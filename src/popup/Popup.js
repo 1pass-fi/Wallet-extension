@@ -15,10 +15,8 @@ const TechStackLogos = () => {
 const Popup = () => {
   return (
     <div className="popup">
-      <p className="popup-greet">Thanks for using <span className="brand">Modern extension Boilerplate</span></p>
-      <p className="stack-head">Made using :</p>
+      <p className="popup-greet">Welcome to Koi</p>
       <TechStackLogos />
-      <p className="contrib-msg">We would love some of your help in making this boilerplate even better. <br /><a href="https://www.github.com/kryptokinght/react-extension-boilerplate" target="_blank">React Extension Boilerplate</a></p>
     </div>
   );
 };

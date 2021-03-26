@@ -14,9 +14,9 @@ class Options extends Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            Koi
           </a>
-          <h1>Options</h1>
+          <h1>Your gallery</h1>
           <paper-button toggles raised class="green">toggles</paper-button>
         </header>
       </div>
