@@ -47,9 +47,9 @@
         "@storybook/addons": "^4.1.7",
         "@storybook/react": "^4.1.7",
         "@svgr/webpack": "2.4.1",
-        "@testing-library/jest-dom": "^5.11.8",
-        "@testing-library/react": "^11.2.3",
-        "@testing-library/user-event": "^12.1.10",
+        "@testing-library/jest-dom": "^5.12.0",
+        "@testing-library/react": "^11.2.6",
+        "@testing-library/user-event": "^13.1.8",
         "@webcomponents/webcomponentsjs": "^2.2.6",
         "babel-core": "7.0.0-bridge.0",
         "babel-eslint": "^10.0.1",
@@ -98,8 +98,10 @@
         "react-app-polyfill": "^0.2.0",
         "react-dev-utils": "^7.0.1",
         "react-dom": "^16.7.0",
+        "react-router-dom": "^5.2.0",
         "resolve": "1.8.1",
         "sass-loader": "7.1.0",
+        "sinon": "^10.0.0",
         "style-loader": "^0.23.1",
         "terser-webpack-plugin": "1.1.0",
         "url-loader": "1.1.1",
@@ -125,7 +127,8 @@
         "collectCoverageFrom": [
             "src/**/*.{js,jsx,ts,tsx}",
             "!src/index.js"
-        ]
+        ],
+        "coveragePathIgnorePatterns": ["/node_modules/", "/sidebar/", "/options/", "/libs/", "/background/", "/content_scripts/", "/lib/"]
     },
     "devDependencies": {
         "handlebars": "^4.7.7"
