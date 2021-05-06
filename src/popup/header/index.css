@@ -1,0 +1,41 @@
+header {
+    align-items: center;
+    display: flex;
+    height: 70px;
+    padding: 0 20px;
+}
+
+.logo {
+    display: inline-block;
+    margin-left: 3px;
+}
+
+.gallery-button {
+    background: #F5F5F5;
+    border-radius: 2px;
+    border: 1.5px solid #171753;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+    color: #171753;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    height: 28px;
+    letter-spacing: 0.03em;
+    line-height: 20px;
+    margin-left: 150px;
+    text-align: center;
+    width: 137px;
+}
+
+.setting-button {
+    background: #F5F5F5;
+    border-radius: 50%;
+    border: 0px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+    display: inline-block;
+    height: 28px;
+    margin-left: 20px;
+    padding: 0;
+    text-align: center;
+    width: 28px;
+}
