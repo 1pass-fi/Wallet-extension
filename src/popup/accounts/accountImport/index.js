@@ -3,16 +3,17 @@ import exportIcon from '../../../img/export-icon.svg'
 import importIcon from '../../../img/import-icon.svg'
 import plusIcon from '../../../img/plus-icon-outline.svg'
 import './index.css'
+import Card from '../../shared/card'
 
-const Card = ({ imgSrc, title, description }) => {
+const CardOption = ({ imgSrc, title, description }) => {
     return (
-        <div className="option-card">
+        <Card className="option-card">
             <div className="card-title-wrapper">
                 <img className="card-icon" src={imgSrc} />
                 <p className="card-title">{title}</p>
             </div>
             <div className="card-description">{description}</div>
-        </div>
+        </Card>
     )
 }
 
@@ -38,7 +39,7 @@ const CONTENTS = [
 export default () => {
     return (
         <div className="account-import">
-            {CONTENTS.map(content => <Card {...content} />)}
+            {CONTENTS.map(content => <CardOption {...content} />)}
         </div>
     )
 }

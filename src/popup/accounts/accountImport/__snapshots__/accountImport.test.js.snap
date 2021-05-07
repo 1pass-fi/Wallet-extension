@@ -6,7 +6,7 @@ exports[`Test for AccountImport component Render without crashing renders correc
     class="account-import"
   >
     <div
-      class="option-card"
+      class="card option-card"
     >
       <div
         class="card-title-wrapper"
@@ -28,7 +28,7 @@ exports[`Test for AccountImport component Render without crashing renders correc
       </div>
     </div>
     <div
-      class="option-card"
+      class="card option-card"
     >
       <div
         class="card-title-wrapper"
@@ -50,7 +50,7 @@ exports[`Test for AccountImport component Render without crashing renders correc
       </div>
     </div>
     <div
-      class="option-card"
+      class="card option-card"
     >
       <div
         class="card-title-wrapper"
