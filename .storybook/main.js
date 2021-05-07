@@ -10,6 +10,13 @@ module.exports = {
         enforce: 'pre',
         loader: require.resolve('@svgr/webpack'),
       });
+      config.node = {
+          dgram: 'empty',
+          fs: 'empty',
+          net: 'empty',
+          tls: 'empty',
+          child_process: 'empty',
+      }
 
       return config;
   }
