@@ -42,11 +42,11 @@
         "@babel/preset-env": "^7.2.3",
         "@babel/preset-react": "^7.0.0",
         "@polymer/paper-button": "^3.0.1",
-        "@storybook/addon-actions": "^4.1.7",
-        "@storybook/addon-links": "^4.1.7",
-        "@storybook/addons": "^4.1.7",
-        "@storybook/react": "^4.1.7",
-        "@svgr/webpack": "2.4.1",
+        "@storybook/addon-actions": "^6.2.9",
+        "@storybook/addon-links": "^6.2.9",
+        "@storybook/addons": "^6.2.9",
+        "@storybook/react": "^6.2.9",
+        "@svgr/webpack": "^5.5.0",
         "@testing-library/jest-dom": "^5.12.0",
         "@testing-library/react": "^11.2.6",
         "@testing-library/user-event": "^13.1.8",
@@ -128,9 +128,18 @@
             "src/**/*.{js,jsx,ts,tsx}",
             "!src/index.js"
         ],
-        "coveragePathIgnorePatterns": ["/node_modules/", "/sidebar/", "/options/", "/libs/", "/background/", "/content_scripts/", "/lib/"]
+        "coveragePathIgnorePatterns": [
+            "/node_modules/",
+            "/sidebar/",
+            "/options/",
+            "/libs/",
+            "/background/",
+            "/content_scripts/",
+            "/lib/"
+        ]
     },
     "devDependencies": {
+        "babel-plugin-module-resolver": "^4.1.0",
         "handlebars": "^4.7.7"
     }
 }

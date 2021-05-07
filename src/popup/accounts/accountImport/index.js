@@ -1,14 +1,14 @@
 import React from 'react'
-import exportIcon from '../../../img/export-icon.svg'
-import importIcon from '../../../img/import-icon.svg'
-import plusIcon from '../../../img/plus-icon-outline.svg'
+import ExportIcon from 'img/export-icon.svg'
+import ImportIcon from 'img/import-icon.svg'
+import PlusIcon from 'img/plus-icon-outline.svg'
 import './index.css'
 
-const Card = ({ imgSrc, title, description }) => {
+const Card = ({ SvgImg, title, description }) => {
     return (
         <div className="option-card">
             <div className="card-title-wrapper">
-                <img className="card-icon" src={imgSrc} />
+                <SvgImg className="card-icon" />
                 <p className="card-title">{title}</p>
             </div>
             <div className="card-description">{description}</div>
@@ -19,17 +19,17 @@ const Card = ({ imgSrc, title, description }) => {
 const CONTENTS = [
     {
         key: 1,
-        imgSrc: importIcon,
+        SvgImg: ImportIcon,
         title: 'Import with a seed phrase',
         description: 'Import an existing wallet using a 12-word seed phrase.'
     }, {
         key: 2,
-        imgSrc: exportIcon,
+        SvgImg: ExportIcon,
         title: 'Upload a .JSON wallet file',
         description: 'Import an existing wallet by uploading a .JSON file.'
     }, {
         key: 3,
-        imgSrc: plusIcon,
+        SvgImg: PlusIcon,
         title: 'Get a new wallet',
         description: 'Start from the beginning.'
     }

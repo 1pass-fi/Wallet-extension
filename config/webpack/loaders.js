@@ -155,6 +155,11 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
     }),
   };
 
+  const svgLoader = {
+    test: /\.svg$/,
+    use: ['@svgr/webpack'],
+  }
+
   const fileLoader = {
     loader: require.resolve('file-loader'),
     exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
@@ -166,6 +171,7 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
   return {
     eslintLoader,
     urlLoader,
+    svgLoader,
     insideBabelLoader,
     outsideBabelLoader,
     styleLoader,
@@ -175,5 +181,3 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
 };
 
 module.exports = getLoaders;
-
-
