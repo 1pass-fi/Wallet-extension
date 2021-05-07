@@ -10,6 +10,8 @@ import Sidebar from '../src/sidebar/Sidebar';
 import Options from '../src/options/Options';
 import AccountImport from '../src/popup/accounts/accountImport';
 import InputField from '../src/popup/shared/inputField';
+import ButtonShared from '../src/popup/shared/button';
+import ImportByPhrase from '../src/popup/accounts/importByPhrase/index'
 
 storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
 
@@ -28,3 +30,5 @@ storiesOf('Sidebar', module).add('Default', () => <Sidebar />);
 storiesOf('Options', module).add('Default', () => <Options />);
 storiesOf('AccountImport', module).add('Default', () => <AccountImport />);
 storiesOf('InputField', module).add('Default', () => <InputField label="password" value={null} onChange={() => { }} />);
+storiesOf('ButtonShared', module).add('Default', () => <ButtonShared label="Click Me" onClick={() => { }} />)
+storiesOf('ImportByPhrase', module).add('Default', () => <ImportByPhrase />)

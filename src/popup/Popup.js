@@ -21,7 +21,7 @@ const Popup = () => {
                         <Route path="/assets">Assets</Route>
                         <Route path="/activity">Activity</Route>
                         <Route path="/">
-                            <Redirect to="/account/home" />
+                            <Redirect to="/account" />
                         </Route>
                     </Switch>
                 </div>

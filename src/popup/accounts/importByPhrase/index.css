@@ -1,0 +1,79 @@
+.account-import-phrase {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 464px;
+}
+
+.import-phrase {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 394px;
+}
+
+/* TITLE */
+.import-phrase .title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 181px;
+    font-size: 18px;
+}
+
+.import-phrase .title img {
+    width: 24px;
+    height: 24px;
+}
+
+.import-phrase .title p {
+    margin: 0;
+}
+
+/* FIELDS */
+
+.import-phrase .fields {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 208px;
+}
+
+
+/* TERM SERVICE */
+
+.import-phrase .term-service {
+    display: flex;
+    align-items: center;
+    width: 330px;
+    height: 18px;
+}
+
+.import-phrase .term-service input {
+    height: 18px;
+    width: 18px;
+    margin: 0 15px 0 0;
+    background: #FFFFFF;
+    border: 1.5px solid #171753;
+    box-sizing: border-box;
+    border-radius: 2px;
+    padding: 0;
+}
+
+.import-phrase .term-service p {
+    font-size: 15px;
+}
+
+.import-phrase .term-service a {
+    color: #237B75;
+}
+
+/* BUTTON */
+.import-phrase .button {
+    height: 53px;
+    width: 330px;
+    font-size: 14px;
+}

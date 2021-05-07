@@ -17,7 +17,7 @@ nav {
     text-decoration: none;
 }
 
-.nav-item-active {
+.nav-item-active div {
     border-bottom: 2px solid #171753;
     display: inline-block;
     line-height: 20px;

@@ -1,24 +1,32 @@
 import React from 'react';
 import './index.css';
 import {
-    BrowserRouter as Router,
     Route,
     Switch,
 } from 'react-router-dom';
 
 import AccountHome from './accountHome'
 import AccountImport from './accountImport'
+import ImportPhrase from './importByPhrase/index'
+import ImportFile from './importByFile/index'
+
 
 const Account = () => {
     return (
         <Switch>
-            <Route path="/account/home">
+            <Route exact path="/account">
                 <AccountHome />
+            </Route>
+            <Route path="/account/import/phrase">
+                <ImportPhrase />
+            </Route>
+            <Route path="/account/import/keyfile">
+                <ImportFile />
             </Route>
             <Route path="/account/import">
                 <AccountImport />
             </Route>
-        </Switch>
+        </Switch >
     )
 }
 
