@@ -12,6 +12,8 @@ import AccountImport from '../src/popup/accounts/accountImport';
 import InputField from '../src/popup/shared/inputField';
 import ButtonShared from '../src/popup/shared/button';
 import ImportByPhrase from '../src/popup/accounts/importByPhrase/index'
+import ImportByFile from '../src/popup/accounts/importByFile/index'
+import CreatePassword from '../src/popup/shared/createPassword/index'
 
 storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
 
@@ -32,3 +34,5 @@ storiesOf('AccountImport', module).add('Default', () => <AccountImport />);
 storiesOf('InputField', module).add('Default', () => <InputField label="password" value={null} onChange={() => { }} />);
 storiesOf('ButtonShared', module).add('Default', () => <ButtonShared label="Click Me" onClick={() => { }} />)
 storiesOf('ImportByPhrase', module).add('Default', () => <ImportByPhrase />)
+storiesOf('ImportByFile', module).add('Default', () => <ImportByFile />)
+storiesOf('CreatePassword', module).add('Default', () => <CreatePassword />)

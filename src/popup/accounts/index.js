@@ -10,7 +10,6 @@ import AccountImport from './accountImport'
 import ImportPhrase from './importByPhrase/index'
 import ImportFile from './importByFile/index'
 
-
 const Account = () => {
     return (
         <Switch>

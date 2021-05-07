@@ -1,0 +1,49 @@
+.create-password {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    height: 280px;
+}
+
+.create-password .fields {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 132px;
+}
+
+
+/* TERM SERVICE */
+
+.create-password .term-service {
+    display: flex;
+    align-items: center;
+    width: 330px;
+    height: 18px;
+}
+
+.create-password .term-service input {
+    height: 18px;
+    width: 18px;
+    margin: 0 15px 0 0;
+    background: #FFFFFF;
+    border: 1.5px solid #171753;
+    box-sizing: border-box;
+    border-radius: 2px;
+    padding: 0;
+}
+
+.create-password .term-service p {
+    font-size: 15px;
+}
+
+.create-password .term-service a {
+    color: #237B75;
+}
+
+/* BUTTON */
+.create-password .button {
+    height: 32px;
+    width: 330px;
+    font-size: 14px;
+}
