@@ -5,18 +5,6 @@ import plusIcon from '../../../img/plus-icon-outline.svg'
 import './index.css'
 import Card from '../../shared/card'
 
-const CardOption = ({ imgSrc, title, description }) => {
-    return (
-        <Card className="option-card">
-            <div className="card-title-wrapper">
-                <img className="card-icon" src={imgSrc} />
-                <p className="card-title">{title}</p>
-            </div>
-            <div className="card-description">{description}</div>
-        </Card>
-    )
-}
-
 const CONTENTS = [
     {
         key: 1,
@@ -35,6 +23,18 @@ const CONTENTS = [
         description: 'Start from the beginning.'
     }
 ]
+
+const CardOption = ({ imgSrc, title, description }) => {
+    return (
+        <Card className="option-card">
+            <div className="card-title-wrapper">
+                <img className="card-icon" src={imgSrc} />
+                <p className="card-title">{title}</p>
+            </div>
+            <div className="card-description">{description}</div>
+        </Card>
+    )
+}
 
 export default () => {
     return (

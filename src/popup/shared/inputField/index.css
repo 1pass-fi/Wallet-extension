@@ -1,0 +1,46 @@
+.input-field {
+  color: #171753;
+}
+
+.label {
+  font-size: 15px;
+  line-height: 20px;
+  margin-left: 10px;
+  height: 20px;
+  text-transform: capitalize;
+}
+
+.input-wrapper {
+  background: #FFFFFF;
+  height: 32px;
+  position: relative;
+  width: 330px;
+}
+
+.input {
+  border-radius: 2px;
+  border: 1.5px solid #171753;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  color: #171753;
+  font-size: 15px;
+  height: 100%;
+  letter-spacing: 0.03em;
+  line-height: 18px;
+  margin: 0;
+  padding: 8px 10px 6px;
+  width: 100%;
+}
+
+.input::placeholder {
+  color: #237B75;
+  opacity: 0.7;
+}
+
+.toggle-display {
+  cursor: pointer;
+  position: absolute;
+  right: 9px;
+  top: 4px;
+}
+
