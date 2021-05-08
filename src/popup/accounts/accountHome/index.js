@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 import './index.css'
 
 export default () => {
-    return (
-        <Link to='/account/import' className="plus-button">
-            <PlusIcon />
-        </Link>
-    )
+  return (
+    <Link to='/account/import' className="plus-button">
+      <PlusIcon />
+    </Link>
+  )
 }

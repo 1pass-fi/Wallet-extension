@@ -24,6 +24,7 @@ module.exports = {
         "camelcase": "off",
         "no-empty": "off",
         "no-param-reassign": "off",
+        "no-unused-vars": "off",
         "func-names": [
             "error",
             "never"
@@ -35,10 +36,10 @@ module.exports = {
                 "array": false
             }
         ],
-        indent: ['error', 4, { SwitchCase: 1 }],
+        indent: ['error', 2, { SwitchCase: 1 }],
         'linebreak-style': ['error', 'unix'],
         quotes: ['error', 'single', { allowTemplateLiterals: true }],
-        semi: ['error', 'always'],
+        semi: ['error', 'never'],
         'react/jsx-uses-vars': 1,
         'react/jsx-uses-react': 1,
         'spaced-comment': ['error', 'always', { exceptions: ['-', '+'] }],

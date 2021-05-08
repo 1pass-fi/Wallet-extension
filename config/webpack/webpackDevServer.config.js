@@ -1,9 +1,9 @@
 /* Minimal webpack-dev-server config */
 
-const ignoredFiles = require('react-dev-utils/ignoredFiles');
-const paths = require('../paths');
+const ignoredFiles = require('react-dev-utils/ignoredFiles')
+const paths = require('../paths')
 
-const host = process.env.HOST || '0.0.0.0';
+const host = process.env.HOST || '0.0.0.0'
 
 module.exports = function () {
   return {
@@ -18,5 +18,5 @@ module.exports = function () {
       ignored: ignoredFiles(paths.appSrc),
     },
     host
-  };
-};
+  }
+}
