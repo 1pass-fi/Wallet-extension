@@ -100,6 +100,7 @@ module.exports = function (webpackEnv) {
                         loaders.urlLoader,
                         loaders.insideBabelLoader,
                         loaders.outsideBabelLoader,
+                        loaders.svgLoader,
                         loaders.styleLoader,
                         loaders.cssModuleLoader,
                         loaders.fileLoader

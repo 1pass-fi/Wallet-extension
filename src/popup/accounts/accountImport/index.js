@@ -10,19 +10,19 @@ import Card from '../../shared/card'
 const CONTENTS = [
     {
         key: 1,
-        imgSrc: importIcon,
+        SvgImg: ImportIcon,
         title: 'Import with a seed phrase',
         description: 'Import an existing wallet using a 12-word seed phrase.',
         path: '/account/import/phrase'
     }, {
         key: 2,
-        imgSrc: exportIcon,
+        SvgImg: ExportIcon,
         title: 'Upload a .JSON wallet file',
         description: 'Import an existing wallet by uploading a .JSON file.',
         path: '/account/import/keyfile'
     }, {
         key: 3,
-        imgSrc: plusIcon,
+        SvgImg: PlusIcon,
         title: 'Get a new wallet',
         description: 'Start from the beginning.',
         path: '#'
