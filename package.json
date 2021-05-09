@@ -39,6 +39,7 @@
     },
     "dependencies": {
         "@babel/core": "^7.2.2",
+        "@babel/polyfill": "^7.12.1",
         "@babel/preset-env": "^7.2.3",
         "@babel/preset-react": "^7.0.0",
         "@polymer/paper-button": "^3.0.1",
@@ -67,6 +68,7 @@
         "css-loader": "^1.0.0",
         "dotenv": "6.0.0",
         "dotenv-expand": "4.2.0",
+        "enzyme": "^3.11.0",
         "eslint": "^5.12.0",
         "eslint-config-react-app": "^3.0.6",
         "eslint-loader": "2.1.1",
@@ -123,8 +125,9 @@
     ],
     "jest": {
         "moduleNameMapper": {
-            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/assetsTransformer.js",
-            "\\.(css|less)$": "<rootDir>/assetsTransformer.js"
+            "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/assetsTransformer.js",
+            "\\.(css|less)$": "<rootDir>/assetsTransformer.js",
+            "\\.(svg)$": "<rootDir>/__mocks__/svgrMock.js"
         },
         "collectCoverageFrom": [
             "src/**/*.{js,jsx,ts,tsx}",

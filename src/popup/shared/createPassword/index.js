@@ -4,7 +4,7 @@ import InputField from '../inputField/index'
 import ButtonShared from '../button/index'
 import './index.css'
 
-export default () => {
+export default ({ onClick }) => {
   return (
     <div className="create-password">
       <div className="fields">

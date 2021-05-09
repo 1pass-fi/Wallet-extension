@@ -6,7 +6,7 @@ import {
   Redirect
 } from 'react-router-dom'
 // import koiTools from 'koi_tools'
-
+import '@babel/polyfill'
 import './Popup.css'
 import Header from './header'
 import Account from './accounts/index'
@@ -29,10 +29,8 @@ const Popup = () => {
 
   //     // await chrome.storage.local.set({ "koi-address": "askdhlasjdksdasdkalsj" })
   //     // koiObj.wallet = await chrome.storage.local.get(['koi-address'])
-
-
   // }, [])
-
+  
   return (
     <div className="popup">
       <Router>
