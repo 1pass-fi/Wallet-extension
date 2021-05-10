@@ -1,7 +1,7 @@
 import { loadKoiBy } from 'constant'
 
 export const setChromeStorage = (obj) => {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     chrome.storage.local.set(obj, () => {
       resolve()
     })
@@ -9,23 +9,34 @@ export const setChromeStorage = (obj) => {
 }
 
 export const getChromeStorage = (key) => {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     chrome.storage.local.get(key, (result) => {
       resolve(result)
     })
   })
 }
 
+export const removeChromeStorage = (key) => {
+  return new Promise(function (resolve, reject) {
+    chrome.storage.local.remove(key, () => {
+      resolve()
+    })
+  })
+}
+
 export const loadWallet = async (koiObj, data, loadBy) => {
   try {
-    switch(loadBy) {
+    switch (loadBy) {
       case loadKoiBy.ADDRESS:
         koiObj.address = data
         break
       case loadKoiBy.FILE:
+        data = await JSONFileToObject(data)
         await koiObj.loadWallet(data)
         break
       case loadKoiBy.SEED:
+        console.log('running')
+        await koiObj.loadWallet(data)
         break
     }
 

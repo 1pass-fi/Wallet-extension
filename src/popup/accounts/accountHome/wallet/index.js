@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import './index.css'
+import Context from 'popup/context'
+
 import Card from 'shared/card'
 import CopyIcon from 'img/copy-icon.svg'
 import EditIcon from 'img/edit-icon.svg'
 import Fish from 'img/fish.svg'
+import ShareIconOne from 'img/wallet/share-icon.svg'
+import ShareIconTwo from 'img/wallet/share2-icon.svg'
+import KeyIcon from 'img/wallet/key-icon.svg'
+import DeleteIcon from 'img/wallet/delete-icon.svg'
+
 
 const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
   return (
@@ -16,7 +23,7 @@ const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
             <EditIcon />
           </div>
           <div className='addr'>
-            <div>{`${accountAddress.slice(0, 6)}...${accountAddress.slice(accountAddress.length - 6)}`}</div>
+            <div>{`${accountAddress.slice(0, 6)}...${accountAddress.slice(accountAddress.length - 4)}`}</div>
             <CopyIcon />
           </div>
         </div>
@@ -33,15 +40,28 @@ const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
 
 const ITEMS = [
   {
-    icon: 'icon',
-    title: 'title',
-    onClick: () => { }
-  }
+    icon: <ShareIconOne />,
+    title: 'View Block Explorer',
+    onClick: () => { },
+    className: ''
+  },
+  {
+    icon: <KeyIcon />,
+    title: 'Export Private Key',
+    onClick: () => { },
+    className: ''
+  },
+  {
+    icon: <ShareIconTwo />,
+    title: 'See Connected Sites',
+    onClick: () => { },
+    className: ''
+  },
 ]
 
-const WalletConfItem = ({ icon, title, onClick }) => {
+const WalletConfItem = ({ icon, title, onClick, className }) => {
   return (
-    <div onClick={onClick}>
+    <div className={'wallet-conf-item ' + className} onClick={onClick}>
       {icon}
       <p>{title}</p>
     </div>
@@ -49,9 +69,11 @@ const WalletConfItem = ({ icon, title, onClick }) => {
 }
 
 const WalletConf = () => {
+  const { handleRemoveWallet } = useContext(Context)
   return (
     <div className='wallet-conf'>
       {ITEMS.map(content => <WalletConfItem {...content} />)}
+      <WalletConfItem className='delete-wallet' icon={<DeleteIcon />} title='Remove Account' onClick={handleRemoveWallet} />
     </div>
   )
 }
@@ -63,7 +85,7 @@ export default ({ accountAddress, koiBalance, arBalance }) => {
       <div className="wallet-wrapper">
         <WalletInfo accountName={'Account #1'} accountAddress={accountAddress} koiBalance={koiBalance} arBalance={arBalance} />
         <Card className='address'>${accountAddress}</Card>
-        {/* <WalletConf /> */}
+        <WalletConf />
       </div>
     </div>
   )

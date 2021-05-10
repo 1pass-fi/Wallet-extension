@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import ToggleDisplayIcon from 'img/toggle-display.svg'
 import './index.css'
 
-export default ({ label, value, onChange, placeholder = '' }) => {
+export default ({ label, value, onChange, placeholder = '', name }) => {
   const [isDisplay, setDisplay] = useState(false)
   const toggleDisplay = () => {
     setDisplay(!isDisplay)
@@ -14,6 +14,7 @@ export default ({ label, value, onChange, placeholder = '' }) => {
       <div className="label">{label}</div>
       <div className="input-wrapper">
         <input
+          name={name}
           className="input"
           type={isDisplay ? 'text' : 'password'}
           value={value}
