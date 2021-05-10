@@ -1,11 +1,6 @@
 import '@babel/polyfill'
 import React, { useEffect, useState } from 'react'
-import {
-  Route,
-  Switch,
-  Redirect,
-  useHistory
-} from 'react-router-dom'
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom'
 import koiTools from 'koi_tools'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
@@ -16,7 +11,12 @@ import Loading from './loading'
 import Account from './accounts/index'
 import { loadKoiBy } from 'constant'
 
-import { setChromeStorage, getChromeStorage, loadWallet, JSONFileToObject } from 'utils'
+import {
+  setChromeStorage,
+  getChromeStorage,
+  loadWallet,
+  JSONFileToObject,
+} from 'utils'
 
 import KoiContext from 'popup/context'
 
@@ -28,7 +28,7 @@ const Popup = () => {
   const [koi, setKoi] = useState({
     arBalance: koiObj.balance,
     koiBalance: koiObj.koiBalance,
-    address: koiObj.address
+    address: koiObj.address,
   })
 
   const handleImportWallet = async (e) => {
@@ -43,8 +43,9 @@ const Popup = () => {
       const fileObject = await JSONFileToObject(file)
       const newData = await loadWallet(koiObj, fileObject, loadKoiBy.FILE)
       // await setChromeStorage({'koiAddress': koiObj.address})
-      setKoi(prevState => ({ ...prevState, ...newData }))
-      history.push('/account')
+      setKoi((prevState) => ({ ...prevState, ...newData }))
+      console.log(history)
+      history.push('/account/import/keyfile/success')
       setIsLoading(false)
     } catch (err) {
       console.log(err.message)
@@ -57,8 +58,12 @@ const Popup = () => {
       const result = await getChromeStorage('koiAddress')
 
       if (result) {
-        const newData = await loadWallet(koiObj, result['koiAddress'], loadKoiBy.ADDRESS)
-        setKoi(prevState => ({ ...prevState, ...newData }))
+        const newData = await loadWallet(
+          koiObj,
+          result['koiAddress'],
+          loadKoiBy.ADDRESS
+        )
+        setKoi((prevState) => ({ ...prevState, ...newData }))
       }
       setIsLoading(false)
     }
@@ -66,19 +71,21 @@ const Popup = () => {
   }, [])
 
   return (
-    <div className="popup">
-      <KoiContext.Provider value={{ koi, setKoi, handleImportWallet, isLoading, setIsLoading }}>
+    <div className='popup'>
+      <KoiContext.Provider
+        value={{ koi, setKoi, handleImportWallet, isLoading, setIsLoading }}
+      >
         {isLoading && <Loading />}
         <Header />
-        <div className="content">
+        <div className='content'>
           <Switch>
-            <Route path="/account">
+            <Route path='/account'>
               <Account />
             </Route>
-            <Route path="/assets"></Route>
-            <Route path="/activity">Activity</Route>
-            <Route path="/">
-              <Redirect to="/account" />
+            <Route path='/assets'></Route>
+            <Route path='/activity'>Activity</Route>
+            <Route path='/'>
+              <Redirect to='/account' />
             </Route>
           </Switch>
         </div>
