@@ -1,14 +1,8 @@
 import '@babel/polyfill'
 import React, { useEffect, useState } from 'react'
-import {
-  Route,
-  Switch,
-  Redirect,
-  useHistory
-} from 'react-router-dom'
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom'
 import koiTools from 'koi_tools'
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
 
 import './Popup.css'
 import Header from './header'
@@ -16,7 +10,7 @@ import Loading from './loading'
 import Account from './accounts/index'
 import { loadKoiBy } from 'constant'
 
-import { setChromeStorage, getChromeStorage, removeChromeStorage, loadWallet, JSONFileToObject } from 'utils'
+import { setChromeStorage, getChromeStorage, removeChromeStorage, loadWallet } from 'utils'
 
 import KoiContext from 'popup/context'
 
@@ -28,7 +22,7 @@ const Popup = () => {
   const [koi, setKoi] = useState({
     arBalance: koiObj.balance,
     koiBalance: koiObj.koiBalance,
-    address: koiObj.address
+    address: koiObj.address,
   })
 
   const handleImportWallet = async (e) => {
@@ -40,19 +34,22 @@ const Popup = () => {
       const phrase = get(e, 'target.inputPhrase.value')
 
       let newData = {}
-
+      let redirectPath = ''
       if (file) {
         newData = await loadWallet(koiObj, file, loadKoiBy.FILE)
+        redirectPath = '/account/import/keyfile/success'
       } else if (phrase) {
         newData = await loadWallet(koiObj, phrase, loadKoiBy.SEED)
+        redirectPath = '/account/import/phrase/success'
       }
 
       await setChromeStorage({ 'koiAddress': koiObj.address })
       setKoi(prevState => ({ ...prevState, ...newData }))
       setIsLoading(false)
-      history.push('/account')
+      history.push(redirectPath)
     } catch (err) {
       console.log(err.message)
+      setIsLoading(false)
     }
   }
 
@@ -60,23 +57,36 @@ const Popup = () => {
     try {
       setIsLoading(true)
       await removeChromeStorage('koiAddress')
+      koiObj.address = null
       setKoi(prevState => ({ ...prevState, arBalance: null, koiBalance: null, address: null }))
       setIsLoading(false)
     } catch (err) {
       console.log(err.message)
+      setIsLoading(false)
     }
   }
 
   useEffect(() => {
     async function getKoiData() {
-      setIsLoading(true)
-      const result = await getChromeStorage('koiAddress')
-      if (result) {
-        const newData = await loadWallet(koiObj, result['koiAddress'], loadKoiBy.ADDRESS)
-        setKoi(prevState => ({ ...prevState, ...newData }))
+      try {
+        setIsLoading(true)
+        const result = await getChromeStorage('koiAddress')
+        if (result) {
+          const newData = await loadWallet(
+            koiObj,
+            result['koiAddress'],
+            loadKoiBy.ADDRESS
+          )
+          setKoi((prevState) => ({ ...prevState, ...newData }))
+        }
+        setIsLoading(false)
+      } catch (err) {
+        console.log(err.message)
+        setIsLoading(false)
       }
-      setIsLoading(false)
+
     }
+
     getKoiData()
   }, [])
 
@@ -85,15 +95,15 @@ const Popup = () => {
       <KoiContext.Provider value={{ koi, setKoi, handleImportWallet, handleRemoveWallet, isLoading, setIsLoading }}>
         {isLoading && <Loading />}
         <Header />
-        <div className="content">
+        <div className='content'>
           <Switch>
-            <Route path="/account">
+            <Route path='/account'>
               <Account />
             </Route>
-            <Route path="/assets"></Route>
-            <Route path="/activity">Activity</Route>
-            <Route path="/">
-              <Redirect to="/account" />
+            <Route path='/assets'></Route>
+            <Route path='/activity'>Activity</Route>
+            <Route path='/'>
+              <Redirect to='/account' />
             </Route>
           </Switch>
         </div>
