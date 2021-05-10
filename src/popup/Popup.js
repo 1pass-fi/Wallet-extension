@@ -7,10 +7,12 @@ import {
   useHistory
 } from 'react-router-dom'
 import koiTools from 'koi_tools'
-import { get } from 'lodash'
+import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 
 import './Popup.css'
 import Header from './header'
+import Loading from './loading'
 import Account from './accounts/index'
 import { loadKoiBy } from 'constant'
 
@@ -21,6 +23,7 @@ import KoiContext from 'popup/context'
 const koiObj = new koiTools.koi_tools()
 
 const Popup = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const history = useHistory()
   const [koi, setKoi] = useState({
     arBalance: koiObj.balance,
@@ -30,14 +33,19 @@ const Popup = () => {
 
   const handleImportWallet = async (e) => {
     try {
+      setIsLoading(true)
       e.preventDefault()
-      console.log(e.target.files)
-      let file = get(e, 'target.fileField.files[0]')
-      file = await JSONFileToObject(file)
-      const newData = await loadWallet(koiObj, file, loadKoiBy.FILE)
-      await setChromeStorage({'koiAddress': koiObj.address})
-      setKoi(prevState => ({...prevState, ...newData}))
+      const file = get(e, 'target.files.0')
+      if (isEmpty(file)) {
+        return
+      }
+
+      const fileObject = await JSONFileToObject(file)
+      const newData = await loadWallet(koiObj, fileObject, loadKoiBy.FILE)
+      // await setChromeStorage({'koiAddress': koiObj.address})
+      setKoi(prevState => ({ ...prevState, ...newData }))
       history.push('/account')
+      setIsLoading(false)
     } catch (err) {
       console.log(err.message)
     }
@@ -45,26 +53,22 @@ const Popup = () => {
 
   useEffect(() => {
     async function getKoiData() {
-      // await setChromeStorage({ "koiAddress": "6VJYLb6lvBISrgRbhd1ODHzJ1xAh3ZA3OdSY20E88Bg" })
-      // const result = await getChromeStorage('koiAddress')
-      // koiObj.address = result['koiAddress']
-      // await koiObj.getWalletBalance()
-      // const koiBalance = await koiObj.getKoiBalance()
-      // const koiData = await loadWallet(koiObj, file, loadKoiBy.FILE)
+      setIsLoading(true)
+      const result = await getChromeStorage('koiAddress')
 
-      // setKoi((prevState) => {
-      //   return {
-      //     ...prevState,
-      //     ...koiData
-      //   }
-      // })
+      if (result) {
+        const newData = await loadWallet(koiObj, result['koiAddress'], loadKoiBy.ADDRESS)
+        setKoi(prevState => ({ ...prevState, ...newData }))
+      }
+      setIsLoading(false)
     }
     getKoiData()
   }, [])
-  
+
   return (
     <div className="popup">
-      <KoiContext.Provider value={{koi, setKoi, handleImportWallet}}>
+      <KoiContext.Provider value={{ koi, setKoi, handleImportWallet, isLoading, setIsLoading }}>
+        {isLoading && <Loading />}
         <Header />
         <div className="content">
           <Switch>

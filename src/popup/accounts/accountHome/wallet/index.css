@@ -1,0 +1,68 @@
+.wallet {
+  position: relative;
+  width: 426px;
+  /* border: 0.1px solid black; */
+}
+
+.fish {
+  position: absolute;
+  top: 15px;
+  left: 28px;
+}
+
+.wallet .wallet-wrapper {
+  padding: 0 48px;
+}
+
+.wallet .wallet-wrapper .wallet-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.wallet .wallet-wrapper .address {
+  width: 330px;
+  height: 28px;
+  font-size: 13x;
+}
+
+.wallet .wallet-wrapper .wallet-info .wallet-info-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 165px;
+  height: 66px;
+}
+
+.wallet .wallet-wrapper .wallet-info .wallet-info-row .name {
+  display: flex;
+  justify-content: space-around;
+  width: 130px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.wallet .wallet-wrapper .wallet-info .wallet-info-row .addr {
+  display: flex;
+  justify-content: space-around;
+  width: 130px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #237B75;
+}
+
+.wallet .wallet-wrapper .wallet-info .wallet-info-row .koi {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.wallet .wallet-wrapper .wallet-info .wallet-info-row .ar {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #6D6DA0;
+}

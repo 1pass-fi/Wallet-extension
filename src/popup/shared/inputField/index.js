@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
+
 import ToggleDisplayIcon from 'img/toggle-display.svg'
 import './index.css'
 
-export default ({ label, value, onChange, placeholder = 'hajdhasd' }) => {
+export default ({ label, value, onChange, placeholder = '' }) => {
   const [isDisplay, setDisplay] = useState(false)
-
   const toggleDisplay = () => {
     setDisplay(!isDisplay)
   }
@@ -20,7 +20,7 @@ export default ({ label, value, onChange, placeholder = 'hajdhasd' }) => {
           onChange={onChange}
           placeholder={placeholder}>
         </input>
-        <ToggleDisplayIcon className="toggle-display" onClick={toggleDisplay}/>
+        <ToggleDisplayIcon className="toggle-display" onClick={toggleDisplay} />
       </div>
     </div>
   )

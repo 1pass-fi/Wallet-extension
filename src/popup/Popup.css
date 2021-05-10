@@ -2,6 +2,7 @@
   width: 426px;
   min-height: 571px;
   box-sizing: border-box;
+  position: relative;
   /* border: 1px solid black; */
 }
 

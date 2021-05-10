@@ -1,8 +1,8 @@
 import React from 'react'
 import './index.css'
 
-export default ({ label, onClick }) => {
+export default ({ label, onClick, isEnable }) => {
   return (
-    <button onClick={onClick} className="button-shared">{label}</button>
+    <button disabled={!isEnable} onClick={onClick} className="button-shared">{label}</button>
   )
 }

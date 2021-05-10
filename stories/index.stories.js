@@ -15,6 +15,7 @@ import ButtonShared from '../src/popup/shared/button'
 import ImportByPhrase from '../src/popup/accounts/importByPhrase/index'
 import ImportByFile from '../src/popup/accounts/importByFile/index'
 import CreatePassword from '../src/popup/shared/createPassword/index'
+import WalletInfo from '../src/popup/accounts/accountHome/wallet/index'
 
 addDecorator(StoryRouter());
 
@@ -25,7 +26,7 @@ storiesOf('Button', module)
   .add('with some emoji', () => (
     <Button onClick={action('clicked')}>
       <span role="img" aria-label="so cool">
-                😀 😎 👍 💯
+        😀 😎 👍 💯
       </span>
     </Button>
   ))
@@ -39,3 +40,4 @@ storiesOf('ButtonShared', module).add('Default', () => <ButtonShared label="Clic
 storiesOf('ImportByPhrase', module).add('Default', () => <ImportByPhrase />)
 storiesOf('ImportByFile', module).add('Default', () => <ImportByFile />)
 storiesOf('CreatePassword', module).add('Default', () => <CreatePassword />)
+storiesOf('WalletInfo', module).add('Default', () => <WalletInfo accountAddress='$n-kxQLufYyR4mA5PxU7mtsrCFSIu-W66GTR7nl3fiCc' arBalance={100} koiBalance={103} />)
