@@ -12,7 +12,7 @@ describe('Test for Card component', () => {
       Children = () => <h1>Hello</h1>
       props = {
         children: <Children />,
-        className: "extra-class-name"
+        className: 'extra-class-name'
       }
       const obj = render(<Card children={props.children} className={props.className}/>)
 

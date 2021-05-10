@@ -10,7 +10,7 @@ describe('Test for Button component', () => {
 
     beforeEach(() => {
       props = {
-        label: "Click Me",
+        label: 'Click Me',
         onClick: () => {
           document.body.style.backgroundColor = 'red'
         }

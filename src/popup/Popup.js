@@ -1,54 +1,84 @@
+import '@babel/polyfill'
 import React, { useEffect, useState } from 'react'
 import {
-  BrowserRouter as Router,
   Route,
   Switch,
-  Redirect
+  Redirect,
+  useHistory
 } from 'react-router-dom'
-// import koiTools from 'koi_tools'
-import '@babel/polyfill'
+import koiTools from 'koi_tools'
+import { get } from 'lodash'
+
 import './Popup.css'
 import Header from './header'
 import Account from './accounts/index'
+import { loadKoiBy } from 'constant'
 
-// Load wallet from localstorage
-// const koiObj = new koiTools.koi_tools()
+import { setChromeStorage, getChromeStorage, loadWallet, JSONFileToObject } from 'utils'
+
+import KoiContext from 'popup/context'
+
+const koiObj = new koiTools.koi_tools()
+
 const Popup = () => {
-  // const [koi, setKoi] = useState(null)
+  const history = useHistory()
+  const [koi, setKoi] = useState({
+    arBalance: koiObj.balance,
+    koiBalance: koiObj.koiBalance,
+    address: koiObj.address
+  })
 
-  // useEffect(() => {
-  //     // koiObj.wallet = localStorage.getItem('koi-address')
+  const handleImportWallet = async (e) => {
+    try {
+      e.preventDefault()
+      console.log(e.target.files)
+      let file = get(e, 'target.fileField.files[0]')
+      file = await JSONFileToObject(file)
+      const newData = await loadWallet(koiObj, file, loadKoiBy.FILE)
+      await setChromeStorage({'koiAddress': koiObj.address})
+      setKoi(prevState => ({...prevState, ...newData}))
+      history.push('/account')
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
 
-  //     chrome.storage.local.set({ "koi-address": "askdhlasjdksdasdkalsj" }, function () {
-  //         chrome.storage.local.get('koi-address', function (result) {
-  //             console.log(result['koi-address'])
-  //             koiObj.wallet = result['koi-address']
-  //             setKoi(koiObj)
-  //         });
-  //     });
+  useEffect(() => {
+    async function getKoiData() {
+      // await setChromeStorage({ "koiAddress": "6VJYLb6lvBISrgRbhd1ODHzJ1xAh3ZA3OdSY20E88Bg" })
+      // const result = await getChromeStorage('koiAddress')
+      // koiObj.address = result['koiAddress']
+      // await koiObj.getWalletBalance()
+      // const koiBalance = await koiObj.getKoiBalance()
+      // const koiData = await loadWallet(koiObj, file, loadKoiBy.FILE)
 
-  //     // await chrome.storage.local.set({ "koi-address": "askdhlasjdksdasdkalsj" })
-  //     // koiObj.wallet = await chrome.storage.local.get(['koi-address'])
-  // }, [])
+      // setKoi((prevState) => {
+      //   return {
+      //     ...prevState,
+      //     ...koiData
+      //   }
+      // })
+    }
+    getKoiData()
+  }, [])
   
   return (
     <div className="popup">
-      <Router>
+      <KoiContext.Provider value={{koi, setKoi, handleImportWallet}}>
         <Header />
         <div className="content">
           <Switch>
             <Route path="/account">
               <Account />
             </Route>
-            <Route path="/assets">Assets</Route>
+            <Route path="/assets"></Route>
             <Route path="/activity">Activity</Route>
             <Route path="/">
               <Redirect to="/account" />
             </Route>
           </Switch>
         </div>
-      </Router>
-
+      </KoiContext.Provider>
     </div>
   )
 }
