@@ -144,6 +144,7 @@
         ]
     },
     "devDependencies": {
+        "@tcorley/storybook-react-router": "^1.0.9",
         "babel-plugin-module-resolver": "^4.1.0",
         "handlebars": "^4.7.7"
     }

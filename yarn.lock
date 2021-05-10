@@ -2450,6 +2450,13 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
+"@tcorley/storybook-react-router@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@tcorley/storybook-react-router/-/storybook-react-router-1.0.9.tgz#4dabb864eff1f9dacbad519c0934817edae164f3"
+  integrity sha512-ygTsNUe23hG7SJ20VB4i4T9n9qZ7skRcImeMMOz9mDuZkH+eHjIuaLCFet9MJ7m9MG75JH4DUfi9txUnpU8w5g==
+  dependencies:
+    prop-types "^15.7.2"
+
 "@testing-library/dom@^7.28.1":
   version "7.30.4"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-7.30.4.tgz#c6a4a91557e92035fd565246bbbfb8107aa4634d"

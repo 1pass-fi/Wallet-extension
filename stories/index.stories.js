@@ -1,8 +1,9 @@
 import React from 'react'
 
-import { storiesOf } from '@storybook/react'
+import { storiesOf, addDecorator } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { linkTo } from '@storybook/addon-links'
+import StoryRouter from '@tcorley/storybook-react-router'
 
 import { Button, Welcome } from '@storybook/react/demo'
 import Popup from '../src/popup/Popup'
@@ -14,6 +15,8 @@ import ButtonShared from '../src/popup/shared/button'
 import ImportByPhrase from '../src/popup/accounts/importByPhrase/index'
 import ImportByFile from '../src/popup/accounts/importByFile/index'
 import CreatePassword from '../src/popup/shared/createPassword/index'
+
+addDecorator(StoryRouter());
 
 storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />)
 
