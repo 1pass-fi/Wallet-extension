@@ -10,22 +10,22 @@ import Card from 'shared/card'
 const CONTENTS = [
   {
     key: 1,
-    SvgImage: <ImportIcon className="card-icon"/>,
+    SvgImage: <ImportIcon className="card-icon" />,
     title: 'Import with a seed phrase',
     description: 'Import an existing wallet using a 12-word seed phrase.',
     path: '/account/import/phrase'
   }, {
     key: 2,
-    SvgImage: <ExportIcon className="card-icon"/>,
+    SvgImage: <ExportIcon className="card-icon" />,
     title: 'Upload a .JSON wallet file',
     description: 'Import an existing wallet by uploading a .JSON file.',
     path: '/account/import/keyfile'
   }, {
     key: 3,
-    SvgImage: <PlusIcon className="card-icon"/>,
+    SvgImage: <PlusIcon className="card-icon" />,
     title: 'Get a new wallet',
     description: 'Start from the beginning.',
-    path: '#'
+    path: '/account/create'
   }
 ]
 

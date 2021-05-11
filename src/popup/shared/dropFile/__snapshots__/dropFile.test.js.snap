@@ -12,7 +12,9 @@ exports[`Test for DropFile component Render without crashing renders correctly 1
       <input
         accept="application/json"
         autocomplete="off"
+        data-testid="fileInput"
         multiple=""
+        name="fileField"
         style="display: none;"
         tabindex="-1"
         type="file"
@@ -20,6 +22,9 @@ exports[`Test for DropFile component Render without crashing renders correctly 1
       <div
         class="drag-active"
       >
+        <svg
+          class="export-icon"
+        />
         <div
           class="import-description"
         >

@@ -10,7 +10,15 @@ import Loading from './loading'
 import Account from './accounts/index'
 import { loadKoiBy } from 'constant'
 
-import { setChromeStorage, getChromeStorage, removeChromeStorage, loadWallet } from 'utils'
+import {
+  setChromeStorage,
+  getChromeStorage,
+  removeChromeStorage,
+  loadWallet,
+  generateWallet,
+  saveWalletToChrome,
+  removeWalletFromChrome
+} from 'utils'
 
 import KoiContext from 'popup/context'
 
@@ -24,6 +32,18 @@ const Popup = () => {
     koiBalance: koiObj.koiBalance,
     address: koiObj.address,
   })
+
+  const handleGenerateWallet = async () => {
+    try {
+      setIsLoading(true)
+      const seedPhrase = await generateWallet(koiObj)
+      setIsLoading(false)
+      return seedPhrase
+    } catch (err) {
+      console.log(err.message)
+      setIsLoading(false)
+    }
+  }
 
   const handleImportWallet = async (e) => {
     try {
@@ -42,8 +62,9 @@ const Popup = () => {
         newData = await loadWallet(koiObj, phrase, loadKoiBy.SEED)
         redirectPath = '/account/import/phrase/success'
       }
+      const password = ''
+      await saveWalletToChrome(koiObj, password)
 
-      await setChromeStorage({ 'koiAddress': koiObj.address })
       setKoi(prevState => ({ ...prevState, ...newData }))
       setIsLoading(false)
       history.push(redirectPath)
@@ -56,9 +77,40 @@ const Popup = () => {
   const handleRemoveWallet = async () => {
     try {
       setIsLoading(true)
-      await removeChromeStorage('koiAddress')
+      await removeWalletFromChrome()
       koiObj.address = null
+      koiObj.wallet = null
       setKoi(prevState => ({ ...prevState, arBalance: null, koiBalance: null, address: null }))
+      setIsLoading(false)
+    } catch (err) {
+      console.log(err.message)
+      setIsLoading(false)
+    }
+  }
+
+  const handleReloadWallet = async () => {
+    try {
+      setIsLoading(true)
+      const result = await getChromeStorage('koiAddress')
+      if (result) {
+        const newData = await loadWallet(
+          koiObj,
+          result['koiAddress'],
+          loadKoiBy.ADDRESS
+        )
+        setKoi((prevState) => ({ ...prevState, ...newData }))
+      }
+      setIsLoading(false)
+    } catch (err) {
+      console.log(err.message)
+      isLoading(false)
+    }
+  }
+
+  const handleSaveWallet = async (password) => {
+    try {
+      setIsLoading(true)
+      await saveWalletToChrome(koiObj, password)
       setIsLoading(false)
     } catch (err) {
       console.log(err.message)
@@ -84,15 +136,23 @@ const Popup = () => {
         console.log(err.message)
         setIsLoading(false)
       }
-
     }
-
     getKoiData()
   }, [])
 
   return (
     <div className="popup">
-      <KoiContext.Provider value={{ koi, setKoi, handleImportWallet, handleRemoveWallet, isLoading, setIsLoading }}>
+      <KoiContext.Provider value={{
+        koi,
+        setKoi,
+        handleImportWallet,
+        handleRemoveWallet,
+        handleGenerateWallet,
+        handleReloadWallet,
+        handleSaveWallet,
+        isLoading,
+        setIsLoading
+      }}>
         {isLoading && <Loading />}
         <Header />
         <div className='content'>

@@ -3,18 +3,18 @@ import './index.css'
 
 export default ({
   label,
-  onClick = () => {},
+  onClick = () => { },
   isEnable = true,
   className = '',
   type = '',
 }) => {
+  const buttonType = type === '' ? 'button-filled' : `button-${type}`
+
   return (
     <button
       disabled={!isEnable}
       onClick={onClick}
-      className={`button-shared ${
-        type === 'outline' ? 'button-outline' : 'button-filled'
-      } ${className}`}
+      className={`button-shared ${buttonType} ${className}`}
     >
       {label}
     </button>

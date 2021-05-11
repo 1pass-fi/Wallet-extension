@@ -38,7 +38,7 @@ export default ({ file, setFile }) => {
   return (
     <div {...getRootProps({ className: 'dropzone' })}>
       <div className='decorator'>
-        <input name='fileField' {...getInputProps()} />
+        <input name='fileField' data-testid='fileInput' {...getInputProps()} />
         {isDragAccept && <DragActive description={'Drop to import file.'} />}
         {isDragReject && <DragActive description={'Invalid file.'} />}
         {!isDragActive && (
