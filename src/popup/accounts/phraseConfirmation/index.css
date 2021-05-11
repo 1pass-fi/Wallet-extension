@@ -1,0 +1,17 @@
+.box {
+  height: 40px;
+  padding: 5px 10px;
+  margin-left: 10px;
+  margin-top: 5px;
+  border: 1px solid green;
+  user-select: none;
+  cursor: pointer;
+  transition: 0.5s opacity;
+}
+
+.disabled {
+  opacity: 0;
+  /* border: 1px solid white;
+  color: white;
+  background-color: white; */
+}

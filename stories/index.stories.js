@@ -16,6 +16,7 @@ import ImportByPhrase from '../src/popup/accounts/importByPhrase/index'
 import ImportByFile from '../src/popup/accounts/importByFile/index'
 import ImportByFileSuccess from '../src/popup/accounts/importByFileSuccess/index'
 import ImportByPhraseSuccess from '../src/popup/accounts/importByPhraseSuccess/index'
+import PhraseConfirmation from '../src/popup/accounts/phraseConfirmation/index'
 import CreatePassword from '../src/popup/shared/createPassword/index'
 import WalletInfo from '../src/popup/accounts/accountHome/wallet/index'
 
@@ -62,8 +63,30 @@ storiesOf('ImportByFileSuccess', module).add('Default', () => (
     <ImportByFileSuccess />
   </div>
 ))
+
 storiesOf('ImportByPhraseSuccess', module).add('Default', () => (
   <div style={{ width: '426px', height: '571px', fontFamily: 'Catamaran' }}>
     <ImportByPhraseSuccess />
+  </div>
+))
+
+storiesOf('ImportByPhraseSuccess', module).add('Default', () => (
+  <div style={{ width: '426px', height: '571px', fontFamily: 'Catamaran' }}>
+    <PhraseConfirmation
+      seedPhrase={[
+        'expect',
+        'leaf',
+        'canvas',
+        'flash',
+        'juice',
+        'caught',
+        'weasel',
+        'recipe',
+        'stadium',
+        'door',
+        'typical',
+        'series',
+      ]}
+    />
   </div>
 ))
