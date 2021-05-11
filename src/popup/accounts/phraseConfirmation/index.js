@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import union from 'lodash/union'
 import map from 'lodash/map'
 import filter from 'lodash/filter'
 
+import KeyIcon from 'img/key-icon.svg'
+import Card from 'shared/card'
+import Button from 'shared/button'
 import './index.css'
 
 export default ({ seedPhrase }) => {
@@ -17,6 +20,11 @@ export default ({ seedPhrase }) => {
 
     setBasePhrase(constructedSeedPhrase)
   }, [])
+
+  const confirmActive = useMemo(
+    () => basePhrase.length === addedPhrase.length,
+    [basePhrase, addedPhrase]
+  )
 
   const onAddWord = (newWord) => {
     // Add new word
@@ -58,25 +66,42 @@ export default ({ seedPhrase }) => {
 
   return (
     <div>
-      <div className='b1'>
-        {addedPhrase.map((word) => (
-          <button className='box' key={word} onClick={() => onRemoveWord(word)}>
-            {word}
-          </button>
-        ))}
-      </div>
-      <div>helllo</div>
-      <div className='b2'>
-        {basePhrase.map(({ word, disabled, onClick }) => (
-          <button
-            key={word}
-            className={`box ${disabled ? 'disabled' : ''}`}
-            onClick={() => onAddWord(word)}
-          >
-            {word}
-          </button>
-        ))}
-      </div>
+      <Card className='confirmation-card'>
+        <div className='title'>
+          <KeyIcon className='icon' />
+          <div className='text'>Confirm Backup Phrase</div>
+        </div>
+        <div className='description'>
+          Select each word in order to make sure it is correct.
+        </div>
+        <div className='selected-box'>
+          {addedPhrase.map((word) => (
+            <button
+              className='word'
+              key={word}
+              onClick={() => onRemoveWord(word)}
+            >
+              {word}
+            </button>
+          ))}
+        </div>
+        <div className='b2'>
+          {basePhrase.map(({ word, disabled }) => (
+            <button
+              key={word}
+              className={`word ${disabled ? 'disabled' : ''}`}
+              onClick={() => onAddWord(word)}
+            >
+              {word}
+            </button>
+          ))}
+        </div>
+        <Button
+          className='confirm-button'
+          label={'Confirm'}
+          type={confirmActive ? '' : 'outline'}
+        />
+      </Card>
     </div>
   )
 }

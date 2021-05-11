@@ -1,17 +1,84 @@
-.box {
-  height: 40px;
-  padding: 5px 10px;
-  margin-left: 10px;
-  margin-top: 5px;
-  border: 1px solid green;
-  user-select: none;
-  cursor: pointer;
-  transition: 0.5s opacity;
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
-.disabled {
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.confirmation-card {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.confirmation-card .title {
+  color: #171753;
+  display: flex;
+  height: 21px;
+}
+
+.confirmation-card .title .icon {
+  width: 20px;
+}
+
+.confirmation-card .title .text {
+  font-size: 18px;
+  letter-spacing: 0.03em;
+  line-height: 20px;
+  margin-left: 20px;
+  text-align: center;
+}
+
+.confirmation-card .description {
+  margin: 27px 0;
+}
+
+.confirmation-card .selected-box {
+  background: #f5f5f5;
+  border: 1.5px solid #171753;
+  box-sizing: border-box;
+  height: 182px;
+  left: 48px;
+  margin-bottom: 20px;
+  padding: 12px;
+  top: 286px;
+  width: 100%;
+}
+
+.confirmation-card .word {
+  animation: fadeIn 0.6s;
+  background: #ffffff;
+  border-radius: 2px;
+  border: 1px solid #237b75;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  color: #237b75;
+  cursor: pointer;
+  height: 31px;
+  margin-bottom: 10px;
+  margin-right: 12px;
+  opacity: 1;
+  user-select: none;
+}
+
+.confirmation-card .word.disabled {
+  animation: fadeOut 0.6s;
   opacity: 0;
-  /* border: 1px solid white;
-  color: white;
-  background-color: white; */
+}
+
+.confirmation-card .confirm-button {
+  align-self: flex-start;
+  margin-top: 15px;
 }
