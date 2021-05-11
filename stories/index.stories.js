@@ -19,6 +19,7 @@ import ImportByPhraseSuccess from '../src/popup/accounts/importByPhraseSuccess/i
 import PhraseConfirmation from '../src/popup/accounts/phraseConfirmation/index'
 import CreatePassword from '../src/popup/shared/createPassword/index'
 import WalletInfo from '../src/popup/accounts/accountHome/wallet/index'
+import BackupPhrase from '../src/popup/accounts/backupPhrase'
 
 addDecorator(StoryRouter())
 
@@ -87,6 +88,16 @@ storiesOf('ImportByPhraseSuccess', module).add('Default', () => (
         'typical',
         'series',
       ]}
+    />
+  </div>
+))
+
+storiesOf('BackupPhrase', module).add('Default', () => (
+  <div style={{ width: '426px', height: '571px', fontFamily: 'Catamaran' }}>
+    <BackupPhrase
+      seedPhrase={
+        'telephone alpaca shampoo website table games bowl exclaim button fleece oatmeal cookbook'
+      }
     />
   </div>
 ))
