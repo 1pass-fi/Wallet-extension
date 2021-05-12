@@ -101,3 +101,5 @@ storiesOf('BackupPhrase', module).add('Default', () => (
     />
   </div>
 ))
+
+storiesOf('UnlockScreen', module).add('Default', () => <UnlockScreen />)
