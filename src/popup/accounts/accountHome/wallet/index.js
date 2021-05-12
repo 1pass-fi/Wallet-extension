@@ -87,7 +87,7 @@ export default ({ accountAddress, koiBalance, arBalance }) => {
         <WalletInfo accountName={'Account #1'} accountAddress={accountAddress} koiBalance={koiBalance} arBalance={arBalance} />
         <Card className='address'>${accountAddress}</Card>
         <WalletConf handleRemoveWallet={handleRemoveWallet} />
-        <button onClick={handleLockWallet}>Lock</button>
+        <button className='lock-button' onClick={handleLockWallet}>Lock</button>
       </div>
     </div>
   )

@@ -4,3 +4,5 @@ export const loadKoiBy = {
   FILE: 'file',
   KEY: 'key'
 }
+
+export const HEADER_EXCLUDE_PATH = ['/account/login']

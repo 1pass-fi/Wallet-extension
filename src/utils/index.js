@@ -80,7 +80,7 @@ export const decryptWalletKeyFromChrome = async (password) => {
     const key = await passworder.decrypt(password, result['koiKey'])
     return key
   } catch (err) {
-    return err.message
+    throw new Error(err.message)
   }
 }
 

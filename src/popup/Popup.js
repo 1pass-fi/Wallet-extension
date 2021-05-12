@@ -1,6 +1,6 @@
 import '@babel/polyfill'
 import React, { useEffect, useState } from 'react'
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom'
+import { Route, Switch, Redirect, useHistory, withRouter } from 'react-router-dom'
 import koiTools from 'koi_tools'
 import get from 'lodash/get'
 
@@ -8,7 +8,7 @@ import './Popup.css'
 import Header from './header'
 import Loading from './loading'
 import Account from './accounts/index'
-import { loadKoiBy } from 'constant'
+import { loadKoiBy, HEADER_EXCLUDE_PATH } from 'constant'
 
 import {
   setChromeStorage,
@@ -25,7 +25,7 @@ import KoiContext from 'popup/context'
 
 const koiObj = new koiTools.koi_tools()
 
-const Popup = () => {
+const Popup = ({ location }) => {
   const [isLoading, setIsLoading] = useState(false)
   const history = useHistory()
   const [koi, setKoi] = useState({
@@ -50,7 +50,7 @@ const Popup = () => {
     try {
       setIsLoading(true)
       e.preventDefault()
-
+      const password = e.target.pwd.value
       const file = get(e, 'target.files.0')
       const phrase = get(e, 'target.inputPhrase.value')
 
@@ -63,7 +63,7 @@ const Popup = () => {
         newData = await loadWallet(koiObj, phrase, loadKoiBy.SEED)
         redirectPath = '/account/import/phrase/success'
       }
-      const password = ''
+
       await saveWalletToChrome(koiObj, password)
 
       setKoi(prevState => ({ ...prevState, ...newData }))
@@ -81,6 +81,11 @@ const Popup = () => {
       await removeChromeStorage('koiAddress')
       koiObj.wallet = null
       koiObj.address = null
+      setKoi({
+        arBalance: null,
+        koiBalance: null,
+        address: null,
+      })
       setIsLoading(false)
       history.push('/account/login')
     } catch (err) {
@@ -95,7 +100,6 @@ const Popup = () => {
       const walletKey = await decryptWalletKeyFromChrome(password)
       console.log('DECRYPTED KEY: ', walletKey)
       const newData = await loadWallet(koiObj, walletKey, loadKoiBy.KEY)
-      console.log(newData)
       setChromeStorage({ 'koiAddress': koiObj.address })
       setKoi((prevState) => ({ ...prevState, ...newData }))
       setIsLoading(false)
@@ -192,7 +196,7 @@ const Popup = () => {
         setIsLoading
       }}>
         {isLoading && <Loading />}
-        <Header />
+        {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header />}
         <div className='content'>
           <Switch>
             <Route path='/account'>
@@ -210,4 +214,4 @@ const Popup = () => {
   )
 }
 
-export default Popup
+export default withRouter(Popup)

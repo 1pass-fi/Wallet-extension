@@ -102,3 +102,7 @@
 .wallet .wallet-wrapper .wallet-conf .delete-wallet {
   color: #FF4141
 }
+
+.wallet .wallet-wrapper .lock-button {
+  margin-top: 10px
+}
