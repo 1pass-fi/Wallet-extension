@@ -1,13 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
+
+import CreatePassword from 'shared/createPassword'
+import Card from 'shared/card'
+
+import PlusIconOutline from 'img/plus-icon-outline.svg'
+
+import './index.css'
 
 export default ({ setStage, setPassword, setSeedPhrase, handleGenerateWallet }) => {
-  const [passwd, setPasswd] = useState('')
   const handleOnSubmit = async (e) => {
+    e.preventDefault()
     try {
-      e.preventDefault()
+      const pwd = e.target.pwd.value
       const phrase = await handleGenerateWallet()
       setSeedPhrase(phrase)
-      setPassword(passwd)
+      setPassword(pwd)
       setStage(2)
     } catch (err) {
       console.log(err.message)
@@ -16,10 +23,15 @@ export default ({ setStage, setPassword, setSeedPhrase, handleGenerateWallet }) 
   }
   return (
     <div>
-      <form onSubmit={handleOnSubmit}>
-        <input name='password' value={passwd} onChange={e => setPasswd(e.target.value)} />
-        <button>Create Password</button>
-      </form>
+      <Card>
+        <div className='title'>
+          <PlusIconOutline />
+          <p>Create a password</p>
+        </div>
+        <form onSubmit={handleOnSubmit}>
+          <CreatePassword isEnable={true} buttonLabel={'Create Wallet'} />
+        </form>
+      </Card>
     </div>
   )
 }

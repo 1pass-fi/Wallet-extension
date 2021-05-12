@@ -5,13 +5,14 @@ import RevealSeed from './revealSeed'
 import ConfirmSeed from './confirmSeed'
 
 import Context from 'popup/context'
+import './index.css'
 
 const Wrapper = ({ stage, setStage }) => {
   const { handleGenerateWallet, handleSaveWallet, handleReloadWallet } = useContext(Context)
   const [password, setPassword] = useState(null)
   const [seedPhrase, setSeedPhrase] = useState([])
   return (
-    <div>
+    <div className='create-wallet'>
       {stage === 1 && <CreatePassword
         setStage={setStage}
         setPassword={setPassword}

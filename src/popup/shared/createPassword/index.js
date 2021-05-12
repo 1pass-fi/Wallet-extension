@@ -4,7 +4,7 @@ import InputField from '../inputField/index'
 import ButtonShared from '../button/index'
 import './index.css'
 
-export default ({ isEnable }) => {
+export default ({ isEnable, buttonLabel }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isAccept, setIsAccept] = useState(false)
@@ -33,6 +33,7 @@ export default ({ isEnable }) => {
           label='New password'
           onChange={onPasswordChange}
           placeholder='Make it unique (min. 8 characters)'
+          name='pwd'
         />
         <InputField
           label='Confirm password'
@@ -55,7 +56,7 @@ export default ({ isEnable }) => {
       <div className='button'>
         <ButtonShared
           isEnable={isEnable & isPasswordValid & isAccept}
-          label='Import Wallet'
+          label={buttonLabel ? buttonLabel : 'Import Wallet'}
         />
       </div>
     </div>

@@ -12,7 +12,7 @@ import './index.css'
 export default () => {
   const [file, setFile] = useState({})
   const { handleImportWallet } = useContext(KoiContext)
-  const handelSubmit = (e) => {
+  const handleSubmit = (e) => {
     if (!e.target.files) {
       e.target.files = [file]
     }
@@ -26,7 +26,7 @@ export default () => {
           <ExportIcon className="title-icon" />
           <div className="title-text">Upload a .JSON file</div>
         </div>
-        <form onSubmit={handelSubmit}>
+        <form onSubmit={handleSubmit}>
           <DropFile file={file} setFile={setFile} />
           <CreatePassword isEnable={!isEmpty(file)} />
         </form>

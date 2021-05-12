@@ -16,10 +16,10 @@ import ImportByPhrase from '../src/popup/accounts/importByPhrase/index'
 import ImportByFile from '../src/popup/accounts/importByFile/index'
 import ImportByFileSuccess from '../src/popup/accounts/importByFileSuccess/index'
 import ImportByPhraseSuccess from '../src/popup/accounts/importByPhraseSuccess/index'
-import PhraseConfirmation from '../src/popup/accounts/phraseConfirmation/index'
+import PhraseConfirmation from '../src/popup/accounts/createWallet/confirmSeed/index'
 import CreatePassword from '../src/popup/shared/createPassword/index'
 import WalletInfo from '../src/popup/accounts/accountHome/wallet/index'
-import BackupPhrase from '../src/popup/accounts/backupPhrase'
+import BackupPhrase from '../src/popup/accounts/createWallet/revealSeed/index'
 
 addDecorator(StoryRouter())
 
@@ -44,10 +44,10 @@ storiesOf('Sidebar', module).add('Default', () => <Sidebar />)
 storiesOf('Options', module).add('Default', () => <Options />)
 storiesOf('AccountImport', module).add('Default', () => <AccountImport />)
 storiesOf('InputField', module).add('Default', () => (
-  <InputField label='password' value={null} onChange={() => {}} />
+  <InputField label='password' value={null} onChange={() => { }} />
 ))
 storiesOf('ButtonShared', module).add('Default', () => (
-  <ButtonShared label='Click Me' onClick={() => {}} />
+  <ButtonShared label='Click Me' onClick={() => { }} />
 ))
 storiesOf('ImportByPhrase', module).add('Default', () => <ImportByPhrase />)
 storiesOf('ImportByFile', module).add('Default', () => <ImportByFile />)
