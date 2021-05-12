@@ -15,14 +15,24 @@
   margin-top: 18px;
 }
 
+.backup-phrase-wrapper {
+  align-items: center;
+  background: linear-gradient(90deg, rgba(3, 3, 50, 0.7) 0%, rgba(23, 23, 83, 1) 100%);
+  justify-content: center;
+  box-sizing: border-box;
+  display: flex;
+  height: 100%;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
 .backup-phrase {
   box-sizing: border-box;
   height: 568px;
   padding: 20px;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
 }
 
 .backup-phrase .cancel-icon {

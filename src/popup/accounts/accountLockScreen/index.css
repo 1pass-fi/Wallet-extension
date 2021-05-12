@@ -1,5 +1,6 @@
 .unlock-screen {
   box-sizing: border-box;
+  background: #ffffff;
   color: #171753;
   height: 600px;
   letter-spacing: 0.03em;

@@ -89,7 +89,7 @@ export default ({ seedPhrase, handleSaveWallet, handleReloadWallet, handleCancel
   }, [])
 
   return (
-    <div>
+    <div className='confirmation-card-wrapper'>
       <Card className='confirmation-card'>
         <div onClick={handleCancel} className='cancel-icon'>
           <CancelIcon />

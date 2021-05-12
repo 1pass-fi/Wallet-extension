@@ -18,14 +18,24 @@
   }
 }
 
+.confirmation-card-wrapper {
+  align-items: center;
+  background: linear-gradient(90deg, rgba(3, 3, 50, 0.7) 0%, rgba(23, 23, 83, 1) 100%);
+  justify-content: center;
+  box-sizing: border-box;
+  display: flex;
+  height: 100%;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
 .confirmation-card {
   box-sizing: border-box;
   height: 568px;
-  position: absolute;
-  transform: translate(-50%, -50%);
   padding: 20px;
-  top: 50%;
-  left: 50%;
 }
 
 .confirmation-card .title {

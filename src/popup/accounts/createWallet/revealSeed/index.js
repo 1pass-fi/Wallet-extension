@@ -29,7 +29,7 @@ export default ({ seedPhrase, setStage, handleCancel }) => {
   }
 
   return (
-    <div>
+    <div className='backup-phrase-wrapper'>
       <Card className='backup-phrase'>
         <div onClick={handleCancel} className='cancel-icon'>
           <CancelIcon />

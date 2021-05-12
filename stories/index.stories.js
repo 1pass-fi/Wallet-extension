@@ -21,6 +21,8 @@ import CreatePassword from '../src/popup/shared/createPassword/index'
 import WalletInfo from '../src/popup/accounts/accountHome/wallet/index'
 import BackupPhrase from '../src/popup/accounts/createWallet/revealSeed/index'
 
+import KoiContext from 'popup/context'
+
 addDecorator(StoryRouter())
 
 storiesOf('Welcome', module).add('to Storybook', () => (
@@ -44,10 +46,10 @@ storiesOf('Sidebar', module).add('Default', () => <Sidebar />)
 storiesOf('Options', module).add('Default', () => <Options />)
 storiesOf('AccountImport', module).add('Default', () => <AccountImport />)
 storiesOf('InputField', module).add('Default', () => (
-  <InputField label='password' value={null} onChange={() => { }} />
+  <InputField label='password' value={null} onChange={() => {}} />
 ))
 storiesOf('ButtonShared', module).add('Default', () => (
-  <ButtonShared label='Click Me' onClick={() => { }} />
+  <ButtonShared label='Click Me' onClick={() => {}} />
 ))
 storiesOf('ImportByPhrase', module).add('Default', () => <ImportByPhrase />)
 storiesOf('ImportByFile', module).add('Default', () => <ImportByFile />)
@@ -71,25 +73,20 @@ storiesOf('ImportByPhraseSuccess', module).add('Default', () => (
   </div>
 ))
 
-storiesOf('ImportByPhraseSuccess', module).add('Default', () => (
-  <div style={{ width: '426px', height: '571px', fontFamily: 'Catamaran' }}>
-    <PhraseConfirmation
-      seedPhrase={[
-        'expect',
-        'leaf',
-        'canvas',
-        'flash',
-        'juice',
-        'caught',
-        'weasel',
-        'recipe',
-        'stadium',
-        'door',
-        'typical',
-        'series',
-      ]}
-    />
-  </div>
+storiesOf('PhraseConfirmation', module).add('Default', () => (
+  <KoiContext.Provider
+    value={{
+      setError: () => {},
+    }}
+  >
+    <div style={{ width: '426px', height: '571px', fontFamily: 'Catamaran' }}>
+      <PhraseConfirmation
+        seedPhrase={
+          'expect leaf canvas flash juice caught weasel recipe stadium door typical series'
+        }
+      />
+    </div>
+  </KoiContext.Provider>
 ))
 
 storiesOf('BackupPhrase', module).add('Default', () => (
