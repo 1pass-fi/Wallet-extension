@@ -1,4 +1,5 @@
 import { loadKoiBy } from 'constant'
+import passworder from 'browser-passworder'
 
 export const setChromeStorage = (obj) => {
   return new Promise(function (resolve, reject) {
@@ -48,6 +49,33 @@ export const loadWallet = async (koiObj, data, loadBy) => {
       koiBalance: koiBalance,
       address: koiObj.address
     }
+  } catch (err) {
+    return err.message
+  }
+}
+
+export const generateWallet = async (koiObj) => {
+  try {
+    await koiObj.generateWallet(true)
+    return koiObj.mnemonic
+  } catch (err) {
+    return err.message
+  }
+}
+
+export const saveWalletToChrome = async (koiObj, password) => {
+  try {
+    const encryptedWalletKey = await passworder.encrypt(password, koiObj.wallet)
+    await setChromeStorage({ 'koiAddress': koiObj.address, 'koiKey': encryptedWalletKey })
+  } catch (err) {
+    return err.message
+  }
+}
+
+export const removeWalletFromChrome = async () => {
+  try {
+    await removeChromeStorage('koiAddress')
+    await removeChromeStorage('koiKey')
   } catch (err) {
     return err.message
   }

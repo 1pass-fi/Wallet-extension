@@ -16,7 +16,7 @@ describe('Test for DropFile component', () => {
         onChange: () => { document.body.style.backgroundColor = 'red' },
         placeholder: 'placeholder'
       }
-      obj = render(<InputField label={props.label} value={props.value} onChange={props.onChange} placeholder={props.placeholder}/>)
+      obj = render(<InputField label={props.label} value={props.value} onChange={props.onChange} placeholder={props.placeholder} />)
       container = obj.container
       input = container.querySelector('input')
       toggleIcon = container.getElementsByClassName('toggle-display')[0]
@@ -32,14 +32,12 @@ describe('Test for DropFile component', () => {
       expect(document.body.style.backgroundColor).toEqual('red')
     })
 
-    // it('toggles between type display and password when toggle icon clicked', () => {
-    //   expect(input.type).toEqual('password')
-    //   fireEvent.click(toggleIcon)
-    //   expect(input.type).toEqual('text')
-    //   fireEvent.click(toggleIcon)
-    //   expect(input.type).toEqual('password')
-
-    //   console.log(inputFieldComponent.state())
-    // })
+    it('toggles between type display and password when toggle icon clicked', () => {
+      expect(input.type).toEqual('password')
+      fireEvent.click(toggleIcon)
+      expect(input.type).toEqual('text')
+      fireEvent.click(toggleIcon)
+      expect(input.type).toEqual('password')
+    })
   })
 })

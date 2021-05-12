@@ -8,6 +8,7 @@ import ImportPhrase from './importByPhrase/index'
 import ImportFile from './importByFile/index'
 import ImportFileSuccess from './importByFileSuccess/index'
 import ImportPhraseSuccess from './importByPhraseSuccess/index'
+import CreateWallet from './createWallet/index'
 
 const Account = () => {
   return (
@@ -29,6 +30,9 @@ const Account = () => {
       </Route>
       <Route path='/account/import'>
         <AccountImport />
+      </Route>
+      <Route path='/account/create'>
+        <CreateWallet />
       </Route>
     </Switch>
   )
