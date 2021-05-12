@@ -8,9 +8,15 @@ import './Popup.css'
 import Header from './header'
 import Loading from './loading'
 import Account from './accounts/index'
+import ErrorMessage from './errorMessage'
 import { loadKoiBy } from 'constant'
 
-import { setChromeStorage, getChromeStorage, removeChromeStorage, loadWallet } from 'utils'
+import {
+  setChromeStorage,
+  getChromeStorage,
+  removeChromeStorage,
+  loadWallet,
+} from 'utils'
 
 import KoiContext from 'popup/context'
 
@@ -18,6 +24,7 @@ const koiObj = new koiTools.koi_tools()
 
 const Popup = () => {
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
   const history = useHistory()
   const [koi, setKoi] = useState({
     arBalance: koiObj.balance,
@@ -43,8 +50,8 @@ const Popup = () => {
         redirectPath = '/account/import/phrase/success'
       }
 
-      await setChromeStorage({ 'koiAddress': koiObj.address })
-      setKoi(prevState => ({ ...prevState, ...newData }))
+      await setChromeStorage({ koiAddress: koiObj.address })
+      setKoi((prevState) => ({ ...prevState, ...newData }))
       setIsLoading(false)
       history.push(redirectPath)
     } catch (err) {
@@ -58,7 +65,12 @@ const Popup = () => {
       setIsLoading(true)
       await removeChromeStorage('koiAddress')
       koiObj.address = null
-      setKoi(prevState => ({ ...prevState, arBalance: null, koiBalance: null, address: null }))
+      setKoi((prevState) => ({
+        ...prevState,
+        arBalance: null,
+        koiBalance: null,
+        address: null,
+      }))
       setIsLoading(false)
     } catch (err) {
       console.log(err.message)
@@ -84,16 +96,33 @@ const Popup = () => {
         console.log(err.message)
         setIsLoading(false)
       }
-
     }
 
     getKoiData()
   }, [])
 
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 4000)
+      return () => clearTimeout(timer)
+    }
+  }, [error])
+
   return (
-    <div className="popup">
-      <KoiContext.Provider value={{ koi, setKoi, handleImportWallet, handleRemoveWallet, isLoading, setIsLoading }}>
+    <div className='popup'>
+      <KoiContext.Provider
+        value={{
+          koi,
+          setKoi,
+          handleImportWallet,
+          handleRemoveWallet,
+          isLoading,
+          setIsLoading,
+          setError,
+        }}
+      >
         {isLoading && <Loading />}
+        {error && <ErrorMessage children={error} />}
         <Header />
         <div className='content'>
           <Switch>
