@@ -51,7 +51,7 @@ export const loadWallet = async (koiObj, data, loadBy) => {
       address: koiObj.address
     }
   } catch (err) {
-    return err.message
+    throw new Error(err.message)
   }
 }
 
@@ -60,7 +60,7 @@ export const generateWallet = async (koiObj) => {
     await koiObj.generateWallet(true)
     return koiObj.mnemonic
   } catch (err) {
-    return err.message
+    throw new Error(err.message)
   }
 }
 
@@ -69,7 +69,7 @@ export const saveWalletToChrome = async (koiObj, password) => {
     const encryptedWalletKey = await passworder.encrypt(password, koiObj.wallet)
     await setChromeStorage({ 'koiAddress': koiObj.address, 'koiKey': encryptedWalletKey })
   } catch (err) {
-    return err.message
+    throw new Error(err.message)
   }
 }
 
@@ -89,11 +89,15 @@ export const removeWalletFromChrome = async () => {
     await removeChromeStorage('koiAddress')
     await removeChromeStorage('koiKey')
   } catch (err) {
-    return err.message
+    throw new Error(err.message)
   }
 }
 
 export const JSONFileToObject = async (file) => {
-  const fileText = await file.text()
-  return JSON.parse(fileText)
+  try {
+    const fileText = await file.text()
+    return JSON.parse(fileText)
+  } catch (err) {
+    throw new Error(err.message)
+  }
 }

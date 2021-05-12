@@ -11,12 +11,29 @@ import './index.css'
 
 export default () => {
   const [file, setFile] = useState({})
-  const { handleImportWallet } = useContext(KoiContext)
+  const { handleImportWallet, setError } = useContext(KoiContext)
   const handleSubmit = (e) => {
-    if (!e.target.files) {
-      e.target.files = [file]
+    e.preventDefault()
+    try {
+      if (!e.target.files) {
+        e.target.files = [file]
+      }
+      const password = e.target.pwd.value
+      const passwordConfirm = e.target.pwdConfirm.value
+      const checked = e.target.checkbox.checked
+
+      if (password.length < 8) {
+        setError('Password must contain at least 8 characters')
+      } else if (password !== passwordConfirm) {
+        setError('Confirm Password does not match')
+      } else if (!checked) {
+        setError('You have to agree to the Terms of Service')
+      } else {
+        handleImportWallet(e)
+      }
+    } catch (err) {
+      setError(err.message)
     }
-    handleImportWallet(e)
   }
 
   return (

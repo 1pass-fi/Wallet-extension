@@ -8,6 +8,8 @@ import './Popup.css'
 import Header from './header'
 import Loading from './loading'
 import Account from './accounts/index'
+import ErrorMessage from './errorMessage'
+
 import { loadKoiBy, HEADER_EXCLUDE_PATH } from 'constant'
 
 import {
@@ -42,7 +44,7 @@ const Popup = ({ location }) => {
       setIsLoading(false)
       return seedPhrase
     } catch (err) {
-      console.log(err.message)
+      setError(err.message)
       setIsLoading(false)
     }
   }
@@ -71,7 +73,7 @@ const Popup = ({ location }) => {
       setIsLoading(false)
       history.push(redirectPath)
     } catch (err) {
-      console.log(err.message)
+      setError(err.message)
       setIsLoading(false)
     }
   }
@@ -90,7 +92,7 @@ const Popup = ({ location }) => {
       setIsLoading(false)
       history.push('/account/login')
     } catch (err) {
-      console.log(err.message)
+      setError(err.message)
       setIsLoading(false)
     }
   }
@@ -106,7 +108,7 @@ const Popup = ({ location }) => {
       setIsLoading(false)
       history.push('/account')
     } catch (err) {
-      console.log(err.message)
+      setError(err.message)
       setIsLoading(false)
     }
   }
@@ -120,7 +122,7 @@ const Popup = ({ location }) => {
       setKoi(prevState => ({ ...prevState, arBalance: null, koiBalance: null, address: null }))
       setIsLoading(false)
     } catch (err) {
-      console.log(err.message)
+      setError(err.message)
       setIsLoading(false)
     }
   }
@@ -139,7 +141,7 @@ const Popup = ({ location }) => {
       }
       setIsLoading(false)
     } catch (err) {
-      console.log(err.message)
+      setError(err.message)
       isLoading(false)
     }
   }
@@ -150,7 +152,7 @@ const Popup = ({ location }) => {
       await saveWalletToChrome(koiObj, password)
       setIsLoading(false)
     } catch (err) {
-      console.log(err.message)
+      setError(err.message)
       setIsLoading(false)
     }
   }
@@ -174,7 +176,7 @@ const Popup = ({ location }) => {
         }
         setIsLoading(false)
       } catch (err) {
-        console.log(err.message)
+        setError(err.message)
         setIsLoading(false)
       }
     }
@@ -201,9 +203,11 @@ const Popup = ({ location }) => {
         handleLockWallet,
         handleUnlockWallet,
         isLoading,
-        setIsLoading
+        setIsLoading,
+        setError
       }}>
         {isLoading && <Loading />}
+        {error && <ErrorMessage children={error} />}
         {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header />}
         <div className='content'>
           <Switch>

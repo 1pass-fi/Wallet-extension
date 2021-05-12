@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import union from 'lodash/union'
 import map from 'lodash/map'
@@ -9,11 +9,14 @@ import KeyIcon from 'img/key-icon.svg'
 import WarningIcon from 'img/warning-icon.svg'
 import CancelIcon from 'img/x-icon.svg'
 
+import Context from 'popup/context'
+
 import Card from 'shared/card'
 import Button from 'shared/button'
 import './index.css'
 
 export default ({ seedPhrase, handleSaveWallet, handleReloadWallet, handleCancel, password }) => {
+  const { setError } = useContext(Context)
   const wordLists = shuffle(seedPhrase.split(' '))
   const history = useHistory()
   const [basePhrase, setBasePhrase] = useState([])
@@ -26,10 +29,10 @@ export default ({ seedPhrase, handleSaveWallet, handleReloadWallet, handleCancel
         await handleReloadWallet()
         history.push('/account')
       } else {
-
+        setError('Incorrect Seed phrase')
       }
     } catch (err) {
-      console.log(err.message)
+      setError(err.message)
     }
   }
 

@@ -39,6 +39,7 @@ export default ({ isEnable, buttonLabel }) => {
           label='Confirm password'
           onChange={onConfirmPasswordChange}
           placeholder=''
+          name='pwdConfirm'
         />
       </div>
       <div className='term-service'>
@@ -47,6 +48,7 @@ export default ({ isEnable, buttonLabel }) => {
             defaultValue={isAccept}
             onChange={onCheckbox}
             type='checkbox'
+            name='checkbox'
           />
         </div>
         <label>
@@ -55,7 +57,6 @@ export default ({ isEnable, buttonLabel }) => {
       </div>
       <div className='button'>
         <ButtonShared
-          isEnable={isEnable & isPasswordValid & isAccept}
           label={buttonLabel ? buttonLabel : 'Import Wallet'}
         />
       </div>
