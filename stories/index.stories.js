@@ -20,6 +20,7 @@ import PhraseConfirmation from '../src/popup/accounts/phraseConfirmation/index'
 import CreatePassword from '../src/popup/shared/createPassword/index'
 import WalletInfo from '../src/popup/accounts/accountHome/wallet/index'
 import BackupPhrase from '../src/popup/accounts/backupPhrase'
+import UnlockScreen from '../src/popup/unlockScreen'
 
 addDecorator(StoryRouter())
 
@@ -101,3 +102,5 @@ storiesOf('BackupPhrase', module).add('Default', () => (
     />
   </div>
 ))
+
+storiesOf('UnlockScreen', module).add('Default', () => <UnlockScreen />)
