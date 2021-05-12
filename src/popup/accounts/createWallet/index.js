@@ -10,7 +10,14 @@ import './index.css'
 const Wrapper = ({ stage, setStage }) => {
   const { handleGenerateWallet, handleSaveWallet, handleReloadWallet } = useContext(Context)
   const [password, setPassword] = useState(null)
-  const [seedPhrase, setSeedPhrase] = useState([])
+  const [seedPhrase, setSeedPhrase] = useState(null)
+
+  const handleCancel = () => {
+    setPassword(null)
+    setSeedPhrase(null)
+    setStage(1)
+  }
+
   return (
     <div className='create-wallet'>
       {stage === 1 && <CreatePassword
@@ -20,13 +27,19 @@ const Wrapper = ({ stage, setStage }) => {
         handleGenerateWallet={handleGenerateWallet} />
       }
 
-      {stage === 2 && <RevealSeed setStage={setStage} seedPhrase={seedPhrase} password={password} />}
+      {stage === 2 && <RevealSeed
+        setStage={setStage}
+        seedPhrase={seedPhrase}
+        password={password}
+        handleCancel={handleCancel} />}
 
       {stage === 3 && <ConfirmSeed
         password={password}
         seedPhrase={seedPhrase}
         handleSaveWallet={handleSaveWallet}
-        handleReloadWallet={handleReloadWallet} />}
+        handleReloadWallet={handleReloadWallet}
+        handleCancel={handleCancel} />}
+
     </div>
   )
 }

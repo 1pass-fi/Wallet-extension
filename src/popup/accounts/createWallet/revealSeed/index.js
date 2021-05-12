@@ -6,6 +6,8 @@ import WarningIcon from 'img/warning-icon.svg'
 import QuestionMarkIcon from 'img/question-mark-icon.svg'
 import LockIcon from 'img/lock-icon.svg'
 import CopyIcon from 'img/copy-icon.svg'
+import CancelIcon from 'img/x-icon.svg'
+
 import Card from 'shared/card'
 import Button from 'shared/button'
 import './index.css'
@@ -19,7 +21,7 @@ const LockScreen = ({ onClick }) => {
   )
 }
 
-export default ({ seedPhrase, setStage }) => {
+export default ({ seedPhrase, setStage, handleCancel }) => {
   const [isShowSeePhrase, setIsShowSeedPhrase] = useState(false)
 
   const handleOnClick = () => {
@@ -29,6 +31,9 @@ export default ({ seedPhrase, setStage }) => {
   return (
     <div>
       <Card className='backup-phrase'>
+        <div onClick={handleCancel} className='cancel-icon'>
+          <CancelIcon />
+        </div>
         <div className='title'>
           <KeyIcon className='icon' />
           <div className='text'>Secret Backup Phrase</div>

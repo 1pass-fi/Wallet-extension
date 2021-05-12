@@ -17,7 +17,16 @@
 
 .backup-phrase {
   box-sizing: border-box;
+  height: 568px;
   padding: 20px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+.backup-phrase .cancel-icon {
+  margin-left: 340px;
 }
 
 .backup-phrase .title {

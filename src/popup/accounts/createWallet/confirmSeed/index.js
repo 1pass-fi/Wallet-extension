@@ -7,11 +7,13 @@ import filter from 'lodash/filter'
 
 import KeyIcon from 'img/key-icon.svg'
 import WarningIcon from 'img/warning-icon.svg'
+import CancelIcon from 'img/x-icon.svg'
+
 import Card from 'shared/card'
 import Button from 'shared/button'
 import './index.css'
 
-export default ({ seedPhrase, handleSaveWallet, handleReloadWallet, password }) => {
+export default ({ seedPhrase, handleSaveWallet, handleReloadWallet, handleCancel, password }) => {
   const wordLists = shuffle(seedPhrase.split(' '))
   const history = useHistory()
   const [basePhrase, setBasePhrase] = useState([])
@@ -19,8 +21,6 @@ export default ({ seedPhrase, handleSaveWallet, handleReloadWallet, password }) 
 
   const handleOnClick = async () => {
     try {
-      console.log(seedPhrase === addedPhrase.join(' '))
-      console.log(password)
       if (seedPhrase === addedPhrase.join(' ')) {
         await handleSaveWallet(password)
         await handleReloadWallet()
@@ -32,15 +32,6 @@ export default ({ seedPhrase, handleSaveWallet, handleReloadWallet, password }) 
       console.log(err.message)
     }
   }
-
-  useEffect(() => {
-    const constructedSeedPhrase = wordLists.map((word) => ({
-      word,
-      disabled: false,
-    }))
-
-    setBasePhrase(constructedSeedPhrase)
-  }, [])
 
   const confirmActive = useMemo(
     () => basePhrase.length === addedPhrase.length,
@@ -85,9 +76,21 @@ export default ({ seedPhrase, handleSaveWallet, handleReloadWallet, password }) 
     setBasePhrase(updatedPhrase)
   }
 
+  useEffect(() => {
+    const constructedSeedPhrase = wordLists.map((word) => ({
+      word,
+      disabled: false,
+    }))
+
+    setBasePhrase(constructedSeedPhrase)
+  }, [])
+
   return (
     <div>
       <Card className='confirmation-card'>
+        <div onClick={handleCancel} className='cancel-icon'>
+          <CancelIcon />
+        </div>
         <div className='title'>
           <KeyIcon className='icon' />
           <div className='text'>Secret Backup Phrase</div>
