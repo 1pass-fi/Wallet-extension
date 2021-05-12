@@ -4,6 +4,7 @@ import map from 'lodash/map'
 import filter from 'lodash/filter'
 
 import KeyIcon from 'img/key-icon.svg'
+import WarningIcon from 'img/warning-icon.svg'
 import Card from 'shared/card'
 import Button from 'shared/button'
 import './index.css'
@@ -69,10 +70,18 @@ export default ({ seedPhrase }) => {
       <Card className='confirmation-card'>
         <div className='title'>
           <KeyIcon className='icon' />
-          <div className='text'>Confirm Backup Phrase</div>
+          <div className='text'>Secret Backup Phrase</div>
         </div>
         <div className='description'>
-          Select each word in order to make sure it is correct.
+          Your secret backup phrase makes it easy to back up and restore your
+          account.
+        </div>
+        <div className='warning'>
+          <WarningIcon className='warning-icon' />
+          <div className='warning-text'>
+            Your secret backup phrase makes it easy to back up and restore your
+            account.
+          </div>
         </div>
         <div className='selected-box'>
           {addedPhrase.map((word) => (

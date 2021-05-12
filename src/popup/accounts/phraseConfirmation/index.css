@@ -23,6 +23,11 @@
   padding: 20px;
 }
 
+.confirmation-card {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
 .confirmation-card .title {
   color: #171753;
   display: flex;
@@ -42,14 +47,25 @@
 }
 
 .confirmation-card .description {
-  margin: 27px 0;
+  margin: 27px 0 18px;
+}
+
+.confirmation-card .warning {
+  display: flex;
+  margin-bottom: 21px;
+}
+
+.confirmation-card .warning .warning-text {
+  font-weight: 600;
+  margin-left: 9px;
+  width: 297px;
 }
 
 .confirmation-card .selected-box {
   background: #f5f5f5;
   border: 1.5px solid #171753;
   box-sizing: border-box;
-  height: 182px;
+  height: 136px;
   left: 48px;
   margin-bottom: 20px;
   padding: 12px;
@@ -66,6 +82,7 @@
   box-sizing: border-box;
   color: #237b75;
   cursor: pointer;
+  font-size: 15px;
   height: 31px;
   margin-bottom: 10px;
   margin-right: 12px;
