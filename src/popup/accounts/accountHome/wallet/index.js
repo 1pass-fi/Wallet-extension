@@ -68,8 +68,7 @@ const WalletConfItem = ({ icon, title, onClick, className }) => {
   )
 }
 
-const WalletConf = () => {
-  const { handleRemoveWallet } = useContext(Context)
+const WalletConf = ({ handleRemoveWallet }) => {
   return (
     <div className='wallet-conf'>
       {ITEMS.map(content => <WalletConfItem {...content} />)}
@@ -79,13 +78,16 @@ const WalletConf = () => {
 }
 
 export default ({ accountAddress, koiBalance, arBalance }) => {
+  const { handleRemoveWallet, handleLockWallet } = useContext(Context)
+
   return (
     <div className="wallet">
       <Fish className='fish' />
       <div className="wallet-wrapper">
         <WalletInfo accountName={'Account #1'} accountAddress={accountAddress} koiBalance={koiBalance} arBalance={arBalance} />
         <Card className='address'>${accountAddress}</Card>
-        <WalletConf />
+        <WalletConf handleRemoveWallet={handleRemoveWallet} />
+        <button onClick={handleLockWallet}>Lock</button>
       </div>
     </div>
   )

@@ -17,7 +17,8 @@ import {
   loadWallet,
   generateWallet,
   saveWalletToChrome,
-  removeWalletFromChrome
+  removeWalletFromChrome,
+  decryptWalletKeyFromChrome
 } from 'utils'
 
 import KoiContext from 'popup/context'
@@ -74,6 +75,37 @@ const Popup = () => {
     }
   }
 
+  const handleLockWallet = async () => {
+    try {
+      setIsLoading(true)
+      await removeChromeStorage('koiAddress')
+      koiObj.wallet = null
+      koiObj.address = null
+      setIsLoading(false)
+      history.push('/account/login')
+    } catch (err) {
+      console.log(err.message)
+      setIsLoading(false)
+    }
+  }
+
+  const handleUnlockWallet = async (password) => {
+    try {
+      setIsLoading(true)
+      const walletKey = await decryptWalletKeyFromChrome(password)
+      console.log('DECRYPTED KEY: ', walletKey)
+      const newData = await loadWallet(koiObj, walletKey, loadKoiBy.KEY)
+      console.log(newData)
+      setChromeStorage({ 'koiAddress': koiObj.address })
+      setKoi((prevState) => ({ ...prevState, ...newData }))
+      setIsLoading(false)
+      history.push('/account')
+    } catch (err) {
+      console.log(err.message)
+      setIsLoading(false)
+    }
+  }
+
   const handleRemoveWallet = async () => {
     try {
       setIsLoading(true)
@@ -122,14 +154,18 @@ const Popup = () => {
     async function getKoiData() {
       try {
         setIsLoading(true)
-        const result = await getChromeStorage('koiAddress')
-        if (result) {
+        const result = await getChromeStorage(['koiAddress', 'koiKey'])
+        if (result['koiAddress']) {
           const newData = await loadWallet(
             koiObj,
             result['koiAddress'],
             loadKoiBy.ADDRESS
           )
           setKoi((prevState) => ({ ...prevState, ...newData }))
+        } else {
+          if (result['koiKey']) {
+            history.push('/account/login')
+          }
         }
         setIsLoading(false)
       } catch (err) {
@@ -150,6 +186,8 @@ const Popup = () => {
         handleGenerateWallet,
         handleReloadWallet,
         handleSaveWallet,
+        handleLockWallet,
+        handleUnlockWallet,
         isLoading,
         setIsLoading
       }}>

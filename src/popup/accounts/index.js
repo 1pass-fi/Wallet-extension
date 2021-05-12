@@ -9,6 +9,7 @@ import ImportFile from './importByFile/index'
 import ImportFileSuccess from './importByFileSuccess/index'
 import ImportPhraseSuccess from './importByPhraseSuccess/index'
 import CreateWallet from './createWallet/index'
+import Login from './accountLockScreen/index'
 
 const Account = () => {
   return (
@@ -33,6 +34,9 @@ const Account = () => {
       </Route>
       <Route path='/account/create'>
         <CreateWallet />
+      </Route>
+      <Route path='/account/login'>
+        <Login />
       </Route>
     </Switch>
   )

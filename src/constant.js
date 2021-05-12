@@ -1,5 +1,6 @@
 export const loadKoiBy = {
   ADDRESS: 'address',
   SEED: 'seed',
-  FILE: 'file'
+  FILE: 'file',
+  KEY: 'key'
 }

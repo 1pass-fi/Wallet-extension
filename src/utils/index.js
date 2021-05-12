@@ -36,9 +36,10 @@ export const loadWallet = async (koiObj, data, loadBy) => {
         await koiObj.loadWallet(data)
         break
       case loadKoiBy.SEED:
-        console.log('running')
         await koiObj.loadWallet(data)
         break
+      case loadKoiBy.KEY:
+        await koiObj.loadWallet(data)
     }
 
     await koiObj.getWalletBalance()
@@ -67,6 +68,17 @@ export const saveWalletToChrome = async (koiObj, password) => {
   try {
     const encryptedWalletKey = await passworder.encrypt(password, koiObj.wallet)
     await setChromeStorage({ 'koiAddress': koiObj.address, 'koiKey': encryptedWalletKey })
+  } catch (err) {
+    return err.message
+  }
+}
+
+export const decryptWalletKeyFromChrome = async (password) => {
+  try {
+    const result = await getChromeStorage('koiKey')
+    console.log('RESULT KOIKEY', result['koiKey'])
+    const key = await passworder.decrypt(password, result['koiKey'])
+    return key
   } catch (err) {
     return err.message
   }
