@@ -1,6 +1,6 @@
 .popup {
   width: 426px;
-  min-height: 571px;
+  height: 600px;
   box-sizing: border-box;
   position: relative;
   /* border: 1px solid black; */
