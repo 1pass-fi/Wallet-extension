@@ -27,6 +27,7 @@ const koiObj = new koiTools.koi_tools()
 
 const Popup = ({ location }) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
   const history = useHistory()
   const [koi, setKoi] = useState({
     arBalance: koiObj.balance,
@@ -179,6 +180,13 @@ const Popup = ({ location }) => {
     }
     getKoiData()
   }, [])
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 4000)
+      return () => clearTimeout(timer)
+    }
+  }, [error])
 
   return (
     <div className="popup">
