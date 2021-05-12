@@ -1,9 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useState } from 'react'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import KeyIcon from 'img/key-icon.svg'
 import WarningIcon from 'img/warning-icon.svg'
 import QuestionMarkIcon from 'img/question-mark-icon.svg'
 import LockIcon from 'img/lock-icon.svg'
+import CopyIcon from 'img/copy-icon.svg'
 import Card from 'shared/card'
 import Button from 'shared/button'
 import './index.css'
@@ -38,9 +40,17 @@ export default ({ seedPhrase }) => {
             account.
           </div>
         </div>
-        <div className='selected-box'>
+        <div className='phrase-display-box'>
           {isShowSeePhrase ? (
-            seedPhrase
+            <>
+              {seedPhrase}
+              <CopyToClipboard className='copy-button' text={seedPhrase}>
+                <div>
+                  copy phrase
+                  <CopyIcon className='copy-icon' />
+                </div>
+              </CopyToClipboard>
+            </>
           ) : (
             <LockScreen onClick={() => setIsShowSeedPhrase(true)} />
           )}

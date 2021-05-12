@@ -2,7 +2,7 @@
   position: absolute;
   background: rgba(23, 23, 83, 0.45);
   width: 335px;
-  height: 182px;
+  height: 119px;
   top: 0;
   left: 0;
   display: flex;
@@ -44,7 +44,7 @@
 
 .backup-phrase .warning {
   display: flex;
-  margin-bottom: 26px;
+  margin-bottom: 21px;
 }
 
 .backup-phrase .warning .warning-text {
@@ -53,7 +53,7 @@
   width: 297px;
 }
 
-.backup-phrase .selected-box {
+.backup-phrase .phrase-display-box {
   position: relative;
   background: #f5f5f5;
   border: 1.5px solid #171753;
@@ -61,17 +61,38 @@
   color: #434367;
   font-size: 15px;
   font-weight: 600;
-  height: 182px;
+  height: 119px;
   letter-spacing: 0.03em;
   line-height: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   padding: 12px;
   width: 100%;
 }
 
+.backup-phrase .phrase-display-box .copy-button {
+  align-items: center;
+  bottom: 9px;
+  color: #237b75;
+  cursor: pointer;
+  display: flex;
+  font-size: 15px;
+  font-weight: 400;
+  height: 20px;
+  left: 13px;
+  letter-spacing: 0.03em;
+  line-height: 20px;
+  position: absolute;
+  text-decoration-line: underline;
+}
+
+.backup-phrase .phrase-display-box .copy-button .copy-icon {
+  height: 16px;
+  margin-left: 9px;
+  width: 16px;
+}
+
 .backup-phrase .confirm-button {
   align-self: flex-start;
-  margin-top: 15px;
 }
 
 .backup-phrase .qa {
@@ -80,7 +101,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin-top: 41px;
+  margin-top: 23px;
 }
 
 .backup-phrase .qa .qa-icon {
@@ -94,4 +115,8 @@
   font-size: 15px;
   line-height: 20px;
   width: 297px;
+}
+
+.backup-phrase .qa .qa-item:last-child {
+  margin-bottom: 0px;
 }
