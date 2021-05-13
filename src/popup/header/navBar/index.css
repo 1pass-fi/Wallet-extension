@@ -1,0 +1,25 @@
+nav {
+    display: flex;
+    height: 47px;
+}
+
+.nav-item {
+    align-items: center;
+    color: #171753;
+    display: flex;
+    font-size: 16px;
+    font-weight: 600;
+    height: 100%;
+    justify-content: center;
+    letter-spacing: 0.03em;
+    text-align: center;
+    width: 100%;
+    text-decoration: none;
+}
+
+.nav-item-active div {
+    border-bottom: 2px solid #171753;
+    display: inline-block;
+    line-height: 20px;
+    padding: 0 2px;
+}

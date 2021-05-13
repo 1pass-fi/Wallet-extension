@@ -1,11 +1,11 @@
-const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 // NOTE: Loader `include` paths are relative to this module
-const paths = require('../paths');
+const paths = require('../paths')
 
-const cssRegex = /\.css$/;
-const cssModuleRegex = /\.module\.css$/;
+const cssRegex = /\.css$/
+const cssModuleRegex = /\.module\.css$/
 
 
 
@@ -42,17 +42,17 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
           sourceMap: isEnvProduction && shouldUseSourceMap,
         },
       },
-    ].filter(Boolean);
+    ].filter(Boolean)
     if (preProcessor) {
       styleLoaders.push({
         loader: require.resolve(preProcessor),
         options: {
           sourceMap: isEnvProduction && shouldUseSourceMap,
         },
-      });
+      })
     }
-    return styleLoaders;
-  };
+    return styleLoaders
+  }
 
   const eslintLoader = {
     test: /\.(js|mjs|jsx)$/,
@@ -68,7 +68,7 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
       },
     ],
     include: paths.appSrc,
-  };
+  }
 
   const urlLoader = {
     test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
@@ -77,7 +77,7 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
       limit: 10000,
       name: 'static/media/[name].[hash:8].[ext]',
     },
-  };
+  }
   // Process application JS with Babel.
   // The preset includes JSX, Flow, TypeScript, and some ESnext features.
   const insideBabelLoader = {
@@ -105,7 +105,7 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
       cacheCompression: isEnvProduction,
       compact: isEnvProduction,
     },
-  };
+  }
   // Process any JS outside of the app with Babel.
   // Unlike the application JS, we only compile the standard ES features.
   const outsideBabelLoader = {
@@ -126,7 +126,7 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
       cacheCompression: isEnvProduction,
       sourceMaps: false,
     },
-  };
+  }
   // "postcss" loader applies autoprefixer to our CSS.
   // "css" loader resolves paths in CSS and adds assets as dependencies.
   // "style" loader turns CSS into JS modules that inject <style> tags.
@@ -142,7 +142,7 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
       sourceMap: isEnvProduction && shouldUseSourceMap,
     }),
     sideEffects: true,
-  };
+  }
   // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
   // using the extension .module.css
   const cssModuleLoader = {
@@ -153,7 +153,12 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
       modules: true,
       getLocalIdent: getCSSModuleLocalIdent,
     }),
-  };
+  }
+
+  const svgLoader = {
+    test: /\.svg$/,
+    use: ['@svgr/webpack'],
+  }
 
   const fileLoader = {
     loader: require.resolve('file-loader'),
@@ -161,19 +166,18 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
     options: {
       name: 'static/media/[name].[hash:8].[ext]',
     },
-  };
+  }
 
   return {
     eslintLoader,
     urlLoader,
+    svgLoader,
     insideBabelLoader,
     outsideBabelLoader,
     styleLoader,
     cssModuleLoader,
     fileLoader
-  };
-};
+  }
+}
 
-module.exports = getLoaders;
-
-
+module.exports = getLoaders

@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for AccountImport component Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="account-import"
+  >
+    <div
+      class="card option-card"
+    >
+      <div
+        class="card-title-wrapper"
+      >
+        <img
+          class="card-icon"
+          src="[object Object]"
+        />
+        <p
+          class="card-title"
+        >
+          Import with a seed phrase
+        </p>
+      </div>
+      <div
+        class="card-description"
+      >
+        Import an existing wallet using a 12-word seed phrase.
+      </div>
+    </div>
+    <div
+      class="card option-card"
+    >
+      <div
+        class="card-title-wrapper"
+      >
+        <img
+          class="card-icon"
+          src="[object Object]"
+        />
+        <p
+          class="card-title"
+        >
+          Upload a .JSON wallet file
+        </p>
+      </div>
+      <div
+        class="card-description"
+      >
+        Import an existing wallet by uploading a .JSON file.
+      </div>
+    </div>
+    <div
+      class="card option-card"
+    >
+      <div
+        class="card-title-wrapper"
+      >
+        <img
+          class="card-icon"
+          src="[object Object]"
+        />
+        <p
+          class="card-title"
+        >
+          Get a new wallet
+        </p>
+      </div>
+      <div
+        class="card-description"
+      >
+        Start from the beginning.
+      </div>
+    </div>
+  </div>
+</div>
+`;

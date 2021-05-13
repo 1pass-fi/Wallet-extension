@@ -5,3 +5,7 @@ dist
 extension
 dev
 .vscode
+coverage
+**/.DS_Store
+storybook-static
+process.yml

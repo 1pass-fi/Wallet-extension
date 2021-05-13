@@ -1,0 +1,10 @@
+.create-wallet .title {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.create-wallet .title p {
+  font-size: 18px;
+  margin-left: 14px;
+}

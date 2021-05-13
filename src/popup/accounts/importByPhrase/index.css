@@ -1,0 +1,34 @@
+.account-import-phrase {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 480px;
+}
+
+.import-phrase {
+    height: 415px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+/* TITLE */
+.import-phrase .title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 181px;
+    font-size: 18px;
+}
+
+.import-phrase .title img {
+    width: 24px;
+    height: 24px;
+}
+
+.import-phrase .title p {
+    margin: 0;
+}

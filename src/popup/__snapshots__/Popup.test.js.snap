@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for Popup component Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="popup"
+  >
+    <header>
+      <img
+        class="logo"
+        src="[object Object]"
+      />
+      <button
+        class="gallery-button"
+      >
+        My NFT Gallery
+      </button>
+      <button
+        class="setting-button"
+      >
+        <img
+          src="[object Object]"
+        />
+      </button>
+    </header>
+    <nav>
+      <a
+        class="nav-item"
+        href="/account/home"
+      >
+        <div
+          class="nav-item-active"
+        >
+          Accounts
+        </div>
+      </a>
+      <a
+        class="nav-item"
+        href="/assets"
+      >
+        <div
+          class=""
+        >
+          Assets
+        </div>
+      </a>
+      <a
+        class="nav-item"
+        href="/activity"
+      >
+        <div
+          class=""
+        >
+          Activity
+        </div>
+      </a>
+    </nav>
+    <div
+      class="content"
+    >
+      <a
+        class="plus-button"
+        href="/account/import"
+      >
+        <img
+          src="[object Object]"
+        />
+      </a>
+    </div>
+  </div>
+</div>
+`;
