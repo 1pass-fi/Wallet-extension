@@ -32,7 +32,6 @@ export const loadWallet = async (koiObj, data, loadBy) => {
         koiObj.address = data
         break
       case loadKoiBy.FILE:
-        data = await JSONFileToObject(data)
         await koiObj.loadWallet(data)
         break
       case loadKoiBy.SEED:

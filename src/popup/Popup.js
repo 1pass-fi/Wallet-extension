@@ -10,7 +10,7 @@ import Loading from './loading'
 import Account from './accounts/index'
 import ErrorMessage from './errorMessage'
 
-import { loadKoiBy, HEADER_EXCLUDE_PATH } from 'constant'
+import { loadKoiBy, HEADER_EXCLUDE_PATH, MESSAGES } from 'constant'
 
 import {
   setChromeStorage,
@@ -20,12 +20,16 @@ import {
   generateWallet,
   saveWalletToChrome,
   removeWalletFromChrome,
-  decryptWalletKeyFromChrome
+  decryptWalletKeyFromChrome,
+  JSONFileToObject
 } from 'utils'
 
 import KoiContext from 'popup/context'
+import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
 
 const koiObj = new koiTools.koi_tools()
+
+const backgroundConnect = new BackgroundConnect()
 
 const Popup = ({ location }) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -58,20 +62,12 @@ const Popup = ({ location }) => {
       const phrase = get(e, 'target.inputPhrase.value')
 
       let newData = {}
-      let redirectPath = ''
       if (file) {
-        newData = await loadWallet(koiObj, file, loadKoiBy.FILE)
-        redirectPath = '/account/import/keyfile/success'
+        const fileData = await JSONFileToObject(file)
+        backgroundConnect.postMessage({type: MESSAGES.IMPORT_WALLET, data: { object: fileData, password, from: loadKoiBy.FILE } })
       } else if (phrase) {
-        newData = await loadWallet(koiObj, phrase, loadKoiBy.SEED)
-        redirectPath = '/account/import/phrase/success'
+        backgroundConnect.postMessage({type: MESSAGES.IMPORT_WALLET, data: { object: phrase, password, from: loadKoiBy.SEED } })
       }
-
-      await saveWalletToChrome(koiObj, password)
-
-      setKoi(prevState => ({ ...prevState, ...newData }))
-      setIsLoading(false)
-      history.push(redirectPath)
     } catch (err) {
       setError(err.message)
       setIsLoading(false)
@@ -181,6 +177,19 @@ const Popup = ({ location }) => {
       }
     }
     getKoiData()
+    const importWalletHandler = new EventHandler(MESSAGES.IMPORT_WALLET_SUCCESS, message => {
+      const { koiData, from } = message.data
+      setKoi(prevState => ({ ...prevState, ...koiData }))
+      setIsLoading(false)
+      const redirectPath = from === loadKoiBy.FILE ? '/account/import/keyfile/success' : '/account/import/phrase/success'
+      history.push(redirectPath)
+    })
+
+    backgroundConnect.addHandler(importWalletHandler)
+
+    return () => {
+      backgroundConnect.removeHandler(importWalletHandler)
+    }
   }, [])
 
   useEffect(() => {
@@ -204,7 +213,8 @@ const Popup = ({ location }) => {
         handleUnlockWallet,
         isLoading,
         setIsLoading,
-        setError
+        setError,
+        backgroundConnect,
       }}>
         {isLoading && <Loading />}
         {error && <ErrorMessage children={error} />}
