@@ -1,0 +1,57 @@
+.modal-title {
+  padding: 0 34px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  text-align: center;
+  letter-spacing: 0.03em;
+  color: #171753;
+  display: block;
+}
+
+.modal-account-id {
+  padding: 9px 28px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: 0.03em;
+  color: #237B75;
+  word-break: break-word;
+}
+
+.modal-description {
+  padding: 19px 34px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: center;
+  letter-spacing: 0.03em;
+  color: #171753;
+}
+
+.modal-action-buttons {
+  padding: 6px, 37px;
+}
+
+.modal-action-button {
+  min-width: 132px;
+  background-color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 22px;
+  text-align: center;
+  letter-spacing: 0.03em;
+  font-family: 'Catamaran', sans-serif;
+}
+
+.modal-action-button.close{
+  margin-left: 20px;
+  border: 1.5px solid #171753;
+}
+
+.modal-action-button.remove{
+  margin-right: 20px;
+  border: 1.5px solid #ff4141;
+  color: #ff4141;
+}

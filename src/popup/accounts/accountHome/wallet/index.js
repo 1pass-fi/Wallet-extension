@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 
 import './index.css'
 import Context from 'popup/context'
@@ -11,6 +11,7 @@ import ShareIconOne from 'img/wallet/share-icon.svg'
 import ShareIconTwo from 'img/wallet/share2-icon.svg'
 import KeyIcon from 'img/wallet/key-icon.svg'
 import DeleteIcon from 'img/wallet/delete-icon.svg'
+import RemoveAccountModal from 'popup/shared/modal/RemoveAccountModal'
 
 
 const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
@@ -68,11 +69,20 @@ const WalletConfItem = ({ icon, title, onClick, className }) => {
   )
 }
 
-const WalletConf = ({ handleRemoveWallet }) => {
+const WalletConf = ({ handleRemoveWallet, accountAddress }) => {
+  const [showModal, setShowModal] = useState(false)
   return (
     <div className='wallet-conf'>
       {ITEMS.map(content => <WalletConfItem {...content} />)}
-      <WalletConfItem className='delete-wallet' icon={<DeleteIcon />} title='Remove Account' onClick={handleRemoveWallet} />
+      <WalletConfItem className='delete-wallet' icon={<DeleteIcon />} title='Remove Account' onClick={() => setShowModal(true)} />
+      { showModal && (
+        <RemoveAccountModal
+          accountName="Account 1" 
+          accountID={accountAddress} 
+          onClose={() => setShowModal(false)}
+          onSubmit={handleRemoveWallet} 
+        />
+      )}
     </div>
   )
 }
@@ -86,7 +96,7 @@ export default ({ accountAddress, koiBalance, arBalance }) => {
       <div className="wallet-wrapper">
         <WalletInfo accountName={'Account #1'} accountAddress={accountAddress} koiBalance={koiBalance} arBalance={arBalance} />
         <Card className='address'>${accountAddress}</Card>
-        <WalletConf handleRemoveWallet={handleRemoveWallet} />
+        <WalletConf accountAddress={accountAddress} handleRemoveWallet={handleRemoveWallet} />
         <button className='lock-button' onClick={handleLockWallet}>Lock</button>
       </div>
     </div>

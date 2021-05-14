@@ -20,6 +20,8 @@ import PhraseConfirmation from '../src/popup/accounts/createWallet/confirmSeed/i
 import CreatePassword from '../src/popup/shared/createPassword/index'
 import WalletInfo from '../src/popup/accounts/accountHome/wallet/index'
 import BackupPhrase from '../src/popup/accounts/createWallet/revealSeed/index'
+// import Modal from 'popup/shared/modal'
+import RemoveAccountModal from 'popup/shared/modal/RemoveAccountModal'
 
 import KoiContext from 'popup/context'
 
@@ -100,3 +102,13 @@ storiesOf('BackupPhrase', module).add('Default', () => (
 ))
 
 storiesOf('UnlockScreen', module).add('Default', () => <UnlockScreen />)
+
+storiesOf('RemoveAccountModal', module).add('Default', () => (
+  <div style={{width: '426px', height: '600px'}}>
+    <RemoveAccountModal
+      accountName="Account 1"
+      accountID={'123456789012345678901234567890123456789012'} 
+      onClose={() => {alert('onClose')}}
+    />
+  </div>
+))
