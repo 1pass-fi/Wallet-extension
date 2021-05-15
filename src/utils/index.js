@@ -1,4 +1,4 @@
-import { loadKoiBy } from 'constant'
+import { LOAD_KOI_BY } from 'constants'
 import passworder from 'browser-passworder'
 
 export const setChromeStorage = (obj) => {
@@ -28,17 +28,12 @@ export const removeChromeStorage = (key) => {
 export const loadWallet = async (koiObj, data, loadBy) => {
   try {
     switch (loadBy) {
-      case loadKoiBy.ADDRESS:
+      case LOAD_KOI_BY.ADDRESS:
         koiObj.address = data
         break
-      case loadKoiBy.FILE:
+      case LOAD_KOI_BY.KEY:
         await koiObj.loadWallet(data)
         break
-      case loadKoiBy.SEED:
-        await koiObj.loadWallet(data)
-        break
-      case loadKoiBy.KEY:
-        await koiObj.loadWallet(data)
     }
 
     await koiObj.getWalletBalance()

@@ -1,16 +1,21 @@
 import '@babel/polyfill'
 import React, { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
 import { Route, Switch, Redirect, useHistory, withRouter } from 'react-router-dom'
 import koiTools from 'koi_tools'
 import get from 'lodash/get'
 
 import './Popup.css'
-import Header from './header'
-import Loading from './loading'
-import Account from './accounts/index'
-import ErrorMessage from './errorMessage'
+import Header from 'components/header'
+import Loading from 'components/loading'
+import Account from 'components/accounts/index'
+import ErrorMessage from 'components/errorMessage'
 
-import { loadKoiBy, HEADER_EXCLUDE_PATH, MESSAGES } from 'constant'
+import { setIsLoading } from 'actions/loading'
+import { setError } from 'actions/error'
+import { setKoi } from 'actions/koi'
+
+import { LOAD_KOI_BY, HEADER_EXCLUDE_PATH, MESSAGES } from 'constants'
 
 import {
   setChromeStorage,
@@ -31,15 +36,8 @@ const koiObj = new koiTools.koi_tools()
 
 const backgroundConnect = new BackgroundConnect()
 
-const Popup = ({ location }) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
+const Popup = ({ location, isLoading, setIsLoading, error, setError, koi, setKoi }) => {
   const history = useHistory()
-  const [koi, setKoi] = useState({
-    arBalance: koiObj.balance,
-    koiBalance: koiObj.koiBalance,
-    address: koiObj.address,
-  })
 
   const handleGenerateWallet = async () => {
     try {
@@ -64,9 +62,9 @@ const Popup = ({ location }) => {
       let newData = {}
       if (file) {
         const fileData = await JSONFileToObject(file)
-        backgroundConnect.postMessage({type: MESSAGES.IMPORT_WALLET, data: { object: fileData, password, from: loadKoiBy.FILE } })
+        backgroundConnect.postMessage({type: MESSAGES.IMPORT_WALLET, data: { object: fileData, password, from: LOAD_KOI_BY.FILE } })
       } else if (phrase) {
-        backgroundConnect.postMessage({type: MESSAGES.IMPORT_WALLET, data: { object: phrase, password, from: loadKoiBy.SEED } })
+        backgroundConnect.postMessage({type: MESSAGES.IMPORT_WALLET, data: { object: phrase, password, from: LOAD_KOI_BY.SEED } })
       }
     } catch (err) {
       setError(err.message)
@@ -98,7 +96,7 @@ const Popup = ({ location }) => {
       setIsLoading(true)
       const walletKey = await decryptWalletKeyFromChrome(password)
       console.log('DECRYPTED KEY: ', walletKey)
-      const newData = await loadWallet(koiObj, walletKey, loadKoiBy.KEY)
+      const newData = await loadWallet(koiObj, walletKey, LOAD_KOI_BY.KEY)
       setChromeStorage({ 'koiAddress': koiObj.address })
       setKoi((prevState) => ({ ...prevState, ...newData }))
       setIsLoading(false)
@@ -131,7 +129,7 @@ const Popup = ({ location }) => {
         const newData = await loadWallet(
           koiObj,
           result['koiAddress'],
-          loadKoiBy.ADDRESS
+          LOAD_KOI_BY.ADDRESS
         )
         setKoi((prevState) => ({ ...prevState, ...newData }))
       }
@@ -162,7 +160,7 @@ const Popup = ({ location }) => {
           const newData = await loadWallet(
             koiObj,
             result['koiAddress'],
-            loadKoiBy.ADDRESS
+            LOAD_KOI_BY.ADDRESS
           )
           setKoi((prevState) => ({ ...prevState, ...newData }))
         } else {
@@ -181,7 +179,7 @@ const Popup = ({ location }) => {
       const { koiData, from } = message.data
       setKoi(prevState => ({ ...prevState, ...koiData }))
       setIsLoading(false)
-      const redirectPath = from === loadKoiBy.FILE ? '/account/import/keyfile/success' : '/account/import/phrase/success'
+      const redirectPath = from === LOAD_KOI_BY.FILE ? '/account/import/keyfile/success' : '/account/import/phrase/success'
       history.push(redirectPath)
     })
 
@@ -213,7 +211,6 @@ const Popup = ({ location }) => {
         handleUnlockWallet,
         isLoading,
         setIsLoading,
-        setError,
         backgroundConnect,
       }}>
         {isLoading && <Loading />}
@@ -236,4 +233,10 @@ const Popup = ({ location }) => {
   )
 }
 
-export default withRouter(Popup)
+const mapStateToProps = (state) => ({ 
+  isLoading: state.loading,
+  error: state.error,
+  koi: state.koi
+})
+
+export default connect(mapStateToProps, { setIsLoading, setError, setKoi })(withRouter(Popup))

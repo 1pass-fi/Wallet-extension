@@ -1,4 +1,6 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { connect } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 
 import './index.css'
@@ -6,11 +8,14 @@ import ImportIcon from 'img/import-icon.svg'
 import Card from 'shared/card'
 import InputField from 'shared/inputField'
 import CreatePassword from 'shared/createPassword'
-import Context from 'popup/context'
 
+import { importWallet } from 'actions/koi'
+import { setError } from 'actions/error'
 
-export default () => {
-  const { handleImportWallet, setError } = useContext(Context)
+import { PATH, ERROR_MESSAGE } from 'constants'
+
+export const ImportByPhrase = ({ importWallet, setError }) => {
+  const history = useHistory()
   const [phrase, setPharse] = useState('')
 
   const onPhraseChange = (e) => {
@@ -24,17 +29,18 @@ export default () => {
       const passwordConfirm = e.target.pwdConfirm.value
       const checked = e.target.checkbox.checked
       const phrase = e.target.inputPhrase.value
-
-      if (password.length < 8) {
-        setError('Password must contain at least 8 characters')
+      
+      if (!phrase) {
+        setError(ERROR_MESSAGE.EMPTY_PHRASE)
+      } else if (password.length < 8) {
+        setError(ERROR_MESSAGE.PASSWORD_LENGTH)
       } else if (password !== passwordConfirm) {
-        setError('Confirm Password does not match')
+        setError(ERROR_MESSAGE.PASSWORD_MATCH)
       } else if (!checked) {
-        setError('You have to agree to the Terms of Service')
-      } else if (!phrase) {
-        setError('Seed phrase should not be empty')
+        setError(ERROR_MESSAGE.CHECKED_TERMS)
       } else {
-        handleImportWallet(e)
+        const redirectPath = PATH.IMPORT_PHRASE_REDIRECT
+        importWallet({ data: phrase, password, history, redirectPath })
       }
     } catch (err) {
       setError(err.message)
@@ -56,3 +62,7 @@ export default () => {
     </div>
   )
 }
+
+const mapStateToProps = (state) => ({ isLoading: state.loading })
+
+export default connect(mapStateToProps, { importWallet, setError })(ImportByPhrase)

@@ -1,7 +1,7 @@
 import '@babel/polyfill'
 
 import koiTools from 'koi_tools'
-import { PORTS } from 'constant'
+import { PORTS } from 'constants'
 import popUpEventHandlers from './poupEventHandlers'
 
 /* eslint-disable no-undef */

@@ -1,4 +1,4 @@
-import { PORTS } from 'constant'
+import { PORTS } from 'constants'
 
 export class EventHandler {
   constructor(type, callback) {
@@ -10,7 +10,7 @@ export class EventHandler {
 export class BackgroundConnect {
   constructor() {
     console.log('BackgroundConnect--init')
-    this.port = chrome.runtime.connect({ name: 'POPUP' })
+    this.port = chrome.runtime.connect({ name: PORTS.POPUP })
     this.eventHandlers = []
     this.port.onMessage.addListener((message, sender) => {
       this.eventHandlers.forEach(handler => {
@@ -26,11 +26,14 @@ export class BackgroundConnect {
     this.port.postMessage(message)
   }
 
-  addHandler(handler) {
-    this.eventHandlers.push(handler)
+  addHandler(aHandler) {
+    if (this.eventHandlers.every(handler => handler.type !== aHandler.type)) {
+      console.log('NEW HANDLER: ' + aHandler.type)
+      this.eventHandlers.push(aHandler)
+    }
   }
 
-  removeHandler(aHandler) {
-    this.eventHandlers = this.eventHandlers.filter(handler => handler !== aHandler)
+  removeHandler(handlerType) {
+    this.eventHandlers = this.eventHandlers.filter(handler => handler.type !== handlerType)
   }
 }

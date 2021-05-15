@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for Card component Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="card extra-class-name"
+  >
+    <h1>
+      Hello
+    </h1>
+  </div>
+</div>
+`;
