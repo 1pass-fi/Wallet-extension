@@ -28,7 +28,6 @@ export class BackgroundConnect {
 
   addHandler(aHandler) {
     if (this.eventHandlers.every(handler => handler.type !== aHandler.type)) {
-      console.log('NEW HANDLER: ' + aHandler.type)
       this.eventHandlers.push(aHandler)
     }
   }

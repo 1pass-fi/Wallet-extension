@@ -3,7 +3,7 @@
 exports[`Test for Button component Render without crashing renders correctly 1`] = `
 <div>
   <button
-    class="button-shared"
+    class="button-shared button-filled "
   >
     Click Me
   </button>

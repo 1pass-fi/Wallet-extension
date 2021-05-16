@@ -5,11 +5,9 @@ exports[`Test for Navbar component Render without crashing renders correctly 1`]
   <nav>
     <a
       class="nav-item"
-      href="/account/home"
+      href="/account"
     >
-      <div
-        class=""
-      >
+      <div>
         Accounts
       </div>
     </a>
@@ -17,9 +15,7 @@ exports[`Test for Navbar component Render without crashing renders correctly 1`]
       class="nav-item"
       href="/assets"
     >
-      <div
-        class=""
-      >
+      <div>
         Assets
       </div>
     </a>
@@ -27,9 +23,7 @@ exports[`Test for Navbar component Render without crashing renders correctly 1`]
       class="nav-item"
       href="/activity"
     >
-      <div
-        class=""
-      >
+      <div>
         Activity
       </div>
     </a>

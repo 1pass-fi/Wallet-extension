@@ -70,7 +70,6 @@ export const saveWalletToChrome = async (koiObj, password) => {
 export const decryptWalletKeyFromChrome = async (password) => {
   try {
     const result = await getChromeStorage('koiKey')
-    console.log('RESULT KOIKEY', result['koiKey'])
     const key = await passworder.decrypt(password, result['koiKey'])
     return key
   } catch (err) {

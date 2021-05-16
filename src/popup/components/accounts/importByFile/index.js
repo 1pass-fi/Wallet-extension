@@ -34,7 +34,7 @@ export const ImportByFile = ({ setError, importWallet }) => {
       if (password.length < 8) {
         setError(ERROR_MESSAGE.PASSWORD_LENGTH)
       } else if (password !== passwordConfirm) {
-        setError(ERROR_MESSAGE.PASSWORD_MATCH)
+        setError(ERROR_MESSAGE.PASSWORD_MATCH)  
       } else if (!checked) {
         setError(ERROR_MESSAGE.CHECKED_TERMS)
       } else {

@@ -1,22 +1,22 @@
 import React, { useState, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import KoiIcon from 'img/koi-logo-large.svg'
 import InputField from 'shared/inputField'
 import Button from 'shared/button'
 import { Link } from 'react-router-dom'
 
-import Context from 'popup/context'
+import { unlockWallet } from 'actions/koi'
 
 import './index.css'
 
-export default () => {
-  const [password, setPassword] = useState('')
-  const { handleUnlockWallet } = useContext(Context)
+const LockScreen = ({ unlockWallet }) => {
+  const history = useHistory()
 
-  const handleOnSubmit = async (e) => {
-    e.preventDefault()
-    await handleUnlockWallet(password)
-  }
+  const [password, setPassword] = useState('')
+  
+  const handleOnSubmit = () => unlockWallet({ password, history })
 
   const onPasswordChange = (e) => {
     setPassword(e.target.value)
@@ -42,9 +42,10 @@ export default () => {
           <Link to='/account/import/keyfile' className='link-to-seed-phrase'>
             seed phrase
           </Link>
-          .
         </div>
       </div>
     </div>
   )
 }
+
+export default connect(null, { unlockWallet })(LockScreen)
