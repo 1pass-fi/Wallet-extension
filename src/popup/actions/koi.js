@@ -1,10 +1,11 @@
 import { setIsLoading } from './loading'
 import { setError } from './error'
+import { setCreateWallet } from './createWallet'
 import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 
-import { MESSAGES } from 'constants'
+import { MESSAGES, PATH } from 'constants'
 
-import { SET_KOI } from 'actions/types'
+import { SET_KOI, SET_CREATE_WALLET } from 'actions/types'
 
 export const importWallet = (inputData) => (dispatch) => {
   try {
@@ -109,6 +110,64 @@ export const unlockWallet = (inputData) => (dispatch) => {
     backgroundConnect.addHandler(unlockFailedHandler)
     backgroundConnect.postMessage({
       type: MESSAGES.UNLOCK_WALLET,
+      data: inputData
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const generateWallet = (inputData) => (dispatch) => {
+  try {
+    const { stage, password } = inputData
+
+    dispatch(setIsLoading(true))
+    const generateSuccessHandler = new CreateEventHandler(MESSAGES.GENERATE_WALLET_SUCCESS, response => {
+      const { seedPhrase } = response.data
+      dispatch(setCreateWallet({ seedPhrase, stage, password }))
+      dispatch(setIsLoading(false))
+    })
+    const generateFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
+
+    backgroundConnect.addHandler(generateSuccessHandler)
+    backgroundConnect.addHandler(generateFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.GENERATE_WALLET,
+      data: inputData
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const saveWallet = (inputData) => (dispatch) => {
+  try {
+    const { history } = inputData
+    dispatch(setIsLoading(true))
+    const saveSuccessHandler = new CreateEventHandler(MESSAGES.SAVE_WALLET_SUCCESS, response => {
+      const { koiData } = response.data
+      dispatch(setKoi(koiData))
+      dispatch(setIsLoading(false))
+      history.push(PATH.HOME)
+    })
+    const saveFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
+
+    backgroundConnect.addHandler(saveSuccessHandler)
+    backgroundConnect.addHandler(saveFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.SAVE_WALLET,
       data: inputData
     })
   } catch (err) {

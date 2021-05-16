@@ -1,53 +1,61 @@
 import React, { useState, useContext } from 'react'
+import { connect } from 'react-redux'
 
 import CreatePassword from './createPassword'
 import RevealSeed from './revealSeed'
 import ConfirmSeed from './confirmSeed'
 
+import { setCreateWallet } from 'actions/createWallet'
+import { generateWallet, saveWallet } from 'actions/koi'
+
 import Context from 'popup/context'
 import './index.css'
 
-const Wrapper = ({ stage, setStage }) => {
-  const { handleGenerateWallet, handleSaveWallet, handleReloadWallet } = useContext(Context)
-  const [password, setPassword] = useState(null)
-  const [seedPhrase, setSeedPhrase] = useState(null)
+const Wrapper = ({ createWallet, setCreateWallet, generateWallet, saveWallet }) => {
+  // const [password, setPassword] = useState(null)
+  // const [seedPhrase, setSeedPhrase] = useState(null)
 
   const handleCancel = () => {
-    setPassword(null)
-    setSeedPhrase(null)
-    setStage(1)
+    setCreateWallet({
+      stage: 1,
+      password: null,
+      seedPhrase: null
+    })
   }
 
   return (
     <div className='create-wallet'>
-      {stage === 1 && <CreatePassword
-        setStage={setStage}
-        setPassword={setPassword}
-        setSeedPhrase={setSeedPhrase}
-        handleGenerateWallet={handleGenerateWallet} />
+      {createWallet.stage === 1 && <CreatePassword
+        setCreateWallet={setCreateWallet}
+        generateWallet={generateWallet} />
       }
 
-      {stage === 2 && <RevealSeed
-        setStage={setStage}
-        seedPhrase={seedPhrase}
-        password={password}
+      {createWallet.stage === 2 && <RevealSeed
+        setCreateWallet={setCreateWallet}
+        password={createWallet.password}
+        seedPhrase={createWallet.seedPhrase}
         handleCancel={handleCancel} />}
 
-      {stage === 3 && <ConfirmSeed
-        password={password}
-        seedPhrase={seedPhrase}
-        handleSaveWallet={handleSaveWallet}
-        handleReloadWallet={handleReloadWallet}
+      {createWallet.stage === 3 && <ConfirmSeed
+        password={createWallet.password}
+        seedPhrase={createWallet.seedPhrase}
+        saveWallet={saveWallet}
         handleCancel={handleCancel} />}
-
     </div>
   )
 }
 
-export default () => {
-  const [stage, setStage] = useState(1)
-
+export const CreateWallet = ({ generateWallet, saveWallet, createWallet }) => {
   return (
-    <Wrapper stage={stage} setStage={setStage} />
+    <Wrapper 
+      createWallet={createWallet}
+      setCreateWallet={setCreateWallet} 
+      generateWallet={generateWallet}
+      saveWallet={saveWallet}
+    />
   )
 }
+
+const mapStateToProps = (state) => ({ createWallet: state.createWallet })
+
+export default connect(mapStateToProps, { generateWallet, saveWallet, setCreateWallet })(CreateWallet)

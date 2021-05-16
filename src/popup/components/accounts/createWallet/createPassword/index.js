@@ -1,33 +1,35 @@
-import React, { useContext } from 'react'
+import React from 'react'
+import { get } from 'lodash'
 
 import CreatePassword from 'shared/createPassword'
 import Card from 'shared/card'
 
 import PlusIconOutline from 'img/plus-icon-outline.svg'
 
-import Context from 'popup/context'
+import { setError } from 'actions/error'
+import { ERROR_MESSAGE } from 'constants'
 
 import './index.css'
 
-export default ({ setStage, setPassword, setSeedPhrase, handleGenerateWallet }) => {
-  const { setError } = useContext(Context)
+export default ({ generateWallet }) => {
   const handleOnSubmit = async (e) => {
     e.preventDefault()
     try {
-      const pwd = e.target.pwd.value
-      const pwdConfirm = e.target.pwdConfirm.value
-      const checked = e.target.checkbox.checked
+      const pwd = get(e, 'target.pwd.value')
+      const pwdConfirm = get(e, 'target.pwdConfirm.value')
+      const checked = get(e, 'target.checkbox.checked')
       if (pwd.length < 8) {
-        setError('Password must contain at least 8 characters')
+        setError(ERROR_MESSAGE.PASSWORD_LENGTH)
       } else if (pwd !== pwdConfirm) {
-        setError('Confirm Password does not match')
+        setError(ERROR_MESSAGE.PASSWORD_MATCH)
       } else if (!checked) {
-        setError('You have to agree with the Terms of Service')
+        setError(ERROR_MESSAGE.CHECKED_TEMRS)
       } else {
-        const phrase = await handleGenerateWallet()
-        setSeedPhrase(phrase)
-        setPassword(pwd)
-        setStage(2)
+        // const phrase = await handleGenerateWallet()
+        // setSeedPhrase(phrase)
+        // setPassword(pwd)
+        // setStage(2)
+        generateWallet({ stage: 2, password: pwd })
       }
     } catch (err) {
       setError(err.message)

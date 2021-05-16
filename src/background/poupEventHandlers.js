@@ -4,7 +4,8 @@ import {
   utils, 
   removeWalletFromChrome,
   decryptWalletKeyFromChrome,
-  setChromeStorage
+  setChromeStorage,
+  generateWallet
 } from 'utils'
 
 export default async (koi, port, message) => {
@@ -51,6 +52,24 @@ export default async (koi, port, message) => {
         await setChromeStorage({ 'koiAddress': koi.address })
         port.postMessage({
           type: MESSAGES.UNLOCK_WALLET_SUCCESS,
+          data: { koiData }
+        })
+        break
+      }
+      case MESSAGES.GENERATE_WALLET: {
+        const seedPhrase = await generateWallet(koi)
+        port.postMessage({
+          type: MESSAGES.GENERATE_WALLET_SUCCESS,
+          data: { seedPhrase }
+        })
+        break
+      }
+      case MESSAGES.SAVE_WALLET: {
+        const { password } = message.data
+        await saveWalletToChrome(koi, password)
+        const koiData = await utils.loadWallet(koi, koi.address, LOAD_KOI_BY.ADDRESS)
+        port.postMessage({
+          type: MESSAGES.SAVE_WALLET_SUCCESS,
           data: { koiData }
         })
         break

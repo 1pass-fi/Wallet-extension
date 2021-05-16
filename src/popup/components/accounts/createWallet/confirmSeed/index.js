@@ -15,19 +15,17 @@ import Card from 'shared/card'
 import Button from 'shared/button'
 import './index.css'
 
-export default ({ seedPhrase, handleSaveWallet, handleReloadWallet, handleCancel, password }) => {
+export default ({ seedPhrase, handleCancel, password, saveWallet }) => {
   const { setError } = useContext(Context)
   const wordLists = shuffle(seedPhrase.split(' '))
   const history = useHistory()
   const [basePhrase, setBasePhrase] = useState([])
   const [addedPhrase, setAddedPhrase] = useState([])
 
-  const handleOnClick = async () => {
+  const handleOnClick = () => {
     try {
       if (seedPhrase === addedPhrase.join(' ')) {
-        await handleSaveWallet(password)
-        await handleReloadWallet()
-        history.push('/account')
+        saveWallet({ password, history })
       } else {
         setError('Incorrect Seed phrase')
       }

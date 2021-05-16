@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
+
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import KeyIcon from 'img/key-icon.svg'
@@ -12,6 +14,8 @@ import Card from 'shared/card'
 import Button from 'shared/button'
 import './index.css'
 
+import { setCreateWallet } from 'actions/createWallet'
+
 const LockScreen = ({ onClick }) => {
   return (
     <div className='lock-screen' onClick={onClick}>
@@ -21,11 +25,11 @@ const LockScreen = ({ onClick }) => {
   )
 }
 
-export default ({ seedPhrase, setStage, handleCancel }) => {
-  const [isShowSeePhrase, setIsShowSeedPhrase] = useState(false)
+export const RevealSeed = ({ seedPhrase, setCreateWallet, handleCancel }) => {
+  const [isShowSeedPhrase, setIsShowSeedPhrase] = useState(false)
 
   const handleOnClick = () => {
-    setStage(3)
+    setCreateWallet({ stage: 3 })
   }
 
   return (
@@ -50,7 +54,7 @@ export default ({ seedPhrase, setStage, handleCancel }) => {
           </div>
         </div>
         <div className='phrase-display-box'>
-          {isShowSeePhrase ? (
+          {isShowSeedPhrase ? (
             <>
               {seedPhrase}
               <CopyToClipboard className='copy-button' text={seedPhrase}>
@@ -67,7 +71,7 @@ export default ({ seedPhrase, setStage, handleCancel }) => {
         <Button
           className='confirm-button'
           label={'Continue'}
-          type={isShowSeePhrase ? '' : 'outline'}
+          type={isShowSeedPhrase ? '' : 'outline'}
           onClick={handleOnClick}
         />
         <div className='qa'>
@@ -88,3 +92,5 @@ export default ({ seedPhrase, setStage, handleCancel }) => {
     </div>
   )
 }
+
+export default connect(null, { setCreateWallet })(RevealSeed)
