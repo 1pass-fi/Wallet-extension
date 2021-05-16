@@ -95,3 +95,7 @@ export const JSONFileToObject = async (file) => {
     throw new Error(err.message)
   }
 }
+
+export const utils = {
+  loadWallet
+}
