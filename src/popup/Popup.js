@@ -6,7 +6,8 @@ import { Route, Switch, Redirect, useHistory, withRouter } from 'react-router-do
 import './Popup.css'
 import Header from 'components/header'
 import Loading from 'components/loading'
-import Account from 'components/accounts/index'
+import Account from 'components/accounts'
+import Assets from 'components/assets'
 import ErrorMessage from 'components/errorMessage'
 
 import { setIsLoading } from 'actions/loading'
@@ -63,7 +64,9 @@ const Popup = ({
           <Route path='/account'>
             <Account />
           </Route>
-          <Route path='/assets'></Route>
+          <Route path='/assets'>
+            <Assets />
+          </Route>
           <Route path='/activity'>Activity</Route>
           <Route path='/'>
             <Redirect to='/account' />

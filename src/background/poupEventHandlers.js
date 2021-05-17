@@ -88,9 +88,10 @@ export default async (koi, port, message) => {
       }
       case MESSAGES.LOAD_CONTENT: {
         const contentList = await loadMyContent(koi)
+        console.log(contentList)
         setChromeStorage({ contentList })
         port.postMessage({
-          type: LOAD_CONTENT_SUCCESS,
+          type: MESSAGES.LOAD_CONTENT_SUCCESS,
           data: { contentList }
         })
         break

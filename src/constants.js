@@ -25,6 +25,8 @@ export const MESSAGES = {
   GENERATE_WALLET_SUCCESS: 'GENERATE_WALLET_SUCCESS',
   SAVE_WALLET: 'SAVE_WALLET',
   SAVE_WALLET_SUCCESS: 'SAVE_WALLET_SUCCESS',
+  LOAD_CONTENT: 'LOAD_CONTENT',
+  LOAD_CONTENT_SUCCESS: 'LOAD_CONTENT_SUCCESS',
   ERROR: 'ERROR'
 }
 
@@ -42,4 +44,10 @@ export const ERROR_MESSAGE = {
   INCORRECT_PHRASE: 'Incorrect seed phrase, please try again.',
   EMPTY_PHRASE: 'Seed phrase should not be blank.',
   CHECKED_TERMS: 'You have to agree to the Terms of Service'
+}
+
+export const STORAGE = {
+  KOI_ADDRESS: 'koiAddress',
+  KOI_KEY: 'koiKey',
+  CONTENT_LIST: 'contentList'
 }

@@ -206,7 +206,7 @@ export const saveWallet = (inputData) => (dispatch) => {
 export const loadContent = () => (dispatch) => {
   try {
     dispatch(setIsLoading(true))
-    const saveSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_WALLET_SUCCESS, response => {
+    const saveSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_CONTENT_SUCCESS, response => {
       const { contentList } = response.data
       dispatch(setAssets(contentList))
       dispatch(setIsLoading(false))
@@ -221,8 +221,7 @@ export const loadContent = () => (dispatch) => {
     backgroundConnect.addHandler(saveSuccessHandler)
     backgroundConnect.addHandler(saveFailedHandler)
     backgroundConnect.postMessage({
-      type: MESSAGES.SAVE_WALLET,
-      data: inputData
+      type: MESSAGES.LOAD_CONTENT,
     })
   } catch (err) {
     dispatch(setError(err.message))

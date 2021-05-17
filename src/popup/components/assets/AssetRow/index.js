@@ -1,0 +1,65 @@
+import React from 'react'
+import PropTypes from 'prop-types'
+
+import ShareIcon from 'img/share-icon.svg'
+import GalleryIcon from 'img/gallery-icon.svg'
+import Fish from 'img/fish.svg'
+import AlternativeWalletIcon from 'img/alternative-wallet-icon.svg'
+import RearrangePadsIcon from 'img/rearrange-pads-icon.svg'
+import './index.css'
+
+const propTypes = {
+  isGrey: PropTypes.bool,
+  isKoiWallet: PropTypes.bool,
+  name: PropTypes.string,
+  isRegistered: PropTypes.bool,
+  earnedKoi: PropTypes.number,
+}
+
+const WalletIcon = ({ isKoiWallet }) => (
+  <div className="asset-row-logo-icon">
+    { isKoiWallet ?
+      <Fish />
+      :
+      <AlternativeWalletIcon />}
+  </div>
+)
+
+const EarnedKoi = ({ isRegistered, earnedKoi }) => (
+  isRegistered ?
+    <div className="koi-earned">
+      {new Intl.NumberFormat('en-US').format(earnedKoi)} KOI earned
+    </div>
+    :
+    <button className="register-button">
+      <div className="register-button-icon">
+        <Fish/>
+      </div>
+      <span>Register</span>
+    </button>
+)
+
+const Actions = ({ isRegistered }) => (
+  <div className="asset-row-function-icons">
+    { isRegistered && <ShareIcon className="asset-row-function-icon" />}
+    <GalleryIcon className="asset-row-function-icon" />
+  </div>
+)
+
+const AssetRow = ({ isGrey, isKoiWallet, name, isRegistered, earnedKoi }) => {
+  return (
+    <div className="asset-row-container" style={{ background: isGrey ? '#EEEEEE' : '#fff' }}>
+      <div className="asset-row-rearrange-icon">
+        <RearrangePadsIcon />
+      </div>
+      <WalletIcon isKoiWallet={isKoiWallet} />
+      <div className="asset-name">{name}</div>
+      <EarnedKoi isRegistered={isRegistered} earnedKoi={earnedKoi}/>
+      <Actions isRegistered={isRegistered} />
+    </div>
+  )
+}
+
+AssetRow.propTypes = propTypes
+
+export default AssetRow

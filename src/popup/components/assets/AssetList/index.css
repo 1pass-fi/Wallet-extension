@@ -1,0 +1,14 @@
+.assets-add-more-row {
+  background-color: #EEE;
+  height: 54px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.assets-plus-icon {
+  margin-left: 35px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}

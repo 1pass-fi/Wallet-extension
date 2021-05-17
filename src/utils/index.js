@@ -60,7 +60,9 @@ export const generateWallet = async (koiObj) => {
 
 export const loadMyContent = async (koiObj) => {
   try {
+    console.log('ADDRESS', koiObj.address)
     const contentList = await koiObj.myContent()
+    console.log('CONTENT LIST FROM UTILS', contentList)
     const resultList = contentList.map((content) => {
       return {
         name: content.title,
@@ -71,6 +73,7 @@ export const loadMyContent = async (koiObj) => {
         isRegistered: true
       }
     })
+    console.log(resultList)
 
     return resultList
 
