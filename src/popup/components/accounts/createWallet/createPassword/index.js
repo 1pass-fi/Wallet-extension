@@ -25,10 +25,6 @@ export default ({ generateWallet }) => {
       } else if (!checked) {
         setError(ERROR_MESSAGE.CHECKED_TEMRS)
       } else {
-        // const phrase = await handleGenerateWallet()
-        // setSeedPhrase(phrase)
-        // setPassword(pwd)
-        // setStage(2)
         generateWallet({ stage: 2, password: pwd })
       }
     } catch (err) {

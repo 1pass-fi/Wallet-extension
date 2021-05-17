@@ -1,7 +1,8 @@
-import React, { useContext } from 'react'
+import React from 'react'
+import { useHistory } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import './index.css'
-import Context from 'popup/context'
 
 import Card from 'shared/card'
 import CopyIcon from 'img/copy-icon.svg'
@@ -11,6 +12,8 @@ import ShareIconOne from 'img/wallet/share-icon.svg'
 import ShareIconTwo from 'img/wallet/share2-icon.svg'
 import KeyIcon from 'img/wallet/key-icon.svg'
 import DeleteIcon from 'img/wallet/delete-icon.svg'
+
+import { removeWallet, lockWallet } from 'actions/koi'
 
 
 const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
@@ -77,8 +80,11 @@ const WalletConf = ({ handleRemoveWallet }) => {
   )
 }
 
-export default ({ accountAddress, koiBalance, arBalance }) => {
-  const { handleRemoveWallet, handleLockWallet } = useContext(Context)
+export const Wallet = ({ accountAddress, koiBalance, arBalance, removeWallet, lockWallet }) => {
+  const history = useHistory()
+  const handleRemoveWallet = () => removeWallet()
+
+  const handleLockWallet = () => lockWallet({ history })
 
   return (
     <div className="wallet">
@@ -92,3 +98,5 @@ export default ({ accountAddress, koiBalance, arBalance }) => {
     </div>
   )
 }
+
+export default connect(null, { removeWallet, lockWallet })(Wallet)

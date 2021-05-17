@@ -5,7 +5,7 @@ import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 
 import { MESSAGES, PATH } from 'constants'
 
-import { SET_KOI, SET_CREATE_WALLET } from 'actions/types'
+import { SET_KOI } from 'actions/types'
 
 export const importWallet = (inputData) => (dispatch) => {
   try {
@@ -82,6 +82,32 @@ export const removeWallet = () => (dispatch) => {
     backgroundConnect.addHandler(removeFailedHandler)
     backgroundConnect.postMessage({
       type: MESSAGES.REMOVE_WALLET
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const lockWallet = (inputData) => (dispatch) => {
+  try {
+    const { history } = inputData
+    dispatch(setIsLoading(true))
+    const lockSuccessHandler = new CreateEventHandler(MESSAGES.LOCK_WALLET_SUCCESS, response => {
+      dispatch(setIsLoading(false))
+      history.push(PATH.LOGIN)
+    })
+    const lockFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
+
+    backgroundConnect.addHandler(lockSuccessHandler)
+    backgroundConnect.addHandler(lockFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.LOCK_WALLET
     })
   } catch (err) {
     dispatch(setError(err.message))

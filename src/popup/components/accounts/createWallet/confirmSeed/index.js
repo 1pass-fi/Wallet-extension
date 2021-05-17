@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState, useContext } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import union from 'lodash/union'
 import map from 'lodash/map'
@@ -9,14 +10,14 @@ import KeyIcon from 'img/key-icon.svg'
 import WarningIcon from 'img/warning-icon.svg'
 import CancelIcon from 'img/x-icon.svg'
 
-import Context from 'popup/context'
-
 import Card from 'shared/card'
 import Button from 'shared/button'
+
+import { setError } from 'actions/error'
+
 import './index.css'
 
-export default ({ seedPhrase, handleCancel, password, saveWallet }) => {
-  const { setError } = useContext(Context)
+export const ConfirmSeed = ({ seedPhrase, handleCancel, password, saveWallet, setError }) => {
   const wordLists = shuffle(seedPhrase.split(' '))
   const history = useHistory()
   const [basePhrase, setBasePhrase] = useState([])
@@ -139,3 +140,5 @@ export default ({ seedPhrase, handleCancel, password, saveWallet }) => {
     </div>
   )
 }
+
+export default connect(null, { setError })(ConfirmSeed)

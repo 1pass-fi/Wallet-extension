@@ -17,6 +17,8 @@ export const MESSAGES = {
   LOAD_WALLET_SUCCESS: 'LOAD_WALLET_SUCCESS',
   REMOVE_WALLET: 'REMOVE_WALLET',
   REMOVE_WALLET_SUCCESS: 'REMOVE_WALLET_SUCCESS',
+  LOCK_WALLET: 'LOCK_WALLET',
+  LOCK_WALLET_SUCCESS: 'LOCK_WALLET_SUCCESS',
   UNLOCK_WALLET: 'UNLOCK_WALLET',
   UNLOCK_WALLET_SUCCESS: 'UNLOCK_WALLET_SUCCESS',
   GENERATE_WALLET: 'GENERATE_WALLET',
@@ -29,7 +31,8 @@ export const MESSAGES = {
 export const PATH = {
   IMPORT_PHRASE_REDIRECT: '/account/import/phrase/success',
   IMPORT_KEY_REDIRECT: '/account/import/keyfile/success',
-  HOME: '/account'
+  HOME: '/account',
+  LOGIN: '/account/login'
 }
 
 export const ERROR_MESSAGE = {

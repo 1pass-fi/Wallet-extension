@@ -5,6 +5,7 @@ import {
   removeWalletFromChrome,
   decryptWalletKeyFromChrome,
   setChromeStorage,
+  removeChromeStorage,
   generateWallet
 } from 'utils'
 
@@ -43,6 +44,16 @@ export default async (koi, port, message) => {
           type: MESSAGES.REMOVE_WALLET_SUCCESS,
           data: { koiData }
         })
+        break
+      }
+      case MESSAGES.LOCK_WALLET: {
+        await removeChromeStorage('koiAddress')
+        koi.address = null
+        koi.wallet = null
+        port.postMessage({
+          type: MESSAGES.LOCK_WALLET_SUCCESS
+        })
+
         break
       }
       case MESSAGES.UNLOCK_WALLET: {

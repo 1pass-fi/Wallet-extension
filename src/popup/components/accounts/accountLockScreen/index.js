@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -15,7 +15,7 @@ const LockScreen = ({ unlockWallet }) => {
   const history = useHistory()
 
   const [password, setPassword] = useState('')
-  
+
   const handleOnSubmit = () => unlockWallet({ password, history })
 
   const onPasswordChange = (e) => {

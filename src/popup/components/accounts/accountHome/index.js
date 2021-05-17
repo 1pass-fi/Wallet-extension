@@ -1,14 +1,13 @@
-import React, { useContext } from 'react'
+import React from 'react'
+import { connect } from 'react-redux'
+
 import PlusIcon from 'img/plus-icon.svg'
 import { Link } from 'react-router-dom'
 import './index.css'
 
 import Wallet from './wallet/index'
 
-import KoiContext from 'popup/context'
-
-export default () => {
-  const { koi, setKoi } = useContext(KoiContext)
+export const AccountHome = ({ koi }) => {
   return (
     <div>
       {koi.address ? <Wallet accountAddress={koi.address} koiBalance={koi.koiBalance} arBalance={koi.arBalance} /> :
@@ -18,3 +17,7 @@ export default () => {
     </div>
   )
 }
+
+const mapStateToProps = (state) => ({ koi: state.koi })
+
+export default connect(mapStateToProps)(AccountHome)
