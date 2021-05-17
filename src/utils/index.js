@@ -58,6 +58,27 @@ export const generateWallet = async (koiObj) => {
   }
 }
 
+export const loadMyContent = async (koiObj) => {
+  try {
+    const contentList = await koiObj.myContent()
+    const resultList = contentList.map((content) => {
+      return {
+        name: content.title,
+        isKoiWallet: content.ticker === 'KOINFT',
+        earndKoi: content.totalReward,
+        txId: content.txIdContent,
+        path: `${PATH.NFT_IMAGE}/${content.txIdContent}`,
+        isRegistered: true
+      }
+    })
+
+    return resultList
+
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
 export const saveWalletToChrome = async (koiObj, password) => {
   try {
     const encryptedWalletKey = await passworder.encrypt(password, koiObj.wallet)

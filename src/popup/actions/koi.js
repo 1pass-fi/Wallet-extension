@@ -1,6 +1,7 @@
 import { setIsLoading } from './loading'
 import { setError } from './error'
 import { setCreateWallet } from './createWallet'
+import { setAssets } from './assets'
 import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 
 import { MESSAGES, PATH } from 'constants'
@@ -182,6 +183,33 @@ export const saveWallet = (inputData) => (dispatch) => {
       dispatch(setKoi(koiData))
       dispatch(setIsLoading(false))
       history.push(PATH.HOME)
+    })
+    const saveFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
+
+    backgroundConnect.addHandler(saveSuccessHandler)
+    backgroundConnect.addHandler(saveFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.SAVE_WALLET,
+      data: inputData
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const loadContent = () => (dispatch) => {
+  try {
+    dispatch(setIsLoading(true))
+    const saveSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_WALLET_SUCCESS, response => {
+      const { contentList } = response.data
+      dispatch(setAssets(contentList))
+      dispatch(setIsLoading(false))
     })
     const saveFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')

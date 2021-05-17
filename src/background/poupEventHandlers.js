@@ -1,7 +1,8 @@
 import { MESSAGES, LOAD_KOI_BY } from 'constants'
 import { 
   saveWalletToChrome, 
-  utils, 
+  utils,
+  loadMyContent,
   removeWalletFromChrome,
   decryptWalletKeyFromChrome,
   setChromeStorage,
@@ -82,6 +83,15 @@ export default async (koi, port, message) => {
         port.postMessage({
           type: MESSAGES.SAVE_WALLET_SUCCESS,
           data: { koiData }
+        })
+        break
+      }
+      case MESSAGES.LOAD_CONTENT: {
+        const contentList = await loadMyContent(koi)
+        setChromeStorage({ contentList })
+        port.postMessage({
+          type: LOAD_CONTENT_SUCCESS,
+          data: { contentList }
         })
         break
       }

@@ -27,8 +27,6 @@ const Popup = ({
 }) => {
   const history = useHistory()
 
-  const handleRemoveWallet = () => removeWallet()
-
   useEffect(() => {
     async function getKoiData() {
       try {
