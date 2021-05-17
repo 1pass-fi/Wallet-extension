@@ -1,32 +1,208 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
+.app {
+  background: linear-gradient(90deg, #030332 0%, #171753 100%);
   min-height: 100vh;
+}
+
+/* START HEADER */
+.app-header {
+  padding: 0 56px 0 26px;
+  height: 7s0px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+}
+
+.app-header .header-left .logo {
+  width: 45px;
+  height: 45px;
+}
+
+.app-header .header-right {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-header .header-right .total-koi {
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  border: 1.5px solid #171753;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 4px;
+  color: #171753;
+  font-weight: 600;
+  padding: 6px 11px;
+}
+
+.app-header .header-right .total-koi div {
+  height: 16px;
+}
+
+.app-header .header-right .total-koi .koi-unit {
+  margin-left: 6px;
+  background: #FFFFFF;
+  width: 16px;
+  height: 16px;
+}
+
+.app-header .header-right .setting-button {
+  width: 28px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+/* END HEADER */
+
+/* START CONTENT */
+.app .app-content .cards {
+  max-width: 987px;
+  margin: auto;
+  padding: 40px 104px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.App-link {
-  color: #61dafb;
+.app .app-content .cards .small-cards {
+  width: 100%;
+  gap: 10px 148px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.app .app-content .title {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: 0.03em;
+  color: #FFFFFF;
+  margin-left: 96px; 
 }
+
+/* -- START BIGCARD */
+.big-nft-card {
+  position: relative;
+  width: 512px;  
+  height: 700px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.big-nft-card .nft-name {
+  margin-top: 20px;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 56px;
+  letter-spacing: 0.03em;
+  color: #FFFFFF;
+  margin-bottom: 2px;
+}
+
+.big-nft-card .nft-earned-koi {
+  font-size: 28px;
+  line-height: 32px;
+  letter-spacing: 0.03em;
+  color: #FFFFFF;
+}
+
+.big-nft-card .register-button {
+  display: flex;
+  align-items: center;
+  height: 20px;
+  background: linear-gradient(90deg, #030332 0%, #171753 100%);
+  border: 1px solid #F5F5F5;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
+  color: #FFFFFF;
+}
+
+.big-nft-card .register-button .icon {
+  width: 15px;
+}
+
+.big-nft-card .nft-img {
+  width: 512px;
+  height: 512px;
+  object-fit: contain;
+  background:  #020221;
+}
+
+.big-nft-card .nft-path {
+  top: 550px;
+  right: 5px;
+  position: absolute;
+  width: 157px;
+  height: 30px;
+  white-space: nowrap;
+  background: linear-gradient(90deg, #030332 0%, #171753 100%);
+  border: 1.5px solid #F5F5F5;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
+  text-decoration: none;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 30px;
+}
+/* -- END BIGCARD */
+
+/* -- START CARD */
+.nft-card {
+  position: relative;
+  width: 216px;  
+  height: 320px;
+  cursor: pointer;
+}
+
+.nft-card .nft-name {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.03em;
+  color: #FFFFFF;
+  margin-bottom: 2px;
+}
+
+.nft-card .nft-earned-koi {
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.03em;
+  color: #FFFFFF;
+}
+
+.nft-card .register-button {
+  display: flex;
+  align-items: center;
+  height: 20px;
+  background: linear-gradient(90deg, #030332 0%, #171753 100%);
+  border: 1px solid #F5F5F5;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
+  color: #FFFFFF;
+}
+
+.nft-card .register-button .icon {
+  width: 15px;
+}
+
+.nft-card .nft-img {
+  width: 216px;
+  height: 216px;
+  object-fit: contain;
+  background:  #020221;
+}
+
+.nft-card .nft-path {
+  top: 225px;
+  right: 5px;
+  position: absolute;
+  width: 18px;
+  height: 18px;
+}
+/* -- END CARD */
+
+/* END CONTENT */
