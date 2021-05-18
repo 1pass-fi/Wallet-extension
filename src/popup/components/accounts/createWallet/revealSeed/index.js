@@ -25,11 +25,15 @@ const LockScreen = ({ onClick }) => {
   )
 }
 
-export const RevealSeed = ({ seedPhrase, setCreateWallet, handleCancel }) => {
+export const RevealSeed = ({ seedPhrase, setCreateWallet }) => {
   const [isShowSeedPhrase, setIsShowSeedPhrase] = useState(false)
 
   const handleOnClick = () => {
     setCreateWallet({ stage: 3 })
+  }
+
+  const handleCancel = () => {
+    setCreateWallet({ password: null, seedPhrase: null, stage: 1 })
   }
 
   return (

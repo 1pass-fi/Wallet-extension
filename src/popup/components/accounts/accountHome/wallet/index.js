@@ -34,7 +34,7 @@ const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
       <div className='wallet-info-row'>
         <div>
           <div className='koi'>{koiBalance} KOI</div>
-          <div className='ar'>{arBalance} AR</div>
+          <div className='ar'>0.{arBalance.toString().slice(0, 3)} AR</div>
         </div>
       </div>
     </div>
@@ -91,7 +91,7 @@ export const Wallet = ({ accountAddress, koiBalance, arBalance, removeWallet, lo
       <div className='wallet fish'><Fish /></div>
       <div className="wallet-wrapper">
         <WalletInfo accountName={'Account #1'} accountAddress={accountAddress} koiBalance={koiBalance} arBalance={arBalance} />
-        <Card className='address'>${accountAddress}</Card>
+        <Card className='address'>{accountAddress}</Card>
         <WalletConf handleRemoveWallet={handleRemoveWallet} />
         <button className='lock-button' onClick={handleLockWallet}>Lock</button>
       </div>

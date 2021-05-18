@@ -14,9 +14,9 @@ import SettingsIcon from 'img/settings-icon.svg'
 import ShareIcon from 'img/share-icon.svg'
 
 import './Options.css'
-import { MESSAGES, STORAGE } from '../constants'
+import { MESSAGES, STORAGE, PORTS } from '../constants'
 
-const backgroundConnect = new BackgroundConnect()
+const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
 const Header = ({ totalKoi }) => {
   return (
@@ -101,7 +101,7 @@ const Content = ({ cardInfos }) => {
 
   useEffect(() => {
     const query = window.location.search
-    let id = ""
+    let id = ''
     if (query.length > 4) {
       id = query.slice(4)
     }
@@ -135,23 +135,25 @@ export default () => {
 
   useEffect(() => {
     const getData = async () => {
-      const storage = await getChromeStorage([STORAGE.KOI_ADDRESS, STORAGE.CONTENT_LIST])
-      if (STORAGE.CONTENT_LIST) {
-        setCardInfos(storage[STORAGE.CONTENT_LIST])
-      }
-      if (storage[STORAGE.KOI_ADDRESS]) {
-        const address = storage[STORAGE.KOI_ADDRESS]
-        backgroundConnect.postMessage({
-          type: MESSAGES.LOAD_WALLET,
-          data: { data: address }
-        })
+      try {
+        const storage = await getChromeStorage([STORAGE.KOI_ADDRESS, STORAGE.CONTENT_LIST])
+        if (storage[STORAGE.CONTENT_LIST]) {
+          setCardInfos(storage[STORAGE.CONTENT_LIST])
+        }
+        if (storage[STORAGE.KOI_ADDRESS]) {
+          const address = storage[STORAGE.KOI_ADDRESS]
+          backgroundConnect.postMessage({
+            type: MESSAGES.LOAD_WALLET,
+            data: { data: address }
+          })
+        }
+      } catch (err) {
+        console.log(err.message)
       }
     }
-
     const getKoiHandler = new EventHandler(MESSAGES.LOAD_WALLET_SUCCESS, response => {
-      console.log('EVENT HANDLER RUNNING')
       const { koiData } = response.data
-      console.log('KOI DATA', koiData)
+
       setTotalKoi(koiData.koiBalance)
     })
     backgroundConnect.addHandler(getKoiHandler)

@@ -19,7 +19,7 @@ browser.runtime.onMessage.addListener(function (message) {
   console.log(message)
 })
 
-chrome.runtime.onConnect.addListener(function(port) {
+chrome.runtime.onConnect.addListener(function (port) {
   switch (port.name) {
     case PORTS.POPUP:
       port.onMessage.addListener(message => {

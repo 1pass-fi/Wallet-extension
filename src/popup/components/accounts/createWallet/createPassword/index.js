@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { get } from 'lodash'
 
 import CreatePassword from 'shared/createPassword'
@@ -11,7 +12,7 @@ import { ERROR_MESSAGE } from 'constants'
 
 import './index.css'
 
-export default ({ generateWallet }) => {
+export const Password = ({ generateWallet, setError }) => {
   const handleOnSubmit = async (e) => {
     e.preventDefault()
     try {
@@ -23,7 +24,7 @@ export default ({ generateWallet }) => {
       } else if (pwd !== pwdConfirm) {
         setError(ERROR_MESSAGE.PASSWORD_MATCH)
       } else if (!checked) {
-        setError(ERROR_MESSAGE.CHECKED_TEMRS)
+        setError(ERROR_MESSAGE.CHECKED_TERMS)
       } else {
         generateWallet({ stage: 2, password: pwd })
       }
@@ -45,3 +46,5 @@ export default ({ generateWallet }) => {
     </div>
   )
 }
+
+export default connect(null, { setError })(Password)

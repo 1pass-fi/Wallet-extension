@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import ShareIcon from 'img/share-icon.svg'
+import ShareIcon from 'img/share-icon-green.svg'
 import GalleryIcon from 'img/gallery-icon.svg'
 import Fish from 'img/fish.svg'
 import AlternativeWalletIcon from 'img/alternative-wallet-icon.svg'
