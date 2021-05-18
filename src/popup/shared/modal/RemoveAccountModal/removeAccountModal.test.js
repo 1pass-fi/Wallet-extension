@@ -7,7 +7,7 @@ import RemoveAccountModal from '.'
 describe('Test for  RemoveAccountModal component', () => {
   describe('Render without crashing', () => {
     it('renders correctly', () => {
-      const { container } = render(<RemoveAccountModal accountName={'Account 1'} accountID={'12345678901234567890123456789'}/>)
+      const { container } = render(<RemoveAccountModal accountName={'Account 1'} accountAddress={'12345678901234567890123456789'}/>)
       expect(container).toMatchSnapshot()
     })
   })

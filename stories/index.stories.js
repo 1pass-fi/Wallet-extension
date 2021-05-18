@@ -107,7 +107,7 @@ storiesOf('RemoveAccountModal', module).add('Default', () => (
   <div style={{width: '426px', height: '600px'}}>
     <RemoveAccountModal
       accountName="Account 1"
-      accountID={'123456789012345678901234567890123456789012'} 
+      accountAddress={'123456789012345678901234567890123456789012'} 
       onClose={() => {alert('onClose')}}
     />
   </div>

@@ -78,7 +78,7 @@ const WalletConf = ({ handleRemoveWallet, accountAddress }) => {
       { showModal && (
         <RemoveAccountModal
           accountName="Account 1" 
-          accountID={accountAddress} 
+          accountAddress={accountAddress} 
           onClose={() => setShowModal(false)}
           onSubmit={handleRemoveWallet} 
         />

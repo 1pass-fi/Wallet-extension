@@ -8,7 +8,7 @@ import './index.css'
 
 const propTypes = {
   accountName: PropTypes.string,
-  accountID: PropTypes.string,
+  accountAddress: PropTypes.string,
   onClose: PropTypes.func,
   onSubmit: PropTypes.func,
 }
@@ -24,11 +24,11 @@ const ModalTitle = ({ accountName }) => {
   )
 }
 
-const RemoveAccountModal = ({ accountName, accountID, onClose, onSubmit }) => {
+const RemoveAccountModal = ({ accountName, accountAddress, onClose, onSubmit }) => {
   return (
     <Modal onClose={onClose} >
       <ModalTitle accountName={accountName} />
-      <div className="modal-account-id">{accountID}</div>
+      <div className="modal-account-address">{accountAddress}</div>
       <div className="modal-description">
         To access to this wallet again from Koi, you will need to add it as a new account.
       </div>
