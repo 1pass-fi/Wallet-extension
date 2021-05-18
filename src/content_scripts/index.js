@@ -1,9 +1,73 @@
+import '@babel/polyfill'
+
+import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
+import { PORTS, MESSAGES } from 'constants'
+
 console.log('Content scripts has loaded')
 
-
-window.addEventListener('message', function (event) {
-  console.log('MESSAGE', event)
-  chrome.runtime.sendMessage({ essential: event.data.essential })
+const messageTypes = [MESSAGES.GET_ADDRESS_SUCCESS, MESSAGES.GET_ADDRESS_ERROR]
+const backgroundConnect = new BackgroundConnect(PORTS.CONTENT_SCRIPT)
+messageTypes.forEach(messageType => {
+  backgroundConnect.addHandler(new EventHandler(messageType, (message) => {
+    window.postMessage(message)
+  }))
 })
 
-console.log('CHROME STORAGE', chrome.storage)
+window.addEventListener('message', function (event) {
+  switch (event.data.type) {
+    case MESSAGES.GET_ADDRESS:
+      backgroundConnect.postMessage({ type: event.data.type })
+      break
+
+    default:
+      break
+  }
+})
+
+;(function(messages) {
+  function script() {
+    const promiseResolves = {}
+    Object.values(MESSAGE_TYPES).forEach(messageType => {
+      promiseResolves[`${messageType}_SUCCESS`] = []
+      promiseResolves[`${messageType}_ERROR`] = []
+    })
+
+    function buildPromise(messageType) {
+      const promise = new Promise((resolve, reject) => {
+        window.postMessage({ type: messageType })
+        promiseResolves[messageType + '_SUCCESS'].push(resolve)
+        promiseResolves[messageType + '_ERROR'].push(reject)
+      })
+      return promise
+    }
+
+    window.koi = {
+      getAddress: () => buildPromise(MESSAGE_TYPES.GET_ADDRESS)
+    }
+    window.addEventListener('message', function (event) {
+      if (!event.data || !event.data.type) {
+        return
+      }
+      if (promiseResolves[event.data.type]) {
+        promiseResolves[event.data.type].forEach(resolve => resolve(event))
+        promiseResolves[event.data.type] = []
+        const pairMessageType = event.data.type.endsWith('_SUCCESS') ? event.data.type.replace(/_SUCCESS$/g, '_ERROR') : event.data.type.replace(/_ERROR$/g, '_SUCCESS')
+        if (pairMessageType !== event.data.type && promiseResolves[pairMessageType]) {
+          promiseResolves[pairMessageType] = []
+        }
+      }
+    })
+  }
+
+  function inject(fn) {
+    const script = document.createElement('script')
+    const { GET_ADDRESS } = messages
+    const pickedMessages = {
+      GET_ADDRESS
+    }
+    script.text = `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(pickedMessages)}');(${fn.toString()})();`
+    document.documentElement.appendChild(script)
+  }
+
+  inject(script)
+})(MESSAGES)

@@ -3,6 +3,7 @@ import '@babel/polyfill'
 import koiTools from 'koi_tools'
 import { PORTS } from 'constants'
 import popUpEventHandlers from './poupEventHandlers'
+import contentScriptEventHandlers from './contentScriptEventHandlers'
 
 /* eslint-disable no-undef */
 const koi = new koiTools.koi_tools()
@@ -19,9 +20,16 @@ browser.runtime.onMessage.addListener(function (message) {
 })
 
 chrome.runtime.onConnect.addListener(function(port) {
-  if (port.name === PORTS.POPUP) {
-    port.onMessage.addListener(message => {
-      popUpEventHandlers(koi, port, message)
-    })
+  switch (port.name) {
+    case PORTS.POPUP:
+      port.onMessage.addListener(message => {
+        popUpEventHandlers(koi, port, message)
+      })
+      break
+    case PORTS.CONTENT_SCRIPT:
+      port.onMessage.addListener(message => {
+        contentScriptEventHandlers(koi, port, message)
+      })
+      break
   }
 })
