@@ -5,15 +5,22 @@ import NavBar from './navBar'
 import './index.css'
 
 export default () => {
+  const onGalleryClick = () => {
+    const url = chrome.extension.getURL('options.html')
+    chrome.tabs.create({ url })
+  }
+
   return (
     <>
       <header>
-        <LogoIcon className="logo" />
-        <button className="gallery-button">My NFT Gallery</button>
-        <button className="setting-button">
+        <LogoIcon className='logo' />
+        <button onClick={onGalleryClick} className='gallery-button'>
+          My NFT Gallery
+        </button>
+        <button className='setting-button'>
           <SettingIcon />
         </button>
-      </header >
+      </header>
       <NavBar />
     </>
   )
