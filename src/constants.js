@@ -36,7 +36,7 @@ export const PATH = {
   HOME: '/account',
   LOGIN: '/account/login',
   NFT_IMAGE: 'https://arweave.net',
-  GALLERY: `${chrome.extension.getURL('/option.html')}`,
+  GALLERY: `${chrome.extension.getURL('/options.html')}`,
   VIEW_BLOCK: 'https://viewblock.io/arweave/tx'
 }
 

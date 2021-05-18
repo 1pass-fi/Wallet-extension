@@ -6,8 +6,9 @@
 /* START HEADER */
 .app-header {
   padding: 0 56px 0 26px;
-  height: 7s0px;
+  height: 70px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -47,8 +48,12 @@
 }
 
 .app-header .header-right .setting-button {
+  border-radius: 50%;
+  height: 28px;
   width: 28px;
   display: flex;
+  border: 0;
+  margin-left: 30px;
   align-items: center;
   justify-content: center;
 }

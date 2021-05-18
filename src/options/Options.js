@@ -1,8 +1,12 @@
+import '@babel/polyfill'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Link, useQuery } from 'react-router-dom'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
+
+import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
+import { getChromeStorage } from 'utils'
 
 import KoiIcon from 'img/koi-logo.svg'
 import KoiUnit from 'img/koi-logo-no-bg.svg'
@@ -10,6 +14,9 @@ import SettingsIcon from 'img/settings-icon.svg'
 import ShareIcon from 'img/share-icon.svg'
 
 import './Options.css'
+import { MESSAGES, STORAGE } from '../constants'
+
+const backgroundConnect = new BackgroundConnect()
 
 const Header = ({ totalKoi }) => {
   return (
@@ -23,7 +30,7 @@ const Header = ({ totalKoi }) => {
           <KoiUnit className='koi-unit' />
         </div>
         <button className='setting-button'>
-          <SettingsIcon />
+          <SettingsIcon className='option setting-icon'></SettingsIcon>
         </button>
       </div>
     </header>
@@ -33,15 +40,15 @@ const Header = ({ totalKoi }) => {
 const BigCard = ({
   txId,
   name,
-  imgSrc,
+  imageUrl,
   earnedKoi,
   isRegistered,
-  path,
+  viewblockUrl,
   setChoosen,
 }) => {
   return (
     <div className='big-nft-card' onClick={() => setChoosen('')}>
-      <img src={imgSrc} className='nft-img' />
+      <img src={imageUrl} className='nft-img' />
       <div className='nft-name'>{name}</div>
       {isRegistered ? (
         <div className='nft-earned-koi'>{earnedKoi} KOI</div>
@@ -51,9 +58,9 @@ const BigCard = ({
         </button>
       )}
       {isRegistered && (
-        <Link to={path} className='nft-path'>
+        <a target="_blank" href={viewblockUrl} className='nft-path'>
           View on koi.rocks
-        </Link>
+        </a>
       )}
     </div>
   )
@@ -62,16 +69,16 @@ const BigCard = ({
 const Card = ({
   txId,
   name,
-  imgSrc,
+  imageUrl,
   earnedKoi,
   isRegistered,
-  path,
+  viewblockUrl,
   choosen,
   setChoosen,
 }) => {
   return choosen !== txId ? (
     <div className='nft-card' onClick={() => setChoosen(txId)}>
-      <img src={imgSrc} className='nft-img' />
+      <img src={imageUrl} className='nft-img' />
       <div className='nft-name'>{name}</div>
       {isRegistered ? (
         <div className='nft-earned-koi'>{earnedKoi} KOI</div>
@@ -81,9 +88,9 @@ const Card = ({
         </button>
       )}
       {isRegistered && (
-        <Link to={path} className='nft-path'>
+        <a target="_blank" href={viewblockUrl} className='nft-path'>
           <ShareIcon />
-        </Link>
+        </a>
       )}
     </div>
   ) : null
@@ -91,18 +98,19 @@ const Card = ({
 
 const Content = ({ cardInfos }) => {
   const [choosen, setChoosen] = useState('')
-  const choosenCard = useMemo(
-    () => find(cardInfos, { txId: choosen }),
-    [choosen]
-  )
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const txId = get(params, 'txId', '')
-    if (txId) {
-      setChoosen(txId)
+    const query = window.location.search
+    let id = ""
+    if (query.length > 4) {
+      id = query.slice(4)
+    }
+    if (id) {
+      setChoosen(id)
     }
   }, [])
+
+  const choosenCard = find(cardInfos, { txId: choosen })
 
   return (
     <div className='app-content'>
@@ -121,7 +129,35 @@ const Content = ({ cardInfos }) => {
   )
 }
 
-export default ({ cardInfos = [], totalKoi = 0 }) => {
+export default () => {
+  const [cardInfos, setCardInfos] = useState([])
+  const [totalKoi, setTotalKoi] = useState(0)
+
+  useEffect(() => {
+    const getData = async () => {
+      const storage = await getChromeStorage([STORAGE.KOI_ADDRESS, STORAGE.CONTENT_LIST])
+      if (STORAGE.CONTENT_LIST) {
+        setCardInfos(storage[STORAGE.CONTENT_LIST])
+      }
+      if (storage[STORAGE.KOI_ADDRESS]) {
+        const address = storage[STORAGE.KOI_ADDRESS]
+        backgroundConnect.postMessage({
+          type: MESSAGES.LOAD_WALLET,
+          data: { data: address }
+        })
+      }
+    }
+
+    const getKoiHandler = new EventHandler(MESSAGES.LOAD_WALLET_SUCCESS, response => {
+      console.log('EVENT HANDLER RUNNING')
+      const { koiData } = response.data
+      console.log('KOI DATA', koiData)
+      setTotalKoi(koiData.koiBalance)
+    })
+    backgroundConnect.addHandler(getKoiHandler)
+    getData()
+  }, [])
+
   return (
     <div className='app'>
       <Header totalKoi={totalKoi} />
