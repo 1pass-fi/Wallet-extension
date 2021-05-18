@@ -28,25 +28,34 @@ const WalletIcon = ({ isKoiWallet }) => (
 const EarnedKoi = ({ isRegistered, earnedKoi }) => (
   isRegistered ?
     <div className="koi-earned">
-      {new Intl.NumberFormat('en-US').format(earnedKoi)} KOI earned
+      {earnedKoi} KOI earned
     </div>
     :
     <button className="register-button">
       <div className="register-button-icon">
-        <Fish/>
+        <div className='assets fish-icon'><Fish /></div>
       </div>
       <span>Register</span>
     </button>
 )
 
-const Actions = ({ isRegistered }) => (
-  <div className="asset-row-function-icons">
-    { isRegistered && <ShareIcon className="asset-row-function-icon" />}
-    <GalleryIcon className="asset-row-function-icon" />
-  </div>
-)
+const Actions = ({ isRegistered, viewblockUrl, galleryUrl }) => {
 
-const AssetRow = ({ isGrey, isKoiWallet, name, isRegistered, earnedKoi }) => {
+  const handleCreateTab = (to) => {
+    chrome.tabs.create({
+      url: to
+    })
+  }
+
+  return (
+    <div className="asset-row-function-icons">
+      { isRegistered && <div onClick={() => handleCreateTab(viewblockUrl)}><ShareIcon className="asset-row-function-icon" /></div>}
+      <div onClick={() => handleCreateTab(galleryUrl)}><GalleryIcon className="asset-row-function-icon" /></div>
+    </div>
+  )
+}
+
+const AssetRow = ({ isGrey, isKoiWallet, name, isRegistered, earnedKoi, viewblockUrl, galleryUrl }) => {
   return (
     <div className="asset-row-container" style={{ background: isGrey ? '#EEEEEE' : '#fff' }}>
       <div className="asset-row-rearrange-icon">
@@ -54,8 +63,8 @@ const AssetRow = ({ isGrey, isKoiWallet, name, isRegistered, earnedKoi }) => {
       </div>
       <WalletIcon isKoiWallet={isKoiWallet} />
       <div className="asset-name">{name}</div>
-      <EarnedKoi isRegistered={isRegistered} earnedKoi={earnedKoi}/>
-      <Actions isRegistered={isRegistered} />
+      <EarnedKoi isRegistered={isRegistered} earnedKoi={earnedKoi} />
+      <Actions isRegistered={isRegistered} viewblockUrl={viewblockUrl} galleryUrl={galleryUrl} />
     </div>
   )
 }

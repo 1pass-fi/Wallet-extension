@@ -34,7 +34,10 @@ export const PATH = {
   IMPORT_PHRASE_REDIRECT: '/account/import/phrase/success',
   IMPORT_KEY_REDIRECT: '/account/import/keyfile/success',
   HOME: '/account',
-  LOGIN: '/account/login'
+  LOGIN: '/account/login',
+  NFT_IMAGE: 'https://arweave.net',
+  GALLERY: `${chrome.extension.getURL('/option.html')}`,
+  VIEW_BLOCK: 'https://viewblock.io/arweave/tx'
 }
 
 export const ERROR_MESSAGE = {

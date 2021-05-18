@@ -10,10 +10,10 @@ const propTypes = {
   onAddAsset: PropTypes.func,
 }
 
-const AssetList =  ({ assets, onAddAsset }) => {
+const AssetList = ({ assets, onAddAsset }) => {
   return (
     <div className="assets">
-      {assets.map((asset, index) => <AssetRow key={index} {...asset} isGrey={index % 2 === 0}/>)}
+      {assets.map((asset, index) => <AssetRow key={index} {...asset} isGrey={index % 2 === 0} />)}
       <div className="assets-add-more-row">
         <div className="assets-plus-icon">
           <PlusIcon onClick={onAddAsset} />

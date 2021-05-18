@@ -1,5 +1,6 @@
-import { LOAD_KOI_BY } from 'constants'
+import { LOAD_KOI_BY, PATH } from 'constants'
 import passworder from 'browser-passworder'
+import axios from 'axios'
 
 export const setChromeStorage = (obj) => {
   return new Promise(function (resolve, reject) {
@@ -58,25 +59,51 @@ export const generateWallet = async (koiObj) => {
   }
 }
 
+// export const loadMyContent = async (koiObj) => {
+//   try {
+//     console.log('ADDRESS', koiObj.address)
+//     const contentList = await koiObj.myContent()
+//     console.log('CONTENT LIST FROM UTILS', contentList)
+//     const resultList = contentList.map((content) => {
+//       return {
+//         name: content.title,
+//         isKoiWallet: content.ticker === 'KOINFT',
+//         earndKoi: content.totalReward,
+//         txId: content.txIdContent,
+//         path: `${PATH.NFT_IMAGE}/${content.txIdContent}`,
+//         isRegistered: true
+//       }
+//     })
+//     console.log(resultList)
+
+//     return resultList
+
+//   } catch (err) {
+//     throw new Error(err.message)
+//   }
+// }
+
 export const loadMyContent = async (koiObj) => {
   try {
-    console.log('ADDRESS', koiObj.address)
-    const contentList = await koiObj.myContent()
-    console.log('CONTENT LIST FROM UTILS', contentList)
-    const resultList = contentList.map((content) => {
+    let { data } = await axios.get('https://bundler.openkoi.com:8888/state/getTopContent')
+    if (data === 0) {
+      throw new Error('There are no contents.')
+    }
+    // data = data.filter(item => item.owner === koiObj.address)
+    const resultData = data.map(content => {
+      console.log('CONTENT', content)
       return {
-        name: content.title,
+        name: content.name,
         isKoiWallet: content.ticker === 'KOINFT',
-        earndKoi: content.totalReward,
+        earnedKoi: content.totalReward,
         txId: content.txIdContent,
-        path: `${PATH.NFT_IMAGE}/${content.txIdContent}`,
+        imageUrl: `${PATH.NFT_IMAGE}/${content.txIdContent}`,
+        galleryUrl: `${PATH.GALLERY}?id=${content.txIdContent}`,
+        viewblockUrl: `${PATH.VIEW_BLOCK}/${content.txIdContent}`,
         isRegistered: true
       }
     })
-    console.log(resultList)
-
-    return resultList
-
+    return resultData.slice(0, 7)
   } catch (err) {
     throw new Error(err.message)
   }

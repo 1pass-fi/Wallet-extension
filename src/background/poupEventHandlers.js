@@ -1,6 +1,6 @@
 import { MESSAGES, LOAD_KOI_BY } from 'constants'
-import { 
-  saveWalletToChrome, 
+import {
+  saveWalletToChrome,
   utils,
   loadMyContent,
   removeWalletFromChrome,
@@ -88,7 +88,7 @@ export default async (koi, port, message) => {
       }
       case MESSAGES.LOAD_CONTENT: {
         const contentList = await loadMyContent(koi)
-        console.log(contentList)
+        console.log('CONTENT LIST', contentList)
         setChromeStorage({ contentList })
         port.postMessage({
           type: MESSAGES.LOAD_CONTENT_SUCCESS,

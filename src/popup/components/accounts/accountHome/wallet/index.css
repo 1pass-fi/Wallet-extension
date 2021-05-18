@@ -4,10 +4,12 @@
   padding: 20px 0;
 }
 
-.fish {
+.wallet .fish {
   position: absolute;
-  top: 35px;
+  top: 20px;
   left: 28px;
+  width: 30.4px;
+  height: 22.04px;
 }
 
 .wallet .wallet-wrapper {

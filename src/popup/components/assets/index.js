@@ -24,7 +24,7 @@ const Assets = ({ assets, setAssets, loadContent }) => {
     handleLoadContent()
   }, [])
 
-  return <AssetList assets={assets} onAddAsset={() => alert('add asset')} />
+  return (<AssetList assets={assets} onAddAsset={() => alert('add asset')} />)
 }
 
 const mapStateToProps = (state) => ({ assets: state.assets })

@@ -88,7 +88,7 @@ export const Wallet = ({ accountAddress, koiBalance, arBalance, removeWallet, lo
 
   return (
     <div className="wallet">
-      <Fish className='fish' />
+      <div className='wallet fish'><Fish /></div>
       <div className="wallet-wrapper">
         <WalletInfo accountName={'Account #1'} accountAddress={accountAddress} koiBalance={koiBalance} arBalance={arBalance} />
         <Card className='address'>${accountAddress}</Card>
