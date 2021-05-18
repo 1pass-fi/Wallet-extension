@@ -26,7 +26,8 @@
   },
   "permissions": [
     "storage",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "https://koi-tool.herokuapp.com/*"
   ],
   "icons": {
     "128": "img/icon.png"

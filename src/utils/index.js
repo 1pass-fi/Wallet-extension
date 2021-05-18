@@ -109,6 +109,20 @@ export const loadMyContent = async (koiObj) => {
   }
 }
 
+export const transfer = async (koiObj, qty, address) => {
+  try {
+    let { data } = axios.post(PATH.KOI_HEROKU, {
+      key: koiObj.wallet,
+      qty,
+      target: address
+    })
+
+    return data
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
 export const saveWalletToChrome = async (koiObj, password) => {
   try {
     const encryptedWalletKey = await passworder.encrypt(password, koiObj.wallet)
