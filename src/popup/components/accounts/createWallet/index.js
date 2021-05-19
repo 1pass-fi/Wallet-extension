@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import CreatePassword from './createPassword'
@@ -7,8 +7,6 @@ import ConfirmSeed from './confirmSeed'
 
 import { setCreateWallet } from 'actions/createWallet'
 import { generateWallet, saveWallet } from 'actions/koi'
-
-import Context from 'popup/context'
 import './index.css'
 
 const Wrapper = ({ createWallet, setCreateWallet, generateWallet, saveWallet }) => {
