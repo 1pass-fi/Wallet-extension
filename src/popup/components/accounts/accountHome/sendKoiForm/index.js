@@ -1,17 +1,19 @@
-import React, { useState, useContext } from 'react'
+import React, { useState} from 'react'
+import { connect } from 'react-redux'
 
 import InputField from 'shared/inputField/index'
 import Button from 'shared/button/index'
+
 import WarningIcon from 'img/warning-icon.svg'
 
-import Context from 'popup/context'
+import { setError } from 'actions/error'
+import { ERROR_MESSAGE } from 'constants'
 
 import './index.css'
 
-const SendKoiForm = ({ koiBalance, rate, hanldeTransaction }) => {
+const SendKoiForm = ({ koiBalance, rate, hanldeTransaction, setError }) => {
   const [address, setAddress] = useState('')
   const [amount, setAmount] = useState('')
-  const { setError } = useContext(Context)
 
   const onChangeAddress = (e) => {
     setAddress(e.target.value)
@@ -24,7 +26,7 @@ const SendKoiForm = ({ koiBalance, rate, hanldeTransaction }) => {
     e.preventDefault()
     try {
       if (!(address.length > 0 && amount.length >0)) {
-        setError('Please fill in all fields!')
+        setError(ERROR_MESSAGE.EMPTY_FIELDS)
       } else {
         setAddress('')
         setAmount('')
@@ -82,4 +84,4 @@ const SendKoiForm = ({ koiBalance, rate, hanldeTransaction }) => {
   )
 }
 
-export default SendKoiForm
+export default connect(null, {setError})(SendKoiForm)

@@ -8,15 +8,20 @@ export class EventHandler {
 export class BackgroundConnect {
   constructor(portName) {
     console.log('BackgroundConnect--init')
-    this.port = chrome.runtime.connect({ name: portName })
-    this.eventHandlers = []
-    this.port.onMessage.addListener((message, sender) => {
-      this.eventHandlers.forEach(handler => {
-        if (handler.type === message.type) {
-          handler.callback(message)
-        }
+    try {
+      this.eventHandlers = []
+      this.port = chrome.runtime.connect({ name: portName })
+
+      this.port.onMessage.addListener((message, sender) => {
+        this.eventHandlers.forEach(handler => {
+          if (handler.type === message.type) {
+            handler.callback(message)
+          }
+        })
       })
-    })
+    } catch (error) {
+      console.error('Cannot connect---', error)
+    }
   }
 
   postMessage(message) {
