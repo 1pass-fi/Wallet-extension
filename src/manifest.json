@@ -1,8 +1,8 @@
 {
-  "version": "1.0",
+  "version": "0.2",
   "manifest_version": 2,
-  "name": "React Boilerplate Extension",
-  "description": "Modern React boilerplate for Firefox and Chrome extensions.",
+  "name": "OpenKoi",
+  "description": "OpneKoi Chrome Extension.",
   "content_scripts": [
     {
       "matches": [
@@ -25,7 +25,6 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "http://myapi.com",
     "storage",
     "unlimitedStorage"
   ],
@@ -35,11 +34,6 @@
   "web_accessible_resources": [
     "sidebar.html"
   ],
-  "sidebar_action": {
-    "default_icon": "img/icon.png",
-    "default_title" : "Sidebar",
-    "default_panel": "sidebar.html"
-  },
   "options_ui": {
     "page": "./options.html",
     "open_in_tab": true

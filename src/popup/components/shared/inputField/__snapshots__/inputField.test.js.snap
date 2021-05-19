@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for DropFile component Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="input-field "
+  >
+    <div
+      class="label"
+    >
+      label
+    </div>
+    <div
+      class="input-wrapper"
+    >
+      <input
+        class="input"
+        name=""
+        placeholder="placeholder"
+        type="password"
+        value=""
+      />
+      <svg
+        class="toggle-display"
+      />
+    </div>
+  </div>
+</div>
+`;
