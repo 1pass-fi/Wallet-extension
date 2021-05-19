@@ -232,4 +232,29 @@ export const loadContent = () => (dispatch) => {
   }
 }
 
+export const makeTransfer = () => (dispatch) => {
+  try {
+    dispatch(setIsLoading(true))
+    const transferSuccessHandler = new CreateEventHandler(MESSAGES.MAKE_TRANSFER_SUCCESS, response => {
+      const { txId } = response.data
+      dispatch(setTransactions([txId]))
+      dispatch(setIsLoading(false))
+    })
+    const transferFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
+    backgroundConnect.addHandler(transferSuccessHandler)
+    backgroundConnect.addHandler(transferFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.MAKE_TRANSFER,
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
 export const setKoi = (payload) => ({ type: SET_KOI, payload })

@@ -40,10 +40,8 @@ export const PATH = {
   LOGIN: '/account/login',
   NFT_IMAGE: 'https://arweave.net',
   VIEW_BLOCK: 'https://viewblock.io/arweave/tx',
-  KOI_HEROKU: 'https://koi-tool.herokuapp.com'
-  GALLERY: chrome.extension ? `${chrome.extension.getURL('/options.html')}` : 'GALLERY_PATH',
-  VIEW_BLOCK: 'https://viewblock.io/arweave/tx',
-  KOI_HEROKU: 'https://koi-tool.herokuapp.com'
+  KOI_HEROKU: 'https://koi-tool.herokuapp.com',
+  GALLERY: chrome.extension ? `${chrome.extension.getURL('/options.html')}` : 'GALLERY_PATH'
 }
 
 export const ERROR_MESSAGE = {
