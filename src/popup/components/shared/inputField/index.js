@@ -10,10 +10,11 @@ export default ({
   name = '',
   placeholder = '',
   className = '',
-  type='password',
+  type = 'password',
 }) => {
-  const [isDisplay, setDisplay] = useState(type!=='password')
+  const [isDisplay, setDisplay] = useState(type !== 'password')
   const toggleDisplay = () => {
+    console.log('on click')
     setDisplay(!isDisplay)
   }
 
@@ -24,12 +25,12 @@ export default ({
         <input
           name={name}
           className='input'
-          type={isDisplay ? type : 'password'}
+          type={isDisplay ? 'text' : 'password'}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
         ></input>
-        <ToggleDisplayIcon className='toggle-display' onClick={toggleDisplay} />
+        < ToggleDisplayIcon className='toggle-display' onClick={toggleDisplay} />
       </div>
     </div>
   )

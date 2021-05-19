@@ -20,10 +20,10 @@ import { getChromeStorage } from 'utils'
 
 const Popup = ({
   location,
-  isLoading, 
-  setIsLoading, 
-  error, 
-  setError, 
+  isLoading,
+  setIsLoading,
+  error,
+  setError,
   loadWallet,
 }) => {
   const history = useHistory()
@@ -40,6 +40,7 @@ const Popup = ({
           }
         }
       } catch (err) {
+        console.log(err.message)
         setError(err.message)
         setIsLoading(false)
       }
@@ -77,17 +78,17 @@ const Popup = ({
   )
 }
 
-const mapStateToProps = (state) => ({ 
+const mapStateToProps = (state) => ({
   isLoading: state.loading,
   error: state.error,
   koi: state.koi
 })
 
 const mapDispatchToProps = {
-  setIsLoading, 
-  setError, 
-  setKoi, 
-  loadWallet, 
+  setIsLoading,
+  setError,
+  setKoi,
+  loadWallet,
   removeWallet
 }
 
