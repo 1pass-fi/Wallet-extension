@@ -22,7 +22,8 @@ import WalletInfo from '../src/popup/accounts/accountHome/wallet/index'
 import BackupPhrase from '../src/popup/accounts/createWallet/revealSeed/index'
 
 import KoiContext from 'popup/context'
-import SendKOIForm from '../src/popup/accounts/accountHome/sendKOIForm/index'
+import SendKoiForm from '../src/popup/accounts/accountHome/sendKoiForm/index'
+import SendKoiButton from '../src/popup/accounts/accountHome/sendKoiButton/index'
 
 addDecorator(StoryRouter())
 
@@ -101,13 +102,20 @@ storiesOf('BackupPhrase', module).add('Default', () => (
 ))
 
 storiesOf('UnlockScreen', module).add('Default', () => <UnlockScreen />)
-storiesOf('SendKOIForm', module).add('Default', () => (
+
+storiesOf('SendKoiForm', module).add('Default', () => (
   <KoiContext.Provider
     value={{
       setError: () => {},
     }}>
     <div style={{ width: '426px', height: '571px', fontFamily: '\'Catamaran\', sans-serif' }}>
-      <SendKOIForm koiBalance={123456.45} rate={5.22} />
+      <SendKoiForm koiBalance={123456.45} rate={5.22} />
     </div>
   </KoiContext.Provider>
+))
+
+storiesOf('SendKoiButton', module).add('Default', () => (
+  <div style={{ width: '426px', height: '571px', fontFamily: '\'Catamaran\', sans-serif' }}>
+    <SendKoiButton />
+  </div>
 ))

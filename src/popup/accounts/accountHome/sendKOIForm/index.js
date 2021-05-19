@@ -8,7 +8,7 @@ import Context from 'popup/context'
 
 import './index.css'
 
-const SendKOIForm = ({ koiBalance, rate, hanldeTransaction }) => {
+const SendKoiForm = ({ koiBalance, rate, hanldeTransaction }) => {
   const [address, setAddress] = useState('')
   const [amount, setAmount] = useState('')
   const { setError } = useContext(Context)
@@ -82,4 +82,4 @@ const SendKOIForm = ({ koiBalance, rate, hanldeTransaction }) => {
   )
 }
 
-export default SendKOIForm
+export default SendKoiForm
