@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -12,6 +12,7 @@ import ShareIconOne from 'img/wallet/share-icon.svg'
 import ShareIconTwo from 'img/wallet/share2-icon.svg'
 import KeyIcon from 'img/wallet/key-icon.svg'
 import DeleteIcon from 'img/wallet/delete-icon.svg'
+import RemoveAccountModal from 'popup/components/shared/modal/removeAccountModal'
 
 import { removeWallet, lockWallet } from 'actions/koi'
 
@@ -71,11 +72,20 @@ const WalletConfItem = ({ icon, title, onClick, className }) => {
   )
 }
 
-const WalletConf = ({ handleRemoveWallet }) => {
+const WalletConf = ({ handleRemoveWallet, accountAddress }) => {
+  const [showModal, setShowModal] = useState(false)
   return (
     <div className='wallet-conf'>
       {ITEMS.map(content => <WalletConfItem {...content} />)}
-      <WalletConfItem className='delete-wallet' icon={<DeleteIcon />} title='Remove Account' onClick={handleRemoveWallet} />
+      <WalletConfItem className='delete-wallet' icon={<DeleteIcon />} title='Remove Account' onClick={() => setShowModal(true)} />
+      { showModal && (
+        <RemoveAccountModal
+          accountName="Account 1" 
+          accountAddress={accountAddress} 
+          onClose={() => setShowModal(false)}
+          onSubmit={handleRemoveWallet} 
+        />
+      )}
     </div>
   )
 }
@@ -91,8 +101,8 @@ export const Wallet = ({ accountAddress, koiBalance, arBalance, removeWallet, lo
       <div className='wallet fish'><Fish /></div>
       <div className="wallet-wrapper">
         <WalletInfo accountName={'Account #1'} accountAddress={accountAddress} koiBalance={koiBalance} arBalance={arBalance} />
-        <Card className='address'>{accountAddress}</Card>
-        <WalletConf handleRemoveWallet={handleRemoveWallet} />
+        <Card className='address'>${accountAddress}</Card>
+        <WalletConf accountAddress={accountAddress} handleRemoveWallet={handleRemoveWallet} />
         <button className='lock-button' onClick={handleLockWallet}>Lock</button>
       </div>
     </div>

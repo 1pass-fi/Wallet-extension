@@ -23,6 +23,8 @@ import WalletInfo from 'popup/components/accounts/accountHome/wallet'
 import BackupPhrase from 'popup/components/accounts/createWallet/revealSeed'
 import SendKoiForm from 'popup/components/accounts/accountHome/sendKoiForm/index'
 import GlobalButton from 'popup/components/shared/globalButton'
+import RemoveAccountModal from 'popup/components/shared/modal/removeAccountModal'
+
 
 import store from 'popup/store'
 
@@ -109,5 +111,15 @@ storiesOf('SendKoiForm', module).add('Default', () => (
 storiesOf('GlobalButton', module).add('Default', () => (
   <div style={{ width: '426px', height: '571px', fontFamily: '\'Catamaran\', sans-serif' }}>
     <GlobalButton type='lock'/>
+  </div>
+))
+
+storiesOf('RemoveAccountModal', module).add('Default', () => (
+  <div style={{width: '426px', height: '600px', fontFamily: '\'Catamaran\', sans-serif'}}>
+    <RemoveAccountModal
+      accountName="Account 1"
+      accountAddress={'123456789012345678901234567890123456789012'} 
+      onClose={() => {alert('onClose')}}
+    />
   </div>
 ))
