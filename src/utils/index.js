@@ -1,5 +1,6 @@
-import { loadKoiBy } from 'constant'
+import { LOAD_KOI_BY, PATH, STORAGE } from 'constants'
 import passworder from 'browser-passworder'
+import axios from 'axios'
 
 export const setChromeStorage = (obj) => {
   return new Promise(function (resolve, reject) {
@@ -28,18 +29,12 @@ export const removeChromeStorage = (key) => {
 export const loadWallet = async (koiObj, data, loadBy) => {
   try {
     switch (loadBy) {
-      case loadKoiBy.ADDRESS:
+      case LOAD_KOI_BY.ADDRESS:
         koiObj.address = data
         break
-      case loadKoiBy.FILE:
-        data = await JSONFileToObject(data)
+      case LOAD_KOI_BY.KEY:
         await koiObj.loadWallet(data)
         break
-      case loadKoiBy.SEED:
-        await koiObj.loadWallet(data)
-        break
-      case loadKoiBy.KEY:
-        await koiObj.loadWallet(data)
     }
 
     await koiObj.getWalletBalance()
@@ -64,6 +59,56 @@ export const generateWallet = async (koiObj) => {
   }
 }
 
+// export const loadMyContent = async (koiObj) => {
+//   try {
+//     console.log('ADDRESS', koiObj.address)
+//     const contentList = await koiObj.myContent()
+//     console.log('CONTENT LIST FROM UTILS', contentList)
+//     const resultList = contentList.map((content) => {
+//       return {
+//         name: content.title,
+//         isKoiWallet: content.ticker === 'KOINFT',
+//         earndKoi: content.totalReward,
+//         txId: content.txIdContent,
+//         path: `${PATH.NFT_IMAGE}/${content.txIdContent}`,
+//         isRegistered: true
+//       }
+//     })
+//     console.log(resultList)
+
+//     return resultList
+
+//   } catch (err) {
+//     throw new Error(err.message)
+//   }
+// }
+
+export const loadMyContent = async (koiObj) => {
+  try {
+    let { data } = await axios.get('https://bundler.openkoi.com:8888/state/getTopContent')
+    if (data === 0) {
+      throw new Error('There are no contents.')
+    }
+    // data = data.filter(item => item.owner === koiObj.address)
+    const resultData = data.map(content => {
+      console.log('CONTENT', content)
+      return {
+        name: content.name,
+        isKoiWallet: content.ticker === 'KOINFT',
+        earnedKoi: content.totalReward,
+        txId: content.txIdContent,
+        imageUrl: `${PATH.NFT_IMAGE}/${content.txIdContent}`,
+        galleryUrl: `${PATH.GALLERY}?id=${content.txIdContent}`,
+        viewblockUrl: `${PATH.VIEW_BLOCK}/${content.txIdContent}`,
+        isRegistered: true
+      }
+    })
+    return resultData.slice(0, 7)
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
 export const saveWalletToChrome = async (koiObj, password) => {
   try {
     const encryptedWalletKey = await passworder.encrypt(password, koiObj.wallet)
@@ -76,7 +121,6 @@ export const saveWalletToChrome = async (koiObj, password) => {
 export const decryptWalletKeyFromChrome = async (password) => {
   try {
     const result = await getChromeStorage('koiKey')
-    console.log('RESULT KOIKEY', result['koiKey'])
     const key = await passworder.decrypt(password, result['koiKey'])
     return key
   } catch (err) {
@@ -86,8 +130,9 @@ export const decryptWalletKeyFromChrome = async (password) => {
 
 export const removeWalletFromChrome = async () => {
   try {
-    await removeChromeStorage('koiAddress')
-    await removeChromeStorage('koiKey')
+    await removeChromeStorage(STORAGE.KOI_ADDRESS)
+    await removeChromeStorage(STORAGE.KOI_KEY)
+    await removeChromeStorage(STORAGE.CONTENT_LIST)
   } catch (err) {
     throw new Error(err.message)
   }
@@ -100,4 +145,8 @@ export const JSONFileToObject = async (file) => {
   } catch (err) {
     throw new Error(err.message)
   }
+}
+
+export const utils = {
+  loadWallet
 }

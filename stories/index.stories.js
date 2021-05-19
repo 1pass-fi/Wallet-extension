@@ -9,17 +9,18 @@ import { Button, Welcome } from '@storybook/react/demo'
 import Popup from '../src/popup/Popup'
 import Sidebar from '../src/sidebar/Sidebar'
 import Options from '../src/options/Options'
-import AccountImport from '../src/popup/accounts/accountImport'
-import InputField from '../src/popup/shared/inputField'
-import ButtonShared from '../src/popup/shared/button'
-import ImportByPhrase from '../src/popup/accounts/importByPhrase/index'
-import ImportByFile from '../src/popup/accounts/importByFile/index'
-import ImportByFileSuccess from '../src/popup/accounts/importByFileSuccess/index'
-import ImportByPhraseSuccess from '../src/popup/accounts/importByPhraseSuccess/index'
-import PhraseConfirmation from '../src/popup/accounts/createWallet/confirmSeed/index'
-import CreatePassword from '../src/popup/shared/createPassword/index'
-import WalletInfo from '../src/popup/accounts/accountHome/wallet/index'
-import BackupPhrase from '../src/popup/accounts/createWallet/revealSeed/index'
+import UnlockScreen from '../src/popup/components/unlockScreen'
+import AccountImport from '../src/popup/components/accounts/accountImport'
+import InputField from '../src/popup/components/shared/inputField'
+import ButtonShared from '../src/popup/components/shared/button'
+import ImportByPhrase from '../src/popup/components/accounts/importByPhrase'
+import ImportByFile from '../src/popup/components/accounts/importByFile'
+import ImportByFileSuccess from '../src/popup/components/accounts/importByFileSuccess'
+import ImportByPhraseSuccess from '../src/popup/components/accounts/importByPhraseSuccess'
+import PhraseConfirmation from '../src/popup/components/accounts/createWallet/confirmSeed'
+import CreatePassword from '../src/popup/components/shared/createPassword'
+import WalletInfo from '../src/popup/components/accounts/accountHome/wallet'
+import BackupPhrase from '../src/popup/components/accounts/createWallet/revealSeed'
 
 import KoiContext from 'popup/context'
 import SendKoiForm from '../src/popup/accounts/accountHome/sendKoiForm/index'
@@ -48,10 +49,10 @@ storiesOf('Sidebar', module).add('Default', () => <Sidebar />)
 storiesOf('Options', module).add('Default', () => <Options />)
 storiesOf('AccountImport', module).add('Default', () => <AccountImport />)
 storiesOf('InputField', module).add('Default', () => (
-  <InputField label='password' value={null} onChange={() => {}} />
+  <InputField label='password' value={null} onChange={() => { }} />
 ))
 storiesOf('ButtonShared', module).add('Default', () => (
-  <ButtonShared label='Click Me' onClick={() => {}} />
+  <ButtonShared label='Click Me' onClick={() => { }} />
 ))
 storiesOf('ImportByPhrase', module).add('Default', () => <ImportByPhrase />)
 storiesOf('ImportByFile', module).add('Default', () => <ImportByFile />)
@@ -70,15 +71,15 @@ storiesOf('ImportByFileSuccess', module).add('Default', () => (
 ))
 
 storiesOf('ImportByPhraseSuccess', module).add('Default', () => (
-  <div style={{ width: '426px', height: '571px', fontFamily: 'Catamaran' }}>
+  <div div div style={{ width: '426px', height: '571px', fontFamily: 'Catamaran' }}>
     <ImportByPhraseSuccess />
-  </div>
+  </div >
 ))
 
 storiesOf('PhraseConfirmation', module).add('Default', () => (
   <KoiContext.Provider
     value={{
-      setError: () => {},
+      setError: () => { },
     }}
   >
     <div style={{ width: '426px', height: '571px', fontFamily: 'Catamaran' }}>
