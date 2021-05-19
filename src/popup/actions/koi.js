@@ -69,6 +69,7 @@ export const removeWallet = () => (dispatch) => {
     dispatch(setIsLoading(true))
     const removeSuccessHandler = new CreateEventHandler(MESSAGES.REMOVE_WALLET_SUCCESS, response => {
       const { koiData } = response.data
+      dispatch(setAssets([]))
       dispatch(setKoi(koiData))
       dispatch(setIsLoading(false))
     })
@@ -182,6 +183,7 @@ export const saveWallet = (inputData) => (dispatch) => {
       const { koiData } = response.data
       dispatch(setKoi(koiData))
       dispatch(setIsLoading(false))
+      setCreateWallet({ stage: 1, password: null, seedPhrase: null })
       history.push(PATH.HOME)
     })
     const saveFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {

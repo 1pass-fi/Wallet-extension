@@ -1,4 +1,4 @@
-import { LOAD_KOI_BY, PATH } from 'constants'
+import { LOAD_KOI_BY, PATH, STORAGE } from 'constants'
 import passworder from 'browser-passworder'
 import axios from 'axios'
 
@@ -144,8 +144,9 @@ export const decryptWalletKeyFromChrome = async (password) => {
 
 export const removeWalletFromChrome = async () => {
   try {
-    await removeChromeStorage('koiAddress')
-    await removeChromeStorage('koiKey')
+    await removeChromeStorage(STORAGE.KOI_ADDRESS)
+    await removeChromeStorage(STORAGE.KOI_KEY)
+    await removeChromeStorage(STORAGE.CONTENT_LIST)
   } catch (err) {
     throw new Error(err.message)
   }

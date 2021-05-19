@@ -1,5 +1,3 @@
-import { PORTS } from 'constants'
-
 export class EventHandler {
   constructor(type, callback) {
     this.type = type
@@ -8,17 +6,22 @@ export class EventHandler {
 }
 
 export class BackgroundConnect {
-  constructor() {
+  constructor(portName) {
     console.log('BackgroundConnect--init')
-    this.port = chrome.runtime.connect({ name: PORTS.POPUP })
-    this.eventHandlers = []
-    this.port.onMessage.addListener((message, sender) => {
-      this.eventHandlers.forEach(handler => {
-        if (handler.type === message.type) {
-          handler.callback(message)
-        }
+    try {
+      this.eventHandlers = []
+      this.port = chrome.runtime.connect({ name: portName })
+
+      this.port.onMessage.addListener((message, sender) => {
+        this.eventHandlers.forEach(handler => {
+          if (handler.type === message.type) {
+            handler.callback(message)
+          }
+        })
       })
-    })
+    } catch (error) {
+      console.error('Cannot connect---', error)
+    }
   }
 
   postMessage(message) {

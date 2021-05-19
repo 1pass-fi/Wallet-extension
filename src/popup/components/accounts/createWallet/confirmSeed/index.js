@@ -14,14 +14,19 @@ import Card from 'shared/card'
 import Button from 'shared/button'
 
 import { setError } from 'actions/error'
+import { setCreateWallet } from 'actions/createWallet'
 
 import './index.css'
 
-export const ConfirmSeed = ({ seedPhrase, handleCancel, password, saveWallet, setError }) => {
+export const ConfirmSeed = ({ seedPhrase, password, saveWallet, setError, setCreateWallet }) => {
   const wordLists = shuffle(seedPhrase.split(' '))
   const history = useHistory()
   const [basePhrase, setBasePhrase] = useState([])
   const [addedPhrase, setAddedPhrase] = useState([])
+
+  const handleCancel = () => {
+    setCreateWallet({ password: null, seedPhrase: null, stage: 1 })
+  }
 
   const handleOnClick = () => {
     try {
@@ -141,4 +146,4 @@ export const ConfirmSeed = ({ seedPhrase, handleCancel, password, saveWallet, se
   )
 }
 
-export default connect(null, { setError })(ConfirmSeed)
+export default connect(null, { setError, setCreateWallet })(ConfirmSeed)
