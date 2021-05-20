@@ -1,12 +1,11 @@
 import '@babel/polyfill'
 
-import koiTools from 'koi_tools'
 import { PORTS } from 'constants'
 import popUpEventHandlers from './poupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
-
+import { Web } from 'koi_tools/web'
 /* eslint-disable no-undef */
-const koi = new koiTools.koi_tools()
+const koi = new Web()
 console.log('Background.js file loaded')
 
 /* const defaultUninstallURL = () => {
