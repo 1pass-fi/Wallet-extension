@@ -1,6 +1,5 @@
 import { LOAD_KOI_BY, PATH, STORAGE } from 'constants'
 import passworder from 'browser-passworder'
-import axios from 'axios'
 
 export const setChromeStorage = (obj) => {
   return new Promise(function (resolve, reject) {
@@ -122,6 +121,15 @@ export const JSONFileToObject = async (file) => {
   try {
     const fileText = await file.text()
     return JSON.parse(fileText)
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
+export const checkSitePermission = async (origin) => {
+  try {
+    const permissions = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
+    return permissions.includes(origin)
   } catch (err) {
     throw new Error(err.message)
   }

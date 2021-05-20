@@ -5,7 +5,12 @@ import { PORTS, MESSAGES } from 'constants'
 
 console.log('Content scripts has loaded')
 
-const messageTypes = [MESSAGES.GET_ADDRESS_SUCCESS, MESSAGES.GET_ADDRESS_ERROR]
+const messageTypes = [
+  MESSAGES.GET_ADDRESS_SUCCESS,
+  MESSAGES.GET_ADDRESS_ERROR,
+  MESSAGES.GET_PERMISSION_SUCCESS,
+  MESSAGES.GET_PERMISSION_ERROR
+]
 const backgroundConnect = new BackgroundConnect(PORTS.CONTENT_SCRIPT)
 messageTypes.forEach(messageType => {
   backgroundConnect.addHandler(new EventHandler(messageType, (message) => {
@@ -18,56 +23,59 @@ window.addEventListener('message', function (event) {
     case MESSAGES.GET_ADDRESS:
       backgroundConnect.postMessage({ type: event.data.type })
       break
-
+    case MESSAGES.GET_PERMISSION:
+      backgroundConnect.postMessage({ type: event.data.type, data: event.data.data })
     default:
       break
   }
 })
 
-;(function(messages) {
-  function script() {
-    const promiseResolves = {}
-    Object.values(MESSAGE_TYPES).forEach(messageType => {
-      promiseResolves[`${messageType}_SUCCESS`] = []
-      promiseResolves[`${messageType}_ERROR`] = []
-    })
-
-    function buildPromise(messageType) {
-      const promise = new Promise((resolve, reject) => {
-        window.postMessage({ type: messageType })
-        promiseResolves[messageType + '_SUCCESS'].push(resolve)
-        promiseResolves[messageType + '_ERROR'].push(reject)
+  ; (function (messages) {
+    function script() {
+      const promiseResolves = {}
+      Object.values(MESSAGE_TYPES).forEach(messageType => {
+        promiseResolves[`${messageType}_SUCCESS`] = []
+        promiseResolves[`${messageType}_ERROR`] = []
       })
-      return promise
-    }
 
-    window.koi = {
-      getAddress: () => buildPromise(MESSAGE_TYPES.GET_ADDRESS)
-    }
-    window.addEventListener('message', function (event) {
-      if (!event.data || !event.data.type) {
-        return
+      function buildPromise(messageType, data) {
+        const promise = new Promise((resolve, reject) => {
+          window.postMessage({ type: messageType, data })
+          promiseResolves[messageType + '_SUCCESS'].push(resolve)
+          promiseResolves[messageType + '_ERROR'].push(reject)
+        })
+        return promise
       }
-      if (promiseResolves[event.data.type]) {
-        promiseResolves[event.data.type].forEach(resolve => resolve(event))
-        promiseResolves[event.data.type] = []
-        const pairMessageType = event.data.type.endsWith('_SUCCESS') ? event.data.type.replace(/_SUCCESS$/g, '_ERROR') : event.data.type.replace(/_ERROR$/g, '_SUCCESS')
-        if (pairMessageType !== event.data.type && promiseResolves[pairMessageType]) {
-          promiseResolves[pairMessageType] = []
+
+      window.koi = {
+        getAddress: () => buildPromise(MESSAGE_TYPES.GET_ADDRESS),
+        getPermission: () => buildPromise(MESSAGE_TYPES.GET_PERMISSION, window.location.href)
+      }
+      window.addEventListener('message', function (event) {
+        if (!event.data || !event.data.type) {
+          return
         }
-      }
-    })
-  }
-
-  function inject(fn) {
-    const script = document.createElement('script')
-    const { GET_ADDRESS } = messages
-    const pickedMessages = {
-      GET_ADDRESS
+        if (promiseResolves[event.data.type]) {
+          promiseResolves[event.data.type].forEach(resolve => resolve(event))
+          promiseResolves[event.data.type] = []
+          const pairMessageType = event.data.type.endsWith('_SUCCESS') ? event.data.type.replace(/_SUCCESS$/g, '_ERROR') : event.data.type.replace(/_ERROR$/g, '_SUCCESS')
+          if (pairMessageType !== event.data.type && promiseResolves[pairMessageType]) {
+            promiseResolves[pairMessageType] = []
+          }
+        }
+      })
     }
-    script.text = `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(pickedMessages)}');(${fn.toString()})();`
-    document.documentElement.appendChild(script)
-  }
 
-  inject(script)
-})(MESSAGES)
+    function inject(fn) {
+      const script = document.createElement('script')
+      const { GET_ADDRESS, GET_PERMISSION } = messages
+      const pickedMessages = {
+        GET_ADDRESS,
+        GET_PERMISSION
+      }
+      script.text = `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(pickedMessages)}');(${fn.toString()})();`
+      document.documentElement.appendChild(script)
+    }
+
+    inject(script)
+  })(MESSAGES)

@@ -27,7 +27,7 @@
   "permissions": [
     "storage",
     "unlimitedStorage",
-    "https://koi-tool.herokuapp.com/*"
+    "activeTab"
   ],
   "icons": {
     "128": "img/icon.png"
