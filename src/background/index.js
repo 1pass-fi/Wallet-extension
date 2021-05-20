@@ -1,6 +1,5 @@
 import '@babel/polyfill'
 
-// import koiTools from 'koi_tools'
 import { PORTS } from 'constants'
 import popUpEventHandlers from './poupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
