@@ -3,7 +3,7 @@ export const LOAD_KOI_BY = {
   KEY: 'key'
 }
 
-export const HEADER_EXCLUDE_PATH = ['/account/login']
+export const HEADER_EXCLUDE_PATH = ['/account/login', '/account/connect-site']
 
 export const PORTS = {
   POPUP: 'POPUP',

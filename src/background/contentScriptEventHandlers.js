@@ -22,7 +22,6 @@ export default async (koi, port, message) => {
             data: 'Address not found'
           })
         }
-
         break
       }
       default:
