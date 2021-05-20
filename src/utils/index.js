@@ -112,6 +112,8 @@ export const removeWalletFromChrome = async () => {
     await removeChromeStorage(STORAGE.KOI_ADDRESS)
     await removeChromeStorage(STORAGE.KOI_KEY)
     await removeChromeStorage(STORAGE.CONTENT_LIST)
+    await removeChromeStorage(STORAGE.PENDING_REQUEST)
+    await removeChromeStorage(STORAGE.SITE_PERMISSION)
   } catch (err) {
     throw new Error(err.message)
   }
@@ -128,9 +130,22 @@ export const JSONFileToObject = async (file) => {
 
 export const checkSitePermission = async (origin) => {
   try {
-    const permissions = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
-    return permissions.includes(origin)
+    let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
+    if (!approvedOrigin) approvedOrigin = []
+    return approvedOrigin.includes(origin)
   } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
+export const saveOriginToChrome = async (origin) => {
+  try {
+    let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
+    if (!approvedOrigin) approvedOrigin = []
+    approvedOrigin.push(origin)
+    await setChromeStorage({ 'sitePermission': approvedOrigin })
+  } catch (err) {
+    console.log(err.message)
     throw new Error(err.message)
   }
 }

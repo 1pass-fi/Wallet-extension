@@ -1,4 +1,3 @@
-import { STORAGE, REQUEST } from 'constants'
 import { REQUEST } from 'constants'
 import { MESSAGES } from 'constants'
 import { checkSitePermission, setChromeStorage } from 'utils'
@@ -28,20 +27,22 @@ export default async (koi, port, message) => {
         break
       }
       case MESSAGES.GET_PERMISSION: {
-        const { data: origin } = message
+        const { origin, favicon } = message.data
         console.log('ORIGIN', origin)
+        console.log('FAVICON', favicon)
+        console.log('CHECK SITE PERMISSION', await checkSitePermission(origin))
         if (!(await checkSitePermission(origin))) {
           setChromeStorage({
             'pendingRequest': {
               type: REQUEST.PERMISSION,
-              data: origin
+              data: { origin, favicon }
             }
           })
           chrome.windows.create({
             url: chrome.extension.getURL('/popup.html'),
             focused: true,
             type: 'popup',
-            height: 630,
+            height: 622,
             width: 426
           })
         }

@@ -1,32 +1,29 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import union from 'lodash/union'
 import filter from 'lodash/filter'
 import map from 'lodash/map'
+import { get } from 'lodash'
 
 import Card from 'popup/components/shared/card'
 
 import AllowPermission from './allowPermission'
 import SelectWallet from './selectWallet'
 
-import KoiIcon from 'img/koi-logo.svg'
-import ArweaveIcon from 'img/arweave-icon.svg'
+import { getChromeStorage, removeChromeStorage, saveOriginToChrome } from 'utils'
+
+import { STORAGE } from 'constants'
 
 import './index.css'
 
-const walletIcon = {
-  koi: <KoiIcon className='wallet-icon' />,
-  arweave: <ArweaveIcon className='wallet-icon' />,
-}
-
-
 export default () => {
   const [checkedList, setCheckedList] = useState([])
-  const url = 'https://www.google.com/'
+  const [address, setAddress] = useState('')
   const accounts = [
     {
       name: 'Account 1',
-      address: '1234567890123456789012345678901234567890123',
-      type: 'arweave',
+      address,
+      type: 'koi',
     },
     // {
     //   name: 'Account 2',
@@ -58,25 +55,59 @@ export default () => {
     }
   }
 
+  const [origin, setOrigin] = useState('')
+  const [favicon, setFavicon] = useState('')
+  const [step, setStep] = useState(1)
+
+  const history = useHistory()
+
+  const handleOnClick = async (accept) => {
+    if (accept) {
+      await saveOriginToChrome(origin)
+    }
+    removeChromeStorage(STORAGE.PENDING_REQUEST)
+    history.push('/account')
+  }
+
+  useEffect(() => {
+    const loadRequest = async () => {
+      const request = (await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]
+      const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[STORAGE.KOI_ADDRESS]
+      setAddress(address)
+      console.log('REQUEST DATA', request)
+      const requestOrigin = get(request, 'data.origin')
+      const requestFavicon = get(request, 'data.favicon')
+      setOrigin(requestOrigin)
+      setFavicon(requestFavicon)
+    }
+
+    loadRequest()
+  })
+
   return (
     <div className='select-wallet'>
       <header className='header'>
-        <img src='#' className='logo' />
         <div className='connect-with-koi'>Connect with Koi</div>
-        <a className='company-url' target='_blank' href={url}>
-          {url}
-        </a>
+        <div className='title'>
+          {favicon && <img src={favicon} className='logo' />}
+          <a className='company-url' target='_blank' href={origin}>
+            {origin}
+          </a>
+        </div>
+
       </header>
       <div className='content'>
         <Card className='card-content'>
-          {/* <SelectWallet
+          {step === 1 && <SelectWallet
             accounts={accounts}
             clearChecked={clearChecked}
             checkAll={checkAll}
             onChecked={onChecked}
             checkedList={checkedList}
-          /> */}
-          <AllowPermission />
+            setStep={setStep}
+            handleOnClick={handleOnClick}
+          />}
+          {step === 2 && <AllowPermission handleOnClick={handleOnClick} />}
         </Card>
       </div>
     </div>

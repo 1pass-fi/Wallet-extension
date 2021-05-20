@@ -1,8 +1,17 @@
 import React from 'react'
 import includes from 'lodash/includes'
 
+import KoiIcon from 'img/koi-logo.svg'
+import ArweaveIcon from 'img/arweave-icon.svg'
+
 import Button from 'popup/components/shared/button'
 import '../index.css'
+
+const walletIcon = {
+  koi: <KoiIcon className='wallet-icon' />,
+  arweave: <ArweaveIcon className='wallet-icon' />,
+}
+
 
 const SelectWallet = ({
   accounts,
@@ -10,6 +19,8 @@ const SelectWallet = ({
   clearChecked,
   checkAll,
   onChecked,
+  setStep,
+  handleOnClick
 }) => {
   return (
     <>
@@ -32,7 +43,9 @@ const SelectWallet = ({
             <input
               type='checkbox'
               className='check-wallet'
-              checked={includes(checkedList, account.address)}
+              // checked={includes(checkedList, account.address)}
+              checked={true}
+              disabled={true}
               onChange={(e) => onChecked(e, account.address)}
             />
             {walletIcon[account.type]}
@@ -49,8 +62,8 @@ const SelectWallet = ({
       </div>
       <div>Only connect with sites you trust.</div>
       <div className='button-line'>
-        <Button className='connect-button' label='Connect' />
-        <Button className='reject-button' type='outline' label='Reject' />
+        <Button className='connect-button' label='Connect' onClick={() => setStep(2)} />
+        <Button className='reject-button' type='outline' label='Reject' onClick={() => handleOnClick(false)} />
       </div>
     </>
   )

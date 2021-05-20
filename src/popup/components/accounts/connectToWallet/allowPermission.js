@@ -3,7 +3,7 @@ import Button from 'popup/components/shared/button'
 
 import '../index.css'
 
-const AllowPermission = () => {
+const AllowPermission = ({ handleOnClick }) => {
   return (
     <div className='allow-permission'>
       <div className='label'>Allow this site to:</div>
@@ -21,8 +21,8 @@ const AllowPermission = () => {
       </div>
       <div className='trust-sites'>Only connect with sites you trust.</div>
       <div className='button-line'>
-        <Button className='connect-button' label='Connect' />
-        <Button className='reject-button' type='outline' label='Reject' />
+        <Button className='connect-button' label='Connect' onClick={() => handleOnClick(true)} />
+        <Button className='reject-button' type='outline' label='Reject' onClick={() => handleOnClick(false)} />
       </div>
     </div>
   )

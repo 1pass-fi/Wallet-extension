@@ -1,3 +1,5 @@
+import { get } from 'lodash'
+
 import { setIsLoading } from './loading'
 import { setError } from './error'
 import { setCreateWallet } from './createWallet'
@@ -6,9 +8,10 @@ import { setTransactions } from './transactions'
 
 import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 
-import { MESSAGES, PATH } from 'constants'
+import { MESSAGES, PATH, STORAGE, REQUEST } from 'constants'
 
 import { SET_KOI } from 'actions/types'
+import { getChromeStorage } from 'utils'
 
 export const importWallet = (inputData) => (dispatch) => {
   try {
@@ -123,11 +126,21 @@ export const unlockWallet = (inputData) => (dispatch) => {
   try {
     const { history } = inputData
     dispatch(setIsLoading(true))
-    const unlockSuccessHandler = new CreateEventHandler(MESSAGES.UNLOCK_WALLET_SUCCESS, response => {
+    const unlockSuccessHandler = new CreateEventHandler(MESSAGES.UNLOCK_WALLET_SUCCESS, async response => {
       const { koiData } = response.data
       dispatch(setKoi(koiData))
+      const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
       dispatch(setIsLoading(false))
-      history.push('/account')
+      switch (get(storage[STORAGE.PENDING_REQUEST], 'type')) {
+        case REQUEST.PERMISSION:
+          history.push('/account/connect-site')
+          break
+        case REQUEST.TRANSACTION:
+          history.push('account/sign-transaction')
+          break
+        default:
+          history.push('/account')
+      }
     })
     const unlockFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')

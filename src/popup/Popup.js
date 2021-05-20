@@ -2,6 +2,7 @@ import '@babel/polyfill'
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch, Redirect, useHistory, withRouter } from 'react-router-dom'
+import { get } from 'lodash'
 
 import './Popup.css'
 import Header from 'components/header'
@@ -14,7 +15,7 @@ import { setIsLoading } from 'actions/loading'
 import { setError } from 'actions/error'
 import { setKoi, loadWallet, removeWallet } from 'actions/koi'
 
-import { HEADER_EXCLUDE_PATH } from 'constants'
+import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST } from 'constants'
 
 import { getChromeStorage } from 'utils'
 
@@ -32,10 +33,22 @@ const Popup = ({
   useEffect(() => {
     async function getKoiData() {
       try {
-        const storage = await getChromeStorage(['koiAddress', 'koiKey'])
+        const { KOI_ADDRESS, KOI_KEY, PENDING_REQUEST } = STORAGE
+        const storage = await getChromeStorage([KOI_ADDRESS, KOI_KEY, PENDING_REQUEST])
+
         if (storage['koiAddress']) {
+          // Koi Address in local storage
           loadWallet({ data: storage['koiAddress'] })
+          switch (get(storage[PENDING_REQUEST], 'type')) {
+            case REQUEST.PERMISSION:
+              history.push('/account/connect-site')
+              break
+            case REQUEST.TRANSACTION:
+              history.push('account/sign-transaction')
+              break
+          }
         } else {
+          // Koi Address not in local storage
           if (storage['koiKey']) {
             history.push('/account/login')
           }
