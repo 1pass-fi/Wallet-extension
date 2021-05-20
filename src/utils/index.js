@@ -61,9 +61,7 @@ export const generateWallet = async (koiObj) => {
 
 export const loadMyContent = async (koiObj) => {
   try {
-    console.log('ADDRESS', koiObj.address)
     const contentList = await koiObj.myContent()
-    console.log('CONTENT LIST FROM UTILS', contentList)
     const resultList = contentList.map((content) => {
       return {
         name: content.name,
@@ -76,8 +74,6 @@ export const loadMyContent = async (koiObj) => {
         isRegistered: true
       }
     })
-    console.log(resultList)
-
     return resultList
 
   } catch (err) {
@@ -85,31 +81,13 @@ export const loadMyContent = async (koiObj) => {
   }
 }
 
-// export const loadMyContent = async (koiObj) => {
-//   try {
-//     let { data } = await axios.get('https://bundler.openkoi.com:8888/state/getTopContent')
-//     if (data === 0) {
-//       throw new Error('There are no contents.')
-//     }
-//     // data = data.filter(item => item.owner === koiObj.address)
-//     const resultData = data.map(content => {
-//       console.log('CONTENT', content)
-//       return {
-//         name: content.name,
-//         isKoiWallet: content.ticker === 'KOINFT',
-//         earnedKoi: content.totalReward,
-//         txId: content.txIdContent,
-//         imageUrl: `${PATH.NFT_IMAGE}/${content.txIdContent}`,
-//         galleryUrl: `${PATH.GALLERY}?id=${content.txIdContent}`,
-//         viewblockUrl: `${PATH.VIEW_BLOCK}/${content.txIdContent}`,
-//         isRegistered: true
-//       }
-//     })
-//     return resultData.slice(0, 7)
-//   } catch (err) {
-//     throw new Error(err.message)
-//   }
-// }
+export const transfer = async (koiObj, qty, address) => {
+  try {
+    return await koiObj.transfer(qty, address)
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
 
 export const saveWalletToChrome = async (koiObj, password) => {
   try {

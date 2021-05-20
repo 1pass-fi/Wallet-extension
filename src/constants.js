@@ -31,6 +31,8 @@ export const MESSAGES = {
   GET_ADDRESS: 'GET_ADDRESS',
   GET_ADDRESS_SUCCESS: 'GET_ADDRESS_SUCCESS',
   GET_ADDRESS_ERROR: 'GET_ADDRESS_ERROR',
+  MAKE_TRANSFER: 'MAKE_TRANSFER',
+  MAKE_TRANSFER_SUCCESS: 'MAKE_TRANSFER_SUCCESS'
 }
 
 export const PATH = {
@@ -39,8 +41,9 @@ export const PATH = {
   HOME: '/account',
   LOGIN: '/account/login',
   NFT_IMAGE: 'https://arweave.net',
-  GALLERY: chrome.extension ? `${chrome.extension.getURL('/options.html')}` : 'GALLERY_PATH',
-  VIEW_BLOCK: 'https://viewblock.io/arweave/tx'
+  VIEW_BLOCK: 'https://viewblock.io/arweave/tx',
+  KOI_HEROKU: 'https://koi-tool.herokuapp.com',
+  GALLERY: chrome.extension ? `${chrome.extension.getURL('/options.html')}` : 'GALLERY_PATH'
 }
 
 export const ERROR_MESSAGE = {

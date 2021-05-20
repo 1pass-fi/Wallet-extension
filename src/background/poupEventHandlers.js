@@ -7,7 +7,8 @@ import {
   decryptWalletKeyFromChrome,
   setChromeStorage,
   removeChromeStorage,
-  generateWallet
+  generateWallet,
+  transfer
 } from 'utils'
 
 export default async (koi, port, message) => {
@@ -93,6 +94,15 @@ export default async (koi, port, message) => {
         port.postMessage({
           type: MESSAGES.LOAD_CONTENT_SUCCESS,
           data: { contentList }
+        })
+        break
+      }
+      case MESSAGES.MAKE_TRANSFER: {
+        const { qty, address } = message.data
+        const txId = await transfer(koi, qty, address)
+        port.postMessage({
+          type: MESSAGES.MAKE_TRANSFER_SUCCESS,
+          data: { txId }
         })
         break
       }
