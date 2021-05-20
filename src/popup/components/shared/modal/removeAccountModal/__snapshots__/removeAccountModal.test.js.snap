@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for  RemoveAccountModal component Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="modal-container"
+  >
+    <div
+      class="modal"
+    >
+      <div
+        class="modal-close-icon"
+      >
+        <svg />
+      </div>
+      <div
+        class="modal-title"
+      >
+        Are you sure you want to remove
+        <br />
+        <strong>
+          Account 1
+        </strong>
+        from your Koi Wallet?
+      </div>
+      <div
+        class="modal-account-address"
+      >
+        12345678901234567890123456789
+      </div>
+      <div
+        class="modal-description"
+      >
+        To access to this wallet again from Koi, you will need to add it as a new account.
+      </div>
+      <div
+        class="modal-action-buttons"
+      >
+        <button
+          class="button-shared button-outline modal-action-button remove"
+        >
+          Yes, Remove
+        </button>
+        <button
+          class="button-shared button-outline modal-action-button close"
+        >
+          No, Go Back
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

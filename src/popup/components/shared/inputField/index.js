@@ -10,9 +10,11 @@ export default ({
   name = '',
   placeholder = '',
   className = '',
+  type = 'password',
 }) => {
-  const [isDisplay, setDisplay] = useState(false)
+  const [isDisplay, setDisplay] = useState(type !== 'password')
   const toggleDisplay = () => {
+    console.log('on click')
     setDisplay(!isDisplay)
   }
 
@@ -28,7 +30,7 @@ export default ({
           onChange={onChange}
           placeholder={placeholder}
         ></input>
-        <ToggleDisplayIcon className='toggle-display' onClick={toggleDisplay} />
+        < ToggleDisplayIcon className='toggle-display' onClick={toggleDisplay} />
       </div>
     </div>
   )

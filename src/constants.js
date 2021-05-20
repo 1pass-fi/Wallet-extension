@@ -50,7 +50,8 @@ export const ERROR_MESSAGE = {
   PASSWORD_MATCH: 'Passwords do not match, please try again.',
   INCORRECT_PHRASE: 'Incorrect seed phrase, please try again.',
   EMPTY_PHRASE: 'Seed phrase should not be blank.',
-  CHECKED_TERMS: 'You have to agree to the Terms of Service'
+  CHECKED_TERMS: 'You have to agree to the Terms of Service',
+  EMPTY_FIELDS: 'Please fill in all fields!'
 }
 
 export const STORAGE = {

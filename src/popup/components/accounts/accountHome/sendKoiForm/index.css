@@ -1,0 +1,69 @@
+.send-koi-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background-color: #eeeeee;
+}
+
+.koi-balance {
+  font-size: 14px;
+  line-height: 20px;
+  align-items: center;
+  letter-spacing: 0.03em;
+}
+
+.recipient{
+  margin: 21px 40px 20px 40px;
+}
+
+.input-field.form-input .input {
+  font-family: 'Catamaran', sans-serif;
+  font-size: 14.5px;
+}
+.input-field.form-input .label {
+  font-size: 14px;
+}
+
+.input-field.form-input .toggle-display {
+  display: none;
+}
+
+.warning {
+  margin: 0 40px 30px 40px;
+  display: flex;
+}
+
+.warning-icon {
+  width: 24px;
+  height: 24px;
+  margin: 8px 10px 8px 0;
+}
+
+.warning-message {
+  font-size: 15px;
+  line-height: 20px;
+  letter-spacing: 0.03em;
+  align-content: flex-start;
+}
+
+.amount{
+  margin: 0 40px 46px 40px;
+}
+
+.send-button {
+  margin-bottom: 46px;
+  width: 183px;
+  height: 32px;
+}
+
+.amount-in-usd {
+  padding-left: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.03em;
+  color: #237b75;
+}
+.koi-balance .amount-in-usd {
+  padding-left: 116px;
+}
