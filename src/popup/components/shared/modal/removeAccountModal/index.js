@@ -24,7 +24,7 @@ const ModalTitle = ({ accountName }) => {
   )
 }
 
-const RemoveAccountModal = ({ accountName, accountAddress, onClose, onSubmit }) => {
+const RemoveAccountModal = ({ accountName, accountAddress, onClose, onSubmit }) => {  
   return (
     <Modal onClose={onClose} >
       <ModalTitle accountName={accountName} />

@@ -12,12 +12,17 @@ import Wallet from './wallet/index'
 
 export const AccountHome = ({ koi }) => {
   const [showForm, setShowForm] = useState(false)
+  const onSendSuccess = () => {
+    console.log('success')
+    setShowForm(false)
+  }
   return (
     <div>
       {koi.address && <GlobalButton onClick={() => setShowForm(prev => !prev)}/>}
       {showForm && <SendKoiForm 
         koiBalance={koi.koiBalance}
         rate={1}
+        onSendSuccess={onSendSuccess}
       />}
       {koi.address ? <Wallet accountAddress={koi.address} koiBalance={koi.koiBalance} arBalance={koi.arBalance} /> :
         <Link to='/account/import' className="plus-button">

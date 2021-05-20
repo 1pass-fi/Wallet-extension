@@ -7,12 +7,13 @@ import TransactionConfirmModal from 'popup/components/modals/transactionConfirmM
 
 import WarningIcon from 'img/warning-icon.svg'
 
+import { makeTransfer } from 'actions/koi'
 import { setError } from 'actions/error'
 import { ERROR_MESSAGE } from 'constants'
 
 import './index.css'
 
-const SendKoiForm = ({ koiBalance, rate, hanldeTransaction, setError }) => {
+const SendKoiForm = ({ koiBalance, rate, setError, makeTransfer, onSendSuccess }) => {
   const [address, setAddress] = useState('')
   const [amount, setAmount] = useState('')
   const [showModal, setShowModal] = useState(false)
@@ -35,6 +36,12 @@ const SendKoiForm = ({ koiBalance, rate, hanldeTransaction, setError }) => {
     } catch (err) {
       setError(err.message)
     }
+  }
+
+  const hanldeTransaction = () => {
+    setShowModal(false)
+    makeTransfer({ qty: Number(amount),  address: address }) 
+    onSendSuccess()
   }
 
   const numberFormat = (num) => {
@@ -85,7 +92,7 @@ const SendKoiForm = ({ koiBalance, rate, hanldeTransaction, setError }) => {
       <Button label="Send KOI" className="send-button" />
       {showModal && (
         <TransactionConfirmModal 
-          koiAmount={amount} 
+          koiAmount={Number(amount)} 
           accountAddress={address} 
           onClose={()=> {setShowModal(false)}}
           onSubmit={hanldeTransaction}
@@ -95,5 +102,5 @@ const SendKoiForm = ({ koiBalance, rate, hanldeTransaction, setError }) => {
   )
 }
 
-export default connect(null, { setError })(SendKoiForm)
+export default connect(null, { setError, makeTransfer })(SendKoiForm)
 
