@@ -97,11 +97,11 @@ export default async (koi, port, message) => {
         })
         break
       }
-      case MESSAGES.TRANSFER: {
+      case MESSAGES.MAKE_TRANSFER: {
         const { qty, address } = message.data
         const txId = await transfer(koi, qty, address)
         port.postMessage({
-          type: MESSAGES.TRANSFER_SUCCESS,
+          type: MESSAGES.MAKE_TRANSFER_SUCCESS,
           data: { txId }
         })
         break
