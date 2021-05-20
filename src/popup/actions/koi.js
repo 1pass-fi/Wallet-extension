@@ -2,6 +2,8 @@ import { setIsLoading } from './loading'
 import { setError } from './error'
 import { setCreateWallet } from './createWallet'
 import { setAssets } from './assets'
+import { setTransactions } from './transactions'
+
 import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 
 import { MESSAGES, PATH } from 'constants'
@@ -225,6 +227,32 @@ export const loadContent = () => (dispatch) => {
     backgroundConnect.addHandler(saveFailedHandler)
     backgroundConnect.postMessage({
       type: MESSAGES.LOAD_CONTENT,
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const makeTransfer = (inputData) => (dispatch) => {
+  try {
+    dispatch(setIsLoading(true))
+    const transferSuccessHandler = new CreateEventHandler(MESSAGES.MAKE_TRANSFER_SUCCESS, response => {
+      const { txId } = response.data
+      dispatch(setTransactions([txId]))
+      dispatch(setIsLoading(false))
+    })
+    const transferFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
+    backgroundConnect.addHandler(transferSuccessHandler)
+    backgroundConnect.addHandler(transferFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.MAKE_TRANSFER,
+      data: inputData
     })
   } catch (err) {
     dispatch(setError(err.message))

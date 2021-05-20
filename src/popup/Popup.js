@@ -20,11 +20,12 @@ import { getChromeStorage } from 'utils'
 
 const Popup = ({
   location,
-  isLoading, 
-  setIsLoading, 
-  error, 
-  setError, 
+  isLoading,
+  setIsLoading,
+  error,
+  setError,
   loadWallet,
+  transactions
 }) => {
   const history = useHistory()
 
@@ -40,6 +41,7 @@ const Popup = ({
           }
         }
       } catch (err) {
+        console.log(err.message)
         setError(err.message)
         setIsLoading(false)
       }
@@ -67,7 +69,9 @@ const Popup = ({
           <Route path='/assets'>
             <Assets />
           </Route>
-          <Route path='/activity'>Activity</Route>
+          <Route path='/activity'>
+            {transactions.map((transaction) => <h1>Transactions: {transaction}</h1>)}
+          </Route>
           <Route path='/'>
             <Redirect to='/account' />
           </Route>
@@ -77,17 +81,18 @@ const Popup = ({
   )
 }
 
-const mapStateToProps = (state) => ({ 
+const mapStateToProps = (state) => ({
   isLoading: state.loading,
   error: state.error,
-  koi: state.koi
+  koi: state.koi,
+  transactions: state.transactions
 })
 
 const mapDispatchToProps = {
-  setIsLoading, 
-  setError, 
-  setKoi, 
-  loadWallet, 
+  setIsLoading,
+  setError,
+  setKoi,
+  loadWallet,
   removeWallet
 }
 
