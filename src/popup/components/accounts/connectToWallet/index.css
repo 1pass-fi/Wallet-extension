@@ -1,0 +1,198 @@
+.select-wallet .header {
+  display: flex;
+  flex-direction: column;
+  height: 173px;
+  padding: 22px 0 14px;
+}
+
+.select-wallet .header .logo {
+  height: 64px;
+  width: 64px;
+}
+
+.select-wallet .header .connect-with-koi {
+  color: #171753;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 32px;
+  margin-top: 14px;
+  text-align: center;
+}
+
+.select-wallet .header .company-url {
+  color: #237b75;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  line-height: 20px;
+  margin-top: 7px;
+  text-align: center;
+}
+
+.select-wallet .content {
+  min-height: 354px;
+  padding: 29px 24px 24px;
+}
+
+.select-wallet .content .card-content {
+  align-items: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  padding: 20px 0px 24px;
+  width: 378px;
+}
+
+.select-wallet .content .card-content > * {
+  padding: 0 20px;
+}
+
+.select-wallet .content .select-account {
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  line-height: 20px;
+  margin-bottom: 12px;
+}
+
+.select-wallet .content .unselect-button {
+  background: #ffc78f;
+  border-radius: 2px;
+  border: 1.5px solid #171753;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 18px;
+  line-height: 4px;
+  width: 18px;
+}
+
+.select-wallet .content .select-all-button {
+  background: 0;
+  border: 0;
+  color: #171753;
+  cursor: pointer;
+  font-family: Catamaran;
+  font-size: 18px;
+  line-height: 20px;
+  margin-bottom: 12px;
+  margin-left: 34px;
+  padding: 0;
+}
+
+.select-wallet .content .wallet-options {
+  min-height: 140px;
+  width: 100%;
+  padding: 0 !important;
+  box-sizing: border-box;
+}
+
+.select-wallet .content .wallet-option {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  height: 70px;
+  padding: 17px 20px 13px !important;
+  width: 100%;
+}
+
+.select-wallet .content .wallet-option.checked {
+  background: #ffc78f;
+  border: 1px solid #ffc78f;
+}
+
+.select-wallet .content .check-wallet {
+  height: 18px;
+  margin: 0;
+  width: 18px;
+}
+
+.select-wallet .content .wallet-option .wallet-icon {
+  height: 34px;
+  margin-left: 33px;
+  width: 34px;
+}
+
+.select-wallet .content .wallet-option .wallet-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 21px;
+  max-width: 100px;
+}
+
+.select-wallet .content .wallet-option .wallet-info .wallet-name {
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.select-wallet .content .wallet-option .wallet-info .wallet-address {
+  color: #237b75;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  line-height: 20px;
+}
+
+.select-wallet .content .button-line {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 27px;
+  width: 100%;
+}
+
+.select-wallet .content .button-line .connect-button {
+  height: 40px;
+  width: 147px;
+}
+
+.select-wallet .content .button-line .reject-button {
+  border: 1.5px solid #171753;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  height: 40px;
+  width: 147px;
+}
+
+/* ALLOW PERMISSION */
+.select-wallet .content .allow-permission {
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  line-height: 20px;
+  margin-bottom: 12px;
+  padding: 0;
+}
+
+.select-wallet .content .allow-permission .label {
+  font-size: 15px;
+  line-height: 20px;
+  letter-spacing: 0.03em;
+  margin-left: 20px;
+  margin-bottom: 17px;
+}
+
+.select-wallet .content .allow-permission .permission {
+  background: #ffc78f;
+  display: flex;
+  flex-direction: row;
+  padding: 17px 20px 13px;
+  width: 335px;
+  margin-bottom: 116px;
+}
+
+.select-wallet .content .allow-permission .check-allow {
+  height: 18px;
+  width: 18px;
+  margin: 0;
+}
+
+.select-wallet .content .allow-permission .permission-content {
+  font-size: 18px;
+  line-height: 20px;
+  width: 280px;
+  margin-left: 29px;
+}
+
+.select-wallet .content .allow-permission .trust-sites {
+  padding: 0 17px;
+}
+
+.select-wallet .content .allow-permission .button-line {
+  padding: 0 17px;
+}

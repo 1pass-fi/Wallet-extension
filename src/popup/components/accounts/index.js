@@ -4,12 +4,14 @@ import { Route, Switch } from 'react-router-dom'
 
 import AccountHome from './accountHome'
 import AccountImport from './accountImport'
-import ImportPhrase from './importByPhrase/index'
-import ImportFile from './importByFile/index'
-import ImportFileSuccess from './importByFileSuccess/index'
-import ImportPhraseSuccess from './importByPhraseSuccess/index'
-import CreateWallet from './createWallet/index'
-import Login from './accountLockScreen/index'
+import ConnectToWallet from './connectToWallet'
+import ImportPhrase from './importByPhrase'
+import ImportFile from './importByFile'
+import ImportFileSuccess from './importByFileSuccess'
+import ImportPhraseSuccess from './importByPhraseSuccess'
+import CreateWallet from './createWallet'
+import Login from './accountLockScreen'
+import ConnectSite from './connectToWallet'
 
 const Account = () => {
   return (
@@ -29,6 +31,9 @@ const Account = () => {
       <Route path='/account/import/keyfile'>
         <ImportFile />
       </Route>
+      <Route path='/account/connect'>
+        <ConnectToWallet />
+      </Route>
       <Route path='/account/import'>
         <AccountImport />
       </Route>
@@ -37,6 +42,9 @@ const Account = () => {
       </Route>
       <Route path='/account/login'>
         <Login />
+      </Route>
+      <Route path='/account/connect-site'>
+        <ConnectSite />
       </Route>
     </Switch>
   )
