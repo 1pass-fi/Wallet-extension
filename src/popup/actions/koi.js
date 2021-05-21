@@ -1,6 +1,7 @@
 import { get } from 'lodash'
 
 import { setIsLoading } from './loading'
+import { setContLoading } from './continueLoading'
 import { setError } from './error'
 import { setCreateWallet } from './createWallet'
 import { setAssets } from './assets'
@@ -101,6 +102,11 @@ export const lockWallet = (inputData) => (dispatch) => {
     const { history } = inputData
     dispatch(setIsLoading(true))
     const lockSuccessHandler = new CreateEventHandler(MESSAGES.LOCK_WALLET_SUCCESS, response => {
+      dispatch(setKoi({
+        koiBalance: null,
+        arBalance: null,
+        address: null
+      }))
       dispatch(setIsLoading(false))
       history.push(PATH.LOGIN)
     })
@@ -222,17 +228,18 @@ export const saveWallet = (inputData) => (dispatch) => {
 
 export const loadContent = () => (dispatch) => {
   try {
-    dispatch(setIsLoading(true))
+    console.log('Should run only one time')
+    dispatch(setContLoading(true))
     const saveSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_CONTENT_SUCCESS, response => {
       const { contentList } = response.data
       console.log('CONTENT LIST FROM ACTION', contentList)
       dispatch(setAssets(contentList))
-      dispatch(setIsLoading(false))
+      dispatch(setContLoading(false))
     })
     const saveFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
       const errorMessage = response.data
-      dispatch(setIsLoading(false))
+      dispatch(setContLoading(false))
       dispatch(setError(errorMessage))
     })
 
@@ -243,7 +250,7 @@ export const loadContent = () => (dispatch) => {
     })
   } catch (err) {
     dispatch(setError(err.message))
-    dispatch(setIsLoading(false))
+    dispatch(setContLoading(false))
   }
 }
 

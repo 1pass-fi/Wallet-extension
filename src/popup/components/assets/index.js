@@ -9,15 +9,15 @@ import { STORAGE } from 'constants'
 
 import AssetList from './AssetList'
 
-const Assets = ({ assets, setAssets, loadContent }) => {
+const Assets = ({ assets, setAssets, loadContent, isContLoading }) => {
   useEffect(() => {
     async function handleLoadContent() {
-      const storage =  await getChromeStorage([STORAGE.CONTENT_LIST, STORAGE.KOI_ADDRESS])
+      const storage = await getChromeStorage([STORAGE.CONTENT_LIST, STORAGE.KOI_ADDRESS])
       console.log(storage[STORAGE.CONTENT_LIST])
       if (storage[STORAGE.CONTENT_LIST]) {
         setAssets(storage[STORAGE.CONTENT_LIST])
       }
-      if (storage[STORAGE.KOI_ADDRESS]) {
+      if (storage[STORAGE.KOI_ADDRESS] && !isContLoading) {
         loadContent()
       }
     }
@@ -27,6 +27,6 @@ const Assets = ({ assets, setAssets, loadContent }) => {
   return (<AssetList assets={assets} onAddAsset={() => alert('add asset')} />)
 }
 
-const mapStateToProps = (state) => ({ assets: state.assets })
+const mapStateToProps = (state) => ({ assets: state.assets, isContLoading: state.contLoading })
 
 export default connect(mapStateToProps, { loadContent, setAssets })(Assets)

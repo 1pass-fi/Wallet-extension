@@ -1,19 +1,31 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Redirect, withRouter, useHistory } from 'react-router-dom'
+
 import LogoIcon from 'img/koi-logo.svg'
 import SettingIcon from 'img/settings-icon.svg'
 import NavBar from './navBar'
+
+import { getChromeStorage } from 'utils'
+import { STORAGE } from 'constants'
+import { setError } from 'actions/error'
+
 import './index.css'
 
-const Header = ({ location }) => {
+const Header = ({ location, setError }) => {
   const history = useHistory()
   const onGalleryClick = () => {
     const url = chrome.extension.getURL('options.html')
     chrome.tabs.create({ url })
   }
 
-  const onSettingButtonClick = () => {
-    history.push('/setting')
+  const onSettingButtonClick = async () => {
+    const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[STORAGE.KOI_ADDRESS]
+    if (address) {
+      history.push('/setting')
+    } else {
+      setError('Please Import Wallet or Create new Wallet.')
+    }
   }
 
   const onLogoButtonClick = () => {
@@ -22,7 +34,7 @@ const Header = ({ location }) => {
 
   return (
     <>
-      <header style={{marginBottom: location.pathname === '/setting'? '20px': '0'}}>
+      <header style={{ marginBottom: location.pathname === '/setting' ? '20px' : '0' }}>
         <button className='logo-button' onClick={onLogoButtonClick}>
           <LogoIcon className='logo' />
         </button>
@@ -33,9 +45,9 @@ const Header = ({ location }) => {
           <SettingIcon />
         </button>
       </header>
-      { location.pathname !== '/setting' && <NavBar /> }
+      { location.pathname !== '/setting' && <NavBar />}
     </>
   )
 }
 
-export default withRouter(Header)
+export default connect(null, { setError })(withRouter(Header))

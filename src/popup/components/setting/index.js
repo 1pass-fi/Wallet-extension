@@ -3,16 +3,26 @@ import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { lockWallet } from 'actions/koi'
+import { setError } from 'actions/error'
 
 import GlobalButton from 'popup/components/shared/globalButton'
 
 import './index.css'
 
-const Setting = ({ lockWallet }) => {
+const Setting = ({ lockWallet, setError }) => {
   const history = useHistory()
+  const handleOnClick = async () => {
+    const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[STORAGE.KOI_ADDRESS]
+    if (address) {
+      lockWallet({ history })
+    } else {
+      setError('Cannot lock wallet.')
+    }
+  }
+
   return (
     <div className='setting-container'>
-      <GlobalButton type='lock' className='lock' onClick={() => lockWallet({ history })} />
+      <GlobalButton type='lock' className='lock' onClick={handleOnClick} />
       <div className='setting-mock-content'>
         Setting Page
       </div>
@@ -20,4 +30,4 @@ const Setting = ({ lockWallet }) => {
   )
 }
 
-export default connect(null, { lockWallet })(Setting)
+export default connect(null, { lockWallet, setError })(Setting)
