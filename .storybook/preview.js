@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { MINIMAL_VIEWPORTS, DEFAULT_VIEWPORT } from '@storybook/addon-viewport';
+import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
 
 import store from 'popup/store'
 
@@ -11,9 +11,6 @@ const customViewports = {
       width: '426px',
       height: '600px',
     },
-  },
-  [DEFAULT_VIEWPORT]: {
-    name: DEFAULT_VIEWPORT
   },
   ...MINIMAL_VIEWPORTS,
 
