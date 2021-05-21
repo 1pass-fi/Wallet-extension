@@ -71,3 +71,8 @@ export const REQUEST = {
   PERMISSION: 'PERMISSION',
   TRANSACTION: 'TRANSACTION'
 }
+
+export const RATE = {
+  KOI: 0.93,
+  AR: 2
+}

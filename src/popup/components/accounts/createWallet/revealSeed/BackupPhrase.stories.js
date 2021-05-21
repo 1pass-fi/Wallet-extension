@@ -3,7 +3,7 @@ import BackupPhrase from '.'
 BackupPhrase.displayName = 'BackupPhrase'
 
 export default {
-  title: 'component/BackupPhrase',
+  title: 'screen/BackupPhrase',
   component: BackupPhrase,
   args: {
     seedPhrase: 'telephone alpaca shampoo website table games bowl exclaim button fleece oatmeal cookbook'

@@ -3,7 +3,7 @@ import AccountImport from '.'
 AccountImport.displayName = 'AccountImport'
 
 export default {
-  title: 'component/AccountImport',
+  title: 'screen/AccountImport',
   component: AccountImport,
 }
 

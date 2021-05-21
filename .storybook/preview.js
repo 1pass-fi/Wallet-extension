@@ -29,7 +29,9 @@ export const parameters = {
   },
   viewport: {
     viewports: customViewports,
+    defaultViewport: 'Popup'
   },
+  layout: 'fullscreen'
 }
 
 export const decorators = [

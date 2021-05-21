@@ -31,7 +31,7 @@
 }
 
 .modal-action-buttons {
-  padding: 6px, 37px;
+  padding: 6px 0 20px 0;
 }
 
 .modal-action-button {
@@ -39,7 +39,7 @@
   background-color: #ffffff;
   font-weight: 600;
   font-size: 15px;
-  line-height: 22px;
+  line-height: 20px;
   text-align: center;
   letter-spacing: 0.03em;
   font-family: 'Catamaran', sans-serif;

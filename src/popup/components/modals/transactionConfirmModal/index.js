@@ -1,49 +1,47 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Modal from '..'
+import Modal from 'popup/components/shared/modal/index'
 import Button from 'popup/components/shared/button/'
 
 import './index.css'
 
 const propTypes = {
-  accountName: PropTypes.string,
+  koiAmount: PropTypes.number,
   accountAddress: PropTypes.string,
   onClose: PropTypes.func,
   onSubmit: PropTypes.func,
 }
 
-const ModalTitle = ({ accountName }) => {
+const ModalTitle = ({ koiAmount }) => {
   return (
     <div className="modal-title">
-      Are you sure you want to remove
+      <strong>Transaction Confirmation</strong> 
       <br />
-      <strong>{accountName}</strong>
-      {' '}from your Koi Wallet?
+      Send{' '}
+      <strong>{new Intl.NumberFormat('en-US').format(koiAmount)} KOI</strong> to
     </div>
   )
 }
 
-const RemoveAccountModal = ({
-  accountName,
+const TransactionConfirmModal = ({
+  koiAmount,
   accountAddress,
   onClose,
   onSubmit,
 }) => {
   return (
     <Modal onClose={onClose}>
-      <ModalTitle accountName={accountName} />
-      <div className="modal-account-address">{accountAddress}</div>
+      <ModalTitle koiAmount={koiAmount} />
+      <div className="modal-account-address confirm-transaction">{accountAddress}</div>
       <div className="modal-description">
-        To access to this wallet again from Koi, you will need to add it as a
-        new account.
+        * Yes, I have confirmed this is the correct wallet address.
       </div>
       <div className="modal-action-buttons">
         <Button
           onClick={onSubmit}
-          type="outline"
-          label="Yes, Remove"
-          className="modal-action-button remove"
+          label="Send KOI"
+          className="modal-action-button send"
         />
         <Button
           onClick={onClose}
@@ -56,6 +54,6 @@ const RemoveAccountModal = ({
   )
 }
 
-RemoveAccountModal.propTypes = propTypes
+TransactionConfirmModal.propTypes = propTypes
 
-export default RemoveAccountModal
+export default TransactionConfirmModal

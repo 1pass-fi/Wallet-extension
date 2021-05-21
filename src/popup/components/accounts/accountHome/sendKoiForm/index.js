@@ -1,19 +1,22 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import InputField from 'shared/inputField/index'
-import Button from 'shared/button/index'
+import InputField from 'shared/inputField'
+import Button from 'shared/button'
+import TransactionConfirmModal from 'popup/components/modals/transactionConfirmModal'
 
 import WarningIcon from 'img/warning-icon.svg'
 
+import { makeTransfer } from 'actions/koi'
 import { setError } from 'actions/error'
 import { ERROR_MESSAGE } from 'constants'
 
 import './index.css'
 
-const SendKoiForm = ({ koiBalance, rate, hanldeTransaction, setError }) => {
+const SendKoiForm = ({ koiBalance, rate, setError, makeTransfer, onSendSuccess }) => {
   const [address, setAddress] = useState('')
   const [amount, setAmount] = useState('')
+  const [showModal, setShowModal] = useState(false)
 
   const onChangeAddress = (e) => {
     setAddress(e.target.value)
@@ -22,20 +25,23 @@ const SendKoiForm = ({ koiBalance, rate, hanldeTransaction, setError }) => {
     setAmount(e.target.value)
   }
 
-  const handleSubmitForm = async (e) => {
+  const handleSubmitForm = (e) => {
     e.preventDefault()
     try {
-      if (!(address.length > 0 && amount.length >0)) {
+      if (!(address.length > 0 && amount.length > 0)) {
         setError(ERROR_MESSAGE.EMPTY_FIELDS)
       } else {
-        setAddress('')
-        setAmount('')
-        await hanldeTransaction()
-        alert('Sent!')
+        setShowModal(true)
       }
     } catch (err) {
       setError(err.message)
     }
+  }
+
+  const hanldeTransaction = () => {
+    setShowModal(false)
+    makeTransfer({ qty: Number(amount), address: address })
+    onSendSuccess()
   }
 
   const numberFormat = (num) => {
@@ -47,7 +53,9 @@ const SendKoiForm = ({ koiBalance, rate, hanldeTransaction, setError }) => {
       <div className="koi-balance">
         <span>Available balance: </span>
         <b>{koiBalance} KOI</b>
-        <div className="amount-in-usd">~ $ {numberFormat(koiBalance*rate)} USD</div>
+        <div className="amount-in-usd">
+          ~ $ {numberFormat(koiBalance * rate)} USD
+        </div>
       </div>
       <div className="recipient">
         <InputField
@@ -77,11 +85,22 @@ const SendKoiForm = ({ koiBalance, rate, hanldeTransaction, setError }) => {
           onChange={onChangeAmount}
           value={amount}
         />
-        <div className="amount-in-usd">~ $ {numberFormat(Number(amount)*rate)} USD</div>
+        <div className="amount-in-usd">
+          ~ $ {numberFormat(Number(amount) * rate)} USD
+        </div>
       </div>
       <Button label="Send KOI" className="send-button" />
+      {showModal && (
+        <TransactionConfirmModal
+          koiAmount={Number(amount)}
+          accountAddress={address}
+          onClose={() => { setShowModal(false) }}
+          onSubmit={hanldeTransaction}
+        />
+      )}
     </form>
   )
 }
 
-export default connect(null, {setError})(SendKoiForm)
+export default connect(null, { setError, makeTransfer })(SendKoiForm)
+

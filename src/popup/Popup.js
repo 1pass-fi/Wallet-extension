@@ -9,6 +9,7 @@ import Header from 'components/header'
 import Loading from 'components/loading'
 import Account from 'components/accounts'
 import Assets from 'components/assets'
+import Setting from 'components/setting'
 import ErrorMessage from 'components/errorMessage'
 
 import { setIsLoading } from 'actions/loading'
@@ -73,7 +74,7 @@ const Popup = ({
     <div className="popup">
       {isLoading && <Loading />}
       {error && <ErrorMessage children={error} />}
-      {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header />}
+      {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location}/>}
       <div className='content'>
         <Switch>
           <Route path='/account'>
@@ -84,6 +85,9 @@ const Popup = ({
           </Route>
           <Route path='/activity'>
             {transactions.map((transaction) => <h1>Transactions: {transaction}</h1>)}
+          </Route>
+          <Route path='/setting'>
+            <Setting/>
           </Route>
           <Route path='/'>
             <Redirect to='/account' />
