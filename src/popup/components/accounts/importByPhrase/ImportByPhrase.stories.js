@@ -3,7 +3,7 @@ import ImportByPhrase from '.'
 ImportByPhrase.displayName = 'ImportByPhrase'
 
 export default {
-  title: 'component/ImportByPhrase',
+  title: 'screen/ImportByPhrase',
   component: ImportByPhrase,
 }
 
