@@ -36,6 +36,7 @@
   box-sizing: border-box;
   height: 568px;
   padding: 20px;
+  position: relative;
 }
 
 .confirmation-card .title {
@@ -45,7 +46,12 @@
 }
 
 .confirmation-card .cancel-icon {
-  margin-left: 340px;
+  display: flex;
+  height: 10px;
+  width: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .confirmation-card .title .icon {

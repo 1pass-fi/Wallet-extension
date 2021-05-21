@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import KeyIcon from 'img/key-icon.svg'
 import WarningIcon from 'img/warning-icon.svg'
-import QuestionMarkIcon from 'img/question-mark-icon.svg'
+import InfoIcon from 'img/info.svg'
 import LockIcon from 'img/lock-icon.svg'
 import CopyIcon from 'img/copy-icon.svg'
 import CancelIcon from 'img/x-icon.svg'
@@ -80,7 +80,7 @@ export const RevealSeed = ({ seedPhrase, setCreateWallet }) => {
         />
         <div className='qa'>
           <div className='qa-icon'>
-            <QuestionMarkIcon />
+            <InfoIcon />
           </div>
           <div className='qa-item'>
             Store your backup phrase in a password manager.
