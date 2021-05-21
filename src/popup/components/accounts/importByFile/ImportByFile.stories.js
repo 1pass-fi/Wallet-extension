@@ -3,7 +3,7 @@ import ImportByFile from '.'
 ImportByFile.displayName = 'ImportByFile'
 
 export default {
-  title: 'component/ImportByFile',
+  title: 'screen/ImportByFile',
   component: ImportByFile,
 }
 

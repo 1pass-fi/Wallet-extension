@@ -3,7 +3,7 @@ import ImportByPhraseSuccess from '.'
 ImportByPhraseSuccess.displayName = 'ImportByPhraseSuccess'
 
 export default {
-  title: 'component/ImportByPhraseSuccess',
+  title: 'screen/ImportByPhraseSuccess',
   component: ImportByPhraseSuccess,
 }
 

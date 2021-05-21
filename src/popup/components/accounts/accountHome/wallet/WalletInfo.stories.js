@@ -3,7 +3,7 @@ import WalletInfo from '.'
 WalletInfo.displayName = 'WalletInfo'
 
 export default {
-  title: 'component/WalletInfo',
+  title: 'screen/WalletInfo',
   component: WalletInfo,
   args: {
     accountAddress: '$n-kxQLufYyR4mA5PxU7mtsrCFSIu-W66GTR7nl3fiCc',
