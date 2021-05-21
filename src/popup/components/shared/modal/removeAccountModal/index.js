@@ -15,22 +15,28 @@ const propTypes = {
 
 const ModalTitle = ({ accountName }) => {
   return (
-    <div className='modal-title'>
+    <div className="modal-title">
       Are you sure you want to remove
       <br />
       <strong>{accountName}</strong>
-      from your Koi Wallet?
+      {' '}from your Koi Wallet?
     </div>
   )
 }
 
-const RemoveAccountModal = ({ accountName, accountAddress, onClose, onSubmit }) => {  
+const RemoveAccountModal = ({
+  accountName,
+  accountAddress,
+  onClose,
+  onSubmit,
+}) => {
   return (
-    <Modal onClose={onClose} >
+    <Modal onClose={onClose}>
       <ModalTitle accountName={accountName} />
       <div className="modal-account-address">{accountAddress}</div>
       <div className="modal-description">
-        To access to this wallet again from Koi, you will need to add it as a new account.
+        To access to this wallet again from Koi, you will need to add it as a
+        new account.
       </div>
       <div className="modal-action-buttons">
         <Button
