@@ -150,6 +150,18 @@ export const saveOriginToChrome = async (origin) => {
   }
 }
 
+export const deleteOriginFromChrome = async (aOrigin) => {
+  try {
+    let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
+    if (!approvedOrigin) approvedOrigin = []
+    approvedOrigin = approvedOrigin.filter(origin => origin !== aOrigin)
+    await setChromeStorage({ 'sitePermission': approvedOrigin })
+  } catch (err) {
+    console.log(err.message)
+    throw new Error(err.message)
+  }
+}
+
 export const utils = {
   loadWallet
 }
