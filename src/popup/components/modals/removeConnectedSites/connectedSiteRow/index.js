@@ -9,13 +9,13 @@ const propTypes = {
   isGreyBackgroud: PropTypes.bool
 }
 
-const ConnectedSiteRow = ({ site, isGreyBackground }) => {
+const ConnectedSiteRow = ({ site, isGreyBackground, handleDeleteSite }) => {
   return (
-    <div className='connected-site-row' style={{background: isGreyBackground ? '#eeeeee' : '#ffffff'}}>
-      <div className='connected-site-name'>{site.name}</div>
+    <div className='connected-site-row' style={{ background: isGreyBackground ? '#eeeeee' : '#ffffff' }}>
+      <div className='connected-site-name'>{site}</div>
       <button className='delete-button'>
         <div className='delete-icon'>
-          <DeleteIcon />
+          <DeleteIcon onClick={() => handleDeleteSite(site)} />
         </div>
       </button>
     </div>
