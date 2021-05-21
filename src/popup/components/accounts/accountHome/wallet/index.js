@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import './index.css'
@@ -80,10 +79,10 @@ const WalletConf = ({ handleRemoveWallet, accountAddress }) => {
       <WalletConfItem className='delete-wallet' icon={<DeleteIcon />} title='Remove Account' onClick={() => setShowModal(true)} />
       { showModal && (
         <RemoveAccountModal
-          accountName="Account 1" 
-          accountAddress={accountAddress} 
+          accountName="Account 1"
+          accountAddress={accountAddress}
           onClose={() => setShowModal(false)}
-          onSubmit={handleRemoveWallet} 
+          onSubmit={handleRemoveWallet}
         />
       )}
     </div>
@@ -91,10 +90,7 @@ const WalletConf = ({ handleRemoveWallet, accountAddress }) => {
 }
 
 export const Wallet = ({ accountAddress, koiBalance, arBalance, removeWallet, lockWallet }) => {
-  const history = useHistory()
   const handleRemoveWallet = () => removeWallet()
-
-  const handleLockWallet = () => lockWallet({ history })
 
   return (
     <div className="wallet">
@@ -103,7 +99,6 @@ export const Wallet = ({ accountAddress, koiBalance, arBalance, removeWallet, lo
         <WalletInfo accountName={'Account #1'} accountAddress={accountAddress} koiBalance={koiBalance} arBalance={arBalance} />
         <Card className='address'>${accountAddress}</Card>
         <WalletConf accountAddress={accountAddress} handleRemoveWallet={handleRemoveWallet} />
-        <button className='lock-button' onClick={handleLockWallet}>Lock</button>
       </div>
     </div>
   )
