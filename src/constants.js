@@ -61,3 +61,8 @@ export const STORAGE = {
   KOI_KEY: 'koiKey',
   CONTENT_LIST: 'contentList'
 }
+
+export const RATE = {
+  KOI: 0.93,
+  AR: 2
+}

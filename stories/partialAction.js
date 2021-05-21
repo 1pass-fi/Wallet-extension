@@ -1,4 +1,4 @@
-import { action } from '@storybook/addon-actions';
+import { action } from '@storybook/addon-actions'
 
 /* Partial event logging, as full logging can be expensive/slow
  * Invocation: partialLog('actionName')(eventObj, ...args)
