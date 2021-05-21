@@ -37,6 +37,7 @@ export const loadWallet = async (koiObj, data, loadBy) => {
     }
 
     koiObj.balance = await koiObj.getWalletBalance()
+    console.log('AR BALANCE', koiObj.balance)
     const koiBalance = await koiObj.getKoiBalance()
 
     return {
@@ -63,13 +64,13 @@ export const loadMyContent = async (koiObj) => {
     const contentList = await koiObj.myContent()
     const resultList = contentList.map((content) => {
       return {
-        name: content.name,
+        name: content.title,
         isKoiWallet: content.ticker === 'KOINFT',
         earnedKoi: content.totalReward,
         txId: content.txIdContent,
         imageUrl: `${PATH.NFT_IMAGE}/${content.txIdContent}`,
         galleryUrl: `${PATH.GALLERY}?id=${content.txIdContent}`,
-        viewblockUrl: `${PATH.VIEW_BLOCK}/${content.txIdContent}`,
+        viewblockUrl: `${PATH.KOI_ROCK}/${content.txIdContent}`,
         isRegistered: true
       }
     })

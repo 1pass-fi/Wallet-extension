@@ -27,3 +27,16 @@ input::-webkit-inner-spin-button {
 input[type=number]{
   -moz-appearance: textfield;
 }
+
+.continue-loading {
+  position: fixed;
+  width: 55px;
+  height: 55px;
+  top: 93%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.continue-loading img {
+  width: 100%;
+}
