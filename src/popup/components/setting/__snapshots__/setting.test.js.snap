@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for Setting component Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="setting-container"
+  >
+    <div>
+      <button
+        class="global-button"
+      >
+        <div
+          class="global-button-content"
+        >
+          <div
+            class="global-button-icon"
+          >
+            <svg />
+          </div>
+          <div
+            class="global-button-label"
+          >
+            Lock Koi Wallet
+          </div>
+        </div>
+      </button>
+    </div>
+    <div
+      class="setting-mock-content"
+    >
+      Setting Page
+    </div>
+  </div>
+</div>
+`;

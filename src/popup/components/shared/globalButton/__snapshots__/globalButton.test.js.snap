@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for GlobalButton component Render without crashing renders correctly 1`] = `
+<div>
+  <div>
+    <button
+      class="global-button"
+    >
+      <div
+        class="global-button-content"
+      >
+        <div
+          class="global-button-icon"
+        >
+          <svg />
+        </div>
+        <div
+          class="global-button-label"
+        >
+          Send KOI
+        </div>
+      </div>
+    </button>
+  </div>
+</div>
+`;

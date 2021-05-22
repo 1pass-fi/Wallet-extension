@@ -10,8 +10,9 @@ export class BackgroundConnect {
     console.log('BackgroundConnect--init')
     try {
       this.eventHandlers = []
+      /* istanbul ignore next */
       this.port = chrome.runtime.connect({ name: portName })
-
+      /* istanbul ignore next */
       this.port.onMessage.addListener((message, sender) => {
         this.eventHandlers.forEach(handler => {
           if (handler.type === message.type) {
@@ -20,10 +21,11 @@ export class BackgroundConnect {
         })
       })
     } catch (error) {
+      /* istanbul ignore next */
       console.error('Cannot connect---', error)
     }
   }
-
+  /* istanbul ignore next */
   postMessage(message) {
     if (!this.port) return
     this.port.postMessage(message)

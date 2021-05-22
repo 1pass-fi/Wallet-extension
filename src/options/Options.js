@@ -43,7 +43,7 @@ const BigCard = ({
   imageUrl,
   earnedKoi,
   isRegistered,
-  viewblockUrl,
+  koiRockUrl,
   setChoosen,
 }) => {
   return (
@@ -58,7 +58,7 @@ const BigCard = ({
         </button>
       )}
       {isRegistered && (
-        <a target="_blank" href={viewblockUrl} className='nft-path'>
+        <a target="_blank" href={koiRockUrl} className='nft-path'>
           View on koi.rocks
         </a>
       )}
@@ -72,7 +72,7 @@ const Card = ({
   imageUrl,
   earnedKoi,
   isRegistered,
-  viewblockUrl,
+  koiRockUrl,
   choosen,
   setChoosen,
   titleRef
@@ -94,7 +94,7 @@ const Card = ({
         </button>
       )}
       {isRegistered && (
-        <a target="_blank" href={viewblockUrl} className='nft-path'>
+        <a target="_blank" href={koiRockUrl} className='nft-path'>
           <ShareIcon />
         </a>
       )}

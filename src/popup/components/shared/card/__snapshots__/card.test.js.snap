@@ -5,7 +5,9 @@ exports[`Test for Card component Render without crashing renders correctly 1`] =
   <div
     class="card extra-class-name"
   >
-    <h1>
+    <h1
+      id="children"
+    >
       Hello
     </h1>
   </div>

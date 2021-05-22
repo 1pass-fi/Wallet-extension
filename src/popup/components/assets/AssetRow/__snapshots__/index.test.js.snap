@@ -30,12 +30,16 @@ exports[`Test for  AssetRow component Registered Render without crashing renders
     <div
       class="asset-row-function-icons"
     >
-      <svg
-        class="asset-row-function-icon"
-      />
-      <svg
-        class="asset-row-function-icon"
-      />
+      <div>
+        <svg
+          class="asset-row-function-icon"
+        />
+      </div>
+      <div>
+        <svg
+          class="asset-row-function-icon"
+        />
+      </div>
     </div>
   </div>
 </div>
@@ -68,7 +72,11 @@ exports[`Test for  AssetRow component Unregistered Render without crashing rende
       <div
         class="register-button-icon"
       >
-        <svg />
+        <div
+          class="assets fish-icon"
+        >
+          <svg />
+        </div>
       </div>
       <span>
         Register
@@ -77,9 +85,11 @@ exports[`Test for  AssetRow component Unregistered Render without crashing rende
     <div
       class="asset-row-function-icons"
     >
-      <svg
-        class="asset-row-function-icon"
-      />
+      <div>
+        <svg
+          class="asset-row-function-icon"
+        />
+      </div>
     </div>
   </div>
 </div>

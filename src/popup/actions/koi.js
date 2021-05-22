@@ -135,8 +135,9 @@ export const unlockWallet = (inputData) => (dispatch) => {
     const unlockSuccessHandler = new CreateEventHandler(MESSAGES.UNLOCK_WALLET_SUCCESS, async response => {
       const { koiData } = response.data
       dispatch(setKoi(koiData))
-      const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
       dispatch(setIsLoading(false))
+      const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
+      /* istanbul ignore next */
       switch (get(storage[STORAGE.PENDING_REQUEST], 'type')) {
         case REQUEST.PERMISSION:
           history.push('/account/connect-site')
@@ -228,7 +229,6 @@ export const saveWallet = (inputData) => (dispatch) => {
 
 export const loadContent = () => (dispatch) => {
   try {
-    console.log('Should run only one time')
     dispatch(setContLoading(true))
     const saveSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_CONTENT_SUCCESS, response => {
       const { contentList } = response.data
@@ -259,7 +259,7 @@ export const makeTransfer = (inputData) => (dispatch) => {
     dispatch(setIsLoading(true))
     const transferSuccessHandler = new CreateEventHandler(MESSAGES.MAKE_TRANSFER_SUCCESS, response => {
       const { txId } = response.data
-      dispatch(setTransactions([txId]))
+      dispatch(setTransactions(txId))
       dispatch(setIsLoading(false))
     })
     const transferFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {

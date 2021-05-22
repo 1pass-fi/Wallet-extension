@@ -33,12 +33,16 @@ exports[`Test for AssetList component Render without crashing renders correctly 
       <div
         class="asset-row-function-icons"
       >
-        <svg
-          class="asset-row-function-icon"
-        />
-        <svg
-          class="asset-row-function-icon"
-        />
+        <div>
+          <svg
+            class="asset-row-function-icon"
+          />
+        </div>
+        <div>
+          <svg
+            class="asset-row-function-icon"
+          />
+        </div>
       </div>
     </div>
     <div
@@ -69,12 +73,16 @@ exports[`Test for AssetList component Render without crashing renders correctly 
       <div
         class="asset-row-function-icons"
       >
-        <svg
-          class="asset-row-function-icon"
-        />
-        <svg
-          class="asset-row-function-icon"
-        />
+        <div>
+          <svg
+            class="asset-row-function-icon"
+          />
+        </div>
+        <div>
+          <svg
+            class="asset-row-function-icon"
+          />
+        </div>
       </div>
     </div>
     <div

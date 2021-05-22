@@ -1,6 +1,7 @@
 import { LOAD_KOI_BY, PATH, STORAGE } from 'constants'
 import passworder from 'browser-passworder'
 
+/* istanbul ignore next */
 export const setChromeStorage = (obj) => {
   return new Promise(function (resolve, reject) {
     chrome.storage.local.set(obj, () => {
@@ -9,6 +10,7 @@ export const setChromeStorage = (obj) => {
   })
 }
 
+/* istanbul ignore next */
 export const getChromeStorage = (key) => {
   return new Promise(function (resolve, reject) {
     chrome.storage.local.get(key, (result) => {
@@ -17,6 +19,7 @@ export const getChromeStorage = (key) => {
   })
 }
 
+/* istanbul ignore next */
 export const removeChromeStorage = (key) => {
   return new Promise(function (resolve, reject) {
     chrome.storage.local.remove(key, () => {
@@ -70,7 +73,7 @@ export const loadMyContent = async (koiObj) => {
         txId: content.txIdContent,
         imageUrl: `${PATH.NFT_IMAGE}/${content.txIdContent}`,
         galleryUrl: `${PATH.GALLERY}?id=${content.txIdContent}`,
-        viewblockUrl: `${PATH.KOI_ROCK}/${content.txIdContent}`,
+        koiRockUrl: `${PATH.KOI_ROCK}/${content.txIdContent}`,
         isRegistered: true
       }
     })
@@ -89,6 +92,7 @@ export const transfer = async (koiObj, qty, address) => {
   }
 }
 
+/* istanbul ignore next */
 export const saveWalletToChrome = async (koiObj, password) => {
   try {
     const encryptedWalletKey = await passworder.encrypt(password, koiObj.wallet)
@@ -98,6 +102,7 @@ export const saveWalletToChrome = async (koiObj, password) => {
   }
 }
 
+/* istanbul ignore next */
 export const decryptWalletKeyFromChrome = async (password) => {
   try {
     const result = await getChromeStorage('koiKey')
@@ -108,6 +113,7 @@ export const decryptWalletKeyFromChrome = async (password) => {
   }
 }
 
+/* istanbul ignore next */
 export const removeWalletFromChrome = async () => {
   try {
     await removeChromeStorage(STORAGE.KOI_ADDRESS)
@@ -129,6 +135,7 @@ export const JSONFileToObject = async (file) => {
   }
 }
 
+/* istanbul ignore next */
 export const checkSitePermission = async (origin) => {
   try {
     let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
@@ -139,6 +146,7 @@ export const checkSitePermission = async (origin) => {
   }
 }
 
+/* istanbul ignore next */
 export const saveOriginToChrome = async (origin) => {
   try {
     let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
@@ -151,6 +159,7 @@ export const saveOriginToChrome = async (origin) => {
   }
 }
 
+/* istanbul ignore next */
 export const deleteOriginFromChrome = async (aOrigin) => {
   try {
     let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]

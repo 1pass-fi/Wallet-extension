@@ -36,7 +36,7 @@ const EarnedKoi = ({ isRegistered, earnedKoi }) =>
     </button>
   )
 
-const Actions = ({ isRegistered, viewblockUrl, galleryUrl }) => {
+const Actions = ({ isRegistered, koiRockUrl, galleryUrl }) => {
   const handleCreateTab = (to) => {
     chrome.tabs.create({
       url: to,
@@ -46,7 +46,7 @@ const Actions = ({ isRegistered, viewblockUrl, galleryUrl }) => {
   return (
     <div className='asset-row-function-icons'>
       {isRegistered && (
-        <div onClick={() => handleCreateTab(viewblockUrl)}>
+        <div onClick={() => handleCreateTab(koiRockUrl)}>
           <ShareIcon className='asset-row-function-icon' />
         </div>
       )}
@@ -63,7 +63,7 @@ const AssetRow = ({
   name,
   isRegistered,
   earnedKoi,
-  viewblockUrl,
+  koiRockUrl,
   galleryUrl,
 }) => {
   return (
@@ -79,7 +79,7 @@ const AssetRow = ({
       <EarnedKoi isRegistered={isRegistered} earnedKoi={earnedKoi} />
       <Actions
         isRegistered={isRegistered}
-        viewblockUrl={viewblockUrl}
+        koiRockUrl={koiRockUrl}
         galleryUrl={galleryUrl}
       />
     </div>

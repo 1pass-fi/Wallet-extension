@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for SendKoiForm component Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="allow-permission"
+  >
+    <div
+      class="label"
+    >
+      Allow this site to:
+    </div>
+    <div
+      class="permission checked"
+    >
+      <input
+        checked=""
+        class="check-allow"
+        disabled=""
+        type="checkbox"
+      />
+      <div
+        class="permission-content"
+      >
+        View the addresses of your permitted accounts (required)
+      </div>
+    </div>
+    <div
+      class="trust-sites"
+    >
+      Only connect with sites you trust.
+    </div>
+    <div
+      class="button-line"
+    >
+      <button
+        class="button-shared button-filled connect-button"
+      >
+        Connect
+      </button>
+      <button
+        class="button-shared button-outline reject-button"
+      >
+        Reject
+      </button>
+    </div>
+  </div>
+</div>
+`;

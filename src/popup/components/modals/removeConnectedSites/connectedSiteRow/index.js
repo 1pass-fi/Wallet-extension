@@ -5,7 +5,7 @@ import DeleteIcon from 'img/wallet/delete-icon.svg'
 import './index.css'
 
 const propTypes = {
-  site: PropTypes.object,
+  site: PropTypes.string,
   isGreyBackgroud: PropTypes.bool
 }
 

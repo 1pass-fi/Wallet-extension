@@ -14,11 +14,13 @@ import './index.css'
 
 const Header = ({ location, setError }) => {
   const history = useHistory()
+  /* istanbul ignore next */
   const onGalleryClick = () => {
     const url = chrome.extension.getURL('options.html')
     chrome.tabs.create({ url })
   }
 
+  /* istanbul ignore next */
   const onSettingButtonClick = async () => {
     const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[STORAGE.KOI_ADDRESS]
     if (address) {

@@ -8,6 +8,8 @@ import './index.css'
 import Popup from './Popup'
 import store from './store'
 
+/* istanbul ignore next */
+
 browser.runtime.sendMessage({ data: 'hello' })
 
 ReactDOM.render(<Provider store={store}><Router><Popup /></Router></Provider>, document.getElementById('root'))
