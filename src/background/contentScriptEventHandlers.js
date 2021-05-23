@@ -1,6 +1,6 @@
 import { REQUEST } from 'constants'
 import { MESSAGES } from 'constants'
-import { checkSitePermission, setChromeStorage } from 'utils'
+import { checkSitePermission, setChromeStorage, transfer } from 'utils'
 
 let pendingMessages = {}
 
@@ -44,6 +44,35 @@ export default async (koi, port, message) => {
             type: 'popup',
             height: 622,
             width: 426
+          })
+        }
+        break
+      }
+      case MESSAGES.SIGN_TRANSACTION: {
+        const { origin, favicon, qty, address } = message.data
+        if (!(await checkSitePermission(origin))) {
+          setChromeStorage({
+            'pendingRequest': {
+              type: REQUEST.PERMISSION,
+              data: { origin, favicon }
+            }
+          })
+          chrome.windows.create({
+            url: chrome.extension.getURL('/popup.html'),
+            focused: true,
+            type: 'popup',
+            height: 622,
+            width: 426
+          })
+          port.postMessage({
+            type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
+            data: 'Do not have permission.'
+          })
+        } else {
+          const txId = await transfer(koi, qty, address)
+          port.postMessage({
+            type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
+            data: txId
           })
         }
         break

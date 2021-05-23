@@ -9,7 +9,9 @@ const messageTypes = [
   MESSAGES.GET_ADDRESS_SUCCESS,
   MESSAGES.GET_ADDRESS_ERROR,
   MESSAGES.GET_PERMISSION_SUCCESS,
-  MESSAGES.GET_PERMISSION_ERROR
+  MESSAGES.GET_PERMISSION_ERROR,
+  MESSAGES.SIGN_TRANSACTION_SUCCESS,
+  MESSAGES.SIGN_TRANSACTION_ERROR
 ]
 const backgroundConnect = new BackgroundConnect(PORTS.CONTENT_SCRIPT)
 messageTypes.forEach(messageType => {
@@ -24,6 +26,9 @@ window.addEventListener('message', function (event) {
       backgroundConnect.postMessage({ type: event.data.type })
       break
     case MESSAGES.GET_PERMISSION:
+      backgroundConnect.postMessage({ type: event.data.type, data: event.data.data })
+      break
+    case MESSAGES.SIGN_TRANSACTION:
       backgroundConnect.postMessage({ type: event.data.type, data: event.data.data })
       break
     default:
@@ -63,7 +68,8 @@ window.addEventListener('message', function (event) {
 
     window.koi = {
       getAddress: () => buildPromise(MESSAGE_TYPES.GET_ADDRESS),
-      getPermission: () => buildPromise(MESSAGE_TYPES.GET_PERMISSION, {origin: window.location.origin, favicon: getFavicon() })
+      getPermission: () => buildPromise(MESSAGE_TYPES.GET_PERMISSION, {origin: window.location.origin, favicon: getFavicon() }),
+      signTransaction: (qty, address) => buildPromise(MESSAGE_TYPES.SIGN_TRANSACTION, { qty, address, origin: window.location.origin, favicon: getFavicon() })
     }
     window.addEventListener('message', function (event) {
       if (!event.data || !event.data.type) {
@@ -82,10 +88,11 @@ window.addEventListener('message', function (event) {
 
   function inject(fn) {
     const script = document.createElement('script')
-    const { GET_ADDRESS, GET_PERMISSION } = messages
+    const { GET_ADDRESS, GET_PERMISSION, SIGN_TRANSACTION } = messages
     const pickedMessages = {
       GET_ADDRESS,
-      GET_PERMISSION
+      GET_PERMISSION,
+      SIGN_TRANSACTION
     }
     script.text = `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(pickedMessages)}');(${fn.toString()})();`
     document.documentElement.appendChild(script)
