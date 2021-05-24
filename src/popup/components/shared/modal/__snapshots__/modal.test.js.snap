@@ -13,7 +13,9 @@ exports[`Test for  Modal component Render without crashing renders correctly 1`]
       >
         <svg />
       </div>
-      <h1>
+      <h1
+        class="children"
+      >
         Hello
       </h1>
     </div>

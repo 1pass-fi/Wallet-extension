@@ -21,6 +21,7 @@ exports[`Test for  RemoveAccountModal component Render without crashing renders 
         <strong>
           Account 1
         </strong>
+         
         from your Koi Wallet?
       </div>
       <div

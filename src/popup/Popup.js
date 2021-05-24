@@ -9,8 +9,10 @@ import Header from 'components/header'
 import Loading from 'components/loading'
 import Account from 'components/accounts'
 import Assets from 'components/assets'
+import Activity from 'components/activity'
 import Setting from 'components/setting'
 import ErrorMessage from 'components/errorMessage'
+import continueLoadingIcon from 'img/continue-load.gif'
 
 import { setIsLoading } from 'actions/loading'
 import { setError } from 'actions/error'
@@ -20,9 +22,16 @@ import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST } from 'constants'
 
 import { getChromeStorage } from 'utils'
 
+const ContinueLoading = () => (
+  <div className='continue-loading'>
+    <img src={continueLoadingIcon} />
+  </div>
+)
+
 const Popup = ({
   location,
   isLoading,
+  isContLoading,
   setIsLoading,
   error,
   setError,
@@ -45,7 +54,7 @@ const Popup = ({
               history.push('/account/connect-site')
               break
             case REQUEST.TRANSACTION:
-              history.push('account/sign-transaction')
+              history.push('/account/sign-transaction')
               break
           }
         } else {
@@ -70,11 +79,27 @@ const Popup = ({
     }
   }, [error])
 
+  const activities = [
+    {
+      activityName: `Purchased "The Balance of Koi"`,
+      expense: 100,
+      accountName: 'Account 1',
+      date: 'May 24, 2021'
+    },
+    {
+      activityName: `Purchased "The Balance of Koi"`,
+      expense: 200,
+      accountName: 'Account 1',
+      date: 'May 22, 2021'
+    },
+  ]
+
   return (
     <div className="popup">
+      {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
       {isLoading && <Loading />}
       {error && <ErrorMessage children={error} />}
-      {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location}/>}
+      {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />}
       <div className='content'>
         <Switch>
           <Route path='/account'>
@@ -84,10 +109,10 @@ const Popup = ({
             <Assets />
           </Route>
           <Route path='/activity'>
-            {transactions.map((transaction) => <h1>Transactions: {transaction}</h1>)}
+            <Activity activities={activities} />
           </Route>
           <Route path='/setting'>
-            <Setting/>
+            <Setting />
           </Route>
           <Route path='/'>
             <Redirect to='/account' />
@@ -102,7 +127,8 @@ const mapStateToProps = (state) => ({
   isLoading: state.loading,
   error: state.error,
   koi: state.koi,
-  transactions: state.transactions
+  transactions: state.transactions,
+  isContLoading: state.contLoading
 })
 
 const mapDispatchToProps = {

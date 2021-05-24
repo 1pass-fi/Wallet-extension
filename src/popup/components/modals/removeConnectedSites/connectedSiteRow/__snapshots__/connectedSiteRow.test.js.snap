@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for ConnectedSiteRow component Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="connected-site-row"
+    style="background: rgb(255, 255, 255);"
+  >
+    <div
+      class="connected-site-name"
+    />
+    <button
+      class="delete-button"
+    >
+      <div
+        class="delete-icon"
+      >
+        <svg />
+      </div>
+    </button>
+  </div>
+</div>
+`;

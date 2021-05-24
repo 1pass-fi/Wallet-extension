@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
 import loading from './loading'
+import contLoading from './continueLoading'
 import error from './error'
 import koi from './koi'
 import createWallet from './createWallet'
@@ -9,6 +10,7 @@ import transactions from './transactions'
 
 export default combineReducers({
   loading,
+  contLoading,
   error,
   koi,
   createWallet,

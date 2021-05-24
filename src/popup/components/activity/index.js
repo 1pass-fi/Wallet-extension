@@ -21,9 +21,18 @@ const ActivitiesList = ({ activities }) => {
   ))
 }
 
+const AccountLabel = ({ accountName }) => {
+  return (
+    <div className='activity-account-label'>
+      <div className='text'>{accountName}</div>
+    </div>
+  )
+}
+
 const Activity = ({ activities }) => {
   return (
     <div className='activity-container'>
+      <AccountLabel accountName='Account #1' />
       <ActivitiesList activities={activities} />
     </div>
   )

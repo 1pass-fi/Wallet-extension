@@ -5,11 +5,16 @@ exports[`Test for Popup component Render without crashing renders correctly 1`] 
   <div
     class="popup"
   >
-    <header>
-      <img
-        class="logo"
-        src="[object Object]"
-      />
+    <header
+      style="margin-bottom: 0px;"
+    >
+      <button
+        class="logo-button"
+      >
+        <svg
+          class="logo"
+        />
+      </button>
       <button
         class="gallery-button"
       >
@@ -18,19 +23,16 @@ exports[`Test for Popup component Render without crashing renders correctly 1`] 
       <button
         class="setting-button"
       >
-        <img
-          src="[object Object]"
-        />
+        <svg />
       </button>
     </header>
     <nav>
       <a
-        class="nav-item"
-        href="/account/home"
+        aria-current="page"
+        class="nav-item nav-item-active"
+        href="/account"
       >
-        <div
-          class="nav-item-active"
-        >
+        <div>
           Accounts
         </div>
       </a>
@@ -38,9 +40,7 @@ exports[`Test for Popup component Render without crashing renders correctly 1`] 
         class="nav-item"
         href="/assets"
       >
-        <div
-          class=""
-        >
+        <div>
           Assets
         </div>
       </a>
@@ -48,9 +48,7 @@ exports[`Test for Popup component Render without crashing renders correctly 1`] 
         class="nav-item"
         href="/activity"
       >
-        <div
-          class=""
-        >
+        <div>
           Activity
         </div>
       </a>
@@ -58,14 +56,14 @@ exports[`Test for Popup component Render without crashing renders correctly 1`] 
     <div
       class="content"
     >
-      <a
-        class="plus-button"
-        href="/account/import"
-      >
-        <img
-          src="[object Object]"
-        />
-      </a>
+      <div>
+        <a
+          class="plus-button"
+          href="/account/import"
+        >
+          <svg />
+        </a>
+      </div>
     </div>
   </div>
 </div>

@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Modal from 'popup/components/shared/modal/index'
-import ConnectedSiteRow from './connectedSiteRow/index'
+import Modal from 'popup/components/shared/modal'
+import ConnectedSiteRow from './connectedSiteRow'
 
 import PlusIcon from 'img/plus-icon.svg'
 
@@ -23,9 +23,9 @@ const ModalTitle = ({ accountName }) => {
   )
 }
 
-const ManualConnectSite = ({isGreyBackground}) => {
+const ManualConnectSite = ({ isGreyBackground }) => {
   return (
-    <div className='manual-connect-container' style={{ background: isGreyBackground ? '#eeeeee' : '#ffffff'}}>
+    <div className='manual-connect-container' style={{ background: isGreyBackground ? '#eeeeee' : '#ffffff' }}>
       <button className='manual-connect-button'>
         <div className='plus-icon'>
           <PlusIcon />
@@ -36,20 +36,21 @@ const ManualConnectSite = ({isGreyBackground}) => {
   )
 }
 
-const RemoveConnectedSites = ({ sites, accountName }) => {
+const RemoveConnectedSites = ({ sites, accountName, handleDeleteSite, onClose }) => {
   return (
-    <Modal>
+    <Modal onClose={onClose}>
       <ModalTitle accountName={accountName} />
-      {sites.map((element, index) => {
+      {sites.map((site, index) => {
         return (
           <ConnectedSiteRow
-            site={{...element}}
-            key={element.name}
+            site={site}
+            key={index}
             isGreyBackground={index % 2 === 0}
+            handleDeleteSite={handleDeleteSite}
           />
         )
       })}
-      <ManualConnectSite isGreyBackground={sites.length % 2 === 0}/>
+      <ManualConnectSite isGreyBackground={sites.length % 2 === 0} />
     </Modal>
   )
 }

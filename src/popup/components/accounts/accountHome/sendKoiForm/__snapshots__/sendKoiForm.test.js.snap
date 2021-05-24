@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for SendKoiForm component Render without crashing renders correctly 1`] = `
+<div>
+  <form
+    class="send-koi-form"
+  >
+    <div
+      class="koi-balance"
+    >
+      <span>
+        Available balance: 
+      </span>
+      <b>
+         KOI
+      </b>
+      <div
+        class="amount-in-usd"
+      >
+        ~ $ 
+        NaN
+         USD
+      </div>
+    </div>
+    <div
+      class="recipient"
+    >
+      <div
+        class="input-field form-input"
+      >
+        <div
+          class="label"
+        >
+          To
+        </div>
+        <div
+          class="input-wrapper"
+        >
+          <input
+            class="input"
+            name=""
+            placeholder="Recipient’s wallet address"
+            type="text"
+            value=""
+          />
+          <svg
+            class="toggle-display"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="warning"
+    >
+      <div
+        class="warning-icon"
+      >
+        <svg />
+      </div>
+      <div
+        class="warning-message"
+      >
+        Make sure you have the correct wallet address. There is no way to reverse the transaction.
+      </div>
+    </div>
+    <div
+      class="amount"
+    >
+      <div
+        class="input-field form-input"
+      >
+        <div
+          class="label"
+        >
+          Amount
+        </div>
+        <div
+          class="input-wrapper"
+        >
+          <input
+            class="input"
+            name=""
+            placeholder="Amount of KOI to send"
+            type="text"
+            value=""
+          />
+          <svg
+            class="toggle-display"
+          />
+        </div>
+      </div>
+      <div
+        class="amount-in-usd"
+      >
+        ~ $ 
+        NaN
+         USD
+      </div>
+    </div>
+    <button
+      class="button-shared button-filled send-button"
+    >
+      Send KOI
+    </button>
+  </form>
+</div>
+`;

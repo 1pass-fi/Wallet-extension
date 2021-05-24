@@ -5,72 +5,84 @@ exports[`Test for AccountImport component Render without crashing renders correc
   <div
     class="account-import"
   >
-    <div
-      class="card option-card"
+    <a
+      href="/account/import/phrase"
+      style="text-decoration: none;"
     >
       <div
-        class="card-title-wrapper"
+        class="card option-card"
       >
-        <img
-          class="card-icon"
-          src="[object Object]"
-        />
-        <p
-          class="card-title"
+        <div
+          class="card-title-wrapper"
         >
-          Import with a seed phrase
-        </p>
+          <svg
+            class="card-icon"
+          />
+          <p
+            class="card-title"
+          >
+            Import with a seed phrase
+          </p>
+        </div>
+        <div
+          class="card-description"
+        >
+          Import an existing wallet using a 12-word seed phrase.
+        </div>
       </div>
-      <div
-        class="card-description"
-      >
-        Import an existing wallet using a 12-word seed phrase.
-      </div>
-    </div>
-    <div
-      class="card option-card"
+    </a>
+    <a
+      href="/account/import/keyfile"
+      style="text-decoration: none;"
     >
       <div
-        class="card-title-wrapper"
+        class="card option-card"
       >
-        <img
-          class="card-icon"
-          src="[object Object]"
-        />
-        <p
-          class="card-title"
+        <div
+          class="card-title-wrapper"
         >
-          Upload a .JSON wallet file
-        </p>
+          <svg
+            class="card-icon"
+          />
+          <p
+            class="card-title"
+          >
+            Upload a .JSON wallet file
+          </p>
+        </div>
+        <div
+          class="card-description"
+        >
+          Import an existing wallet by uploading a .JSON file.
+        </div>
       </div>
-      <div
-        class="card-description"
-      >
-        Import an existing wallet by uploading a .JSON file.
-      </div>
-    </div>
-    <div
-      class="card option-card"
+    </a>
+    <a
+      href="/account/create"
+      style="text-decoration: none;"
     >
       <div
-        class="card-title-wrapper"
+        class="card option-card"
       >
-        <img
-          class="card-icon"
-          src="[object Object]"
-        />
-        <p
-          class="card-title"
+        <div
+          class="card-title-wrapper"
         >
-          Get a new wallet
-        </p>
+          <svg
+            class="card-icon"
+          />
+          <p
+            class="card-title"
+          >
+            Get a new wallet
+          </p>
+        </div>
+        <div
+          class="card-description"
+        >
+          Start from the beginning.
+        </div>
       </div>
-      <div
-        class="card-description"
-      >
-        Start from the beginning.
-      </div>
-    </div>
+    </a>
   </div>
 </div>
 `;

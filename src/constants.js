@@ -3,7 +3,7 @@ export const LOAD_KOI_BY = {
   KEY: 'key'
 }
 
-export const HEADER_EXCLUDE_PATH = ['/account/login', '/account/connect-site']
+export const HEADER_EXCLUDE_PATH = ['/account/login', '/account/connect-site', '/account/sign-transaction']
 
 export const PORTS = {
   POPUP: 'POPUP',
@@ -35,7 +35,13 @@ export const MESSAGES = {
   GET_ADDRESS_ERROR: 'GET_ADDRESS_ERROR',
   GET_PERMISSION: 'GET_PERMISSION',
   GET_PERMISSION_SUCCESS: 'GET_PERMISSION_SUCCESS',
-  GET_PERMISSION_ERROR: 'GET_PERMISSION_ERROR'
+  GET_PERMISSION_ERROR: 'GET_PERMISSION_ERROR',
+  CREATE_TRANSACTION: 'CREATE_TRANSACTION',
+  CREATE_TRANSACTION_SUCCESS: 'CREATE_TRANSACTION_SUCCESS',
+  CREATE_TRANSACTION_ERROR: 'CREATE_TRANSACTION_ERROR',
+  SIGN_TRANSACTION: 'SIGN_TRANSACTION',
+  SIGN_TRANSACTION_SUCCESS: 'SIGN_TRANSACTION_SUCCESS',
+  SIGN_TRANSACTION_ERROR: 'SIGN_TRANSACTION_ERROR'
 }
 
 export const PATH = {
@@ -45,7 +51,7 @@ export const PATH = {
   LOGIN: '/account/login',
   NFT_IMAGE: 'https://arweave.net',
   VIEW_BLOCK: 'https://viewblock.io/arweave/tx',
-  KOI_HEROKU: 'https://koi-tool.herokuapp.com',
+  KOI_ROCK: 'https://koi.rocks/content-detail',
   GALLERY: chrome.extension ? `${chrome.extension.getURL('/options.html')}` : 'GALLERY_PATH'
 }
 

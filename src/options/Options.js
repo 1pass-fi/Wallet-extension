@@ -1,5 +1,5 @@
 import '@babel/polyfill'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, useQuery } from 'react-router-dom'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
@@ -43,7 +43,7 @@ const BigCard = ({
   imageUrl,
   earnedKoi,
   isRegistered,
-  viewblockUrl,
+  koiRockUrl,
   setChoosen,
 }) => {
   return (
@@ -58,7 +58,7 @@ const BigCard = ({
         </button>
       )}
       {isRegistered && (
-        <a target="_blank" href={viewblockUrl} className='nft-path'>
+        <a target="_blank" href={koiRockUrl} className='nft-path'>
           View on koi.rocks
         </a>
       )}
@@ -72,12 +72,18 @@ const Card = ({
   imageUrl,
   earnedKoi,
   isRegistered,
-  viewblockUrl,
+  koiRockUrl,
   choosen,
   setChoosen,
+  titleRef
 }) => {
+  const onClick = () => {
+    setChoosen(txId)
+    titleRef.current.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return choosen !== txId ? (
-    <div className='nft-card' onClick={() => setChoosen(txId)}>
+    <div className='nft-card' onClick={onClick}>
       <img src={imageUrl} className='nft-img' />
       <div className='nft-name'>{name}</div>
       {isRegistered ? (
@@ -88,7 +94,7 @@ const Card = ({
         </button>
       )}
       {isRegistered && (
-        <a target="_blank" href={viewblockUrl} className='nft-path'>
+        <a target="_blank" href={koiRockUrl} className='nft-path'>
           <ShareIcon />
         </a>
       )}
@@ -98,6 +104,7 @@ const Card = ({
 
 const Content = ({ cardInfos }) => {
   const [choosen, setChoosen] = useState('')
+  const titleRef = useRef(null)
 
   useEffect(() => {
     const query = window.location.search
@@ -114,14 +121,14 @@ const Content = ({ cardInfos }) => {
 
   return (
     <div className='app-content'>
-      <div className='title'>My NFT Gallery</div>
+      <div className='title' ref={titleRef}>My NFT Gallery</div>
       <div className='cards'>
         {!isEmpty(choosenCard) && (
           <BigCard {...choosenCard} setChoosen={setChoosen} />
         )}
         <div className='small-cards'>
           {cardInfos.map((cardInfo) => (
-            <Card choosen={choosen} setChoosen={setChoosen} {...cardInfo} />
+            <Card choosen={choosen} setChoosen={setChoosen} {...cardInfo} titleRef={titleRef} />
           ))}
         </div>
       </div>

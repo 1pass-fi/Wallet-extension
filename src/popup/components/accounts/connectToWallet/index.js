@@ -82,7 +82,7 @@ export default () => {
     }
 
     loadRequest()
-  })
+  }, [])
 
   return (
     <div className='select-wallet'>

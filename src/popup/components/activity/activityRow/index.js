@@ -11,7 +11,7 @@ const propTypes = {
   date: PropTypes.instanceOf(Date)
 }
 
-const ActivityRow = ({ activityName, expense, accountName, date}) => {
+const ActivityRow = ({ activityName, expense, accountName, date }) => {
   const dateFormat = (date) => {
     return moment(date).format('MMMM Do, YYYY')
   }
@@ -19,7 +19,7 @@ const ActivityRow = ({ activityName, expense, accountName, date}) => {
     <div className='activity-row-container'>
       <div className='activity-info main'>
         <div className='activity-name'>{activityName}</div>
-        <div className='activity-expense'>{expense} AR</div>
+        <div className='activity-expense'>- {expense} AR</div>
       </div>
       <div className='activity-info sub'>
         <div className='activity-account'>{accountName}</div>

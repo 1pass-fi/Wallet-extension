@@ -1,6 +1,7 @@
 import { get } from 'lodash'
 
 import { setIsLoading } from './loading'
+import { setContLoading } from './continueLoading'
 import { setError } from './error'
 import { setCreateWallet } from './createWallet'
 import { setAssets } from './assets'
@@ -101,6 +102,11 @@ export const lockWallet = (inputData) => (dispatch) => {
     const { history } = inputData
     dispatch(setIsLoading(true))
     const lockSuccessHandler = new CreateEventHandler(MESSAGES.LOCK_WALLET_SUCCESS, response => {
+      dispatch(setKoi({
+        koiBalance: null,
+        arBalance: null,
+        address: null
+      }))
       dispatch(setIsLoading(false))
       history.push(PATH.LOGIN)
     })
@@ -129,8 +135,9 @@ export const unlockWallet = (inputData) => (dispatch) => {
     const unlockSuccessHandler = new CreateEventHandler(MESSAGES.UNLOCK_WALLET_SUCCESS, async response => {
       const { koiData } = response.data
       dispatch(setKoi(koiData))
-      const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
       dispatch(setIsLoading(false))
+      const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
+      /* istanbul ignore next */
       switch (get(storage[STORAGE.PENDING_REQUEST], 'type')) {
         case REQUEST.PERMISSION:
           history.push('/account/connect-site')
@@ -222,17 +229,17 @@ export const saveWallet = (inputData) => (dispatch) => {
 
 export const loadContent = () => (dispatch) => {
   try {
-    dispatch(setIsLoading(true))
+    dispatch(setContLoading(true))
     const saveSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_CONTENT_SUCCESS, response => {
       const { contentList } = response.data
       console.log('CONTENT LIST FROM ACTION', contentList)
       dispatch(setAssets(contentList))
-      dispatch(setIsLoading(false))
+      dispatch(setContLoading(false))
     })
     const saveFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
       const errorMessage = response.data
-      dispatch(setIsLoading(false))
+      dispatch(setContLoading(false))
       dispatch(setError(errorMessage))
     })
 
@@ -243,7 +250,7 @@ export const loadContent = () => (dispatch) => {
     })
   } catch (err) {
     dispatch(setError(err.message))
-    dispatch(setIsLoading(false))
+    dispatch(setContLoading(false))
   }
 }
 
@@ -252,7 +259,7 @@ export const makeTransfer = (inputData) => (dispatch) => {
     dispatch(setIsLoading(true))
     const transferSuccessHandler = new CreateEventHandler(MESSAGES.MAKE_TRANSFER_SUCCESS, response => {
       const { txId } = response.data
-      dispatch(setTransactions([txId]))
+      dispatch(setTransactions(txId))
       dispatch(setIsLoading(false))
     })
     const transferFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
@@ -265,6 +272,32 @@ export const makeTransfer = (inputData) => (dispatch) => {
     backgroundConnect.addHandler(transferFailedHandler)
     backgroundConnect.postMessage({
       type: MESSAGES.MAKE_TRANSFER,
+      data: inputData
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const signTransaction = (inputData) => (dispatch) => {
+  try {
+    console.log('SIGN TRANSACTION ACTION')
+    dispatch(setIsLoading(true))
+    const signSuccessHandler = new CreateEventHandler(MESSAGES.SIGN_TRANSACTION_SUCCESS, response => {
+      console.log('SIGN TRANSACTION SUCCESS')
+      dispatch(setIsLoading(false))
+    })
+    const signFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
+    backgroundConnect.addHandler(signSuccessHandler)
+    backgroundConnect.addHandler(signFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.SIGN_TRANSACTION,
       data: inputData
     })
   } catch (err) {

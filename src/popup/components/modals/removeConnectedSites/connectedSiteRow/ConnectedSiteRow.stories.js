@@ -1,13 +1,21 @@
 import ConnectedSiteRow from '.'
+import partialAction from 'stories/partialAction'
 
 ConnectedSiteRow.displayName = 'ConnectedSiteRow'
 
 export default {
   title: 'component/ConnectedSiteRow',
   component: ConnectedSiteRow,
+  argTypes: {
+    isGreyBackground: {
+      control: { type: 'boolean' }
+    },
+
+  },
   args: {
     isGreyBackground: true,
-    site: { name: 'koi.rocks' },
+    site: 'koi.rocks',
+    handleDeleteSite: partialAction('handleDelete')
   }
 }
 
@@ -18,4 +26,3 @@ White.args = {
   isGreyBackground: false,
 }
 export const Grey = Template.bind({})
-

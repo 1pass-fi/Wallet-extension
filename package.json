@@ -154,7 +154,9 @@
             "/libs/",
             "/background/",
             "/content_scripts/",
-            "/lib/"
+            "/lib/",
+            ".stories.js"
+
         ],
         "setupFiles": [
             "jest-webextension-mock"

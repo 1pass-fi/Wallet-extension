@@ -9,7 +9,7 @@ describe('Test for Card component', () => {
     let outerDiv, container, props, Children
 
     beforeEach(() => {
-      Children = () => <h1>Hello</h1>
+      Children = () => <h1 id='children'>Hello</h1>
       props = {
         children: <Children />,
         className: 'extra-class-name'
@@ -26,7 +26,7 @@ describe('Test for Card component', () => {
     })
 
     it('renders children', () => {
-      expect(screen.getByRole('h1')).toBeInTheDocument()
+      expect(document.getElementById('children').textContent).toEqual('Hello')
     })
   })
 })
