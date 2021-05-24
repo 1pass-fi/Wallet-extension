@@ -1,13 +1,14 @@
 import RemoveConnectedSites from '.'
+import partialAction from 'stories/partialAction'
 
 RemoveConnectedSites.displayName = 'RemoveConnectedSites'
 
 const sites = [
-  { name: 'koi.rocks' },
-  { name: 'app.uniswap.org' },
-  { name: 'opensea.io' },
-  { name: 'examplewebsite.io'},
-  { name: 'thisisaprettylongnameeeeeeeeeeeeeeeeeeee.io'}
+  'koi.rocks' ,
+  'app.uniswap.org' ,
+  'opensea.io' ,
+  'examplewebsite.io',
+  'thisisaprettylongnameeeeeeeeeeeeeeeeeeee.io'
 ]
 
 export default {
@@ -16,6 +17,8 @@ export default {
   args: {
     sites: sites,
     accountName: 'Account 1',
+    handleDeleteSite: partialAction('handleDeleteSite'),
+    onClose: partialAction('onClose')
   }
 }
 
