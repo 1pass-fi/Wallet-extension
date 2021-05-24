@@ -33,7 +33,7 @@
     padding: 0;
 }
 
-.create-password .term-service p {
+.create-password .term-service label {
     font-size: 15px;
 }
 
@@ -44,6 +44,10 @@
 /* BUTTON */
 .create-password .button {
     height: 32px;
-    width: 330px;
+    width: 137px;
+}
+
+.create-password .button .import-button{
     font-size: 14px;
+    font-weight: 600;
 }

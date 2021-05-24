@@ -54,7 +54,7 @@ const SendKoiForm = ({ koiBalance, rate, setError, makeTransfer, onSendSuccess }
         <span>Available balance: </span>
         <b>{koiBalance} KOI</b>
         <div className="amount-in-usd">
-          ~ $ {numberFormat(koiBalance * rate)} USD
+          ~ ${numberFormat(koiBalance * rate)} USD
         </div>
       </div>
       <div className="recipient">
