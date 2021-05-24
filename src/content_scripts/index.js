@@ -10,10 +10,10 @@ const messageTypes = [
   MESSAGES.GET_ADDRESS_ERROR,
   MESSAGES.GET_PERMISSION_SUCCESS,
   MESSAGES.GET_PERMISSION_ERROR,
-  MESSAGES.SIGN_TRANSACTION_SUCCESS,
-  MESSAGES.SIGN_TRANSACTION_ERROR
+  MESSAGES.CREATE_TRANSACTION_SUCCESS,
+  MESSAGES.CREATE_TRANSACTION_ERROR,
 ]
-const backgroundConnect = new BackgroundConnect(PORTS.CONTENT_SCRIPT)
+export const backgroundConnect = new BackgroundConnect(PORTS.CONTENT_SCRIPT)
 messageTypes.forEach(messageType => {
   backgroundConnect.addHandler(new EventHandler(messageType, (message) => {
     window.postMessage(message)
@@ -28,7 +28,7 @@ window.addEventListener('message', function (event) {
     case MESSAGES.GET_PERMISSION:
       backgroundConnect.postMessage({ type: event.data.type, data: event.data.data })
       break
-    case MESSAGES.SIGN_TRANSACTION:
+    case MESSAGES.CREATE_TRANSACTION:
       backgroundConnect.postMessage({ type: event.data.type, data: event.data.data })
       break
     default:
@@ -53,23 +53,21 @@ window.addEventListener('message', function (event) {
       return promise
     }
 
-    var getFavicon = function(){
+    var getFavicon = function () {
       var favicon = undefined
       var nodeList = document.getElementsByTagName('link')
-      for (var i = 0; i < nodeList.length; i++)
-      {
-        if((nodeList[i].getAttribute('rel') == 'icon')||(nodeList[i].getAttribute('rel') == 'shortcut icon'))
-        {
+      for (var i = 0; i < nodeList.length; i++) {
+        if ((nodeList[i].getAttribute('rel') == 'icon') || (nodeList[i].getAttribute('rel') == 'shortcut icon')) {
           favicon = nodeList[i].getAttribute('href')
         }
       }
-      return favicon        
+      return favicon
     }
 
     window.koi = {
       getAddress: () => buildPromise(MESSAGE_TYPES.GET_ADDRESS),
-      getPermission: () => buildPromise(MESSAGE_TYPES.GET_PERMISSION, {origin: window.location.origin, favicon: getFavicon() }),
-      signTransaction: (qty, address) => buildPromise(MESSAGE_TYPES.SIGN_TRANSACTION, { qty, address, origin: window.location.origin, favicon: getFavicon() })
+      getPermission: () => buildPromise(MESSAGE_TYPES.GET_PERMISSION, { origin: window.location.origin, favicon: getFavicon() }),
+      signTransaction: (qty, address) => buildPromise(MESSAGE_TYPES.CREATE_TRANSACTION, { qty, address, origin: window.location.origin, favicon: getFavicon() })
     }
     window.addEventListener('message', function (event) {
       if (!event.data || !event.data.type) {
@@ -88,11 +86,11 @@ window.addEventListener('message', function (event) {
 
   function inject(fn) {
     const script = document.createElement('script')
-    const { GET_ADDRESS, GET_PERMISSION, SIGN_TRANSACTION } = messages
+    const { GET_ADDRESS, GET_PERMISSION, CREATE_TRANSACTION } = messages
     const pickedMessages = {
       GET_ADDRESS,
       GET_PERMISSION,
-      SIGN_TRANSACTION
+      CREATE_TRANSACTION
     }
     script.text = `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(pickedMessages)}');(${fn.toString()})();`
     document.documentElement.appendChild(script)

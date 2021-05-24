@@ -32,7 +32,7 @@ export default async (koi, port, message) => {
         console.log('FAVICON', favicon)
         console.log('CHECK SITE PERMISSION', await checkSitePermission(origin))
         if (!(await checkSitePermission(origin))) {
-          setChromeStorage({
+          await setChromeStorage({
             'pendingRequest': {
               type: REQUEST.PERMISSION,
               data: { origin, favicon }
@@ -48,10 +48,15 @@ export default async (koi, port, message) => {
         }
         break
       }
-      case MESSAGES.SIGN_TRANSACTION: {
+      case MESSAGES.CREATE_TRANSACTION: {
+        console.log('CREATE TRASACTION BACKGROUND')
         const { origin, favicon, qty, address } = message.data
+        console.log('ORIGIN', origin)
+        console.log('FAVICON', favicon)
+        console.log('QTY', qty)
+        console.log('ADDRESS', address)
         if (!(await checkSitePermission(origin))) {
-          setChromeStorage({
+          await setChromeStorage({
             'pendingRequest': {
               type: REQUEST.PERMISSION,
               data: { origin, favicon }
@@ -65,14 +70,22 @@ export default async (koi, port, message) => {
             width: 426
           })
           port.postMessage({
-            type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
+            type: MESSAGES.CREATE_TRANSACTION_ERROR,
             data: 'Do not have permission.'
           })
         } else {
-          const txId = await transfer(koi, qty, address)
-          port.postMessage({
-            type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
-            data: txId
+          await setChromeStorage({
+            'pendingRequest': {
+              type: REQUEST.TRANSACTION,
+              data: { origin, favicon, qty, address }
+            }
+          })
+          chrome.windows.create({
+            url: chrome.extension.getURL('/popup.html'),
+            focused: true,
+            type: 'popup',
+            height: 622,
+            width: 426
           })
         }
         break

@@ -3,11 +3,26 @@
 }
 
 .sign-tx .account-section {
-  display: flex;
-  justify-content: space-between;
-  height: 247px;
-  align-items: flex-start;
+  height: 153px;
   padding: 0 24px;
+  background-color: white;
+}
+
+.sign-tx .account-section .account-source {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-top: 36px;
+}
+
+.sign-tx .account-section .origin {
+  text-align: center;
+  height: 20px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #237B75;
+  padding-top: 5px;
 }
 
 .sign-tx .account-section .account {
@@ -55,9 +70,11 @@
 }
 
 .content-section {
+  display: flex;
   background: #eeeeee;
-  padding: 29px 24px;
-  width: 100%;
+  justify-content: center;
+  width: 426px;
+  padding: 20px 0;
 }
 
 .sign-tx .content-section .transaction-detail {
@@ -66,6 +83,26 @@
   height: 342px;
   padding: 22px 20px 80px;
   position: relative;
+}
+
+.sign-tx .content-section .transaction-detail .total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sign-tx .content-section .transaction-detail .total .amount {
+  display: flex;
+  margin: 0;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.sign-tx .content-section .transaction-detail .total .amount .koi-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
 }
 
 .sign-tx .content-section .transaction-detail .button-group {

@@ -106,6 +106,16 @@ export default async (koi, port, message) => {
         })
         break
       }
+      case MESSAGES.SIGN_TRANSACTION: {
+        console.log('SIGN TRANSACTION BACKGROUND')
+        const { qty, address } = message.data
+        const txId = await transfer(koi, qty, address)
+        console.log('TRANSACTION ID', txId)
+        port.postMessage({
+          type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
+        })
+        break
+      }
       default:
         break
     }
