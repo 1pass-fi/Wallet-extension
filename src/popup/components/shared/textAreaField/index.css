@@ -1,0 +1,49 @@
+.text-area-field {
+  color: #171753;
+}
+
+.text-area-field .label {
+  font-size: 15px;
+  height: 20px;
+  line-height: 20px;
+  margin-left: 10px;
+  text-transform: capitalize;
+}
+
+.text-area-field .input-wrapper {
+  background: #ffffff;
+  height: 110px;
+  position: relative;
+  width: 330px;
+}
+
+.text-area-field .input {
+  border-radius: 2px;
+  border: 1.5px solid #171753;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  color: #171753;
+  font-size: 15px;
+  height: 100%;
+  letter-spacing: 0.03em;
+  line-height: 18px;
+  margin: 0;
+  padding: 8px 10px 6px;
+  width: 100%;
+}
+
+.text-area-field .input.protect {
+  -webkit-text-security: disc;
+}
+
+.text-area-field .input::placeholder {
+  color: #237b75;
+  opacity: 0.7;
+}
+
+.text-area-field .toggle-display {
+  cursor: pointer;
+  position: absolute;
+  right: 9px;
+  top: 4px;
+}
