@@ -143,7 +143,7 @@ export const unlockWallet = (inputData) => (dispatch) => {
           history.push('/account/connect-site')
           break
         case REQUEST.TRANSACTION:
-          history.push('account/sign-transaction')
+          history.push('/account/sign-transaction')
           break
         default:
           history.push('/account')
