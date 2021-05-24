@@ -12,6 +12,7 @@ import ImportPhraseSuccess from './importByPhraseSuccess'
 import CreateWallet from './createWallet'
 import Login from './accountLockScreen'
 import ConnectSite from './connectToWallet'
+import SignTx from './signTx'
 
 const Account = () => {
   return (
@@ -45,6 +46,9 @@ const Account = () => {
       </Route>
       <Route path='/account/connect-site'>
         <ConnectSite />
+      </Route>
+      <Route path='/account/sign-transaction'>
+        <SignTx />
       </Route>
     </Switch>
   )

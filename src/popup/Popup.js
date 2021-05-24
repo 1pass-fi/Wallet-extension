@@ -53,7 +53,7 @@ const Popup = ({
               history.push('/account/connect-site')
               break
             case REQUEST.TRANSACTION:
-              history.push('account/sign-transaction')
+              history.push('/account/sign-transaction')
               break
           }
         } else {

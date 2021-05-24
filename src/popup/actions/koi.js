@@ -280,4 +280,30 @@ export const makeTransfer = (inputData) => (dispatch) => {
   }
 }
 
+export const signTransaction = (inputData) => (dispatch) => {
+  try {
+    console.log('SIGN TRANSACTION ACTION')
+    dispatch(setIsLoading(true))
+    const signSuccessHandler = new CreateEventHandler(MESSAGES.SIGN_TRANSACTION_SUCCESS, response => {
+      console.log('SIGN TRANSACTION SUCCESS')
+      dispatch(setIsLoading(false))
+    })
+    const signFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
+    backgroundConnect.addHandler(signSuccessHandler)
+    backgroundConnect.addHandler(signFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.SIGN_TRANSACTION,
+      data: inputData
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
 export const setKoi = (payload) => ({ type: SET_KOI, payload })
