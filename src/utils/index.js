@@ -84,6 +84,59 @@ export const loadMyContent = async (koiObj) => {
   }
 }
 
+export const loadMyActivities = async (koiObj) => {
+  return [
+    {
+      activityName: `Purchased "The Balance of Koi"`,
+      expense: 100,
+      accountName: 'Account 1',
+      date: 'May 24, 2021'
+    },
+    {
+      activityName: `Purchased "The Balance of Koi"`,
+      expense: 200,
+      accountName: 'Account 1',
+      date: 'May 22, 2021'
+    },
+    {
+      activityName: `Purchased "The Balance of Koi"`,
+      expense: 100,
+      accountName: 'Account 1',
+      date: 'May 24, 2021'
+    },
+    {
+      activityName: `Purchased "The Balance of Koi"`,
+      expense: 200,
+      accountName: 'Account 1',
+      date: 'May 22, 2021'
+    },
+    {
+      activityName: `Purchased "The Balance of Koi"`,
+      expense: 100,
+      accountName: 'Account 1',
+      date: 'May 24, 2021'
+    },
+    {
+      activityName: `Purchased "The Balance of Koi"`,
+      expense: 200,
+      accountName: 'Account 1',
+      date: 'May 22, 2021'
+    },
+    {
+      activityName: `Purchased "The Balance of Koi"`,
+      expense: 100,
+      accountName: 'Account 1',
+      date: 'May 24, 2021'
+    },
+    {
+      activityName: `Purchased "The Balance of Koi"`,
+      expense: 200,
+      accountName: 'Account 1',
+      date: 'May 22, 2021'
+    }
+  ]
+}
+
 export const transfer = async (koiObj, qty, address) => {
   try {
     return await koiObj.transfer(qty, address)

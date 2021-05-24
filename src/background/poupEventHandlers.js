@@ -3,6 +3,7 @@ import {
   saveWalletToChrome,
   utils,
   loadMyContent,
+  loadMyActivities,
   removeWalletFromChrome,
   decryptWalletKeyFromChrome,
   setChromeStorage,
@@ -94,6 +95,16 @@ export default async (koi, port, message) => {
         port.postMessage({
           type: MESSAGES.LOAD_CONTENT_SUCCESS,
           data: { contentList }
+        })
+        break
+      }
+      case MESSAGES.LOAD_ACTIVITIES: {
+        const activitiesList = await loadMyActivities(koi)
+        console.log('ACTIVITIES LIST', activitiesList)
+        setChromeStorage({ activitiesList })
+        port.postMessage({
+          type: MESSAGES.LOAD_ACTIVITIES_SUCCESS,
+          data: { activitiesList }
         })
         break
       }

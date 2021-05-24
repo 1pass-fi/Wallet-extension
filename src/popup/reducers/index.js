@@ -6,6 +6,7 @@ import error from './error'
 import koi from './koi'
 import createWallet from './createWallet'
 import assets from './assets'
+import activities from './activities'
 import transactions from './transactions'
 
 export default combineReducers({
@@ -15,5 +16,6 @@ export default combineReducers({
   koi,
   createWallet,
   assets,
+  activities,
   transactions
 })
