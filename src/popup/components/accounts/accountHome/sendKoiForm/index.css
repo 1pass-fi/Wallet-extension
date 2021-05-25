@@ -6,22 +6,22 @@
   background-color: #eeeeee;
 }
 
-.koi-balance {
+.send-koi-form .koi-balance {
   font-size: 14px;
   line-height: 20px;
   align-items: center;
   letter-spacing: 0.03em;
 }
 
-.recipient{
+.send-koi-form .recipient{
   margin: 21px 40px 20px 40px;
 }
 
-.input-field.form-input .input {
+.send-koi-form .input-field.form-input .input {
   font-family: 'Catamaran', sans-serif;
   font-size: 14.5px;
 }
-.input-field.form-input .label {
+.send-koi-form .input-field.form-input .label {
   font-size: 14px;
 }
 
@@ -29,41 +29,42 @@
   display: none;
 }
 
-.warning {
+.send-koi-form .warning {
   margin: 0 40px 30px 40px;
   display: flex;
 }
 
-.warning-icon {
+.send-koi-form .warning-icon {
   width: 24px;
   height: 24px;
   margin: 8px 10px 8px 0;
 }
 
-.warning-message {
+.send-koi-form .warning-message {
   font-size: 15px;
   line-height: 20px;
   letter-spacing: 0.03em;
   align-content: flex-start;
 }
 
-.amount{
+.send-koi-form .amount{
   margin: 0 40px 46px 40px;
 }
 
-.send-button {
+.send-koi-form .send-button {
   margin-bottom: 46px;
   width: 183px;
   height: 32px;
+  font-weight: 600;
 }
 
-.amount-in-usd {
+.send-koi-form .amount-in-usd {
   padding-left: 10px;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.03em;
   color: #237b75;
 }
-.koi-balance .amount-in-usd {
+.send-koi-form .koi-balance .amount-in-usd {
   padding-left: 116px;
 }

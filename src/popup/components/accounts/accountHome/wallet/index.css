@@ -3,6 +3,7 @@
   width: 426px;
   padding: 20px 0;
   background: #ffffff;
+  color: #171753;
 }
 
 .wallet .fish {
@@ -26,7 +27,9 @@
 .wallet .wallet-wrapper .address {
   width: 330px;
   min-height: 28px;
-  font-size: 13x;
+  border: 1.5px solid #171753;
+  color: #237b75;
+  font-size: 13px;
 }
 
 .wallet .wallet-wrapper .wallet-info .wallet-info-row {

@@ -18,7 +18,7 @@ export default () => {
         <div className='details'>
           <div className='safekeeping'>A few tips for safekeeping:</div>
           <div className='tips-set'>
-            <p className='tip-item'>Create a 12-word seed phrase. </p>
+            <strong className='tip-item'>Create a 12-word seed phrase. </strong>
             <p className='tip-item'>Save a backup copy in several places. </p>
             <p className='tip-item'>
               Never share your seed phrase or keyfile with anyone.{' '}
@@ -38,13 +38,13 @@ export default () => {
       <div className='button-line'>
         <Link to='#'>
           <Button
-            className='create-phrase-button'
+            className='import-wallet-success-button create'
             label={'Create Seed Phrase'}
           ></Button>
         </Link>
         <Link to='/account'>
           <Button
-            className='go-to-account-button'
+            className='import-wallet-success-button skip'
             label={'Skip, Go to Accounts'}
             type={'outline'}
           ></Button>
