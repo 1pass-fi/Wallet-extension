@@ -65,6 +65,8 @@ const Popup = ({
           // Koi Address not in local storage
           if (storage['koiKey']) {
             history.push('/account/login')
+          } else {
+            history.push('/account/welcome')
           }
         }
       } catch (err) {
@@ -110,7 +112,7 @@ const Popup = ({
       {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
       {isLoading && <Loading />}
       {error && <ErrorMessage children={error} />}
-      {notification && <NotificationMessage children={notification}/>}
+      {notification && <NotificationMessage children={notification} />}
       {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />}
       <div className='content'>
         <Switch>

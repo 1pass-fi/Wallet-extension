@@ -1,18 +1,13 @@
 import '@babel/polyfill'
 
 import { PORTS } from 'constants'
-import popUpEventHandlers from './poupEventHandlers'
+import popUpEventHandlers from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from 'koi_tools/web'
+
 /* eslint-disable no-undef */
 const koi = new Web()
 console.log('Background.js file loaded')
-
-/* const defaultUninstallURL = () => {
-  return process.env.NODE_ENV === 'production'
-    ? 'https://wwww.github.com/kryptokinght'
-    : '';
-}; */
 
 browser.runtime.onMessage.addListener(function (message) {
   console.log(message)

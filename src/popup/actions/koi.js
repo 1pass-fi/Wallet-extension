@@ -10,10 +10,11 @@ import { setTransactions } from './transactions'
 
 import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 
-import { MESSAGES, PATH, STORAGE, REQUEST } from 'constants'
+import { MESSAGES, PATH, STORAGE, REQUEST, NOTIFICATION } from 'constants'
 
 import { SET_KOI } from 'actions/types'
 import { getChromeStorage } from 'utils'
+import { setNotification } from './notification'
 
 export const importWallet = (inputData) => (dispatch) => {
   try {
@@ -71,14 +72,16 @@ export const loadWallet = (inputData) => (dispatch) => {
   }
 }
 
-export const removeWallet = () => (dispatch) => {
+export const removeWallet = (inputData) => (dispatch) => {
   try {
+    const { history } = inputData
     dispatch(setIsLoading(true))
     const removeSuccessHandler = new CreateEventHandler(MESSAGES.REMOVE_WALLET_SUCCESS, response => {
       const { koiData } = response.data
       dispatch(setAssets([]))
       dispatch(setKoi(koiData))
       dispatch(setIsLoading(false))
+      history.push('/account/welcome')
     })
     const removeFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
@@ -290,6 +293,7 @@ export const makeTransfer = (inputData) => (dispatch) => {
       const { txId } = response.data
       dispatch(setTransactions(txId))
       dispatch(setIsLoading(false))
+      dispatch(setNotification(`Transaction ID: ${txId}`))
     })
     const transferFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
@@ -333,6 +337,26 @@ export const signTransaction = (inputData) => (dispatch) => {
     dispatch(setError(err.message))
     dispatch(setIsLoading(false))
   }
+}
+
+export const getKeyFile = () => (dispatch) => {
+  const getKeyFileSuccessHandler = new CreateEventHandler(MESSAGES.GET_KEY_FILE_SUCCESS, response => {
+    const content = response.data
+    const filename = 'arweave-key.json'
+    const result = JSON.stringify(content)
+
+    const url = 'data:application/json;base64,' + btoa(result)
+    chrome.downloads.download({
+      url: url,
+      filename: filename,
+    })
+    dispatch(setNotification(NOTIFICATION.KEY_EXPORTED))
+  })
+  backgroundConnect.addHandler(getKeyFileSuccessHandler)
+  backgroundConnect.postMessage({
+    type: MESSAGES.GET_KEY_FILE,
+    data: {}
+  })
 }
 
 export const setKoi = (payload) => ({ type: SET_KOI, payload })

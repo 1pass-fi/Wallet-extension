@@ -1,9 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useHistory } from 'react-router-dom'
+import { connect } from 'react-redux'
 
+import { REQUEST, STORAGE } from 'constants'
+import { setChromeStorage, checkSitePermission } from 'utils'
+import { setError } from 'popup/actions/error'
 import Modal from 'popup/components/shared/modal'
 import ConnectedSiteRow from './connectedSiteRow'
-
 import PlusIcon from 'img/plus-icon.svg'
 
 import './index.css'
@@ -23,9 +27,33 @@ const ModalTitle = ({ accountName }) => {
   )
 }
 
-const ManualConnectSite = ({ isGreyBackground }) => {
+const ManualConnectSite = ({ isGreyBackground, setError }) => {
+  const history = useHistory()
+
+  const onManualConnect = () => {
+    chrome.tabs.getSelected(null, async (tab) => {
+      const origin = (new URL(tab.url)).origin
+      const favicon = tab.favIconUrl
+
+      if (!(await checkSitePermission(origin))) {
+        await setChromeStorage({
+          [STORAGE.PENDING_REQUEST]: {
+            type: REQUEST.PERMISSION,
+            data: { origin, favicon }
+          }
+        })
+        history.push('/account/connect-site')
+      } else {
+        setError('This site has already connected')
+      }
+    })
+  }
   return (
-    <div className='manual-connect-container' style={{ background: isGreyBackground ? '#eeeeee' : '#ffffff' }}>
+    <div
+      className='manual-connect-container'
+      onClick={onManualConnect}
+      style={{ background: isGreyBackground ? '#eeeeee' : '#ffffff' }}
+    >
       <button className='manual-connect-button'>
         <div className='plus-icon'>
           <PlusIcon />
@@ -36,7 +64,7 @@ const ManualConnectSite = ({ isGreyBackground }) => {
   )
 }
 
-const RemoveConnectedSites = ({ sites, accountName, handleDeleteSite, onClose }) => {
+const RemoveConnectedSites = ({ sites, accountName, handleDeleteSite, onClose, setError }) => {
   return (
     <Modal onClose={onClose}>
       <ModalTitle accountName={accountName} />
@@ -50,11 +78,14 @@ const RemoveConnectedSites = ({ sites, accountName, handleDeleteSite, onClose })
           />
         )
       })}
-      <ManualConnectSite isGreyBackground={sites.length % 2 === 0} />
+      <ManualConnectSite
+        setError={setError}
+        isGreyBackground={sites.length % 2 === 0}
+      />
     </Modal>
   )
 }
 
 RemoveConnectedSites.propTypes = propTypes
 
-export default RemoveConnectedSites
+export default connect(null, { setError })(RemoveConnectedSites)

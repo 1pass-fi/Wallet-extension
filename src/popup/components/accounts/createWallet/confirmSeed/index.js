@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import union from 'lodash/union'
+import unionBy from 'lodash/unionBy'
 import map from 'lodash/map'
 import shuffle from 'lodash/shuffle'
 import filter from 'lodash/filter'
@@ -18,7 +18,13 @@ import { setCreateWallet } from 'actions/createWallet'
 
 import './index.css'
 
-export const ConfirmSeed = ({ seedPhrase, password, saveWallet, setError, setCreateWallet }) => {
+export const ConfirmSeed = ({
+  seedPhrase,
+  password,
+  saveWallet,
+  setError,
+  setCreateWallet,
+}) => {
   const wordLists = shuffle(seedPhrase.split(' '))
   const history = useHistory()
   const [basePhrase, setBasePhrase] = useState([])
@@ -30,7 +36,7 @@ export const ConfirmSeed = ({ seedPhrase, password, saveWallet, setError, setCre
 
   const handleOnClick = () => {
     try {
-      if (seedPhrase === addedPhrase.join(' ')) {
+      if (seedPhrase === addedPhrase.map(item => item.word).join(' ')) {
         saveWallet({ password, history })
       } else {
         setError('Incorrect Seed phrase')
@@ -45,13 +51,13 @@ export const ConfirmSeed = ({ seedPhrase, password, saveWallet, setError, setCre
     [basePhrase, addedPhrase]
   )
 
-  const onAddWord = (newWord) => {
+  const onAddWord = (newItem) => {
     // Add new word
-    setAddedPhrase(union(addedPhrase, [newWord]))
+    setAddedPhrase(unionBy(addedPhrase, [newItem], 'id'))
 
     // Dissable word in base phrase
     const updatedPhrase = map(basePhrase, (item) => {
-      if (item.word === newWord) {
+      if (item.id === newItem.id) {
         return {
           ...item,
           disabled: true,
@@ -62,17 +68,17 @@ export const ConfirmSeed = ({ seedPhrase, password, saveWallet, setError, setCre
     setBasePhrase(updatedPhrase)
   }
 
-  const onRemoveWord = (removeWord) => {
+  const onRemoveWord = (removeItem) => {
     // Update added phrase
     const updatedAddedPhrase = filter(
       addedPhrase,
-      (word) => word !== removeWord
+      (item) => item.id !== removeItem.id
     )
     setAddedPhrase(updatedAddedPhrase)
 
     // Update base phrase
     const updatedPhrase = map(basePhrase, (item) => {
-      if (item.word === removeWord) {
+      if (item.id === removeItem.id) {
         return {
           ...item,
           disabled: false,
@@ -84,7 +90,8 @@ export const ConfirmSeed = ({ seedPhrase, password, saveWallet, setError, setCre
   }
 
   useEffect(() => {
-    const constructedSeedPhrase = wordLists.map((word) => ({
+    const constructedSeedPhrase = wordLists.map((word, id) => ({
+      id,
       word,
       disabled: false,
     }))
@@ -114,22 +121,22 @@ export const ConfirmSeed = ({ seedPhrase, password, saveWallet, setError, setCre
           </div>
         </div>
         <div className='selected-box'>
-          {addedPhrase.map((word) => (
+          {addedPhrase.map((item) => (
             <button
               className='word'
-              key={word}
-              onClick={() => onRemoveWord(word)}
+              key={item}
+              onClick={() => onRemoveWord(item)}
             >
-              {word}
+              {item.word}
             </button>
           ))}
         </div>
         <div className='b2'>
-          {basePhrase.map(({ word, disabled }) => (
+          {basePhrase.map(({ id, word, disabled }) => (
             <button
               key={word}
               className={`word ${disabled ? 'disabled' : ''}`}
-              onClick={() => onAddWord(word)}
+              onClick={() => onAddWord({ id, word })}
             >
               {word}
             </button>

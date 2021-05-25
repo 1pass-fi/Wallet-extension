@@ -27,7 +27,8 @@
   "permissions": [
     "storage",
     "unlimitedStorage",
-    "activeTab"
+    "downloads",
+    "tabs"
   ],
   "icons": {
     "128": "img/icon.png"

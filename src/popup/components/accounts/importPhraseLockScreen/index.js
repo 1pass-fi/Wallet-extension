@@ -31,7 +31,9 @@ const ImportPhrase = ({ setError, importWallet }) => {
 
   const onSubmit = async () => {
     try {
-      if (password.length < 8) {
+      if (phrase.split(' ').length != 12) {
+        setError(ERROR_MESSAGE.INCORRECT_PHRASE)
+      } else if (password.length < 8) {
         setError(ERROR_MESSAGE.PASSWORD_LENGTH)
       } else if (password !== confirmPassword) {
         setError(ERROR_MESSAGE.PASSWORD_MATCH)

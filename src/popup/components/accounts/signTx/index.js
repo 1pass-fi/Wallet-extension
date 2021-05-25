@@ -9,13 +9,14 @@ import Button from 'shared/button'
 
 import { getChromeStorage, removeChromeStorage } from 'utils'
 
-import { STORAGE } from 'constants'
+import { STORAGE, REQUEST, ERROR_MESSAGE } from 'constants'
 import { signTransaction } from 'actions/koi'
+import { setError } from 'actions/error'
 
 
 import './index.css'
 
-export const SignTx = ({ signTransaction }) => {
+export const SignTx = ({ signTransaction, setError }) => {
   const history = useHistory()
   const [sourceAccount, setSourceAccount] = useState({ address: '', type: 'koi' })
   const [destinationAccount, setDestinationAccount] = useState({ address: '', type: 'arweave' })
@@ -37,7 +38,7 @@ export const SignTx = ({ signTransaction }) => {
       console.log('ADDRESS', address)
       console.log('TARGET ADDRESS', targetAddress)
 
-      setSourceAccount({ address, type: 'koi'})
+      setSourceAccount({ address, type: 'koi' })
       setDestinationAccount({ address: targetAddress, type: 'arweave' })
       setOrigin(requestOrigin)
       setQty(qty)
@@ -46,13 +47,18 @@ export const SignTx = ({ signTransaction }) => {
     loadRequest()
   }, [])
 
-  const handleOnClick = (confirm) => {
-    if (confirm) {
-      const { address } = destinationAccount 
-      signTransaction({ qty, address })
+  const handleOnClick = async (confirm) => {
+    try {
+      if (confirm) {
+        if (!(await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
+        const { address } = destinationAccount
+        signTransaction({ qty, address })
+      }
+      removeChromeStorage(STORAGE.PENDING_REQUEST)
+      history.push('/account')
+    } catch (err) {
+      setError(err.message)
     }
-    removeChromeStorage(STORAGE.PENDING_REQUEST)
-    history.push('/account')
   }
 
   return (
@@ -96,8 +102,8 @@ export const SignTx = ({ signTransaction }) => {
             </div>
           </div>
           <div className='button-group'>
-            <Button label='Confirm' onClick={() => handleOnClick(true)}/>
-            <Button label='Reject' type='layout' className='reject-button' onClick={() => handleOnClick(false)}/>
+            <Button label='Confirm' onClick={() => handleOnClick(true)} />
+            <Button label='Reject' type='layout' className='reject-button' onClick={() => handleOnClick(false)} />
           </div>
         </Card>
       </div>
@@ -106,4 +112,4 @@ export const SignTx = ({ signTransaction }) => {
 }
 
 
-export default connect(null, { signTransaction })(SignTx)
+export default connect(null, { signTransaction, setError })(SignTx)

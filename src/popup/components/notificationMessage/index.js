@@ -11,7 +11,7 @@ export default ({ children }) => {
   }, [])
 
   return (
-    <div className={`error-message ${isDisabled ? 'disabled' : ''}`}>
+    <div className={`notification-message ${isDisabled ? 'disabled' : ''}`}>
       {children}
     </div>
   )

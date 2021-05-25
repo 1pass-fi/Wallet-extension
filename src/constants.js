@@ -8,6 +8,7 @@ export const HEADER_EXCLUDE_PATH = [
   '/account/login/phrase',
   '/account/connect-site',
   '/account/sign-transaction',
+  '/account/welcome'
 ]
 
 export const PORTS = {
@@ -43,6 +44,8 @@ export const MESSAGES = {
   GET_PERMISSION: 'GET_PERMISSION',
   GET_PERMISSION_SUCCESS: 'GET_PERMISSION_SUCCESS',
   GET_PERMISSION_ERROR: 'GET_PERMISSION_ERROR',
+  GET_KEY_FILE: 'GET_KEY_FILE',
+  GET_KEY_FILE_SUCCESS: 'GET_KEY_FILE_SUCCESS',
   CREATE_TRANSACTION: 'CREATE_TRANSACTION',
   CREATE_TRANSACTION_SUCCESS: 'CREATE_TRANSACTION_SUCCESS',
   CREATE_TRANSACTION_ERROR: 'CREATE_TRANSACTION_ERROR',
@@ -71,13 +74,17 @@ export const ERROR_MESSAGE = {
   INCORRECT_PHRASE: 'Incorrect seed phrase, please try again.',
   EMPTY_PHRASE: 'Seed phrase should not be blank.',
   CHECKED_TERMS: 'You have to agree to the Terms of Service',
-  EMPTY_FIELDS: 'Please fill in all fields!',
-  INVALID_AMOUNT: 'Amount must be greater than 0!',
+  EMPTY_FIELDS: 'Please fill in all fields.',
+  NOT_ENOUGH_KOI: `You don't have enough Koi.`,
+  REQUEST_NOT_EXIST: 'This request is no longer exist.'
+  INVALID_AMOUNT: 'Amount must be greater than 0!'
 }
 
 export const STORAGE = {
   KOI_ADDRESS: 'koiAddress',
   KOI_KEY: 'koiKey',
+  KOI_BALANCE: 'koiBalance',
+  AR_BALANCE: 'arBalance',
   CONTENT_LIST: 'contentList',
   ACTIVITIES_LIST: 'activitiesList',
   SITE_PERMISSION: 'sitePermission',
@@ -92,4 +99,9 @@ export const REQUEST = {
 export const RATE = {
   KOI: 0.93,
   AR: 2,
+}
+
+export const NOTIFICATION = {
+  COPIED: 'Copied to clipboard.',
+  KEY_EXPORTED: 'Private key downloaded.'
 }
