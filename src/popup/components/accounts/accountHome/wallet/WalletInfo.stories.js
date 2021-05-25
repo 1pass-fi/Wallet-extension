@@ -7,8 +7,8 @@ export default {
   component: WalletInfo,
   args: {
     accountAddress: '$n-kxQLufYyR4mA5PxU7mtsrCFSIu-W66GTR7nl3fiCc',
-    arBalance: 100,
-    koiBalance: 103
+    arBalance: 34981,
+    koiBalance: 103123123
   }
 }
 

@@ -16,28 +16,33 @@ import RemoveConnectedSite from 'popup/components/modals/removeConnectedSites'
 
 import { removeWallet, lockWallet } from 'actions/koi'
 import { getChromeStorage, deleteOriginFromChrome } from 'utils'
-import { STORAGE } from 'constants'
+import { STORAGE, RATE } from 'constants'
 
 
 const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
+  const numberFormat = (num) => {
+    return new Intl.NumberFormat('en-US').format(num)
+  }
   return (
     <div className='wallet-info'>
       <div className='wallet-info-row'>
-        <div>
-          <div className='name'>
-            <div>{accountName}</div>
-            <EditIcon />
-          </div>
-          <div className='addr'>
-            <div>{`${accountAddress.slice(0, 6)}...${accountAddress.slice(accountAddress.length - 4)}`}</div>
-            <CopyIcon />
-          </div>
+        <div className='name'>
+          <div>{accountName}</div>
+          <EditIcon />
+        </div>
+        <div className='addr'>
+          <div>{`${accountAddress.slice(0, 6)}...${accountAddress.slice(accountAddress.length - 4)}`}</div>
+          <CopyIcon />
         </div>
       </div>
-      <div className='wallet-info-row'>
-        <div>
-          <div className='koi'>{koiBalance} KOI</div>
-          <div className='ar'>{arBalance} AR</div>
+      <div className='wallet-info-row wallet-balance'>
+        <div class='koi-balance'>
+          <div className='balance'>{numberFormat(koiBalance)} KOI</div>
+          {koiBalance > 0 && <div className='usd-exchange'>~${numberFormat(koiBalance*RATE.KOI)}USD</div>}
+        </div>
+        <div className='ar-balance'>
+          <div className='balance'>{numberFormat(arBalance)} AR</div>
+          {arBalance > 0 && <div className='usd-exchange'>~${numberFormat(arBalance*RATE.AR)}USD</div>}
         </div>
       </div>
     </div>
