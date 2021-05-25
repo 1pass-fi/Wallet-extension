@@ -36,6 +36,8 @@ const SendKoiForm = ({
     try {
       if (!(address.trim().length > 0 && amount.trim().length > 0)) {
         setError(ERROR_MESSAGE.EMPTY_FIELDS)
+      } else if (Number(amount) <= 0) {
+        setError(ERROR_MESSAGE.INVALID_AMOUNT)
       } else {
         setShowModal(true)
       }

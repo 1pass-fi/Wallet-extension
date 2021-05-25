@@ -72,6 +72,7 @@ export const ERROR_MESSAGE = {
   EMPTY_PHRASE: 'Seed phrase should not be blank.',
   CHECKED_TERMS: 'You have to agree to the Terms of Service',
   EMPTY_FIELDS: 'Please fill in all fields!',
+  INVALID_AMOUNT: 'Amount must be greater than 0!',
 }
 
 export const STORAGE = {
