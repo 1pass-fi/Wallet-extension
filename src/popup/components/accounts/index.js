@@ -11,7 +11,9 @@ import ImportFileSuccess from './importByFileSuccess'
 import ImportPhraseSuccess from './importByPhraseSuccess'
 import CreateWallet from './createWallet'
 import Login from './accountLockScreen'
+import ImportPhraseLockScreen from './importPhraseLockScreen'
 import ConnectSite from './connectToWallet'
+import SignTx from './signTx'
 
 const Account = () => {
   return (
@@ -40,11 +42,17 @@ const Account = () => {
       <Route path='/account/create'>
         <CreateWallet />
       </Route>
+      <Route path='/account/login/phrase'>
+        <ImportPhraseLockScreen />
+      </Route>
       <Route path='/account/login'>
         <Login />
       </Route>
       <Route path='/account/connect-site'>
         <ConnectSite />
+      </Route>
+      <Route path='/account/sign-transaction'>
+        <SignTx />
       </Route>
     </Switch>
   )

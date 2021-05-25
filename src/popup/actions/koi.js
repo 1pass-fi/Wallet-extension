@@ -5,6 +5,7 @@ import { setContLoading } from './continueLoading'
 import { setError } from './error'
 import { setCreateWallet } from './createWallet'
 import { setAssets } from './assets'
+import { setActivities } from './activities'
 import { setTransactions } from './transactions'
 
 import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
@@ -143,7 +144,7 @@ export const unlockWallet = (inputData) => (dispatch) => {
           history.push('/account/connect-site')
           break
         case REQUEST.TRANSACTION:
-          history.push('account/sign-transaction')
+          history.push('/account/sign-transaction')
           break
         default:
           history.push('/account')
@@ -230,23 +231,51 @@ export const saveWallet = (inputData) => (dispatch) => {
 export const loadContent = () => (dispatch) => {
   try {
     dispatch(setContLoading(true))
-    const saveSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_CONTENT_SUCCESS, response => {
+    const loadSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_CONTENT_SUCCESS, response => {
       const { contentList } = response.data
       console.log('CONTENT LIST FROM ACTION', contentList)
       dispatch(setAssets(contentList))
       dispatch(setContLoading(false))
     })
-    const saveFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+    const loadFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
       const errorMessage = response.data
       dispatch(setContLoading(false))
       dispatch(setError(errorMessage))
     })
 
-    backgroundConnect.addHandler(saveSuccessHandler)
-    backgroundConnect.addHandler(saveFailedHandler)
+    backgroundConnect.addHandler(loadSuccessHandler)
+    backgroundConnect.addHandler(loadFailedHandler)
     backgroundConnect.postMessage({
       type: MESSAGES.LOAD_CONTENT,
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setContLoading(false))
+  }
+}
+
+export const loadActivities = () => (dispatch) => {
+  try {
+    console.log('LOAD ACTIVITIES ACTION')
+    dispatch(setContLoading(true))
+    const loadSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_ACTIVITIES_SUCCESS, response => {
+      const { activitiesList } = response.data
+      console.log('ACTIVITIES LIST ACTION', activitiesList)
+      dispatch(setActivities(activitiesList))
+      dispatch(setContLoading(false))
+    })
+    const loadFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setContLoading(false))
+      dispatch(setError(errorMessage))
+    })
+
+    backgroundConnect.addHandler(loadSuccessHandler)
+    backgroundConnect.addHandler(loadFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.LOAD_ACTIVITIES,
     })
   } catch (err) {
     dispatch(setError(err.message))
@@ -272,6 +301,32 @@ export const makeTransfer = (inputData) => (dispatch) => {
     backgroundConnect.addHandler(transferFailedHandler)
     backgroundConnect.postMessage({
       type: MESSAGES.MAKE_TRANSFER,
+      data: inputData
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const signTransaction = (inputData) => (dispatch) => {
+  try {
+    console.log('SIGN TRANSACTION ACTION')
+    dispatch(setIsLoading(true))
+    const signSuccessHandler = new CreateEventHandler(MESSAGES.SIGN_TRANSACTION_SUCCESS, response => {
+      console.log('SIGN TRANSACTION SUCCESS')
+      dispatch(setIsLoading(false))
+    })
+    const signFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
+    backgroundConnect.addHandler(signSuccessHandler)
+    backgroundConnect.addHandler(signFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.SIGN_TRANSACTION,
       data: inputData
     })
   } catch (err) {

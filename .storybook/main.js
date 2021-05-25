@@ -1,3 +1,6 @@
+const staticFiles = require('../config/webpack/static-files')
+const CopyPlugin = require('copy-webpack-plugin')
+
 module.exports = {
   stories: [
     '../src/**/*.stories.mdx',
@@ -25,6 +28,9 @@ module.exports = {
           tls: 'empty',
           child_process: 'empty',
       }
+
+      const copyPlugin = new CopyPlugin(staticFiles.copyPatterns)
+      config.plugins.push(copyPlugin)
 
       return config;
   }
