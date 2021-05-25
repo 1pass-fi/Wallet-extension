@@ -12,10 +12,12 @@ import Assets from 'components/assets'
 import Activity from 'components/activity'
 import Setting from 'components/setting'
 import ErrorMessage from 'components/errorMessage'
+import NotificationMessage from 'components/notificationMessage'
 import continueLoadingIcon from 'img/continue-load.gif'
 
 import { setIsLoading } from 'actions/loading'
 import { setError } from 'actions/error'
+import { setNotification } from 'actions/notification'
 import { setKoi, loadWallet, removeWallet } from 'actions/koi'
 
 import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST } from 'constants'
@@ -35,6 +37,8 @@ const Popup = ({
   setIsLoading,
   error,
   setError,
+  notification,
+  setNotification,
   loadWallet,
   transactions
 }) => {
@@ -79,6 +83,13 @@ const Popup = ({
     }
   }, [error])
 
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => setNotification(null), 4000)
+      return () => clearTimeout(timer)
+    }
+  }, [notification])
+
   const activities = [
     {
       activityName: `Purchased "The Balance of Koi"`,
@@ -99,6 +110,7 @@ const Popup = ({
       {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
       {isLoading && <Loading />}
       {error && <ErrorMessage children={error} />}
+      {notification && <NotificationMessage children={notification}/>}
       {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />}
       <div className='content'>
         <Switch>
@@ -126,6 +138,7 @@ const Popup = ({
 const mapStateToProps = (state) => ({
   isLoading: state.loading,
   error: state.error,
+  notification: state.notification,
   koi: state.koi,
   transactions: state.transactions,
   isContLoading: state.contLoading
@@ -134,6 +147,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setIsLoading,
   setError,
+  setNotification,
   setKoi,
   loadWallet,
   removeWallet
