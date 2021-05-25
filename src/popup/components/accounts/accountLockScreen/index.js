@@ -36,10 +36,14 @@ const LockScreen = ({ unlockWallet }) => {
           value={password}
           onChange={onPasswordChange}
         />
-        <Button className='unlock-button' label={'Unlock'} onClick={handleOnSubmit} />
+        <Button
+          className='unlock-button'
+          label={'Unlock'}
+          onClick={handleOnSubmit}
+        />
         <div className='seed-phrase'>
           Import my account using my&nbsp;
-          <Link to='/account/import/keyfile' className='link-to-seed-phrase'>
+          <Link to='/account/login/phrase' className='link-to-seed-phrase'>
             seed phrase
           </Link>
         </div>
