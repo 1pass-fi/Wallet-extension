@@ -12,6 +12,10 @@ import CancelIcon from 'img/x-icon.svg'
 
 import Card from 'shared/card'
 import Button from 'shared/button'
+
+import { NOTIFICATION } from 'constants'
+import { setNotification } from 'actions/notification'
+
 import './index.css'
 
 import { setCreateWallet } from 'actions/createWallet'
@@ -25,7 +29,7 @@ const LockScreen = ({ onClick }) => {
   )
 }
 
-export const RevealSeed = ({ seedPhrase, setCreateWallet }) => {
+export const RevealSeed = ({ seedPhrase, setCreateWallet, setNotification }) => {
   const [isShowSeedPhrase, setIsShowSeedPhrase] = useState(false)
 
   const handleOnClick = () => {
@@ -62,7 +66,7 @@ export const RevealSeed = ({ seedPhrase, setCreateWallet }) => {
             <>
               {seedPhrase}
               <CopyToClipboard className='copy-button' text={seedPhrase}>
-                <div>
+                <div onClick={() => setNotification(NOTIFICATION.COPIED)}>
                   copy phrase
                   <CopyIcon className='copy-icon' />
                 </div>
@@ -97,4 +101,4 @@ export const RevealSeed = ({ seedPhrase, setCreateWallet }) => {
   )
 }
 
-export default connect(null, { setCreateWallet })(RevealSeed)
+export default connect(null, { setCreateWallet, setNotification })(RevealSeed)

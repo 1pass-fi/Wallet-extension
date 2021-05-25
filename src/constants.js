@@ -99,3 +99,8 @@ export const RATE = {
   KOI: 0.93,
   AR: 2,
 }
+
+export const NOTIFICATION = {
+  COPIED: 'Copied to clipboard.',
+  KEY_EXPORTED: 'Private key downloaded.'
+}

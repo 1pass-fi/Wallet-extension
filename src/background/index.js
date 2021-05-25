@@ -4,6 +4,7 @@ import { PORTS } from 'constants'
 import popUpEventHandlers from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from 'koi_tools/web'
+
 /* eslint-disable no-undef */
 const koi = new Web()
 console.log('Background.js file loaded')
