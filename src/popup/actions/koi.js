@@ -71,14 +71,16 @@ export const loadWallet = (inputData) => (dispatch) => {
   }
 }
 
-export const removeWallet = () => (dispatch) => {
+export const removeWallet = (inputData) => (dispatch) => {
   try {
+    const { history } = inputData
     dispatch(setIsLoading(true))
     const removeSuccessHandler = new CreateEventHandler(MESSAGES.REMOVE_WALLET_SUCCESS, response => {
       const { koiData } = response.data
       dispatch(setAssets([]))
       dispatch(setKoi(koiData))
       dispatch(setIsLoading(false))
+      history.push('/account/welcome')
     })
     const removeFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')

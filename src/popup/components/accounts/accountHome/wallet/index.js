@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import './index.css'
+
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import Card from 'shared/card'
 import CopyIcon from 'img/copy-icon.svg'
@@ -18,6 +21,7 @@ import { removeWallet, lockWallet, getKeyFile } from 'actions/koi'
 import { getChromeStorage, deleteOriginFromChrome } from 'utils'
 import { STORAGE } from 'constants'
 
+
 const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
   return (
     <div className='wallet-info'>
@@ -31,7 +35,7 @@ const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
             <div>{`${accountAddress.slice(0, 6)}...${accountAddress.slice(
               accountAddress.length - 4
             )}`}</div>
-            <CopyIcon />
+            <CopyToClipboard text={accountAddress}><CopyIcon /></CopyToClipboard>
           </div>
         </div>
       </div>
@@ -73,7 +77,7 @@ const WalletConf = ({
       <WalletConfItem
         icon={<ShareIconOne />}
         title={'View Block Explorer'}
-        onClick={() => {}}
+        onClick={() => { }}
       />
       <WalletConfItem
         icon={<KeyIcon />}
@@ -119,8 +123,9 @@ export const Wallet = ({
   removeWallet,
   getKeyFile,
 }) => {
+  const history = useHistory()
   const [connectedSite, setConnectedSite] = useState([])
-  const handleRemoveWallet = () => removeWallet()
+  const handleRemoveWallet = () => removeWallet({ history })
 
   const handleDeleteSite = async (site) => {
     await deleteOriginFromChrome(site)
