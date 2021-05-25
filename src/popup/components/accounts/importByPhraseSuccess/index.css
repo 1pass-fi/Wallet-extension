@@ -46,6 +46,8 @@
 
 .tips-section .details .tips-set .tip-item .security-link {
   color: #237b75;
+  text-decoration: underline;
+  font-size: 600;
 }
 
 .import-phrase-success .back-button {
