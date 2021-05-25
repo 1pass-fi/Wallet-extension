@@ -14,6 +14,7 @@ import Login from './accountLockScreen'
 import ImportPhraseLockScreen from './importPhraseLockScreen'
 import ConnectSite from './connectToWallet'
 import SignTx from './signTx'
+import WelcomeScreen from './welcomeScreen'
 
 const Account = () => {
   return (
@@ -53,6 +54,9 @@ const Account = () => {
       </Route>
       <Route path='/account/sign-transaction'>
         <SignTx />
+      </Route>
+      <Route path='/account/welcome'>
+        <WelcomeScreen />
       </Route>
     </Switch>
   )

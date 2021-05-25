@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Redirect, withRouter, useHistory } from 'react-router-dom'
 
@@ -12,7 +12,7 @@ import { setError } from 'actions/error'
 
 import './index.css'
 
-const Header = ({ location, setError }) => {
+const Header = ({ location, setError, koi }) => {
   const history = useHistory()
   /* istanbul ignore next */
   const onGalleryClick = () => {
@@ -31,7 +31,11 @@ const Header = ({ location, setError }) => {
   }
 
   const onLogoButtonClick = () => {
-    history.push('/account')
+    if (koi.address) {
+      history.push('/account')
+    } else {
+      history.push('/account/welcome')
+    }
   }
 
   return (
@@ -47,9 +51,11 @@ const Header = ({ location, setError }) => {
           <SettingIcon />
         </button>
       </header>
-      { location.pathname !== '/setting' && <NavBar />}
+      { koi.address && location.pathname !== '/setting' && <NavBar />}
     </>
   )
 }
 
-export default connect(null, { setError })(withRouter(Header))
+const mapStateToProps = (state) => ({ koi: state.koi })
+
+export default connect(mapStateToProps, { setError })(withRouter(Header))

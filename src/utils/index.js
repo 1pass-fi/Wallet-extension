@@ -1,4 +1,4 @@
-import { LOAD_KOI_BY, PATH, STORAGE } from 'constants'
+import { LOAD_KOI_BY, PATH, STORAGE, ERROR_MESSAGE } from 'constants'
 import passworder from 'browser-passworder'
 
 /* istanbul ignore next */
@@ -42,6 +42,8 @@ export const loadWallet = async (koiObj, data, loadBy) => {
     koiObj.balance = await koiObj.getWalletBalance()
     console.log('AR BALANCE', koiObj.balance)
     const koiBalance = await koiObj.getKoiBalance()
+
+    await setChromeStorage({ 'koiBalance': koiBalance, 'arBalance': koiObj['balance'] })
 
     return {
       arBalance: koiObj.balance,
@@ -139,6 +141,8 @@ export const loadMyActivities = async (koiObj) => {
 
 export const transfer = async (koiObj, qty, address) => {
   try {
+    const koiBalance = await koiObj.getKoiBalance()
+    if (qty > koiBalance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
     return await koiObj.transfer(qty, address)
   } catch (err) {
     throw new Error(err.message)

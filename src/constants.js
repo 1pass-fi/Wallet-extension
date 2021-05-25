@@ -8,6 +8,7 @@ export const HEADER_EXCLUDE_PATH = [
   '/account/login/phrase',
   '/account/connect-site',
   '/account/sign-transaction',
+  '/account/welcome'
 ]
 
 export const PORTS = {
@@ -73,12 +74,15 @@ export const ERROR_MESSAGE = {
   INCORRECT_PHRASE: 'Incorrect seed phrase, please try again.',
   EMPTY_PHRASE: 'Seed phrase should not be blank.',
   CHECKED_TERMS: 'You have to agree to the Terms of Service',
-  EMPTY_FIELDS: 'Please fill in all fields!',
+  EMPTY_FIELDS: 'Please fill in all fields.',
+  NOT_ENOUGH_KOI: `You don't have enough Koi.`
 }
 
 export const STORAGE = {
   KOI_ADDRESS: 'koiAddress',
   KOI_KEY: 'koiKey',
+  KOI_BALANCE: 'koiBalance',
+  AR_BALANCE: 'arBalance',
   CONTENT_LIST: 'contentList',
   ACTIVITIES_LIST: 'activitiesList',
   SITE_PERMISSION: 'sitePermission',
