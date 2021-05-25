@@ -46,6 +46,7 @@ const LockScreen = ({ unlockWallet }) => {
           <Link to='/account/login/phrase' className='link-to-seed-phrase'>
             seed phrase
           </Link>
+          {'.'}
         </div>
       </div>
     </div>

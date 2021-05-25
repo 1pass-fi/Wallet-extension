@@ -51,7 +51,7 @@
 
 .unlock-screen .screen-content .unlock-button {
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 600;
   height: 56px;
   line-height: 18px;
   margin-top: 40px;
@@ -66,5 +66,5 @@
 
 .unlock-screen .screen-content .seed-phrase .link-to-seed-phrase {
   color: #237b75;
-  font-weight: 6  00;
+  font-weight: 600;
 }
