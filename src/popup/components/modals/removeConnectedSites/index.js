@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Modal from 'popup/components/shared/modal/index'
-import ConnectedSiteRow from './connectedSiteRow/index'
+import Modal from 'popup/components/shared/modal'
+import ConnectedSiteRow from './connectedSiteRow'
 
 import PlusIcon from 'img/plus-icon.svg'
 

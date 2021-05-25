@@ -1,6 +1,6 @@
 import { render, cleanup } from '@testing-library/react'
-import { BrowserRouter as Router } from 'react-router-dom'
 import '@testing-library/jest-dom/extend-expect'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from 'popup/store'
 import React from 'react'

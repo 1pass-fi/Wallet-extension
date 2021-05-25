@@ -9,6 +9,7 @@ import Header from 'components/header'
 import Loading from 'components/loading'
 import Account from 'components/accounts'
 import Assets from 'components/assets'
+import Activity from 'components/activity'
 import Setting from 'components/setting'
 import ErrorMessage from 'components/errorMessage'
 import continueLoadingIcon from 'img/continue-load.gif'
@@ -53,7 +54,7 @@ const Popup = ({
               history.push('/account/connect-site')
               break
             case REQUEST.TRANSACTION:
-              history.push('account/sign-transaction')
+              history.push('/account/sign-transaction')
               break
           }
         } else {
@@ -78,6 +79,21 @@ const Popup = ({
     }
   }, [error])
 
+  const activities = [
+    {
+      activityName: `Purchased "The Balance of Koi"`,
+      expense: 100,
+      accountName: 'Account 1',
+      date: 'May 24, 2021'
+    },
+    {
+      activityName: `Purchased "The Balance of Koi"`,
+      expense: 200,
+      accountName: 'Account 1',
+      date: 'May 22, 2021'
+    },
+  ]
+
   return (
     <div className="popup">
       {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
@@ -93,7 +109,7 @@ const Popup = ({
             <Assets />
           </Route>
           <Route path='/activity'>
-            {transactions.map((transaction) => <h1>Transactions: {transaction}</h1>)}
+            <Activity activities={activities} />
           </Route>
           <Route path='/setting'>
             <Setting />

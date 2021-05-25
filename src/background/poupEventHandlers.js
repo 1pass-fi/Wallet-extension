@@ -3,6 +3,7 @@ import {
   saveWalletToChrome,
   utils,
   loadMyContent,
+  loadMyActivities,
   removeWalletFromChrome,
   decryptWalletKeyFromChrome,
   setChromeStorage,
@@ -97,12 +98,32 @@ export default async (koi, port, message) => {
         })
         break
       }
+      case MESSAGES.LOAD_ACTIVITIES: {
+        const activitiesList = await loadMyActivities(koi)
+        console.log('ACTIVITIES LIST', activitiesList)
+        setChromeStorage({ activitiesList })
+        port.postMessage({
+          type: MESSAGES.LOAD_ACTIVITIES_SUCCESS,
+          data: { activitiesList }
+        })
+        break
+      }
       case MESSAGES.MAKE_TRANSFER: {
         const { qty, address } = message.data
         const txId = await transfer(koi, qty, address)
         port.postMessage({
           type: MESSAGES.MAKE_TRANSFER_SUCCESS,
           data: { txId }
+        })
+        break
+      }
+      case MESSAGES.SIGN_TRANSACTION: {
+        console.log('SIGN TRANSACTION BACKGROUND')
+        const { qty, address } = message.data
+        const txId = await transfer(koi, qty, address)
+        console.log('TRANSACTION ID', txId)
+        port.postMessage({
+          type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
         })
         break
       }

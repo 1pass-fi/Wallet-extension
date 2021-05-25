@@ -6,7 +6,7 @@ import './index.css'
 
 const propTypes = {
   site: PropTypes.string,
-  isGreyBackgroud: PropTypes.bool
+  isGreyBackground: PropTypes.bool
 }
 
 const ConnectedSiteRow = ({ site, isGreyBackground, handleDeleteSite }) => {

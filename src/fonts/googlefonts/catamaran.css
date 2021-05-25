@@ -1,0 +1,27 @@
+@font-face {
+  font-family: 'Catamaran';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./Catamaran-Regular.ttf')
+}
+
+@font-face {
+  font-family: 'Catamaran';
+  font-style: normal;
+  font-weight: 500;
+  src: url('./Catamaran-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'Catamaran';
+  font-style: normal;
+  font-weight: 600;
+  src: url('./Catamaran-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: 'Catamaran';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./Catamaran-Bold.ttf');
+}

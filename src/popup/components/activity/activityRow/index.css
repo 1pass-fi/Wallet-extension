@@ -1,0 +1,48 @@
+.activity-row-container {
+  height: 86px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: #ffffff;
+  border-bottom: 1px solid #237B75
+}
+
+.activity-info {
+  padding: 25px 32px 0 32px;
+  display: flex;
+  flex-direction: row;
+  letter-spacing: 0.03em;
+}
+
+.activity-info.main {
+  font-size: 16px;
+  line-height: 20px;
+  color: #171753;
+}
+
+.activity-name, .activity-account {
+  display: block;
+  word-break: break-word;
+}
+
+.activity-name {
+  flex-grow: 1; 
+}
+
+.activity-account {
+  min-width: 33%;
+  word-break: break-all;
+}
+
+.activity-expense, .activity-date {
+  padding-left: 20px;
+}
+
+.activity-info.sub {
+  padding-top: 5px;
+  font-size: 14px;
+  line-height: 18px;
+  color: #237B75;
+}
+
