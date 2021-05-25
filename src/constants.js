@@ -75,7 +75,8 @@ export const ERROR_MESSAGE = {
   EMPTY_PHRASE: 'Seed phrase should not be blank.',
   CHECKED_TERMS: 'You have to agree to the Terms of Service',
   EMPTY_FIELDS: 'Please fill in all fields.',
-  NOT_ENOUGH_KOI: `You don't have enough Koi.`
+  NOT_ENOUGH_KOI: `You don't have enough Koi.`,
+  REQUEST_NOT_EXIST: 'This request is no longer exist.'
 }
 
 export const STORAGE = {

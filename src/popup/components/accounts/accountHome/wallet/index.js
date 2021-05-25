@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import './index.css'
@@ -17,6 +18,7 @@ import RemoveConnectedSite from 'popup/components/modals/removeConnectedSites'
 import { removeWallet, lockWallet, getKeyFile } from 'actions/koi'
 import { getChromeStorage, deleteOriginFromChrome } from 'utils'
 import { STORAGE } from 'constants'
+
 
 const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
   return (
@@ -73,7 +75,7 @@ const WalletConf = ({
       <WalletConfItem
         icon={<ShareIconOne />}
         title={'View Block Explorer'}
-        onClick={() => {}}
+        onClick={() => { }}
       />
       <WalletConfItem
         icon={<KeyIcon />}
@@ -119,8 +121,9 @@ export const Wallet = ({
   removeWallet,
   getKeyFile,
 }) => {
+  const history = useHistory()
   const [connectedSite, setConnectedSite] = useState([])
-  const handleRemoveWallet = () => removeWallet()
+  const handleRemoveWallet = () => removeWallet({ history })
 
   const handleDeleteSite = async (site) => {
     await deleteOriginFromChrome(site)
