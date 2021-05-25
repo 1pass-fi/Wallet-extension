@@ -21,8 +21,8 @@ const AllowPermission = ({ handleOnClick }) => {
       </div>
       <div className='trust-sites'>Only connect with sites you trust.</div>
       <div className='button-line'>
-        <Button className='connect-button' label='Connect' onClick={() => handleOnClick(true)} />
-        <Button className='reject-button' type='outline' label='Reject' onClick={() => handleOnClick(false)} />
+        <Button className='button connect' label='Connect' onClick={() => handleOnClick(true)} />
+        <Button className='button reject' type='outline' label='Reject' onClick={() => handleOnClick(false)} />
       </div>
     </div>
   )

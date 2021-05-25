@@ -127,6 +127,10 @@
   max-width: 100px;
 }
 
+.select-wallet .content .trust-sites {
+  font-size: 14px;
+}
+
 .select-wallet .content .wallet-option .wallet-info .wallet-name {
   font-size: 18px;
   line-height: 20px;
@@ -147,17 +151,16 @@
   width: 100%;
 }
 
-.select-wallet .content .button-line .connect-button {
+.select-wallet .content .button-line .button {
   height: 40px;
   width: 147px;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: 'Catamaran', sans-serif;
 }
 
-.select-wallet .content .button-line .reject-button {
+.select-wallet .content .button-line .button.reject {
   border: 1.5px solid #171753;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
-  box-sizing: border-box;
-  height: 40px;
-  width: 147px;
 }
 
 /* ALLOW PERMISSION */

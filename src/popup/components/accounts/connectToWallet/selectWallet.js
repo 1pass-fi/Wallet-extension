@@ -60,10 +60,10 @@ const SelectWallet = ({
           </div>
         ))}
       </div>
-      <div>Only connect with sites you trust.</div>
+      <div className='trust-sites'>Only connect with sites you trust.</div>
       <div className='button-line'>
-        <Button className='connect-button' label='Connect' onClick={() => setStep(2)} />
-        <Button className='reject-button' type='outline' label='Reject' onClick={() => handleOnClick(false)} />
+        <Button className='button connect' label='Connect' onClick={() => setStep(2)} />
+        <Button className='button reject' type='outline' label='Reject' onClick={() => handleOnClick(false)} />
       </div>
     </>
   )
