@@ -10,10 +10,11 @@ import { setTransactions } from './transactions'
 
 import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 
-import { MESSAGES, PATH, STORAGE, REQUEST } from 'constants'
+import { MESSAGES, PATH, STORAGE, REQUEST, NOTIFICATION } from 'constants'
 
 import { SET_KOI } from 'actions/types'
 import { getChromeStorage } from 'utils'
+import { setNotification } from './notification'
 
 export const importWallet = (inputData) => (dispatch) => {
   try {
@@ -292,6 +293,7 @@ export const makeTransfer = (inputData) => (dispatch) => {
       const { txId } = response.data
       dispatch(setTransactions(txId))
       dispatch(setIsLoading(false))
+      dispatch(setNotification(`Transaction ID: ${txId}`))
     })
     const transferFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
@@ -337,7 +339,7 @@ export const signTransaction = (inputData) => (dispatch) => {
   }
 }
 
-export const getKeyFile = () => () => {
+export const getKeyFile = () => (dispatch) => {
   const getKeyFileSuccessHandler = new CreateEventHandler(MESSAGES.GET_KEY_FILE_SUCCESS, response => {
     const content = response.data
     const filename = 'arweave-key.json'
@@ -348,6 +350,7 @@ export const getKeyFile = () => () => {
       url: url,
       filename: filename,
     })
+    dispatch(setNotification(NOTIFICATION.KEY_EXPORTED))
   })
   backgroundConnect.addHandler(getKeyFileSuccessHandler)
   backgroundConnect.postMessage({

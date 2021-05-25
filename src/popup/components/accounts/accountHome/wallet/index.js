@@ -18,11 +18,12 @@ import RemoveAccountModal from 'shared/modal/removeAccountModal'
 import RemoveConnectedSite from 'popup/components/modals/removeConnectedSites'
 
 import { removeWallet, lockWallet, getKeyFile } from 'actions/koi'
+import { setNotification } from 'actions/notification'
 import { getChromeStorage, deleteOriginFromChrome } from 'utils'
-import { STORAGE } from 'constants'
+import { STORAGE, NOTIFICATION } from 'constants'
 
 
-const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
+const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance, setNotification }) => {
   return (
     <div className='wallet-info'>
       <div className='wallet-info-row'>
@@ -35,7 +36,7 @@ const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
             <div>{`${accountAddress.slice(0, 6)}...${accountAddress.slice(
               accountAddress.length - 4
             )}`}</div>
-            <CopyToClipboard text={accountAddress}><CopyIcon /></CopyToClipboard>
+            <div onClick={() => setNotification(NOTIFICATION.COPIED)}><CopyToClipboard text={accountAddress}><CopyIcon /></CopyToClipboard></div>
           </div>
         </div>
       </div>
@@ -122,6 +123,7 @@ export const Wallet = ({
   arBalance,
   removeWallet,
   getKeyFile,
+  setNotification
 }) => {
   const history = useHistory()
   const [connectedSite, setConnectedSite] = useState([])
@@ -158,6 +160,7 @@ export const Wallet = ({
           accountAddress={accountAddress}
           koiBalance={koiBalance}
           arBalance={arBalance}
+          setNotification={setNotification}
         />
         <Card className='address'>{accountAddress}</Card>
         <WalletConf
@@ -172,4 +175,4 @@ export const Wallet = ({
   )
 }
 
-export default connect(null, { removeWallet, lockWallet, getKeyFile })(Wallet)
+export default connect(null, { removeWallet, lockWallet, getKeyFile, setNotification })(Wallet)
