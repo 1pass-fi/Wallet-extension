@@ -335,4 +335,23 @@ export const signTransaction = (inputData) => (dispatch) => {
   }
 }
 
+export const getKeyFile = () => () => {
+  const getKeyFileSuccessHandler = new CreateEventHandler(MESSAGES.GET_KEY_FILE_SUCCESS, response => {
+    const content = response.data
+    const filename = 'arweave-key.json'
+    const result = JSON.stringify(content)
+
+    const url = 'data:application/json;base64,' + btoa(result)
+    chrome.downloads.download({
+      url: url,
+      filename: filename,
+    })
+  })
+  backgroundConnect.addHandler(getKeyFileSuccessHandler)
+  backgroundConnect.postMessage({
+    type: MESSAGES.GET_KEY_FILE,
+    data: {}
+  })
+}
+
 export const setKoi = (payload) => ({ type: SET_KOI, payload })
