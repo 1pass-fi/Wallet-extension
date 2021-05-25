@@ -92,7 +92,7 @@
         "jest-pnp-resolver": "1.0.1",
         "jest-resolve": "23.6.0",
         "jest-webextension-mock": "^3.7.10",
-        "koi_tools": "2.1.16-beta.6",
+        "koi_tools": "2.1.16-beta.12",
         "mini-css-extract-plugin": "0.4.3",
         "mnemonic": "^1.0.1",
         "moment": "^2.29.1",
