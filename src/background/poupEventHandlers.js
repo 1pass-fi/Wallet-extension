@@ -117,6 +117,13 @@ export default async (koi, port, message) => {
         })
         break
       }
+      case MESSAGES.GET_KEY_FILE: {
+        port.postMessage({
+          type: MESSAGES.GET_KEY_FILE_SUCCESS,
+          data: koi.wallet
+        })
+        break
+      }
       case MESSAGES.SIGN_TRANSACTION: {
         console.log('SIGN TRANSACTION BACKGROUND')
         const { qty, address } = message.data

@@ -14,10 +14,9 @@ import DeleteIcon from 'img/wallet/delete-icon.svg'
 import RemoveAccountModal from 'shared/modal/removeAccountModal'
 import RemoveConnectedSite from 'popup/components/modals/removeConnectedSites'
 
-import { removeWallet, lockWallet } from 'actions/koi'
+import { removeWallet, lockWallet, getKeyFile } from 'actions/koi'
 import { getChromeStorage, deleteOriginFromChrome } from 'utils'
 import { STORAGE } from 'constants'
-
 
 const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
   return (
@@ -29,7 +28,9 @@ const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
             <EditIcon />
           </div>
           <div className='addr'>
-            <div>{`${accountAddress.slice(0, 6)}...${accountAddress.slice(accountAddress.length - 4)}`}</div>
+            <div>{`${accountAddress.slice(0, 6)}...${accountAddress.slice(
+              accountAddress.length - 4
+            )}`}</div>
             <CopyIcon />
           </div>
         </div>
@@ -44,21 +45,6 @@ const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance }) => {
   )
 }
 
-const ITEMS = [
-  {
-    icon: <ShareIconOne />,
-    title: 'View Block Explorer',
-    onClick: () => { },
-    className: ''
-  },
-  {
-    icon: <KeyIcon />,
-    title: 'Export Private Key',
-    onClick: () => { },
-    className: ''
-  },
-]
-
 const WalletConfItem = ({ icon, title, onClick, className }) => {
   return (
     <div className={'wallet-conf-item ' + className} onClick={onClick}>
@@ -68,49 +54,87 @@ const WalletConfItem = ({ icon, title, onClick, className }) => {
   )
 }
 
-const WalletConf = ({ handleRemoveWallet, accountAddress, sites, handleDeleteSite }) => {
+const WalletConf = ({
+  handleRemoveWallet,
+  handleGetKeyFile,
+  accountAddress,
+  sites,
+  handleDeleteSite,
+}) => {
   const [showModal, setShowModal] = useState(false)
   const [showModalConnectedSite, setShowModalConnectedSite] = useState(false)
+
+  const onExportClick = () => {
+    handleGetKeyFile()
+  }
+
   return (
     <div className='wallet-conf'>
-      {ITEMS.map(content => <WalletConfItem {...content} />)}
-      <WalletConfItem className='' icon={<ShareIconTwo />} title='See Connected Sites' onClick={() => setShowModalConnectedSite(true)} />
-      <WalletConfItem className='delete-wallet' icon={<DeleteIcon />} title='Remove Account' onClick={() => setShowModal(true)} />
-      { showModal && (
+      <WalletConfItem
+        icon={<ShareIconOne />}
+        title={'View Block Explorer'}
+        onClick={() => {}}
+      />
+      <WalletConfItem
+        icon={<KeyIcon />}
+        title={'Export Private Key'}
+        onClick={onExportClick}
+      />
+      <WalletConfItem
+        className=''
+        icon={<ShareIconTwo />}
+        title='See Connected Sites'
+        onClick={() => setShowModalConnectedSite(true)}
+      />
+      <WalletConfItem
+        className='delete-wallet'
+        icon={<DeleteIcon />}
+        title='Remove Account'
+        onClick={() => setShowModal(true)}
+      />
+      {showModal && (
         <RemoveAccountModal
-          accountName="Account 1"
+          accountName='Account 1'
           accountAddress={accountAddress}
           onClose={() => setShowModal(false)}
           onSubmit={handleRemoveWallet}
         />
       )}
-      {
-        showModalConnectedSite && (
-          <RemoveConnectedSite
-            sites={sites}
-            accountName='Account 1'
-            handleDeleteSite={handleDeleteSite}
-            onClose={() => setShowModalConnectedSite(false)}
-          />
-        )
-      }
+      {showModalConnectedSite && (
+        <RemoveConnectedSite
+          sites={sites}
+          accountName='Account 1'
+          handleDeleteSite={handleDeleteSite}
+          onClose={() => setShowModalConnectedSite(false)}
+        />
+      )}
     </div>
   )
 }
 
-export const Wallet = ({ accountAddress, koiBalance, arBalance, removeWallet }) => {
+export const Wallet = ({
+  accountAddress,
+  koiBalance,
+  arBalance,
+  removeWallet,
+  getKeyFile,
+}) => {
   const [connectedSite, setConnectedSite] = useState([])
   const handleRemoveWallet = () => removeWallet()
 
   const handleDeleteSite = async (site) => {
     await deleteOriginFromChrome(site)
-    const connectedSite = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
+    const connectedSite = (await getChromeStorage(STORAGE.SITE_PERMISSION))[
+      STORAGE.SITE_PERMISSION
+    ]
     setConnectedSite(connectedSite)
   }
 
   useEffect(() => {
     const getConnectedSite = async () => {
-      let connectedSite = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
+      let connectedSite = (await getChromeStorage(STORAGE.SITE_PERMISSION))[
+        STORAGE.SITE_PERMISSION
+      ]
       if (!connectedSite) connectedSite = []
       setConnectedSite(connectedSite)
     }
@@ -119,20 +143,28 @@ export const Wallet = ({ accountAddress, koiBalance, arBalance, removeWallet }) 
   })
 
   return (
-    <div className="wallet">
-      <div className='wallet fish'><Fish /></div>
-      <div className="wallet-wrapper">
-        <WalletInfo accountName={'Account #1'} accountAddress={accountAddress} koiBalance={koiBalance} arBalance={arBalance} />
+    <div className='wallet'>
+      <div className='wallet fish'>
+        <Fish />
+      </div>
+      <div className='wallet-wrapper'>
+        <WalletInfo
+          accountName={'Account #1'}
+          accountAddress={accountAddress}
+          koiBalance={koiBalance}
+          arBalance={arBalance}
+        />
         <Card className='address'>{accountAddress}</Card>
         <WalletConf
           accountAddress={accountAddress}
           sites={connectedSite}
           handleDeleteSite={handleDeleteSite}
           handleRemoveWallet={handleRemoveWallet}
+          handleGetKeyFile={getKeyFile}
         />
       </div>
     </div>
   )
 }
 
-export default connect(null, { removeWallet, lockWallet })(Wallet)
+export default connect(null, { removeWallet, lockWallet, getKeyFile })(Wallet)
