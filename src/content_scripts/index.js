@@ -53,21 +53,10 @@ window.addEventListener('message', function (event) {
       return promise
     }
 
-    var getFavicon = function () {
-      var favicon = undefined
-      var nodeList = document.getElementsByTagName('link')
-      for (var i = 0; i < nodeList.length; i++) {
-        if ((nodeList[i].getAttribute('rel') == 'icon') || (nodeList[i].getAttribute('rel') == 'shortcut icon')) {
-          favicon = nodeList[i].getAttribute('href')
-        }
-      }
-      return favicon
-    }
-
     window.koi = {
       getAddress: () => buildPromise(MESSAGE_TYPES.GET_ADDRESS),
-      getPermission: () => buildPromise(MESSAGE_TYPES.GET_PERMISSION, { origin: window.location.origin, favicon: getFavicon() }),
-      signTransaction: (qty, address) => buildPromise(MESSAGE_TYPES.CREATE_TRANSACTION, { qty, address, origin: window.location.origin, favicon: getFavicon() })
+      getPermission: () => buildPromise(MESSAGE_TYPES.GET_PERMISSION),
+      signTransaction: (qty, address) => buildPromise(MESSAGE_TYPES.CREATE_TRANSACTION, { qty, address })
     }
     window.addEventListener('message', function (event) {
       if (!event.data || !event.data.type) {
