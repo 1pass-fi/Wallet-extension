@@ -28,7 +28,7 @@
   }
 }
 
-.error-message {
+.notification-message {
   animation: slideBox 0.5s, fadeIn 1s;
   background: #ECFFFE;
   border-radius: 3px;
@@ -44,12 +44,12 @@
   z-index: 10000;
 }
 
-.error-message.disabled {
+.notification-message.disabled {
   animation: fadeOut 0.75s;
   opacity: 0;
 }
 
-.error-message:after {
+.notification-message:after {
   background-color: #ECFFFE;
   border-bottom: 1px solid #ECFFFE;
   border-right: 1px solid #ECFFFE;
