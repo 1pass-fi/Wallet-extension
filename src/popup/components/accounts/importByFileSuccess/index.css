@@ -39,6 +39,11 @@
   font-weight: 400;
 }
 
+.tips-section .details .tips-set{
+  margin-top: 11px;
+  padding-left: 4px;
+}
+
 .tips-section .details .tips-set .tip-item {
   margin-top: 15px;
   margin-bottom: 0px;
@@ -46,6 +51,7 @@
 
 .tips-section .details .tips-set .tip-item .security-link {
   color: #237b75;
+  font-weight: 600;
 }
 
 .import-file-success .button-line {
@@ -53,4 +59,19 @@
   margin-top: 30px;
   display: flex;
   justify-content: space-between;
+  font-weight: 600;
+}
+
+.import-wallet-success-button {
+  font-weight: 600;
+  line-height: 20px;
+  min-width: 156px;
+}
+
+.import-wallet-success-button.skip{
+  border: 1.5px solid #171753;
+}
+
+.import-wallet-success-button.create{
+  min-height: 35px;
 }

@@ -31,7 +31,7 @@ const TransactionConfirmModal = ({
   onSubmit,
 }) => {
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} className='transaction-modal'>
       <ModalTitle koiAmount={koiAmount} />
       <div className="modal-account-address confirm-transaction">{accountAddress}</div>
       <div className="modal-description">

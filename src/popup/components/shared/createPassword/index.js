@@ -58,6 +58,7 @@ export default ({ isEnable, buttonLabel }) => {
       <div className='button'>
         <ButtonShared
           label={buttonLabel ? buttonLabel : 'Import Wallet'}
+          className='import-button'
         />
       </div>
     </div>

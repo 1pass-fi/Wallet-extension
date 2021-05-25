@@ -8,7 +8,7 @@ nav {
     color: #171753;
     display: flex;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 400;
     height: 100%;
     justify-content: center;
     letter-spacing: 0.03em;
@@ -22,4 +22,5 @@ nav {
     display: inline-block;
     line-height: 20px;
     padding: 0 2px;
+    font-weight: 600;
 }

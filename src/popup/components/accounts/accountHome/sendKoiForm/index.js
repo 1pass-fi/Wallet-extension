@@ -13,7 +13,13 @@ import { ERROR_MESSAGE } from 'constants'
 
 import './index.css'
 
-const SendKoiForm = ({ koiBalance, rate, setError, makeTransfer, onSendSuccess }) => {
+const SendKoiForm = ({
+  koiBalance,
+  rate,
+  setError,
+  makeTransfer,
+  onSendSuccess,
+}) => {
   const [address, setAddress] = useState('')
   const [amount, setAmount] = useState('')
   const [showModal, setShowModal] = useState(false)
@@ -28,7 +34,7 @@ const SendKoiForm = ({ koiBalance, rate, setError, makeTransfer, onSendSuccess }
   const handleSubmitForm = (e) => {
     e.preventDefault()
     try {
-      if (!(address.length > 0 && amount.length > 0)) {
+      if (!(address.trim().length > 0 && amount.trim().length > 0)) {
         setError(ERROR_MESSAGE.EMPTY_FIELDS)
       } else {
         setShowModal(true)
@@ -54,7 +60,7 @@ const SendKoiForm = ({ koiBalance, rate, setError, makeTransfer, onSendSuccess }
         <span>Available balance: </span>
         <b>{koiBalance} KOI</b>
         <div className="amount-in-usd">
-          ~ $ {numberFormat(koiBalance * rate)} USD
+          ~ ${numberFormat(koiBalance * rate)} USD
         </div>
       </div>
       <div className="recipient">
@@ -85,16 +91,20 @@ const SendKoiForm = ({ koiBalance, rate, setError, makeTransfer, onSendSuccess }
           onChange={onChangeAmount}
           value={amount}
         />
-        <div className="amount-in-usd">
-          ~ $ {numberFormat(Number(amount) * rate)} USD
-        </div>
+        {amount.trim().length > 0 && (
+          <div className="amount-in-usd">
+            ~ $ {numberFormat(Number(amount) * rate)} USD
+          </div>
+        )}
       </div>
       <Button label="Send KOI" className="send-button" />
       {showModal && (
         <TransactionConfirmModal
           koiAmount={Number(amount)}
           accountAddress={address}
-          onClose={() => { setShowModal(false) }}
+          onClose={() => {
+            setShowModal(false)
+          }}
           onSubmit={hanldeTransaction}
         />
       )}
@@ -103,4 +113,3 @@ const SendKoiForm = ({ koiBalance, rate, setError, makeTransfer, onSendSuccess }
 }
 
 export default connect(null, { setError, makeTransfer })(SendKoiForm)
-
