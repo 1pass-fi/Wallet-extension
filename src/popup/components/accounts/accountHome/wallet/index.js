@@ -20,10 +20,13 @@ import RemoveConnectedSite from 'popup/components/modals/removeConnectedSites'
 import { removeWallet, lockWallet, getKeyFile } from 'actions/koi'
 import { setNotification } from 'actions/notification'
 import { getChromeStorage, deleteOriginFromChrome } from 'utils'
-import { STORAGE, NOTIFICATION } from 'constants'
+import { STORAGE, NOTIFICATION, RATE, PATH } from 'constants'
 
 
 const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance, setNotification }) => {
+  const numberFormat = (num) => {
+    return new Intl.NumberFormat('en-US').format(num)
+  }
   return (
     <div className='wallet-info'>
       <div className='wallet-info-row'>
@@ -41,13 +44,13 @@ const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance, setNot
         </div>
       </div>
       <div className='wallet-info-row wallet-balance'>
-        <div class='koi-balance'>
+        <div className='koi-balance'>
           <div className='balance'>{numberFormat(koiBalance)} KOI</div>
-          {koiBalance > 0 && <div className='usd-exchange'>~${numberFormat(koiBalance*RATE.KOI)}USD</div>}
+          {<div className='usd-exchange'>~${numberFormat(koiBalance * RATE.KOI)}USD</div>}
         </div>
         <div className='ar-balance'>
           <div className='balance'>{numberFormat(arBalance)} AR</div>
-          {arBalance > 0 && <div className='usd-exchange'>~${numberFormat(arBalance*RATE.AR)}USD</div>}
+          {<div className='usd-exchange'>~${numberFormat(arBalance * RATE.AR)}USD</div>}
         </div>
       </div>
     </div>
@@ -82,7 +85,10 @@ const WalletConf = ({
       <WalletConfItem
         icon={<ShareIconOne />}
         title={'View Block Explorer'}
-        onClick={() => { }}
+        onClick={() => {
+          const url = `${PATH.VIEW_BLOCK}/${accountAddress}`
+          chrome.tabs.create({ url })
+        }}
       />
       <WalletConfItem
         icon={<KeyIcon />}

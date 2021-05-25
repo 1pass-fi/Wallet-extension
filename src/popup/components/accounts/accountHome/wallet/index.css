@@ -8,7 +8,7 @@
 
 .wallet .fish {
   position: absolute;
-  top: 20px;
+  top: 7px;
   left: 28px;
   width: 30.4px;
   height: 22.04px;
@@ -64,7 +64,9 @@
 }
 
 .wallet .wallet-wrapper .wallet-info .wallet-info-row.wallet-balance {
-  align-items: flex-start;
+  display: flex;
+  justify-content: right;
+  align-items: flex-end;
   padding-left: 10px;
 }
 

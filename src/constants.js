@@ -60,7 +60,7 @@ export const PATH = {
   HOME: '/account',
   LOGIN: '/account/login',
   NFT_IMAGE: 'https://arweave.net',
-  VIEW_BLOCK: 'https://viewblock.io/arweave/tx',
+  VIEW_BLOCK: 'https://viewblock.io/arweave/address',
   KOI_ROCK: 'https://koi.rocks/content-detail',
   GALLERY: chrome.extension
     ? `${chrome.extension.getURL('/options.html')}`
@@ -76,7 +76,7 @@ export const ERROR_MESSAGE = {
   CHECKED_TERMS: 'You have to agree to the Terms of Service',
   EMPTY_FIELDS: 'Please fill in all fields.',
   NOT_ENOUGH_KOI: `You don't have enough Koi.`,
-  REQUEST_NOT_EXIST: 'This request is no longer exist.'
+  REQUEST_NOT_EXIST: 'This request is no longer exist.',
   INVALID_AMOUNT: 'Amount must be greater than 0!'
 }
 

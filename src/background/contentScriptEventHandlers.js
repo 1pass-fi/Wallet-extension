@@ -1,6 +1,7 @@
 import { REQUEST } from 'constants'
 import { MESSAGES } from 'constants'
 import { checkSitePermission, setChromeStorage, transfer } from 'utils'
+import { isInteger, isString } from 'lodash'
 
 let pendingMessages = {}
 
@@ -84,6 +85,23 @@ export default async (koi, port, message) => {
           console.log('FAVICON', favicon)
           console.log('QTY', qty)
           console.log('ADDRESS', address)
+
+          if (!isInteger(qty) || qty < 0) {
+            port.postMessage({
+              type: MESSAGES.CREATE_TRANSACTION_ERROR,
+              data: 'Invalid input qty.'
+            })
+            break
+          }
+
+          if (!isString(address)) {
+            port.postMessage({
+              type: MESSAGES.CREATE_TRANSACTION_ERROR,
+              data: 'Invalid input address.'
+            })
+            break
+          }
+
           if (!hadPermission) {
             await setChromeStorage({
               'pendingRequest': {

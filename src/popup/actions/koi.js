@@ -13,16 +13,20 @@ import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 import { MESSAGES, PATH, STORAGE, REQUEST, NOTIFICATION } from 'constants'
 
 import { SET_KOI } from 'actions/types'
-import { getChromeStorage } from 'utils'
+import { getChromeStorage, removeChromeStorage } from 'utils'
 import { setNotification } from './notification'
 
 export const importWallet = (inputData) => (dispatch) => {
   try {
     dispatch(setIsLoading(true))
     const { history, redirectPath } = inputData
-    const importSuccessHandler = new CreateEventHandler(MESSAGES.IMPORT_WALLET_SUCCESS, response => {
+    const importSuccessHandler = new CreateEventHandler(MESSAGES.IMPORT_WALLET_SUCCESS, async response => {
       const { koiData } = response.data
       dispatch(setKoi(koiData))
+      await removeChromeStorage(STORAGE.SITE_PERMISSION)
+      await removeChromeStorage(STORAGE.PENDING_REQUEST)
+      await removeChromeStorage(STORAGE.CONTENT_LIST)
+      await removeChromeStorage(STORAGE.ACTIVITIES_LIST)
       dispatch(setIsLoading(false))
       history.push(redirectPath)
     })
