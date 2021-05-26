@@ -1,4 +1,4 @@
-import { MESSAGES, LOAD_KOI_BY } from 'constants'
+import { MESSAGES, LOAD_KOI_BY } from 'koiConstants'
 import {
   saveWalletToChrome,
   utils,

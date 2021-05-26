@@ -8,7 +8,7 @@ import Card from 'shared/card'
 import PlusIconOutline from 'img/plus-icon-outline.svg'
 
 import { setError } from 'actions/error'
-import { ERROR_MESSAGE } from 'constants'
+import { ERROR_MESSAGE } from 'koiConstants'
 
 import './index.css'
 

@@ -11,7 +11,7 @@ import './index.css'
 
 import Wallet from './wallet/index'
 
-import { RATE } from 'constants'
+import { RATE } from 'koiConstants'
 
 export const AccountHome = ({ koi }) => {
   const [showForm, setShowForm] = useState(false)

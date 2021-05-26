@@ -1,7 +1,7 @@
 import '@babel/polyfill'
 
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
-import { PORTS, MESSAGES } from 'constants'
+import { PORTS, MESSAGES } from 'koiConstants'
 
 console.log('Content scripts has loaded')
 

@@ -10,7 +10,7 @@ import { setTransactions } from './transactions'
 
 import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 
-import { MESSAGES, PATH, STORAGE, REQUEST, NOTIFICATION } from 'constants'
+import { MESSAGES, PATH, STORAGE, REQUEST, NOTIFICATION } from 'koiConstants'
 
 import { SET_KOI } from 'actions/types'
 import { getChromeStorage, removeChromeStorage } from 'utils'

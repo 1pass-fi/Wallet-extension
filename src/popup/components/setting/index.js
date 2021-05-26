@@ -7,7 +7,7 @@ import { setError } from 'actions/error'
 
 import GlobalButton from 'popup/components/shared/globalButton'
 
-import { STORAGE } from 'constants'
+import { STORAGE } from 'koiConstants'
 import { getChromeStorage } from 'utils'
 
 import './index.css'

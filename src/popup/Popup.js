@@ -20,7 +20,7 @@ import { setError } from 'actions/error'
 import { setNotification } from 'actions/notification'
 import { setKoi, loadWallet, removeWallet } from 'actions/koi'
 
-import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST } from 'constants'
+import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST } from 'koiConstants'
 
 import { getChromeStorage } from 'utils'
 

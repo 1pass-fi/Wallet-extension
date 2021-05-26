@@ -7,7 +7,7 @@ import TextAreaField from 'shared/textAreaField'
 import Button from 'shared/button'
 import { importWallet } from 'actions/koi'
 import { setError } from 'actions/error'
-import { PATH, ERROR_MESSAGE } from 'constants'
+import { PATH, ERROR_MESSAGE } from 'koiConstants'
 
 import './index.css'
 import Header from 'shared/header'

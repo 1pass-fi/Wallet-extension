@@ -12,7 +12,7 @@ import CreatePassword from 'shared/createPassword'
 import { importWallet } from 'actions/koi'
 import { setError } from 'actions/error'
 
-import { PATH, ERROR_MESSAGE } from 'constants'
+import { PATH, ERROR_MESSAGE } from 'koiConstants'
 
 export const ImportByPhrase = ({ importWallet, setError }) => {
   const history = useHistory()
@@ -29,7 +29,7 @@ export const ImportByPhrase = ({ importWallet, setError }) => {
       const passwordConfirm = e.target.pwdConfirm.value
       const checked = e.target.checkbox.checked
       const phrase = e.target.inputPhrase.value
-      
+
       if (!phrase) {
         setError(ERROR_MESSAGE.EMPTY_PHRASE)
       } else if (password.length < 8) {

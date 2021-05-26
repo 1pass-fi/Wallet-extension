@@ -15,7 +15,7 @@ import { setError } from 'actions/error'
 
 import { getChromeStorage, removeChromeStorage, saveOriginToChrome } from 'utils'
 
-import { STORAGE, REQUEST, ERROR_MESSAGE } from 'constants'
+import { STORAGE, REQUEST, ERROR_MESSAGE } from 'koiConstants'
 
 import './index.css'
 
