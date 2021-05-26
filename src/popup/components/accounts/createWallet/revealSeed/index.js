@@ -29,7 +29,11 @@ const LockScreen = ({ onClick }) => {
   )
 }
 
-export const RevealSeed = ({ seedPhrase, setCreateWallet, setNotification }) => {
+export const RevealSeed = ({
+  seedPhrase,
+  setCreateWallet,
+  setNotification,
+}) => {
   const [isShowSeedPhrase, setIsShowSeedPhrase] = useState(false)
 
   const handleOnClick = () => {
@@ -80,6 +84,7 @@ export const RevealSeed = ({ seedPhrase, setCreateWallet, setNotification }) => 
           className='confirm-button'
           label={'Continue'}
           type={isShowSeedPhrase ? '' : 'outline'}
+          isEnable={isShowSeedPhrase}
           onClick={handleOnClick}
         />
         <div className='qa'>
