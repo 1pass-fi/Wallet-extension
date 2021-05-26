@@ -1,0 +1,13 @@
+.modal.seed-phrase-modal {
+  margin-top: 48px;
+}
+
+.modal.seed-phrase-modal .backup-phrase {
+  height: auto;
+  padding-top: 0;
+}
+
+.modal.seed-phrase-modal .backup-phrase .title {
+  justify-content: center;
+  margin-bottom: 20px;
+}

@@ -30,11 +30,12 @@
 }
 
 .backup-phrase {
+  position: relative;
   box-sizing: border-box;
   height: 568px;
   padding: 20px;
   font-size: 15px;
-  position: relative;
+  color: #171753;
 }
 
 .backup-phrase .cancel-icon {

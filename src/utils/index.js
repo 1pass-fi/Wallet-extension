@@ -171,6 +171,11 @@ export const decryptWalletKeyFromChrome = async (password) => {
 }
 
 /* istanbul ignore next */
+export const decryptSeedPhraseFromChrome = async (password) => {
+  return password
+}
+
+/* istanbul ignore next */
 export const removeWalletFromChrome = async () => {
   try {
     await removeChromeStorage(STORAGE.KOI_ADDRESS)
