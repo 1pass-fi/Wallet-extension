@@ -6,7 +6,7 @@ exports[`Test for RemoveConnectedSites component Render without crashing renders
     class="modal-container"
   >
     <div
-      class="modal"
+      class="modal undefined"
     >
       <div
         class="modal-close-icon"

@@ -23,11 +23,11 @@ export const importWallet = (inputData) => (dispatch) => {
     const importSuccessHandler = new CreateEventHandler(MESSAGES.IMPORT_WALLET_SUCCESS, async response => {
       const { koiData } = response.data
       dispatch(setKoi(koiData))
+      dispatch(setIsLoading(false))
       await removeChromeStorage(STORAGE.SITE_PERMISSION)
       await removeChromeStorage(STORAGE.PENDING_REQUEST)
       await removeChromeStorage(STORAGE.CONTENT_LIST)
       await removeChromeStorage(STORAGE.ACTIVITIES_LIST)
-      dispatch(setIsLoading(false))
       history.push(redirectPath)
     })
     const importFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
@@ -297,7 +297,8 @@ export const makeTransfer = (inputData) => (dispatch) => {
       const { txId } = response.data
       dispatch(setTransactions(txId))
       dispatch(setIsLoading(false))
-      dispatch(setNotification(`Transaction ID: ${txId}`))
+      console.log('TRANSACTION ID', txId)
+      dispatch(setNotification(`Transaction sent.`))
     })
     const transferFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
