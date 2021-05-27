@@ -61,6 +61,8 @@ const Popup = ({
             case REQUEST.TRANSACTION:
               history.push('/account/sign-transaction')
               break
+            default:
+              history.push('/account')
           }
         } else {
           // Koi Address not in local storage

@@ -1,23 +1,3 @@
-<style>
-  .wrapper {
-    display: flex;
-    flex-direction: row;
-  }
-
-  #getAddressButton {
-    width: 100px;
-    margin-right: 10px;
-  }
-
-  #result {
-    color: blue;
-  }
-
-  #error {
-    color: red;
-  }
-</style>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,42 +5,19 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test KOI</title>
+  <title>Document</title>
 </head>
 
 <body>
-  <div class="wrapper">
-    <button id="getAddressButton">Get Address:</button>
-    <div id="result"></div>
-    <div id="error"></div>
-  </div>
+  const arweave = Arweave.init({
+  host: "arweave.net",
+  protocol: "https",
+  port: 443,
+  });
+
+  let tx = await arweave.createTransaction({target: 'asdasdasdasd', quantity: 0.0001});
+  <script src="https://unpkg.com/arweave/bundles/web.bundle.js"></script>
+
 </body>
-<script>
-  const button = document.getElementById("getAddressButton");
-  button.addEventListener("click", () => {
-    document.getElementById("error").textContent = ''
-    document.getElementById("result").textContent = ''
-
-    koi.getAddress()
-      .then(event => {
-        document.getElementById("result").textContent = event.data.data
-      })
-      .catch(event => {
-        document.getElementById("error").textContent = event.data.data
-      })
-  })
-
-
-  // let button = document.createElement('button')
-  // button.id = 'getAddressButton'
-  // button.textContent = 'Get Address'
-  // const result = document.createElement('h1')
-  // result.id = 'result'
-  // const error = document.createElement('h1')
-  // error.id = 'error'
-  // document.body.appendChild(button)
-  // document.body.appendChild(result)
-  // document.body.appendChild(error)
-</script>
 
 </html>

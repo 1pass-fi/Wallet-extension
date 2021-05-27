@@ -38,7 +38,8 @@ export default async (koi, port, message) => {
         if (!hadPermission) {
           port.postMessage({
             type: `${message.type}_ERROR`,
-            data: 'You don\'t have enough permissions to perform this action'
+            data: 'You don\'t have enough permissions to perform this action',
+            id: message.id
           })
           return
         }
@@ -49,36 +50,50 @@ export default async (koi, port, message) => {
           if (koi.address) {
             port.postMessage({
               type: MESSAGES.GET_ADDRESS_SUCCESS,
-              data: koi.address
+              data: koi.address,
+              id: message.id
             })
           } else {
             port.postMessage({
               type: MESSAGES.GET_ADDRESS_ERROR,
-              data: 'Address not found'
+              data: 'Address not found',
+              id: message.id
             })
           }
           break
         }
         case MESSAGES.GET_PERMISSION: {
-          if (!hadPermission) {
-            await setChromeStorage({
-              'pendingRequest': {
-                type: REQUEST.PERMISSION,
-                data: { origin, favicon }
-              }
+          if (hadPermission) {
+            port.postMessage({
+              type: MESSAGES.GET_PERMISSION_SUCCESS,
+              data: ['SIGN_TRANSACTION'],
+              id: message.id
             })
-            chrome.windows.create({
-              url: chrome.extension.getURL('/popup.html'),
-              focused: true,
-              type: 'popup',
-              height: 622,
-              width: 426
+          } else {
+            port.postMessage({
+              type: MESSAGES.GET_PERMISSION_SUCCESS,
+              data: [],
+              id: message.id
             })
           }
+          // if (!hadPermission) {
+          //   await setChromeStorage({
+          //     'pendingRequest': {
+          //       type: REQUEST.PERMISSION,
+          //       data: { origin, favicon }
+          //     }
+          //   })
+          //   chrome.windows.create({
+          //     url: chrome.extension.getURL('/popup.html'),
+          //     focused: true,
+          //     type: 'popup',
+          //     height: 622,
+          //     width: 426
+          //   })
+          // }
           break
         }
         case MESSAGES.CREATE_TRANSACTION: {
-          console.log('CREATE TRANSACTION BACKGROUND')
           const { qty, address } = message.data
           console.log('ORIGIN', origin)
           console.log('FAVICON', favicon)
