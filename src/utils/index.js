@@ -153,6 +153,7 @@ export const transfer = async (koiObj, qty, address) => {
 export const saveWalletToChrome = async (koiObj, password) => {
   try {
     const encryptedWalletKey = await passworder.encrypt(password, koiObj.wallet)
+    console.log('ENCRYPTED KEY', encryptedWalletKey)
     await setChromeStorage({ 'koiAddress': koiObj.address, 'koiKey': encryptedWalletKey })
   } catch (err) {
     throw new Error(err.message)

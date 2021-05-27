@@ -1,4 +1,5 @@
 import { get } from 'lodash'
+import passworder from 'browser-passworder'
 
 import { setIsLoading } from './loading'
 import { setContLoading } from './continueLoading'
@@ -13,8 +14,10 @@ import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 import { MESSAGES, PATH, STORAGE, REQUEST, NOTIFICATION } from 'koiConstants'
 
 import { SET_KOI } from 'actions/types'
-import { getChromeStorage, removeChromeStorage } from 'utils'
+import { getChromeStorage, removeChromeStorage, setChromeStorage, generateWallet as generateWalletUtil } from 'utils'
 import { setNotification } from './notification'
+
+import { koi } from 'background'
 
 export const importWallet = (inputData) => (dispatch) => {
   try {
@@ -176,29 +179,36 @@ export const unlockWallet = (inputData) => (dispatch) => {
   }
 }
 
-export const generateWallet = (inputData) => (dispatch) => {
+export const generateWallet = (inputData) => async (dispatch) => {
   try {
     const { stage, password } = inputData
 
     dispatch(setIsLoading(true))
-    const generateSuccessHandler = new CreateEventHandler(MESSAGES.GENERATE_WALLET_SUCCESS, response => {
-      const { seedPhrase } = response.data
-      dispatch(setCreateWallet({ seedPhrase, stage, password }))
-      dispatch(setIsLoading(false))
-    })
-    const generateFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
-      console.log('=== BACKGROUND ERROR ===')
-      const errorMessage = response.data
-      dispatch(setIsLoading(false))
-      dispatch(setError(errorMessage))
-    })
+    const seedPhrase = await generateWalletUtil(koi)
+    const encryptedKey = await passworder.encrypt(password, koi.wallet)
+    await setChromeStorage({ 'createdWalletAddress': koi.address, 'createdWalletKey': encryptedKey })
+    dispatch(setCreateWallet({ seedPhrase, stage, password }))
+    dispatch(setIsLoading(false))
 
-    backgroundConnect.addHandler(generateSuccessHandler)
-    backgroundConnect.addHandler(generateFailedHandler)
-    backgroundConnect.postMessage({
-      type: MESSAGES.GENERATE_WALLET,
-      data: inputData
-    })
+
+    // const generateSuccessHandler = new CreateEventHandler(MESSAGES.GENERATE_WALLET_SUCCESS, response => {
+    //   const { seedPhrase } = response.data
+    //   dispatch(setCreateWallet({ seedPhrase, stage, password }))
+    //   dispatch(setIsLoading(false))
+    // })
+    // const generateFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+    //   console.log('=== BACKGROUND ERROR ===')
+    //   const errorMessage = response.data
+    //   dispatch(setIsLoading(false))
+    //   dispatch(setError(errorMessage))
+    // })
+
+    // backgroundConnect.addHandler(generateSuccessHandler)
+    // backgroundConnect.addHandler(generateFailedHandler)
+    // backgroundConnect.postMessage({
+    //   type: MESSAGES.GENERATE_WALLET,
+    //   data: inputData
+    // })
   } catch (err) {
     dispatch(setError(err.message))
     dispatch(setIsLoading(false))
