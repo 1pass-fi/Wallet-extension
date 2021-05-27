@@ -172,7 +172,7 @@ export const decryptWalletKeyFromChrome = async (password) => {
 
 /* istanbul ignore next */
 export const decryptSeedPhraseFromChrome = async (password) => {
-  return password
+  return 'seed phrase'
 }
 
 /* istanbul ignore next */

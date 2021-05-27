@@ -11,16 +11,18 @@ import { setError } from 'popup/actions/error'
 import { SeedPhraseModal } from '../seedPhraseModal'
 
 const AccountSettingRow = ({ accountName }) => {
-  let key = null
+  const [seedPhrase, setSeedPhrase] = useState('')
   const [showRevealModal, setShowRevealModal] = useState(false)
   const [showSeedPhraseModal, setShowSeedPhraseModal] = useState(false)
 
   const onRevealSeedPhare = async (password) => {
     try {
-      key = await decryptSeedPhraseFromChrome(password)
-      if (!key) {
+      const phrase = await decryptSeedPhraseFromChrome(password)
+      if (!phrase) {
+        setShowRevealModal(false)
         setError('Empty seed phrase !')
       } else { 
+        setSeedPhrase(phrase)
         setShowRevealModal(false)
         setShowSeedPhraseModal(true)
       }
@@ -53,7 +55,7 @@ const AccountSettingRow = ({ accountName }) => {
         </div>
       </div>
       {showRevealModal && <RevealSeedPhraseModal onClose={() => {setShowRevealModal(false)}} onReveal={onRevealSeedPhare} />}
-      {showSeedPhraseModal && <SeedPhraseModal onClose={() => {setShowSeedPhraseModal(false)}} seedPhrase={key}/>}
+      {showSeedPhraseModal && <SeedPhraseModal onClose={() => {setShowSeedPhraseModal(false)}} seedPhrase={seedPhrase}/>}
     </>
   )
 }

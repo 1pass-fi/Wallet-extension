@@ -23,7 +23,7 @@ const RevealSeedPhraseModal = ({ onReveal, onClose, setError }) => {
     if (password.length === 0) {
       setError(ERROR_MESSAGE.EMPTY_FIELDS)
     } else {
-      onReveal()
+      onReveal(password)
     }
   }
 

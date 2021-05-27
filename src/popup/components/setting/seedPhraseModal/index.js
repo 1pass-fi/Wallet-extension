@@ -17,7 +17,6 @@ import { setNotification } from 'actions/notification'
 import './index.css'
 
 export const SeedPhraseModal = ({ seedPhrase, setNotification, onClose }) => {
-
   return (
     <Modal className='seed-phrase-modal' onClose={onClose}>
       <div className='backup-phrase' >

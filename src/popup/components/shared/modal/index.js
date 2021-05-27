@@ -8,7 +8,7 @@ const propTypes = {
   onClose: PropTypes.func,
 }
 
-const Modal = ({ onClose, children, className }) => {
+const Modal = ({ onClose, children, className = '' }) => {
   return (
     <div className="modal-container">
       <div className={`modal ${className}`}>
