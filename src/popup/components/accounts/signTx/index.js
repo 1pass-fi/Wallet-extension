@@ -9,7 +9,7 @@ import Button from 'shared/button'
 
 import { getChromeStorage, removeChromeStorage } from 'utils'
 
-import { STORAGE, REQUEST, ERROR_MESSAGE } from 'constants'
+import { STORAGE, REQUEST, ERROR_MESSAGE } from 'koiConstants'
 import { signTransaction } from 'actions/koi'
 import { setError } from 'actions/error'
 

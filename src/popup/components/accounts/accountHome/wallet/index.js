@@ -20,7 +20,7 @@ import RemoveConnectedSite from 'popup/components/modals/removeConnectedSites'
 import { removeWallet, lockWallet, getKeyFile } from 'actions/koi'
 import { setNotification } from 'actions/notification'
 import { getChromeStorage, deleteOriginFromChrome } from 'utils'
-import { STORAGE, NOTIFICATION, RATE, PATH } from 'constants'
+import { STORAGE, NOTIFICATION, RATE, PATH } from 'koiConstants'
 
 
 const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance, setNotification }) => {

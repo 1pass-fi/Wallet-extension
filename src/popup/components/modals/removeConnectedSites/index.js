@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { REQUEST, STORAGE } from 'constants'
+import { REQUEST, STORAGE } from 'koiConstants'
 import { setChromeStorage, checkSitePermission } from 'utils'
 import { setError } from 'popup/actions/error'
 import Modal from 'popup/components/shared/modal'

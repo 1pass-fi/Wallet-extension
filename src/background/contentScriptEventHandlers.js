@@ -1,5 +1,4 @@
-import { REQUEST } from 'constants'
-import { MESSAGES } from 'constants'
+import { REQUEST, MESSAGES } from 'koiConstants'
 import { checkSitePermission, setChromeStorage, transfer } from 'utils'
 import { isInteger, isString } from 'lodash'
 

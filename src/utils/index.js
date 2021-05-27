@@ -1,4 +1,4 @@
-import { LOAD_KOI_BY, PATH, STORAGE, ERROR_MESSAGE } from 'constants'
+import { LOAD_KOI_BY, PATH, STORAGE, ERROR_MESSAGE } from 'koiConstants'
 import passworder from 'browser-passworder'
 
 /* istanbul ignore next */

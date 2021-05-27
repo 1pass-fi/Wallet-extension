@@ -14,7 +14,7 @@ import SettingsIcon from 'img/settings-icon.svg'
 import ShareIcon from 'img/share-icon.svg'
 
 import './Options.css'
-import { MESSAGES, STORAGE, PORTS } from '../constants'
+import { MESSAGES, STORAGE, PORTS } from 'koiConstants'
 
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 

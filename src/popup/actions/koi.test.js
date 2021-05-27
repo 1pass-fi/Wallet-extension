@@ -4,14 +4,14 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import backgroundConnect from 'actions/backgroundConnect'
-import { 
-  SET_LOADING, 
-  SET_KOI, 
-  SET_ERROR, 
-  SET_ASSETS, 
-  SET_CREATE_WALLET, 
-  SET_CONT_LOADING, 
-  SET_TRANSACTIONS 
+import {
+  SET_LOADING,
+  SET_KOI,
+  SET_ERROR,
+  SET_ASSETS,
+  SET_CREATE_WALLET,
+  SET_CONT_LOADING,
+  SET_TRANSACTIONS
 } from 'actions/types'
 
 import {
@@ -26,7 +26,7 @@ import {
   lockWallet
 } from './koi'
 
-import { MESSAGES } from 'constants'
+import { MESSAGES } from 'koiConstants'
 
 describe('Tests for actions/koi', () => {
   let middlewares, mockStore, store, expectedActions, postMessage
@@ -114,7 +114,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(importWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -229,7 +229,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(loadWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -342,7 +342,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(removeWallet())
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -462,7 +462,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(unlockWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -577,7 +577,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(generateWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -687,7 +687,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(saveWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -793,7 +793,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(loadContent(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -901,7 +901,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(makeTransfer(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -1011,7 +1011,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(lockWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })

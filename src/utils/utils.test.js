@@ -1,6 +1,6 @@
 import '@babel/polyfill'
-import { LOAD_KOI_BY, PATH } from 'constants'
-import { 
+import { LOAD_KOI_BY, PATH } from 'koiConstants'
+import {
   loadWallet,
   generateWallet,
   loadMyContent,
@@ -10,7 +10,7 @@ import {
 
 describe('Tests for utils', () => {
   let koiObj, initKoiObj
-  
+
   beforeEach(() => {
     initKoiObj = {
       address: '',
@@ -65,7 +65,7 @@ describe('Tests for utils', () => {
 
   describe('Test for loadMyContent()', () => {
     let returnedContentList
-    
+
     beforeEach(() => {
       returnedContentList = [
         {

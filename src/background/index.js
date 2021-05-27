@@ -1,6 +1,6 @@
 import '@babel/polyfill'
 
-import { PORTS } from 'constants'
+import { PORTS } from 'koiConstants'
 import popUpEventHandlers from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from 'koi_tools/web'
