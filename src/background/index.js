@@ -6,7 +6,7 @@ import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from 'koi_tools/web'
 
 /* eslint-disable no-undef */
-const koi = new Web()
+export const koi = new Web()
 console.log('Background.js file loaded')
 
 browser.runtime.onMessage.addListener(function (message) {

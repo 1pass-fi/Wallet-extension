@@ -1,3 +1,5 @@
+import passworder from 'browser-passworder'
+
 import { MESSAGES, LOAD_KOI_BY } from 'koiConstants'
 import {
   saveWalletToChrome,
@@ -9,7 +11,8 @@ import {
   setChromeStorage,
   removeChromeStorage,
   generateWallet,
-  transfer
+  transfer,
+  getChromeStorage
 } from 'utils'
 
 export default async (koi, port, message) => {
@@ -80,8 +83,22 @@ export default async (koi, port, message) => {
       }
       case MESSAGES.SAVE_WALLET: {
         const { password } = message.data
+
+        const createdWalletAddress = (await getChromeStorage('createdWalletAddress'))['createdWalletAddress']
+        const createdWalletKey = (await getChromeStorage('createdWalletKey'))['createdWalletKey']
+        const decryptedWalletKey = await passworder.decrypt(password, createdWalletKey)
+
+        if (createdWalletAddress && decryptedWalletKey) {
+          koi.address = createdWalletAddress
+          koi.wallet = decryptedWalletKey
+        } else {
+          throw new Error('Create new wallet failed.')
+        }
+
         await saveWalletToChrome(koi, password)
         const koiData = await utils.loadWallet(koi, koi.address, LOAD_KOI_BY.ADDRESS)
+        console.log('SAVE WALLET BACKGROUND', koiData)
+
         port.postMessage({
           type: MESSAGES.SAVE_WALLET_SUCCESS,
           data: { koiData }
