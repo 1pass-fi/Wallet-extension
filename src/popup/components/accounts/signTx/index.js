@@ -34,10 +34,6 @@ export const SignTx = ({ signTransaction, setError }) => {
       const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[STORAGE.KOI_ADDRESS]
       const { origin: requestOrigin, qty, address: targetAddress } = request.data
 
-      console.log('REQUEST DATA', request)
-      console.log('ADDRESS', address)
-      console.log('TARGET ADDRESS', targetAddress)
-
       setSourceAccount({ address, type: 'koi' })
       setDestinationAccount({ address: targetAddress, type: 'arweave' })
       setOrigin(requestOrigin)

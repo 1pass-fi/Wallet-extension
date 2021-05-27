@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for RevealSeed component Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="backup-phrase-wrapper"
+  >
+    <div
+      class="card backup-phrase"
+    >
+      <div
+        class="cancel-icon"
+      >
+        <svg />
+      </div>
+      <div
+        class="title"
+      >
+        <svg
+          class="icon"
+        />
+        <div
+          class="text"
+        >
+          Secret Backup Phrase
+        </div>
+      </div>
+      <div
+        class="description"
+      >
+        Your secret backup phrase makes it easy to back up and restore your account.
+      </div>
+      <div
+        class="warning"
+      >
+        <svg
+          class="warning-icon"
+        />
+        <div
+          class="warning-text"
+        >
+          Your secret backup phrase makes it easy to back up and restore your account.
+        </div>
+      </div>
+      <div
+        class="phrase-display-box"
+      >
+        <div
+          class="lock-screen"
+        >
+          <svg
+            class="icon"
+          />
+          <div
+            class="text"
+          >
+            Click to reveal secret words.
+          </div>
+        </div>
+      </div>
+      <button
+        class="button-shared button-outline confirm-button"
+      >
+        Continue
+      </button>
+      <div
+        class="qa"
+      >
+        <div
+          class="qa-icon"
+        >
+          <svg />
+        </div>
+        <div
+          class="qa-item"
+        >
+          Store your backup phrase in a password manager.
+        </div>
+        <div
+          class="qa-item"
+        >
+          Write the phrase on a piece of paper and keep it in a safe location (or multiple).
+        </div>
+        <div
+          class="qa-item"
+        >
+          Memorize this phrase
+        </div>
+        <div
+          class="qa-item"
+        >
+          Koi cannot recover this phrase for you.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for ConfirmSeed component Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="confirmation-card-wrapper"
+  >
+    <div
+      class="card confirmation-card"
+    >
+      <div
+        class="cancel-icon"
+      >
+        <svg />
+      </div>
+      <div
+        class="title"
+      >
+        <svg
+          class="icon"
+        />
+        <div
+          class="text"
+        >
+          Secret Backup Phrase
+        </div>
+      </div>
+      <div
+        class="description"
+      >
+        Your secret backup phrase makes it easy to back up and restore your account.
+      </div>
+      <div
+        class="warning"
+      >
+        <svg
+          class="warning-icon"
+        />
+        <div
+          class="warning-text"
+        >
+          Your secret backup phrase makes it easy to back up and restore your account.
+        </div>
+      </div>
+      <div
+        class="selected-box"
+      />
+      <div
+        class="b2"
+      >
+        <button
+          class="word "
+        >
+          fragile
+        </button>
+        <button
+          class="word "
+        >
+          narrow
+        </button>
+        <button
+          class="word "
+        >
+          pepper
+        </button>
+        <button
+          class="word "
+        >
+          warfare
+        </button>
+        <button
+          class="word "
+        >
+          aisle
+        </button>
+        <button
+          class="word "
+        >
+          average
+        </button>
+        <button
+          class="word "
+        >
+          gospel
+        </button>
+        <button
+          class="word "
+        >
+          danger
+        </button>
+        <button
+          class="word "
+        >
+          quarter
+        </button>
+        <button
+          class="word "
+        >
+          warm
+        </button>
+        <button
+          class="word "
+        >
+          egg
+        </button>
+        <button
+          class="word "
+        >
+          civil
+        </button>
+      </div>
+      <button
+        class="button-shared button-outline confirm-button"
+      >
+        Confirm
+      </button>
+    </div>
+  </div>
+</div>
+`;
