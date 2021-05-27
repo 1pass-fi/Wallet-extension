@@ -7,6 +7,10 @@
 }
 
 body {
+  display: flex;
+  min-height: 70vh;
+  align-items: center;
+  justify-content: center;
   font-family: 'Catamaran', sans-serif;
   font-weight: 400;
 }
