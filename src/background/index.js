@@ -3,8 +3,8 @@ import '@babel/polyfill'
 import { PORTS } from 'koiConstants'
 import popUpEventHandlers from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
-// import { Web } from 'koi_tools/web'
-import { Web } from './koiMock'
+import { Web } from '@_koi/sdk/web'
+// import { Web } from './koiMock'
 
 /* eslint-disable no-undef */
 export const koi = new Web()

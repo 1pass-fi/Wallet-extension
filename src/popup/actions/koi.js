@@ -224,7 +224,8 @@ export const saveWallet = (inputData) => (dispatch) => {
       dispatch(setKoi(koiData))
       dispatch(setIsLoading(false))
       setCreateWallet({ stage: 1, password: null, seedPhrase: null })
-      history.push(PATH.HOME)
+      window.close()
+      // history.push(PATH.HOME)
     })
     const saveFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
