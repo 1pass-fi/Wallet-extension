@@ -142,7 +142,7 @@ const WalletConf = ({
           onClose={() => setShowModalConnectedSite(false)}
         />
       )}
-      {showExportKeyModal && <ExportPrivateKeyModal />}
+      {showExportKeyModal && <ExportPrivateKeyModal setShowExportKeyModel={setShowExportKeyModel}/>}
     </div>
   )
 }
@@ -198,7 +198,6 @@ export const Wallet = ({
           sites={connectedSite}
           handleDeleteSite={handleDeleteSite}
           handleRemoveWallet={handleRemoveWallet}
-          handleGetKeyFile={getKeyFile}
         />
       </div>
     </div>

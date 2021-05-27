@@ -118,9 +118,11 @@ export default async (koi, port, message) => {
         break
       }
       case MESSAGES.GET_KEY_FILE: {
+        const { password } = message.data
+        const key = await decryptWalletKeyFromChrome(password)
         port.postMessage({
           type: MESSAGES.GET_KEY_FILE_SUCCESS,
-          data: koi.wallet
+          data: key
         })
         break
       }

@@ -343,7 +343,7 @@ export const signTransaction = (inputData) => (dispatch) => {
   }
 }
 
-export const getKeyFile = () => (dispatch) => {
+export const getKeyFile = (inputData) => (dispatch) => {
   const getKeyFileSuccessHandler = new CreateEventHandler(MESSAGES.GET_KEY_FILE_SUCCESS, response => {
     const content = response.data
     const filename = 'arweave-key.json'
@@ -359,7 +359,7 @@ export const getKeyFile = () => (dispatch) => {
   backgroundConnect.addHandler(getKeyFileSuccessHandler)
   backgroundConnect.postMessage({
     type: MESSAGES.GET_KEY_FILE,
-    data: {}
+    data: inputData
   })
 }
 

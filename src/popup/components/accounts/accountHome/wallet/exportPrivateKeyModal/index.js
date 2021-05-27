@@ -1,4 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+
+import { getKeyFile } from 'actions/koi'
 
 import WarningIcon from 'img/warning-icon.svg'
 
@@ -6,7 +9,16 @@ import './index.css'
 import InputField from 'shared/inputField'
 import Button from 'popup/components/shared/button'
 
-export default () => {
+export const KeyModal = ({ getKeyFile, setShowExportKeyModel }) => {
+  const [password, setPassword] = useState(null)
+
+  const handleOnClick = () => {
+    if (password) {
+      getKeyFile({ password })
+      setShowExportKeyModel(false)
+    }
+  }
+  
   return (
     <div className='export-file-popup-wrapper'>
       <div className='export-file-popup'>
@@ -23,12 +35,14 @@ export default () => {
             assets in this account.
           </div>
         </div>
-        <InputField label='Enter your password' className='enter-password' />
+        <InputField onChange={(e) => setPassword(e.target.value)} label='Enter your password' className='enter-password' />
         <div className='button-line'>
-          <Button label='Reveal' className='reveal-button' />
-          <Button label='Go Back' type='outline' className='go-back-button'   />
+          <Button onClick={handleOnClick} label='Reveal' className='reveal-button' />
+          <Button onClick={() => setShowExportKeyModel(false)} label='Go Back' type='outline' className='go-back-button'   />
         </div>
       </div>
     </div>
   )
 }
+
+export default connect(null, { getKeyFile })(KeyModal)
