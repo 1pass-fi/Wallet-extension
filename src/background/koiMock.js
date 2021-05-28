@@ -1,6 +1,7 @@
 const MOCK_ADDRESS = '123456789012345678901234567890123456789012'
-const MOCK_PHASE = 'faculty photo tornado doll matrix bench thumb team move diesel room tube'
+const MOCK_PHASE = '1faculty 2photo 3tornado 4doll 5matrix 6bench 7thumb 8team 9move 10diesel 11room 12tube'
 const MOCK_KEY = 'ajsdaskdjsdhkashdj'
+const CONTENTS = require('./mockContent.json')
 
 export class Web {
   constructor() {
@@ -24,20 +25,7 @@ export class Web {
   }
 
   myContent() {
-    return Promise.resolve([
-      {
-        title: 'title 1',
-        ticker: 'KOINFT',
-        totalReward: 1000,
-        txIdContent: 'txId 1',
-      },
-      {
-        title: 'title 2',
-        ticker: 'KOINFT2',
-        totalReward: 2000,
-        txIdContent: 'txId 2',
-      }
-    ])
+    return Promise.resolve(CONTENTS)
   }
 
   getKoiBalance() {
