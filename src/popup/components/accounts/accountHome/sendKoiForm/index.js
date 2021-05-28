@@ -62,7 +62,7 @@ const SendKoiForm = ({
         <span>Available balance: </span>
         <b>{koiBalance} KOI</b>
         <div className="amount-in-usd">
-          ~ ${numberFormat(koiBalance * rate)} USD
+          ${numberFormat(koiBalance * rate)} USD
         </div>
       </div>
       <div className="recipient">
@@ -95,7 +95,7 @@ const SendKoiForm = ({
         />
         {amount.trim().length > 0 && (
           <div className="amount-in-usd">
-            ~ $ {numberFormat(Number(amount) * rate)} USD
+            $ {numberFormat(Number(amount) * rate)} USD
           </div>
         )}
       </div>
