@@ -50,9 +50,9 @@ const Popup = ({
         const { KOI_ADDRESS, KOI_KEY, PENDING_REQUEST } = STORAGE
         const storage = await getChromeStorage([KOI_ADDRESS, KOI_KEY, PENDING_REQUEST])
 
-        if (storage['koiAddress']) {
+        if (storage[KOI_ADDRESS]) {
           // Koi Address in local storage
-          loadWallet({ data: storage['koiAddress'] })
+          loadWallet({ data: storage[KOI_ADDRESS] })
           switch (get(storage[PENDING_REQUEST], 'type')) {
             case REQUEST.PERMISSION:
               history.push('/account/connect-site')
@@ -63,7 +63,7 @@ const Popup = ({
           }
         } else {
           // Koi Address not in local storage
-          if (storage['koiKey']) {
+          if (storage[KOI_KEY]) {
             history.push('/account/login')
           } else {
             history.push('/account/welcome')

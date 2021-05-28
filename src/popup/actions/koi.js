@@ -16,19 +16,34 @@ import { SET_KOI } from 'actions/types'
 import { getChromeStorage, removeChromeStorage } from 'utils'
 import { setNotification } from './notification'
 
+export const getBalances = () => (dispatch) => {
+  const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
+    const { koiData } = response.data
+    dispatch(setKoi(koiData))
+  })
+  backgroundConnect.addHandler(getBalanceSuccessHandler)
+  backgroundConnect.postMessage({
+    type: MESSAGES.GET_BALANCES
+  })
+}
+
 export const importWallet = (inputData) => (dispatch) => {
   try {
     dispatch(setIsLoading(true))
     const { history, redirectPath } = inputData
     const importSuccessHandler = new CreateEventHandler(MESSAGES.IMPORT_WALLET_SUCCESS, async response => {
       const { koiData } = response.data
+      console.log('IMPORT_WALLET_SUCCESS---', koiData)
       dispatch(setKoi(koiData))
-      await removeChromeStorage(STORAGE.SITE_PERMISSION)
-      await removeChromeStorage(STORAGE.PENDING_REQUEST)
-      await removeChromeStorage(STORAGE.CONTENT_LIST)
-      await removeChromeStorage(STORAGE.ACTIVITIES_LIST)
+      await Promise.all([
+        removeChromeStorage(STORAGE.SITE_PERMISSION),
+        removeChromeStorage(STORAGE.PENDING_REQUEST),
+        removeChromeStorage(STORAGE.CONTENT_LIST),
+        removeChromeStorage(STORAGE.ACTIVITIES_LIST)
+      ])
       dispatch(setIsLoading(false))
       history.push(redirectPath)
+      dispatch(getBalances())
     })
     const importFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')

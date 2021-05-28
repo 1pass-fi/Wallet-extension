@@ -5,19 +5,21 @@ import {
   generateWallet,
   loadMyContent,
   transfer,
-  JSONFileToObject
+  getBalances
 } from './index'
 
 describe('Tests for utils', () => {
   let koiObj, initKoiObj
+  const koiBalance = 100
+  const arBalance = 50
 
   beforeEach(() => {
     initKoiObj = {
       address: '',
       mnemonic: '',
       loadWallet: async () => koiObj.address = 'address',
-      getWalletBalance: async () => 'arBalance',
-      getKoiBalance: async () => 'koiBalance',
+      getWalletBalance: () => Promise.resolve(arBalance),
+      getKoiBalance: () => Promise.resolve(koiBalance),
       generateWallet: async () => koiObj.mnemonic = 'seedPhrase'
     }
 
@@ -28,14 +30,23 @@ describe('Tests for utils', () => {
     koiObj = { ...initKoiObj }
   })
 
+  describe('Test for getBalances()', () => {
+    it('returns balancesData as expected', async () => {
+      const balancesData = await getBalances(koiObj)
+
+      expect(balancesData).toEqual({
+        arBalance: arBalance,
+        koiBalance: koiBalance
+      })
+    })
+  })
+
   describe('Test for loadWallet()', () => {
     describe('loadWallet by address', () => {
       it('returns koiData as expected', async () => {
         const koiData = await loadWallet(koiObj, 'address', LOAD_KOI_BY.ADDRESS)
 
         expect(koiData).toEqual({
-          arBalance: 'arBalance',
-          koiBalance: 'koiBalance',
           address: 'address'
         })
       })
@@ -46,8 +57,6 @@ describe('Tests for utils', () => {
         const koiData = await loadWallet(koiObj, 'address', LOAD_KOI_BY.KEY)
 
         expect(koiData).toEqual({
-          arBalance: 'arBalance',
-          koiBalance: 'koiBalance',
           address: 'address'
         })
       })
@@ -120,7 +129,7 @@ describe('Tests for utils', () => {
     })
 
     it('returns transaction id', async () => {
-      const txId = await transfer(koiObj, 'qty', 'address')
+      const txId = await transfer(koiObj, 1, 'address')
 
       expect(txId).toEqual('txId')
     })

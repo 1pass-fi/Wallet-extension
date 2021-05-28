@@ -28,6 +28,27 @@ export const removeChromeStorage = (key) => {
   })
 }
 
+/* istanbul ignore next */
+export const clearChromeStorage = (key) => {
+  return new Promise(function (resolve, reject) {
+    chrome.storage.local.clear(() => {
+      resolve()
+    })
+  })
+}
+
+export const getBalances = async (koiObj) => {
+  const [arBalance, koiBalance] = await Promise.all([koiObj.getWalletBalance(), koiObj.getKoiBalance()])
+
+  koiObj.balance = arBalance
+  console.log('AR BALANCE', koiObj.balance)
+  await setChromeStorage({ [STORAGE.KOI_BALANCE]: koiBalance, [STORAGE.AR_BALANCE]: koiObj['balance'] })
+  return {
+    arBalance: koiObj.balance,
+    koiBalance: koiBalance
+  }
+}
+
 export const loadWallet = async (koiObj, data, loadBy) => {
   try {
     switch (loadBy) {
@@ -39,17 +60,10 @@ export const loadWallet = async (koiObj, data, loadBy) => {
         break
     }
 
-    koiObj.balance = await koiObj.getWalletBalance()
-    console.log('AR BALANCE', koiObj.balance)
-    const koiBalance = await koiObj.getKoiBalance()
-
-    await setChromeStorage({ 'koiBalance': koiBalance, 'arBalance': koiObj['balance'] })
-
     return {
-      arBalance: koiObj.balance,
-      koiBalance: koiBalance,
       address: koiObj.address
     }
+
   } catch (err) {
     throw new Error(err.message)
   }
@@ -173,11 +187,7 @@ export const decryptWalletKeyFromChrome = async (password) => {
 /* istanbul ignore next */
 export const removeWalletFromChrome = async () => {
   try {
-    await removeChromeStorage(STORAGE.KOI_ADDRESS)
-    await removeChromeStorage(STORAGE.KOI_KEY)
-    await removeChromeStorage(STORAGE.CONTENT_LIST)
-    await removeChromeStorage(STORAGE.PENDING_REQUEST)
-    await removeChromeStorage(STORAGE.SITE_PERMISSION)
+    await Promise.all(Object.keys(STORAGE).map(key => removeChromeStorage(key)))
   } catch (err) {
     throw new Error(err.message)
   }

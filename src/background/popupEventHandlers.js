@@ -1,16 +1,39 @@
-import { MESSAGES, LOAD_KOI_BY } from 'koiConstants'
+import { MESSAGES, LOAD_KOI_BY, STORAGE } from 'koiConstants'
 import {
   saveWalletToChrome,
   utils,
   loadMyContent,
   loadMyActivities,
-  removeWalletFromChrome,
+  clearChromeStorage,
   decryptWalletKeyFromChrome,
   setChromeStorage,
   removeChromeStorage,
+  getChromeStorage,
   generateWallet,
-  transfer
+  transfer,
+  getBalances
 } from 'utils'
+
+export const loadBalances = async (koi, port) => {
+  const storage = await getChromeStorage([STORAGE.KOI_BALANCE, STORAGE.AR_BALANCE])
+  const koiBalance = storage[STORAGE.KOI_BALANCE]
+  const arBalance = storage[STORAGE.AR_BALANCE]
+  if (koiBalance !== undefined && arBalance !== undefined) {
+    port.postMessage({
+      type: MESSAGES.GET_BALANCES_SUCCESS,
+      data: { koiData: { koiBalance, arBalance } }
+    })
+  }
+  try {
+    const koiData = await getBalances(koi)
+    port.postMessage({
+      type: MESSAGES.GET_BALANCES_SUCCESS,
+      data: { koiData }
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 export default async (koi, port, message) => {
   try {
@@ -23,6 +46,10 @@ export default async (koi, port, message) => {
           type: MESSAGES.IMPORT_WALLET_SUCCESS,
           data: { koiData }
         })
+        break
+      }
+      case MESSAGES.GET_BALANCES: {
+        loadBalances(koi, port)
         break
       }
       case MESSAGES.LOAD_WALLET: {
@@ -40,7 +67,7 @@ export default async (koi, port, message) => {
           koiBalance: null,
           address: null
         }
-        await removeWalletFromChrome()
+        await clearChromeStorage()
         koi.wallet = null
         koi.address = null
         port.postMessage({
@@ -50,7 +77,7 @@ export default async (koi, port, message) => {
         break
       }
       case MESSAGES.LOCK_WALLET: {
-        await removeChromeStorage('koiAddress')
+        await removeChromeStorage(STORAGE.KOI_ADDRESS)
         koi.address = null
         koi.wallet = null
         port.postMessage({
@@ -63,7 +90,7 @@ export default async (koi, port, message) => {
         const { password } = message.data
         const walletKey = await decryptWalletKeyFromChrome(password)
         const koiData = await utils.loadWallet(koi, walletKey, LOAD_KOI_BY.KEY)
-        await setChromeStorage({ 'koiAddress': koi.address })
+        await setChromeStorage({ [STORAGE.KOI_ADDRESS]: koi.address })
         port.postMessage({
           type: MESSAGES.UNLOCK_WALLET_SUCCESS,
           data: { koiData }

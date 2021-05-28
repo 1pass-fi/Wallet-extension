@@ -25,7 +25,7 @@ import { STORAGE, NOTIFICATION, RATE, PATH } from 'koiConstants'
 
 const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance, setNotification }) => {
   const numberFormat = (num) => {
-    return new Intl.NumberFormat('en-US').format(num)
+    return num === null ? '---' : new Intl.NumberFormat('en-US').format(num)
   }
   return (
     <div className='wallet-info'>
