@@ -36,7 +36,7 @@ export const ConfirmSeed = ({
 
   const handleOnClick = () => {
     try {
-      if (seedPhrase === addedPhrase.map(item => item.word).join(' ')) {
+      if (seedPhrase === addedPhrase.map((item) => item.word).join(' ')) {
         saveWallet({ password, history })
       } else {
         setError('Incorrect Seed phrase')
@@ -124,14 +124,14 @@ export const ConfirmSeed = ({
           {addedPhrase.map((item) => (
             <button
               className='word'
-              key={item}
+              key={`${item.id}${item.word}`}
               onClick={() => onRemoveWord(item)}
             >
               {item.word}
             </button>
           ))}
         </div>
-        <div className='b2'>
+        <div className='unselected-box'>
           {basePhrase.map(({ id, word, disabled }) => (
             <button
               key={word}
