@@ -19,17 +19,21 @@ export const loadBalances = async (koi, port) => {
   const koiBalance = storage[STORAGE.KOI_BALANCE]
   const arBalance = storage[STORAGE.AR_BALANCE]
   if (koiBalance !== undefined && arBalance !== undefined) {
-    port.postMessage({
-      type: MESSAGES.GET_BALANCES_SUCCESS,
-      data: { koiData: { koiBalance, arBalance } }
-    })
+    if (port) {
+      port.postMessage({
+        type: MESSAGES.GET_BALANCES_SUCCESS,
+        data: { koiData: { koiBalance, arBalance } }
+      })
+    }
   }
   try {
     const koiData = await getBalances(koi)
-    port.postMessage({
-      type: MESSAGES.GET_BALANCES_SUCCESS,
-      data: { koiData }
-    })
+    if (port) {
+      port.postMessage({
+        type: MESSAGES.GET_BALANCES_SUCCESS,
+        data: { koiData }
+      })
+    }
   } catch (error) {
     console.error(error)
   }

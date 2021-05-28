@@ -15,9 +15,10 @@ browser.runtime.onMessage.addListener(function (message) {
 })
 
 let autoLoadBalancesInterval
-const autoLoadBalances = (koi, port) => {
+let autoLoadBalancesPort
+const autoLoadBalances = (koi) => {
   autoLoadBalancesInterval = setInterval(() => {
-    loadBalances(koi, port)
+    loadBalances(koi, autoLoadBalancesPort)
   }, LOAD_BALANCES_TIME_INTERVAL)
 }
 
@@ -27,15 +28,15 @@ chrome.runtime.onConnect.addListener(function (port) {
     case PORTS.POPUP: {
       port.onDisconnect.addListener(disconnect => {
         console.log('port disconnected--', disconnect, port)
-        clearInterval(autoLoadBalancesInterval)
-        autoLoadBalancesInterval = undefined
+        autoLoadBalancesPort = undefined
       })
 
       port.onMessage.addListener(message => {
         popUpEventHandlers(koi, port, message)
 
         if (koi.address && !autoLoadBalancesInterval) {
-          autoLoadBalances(koi, port)
+          autoLoadBalancesPort = port
+          autoLoadBalances(koi)
         }
       })
       break
