@@ -11,6 +11,10 @@ body {
   font-weight: 400;
 }
 
+body #root {
+  overflow: auto;
+}
+
 .content {
     display: flex;
     background-color: #EEEEEE;
