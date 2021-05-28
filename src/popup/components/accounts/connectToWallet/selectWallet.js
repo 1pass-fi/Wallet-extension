@@ -25,14 +25,18 @@ const SelectWallet = ({
   return (
     <>
       <div className='select-account'>Select accounts</div>
-      <div>
-        <button className='unselect-button' onClick={clearChecked}>
-          -
-        </button>
-        <button className='select-all-button' onClick={checkAll}>
-          Select all
-        </button>
-      </div>
+      {
+        accounts.lenght > 1 && (
+          <div>
+            <button className='unselect-button' onClick={clearChecked}>
+              -
+            </button>
+            <button className='select-all-button' onClick={checkAll}>
+              Select all
+            </button>
+          </div>
+        )
+      }
       <div className='wallet-options'>
         {accounts.map((account) => (
           <div
