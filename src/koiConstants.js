@@ -69,13 +69,13 @@ export const PATH = {
 
 export const ERROR_MESSAGE = {
   INCORRECT_PASSWORD: 'Incorrect password, please try again.',
-  PASSWORD_LENGTH: 'Your Koi password must have at least 8 characters.',
+  PASSWORD_LENGTH: 'Your KOI password must have at least 8 characters.',
   PASSWORD_MATCH: 'Passwords do not match, please try again.',
   INCORRECT_PHRASE: 'Incorrect seed phrase, please try again.',
   EMPTY_PHRASE: 'Seed phrase should not be blank.',
   CHECKED_TERMS: 'You have to agree to the Terms of Service',
   EMPTY_FIELDS: 'Please fill in all fields.',
-  NOT_ENOUGH_KOI: `You don't have enough Koi.`,
+  NOT_ENOUGH_KOI: `You don't have enough KOI.`,
   REQUEST_NOT_EXIST: 'This request is no longer exist.',
   INVALID_AMOUNT: 'Amount must be greater than 0!'
 }
