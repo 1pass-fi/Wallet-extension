@@ -4,7 +4,7 @@ import { isInteger, isString } from 'lodash'
 
 let pendingMessages = {}
 
-export default async (koi, port, message) => {
+export default async (koi, port, message, ports, resolveId) => {
   if (!message.type) return
 
   if (pendingMessages[message.type] === true) return
@@ -34,7 +34,7 @@ export default async (koi, port, message) => {
   const perform = async () => {
     try {
       const { origin, favicon, hadPermission } = await checkCurrentTabPermission()
-      if (![MESSAGES.GET_PERMISSION, MESSAGES.CREATE_TRANSACTION].includes(message.type)) {
+      if (![MESSAGES.GET_PERMISSION, MESSAGES.CREATE_TRANSACTION, MESSAGES.CONNECT].includes(message.type)) {
         if (!hadPermission) {
           port.postMessage({
             type: `${message.type}_ERROR`,
@@ -83,62 +83,64 @@ export default async (koi, port, message) => {
           //       data: { origin, favicon }
           //     }
           //   })
-          //   chrome.windows.create({
-          //     url: chrome.extension.getURL('/popup.html'),
-          //     focused: true,
-          //     type: 'popup',
-          //     height: 622,
-          //     width: 426
-          //   })
+          // chrome.windows.create({
+          //   url: chrome.extension.getURL('/popup.html'),
+          //   focused: true,
+          //   type: 'popup',
+          //   height: 622,
+          //   width: 426
+          // })
           // }
           break
         }
+        case MESSAGES.CONNECT: {
+          console.log('MESSAGE.CONNECT BACKGROUND')
+          const { id } = message
+          const { permissionId } = resolveId
+          permissionId.push(id)
+          console.log('ORIGIN BACKGROUND', origin)
+          await setChromeStorage({
+            'pendingRequest': {
+              type: REQUEST.PERMISSION,
+              data: { origin, favicon }
+            }
+          })
+
+          chrome.windows.create({
+            url: chrome.extension.getURL('/popup.html'),
+            focused: true,
+            type: 'popup',
+            height: 622,
+            width: 426
+          })
+          break
+        }
+
         case MESSAGES.CREATE_TRANSACTION: {
-          const { qty, address } = message.data
+          const { transaction } = message.data
           console.log('ORIGIN', origin)
           console.log('FAVICON', favicon)
-          console.log('QTY', qty)
-          console.log('ADDRESS', address)
+          console.log('TRANSACTION', transaction)
+          console.log('PERMISSION CREATE TRANSACTION', hadPermission)
 
-          if (!isInteger(qty) || qty < 0) {
-            port.postMessage({
-              type: MESSAGES.CREATE_TRANSACTION_ERROR,
-              data: 'Invalid input qty.'
-            })
-            break
-          }
-
-          if (!isString(address)) {
-            port.postMessage({
-              type: MESSAGES.CREATE_TRANSACTION_ERROR,
-              data: 'Invalid input address.'
-            })
-            break
-          }
-
+          const { id } = message
+          const { createTransactionId } = resolveId
+          createTransactionId.push(id)
           if (!hadPermission) {
-            await setChromeStorage({
-              'pendingRequest': {
-                type: REQUEST.PERMISSION,
-                data: { origin, favicon }
-              }
-            })
-            chrome.windows.create({
-              url: chrome.extension.getURL('/popup.html'),
-              focused: true,
-              type: 'popup',
-              height: 622,
-              width: 426
-            })
             port.postMessage({
               type: MESSAGES.CREATE_TRANSACTION_ERROR,
-              data: 'Do not have permission.'
+              data: { message: 'Do not have permission.' },
+              id: message.id
             })
           } else {
+            const qty = transaction.quantity
+            const address = transaction.target
+            console.log('QUANTITY', qty)
+            console.log('ADDRESS', address)
             await setChromeStorage({
               'pendingRequest': {
                 type: REQUEST.TRANSACTION,
-                data: { origin, favicon, qty, address }
+                data: { transaction, qty, address, origin, favicon }
               }
             })
             chrome.windows.create({

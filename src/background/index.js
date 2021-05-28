@@ -14,17 +14,22 @@ browser.runtime.onMessage.addListener(function (message) {
   console.log(message)
 })
 
+const ports = {}
+const permissionId = []
+const createTransactionId = []
+
 chrome.runtime.onConnect.addListener(function (port) {
-  console.log(port)
   switch (port.name) {
     case PORTS.POPUP:
+      ports[PORTS.POPUP] = port
       port.onMessage.addListener(message => {
-        popUpEventHandlers(koi, port, message)
+        popUpEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
       })
       break
     case PORTS.CONTENT_SCRIPT:
+      ports[PORTS.CONTENT_SCRIPT] = port
       port.onMessage.addListener(message => {
-        contentScriptEventHandlers(koi, port, message)
+        contentScriptEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
       })
       break
   }

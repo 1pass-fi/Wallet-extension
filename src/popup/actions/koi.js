@@ -335,12 +335,14 @@ export const signTransaction = (inputData) => (dispatch) => {
     const signSuccessHandler = new CreateEventHandler(MESSAGES.SIGN_TRANSACTION_SUCCESS, response => {
       console.log('SIGN TRANSACTION SUCCESS')
       dispatch(setIsLoading(false))
+      window.close()
     })
     const signFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
       const errorMessage = response.data
       dispatch(setIsLoading(false))
       dispatch(setError(errorMessage))
+      window.close()
     })
     backgroundConnect.addHandler(signSuccessHandler)
     backgroundConnect.addHandler(signFailedHandler)
@@ -355,23 +357,52 @@ export const signTransaction = (inputData) => (dispatch) => {
 }
 
 export const getKeyFile = () => (dispatch) => {
-  const getKeyFileSuccessHandler = new CreateEventHandler(MESSAGES.GET_KEY_FILE_SUCCESS, response => {
-    const content = response.data
-    const filename = 'arweave-key.json'
-    const result = JSON.stringify(content)
+  try {
+    const getKeyFileSuccessHandler = new CreateEventHandler(MESSAGES.GET_KEY_FILE_SUCCESS, response => {
+      const content = response.data
+      const filename = 'arweave-key.json'
+      const result = JSON.stringify(content)
 
-    const url = 'data:application/json;base64,' + btoa(result)
-    chrome.downloads.download({
-      url: url,
-      filename: filename,
+      const url = 'data:application/json;base64,' + btoa(result)
+      chrome.downloads.download({
+        url: url,
+        filename: filename,
+      })
+      dispatch(setNotification(NOTIFICATION.KEY_EXPORTED))
     })
-    dispatch(setNotification(NOTIFICATION.KEY_EXPORTED))
-  })
-  backgroundConnect.addHandler(getKeyFileSuccessHandler)
-  backgroundConnect.postMessage({
-    type: MESSAGES.GET_KEY_FILE,
-    data: {}
-  })
+    backgroundConnect.addHandler(getKeyFileSuccessHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.GET_KEY_FILE,
+      data: {}
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const connectSite = (inputData) => (dispatch) => {
+  try {
+    const connectSuccessHandler = new CreateEventHandler(MESSAGES.CONNECT_SUCCESS, response => {
+      window.close()
+    })
+    const connectFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+      window.close()
+    })
+    backgroundConnect.addHandler(connectSuccessHandler)
+    backgroundConnect.addHandler(connectFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.CONNECT,
+      data: inputData
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
 }
 
 export const setKoi = (payload) => ({ type: SET_KOI, payload })

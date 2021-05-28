@@ -9,14 +9,57 @@
 </head>
 
 <body>
-  const arweave = Arweave.init({
-  host: "arweave.net",
-  protocol: "https",
-  port: 443,
-  });
+  <div>
+    <form id='ar-form'>
+      <input placeholder="target" name='target' />
+      <input placeholder="quantity" name='quantity' />
+      <button id='submit-btn'>Submit</button>
+    </form>
+    <div>
+      <h3 id='transaction-id'>Transaction Id: </h3>
+      <h3 id='signature'>Signature: </h3>
+      <h3 id="error" style="color: red;"></h3>
+    </div>
+  </div>
 
-  let tx = await arweave.createTransaction({target: 'asdasdasdasd', quantity: 0.0001});
+  <!-- LOAD ARWEAVE CDN -->
   <script src="https://unpkg.com/arweave/bundles/web.bundle.js"></script>
+
+
+  <script>
+    const arweave = Arweave.init({ host: "arweave.net", protocol: "https", port: 443, });
+
+    const arForm = document.getElementById('ar-form')
+    const submitBtn = document.getElementById('submit-btn')
+    const transactionIdField = document.getElementById('transaction-id')
+    const signatureField = document.getElementById('signature')
+    const errorField = document.getElementById('error')
+
+    const handleOnSubmit = async (e) => {
+      e.preventDefault()
+      const target = e.target.target.value
+      const quantity = e.target.quantity.value
+      submitBtn.disabled = true
+      try {
+        errorField.textContent = ''
+        // The transaction will be created by running the following line.
+        const tx = await arweave.createTransaction({ target, quantity })
+        // Then sign the transaction within the KOI Extension.
+        await arweave.transactions.sign(tx)
+        submitBtn.disabled = false
+        transactionIdField.textContent = `Transaction Id: ${tx.id}`
+        signatureField.textContent = `Signature: ${tx.signature}`
+      } catch (err) {
+        errorField.textContent = err.message
+        transactionIdField.textContent = `Transaction Id:`
+        signatureField.textContent = `Signature:`
+        submitBtn.disabled = false
+      }
+
+    }
+
+    arForm.addEventListener('submit', handleOnSubmit)
+  </script>
 
 </body>
 

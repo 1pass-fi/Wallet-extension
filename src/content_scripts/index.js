@@ -12,6 +12,8 @@ const messageTypes = [
   MESSAGES.GET_PERMISSION_ERROR,
   MESSAGES.CREATE_TRANSACTION_SUCCESS,
   MESSAGES.CREATE_TRANSACTION_ERROR,
+  MESSAGES.CONNECT_SUCCESS,
+  MESSAGES.CONNECT_ERROR
 ]
 export const backgroundConnect = new BackgroundConnect(PORTS.CONTENT_SCRIPT)
 messageTypes.forEach(messageType => {
@@ -25,6 +27,7 @@ window.addEventListener('message', function (event) {
     case MESSAGES.GET_ADDRESS:
     case MESSAGES.GET_PERMISSION:
     case MESSAGES.CREATE_TRANSACTION:
+    case MESSAGES.CONNECT:
       backgroundConnect.postMessage(event.data)
       break
     default:
@@ -53,8 +56,8 @@ window.addEventListener('message', function (event) {
     window.arweaveWallet = {
       getAddress: () => buildPromise(MESSAGE_TYPES.GET_ADDRESS),
       getPermissions: () => buildPromise(MESSAGE_TYPES.GET_PERMISSION),
-      connect: () => new Promise(() => { }),
-      sign: (qty, address) => buildPromise(MESSAGE_TYPES.CREATE_TRANSACTION, { qty, address })
+      connect: () => buildPromise(MESSAGE_TYPES.CONNECT),
+      sign: (transaction) => buildPromise(MESSAGE_TYPES.CREATE_TRANSACTION, { transaction })
     }
     window.addEventListener('message', function (event) {
       if (!event.data || !event.data.type) {
@@ -62,6 +65,7 @@ window.addEventListener('message', function (event) {
       }
       if (promiseResolves[event.data.type]) {
         promiseResolves[event.data.type].forEach(({ id, resolve }) => {
+          console.log('ID FROM EVENT', id)
           if (id === event.data.id) {
             resolve(event.data.data)
           }
@@ -77,11 +81,12 @@ window.addEventListener('message', function (event) {
 
   function inject(fn) {
     const script = document.createElement('script')
-    const { GET_ADDRESS, GET_PERMISSION, CREATE_TRANSACTION } = messages
+    const { GET_ADDRESS, GET_PERMISSION, CREATE_TRANSACTION, CONNECT } = messages
     const pickedMessages = {
       GET_ADDRESS,
       GET_PERMISSION,
-      CREATE_TRANSACTION
+      CREATE_TRANSACTION,
+      CONNECT
     }
     script.text = `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(pickedMessages)}');(${fn.toString()})();`
     document.documentElement.appendChild(script)
