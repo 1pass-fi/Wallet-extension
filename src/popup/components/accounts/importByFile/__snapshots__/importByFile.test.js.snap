@@ -130,7 +130,7 @@ exports[`Test for ImportByFile component Render without crashing renders correct
             class="button"
           >
             <button
-              class="button-shared button-filled "
+              class="button-shared button-filled import-button"
             >
               Import Wallet
             </button>

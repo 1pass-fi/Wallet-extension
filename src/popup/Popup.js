@@ -49,6 +49,7 @@ const Popup = ({
       try {
         const { KOI_ADDRESS, KOI_KEY, PENDING_REQUEST } = STORAGE
         const storage = await getChromeStorage([KOI_ADDRESS, KOI_KEY, PENDING_REQUEST])
+        const query = window.location.search
 
         if (storage['koiAddress']) {
           // Koi Address in local storage
@@ -60,11 +61,15 @@ const Popup = ({
             case REQUEST.TRANSACTION:
               history.push('/account/sign-transaction')
               break
+            default:
+              history.push('/account')
           }
         } else {
           // Koi Address not in local storage
           if (storage['koiKey']) {
             history.push('/account/login')
+          } else if (query.includes('create-wallet')) {
+            history.push('/account/create')
           } else {
             history.push('/account/welcome')
           }
@@ -128,9 +133,9 @@ const Popup = ({
           <Route path='/setting'>
             <Setting />
           </Route>
-          <Route path='/'>
+          {/* <Route path='/'>
             <Redirect to='/account' />
-          </Route>
+          </Route> */}
         </Switch>
       </div>
     </div>

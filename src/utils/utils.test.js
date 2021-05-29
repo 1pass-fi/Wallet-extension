@@ -8,6 +8,8 @@ import {
   JSONFileToObject
 } from './index'
 
+import { ERROR_MESSAGE } from 'constants'
+
 describe('Tests for utils', () => {
   let koiObj, initKoiObj
 
@@ -21,7 +23,7 @@ describe('Tests for utils', () => {
       generateWallet: async () => koiObj.mnemonic = 'seedPhrase'
     }
 
-    koiObj = {...initKoiObj }
+    koiObj = { ...initKoiObj }
   })
 
   afterEach(() => {
@@ -117,21 +119,25 @@ describe('Tests for utils', () => {
   describe('Test for transfer()', () => {
     beforeEach(() => {
       koiObj.transfer = async () => 'txId'
+      koiObj.Balance = async () => 1
     })
 
-    it('returns transaction id', async () => {
-      const txId = await transfer(koiObj, 'qty', 'address')
+    describe('Have enough Koi', () => {
+      it('returns transaction id', async () => {
+        const txId = await transfer(koiObj, 1, 'address')
 
-      expect(txId).toEqual('txId')
+        expect(txId).toEqual('txId')
+      })
+    })
+
+    describe('Not enough Koi', () => {
+      it('throws error', async () => {
+        try {
+          await transfer(koiObj, 2, 'address')
+        } catch (err) {
+          expect(err.message).toEqual(ERROR_MESSAGE.NOT_ENOUGH_KOI)
+        }
+      })
     })
   })
-
-  // describe('Test for JSONFileToObject()', () => {
-  //   it('returns object from json', async () => {
-  //     const file = new File([`{ "key": "value" }`], 'file.json')
-  //     const returnedObj = await JSONFileToObject(file)
-
-  //     expect(returnedObj).toEqual({ "key": "value" })
-  //   })
-  // })
 })

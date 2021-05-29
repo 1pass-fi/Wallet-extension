@@ -1,4 +1,5 @@
 import { get } from 'lodash'
+import passworder from 'browser-passworder'
 
 import { setIsLoading } from './loading'
 import { setContLoading } from './continueLoading'
@@ -13,8 +14,10 @@ import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 import { MESSAGES, PATH, STORAGE, REQUEST, NOTIFICATION } from 'koiConstants'
 
 import { SET_KOI } from 'actions/types'
-import { getChromeStorage, removeChromeStorage } from 'utils'
+import { getChromeStorage, removeChromeStorage, setChromeStorage, generateWallet as generateWalletUtil } from 'utils'
 import { setNotification } from './notification'
+
+import { koi } from 'background'
 
 export const importWallet = (inputData) => (dispatch) => {
   try {
@@ -23,11 +26,11 @@ export const importWallet = (inputData) => (dispatch) => {
     const importSuccessHandler = new CreateEventHandler(MESSAGES.IMPORT_WALLET_SUCCESS, async response => {
       const { koiData } = response.data
       dispatch(setKoi(koiData))
+      dispatch(setIsLoading(false))
       await removeChromeStorage(STORAGE.SITE_PERMISSION)
       await removeChromeStorage(STORAGE.PENDING_REQUEST)
       await removeChromeStorage(STORAGE.CONTENT_LIST)
       await removeChromeStorage(STORAGE.ACTIVITIES_LIST)
-      dispatch(setIsLoading(false))
       history.push(redirectPath)
     })
     const importFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
@@ -176,29 +179,37 @@ export const unlockWallet = (inputData) => (dispatch) => {
   }
 }
 
-export const generateWallet = (inputData) => (dispatch) => {
+/* istanbul ignore next */
+export const generateWallet = (inputData) => async (dispatch) => {
   try {
     const { stage, password } = inputData
 
     dispatch(setIsLoading(true))
-    const generateSuccessHandler = new CreateEventHandler(MESSAGES.GENERATE_WALLET_SUCCESS, response => {
-      const { seedPhrase } = response.data
-      dispatch(setCreateWallet({ seedPhrase, stage, password }))
-      dispatch(setIsLoading(false))
-    })
-    const generateFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
-      console.log('=== BACKGROUND ERROR ===')
-      const errorMessage = response.data
-      dispatch(setIsLoading(false))
-      dispatch(setError(errorMessage))
-    })
+    const seedPhrase = await generateWalletUtil(koi)
+    const encryptedKey = await passworder.encrypt(password, koi.wallet)
+    await setChromeStorage({ 'createdWalletAddress': koi.address, 'createdWalletKey': encryptedKey })
+    dispatch(setCreateWallet({ seedPhrase, stage, password }))
+    dispatch(setIsLoading(false))
 
-    backgroundConnect.addHandler(generateSuccessHandler)
-    backgroundConnect.addHandler(generateFailedHandler)
-    backgroundConnect.postMessage({
-      type: MESSAGES.GENERATE_WALLET,
-      data: inputData
-    })
+
+    // const generateSuccessHandler = new CreateEventHandler(MESSAGES.GENERATE_WALLET_SUCCESS, response => {
+    //   const { seedPhrase } = response.data
+    //   dispatch(setCreateWallet({ seedPhrase, stage, password }))
+    //   dispatch(setIsLoading(false))
+    // })
+    // const generateFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+    //   console.log('=== BACKGROUND ERROR ===')
+    //   const errorMessage = response.data
+    //   dispatch(setIsLoading(false))
+    //   dispatch(setError(errorMessage))
+    // })
+
+    // backgroundConnect.addHandler(generateSuccessHandler)
+    // backgroundConnect.addHandler(generateFailedHandler)
+    // backgroundConnect.postMessage({
+    //   type: MESSAGES.GENERATE_WALLET,
+    //   data: inputData
+    // })
   } catch (err) {
     dispatch(setError(err.message))
     dispatch(setIsLoading(false))
@@ -214,7 +225,8 @@ export const saveWallet = (inputData) => (dispatch) => {
       dispatch(setKoi(koiData))
       dispatch(setIsLoading(false))
       setCreateWallet({ stage: 1, password: null, seedPhrase: null })
-      history.push(PATH.HOME)
+      window.close()
+      // history.push(PATH.HOME)
     })
     const saveFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
@@ -297,7 +309,8 @@ export const makeTransfer = (inputData) => (dispatch) => {
       const { txId } = response.data
       dispatch(setTransactions(txId))
       dispatch(setIsLoading(false))
-      dispatch(setNotification(`Transaction ID: ${txId}`))
+      console.log('TRANSACTION ID', txId)
+      dispatch(setNotification(`Transaction sent.`))
     })
     const transferFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
@@ -324,12 +337,14 @@ export const signTransaction = (inputData) => (dispatch) => {
     const signSuccessHandler = new CreateEventHandler(MESSAGES.SIGN_TRANSACTION_SUCCESS, response => {
       console.log('SIGN TRANSACTION SUCCESS')
       dispatch(setIsLoading(false))
+      window.close()
     })
     const signFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
       const errorMessage = response.data
       dispatch(setIsLoading(false))
       dispatch(setError(errorMessage))
+      window.close()
     })
     backgroundConnect.addHandler(signSuccessHandler)
     backgroundConnect.addHandler(signFailedHandler)
@@ -344,23 +359,52 @@ export const signTransaction = (inputData) => (dispatch) => {
 }
 
 export const getKeyFile = () => (dispatch) => {
-  const getKeyFileSuccessHandler = new CreateEventHandler(MESSAGES.GET_KEY_FILE_SUCCESS, response => {
-    const content = response.data
-    const filename = 'arweave-key.json'
-    const result = JSON.stringify(content)
+  try {
+    const getKeyFileSuccessHandler = new CreateEventHandler(MESSAGES.GET_KEY_FILE_SUCCESS, response => {
+      const content = response.data
+      const filename = 'arweave-key.json'
+      const result = JSON.stringify(content)
 
-    const url = 'data:application/json;base64,' + btoa(result)
-    chrome.downloads.download({
-      url: url,
-      filename: filename,
+      const url = 'data:application/json;base64,' + btoa(result)
+      chrome.downloads.download({
+        url: url,
+        filename: filename,
+      })
+      dispatch(setNotification(NOTIFICATION.KEY_EXPORTED))
     })
-    dispatch(setNotification(NOTIFICATION.KEY_EXPORTED))
-  })
-  backgroundConnect.addHandler(getKeyFileSuccessHandler)
-  backgroundConnect.postMessage({
-    type: MESSAGES.GET_KEY_FILE,
-    data: {}
-  })
+    backgroundConnect.addHandler(getKeyFileSuccessHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.GET_KEY_FILE,
+      data: {}
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const connectSite = (inputData) => (dispatch) => {
+  try {
+    const connectSuccessHandler = new CreateEventHandler(MESSAGES.CONNECT_SUCCESS, response => {
+      window.close()
+    })
+    const connectFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+      window.close()
+    })
+    backgroundConnect.addHandler(connectSuccessHandler)
+    backgroundConnect.addHandler(connectFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.CONNECT,
+      data: inputData
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
 }
 
 export const setKoi = (payload) => ({ type: SET_KOI, payload })

@@ -14,7 +14,6 @@ export default ({
 }) => {
   const [isDisplay, setDisplay] = useState(type !== 'password')
   const toggleDisplay = () => {
-    console.log('on click')
     setDisplay(!isDisplay)
   }
 
