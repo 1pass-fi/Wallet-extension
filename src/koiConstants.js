@@ -80,7 +80,9 @@ export const ERROR_MESSAGE = {
   EMPTY_FIELDS: 'Please fill in all fields.',
   NOT_ENOUGH_KOI: `You don't have enough Koi.`,
   REQUEST_NOT_EXIST: 'This request is no longer exist.',
-  INVALID_AMOUNT: 'Amount must be greater than 0!'
+  INVALID_AMOUNT: 'Amount must be greater than 0!',
+  ALREADY_CONNECTED_SITE: 'This site has already connected',
+  MUST_USE_IN_POPUP: 'Please use this feature in the extension pop up'
 }
 
 export const STORAGE = {

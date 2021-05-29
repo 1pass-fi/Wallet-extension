@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { REQUEST, STORAGE } from 'koiConstants'
+import { REQUEST, STORAGE, ERROR_MESSAGE } from 'koiConstants'
 import { setChromeStorage, checkSitePermission } from 'utils'
 import { setError } from 'popup/actions/error'
 import Modal from 'popup/components/shared/modal'
@@ -33,6 +33,10 @@ const ManualConnectSite = ({ isGreyBackground, setError }) => {
   const onManualConnect = () => {
     chrome.tabs.getSelected(null, async (tab) => {
       const origin = (new URL(tab.url)).origin
+      if (origin.startsWith('chrome-extension://')) {
+        setError(ERROR_MESSAGE.MUST_USE_IN_POPUP)
+        return
+      }
       const favicon = tab.favIconUrl
 
       if (!(await checkSitePermission(origin))) {
@@ -44,7 +48,7 @@ const ManualConnectSite = ({ isGreyBackground, setError }) => {
         })
         history.push('/account/connect-site')
       } else {
-        setError('This site has already connected')
+        setError(ERROR_MESSAGE.ALREADY_CONNECTED_SITE)
       }
     })
   }
