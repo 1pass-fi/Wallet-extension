@@ -2,6 +2,22 @@
 # yarn lockfile v1
 
 
+"@_koi/sdk@2.1.16-beta.20":
+  version "2.1.16-beta.20"
+  resolved "https://registry.yarnpkg.com/@_koi/sdk/-/sdk-2.1.16-beta.20.tgz#f2107165213433148593c5cd3575dc46507a10a8"
+  integrity sha512-thKgPHEj1ZExQO+bTNX5TAsaZbSM+DHISh8VffItU3/Vj1+aA/GgmirgpdI54HmATwNYHmYZeiXmrTBR8OosTA==
+  dependencies:
+    "@kyve/query" "^0.0.0-alpha.9"
+    arweave "^1.10.13"
+    axios "^0.21.1"
+    dotenv "^9.0.2"
+    human-crypto-keys "^0.1.4"
+    libp2p-crypto "^0.19.4"
+    nedb-promises "^4.1.5"
+    node-polyfill-webpack-plugin "^1.1.1"
+    redis "^3.1.2"
+    smartweave "^0.4.29"
+
 "@babel/code-frame@7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0.tgz#06e2ab19bdb535385559aabb5ba59729482800f8"

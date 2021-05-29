@@ -12,14 +12,15 @@ import AllowPermission from './allowPermission'
 import SelectWallet from './selectWallet'
 
 import { setError } from 'actions/error'
+import { connectSite } from 'actions/koi'
 
 import { getChromeStorage, removeChromeStorage, saveOriginToChrome } from 'utils'
 
-import { STORAGE, REQUEST, ERROR_MESSAGE } from 'constants'
+import { STORAGE, REQUEST, ERROR_MESSAGE } from 'koiConstants'
 
 import './index.css'
 
-export const ConnectToWallet = ({ setError }) => {
+export const ConnectToWallet = ({ setError, connectSite }) => {
   const [checkedList, setCheckedList] = useState([])
   const [address, setAddress] = useState('')
   const accounts = [
@@ -68,10 +69,14 @@ export const ConnectToWallet = ({ setError }) => {
     try {
       if (accept) {
         if (!(await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-        await saveOriginToChrome(origin)
+        console.log('ORIGIN POPUP', origin)
+        connectSite({ origin, confirm: true })
+        removeChromeStorage(STORAGE.PENDING_REQUEST)
+      } else {
+        connectSite({ origin, confirm: false })
+        removeChromeStorage(STORAGE.PENDING_REQUEST)
+        window.close()
       }
-      removeChromeStorage(STORAGE.PENDING_REQUEST)
-      history.push('/account')
     } catch (err) {
       setError(err.message)
     }
@@ -122,4 +127,4 @@ export const ConnectToWallet = ({ setError }) => {
   )
 }
 
-export default connect(null, { setError })(ConnectToWallet)
+export default connect(null, { setError, connectSite })(ConnectToWallet)

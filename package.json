@@ -38,6 +38,7 @@
         "url": "https://github.com/kryptokinght/react-extension-boilerplate/issues"
     },
     "dependencies": {
+        "@_koi/sdk": "2.1.16-beta.20",
         "@babel/core": "^7.2.2",
         "@babel/polyfill": "^7.12.1",
         "@babel/preset-env": "^7.2.3",
@@ -156,7 +157,6 @@
             "/content_scripts/",
             "/lib/",
             ".stories.js"
-
         ],
         "setupFiles": [
             "jest-webextension-mock"

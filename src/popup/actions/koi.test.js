@@ -11,7 +11,7 @@ import {
   SET_ASSETS,
   SET_CREATE_WALLET,
   SET_CONT_LOADING,
-  SET_TRANSACTIONS,
+  SET_TRANSACTIONS
   SET_NOTIFICATION
 } from 'actions/types'
 
@@ -27,7 +27,7 @@ import {
   lockWallet
 } from './koi'
 
-import { MESSAGES } from 'constants'
+import { MESSAGES } from 'koiConstants'
 
 describe('Tests for actions/koi', () => {
   let middlewares, mockStore, store, expectedActions, postMessage

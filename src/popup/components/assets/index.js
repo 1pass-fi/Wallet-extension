@@ -5,7 +5,7 @@ import { getChromeStorage } from 'utils'
 import { loadContent } from 'actions/koi'
 import { setAssets } from 'actions/assets'
 
-import { STORAGE } from 'constants'
+import { STORAGE } from 'koiConstants'
 
 import AssetList from './AssetList'
 

@@ -1,5 +1,5 @@
 import '@babel/polyfill'
-import { LOAD_KOI_BY, PATH } from 'constants'
+import { LOAD_KOI_BY, PATH } from 'koiConstants'
 import {
   loadWallet,
   generateWallet,

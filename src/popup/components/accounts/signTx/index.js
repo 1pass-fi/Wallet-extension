@@ -9,7 +9,7 @@ import Button from 'shared/button'
 
 import { getChromeStorage, removeChromeStorage } from 'utils'
 
-import { STORAGE, REQUEST, ERROR_MESSAGE } from 'constants'
+import { STORAGE, REQUEST, ERROR_MESSAGE } from 'koiConstants'
 import { signTransaction } from 'actions/koi'
 import { setError } from 'actions/error'
 
@@ -59,16 +59,16 @@ export const SignTx = ({ signTransaction, setError }) => {
   const handleOnClick = async (confirm) => {
     try {
       if (confirm) {
-        if (
-          !(await getChromeStorage(STORAGE.PENDING_REQUEST))[
-            STORAGE.PENDING_REQUEST
-          ]
-        )
-          throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-        const { address } = destinationAccount
-        signTransaction({ qty, address })
+        if (!(await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
+        const request = (await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]
+        const { transaction } = request.data
+        signTransaction({ tx: transaction, confirm: true })
+        removeChromeStorage(STORAGE.PENDING_REQUEST)
+      } else {
+        signTransaction({ tx: null, confirm: false })
+        removeChromeStorage(STORAGE.PENDING_REQUEST)
       }
-      removeChromeStorage(STORAGE.PENDING_REQUEST)
+
       history.push('/account')
     } catch (err) {
       setError(err.message)
@@ -109,10 +109,8 @@ export const SignTx = ({ signTransaction, setError }) => {
           <div className='total'>
             <div>TOTAL</div>
             <div className='amount'>
-              <div className='koi-icon'>
-                <KoiIcon />
-              </div>
-              <div>{qty}.0</div>
+              <div className='koi-icon'><ArweaveIcon /></div>
+              <div>{qty}</div>
             </div>
           </div>
           <div className='button-group'>
