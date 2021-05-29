@@ -1,5 +1,5 @@
 import get from 'lodash/get'
-import { ERROR_MESSAGE } from 'constants'
+import { ERROR_MESSAGE } from 'koiConstants'
 
 export const validatePassword = ({ e, setError, generateWallet }) => {
   try {

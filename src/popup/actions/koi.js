@@ -179,6 +179,7 @@ export const unlockWallet = (inputData) => (dispatch) => {
   }
 }
 
+/* istanbul ignore next */
 export const generateWallet = (inputData) => async (dispatch) => {
   try {
     const { stage, password } = inputData

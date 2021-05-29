@@ -28,16 +28,7 @@ exports[`Test for Popup component Render without crashing renders correctly 1`] 
     </header>
     <div
       class="content"
-    >
-      <div>
-        <a
-          class="plus-button"
-          href="/account/import"
-        >
-          <svg />
-        </a>
-      </div>
-    </div>
+    />
   </div>
 </div>
 `;

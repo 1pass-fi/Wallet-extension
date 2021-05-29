@@ -82,9 +82,7 @@ exports[`Test for ImportPhraseLockScreen component renders without crashing rend
             >
               <svg />
             </div>
-            <div>
-              .0
-            </div>
+            <div />
           </div>
         </div>
         <div

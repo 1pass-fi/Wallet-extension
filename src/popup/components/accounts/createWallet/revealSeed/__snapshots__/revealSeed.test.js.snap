@@ -60,6 +60,7 @@ exports[`Test for RevealSeed component Render without crashing renders correctly
       </div>
       <button
         class="button-shared button-outline confirm-button"
+        disabled=""
       >
         Continue
       </button>
