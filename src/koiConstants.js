@@ -114,4 +114,4 @@ export const NOTIFICATION = {
   KEY_EXPORTED: 'Private key downloaded.'
 }
 
-export const LOAD_BALANCES_TIME_INTERVAL = 60000
+export const LOAD_BALANCES_TIME_INTERVAL = 10000

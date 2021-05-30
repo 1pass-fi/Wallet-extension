@@ -22,6 +22,7 @@ import { koi } from 'background'
 export const getBalances = () => (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
     const { koiData } = response.data
+    console.log('UPDATE BALANCES. KOI: ', koiData.koiBalance, '; AR: ', koiData.arBalance)
     dispatch(setKoi(koiData))
   })
   backgroundConnect.addHandler(getBalanceSuccessHandler)

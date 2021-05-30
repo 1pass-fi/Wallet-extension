@@ -18,7 +18,7 @@ import continueLoadingIcon from 'img/continue-load.gif'
 import { setIsLoading } from 'actions/loading'
 import { setError } from 'actions/error'
 import { setNotification } from 'actions/notification'
-import { setKoi, loadWallet, removeWallet } from 'actions/koi'
+import { setKoi, loadWallet, removeWallet, getBalances } from 'actions/koi'
 
 import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST } from 'koiConstants'
 
@@ -40,7 +40,7 @@ const Popup = ({
   notification,
   setNotification,
   loadWallet,
-  transactions
+  getBalances
 }) => {
   const history = useHistory()
 
@@ -54,6 +54,7 @@ const Popup = ({
         if (storage[KOI_ADDRESS]) {
           // Koi Address in local storage
           loadWallet({ data: storage[KOI_ADDRESS] })
+          getBalances()
           switch (get(storage[PENDING_REQUEST], 'type')) {
             case REQUEST.PERMISSION:
               history.push('/account/connect-site')
@@ -157,7 +158,8 @@ const mapDispatchToProps = {
   setNotification,
   setKoi,
   loadWallet,
-  removeWallet
+  removeWallet,
+  getBalances
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Popup))

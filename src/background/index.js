@@ -31,14 +31,15 @@ chrome.runtime.onConnect.addListener(function (port) {
       ports[PORTS.POPUP] = port
       port.onMessage.addListener(message => {
         popUpEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
-	        if (koi.address && !autoLoadBalancesInterval) {
-          autoLoadBalancesPort = port
-          autoLoadBalances(koi)
-        }
 
+        if (koi.address) {
+          autoLoadBalancesPort = port
+          if (!autoLoadBalancesInterval) {
+            autoLoadBalances(koi)
+          }
+        }
       })
       break
-    }
     case PORTS.CONTENT_SCRIPT:
       ports[PORTS.CONTENT_SCRIPT] = port
       port.onMessage.addListener(message => {
