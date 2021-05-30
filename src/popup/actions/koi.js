@@ -227,11 +227,10 @@ export const saveWallet = (inputData) => (dispatch) => {
     dispatch(setIsLoading(true))
     const saveSuccessHandler = new CreateEventHandler(MESSAGES.SAVE_WALLET_SUCCESS, async response => {
       const { koiData } = response.data
-      const encryptedSeedPhrase = await passworder.encrypt(password, seedPhrase)
-      setChromeStorage({ 'koiPhrase': encryptedSeedPhrase })
       dispatch(setKoi(koiData))
       dispatch(setIsLoading(false))
-      
+      const encryptedSeedPhrase = await passworder.encrypt(password, seedPhrase)
+      setChromeStorage({ 'koiPhrase': encryptedSeedPhrase })
       setCreateWallet({ stage: 1, password: null, seedPhrase: null })
       window.close()
       // history.push(PATH.HOME)
@@ -366,7 +365,7 @@ export const signTransaction = (inputData) => (dispatch) => {
   }
 }
 
-export const getKeyFile = () => (dispatch) => {
+export const getKeyFile = (inputData) => (dispatch) => {
   try {
     const getKeyFileSuccessHandler = new CreateEventHandler(MESSAGES.GET_KEY_FILE_SUCCESS, response => {
       const content = response.data
@@ -383,7 +382,7 @@ export const getKeyFile = () => (dispatch) => {
     backgroundConnect.addHandler(getKeyFileSuccessHandler)
     backgroundConnect.postMessage({
       type: MESSAGES.GET_KEY_FILE,
-      data: {}
+      data: inputData
     })
   } catch (err) {
     dispatch(setError(err.message))
