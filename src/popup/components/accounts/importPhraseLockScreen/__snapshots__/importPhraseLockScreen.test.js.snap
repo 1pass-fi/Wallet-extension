@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for ImportPhraseLockScreen component renders without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="seed-phrase-lock-screen"
+  >
+    <header
+      class="lock-screen-header"
+    >
+      <svg
+        class="koi-icon"
+      />
+      <div
+        class="koi-title"
+      >
+        Koi Wallet
+      </div>
+    </header>
+    <div
+      class="content"
+    >
+      <div
+        class="welcome"
+      >
+        Welcome
+      </div>
+      <div
+        class="text-area-field seed-phrase field"
+      >
+        <div
+          class="label"
+        >
+          Paste your seed phrase
+        </div>
+        <div
+          class="input-wrapper"
+        >
+          <textarea
+            class="input protect"
+            name="inputPhrase"
+            placeholder=""
+            spellcheck="false"
+          />
+          <svg
+            class="toggle-display"
+          />
+        </div>
+      </div>
+      <div
+        class="input-field password field"
+      >
+        <div
+          class="label"
+        >
+          password
+        </div>
+        <div
+          class="input-wrapper"
+        >
+          <input
+            class="input"
+            name="password"
+            placeholder="Make it unique (min. 8 characters)"
+            type="password"
+            value=""
+          />
+          <svg
+            class="toggle-display"
+          />
+        </div>
+      </div>
+      <div
+        class="input-field confirm-password field"
+      >
+        <div
+          class="label"
+        >
+          Confirm password
+        </div>
+        <div
+          class="input-wrapper"
+        >
+          <input
+            class="input"
+            name="confirm-password"
+            placeholder=""
+            type="password"
+            value=""
+          />
+          <svg
+            class="toggle-display"
+          />
+        </div>
+      </div>
+      <button
+        class="button-shared button-filled unlock-button"
+      >
+        Unlock
+      </button>
+      <div
+        class="login-with-password"
+      >
+        Log in with my
+         
+        <a
+          class="password-link"
+          href="/account/login"
+        >
+          password
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;

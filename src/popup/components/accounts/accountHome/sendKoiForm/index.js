@@ -9,7 +9,7 @@ import WarningIcon from 'img/warning-icon.svg'
 
 import { makeTransfer } from 'actions/koi'
 import { setError } from 'actions/error'
-import { ERROR_MESSAGE } from 'constants'
+import { ERROR_MESSAGE } from 'koiConstants'
 
 import './index.css'
 

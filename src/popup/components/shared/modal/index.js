@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import CloseIcon from 'img/close-icon.svg'
 
@@ -8,7 +8,7 @@ const propTypes = {
   onClose: PropTypes.func,
 }
 
-const Modal = ({ onClose, children, className }) => {
+const Modal = ({ onClose, children, className = '' }) => {
   return (
     <div className="modal-container">
       <div className={`modal ${className}`}>

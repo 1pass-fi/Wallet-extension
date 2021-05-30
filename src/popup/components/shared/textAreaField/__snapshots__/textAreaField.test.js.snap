@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for TextAreaField component Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="text-area-field "
+  >
+    <div
+      class="label"
+    />
+    <div
+      class="input-wrapper"
+    >
+      <textarea
+        class="input protect"
+        name=""
+        placeholder=""
+        spellcheck="false"
+      />
+      <svg
+        class="toggle-display"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Test for TextAreaField component Render without crashing renders correctly 2`] = `
+<div>
+  <div
+    class="text-area-field "
+  >
+    <div
+      class="label"
+    />
+    <div
+      class="input-wrapper"
+    >
+      <textarea
+        class="input true"
+        name=""
+        placeholder=""
+        spellcheck="false"
+      />
+      <svg
+        class="toggle-display"
+      />
+    </div>
+  </div>
+</div>
+`;

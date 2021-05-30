@@ -1,17 +1,17 @@
-import '@babel/polyfill'
-import sinon from 'sinon'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+require('text-encoding').TextDecoder
 
 import backgroundConnect from 'actions/backgroundConnect'
-import { 
-  SET_LOADING, 
-  SET_KOI, 
-  SET_ERROR, 
-  SET_ASSETS, 
-  SET_CREATE_WALLET, 
-  SET_CONT_LOADING, 
-  SET_TRANSACTIONS 
+import {
+  SET_LOADING,
+  SET_KOI,
+  SET_ERROR,
+  SET_ASSETS,
+  SET_CREATE_WALLET,
+  SET_CONT_LOADING,
+  SET_TRANSACTIONS,
+  SET_NOTIFICATION
 } from 'actions/types'
 
 import {
@@ -26,7 +26,7 @@ import {
   lockWallet
 } from './koi'
 
-import { MESSAGES } from 'constants'
+import { MESSAGES } from 'koiConstants'
 
 describe('Tests for actions/koi', () => {
   let middlewares, mockStore, store, expectedActions, postMessage
@@ -78,7 +78,7 @@ describe('Tests for actions/koi', () => {
 
         const response = {
           data: {
-            koiData : {
+            koiData: {
               arBalance: 100,
               koiBalance: 200,
               address: 'address'
@@ -114,7 +114,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(importWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -193,7 +193,7 @@ describe('Tests for actions/koi', () => {
 
         const response = {
           data: {
-            koiData : {
+            koiData: {
               arBalance: 100,
               koiBalance: 200,
               address: 'address'
@@ -229,7 +229,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(loadWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -287,11 +287,17 @@ describe('Tests for actions/koi', () => {
 
 
   describe('Tests for removeWallet()', () => {
+    let history, inputData
     beforeEach(() => {
       store = mockStore()
 
+      const push = jest.fn()
+      history = { push }
+
+      inputData = { history }
+
       let dispatch = store.dispatch
-      removeWallet()(dispatch)
+      removeWallet(inputData)(dispatch)
     })
 
     describe('background removeWallet success', () => {
@@ -302,7 +308,7 @@ describe('Tests for actions/koi', () => {
 
         const response = {
           data: {
-            koiData : {
+            koiData: {
               arBalance: null,
               koiBalance: null,
               address: null
@@ -342,8 +348,8 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
-        store.dispatch(removeWallet())
+      it('dispatchs data as expected', async () => {
+        store.dispatch(removeWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -371,7 +377,7 @@ describe('Tests for actions/koi', () => {
       })
 
       it('dispatchs data as expected', () => {
-        store.dispatch(removeWallet())
+        store.dispatch(removeWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -392,7 +398,7 @@ describe('Tests for actions/koi', () => {
       })
 
       it('dispatchs data as expected', () => {
-        store.dispatch(removeWallet())
+        store.dispatch(removeWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -426,7 +432,7 @@ describe('Tests for actions/koi', () => {
 
         const response = {
           data: {
-            koiData : {
+            koiData: {
               arBalance: 100,
               koiBalance: 200,
               address: 'address'
@@ -462,7 +468,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(unlockWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -519,120 +525,119 @@ describe('Tests for actions/koi', () => {
   })
 
 
-  describe('Tests for generateWallet()', () => {
-    let inputData, history
+  // describe('Tests for generateWallet()', () => {
+  //   let inputData, history
 
-    beforeEach(() => {
-      store = mockStore()
+  //   beforeEach(() => {
+  //     store = mockStore()
 
-      const push = jest.fn()
-      history = { push }
+  //     const push = jest.fn()
+  //     history = { push }
 
-      inputData = {
-        password: 'password',
-        stage: 'stage'
-      }
+  //     inputData = {
+  //       password: 'password',
+  //       stage: 'stage'
+  //     }
 
-      let dispatch = store.dispatch
-      generateWallet(inputData)(dispatch)
-    })
+  //     let dispatch = store.dispatch
+  //     generateWallet(inputData)(dispatch)
+  //   })
 
-    describe('background unlockWallet success', () => {
-      beforeEach(() => {
-        let generateSuccessFunction = backgroundConnect.eventHandlers.filter((handler) => {
-          return handler.type = MESSAGES.GENERATE_WALLET_SUCCESS
-        })[0].callback
+  //   describe('background unlockWallet success', () => {
+  //     beforeEach(() => {
+  //       let generateSuccessFunction = backgroundConnect.eventHandlers.filter((handler) => {
+  //         return handler.type = MESSAGES.GENERATE_WALLET_SUCCESS
+  //       })[0].callback
 
-        const response = {
-          data: {
-            seedPhrase: 'seedPhrase'
-          }
-        }
+  //       const response = {
+  //         data: {
+  //           seedPhrase: 'seedPhrase'
+  //         }
+  //       }
 
-        backgroundConnect.postMessage = () => {
-          generateSuccessFunction(response)
-        }
+  //       backgroundConnect.postMessage = () => {
+  //         generateSuccessFunction(response)
+  //       }
 
-        expectedActions = [
-          {
-            type: SET_LOADING,
-            payload: true
-          },
-          {
-            type: SET_LOADING,
-            payload: true
-          },
-          {
-            type: SET_CREATE_WALLET,
-            payload: {
-              seedPhrase: 'seedPhrase',
-              stage: inputData.stage,
-              password: inputData.password
-            }
-          },
-          {
-            type: SET_LOADING,
-            payload: false
-          }
-        ]
-      })
+  //       expectedActions = [
+  //         {
+  //           type: SET_LOADING,
+  //           payload: true
+  //         },
+  //         {
+  //           type: SET_LOADING,
+  //           payload: true
+  //         },
+  //         {
+  //           type: SET_CREATE_WALLET,
+  //           payload: {
+  //             seedPhrase: 'seedPhrase',
+  //             stage: inputData.stage,
+  //             password: inputData.password
+  //           }
+  //         },
+  //         {
+  //           type: SET_LOADING,
+  //           payload: false
+  //         }
+  //       ]
+  //     })
 
-      it('dispatchs data as expected', async () => {  
-        store.dispatch(generateWallet(inputData))
-        expect(store.getActions()).toEqual(expectedActions)
-      })
-    })
+  //     it('dispatchs data as expected', async () => {
+  //       store.dispatch(generateWallet(inputData))
+  //       expect(store.getActions()).toEqual(expectedActions)
+  //     })
+  //   })
 
-    describe('background generateWallet failed', () => {
-      beforeEach(() => {
-        let generateFailedFunction = backgroundConnect.eventHandlers.filter((handler) => {
-          return handler.type === MESSAGES.ERROR
-        })[0].callback
+  //   describe('background generateWallet failed', () => {
+  //     beforeEach(() => {
+  //       let generateFailedFunction = backgroundConnect.eventHandlers.filter((handler) => {
+  //         return handler.type === MESSAGES.ERROR
+  //       })[0].callback
 
-        const response = {
-          data: 'Error message'
-        }
+  //       const response = {
+  //         data: 'Error message'
+  //       }
 
-        backgroundConnect.postMessage = () => {
-          generateFailedFunction(response)
-        }
+  //       backgroundConnect.postMessage = () => {
+  //         generateFailedFunction(response)
+  //       }
 
-        expectedActions = [
-          { type: SET_LOADING, payload: true },
-          { type: SET_LOADING, payload: true },
-          { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: 'Error message' }
-        ]
-      })
+  //       expectedActions = [
+  //         { type: SET_LOADING, payload: true },
+  //         { type: SET_LOADING, payload: true },
+  //         { type: SET_LOADING, payload: false },
+  //         { type: SET_ERROR, payload: 'Error message' }
+  //       ]
+  //     })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(generateWallet(inputData))
-        expect(store.getActions()).toEqual(expectedActions)
-      })
-    })
+  //     it('dispatchs data as expected', () => {
+  //       store.dispatch(generateWallet(inputData))
+  //       expect(store.getActions()).toEqual(expectedActions)
+  //     })
+  //   })
 
 
-    describe('something went wrong', () => {
-      beforeEach(() => {
-        backgroundConnect.postMessage = () => {
-          throw new Error('Error message')
-        }
+  //   describe('something went wrong', () => {
+  //     beforeEach(() => {
+  //       backgroundConnect.postMessage = () => {
+  //         throw new Error('Error message')
+  //       }
 
-        expectedActions = [
-          { type: SET_LOADING, payload: true },
-          { type: SET_LOADING, payload: true },
-          { type: SET_ERROR, payload: 'Error message' },
-          { type: SET_LOADING, payload: false },
-        ]
-      })
+  //       expectedActions = [
+  //         { type: SET_LOADING, payload: true },
+  //         { type: SET_LOADING, payload: true },
+  //         { type: SET_ERROR, payload: 'Error message' },
+  //         { type: SET_LOADING, payload: false },
+  //       ]
+  //     })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(generateWallet(inputData))
-        expect(store.getActions()).toEqual(expectedActions)
-      })
-    })
-  })
-
+  //     it('dispatchs data as expected', () => {
+  //       store.dispatch(generateWallet(inputData))
+  //       expect(store.getActions()).toEqual(expectedActions)
+  //     })
+  //   })
+  // })
 
   describe('Tests for saveWallet()', () => {
     let inputData, history
@@ -687,7 +692,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(saveWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -793,7 +798,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(loadContent(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -897,11 +902,15 @@ describe('Tests for actions/koi', () => {
           {
             type: SET_LOADING,
             payload: false
+          },
+          {
+            type: SET_NOTIFICATION,
+            payload: 'Transaction sent.'
           }
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(makeTransfer(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
@@ -1011,7 +1020,7 @@ describe('Tests for actions/koi', () => {
         ]
       })
 
-      it('dispatchs data as expected', async () => {  
+      it('dispatchs data as expected', async () => {
         store.dispatch(lockWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })

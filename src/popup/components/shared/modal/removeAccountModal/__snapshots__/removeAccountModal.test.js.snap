@@ -6,7 +6,7 @@ exports[`Test for  RemoveAccountModal component Render without crashing renders 
     class="modal-container"
   >
     <div
-      class="modal"
+      class="modal "
     >
       <div
         class="modal-close-icon"

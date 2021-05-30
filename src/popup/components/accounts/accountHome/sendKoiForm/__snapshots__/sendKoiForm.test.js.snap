@@ -17,7 +17,7 @@ exports[`Test for SendKoiForm component Render without crashing renders correctl
       <div
         class="amount-in-usd"
       >
-        ~ $ 
+        ~ $
         NaN
          USD
       </div>
@@ -81,20 +81,13 @@ exports[`Test for SendKoiForm component Render without crashing renders correctl
             class="input"
             name=""
             placeholder="Amount of KOI to send"
-            type="text"
+            type="number"
             value=""
           />
           <svg
             class="toggle-display"
           />
         </div>
-      </div>
-      <div
-        class="amount-in-usd"
-      >
-        ~ $ 
-        NaN
-         USD
       </div>
     </div>
     <button

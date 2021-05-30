@@ -7,10 +7,10 @@ import TextAreaField from 'shared/textAreaField'
 import Button from 'shared/button'
 import { importWallet } from 'actions/koi'
 import { setError } from 'actions/error'
-import { PATH, ERROR_MESSAGE } from 'constants'
+import Header from 'shared/header'
 
 import './index.css'
-import Header from 'shared/header'
+import { validatePhrase } from './utils'
 
 const ImportPhrase = ({ setError, importWallet }) => {
   const history = useHistory()
@@ -30,20 +30,14 @@ const ImportPhrase = ({ setError, importWallet }) => {
   }
 
   const onSubmit = async () => {
-    try {
-      if (phrase.split(' ').length != 12) {
-        setError(ERROR_MESSAGE.INCORRECT_PHRASE)
-      } else if (password.length < 8) {
-        setError(ERROR_MESSAGE.PASSWORD_LENGTH)
-      } else if (password !== confirmPassword) {
-        setError(ERROR_MESSAGE.PASSWORD_MATCH)
-      } else {
-        const redirectPath = PATH.IMPORT_KEY_REDIRECT
-        importWallet({ data: phrase, password, history, redirectPath })
-      }
-    } catch (err) {
-      setError(err.message)
-    }
+    validatePhrase({
+      phrase,
+      password,
+      confirmPassword,
+      history,
+      setError,
+      importWallet,
+    })
   }
 
   return (

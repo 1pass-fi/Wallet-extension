@@ -7,7 +7,7 @@ import { loadActivities } from 'actions/koi'
 import { getChromeStorage } from 'utils'
 
 import ActivityRow from './activityRow'
-import { STORAGE } from 'constants'
+import { STORAGE } from 'koiConstants'
 
 import './index.css'
 

@@ -1,5 +1,5 @@
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
-import { PORTS } from 'constants'
+import { PORTS } from 'koiConstants'
 
 export const CreateEventHandler = EventHandler
 

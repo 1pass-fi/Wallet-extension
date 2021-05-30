@@ -9,17 +9,22 @@ import Button from 'shared/button'
 
 import { getChromeStorage, removeChromeStorage } from 'utils'
 
-import { STORAGE, REQUEST, ERROR_MESSAGE } from 'constants'
+import { STORAGE, REQUEST, ERROR_MESSAGE } from 'koiConstants'
 import { signTransaction } from 'actions/koi'
 import { setError } from 'actions/error'
-
 
 import './index.css'
 
 export const SignTx = ({ signTransaction, setError }) => {
   const history = useHistory()
-  const [sourceAccount, setSourceAccount] = useState({ address: '', type: 'koi' })
-  const [destinationAccount, setDestinationAccount] = useState({ address: '', type: 'arweave' })
+  const [sourceAccount, setSourceAccount] = useState({
+    address: '',
+    type: 'koi',
+  })
+  const [destinationAccount, setDestinationAccount] = useState({
+    address: '',
+    type: 'arweave',
+  })
   const [origin, setOrigin] = useState('')
   const [qty, setQty] = useState(null)
 
@@ -30,13 +35,17 @@ export const SignTx = ({ signTransaction, setError }) => {
 
   useEffect(() => {
     const loadRequest = async () => {
-      const request = (await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]
-      const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[STORAGE.KOI_ADDRESS]
-      const { origin: requestOrigin, qty, address: targetAddress } = request.data
-
-      console.log('REQUEST DATA', request)
-      console.log('ADDRESS', address)
-      console.log('TARGET ADDRESS', targetAddress)
+      const request = (await getChromeStorage(STORAGE.PENDING_REQUEST))[
+        STORAGE.PENDING_REQUEST
+      ]
+      const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[
+        STORAGE.KOI_ADDRESS
+      ]
+      const {
+        origin: requestOrigin,
+        qty,
+        address: targetAddress,
+      } = request.data
 
       setSourceAccount({ address, type: 'koi' })
       setDestinationAccount({ address: targetAddress, type: 'arweave' })
@@ -51,10 +60,15 @@ export const SignTx = ({ signTransaction, setError }) => {
     try {
       if (confirm) {
         if (!(await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-        const { address } = destinationAccount
-        signTransaction({ qty, address })
+        const request = (await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]
+        const { transaction } = request.data
+        signTransaction({ tx: transaction, confirm: true })
+        removeChromeStorage(STORAGE.PENDING_REQUEST)
+      } else {
+        signTransaction({ tx: null, confirm: false })
+        removeChromeStorage(STORAGE.PENDING_REQUEST)
       }
-      removeChromeStorage(STORAGE.PENDING_REQUEST)
+
       history.push('/account')
     } catch (err) {
       setError(err.message)
@@ -88,28 +102,34 @@ export const SignTx = ({ signTransaction, setError }) => {
             </div>
           </div>
         </div>
-        <div className='origin'>
-          {origin}
-        </div>
+        <div className='origin'>{origin}</div>
       </div>
       <div className='content-section'>
         <Card className='transaction-detail'>
           <div className='total'>
             <div>TOTAL</div>
             <div className='amount'>
-              <div className='koi-icon'><KoiIcon /></div>
-              <div>{qty}.0</div>
+              <div className='koi-icon'><ArweaveIcon /></div>
+              <div>{qty}</div>
             </div>
           </div>
           <div className='button-group'>
-            <Button label='Confirm' onClick={() => handleOnClick(true)} />
-            <Button label='Reject' type='layout' className='reject-button' onClick={() => handleOnClick(false)} />
+            <Button
+              label='Confirm'
+              onClick={() => handleOnClick(true)}
+              className='confirm-button'
+            />
+            <Button
+              label='Reject'
+              type='layout'
+              className='reject-button'
+              onClick={() => handleOnClick(false)}
+            />
           </div>
         </Card>
       </div>
     </div>
   )
 }
-
 
 export default connect(null, { signTransaction, setError })(SignTx)

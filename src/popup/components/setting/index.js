@@ -6,8 +6,9 @@ import { lockWallet } from 'actions/koi'
 import { setError } from 'actions/error'
 
 import GlobalButton from 'popup/components/shared/globalButton'
+import AccountSettingRow from './accountSettingRow'
 
-import { STORAGE } from 'constants'
+import { STORAGE } from 'koiConstants'
 import { getChromeStorage } from 'utils'
 
 import './index.css'
@@ -27,7 +28,7 @@ const Setting = ({ lockWallet, setError }) => {
     <div className='setting-container'>
       <GlobalButton type='lock' className='lock' onClick={handleOnClick} />
       <div className='setting-mock-content'>
-        Setting Page
+        <AccountSettingRow accountName='Account 1' /> 
       </div>
     </div>
   )

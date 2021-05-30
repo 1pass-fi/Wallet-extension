@@ -58,7 +58,7 @@ exports[`Test for AccountImport component Render without crashing renders correc
       </div>
     </a>
     <a
-      href="/account/create"
+      href="/"
       style="text-decoration: none;"
     >
       <div
