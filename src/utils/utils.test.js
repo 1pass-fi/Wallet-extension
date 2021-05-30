@@ -8,7 +8,7 @@ import {
   JSONFileToObject
 } from './index'
 
-import { ERROR_MESSAGE } from 'constants'
+import { ERROR_MESSAGE } from 'koiConstants'
 
 describe('Tests for utils', () => {
   let koiObj, initKoiObj

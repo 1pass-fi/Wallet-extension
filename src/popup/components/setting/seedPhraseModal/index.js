@@ -11,7 +11,7 @@ import CopyIcon from 'img/copy-icon.svg'
 import Modal from 'shared/modal'
 import Button from 'shared/button'
 
-import { NOTIFICATION } from 'constants'
+import { NOTIFICATION } from 'koiConstants'
 import { setNotification } from 'actions/notification'
 
 import './index.css'

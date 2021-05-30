@@ -6,7 +6,7 @@ exports[`Test for  Modal component Render without crashing renders correctly 1`]
     class="modal-container"
   >
     <div
-      class="modal undefined"
+      class="modal "
     >
       <div
         class="modal-close-icon"

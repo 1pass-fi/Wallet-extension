@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
 
 import Fish from 'img/fish.svg'
 import EditIcon from 'img/edit-icon.svg'
 import Button from 'popup/components/shared/button'
 import RevealSeedPhraseModal from '../revealSeedPhraseModal'
-import {decryptSeedPhraseFromChrome} from 'utils/index.js'
+import { decryptSeedPhraseFromChrome } from 'utils'
 
 import './index.css'
 import { setError } from 'popup/actions/error'
 import { SeedPhraseModal } from '../seedPhraseModal'
 
-const AccountSettingRow = ({ accountName }) => {
+const AccountSettingRow = ({ accountName, setError }) => {
   const [seedPhrase, setSeedPhrase] = useState('')
   const [showRevealModal, setShowRevealModal] = useState(false)
   const [showSeedPhraseModal, setShowSeedPhraseModal] = useState(false)
@@ -20,7 +21,7 @@ const AccountSettingRow = ({ accountName }) => {
       const phrase = await decryptSeedPhraseFromChrome(password)
       if (!phrase) {
         setShowRevealModal(false)
-        setError('Empty seed phrase !')
+        setError('Seed Phrase not found.')
       } else { 
         setSeedPhrase(phrase)
         setShowRevealModal(false)
@@ -28,6 +29,7 @@ const AccountSettingRow = ({ accountName }) => {
       }
     } catch (err) {
       setError(err.message)
+      setShowRevealModal(false)
     }
   }
 
@@ -41,7 +43,7 @@ const AccountSettingRow = ({ accountName }) => {
         </div>
         <div className="display-row account-info">
           <div className="account-name-line">
-            <div class="name">{accountName}</div>
+            <div className="name">{accountName}</div>
             <div className="edit-icon">
               <EditIcon />
             </div>
@@ -60,4 +62,4 @@ const AccountSettingRow = ({ accountName }) => {
   )
 }
 
-export default AccountSettingRow
+export default connect(null, { setError })(AccountSettingRow)

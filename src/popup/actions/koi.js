@@ -1,4 +1,4 @@
-import { get } from 'lodash'
+import { get, isString } from 'lodash'
 import passworder from 'browser-passworder'
 
 import { setIsLoading } from './loading'
@@ -14,19 +14,24 @@ import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 import { MESSAGES, PATH, STORAGE, REQUEST, NOTIFICATION } from 'koiConstants'
 
 import { SET_KOI } from 'actions/types'
-import { getChromeStorage, removeChromeStorage, setChromeStorage, generateWallet as generateWalletUtil } from 'utils'
+import { getChromeStorage, removeChromeStorage, setChromeStorage, generateWallet as generateWalletUtil, saveWalletToChrome } from 'utils'
 import { setNotification } from './notification'
 
 import { koi } from 'background'
 
 export const importWallet = (inputData) => (dispatch) => {
   try {
+    const { data, password } = inputData
     dispatch(setIsLoading(true))
     const { history, redirectPath } = inputData
     const importSuccessHandler = new CreateEventHandler(MESSAGES.IMPORT_WALLET_SUCCESS, async response => {
       const { koiData } = response.data
       dispatch(setKoi(koiData))
       dispatch(setIsLoading(false))
+      if (isString(data)) {
+        const encryptedPhrase = await passworder.encrypt(password, data)
+        await setChromeStorage({ 'koiPhrase': encryptedPhrase })
+      } 
       await removeChromeStorage(STORAGE.SITE_PERMISSION)
       await removeChromeStorage(STORAGE.PENDING_REQUEST)
       await removeChromeStorage(STORAGE.CONTENT_LIST)
@@ -218,12 +223,15 @@ export const generateWallet = (inputData) => async (dispatch) => {
 
 export const saveWallet = (inputData) => (dispatch) => {
   try {
-    const { history } = inputData
+    const { seedPhrase, history, password } = inputData
     dispatch(setIsLoading(true))
-    const saveSuccessHandler = new CreateEventHandler(MESSAGES.SAVE_WALLET_SUCCESS, response => {
+    const saveSuccessHandler = new CreateEventHandler(MESSAGES.SAVE_WALLET_SUCCESS, async response => {
       const { koiData } = response.data
+      const encryptedSeedPhrase = await passworder.encrypt(password, seedPhrase)
+      setChromeStorage({ 'koiPhrase': encryptedSeedPhrase })
       dispatch(setKoi(koiData))
       dispatch(setIsLoading(false))
+      
       setCreateWallet({ stage: 1, password: null, seedPhrase: null })
       window.close()
       // history.push(PATH.HOME)

@@ -10,7 +10,7 @@ import WarningIcon from 'img/warning-icon.svg'
 
 import './index.css'
 import { setError } from 'actions/error'
-import { ERROR_MESSAGE } from 'constants'
+import { ERROR_MESSAGE } from 'koiConstants'
 
 const RevealSeedPhraseModal = ({ onReveal, onClose, setError }) => {
   const [password, setPassword] = useState('')

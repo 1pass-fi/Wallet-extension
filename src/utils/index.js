@@ -168,8 +168,8 @@ export const saveWalletToChrome = async (koiObj, password) => {
 /* istanbul ignore next */
 export const decryptWalletKeyFromChrome = async (password) => {
   try {
-    const result = await getChromeStorage('koiKey')
-    const key = await passworder.decrypt(password, result['koiKey'])
+    const result = await getChromeStorage(STORAGE.KOI_KEY)
+    const key = await passworder.decrypt(password, result[STORAGE.KOI_KEY])
     return key
   } catch (err) {
     throw new Error(err.message)
@@ -178,7 +178,14 @@ export const decryptWalletKeyFromChrome = async (password) => {
 
 /* istanbul ignore next */
 export const decryptSeedPhraseFromChrome = async (password) => {
-  return 'seed phrase'
+  try {
+    const result = await getChromeStorage(STORAGE.KOI_PHRASE)
+    if (!result[STORAGE.KOI_PHRASE]) return
+    const phrase = await passworder.decrypt(password, result[STORAGE.KOI_PHRASE])
+    return phrase
+  } catch (err) {
+    throw new Error(err.message)
+  }
 }
 
 /* istanbul ignore next */
@@ -186,6 +193,7 @@ export const removeWalletFromChrome = async () => {
   try {
     await removeChromeStorage(STORAGE.KOI_ADDRESS)
     await removeChromeStorage(STORAGE.KOI_KEY)
+    await removeChromeStorage(STORAGE.KOI_PHRASE)
     await removeChromeStorage(STORAGE.CONTENT_LIST)
     await removeChromeStorage(STORAGE.PENDING_REQUEST)
     await removeChromeStorage(STORAGE.SITE_PERMISSION)

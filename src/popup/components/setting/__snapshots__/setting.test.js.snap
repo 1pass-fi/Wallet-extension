@@ -28,7 +28,42 @@ exports[`Test for Setting component Render without crashing renders correctly 1`
     <div
       class="setting-mock-content"
     >
-      Setting Page
+      <div
+        class="account-setting-row"
+      >
+        <div
+          class="display-row icon"
+        >
+          <div
+            class="logo-icon"
+          >
+            <svg />
+          </div>
+        </div>
+        <div
+          class="display-row account-info"
+        >
+          <div
+            class="account-name-line"
+          >
+            <div
+              class="name"
+            >
+              Account 1
+            </div>
+            <div
+              class="edit-icon"
+            >
+              <svg />
+            </div>
+          </div>
+          <button
+            class="button-shared button-outline get-seed-phrase-button"
+          >
+            Get Seed Phrase
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

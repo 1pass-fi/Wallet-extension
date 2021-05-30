@@ -37,7 +37,7 @@ export const ConfirmSeed = ({
   const handleOnClick = () => {
     try {
       if (seedPhrase === addedPhrase.map((item) => item.word).join(' ')) {
-        saveWallet({ password, history })
+        saveWallet({ password, history, seedPhrase })
       } else {
         setError('Incorrect Seed phrase')
       }
