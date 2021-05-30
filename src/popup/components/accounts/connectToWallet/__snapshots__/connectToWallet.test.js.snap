@@ -1,0 +1,605 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for ConnectToWallet component click on check all button and clear checked renders correctly 1`] = `
+<div>
+  <div
+    class="select-wallet"
+  >
+    <header
+      class="header"
+    >
+      <div
+        class="connect-with-koi"
+      >
+        Connect with Koi
+      </div>
+      <div
+        class="title"
+      >
+        
+        <a
+          class="company-url"
+          href=""
+          target="_blank"
+        />
+      </div>
+    </header>
+    <div
+      class="content"
+    >
+      <div
+        class="card card-content"
+      >
+        <div
+          class="select-account"
+        >
+          Select accounts
+        </div>
+        <div>
+          <button
+            class="unselect-button"
+          >
+            -
+          </button>
+          <button
+            class="select-all-button"
+          >
+            Select all
+          </button>
+        </div>
+        <div
+          class="wallet-options"
+        >
+          <div
+            class="wallet-option checked"
+          >
+            <input
+              checked=""
+              class="check-wallet"
+              disabled=""
+              type="checkbox"
+            />
+            <svg
+              class="wallet-icon"
+            />
+            <div
+              class="wallet-info"
+            >
+              <div
+                class="wallet-name"
+              >
+                Account 1
+              </div>
+              <div
+                class="wallet-address"
+              >
+                
+                ...
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="trust-sites"
+        >
+          Only connect with sites you trust.
+        </div>
+        <div
+          class="button-line"
+        >
+          <button
+            class="button-shared button-filled button connect"
+          >
+            Connect
+          </button>
+          <button
+            class="button-shared button-outline button reject"
+          >
+            Reject
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Test for ConnectToWallet component click on check all button and clear checked renders correctly 2`] = `
+<div>
+  <div
+    class="select-wallet"
+  >
+    <header
+      class="header"
+    >
+      <div
+        class="connect-with-koi"
+      >
+        Connect with Koi
+      </div>
+      <div
+        class="title"
+      >
+        
+        <a
+          class="company-url"
+          href=""
+          target="_blank"
+        />
+      </div>
+    </header>
+    <div
+      class="content"
+    >
+      <div
+        class="card card-content"
+      >
+        <div
+          class="select-account"
+        >
+          Select accounts
+        </div>
+        <div>
+          <button
+            class="unselect-button"
+          >
+            -
+          </button>
+          <button
+            class="select-all-button"
+          >
+            Select all
+          </button>
+        </div>
+        <div
+          class="wallet-options"
+        >
+          <div
+            class="wallet-option false"
+          >
+            <input
+              checked=""
+              class="check-wallet"
+              disabled=""
+              type="checkbox"
+            />
+            <svg
+              class="wallet-icon"
+            />
+            <div
+              class="wallet-info"
+            >
+              <div
+                class="wallet-name"
+              >
+                Account 1
+              </div>
+              <div
+                class="wallet-address"
+              >
+                
+                ...
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="trust-sites"
+        >
+          Only connect with sites you trust.
+        </div>
+        <div
+          class="button-line"
+        >
+          <button
+            class="button-shared button-filled button connect"
+          >
+            Connect
+          </button>
+          <button
+            class="button-shared button-outline button reject"
+          >
+            Reject
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Test for ConnectToWallet component click on check all button and clear checked renders correctly 3`] = `
+<div>
+  <div
+    class="select-wallet"
+  >
+    <header
+      class="header"
+    >
+      <div
+        class="connect-with-koi"
+      >
+        Connect with Koi
+      </div>
+      <div
+        class="title"
+      >
+        
+        <a
+          class="company-url"
+          href=""
+          target="_blank"
+        />
+      </div>
+    </header>
+    <div
+      class="content"
+    >
+      <div
+        class="card card-content"
+      >
+        <div
+          class="select-account"
+        >
+          Select accounts
+        </div>
+        <div>
+          <button
+            class="unselect-button"
+          >
+            -
+          </button>
+          <button
+            class="select-all-button"
+          >
+            Select all
+          </button>
+        </div>
+        <div
+          class="wallet-options"
+        >
+          <div
+            class="wallet-option false"
+          >
+            <input
+              checked=""
+              class="check-wallet"
+              disabled=""
+              type="checkbox"
+            />
+            <svg
+              class="wallet-icon"
+            />
+            <div
+              class="wallet-info"
+            >
+              <div
+                class="wallet-name"
+              >
+                Account 1
+              </div>
+              <div
+                class="wallet-address"
+              >
+                
+                ...
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="trust-sites"
+        >
+          Only connect with sites you trust.
+        </div>
+        <div
+          class="button-line"
+        >
+          <button
+            class="button-shared button-filled button connect"
+          >
+            Connect
+          </button>
+          <button
+            class="button-shared button-outline button reject"
+          >
+            Reject
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Test for ConnectToWallet component click on connect button renders correctly 1`] = `
+<div>
+  <div
+    class="select-wallet"
+  >
+    <header
+      class="header"
+    >
+      <div
+        class="connect-with-koi"
+      >
+        Connect with Koi
+      </div>
+      <div
+        class="title"
+      >
+        
+        <a
+          class="company-url"
+          href=""
+          target="_blank"
+        />
+      </div>
+    </header>
+    <div
+      class="content"
+    >
+      <div
+        class="card card-content"
+      >
+        <div
+          class="allow-permission"
+        >
+          <div
+            class="label"
+          >
+            Allow this site to:
+          </div>
+          <div
+            class="permission checked"
+          >
+            <input
+              checked=""
+              class="check-allow"
+              disabled=""
+              type="checkbox"
+            />
+            <div
+              class="permission-content"
+            >
+              View the addresses of your permitted accounts (required)
+            </div>
+          </div>
+          <div
+            class="trust-sites"
+          >
+            Only connect with sites you trust.
+          </div>
+          <div
+            class="button-line"
+          >
+            <button
+              class="button-shared button-filled button connect"
+            >
+              Connect
+            </button>
+            <button
+              class="button-shared button-outline button reject"
+            >
+              Reject
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Test for ConnectToWallet component click on reject button renders correctly 1`] = `
+<div>
+  <div
+    class="select-wallet"
+  >
+    <header
+      class="header"
+    >
+      <div
+        class="connect-with-koi"
+      >
+        Connect with Koi
+      </div>
+      <div
+        class="title"
+      >
+        
+        <a
+          class="company-url"
+          href=""
+          target="_blank"
+        />
+      </div>
+    </header>
+    <div
+      class="content"
+    >
+      <div
+        class="card card-content"
+      >
+        <div
+          class="select-account"
+        >
+          Select accounts
+        </div>
+        <div>
+          <button
+            class="unselect-button"
+          >
+            -
+          </button>
+          <button
+            class="select-all-button"
+          >
+            Select all
+          </button>
+        </div>
+        <div
+          class="wallet-options"
+        >
+          <div
+            class="wallet-option false"
+          >
+            <input
+              checked=""
+              class="check-wallet"
+              disabled=""
+              type="checkbox"
+            />
+            <svg
+              class="wallet-icon"
+            />
+            <div
+              class="wallet-info"
+            >
+              <div
+                class="wallet-name"
+              >
+                Account 1
+              </div>
+              <div
+                class="wallet-address"
+              >
+                
+                ...
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="trust-sites"
+        >
+          Only connect with sites you trust.
+        </div>
+        <div
+          class="button-line"
+        >
+          <button
+            class="button-shared button-filled button connect"
+          >
+            Connect
+          </button>
+          <button
+            class="button-shared button-outline button reject"
+          >
+            Reject
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Test for ConnectToWallet component renders without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="select-wallet"
+  >
+    <header
+      class="header"
+    >
+      <div
+        class="connect-with-koi"
+      >
+        Connect with Koi
+      </div>
+      <div
+        class="title"
+      >
+        
+        <a
+          class="company-url"
+          href=""
+          target="_blank"
+        />
+      </div>
+    </header>
+    <div
+      class="content"
+    >
+      <div
+        class="card card-content"
+      >
+        <div
+          class="select-account"
+        >
+          Select accounts
+        </div>
+        <div>
+          <button
+            class="unselect-button"
+          >
+            -
+          </button>
+          <button
+            class="select-all-button"
+          >
+            Select all
+          </button>
+        </div>
+        <div
+          class="wallet-options"
+        >
+          <div
+            class="wallet-option false"
+          >
+            <input
+              checked=""
+              class="check-wallet"
+              disabled=""
+              type="checkbox"
+            />
+            <svg
+              class="wallet-icon"
+            />
+            <div
+              class="wallet-info"
+            >
+              <div
+                class="wallet-name"
+              >
+                Account 1
+              </div>
+              <div
+                class="wallet-address"
+              >
+                
+                ...
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="trust-sites"
+        >
+          Only connect with sites you trust.
+        </div>
+        <div
+          class="button-line"
+        >
+          <button
+            class="button-shared button-filled button connect"
+          >
+            Connect
+          </button>
+          <button
+            class="button-shared button-outline button reject"
+          >
+            Reject
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

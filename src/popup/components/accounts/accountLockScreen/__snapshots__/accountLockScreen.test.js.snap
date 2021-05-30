@@ -61,10 +61,11 @@ exports[`Test for AccountLockScreen component Render without crashing renders co
         Import my account using my 
         <a
           class="link-to-seed-phrase"
-          href="/account/import/keyfile"
+          href="/account/login/phrase"
         >
           seed phrase
         </a>
+        .
       </div>
     </div>
   </div>

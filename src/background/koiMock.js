@@ -14,14 +14,22 @@ export class Web {
   loadWallet(data) {
     this.wallet = data
     this.address = MOCK_ADDRESS
-    return Promise.resolve(this.wallet)
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.wallet)
+      }, 2000)
+    })
   }
 
   generateWallet() {
     this.mnemonic = MOCK_PHASE
     this.address = MOCK_ADDRESS
     this.wallet = MOCK_KEY
-    return Promise.resolve(true)
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(true)
+      }, 3000)
+    })
   }
 
   myContent() {

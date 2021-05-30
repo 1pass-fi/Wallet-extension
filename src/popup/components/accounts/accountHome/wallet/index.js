@@ -21,9 +21,15 @@ import { removeWallet, lockWallet, getKeyFile } from 'actions/koi'
 import { setNotification } from 'actions/notification'
 import { getChromeStorage, deleteOriginFromChrome } from 'utils'
 import { STORAGE, NOTIFICATION, RATE, PATH } from 'koiConstants'
+import ExportPrivateKeyModal from './exportPrivateKeyModal'
 
-
-const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance, setNotification }) => {
+const WalletInfo = ({
+  accountName,
+  accountAddress,
+  koiBalance,
+  arBalance,
+  setNotification,
+}) => {
   const numberFormat = (num) => {
     return num === null ? '---' : new Intl.NumberFormat('en-US').format(num)
   }
@@ -39,18 +45,30 @@ const WalletInfo = ({ accountName, accountAddress, koiBalance, arBalance, setNot
             <div>{`${accountAddress.slice(0, 6)}...${accountAddress.slice(
               accountAddress.length - 4
             )}`}</div>
-            <div onClick={() => setNotification(NOTIFICATION.COPIED)}><CopyToClipboard text={accountAddress}><CopyIcon /></CopyToClipboard></div>
+            <div onClick={() => setNotification(NOTIFICATION.COPIED)}>
+              <CopyToClipboard text={accountAddress}>
+                <CopyIcon />
+              </CopyToClipboard>
+            </div>
           </div>
         </div>
       </div>
       <div className='wallet-info-row wallet-balance'>
         <div className='koi-balance'>
           <div className='balance'>{numberFormat(koiBalance)} KOI</div>
-          {<div className='usd-exchange'>~${numberFormat(koiBalance * RATE.KOI)}USD</div>}
+          {
+            <div className='usd-exchange'>
+              ~${numberFormat(koiBalance * RATE.KOI)}USD
+            </div>
+          }
         </div>
         <div className='ar-balance'>
           <div className='balance'>{numberFormat(arBalance)} AR</div>
-          {<div className='usd-exchange'>~${numberFormat(arBalance * RATE.AR)}USD</div>}
+          {
+            <div className='usd-exchange'>
+              ~${numberFormat(arBalance * RATE.AR)}USD
+            </div>
+          }
         </div>
       </div>
     </div>
@@ -75,6 +93,7 @@ const WalletConf = ({
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [showModalConnectedSite, setShowModalConnectedSite] = useState(false)
+  const [showExportKeyModal, setShowExportKeyModel] = useState(false)
 
   const onExportClick = () => {
     handleGetKeyFile()
@@ -93,7 +112,7 @@ const WalletConf = ({
       <WalletConfItem
         icon={<KeyIcon />}
         title={'Export Private Key'}
-        onClick={onExportClick}
+        onClick={() => setShowExportKeyModel(true)}
       />
       <WalletConfItem
         className=''
@@ -123,6 +142,7 @@ const WalletConf = ({
           onClose={() => setShowModalConnectedSite(false)}
         />
       )}
+      {showExportKeyModal && <ExportPrivateKeyModal setShowExportKeyModel={setShowExportKeyModel}/>}
     </div>
   )
 }
@@ -133,7 +153,7 @@ export const Wallet = ({
   arBalance,
   removeWallet,
   getKeyFile,
-  setNotification
+  setNotification,
 }) => {
   const history = useHistory()
   const [connectedSite, setConnectedSite] = useState([])
@@ -178,11 +198,15 @@ export const Wallet = ({
           sites={connectedSite}
           handleDeleteSite={handleDeleteSite}
           handleRemoveWallet={handleRemoveWallet}
-          handleGetKeyFile={getKeyFile}
         />
       </div>
     </div>
   )
 }
 
-export default connect(null, { removeWallet, lockWallet, getKeyFile, setNotification })(Wallet)
+export default connect(null, {
+  removeWallet,
+  lockWallet,
+  getKeyFile,
+  setNotification,
+})(Wallet)

@@ -1,0 +1,44 @@
+.modal.reveal-seed-phrase .modal-title {
+  font-weight: 600;
+}
+
+.modal.reveal-seed-phrase .modal-description {
+  padding: 11px 16px 19px;
+}
+.modal.reveal-seed-phrase .modal-description > span{
+  display: block;
+  margin-top: 10px;
+}
+
+.modal.reveal-seed-phrase .modal-warning {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: row;
+}
+
+.modal.reveal-seed-phrase .modal-warning .warning-icon {
+  padding: 4px 0;
+  width: 24px;
+  height: 24px;
+}
+
+.modal.reveal-seed-phrase .modal-warning .warning-message {
+  margin-left: 9px;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+  letter-spacing: 0.03em;
+  color: #171753;
+}
+
+.modal.reveal-seed-phrase .password-field {
+  padding: 27px 37px;
+}
+
+.modal.reveal-seed-phrase .buttons-line {
+  padding: 0 37px 20px;
+}
+
+.modal.reveal-seed-phrase .modal-action-button.reveal {
+  height: 35px;
+}
