@@ -1,0 +1,48 @@
+.checkbox-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.checkbox-input {
+  display: inline-block;
+}
+
+.checkbox-input .checkbox-hidden {
+  position: absolute;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 18px;
+  height: 18px;
+  opacity: 0;
+}
+
+.checkbox-input .checkbox-styled {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #171753;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
+
+.checkbox-input .checkbox-styled .check-mark-icon {
+  width: 18px;
+  height: 13px;
+  padding-left: 3px;
+  padding-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.checkbox-container .checkbox-label {
+  font-family: 'Catamaran', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0.03em;
+  color: #171753;
+  padding-left: 29px;
+  align-content: center;
+}

@@ -189,19 +189,6 @@
   margin-bottom: 116px;
 }
 
-.select-wallet .content .allow-permission .check-allow {
-  height: 18px;
-  width: 18px;
-  margin: 0;
-}
-
-.select-wallet .content .allow-permission .permission-content {
-  font-size: 18px;
-  line-height: 20px;
-  width: 280px;
-  margin-left: 29px;
-}
-
 .select-wallet .content .allow-permission .trust-sites {
   padding: 0 17px;
 }
@@ -209,3 +196,4 @@
 .select-wallet .content .allow-permission .button-line {
   padding: 0 17px;
 }
+
