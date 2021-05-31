@@ -12,8 +12,6 @@ import './index.css'
 import Wallet from './wallet'
 import { getBalances } from 'actions/koi'
 
-import { RATE } from 'koiConstants'
-
 export const AccountHome = ({ koi, getBalances }) => {
   const [showForm, setShowForm] = useState(false)
   const history = useHistory()
@@ -42,7 +40,6 @@ export const AccountHome = ({ koi, getBalances }) => {
       {koi.address && <GlobalButton onClick={onClickGlobalSendButton} />}
       {showForm && <SendKoiForm
         koiBalance={koi.koiBalance}
-        rate={RATE.KOI}
         onSendSuccess={onSendSuccess}
       />}
       {koi.address ? <Wallet accountAddress={koi.address} koiBalance={koi.koiBalance} arBalance={koi.arBalance} /> :

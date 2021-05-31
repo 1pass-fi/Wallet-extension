@@ -7,7 +7,7 @@ export default {
   component: SendKoiForm,
   args: {
     koiBalance: 123456.45,
-    rate: 5.22
+    arBalance: 456.45,
   }
 }
 
