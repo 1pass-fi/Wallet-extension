@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { REQUEST, STORAGE } from 'koiConstants'
+import { REQUEST, STORAGE, ERROR_MESSAGE } from 'koiConstants'
 import { setChromeStorage, checkSitePermission } from 'utils'
+import { getSelectedTab } from 'utils/extension'
 import { setError } from 'popup/actions/error'
 import Modal from 'popup/components/shared/modal'
 import ConnectedSiteRow from './connectedSiteRow'
@@ -30,8 +31,9 @@ const ModalTitle = ({ accountName }) => {
 const ManualConnectSite = ({ isGreyBackground, setError }) => {
   const history = useHistory()
 
-  const onManualConnect = () => {
-    chrome.tabs.getSelected(null, async (tab) => {
+  const onManualConnect = async () => {
+    try {
+      const tab = await getSelectedTab()
       const origin = (new URL(tab.url)).origin
       const favicon = tab.favIconUrl
 
@@ -44,9 +46,11 @@ const ManualConnectSite = ({ isGreyBackground, setError }) => {
         })
         history.push('/account/connect-site')
       } else {
-        setError('This site has already connected')
+        setError(ERROR_MESSAGE.ALREADY_CONNECTED_SITE)
       }
-    })
+    } catch (error) {
+      setError(ERROR_MESSAGE.MUST_USE_IN_POPUP)
+    }
   }
   return (
     <div

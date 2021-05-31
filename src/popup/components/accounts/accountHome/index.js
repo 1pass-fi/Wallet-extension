@@ -2,22 +2,25 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import GlobalButton from 'shared/globalButton/index'
-import SendKoiForm from './sendKoiForm/index'
+import GlobalButton from 'shared/globalButton'
+import SendKoiForm from './sendKoiForm'
 
 import PlusIcon from 'img/plus-icon.svg'
 import { Link } from 'react-router-dom'
 import './index.css'
 
-import Wallet from './wallet/index'
+import Wallet from './wallet'
+import { getBalances } from 'actions/koi'
 
 import { RATE } from 'koiConstants'
 
-export const AccountHome = ({ koi }) => {
+export const AccountHome = ({ koi, getBalances }) => {
   const [showForm, setShowForm] = useState(false)
   const history = useHistory()
 
   useEffect(() => {
+    getBalances()
+
     return history.listen((location) => {
       const openSendForm = new URLSearchParams(location.search).get('openSendForm') === 'true'
       setShowForm(openSendForm)
@@ -52,4 +55,4 @@ export const AccountHome = ({ koi }) => {
 
 const mapStateToProps = (state) => ({ koi: state.koi })
 
-export default connect(mapStateToProps)(AccountHome)
+export default connect(mapStateToProps, { getBalances })(AccountHome)

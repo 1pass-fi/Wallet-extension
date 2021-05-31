@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for ImportPhraseLockScreen component renders without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="sign-tx"
+  >
+    <div
+      class="account-section"
+    >
+      <div
+        class="account-source"
+      >
+        <div
+          class="source-account account"
+        >
+          <svg
+            class="icon"
+          />
+          <div
+            class="account-info"
+          >
+            <div
+              class="title"
+            >
+              Account 1
+            </div>
+            <div
+              class="address"
+            >
+              
+              ...
+              
+            </div>
+          </div>
+        </div>
+        <div
+          class="divider"
+        >
+          <div
+            class="arrow"
+          />
+        </div>
+        <div
+          class="destination-account account"
+        >
+          <svg />
+          <div
+            class="account-info"
+          >
+            <div
+              class="address"
+            >
+              
+              ...
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="origin"
+      />
+    </div>
+    <div
+      class="content-section"
+    >
+      <div
+        class="card transaction-detail"
+      >
+        <div
+          class="total"
+        >
+          <div>
+            TOTAL
+          </div>
+          <div
+            class="amount"
+          >
+            <div
+              class="koi-icon"
+            >
+              <svg />
+            </div>
+            <div />
+          </div>
+        </div>
+        <div
+          class="button-group"
+        >
+          <button
+            class="button-shared button-filled confirm-button"
+          >
+            Confirm
+          </button>
+          <button
+            class="button-shared button-layout reject-button"
+          >
+            Reject
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

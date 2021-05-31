@@ -23,31 +23,5 @@ exports[`Test for Header component Render without crashing renders correctly 1`]
       <svg />
     </button>
   </header>
-  <nav>
-    <a
-      class="nav-item"
-      href="/account"
-    >
-      <div>
-        Accounts
-      </div>
-    </a>
-    <a
-      class="nav-item"
-      href="/assets"
-    >
-      <div>
-        Assets
-      </div>
-    </a>
-    <a
-      class="nav-item"
-      href="/activity"
-    >
-      <div>
-        Activity
-      </div>
-    </a>
-  </nav>
 </div>
 `;

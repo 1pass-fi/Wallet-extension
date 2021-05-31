@@ -19,6 +19,8 @@ export const PORTS = {
 export const MESSAGES = {
   IMPORT_WALLET: 'IMPORT_WALLET',
   IMPORT_WALLET_SUCCESS: 'IMPORT_WALLET_SUCCESS',
+  GET_BALANCES: 'GET_BALANCES',
+  GET_BALANCES_SUCCESS: 'GET_BALANCES_SUCCESS',
   LOAD_WALLET: 'LOAD_WALLET',
   LOAD_WALLET_SUCCESS: 'LOAD_WALLET_SUCCESS',
   REMOVE_WALLET: 'REMOVE_WALLET',
@@ -44,6 +46,9 @@ export const MESSAGES = {
   GET_PERMISSION: 'GET_PERMISSION',
   GET_PERMISSION_SUCCESS: 'GET_PERMISSION_SUCCESS',
   GET_PERMISSION_ERROR: 'GET_PERMISSION_ERROR',
+  CONNECT: 'CONNECT',
+  CONNECT_SUCCESS: 'CONNECT_SUCCESS',
+  CONNECT_ERROR: 'CONNECT_ERROR',
   GET_KEY_FILE: 'GET_KEY_FILE',
   GET_KEY_FILE_SUCCESS: 'GET_KEY_FILE_SUCCESS',
   CREATE_TRANSACTION: 'CREATE_TRANSACTION',
@@ -65,6 +70,8 @@ export const PATH = {
   GALLERY: chrome.extension
     ? `${chrome.extension.getURL('/options.html')}`
     : 'GALLERY_PATH',
+  ALL_CONTENT: 'https://bundler.openkoi.com:8888/state/getTopContentPredicted?frequency=all',
+  SINGLE_CONTENT: 'https://bundler.openkoi.com:8888/state/getNFTState?tranxId='
 }
 
 export const ERROR_MESSAGE = {
@@ -77,7 +84,9 @@ export const ERROR_MESSAGE = {
   EMPTY_FIELDS: 'Please fill in all fields.',
   NOT_ENOUGH_KOI: `You don't have enough KOI.`,
   REQUEST_NOT_EXIST: 'This request is no longer exist.',
-  INVALID_AMOUNT: 'Amount must be greater than 0!'
+  INVALID_AMOUNT: 'Amount must be greater than 0!',
+  ALREADY_CONNECTED_SITE: 'This site has already connected',
+  MUST_USE_IN_POPUP: 'Please use this feature in the extension pop up'
 }
 
 export const STORAGE = {
@@ -89,6 +98,7 @@ export const STORAGE = {
   ACTIVITIES_LIST: 'activitiesList',
   SITE_PERMISSION: 'sitePermission',
   PENDING_REQUEST: 'pendingRequest',
+  KOI_PHRASE: 'koiPhrase'
 }
 
 export const REQUEST = {
@@ -105,3 +115,5 @@ export const NOTIFICATION = {
   COPIED: 'Copied to clipboard.',
   KEY_EXPORTED: 'Private key downloaded.'
 }
+
+export const LOAD_BALANCES_TIME_INTERVAL = 10000

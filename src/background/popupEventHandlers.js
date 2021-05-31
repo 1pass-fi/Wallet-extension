@@ -1,18 +1,49 @@
-import { MESSAGES, LOAD_KOI_BY } from 'koiConstants'
+import passworder from 'browser-passworder'
+
+import { MESSAGES, LOAD_KOI_BY, PORTS, STORAGE } from 'koiConstants'
 import {
   saveWalletToChrome,
   utils,
   loadMyContent,
   loadMyActivities,
-  removeWalletFromChrome,
+  clearChromeStorage,
   decryptWalletKeyFromChrome,
   setChromeStorage,
   removeChromeStorage,
+  getChromeStorage,
   generateWallet,
-  transfer
+  transfer,
+  saveOriginToChrome,
+  signTransaction,
+  getBalances
 } from 'utils'
 
-export default async (koi, port, message) => {
+export const loadBalances = async (koi, port) => {
+  const storage = await getChromeStorage([STORAGE.KOI_BALANCE, STORAGE.AR_BALANCE])
+  const koiBalance = storage[STORAGE.KOI_BALANCE]
+  const arBalance = storage[STORAGE.AR_BALANCE]
+  if (koiBalance !== undefined && arBalance !== undefined) {
+    if (port) {
+      port.postMessage({
+        type: MESSAGES.GET_BALANCES_SUCCESS,
+        data: { koiData: { koiBalance, arBalance } }
+      })
+    }
+  }
+  try {
+    const koiData = await getBalances(koi)
+    if (port) {
+      port.postMessage({
+        type: MESSAGES.GET_BALANCES_SUCCESS,
+        data: { koiData }
+      })
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export default async (koi, port, message, ports, resolveId) => {
   try {
     switch (message.type) {
       case MESSAGES.IMPORT_WALLET: {
@@ -23,6 +54,10 @@ export default async (koi, port, message) => {
           type: MESSAGES.IMPORT_WALLET_SUCCESS,
           data: { koiData }
         })
+        break
+      }
+      case MESSAGES.GET_BALANCES: {
+        loadBalances(koi, port)
         break
       }
       case MESSAGES.LOAD_WALLET: {
@@ -40,7 +75,7 @@ export default async (koi, port, message) => {
           koiBalance: null,
           address: null
         }
-        await removeWalletFromChrome()
+        await clearChromeStorage()
         koi.wallet = null
         koi.address = null
         port.postMessage({
@@ -50,7 +85,7 @@ export default async (koi, port, message) => {
         break
       }
       case MESSAGES.LOCK_WALLET: {
-        await removeChromeStorage('koiAddress')
+        await removeChromeStorage(STORAGE.KOI_ADDRESS)
         koi.address = null
         koi.wallet = null
         port.postMessage({
@@ -63,7 +98,7 @@ export default async (koi, port, message) => {
         const { password } = message.data
         const walletKey = await decryptWalletKeyFromChrome(password)
         const koiData = await utils.loadWallet(koi, walletKey, LOAD_KOI_BY.KEY)
-        await setChromeStorage({ 'koiAddress': koi.address })
+        await setChromeStorage({ [STORAGE.KOI_ADDRESS]: koi.address })
         port.postMessage({
           type: MESSAGES.UNLOCK_WALLET_SUCCESS,
           data: { koiData }
@@ -80,8 +115,22 @@ export default async (koi, port, message) => {
       }
       case MESSAGES.SAVE_WALLET: {
         const { password } = message.data
+
+        const createdWalletAddress = (await getChromeStorage('createdWalletAddress'))['createdWalletAddress']
+        const createdWalletKey = (await getChromeStorage('createdWalletKey'))['createdWalletKey']
+        const decryptedWalletKey = await passworder.decrypt(password, createdWalletKey)
+
+        if (createdWalletAddress && decryptedWalletKey) {
+          koi.address = createdWalletAddress
+          koi.wallet = decryptedWalletKey
+        } else {
+          throw new Error('Create new wallet failed.')
+        }
+
         await saveWalletToChrome(koi, password)
         const koiData = await utils.loadWallet(koi, koi.address, LOAD_KOI_BY.ADDRESS)
+        console.log('SAVE WALLET BACKGROUND', koiData)
+
         port.postMessage({
           type: MESSAGES.SAVE_WALLET_SUCCESS,
           data: { koiData }
@@ -118,20 +167,57 @@ export default async (koi, port, message) => {
         break
       }
       case MESSAGES.GET_KEY_FILE: {
+        const { password } = message.data
+        const key = await decryptWalletKeyFromChrome(password)
         port.postMessage({
           type: MESSAGES.GET_KEY_FILE_SUCCESS,
-          data: koi.wallet
+          data: key
         })
         break
       }
-      case MESSAGES.SIGN_TRANSACTION: {
-        console.log('SIGN TRANSACTION BACKGROUND')
-        const { qty, address } = message.data
-        const txId = await transfer(koi, qty, address)
-        console.log('TRANSACTION ID', txId)
+      case MESSAGES.CONNECT: {
+        const { origin, confirm } = message.data
+        const { permissionId } = resolveId
+        if (confirm) {
+          await saveOriginToChrome(origin)
+        }
+        removeChromeStorage(STORAGE.PENDING_REQUEST)
         port.postMessage({
-          type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
+          type: MESSAGES.CONNECT_SUCCESS,
         })
+        ports[PORTS.CONTENT_SCRIPT].postMessage({
+          type: MESSAGES.CONNECT_SUCCESS,
+          id: permissionId[permissionId.length - 1],
+        })
+        permissionId.length = 0
+        break
+      }
+      case MESSAGES.SIGN_TRANSACTION: {
+        const { createTransactionId } = resolveId
+        const { tx, confirm } = message.data
+        let transaction = null
+        if (confirm) {
+          transaction = await signTransaction(tx)
+          port.postMessage({
+            type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
+          })
+          ports[PORTS.CONTENT_SCRIPT].postMessage({
+            type: MESSAGES.CREATE_TRANSACTION_SUCCESS,
+            id: createTransactionId[createTransactionId.length - 1],
+            data: transaction
+          })
+          createTransactionId.length = 0
+        } else {
+          port.postMessage({
+            type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
+          })
+          ports[PORTS.CONTENT_SCRIPT].postMessage({
+            type: MESSAGES.CREATE_TRANSACTION_ERROR,
+            id: createTransactionId[createTransactionId.length - 1],
+            data: { message: 'Transaction rejected.' }
+          })
+          createTransactionId.length = 0
+        }
         break
       }
       default:

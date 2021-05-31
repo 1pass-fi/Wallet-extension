@@ -1,15 +1,14 @@
 import '@babel/polyfill'
 import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import { BrowserRouter as Router } from 'react-router-dom'
 import React from 'react'
 
-import UnlockScreen from '.'
+import NotificationMessage from '.'
 
-describe('Test for UnlockScreen component', () => {
+describe('Test for NotificationMessage component', () => {
   describe('Render without crashing', () => {
     it('renders correctly', () => {
-      const { container } = render(<Router><UnlockScreen /></Router>)
+      const { container } = render(<NotificationMessage />)
       expect(container).toMatchSnapshot()
     })
   })
