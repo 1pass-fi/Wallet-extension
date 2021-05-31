@@ -1,6 +1,8 @@
+import { isInteger, isString } from 'lodash'
+
 import { REQUEST, MESSAGES } from 'koiConstants'
 import { checkSitePermission, setChromeStorage, transfer } from 'utils'
-import { isInteger, isString } from 'lodash'
+import { getSelectedTab, createWindow } from 'utils/extension'
 
 let pendingMessages = {}
 
@@ -12,7 +14,7 @@ export default async (koi, port, message, ports, resolveId) => {
 
   const getCurrentTab = () => {
     return new Promise((resolve, reject) => {
-      chrome.tabs.getSelected(null, tab => {
+      getSelectedTab().then(tab => {
         try {
           const url = tab.url
           const origin = (new URL(url)).origin
@@ -105,8 +107,7 @@ export default async (koi, port, message, ports, resolveId) => {
               data: { origin, favicon }
             }
           })
-
-          chrome.windows.create({
+          createWindow({
             url: chrome.extension.getURL('/popup.html'),
             focused: true,
             type: 'popup',
@@ -143,7 +144,7 @@ export default async (koi, port, message, ports, resolveId) => {
                 data: { transaction, qty, address, origin, favicon }
               }
             })
-            chrome.windows.create({
+            createWindow({
               url: chrome.extension.getURL('/popup.html'),
               focused: true,
               type: 'popup',
