@@ -1,5 +1,5 @@
-import '@babel/polyfill'
-import { LOAD_KOI_BY, PATH } from 'koiConstants'
+import MockAdapter from 'axios-mock-adapter'
+import axios from 'axios'
 import {
   loadWallet,
   generateWallet,
@@ -8,14 +8,15 @@ import {
   getBalances
 } from './index'
 
-import { ERROR_MESSAGE } from 'koiConstants'
+import { LOAD_KOI_BY, ERROR_MESSAGE, PATH } from 'koiConstants'
 
 describe('Tests for utils', () => {
-  let koiObj, initKoiObj
+  let koiObj, initKoiObj, mock
   const koiBalance = 100
   const arBalance = 50
 
   beforeEach(() => {
+    mock = new MockAdapter(axios)
     initKoiObj = {
       address: '',
       mnemonic: '',
@@ -30,6 +31,7 @@ describe('Tests for utils', () => {
 
   afterEach(() => {
     koiObj = { ...initKoiObj }
+    mock.reset()
   })
 
   describe('Test for getBalances()', () => {
@@ -75,25 +77,61 @@ describe('Tests for utils', () => {
   })
 
   describe('Test for loadMyContent()', () => {
-    let returnedContentList
+    let allContent, contentOne, contentTwo, contentThree
 
     beforeEach(() => {
-      returnedContentList = [
+      koiObj.address = 'address'
+      allContent = [
         {
-          title: 'title 1',
-          ticker: 'KOINFT',
-          totalReward: 1000,
-          txIdContent: 'txId 1',
+          txId1: {
+            txIdContent: 'txId1',
+            owner: 'address'
+          }
         },
         {
-          title: 'title 2',
-          ticker: 'ARNFT',
-          totalReward: 2000,
-          txIdContent: 'txId 2',
+          txId2: {
+            txIdContent: 'txId2',
+            owner: 'address'
+          }
+        },
+        {
+          txId3: {
+            txIdContent: 'txId2',
+            owner: 'another-address'
+          }
         }
       ]
+      
+      contentOne = {
+        title: 'title 1',
+        ticker: 'KOINFT',
+        totalReward: 1000,
+        txIdContent: 'txId1'
+      }
 
-      koiObj.myContent = async () => returnedContentList
+      contentTwo = {
+        title: 'title 2',
+        ticker: 'ANOTHER',
+        totalReward: 2000,
+        txIdContent: 'txId2'
+      }
+
+      contentThree = {
+        title: 'title 3',
+        ticker: 'KOINFT',
+        totalReward: 3000,
+        txIdContent: 'txId3'
+      }
+
+      const url = PATH.ALL_CONTENT
+      const contentOneUrl = `${PATH.SINGLE_CONTENT}/txId1`
+      const contentTwoUrl = `${PATH.SINGLE_CONTENT}/txId2`
+      const contentThreeUrl = `${PATH.SINGLE_CONTENT}/txId3`
+
+      mock.onGet(url).reply(200, allContent)
+      mock.onGet(contentOneUrl).reply(200, contentOne)
+      mock.onGet(contentTwoUrl).reply(200, contentTwo)
+      mock.onGet(contentThreeUrl).reply(200, contentThree)
     })
 
     it('return list of content', async () => {
@@ -104,20 +142,20 @@ describe('Tests for utils', () => {
           name: 'title 1',
           isKoiWallet: true,
           earnedKoi: 1000,
-          txId: 'txId 1',
-          imageUrl: `${PATH.NFT_IMAGE}/txId 1`,
-          galleryUrl: `${PATH.GALLERY}?id=txId 1`,
-          koiRockUrl: `${PATH.KOI_ROCK}/txId 1`,
+          txId: 'txId1',
+          imageUrl: `${PATH.NFT_IMAGE}txId1`,
+          galleryUrl: `${PATH.GALLERY}?id=txId1`,
+          koiRockUrl: `${PATH.KOI_ROCK}txId1`,
           isRegistered: true
         },
         {
           name: 'title 2',
           isKoiWallet: false,
           earnedKoi: 2000,
-          txId: 'txId 2',
-          imageUrl: `${PATH.NFT_IMAGE}/txId 2`,
-          galleryUrl: `${PATH.GALLERY}?id=txId 2`,
-          koiRockUrl: `${PATH.KOI_ROCK}/txId 2`,
+          txId: 'txId2',
+          imageUrl: `${PATH.NFT_IMAGE}txId2`,
+          galleryUrl: `${PATH.GALLERY}?id=txId2`,
+          koiRockUrl: `${PATH.KOI_ROCK}txId2`,
           isRegistered: true
         }
       ])

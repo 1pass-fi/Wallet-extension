@@ -41,10 +41,12 @@ export const importWallet = (inputData) => (dispatch) => {
       console.log('IMPORT_WALLET_SUCCESS---', koiData)
       dispatch(setKoi(koiData))
       dispatch(setIsLoading(false))
+      /* istanbul ignore next */
       if (isString(data)) {
         const encryptedPhrase = await passworder.encrypt(password, data)
         await setChromeStorage({ 'koiPhrase': encryptedPhrase })
       } 
+      /* istanbul ignore next */
       await removeChromeStorage(STORAGE.SITE_PERMISSION)
       await removeChromeStorage(STORAGE.PENDING_REQUEST)
       await removeChromeStorage(STORAGE.CONTENT_LIST)
@@ -297,11 +299,9 @@ export const loadContent = () => (dispatch) => {
 
 export const loadActivities = () => (dispatch) => {
   try {
-    console.log('LOAD ACTIVITIES ACTION')
     dispatch(setContLoading(true))
     const loadSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_ACTIVITIES_SUCCESS, response => {
       const { activitiesList } = response.data
-      console.log('ACTIVITIES LIST ACTION', activitiesList)
       dispatch(setActivities(activitiesList))
       dispatch(setContLoading(false))
     })
@@ -353,10 +353,8 @@ export const makeTransfer = (inputData) => (dispatch) => {
 
 export const signTransaction = (inputData) => (dispatch) => {
   try {
-    console.log('SIGN TRANSACTION ACTION')
     dispatch(setIsLoading(true))
     const signSuccessHandler = new CreateEventHandler(MESSAGES.SIGN_TRANSACTION_SUCCESS, response => {
-      console.log('SIGN TRANSACTION SUCCESS')
       dispatch(setIsLoading(false))
       window.close()
     })
@@ -400,7 +398,6 @@ export const getKeyFile = (inputData) => (dispatch) => {
     })
   } catch (err) {
     dispatch(setError(err.message))
-    dispatch(setIsLoading(false))
   }
 }
 
@@ -412,7 +409,6 @@ export const connectSite = (inputData) => (dispatch) => {
     const connectFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
       const errorMessage = response.data
-      dispatch(setIsLoading(false))
       dispatch(setError(errorMessage))
       window.close()
     })
@@ -424,7 +420,6 @@ export const connectSite = (inputData) => (dispatch) => {
     })
   } catch (err) {
     dispatch(setError(err.message))
-    dispatch(setIsLoading(false))
   }
 }
 

@@ -17,7 +17,7 @@ exports[`Test for SendKoiForm component Render without crashing renders correctl
       <div
         class="amount-in-usd"
       >
-        ~ $
+        $
         NaN
          USD
       </div>

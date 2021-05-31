@@ -35,240 +35,37 @@ exports[`Test for ConnectToWallet component click on check all button and clear 
         >
           Select accounts
         </div>
-        <div>
-          <button
-            class="unselect-button"
-          >
-            -
-          </button>
-          <button
-            class="select-all-button"
-          >
-            Select all
-          </button>
-        </div>
-        <div
-          class="wallet-options"
-        >
-          <div
-            class="wallet-option checked"
-          >
-            <input
-              checked=""
-              class="check-wallet"
-              disabled=""
-              type="checkbox"
-            />
-            <svg
-              class="wallet-icon"
-            />
-            <div
-              class="wallet-info"
-            >
-              <div
-                class="wallet-name"
-              >
-                Account 1
-              </div>
-              <div
-                class="wallet-address"
-              >
-                
-                ...
-                
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="trust-sites"
-        >
-          Only connect with sites you trust.
-        </div>
-        <div
-          class="button-line"
-        >
-          <button
-            class="button-shared button-filled button connect"
-          >
-            Connect
-          </button>
-          <button
-            class="button-shared button-outline button reject"
-          >
-            Reject
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Test for ConnectToWallet component click on check all button and clear checked renders correctly 2`] = `
-<div>
-  <div
-    class="select-wallet"
-  >
-    <header
-      class="header"
-    >
-      <div
-        class="connect-with-koi"
-      >
-        Connect with Koi
-      </div>
-      <div
-        class="title"
-      >
-        
-        <a
-          class="company-url"
-          href=""
-          target="_blank"
-        />
-      </div>
-    </header>
-    <div
-      class="content"
-    >
-      <div
-        class="card card-content"
-      >
-        <div
-          class="select-account"
-        >
-          Select accounts
-        </div>
-        <div>
-          <button
-            class="unselect-button"
-          >
-            -
-          </button>
-          <button
-            class="select-all-button"
-          >
-            Select all
-          </button>
-        </div>
         <div
           class="wallet-options"
         >
           <div
             class="wallet-option false"
           >
-            <input
-              checked=""
-              class="check-wallet"
-              disabled=""
-              type="checkbox"
-            />
-            <svg
-              class="wallet-icon"
-            />
             <div
-              class="wallet-info"
+              class="checkbox-container check-wallet"
             >
               <div
-                class="wallet-name"
+                class="checkbox-input"
               >
-                Account 1
-              </div>
-              <div
-                class="wallet-address"
-              >
-                
-                ...
-                
+                <input
+                  checked=""
+                  class="checkbox-hidden"
+                  disabled=""
+                  type="checkbox"
+                />
+                <div
+                  class="checkbox-styled"
+                  style="background: rgb(155, 231, 196);"
+                >
+                  <div
+                    class="check-mark-icon"
+                    style="visibility: visible;"
+                  >
+                    <svg />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div
-          class="trust-sites"
-        >
-          Only connect with sites you trust.
-        </div>
-        <div
-          class="button-line"
-        >
-          <button
-            class="button-shared button-filled button connect"
-          >
-            Connect
-          </button>
-          <button
-            class="button-shared button-outline button reject"
-          >
-            Reject
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Test for ConnectToWallet component click on check all button and clear checked renders correctly 3`] = `
-<div>
-  <div
-    class="select-wallet"
-  >
-    <header
-      class="header"
-    >
-      <div
-        class="connect-with-koi"
-      >
-        Connect with Koi
-      </div>
-      <div
-        class="title"
-      >
-        
-        <a
-          class="company-url"
-          href=""
-          target="_blank"
-        />
-      </div>
-    </header>
-    <div
-      class="content"
-    >
-      <div
-        class="card card-content"
-      >
-        <div
-          class="select-account"
-        >
-          Select accounts
-        </div>
-        <div>
-          <button
-            class="unselect-button"
-          >
-            -
-          </button>
-          <button
-            class="select-all-button"
-          >
-            Select all
-          </button>
-        </div>
-        <div
-          class="wallet-options"
-        >
-          <div
-            class="wallet-option false"
-          >
-            <input
-              checked=""
-              class="check-wallet"
-              disabled=""
-              type="checkbox"
-            />
             <svg
               class="wallet-icon"
             />
@@ -356,16 +153,35 @@ exports[`Test for ConnectToWallet component click on connect button renders corr
           <div
             class="permission checked"
           >
-            <input
-              checked=""
-              class="check-allow"
-              disabled=""
-              type="checkbox"
-            />
             <div
-              class="permission-content"
+              class="checkbox-container check-allow"
             >
-              View the addresses of your permitted accounts (required)
+              <div
+                class="checkbox-input"
+              >
+                <input
+                  checked=""
+                  class="checkbox-hidden"
+                  disabled=""
+                  type="checkbox"
+                />
+                <div
+                  class="checkbox-styled"
+                  style="background: rgb(155, 231, 196);"
+                >
+                  <div
+                    class="check-mark-icon"
+                    style="visibility: visible;"
+                  >
+                    <svg />
+                  </div>
+                </div>
+              </div>
+              <span
+                class="checkbox-label"
+              >
+                View the addresses of your permitted accounts (required)
+              </span>
             </div>
           </div>
           <div
@@ -429,30 +245,37 @@ exports[`Test for ConnectToWallet component click on reject button renders corre
         >
           Select accounts
         </div>
-        <div>
-          <button
-            class="unselect-button"
-          >
-            -
-          </button>
-          <button
-            class="select-all-button"
-          >
-            Select all
-          </button>
-        </div>
         <div
           class="wallet-options"
         >
           <div
             class="wallet-option false"
           >
-            <input
-              checked=""
-              class="check-wallet"
-              disabled=""
-              type="checkbox"
-            />
+            <div
+              class="checkbox-container check-wallet"
+            >
+              <div
+                class="checkbox-input"
+              >
+                <input
+                  checked=""
+                  class="checkbox-hidden"
+                  disabled=""
+                  type="checkbox"
+                />
+                <div
+                  class="checkbox-styled"
+                  style="background: rgb(155, 231, 196);"
+                >
+                  <div
+                    class="check-mark-icon"
+                    style="visibility: visible;"
+                  >
+                    <svg />
+                  </div>
+                </div>
+              </div>
+            </div>
             <svg
               class="wallet-icon"
             />
@@ -534,30 +357,37 @@ exports[`Test for ConnectToWallet component renders without crashing renders cor
         >
           Select accounts
         </div>
-        <div>
-          <button
-            class="unselect-button"
-          >
-            -
-          </button>
-          <button
-            class="select-all-button"
-          >
-            Select all
-          </button>
-        </div>
         <div
           class="wallet-options"
         >
           <div
             class="wallet-option false"
           >
-            <input
-              checked=""
-              class="check-wallet"
-              disabled=""
-              type="checkbox"
-            />
+            <div
+              class="checkbox-container check-wallet"
+            >
+              <div
+                class="checkbox-input"
+              >
+                <input
+                  checked=""
+                  class="checkbox-hidden"
+                  disabled=""
+                  type="checkbox"
+                />
+                <div
+                  class="checkbox-styled"
+                  style="background: rgb(155, 231, 196);"
+                >
+                  <div
+                    class="check-mark-icon"
+                    style="visibility: visible;"
+                  >
+                    <svg />
+                  </div>
+                </div>
+              </div>
+            </div>
             <svg
               class="wallet-icon"
             />
