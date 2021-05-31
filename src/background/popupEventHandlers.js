@@ -37,12 +37,7 @@ export const loadBalances = async (koi, port) => {
       data: { koiData }
     })
   } catch (error) {
-    if (koiData) {
-      const { koiBalance, arBalance } = koiData
-      await setChromeStorage({ koiBalance, arBalance })
-    }
-    console.log('PORT DISCONNECTED - SAVE BALANCES TO LOCAL STORAGE')
-    console.log('AR: ', arBalance, '; KOI: ', koiBalance)
+    console.error(error)
   }
 }
 

@@ -70,6 +70,8 @@ export const PATH = {
   GALLERY: chrome.extension
     ? `${chrome.extension.getURL('/options.html')}`
     : 'GALLERY_PATH',
+  ALL_CONTENT: 'https://bundler.openkoi.com:8888/state/getTopContentPredicted?frequency=all',
+  SINGLE_CONTENT: 'https://bundler.openkoi.com:8888/state/getNFTState?tranxId='
 }
 
 export const ERROR_MESSAGE = {
