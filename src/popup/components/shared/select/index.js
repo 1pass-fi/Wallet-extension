@@ -16,13 +16,15 @@ const Select = ({
   const [selectedOption, setSelectedOption] = useState(defaultOption)
 
   const handleSelect = (e) => {
+    e.preventDefault()
     setSelectedOption(e.target.value)
     setShowMenu(false)
     setDownArrow(true)
     onChange(e.target.value)
   }
 
-  const handleShowMenu = () => {
+  const handleShowMenu = (e) => {
+    e.preventDefault()
     setDownArrow((prev) => {return !prev})
     setShowMenu((prev) => {return !prev})
   }
