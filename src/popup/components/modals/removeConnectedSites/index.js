@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 
 import { REQUEST, STORAGE, ERROR_MESSAGE } from 'koiConstants'
 import { setChromeStorage, checkSitePermission } from 'utils'
+import { getSelectedTab } from 'utils/extension'
 import { setError } from 'popup/actions/error'
 import Modal from 'popup/components/shared/modal'
 import ConnectedSiteRow from './connectedSiteRow'
@@ -30,13 +31,10 @@ const ModalTitle = ({ accountName }) => {
 const ManualConnectSite = ({ isGreyBackground, setError }) => {
   const history = useHistory()
 
-  const onManualConnect = () => {
-    chrome.tabs.getSelected(null, async (tab) => {
+  const onManualConnect = async () => {
+    try {
+      const tab = await getSelectedTab()
       const origin = (new URL(tab.url)).origin
-      if (origin.startsWith('chrome-extension://')) {
-        setError(ERROR_MESSAGE.MUST_USE_IN_POPUP)
-        return
-      }
       const favicon = tab.favIconUrl
 
       if (!(await checkSitePermission(origin))) {
@@ -50,7 +48,9 @@ const ManualConnectSite = ({ isGreyBackground, setError }) => {
       } else {
         setError(ERROR_MESSAGE.ALREADY_CONNECTED_SITE)
       }
-    })
+    } catch (error) {
+      setError(ERROR_MESSAGE.MUST_USE_IN_POPUP)
+    }
   }
   return (
     <div
