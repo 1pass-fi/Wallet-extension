@@ -11,7 +11,8 @@ import {
   SET_CREATE_WALLET,
   SET_CONT_LOADING,
   SET_TRANSACTIONS,
-  SET_NOTIFICATION
+  SET_NOTIFICATION,
+  SET_ACTIVITIES
 } from 'actions/types'
 
 import {
@@ -23,7 +24,12 @@ import {
   saveWallet,
   loadContent,
   makeTransfer,
-  lockWallet
+  lockWallet,
+  getBalances,
+  loadActivities,
+  signTransaction,
+  getKeyFile,
+  connectSite
 } from './koi'
 
 import { MESSAGES } from 'koiConstants'
@@ -47,6 +53,55 @@ describe('Tests for actions/koi', () => {
   afterEach(() => {
     backgroundConnect.postMessage = postMessage
     backgroundConnect.eventHandlers = []
+  })
+
+  describe('Tests for getBalances()', () => {
+
+    beforeEach(() => {
+      store = mockStore()
+
+      let dispatch = store.dispatch
+      getBalances()(dispatch)
+
+    })
+
+    describe('background getBalances success', () => {
+      beforeEach(() => {
+        let getSuccessHandler = backgroundConnect.eventHandlers.filter((handler) => {
+          return handler.type = MESSAGES.GET_BALANCES_SUCCESS
+        })[0].callback
+
+        const response = {
+          data: {
+            koiData: {
+              arBalance: 100,
+              koiBalance: 200,
+              address: 'address'
+            }
+          }
+        }
+
+        backgroundConnect.postMessage = () => {
+          getSuccessHandler(response)
+        }
+
+        expectedActions = [
+          {
+            type: SET_KOI,
+            payload: {
+              arBalance: 100,
+              koiBalance: 200,
+              address: 'address'
+            }
+          }
+        ]
+      })
+
+      it('dispatchs data as expected', async () => {
+        store.dispatch(getBalances())
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
   })
 
   describe('Tests for importWallet()', () => {
@@ -404,6 +459,116 @@ describe('Tests for actions/koi', () => {
     })
   })
 
+ 
+  describe('Tests for lockWallet()', () => {
+    let inputData, history
+
+    beforeEach(() => {
+      store = mockStore()
+
+      const push = jest.fn()
+      history = { push }
+
+      inputData = { history }
+
+      let dispatch = store.dispatch
+      lockWallet(inputData)(dispatch)
+    })
+
+    describe('background lockWallet success', () => {
+      beforeEach(() => {
+        let lockSuccessFunction = backgroundConnect.eventHandlers.filter((handler) => {
+          return handler.type = MESSAGES.LOCK_WALLET_SUCCESS
+        })[0].callback
+
+        const response = {
+          data: {}
+        }
+
+        backgroundConnect.postMessage = () => {
+          lockSuccessFunction(response)
+        }
+
+        expectedActions = [
+          {
+            type: SET_LOADING,
+            payload: true
+          },
+          {
+            type: SET_LOADING,
+            payload: true
+          },
+          {
+            type: SET_KOI,
+            payload: {
+              koiBalance: null,
+              arBalance: null,
+              address: null
+            }
+          },
+          {
+            type: SET_LOADING,
+            payload: false
+          }
+        ]
+      })
+
+      it('dispatchs data as expected', async () => {
+        store.dispatch(lockWallet(inputData))
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+
+    describe('background generateWallet failed', () => {
+      beforeEach(() => {
+        let lockFailedFunction = backgroundConnect.eventHandlers.filter((handler) => {
+          return handler.type === MESSAGES.ERROR
+        })[0].callback
+
+        const response = {
+          data: 'Error message'
+        }
+
+        backgroundConnect.postMessage = () => {
+          lockFailedFunction(response)
+        }
+
+        expectedActions = [
+          { type: SET_LOADING, payload: true },
+          { type: SET_LOADING, payload: true },
+          { type: SET_LOADING, payload: false },
+          { type: SET_ERROR, payload: 'Error message' }
+        ]
+      })
+
+      it('dispatchs data as expected', () => {
+        store.dispatch(lockWallet(inputData))
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+
+
+    describe('something went wrong', () => {
+      beforeEach(() => {
+        backgroundConnect.postMessage = () => {
+          throw new Error('Error message')
+        }
+
+        expectedActions = [
+          { type: SET_LOADING, payload: true },
+          { type: SET_LOADING, payload: true },
+          { type: SET_ERROR, payload: 'Error message' },
+          { type: SET_LOADING, payload: false },
+        ]
+      })
+
+      it('dispatchs data as expected', () => {
+        store.dispatch(lockWallet(inputData))
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+  })
+
 
   describe('Tests for unlockWallet()', () => {
     let inputData, history
@@ -656,7 +821,7 @@ describe('Tests for actions/koi', () => {
       saveWallet(inputData)(dispatch)
     })
 
-    describe('background unlockWallet success', () => {
+    describe('background saveWallet success', () => {
       beforeEach(() => {
         let saveSuccessFunction = backgroundConnect.eventHandlers.filter((handler) => {
           return handler.type = MESSAGES.SAVE_WALLET_SUCCESS
@@ -854,6 +1019,110 @@ describe('Tests for actions/koi', () => {
     })
   })
 
+  describe('Tests for loadActivies()', () => {
+    let inputData, history
+
+    beforeEach(() => {
+      store = mockStore()
+
+      const push = jest.fn()
+      history = { push }
+
+      let dispatch = store.dispatch
+      loadActivities()(dispatch)
+    })
+
+    describe('background loadActivities success', () => {
+      beforeEach(() => {
+        let loadSuccessFunction = backgroundConnect.eventHandlers.filter((handler) => {
+          return handler.type = MESSAGES.LOAD_ACTIVITIES_SUCCESS
+        })[0].callback
+
+        const response = {
+          data: {
+            activitiesList: 'activitiesList'
+          }
+        }
+
+        backgroundConnect.postMessage = () => {
+          loadSuccessFunction(response)
+        }
+
+        expectedActions = [
+          {
+            type: SET_CONT_LOADING,
+            payload: true
+          },
+          {
+            type: SET_CONT_LOADING,
+            payload: true
+          },
+          {
+            type: SET_ACTIVITIES,
+            payload: 'activitiesList'
+          },
+          {
+            type: SET_CONT_LOADING,
+            payload: false
+          }
+        ]
+      })
+
+      it('dispatchs data as expected', async () => {
+        store.dispatch(loadActivities())
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+
+    describe('background loadActivities failed', () => {
+      beforeEach(() => {
+        let loadFailedFunction = backgroundConnect.eventHandlers.filter((handler) => {
+          return handler.type === MESSAGES.ERROR
+        })[0].callback
+
+        const response = {
+          data: 'Error message'
+        }
+
+        backgroundConnect.postMessage = () => {
+          loadFailedFunction(response)
+        }
+
+        expectedActions = [
+          { type: SET_CONT_LOADING, payload: true },
+          { type: SET_CONT_LOADING, payload: true },
+          { type: SET_CONT_LOADING, payload: false },
+          { type: SET_ERROR, payload: 'Error message' }
+        ]
+      })
+
+      it('dispatchs data as expected', () => {
+        store.dispatch(loadActivities())
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+
+
+    describe('something went wrong', () => {
+      beforeEach(() => {
+        backgroundConnect.postMessage = () => {
+          throw new Error('Error message')
+        }
+
+        expectedActions = [
+          { type: SET_CONT_LOADING, payload: true },
+          { type: SET_CONT_LOADING, payload: true },
+          { type: SET_ERROR, payload: 'Error message' },
+          { type: SET_CONT_LOADING, payload: false },
+        ]
+      })
+
+      it('dispatchs data as expected', () => {
+        store.dispatch(loadActivities())
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+  })
 
   describe('Tests for makeTransfer()', () => {
     let inputData, history
@@ -916,7 +1185,7 @@ describe('Tests for actions/koi', () => {
       })
     })
 
-    describe('background generateWallet failed', () => {
+    describe('background makeTransfer failed', () => {
       beforeEach(() => {
         let transferFailedFunction = backgroundConnect.eventHandlers.filter((handler) => {
           return handler.type === MESSAGES.ERROR
@@ -967,33 +1236,28 @@ describe('Tests for actions/koi', () => {
   })
 
 
-  describe('Tests for lockWallet()', () => {
+  describe('Tests for signTransaction()', () => {
     let inputData, history
 
     beforeEach(() => {
       store = mockStore()
 
-      const push = jest.fn()
-      history = { push }
-
-      inputData = { history }
+      const inputData = 'inputData'
 
       let dispatch = store.dispatch
-      lockWallet(inputData)(dispatch)
+      signTransaction(inputData)(dispatch)
     })
 
-    describe('background lockWallet success', () => {
+    describe('background signTransaction success', () => {
       beforeEach(() => {
-        let lockSuccessFunction = backgroundConnect.eventHandlers.filter((handler) => {
-          return handler.type = MESSAGES.LOCK_WALLET_SUCCESS
+        let signSuccessFunction = backgroundConnect.eventHandlers.filter((handler) => {
+          return handler.type = MESSAGES.SIGN_TRANSACTION_SUCCESS
         })[0].callback
 
-        const response = {
-          data: {}
-        }
+        const response = 'response'
 
         backgroundConnect.postMessage = () => {
-          lockSuccessFunction(response)
+          signSuccessFunction(response)
         }
 
         expectedActions = [
@@ -1006,14 +1270,6 @@ describe('Tests for actions/koi', () => {
             payload: true
           },
           {
-            type: SET_KOI,
-            payload: {
-              koiBalance: null,
-              arBalance: null,
-              address: null
-            }
-          },
-          {
             type: SET_LOADING,
             payload: false
           }
@@ -1021,14 +1277,14 @@ describe('Tests for actions/koi', () => {
       })
 
       it('dispatchs data as expected', async () => {
-        store.dispatch(lockWallet(inputData))
+        store.dispatch(signTransaction(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
 
-    describe('background generateWallet failed', () => {
+    describe('background signTransaction failed', () => {
       beforeEach(() => {
-        let lockFailedFunction = backgroundConnect.eventHandlers.filter((handler) => {
+        let signFailedFunction = backgroundConnect.eventHandlers.filter((handler) => {
           return handler.type === MESSAGES.ERROR
         })[0].callback
 
@@ -1037,7 +1293,7 @@ describe('Tests for actions/koi', () => {
         }
 
         backgroundConnect.postMessage = () => {
-          lockFailedFunction(response)
+          signFailedFunction(response)
         }
 
         expectedActions = [
@@ -1049,7 +1305,7 @@ describe('Tests for actions/koi', () => {
       })
 
       it('dispatchs data as expected', () => {
-        store.dispatch(lockWallet(inputData))
+        store.dispatch(signTransaction(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -1070,7 +1326,118 @@ describe('Tests for actions/koi', () => {
       })
 
       it('dispatchs data as expected', () => {
-        store.dispatch(lockWallet(inputData))
+        store.dispatch(signTransaction(inputData))
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+  })
+
+  describe('Tests for getKeyFile()', () => {
+    let inputData
+
+    beforeEach(() => {
+      store = mockStore()
+
+      const inputData = 'inputData'
+
+      let dispatch = store.dispatch
+      getKeyFile(inputData)(dispatch)
+    })
+
+    describe('background getKeyFile success', () => {
+      beforeEach(() => {
+        let getKeySuccessFunction = backgroundConnect.eventHandlers.filter((handler) => {
+          return handler.type = MESSAGES.GET_KEY_FILE_SUCCESS
+        })[0].callback
+
+        const response = { data: 'data' }
+
+        backgroundConnect.postMessage = () => {
+          getKeySuccessFunction(response)
+        }
+
+        expectedActions = [
+          {
+            type: SET_NOTIFICATION,
+            payload: 'Private key downloaded.'
+          }
+        ]
+      })
+
+      it('dispatchs data as expected', async () => {
+        store.dispatch(getKeyFile(inputData))
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+
+    describe('something went wrong', () => {
+      beforeEach(() => {
+        backgroundConnect.postMessage = () => {
+          throw new Error('Error message')
+        }
+
+        expectedActions = [
+          { type: SET_ERROR, payload: 'Error message' },
+        ]
+      })
+
+      it('dispatchs data as expected', () => {
+        store.dispatch(getKeyFile(inputData))
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+  })
+
+  describe('Tests for connectSite()', () => {
+    let inputData
+
+    beforeEach(() => {
+      store = mockStore()
+
+      const inputData = 'inputData'
+
+      let dispatch = store.dispatch
+      connectSite(inputData)(dispatch)
+    })
+
+    describe('background connectSite failed', () => {
+      beforeEach(() => {
+        let signFailedFunction = backgroundConnect.eventHandlers.filter((handler) => {
+          return handler.type === MESSAGES.ERROR
+        })[0].callback
+
+        const response = {
+          data: 'Error message'
+        }
+
+        backgroundConnect.postMessage = () => {
+          signFailedFunction(response)
+        }
+
+        expectedActions = [
+          { type: SET_ERROR, payload: 'Error message' }
+        ]
+      })
+
+      it('dispatchs data as expected', () => {
+        store.dispatch(connectSite(inputData))
+        expect(store.getActions()).toEqual(expectedActions)
+      })
+    })
+
+    describe('something went wrong', () => {
+      beforeEach(() => {
+        backgroundConnect.postMessage = () => {
+          throw new Error('Error message')
+        }
+
+        expectedActions = [
+          { type: SET_ERROR, payload: 'Error message' },
+        ]
+      })
+
+      it('dispatchs data as expected', () => {
+        store.dispatch(connectSite(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })

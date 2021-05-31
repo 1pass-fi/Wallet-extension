@@ -57,6 +57,7 @@
         "@webcomponents/webcomponentsjs": "^2.2.6",
         "arweave": "^1.10.14",
         "axios": "^0.21.1",
+        "axios-mock-adapter": "^1.19.0",
         "babel-core": "7.0.0-bridge.0",
         "babel-eslint": "^10.0.1",
         "babel-jest": "23.6.0",
@@ -160,7 +161,8 @@
             "/background/",
             "/content_scripts/",
             "/lib/",
-            ".stories.js"
+            ".stories.js",
+            "extension.js"
         ],
         "setupFiles": [
             "jest-webextension-mock",

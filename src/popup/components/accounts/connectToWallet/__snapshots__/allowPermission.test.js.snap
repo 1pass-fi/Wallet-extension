@@ -13,16 +13,35 @@ exports[`Test for SendKoiForm component Render without crashing renders correctl
     <div
       class="permission checked"
     >
-      <input
-        checked=""
-        class="check-allow"
-        disabled=""
-        type="checkbox"
-      />
       <div
-        class="permission-content"
+        class="checkbox-container check-allow"
       >
-        View the addresses of your permitted accounts (required)
+        <div
+          class="checkbox-input"
+        >
+          <input
+            checked=""
+            class="checkbox-hidden"
+            disabled=""
+            type="checkbox"
+          />
+          <div
+            class="checkbox-styled"
+            style="background: rgb(155, 231, 196);"
+          >
+            <div
+              class="check-mark-icon"
+              style="visibility: visible;"
+            >
+              <svg />
+            </div>
+          </div>
+        </div>
+        <span
+          class="checkbox-label"
+        >
+          View the addresses of your permitted accounts (required)
+        </span>
       </div>
     </div>
     <div
