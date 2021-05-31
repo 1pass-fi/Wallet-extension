@@ -22,20 +22,22 @@ export const loadBalances = async (koi, port) => {
   const storage = await getChromeStorage([STORAGE.KOI_BALANCE, STORAGE.AR_BALANCE])
   const koiBalance = storage[STORAGE.KOI_BALANCE]
   const arBalance = storage[STORAGE.AR_BALANCE]
-  let koiData
-  try {
-    if (koiBalance !== undefined && arBalance !== undefined) {
+  if (koiBalance !== undefined && arBalance !== undefined) {
+    if (port) {
       port.postMessage({
         type: MESSAGES.GET_BALANCES_SUCCESS,
         data: { koiData: { koiBalance, arBalance } }
       })
     }
-
-    koiData = await getBalances(koi)
-    port.postMessage({
-      type: MESSAGES.GET_BALANCES_SUCCESS,
-      data: { koiData }
-    })
+  }
+  try {
+    const koiData = await getBalances(koi)
+    if (port) {
+      port.postMessage({
+        type: MESSAGES.GET_BALANCES_SUCCESS,
+        data: { koiData }
+      })
+    }
   } catch (error) {
     console.error(error)
   }
