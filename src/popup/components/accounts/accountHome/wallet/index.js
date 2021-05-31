@@ -56,19 +56,11 @@ const WalletInfo = ({
       <div className='wallet-info-row wallet-balance'>
         <div className='koi-balance'>
           <div className='balance'>{numberFormat(koiBalance)} KOI</div>
-          {
-            <div className='usd-exchange'>
-              ~${numberFormat(koiBalance * RATE.KOI)}USD
-            </div>
-          }
+          {<div className='usd-exchange'>${numberFormat(koiBalance * RATE.KOI)}USD</div>}
         </div>
         <div className='ar-balance'>
           <div className='balance'>{numberFormat(arBalance)} AR</div>
-          {
-            <div className='usd-exchange'>
-              ~${numberFormat(arBalance * RATE.AR)}USD
-            </div>
-          }
+          {<div className='usd-exchange'>${numberFormat(arBalance * RATE.AR)}USD</div>}
         </div>
       </div>
     </div>

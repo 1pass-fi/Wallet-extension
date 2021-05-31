@@ -29,6 +29,12 @@ chrome.runtime.onConnect.addListener(function (port) {
   switch (port.name) {
     case PORTS.POPUP:
       ports[PORTS.POPUP] = port
+
+      port.onDisconnect.addListener(disconnect => {
+        console.log('port disconnected--', disconnect, port)
+        autoLoadBalancesPort = undefined
+      })
+
       port.onMessage.addListener(message => {
         popUpEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
 

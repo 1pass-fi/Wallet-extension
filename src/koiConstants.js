@@ -70,17 +70,19 @@ export const PATH = {
   GALLERY: chrome.extension
     ? `${chrome.extension.getURL('/options.html')}`
     : 'GALLERY_PATH',
+  ALL_CONTENT: 'https://bundler.openkoi.com:8888/state/getTopContentPredicted?frequency=all',
+  SINGLE_CONTENT: 'https://bundler.openkoi.com:8888/state/getNFTState?tranxId='
 }
 
 export const ERROR_MESSAGE = {
   INCORRECT_PASSWORD: 'Incorrect password, please try again.',
-  PASSWORD_LENGTH: 'Your Koi password must have at least 8 characters.',
+  PASSWORD_LENGTH: 'Your KOI password must have at least 8 characters.',
   PASSWORD_MATCH: 'Passwords do not match, please try again.',
   INCORRECT_PHRASE: 'Incorrect seed phrase, please try again.',
   EMPTY_PHRASE: 'Seed phrase should not be blank.',
   CHECKED_TERMS: 'You have to agree to the Terms of Service',
   EMPTY_FIELDS: 'Please fill in all fields.',
-  NOT_ENOUGH_KOI: `You don't have enough Koi.`,
+  NOT_ENOUGH_KOI: `You don't have enough KOI.`,
   REQUEST_NOT_EXIST: 'This request is no longer exist.',
   INVALID_AMOUNT: 'Amount can not be negative!',
   ALREADY_CONNECTED_SITE: 'This site has already connected',

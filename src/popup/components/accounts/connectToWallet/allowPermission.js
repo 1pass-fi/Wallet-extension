@@ -1,6 +1,8 @@
 import React from 'react'
 import Button from 'popup/components/shared/button'
 
+import Checkbox from 'popup/components/shared/checkbox'
+
 import '../index.css'
 
 const AllowPermission = ({ handleOnClick }) => {
@@ -8,16 +10,13 @@ const AllowPermission = ({ handleOnClick }) => {
     <div className='allow-permission'>
       <div className='label'>Allow this site to:</div>
       <div className={`permission ${true && 'checked'}`}>
-        <input
-          type='checkbox'
+        <Checkbox 
           className='check-allow'
-          checked={true}
-          onChange={(e) => { }}
-          disabled={true}
+          defaultChecked={true}
+          isDisabled={true}
+          onChange={(e) => {}}
+          label='View the addresses of your permitted accounts (required)'
         />
-        <div className='permission-content'>
-          View the addresses of your permitted accounts (required)
-        </div>
       </div>
       <div className='trust-sites'>Only connect with sites you trust.</div>
       <div className='button-line'>

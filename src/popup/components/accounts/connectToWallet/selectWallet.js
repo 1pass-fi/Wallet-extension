@@ -4,6 +4,7 @@ import includes from 'lodash/includes'
 import KoiIcon from 'img/koi-logo.svg'
 import ArweaveIcon from 'img/arweave-icon.svg'
 
+import Checkbox from 'popup/components/shared/checkbox'
 import Button from 'popup/components/shared/button'
 import '../index.css'
 
@@ -25,14 +26,18 @@ const SelectWallet = ({
   return (
     <>
       <div className='select-account'>Select accounts</div>
-      <div>
-        <button className='unselect-button' onClick={clearChecked}>
-          -
-        </button>
-        <button className='select-all-button' onClick={checkAll}>
-          Select all
-        </button>
-      </div>
+      {
+        accounts.lenght > 1 && (
+          <div>
+            <button className='unselect-button' onClick={clearChecked}>
+              -
+            </button>
+            <button className='select-all-button' onClick={checkAll}>
+              Select all
+            </button>
+          </div>
+        )
+      }
       <div className='wallet-options'>
         {accounts.map((account) => (
           <div
@@ -40,12 +45,10 @@ const SelectWallet = ({
             }`}
             key={account.address}
           >
-            <input
-              type='checkbox'
+            <Checkbox 
+              defaultChecked={true}
               className='check-wallet'
-              // checked={includes(checkedList, account.address)}
-              checked={true}
-              disabled={true}
+              isDisabled={true}
               onChange={(e) => onChecked(e, account.address)}
             />
             {walletIcon[account.type]}
