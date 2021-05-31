@@ -17,7 +17,8 @@
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
         "chrome-launch": "node scripts/dev.js --browser=chrome",
-        "firefox-launch": "node scripts/dev.js --browser=firefox"
+        "firefox-launch": "node scripts/dev.js --browser=firefox",
+        "coveralls": "coveralls < coverage/lcov.info"
     },
     "keywords": [
         "chrome",
@@ -69,6 +70,7 @@
         "chrome-launch": "^1.1.4",
         "colors": "^1.3.3",
         "copy-webpack-plugin": "^4.6.0",
+        "coveralls": "^3.1.0",
         "crx": "^3.2.1",
         "css-loader": "^1.0.0",
         "dotenv": "6.0.0",
