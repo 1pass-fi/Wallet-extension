@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import CheckMarkIcon from 'img/check-mark.svg'
 import './index.css'

@@ -8,7 +8,7 @@
   display: inline-block;
 }
 
-.checkbox-input .checkbox-hidden {
+.checkbox-input > input {
   position: absolute;
   border: none;
   padding: 0;
