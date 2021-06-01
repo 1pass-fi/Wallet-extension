@@ -111,11 +111,30 @@ exports[`Test for ImportByFile component Render without crashing renders correct
             <div
               class="checkbox"
             >
-              <input
-                name="checkbox"
-                type="checkbox"
-                value="false"
-              />
+              <div
+                class="checkbox-container term-service-checkbox"
+              >
+                <div
+                  class="checkbox-input"
+                >
+                  <input
+                    class="checkbox-hidden"
+                    name="checkbox"
+                    type="checkbox"
+                  />
+                  <div
+                    class="checkbox-styled"
+                    style="background: rgb(255, 255, 255);"
+                  >
+                    <div
+                      class="check-mark-icon"
+                      style="visibility: hidden;"
+                    >
+                      <svg />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <label>
               I agree with the 

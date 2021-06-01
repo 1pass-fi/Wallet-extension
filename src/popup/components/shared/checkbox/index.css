@@ -29,8 +29,8 @@
 .checkbox-input .checkbox-styled .check-mark-icon {
   width: 18px;
   height: 13px;
-  padding-left: 3px;
-  padding-bottom: 4px;
+  padding-left: 2px;
+  padding-bottom: 3px;
   display: flex;
   flex-direction: column;
   justify-content: center;

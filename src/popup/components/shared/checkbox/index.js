@@ -4,8 +4,10 @@ import CheckMarkIcon from 'img/check-mark.svg'
 import './index.css'
 
 const Checkbox = ({
-  defaultChecked,
+  defaultChecked = false,
+  greenBackround = true,
   label = '',
+  name,
   onChange,
   className,
   isDisabled = false,
@@ -21,13 +23,14 @@ const Checkbox = ({
         <input 
           className='checkbox-hidden'
           type='checkbox'
+          name={name}
           defaultChecked={defaultChecked}
           disabled={isDisabled}
           onClick={handleOnClick}
           onChange = {onChange}
         >
         </input>
-        <div className='checkbox-styled' style={{background: selected ? '#9be7c4' : '#ffffff' }}> 
+        <div className='checkbox-styled' style={{background: greenBackround && selected ? '#9be7c4' : '#ffffff' }}> 
           <div className='check-mark-icon' style={{visibility: selected ? 'visible' : 'hidden'}}>
             <CheckMarkIcon />
           </div>
