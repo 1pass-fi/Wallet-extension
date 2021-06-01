@@ -1,5 +1,7 @@
 import { LOAD_KOI_BY, PATH, STORAGE, ERROR_MESSAGE } from 'koiConstants'
 import passworder from 'browser-passworder'
+import moment from 'moment'
+import { get } from 'lodash'
 
 import Arweave from 'arweave'
 import axios from 'axios'
@@ -49,7 +51,6 @@ export const getBalances = async (koiObj) => {
   const [arBalance, koiBalance] = await Promise.all([koiObj.getWalletBalance(), koiObj.getKoiBalance()])
 
   koiObj.balance = arBalance
-  console.log('AR BALANCE', koiObj.balance)
   await setChromeStorage({ [STORAGE.KOI_BALANCE]: koiBalance, [STORAGE.AR_BALANCE]: koiObj['balance'] })
   return {
     arBalance: koiObj.balance,
@@ -90,14 +91,21 @@ export const loadMyContent = async (koiObj) => {
   try {
     const { data: allContent } = await axios.get(PATH.ALL_CONTENT)
     const myContent = (allContent.filter(content => content[Object.keys(content)[0]].owner === koiObj.address)).map(content => Object.keys(content)[0])
+    const storage = await getChromeStorage(STORAGE.CONTENT_LIST)
+    const contentList = storage[STORAGE.CONTENT_LIST] || []
+    if (myContent.length === contentList.length) return
     return Promise.all(myContent.map(async contentId => {
       const { data: content } = await axios.get(`${PATH.SINGLE_CONTENT}/${contentId}`)
+
+      const u8 = Buffer.from((await axios.get(`${PATH.NFT_IMAGE}${content.txIdContent}`, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
+      const imageUrl = `data:image/jpeg;base64,${u8}`
+
       return {
         name: content.title,
         isKoiWallet: content.ticker === 'KOINFT',
         earnedKoi: content.totalReward,
         txId: content.txIdContent,
-        imageUrl: `${PATH.NFT_IMAGE}${content.txIdContent}`,
+        imageUrl,
         galleryUrl: `${PATH.GALLERY}?id=${content.txIdContent}`,
         koiRockUrl: `${PATH.KOI_ROCK}${content.txIdContent}`,
         isRegistered: true
@@ -110,56 +118,31 @@ export const loadMyContent = async (koiObj) => {
 
 /* istanbul ignore next */
 export const loadMyActivities = async (koiObj) => {
-  return [
-    {
-      activityName: `Purchased "The Balance of Koi"`,
-      expense: 100,
-      accountName: 'Account 1',
-      date: 'May 24, 2021'
-    },
-    {
-      activityName: `Purchased "The Balance of Koi"`,
-      expense: 200,
-      accountName: 'Account 1',
-      date: 'May 22, 2021'
-    },
-    {
-      activityName: `Purchased "The Balance of Koi"`,
-      expense: 100,
-      accountName: 'Account 1',
-      date: 'May 24, 2021'
-    },
-    {
-      activityName: `Purchased "The Balance of Koi"`,
-      expense: 200,
-      accountName: 'Account 1',
-      date: 'May 22, 2021'
-    },
-    {
-      activityName: `Purchased "The Balance of Koi"`,
-      expense: 100,
-      accountName: 'Account 1',
-      date: 'May 24, 2021'
-    },
-    {
-      activityName: `Purchased "The Balance of Koi"`,
-      expense: 200,
-      accountName: 'Account 1',
-      date: 'May 22, 2021'
-    },
-    {
-      activityName: `Purchased "The Balance of Koi"`,
-      expense: 100,
-      accountName: 'Account 1',
-      date: 'May 24, 2021'
-    },
-    {
-      activityName: `Purchased "The Balance of Koi"`,
-      expense: 200,
-      accountName: 'Account 1',
-      date: 'May 22, 2021'
+  const { data } = await koiObj.getWalletTxs(koiObj.address)
+  let activitiesList = get(data, 'ownedTxs.edges')
+  activitiesList = activitiesList.map(activity => {
+    const time = get(activity, 'node.block.timestamp')
+    const timeString = moment(time*1000).format('MMMM DD YYYY')
+    let activityName = 'Transfer AR'
+    let expense = get(activity, 'node.quantity.ar')
+    // get input tag
+    const inputTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Input')
+    let inputFunction
+    if (inputTag[0]) {
+      inputFunction = JSON.parse(inputTag[0].value)
+      if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
+        activityName = 'Transfer KOI'
+        expense = inputFunction.qty
+      }
     }
-  ]
+    return {
+      activityName,
+      expense,
+      accountName: 'Account 1',
+      date: timeString
+    }
+  })
+  return activitiesList
 }
 
 export const transfer = async (koiObj, qty, address) => {
@@ -176,7 +159,6 @@ export const transfer = async (koiObj, qty, address) => {
 export const saveWalletToChrome = async (koiObj, password) => {
   try {
     const encryptedWalletKey = await passworder.encrypt(password, koiObj.wallet)
-    console.log('ENCRYPTED KEY', encryptedWalletKey)
     await setChromeStorage({ 'koiAddress': koiObj.address, 'koiKey': encryptedWalletKey })
   } catch (err) {
     throw new Error(err.message)
