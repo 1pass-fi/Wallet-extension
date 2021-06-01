@@ -1,6 +1,6 @@
-import Activity from '.'
+import { ActivitiesList } from '.'
 
-Activity.displayName = 'Activity'
+ActivitiesList.displayName = 'ActivitiesList'
 
 const activities = [
   {
@@ -27,13 +27,13 @@ const activities = [
 ]
 
 export default {
-  title: 'component/Activity',
-  component: Activity,
+  title: 'component/ActivitiesList',
+  component: ActivitiesList,
   args: {
     activities: activities,
   }
 }
 
-const Template = (args) => <Activity {...args} />
+const Template = (args) => <ActivitiesList {...args} />
 
 export const Default = Template.bind({})
