@@ -12,14 +12,43 @@ exports[`Test for SendKoiForm component Render without crashing renders correctl
         Available balance: 
       </span>
       <b>
-         KOI
+        123 KOI
       </b>
       <div
         class="amount-in-usd"
       >
         $
-        NaN
+        114.39
          USD
+      </div>
+    </div>
+    <div
+      class="select-container currency-select"
+    >
+      <div
+        class="select-wrapper"
+      >
+        <div
+          class="header"
+        >
+          <input
+            class="selected-option"
+            placeholder=""
+            readonly=""
+            type="text"
+            value="KOI"
+          />
+          <button
+            class="arrow-button"
+          >
+            <div
+              class="arrow-icon"
+              style="transform: none;"
+            >
+              <svg />
+            </div>
+          </button>
+        </div>
       </div>
     </div>
     <div

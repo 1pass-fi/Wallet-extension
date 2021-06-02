@@ -7,7 +7,7 @@ export default {
   title: 'screen/TransactionConfirmModal',
   component: TransactionConfirmModal,
   args: {
-    koiAmount: 12,
+    sentAmount: 12,
     accountAddress: '123456789012345678901234567890123456789012',
     onClose: partialAction('Closed'),
     onSubmit: partialAction('Submit')

@@ -17,16 +17,13 @@ import './index.css'
 const SendKoiForm = ({
   koiBalance,
   arBalance,
+  currencies,
+  onUpdateCurrency,
   setError,
   makeTransfer,
   onSendSuccess,
 }) => {
-  let options = []
-  for (const [key, _] of Object.entries(RATE)) {
-    options.push({label: key, value: key})
-  }
-
-  const defaultCur = options[0].value
+  const defaultCur = currencies[0].value
 
   const [address, setAddress] = useState('')
   const [amount, setAmount] = useState('')
@@ -43,6 +40,7 @@ const SendKoiForm = ({
 
   const onChangeCurrency = (newCurr) => {
     setCurrency(newCurr)
+    onUpdateCurrency(newCurr)
   }
 
   const selectBalance = (cur) => {
@@ -85,7 +83,7 @@ const SendKoiForm = ({
       </div>
       <Select 
         className='currency-select'
-        options={options}
+        options={currencies}
         defaultOption={defaultCur}
         onChange={onChangeCurrency}
       />
@@ -126,7 +124,8 @@ const SendKoiForm = ({
       <Button label={`Send ${currency}`} className="send-button" />
       {showModal && (
         <TransactionConfirmModal
-          koiAmount={Number(amount)}
+          sentAmount={Number(amount)}
+          currency={currency}
           accountAddress={address}
           onClose={() => {
             setShowModal(false)

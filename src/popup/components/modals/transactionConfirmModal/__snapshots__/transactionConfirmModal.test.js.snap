@@ -23,8 +23,9 @@ exports[`Test for TransactionConfirmModal component Render without crashing rend
         Send
          
         <strong>
-          NaN
-           KOI
+          123
+           
+          KOI
         </strong>
          to
       </div>
