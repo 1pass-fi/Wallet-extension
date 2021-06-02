@@ -1,46 +1,54 @@
 .sign-tx {
   color: #171753;
+  letter-spacing: 0.03em;
 }
 
 .sign-tx .account-section {
-  height: 153px;
-  padding: 0 24px;
+  padding: 34px 66px 29px;
+  font-size: 16px;
+  font-weight: 400;
   background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.sign-tx .account-section .account-source {
+.sign-tx .account-section .account {
+  padding-left: 20px;
   display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.sign-tx .account-section .account .account-info {
+  margin-left: 7px;
+  display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  padding-top: 36px;
+  min-height: 38px;
+}
+
+.sign-tx .account-section .account .logo-icon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  max-height: 38px;
+  display: block;
+  margin: auto;
 }
 
 .sign-tx .account-section .origin {
-  text-align: center;
+  align-items: center;
   height: 20px;
+  padding-top: 20px;
+}
+
+.sign-tx .account-section .origin > a {
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
   color: #237B75;
-  padding-top: 5px;
-}
-
-.sign-tx .account-section .account {
-  align-items: center;
-  display: flex;
-  letter-spacing: 0.03em;
-}
-
-.sign-tx .account-section .account .icon {
-  height: 34px;
-  width: 34px;
-}
-
-.sign-tx .account-section .account .account-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: 6px;
+  text-decoration: none;
 }
 
 .sign-tx .account-section .account .account-info .title {
@@ -53,20 +61,7 @@
   color: #237b75;
   font-size: 14px;
   line-height: 20px;
-}
-
-.sign-tx .account-section .divider {
-  position: relative;
-}
-
-.sign-tx .account-section .divider .arrow {
-  border-right: 2px solid #171753;
-  border-top: 2px solid #171753;
-  content: '';
-  height: 10px;
-  position: absolute;
-  transform: rotate(45deg) translate(50%, 100%);
-  width: 10px;
+  word-break: break-word;
 }
 
 .content-section {
@@ -83,26 +78,44 @@
   height: 342px;
   padding: 22px 20px 80px;
   position: relative;
+  font-size: 14px;
+  line-height: 20px;
 }
 
-.sign-tx .content-section .transaction-detail .total {
+.sign-tx .content-section .transaction-detail .label {
+  margin-left: 0;
+  font-size: 18px;
+}
+
+.sign-tx .content-section .transaction-detail .details {
+  margin: 45px 27px 0;
   display: flex;
+  flex-direction: row;
+  justify-items: flex-start;
   justify-content: space-between;
   align-items: center;
 }
 
-.sign-tx .content-section .transaction-detail .total .amount {
+.sign-tx .content-section .transaction-detail .details .detail-row {
   display: flex;
+  flex-direction: column;
   margin: 0;
-  align-items: center;
-  font-size: 18px;
-  font-weight: 600;
+  height: 46px;
+  align-items: flex-start;
 }
 
-.sign-tx .content-section .transaction-detail .total .amount .koi-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
+.sign-tx .content-section .transaction-detail .details .detail-row.amount {
+  margin-left: 40px;
+  align-items: flex-end;
+}
+
+.sign-tx .content-section .transaction-detail .details .detail-row .koi {
+  font-size: 24px;
+}
+
+.sign-tx .content-section .transaction-detail .details .detail-row .usd {
+  margin-top: 6px;
+  color: #6D6DA0;
 }
 
 .sign-tx .content-section .transaction-detail .button-group {
@@ -110,12 +123,17 @@
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-  /* padding: 0 20px; */
   position: absolute;
   width: calc(100% - 40px);
 }
 
-.sign-tx .content-section .transaction-detail .button-group .reject-button {
+.sign-tx .content-section .transaction-detail .button-group .button {
+  width: 147px;
+  height: 40px;
+}
+
+.sign-tx .content-section .transaction-detail .button-group .reject {
+  color: #171753;
   border: 1.5px solid #171753;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
 }

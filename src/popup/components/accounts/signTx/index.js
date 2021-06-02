@@ -7,9 +7,9 @@ import KoiIcon from 'img/koi-logo-no-bg.svg'
 import Card from 'shared/card'
 import Button from 'shared/button'
 
-import { getChromeStorage, removeChromeStorage } from 'utils'
+import { getChromeStorage, removeChromeStorage, numberFormat, fiatCurrencyFormat } from 'utils'
 
-import { STORAGE, REQUEST, ERROR_MESSAGE } from 'koiConstants'
+import { STORAGE, REQUEST, ERROR_MESSAGE, RATE } from 'koiConstants'
 import { signTransaction } from 'actions/koi'
 import { setError } from 'actions/error'
 
@@ -79,50 +79,54 @@ export const SignTx = ({ signTransaction, setError }) => {
     <div className='sign-tx'>
       <div className='account-section'>
         <div className='account-source'>
+          <div>From:</div>
           <div className='source-account account'>
-            {walletIcon[sourceAccount.type]}
+            <div className='logo-icon'>
+              {walletIcon[sourceAccount.type]}
+            </div>
             <div className='account-info'>
               <div className='title'>Account 1</div>
               <div className='address'>
-                {sourceAccount.address.substring(0, 6)}...
-                {sourceAccount.address.substring(38, 43)}
+                {sourceAccount.address}
               </div>
             </div>
           </div>
-          <div className='divider'>
-            <div className='arrow' />
-          </div>
+          <div>To:</div>
           <div className='destination-account account'>
-            {walletIcon[destinationAccount.type]}
+            <div className='logo-icon'>
+              {walletIcon[destinationAccount.type]}
+            </div>
             <div className='account-info'>
               <div className='address'>
-                {destinationAccount.address.substring(0, 6)}...
-                {destinationAccount.address.substring(38, 43)}
+                {destinationAccount.address}
               </div>
             </div>
           </div>
         </div>
-        <div className='origin'>{origin}</div>
+        <div className='origin'>
+          <a href={origin}>{origin}</a>
+        </div>
       </div>
       <div className='content-section'>
         <Card className='transaction-detail'>
-          <div className='total'>
-            <div>TOTAL</div>
-            <div className='amount'>
-              <div className='koi-icon'><ArweaveIcon /></div>
-              <div>{qty}</div>
+          <div className='label'>Transaction details</div>
+          <div className='details'>
+            <div className='detail-row'>Send</div>
+            <div className='detail-row amount'>
+              <div className='koi'>{numberFormat(qty)} KOI</div>
+              <div className='usd'>~{fiatCurrencyFormat(qty*RATE.KOI)} USD</div>
             </div>
           </div>
           <div className='button-group'>
             <Button
               label='Confirm'
               onClick={() => handleOnClick(true)}
-              className='confirm-button'
+              className='button confirm'
             />
             <Button
               label='Reject'
               type='layout'
-              className='reject-button'
+              className='button reject'
               onClick={() => handleOnClick(false)}
             />
           </div>
