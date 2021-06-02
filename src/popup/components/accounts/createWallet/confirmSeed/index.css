@@ -30,6 +30,7 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
+  font-size: 15px;
 }
 
 .confirmation-card {
@@ -118,4 +119,7 @@
 .confirmation-card .confirm-button {
   align-self: flex-start;
   margin-top: 15px;
+  padding: 9px 44px 8px 44px;
+  line-height: 15px;
+  font-size: 15px;
 }
