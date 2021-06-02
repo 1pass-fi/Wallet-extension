@@ -1,4 +1,8 @@
 .export-file-popup-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   background: rgba(17, 17, 53, 0.7);
   display: flex;
   justify-content: center;

@@ -15,7 +15,7 @@ const propTypes = {
   activities: PropTypes.array,
 }
 
-const ActivitiesList = ({ activities }) => {
+export const ActivitiesList = ({ activities }) => {
   return activities.map((activity, index) => (
     <ActivityRow
       key={index}
