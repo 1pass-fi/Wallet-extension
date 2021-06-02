@@ -118,8 +118,8 @@ export const loadMyContent = async (koiObj) => {
 
 /* istanbul ignore next */
 export const loadMyActivities = async (koiObj) => {
-  const { data } = await koiObj.getWalletTxs(koiObj.address)
-  let activitiesList = get(data, 'ownedTxs.edges')
+  const { data } = await koiObj.getOwnedTxs(koiObj.address)
+  let activitiesList = get(data, 'transactions.edges')
   activitiesList = activitiesList.map(activity => {
     const time = get(activity, 'node.block.timestamp')
     const timeString = moment(time*1000).format('MMMM DD YYYY')

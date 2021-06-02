@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@_koi/sdk@2.1.16-beta.26":
-  version "2.1.16-beta.26"
-  resolved "https://registry.yarnpkg.com/@_koi/sdk/-/sdk-2.1.16-beta.26.tgz#b3777e95319ff28de50128b30c201b62ca637bb1"
-  integrity sha512-iiQxyV3Qyt0fTZoaGeXq3V46t8W0pw1uyCHFL3n3pyf/HABikTfgvOeqmoTxSFAjEtxjWcWOgro9K+YjeIGWqA==
+"@_koi/sdk@2.1.16-beta.34":
+  version "2.1.16-beta.34"
+  resolved "https://registry.yarnpkg.com/@_koi/sdk/-/sdk-2.1.16-beta.34.tgz#7f7ef88c8c3166e9c84bf9f4bf3a89b33bf761d2"
+  integrity sha512-bY7h4fvPmVVznJ1g8a1i2McKhJ6FoQSkjMgmkf+EcAXUuIFHWb0i/KZ5+nx2+HnHbf4GeBO0iHt1K6qX07QZzg==
   dependencies:
     "@kyve/query" "^0.0.0-alpha.9"
     arweave "^1.10.13"
@@ -17,6 +17,7 @@
     node-polyfill-webpack-plugin "^1.1.1"
     redis "^3.1.2"
     smartweave "^0.4.29"
+    underscore "1.12.1"
 
 "@babel/code-frame@7.0.0":
   version "7.0.0"
@@ -18657,6 +18658,11 @@ undefsafe@^2.0.0:
   integrity sha512-nrXZwwXrD/T/JXeygJqdCO6NZZ1L66HrxM/Z7mIq2oPanoN0F1nLx3lwJMu6AwJY69hdixaFQOuoYsMjE5/C2A==
   dependencies:
     debug "^2.2.0"
+
+underscore@1.12.1:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.12.1.tgz#7bb8cc9b3d397e201cf8553336d262544ead829e"
+  integrity sha512-hEQt0+ZLDVUMhebKxL4x1BTtDY7bavVofhZ9KZ4aI26X9SRaE+Y3m83XUL1UP2jn8ynjndwCCpEHdUG+9pP1Tw==
 
 underscore@>=1.3.1:
   version "1.13.1"
