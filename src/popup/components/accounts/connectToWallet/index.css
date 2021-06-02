@@ -64,7 +64,7 @@
 }
 
 .select-wallet .content .unselect-button {
-  background: #ffc78f;
+  background: #ffddbc;
   border-radius: 2px;
   border: 1.5px solid #171753;
   box-sizing: border-box;
@@ -79,7 +79,6 @@
   border: 0;
   color: #171753;
   cursor: pointer;
-  font-family: Catamaran;
   font-size: 18px;
   line-height: 20px;
   margin-bottom: 12px;
@@ -104,8 +103,8 @@
 }
 
 .select-wallet .content .wallet-option.checked {
-  background: #ffc78f;
-  border: 1px solid #ffc78f;
+  background: #ffddbc;
+  border: 1px solid #ffddbc;
 }
 
 .select-wallet .content .check-wallet {
@@ -154,9 +153,10 @@
 .select-wallet .content .button-line .button {
   height: 40px;
   width: 147px;
-  font-size: 18px;
-  font-weight: 500;
-  font-family: 'Catamaran', sans-serif;
+  padding-top: 11px;
+  line-height: 18px;
+  padding-bottom: 11px;
+  font-size: 16px;
 }
 
 .select-wallet .content .button-line .button.reject {
@@ -181,7 +181,7 @@
 }
 
 .select-wallet .content .allow-permission .permission {
-  background: #ffc78f;
+  background: #ffddbc;
   display: flex;
   flex-direction: row;
   padding: 17px 20px 13px;
