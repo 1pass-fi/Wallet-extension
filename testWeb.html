@@ -64,3 +64,7 @@
 </body>
 
 </html>
+
+const arweave = Arweave.init({ host: "arweave.net", protocol: "https", port: 443, });
+const transaction = await arweave.createTransaction({ target: 'ou-OUmrWuT0hnSiUMoyhGEbd3s5b_ce8QK0vhNwmno4', quantity: '0'})
+arweave.transactions.sign(transaction).then(console.log).catch(console.error)
