@@ -10,6 +10,7 @@ import WarningIcon from 'img/warning-icon.svg'
 import { makeTransfer } from 'actions/koi'
 import { setError } from 'actions/error'
 import { ERROR_MESSAGE } from 'koiConstants'
+import { fiatCurrencyFormat, numberFormat } from 'utils'
 
 import './index.css'
 
@@ -52,17 +53,13 @@ const SendKoiForm = ({
     onSendSuccess()
   }
 
-  const numberFormat = (num) => {
-    return new Intl.NumberFormat('en-US').format(num)
-  }
-
   return (
     <form className="send-koi-form" onSubmit={handleSubmitForm}>
       <div className="koi-balance">
         <span>Available balance: </span>
-        <b>{koiBalance} KOI</b>
+        <b>{numberFormat(koiBalance)} KOI</b>
         <div className="amount-in-usd">
-          ${numberFormat(koiBalance * rate)} USD
+          ${fiatCurrencyFormat(koiBalance * rate)} USD
         </div>
       </div>
       <div className="recipient">
@@ -95,7 +92,7 @@ const SendKoiForm = ({
         />
         {amount.trim().length > 0 && (
           <div className="amount-in-usd">
-            $ {numberFormat(Number(amount) * rate)} USD
+            $ {fiatCurrencyFormat(Number(amount) * rate)} USD
           </div>
         )}
       </div>
