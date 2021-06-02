@@ -1,8 +1,9 @@
 import '@babel/polyfill'
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch, Redirect, useHistory, withRouter } from 'react-router-dom'
+import { Route, Switch, useHistory, withRouter } from 'react-router-dom'
 import { get } from 'lodash'
+import axios from 'axios'
 
 import './Popup.css'
 import Header from 'components/header'
@@ -43,7 +44,6 @@ const Popup = ({
   getBalances
 }) => {
   const history = useHistory()
-
   useEffect(() => {
     async function getKoiData() {
       try {

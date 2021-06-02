@@ -276,7 +276,7 @@ export const loadContent = () => (dispatch) => {
     const loadSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_CONTENT_SUCCESS, response => {
       const { contentList } = response.data
       console.log('CONTENT LIST FROM ACTION', contentList)
-      dispatch(setAssets(contentList))
+      if (contentList) dispatch(setAssets(contentList))
       dispatch(setContLoading(false))
     })
     const loadFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {

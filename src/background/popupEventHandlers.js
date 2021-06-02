@@ -140,7 +140,7 @@ export default async (koi, port, message, ports, resolveId) => {
       case MESSAGES.LOAD_CONTENT: {
         const contentList = await loadMyContent(koi)
         console.log('CONTENT LIST', contentList)
-        setChromeStorage({ contentList })
+        if (contentList) setChromeStorage({ contentList })
         port.postMessage({
           type: MESSAGES.LOAD_CONTENT_SUCCESS,
           data: { contentList }

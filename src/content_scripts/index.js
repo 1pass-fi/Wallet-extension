@@ -81,6 +81,7 @@ window.addEventListener('message', function (event) {
 
   function inject(fn) {
     const script = document.createElement('script')
+    const arweaveScript = document.createElement('script')
     const { GET_ADDRESS, GET_PERMISSION, CREATE_TRANSACTION, CONNECT } = messages
     const pickedMessages = {
       GET_ADDRESS,
@@ -89,7 +90,12 @@ window.addEventListener('message', function (event) {
       CONNECT
     }
     script.text = `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(pickedMessages)}');(${fn.toString()})();`
-    document.documentElement.appendChild(script)
+    arweaveScript.src = 'https://unpkg.com/arweave/bundles/web.bundle.js'
+
+    document.documentElement.appendChild(arweaveScript)
+    setTimeout(() => {
+      document.documentElement.appendChild(script)
+    }, 2000)
   }
 
   inject(script)
