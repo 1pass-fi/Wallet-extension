@@ -1,20 +1,23 @@
 import '@babel/polyfill'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useQuery } from 'react-router-dom'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
+import throttle from 'lodash/throttle'
 
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
 import { getChromeStorage } from 'utils'
+import { MESSAGES, STORAGE, PORTS } from 'koiConstants'
 
 import KoiIcon from 'img/koi-logo.svg'
 import KoiUnit from 'img/koi-logo-no-bg.svg'
 import SettingsIcon from 'img/settings-icon.svg'
 import ShareIcon from 'img/share-icon.svg'
+import AddButton from 'img/add-button.svg'
 
 import './Options.css'
-import { MESSAGES, STORAGE, PORTS } from 'koiConstants'
+import UploadNFT from './uploadNFT'
 
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
@@ -37,6 +40,8 @@ const Header = ({ totalKoi }) => {
   )
 }
 
+const Footer = () => {}
+
 const BigCard = ({
   txId,
   name,
@@ -58,7 +63,7 @@ const BigCard = ({
         </button>
       )}
       {isRegistered && (
-        <a target="_blank" href={koiRockUrl} className='nft-path'>
+        <a target='_blank' href={koiRockUrl} className='nft-path'>
           View on koi.rocks
         </a>
       )}
@@ -75,10 +80,11 @@ const Card = ({
   koiRockUrl,
   choosen,
   setChoosen,
-  titleRef
+  titleRef,
 }) => {
   const onClick = () => {
     setChoosen(txId)
+    console.log('click')
     titleRef.current.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -94,7 +100,7 @@ const Card = ({
         </button>
       )}
       {isRegistered && (
-        <a target="_blank" href={koiRockUrl} className='nft-path'>
+        <a target='_blank' href={koiRockUrl} className='nft-path'>
           <ShareIcon />
         </a>
       )}
@@ -102,7 +108,7 @@ const Card = ({
   ) : null
 }
 
-const Content = ({ cardInfos }) => {
+const Content = ({ cardInfos, isDragging }) => {
   const [choosen, setChoosen] = useState('')
   const titleRef = useRef(null)
 
@@ -121,14 +127,22 @@ const Content = ({ cardInfos }) => {
 
   return (
     <div className='app-content'>
-      <div className='title' ref={titleRef}>My NFT Gallery</div>
+      <div className='title' ref={titleRef}>
+        My NFT Gallery
+      </div>
+      <UploadNFT isDragging={isDragging} />
       <div className='cards'>
-        {!isEmpty(choosenCard) && (
+        {!isDragging && !isEmpty(choosenCard) && (
           <BigCard {...choosenCard} setChoosen={setChoosen} />
         )}
         <div className='small-cards'>
           {cardInfos.map((cardInfo) => (
-            <Card choosen={choosen} setChoosen={setChoosen} {...cardInfo} titleRef={titleRef} />
+            <Card
+              choosen={choosen}
+              setChoosen={setChoosen}
+              {...cardInfo}
+              titleRef={titleRef}
+            />
           ))}
         </div>
       </div>
@@ -137,13 +151,17 @@ const Content = ({ cardInfos }) => {
 }
 
 export default () => {
+  const [isDragging, setIsDragging] = useState(false)
   const [cardInfos, setCardInfos] = useState([])
   const [totalKoi, setTotalKoi] = useState(0)
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const storage = await getChromeStorage([STORAGE.KOI_ADDRESS, STORAGE.CONTENT_LIST])
+        const storage = await getChromeStorage([
+          STORAGE.KOI_ADDRESS,
+          STORAGE.CONTENT_LIST,
+        ])
         if (storage[STORAGE.CONTENT_LIST]) {
           setCardInfos(storage[STORAGE.CONTENT_LIST])
         }
@@ -151,26 +169,63 @@ export default () => {
           const address = storage[STORAGE.KOI_ADDRESS]
           backgroundConnect.postMessage({
             type: MESSAGES.LOAD_WALLET,
-            data: { data: address }
+            data: { data: address },
           })
         }
       } catch (err) {
         console.log(err.message)
       }
     }
-    const getKoiHandler = new EventHandler(MESSAGES.LOAD_WALLET_SUCCESS, response => {
-      const { koiData } = response.data
+    const getKoiHandler = new EventHandler(
+      MESSAGES.LOAD_WALLET_SUCCESS,
+      (response) => {
+        const { koiData } = response.data
 
-      setTotalKoi(koiData.koiBalance)
-    })
+        setTotalKoi(koiData.koiBalance)
+      }
+    )
     backgroundConnect.addHandler(getKoiHandler)
     getData()
   }, [])
 
+  const modifyDraging = useCallback(
+    throttle((newValue) => {
+      setIsDragging(newValue)
+    }, 500),
+    []
+  )
+
   return (
-    <div className='app'>
+    <div
+      className='app'
+      onDragOver={(e) => {
+        e.preventDefault()
+        modifyDraging(true)
+      }}
+      onDragLeave={() => {
+        modifyDraging(false)
+      }}
+      onDrop={() => {
+        modifyDraging(false)
+      }}
+    >
       <Header totalKoi={totalKoi} />
-      <Content cardInfos={cardInfos} />
+      <Content cardInfos={cardInfos} isDragging={isDragging} />
+      {!isDragging && (
+        <footer className='footer-wrapper'>
+          <div className='footer-content'>
+            <AddButton
+              className='add-nft-button'
+              onClick={() => {
+                modifyDraging(true)
+              }}
+            />
+            <div className='footer-text'>
+              Drag & drop any file onto this page to create a new NFT
+            </div>
+          </div>
+        </footer>
+      )}
     </div>
   )
 }
