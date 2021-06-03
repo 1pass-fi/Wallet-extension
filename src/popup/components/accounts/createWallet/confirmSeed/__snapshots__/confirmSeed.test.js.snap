@@ -110,7 +110,7 @@ exports[`Test for ConnectToWallet component renders without crashing renders cor
         </button>
       </div>
       <button
-        class="button-shared button-outline confirm-button"
+        class="button-shared button-deactivated confirm-button"
       >
         Confirm
       </button>
@@ -415,7 +415,7 @@ exports[`Test for ConnectToWallet component select word in phrase renders correc
         </button>
       </div>
       <button
-        class="button-shared button-outline confirm-button"
+        class="button-shared button-deactivated confirm-button"
       >
         Confirm
       </button>
@@ -534,7 +534,7 @@ exports[`Test for ConnectToWallet component select word in phrase renders correc
         </button>
       </div>
       <button
-        class="button-shared button-outline confirm-button"
+        class="button-shared button-deactivated confirm-button"
       >
         Confirm
       </button>
@@ -653,7 +653,7 @@ exports[`Test for ConnectToWallet component select word in phrase renders correc
         </button>
       </div>
       <button
-        class="button-shared button-outline confirm-button"
+        class="button-shared button-deactivated confirm-button"
       >
         Confirm
       </button>
@@ -772,7 +772,7 @@ exports[`Test for ConnectToWallet component select word in phrase renders correc
         </button>
       </div>
       <button
-        class="button-shared button-outline confirm-button"
+        class="button-shared button-deactivated confirm-button"
       >
         Confirm
       </button>

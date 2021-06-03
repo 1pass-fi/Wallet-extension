@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import Modal from 'popup/components/shared/modal/index'
 import Button from 'popup/components/shared/button/'
+import { numberFormat } from 'utils'
 
 import './index.css'
 
@@ -19,7 +20,7 @@ const ModalTitle = ({ koiAmount }) => {
       <strong>Transaction Confirmation</strong> 
       <br />
       Send{' '}
-      <strong>{new Intl.NumberFormat('en-US').format(koiAmount)} KOI</strong> to
+      <strong>{numberFormat(koiAmount)} KOI</strong> to
     </div>
   )
 }

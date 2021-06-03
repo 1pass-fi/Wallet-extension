@@ -58,7 +58,7 @@
   width: 100%;
   margin-top: 30px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   font-weight: 600;
 }
 
@@ -66,10 +66,6 @@
   font-weight: 600;
   line-height: 20px;
   min-width: 156px;
-}
-
-.import-wallet-success-button.skip{
-  border: 1.5px solid #171753;
 }
 
 .import-wallet-success-button.create{

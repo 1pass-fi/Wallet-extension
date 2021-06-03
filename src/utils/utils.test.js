@@ -5,7 +5,9 @@ import {
   generateWallet,
   loadMyContent,
   transfer,
-  getBalances
+  getBalances, 
+  numberFormat,
+  fiatCurrencyFormat
 } from './index'
 
 import { LOAD_KOI_BY, ERROR_MESSAGE, PATH } from 'koiConstants'
@@ -186,5 +188,19 @@ describe('Tests for utils', () => {
         }
       })
     })
+  })
+})
+
+describe('test for numberFormatter', () => {
+  it('returns string with correct format', () => {
+    expect(numberFormat(null)).toEqual('---')
+    expect(numberFormat(12345.678)).toEqual('12,345.678')
+  })
+})
+
+describe('test for fiatCurrencyFormat', () => {
+  it('returns string with correct format', () => {
+    expect(fiatCurrencyFormat(null)).toEqual('---')
+    expect(fiatCurrencyFormat(12345.678)).toEqual('12,345.68')
   })
 })

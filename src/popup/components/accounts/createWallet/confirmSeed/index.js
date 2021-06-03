@@ -145,7 +145,7 @@ export const ConfirmSeed = ({
         <Button
           className='confirm-button'
           label={'Confirm'}
-          type={confirmActive ? '' : 'outline'}
+          type={confirmActive ? '' : 'deactivated'}
           onClick={handleOnClick}
         />
       </Card>

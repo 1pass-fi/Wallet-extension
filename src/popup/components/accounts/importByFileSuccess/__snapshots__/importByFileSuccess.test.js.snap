@@ -38,11 +38,6 @@ exports[`Test for ImportByFileSuccess component Render without crashing renders 
         <div
           class="tips-set"
         >
-          <strong
-            class="tip-item"
-          >
-            Create a 12-word seed phrase. 
-          </strong>
           <p
             class="tip-item"
           >
@@ -77,21 +72,12 @@ exports[`Test for ImportByFileSuccess component Render without crashing renders 
       class="button-line"
     >
       <a
-        href="/"
-      >
-        <button
-          class="button-shared button-filled import-wallet-success-button create"
-        >
-          Create Seed Phrase
-        </button>
-      </a>
-      <a
         href="/account"
       >
         <button
-          class="button-shared button-outline import-wallet-success-button skip"
+          class="button-shared button-filled import-wallet-success-button skip"
         >
-          Skip, Go to Accounts
+          Go to Accounts
         </button>
       </a>
     </div>

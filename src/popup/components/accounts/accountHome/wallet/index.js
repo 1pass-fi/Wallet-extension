@@ -19,7 +19,7 @@ import RemoveConnectedSite from 'popup/components/modals/removeConnectedSites'
 
 import { removeWallet, lockWallet, getKeyFile } from 'actions/koi'
 import { setNotification } from 'actions/notification'
-import { getChromeStorage, deleteOriginFromChrome } from 'utils'
+import { getChromeStorage, deleteOriginFromChrome, numberFormat, fiatCurrencyFormat } from 'utils'
 import { STORAGE, NOTIFICATION, RATE, PATH } from 'koiConstants'
 import ExportPrivateKeyModal from './exportPrivateKeyModal'
 
@@ -30,9 +30,6 @@ const WalletInfo = ({
   arBalance,
   setNotification,
 }) => {
-  const numberFormat = (num) => {
-    return num === null ? '---' : new Intl.NumberFormat('en-US').format(num)
-  }
   return (
     <div className='wallet-info'>
       <div className='wallet-info-row'>
@@ -56,11 +53,11 @@ const WalletInfo = ({
       <div className='wallet-info-row wallet-balance'>
         <div className='koi-balance'>
           <div className='balance'>{numberFormat(koiBalance)} KOI</div>
-          {<div className='usd-exchange'>${numberFormat(koiBalance * RATE.KOI)}USD</div>}
+          {<div className='usd-exchange'>${fiatCurrencyFormat(koiBalance * RATE.KOI)} USD</div>}
         </div>
         <div className='ar-balance'>
           <div className='balance'>{numberFormat(arBalance)} AR</div>
-          {<div className='usd-exchange'>${numberFormat(arBalance * RATE.AR)}USD</div>}
+          {<div className='usd-exchange'>${fiatCurrencyFormat(arBalance * RATE.AR)} USD</div>}
         </div>
       </div>
     </div>

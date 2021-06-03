@@ -123,6 +123,9 @@
 
 .backup-phrase .confirm-button {
   align-self: flex-start;
+  padding: 9px 44px 8px 44px;
+  line-height: 15px;
+  font-size: 15px;
 }
 
 .backup-phrase .qa {

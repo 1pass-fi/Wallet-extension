@@ -300,3 +300,11 @@ export const signTransaction = async (transaction) => {
 export const utils = {
   loadWallet
 }
+
+export const numberFormat = (num) => {
+  return num === null ? '---' : new Intl.NumberFormat('en-US').format(num)
+}
+
+export const fiatCurrencyFormat = (num) => {
+  return num === null ? '---' : new Intl.NumberFormat('en-US').format(num.toFixed(2))
+}

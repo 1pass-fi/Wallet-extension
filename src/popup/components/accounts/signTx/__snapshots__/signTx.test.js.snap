@@ -11,12 +11,19 @@ exports[`Test for ImportPhraseLockScreen component renders without crashing rend
       <div
         class="account-source"
       >
+        <div>
+          From:
+        </div>
         <div
           class="source-account account"
         >
-          <svg
-            class="icon"
-          />
+          <div
+            class="logo-icon"
+          >
+            <svg
+              class="icon"
+            />
+          </div>
           <div
             class="account-info"
           >
@@ -27,40 +34,36 @@ exports[`Test for ImportPhraseLockScreen component renders without crashing rend
             </div>
             <div
               class="address"
-            >
-              
-              ...
-              
-            </div>
+            />
           </div>
         </div>
-        <div
-          class="divider"
-        >
-          <div
-            class="arrow"
-          />
+        <div>
+          To:
         </div>
         <div
           class="destination-account account"
         >
-          <svg />
+          <div
+            class="logo-icon"
+          >
+            <svg />
+          </div>
           <div
             class="account-info"
           >
             <div
               class="address"
-            >
-              
-              ...
-              
-            </div>
+            />
           </div>
         </div>
       </div>
       <div
         class="origin"
-      />
+      >
+        <a
+          href=""
+        />
+      </div>
     </div>
     <div
       class="content-section"
@@ -69,32 +72,46 @@ exports[`Test for ImportPhraseLockScreen component renders without crashing rend
         class="card transaction-detail"
       >
         <div
-          class="total"
+          class="label"
         >
-          <div>
-            TOTAL
+          Transaction details
+        </div>
+        <div
+          class="details"
+        >
+          <div
+            class="detail-row"
+          >
+            Send
           </div>
           <div
-            class="amount"
+            class="detail-row amount"
           >
             <div
-              class="koi-icon"
+              class="koi"
             >
-              <svg />
+              ---
+               KOI
             </div>
-            <div />
+            <div
+              class="usd"
+            >
+              ~
+              0
+               USD
+            </div>
           </div>
         </div>
         <div
           class="button-group"
         >
           <button
-            class="button-shared button-filled confirm-button"
+            class="button-shared button-filled button confirm"
           >
             Confirm
           </button>
           <button
-            class="button-shared button-layout reject-button"
+            class="button-shared button-layout button reject"
           >
             Reject
           </button>

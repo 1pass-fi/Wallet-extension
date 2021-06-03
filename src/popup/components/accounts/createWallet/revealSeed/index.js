@@ -83,7 +83,7 @@ export const RevealSeed = ({
         <Button
           className='confirm-button'
           label={'Continue'}
-          type={isShowSeedPhrase ? '' : 'outline'}
+          type={isShowSeedPhrase ? '' : 'deactivated'}
           isEnable={isShowSeedPhrase}
           onClick={handleOnClick}
         />
