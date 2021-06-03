@@ -91,6 +91,7 @@ export const loadMyContent = async (koiObj) => {
   try {
     const { data: allContent } = await axios.get(PATH.ALL_CONTENT)
     const myContent = (allContent.filter(content => content[Object.keys(content)[0]].owner === koiObj.address)).map(content => Object.keys(content)[0])
+    console.log('MY CONTENT', myContent)
     const storage = await getChromeStorage(STORAGE.CONTENT_LIST)
     const contentList = storage[STORAGE.CONTENT_LIST] || []
     if (myContent.length === contentList.length) return
@@ -146,7 +147,7 @@ export const loadMyActivities = async (koiObj, cursor) => {
     const nextRecipientCursor = recipientData.length > 0 ? recipientData[recipientData.length - 1].cursor : recipientCursor
 
     if (activitiesList.length > 0) {
-      activitiesList = activitiesList.map(activity => {
+      activitiesList = activitiesList.filter(activity => get(activity, 'node.block') !== null).map(activity => {
         const time = get(activity, 'node.block.timestamp')
         const timeString = moment(time*1000).format('MMMM DD YYYY')
         const id = get(activity, 'node.id')
@@ -188,9 +189,13 @@ export const loadMyActivities = async (koiObj, cursor) => {
 
 export const transfer = async (koiObj, qty, address) => {
   try {
+    console.log('TRANSFER UTILS', qty, address)
     const koiBalance = await koiObj.getKoiBalance()
+    console.log('TRANSFER UTILS - KOI BALANCE', koiBalance)
     if (qty > koiBalance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
-    return await koiObj.transfer(qty, address)
+    const txId = await koiObj.transfer(qty, address)
+    console.log('TRANSFER UTILS - TXID', txId)
+    return txId
   } catch (err) {
     throw new Error(err.message)
   }

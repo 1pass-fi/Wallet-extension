@@ -64,6 +64,7 @@ const SendKoiForm = ({
 
   const hanldeTransaction = () => {
     setShowModal(false)
+    console.log('RUN MAKE TRANSFER')
     makeTransfer({ qty: Number(amount), address: address })
     onSendSuccess()
   }

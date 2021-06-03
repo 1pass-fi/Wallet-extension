@@ -20,7 +20,7 @@ const ModalTitle = ({ amount, currency }) => {
       <strong>Transaction Confirmation</strong> 
       <br />
       Send{' '}
-      <strong>{numberFormat(koiAmount)} KOI</strong> to
+      <strong>{numberFormat(amount)} {currency}</strong> to
     </div>
   )
 }

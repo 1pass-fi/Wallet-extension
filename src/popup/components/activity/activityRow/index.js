@@ -20,13 +20,13 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending }) => {
     <div className='activity-row-container'>
       <div className='activity-info main'>
         <div className='activity-name'>{activityName}</div>
-        <div className='activity-expense'>{activityName === 'Received AR' ? '+' : '-'} {expense} {activityName === 'Sent KOI' ? 'KOI' : 'AR'}</div>
+        <div className='activity-expense'>{activityName.includes('Received') ? '+' : '-'} {expense} {activityName === 'Sent KOI' ? 'KOI' : 'AR'}</div>
       </div>
       <div className='activity-info sub'>
         <div className='activity-account'>{pending ? 'Transaction pending' : <a target="_blank" href={`${url}/${id}`}><button>view block</button></a>}</div>
         <div className='activity-date'>{date}</div>
       </div>
-      {(activityName.includes('KOI') || activityName.includes('AR')) && <div>{activityName.includes('Sent') ? 'to ' : 'from '}{source}</div>}
+      {(activityName.includes('Sent') || activityName.includes('Received')) && !pending && <div>{activityName.includes('Sent') ? 'to ' : 'from '}{source}</div>}
     </div>
   )
 }

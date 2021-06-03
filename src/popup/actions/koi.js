@@ -333,14 +333,16 @@ export const makeTransfer = (inputData) => (dispatch) => {
     const { qty } = inputData
     const transferSuccessHandler = new CreateEventHandler(MESSAGES.MAKE_TRANSFER_SUCCESS, async response => {
       const { txId } = response.data
+      console.log('ACTION - TXID', txId)
       const storage = await getChromeStorage(STORAGE.PENDING_TRANSACTION)
       const pendingTransactions = storage[STORAGE.PENDING_TRANSACTION] || []
+      console.log('ACTION - PENDING TRANSACTIONS', pendingTransactions)
       pendingTransactions.push({
         id: txId,
         activityName: 'Sent KOI',
         expense: qty,
         accountName: 'Account 1',
-        date: moment().formar('MMMM DD YYYY')
+        date: moment().format('MMMM DD YYYY')
       })
       await setChromeStorage({ pendingTransactions })
       dispatch(setTransactions([{
