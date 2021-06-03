@@ -98,7 +98,8 @@ export const STORAGE = {
   ACTIVITIES_LIST: 'activitiesList',
   SITE_PERMISSION: 'sitePermission',
   PENDING_REQUEST: 'pendingRequest',
-  KOI_PHRASE: 'koiPhrase'
+  KOI_PHRASE: 'koiPhrase',
+  PENDING_TRANSACTION: 'pendingTransactions'
 }
 
 export const REQUEST = {

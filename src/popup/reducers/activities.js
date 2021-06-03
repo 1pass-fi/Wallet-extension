@@ -6,7 +6,7 @@ export default (state = initialState, action) => {
   const { type, payload } = action
   switch (type) {
     case SET_ACTIVITIES:
-      return payload
+      return [...state, ...payload]
     default:
       return state
   }

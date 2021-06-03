@@ -9,6 +9,7 @@ import createWallet from './createWallet'
 import assets from './assets'
 import activities from './activities'
 import transactions from './transactions'
+import cursor from './cursor'
 
 export default combineReducers({
   loading,
@@ -19,5 +20,6 @@ export default combineReducers({
   createWallet,
   assets,
   activities,
-  transactions
+  transactions,
+  cursor
 })

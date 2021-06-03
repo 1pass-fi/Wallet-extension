@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { setActivities } from 'actions/activities'
 import { loadActivities } from 'actions/koi'
+import { setTransactions } from 'actions/transactions'
+import { setError } from 'actions/error'
 import { getChromeStorage } from 'utils'
 
 import ActivityRow from './activityRow'
@@ -23,6 +24,21 @@ export const ActivitiesList = ({ activities }) => {
       expense={activity.expense}
       accountName={activity.accountName}
       date={activity.date}
+      id={activity.id}
+      source={activity.source}
+    />
+  ))
+}
+
+export const PendingList = ({ transactions }) => {
+  return transactions.map((transaction, index) => (
+    <ActivityRow 
+      key={index}
+      activityName={transaction.activityName}
+      expense={transaction.expense}
+      date={transaction.date}
+      pending={true}
+      id={transaction.id}
     />
   ))
 }
@@ -35,30 +51,34 @@ const AccountLabel = ({ accountName }) => {
   )
 }
 
-const Activity = ({ activities, setActivities, loadActivities }) => {
+const Activity = ({ activities, loadActivities, cursor, transactions, setTransactions, setError, error }) => {
+
   useEffect(() => {
     async function handleLoadActivities() {
-      const storage = await getChromeStorage([STORAGE.ACTIVITIES_LIST, STORAGE.KOI_ADDRESS])
-      if (storage[STORAGE.ACTIVITIES_LIST]) {
-        setActivities(storage[STORAGE.ACTIVITIES_LIST])
-      }
+      const storage = await getChromeStorage([STORAGE.KOI_ADDRESS, STORAGE.PENDING_TRANSACTION])
+      const listPendingTransaction = storage[STORAGE.PENDING_TRANSACTION]
       if (storage[STORAGE.KOI_ADDRESS]) {
-        loadActivities()
-      }
+        loadActivities({ cursor })
+      } 
+      setTransactions(listPendingTransaction)
     }
     handleLoadActivities()
   }, [])
 
+  const handleLoadMore = () => loadActivities({ cursor })
+
   return (
     <div className='activity-container'>
       {activities.length !== 0 && <AccountLabel accountName='Account #1' />}
+      <PendingList transactions={transactions} />
       <ActivitiesList activities={activities} />
+      <button onClick={handleLoadMore}>Load More</button>
     </div>
   )
 }
 
 Activity.propTypes = propTypes
 
-const mapStateToProps = (state) => ({ activities: state.activities })
+const mapStateToProps = (state) => ({ activities: state.activities, cursor: state.cursor, transactions: state.transactions, contLoading: state.contLoading, error: state.error })
 
-export default connect(mapStateToProps, { setActivities, loadActivities })(Activity)
+export default connect(mapStateToProps, { loadActivities, setTransactions, setError })(Activity)

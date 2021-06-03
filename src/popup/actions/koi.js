@@ -8,6 +8,7 @@ import { setCreateWallet } from './createWallet'
 import { setAssets } from './assets'
 import { setActivities } from './activities'
 import { setTransactions } from './transactions'
+import { setCursor } from './cursor'
 
 import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 
@@ -18,6 +19,7 @@ import { getChromeStorage, removeChromeStorage, setChromeStorage, generateWallet
 import { setNotification } from './notification'
 
 import { koi } from 'background'
+import moment from 'moment'
 
 export const getBalances = () => (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
@@ -297,11 +299,12 @@ export const loadContent = () => (dispatch) => {
   }
 }
 
-export const loadActivities = () => (dispatch) => {
-  try {
+export const loadActivities = (inputData) => (dispatch) => {
+  try { 
     dispatch(setContLoading(true))
     const loadSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_ACTIVITIES_SUCCESS, response => {
-      const { activitiesList } = response.data
+      const { activitiesList, nextOwnedCursor: ownedCursor, nextRecipientCursor: recipientCursor } = response.data
+      dispatch(setCursor({ ownedCursor, recipientCursor }))
       dispatch(setActivities(activitiesList))
       dispatch(setContLoading(false))
     })
@@ -316,6 +319,7 @@ export const loadActivities = () => (dispatch) => {
     backgroundConnect.addHandler(loadFailedHandler)
     backgroundConnect.postMessage({
       type: MESSAGES.LOAD_ACTIVITIES,
+      data: inputData
     })
   } catch (err) {
     dispatch(setError(err.message))
@@ -326,9 +330,25 @@ export const loadActivities = () => (dispatch) => {
 export const makeTransfer = (inputData) => (dispatch) => {
   try {
     dispatch(setIsLoading(true))
-    const transferSuccessHandler = new CreateEventHandler(MESSAGES.MAKE_TRANSFER_SUCCESS, response => {
+    const { qty } = inputData
+    const transferSuccessHandler = new CreateEventHandler(MESSAGES.MAKE_TRANSFER_SUCCESS, async response => {
       const { txId } = response.data
-      dispatch(setTransactions(txId))
+      const storage = await getChromeStorage(STORAGE.PENDING_TRANSACTION)
+      const pendingTransactions = storage[STORAGE.PENDING_TRANSACTION] || []
+      pendingTransactions.push({
+        id: txId,
+        activityName: 'Sent KOI',
+        expense: qty,
+        accountName: 'Account 1',
+        date: moment().formar('MMMM DD YYYY')
+      })
+      await setChromeStorage({ pendingTransactions })
+      dispatch(setTransactions([{
+        id: txId,
+        activityName: 'Sent KOI',
+        expense: qty,
+        accountName: 'Account 1'
+      }]))
       dispatch(setIsLoading(false))
       console.log('TRANSACTION ID', txId)
       dispatch(setNotification(`Transaction sent.`))

@@ -148,12 +148,13 @@ export default async (koi, port, message, ports, resolveId) => {
         break
       }
       case MESSAGES.LOAD_ACTIVITIES: {
-        const activitiesList = await loadMyActivities(koi)
+        const { cursor } = message.data
+        const { activitiesList, nextOwnedCursor, nextRecipientCursor } = await loadMyActivities(koi, cursor)
         console.log('ACTIVITIES LIST', activitiesList)
         setChromeStorage({ activitiesList })
         port.postMessage({
           type: MESSAGES.LOAD_ACTIVITIES_SUCCESS,
-          data: { activitiesList }
+          data: { activitiesList, nextOwnedCursor, nextRecipientCursor }
         })
         break
       }

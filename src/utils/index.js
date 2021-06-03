@@ -117,32 +117,73 @@ export const loadMyContent = async (koiObj) => {
 }
 
 /* istanbul ignore next */
-export const loadMyActivities = async (koiObj) => {
-  const { data } = await koiObj.getOwnedTxs(koiObj.address)
-  let activitiesList = get(data, 'transactions.edges')
-  activitiesList = activitiesList.map(activity => {
-    const time = get(activity, 'node.block.timestamp')
-    const timeString = moment(time*1000).format('MMMM DD YYYY')
-    let activityName = 'Transfer AR'
-    let expense = get(activity, 'node.quantity.ar')
-    // get input tag
-    const inputTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Input')
-    let inputFunction
-    if (inputTag[0]) {
-      inputFunction = JSON.parse(inputTag[0].value)
-      if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
-        activityName = 'Transfer KOI'
-        expense = inputFunction.qty
-      }
+export const loadMyActivities = async (koiObj, cursor) => {
+  try {
+    const { ownedCursor, recipientCursor } = cursor
+
+    let ownedData
+    let recipientData
+    if (ownedCursor) {
+      ownedData = get(await koiObj.getOwnedTxs(koiObj.address, 10, ownedCursor), 'data')
+    } else {
+      ownedData = get(await koiObj.getOwnedTxs(koiObj.address), 'data')
     }
-    return {
-      activityName,
-      expense,
-      accountName: 'Account 1',
-      date: timeString
+  
+    if (recipientCursor) {
+      recipientData = get(await koiObj.getRecipientTxs(koiObj.address, 10, recipientCursor), 'data')
+    } else {
+      recipientData = get(await koiObj.getRecipientTxs(koiObj.address), 'data')
     }
-  })
-  return activitiesList
+  
+    ownedData = get(ownedData, 'transactions.edges')
+    console.log('OWNED DATA', ownedData)
+    recipientData = get(recipientData, 'transactions.edges')
+    console.log('RECIPIENT DATA', recipientData)
+    let activitiesList = [...ownedData, ...recipientData]
+    console.log('ACTIVITIES LIST', activitiesList)
+
+    const nextOwnedCursor = ownedData.length > 0 ? ownedData[ownedData.length - 1].cursor : ownedCursor
+    const nextRecipientCursor = recipientData.length > 0 ? recipientData[recipientData.length - 1].cursor : recipientCursor
+
+    if (activitiesList.length > 0) {
+      activitiesList = activitiesList.map(activity => {
+        const time = get(activity, 'node.block.timestamp')
+        const timeString = moment(time*1000).format('MMMM DD YYYY')
+        const id = get(activity, 'node.id')
+        let activityName = 'Sent AR'
+        let expense = Number(get(activity, 'node.quantity.ar')) + Number(get(activity, 'node.fee.ar'))
+        // get input tag
+        const inputTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Input')
+        let source = get(activity, 'node.recipient')
+        let inputFunction
+        if (inputTag[0]) {
+          inputFunction = JSON.parse(inputTag[0].value)
+          if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
+            activityName = 'Sent KOI'
+            expense = inputFunction.qty
+            source = inputFunction.target
+          }
+        }
+
+        if (get(activity, 'node.owner.address') !== koiObj.address) {
+          activityName = 'Received AR'
+          source = get(activity, 'node.owner.address')
+        }
+
+        return {
+          id,
+          activityName,
+          expense,
+          accountName: 'Account 1',
+          date: timeString,
+          source
+        }
+      })
+    }
+    return { activitiesList, nextOwnedCursor, nextRecipientCursor }
+  } catch(err) {
+    throw new Error(err.message)
+  }
 }
 
 export const transfer = async (koiObj, qty, address) => {

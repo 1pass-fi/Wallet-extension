@@ -96,11 +96,9 @@ export default async (koi, port, message, ports, resolveId) => {
           break
         }
         case MESSAGES.CONNECT: {
-          console.log('MESSAGE.CONNECT BACKGROUND')
           const { id } = message
           const { permissionId } = resolveId
           permissionId.push(id)
-          console.log('ORIGIN BACKGROUND', origin)
           await setChromeStorage({
             'pendingRequest': {
               type: REQUEST.PERMISSION,
