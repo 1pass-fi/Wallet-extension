@@ -8,6 +8,18 @@ import SendKoiForm from '.'
 
 import { BrowserRouter as Router } from 'react-router-dom'
 
+const currencies = [
+  {
+    id: 'KOI',
+    value: 'KOI',
+    label: 'KOI',
+  }, {
+    id: 'AR',
+    value: 'AR',
+    label: 'AR',
+  }
+]
+
 describe('Test for SendKoiForm component', () => {
   describe('Render without crashing', () => {
     it('renders correctly', () => {

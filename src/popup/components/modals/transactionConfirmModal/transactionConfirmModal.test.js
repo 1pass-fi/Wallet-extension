@@ -7,7 +7,7 @@ import TransactionConfirmModal from '.'
 describe('Test for TransactionConfirmModal component', () => {
   describe('Render without crashing', () => {    
     it('renders correctly', () => {
-      const { container } = render(<TransactionConfirmModal />)
+      const { container } = render(<TransactionConfirmModal currency='KOI' sentAmount={123}/>)
       expect(container).toMatchSnapshot()
     })
   })

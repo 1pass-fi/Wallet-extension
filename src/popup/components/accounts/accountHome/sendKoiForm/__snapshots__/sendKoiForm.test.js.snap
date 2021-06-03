@@ -24,6 +24,35 @@ exports[`Test for SendKoiForm component Render without crashing renders correctl
       </div>
     </div>
     <div
+      class="select-container currency-select"
+    >
+      <div
+        class="select-wrapper"
+      >
+        <div
+          class="header"
+        >
+          <input
+            class="selected-option"
+            placeholder=""
+            readonly=""
+            type="text"
+            value="KOI"
+          />
+          <button
+            class="arrow-button"
+          >
+            <div
+              class="arrow-icon"
+              style="transform: none;"
+            >
+              <svg />
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
       class="recipient"
     >
       <div

@@ -11,11 +11,18 @@ import './index.css'
 
 import Wallet from './wallet'
 import { getBalances } from 'actions/koi'
-
 import { RATE } from 'koiConstants'
 
 export const AccountHome = ({ koi, getBalances }) => {
+  let currencies = []
+  for (const [key, _] of Object.entries(RATE)) {
+    currencies.push({label: key, value: key, id: key})
+  }
+
+  const defaultCurrency = currencies[0].value
+
   const [showForm, setShowForm] = useState(false)
+  const [currency, setCurrency] = useState(defaultCurrency)
   const history = useHistory()
 
   useEffect(() => {
@@ -24,14 +31,24 @@ export const AccountHome = ({ koi, getBalances }) => {
     return history.listen((location) => {
       const openSendForm = new URLSearchParams(location.search).get('openSendForm') === 'true'
       setShowForm(openSendForm)
+      if (!openSendForm) {
+        setCurrency(defaultCurrency)
+      }
     })
   }, [])
 
   const onSendSuccess = () => {
     setShowForm(false)
+    setCurrency(defaultCurrency)
   }
+
+  const onChangeCurrency = (newCurrency) => {
+    setCurrency(newCurrency)
+  } 
+
   const onClickGlobalSendButton = () => {
     if (showForm) {
+      setCurrency(defaultCurrency)
       history.replace('/account')
     } else {
       history.replace('/account?openSendForm=true')
@@ -39,10 +56,13 @@ export const AccountHome = ({ koi, getBalances }) => {
   }
   return (
     <div>
-      {koi.address && <GlobalButton onClick={onClickGlobalSendButton} />}
+      {koi.address && <GlobalButton onClick={onClickGlobalSendButton} currency={currency}/>}
       {showForm && <SendKoiForm
         koiBalance={koi.koiBalance}
-        rate={RATE.KOI}
+        arBalance={koi.arBalance}
+        onUpdateCurrency={onChangeCurrency}
+        currencies={currencies}
+
         onSendSuccess={onSendSuccess}
       />}
       {koi.address ? <Wallet accountAddress={koi.address} koiBalance={koi.koiBalance} arBalance={koi.arBalance} /> :

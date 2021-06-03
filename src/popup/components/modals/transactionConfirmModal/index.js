@@ -8,13 +8,13 @@ import { numberFormat } from 'utils'
 import './index.css'
 
 const propTypes = {
-  koiAmount: PropTypes.number,
+  sentAmount: PropTypes.number,
   accountAddress: PropTypes.string,
   onClose: PropTypes.func,
   onSubmit: PropTypes.func,
 }
 
-const ModalTitle = ({ koiAmount }) => {
+const ModalTitle = ({ amount, currency }) => {
   return (
     <div className="modal-title">
       <strong>Transaction Confirmation</strong> 
@@ -26,14 +26,15 @@ const ModalTitle = ({ koiAmount }) => {
 }
 
 const TransactionConfirmModal = ({
-  koiAmount,
+  sentAmount,
   accountAddress,
+  currency,
   onClose,
   onSubmit,
 }) => {
   return (
     <Modal onClose={onClose} className='transaction-modal'>
-      <ModalTitle koiAmount={koiAmount} />
+      <ModalTitle amount={sentAmount} currency={currency}/>
       <div className="modal-account-address confirm-transaction">{accountAddress}</div>
       <div className="modal-description">
         * Yes, I have confirmed this is the correct wallet address.
@@ -41,7 +42,7 @@ const TransactionConfirmModal = ({
       <div className="modal-action-buttons">
         <Button
           onClick={onSubmit}
-          label="Send KOI"
+          label={`Send ${currency}`}
           className="modal-action-button send"
         />
         <Button

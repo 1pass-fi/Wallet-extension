@@ -1,0 +1,79 @@
+.select-container {
+  color: #171753;
+  letter-spacing: 0.03em;
+  width: 346px;
+}
+
+.select-container .label {
+	font-size: 15px;
+	height: 20px;
+	line-height: 20px;
+	margin-left: 10px;
+	text-transform: capitalize;
+}
+
+.select-container .select-wrapper .header {
+  display: flex;
+  flex-direction: row;
+	background: #FFFFFF;
+	position: relative;
+	width: 100%;
+}
+
+.select-container .select-wrapper .header .selected-option {
+  padding-left: 10px;
+  font-weight: 600;
+  font-size: 14.5px;  
+  color: #171753;
+  flex-grow: 1;
+  height: 28px;
+  border: 1.5px solid #171753;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 2px 0 0 2px;
+  /* pointer-events: none; */
+}
+
+.select-container .select-wrapper .header .selected-option::placeholder {
+	color: #237B75;
+	opacity: 0.7;
+}
+
+.select-container .select-wrapper .header .arrow-button {
+  border: none;
+  padding: 0;
+  width: 48px;
+  height: 28px;
+  border: 1.5px solid #171753;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 0 2px 2px 0;
+  background-color:#171753;
+  cursor: pointer;
+}
+
+.select-container .select-wrapper .select-options {
+  margin-top: 2px;
+  display: flex;
+  flex-direction: column;
+  width: 298px;
+  border: 1.5px solid #171753;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
+}
+
+.select-container .select-wrapper .select-options .option{
+  height: 28px;
+  width: 100%;
+  font-weight: 600;
+  color: #171753;
+  margin: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.select-container .select-wrapper .select-options .option:hover{
+  background-color: rgba(66, 135, 245, 0.3);
+}

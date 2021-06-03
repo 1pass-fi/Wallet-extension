@@ -7,6 +7,11 @@
   background-color: #eeeeee;
 }
 
+.send-koi-form .input-wrapper {
+  width: 346px;
+  height: 28px;
+}
+
 .send-koi-form .koi-balance {
   font-size: 14px;
   line-height: 20px;
@@ -14,8 +19,12 @@
   letter-spacing: 0.03em;
 }
 
+.send-koi-form .currency-select {
+  margin: 15px 40px 0 40px;
+}
+
 .send-koi-form .recipient{
-  margin: 21px 40px 20px 40px;
+  margin: 28px 40px 20px 40px;
 }
 
 .send-koi-form .input-field.form-input .input {

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
 import InputField from 'shared/inputField'
+import Select from 'shared/select'
 import Button from 'shared/button'
 import TransactionConfirmModal from 'popup/components/modals/transactionConfirmModal'
 
@@ -16,20 +17,35 @@ import './index.css'
 
 const SendKoiForm = ({
   koiBalance,
-  rate,
+  arBalance,
+  currencies,
+  onUpdateCurrency,
   setError,
   makeTransfer,
   onSendSuccess,
 }) => {
+  const defaultCur = currencies[0].value
+
   const [address, setAddress] = useState('')
   const [amount, setAmount] = useState('')
   const [showModal, setShowModal] = useState(false)
+  const [currency, setCurrency] = useState(defaultCur)
 
   const onChangeAddress = (e) => {
     setAddress(e.target.value)
   }
+
   const onChangeAmount = (e) => {
     setAmount(e.target.value)
+  }
+
+  const onChangeCurrency = (newCurr) => {
+    setCurrency(newCurr)
+    onUpdateCurrency(newCurr)
+  }
+
+  const selectBalance = (cur) => {
+    return cur === 'KOI' ? koiBalance : arBalance
   }
 
   const handleSubmitForm = (e) => {
@@ -37,7 +53,7 @@ const SendKoiForm = ({
     try {
       if (!(address.trim().length > 0 && amount.trim().length > 0)) {
         setError(ERROR_MESSAGE.EMPTY_FIELDS)
-      } else if (Number(amount) <= 0) {
+      } else if (Number(amount) < 0) {
         setError(ERROR_MESSAGE.INVALID_AMOUNT)
       } else {
         setShowModal(true)
@@ -62,6 +78,12 @@ const SendKoiForm = ({
           ${fiatCurrencyFormat(koiBalance * rate)} USD
         </div>
       </div>
+      <Select 
+        className='currency-select'
+        options={currencies}
+        defaultOption={defaultCur}
+        onChange={onChangeCurrency}
+      />
       <div className="recipient">
         <InputField
           label="To"
@@ -84,7 +106,7 @@ const SendKoiForm = ({
       <div className="amount">
         <InputField
           label="Amount"
-          placeholder="Amount of KOI to send"
+          placeholder={`Amount of ${currency} to send`}
           className="form-input"
           type="number"
           onChange={onChangeAmount}
@@ -96,10 +118,11 @@ const SendKoiForm = ({
           </div>
         )}
       </div>
-      <Button label="Send KOI" className="send-button" />
+      <Button label={`Send ${currency}`} className="send-button" />
       {showModal && (
         <TransactionConfirmModal
-          koiAmount={Number(amount)}
+          sentAmount={Number(amount)}
+          currency={currency}
           accountAddress={address}
           onClose={() => {
             setShowModal(false)
