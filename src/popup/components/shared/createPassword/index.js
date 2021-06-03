@@ -2,12 +2,13 @@ import React, { useState, useMemo } from 'react'
 
 import InputField from '../inputField/index'
 import ButtonShared from '../button/index'
+import CheckBox from '../checkbox'
 import './index.css'
 
-export default ({ isEnable, buttonLabel }) => {
+export default  ({ isEnable, buttonLabel }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [isAccept, setIsAccept] = useState(false)
+  const [_ , setIsAccept] = useState(false)
 
   const onPasswordChange = (e) => {
     setPassword(e.target.value)
@@ -44,10 +45,11 @@ export default ({ isEnable, buttonLabel }) => {
       </div>
       <div className='term-service'>
         <div className='checkbox'>
-          <input
-            defaultValue={isAccept}
+          <CheckBox 
+            defaultChecked = {false}
+            greenBackround={false}
             onChange={onCheckbox}
-            type='checkbox'
+            className='term-service-checkbox'
             name='checkbox'
           />
         </div>
