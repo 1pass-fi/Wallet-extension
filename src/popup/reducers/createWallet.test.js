@@ -22,7 +22,7 @@ describe('CreateWallet reducer', () => {
         seedPhrase: 'seedPhrase'
       }
       expect(createWalletReducer(newAttr, { type: types.SET_CREATE_WALLET, payload: newAttr }))
-      .toEqual(newAttr)
+        .toEqual(newAttr)
     })
   })
 })

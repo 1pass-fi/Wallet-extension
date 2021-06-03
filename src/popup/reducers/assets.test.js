@@ -14,7 +14,7 @@ describe('Assets reducer', () => {
     it('adds new assets list', () => {
       const assets = [1, 2 , 3]
       expect(assetsReducer(assets, { type: types.SET_ASSETS, payload: assets }))
-      .toEqual(assets)
+        .toEqual(assets)
     })
   })
 })

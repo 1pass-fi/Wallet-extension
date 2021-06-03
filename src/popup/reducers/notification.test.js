@@ -14,7 +14,7 @@ describe('Notification reducer', () => {
     it('sets true state', () => {
       const notification = 'notification message'
       expect(notificationReducer(notification, { type: types.SET_NOTIFICATION, payload: notification }))
-      .toEqual(notification)
+        .toEqual(notification)
     })
   })
 })

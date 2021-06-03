@@ -8,6 +8,7 @@ import { setError } from 'actions/error'
 import { getChromeStorage } from 'utils'
 
 import ActivityRow from './activityRow'
+import Button from 'shared/button'
 import { STORAGE } from 'koiConstants'
 
 import './index.css'
@@ -22,7 +23,6 @@ export const ActivitiesList = ({ activities }) => {
       key={index}
       activityName={activity.activityName}
       expense={activity.expense}
-      accountName={activity.accountName}
       date={activity.date}
       id={activity.id}
       source={activity.source}
@@ -72,7 +72,11 @@ const Activity = ({ activities, loadActivities, cursor, transactions, setTransac
       {activities.length !== 0 && <AccountLabel accountName='Account #1' />}
       <PendingList transactions={transactions} />
       <ActivitiesList activities={activities} />
-      <button onClick={handleLoadMore}>Load More</button>
+      <Button className='load-more'
+        type='outline'
+        onClick={handleLoadMore}
+        label='See More Activity'
+      />
     </div>
   )
 }

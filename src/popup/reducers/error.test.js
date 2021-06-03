@@ -14,7 +14,7 @@ describe('Error reducer', () => {
     it('sets true state', () => {
       const error = 'error message'
       expect(errorReducer(error, { type: types.SET_ERROR, payload: error }))
-      .toEqual(error)
+        .toEqual(error)
     })
   })
 })

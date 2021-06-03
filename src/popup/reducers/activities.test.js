@@ -14,7 +14,7 @@ describe('Activities reducer', () => {
     it('adds new activities list', () => {
       const activities = [1, 2 , 3]
       expect(activitiesReducer(activities, { type: types.SET_ACTIVITIES, payload: activities }))
-      .toEqual(activities)
+        .toEqual(activities)
     })
   })
 })

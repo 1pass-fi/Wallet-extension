@@ -14,7 +14,7 @@ describe('Loading reducer', () => {
     it('sets true state', () => {
       const isLoading = true
       expect(loadingReducer(isLoading, { type: types.SET_LOADING, payload: isLoading }))
-      .toEqual(isLoading)
+        .toEqual(isLoading)
     })
   })
 })

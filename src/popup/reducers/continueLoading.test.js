@@ -14,7 +14,7 @@ describe('ContinueLoading reducer', () => {
     it('sets true state', () => {
       const isContLoading = true
       expect(continueLoadingReducer(isContLoading, { type: types.SET_CONT_LOADING, payload: isContLoading }))
-      .toEqual(isContLoading)
+        .toEqual(isContLoading)
     })
   })
 })

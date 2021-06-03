@@ -22,7 +22,7 @@ describe('Koi reducer', () => {
         address: 'address'
       }
       expect(koiReducer(newAttr, { type: types.SET_KOI, payload: newAttr }))
-      .toEqual(newAttr)
+        .toEqual(newAttr)
     })
   })
 })

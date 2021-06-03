@@ -1,5 +1,6 @@
 .activity-container {
   width: 100%;
+  background: #ffffff;
 }
 
 .activity-container .activity-account-label {
@@ -16,4 +17,13 @@
 
 .activity-container .activity-account-label .text {
   margin-left: 23px;
+}
+
+.activity-container .load-more {
+  margin: 40px 126px 20px;
+  width: 174px;
+  border: 1.5px solid #171753;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
 }

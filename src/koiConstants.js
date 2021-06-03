@@ -71,7 +71,8 @@ export const PATH = {
     ? `${chrome.extension.getURL('/options.html')}`
     : 'GALLERY_PATH',
   ALL_CONTENT: 'https://bundler.openkoi.com:8888/state/getTopContentPredicted?frequency=all',
-  SINGLE_CONTENT: 'https://bundler.openkoi.com:8888/state/getNFTState?tranxId='
+  SINGLE_CONTENT: 'https://bundler.openkoi.com:8888/state/getNFTState?tranxId=',
+  VIEW_BLOCK_TRANSACTION: 'https://viewblock.io/arweave/tx'
 }
 
 export const ERROR_MESSAGE = {

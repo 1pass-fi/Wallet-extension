@@ -4,25 +4,28 @@ ActivitiesList.displayName = 'ActivitiesList'
 
 const activities = [
   {
-    activityName: 'Purchased “The Balance of Koi”',
-    expense: -450,
-    accountName: 'Account #1',
-    date: new Date('04-21-2021')
+    activityName: 'Create new NFT',
+    expense: null,
+    date: new Date('04-21-2021'),
+    pending: false,
   }, {
-    activityName: 'Purchased “The Balance of Koi”',
-    expense: -450,
-    accountName: 'Account #1',
-    date: new Date('04-21-2021')
+    activityName: 'Sent KOI',
+    expense: 10,
+    date: new Date('04-21-2021'),
+    pending: true,
+    source: '12345678912345678912345678912345678923456'
   }, {
-    activityName: 'Purchased “The Balance of Koi”',
-    expense: -450,
-    accountName: 'Account #1',
-    date: new Date('04-21-2021')
+    activityName: 'Sent AR',
+    expense: 0,
+    date: new Date('04-21-2021'),
+    pending: false,
+    source: '12345678912345678912345678912345678923456'
   }, {
-    activityName: 'Purchased “The Balance of Koi”',
-    expense: -450,
-    accountName: 'Account #1',
-    date: new Date('04-21-2021')
+    activityName: 'Received KOI',
+    expense: 450,
+    date: new Date('04-21-2021'),
+    pending: true,
+    source: '12345678912345678912345678912345678923456'
   }
 ]
 

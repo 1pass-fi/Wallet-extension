@@ -6,10 +6,12 @@ export default {
   title: 'component/ActivityRow',
   component: ActivityRow,
   args: {
-    activityName: 'Purchased “The Balance of Koi”',
-    expense: -450,
-    accountName: 'Account #1',
-    date: new Date('04-21-2021')
+    activityName: 'Received AR',
+    expense: 450,
+    date: new Date('04-21-2021'),
+    source: '1234567891234567812345678',
+    id: '12345',
+    pending: false
   }
 }
 
