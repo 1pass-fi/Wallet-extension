@@ -113,8 +113,8 @@ export const SignTx = ({ signTransaction, setError }) => {
           <div className='details'>
             <div className='detail-row'>Send</div>
             <div className='detail-row amount'>
-              <div className='koi'>{numberFormat(qty)} KOI</div>
-              <div className='usd'>~{fiatCurrencyFormat(qty*RATE.KOI)} USD</div>
+              <div className='koi'>{numberFormat(qty)} AR</div>
+              <div className='usd'>~{fiatCurrencyFormat(qty*RATE.AR)} USD</div>
             </div>
           </div>
           <div className='button-group'>

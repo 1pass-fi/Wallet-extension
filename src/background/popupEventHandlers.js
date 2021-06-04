@@ -200,7 +200,7 @@ export default async (koi, port, message, ports, resolveId) => {
         const { tx, confirm } = message.data
         let transaction = null
         if (confirm) {
-          transaction = await signTransaction(tx)
+          transaction = await signTransaction(koi, tx)
           port.postMessage({
             type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
           })
