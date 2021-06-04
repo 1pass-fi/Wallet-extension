@@ -1,0 +1,73 @@
+.import-file-success {
+  letter-spacing: 0.03em;
+  padding: 24px 36px 20px;
+  color: #171753;
+  background: #e5e5e5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.congratulations-section {
+  text-align: center;
+}
+
+.congratulations-section .title {
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.congratulations-section .details {
+  font-size: 15px;
+  line-height: 20px;
+  margin-top: 13px;
+}
+
+.tips-section {
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.tips-section .title {
+  font-weight: 600;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.tips-section .details {
+  margin-top: 11px;
+  font-weight: 400;
+}
+
+.tips-section .details .tips-set{
+  margin-top: 11px;
+  padding-left: 4px;
+}
+
+.tips-section .details .tips-set .tip-item {
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+
+.tips-section .details .tips-set .tip-item .security-link {
+  color: #237b75;
+  font-weight: 600;
+}
+
+.import-file-success .button-line {
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.import-wallet-success-button {
+  font-weight: 600;
+  line-height: 20px;
+  min-width: 156px;
+}
+
+.import-wallet-success-button.create{
+  min-height: 35px;
+}

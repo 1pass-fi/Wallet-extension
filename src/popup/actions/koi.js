@@ -251,8 +251,8 @@ export const saveWallet = (inputData) => (dispatch) => {
       const encryptedSeedPhrase = await passworder.encrypt(password, seedPhrase)
       setChromeStorage({ 'koiPhrase': encryptedSeedPhrase })
       setCreateWallet({ stage: 1, password: null, seedPhrase: null })
-      window.close()
-      // history.push(PATH.HOME)
+      console.log(PATH.CREATE_WALLET_REDIRECT)
+      history.push(PATH.CREATE_WALLET_REDIRECT)
     })
     const saveFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')

@@ -330,7 +330,7 @@ export const utils = {
 }
 
 export const numberFormat = (num) => {
-  return num === null ? '---' : new Intl.NumberFormat('en-US').format(num)
+  return num === null ? '---' : new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 }).format(num)
 }
 
 export const fiatCurrencyFormat = (num) => {

@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for ImportByFileSuccess component Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="import-file-success"
+  >
+    <div
+      class="congratulations-section"
+    >
+      <div
+        class="title"
+      >
+        Congratulations!
+      </div>
+      <div
+        class="details"
+      >
+        You successfully imported your wallet to Koi.
+      </div>
+    </div>
+    <div
+      class="tips-section"
+    >
+      <div
+        class="title"
+      >
+        Remember to keep your keyfile safe.
+      </div>
+      <div
+        class="details"
+      >
+        <div
+          class="safekeeping"
+        >
+          A few tips for safekeeping:
+        </div>
+        <div
+          class="tips-set"
+        >
+          <p
+            class="tip-item"
+          >
+            Save a backup copy in several places. 
+          </p>
+          <p
+            class="tip-item"
+          >
+            Never share your seed phrase or keyfile with anyone.
+             
+          </p>
+          <p
+            class="tip-item"
+          >
+            Stay safe from phishing scams— Koi will never ask you for your seed phrase or keyfile.
+          </p>
+          <p
+            class="tip-item"
+          >
+            If you have questions or see something suspicious, email us at 
+            <a
+              class="security-link"
+            >
+              security@openkoi.com
+            </a>
+            .
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="button-line"
+    >
+      <a
+        href="/account"
+      >
+        <button
+          class="button-shared button-filled import-wallet-success-button skip"
+        >
+          Go to Accounts
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
+`;

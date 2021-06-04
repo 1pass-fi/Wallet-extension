@@ -8,7 +8,8 @@ export const HEADER_EXCLUDE_PATH = [
   '/account/login/phrase',
   '/account/connect-site',
   '/account/sign-transaction',
-  '/account/welcome'
+  '/account/welcome',
+  '/account/create/success'
 ]
 
 export const PORTS = {
@@ -62,6 +63,7 @@ export const MESSAGES = {
 export const PATH = {
   IMPORT_PHRASE_REDIRECT: '/account/import/phrase/success',
   IMPORT_KEY_REDIRECT: '/account/import/keyfile/success',
+  CREATE_WALLET_REDIRECT: '/account/create/success',
   HOME: '/account',
   LOGIN: '/account/login',
   NFT_IMAGE: 'https://arweave.net',
