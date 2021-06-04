@@ -337,10 +337,8 @@ export const makeTransfer = (inputData) => (dispatch) => {
     dispatch(setIsLoading(true))
     const transferSuccessHandler = new CreateEventHandler(MESSAGES.MAKE_TRANSFER_SUCCESS, async response => {
       const { txId, qty, address, currency } = response.data
-      console.log('ACTION - TXID', txId)
       const storage = await getChromeStorage(STORAGE.PENDING_TRANSACTION)
       const pendingTransactions = storage[STORAGE.PENDING_TRANSACTION] || []
-      console.log('ACTION - PENDING TRANSACTIONS', pendingTransactions)
       const newTransaction = {
         id: txId,
         activityName: (currency === 'KOI' ? 'Sent KOI' : 'Sent AR'),
@@ -349,8 +347,7 @@ export const makeTransfer = (inputData) => (dispatch) => {
         date: moment().format('MMMM DD YYYY'),
         source: address
       }
-      console.log({ newTransaction })
-      pendingTransactions.push(newTransaction)
+      pendingTransactions.unshift(newTransaction)
       await setChromeStorage({ pendingTransactions })
       dispatch(setTransactions(pendingTransactions))
       dispatch(setIsLoading(false))

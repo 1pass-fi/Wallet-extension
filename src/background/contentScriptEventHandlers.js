@@ -98,20 +98,29 @@ export default async (koi, port, message, ports, resolveId) => {
         case MESSAGES.CONNECT: {
           const { id } = message
           const { permissionId } = resolveId
-          permissionId.push(id)
-          await setChromeStorage({
-            'pendingRequest': {
-              type: REQUEST.PERMISSION,
-              data: { origin, favicon }
-            }
-          })
-          createWindow({
-            url: chrome.extension.getURL('/popup.html'),
-            focused: true,
-            type: 'popup',
-            height: 622,
-            width: 426
-          })
+          
+          if (!hadPermission) {
+            permissionId.push(id)
+            await setChromeStorage({
+              'pendingRequest': {
+                type: REQUEST.PERMISSION,
+                data: { origin, favicon }
+              }
+            })
+            createWindow({
+              url: chrome.extension.getURL('/popup.html'),
+              focused: true,
+              type: 'popup',
+              height: 622,
+              width: 426
+            })
+          } else {
+            port.postMessage({
+              type: MESSAGES.CONNECT_ERROR,
+              data: { message: 'This site has already connected.' },
+              id
+            })
+          }
           break
         }
 
