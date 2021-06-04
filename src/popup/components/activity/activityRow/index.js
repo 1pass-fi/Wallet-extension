@@ -24,7 +24,7 @@ const ActivityRow = ({activityName, expense, date, source, id, pending }) => {
     return num === null ? '---' : `${Math.round(num * Math.pow(10, 6)) / Math.pow(10, 6)}`
   }
   
-  const currency = activityName.includes('AR') ? 'AR' : 'KOI'
+  const currency = activityName.includes('KOI') ? 'KOI' : 'AR'
   const sign = activityName.includes('Received') ? '+' : '-'
   const sourceStr = source ? `${source.slice(0,7)}...${source.slice(source.length - 9)}` : ''
 

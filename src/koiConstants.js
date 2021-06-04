@@ -85,9 +85,10 @@ export const ERROR_MESSAGE = {
   EMPTY_FIELDS: 'Please fill in all fields.',
   NOT_ENOUGH_KOI: `You don't have enough KOI.`,
   REQUEST_NOT_EXIST: 'This request is no longer exist.',
-  INVALID_AMOUNT: 'Amount can not be negative!',
-  ALREADY_CONNECTED_SITE: 'This site has already connected',
-  MUST_USE_IN_POPUP: 'Please use this feature in the extension pop up'
+  INVALID_AMOUNT: 'Amount can not be negative.',
+  ALREADY_CONNECTED_SITE: 'This site has already connected.',
+  MUST_USE_IN_POPUP: 'Please use this feature in the extension pop up.',
+  NOT_ENOUGH_AR: `You don't have enough AR.`
 }
 
 export const STORAGE = {

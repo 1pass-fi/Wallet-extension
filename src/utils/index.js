@@ -91,7 +91,6 @@ export const loadMyContent = async (koiObj) => {
   try {
     const { data: allContent } = await axios.get(PATH.ALL_CONTENT)
     const myContent = (allContent.filter(content => content[Object.keys(content)[0]].owner === koiObj.address)).map(content => Object.keys(content)[0])
-    console.log('MY CONTENT', myContent)
     const storage = await getChromeStorage(STORAGE.CONTENT_LIST)
     const contentList = storage[STORAGE.CONTENT_LIST] || []
     if (myContent.length === contentList.length) return
@@ -137,11 +136,8 @@ export const loadMyActivities = async (koiObj, cursor) => {
     }
   
     ownedData = get(ownedData, 'transactions.edges')
-    console.log('OWNED DATA', ownedData)
     recipientData = get(recipientData, 'transactions.edges')
-    console.log('RECIPIENT DATA', recipientData)
     let activitiesList = [...ownedData, ...recipientData]
-    console.log('ACTIVITIES LIST', activitiesList)
 
     const nextOwnedCursor = ownedData.length > 0 ? ownedData[ownedData.length - 1].cursor : ownedCursor
     const nextRecipientCursor = recipientData.length > 0 ? recipientData[recipientData.length - 1].cursor : recipientCursor
@@ -155,6 +151,7 @@ export const loadMyActivities = async (koiObj, cursor) => {
         let expense = Number(get(activity, 'node.quantity.ar')) + Number(get(activity, 'node.fee.ar'))
         // get input tag
         const inputTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Input')
+        const initStateTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Init-State')
         let source = get(activity, 'node.recipient')
         let inputFunction
         if (inputTag[0]) {
@@ -164,11 +161,30 @@ export const loadMyActivities = async (koiObj, cursor) => {
             expense = inputFunction.qty
             source = inputFunction.target
           }
+
+          if (inputFunction.function === 'registerData') {
+            activityName = 'Registered NFT'
+            source = null
+          }
+        }
+
+        if (initStateTag[0]) {
+          const initState = JSON.parse(initStateTag[0].value)
+          activityName = `Purchased "${initState.title}"`
         }
 
         if (get(activity, 'node.owner.address') !== koiObj.address) {
           activityName = 'Received AR'
           source = get(activity, 'node.owner.address')
+          expense -= Number(get(activity, 'node.fee.ar'))
+          if (inputTag[0]) {
+            inputFunction = JSON.parse(inputTag[0].value)
+            if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
+              activityName = 'Received KOI'
+              expense = inputFunction.qty
+              source = inputFunction.target
+            }
+          }
         }
 
         return {
@@ -187,15 +203,22 @@ export const loadMyActivities = async (koiObj, cursor) => {
   }
 }
 
-export const transfer = async (koiObj, qty, address) => {
+export const transfer = async (koiObj, qty, address, currency) => {
   try {
-    console.log('TRANSFER UTILS', qty, address)
-    const koiBalance = await koiObj.getKoiBalance()
-    console.log('TRANSFER UTILS - KOI BALANCE', koiBalance)
-    if (qty > koiBalance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
-    const txId = await koiObj.transfer(qty, address)
-    console.log('TRANSFER UTILS - TXID', txId)
+    let balance
+    switch (currency) {
+      case 'KOI':
+        balance = await koiObj.getKoiBalance()
+        if (qty > balance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
+        break
+      case 'AR':
+        balance = await koiObj.getWalletBalance()
+        if (qty > balance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
+        break
+    }
+    const txId = await koiObj.transfer(qty, address, currency)
     return txId
+
   } catch (err) {
     throw new Error(err.message)
   }

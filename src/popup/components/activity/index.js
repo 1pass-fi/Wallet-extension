@@ -39,6 +39,7 @@ export const PendingList = ({ transactions }) => {
       date={transaction.date}
       pending={true}
       id={transaction.id}
+      source={transaction.source}
     />
   ))
 }
@@ -51,8 +52,7 @@ const AccountLabel = ({ accountName }) => {
   )
 }
 
-const Activity = ({ activities, loadActivities, cursor, transactions, setTransactions, setError, error }) => {
-
+const Activity = ({ activities, loadActivities, cursor, transactions, setTransactions, setError }) => {
   useEffect(() => {
     async function handleLoadActivities() {
       const storage = await getChromeStorage([STORAGE.KOI_ADDRESS, STORAGE.PENDING_TRANSACTION])
@@ -72,11 +72,11 @@ const Activity = ({ activities, loadActivities, cursor, transactions, setTransac
       {activities.length !== 0 && <AccountLabel accountName='Account #1' />}
       <PendingList transactions={transactions} />
       <ActivitiesList activities={activities} />
-      <Button className='load-more'
+      {!cursor.doneLoading && <Button className='load-more'
         type='outline'
         onClick={handleLoadMore}
         label='See More Activity'
-      />
+      />}
     </div>
   )
 }

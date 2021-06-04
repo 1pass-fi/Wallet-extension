@@ -64,13 +64,12 @@ const SendKoiForm = ({
 
   const hanldeTransaction = () => {
     setShowModal(false)
-    console.log('RUN MAKE TRANSFER')
-    makeTransfer({ qty: Number(amount), address: address })
+    makeTransfer({ qty: Number(amount), address: address, currency })
     onSendSuccess()
   }
 
   const numberFormat = (num) => {
-    return new Intl.NumberFormat('en-US').format(num)
+    return new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 }).format(num)
   }
 
   return (

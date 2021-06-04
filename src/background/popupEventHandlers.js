@@ -159,13 +159,13 @@ export default async (koi, port, message, ports, resolveId) => {
         break
       }
       case MESSAGES.MAKE_TRANSFER: {
-        const { qty, address } = message.data
+        const { qty, address, currency } = message.data
         console.log('QTY ', qty, 'ADDRESS ', address)
-        const txId = await transfer(koi, qty, address)
+        const txId = await transfer(koi, qty, address, currency)
         console.log('BACKGROUND - TXID', txId)
         port.postMessage({
           type: MESSAGES.MAKE_TRANSFER_SUCCESS,
-          data: { txId }
+          data: { txId, qty, address, currency }
         })
         break
       }

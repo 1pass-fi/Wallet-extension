@@ -84,7 +84,6 @@ const Card = ({
 }) => {
   const onClick = () => {
     setChoosen(txId)
-    console.log('click')
     titleRef.current.scrollIntoView({ behavior: 'smooth' })
   }
 

@@ -13,7 +13,6 @@ const Assets = ({ assets, setAssets, loadContent, isContLoading }) => {
   useEffect(() => {
     async function handleLoadContent() {
       const storage = await getChromeStorage([STORAGE.CONTENT_LIST, STORAGE.KOI_ADDRESS])
-      console.log(storage[STORAGE.CONTENT_LIST])
       if (storage[STORAGE.CONTENT_LIST]) {
         setAssets(storage[STORAGE.CONTENT_LIST])
       }

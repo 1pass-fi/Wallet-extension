@@ -109,6 +109,7 @@ export const removeWallet = (inputData) => (dispatch) => {
     const removeSuccessHandler = new CreateEventHandler(MESSAGES.REMOVE_WALLET_SUCCESS, response => {
       const { koiData } = response.data
       dispatch(setAssets([]))
+      dispatch(setTransactions([]))
       dispatch(setKoi(koiData))
       dispatch(setIsLoading(false))
       history.push('/account/welcome')
@@ -301,17 +302,22 @@ export const loadContent = () => (dispatch) => {
 
 export const loadActivities = (inputData) => (dispatch) => {
   try { 
-    dispatch(setContLoading(true))
-    const loadSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_ACTIVITIES_SUCCESS, response => {
+    const loadSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_ACTIVITIES_SUCCESS, async response => {
       const { activitiesList, nextOwnedCursor: ownedCursor, nextRecipientCursor: recipientCursor } = response.data
+      let pendingTransactions = (await getChromeStorage(STORAGE.PENDING_TRANSACTION))[STORAGE.PENDING_TRANSACTION] || []
+      pendingTransactions = pendingTransactions.filter(tx => {
+        return activitiesList.every(activity => activity.id !== tx.id)
+      })
+      console.log({ pendingTransactions })
+      setChromeStorage({ pendingTransactions })
+      dispatch(setTransactions(pendingTransactions))
       dispatch(setCursor({ ownedCursor, recipientCursor }))
+      !(activitiesList.length) && dispatch(setCursor({ doneLoading: true }))
       dispatch(setActivities(activitiesList))
-      dispatch(setContLoading(false))
     })
     const loadFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')
       const errorMessage = response.data
-      dispatch(setContLoading(false))
       dispatch(setError(errorMessage))
     })
 
@@ -323,34 +329,30 @@ export const loadActivities = (inputData) => (dispatch) => {
     })
   } catch (err) {
     dispatch(setError(err.message))
-    dispatch(setContLoading(false))
   }
 }
 
 export const makeTransfer = (inputData) => (dispatch) => {
   try {
     dispatch(setIsLoading(true))
-    const { qty } = inputData
     const transferSuccessHandler = new CreateEventHandler(MESSAGES.MAKE_TRANSFER_SUCCESS, async response => {
-      const { txId } = response.data
+      const { txId, qty, address, currency } = response.data
       console.log('ACTION - TXID', txId)
       const storage = await getChromeStorage(STORAGE.PENDING_TRANSACTION)
       const pendingTransactions = storage[STORAGE.PENDING_TRANSACTION] || []
       console.log('ACTION - PENDING TRANSACTIONS', pendingTransactions)
-      pendingTransactions.push({
+      const newTransaction = {
         id: txId,
-        activityName: 'Sent KOI',
+        activityName: (currency === 'KOI' ? 'Sent KOI' : 'Sent AR'),
         expense: qty,
         accountName: 'Account 1',
-        date: moment().format('MMMM DD YYYY')
-      })
+        date: moment().format('MMMM DD YYYY'),
+        source: address
+      }
+      console.log({ newTransaction })
+      pendingTransactions.push(newTransaction)
       await setChromeStorage({ pendingTransactions })
-      dispatch(setTransactions([{
-        id: txId,
-        activityName: 'Sent KOI',
-        expense: qty,
-        accountName: 'Account 1'
-      }]))
+      dispatch(setTransactions(pendingTransactions))
       dispatch(setIsLoading(false))
       console.log('TRANSACTION ID', txId)
       dispatch(setNotification(`Transaction sent.`))

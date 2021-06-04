@@ -87,7 +87,6 @@ export const ConnectToWallet = ({ setError, connectSite }) => {
       const request = (await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]
       const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[STORAGE.KOI_ADDRESS]
       setAddress(address)
-      console.log('REQUEST DATA', request)
       const requestOrigin = get(request, 'data.origin')
       const requestFavicon = get(request, 'data.favicon')
       setOrigin(requestOrigin)
