@@ -9,6 +9,7 @@ import { setAssets } from './assets'
 import { setActivities } from './activities'
 import { setTransactions } from './transactions'
 import { setCursor } from './cursor'
+import { clearActivities } from './activities'
 
 import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 
@@ -110,6 +111,8 @@ export const removeWallet = (inputData) => (dispatch) => {
       const { koiData } = response.data
       dispatch(setAssets([]))
       dispatch(setTransactions([]))
+      dispatch(clearActivities())
+      dispatch(setCursor({ ownedCursor: null, recipientCursor: null, doneLoading: false }))
       dispatch(setKoi(koiData))
       dispatch(setIsLoading(false))
       history.push('/account/welcome')

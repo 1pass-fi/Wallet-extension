@@ -1,4 +1,4 @@
-import { SET_ACTIVITIES } from 'actions/types'
+import { SET_ACTIVITIES, CLEAR_ACTIVITIES } from 'actions/types'
 
 const initialState = []
 
@@ -7,6 +7,8 @@ export default (state = initialState, action) => {
   switch (type) {
     case SET_ACTIVITIES:
       return [...state, ...payload]
+    case CLEAR_ACTIVITIES:
+      return []
     default:
       return state
   }
