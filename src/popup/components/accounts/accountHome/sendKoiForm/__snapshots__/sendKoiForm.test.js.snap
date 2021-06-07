@@ -12,14 +12,13 @@ exports[`Test for SendKoiForm component Render without crashing renders correctl
         Available balance: 
       </span>
       <b>
-        1,345.22
-         KOI
+        1345.22 KOI
       </b>
       <div
         class="amount-in-usd"
       >
         $
-        24,671.33
+        1,251.0546
          USD
       </div>
     </div>

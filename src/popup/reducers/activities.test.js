@@ -13,8 +13,15 @@ describe('Activities reducer', () => {
   describe('Handle SET_ACTIVITIES', () => {
     it('adds new activities list', () => {
       const activities = [1, 2 , 3]
-      expect(activitiesReducer(activities, { type: types.SET_ACTIVITIES, payload: activities }))
+      expect(activitiesReducer([], { type: types.SET_ACTIVITIES, payload: activities }))
         .toEqual(activities)
+    })
+  })
+
+  describe('Handle CLEAR_ACTIVITIES', () => {
+    it('returns empty array', () => {
+      expect(activitiesReducer([1, 2, 3], { type: types.CLEAR_ACTIVITIES }))
+        .toEqual([])
     })
   })
 })

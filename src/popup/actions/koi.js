@@ -303,6 +303,7 @@ export const loadContent = () => (dispatch) => {
   }
 }
 
+/* istanbul ignore next */
 export const loadActivities = (inputData) => (dispatch) => {
   try { 
     const loadSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_ACTIVITIES_SUCCESS, async response => {
@@ -311,8 +312,7 @@ export const loadActivities = (inputData) => (dispatch) => {
       pendingTransactions = pendingTransactions.filter(tx => {
         return activitiesList.every(activity => activity.id !== tx.id)
       })
-      console.log({ pendingTransactions })
-      setChromeStorage({ pendingTransactions })
+      await setChromeStorage({ pendingTransactions })
       dispatch(setTransactions(pendingTransactions))
       dispatch(setCursor({ ownedCursor, recipientCursor }))
       !(activitiesList.length) && dispatch(setCursor({ doneLoading: true }))
@@ -335,6 +335,7 @@ export const loadActivities = (inputData) => (dispatch) => {
   }
 }
 
+/* istanbul ignore next */
 export const makeTransfer = (inputData) => (dispatch) => {
   try {
     dispatch(setIsLoading(true))

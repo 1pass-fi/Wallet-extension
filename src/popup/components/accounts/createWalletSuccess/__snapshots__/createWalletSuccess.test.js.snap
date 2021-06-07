@@ -71,15 +71,11 @@ exports[`Test for ImportByFileSuccess component Render without crashing renders 
     <div
       class="button-line"
     >
-      <a
-        href="/account"
+      <button
+        class="button-shared button-filled import-wallet-success-button skip"
       >
-        <button
-          class="button-shared button-filled import-wallet-success-button skip"
-        >
-          Go to Accounts
-        </button>
-      </a>
+        Finish
+      </button>
     </div>
   </div>
 </div>

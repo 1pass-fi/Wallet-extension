@@ -23,7 +23,7 @@ const currencies = [
 describe('Test for SendKoiForm component', () => {
   describe('Render without crashing', () => {
     it('renders correctly', () => {
-      const { container } = render(<Router><Provider store={store}><SendKoiForm koiBalance={1345.22} rate={18.34} /></Provider></Router>)
+      const { container } = render(<Router><Provider store={store}><SendKoiForm koiBalance={1345.22} rate={18.34} currencies={currencies} /></Provider></Router>)
       expect(container).toMatchSnapshot()
     })
   })

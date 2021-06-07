@@ -108,32 +108,38 @@ describe('Tests for utils', () => {
         title: 'title 1',
         ticker: 'KOINFT',
         totalReward: 1000,
-        txIdContent: 'txId1'
+        txIdContent: '/txId1'
       }
 
       contentTwo = {
         title: 'title 2',
         ticker: 'ANOTHER',
         totalReward: 2000,
-        txIdContent: 'txId2'
+        txIdContent: '/txId2'
       }
 
       contentThree = {
         title: 'title 3',
         ticker: 'KOINFT',
         totalReward: 3000,
-        txIdContent: 'txId3'
+        txIdContent: '/txId3'
       }
 
       const url = PATH.ALL_CONTENT
       const contentOneUrl = `${PATH.SINGLE_CONTENT}/txId1`
       const contentTwoUrl = `${PATH.SINGLE_CONTENT}/txId2`
       const contentThreeUrl = `${PATH.SINGLE_CONTENT}/txId3`
+      const imageOneUrl = `${PATH.NFT_IMAGE}/txId1`
+      const imageTwoUrl = `${PATH.NFT_IMAGE}/txId2`
+      const imageThreeUrl = `${PATH.NFT_IMAGE}/txId3`
 
       mock.onGet(url).reply(200, allContent)
       mock.onGet(contentOneUrl).reply(200, contentOne)
       mock.onGet(contentTwoUrl).reply(200, contentTwo)
       mock.onGet(contentThreeUrl).reply(200, contentThree)
+      mock.onGet(imageOneUrl).reply(200, 'image1')
+      mock.onGet(imageTwoUrl).reply(200, 'image2')
+      mock.onGet(imageThreeUrl).reply(200, 'image3')
     })
 
     it('return list of content', async () => {
@@ -144,20 +150,20 @@ describe('Tests for utils', () => {
           name: 'title 1',
           isKoiWallet: true,
           earnedKoi: 1000,
-          txId: 'txId1',
-          imageUrl: `${PATH.NFT_IMAGE}txId1`,
-          galleryUrl: `${PATH.GALLERY}?id=txId1`,
-          koiRockUrl: `${PATH.KOI_ROCK}txId1`,
+          txId: '/txId1',
+          imageUrl: `data:image/jpeg;base64,aW1hZ2Ux`,
+          galleryUrl: `${PATH.GALLERY}?id=/txId1`,
+          koiRockUrl: `${PATH.KOI_ROCK}/txId1`,
           isRegistered: true
         },
         {
           name: 'title 2',
           isKoiWallet: false,
           earnedKoi: 2000,
-          txId: 'txId2',
-          imageUrl: `${PATH.NFT_IMAGE}txId2`,
-          galleryUrl: `${PATH.GALLERY}?id=txId2`,
-          koiRockUrl: `${PATH.KOI_ROCK}txId2`,
+          txId: '/txId2',
+          imageUrl: `data:image/jpeg;base64,aW1hZ2Uy`,
+          galleryUrl: `${PATH.GALLERY}?id=/txId2`,
+          koiRockUrl: `${PATH.KOI_ROCK}/txId2`,
           isRegistered: true
         }
       ])
@@ -201,6 +207,6 @@ describe('test for numberFormatter', () => {
 describe('test for fiatCurrencyFormat', () => {
   it('returns string with correct format', () => {
     expect(fiatCurrencyFormat(null)).toEqual('---')
-    expect(fiatCurrencyFormat(12345.678)).toEqual('12,345.68')
+    expect(fiatCurrencyFormat(12345.678)).toEqual('12,345.678')
   })
 })
