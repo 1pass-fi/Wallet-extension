@@ -1,5 +1,8 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import sinon from 'sinon'
+import { utils } from 'utils'
+import moment from 'moment'
 require('text-encoding').TextDecoder
 
 import backgroundConnect from 'actions/backgroundConnect'
@@ -1041,6 +1044,10 @@ describe('Tests for actions/koi', () => {
 
     beforeEach(() => {
       store = mockStore()
+      const getChromeStorageStub = sinon.stub(utils, 'getChromeStorage')
+      getChromeStorageStub.returns({ 'pendingTransactions': ['tx1', 'tx2'] })
+      const setChromeStorageStub = sinon.stub(utils, 'setChromeStorage')
+      setChromeStorageStub.returns(null)
 
       const push = jest.fn()
       history = { push }
@@ -1051,44 +1058,56 @@ describe('Tests for actions/koi', () => {
       loadActivities(inputData)(dispatch)
     })
 
-    xdescribe('background loadActivities success', () => {
+    afterEach(() => {
+      utils.getChromeStorage.restore()
+      utils.setChromeStorage.restore()
+      sinon.reset()
+    })
+
+    describe('background loadActivities success', () => {
       beforeEach(() => {
         let loadSuccessFunction = backgroundConnect.eventHandlers.filter((handler) => {
           return handler.type = MESSAGES.LOAD_ACTIVITIES_SUCCESS
         })[0].callback
-
         const response = {
           data: {
-            activitiesList: 'activitiesList'
+            activitiesList: [],
+            nextOwnedCursor: null,
+            nextRecipientCursor: null
           }
         }
 
-        backgroundConnect.postMessage = () => {
-          loadSuccessFunction(response)
+        backgroundConnect.postMessage = async () => {
+          await loadSuccessFunction(response)
         }
 
         expectedActions = [
           {
-            type: SET_CONT_LOADING,
-            payload: true
+            type: SET_TRANSACTIONS,
+            payload: ["tx1", "tx2"]
           },
           {
-            type: SET_CONT_LOADING,
-            payload: true
+            type: SET_CURSOR,
+            payload: {
+              ownedCursor: null,
+              recipientCursor: null
+            }
+          },
+          {
+            type: SET_CURSOR,
+            payload: {
+              doneLoading: true
+            }
           },
           {
             type: SET_ACTIVITIES,
-            payload: 'activitiesList'
-          },
-          {
-            type: SET_CONT_LOADING,
-            payload: false
+            payload: []
           }
         ]
       })
 
       it('dispatchs data as expected', async () => {
-        store.dispatch(loadActivities(inputData))
+        await store.dispatch(loadActivities(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -1152,7 +1171,7 @@ describe('Tests for actions/koi', () => {
       makeTransfer(inputData)(dispatch)
     })
 
-    xdescribe('background makeTransfer success', () => {
+    describe('background makeTransfer success', () => {
       beforeEach(() => {
         let transferSuccessFunction = backgroundConnect.eventHandlers.filter((handler) => {
           return handler.type = MESSAGES.MAKE_TRANSFER_SUCCESS
@@ -1160,12 +1179,15 @@ describe('Tests for actions/koi', () => {
 
         const response = {
           data: {
-            txId: 'txId'
+            txId: 'txId',
+            qty: 100,
+            address: 'address',
+            currency: 'KOI'
           }
         }
 
-        backgroundConnect.postMessage = () => {
-          transferSuccessFunction(response)
+        backgroundConnect.postMessage = async () => {
+          await transferSuccessFunction(response)
         }
 
         expectedActions = [
@@ -1179,7 +1201,14 @@ describe('Tests for actions/koi', () => {
           },
           {
             type: SET_TRANSACTIONS,
-            payload: 'txId'
+            payload: [{
+              accountName: 'Account 1',
+              activityName: 'Sent KOI',
+              date: moment().format('MMMM DD YYYY'),
+              expense: 100,
+              id: "txId",
+              source: "address"
+            }]
           },
           {
             type: SET_LOADING,
@@ -1193,7 +1222,7 @@ describe('Tests for actions/koi', () => {
       })
 
       it('dispatchs data as expected', async () => {
-        store.dispatch(makeTransfer(inputData))
+        await store.dispatch(makeTransfer(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })

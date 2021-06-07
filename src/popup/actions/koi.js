@@ -17,6 +17,7 @@ import { MESSAGES, PATH, STORAGE, REQUEST, NOTIFICATION } from 'koiConstants'
 
 import { SET_KOI } from 'actions/types'
 import { getChromeStorage, removeChromeStorage, setChromeStorage, generateWallet as generateWalletUtil, saveWalletToChrome } from 'utils'
+import { utils } from 'utils'
 import { setNotification } from './notification'
 
 import { koi } from 'background'
@@ -303,16 +304,18 @@ export const loadContent = () => (dispatch) => {
   }
 }
 
-/* istanbul ignore next */
-export const loadActivities = (inputData) => (dispatch) => {
+export const loadActivities = (inputData) => async (dispatch) => {
   try { 
     const loadSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_ACTIVITIES_SUCCESS, async response => {
+      
       const { activitiesList, nextOwnedCursor: ownedCursor, nextRecipientCursor: recipientCursor } = response.data
-      let pendingTransactions = (await getChromeStorage(STORAGE.PENDING_TRANSACTION))[STORAGE.PENDING_TRANSACTION] || []
+      let pendingTransactions = (await utils.getChromeStorage(STORAGE.PENDING_TRANSACTION))[STORAGE.PENDING_TRANSACTION] || []
+
       pendingTransactions = pendingTransactions.filter(tx => {
         return activitiesList.every(activity => activity.id !== tx.id)
       })
-      await setChromeStorage({ pendingTransactions })
+      await utils.setChromeStorage({ pendingTransactions })
+      
       dispatch(setTransactions(pendingTransactions))
       dispatch(setCursor({ ownedCursor, recipientCursor }))
       !(activitiesList.length) && dispatch(setCursor({ doneLoading: true }))
@@ -326,7 +329,7 @@ export const loadActivities = (inputData) => (dispatch) => {
 
     backgroundConnect.addHandler(loadSuccessHandler)
     backgroundConnect.addHandler(loadFailedHandler)
-    backgroundConnect.postMessage({
+    await backgroundConnect.postMessage({
       type: MESSAGES.LOAD_ACTIVITIES,
       data: inputData
     })
@@ -335,8 +338,7 @@ export const loadActivities = (inputData) => (dispatch) => {
   }
 }
 
-/* istanbul ignore next */
-export const makeTransfer = (inputData) => (dispatch) => {
+export const makeTransfer = (inputData) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true))
     const transferSuccessHandler = new CreateEventHandler(MESSAGES.MAKE_TRANSFER_SUCCESS, async response => {
@@ -366,7 +368,7 @@ export const makeTransfer = (inputData) => (dispatch) => {
     })
     backgroundConnect.addHandler(transferSuccessHandler)
     backgroundConnect.addHandler(transferFailedHandler)
-    backgroundConnect.postMessage({
+    await backgroundConnect.postMessage({
       type: MESSAGES.MAKE_TRANSFER,
       data: inputData
     })
@@ -446,6 +448,15 @@ export const connectSite = (inputData) => (dispatch) => {
   } catch (err) {
     dispatch(setError(err.message))
   }
+}
+
+export const getAddress = () => async () => {
+  return new Promise((resolve, reject) => {
+    backgroundConnect.postMessage({
+      type: MESSAGES.GET_ADDRESS,
+      data: { resolve }
+    })
+  })
 }
 
 export const setKoi = (payload) => ({ type: SET_KOI, payload })

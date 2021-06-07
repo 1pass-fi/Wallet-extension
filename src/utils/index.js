@@ -323,7 +323,9 @@ export const signTransaction = async (koiObj, transaction) => {
 }
 
 export const utils = {
-  loadWallet
+  loadWallet,
+  setChromeStorage,
+  getChromeStorage
 }
 
 export const numberFormat = (num) => {
