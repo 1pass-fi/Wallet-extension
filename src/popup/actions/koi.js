@@ -39,7 +39,7 @@ export const importWallet = (inputData) => (dispatch) => {
   try {
     const { data, password } = inputData
     dispatch(setIsLoading(true))
-    const { history, redirectPath } = inputData
+    let { history, redirectPath } = inputData
     const importSuccessHandler = new CreateEventHandler(MESSAGES.IMPORT_WALLET_SUCCESS, async response => {
       const { koiData } = response.data
       console.log('IMPORT_WALLET_SUCCESS---', koiData)
@@ -52,9 +52,9 @@ export const importWallet = (inputData) => (dispatch) => {
       } 
       /* istanbul ignore next */
       await removeChromeStorage(STORAGE.SITE_PERMISSION)
-      await removeChromeStorage(STORAGE.PENDING_REQUEST)
       await removeChromeStorage(STORAGE.CONTENT_LIST)
       await removeChromeStorage(STORAGE.ACTIVITIES_LIST)
+      redirectPath = ((await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) ? PATH.CONNECT_SITE : redirectPath
       history.push(redirectPath)
       dispatch(getBalances())
     })
@@ -255,8 +255,11 @@ export const saveWallet = (inputData) => (dispatch) => {
       const encryptedSeedPhrase = await passworder.encrypt(password, seedPhrase)
       setChromeStorage({ 'koiPhrase': encryptedSeedPhrase })
       setCreateWallet({ stage: 1, password: null, seedPhrase: null })
-      console.log(PATH.CREATE_WALLET_REDIRECT)
-      history.push(PATH.CREATE_WALLET_REDIRECT)
+      if ((await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) {
+        history.push(PATH.CONNECT_SITE)
+      } else {
+        history.push(PATH.CREATE_WALLET_REDIRECT)
+      } 
     })
     const saveFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
       console.log('=== BACKGROUND ERROR ===')

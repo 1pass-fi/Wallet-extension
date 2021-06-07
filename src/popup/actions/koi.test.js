@@ -1084,7 +1084,7 @@ describe('Tests for actions/koi', () => {
         expectedActions = [
           {
             type: SET_TRANSACTIONS,
-            payload: ["tx1", "tx2"]
+            payload: ['tx1', 'tx2']
           },
           {
             type: SET_CURSOR,
@@ -1206,8 +1206,8 @@ describe('Tests for actions/koi', () => {
               activityName: 'Sent KOI',
               date: moment().format('MMMM DD YYYY'),
               expense: 100,
-              id: "txId",
-              source: "address"
+              id: 'txId',
+              source: 'address'
             }]
           },
           {
