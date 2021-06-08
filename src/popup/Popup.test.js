@@ -7,7 +7,7 @@ import React from 'react'
 
 import Popup from './Popup'
 
-describe('Test for Popup component', () => {
+xdescribe('Test for Popup component', () => {
   describe('Render without crashing', () => {
     it('renders correctly', () => {
       const { container } = render(<Router><Provider store={store}><Popup /></Provider></Router>)

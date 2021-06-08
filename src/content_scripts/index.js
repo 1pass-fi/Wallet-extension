@@ -13,7 +13,15 @@ const messageTypes = [
   MESSAGES.CREATE_TRANSACTION_SUCCESS,
   MESSAGES.CREATE_TRANSACTION_ERROR,
   MESSAGES.CONNECT_SUCCESS,
-  MESSAGES.CONNECT_ERROR
+  MESSAGES.CONNECT_ERROR,
+  MESSAGES.KOI_GET_ADDRESS_SUCCESS,
+  MESSAGES.KOI_GET_ADDRESS_ERROR,
+  MESSAGES.KOI_GET_PERMISSION_SUCCESS,
+  MESSAGES.KOI_GET_PERMISSION_ERROR,
+  MESSAGES.KOI_CREATE_TRANSACTION_SUCCESS,
+  MESSAGES.KOI_CREATE_TRANSACTION_ERROR,
+  MESSAGES.KOI_CONNECT_SUCCESS,
+  MESSAGES.KOI_CONNECT_ERROR
 ]
 export const backgroundConnect = new BackgroundConnect(PORTS.CONTENT_SCRIPT)
 messageTypes.forEach(messageType => {
@@ -28,6 +36,10 @@ window.addEventListener('message', function (event) {
     case MESSAGES.GET_PERMISSION:
     case MESSAGES.CREATE_TRANSACTION:
     case MESSAGES.CONNECT:
+    case MESSAGES.KOI_GET_ADDRESS:
+    case MESSAGES.KOI_GET_PERMISSION:
+    case MESSAGES.KOI_CREATE_TRANSACTION:
+    case MESSAGES.KOI_CONNECT:
       backgroundConnect.postMessage(event.data)
       break
     default:
@@ -59,6 +71,12 @@ window.addEventListener('message', function (event) {
       connect: () => buildPromise(MESSAGE_TYPES.CONNECT),
       sign: (transaction) => buildPromise(MESSAGE_TYPES.CREATE_TRANSACTION, { transaction })
     }
+    window.koiWallet = {
+      getAddress: () => buildPromise(MESSAGE_TYPES.KOI_GET_ADDRESS),
+      getPermissions: () => buildPromise(MESSAGE_TYPES.KOI_GET_PERMISSION),
+      connect: () => buildPromise(MESSAGE_TYPES.KOI_CONNECT),
+      sign: (transaction) => buildPromise(MESSAGE_TYPES.KOI_CREATE_TRANSACTION, { transaction })
+    }
     window.addEventListener('message', function (event) {
       if (!event.data || !event.data.type) {
         return
@@ -82,12 +100,25 @@ window.addEventListener('message', function (event) {
   function inject(fn) {
     const script = document.createElement('script')
     const arweaveScript = document.createElement('script')
-    const { GET_ADDRESS, GET_PERMISSION, CREATE_TRANSACTION, CONNECT } = messages
+    const { 
+      GET_ADDRESS,
+      GET_PERMISSION, 
+      CREATE_TRANSACTION, 
+      CONNECT,
+      KOI_GET_ADDRESS,
+      KOI_GET_PERMISSION, 
+      KOI_CREATE_TRANSACTION, 
+      KOI_CONNECT 
+    } = messages
     const pickedMessages = {
       GET_ADDRESS,
       GET_PERMISSION,
       CREATE_TRANSACTION,
-      CONNECT
+      CONNECT,
+      KOI_GET_ADDRESS,
+      KOI_GET_PERMISSION, 
+      KOI_CREATE_TRANSACTION, 
+      KOI_CONNECT 
     }
     script.text = `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(pickedMessages)}');(${fn.toString()})();`
     arweaveScript.src = 'https://unpkg.com/arweave/bundles/web.bundle.js'

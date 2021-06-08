@@ -453,13 +453,5 @@ export const connectSite = (inputData) => (dispatch) => {
   }
 }
 
-export const getAddress = () => async () => {
-  return new Promise((resolve, reject) => {
-    backgroundConnect.postMessage({
-      type: MESSAGES.GET_ADDRESS,
-      data: { resolve }
-    })
-  })
-}
 
 export const setKoi = (payload) => ({ type: SET_KOI, payload })

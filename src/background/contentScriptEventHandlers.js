@@ -36,11 +36,18 @@ export default async (koi, port, message, ports, resolveId) => {
   const perform = async () => {
     try {
       const { origin, favicon, hadPermission } = await checkCurrentTabPermission()
-      if (![MESSAGES.GET_PERMISSION, MESSAGES.CREATE_TRANSACTION, MESSAGES.CONNECT].includes(message.type)) {
+      const allowedEndpoints = [
+        MESSAGES.GET_PERMISSION,
+        MESSAGES.CREATE_TRANSACTION,
+        MESSAGES.CONNECT,
+        MESSAGES.KOI_GET_PERMISSION,
+        MESSAGES.KOI_CONNECT,
+      ]
+      if (!allowedEndpoints.includes(message.type)) {
         if (!hadPermission) {
           port.postMessage({
-            type: `${message.type}_ERROR`,
-            data: 'You don\'t have enough permissions to perform this action',
+            type: `${message.type}_SUCCESS`,
+            data: { status: 401, data: 'Do not have permissions.' },
             id: message.id
           })
           return
@@ -64,11 +71,29 @@ export default async (koi, port, message, ports, resolveId) => {
           }
           break
         }
+
+        case MESSAGES.KOI_GET_ADDRESS: {
+          if (koi.address) {
+            port.postMessage({
+              type: MESSAGES.KOI_GET_ADDRESS_SUCCESS,
+              data: { status: 200, data: koi.address },
+              id: message.id
+            })
+          } else {
+            port.postMessage({
+              type: MESSAGES.KOI_GET_ADDRESS_SUCCESS,
+              data: { status: 404, data: 'Address not found.' },
+              id: message.id
+            })
+          }
+          break
+        }
+
         case MESSAGES.GET_PERMISSION: {
           if (hadPermission) {
             port.postMessage({
               type: MESSAGES.GET_PERMISSION_SUCCESS,
-              data: ['SIGN_TRANSACTION'],
+              data: ['SIGN_TRANSACTION', 'GET_ADDRESS'],
               id: message.id
             })
           } else {
@@ -78,23 +103,26 @@ export default async (koi, port, message, ports, resolveId) => {
               id: message.id
             })
           }
-          // if (!hadPermission) {
-          //   await setChromeStorage({
-          //     'pendingRequest': {
-          //       type: REQUEST.PERMISSION,
-          //       data: { origin, favicon }
-          //     }
-          //   })
-          // chrome.windows.create({
-          //   url: chrome.extension.getURL('/popup.html'),
-          //   focused: true,
-          //   type: 'popup',
-          //   height: 622,
-          //   width: 426
-          // })
-          // }
           break
         }
+
+        case MESSAGES.KOI_GET_PERMISSION: {
+          if (hadPermission) {
+            port.postMessage({
+              type: MESSAGES.KOI_GET_PERMISSION_SUCCESS,
+              data: { status: 200, data: ['SIGN_TRANSACTION', 'GET_ADDRESS'] },
+              id: message.id
+            })
+          } else {
+            port.postMessage({
+              type: MESSAGES.KOI_GET_PERMISSION_SUCCESS,
+              data: { status: 200, data: [] },
+              id: message.id
+            })
+          }
+          break
+        }
+
         case MESSAGES.CONNECT: {
           const { id } = message
           const { permissionId } = resolveId
@@ -118,6 +146,35 @@ export default async (koi, port, message, ports, resolveId) => {
             port.postMessage({
               type: MESSAGES.CONNECT_ERROR,
               data: { message: 'This site has already connected.' },
+              id
+            })
+          }
+          break
+        }
+
+        case MESSAGES.KOI_CONNECT: {
+          const { id } = message
+          const { permissionId } = resolveId
+          
+          if (!hadPermission) {
+            permissionId.push(id)
+            await setChromeStorage({
+              'pendingRequest': {
+                type: REQUEST.PERMISSION,
+                data: { origin, favicon }
+              }
+            })
+            createWindow({
+              url: chrome.extension.getURL('/popup.html'),
+              focused: true,
+              type: 'popup',
+              height: 622,
+              width: 426
+            })
+          } else {
+            port.postMessage({
+              type: MESSAGES.KOI_CONNECT_SUCCESS,
+              data: { status: 400, data: 'This site has already connected.' },
               id
             })
           }
@@ -159,6 +216,37 @@ export default async (koi, port, message, ports, resolveId) => {
               width: 426
             })
           }
+          break
+        }
+
+        case MESSAGES.KOI_CREATE_TRANSACTION: {
+          const { transaction } = message.data
+          console.log('ORIGIN', origin)
+          console.log('FAVICON', favicon)
+          console.log('TRANSACTION', transaction)
+          console.log('PERMISSION CREATE TRANSACTION', hadPermission)
+
+          const { id } = message
+          const { createTransactionId } = resolveId
+          createTransactionId.push(id)
+
+          const qty = transaction.quantity
+          const address = transaction.target
+          console.log('QUANTITY', qty)
+          console.log('ADDRESS', address)
+          await setChromeStorage({
+            'pendingRequest': {
+              type: REQUEST.TRANSACTION,
+              data: { transaction, qty, address, origin, favicon }
+            }
+          })
+          createWindow({
+            url: chrome.extension.getURL('/popup.html'),
+            focused: true,
+            type: 'popup',
+            height: 622,
+            width: 426
+          })
           break
         }
         default:

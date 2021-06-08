@@ -183,6 +183,17 @@ export default async (koi, port, message, ports, resolveId) => {
         const { permissionId } = resolveId
         if (confirm) {
           await saveOriginToChrome(origin)
+          ports[PORTS.CONTENT_SCRIPT].postMessage({
+            type: MESSAGES.KOI_CONNECT_SUCCESS,
+            data: { status: 200, data: 'Connected.' },
+            id: permissionId[permissionId.length - 1],
+          })
+        } else {
+          ports[PORTS.CONTENT_SCRIPT].postMessage({
+            type: MESSAGES.KOI_CONNECT_SUCCESS,
+            data: { status: 401, data: 'Connection rejected.' },
+            id: permissionId[permissionId.length - 1],
+          })
         }
         removeChromeStorage(STORAGE.PENDING_REQUEST)
         port.postMessage({
@@ -192,6 +203,7 @@ export default async (koi, port, message, ports, resolveId) => {
           type: MESSAGES.CONNECT_SUCCESS,
           id: permissionId[permissionId.length - 1],
         })
+
         permissionId.length = 0
         break
       }
@@ -209,6 +221,11 @@ export default async (koi, port, message, ports, resolveId) => {
             id: createTransactionId[createTransactionId.length - 1],
             data: transaction
           })
+          ports[PORTS.CONTENT_SCRIPT].postMessage({
+            type: MESSAGES.KOI_CREATE_TRANSACTION_SUCCESS,
+            id: createTransactionId[createTransactionId.length - 1],
+            data: { status: 200, data: transaction }
+          })
           createTransactionId.length = 0
         } else {
           port.postMessage({
@@ -218,6 +235,11 @@ export default async (koi, port, message, ports, resolveId) => {
             type: MESSAGES.CREATE_TRANSACTION_ERROR,
             id: createTransactionId[createTransactionId.length - 1],
             data: { message: 'Transaction rejected.' }
+          })
+          ports[PORTS.CONTENT_SCRIPT].postMessage({
+            type: MESSAGES.KOI_CREATE_TRANSACTION_SUCCESS,
+            id: createTransactionId[createTransactionId.length - 1],
+            data: { status: 403, data: 'Transaction rejected.' }
           })
           createTransactionId.length = 0
         }
