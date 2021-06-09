@@ -36,7 +36,9 @@ const WalletInfo = ({
         <div>
           <div className='name'>
             <div>{accountName}</div>
-            <EditIcon />
+            <div className='icon'>
+              <EditIcon />
+            </div>
           </div>
           <div className='addr'>
             <div>{`${accountAddress.slice(0, 6)}...${accountAddress.slice(
@@ -44,7 +46,9 @@ const WalletInfo = ({
             )}`}</div>
             <div onClick={() => setNotification(NOTIFICATION.COPIED)}>
               <CopyToClipboard text={accountAddress}>
-                <CopyIcon />
+                <div className="icon">
+                  <CopyIcon/>
+                </div>
               </CopyToClipboard>
             </div>
           </div>

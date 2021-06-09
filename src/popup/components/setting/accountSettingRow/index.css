@@ -38,12 +38,14 @@
   text-overflow: ellipsis;
   font-weight: 500;
   font-size: 18px;
+  line-height:20px;
   letter-spacing: 0.03em;
   color: #171753;
 }
 
 .account-setting-row .account-name-line .edit-icon {
   padding-left: 14px;
+  cursor: pointer;
 }
 
 .account-setting-row .display-row .get-seed-phrase-button {
