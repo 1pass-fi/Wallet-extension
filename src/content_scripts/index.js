@@ -88,10 +88,10 @@ window.addEventListener('message', function (event) {
             resolve(event.data.data)
           }
         })
-        promiseResolves[event.data.type] = []
+        promiseResolves[event.data.type] = promiseResolves[event.data.type].filter(({ id }) => id !== event.data.id)
         const pairMessageType = event.data.type.endsWith('_SUCCESS') ? event.data.type.replace(/_SUCCESS$/g, '_ERROR') : event.data.type.replace(/_ERROR$/g, '_SUCCESS')
         if (pairMessageType !== event.data.type && promiseResolves[pairMessageType]) {
-          promiseResolves[pairMessageType].filter(({ id }) => id !== event.data.id)
+          promiseResolves[pairMessageType] = promiseResolves[pairMessageType].filter(({ id }) => id !== event.data.id)
         }
       }
     })
@@ -100,15 +100,15 @@ window.addEventListener('message', function (event) {
   function inject(fn) {
     const script = document.createElement('script')
     const arweaveScript = document.createElement('script')
-    const { 
+    const {
       GET_ADDRESS,
-      GET_PERMISSION, 
-      CREATE_TRANSACTION, 
+      GET_PERMISSION,
+      CREATE_TRANSACTION,
       CONNECT,
       KOI_GET_ADDRESS,
-      KOI_GET_PERMISSION, 
-      KOI_CREATE_TRANSACTION, 
-      KOI_CONNECT 
+      KOI_GET_PERMISSION,
+      KOI_CREATE_TRANSACTION,
+      KOI_CONNECT
     } = messages
     const pickedMessages = {
       GET_ADDRESS,
@@ -116,9 +116,9 @@ window.addEventListener('message', function (event) {
       CREATE_TRANSACTION,
       CONNECT,
       KOI_GET_ADDRESS,
-      KOI_GET_PERMISSION, 
-      KOI_CREATE_TRANSACTION, 
-      KOI_CONNECT 
+      KOI_GET_PERMISSION,
+      KOI_CREATE_TRANSACTION,
+      KOI_CONNECT
     }
     script.text = `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(pickedMessages)}');(${fn.toString()})();`
     arweaveScript.src = 'https://unpkg.com/arweave/bundles/web.bundle.js'
