@@ -134,4 +134,8 @@ export const NOTIFICATION = {
   KEY_EXPORTED: 'Private key downloaded.'
 }
 
+export const WARNING_MESSAGE = {
+  SEND_ZERO_KOI: 'You are about to send 0 tokens. There will still be a very small fee. Make sure the transaction is correct before finalizing it.',
+}
+
 export const LOAD_BALANCES_TIME_INTERVAL = 10000

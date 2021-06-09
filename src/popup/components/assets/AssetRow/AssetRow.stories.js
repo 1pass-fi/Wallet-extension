@@ -10,7 +10,7 @@ export default {
     isKoiWallet: true,
     name: 'Test Asset Row', 
     isRegistered: true,
-    earnedKoi: 1,
+    earnedKoi: 1
   }
 }
 

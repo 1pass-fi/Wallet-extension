@@ -12,13 +12,13 @@ import Account from 'components/accounts'
 import Assets from 'components/assets'
 import Activity from 'components/activity'
 import Setting from 'components/setting'
-import ErrorMessage from 'components/errorMessage'
-import NotificationMessage from 'components/notificationMessage'
+import Message from 'components/message'
 import continueLoadingIcon from 'img/continue-load.gif'
 
 import { setIsLoading } from 'actions/loading'
 import { setError } from 'actions/error'
 import { setNotification } from 'actions/notification'
+import { setWarning } from 'actions/warning'
 import { setKoi, loadWallet, removeWallet, getBalances } from 'actions/koi'
 
 import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST } from 'koiConstants'
@@ -40,6 +40,8 @@ const Popup = ({
   setError,
   notification,
   setNotification,
+  warning,
+  setWarning,
   loadWallet,
   getBalances
 }) => {
@@ -98,6 +100,13 @@ const Popup = ({
     }
   }, [notification])
 
+  useEffect(() => {
+    if (warning) {
+      const timer = setTimeout(() => setWarning(null), 6000)
+      return () => clearTimeout(timer)
+    }
+  }, [warning])
+
   const activities = [
     {
       activityName: `Purchased "The Balance of Koi"`,
@@ -117,8 +126,9 @@ const Popup = ({
     <div className="popup">
       {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
       {isLoading && <Loading />}
-      {error && <ErrorMessage children={error} />}
-      {notification && <NotificationMessage children={notification} />}
+      {error && <Message type='error' children={error} />}
+      {notification && <Message type='notification' children={notification} />}
+      {warning && <Message type='warning' children={warning} />}
       {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />}
       <div className='content'>
         <Switch>
@@ -147,6 +157,7 @@ const mapStateToProps = (state) => ({
   isLoading: state.loading,
   error: state.error,
   notification: state.notification,
+  warning: state.warning,
   koi: state.koi,
   transactions: state.transactions,
   isContLoading: state.contLoading
@@ -156,6 +167,7 @@ const mapDispatchToProps = {
   setIsLoading,
   setError,
   setNotification,
+  setWarning,
   setKoi,
   loadWallet,
   removeWallet,
