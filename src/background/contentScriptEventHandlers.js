@@ -4,6 +4,8 @@ import { REQUEST, MESSAGES } from 'koiConstants'
 import { checkSitePermission, setChromeStorage, transfer } from 'utils'
 import { getSelectedTab, createWindow } from 'utils/extension'
 
+import { closeCurrentWindow } from 'utils/extension'
+
 let pendingMessages = {}
 
 export default async (koi, port, message, ports, resolveId) => {
@@ -158,19 +160,30 @@ export default async (koi, port, message, ports, resolveId) => {
           
           if (!hadPermission) {
             permissionId.push(id)
+
+            await closeCurrentWindow()
+
             await setChromeStorage({
               'pendingRequest': {
                 type: REQUEST.PERMISSION,
                 data: { origin, favicon }
               }
             })
+
+            const onClosedMessage = {
+              type: MESSAGES.KOI_CONNECT_SUCCESS,
+              data: { status: 401, data: 'Connection rejected.' },
+              id
+            }
+
             createWindow({
               url: chrome.extension.getURL('/popup.html'),
               focused: true,
               type: 'popup',
               height: 622,
               width: 426
-            })
+            }, port, onClosedMessage)
+
           } else {
             port.postMessage({
               type: MESSAGES.KOI_CONNECT_SUCCESS,
@@ -208,6 +221,7 @@ export default async (koi, port, message, ports, resolveId) => {
                 data: { transaction, qty, address, origin, favicon }
               }
             })
+
             createWindow({
               url: chrome.extension.getURL('/popup.html'),
               focused: true,

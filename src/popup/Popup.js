@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch, useHistory, withRouter } from 'react-router-dom'
 import { get } from 'lodash'
-import axios from 'axios'
 
 import './Popup.css'
 import Header from 'components/header'

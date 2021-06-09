@@ -1,5 +1,5 @@
 let currentWindow
-
+import { removeChromeStorage } from 'utils'
 export const closeCurrentWindow = () => {
   return new Promise((resolve) => {
     if (currentWindow) {
@@ -13,10 +13,18 @@ export const closeCurrentWindow = () => {
   })
 }
 
-export const createWindow = (windowData) => {
+export const createWindow = (windowData, port, onClosedMessage) => {
   closeCurrentWindow().then(() => {
     setTimeout(() => {
-      chrome.windows.create(windowData , w => currentWindow = w)
+      chrome.windows.create(windowData , w => {
+        currentWindow = w
+        chrome.windows.onRemoved.addListener(async wIndex => {
+          if (wIndex === w.id) {
+            await removeChromeStorage('pendingRequest')
+            port.postMessage(onClosedMessage)
+          }
+        })
+      })
     }, 500)
   })
 }
