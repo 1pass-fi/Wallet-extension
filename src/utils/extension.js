@@ -1,8 +1,13 @@
 let currentWindow
+let afterCloseCallbacks = {}
 
 export const closeCurrentWindow = () => {
   return new Promise((resolve) => {
     if (currentWindow) {
+      if (afterCloseCallbacks[currentWindow.id]) {
+        afterCloseCallbacks[currentWindow.id]()
+        afterCloseCallbacks[currentWindow.id] = undefined
+      }
       chrome.windows.remove(currentWindow.id, () => {
         currentWindow = undefined
         resolve()
@@ -13,10 +18,20 @@ export const closeCurrentWindow = () => {
   })
 }
 
-export const createWindow = (windowData) => {
+export const createWindow = (windowData, { beforeCreate = () => {}, afterClose = () => {} } = {}) => {
   closeCurrentWindow().then(() => {
-    setTimeout(() => {
-      chrome.windows.create(windowData , w => currentWindow = w)
+    setTimeout(async () => {
+      await beforeCreate()
+      chrome.windows.create(windowData , w => {
+        currentWindow = w
+        afterCloseCallbacks[w.id] = afterClose
+        chrome.windows.onRemoved.addListener(async wIndex => {
+          if (afterCloseCallbacks[w.id]) {
+            afterCloseCallbacks[w.id]()
+            afterCloseCallbacks[w.id] = undefined
+          }
+        })
+      })
     }, 500)
   })
 }
@@ -30,7 +45,6 @@ export const getSelectedTab = (timeout = 0, retries = 0) => {
       }
       chrome.tabs.getSelected(null, tab => {
         if (tab.url.startsWith('chrome-extension://')) {
-          console.log('invalid tab url---', tab)
           getSelectedTab(100, retries + 1).then(resolve).catch(reject)
         } else {
           resolve(tab)
