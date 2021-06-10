@@ -1,9 +1,8 @@
 import '@babel/polyfill'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Link, useQuery } from 'react-router-dom'
+import { useDropzone } from 'react-dropzone'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
-import get from 'lodash/get'
 import throttle from 'lodash/throttle'
 
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
@@ -28,10 +27,20 @@ const Header = ({ totalKoi }) => {
         <KoiIcon className='logo' />
       </div>
       <div className='header-right'>
-        <div className='total-koi'>
-          <div>{totalKoi}</div>
-          <KoiUnit className='koi-unit' />
-        </div>
+        {totalKoi ? (
+          <div className='total-koi'>
+            <div>{totalKoi}</div>
+            <KoiUnit className='koi-unit' />
+          </div>
+        ) : (
+          <a
+            target='_blank'
+            href='https://koi.rocks/faucet?step=0'
+            className='no-koi'
+          >
+            <div className='get-some'>No KOI? Get some</div>
+          </a>
+        )}
         <button className='setting-button'>
           <SettingsIcon className='option setting-icon'></SettingsIcon>
         </button>
@@ -40,7 +49,18 @@ const Header = ({ totalKoi }) => {
   )
 }
 
-const Footer = () => {}
+const Footer = ({ showDropzone }) => {
+  return (
+    <footer className='footer-wrapper'>
+      <div className='footer-content'>
+        <AddButton className='add-nft-button' onClick={showDropzone} />
+        <div className='footer-text'>
+          Drag & drop any file onto this page to create a new NFT
+        </div>
+      </div>
+    </footer>
+  )
+}
 
 const BigCard = ({
   txId,
@@ -81,6 +101,7 @@ const Card = ({
   choosen,
   setChoosen,
   titleRef,
+  disabled,
 }) => {
   const onClick = () => {
     setChoosen(txId)
@@ -88,7 +109,7 @@ const Card = ({
   }
 
   return choosen !== txId ? (
-    <div className='nft-card' onClick={onClick}>
+    <div disabled={disabled} className='nft-card' onClick={onClick}>
       <img src={imageUrl} className='nft-img' />
       <div className='nft-name'>{name}</div>
       {isRegistered ? (
@@ -107,7 +128,13 @@ const Card = ({
   ) : null
 }
 
-const Content = ({ cardInfos, isDragging }) => {
+const Content = ({
+  cardInfos,
+  isDragging,
+  file,
+  onClearFile,
+  onCloseUploadModal,
+}) => {
   const [choosen, setChoosen] = useState('')
   const titleRef = useRef(null)
 
@@ -129,7 +156,12 @@ const Content = ({ cardInfos, isDragging }) => {
       <div className='title' ref={titleRef}>
         My NFT Gallery
       </div>
-      <UploadNFT isDragging={isDragging} />
+      <UploadNFT
+        isDragging={isDragging}
+        file={file}
+        onClearFile={onClearFile}
+        onCloseUploadModal={onCloseUploadModal}
+      />
       <div className='cards'>
         {!isDragging && !isEmpty(choosenCard) && (
           <BigCard {...choosenCard} setChoosen={setChoosen} />
@@ -137,6 +169,7 @@ const Content = ({ cardInfos, isDragging }) => {
         <div className='small-cards'>
           {cardInfos.map((cardInfo) => (
             <Card
+              disabled={isDragging}
               choosen={choosen}
               setChoosen={setChoosen}
               {...cardInfo}
@@ -153,6 +186,19 @@ export default () => {
   const [isDragging, setIsDragging] = useState(false)
   const [cardInfos, setCardInfos] = useState([])
   const [totalKoi, setTotalKoi] = useState(0)
+  const [file, setFile] = useState({})
+
+  const {
+    acceptedFiles,
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({
+    maxFiles: 1,
+    accept: 'image/*',
+  })
 
   useEffect(() => {
     const getData = async () => {
@@ -187,6 +233,10 @@ export default () => {
     getData()
   }, [])
 
+  useEffect(() => {
+    setFile(acceptedFiles ? acceptedFiles[0] : {})
+  }, [acceptedFiles])
+
   const modifyDraging = useCallback(
     throttle((newValue) => {
       setIsDragging(newValue)
@@ -194,37 +244,33 @@ export default () => {
     []
   )
 
+  const onClearFile = () => {
+    setFile({})
+  }
+
+  const onCloseUploadModal = () => {
+    setFile({})
+    setIsDragging(false)
+  }
+
   return (
     <div
-      className='app'
-      onDragOver={(e) => {
-        e.preventDefault()
-        modifyDraging(true)
-      }}
-      onDragLeave={() => {
-        modifyDraging(false)
-      }}
-      onDrop={() => {
-        modifyDraging(false)
-      }}
+      {...getRootProps({ className: 'app dropzone' })}
+      onDragOver={() => modifyDraging(true)}
+      onDragLeave={() => modifyDraging(false)}
     >
-      <Header totalKoi={totalKoi} />
-      <Content cardInfos={cardInfos} isDragging={isDragging} />
-      {!isDragging && (
-        <footer className='footer-wrapper'>
-          <div className='footer-content'>
-            <AddButton
-              className='add-nft-button'
-              onClick={() => {
-                modifyDraging(true)
-              }}
-            />
-            <div className='footer-text'>
-              Drag & drop any file onto this page to create a new NFT
-            </div>
-          </div>
-        </footer>
+      {isDragging && isEmpty(file) && (
+        <input name='fileField' {...getInputProps()} />
       )}
+      <Header totalKoi={totalKoi} />
+      <Content
+        cardInfos={cardInfos}
+        isDragging={isDragging}
+        onCloseUploadModal={onCloseUploadModal}
+        file={file}
+        onClearFile={onClearFile}
+      />
+      {!isDragging && <Footer />}
     </div>
   )
 }
