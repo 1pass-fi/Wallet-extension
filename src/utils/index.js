@@ -335,3 +335,7 @@ export const numberFormat = (num) => {
 export const fiatCurrencyFormat = (num) => {
   return num === null ? '---' : new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 }).format(num)
 }
+
+export const transactionAmountFormat = (num) => {
+  return num === null ? '---' : `${Math.round(num * Math.pow(10, 6)) / Math.pow(10, 6)}`
+}
