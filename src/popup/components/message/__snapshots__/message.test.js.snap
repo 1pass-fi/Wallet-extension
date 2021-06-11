@@ -3,7 +3,7 @@
 exports[`Test for ErrorMessage component Render without crashing renders correctly 1`] = `
 <div>
   <div
-    class="error-message "
+    class="message error "
   />
 </div>
 `;

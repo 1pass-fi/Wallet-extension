@@ -1,8 +1,8 @@
 import { SET_WARNING } from './types'
+import { clearMessage } from './clearMessage' 
 
-// export const setWarning = (payload) => ({ type: SET_WARNING, payload })
 export const setWarning = (payload) => (dispatch) => {
-  dispatch({ type: SET_WARNING, payload: null })
+  clearMessage(dispatch)
   setTimeout(() => {
     dispatch({ type: SET_WARNING, payload })
   }, 200)

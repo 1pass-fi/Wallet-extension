@@ -80,25 +80,82 @@ exports[`Test for ImportPhraseLockScreen component renders without crashing rend
           class="details"
         >
           <div
-            class="detail-row"
-          >
-            Send
-          </div>
-          <div
-            class="detail-row amount"
+            class="detail send ar"
           >
             <div
-              class="koi"
+              class="detail-row row-label"
             >
-              ---
-               AR
+              Send
             </div>
             <div
-              class="usd"
+              class="detail-row amount"
             >
-              ~
-              0
-               USD
+              <div
+                class="koi"
+              >
+                ---
+                 
+                AR
+              </div>
+              <div
+                class="usd"
+              >
+                ~
+                0
+                 USD
+              </div>
+            </div>
+          </div>
+          <div
+            class="detail fee"
+          >
+            <div
+              class="detail-row row-label"
+            >
+              Fee
+            </div>
+            <div
+              class="detail-row amount"
+            >
+              <div
+                class="koi"
+              >
+                ---
+                 AR
+              </div>
+              <div
+                class="usd"
+              >
+                ~
+                0
+                 USD
+              </div>
+            </div>
+          </div>
+          <div
+            class="detail total"
+          >
+            <div
+              class="detail-row row-label"
+            >
+              Total
+            </div>
+            <div
+              class="detail-row amount"
+            >
+              <div
+                class="koi"
+              >
+                0
+                 AR
+              </div>
+              <div
+                class="usd"
+              >
+                ~
+                0
+                 USD
+              </div>
             </div>
           </div>
         </div>

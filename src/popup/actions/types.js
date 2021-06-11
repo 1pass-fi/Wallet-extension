@@ -4,6 +4,8 @@ export const SET_KOI = 'SET_KOI'
 
 export const SET_ERROR = 'SET_ERROR'
 
+export const CLEAR_ERROR = 'CLEAR_ERROR'
+
 export const SET_CREATE_WALLET = 'SET_CREATE_WALLET'
 
 export const SET_ASSETS = 'SET_ASSETS'
@@ -16,7 +18,11 @@ export const SET_CONT_LOADING = 'SET_CONT_LOADING'
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION'
 
+export const CLEAR_NOTIFICATION = 'CLEAR_NOTIFICATION'
+
 export const SET_WARNING = 'SET_WARNING'
+
+export const CLEAR_WARNING = 'CLEAR_WARNING'
 
 export const SET_CURSOR = 'SET_OWNED_CURSOR'
 

@@ -17,7 +17,10 @@ import {
   SET_NOTIFICATION,
   SET_ACTIVITIES,
   SET_CURSOR,
-  CLEAR_ACTIVITIES
+  CLEAR_ACTIVITIES,
+  CLEAR_ERROR,
+  CLEAR_NOTIFICATION,
+  CLEAR_WARNING
 } from 'actions/types'
 
 import {
@@ -198,7 +201,9 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: 'Error message' }
+          { type: SET_ERROR, payload: null },
+          { type: SET_NOTIFICATION, payload: null },
+          { type: SET_WARNING, payload: null }
         ]
       })
 
@@ -313,7 +318,9 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: 'Error message' }
+          { type: SET_ERROR, payload: null },
+          { type: SET_NOTIFICATION, payload: null },
+          { type: SET_WARNING, payload: null }
         ]
       })
 
@@ -557,7 +564,9 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: 'Error message' }
+          { type: SET_ERROR, payload: null },
+          { type: SET_NOTIFICATION, payload: null },
+          { type: SET_WARNING, payload: null }
         ]
       })
 
@@ -677,7 +686,9 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: 'Error message' }
+          { type: SET_ERROR, payload: null },
+          { type: SET_NOTIFICATION, payload: null },
+          { type: SET_WARNING, payload: null }
         ]
       })
 
@@ -901,7 +912,9 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: 'Error message' }
+          { type: SET_ERROR, payload: null },
+          { type: SET_NOTIFICATION, payload: null },
+          { type: SET_WARNING, payload: null }
         ]
       })
 
@@ -1007,7 +1020,9 @@ describe('Tests for actions/koi', () => {
           { type: SET_CONT_LOADING, payload: true },
           { type: SET_CONT_LOADING, payload: true },
           { type: SET_CONT_LOADING, payload: false },
-          { type: SET_ERROR, payload: 'Error message' }
+          { type: SET_ERROR, payload: null },
+          { type: SET_NOTIFICATION, payload: null },
+          { type: SET_WARNING, payload: null }
         ]
       })
 
@@ -1127,7 +1142,9 @@ describe('Tests for actions/koi', () => {
         }
 
         expectedActions = [
-          { type: SET_ERROR, payload: 'Error message' }
+          { type: SET_ERROR, payload: null },
+          { type: SET_NOTIFICATION, payload: null },
+          { type: SET_WARNING, payload: null }
         ]
       })
 
@@ -1245,7 +1262,9 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: 'Error message' }
+          { type: SET_ERROR, payload: null },
+          { type: SET_NOTIFICATION, payload: null },
+          { type: SET_WARNING, payload: null }
         ]
       })
 
@@ -1342,7 +1361,9 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: 'Error message' }
+          { type: SET_ERROR, payload: null },
+          { type: SET_NOTIFICATION, payload: null },
+          { type: SET_WARNING, payload: null }
         ]
       })
 
@@ -1457,7 +1478,9 @@ describe('Tests for actions/koi', () => {
         }
 
         expectedActions = [
-          { type: SET_ERROR, payload: 'Error message' }
+          { type: SET_ERROR, payload: null },
+          { type: SET_NOTIFICATION, payload: null },
+          { type: SET_WARNING, payload: null }
         ]
       })
 
@@ -1474,12 +1497,15 @@ describe('Tests for actions/koi', () => {
         }
 
         expectedActions = [
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           { type: SET_ERROR, payload: 'Error message' },
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(connectSite(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(connectSite(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })

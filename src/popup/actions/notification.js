@@ -1,8 +1,8 @@
 import { SET_NOTIFICATION } from './types'
+import { clearMessage } from './clearMessage' 
 
-// export const setNotification = (payload) => ({ type: SET_NOTIFICATION, payload })
 export const setNotification = (payload) => (dispatch) => {
-  dispatch({ type: SET_NOTIFICATION, payload: null })
+  clearMessage(dispatch)
   setTimeout(() => {
     dispatch({ type: SET_NOTIFICATION, payload })
   }, 200)
