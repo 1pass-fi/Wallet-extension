@@ -453,5 +453,4 @@ export const connectSite = (inputData) => (dispatch) => {
   }
 }
 
-
 export const setKoi = (payload) => ({ type: SET_KOI, payload })

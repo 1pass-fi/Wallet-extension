@@ -63,8 +63,14 @@
   color: #237b75;
 }
 
+.wallet .wallet-wrapper .wallet-info .wallet-info-row .name .text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .wallet .wallet-wrapper .wallet-info .wallet-info-row .icon {
   cursor: pointer;
+  margin-left: 10px;
 }
 
 .wallet .wallet-wrapper .wallet-info .wallet-info-row.wallet-balance {

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for Message component default type is error Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="message error "
+  />
+</div>
+`;
+
+exports[`Test for Message component type is notification Render without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="message notification "
+  />
+</div>
+`;
