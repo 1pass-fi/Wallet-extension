@@ -63,6 +63,10 @@
   color: #237b75;
 }
 
+.wallet .wallet-wrapper .wallet-info .wallet-info-row .icon {
+  cursor: pointer;
+}
+
 .wallet .wallet-wrapper .wallet-info .wallet-info-row.wallet-balance {
   display: flex;
   justify-content: right;

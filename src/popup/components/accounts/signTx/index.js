@@ -7,7 +7,7 @@ import KoiIcon from 'img/koi-logo-no-bg.svg'
 import Card from 'shared/card'
 import Button from 'shared/button'
 
-import { getChromeStorage, removeChromeStorage, numberFormat, fiatCurrencyFormat } from 'utils'
+import { getChromeStorage, removeChromeStorage, transactionAmountFormat, fiatCurrencyFormat } from 'utils'
 
 import { STORAGE, REQUEST, ERROR_MESSAGE, RATE } from 'koiConstants'
 import { signTransaction } from 'actions/koi'
@@ -27,6 +27,8 @@ export const SignTx = ({ signTransaction, setError }) => {
   })
   const [origin, setOrigin] = useState('')
   const [qty, setQty] = useState(null)
+  const [currency, setCurrency] =  useState('AR')
+  const [fee, setFee] = useState(null)
 
   const walletIcon = {
     koi: <KoiIcon className='icon' />,
@@ -41,6 +43,7 @@ export const SignTx = ({ signTransaction, setError }) => {
       const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[
         STORAGE.KOI_ADDRESS
       ]
+      console.log(request.data)
       const {
         origin: requestOrigin,
         qty,
@@ -51,6 +54,7 @@ export const SignTx = ({ signTransaction, setError }) => {
       setDestinationAccount({ address: targetAddress, type: 'arweave' })
       setOrigin(requestOrigin)
       setQty(qty)
+      setFee(0.000001) // mock fee
     }
 
     loadRequest()
@@ -111,11 +115,29 @@ export const SignTx = ({ signTransaction, setError }) => {
         <Card className='transaction-detail'>
           <div className='label'>Transaction details</div>
           <div className='details'>
-            <div className='detail-row'>Send</div>
-            <div className='detail-row amount'>
-              <div className='koi'>{numberFormat(qty)} AR</div>
-              <div className='usd'>~{fiatCurrencyFormat(qty*RATE.AR)} USD</div>
+            <div className={`detail send ${currency.toLowerCase()}`}> 
+              <div className='detail-row row-label'>Send</div>
+              <div className='detail-row amount'>
+                <div className='koi'>{transactionAmountFormat(qty)} {currency}</div>
+                <div className='usd'>~{fiatCurrencyFormat(qty*RATE[currency])} USD</div>
+              </div>
             </div>
+            <div className='detail fee'>
+              <div className='detail-row row-label'>Fee</div>
+              <div className='detail-row amount'>
+                <div className='koi'>{transactionAmountFormat(fee)} AR</div>
+                <div className='usd'>~{fiatCurrencyFormat(qty*RATE.AR)} USD</div>
+              </div>
+            </div>
+            { currency === 'AR' &&
+              <div className='detail total'>
+                <div className='detail-row row-label'>Total</div>
+                <div className='detail-row amount'>
+                  <div className='koi'>{transactionAmountFormat(qty+fee)} AR</div>
+                  <div className='usd'>~{fiatCurrencyFormat((qty+fee)*RATE.AR)} USD</div>
+                </div>
+              </div>
+            }
           </div>
           <div className='button-group'>
             <Button

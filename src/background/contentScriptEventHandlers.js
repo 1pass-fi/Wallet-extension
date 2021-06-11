@@ -1,7 +1,5 @@
-import { isInteger, isString } from 'lodash'
-
-import { REQUEST, MESSAGES } from 'koiConstants'
-import { checkSitePermission, setChromeStorage, transfer } from 'utils'
+import { REQUEST, MESSAGES, STORAGE } from 'koiConstants'
+import { checkSitePermission, setChromeStorage, removeChromeStorage, getChromeStorage } from 'utils'
 import { getSelectedTab, createWindow } from 'utils/extension'
 
 let pendingMessages = {}
@@ -116,7 +114,7 @@ export default async (koi, port, message, ports, resolveId) => {
           } else {
             port.postMessage({
               type: MESSAGES.KOI_GET_PERMISSION_SUCCESS,
-              data: { status: 200, data: [] },
+              data: { status: 401, data: [] },
               id: message.id
             })
           }
@@ -126,15 +124,9 @@ export default async (koi, port, message, ports, resolveId) => {
         case MESSAGES.CONNECT: {
           const { id } = message
           const { permissionId } = resolveId
-          
+
           if (!hadPermission) {
             permissionId.push(id)
-            await setChromeStorage({
-              'pendingRequest': {
-                type: REQUEST.PERMISSION,
-                data: { origin, favicon }
-              }
-            })
             createWindow({
               url: chrome.extension.getURL('/popup.html'),
               focused: true,
@@ -155,22 +147,40 @@ export default async (koi, port, message, ports, resolveId) => {
         case MESSAGES.KOI_CONNECT: {
           const { id } = message
           const { permissionId } = resolveId
-          
+
           if (!hadPermission) {
             permissionId.push(id)
-            await setChromeStorage({
-              'pendingRequest': {
-                type: REQUEST.PERMISSION,
-                data: { origin, favicon }
+
+            const onClosedMessage = {
+              type: MESSAGES.KOI_CONNECT_SUCCESS,
+              data: { status: 401, data: 'Connection rejected.' },
+              id
+            }
+
+            createWindow(
+              {
+                url: chrome.extension.getURL('/popup.html'),
+                focused: true,
+                type: 'popup',
+                height: 622,
+                width: 426,
+              },
+              {
+                beforeCreate: async () => {
+                  await setChromeStorage({
+                    'pendingRequest': {
+                      type: REQUEST.PERMISSION,
+                      data: { origin, favicon }
+                    }
+                  })
+                },
+                afterClose: async () => {
+                  port.postMessage(onClosedMessage)
+                  await removeChromeStorage('pendingRequest')
+                },
               }
-            })
-            createWindow({
-              url: chrome.extension.getURL('/popup.html'),
-              focused: true,
-              type: 'popup',
-              height: 622,
-              width: 426
-            })
+            )
+
           } else {
             port.postMessage({
               type: MESSAGES.KOI_CONNECT_SUCCESS,
@@ -208,6 +218,7 @@ export default async (koi, port, message, ports, resolveId) => {
                 data: { transaction, qty, address, origin, favicon }
               }
             })
+
             createWindow({
               url: chrome.extension.getURL('/popup.html'),
               focused: true,
@@ -246,6 +257,20 @@ export default async (koi, port, message, ports, resolveId) => {
             type: 'popup',
             height: 622,
             width: 426
+          })
+          break
+        }
+
+        case MESSAGES.KOI_DISCONNECT: {
+          const { id } = message
+          const storage = await getChromeStorage(STORAGE.SITE_PERMISSION)
+          let approvedSite = storage[STORAGE.SITE_PERMISSION] || []
+          if (hadPermission) approvedSite = approvedSite.filter(site => site !== origin)
+          await setChromeStorage({ 'sitePermission': approvedSite })
+          port.postMessage({
+            type: MESSAGES.KOI_DISCONNECT_SUCCESS,
+            data: { status: 200, data: 'Disconnected.' },
+            id
           })
           break
         }

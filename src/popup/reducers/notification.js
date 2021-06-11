@@ -1,4 +1,4 @@
-import { SET_NOTIFICATION } from '../actions/types'
+import { SET_NOTIFICATION, CLEAR_NOTIFICATION } from '../actions/types'
 
 const initialState = null
 
@@ -7,6 +7,8 @@ export default (state = initialState, action) => {
   switch(type) {
     case SET_NOTIFICATION:
       return payload
+    case CLEAR_NOTIFICATION:
+      return null
     default:
       return state
   }

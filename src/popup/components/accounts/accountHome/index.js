@@ -62,7 +62,6 @@ export const AccountHome = ({ koi, getBalances }) => {
         arBalance={koi.arBalance}
         onUpdateCurrency={onChangeCurrency}
         currencies={currencies}
-
         onSendSuccess={onSendSuccess}
       />}
       {koi.address ? <Wallet accountAddress={koi.address} koiBalance={koi.koiBalance} arBalance={koi.arBalance} /> :

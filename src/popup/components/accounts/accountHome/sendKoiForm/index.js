@@ -10,7 +10,8 @@ import WarningIcon from 'img/warning-icon.svg'
 
 import { makeTransfer } from 'actions/koi'
 import { setError } from 'actions/error'
-import { ERROR_MESSAGE, RATE } from 'koiConstants'
+import { setWarning } from 'actions/warning'
+import { ERROR_MESSAGE, WARNING_MESSAGE, RATE } from 'koiConstants'
 
 import './index.css'
 
@@ -20,6 +21,7 @@ const SendKoiForm = ({
   currencies,
   onUpdateCurrency,
   setError,
+  setWarning,
   makeTransfer,
   onSendSuccess,
 }) => {
@@ -55,6 +57,9 @@ const SendKoiForm = ({
       } else if (Number(amount) < 0) {
         setError(ERROR_MESSAGE.INVALID_AMOUNT)
       } else {
+        if (Number(amount) === 0) {
+          setWarning(WARNING_MESSAGE.SEND_ZERO_KOI)
+        }
         setShowModal(true)
       }
     } catch (err) {
@@ -137,4 +142,4 @@ const SendKoiForm = ({
   )
 }
 
-export default connect(null, { setError, makeTransfer })(SendKoiForm)
+export default connect(null, { setError, setWarning, makeTransfer })(SendKoiForm)

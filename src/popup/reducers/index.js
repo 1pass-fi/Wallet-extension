@@ -4,6 +4,7 @@ import loading from './loading'
 import contLoading from './continueLoading'
 import error from './error'
 import notification from './notification'
+import warning from './warning'
 import koi from './koi'
 import createWallet from './createWallet'
 import assets from './assets'
@@ -16,6 +17,7 @@ export default combineReducers({
   contLoading,
   error,
   notification,
+  warning,
   koi,
   createWallet,
   assets,

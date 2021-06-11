@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 import { PATH, RATE } from 'koiConstants' 
+import { transactionAmountFormat } from 'utils'
 
 import './index.css'
 
@@ -18,10 +19,6 @@ const propTypes = {
 const ActivityRow = ({activityName, expense, date, source, id, pending }) => {
   const dateFormat = (date) => {
     return moment(date).format('MMMM Do, YYYY')
-  }
-
-  const numberFormat = (num) => {
-    return num === null ? '---' : `${Math.round(num * Math.pow(10, 6)) / Math.pow(10, 6)}`
   }
   
   const currency = activityName.includes('KOI') ? 'KOI' : 'AR'
@@ -50,9 +47,9 @@ const ActivityRow = ({activityName, expense, date, source, id, pending }) => {
           )}
         </div>
         <div className='activity-info-row'>
-          <div className='activity-expense'>{ (expense != null && expense > 0) ? sign : ''}{numberFormat(expense)} {currency}</div>
+          <div className='activity-expense'>{ (expense != null && expense > 0) ? sign : ''}{transactionAmountFormat(expense)} {currency}</div>
           { expense != null && 
-            <div className='activity-expense usd'>{numberFormat(expense*RATE[currency])} USD</div>
+            <div className='activity-expense usd'>{transactionAmountFormat(expense*RATE[currency])} USD</div>
           } 
           <div className='activity-date'>{ dateFormat(date) }</div>
         </div>

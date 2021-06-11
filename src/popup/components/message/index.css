@@ -28,9 +28,8 @@
   }
 }
 
-.error-message {
+.message {
   animation: slideBox 0.5s, fadeIn 0.5s;
-  background: #ffa6a6;
   border-radius: 3px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
   color: #171753;
@@ -45,15 +44,12 @@
   z-index: 10000;
 }
 
-.error-message.disabled {
+.message.disabled {
   animation: fadeOut 0.75s;
   opacity: 0;
 }
 
-.error-message:after {
-  background-color: #ffa6a6;
-  border-bottom: 1px solid #ffa6a6;
-  border-right: 1px solid #ffa6a6;
+.message:after {
   content: '';
   height: 10px;
   position: absolute;
@@ -61,4 +57,34 @@
   top: 0px;
   transform: rotate(45deg) translate(50%, 50%);
   width: 10px;
+}
+
+.message.error {
+  background: #ffa6a6;
+}
+
+.message.error:after {
+  background-color: #ffa6a6;
+  border-bottom: 1px solid #ffa6a6;
+  border-right: 1px solid #ffa6a6;
+}
+
+.message.notification {
+  background: #ECFFFE;
+}
+
+.message.notification:after {
+  background-color: #ECFFFE;
+  border-bottom: 1px solid #ECFFFE;
+  border-right: 1px solid #ECFFFE;
+}
+
+.message.warning {
+  background: #FFC78F;
+}
+
+.message.warning:after {
+  background-color: #FFC78F;
+  border-bottom: 1px solid #FFC78F;
+  border-right: 1px solid #FFC78F;
 }

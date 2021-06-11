@@ -1,3 +1,7 @@
 import { SET_ERROR } from './types'
+import { clearMessage } from './clearMessage' 
 
-export const setError = (payload) => ({ type: SET_ERROR, payload })
+export const setError = (payload) => async (dispatch) => {
+  await clearMessage(dispatch)
+  dispatch({ type: SET_ERROR, payload })
+}

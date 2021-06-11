@@ -75,7 +75,7 @@
 .sign-tx .content-section .transaction-detail {
   box-sizing: border-box;
   display: block;
-  height: 262px;
+  height: 342px;
   padding: 22px 20px 80px;
   position: relative;
   font-size: 14px;
@@ -88,7 +88,13 @@
 }
 
 .sign-tx .content-section .transaction-detail .details {
-  margin: 45px 27px 0;
+  margin: 0 27px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sign-tx .content-section .transaction-detail .detail {
+  padding-top: 21px;
   display: flex;
   flex-direction: row;
   justify-items: flex-start;
@@ -96,7 +102,15 @@
   align-items: center;
 }
 
-.sign-tx .content-section .transaction-detail .details .detail-row {
+.sign-tx .content-section .transaction-detail .detail.koi {
+  padding-top: 26px;
+}
+
+.sign-tx .content-section .transaction-detail .detail.ar {
+  padding-top: 16px;
+}
+
+.sign-tx .content-section .transaction-detail .detail .detail-row {
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -104,16 +118,21 @@
   align-items: flex-start;
 }
 
-.sign-tx .content-section .transaction-detail .details .detail-row.amount {
+.sign-tx .content-section .transaction-detail .detail .detail-row.amount {
   margin-left: 40px;
   align-items: flex-end;
 }
 
-.sign-tx .content-section .transaction-detail .details .detail-row .koi {
+.sign-tx .content-section .transaction-detail .send .detail-row .koi, .total .detail-row .koi {
   font-size: 24px;
 }
 
-.sign-tx .content-section .transaction-detail .details .detail-row .usd {
+.sign-tx .content-section .transaction-detail .detail.total .row-label {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.sign-tx .content-section .transaction-detail .detail .detail-row .usd {
   margin-top: 6px;
   color: #6D6DA0;
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import './index.css'
 
-export default ({ children }) => {
+export default ({ children, type='error' }) => {
   const [isDisabled, setIsDisabled] = useState(false)
 
   useEffect(() => {
@@ -11,7 +11,7 @@ export default ({ children }) => {
   }, [])
 
   return (
-    <div className={`error-message ${isDisabled ? 'disabled' : ''}`}>
+    <div className={`message ${type} ${isDisabled ? 'disabled' : ''}`}>
       {children}
     </div>
   )

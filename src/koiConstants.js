@@ -69,7 +69,10 @@ export const MESSAGES = {
   KOI_CREATE_TRANSACTION_ERROR: 'KOI_CREATE_TRANSACTION_ERROR',
   KOI_CONNECT: 'KOI_CONNECT',
   KOI_CONNECT_SUCCESS: 'KOI_CONNECT_SUCCESS',
-  KOI_CONNECT_ERROR: 'KOI_CONNECT_ERROR'
+  KOI_CONNECT_ERROR: 'KOI_CONNECT_ERROR',
+  KOI_DISCONNECT: 'KOI_DISCONNECT',
+  KOI_DISCONNECT_SUCCESS: 'KOI_DISCONNECT_SUCCESS',
+  KOI_DISCONNECT_ERROR: 'KOI_DISCONNECT_ERROR'
 }
 
 export const PATH = {
@@ -132,6 +135,10 @@ export const RATE = {
 export const NOTIFICATION = {
   COPIED: 'Copied to clipboard.',
   KEY_EXPORTED: 'Private key downloaded.'
+}
+
+export const WARNING_MESSAGE = {
+  SEND_ZERO_KOI: 'You are about to send 0 tokens. There will still be a very small fee. Make sure the transaction is correct before finalizing it.',
 }
 
 export const LOAD_BALANCES_TIME_INTERVAL = 10000

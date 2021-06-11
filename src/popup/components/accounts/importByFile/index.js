@@ -39,7 +39,7 @@ export const ImportByFile = ({ setError, importWallet }) => {
         setError(ERROR_MESSAGE.CHECKED_TERMS)
       } else {
         const fileData = await JSONFileToObject(file)
-        const redirectPath = PATH.IMPORT_KEY_REDIRECT
+        const redirectPath = PATH.CREATE_WALLET_REDIRECT
         importWallet({ data: fileData, password, history, redirectPath })
       }
     } catch (err) {

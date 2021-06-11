@@ -29,6 +29,7 @@ header {
     margin-left: 150px;
     text-align: center;
     width: 137px;
+    cursor: pointer;
 }
 
 .setting-button {
