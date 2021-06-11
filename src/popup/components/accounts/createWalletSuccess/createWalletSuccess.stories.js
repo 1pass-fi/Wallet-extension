@@ -1,10 +1,10 @@
-import ImportByFileSuccess from '.'
+import CreateWalletSuccess from '.'
 
-ImportByFileSuccess.displayName = 'ImportByFileSuccess'
+CreateWalletSuccess.displayName = 'CreateWalletSuccess'
 
 export default {
-  title: 'screen/ImportByFileSuccess',
-  component: ImportByFileSuccess,
+  title: 'screen/CreateWalletSuccess',
+  component: CreateWalletSuccess,
 }
 
-export const Default = () => <ImportByFileSuccess />
+export const Default = () => <CreateWalletSuccess />

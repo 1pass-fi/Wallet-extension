@@ -24,8 +24,8 @@ const CardOption = ({ SvgImage, title, description, path, onClick }) => {
 }
 
 export default () => {
-  const handleOnClick = () => {
-    const url = chrome.extension.getURL('/popup.html?page=create-wallet')
+  const handleOnClick = (path) => {
+    const url = chrome.extension.getURL(path)
     chrome.windows.create({
       url,
       focused: true,
@@ -48,14 +48,15 @@ export default () => {
       SvgImage: <ExportIcon className="card-icon" />,
       title: 'Upload a .JSON wallet file',
       description: 'Import an existing wallet by uploading a .JSON file.',
-      path: '/account/import/keyfile'
+      path: '#',
+      onClick: () => handleOnClick('/popup.html?page=upload-json')
     }, {
       key: 3,
       SvgImage: <PlusIcon className="card-icon" />,
       title: 'Get a new wallet',
       description: 'Start from the beginning.',
       path: '#',
-      onClick: handleOnClick
+      onClick: () => handleOnClick('/popup.html?page=create-wallet')
     }
   ]
 

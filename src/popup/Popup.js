@@ -72,6 +72,8 @@ const Popup = ({
             history.push('/account/login')
           } else if (query.includes('create-wallet')) {
             history.push('/account/create')
+          } else if (query.includes('upload-json')) {
+            history.push('/account/import/keyfile')
           } else {
             history.push('/account/welcome')
           }
@@ -143,9 +145,6 @@ const Popup = ({
           <Route path='/setting'>
             <Setting />
           </Route>
-          {/* <Route path='/'>
-            <Redirect to='/account' />
-          </Route> */}
         </Switch>
       </div>
     </div>
