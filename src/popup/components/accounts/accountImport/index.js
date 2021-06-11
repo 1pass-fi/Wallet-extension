@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import ExportIcon from 'img/export-icon.svg'
@@ -6,6 +6,8 @@ import ImportIcon from 'img/import-icon.svg'
 import PlusIcon from 'img/plus-icon-outline.svg'
 import './index.css'
 import Card from 'shared/card'
+import { getChromeStorage } from 'utils'
+import { STORAGE } from 'koiConstants'
 
 
 
@@ -24,6 +26,8 @@ const CardOption = ({ SvgImage, title, description, path, onClick }) => {
 }
 
 export default () => {
+  const [selections, setSelections] = useState([])
+
   const handleOnClick = (path) => {
     const url = chrome.extension.getURL(path)
     chrome.windows.create({
@@ -36,33 +40,41 @@ export default () => {
     window.close()
   }
 
-  const CONTENTS = [
-    {
-      key: 1,
-      SvgImage: <ImportIcon className="card-icon" />,
-      title: 'Import with a seed phrase',
-      description: 'Import an existing wallet using a 12-word seed phrase.',
-      path: '/account/import/phrase'
-    }, {
-      key: 2,
-      SvgImage: <ExportIcon className="card-icon" />,
-      title: 'Upload a .JSON wallet file',
-      description: 'Import an existing wallet by uploading a .JSON file.',
-      path: '#',
-      onClick: () => handleOnClick('/popup.html?page=upload-json')
-    }, {
-      key: 3,
-      SvgImage: <PlusIcon className="card-icon" />,
-      title: 'Get a new wallet',
-      description: 'Start from the beginning.',
-      path: '#',
-      onClick: () => handleOnClick('/popup.html?page=create-wallet')
+  useEffect(() => {
+    const loadSelections = async () => {
+      const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
+      const hasPendingRequest = !!storage[STORAGE.PENDING_REQUEST]
+      setSelections([
+        {
+          key: 1,
+          SvgImage: <ImportIcon className="card-icon" />,
+          title: 'Import with a seed phrase',
+          description: 'Import an existing wallet using a 12-word seed phrase.',
+          path: '/account/import/phrase'
+        }, {
+          key: 2,
+          SvgImage: <ExportIcon className="card-icon" />,
+          title: 'Upload a .JSON wallet file',
+          description: 'Import an existing wallet by uploading a .JSON file.',
+          path: (hasPendingRequest ? '/account/import/keyfile' : '#'),
+          onClick: () => { !hasPendingRequest && handleOnClick('/popup.html?page=upload-json') }
+        }, {
+          key: 3,
+          SvgImage: <PlusIcon className="card-icon" />,
+          title: 'Get a new wallet',
+          description: 'Start from the beginning.',
+          path: (hasPendingRequest ? 'account/import/pharse' : '#'),
+          onClick: () => { !hasPendingRequest && handleOnClick('/popup.html?page=create-wallet')}
+        }
+      ])
     }
-  ]
+
+    loadSelections()
+  }, [])
 
   return (
     <div className="account-import">
-      {CONTENTS.map(content => <CardOption {...content} />)}
+      {selections.map(content => <CardOption {...content} />)}
     </div>
   )
 }
