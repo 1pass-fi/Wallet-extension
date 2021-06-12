@@ -24,6 +24,28 @@
   align-items: center;
 }
 
+.app-header .header-right .no-koi {
+  align-items: center;
+  background: #ffffff;
+  border-radius: 4px;
+  border: 1.5px solid #171753;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  font-size: 16px;
+  font-weight: 600;
+  height: 32px;
+  justify-content: center;
+  text-decoration: none;
+  line-height: 18px;
+  width: 156px;
+}
+
+.app-header .header-right .no-koi .get-some {
+  color: #171753;
+}
+
 .app-header .header-right .total-koi {
   display: flex;
   align-items: center;

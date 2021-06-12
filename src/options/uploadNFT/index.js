@@ -56,6 +56,7 @@ const BodyContent = ({
   username,
   setDescription,
   setTitle,
+  setUsername,
 }) => {
   if (stage == 1) {
     return (
@@ -70,7 +71,11 @@ const BodyContent = ({
         </div>
         <div className='field'>
           <label className='field-label'>Username</label>
-          <input value={username} className='field-input' readOnly></input>
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className='field-input'
+          ></input>
         </div>
         <div className='field'>
           <label className='field-label'>Description</label>
@@ -137,20 +142,20 @@ const BottomButton = ({ description, setStage, stage, title }) => {
   )
 }
 
-const UploadForm = ({ file, clearFile, setKeepActive }) => {
+const UploadForm = ({ file, onClearFile, onCloseUploadModal }) => {
   const [stage, setStage] = useState(1)
   const [title, setTitle] = useState('')
+  const [username, setUsername] = useState('')
   const [description, setDescription] = useState('')
   const url = useMemo(() => URL.createObjectURL(file), [file])
   const onGoBack = () => {
     if (stage != 1) {
       setStage(stage - 1)
     } else {
-      clearFile()
+      onClearFile()
     }
   }
-  const username = 'username'
-
+  
   return (
     <div className='upload-form'>
       <UploadFormHeader stage={stage} />
@@ -163,6 +168,8 @@ const UploadForm = ({ file, clearFile, setKeepActive }) => {
           stage={stage}
           title={title}
           setTitle={setTitle}
+          username={username}
+          setUsername={setUsername}
           description={description}
           setDescription={setDescription}
           username={username}
@@ -174,68 +181,32 @@ const UploadForm = ({ file, clearFile, setKeepActive }) => {
         title={title}
         description={description}
       />
-      <div className='close-button' onClick={() => setKeepActive(false)}>
+      <div className='close-button' onClick={onCloseUploadModal}>
         <CloseIcon />
       </div>
-      <div className='goback-button' onClick={() => onGoBack()}>
+      <div className='goback-button' onClick={onGoBack}>
         <GoBackIcon />
       </div>
     </div>
   )
 }
 
-export default ({ isDragging }) => {
-  const [file, setFile] = useState({})
-  const [keepActive, setKeepActive] = useState(false)
-
-  const {
-    acceptedFiles,
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({
-    maxFiles: 1,
-    accept: 'image/*',
-  })
-
-  useEffect(() => {
-    setFile(acceptedFiles ? acceptedFiles[0] : {})
-    if (acceptedFiles.length > 0) {
-      setKeepActive(true)
-    }
-  }, [acceptedFiles])
-
-  const borderColorClass = useMemo(() => {
-    if (isDragAccept) return 'success'
-    if (isDragReject) return 'error'
-    return ''
-  }, [isDragReject, isDragAccept])
-
-  if (!isDragging && !keepActive) {
+export default ({ file, isDragging, onClearFile, onCloseUploadModal }) => {
+  console.log({ isDragging })
+  if (!isDragging) {
     return <div></div>
   }
 
   return (
     <div className='uploadNFT-wrapper'>
-      <div className={`uploadNFT ${borderColorClass}`}>
+      <div className={`uploadNFT`}>
         {isEmpty(file) ? (
-          <div {...getRootProps({ className: 'dropzone' })}>
-            <div className='decorator'>
-              <input
-                name='fileField'
-                data-testid='fileInput'
-                {...getInputProps()}
-              />
-              <DragActive />
-            </div>
-          </div>
+          <DragActive />
         ) : (
           <UploadForm
             file={file}
-            clearFile={() => setFile({})}
-            setKeepActive={setKeepActive}
+            onClearFile={onClearFile}
+            onCloseUploadModal={onCloseUploadModal}
           />
         )}
       </div>
