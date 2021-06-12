@@ -15,7 +15,7 @@ import { setError } from 'actions/error'
 
 import './index.css'
 
-export const SignTx = ({ signTransaction, setError }) => {
+export const SignTx = ({ signTransaction, setError, accountName }) => {
   const history = useHistory()
   const [sourceAccount, setSourceAccount] = useState({
     address: '',
@@ -89,7 +89,7 @@ export const SignTx = ({ signTransaction, setError }) => {
               {walletIcon[sourceAccount.type]}
             </div>
             <div className='account-info'>
-              <div className='title'>Account 1</div>
+              <div className='title'>{accountName}</div>
               <div className='address'>
                 {sourceAccount.address}
               </div>
@@ -158,4 +158,6 @@ export const SignTx = ({ signTransaction, setError }) => {
   )
 }
 
-export default connect(null, { signTransaction, setError })(SignTx)
+export const mapStateToProps = (state) => ({ accountName: state.accountName})
+
+export default connect(mapStateToProps, { signTransaction, setError })(SignTx)

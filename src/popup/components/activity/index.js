@@ -32,7 +32,7 @@ export const ActivitiesList = ({ activities }) => {
 
 export const PendingList = ({ transactions }) => {
   return transactions.map((transaction, index) => (
-    <ActivityRow 
+    <ActivityRow
       key={index}
       activityName={transaction.activityName}
       expense={transaction.expense}
@@ -46,43 +46,68 @@ export const PendingList = ({ transactions }) => {
 
 const AccountLabel = ({ accountName }) => {
   return (
-    <div className='activity-account-label'>
-      <div className='text'>{accountName}</div>
+    <div className="activity-account-label">
+      <div className="text">{accountName}</div>
     </div>
   )
 }
 
-const Activity = ({ activities, loadActivities, cursor, transactions, setTransactions, setError }) => {
+const Activity = ({
+  activities,
+  loadActivities,
+  cursor,
+  transactions,
+  setTransactions,
+  setError,
+  accountName,
+}) => {
   useEffect(() => {
     async function handleLoadActivities() {
-      const storage = await getChromeStorage([STORAGE.KOI_ADDRESS, STORAGE.PENDING_TRANSACTION])
+      const storage = await getChromeStorage([
+        STORAGE.KOI_ADDRESS,
+        STORAGE.PENDING_TRANSACTION,
+      ])
       const listPendingTransaction = storage[STORAGE.PENDING_TRANSACTION]
       if (storage[STORAGE.KOI_ADDRESS]) {
         loadActivities({ cursor })
-      } 
+      }
       setTransactions(listPendingTransaction)
     }
     handleLoadActivities()
   }, [])
-
+  
   const handleLoadMore = () => loadActivities({ cursor })
 
   return (
-    <div className='activity-container'>
-      {activities.length !== 0 && <AccountLabel accountName='Account #1' />}
+    <div className="activity-container">
+      {activities.length !== 0 && <AccountLabel accountName={accountName} />}
       <PendingList transactions={transactions} />
       <ActivitiesList activities={activities} />
-      {!cursor.doneLoading && <Button className='load-more'
-        type='outline'
-        onClick={handleLoadMore}
-        label='See More Activity'
-      />}
+      {!cursor.doneLoading && (
+        <Button
+          className="load-more"
+          type="outline"
+          onClick={handleLoadMore}
+          label="See More Activity"
+        />
+      )}
     </div>
   )
 }
 
 Activity.propTypes = propTypes
 
-const mapStateToProps = (state) => ({ activities: state.activities, cursor: state.cursor, transactions: state.transactions, contLoading: state.contLoading, error: state.error })
+const mapStateToProps = (state) => ({
+  activities: state.activities,
+  cursor: state.cursor,
+  transactions: state.transactions,
+  contLoading: state.contLoading,
+  error: state.error,
+  accountName: state.accountName
+})
 
-export default connect(mapStateToProps, { loadActivities, setTransactions, setError })(Activity)
+export default connect(mapStateToProps, {
+  loadActivities,
+  setTransactions,
+  setError,
+})(Activity)

@@ -116,7 +116,8 @@ export const STORAGE = {
   SITE_PERMISSION: 'sitePermission',
   PENDING_REQUEST: 'pendingRequest',
   KOI_PHRASE: 'koiPhrase',
-  PENDING_TRANSACTION: 'pendingTransactions'
+  PENDING_TRANSACTION: 'pendingTransactions',
+  ACCOUNT_NAME: 'accountName',
 }
 
 export const REQUEST = {
@@ -131,7 +132,8 @@ export const RATE = {
 
 export const NOTIFICATION = {
   COPIED: 'Copied to clipboard.',
-  KEY_EXPORTED: 'Private key downloaded.'
+  KEY_EXPORTED: 'Private key downloaded.',
+  ACCOUNT_NAME_UPDATED: 'Account name updated.'
 }
 
 export const WARNING_MESSAGE = {

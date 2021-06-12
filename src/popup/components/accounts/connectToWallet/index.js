@@ -20,12 +20,12 @@ import { STORAGE, REQUEST, ERROR_MESSAGE } from 'koiConstants'
 
 import './index.css'
 
-export const ConnectToWallet = ({ setError, connectSite }) => {
+export const ConnectToWallet = ({ setError, connectSite, accountName }) => {
   const [checkedList, setCheckedList] = useState([])
   const [address, setAddress] = useState('')
   const accounts = [
     {
-      name: 'Account 1',
+      name: accountName,
       address,
       type: 'koi',
     },
@@ -126,4 +126,6 @@ export const ConnectToWallet = ({ setError, connectSite }) => {
   )
 }
 
-export default connect(null, { setError, connectSite })(ConnectToWallet)
+export const mapStateToProps = (state) => ({accountName: state.accountName})
+
+export default connect(mapStateToProps, { setError, connectSite })(ConnectToWallet)

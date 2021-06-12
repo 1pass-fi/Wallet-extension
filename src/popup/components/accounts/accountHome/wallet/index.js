@@ -16,27 +16,43 @@ import KeyIcon from 'img/wallet/key-icon.svg'
 import DeleteIcon from 'img/wallet/delete-icon.svg'
 import RemoveAccountModal from 'shared/modal/removeAccountModal'
 import RemoveConnectedSite from 'popup/components/modals/removeConnectedSites'
+import EditAccountNameModal from 'popup/components/modals/editAccountNameModal'
 
 import { removeWallet, lockWallet, getKeyFile } from 'actions/koi'
 import { setNotification } from 'actions/notification'
-import { getChromeStorage, deleteOriginFromChrome, numberFormat, fiatCurrencyFormat } from 'utils'
+import { setAccountName } from 'actions/accountName'
+import { getChromeStorage, deleteOriginFromChrome, numberFormat, fiatCurrencyFormat, getAccountName, updateAccountName } from 'utils'
 import { STORAGE, NOTIFICATION, RATE, PATH } from 'koiConstants'
 import ExportPrivateKeyModal from './exportPrivateKeyModal'
 
-const WalletInfo = ({
+const WalletInfo = connect((state) => ({accountName: state.accountName}), null)(({
   accountName,
   accountAddress,
   koiBalance,
   arBalance,
   setNotification,
+  setAccountName,
 }) => {
+  const [openEditModal, setOpenEditModal] = useState(false)
+
+  const onSubmit = async (newName) => {
+    await updateAccountName(newName)
+    setNotification(NOTIFICATION.ACCOUNT_NAME_UPDATED)
+    setAccountName(newName)
+    setOpenEditModal(false)
+  }
+
+  const onClose = () => {
+    setOpenEditModal(false)
+  }
+
   return (
     <div className='wallet-info'>
       <div className='wallet-info-row'>
         <div>
           <div className='name'>
-            <div>{accountName}</div>
-            <div className='icon'>
+            <div className='text'>{accountName}</div>
+            <div className='icon' onClick={() => setOpenEditModal(true)}>
               <EditIcon />
             </div>
           </div>
@@ -45,7 +61,7 @@ const WalletInfo = ({
               accountAddress.length - 4
             )}`}</div>
             <div onClick={() => setNotification(NOTIFICATION.COPIED)}>
-              <CopyToClipboard text={accountAddress}>
+              <CopyToClipboard text={accountName}>
                 <div className="icon">
                   <CopyIcon/>
                 </div>
@@ -64,9 +80,10 @@ const WalletInfo = ({
           {<div className='usd-exchange'>${fiatCurrencyFormat(arBalance * RATE.AR)} USD</div>}
         </div>
       </div>
+      { openEditModal && <EditAccountNameModal onClose={onClose} onSubmit={onSubmit} currentName={accountName}/> }
     </div>
   )
-}
+})
 
 const WalletConfItem = ({ icon, title, onClick, className }) => {
   return (
@@ -77,10 +94,11 @@ const WalletConfItem = ({ icon, title, onClick, className }) => {
   )
 }
 
-const WalletConf = ({
+const WalletConf = connect((state) => ({accountName: state.accountName}), null)(({
   handleRemoveWallet,
   handleGetKeyFile,
   accountAddress,
+  accountName,
   sites,
   handleDeleteSite,
 }) => {
@@ -121,7 +139,7 @@ const WalletConf = ({
       />
       {showModal && (
         <RemoveAccountModal
-          accountName='Account 1'
+          accountName={accountName}
           accountAddress={accountAddress}
           onClose={() => setShowModal(false)}
           onSubmit={handleRemoveWallet}
@@ -130,7 +148,7 @@ const WalletConf = ({
       {showModalConnectedSite && (
         <RemoveConnectedSite
           sites={sites}
-          accountName='Account 1'
+          accountName={accountName}
           handleDeleteSite={handleDeleteSite}
           onClose={() => setShowModalConnectedSite(false)}
         />
@@ -138,7 +156,7 @@ const WalletConf = ({
       {showExportKeyModal && <ExportPrivateKeyModal setShowExportKeyModel={setShowExportKeyModel}/>}
     </div>
   )
-}
+})
 
 export const Wallet = ({
   accountAddress,
@@ -147,6 +165,7 @@ export const Wallet = ({
   removeWallet,
   getKeyFile,
   setNotification,
+  setAccountName,
 }) => {
   const history = useHistory()
   const [connectedSite, setConnectedSite] = useState([])
@@ -169,8 +188,15 @@ export const Wallet = ({
       setConnectedSite(connectedSite)
     }
 
+    const getName = async () => {
+      let name = await getAccountName()
+      if (!name) name = await updateAccountName('Acount 1')
+      setAccountName(name)
+    }
+    
+    getName()
     getConnectedSite()
-  })
+  }, [])
 
   return (
     <div className='wallet'>
@@ -179,11 +205,11 @@ export const Wallet = ({
       </div>
       <div className='wallet-wrapper'>
         <WalletInfo
-          accountName={'Account #1'}
           accountAddress={accountAddress}
           koiBalance={koiBalance}
           arBalance={arBalance}
           setNotification={setNotification}
+          setAccountName={setAccountName}
         />
         <Card className='address'>{accountAddress}</Card>
         <WalletConf
@@ -202,4 +228,5 @@ export default connect(null, {
   lockWallet,
   getKeyFile,
   setNotification,
+  setAccountName,
 })(Wallet)

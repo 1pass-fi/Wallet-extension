@@ -11,7 +11,7 @@ import './index.css'
 
 import Wallet from './wallet'
 import { getBalances } from 'actions/koi'
-import { RATE } from 'koiConstants'
+import { RATE, STORAGE } from 'koiConstants'
 
 export const AccountHome = ({ koi, getBalances }) => {
   let currencies = []

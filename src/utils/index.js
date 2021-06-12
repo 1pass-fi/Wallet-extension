@@ -339,3 +339,13 @@ export const fiatCurrencyFormat = (num) => {
 export const transactionAmountFormat = (num) => {
   return num === null ? '---' : `${Math.round(num * Math.pow(10, 6)) / Math.pow(10, 6)}`
 }
+
+export const getAccountName = async ()  => {
+  const name = (await getChromeStorage(STORAGE.ACCOUNT_NAME))[STORAGE.ACCOUNT_NAME]
+  return name
+}
+
+export const updateAccountName = async (name) => {
+  await setChromeStorage({ [STORAGE.ACCOUNT_NAME] : name})
+  return name
+}
