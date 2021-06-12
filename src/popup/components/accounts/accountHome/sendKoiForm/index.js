@@ -24,6 +24,7 @@ const SendKoiForm = ({
   setWarning,
   makeTransfer,
   onSendSuccess,
+  price
 }) => {
   const defaultCur = currencies[0].value
 
@@ -83,7 +84,7 @@ const SendKoiForm = ({
         <span>Available balance: </span>
         <b>{`${selectBalance(currency)} ${currency}`}</b>
         <div className="amount-in-usd">
-          ${numberFormat(selectBalance(currency) * RATE[currency])} USD
+          ${numberFormat(selectBalance(currency) * price[currency])} USD
         </div>
       </div>
       <Select 
@@ -122,7 +123,7 @@ const SendKoiForm = ({
         />
         {amount.trim().length > 0 && (
           <div className="amount-in-usd">
-            $ {numberFormat(Number(amount) * RATE[currency])} USD
+            $ {numberFormat(Number(amount) * price[currency])} USD
           </div>
         )}
       </div>
@@ -142,4 +143,6 @@ const SendKoiForm = ({
   )
 }
 
-export default connect(null, { setError, setWarning, makeTransfer })(SendKoiForm)
+const mapStateToProps = (state) => ({ price: state.price })
+
+export default connect(mapStateToProps, { setError, setWarning, makeTransfer })(SendKoiForm)

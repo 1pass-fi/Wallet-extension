@@ -90,7 +90,8 @@ export const PATH = {
   ALL_CONTENT: 'https://bundler.openkoi.com:8888/state/getTopContentPredicted?frequency=all',
   SINGLE_CONTENT: 'https://bundler.openkoi.com:8888/state/getNFTState?tranxId=',
   VIEW_BLOCK_TRANSACTION: 'https://viewblock.io/arweave/tx',
-  CONNECT_SITE: '/account/connect-site'
+  CONNECT_SITE: '/account/connect-site',
+  AR_PRICE: 'https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=usd'
 }
 
 export const ERROR_MESSAGE = {
@@ -121,6 +122,7 @@ export const STORAGE = {
   KOI_PHRASE: 'koiPhrase',
   PENDING_TRANSACTION: 'pendingTransactions',
   ACCOUNT_NAME: 'accountName',
+  PRICE: 'PRICE'
 }
 
 export const REQUEST = {

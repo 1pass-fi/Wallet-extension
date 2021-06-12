@@ -15,7 +15,7 @@ import { setError } from 'actions/error'
 
 import './index.css'
 
-export const SignTx = ({ signTransaction, setError, accountName }) => {
+export const SignTx = ({ signTransaction, setError, accountName, price }) => {
   const history = useHistory()
   const [sourceAccount, setSourceAccount] = useState({
     address: '',
@@ -119,14 +119,14 @@ export const SignTx = ({ signTransaction, setError, accountName }) => {
               <div className='detail-row row-label'>Send</div>
               <div className='detail-row amount'>
                 <div className='koi'>{transactionAmountFormat(qty)} {currency}</div>
-                <div className='usd'>~{fiatCurrencyFormat(qty*RATE[currency])} USD</div>
+                <div className='usd'>~{fiatCurrencyFormat(qty*price[currency])} USD</div>
               </div>
             </div>
             <div className='detail fee'>
               <div className='detail-row row-label'>Fee</div>
               <div className='detail-row amount'>
                 <div className='koi'>{transactionAmountFormat(fee)} AR</div>
-                <div className='usd'>~{fiatCurrencyFormat(qty*RATE.AR)} USD</div>
+                <div className='usd'>~{fiatCurrencyFormat(qty*price.AR)} USD</div>
               </div>
             </div>
             { currency === 'AR' &&
@@ -134,7 +134,7 @@ export const SignTx = ({ signTransaction, setError, accountName }) => {
                 <div className='detail-row row-label'>Total</div>
                 <div className='detail-row amount'>
                   <div className='koi'>{transactionAmountFormat(qty+fee)} AR</div>
-                  <div className='usd'>~{fiatCurrencyFormat((qty+fee)*RATE.AR)} USD</div>
+                  <div className='usd'>~{fiatCurrencyFormat((qty+fee)*price.AR)} USD</div>
                 </div>
               </div>
             }
@@ -158,6 +158,6 @@ export const SignTx = ({ signTransaction, setError, accountName }) => {
   )
 }
 
-export const mapStateToProps = (state) => ({ accountName: state.accountName})
+export const mapStateToProps = (state) => ({ accountName: state.accountName, price: state.price })
 
 export default connect(mapStateToProps, { signTransaction, setError })(SignTx)

@@ -29,3 +29,5 @@ export const SET_CURSOR = 'SET_OWNED_CURSOR'
 export const CLEAR_ACTIVITIES = 'CLEAR_ACTIVITIES'
 
 export const SET_ACCOUNT_NAME = 'SET_ACCOUNT_NAME'
+
+export const SET_PRICE = 'SET_PRICE'

@@ -25,13 +25,14 @@ import { getChromeStorage, deleteOriginFromChrome, numberFormat, fiatCurrencyFor
 import { STORAGE, NOTIFICATION, RATE, PATH } from 'koiConstants'
 import ExportPrivateKeyModal from './exportPrivateKeyModal'
 
-const WalletInfo = connect((state) => ({accountName: state.accountName}), null)(({
+const WalletInfo = connect((state) => ({accountName: state.accountName, price: state.price}), null)(({
   accountName,
   accountAddress,
   koiBalance,
   arBalance,
   setNotification,
   setAccountName,
+  price
 }) => {
   const [openEditModal, setOpenEditModal] = useState(false)
 
@@ -73,11 +74,11 @@ const WalletInfo = connect((state) => ({accountName: state.accountName}), null)(
       <div className='wallet-info-row wallet-balance'>
         <div className='koi-balance'>
           <div className='balance'>{numberFormat(koiBalance)} KOI</div>
-          {<div className='usd-exchange'>${fiatCurrencyFormat(koiBalance * RATE.KOI)} USD</div>}
+          {<div className='usd-exchange'>${fiatCurrencyFormat(koiBalance * price.KOI)} USD</div>}
         </div>
         <div className='ar-balance'>
           <div className='balance'>{numberFormat(arBalance)} AR</div>
-          {<div className='usd-exchange'>${fiatCurrencyFormat(arBalance * RATE.AR)} USD</div>}
+          {<div className='usd-exchange'>${fiatCurrencyFormat(arBalance * price.AR)} USD</div>}
         </div>
       </div>
       { openEditModal && <EditAccountNameModal onClose={onClose} onSubmit={onSubmit} currentName={accountName}/> }

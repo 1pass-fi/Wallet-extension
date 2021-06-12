@@ -2,7 +2,7 @@ import '@babel/polyfill'
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch, useHistory, withRouter } from 'react-router-dom'
-import { get } from 'lodash'
+import { get, isNumber } from 'lodash'
 
 import './Popup.css'
 import Header from 'components/header'
@@ -18,11 +18,13 @@ import { setIsLoading } from 'actions/loading'
 import { setError } from 'actions/error'
 import { setNotification } from 'actions/notification'
 import { setWarning } from 'actions/warning'
+import { setPrice } from 'actions/price'
 import { setKoi, loadWallet, removeWallet, getBalances } from 'actions/koi'
 
-import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST } from 'koiConstants'
+import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST, PATH } from 'koiConstants'
 
-import { getChromeStorage } from 'utils'
+import { getChromeStorage, setChromeStorage } from 'utils'
+import axios from 'axios'
 
 const ContinueLoading = () => (
   <div className='continue-loading'>
@@ -42,7 +44,8 @@ const Popup = ({
   warning,
   setWarning,
   loadWallet,
-  getBalances
+  getBalances,
+  setPrice
 }) => {
   const history = useHistory()
   useEffect(() => {
@@ -85,6 +88,27 @@ const Popup = ({
       }
     }
     getKoiData()
+  }, [])
+
+  useEffect(() => {
+    const loadPrice = async () => {
+      try {
+        const storage = await getChromeStorage(STORAGE.PRICE)
+        const { AR } = storage[STORAGE.PRICE] || { AR: 1 }
+        setPrice({ AR })
+        const { data } = await axios.get(PATH.AR_PRICE)
+        const arPrice = get(data, 'arweave.usd')
+        if (isNumber(arPrice)) {
+          await setPrice({ AR: arPrice })
+          const price =  { AR: arPrice, KOI: 1 }
+          await setChromeStorage({ [STORAGE.PRICE]: price })
+        }
+      } catch(err) {
+        setError(err.message)
+      }
+    }
+
+    loadPrice()
   }, [])
 
   useEffect(() => {
@@ -158,7 +182,8 @@ const mapStateToProps = (state) => ({
   warning: state.warning,
   koi: state.koi,
   transactions: state.transactions,
-  isContLoading: state.contLoading
+  isContLoading: state.contLoading,
+  price: state.price
 })
 
 const mapDispatchToProps = {
@@ -169,7 +194,8 @@ const mapDispatchToProps = {
   setKoi,
   loadWallet,
   removeWallet,
-  getBalances
+  getBalances,
+  setPrice
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Popup))
