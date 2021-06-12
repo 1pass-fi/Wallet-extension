@@ -190,7 +190,7 @@ export const Wallet = ({
 
     const getName = async () => {
       let name = await getAccountName()
-      if (!name) name = await updateAccountName('Acount 1')
+      if (!name) name = await updateAccountName('Account 1')
       setAccountName(name)
     }
     
