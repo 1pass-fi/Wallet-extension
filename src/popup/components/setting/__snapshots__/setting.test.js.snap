@@ -48,9 +48,7 @@ exports[`Test for Setting component Render without crashing renders correctly 1`
           >
             <div
               class="name"
-            >
-              Account 1
-            </div>
+            />
             <div
               class="edit-icon"
             >

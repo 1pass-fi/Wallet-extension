@@ -4,9 +4,11 @@ import { useDropzone } from 'react-dropzone'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
+import isArray from 'lodash/isArray'
 
+import Loading from 'popup/components/loading'
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
-import { getChromeStorage } from 'utils'
+import { getChromeStorage, setChromeStorage } from 'utils'
 import { MESSAGES, STORAGE, PORTS } from 'koiConstants'
 
 import KoiIcon from 'img/koi-logo.svg'
@@ -17,6 +19,7 @@ import AddButton from 'img/add-button.svg'
 
 import './Options.css'
 import UploadNFT from './uploadNFT'
+import { CreateEventHandler } from 'popup/actions/backgroundConnect'
 
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
@@ -187,6 +190,7 @@ export default () => {
   const [cardInfos, setCardInfos] = useState([])
   const [totalKoi, setTotalKoi] = useState(0)
   const [file, setFile] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
     acceptedFiles,
@@ -204,32 +208,31 @@ export default () => {
     const getData = async () => {
       try {
         const storage = await getChromeStorage([
-          STORAGE.KOI_ADDRESS,
           STORAGE.CONTENT_LIST,
+          STORAGE.KOI_BALANCE
         ])
         if (storage[STORAGE.CONTENT_LIST]) {
           setCardInfos(storage[STORAGE.CONTENT_LIST])
-        }
-        if (storage[STORAGE.KOI_ADDRESS]) {
-          const address = storage[STORAGE.KOI_ADDRESS]
+        } else {
+          setIsLoading(true)
           backgroundConnect.postMessage({
-            type: MESSAGES.LOAD_WALLET,
-            data: { data: address },
+            type: MESSAGES.LOAD_CONTENT
           })
+        }
+        if (storage[STORAGE.KOI_BALANCE]) {
+          setTotalKoi(storage[STORAGE.KOI_BALANCE])
         }
       } catch (err) {
         console.log(err.message)
       }
     }
-    const getKoiHandler = new EventHandler(
-      MESSAGES.LOAD_WALLET_SUCCESS,
-      (response) => {
-        const { koiData } = response.data
-
-        setTotalKoi(koiData.koiBalance)
-      }
-    )
-    backgroundConnect.addHandler(getKoiHandler)
+    const loadContentSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_CONTENT_SUCCESS, async response => {
+      const { contentList } = response.data
+      isArray(contentList) && setCardInfos(contentList)
+      await setChromeStorage({ [STORAGE.CONTENT_LIST]: contentList })
+      setIsLoading(false)
+    })
+    backgroundConnect.addHandler(loadContentSuccessHandler)
     getData()
   }, [])
 
@@ -259,6 +262,7 @@ export default () => {
       onDragOver={() => modifyDraging(true)}
       onDragLeave={() => modifyDraging(false)}
     >
+      {isLoading && <Loading />}
       {isDragging && isEmpty(file) && (
         <input name='fileField' {...getInputProps()} />
       )}

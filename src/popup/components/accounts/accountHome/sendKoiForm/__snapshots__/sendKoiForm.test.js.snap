@@ -18,7 +18,7 @@ exports[`Test for SendKoiForm component Render without crashing renders correctl
         class="amount-in-usd"
       >
         $
-        1,251.0546
+        1,345.22
          USD
       </div>
     </div>
