@@ -1,3 +1,11 @@
+.import-file-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: white;
+}
+
 .import-file-success {
   letter-spacing: 0.03em;
   padding: 24px 36px 20px;

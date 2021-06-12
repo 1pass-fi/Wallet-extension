@@ -1,7 +1,7 @@
 import { LOAD_KOI_BY, PATH, STORAGE, ERROR_MESSAGE } from 'koiConstants'
 import passworder from 'browser-passworder'
 import moment from 'moment'
-import { get } from 'lodash'
+import { get, isNumber, isArray } from 'lodash'
 
 import Arweave from 'arweave'
 import axios from 'axios'
@@ -89,26 +89,34 @@ export const generateWallet = async (koiObj) => {
 export const loadMyContent = async (koiObj) => {
   try {
     const { data: allContent } = await axios.get(PATH.ALL_CONTENT)
-    const myContent = (allContent.filter(content => content[Object.keys(content)[0]].owner === koiObj.address)).map(content => Object.keys(content)[0])
+    console.log({ allContent })
+    const myContent = (allContent.filter(content => get(content[Object.keys(content)[0]], 'owner') === koiObj.address)).map(content => Object.keys(content)[0])
     const storage = await getChromeStorage(STORAGE.CONTENT_LIST)
     const contentList = storage[STORAGE.CONTENT_LIST] || []
     if (myContent.length === contentList.length) return
     return Promise.all(myContent.map(async contentId => {
-      const { data: content } = await axios.get(`${PATH.SINGLE_CONTENT}/${contentId}`)
-
-      const u8 = Buffer.from((await axios.get(`${PATH.NFT_IMAGE}${content.txIdContent}`, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
-      const imageUrl = `data:image/jpeg;base64,${u8}`
-
-      return {
-        name: content.title,
-        isKoiWallet: content.ticker === 'KOINFT',
-        earnedKoi: content.totalReward,
-        txId: content.txIdContent,
-        imageUrl,
-        galleryUrl: `${PATH.GALLERY}?id=${content.txIdContent}`,
-        koiRockUrl: `${PATH.KOI_ROCK}${content.txIdContent}`,
-        isRegistered: true
+      try {
+        const { data: content } = await axios.get(`${PATH.SINGLE_CONTENT}/${contentId}`)
+        const u8 = Buffer.from((await axios.get(`${PATH.NFT_IMAGE}${content.txIdContent}`, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
+        const imageUrl = `data:image/jpeg;base64,${u8}`
+  
+        return {
+          name: content.title,
+          isKoiWallet: content.ticker === 'KOINFT',
+          earnedKoi: content.totalReward,
+          txId: content.txIdContent,
+          imageUrl,
+          galleryUrl: `${PATH.GALLERY}?id=${content.txIdContent}`,
+          koiRockUrl: `${PATH.KOI_ROCK}${content.txIdContent}`,
+          isRegistered: true
+        }
+      } catch (err) {
+        return {
+          isRegistered: true,
+          isKoiWallet: true
+        }
       }
+
     }))
   } catch (err) {
     throw new Error(err.message)
@@ -122,34 +130,35 @@ export const loadMyActivities = async (koiObj, cursor) => {
 
     let ownedData
     let recipientData
+
     if (ownedCursor) {
-      ownedData = get(await koiObj.getOwnedTxs(koiObj.address, 10, ownedCursor), 'data')
+      ownedData = get(await koiObj.getOwnedTxs(koiObj.address, 10, ownedCursor), 'data.transactions.edges')
     } else {
-      ownedData = get(await koiObj.getOwnedTxs(koiObj.address), 'data')
+      ownedData = get(await koiObj.getOwnedTxs(koiObj.address), 'data.transactions.edges')
     }
   
     if (recipientCursor) {
-      recipientData = get(await koiObj.getRecipientTxs(koiObj.address, 10, recipientCursor), 'data')
+      recipientData = get(await koiObj.getRecipientTxs(koiObj.address, 10, recipientCursor), 'data.transactions.edges')
     } else {
-      recipientData = get(await koiObj.getRecipientTxs(koiObj.address), 'data')
+      recipientData = get(await koiObj.getRecipientTxs(koiObj.address), 'data.transactions.edges')
     }
   
-    ownedData = get(ownedData, 'transactions.edges')
-    recipientData = get(recipientData, 'transactions.edges')
     let activitiesList = [...ownedData, ...recipientData]
 
-    const nextOwnedCursor = ownedData.length > 0 ? ownedData[ownedData.length - 1].cursor : ownedCursor
-    const nextRecipientCursor = recipientData.length > 0 ? recipientData[recipientData.length - 1].cursor : recipientCursor
+    const nextOwnedCursor = ownedData.length > 0 ? get(ownedData[ownedData.length - 1], 'cursor') : ownedCursor
+    const nextRecipientCursor = recipientData.length > 0 ? get(recipientData[recipientData.length - 1], 'cursor') : recipientCursor
 
     if (activitiesList.length > 0) {
-      activitiesList = activitiesList.filter(activity => get(activity, 'node.block') !== null).map(activity => {
+      activitiesList = activitiesList.filter(activity => !!get(activity, 'node.block')).map(activity => {
         const time = get(activity, 'node.block.timestamp')
-        const timeString = moment(time*1000).format('MMMM DD YYYY')
+        const timeString = isNumber(time) ? moment(time*1000).format('MMMM DD YYYY') : ''
         const id = get(activity, 'node.id')
         let activityName = 'Sent AR'
         let expense = Number(get(activity, 'node.quantity.ar')) + Number(get(activity, 'node.fee.ar'))
         // get input tag
-        const inputTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Input')
+        let inputTag = (get(activity, 'node.tags'))
+        if (!isArray(inputTag)) inputTag = []
+        inputTag = inputTag.filter(tag => tag.name === 'Input')
         const initStateTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Init-State')
         let source = get(activity, 'node.recipient')
         let inputFunction

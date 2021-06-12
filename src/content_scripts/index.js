@@ -21,7 +21,9 @@ const messageTypes = [
   MESSAGES.KOI_CREATE_TRANSACTION_SUCCESS,
   MESSAGES.KOI_CREATE_TRANSACTION_ERROR,
   MESSAGES.KOI_CONNECT_SUCCESS,
-  MESSAGES.KOI_CONNECT_ERROR
+  MESSAGES.KOI_CONNECT_ERROR,
+  MESSAGES.KOI_DISCONNECT_SUCCESS,
+  MESSAGES.KOI_DISCONNECT_ERROR
 ]
 export const backgroundConnect = new BackgroundConnect(PORTS.CONTENT_SCRIPT)
 messageTypes.forEach(messageType => {
@@ -40,6 +42,7 @@ window.addEventListener('message', function (event) {
     case MESSAGES.KOI_GET_PERMISSION:
     case MESSAGES.KOI_CREATE_TRANSACTION:
     case MESSAGES.KOI_CONNECT:
+    case MESSAGES.KOI_DISCONNECT:
       backgroundConnect.postMessage(event.data)
       break
     default:
@@ -75,7 +78,8 @@ window.addEventListener('message', function (event) {
       getAddress: () => buildPromise(MESSAGE_TYPES.KOI_GET_ADDRESS),
       getPermissions: () => buildPromise(MESSAGE_TYPES.KOI_GET_PERMISSION),
       connect: () => buildPromise(MESSAGE_TYPES.KOI_CONNECT),
-      sign: (transaction) => buildPromise(MESSAGE_TYPES.KOI_CREATE_TRANSACTION, { transaction })
+      sign: (transaction) => buildPromise(MESSAGE_TYPES.KOI_CREATE_TRANSACTION, { transaction }),
+      disconnect: () => buildPromise(MESSAGE_TYPES.KOI_DISCONNECT)
     }
     window.addEventListener('message', function (event) {
       if (!event.data || !event.data.type) {
@@ -108,7 +112,8 @@ window.addEventListener('message', function (event) {
       KOI_GET_ADDRESS,
       KOI_GET_PERMISSION,
       KOI_CREATE_TRANSACTION,
-      KOI_CONNECT
+      KOI_CONNECT,
+      KOI_DISCONNECT
     } = messages
     const pickedMessages = {
       GET_ADDRESS,
@@ -118,7 +123,8 @@ window.addEventListener('message', function (event) {
       KOI_GET_ADDRESS,
       KOI_GET_PERMISSION,
       KOI_CREATE_TRANSACTION,
-      KOI_CONNECT
+      KOI_CONNECT,
+      KOI_DISCONNECT
     }
     script.text = `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(pickedMessages)}');(${fn.toString()})();`
     arweaveScript.src = 'https://unpkg.com/arweave/bundles/web.bundle.js'
