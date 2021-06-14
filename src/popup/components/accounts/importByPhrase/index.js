@@ -17,6 +17,9 @@ import { PATH, ERROR_MESSAGE } from 'koiConstants'
 export const ImportByPhrase = ({ importWallet, setError }) => {
   const history = useHistory()
   const [phrase, setPharse] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [isAccept, setIsAccept] = useState(false)
 
   const onPhraseChange = (e) => {
     setPharse(e.target.value)
@@ -25,18 +28,13 @@ export const ImportByPhrase = ({ importWallet, setError }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     try {
-      const password = e.target.pwd.value
-      const passwordConfirm = e.target.pwdConfirm.value
-      const checked = e.target.checkbox.checked
-      const phrase = e.target.inputPhrase.value
-
       if (!phrase) {
         setError(ERROR_MESSAGE.EMPTY_PHRASE)
       } else if (password.length < 8) {
         setError(ERROR_MESSAGE.PASSWORD_LENGTH)
-      } else if (password !== passwordConfirm) {
+      } else if (password !== confirmPassword) {
         setError(ERROR_MESSAGE.PASSWORD_MATCH)
-      } else if (!checked) {
+      } else if (!isAccept) {
         setError(ERROR_MESSAGE.CHECKED_TERMS)
       } else {
         const redirectPath = PATH.IMPORT_PHRASE_REDIRECT
@@ -56,7 +54,12 @@ export const ImportByPhrase = ({ importWallet, setError }) => {
         </div>
         <form onSubmit={handleSubmit}>
           <InputField name="inputPhrase" label="12-word seed phrase" onChange={onPhraseChange} placeholder="Paste seed phrase here" />
-          <CreatePassword isEnable={!isEmpty(phrase)} />
+          <CreatePassword 
+            isEnable={!isEmpty(phrase) } 
+            setPassword={setPassword} 
+            setConfirmPassword={setConfirmPassword} 
+            setIsAccept={setIsAccept} 
+          />
         </form>
       </Card>
     </div>

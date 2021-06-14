@@ -1,40 +1,60 @@
 import '@babel/polyfill'
-import { fireEvent, getByText, render } from '@testing-library/react'
+import { fireEvent, getByText, queryAllByTestId, render, wait, waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
 import '@testing-library/jest-dom/extend-expect'
 import React from 'react'
-import { Provider } from 'react-redux'
-import configureStore from 'redux-mock-store'
-import { BrowserRouter as Router } from 'react-router-dom'
+import sinon from 'sinon'
 
-import ImportPhraseLockScreen from '.'
+import { utils } from 'utils'
+import { SignTx } from '.'
+import { STORAGE } from 'koiConstants'
 
-const mockStore = configureStore([])
 
 describe('Test for ImportPhraseLockScreen component', () => {
-  let setErrorMock, signTransactionMock, storeMock, container
-  beforeEach(() => {
+  let setErrorMock, signTransactionMock, container, accountName, price, getChromeStorageStub, sourceAddressEle, targetAddressEle, originEle
+  beforeEach(async () => {
+    getChromeStorageStub = sinon.stub(utils, 'getChromeStorage')
+    getChromeStorageStub.withArgs(STORAGE.PENDING_REQUEST).resolves({ [STORAGE.PENDING_REQUEST]: { data: {
+      origin: 'origin',
+      qty: 100,
+      address: 'targetAddress'
+    } } })
+    getChromeStorageStub.withArgs(STORAGE.KOI_ADDRESS).resolves({ [STORAGE.KOI_ADDRESS]: 'koiAddress' })
     setErrorMock = jest.fn()
     signTransactionMock = jest.fn()
+    accountName = 'accountName',
+    price = { AR: 1, KOI: 2 }
 
-    const initState = {
-      setError: setErrorMock,
-      signTransaction: signTransactionMock,
-    }
+    container = render(<SignTx
+      signTransaction={signTransactionMock}
+      setError={setErrorMock}
+      accountName={accountName}
+      price={price}
+    />).container
+    await waitFor(() => {
+      sourceAddressEle = queryAllByTestId(container, 'source-address')[0]
+      targetAddressEle = queryAllByTestId(container, 'target-address')[0]
+      originEle = queryAllByTestId(container, 'origin')[0]
+    })
 
-    storeMock = mockStore(initState)
+  })
 
-    container = render(
-      <Router>
-        <Provider store={storeMock}>
-          <ImportPhraseLockScreen />
-        </Provider>
-      </Router>
-    ).container
+  afterEach(() => {
+    sinon.reset()
+    getChromeStorageStub.restore()
   })
 
   describe('renders without crashing', () => {
-    it('renders correctly', () => {
+    it('renders correctly', async () => {
       expect(container).toMatchSnapshot()
+    })
+  })
+
+  describe('load data from local storage and set state', () => {
+    it ('renders with data from local storage', () => {
+      expect(sourceAddressEle.textContent).toEqual('koiAddress')
+      expect(targetAddressEle.textContent).toEqual('targetAddress')
+      expect(originEle.textContent).toEqual('origin')
     })
   })
 })

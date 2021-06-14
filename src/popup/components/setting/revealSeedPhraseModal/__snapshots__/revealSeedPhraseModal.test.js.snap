@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test for ImportPhraseLockScreen component renders without crashing renders correctly 1`] = `
+<div>
+  <div
+    class="modal-container"
+  >
+    <div
+      class="modal reveal-seed-phrase"
+    >
+      <div
+        class="modal-close-icon"
+      >
+        <svg />
+      </div>
+      <div
+        class="modal-title"
+      >
+        Reveal Seed Phrase
+      </div>
+      <div
+        class="modal-description"
+      >
+        If you change browsers or computers, you will need this seed phrase to access your account.
+        <br />
+        <span>
+           
+           
+        </span>
+        Save it somewhere 
+        <strong>
+          safe and secret
+        </strong>
+        .
+      </div>
+      <div
+        class="modal-warning"
+      >
+        <div
+          class="warning-icon"
+        >
+          <svg />
+        </div>
+        <div
+          class="warning-message"
+        >
+          Never disclose your backup phrase. Anyone with this phrase can steal your accounts.
+        </div>
+      </div>
+      <div
+        class="input-field password-field"
+      >
+        <div
+          class="label"
+        >
+          Enter your password
+        </div>
+        <div
+          class="input-wrapper"
+        >
+          <input
+            class="input"
+            name=""
+            placeholder=""
+            type="password"
+            value=""
+          />
+          <svg
+            class="toggle-display"
+          />
+        </div>
+      </div>
+      <div
+        class="buttons-line"
+      >
+        <button
+          class="button-shared button-filled modal-action-button reveal"
+        >
+          Reveal
+        </button>
+        <button
+          class="button-shared button-outline modal-action-button close"
+        >
+          Go Back
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

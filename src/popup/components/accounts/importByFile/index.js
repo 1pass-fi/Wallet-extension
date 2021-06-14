@@ -21,21 +21,20 @@ import './index.css'
 export const ImportByFile = ({ setError, importWallet }) => {
   const history = useHistory()
   const [file, setFile] = useState({})
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [isAccept, setIsAccept] = useState(false)
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       if (!e.target.files) {
         e.target.files = [file]
       }
-      const password = get(e, 'target.pwd.value')
-      const passwordConfirm = get(e, 'target.pwdConfirm.value')
-      const checked = get(e, 'target.checkbox.checked')
-
       if (password.length < 8) {
         setError(ERROR_MESSAGE.PASSWORD_LENGTH)
-      } else if (password !== passwordConfirm) {
+      } else if (password !== confirmPassword) {
         setError(ERROR_MESSAGE.PASSWORD_MATCH)
-      } else if (!checked) {
+      } else if (!isAccept) {
         setError(ERROR_MESSAGE.CHECKED_TERMS)
       } else {
         const fileData = await JSONFileToObject(file)
@@ -56,7 +55,12 @@ export const ImportByFile = ({ setError, importWallet }) => {
         </div>
         <form onSubmit={handleSubmit}>
           <DropFile file={file} setFile={setFile} />
-          <CreatePassword isEnable={!isEmpty(file)} />
+          <CreatePassword 
+            isEnable={!isEmpty(file)}
+            setPassword={setPassword} 
+            setConfirmPassword={setConfirmPassword} 
+            setIsAccept={setIsAccept}
+          />
         </form>
       </Card>
     </div>

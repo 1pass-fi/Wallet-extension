@@ -12,7 +12,7 @@ import './index.css'
 import { setError } from 'actions/error'
 import { ERROR_MESSAGE } from 'koiConstants'
 
-const RevealSeedPhraseModal = ({ onReveal, onClose, setError }) => {
+export const RevealSeedPhraseModal = ({ onReveal, onClose, setError }) => {
   const [password, setPassword] = useState('')
 
   const onChangePassword = (e) => {

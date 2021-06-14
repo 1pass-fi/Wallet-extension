@@ -25,7 +25,7 @@ import { getChromeStorage, deleteOriginFromChrome, numberFormat, fiatCurrencyFor
 import { STORAGE, NOTIFICATION, RATE, PATH } from 'koiConstants'
 import ExportPrivateKeyModal from './exportPrivateKeyModal'
 
-const WalletInfo = connect((state) => ({accountName: state.accountName, price: state.price}), null)(({
+const WalletInfo = (({
   accountName,
   accountAddress,
   koiBalance,
@@ -95,7 +95,7 @@ const WalletConfItem = ({ icon, title, onClick, className }) => {
   )
 }
 
-const WalletConf = connect((state) => ({accountName: state.accountName}), null)(({
+const WalletConf = (({
   handleRemoveWallet,
   handleGetKeyFile,
   accountAddress,
@@ -164,9 +164,10 @@ export const Wallet = ({
   koiBalance,
   arBalance,
   removeWallet,
-  getKeyFile,
   setNotification,
   setAccountName,
+  price,
+  accountName
 }) => {
   const history = useHistory()
   const [connectedSite, setConnectedSite] = useState([])
@@ -211,6 +212,8 @@ export const Wallet = ({
           arBalance={arBalance}
           setNotification={setNotification}
           setAccountName={setAccountName}
+          accountName={accountName}
+          price={price}
         />
         <Card className='address'>{accountAddress}</Card>
         <WalletConf
@@ -218,13 +221,16 @@ export const Wallet = ({
           sites={connectedSite}
           handleDeleteSite={handleDeleteSite}
           handleRemoveWallet={handleRemoveWallet}
+          accountName={accountName}
         />
       </div>
     </div>
   )
 }
 
-export default connect(null, {
+const mapStateToProps = (state) => ({ price: state.price, accountName: state.accountName })
+
+export default connect(mapStateToProps, {
   removeWallet,
   lockWallet,
   getKeyFile,

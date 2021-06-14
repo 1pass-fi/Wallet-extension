@@ -5,12 +5,13 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 import { BrowserRouter as Router } from 'react-router-dom'
+import thunk from 'redux-thunk'
 
 jest.mock('lodash/shuffle', () => (list) => list)
 
 import ConnectToWallet from '.'
 
-const mockStore = configureStore([])
+const mockStore = configureStore([thunk])
 
 describe('Test for ConnectToWallet component', () => {
   let setErrorMock, storeMock, container, setCreateWalletMock, saveWalletMock

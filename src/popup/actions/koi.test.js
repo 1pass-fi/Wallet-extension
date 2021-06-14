@@ -201,14 +201,15 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: null },
-          { type: SET_NOTIFICATION, payload: null },
-          { type: SET_WARNING, payload: null }
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(importWallet(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(importWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -223,13 +224,16 @@ describe('Tests for actions/koi', () => {
         expectedActions = [
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
-          { type: SET_ERROR, payload: 'Error message' },
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           { type: SET_LOADING, payload: false },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(importWallet(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(importWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -318,14 +322,15 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: null },
-          { type: SET_NOTIFICATION, payload: null },
-          { type: SET_WARNING, payload: null }
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(loadWallet(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(loadWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -340,13 +345,16 @@ describe('Tests for actions/koi', () => {
         expectedActions = [
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
-          { type: SET_ERROR, payload: 'Error message' },
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           { type: SET_LOADING, payload: false },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(loadWallet(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(loadWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -454,16 +462,18 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(removeWallet(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(removeWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
-
 
     describe('something went wrong', () => {
       beforeEach(() => {
@@ -474,13 +484,16 @@ describe('Tests for actions/koi', () => {
         expectedActions = [
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
-          { type: SET_ERROR, payload: 'Error message' },
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           { type: SET_LOADING, payload: false },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(removeWallet(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(removeWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -564,14 +577,15 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: null },
-          { type: SET_NOTIFICATION, payload: null },
-          { type: SET_WARNING, payload: null }
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(lockWallet(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(lockWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -586,13 +600,16 @@ describe('Tests for actions/koi', () => {
         expectedActions = [
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
-          { type: SET_ERROR, payload: 'Error message' },
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           { type: SET_LOADING, payload: false },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(lockWallet(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(lockWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -686,14 +703,15 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: null },
-          { type: SET_NOTIFICATION, payload: null },
-          { type: SET_WARNING, payload: null }
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(unlockWallet(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(unlockWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -708,13 +726,16 @@ describe('Tests for actions/koi', () => {
         expectedActions = [
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
-          { type: SET_ERROR, payload: 'Error message' },
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           { type: SET_LOADING, payload: false },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(unlockWallet(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(unlockWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -912,14 +933,15 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: null },
-          { type: SET_NOTIFICATION, payload: null },
-          { type: SET_WARNING, payload: null }
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(saveWallet(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(saveWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -934,13 +956,16 @@ describe('Tests for actions/koi', () => {
         expectedActions = [
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
-          { type: SET_ERROR, payload: 'Error message' },
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           { type: SET_LOADING, payload: false },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(saveWallet(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(saveWallet(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -1020,14 +1045,15 @@ describe('Tests for actions/koi', () => {
           { type: SET_CONT_LOADING, payload: true },
           { type: SET_CONT_LOADING, payload: true },
           { type: SET_CONT_LOADING, payload: false },
-          { type: SET_ERROR, payload: null },
-          { type: SET_NOTIFICATION, payload: null },
-          { type: SET_WARNING, payload: null }
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
+          { type: SET_ERROR, payload: 'Error message' },
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(loadContent(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(loadContent(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -1042,19 +1068,22 @@ describe('Tests for actions/koi', () => {
         expectedActions = [
           { type: SET_CONT_LOADING, payload: true },
           { type: SET_CONT_LOADING, payload: true },
-          { type: SET_ERROR, payload: 'Error message' },
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           { type: SET_CONT_LOADING, payload: false },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(loadContent(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(loadContent(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
   })
 
-  describe('Tests for loadActivies()', () => {
+  describe('Tests for loadActivities()', () => {
     let inputData, history
 
     beforeEach(() => {
@@ -1142,14 +1171,15 @@ describe('Tests for actions/koi', () => {
         }
 
         expectedActions = [
-          { type: SET_ERROR, payload: null },
-          { type: SET_NOTIFICATION, payload: null },
-          { type: SET_WARNING, payload: null }
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(loadActivities())
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(loadActivities())
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -1162,12 +1192,15 @@ describe('Tests for actions/koi', () => {
         }
 
         expectedActions = [
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(loadActivities())
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(loadActivities())
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -1231,6 +1264,9 @@ describe('Tests for actions/koi', () => {
             type: SET_LOADING,
             payload: false
           },
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           {
             type: SET_NOTIFICATION,
             payload: 'Transaction sent.'
@@ -1262,14 +1298,15 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: null },
-          { type: SET_NOTIFICATION, payload: null },
-          { type: SET_WARNING, payload: null }
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(makeTransfer(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(makeTransfer(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -1284,13 +1321,16 @@ describe('Tests for actions/koi', () => {
         expectedActions = [
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
-          { type: SET_ERROR, payload: 'Error message' },
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           { type: SET_LOADING, payload: false },
+          { type: SET_ERROR, payload: 'Error message' },
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(makeTransfer(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(makeTransfer(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -1361,14 +1401,15 @@ describe('Tests for actions/koi', () => {
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: false },
-          { type: SET_ERROR, payload: null },
-          { type: SET_NOTIFICATION, payload: null },
-          { type: SET_WARNING, payload: null }
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
+          { type: SET_ERROR, payload: 'Error message' },
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(signTransaction(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(signTransaction(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -1383,13 +1424,16 @@ describe('Tests for actions/koi', () => {
         expectedActions = [
           { type: SET_LOADING, payload: true },
           { type: SET_LOADING, payload: true },
-          { type: SET_ERROR, payload: 'Error message' },
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           { type: SET_LOADING, payload: false },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(signTransaction(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(signTransaction(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -1420,6 +1464,9 @@ describe('Tests for actions/koi', () => {
         }
 
         expectedActions = [
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
           {
             type: SET_NOTIFICATION,
             payload: 'Private key downloaded.'
@@ -1428,7 +1475,7 @@ describe('Tests for actions/koi', () => {
       })
 
       it('dispatchs data as expected', async () => {
-        store.dispatch(getKeyFile(inputData))
+        await store.dispatch(getKeyFile(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -1440,12 +1487,15 @@ describe('Tests for actions/koi', () => {
         }
 
         expectedActions = [
-          { type: SET_ERROR, payload: 'Error message' },
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(getKeyFile(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(getKeyFile(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })
@@ -1478,14 +1528,15 @@ describe('Tests for actions/koi', () => {
         }
 
         expectedActions = [
-          { type: SET_ERROR, payload: null },
-          { type: SET_NOTIFICATION, payload: null },
-          { type: SET_WARNING, payload: null }
+          { type: CLEAR_ERROR },
+          { type: CLEAR_NOTIFICATION },
+          { type: CLEAR_WARNING },
+          { type: SET_ERROR, payload: 'Error message' }
         ]
       })
 
-      it('dispatchs data as expected', () => {
-        store.dispatch(connectSite(inputData))
+      it('dispatchs data as expected', async () => {
+        await store.dispatch(connectSite(inputData))
         expect(store.getActions()).toEqual(expectedActions)
       })
     })

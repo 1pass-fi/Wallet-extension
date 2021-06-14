@@ -5,10 +5,10 @@ import ButtonShared from '../button/index'
 import CheckBox from '../checkbox'
 import './index.css'
 
-export default  ({ isEnable, buttonLabel }) => {
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [_ , setIsAccept] = useState(false)
+export default  ({ isEnable, buttonLabel, setPassword, setConfirmPassword, setIsAccept }) => {
+  // const [password, setPassword] = useState('')
+  // const [confirmPassword, setConfirmPassword] = useState('')
+  // const [_ , setIsAccept] = useState(false)
 
   const onPasswordChange = (e) => {
     setPassword(e.target.value)
@@ -18,10 +18,10 @@ export default  ({ isEnable, buttonLabel }) => {
     setConfirmPassword(e.target.value)
   }
 
-  const isPasswordValid = useMemo(
-    () => (password === confirmPassword) & (password.length >= 8),
-    [password, confirmPassword]
-  )
+  // const isPasswordValid = useMemo(
+  //   () => (password === confirmPassword) & (password.length >= 8),
+  //   [password, confirmPassword]
+  // )
 
   const onCheckbox = (e) => {
     setIsAccept(e.target.checked)

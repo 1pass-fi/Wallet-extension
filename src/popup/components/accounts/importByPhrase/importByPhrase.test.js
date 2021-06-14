@@ -8,7 +8,7 @@ import { ERROR_MESSAGE } from 'koiConstants'
 
 
 describe('Test for ImportByPhrase component', () => {
-  let importWalletMock, setErrorMock, container, form, submitBtn
+  let importWalletMock, setErrorMock, container, submitBtn, checkedInput
 
   beforeEach(() => {
     importWalletMock = jest.fn()
@@ -18,7 +18,7 @@ describe('Test for ImportByPhrase component', () => {
       <ImportByPhrase importWallet={importWalletMock} setError={setErrorMock}/>
     ).container
     submitBtn = getByText(container, 'Import Wallet')
-    console.log(document.getElementsByName('inputPhrase')[0].name)
+    checkedInput = document.getElementsByName('checkbox')[0]
   })
 
   const submitForm = async () => {
@@ -31,7 +31,6 @@ describe('Test for ImportByPhrase component', () => {
     const seedPhraseInput = screen.getByPlaceholderText('Paste seed phrase here')
     const passwordInput = screen.getByPlaceholderText('Make it unique (min. 8 characters)')
     const passwordConfirmInput = document.getElementsByName('pwdConfirm')[0]
-    const checkedInput = document.getElementsByName('checkbox')[0]
     await act(async () => {
       await fireEvent.change(seedPhraseInput, {
         target: { value: `${seedPhrase}` },
@@ -41,9 +40,6 @@ describe('Test for ImportByPhrase component', () => {
       });
       await fireEvent.change(passwordConfirmInput, {
         target: { value: `${passwordConfirm}` }
-      })
-      await fireEvent.change(checkedInput, {
-        target: { value: `${checked}` }
       })
     })
   }
@@ -65,6 +61,59 @@ describe('Test for ImportByPhrase component', () => {
         })
         await submitForm()
         expect(setErrorMock).toBeCalledWith(ERROR_MESSAGE.EMPTY_PHRASE)
+      })
+    })
+
+    describe('password length < 8', () => {
+      it('calls setError with correct message', async () => {
+        await fillForm({
+          seedPhrase: 'seedPhrase',
+          password: '123',
+          passwordConfirm: '',
+          checked: false
+        })
+        await submitForm()
+        expect(setErrorMock).toBeCalledWith(ERROR_MESSAGE.PASSWORD_LENGTH)
+      })
+    })
+
+    describe('passwords do not match', () => {
+      it('calls setError with correct message', async () => {
+        await fillForm({
+          seedPhrase: 'seedPhrase',
+          password: '123456789',
+          passwordConfirm: '987654321',
+          checked: false
+        })
+        await submitForm()
+        expect(setErrorMock).toBeCalledWith(ERROR_MESSAGE.PASSWORD_MATCH)
+      })
+    })
+
+    describe('unchecked terms of service', () => {
+      it('calls setError with correct message', async () => {
+        await fillForm({
+          seedPhrase: 'seedPhrase',
+          password: '123456789',
+          passwordConfirm: '123456789',
+          checked: false
+        })
+        await submitForm()
+        expect(setErrorMock).toBeCalledWith(ERROR_MESSAGE.CHECKED_TERMS)
+      })
+    })
+
+    describe('all validations passed', () => {
+      it('calls importWallet', async () => {
+        await fillForm({
+          seedPhrase: 'seedPhrase',
+          password: '123456789',
+          passwordConfirm: '123456789',
+          checked: true
+        })
+        fireEvent.click(checkedInput)
+        await submitForm()
+        expect(importWalletMock).toBeCalled()
       })
     })
   })

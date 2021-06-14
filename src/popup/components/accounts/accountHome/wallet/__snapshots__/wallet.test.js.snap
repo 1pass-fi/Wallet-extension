@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests for Wallet component Render correctly renders without crashing 1`] = `
+<div>
+  <div
+    class="wallet"
+  >
+    <div
+      class="wallet fish"
+    >
+      <svg />
+    </div>
+    <div
+      class="wallet-wrapper"
+    >
+      <div
+        class="wallet-info"
+      >
+        <div
+          class="wallet-info-row"
+        >
+          <div>
+            <div
+              class="name"
+            >
+              <div
+                class="text"
+              >
+                accountName
+              </div>
+              <div
+                class="icon"
+              >
+                <svg />
+              </div>
+            </div>
+            <div
+              class="addr"
+            >
+              <div>
+                accoun...ress
+              </div>
+              <div>
+                <div
+                  class="icon"
+                >
+                  <svg />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="wallet-info-row wallet-balance"
+        >
+          <div
+            class="koi-balance"
+          >
+            <div
+              class="balance"
+            >
+              100
+               KOI
+            </div>
+            <div
+              class="usd-exchange"
+            >
+              $
+              200
+               USD
+            </div>
+          </div>
+          <div
+            class="ar-balance"
+          >
+            <div
+              class="balance"
+            >
+              1,000
+               AR
+            </div>
+            <div
+              class="usd-exchange"
+            >
+              $
+              1,000
+               USD
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="card address"
+      >
+        accountAddress
+      </div>
+      <div
+        class="wallet-conf"
+      >
+        <div
+          class="wallet-conf-item undefined"
+        >
+          <svg />
+          <p>
+            View Block Explorer
+          </p>
+        </div>
+        <div
+          class="wallet-conf-item undefined"
+        >
+          <svg />
+          <p>
+            Export Private Key
+          </p>
+        </div>
+        <div
+          class="wallet-conf-item "
+        >
+          <svg />
+          <p>
+            See Connected Sites
+          </p>
+        </div>
+        <div
+          class="wallet-conf-item delete-wallet"
+        >
+          <svg />
+          <p>
+            Remove Account
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

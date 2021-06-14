@@ -331,12 +331,6 @@ export const signTransaction = async (koiObj, transaction) => {
   }
 }
 
-export const utils = {
-  loadWallet,
-  setChromeStorage,
-  getChromeStorage
-}
-
 export const numberFormat = (num) => {
   return num === null ? '---' : new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 }).format(num)
 }
@@ -357,4 +351,11 @@ export const getAccountName = async ()  => {
 export const updateAccountName = async (name) => {
   await setChromeStorage({ [STORAGE.ACCOUNT_NAME] : name})
   return name
+}
+
+export const utils = {
+  loadWallet,
+  setChromeStorage,
+  getChromeStorage,
+  removeChromeStorage
 }

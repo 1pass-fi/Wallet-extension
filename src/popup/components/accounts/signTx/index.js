@@ -8,6 +8,7 @@ import Card from 'shared/card'
 import Button from 'shared/button'
 
 import { getChromeStorage, removeChromeStorage, transactionAmountFormat, fiatCurrencyFormat } from 'utils'
+import { utils } from 'utils'
 
 import { STORAGE, REQUEST, ERROR_MESSAGE, RATE } from 'koiConstants'
 import { signTransaction } from 'actions/koi'
@@ -37,13 +38,12 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
 
   useEffect(() => {
     const loadRequest = async () => {
-      const request = (await getChromeStorage(STORAGE.PENDING_REQUEST))[
+      const request = (await utils.getChromeStorage(STORAGE.PENDING_REQUEST))[
         STORAGE.PENDING_REQUEST
       ]
-      const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[
+      const address = (await utils.getChromeStorage(STORAGE.KOI_ADDRESS))[
         STORAGE.KOI_ADDRESS
       ]
-      console.log(request.data)
       const {
         origin: requestOrigin,
         qty,
@@ -90,7 +90,7 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
             </div>
             <div className='account-info'>
               <div className='title'>{accountName}</div>
-              <div className='address'>
+              <div className='address' data-testid='source-address'>
                 {sourceAccount.address}
               </div>
             </div>
@@ -101,14 +101,14 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
               {walletIcon[destinationAccount.type]}
             </div>
             <div className='account-info'>
-              <div className='address'>
+              <div className='address' data-testid='target-address'>
                 {destinationAccount.address}
               </div>
             </div>
           </div>
         </div>
         <div className='origin'>
-          <a href={origin}>{origin}</a>
+          <a href={origin} data-testid='origin'>{origin}</a>
         </div>
       </div>
       <div className='content-section'>

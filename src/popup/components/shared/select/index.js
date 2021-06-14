@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import DownArrowIcon from 'img/down-arrow-icon.svg'
 import './index.css'
 
-const Select = ({ 
+export const Select = ({ 
   options,
   defaultOption = '', 
   label='', 
