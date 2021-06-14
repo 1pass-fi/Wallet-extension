@@ -1,8 +1,10 @@
 import '@babel/polyfill'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
+import isEqual from 'lodash/isEqual'
 import throttle from 'lodash/throttle'
 import isArray from 'lodash/isArray'
 
@@ -15,11 +17,13 @@ import KoiIcon from 'img/koi-logo.svg'
 import KoiUnit from 'img/koi-logo-no-bg.svg'
 import SettingsIcon from 'img/settings-icon.svg'
 import ShareIcon from 'img/share-icon.svg'
+import CopyLinkIcon from 'img/share-icon-2.svg'
 import AddButton from 'img/add-button.svg'
 
 import './Options.css'
 import UploadNFT from './uploadNFT'
 import { CreateEventHandler } from 'popup/actions/backgroundConnect'
+import Button from 'popup/components/shared/button'
 
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
@@ -72,24 +76,44 @@ const BigCard = ({
   earnedKoi,
   isRegistered,
   koiRockUrl,
-  setChoosen,
 }) => {
+  const [isCopied, setIsCopied] = useState(false)
+  const onCopy = () => {
+    setIsCopied(true)
+    setTimeout(() => setIsCopied(false), 3000)
+  }
+
   return (
-    <div className='big-nft-card' onClick={() => setChoosen('')}>
-      <img src={imageUrl} className='nft-img' />
-      <div className='nft-name'>{name}</div>
-      {isRegistered ? (
-        <div className='nft-earned-koi'>{earnedKoi} KOI</div>
-      ) : (
-        <button className='register-button'>
-          <KoiIcon className='icon' /> Register &amp; Earn
-        </button>
-      )}
-      {isRegistered && (
-        <a target='_blank' href={koiRockUrl} className='nft-path'>
-          View on koi.rocks
-        </a>
-      )}
+    <div className='big-nft-card-wrapper'>
+      <div className='big-nft-card'>
+        <img src={imageUrl} className='nft-img' />
+        <div className='nft-name'>{name}</div>
+        {isRegistered ? (
+          <div className='nft-earned-koi'>{earnedKoi} KOI</div>
+        ) : (
+          <button className='register-button'>
+            <KoiIcon className='icon' /> Register &amp; Earn
+          </button>
+        )}
+        {isRegistered && (
+          <>
+            <CopyToClipboard text={koiRockUrl}>
+              <>
+                {isCopied && <div className='copy-noti'>Link copied!</div>}
+                <Button
+                  label='Share'
+                  type='outline'
+                  className='share-nft-button'
+                  onClick={onCopy}
+                />
+              </>
+            </CopyToClipboard>
+            <a target='_blank' href={koiRockUrl} className='nft-path'>
+              View on koi.rocks
+            </a>
+          </>
+        )}
+      </div>
     </div>
   )
 }
@@ -103,17 +127,22 @@ const Card = ({
   koiRockUrl,
   choosen,
   setChoosen,
-  titleRef,
   disabled,
 }) => {
+  const [isCopied, setIsCopied] = useState(false)
+
+  const onCopy = () => {
+    setIsCopied(true)
+    setTimeout(() => setIsCopied(false), 3000)
+  }
+
   const onClick = () => {
     setChoosen(txId)
-    titleRef.current.scrollIntoView({ behavior: 'smooth' })
   }
 
   return choosen !== txId ? (
-    <div disabled={disabled} className='nft-card' onClick={onClick}>
-      <img src={imageUrl} className='nft-img' />
+    <div disabled={disabled} className='nft-card'>
+      <img src={imageUrl} className='nft-img' onClick={onClick} />
       <div className='nft-name'>{name}</div>
       {isRegistered ? (
         <div className='nft-earned-koi'>{earnedKoi} KOI</div>
@@ -123,9 +152,15 @@ const Card = ({
         </button>
       )}
       {isRegistered && (
-        <a target='_blank' href={koiRockUrl} className='nft-path'>
-          <ShareIcon />
-        </a>
+        <>
+          {isCopied && <div className='copy-noti'>Link copied!</div>}
+          <CopyToClipboard text={koiRockUrl}>
+            <CopyLinkIcon className='share-nft-button' onClick={onCopy} />
+          </CopyToClipboard>
+          <a target='_blank' href={koiRockUrl} className='nft-path'>
+            <ShareIcon />
+          </a>
+        </>
       )}
     </div>
   ) : null
@@ -139,7 +174,6 @@ const Content = ({
   onCloseUploadModal,
 }) => {
   const [choosen, setChoosen] = useState('')
-  const titleRef = useRef(null)
 
   useEffect(() => {
     const query = window.location.search
@@ -156,9 +190,7 @@ const Content = ({
 
   return (
     <div className='app-content'>
-      <div className='title' ref={titleRef}>
-        My NFT Gallery
-      </div>
+      <div className='title'>My NFT Gallery</div>
       <UploadNFT
         isDragging={isDragging}
         file={file}
@@ -166,19 +198,19 @@ const Content = ({
         onCloseUploadModal={onCloseUploadModal}
       />
       <div className='cards'>
-        {!isDragging && !isEmpty(choosenCard) && (
-          <BigCard {...choosenCard} setChoosen={setChoosen} />
-        )}
         <div className='small-cards'>
-          {cardInfos.map((cardInfo) => (
-            <Card
-              disabled={isDragging}
-              choosen={choosen}
-              setChoosen={setChoosen}
-              {...cardInfo}
-              titleRef={titleRef}
-            />
-          ))}
+          {cardInfos.map((cardInfo) =>
+            isEqual(cardInfo, choosenCard) ? (
+              <BigCard {...choosenCard} />
+            ) : (
+              <Card
+                disabled={isDragging}
+                choosen={choosen}
+                setChoosen={setChoosen}
+                {...cardInfo}
+              />
+            )
+          )}
         </div>
       </div>
     </div>
@@ -209,14 +241,14 @@ export default () => {
       try {
         const storage = await getChromeStorage([
           STORAGE.CONTENT_LIST,
-          STORAGE.KOI_BALANCE
+          STORAGE.KOI_BALANCE,
         ])
         if (storage[STORAGE.CONTENT_LIST]) {
           setCardInfos(storage[STORAGE.CONTENT_LIST])
         } else {
           setIsLoading(true)
           backgroundConnect.postMessage({
-            type: MESSAGES.LOAD_CONTENT
+            type: MESSAGES.LOAD_CONTENT,
           })
         }
         if (storage[STORAGE.KOI_BALANCE]) {
@@ -226,12 +258,15 @@ export default () => {
         console.log(err.message)
       }
     }
-    const loadContentSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_CONTENT_SUCCESS, async response => {
-      const { contentList } = response.data
-      isArray(contentList) && setCardInfos(contentList)
-      await setChromeStorage({ [STORAGE.CONTENT_LIST]: contentList })
-      setIsLoading(false)
-    })
+    const loadContentSuccessHandler = new CreateEventHandler(
+      MESSAGES.LOAD_CONTENT_SUCCESS,
+      async (response) => {
+        const { contentList } = response.data
+        isArray(contentList) && setCardInfos(contentList)
+        await setChromeStorage({ [STORAGE.CONTENT_LIST]: contentList })
+        setIsLoading(false)
+      }
+    )
     backgroundConnect.addHandler(loadContentSuccessHandler)
     getData()
   }, [])
@@ -274,7 +309,7 @@ export default () => {
         file={file}
         onClearFile={onClearFile}
       />
-      {!isDragging && <Footer />}
+      {!isDragging && <Footer showDropzone={() => modifyDraging(true)} />}
     </div>
   )
 }
