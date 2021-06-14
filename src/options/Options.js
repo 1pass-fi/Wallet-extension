@@ -128,6 +128,7 @@ const Card = ({
   choosen,
   setChoosen,
   disabled,
+  contentType
 }) => {
   const [isCopied, setIsCopied] = useState(false)
 
@@ -142,7 +143,10 @@ const Card = ({
 
   return choosen !== txId ? (
     <div disabled={disabled} className='nft-card'>
-      <img src={imageUrl} className='nft-img' onClick={onClick} />
+      { contentType.includes('image') ?
+        <img src={imageUrl} className='nft-img' onClick={onClick} /> :
+        <video width={200} height={200} src={imageUrl} className='nft-img' onClick={onClick} />
+      }
       <div className='nft-name'>{name}</div>
       {isRegistered ? (
         <div className='nft-earned-koi'>{earnedKoi} KOI</div>
@@ -172,6 +176,7 @@ const Content = ({
   file,
   onClearFile,
   onCloseUploadModal,
+  setIsLoading
 }) => {
   const [choosen, setChoosen] = useState('')
 
@@ -196,6 +201,7 @@ const Content = ({
         file={file}
         onClearFile={onClearFile}
         onCloseUploadModal={onCloseUploadModal}
+        setIsLoading={setIsLoading}
       />
       <div className='cards'>
         <div className='small-cards'>
@@ -308,6 +314,7 @@ export default () => {
         onCloseUploadModal={onCloseUploadModal}
         file={file}
         onClearFile={onClearFile}
+        setIsLoading={setIsLoading}
       />
       {!isDragging && <Footer showDropzone={() => modifyDraging(true)} />}
     </div>

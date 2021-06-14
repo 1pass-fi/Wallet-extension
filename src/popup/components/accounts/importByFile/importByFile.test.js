@@ -33,7 +33,7 @@ describe('Test for ImportByPhrase component', () => {
     await act(async () => {
       await fireEvent.change(passwordInput, {
         target: { value: `${password}` },
-      });
+      })
       await fireEvent.change(passwordConfirmInput, {
         target: { value: `${passwordConfirm}` }
       })
