@@ -30,9 +30,9 @@ const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
 const formatNumber = (value) => numeral(value).format('0,0.000000')
 
-const Header = ({ totalKoi }) => {
+const Header = ({ totalKoi, headerRef }) => {
   return (
-    <header className='app-header'>
+    <header className='app-header' ref={headerRef}>
       <div className='header-left'>
         <KoiIcon className='logo' />
       </div>
@@ -256,6 +256,7 @@ export default () => {
   const [totalKoi, setTotalKoi] = useState(0)
   const [file, setFile] = useState({})
   const [isLoading, setIsLoading] = useState(false)
+  const headerRef = useRef(null)
 
   const {
     acceptedFiles,
@@ -267,6 +268,7 @@ export default () => {
   } = useDropzone({
     maxFiles: 1,
     accept: 'image/*',
+    noClick: true,
   })
 
   useEffect(() => {
@@ -315,6 +317,16 @@ export default () => {
     []
   )
 
+  useEffect(() => {
+    if (isDragging && headerRef.current) {
+      headerRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [isDragging])
+
+  const showDropzone = () => {
+    modifyDraging(true)
+  }
+
   const onClearFile = () => {
     setFile({})
   }
@@ -334,7 +346,7 @@ export default () => {
       {isDragging && isEmpty(file) && (
         <input name='fileField' {...getInputProps()} />
       )}
-      <Header totalKoi={totalKoi} />
+      <Header totalKoi={totalKoi} headerRef={headerRef} />
       <Content
         cardInfos={cardInfos}
         isDragging={isDragging}
@@ -343,7 +355,7 @@ export default () => {
         onClearFile={onClearFile}
         setIsLoading={setIsLoading}
       />
-      {!isDragging && <Footer showDropzone={() => modifyDraging(true)} />}
+      {!isDragging && <Footer showDropzone={showDropzone} />}
     </div>
   )
 }
