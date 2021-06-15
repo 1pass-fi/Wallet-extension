@@ -193,12 +193,14 @@ export default async (koi, port, message, ports, resolveId) => {
         const { permissionId } = resolveId
         if (confirm) {
           await saveOriginToChrome(origin)
+          chrome.browserAction.setBadgeText({ text: '' })
           ports[PORTS.CONTENT_SCRIPT].postMessage({
             type: MESSAGES.KOI_CONNECT_SUCCESS,
             data: { status: 200, data: 'Connected.' },
             id: permissionId[permissionId.length - 1],
           })
         } else {
+          chrome.browserAction.setBadgeText({ text: '' })
           ports[PORTS.CONTENT_SCRIPT].postMessage({
             type: MESSAGES.KOI_CONNECT_SUCCESS,
             data: { status: 401, data: 'Connection rejected.' },
@@ -222,6 +224,7 @@ export default async (koi, port, message, ports, resolveId) => {
         const { tx, confirm } = message.data
         let transaction = null
         if (confirm) {
+          chrome.browserAction.setBadgeText({ text: '' })
           transaction = await signTransaction(koi, tx)
           port.postMessage({
             type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
@@ -238,6 +241,7 @@ export default async (koi, port, message, ports, resolveId) => {
           })
           createTransactionId.length = 0
         } else {
+          chrome.browserAction.setBadgeText({ text: '' })
           port.postMessage({
             type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
           })
