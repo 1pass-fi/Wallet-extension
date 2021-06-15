@@ -81,6 +81,7 @@ const BigCard = ({
   koiRockUrl,
   setChoosen,
   bigCardRef,
+  contentType
 }) => {
   const [isCopied, setIsCopied] = useState(false)
   const onCopy = () => {
@@ -91,11 +92,21 @@ const BigCard = ({
   return (
     <div className='big-nft-card-wrapper' ref={bigCardRef}>
       <div className='big-nft-card'>
-        <img
-          src={imageUrl}
-          className='nft-img'
-          onClick={() => setChoosen('')}
-        />
+        { contentType.includes('image') ?
+          <img
+            src={imageUrl}
+            className='nft-img'
+            onClick={() => setChoosen('')} 
+          /> :
+          <video
+            width={320}
+            height={240}
+            src={imageUrl}
+            className='nft-img'
+            controls
+            autoPlay
+          />
+        }
         <div className='nft-name'>{name}</div>
         {isRegistered ? (
           <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>
@@ -161,6 +172,9 @@ const Card = ({
           src={imageUrl}
           className='nft-img'
           onClick={onClick}
+          controls
+          autoPlay
+          muted
         />
       )}
       <div className='nft-name'>{name}</div>

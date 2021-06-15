@@ -52,7 +52,7 @@ const UploadFormHeader = ({ stage }) => {
     )
 
   return (
-    <>
+    <div className='upload-success'>
       <div className='description-title'>
         Congratulations! Your new NFT is ready for action
       </div>
@@ -60,7 +60,7 @@ const UploadFormHeader = ({ stage }) => {
         Share your newly minted NFT with everyone you know to start earning
         attention rewards.
       </div>
-    </>
+    </div>
   )
 }
 
@@ -246,7 +246,7 @@ const UploadForm = ({ file, onClearFile, onCloseUploadModal, setIsLoading, addre
   )
 }
 
-export default ({ file, isDragging, onClearFile, onCloseUploadModal, setIsLoading }) => {
+export default ({ file, isDragging, onClearFile, onCloseUploadModal, setIsLoading, address, wallet }) => {
   if (!isDragging) {
     return <div></div>
   }

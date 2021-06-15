@@ -2,7 +2,7 @@
   "version": "0.4",
   "manifest_version": 2,
   "name": "OpenKoi",
-  "description": "OpneKoi Chrome Extension.",
+  "description": "OpenKoi Chrome Extension.",
   "content_scripts": [
     {
       "matches": [
