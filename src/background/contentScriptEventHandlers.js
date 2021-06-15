@@ -156,7 +156,6 @@ export default async (koi, port, message, ports, resolveId) => {
               data: { status: 401, data: 'Connection rejected.' },
               id
             }
-
             createWindow(
               {
                 url: chrome.extension.getURL('/popup.html'),
@@ -167,6 +166,7 @@ export default async (koi, port, message, ports, resolveId) => {
               },
               {
                 beforeCreate: async () => {
+                  chrome.browserAction.setBadgeText({ text: '1' })
                   await setChromeStorage({
                     'pendingRequest': {
                       type: REQUEST.PERMISSION,
@@ -175,6 +175,7 @@ export default async (koi, port, message, ports, resolveId) => {
                   })
                 },
                 afterClose: async () => {
+                  chrome.browserAction.setBadgeText({ text: '' })
                   port.postMessage(onClosedMessage)
                   await removeChromeStorage('pendingRequest')
                 },
@@ -212,20 +213,46 @@ export default async (koi, port, message, ports, resolveId) => {
             const address = transaction.target
             console.log('QUANTITY', qty)
             console.log('ADDRESS', address)
-            await setChromeStorage({
-              'pendingRequest': {
-                type: REQUEST.TRANSACTION,
-                data: { transaction, qty, address, origin, favicon }
-              }
-            })
+            // await setChromeStorage({
+            //   'pendingRequest': {
+            //     type: REQUEST.TRANSACTION,
+            //     data: { transaction, qty, address, origin, favicon }
+            //   }
+            // })
+            // chrome.browserAction.setBadgeText({ text: '1' })
+            // createWindow({
+            //   url: chrome.extension.getURL('/popup.html'),
+            //   focused: true,
+            //   type: 'popup',
+            //   height: 622,
+            //   width: 426
+            // })
 
-            createWindow({
-              url: chrome.extension.getURL('/popup.html'),
-              focused: true,
-              type: 'popup',
-              height: 622,
-              width: 426
-            })
+            createWindow(
+              {
+                url: chrome.extension.getURL('/popup.html'),
+                focused: true,
+                type: 'popup',
+                height: 622,
+                width: 426,
+              },
+              {
+                beforeCreate: async () => {
+                  chrome.browserAction.setBadgeText({ text: '1' })
+                  await setChromeStorage({
+                    'pendingRequest': {
+                      type: REQUEST.TRANSACTION,
+                      data: { transaction, qty, address, origin, favicon }
+                    }
+                  })
+                },
+                afterClose: async () => {
+                  chrome.browserAction.setBadgeText({ text: '' })
+                  port.postMessage(onClosedMessage)
+                  await removeChromeStorage('pendingRequest')
+                },
+              }
+            )
           }
           break
         }
@@ -245,19 +272,51 @@ export default async (koi, port, message, ports, resolveId) => {
           const address = transaction.target
           console.log('QUANTITY', qty)
           console.log('ADDRESS', address)
-          await setChromeStorage({
-            'pendingRequest': {
-              type: REQUEST.TRANSACTION,
-              data: { transaction, qty, address, origin, favicon }
+          // await setChromeStorage({
+          //   'pendingRequest': {
+          //     type: REQUEST.TRANSACTION,
+          //     data: { transaction, qty, address, origin, favicon }
+          //   }
+          // })
+          // createWindow({
+          //   url: chrome.extension.getURL('/popup.html'),
+          //   focused: true,
+          //   type: 'popup',
+          //   height: 622,
+          //   width: 426
+          // })
+
+          const onClosedMessage = {
+            type: MESSAGES.KOI_CREATE_TRANSACTION_SUCCESS,
+            data: { status: 403, data: 'Transaction rejected.' },
+            id
+          }
+
+          createWindow(
+            {
+              url: chrome.extension.getURL('/popup.html'),
+              focused: true,
+              type: 'popup',
+              height: 622,
+              width: 426,
+            },
+            {
+              beforeCreate: async () => {
+                chrome.browserAction.setBadgeText({ text: '1' })
+                await setChromeStorage({
+                  'pendingRequest': {
+                    type: REQUEST.TRANSACTION,
+                    data: { transaction, qty, address, origin, favicon }
+                  }
+                })
+              },
+              afterClose: async () => {
+                chrome.browserAction.setBadgeText({ text: '' })
+                port.postMessage(onClosedMessage)
+                await removeChromeStorage('pendingRequest')
+              },
             }
-          })
-          createWindow({
-            url: chrome.extension.getURL('/popup.html'),
-            focused: true,
-            type: 'popup',
-            height: 622,
-            width: 426
-          })
+          )
           break
         }
 

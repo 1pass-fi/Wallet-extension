@@ -93,6 +93,7 @@ const Popup = ({
   useEffect(() => {
     const loadPrice = async () => {
       try {
+        chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] })
         const storage = await getChromeStorage(STORAGE.PRICE)
         const { AR } = storage[STORAGE.PRICE] || { AR: 1 }
         setPrice({ AR })
