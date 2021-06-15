@@ -79,6 +79,8 @@ const BigCard = ({
   earnedKoi,
   isRegistered,
   koiRockUrl,
+  setChoosen,
+  bigCardRef,
 }) => {
   const [isCopied, setIsCopied] = useState(false)
   const onCopy = () => {
@@ -87,9 +89,13 @@ const BigCard = ({
   }
 
   return (
-    <div className='big-nft-card-wrapper'>
+    <div className='big-nft-card-wrapper' ref={bigCardRef}>
       <div className='big-nft-card'>
-        <img src={imageUrl} className='nft-img' />
+        <img
+          src={imageUrl}
+          className='nft-img'
+          onClick={() => setChoosen('')}
+        />
         <div className='nft-name'>{name}</div>
         {isRegistered ? (
           <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>
@@ -189,6 +195,7 @@ const Content = ({
   setIsLoading,
 }) => {
   const [choosen, setChoosen] = useState('')
+  const bigCardRef = useRef(null)
 
   useEffect(() => {
     const query = window.location.search
@@ -200,6 +207,12 @@ const Content = ({
       setChoosen(id)
     }
   }, [])
+
+  useEffect(() => {
+    if (bigCardRef.current) {
+      bigCardRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [choosen])
 
   const choosenCard = find(cardInfos, { txId: choosen })
 
@@ -217,7 +230,11 @@ const Content = ({
         <div className='small-cards'>
           {cardInfos.map((cardInfo) =>
             isEqual(cardInfo, choosenCard) ? (
-              <BigCard {...choosenCard} />
+              <BigCard
+                {...choosenCard}
+                setChoosen={setChoosen}
+                bigCardRef={bigCardRef}
+              />
             ) : (
               <Card
                 disabled={isDragging}
