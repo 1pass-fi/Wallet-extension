@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
+import get from 'lodash/get'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import UploadNFTIcon from 'img/uploadNFT-icon.svg'
@@ -11,6 +12,17 @@ import { exportNFT } from 'utils'
 import './index.css'
 
 const arweave = Arweave.init({ host: 'arweave.net', protocol: 'https', port: 443, })
+
+const NFT_TYPES = {IMAGE: 'image', VIDEO: 'video', AUDIO: 'audio'}
+const getFileType = (file) => {
+  const fileType = get(file, 'type', '')
+  for (let i in NFT_TYPES) {
+    if (fileType.includes(NFT_TYPES[i])) {
+      return NFT_TYPES[i]
+    }
+  }
+  return ''
+}
 
 const DragActive = ({ className = '' }) => {
   return (
@@ -119,7 +131,6 @@ const BodyContent = ({
 
 const BottomButton = ({ description, setStage, stage, title, file, username, setIsLoading, address, wallet }) => {
   const handleUploadNFT = async () => {
-    console.log('RUNNING')
     setIsLoading(true)
     try {
       if (file.size > 15*1024**2) throw new Error('File too large')
@@ -184,6 +195,7 @@ const UploadForm = ({ file, onClearFile, onCloseUploadModal, setIsLoading, addre
   const [username, setUsername] = useState('')
   const [description, setDescription] = useState('')
   const url = useMemo(() => URL.createObjectURL(file), [file])
+  const fileType = useMemo(() => getFileType(file), [file])
   const onGoBack = () => {
     if (stage != 1) {
       setStage(stage - 1)
@@ -198,7 +210,9 @@ const UploadForm = ({ file, onClearFile, onCloseUploadModal, setIsLoading, addre
 
       <div className='nft-infomation'>
         <div className='left-column'>
-          <img src={url} className='nft-image' />
+          {fileType==NFT_TYPES.IMAGE && <img src={url} className='nft-image' />}
+          {fileType==NFT_TYPES.VIDEO && <video controls src={url} className='nft-image' />}
+          {fileType==NFT_TYPES.AUDIO && <audio controls src={url} className='nft-image' />}
         </div>
         <BodyContent
           stage={stage}
@@ -232,9 +246,7 @@ const UploadForm = ({ file, onClearFile, onCloseUploadModal, setIsLoading, addre
   )
 }
 
-export default ({ file, isDragging, onClearFile, onCloseUploadModal, setIsLoading, address, wallet }) => {
-  console.log({ isDragging })
-  console.log({ setIsLoading })
+export default ({ file, isDragging, onClearFile, onCloseUploadModal, setIsLoading }) => {
   if (!isDragging) {
     return <div></div>
   }

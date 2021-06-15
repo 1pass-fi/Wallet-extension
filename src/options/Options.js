@@ -273,7 +273,7 @@ export default () => {
     isDragReject,
   } = useDropzone({
     maxFiles: 1,
-    accept: 'image/*',
+    accept: ['image/*', 'video/*', 'audio/*'],
     noClick: true,
   })
 
