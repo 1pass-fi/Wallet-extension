@@ -8,7 +8,7 @@ import isEqual from 'lodash/isEqual'
 import throttle from 'lodash/throttle'
 import isArray from 'lodash/isArray'
 
-import Loading from 'popup/components/loading'
+import Loading from 'options/loading'
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
 import { getChromeStorage, setChromeStorage } from 'utils'
 import { MESSAGES, STORAGE, PORTS } from 'koiConstants'
@@ -176,7 +176,9 @@ const Content = ({
   file,
   onClearFile,
   onCloseUploadModal,
-  setIsLoading
+  setIsLoading,
+  address,
+  wallet
 }) => {
   const [choosen, setChoosen] = useState('')
 
@@ -202,6 +204,8 @@ const Content = ({
         onClearFile={onClearFile}
         onCloseUploadModal={onCloseUploadModal}
         setIsLoading={setIsLoading}
+        address={address}
+        wallet={wallet}
       />
       <div className='cards'>
         <div className='small-cards'>
@@ -229,6 +233,8 @@ export default () => {
   const [totalKoi, setTotalKoi] = useState(0)
   const [file, setFile] = useState({})
   const [isLoading, setIsLoading] = useState(false)
+  const [address, setAddress] = useState(null)
+  const [wallet, setWallet] = useState(null)
 
   const {
     acceptedFiles,
@@ -242,23 +248,35 @@ export default () => {
     accept: 'image/*',
   })
 
+
   useEffect(() => {
     const getData = async () => {
       try {
         const storage = await getChromeStorage([
           STORAGE.CONTENT_LIST,
           STORAGE.KOI_BALANCE,
+          STORAGE.KOI_ADDRESS
         ])
         if (storage[STORAGE.CONTENT_LIST]) {
           setCardInfos(storage[STORAGE.CONTENT_LIST])
         } else {
-          setIsLoading(true)
-          backgroundConnect.postMessage({
-            type: MESSAGES.LOAD_CONTENT,
-          })
+          // setIsLoading(true)
+          // backgroundConnect.postMessage({
+          //   type: MESSAGES.LOAD_CONTENT,
+          // })
         }
+        setIsLoading(true)
+        backgroundConnect.postMessage({
+          type: MESSAGES.LOAD_CONTENT,
+        })
         if (storage[STORAGE.KOI_BALANCE]) {
           setTotalKoi(storage[STORAGE.KOI_BALANCE])
+        }
+        if (storage[STORAGE.KOI_ADDRESS]) {
+          setAddress(storage[STORAGE.KOI_ADDRESS])
+          backgroundConnect.postMessage({
+            type: MESSAGES.GET_WALLET
+          })
         }
       } catch (err) {
         console.log(err.message)
@@ -273,7 +291,13 @@ export default () => {
         setIsLoading(false)
       }
     )
+    const loadKeySuccessHandler = new CreateEventHandler(MESSAGES.GET_WALLET_SUCCESS, async (response) => {
+      const { key } = response.data
+      setWallet(key)
+    })
+
     backgroundConnect.addHandler(loadContentSuccessHandler)
+    backgroundConnect.addHandler(loadKeySuccessHandler)
     getData()
   }, [])
 
@@ -315,6 +339,8 @@ export default () => {
         file={file}
         onClearFile={onClearFile}
         setIsLoading={setIsLoading}
+        address={address}
+        wallet={wallet}
       />
       {!isDragging && <Footer showDropzone={() => modifyDraging(true)} />}
     </div>

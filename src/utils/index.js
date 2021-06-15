@@ -95,8 +95,8 @@ export const loadMyContent = async (koiObj) => {
     const myContent = (allContent.filter(content => get(content[Object.keys(content)[0]], 'owner') === koiObj.address)).map(content => Object.keys(content)[0])
     console.log({ myContent })
     const storage = await getChromeStorage(STORAGE.CONTENT_LIST)
-    // const contentList = storage[STORAGE.CONTENT_LIST] || []
-    // if (myContent.length === contentList.length) return
+    const contentList = storage[STORAGE.CONTENT_LIST] || []
+    if (myContent.length === contentList.length) return
     return Promise.all(myContent.map(async contentId => {
       try {
         console.log(`${PATH.SINGLE_CONTENT}${contentId}`)
@@ -135,8 +135,8 @@ export const loadMyContent = async (koiObj) => {
       } catch (err) {
         console.log(err.message)
         return {
-          isRegistered: true,
-          isKoiWallet: true
+          isRegistered: false,
+          isKoiWallet: false
         }
       }
 

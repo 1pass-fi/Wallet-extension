@@ -1,4 +1,5 @@
 import passworder from 'browser-passworder'
+import { isArray } from 'lodash'
 
 import { MESSAGES, LOAD_KOI_BY, PORTS, STORAGE } from 'koiConstants'
 import {
@@ -146,7 +147,8 @@ export default async (koi, port, message, ports, resolveId) => {
         break
       }
       case MESSAGES.LOAD_CONTENT: {
-        const contentList = await loadMyContent(koi)
+        let contentList = await loadMyContent(koi)
+        if (isArray(contentList)) contentList = contentList.filter(content => !!content.name)
         console.log('CONTENT LIST', contentList)
         if (contentList) setChromeStorage({ contentList })
         port.postMessage({
@@ -251,6 +253,13 @@ export default async (koi, port, message, ports, resolveId) => {
           })
           createTransactionId.length = 0
         }
+        break
+      }
+      case MESSAGES.GET_WALLET: {
+        port.postMessage({
+          type: MESSAGES.GET_WALLET_SUCCESS,
+          data: { key: koi['wallet'] }
+        })
         break
       }
       default:

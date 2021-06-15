@@ -1,8 +1,9 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import { PATH, RATE } from 'koiConstants' 
+import { PATH } from 'koiConstants' 
 import { transactionAmountFormat } from 'utils'
 
 import './index.css'
@@ -16,7 +17,7 @@ const propTypes = {
   source: PropTypes.string,
 }
 
-const ActivityRow = ({activityName, expense, date, source, id, pending }) => {
+const ActivityRow = ({activityName, expense, date, source, id, pending, price }) => {
   const dateFormat = (date) => {
     return moment(date).format('MMMM Do, YYYY')
   }
@@ -49,7 +50,7 @@ const ActivityRow = ({activityName, expense, date, source, id, pending }) => {
         <div className='activity-info-row'>
           <div className='activity-expense'>{ (expense != null && expense > 0) ? sign : ''}{transactionAmountFormat(expense)} {currency}</div>
           { expense != null && 
-            <div className='activity-expense usd'>{transactionAmountFormat(expense*RATE[currency])} USD</div>
+            <div className='activity-expense usd'>{transactionAmountFormat(expense*price[currency])} USD</div>
           } 
           <div className='activity-date'>{ dateFormat(date) }</div>
         </div>
@@ -60,4 +61,6 @@ const ActivityRow = ({activityName, expense, date, source, id, pending }) => {
 
 ActivityRow.propTypes = propTypes
 
-export default ActivityRow
+const mapStateToProps = (state) => ({ price: state.price })
+
+export default connect(mapStateToProps)(ActivityRow)
