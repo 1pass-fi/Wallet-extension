@@ -121,26 +121,29 @@
 .big-nft-card {
   position: relative;
   width: 512px;
-  height: 700px;
+  min-height: 700px;
   margin-bottom: 20px;
   cursor: pointer;
 }
 
 .big-nft-card .nft-name {
-  margin-top: 20px;
-  font-weight: 600;
-  font-size: 48px;
-  line-height: 56px;
-  letter-spacing: 0.03em;
   color: #ffffff;
+  font-size: 48px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 56px;
   margin-bottom: 2px;
+  margin-top: 20px;
+  overflow: hidden;
+  width: 350px;
 }
 
 .big-nft-card .nft-earned-koi {
-  font-size: 28px;
-  line-height: 32px;
-  letter-spacing: 0.03em;
   color: #ffffff;
+  font-size: 28px;
+  letter-spacing: 0.03em;
+  line-height: 32px;
+  width: 350px;
 }
 
 .big-nft-card .register-button {
@@ -215,11 +218,15 @@
 }
 
 .nft-card .nft-name {
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 24px;
-  letter-spacing: 0.03em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 190px;
   color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 24px;
   margin-bottom: 2px;
 }
 

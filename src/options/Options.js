@@ -12,6 +12,7 @@ import Loading from 'options/loading'
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
 import { getChromeStorage, setChromeStorage } from 'utils'
 import { MESSAGES, STORAGE, PORTS } from 'koiConstants'
+import numeral from 'numeral'
 
 import KoiIcon from 'img/koi-logo.svg'
 import KoiUnit from 'img/koi-logo-no-bg.svg'
@@ -27,9 +28,11 @@ import Button from 'popup/components/shared/button'
 
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
-const Header = ({ totalKoi }) => {
+const formatNumber = (value) => numeral(value).format('0,0.000000')
+
+const Header = ({ totalKoi, headerRef }) => {
   return (
-    <header className='app-header'>
+    <header className='app-header' ref={headerRef}>
       <div className='header-left'>
         <KoiIcon className='logo' />
       </div>
@@ -76,6 +79,8 @@ const BigCard = ({
   earnedKoi,
   isRegistered,
   koiRockUrl,
+  setChoosen,
+  bigCardRef,
 }) => {
   const [isCopied, setIsCopied] = useState(false)
   const onCopy = () => {
@@ -84,12 +89,16 @@ const BigCard = ({
   }
 
   return (
-    <div className='big-nft-card-wrapper'>
+    <div className='big-nft-card-wrapper' ref={bigCardRef}>
       <div className='big-nft-card'>
-        <img src={imageUrl} className='nft-img' />
+        <img
+          src={imageUrl}
+          className='nft-img'
+          onClick={() => setChoosen('')}
+        />
         <div className='nft-name'>{name}</div>
         {isRegistered ? (
-          <div className='nft-earned-koi'>{earnedKoi} KOI</div>
+          <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>
         ) : (
           <button className='register-button'>
             <KoiIcon className='icon' /> Register &amp; Earn
@@ -128,7 +137,7 @@ const Card = ({
   choosen,
   setChoosen,
   disabled,
-  contentType
+  contentType,
 }) => {
   const [isCopied, setIsCopied] = useState(false)
 
@@ -143,13 +152,20 @@ const Card = ({
 
   return choosen !== txId ? (
     <div disabled={disabled} className='nft-card'>
-      { contentType.includes('image') ?
-        <img src={imageUrl} className='nft-img' onClick={onClick} /> :
-        <video width={200} height={200} src={imageUrl} className='nft-img' onClick={onClick} />
-      }
+      {contentType.includes('image') ? (
+        <img src={imageUrl} className='nft-img' onClick={onClick} />
+      ) : (
+        <video
+          width={200}
+          height={200}
+          src={imageUrl}
+          className='nft-img'
+          onClick={onClick}
+        />
+      )}
       <div className='nft-name'>{name}</div>
       {isRegistered ? (
-        <div className='nft-earned-koi'>{earnedKoi} KOI</div>
+        <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>
       ) : (
         <button className='register-button'>
           <KoiIcon className='icon' /> Register &amp; Earn
@@ -181,6 +197,7 @@ const Content = ({
   wallet
 }) => {
   const [choosen, setChoosen] = useState('')
+  const bigCardRef = useRef(null)
 
   useEffect(() => {
     const query = window.location.search
@@ -192,6 +209,12 @@ const Content = ({
       setChoosen(id)
     }
   }, [])
+
+  useEffect(() => {
+    if (bigCardRef.current) {
+      bigCardRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [choosen])
 
   const choosenCard = find(cardInfos, { txId: choosen })
 
@@ -211,7 +234,11 @@ const Content = ({
         <div className='small-cards'>
           {cardInfos.map((cardInfo) =>
             isEqual(cardInfo, choosenCard) ? (
-              <BigCard {...choosenCard} />
+              <BigCard
+                {...choosenCard}
+                setChoosen={setChoosen}
+                bigCardRef={bigCardRef}
+              />
             ) : (
               <Card
                 disabled={isDragging}
@@ -235,6 +262,7 @@ export default () => {
   const [isLoading, setIsLoading] = useState(false)
   const [address, setAddress] = useState(null)
   const [wallet, setWallet] = useState(null)
+  const headerRef = useRef(null)
 
   const {
     acceptedFiles,
@@ -246,6 +274,7 @@ export default () => {
   } = useDropzone({
     maxFiles: 1,
     accept: 'image/*',
+    noClick: true,
   })
 
 
@@ -312,6 +341,16 @@ export default () => {
     []
   )
 
+  useEffect(() => {
+    if (isDragging && headerRef.current) {
+      headerRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [isDragging])
+
+  const showDropzone = () => {
+    modifyDraging(true)
+  }
+
   const onClearFile = () => {
     setFile({})
   }
@@ -331,7 +370,7 @@ export default () => {
       {isDragging && isEmpty(file) && (
         <input name='fileField' {...getInputProps()} />
       )}
-      <Header totalKoi={totalKoi} />
+      <Header totalKoi={totalKoi} headerRef={headerRef} />
       <Content
         cardInfos={cardInfos}
         isDragging={isDragging}
@@ -342,7 +381,7 @@ export default () => {
         address={address}
         wallet={wallet}
       />
-      {!isDragging && <Footer showDropzone={() => modifyDraging(true)} />}
+      {!isDragging && <Footer showDropzone={showDropzone} />}
     </div>
   )
 }
