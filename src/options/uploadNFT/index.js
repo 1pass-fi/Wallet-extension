@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useContext } from 'react'
 import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
@@ -10,6 +10,7 @@ import GoBackIcon from 'img/goback-icon.svg'
 import { exportNFT } from 'utils'
 
 import './index.css'
+import { GalleryContext } from '../galleryContext'
 
 const arweave = Arweave.init({ host: 'arweave.net', protocol: 'https', port: 443, })
 
@@ -129,7 +130,11 @@ const BodyContent = ({
   )
 }
 
-const BottomButton = ({ description, setStage, stage, title, file, username, setIsLoading, address, wallet }) => {
+const BottomButton = ({ description, setStage, stage, title, file, username }) => {
+  const { setIsLoading, address, wallet } = useContext(GalleryContext)
+  console.log({ setIsLoading, address, wallet })
+
+
   const handleUploadNFT = async () => {
     setIsLoading(true)
     try {
@@ -189,7 +194,7 @@ const BottomButton = ({ description, setStage, stage, title, file, username, set
   )
 }
 
-const UploadForm = ({ file, onClearFile, onCloseUploadModal, setIsLoading, address, wallet }) => {
+const UploadForm = ({ file, onClearFile, onCloseUploadModal}) => {
   const [stage, setStage] = useState(1)
   const [title, setTitle] = useState('')
   const [username, setUsername] = useState('')
@@ -232,9 +237,6 @@ const UploadForm = ({ file, onClearFile, onCloseUploadModal, setIsLoading, addre
         description={description}
         file={file}
         username={username}
-        setIsLoading={setIsLoading}
-        address={address}
-        wallet={wallet}
       />
       <div className='close-button' onClick={onCloseUploadModal}>
         <CloseIcon />
@@ -246,7 +248,7 @@ const UploadForm = ({ file, onClearFile, onCloseUploadModal, setIsLoading, addre
   )
 }
 
-export default ({ file, isDragging, onClearFile, onCloseUploadModal, setIsLoading, address, wallet }) => {
+export default ({ file, isDragging, onClearFile, onCloseUploadModal}) => {
   if (!isDragging) {
     return <div></div>
   }
@@ -261,9 +263,6 @@ export default ({ file, isDragging, onClearFile, onCloseUploadModal, setIsLoadin
             file={file}
             onClearFile={onClearFile}f
             onCloseUploadModal={onCloseUploadModal}
-            setIsLoading={setIsLoading}
-            address={address}
-            wallet={wallet}
           />
         )}
       </div>

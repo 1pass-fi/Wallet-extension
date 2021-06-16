@@ -347,7 +347,11 @@ export const deleteOriginFromChrome = async (aOrigin) => {
 /* istanbul ignore next */
 export const signTransaction = async (koiObj, transaction) => {
   try {
-    const tx = await arweave.createTransaction({ target: transaction.target, quantity: transaction.quantity })
+    if (transaction.data) {
+      const tx = await arweave.createTransaction({ data: [transaction.data] })
+    } else {
+      const tx = await arweave.createTransaction({ target: transaction.target, quantity: transaction.quantity })
+    }
     return await koiObj.signTransaction(tx)
   } catch (err) {
     console.log(err.message)

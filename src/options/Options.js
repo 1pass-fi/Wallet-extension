@@ -26,6 +26,8 @@ import UploadNFT from './uploadNFT'
 import { CreateEventHandler } from 'popup/actions/backgroundConnect'
 import Button from 'popup/components/shared/button'
 
+import { GalleryContext } from './galleryContext'
+
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
 const formatNumber = (value) => numeral(value).format('0,0.000000')
@@ -375,27 +377,33 @@ export default () => {
   }
 
   return (
-    <div
-      {...getRootProps({ className: 'app dropzone' })}
-      onDragOver={() => modifyDraging(true)}
-      onDragLeave={() => modifyDraging(false)}
+    <GalleryContext.Provider value={
+      {
+        setIsLoading,
+        address,
+        wallet
+      }
+    }
     >
-      {isLoading && <Loading />}
-      {isDragging && isEmpty(file) && (
-        <input name='fileField' {...getInputProps()} />
-      )}
-      <Header totalKoi={totalKoi} headerRef={headerRef} />
-      <Content
-        cardInfos={cardInfos}
-        isDragging={isDragging}
-        onCloseUploadModal={onCloseUploadModal}
-        file={file}
-        onClearFile={onClearFile}
-        setIsLoading={setIsLoading}
-        address={address}
-        wallet={wallet}
-      />
-      {!isDragging && <Footer showDropzone={showDropzone} />}
-    </div>
+      <div
+        {...getRootProps({ className: 'app dropzone' })}
+        onDragOver={() => modifyDraging(true)}
+        onDragLeave={() => modifyDraging(false)}
+      >
+        {isLoading && <Loading />}
+        {isDragging && isEmpty(file) && (
+          <input name='fileField' {...getInputProps()} />
+        )}
+        <Header totalKoi={totalKoi} headerRef={headerRef} />
+        <Content
+          cardInfos={cardInfos}
+          isDragging={isDragging}
+          onCloseUploadModal={onCloseUploadModal}
+          file={file}
+          onClearFile={onClearFile}
+        />
+        {!isDragging && <Footer showDropzone={showDropzone} />}
+      </div>
+    </GalleryContext.Provider>
   )
 }
