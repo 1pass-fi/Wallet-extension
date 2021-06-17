@@ -284,9 +284,6 @@ export default () => {
     acceptedFiles,
     getRootProps,
     getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
   } = useDropzone({
     maxFiles: 1,
     accept: ['image/*', 'video/*', 'audio/*'],
