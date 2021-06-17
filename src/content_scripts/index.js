@@ -88,8 +88,8 @@ window.addEventListener('message', function (event) {
       registerData: (txId) => buildPromise(MESSAGE_TYPES.KOI_REGISTER_DATA, { txId })
     }
     window.addEventListener('message', function (event) {
-      console.log('EVENT', event)
-      console.log({ promiseResolves })
+      // console.log('EVENT', event)
+      // console.log({ promiseResolves })
       if (!event.data || !event.data.type) {
         return
       }
