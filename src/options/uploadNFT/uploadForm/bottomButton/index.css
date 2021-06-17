@@ -1,0 +1,15 @@
+/* CREATE NFT BUTTON START */
+.uploadNFT-wrapper .uploadNFT .upload-form .create-ntf-button {
+  background: #ffffff;
+  border-radius: 3px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  color: #171753;
+  font-size: 18px;
+  font-weight: 600;
+  height: 40px;
+  line-height: 15px;
+  width: 236px;
+  margin-top: 24px;
+  cursor: pointer;
+}
+/* CREATE NFT BUTTON END */
