@@ -191,7 +191,7 @@ export default async (koi, port, message, ports, resolveId) => {
       case MESSAGES.CONNECT: {
         const { origin, confirm } = message.data
         const { permissionId } = resolveId
-        console.log({ resolveId })
+        console.log('PERMISSION-ID: ', permissionId)
         if (confirm) {
           await saveOriginToChrome(origin)
           chrome.browserAction.setBadgeText({ text: '' })

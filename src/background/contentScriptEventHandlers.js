@@ -160,7 +160,7 @@ export default async (koi, port, message, ports, resolveId) => {
 
             const onClosedMessage = {
               type: MESSAGES.KOI_CONNECT_SUCCESS,
-              data: { status: 401, data: 'Connection rejected.' },
+              data: { status: 401, data: 'Connection rejected on closed.' },
               id
             }
             if (hasPendingRequest) {
@@ -303,7 +303,7 @@ export default async (koi, port, message, ports, resolveId) => {
 
           const onClosedMessage = {
             type: MESSAGES.KOI_CREATE_TRANSACTION_SUCCESS,
-            data: { status: 403, data: 'Transaction rejected.' },
+            data: { status: 403, data: 'Transaction rejected on closed.' },
             id
           }
 
