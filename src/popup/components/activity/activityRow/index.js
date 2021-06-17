@@ -50,7 +50,7 @@ const ActivityRow = ({activityName, expense, date, source, id, pending, price })
         <div className='activity-info-row'>
           <div className='activity-expense'>{ (expense != null && expense > 0) ? sign : ''}{transactionAmountFormat(expense)} {currency}</div>
           { expense != null && 
-            <div className='activity-expense usd'>{transactionAmountFormat(expense*price[currency])} USD</div>
+            <div hidden={activityName.includes('KOI')} className='activity-expense usd'>{transactionAmountFormat(expense*price[currency])} USD</div>
           } 
           <div className='activity-date'>{ dateFormat(date) }</div>
         </div>

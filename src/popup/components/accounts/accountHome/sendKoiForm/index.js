@@ -83,7 +83,7 @@ const SendKoiForm = ({
       <div className="koi-balance">
         <span>Available balance: </span>
         <b>{`${selectBalance(currency)} ${currency}`}</b>
-        <div className="amount-in-usd">
+        <div hidden={currency == 'KOI'} className="amount-in-usd">
           ${numberFormat(selectBalance(currency) * price[currency])} USD
         </div>
       </div>
@@ -122,7 +122,7 @@ const SendKoiForm = ({
           value={amount}
         />
         {amount.trim().length > 0 && (
-          <div className="amount-in-usd">
+          <div hidden={currency == 'KOI'} className="amount-in-usd">
             $ {numberFormat(Number(amount) * price[currency])} USD
           </div>
         )}

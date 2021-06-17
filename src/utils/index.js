@@ -115,7 +115,7 @@ export const loadMyContent = async (koiObj) => {
             txId: content.txIdContent,
             imageUrl,
             galleryUrl: `${PATH.GALLERY}?id=${content.txIdContent}`,
-            koiRockUrl: `${PATH.KOI_ROCK}${content.txIdContent}`,
+            koiRockUrl: `${PATH.KOI_ROCK}/${content.txIdContent}`,
             isRegistered: true,
             contentType: content.contentType
           }
@@ -371,11 +371,11 @@ export const signTransaction = async (koiObj, transaction) => {
 }
 
 export const numberFormat = (num) => {
-  return num === null ? '---' : new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 }).format(num)
+  return num === null ? '---' : new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 }).format(num)
 }
 
 export const fiatCurrencyFormat = (num) => {
-  return num === null ? '---' : new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 }).format(num)
+  return num === null ? '---' : new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 }).format(num)
 }
 
 export const transactionAmountFormat = (num) => {

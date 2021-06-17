@@ -301,6 +301,7 @@
   display: flex;
   margin: auto;
   width: 100%;
+  padding-top: 10px;
 }
 
 .footer-content {

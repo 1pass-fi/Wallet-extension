@@ -62,13 +62,15 @@ window.addEventListener('message', function (event) {
     })
 
     function buildPromise(messageType, data) {
-      const id = `${messageType}-${Date.now()}`
-      const promise = new Promise((resolve, reject) => {
-        window.postMessage({ type: messageType, data, id })
-        promiseResolves[messageType + '_SUCCESS'].push({ resolve, id })
-        promiseResolves[messageType + '_ERROR'].push({ resolve: reject, id })
-      })
-      return promise
+      if (!(window.origin).includes('chrome-extension')) {
+        const id = `${messageType}-${Date.now()}`
+        const promise = new Promise((resolve, reject) => {
+          window.postMessage({ type: messageType, data, id })
+          promiseResolves[messageType + '_SUCCESS'].push({ resolve, id })
+          promiseResolves[messageType + '_ERROR'].push({ resolve: reject, id })
+        })
+        return promise
+      }
     }
 
     window.arweaveWallet = {

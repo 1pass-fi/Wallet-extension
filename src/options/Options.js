@@ -25,6 +25,7 @@ import './Options.css'
 import UploadNFT from './uploadNFT'
 import { CreateEventHandler } from 'popup/actions/backgroundConnect'
 import Button from 'popup/components/shared/button'
+import { numberFormat } from 'utils'
 
 import { GalleryContext } from './galleryContext'
 
@@ -41,7 +42,7 @@ const Header = ({ totalKoi, headerRef }) => {
       <div className='header-right'>
         {totalKoi ? (
           <div className='total-koi'>
-            <div>{totalKoi}</div>
+            <div>{numberFormat(totalKoi)}</div>
             <KoiUnit className='koi-unit' />
           </div>
         ) : (
