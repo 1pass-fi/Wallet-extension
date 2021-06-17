@@ -2,6 +2,7 @@ import React from 'react'
 import isEmpty from 'lodash/isEmpty'
 
 import UploadZone from './uploadZone'
+import UploadForm from './uploadForm'
 import './index.css'
 
 export default ({ file, isDragging, onClearFile, onCloseUploadModal }) => {
@@ -11,7 +12,7 @@ export default ({ file, isDragging, onClearFile, onCloseUploadModal }) => {
 
   return (
     <div className='uploadNFT-wrapper'>
-      {/* <div className={`uploadNFT`}>
+      <div className={`uploadNFT`}>
         {isEmpty(file) ? (
           <UploadZone />
         ) : (
@@ -21,7 +22,7 @@ export default ({ file, isDragging, onClearFile, onCloseUploadModal }) => {
             onCloseUploadModal={onCloseUploadModal}
           />
         )}
-      </div> */}
+      </div>
     </div>
   )
 }

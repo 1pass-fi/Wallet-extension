@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import isEmpty from 'lodash/isEmpty'
 
 import { exportNFT } from 'utils'
 const arweave = Arweave.init({
@@ -7,7 +8,7 @@ const arweave = Arweave.init({
   protocol: 'https',
   port: 443,
 })
-import { GalleryContext } from '../galleryContext'
+import { GalleryContext } from '../../../galleryContext'
 
 export default ({ description, setStage, stage, title, file, username }) => {
   const { setIsLoading, address, wallet } = useContext(GalleryContext)
