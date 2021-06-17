@@ -7,6 +7,7 @@ import BottomButton from './bottomButton'
 import Header from './header'
 import BodyContent from './bodyContent'
 import { getFileType, NFT_TYPES } from './utils'
+import './index.css'
 
 export default ({ file, onClearFile, onCloseUploadModal }) => {
   const [stage, setStage] = useState(1)

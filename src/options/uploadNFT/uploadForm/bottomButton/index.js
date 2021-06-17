@@ -9,6 +9,7 @@ const arweave = Arweave.init({
   port: 443,
 })
 import { GalleryContext } from '../../../galleryContext'
+import './index.css'
 
 export default ({ description, setStage, stage, title, file, username }) => {
   const { setIsLoading, address, wallet } = useContext(GalleryContext)
@@ -67,14 +68,6 @@ export default ({ description, setStage, stage, title, file, username }) => {
       </button>
     )
   }
-
-  // if (stage == 3) {
-  //   <button className='create-ntf-button' onClick={async () => {
-  //     console.log('RUNNING')
-  // await handleUploadNFT()
-  // setStage(4)
-  //   }}>Confirm Registration</button>
-  // }
 
   return (
     <CopyToClipboard text='https://koi.registerlink.example'>

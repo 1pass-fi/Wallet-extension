@@ -1,6 +1,8 @@
 import React from 'react'
 import UploadNFTIcon from 'img/uploadNFT-icon.svg'
 
+import './index.css'
+
 export default ({ className = '' }) => {
   return (
     <div className={className + ' drag-active'}>
