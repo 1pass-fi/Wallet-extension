@@ -191,9 +191,11 @@ export default async (koi, port, message, ports, resolveId) => {
       case MESSAGES.CONNECT: {
         const { origin, confirm } = message.data
         const { permissionId } = resolveId
+        console.log({ resolveId })
         if (confirm) {
           await saveOriginToChrome(origin)
           chrome.browserAction.setBadgeText({ text: '' })
+          console.log({ permissionId })
           ports[PORTS.CONTENT_SCRIPT].postMessage({
             type: MESSAGES.KOI_CONNECT_SUCCESS,
             data: { status: 200, data: 'Connected.' },

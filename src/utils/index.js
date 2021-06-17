@@ -353,6 +353,12 @@ export const signTransaction = async (koiObj, transaction) => {
       console.log('TRANSACTION WITH DATA')
       const data = Uint8Array.from(Object.values(transaction.data))
       tx = await arweave.createTransaction({ data })
+      tx.data_root = transaction.data_root
+      const { tags } = transaction
+      tags.forEach((tag) => {
+        console.log('TAG', atob(tag.name), atob(tag.value))
+        tx.addTag(atob(tag.name), atob(tag.value))
+      })
     } else {
       console.log('TRANSFER TRANSACTION')
       tx = await arweave.createTransaction({ target: transaction.target, quantity: transaction.quantity })
@@ -402,7 +408,7 @@ async function getDataBlob(imageUrl) {
   return obj
 }
 
-export const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlob, wallet = {},imageObj) => {
+export const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', imageBlob, wallet = {}, imageObj) => {
   try {
     const bundlerUrl = 'https://bundler.openkoi.com:8888'
     console.log('arweave',arweave)
@@ -460,6 +466,7 @@ export const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', i
       console.log({wallet})
     }
     let tx
+
     try {
       tx = await arweave.createTransaction({
         // eslint-disable-next-line no-undef
@@ -474,7 +481,7 @@ export const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', i
 
     tx.addTag('Content-Type', imgContentType)
     tx.addTag('Network', 'Koi')
-    tx.addTag('Action', 'marketplace/Create')x
+    tx.addTag('Action', 'marketplace/Create')
     tx.addTag('App-Name', 'SmartWeaveContract')
     tx.addTag('App-Version', '0.3.0')
     tx.addTag('Contract-Src', 'I8xgq3361qpR8_DvqcGpkCYAUTMktyAgvkm6kGhJzEQ')

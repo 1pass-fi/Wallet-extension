@@ -31,9 +31,16 @@ export default async (koi, port, message, ports, resolveId) => {
     return { ...tab, hadPermission }
   }
 
+  const checkPendingRequest = async () => {
+    const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
+    if (storage[STORAGE.PENDING_REQUEST]) return true
+    return false
+  }
+
   const perform = async () => {
     try {
       const { origin, favicon, hadPermission } = await checkCurrentTabPermission()
+      const hasPendingRequest = await checkPendingRequest()
       const allowedEndpoints = [
         MESSAGES.GET_PERMISSION,
         MESSAGES.CREATE_TRANSACTION,
@@ -155,6 +162,14 @@ export default async (koi, port, message, ports, resolveId) => {
               type: MESSAGES.KOI_CONNECT_SUCCESS,
               data: { status: 401, data: 'Connection rejected.' },
               id
+            }
+            if (hasPendingRequest) {
+              port.postMessage({
+                type: MESSAGES.KOI_CONNECT_SUCCESS,
+                data: { status: 400, data: `Request pending` },
+                id
+              })
+              return
             }
             createWindow(
               {
@@ -333,10 +348,24 @@ export default async (koi, port, message, ports, resolveId) => {
           })
           break
         }
+
+        case MESSAGES.KOI_REGISTER_DATA: {
+          const { txId } = message.data
+          const { id } = message
+          const resTx = await koi.registerData(txId, koi.address)
+          port.postMessage({
+            type: MESSAGES.KOI_REGISTER_DATA_SUCCESS,
+            data: { status: 200, data: resTx },
+            id
+          })
+          break
+        }
+
         default:
           break
       }
     } catch (err) {
+      console.log('ERROR: ', err.message)
       port.postMessage({
         type: MESSAGES.ERROR,
         data: err.message

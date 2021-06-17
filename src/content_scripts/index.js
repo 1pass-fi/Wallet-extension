@@ -23,7 +23,9 @@ const messageTypes = [
   MESSAGES.KOI_CONNECT_SUCCESS,
   MESSAGES.KOI_CONNECT_ERROR,
   MESSAGES.KOI_DISCONNECT_SUCCESS,
-  MESSAGES.KOI_DISCONNECT_ERROR
+  MESSAGES.KOI_DISCONNECT_ERROR,
+  MESSAGES.KOI_REGISTER_DATA_SUCCESS,
+  MESSAGES.KOI_REGISTER_DATA_ERROR
 ]
 export const backgroundConnect = new BackgroundConnect(PORTS.CONTENT_SCRIPT)
 messageTypes.forEach(messageType => {
@@ -43,6 +45,7 @@ window.addEventListener('message', function (event) {
     case MESSAGES.KOI_CREATE_TRANSACTION:
     case MESSAGES.KOI_CONNECT:
     case MESSAGES.KOI_DISCONNECT:
+    case MESSAGES.KOI_REGISTER_DATA:
       backgroundConnect.postMessage(event.data)
       break
     default:
@@ -79,13 +82,17 @@ window.addEventListener('message', function (event) {
       getPermissions: () => buildPromise(MESSAGE_TYPES.KOI_GET_PERMISSION),
       connect: () => buildPromise(MESSAGE_TYPES.KOI_CONNECT),
       sign: (transaction) => buildPromise(MESSAGE_TYPES.KOI_CREATE_TRANSACTION, { transaction }),
-      disconnect: () => buildPromise(MESSAGE_TYPES.KOI_DISCONNECT)
+      disconnect: () => buildPromise(MESSAGE_TYPES.KOI_DISCONNECT),
+      registerData: (txId) => buildPromise(MESSAGE_TYPES.KOI_REGISTER_DATA, { txId })
     }
     window.addEventListener('message', function (event) {
+      console.log('EVENT', event)
+      console.log({ promiseResolves })
       if (!event.data || !event.data.type) {
         return
       }
       if (promiseResolves[event.data.type]) {
+        console.log('PROMISES', promiseResolves[event.data.type])
         promiseResolves[event.data.type].forEach(({ id, resolve }) => {
           console.log('ID FROM EVENT', id)
           if (id === event.data.id) {
@@ -113,7 +120,8 @@ window.addEventListener('message', function (event) {
       KOI_GET_PERMISSION,
       KOI_CREATE_TRANSACTION,
       KOI_CONNECT,
-      KOI_DISCONNECT
+      KOI_DISCONNECT,
+      KOI_REGISTER_DATA
     } = messages
     const pickedMessages = {
       GET_ADDRESS,
@@ -124,7 +132,8 @@ window.addEventListener('message', function (event) {
       KOI_GET_PERMISSION,
       KOI_CREATE_TRANSACTION,
       KOI_CONNECT,
-      KOI_DISCONNECT
+      KOI_DISCONNECT,
+      KOI_REGISTER_DATA
     }
     script.text = `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(pickedMessages)}');(${fn.toString()})();`
     arweaveScript.src = 'https://unpkg.com/arweave/bundles/web.bundle.js'
