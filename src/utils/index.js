@@ -351,11 +351,13 @@ export const signTransaction = async (koiObj, transaction) => {
     console.log({ transaction })
     if (transaction.data) {
       console.log('TRANSACTION WITH DATA')
-      tx = await arweave.createTransaction({ data: transaction.data })
+      const data = Uint8Array.from(Object.values(transaction.data))
+      tx = await arweave.createTransaction({ data })
     } else {
       console.log('TRANSFER TRANSACTION')
       tx = await arweave.createTransaction({ target: transaction.target, quantity: transaction.quantity })
     }
+    console.log({ tx })
     return await koiObj.signTransaction(tx)
   } catch (err) {
     console.log(err.message)
@@ -472,7 +474,7 @@ export const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', i
 
     tx.addTag('Content-Type', imgContentType)
     tx.addTag('Network', 'Koi')
-    tx.addTag('Action', 'marketplace/Create')
+    tx.addTag('Action', 'marketplace/Create')x
     tx.addTag('App-Name', 'SmartWeaveContract')
     tx.addTag('App-Version', '0.3.0')
     tx.addTag('Contract-Src', 'I8xgq3361qpR8_DvqcGpkCYAUTMktyAgvkm6kGhJzEQ')
