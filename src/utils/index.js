@@ -351,6 +351,7 @@ export const signTransaction = async (koiObj, transaction) => {
     console.log({ transaction })
     if (transaction.data) {
       console.log('TRANSACTION WITH DATA')
+      transaction.data = JSON.parse(transaction.data)
       const data = Uint8Array.from(Object.values(transaction.data))
       tx = await arweave.createTransaction({ data })
       tx.data_root = transaction.data_root
@@ -364,7 +365,10 @@ export const signTransaction = async (koiObj, transaction) => {
       tx = await arweave.createTransaction({ target: transaction.target, quantity: transaction.quantity })
     }
     console.log({ tx })
-    return await koiObj.signTransaction(tx)
+    console.log(await arweave.transactions.getPrice(tx.data_size))
+    const result = await koiObj.signTransaction(tx)
+    result.data = []
+    return result
   } catch (err) {
     console.log(err.message)
   }

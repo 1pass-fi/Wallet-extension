@@ -2,6 +2,8 @@ import '@babel/polyfill'
 
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
 import { PORTS, MESSAGES } from 'koiConstants'
+import { setChromeStorage } from 'utils'
+import { get } from 'lodash'
 
 console.log('Content scripts has loaded')
 
@@ -34,7 +36,8 @@ messageTypes.forEach(messageType => {
   }))
 })
 
-window.addEventListener('message', function (event) {
+window.addEventListener('message', async function (event) {
+  let transaction, data
   switch (event.data.type) {
     case MESSAGES.GET_ADDRESS:
     case MESSAGES.GET_PERMISSION:
@@ -42,10 +45,16 @@ window.addEventListener('message', function (event) {
     case MESSAGES.CONNECT:
     case MESSAGES.KOI_GET_ADDRESS:
     case MESSAGES.KOI_GET_PERMISSION:
-    case MESSAGES.KOI_CREATE_TRANSACTION:
     case MESSAGES.KOI_CONNECT:
     case MESSAGES.KOI_DISCONNECT:
     case MESSAGES.KOI_REGISTER_DATA:
+      backgroundConnect.postMessage(event.data)
+      break
+    case MESSAGES.KOI_CREATE_TRANSACTION:
+      transaction = get(event, 'data.data.transaction')
+      data = transaction.data
+      await setChromeStorage({ 'transactionData': data })
+      event.data.data.transaction.data = []
       backgroundConnect.postMessage(event.data)
       break
     default:

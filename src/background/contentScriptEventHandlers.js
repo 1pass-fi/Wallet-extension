@@ -254,6 +254,8 @@ export default async (koi, port, message, ports, resolveId) => {
               {
                 beforeCreate: async () => {
                   chrome.browserAction.setBadgeText({ text: '1' })
+                  transaction.data = JSON.parse(transaction.data)
+                  console.log({ transaction })
                   await setChromeStorage({
                     'pendingRequest': {
                       type: REQUEST.TRANSACTION,

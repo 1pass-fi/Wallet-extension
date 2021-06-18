@@ -227,6 +227,8 @@ export default async (koi, port, message, ports, resolveId) => {
         let transaction = null
         if (confirm) {
           chrome.browserAction.setBadgeText({ text: '' })
+          const transactionData = (await getChromeStorage('transactionData'))['transactionData'] || []
+          tx.data = transactionData
           transaction = await signTransaction(koi, tx)
           port.postMessage({
             type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
