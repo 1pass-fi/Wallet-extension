@@ -1,0 +1,32 @@
+/* START FOOTER */
+.footer-wrapper {
+  background: linear-gradient(90deg, #030332 0%, #171753 100%);
+  position: fixed;
+  bottom: 0;
+  height: 56px;
+  justify-content: center;
+  display: flex;
+  margin: auto;
+  width: 100%;
+  padding-top: 10px;
+}
+
+.footer-content {
+  width: 100%;
+  max-width: 987px;
+  display: flex;
+}
+
+.footer-wrapper .footer-text {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  color: #ffffff;
+  width: 287px;
+  margin-left: 13px;
+}
+
+.footer-wrapper .add-nft-button {
+  cursor: pointer;
+}
+/* END FOOTER */
