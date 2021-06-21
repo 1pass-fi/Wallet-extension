@@ -6,8 +6,8 @@
 
 .loading-screen .loading-icon {
   top: 25%;
-  right: 0px;
-  transform: translate(-50%, -50%);
+  right: 50%;
+  transform: translate(50%, -50%);
   position: absolute;
   width: 100px;
   z-index: 1000;
