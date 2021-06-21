@@ -30,6 +30,7 @@ import { numberFormat } from 'utils'
 import { GalleryContext } from './galleryContext'
 
 import ShareNFT from 'options/modal/shareNFT'
+import ExportNFT from 'options/modal/exportNFT'
 
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
@@ -376,7 +377,7 @@ export default () => {
     setIsDragging(false)
   }
 
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(true)
 
   return (
     <GalleryContext.Provider value={
@@ -394,7 +395,7 @@ export default () => {
         onDragLeave={() => modifyDraging(false)}
       >
         <button onClick={() => { setShowModal(true) }}>Click Me</button>
-        {showModal && <ShareNFT onClose={() => {setShowModal(false)}}/>}
+        {showModal && <ExportNFT onClose={() => {setShowModal(false)}}/>}
         {isLoading && <Loading />}
         {isDragging && isEmpty(file) && (
           <input name='fileField' {...getInputProps()} />
