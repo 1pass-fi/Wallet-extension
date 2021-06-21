@@ -15,11 +15,11 @@ import './Options.css'
 import Footer from './footer'
 import Content from './content'
 import Header from './header'
+import Navbar from './navbar'
 
 import { GalleryContext } from './galleryContext'
 
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
-
 
 export default () => {
   const [isDragging, setIsDragging] = useState(false)
@@ -148,6 +148,7 @@ export default () => {
           onClearFile={onClearFile}
         />
         {!isDragging && <Footer showDropzone={showDropzone} />}
+        <Navbar />
       </div>
     </GalleryContext.Provider>
   )
