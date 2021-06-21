@@ -29,6 +29,8 @@ import { numberFormat } from 'utils'
 
 import { GalleryContext } from './galleryContext'
 
+import ShareNFT from 'options/modal/shareNFT'
+
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
 const formatNumber = (value) => numeral(value).format('0,0.000000')
@@ -374,6 +376,8 @@ export default () => {
     setIsDragging(false)
   }
 
+  const [showModal, setShowModal] = useState(false)
+
   return (
     <GalleryContext.Provider value={
       {
@@ -384,10 +388,13 @@ export default () => {
     }
     >
       <div
+        
         {...getRootProps({ className: 'app dropzone' })}
         onDragOver={() => modifyDraging(true)}
         onDragLeave={() => modifyDraging(false)}
       >
+        <button onClick={() => { setShowModal(true) }}>Click Me</button>
+        {showModal && <ShareNFT onClose={() => {setShowModal(false)}}/>}
         {isLoading && <Loading />}
         {isDragging && isEmpty(file) && (
           <input name='fileField' {...getInputProps()} />
