@@ -32,6 +32,8 @@ import { GalleryContext } from './galleryContext'
 import ShareNFT from 'options/modal/shareNFT'
 import ExportNFT from 'options/modal/exportNFT'
 
+import { getShareUrl, createShareWindow } from './helpers'
+
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
 const formatNumber = (value) => numeral(value).format('0,0.000000')
@@ -297,6 +299,9 @@ export default () => {
 
   useEffect(() => {
     const getData = async () => {
+      console.log(getShareUrl('twitter', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU'))
+      console.log(getShareUrl('facebook', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU'))
+      console.log(getShareUrl('linkedin', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU'))
       try {
         const storage = await getChromeStorage([
           STORAGE.CONTENT_LIST,
@@ -377,7 +382,7 @@ export default () => {
     setIsDragging(false)
   }
 
-  const [showModal, setShowModal] = useState(true)
+  const [showModal, setShowModal] = useState(false)
 
   return (
     <GalleryContext.Provider value={
@@ -395,7 +400,9 @@ export default () => {
         onDragLeave={() => modifyDraging(false)}
       >
         <button onClick={() => { setShowModal(true) }}>Click Me</button>
-        {showModal && <ExportNFT onClose={() => {setShowModal(false)}}/>}
+        <button onClick={() => { createShareWindow('twitter', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU') }}>Click Me 2</button>
+        {showModal && <ShareNFT onClose={() => {setShowModal(false)}}/>}
+        
         {isLoading && <Loading />}
         {isDragging && isEmpty(file) && (
           <input name='fileField' {...getInputProps()} />

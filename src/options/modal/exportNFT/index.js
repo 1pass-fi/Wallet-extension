@@ -32,7 +32,7 @@ const ExportNFT = () => {
         <Chain Icon={EthereumLogo} title='Ethereum'/>
         <Chain Icon={TezosLogo} title='Tezos'/>
         <Chain Icon={PolkadotLogo} title='Polkadot'/>
-        <div className='export-nft chains binance'><Chain Icon={BinanceLogo} title='Binance'/></div>
+        <Chain Icon={BinanceLogo} title='Binance'/>
         <Chain Icon={Avalanche} title='Avalanche'/>
       </div>
     </div>

@@ -21,6 +21,7 @@ const TextBox = ({title, text, buttonText}) => {
 }
 
 const ShareNFT = () => {
+  const txid = 'txid'
   return (
     <div className='share-nft container'>
       <div className='share-nft title container'>
@@ -34,7 +35,9 @@ const ShareNFT = () => {
         <TwitterIcon />
         <FacebookIcon />
         <LinkedInIcon />
-        <EmailIcon />
+        <a href={`mailto:?subject=Check out my NFT, now stored on Koi— forever!&body=https://koi.rocks/my-content/${txid}`} title="Share by Email">
+          <EmailIcon />
+        </a>
       </div>
     </div>
   )
