@@ -11,7 +11,7 @@ import TwitterIcon from 'img/social-icons/twitter-icon.svg'
 import { GalleryContext } from 'options/galleryContext'
 
 import './index.css'
-import { formatNumber } from '../../utils'
+import { formatNumber } from '../../../utils'
 
 export default ({
   txId,
@@ -43,18 +43,20 @@ export default ({
   return (
     <div className='big-nft-card-wrapper' ref={bigCardRef}>
       <div className='big-nft-card'>
-        {contentType.includes('image') ? (
-          <img src={imageUrl} className='nft-img' />
-        ) : (
-          <video
-            width={320}
-            height={240}
-            src={imageUrl}
-            className='nft-img'
-            controls
-            autoPlay
-          />
-        )}
+        <div className='nft-preview'>
+          {contentType.includes('image') ? (
+            <img src={imageUrl} className='nft-img' />
+          ) : (
+            <video
+              width={320}
+              height={240}
+              src={imageUrl}
+              className='nft-img'
+              controls
+              autoPlay
+            />
+          )}
+        </div>
         <div className='info'>
           <div className='nft-name'>{name}</div>
           <div className='export-nft'>

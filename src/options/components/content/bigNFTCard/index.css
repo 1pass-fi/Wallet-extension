@@ -11,6 +11,10 @@
   width: 100%;
 }
 
+.big-nft-card .nft-preview {
+  width: 470px;
+}
+
 .big-nft-card .nft-img {
   background: #020221;
   height: 470px;

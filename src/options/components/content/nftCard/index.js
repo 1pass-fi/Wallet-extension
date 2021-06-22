@@ -4,7 +4,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import ShareIcon from 'img/share-icon.svg'
 import CopyLinkIcon from 'img/share-icon-2.svg'
 
-import { formatNumber } from '../../utils'
+import { formatNumber } from '../../../utils'
 import './index.css'
 
 export default ({

@@ -4,7 +4,7 @@ import KoiIcon from 'img/koi-logo.svg'
 import KoiUnit from 'img/koi-logo-no-bg.svg'
 import SettingsIcon from 'img/settings-icon.svg'
 
-import { formatNumber } from '../utils'
+import { formatNumber } from '../../utils'
 
 import './index.css'
 

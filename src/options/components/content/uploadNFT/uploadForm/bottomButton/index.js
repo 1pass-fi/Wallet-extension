@@ -8,7 +8,7 @@ const arweave = Arweave.init({
   protocol: 'https',
   port: 443,
 })
-import { GalleryContext } from '../../../../galleryContext'
+import { GalleryContext } from '../../../../../galleryContext'
 import './index.css'
 
 export default ({ description, setStage, stage, title, file, username }) => {
