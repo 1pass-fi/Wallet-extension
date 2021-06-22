@@ -1,6 +1,8 @@
 .big-nft-card-wrapper {
   display: flex;
   width: 100%;
+  height: calc(100vh - 170px);
+  padding-top: calc((100vh - 740px) / 2);
 }
 
 .big-nft-card {
@@ -95,6 +97,7 @@
   line-height: 20px;
   margin-top: 20px;
   overflow-y: scroll;
+  font-size: 14px;
   padding-right: 11px;
 }
 

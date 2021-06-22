@@ -6,6 +6,7 @@ import CopyLinkIcon from 'img/share-icon-2.svg'
 
 import { formatNumber } from '../../../utils'
 import './index.css'
+import { Link } from 'react-router-dom'
 
 export default ({
   txId,
@@ -15,7 +16,6 @@ export default ({
   isRegistered,
   koiRockUrl,
   choosen,
-  setChoosen,
   disabled,
   contentType,
 }) => {
@@ -26,26 +26,23 @@ export default ({
     setTimeout(() => setIsCopied(false), 3000)
   }
 
-  const onClick = () => {
-    setChoosen(txId)
-  }
-
   return choosen !== txId ? (
     <div disabled={disabled} className='nft-card'>
-      {contentType.includes('image') ? (
-        <img src={imageUrl} className='nft-img' onClick={onClick} />
-      ) : (
-        <video
-          width={200}
-          height={200}
-          src={imageUrl}
-          className='nft-img'
-          onClick={onClick}
-          controls
-          autoPlay
-          muted
-        />
-      )}
+      <Link to={`/details/${txId}`}>
+        {contentType.includes('image') ? (
+          <img src={imageUrl} className='nft-img' />
+        ) : (
+          <video
+            width={200}
+            height={200}
+            src={imageUrl}
+            className='nft-img'
+            controls
+            autoPlay
+            muted
+          />
+        )}
+      </Link>
       <div className='nft-name'>{name}</div>
       {isRegistered ? (
         <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>

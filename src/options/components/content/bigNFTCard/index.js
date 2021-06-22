@@ -1,4 +1,10 @@
-import React, { useState, useContext } from 'react'
+import React, {
+  useState,
+  useContext,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import moment from 'moment'
 
@@ -21,17 +27,11 @@ export default ({
   isRegistered,
   koiRockUrl,
   setChoosen,
-  bigCardRef,
   contentType,
   totalViews,
-  createdAt
+  createdAt,
 }) => {
   const { setShowExportModal, setShowShareModal } = useContext(GalleryContext)
-  const [isCopied, setIsCopied] = useState(false)
-  const onCopy = () => {
-    setIsCopied(true)
-    setTimeout(() => setIsCopied(false), 3000)
-  }
 
   const { registeredDate, description, tags } = {
     registeredDate: moment(createdAt * 1000).format('MMMM Do, YYYY'),
@@ -41,7 +41,7 @@ export default ({
   }
 
   return (
-    <div className='big-nft-card-wrapper' ref={bigCardRef}>
+    <div className='big-nft-card-wrapper'>
       <div className='big-nft-card'>
         <div className='nft-preview'>
           {contentType.includes('image') ? (
@@ -62,7 +62,15 @@ export default ({
           <div className='export-nft'>
             <ArweaveIcon className='arweave-icon' />
             Export this NFT to a&nbsp;
-            <span onClick={() => {setShowExportModal(true)}} className='different-chain'>different chain</span>.
+            <span
+              onClick={() => {
+                setShowExportModal(true)
+              }}
+              className='different-chain'
+            >
+              different chain
+            </span>
+            .
           </div>
           <div className='registered-date'>Registered: {registeredDate}</div>
           <div className='external-links'>
@@ -79,16 +87,27 @@ export default ({
           </div>
           <div className='description'>{description}</div>
           <div className='tags'>
-            {tags.map((tag) => (
-              <div className='tag-item'>{tag}</div>
+            {tags.map((tag, index) => (
+              <div key={index} className='tag-item'>
+                {tag}
+              </div>
             ))}
           </div>
           <div className='earned'>
-            <div className='views'>{totalViews} { totalViews > 1 ? 'views' : 'view'}</div>
+            <div className='views'>
+              {totalViews} {totalViews > 1 ? 'views' : 'view'}
+            </div>
             <div className='koi '>{formatNumber(earnedKoi)} KOI earned</div>
           </div>
           <div className='share-embed'>
-            <button className='share-button' onClick={() => { setShowShareModal({show: true, txid: txId})}}>Share</button>
+            <button
+              className='share-button'
+              onClick={() => {
+                setShowShareModal({ show: true, txid: txId })
+              }}
+            >
+              Share
+            </button>
             <button className='embed-button'>Embed</button>
           </div>
           <div className='social-icons'>

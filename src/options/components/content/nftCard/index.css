@@ -47,6 +47,7 @@
   height: 216px;
   object-fit: contain;
   background: #020221;
+  -webkit-user-drag: none;
 }
 
 .nft-card .copy-noti {
