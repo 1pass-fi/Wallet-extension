@@ -66,3 +66,16 @@
   line-height: 20px;
   padding: 0;
 }
+
+
+.copy-noti {
+  top: 225px;
+  font-size: 16px;
+  line-height: 16px;
+  color: #ffc78f;
+  right: -90px;
+  position: absolute;
+  width: 80px;
+  height: 30px;
+  white-space: nowrap;
+}

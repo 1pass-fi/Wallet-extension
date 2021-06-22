@@ -130,7 +130,8 @@ export default () => {
     setIsDragging(false)
   }
 
-  const [showModal, setShowModal] = useState(false)
+  const [showShareModal, setShowShareModal] = useState({ show: false, txid: null })
+  const [showExportModal, setShowExportModal] = useState(false)
 
   return (
     <GalleryContext.Provider
@@ -138,6 +139,8 @@ export default () => {
         setIsLoading,
         address,
         wallet,
+        setShowExportModal,
+        setShowShareModal
       }}
     >
       <div
@@ -146,10 +149,9 @@ export default () => {
         onDragOver={() => modifyDraging(true)}
         onDragLeave={() => modifyDraging(false)}
       >
-        <button onClick={() => { setShowModal(true) }}>Click Me</button>
-        <button onClick={() => { createShareWindow('twitter', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU') }}>Click Me 2</button>
-        {showModal && <ShareNFT onClose={() => {setShowModal(false)}}/>}
-        
+        {showShareModal.show && <ShareNFT txid={showShareModal.txid} onClose={() => {setShowShareModal({...showShareModal, show: false})}}/>}
+        {showExportModal && <ExportNFT onClose={() => {setShowExportModal(false)}}/>}
+
         {isLoading && <Loading />}
         {isDragging && isEmpty(file) && (
           <input name='fileField' {...getInputProps()} />

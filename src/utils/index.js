@@ -117,7 +117,9 @@ export const loadMyContent = async (koiObj) => {
             galleryUrl: `${PATH.GALLERY}?id=${content.txIdContent}`,
             koiRockUrl: `${PATH.KOI_ROCK}/${content.txIdContent}`,
             isRegistered: true,
-            contentType: content.contentType
+            contentType: content.contentType,
+            totalViews: content.totalViews,
+            createdAt: content.createdAt
           }
         } else {
           return {
@@ -129,7 +131,9 @@ export const loadMyContent = async (koiObj) => {
             galleryUrl: `${PATH.GALLERY}?id=${content.txIdContent}`,
             koiRockUrl: `${PATH.KOI_ROCK}${content.txIdContent}`,
             isRegistered: true,
-            contentType: content.contentType || 'image'
+            contentType: content.contentType || 'image',
+            totalViews: content.totalViews,
+            createdAt: content.createdAt
           }
         }
       } catch (err) {
