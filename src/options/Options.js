@@ -19,6 +19,11 @@ import Navbar from './navbar'
 
 import { GalleryContext } from './galleryContext'
 
+import ShareNFT from 'options/modal/shareNFT'
+import ExportNFT from 'options/modal/exportNFT'
+
+import { getShareUrl, createShareWindow } from './helpers'
+
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
 export default () => {
@@ -39,6 +44,9 @@ export default () => {
 
   useEffect(() => {
     const getData = async () => {
+      console.log(getShareUrl('twitter', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU'))
+      console.log(getShareUrl('facebook', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU'))
+      console.log(getShareUrl('linkedin', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU'))
       try {
         const storage = await getChromeStorage([
           STORAGE.CONTENT_LIST,
@@ -122,19 +130,28 @@ export default () => {
     setIsDragging(false)
   }
 
+  const [showShareModal, setShowShareModal] = useState({ show: false, txid: null })
+  const [showExportModal, setShowExportModal] = useState(false)
+
   return (
     <GalleryContext.Provider
       value={{
         setIsLoading,
         address,
         wallet,
+        setShowExportModal,
+        setShowShareModal
       }}
     >
       <div
+        
         {...getRootProps({ className: 'app dropzone' })}
         onDragOver={() => modifyDraging(true)}
         onDragLeave={() => modifyDraging(false)}
       >
+        {showShareModal.show && <ShareNFT txid={showShareModal.txid} onClose={() => {setShowShareModal({...showShareModal, show: false})}}/>}
+        {showExportModal && <ExportNFT onClose={() => {setShowExportModal(false)}}/>}
+
         {isLoading && <Loading />}
         {isDragging && isEmpty(file) && (
           <input name='fileField' {...getInputProps()} />

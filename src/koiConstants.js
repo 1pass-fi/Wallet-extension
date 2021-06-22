@@ -96,7 +96,10 @@ export const PATH = {
   SINGLE_CONTENT: 'https://bundler.openkoi.com:8888/state/getNFTState?tranxId=',
   VIEW_BLOCK_TRANSACTION: 'https://viewblock.io/arweave/tx',
   CONNECT_SITE: '/account/connect-site',
-  AR_PRICE: 'https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=usd'
+  AR_PRICE: 'https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=usd',
+  SHARE_TWITTER: 'https://twitter.com/intent/tweet',
+  SHARE_FACEBOOK: 'https://www.facebook.com/sharer/sharer.php',
+  SHARE_LINKEDIN: 'https://www.linkedin.com/sharing/share-offsite/'
 }
 
 export const ERROR_MESSAGE = {

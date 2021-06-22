@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import moment from 'moment'
 
 import ArweaveIcon from 'img/arweave-icon.svg'
 import EmailIcon from 'img/social-icons/email-icon.svg'
 import FacebookIcon from 'img/social-icons/facebook-icon.svg'
 import LinkedinIcon from 'img/social-icons/linkedin-icon.svg'
 import TwitterIcon from 'img/social-icons/twitter-icon.svg'
+
+import { GalleryContext } from 'options/galleryContext'
 
 import './index.css'
 import { formatNumber } from '../../utils'
@@ -20,7 +23,10 @@ export default ({
   setChoosen,
   bigCardRef,
   contentType,
+  totalViews,
+  createdAt
 }) => {
+  const { setShowExportModal, setShowShareModal } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const onCopy = () => {
     setIsCopied(true)
@@ -28,7 +34,7 @@ export default ({
   }
 
   const { registeredDate, description, tags } = {
-    registeredDate: 'June 7, 2021',
+    registeredDate: moment(createdAt * 1000).format('MMMM Do, YYYY'),
     description:
       'It is a long established fact that a reader will long established fact that a reader will long established fact that a reader will It is a long established fact that a reader will It is a long established fact that a reader willIt is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using It is a long established fact that a reader will long established fact that a reader will long established fact that a reader will It is a long established fact that a reader will It is a long established fact that a reader willIt is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using',
     tags: ['crypto', 'puppies', 'electropop', 'cubism'],
@@ -54,7 +60,7 @@ export default ({
           <div className='export-nft'>
             <ArweaveIcon className='arweave-icon' />
             Export this NFT to a&nbsp;
-            <span className='different-chain'>different chain</span>.
+            <span onClick={() => {setShowExportModal(true)}} className='different-chain'>different chain</span>.
           </div>
           <div className='registered-date'>Registered: {registeredDate}</div>
           <div className='external-links'>
@@ -76,11 +82,11 @@ export default ({
             ))}
           </div>
           <div className='earned'>
-            <div className='views'>0 views</div>
+            <div className='views'>{totalViews} { totalViews > 1 ? 'views' : 'view'}</div>
             <div className='koi '>{formatNumber(earnedKoi)} KOI earned</div>
           </div>
           <div className='share-embed'>
-            <button className='share-button'>Share</button>
+            <button className='share-button' onClick={() => { setShowShareModal({show: true, txid: txId})}}>Share</button>
             <button className='embed-button'>Embed</button>
           </div>
           <div className='social-icons'>
