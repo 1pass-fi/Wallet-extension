@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { MemoryRouter as Router, Route, Switch } from 'react-router-dom'
 
 import './index.css'
+import Layout from './layout'
 import Home from './pages/Home'
 import Details from './pages/Details'
 import Create from './pages/Create'
@@ -14,29 +15,31 @@ import Friends from './pages/Friends'
 const Gallery = () => {
   return (
     <Router>
-      <Switch>
-        <Route exact path='/details/:txid'>
-          <Details />
-        </Route>
-        <Route exact path='/create'>
-          <Create />
-        </Route>
-        <Route exact path='/faucet'>
-          <Faucet />
-        </Route>
-        <Route exact path='/friends'>
-          <Friends />
-        </Route>
-        <Route exact path='/collections'>
-          <Collections />
-        </Route>
-        <Route exact path='/settings'>
-          <Settings />
-        </Route>
-        <Route path='*'>
-          <Home />
-        </Route>
-      </Switch>
+      <Layout>
+        <Switch>
+          <Route exact path='/details/:txid'>
+            <Details />
+          </Route>
+          <Route exact path='/create'>
+            <Create />
+          </Route>
+          <Route exact path='/faucet'>
+            <Faucet />
+          </Route>
+          <Route exact path='/friends'>
+            <Friends />
+          </Route>
+          <Route exact path='/collections'>
+            <Collections />
+          </Route>
+          <Route exact path='/settings'>
+            <Settings />
+          </Route>
+          <Route path='*'>
+            <Home />
+          </Route>
+        </Switch>
+      </Layout>
     </Router>
   )
 }

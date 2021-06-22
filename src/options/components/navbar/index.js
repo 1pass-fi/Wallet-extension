@@ -20,40 +20,39 @@ const routes = {
 
 export default () => {
   const [route, setRoute] = useState('')
-  const a = useLocation()
-  console.log({ a: a.pathname })
+  const { pathname } = useLocation()
 
   return (
     <div className='navbar'>
       <div className='top'>
         <Link to='/'>
-          <HomeIcon
-            className={`nav-item ${route == routes.HOME ? 'active' : ''}`}
-          />
+          <HomeIcon className={`nav-item ${pathname == '/' ? 'active' : ''}`} />
         </Link>
         <Link to='/create'>
           <CreateNFTIcon
-            className={`nav-item ${route == routes.CREATE_NFT ? 'active' : ''}`}
+            className={`nav-item ${pathname == '/create' ? 'active' : ''}`}
           />
         </Link>
         <Link to='/collections'>
           <CollectionIcon
-            className={`nav-item ${route == routes.COLLECTION ? 'active' : ''}`}
+            className={`nav-item ${pathname == '/collections' ? 'active' : ''}`}
           />
         </Link>
         <Link to='/settings'>
           <SettingIcon
-            className={`nav-item ${route == routes.SETTING ? 'active' : ''}`}
+            className={`nav-item ${pathname == '/settings' ? 'active' : ''}`}
           />
         </Link>
       </div>
       <div className='bottom'>
-        <FriendIcon
-          className={`nav-item friend ${
-            route == routes.FRIEND ? 'active' : ''
-          }`}
-          onClick={() => setRoute(routes.FRIEND)}
-        />
+        <Link to='/friends'>
+          <FriendIcon
+            className={`nav-item friend ${
+              pathname == '/friends' ? 'active' : ''
+            }`}
+            onClick={() => setRoute(routes.FRIEND)}
+          />
+        </Link>
         <div className='address'>ABCD-123</div>
       </div>
     </div>
