@@ -7,6 +7,8 @@ import SettingIcon from 'img/navbar/setting.svg'
 import FriendIcon from 'img/navbar/friend.svg'
 
 import './index.css'
+import { useLocation } from 'react-router'
+import { Link } from 'react-router-dom'
 
 const routes = {
   HOME: 'home',
@@ -17,32 +19,39 @@ const routes = {
 }
 
 export default () => {
-  const [route, setRoute] = useState(routes.HOME)
+  const [route, setRoute] = useState('')
+  const a = useLocation()
+  console.log({ a: a.pathname })
 
   return (
     <div className='navbar'>
       <div className='top'>
-        <HomeIcon
-          className={`nav-item ${route == routes.HOME ? 'active' : ''}`}
-          onClick={() => setRoute(routes.HOME)}
-          fill='green'
-        />
-        <CreateNFTIcon
-          className={`nav-item ${route == routes.CREATE_NFT ? 'active' : ''}`}
-          onClick={() => setRoute(routes.CREATE_NFT)}
-        />
-        <CollectionIcon
-          className={`nav-item ${route == routes.COLLECTION ? 'active' : ''}`}
-          onClick={() => setRoute(routes.COLLECTION)}
-        />
-        <SettingIcon
-          className={`nav-item ${route == routes.SETTING ? 'active' : ''}`}
-          onClick={() => setRoute(routes.SETTING)}
-        />
+        <Link to='/'>
+          <HomeIcon
+            className={`nav-item ${route == routes.HOME ? 'active' : ''}`}
+          />
+        </Link>
+        <Link to='/create'>
+          <CreateNFTIcon
+            className={`nav-item ${route == routes.CREATE_NFT ? 'active' : ''}`}
+          />
+        </Link>
+        <Link to='/collections'>
+          <CollectionIcon
+            className={`nav-item ${route == routes.COLLECTION ? 'active' : ''}`}
+          />
+        </Link>
+        <Link to='/settings'>
+          <SettingIcon
+            className={`nav-item ${route == routes.SETTING ? 'active' : ''}`}
+          />
+        </Link>
       </div>
       <div className='bottom'>
         <FriendIcon
-          className={`nav-item friend ${route == routes.FRIEND ? 'active' : ''}`}
+          className={`nav-item friend ${
+            route == routes.FRIEND ? 'active' : ''
+          }`}
           onClick={() => setRoute(routes.FRIEND)}
         />
         <div className='address'>ABCD-123</div>

@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useContext } from 'react'
 import find from 'lodash/find'
 import isEqual from 'lodash/isEqual'
+
+import { GalleryContext } from 'options/galleryContext'
 
 import UploadNFT from './uploadNFT'
 import BigCard from './bigNFTCard'
@@ -8,16 +10,8 @@ import Card from './nftCard'
 
 import './index.css'
 
-export default ({
-  cardInfos,
-  isDragging,
-  file,
-  onClearFile,
-  onCloseUploadModal,
-  setIsLoading,
-  address,
-  wallet,
-}) => {
+export default ({ setIsLoading, address, wallet }) => {
+  const { cardInfos, isDragging, file } = useContext(GalleryContext)
   const [choosen, setChoosen] = useState('')
   const bigCardRef = useRef(null)
 
@@ -43,15 +37,7 @@ export default ({
   return (
     <div className='app-content'>
       <div className='title'>My NFT Gallery</div>
-      <UploadNFT
-        isDragging={isDragging}
-        file={file}
-        onClearFile={onClearFile}
-        onCloseUploadModal={onCloseUploadModal}
-        setIsLoading={setIsLoading}
-        address={address}
-        wallet={wallet}
-      />
+      <UploadNFT />
       <div className='cards'>
         <div className='small-cards'>
           {cardInfos.map((cardInfo) =>

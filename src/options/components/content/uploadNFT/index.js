@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import isEmpty from 'lodash/isEmpty'
+
+import { GalleryContext } from 'options/galleryContext'
 
 import UploadZone from './uploadZone'
 import UploadForm from './uploadForm'
 import './index.css'
 
-export default ({ file, isDragging, onClearFile, onCloseUploadModal }) => {
+export default () => {
+  const { file, isDragging } = useContext(GalleryContext)
   if (!isDragging) {
     return <div></div>
   }
@@ -13,15 +16,7 @@ export default ({ file, isDragging, onClearFile, onCloseUploadModal }) => {
   return (
     <div className='uploadNFT-wrapper'>
       <div className={`uploadNFT`}>
-        {isEmpty(file) ? (
-          <UploadZone />
-        ) : (
-          <UploadForm
-            file={file}
-            onClearFile={onClearFile}
-            onCloseUploadModal={onCloseUploadModal}
-          />
-        )}
+        {isEmpty(file) ? <UploadZone /> : <UploadForm />}
       </div>
     </div>
   )

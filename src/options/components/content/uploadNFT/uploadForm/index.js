@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useContext } from 'react'
 
 import CloseIcon from 'img/close-x-icon.svg'
 import GoBackIcon from 'img/goback-icon.svg'
@@ -9,7 +9,14 @@ import BodyContent from './bodyContent'
 import { getFileType, NFT_TYPES } from './utils'
 import './index.css'
 
-export default ({ file, onClearFile, onCloseUploadModal }) => {
+import { GalleryContext } from 'options/galleryContext'
+
+export default () => {
+  const {
+    file,
+    onClearFile,
+    onCloseUploadModal,
+  } = useContext(GalleryContext)
   const [stage, setStage] = useState(1)
   const [title, setTitle] = useState('')
   const [username, setUsername] = useState('')
