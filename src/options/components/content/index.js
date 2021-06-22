@@ -42,7 +42,7 @@ export default ({ choosenTxid = '' }) => {
 
   return (
     <div className='app-content'>
-      {!choosenCard && <div className='title'>My NFT Gallery</div>}
+      {!choosenCard && <div className='title'>Gallery</div>}
       <UploadNFT />
       <div className='cards'>
         {choosenCard && (

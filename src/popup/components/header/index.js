@@ -51,7 +51,7 @@ const Header = ({ location, setError, koi }) => {
           <LogoIcon className='logo' />
         </button>
         <button onClick={onGalleryClick} className='gallery-button'>
-          Gallery
+          My NFT Gallery
         </button>
         <button className='setting-button' onClick={onSettingButtonClick}>
           <SettingIcon />

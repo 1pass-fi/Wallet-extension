@@ -10,16 +10,7 @@ import './index.css'
 import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 
-const routes = {
-  HOME: 'home',
-  CREATE_NFT: 'create_nft',
-  COLLECTION: 'collection',
-  SETTING: 'setting',
-  FRIEND: 'friend',
-}
-
 export default () => {
-  const [route, setRoute] = useState('')
   const { pathname } = useLocation()
 
   return (
@@ -50,7 +41,6 @@ export default () => {
             className={`nav-item friend ${
               pathname == '/friends' ? 'active' : ''
             }`}
-            onClick={() => setRoute(routes.FRIEND)}
           />
         </Link>
         <div className='address'>ABCD-123</div>
