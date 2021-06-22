@@ -205,7 +205,7 @@ export const loadMyActivities = async (koiObj, cursor) => {
 
         if (initStateTag[0]) {
           const initState = JSON.parse(initStateTag[0].value)
-          activityName = `Purchased "${initState.title}"`
+          activityName = `Minted NFT "${initState.title}"`
         }
 
         if (get(activity, 'node.owner.address') !== koiObj.address) {

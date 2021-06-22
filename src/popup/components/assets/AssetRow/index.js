@@ -8,6 +8,8 @@ import AlternativeWalletIcon from 'img/arweave-icon.svg'
 import RearrangePadsIcon from 'img/rearrange-pads-icon.svg'
 import './index.css'
 
+import { numberFormat } from 'utils'
+
 const propTypes = {
   isGrey: PropTypes.bool,
   isKoiWallet: PropTypes.bool,
@@ -24,7 +26,7 @@ const WalletIcon = ({ isKoiWallet }) => (
 
 const EarnedKoi = ({ isRegistered, earnedKoi }) =>
   isRegistered ? (
-    <div className='koi-earned'>{earnedKoi} KOI earned</div>
+    <div className='koi-earned'>{numberFormat(earnedKoi)} KOI earned</div>
   ) : (
     <button className='register-button'>
       <div className='register-button-icon'>
