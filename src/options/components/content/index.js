@@ -14,25 +14,6 @@ import './index.css'
 
 export default ({ choosenTxid = '' }) => {
   const { cardInfos, isDragging } = useContext(GalleryContext)
-  const bigCardRef = useRef(null)
-  const history = useHistory()
-
-  useEffect(() => {
-    const query = window.location.search
-    let id = ''
-    if (query.length > 4) {
-      id = query.slice(4)
-    }
-    if (id) {
-      history.push(`/details/${id}`, {})
-      // Below statement is used to change URL without reload page
-      window.history.replaceState(
-        {},
-        '',
-        chrome.extension.getURL('options.html')
-      )
-    }
-  }, [])
 
   useEffect(() => {
     window.scroll({ top: 0, behavior: 'smooth' })
