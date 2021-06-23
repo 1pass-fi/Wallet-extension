@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { trim } from 'lodash'
 
+import Checkbox from 'popup/components/shared/checkbox'
 import './index.css'
+
+import { UploadContext } from '../../../index'
 
 export default ({
   stage,
@@ -11,6 +15,16 @@ export default ({
   setTitle,
   setUsername,
 }) => {
+  const { setTags, tags } = useContext(UploadContext)
+
+  const addTag = (e) => {
+    const value = trim(e.target.value)
+    if (e.keyCode === 32 || e.keyCode === 13) {
+      if (value && !tags.includes(value)) setTags([...tags, value])
+      e.target.value = ''
+    }
+  }
+
   if (stage == 1) {
     return (
       <div className='right-column stage1'>
@@ -31,12 +45,27 @@ export default ({
           ></input>
         </div>
         <div className='field'>
+          {/* <input
+            type='checkbox'
+            className='field-checkbox'
+          ></input> */}
+          <div className='field-checkbox'><Checkbox /></div>
+          <label className='field-label-checkbox'>Save my username for future NFTs</label>
+        </div>
+        <div className='field'>
           <label className='field-label'>Description</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className='field-input'
           />
+        </div>
+        <div className='field'>
+          <label className='field-label'>Tags</label>
+          <input
+            className='field-input'
+            onKeyUp={addTag}
+          ></input>
         </div>
       </div>
     )
@@ -45,11 +74,6 @@ export default ({
   if (stage == 2) {
     return (
       <div className='right-column stage2'>
-        <div className='ntf-preview-infomation'>
-          <div className='preview-info'>{title}</div>
-          <div className='preview-info'>{username}</div>
-          <div className='preview-info'>{description}</div>
-        </div>
         <div className='estimate-cost'>
           <div className='estimate-cost-title'>Estimated Costs</div>
           <div className='estimate-ar'>0.0002 AR</div>

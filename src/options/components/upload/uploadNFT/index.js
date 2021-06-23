@@ -8,11 +8,8 @@ import UploadForm from './uploadForm'
 import './index.css'
 
 export default () => {
-  const { file, isDragging } = useContext(GalleryContext)
-  if (!isDragging) {
-    return <div></div>
-  }
-
+  const { file } = useContext(GalleryContext)
+  
   return (
     <div className='uploadNFT-wrapper'>
       <div className={`uploadNFT`}>

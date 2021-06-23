@@ -6,8 +6,7 @@ export default ({ stage }) => {
       <>
         <div className='description-title'>Create an Atomic NFT</div>
         <div className='description-detail'>
-          Drop your file here to store it forever and start earning attention
-          rewards.
+          An Atomic NFT is store permanently on Arweave and earns attention rewards forever through Koi. 
         </div>
       </>
     )

@@ -6,7 +6,7 @@ import isEqual from 'lodash/isEqual'
 
 import { GalleryContext } from 'options/galleryContext'
 
-import UploadNFT from './uploadNFT'
+import UploadNFT from '../../components/upload'
 import Card from './nftCard'
 import BigCard from './bigNFTCard'
 

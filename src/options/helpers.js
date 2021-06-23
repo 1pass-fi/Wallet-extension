@@ -21,3 +21,11 @@ export const createShareWindow = (network, txid) => {
     width: 600
   })
 }
+
+export const sendReferralCode = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ status: 200 })
+    }, 2000)
+  })
+}
