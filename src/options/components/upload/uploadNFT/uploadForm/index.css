@@ -64,6 +64,18 @@
   width: 309px;
 }
 
+.uploadNFT-wrapper
+  .uploadNFT 
+  .upload-form 
+  .nft-infomation 
+  .left-column 
+  .picture 
+  .nft-preview-infomation 
+  .preview-info.description {
+  overflow-y: scroll;
+  height: 96px;
+}
+
 .uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column .tags {
   padding-top: 10px;
   display: flex;
@@ -71,6 +83,12 @@
   flex-wrap: wrap;
   width: 216px;
   gap: 8px;
+  height: 48px;
+  overflow-y: scroll;
+}
+
+.uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column .tags.stage2 {
+  width: 309px;
 }
 
 .uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column .tags .tag {

@@ -61,7 +61,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
   if (stage == 2) {
     return (
       <button
-        className='create-ntf-button'
+        className='create-ntf-button  stage2'
         onClick={async () => {
           await handleUploadNFT()
           setStage(3)
@@ -74,7 +74,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
 
   return (
     <CopyToClipboard text='https://koi.registerlink.example'>
-      <button className='create-ntf-button'>Copy Link to Share</button>
+      <button className={'create-ntf-button'}>Copy Link to Share</button>
     </CopyToClipboard>
   )
 }

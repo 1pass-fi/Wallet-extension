@@ -10,14 +10,6 @@ export default ({ choosenTxid = '' }) => {
   const [tags, setTags] = useState([])
 
   useEffect(() => {
-    window.history.replaceState(
-      {},
-      '',
-      chrome.extension.getURL('options.html')
-    )
-  }, [])
-
-  useEffect(() => {
     window.scroll({ top: 0, behavior: 'smooth' })
   }, [choosenTxid])
 

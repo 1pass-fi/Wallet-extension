@@ -45,12 +45,8 @@ export default ({
           ></input>
         </div>
         <div className='field'>
-          {/* <input
-            type='checkbox'
-            className='field-checkbox'
-          ></input> */}
-          <div className='field-checkbox'><Checkbox /></div>
-          <label className='field-label-checkbox'>Save my username for future NFTs</label>
+          <div hidden={true} className='field-checkbox'><Checkbox /></div>
+          <label hidden={true} className='field-label-checkbox'>Save my username for future NFTs</label>
         </div>
         <div className='field'>
           <label className='field-label'>Description</label>

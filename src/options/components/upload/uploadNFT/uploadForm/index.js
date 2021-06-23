@@ -44,6 +44,7 @@ export default () => {
       setStage(stage - 1)
     } else {
       onClearFile()
+      setTags([])
     }
   }
 
@@ -68,8 +69,8 @@ export default () => {
                 <div className='nft-preview-infomation'>
                   <div className='preview-info'>{title}</div>
                   <div className='preview-info'>{username}</div>
-                  <div className='preview-info'>{description}</div>
-                  <div className='tags'>
+                  <div className='preview-info description'>{description}</div>
+                  <div className='tags stage2'>
                     {tags.map((tag, index) => <Tag key={index} tag={tag} stage={stage}/>)}
                   </div>
                 </div>
@@ -101,7 +102,10 @@ export default () => {
         file={file}
         username={username}
       />
-      <div className='close-button' onClick={onCloseUploadModal}>
+      <div className='close-button' onClick={() => {
+        setTags([])
+        onCloseUploadModal()
+      }}>
         <CloseIcon />
       </div>
       <div className='goback-button' onClick={onGoBack}>
