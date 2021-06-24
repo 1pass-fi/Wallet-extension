@@ -122,7 +122,6 @@
   display: flex;
   flex-direction: row;
   margin-top: 12px;
-  height: 94px;
 }
 
 .big-nft-card .info .tags .tag-item {
@@ -185,6 +184,7 @@
   flex-direction: row;
   gap: 50px;
   margin-top: 17px;
+  cursor: pointer;
 }
 
 .big-nft-card .info .social-icons .social-icon {

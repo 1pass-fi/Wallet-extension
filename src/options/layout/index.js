@@ -32,6 +32,7 @@ export default ({ children }) => {
   const [isDragging, setIsDragging] = useState(false)
   const [cardInfos, setCardInfos] = useState([])
   const [totalKoi, setTotalKoi] = useState(0)
+  const [totalAr, setTotalAr] = useState(0)
   const [file, setFile] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [address, setAddress] = useState(null)
@@ -52,6 +53,7 @@ export default ({ children }) => {
           STORAGE.CONTENT_LIST,
           STORAGE.KOI_BALANCE,
           STORAGE.KOI_ADDRESS,
+          STORAGE.AR_BALANCE
         ])
         if (storage[STORAGE.CONTENT_LIST]) {
           setCardInfos(storage[STORAGE.CONTENT_LIST])
@@ -67,6 +69,7 @@ export default ({ children }) => {
         })
         if (storage[STORAGE.KOI_BALANCE]) {
           setTotalKoi(storage[STORAGE.KOI_BALANCE])
+          setTotalAr(storage[STORAGE.AR_BALANCE])
         }
         if (storage[STORAGE.KOI_ADDRESS]) {
           setAddress(storage[STORAGE.KOI_ADDRESS])
@@ -180,7 +183,7 @@ export default ({ children }) => {
         {isDragging && isEmpty(file) && (
           <input name='fileField' {...getInputProps()} />
         )}
-        <Header totalKoi={totalKoi} headerRef={headerRef} />
+        <Header totalKoi={totalKoi} totalAr={totalAr} headerRef={headerRef} />
         {children}
         {!isDragging && <Footer showDropzone={showDropzone} />}
         <Navbar />

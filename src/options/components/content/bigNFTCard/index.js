@@ -14,6 +14,8 @@ import FacebookIcon from 'img/social-icons/facebook-icon.svg'
 import LinkedinIcon from 'img/social-icons/linkedin-icon.svg'
 import TwitterIcon from 'img/social-icons/twitter-icon.svg'
 
+import { createShareWindow } from '../../../helpers'
+
 import { GalleryContext } from 'options/galleryContext'
 
 import './index.css'
@@ -76,7 +78,7 @@ export default ({
           <div className='external-links'>
             <a
               className='external-link'
-              href='https://viewblock.io/'
+              href={`https://viewblock.io/arweave/tx/${txId}`}
               target='_blank'
             >
               explore block
@@ -86,13 +88,13 @@ export default ({
             </a>
           </div>
           <div className='description'>{description}</div>
-          <div className='tags'>
+          {/* <div className='tags'>
             {tags.map((tag, index) => (
               <div key={index} className='tag-item'>
                 {tag}
               </div>
             ))}
-          </div>
+          </div> */}
           <div className='earned'>
             <div className='views'>
               {totalViews} {totalViews > 1 ? 'views' : 'view'}
@@ -111,10 +113,12 @@ export default ({
             <button className='embed-button'>Embed</button>
           </div>
           <div className='social-icons'>
-            <TwitterIcon className='social-icon' />
-            <FacebookIcon className='social-icon' />
-            <LinkedinIcon className='social-icon' />
-            <EmailIcon className='social-icon' />
+            <TwitterIcon onClick={() => { createShareWindow('twitter', txId) }} className='social-icon' />
+            <FacebookIcon onClick={() => { createShareWindow('facebook', txId) }} className='social-icon' />
+            <LinkedinIcon onClick={() => { createShareWindow('linkedin', txId) }} className='social-icon' />
+            <a href={`mailto:?subject=Check out my NFT, now stored on Koi— forever!&body=https://koi.rocks/content-detail/${txId}`} title="Share by Email">
+              <EmailIcon className='social-icon' />
+            </a>
           </div>
         </div>
       </div>

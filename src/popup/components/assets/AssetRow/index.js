@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import ShareIcon from 'img/share-icon-green.svg'
 import GalleryIcon from 'img/gallery-icon.svg'
-import Fish from 'img/fish.svg'
+import Fish from 'img/koi-logo.svg'
 import AlternativeWalletIcon from 'img/arweave-icon.svg'
 import RearrangePadsIcon from 'img/rearrange-pads-icon.svg'
 import './index.css'

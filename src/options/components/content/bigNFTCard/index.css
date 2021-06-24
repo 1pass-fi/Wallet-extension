@@ -172,4 +172,5 @@
 .big-nft-card .info .social-icons .social-icon {
   width: 28px;
   height: 28px;
+  cursor: pointer;
 }

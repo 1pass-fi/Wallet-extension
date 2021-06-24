@@ -17,6 +17,8 @@ import TwitterIcon from 'img/social-icons/twitter-icon.svg'
 
 import { GalleryContext } from 'options/galleryContext'
 
+import { createShareWindow } from '../../../helpers'
+
 import './index.css'
 
 export default ({
@@ -73,7 +75,7 @@ export default ({
           <div className='external-links'>
             <a
               className='external-link-pending'
-              href='https://viewblock.io/'
+              href={`https://viewblock.io/arweave/tx/${txId}`}
               target='_blank'
             >
               transaction pending
@@ -108,10 +110,12 @@ export default ({
             <button className='embed-button'>Embed</button>
           </div>
           <div className='social-icons'>
-            <TwitterIcon className='social-icon' />
-            <FacebookIcon className='social-icon' />
-            <LinkedinIcon className='social-icon' />
-            <EmailIcon className='social-icon' />
+            <TwitterIcon onClick={() => { createShareWindow('twitter', txId) }} className='social-icon' />
+            <FacebookIcon onClick={() => { createShareWindow('facebook', txId) }} className='social-icon' />
+            <LinkedinIcon onClick={() => { createShareWindow('linkedin', txId) }} className='social-icon' />
+            <a href={`mailto:?subject=Check out my NFT, now stored on Koi— forever!&body=https://koi.rocks/content-detail/${txId}`} title="Share by Email">
+              <EmailIcon className='social-icon' />
+            </a>
           </div>
         </div>
       </div>
