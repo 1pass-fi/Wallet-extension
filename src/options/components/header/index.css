@@ -1,20 +1,27 @@
 /* START HEADER */
 .app-header {
-  padding: 0 56px 0 26px;
-  height: 70px;
+  height: 65px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+.app-header .header-left,
+.app-header .header-center,
+.app-header .header-right {
+  width: calc(100vw / 3);
+}
+
 .app-header .header-left .logo {
-  width: 45px;
-  height: 45px;
+  margin: 25px 0px 0px 8px;
+  width: 72px;
+  height: 72px;
 }
 
 .app-header .header-right {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  margin-right: 71px;
   align-items: center;
 }
 

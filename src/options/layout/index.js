@@ -33,6 +33,7 @@ export default ({ children }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [address, setAddress] = useState(null)
   const [wallet, setWallet] = useState(null)
+  const [searchTerm, setSearchTerm] = useState('')
   const headerRef = useRef(null)
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
@@ -144,6 +145,8 @@ export default ({ children }) => {
   return (
     <GalleryContext.Provider
       value={{
+        searchTerm,
+        setSearchTerm,
         address,
         cardInfos,
         file,
