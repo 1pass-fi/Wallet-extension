@@ -9,8 +9,7 @@
         "<all_urls>"
       ],
       "js": [
-        "lib/js/browser-polyfill.js",
-        "content.js"
+        "lib/js/browser-polyfill.js"
       ]
     }
   ],

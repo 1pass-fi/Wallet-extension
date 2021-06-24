@@ -40,6 +40,17 @@
 
 .uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column.stage2 {
   width: 525px;
+  display: flex;
+  flex-direction: row;
+}
+
+.uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column .picture {
+  background-color: #171753;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 216px;
+  height: 216px;
 }
 
 .uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column .picture {
@@ -50,7 +61,7 @@
   height: 216px;
 }
 
-.uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column .picture .nft-preview-infomation {
+.uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column .nft-preview-infomation {
   box-sizing: border-box;
   padding: 11px;
   width: 309px;
@@ -60,24 +71,24 @@
   font-weight: 400;
 }
 
-.uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column .picture .nft-preview-infomation .preview-info {
+.uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column .nft-preview-infomation .preview-info {
   width: 309px;
 }
 
 .uploadNFT-wrapper
   .uploadNFT 
   .upload-form 
-  .nft-infomation 
-  .left-column 
-  .picture 
+  .nft-infomation
+  .left-column
   .nft-preview-infomation 
   .preview-info.description {
   overflow-y: scroll;
+  width: 309px;
   height: 96px;
 }
 
 .uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column .tags {
-  padding-top: 10px;
+  margin-top: 10px;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
@@ -144,3 +155,46 @@
 /* CLOSE BUTTON END */
 
 /* UPLOAD INFOMATION FORM END */
+
+/* SUCCESS SCRENN */
+
+.uploadNFT-wrapper .uploadNFT .success-screen .message {
+  width: 987px;
+  height: 114px;
+  margin-bottom: 51px;
+  text-align: center;
+}
+
+.uploadNFT-wrapper .uploadNFT .success-screen .message .title {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.uploadNFT-wrapper .uploadNFT .success-screen .message .description {
+  font-size: 16px;
+  line-height: 32px;
+  font-weight: 400;
+}
+
+.uploadNFT-wrapper .uploadNFT .success-screen .message .btns {
+  display: flex;
+  justify-content: space-between;
+  width: 454px;
+  margin: auto;
+  margin-top: 12px;
+}
+
+.uploadNFT-wrapper .uploadNFT .success-screen .message .btn {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  background-color: #030332;
+  border: 1.5px solid #ffffff;
+  border-radius: 2px;
+  width: 203px;
+  height: 32px;
+  color: #ffffff;
+  cursor: pointer;
+}

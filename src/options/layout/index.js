@@ -1,5 +1,6 @@
 import '@babel/polyfill'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { history, useHistory } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
@@ -26,6 +27,8 @@ import { getShareUrl, createShareWindow } from 'options/helpers'
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
 export default ({ children }) => {
+  const history = useHistory()
+
   const [isDragging, setIsDragging] = useState(false)
   const [cardInfos, setCardInfos] = useState([])
   const [totalKoi, setTotalKoi] = useState(0)
@@ -107,6 +110,7 @@ export default ({ children }) => {
 
   useEffect(() => {
     setFile(acceptedFiles ? acceptedFiles[0] : {})
+    if (!isEmpty(acceptedFiles)) history.push('/create')
   }, [acceptedFiles])
 
   const modifyDraging = useCallback(
@@ -147,6 +151,7 @@ export default ({ children }) => {
         address,
         cardInfos,
         file,
+        setFile,
         isDragging,
         onClearFile,
         onCloseUploadModal,

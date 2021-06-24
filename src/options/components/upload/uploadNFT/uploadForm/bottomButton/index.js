@@ -13,8 +13,8 @@ import { UploadContext } from '../../../index'
 import './index.css'
 
 export default ({ description, setStage, stage, title, file, username }) => {
-  const { setIsLoading, address, wallet } = useContext(GalleryContext)
-  const { tags } = useContext(UploadContext)
+  const { setIsLoading, address, wallet, setFile } = useContext(GalleryContext)
+  const { tags, setTransactionId, setCreatedAt } = useContext(UploadContext)
   console.log({ setIsLoading, address, wallet })
 
   const handleUploadNFT = async () => {
@@ -46,6 +46,13 @@ export default ({ description, setStage, stage, title, file, username }) => {
     }
   }
 
+  const mockUploadNFT = async () => {
+    return {
+      txid: 'txid',
+      time: 1624524443
+    }
+  }
+
   if (stage == 1) {
     return (
       <button
@@ -61,9 +68,12 @@ export default ({ description, setStage, stage, title, file, username }) => {
   if (stage == 2) {
     return (
       <button
-        className='create-ntf-button  stage2'
+        className='create-ntf-button stage2'
         onClick={async () => {
-          await handleUploadNFT()
+          // const { txid, time } = await handleUploadNFT()
+          const { txid, time } = await mockUploadNFT()
+          setTransactionId(txid)
+          setCreatedAt(time)
           setStage(3)
         }}
       >

@@ -545,7 +545,7 @@ export const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', i
     // end koi
 
     console.log(tx.id)
-    return tx.id
+    return { txid: [tx.id], time: createdAt }
   } catch (err) {
     console.log('err-last', err)
     return false

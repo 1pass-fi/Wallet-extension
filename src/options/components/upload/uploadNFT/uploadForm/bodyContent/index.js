@@ -79,10 +79,8 @@ export default ({
     )
   }
 
+  // Congratulation screen
   return (
-    <div className='right-column stage3'>
-      <div className='preview-info'>{title}</div>
-      <div className='preview-info'>{username}</div>
-    </div>
+    <div></div>
   )
 }

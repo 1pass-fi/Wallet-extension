@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 import { trim } from 'lodash'
 
 import CloseIcon from 'img/close-x-icon.svg'
@@ -10,8 +11,10 @@ import BodyContent from './bodyContent'
 import { getFileType, NFT_TYPES } from './utils'
 import './index.css'
 
+import BigCard from '../../bigNFTCard'
 import { UploadContext } from '../../index'
 import { GalleryContext } from 'options/galleryContext'
+import { PATH } from 'koiConstants'
 
 const Tag = ({ tag, stage }) => {
   const { tags, setTags } = useContext(UploadContext)
@@ -26,14 +29,16 @@ const Tag = ({ tag, stage }) => {
   )
 }
 
-export default () => {
+export default ({ stage, setStage }) => {
+  const history = useHistory()
   const {
     file,
+    setFile,
     onClearFile,
     onCloseUploadModal,
   } = useContext(GalleryContext)
-  const { tags, setTags } = useContext(UploadContext)
-  const [stage, setStage] = useState(1)
+  const { tags, setTags, transactionId, time } = useContext(UploadContext)
+  // const [stage, setStage] = useState(1)
   const [title, setTitle] = useState('')
   const [username, setUsername] = useState('')
   const [description, setDescription] = useState('')
@@ -48,69 +53,107 @@ export default () => {
     }
   }
 
-  return (
-    <div className='upload-form'>
-      <Header stage={stage} />
+  const handleRegisterMore = () => {
+    setFile({})
+    setTags([])
+    setTitle('')
+    setUsername('')
+    setDescription('')
+    setStage(1)
+  }
 
-      <div className={stage === 2 ? 'nft-infomation stage2' : 'nft-infomation'}>
-        <div className={ stage === 2 ? 'left-column stage2' : 'left-column'}>
-          <div className='picture'>
-            {fileType == NFT_TYPES.IMAGE && (
-              <img src={url} className='nft-image' />
-            )}
-            {fileType == NFT_TYPES.VIDEO && (
-              <video controls src={url} className='nft-image' />
-            )}
-            {fileType == NFT_TYPES.AUDIO && (
-              <audio controls src={url} className='nft-image' />
-            )}
-            {
-              stage === 2 &&
-                <div className='nft-preview-infomation'>
-                  <div className='preview-info'>{title}</div>
-                  <div className='preview-info'>{username}</div>
-                  <div className='preview-info description'>{description}</div>
-                  <div className='tags stage2'>
+  const handleGoToGallery = () => {
+    history.push('/')
+    setFile({})
+  }
+
+  return (
+    <div>
+      { stage !== 3 ?
+        <div className='upload-form'>
+          <Header stage={stage} />
+          <div className={stage === 2 ? 'nft-infomation stage2' : 'nft-infomation'}>
+            <div className={ stage === 2 ? 'left-column stage2' : 'left-column'}>
+              <div className='picture'>
+                {fileType == NFT_TYPES.IMAGE && (
+                  <img src={url} className='nft-image' />
+                )}
+                {fileType == NFT_TYPES.VIDEO && (
+                  <video controls src={url} className='nft-image' />
+                )}
+                {fileType == NFT_TYPES.AUDIO && (
+                  <audio controls src={url} className='nft-image' />
+                )}
+              </div>
+              {
+                stage === 2 &&
+                  <div className='nft-preview-infomation'>
+                    <div className='preview-info'>{title}</div>
+                    <div className='preview-info'>{username}</div>
+                    <div className='preview-info description'>{description}</div>
+                    <div className='tags stage2'>
+                      {tags.map((tag, index) => <Tag key={index} tag={tag} stage={stage}/>)}
+                    </div>
+                  </div>
+              }
+              {
+                stage === 1 &&
+                  <div className='tags'>
                     {tags.map((tag, index) => <Tag key={index} tag={tag} stage={stage}/>)}
                   </div>
-                </div>
-            }
+              }
+            </div>
+            <BodyContent
+              stage={stage}
+              title={title}
+              setTitle={setTitle}
+              username={username}
+              setUsername={setUsername}
+              description={description}
+              setDescription={setDescription}
+              username={username}
+            />
           </div>
-          {
-            stage === 1 &&
-              <div className='tags'>
-                {tags.map((tag, index) => <Tag key={index} tag={tag} stage={stage}/>)}
-              </div>
-          }
+          <BottomButton
+            stage={stage}
+            setStage={setStage}
+            title={title}
+            description={description}
+            file={file}
+            username={username}
+          />
+          <div className='close-button' onClick={() => {
+            setTags([])
+            onCloseUploadModal()
+          }}>
+            <CloseIcon />
+          </div>
+          <div className='goback-button' onClick={onGoBack}>
+            <GoBackIcon />
+          </div>
+        </div> :
+        <div className='success-screen'>
+          <div className='message'>
+            <div className='title'>Congratulations! Your NFT is ready for action </div>
+            <div className='description'>Share your newly minted media with everyone you know to start earning attention rewards.</div>
+            <div className='btns'>
+              <button onClick={handleRegisterMore} className='btn'>Register More</button>
+              <button onClick={handleGoToGallery} className='btn'>Go to My Gallery</button>
+            </div>
+          </div>
+          <div className='card'>
+            <BigCard
+              txId={transactionId}
+              name={title}
+              imageUrl={url}
+              contentType='image'
+              createdAt={time}
+              tags={tags}
+              koiRockUrl={`${PATH.KOI_ROCK}/${transactionId}`}
+            />
+          </div>
         </div>
-        <BodyContent
-          stage={stage}
-          title={title}
-          setTitle={setTitle}
-          username={username}
-          setUsername={setUsername}
-          description={description}
-          setDescription={setDescription}
-          username={username}
-        />
-      </div>
-      <BottomButton
-        stage={stage}
-        setStage={setStage}
-        title={title}
-        description={description}
-        file={file}
-        username={username}
-      />
-      <div className='close-button' onClick={() => {
-        setTags([])
-        onCloseUploadModal()
-      }}>
-        <CloseIcon />
-      </div>
-      <div className='goback-button' onClick={onGoBack}>
-        <GoBackIcon />
-      </div>
+      }
     </div>
   )
 }
