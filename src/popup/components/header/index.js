@@ -22,7 +22,9 @@ const Header = ({ location, setError, koi }) => {
 
   /* istanbul ignore next */
   const onSettingButtonClick = async () => {
-    const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[STORAGE.KOI_ADDRESS]
+    const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[
+      STORAGE.KOI_ADDRESS
+    ]
     if (address) {
       history.push('/setting')
     } else {
@@ -40,7 +42,11 @@ const Header = ({ location, setError, koi }) => {
 
   return (
     <>
-      <header style={{ marginBottom: location.pathname === '/setting' ? '20px' : '0' }}>
+      <header
+        style={{
+          marginBottom: location.pathname === '/setting' ? '20px' : '0',
+        }}
+      >
         <button className='logo-button' onClick={onLogoButtonClick}>
           <LogoIcon className='logo' />
         </button>
@@ -51,7 +57,7 @@ const Header = ({ location, setError, koi }) => {
           <SettingIcon />
         </button>
       </header>
-      { koi.address && location.pathname !== '/setting' && <NavBar />}
+      {koi.address && location.pathname !== '/setting' && <NavBar />}
     </>
   )
 }

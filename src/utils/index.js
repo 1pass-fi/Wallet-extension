@@ -114,10 +114,12 @@ export const loadMyContent = async (koiObj) => {
             earnedKoi: content.totalReward,
             txId: content.txIdContent,
             imageUrl,
-            galleryUrl: `${PATH.GALLERY}?id=${content.txIdContent}`,
+            galleryUrl: `${PATH.GALLERY}#/details/${content.txIdContent}`,
             koiRockUrl: `${PATH.KOI_ROCK}/${content.txIdContent}`,
             isRegistered: true,
-            contentType: content.contentType
+            contentType: content.contentType,
+            totalViews: content.totalViews,
+            createdAt: content.createdAt
           }
         } else {
           return {
@@ -126,10 +128,12 @@ export const loadMyContent = async (koiObj) => {
             earnedKoi: content.totalReward,
             txId: content.txIdContent,
             imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
-            galleryUrl: `${PATH.GALLERY}?id=${content.txIdContent}`,
+            galleryUrl: `${PATH.GALLERY}#/details/${content.txIdContent}`,
             koiRockUrl: `${PATH.KOI_ROCK}${content.txIdContent}`,
             isRegistered: true,
-            contentType: content.contentType || 'image'
+            contentType: content.contentType || 'image',
+            totalViews: content.totalViews,
+            createdAt: content.createdAt
           }
         }
       } catch (err) {
@@ -201,7 +205,7 @@ export const loadMyActivities = async (koiObj, cursor) => {
 
         if (initStateTag[0]) {
           const initState = JSON.parse(initStateTag[0].value)
-          activityName = `Purchased "${initState.title}"`
+          activityName = `Minted NFT "${initState.title}"`
         }
 
         if (get(activity, 'node.owner.address') !== koiObj.address) {

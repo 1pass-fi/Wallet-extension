@@ -1,0 +1,79 @@
+/* START HEADER */
+.app-header {
+  padding: 0 56px 0 26px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-header .header-left .logo {
+  width: 45px;
+  height: 45px;
+}
+
+.app-header .header-right {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-header .header-right .no-koi {
+  align-items: center;
+  background: #ffffff;
+  border-radius: 4px;
+  border: 1.5px solid #171753;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  font-size: 16px;
+  font-weight: 600;
+  height: 32px;
+  justify-content: center;
+  text-decoration: none;
+  line-height: 18px;
+  width: 156px;
+}
+
+.app-header .header-right .no-koi .get-some {
+  color: #171753;
+}
+
+.app-header .header-right .total-koi {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1.5px solid #171753;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 4px;
+  color: #171753;
+  font-weight: 600;
+  padding: 6px 11px;
+  line-height: 16px;
+  font-size: 16px;
+}
+
+.app-header .header-right .total-koi div {
+  height: 16px;
+}
+
+.app-header .header-right .total-koi .koi-unit {
+  margin-left: 6px;
+  background: #ffffff;
+  width: 16px;
+  height: 16px;
+}
+
+.app-header .header-right .setting-button {
+  border-radius: 50%;
+  height: 28px;
+  width: 28px;
+  display: flex;
+  border: 0;
+  margin-left: 30px;
+  align-items: center;
+  justify-content: center;
+}
+/* END HEADER */

@@ -1,0 +1,80 @@
+/* -- START CARD */
+.nft-card {
+  position: relative;
+  width: 216px;
+  height: 320px;
+  cursor: pointer;
+}
+
+.nft-card .nft-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 190px;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 24px;
+  margin-bottom: 2px;
+}
+
+.nft-card .nft-earned-koi {
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.03em;
+  color: #ffffff;
+}
+
+.nft-card .register-button {
+  display: flex;
+  align-items: center;
+  height: 20px;
+  background: linear-gradient(90deg, #030332 0%, #171753 100%);
+  border: 1px solid #f5f5f5;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
+  color: #ffffff;
+}
+
+.nft-card .register-button .icon {
+  width: 15px;
+}
+
+.nft-card .nft-img {
+  width: 216px;
+  height: 216px;
+  object-fit: contain;
+  background: #020221;
+  -webkit-user-drag: none;
+}
+
+.nft-card .copy-noti {
+  top: 225px;
+  font-size: 16px;
+  line-height: 16px;
+  color: #ffc78f;
+  right: -90px;
+  position: absolute;
+  width: 80px;
+  height: 30px;
+  white-space: nowrap;
+}
+
+.nft-card .share-nft-button {
+  top: 225px;
+  right: 5px;
+  position: absolute;
+  width: 18px;
+  height: 18px;
+}
+
+.nft-card .nft-path {
+  top: 255px;
+  right: 5px;
+  position: absolute;
+  width: 18px;
+  height: 18px;
+}
+/* -- END CARD */
