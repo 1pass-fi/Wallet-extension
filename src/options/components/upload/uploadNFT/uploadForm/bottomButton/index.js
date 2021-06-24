@@ -70,8 +70,8 @@ export default ({ description, setStage, stage, title, file, username }) => {
       <button
         className='create-ntf-button stage2'
         onClick={async () => {
-          // const { txid, time } = await handleUploadNFT()
-          const { txid, time } = await mockUploadNFT()
+          const { txid, time } = await handleUploadNFT()
+          // const { txid, time } = await mockUploadNFT()
           setTransactionId(txid)
           setCreatedAt(time)
           setStage(3)

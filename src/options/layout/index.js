@@ -47,15 +47,6 @@ export default ({ children }) => {
 
   useEffect(() => {
     const getData = async () => {
-      console.log(
-        getShareUrl('twitter', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU')
-      )
-      console.log(
-        getShareUrl('facebook', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU')
-      )
-      console.log(
-        getShareUrl('linkedin', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU')
-      )
       try {
         const storage = await getChromeStorage([
           STORAGE.CONTENT_LIST,
