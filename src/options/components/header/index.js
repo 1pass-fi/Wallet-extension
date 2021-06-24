@@ -1,19 +1,23 @@
 import React from 'react'
+import { useLocation } from 'react-router'
 
-import KoiIcon from 'img/koi-logo.svg'
+import KoiIcon from 'img/finnie-koi-logo-white.svg'
 import KoiUnit from 'img/koi-logo-no-bg.svg'
-import SettingsIcon from 'img/settings-icon.svg'
+import SearchBar from './SearchBar'
 
 import { formatNumber } from '../../utils'
 
 import './index.css'
 
 export default ({ totalKoi, headerRef }) => {
+  const { pathname } = useLocation()
+
   return (
     <header className='app-header' ref={headerRef}>
       <div className='header-left'>
         <KoiIcon className='logo' />
       </div>
+      <div className='header-center'>{pathname == '/' && <SearchBar />}</div>
       <div className='header-right'>
         {totalKoi ? (
           <div className='total-koi'>
@@ -29,9 +33,6 @@ export default ({ totalKoi, headerRef }) => {
             <div className='get-some'>No KOI? Get some</div>
           </a>
         )}
-        <button className='setting-button'>
-          <SettingsIcon className='option setting-icon'></SettingsIcon>
-        </button>
       </div>
     </header>
   )

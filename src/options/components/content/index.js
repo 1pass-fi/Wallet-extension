@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useRef } from 'react'
-import { useHistory } from 'react-router-dom'
 import get from 'lodash/get'
+import includes from 'lodash/includes'
 import find from 'lodash/find'
 import isEqual from 'lodash/isEqual'
 
@@ -13,7 +13,7 @@ import BigCard from './bigNFTCard'
 import './index.css'
 
 export default ({ choosenTxid = '' }) => {
-  const { cardInfos, isDragging } = useContext(GalleryContext)
+  const { cardInfos, isDragging, searchTerm } = useContext(GalleryContext)
 
   useEffect(() => {
     window.scroll({ top: 0, behavior: 'smooth' })
@@ -25,20 +25,19 @@ export default ({ choosenTxid = '' }) => {
     <div className='app-content'>
       {!choosenCard && <div className='title'>Gallery</div>}
       <div className='cards'>
-        {choosenCard && (
-          <BigCard {...choosenCard} />
-        )}
+        {choosenCard && <BigCard {...choosenCard} />}
         <div className='small-cards'>
           {cardInfos.map(
             (cardInfo) =>
-              isEqual(get(cardInfo, 'txId', ''), choosenTxid) || (
+              isEqual(get(cardInfo, 'txId', ''), choosenTxid) ||
+              (includes(get(cardInfo, 'name', ''), searchTerm) && (
                 <Card
                   key={get(cardInfo, 'txId', '')}
                   disabled={isDragging}
                   choosen={choosenTxid}
                   {...cardInfo}
                 />
-              )
+              ))
           )}
         </div>
       </div>
