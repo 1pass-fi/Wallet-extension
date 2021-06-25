@@ -8,10 +8,10 @@
 
 .wallet .fish {
   position: absolute;
-  top: 7px;
-  left: 28px;
-  width: 30.4px;
-  height: 22.04px;
+  top: 0px;
+  left: 30px;
+  width: 40px;
+  height: 40px;
 }
 
 .wallet .wallet-wrapper {
