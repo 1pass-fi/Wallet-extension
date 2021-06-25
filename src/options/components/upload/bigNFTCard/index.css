@@ -1,11 +1,10 @@
-.big-nft-card-wrapper {
+.big-nft-card-wrapper-upload {
   display: flex;
   width: 100%;
-  height: calc(100vh - 170px);
-  padding-top: calc((100vh - 740px) / 2);
+  padding-top: 40px;
 }
 
-.big-nft-card {
+.big-nft-card-upload {
   color: #ffffff;
   display: flex;
   flex-direction: row;
@@ -13,22 +12,22 @@
   width: 100%;
 }
 
-.big-nft-card .nft-preview {
+.big-nft-card-upload .nft-preview {
   width: 470px;
 }
 
-.big-nft-card .nft-img {
+.big-nft-card-upload .nft-img {
   background: #020221;
   height: 470px;
   object-fit: contain;
   width: 470px;
 }
 
-.big-nft-card .info {
+.big-nft-card-upload .info {
   margin-left: 32px;
 }
 
-.big-nft-card .info .nft-name {
+.big-nft-card-upload .info .nft-name {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   display: -webkit-box;
@@ -39,7 +38,7 @@
   overflow: hidden;
 }
 
-.big-nft-card .info .export-nft {
+.big-nft-card-upload .info .export-nft {
   align-items: center;
   display: flex;
   font-size: 16px;
@@ -48,19 +47,19 @@
   line-height: 20px;
 }
 
-.big-nft-card .info .export-nft .arweave-icon {
+.big-nft-card-upload .info .export-nft .arweave-icon {
   height: 24px;
   margin-right: 9px;
   width: 24px;
 }
 
-.big-nft-card .info .export-nft .different-chain {
+.big-nft-card-upload .info .export-nft .different-chain {
   cursor: pointer;
   font-weight: 600;
   text-decoration: underline;
 }
 
-.big-nft-card .info .registered-date {
+.big-nft-card-upload .info .registered-date {
   font-size: 16px;
   font-weight: 500;
   height: 20px;
@@ -68,12 +67,12 @@
   margin-top: 16px;
 }
 
-.big-nft-card .info .external-links {
+.big-nft-card-upload .info .external-links {
   height: 24px;
   margin-top: 6px;
 }
 
-.big-nft-card .info .external-links .external-link {
+.big-nft-card-upload .info .external-links .external-link {
   background: #f5f5f5;
   border-radius: 2px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
@@ -88,11 +87,29 @@
   text-decoration: none;
 }
 
-.big-nft-card .info .external-links .external-link:first-of-type {
+.big-nft-card-upload .info .external-links .external-link-pending {
+  background: #030332;
+  border-radius: 2px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border: 1px solid #ffffff;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  height: 24px;
+  line-height: 20px;
+  padding: 2px 5px;
+  text-decoration: none;
+  width: 140px;
+  margin-right: 29px;
+}
+
+.big-nft-card-upload .info .external-links .external-link:first-of-type {
   margin-right: 24px;
 }
 
-.big-nft-card .info .description {
+.big-nft-card-upload .info .description {
   height: 120px;
   line-height: 20px;
   margin-top: 20px;
@@ -101,13 +118,13 @@
   padding-right: 11px;
 }
 
-.big-nft-card .info .tags {
+.big-nft-card-upload .info .tags {
   display: flex;
   flex-direction: row;
   margin-top: 12px;
 }
 
-.big-nft-card .info .tags .tag-item {
+.big-nft-card-upload .info .tags .tag-item {
   background: #bef0ed;
   border-radius: 24px;
   color: #171753;
@@ -116,7 +133,7 @@
   padding: 2px 14px;
 }
 
-.big-nft-card .info .earned {
+.big-nft-card-upload .info .earned {
   display: flex;
   flex-direction: row;
   height: 32px;
@@ -124,16 +141,16 @@
   margin-top: 21px;
 }
 
-.big-nft-card .info .earned .views {
+.big-nft-card-upload .info .earned .views {
   font-size: 24px;
 }
 
-.big-nft-card .info .earned .koi {
+.big-nft-card-upload .info .earned .koi {
   font-size: 18px;
   margin-left: 33px;
 }
 
-.big-nft-card .info .share-embed {
+.big-nft-card-upload .info .share-embed {
   color: #171753;
   display: flex;
   flex-direction: row;
@@ -143,7 +160,7 @@
   margin-top: 10px;
 }
 
-.big-nft-card .info .share-embed .share-button {
+.big-nft-card-upload .info .share-embed .share-button {
   background: #ffc78f;
   border-radius: 2px;
   border: 0;
@@ -152,7 +169,7 @@
   width: 247px;
 }
 
-.big-nft-card .info .share-embed .embed-button {
+.big-nft-card-upload .info .share-embed .embed-button {
   background: #ffffff;
   border-radius: 2px;
   border: 0;
@@ -162,15 +179,15 @@
   width: 103px;
 }
 
-.big-nft-card .info .social-icons {
+.big-nft-card-upload .info .social-icons {
   display: flex;
   flex-direction: row;
   gap: 50px;
   margin-top: 17px;
+  cursor: pointer;
 }
 
-.big-nft-card .info .social-icons .social-icon {
+.big-nft-card-upload .info .social-icons .social-icon {
   width: 28px;
   height: 28px;
-  cursor: pointer;
 }

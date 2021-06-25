@@ -67,10 +67,18 @@
 }
 
 .app-header .header-right .total-koi .koi-unit {
-  margin-left: 6px;
+  margin-right: 6px;
   background: #ffffff;
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
+}
+
+.app-header .header-right .total-koi .ar-unit {
+  margin-right: 6px;
+  margin-left: 16px;
+  background: #ffffff;
+  width: 24px;
+  height: 24px;
 }
 
 .app-header .header-right .setting-button {

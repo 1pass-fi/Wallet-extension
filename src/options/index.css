@@ -6,6 +6,31 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: linear-gradient(90deg, #030332 0%, #171753 100%);
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(165, 165, 165); 
+  border-radius: 10px;
+  border: 0px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #BEF0ED;
+  border-radius: 10px;
+  border: 0px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }
 
 code {

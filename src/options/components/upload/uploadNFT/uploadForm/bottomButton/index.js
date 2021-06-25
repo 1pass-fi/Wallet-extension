@@ -8,12 +8,14 @@ const arweave = Arweave.init({
   protocol: 'https',
   port: 443,
 })
+import { loadNFTCost } from 'utils'
 import { GalleryContext } from '../../../../../galleryContext'
+import { UploadContext } from '../../../index'
 import './index.css'
 
 export default ({ description, setStage, stage, title, file, username }) => {
-  const { setIsLoading, address, wallet } = useContext(GalleryContext)
-  console.log({ setIsLoading, address, wallet })
+  const { setIsLoading, address, wallet, setFile } = useContext(GalleryContext)
+  const { tags, setTransactionId, setCreatedAt } = useContext(UploadContext)
 
   const handleUploadNFT = async () => {
     setIsLoading(true)
@@ -32,7 +34,8 @@ export default ({ description, setStage, stage, title, file, username }) => {
         url,
         null,
         wallet,
-        file
+        file,
+        tags
       )
       console.log({ result })
       setIsLoading(false)
@@ -40,6 +43,13 @@ export default ({ description, setStage, stage, title, file, username }) => {
     } catch (err) {
       console.log(err.message)
       setIsLoading(false)
+    }
+  }
+
+  const mockUploadNFT = async () => {
+    return {
+      txid: 'txid',
+      time: 1624524443
     }
   }
 
@@ -58,9 +68,12 @@ export default ({ description, setStage, stage, title, file, username }) => {
   if (stage == 2) {
     return (
       <button
-        className='create-ntf-button'
+        className='create-ntf-button stage2'
         onClick={async () => {
-          await handleUploadNFT()
+          const { txid, time } = await handleUploadNFT()
+          // const { txid, time } = await mockUploadNFT()
+          setTransactionId(txid)
+          setCreatedAt(time)
           setStage(3)
         }}
       >
@@ -71,7 +84,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
 
   return (
     <CopyToClipboard text='https://koi.registerlink.example'>
-      <button className='create-ntf-button'>Copy Link to Share</button>
+      <button className={'create-ntf-button'}>Copy Link to Share</button>
     </CopyToClipboard>
   )
 }

@@ -2,14 +2,15 @@ import React from 'react'
 import { useLocation } from 'react-router'
 
 import KoiIcon from 'img/finnie-koi-logo-white.svg'
-import KoiUnit from 'img/koi-logo-no-bg.svg'
+import ArUnit from 'img/ar-token.svg'
+import KoiUnit from 'img/koi-token.svg'
 import SearchBar from './SearchBar'
 
 import { formatNumber } from '../../utils'
 
 import './index.css'
 
-export default ({ totalKoi, headerRef }) => {
+export default ({ totalKoi, totalAr, headerRef }) => {
   const { pathname } = useLocation()
 
   return (
@@ -21,8 +22,10 @@ export default ({ totalKoi, headerRef }) => {
       <div className='header-right'>
         {totalKoi ? (
           <div className='total-koi'>
-            <div>{formatNumber(totalKoi)}</div>
             <KoiUnit className='koi-unit' />
+            <div>{formatNumber(totalKoi)}</div>
+            <ArUnit className='ar-unit' />
+            <div>{totalAr}</div>
           </div>
         ) : (
           <a

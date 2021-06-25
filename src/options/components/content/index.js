@@ -6,7 +6,7 @@ import isEqual from 'lodash/isEqual'
 
 import { GalleryContext } from 'options/galleryContext'
 
-import UploadNFT from './uploadNFT'
+import UploadNFT from '../../components/upload'
 import Card from './nftCard'
 import BigCard from './bigNFTCard'
 
@@ -24,7 +24,6 @@ export default ({ choosenTxid = '' }) => {
   return (
     <div className='app-content'>
       {!choosenCard && <div className='title'>Gallery</div>}
-      <UploadNFT />
       <div className='cards'>
         {choosenCard && <BigCard {...choosenCard} />}
         <div className='small-cards'>

@@ -1,6 +1,6 @@
 /* START FOOTER */
 .footer-wrapper {
-  background: linear-gradient(90deg, #030332 0%, #171753 100%);
+  background: #211C52;
   position: fixed;
   bottom: 0;
   height: 56px;
@@ -8,7 +8,8 @@
   display: flex;
   margin: auto;
   width: 100%;
-  padding-top: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .footer-content {

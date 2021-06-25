@@ -39,6 +39,19 @@
   .nft-infomation
   .right-column.stage1
   .field
+  .field-label-checkbox {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  padding-left: 7px;
+}
+
+.uploadNFT-wrapper
+  .uploadNFT
+  .upload-form
+  .nft-infomation
+  .right-column.stage1
+  .field
   .field-input {
   border: 2px solid #f5f5f5;
   box-sizing: border-box;
@@ -47,6 +60,16 @@
   width: 422px;
   color: #ffffff;
   font-size: 16px;
+}
+
+.uploadNFT-wrapper
+  .uploadNFT
+  .upload-form
+  .nft-infomation
+  .right-column.stage1
+  .field
+  .field-checkbox {
+  margin-left: 129px;
 }
 
 .uploadNFT-wrapper
@@ -66,7 +89,7 @@
   .right-column.stage1
   .field
   textarea.field-input {
-  height: 113px;
+  height: 88px;
   resize: none;
 }
 /* UPLOAD FORM STAGE 1 END */
@@ -79,21 +102,8 @@
   .right-column.stage2 {
   display: flex;
   align-items: center;
-  margin-left: 19px;
-}
-
-.uploadNFT-wrapper
-  .uploadNFT
-  .upload-form
-  .nft-infomation
-  .right-column.stage2
-  .ntf-preview-infomation
-  .preview-info {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 16px;
-  margin-bottom: 12px;
-  width: 231px;
+  justify-content: center;
+  width: 269px;
 }
 
 .uploadNFT-wrapper
@@ -115,7 +125,6 @@
   font-weight: 500;
   height: 106px;
   line-height: 18px;
-  margin-left: 101px;
   width: 187px;
 }
 
@@ -138,17 +147,5 @@
   width: 231px;
   margin-left: 19px;
   padding-top: 30px;
-}
-
-.uploadNFT-wrapper
-  .uploadNFT
-  .upload-form
-  .nft-infomation
-  .right-column.stage3
-  .preview-info {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 16px;
-  margin-bottom: 12px;
 }
 /* UPLOAD FORM STAGE 3 END */

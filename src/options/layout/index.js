@@ -1,5 +1,6 @@
 import '@babel/polyfill'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { history, useHistory } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
@@ -26,9 +27,12 @@ import { getShareUrl, createShareWindow } from 'options/helpers'
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
 export default ({ children }) => {
+  const history = useHistory()
+
   const [isDragging, setIsDragging] = useState(false)
   const [cardInfos, setCardInfos] = useState([])
   const [totalKoi, setTotalKoi] = useState(0)
+  const [totalAr, setTotalAr] = useState(0)
   const [file, setFile] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [address, setAddress] = useState(null)
@@ -44,20 +48,12 @@ export default ({ children }) => {
 
   useEffect(() => {
     const getData = async () => {
-      console.log(
-        getShareUrl('twitter', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU')
-      )
-      console.log(
-        getShareUrl('facebook', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU')
-      )
-      console.log(
-        getShareUrl('linkedin', 'Y6sn84Cwl2rEhN2ukXxpCtvERAYJ3mrDx8WmbNjJLZU')
-      )
       try {
         const storage = await getChromeStorage([
           STORAGE.CONTENT_LIST,
           STORAGE.KOI_BALANCE,
           STORAGE.KOI_ADDRESS,
+          STORAGE.AR_BALANCE
         ])
         if (storage[STORAGE.CONTENT_LIST]) {
           setCardInfos(storage[STORAGE.CONTENT_LIST])
@@ -73,6 +69,7 @@ export default ({ children }) => {
         })
         if (storage[STORAGE.KOI_BALANCE]) {
           setTotalKoi(storage[STORAGE.KOI_BALANCE])
+          setTotalAr(storage[STORAGE.AR_BALANCE])
         }
         if (storage[STORAGE.KOI_ADDRESS]) {
           setAddress(storage[STORAGE.KOI_ADDRESS])
@@ -108,6 +105,7 @@ export default ({ children }) => {
 
   useEffect(() => {
     setFile(acceptedFiles ? acceptedFiles[0] : {})
+    if (!isEmpty(acceptedFiles)) history.push('/create')
   }, [acceptedFiles])
 
   const modifyDraging = useCallback(
@@ -150,6 +148,7 @@ export default ({ children }) => {
         address,
         cardInfos,
         file,
+        setFile,
         isDragging,
         onClearFile,
         onCloseUploadModal,
@@ -184,7 +183,7 @@ export default ({ children }) => {
         {isDragging && isEmpty(file) && (
           <input name='fileField' {...getInputProps()} />
         )}
-        <Header totalKoi={totalKoi} headerRef={headerRef} />
+        <Header totalKoi={totalKoi} totalAr={totalAr} headerRef={headerRef} />
         {children}
         {!isDragging && <Footer showDropzone={showDropzone} />}
         <Navbar />

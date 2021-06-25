@@ -29,6 +29,16 @@
   padding-top: 40px;
 }
 
+.share-nft.social-icon.container .icon {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.share-nft.text-box {
+  position: relative;
+}
+
 .share-nft.text-box.title {
   font-size: 16px;
   font-weight: 600;
@@ -65,15 +75,15 @@
   font-weight: 500;
   line-height: 20px;
   padding: 0;
+  cursor: pointer;
 }
 
-
 .copy-noti {
-  top: 225px;
   font-size: 16px;
   line-height: 16px;
   color: #ffc78f;
-  right: -90px;
+  right: 0px;
+  top: 0px;
   position: absolute;
   width: 80px;
   height: 30px;

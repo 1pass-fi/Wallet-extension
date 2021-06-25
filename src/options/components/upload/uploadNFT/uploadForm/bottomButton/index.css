@@ -12,4 +12,8 @@
   margin-top: 24px;
   cursor: pointer;
 }
+
+.uploadNFT-wrapper .uploadNFT .upload-form .create-ntf-button.stage2 {
+  margin-top: 94px;
+}
 /* CREATE NFT BUTTON END */

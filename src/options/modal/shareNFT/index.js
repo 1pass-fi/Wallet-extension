@@ -7,7 +7,7 @@ import './index.css'
 import TwitterIcon from 'img/social-icons/twitter-icon.svg'
 import FacebookIcon from 'img/social/facebook-icon.svg'
 import EmailIcon from 'img/social/email-icon.svg'
-import LinkedInIcon from 'img/social/linkedin-icon.svg'
+import LinkedInIcon from 'img/social-icons/linkedin-icon.svg'
 
 import { createShareWindow } from '../../helpers'
 
@@ -48,9 +48,9 @@ const ShareNFT = ({ txid }) => {
         <TextBox txid={txid} text={embedUrl} url={embedUrl} title='Embed:' buttonText='get embed link'/>
       </div>
       <div className='share-nft social-icon container'>
-        <div onClick={() => { createShareWindow('twitter', txid) }}><TwitterIcon /></div>
-        <FacebookIcon onClick={() => { createShareWindow('facebook', txid) }}/>
-        <LinkedInIcon onClick={() => { createShareWindow('linkedin', txid) }}/>
+        <div className='icon'><TwitterIcon onClick={() => { createShareWindow('twitter', txid) }}/></div>
+        <div className='icon'><FacebookIcon onClick={() => { createShareWindow('facebook', txid) }}/></div>
+        <div className='icon'><LinkedInIcon onClick={() => { createShareWindow('linkedin', txid) }}/></div>
         <a href={`mailto:?subject=Check out my NFT, now stored on Koi— forever!&body=https://koi.rocks/content-detail/${txid}`} title="Share by Email">
           <EmailIcon />
         </a>
