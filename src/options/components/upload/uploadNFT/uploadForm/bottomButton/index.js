@@ -8,6 +8,7 @@ const arweave = Arweave.init({
   protocol: 'https',
   port: 443,
 })
+import { loadNFTCost } from 'utils'
 import { GalleryContext } from '../../../../../galleryContext'
 import { UploadContext } from '../../../index'
 import './index.css'
@@ -15,7 +16,6 @@ import './index.css'
 export default ({ description, setStage, stage, title, file, username }) => {
   const { setIsLoading, address, wallet, setFile } = useContext(GalleryContext)
   const { tags, setTransactionId, setCreatedAt } = useContext(UploadContext)
-  console.log({ setIsLoading, address, wallet })
 
   const handleUploadNFT = async () => {
     setIsLoading(true)

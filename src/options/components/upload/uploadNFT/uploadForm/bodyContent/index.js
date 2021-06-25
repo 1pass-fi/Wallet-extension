@@ -1,9 +1,13 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { trim } from 'lodash'
 
 import Checkbox from 'popup/components/shared/checkbox'
 import './index.css'
 
+import { loadNFTCost } from 'utils'
+
+import { formatNumber } from 'options/utils'
+import { GalleryContext } from 'options/galleryContext'
 import { UploadContext } from '../../../index'
 
 export default ({
@@ -16,6 +20,8 @@ export default ({
   setUsername,
 }) => {
   const { setTags, tags } = useContext(UploadContext)
+  const { file } = useContext(GalleryContext)
+  const [price, setPrice] = useState(0)
 
   const addTag = (e) => {
     const value = trim(e.target.value)
@@ -24,6 +30,15 @@ export default ({
       e.target.value = ''
     }
   }
+
+  useEffect(() => {
+    const getPrice = async () => {
+      const arPrice = await loadNFTCost(file.size)
+      setPrice(arPrice)
+    }
+
+    getPrice()
+  }, [])
 
   if (stage == 1) {
     return (
@@ -72,7 +87,7 @@ export default ({
       <div className='right-column stage2'>
         <div className='estimate-cost'>
           <div className='estimate-cost-title'>Estimated Costs</div>
-          <div className='estimate-ar'>0.0002 AR</div>
+          <div className='estimate-ar'>{formatNumber(price, 6)} AR</div>
           <div className='estimate-koi'>1.00 KOI</div>
         </div>
       </div>

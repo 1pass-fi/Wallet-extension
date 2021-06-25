@@ -554,6 +554,11 @@ export const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', i
   }
 }
 
+export const loadNFTCost = async (size, address) => {
+  const price = await arweave.transactions.getPrice(size, address)
+  return price / 1000000000000
+}
+
 export const utils = {
   loadWallet,
   setChromeStorage,
