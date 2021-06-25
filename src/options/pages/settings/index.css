@@ -1,0 +1,95 @@
+.settings-page-wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 140px);
+}
+
+.settings-page {
+  color: #ffffff;
+  width: 760px;
+}
+
+.settings-page .top-section {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 140px;
+}
+
+.settings-page .top-section .settings-icon {
+  height: 57px;
+  width: 57px;
+}
+
+.settings-page .top-section .title {
+  font-size: 24px;
+  height: 32px;
+  line-height: 32px;
+  margin-top: 15px;
+}
+
+.settings-page .top-section .description {
+  font-size: 18px;
+  height: 32px;
+  line-height: 32px;
+  margin-top: 3px;
+}
+
+.settings-page .content-section {
+  margin-top: 20px;
+}
+
+.settings-page .content-section .description {
+  font-size: 16px;
+  height: 64px;
+  line-height: 32px;
+}
+
+.settings-page .content-section .specs .spec-item {
+  align-items: center;
+  display: flex;
+  margin-top: 7px;
+}
+
+.settings-page .content-section .specs .spec-item .number {
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid #49ce8b;
+  box-sizing: border-box;
+  display: flex;
+  font-size: 14px;
+  height: 23px;
+  justify-content: center;
+  width: 23px;
+}
+
+.settings-page .content-section .specs .spec-item .text {
+  font-size: 16px;
+  line-height: 32px;
+  margin-left: 24px;
+}
+
+.settings-page .bottom-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 31px;
+}
+
+.settings-page .bottom-section .reward-box {
+  border-radius: 2px;
+  border: 2px solid #ffffff;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  height: 92px;
+  justify-content: space-between;
+  padding: 13px 22px 15px 40px;
+  width: 578px;
+}
+
+.settings-page .bottom-section .reward-box .reward-text {
+  font-size: 18px;
+  line-height: 32px;
+  width: 438px;
+}
