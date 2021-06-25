@@ -150,6 +150,7 @@ export default ({ stage, setStage }) => {
               createdAt={createdAt}
               tags={tags}
               koiRockUrl={`${PATH.KOI_ROCK}/${transactionId}`}
+              description={description}
             />
           </div>
         </div>

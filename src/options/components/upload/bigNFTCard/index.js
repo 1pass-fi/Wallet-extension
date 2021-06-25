@@ -1,12 +1,6 @@
 import React, {
-  useState,
   useContext,
-  forwardRef,
-  useImperativeHandle,
-  useRef,
-  useEffect,
 } from 'react'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
 import moment from 'moment'
 
 import ArweaveIcon from 'img/arweave-icon.svg'
@@ -29,19 +23,19 @@ export default ({
   contentType,
   createdAt,
   tags: tagss,
+  description: aDescription
 }) => {
-  const { setShowExportModal, setShowShareModal, setFile } = useContext(GalleryContext)
+  const { setShowExportModal, setShowShareModal } = useContext(GalleryContext)
 
   const { registeredDate, description, tags } = {
     registeredDate: moment(createdAt * 1000).format('MMMM Do, YYYY'),
-    description:
-      'It is a long established fact that a reader will long established fact that a reader will long established fact that a reader will It is a long established fact that a reader will It is a long established fact that a reader willIt is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using It is a long established fact that a reader will long established fact that a reader will long established fact that a reader will It is a long established fact that a reader will It is a long established fact that a reader willIt is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using',
+    description: aDescription,
     tags: tagss
   }
 
   return (
     <div className='big-nft-card-wrapper-upload'>
-      <div className='big-nft-card'>
+      <div className='big-nft-card-upload'>
         <div className='nft-preview'>
           {contentType.includes('image') ? (
             <img src={imageUrl} className='nft-img' />

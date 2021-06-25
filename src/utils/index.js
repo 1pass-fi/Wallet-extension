@@ -119,7 +119,8 @@ export const loadMyContent = async (koiObj) => {
             isRegistered: true,
             contentType: content.contentType,
             totalViews: content.totalViews,
-            createdAt: content.createdAt
+            createdAt: content.createdAt,
+            description: content.description
           }
         } else {
           return {
@@ -133,7 +134,8 @@ export const loadMyContent = async (koiObj) => {
             isRegistered: true,
             contentType: content.contentType || 'image',
             totalViews: content.totalViews,
-            createdAt: content.createdAt
+            createdAt: content.createdAt,
+            description: content.description
           }
         }
       } catch (err) {
