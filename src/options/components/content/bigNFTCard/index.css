@@ -101,6 +101,18 @@
   padding-right: 11px;
 }
 
+.big-nft-card .info .description::-webkit-scrollbar {
+  width: 3px;
+}
+
+.big-nft-card .info .description::-webkit-scrollbar-track {
+  background: #888;
+}
+
+.big-nft-card .info .description::-webkit-scrollbar-thumb {
+  background: #f1f1f1;
+}
+
 .big-nft-card .info .tags {
   display: flex;
   flex-direction: row;

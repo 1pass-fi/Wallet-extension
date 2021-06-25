@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useRef } from 'react'
 import get from 'lodash/get'
 import includes from 'lodash/includes'
 import find from 'lodash/find'
+import toLower from 'lodash/toLower'
 import isEqual from 'lodash/isEqual'
 
 import { GalleryContext } from 'options/galleryContext'
@@ -31,7 +32,10 @@ export default ({ choosenTxid = '' }) => {
           {cardInfos.map(
             (cardInfo) =>
               isEqual(get(cardInfo, 'txId', ''), choosenTxid) ||
-              (includes(get(cardInfo, 'name', ''), searchTerm) && (
+              (includes(
+                toLower(get(cardInfo, 'name', '')),
+                toLower(searchTerm)
+              ) && (
                 <Card
                   key={get(cardInfo, 'txId', '')}
                   disabled={isDragging}
