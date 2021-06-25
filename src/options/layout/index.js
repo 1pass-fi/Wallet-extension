@@ -21,6 +21,7 @@ import { GalleryContext } from 'options/galleryContext'
 
 import ShareNFT from 'options/modal/shareNFT'
 import ExportNFT from 'options/modal/exportNFT'
+import Welcome from 'options/modal/welcomeScreen'
 
 import { getShareUrl, createShareWindow } from 'options/helpers'
 
@@ -139,6 +140,7 @@ export default ({ children }) => {
     txid: null,
   })
   const [showExportModal, setShowExportModal] = useState(false)
+  const [showWelcome, setShowWelcome] = useState(true)
 
   return (
     <GalleryContext.Provider
@@ -162,6 +164,13 @@ export default ({ children }) => {
         {...getRootProps({ className: 'app dropzone' })}
         onDragOver={() => modifyDraging(true)}
         onDragLeave={() => modifyDraging(false)}
+        onClick={(e) => {
+          if (e.target.className === 'modal-container') {
+            setShowShareModal(false)
+            setShowExportModal(false)
+            setShowWelcome(false)
+          }
+        }}
       >
         {showShareModal.show && (
           <ShareNFT
@@ -178,6 +187,14 @@ export default ({ children }) => {
             }}
           />
         )}
+        {showWelcome && (
+          <Welcome 
+            onClose={() => {
+              setShowWelcome(false)
+            }}
+          />
+        )
+        }
 
         {isLoading && <Loading />}
         {isDragging && isEmpty(file) && (

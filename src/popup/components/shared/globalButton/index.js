@@ -15,7 +15,7 @@ const GlobalButton = ({ onClick, type = 'send', currency=''}) => {
             {type === 'lock' && <BackgroundLockIcon />}
           </div>
           <div className='global-button-label'>
-            {type === 'send' && `Send ${currency}`}
+            {type === 'send' && `Send tokens`}
             {type === 'lock' && 'Lock Koi Wallet'}
           </div>
         </div>
