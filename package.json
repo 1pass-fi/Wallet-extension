@@ -1,7 +1,7 @@
 {
-    "name": "react-extension-boilerplate",
-    "version": "1.0.0",
-    "description": "Modern React boilerplate for Firefox and Chrome extensions",
+    "name": "Finnie",
+    "version": "0.1.0",
+    "description": "Your companion forever.",
     "scripts": {
         "test": "jest --coverage",
         "start:chrome": "npm run chrome-launch",
