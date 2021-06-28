@@ -19,7 +19,7 @@ export default ({
   setTitle,
   setUsername,
 }) => {
-  const { setTags, tags } = useContext(UploadContext)
+  const { setTags, tags, isFriendCodeValid } = useContext(UploadContext)
   const { file } = useContext(GalleryContext)
   const [price, setPrice] = useState(0)
 
@@ -60,8 +60,12 @@ export default ({
           ></input>
         </div>
         <div className='field'>
-          <div hidden={true} className='field-checkbox'><Checkbox /></div>
-          <label hidden={true} className='field-label-checkbox'>Save my username for future NFTs</label>
+          <div hidden={true} className='field-checkbox'>
+            <Checkbox />
+          </div>
+          <label hidden={true} className='field-label-checkbox'>
+            Save my username for future NFTs
+          </label>
         </div>
         <div className='field'>
           <label className='field-label'>Description</label>
@@ -73,10 +77,7 @@ export default ({
         </div>
         <div className='field'>
           <label className='field-label'>Tags</label>
-          <input
-            className='field-input'
-            onKeyUp={addTag}
-          ></input>
+          <input className='field-input' onKeyUp={addTag}></input>
         </div>
       </div>
     )
@@ -88,14 +89,21 @@ export default ({
         <div className='estimate-cost'>
           <div className='estimate-cost-title'>Estimated Costs</div>
           <div className='estimate-ar'>{formatNumber(price, 6)} AR</div>
-          <div className='estimate-koi'>1.00 KOI</div>
+          <div className='estimate-koi'>
+            <span
+              className={`koi-consumed ${
+                isFriendCodeValid ? 'ignore-consumed' : ''
+              }`}
+            >
+              1.00 KOI
+            </span>
+            {isFriendCodeValid && <span className='koi-free'>Free!</span>}
+          </div>
         </div>
       </div>
     )
   }
 
   // Congratulation screen
-  return (
-    <div></div>
-  )
+  return <div></div>
 }
