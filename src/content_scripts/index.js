@@ -150,9 +150,10 @@ window.addEventListener('message', async function (event) {
     arweaveScript.src = 'https://unpkg.com/arweave/bundles/web.bundle.js'
 
     document.documentElement.appendChild(arweaveScript)
-    setTimeout(() => {
-      document.documentElement.appendChild(script)
-    }, 2000)
+    document.documentElement.appendChild(script)
+    // setTimeout(() => {
+      
+    // }, 2000)
   }
 
   inject(script)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 
 import HomeIcon from 'img/navbar/home.svg'
 import CollectionIcon from 'img/navbar/collection.svg'
@@ -10,7 +10,10 @@ import './index.css'
 import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 
+import { GalleryContext } from 'options/galleryContext'
+
 export default () => {
+  const { affiliateCode } = useContext(GalleryContext)
   const { pathname } = useLocation()
 
   return (
@@ -43,7 +46,7 @@ export default () => {
             }`}
           />
         </Link>
-        <div className='address'>ABCD-123</div>
+        <div className='address'>{`${affiliateCode && affiliateCode.slice(0,5)}...`}</div>
       </div>
     </div>
   )

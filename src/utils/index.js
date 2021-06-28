@@ -559,6 +559,82 @@ export const loadNFTCost = async (size, address) => {
   return price / 1000000000000
 }
 
+export const getAffiliateCode = async (koi) => {
+  try {
+    const signedPayload = await koi.signPayload({ data: { address: koi.address } })
+    const { data } = await axios({
+      method: 'POST',
+      url: 'https://koi.rocks:8888/api/v1/registerAffiliate',
+      data: {
+        address: koi.address,
+        signature: signedPayload.signature,
+        publicKey: signedPayload.owner
+      }
+    })
+
+    return get(data, 'data.affiliateCode')
+  } catch (err) {
+    throw new Error('Cannot get affiliateCode')
+  }
+}
+
+export const claimReward = async (koi) => {
+  try {
+    const signedPayload = await koi.signPayload({ data: { address: koi.address } })
+    const { data } = await axios({
+      method: 'POST',
+      url: 'https://koi.rocks:8888/api/v1/cliamReward',
+      data: {
+        address: koi.address,
+        signature: signedPayload.signature,
+        publicKey: signedPayload.owner
+      }
+    })
+    return data
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
+export const getRegistrationReward = async (koi) => {
+  try {
+    const signedPayload = await koi.signPayload({ data: { address: koi.address }})
+    const { data } = await axios({
+      method: 'POST',
+      url: 'https://koi.rocks:8888/api/v1/freeRegistrationReward',
+      data: {
+        address: koi.address,
+        signature: signedPayload.signature,
+        publicKey: signedPayload.owner
+      }
+    })
+
+    return data
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
+export const submitInviteCode = async (koi, code) => {
+  try {
+    const signedPayload = await koi.signPayload({ data: { address: koi.address, code } })
+    const { data } = await axios({
+      method: 'POST',
+      url: 'https://koi.rocks:8888/api/v1/submitCode',
+      data: {
+        address: koi.address,
+        code,
+        signature: signedPayload.signature,
+        publicKey: signedPayload.owner
+      }
+    })
+
+    return data
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
 export const utils = {
   loadWallet,
   setChromeStorage,

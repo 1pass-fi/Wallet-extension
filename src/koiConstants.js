@@ -130,7 +130,8 @@ export const STORAGE = {
   KOI_PHRASE: 'koiPhrase',
   PENDING_TRANSACTION: 'pendingTransactions',
   ACCOUNT_NAME: 'accountName',
-  PRICE: 'PRICE'
+  PRICE: 'PRICE',
+  AFFILIATE_CODE: 'AFFILIATE_CODE'
 }
 
 export const REQUEST = {

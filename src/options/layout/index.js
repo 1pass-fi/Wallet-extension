@@ -7,7 +7,7 @@ import throttle from 'lodash/throttle'
 import isArray from 'lodash/isArray'
 
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
-import { getChromeStorage, setChromeStorage } from 'utils'
+import { getAffiliateCode, getChromeStorage, setChromeStorage } from 'utils'
 import { MESSAGES, STORAGE, PORTS } from 'koiConstants'
 import { CreateEventHandler } from 'popup/actions/backgroundConnect'
 
@@ -24,6 +24,7 @@ import ExportNFT from 'options/modal/exportNFT'
 import Welcome from 'options/modal/welcomeScreen'
 
 import { getShareUrl, createShareWindow } from 'options/helpers'
+import { koi } from 'background'
 
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
@@ -40,6 +41,7 @@ export default ({ children }) => {
   const [wallet, setWallet] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const headerRef = useRef(null)
+  const [affiliateCode, setAffiliateCode] = useState(null)
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
@@ -54,8 +56,12 @@ export default ({ children }) => {
           STORAGE.CONTENT_LIST,
           STORAGE.KOI_BALANCE,
           STORAGE.KOI_ADDRESS,
-          STORAGE.AR_BALANCE
+          STORAGE.AR_BALANCE,
+          STORAGE.AFFILIATE_CODE
         ])
+        if (storage[STORAGE.AFFILIATE_CODE]) {
+          setAffiliateCode(storage[STORAGE.AFFILIATE_CODE])
+        }
         if (storage[STORAGE.CONTENT_LIST]) {
           setCardInfos(storage[STORAGE.CONTENT_LIST])
         } else {
@@ -95,6 +101,15 @@ export default ({ children }) => {
       MESSAGES.GET_WALLET_SUCCESS,
       async (response) => {
         const { key } = response.data
+        const storage = await getChromeStorage([
+          STORAGE.AFFILIATE_CODE
+        ])
+        if (!storage[STORAGE.AFFILIATE_CODE]) {
+          koi.wallet = key
+          await koi.getWalletAddress()
+          const code = await getAffiliateCode(koi)
+          setAffiliateCode(code)
+        }
         setWallet(key)
       }
     )
@@ -158,6 +173,7 @@ export default ({ children }) => {
         setShowExportModal,
         setShowShareModal,
         wallet,
+        affiliateCode
       }}
     >
       <div
