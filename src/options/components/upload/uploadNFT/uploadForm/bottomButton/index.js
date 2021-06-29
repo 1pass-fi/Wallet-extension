@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import isEmpty from 'lodash/isEmpty'
 
@@ -15,7 +15,14 @@ import './index.css'
 
 export default ({ description, setStage, stage, title, file, username }) => {
   const { setIsLoading, address, wallet, setFile } = useContext(GalleryContext)
-  const { tags, setTransactionId, setCreatedAt } = useContext(UploadContext)
+  const {
+    tags,
+    setTransactionId,
+    setCreatedAt,
+    isFriendCodeValid,
+    setIsFriendCodeValid,
+  } = useContext(UploadContext)
+  const [friendCode, setFriendCode] = useState('')
 
   const handleUploadNFT = async () => {
     setIsLoading(true)
@@ -49,7 +56,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
   const mockUploadNFT = async () => {
     return {
       txid: 'txid',
-      time: 1624524443
+      time: 1624524443,
     }
   }
 
@@ -66,19 +73,51 @@ export default ({ description, setStage, stage, title, file, username }) => {
   }
 
   if (stage == 2) {
+    const handleUploadStage2 = async () => {
+      const { txid, time } = await handleUploadNFT()
+      // const { txid, time } = await mockUploadNFT()
+      setTransactionId(txid)
+      setCreatedAt(time)
+      setStage(3)
+    }
+
+    const checkFriendCode = () => {
+      // Check friend code
+      setIsFriendCodeValid(true)
+    }
+
     return (
-      <button
-        className='create-ntf-button stage2'
-        onClick={async () => {
-          const { txid, time } = await handleUploadNFT()
-          // const { txid, time } = await mockUploadNFT()
-          setTransactionId(txid)
-          setCreatedAt(time)
-          setStage(3)
-        }}
-      >
-        Confirm Registration
-      </button>
+      <div className='confirmation-bottom-button'>
+        <div className='friends-referal'>
+          <div className='referal-title'>Friend Referral Code</div>
+          <div className='referal-description'>
+            Skip the KOII cost with a referral code
+          </div>
+          {isFriendCodeValid ? (
+            <div className='success-noti'>Success!</div>
+          ) : (
+            <div className='fill-code'>
+              <input
+                value={friendCode}
+                onChange={(e) => setFriendCode(e.target.value)}
+                className='friend-code-input'
+              />
+              <div
+                className='submit-friend-code-button'
+                onClick={checkFriendCode}
+              >
+                Submit
+              </div>
+            </div>
+          )}
+        </div>
+        <button
+          className='create-ntf-button stage2'
+          onClick={handleUploadStage2}
+        >
+          Confirm Registration
+        </button>
+      </div>
     )
   }
 
