@@ -136,6 +136,28 @@
   .estimate-cost:first-child {
   font-weight: 600;
 }
+
+.uploadNFT-wrapper
+  .uploadNFT
+  .upload-form
+  .nft-infomation
+  .right-column.stage2
+  .estimate-cost
+  .koi-consumed.ignore-consumed {
+  text-decoration: line-through;
+  text-decoration-color: #ffa54b;
+}
+
+.uploadNFT-wrapper
+  .uploadNFT
+  .upload-form
+  .nft-infomation
+  .right-column.stage2
+  .estimate-cost
+  .koi-free {
+  color: #ffc78f;
+  margin-left: 8px;
+}
 /* UPLOAD FORM STAGE 2 END */
 
 /* UPLOAD FORM STAGE 3 START */
