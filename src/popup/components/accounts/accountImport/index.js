@@ -63,7 +63,7 @@ export default () => {
           SvgImage: <PlusIcon className="card-icon" />,
           title: 'Get a new wallet',
           description: 'Start from the beginning.',
-          path: (hasPendingRequest ? 'account/import/pharse' : '#'),
+          path: (hasPendingRequest ? '/account/create' : '#'),
           onClick: () => { !hasPendingRequest && handleOnClick('/popup.html?page=create-wallet')}
         }
       ])

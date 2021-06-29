@@ -62,7 +62,7 @@ const WalletInfo = (({
               accountAddress.length - 4
             )}`}</div>
             <div onClick={() => setNotification(NOTIFICATION.COPIED)}>
-              <CopyToClipboard text={accountName}>
+              <CopyToClipboard text={accountAddress}>
                 <div className="icon">
                   <CopyIcon/>
                 </div>
