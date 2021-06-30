@@ -11,10 +11,12 @@ const arweave = Arweave.init({
 import { loadNFTCost } from 'utils'
 import { GalleryContext } from '../../../../../galleryContext'
 import { UploadContext } from '../../../index'
+import { submitInviteCode } from 'utils'
+import { koi } from 'background'
 import './index.css'
 
 export default ({ description, setStage, stage, title, file, username }) => {
-  const { setIsLoading, address, wallet, setFile } = useContext(GalleryContext)
+  const { setIsLoading, address, wallet, setFile, setNotification, setError } = useContext(GalleryContext)
   const {
     tags,
     setTransactionId,
@@ -74,16 +76,37 @@ export default ({ description, setStage, stage, title, file, username }) => {
 
   if (stage == 2) {
     const handleUploadStage2 = async () => {
-      const { txid, time } = await handleUploadNFT()
-      // const { txid, time } = await mockUploadNFT()
-      setTransactionId(txid)
-      setCreatedAt(time)
-      setStage(3)
+      try {
+        const { txid, time } = await handleUploadNFT()
+        // const { txid, time } = await mockUploadNFT()
+        setTransactionId(txid)
+        setCreatedAt(time)
+        setStage(3)
+      } catch (err) {
+        setError(err.message)
+      }
     }
 
-    const checkFriendCode = () => {
-      // Check friend code
-      setIsFriendCodeValid(true)
+    const checkFriendCode = async () => {
+      setIsLoading(true)
+      try {
+        if (wallet) {
+          koi.wallet = wallet
+          koi.address = address
+  
+          const { status, message } = await submitInviteCode(koi, friendCode)
+          if (status === 201) {
+            setIsFriendCodeValid(true)
+            setNotification(message)
+          } else {
+            setError(message)
+          }
+          
+        }
+      } catch (err) {
+        setError(err.message)
+      }
+      setIsLoading(false)
     }
 
     return (

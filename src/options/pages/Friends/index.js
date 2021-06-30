@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import BlockRewardIcon from 'img/block-reward-icon.svg'
@@ -8,11 +8,37 @@ import FacebookIcon from 'img/social-icons/facebook-icon.svg'
 import LinkedinIcon from 'img/social-icons/linkedin-icon.svg'
 import TwitterIcon from 'img/social-icons/twitter-icon.svg'
 
+import { GalleryContext } from 'options/galleryContext'
+import { koi } from 'background'
+import { claimReward } from 'utils'
+
 import './index.css'
 
 export default () => {
+  const { affiliateCode, wallet, address, setIsLoading, setError, setNotification } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
-  const code = 'ABCD-1234'
+  const code = affiliateCode
+
+  const handleClaimReward = async () => {
+    try {
+      setIsLoading(true)
+      if (wallet) {
+        koi.wallet = wallet
+        koi.address = address
+        const { message, status } = await claimReward(koi)
+  
+        if (status != 200) {
+          setNotification(message)
+        } else {
+          console.log('RECEIVED KOII')
+        }
+      }
+    } catch (err) {
+      setError(err.message)
+    }
+    setIsLoading(false)
+  }
+
   return (
     <div className='friends-page-wrapper'>
       <div className='friends-page'>
@@ -42,7 +68,7 @@ export default () => {
           </CopyToClipboard>
           <div className='share'>
             <button className='share-button'>Share Code on Twitter</button>
-            <button className='email-button'>Email My Code</button>
+            <button onClick={handleClaimReward} className='email-button'>Claim Reward</button>
           </div>
           <div className='social-media'>
             <TwitterIcon className='social-icon' />

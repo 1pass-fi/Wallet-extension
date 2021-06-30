@@ -508,6 +508,9 @@ export const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', i
     console.log(tx)
     // console.log(" wallet : ", wallet);
 
+    const registrationData = await getRegistrationReward(koi, tx.id)
+    console.log('REGISTER REWARD: ', registrationData)
+
     let uploader = await arweave.transactions.getUploader(tx)
     console.log('uploder', uploader)
     
@@ -596,7 +599,8 @@ export const claimReward = async (koi) => {
   }
 }
 
-export const getRegistrationReward = async (koi) => {
+export const getRegistrationReward = async (koi, nftId) => {
+  console.log('NFT ID: ', nftId)
   try {
     const signedPayload = await koi.signPayload({ data: { address: koi.address }})
     const { data } = await axios({
@@ -605,7 +609,8 @@ export const getRegistrationReward = async (koi) => {
       data: {
         address: koi.address,
         signature: signedPayload.signature,
-        publicKey: signedPayload.owner
+        publicKey: signedPayload.owner,
+        nftId
       }
     })
 

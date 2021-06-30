@@ -54,7 +54,7 @@
   justify-content: center;
   line-height: 24px;
   position: relative;
-  width: 212px;
+  width: 500px;
 }
 
 .friends-page .content-section .code-text .link-icon {
@@ -96,6 +96,10 @@
   height: 32px;
   line-height: 24px;
   width: 226px;
+}
+
+.friends-page .content-section .share .email-button {
+  background-color: #ffc78f;
 }
 
 .friends-page .content-section .social-media {

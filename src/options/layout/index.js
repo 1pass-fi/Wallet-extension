@@ -16,6 +16,7 @@ import Loading from 'options/components/loading'
 import Footer from 'options/components/footer'
 import Header from 'options/components/header'
 import Navbar from 'options/components/navbar'
+import Message from 'options/components/message'
 
 import { GalleryContext } from 'options/galleryContext'
 
@@ -42,6 +43,8 @@ export default ({ children }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const headerRef = useRef(null)
   const [affiliateCode, setAffiliateCode] = useState(null)
+  const [error, setError] = useState(null)
+  const [notification, setNotification] = useState(null)
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
@@ -137,6 +140,20 @@ export default ({ children }) => {
     }
   }, [isDragging])
 
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 4000)
+      return () => clearTimeout(timer)
+    }
+  }, [error])
+
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => setNotification(null), 4000)
+      return () => clearTimeout(timer)
+    }
+  }, [notification])
+
   const showDropzone = () => {
     modifyDraging(true)
   }
@@ -173,7 +190,9 @@ export default ({ children }) => {
         setShowExportModal,
         setShowShareModal,
         wallet,
-        affiliateCode
+        affiliateCode,
+        setError,
+        setNotification
       }}
     >
       <div
@@ -188,6 +207,8 @@ export default ({ children }) => {
           }
         }}
       >
+        {error && <Message children={error}/>}
+        {notification && <Message children={notification} type='notification'/> }
         {showShareModal.show && (
           <ShareNFT
             txid={showShareModal.txid}
