@@ -8,6 +8,7 @@ const arweave = Arweave.init({
   protocol: 'https',
   port: 443,
 })
+
 import { loadNFTCost } from 'utils'
 import { GalleryContext } from '../../../../../galleryContext'
 import { UploadContext } from '../../../index'
@@ -16,7 +17,7 @@ import { koi } from 'background'
 import './index.css'
 
 export default ({ description, setStage, stage, title, file, username }) => {
-  const { setIsLoading, address, wallet, setFile, setNotification, setError } = useContext(GalleryContext)
+  const { setIsLoading, address, wallet, setFile, setNotification, setError, inviteSpent } = useContext(GalleryContext)
   const {
     tags,
     setTransactionId,
@@ -111,29 +112,32 @@ export default ({ description, setStage, stage, title, file, username }) => {
 
     return (
       <div className='confirmation-bottom-button'>
-        <div className='friends-referal'>
-          <div className='referal-title'>Friend Referral Code</div>
-          <div className='referal-description'>
+        {
+          !inviteSpent &&
+          <div className='friends-referal'>
+            <div className='referal-title'>Friend Referral Code</div>
+            <div className='referal-description'>
             Skip the KOII cost with a referral code
-          </div>
-          {isFriendCodeValid ? (
-            <div className='success-noti'>Success!</div>
-          ) : (
-            <div className='fill-code'>
-              <input
-                value={friendCode}
-                onChange={(e) => setFriendCode(e.target.value)}
-                className='friend-code-input'
-              />
-              <div
-                className='submit-friend-code-button'
-                onClick={checkFriendCode}
-              >
-                Submit
-              </div>
             </div>
-          )}
-        </div>
+            {isFriendCodeValid ? (
+              <div className='success-noti'>Success!</div>
+            ) : (
+              <div className='fill-code'>
+                <input
+                  value={friendCode}
+                  onChange={(e) => setFriendCode(e.target.value)}
+                  className='friend-code-input'
+                />
+                <div
+                  className='submit-friend-code-button'
+                  onClick={checkFriendCode}
+                >
+                Submit
+                </div>
+              </div>
+            )}
+          </div>
+        }
         <button
           className='create-ntf-button stage2'
           onClick={handleUploadStage2}

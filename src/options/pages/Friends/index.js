@@ -15,7 +15,14 @@ import { claimReward } from 'utils'
 import './index.css'
 
 export default () => {
-  const { affiliateCode, wallet, address, setIsLoading, setError, setNotification } = useContext(GalleryContext)
+  const { 
+    affiliateCode, 
+    wallet,
+    address, 
+    setIsLoading, 
+    setError, 
+    setNotification, 
+    totalReward } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const code = affiliateCode
 
@@ -82,7 +89,7 @@ export default () => {
           <div className='reward-box'>
             <BlockRewardIcon className='reward-icon' />
             <div className='reward-text'>
-              You’ve earned <span className='koi-quantity'>8 KOII</span> by
+              You’ve earned <span className='koi-quantity'>{totalReward} KOII</span> by
               using your referral code.
               <br />
               <strong> Keep sharing for free KOII.</strong>

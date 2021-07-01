@@ -567,7 +567,7 @@ export const getAffiliateCode = async (koi) => {
     const signedPayload = await koi.signPayload({ data: { address: koi.address } })
     const { data } = await axios({
       method: 'POST',
-      url: 'https://koi.rocks:8888/api/v1/registerAffiliate',
+      url: PATH.AFFILIATE_REGISTER,
       data: {
         address: koi.address,
         signature: signedPayload.signature,
@@ -586,7 +586,7 @@ export const claimReward = async (koi) => {
     const signedPayload = await koi.signPayload({ data: { address: koi.address } })
     const { data } = await axios({
       method: 'POST',
-      url: 'https://koi.rocks:8888/api/v1/cliamReward',
+      url: PATH.AFFILIATE_CLAIM_REWARD,
       data: {
         address: koi.address,
         signature: signedPayload.signature,
@@ -595,7 +595,7 @@ export const claimReward = async (koi) => {
     })
     return data
   } catch (err) {
-    throw new Error(err)
+    throw new Error(err.message)
   }
 }
 
@@ -605,7 +605,7 @@ export const getRegistrationReward = async (koi, nftId) => {
     const signedPayload = await koi.signPayload({ data: { address: koi.address }})
     const { data } = await axios({
       method: 'POST',
-      url: 'https://koi.rocks:8888/api/v1/freeRegistrationReward',
+      url: PATH.AFFILIATE_REGISTRATION_REWARD,
       data: {
         address: koi.address,
         signature: signedPayload.signature,
@@ -616,7 +616,7 @@ export const getRegistrationReward = async (koi, nftId) => {
 
     return data
   } catch (err) {
-    throw new Error(err)
+    throw new Error(err.message)
   }
 }
 
@@ -625,7 +625,7 @@ export const submitInviteCode = async (koi, code) => {
     const signedPayload = await koi.signPayload({ data: { address: koi.address, code } })
     const { data } = await axios({
       method: 'POST',
-      url: 'https://koi.rocks:8888/api/v1/submitCode',
+      url: PATH.AFFILIATE_SUBMIT_CODE,
       data: {
         address: koi.address,
         code,
@@ -636,7 +636,48 @@ export const submitInviteCode = async (koi, code) => {
 
     return data
   } catch (err) {
-    throw new Error(err)
+    throw new Error(err.message)
+  }
+}
+
+export const getTotalRewardKoi = async (koi) => {
+  try {
+    const { data } = await axios({
+      method: 'POST',
+      url: PATH.AFFILIATE_TOTAL_REWARD,
+      data: {
+        address: [koi.address]
+      }
+    })
+    if (status !== 200) {
+      return 0
+    }
+
+    return get(data, 'data.totalReward')
+  } catch(err) {
+    throw new Error(err.message)
+  }
+}
+
+export const checkAffiliateInviteSpent = async (koi) => {
+  try {
+    const signedPayload = await koi.signPayload({ data: { address: koi.address, code: 'code' } })
+    const { data } = await axios({
+      method: 'POST',
+      url: PATH.AFFILIATE_SUBMIT_CODE,
+      data: {
+        address: koi.address,
+        code: 'code',
+        signature: signedPayload.signature,
+        publicKey: signedPayload.owner
+      }
+    })
+
+    if (((data.message).toLowerCase()).includes('already exists')) {
+      return true
+    }
+  } catch (err) {
+    throw new Error(err.message)
   }
 }
 

@@ -60,7 +60,6 @@ const Content = () => {
 }
 
 export default () => {
-  console.log('collections')
   return (
     <div className='collections-container'>
       <Header />

@@ -7,7 +7,12 @@ import throttle from 'lodash/throttle'
 import isArray from 'lodash/isArray'
 
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
-import { getAffiliateCode, getChromeStorage, setChromeStorage } from 'utils'
+import { 
+  getAffiliateCode, 
+  getChromeStorage, 
+  setChromeStorage, 
+  getTotalRewardKoi, 
+  checkAffiliateInviteSpent } from 'utils'
 import { MESSAGES, STORAGE, PORTS } from 'koiConstants'
 import { CreateEventHandler } from 'popup/actions/backgroundConnect'
 
@@ -45,6 +50,8 @@ export default ({ children }) => {
   const [affiliateCode, setAffiliateCode] = useState(null)
   const [error, setError] = useState(null)
   const [notification, setNotification] = useState(null)
+  const [totalReward, setTotalReward] = useState(null)
+  const [inviteSpent, setInviteSpent] = useState(false)
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
@@ -60,8 +67,13 @@ export default ({ children }) => {
           STORAGE.KOI_BALANCE,
           STORAGE.KOI_ADDRESS,
           STORAGE.AR_BALANCE,
-          STORAGE.AFFILIATE_CODE
+          STORAGE.AFFILIATE_CODE,
+          STORAGE.SHOW_WELCOME_SCREEN
         ])
+        if (!storage[STORAGE.SHOW_WELCOME_SCREEN]) {
+          setShowWelcome(true)
+          setChromeStorage({ [STORAGE.SHOW_WELCOME_SCREEN]: 1 })
+        }
         if (storage[STORAGE.AFFILIATE_CODE]) {
           setAffiliateCode(storage[STORAGE.AFFILIATE_CODE])
         }
@@ -111,7 +123,11 @@ export default ({ children }) => {
           koi.wallet = key
           await koi.getWalletAddress()
           const code = await getAffiliateCode(koi)
+          const reward = await getTotalRewardKoi(koi)
+          const spent = await checkAffiliateInviteSpent(koi)
           setAffiliateCode(code)
+          setTotalReward(reward)
+          setInviteSpent(spent)
         }
         setWallet(key)
       }
@@ -172,7 +188,7 @@ export default ({ children }) => {
     txid: null,
   })
   const [showExportModal, setShowExportModal] = useState(false)
-  const [showWelcome, setShowWelcome] = useState(true)
+  const [showWelcome, setShowWelcome] = useState(false)
 
   return (
     <GalleryContext.Provider
@@ -192,7 +208,9 @@ export default ({ children }) => {
         wallet,
         affiliateCode,
         setError,
-        setNotification
+        setNotification,
+        totalReward,
+        inviteSpent
       }}
     >
       <div

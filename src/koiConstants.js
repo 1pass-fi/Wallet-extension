@@ -81,11 +81,13 @@ export const MESSAGES = {
 }
 
 export const PATH = {
+  // Router path
   IMPORT_PHRASE_REDIRECT: '/account/import/phrase/success',
   IMPORT_KEY_REDIRECT: '/account/import/keyfile/success',
   CREATE_WALLET_REDIRECT: '/account/create/success',
   HOME: '/account',
   LOGIN: '/account/login',
+  // Gallery path
   NFT_IMAGE: 'https://arweave.net',
   VIEW_BLOCK: 'https://viewblock.io/arweave/address',
   KOI_ROCK: 'https://koi.rocks/content-detail',
@@ -96,10 +98,18 @@ export const PATH = {
   SINGLE_CONTENT: 'https://bundler.openkoi.com:8888/state/getNFTState?tranxId=',
   VIEW_BLOCK_TRANSACTION: 'https://viewblock.io/arweave/tx',
   CONNECT_SITE: '/account/connect-site',
+  // Fetch AR price
   AR_PRICE: 'https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=usd',
+  // Social sharing
   SHARE_TWITTER: 'https://twitter.com/intent/tweet',
   SHARE_FACEBOOK: 'https://www.facebook.com/sharer/sharer.php',
-  SHARE_LINKEDIN: 'https://www.linkedin.com/sharing/share-offsite/'
+  SHARE_LINKEDIN: 'https://www.linkedin.com/sharing/share-offsite/',
+  // Affiliate endpoints
+  AFFILIATE_REGISTER: 'https://koi.rocks:8888/api/v1/registerAffiliate',
+  AFFILIATE_CLAIM_REWARD: 'https://koi.rocks:8888/api/v1/cliamReward',
+  AFFILIATE_REGISTRATION_REWARD: 'https://koi.rocks:8888/api/v1/freeRegistrationReward',
+  AFFILIATE_SUBMIT_CODE: 'https://koi.rocks:8888/api/v1/submitCode',
+  AFFILIATE_TOTAL_REWARD: 'https://koi.rocks:8888/api/v1/totalRewardForAffiliate'
 }
 
 export const ERROR_MESSAGE = {
@@ -131,7 +141,8 @@ export const STORAGE = {
   PENDING_TRANSACTION: 'pendingTransactions',
   ACCOUNT_NAME: 'accountName',
   PRICE: 'PRICE',
-  AFFILIATE_CODE: 'AFFILIATE_CODE'
+  AFFILIATE_CODE: 'AFFILIATE_CODE',
+  SHOW_WELCOME_SCREEN: 'SHOW_WELCOME_SCREEN'
 }
 
 export const REQUEST = {
