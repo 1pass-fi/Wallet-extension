@@ -45,8 +45,8 @@ export default  ({ isEnable, buttonLabel, setPassword, setConfirmPassword, setIs
       </div>
       <div className='term-service'>
         <div className='checkbox'>
-          <CheckBox 
-            defaultChecked = {false}
+          <CheckBox
+            defaultChecked={false}
             greenBackround={false}
             onChange={onCheckbox}
             className='term-service-checkbox'
@@ -54,7 +54,10 @@ export default  ({ isEnable, buttonLabel, setPassword, setConfirmPassword, setIs
           />
         </div>
         <label>
-          I agree with the <a href='#'>Terms of Service</a>
+          I agree with the{' '}
+          <a href='https://koii.network/TOU_June_22_2021.pdf'>
+            Terms of Service
+          </a>
         </label>
       </div>
       <div className='button'>
