@@ -13,10 +13,12 @@ export class BackgroundConnect {
       /* istanbul ignore next */
       this.port = chrome.runtime.connect({ name: portName })
       /* istanbul ignore next */
-      this.port.onMessage.addListener((message, sender) => {
+      this.port.onMessage.addListener((message) => {
+        const _this = this
         this.eventHandlers.forEach(handler => {
           if (handler.type === message.type) {
             handler.callback(message)
+            _this.removeHandler(handler.type)
           }
         })
       })
@@ -35,6 +37,16 @@ export class BackgroundConnect {
     if (this.eventHandlers.every(handler => handler.type !== aHandler.type)) {
       this.eventHandlers.push(aHandler)
     }
+  }
+
+  request(type, callback, data) {
+    console.log('DATA ON BACKGROUND CONNECT', data)
+    const newRequest = new EventHandler(type, callback, data)
+    this.addHandler(newRequest)
+    this.postMessage({
+      type,
+      data
+    })
   }
 
   removeHandler(handlerType) {

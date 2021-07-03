@@ -13,7 +13,7 @@ import { clearActivities } from './activities'
 
 import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 
-import { MESSAGES, PATH, STORAGE, REQUEST, NOTIFICATION } from 'koiConstants'
+import { MESSAGES, PATH, STORAGE, REQUEST, NOTIFICATION, PORTS } from 'koiConstants'
 
 import { SET_KOI } from 'actions/types'
 import { getChromeStorage, removeChromeStorage, setChromeStorage, generateWallet as generateWalletUtil, saveWalletToChrome } from 'utils'
@@ -22,11 +22,12 @@ import { setNotification } from './notification'
 
 import { koi } from 'background'
 import moment from 'moment'
+import { BackgroundConnect } from 'utils/backgroundConnect'
 
 export const getBalances = () => (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
     const { koiData } = response.data
-    console.log('UPDATE BALANCES. KOI: ', koiData.koiBalance, '; AR: ', koiData.arBalance)
+    console.log('UPDATE BALANCES. KOI:s ', koiData.koiBalance, '; AR: ', koiData.arBalance)
     dispatch(setKoi(koiData))
   })
   backgroundConnect.addHandler(getBalanceSuccessHandler)
@@ -452,5 +453,57 @@ export const connectSite = (inputData) => (dispatch) => {
     dispatch(setError(err.message))
   }
 }
+
+export const test = (data) => {
+  return new Promise((resolve, reject) => {
+    backgroundConnect.request(MESSAGES.TEST, response => {
+      resolve(response)
+
+      if (response.error) {
+        reject(response.error)
+      }
+    }, data)
+  })
+}
+
+class BackgroundRequest {
+  constructor(port) {
+    this.backgroundConnect = new BackgroundConnect(port)
+  }
+  /**
+   * 
+   * @param {string} body input string
+   * @returns {string} data
+   */
+  test(body) {
+    return this.promise(MESSAGES.TEST, body)
+  }
+  /**
+   * 
+   * @param {Object} body 
+   * @param {JSON} body.content Title, Description, Username of the NFT
+   * @param {Array} body.tags Tas of the NFT
+   * @param {String} body.fileType The content type of file
+   * @returns {String} transaction Id
+   */
+  uploadNFT(body) {
+    return this.promise(MESSAGES.UPLOAD_NFT, body)
+  }
+
+  promise (messageType, body) {
+    return new Promise((resolve, reject) => {
+      
+      this.backgroundConnect.request(messageType, response => {
+        resolve(response.data)
+        if (response.error) {
+          reject(response.error)
+        }
+      }, body)
+    })
+  } 
+}
+
+
+export const backgroundRequest = new BackgroundRequest(PORTS.POPUP)
 
 export const setKoi = (payload) => ({ type: SET_KOI, payload })

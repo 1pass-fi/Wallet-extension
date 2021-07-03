@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import isEmpty from 'lodash/isEmpty'
 
-import { exportNFT } from 'utils'
+import { exportNFT, setChromeStorage } from 'utils'
 const arweave = Arweave.init({
   host: 'arweave.net',
   protocol: 'https',
@@ -15,6 +15,8 @@ import { UploadContext } from '../../../index'
 import { submitInviteCode } from 'utils'
 import { koi } from 'background'
 import './index.css'
+import { backgroundRequest } from 'popup/actions/koi'
+import { NFT_BIT_DATA } from 'koiConstants'
 
 export default ({ description, setStage, stage, title, file, username }) => {
   const { setIsLoading, address, wallet, setFile, setNotification, setError, inviteSpent } = useContext(GalleryContext)
@@ -36,14 +38,11 @@ export default ({ description, setStage, stage, title, file, username }) => {
         title,
         owner: username,
         description,
-      }
+      }      
       const result = await exportNFT(
         arweave,
         address,
         content,
-        url,
-        null,
-        wallet,
         file,
         tags
       )
@@ -57,9 +56,43 @@ export default ({ description, setStage, stage, title, file, username }) => {
   }
 
   const mockUploadNFT = async () => {
-    return {
-      txid: 'txid',
-      time: 1624524443,
+    // check for file size
+    if (file.size > 15 * 1024 ** 2) throw new Error('File too large. The maximum size for NFT is 15MB')
+    setIsLoading(true)
+    try {
+      const url = URL.createObjectURL(file)
+      console.log('bottomButton- file', file)
+      // get the file type
+      const fileType = file.type
+      const response = await fetch(url)
+      const blob = await response.blob()
+      const dataBuffer = await blob.arrayBuffer()
+      console.log('bottomButton- dataBuffer', dataBuffer)
+      // create a 8bit array and save to local storage
+      let u8 = new Int8Array(dataBuffer)
+      console.log('bottomButton- u8', u8)
+      // save u8 to local storage
+      u8 = JSON.stringify(u8, null, 2)
+      console.log('bottomButton- u8', u8)
+      await setChromeStorage({ NFT_BIT_DATA: u8 })
+      // prepare necessary meta data
+      const content = {
+        title,
+        owner: username,
+        description,
+      }
+      // call the request function
+      const { txId, time } = await backgroundRequest.uploadNFT({ content, tags, fileType })
+      console.log('RESPONSE DATA', txId, time)
+      setIsLoading(false)
+      return {
+        txId,
+        time
+      }
+      
+    } catch (err) {
+      setIsLoading(false)
+      setError(err.message)
     }
   }
 
@@ -67,7 +100,14 @@ export default ({ description, setStage, stage, title, file, username }) => {
     return (
       <button
         className='create-ntf-button'
-        onClick={() => setStage(2)}
+        onClick={() => {
+          try {            
+            if (file.size > 15 * 1024 ** 2) throw new Error('File too large. The maximum size for NFT is 15MB')
+            setStage(2)
+          } catch(error) {
+            setError(error.message)
+          } 
+        }}
         disabled={isEmpty(title) | isEmpty(description)}
       >
         Create New NFT
@@ -78,9 +118,9 @@ export default ({ description, setStage, stage, title, file, username }) => {
   if (stage == 2) {
     const handleUploadStage2 = async () => {
       try {
-        const { txid, time } = await handleUploadNFT()
-        // const { txid, time } = await mockUploadNFT()
-        setTransactionId(txid)
+        // const { txid, time } = await handleUploadNFT()
+        const { txId, time } = await mockUploadNFT()
+        setTransactionId(txId)
         setCreatedAt(time)
         setStage(3)
       } catch (err) {
@@ -150,6 +190,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
 
   return (
     <CopyToClipboard text='https://koi.registerlink.example'>
+
       <button className={'create-ntf-button'}>Copy Link to Share</button>
     </CopyToClipboard>
   )
