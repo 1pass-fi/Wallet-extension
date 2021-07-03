@@ -40,7 +40,6 @@ export class BackgroundConnect {
   }
 
   request(type, callback, data) {
-    console.log('DATA ON BACKGROUND CONNECT', data)
     const newRequest = new EventHandler(type, callback, data)
     this.addHandler(newRequest)
     this.postMessage({

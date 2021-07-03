@@ -1,5 +1,5 @@
 import passworder from 'browser-passworder'
-import { isArray, isString } from 'lodash'
+import { isArray } from 'lodash'
 import Arweave from 'arweave'
 
 const arweave = Arweave.init({
@@ -64,31 +64,13 @@ export default async (koi, port, message, ports, resolveId) => {
   try {
     switch (message.type) {
       case MESSAGES.IMPORT_WALLET: {
-        try {
-          const { key, password } = message.data
-          const koiData = await utils.loadWallet(koi, key, LOAD_KOI_BY.KEY)
-          await saveWalletToChrome(koi, password)
-
-          if (isString(key)) {
-            const encryptedPhrase = await passworder.encrypt(password, key)
-            await setChromeStorage({ 'koiPhrase': encryptedPhrase })
-          }
-
-          await removeChromeStorage(STORAGE.SITE_PERMISSION)
-          await removeChromeStorage(STORAGE.CONTENT_LIST)
-          await removeChromeStorage(STORAGE.ACTIVITIES_LIST)
-          console.log('KOI DATA BACKGROUND: ', koiData)
-          port.postMessage({
-            type: MESSAGES.IMPORT_WALLET,
-            data: { koiData }
-          })
-        } catch (err) {
-          port.postMessage({
-            type: MESSAGES.IMPORT_WALLET,
-            error: `BACKGROUND ERROR: ${err.message}`
-          })
-        }
-
+        const { data, password } = message.data
+        const koiData = await utils.loadWallet(koi, data, LOAD_KOI_BY.KEY)
+        await saveWalletToChrome(koi, password)
+        port.postMessage({
+          type: MESSAGES.IMPORT_WALLET_SUCCESS,
+          data: { koiData }
+        })
         break
       }
       case MESSAGES.GET_BALANCES: {
