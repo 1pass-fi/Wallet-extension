@@ -19,7 +19,7 @@ import { setError } from 'actions/error'
 import { setNotification } from 'actions/notification'
 import { setWarning } from 'actions/warning'
 import { setPrice } from 'actions/price'
-import { setKoi, loadWallet, removeWallet, getBalances, test, backgroundRequest } from 'actions/koi'
+import { setKoi, loadWallet, removeWallet, getBalances } from 'actions/koi'
 
 import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST, PATH } from 'koiConstants'
 
@@ -148,11 +148,6 @@ const Popup = ({
     },
   ]
 
-  const testBackground = async () => {
-    console.log('RUNNING function testBackground on popup')
-    console.log('RESULT FROM BACKGROUND', await backgroundRequest.test())
-  }
-
   return (
     <div className="popup">
       {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
@@ -161,7 +156,6 @@ const Popup = ({
       {notification && <Message type='notification' children={notification} />}
       {warning && <Message type='warning' children={warning} />}
       {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />}
-      <button onClick={testBackground}>Click Me</button>      
       <div className='content'>
         <Switch>
           <Route path='/account'>
