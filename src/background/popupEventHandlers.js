@@ -1,5 +1,12 @@
 import passworder from 'browser-passworder'
 import { isArray } from 'lodash'
+import Arweave from 'arweave'
+
+const arweave = Arweave.init({
+  host: 'arweave.net',
+  protocol: 'https',
+  port: 443,
+})
 
 import { MESSAGES, LOAD_KOI_BY, PORTS, STORAGE } from 'koiConstants'
 import {
@@ -16,7 +23,8 @@ import {
   transfer,
   saveOriginToChrome,
   signTransaction,
-  getBalances
+  getBalances,
+  exportNFTNew
 } from 'utils'
 
 export const loadBalances = async (koi, port) => {
@@ -263,10 +271,35 @@ export default async (koi, port, message, ports, resolveId) => {
         }
         break
       }
+
       case MESSAGES.GET_WALLET: {
         port.postMessage({
           type: MESSAGES.GET_WALLET_SUCCESS,
           data: { key: koi['wallet'] }
+        })
+        break
+      }
+
+      case MESSAGES.TEST: {
+        console.log('RUNNING MESSAGE TEST ON BACKGROUND')
+        console.log(message.data)
+        port.postMessage({
+          type: MESSAGES.TEST,
+          data: 'HELLO WORLD'
+        })
+        break
+      }
+
+      case MESSAGES.UPLOAD_NFT: {
+        console.log('message', message)
+        console.log('UPLOAD NFT RUNNING ON BACKGROUND')
+        console.log('MESSAGE DATA', message.data)
+        const { content, tags, fileType } = message.data
+        const result = await exportNFTNew(koi, arweave, content, tags, fileType)
+        console.log('RESULT', result)
+        port.postMessage({
+          type: MESSAGES.UPLOAD_NFT,
+          data: result
         })
         break
       }

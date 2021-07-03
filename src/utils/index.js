@@ -1,4 +1,4 @@
-import { LOAD_KOI_BY, PATH, STORAGE, ERROR_MESSAGE } from 'koiConstants'
+import { LOAD_KOI_BY, PATH, STORAGE, ERROR_MESSAGE, NFT_BIT_DATA } from 'koiConstants'
 import passworder from 'browser-passworder'
 import moment from 'moment'
 import { get, isNumber, isArray } from 'lodash'
@@ -425,6 +425,9 @@ export const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', i
     let nftData
     let imgContentBuffer
     let imgContentType
+
+
+    // get image arrayBuffer
     if (imageUrl) {
       console.log({ imageUrl })
       nftData = await getDataBlob(imageUrl)
@@ -478,6 +481,8 @@ export const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', i
     }
     let tx
 
+
+    // create new transaction from image blob
     try {
       tx = await arweave.createTransaction({
         // eslint-disable-next-line no-undef
@@ -524,7 +529,7 @@ export const exportNFT = async (arweave, ownerAddress, content, imageUrl = '', i
 
     /**/
     // pay via KOI
-    try{
+    try {
       let ktools = koi
       let resAddress = await ktools.loadWallet(wallet)
       console.log({resAddress})
@@ -677,6 +682,125 @@ export const checkAffiliateInviteSpent = async (koi) => {
       return true
     }
   } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
+export const exportNFTNew = async (koi , arweave, content, tags, fileType) => {
+  console.log('EXPORT NFT UTIL RUNNING')
+  const bundlerUrl = 'https://bundler.openkoi.com:8888'
+  try {
+    // get the bit object from local storage
+    const storage = await getChromeStorage(NFT_BIT_DATA)
+    let bitObject = storage[NFT_BIT_DATA]
+    if (!bitObject) return
+    // parse the JSON string on local storage
+    bitObject = JSON.parse(bitObject)
+    console.log('bitObject', bitObject)
+    // create 8 bit array from bit object
+    const u8 = Uint8Array.from(Object.values(bitObject))
+    console.log('u8', u8)
+    // create blob from u8
+    const blob = new Blob([u8], { type: 'contentType'})
+    console.log('blob', blob)
+    // create file from blob
+    const file = new File([blob], 'filename', { type: fileType })
+    console.log(file)
+
+    let metadata = {
+      owner: koi.address,
+      name: 'koi nft',
+      description: 'first koi nft',
+      ticker: 'KOINFT'
+    }
+
+    metadata.title = content.title
+    metadata.name = content.owner
+    metadata.description = content.description
+    metadata.owner = koi.address
+    metadata.ticker = 'KOINFT'
+
+    const balances = {}
+    balances[metadata.owner] = 1
+
+    let d = new Date()
+    let createdAt = Math.floor(d.getTime()/1000).toString()
+    const initialState = {
+      'owner': metadata.owner,
+      'title': metadata.title,
+      'name': metadata.name,
+      'description': metadata.description,
+      'ticker': metadata.ticker,
+      'balances': balances,
+      'contentType': fileType,
+      'createdAt': createdAt,
+      'tags': tags
+    }
+
+    let tx
+    
+    tx = await arweave.createTransaction({
+      data: u8
+    })
+
+    tx.addTag('Content-Type', fileType)
+    tx.addTag('Network', 'Koi')
+    tx.addTag('Action', 'marketplace/Create')
+    tx.addTag('App-Name', 'SmartWeaveContract')
+    tx.addTag('App-Version', '0.3.0')
+    tx.addTag('Contract-Src', 'I8xgq3361qpR8_DvqcGpkCYAUTMktyAgvkm6kGhJzEQ')
+    tx.addTag('Init-State', JSON.stringify(initialState))
+
+    try {
+      await arweave.transactions.sign(tx, koi.wallet)
+    } catch (err) {
+      console.log('transaction sign error')
+      console.log('err-sign', err)
+      return false
+    }
+    console.log(tx)
+
+    const registrationData = await getRegistrationReward(koi, tx.id)
+    console.log('REGISTER REWARD: ', registrationData)
+
+    let uploader = await arweave.transactions.getUploader(tx)
+    console.log('uploader', uploader)
+    
+    // Upload progress
+    while (!uploader.isComplete) {
+      await uploader.uploadChunk()
+      console.log(
+        uploader.pctComplete + '% complete',
+        uploader.uploadedChunks + '/' + uploader.totalChunks
+      )
+    }
+
+    try {
+      // let ktools = koi
+      // let resAddress = await ktools.loadWallet(wallet))
+      initialState.tx = tx
+      initialState.registerDataParams = { id : tx.id, ownerAddress: koi.address }
+      const formData  = new FormData()
+      formData.append('file', file)
+      formData.append('data', JSON.stringify(initialState))
+      const rawResponse = await fetch(`${bundlerUrl}/handleNFTUpload`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: formData
+      })
+      const response = await rawResponse.json()
+      let resTx = await koi.registerData(tx.id, koi.address, koi.wallet, arweave)
+      console.log({resTx})
+
+      return { txId: tx.id, time: createdAt }
+    } catch(err) {
+      console.log('err-@_koi/sdk', err)
+      return false
+    }
+  } catch(err) {
+    console.log(err.message)
     throw new Error(err.message)
   }
 }
