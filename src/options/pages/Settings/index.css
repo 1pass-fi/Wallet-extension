@@ -90,6 +90,8 @@
 
 .settings-page .bottom-section .reward-box .reward-text {
   font-size: 18px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
   line-height: 32px;
   width: 438px;
 }

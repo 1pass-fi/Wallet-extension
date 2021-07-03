@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { trim } from 'lodash'
+import trim from 'lodash/trim'
+import union from 'lodash/union'
 
 import Checkbox from 'popup/components/shared/checkbox'
 import './index.css'
@@ -22,12 +23,13 @@ export default ({
   const { setTags, tags, isFriendCodeValid } = useContext(UploadContext)
   const { file } = useContext(GalleryContext)
   const [price, setPrice] = useState(0)
+  const [tagInput, setTagInput] = useState('')
 
   const addTag = (e) => {
-    const value = trim(e.target.value)
     if (e.keyCode === 32 || e.keyCode === 13) {
-      if (value && !tags.includes(value)) setTags([...tags, value])
-      e.target.value = ''
+      const newTag = trim(tagInput)
+      newTag && setTags(union(tags, [newTag]))
+      setTagInput('')
     }
   }
 
@@ -77,7 +79,12 @@ export default ({
         </div>
         <div className='field'>
           <label className='field-label'>Tags</label>
-          <input className='field-input' onKeyUp={addTag}></input>
+          <input
+            className='field-input'
+            value={tagInput}
+            onChange={(e) => setTagInput(e.target.value)}
+            onKeyDown={addTag}
+          ></input>
         </div>
       </div>
     )

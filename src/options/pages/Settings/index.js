@@ -49,7 +49,13 @@ export default () => {
             <BlockRewardIcon className='reward-icon' />
             <div className='reward-text'>
               Have a feature you’d like to see? We want to hear!
-              <br /> Fill out &nbsp;<a className='form-link'>this form.</a>
+              <br /> Fill out &nbsp;
+              <a
+                href='https://docs.google.com/forms/d/1NwBLA406LlwwEIE0Fw_HG_iQC3VGDpw5H3v4It4iZX0/'
+                className='form-link'
+              >
+                this form.
+              </a>
             </div>
           </div>
         </div>

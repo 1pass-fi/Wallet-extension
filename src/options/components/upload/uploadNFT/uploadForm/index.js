@@ -20,23 +20,22 @@ const Tag = ({ tag, stage }) => {
   const { tags, setTags } = useContext(UploadContext)
 
   const removeTag = (e) => {
-    const newTags = tags.filter(tag => tag !== e.target.textContent)
+    const newTags = tags.filter((tag) => tag !== e.target.textContent)
     setTags(newTags)
   }
 
   return (
-    <div onClick={removeTag} className={stage === 2 ? 'tag stage2' : 'tag'}>{tag}</div>
+    <div onClick={removeTag} className={stage === 2 ? 'tag stage2' : 'tag'}>
+      {tag}
+    </div>
   )
 }
 
 export default ({ stage, setStage }) => {
   const history = useHistory()
-  const {
-    file,
-    setFile,
-    onClearFile,
-    onCloseUploadModal,
-  } = useContext(GalleryContext)
+  const { file, setFile, onClearFile, onCloseUploadModal } = useContext(
+    GalleryContext
+  )
   const { tags, setTags, transactionId, createdAt } = useContext(UploadContext)
   // const [stage, setStage] = useState(1)
   const [title, setTitle] = useState('')
@@ -69,11 +68,13 @@ export default ({ stage, setStage }) => {
 
   return (
     <div>
-      { stage !== 3 ?
+      {stage !== 3 ? (
         <div className='upload-form'>
           <Header stage={stage} />
-          <div className={stage === 2 ? 'nft-infomation stage2' : 'nft-infomation'}>
-            <div className={ stage === 2 ? 'left-column stage2' : 'left-column'}>
+          <div
+            className={stage === 2 ? 'nft-infomation stage2' : 'nft-infomation'}
+          >
+            <div className={stage === 2 ? 'left-column stage2' : 'left-column'}>
               <div className='picture'>
                 {fileType == NFT_TYPES.IMAGE && (
                   <img src={url} className='nft-image' />
@@ -85,23 +86,25 @@ export default ({ stage, setStage }) => {
                   <audio controls src={url} className='nft-image' />
                 )}
               </div>
-              {
-                stage === 2 &&
-                  <div className='nft-preview-infomation'>
-                    <div className='preview-info'>{title}</div>
-                    <div className='preview-info'>{username}</div>
-                    <div className='preview-info description'>{description}</div>
-                    <div className='tags stage2'>
-                      {tags.map((tag, index) => <Tag key={index} tag={tag} stage={stage}/>)}
-                    </div>
+              {stage === 2 && (
+                <div className='nft-preview-infomation'>
+                  <div className='preview-info'>{title}</div>
+                  <div className='preview-info'>{username}</div>
+                  <div className='preview-info description'>{description}</div>
+                  <div className='tags stage2'>
+                    {tags.map((tag, index) => (
+                      <Tag key={index} tag={tag} stage={stage} />
+                    ))}
                   </div>
-              }
-              {
-                stage === 1 &&
-                  <div className='tags'>
-                    {tags.map((tag, index) => <Tag key={index} tag={tag} stage={stage}/>)}
-                  </div>
-              }
+                </div>
+              )}
+              {stage === 1 && (
+                <div className='tags'>
+                  {tags.map((tag, index) => (
+                    <Tag key={index} tag={tag} stage={stage} />
+                  ))}
+                </div>
+              )}
             </div>
             <BodyContent
               stage={stage}
@@ -122,23 +125,36 @@ export default ({ stage, setStage }) => {
             file={file}
             username={username}
           />
-          <div className='close-button' onClick={() => {
-            setTags([])
-            onCloseUploadModal()
-          }}>
+          <div
+            className='close-button'
+            onClick={() => {
+              setTags([])
+              onCloseUploadModal()
+            }}
+          >
             <CloseIcon />
           </div>
           <div className='goback-button' onClick={onGoBack}>
             <GoBackIcon />
           </div>
-        </div> :
+        </div>
+      ) : (
         <div className='success-screen'>
           <div className='message'>
-            <div className='title'>Congratulations! Your NFT is ready for action </div>
-            <div className='description'>Share your newly minted media with everyone you know to start earning attention rewards.</div>
+            <div className='title'>
+              Congratulations! Your NFT is ready for action{' '}
+            </div>
+            <div className='description'>
+              Share your newly minted media with everyone you know to start
+              earning attention rewards.
+            </div>
             <div className='btns'>
-              <button onClick={handleRegisterMore} className='btn'>Register More</button>
-              <button onClick={handleGoToGallery} className='btn'>Go to My Gallery</button>
+              <button onClick={handleRegisterMore} className='btn'>
+                Register More
+              </button>
+              <button onClick={handleGoToGallery} className='btn'>
+                Go to My Gallery
+              </button>
             </div>
           </div>
           <div className='card'>
@@ -154,7 +170,7 @@ export default ({ stage, setStage }) => {
             />
           </div>
         </div>
-      }
+      )}
     </div>
   )
 }

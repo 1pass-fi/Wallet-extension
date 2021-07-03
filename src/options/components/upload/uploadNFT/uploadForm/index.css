@@ -82,20 +82,20 @@
   .left-column
   .nft-preview-infomation 
   .preview-info.description {
-  overflow-y: scroll;
+  overflow-y: auto;
   width: 309px;
   height: 96px;
 }
 
 .uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column .tags {
-  margin-top: 10px;
   display: flex;
-  justify-content: flex-start;
   flex-wrap: wrap;
-  width: 216px;
   gap: 8px;
   height: 48px;
-  overflow-y: scroll;
+  justify-content: flex-start;
+  margin-top: 10px;
+  overflow-y: auto;
+  width: 216px;
 }
 
 .uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column .tags.stage2 {
