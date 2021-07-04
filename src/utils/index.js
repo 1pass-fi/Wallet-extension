@@ -50,7 +50,7 @@ export const clearChromeStorage = (key) => {
 }
 
 export const getBalances = async (koiObj) => {
-  const [arBalance, koiBalance] = await Promise.all([koiObj.getWalletBalance(), koiObj.getKoiBalance()])
+  const [arBalance, koiBalance] = await Promise.all([koiObj.getWalletBalance(), koiObj.getKoiBalance()])  
 
   koiObj.balance = arBalance  
   await setChromeStorage({ [STORAGE.KOI_BALANCE]: koiBalance, [STORAGE.AR_BALANCE]: koiObj['balance'] })
