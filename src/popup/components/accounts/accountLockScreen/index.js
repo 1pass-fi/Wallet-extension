@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { get } from 'lodash'
 
 import KoiIcon from 'img/koi-logo-large.svg'
 import InputField from 'shared/inputField'
@@ -8,15 +9,34 @@ import Button from 'shared/button'
 import { Link } from 'react-router-dom'
 
 import { unlockWallet } from 'actions/koi'
+import { getChromeStorage } from 'utils'
+import { STORAGE, REQUEST } from 'koiConstants'
 
 import './index.css'
+import { setIsLoading } from 'popup/actions/loading'
 
-const LockScreen = ({ unlockWallet }) => {
+const LockScreen = ({ unlockWallet, setIsLoading }) => {
   const history = useHistory()
 
   const [password, setPassword] = useState('')
 
-  const handleOnSubmit = () => unlockWallet({ password, history })
+  const handleOnSubmit = async () => {
+    await setIsLoading(true)
+    unlockWallet(password)
+    await setIsLoading(false)
+
+    const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
+    switch (get(storage[STORAGE.PENDING_REQUEST], 'type')) {
+      case REQUEST.PERMISSION:
+        history.push('/account/connect-site')
+        break
+      case REQUEST.TRANSACTION:
+        history.push('/account/sign-transaction')
+        break
+      default:
+        history.push('/account')
+    }
+  }
 
   const onPasswordChange = (e) => {
     setPassword(e.target.value)
@@ -53,4 +73,4 @@ const LockScreen = ({ unlockWallet }) => {
   )
 }
 
-export default connect(null, { unlockWallet })(LockScreen)
+export default connect(null, { unlockWallet, setIsLoading })(LockScreen)

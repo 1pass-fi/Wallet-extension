@@ -25,96 +25,42 @@ const autoLoadBalances = (koi) => {
   }, LOAD_BALANCES_TIME_INTERVAL)
 }
 
-if (chrome.runtime.onInstalled) {
-  chrome.runtime.onInstalled.addListener((details) => {
-    chrome.runtime.onConnect.addListener(function (port) {
-      switch (port.name) {
-        case PORTS.POPUP:
-          ports[PORTS.POPUP] = port
-    
-          port.onDisconnect.addListener(disconnect => {
-            console.log('port disconnected--', disconnect, port)
-            autoLoadBalancesPort = undefined
-          })
-    
-          port.onMessage.addListener(message => {
-            popUpEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
-    
-            if (koi.address) {
-              autoLoadBalancesPort = port
-              if (!autoLoadBalancesInterval) {
-                autoLoadBalances(koi)
-              }
-            }
-          })
-          break
-        case PORTS.CONTENT_SCRIPT:
-          ports[PORTS.CONTENT_SCRIPT] = port
-          port.onMessage.addListener(message => {
-            contentScriptEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
-          })
-          break
-      }
-    })
-  })
-} else {
-  chrome.runtime.onConnect.addListener(function (port) {
-    switch (port.name) {
-      case PORTS.POPUP:
-        ports[PORTS.POPUP] = port
-  
-        port.onDisconnect.addListener(disconnect => {
-          console.log('port disconnected--', disconnect, port)
-          autoLoadBalancesPort = undefined
-        })
-  
-        port.onMessage.addListener(message => {
-          popUpEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
-  
-          if (koi.address) {
-            autoLoadBalancesPort = port
-            if (!autoLoadBalancesInterval) {
-              autoLoadBalances(koi)
-            }
+function cb(port) {
+  switch (port.name) {
+    case PORTS.POPUP:
+      ports[PORTS.POPUP] = port
+
+      port.onDisconnect.addListener(disconnect => {
+        console.log('port disconnected--', disconnect, port)
+        autoLoadBalancesPort = undefined
+      })
+
+      port.onMessage.addListener(message => {
+        popUpEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
+
+        if (koi.address) {
+          autoLoadBalancesPort = port
+          if (!autoLoadBalancesInterval) {
+            autoLoadBalances(koi)
           }
-        })
-        break
-      case PORTS.CONTENT_SCRIPT:
-        ports[PORTS.CONTENT_SCRIPT] = port
-        port.onMessage.addListener(message => {
-          contentScriptEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
-        })
-        break
-    }
-  })
+        }
+      })
+      break
+    case PORTS.CONTENT_SCRIPT:
+      ports[PORTS.CONTENT_SCRIPT] = port
+      port.onMessage.addListener(message => {
+        contentScriptEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
+      })
+      break
+  }
 }
 
-// chrome.runtime.onConnect.addListener(function (port) {
-//   switch (port.name) {
-//     case PORTS.POPUP:
-//       ports[PORTS.POPUP] = port
+if (chrome.runtime.onInstalled) {
+  chrome.runtime.onInstalled.addListener(() => {
+    chrome.runtime.onConnect.addListener(cb)
+  })
 
-//       port.onDisconnect.addListener(disconnect => {
-//         console.log('port disconnected--', disconnect, port)
-//         autoLoadBalancesPort = undefined
-//       })
-
-//       port.onMessage.addListener(message => {
-//         popUpEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
-
-//         if (koi.address) {
-//           autoLoadBalancesPort = port
-//           if (!autoLoadBalancesInterval) {
-//             autoLoadBalances(koi)
-//           }
-//         }
-//       })
-//       break
-//     case PORTS.CONTENT_SCRIPT:
-//       ports[PORTS.CONTENT_SCRIPT] = port
-//       port.onMessage.addListener(message => {
-//         contentScriptEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
-//       })
-//       break
-//   }
-// })
+  chrome.runtime.onStartup.addListener(() => {
+    chrome.runtime.onConnect.addListener(cb)
+  })
+}
