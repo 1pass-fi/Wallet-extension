@@ -10,10 +10,6 @@ import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
 console.log('Background.js file loaded')
 
-browser.runtime.onMessage.addListener(function (message) {
-  console.log(message)
-})
-
 const ports = {}
 const permissionId = []
 const createTransactionId = []

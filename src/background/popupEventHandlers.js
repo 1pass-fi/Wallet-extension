@@ -31,7 +31,7 @@ export const loadBalances = async (koi, port) => {
   const storage = await getChromeStorage([STORAGE.KOI_BALANCE, STORAGE.AR_BALANCE])
   const koiBalance = storage[STORAGE.KOI_BALANCE]
   const arBalance = storage[STORAGE.AR_BALANCE]
-  if (!!koiBalance && !!arBalance) {
+  if (koiBalance !== null && arBalance !== null) {
     if (port) {
       try {
         port.postMessage({
