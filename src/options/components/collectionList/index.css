@@ -1,0 +1,14 @@
+.collection-list-wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 140px);
+}
+
+.collection-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px;
+  justify-content: space-between;
+  max-width: 920px;
+}

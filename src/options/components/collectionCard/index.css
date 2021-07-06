@@ -15,11 +15,24 @@
   min-height: 354px;
   position: relative;
   width: 216px;
-  z-index: 2;
 }
 
 .nft-collection-card * {
   box-sizing: border-box;
+}
+
+.nft-collection-card {
+  border-radius: 3px;
+  box-sizing: border-box;
+  left: -20px;
+  padding: 20px;
+  position: absolute;
+  width: 256px;
+}
+
+.nft-collection-card.expand {
+  background: #171753;
+  z-index: 1;
 }
 
 .nft-collection-card .preview-nft {
@@ -174,7 +187,7 @@
 
 .nft-collection-card .share-nft-button {
   top: 255px;
-  right: 5px;
+  right: 20px;
   position: absolute;
   width: 18px;
   height: 18px;
@@ -182,7 +195,7 @@
 
 .nft-collection-card .nft-path {
   top: 285px;
-  right: 5px;
+  right: 20px;
   position: absolute;
   width: 18px;
   height: 18px;

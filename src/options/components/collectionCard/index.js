@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import ShareIcon from 'img/share-icon.svg'
@@ -27,6 +27,7 @@ export default ({ collection }) => {
   const [displayNftIndex, setDisplayNftIndex] = useState(1)
   const [displayTags, setDisplayTags] = useState([])
   const [expandTag, setExpandTag] = useState('')
+  const ref = useRef()
 
   const displayNft = useMemo(() => nfts[displayNftIndex], [
     displayNftIndex,
@@ -102,9 +103,25 @@ export default ({ collection }) => {
     calculateDisplayTags()
   }, [tags])
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!expandTag && ref.current && !ref.current.contains(event.target)) {
+        calculateDisplayTags()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [ref])
+
   return (
     <div className='nft-collection-card-wrapper'>
-      <div className='nft-collection-card'>
+      <div
+        className={`nft-collection-card ${expandTag ? '' : 'expand'}`}
+        ref={ref}
+      >
         <div className='preview-nft'>
           {displayNftIndex > 0 && (
             <div className='prev-nft' onClick={displayPrevNft}>
