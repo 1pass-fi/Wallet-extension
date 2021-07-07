@@ -22,12 +22,12 @@ import { setNotification } from './notification'
 
 import { koi } from 'background'
 import moment from 'moment'
-import { backgroundRequest } from 'popup/backgroundRequest'
+import { BackgroundConnect } from 'utils/backgroundConnect'
 
 export const getBalances = () => (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
     const { koiData } = response.data
-    console.log('UPDATE BALANCES. KOI: ', koiData.koiBalance, '; AR: ', koiData.arBalance)
+    console.log('UPDATE BALANCES. KOI:s ', koiData.koiBalance, '; AR: ', koiData.arBalance)
     dispatch(setKoi(koiData))
   })
   backgroundConnect.addHandler(getBalanceSuccessHandler)
@@ -36,61 +36,179 @@ export const getBalances = () => (dispatch) => {
   })
 }
 
-/**
- * @param {String} key Wallet key or Seed phrase
- * @param {String} password Input password
- * @returns {Void}
- */
-export const importWallet = (key, password) => async (dispatch) => {
+export const importWallet = (inputData) => (dispatch) => {
   try {
-    console.log(key, password)
-    const response = await backgroundRequest.wallet.importWallet({key, password})
-    const koiData = response.koiData
-    console.log('IMPORT_WALLET_SUCCESS---', koiData)
-    dispatch(setKoi(koiData))
-    dispatch(getBalances())
-  } catch (err) {
-    dispatch(setError(err.message))
-  }
-}
+    const { data, password } = inputData
+    dispatch(setIsLoading(true))
+    let { history, redirectPath } = inputData
+    const importSuccessHandler = new CreateEventHandler(MESSAGES.IMPORT_WALLET_SUCCESS, async response => {
+      const { koiData } = response.data
+      console.log('IMPORT_WALLET_SUCCESS---', koiData)
+      dispatch(setKoi(koiData))
+      dispatch(setIsLoading(false))
+      /* istanbul ignore next */
+      if (isString(data)) {
+        const encryptedPhrase = await passworder.encrypt(password, data)
+        await setChromeStorage({ 'koiPhrase': encryptedPhrase })
+      } 
+      /* istanbul ignore next */
+      await removeChromeStorage(STORAGE.SITE_PERMISSION)
+      await removeChromeStorage(STORAGE.CONTENT_LIST)
+      await removeChromeStorage(STORAGE.ACTIVITIES_LIST)
+      redirectPath = ((await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) ? PATH.CONNECT_SITE : redirectPath
+      history.push(redirectPath)
+      dispatch(getBalances())
+    })
+    const importFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
 
-export const removeWallet = () => async (dispatch) => {
-  try {
-    const { koiData } = await backgroundRequest.wallet.removeWallet()
-    dispatch(setAssets([]))
-    dispatch(setTransactions([]))
-    dispatch(clearActivities())
-    dispatch(setCursor({ ownedCursor: null, recipientCursor: null, doneLoading: false }))
-    dispatch(setKoi(koiData))
-    dispatch(setIsLoading(false))
-  } catch (err) {
-    dispatch(setError(err.message))
-  }
-}
-
-
-export const lockWallet = () => async (dispatch) => {
-  try {
-    const { koiData } = await backgroundRequest.wallet.lockWallet()
-    dispatch(setKoi(koiData))
-  } catch (err) {
-    dispatch(setError(err.message))
-  }
-}
-
-
-export const unlockWallet = (password) => async (dispatch) => {
-  try {
-    const { koiData } = await backgroundRequest.wallet.unlockWallet({ password })
-    dispatch(setKoi(koiData))
-    dispatch(getBalances())
+    backgroundConnect.addHandler(importSuccessHandler)
+    backgroundConnect.addHandler(importFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.IMPORT_WALLET,
+      data: inputData
+    })
   } catch (err) {
     dispatch(setError(err.message))
     dispatch(setIsLoading(false))
   }
 }
 
+export const loadWallet = (inputData) => (dispatch) => {
+  try {
+    dispatch(setIsLoading(true))
+    const loadSuccessHandler = new CreateEventHandler(MESSAGES.LOAD_WALLET_SUCCESS, response => {
+      const { koiData } = response.data
+      dispatch(setKoi(koiData))
+      dispatch(setIsLoading(false))
+    })
+    const loadFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
 
+    backgroundConnect.addHandler(loadSuccessHandler)
+    backgroundConnect.addHandler(loadFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.LOAD_WALLET,
+      data: inputData
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const removeWallet = (inputData) => (dispatch) => {
+  try {
+    const { history } = inputData
+    dispatch(setIsLoading(true))
+    const removeSuccessHandler = new CreateEventHandler(MESSAGES.REMOVE_WALLET_SUCCESS, response => {
+      const { koiData } = response.data
+      dispatch(setAssets([]))
+      dispatch(setTransactions([]))
+      dispatch(clearActivities())
+      dispatch(setCursor({ ownedCursor: null, recipientCursor: null, doneLoading: false }))
+      dispatch(setKoi(koiData))
+      dispatch(setIsLoading(false))
+      history.push('/account/welcome')
+    })
+    const removeFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
+
+    backgroundConnect.addHandler(removeSuccessHandler)
+    backgroundConnect.addHandler(removeFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.REMOVE_WALLET
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const lockWallet = (inputData) => (dispatch) => {
+  try {
+    const { history } = inputData
+    dispatch(setIsLoading(true))
+    const lockSuccessHandler = new CreateEventHandler(MESSAGES.LOCK_WALLET_SUCCESS, response => {
+      dispatch(setKoi({
+        koiBalance: null,
+        arBalance: null,
+        address: null
+      }))
+      dispatch(setIsLoading(false))
+      history.push(PATH.LOGIN)
+    })
+    const lockFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
+
+    backgroundConnect.addHandler(lockSuccessHandler)
+    backgroundConnect.addHandler(lockFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.LOCK_WALLET
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const unlockWallet = (inputData) => (dispatch) => {
+  try {
+    const { history } = inputData
+    dispatch(setIsLoading(true))
+    const unlockSuccessHandler = new CreateEventHandler(MESSAGES.UNLOCK_WALLET_SUCCESS, async response => {
+      const { koiData } = response.data
+      dispatch(setKoi(koiData))
+      dispatch(setIsLoading(false))
+      const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
+      /* istanbul ignore next */
+      switch (get(storage[STORAGE.PENDING_REQUEST], 'type')) {
+        case REQUEST.PERMISSION:
+          history.push('/account/connect-site')
+          break
+        case REQUEST.TRANSACTION:
+          history.push('/account/sign-transaction')
+          break
+        default:
+          history.push('/account')
+      }
+    })
+    const unlockFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+      console.log('=== BACKGROUND ERROR ===')
+      const errorMessage = response.data
+      dispatch(setIsLoading(false))
+      dispatch(setError(errorMessage))
+    })
+
+    backgroundConnect.addHandler(unlockSuccessHandler)
+    backgroundConnect.addHandler(unlockFailedHandler)
+    backgroundConnect.postMessage({
+      type: MESSAGES.UNLOCK_WALLET,
+      data: inputData
+    })
+  } catch (err) {
+    dispatch(setError(err.message))
+    dispatch(setIsLoading(false))
+  }
+}
+
+/* istanbul ignore next */
 export const generateWallet = (inputData) => async (dispatch) => {
   try {
     const { stage, password } = inputData
@@ -101,6 +219,26 @@ export const generateWallet = (inputData) => async (dispatch) => {
     await setChromeStorage({ 'createdWalletAddress': koi.address, 'createdWalletKey': encryptedKey })
     dispatch(setCreateWallet({ seedPhrase, stage, password }))
     dispatch(setIsLoading(false))
+
+
+    // const generateSuccessHandler = new CreateEventHandler(MESSAGES.GENERATE_WALLET_SUCCESS, response => {
+    //   const { seedPhrase } = response.data
+    //   dispatch(setCreateWallet({ seedPhrase, stage, password }))
+    //   dispatch(setIsLoading(false))
+    // })
+    // const generateFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
+    //   console.log('=== BACKGROUND ERROR ===')
+    //   const errorMessage = response.data
+    //   dispatch(setIsLoading(false))
+    //   dispatch(setError(errorMessage))
+    // })
+
+    // backgroundConnect.addHandler(generateSuccessHandler)
+    // backgroundConnect.addHandler(generateFailedHandler)
+    // backgroundConnect.postMessage({
+    //   type: MESSAGES.GENERATE_WALLET,
+    //   data: inputData
+    // })
   } catch (err) {
     dispatch(setError(err.message))
     dispatch(setIsLoading(false))
@@ -300,7 +438,7 @@ export const connectSite = (inputData) => (dispatch) => {
       window.close()
     })
     const connectFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
-      console.log('=== BACKGROUND ERROR 1===')
+      console.log('=== BACKGROUND ERROR ===')
       const errorMessage = response.data
       dispatch(setError(errorMessage))
       window.close()
@@ -327,5 +465,45 @@ export const test = (data) => {
     }, data)
   })
 }
+
+class BackgroundRequest {
+  constructor(port) {
+    this.backgroundConnect = new BackgroundConnect(port)
+  }
+  /**
+   * 
+   * @param {string} body input string
+   * @returns {string} data
+   */
+  test(body) {
+    return this.promise(MESSAGES.TEST, body)
+  }
+  /**
+   * 
+   * @param {Object} body 
+   * @param {JSON} body.content Title, Description, Username of the NFT
+   * @param {Array} body.tags Tas of the NFT
+   * @param {String} body.fileType The content type of file
+   * @returns {String} transaction Id
+   */
+  uploadNFT(body) {
+    return this.promise(MESSAGES.UPLOAD_NFT, body)
+  }
+
+  promise (messageType, body) {
+    return new Promise((resolve, reject) => {
+      
+      this.backgroundConnect.request(messageType, response => {
+        resolve(response.data)
+        if (response.error) {
+          reject(response.error)
+        }
+      }, body)
+    })
+  } 
+}
+
+
+export const backgroundRequest = new BackgroundRequest(PORTS.POPUP)
 
 export const setKoi = (payload) => ({ type: SET_KOI, payload })

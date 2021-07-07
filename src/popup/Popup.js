@@ -19,7 +19,7 @@ import { setError } from 'actions/error'
 import { setNotification } from 'actions/notification'
 import { setWarning } from 'actions/warning'
 import { setPrice } from 'actions/price'
-import { setKoi, loadWallet, removeWallet, getBalances } from 'actions/koi'
+import { setKoi, getBalances } from 'actions/koi'
 
 import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST, PATH } from 'koiConstants'
 
@@ -43,9 +43,9 @@ const Popup = ({
   setNotification,
   warning,
   setWarning,
-  loadWallet,
   getBalances,
-  setPrice
+  setPrice,
+  setKoi
 }) => {
   const history = useHistory()
   useEffect(() => {
@@ -57,7 +57,7 @@ const Popup = ({
 
         if (storage[KOI_ADDRESS]) {
           // Koi Address in local storage
-          loadWallet({ data: storage[KOI_ADDRESS] })
+          setKoi({ address: storage[KOI_ADDRESS] })
           getBalances()
           switch (get(storage[PENDING_REQUEST], 'type')) {
             case REQUEST.PERMISSION:
@@ -193,8 +193,6 @@ const mapDispatchToProps = {
   setNotification,
   setWarning,
   setKoi,
-  loadWallet,
-  removeWallet,
   getBalances,
   setPrice
 }

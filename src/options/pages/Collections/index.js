@@ -6,6 +6,7 @@ import TwoIcon from 'img/collections/two-icon.svg'
 import ThreeIcon from 'img/collections/three-icon.svg'
 
 import './index.css'
+import CollectionList from 'options/components/collectionList'
 
 const Header = () => {
   return (
@@ -19,7 +20,7 @@ const Header = () => {
   )
 }
 
-const Content = () => {
+const OldContent = () => {
   return (
     <div className='collections-container__content'>
       <div className='collections-container__content__first'>
@@ -63,7 +64,7 @@ export default () => {
   return (
     <div className='collections-container'>
       <Header />
-      <Content />
+      <CollectionList />
     </div>
   )
 }

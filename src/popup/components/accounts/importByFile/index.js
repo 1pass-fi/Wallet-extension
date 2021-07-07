@@ -12,10 +12,11 @@ import ExportIcon from 'img/export-icon.svg'
 import { importWallet } from 'actions/koi'
 import { setError } from 'actions/error'
 
-import { JSONFileToObject } from 'utils'
-import { PATH, ERROR_MESSAGE } from 'koiConstants'
+import { JSONFileToObject, getChromeStorage } from 'utils'
+import { PATH, ERROR_MESSAGE, STORAGE } from 'koiConstants'
 
 import './index.css'
+import { setIsLoading } from 'popup/actions/loading'
 
 
 export const ImportByFile = ({ setError, importWallet }) => {
@@ -24,6 +25,7 @@ export const ImportByFile = ({ setError, importWallet }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isAccept, setIsAccept] = useState(false)
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
@@ -37,9 +39,15 @@ export const ImportByFile = ({ setError, importWallet }) => {
       } else if (!isAccept) {
         setError(ERROR_MESSAGE.CHECKED_TERMS)
       } else {
-        const fileData = await JSONFileToObject(file)
-        const redirectPath = PATH.CREATE_WALLET_REDIRECT
-        importWallet({ data: fileData, password, history, redirectPath })
+        const key = await JSONFileToObject(file)
+        let redirectPath = PATH.CREATE_WALLET_REDIRECT
+        redirectPath = ((await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) ? PATH.CONNECT_SITE : redirectPath
+
+        setIsLoading(true)
+        await importWallet(key, password)
+        setIsLoading(false)
+
+        history.push(redirectPath)
       }
     } catch (err) {
       setError(err.message)

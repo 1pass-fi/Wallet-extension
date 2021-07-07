@@ -14,7 +14,7 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: rgb(165, 165, 165);
+  background: rgba(165, 165, 165, 0);
   border-radius: 10px;
   border: 0px;
 }

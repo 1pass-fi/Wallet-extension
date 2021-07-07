@@ -43,11 +43,33 @@
 }
 
 .nft-card .nft-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
   width: 216px;
   height: 216px;
   object-fit: contain;
   background: #020221;
   -webkit-user-drag: none;
+  box-sizing: border-box;
+}
+
+.nft-card .nft-img img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.nft-card .nft-img.selected {
+  border: 2px solid #FFC78F;
+}
+
+.nft-card .nft-img .nft-img-checked-icon {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: -20px;
+  right: -20px;
 }
 
 .nft-card .copy-noti {

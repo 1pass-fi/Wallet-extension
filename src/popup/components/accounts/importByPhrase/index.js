@@ -12,9 +12,11 @@ import CreatePassword from 'shared/createPassword'
 import { importWallet } from 'actions/koi'
 import { setError } from 'actions/error'
 
-import { PATH, ERROR_MESSAGE } from 'koiConstants'
+import { PATH, ERROR_MESSAGE, STORAGE } from 'koiConstants'
+import { setIsLoading } from 'popup/actions/loading'
+import { getChromeStorage } from 'utils'
 
-export const ImportByPhrase = ({ importWallet, setError }) => {
+export const ImportByPhrase = ({ importWallet, setError, setIsLoading }) => {
   const history = useHistory()
   const [phrase, setPharse] = useState('')
   const [password, setPassword] = useState('')
@@ -25,7 +27,7 @@ export const ImportByPhrase = ({ importWallet, setError }) => {
     setPharse(e.target.value)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       if (!phrase) {
@@ -37,8 +39,14 @@ export const ImportByPhrase = ({ importWallet, setError }) => {
       } else if (!isAccept) {
         setError(ERROR_MESSAGE.CHECKED_TERMS)
       } else {
-        const redirectPath = PATH.IMPORT_PHRASE_REDIRECT
-        importWallet({ data: phrase, password, history, redirectPath })
+        let redirectPath = PATH.IMPORT_PHRASE_REDIRECT
+        redirectPath = ((await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) ? PATH.CONNECT_SITE : redirectPath
+
+        setIsLoading(true)
+        await importWallet(phrase, password)
+        setIsLoading(false)
+
+        history.push(redirectPath)
       }
     } catch (err) {
       setError(err.message)
@@ -68,4 +76,4 @@ export const ImportByPhrase = ({ importWallet, setError }) => {
 
 const mapStateToProps = (state) => ({ isLoading: state.loading })
 
-export default connect(mapStateToProps, { importWallet, setError })(ImportByPhrase)
+export default connect(mapStateToProps, { importWallet, setError, setIsLoading })(ImportByPhrase)

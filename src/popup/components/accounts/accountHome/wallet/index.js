@@ -18,12 +18,13 @@ import RemoveAccountModal from 'shared/modal/removeAccountModal'
 import RemoveConnectedSite from 'popup/components/modals/removeConnectedSites'
 import EditAccountNameModal from 'popup/components/modals/editAccountNameModal'
 
-import { removeWallet, lockWallet, getKeyFile } from 'actions/koi'
+import { removeWallet, getKeyFile } from 'actions/koi'
 import { setNotification } from 'actions/notification'
 import { setAccountName } from 'actions/accountName'
 import { getChromeStorage, deleteOriginFromChrome, numberFormat, fiatCurrencyFormat, getAccountName, updateAccountName } from 'utils'
 import { STORAGE, NOTIFICATION, RATE, PATH } from 'koiConstants'
 import ExportPrivateKeyModal from './exportPrivateKeyModal'
+import { setIsLoading } from 'popup/actions/loading'
 
 const WalletInfo = (({
   accountName,
@@ -167,11 +168,18 @@ export const Wallet = ({
   setNotification,
   setAccountName,
   price,
-  accountName
+  accountName,
+  setIsLoading
 }) => {
   const history = useHistory()
   const [connectedSite, setConnectedSite] = useState([])
-  const handleRemoveWallet = () => removeWallet({ history })
+  const handleRemoveWallet = async () => {
+    setIsLoading(true)
+    await removeWallet()
+    setIsLoading(false)
+
+    history.push('/account/welcome')
+  } 
 
   const handleDeleteSite = async (site) => {
     await deleteOriginFromChrome(site)
@@ -232,8 +240,8 @@ const mapStateToProps = (state) => ({ price: state.price, accountName: state.acc
 
 export default connect(mapStateToProps, {
   removeWallet,
-  lockWallet,
   getKeyFile,
   setNotification,
   setAccountName,
+  setIsLoading
 })(Wallet)

@@ -26,7 +26,7 @@ export default ({
   const [tagInput, setTagInput] = useState('')
 
   const addTag = (e) => {
-    if (e.keyCode === 32 || e.keyCode === 13) {
+    if (e.keyCode === 32 || e.keyCode === 13 || e.keyCode === 188) {
       const newTag = trim(tagInput)
       newTag && setTags(union(tags, [newTag]))
       setTagInput('')

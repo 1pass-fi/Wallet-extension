@@ -1,5 +1,5 @@
 import passworder from 'browser-passworder'
-import { isArray, isString } from 'lodash'
+import { isArray } from 'lodash'
 import Arweave from 'arweave'
 
 const arweave = Arweave.init({
@@ -31,7 +31,7 @@ export const loadBalances = async (koi, port) => {
   const storage = await getChromeStorage([STORAGE.KOI_BALANCE, STORAGE.AR_BALANCE])
   const koiBalance = storage[STORAGE.KOI_BALANCE]
   const arBalance = storage[STORAGE.AR_BALANCE]
-  if (!!koiBalance && !!arBalance) {
+  if (koiBalance !== undefined && arBalance !== undefined) {
     if (port) {
       try {
         port.postMessage({
@@ -64,100 +64,62 @@ export default async (koi, port, message, ports, resolveId) => {
   try {
     switch (message.type) {
       case MESSAGES.IMPORT_WALLET: {
-        try {
-          const { key, password } = message.data
-          const koiData = await utils.loadWallet(koi, key, LOAD_KOI_BY.KEY)
-          await saveWalletToChrome(koi, password)
-
-          if (isString(key)) {
-            const encryptedPhrase = await passworder.encrypt(password, key)
-            await setChromeStorage({ 'koiPhrase': encryptedPhrase })
-          }
-
-          await removeChromeStorage(STORAGE.SITE_PERMISSION)
-          await removeChromeStorage(STORAGE.CONTENT_LIST)
-          await removeChromeStorage(STORAGE.ACTIVITIES_LIST)
-          console.log('KOI DATA BACKGROUND: ', koiData)
-          port.postMessage({
-            type: MESSAGES.IMPORT_WALLET,
-            data: { koiData }
-          })
-        } catch (err) {
-          port.postMessage({
-            type: MESSAGES.IMPORT_WALLET,
-            error: `BACKGROUND ERROR: ${err.message}`
-          })
-        }
-
+        const { data, password } = message.data
+        const koiData = await utils.loadWallet(koi, data, LOAD_KOI_BY.KEY)
+        await saveWalletToChrome(koi, password)
+        port.postMessage({
+          type: MESSAGES.IMPORT_WALLET_SUCCESS,
+          data: { koiData }
+        })
         break
       }
       case MESSAGES.GET_BALANCES: {
         loadBalances(koi, port)
         break
       }
-
+      case MESSAGES.LOAD_WALLET: {
+        const { data } = message.data
+        const koiData = await utils.loadWallet(koi, data, LOAD_KOI_BY.ADDRESS)
+        port.postMessage({
+          type: MESSAGES.LOAD_WALLET_SUCCESS,
+          data: { koiData }
+        })
+        break
+      }
       case MESSAGES.REMOVE_WALLET: {
-        try {
-          const koiData = {
-            arBalance: null,
-            koiBalance: null,
-            address: null
-          }
-          await clearChromeStorage()
-          koi.wallet = null
-          koi.address = null
-          port.postMessage({
-            type: MESSAGES.REMOVE_WALLET,
-            data: { koiData }
-          })
-        } catch (err) {
-          port.postMessage({
-            type: MESSAGES.REMOVE_WALLET,
-            error: `BACKGROUND ERROR: ${err.message}`
-          })
+        const koiData = {
+          arBalance: null,
+          koiBalance: null,
+          address: null
         }
+        await clearChromeStorage()
+        koi.wallet = null
+        koi.address = null
+        port.postMessage({
+          type: MESSAGES.REMOVE_WALLET_SUCCESS,
+          data: { koiData }
+        })
         break
       }
       case MESSAGES.LOCK_WALLET: {
-        try {
-          await removeChromeStorage(STORAGE.KOI_ADDRESS)
-          koi.address = null
-          koi.wallet = null
-  
-          const koiData = {
-            arBalance: null,
-            koiBalance: null,
-            address: null
-          }
-          port.postMessage({
-            type: MESSAGES.LOCK_WALLET,
-            data: { koiData }
-          })
-        } catch(err) {
-          port.postMessage({
-            type: MESSAGES.LOCK_WALLET,
-            error: `BACKGROUND ERROR: ${err.message}`           
-          })        
-        }
+        await removeChromeStorage(STORAGE.KOI_ADDRESS)
+        koi.address = null
+        koi.wallet = null
+        port.postMessage({
+          type: MESSAGES.LOCK_WALLET_SUCCESS
+        })
+
         break
       }
       case MESSAGES.UNLOCK_WALLET: {
-        try {
-          const { password } = message.data
-          const walletKey = await decryptWalletKeyFromChrome(password)
-          const koiData = await utils.loadWallet(koi, walletKey, LOAD_KOI_BY.KEY)
-          await setChromeStorage({ [STORAGE.KOI_ADDRESS]: koi.address })
-          port.postMessage({
-            type: MESSAGES.UNLOCK_WALLET,
-            data: { koiData }
-          })
-        } catch (err) {
-          port.postMessage({
-            type: MESSAGES.UNLOCK_WALLET,
-            error: `BACKGROUND ERROR: ${err.message}`
-          })
-
-        }
+        const { password } = message.data
+        const walletKey = await decryptWalletKeyFromChrome(password)
+        const koiData = await utils.loadWallet(koi, walletKey, LOAD_KOI_BY.KEY)
+        await setChromeStorage({ [STORAGE.KOI_ADDRESS]: koi.address })
+        port.postMessage({
+          type: MESSAGES.UNLOCK_WALLET_SUCCESS,
+          data: { koiData }
+        })
         break
       }
       case MESSAGES.GENERATE_WALLET: {
