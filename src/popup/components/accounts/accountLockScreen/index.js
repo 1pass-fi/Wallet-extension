@@ -14,27 +14,35 @@ import { STORAGE, REQUEST } from 'koiConstants'
 
 import './index.css'
 import { setIsLoading } from 'popup/actions/loading'
+import { setError } from 'popup/actions/error'
 
-const LockScreen = ({ unlockWallet, setIsLoading }) => {
+
+const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {
   const history = useHistory()
 
   const [password, setPassword] = useState('')
 
   const handleOnSubmit = async () => {
-    await setIsLoading(true)
-    unlockWallet(password)
-    await setIsLoading(false)
+    try {
+      setIsLoading(true)
+      const unlocked = await unlockWallet(password)
+      setIsLoading(false)
 
-    const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
-    switch (get(storage[STORAGE.PENDING_REQUEST], 'type')) {
-      case REQUEST.PERMISSION:
-        history.push('/account/connect-site')
-        break
-      case REQUEST.TRANSACTION:
-        history.push('/account/sign-transaction')
-        break
-      default:
-        history.push('/account')
+      if (unlocked) {
+        const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
+        switch (get(storage[STORAGE.PENDING_REQUEST], 'type')) {
+          case REQUEST.PERMISSION:
+            history.push('/account/connect-site')
+            break
+          case REQUEST.TRANSACTION:
+            history.push('/account/sign-transaction')
+            break
+          default:
+            history.push('/account')
+        }
+      }
+    } catch (err) {
+      setError(err.message)
     }
   }
 
@@ -73,4 +81,4 @@ const LockScreen = ({ unlockWallet, setIsLoading }) => {
   )
 }
 
-export default connect(null, { unlockWallet, setIsLoading })(LockScreen)
+export default connect(null, { unlockWallet, setIsLoading, setError })(LockScreen)

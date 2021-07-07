@@ -104,7 +104,7 @@ export default ({ children }) => {
       }
     }
     const loadContentSuccessHandler = new CreateEventHandler(
-      MESSAGES.LOAD_CONTENT_SUCCESS,
+      MESSAGES.LOAD_CONTENT,
       async (response) => {
         const { contentList } = response.data
         isArray(contentList) && setCardInfos(contentList)

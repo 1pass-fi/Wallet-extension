@@ -12,9 +12,9 @@ import './index.css'
 import { validatePassword } from './utils'
 
 export const Password = ({ generateWallet, setError }) => {
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault()
-    validatePassword({ e, setError, generateWallet })
+    await validatePassword({ e, setError, generateWallet })
   }
   return (
     <div>

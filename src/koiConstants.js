@@ -161,7 +161,9 @@ export const RATE = {
 export const NOTIFICATION = {
   COPIED: 'Copied to clipboard.',
   KEY_EXPORTED: 'Private key downloaded.',
-  ACCOUNT_NAME_UPDATED: 'Account name updated.'
+  ACCOUNT_NAME_UPDATED: 'Account name updated.',
+  NFT_LOADED: 'Your assets list is up to date.',
+  TRANSACTION_SENT: 'Transaction sent.'
 }
 
 export const WARNING_MESSAGE = {
@@ -171,3 +173,5 @@ export const WARNING_MESSAGE = {
 export const LOAD_BALANCES_TIME_INTERVAL = 10000
 
 export const NFT_BIT_DATA = 'NFT_BIT_DATA'
+
+export const ALL_NFT_LOADED = 'ALL_NFT_LOADED'

@@ -1,4 +1,4 @@
-import { LOAD_KOI_BY, PATH, STORAGE, ERROR_MESSAGE, NFT_BIT_DATA } from 'koiConstants'
+import { LOAD_KOI_BY, PATH, STORAGE, ERROR_MESSAGE, NFT_BIT_DATA, ALL_NFT_LOADED } from 'koiConstants'
 import passworder from 'browser-passworder'
 import moment from 'moment'
 import { get, isNumber, isArray } from 'lodash'
@@ -97,7 +97,7 @@ export const loadMyContent = async (koiObj) => {
     console.log({ myContent })
     const storage = await getChromeStorage(STORAGE.CONTENT_LIST)
     const contentList = storage[STORAGE.CONTENT_LIST] || []
-    if (myContent.length === contentList.length) return
+    if (myContent.length === contentList.length) return ALL_NFT_LOADED
     return Promise.all(myContent.map(async contentId => {
       try {
         console.log(`${PATH.SINGLE_CONTENT}${contentId}`)
@@ -160,25 +160,29 @@ export const loadMyActivities = async (koiObj, cursor) => {
 
     let ownedData
     let recipientData
-    console.log(await koiObj.getOwnedTxs(koiObj.address))
+    
+    // fetch data base on inputed cursors
     if (ownedCursor) {
-      ownedData = get(await koiObj.getOwnedTxs(koiObj.address, 10, ownedCursor), 'data.transactions.edges')
+      ownedData = get(await koiObj.getOwnedTxs(koiObj.address, 10, ownedCursor), 'data.transactions.edges') || []
     } else {
-      ownedData = get(await koiObj.getOwnedTxs(koiObj.address), 'data.transactions.edges')
+      ownedData = get(await koiObj.getOwnedTxs(koiObj.address), 'data.transactions.edges') || []
     }
   
     if (recipientCursor) {
-      recipientData = get(await koiObj.getRecipientTxs(koiObj.address, 10, recipientCursor), 'data.transactions.edges')
+      recipientData = get(await koiObj.getRecipientTxs(koiObj.address, 10, recipientCursor), 'data.transactions.edges') || []
     } else {
-      recipientData = get(await koiObj.getRecipientTxs(koiObj.address), 'data.transactions.edges')
+      recipientData = get(await koiObj.getRecipientTxs(koiObj.address), 'data.transactions.edges') || []
     }
   
     let activitiesList = [...ownedData, ...recipientData]
 
+    // get next cursors
     const nextOwnedCursor = ownedData.length > 0 ? get(ownedData[ownedData.length - 1], 'cursor') : ownedCursor
     const nextRecipientCursor = recipientData.length > 0 ? get(recipientData[recipientData.length - 1], 'cursor') : recipientCursor
 
     if (activitiesList.length > 0) {
+
+      // filter activities has node.block (success fetched activities) field then loop through to get necessary fields
       activitiesList = activitiesList.filter(activity => !!get(activity, 'node.block')).map(activity => {
         const time = get(activity, 'node.block.timestamp')
         const timeString = isNumber(time) ? moment(time*1000).format('MMMM DD YYYY') : ''
