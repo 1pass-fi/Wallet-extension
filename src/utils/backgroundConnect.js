@@ -1,3 +1,5 @@
+import { MESSAGES } from 'koiConstants'
+
 export class EventHandler {
   constructor(type, callback) {
     this.type = type
@@ -18,7 +20,7 @@ export class BackgroundConnect {
         this.eventHandlers.forEach(handler => {
           if (handler.type === message.type) {
             handler.callback(message)
-            _this.removeHandler(handler.type)
+            handler.type !== MESSAGES.GET_BALANCES_SUCCESS && _this.removeHandler(handler.type)
           }
         })
       })

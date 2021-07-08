@@ -10,7 +10,7 @@ export default () => {
       <div className='congratulations-section'>
         <div className='title'>Congratulations!</div>
         <div className='details'>
-          You successfully imported your wallet to Koi.
+          You successfully imported your wallet to Koii.
         </div>
       </div>
       <div className='tips-section'>
@@ -21,13 +21,13 @@ export default () => {
             <p className='tip-item'>Save a backup copy in several places.</p>
             <p className='tip-item'>Never share your phrase with anyone. </p>
             <p className='tip-item'>
-              Stay safe from phishing scams— Koi will never ask you for your
+              Stay safe from phishing scams— Koii will never ask you for your
               seed phrase.
             </p>
             <p className='tip-item'>
               If you have questions or see something suspicious, email us
               at&nbsp;
-              <a className='security-link'>security@openkoi.com</a>.
+              <a className='security-link'>support@koii.network</a>.
             </p>
           </div>
         </div>

@@ -34,7 +34,7 @@ export default () => {
       url,
       focused: true,
       type: 'popup',
-      height: 622,
+      height: 628,
       width: 426
     })
     window.close()

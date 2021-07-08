@@ -9,7 +9,8 @@ export const HEADER_EXCLUDE_PATH = [
   '/account/connect-site',
   '/account/sign-transaction',
   '/account/welcome',
-  '/account/create/success'
+  '/account/create/success',
+  '/account/import/keyfile/success'
 ]
 
 export const PORTS = {
@@ -117,18 +118,19 @@ export const PATH = {
 
 export const ERROR_MESSAGE = {
   INCORRECT_PASSWORD: 'Incorrect password, please try again.',
-  PASSWORD_LENGTH: 'Your KOI password must have at least 8 characters.',
+  PASSWORD_LENGTH: 'Your Koii password must have at least 8 characters.',
   PASSWORD_MATCH: 'Passwords do not match, please try again.',
   INCORRECT_PHRASE: 'Incorrect seed phrase, please try again.',
   EMPTY_PHRASE: 'Seed phrase should not be blank.',
   CHECKED_TERMS: 'You have to agree to the Terms of Service',
   EMPTY_FIELDS: 'Please fill in all fields.',
-  NOT_ENOUGH_KOI: `You don't have enough KOI.`,
+  NOT_ENOUGH_KOI: `You don't have enough Koii.`,
   REQUEST_NOT_EXIST: 'This request is no longer exist.',
   INVALID_AMOUNT: 'Amount can not be negative.',
   ALREADY_CONNECTED_SITE: 'This site has already connected.',
   MUST_USE_IN_POPUP: 'Please use this feature in the extension pop up.',
-  NOT_ENOUGH_AR: `You don't have enough AR.`
+  NOT_ENOUGH_AR: `You don't have enough AR.`,
+  FILE_TOO_LARGE: 'File too large. The maximum size for NFT is 15MB'
 }
 
 export const STORAGE = {

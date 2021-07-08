@@ -5,7 +5,7 @@ import { PORTS, MESSAGES } from 'koiConstants'
 import { setChromeStorage } from 'utils'
 import { get } from 'lodash'
 
-console.log('Content scripts has loaded')
+console.log('Finnie is ready to connect to the site.')
 
 const messageTypes = [
   MESSAGES.GET_ADDRESS_SUCCESS,

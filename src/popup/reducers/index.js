@@ -13,6 +13,7 @@ import transactions from './transactions'
 import cursor from './cursor'
 import accountName from './accountName'
 import price from './price'
+import creatingWallet from './creatingWallet'
 
 export default combineReducers({
   loading,
@@ -27,5 +28,6 @@ export default combineReducers({
   transactions,
   cursor,
   accountName,
-  price
+  price,
+  creatingWallet
 })

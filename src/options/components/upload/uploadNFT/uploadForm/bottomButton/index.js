@@ -1,6 +1,7 @@
 import React, { useContext, useState, useRef } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import isEmpty from 'lodash/isEmpty'
+import isNumber from 'lodash/isNumber'
 
 import { exportNFT, getChromeStorage, setChromeStorage } from 'utils'
 const arweave = Arweave.init({
@@ -17,13 +18,22 @@ import { koi } from 'background'
 import './index.css'
 import { backgroundRequest } from 'popup/backgroundRequest'
 
-import { NFT_BIT_DATA } from 'koiConstants'
+import { ERROR_MESSAGE, NFT_BIT_DATA } from 'koiConstants'
 
 export default ({ description, setStage, stage, title, file, username }) => {
   const createNftButtonRef = useRef(null)
-  const { setIsLoading, address, wallet, setFile, setNotification, setError, inviteSpent } = useContext(GalleryContext)
+  const { setIsLoading, 
+    address, 
+    wallet, 
+    setFile, 
+    setNotification,
+    setError,
+    inviteSpent,
+    totalAr,
+    totalKoi } = useContext(GalleryContext)
   const {
     tags,
+    price,
     setTransactionId,
     setCreatedAt,
     isFriendCodeValid,
@@ -33,7 +43,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
 
   const handleUploadNFT = async () => {
     // file size checking
-    if (file.size > 15 * 1024 ** 2) throw new Error('File too large. The maximum size for NFT is 15MB')
+    if (file.size > 15 * 1024 ** 2) throw new Error(ERROR_MESSAGE.FILE_TOO_LARGE)
     setIsLoading(true)
     try {
       const url = URL.createObjectURL(file)
@@ -94,7 +104,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
         className='create-ntf-button'
         onClick={() => {
           try {            
-            if (file.size > 15 * 1024 ** 2) throw new Error('File too large. The maximum size for NFT is 15MB')
+            if (file.size > 15 * 1024 ** 2) throw new Error(ERROR_MESSAGE.FILE_TOO_LARGE)
             setStage(2)
           } catch(error) {
             setError(error.message)
@@ -109,15 +119,33 @@ export default ({ description, setStage, stage, title, file, username }) => {
 
   if (stage == 2) {
     const handleUploadStage2 = async () => {
-      try {
-        createNftButtonRef.current.disabled = true
-        const { txId, time } = await handleUploadNFT()
-        // const { txId, time } = await mockUploadNFT()
-        setTransactionId(txId)
-        setCreatedAt(time)
-        setStage(3)
-      } catch (err) {
-        setError(err.message)
+      console.log(price)
+      // Costs validations
+      if (isNumber(price)) {
+        try {
+          const koiPrice = isFriendCodeValid ? 0 : 1
+
+          if (totalKoi < koiPrice) {
+            setError(ERROR_MESSAGE.NOT_ENOUGH_KOI)
+            return
+          }
+
+          if (totalAr <= price) {
+            setError(ERROR_MESSAGE.NOT_ENOUGH_AR)
+            return
+          }
+
+          createNftButtonRef.current.disabled = true
+          const { txId, time } = await handleUploadNFT()
+          // const { txId, time } = await mockUploadNFT()
+          setTransactionId(txId)
+          setCreatedAt(time)
+          setStage(3)
+        } catch (err) {
+          setError(err.message)
+        }
+      } else {
+        setError(ERROR_MESSAGE.CANNOT_GET_COSTS)
       }
     }
 

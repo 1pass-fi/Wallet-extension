@@ -53,9 +53,9 @@ export default  ({ isEnable, buttonLabel, setPassword, setConfirmPassword, setIs
             name='checkbox'
           />
         </div>
-        <label>
+        <label for='check-terms'>
           I agree with the{' '}
-          <a href='https://koii.network/TOU_June_22_2021.pdf'>
+          <a target="_blank" href='https://koii.network/TOU_June_22_2021.pdf'>
             Terms of Service
           </a>
         </label>

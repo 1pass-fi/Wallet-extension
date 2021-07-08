@@ -25,6 +25,7 @@
 .create-password .term-service label {
     margin-left: 15px;
     font-size: 15px;
+    display: block;
 }
 
 .create-password .term-service a {

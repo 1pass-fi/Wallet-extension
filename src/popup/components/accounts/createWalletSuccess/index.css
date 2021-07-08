@@ -1,12 +1,12 @@
-.import-file-wrapper {
+.create-wallet-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: white;
+  background-color: #e5e5e5;
 }
 
-.import-file-success {
+.create-wallet-success {
   letter-spacing: 0.03em;
   padding: 24px 36px 20px;
   color: #171753;
@@ -62,7 +62,7 @@
   font-weight: 600;
 }
 
-.import-file-success .button-line {
+.create-wallet-success .button-line {
   width: 100%;
   margin-top: 30px;
   display: flex;
@@ -76,6 +76,6 @@
   min-width: 156px;
 }
 
-.import-wallet-success-button.create{
+.create-wallet-success-button.create{
   min-height: 35px;
 }

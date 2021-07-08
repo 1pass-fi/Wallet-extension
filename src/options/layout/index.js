@@ -107,8 +107,14 @@ export default ({ children }) => {
       MESSAGES.LOAD_CONTENT,
       async (response) => {
         const { contentList } = response.data
-        isArray(contentList) && setCardInfos(contentList)
-        await setChromeStorage({ [STORAGE.CONTENT_LIST]: contentList })
+        if (isArray(contentList)) {
+          setCardInfos(contentList)
+          await setChromeStorage({ [STORAGE.CONTENT_LIST]: contentList })
+          if (isEmpty(contentList)) history.push('/create')
+        } else {
+          const storageContentList = (await getChromeStorage(STORAGE.CONTENT_LIST))[STORAGE.CONTENT_LIST] || []
+          if (isEmpty(storageContentList)) history.push('/create')
+        }
         setIsLoading(false)
       }
     )
@@ -210,7 +216,9 @@ export default ({ children }) => {
         setError,
         setNotification,
         totalReward,
-        inviteSpent
+        inviteSpent,
+        totalKoi,
+        totalAr
       }}
     >
       <div

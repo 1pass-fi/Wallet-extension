@@ -13,10 +13,25 @@ body {
   justify-content: center;
   font-family: 'Catamaran', sans-serif;
   font-weight: 400;
+  overflow-x: hidden;
 }
 
 body #root {
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: overlay;
+  height: 600px;
+}
+
+#root::-webkit-scrollbar {
+  width: 3px;
+}
+
+#root::-webkit-scrollbar-track {
+  background: #f8f8f8;
+}
+
+#root::-webkit-scrollbar-thumb {
+  background: #888;
 }
 
 .content {

@@ -35,7 +35,12 @@ const Assets = ({ assets, setAssets, loadContent, isContLoading, setContLoading,
     handleLoadContent()
   }, [])
 
-  return (<AssetList assets={assets} onAddAsset={() => alert('add asset')} />)
+  const onAddAsset = () => {
+    const url = chrome.extension.getURL('options.html#/create')
+    chrome.tabs.create({ url })
+  }
+
+  return (<AssetList assets={assets} onAddAsset={onAddAsset} />)
 }
 
 const mapStateToProps = (state) => ({ assets: state.assets, isContLoading: state.contLoading })

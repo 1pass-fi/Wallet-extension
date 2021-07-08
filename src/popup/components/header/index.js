@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Redirect, withRouter, useHistory } from 'react-router-dom'
 
@@ -13,6 +13,8 @@ import { setError } from 'actions/error'
 import './index.css'
 
 const Header = ({ location, setError, koi }) => {
+  const [showGalleryButton, setShowGalleryButton] = useState(false)
+
   const history = useHistory()
   /* istanbul ignore next */
   const onGalleryClick = () => {
@@ -40,6 +42,15 @@ const Header = ({ location, setError, koi }) => {
     }
   }
 
+  useEffect(() => {
+    const getAddress = async () => {
+      const storage = await getChromeStorage(STORAGE.KOI_ADDRESS)
+      if (storage[STORAGE.KOI_ADDRESS]) setShowGalleryButton(true)
+    }
+
+    getAddress()
+  }, [])
+
   return (
     <>
       <header
@@ -50,12 +61,12 @@ const Header = ({ location, setError, koi }) => {
         <button className='logo-button' onClick={onLogoButtonClick}>
           <LogoIcon className='logo' />
         </button>
-        <button onClick={onGalleryClick} className='gallery-button'>
+        {showGalleryButton && <button onClick={onGalleryClick} className='gallery-button'>
           My NFT Gallery
-        </button>
-        <button className='setting-button' onClick={onSettingButtonClick}>
+        </button>}
+        {showGalleryButton && <button className='setting-button' onClick={onSettingButtonClick}>
           <SettingIcon />
-        </button>
+        </button>}
       </header>
       {koi.address && location.pathname !== '/setting' && <NavBar />}
     </>
