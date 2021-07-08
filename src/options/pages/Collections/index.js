@@ -63,7 +63,6 @@ const OldContent = () => {
 export default () => {
   return (
     <div className='collections-container'>
-      <Header />
       <CollectionList />
     </div>
   )

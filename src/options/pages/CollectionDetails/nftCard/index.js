@@ -18,8 +18,8 @@ export default ({ nft }) => {
     setTimeout(() => setIsCopied(false), 3000)
   }
   return (
-    <div className='nft-card-wrapper'>
-      <div className='nft-card'>
+    <div className='nft-simple-card-wrapper'>
+      <div className='nft-simple-card'>
         <div className='preview-nft'>
           {contentType.includes('image') ? (
             <img src={url} className='nft-img' />

@@ -4,7 +4,7 @@ import CollectionCard from 'options/components/collectionCard'
 
 import './index.css'
 
-export default ({ collections }) => {
+export default ({ collections = [] }) => {
   return (
     <div className='collection-list-wrapper'>
       <div className='collection-list'>

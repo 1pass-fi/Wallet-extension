@@ -1,5 +1,5 @@
 /* -- START CARD */
-.nft-card-wrapper {
+.nft-simple-card-wrapper {
   color: #ffffff;
   cursor: pointer;
   height: 320px;
@@ -7,18 +7,18 @@
   width: 216px;
 }
 
-.nft-card-wrapper {
+.nft-simple-card-wrapper {
   color: #ffffff;
   cursor: pointer;
   position: relative;
   width: 216px;
 }
 
-.nft-card * {
+.nft-simple-card * {
   box-sizing: border-box;
 }
 
-.nft-card {
+.nft-simple-card {
   border-radius: 3px;
   box-sizing: border-box;
   left: -20px;
@@ -27,7 +27,7 @@
   width: 256px;
 }
 
-.nft-card .nft-name {
+.nft-simple-card .nft-name {
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;
@@ -40,25 +40,25 @@
   white-space: nowrap;
 }
 
-.nft-card .nft-name:hover {
+.nft-simple-card .nft-name:hover {
   text-decoration: underline;
 }
 
-.nft-card .nft-view {
+.nft-simple-card .nft-view {
   color: #ffffff;
   font-weight: 400;
   font-size: 16px;
   line-height: 20px;
 }
 
-.nft-card .nft-earned-koi {
+.nft-simple-card .nft-earned-koi {
   color: #ffffff;
   font-size: 12px;
   letter-spacing: 0.03em;
   line-height: 16px;
 }
 
-.nft-card .register-button {
+.nft-simple-card .register-button {
   align-items: center;
   background: linear-gradient(90deg, #030332 0%, #171753 100%);
   border-radius: 2px;
@@ -70,11 +70,11 @@
   height: 20px;
 }
 
-.nft-card .register-button .icon {
+.nft-simple-card .register-button .icon {
   width: 15px;
 }
 
-.nft-card .nft-img {
+.nft-simple-card .nft-img {
   -webkit-user-drag: none;
   background: #020221;
   height: 216px;
@@ -82,7 +82,7 @@
   width: 216px;
 }
 
-.nft-card .copy-noti {
+.nft-simple-card .copy-noti {
   color: #ffc78f;
   font-size: 16px;
   height: 30px;
@@ -94,7 +94,7 @@
   width: 80px;
 }
 
-.nft-card .share-nft-button {
+.nft-simple-card .share-nft-button {
   height: 18px;
   position: absolute;
   right: 20px;
@@ -102,7 +102,7 @@
   width: 18px;
 }
 
-.nft-card .nft-path {
+.nft-simple-card .nft-path {
   height: 18px;
   position: absolute;
   right: 20px;
