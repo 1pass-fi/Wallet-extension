@@ -53,6 +53,7 @@ function cb(port) {
 
 if (chrome.runtime.onInstalled) {
   chrome.runtime.onInstalled.addListener(() => {
+    chrome.storage.local.remove('koiAddress')
     chrome.runtime.onConnect.addListener(cb)
   })
 

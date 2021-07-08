@@ -130,7 +130,8 @@ export const ERROR_MESSAGE = {
   ALREADY_CONNECTED_SITE: 'This site has already connected.',
   MUST_USE_IN_POPUP: 'Please use this feature in the extension pop up.',
   NOT_ENOUGH_AR: `You don't have enough AR.`,
-  FILE_TOO_LARGE: 'File too large. The maximum size for NFT is 15MB'
+  FILE_TOO_LARGE: 'File too large. The maximum size for NFT is 15MB',
+  CANNOT_GET_COSTS: 'Cannot get the upload costs.'
 }
 
 export const STORAGE = {
@@ -177,3 +178,5 @@ export const LOAD_BALANCES_TIME_INTERVAL = 10000
 export const NFT_BIT_DATA = 'NFT_BIT_DATA'
 
 export const ALL_NFT_LOADED = 'ALL_NFT_LOADED'
+
+export const DISCONNECTED_BACKGROUND = 'Attempting to use a disconnected port object'
