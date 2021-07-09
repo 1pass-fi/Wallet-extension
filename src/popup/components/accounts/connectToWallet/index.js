@@ -99,7 +99,7 @@ export const ConnectToWallet = ({ setError, connectSite, accountName }) => {
   return (
     <div className='select-wallet'>
       <header className='header'>
-        <div className='connect-with-koi'>Connect with Koi</div>
+        <div className='connect-with-koi'>Connect with Koii</div>
         <div className='title'>
           {favicon && <img src={favicon} className='logo' />}
           <a className='company-url' target='_blank' href={origin}>

@@ -209,7 +209,8 @@ export const makeTransfer = (qty, target, currency) => async (dispatch) => {
 
     console.log('TRANSACTION ID', txId)
   } catch (err) {
-    dispatch(setError(err.message))
+    console.log('ERROR-ACTION: ', err.message)
+    throw new Error(err.message)
   }
 }
 

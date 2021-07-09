@@ -73,12 +73,16 @@ const SendKoiForm = ({
   }
 
   const hanldeTransaction = async () => {
-    setShowModal(false)
-    setIsLoading(true)
-    await makeTransfer(Number(amount), address, currency)
-    setIsLoading(false)
-    setNotification(NOTIFICATION.TRANSACTION_SENT)
-    // onSendSuccess()
+    try {
+      setShowModal(false)
+      setIsLoading(true)
+      await makeTransfer(Number(amount), address, currency)
+      setIsLoading(false)
+      setNotification(NOTIFICATION.TRANSACTION_SENT)
+    } catch (err) {
+      setIsLoading(false)
+      setError(err.message)
+    } 
   }
 
   const numberFormat = (num) => {

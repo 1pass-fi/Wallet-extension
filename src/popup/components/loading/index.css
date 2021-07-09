@@ -1,5 +1,5 @@
 .loading-screen {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.7);
@@ -10,13 +10,13 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  position: absolute;
+  position: fixed;
   width: 100px;
   z-index: 500;
 }
 
 .loading-screen .creating-wallet-statement {
-  position: absolute;
+  position: fixed;
   padding: 15px;
   text-align: center;
   color: #000000;
