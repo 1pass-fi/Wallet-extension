@@ -167,6 +167,9 @@
 }
 
 .settings-page .info-section .left .select-image-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   background: #171753;
   border-radius: 2px;
   border: 1.5px solid #ffffff;
