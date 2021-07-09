@@ -38,6 +38,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
     setCreatedAt,
     isFriendCodeValid,
     setIsFriendCodeValid,
+    setContentType
   } = useContext(UploadContext)
   const [friendCode, setFriendCode] = useState('')
 
@@ -51,6 +52,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
 
       // get the file type
       const fileType = file.type
+      setContentType(file.type)
       
       // get arrayBuffer
       const response = await fetch(url)

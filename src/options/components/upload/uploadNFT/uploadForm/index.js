@@ -36,7 +36,7 @@ export default ({ stage, setStage }) => {
   const { file, setFile, onClearFile, onCloseUploadModal } = useContext(
     GalleryContext
   )
-  const { tags, setTags, transactionId, createdAt } = useContext(UploadContext)
+  const { tags, setTags, transactionId, createdAt, contentType } = useContext(UploadContext)
   // const [stage, setStage] = useState(1)
   const [title, setTitle] = useState('')
   const [username, setUsername] = useState('')
@@ -162,7 +162,7 @@ export default ({ stage, setStage }) => {
               txId={transactionId}
               name={title}
               imageUrl={url}
-              contentType='image'
+              contentType={contentType}
               createdAt={createdAt}
               tags={tags}
               koiRockUrl={`${PATH.KOI_ROCK}/${transactionId}`}
