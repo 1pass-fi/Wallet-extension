@@ -67,16 +67,17 @@ const Activity = ({
         STORAGE.KOI_ADDRESS,
         STORAGE.PENDING_TRANSACTION,
       ])
-      const listPendingTransaction = storage[STORAGE.PENDING_TRANSACTION]
-      if (storage[STORAGE.KOI_ADDRESS]) {
-        loadActivities({ cursor })
-      }
+      const listPendingTransaction = storage[STORAGE.PENDING_TRANSACTION] || []
       setTransactions(listPendingTransaction)
+      
+      if (storage[STORAGE.KOI_ADDRESS]) {
+        await loadActivities(cursor)
+      }
     }
     handleLoadActivities()
   }, [])
   
-  const handleLoadMore = () => loadActivities({ cursor })
+  const handleLoadMore = async () => await loadActivities(cursor)
 
   return (
     <div className="activity-container">

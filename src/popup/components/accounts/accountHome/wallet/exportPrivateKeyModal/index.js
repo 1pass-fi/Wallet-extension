@@ -9,13 +9,15 @@ import './index.css'
 import InputField from 'shared/inputField'
 import Button from 'popup/components/shared/button'
 import Modal from 'popup/components/shared/modal/index'
+import { setNotification } from 'popup/actions/notification'
 
-export const KeyModal = ({ getKeyFile, setShowExportKeyModel }) => {
+export const KeyModal = ({ getKeyFile, setShowExportKeyModel, setNotification }) => {
   const [password, setPassword] = useState(null)
 
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
     if (password) {
-      getKeyFile({ password })
+      await getKeyFile(password)
+      setNotification(NOTIFICATION.KEY_EXPORTED)
       setShowExportKeyModel(false)
     }
   }
@@ -47,4 +49,4 @@ export const KeyModal = ({ getKeyFile, setShowExportKeyModel }) => {
   )
 }
 
-export default connect(null, { getKeyFile })(KeyModal)
+export default connect(null, { getKeyFile, setNotification })(KeyModal)

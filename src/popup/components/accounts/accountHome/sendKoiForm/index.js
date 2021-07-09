@@ -11,9 +11,11 @@ import WarningIcon from 'img/warning-icon.svg'
 import { makeTransfer } from 'actions/koi'
 import { setError } from 'actions/error'
 import { setWarning } from 'actions/warning'
-import { ERROR_MESSAGE, WARNING_MESSAGE, RATE } from 'koiConstants'
+import { ERROR_MESSAGE, WARNING_MESSAGE, RATE, NOTIFICATION } from 'koiConstants'
 
 import './index.css'
+import { setIsLoading } from 'popup/actions/loading'
+import { setNotification } from 'popup/actions/notification'
 
 const SendKoiForm = ({
   koiBalance,
@@ -24,7 +26,9 @@ const SendKoiForm = ({
   setWarning,
   makeTransfer,
   onSendSuccess,
-  price
+  setIsLoading,
+  price,
+  setNotification
 }) => {
   const defaultCur = currencies[0].value
 
@@ -68,10 +72,13 @@ const SendKoiForm = ({
     }
   }
 
-  const hanldeTransaction = () => {
+  const hanldeTransaction = async () => {
     setShowModal(false)
-    makeTransfer({ qty: Number(amount), address: address, currency })
-    onSendSuccess()
+    setIsLoading(true)
+    await makeTransfer(Number(amount), address, currency)
+    setIsLoading(false)
+    setNotification(NOTIFICATION.TRANSACTION_SENT)
+    // onSendSuccess()
   }
 
   const numberFormat = (num) => {
@@ -145,4 +152,4 @@ const SendKoiForm = ({
 
 const mapStateToProps = (state) => ({ price: state.price })
 
-export default connect(mapStateToProps, { setError, setWarning, makeTransfer })(SendKoiForm)
+export default connect(mapStateToProps, { setError, setWarning, makeTransfer, setIsLoading, setNotification })(SendKoiForm)

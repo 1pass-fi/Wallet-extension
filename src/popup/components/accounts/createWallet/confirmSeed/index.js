@@ -15,6 +15,10 @@ import Button from 'shared/button'
 
 import { setError } from 'actions/error'
 import { setCreateWallet } from 'actions/createWallet'
+import { setIsLoading } from 'popup/actions/loading'
+
+import { getChromeStorage } from 'utils'
+import { STORAGE, PATH } from 'koiConstants'
 
 import './index.css'
 
@@ -24,6 +28,7 @@ export const ConfirmSeed = ({
   saveWallet,
   setError,
   setCreateWallet,
+  setIsLoading
 }) => {
   const wordLists = shuffle(seedPhrase.split(' '))
   const history = useHistory()
@@ -34,10 +39,19 @@ export const ConfirmSeed = ({
     setCreateWallet({ password: null, seedPhrase: null, stage: 1 })
   }
 
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
     try {
       if (seedPhrase === addedPhrase.map((item) => item.word).join(' ')) {
-        saveWallet({ password, history, seedPhrase })
+        setIsLoading(true)
+        await saveWallet(seedPhrase, password)
+        setIsLoading(false)
+
+        if ((await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) {
+          // In case user created new wallet via koi.rocks, they will be redirected to the connect-site page.
+          history.push(PATH.CONNECT_SITE)
+        } else {
+          history.push(PATH.CREATE_WALLET_REDIRECT)
+        }
       } else {
         setError('Incorrect Seed phrase')
       }
@@ -153,4 +167,4 @@ export const ConfirmSeed = ({
   )
 }
 
-export default connect(null, { setError, setCreateWallet })(ConfirmSeed)
+export default connect(null, { setError, setCreateWallet, setIsLoading })(ConfirmSeed)
