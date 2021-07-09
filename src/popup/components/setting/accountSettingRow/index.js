@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import Fish from 'img/fish.svg'
+import Fish from 'img/koi-logo-bg.svg'
 import EditIcon from 'img/edit-icon.svg'
 import Button from 'popup/components/shared/button'
 import RevealSeedPhraseModal from '../revealSeedPhraseModal'

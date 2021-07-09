@@ -20,15 +20,15 @@ export default ({
   setTitle,
   setUsername,
 }) => {
-  const { setTags, tags, isFriendCodeValid } = useContext(UploadContext)
+  const { setTags, tags, isFriendCodeValid, price, setPrice } = useContext(UploadContext)
   const { file } = useContext(GalleryContext)
-  const [price, setPrice] = useState(0)
   const [tagInput, setTagInput] = useState('')
 
   const addTag = (e) => {
-    if (e.keyCode === 32 || e.keyCode === 13) {
-      const newTag = trim(tagInput)
-      newTag && setTags(union(tags, [newTag]))
+    if (e.keyCode === 13) {
+      let newTags = tagInput.split(',')
+      newTags = newTags.map((tag) => trim(tag)).filter((tag) => tag.replace(/\s/g, '').length)
+      setTags(union(tags, newTags))
       setTagInput('')
     }
   }

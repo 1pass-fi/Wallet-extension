@@ -15,7 +15,8 @@ const AssetList = ({ assets, onAddAsset }) => {
     <div className="assets">
       {assets.map((asset, index) => <AssetRow key={index} {...asset} isGrey={index % 2 === 0} />)}
       <div className="assets-add-more-row">
-        <div className="assets-plus-icon">
+        <div onClick={onAddAsset} className="assets-plus-icon">
+          <PlusIcon />
         </div>
       </div>
     </div>

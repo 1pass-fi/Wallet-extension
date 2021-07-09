@@ -1,3 +1,11 @@
+.modal.reveal-seed-phrase .wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 373px;
+}
+
 .modal.reveal-seed-phrase .modal-title {
   font-weight: 600;
 }
@@ -41,4 +49,12 @@
 
 .modal.reveal-seed-phrase .modal-action-button.reveal {
   height: 35px;
+}
+
+.modal.reveal-seed-phrase .modal-button-no-seedphrase {
+  text-align: center;
+}
+
+.modal.reveal-seed-phrase .modal-button-no-seedphrase button {
+  margin-left: 0px;
 }

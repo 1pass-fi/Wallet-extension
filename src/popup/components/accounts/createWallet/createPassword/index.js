@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
 import CreatePassword from 'shared/createPassword'
@@ -10,14 +10,27 @@ import { setError } from 'actions/error'
 
 import './index.css'
 import { validatePassword } from './utils'
+import { setIsLoading } from 'actions/loading'
+import { setCreatingWallet } from 'actions/creatingWallet'
 
-export const Password = ({ generateWallet, setError }) => {
+export const Password = ({ generateWallet, setError, setIsLoading, setCreatingWallet }) => {
+
   const handleOnSubmit = async (e) => {
-    e.preventDefault()
-    await validatePassword({ e, setError, generateWallet })
+    try {
+      e.preventDefault()
+      setIsLoading(true)
+      setCreatingWallet(true) // show the creating wallet statement
+      await validatePassword({ e, setError, generateWallet })
+      setCreatingWallet(false)
+      setIsLoading(false)
+    } catch (err) {
+      setIsLoading(false)
+      setCreatingWallet(false)
+      setError(err.message)
+    }
   }
   return (
-    <div>
+    <div className='stage1'>
       <Card>
         <div className='title'>
           <PlusIconOutline />
@@ -31,4 +44,4 @@ export const Password = ({ generateWallet, setError }) => {
   )
 }
 
-export default connect(null, { setError })(Password)
+export default connect(null, { setError, setIsLoading, setCreatingWallet })(Password)

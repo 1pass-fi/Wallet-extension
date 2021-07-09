@@ -8,7 +8,7 @@ const arweave = Arweave.init({
   port: 443,
 })
 
-import { MESSAGES, LOAD_KOI_BY, PORTS, STORAGE, ALL_NFT_LOADED } from 'koiConstants'
+import { MESSAGES, LOAD_KOI_BY, PORTS, STORAGE, ALL_NFT_LOADED, ERROR_MESSAGE } from 'koiConstants'
 import {
   saveWalletToChrome,
   utils,
@@ -262,10 +262,17 @@ export default async (koi, port, message, ports, resolveId) => {
             data: { txId }
           })
         } catch(err) {
-          port.postMessage({
-            type: MESSAGES.MAKE_TRANSFER,
-            error: `BACKGROUND ERROR: ${err.message}`
-          })          
+          if (err.message == ERROR_MESSAGE.NOT_ENOUGH_KOI || err.message == ERROR_MESSAGE.NOT_ENOUGH_AR) {
+            port.postMessage({
+              type: MESSAGES.MAKE_TRANSFER,
+              error: err.message
+            })          
+          } else {
+            port.postMessage({
+              type: MESSAGES.MAKE_TRANSFER,
+              error: `BACKGROUND ERROR: ${err.message}`
+            })          
+          }
         }
         break
       }

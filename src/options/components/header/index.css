@@ -20,14 +20,16 @@
 
 .app-header .header-right {
   display: flex;
-  justify-content: flex-end;
-  margin-right: 71px;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-right: 25px;
+  align-items: flex-end;
+  height: 80px;
+  margin-top: 40px;
 }
 
 .app-header .header-right .no-koi {
   align-items: center;
-  background: #ffffff;
   border-radius: 4px;
   border: 1.5px solid #171753;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
@@ -41,10 +43,11 @@
   text-decoration: none;
   line-height: 18px;
   width: 156px;
+  min-width: 170px;
 }
 
 .app-header .header-right .no-koi .get-some {
-  color: #171753;
+  color: #ffffff;
 }
 
 .app-header .header-right .total-koi {
@@ -60,6 +63,7 @@
   padding: 6px 11px;
   line-height: 16px;
   font-size: 16px;
+  min-width: 170px;
 }
 
 .app-header .header-right .total-koi div {

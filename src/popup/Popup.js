@@ -1,5 +1,5 @@
 import '@babel/polyfill'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch, useHistory, withRouter } from 'react-router-dom'
 import { get, isNumber } from 'lodash'
@@ -14,6 +14,8 @@ import Setting from 'components/setting'
 import Message from 'components/message'
 import continueLoadingIcon from 'img/continue-load.gif'
 
+import KoiLogo from 'img/koi-logo.svg'
+
 import { setIsLoading } from 'actions/loading'
 import { setError } from 'actions/error'
 import { setNotification } from 'actions/notification'
@@ -21,7 +23,7 @@ import { setWarning } from 'actions/warning'
 import { setPrice } from 'actions/price'
 import { setKoi, getBalances } from 'actions/koi'
 
-import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST, PATH } from 'koiConstants'
+import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST, PATH, DISCONNECTED_BACKGROUND } from 'koiConstants'
 
 import { getChromeStorage, setChromeStorage } from 'utils'
 import axios from 'axios'
@@ -29,6 +31,14 @@ import axios from 'axios'
 const ContinueLoading = () => (
   <div className='continue-loading'>
     <img src={continueLoadingIcon} />
+  </div>
+)
+
+const Reconnect = () => (
+  <div className='reconnect'>
+    <div className='reconnect-logo'><KoiLogo /></div>
+      Finnie needs to reconnect to the background. Please click on the button below.
+    <button onClick={() => chrome.runtime.reload()}>Reconnect</button>
   </div>
 )
 
@@ -48,13 +58,16 @@ const Popup = ({
   setKoi
 }) => {
   const history = useHistory()
+
+  const [needToReconnect, setNeedToReconnect] = useState(false)
+
   useEffect(() => {
     async function getKoiData() {
       try {
         const { KOI_ADDRESS, KOI_KEY, PENDING_REQUEST } = STORAGE
         const storage = await getChromeStorage([KOI_ADDRESS, KOI_KEY, PENDING_REQUEST])
         const query = window.location.search
-
+        getBalances()
         if (storage[KOI_ADDRESS]) {
           // Koi Address in local storage
           setKoi({ address: storage[KOI_ADDRESS] })
@@ -77,13 +90,19 @@ const Popup = ({
             history.push('/account/create')
           } else if (query.includes('upload-json')) {
             history.push('/account/import/keyfile')
+          } else if (query.includes('upload-seedphrase')) {
+            history.push('/account/import/phrase')
           } else {
             history.push('/account/welcome')
           }
         }
       } catch (err) {
         console.log(err.message)
-        setError(err.message)
+        if (err.message === DISCONNECTED_BACKGROUND) {
+          setNeedToReconnect(true)
+        } else {
+          setError(err.message)
+        }
         setIsLoading(false)
       }
     }
@@ -150,28 +169,33 @@ const Popup = ({
 
   return (
     <div className="popup">
-      {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
-      {isLoading && <Loading />}
-      {error && <Message type='error' children={error} />}
-      {notification && <Message type='notification' children={notification} />}
-      {warning && <Message type='warning' children={warning} />}
-      {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />}
-      <div className='content'>
-        <Switch>
-          <Route path='/account'>
-            <Account />
-          </Route>
-          <Route path='/assets'>
-            <Assets />
-          </Route>
-          <Route path='/activity'>
-            <Activity activities={activities} />
-          </Route>
-          <Route path='/setting'>
-            <Setting />
-          </Route>
-        </Switch>
-      </div>
+      {
+        needToReconnect ? <Reconnect /> :
+          <div>
+            {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
+            {isLoading && <Loading />}
+            {error && <Message type='error' children={error} />}
+            {notification && <Message type='notification' children={notification} />}
+            {warning && <Message type='warning' children={warning} />}
+            {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />}
+            <div className='content'>
+              <Switch>
+                <Route path='/account'>
+                  <Account />
+                </Route>
+                <Route path='/assets'>
+                  <Assets />
+                </Route>
+                <Route path='/activity'>
+                  <Activity activities={activities} />
+                </Route>
+                <Route path='/setting'>
+                  <Setting />
+                </Route>
+              </Switch>
+            </div>
+          </div>
+      }
     </div>
   )
 }

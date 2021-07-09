@@ -1,4 +1,4 @@
-import { get, isString, isArray } from 'lodash'
+import { get, isString, isArray, isNumber } from 'lodash'
 import passworder from 'browser-passworder'
 
 import { setIsLoading } from './loading'
@@ -26,9 +26,29 @@ import { backgroundRequest } from 'popup/backgroundRequest'
 
 export const getBalances = () => (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
-    const { koiData } = response.data
-    console.log('UPDATE BALANCES. KOI: ', koiData.koiBalance, '; AR: ', koiData.arBalance)
-    dispatch(setKoi(koiData))
+    try {
+      const { koiData } = response.data
+
+      // reduce balances by pending transaction expenses
+      const storage = await getChromeStorage(STORAGE.PENDING_TRANSACTION)
+      const pendingTransaction = storage[STORAGE.PENDING_TRANSACTION] || []
+      pendingTransaction.forEach((transaction) => {
+        if (isNumber(transaction.expense)) {
+          switch (transaction.activityName) {
+            case 'Sent KOI':
+              koiData.koiBalance -= transaction.expense
+              break
+            case 'Sent AR':
+              koiData.arBalance -= transaction.expense
+          }
+        }
+      })
+      
+      console.log('UPDATE BALANCES. KOI: ', koiData.koiBalance, '; AR: ', koiData.arBalance)
+      dispatch(setKoi(koiData))
+    } catch (err) {
+      dispatch(err.message)
+    }
   })
   backgroundConnect.addHandler(getBalanceSuccessHandler)
   backgroundConnect.postMessage({
@@ -102,10 +122,8 @@ export const generateWallet = (inputData) => async (dispatch) => {
     const encryptedKey = await passworder.encrypt(password, koi.wallet)
     await setChromeStorage({ 'createdWalletAddress': koi.address, 'createdWalletKey': encryptedKey })
     dispatch(setCreateWallet({ seedPhrase, stage, password }))
-    dispatch(setIsLoading(false))
   } catch (err) {
     dispatch(setError(err.message))
-    dispatch(setIsLoading(false))
   }
 }
 
@@ -191,7 +209,8 @@ export const makeTransfer = (qty, target, currency) => async (dispatch) => {
 
     console.log('TRANSACTION ID', txId)
   } catch (err) {
-    dispatch(setError(err.message))
+    console.log('ERROR-ACTION: ', err.message)
+    throw new Error(err.message)
   }
 }
 

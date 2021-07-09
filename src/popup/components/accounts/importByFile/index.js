@@ -40,7 +40,7 @@ export const ImportByFile = ({ setError, importWallet }) => {
         setError(ERROR_MESSAGE.CHECKED_TERMS)
       } else {
         const key = await JSONFileToObject(file)
-        let redirectPath = PATH.CREATE_WALLET_REDIRECT
+        let redirectPath = PATH.IMPORT_KEY_REDIRECT
         redirectPath = ((await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) ? PATH.CONNECT_SITE : redirectPath
 
         setIsLoading(true)

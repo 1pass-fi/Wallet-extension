@@ -1,16 +1,18 @@
 .sign-tx {
   color: #171753;
   letter-spacing: 0.03em;
+  height: 600px;
 }
 
 .sign-tx .account-section {
-  padding: 34px 66px 29px;
+  padding: 10px 20px 0px 20px;
   font-size: 16px;
   font-weight: 400;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 208px;
 }
 
 .sign-tx .account-section .account {
@@ -18,6 +20,7 @@
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+  justify-content: center;
 }
 
 .sign-tx .account-section .account .account-info {
@@ -26,6 +29,7 @@
   flex-direction: column;
   align-items: flex-start;
   min-height: 38px;
+  justify-content: center;
 }
 
 .sign-tx .account-section .account .logo-icon {
