@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
 
-import KoiIcon from 'img/koi-logo-large.svg'
+import KoiIcon from 'img/koi-logo.svg'
 import InputField from 'shared/inputField'
 import Button from 'shared/button'
 import { Link } from 'react-router-dom'
@@ -54,7 +54,7 @@ const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {
     <div className='unlock-screen'>
       <div className='screen-header'>
         <KoiIcon width='130' height='130' className='koi-icon' />
-        <div className='title'>Koi Wallet</div>
+        <div className='title'>Koii Wallet</div>
       </div>
       <div className='screen-content'>
         <div className='welcome'>Welcome back</div>

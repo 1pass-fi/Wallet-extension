@@ -102,7 +102,7 @@ window.addEventListener('message', async function (event) {
       }
       if (promiseResolves[event.data.type]) {
         promiseResolves[event.data.type].forEach(({ id, resolve }) => {
-          console.log('EVENT FROM KOII EXTENSION: ', id)
+          console.log('Finnie event: ', id)
           if (id === event.data.id) {
             resolve(event.data.data)
           }

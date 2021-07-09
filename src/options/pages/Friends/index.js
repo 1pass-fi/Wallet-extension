@@ -11,8 +11,10 @@ import TwitterIcon from 'img/social-icons/twitter-icon.svg'
 import { GalleryContext } from 'options/galleryContext'
 import { koi } from 'background'
 import { claimReward } from 'utils'
+import { shareFriendCode } from 'options/helpers'
 
 import './index.css'
+import { STATEMENT } from 'koiConstants'
 
 export default () => {
   const { 
@@ -35,7 +37,13 @@ export default () => {
         const { message, status } = await claimReward(koi)
   
         if (status != 200) {
-          setNotification(message)
+          switch (message) {
+            case `Affiliate Invites doesn't exists or already claimed`:
+              setNotification(STATEMENT.NO_REWARD)
+              break
+            default:
+              setNotification(message)
+          }
         } else {
           console.log('RECEIVED KOII')
         }
@@ -74,14 +82,17 @@ export default () => {
             </div>
           </CopyToClipboard>
           <div className='share'>
-            <button className='share-button'>Share Code on Twitter</button>
-            <button onClick={handleClaimReward} className='email-button'>Claim Reward</button>
+            <button className='share-button' onClick={() => shareFriendCode(code, 'twitter')}>Share Code on Twitter</button>
+            <button onClick={handleClaimReward} className='email-button'>Claim My Rewards</button>
           </div>
           <div className='social-media'>
-            <TwitterIcon className='social-icon' />
-            <FacebookIcon className='social-icon' />
-            <LinkedinIcon className='social-icon' />
-            <EmailIcon className='social-icon' />
+            <TwitterIcon onClick={() => shareFriendCode(code, 'twitter')} className='social-icon' />
+            <FacebookIcon onClick={() => shareFriendCode(code, 'facebook')} className='social-icon' />
+            <LinkedinIcon onClick={() => shareFriendCode(code, 'linkedin')} className='social-icon' />
+            <a href={`mailto:?subject=Use my Koii Friend Referral code&body=Use my code to get 1 free NFT upload on koi.rocks: \n${code}`} title="Share by Email">
+              <EmailIcon className='social-icon' />
+            </a>
+
           </div>
         </div>
 

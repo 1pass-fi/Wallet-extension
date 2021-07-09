@@ -37,7 +37,7 @@ const ContinueLoading = () => (
 const Reconnect = () => (
   <div className='reconnect'>
     <div className='reconnect-logo'><KoiLogo /></div>
-      Finnie need to reconnect to the background. Please click on the button below.
+      Finnie needs to reconnect to the background. Please click on the button below.
     <button onClick={() => chrome.runtime.reload()}>Reconnect</button>
   </div>
 )
@@ -67,7 +67,7 @@ const Popup = ({
         const { KOI_ADDRESS, KOI_KEY, PENDING_REQUEST } = STORAGE
         const storage = await getChromeStorage([KOI_ADDRESS, KOI_KEY, PENDING_REQUEST])
         const query = window.location.search
-
+        getBalances()
         if (storage[KOI_ADDRESS]) {
           // Koi Address in local storage
           setKoi({ address: storage[KOI_ADDRESS] })
@@ -90,6 +90,8 @@ const Popup = ({
             history.push('/account/create')
           } else if (query.includes('upload-json')) {
             history.push('/account/import/keyfile')
+          } else if (query.includes('upload-seedphrase')) {
+            history.push('/account/import/phrase')
           } else {
             history.push('/account/welcome')
           }

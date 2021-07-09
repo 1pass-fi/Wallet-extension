@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import ArweaveIcon from 'img/arweave-icon.svg'
-import KoiIcon from 'img/koi-logo-no-bg.svg'
+import KoiIcon from 'img/koi-logo-bg.svg'
 import Card from 'shared/card'
 import Button from 'shared/button'
 
@@ -47,6 +47,7 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
       const {
         origin: requestOrigin,
         qty,
+        fee,
         address: targetAddress,
       } = request.data
 
@@ -54,7 +55,7 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
       setDestinationAccount({ address: targetAddress, type: 'arweave' })
       setOrigin(requestOrigin)
       setQty(qty)
-      setFee(0.000001) // mock fee
+      setFee(fee)
     }
 
     loadRequest()
@@ -95,8 +96,8 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
               </div>
             </div>
           </div>
-          <div>To:</div>
-          <div className='destination-account account'>
+          {destinationAccount.address && <div>To:</div>}
+          {destinationAccount.address && <div className='destination-account account'>
             <div className='logo-icon'>
               {walletIcon[destinationAccount.type]}
             </div>
@@ -105,7 +106,7 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
                 {destinationAccount.address}
               </div>
             </div>
-          </div>
+          </div>}
         </div>
         <div className='origin'>
           <a href={origin} data-testid='origin'>{origin}</a>
@@ -126,7 +127,7 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
               <div className='detail-row row-label'>Fee</div>
               <div className='detail-row amount'>
                 <div className='koi'>{transactionAmountFormat(fee)} AR</div>
-                <div className='usd'>~{fiatCurrencyFormat(qty*price.AR)} USD</div>
+                <div className='usd'>~{fiatCurrencyFormat(fee*price.AR)} USD</div>
               </div>
             </div>
             { currency === 'AR' &&

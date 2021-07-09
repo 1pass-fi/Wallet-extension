@@ -11,6 +11,43 @@ export const getShareUrl = (network, txid) => {
   }
 }
 
+// Will refactor this code
+export const shareFriendCode = (code, network) => {
+  const text = `Use my code to get 1 free NFT upload on https://koi.rocks/ \n${code}`
+  let url
+  switch(network) {
+    case 'twitter':
+      url = encodeURI(`${PATH.SHARE_TWITTER}?text=${text}`)
+      chrome.windows.create({
+        url,
+        focused: true,
+        type: 'popup',
+        height: 400,
+        width: 600
+      })
+      break
+    case 'facebook':
+      url = encodeURI(`${PATH.SHARE_FACEBOOK}?u=https://koi.rocks&quote=${text}`)
+      chrome.windows.create({
+        url,
+        focused: true,
+        type: 'popup',
+        height: 400,
+        width: 600
+      })
+      break
+    case 'linkedin':
+      url = encodeURI(`${PATH.SHARE_LINKEDIN}?title=${text}`)
+      chrome.windows.create({
+        url,
+        focused: true,
+        type: 'popup',
+        height: 400,
+        width: 600
+      })
+  } 
+}
+
 export const createShareWindow = (network, txid) => {
   const url = getShareUrl(network, txid)
   chrome.windows.create({

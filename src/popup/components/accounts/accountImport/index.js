@@ -50,7 +50,8 @@ export default () => {
           SvgImage: <ImportIcon className="card-icon" />,
           title: 'Import with a seed phrase',
           description: 'Import an existing wallet using a 12-word seed phrase.',
-          path: '/account/import/phrase'
+          path: (hasPendingRequest ? '/account/import/phrase' : '#'),
+          onClick: () => { !hasPendingRequest && handleOnClick('/popup.html?page=upload-seedphrase') }
         }, {
           key: 2,
           SvgImage: <ExportIcon className="card-icon" />,

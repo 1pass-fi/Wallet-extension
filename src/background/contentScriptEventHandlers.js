@@ -176,7 +176,7 @@ export default async (koi, port, message, ports, resolveId) => {
                 url: chrome.extension.getURL('/popup.html'),
                 focused: true,
                 type: 'popup',
-                height: 622,
+                height: 628,
                 width: 426,
               },
               {
@@ -287,6 +287,7 @@ export default async (koi, port, message, ports, resolveId) => {
 
           const qty = transaction.quantity
           const address = transaction.target
+          const fee = transaction.fee / 1000000000000
           console.log('QUANTITY', qty)
           console.log('ADDRESS', address)
           // await setChromeStorage({
@@ -314,7 +315,7 @@ export default async (koi, port, message, ports, resolveId) => {
               url: chrome.extension.getURL('/popup.html'),
               focused: true,
               type: 'popup',
-              height: 622,
+              height: 628,
               width: 426,
             },
             {
@@ -323,7 +324,7 @@ export default async (koi, port, message, ports, resolveId) => {
                 await setChromeStorage({
                   'pendingRequest': {
                     type: REQUEST.TRANSACTION,
-                    data: { transaction, qty, address, origin, favicon }
+                    data: { transaction, qty, address, origin, favicon, fee }
                   }
                 })
               },
@@ -338,7 +339,6 @@ export default async (koi, port, message, ports, resolveId) => {
         }
 
         case MESSAGES.KOI_DISCONNECT: {
-          const { id } = message
           const storage = await getChromeStorage(STORAGE.SITE_PERMISSION)
           let approvedSite = storage[STORAGE.SITE_PERMISSION] || []
           if (hadPermission) approvedSite = approvedSite.filter(site => site !== origin)
@@ -346,19 +346,18 @@ export default async (koi, port, message, ports, resolveId) => {
           port.postMessage({
             type: MESSAGES.KOI_DISCONNECT_SUCCESS,
             data: { status: 200, data: 'Disconnected.' },
-            id
+            id: message.id
           })
           break
         }
 
         case MESSAGES.KOI_REGISTER_DATA: {
           const { txId } = message.data
-          const { id } = message
           const resTx = await koi.registerData(txId, koi.address)
           port.postMessage({
             type: MESSAGES.KOI_REGISTER_DATA_SUCCESS,
             data: { status: 200, data: resTx },
-            id
+            id: message.id
           })
           break
         }

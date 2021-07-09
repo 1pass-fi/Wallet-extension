@@ -10,7 +10,32 @@ export const HEADER_EXCLUDE_PATH = [
   '/account/sign-transaction',
   '/account/welcome',
   '/account/create/success',
-  '/account/import/keyfile/success'
+  '/account/import/keyfile/success',
+  '/account/import/phrase/success'
+]
+
+export const LONG_LIVED_HANDLER = [
+  'GET_ADDRESS_SUCCESS',
+  'GET_ADDRESS_ERROR',
+  'GET_PERMISSION_SUCCESS',
+  'GET_PERMISSION_ERROR',
+  'CREATE_TRANSACTION_SUCCESS',
+  'CREATE_TRANSACTION_ERROR',
+  'CONNECT_SUCCESS',
+  'CONNECT_ERROR',
+  'KOI_GET_ADDRESS_SUCCESS',
+  'KOI_GET_ADDRESS_ERROR',
+  'KOI_GET_PERMISSION_SUCCESS',
+  'KOI_GET_PERMISSION_ERROR',
+  'KOI_CREATE_TRANSACTION_SUCCESS',
+  'KOI_CREATE_TRANSACTION_ERROR',
+  'KOI_CONNECT_SUCCESS',
+  'KOI_CONNECT_ERROR',
+  'KOI_DISCONNECT_SUCCESS',
+  'KOI_DISCONNECT_ERROR',
+  'KOI_REGISTER_DATA_SUCCESS',
+  'KOI_REGISTER_DATA_ERROR',
+  'GET_BALANCES_SUCCESS'
 ]
 
 export const PORTS = {
@@ -131,7 +156,8 @@ export const ERROR_MESSAGE = {
   MUST_USE_IN_POPUP: 'Please use this feature in the extension pop up.',
   NOT_ENOUGH_AR: `You don't have enough AR.`,
   FILE_TOO_LARGE: 'File too large. The maximum size for NFT is 15MB',
-  CANNOT_GET_COSTS: 'Cannot get the upload costs.'
+  CANNOT_GET_COSTS: 'Cannot get the upload costs.',
+  INVALID_FRIEND_CODE: `That code isn't quite right. Check it and try again.`
 }
 
 export const STORAGE = {
@@ -173,6 +199,10 @@ export const WARNING_MESSAGE = {
   SEND_ZERO_KOI: 'You are about to send 0 tokens. There will still be a very small fee. Make sure the transaction is correct before finalizing it.',
 }
 
+export const STATEMENT = {
+  NO_REWARD: `You don't have any rewards available, share your code to get some!`,
+}
+
 export const LOAD_BALANCES_TIME_INTERVAL = 10000
 
 export const NFT_BIT_DATA = 'NFT_BIT_DATA'
@@ -180,3 +210,5 @@ export const NFT_BIT_DATA = 'NFT_BIT_DATA'
 export const ALL_NFT_LOADED = 'ALL_NFT_LOADED'
 
 export const DISCONNECTED_BACKGROUND = 'Attempting to use a disconnected port object'
+
+export const TRANSACTION_DATA = 'TRANSACTION_DATA'

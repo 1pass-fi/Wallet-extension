@@ -157,11 +157,18 @@ export default ({ description, setStage, stage, title, file, username }) => {
           koi.address = address
   
           const { status, message } = await submitInviteCode(koi, friendCode)
+          // const { status, message } = { status: 201, message: 'mock message' }
           if (status === 201) {
             setIsFriendCodeValid(true)
             setNotification(message)
           } else {
-            setError(message)
+            switch (message) {
+              case 'affiliateCode is not valid':
+                setError(ERROR_MESSAGE.INVALID_FRIEND_CODE)
+                break
+              default:
+                setError(message)
+            }
           }
           
         }
