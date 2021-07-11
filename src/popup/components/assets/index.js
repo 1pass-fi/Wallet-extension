@@ -5,11 +5,14 @@ import { getChromeStorage } from 'utils'
 import { loadContent } from 'actions/koi'
 import { setAssets } from 'actions/assets'
 
-import { STORAGE } from 'koiConstants'
+import { NOTIFICATION, STORAGE } from 'koiConstants'
 
 import AssetList from './AssetList'
+import { setContLoading } from 'actions/continueLoading'
+import { setError } from 'popup/actions/error'
+import { setNotification } from 'popup/actions/notification'
 
-const Assets = ({ assets, setAssets, loadContent, isContLoading }) => {
+const Assets = ({ assets, setAssets, loadContent, isContLoading, setContLoading, setError, setNotification }) => {
   useEffect(() => {
     async function handleLoadContent() {
       const storage = await getChromeStorage([STORAGE.CONTENT_LIST, STORAGE.KOI_ADDRESS])
@@ -17,15 +20,29 @@ const Assets = ({ assets, setAssets, loadContent, isContLoading }) => {
         setAssets(storage[STORAGE.CONTENT_LIST])
       }
       if (storage[STORAGE.KOI_ADDRESS] && !isContLoading) {
-        loadContent()
+        try {
+          setContLoading(true)
+          const allNftLoaded = await loadContent()
+          setContLoading(false)
+
+          if (allNftLoaded) setNotification(NOTIFICATION.NFT_LOADED)
+        } catch (err) {
+          setContLoading(false)
+          setError(err.message)
+        }
       }
     }
     handleLoadContent()
   }, [])
 
-  return (<AssetList assets={assets} onAddAsset={() => alert('add asset')} />)
+  const onAddAsset = () => {
+    const url = chrome.extension.getURL('options.html#/create')
+    chrome.tabs.create({ url })
+  }
+
+  return (<AssetList assets={assets} onAddAsset={onAddAsset} />)
 }
 
 const mapStateToProps = (state) => ({ assets: state.assets, isContLoading: state.contLoading })
 
-export default connect(mapStateToProps, { loadContent, setAssets })(Assets)
+export default connect(mapStateToProps, { loadContent, setAssets, setContLoading, setError, setNotification })(Assets)

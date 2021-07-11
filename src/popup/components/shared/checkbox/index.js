@@ -28,6 +28,7 @@ const Checkbox = ({
           disabled={isDisabled}
           onClick={handleOnClick}
           onChange = {onChange}
+          id='check-terms'
         >
         </input>
         <div className='checkbox-styled' style={{background: greenBackround && selected ? '#9be7c4' : '#ffffff' }}> 

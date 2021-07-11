@@ -20,22 +20,21 @@ export default ({ totalKoi, totalAr, headerRef }) => {
       </div>
       <div className='header-center'>{pathname == '/' && <SearchBar />}</div>
       <div className='header-right'>
-        {totalKoi ? (
-          <div className='total-koi'>
-            <KoiUnit className='koi-unit' />
-            <div>{formatNumber(totalKoi)}</div>
-            <ArUnit className='ar-unit' />
-            <div>{totalAr}</div>
-          </div>
-        ) : (
+        <div className='total-koi'>
+          <KoiUnit className='koi-unit' />
+          <div>{formatNumber(totalKoi)}</div>
+          <ArUnit className='ar-unit' />
+          <div>{formatNumber(totalAr, 6)}</div>
+        </div>
+        {!totalKoi && 
           <a
             target='_blank'
             href='https://koi.rocks/faucet?step=0'
             className='no-koi'
           >
-            <div className='get-some'>No KOI? Get some</div>
-          </a>
-        )}
+            <div className='get-some'>No KOII? <u>Get some</u></div>
+          </a> 
+        }
       </div>
     </header>
   )

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
 
-import KoiIcon from 'img/koi-logo-large.svg'
+import KoiIcon from 'img/koi-logo.svg'
 import InputField from 'shared/inputField'
 import Button from 'shared/button'
 import { Link } from 'react-router-dom'
@@ -14,27 +14,35 @@ import { STORAGE, REQUEST } from 'koiConstants'
 
 import './index.css'
 import { setIsLoading } from 'popup/actions/loading'
+import { setError } from 'popup/actions/error'
 
-const LockScreen = ({ unlockWallet, setIsLoading }) => {
+
+const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {
   const history = useHistory()
 
   const [password, setPassword] = useState('')
 
   const handleOnSubmit = async () => {
-    await setIsLoading(true)
-    unlockWallet(password)
-    await setIsLoading(false)
+    try {
+      setIsLoading(true)
+      const unlocked = await unlockWallet(password)
+      setIsLoading(false)
 
-    const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
-    switch (get(storage[STORAGE.PENDING_REQUEST], 'type')) {
-      case REQUEST.PERMISSION:
-        history.push('/account/connect-site')
-        break
-      case REQUEST.TRANSACTION:
-        history.push('/account/sign-transaction')
-        break
-      default:
-        history.push('/account')
+      if (unlocked) {
+        const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
+        switch (get(storage[STORAGE.PENDING_REQUEST], 'type')) {
+          case REQUEST.PERMISSION:
+            history.push('/account/connect-site')
+            break
+          case REQUEST.TRANSACTION:
+            history.push('/account/sign-transaction')
+            break
+          default:
+            history.push('/account')
+        }
+      }
+    } catch (err) {
+      setError(err.message)
     }
   }
 
@@ -46,7 +54,7 @@ const LockScreen = ({ unlockWallet, setIsLoading }) => {
     <div className='unlock-screen'>
       <div className='screen-header'>
         <KoiIcon width='130' height='130' className='koi-icon' />
-        <div className='title'>Koi Wallet</div>
+        <div className='title'>Koii Wallet</div>
       </div>
       <div className='screen-content'>
         <div className='welcome'>Welcome back</div>
@@ -73,4 +81,4 @@ const LockScreen = ({ unlockWallet, setIsLoading }) => {
   )
 }
 
-export default connect(null, { unlockWallet, setIsLoading })(LockScreen)
+export default connect(null, { unlockWallet, setIsLoading, setError })(LockScreen)

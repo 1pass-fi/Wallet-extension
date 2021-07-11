@@ -11,6 +11,8 @@ export default ({ choosenTxid = '' }) => {
   const [transactionId, setTransactionId] = useState('txId')
   const [createdAt, setCreatedAt] = useState(Date.now())
   const [isFriendCodeValid, setIsFriendCodeValid] = useState(false)
+  const [price, setPrice] = useState(null)
+  const [contentType, setContentType] = useState(null)
 
   useEffect(() => {
     window.scroll({ top: 0, behavior: 'smooth' })
@@ -27,6 +29,10 @@ export default ({ choosenTxid = '' }) => {
         setCreatedAt,
         isFriendCodeValid,
         setIsFriendCodeValid,
+        price,
+        setPrice,
+        contentType,
+        setContentType
       }}
     >
       <div className='app-content'>

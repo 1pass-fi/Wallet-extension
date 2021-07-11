@@ -1,6 +1,7 @@
 import React, { useContext, useState, useRef } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import isEmpty from 'lodash/isEmpty'
+import isNumber from 'lodash/isNumber'
 
 import { exportNFT, getChromeStorage, setChromeStorage } from 'utils'
 const arweave = Arweave.init({
@@ -17,47 +18,58 @@ import { koi } from 'background'
 import './index.css'
 import { backgroundRequest } from 'popup/backgroundRequest'
 
-import { NFT_BIT_DATA } from 'koiConstants'
+import { ERROR_MESSAGE, NFT_BIT_DATA } from 'koiConstants'
 
 export default ({ description, setStage, stage, title, file, username }) => {
   const createNftButtonRef = useRef(null)
-  const { setIsLoading, address, wallet, setFile, setNotification, setError, inviteSpent } = useContext(GalleryContext)
+  const { setIsLoading, 
+    address, 
+    wallet, 
+    setFile, 
+    setNotification,
+    setError,
+    inviteSpent,
+    totalAr,
+    totalKoi } = useContext(GalleryContext)
   const {
     tags,
+    price,
     setTransactionId,
     setCreatedAt,
     isFriendCodeValid,
     setIsFriendCodeValid,
+    setContentType
   } = useContext(UploadContext)
   const [friendCode, setFriendCode] = useState('')
 
   const handleUploadNFT = async () => {
     // file size checking
-    if (file.size > 15 * 1024 ** 2) throw new Error('File too large. The maximum size for NFT is 15MB')
+    if (file.size > 15 * 1024 ** 2) throw new Error(ERROR_MESSAGE.FILE_TOO_LARGE)
     setIsLoading(true)
     try {
       const url = URL.createObjectURL(file)
-      console.log('bottomButton- file', file)
+      // console.log('bottomButton- file', file)
 
       // get the file type
       const fileType = file.type
+      setContentType(file.type)
       
       // get arrayBuffer
       const response = await fetch(url)
       const blob = await response.blob()
       const dataBuffer = await blob.arrayBuffer()
-      console.log('bottomButton- dataBuffer', dataBuffer)
+      // console.log('bottomButton- dataBuffer', dataBuffer)
 
       // create a 8bit array and save to local storage
       let u8 = new Int8Array(dataBuffer)
-      console.log('bottomButton- u8', u8)
+      // console.log('bottomButton- u8', u8)
 
       // save u8 to local storage
       u8 = JSON.stringify(u8, null, 2)
-      console.log('bottomButton- u8', u8)
+      // console.log('bottomButton- u8', u8)
 
       await setChromeStorage({ NFT_BIT_DATA: u8 })
-      console.log(await getChromeStorage(NFT_BIT_DATA))
+      // console.log(await getChromeStorage(NFT_BIT_DATA))
       // prepare metadata
       const content = {
         title,
@@ -94,7 +106,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
         className='create-ntf-button'
         onClick={() => {
           try {            
-            if (file.size > 15 * 1024 ** 2) throw new Error('File too large. The maximum size for NFT is 15MB')
+            if (file.size > 15 * 1024 ** 2) throw new Error(ERROR_MESSAGE.FILE_TOO_LARGE)
             setStage(2)
           } catch(error) {
             setError(error.message)
@@ -109,15 +121,33 @@ export default ({ description, setStage, stage, title, file, username }) => {
 
   if (stage == 2) {
     const handleUploadStage2 = async () => {
-      try {
-        createNftButtonRef.current.disabled = true
-        const { txId, time } = await handleUploadNFT()
-        // const { txId, time } = await mockUploadNFT()
-        setTransactionId(txId)
-        setCreatedAt(time)
-        setStage(3)
-      } catch (err) {
-        setError(err.message)
+      console.log(price)
+      // Costs validations
+      if (isNumber(price)) {
+        try {
+          const koiPrice = isFriendCodeValid ? 0 : 1
+
+          if (totalKoi < koiPrice) {
+            setError(ERROR_MESSAGE.NOT_ENOUGH_KOI)
+            return
+          }
+
+          if (totalAr <= price) {
+            setError(ERROR_MESSAGE.NOT_ENOUGH_AR)
+            return
+          }
+
+          createNftButtonRef.current.disabled = true
+          const { txId, time } = await handleUploadNFT()
+          // const { txId, time } = await mockUploadNFT()
+          setTransactionId(txId)
+          setCreatedAt(time)
+          setStage(3)
+        } catch (err) {
+          setError(err.message)
+        }
+      } else {
+        setError(ERROR_MESSAGE.CANNOT_GET_COSTS)
       }
     }
 
@@ -129,11 +159,18 @@ export default ({ description, setStage, stage, title, file, username }) => {
           koi.address = address
   
           const { status, message } = await submitInviteCode(koi, friendCode)
+          // const { status, message } = { status: 201, message: 'mock message' }
           if (status === 201) {
             setIsFriendCodeValid(true)
             setNotification(message)
           } else {
-            setError(message)
+            switch (message) {
+              case 'affiliateCode is not valid':
+                setError(ERROR_MESSAGE.INVALID_FRIEND_CODE)
+                break
+              default:
+                setError(message)
+            }
           }
           
         }

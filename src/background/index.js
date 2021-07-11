@@ -8,11 +8,7 @@ import { Web } from '@_koi/sdk/web'
 
 /* eslint-disable no-undef */
 export const koi = new Web()
-console.log('Background.js file loaded')
-
-browser.runtime.onMessage.addListener(function (message) {
-  console.log(message)
-})
+console.log('Finnie is waiting for instructions.')
 
 const ports = {}
 const permissionId = []
@@ -57,6 +53,7 @@ function cb(port) {
 
 if (chrome.runtime.onInstalled) {
   chrome.runtime.onInstalled.addListener(() => {
+    chrome.storage.local.remove('koiAddress')
     chrome.runtime.onConnect.addListener(cb)
   })
 

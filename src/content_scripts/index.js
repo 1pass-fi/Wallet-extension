@@ -5,7 +5,7 @@ import { PORTS, MESSAGES } from 'koiConstants'
 import { setChromeStorage } from 'utils'
 import { get } from 'lodash'
 
-console.log('Content scripts has loaded')
+console.log('Finnie is ready to connect to the site.')
 
 const messageTypes = [
   MESSAGES.GET_ADDRESS_SUCCESS,
@@ -97,14 +97,12 @@ window.addEventListener('message', async function (event) {
       registerData: (txId) => buildPromise(MESSAGE_TYPES.KOI_REGISTER_DATA, { txId })
     }
     window.addEventListener('message', function (event) {
-      // console.log('EVENT', event)
-      // console.log({ promiseResolves })
       if (!event.data || !event.data.type) {
         return
       }
       if (promiseResolves[event.data.type]) {
         promiseResolves[event.data.type].forEach(({ id, resolve }) => {
-          console.log('EVENT FROM KOII EXTENSION: ', id)
+          console.log('Finnie event: ', id)
           if (id === event.data.id) {
             resolve(event.data.data)
           }

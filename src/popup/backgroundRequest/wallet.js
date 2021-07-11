@@ -52,4 +52,40 @@ export class WalletRequest extends Request {
   unlockWallet(body) {
     return this.promise(MESSAGES.UNLOCK_WALLET, body)
   }
+
+
+  /**
+   * 
+   * @param {Object} body request body
+   * @param {String} body.seedPhrase the generated seed phrase
+   * @param {String} body.password input password
+   * @returns {Object} koiData: { address }
+   */
+  saveWallet(body) {
+    return this.promise(MESSAGES.SAVE_WALLET, body)
+  }
+
+
+  /**
+   * 
+   * @param {Object} body request body
+   * @param {Number} body.qty quantity
+   * @param {String} body.target target address
+   * @param {String} body.currency KOII or AR
+   * @returns {Object} { txId, qty, address, currency }
+   */
+  makeTransfer(body) {
+    return this.promise(MESSAGES.MAKE_TRANSFER, body)
+  }
+
+
+  /**
+   * 
+   * @param {Object} body request body
+   * @param {String} body.password input password
+   * @returns {Object} { key }
+   */
+  getKeyFile(body) {
+    return this.promise(MESSAGES.GET_KEY_FILE, body)
+  }
 }

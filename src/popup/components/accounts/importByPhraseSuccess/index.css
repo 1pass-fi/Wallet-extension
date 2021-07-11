@@ -1,3 +1,11 @@
+.import-phrase-success-wrapper {
+  height: 600px;
+  background-color: #e5e5e5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .import-phrase-success {
   letter-spacing: 0.03em;
   padding: 24px 36px 20px;

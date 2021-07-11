@@ -35,7 +35,7 @@ const RemoveAccountModal = ({
       <ModalTitle accountName={accountName} />
       <div className="modal-account-address">{accountAddress}</div>
       <div className="modal-description">
-        To access to this wallet again from Koi, you will need to add it as a
+        To access to this wallet again from Koii, you will need to add it as a
         new account.
       </div>
       <div className="modal-action-buttons">

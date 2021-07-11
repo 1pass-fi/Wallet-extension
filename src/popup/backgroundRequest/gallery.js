@@ -15,8 +15,6 @@ export class GalleryRequest extends Request {
    * @returns {String} transaction Id
    */
   uploadNFT(body) {
-    console.log('upload nft on class GalleryRequest')
-    console.log(MESSAGES.UPLOAD_NFT)
     return this.promise(MESSAGES.UPLOAD_NFT, body)
   }
 }

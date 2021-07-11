@@ -1,3 +1,5 @@
+import { MESSAGES, LONG_LIVED_HANDLER } from 'koiConstants'
+
 export class EventHandler {
   constructor(type, callback) {
     this.type = type
@@ -7,7 +9,6 @@ export class EventHandler {
 
 export class BackgroundConnect {
   constructor(portName) {
-    console.log('BackgroundConnect--init')
     try {
       this.eventHandlers = []
       /* istanbul ignore next */
@@ -18,7 +19,7 @@ export class BackgroundConnect {
         this.eventHandlers.forEach(handler => {
           if (handler.type === message.type) {
             handler.callback(message)
-            _this.removeHandler(handler.type)
+            !LONG_LIVED_HANDLER.includes(handler.type) && _this.removeHandler(handler.type)
           }
         })
       })
