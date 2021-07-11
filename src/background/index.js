@@ -1,6 +1,6 @@
 import '@babel/polyfill'
 
-import { PORTS, LOAD_BALANCES_TIME_INTERVAL } from 'koiConstants'
+import { PORTS, LOAD_BALANCES_TIME_INTERVAL, OS } from 'koiConstants'
 import popUpEventHandlers, { loadBalances } from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from '@_koi/sdk/web'
@@ -53,11 +53,17 @@ function cb(port) {
 
 if (chrome.runtime.onInstalled) {
   chrome.runtime.onInstalled.addListener(() => {
+    chrome.runtime.getPlatformInfo((info) => {
+      window.localStorage.setItem(OS, info.os)
+    })
     chrome.storage.local.remove('koiAddress')
     chrome.runtime.onConnect.addListener(cb)
   })
 
   chrome.runtime.onStartup.addListener(() => {
+    chrome.runtime.getPlatformInfo((info) => {
+      window.localStorage.setItem(OS, info.os)
+    })
     chrome.runtime.onConnect.addListener(cb)
   })
 }

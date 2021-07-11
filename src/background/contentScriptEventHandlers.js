@@ -1,4 +1,4 @@
-import { REQUEST, MESSAGES, STORAGE } from 'koiConstants'
+import { REQUEST, MESSAGES, STORAGE, OS, WINDOW_SIZE } from 'koiConstants'
 import { checkSitePermission, setChromeStorage, removeChromeStorage, getChromeStorage } from 'utils'
 import { getSelectedTab, createWindow } from 'utils/extension'
 
@@ -171,14 +171,35 @@ export default async (koi, port, message, ports, resolveId) => {
               })
               return
             }
+
+            const screenWidth = screen.availWidth
+            const screenHeight = screen.availHeight
+            const os = window.localStorage.getItem(OS)
+            let windowData = {
+              url: chrome.extension.getURL('/popup.html'),
+              focused: true,
+              type: 'popup',
+            }
+            if (os == 'win') {
+              windowData = {
+                ...windowData,
+                height: WINDOW_SIZE.WIN_HEIGHT,
+                width: WINDOW_SIZE.WIN_WIDTH,
+                left: Math.round((screenWidth - WINDOW_SIZE.WIN_WIDTH) / 2),
+                top: Math.round((screenHeight - WINDOW_SIZE.WIN_HEIGHT) / 2)
+              }
+            } else {
+              windowData = {
+                ...windowData,
+                height: WINDOW_SIZE.MAC_HEIGHT,
+                width: WINDOW_SIZE.MAC_WIDTH,
+                left: Math.round((screenWidth - WINDOW_SIZE.MAC_WIDTH) / 2),
+                top: Math.round((screenHeight - WINDOW_SIZE.MAC_HEIGHT) / 2)
+              }
+            }
+
             createWindow(
-              {
-                url: chrome.extension.getURL('/popup.html'),
-                focused: true,
-                type: 'popup',
-                height: 628,
-                width: 426,
-              },
+              windowData,
               {
                 beforeCreate: async () => {
                   chrome.browserAction.setBadgeText({ text: '1' })
@@ -228,29 +249,35 @@ export default async (koi, port, message, ports, resolveId) => {
             const address = transaction.target
             console.log('QUANTITY', qty)
             console.log('ADDRESS', address)
-            // await setChromeStorage({
-            //   'pendingRequest': {
-            //     type: REQUEST.TRANSACTION,
-            //     data: { transaction, qty, address, origin, favicon }
-            //   }
-            // })
-            // chrome.browserAction.setBadgeText({ text: '1' })
-            // createWindow({
-            //   url: chrome.extension.getURL('/popup.html'),
-            //   focused: true,
-            //   type: 'popup',
-            //   height: 622,
-            //   width: 426
-            // })
+            
+            const os = window.localStorage.getItem(OS)
+            let windowData = {
+              url: chrome.extension.getURL('/popup.html'),
+              focused: true,
+              type: 'popup',
+            }
+            const screenWidth = screen.availWidth
+            const screenHeight = screen.availHeight
+            if (os == 'win') {
+              windowData = {
+                ...windowData,
+                height: WINDOW_SIZE.WIN_HEIGHT,
+                width: WINDOW_SIZE.WIN_WIDTH,
+                left: Math.round((screenWidth - WINDOW_SIZE.WIN_WIDTH) / 2),
+                top: Math.round((screenHeight - WINDOW_SIZE.WIN_HEIGHT) / 2)
+              }
+            } else {
+              windowData = {
+                ...windowData,
+                height: WINDOW_SIZE.MAC_HEIGHT,
+                width: WINDOW_SIZE.MAC_WIDTH,
+                left: Math.round((screenWidth - WINDOW_SIZE.MAC_WIDTH) / 2),
+                top: Math.round((screenHeight - WINDOW_SIZE.MAC_HEIGHT) / 2)
+              }
+            }
 
             createWindow(
-              {
-                url: chrome.extension.getURL('/popup.html'),
-                focused: true,
-                type: 'popup',
-                height: 622,
-                width: 426,
-              },
+              windowData,
               {
                 beforeCreate: async () => {
                   chrome.browserAction.setBadgeText({ text: '1' })
@@ -290,19 +317,6 @@ export default async (koi, port, message, ports, resolveId) => {
           const fee = transaction.fee / 1000000000000
           console.log('QUANTITY', qty)
           console.log('ADDRESS', address)
-          // await setChromeStorage({
-          //   'pendingRequest': {
-          //     type: REQUEST.TRANSACTION,
-          //     data: { transaction, qty, address, origin, favicon }
-          //   }
-          // })
-          // createWindow({
-          //   url: chrome.extension.getURL('/popup.html'),
-          //   focused: true,
-          //   type: 'popup',
-          //   height: 622,
-          //   width: 426
-          // })
 
           const onClosedMessage = {
             type: MESSAGES.KOI_CREATE_TRANSACTION_SUCCESS,
@@ -310,31 +324,46 @@ export default async (koi, port, message, ports, resolveId) => {
             id
           }
 
-          createWindow(
-            {
-              url: chrome.extension.getURL('/popup.html'),
-              focused: true,
-              type: 'popup',
-              height: 628,
-              width: 426,
-            },
-            {
-              beforeCreate: async () => {
-                chrome.browserAction.setBadgeText({ text: '1' })
-                await setChromeStorage({
-                  'pendingRequest': {
-                    type: REQUEST.TRANSACTION,
-                    data: { transaction, qty, address, origin, favicon, fee }
-                  }
-                })
-              },
-              afterClose: async () => {
-                chrome.browserAction.setBadgeText({ text: '' })
-                port.postMessage(onClosedMessage)
-                await removeChromeStorage('pendingRequest')
-              },
-            }
-          )
+          chrome.runtime.getPlatformInfo((info) => {
+            let windowData
+
+            if (info.os == 'win') {
+              windowData = {
+                url: chrome.extension.getURL('/popup.html'),
+                focused: true,
+                type: 'popup',
+                height: 628,
+                width: 426,
+              }
+            } else [
+              windowData = {
+                url: chrome.extension.getURL('/popup.html'),
+                focused: true,
+                type: 'popup',
+                height: 628,
+                width: 426,  
+              }
+            ]
+            createWindow(
+              windowData,
+              {
+                beforeCreate: async () => {
+                  chrome.browserAction.setBadgeText({ text: '1' })
+                  await setChromeStorage({
+                    'pendingRequest': {
+                      type: REQUEST.TRANSACTION,
+                      data: { transaction, qty, address, origin, favicon, fee }
+                    }
+                  })
+                },
+                afterClose: async () => {
+                  chrome.browserAction.setBadgeText({ text: '' })
+                  port.postMessage(onClosedMessage)
+                  await removeChromeStorage('pendingRequest')
+                },
+              }
+            )
+          })
           break
         }
 

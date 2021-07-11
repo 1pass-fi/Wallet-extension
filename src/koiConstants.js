@@ -212,3 +212,12 @@ export const ALL_NFT_LOADED = 'ALL_NFT_LOADED'
 export const DISCONNECTED_BACKGROUND = 'Attempting to use a disconnected port object'
 
 export const TRANSACTION_DATA = 'TRANSACTION_DATA'
+
+export const OS = 'OS'
+
+export const WINDOW_SIZE = {
+  WIN_HEIGHT: 635,
+  WIN_WIDTH: 439,
+  MAC_HEIGHT: 628,
+  MAC_WIDTH: 426
+}
