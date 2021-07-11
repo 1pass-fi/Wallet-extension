@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 import './index.css'
 import Tag from '../Tag'
@@ -26,6 +27,16 @@ export default ({nfts, tags, setNfts, collectionName, description, stage}) => {
     setCollectionNFT([...nfts])
   }
 
+  const onDragEnd = () => {
+    /* Reoder nfts */
+  }
+
+  const grid = 8;
+
+  const getItemStyle = isDraggingOver => ({
+    boxShadow: isDraggingOver && '1px 1px 1px 1px #000000' 
+  });
+
   return (
     <div className='select-nft'>
       {/* INFO */}
@@ -47,13 +58,46 @@ export default ({nfts, tags, setNfts, collectionName, description, stage}) => {
 
       {/* NFTs */}
       {stage === 2 &&
-      <div className='nft'>
-        {(nfts.slice(page*5, page*5 + 5)).map((nft, index) => (
-          <div key={index} className={nft.url ? 'nft-wrapper' : 'nft-wrapper empty'}>
-            {nft.url && <img src={nft.url}></img>}
-            {nft.url && <div onClick={() => handleOnClick(nft.id)} className='delete-icon'><DeleteIcon /></div>}
-          </div>
-        ))}
+
+
+      /* 
+        Render each 5 nfts.
+        We will use react-beautiful-dnd to do the drag and drop.
+        Docs: https://github.com/atlassian/react-beautiful-dnd/tree/master/docs/guides
+        Code sandbox: https://codesandbox.io/s/mmrp44okvj?file=/index.js
+      */
+      <div>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId='droppable' direction='horizontal'>
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className='nft'
+              >
+                {(nfts.slice(page*5, page*5 + 5)).map((nft, index) => (
+                  <Draggable key={index} draggableId={'draggable' + index} index={index}>
+                    {(provided, snapshot) => (
+                      <div 
+                        key={index} 
+                        className={nft.url ? 'nft-wrapper' : 'nft-wrapper empty'}
+                        ref={provided.innerRef}
+                        style={getItemStyle(snapshot.isDragging)}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        {nft.url && <img src={nft.url}></img>}
+                        {nft.url && <div onClick={() => handleOnClick(nft.id)} className='delete-icon'><DeleteIcon /></div>}
+                      </div>
+                    )
+                    }
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>              
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>      
       }
       {stage === 3 &&

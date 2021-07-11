@@ -225,9 +225,9 @@ export default ({ children }) => {
         setCollectionNFT,
         totalPage,
         setTotalPage,
-        setShowCreateCollection
-		totalKoi,
-		totalAr
+        setShowCreateCollection,
+        totalKoi,
+        totalAr
       }}
     >
       <div
