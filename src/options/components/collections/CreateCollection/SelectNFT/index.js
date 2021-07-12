@@ -12,30 +12,45 @@ export default ({nfts, tags, setNfts, collectionName, description, stage}) => {
   const { collectionNFT, setCollectionNFT, totalPage, setTotalPage} = useContext(GalleryContext)
   const [page, setPage] = useState(0)
 
+  /* 
+    Handle removing a selected NFT from the list.
+    The code for selecting new NFT is in: options/components/content/nftCard
+  */
   const handleOnClick = (id) => {
     let nfts = [...collectionNFT]
     nfts = nfts.filter((nft) => nft.id !== id)
     nfts.push({})
-    const notEmpty = nfts.filter((nft) => nft.id)
-    if ((notEmpty.length % 5 === 0 && notEmpty.length > 0)) {
-      nfts = notEmpty
+    const notEmptySlots = nfts.filter((nft) => nft.id)
+    if ((notEmptySlots.length % 5 === 0 && notEmptySlots.length > 0)) {
+      nfts = notEmptySlots
     }
-    if ((totalPage - nfts.length / 5 === 1) && page === totalPage - 1) {
+    if (((totalPage - nfts.length / 5) === 1) && page === totalPage - 1) {
       setPage(page - 1)
     }
     setTotalPage(nfts.length / 5)
     setCollectionNFT([...nfts])
   }
 
-  const onDragEnd = () => {
-    /* Reoder nfts */
+  const reorder = (list, startIndex, endIndex) => {
+    const result = [...list]
+    const [removed] = result.splice(startIndex, 1)
+    result.splice(endIndex, 0, removed)
+  
+    return result
   }
+  
+  // Run when drop
+  const onDragEnd = (result) => {
+    /* Reoder nfts */
+    console.log(result)
+    const destId = result.destination.index
+    const sourceId = result.source.index
 
-  const grid = 8;
-
-  const getItemStyle = isDraggingOver => ({
-    boxShadow: isDraggingOver && '1px 1px 1px 1px #000000' 
-  });
+    if (collectionNFT[destId].url && collectionNFT[sourceId].url) {
+      const newArray = reorder(collectionNFT, sourceId, destId)
+      setCollectionNFT([...newArray])
+    }
+  }
 
   return (
     <div className='select-nft'>
@@ -61,28 +76,27 @@ export default ({nfts, tags, setNfts, collectionName, description, stage}) => {
 
 
       /* 
-        Render each 5 nfts.
-        We will use react-beautiful-dnd to do the drag and drop.
+        Displays set of 5 nfts.
+        We will use react-beautiful-dnd to do drag and drop.
         Docs: https://github.com/atlassian/react-beautiful-dnd/tree/master/docs/guides
         Code sandbox: https://codesandbox.io/s/mmrp44okvj?file=/index.js
       */
       <div>
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId='droppable' direction='horizontal'>
-            {(provided, snapshot) => (
+            {(provided) => (
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 className='nft'
               >
                 {(nfts.slice(page*5, page*5 + 5)).map((nft, index) => (
-                  <Draggable key={index} draggableId={'draggable' + index} index={index}>
-                    {(provided, snapshot) => (
+                  <Draggable key={index} draggableId={'draggable' + index} index={index + page*5}>
+                    {(provided) => (
                       <div 
                         key={index} 
                         className={nft.url ? 'nft-wrapper' : 'nft-wrapper empty'}
                         ref={provided.innerRef}
-                        style={getItemStyle(snapshot.isDragging)}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
@@ -100,7 +114,12 @@ export default ({nfts, tags, setNfts, collectionName, description, stage}) => {
         </DragDropContext>
       </div>      
       }
+
+
       {stage === 3 &&
+      /* 
+        Shows all selected NFTs
+      */
       <div className='selected-nft'>
         {(collectionNFT.map((nft, index) => {
           if (nft.url) return (
@@ -114,11 +133,12 @@ export default ({nfts, tags, setNfts, collectionName, description, stage}) => {
 
       {/* PAGES */}
       {stage === 2 && <div className='page'>
-        {[...Array(totalPage)].map((a, index) => <div 
-          key={index} 
-          className={page === index ? 'pageNum active': 'pageNum'}
-          onClick={() => setPage(index)}
-        ></div>)}
+        {[...Array(totalPage)].map((a, index) => 
+          <div 
+            key={index} 
+            className={page === index ? 'pageNum active': 'pageNum'}
+            onClick={() => setPage(index)}
+          ></div>)}
       </div>}
 
       {/* PRICE */}

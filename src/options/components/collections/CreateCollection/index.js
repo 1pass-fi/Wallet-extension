@@ -42,7 +42,13 @@ export default () => {
         {/* FORM BODY */}
         <div className='content'>
           {
-            stage == 1 && <InputInfo  
+            /* 
+              Input: 
+                - Name
+                - Description
+                - Tags
+            */
+            stage == 1 && <InputInfo
               tags={tags}
               setColletionName={setColletionName}
               setDescription={setDescription}
@@ -51,6 +57,10 @@ export default () => {
             />
           }
           {
+            /* 
+              Stage 2: select NFTs to put into the collection
+              Stage 3: preview the collections
+            */
             (stage == 2 || stage == 3) && <SelectNFT 
               nfts={isEmpty(collectionNFT) ? [{}, {}, {}, {}, {}] : collectionNFT} tags={tags} 
               collectionName={collectionName}
@@ -61,6 +71,9 @@ export default () => {
             />
           }
           {
+            /* 
+              Created successfully screen.
+            */
             stage == 4 && <Success collectionName={collectionName} description={description} tags={tags}/>
           }
         </div>

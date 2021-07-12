@@ -17,8 +17,8 @@ export default ({tags, setColletionName, setDescription, setTags, collectionName
 
   return (
     <div className='input-info'>
-      {/* DESCRIPTION */}
-      <div className='description'>
+      {/* HINT */}
+      <div className='hint'>
         Name your collection and add details.
       </div>
 
