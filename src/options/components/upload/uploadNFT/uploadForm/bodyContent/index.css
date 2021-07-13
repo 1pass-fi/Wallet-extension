@@ -102,7 +102,7 @@
   .right-column.stage2 {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   width: 269px;
 }
 

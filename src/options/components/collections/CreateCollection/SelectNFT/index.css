@@ -3,6 +3,7 @@
   .select-nft {
     width : 914px;
     min-height: 307px;
+    position: relative;
   }
 
 .create-collection
@@ -12,7 +13,20 @@
     display: flex;
     height: 154px;
 }
-  
+
+.create-collection
+  .wrapper
+  .select-nft
+  .cover-image-tag {
+    position: absolute;
+    bottom: 0px;
+    left: 45px;
+    color: #ffffff;
+    font-size: 15px;
+    line-height: 16px;
+    font-weight: 400;
+  }
+
 .create-collection
   .wrapper
   .select-nft
@@ -206,6 +220,7 @@
     height: 6px;
     background-color: #ffffff;
     border-radius: 3px;
+    cursor: pointer;
   }
 
 .create-collection

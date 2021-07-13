@@ -14,7 +14,7 @@
   gap: 10px 148px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .app .app-content .title {

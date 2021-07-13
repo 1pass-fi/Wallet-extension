@@ -37,6 +37,7 @@
 
 .nft-collection-card .preview-nft {
   position: relative;
+  user-select: none;
 }
 
 .nft-collection-card .preview-nft .prev-nft {

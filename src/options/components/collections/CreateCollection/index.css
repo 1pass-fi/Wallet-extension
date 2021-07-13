@@ -31,6 +31,7 @@
     left: 13px;
     width: 25px;
     height: 25px;
+    cursor: pointer;
   }
 
 /* CLOSE BUTTON */
@@ -42,6 +43,7 @@
     right: 13px;
     width: 25px;
     height: 25px;
+    cursor: pointer;
   }
 
 /* TITLE */
@@ -80,6 +82,8 @@
     font-size: 16px;
     line-height: 24px;
     font-weight: 600px;
+    cursor: pointer;
+    margin-bottom: 25px;
   }
 
 /* CONTENT */

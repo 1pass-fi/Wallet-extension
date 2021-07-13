@@ -30,6 +30,8 @@
 
 .uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation.stage2 {
   height: 216px;
+  display: flex;
+  justify-content: center;
 }
 
 .uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column {
@@ -42,6 +44,7 @@
   width: 525px;
   display: flex;
   flex-direction: row;
+  margin-left: 0px;
 }
 
 .uploadNFT-wrapper .uploadNFT .upload-form .nft-infomation .left-column .picture {

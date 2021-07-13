@@ -133,9 +133,10 @@
     justify-content: center;
     align-items: center;
     gap: 30px;
-    width: 703px;
+    width: 849px;
     flex-wrap: wrap;
     margin: auto;
+    margin-top: 20px;
     overflow-y: scroll;
   }
 

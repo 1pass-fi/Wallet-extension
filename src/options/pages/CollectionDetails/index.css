@@ -22,7 +22,8 @@
   height: 30px;
   position: absolute;
   top: 8px;
-  left: 36px
+  left: 36px;
+  cursor: pointer;
 }
 
 .collection-details .title {

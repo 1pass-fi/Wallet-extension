@@ -54,6 +54,7 @@ export default ({nfts, tags, setNfts, collectionName, description, stage}) => {
 
   return (
     <div className='select-nft'>
+      
       {/* INFO */}
       <div className='info'>
         <div className='nft-title'>
@@ -81,6 +82,7 @@ export default ({nfts, tags, setNfts, collectionName, description, stage}) => {
         Code sandbox: https://codesandbox.io/s/mmrp44okvj?file=/index.js
       */
       <div>
+        {page == 0 && <div className='cover-image-tag'>cover image</div>}
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId='droppable' direction='horizontal'>
             {(provided) => (
