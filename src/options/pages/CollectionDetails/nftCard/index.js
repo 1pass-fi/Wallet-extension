@@ -9,7 +9,7 @@ import './index.css'
 import { Link } from 'react-router-dom'
 
 export default ({ nft }) => {
-  const { txId, url, name, views, earnedKoi, koiRockUrl, contentType } = nft
+  const { id: txId, url, name, views, earnedKoi, koiRockUrl, contentType } = nft
 
   const [isCopied, setIsCopied] = useState(false)
 

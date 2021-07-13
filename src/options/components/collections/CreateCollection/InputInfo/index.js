@@ -8,9 +8,10 @@ export default ({tags, setColletionName, setDescription, setTags, collectionName
   const [tagInput, setTagInput] = useState('')
 
   const addTag = (e) => {
-    if (e.keyCode === 32 || e.keyCode === 13 || e.keyCode === 188) {
-      const newTag = trim(tagInput)
-      newTag && setTags(union(tags, [newTag]))
+    if (e.keyCode === 13) {
+      let newTags = tagInput.split(',')
+      newTags = newTags.map((tag) => trim(tag)).filter((tag) => tag.replace(/\s/g, '').length)
+      setTags(union(tags, newTags))
       setTagInput('')
     }
   }

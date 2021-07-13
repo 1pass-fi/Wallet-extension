@@ -55,6 +55,10 @@ export default ({ children }) => {
   const [showCreateCollection, setShowCreateCollection] = useState(false)
   const [collectionNFT, setCollectionNFT] = useState([])
   const [totalPage, setTotalPage] = useState(1)
+  const [stage, setStage] = useState(1)
+  const [page, setPage] = useState(0)
+
+  const [demoCollections, setDemoCollections] = useState([])
   
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
@@ -227,7 +231,13 @@ export default ({ children }) => {
         setTotalPage,
         setShowCreateCollection,
         totalKoi,
-        totalAr
+        totalAr,
+        stage,
+        setStage,
+        page,
+        setPage,
+        demoCollections,
+        setDemoCollections
       }}
     >
       <div
@@ -273,9 +283,8 @@ export default ({ children }) => {
           <input name='fileField' {...getInputProps()} />
         )}
         <Header totalKoi={totalKoi} totalAr={totalAr} headerRef={headerRef} />
-        <button onClick={() => setShowCreateCollection(true)}>Create Collection</button>
         {children}
-        {!isDragging && <Footer showDropzone={showDropzone} />}
+        <Footer showDropzone={showDropzone} />
         <Navbar />
       </div>
     </GalleryContext.Provider>

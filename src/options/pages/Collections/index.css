@@ -1,18 +1,30 @@
 .collections-container {
-  width: 800px;
+  width: 941px;
   margin: auto;
   color: #ffffff;
+  padding: 60px;
 }
 
 .collections-container__header {
   text-align: center;
   padding-bottom: 20px;
+  position: relative;
 }
 
 .collections-container__header__title {
-  font-size: 24px;
-  line-height: 32px;
+  font-size: 32px;
+  line-height: 40px;
   font-weight: 400;
+  text-align: left;
+}
+
+.collections-container__header__add-icon {
+  position: absolute;
+  width: 21px;
+  height: 21px;
+  top: 9.5px;
+  left: 197px;
+  cursor: pointer;
 }
 
 .collections-container__header__subtitle {

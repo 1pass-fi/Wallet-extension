@@ -9,12 +9,24 @@ import Success from './Success'
 import CloseIcon from 'img/close-x-icon.svg'
 import GoBackIcon from 'img/goback-icon.svg'
 import { GalleryContext } from 'options/galleryContext'
+import { ERROR_MESSAGE } from 'koiConstants'
+import { setIsLoading } from 'popup/actions/loading'
 
 export default () => {
-  const { collectionNFT, setCollectionNFT, setShowCreateCollection } = useContext(GalleryContext)
-  const [stage, setStage] = useState(1)
+  const { collectionNFT,
+    setCollectionNFT, 
+    setShowCreateCollection,
+    stage, 
+    setStage,
+    setError,
+    demoCollections,
+    setDemoCollections,
+    setPage,
+    setTotalPage
+  } = useContext(GalleryContext)
+  // const [stage, setStage] = useState(1)
 
-  const [collectionName, setColletionName] = useState('')
+  const [collectionName, setCollectionName] = useState('')
   const [description, setDescription] = useState('')
   const [tags, setTags] = useState([])
 
@@ -22,14 +34,60 @@ export default () => {
   const onClose = () => {
     setShowCreateCollection(false)
     setCollectionNFT([])
+    setPage(0)
+    setTotalPage(1)
+    setStage(1)
   }
 
   const onGoBack = () => {
     setStage(stage !== 1 ? stage - 1 : 1)
   }
 
-  const confirmButtonOnClick = () => {
-    stage !== 4 && setStage(stage + 1)
+  const handleCreateNewCollection = async () => {
+    const nfts = collectionNFT.filter(nft => nft.id)
+
+    const newCollection = {
+      id: Date.now(),
+      name: collectionName,
+      nfts,
+      view: 1234,
+      earnedKoi: 1000,
+      pieces: nfts.length,
+      tags,
+      koiRockUrl: 'https://koi.rocks'
+    }
+    
+    /* 
+      For demo.
+    */
+    setDemoCollections([...demoCollections, newCollection, newCollection, newCollection, newCollection, newCollection, newCollection])
+  }
+
+  const confirmButtonOnClick = async () => {
+    switch (stage) {
+      case 1:
+        if (!collectionName || !description) {
+          setError(ERROR_MESSAGE.EMPTY_FIELDS)
+        } else {
+          setStage(stage + 1)
+        }
+        break
+      case 2:
+        setStage(stage + 1)
+        break
+      case 3:
+        setStage(stage + 1)
+        setIsLoading(true)
+        await handleCreateNewCollection()
+        setIsLoading(false)
+        break
+    }
+
+    // if (stage !== 4) {
+    //   setStage(stage + 1)
+    // } else {
+    //   await handleCreateNewCollection()
+    // }
   }
 
   return (
@@ -50,7 +108,7 @@ export default () => {
             */
             stage == 1 && <InputInfo
               tags={tags}
-              setColletionName={setColletionName}
+              setColletionName={setCollectionName}
               setDescription={setDescription}
               setTags={setTags}
               collectionName={collectionName}
@@ -79,12 +137,12 @@ export default () => {
         </div>
 
         {/* CLOSE BUTTON */}
-        {stage !== 4 && <div
+        <div
           className='close-button'
           onClick={onClose}
         >
           <CloseIcon />
-        </div>}
+        </div>
 
         {/* GO BACK BUTTON */}
         {stage !== 4 && <div className='goback-button' onClick={onGoBack}>

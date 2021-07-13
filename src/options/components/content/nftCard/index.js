@@ -22,7 +22,15 @@ export default ({
   disabled,
   contentType,
 }) => {
-  const { showCreateCollection, collectionNFT, setCollectionNFT, totalPage, setTotalPage } = useContext(GalleryContext)
+  const { showCreateCollection, 
+    collectionNFT,
+    setCollectionNFT,
+    totalPage, 
+    setTotalPage,
+    stage,
+    page,
+    setPage
+  } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const [selectedCollection, setSelectedCollection] = useState(false)
 
@@ -31,19 +39,51 @@ export default ({
     setTimeout(() => setIsCopied(false), 3000)
   }
 
+  /* 
+    Handle selecting new NFT to put to new colleciton.
+    Take a look at: options/components/collection/CreateCollection
+  */
   const addToCollection = () => {
-    if (!find(collectionNFT, v => v.id == txId)) {
-      let nfts = [...collectionNFT]
-      nfts = nfts.filter((nft) => !!nft.url)
-      nfts.push({ id: txId, url: imageUrl })
-      if (nfts.length % 5 !== 0) {
-        const addOn = 5 - (nfts.length % 5)
-        for (let i = 0; i < addOn; i++) {
-          nfts.push({})
+    if (stage == 2) {
+      if (!find(collectionNFT, v => v.id == txId)) {
+        /* Click to select this picture */
+        let nfts = [...collectionNFT]
+        nfts = nfts.filter((nft) => !!nft.url)
+        nfts.push({ 
+          id: txId, 
+          url: imageUrl, 
+          contentType,
+          name,
+          views: 100,
+          earnedKoi,
+          koiRockUrl
+        })
+        if (nfts.length % 5 !== 0) {
+          const addOn = 5 - (nfts.length % 5)
+          for (let i = 0; i < addOn; i++) {
+            nfts.push({})
+          }
         }
+        if (nfts.length / 5 !== totalPage) {
+          setTotalPage(nfts.length / 5)
+          setPage(totalPage)
+        }
+        setCollectionNFT([...nfts])
+      } else {
+        /* Click to unselect this picture */
+        let nfts = [...collectionNFT]
+        nfts = nfts.filter((nft) => nft.id !== txId)
+        nfts.push({})
+        const notEmptySlots = nfts.filter((nft) => nft.id)
+        if ((notEmptySlots.length % 5 === 0 && notEmptySlots.length > 0)) {
+          nfts = notEmptySlots
+        }
+        if (((totalPage - nfts.length / 5) === 1) && page === totalPage - 1) {
+          setPage(page - 1)
+        }
+        setTotalPage(nfts.length / 5)
+        setCollectionNFT([...nfts])
       }
-      nfts.length / 5 !== totalPage && setTotalPage(nfts.length / 5)
-      setCollectionNFT([...nfts])
     }
   }
 

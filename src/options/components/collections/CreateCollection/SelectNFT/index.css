@@ -20,12 +20,13 @@
   .nft-wrapper {
     position: relative;
     object-fit: cover;
-    width: 154px;
+    width: 146.8px;
     height: 154px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0 18px;
+    box-sizing: border-box;
   }
 
 .create-collection
@@ -104,9 +105,12 @@
   .tags {
     display: flex;
     gap: 13px;
-    width: 516px;
+    width: 734px;
+    height: 22px;
     margin-left: 180px;
     margin-top: 24px;
+    flex-wrap: wrap;
+    overflow-y: overlay;
   }
 
 

@@ -10,7 +10,7 @@ import { formatNumber } from 'options/utils'
 import './index.css'
 import { Link } from 'react-router-dom'
 
-export default ({ collection }) => {
+export default ({ collection, setCollection }) => {
   const {
     id,
     name,
@@ -21,10 +21,11 @@ export default ({ collection }) => {
     pieces,
     tags,
     koiRockUrl,
+    description
   } = collection
 
   const [isCopied, setIsCopied] = useState(false)
-  const [displayNftIndex, setDisplayNftIndex] = useState(1)
+  const [displayNftIndex, setDisplayNftIndex] = useState(0)
   const [displayTags, setDisplayTags] = useState([])
   const [expandTag, setExpandTag] = useState('')
   const ref = useRef()
@@ -99,6 +100,26 @@ export default ({ collection }) => {
     setExpandTag('')
   }
 
+  /* 
+    Set collection data for detail collection.
+    Later we will move component CollectionDetail to another page.
+    This function will be removed.
+  */
+  const handleSetCollection = () => {
+    setCollection({
+      id,
+      name,
+      nfts,
+      view,
+      earnedKoi,
+      contributors,
+      pieces,
+      tags,
+      koiRockUrl,
+      description
+    })
+  }
+
   useEffect(() => {
     calculateDisplayTags()
   }, [tags])
@@ -147,14 +168,18 @@ export default ({ collection }) => {
             />
           )}
         </div>
-        <Link className='nft-name' to={`/details/${id}`}>
+        {/* <Link className='nft-name' to={`/details/${id}`}>
+          {name}
+        </Link> */}
+        <Link className='nft-name' onClick={handleSetCollection} to='#'>
           {name}
         </Link>
 
         <div className='nft-view'>{view} KOI </div>
         <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>
         <div className='nft-stats'>
-          <div className='contributors'>{contributors}</div>
+
+          {/* <div className='contributors'>{contributors}</div> */}
           <div className='pieces'>{pieces}</div>
         </div>
         <div className='tags '>

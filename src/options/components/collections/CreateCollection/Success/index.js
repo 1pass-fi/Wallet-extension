@@ -1,5 +1,5 @@
 import { GalleryContext } from 'options/galleryContext'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import Twitter from 'img/social-icons/twitter-icon.svg'
 import Facebook from 'img/social-icons/facebook-icon.svg'
@@ -27,7 +27,13 @@ const Share = () => {
 }
 
 export default ({ collectionName, description, tags }) => {
-  const { collectionNFT } = useContext(GalleryContext)
+  const { collectionNFT, setCollectionNFT } = useContext(GalleryContext)
+  const [nfts, setNfts] = useState([])
+
+  useEffect(() => {
+    setNfts([...collectionNFT])
+    setCollectionNFT([])
+  }, [])
 
   return (
     <div className='success'>
@@ -36,7 +42,7 @@ export default ({ collectionName, description, tags }) => {
       </div>
       <Share />
       <div className='nfts'>
-        {collectionNFT.map((nft, index) => {
+        {nfts.map((nft, index) => {
           if (nft.url) return (
             <div className='nft-wrapper' key={index}>
               <img src={nft.url}></img>

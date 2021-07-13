@@ -46,7 +46,7 @@ export default () => {
     })
     window.close()
   }, (path) => {
-    // On Mac
+    // On Mac and others
     const url = chrome.extension.getURL(path)
     chrome.windows.create({
       url,

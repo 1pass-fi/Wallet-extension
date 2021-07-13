@@ -9,14 +9,14 @@ import DeleteIcon from 'img/delete-icon-collection.svg'
 import { GalleryContext } from 'options/galleryContext'
  
 export default ({nfts, tags, setNfts, collectionName, description, stage}) => {
-  const { collectionNFT, setCollectionNFT, totalPage, setTotalPage} = useContext(GalleryContext)
-  const [page, setPage] = useState(0)
+  const { collectionNFT, setCollectionNFT, totalPage, setTotalPage, page, setPage} = useContext(GalleryContext)
+  // const [page, setPage] = useState(0)
 
   /* 
-    Handle removing a selected NFT from the list.
+    Handles removing an NFT from the list.
     The code for selecting new NFT is in: options/components/content/nftCard
   */
-  const handleOnClick = (id) => {
+  const removeFromCollection = (id) => {
     let nfts = [...collectionNFT]
     nfts = nfts.filter((nft) => nft.id !== id)
     nfts.push({})
@@ -38,8 +38,8 @@ export default ({nfts, tags, setNfts, collectionName, description, stage}) => {
   
     return result
   }
-  
-  // Run when drop
+
+  // Runs when drop
   const onDragEnd = (result) => {
     /* Reoder nfts */
     console.log(result)
@@ -74,7 +74,6 @@ export default ({nfts, tags, setNfts, collectionName, description, stage}) => {
       {/* NFTs */}
       {stage === 2 &&
 
-
       /* 
         Displays set of 5 nfts.
         We will use react-beautiful-dnd to do drag and drop.
@@ -101,7 +100,7 @@ export default ({nfts, tags, setNfts, collectionName, description, stage}) => {
                         {...provided.dragHandleProps}
                       >
                         {nft.url && <img src={nft.url}></img>}
-                        {nft.url && <div onClick={() => handleOnClick(nft.id)} className='delete-icon'><DeleteIcon /></div>}
+                        {nft.url && <div onClick={() => removeFromCollection(nft.id)} className='delete-icon'><DeleteIcon /></div>}
                       </div>
                     )
                     }
@@ -114,7 +113,6 @@ export default ({nfts, tags, setNfts, collectionName, description, stage}) => {
         </DragDropContext>
       </div>      
       }
-
 
       {stage === 3 &&
       /* 
