@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef, useEffect } from 'react'
 
 import HomeIcon from 'img/navbar/home.svg'
 import CollectionIcon from 'img/navbar/collection.svg'
@@ -17,13 +17,20 @@ import SlideNavbar from './SlideNav'
 export default () => {
   const { affiliateCode } = useContext(GalleryContext)
   const { pathname } = useLocation()
+  const [isExpandSubNavbar, setIsExpandSubNavbar] = useState(false)
 
   return (
-    <div className='navbar-container'>
+    <div
+      className='navbar-container'
+      onMouseEnter={() => setIsExpandSubNavbar(true)}
+      onMouseLeave={() => setIsExpandSubNavbar(false)}
+    >
       <div className='navbar'>
         <div className='top'>
           <Link to='/'>
-            <HomeIcon className={`nav-item ${pathname == '/' ? 'active' : ''}`} />
+            <HomeIcon
+              className={`nav-item ${pathname == '/' ? 'active' : ''}`}
+            />
           </Link>
           <Link to='/create'>
             <CreateNFTIcon
@@ -32,12 +39,16 @@ export default () => {
           </Link>
           <Link to='/collections'>
             <CollectionIcon
-              className={`nav-item ${pathname == '/collections' ? 'active' : ''}`}
+              className={`nav-item ${
+                pathname == '/collections' ? 'active' : ''
+              }`}
             />
           </Link>
           <Link to='/settings'>
             <SettingIcon
-              className={`nav-item ${pathname.includes('/settings') ? 'active' : ''}`}
+              className={`nav-item ${
+                pathname.includes('/settings') ? 'active' : ''
+              }`}
             />
           </Link>
         </div>
@@ -49,10 +60,14 @@ export default () => {
               }`}
             />
           </Link>
-          <div className='address'>{`${affiliateCode && affiliateCode.slice(0,5)}...`}</div>
+          <div className='address'>{`${
+            affiliateCode && affiliateCode.slice(0, 5)
+          }...`}</div>
         </div>
       </div>
-      <SlideNavbar />
+      {pathname.includes('/settings') && (
+        <SlideNavbar isExpand={isExpandSubNavbar} />
+      )}
     </div>
   )
 }

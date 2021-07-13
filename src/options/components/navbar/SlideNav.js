@@ -1,31 +1,57 @@
-import React from 'react'
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react'
 import './SlideNav.css'
 
 import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 
-export default () => {
+export default ({ isExpand }) => {
   const { pathname } = useLocation()
+
   return (
-    <div className='slide-nav'>
+    <div className={`slide-nav ${isExpand ? 'expand' : ''}`}>
       <div className='items'>
-        <Link style={{ textDecoration: 'none' }} to='/settings/k-id'>
-          <div className={pathname == '/settings/k-id' ? 'item active' : 'item'}>Koi Identity (kID)</div>
+        <Link
+          className={`item ${pathname == '/settings/k-id' ? 'active' : ''}`}
+          to='/settings/k-id'
+        >
+          Koi Identity (kID)
         </Link>
-        <Link style={{ textDecoration: 'none' }} to='/settings/gallery'>
-          <div className={pathname == '/settings/gallery' ? 'item active' : 'item'}>Gallery Settings</div>
+        <Link
+          className={`item ${pathname == '/settings/gallery' ? 'active' : ''}`}
+          to='/settings/gallery'
+        >
+          Gallery Settings
         </Link>
-        <Link style={{ textDecoration: 'none' }} to='/settings/wallet'>
-          <div className={pathname == '/settings/wallet' ? 'item active' : 'item'}>Wallet Settings</div>
+        <Link
+          className={`item ${pathname == '/settings/wallet' ? 'active' : ''}`}
+          to='/settings/wallet'
+        >
+          Wallet Settings
         </Link>
-        <Link style={{ textDecoration: 'none' }} to='/settings/security'>
-          <div className={pathname == '/settings/security' ? 'item active' : 'item'}>Security</div>
+        <Link
+          className={`item ${pathname == '/settings/security' ? 'active' : ''}`}
+          to='/settings/security'
+        >
+          Security
         </Link>
-        <Link style={{ textDecoration: 'none' }} to='#'>
-          <div className={pathname == '/settings/customization' ? 'item active' : 'item'}>Customization</div>
+        <Link
+          className={`item ${
+            pathname == '/settings/customization' ? 'active' : ''
+          }`}
+          to='/settings/customization'
+        >
+          Customization
         </Link>
-        <Link style={{ textDecoration: 'none' }} to='/settings/about'>
-          <div className={pathname == '/settings/about' ? 'item active' : 'item'}>About</div>
+        <Link
+          className={`item ${pathname == '/settings/about' ? 'active' : ''}`}
+          to='/settings/about'
+        >
+          About
         </Link>
       </div>
     </div>
