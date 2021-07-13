@@ -1,0 +1,49 @@
+.collection-details-wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 140px);
+}
+
+.collection-details {
+  max-width: 920px;
+  color: #ffffff;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.collection-details .title {
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.collection-details .views {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  margin-top: 12px;
+  text-transform: uppercase;
+}
+
+.collection-details .earned-koi {
+  font-size: 14px;
+  line-height: 24px;
+  text-transform: uppercase;
+}
+
+.collection-details .description {
+  margin: 53px 0;
+  font-size: 18px;
+  line-height: 32px;
+  max-width: 772px;
+}
+
+.collection-details .cards {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-direction: row;
+  flex-wrap: wrap;
+}

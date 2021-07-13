@@ -52,7 +52,10 @@ export default ({ children }) => {
   const [notification, setNotification] = useState(null)
   const [totalReward, setTotalReward] = useState(null)
   const [inviteSpent, setInviteSpent] = useState(false)
-
+  const [showCreateCollection, setShowCreateCollection] = useState(false)
+  const [collectionNFT, setCollectionNFT] = useState([])
+  const [totalPage, setTotalPage] = useState(1)
+  
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
     accept: ['image/*', 'video/*', 'audio/*'],
@@ -157,7 +160,7 @@ export default ({ children }) => {
   )
 
   useEffect(() => {
-    if (isDragging && headerRef.current) {
+    if (isDragging && headerRef.current !== showCreateCollection) {
       headerRef.current.scrollIntoView({ behavior: 'smooth' })
     }
   }, [isDragging])
@@ -217,6 +220,12 @@ export default ({ children }) => {
         setNotification,
         totalReward,
         inviteSpent,
+        showCreateCollection,
+        collectionNFT,
+        setCollectionNFT,
+        totalPage,
+        setTotalPage,
+        setShowCreateCollection,
         totalKoi,
         totalAr
       }}
@@ -264,6 +273,7 @@ export default ({ children }) => {
           <input name='fileField' {...getInputProps()} />
         )}
         <Header totalKoi={totalKoi} totalAr={totalAr} headerRef={headerRef} />
+        <button onClick={() => setShowCreateCollection(true)}>Create Collection</button>
         {children}
         {!isDragging && <Footer showDropzone={showDropzone} />}
         <Navbar />

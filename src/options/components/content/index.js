@@ -6,18 +6,18 @@ import toLower from 'lodash/toLower'
 import isEqual from 'lodash/isEqual'
 
 import { GalleryContext } from 'options/galleryContext'
+import CreateCollection from 'options/components/collections/CreateCollection'
 
-import UploadNFT from '../../components/upload'
 import Card from './nftCard'
 import BigCard from './bigNFTCard'
 
 import './index.css'
 
 export default ({ choosenTxid = '' }) => {
-  const { cardInfos, isDragging, searchTerm } = useContext(GalleryContext)
+  const { cardInfos, isDragging, searchTerm, showCreateCollection } = useContext(GalleryContext)
 
   useEffect(() => {
-    window.scroll({ top: 0, behavior: 'smooth' })
+    if (!showCreateCollection) window.scroll({ top: 0, behavior: 'smooth' }) 
   }, [choosenTxid])
 
   const choosenCard = find(cardInfos, { txId: choosenTxid })
@@ -25,6 +25,9 @@ export default ({ choosenTxid = '' }) => {
   return (
     <div className='app-content'>
       {!choosenCard && <div className='title'>Gallery</div>}
+      {showCreateCollection && <div className='create-collection-container'>
+        <CreateCollection />
+      </div>}
       <div className='cards'>
         {choosenCard && <BigCard {...choosenCard} />}
         <div className='small-cards'>

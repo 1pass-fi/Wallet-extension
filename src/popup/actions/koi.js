@@ -278,4 +278,16 @@ export const connectSite = (inputData) => (dispatch) => {
   }
 }
 
+export const test = (data) => {
+  return new Promise((resolve, reject) => {
+    backgroundConnect.request(MESSAGES.TEST, response => {
+      resolve(response)
+
+      if (response.error) {
+        reject(response.error)
+      }
+    }, data)
+  })
+}
+
 export const setKoi = (payload) => ({ type: SET_KOI, payload })

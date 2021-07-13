@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import Details from './pages/Details'
 import Create from './pages/Create'
 import Collections from './pages/Collections'
+import CollectionDetails from './pages/CollectionDetails'
 import Settings from './pages/Settings'
 import Faucet from './pages/Faucet'
 import Friends from './pages/Friends'
@@ -28,6 +29,9 @@ const Gallery = () => {
           </Route>
           <Route exact path='/friends'>
             <Friends />
+          </Route>
+          <Route exact path='/collections/:collectionId'>
+            <CollectionDetails />
           </Route>
           <Route exact path='/collections'>
             <Collections />
