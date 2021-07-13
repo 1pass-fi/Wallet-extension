@@ -37,7 +37,7 @@ export default () => {
           </Link>
           <Link to='/settings'>
             <SettingIcon
-              className={`nav-item ${pathname == '/settings' ? 'active' : ''}`}
+              className={`nav-item ${pathname.includes('/settings') ? 'active' : ''}`}
             />
           </Link>
         </div>

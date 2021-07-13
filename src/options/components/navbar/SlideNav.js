@@ -24,8 +24,8 @@ export default () => {
         <Link style={{ textDecoration: 'none' }} to='#'>
           <div className={pathname == '/settings/customization' ? 'item active' : 'item'}>Customization</div>
         </Link>
-        <Link style={{ textDecoration: 'none' }} to='/about'>
-          <div className={pathname == '/about' ? 'item active' : 'item'}>About</div>
+        <Link style={{ textDecoration: 'none' }} to='/settings/about'>
+          <div className={pathname == '/settings/about' ? 'item active' : 'item'}>About</div>
         </Link>
       </div>
     </div>
