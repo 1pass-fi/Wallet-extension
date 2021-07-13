@@ -7,7 +7,8 @@ import PlusIcon from 'img/plus-icon-outline.svg'
 import './index.css'
 import Card from 'shared/card'
 import { getChromeStorage } from 'utils'
-import { STORAGE } from 'koiConstants'
+import { STORAGE, WINDOW_SIZE } from 'koiConstants'
+import { performOnDifferentOs, performOnWindows } from 'utils/extension'
 
 
 
@@ -28,17 +29,36 @@ const CardOption = ({ SvgImage, title, description, path, onClick }) => {
 export default () => {
   const [selections, setSelections] = useState([])
 
-  const handleOnClick = (path) => {
+  const screenWidth = screen.availWidth
+  const screenHeight = screen.availHeight
+
+  const handleOnClick = performOnDifferentOs((path) => {
+    // On Windows
     const url = chrome.extension.getURL(path)
     chrome.windows.create({
       url,
       focused: true,
       type: 'popup',
-      height: 628,
-      width: 426
+      height: WINDOW_SIZE.WIN_HEIGHT,
+      width: WINDOW_SIZE.WIN_WIDTH,
+      left: Math.round((screenWidth - WINDOW_SIZE.WIN_WIDTH) / 2),
+      top: Math.round((screenHeight - WINDOW_SIZE.WIN_HEIGHT) / 2)
     })
     window.close()
-  }
+  }, (path) => {
+    // On Mac
+    const url = chrome.extension.getURL(path)
+    chrome.windows.create({
+      url,
+      focused: true,
+      type: 'popup',
+      height: WINDOW_SIZE.MAC_HEIGHT,
+      width: WINDOW_SIZE.MAC_WIDTH,
+      left: Math.round((screenWidth - WINDOW_SIZE.MAC_WIDTH) / 2),
+      top: Math.round((screenHeight - WINDOW_SIZE.MAC_HEIGHT) / 2)
+    })
+    window.close()
+  })
 
   useEffect(() => {
     const loadSelections = async () => {

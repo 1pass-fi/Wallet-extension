@@ -1,3 +1,6 @@
+import { OS } from 'koiConstants'
+import { getChromeStorage } from 'utils'
+
 let currentWindow
 let afterCloseCallbacks = {}
 
@@ -52,4 +55,13 @@ export const getSelectedTab = (timeout = 0, retries = 0) => {
       })
     }, timeout)
   })
+}
+
+export const performOnDifferentOs = (win, others) => (payload) => {
+  const os = window.localStorage.getItem(OS)
+  if (os == 'win') {
+    win(payload)
+  } else {
+    others(payload)
+  }
 }
