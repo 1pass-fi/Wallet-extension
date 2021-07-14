@@ -1,0 +1,81 @@
+.security-settings-wrapper * {
+  box-sizing: border-box;
+  color: #ffffff;
+}
+
+.security-settings-wrapper {
+  padding-left: 138px;
+}
+
+.security-settings .header {
+  font-size: 32px;
+  line-height: 40px;
+  margin-bottom: 40px;
+}
+
+.security-settings .content {
+  padding-left: 20px;
+}
+
+.security-settings .content .backup-seedphrase .title,
+.security-settings .content .backup-keyfile .title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.security-settings .content .backup-seedphrase .description,
+.security-settings .content .backup-keyfile .description {
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.security-settings .content .backup-keyfile {
+  margin-top: 35px;
+}
+
+.security-settings .content .seedphrase,
+.security-settings .content .keyfile {
+  background: #f5f5f5;
+  border-radius: 3px;
+  margin-top: 12px;
+  padding: 9px 0;
+  width: 376px;
+}
+
+.security-settings .content .account[disabled] {
+  background: #ffffff;
+  cursor: unset;
+  pointer-events: none;
+}
+
+.security-settings .content .account {
+  align-items: center;
+  background: #bef0ed;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  height: 36px;
+  justify-content: space-between;
+  padding: 7px 41px 7px 14px;
+}
+
+.security-settings .content .account .name-icon {
+  display: flex;
+  flex-direction: row;
+}
+
+.security-settings .content .account .account-name {
+  color: #171753;
+  font-size: 14px;
+  line-height: 24px;
+  margin-left: 9px;
+}
+
+.security-settings .content .account .account-address {
+  color: #237b75;
+  font-size: 12px;
+  justify-self: flex-end;
+  letter-spacing: 0.01em;
+  line-height: 16px;
+}
