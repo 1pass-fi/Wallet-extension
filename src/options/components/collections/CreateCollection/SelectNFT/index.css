@@ -47,6 +47,16 @@
   }
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 
 .create-collection
   .wrapper
@@ -80,6 +90,7 @@
   .wrapper
   .select-nft
   .cover-image-tag {
+    animation: fadeIn 0.7s;
     position: absolute;
     bottom: 0px;
     left: 45px;
