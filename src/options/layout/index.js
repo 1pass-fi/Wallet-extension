@@ -52,10 +52,10 @@ export default ({ children }) => {
   const [notification, setNotification] = useState(null)
   const [totalReward, setTotalReward] = useState(null)
   const [inviteSpent, setInviteSpent] = useState(false)
-  const [showCreateCollection, setShowCreateCollection] = useState(false)
+  const [showCreateCollection, setShowCreateCollection] = useState(true)
   const [collectionNFT, setCollectionNFT] = useState([])
   const [totalPage, setTotalPage] = useState(1)
-  const [stage, setStage] = useState(1)
+  const [stage, setStage] = useState(2)
   const [page, setPage] = useState(0)
 
   const [demoCollections, setDemoCollections] = useState([])

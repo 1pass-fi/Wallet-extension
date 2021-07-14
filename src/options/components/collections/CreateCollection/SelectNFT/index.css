@@ -1,9 +1,71 @@
+@keyframes slideToLeft {
+  0% {
+    right: 0px;
+    opacity: 0;
+  }
+
+  100% {
+    right: 913px;
+    opacity: 1;
+  }
+}
+
+@keyframes slideToLeftMiddle {
+  0% {
+    right: 0px;
+    opacity: 1;
+  }
+
+  100% {
+    right: 913px;
+    opacity: 0;
+  }
+}
+
+
+@keyframes slideToRight {
+  0% {
+    left: 0px;
+    opacity: 0;
+  }
+
+  100% {
+    left: 913px;
+    opacity: 1;
+  }
+}
+
+@keyframes slideToRightMiddle {
+  0% {
+    left: 0px;
+    opacity: 1;
+  }
+
+  100% {
+    left: 913px;
+    opacity: 0;
+  }
+}
+
+
 .create-collection
   .wrapper
   .select-nft {
     width : 914px;
     min-height: 307px;
     position: relative;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  /* ANIMATION FOR NFT THUMNAILS */
+.create-collection
+  .wrapper
+  .select-nft
+  .thumbnails-animation {
+    position: relative;
+    display: flex;
+    right: 913px;
   }
 
 .create-collection
@@ -41,6 +103,53 @@
     align-items: center;
     margin: 0 18px;
     box-sizing: border-box;
+  }
+
+.create-collection
+  .wrapper
+  .select-nft
+  .nft
+  .nft-wrapper.left.slide-to-left {
+    animation: slideToLeft 0.7s;
+  }
+
+.create-collection
+  .wrapper
+  .select-nft
+  .nft
+  .nft-wrapper.middle.slide-to-left {
+    animation: slideToLeftMiddle 0.7s;
+  }
+
+.create-collection
+  .wrapper
+  .select-nft
+  .nft
+  .nft-wrapper.right.slide-to-left {
+    animation: slideToLeft 0.7s;
+  }
+.create-collection
+  .wrapper
+  .select-nft
+  .nft
+  .nft-wrapper.left.slide-to-right {
+    animation: slideToRight 0.7s;
+  }
+
+.create-collection
+  .wrapper
+  .select-nft
+  .nft
+  .nft-wrapper.middle.slide-to-right {
+    animation: slideToRightMiddle 0.7s;
+  }
+
+.create-collection
+  .wrapper
+  .select-nft
+  .nft
+  .nft-wrapper.right.slide-to-right {
+    animation: slideToRight 0.7s;
   }
 
 .create-collection
