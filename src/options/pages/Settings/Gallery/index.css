@@ -1,0 +1,48 @@
+.galery-settings-wrapper * {
+  box-sizing: border-box;
+  color: #ffffff;
+}
+
+.galery-settings-wrapper {
+  padding-left: 138px;
+}
+
+.galery-settings-wrapper .header {
+  font-size: 32px;
+  line-height: 40px;
+  margin-bottom: 40px;
+}
+
+.galery-settings {
+  display: flex;
+  flex-direction: column;
+  width: 581px;
+}
+
+.galery-settings .settings-row {
+  border-bottom: 1px solid #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 20px;
+  padding: 10px 40px 23px 0px;
+}
+
+.galery-settings .settings-row .left {
+  max-width: 400px;
+}
+
+.galery-settings .settings-row .left .title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.galery-settings .settings-row .left .description {
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.galery-settings .settings-row .left .description .leaderboard {
+  color: #49ce8b;
+}

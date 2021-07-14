@@ -36,7 +36,7 @@ const Gallery = () => {
           <Route exact path='/collections'>
             <Collections />
           </Route>
-          <Route exact path='/settings'>
+          <Route path='/settings'>
             <Settings />
           </Route>
           <Route path='*'>
