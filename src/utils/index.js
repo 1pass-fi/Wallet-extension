@@ -123,6 +123,7 @@ export const loadMyContent = async (koiObj) => {
             description: content.description
           }
         } else {
+          console.log('Failed load content: ', content)
           return {
             name: '...',
             isKoiWallet: true,
@@ -130,7 +131,7 @@ export const loadMyContent = async (koiObj) => {
             txId: content.txIdContent,
             imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
             galleryUrl: `${PATH.GALLERY}#/details/${content.txIdContent}`,
-            koiRockUrl: `${PATH.KOI_ROCK}${content.txIdContent}`,
+            koiRockUrl: `${PATH.KOI_ROCK}/${content.txIdContent}`,
             isRegistered: true,
             contentType: content.contentType || 'image',
             totalViews: content.totalViews,
@@ -174,7 +175,7 @@ export const loadMyActivities = async (koiObj, cursor) => {
     }
   
     let activitiesList = [...ownedData, ...recipientData]
-
+    console.log('ACTIVITIES LIST BACKGROUND: ', activitiesList)
     // get next cursors
     const nextOwnedCursor = ownedData.length > 0 ? get(ownedData[ownedData.length - 1], 'cursor') : ownedCursor
     const nextRecipientCursor = recipientData.length > 0 ? get(recipientData[recipientData.length - 1], 'cursor') : recipientCursor
@@ -188,11 +189,17 @@ export const loadMyActivities = async (koiObj, cursor) => {
         const id = get(activity, 'node.id')
         let activityName = 'Sent AR'
         let expense = Number(get(activity, 'node.quantity.ar')) + Number(get(activity, 'node.fee.ar'))
+
         // get input tag
         let inputTag = (get(activity, 'node.tags'))
         if (!isArray(inputTag)) inputTag = []
         inputTag = inputTag.filter(tag => tag.name === 'Input')
+
+        // get Init State tag
         const initStateTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Init-State')
+
+        // get action tag
+        const actionTag = ((get(activity, 'node.tags')).filter(tag => tag.name === 'Action'))
         let source = get(activity, 'node.recipient')
         let inputFunction
         if (inputTag[0]) {
@@ -201,6 +208,10 @@ export const loadMyActivities = async (koiObj, cursor) => {
             activityName = 'Sent KOI'
             expense = inputFunction.qty
             source = inputFunction.target
+          } else if (inputFunction.function === 'updateCollection') {
+            activityName = 'Updated Collection'
+          } else if (inputFunction.function === 'updateKID') {
+            activityName = 'Updated KID'
           }
 
           if (inputFunction.function === 'registerData') {
@@ -210,8 +221,16 @@ export const loadMyActivities = async (koiObj, cursor) => {
         }
 
         if (initStateTag[0]) {
-          const initState = JSON.parse(initStateTag[0].value)
-          activityName = `Minted NFT "${initState.title}"`
+          if (actionTag[0].value.includes('KID/Create')) {
+            const initState = JSON.parse(initStateTag[0].value)
+            activityName = `Created KID "${initState.name}"`
+          } else if (actionTag[0].value.includes('Collection/Create')) {
+            const initState = JSON.parse(initStateTag[0].value)
+            activityName = `Created Collection "${initState.name}"`
+          } else {
+            const initState = JSON.parse(initStateTag[0].value)
+            activityName = `Minted NFT "${initState.title}"`
+          }
         }
 
         if (get(activity, 'node.owner.address') !== koiObj.address) {
@@ -555,7 +574,6 @@ export const getImageDataForNFT = async (fileType) => {
 }
 
 export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
-  console.log('EXPORT NFT UTIL RUNNING')
   const bundlerUrl = 'https://bundler.openkoi.com:8888'
   try {
     const { u8, file } = await getImageDataForNFT(fileType)
@@ -654,6 +672,18 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
     console.log(err.message)
     throw new Error(err.message)
   }
+}
+
+export const createNewKid = async (koi, kidInfo, fileType) => {
+  const { u8 } = await getImageDataForNFT(fileType)
+  const image = { blobData: u8, contentType: fileType }
+
+  const txId = await koi.createKID(kidInfo, image)
+  return txId
+}
+
+export const updateKid = async (koi, kidInfo, contractId) => {
+  return await koi.updateKID(kidInfo, contractId)
 }
 
 export const utils = {

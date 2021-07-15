@@ -27,4 +27,27 @@ export class GalleryRequest extends Request {
   createNewCollection(body) {
     return this.promise(MESSAGES.CREATE_COLLECTION, body)
   }
+
+  
+  /**
+   * 
+   * @param {Object} body
+   * @param {Object} body.kidInfo { name, description, link, addresses }
+   * @param {String} body.fileType
+   * @returns 
+   */
+  createNewKID(body) {
+    return this.promise(MESSAGES.CREATE_KID, body)
+  }
+
+  /**
+   * 
+   * @param {Object} body
+   * @param {Object} body.kidInfo { name, description, link, addresses }
+   * @param {String} body.contractId contract ID of KID to be updated
+   * @returns 
+   */
+  updateKID(body) {
+    return this.promise(MESSAGES.UPDATE_KID, body)
+  }
 }

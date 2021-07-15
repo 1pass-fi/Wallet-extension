@@ -24,7 +24,9 @@ import {
   saveOriginToChrome,
   signTransaction,
   getBalances,
-  exportNFTNew
+  exportNFTNew,
+  createNewKid,
+  updateKid
 } from 'utils'
 
 export const loadBalances = async (koi, port) => {
@@ -406,6 +408,42 @@ export default async (koi, port, message, ports, resolveId) => {
         } catch (err) {
           port.postMessage({
             type: MESSAGES.CREATE_COLLECTION,
+            error: `BACKGROUND ERROR: ${err.message}`
+          })
+        }
+        break
+      }
+
+      case MESSAGES.CREATE_KID: {
+        try {
+          const { kidInfo, fileType } = message.data
+          const txId = await createNewKid(koi, kidInfo, fileType)
+
+          port.postMessage({
+            type: MESSAGES.CREATE_KID,
+            data: txId
+          })
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.CREATE_KID,
+            error: `BACKGROUND ERROR: ${err.message}`
+          })
+        }
+        break
+      }
+
+      case MESSAGES.UPDATE_KID: {
+        try {
+          const { kidInfo, contractId } = message.data
+          console.log('UPDATE KID: ', kidInfo, '; contractId: ', contractId)
+          const txId = await updateKid(koi, kidInfo, contractId)
+          port.postMessage({
+            type: MESSAGES.UPDATE_KID,
+            data: txId
+          })
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.UPDATE_KID,
             error: `BACKGROUND ERROR: ${err.message}`
           })
         }
