@@ -96,7 +96,11 @@ export default () => {
       <div
         className='security-settings'
         style={{
-          filter: `${showExportBackupPhraseModal ? 'blur(8px)' : 'none'}`,
+          filter: `${
+            showExportBackupPhraseModal || showExportBackupKeyfileModal
+              ? 'blur(8px)'
+              : 'none'
+          }`,
         }}
       >
         <div className='header'>Security Settings Settings</div>
