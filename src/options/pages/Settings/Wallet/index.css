@@ -1,0 +1,75 @@
+.wallet-settings-wrapper * {
+  box-sizing: border-box;
+  color: #ffffff;
+  font-family: Sora;
+}
+
+.wallet-settings-wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 140px);
+}
+
+.wallet-settings-wrapper .header {
+  font-size: 32px;
+  line-height: 40px;
+  margin-bottom: 40px;
+}
+
+/* .wallet-settings {} */
+
+.wallet-settings .items {
+  margin-top: 40px;
+}
+
+.wallet-settings .items .item {
+  margin-bottom: 44px;
+}
+
+.wallet-settings .items .item .title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 32px;
+}
+
+.wallet-settings .items .item .description {
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.wallet-settings .items .item .coming-soon {
+  color: #ffc78f;
+}
+
+.wallet-settings .items .item .actions {
+  display: flex;
+  gap: 48px;
+}
+
+.wallet-settings .items .item .actions .action {
+  width: 230px;
+  height: 32px;
+  border: 1.5px solid #ffffff;
+  box-sizing: border-box;
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.16));
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 29px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wallet-settings .items .item .actions .action:active {
+  color: #171753;
+  background: #ffffff;
+  transition: ease 0.25s;
+}
+
+.wallet-settings .items .item .currency {
+  background-color: inherit;
+  width: 32px;
+  height: 32px;
+}
