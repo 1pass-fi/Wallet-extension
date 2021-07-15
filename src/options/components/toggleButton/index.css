@@ -61,10 +61,12 @@
 .on {
   position: absolute;
   left: 14px;
+  color: #171753 !important;
 }
 
 .off {
   right: -6px;
+  color: #171753 !important;
 }
 
 input:checked + .slider .on {
