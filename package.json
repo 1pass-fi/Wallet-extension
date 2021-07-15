@@ -114,6 +114,7 @@
         "react-app-polyfill": "^0.2.0",
         "react-beautiful-dnd": "^13.1.0",
         "react-copy-to-clipboard": "^5.0.3",
+        "react-csv": "^2.0.3",
         "react-dev-utils": "^7.0.1",
         "react-dom": "^16.7.0",
         "react-dropzone": "^11.3.2",

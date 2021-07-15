@@ -1,26 +1,69 @@
-import React from 'react'
+import React, { useState } from 'react'
 import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
 
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
 import { getDisplayAddress } from 'options/utils'
 
+import {
+  ExportBackupPhraseModal,
+  ExportBackupKeyFileModal,
+} from './ExportModal'
+
 import './index.css'
 
 export default () => {
+  const [
+    showExportBackupPhraseModal,
+    setShowExportBackupPhraseModal,
+  ] = useState(false)
+
+  const [
+    showExportBackupKeyfileModal,
+    setShowExportBackupKeyfileModal,
+  ] = useState(false)
+
+  const [selectedAccount, setSelectedAccount] = useState()
+
   const accounts = [
     {
       id: 1,
       name: 'account #1',
       address: '1234567890123456789012345678901234',
-      seedPhrase: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2],
+      seedPhrase: [
+        'shoelace',
+        'bookstore',
+        ' divulge',
+        ' restaurant',
+        ' potato',
+        ' infant',
+        ' leaflet',
+        ' solar',
+        ' maritime',
+        ' photograph',
+        ' balloon',
+        ' museum',
+      ],
       keyfile: { id: '1' },
     },
     {
       id: 2,
       name: 'account #2',
       address: '6789012341234567890123456789012345',
-      seedPhrase: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2],
+      seedPhrase: [
+        'shoelace',
+        'bookstore',
+        ' divulge',
+        ' restaurant',
+        ' potato',
+        ' infant',
+        ' leaflet',
+        ' solar',
+        ' maritime',
+        ' photograph',
+        ' balloon',
+        ' museum',
+      ],
       keyfile: {},
     },
     {
@@ -32,13 +75,30 @@ export default () => {
     },
   ]
 
-  const onAccountClick = (id) => {
-    console.log(id)
+  const onSeedPharseClick = (account) => {
+    setSelectedAccount(account)
+    setShowExportBackupPhraseModal(true)
+  }
+
+  const onKeyFileClick = (account) => {
+    setSelectedAccount(account)
+    setShowExportBackupKeyfileModal(true)
+  }
+
+  const closeModal = () => {
+    setSelectedAccount({})
+    setShowExportBackupKeyfileModal(false)
+    setShowExportBackupPhraseModal(false)
   }
 
   return (
     <div className='security-settings-wrapper'>
-      <div className='security-settings'>
+      <div
+        className='security-settings'
+        style={{
+          filter: `${showExportBackupPhraseModal ? 'blur(8px)' : 'none'}`,
+        }}
+      >
         <div className='header'>Security Settings Settings</div>
         <div className='content'>
           <div className='backup-seedphrase'>
@@ -52,7 +112,7 @@ export default () => {
                   key={account.id}
                   className='account'
                   disabled={isEmpty(get(account, 'seedPhrase', ''))}
-                  onClick={() => onAccountClick(account.id)}
+                  onClick={() => onSeedPharseClick(account)}
                 >
                   <div className='name-icon'>
                     <FinnieIcon className='finnie-icon' />
@@ -77,7 +137,7 @@ export default () => {
                   key={account.id}
                   className='account'
                   disabled={isEmpty(get(account, 'keyfile', ''))}
-                  onClick={() => onAccountClick(account.id)}
+                  onClick={() => onKeyFileClick(account)}
                 >
                   <div className='name-icon'>
                     <FinnieIcon className='finnie-icon' />
@@ -92,6 +152,20 @@ export default () => {
           </div>
         </div>
       </div>
+
+      {showExportBackupPhraseModal && (
+        <ExportBackupPhraseModal
+          account={selectedAccount}
+          closeModal={closeModal}
+        />
+      )}
+
+      {showExportBackupKeyfileModal && (
+        <ExportBackupKeyFileModal
+          account={selectedAccount}
+          closeModal={closeModal}
+        />
+      )}
     </div>
   )
 }

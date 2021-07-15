@@ -1,0 +1,174 @@
+.export-phrase-modal-wrapper {
+  height: 100vh;
+  position: fixed;
+  width: 100vw;
+}
+
+.export-phrase-modal {
+  align-items: center;
+  background-color: #171753;
+  border-radius: 3px;
+  border: 1px solid #ffffff;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 406px;
+  left: 50%;
+  padding: 27px 24px 31px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+}
+
+.export-phrase-modal * {
+  box-sizing: border-box;
+  color: #ffffff;
+  font-family: Sora;
+}
+
+.export-phrase-modal .title {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.export-phrase-modal .account-info {
+  align-items: center;
+  display: flex;
+  margin-top: 1px;
+}
+
+.export-phrase-modal .account-info .account-name {
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.export-phrase-modal .account-info .account-address {
+  color: #bef0ed;
+  font-size: 12px;
+  line-height: 16px;
+  margin-left: 22px;
+}
+
+.export-phrase-modal .description {
+  font-size: 14px;
+  line-height: 24px;
+  margin-top: 3px;
+}
+
+.export-phrase-modal .tip {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+  margin-top: 14px;
+}
+
+.export-phrase-modal .warning {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  line-height: 32px;
+  margin-top: 11px;
+}
+
+.export-phrase-modal .warning .warning-title {
+  color: #ff4141;
+  font-weight: 600;
+}
+
+.export-phrase-modal .warning .warning-description {
+  color: #ff4141;
+}
+
+.export-phrase-modal .seed-phrase,
+.export-phrase-modal .enter-password {
+  margin-top: 22px;
+  width: 464px;
+}
+
+.export-phrase-modal .seed-phrase .label,
+.export-phrase-modal .enter-password .label {
+  font-size: 14px;
+  line-height: 24px;
+  margin-left: 10px;
+}
+
+.export-phrase-modal .seed-phrase .textarea {
+  background: #f5f5f5;
+  border-radius: 3px;
+  color: #171753;
+  font-size: 16px;
+  height: 122px;
+  line-height: 24px;
+  padding: 7px 9px;
+  resize: none;
+  width: 464px;
+}
+
+.export-phrase-modal .enter-password .input {
+  background-color: inherit;
+  border-radius: 3px;
+  border: 1px solid #ffffff;
+  box-sizing: border-box;
+  box-sizing: border-box;
+  color: #ffffff;
+  height: 32px;
+  width: 464px;
+}
+
+.export-phrase-modal .seed-phrase .button-line,
+.export-phrase-modal .enter-password .button-line {
+  display: flex;
+  height: 32px;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+
+.export-phrase-modal .seed-phrase .copy-phrase-button,
+.export-phrase-modal .seed-phrase .save-csv-button,
+.export-phrase-modal .enter-password .go-back-button,
+.export-phrase-modal .enter-password .reveal-phrase-button {
+  border-radius: 3px;
+  border: 1px solid #ffffff;
+  cursor: pointer;
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.16));
+  font-size: 16px;
+  font-weight: 600;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  user-select: none;
+  width: 200px;
+}
+
+.export-phrase-modal .seed-phrase .copy-phrase-button:active,
+.export-phrase-modal .seed-phrase .save-csv-button:active,
+.export-phrase-modal .enter-password .go-back-button:active {
+  background: #ffffff;
+  color: #171753;
+  transition: ease 0.25s;
+}
+
+.export-phrase-modal .enter-password .reveal-phrase-button {
+  background: #ffffff;
+  color: #171753;
+}
+
+.export-phrase-modal .enter-password .reveal-phrase-button:active {
+  background: inherit;
+  color: #ffffff;
+  transition: ease 0.25s;
+}
+
+.export-phrase-modal .close-button {
+  border-radius: 50%;
+  border: 1px solid #ffffff;
+  cursor: pointer;
+  height: 25px;
+  position: absolute;
+  right: 7px;
+  text-align: center;
+  top: 7px;
+  width: 25px;
+}

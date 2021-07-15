@@ -4,7 +4,10 @@
 }
 
 .galery-settings-wrapper {
-  padding-left: 138px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 140px);
 }
 
 .galery-settings-wrapper .header {
