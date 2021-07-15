@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState, useMemo, useEffect } from 'react'
+import passworder from 'browser-passworder'
 import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
 
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
 import { getDisplayAddress } from 'options/utils'
+import { getChromeStorage } from 'utils'
+import { STORAGE } from 'koiConstants'
+
+import { GalleryContext } from 'options/galleryContext'
 
 import {
   ExportBackupPhraseModal,
@@ -13,6 +18,10 @@ import {
 import './index.css'
 
 export default () => {
+  const { address } = useContext(GalleryContext)
+  const [seedPhrase, setSeedPhrase] = useState('')
+  const [hasSeedPhrase, setHasSeedPhrase] = useState(false)
+
   const [
     showExportBackupPhraseModal,
     setShowExportBackupPhraseModal,
@@ -25,55 +34,52 @@ export default () => {
 
   const [selectedAccount, setSelectedAccount] = useState()
 
-  const accounts = [
+  useEffect(() => {
+    const checkSeedPhrase = async () => {
+      const storage = await getChromeStorage(STORAGE.KOI_PHRASE)
+      if (storage[STORAGE.KOI_PHRASE]) setHasSeedPhrase(true)
+    }
+
+    checkSeedPhrase()
+  }, [])
+
+  const accounts = useMemo(() => [
     {
       id: 1,
       name: 'account #1',
-      address: '1234567890123456789012345678901234',
-      seedPhrase: [
-        'shoelace',
-        'bookstore',
-        ' divulge',
-        ' restaurant',
-        ' potato',
-        ' infant',
-        ' leaflet',
-        ' solar',
-        ' maritime',
-        ' photograph',
-        ' balloon',
-        ' museum',
-      ],
+      address,
+      seedPhrase: [],
+      hasSeedPhrase: false,
       keyfile: { id: '1' },
     },
-    {
-      id: 2,
-      name: 'account #2',
-      address: '6789012341234567890123456789012345',
-      seedPhrase: [
-        'shoelace',
-        'bookstore',
-        ' divulge',
-        ' restaurant',
-        ' potato',
-        ' infant',
-        ' leaflet',
-        ' solar',
-        ' maritime',
-        ' photograph',
-        ' balloon',
-        ' museum',
-      ],
-      keyfile: {},
-    },
-    {
-      id: 3,
-      name: 'account #3',
-      address: '1234567890123456789012345679999999',
-      seedPhrase: [],
-      keyfile: { id: '2' },
-    },
-  ]
+    // {
+    //   id: 2,
+    //   name: 'account #2',
+    //   address: '6789012341234567890123456789012345',
+    //   seedPhrase: [
+    //     'shoelace',
+    //     'bookstore',
+    //     ' divulge',
+    //     ' restaurant',
+    //     ' potato',
+    //     ' infant',
+    //     ' leaflet',
+    //     ' solar',
+    //     ' maritime',
+    //     ' photograph',
+    //     ' balloon',
+    //     ' museum',
+    //   ],
+    //   keyfile: {},
+    // },
+    // {
+    //   id: 3,
+    //   name: 'account #3',
+    //   address: '1234567890123456789012345679999999',
+    //   seedPhrase: [],
+    //   keyfile: { id: '2' },
+    // },
+  ], [address])
 
   const onSeedPharseClick = (account) => {
     setSelectedAccount(account)
@@ -115,7 +121,7 @@ export default () => {
                 <div
                   key={account.id}
                   className='account'
-                  disabled={isEmpty(get(account, 'seedPhrase', ''))}
+                  disabled={!hasSeedPhrase}
                   onClick={() => onSeedPharseClick(account)}
                 >
                   <div className='name-icon'>

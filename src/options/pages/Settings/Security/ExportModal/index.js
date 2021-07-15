@@ -1,15 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { CSVLink } from 'react-csv'
 
 import CloseIcon from 'img/close-x-icon.svg'
-
+import { backgroundRequest } from 'popup/backgroundRequest'
+import { GalleryContext } from 'options/galleryContext'
+import { getChromeStorage, decryptSeedPhraseFromChrome } from 'utils'
 import './index.css'
 
 export const ExportBackupPhraseModal = ({ account, closeModal }) => {
-  const { name, address, seedPhrase } = account
+  const { setError } = useContext(GalleryContext)
+
+  const { name, address } = account
   const [password, setPassword] = useState('')
   const [isRevealed, setIsRevealed] = useState(false)
+  const [seedPhrase, setSeedPhrase] = useState('')
   const ref = useRef()
 
   useEffect(() => {
@@ -25,9 +30,15 @@ export const ExportBackupPhraseModal = ({ account, closeModal }) => {
     }
   }, [ref])
 
-  const onRevealSeedphrase = () => {
-    // check password
-    setIsRevealed(true)
+  const onRevealSeedphrase = async () => {
+    try {
+      const seedPhrase = await decryptSeedPhraseFromChrome(password)
+      setSeedPhrase(seedPhrase)
+      setIsRevealed(true)
+
+    } catch (err) {
+      setError(err.message)
+    }
   }
 
   return (
@@ -59,14 +70,14 @@ export const ExportBackupPhraseModal = ({ account, closeModal }) => {
         {isRevealed ? (
           <div className='seed-phrase'>
             <label className='label'>Backup Phrase</label>
-            <div className='textarea'>{seedPhrase.join(' ')}</div>
+            <div className='textarea'>{seedPhrase}</div>
             <div className='button-line'>
-              <CopyToClipboard text={seedPhrase.join(' ')}>
+              <CopyToClipboard text={seedPhrase}>
                 <div className='copy-phrase-button'>Copy Phrase</div>
               </CopyToClipboard>
               <CSVLink
                 filename={`${name}_seedphrase.csv`}
-                data={seedPhrase.join(' ')}
+                data={seedPhrase}
                 style={{ textDecoration: 'none' }}
               >
                 <div className='save-csv-button'>Save as CSV File</div>
@@ -105,6 +116,8 @@ export const ExportBackupPhraseModal = ({ account, closeModal }) => {
 }
 
 export const ExportBackupKeyFileModal = ({ account, closeModal }) => {
+  const { setError } = useContext(GalleryContext)
+
   const { name, address, seedPhrase } = account
   const [password, setPassword] = useState('')
 
@@ -123,14 +136,27 @@ export const ExportBackupKeyFileModal = ({ account, closeModal }) => {
     }
   }, [ref])
 
-  const onExportKeyfile = () => {
-    // check password
+  const onExportKeyfile = async () => {
+    try {
+      const { key } = await backgroundRequest.gallery.getKeyFile({ password })
+      const filename = 'arweave-key.json'
+      const result = JSON.stringify(key)
+  
+      const url = 'data:application/json;base64,' + btoa(result)
+      chrome.downloads.download({
+        url: url,
+        filename: filename,
+      })
+      closeModal()
+    } catch (err) {
+      setError(err.message)
+    }
   }
 
   return (
     <div className='export-phrase-modal-wrapper'>
       <div className='export-phrase-modal' ref={ref}>
-        <div className='title'>Backup Phrase</div>
+        <div className='title'>Backup Keyfile</div>
         <div className='account-info'>
           <div className='account-name'>{name}</div>
           <div className='account-address'>{address}</div>

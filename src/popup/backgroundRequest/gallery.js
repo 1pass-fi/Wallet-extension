@@ -50,4 +50,14 @@ export class GalleryRequest extends Request {
   updateKID(body) {
     return this.promise(MESSAGES.UPDATE_KID, body)
   }
+
+  /**
+   * 
+   * @param {Object} body
+   * @param {String} body.password Input password
+   * @returns 
+   */
+  getKeyFile(body) {
+    return this.promise(MESSAGES.GET_KEY_FILE, body)
+  }
 }
