@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import getSymbolFromCurrency from 'currency-symbol-map'
 
 import './index.css'
 
@@ -33,7 +34,8 @@ const WalletInfo = (({
   arBalance,
   setNotification,
   setAccountName,
-  price
+  price,
+  currency
 }) => {
   const [openEditModal, setOpenEditModal] = useState(false)
 
@@ -79,7 +81,7 @@ const WalletInfo = (({
         </div>
         <div className='ar-balance'>
           <div className='balance'>{numberFormat(arBalance)} AR</div>
-          {<div className='usd-exchange'>${fiatCurrencyFormat(arBalance * price.AR)} USD</div>}
+          {<div className='usd-exchange'>{getSymbolFromCurrency(currency) || ''}{fiatCurrencyFormat(arBalance * price.AR)} {currency}</div>}
         </div>
       </div>
       { openEditModal && <EditAccountNameModal onClose={onClose} onSubmit={onSubmit} currentName={accountName}/> }
@@ -169,7 +171,8 @@ export const Wallet = ({
   setAccountName,
   price,
   accountName,
-  setIsLoading
+  setIsLoading,
+  currency
 }) => {
   const history = useHistory()
   const [connectedSite, setConnectedSite] = useState([])
@@ -222,6 +225,7 @@ export const Wallet = ({
           setAccountName={setAccountName}
           accountName={accountName}
           price={price}
+          currency={currency}
         />
         <Card className='address'>{accountAddress}</Card>
         <WalletConf
@@ -236,7 +240,7 @@ export const Wallet = ({
   )
 }
 
-const mapStateToProps = (state) => ({ price: state.price, accountName: state.accountName })
+const mapStateToProps = (state) => ({ price: state.price, accountName: state.accountName, currency: state.currency })
 
 export default connect(mapStateToProps, {
   removeWallet,

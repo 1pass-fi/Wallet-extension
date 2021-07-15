@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+import getSymbolFromCurrency from 'currency-symbol-map'
+
 import InputField from 'shared/inputField'
 import Select from 'shared/select'
 import Button from 'shared/button'
@@ -26,10 +28,10 @@ const SendKoiForm = ({
   setError,
   setWarning,
   makeTransfer,
-  onSendSuccess,
   setIsLoading,
   price,
-  setNotification
+  setNotification,
+  currency: moneyCurrency
 }) => {
   const history = useHistory()
   const defaultCur = currencies[0].value
@@ -98,7 +100,7 @@ const SendKoiForm = ({
         <span>Available balance: </span>
         <b>{`${selectBalance(currency)} ${currency}`}</b>
         <div hidden={currency == 'KOII'} className="amount-in-usd">
-          ${numberFormat(selectBalance(currency) * price[currency])} USD
+          {getSymbolFromCurrency(moneyCurrency) || ''}{numberFormat(selectBalance(currency) * price[currency])} {moneyCurrency}
         </div>
       </div>
       <Select 
@@ -137,7 +139,7 @@ const SendKoiForm = ({
         />
         {amount.trim().length > 0 && (
           <div hidden={currency == 'KOII'} className="amount-in-usd">
-            $ {numberFormat(Number(amount) * price[currency])} USD
+            {getSymbolFromCurrency(moneyCurrency) || ''} {numberFormat(Number(amount) * price[currency])} {moneyCurrency}
           </div>
         )}
       </div>
@@ -157,6 +159,6 @@ const SendKoiForm = ({
   )
 }
 
-const mapStateToProps = (state) => ({ price: state.price })
+const mapStateToProps = (state) => ({ price: state.price, currency: state.currency })
 
 export default connect(mapStateToProps, { setError, setWarning, makeTransfer, setIsLoading, setNotification })(SendKoiForm)

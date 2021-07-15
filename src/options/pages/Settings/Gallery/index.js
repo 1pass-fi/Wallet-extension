@@ -13,7 +13,12 @@ export default () => {
     <div className='galery-settings-wrapper'>
       <div className='galery-settings'>
         <div className='header'>Gallery Settings</div>
-        <div className='settings-row'>
+
+        {/* 
+          Currently on koi.rocks hasn't had this function yet.
+          We will hide this for now.
+        */}
+        {/* <div className='settings-row'>
           <div className='left'>
             <div className='title'>Discoverable NFTs</div>
             <div className='description'>
@@ -30,7 +35,7 @@ export default () => {
               setValue={setDiscoverableNFTs}
             />
           </div>
-        </div>
+        </div> */}
 
         <div className='settings-row'>
           <div className='left'>

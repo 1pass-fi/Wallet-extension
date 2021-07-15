@@ -14,6 +14,7 @@ import cursor from './cursor'
 import accountName from './accountName'
 import price from './price'
 import creatingWallet from './creatingWallet'
+import currency from './currency'
 
 export default combineReducers({
   loading,
@@ -29,5 +30,6 @@ export default combineReducers({
   cursor,
   accountName,
   price,
-  creatingWallet
+  creatingWallet,
+  currency
 })

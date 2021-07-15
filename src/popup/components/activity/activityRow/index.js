@@ -17,12 +17,12 @@ const propTypes = {
   source: PropTypes.string,
 }
 
-const ActivityRow = ({activityName, expense, date, source, id, pending, price }) => {
+const ActivityRow = ({activityName, expense, date, source, id, pending, price, currency }) => {
   const dateFormat = (date) => {
     return moment(date).format('MMMM Do, YYYY')
   }
   
-  const currency = activityName.includes('KOII') ? 'KOII' : 'AR'
+  const token = activityName.includes('KOII') ? 'KOII' : 'AR'
   const sign = activityName.includes('Received') ? '+' : '-'
   const sourceStr = source ? `${source.slice(0,7)}...${source.slice(source.length - 9)}` : ''
 
@@ -48,9 +48,9 @@ const ActivityRow = ({activityName, expense, date, source, id, pending, price })
           )}
         </div>
         <div className='activity-info-row'>
-          <div className='activity-expense'>{ (expense != null && expense > 0) ? sign : ''}{transactionAmountFormat(expense)} {currency}</div>
+          <div className='activity-expense'>{ (expense != null && expense > 0) ? sign : ''}{transactionAmountFormat(expense)} {token}</div>
           { expense != null && 
-            <div hidden={activityName.includes('KOII')} className='activity-expense usd'>{transactionAmountFormat(expense*price[currency])} USD</div>
+            <div hidden={activityName.includes('KOII')} className='activity-expense usd'>{transactionAmountFormat(expense*price[token])} {currency}</div>
           } 
           <div className='activity-date'>{ dateFormat(date) }</div>
         </div>
@@ -61,6 +61,6 @@ const ActivityRow = ({activityName, expense, date, source, id, pending, price })
 
 ActivityRow.propTypes = propTypes
 
-const mapStateToProps = (state) => ({ price: state.price })
+const mapStateToProps = (state) => ({ price: state.price, currency: state.currency })
 
 export default connect(mapStateToProps)(ActivityRow)

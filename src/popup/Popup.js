@@ -22,6 +22,7 @@ import { setNotification } from 'actions/notification'
 import { setWarning } from 'actions/warning'
 import { setPrice } from 'actions/price'
 import { setKoi, getBalances } from 'actions/koi'
+import { setCurrency } from 'actions/currency'
 
 import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST, PATH, DISCONNECTED_BACKGROUND } from 'koiConstants'
 
@@ -55,7 +56,8 @@ const Popup = ({
   setWarning,
   getBalances,
   setPrice,
-  setKoi
+  setKoi,
+  setCurrency
 }) => {
   const history = useHistory()
 
@@ -113,11 +115,15 @@ const Popup = ({
     const loadPrice = async () => {
       try {
         chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] })
-        const storage = await getChromeStorage(STORAGE.PRICE)
+        const storage = await getChromeStorage([STORAGE.PRICE, STORAGE.CURRENCY])
         const { AR } = storage[STORAGE.PRICE] || { AR: 1 }
         setPrice({ AR })
-        const { data } = await axios.get(PATH.AR_PRICE)
-        const arPrice = get(data, 'arweave.usd')
+        const currency = storage[STORAGE.CURRENCY] || 'USD'
+        setCurrency(currency)
+        const { data } = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=${currency}`)
+        console.log('currency: ', currency)
+        console.log('price', data)
+        const arPrice = get(data, `arweave.${currency.toLowerCase()}`)
         if (isNumber(arPrice)) {
           await setPrice({ AR: arPrice })
           const price =  { AR: arPrice, KOI: 1 }
@@ -218,7 +224,8 @@ const mapDispatchToProps = {
   setWarning,
   setKoi,
   getBalances,
-  setPrice
+  setPrice,
+  setCurrency
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Popup))

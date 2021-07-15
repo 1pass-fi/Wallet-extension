@@ -33,3 +33,5 @@ export const SET_ACCOUNT_NAME = 'SET_ACCOUNT_NAME'
 export const SET_PRICE = 'SET_PRICE'
 
 export const SET_CREATING_WALLET = 'SET_CREATING_WALLET'
+
+export const SET_CURRENCY = 'SET_CURRENCY'
