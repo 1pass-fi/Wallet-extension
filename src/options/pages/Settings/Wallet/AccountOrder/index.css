@@ -1,0 +1,31 @@
+.account-order .account {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.account-order .account .name-icon {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.account-order .account .arrange-icon {
+  margin-right: 14px;
+}
+
+.account-order .account .account-name {
+  color: #171753;
+  font-size: 14px;
+  line-height: 24px;
+  margin-left: 9px;
+}
+
+.account-order .account .account-address {
+  color: #237b75;
+  font-size: 12px;
+  justify-self: flex-end;
+  letter-spacing: 0.01em;
+  line-height: 16px;
+}
