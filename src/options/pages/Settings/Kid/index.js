@@ -1,6 +1,8 @@
-import React, { useRef, useState, useMemo } from 'react'
+import React, { useRef, useState, useMemo, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import get from 'lodash/get'
+
+import { getDisplayAddress, saveImageDataToStorage } from 'options/utils'
 
 // import SettingIcon from 'img/navbar/setting.svg'
 // import BlockRewardIcon from 'img/block-reward-icon.svg'
@@ -9,14 +11,21 @@ import DefaultProfileImageIcon from 'img/default-profile-image-icon.svg'
 import ChangeProfileImageIcon from 'img/change-profile-image-icon.svg'
 
 import './index.css'
+import { GalleryContext } from 'options/galleryContext'
+import { backgroundRequest } from 'popup/backgroundRequest'
+
+import { koi } from 'background'
 
 export default () => {
+  const { address } = useContext(GalleryContext)
+
   const fileRef = useRef()
   const [profileImage, setProfileImage] = useState()
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [link, setLink] = useState('')
   const [syncWallet, setSyncWallet] = useState(false)
+  const [arweaveImage, setArweaveImage] = useState(null)
 
   const onSelectClick = () => {
     fileRef.current.click()
@@ -29,18 +38,81 @@ export default () => {
     }
   }
 
-  const onSubmit = () => {
-    console.log({ profileImage })
-    console.log({ name })
-    console.log({ description })
-    console.log({ link })
-    console.log({ setSyncWallet })
+  const onSubmit = async () => {
+    const addresses = {
+      Arweave: address
+    }
+
+    const kidInfo = {
+      name,
+      description,
+      link,
+      addresses
+    }
+
+    const hadKID = await hadKIDCheck()
+    if (hadKID) {
+      const txId = await backgroundRequest.gallery.updateKID({kidInfo, contractId: hadKID})
+      console.log('KID transaction id: ', txId)
+    } else {
+      const fileType = profileImage.type
+  
+      await saveImageDataToStorage(profileImage)
+  
+      const txId = await backgroundRequest.gallery.createNewKID({ kidInfo, fileType })
+      console.log('KID transaction id: ', txId)
+    }
   }
 
-  const profileImageUrl = useMemo(
-    () => (profileImage ? URL.createObjectURL(profileImage) : ''),
-    [profileImage]
+  const profileImageUrl = useMemo (
+    () => {
+      if (arweaveImage) {
+        return arweaveImage
+      }
+      if (profileImage) {
+        return URL.createObjectURL(profileImage)
+      }
+    },[profileImage, arweaveImage]
   )
+
+  const hadKIDCheck = async () => {
+    const data = await koi.getKIDByWalletAddress(address)
+    if (get(data, 'data.transactions.edges[0].node.id')) {
+      return get(data, 'data.transactions.edges[0].node.id')
+    }
+    return false
+  }
+
+  const getKIDFields = (data) => {
+    console.log(data)
+    if (get(data, 'data.transactions.edges[0].node.tags')) {
+      let initState = (get(data, 'data.transactions.edges[0].node.tags')).filter(tag => tag.name == 'Init-State')
+      const imageUrl = `https://arweave.net/${get(data,'data.transactions.edges[0].node.id')}`
+      initState = JSON.parse(initState[0].value)
+      const name = get(initState, 'name')
+      const description = get(initState, 'description')
+      const link = get(initState, 'link')
+  
+      return { imageUrl, name, description, link }
+    }
+  }
+
+  useEffect(() => {
+    const getKid = async () => {
+      const data = await koi.getKIDByWalletAddress(address)
+      if (get(data, 'data.transactions.edges[0].node.id') ) {
+        const { imageUrl, name, description, link } = getKIDFields(data) 
+        if (imageUrl) {
+          setArweaveImage(imageUrl)
+          setName(name)
+          setDescription(description)
+          setLink(link)
+        }
+      }
+    }
+
+    getKid()
+  }, [address])
 
   return (
     <div className='kid-settings-page-wrapper'>
@@ -53,12 +125,12 @@ export default () => {
             email log-ins or giving your personal data straight to Big Tech.
             This information will be public.
           </div>
-          <div className='address'>KOII Wallet: 12345...12345 (Account 1)</div>
+          <div className='address'>KOII Wallet: {getDisplayAddress(address)} (Account 1)</div>
         </div>
 
         <div className='info-section'>
           <div className='left'>
-            {profileImage ? (
+            {arweaveImage || profileImage ? (
               <img className='profile-image' src={profileImageUrl} />
             ) : (
               <div className='profile-image'>
@@ -138,6 +210,7 @@ export default () => {
                   name='save-info'
                   type='checkbox'
                   value={syncWallet}
+                  checked
                   onChange={(e) => setSyncWallet(e.target.value)}
                 ></input>
                 <label htmlFor='save-info' className='checkbox-label'>

@@ -74,7 +74,7 @@ const WalletInfo = (({
       </div>
       <div className='wallet-info-row wallet-balance'>
         <div className='koi-balance'>
-          <div className='balance'>{numberFormat(koiBalance)} KOI</div>
+          <div className='balance'>{numberFormat(koiBalance)} KOII</div>
           {<div hidden className='usd-exchange'>${fiatCurrencyFormat(koiBalance * price.KOI)} USD</div>}
         </div>
         <div className='ar-balance'>

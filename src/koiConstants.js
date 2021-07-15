@@ -106,7 +106,10 @@ export const MESSAGES = {
   KOI_REGISTER_DATA_ERROR: 'KOI_REGISTERs_DATA_ERROR',
   UPLOAD_NFT: 'UPLOAD_NFT',
   TEST: 'TEST',
-  TEST_SUCCESS: 'TEST_SUCCESS'
+  TEST_SUCCESS: 'TEST_SUCCESS',
+  CREATE_COLLECTION: 'CREATE_COLLECTION',
+  CREATE_KID: 'CREATE_KID',
+  UPDATE_KID: 'UPDATE_KID'
 }
 
 export const PATH = {
@@ -116,6 +119,7 @@ export const PATH = {
   CREATE_WALLET_REDIRECT: '/account/create/success',
   HOME: '/account',
   LOGIN: '/account/login',
+  ACTIVITY: '/activity',
   // Gallery path
   NFT_IMAGE: 'https://arweave.net',
   VIEW_BLOCK: 'https://viewblock.io/arweave/address',
@@ -183,7 +187,7 @@ export const REQUEST = {
 }
 
 export const RATE = {
-  KOI: 0.93,
+  KOII: 0.93,
   AR: 2,
 }
 

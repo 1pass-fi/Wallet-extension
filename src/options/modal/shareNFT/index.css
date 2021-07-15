@@ -71,18 +71,18 @@
   background-color: #FFC78F;
   border: 0px;
   border-left: 2px solid #171753;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 20px;
   padding: 0;
   cursor: pointer;
 }
 
-.copy-noti {
-  font-size: 16px;
+.share-nft.container .copy-noti {
+  font-size: 14px;
   line-height: 16px;
   color: #ffc78f;
-  right: 0px;
+  right: 5px;
   top: 0px;
   position: absolute;
   width: 80px;

@@ -130,8 +130,7 @@ export const ConfirmSeed = ({
         <div className='warning'>
           <WarningIcon className='warning-icon' />
           <div className='warning-text'>
-            Your secret backup phrase makes it easy to back up and restore your
-            account.
+            Never disclose your backup phrase. Anyone with this phrase can steal from your wallet.
           </div>
         </div>
         <div className='selected-box'>

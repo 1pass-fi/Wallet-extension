@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import InputField from 'shared/inputField'
@@ -11,7 +12,7 @@ import WarningIcon from 'img/warning-icon.svg'
 import { makeTransfer } from 'actions/koi'
 import { setError } from 'actions/error'
 import { setWarning } from 'actions/warning'
-import { ERROR_MESSAGE, WARNING_MESSAGE, RATE, NOTIFICATION } from 'koiConstants'
+import { ERROR_MESSAGE, WARNING_MESSAGE, RATE, NOTIFICATION, PATH } from 'koiConstants'
 
 import './index.css'
 import { setIsLoading } from 'popup/actions/loading'
@@ -30,6 +31,7 @@ const SendKoiForm = ({
   price,
   setNotification
 }) => {
+  const history = useHistory()
   const defaultCur = currencies[0].value
 
   const [address, setAddress] = useState('')
@@ -79,6 +81,7 @@ const SendKoiForm = ({
       await makeTransfer(Number(amount), address, currency)
       setIsLoading(false)
       setNotification(NOTIFICATION.TRANSACTION_SENT)
+      history.push(PATH.ACTIVITY)
     } catch (err) {
       setIsLoading(false)
       setError(err.message)
@@ -94,7 +97,7 @@ const SendKoiForm = ({
       <div className="koi-balance">
         <span>Available balance: </span>
         <b>{`${selectBalance(currency)} ${currency}`}</b>
-        <div hidden={currency == 'KOI'} className="amount-in-usd">
+        <div hidden={currency == 'KOII'} className="amount-in-usd">
           ${numberFormat(selectBalance(currency) * price[currency])} USD
         </div>
       </div>
@@ -133,7 +136,7 @@ const SendKoiForm = ({
           value={amount}
         />
         {amount.trim().length > 0 && (
-          <div hidden={currency == 'KOI'} className="amount-in-usd">
+          <div hidden={currency == 'KOII'} className="amount-in-usd">
             $ {numberFormat(Number(amount) * price[currency])} USD
           </div>
         )}

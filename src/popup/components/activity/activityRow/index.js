@@ -22,7 +22,7 @@ const ActivityRow = ({activityName, expense, date, source, id, pending, price })
     return moment(date).format('MMMM Do, YYYY')
   }
   
-  const currency = activityName.includes('KOI') ? 'KOI' : 'AR'
+  const currency = activityName.includes('KOII') ? 'KOII' : 'AR'
   const sign = activityName.includes('Received') ? '+' : '-'
   const sourceStr = source ? `${source.slice(0,7)}...${source.slice(source.length - 9)}` : ''
 
@@ -50,7 +50,7 @@ const ActivityRow = ({activityName, expense, date, source, id, pending, price })
         <div className='activity-info-row'>
           <div className='activity-expense'>{ (expense != null && expense > 0) ? sign : ''}{transactionAmountFormat(expense)} {currency}</div>
           { expense != null && 
-            <div hidden={activityName.includes('KOI')} className='activity-expense usd'>{transactionAmountFormat(expense*price[currency])} USD</div>
+            <div hidden={activityName.includes('KOII')} className='activity-expense usd'>{transactionAmountFormat(expense*price[currency])} USD</div>
           } 
           <div className='activity-date'>{ dateFormat(date) }</div>
         </div>

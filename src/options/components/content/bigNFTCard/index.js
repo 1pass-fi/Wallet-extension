@@ -4,6 +4,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
   useRef,
+  useMemo,
 } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import moment from 'moment'
@@ -35,11 +36,19 @@ export default ({
   description: aDescription
 }) => {
   const { setShowExportModal, setShowShareModal } = useContext(GalleryContext)
-
+  const [isCopied, setIsCopied] = useState(false)
   const { registeredDate, description, tags } = {
     registeredDate: moment(createdAt * 1000).format('MMMM Do, YYYY'),
     description: aDescription,
     tags: ['crypto', 'puppies', 'electropop', 'cubism'],
+  }
+
+  const embed = useMemo(() => `<iframe width="100%" src="https://koi.rocks/embed/${txId}" title="Koi NFT image" frameborder="0" allowfullscreen></iframe>`,
+    [txId])
+
+  const onCopy = () => {
+    setIsCopied(true)
+    setTimeout(() => setIsCopied(false), 3000)
   }
 
   return (
@@ -110,7 +119,10 @@ export default ({
             >
               Share
             </button>
-            <button className='embed-button'>Embed</button>
+            {isCopied && <div className='copy-noti'>Link copied!</div>}
+            <CopyToClipboard text={embed}>
+              <button onClick={onCopy} className='embed-button'>Embed</button>
+            </CopyToClipboard>
           </div>
           <div className='social-icons'>
             <TwitterIcon onClick={() => { createShareWindow('twitter', txId) }} className='social-icon' />

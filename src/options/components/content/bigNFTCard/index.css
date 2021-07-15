@@ -96,7 +96,7 @@
   height: 120px;
   line-height: 20px;
   margin-top: 20px;
-  overflow-y: scroll;
+  overflow-y: overlay;
   font-size: 14px;
   padding-right: 11px;
 }
@@ -153,6 +153,7 @@
   font-weight: 600;
   height: 32px;
   margin-top: 10px;
+  position: relative;
 }
 
 .big-nft-card .info .share-embed .share-button {
@@ -185,4 +186,18 @@
   width: 28px;
   height: 28px;
   cursor: pointer;
+}
+
+
+.big-nft-card .info .share-embed .copy-noti{
+  font-size: 14px;
+  line-height: 16px;
+  color: #ffc78f;
+  right: -100px;
+  top: 8px;
+  position: absolute;
+  width: 80px;
+  height: 30px;
+  white-space: nowrap;
+  font-weight: 400;
 }
