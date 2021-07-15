@@ -119,6 +119,7 @@ export const PATH = {
   CREATE_WALLET_REDIRECT: '/account/create/success',
   HOME: '/account',
   LOGIN: '/account/login',
+  ACTIVITY: '/activity',
   // Gallery path
   NFT_IMAGE: 'https://arweave.net',
   VIEW_BLOCK: 'https://viewblock.io/arweave/address',
@@ -186,7 +187,7 @@ export const REQUEST = {
 }
 
 export const RATE = {
-  KOI: 0.93,
+  KOII: 0.93,
   AR: 2,
 }
 

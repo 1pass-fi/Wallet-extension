@@ -189,6 +189,7 @@ export const loadActivities = (cursor) => async (dispatch) => {
 
 export const makeTransfer = (qty, target, currency) => async (dispatch) => {
   try {
+    if (currency == 'KOII') currency = 'KOI'
     const { txId } = await backgroundRequest.wallet.makeTransfer({qty, target, currency})
 
     const storage = await getChromeStorage(STORAGE.PENDING_TRANSACTION)
@@ -197,7 +198,7 @@ export const makeTransfer = (qty, target, currency) => async (dispatch) => {
     const pendingTransactions = storage[STORAGE.PENDING_TRANSACTION] || []
     const newTransaction = {
       id: txId,
-      activityName: (currency === 'KOI' ? 'Sent KOI' : 'Sent AR'),
+      activityName: (currency === 'KOI' ? 'Sent KOII' : 'Sent AR'),
       expense: qty,
       accountName: 'Account 1',
       date: moment().format('MMMM DD YYYY'),

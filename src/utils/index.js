@@ -205,7 +205,7 @@ export const loadMyActivities = async (koiObj, cursor) => {
         if (inputTag[0]) {
           inputFunction = JSON.parse(inputTag[0].value)
           if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
-            activityName = 'Sent KOI'
+            activityName = 'Sent KOII'
             expense = inputFunction.qty
             source = inputFunction.target
           } else if (inputFunction.function === 'updateCollection') {
