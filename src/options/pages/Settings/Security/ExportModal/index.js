@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { CSVLink } from 'react-csv'
 
@@ -10,6 +10,20 @@ export const ExportBackupPhraseModal = ({ account, closeModal }) => {
   const { name, address, seedPhrase } = account
   const [password, setPassword] = useState('')
   const [isRevealed, setIsRevealed] = useState(false)
+  const ref = useRef()
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        closeModal()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [ref])
 
   const onRevealSeedphrase = () => {
     // check password
@@ -18,7 +32,7 @@ export const ExportBackupPhraseModal = ({ account, closeModal }) => {
 
   return (
     <div className='export-phrase-modal-wrapper'>
-      <div className='export-phrase-modal'>
+      <div className='export-phrase-modal' ref={ref}>
         <div className='title'>Backup Phrase</div>
         <div className='account-info'>
           <div className='account-name'>{name}</div>
@@ -94,13 +108,28 @@ export const ExportBackupKeyFileModal = ({ account, closeModal }) => {
   const { name, address, seedPhrase } = account
   const [password, setPassword] = useState('')
 
+  const ref = useRef()
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        closeModal()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [ref])
+
   const onExportKeyfile = () => {
     // check password
   }
 
   return (
     <div className='export-phrase-modal-wrapper'>
-      <div className='export-phrase-modal'>
+      <div className='export-phrase-modal' ref={ref}>
         <div className='title'>Backup Phrase</div>
         <div className='account-info'>
           <div className='account-name'>{name}</div>
