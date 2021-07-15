@@ -21,6 +21,7 @@
 
 .wallet-settings .items {
   margin-top: 40px;
+  padding-left: 20px;
 }
 
 .wallet-settings .items .item {
@@ -70,6 +71,8 @@
 
 .wallet-settings .items .item .currency {
   background-color: inherit;
-  width: 32px;
+  border: 1px solid #ffffff;
   height: 32px;
+  margin-top: 12px;
+  width: 280px;
 }

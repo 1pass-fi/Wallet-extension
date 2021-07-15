@@ -1,31 +1,46 @@
-import React from 'react'
+import React, { useState } from 'react'
 import data from 'currency-codes/data'
 import getSymbolFromCurrency from 'currency-symbol-map'
 
+import AccountOrder from './AccountOrder'
 import './index.css'
 
 const mockAccount = [
   {
-    id: 1,
+    id: '1',
     name: 'account #1',
     address: '1234567890123456789012345678901234',
   },
   {
-    id: 2,
+    id: '2',
     name: 'account #2',
     address: '6789012341234567890123456789012345',
   },
   {
-    id: 3,
+    id: '3',
     name: 'account #3',
     address: '1234567890123456789012345679999999',
   },
 ]
 
-export default ({ account = mockAccount }) => {
+const onImportSeedPhrase = () => {
+  // Import seed phrase
+}
+
+const onImportKeyFile = () => {
+  // Import key file
+}
+
+const onCreateWallet = () => {
+  // Import create wallet
+}
+
+export default () => {
   const onCurrencyChange = (e) => {
     console.log(e.target.value)
   }
+
+  const [accounts, setAccounts] = useState(mockAccount)
 
   return (
     <div className='wallet-settings-wrapper'>
@@ -36,9 +51,15 @@ export default ({ account = mockAccount }) => {
           <div className='add-wallet item'>
             <div className='title'>Add a Wallet</div>
             <div className='actions'>
-              <div className='action'>Import from Seed Phrase</div>
-              <div className='action'>Import from .JSON File</div>
-              <div className='action'>Create New Wallet</div>
+              <div className='action' onClick={onImportSeedPhrase}>
+                Import from Seed Phrase
+              </div>
+              <div className='action' onClick={onImportKeyFile}>
+                Import from .JSON File
+              </div>
+              <div className='action' onClick={onCreateWallet}>
+                Create New Wallet
+              </div>
             </div>
           </div>
 
@@ -66,6 +87,7 @@ export default ({ account = mockAccount }) => {
             <div className='description'>
               Organize your wallet display (click and drag a wallet to move it).
             </div>
+            <AccountOrder accounts={accounts} setAccounts={setAccounts} />
           </div>
 
           <div className='language-order item'>
