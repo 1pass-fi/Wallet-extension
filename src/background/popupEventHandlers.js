@@ -391,6 +391,27 @@ export default async (koi, port, message, ports, resolveId) => {
         })
         break
       }
+
+      case MESSAGES.CREATE_COLLECTION: {
+        try {
+          const { nftIds, collectionInfo } = message.data
+          const collectionId = await koi.createCollection(collectionInfo)
+          console.log('Collection ID: ', collectionId)
+          const txId = await koi.updateCollection(nftIds, collectionId)
+          console.log('Transaction ID: ', txId)
+          port.postMessage({
+            type: MESSAGES.CREATE_COLLECTION,
+            data: txId
+          })
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.CREATE_COLLECTION,
+            error: `BACKGROUND ERROR: ${err.message}`
+          })
+        }
+        break
+      }
+
       default:
         break
     }

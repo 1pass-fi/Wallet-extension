@@ -17,4 +17,14 @@ export class GalleryRequest extends Request {
   uploadNFT(body) {
     return this.promise(MESSAGES.UPLOAD_NFT, body)
   }
+
+  /**
+   * 
+   * @param {Object} body 
+   * @param {Array} body.nftIds An array of NFT IDs
+   * @param {Object} body.collectionInfo { name: String, description: String, tags: Array }
+   */
+  createNewCollection(body) {
+    return this.promise(MESSAGES.CREATE_COLLECTION, body)
+  }
 }

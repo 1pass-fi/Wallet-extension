@@ -10,7 +10,7 @@ import CloseIcon from 'img/close-x-icon.svg'
 import GoBackIcon from 'img/goback-icon.svg'
 import { GalleryContext } from 'options/galleryContext'
 import { ERROR_MESSAGE } from 'koiConstants'
-import { setIsLoading } from 'popup/actions/loading'
+import { backgroundRequest } from 'popup/backgroundRequest'
 
 export default () => {
   const { collectionNFT,
@@ -22,7 +22,9 @@ export default () => {
     demoCollections,
     setDemoCollections,
     setPage,
-    setTotalPage
+    setTotalPage,
+    address,
+    setIsLoading,
   } = useContext(GalleryContext)
   // const [stage, setStage] = useState(1)
 
@@ -44,26 +46,49 @@ export default () => {
   }
 
   const handleCreateNewCollection = async () => {
-    const nfts = collectionNFT.filter(nft => nft.id)
+    try {
+      const nfts = collectionNFT.filter(nft => nft.id)
+      const nftIds = nfts.map(nft => nft.id)
+      console.log('Nfts list: ', nftIds)
+      const collectionInfo = {
+        name: collectionName,
+        description,
+        tags,
+        owner: address
+      }
 
-    const newCollection = {
-      id: Date.now(),
-      name: collectionName,
-      nfts,
-      view: 1234,
-      earnedKoi: 1000,
-      pieces: nfts.length,
-      tags,
-      koiRockUrl: 'https://koi.rocks'
+      /*
+        Currently we still not have a funciton to get collections. This code will be kept for now.
+      */
+      const newCollection = {
+        id: Date.now(),
+        name: collectionName,
+        nfts,
+        view: 1234,
+        earnedKoi: 1000,
+        pieces: nfts.length,
+        tags,
+        koiRockUrl: 'https://koi.rocks'
+      }
+      setDemoCollections([...demoCollections, newCollection, newCollection, newCollection, newCollection, newCollection, newCollection])
+  
+  
+      /* 
+        Create new collection using sdk
+      */
+      setIsLoading(true)
+      const txId = await backgroundRequest.gallery.createNewCollection({ nftIds, collectionInfo })
+      setIsLoading(false)
+      console.log('Transaction Id: ', txId)
+
+    } catch (err) {
+      setError(err.message)
+      setIsLoading(false)
     }
-    
-    /* 
-      For demo.
-    */
-    setDemoCollections([...demoCollections, newCollection, newCollection, newCollection, newCollection, newCollection, newCollection])
   }
 
   const confirmButtonOnClick = async () => {
+
     switch (stage) {
       case 1:
         if (!collectionName || !description) {
@@ -76,18 +101,16 @@ export default () => {
         setStage(stage + 1)
         break
       case 3:
-        setStage(stage + 1)
-        setIsLoading(true)
-        await handleCreateNewCollection()
-        setIsLoading(false)
-        break
+        try {
+          setIsLoading(true)
+          await handleCreateNewCollection()
+          setIsLoading(false)
+          setStage(stage + 1)
+          break
+        } catch (err) {
+          setError(err.message)
+        }
     }
-
-    // if (stage !== 4) {
-    //   setStage(stage + 1)
-    // } else {
-    //   await handleCreateNewCollection()
-    // }
   }
 
   return (
