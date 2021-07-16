@@ -21,6 +21,7 @@ export default ({
   choosen,
   disabled,
   contentType,
+  totalViews
 }) => {
   const { showCreateCollection, 
     collectionNFT,
@@ -29,7 +30,9 @@ export default ({
     setTotalPage,
     stage,
     page,
-    setPage
+    setPage,
+    showViews,
+    showEarnedKoi
   } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const [selectedCollection, setSelectedCollection] = useState(false)
@@ -116,13 +119,18 @@ export default ({
         )}
       </Link>
       <div className='nft-name'>{name}</div>
-      {isRegistered ? (
-        <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>
+      {isRegistered && showEarnedKoi ? (
+        <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOII</div>
       ) : (
-        <button className='register-button'>
-          <KoiIcon className='icon' /> Register &amp; Earn
-        </button>
+        <></>
+        // <button className='register-button'>
+        //   <KoiIcon className='icon' /> Register &amp; Earn
+        // </button>
       )}
+      {showViews && <div className='nft-views'>
+        {totalViews} views
+      </div>}
+      
       {isRegistered && (
         <>
           {isCopied && <div className='copy-noti'>Link copied!</div>}

@@ -13,7 +13,7 @@ import GoBack from 'img/goback-icon.svg'
 export default () => {
   const history = useHistory()
 
-  const { collections } = useContext(GalleryContext)
+  const { collections, showViews, showEarnedKoi } = useContext(GalleryContext)
   const { collectionId } = useParams()
 
   const collection = useMemo(() => {
@@ -36,8 +36,8 @@ export default () => {
       <div className='collection-details'>
         <div onClick={handleGoBack} className='go-back-button'><GoBack /></div>
         <div className='title'>{collection.name}</div>
-        <div className='views'>{collection.views} Views</div>
-        <div className='earned-koi'>{collection.earnedKoi} KOII earned</div>
+        {showViews && <div className='views'>{collection.views} Views</div>}
+        {showEarnedKoi && <div className='earned-koi'>{collection.earnedKoi} KOII earned</div>}
         <div className='description'>{collection.description}</div>
         <div className='cards'>
           {collection.nfts.map((nft) => (

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { isEmpty } from 'lodash'
 
 import ShareIcon from 'img/share-icon.svg'
 import CopyLinkIcon from 'img/share-icon-2.svg'
@@ -54,47 +55,51 @@ export default ({ collection }) => {
   }
 
   const calculateDisplayTags = () => {
-    const maxWidth = 216
-    let currWidth = 0
-    const gotTags = []
-    while (currWidth < maxWidth) {
-      // Calculate candidate tag width
-      let nextTagWidth
-      if (gotTags.length == 0) {
-        nextTagWidth = tags[gotTags.length].length * 7 + 24
-      } else {
-        nextTagWidth = tags[gotTags.length].length * 7 + 24 + 8
+    if (!isEmpty(tags)) {
+      const maxWidth = 216
+      let currWidth = 0
+      const gotTags = []
+      while (currWidth < maxWidth) {
+        // Calculate candidate tag width
+        let nextTagWidth
+        if (gotTags.length == 0) {
+          nextTagWidth = tags[gotTags.length].length * 7 + 24
+        } else {
+          nextTagWidth = tags[gotTags.length].length * 7 + 24 + 8
+        }
+  
+        // Calculate number of hidden tags width
+        let hiddenTagsWidth = 0
+        if (tags.length - gotTags.length != 1) {
+          hiddenTagsWidth =
+            ((tags.length - gotTags.length).toString.length + 2) * 7 + 12 + 8
+        }
+  
+        // Candidate tag is accept or not
+        if (currWidth + nextTagWidth + hiddenTagsWidth <= maxWidth) {
+          gotTags.push(tags[gotTags.length])
+          currWidth += nextTagWidth
+        } else {
+          break
+        }
+  
+        // show all tags
+        if (gotTags.length == tags.length) {
+          setDisplayTags(gotTags)
+          return
+        }
       }
-
-      // Calculate number of hidden tags width
-      let hiddenTagsWidth = 0
-      if (tags.length - gotTags.length != 1) {
-        hiddenTagsWidth =
-          ((tags.length - gotTags.length).toString.length + 2) * 7 + 12 + 8
-      }
-
-      // Candidate tag is accept or not
-      if (currWidth + nextTagWidth + hiddenTagsWidth <= maxWidth) {
-        gotTags.push(tags[gotTags.length])
-        currWidth += nextTagWidth
-      } else {
-        break
-      }
-
-      // show all tags
-      if (gotTags.length == tags.length) {
-        setDisplayTags(gotTags)
+  
+      if (tags.length == 1) {
+        setDisplayTags(tags)
         return
       }
+  
+      setDisplayTags(gotTags)
+      setExpandTag(`+${tags.length - gotTags.length}⋮`)
+    } else {
+      setDisplayTags([])
     }
-
-    if (tags.length == 1) {
-      setDisplayTags(tags)
-      return
-    }
-
-    setDisplayTags(gotTags)
-    setExpandTag(`+${tags.length - gotTags.length}⋮`)
   }
 
   const showAllTags = () => {

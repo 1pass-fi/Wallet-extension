@@ -1,13 +1,43 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 
 import ToggleButton from 'options/components/toggleButton'
 
+import { setChromeStorage, getChromeStorage } from 'utils'
+import { STORAGE } from 'koiConstants'
+
 import './index.css'
+import { isEmpty } from 'lodash'
+
+import { GalleryContext } from 'options/galleryContext'
 
 export default () => {
+  const { setShowViews, setShowEarnedKoi } = useContext(GalleryContext)
+
   const [discoverableNFTs, setDiscoverableNFTs] = useState(true)
   const [displayView, setDisplayView] = useState(true)
-  const [displayKoiEnrned, setDisplayKoiEnrned] = useState(true)
+  const [displayKoiEarned, setDisplayKoiEarned] = useState(true)
+
+  useEffect(() => {
+    const setFromStorage = async () => {
+      const storage = await getChromeStorage([STORAGE.SHOW_VIEWS, STORAGE.SHOW_EARNED_KOI])
+      if (!isEmpty(storage)) {
+        setDisplayView(storage[STORAGE.SHOW_VIEWS])
+        setDisplayKoiEarned(storage[STORAGE.SHOW_EARNED_KOI])
+      }
+    }
+
+    setFromStorage()
+  }, [])
+
+  useEffect(() => {
+    const setStorage = async () => {
+      await setChromeStorage({ [STORAGE.SHOW_VIEWS]: displayView })
+      setShowViews(displayView)
+      await setChromeStorage({ [STORAGE.SHOW_EARNED_KOI]: displayKoiEarned })
+      setShowEarnedKoi(displayKoiEarned)
+    }
+    setStorage()
+  }, [displayKoiEarned, displayView])
 
   return (
     <div className='galery-settings-wrapper'>
@@ -58,8 +88,8 @@ export default () => {
           </div>
           <div className='right'>
             <ToggleButton
-              value={displayKoiEnrned}
-              setValue={setDisplayKoiEnrned}
+              value={displayKoiEarned}
+              setValue={setDisplayKoiEarned}
             />
           </div>
         </div>

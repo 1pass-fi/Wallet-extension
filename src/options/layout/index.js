@@ -59,6 +59,8 @@ export default ({ children }) => {
   const [totalPage, setTotalPage] = useState(1)
   const [stage, setStage] = useState(1)
   const [page, setPage] = useState(0)
+  const [showViews, setShowViews] = useState(true)
+  const [showEarnedKoi, setShowEarnedKoi] = useState(true)
 
   const [demoCollections, setDemoCollections] = useState([])
   const [collections, setCollections] = useState([])
@@ -79,13 +81,23 @@ export default ({ children }) => {
           STORAGE.AR_BALANCE,
           STORAGE.AFFILIATE_CODE,
           STORAGE.SHOW_WELCOME_SCREEN,
-          STORAGE.MOCK_COLLECTIONS_STORE
+          STORAGE.MOCK_COLLECTIONS_STORE,
+        ])
+
+        const gallerySetting = await getChromeStorage([
+          STORAGE.SHOW_VIEWS,
+          STORAGE.SHOW_EARNED_KOI
         ])
         if (storage[MOCK_COLLECTIONS_STORE]) {
           let collections = storage[MOCK_COLLECTIONS_STORE]
           collections = await Promise.all(collections.map(collection => getNftsDataForCollections(collection))) 
           setCollections(collections)
         } 
+
+        if (!isEmpty(gallerySetting)) {
+          setShowViews(gallerySetting[STORAGE.SHOW_VIEWS])
+          setShowEarnedKoi(gallerySetting[STORAGE.SHOW_EARNED_KOI])
+        }
 
         if (!storage[STORAGE.SHOW_WELCOME_SCREEN]) {
           setShowWelcome(true)
@@ -249,7 +261,11 @@ export default ({ children }) => {
         demoCollections,
         setDemoCollections,
         collections,
-        setCollections
+        setCollections,
+        showViews,
+        showEarnedKoi,
+        setShowViews,
+        setShowEarnedKoi
       }}
     >
       <div

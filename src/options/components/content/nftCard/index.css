@@ -25,6 +25,12 @@
   letter-spacing: 0.03em;
   color: #ffffff;
 }
+.nft-card .nft-views {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.03em;
+  color: #ffffff;
+}
 
 .nft-card .register-button {
   display: flex;

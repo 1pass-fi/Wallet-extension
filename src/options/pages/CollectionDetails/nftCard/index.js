@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import ShareIcon from 'img/share-icon.svg'
@@ -9,7 +9,10 @@ import './index.css'
 import { Link } from 'react-router-dom'
 import { stringTruncate } from 'options/utils'
 
+import { GalleryContext } from 'options/galleryContext'
+
 export default ({ nft }) => {
+  const { showViews, showEarnedKoi } = useContext(GalleryContext)
   const { txId, imageUrl: url, name, totalViews: views, earnedKoi, koiRockUrl, contentType } = nft
 
   const [isCopied, setIsCopied] = useState(false)
@@ -40,8 +43,8 @@ export default ({ nft }) => {
           {stringTruncate(name, 20)}
         </Link>
 
-        <div className='nft-view'>{views} Views </div>
-        <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>
+        {showViews && <div className='nft-view'>{views} Views </div>}
+        {showEarnedKoi && <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>}
 
         <div>
           {isCopied && <div className='copy-noti'>Link copied!</div>}

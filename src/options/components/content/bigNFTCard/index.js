@@ -38,7 +38,7 @@ export default ({
   description: aDescription
 }) => {
   const history = useHistory()
-  const { setShowExportModal, setShowShareModal } = useContext(GalleryContext)
+  const { setShowExportModal, setShowShareModal, showViews, showEarnedKoi } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const { registeredDate, description, tags } = {
     registeredDate: moment(createdAt * 1000).format('MMMM Do, YYYY'),
@@ -115,10 +115,10 @@ export default ({
             ))}
           </div> */}
           <div className='earned'>
-            <div className='views'>
+            {showViews && <div className='views'>
               {totalViews} {totalViews > 1 ? 'views' : 'view'}
-            </div>
-            <div className='koi '>{formatNumber(earnedKoi)} KOI earned</div>
+            </div>}
+            {showEarnedKoi && <div className='koi '>{formatNumber(earnedKoi)} KOII earned</div>}
           </div>
           <div className='share-embed'>
             <button
