@@ -13,11 +13,14 @@ import ChangeProfileImageIcon from 'img/change-profile-image-icon.svg'
 import './index.css'
 import { GalleryContext } from 'options/galleryContext'
 import { backgroundRequest } from 'popup/backgroundRequest'
+import { loadNFTCost } from 'utils'
+
+import { ERROR_MESSAGE } from 'koiConstants'
 
 import { koi } from 'background'
 
 export default () => {
-  const { address } = useContext(GalleryContext)
+  const { address, totalAr, totalKoi, setIsLoading, setError } = useContext(GalleryContext)
 
   const fileRef = useRef()
   const [profileImage, setProfileImage] = useState()
@@ -38,29 +41,57 @@ export default () => {
     }
   }
 
+  /* 
+    Create new KID or update KID
+  */
   const onSubmit = async () => {
-    const addresses = {
-      Arweave: address
-    }
-
-    const kidInfo = {
-      name,
-      description,
-      link,
-      addresses
-    }
-
-    const hadKID = await hadKIDCheck()
-    if (hadKID) {
-      const txId = await backgroundRequest.gallery.updateKID({kidInfo, contractId: hadKID})
-      console.log('KID transaction id: ', txId)
-    } else {
-      const fileType = profileImage.type
+    try {
+      setIsLoading(true)
+      const addresses = {
+        Arweave: address
+      }
   
-      await saveImageDataToStorage(profileImage)
+      const kidInfo = {
+        name,
+        description,
+        link,
+        addresses
+      }
   
-      const txId = await backgroundRequest.gallery.createNewKID({ kidInfo, fileType })
-      console.log('KID transaction id: ', txId)
+      const hadKID = await hadKIDCheck()
+      if (hadKID) {
+        const txId = await backgroundRequest.gallery.updateKID({kidInfo, contractId: hadKID})
+        console.log('KID transaction id: ', txId)
+      } else {
+        if (!get(profileImage, 'type')) {
+          throw new Error('Please select an image.')
+        }
+        const fileType = profileImage.type
+  
+        const arCost = await loadNFTCost(profileImage.size)
+  
+        // Validations
+        if (totalAr < arCost) {
+          throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
+        }
+  
+        if (totalKoi < 1) {
+          throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
+        }
+  
+        if (profileImage.size > 0.5 * 1024**2) {
+          throw new Error('File too large. The maximum size for Profile Picture is 500KB')
+        }
+  
+        await saveImageDataToStorage(profileImage)
+    
+        const txId = await backgroundRequest.gallery.createNewKID({ kidInfo, fileType })
+        console.log('KID transaction id: ', txId)
+      }
+      setIsLoading(false)
+    } catch (err) {
+      setIsLoading(false)
+      setError(err.message)
     }
   }
 
@@ -100,6 +131,7 @@ export default () => {
   useEffect(() => {
     const getKid = async () => {
       const data = await koi.getKIDByWalletAddress(address)
+      console.log(data)
       if (get(data, 'data.transactions.edges[0].node.id') ) {
         const { imageUrl, name, description, link } = getKIDFields(data) 
         if (imageUrl) {
@@ -144,23 +176,23 @@ export default () => {
               accept='image/*'
               onChange={onProfileImageChange}
             />
-            <div className='select-image-button' onClick={onSelectClick}>
+            {!arweaveImage && <div className='select-image-button' onClick={onSelectClick}>
               {profileImage ? (
                 <>
                   <ChangeProfileImageIcon className='change-profile-image-icon' />{' '}
                   Change image
                 </>
               ) : (
-                'Select from Gallery'
+                'Select an image'
               )}
-            </div>
-            <div className='create-nft-text'>
+            </div>}
+            {/* <div className='create-nft-text'>
               Or&nbsp;
               <Link to='/create' className='create-nft-link' target='_blank'>
                 {' create an NFT '}
               </Link>{' '}
               to add to your gallery
-            </div>
+            </div> */}
           </div>
 
           <div className='right'>

@@ -2,7 +2,8 @@ import numeral from 'numeral'
 import { isString } from 'lodash'
 import { getChromeStorage, setChromeStorage } from 'utils'
 import { MOCK_COLLECTIONS_STORE, STORAGE } from 'koiConstants'
-import { find } from 'lodash'
+import { find, get } from 'lodash'
+import { koi } from 'background'
 
 export const formatNumber = (value, decimal) => {
   const zeroArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -66,7 +67,7 @@ export const mockGetCollections = async () => {
 export const getNftsDataForCollections = async (collection) => {
   const storageNfts = (await getChromeStorage(STORAGE.CONTENT_LIST))[STORAGE.CONTENT_LIST] || []
 
-  const { nftIds } = collection
+  const { collection: nftIds } = collection
   const nfts = nftIds.map(id => {
     const nft = find(storageNfts, v => v.txId == id)
     if (nft) return nft
@@ -76,7 +77,7 @@ export const getNftsDataForCollections = async (collection) => {
   return resultCollection
 }
 
-export const stringTruncate = (str ,length) => {
+export const stringTruncate = (str, length) => {
   try {
     if (str.length > 20) {
       return `${str.slice(0,length)}...`
@@ -84,5 +85,41 @@ export const stringTruncate = (str ,length) => {
     return str
   } catch (err) {
     console.log(err)
+  }
+}
+
+export const readState = async (txIds) => {
+  const result = await Promise.all(txIds.map(async id => {
+    try {
+      let state = await koi.readState(id)
+      state = {...state, id}
+      console.log('state', state)
+      return state
+    } catch (err) {
+      return null
+    }
+  }))
+  return result.filter(collection => collection)
+}
+
+export const loadCollections = async (address) => {
+  try {
+    const savedCollection = (await getChromeStorage(STORAGE.COLLECTIONS))[STORAGE.COLLECTIONS] || []
+    let fetchedCollections = await koi.getCollectionsByWalletAddress(address)
+
+    if (savedCollection.length == fetchedCollections.length) return 'fetched'
+
+    fetchedCollections = fetchedCollections.map(collection => get(collection, 'node.id'))
+    console.log(fetchedCollections)
+    fetchedCollections = await readState(fetchedCollections)
+  
+    fetchedCollections = await Promise.all(fetchedCollections.map(collection => getNftsDataForCollections(collection)))
+  
+    console.log('fetchedCollections', fetchedCollections)
+
+    await setChromeStorage({[STORAGE.COLLECTIONS]: fetchedCollections})
+    return fetchedCollections
+  } catch (err) {
+    console.log(err.message)
   }
 }

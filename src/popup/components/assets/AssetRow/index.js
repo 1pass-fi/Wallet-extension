@@ -26,7 +26,7 @@ const WalletIcon = ({ isKoiWallet }) => (
 
 const EarnedKoi = ({ isRegistered, earnedKoi }) =>
   isRegistered ? (
-    <div className='koi-earned'>{numberFormat(earnedKoi)} KOI earned</div>
+    <div className='koi-earned'>{numberFormat(earnedKoi)} KOII earned</div>
   ) : (
     <button className='register-button'>
       <div className='register-button-icon'>

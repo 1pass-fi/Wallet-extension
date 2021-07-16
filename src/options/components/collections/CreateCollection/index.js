@@ -29,7 +29,9 @@ export default () => {
     setTotalPage,
     address,
     setIsLoading,
-    setCollections
+    setCollections,
+    totalAr,
+    totalKoi
   } = useContext(GalleryContext)
   // const [stage, setStage] = useState(1)
 
@@ -52,50 +54,55 @@ export default () => {
 
   const handleCreateNewCollection = async () => {
     try {
+      if (totalAr < 0.0014) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
+      if (totalKoi < 1) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
       const nfts = collectionNFT.filter(nft => nft.id)
-      const nftIds = nfts.map(nft => nft.id)
-      console.log('Nfts list: ', nftIds)
-      const collectionInfo = {
-        name: collectionName,
-        description,
-        tags,
-        owner: address
+      if (!isEmpty(nfts)) {
+        const nftIds = nfts.map(nft => nft.id)
+        console.log('Nfts list: ', nftIds)
+        const collectionInfo = {
+          name: collectionName,
+          description,
+          tags,
+          owner: address
+        }
+  
+        /*
+          Currently we still not have a funciton to get collections. This code will be kept for now.
+        */
+        // const newCollection = {
+        //   id: Date.now(),
+        //   name: collectionName,
+        //   nftIds,
+        //   views: 1234,
+        //   earnedKoi: 1000,
+        //   pieces: nfts.length,
+        //   tags,
+        //   koiRockUrl: 'https://koi.rocks'
+        // }
+  
+        // await mockSaveCollections(newCollection)
+        // let newCollections = await mockGetCollections()
+        // newCollections = await Promise.all(newCollections.map(collection => getNftsDataForCollections(collection))) 
+        // setCollections(newCollections)
+        /* 
+          Create new collection using sdk
+        */
+        setIsLoading(true)
+        const txId = await backgroundRequest.gallery.createNewCollection({ nftIds, collectionInfo })
+        setIsLoading(false)
+        console.log('Transaction Id: ', txId)
+      } else {
+        throw new Error('A collection has to contain at least one NFT.')
       }
-
-      /*
-        Currently we still not have a funciton to get collections. This code will be kept for now.
-      */
-      const newCollection = {
-        id: Date.now(),
-        name: collectionName,
-        nftIds,
-        views: 1234,
-        earnedKoi: 1000,
-        pieces: nfts.length,
-        tags,
-        koiRockUrl: 'https://koi.rocks'
-      }
-
-      await mockSaveCollections(newCollection)
-      let newCollections = await mockGetCollections()
-      newCollections = await Promise.all(newCollections.map(collection => getNftsDataForCollections(collection))) 
-      setCollections(newCollections)
-      /* 
-        Create new collection using sdk
-      */
-      // setIsLoading(true)
-      // const txId = await backgroundRequest.gallery.createNewCollection({ nftIds, collectionInfo })
-      // setIsLoading(false)
-      // console.log('Transaction Id: ', txId)
 
     } catch (err) {
-      setError(err.message)
-      setIsLoading(false)
+      throw new Error(err.message)
     }
   }
 
   const confirmButtonOnClick = async () => {
-
+    let nfts
     switch (stage) {
       case 1:
         if (!collectionName || !description) {
@@ -105,7 +112,12 @@ export default () => {
         }
         break
       case 2:
-        setStage(stage + 1)
+        nfts = collectionNFT.filter(nft => nft.id)
+        if (isEmpty(nfts)) {
+          setError('A collection has to contain at least one NFT.')
+        } else {
+          setStage(stage + 1)
+        }
         break
       case 3:
         try {
@@ -115,6 +127,7 @@ export default () => {
           setStage(stage + 1)
           break
         } catch (err) {
+          setIsLoading(false)
           setError(err.message)
         }
     }

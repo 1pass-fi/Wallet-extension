@@ -8,7 +8,7 @@ export default () => {
   return (
     <header className='lock-screen-header'>
       <KoiIcon className='koi-icon' />
-      <div className='koi-title'>Koi Wallet</div>
+      <div className='koi-title'>Koii Wallet</div>
     </header>
   )
 }

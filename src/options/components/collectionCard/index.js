@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { isEmpty } from 'lodash'
+import { isEmpty, get } from 'lodash'
 
 import ShareIcon from 'img/share-icon.svg'
 import CopyLinkIcon from 'img/share-icon-2.svg'
@@ -141,13 +141,13 @@ export default ({ collection }) => {
               <NextArrowIcon />
             </div>
           )}
-          {displayNft.contentType.includes('image') ? (
-            <img src={displayNft.imageUrl} className='nft-img' />
+          {(get(displayNft, 'contentType') || 'image').includes('image') ? (
+            <img src={get(displayNft, 'imageUrl')} className='nft-img' />
           ) : (
             <video
               width={200}
               height={200}
-              src={displayNft.imageUrl}
+              src={get(displayNft, 'imageUrl')}
               className='nft-img'
               controls
               autoPlay
@@ -167,7 +167,7 @@ export default ({ collection }) => {
         <div className='nft-stats'>
 
           {/* <div className='contributors'>{contributors}</div> */}
-          <div className='pieces'>{pieces}</div>
+          <div className='pieces'>{nfts.length}</div>
         </div>
         <div className='tags '>
           {displayTags.map((tag) => (

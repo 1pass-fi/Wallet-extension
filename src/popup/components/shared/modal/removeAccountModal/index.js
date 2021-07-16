@@ -19,7 +19,7 @@ const ModalTitle = ({ accountName }) => {
       Are you sure you want to remove
       <br />
       <strong>{accountName}</strong>
-      {' '}from your Koi Wallet?
+      {' '}from your Koii Wallet?
     </div>
   )
 }

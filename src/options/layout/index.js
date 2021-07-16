@@ -5,6 +5,7 @@ import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
 import isArray from 'lodash/isArray'
+import { get } from 'lodash'
 
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
 import { 
@@ -32,7 +33,7 @@ import Welcome from 'options/modal/welcomeScreen'
 import { getShareUrl, createShareWindow } from 'options/helpers'
 import { koi } from 'background'
 
-import { getNftsDataForCollections } from 'options/utils'
+import { getNftsDataForCollections, loadCollections } from 'options/utils'
 
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
@@ -88,11 +89,6 @@ export default ({ children }) => {
           STORAGE.SHOW_VIEWS,
           STORAGE.SHOW_EARNED_KOI
         ])
-        if (storage[MOCK_COLLECTIONS_STORE]) {
-          let collections = storage[MOCK_COLLECTIONS_STORE]
-          collections = await Promise.all(collections.map(collection => getNftsDataForCollections(collection))) 
-          setCollections(collections)
-        } 
 
         if (!isEmpty(gallerySetting)) {
           setShowViews(gallerySetting[STORAGE.SHOW_VIEWS])

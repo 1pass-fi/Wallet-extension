@@ -50,6 +50,8 @@
   font-size: 18px;
   line-height: 32px;
   max-width: 772px;
+  height: 150px;
+  overflow-y: overlay;
 }
 
 .collection-details .cards {
