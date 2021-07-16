@@ -18,9 +18,11 @@ import { loadNFTCost } from 'utils'
 import { ERROR_MESSAGE } from 'koiConstants'
 
 import { koi } from 'background'
+import { STORAGE } from 'koiConstants'
+import { setChromeStorage, getChromeStorage } from 'utils'
 
 export default () => {
-  const { address, totalAr, totalKoi, setIsLoading, setError } = useContext(GalleryContext)
+  const { address, totalAr, totalKoi, setIsLoading, setError, setNotification } = useContext(GalleryContext)
 
   const fileRef = useRef()
   const [profileImage, setProfileImage] = useState()
@@ -60,10 +62,22 @@ export default () => {
   
       const hadKID = await hadKIDCheck()
       if (hadKID) {
+        if (totalAr < 0.0002) {
+          throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
+        }
+  
+        if (totalKoi < 1) {
+          throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
+        }
+  
+        if (profileImage.size > 0.5 * 1024**2) {
+          throw new Error('File too large. The maximum size for Profile Picture is 500KB')
+        }
         const txId = await backgroundRequest.gallery.updateKID({kidInfo, contractId: hadKID})
         console.log('KID transaction id: ', txId)
+        setNotification('Update KID success. It may take a while until you can get your data updated.')
       } else {
-        if (!get(profileImage, 'type')) {
+        if (!get(profileImage, 'type') && !arweaveImage) {
           throw new Error('Please select an image.')
         }
         const fileType = profileImage.type
@@ -87,6 +101,7 @@ export default () => {
     
         const txId = await backgroundRequest.gallery.createNewKID({ kidInfo, fileType })
         console.log('KID transaction id: ', txId)
+        setNotification('Create KID success. It may take a while until you can get your data updated.')
       }
       setIsLoading(false)
     } catch (err) {
@@ -108,38 +123,61 @@ export default () => {
 
   const hadKIDCheck = async () => {
     const data = await koi.getKIDByWalletAddress(address)
-    if (get(data, 'data.transactions.edges[0].node.id')) {
-      return get(data, 'data.transactions.edges[0].node.id')
+    if (get(data[0], 'node.id')) {
+      return get(data[0], 'node.id')
     }
     return false
   }
 
-  const getKIDFields = (data) => {
-    console.log(data)
-    if (get(data, 'data.transactions.edges[0].node.tags')) {
-      let initState = (get(data, 'data.transactions.edges[0].node.tags')).filter(tag => tag.name == 'Init-State')
-      const imageUrl = `https://arweave.net/${get(data,'data.transactions.edges[0].node.id')}`
-      initState = JSON.parse(initState[0].value)
-      const name = get(initState, 'name')
-      const description = get(initState, 'description')
-      const link = get(initState, 'link')
-  
-      return { imageUrl, name, description, link }
+  const getKIDFields = async (transactionId) => {
+    try {
+      const imageUrl = `https://arweave.net/${transactionId}`
+      const state = await koi.readState(transactionId)
+      return { imageUrl, ...state }
+    } catch (err) {
+      setError('Get KID Failed')
+      console.log(err)
     }
   }
 
   useEffect(() => {
-    const getKid = async () => {
-      const data = await koi.getKIDByWalletAddress(address)
-      console.log(data)
-      if (get(data, 'data.transactions.edges[0].node.id') ) {
-        const { imageUrl, name, description, link } = getKIDFields(data) 
-        if (imageUrl) {
+    const getKIDFromStorage = async () => {
+      try {
+        const storage = await getChromeStorage(STORAGE.KID)
+        if (storage[STORAGE.KID]) {
+          const { imageUrl, description, link, name } = storage[STORAGE.KID]
           setArweaveImage(imageUrl)
           setName(name)
           setDescription(description)
           setLink(link)
         }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    getKIDFromStorage()
+  }, [])
+
+  useEffect(() => {
+    const getKid = async () => {
+      try {
+        setIsLoading(true)
+        const data = await koi.getKIDByWalletAddress(address)
+        const txId = get(data[0], 'node.id')
+        if (txId) {
+          const { imageUrl, description, link, name } = await getKIDFields(txId)
+          await setChromeStorage({ [STORAGE.KID]: { imageUrl, description, link, name } })
+          if (imageUrl) {
+            setArweaveImage(imageUrl)
+            setName(name)
+            setDescription(description)
+            setLink(link)
+          }
+        }
+        setIsLoading(false)
+      } catch(err) {
+        setIsLoading(false)
+        console.log(err)
       }
     }
 

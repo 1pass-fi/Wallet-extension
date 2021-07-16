@@ -92,7 +92,8 @@ export const readState = async (txIds) => {
   const result = await Promise.all(txIds.map(async id => {
     try {
       let state = await koi.readState(id)
-      state = {...state, id}
+      const viewsAndReward = await koi.getViewsAndEarnedKOII(state.collection)
+      state = {...state, id, ...viewsAndReward}
       console.log('state', state)
       return state
     } catch (err) {
@@ -114,10 +115,13 @@ export const loadCollections = async (address) => {
     fetchedCollections = await readState(fetchedCollections)
   
     fetchedCollections = await Promise.all(fetchedCollections.map(collection => getNftsDataForCollections(collection)))
-  
+    const allNftsLoadedSuccess = fetchedCollections.every(collection => {
+      return collection.nfts.every(nft => nft)
+    })
     console.log('fetchedCollections', fetchedCollections)
+    console.log('allNftsLoadedSuccess', allNftsLoadedSuccess)
 
-    await setChromeStorage({[STORAGE.COLLECTIONS]: fetchedCollections})
+    allNftsLoadedSuccess && await setChromeStorage({[STORAGE.COLLECTIONS]: fetchedCollections})
     return fetchedCollections
   } catch (err) {
     console.log(err.message)

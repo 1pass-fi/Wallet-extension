@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useParams } from 'react-router'
 import { find, isEmpty } from 'lodash'
+import { formatNumber } from 'options/utils'
 
 import NFTCard from './nftCard'
 import './index.css'
@@ -36,7 +37,7 @@ export default () => {
     if (collection) {
       return collection
     }
-    return { title: '', views: '', earnedKoi: 0, description: '', nfts: [] }
+    return { title: '', totalViews: 0, totalReward: 0, description: '', nfts: [] }
   }, [collections])
 
   const handleGoBack = () => {
@@ -48,8 +49,8 @@ export default () => {
       <div className='collection-details'>
         <div onClick={handleGoBack} className='go-back-button'><GoBack /></div>
         <div className='title'>{collection.name}</div>
-        {showViews && <div className='views'>{collection.views} Views</div>}
-        {showEarnedKoi && <div className='earned-koi'>{collection.earnedKoi} KOII earned</div>}
+        {showViews && <div className='views'>{collection.totalViews} Views</div>}
+        {showEarnedKoi && <div className='earned-koi'>{formatNumber(collection.totalReward, 2)} KOII earned</div>}
         <div className='description'>{collection.description}</div>
         <div className='cards'>
           {collection.nfts.map((nft, index) => (

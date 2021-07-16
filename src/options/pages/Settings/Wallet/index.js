@@ -4,7 +4,8 @@ import getSymbolFromCurrency from 'currency-symbol-map'
 import { isEmpty, get } from 'lodash'
 
 import { getChromeStorage, setChromeStorage } from 'utils'
-import { STORAGE } from 'koiConstants'
+import {  } from 'utils/extension'
+import { STORAGE, OS } from 'koiConstants'
 import { GalleryContext } from 'options/galleryContext'
 
 import AccountOrder from './AccountOrder'
@@ -44,6 +45,7 @@ const onCreateWallet = () => {
 export default () => {
   const { setError, setNotification } = useContext(GalleryContext)
   const [currency, setCurrency] = useState('USD')
+  const [textColor, setTextColor] = useState('#ffffff')
 
   const sellectCurrencyRef = useRef()
 
@@ -54,7 +56,13 @@ export default () => {
       sellectCurrencyRef.current.value = currency
     }
 
+    const getOs = () => {
+      const os = window.localStorage.getItem(OS)
+      if (os == 'win') setTextColor('#171753')
+    }
+
     getCurrency()
+    getOs()
   }, [])
 
   const onCurrencyChange =  async (e) => {
@@ -119,7 +127,7 @@ export default () => {
               defaultValue={currency}
             >
               {data.map(({ code, currency }) => (
-                <option key={code} value={code}>{`${
+                <option style={{color: textColor}} key={code} value={code}>{`${
                   getSymbolFromCurrency(code) || ''
                 } ${currency} (${code})`}</option>
               ))}

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { isString } from 'lodash'
 
 import './index.css'
 import CollectionList from 'options/components/collectionList'
