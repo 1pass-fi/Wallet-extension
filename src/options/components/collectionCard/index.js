@@ -24,22 +24,20 @@ export default ({ collection }) => {
     pieces,
     tags,
     koiRockUrl,
-    description
+    description,
   } = collection
 
   const [isCopied, setIsCopied] = useState(false)
   const [displayNftIndex, setDisplayNftIndex] = useState(0)
   const [displayTags, setDisplayTags] = useState([])
   const [expandTag, setExpandTag] = useState('')
+  const [isExpand, setIsExpand] = useState(false)
   const ref = useRef()
 
   const displayNft = useMemo(() => nfts[displayNftIndex], [
     displayNftIndex,
     nfts,
   ])
-
-  console.log({ displayNft })
-  console.log({ displayNftIndex })
 
   const onCopy = () => {
     setIsCopied(true)
@@ -105,6 +103,27 @@ export default ({ collection }) => {
   const showAllTags = () => {
     setDisplayTags(tags)
     setExpandTag('')
+    setIsExpand(true)
+  }
+
+  /* 
+    Set collection data for detail collection.
+    Later we will move component CollectionDetail to another page.
+    This function will be removed.
+  */
+  const handleSetCollection = () => {
+    setCollection({
+      id,
+      name,
+      nfts,
+      view,
+      earnedKoi,
+      contributors,
+      pieces,
+      tags,
+      koiRockUrl,
+      description,
+    })
   }
 
   useEffect(() => {
@@ -114,6 +133,7 @@ export default ({ collection }) => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!expandTag && ref.current && !ref.current.contains(event.target)) {
+        setIsExpand(false)
         calculateDisplayTags()
       }
     }
@@ -127,7 +147,7 @@ export default ({ collection }) => {
   return (
     <div className='nft-collection-card-wrapper'>
       <div
-        className={`nft-collection-card ${expandTag ? '' : 'expand'}`}
+        className={`nft-collection-card ${isExpand ? 'expand' : ''}`}
         ref={ref}
       >
         <div className='preview-nft'>
@@ -165,7 +185,6 @@ export default ({ collection }) => {
         <div className='nft-view'>{views} Views </div>
         <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>
         <div className='nft-stats'>
-
           {/* <div className='contributors'>{contributors}</div> */}
           <div className='pieces'>{pieces}</div>
         </div>
