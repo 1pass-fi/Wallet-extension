@@ -15,18 +15,19 @@ import BigCard from '../../bigNFTCard'
 import { UploadContext } from '../../index'
 import { GalleryContext } from 'options/galleryContext'
 import { PATH } from 'koiConstants'
+import { stringTruncate } from '../../../../utils'
 
 const Tag = ({ tag, stage }) => {
   const { tags, setTags } = useContext(UploadContext)
 
   const removeTag = (e) => {
-    const newTags = tags.filter((tag) => tag !== e.target.textContent)
+    const newTags = tags.filter((aTag) => aTag !== tag)
     setTags(newTags)
   }
 
   return (
     <div onClick={removeTag} className={stage === 2 ? 'tag stage2' : 'tag'}>
-      {tag}
+      {stringTruncate(tag, 15)}
     </div>
   )
 }

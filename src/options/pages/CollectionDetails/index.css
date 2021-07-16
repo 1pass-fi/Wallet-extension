@@ -1,5 +1,5 @@
 .collection-details-wrapper {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   justify-content: center;
   min-height: calc(100vh - 140px);
@@ -7,7 +7,7 @@
 }
 
 .collection-details {
-  max-width: 920px;
+  width: 920px;
   color: #ffffff;
   justify-content: center;
   display: flex;

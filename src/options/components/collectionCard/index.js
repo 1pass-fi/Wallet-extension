@@ -172,7 +172,7 @@ export default ({ collection }) => {
         <div className='tags '>
           {displayTags.map((tag) => (
             <div key={tag} className='tag'>
-              {tag}
+              {stringTruncate(tag, 10) }
             </div>
           ))}
           {expandTag && (
