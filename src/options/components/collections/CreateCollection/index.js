@@ -13,6 +13,8 @@ import { ERROR_MESSAGE } from 'koiConstants'
 import { backgroundRequest } from 'popup/backgroundRequest'
 
 import { mockSaveCollections } from 'options/utils'
+import { mockGetCollections } from 'options/utils'
+import { getNftsDataForCollections } from 'options/utils'
 
 export default () => {
   const { collectionNFT,
@@ -27,6 +29,7 @@ export default () => {
     setTotalPage,
     address,
     setIsLoading,
+    setCollections
   } = useContext(GalleryContext)
   // const [stage, setStage] = useState(1)
 
@@ -74,7 +77,9 @@ export default () => {
       }
 
       await mockSaveCollections(newCollection)
-
+      let newCollections = await mockGetCollections()
+      newCollections = await Promise.all(newCollections.map(collection => getNftsDataForCollections(collection))) 
+      setCollections(newCollections)
       /* 
         Create new collection using sdk
       */

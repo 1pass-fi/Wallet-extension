@@ -41,7 +41,17 @@ export const NftThumbnails = ({
                       {...provided.dragHandleProps}
                     >
                       <div ref={ref => numRef.current[index] = ref} className={nft.url ? `nft-wrapper ${className}` : `nft-wrapper empty ${className}`}>
-                        {nft.url && <img src={nft.url}></img>}
+                        {nft.url && ( nft.contentType.includes('image') ? <img src={nft.url}></img> :
+                          <div><video
+                            width={140}
+                            height={140}
+                            src={nft.url}
+                            className='nft-img'
+                            autoPlay
+                            controls
+                            muted
+                          /></div>
+                        )}
                         {nft.url && <div onClick={() => removeFromCollection(nft.id)} className='delete-icon'><DeleteIcon /></div>}
                       </div>
                     </div>

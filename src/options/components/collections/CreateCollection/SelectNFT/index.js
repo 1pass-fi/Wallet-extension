@@ -270,7 +270,17 @@ export default ({nfts, tags, collectionName, description, stage}) => {
         {(collectionNFT.map((nft, index) => {
           if (nft.url) return (
             <div className='nft-wrapper' key={index}>
-              <img src={nft.url}></img>
+              {(nft.contentType.includes('image')) ? <img src={nft.url}></img> :
+                <video
+                  width={88}
+                  height={88}
+                  src={nft.url}
+                  className='nft-img'
+                  controls
+                  autoPlay
+                  muted
+                />
+              }
             </div>
           )
         }))}

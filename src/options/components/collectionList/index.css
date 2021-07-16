@@ -8,7 +8,7 @@
 .collection-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 60px;
-  justify-content: space-between;
+  gap: 100px;
+  justify-content: flex-start;
   max-width: 920px;
 }

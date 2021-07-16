@@ -45,7 +45,17 @@ export default ({ collectionName, description, tags }) => {
         {nfts.map((nft, index) => {
           if (nft.url) return (
             <div className='nft-wrapper' key={index}>
-              <img src={nft.url}></img>
+              {nft.contentType.includes('image') ? <img src={nft.url}></img> :
+                <video
+                  width={118}
+                  height={118}
+                  src={nft.url}
+                  className='nft-img'
+                  controls
+                  autoPlay
+                  muted
+                />
+              }
             </div>
           )
         })}

@@ -114,6 +114,7 @@
     align-items: center;
     margin: 0 18px;
     box-sizing: border-box;
+    user-select: none;
   }
 
 .create-collection

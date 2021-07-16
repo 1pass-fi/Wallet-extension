@@ -107,7 +107,7 @@ export default ({
             {selectedCollection && <div className='nft-img-checked-icon'><CheckIcon /></div>}
           </div>
         ) : (
-          <video
+          <div className={selectedCollection ? 'nft-img selected' : 'nft-img'}><video
             width={200}
             height={200}
             src={imageUrl}
@@ -116,6 +116,9 @@ export default ({
             autoPlay
             muted
           />
+          {selectedCollection && <div className='nft-img-checked-icon'><CheckIcon /></div>}
+          </div>
+          
         )}
       </Link>
       <div className='nft-name'>{name}</div>
