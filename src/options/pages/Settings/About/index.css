@@ -17,7 +17,9 @@
   margin-bottom: 40px;
 }
 
-/* .about-settings {} */
+.about-settings {
+  width: 802px;
+}
 
 .about-settings .items {
   margin-top: 40px;

@@ -19,7 +19,8 @@
 .galery-settings {
   display: flex;
   flex-direction: column;
-  width: 581px;
+  /* width: 581px; */
+  width: 802px;
 }
 
 .galery-settings .settings-row {
