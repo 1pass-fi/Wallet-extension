@@ -1,7 +1,7 @@
 .big-nft-card-wrapper {
   display: flex;
   width: 100%;
-  height: calc(100vh - 170px);
+  /* height: calc(100vh - 170px); */
   padding-top: calc((100vh - 740px) / 2);
 }
 
@@ -15,6 +15,16 @@
 
 .big-nft-card .nft-preview {
   width: 470px;
+  position: relative;
+}
+
+.big-nft-card .go-back-icon {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 0px;
+  left: -50px;
+  cursor: pointer;
 }
 
 .big-nft-card .nft-img {

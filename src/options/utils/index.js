@@ -1,6 +1,8 @@
 import numeral from 'numeral'
 import { isString } from 'lodash'
-import { setChromeStorage } from 'utils'
+import { getChromeStorage, setChromeStorage } from 'utils'
+import { MOCK_COLLECTIONS_STORE, STORAGE } from 'koiConstants'
+import { find } from 'lodash'
 
 export const formatNumber = (value, decimal) => {
   const zeroArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -40,4 +42,47 @@ export const saveImageDataToStorage = async (file) => {
   // console.log('bottomButton- u8', u8)
 
   await setChromeStorage({ NFT_BIT_DATA: u8 })
+}
+
+/**
+ *
+ * @param {Array} collection { tx: [id1, id2] } 
+ */
+export const mockSaveCollections = async (collection) => {
+  console.log('new collection: ', collection)
+  const storage = await getChromeStorage(MOCK_COLLECTIONS_STORE)
+  const collections = storage[MOCK_COLLECTIONS_STORE] || []
+  collections.push(collection)
+
+  await setChromeStorage({[MOCK_COLLECTIONS_STORE]: collections})
+}
+
+export const mockGetCollections = async () => {
+  const storage = await getChromeStorage(MOCK_COLLECTIONS_STORE)
+  const collections = storage[MOCK_COLLECTIONS_STORE] || []
+  return collections
+}
+
+export const getNftsDataForCollections = async (collection) => {
+  const storageNfts = (await getChromeStorage(STORAGE.CONTENT_LIST))[STORAGE.CONTENT_LIST] || []
+
+  const { nftIds } = collection
+  const nfts = nftIds.map(id => {
+    const nft = find(storageNfts, v => v.txId == id)
+    if (nft) return nft
+  })
+
+  const resultCollection = { ...collection, nfts }
+  return resultCollection
+}
+
+export const stringTruncate = (str ,length) => {
+  try {
+    if (str.length > 20) {
+      return `${str.slice(0,length)}...`
+    }
+    return str
+  } catch (err) {
+    console.log(err)
+  }
 }

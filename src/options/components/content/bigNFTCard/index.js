@@ -6,6 +6,7 @@ import React, {
   useRef,
   useMemo,
 } from 'react'
+import { useHistory } from 'react-router-dom'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import moment from 'moment'
 
@@ -14,6 +15,7 @@ import EmailIcon from 'img/social-icons/email-icon.svg'
 import FacebookIcon from 'img/social-icons/facebook-icon.svg'
 import LinkedinIcon from 'img/social-icons/linkedin-icon.svg'
 import TwitterIcon from 'img/social-icons/twitter-icon.svg'
+import GoBackIcon from 'img/goback-icon.svg'
 
 import { createShareWindow } from '../../../helpers'
 
@@ -35,6 +37,7 @@ export default ({
   createdAt,
   description: aDescription
 }) => {
+  const history = useHistory()
   const { setShowExportModal, setShowShareModal } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const { registeredDate, description, tags } = {
@@ -49,6 +52,10 @@ export default ({
   const onCopy = () => {
     setIsCopied(true)
     setTimeout(() => setIsCopied(false), 3000)
+  }
+
+  const handleGoBack = () => {
+    history.goBack()
   }
 
   return (
@@ -67,6 +74,9 @@ export default ({
               autoPlay
             />
           )}
+          <div onClick={handleGoBack} className='go-back-icon'>
+            <GoBackIcon />
+          </div>
         </div>
         <div className='info'>
           <div className='nft-name'>{name}</div>

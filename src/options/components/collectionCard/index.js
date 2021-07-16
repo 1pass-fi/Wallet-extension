@@ -10,12 +10,14 @@ import { formatNumber } from 'options/utils'
 import './index.css'
 import { Link } from 'react-router-dom'
 
-export default ({ collection, setCollection }) => {
+import { stringTruncate } from 'options/utils'
+
+export default ({ collection }) => {
   const {
     id,
     name,
     nfts,
-    view,
+    views,
     earnedKoi,
     contributors,
     pieces,
@@ -100,26 +102,6 @@ export default ({ collection, setCollection }) => {
     setExpandTag('')
   }
 
-  /* 
-    Set collection data for detail collection.
-    Later we will move component CollectionDetail to another page.
-    This function will be removed.
-  */
-  const handleSetCollection = () => {
-    setCollection({
-      id,
-      name,
-      nfts,
-      view,
-      earnedKoi,
-      contributors,
-      pieces,
-      tags,
-      koiRockUrl,
-      description
-    })
-  }
-
   useEffect(() => {
     calculateDisplayTags()
   }, [tags])
@@ -155,12 +137,12 @@ export default ({ collection, setCollection }) => {
             </div>
           )}
           {displayNft.contentType.includes('image') ? (
-            <img src={displayNft.url} className='nft-img' />
+            <img src={displayNft.imageUrl} className='nft-img' />
           ) : (
             <video
               width={200}
               height={200}
-              src={displayNft.url}
+              src={displayNft.imageUrl}
               className='nft-img'
               controls
               autoPlay
@@ -171,11 +153,11 @@ export default ({ collection, setCollection }) => {
         {/* <Link className='nft-name' to={`/details/${id}`}>
           {name}
         </Link> */}
-        <Link className='nft-name' onClick={handleSetCollection} to='#'>
-          {name}
+        <Link className='nft-name' to={`/collections/${id}`}>
+          {stringTruncate(name, 20)}
         </Link>
 
-        <div className='nft-view'>{view} KOI </div>
+        <div className='nft-view'>{views} Views </div>
         <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>
         <div className='nft-stats'>
 

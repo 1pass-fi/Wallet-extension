@@ -13,12 +13,12 @@ import BigCard from './bigNFTCard'
 
 import './index.css'
 
-export default ({ choosenTxid = '' }) => {
+export default ({ choosenTxid = '', detail }) => {
   const { cardInfos, isDragging, searchTerm, showCreateCollection } = useContext(GalleryContext)
 
-  useEffect(() => {
-    if (!showCreateCollection) window.scroll({ top: 0, behavior: 'smooth' }) 
-  }, [choosenTxid])
+  // useEffect(() => {
+  //   if (!showCreateCollection) window.scroll({ top: 0, behavior: 'smooth' }) 
+  // }, [choosenTxid])
 
   const choosenCard = find(cardInfos, { txId: choosenTxid })
 
@@ -30,7 +30,7 @@ export default ({ choosenTxid = '' }) => {
       </div>}
       <div className='cards'>
         {choosenCard && <BigCard {...choosenCard} />}
-        <div className='small-cards'>
+        {!detail && <div className='small-cards'>
           {cardInfos.map(
             (cardInfo) =>
               isEqual(get(cardInfo, 'txId', ''), choosenTxid) ||
@@ -46,7 +46,7 @@ export default ({ choosenTxid = '' }) => {
                 />
               ))
           )}
-        </div>
+        </div>}
       </div>
     </div>
   )

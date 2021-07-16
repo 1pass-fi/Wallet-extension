@@ -4,5 +4,5 @@ import Content from 'options/components/content'
 
 export default () => {
   const { txid } = useParams()
-  return <Content choosenTxid={txid} />
+  return <Content choosenTxid={txid} detail={true}/>
 }

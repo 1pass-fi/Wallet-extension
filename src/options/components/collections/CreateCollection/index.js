@@ -12,6 +12,8 @@ import { GalleryContext } from 'options/galleryContext'
 import { ERROR_MESSAGE } from 'koiConstants'
 import { backgroundRequest } from 'popup/backgroundRequest'
 
+import { mockSaveCollections } from 'options/utils'
+
 export default () => {
   const { collectionNFT,
     setCollectionNFT, 
@@ -63,23 +65,23 @@ export default () => {
       const newCollection = {
         id: Date.now(),
         name: collectionName,
-        nfts,
-        view: 1234,
+        nftIds,
+        views: 1234,
         earnedKoi: 1000,
         pieces: nfts.length,
         tags,
         koiRockUrl: 'https://koi.rocks'
       }
-      setDemoCollections([...demoCollections, newCollection, newCollection, newCollection, newCollection, newCollection, newCollection])
-  
-  
+
+      await mockSaveCollections(newCollection)
+
       /* 
         Create new collection using sdk
       */
-      setIsLoading(true)
-      const txId = await backgroundRequest.gallery.createNewCollection({ nftIds, collectionInfo })
-      setIsLoading(false)
-      console.log('Transaction Id: ', txId)
+      // setIsLoading(true)
+      // const txId = await backgroundRequest.gallery.createNewCollection({ nftIds, collectionInfo })
+      // setIsLoading(false)
+      // console.log('Transaction Id: ', txId)
 
     } catch (err) {
       setError(err.message)

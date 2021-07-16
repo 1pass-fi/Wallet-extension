@@ -28,27 +28,19 @@ const Header = ({ setShowCreateCollection, setStage, setPage, setTotalPage }) =>
 }
 
 export default () => {
-  const { demoCollections, setShowCreateCollection, setPage, setTotalPage, setStage } = useContext(GalleryContext)
-
-  const [collection, setCollection] = useState({})
+  const { setShowCreateCollection, setPage, setTotalPage, setStage, collections } = useContext(GalleryContext)
 
   return (
     <div className='collections-container'>
-      
-      {
-        !collection.id ?
-          <div>
-            <Header 
-              setShowCreateCollection={setShowCreateCollection}
-              setStage={setStage}
-              setPage={setPage}
-              setTotalPage={setTotalPage}
-            />
-            <CollectionList setCollection={setCollection} collections={demoCollections}/>
-          </div>
-          :
-          <CollectionDetail collection={collection} setCollection={setCollection}/>
-      }
+      <div>
+        <Header 
+          setShowCreateCollection={setShowCreateCollection}
+          setStage={setStage}
+          setPage={setPage}
+          setTotalPage={setTotalPage}
+        />
+        <CollectionList collections={collections}/>
+      </div>
     </div>
   )
 }

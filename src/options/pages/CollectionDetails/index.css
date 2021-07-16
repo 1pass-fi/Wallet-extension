@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   min-height: calc(100vh - 140px);
-  margin-bottom: 60px;
+  padding-bottom: 60px;
 }
 
 .collection-details {

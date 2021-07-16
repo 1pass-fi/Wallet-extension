@@ -7,9 +7,10 @@ import CopyLinkIcon from 'img/share-icon-2.svg'
 import { formatNumber } from 'options/utils'
 import './index.css'
 import { Link } from 'react-router-dom'
+import { stringTruncate } from 'options/utils'
 
 export default ({ nft }) => {
-  const { id: txId, url, name, views, earnedKoi, koiRockUrl, contentType } = nft
+  const { txId, imageUrl: url, name, totalViews: views, earnedKoi, koiRockUrl, contentType } = nft
 
   const [isCopied, setIsCopied] = useState(false)
 
@@ -36,7 +37,7 @@ export default ({ nft }) => {
           )}
         </div>
         <Link className='nft-name' to={`/details/${txId}`}>
-          {name}
+          {stringTruncate(name, 20)}
         </Link>
 
         <div className='nft-view'>{views} Views </div>

@@ -13,7 +13,7 @@ import {
   setChromeStorage, 
   getTotalRewardKoi, 
   checkAffiliateInviteSpent } from 'utils'
-import { MESSAGES, STORAGE, PORTS } from 'koiConstants'
+import { MESSAGES, STORAGE, PORTS, MOCK_COLLECTIONS_STORE } from 'koiConstants'
 import { CreateEventHandler } from 'popup/actions/backgroundConnect'
 
 import './index.css'
@@ -31,6 +31,8 @@ import Welcome from 'options/modal/welcomeScreen'
 
 import { getShareUrl, createShareWindow } from 'options/helpers'
 import { koi } from 'background'
+
+import { getNftsDataForCollections } from 'options/utils'
 
 const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
 
@@ -59,6 +61,7 @@ export default ({ children }) => {
   const [page, setPage] = useState(0)
 
   const [demoCollections, setDemoCollections] = useState([])
+  const [collections, setCollections] = useState([])
   
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
@@ -75,8 +78,15 @@ export default ({ children }) => {
           STORAGE.KOI_ADDRESS,
           STORAGE.AR_BALANCE,
           STORAGE.AFFILIATE_CODE,
-          STORAGE.SHOW_WELCOME_SCREEN
+          STORAGE.SHOW_WELCOME_SCREEN,
+          STORAGE.MOCK_COLLECTIONS_STORE
         ])
+        if (storage[MOCK_COLLECTIONS_STORE]) {
+          let collections = storage[MOCK_COLLECTIONS_STORE]
+          collections = await Promise.all(collections.map(collection => getNftsDataForCollections(collection))) 
+          setCollections(collections)
+        } 
+
         if (!storage[STORAGE.SHOW_WELCOME_SCREEN]) {
           setShowWelcome(true)
           setChromeStorage({ [STORAGE.SHOW_WELCOME_SCREEN]: 1 })
@@ -163,11 +173,11 @@ export default ({ children }) => {
     []
   )
 
-  useEffect(() => {
-    if (isDragging && headerRef.current !== showCreateCollection) {
-      headerRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [isDragging])
+  // useEffect(() => {
+  //   if (isDragging && headerRef.current !== showCreateCollection) {
+  //     headerRef.current.scrollIntoView({ behavior: 'smooth' })
+  //   }
+  // }, [isDragging])
 
   useEffect(() => {
     if (error) {
@@ -237,7 +247,9 @@ export default ({ children }) => {
         page,
         setPage,
         demoCollections,
-        setDemoCollections
+        setDemoCollections,
+        collections,
+        setCollections
       }}
     >
       <div
