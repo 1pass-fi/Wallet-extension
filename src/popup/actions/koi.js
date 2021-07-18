@@ -24,18 +24,20 @@ import { koi } from 'background'
 import moment from 'moment'
 import { backgroundRequest } from 'popup/backgroundRequest'
 
-export const getBalances = () => (dispatch) => {
+import storage from 'storage'
+
+export const getBalances = () => async (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
     try {
       const { koiData } = response.data
-
+      console.log(koiData)
       // reduce balances by pending transaction expenses
-      const storage = await getChromeStorage(STORAGE.PENDING_TRANSACTION)
-      const pendingTransaction = storage[STORAGE.PENDING_TRANSACTION] || []
-      pendingTransaction.forEach((transaction) => {
+      const pendingTransactions = await storage.arweaveWallet.get.pendingTransactions() || []
+      console.log('pendingTransactions: ', pendingTransactions)
+      pendingTransactions.forEach((transaction) => {
         if (isNumber(transaction.expense)) {
           switch (transaction.activityName) {
-            case 'Sent KOI':
+            case 'Sent KOII':
               koiData.koiBalance -= transaction.expense
               break
             case 'Sent AR':
@@ -168,13 +170,13 @@ export const loadActivities = (cursor) => async (dispatch) => {
       nextOwnedCursor: ownedCursor, 
       nextRecipientCursor: recipientCursor } = await backgroundRequest.activities.loadActivities({ cursor })
 
-    let pendingTransactions = (await utils.getChromeStorage(STORAGE.PENDING_TRANSACTION))[STORAGE.PENDING_TRANSACTION] || []
+    let pendingTransactions = await storage.arweaveWallet.get.pendingTransactions() || []
     
-    // filtering accepted pending transactions
+    // filtering accpected pending transactions
     pendingTransactions = pendingTransactions.filter(tx => {
       return activitiesList.every(activity => activity.id !== tx.id)
     })
-    await utils.setChromeStorage({ pendingTransactions })
+    await storage.arweaveWallet.set.pendingTransactions(pendingTransactions)
     dispatch(setTransactions(pendingTransactions))
 
     // set new cursor for next request
@@ -189,13 +191,11 @@ export const loadActivities = (cursor) => async (dispatch) => {
 
 export const makeTransfer = (qty, target, currency) => async (dispatch) => {
   try {
-    if (currency == 'KOII') currency = 'KOI'
+    if (currency == 'KOII') currency = 'KOI' // On the SDK the name of token KOII has not been updated. (still KOI) 
     const { txId } = await backgroundRequest.wallet.makeTransfer({qty, target, currency})
 
-    const storage = await getChromeStorage(STORAGE.PENDING_TRANSACTION)
-
     // Add new pending transaction
-    const pendingTransactions = storage[STORAGE.PENDING_TRANSACTION] || []
+    const pendingTransactions = await storage.arweaveWallet.get.pendingTransactions() || []
     const newTransaction = {
       id: txId,
       activityName: (currency === 'KOI' ? 'Sent KOII' : 'Sent AR'),
@@ -205,7 +205,8 @@ export const makeTransfer = (qty, target, currency) => async (dispatch) => {
       source: target
     }
     pendingTransactions.unshift(newTransaction)
-    await setChromeStorage({ pendingTransactions })
+    // save pending transactions
+    await storage.arweaveWallet.set.pendingTransactions(pendingTransactions)
     dispatch(setTransactions(pendingTransactions))
 
     console.log('TRANSACTION ID', txId)

@@ -24,10 +24,12 @@ import { setPrice } from 'actions/price'
 import { setKoi, getBalances } from 'actions/koi'
 import { setCurrency } from 'actions/currency'
 
-import { HEADER_EXCLUDE_PATH, STORAGE, REQUEST, PATH, DISCONNECTED_BACKGROUND } from 'koiConstants'
+import { HEADER_EXCLUDE_PATH, REQUEST, DISCONNECTED_BACKGROUND } from 'koiConstants'
 
-import { getChromeStorage, setChromeStorage } from 'utils'
+
 import axios from 'axios'
+
+import storage from 'storage'
 
 const ContinueLoading = () => (
   <div className='continue-loading'>
@@ -63,77 +65,90 @@ const Popup = ({
 
   const [needToReconnect, setNeedToReconnect] = useState(false)
 
-  useEffect(() => {
-    async function getKoiData() {
-      try {
-        const { KOI_ADDRESS, KOI_KEY, PENDING_REQUEST } = STORAGE
-        const storage = await getChromeStorage([KOI_ADDRESS, KOI_KEY, PENDING_REQUEST])
-        const query = window.location.search
-        getBalances()
-        if (storage[KOI_ADDRESS]) {
-          // Koi Address in local storage
-          setKoi({ address: storage[KOI_ADDRESS] })
-          getBalances()
-          switch (get(storage[PENDING_REQUEST], 'type')) {
-            case REQUEST.PERMISSION:
-              history.push('/account/connect-site')
-              break
-            case REQUEST.TRANSACTION:
-              history.push('/account/sign-transaction')
-              break
-            default:
-              history.push('/account')
-          }
-        } else {
-          // Koi Address not in local storage
-          if (storage[KOI_KEY]) {
-            history.push('/account/login')
-          } else if (query.includes('create-wallet')) {
-            history.push('/account/create')
-          } else if (query.includes('upload-json')) {
-            history.push('/account/import/keyfile')
-          } else if (query.includes('upload-seedphrase')) {
-            history.push('/account/import/phrase')
-          } else {
-            history.push('/account/welcome')
-          }
-        }
-      } catch (err) {
-        console.log(err.message)
-        if (err.message === DISCONNECTED_BACKGROUND) {
-          setNeedToReconnect(true)
-        } else {
-          setError(err.message)
-        }
-        setIsLoading(false)
-      }
-    }
-    getKoiData()
-  }, [])
+  const loadApp = async () => {
+    /* 
+      Load data for redirecting
+        - Address
+        - Key
+        - Pending Request
+    */
 
-  useEffect(() => {
-    const loadPrice = async () => {
-      try {
-        chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] })
-        const storage = await getChromeStorage([STORAGE.PRICE, STORAGE.CURRENCY])
-        const { AR } = storage[STORAGE.PRICE] || { AR: 1 }
-        setPrice({ AR })
-        const currency = storage[STORAGE.CURRENCY] || 'USD'
-        setCurrency(currency)
-        const { data } = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=${currency}`)
-        console.log('currency: ', currency)
-        console.log('price', data)
-        const arPrice = get(data, `arweave.${currency.toLowerCase()}`)
-        if (isNumber(arPrice)) {
-          await setPrice({ AR: arPrice })
-          const price =  { AR: arPrice, KOI: 1 }
-          await setChromeStorage({ [STORAGE.PRICE]: price })
+    const address = await storage.arweaveWallet.get.address()
+    const key = await storage.arweaveWallet.get.key()
+    const pendingRequest = await storage.generic.get.pendingRequest()
+
+    console.log('address: ', address)
+    console.log('key: ', key)
+    console.log('pendingRequest: ', pendingRequest)
+    const query = window.location.search // later we should refactor using react-hash-router
+    try {
+      if (address) {
+        setKoi({ address })
+        getBalances()
+        switch (get(pendingRequest, 'type')) {
+          case REQUEST.PERMISSION:
+            history.push('/account/connect-site')
+            break
+          case REQUEST.TRANSACTION:
+            history.push('/account/sign-transaction')
+            break
+          default:
+            history.push('/account')
         }
-      } catch(err) {
+      } else {
+        // Koi Address not in local storage -> cannot get data of balances, assets, activities
+        if (key) {
+          history.push('/account/login')
+        } else if (query.includes('create-wallet')) {
+          history.push('/account/create')
+        } else if (query.includes('upload-json')) {
+          history.push('/account/import/keyfile')
+        } else if (query.includes('upload-seedphrase')) {
+          history.push('/account/import/phrase')
+        } else {
+          history.push('/account/welcome')
+        }
+      }
+    } catch (err) {
+      console.log(err.message)
+      if (err.message === DISCONNECTED_BACKGROUND) {
+        setNeedToReconnect(true)
+      } else {
         setError(err.message)
       }
+      setIsLoading(false)
     }
+  }
 
+  const loadPrice = async () => {
+    try {
+      const price = await storage.arweaveWallet.get.price()
+      let selectedCurrency = await storage.generic.get.selectedCurrency() || 'USD'
+
+      console.log('Selected Currency: ', selectedCurrency)
+
+      const AR = price || 1
+
+      setPrice({ AR })
+      setCurrency(selectedCurrency)
+
+      const { data: responseData } = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=${selectedCurrency}`)
+      console.log('currency: ', selectedCurrency)
+      console.log('price', responseData)
+
+      const arPrice = get(responseData, `arweave.${selectedCurrency.toLowerCase()}`)
+
+      if (isNumber(arPrice)) {
+        await setPrice({ AR: arPrice })
+        await storage.arweaveWallet.set.price(arPrice)
+      }
+    } catch(err) {
+      setError(err.message)
+    }
+  }
+
+  useEffect(() => {
+    loadApp()
     loadPrice()
   }, [])
 

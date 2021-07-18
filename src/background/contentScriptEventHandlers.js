@@ -1,6 +1,8 @@
 import { REQUEST, MESSAGES, STORAGE, OS, WINDOW_SIZE } from 'koiConstants'
-import { checkSitePermission, setChromeStorage, removeChromeStorage, getChromeStorage } from 'utils'
+import { setChromeStorage, removeChromeStorage, getChromeStorage } from 'utils'
 import { getSelectedTab, createWindow } from 'utils/extension'
+
+import storage from 'storage'
 
 let pendingMessages = {}
 
@@ -27,13 +29,13 @@ export default async (koi, port, message, ports, resolveId) => {
 
   const checkCurrentTabPermission = async () => {
     const tab = await getCurrentTab()
-    const hadPermission = await checkSitePermission(tab.origin)
+    const hadPermission = await storage.generic.method.checkSitePermission(tab.origin)
     return { ...tab, hadPermission }
   }
 
   const checkPendingRequest = async () => {
-    const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
-    if (storage[STORAGE.PENDING_REQUEST]) return true
+    const pendingRequest = await storage.generic.get.pendingRequest()
+    if (pendingRequest) return true
     return false
   }
 
@@ -203,17 +205,15 @@ export default async (koi, port, message, ports, resolveId) => {
               {
                 beforeCreate: async () => {
                   chrome.browserAction.setBadgeText({ text: '1' })
-                  await setChromeStorage({
-                    'pendingRequest': {
-                      type: REQUEST.PERMISSION,
-                      data: { origin, favicon }
-                    }
+                  await storage.generic.set.pendingRequest({
+                    type: REQUEST.PERMISSION,
+                    data: { origin, favicon }
                   })
                 },
                 afterClose: async () => {
                   chrome.browserAction.setBadgeText({ text: '' })
                   port.postMessage(onClosedMessage)
-                  await removeChromeStorage('pendingRequest')
+                  await storage.generic.remove.pendingRequest()
                 },
               }
             )
@@ -368,10 +368,9 @@ export default async (koi, port, message, ports, resolveId) => {
         }
 
         case MESSAGES.KOI_DISCONNECT: {
-          const storage = await getChromeStorage(STORAGE.SITE_PERMISSION)
-          let approvedSite = storage[STORAGE.SITE_PERMISSION] || []
+          let approvedSite = await storage.generic.get.connectedSites() || []
           if (hadPermission) approvedSite = approvedSite.filter(site => site !== origin)
-          await setChromeStorage({ 'sitePermission': approvedSite })
+          await storage.generic.set.connectedSite(approvedSite)
           port.postMessage({
             type: MESSAGES.KOI_DISCONNECT_SUCCESS,
             data: { status: 200, data: 'Disconnected.' },

@@ -14,11 +14,12 @@ import SelectWallet from './selectWallet'
 import { setError } from 'actions/error'
 import { connectSite } from 'actions/koi'
 
-import { getChromeStorage, removeChromeStorage, saveOriginToChrome } from 'utils'
+import { getChromeStorage, removeChromeStorage } from 'utils'
 
 import { STORAGE, REQUEST, ERROR_MESSAGE } from 'koiConstants'
 
 import './index.css'
+import storage from 'storage'
 
 export const ConnectToWallet = ({ setError, connectSite, accountName }) => {
   const [checkedList, setCheckedList] = useState([])
@@ -68,13 +69,14 @@ export const ConnectToWallet = ({ setError, connectSite, accountName }) => {
   const handleOnClick = async (accept) => {
     try {
       if (accept) {
-        if (!(await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
+        if (!(await storage.generic.get.pendingRequest())) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
         console.log('ORIGIN POPUP', origin)
         connectSite({ origin, confirm: true })
-        removeChromeStorage(STORAGE.PENDING_REQUEST)
+        await storage.generic.remove.pendingRequest()
       } else {
+        // action koi
         connectSite({ origin, confirm: false })
-        removeChromeStorage(STORAGE.PENDING_REQUEST)
+        await storage.generic.remove.pendingRequest()
         window.close()
       }
     } catch (err) {
@@ -84,8 +86,8 @@ export const ConnectToWallet = ({ setError, connectSite, accountName }) => {
 
   useEffect(() => {
     const loadRequest = async () => {
-      const request = (await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]
-      const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[STORAGE.KOI_ADDRESS]
+      const request = await storage.generic.get.pendingRequest()
+      const address = await storage.arweaveWallet.get.address()
       setAddress(address)
       const requestOrigin = get(request, 'data.origin')
       const requestFavicon = get(request, 'data.favicon')

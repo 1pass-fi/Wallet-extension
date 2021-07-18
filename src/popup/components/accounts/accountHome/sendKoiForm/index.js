@@ -60,6 +60,8 @@ const SendKoiForm = ({
 
   const handleSubmitForm = (e) => {
     e.preventDefault()
+
+    // validations
     try {
       if (!(address.trim().length > 0 && amount.trim().length > 0)) {
         setError(ERROR_MESSAGE.EMPTY_FIELDS)

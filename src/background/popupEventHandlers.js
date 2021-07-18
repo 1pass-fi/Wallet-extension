@@ -1,6 +1,7 @@
 import passworder from 'browser-passworder'
 import { isArray, isString, isEmpty } from 'lodash'
 import Arweave from 'arweave'
+import storage from 'storage'
 
 const arweave = Arweave.init({
   host: 'arweave.net',
@@ -21,7 +22,6 @@ import {
   getChromeStorage,
   generateWallet,
   transfer,
-  saveOriginToChrome,
   signTransaction,
   getBalances,
   exportNFTNew,
@@ -30,9 +30,8 @@ import {
 } from 'utils'
 
 export const loadBalances = async (koi, port) => {
-  const storage = await getChromeStorage([STORAGE.KOI_BALANCE, STORAGE.AR_BALANCE])
-  const koiBalance = storage[STORAGE.KOI_BALANCE]
-  const arBalance = storage[STORAGE.AR_BALANCE]
+  const koiBalance = await storage.generic.get.koiBalance()
+  const arBalance = await storage.arweaveWallet.get.balance()
   if (koiBalance !== null && arBalance !== null) {
     if (port) {
       try {
@@ -69,16 +68,29 @@ export default async (koi, port, message, ports, resolveId) => {
         try {
           const { key, password } = message.data
           const koiData = await utils.loadWallet(koi, key, LOAD_KOI_BY.KEY)
+          
+          // save wallet for new storage object
+          await storage.arweaveWallet.method.saveWallet(password, koi)
+
           await saveWalletToChrome(koi, password)
 
+          // key is seedphrase
           if (isString(key)) {
             const encryptedPhrase = await passworder.encrypt(password, key)
             await setChromeStorage({ 'koiPhrase': encryptedPhrase })
+            // save seed phrase for new storage object
+            await storage.arweaveWallet.set.seedPhrase(encryptedPhrase)
           }
 
-          await removeChromeStorage(STORAGE.SITE_PERMISSION)
           await removeChromeStorage(STORAGE.CONTENT_LIST)
           await removeChromeStorage(STORAGE.ACTIVITIES_LIST)
+
+          // remove from new storage object
+          await storage.arweaveWallet.remove.activities()
+          await storage.arweaveWallet.remove.assets()
+          await storage.generic.remove.connectedSites()
+          
+
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,
             data: { koiData }
@@ -121,7 +133,7 @@ export default async (koi, port, message, ports, resolveId) => {
       }
       case MESSAGES.LOCK_WALLET: {
         try {
-          await removeChromeStorage(STORAGE.KOI_ADDRESS)
+          await storage.arweaveWallet.remove.address()
           koi.address = null
           koi.wallet = null
   
@@ -149,7 +161,7 @@ export default async (koi, port, message, ports, resolveId) => {
 
           // throw error if password is incorrect
           try {
-            walletKey = await decryptWalletKeyFromChrome(password)
+            walletKey = await storage.arweaveWallet.method.decryptWalletKey(password)
           } catch (err) {
             port.postMessage({
               type: MESSAGES.UNLOCK_WALLET,
@@ -158,7 +170,10 @@ export default async (koi, port, message, ports, resolveId) => {
           }
 
           const koiData = await utils.loadWallet(koi, walletKey, LOAD_KOI_BY.KEY)
-          await setChromeStorage({ [STORAGE.KOI_ADDRESS]: koi.address })
+          
+          // set address to storage -> unlock
+          await storage.arweaveWallet.set.address(koi.address)
+
           port.postMessage({
             type: MESSAGES.UNLOCK_WALLET,
             data: { koiData }
@@ -220,7 +235,7 @@ export default async (koi, port, message, ports, resolveId) => {
           if (isArray(contentList)) {
             contentList = contentList.filter(content => !!content.name) // remove failed loaded nfts
             console.log('CONTENT LIST: ', contentList)
-            setChromeStorage({ contentList })
+            await storage.arweaveWallet.set.assets(contentList)
           }
 
           port.postMessage({
@@ -241,7 +256,6 @@ export default async (koi, port, message, ports, resolveId) => {
           const { cursor } = message.data
           const { activitiesList, nextOwnedCursor, nextRecipientCursor } = await loadMyActivities(koi, cursor)
           console.log('ACTIVITIES LIST', activitiesList)
-          setChromeStorage({ activitiesList })
           port.postMessage({
             type: MESSAGES.LOAD_ACTIVITIES,
             data: { activitiesList, nextOwnedCursor, nextRecipientCursor }
@@ -306,7 +320,7 @@ export default async (koi, port, message, ports, resolveId) => {
         const { origin, confirm } = message.data
         const { permissionId } = resolveId
         if (confirm) {
-          await saveOriginToChrome(origin)
+          await storage.generic.method.addSite(origin)
           chrome.browserAction.setBadgeText({ text: '' })
           ports[PORTS.CONTENT_SCRIPT].postMessage({
             type: MESSAGES.KOI_CONNECT_SUCCESS,

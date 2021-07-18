@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { REQUEST, STORAGE, ERROR_MESSAGE } from 'koiConstants'
-import { setChromeStorage, checkSitePermission } from 'utils'
+import { setChromeStorage } from 'utils'
 import { getSelectedTab } from 'utils/extension'
 import { setError } from 'popup/actions/error'
 import Modal from 'popup/components/shared/modal'
@@ -12,6 +12,8 @@ import ConnectedSiteRow from './connectedSiteRow'
 import PlusIcon from 'img/plus-icon.svg'
 
 import './index.css'
+
+import storage from 'storage'
 
 const propTypes = {
   sites: PropTypes.array,
@@ -37,12 +39,10 @@ const ManualConnectSite = ({ isGreyBackground, setError }) => {
       const origin = (new URL(tab.url)).origin
       const favicon = tab.favIconUrl
 
-      if (!(await checkSitePermission(origin))) {
-        await setChromeStorage({
-          [STORAGE.PENDING_REQUEST]: {
-            type: REQUEST.PERMISSION,
-            data: { origin, favicon }
-          }
+      if (!(await storage.generic.method.checkSitePermission(origin))) {
+        await storage.generic.set.pendingRequest({
+          type: REQUEST.PERMISSION,
+          data: { origin, favicon }
         })
         history.push('/account/connect-site')
       } else {

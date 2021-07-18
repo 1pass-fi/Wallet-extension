@@ -4,13 +4,14 @@ import getSymbolFromCurrency from 'currency-symbol-map'
 import { isEmpty, get } from 'lodash'
 
 import { getChromeStorage, setChromeStorage } from 'utils'
-import {  } from 'utils/extension'
 import { STORAGE, OS } from 'koiConstants'
 import { GalleryContext } from 'options/galleryContext'
 
 import AccountOrder from './AccountOrder'
 import './index.css'
 import axios from 'axios'
+
+import storage from 'storage'
 
 // const mockAccount = [
 //   {
@@ -79,6 +80,8 @@ export default () => {
       } else {
         setCurrency(currency)
         await setChromeStorage({ [STORAGE.CURRENCY]: currency })
+        // set value for new storage object
+        await storage.generic.set.selectedCurrency(currency)
         setNotification(`Succesfully set currency to ${currency}.`)
       }
     } catch (err) {

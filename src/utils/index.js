@@ -8,6 +8,7 @@ import Arweave from 'arweave'
 import axios from 'axios'
 
 import { koi } from 'background'
+import storage from 'storage'
 
 /* istanbul ignore next */
 const arweave = Arweave.init({ host: 'arweave.net', protocol: 'https', port: 443, })
@@ -52,7 +53,10 @@ export const clearChromeStorage = (key) => {
 export const getBalances = async (koiObj) => {
   const [arBalance, koiBalance] = await Promise.all([koiObj.getWalletBalance(), koiObj.getKoiBalance()])  
   koiObj.balance = arBalance  
-  await setChromeStorage({ [STORAGE.KOI_BALANCE]: koiBalance, [STORAGE.AR_BALANCE]: koiObj['balance'] })
+
+  await storage.arweaveWallet.set.balance(koiObj['balance'])
+  await storage.generic.set.koiBalance(koiBalance)
+
   return {
     arBalance: koiObj.balance,
     koiBalance: koiBalance
@@ -94,8 +98,7 @@ export const loadMyContent = async (koiObj) => {
     console.log({ allContent })
     const myContent = (allContent.filter(content => get(content[Object.keys(content)[0]], 'owner') === koiObj.address)).map(content => Object.keys(content)[0])
     console.log({ myContent })
-    const storage = await getChromeStorage(STORAGE.CONTENT_LIST)
-    const contentList = storage[STORAGE.CONTENT_LIST] || []
+    const contentList = await storage.arweaveWallet.get.assets() || []
     if (myContent.length === contentList.length) return ALL_NFT_LOADED
     return Promise.all(myContent.map(async contentId => {
       try {
@@ -323,7 +326,7 @@ export const removeWalletFromChrome = async () => {
     await Promise.all(Object.keys(STORAGE).map(key => removeChromeStorage(key)))
   } catch (err) {
     throw new Error(err.message)
-  }
+  } 
 }
 
 /* istanbul ignore next */
@@ -337,41 +340,41 @@ export const JSONFileToObject = async (file) => {
 }
 
 /* istanbul ignore next */
-export const checkSitePermission = async (origin) => {
-  try {
-    let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
-    if (!approvedOrigin) approvedOrigin = []
-    return approvedOrigin.includes(origin)
-  } catch (err) {
-    throw new Error(err.message)
-  }
-}
+// export const checkSitePermission = async (origin) => {
+//   try {
+//     let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
+//     if (!approvedOrigin) approvedOrigin = []
+//     return approvedOrigin.includes(origin)
+//   } catch (err) {
+//     throw new Error(err.message)
+//   }
+// }
 
 /* istanbul ignore next */
-export const saveOriginToChrome = async (origin) => {
-  try {
-    let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
-    if (!approvedOrigin) approvedOrigin = []
-    approvedOrigin.push(origin)
-    await setChromeStorage({ 'sitePermission': approvedOrigin })
-  } catch (err) {
-    console.log(err.message)
-    throw new Error(err.message)
-  }
-}
+// export const saveOriginToChrome = async (origin) => {
+//   try {
+//     let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
+//     if (!approvedOrigin) approvedOrigin = []
+//     approvedOrigin.push(origin)
+//     await setChromeStorage({ 'sitePermission': approvedOrigin })
+//   } catch (err) {
+//     console.log(err.message)
+//     throw new Error(err.message)
+//   }
+// }
 
 /* istanbul ignore next */
-export const deleteOriginFromChrome = async (aOrigin) => {
-  try {
-    let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
-    if (!approvedOrigin) approvedOrigin = []
-    approvedOrigin = approvedOrigin.filter(origin => origin !== aOrigin)
-    await setChromeStorage({ 'sitePermission': approvedOrigin })
-  } catch (err) {
-    console.log(err.message)
-    throw new Error(err.message)
-  }
-}
+// export const deleteOriginFromChrome = async (aOrigin) => {
+//   try {
+//     let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
+//     if (!approvedOrigin) approvedOrigin = []
+//     approvedOrigin = approvedOrigin.filter(origin => origin !== aOrigin)
+//     await setChromeStorage({ 'sitePermission': approvedOrigin })
+//   } catch (err) {
+//     console.log(err.message)
+//     throw new Error(err.message)
+//   }
+// }
 
 /* istanbul ignore next */
 export const signTransaction = async (koiObj, transaction) => {
@@ -416,12 +419,12 @@ export const transactionAmountFormat = (num) => {
 }
 
 export const getAccountName = async ()  => {
-  const name = (await getChromeStorage(STORAGE.ACCOUNT_NAME))[STORAGE.ACCOUNT_NAME]
+  const name = await storage.generic.get.accountName()
   return name
 }
 
 export const updateAccountName = async (name) => {
-  await setChromeStorage({ [STORAGE.ACCOUNT_NAME] : name})
+  await storage.generic.set.accountName(name)
   return name
 }
 

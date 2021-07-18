@@ -12,6 +12,7 @@ import Button from 'shared/button'
 import { STORAGE } from 'koiConstants'
 
 import './index.css'
+import storage from 'storage'
 
 const propTypes = {
   activities: PropTypes.array,
@@ -63,14 +64,11 @@ const Activity = ({
 }) => {
   useEffect(() => {
     async function handleLoadActivities() {
-      const storage = await getChromeStorage([
-        STORAGE.KOI_ADDRESS,
-        STORAGE.PENDING_TRANSACTION,
-      ])
-      const listPendingTransaction = storage[STORAGE.PENDING_TRANSACTION] || []
+      const listPendingTransaction = await storage.arweaveWallet.get.pendingTransactions() || []
+      const address = await storage.arweaveWallet.get.address()
       setTransactions(listPendingTransaction)
       
-      if (storage[STORAGE.KOI_ADDRESS]) {
+      if (address) {
         await loadActivities(cursor)
       }
     }

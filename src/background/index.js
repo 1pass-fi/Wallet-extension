@@ -4,6 +4,7 @@ import { PORTS, LOAD_BALANCES_TIME_INTERVAL, OS } from 'koiConstants'
 import popUpEventHandlers, { loadBalances } from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from '@_koi/sdk/web'
+import storage from 'storage'
 // import { Web } from './koiMock'
 
 /* eslint-disable no-undef */
@@ -56,7 +57,8 @@ if (chrome.runtime.onInstalled) {
     chrome.runtime.getPlatformInfo((info) => {
       window.localStorage.setItem(OS, info.os)
     })
-    chrome.storage.local.remove('koiAddress')
+    chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] })
+    storage.arweaveWallet.remove.address()
     chrome.runtime.onConnect.addListener(cb)
   })
 
@@ -64,6 +66,7 @@ if (chrome.runtime.onInstalled) {
     chrome.runtime.getPlatformInfo((info) => {
       window.localStorage.setItem(OS, info.os)
     })
+    chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] })
     chrome.runtime.onConnect.addListener(cb)
   })
 }

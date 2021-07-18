@@ -22,10 +22,12 @@ import EditAccountNameModal from 'popup/components/modals/editAccountNameModal'
 import { removeWallet, getKeyFile } from 'actions/koi'
 import { setNotification } from 'actions/notification'
 import { setAccountName } from 'actions/accountName'
-import { getChromeStorage, deleteOriginFromChrome, numberFormat, fiatCurrencyFormat, getAccountName, updateAccountName } from 'utils'
+import { numberFormat, fiatCurrencyFormat, getAccountName, updateAccountName } from 'utils'
 import { STORAGE, NOTIFICATION, RATE, PATH } from 'koiConstants'
 import ExportPrivateKeyModal from './exportPrivateKeyModal'
 import { setIsLoading } from 'popup/actions/loading'
+
+import storage from 'storage'
 
 const WalletInfo = (({
   accountName,
@@ -185,19 +187,14 @@ export const Wallet = ({
   } 
 
   const handleDeleteSite = async (site) => {
-    await deleteOriginFromChrome(site)
-    const connectedSite = (await getChromeStorage(STORAGE.SITE_PERMISSION))[
-      STORAGE.SITE_PERMISSION
-    ]
+    await storage.generic.method.deleteSite(site)
+    const connectedSite = await storage.generic.get.connectedSites() || []
     setConnectedSite(connectedSite)
   }
 
   useEffect(() => {
     const getConnectedSite = async () => {
-      let connectedSite = (await getChromeStorage(STORAGE.SITE_PERMISSION))[
-        STORAGE.SITE_PERMISSION
-      ]
-      if (!connectedSite) connectedSite = []
+      const connectedSite = await storage.generic.get.connectedSites() || []
       setConnectedSite(connectedSite)
     }
 

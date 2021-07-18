@@ -11,15 +11,17 @@ import AssetList from './AssetList'
 import { setContLoading } from 'actions/continueLoading'
 import { setError } from 'popup/actions/error'
 import { setNotification } from 'popup/actions/notification'
+import storage from 'storage'
 
 const Assets = ({ assets, setAssets, loadContent, isContLoading, setContLoading, setError, setNotification }) => {
   useEffect(() => {
     async function handleLoadContent() {
-      const storage = await getChromeStorage([STORAGE.CONTENT_LIST, STORAGE.KOI_ADDRESS])
-      if (storage[STORAGE.CONTENT_LIST]) {
-        setAssets(storage[STORAGE.CONTENT_LIST])
+      const contentList = await storage.arweaveWallet.get.assets()
+      const address = await storage.arweaveWallet.get.address()
+      if (contentList) {
+        setAssets(contentList)
       }
-      if (storage[STORAGE.KOI_ADDRESS] && !isContLoading) {
+      if (address && !isContLoading) {
         try {
           setContLoading(true)
           const allNftLoaded = await loadContent()
