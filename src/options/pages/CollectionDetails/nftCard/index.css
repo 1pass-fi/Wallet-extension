@@ -84,12 +84,12 @@
 
 .nft-simple-card .copy-noti {
   color: #ffc78f;
-  font-size: 16px;
+  font-size: 13px;
   height: 30px;
   line-height: 16px;
   position: absolute;
-  right: -90px;
-  top: 255px;
+  right: -65px;
+  top: 270px;
   white-space: nowrap;
   width: 80px;
 }

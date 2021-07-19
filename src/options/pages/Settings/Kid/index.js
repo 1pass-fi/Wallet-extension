@@ -15,7 +15,7 @@ import { GalleryContext } from 'options/galleryContext'
 import { backgroundRequest } from 'popup/backgroundRequest'
 import { loadNFTCost } from 'utils'
 
-import { ERROR_MESSAGE } from 'koiConstants'
+import { ERROR_MESSAGE, NOTIFICATION } from 'koiConstants'
 
 import { koi } from 'background'
 import { STORAGE } from 'koiConstants'
@@ -61,21 +61,24 @@ export default () => {
       }
   
       const hadKID = await hadKIDCheck()
+
+      /* 
+        For now we don't have a way to update KID with an image, therefore selecting image will be disabled
+        on KID updating. 
+      */
+      
       if (hadKID) {
-        if (totalAr < 0.0002) {
+        if (totalAr < 0.000002) {
           throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
         }
   
         if (totalKoi < 1) {
           throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
         }
-  
-        if (profileImage.size > 0.5 * 1024**2) {
-          throw new Error('File too large. The maximum size for Profile Picture is 500KB')
-        }
+
         const txId = await backgroundRequest.gallery.updateKID({kidInfo, contractId: hadKID})
         console.log('KID transaction id: ', txId)
-        setNotification('Update KID success. It may take a while until you can get your data updated.')
+        setNotification(NOTIFICATION.UPDATE_KID_SUCCESS)
       } else {
         if (!get(profileImage, 'type') && !arweaveImage) {
           throw new Error('Please select an image.')
@@ -94,14 +97,14 @@ export default () => {
         }
   
         if (profileImage.size > 0.5 * 1024**2) {
-          throw new Error('File too large. The maximum size for Profile Picture is 500KB')
+          throw new Error(ERROR_MESSAGE.KID_FILE_TOO_LARGE)
         }
   
         await saveImageDataToStorage(profileImage)
     
         const txId = await backgroundRequest.gallery.createNewKID({ kidInfo, fileType })
         console.log('KID transaction id: ', txId)
-        setNotification('Create KID success. It may take a while until you can get your data updated.')
+        setNotification(NOTIFICATION.CREATE_KID_SUCCESS)
       }
       setIsLoading(false)
     } catch (err) {

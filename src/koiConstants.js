@@ -161,7 +161,9 @@ export const ERROR_MESSAGE = {
   NOT_ENOUGH_AR: `You don't have enough AR.`,
   FILE_TOO_LARGE: 'File too large. The maximum size for NFT is 15MB',
   CANNOT_GET_COSTS: 'Cannot get the upload costs.',
-  INVALID_FRIEND_CODE: `That code isn't quite right. Check it and try again.`
+  INVALID_FRIEND_CODE: `That code isn't quite right. Check it and try again.`,
+  COLLECTION_NFT_EMPTY: 'A collection has to contain at least one NFT.',
+  KID_FILE_TOO_LARGE: 'File too large. The maximum size for Profile Picture is 500KB'
 }
 
 export const STORAGE = {
@@ -202,7 +204,10 @@ export const NOTIFICATION = {
   KEY_EXPORTED: 'Private key downloaded.',
   ACCOUNT_NAME_UPDATED: 'Account name updated.',
   NFT_LOADED: 'Your assets list is up to date.',
-  TRANSACTION_SENT: 'Transaction sent.'
+  TRANSACTION_SENT: 'Transaction sent.',
+  CREATE_COLLECTION_SUCCESS: 'Collection created successfully. It may take a while until you can get your data updated.',
+  CREATE_KID_SUCCESS: 'Created KID successfully. It may take a while until you can get your data updated.',
+  UPDATE_KID_SUCCESS: 'Updated KID successfully. It may take a while until you can get your data updated.'
 }
 
 export const WARNING_MESSAGE = {
