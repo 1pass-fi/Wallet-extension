@@ -43,9 +43,10 @@ export default ({ isExpand }) => {
           className={`item ${
             pathname == '/settings/customization' ? 'active' : ''
           }`}
-          to='/settings/customization'
+          to='#'
         >
-          Customization
+          <div>Customization</div>
+          <div className='coming-soon'>coming soon!</div>
         </Link>
         <Link
           className={`item ${pathname == '/settings/about' ? 'active' : ''}`}
