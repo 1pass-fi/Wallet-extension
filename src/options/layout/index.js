@@ -62,6 +62,7 @@ export default ({ children }) => {
   const [page, setPage] = useState(0)
   const [showViews, setShowViews] = useState(true)
   const [showEarnedKoi, setShowEarnedKoi] = useState(true)
+  const [accountName, setAccountName] = useState('')
 
   const [demoCollections, setDemoCollections] = useState([])
   const [collections, setCollections] = useState([])
@@ -83,6 +84,7 @@ export default ({ children }) => {
           STORAGE.AFFILIATE_CODE,
           STORAGE.SHOW_WELCOME_SCREEN,
           STORAGE.MOCK_COLLECTIONS_STORE,
+          STORAGE.ACCOUNT_NAME
         ])
 
         const gallerySetting = await getChromeStorage([
@@ -123,6 +125,9 @@ export default ({ children }) => {
           backgroundConnect.postMessage({
             type: MESSAGES.GET_WALLET,
           })
+        }
+        if (storage[STORAGE.ACCOUNT_NAME]) {
+          setAccountName(storage[STORAGE.ACCOUNT_NAME])
         }
       } catch (err) {
         console.log(err.message)
@@ -261,10 +266,11 @@ export default ({ children }) => {
         showViews,
         showEarnedKoi,
         setShowViews,
-        setShowEarnedKoi
+        setShowEarnedKoi,
+        accountName
       }}
     >
-      <div
+      {address ? <div
         {...getRootProps({ className: 'app dropzone' })}
         onDragOver={() => modifyDraging(true)}
         onDragLeave={() => modifyDraging(false)}
@@ -310,7 +316,7 @@ export default ({ children }) => {
         {children}
         <Footer showDropzone={showDropzone} />
         <Navbar />
-      </div>
+      </div> : <div className='app no-wallet'></div>}
     </GalleryContext.Provider>
   )
 }

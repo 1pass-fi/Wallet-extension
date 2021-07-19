@@ -3,3 +3,12 @@
   background: linear-gradient(90deg, #030332 0%, #171753 100%);
   min-height: 100vh;
 }
+
+.app.no-wallet {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 40px;
+  color: #ffffff;
+}

@@ -47,11 +47,12 @@
 
 .collection-details .description {
   margin: 53px 0;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 32px;
   max-width: 772px;
   height: 150px;
   overflow-y: overlay;
+  padding-right: 10px
 }
 
 .collection-details .cards {

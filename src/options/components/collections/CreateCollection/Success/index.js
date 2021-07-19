@@ -40,7 +40,10 @@ export default ({ collectionName, description, tags }) => {
       <div className='hint'>
         Start earning attention rewards when your friends and followers check out your new collection.
       </div>
-      <Share />
+      {/* 
+        Currently on koi.rocks still not have Collections. We will hide this for now.
+      */}      
+      {/* <Share /> */}
       <div className='nfts'>
         {nfts.map((nft, index) => {
           if (nft.url) return (

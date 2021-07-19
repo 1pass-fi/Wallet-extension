@@ -18,7 +18,7 @@ import {
 import './index.css'
 
 export default () => {
-  const { address } = useContext(GalleryContext)
+  const { address, accountName } = useContext(GalleryContext)
   const [seedPhrase, setSeedPhrase] = useState('')
   const [hasSeedPhrase, setHasSeedPhrase] = useState(false)
 
@@ -42,11 +42,11 @@ export default () => {
 
     checkSeedPhrase()
   }, [])
-
+  
   const accounts = useMemo(() => [
     {
       id: 1,
-      name: 'account #1',
+      name: accountName,
       address,
       seedPhrase: [],
       hasSeedPhrase: false,
@@ -79,7 +79,7 @@ export default () => {
     //   seedPhrase: [],
     //   keyfile: { id: '2' },
     // },
-  ], [address])
+  ], [address, accountName])
 
   const onSeedPharseClick = (account) => {
     setSelectedAccount(account)

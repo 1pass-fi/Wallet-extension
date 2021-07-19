@@ -202,13 +202,13 @@ export default ({ collection }) => {
         </div>
 
         <div>
-          {isCopied && <div className='copy-noti'>Link copied!</div>}
+          {/* {isCopied && <div className='copy-noti'>Link copied!</div>}
           <CopyToClipboard text={koiRockUrl}>
             <CopyLinkIcon className='share-nft-button' onClick={onCopy} />
           </CopyToClipboard>
           <a target='_blank' href={koiRockUrl} className='nft-path'>
             <ShareIcon />
-          </a>
+          </a> */}
         </div>
       </div>
     </div>

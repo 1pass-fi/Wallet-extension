@@ -98,7 +98,7 @@ export const RevealSeed = ({
             (or multiple).
           </div>
           <div className='qa-item'>Memorize this phrase</div>
-          <div className='qa-item'>Koi cannot recover this phrase for you.</div>
+          <div className='qa-item'>Koii cannot recover this phrase for you.</div>
         </div>
       </Card>
     </div>

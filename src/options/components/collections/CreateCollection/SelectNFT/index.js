@@ -303,7 +303,7 @@ export default ({nfts, tags, collectionName, description, stage}) => {
         <div>Estimated costs:</div>
         <div className='price-amount'>
           <div>1 KOII</div>
-          <div>0.0014 AR</div>
+          <div>0.000004 AR</div>
         </div>
       </div>
       }
