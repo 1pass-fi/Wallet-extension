@@ -2,6 +2,7 @@
   background: linear-gradient(90deg, #030332 0%, #171753 100%);
   color: #ffffff;
   padding: 26px 24px;
+  padding-right: 12px;
   width: 552px;
 }
 
@@ -26,6 +27,7 @@
   max-height: 450px;
   overflow-x: hidden;
   overflow-y: scroll;
+  padding-right: 20px;
 }
 
 .welcome-message .content .paragraph {

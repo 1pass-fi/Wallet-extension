@@ -1,8 +1,11 @@
-import React from 'react'
+import { GalleryContext } from 'options/galleryContext'
+import React, { useContext } from 'react'
 
 import './index.css'
 
 export default ({ version = '0.0.1' }) => {
+  const { setShowWelcome } = useContext(GalleryContext)
+
   return (
     <div className='about-settings-wrapper'>
       <div className='about-settings'>
@@ -15,7 +18,7 @@ export default ({ version = '0.0.1' }) => {
               See the details about the latest release.
             </div>
             <div className='version-note'>
-              Version &nbsp;{version}&nbsp; Notes
+              <button onClick={() => setShowWelcome(true)}>Version &nbsp;{version}&nbsp; Notes</button>
             </div>
           </div>
 

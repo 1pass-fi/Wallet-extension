@@ -267,7 +267,8 @@ export default ({ children }) => {
         showEarnedKoi,
         setShowViews,
         setShowEarnedKoi,
-        accountName
+        accountName,
+        setShowWelcome
       }}
     >
       {address ? <div
