@@ -26,16 +26,15 @@ import { backgroundRequest } from 'popup/backgroundRequest'
 
 export const getBalances = () => (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
-    try {
+    try { 
       const { koiData } = response.data
-
       // reduce balances by pending transaction expenses
       const storage = await getChromeStorage(STORAGE.PENDING_TRANSACTION)
       const pendingTransaction = storage[STORAGE.PENDING_TRANSACTION] || []
       pendingTransaction.forEach((transaction) => {
         if (isNumber(transaction.expense)) {
           switch (transaction.activityName) {
-            case 'Sent KOI':
+            case 'Sent KOII':
               koiData.koiBalance -= transaction.expense
               break
             case 'Sent AR':

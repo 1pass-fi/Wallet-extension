@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
 import isArray from 'lodash/isArray'
-import { get } from 'lodash'
+import { isNumber } from 'lodash'
 
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
 import { 
@@ -116,9 +116,27 @@ export default ({ children }) => {
         backgroundConnect.postMessage({
           type: MESSAGES.LOAD_CONTENT,
         })
+
+        // Duplicate code. Will refactor.
         if (storage[STORAGE.KOI_BALANCE]) {
-          setTotalKoi(storage[STORAGE.KOI_BALANCE])
-          setTotalAr(storage[STORAGE.AR_BALANCE])
+          let totalAr = storage[STORAGE.AR_BALANCE]
+          let totalKoi = storage[STORAGE.KOI_BALANCE]
+
+          let pendingTransaction = await getChromeStorage(STORAGE.PENDING_TRANSACTION)
+          pendingTransaction = pendingTransaction[STORAGE.PENDING_TRANSACTION] || []
+          pendingTransaction.forEach((transaction) => {
+            if (isNumber(transaction.expense)) {
+              switch (transaction.activityName) {
+                case 'Sent KOII':
+                  totalKoi -= transaction.expense
+                  break
+                case 'Sent AR':
+                  totalAr -= transaction.expense
+              }
+            }
+          })
+          setTotalKoi(totalKoi)
+          setTotalAr(totalAr)
         }
         if (storage[STORAGE.KOI_ADDRESS]) {
           setAddress(storage[STORAGE.KOI_ADDRESS])
