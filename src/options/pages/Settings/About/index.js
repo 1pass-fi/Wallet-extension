@@ -75,6 +75,24 @@ export default ({ version = '0.0.1' }) => {
               </a>
               .
             </div>
+            <div className='report-request'>
+              <a
+                href='https://docs.google.com/forms/d/1AUecQDPLSkq9TTbDetjj7L61azuQY6JU43fX6FCqtaQ/'
+                className='link'
+                target='_blank'
+              >
+                Report
+              </a>
+              &nbsp;a bug or &nbsp;
+              <a
+                href='https://docs.google.com/forms/d/13nYOjTOlnjXnFAxf-fuNXvyTL5bEUQC27sR7VI-z_zE/'
+                className='link'
+                target='_blank'
+              >
+                request
+              </a>
+              &nbsp; a feature.
+            </div>
           </div>
         </div>
       </div>
