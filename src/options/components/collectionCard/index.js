@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react'
+import React, { useState, useMemo, useEffect, useRef, useContext } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { isEmpty, get } from 'lodash'
 
@@ -12,8 +12,10 @@ import './index.css'
 import { Link } from 'react-router-dom'
 
 import { stringTruncate } from 'options/utils'
+import { GalleryContext } from 'options/galleryContext'
 
 export default ({ collection }) => {
+  const { showViews, showEarnedKoi } = useContext(GalleryContext)
   const {
     id,
     name,
@@ -182,8 +184,8 @@ export default ({ collection }) => {
           {stringTruncate(name, 20)}
         </Link>
 
-        <div className='nft-view'>{views} Views </div>
-        <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>
+        {showViews && <div className='nft-view'>{views} Views </div>}
+        {showEarnedKoi && <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>}
         <div className='nft-stats'>
           {/* <div className='contributors'>{contributors}</div> */}
           <div className='pieces'>{nfts.length}</div>

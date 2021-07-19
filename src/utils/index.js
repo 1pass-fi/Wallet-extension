@@ -627,7 +627,7 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
     } catch (err) {
       console.log('transaction sign error')
       console.log('err-sign', err)
-      return false
+      throw new Error(err.message)
     }
     console.log(tx)
 
@@ -666,7 +666,7 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
       return { txId: tx.id, time: createdAt }
     } catch(err) {
       console.log('err-@_koi/sdk', err)
-      return false
+      throw new Error('Upload failed.')
     }
   } catch(err) {
     console.log(err.message)

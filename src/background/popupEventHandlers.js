@@ -385,12 +385,19 @@ export default async (koi, port, message, ports, resolveId) => {
       }
 
       case MESSAGES.UPLOAD_NFT: {
-        const { content, tags, fileType } = message.data
-        const result = await exportNFTNew(koi, arweave, content, tags, fileType)
-        port.postMessage({
-          type: MESSAGES.UPLOAD_NFT,
-          data: result
-        })
+        try {
+          const { content, tags, fileType } = message.data
+          const result = await exportNFTNew(koi, arweave, content, tags, fileType)
+          port.postMessage({
+            type: MESSAGES.UPLOAD_NFT,
+            data: result
+          })
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.UPLOAD_NFT,
+            error: `BACKGROUND ERROR: ${err.message}`
+          })
+        }
         break
       }
 
