@@ -1,0 +1,230 @@
+.transfer-wallet-modal-wrapper {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  position: fixed;
+  width: 100vw;
+  z-index: 5;
+}
+
+.transfer-wallet-modal-wrapper * {
+  box-sizing: border-box;
+  color: #ffffff;
+}
+
+.transfer-wallet-modal {
+  align-items: center;
+  background: linear-gradient(90deg, #030332 0%, #171753 100%);
+  border-radius: 2px;
+  border: 1px solid #ffffff;
+  display: flex;
+  flex-direction: column;
+  height: 540px;
+  justify-content: space-between;
+  padding: 27px 32px 35px;
+  position: relative;
+  width: 690px;
+}
+
+.transfer-wallet-modal .title {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.transfer-wallet-modal .description {
+  font-size: 14px;
+  line-height: 24px;
+  max-width: 500px;
+  text-align: center;
+}
+
+.transfer-wallet-modal .steps {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.transfer-wallet-modal .steps .step {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.transfer-wallet-modal .steps .step .number {
+  border-radius: 50%;
+  border: 1px solid #49ce8b;
+  box-sizing: border-box;
+  height: 23px;
+  line-height: 21px;
+  text-align: center;
+  width: 23px;
+}
+
+.transfer-wallet-modal .steps .step .text {
+  margin-left: 8px;
+}
+
+.transfer-wallet-modal .content {
+  display: flex;
+  gap: 30px;
+  height: 320px;
+}
+
+.transfer-wallet-modal .content .left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.transfer-wallet-modal .content .left .nft-url {
+  -webkit-user-drag: none;
+  align-items: center;
+  background: #020221;
+  box-sizing: border-box;
+  display: flex;
+  height: 208px;
+  justify-content: center;
+  object-fit: contain;
+  position: relative;
+  width: 208px;
+}
+
+.transfer-wallet-modal .content .left .name {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.transfer-wallet-modal .content .left .views {
+  font-size: 18px;
+  line-height: 32px;
+}
+
+.transfer-wallet-modal .content .left .earned-koi {
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.transfer-wallet-modal .content .right {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.transfer-wallet-modal .content .right .eth-address,
+.transfer-wallet-modal .content .right .number-to-transfer {
+  position: relative;
+}
+
+.transfer-wallet-modal .content .right .input {
+  background: #ffffff;
+  border-radius: 2px;
+  border: 1px solid #ffffff;
+  box-sizing: border-box;
+  color: #171753;
+  font-size: 16px;
+  height: 32px;
+  line-height: 20px;
+  padding: 9px 0px 7px 30px;
+  width: 392px;
+}
+
+.transfer-wallet-modal .content .right .input::placeholder {
+  font-size: 13px;
+  line-height: 24px;
+}
+
+.transfer-wallet-modal .content .right .label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 15px;
+  margin-bottom: 3px;
+}
+
+.transfer-wallet-modal .content .right .total-available {
+  color: #ffc78f;
+  font-size: 12px;
+  line-height: 16px;
+  position: absolute;
+  right: 0px;
+  top: 3px;
+}
+
+.transfer-wallet-modal .content .right .description {
+  font-size: 10px;
+  height: 32px;
+  line-height: 16px;
+  margin-top: 6px;
+}
+
+.transfer-wallet-modal .content .right .estimate-cost {
+  display: flex;
+  height: 40px;
+  justify-content: space-between;
+  width: 280px;
+}
+
+.transfer-wallet-modal .content .right .estimate-cost .text {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.transfer-wallet-modal .content .right .estimate-cost .number {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: space-between;
+  line-height: 17px;
+}
+
+.transfer-wallet-modal .content .right .estimate-cost .number * {
+  color: #49ce8b;
+}
+
+.transfer-wallet-modal .content .right .transfer-button {
+  background: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  color: #171753;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  height: 32px;
+  line-height: 24px;
+  line-height: 32px;
+  text-align: center;
+  user-select: none;
+  width: 276px;
+}
+
+.transfer-wallet-modal .content .right .transfer-button:active {
+  background: #171753;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  transition: ease 0.25s;
+}
+
+.transfer-wallet-modal .input-logo {
+  left: 5px;
+  position: absolute;
+  top: 22px;
+}
+
+.transfer-wallet-modal .close-button {
+  cursor: pointer;
+  position: absolute;
+  right: 7px;
+  top: 7px;
+}
+
+.transfer-wallet-modal .goback-button {
+  cursor: pointer;
+  left: 7px;
+  position: absolute;
+  top: 7px;
+}

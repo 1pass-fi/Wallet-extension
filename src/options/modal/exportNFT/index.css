@@ -13,7 +13,7 @@
   font-weight: 500;
   text-align: center;
   color: #ffffff;
-  width: 498px;
+  width: 550px;
   padding: 0;
 }
 
@@ -22,12 +22,42 @@
   font-weight: 400;
 }
 
+.export-nft .ethereum {
+  align-items: center;
+  border-radius: 3px;
+  border: 2px solid #ffffff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  height: 84px;
+  justify-content: center;
+  margin-top: 21px;
+  user-select: none;
+  width: 212px;
+}
+
+.export-nft .ethereum .text {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 32px;
+  margin-left: 16px;
+}
+
+.export-nft .coming-soon {
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 32px;
+  margin-top: 24px;
+}
+
 .export-nft.chains.container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  width: 600px;
+  width: 400px;
   padding: 0;
   height: 148px;
 }
@@ -61,4 +91,3 @@
   line-height: 14px;
   font-weight: 500;
 }
-

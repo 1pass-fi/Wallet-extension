@@ -8,12 +8,13 @@ import isArray from 'lodash/isArray'
 import { isNumber } from 'lodash'
 
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
-import { 
-  getAffiliateCode, 
-  getChromeStorage, 
-  setChromeStorage, 
-  getTotalRewardKoi, 
-  checkAffiliateInviteSpent } from 'utils'
+import {
+  getAffiliateCode,
+  getChromeStorage,
+  setChromeStorage,
+  getTotalRewardKoi,
+  checkAffiliateInviteSpent,
+} from 'utils'
 import { MESSAGES, STORAGE, PORTS, MOCK_COLLECTIONS_STORE } from 'koiConstants'
 import { CreateEventHandler } from 'popup/actions/backgroundConnect'
 
@@ -66,7 +67,7 @@ export default ({ children }) => {
 
   const [demoCollections, setDemoCollections] = useState([])
   const [collections, setCollections] = useState([])
-  
+
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
     accept: ['image/*', 'video/*', 'audio/*'],
@@ -84,12 +85,12 @@ export default ({ children }) => {
           STORAGE.AFFILIATE_CODE,
           STORAGE.SHOW_WELCOME_SCREEN,
           STORAGE.MOCK_COLLECTIONS_STORE,
-          STORAGE.ACCOUNT_NAME
+          STORAGE.ACCOUNT_NAME,
         ])
 
         const gallerySetting = await getChromeStorage([
           STORAGE.SHOW_VIEWS,
-          STORAGE.SHOW_EARNED_KOI
+          STORAGE.SHOW_EARNED_KOI,
         ])
 
         if (!isEmpty(gallerySetting)) {
@@ -122,8 +123,11 @@ export default ({ children }) => {
           let totalAr = storage[STORAGE.AR_BALANCE]
           let totalKoi = storage[STORAGE.KOI_BALANCE]
 
-          let pendingTransaction = await getChromeStorage(STORAGE.PENDING_TRANSACTION)
-          pendingTransaction = pendingTransaction[STORAGE.PENDING_TRANSACTION] || []
+          let pendingTransaction = await getChromeStorage(
+            STORAGE.PENDING_TRANSACTION
+          )
+          pendingTransaction =
+            pendingTransaction[STORAGE.PENDING_TRANSACTION] || []
           pendingTransaction.forEach((transaction) => {
             if (isNumber(transaction.expense)) {
               switch (transaction.activityName) {
@@ -160,7 +164,10 @@ export default ({ children }) => {
           await setChromeStorage({ [STORAGE.CONTENT_LIST]: contentList })
           if (isEmpty(contentList)) history.push('/create')
         } else {
-          const storageContentList = (await getChromeStorage(STORAGE.CONTENT_LIST))[STORAGE.CONTENT_LIST] || []
+          const storageContentList =
+            (await getChromeStorage(STORAGE.CONTENT_LIST))[
+              STORAGE.CONTENT_LIST
+            ] || []
           if (isEmpty(storageContentList)) history.push('/create')
         }
         setIsLoading(false)
@@ -170,9 +177,7 @@ export default ({ children }) => {
       MESSAGES.GET_WALLET_SUCCESS,
       async (response) => {
         const { key } = response.data
-        const storage = await getChromeStorage([
-          STORAGE.AFFILIATE_CODE
-        ])
+        const storage = await getChromeStorage([STORAGE.AFFILIATE_CODE])
         if (!storage[STORAGE.AFFILIATE_CODE]) {
           koi.wallet = key
           await koi.getWalletAddress()
@@ -241,7 +246,7 @@ export default ({ children }) => {
     show: false,
     txid: null,
   })
-  const [showExportModal, setShowExportModal] = useState(false)
+  const [showExportModal, setShowExportModal] = useState({})
   const [showWelcome, setShowWelcome] = useState(false)
 
   return (
@@ -286,56 +291,62 @@ export default ({ children }) => {
         setShowViews,
         setShowEarnedKoi,
         accountName,
-        setShowWelcome
+        setShowWelcome,
       }}
     >
-      {address ? <div
-        {...getRootProps({ className: 'app dropzone' })}
-        onDragOver={() => modifyDraging(true)}
-        onDragLeave={() => modifyDraging(false)}
-        onClick={(e) => {
-          if (e.target.className === 'modal-container') {
-            setShowShareModal(false)
-            setShowExportModal(false)
-            setShowWelcome(false)
-          }
-        }}
-      >
-        {error && <Message children={error}/>}
-        {notification && <Message children={notification} type='notification'/> }
-        {showShareModal.show && (
-          <ShareNFT
-            txid={showShareModal.txid}
-            onClose={() => {
-              setShowShareModal({ ...showShareModal, show: false })
-            }}
-          />
-        )}
-        {showExportModal && (
-          <ExportNFT
-            onClose={() => {
-              setShowExportModal(false)
-            }}
-          />
-        )}
-        {showWelcome && (
-          <Welcome 
-            onClose={() => {
+      {address ? (
+        <div
+          {...getRootProps({ className: 'app dropzone' })}
+          onDragOver={() => modifyDraging(true)}
+          onDragLeave={() => modifyDraging(false)}
+          onClick={(e) => {
+            if (e.target.className === 'modal-container') {
+              setShowShareModal(false)
+              setShowExportModal({})
               setShowWelcome(false)
-            }}
-          />
-        )
-        }
+            }
+          }}
+        >
+          {error && <Message children={error} />}
+          {notification && (
+            <Message children={notification} type='notification' />
+          )}
+          {showShareModal.show && (
+            <ShareNFT
+              txid={showShareModal.txid}
+              onClose={() => {
+                setShowShareModal({ ...showShareModal, show: false })
+              }}
+            />
+          )}
+          {!isEmpty(showExportModal) && (
+            <ExportNFT
+              info={showExportModal}
+              onClose={() => {
+                setShowExportModal({})
+              }}
+            />
+          )}
+          {showWelcome && (
+            <Welcome
+              onClose={() => {
+                setShowWelcome(false)
+              }}
+            />
+          )}
 
-        {isLoading && <Loading />}
-        {isDragging && isEmpty(file) && (
-          <input name='fileField' {...getInputProps()} />
-        )}
-        <Header totalKoi={totalKoi} totalAr={totalAr} headerRef={headerRef} />
-        {children}
-        <Footer showDropzone={showDropzone} />
-        <Navbar />
-      </div> : <div className='app no-wallet'></div>}
+          {isLoading && <Loading />}
+          {isDragging && isEmpty(file) && (
+            <input name='fileField' {...getInputProps()} />
+          )}
+          <Header totalKoi={totalKoi} totalAr={totalAr} headerRef={headerRef} />
+          {children}
+          <Footer showDropzone={showDropzone} />
+          <Navbar />
+        </div>
+      ) : (
+        <div className='app no-wallet'></div>
+      )}
     </GalleryContext.Provider>
   )
 }

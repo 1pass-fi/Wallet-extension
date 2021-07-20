@@ -35,19 +35,26 @@ export default ({
   contentType,
   totalViews,
   createdAt,
-  description: aDescription
+  description,
 }) => {
   const history = useHistory()
-  const { setShowExportModal, setShowShareModal, showViews, showEarnedKoi } = useContext(GalleryContext)
+  const {
+    setShowExportModal,
+    setShowShareModal,
+    showViews,
+    showEarnedKoi,
+  } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
-  const { registeredDate, description, tags } = {
+  const { registeredDate, tags } = {
     registeredDate: moment(createdAt * 1000).format('MMMM Do, YYYY'),
-    description: aDescription,
     tags: ['crypto', 'puppies', 'electropop', 'cubism'],
   }
 
-  const embed = useMemo(() => `<iframe width="100%" src="https://koi.rocks/embed/${txId}" title="Koi NFT image" frameborder="0" allowfullscreen></iframe>`,
-    [txId])
+  const embed = useMemo(
+    () =>
+      `<iframe width="100%" src="https://koi.rocks/embed/${txId}" title="Koi NFT image" frameborder="0" allowfullscreen></iframe>`,
+    [txId]
+  )
 
   const onCopy = () => {
     setIsCopied(true)
@@ -85,7 +92,7 @@ export default ({
             Export this NFT to a&nbsp;
             <span
               onClick={() => {
-                setShowExportModal(true)
+                setShowExportModal({ earnedKoi, totalViews, name, imageUrl })
               }}
               className='different-chain'
             >
@@ -115,10 +122,14 @@ export default ({
             ))}
           </div> */}
           <div className='earned'>
-            {showViews && <div className='views'>
-              {totalViews} {totalViews > 1 ? 'views' : 'view'}
-            </div>}
-            {showEarnedKoi && <div className='koi '>{formatNumber(earnedKoi)} KOII earned</div>}
+            {showViews && (
+              <div className='views'>
+                {totalViews} {totalViews > 1 ? 'views' : 'view'}
+              </div>
+            )}
+            {showEarnedKoi && (
+              <div className='koi '>{formatNumber(earnedKoi)} KOII earned</div>
+            )}
           </div>
           <div className='share-embed'>
             <button
@@ -131,14 +142,34 @@ export default ({
             </button>
             {isCopied && <div className='copy-noti'>Link copied!</div>}
             <CopyToClipboard text={embed}>
-              <button onClick={onCopy} className='embed-button'>Embed</button>
+              <button onClick={onCopy} className='embed-button'>
+                Embed
+              </button>
             </CopyToClipboard>
           </div>
           <div className='social-icons'>
-            <TwitterIcon onClick={() => { createShareWindow('twitter', txId) }} className='social-icon' />
-            <FacebookIcon onClick={() => { createShareWindow('facebook', txId) }} className='social-icon' />
-            <LinkedinIcon onClick={() => { createShareWindow('linkedin', txId) }} className='social-icon' />
-            <a href={`mailto:?subject=Check out my NFT, now stored on Koi— forever!&body=https://koi.rocks/content-detail/${txId}`} title="Share by Email">
+            <TwitterIcon
+              onClick={() => {
+                createShareWindow('twitter', txId)
+              }}
+              className='social-icon'
+            />
+            <FacebookIcon
+              onClick={() => {
+                createShareWindow('facebook', txId)
+              }}
+              className='social-icon'
+            />
+            <LinkedinIcon
+              onClick={() => {
+                createShareWindow('linkedin', txId)
+              }}
+              className='social-icon'
+            />
+            <a
+              href={`mailto:?subject=Check out my NFT, now stored on Koi— forever!&body=https://koi.rocks/content-detail/${txId}`}
+              title='Share by Email'
+            >
               <EmailIcon className='social-icon' />
             </a>
           </div>
