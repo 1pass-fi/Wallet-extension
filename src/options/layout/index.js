@@ -321,6 +321,7 @@ export default ({ children }) => {
           )}
           {!isEmpty(showExportModal) && (
             <ExportNFT
+              info={showExportModal}
               onClose={() => {
                 setShowExportModal({})
               }}

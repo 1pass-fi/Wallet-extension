@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Modal from 'options/shared/modal'
 
 import './index.css'
@@ -8,6 +8,8 @@ import BinanceLogo from 'img/chain/binance-logo.svg'
 import Avalanche from 'img/chain/avalanche-logo.svg'
 import PolkadotLogo from 'img/chain/polkadot-logo.svg'
 import TezosLogo from 'img/chain/tezos-logo.svg'
+
+import Ethereum from './Ethereum'
 
 const Chain = ({ Icon, title }) => {
   return (
@@ -20,7 +22,9 @@ const Chain = ({ Icon, title }) => {
   )
 }
 
-const ExportNFT = () => {
+const ExportNFT = ({ info }) => {
+  const [isShowEthereum, setIsShowEthereum] = useState(false)
+
   return (
     <div className='export-nft container'>
       <div className='export-nft title container'>
@@ -31,7 +35,7 @@ const ExportNFT = () => {
         </div>
       </div>
 
-      <div className='ethereum'>
+      <div className='ethereum' onClick={() => setIsShowEthereum(true)}>
         <EthereumLogo className='logo' />
         <div className='text'>Ethereum</div>
       </div>
@@ -44,15 +48,19 @@ const ExportNFT = () => {
         <Chain Icon={BinanceLogo} title='Binance' />
         <Chain Icon={Avalanche} title='Avalanche' />
       </div>
+
+      {isShowEthereum && (
+        <Ethereum info={info} onClose={() => setIsShowEthereum(false)} />
+      )}
     </div>
   )
 }
 
-export default ({ onClose }) => {
+export default ({ onClose, info }) => {
   return (
     <div>
       <Modal onClose={onClose}>
-        <ExportNFT />
+        <ExportNFT info={info} />
       </Modal>
     </div>
   )
