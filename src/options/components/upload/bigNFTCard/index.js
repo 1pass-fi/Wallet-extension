@@ -1,6 +1,4 @@
-import React, {
-  useContext,
-} from 'react'
+import React, { useContext } from 'react'
 import moment from 'moment'
 
 import ArweaveIcon from 'img/arweave-icon.svg'
@@ -57,7 +55,12 @@ export default ({
             Export this NFT to a&nbsp;
             <span
               onClick={() => {
-                setShowExportModal(true)
+                setShowExportModal({
+                  imageUrl,
+                  name,
+                  earnedKoi: 0,
+                  totalViews: 0,
+                })
               }}
               className='different-chain'
             >
@@ -104,10 +107,28 @@ export default ({
             <button className='embed-button'>Embed</button>
           </div>
           <div className='social-icons'>
-            <TwitterIcon onClick={() => { createShareWindow('twitter', txId) }} className='social-icon' />
-            <FacebookIcon onClick={() => { createShareWindow('facebook', txId) }} className='social-icon' />
-            <LinkedinIcon onClick={() => { createShareWindow('linkedin', txId) }} className='social-icon' />
-            <a href={`mailto:?subject=Check out my NFT, now stored on Koi— forever!&body=https://koi.rocks/content-detail/${txId}`} title="Share by Email">
+            <TwitterIcon
+              onClick={() => {
+                createShareWindow('twitter', txId)
+              }}
+              className='social-icon'
+            />
+            <FacebookIcon
+              onClick={() => {
+                createShareWindow('facebook', txId)
+              }}
+              className='social-icon'
+            />
+            <LinkedinIcon
+              onClick={() => {
+                createShareWindow('linkedin', txId)
+              }}
+              className='social-icon'
+            />
+            <a
+              href={`mailto:?subject=Check out my NFT, now stored on Koi— forever!&body=https://koi.rocks/content-detail/${txId}`}
+              title='Share by Email'
+            >
               <EmailIcon className='social-icon' />
             </a>
           </div>
