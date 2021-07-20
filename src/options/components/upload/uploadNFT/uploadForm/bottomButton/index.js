@@ -87,9 +87,10 @@ export default ({ description, setStage, stage, title, file, username }) => {
         txId,
         time
       }
+
     } catch (err) {
       setIsLoading(false)
-      setError(err.message)
+      throw new Error(err.message)
     }
   }
 

@@ -11,7 +11,7 @@
         "build": "node scripts/build.js",
         "compress": "node scripts/compress",
         "compress-keygen": "crx keygen",
-        "clean": "rimraf build/ dev/ dist/ extension/ *.zip *.crx",
+        "clean": "rimraf build/ dev/ dist/ finnie/ *.zip *.crx",
         "lint": "eslint ./ ",
         "lint:fix": "eslint ./ --fix",
         "storybook": "start-storybook -p 6006",

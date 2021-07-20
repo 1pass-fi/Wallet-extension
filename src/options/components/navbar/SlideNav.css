@@ -33,18 +33,26 @@
 }
 
 .navbar-container .slide-nav .items .item {
-  line-height: 24px;
-  margin-bottom: 32px;
-  height: 39px;
-  align-items: center;
+  align-items: flex-start;
   color: #f5f5f5;
   display: flex;
+  flex-direction: column;
   font-size: 14px;
   font-weight: 600;
+  height: 39px;
+  justify-content: center;
+  line-height: 24px;
+  margin-bottom: 32px;
   text-decoration: none;
   width: 100%;
 }
 
 .navbar-container .slide-nav .items .item.active {
   border-right: 3px solid #49ce8b;
+}
+
+.navbar-container .slide-nav .items .item .coming-soon {
+  color: #ffc78f;
+  font-size: 12px;
+  line-height: 16px;
 }

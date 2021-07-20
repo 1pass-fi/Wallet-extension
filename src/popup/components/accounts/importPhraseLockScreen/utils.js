@@ -1,6 +1,6 @@
 import { PATH, ERROR_MESSAGE } from 'koiConstants'
 
-export const validatePhrase = ({
+export const validatePhrase = async ({
   phrase,
   password,
   confirmPassword,
@@ -16,8 +16,7 @@ export const validatePhrase = ({
     } else if (password !== confirmPassword) {
       setError(ERROR_MESSAGE.PASSWORD_MATCH)
     } else {
-      const redirectPath = PATH.IMPORT_KEY_REDIRECT
-      importWallet({ data: phrase, password, history, redirectPath })
+      await importWallet(phrase, password)
     }
   } catch (err) {
     /* istanbul ignore next */

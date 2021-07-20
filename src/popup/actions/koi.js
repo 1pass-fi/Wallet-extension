@@ -28,7 +28,7 @@ import storage from 'storage'
 
 export const getBalances = () => async (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
-    try {
+    try { 
       const { koiData } = response.data
       console.log(koiData)
       // reduce balances by pending transaction expenses

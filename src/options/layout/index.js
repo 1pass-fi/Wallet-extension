@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
 import isArray from 'lodash/isArray'
-import { get } from 'lodash'
+import { isNumber } from 'lodash'
 
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
 import { 
@@ -62,6 +62,7 @@ export default ({ children }) => {
   const [page, setPage] = useState(0)
   const [showViews, setShowViews] = useState(true)
   const [showEarnedKoi, setShowEarnedKoi] = useState(true)
+  const [accountName, setAccountName] = useState('')
 
   const [demoCollections, setDemoCollections] = useState([])
   const [collections, setCollections] = useState([])
@@ -83,6 +84,7 @@ export default ({ children }) => {
           STORAGE.AFFILIATE_CODE,
           STORAGE.SHOW_WELCOME_SCREEN,
           STORAGE.MOCK_COLLECTIONS_STORE,
+          STORAGE.ACCOUNT_NAME
         ])
 
         const gallerySetting = await getChromeStorage([
@@ -114,15 +116,36 @@ export default ({ children }) => {
         backgroundConnect.postMessage({
           type: MESSAGES.LOAD_CONTENT,
         })
+
+        // Duplicate code. Will refactor.
         if (storage[STORAGE.KOI_BALANCE]) {
-          setTotalKoi(storage[STORAGE.KOI_BALANCE])
-          setTotalAr(storage[STORAGE.AR_BALANCE])
+          let totalAr = storage[STORAGE.AR_BALANCE]
+          let totalKoi = storage[STORAGE.KOI_BALANCE]
+
+          let pendingTransaction = await getChromeStorage(STORAGE.PENDING_TRANSACTION)
+          pendingTransaction = pendingTransaction[STORAGE.PENDING_TRANSACTION] || []
+          pendingTransaction.forEach((transaction) => {
+            if (isNumber(transaction.expense)) {
+              switch (transaction.activityName) {
+                case 'Sent KOII':
+                  totalKoi -= transaction.expense
+                  break
+                case 'Sent AR':
+                  totalAr -= transaction.expense
+              }
+            }
+          })
+          setTotalKoi(totalKoi)
+          setTotalAr(totalAr)
         }
         if (storage[STORAGE.KOI_ADDRESS]) {
           setAddress(storage[STORAGE.KOI_ADDRESS])
           backgroundConnect.postMessage({
             type: MESSAGES.GET_WALLET,
           })
+        }
+        if (storage[STORAGE.ACCOUNT_NAME]) {
+          setAccountName(storage[STORAGE.ACCOUNT_NAME])
         }
       } catch (err) {
         console.log(err.message)
@@ -261,10 +284,12 @@ export default ({ children }) => {
         showViews,
         showEarnedKoi,
         setShowViews,
-        setShowEarnedKoi
+        setShowEarnedKoi,
+        accountName,
+        setShowWelcome
       }}
     >
-      <div
+      {address ? <div
         {...getRootProps({ className: 'app dropzone' })}
         onDragOver={() => modifyDraging(true)}
         onDragLeave={() => modifyDraging(false)}
@@ -310,7 +335,7 @@ export default ({ children }) => {
         {children}
         <Footer showDropzone={showDropzone} />
         <Navbar />
-      </div>
+      </div> : <div className='app no-wallet'></div>}
     </GalleryContext.Provider>
   )
 }

@@ -8,11 +8,14 @@ import Button from 'shared/button'
 import { importWallet } from 'actions/koi'
 import { setError } from 'actions/error'
 import Header from 'shared/header'
+import { PATH, STORAGE } from 'koiConstants'
+import { getChromeStorage } from 'utils'
 
 import './index.css'
 import { validatePhrase } from './utils'
+import { setIsLoading } from 'popup/actions/loading'
 
-const ImportPhrase = ({ setError, importWallet }) => {
+const ImportPhrase = ({ setError, importWallet, setIsLoading }) => {
   const history = useHistory()
   const [phrase, setPhrase] = useState('')
   const [password, setPassword] = useState('')
@@ -30,14 +33,25 @@ const ImportPhrase = ({ setError, importWallet }) => {
   }
 
   const onSubmit = async () => {
-    validatePhrase({
-      phrase,
-      password,
-      confirmPassword,
-      history,
-      setError,
-      importWallet,
-    })
+    try {
+      setIsLoading(true)
+      await validatePhrase({
+        phrase,
+        password,
+        confirmPassword,
+        history,
+        setError,
+        importWallet,
+      })
+      let redirectPath = PATH.IMPORT_PHRASE_REDIRECT
+      redirectPath = ((await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) ? PATH.CONNECT_SITE : redirectPath
+
+      setIsLoading(false)
+      history.push(redirectPath)
+    } catch (err) {
+      setIsLoading(false)
+      setError(err.message)
+    }
   }
 
   return (
@@ -82,4 +96,4 @@ const ImportPhrase = ({ setError, importWallet }) => {
   )
 }
 
-export default connect(null, { setError, importWallet })(ImportPhrase)
+export default connect(null, { setError, importWallet, setIsLoading })(ImportPhrase)

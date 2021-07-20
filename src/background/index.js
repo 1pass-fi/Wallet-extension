@@ -66,7 +66,9 @@ if (chrome.runtime.onInstalled) {
     chrome.runtime.getPlatformInfo((info) => {
       window.localStorage.setItem(OS, info.os)
     })
-    chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] })
+	chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] })
+	storage.arweaveWallet.remove.address()
+
     chrome.runtime.onConnect.addListener(cb)
   })
 }
