@@ -32,7 +32,7 @@ const Header = ({ setShowCreateCollection, setStage, setPage, setTotalPage }) =>
 export default () => {
   const { setShowCreateCollection, 
     setPage, 
-    setTotalPage, 
+    setTotalPage,
     setStage, 
     setIsLoading, 
     setError, 

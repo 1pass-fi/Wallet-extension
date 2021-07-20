@@ -35,3 +35,5 @@ export const SET_PRICE = 'SET_PRICE'
 export const SET_CREATING_WALLET = 'SET_CREATING_WALLET'
 
 export const SET_CURRENCY = 'SET_CURRENCY'
+
+export const SET_ETHEREUM = 'SET_ETHEREUM'

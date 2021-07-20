@@ -23,6 +23,7 @@ import { setWarning } from 'actions/warning'
 import { setPrice } from 'actions/price'
 import { setKoi, getBalances } from 'actions/koi'
 import { setCurrency } from 'actions/currency'
+import { setEthereum } from 'actions/ethereum'
 
 import { HEADER_EXCLUDE_PATH, REQUEST, DISCONNECTED_BACKGROUND } from 'koiConstants'
 
@@ -77,13 +78,18 @@ const Popup = ({
     const key = await storage.arweaveWallet.get.key()
     const pendingRequest = await storage.generic.get.pendingRequest()
 
+    // get ethereum wallet
+    const ethAddress = await storage.ethereumWallet.get.address()
+    const ethKey = await storage.ethereumWallet.get.key()
+
     console.log('address: ', address)
     console.log('key: ', key)
     console.log('pendingRequest: ', pendingRequest)
     const query = window.location.search // later we should refactor using react-hash-router
     try {
-      if (address) {
+      if (address || ethAddress) {
         setKoi({ address })
+        setEthereum({ ethAddress, ethBalance: 0 })
         getBalances()
         switch (get(pendingRequest, 'type')) {
           case REQUEST.PERMISSION:

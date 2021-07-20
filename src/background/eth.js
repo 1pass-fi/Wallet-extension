@@ -37,13 +37,6 @@ class Ethereum {
     return this.#web3.eth.getBalance(this.address)
   }
 
-  /* 
-  PRIVATE FUNCTIONS
-  */
-  #generateMnemonic() {
-    return generateMnemonic()
-  }
-
   getWalletFromSeedPhrase(seedPhrase) {
     const seed = mnemonicToSeedSync(seedPhrase)
     const hdwallet = hdkey.fromMasterSeed(seed)
@@ -57,6 +50,14 @@ class Ethereum {
     const restoredWallet = this.#web3.eth.accounts.privateKeyToAccount(privateKey)
 
     return restoredWallet
+  }
+
+  /*
+  PRIVATE FUNCTIONS
+  */
+
+  #generateMnemonic() {
+    return generateMnemonic()
   }
 }
 
