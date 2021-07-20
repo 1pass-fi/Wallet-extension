@@ -81,7 +81,7 @@ export default () => {
         setCurrency(currency)
         await setChromeStorage({ [STORAGE.CURRENCY]: currency })
         // set value for new storage object
-        await storage.generic.set.selectedCurrency(currency)
+        await storage.setting.set.selectedCurrency(currency)
         setNotification(`Succesfully set currency to ${currency}.`)
       }
     } catch (err) {

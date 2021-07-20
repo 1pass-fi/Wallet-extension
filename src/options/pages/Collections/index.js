@@ -5,12 +5,10 @@ import { isString } from 'lodash'
 import './index.css'
 import CollectionList from 'options/components/collectionList'
 import { GalleryContext } from 'options/galleryContext'
-import CollectionDetail from '../CollectionDetails'
 import { loadCollections } from 'options/utils'
 
 import AddIcon from 'img/add-icon-green.svg'
-import { getChromeStorage } from 'utils'
-import { STORAGE } from 'koiConstants'
+import storage from 'storage'
 
 const Header = ({ setShowCreateCollection, setStage, setPage, setTotalPage }) => {
   const history = useHistory()
@@ -32,12 +30,22 @@ const Header = ({ setShowCreateCollection, setStage, setPage, setTotalPage }) =>
 }
 
 export default () => {
-  const { setShowCreateCollection, setPage, setTotalPage, setStage, setIsLoading, setError, address, collections, setCollections } = useContext(GalleryContext)
+  const { setShowCreateCollection, 
+    setPage, 
+    setTotalPage, 
+    setStage, 
+    setIsLoading, 
+    setError, 
+    address, 
+    collections, 
+    setCollections,
+    collectionsLoaded,
+    setCollectionsLoaded
+  } = useContext(GalleryContext)
 
   useEffect(() => {
     const getCollectionsFromStorage = async () => {
-      const storage = await getChromeStorage(STORAGE.COLLECTIONS)
-      const savedCollections = storage[STORAGE.COLLECTIONS] || []
+      const savedCollections = await storage.arweaveWallet.get.collections() || []
       setCollections(savedCollections)
     }
 
@@ -55,12 +63,13 @@ export default () => {
             setCollections(result)
           }
           setIsLoading(false)
+          setCollectionsLoaded(true)
         }
       } catch (err) {
         setIsLoading(false)
       }
     }
-    if (address) {
+    if (address && !collectionsLoaded) {
       handleLoadCollection()
     }
   }, [address])

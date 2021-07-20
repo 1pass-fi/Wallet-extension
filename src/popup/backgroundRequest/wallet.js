@@ -88,4 +88,12 @@ export class WalletRequest extends Request {
   getKeyFile(body) {
     return this.promise(MESSAGES.GET_KEY_FILE, body)
   }
+
+  /**
+   * 
+   * @returns {Object} wallet key
+   */
+  getWalletKey() {
+    return this.promise(MESSAGES.GET_WALLET)
+  }
 }

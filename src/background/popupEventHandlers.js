@@ -392,7 +392,7 @@ export default async (koi, port, message, ports, resolveId) => {
 
       case MESSAGES.GET_WALLET: {
         port.postMessage({
-          type: MESSAGES.GET_WALLET_SUCCESS,
+          type: MESSAGES.GET_WALLET,
           data: { key: koi['wallet'] }
         })
         break

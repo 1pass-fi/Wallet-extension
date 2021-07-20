@@ -4,6 +4,7 @@ import { getChromeStorage, setChromeStorage } from 'utils'
 import { MOCK_COLLECTIONS_STORE, STORAGE } from 'koiConstants'
 import { find, get } from 'lodash'
 import { koi } from 'background'
+import storage from 'storage'
 
 export const formatNumber = (value, decimal) => {
   const zeroArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -64,19 +65,6 @@ export const mockGetCollections = async () => {
   return collections
 }
 
-export const getNftsDataForCollections = async (collection) => {
-  const storageNfts = (await getChromeStorage(STORAGE.CONTENT_LIST))[STORAGE.CONTENT_LIST] || []
-
-  const { collection: nftIds } = collection
-  const nfts = nftIds.map(id => {
-    const nft = find(storageNfts, v => v.txId == id)
-    if (nft) return nft
-  })
-
-  const resultCollection = { ...collection, nfts }
-  return resultCollection
-}
-
 export const stringTruncate = (str, length) => {
   try {
     if (str.length > 20) {
@@ -86,6 +74,19 @@ export const stringTruncate = (str, length) => {
   } catch (err) {
     console.log(err)
   }
+}
+
+export const getNftsDataForCollections = async (collection) => {
+  const storageNfts = await storage.arweaveWallet.get.assets() || []
+
+  const { collection: nftIds } = collection
+  const nfts = nftIds.map(id => {
+    const nft = find(storageNfts, v => v.txId == id)
+    if (nft) return nft
+  })
+
+  const resultCollection = { ...collection, nfts }
+  return resultCollection
 }
 
 export const readState = async (txIds) => {
@@ -105,23 +106,27 @@ export const readState = async (txIds) => {
 
 export const loadCollections = async (address) => {
   try {
-    const savedCollection = (await getChromeStorage(STORAGE.COLLECTIONS))[STORAGE.COLLECTIONS] || []
+    const savedCollection = await storage.arweaveWallet.get.collections() || []
+    // get list of transactions
     let fetchedCollections = await koi.getCollectionsByWalletAddress(address)
 
     if (savedCollection.length == fetchedCollections.length) return 'fetched'
 
+    // get list of transaction ids
     fetchedCollections = fetchedCollections.map(collection => get(collection, 'node.id'))
     console.log(fetchedCollections)
     fetchedCollections = await readState(fetchedCollections)
-  
+    
+    // read state from the transaction id to get needed data for the collection
     fetchedCollections = await Promise.all(fetchedCollections.map(collection => getNftsDataForCollections(collection)))
-    const allNftsLoadedSuccess = fetchedCollections.every(collection => {
+
+    // filter collection has NFTs that cannot be found on the storage.
+    fetchedCollections = fetchedCollections.filter(collection => {
       return collection.nfts.every(nft => nft)
     })
     console.log('fetchedCollections', fetchedCollections)
-    console.log('allNftsLoadedSuccess', allNftsLoadedSuccess)
 
-    allNftsLoadedSuccess && await setChromeStorage({[STORAGE.COLLECTIONS]: fetchedCollections})
+    await storage.arweaveWallet.set.collections(fetchedCollections)
     return fetchedCollections
   } catch (err) {
     console.log(err.message)

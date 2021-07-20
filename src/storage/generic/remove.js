@@ -26,4 +26,8 @@ export class GenericRemove {
   accountName() {
     return this.#chrome._removeChrome(GENERIC.ACCOUNT_NAME)
   }
+
+  affiliateCode() {
+    return this.#chrome._removeChrome(GENERIC.AFFILIATE_CODE)
+  }
 }

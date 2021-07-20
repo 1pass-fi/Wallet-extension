@@ -55,7 +55,7 @@ const SendKoiForm = ({
   }
 
   const selectBalance = (cur) => {
-    return cur === 'KOI' ? koiBalance : arBalance
+    return cur === 'KOII' ? koiBalance : arBalance
   }
 
   const handleSubmitForm = (e) => {

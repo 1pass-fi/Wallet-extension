@@ -419,12 +419,12 @@ export const transactionAmountFormat = (num) => {
 }
 
 export const getAccountName = async ()  => {
-  const name = await storage.generic.get.accountName()
+  const name = await storage.arweaveWallet.get.accountName()
   return name
 }
 
 export const updateAccountName = async (name) => {
-  await storage.generic.set.accountName(name)
+  await storage.arweaveWallet.set.accountName(name)
   return name
 }
 
@@ -448,6 +448,7 @@ export const getAffiliateCode = async (koi) => {
 
     return get(data, 'data.affiliateCode')
   } catch (err) {
+    console.log(err.message)
     throw new Error('Cannot get affiliateCode')
   }
 }

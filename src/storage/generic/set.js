@@ -48,4 +48,12 @@ export class GenericSet {
   accountName(value) {
     return this.#chrome._setChrome(GENERIC.ACCOUNT_NAME, value)
   }
+  /**
+   * 
+   * @param {String} value Friend referral code.
+   * @returns 
+   */
+  affiliateCode(value) {
+    return this.#chrome._setChrome(GENERIC.AFFILIATE_CODE, value)
+  }
 }

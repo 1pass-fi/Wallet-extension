@@ -71,4 +71,20 @@ export class WalletSet {
   async pendingTransactions(value) {
     await this.#wallet._setChrome(this.#wallet._getKeyWord(WALLET.PENDING_TRANSACTIONS), value)
   }
+  /**
+   * 
+   * @param {String} value Account name for the account.
+   * @returns 
+   */
+  accountName(value) {
+    return this.#wallet._setChrome(this.#wallet._getKeyWord(WALLET.ACCOUNT_NAME), value)
+  }
+  /**
+   * 
+   * @param {Array} value list of collections 
+   * @returns 
+   */
+  collections(value) {
+    return this.#wallet._setChrome(this.#wallet._getKeyWord(WALLET.COLLECTIONS), value)
+  }
 }

@@ -35,7 +35,8 @@ import { koi } from 'background'
 
 import { getNftsDataForCollections, loadCollections } from 'options/utils'
 
-const backgroundConnect = new BackgroundConnect(PORTS.POPUP)
+import storage from 'storage'
+import { backgroundRequest } from 'popup/backgroundRequest'
 
 export default ({ children }) => {
   const history = useHistory()
@@ -49,7 +50,6 @@ export default ({ children }) => {
   const [address, setAddress] = useState(null)
   const [wallet, setWallet] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
-  const headerRef = useRef(null)
   const [affiliateCode, setAffiliateCode] = useState(null)
   const [error, setError] = useState(null)
   const [notification, setNotification] = useState(null)
@@ -63,10 +63,20 @@ export default ({ children }) => {
   const [showViews, setShowViews] = useState(true)
   const [showEarnedKoi, setShowEarnedKoi] = useState(true)
   const [accountName, setAccountName] = useState('')
+  const [collectionsLoaded, setCollectionsLoaded] = useState(false)
 
   const [demoCollections, setDemoCollections] = useState([])
   const [collections, setCollections] = useState([])
-  
+
+  const [showShareModal, setShowShareModal] = useState({
+    show: false,
+    txid: null,
+  })
+  const [showExportModal, setShowExportModal] = useState(false)
+  const [showWelcome, setShowWelcome] = useState(false)
+
+  const headerRef = useRef(null)
+
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
     accept: ['image/*', 'video/*', 'audio/*'],
@@ -76,119 +86,101 @@ export default ({ children }) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const storage = await getChromeStorage([
-          STORAGE.CONTENT_LIST,
-          STORAGE.KOI_BALANCE,
-          STORAGE.KOI_ADDRESS,
-          STORAGE.AR_BALANCE,
-          STORAGE.AFFILIATE_CODE,
-          STORAGE.SHOW_WELCOME_SCREEN,
-          STORAGE.MOCK_COLLECTIONS_STORE,
-          STORAGE.ACCOUNT_NAME
-        ])
+        /* 
+          Contents, koiBalance, arBalance, address, affiliateCode, showWelcomeScreen, accountName
+        */
+        const contentList = await storage.arweaveWallet.get.assets()
+        const arBalance = await storage.arweaveWallet.get.balance()
+        const koiBalance = await storage.generic.get.koiBalance()
+        const addressStorage = await storage.arweaveWallet.get.address()
+        const affiliateCodeStorage = await storage.generic.get.affiliateCode()
+        const showWelcomeScreen = await storage.setting.get.showWelcomeScreen()
+        const arweaveAccountName = await storage.arweaveWallet.get.accountName()
 
-        const gallerySetting = await getChromeStorage([
-          STORAGE.SHOW_VIEWS,
-          STORAGE.SHOW_EARNED_KOI
-        ])
+        const showViewStorage = await storage.setting.get.showViews()
+        const showEarnedKoiStorage = await storage.setting.get.showEarnedKoi()
 
-        if (!isEmpty(gallerySetting)) {
-          setShowViews(gallerySetting[STORAGE.SHOW_VIEWS])
-          setShowEarnedKoi(gallerySetting[STORAGE.SHOW_EARNED_KOI])
-        }
+        if (showViewStorage) setShowViews(showViewStorage)
+        if (showEarnedKoiStorage) setShowEarnedKoi(showEarnedKoiStorage) 
 
-        if (!storage[STORAGE.SHOW_WELCOME_SCREEN]) {
+        if (!showWelcomeScreen) {
           setShowWelcome(true)
-          setChromeStorage({ [STORAGE.SHOW_WELCOME_SCREEN]: 1 })
+          await storage.setting.set.showWelcomeScreen(1)
         }
-        if (storage[STORAGE.AFFILIATE_CODE]) {
-          setAffiliateCode(storage[STORAGE.AFFILIATE_CODE])
-        }
-        if (storage[STORAGE.CONTENT_LIST]) {
-          setCardInfos(storage[STORAGE.CONTENT_LIST])
-        } else {
-          // setIsLoading(true)
-          // backgroundConnect.postMessage({
-          //   type: MESSAGES.LOAD_CONTENT,
-          // })
-        }
-        setIsLoading(true)
-        backgroundConnect.postMessage({
-          type: MESSAGES.LOAD_CONTENT,
-        })
 
-        // Duplicate code. Will refactor.
-        if (storage[STORAGE.KOI_BALANCE]) {
-          let totalAr = storage[STORAGE.AR_BALANCE]
-          let totalKoi = storage[STORAGE.KOI_BALANCE]
+        if (affiliateCodeStorage) setAffiliateCode(affiliateCodeStorage)
+        if (contentList) setCardInfos(contentList)
 
-          let pendingTransaction = await getChromeStorage(STORAGE.PENDING_TRANSACTION)
-          pendingTransaction = pendingTransaction[STORAGE.PENDING_TRANSACTION] || []
-          pendingTransaction.forEach((transaction) => {
-            if (isNumber(transaction.expense)) {
-              switch (transaction.activityName) {
-                case 'Sent KOII':
-                  totalKoi -= transaction.expense
-                  break
-                case 'Sent AR':
-                  totalAr -= transaction.expense
+        // Set address state
+        // Do actions when have address (have wallet imported and unlocked).
+        if (addressStorage) {
+          const { key } = await backgroundRequest.wallet.getWalletKey()
+
+          setAddress(addressStorage)
+          setWallet(key)
+
+          // Duplicate code. Will refactor.
+          // Calculate balances when have pending transactions.
+          if (koiBalance && arBalance) {
+            let totalAr = arBalance
+            let totalKoi = koiBalance
+            console.log(totalAr, totalKoi)
+            let pendingTransactions = await storage.arweaveWallet.get.pendingTransactions() || []
+            pendingTransactions.forEach((transaction) => {
+              if (isNumber(transaction.expense)) {
+                switch (transaction.activityName) {
+                  case 'Sent KOII':
+                    totalKoi -= transaction.expense
+                    break
+                  case 'Sent AR':
+                    totalAr -= transaction.expense
+                }
               }
-            }
-          })
-          setTotalKoi(totalKoi)
-          setTotalAr(totalAr)
+            })
+            setTotalKoi(totalKoi)
+            setTotalAr(totalAr)
+          }
+          
+          setIsLoading(true)
+          // Load affiliate code
+          if (!affiliateCodeStorage) {
+            koi.wallet = key
+            koi.address = addressStorage
+
+            const code = await getAffiliateCode(koi)
+            const reward = await getTotalRewardKoi(koi)
+            const spent = await checkAffiliateInviteSpent(koi)
+            setAffiliateCode(code)
+            setTotalReward(reward)
+            setInviteSpent(spent)
+          }
         }
-        if (storage[STORAGE.KOI_ADDRESS]) {
-          setAddress(storage[STORAGE.KOI_ADDRESS])
-          backgroundConnect.postMessage({
-            type: MESSAGES.GET_WALLET,
-          })
+
+        // load content
+        /* 
+          background will return an array for loaded content list. (can be an empty array)
+          if all content has been fetched before, a string will be returned.
+        */
+        
+        const responseContentList = await backgroundRequest.assets.loadContent()
+        if (isArray(responseContentList)) {
+          setCardInfos(responseContentList)
+          await storage.arweaveWallet.set.assets(responseContentList)
+          if (isEmpty(responseContentList)) history.push('/create')
+        } else {
+          if (isEmpty(contentList)) history.push('/create')
         }
-        if (storage[STORAGE.ACCOUNT_NAME]) {
-          setAccountName(storage[STORAGE.ACCOUNT_NAME])
+        setIsLoading(false)
+
+        // Set accountName state
+        if (arweaveAccountName) {
+          setAccountName(arweaveAccountName)
         }
       } catch (err) {
         console.log(err.message)
       }
     }
-    const loadContentSuccessHandler = new CreateEventHandler(
-      MESSAGES.LOAD_CONTENT,
-      async (response) => {
-        const { contentList } = response.data
-        if (isArray(contentList)) {
-          setCardInfos(contentList)
-          await setChromeStorage({ [STORAGE.CONTENT_LIST]: contentList })
-          if (isEmpty(contentList)) history.push('/create')
-        } else {
-          const storageContentList = (await getChromeStorage(STORAGE.CONTENT_LIST))[STORAGE.CONTENT_LIST] || []
-          if (isEmpty(storageContentList)) history.push('/create')
-        }
-        setIsLoading(false)
-      }
-    )
-    const loadKeySuccessHandler = new CreateEventHandler(
-      MESSAGES.GET_WALLET_SUCCESS,
-      async (response) => {
-        const { key } = response.data
-        const storage = await getChromeStorage([
-          STORAGE.AFFILIATE_CODE
-        ])
-        if (!storage[STORAGE.AFFILIATE_CODE]) {
-          koi.wallet = key
-          await koi.getWalletAddress()
-          const code = await getAffiliateCode(koi)
-          const reward = await getTotalRewardKoi(koi)
-          const spent = await checkAffiliateInviteSpent(koi)
-          setAffiliateCode(code)
-          setTotalReward(reward)
-          setInviteSpent(spent)
-        }
-        setWallet(key)
-      }
-    )
 
-    backgroundConnect.addHandler(loadContentSuccessHandler)
-    backgroundConnect.addHandler(loadKeySuccessHandler)
     getData()
   }, [])
 
@@ -237,12 +229,6 @@ export default ({ children }) => {
     setIsDragging(false)
   }
 
-  const [showShareModal, setShowShareModal] = useState({
-    show: false,
-    txid: null,
-  })
-  const [showExportModal, setShowExportModal] = useState(false)
-  const [showWelcome, setShowWelcome] = useState(false)
 
   return (
     <GalleryContext.Provider
@@ -286,7 +272,9 @@ export default ({ children }) => {
         setShowViews,
         setShowEarnedKoi,
         accountName,
-        setShowWelcome
+        setShowWelcome,
+        collectionsLoaded,
+        setCollectionsLoaded
       }}
     >
       {address ? <div

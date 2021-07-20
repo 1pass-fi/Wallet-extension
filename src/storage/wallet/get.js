@@ -64,4 +64,18 @@ export class WalletGet {
   pendingTransactions() {
     return this.#wallet._getChrome(this.#wallet._getKeyWord(WALLET.PENDING_TRANSACTIONS))
   }
+  /**
+   * 
+   * @returns {String} Account name for the wallet.
+   */
+  accountName() {
+    return this.#wallet._getChrome(this.#wallet._getKeyWord(WALLET.ACCOUNT_NAME))
+  }
+  /**
+   * 
+   * @returns {Array} list of collections
+   */
+  collections() {
+    return this.#wallet._getChrome(this.#wallet._getKeyWord(WALLET.COLLECTIONS))
+  }
 }

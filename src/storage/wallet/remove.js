@@ -39,4 +39,12 @@ export class WalletRemove {
   async pendingTransactions() {
     return this.#wallet._removeChrome(this.#wallet._getKeyWord(WALLET.PENDING_TRANSACTIONS))
   }
+
+  async accountName() {
+    return this.#wallet._removeChrome(this.#wallet._getKeyWord(WALLET.ACCOUNT_NAME))
+  }
+
+  async collections() {
+    return this.#wallet._removeChrome(this.#wallet._getKeyWord(WALLET.COLLECTIONS))
+  }
 }

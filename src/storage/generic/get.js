@@ -41,4 +41,11 @@ export class GenericGet {
   accountName() {
     return this.#chrome._getChrome(GENERIC.ACCOUNT_NAME)
   }
+  /**
+   * 
+   * @returns {String} Friend referral code
+   */
+  affiliateCode() {
+    return this.#chrome._getChrome(GENERIC.AFFILIATE_CODE)
+  }
 }

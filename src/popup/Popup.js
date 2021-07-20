@@ -123,7 +123,7 @@ const Popup = ({
   const loadPrice = async () => {
     try {
       const price = await storage.arweaveWallet.get.price()
-      let selectedCurrency = await storage.generic.get.selectedCurrency() || 'USD'
+      let selectedCurrency = await storage.setting.get.selectedCurrency() || 'USD'
 
       console.log('Selected Currency: ', selectedCurrency)
 
