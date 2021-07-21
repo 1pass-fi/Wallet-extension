@@ -70,6 +70,8 @@
   display: flex;
   gap: 30px;
   height: 320px;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .transfer-wallet-modal .content .left {
@@ -105,6 +107,9 @@
 .transfer-wallet-modal .content .left .earned-koi {
   font-size: 14px;
   line-height: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .transfer-wallet-modal .content .right {
@@ -115,7 +120,66 @@
 }
 .transfer-wallet-modal .content .right .eth-address,
 .transfer-wallet-modal .content .right .number-to-transfer {
+  width: 100%;
   position: relative;
+}
+
+.transfer-wallet-modal .content .right .number-to-transfer.confirm {
+  display: flex;
+  font-size: 16px;
+  line-height: 32px;
+  align-items: center;
+  gap: 7px;
+}
+
+.transfer-wallet-modal .content .right .number-to-transfer.confirm span {
+  color: #9be7c4;
+}
+
+.transfer-wallet-modal .content .right .number-to-transfer.success {
+  font-size: 18px;
+  line-height: 32px;
+}
+
+.transfer-wallet-modal .content .right .eth-address .address-dropdown {
+  position: absolute;
+  right: 0px;
+  top: 18px;
+  z-index: 20;
+}
+
+.transfer-wallet-modal
+  .content
+  .right
+  .eth-address
+  .address-dropdown
+  .dropdown-button {
+  background: #171753;
+  border: 1px solid #ffffff;
+  cursor: pointer;
+  height: 32px;
+  width: 32px;
+}
+
+.transfer-wallet-modal
+  .content
+  .right
+  .eth-address
+  .address-dropdown
+  .dropdown-button:after {
+  border-bottom: 2px solid #ffffff;
+  border-right: 2px solid #ffffff;
+  content: ' ';
+  display: inline-block;
+  height: 3px;
+  padding: 3px;
+  position: absolute;
+  right: 9px;
+  top: 7px;
+  transform: rotate(45deg);
+  width: 3px;
+  width: 3px;
+  /* z-index: 21; */
 }
 
 .transfer-wallet-modal .content .right .input {
@@ -131,8 +195,27 @@
   width: 392px;
 }
 
+.transfer-wallet-modal
+  .content
+  .right
+  .number-to-transfer
+  input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.transfer-wallet-modal
+  .content
+  .right
+  .number-to-transfer
+  input[type='number'] {
+  -moz-appearance: textfield;
+}
+
 .transfer-wallet-modal .content .right .input::placeholder {
-  font-size: 13px;
+  font-size: 10px;
   line-height: 24px;
 }
 
@@ -142,6 +225,30 @@
   font-weight: 600;
   line-height: 15px;
   margin-bottom: 3px;
+}
+
+.transfer-wallet-modal .warning {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 16px;
+  width: 388px;
+  height: 55px;
+  border: 2px solid #ff4141;
+  box-sizing: border-box;
+  border-radius: 3px;
+}
+
+.transfer-wallet-modal .warning-icon {
+  width: 60px;
+  height: 37px;
+}
+
+.transfer-wallet-modal .warning-text {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  color: #ff4141;
 }
 
 .transfer-wallet-modal .content .right .total-available {
@@ -202,6 +309,12 @@
   width: 276px;
 }
 
+.transfer-wallet-modal .content .right .transfer-button.success {
+  color: #ffffff;
+  background: #171753;
+  border: 1px solid #ffffff;
+}
+
 .transfer-wallet-modal .content .right .transfer-button:active {
   background: #171753;
   border: 1px solid #ffffff;
@@ -227,4 +340,100 @@
   left: 7px;
   position: absolute;
   top: 7px;
+}
+
+/* Dropdown */
+.transfer-wallet-modal .address-dropdown .accounts {
+  background: #ffffff;
+  border-radius: 0px 0px 3px 3px;
+  border: 1px solid #171753;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0px;
+  position: absolute;
+  right: 1px;
+  width: 390px;
+}
+
+.transfer-wallet-modal .address-dropdown .account {
+  display: flex;
+  flex-direction: row;
+  padding: 4px 16px 4px 10px;
+  cursor: pointer;
+  align-items: center;
+  gap: 10px;
+}
+
+.transfer-wallet-modal .address-dropdown .account .info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.transfer-wallet-modal .address-dropdown .account:hover,
+.transfer-wallet-modal .address-dropdown .different-address:hover {
+  background: #bef0ed;
+}
+
+.transfer-wallet-modal .address-dropdown .account .name {
+  color: #171753;
+  font-size: 16px;
+  line-height: 32px;
+}
+
+.transfer-wallet-modal .address-dropdown .account .address {
+  font-size: 14px;
+  line-height: 32px;
+  color: #237b75;
+}
+
+.transfer-wallet-modal .address-dropdown .different-address {
+  padding: 4px 16px 4px 42px;
+  cursor: pointer;
+}
+.transfer-wallet-modal .address-dropdown .different-address .name {
+  color: #171753;
+  font-size: 16px;
+  line-height: 32px;
+}
+
+.transfer-wallet-modal .send-to {
+  width: 100%;
+}
+
+.transfer-wallet-modal .send-to .account {
+  display: flex;
+}
+
+.transfer-wallet-modal .send-to .account .account-logo {
+  margin-top: 5px;
+}
+
+.transfer-wallet-modal .send-to .account .name {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 32px;
+  letter-spacing: -0.01em;
+  color: #9be7c4;
+}
+
+.transfer-wallet-modal .send-to .account .address {
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.transfer-wallet-modal .transaction-pending {
+  font-size: 12px;
+  line-height: 16px;
+  transform: matrix(0.99, 0, -0.13, 1, 0, 0);
+  width: 100%;
+}
+
+.transfer-wallet-modal .complete-tip {
+  width: 100%;
+  font-size: 18px;
+  line-height: 32px;
 }
