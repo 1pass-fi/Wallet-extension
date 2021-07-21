@@ -1,16 +1,13 @@
 .wallet {
   position: relative;
   width: 426px;
-  padding: 20px 0;
+  padding: 20px 0px;
   background: #ffffff;
   color: #171753;
+  overflow-y: hidden;
 }
 
-.wallet .fish {
-  position: absolute;
-  top: 0px;
-  left: 30px;
-  width: 40px;
+.wallet.collapsed {
   height: 40px;
 }
 
@@ -34,19 +31,30 @@
   font-size: 13px;
 }
 
+/* WALLET INFO ROW */
 .wallet .wallet-wrapper .wallet-info .wallet-info-row {
   display: flex;
+  position: relative;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  height: 100px;
-  max-width: 60%;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 80px;
+  width: 165px;
   flex-grow: 1;
+  padding-left: 32px;
+}
+
+.wallet .wallet-wrapper .wallet-info .fish {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  top: 0px;
+  left: -16px;
 }
 
 .wallet .wallet-wrapper .wallet-info .wallet-info-row .name {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 130px;
   font-size: 18px;
   font-weight: 500;
@@ -55,12 +63,20 @@
 
 .wallet .wallet-wrapper .wallet-info .wallet-info-row .addr {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 130px;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
   color: #237b75;
+}
+
+.wallet .wallet-wrapper .wallet-info .wallet-info-row .icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .wallet .wallet-wrapper .wallet-info .wallet-info-row .name .text {
@@ -73,25 +89,39 @@
   margin-left: 10px;
 }
 
-.wallet .wallet-wrapper .wallet-info .wallet-info-row.wallet-balance {
+/* WALLET BALANCE ROW */
+.wallet .wallet-wrapper .wallet-info .wallet-balance-row {
   display: flex;
-  justify-content: right;
   align-items: flex-end;
-  padding-left: 10px;
+  padding-right: 32px;
+  width: 165px;
+  height: 80px;
+  flex-direction: column;
+  position: relative;
+  user-select: none;
 }
 
-.wallet .wallet-wrapper .wallet-info .wallet-info-row .koi-balance, .ar-balance {
-  height: 50px;
+.wallet .wallet-wrapper .wallet-info .wallet-balance-row .collapse-icon {
+  width: 14px;
+  height: 6px;
+  position: absolute;
+  top: 5px;
+  right: -7px;
+  cursor: pointer;
+}
+
+.wallet .wallet-wrapper .wallet-info .wallet-balance-row .koi-balance, .ar-balance {
+  height: 40px;
   text-align: right;
 }
 
-.wallet .wallet-wrapper .wallet-info .wallet-info-row .balance {
+.wallet .wallet-wrapper .wallet-info .wallet-balance-row .balance {
   font-size: 18px;
   font-weight: 400;
   line-height: 20px;
 }
 
-.wallet .wallet-wrapper .wallet-info .wallet-info-row .usd-exchange {
+.wallet .wallet-wrapper .wallet-info .wallet-balance-row .usd-exchange {
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;

@@ -82,9 +82,6 @@ const Popup = ({
     const ethAddress = await storage.ethereumWallet.get.address()
     const ethKey = await storage.ethereumWallet.get.key()
 
-    console.log('address: ', address)
-    console.log('key: ', key)
-    console.log('pendingRequest: ', pendingRequest)
     const query = window.location.search // later we should refactor using react-hash-router
     try {
       if (address || ethAddress) {
@@ -163,36 +160,15 @@ const Popup = ({
       const timer = setTimeout(() => setError(null), 4000)
       return () => clearTimeout(timer)
     }
-  }, [error])
-
-  useEffect(() => {
     if (notification) {
       const timer = setTimeout(() => setNotification(null), 4000)
       return () => clearTimeout(timer)
     }
-  }, [notification])
-
-  useEffect(() => {
     if (warning) {
       const timer = setTimeout(() => setWarning(null), 6000)
       return () => clearTimeout(timer)
     }
-  }, [warning])
-
-  const activities = [
-    {
-      activityName: `Purchased "The Balance of Koi"`,
-      expense: 100,
-      accountName: 'Account 1',
-      date: 'May 24, 2021'
-    },
-    {
-      activityName: `Purchased "The Balance of Koi"`,
-      expense: 200,
-      accountName: 'Account 1',
-      date: 'May 22, 2021'
-    },
-  ]
+  }, [error, notification, warning])
 
   return (
     <div className="popup">
@@ -214,7 +190,7 @@ const Popup = ({
                   <Assets />
                 </Route>
                 <Route path='/activity'>
-                  <Activity activities={activities} />
+                  <Activity />
                 </Route>
                 <Route path='/setting'>
                   <Setting />

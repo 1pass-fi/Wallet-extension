@@ -15,7 +15,7 @@ class Ethereum {
   createNewWallet() {
     const seedPhrase = this.#generateMnemonic()
 
-    const createdWallet = this.getWalletFromSeedPhrase(seedPhrase)
+    const createdWallet = this.#getWalletFromSeedPhrase(seedPhrase)
     this.key = createdWallet.privateKey
     this.address = createdWallet.address
     return { seedPhrase, wallet: createdWallet}
@@ -26,7 +26,7 @@ class Ethereum {
     if (type == 'key') {
       wallet = this.#web3.eth.accounts.privateKeyToAccount(payload.key)
     }
-    wallet = this.getWalletFromSeedPhrase(payload)
+    wallet = this.#getWalletFromSeedPhrase(payload)
     this.key = wallet.privateKey
     this.address = wallet.address
 
@@ -37,7 +37,11 @@ class Ethereum {
     return this.#web3.eth.getBalance(this.address)
   }
 
-  getWalletFromSeedPhrase(seedPhrase) {
+  /*
+    PRIVATE FUNCTIONS
+  */
+ 
+  #getWalletFromSeedPhrase(seedPhrase) {
     const seed = mnemonicToSeedSync(seedPhrase)
     const hdwallet = hdkey.fromMasterSeed(seed)
     const wallet_hdpath = 'm/44\'/60\'/0\'/0/0'
@@ -51,10 +55,6 @@ class Ethereum {
 
     return restoredWallet
   }
-
-  /*
-  PRIVATE FUNCTIONS
-  */
 
   #generateMnemonic() {
     return generateMnemonic()

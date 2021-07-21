@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import getSymbolFromCurrency from 'currency-symbol-map'
 
+import AccountInfo from './AccountInfo'
 import './index.css'
 
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -10,7 +11,6 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import Card from 'shared/card'
 import CopyIcon from 'img/copy-icon.svg'
 import EditIcon from 'img/edit-icon.svg'
-import Fish from 'img/koi-logo-bg.svg'
 import ShareIconOne from 'img/wallet/share-icon.svg'
 import ShareIconTwo from 'img/wallet/share2-icon.svg'
 import KeyIcon from 'img/wallet/key-icon.svg'
@@ -23,7 +23,7 @@ import { removeWallet, getKeyFile } from 'actions/koi'
 import { setNotification } from 'actions/notification'
 import { setAccountName } from 'actions/accountName'
 import { numberFormat, fiatCurrencyFormat, getAccountName, updateAccountName } from 'utils'
-import { STORAGE, NOTIFICATION, RATE, PATH } from 'koiConstants'
+import { NOTIFICATION, PATH } from 'koiConstants'
 import ExportPrivateKeyModal from './exportPrivateKeyModal'
 import { setIsLoading } from 'popup/actions/loading'
 
@@ -178,6 +178,8 @@ export const Wallet = ({
 }) => {
   const history = useHistory()
   const [connectedSite, setConnectedSite] = useState([])
+  const [collapsed, setCollapsed] = useState(false)
+
   const handleRemoveWallet = async () => {
     setIsLoading(true)
     await removeWallet()
@@ -209,21 +211,9 @@ export const Wallet = ({
   }, [])
 
   return (
-    <div className='wallet'>
-      <div className='wallet fish'>
-        <Fish />
-      </div>
+    <div className={collapsed ? 'wallet collapsed' : 'wallet'}>
       <div className='wallet-wrapper'>
-        <WalletInfo
-          accountAddress={accountAddress}
-          koiBalance={koiBalance}
-          arBalance={arBalance}
-          setNotification={setNotification}
-          setAccountName={setAccountName}
-          accountName={accountName}
-          price={price}
-          currency={currency}
-        />
+        <AccountInfo setCollapsed={setCollapsed} collapsed={collapsed}/>
         <Card className='address'>{accountAddress}</Card>
         <WalletConf
           accountAddress={accountAddress}

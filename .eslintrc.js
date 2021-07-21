@@ -26,6 +26,7 @@ module.exports = {
         "no-param-reassign": "off",
         "no-unused-vars": "off",
         "no-undef": "off",
+        "no-dupe-class-members": "off",
         "func-names": [
             "error",
             "never"

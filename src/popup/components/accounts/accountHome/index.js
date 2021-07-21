@@ -64,10 +64,13 @@ export const AccountHome = ({ koi, getBalances }) => {
         currencies={currencies}
         onSendSuccess={onSendSuccess}
       />}
-      {koi.address ? <Wallet accountAddress={koi.address} koiBalance={koi.koiBalance} arBalance={koi.arBalance} /> :
+      {/* {koi.address ? <Wallet accountAddress={koi.address} koiBalance={koi.koiBalance} arBalance={koi.arBalance} /> :
         <Link to='/account/import' className="plus-button">
           <PlusIcon />
-        </Link>}
+        </Link>} */}
+      <Wallet accountAddress={koi.address} koiBalance={koi.koiBalance} arBalance={koi.arBalance} />
+      <Wallet accountAddress={koi.address} koiBalance={koi.koiBalance} arBalance={koi.arBalance} />
+      <Wallet accountAddress={koi.address} koiBalance={koi.koiBalance} arBalance={koi.arBalance} />
     </div>
   )
 }
