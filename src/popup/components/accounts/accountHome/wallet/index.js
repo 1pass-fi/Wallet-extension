@@ -86,7 +86,13 @@ const WalletInfo = (({
           {<div className='usd-exchange'>{getSymbolFromCurrency(currency) || ''}{fiatCurrencyFormat(arBalance * price.AR)} {currency}</div>}
         </div>
       </div>
-      { openEditModal && <EditAccountNameModal onClose={onClose} onSubmit={onSubmit} currentName={accountName}/> }
+      { openEditModal && 
+        <EditAccountNameModal 
+          onClose={onClose} 
+          onSubmit={onSubmit} 
+          currentName={accountName}
+          account={account}
+        /> }
     </div>
   )
 })
@@ -107,6 +113,7 @@ const WalletConf = (({
   accountName,
   sites,
   handleDeleteSite,
+  account
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [showModalConnectedSite, setShowModalConnectedSite] = useState(false)
@@ -122,7 +129,7 @@ const WalletConf = (({
         icon={<ShareIconOne />}
         title={'View Block Explorer'}
         onClick={() => {
-          const url = `${PATH.VIEW_BLOCK}/${accountAddress}`
+          const url = `${PATH.VIEW_BLOCK}/${account.address}`
           chrome.tabs.create({ url })
         }}
       />
@@ -145,8 +152,8 @@ const WalletConf = (({
       />
       {showModal && (
         <RemoveAccountModal
-          accountName={accountName}
-          accountAddress={accountAddress}
+          accountName={account.accountName}
+          accountAddress={account.address}
           onClose={() => setShowModal(false)}
           onSubmit={handleRemoveWallet}
         />
@@ -165,27 +172,23 @@ const WalletConf = (({
 })
 
 export const Wallet = ({
-  accountAddress,
-  koiBalance,
-  arBalance,
   removeWallet,
-  setNotification,
   setAccountName,
-  price,
   accountName,
   setIsLoading,
-  currency
+  type,
+  koi,
+  ethereum,
+  account
 }) => {
   const history = useHistory()
   const [connectedSite, setConnectedSite] = useState([])
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
 
   const handleRemoveWallet = async () => {
     setIsLoading(true)
-    await removeWallet()
+    await removeWallet(account.address, account.type)
     setIsLoading(false)
-
-    history.push('/account/welcome')
   } 
 
   const handleDeleteSite = async (site) => {
@@ -213,21 +216,28 @@ export const Wallet = ({
   return (
     <div className={collapsed ? 'wallet collapsed' : 'wallet'}>
       <div className='wallet-wrapper'>
-        <AccountInfo setCollapsed={setCollapsed} collapsed={collapsed}/>
-        <Card className='address'>{accountAddress}</Card>
+        <AccountInfo account={account} type={type} setCollapsed={setCollapsed} collapsed={collapsed}/>
+        <Card className='address'>{account.address}</Card>
         <WalletConf
-          accountAddress={accountAddress}
+          accountAddress={'address'}
           sites={connectedSite}
           handleDeleteSite={handleDeleteSite}
           handleRemoveWallet={handleRemoveWallet}
-          accountName={accountName}
+          accountName={account.accountName}
+          account={account}
         />
       </div>
     </div>
   )
 }
 
-const mapStateToProps = (state) => ({ price: state.price, accountName: state.accountName, currency: state.currency })
+const mapStateToProps = (state) => ({
+  koi: state.koi,
+  price: state.price,
+  accountName: state.accountName,
+  currency: state.currency,
+  ethereum: state.ethereum
+})
 
 export default connect(mapStateToProps, {
   removeWallet,

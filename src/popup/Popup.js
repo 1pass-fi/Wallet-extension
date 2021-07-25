@@ -2,7 +2,7 @@ import '@babel/polyfill'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch, useHistory, withRouter } from 'react-router-dom'
-import { get, isNumber } from 'lodash'
+import { get, isNumber, isEmpty } from 'lodash'
 
 import './Popup.css'
 import Header from 'components/header'
@@ -24,13 +24,17 @@ import { setPrice } from 'actions/price'
 import { setKoi, getBalances } from 'actions/koi'
 import { setCurrency } from 'actions/currency'
 import { setEthereum } from 'actions/ethereum'
+import { setAccounts } from 'actions/accounts'
 
 import { HEADER_EXCLUDE_PATH, REQUEST, DISCONNECTED_BACKGROUND } from 'koiConstants'
-
 
 import axios from 'axios'
 
 import storage from 'storage'
+
+import { Ethereum } from 'account/Ethereum'
+import { Arweave } from 'account/Arweave'
+import { Account as AccountClass } from 'account'
 
 const ContinueLoading = () => (
   <div className='continue-loading'>
@@ -60,7 +64,8 @@ const Popup = ({
   getBalances,
   setPrice,
   setKoi,
-  setCurrency
+  setCurrency,
+  setAccounts
 }) => {
   const history = useHistory()
 
@@ -68,49 +73,41 @@ const Popup = ({
 
   const loadApp = async () => {
     /* 
-      Load data for redirecting
-        - Address
-        - Key
-        - Pending Request
+      load for wallet state of lock or unlock
+      load for all accounts
     */
+    let accounts = await AccountClass.getAll()
+    let unlocked = await storage.generic.get.unlocked()
+    accounts = await Promise.all(accounts.map(async account => await account.get.getAllFields()))
+    
+    unlocked = true
+    setAccounts(accounts)
 
-    const address = await storage.arweaveWallet.get.address()
-    const key = await storage.arweaveWallet.get.key()
-    const pendingRequest = await storage.generic.get.pendingRequest()
-
-    // get ethereum wallet
-    const ethAddress = await storage.ethereumWallet.get.address()
-    const ethKey = await storage.ethereumWallet.get.key()
 
     const query = window.location.search // later we should refactor using react-hash-router
+
+    /* 
+      When there's no imported account, redirect to welcome screen
+      If not unlocked, redirect to lock screen
+      Click on add account, go to welcome screen
+    */
     try {
-      if (address || ethAddress) {
-        setKoi({ address })
-        setEthereum({ ethAddress, ethBalance: 0 })
-        getBalances()
-        switch (get(pendingRequest, 'type')) {
-          case REQUEST.PERMISSION:
-            history.push('/account/connect-site')
-            break
-          case REQUEST.TRANSACTION:
-            history.push('/account/sign-transaction')
-            break
-          default:
-            history.push('/account')
-        }
+      if (isEmpty(accounts)) {
+        history.push('/account/welcome')
       } else {
-        // Koi Address not in local storage -> cannot get data of balances, assets, activities
-        if (key) {
-          history.push('/account/login')
-        } else if (query.includes('create-wallet')) {
-          history.push('/account/create')
-        } else if (query.includes('upload-json')) {
-          history.push('/account/import/keyfile')
-        } else if (query.includes('upload-seedphrase')) {
-          history.push('/account/import/phrase')
-        } else {
-          history.push('/account/welcome')
-        }
+        history.push('/account')
+      }
+
+      if (!unlocked) {
+        history.push('/account/login')
+      }
+
+      if (query.includes('create-wallet')) {
+        history.push('/account/create')
+      } else if (query.includes('upload-json')) {
+        history.push('/account/import/keyfile')
+      } else if (query.includes('upload-seedphrase')) {
+        history.push('/account/import/phrase')
       }
     } catch (err) {
       console.log(err.message)
@@ -170,6 +167,10 @@ const Popup = ({
     }
   }, [error, notification, warning])
 
+  const test = async () => {
+    history.push('/account/welcome')
+  }
+
   return (
     <div className="popup">
       {
@@ -211,7 +212,8 @@ const mapStateToProps = (state) => ({
   koi: state.koi,
   transactions: state.transactions,
   isContLoading: state.contLoading,
-  price: state.price
+  price: state.price,
+  accounts: state.accounts
 })
 
 const mapDispatchToProps = {
@@ -222,7 +224,8 @@ const mapDispatchToProps = {
   setKoi,
   getBalances,
   setPrice,
-  setCurrency
+  setCurrency,
+  setAccounts
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Popup))

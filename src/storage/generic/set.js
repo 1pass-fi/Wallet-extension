@@ -56,4 +56,12 @@ export class GenericSet {
   affiliateCode(value) {
     return this.#chrome._setChrome(GENERIC.AFFILIATE_CODE, value)
   }
+  /**
+   * 
+   * @param {Bolean} value State of locked/unlocked
+   * @returns 
+   */
+  unlocked(value) {
+    return this.#chrome._setChrome(GENERIC.UNLOCKED, value)
+  }
 }

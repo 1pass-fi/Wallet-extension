@@ -15,6 +15,8 @@ import accountName from './accountName'
 import price from './price'
 import creatingWallet from './creatingWallet'
 import currency from './currency'
+import ethereum from './ethereum'
+import accounts from './accounts'
 
 export default combineReducers({
   loading,
@@ -31,5 +33,7 @@ export default combineReducers({
   accountName,
   price,
   creatingWallet,
-  currency
+  currency,
+  ethereum,
+  accounts
 })

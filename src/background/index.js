@@ -4,11 +4,13 @@ import { PORTS, LOAD_BALANCES_TIME_INTERVAL, OS } from 'koiConstants'
 import popUpEventHandlers, { loadBalances } from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from '@_koi/sdk/web'
+import { Ethereum } from './eth'
 import storage from 'storage'
 // import { Web } from './koiMock'
 
 /* eslint-disable no-undef */
 export const koi = new Web()
+export const eth = new Ethereum()
 console.log('Finnie is waiting for instructions.')
 
 const ports = {}
@@ -35,11 +37,13 @@ function cb(port) {
       port.onMessage.addListener(message => {
         popUpEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
 
+
+        autoLoadBalancesPort = port
+        if (!autoLoadBalancesInterval) {
+          autoLoadBalances(koi)
+        }
         if (koi.address) {
-          autoLoadBalancesPort = port
-          if (!autoLoadBalancesInterval) {
-            autoLoadBalances(koi)
-          }
+
         }
       })
       break

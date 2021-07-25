@@ -17,6 +17,7 @@ const EditAccountNameModal = ({
   currentName,
   onClose,
   onSubmit,
+  account
 }) => {
   const [accountName, setAccountName] = useState(currentName)
   
@@ -30,7 +31,7 @@ const EditAccountNameModal = ({
       <InputField 
         type='text'
         className='account-name-input'
-        value={accountName}
+        // value={account.accountName}
         onChange={onChangeAccountName}
       />
       <div className="modal-action-buttons">

@@ -16,3 +16,16 @@
 .assets {
   width: 100%;
 }
+
+.assets .owner {
+  width: 416px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding-left: 23px;
+  font-size: 20px;
+  line-height: 20px;
+  color: #ffffff;
+  background-color: #171753;
+  font-weight: 600;
+}

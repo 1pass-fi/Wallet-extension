@@ -1,12 +1,17 @@
-.plus-button {
-    background: #F5F5F5;
-    border-radius: 50%;
-    border: 0px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
-    display: inline-block;
+.accounts-wrapper {
+    padding-bottom: 20px;
+    background-color: #ffffff;
+}
+
+.home-plus-button-wrapper {
+    background: #EEEEEE;
+    height: 48px;
+    display: flex;
+    align-items: center;
+}
+.home-plus-button-wrapper .button {
+    width: 24px;
     height: 24px;
     margin-left: 35px;
-    padding: 0;
-    text-align: center;
-    width: 24px;
+    cursor: pointer;
 }

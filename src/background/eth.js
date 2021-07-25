@@ -2,7 +2,7 @@ import Web3 from 'web3'
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
 import hdkey from 'ethereumjs-wallet/dist/hdkey'
 
-class Ethereum {
+export class Ethereum {
   #provider
   #web3
   constructor() {
@@ -25,8 +25,9 @@ class Ethereum {
     let wallet
     if (type == 'key') {
       wallet = this.#web3.eth.accounts.privateKeyToAccount(payload.key)
+    } else {
+      wallet = this.#getWalletFromSeedPhrase(payload)
     }
-    wallet = this.#getWalletFromSeedPhrase(payload)
     this.key = wallet.privateKey
     this.address = wallet.address
 

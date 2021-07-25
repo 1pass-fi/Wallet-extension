@@ -68,7 +68,8 @@ const Header = ({ location, setError, koi }) => {
           <SettingIcon />
         </button>}
       </header>
-      {koi.address && location.pathname !== '/setting' && <NavBar />}
+      {/* {koi.address && location.pathname !== '/setting' && <NavBar />} */}
+      <NavBar />
     </>
   )
 }

@@ -18,6 +18,10 @@ import { setNotification } from 'actions/notification'
 import { setAccountName } from 'actions/accountName'
 import { numberFormat, fiatCurrencyFormat, updateAccountName } from 'utils'
 import { NOTIFICATION } from 'koiConstants'
+import { Account } from 'account'
+import { setAccounts } from 'popup/actions/accounts'
+
+import { TYPE } from 'account/accountConstants'
 
 
 export const AccountInfo = (({
@@ -28,7 +32,11 @@ export const AccountInfo = (({
   price,
   currency,
   collapsed,
-  setCollapsed
+  setCollapsed,
+  ethereum,
+  type,
+  account,
+  setAccounts
 }) => {
   const [openEditModal, setOpenEditModal] = useState(false)
   const [accountAddress, setAccountAddress] = useState('')
@@ -36,9 +44,16 @@ export const AccountInfo = (({
   const [balance, setBalance] = useState(null)
 
   const onSubmit = async (newName) => {
-    await updateAccountName(newName)
+
+    const arweaveAccount = await Account.get({ address: account.address }, TYPE.ARWEAVE)
+    await arweaveAccount.set.accountName(newName)
+
+    const accountState = await Account.getAllState()
+    setAccounts(accountState)
+
+    // await updateAccountName(newName)
+    // setAccountName(newName)
     setNotification(NOTIFICATION.ACCOUNT_NAME_UPDATED)
-    setAccountName(newName)
     setOpenEditModal(false)
   }
 
@@ -47,9 +62,15 @@ export const AccountInfo = (({
   }
 
   useEffect(() => {
-    setAccountAddress(get(koi, 'address'))
-    setKoiBalance(get(koi, 'koiBalance'))
-    setBalance(get(koi, 'arBalance'))
+    if (type == 'arweave') {
+      setAccountAddress(get(koi, 'address'))
+      setKoiBalance(get(koi, 'koiBalance'))
+      setBalance(get(koi, 'arBalance'))
+    } else {
+      setAccountAddress(get(ethereum, 'ethAddress'))
+      setKoiBalance(get(koi, 'koiBalance'))
+      setBalance(get(ethereum, 'ethBalance'))
+    }
   }, [koi])
 
   return (
@@ -60,17 +81,17 @@ export const AccountInfo = (({
         </div>
         <div>
           <div className='name'>
-            <div className='text'>{accountName}</div>
+            <div className='text'>{account.accountName}</div>
             <div onClick={() => setOpenEditModal(true)}>
               <div className='icon'><EditIcon /></div>
             </div>
           </div>
           <div className='addr'>
-            <div>{`${accountAddress.slice(0, 6)}...${accountAddress.slice(
-              accountAddress.length - 4
+            <div>{`${account.address.slice(0, 6)}...${account.address.slice(
+              account.address.length - 4
             )}`}</div>
             <div onClick={() => setNotification(NOTIFICATION.COPIED)}>
-              <CopyToClipboard text={accountAddress}>
+              <CopyToClipboard text={account.address}>
                 <div className="icon">
                   <CopyIcon/>
                 </div>
@@ -89,15 +110,21 @@ export const AccountInfo = (({
           </div>
         }
         <div className='koi-balance'>
-          <div className='balance'>{numberFormat(koiBalance)} KOII</div>
-          {<div hidden className='usd-exchange'>${fiatCurrencyFormat(koiBalance * price.KOI)} USD</div>}
+          <div className='balance'>{numberFormat(account.koiBalance)} KOII</div>
+          {<div hidden className='usd-exchange'>${fiatCurrencyFormat(account.koiBalance * price.KOI)} USD</div>}
         </div>
         <div className='ar-balance'>
-          <div className='balance'>{numberFormat(balance)} AR</div>
-          {<div className='usd-exchange'>{getSymbolFromCurrency(currency) || ''}{fiatCurrencyFormat(balance * price.AR)} {currency}</div>}
+          <div className='balance'>{numberFormat(account.balance)} AR</div>
+          {<div className='usd-exchange'>{getSymbolFromCurrency(currency) || ''}{fiatCurrencyFormat(account.balance * price.AR)} {currency}</div>}
         </div>
       </div>
-      { openEditModal && <EditAccountNameModal onClose={onClose} onSubmit={onSubmit} currentName={accountName}/> }
+      { openEditModal && 
+        <EditAccountNameModal 
+          onClose={onClose} 
+          onSubmit={onSubmit} 
+          currentName={account.name}
+          account={account}
+        /> }
     </div>
   )
 })
@@ -106,9 +133,10 @@ const mapStateToProps = (state) => ({
   accountName: state.accountName,
   koi: state.koi,
   price: state.price,
-  currency: state.currency
+  currency: state.currency,
+  ethereum: state.ethereum
 })
 
-const mapDispatchToProps = { setAccountName, setNotification }
+const mapDispatchToProps = { setAccountName, setNotification, setAccounts }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo)

@@ -30,4 +30,8 @@ export class GenericRemove {
   affiliateCode() {
     return this.#chrome._removeChrome(GENERIC.AFFILIATE_CODE)
   }
+
+  unlocked() {
+    return this.#chrome._removeChrome(GENERIC.UNLOCKED)
+  }
 }

@@ -48,4 +48,11 @@ export class GenericGet {
   affiliateCode() {
     return this.#chrome._getChrome(GENERIC.AFFILIATE_CODE)
   }
+  /**
+   * 
+   * @returns {Boolean} State of locked/unlocked
+   */
+  unlocked() {
+    return this.#chrome._getChrome(GENERIC.UNLOCKED)
+  }
 }

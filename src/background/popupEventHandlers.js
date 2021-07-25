@@ -2,6 +2,10 @@ import passworder from 'browser-passworder'
 import { isArray, isString, isEmpty } from 'lodash'
 import Arweave from 'arweave'
 import storage from 'storage'
+import { Account } from 'account'
+import { Arweave as ArweaveWallet } from 'account/Arweave'
+import { Ethereum as EthereumWallet } from 'account/Ethereum'
+import { TYPE } from 'account/accountConstants'
 
 const arweave = Arweave.init({
   host: 'arweave.net',
@@ -30,27 +34,32 @@ import {
 } from 'utils'
 
 export const loadBalances = async (koi, port) => {
-  const koiBalance = await storage.generic.get.koiBalance()
-  const arBalance = await storage.arweaveWallet.get.balance()
-  if (koiBalance !== null && arBalance !== null) {
-    if (port) {
-      try {
-        port.postMessage({
-          type: MESSAGES.GET_BALANCES_SUCCESS,
-          data: { koiData: { koiBalance, arBalance } }
-        })
-      } catch (error) {
-
-      }
-    }
-  }
   try {
-    const koiData = await getBalances(koi)
+    const accounts = await Account.getAll()
+    await Promise.all(accounts.map(async account => {
+      let { arBalance, koiBalance } = await account.method.getBalances()
+      const address = await account.get.address()
+      // reduce balances by pending transaction expenses
+      const pendingTransactions = await account.get.pendingTransactions() || []
+      pendingTransactions.forEach((transaction) => {
+        switch (transaction.activityName) {
+          case 'Sent KOII':
+            koiBalance -= transaction.expense
+            break
+          case 'Sent AR':
+            arBalance -= transaction.expense
+        }
+      })
+      console.log('UPDATE BALANCES FOR', address)
+      console.log('koiBalance:', koiBalance,'; arBalance:', arBalance)
+      await account.set.balance(arBalance)
+      await account.set.koiBalance(koiBalance)
+    }))
+
     if (port) {
       try {
         port.postMessage({
           type: MESSAGES.GET_BALANCES_SUCCESS,
-          data: { koiData }
         })
       } catch (error) {
 
@@ -61,39 +70,51 @@ export const loadBalances = async (koi, port) => {
   }
 }
 
-export default async (koi, port, message, ports, resolveId) => {
+export default async (koi, port, message, ports, resolveId, eth) => {
   try {
     switch (message.type) {
       case MESSAGES.IMPORT_WALLET: {
         try {
-          const { key, password } = message.data
-          const koiData = await utils.loadWallet(koi, key, LOAD_KOI_BY.KEY)
-          
-          // save wallet for new storage object
-          await storage.arweaveWallet.method.saveWallet(password, koi)
-
-          await saveWalletToChrome(koi, password)
-
-          // key is seedphrase
+          let { key, password, type } = message.data
+          let account
+          let address
+          type = TYPE.ARWEAVE
+          // Create new account
+          switch(type) {
+            case TYPE.ARWEAVE:
+              console.log('BACKGROUND', key)
+              address = await ArweaveWallet.utils.loadWallet(koi, key)
+              console.log('BACKGROUND: ', address)
+              await Account.create(address, key, password, TYPE.ARWEAVE)
+              account = Account.get({ address, key }, TYPE.ARWEAVE)
+              console.log('BACKGROUND: ', account)
+              break
+            case TYPE.ETHEREUM:
+              address = await EthereumWallet.utils.loadWallet(eth, key)
+              await Account.create(address, key, password, TYPE.ETHEREUM)
+              account = Account.get({ address, key }, TYPE.ETHEREUM)
+          }
+          // Set seedPhrase if the key is seed phrase
           if (isString(key)) {
             const encryptedPhrase = await passworder.encrypt(password, key)
-            await setChromeStorage({ 'koiPhrase': encryptedPhrase })
-            // save seed phrase for new storage object
-            await storage.arweaveWallet.set.seedPhrase(encryptedPhrase)
+            account.set.seedPhrase(encryptedPhrase)
           }
+          const totalAccounts = (await Account.getAll()).length
+          account.set.accountName(`Account#${totalAccounts}`)
 
-          await removeChromeStorage(STORAGE.CONTENT_LIST)
-          await removeChromeStorage(STORAGE.ACTIVITIES_LIST)
+          /* 
+            Now we will have multiple accounts so don't need to do this removing
+          */
+          // await removeChromeStorage(STORAGE.CONTENT_LIST)
+          // await removeChromeStorage(STORAGE.ACTIVITIES_LIST)
 
           // remove from new storage object
-          await storage.arweaveWallet.remove.activities()
-          await storage.arweaveWallet.remove.assets()
-          await storage.generic.remove.connectedSites()
-          
+          // await storage.arweaveWallet.remove.activities()
+          // await storage.arweaveWallet.remove.assets()
+          // await storage.generic.remove.connectedSites()
 
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,
-            data: { koiData }
           })
         } catch (err) {
           port.postMessage({
@@ -111,17 +132,12 @@ export default async (koi, port, message, ports, resolveId) => {
 
       case MESSAGES.REMOVE_WALLET: {
         try {
-          const koiData = {
-            arBalance: null,
-            koiBalance: null,
-            address: null
-          }
-          await clearChromeStorage()
-          koi.wallet = null
-          koi.address = null
+          const { address, type } = message.data
+          
+          await Account.remove(address, type)
+
           port.postMessage({
             type: MESSAGES.REMOVE_WALLET,
-            data: { koiData }
           })
         } catch (err) {
           port.postMessage({
@@ -230,17 +246,21 @@ export default async (koi, port, message, ports, resolveId) => {
             loadMyContent() will return an array of nfts.
             loadMyContent() will return 'ALL_NFT_LOADED' if there was no new nft.
           */
-          let contentList = await loadMyContent(koi)
 
-          if (isArray(contentList)) {
-            contentList = contentList.filter(content => !!content.name) // remove failed loaded nfts
-            console.log('CONTENT LIST: ', contentList)
-            await storage.arweaveWallet.set.assets(contentList)
-          }
+          // load all accounts
+          const accounts = await Account.getAll()
+          await Promise.all(accounts.map(async account => {
+            let contentList = await account.method.loadMyContent()
+
+            if (isArray(contentList)) {
+              contentList = contentList.filter(content => !!content.name) // remove failed loaded nfts
+              console.log('CONTENT LIST: ', contentList)
+              await account.set.assets(contentList)
+            }
+          }))
 
           port.postMessage({
             type: MESSAGES.LOAD_CONTENT,
-            data: { contentList } // array or 'ALL_NFT_LOADED'
           })
 
         } catch (err) {

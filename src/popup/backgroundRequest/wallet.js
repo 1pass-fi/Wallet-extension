@@ -31,8 +31,8 @@ export class WalletRequest extends Request {
    * 
    * @returns {Object} koiData: { arBalance: null, koiBalance: null, address: null }
    */
-  removeWallet() {
-    return this.promise(MESSAGES.REMOVE_WALLET)
+  removeWallet(body) {
+    return this.promise(MESSAGES.REMOVE_WALLET, body)
   }
 
   /**

@@ -19,35 +19,21 @@ import { SET_KOI } from 'actions/types'
 import { getChromeStorage, removeChromeStorage, setChromeStorage, generateWallet as generateWalletUtil, saveWalletToChrome } from 'utils'
 import { utils } from 'utils'
 import { setNotification } from './notification'
+import { setAccounts } from './accounts'
 
 import { koi } from 'background'
 import moment from 'moment'
 import { backgroundRequest } from 'popup/backgroundRequest'
 
 import storage from 'storage'
+import { Account } from 'account'
+import { TYPE } from 'account/accountConstants'
 
 export const getBalances = () => async (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
     try { 
-      const { koiData } = response.data
-      console.log(koiData)
-      // reduce balances by pending transaction expenses
-      const pendingTransactions = await storage.arweaveWallet.get.pendingTransactions() || []
-      console.log('pendingTransactions: ', pendingTransactions)
-      pendingTransactions.forEach((transaction) => {
-        if (isNumber(transaction.expense)) {
-          switch (transaction.activityName) {
-            case 'Sent KOII':
-              koiData.koiBalance -= transaction.expense
-              break
-            case 'Sent AR':
-              koiData.arBalance -= transaction.expense
-          }
-        }
-      })
-      
-      console.log('UPDATE BALANCES. KOI: ', koiData.koiBalance, '; AR: ', koiData.arBalance)
-      dispatch(setKoi(koiData))
+      const accountStates = await Account.getAllState()
+      dispatch(setAccounts(accountStates))
     } catch (err) {
       dispatch(err.message)
     }
@@ -65,25 +51,38 @@ export const getBalances = () => async (dispatch) => {
  */
 export const importWallet = (key, password) => async (dispatch) => {
   try {
-    const response = await backgroundRequest.wallet.importWallet({key, password})
-    const koiData = response.koiData
-    console.log('IMPORT_WALLET_SUCCESS---', koiData)
-    dispatch(setKoi(koiData))
+    await backgroundRequest.wallet.importWallet({key, password, type: TYPE.ARWEAVE})
+
+    let accounts = await Account.getAll()
+    accounts = await Promise.all(accounts.map(async account => await account.get.getAllFields()))
+    console.log('all account data', accounts)
+
+    dispatch(setAccounts(accounts))
     dispatch(getBalances())
   } catch (err) {
     dispatch(setError(err.message))
   }
 }
 
-export const removeWallet = () => async (dispatch) => {
+export const removeWallet = (address, type) => async (dispatch) => {
   try {
-    const { koiData } = await backgroundRequest.wallet.removeWallet()
-    dispatch(setAssets([]))
-    dispatch(setTransactions([]))
-    dispatch(clearActivities())
-    dispatch(setCursor({ ownedCursor: null, recipientCursor: null, doneLoading: false }))
-    dispatch(setKoi(koiData))
-    dispatch(setIsLoading(false))
+    /* 
+      Remove all data of this address
+      Remove address from list of addresses
+    */
+
+    await backgroundRequest.wallet.removeWallet({ address, type })
+
+    const accountStates = await Account.getAllState()
+    console.log('accountStates: ', accountStates)
+    dispatch(setAccounts(accountStates))
+
+    // dispatch(setAssets([]))
+    // dispatch(setTransactions([]))
+    // dispatch(clearActivities())
+    // dispatch(setCursor({ ownedCursor: null, recipientCursor: null, doneLoading: false }))
+    // dispatch(setKoi(koiData))
+    // dispatch(setIsLoading(false))
   } catch (err) {
     dispatch(setError(err.message))
   }
@@ -153,9 +152,20 @@ export const saveWallet = (seedPhrase, password) => async (dispatch) => {
 
 export const loadContent = () => async (dispatch) => {
   try {
-    const { contentList } = await backgroundRequest.assets.loadContent()
-    if (isArray(contentList)) dispatch(setAssets(contentList))
-    if (contentList == ALL_NFT_LOADED) return ALL_NFT_LOADED
+    await backgroundRequest.assets.loadContent()
+
+    const allAssets = []
+
+    const accounts = await Account.getAll()
+    await Promise.all(accounts.map(async (account) => {
+      const assets = await account.get.assets()
+      const address = await account.get.address()
+
+      const accountAssets = { owner: address, contents: assets }
+
+      allAssets.push(accountAssets)
+    }))
+    dispatch(setAssets(allAssets))
   } catch (err) {
     dispatch(setError(err.message))
   }
@@ -171,7 +181,7 @@ export const loadActivities = (cursor) => async (dispatch) => {
       nextRecipientCursor: recipientCursor } = await backgroundRequest.activities.loadActivities({ cursor })
 
     let pendingTransactions = await storage.arweaveWallet.get.pendingTransactions() || []
-    
+
     // filtering accpected pending transactions
     pendingTransactions = pendingTransactions.filter(tx => {
       return activitiesList.every(activity => activity.id !== tx.id)

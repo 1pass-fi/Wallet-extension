@@ -12,16 +12,28 @@ import { setContLoading } from 'actions/continueLoading'
 import { setError } from 'popup/actions/error'
 import { setNotification } from 'popup/actions/notification'
 import storage from 'storage'
+import { Account } from 'account'
 
 const Assets = ({ assets, setAssets, loadContent, isContLoading, setContLoading, setError, setNotification }) => {
   useEffect(() => {
     async function handleLoadContent() {
-      const contentList = await storage.arweaveWallet.get.assets()
-      const address = await storage.arweaveWallet.get.address()
-      if (contentList) {
-        setAssets(contentList)
-      }
-      if (address && !isContLoading) {
+      // load from local storage
+      const accounts = await Account.getAll()
+      const allAssets = []
+
+      await Promise.all(accounts.map(async account => {
+        const assets = await account.get.assets()
+        const address = await account.get.address()
+
+        const accountAssets = { owner: address, contents: assets }
+        allAssets.push(accountAssets)
+      }))
+
+      setAssets(allAssets)
+      
+
+      // fetch data
+      if (!isContLoading) {
         try {
           setContLoading(true)
           const allNftLoaded = await loadContent()
@@ -41,8 +53,18 @@ const Assets = ({ assets, setAssets, loadContent, isContLoading, setContLoading,
     const url = chrome.extension.getURL('options.html#/create')
     chrome.tabs.create({ url })
   }
-
-  return (<AssetList assets={assets} onAddAsset={onAddAsset} />)
+  return (
+    <div>
+      {
+        assets.map((asset, index) => <AssetList 
+          owner={asset.owner} 
+          assets={asset.contents || []} 
+          onAddAsset={onAddAsset} 
+          key={index}
+        />)
+      }
+    </div>
+  )
 }
 
 const mapStateToProps = (state) => ({ assets: state.assets, isContLoading: state.contLoading })
