@@ -13,7 +13,7 @@ import { setError } from 'actions/error'
 import './index.css'
 
 const Header = ({ location, setError, koi }) => {
-  const [showGalleryButton, setShowGalleryButton] = useState(false)
+  const [showGalleryButton, setShowGalleryButton] = useState(true)
 
   const history = useHistory()
   /* istanbul ignore next */

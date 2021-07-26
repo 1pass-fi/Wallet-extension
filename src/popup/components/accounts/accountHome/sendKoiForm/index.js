@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -20,6 +20,8 @@ import './index.css'
 import { setIsLoading } from 'popup/actions/loading'
 import { setNotification } from 'popup/actions/notification'
 
+import { Account } from 'account'
+
 const SendKoiForm = ({
   koiBalance,
   arBalance,
@@ -40,6 +42,7 @@ const SendKoiForm = ({
   const [amount, setAmount] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [currency, setCurrency] = useState(defaultCur)
+  const [accounts, setAccounts] = useState([])
 
   const onChangeAddress = (e) => {
     setAddress(e.target.value)
@@ -96,6 +99,17 @@ const SendKoiForm = ({
     return new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 }).format(num)
   }
 
+  useEffect(() => {
+    const loadAccounts = async () => {
+      let allWallets = await Account.getAllWallets()
+      allWallets = allWallets.map((wallet) => {
+
+      })
+    }
+
+    loadAccounts()
+  }, [])
+
   return (
     <form className="send-koi-form" onSubmit={handleSubmitForm}>
       <div className="koi-balance">
@@ -110,6 +124,11 @@ const SendKoiForm = ({
         options={currencies}
         defaultOption={defaultCur}
         onChange={onChangeCurrency}
+      />
+      <Select 
+        className='currency-select'
+        options={[{value: 'Account#1', id: 1, label: 'Account#1'}, {value: 'Account#2', id: 2, label: 'Account#2'}]}
+        defaultOption={'Account#1'}
       />
       <div className="recipient">
         <InputField

@@ -87,7 +87,7 @@ const WalletInfo = (({
         </div>
       </div>
       { openEditModal && 
-        <EditAccountNameModal 
+        <EditAccountNameModal
           onClose={onClose} 
           onSubmit={onSubmit} 
           currentName={accountName}

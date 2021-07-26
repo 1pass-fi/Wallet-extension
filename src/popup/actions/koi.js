@@ -171,29 +171,43 @@ export const loadContent = () => async (dispatch) => {
   }
 }
 
-export const loadActivities = (cursor) => async (dispatch) => {
+export const loadActivities = (cursor, address) => async (dispatch, getState) => {
   /*
     the sdk will require cursors for the next request if we want to receive next set of activities (pagination).
   */
   try { 
-    const { activitiesList, 
+    const type = await Account.getTypeOfWallet(address)
+    const account = await Account.get({ address }, type)
+
+    const { activitiesList,
       nextOwnedCursor: ownedCursor, 
-      nextRecipientCursor: recipientCursor } = await backgroundRequest.activities.loadActivities({ cursor })
-
-    let pendingTransactions = await storage.arweaveWallet.get.pendingTransactions() || []
-
+      nextRecipientCursor: recipientCursor } = await account.method.loadMyActivities(cursor)
+    // const { activitiesList,
+    //   nextOwnedCursor: ownedCursor, 
+    //   nextRecipientCursor: recipientCursor } = await backgroundRequest.activities.loadActivities({ cursor, address })
+    console.log('returned activities list: ', activitiesList)
+    // const type = await Account.getTypeOfWallet(address)
+    // const account = await Account.get({ address }, type)
+    let pendingTransactions = await account.get.pendingTransactions() || []
     // filtering accpected pending transactions
     pendingTransactions = pendingTransactions.filter(tx => {
       return activitiesList.every(activity => activity.id !== tx.id)
     })
-    await storage.arweaveWallet.set.pendingTransactions(pendingTransactions)
-    dispatch(setTransactions(pendingTransactions))
+    await account.set.pendingTransactions(pendingTransactions)
+    const { activities } = getState()
+    const newActivities = activities.map(activity => {
+      if (activity.address == address) {
+        activity.activityItems = [...activity.activityItems, ...activitiesList]
+        const doneLoading = !activitiesList.length
+        activity.cursor = { ownedCursor, recipientCursor, doneLoading }
+      }
 
-    // set new cursor for next request
-    dispatch(setCursor({ ownedCursor, recipientCursor }))
-    !(activitiesList.length) && dispatch(setCursor({ doneLoading: true }))
+      return activity
+    })
 
-    dispatch(setActivities(activitiesList))
+    console.log('New Activities: ', newActivities)
+
+    dispatch(setActivities(newActivities))
   } catch (err) {
     dispatch(setError(err.message))
   }

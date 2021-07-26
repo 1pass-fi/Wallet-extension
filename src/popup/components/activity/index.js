@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { isEmpty } from 'lodash'
 
 import { loadActivities } from 'actions/koi'
 import { setTransactions } from 'actions/transactions'
@@ -13,6 +14,8 @@ import { STORAGE } from 'koiConstants'
 
 import './index.css'
 import storage from 'storage'
+import { Account } from 'account'
+import { setActivities } from 'popup/actions/activities'
 
 const propTypes = {
   activities: PropTypes.array,
@@ -53,35 +56,77 @@ const AccountLabel = ({ accountName }) => {
   )
 }
 
+// const Activity = ({
+//   activities,
+//   loadActivities,
+//   cursor,
+//   transactions,
+//   setTransactions,
+//   setError,
+//   accountName,
+// }) => {
+//   useEffect(() => {
+//     async function handleLoadActivities() {
+//       const listPendingTransaction = await storage.arweaveWallet.get.pendingTransactions() || []
+//       const address = await storage.arweaveWallet.get.address()
+//       setTransactions(listPendingTransaction)
+      
+//       if (address) {
+//         await loadActivities(cursor)
+//       }
+//     }
+//     handleLoadActivities()
+//   }, [])
+  
+//   const handleLoadMore = async () => await loadActivities(cursor)
+
+//   return (
+//     <div className="activity-container">
+//       {activities.length !== 0 && <AccountLabel accountName={accountName} />}
+//       <PendingList transactions={transactions} />
+//       <ActivitiesList activities={activities} />
+//       {!cursor.doneLoading && (
+//         <Button
+//           className="load-more"
+//           type="outline"
+//           onClick={handleLoadMore}
+//           label="See More Activity"
+//         />
+//       )}
+//     </div>
+//   )
+// }
 const Activity = ({
-  activities,
-  loadActivities,
+  activityItems,
+  address,
   cursor,
-  transactions,
-  setTransactions,
-  setError,
-  accountName,
+  loadActivities
 }) => {
+  const [accountName, setAccountName] = useState(null)
+  const [transactions, setTransactions] = useState([])
+
   useEffect(() => {
     async function handleLoadActivities() {
-      const listPendingTransaction = await storage.arweaveWallet.get.pendingTransactions() || []
-      const address = await storage.arweaveWallet.get.address()
+      const type = await Account.getTypeOfWallet(address)
+      const account = await Account.get({ address }, type)
+      const name = await account.get.accountName()
+      setAccountName(name)
+
+      const listPendingTransaction = await account.get.pendingTransactions() || []
       setTransactions(listPendingTransaction)
-      
-      if (address) {
-        await loadActivities(cursor)
-      }
+
+      await loadActivities(cursor, address)
     }
     handleLoadActivities()
   }, [])
-  
-  const handleLoadMore = async () => await loadActivities(cursor)
+
+  const handleLoadMore = async () => await loadActivities(cursor, address)
 
   return (
     <div className="activity-container">
-      {activities.length !== 0 && <AccountLabel accountName={accountName} />}
+      <AccountLabel accountName={accountName} />
       <PendingList transactions={transactions} />
-      <ActivitiesList activities={activities} />
+      <ActivitiesList activities={activityItems} />
       {!cursor.doneLoading && (
         <Button
           className="load-more"
@@ -94,19 +139,43 @@ const Activity = ({
   )
 }
 
-Activity.propTypes = propTypes
+const Activities = ({ activities, setActivities, loadActivities }) => {
+  
+  useEffect(() => {
+    async function handleLoadActivities() {
+      let allWallets = await Account.getAllWallets()
+      const allAddresses = allWallets.map(wallet => wallet.address)
+      const listOfPayloads = []
+      allAddresses.forEach(address => {
+        listOfPayloads.push({ address, activityItems: [], cursor: { ownedCursor: null, recipientCursor: null, doneLoading: null } })
+      })
+      console.log('list of payloads: ', listOfPayloads)
+      if (isEmpty(activities)) setActivities(listOfPayloads)
+    }
 
-const mapStateToProps = (state) => ({
-  activities: state.activities,
-  cursor: state.cursor,
-  transactions: state.transactions,
-  contLoading: state.contLoading,
-  error: state.error,
-  accountName: state.accountName
-})
+    handleLoadActivities()
+  }, [])
+
+  return (
+    <div>
+      {activities.map((activity, index) => 
+        <Activity 
+          key={index}
+          activityItems={activity.activityItems}
+          address={activity.address}
+          cursor={activity.cursor}
+          loadActivities={loadActivities}
+        />
+      )}
+    </div>
+  )
+}
+
+const mapStateToProps = (state) => ({ activities: state.activities })
 
 export default connect(mapStateToProps, {
   loadActivities,
   setTransactions,
   setError,
-})(Activity)
+  setActivities
+})(Activities)

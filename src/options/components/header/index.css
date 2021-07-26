@@ -12,6 +12,10 @@
   width: calc(100vw / 3);
 }
 
+.app-header .account-select {
+  margin-right: 40px;
+}
+
 .app-header .header-left .logo {
   margin: 25px 0px 0px 8px;
   width: 72px;

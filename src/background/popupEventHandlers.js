@@ -273,9 +273,11 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       }
       case MESSAGES.LOAD_ACTIVITIES: {
         try {
-          const { cursor } = message.data
-          const { activitiesList, nextOwnedCursor, nextRecipientCursor } = await loadMyActivities(koi, cursor)
-          console.log('ACTIVITIES LIST', activitiesList)
+          const { cursor, address } = message.data
+          const type = await Account.getTypeOfWallet(address)
+          const account = await Account.get({ address }, type)
+          const { activitiesList, nextOwnedCursor, nextRecipientCursor } = await account.method.loadMyActivities(cursor)
+          console.log(`Activities list of ${address}:`, activitiesList)
           port.postMessage({
             type: MESSAGES.LOAD_ACTIVITIES,
             data: { activitiesList, nextOwnedCursor, nextRecipientCursor }

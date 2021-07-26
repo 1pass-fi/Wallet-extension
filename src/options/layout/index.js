@@ -8,7 +8,7 @@ import isArray from 'lodash/isArray'
 import { isNumber } from 'lodash'
 
 import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
-import { 
+import {
   getAffiliateCode, 
   getChromeStorage, 
   setChromeStorage, 
@@ -38,9 +38,12 @@ import { getNftsDataForCollections, loadCollections } from 'options/utils'
 import storage from 'storage'
 import { backgroundRequest } from 'popup/backgroundRequest'
 
+import { Account } from 'account'
+
 export default ({ children }) => {
   const history = useHistory()
-
+  const [wallets, setWallets] = useState([])
+  const [account, setAccount] = useState({})
   const [isDragging, setIsDragging] = useState(false)
   const [cardInfos, setCardInfos] = useState([])
   const [totalKoi, setTotalKoi] = useState(0)
@@ -84,21 +87,36 @@ export default ({ children }) => {
   })
 
   useEffect(() => {
+    const loadWallets = async () => {
+      const allWallets = await Account.getAllWallets()
+      setWallets(allWallets)
+      setAccount(allWallets[0])
+    }
+
+    loadWallets()
+  }, [])
+
+  useEffect(() => {
     const getData = async () => {
       try {
         /* 
           Contents, koiBalance, arBalance, address, affiliateCode, showWelcomeScreen, accountName
         */
-        const contentList = await storage.arweaveWallet.get.assets()
-        const arBalance = await storage.arweaveWallet.get.balance()
-        const koiBalance = await storage.generic.get.koiBalance()
-        const addressStorage = await storage.arweaveWallet.get.address()
-        const affiliateCodeStorage = await storage.generic.get.affiliateCode()
-        const showWelcomeScreen = await storage.setting.get.showWelcomeScreen()
-        const arweaveAccountName = await storage.arweaveWallet.get.accountName()
+        const type = await Account.getTypeOfWallet(account.address)
+        const aAccount = await Account.get(account, type)
+        let contentList = await aAccount.get.assets()
+      
+        const addressStorage = account.address
+
+        const arBalance = await aAccount.get.balance()
+        const koiBalance = await aAccount.get.koiBalance()
+
+        const arweaveAccountName = await aAccount.get.accountName()
 
         const showViewStorage = await storage.setting.get.showViews()
         const showEarnedKoiStorage = await storage.setting.get.showEarnedKoi()
+        const affiliateCodeStorage = await storage.generic.get.affiliateCode()
+        const showWelcomeScreen = await storage.setting.get.showWelcomeScreen()
 
         if (showViewStorage) setShowViews(showViewStorage)
         if (showEarnedKoiStorage) setShowEarnedKoi(showEarnedKoiStorage) 
@@ -125,7 +143,7 @@ export default ({ children }) => {
             let totalAr = arBalance
             let totalKoi = koiBalance
             console.log(totalAr, totalKoi)
-            let pendingTransactions = await storage.arweaveWallet.get.pendingTransactions() || []
+            let pendingTransactions = await aAccount.get.pendingTransactions() || []
             pendingTransactions.forEach((transaction) => {
               if (isNumber(transaction.expense)) {
                 switch (transaction.activityName) {
@@ -182,7 +200,7 @@ export default ({ children }) => {
     }
 
     getData()
-  }, [])
+  }, [account])
 
   useEffect(() => {
     setFile(acceptedFiles ? acceptedFiles[0] : {})
@@ -274,10 +292,13 @@ export default ({ children }) => {
         accountName,
         setShowWelcome,
         collectionsLoaded,
-        setCollectionsLoaded
+        setCollectionsLoaded,
+        wallets,
+        account,
+        setAccount
       }}
     >
-      {address ? <div
+      {!isEmpty(wallets) ? <div
         {...getRootProps({ className: 'app dropzone' })}
         onDragOver={() => modifyDraging(true)}
         onDragLeave={() => modifyDraging(false)}

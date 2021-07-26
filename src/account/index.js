@@ -139,6 +139,13 @@ export class Account {
     return accounts
   }
 
+  static async getAllWallets() {
+    const arweaveWallets = await this.#chrome._getChrome([ADDRESSES.ARWEAVE]) || []
+    const ethereumWallets = await this.#chrome._getChrome([ADDRESSES.ETHEREUM]) || []
+
+    return [...arweaveWallets, ...ethereumWallets]
+  }
+
   static async getTypeOfWallet(address) {
     let arweaveWallets = (await getChromeStorage(ADDRESSES.ARWEAVE))[ADDRESSES.ARWEAVE] || []
     let ethereumWallets = (await getChromeStorage(ADDRESSES.ETHEREUM))[ADDRESSES.ETHEREUM] || []
