@@ -27,7 +27,7 @@ export class Account {
 
       const encryptedKey = await passworder.encrypt(password, key)
 
-      const payload = { ADDRESS: address, TYPE: type }
+      const payload = { ADDRESS: address, TYPE: type, ENCRYPTED_KEY: encryptedKey }
       /* 
         Beside adding wallet info into the array of wallets, we also need to save it's extra data directly to the storage,
         the field name should be it's address. For example:
@@ -73,7 +73,7 @@ export class Account {
           break
         case TYPE.ETHEREUM:
           wallets = await this.#chrome._getChrome(ADDRESSES.ETHEREUM)
-          wallets = wallets.filter(aAddress => address !== aAddress)
+          wallets = wallets.filter(payload => address !== payload.address)
           await this.#chrome._setChrome(ADDRESSES.ETHEREUM, wallets)
       }
       await this.#chrome._removeChrome(address)

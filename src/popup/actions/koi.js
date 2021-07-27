@@ -49,9 +49,9 @@ export const getBalances = () => async (dispatch) => {
  * @param {String} password Input password
  * @returns {Void}
  */
-export const importWallet = (key, password) => async (dispatch) => {
+export const importWallet = (key, password, type) => async (dispatch) => {
   try {
-    await backgroundRequest.wallet.importWallet({key, password, type: TYPE.ARWEAVE})
+    await backgroundRequest.wallet.importWallet({key, password, type})
 
     let accounts = await Account.getAll()
     accounts = await Promise.all(accounts.map(async account => await account.get.getAllFields()))
@@ -64,7 +64,7 @@ export const importWallet = (key, password) => async (dispatch) => {
   }
 }
 
-export const removeWallet = (address, type) => async (dispatch) => {
+export const removeWallet = (address, type) => async (dispatch, getState) => {
   try {
     /* 
       Remove all data of this address
@@ -75,6 +75,9 @@ export const removeWallet = (address, type) => async (dispatch) => {
 
     const accountStates = await Account.getAllState()
     console.log('accountStates: ', accountStates)
+    const { activities } = getState()
+    const newActivities = activities.filter(activity => activity.address !== address)
+    dispatch(setActivities(newActivities))
     dispatch(setAccounts(accountStates))
 
     // dispatch(setAssets([]))
@@ -213,24 +216,28 @@ export const loadActivities = (cursor, address) => async (dispatch, getState) =>
   }
 }
 
-export const makeTransfer = (qty, target, currency) => async (dispatch) => {
+export const makeTransfer = (from, qty, target, token) => async (dispatch) => {
   try {
-    if (currency == 'KOII') currency = 'KOI' // On the SDK the name of token KOII has not been updated. (still KOI) 
-    const { txId } = await backgroundRequest.wallet.makeTransfer({qty, target, currency})
+    const { address } = from
+    const type = await Account.getTypeOfWallet(address)
+    const _account = await Account.get({ address }, type)
+    const name = await _account.get.accountName()
+    if (token == 'KOII') token = 'KOI' // On the SDK the name of token KOII has not been updated. (still KOI) 
+    const { txId } = await backgroundRequest.wallet.makeTransfer({qty, target, token, from})
 
     // Add new pending transaction
-    const pendingTransactions = await storage.arweaveWallet.get.pendingTransactions() || []
+    const pendingTransactions = await _account.get.pendingTransactions() || []
     const newTransaction = {
       id: txId,
-      activityName: (currency === 'KOI' ? 'Sent KOII' : 'Sent AR'),
+      activityName: (token === 'KOI' ? 'Sent KOII' : `Sent ${token}`),
       expense: qty,
-      accountName: 'Account 1',
+      accountName: name,
       date: moment().format('MMMM DD YYYY'),
       source: target
     }
     pendingTransactions.unshift(newTransaction)
     // save pending transactions
-    await storage.arweaveWallet.set.pendingTransactions(pendingTransactions)
+    await _account.set.pendingTransactions(pendingTransactions)
     dispatch(setTransactions(pendingTransactions))
 
     console.log('TRANSACTION ID', txId)
@@ -266,10 +273,15 @@ export const signTransaction = (inputData) => (dispatch) => {
   }
 }
 
-export const getKeyFile = (password) => async (dispatch) => {
+export const getKeyFile = (password, address) => async (dispatch) => {
   try {
-    const { key } = await backgroundRequest.wallet.getKeyFile({ password })
-    const filename = 'arweave-key.json'
+    const { key, type } = await backgroundRequest.wallet.getKeyFile({ password, address })
+    let filename
+    if (type == TYPE.ARWEAVE) {
+      filename = 'arweave-key.json'
+    } else {
+      filename = 'ethereum-key.json'
+    }
     const result = JSON.stringify(key)
 
     const url = 'data:application/json;base64,' + btoa(result)
@@ -278,7 +290,7 @@ export const getKeyFile = (password) => async (dispatch) => {
       filename: filename,
     })
   } catch (err) {
-    dispatch(setError(err.message))
+    throw new Error(err.message)
   }
 }
 

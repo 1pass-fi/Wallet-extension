@@ -16,9 +16,9 @@ export class ArweaveMethod {
   }
 
   async getBalances() {
-    const arBalance = await this.koi.getWalletBalance()
+    const balance = await this.koi.getWalletBalance()
     const koiBalance = await this.koi.getKoiBalance()
-    return { arBalance, koiBalance }
+    return { balance, koiBalance }
   }
 
   async loadMyContent() {
@@ -191,6 +191,27 @@ export class ArweaveMethod {
       }
       return { activitiesList, nextOwnedCursor, nextRecipientCursor }
     } catch(err) {
+      throw new Error(err.message)
+    }
+  }
+
+  async transfer(token, target, qty) {
+    try {
+      let balance
+      switch (token) {
+        case 'KOI':
+          balance = await this.koi.getKoiBalance()
+          if (qty > balance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
+          break
+        case 'AR':
+          balance = await this.koi.getWalletBalance()
+          if (qty > balance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
+          break
+      }
+      const txId = await this.koi.transfer(qty, target, token)
+      return txId
+ 
+    } catch (err) {
       throw new Error(err.message)
     }
   }

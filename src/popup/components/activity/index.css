@@ -1,22 +1,41 @@
 .activity-container {
   width: 100%;
   background: #ffffff;
+  overflow-y: hidden;
+}
+.activity-container.collapsed {
+  height: 52px;
 }
 
 .activity-container .activity-account-label {
   display: flex;
   align-items: center;
-  width: 426px;
+  width: 380px;
   height: 52px;
   background-color: #030332;
   color: #FFFFFF;
   font-size: 20px;
   line-height: 20px;
   font-weight: 600;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 23px;
+  padding-right: 23px;
 }
 
-.activity-container .activity-account-label .text {
+/* .activity-container .activity-account-label .text {
   margin-left: 23px;
+} */
+.activity-container .activity-account-label .collapse-icon {
+  width: 20px;
+  height: 20px;
+  color: white;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 3px;
 }
 
 .activity-container .load-more {

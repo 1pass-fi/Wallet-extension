@@ -28,6 +28,7 @@ import ExportPrivateKeyModal from './exportPrivateKeyModal'
 import { setIsLoading } from 'popup/actions/loading'
 
 import storage from 'storage'
+import { TYPE } from 'account/accountConstants'
 
 const WalletInfo = (({
   accountName,
@@ -127,9 +128,9 @@ const WalletConf = (({
     <div className='wallet-conf'>
       <WalletConfItem
         icon={<ShareIconOne />}
-        title={'View Block Explorer'}
+        title={account.type == TYPE.ARWEAVE ? 'View Block Explorer' : 'Etherscan Explorer'}
         onClick={() => {
-          const url = `${PATH.VIEW_BLOCK}/${account.address}`
+          const url = `${account.type == TYPE.ARWEAVE ? PATH.VIEW_BLOCK : PATH.ETHERSCAN}/${account.address}`
           chrome.tabs.create({ url })
         }}
       />
@@ -166,7 +167,7 @@ const WalletConf = (({
           onClose={() => setShowModalConnectedSite(false)}
         />
       )}
-      {showExportKeyModal && <ExportPrivateKeyModal setShowExportKeyModel={setShowExportKeyModel}/>}
+      {showExportKeyModal && <ExportPrivateKeyModal address={account.address} setShowExportKeyModel={setShowExportKeyModel}/>}
     </div>
   )
 })

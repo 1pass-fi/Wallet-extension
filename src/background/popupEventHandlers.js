@@ -1,11 +1,13 @@
-import passworder from 'browser-passworder'
 import { isArray, isString, isEmpty } from 'lodash'
 import Arweave from 'arweave'
+import passworder from 'browser-passworder'
+
 import storage from 'storage'
 import { Account } from 'account'
 import { Arweave as ArweaveWallet } from 'account/Arweave'
 import { Ethereum as EthereumWallet } from 'account/Ethereum'
 import { TYPE } from 'account/accountConstants'
+
 
 const arweave = Arweave.init({
   host: 'arweave.net',
@@ -37,22 +39,26 @@ export const loadBalances = async (koi, port) => {
   try {
     const accounts = await Account.getAll()
     await Promise.all(accounts.map(async account => {
-      let { arBalance, koiBalance } = await account.method.getBalances()
+      let { balance, koiBalance } = await account.method.getBalances()
       const address = await account.get.address()
       // reduce balances by pending transaction expenses
       const pendingTransactions = await account.get.pendingTransactions() || []
+      console.log('pendingTransactions:', pendingTransactions)
       pendingTransactions.forEach((transaction) => {
         switch (transaction.activityName) {
           case 'Sent KOII':
             koiBalance -= transaction.expense
             break
           case 'Sent AR':
-            arBalance -= transaction.expense
+            balance -= transaction.expense
+            break
+          case 'Sent ETH':
+            balance -= transaction.expense
         }
       })
       console.log('UPDATE BALANCES FOR', address)
-      console.log('koiBalance:', koiBalance,'; arBalance:', arBalance)
-      await account.set.balance(arBalance)
+      console.log('koiBalance:', koiBalance,'; balance:', balance)
+      await account.set.balance(balance)
       await account.set.koiBalance(koiBalance)
     }))
 
@@ -78,7 +84,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           let { key, password, type } = message.data
           let account
           let address
-          type = TYPE.ARWEAVE
           // Create new account
           switch(type) {
             case TYPE.ARWEAVE:
@@ -292,9 +297,13 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       }
       case MESSAGES.MAKE_TRANSFER: {
         try {
-          const { qty, target, currency } = message.data
-          console.log('QTY ', qty, 'TARGET ', target, 'CURRENCY ', currency)
-          const txId = await transfer(koi, qty, target, currency)
+          const { qty, target, token, from } = message.data
+          const { address, key } = from
+          const type = await Account.getTypeOfWallet(address)
+          const _account = await Account.get({ address, key }, type)
+
+          console.log('QTY ', qty, 'TARGET ', target, 'TOKEN ', token)
+          const txId = await _account.method.transfer(token, target, qty)
           port.postMessage({
             type: MESSAGES.MAKE_TRANSFER,
             data: { txId }
@@ -316,10 +325,15 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       }
       case MESSAGES.GET_KEY_FILE: {
         try {
-          const { password } = message.data
+          const { password, address } = message.data
           let key
+          const type = await Account.getTypeOfWallet(address)
+          const _account = await Account.get({ address }, type)
+          const encryptedKey = await _account.get.encryptedKey()
+          console.log('encryptedKey: ', encryptedKey)
           try {
-            key = await decryptWalletKeyFromChrome(password)
+            key = await passworder.decrypt(password, encryptedKey)
+            console.log('key: ', key)
           } catch (err) {
             port.postMessage({
               type: MESSAGES.GET_KEY_FILE,
@@ -328,7 +342,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           }
           port.postMessage({
             type: MESSAGES.GET_KEY_FILE,
-            data: { key }
+            data: { key, type }
           })
         } catch (err) {
           port.postMessage({

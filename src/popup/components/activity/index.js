@@ -17,6 +17,9 @@ import storage from 'storage'
 import { Account } from 'account'
 import { setActivities } from 'popup/actions/activities'
 
+import CollapseIcon from 'img/collapse-icon.svg'
+import ExtendIcon from 'img/extend-icon.svg'
+
 const propTypes = {
   activities: PropTypes.array,
 }
@@ -48,10 +51,12 @@ export const PendingList = ({ transactions }) => {
   ))
 }
 
-const AccountLabel = ({ accountName }) => {
+const AccountLabel = ({ accountName, collapsed, setCollapsed }) => {
   return (
     <div className="activity-account-label">
       <div className="text">{accountName}</div>
+      {!collapsed && <div onClick={() => setCollapsed(!collapsed)} className="collapse-icon"><CollapseIcon /></div>}
+      {collapsed && <div onClick={() => setCollapsed(!collapsed)} className="collapse-icon"><ExtendIcon /></div>}
     </div>
   )
 }
@@ -104,6 +109,7 @@ const Activity = ({
 }) => {
   const [accountName, setAccountName] = useState(null)
   const [transactions, setTransactions] = useState([])
+  const [collapsed, setCollapsed] = useState(false)
 
   useEffect(() => {
     async function handleLoadActivities() {
@@ -123,8 +129,8 @@ const Activity = ({
   const handleLoadMore = async () => await loadActivities(cursor, address)
 
   return (
-    <div className="activity-container">
-      <AccountLabel accountName={accountName} />
+    <div className={collapsed ? 'activity-container collapsed' : 'activity-container'}>
+      <AccountLabel collapsed={collapsed} setCollapsed={setCollapsed} accountName={accountName} />
       <PendingList transactions={transactions} />
       <ActivitiesList activities={activityItems} />
       {!cursor.doneLoading && (
@@ -139,8 +145,7 @@ const Activity = ({
   )
 }
 
-const Activities = ({ activities, setActivities, loadActivities }) => {
-  
+const Activities = ({ activities, setActivities, loadActivities, accounts }) => {
   useEffect(() => {
     async function handleLoadActivities() {
       let allWallets = await Account.getAllWallets()

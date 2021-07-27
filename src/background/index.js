@@ -35,7 +35,7 @@ function cb(port) {
       })
 
       port.onMessage.addListener(message => {
-        popUpEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
+        popUpEventHandlers(koi, port, message, ports, { permissionId, createTransactionId }, eth)
 
 
         autoLoadBalancesPort = port

@@ -15,10 +15,15 @@
 
 .assets {
   width: 100%;
+  overflow-y: hidden;
+}
+
+.assets.collapsed {
+  height: 52px;
 }
 
 .assets .owner {
-  width: 416px;
+  width: 380px;
   height: 52px;
   display: flex;
   align-items: center;
@@ -28,4 +33,19 @@
   color: #ffffff;
   background-color: #171753;
   font-weight: 600;
+  position: relative;
+  justify-content: space-between;
+  padding-right: 23px;
+}
+
+.assets .owner .collapse-icon {
+  width: 20px;
+  height: 20px;
+  color: white;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 3px;
 }

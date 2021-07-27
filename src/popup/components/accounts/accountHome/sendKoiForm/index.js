@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+
+import { find } from 'lodash'
 
 import getSymbolFromCurrency from 'currency-symbol-map'
 
@@ -11,7 +13,7 @@ import TransactionConfirmModal from 'popup/components/modals/transactionConfirmM
 
 import WarningIcon from 'img/warning-icon.svg'
 
-import { makeTransfer } from 'actions/koi'
+import { makeTransfer, setKoi } from 'actions/koi'
 import { setError } from 'actions/error'
 import { setWarning } from 'actions/warning'
 import { ERROR_MESSAGE, WARNING_MESSAGE, RATE, NOTIFICATION, PATH } from 'koiConstants'
@@ -21,12 +23,10 @@ import { setIsLoading } from 'popup/actions/loading'
 import { setNotification } from 'popup/actions/notification'
 
 import { Account } from 'account'
+import { TYPE } from 'account/accountConstants'
 
 const SendKoiForm = ({
-  koiBalance,
   arBalance,
-  currencies,
-  onUpdateCurrency,
   setError,
   setWarning,
   makeTransfer,
@@ -36,13 +36,16 @@ const SendKoiForm = ({
   currency: moneyCurrency
 }) => {
   const history = useHistory()
-  const defaultCur = currencies[0].value
 
   const [address, setAddress] = useState('')
   const [amount, setAmount] = useState('')
   const [showModal, setShowModal] = useState(false)
-  const [currency, setCurrency] = useState(defaultCur)
-  const [accounts, setAccounts] = useState([])
+  const [wallets, setWallets] = useState([])
+  const [selectedAccount, setSelectedAccount] = useState(null)
+  const [balance, setBalance] = useState(null)
+  const [koiBalance, setKoiBalance] = useState(null)
+  const [tokens, setTokens] = useState([])
+  const [token, setToken] = useState(null)
 
   const onChangeAddress = (e) => {
     setAddress(e.target.value)
@@ -52,9 +55,8 @@ const SendKoiForm = ({
     setAmount(e.target.value)
   }
 
-  const onChangeCurrency = (newCurr) => {
-    setCurrency(newCurr)
-    onUpdateCurrency(newCurr)
+  const onChangeToken = (selectedToken) => {
+    setToken(selectedToken)
   }
 
   const selectBalance = (cur) => {
@@ -85,7 +87,7 @@ const SendKoiForm = ({
     try {
       setShowModal(false)
       setIsLoading(true)
-      await makeTransfer(Number(amount), address, currency)
+      await makeTransfer(selectedAccount, Number(amount), address, token)
       setIsLoading(false)
       setNotification(NOTIFICATION.TRANSACTION_SENT)
       history.push(PATH.ACTIVITY)
@@ -99,37 +101,68 @@ const SendKoiForm = ({
     return new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 }).format(num)
   }
 
+  const onChangeAccount = (selected) => {
+    const wallet = find(wallets, v => v.value == selected)
+    setSelectedAccount(wallet)
+  }
+
   useEffect(() => {
     const loadAccounts = async () => {
       let allWallets = await Account.getAllWallets()
-      allWallets = allWallets.map((wallet) => {
-
-      })
+      allWallets = await Promise.all(allWallets.map(async (wallet, index) => {
+        const type = await Account.getTypeOfWallet(wallet.address)
+        const _account = await Account.get(wallet, type)
+        const name = await _account.get.accountName()
+        return {value: name, id: index, label: name, ...wallet}
+      }))
+      console.log('allWallets', allWallets)
+      setWallets(allWallets)
     }
 
     loadAccounts()
   }, [])
 
+
+  useEffect(() => {
+    const loadBalances = async () => {
+      setToken(null)
+      const type = await Account.getTypeOfWallet(selectedAccount.address)
+      if (type == TYPE.ARWEAVE) setTokens([{value: 'AR', label: 'AR'}, {value: 'KOII', label: 'KOII'}])
+      if (type == TYPE.ETHEREUM) setTokens([{value: 'ETH', label: 'ETH'}])
+      console.log('selectedAccount: ', selectedAccount)
+      const _account = await Account.get(selectedAccount, type)
+      console.log(await _account.get.address())
+      const { koiBalance, balance } = await _account.method.getBalances()
+      console.log(koiBalance, balance)
+      setKoiBalance(koiBalance)
+      setBalance(balance)
+    }
+
+    if (selectedAccount) loadBalances()
+  }, [selectedAccount])
+
+
   return (
     <form className="send-koi-form" onSubmit={handleSubmitForm}>
       <div className="koi-balance">
         <span>Available balance: </span>
-        <b>{`${selectBalance(currency)} ${currency}`}</b>
-        <div hidden={currency == 'KOII'} className="amount-in-usd">
-          {getSymbolFromCurrency(moneyCurrency) || ''}{numberFormat(selectBalance(currency) * price[currency])} {moneyCurrency}
-        </div>
+        <b>{`${(token == 'KOII' ? koiBalance : !!token && balance) || '___'} ${token ? token : 'token'}`}</b>
+        {/* <div hidden={token == 'KOII'} className="amount-in-usd">
+          {getSymbolFromCurrency(moneyCurrency) || ''}{numberFormat(selectBalance(token) * price[token])} {moneyCurrency}
+        </div> */}
       </div>
       <Select 
         className='currency-select'
-        options={currencies}
-        defaultOption={defaultCur}
-        onChange={onChangeCurrency}
+        options={wallets}
+        placeholder='Select your account'
+        onChange={onChangeAccount}
       />
-      <Select 
+      {selectedAccount && <Select
         className='currency-select'
-        options={[{value: 'Account#1', id: 1, label: 'Account#1'}, {value: 'Account#2', id: 2, label: 'Account#2'}]}
-        defaultOption={'Account#1'}
-      />
+        options={tokens}
+        placeholder='Select token'
+        onChange={onChangeToken}
+      />}
       <div className="recipient">
         <InputField
           label="To"
@@ -152,23 +185,23 @@ const SendKoiForm = ({
       <div className="amount">
         <InputField
           label="Amount"
-          placeholder={`Amount of ${currency} to send`}
+          placeholder={`Amount of ${token} to send`}
           className="form-input"
           type="number"
           onChange={onChangeAmount}
           value={amount}
         />
-        {amount.trim().length > 0 && (
-          <div hidden={currency == 'KOII'} className="amount-in-usd">
-            {getSymbolFromCurrency(moneyCurrency) || ''} {numberFormat(Number(amount) * price[currency])} {moneyCurrency}
+        {/* {amount.trim().length > 0 && (
+          <div hidden={token == 'KOII'} className="amount-in-usd">
+            {getSymbolFromCurrency(moneyCurrency) || ''} {numberFormat(Number(amount) * price[token])} {moneyCurrency}
           </div>
-        )}
+        )} */}
       </div>
-      <Button label={`Send ${currency}`} className="send-button" />
+      <Button label={`Send ${token ? token : 'token'}`} className="send-button" />
       {showModal && (
         <TransactionConfirmModal
           sentAmount={Number(amount)}
-          currency={currency}
+          currency={token}
           accountAddress={address}
           onClose={() => {
             setShowModal(false)

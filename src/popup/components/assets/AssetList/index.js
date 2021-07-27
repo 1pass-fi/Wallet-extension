@@ -5,6 +5,8 @@ import PropTypes from 'prop-types'
 import AssetRow from '../AssetRow'
 import PlusIcon from 'img/plus-icon.svg'
 import './index.css'
+import CollapseIcon from 'img/collapse-icon.svg'
+import ExtendIcon from 'img/extend-icon.svg'
 
 import { Account } from 'account'
 
@@ -15,6 +17,7 @@ const propTypes = {
 
 const AssetList = ({ owner, assets, onAddAsset }) => {
   const [ownerName, setOwnerName] = useState(null)
+  const [collapsed, setCollapsed] = useState(false)
 
   useEffect(() => {
     const getOwnerName = async () => {
@@ -29,9 +32,11 @@ const AssetList = ({ owner, assets, onAddAsset }) => {
   }, [])
 
   return (
-    <div className="assets">
+    <div className={collapsed ? 'assets collapsed' : 'assets'}>
       <div className="owner">
         {ownerName}
+        {!collapsed && <div onClick={() => setCollapsed(!collapsed)} className="collapse-icon"><CollapseIcon /></div>}
+        {collapsed && <div onClick={() => setCollapsed(!collapsed)} className="collapse-icon"><ExtendIcon /></div>}
       </div>
       {assets.map((asset, index) => <AssetRow key={index} {...asset} isGrey={index % 2 === 0} />)}
       <div className="assets-add-more-row">

@@ -13,6 +13,17 @@ export const HEADER_EXCLUDE_PATH = [
   '/account/import/keyfile/success',
   '/account/import/phrase/success'
 ]
+export const NAVBAR_EXCLUDE_PATH = [
+  '/account/login',
+  '/account/login/phrase',
+  '/account/connect-site',
+  '/account/sign-transaction',
+  '/account/welcome',
+  '/account/create/success',
+  '/account/import/keyfile',
+  '/account/import/keyfile/success',
+  '/account/import/phrase/success'
+]
 
 export const LONG_LIVED_HANDLER = [
   'GET_ADDRESS_SUCCESS',
@@ -123,6 +134,7 @@ export const PATH = {
   // Gallery path
   NFT_IMAGE: 'https://arweave.net',
   VIEW_BLOCK: 'https://viewblock.io/arweave/address',
+  ETHERSCAN: 'https://etherscan.io/address',
   KOI_ROCK: 'https://koi.rocks/content-detail',
   GALLERY: chrome.extension
     ? `${chrome.extension.getURL('/options.html')}`
@@ -197,6 +209,7 @@ export const REQUEST = {
 export const RATE = {
   KOII: 0.93,
   AR: 2,
+  ETH: 100
 }
 
 export const NOTIFICATION = {

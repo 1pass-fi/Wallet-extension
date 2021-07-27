@@ -88,6 +88,10 @@ export class WalletGet {
     return await this.#accountStorage.getField(ACCOUNT.TYPE)
   }
 
+  async encryptedKey() {
+    return await this.#accountStorage.getField(ACCOUNT.ENCRYPTED_KEY)
+  }
+
   async getAllFields() {
     const address = await this.address()
     const balance = await this.balance()

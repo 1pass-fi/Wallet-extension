@@ -7,7 +7,7 @@ import SettingIcon from 'img/settings-icon.svg'
 import NavBar from './navBar'
 
 import { getChromeStorage } from 'utils'
-import { STORAGE } from 'koiConstants'
+import { STORAGE, NAVBAR_EXCLUDE_PATH } from 'koiConstants'
 import { setError } from 'actions/error'
 
 import './index.css'
@@ -61,15 +61,14 @@ const Header = ({ location, setError, koi }) => {
         <button className='logo-button' onClick={onLogoButtonClick}>
           <LogoIcon className='logo' />
         </button>
-        {showGalleryButton && <button onClick={onGalleryClick} className='gallery-button'>
+        {!NAVBAR_EXCLUDE_PATH.includes(location.pathname) && <button onClick={onGalleryClick} className='gallery-button'>
           My NFT Gallery
         </button>}
-        {showGalleryButton && <button className='setting-button' onClick={onSettingButtonClick}>
+        {!NAVBAR_EXCLUDE_PATH.includes(location.pathname) && <button className='setting-button' onClick={onSettingButtonClick}>
           <SettingIcon />
         </button>}
       </header>
-      {/* {koi.address && location.pathname !== '/setting' && <NavBar />} */}
-      <NavBar />
+      {!NAVBAR_EXCLUDE_PATH.includes(location.pathname) && <NavBar />}
     </>
   )
 }

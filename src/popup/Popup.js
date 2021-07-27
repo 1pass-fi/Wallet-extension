@@ -32,9 +32,9 @@ import axios from 'axios'
 
 import storage from 'storage'
 
-import { Ethereum } from 'account/Ethereum'
-import { Arweave } from 'account/Arweave'
 import { Account as AccountClass } from 'account'
+
+import { Ethereum } from 'background/eth'
 
 const ContinueLoading = () => (
   <div className='continue-loading'>
@@ -167,9 +167,11 @@ const Popup = ({
     }
   }, [error, notification, warning])
 
-  const test = async () => {
-    history.push('/account/welcome')
-  }
+  // const test = async () => {
+  //   const eth = new Ethereum()
+  //   const wallet = eth.importWallet('program honey gym never cheap glance always come zebra slogan winner summer')
+  //   console.log(wallet)
+  // }
 
   return (
     <div className="popup">

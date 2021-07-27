@@ -9,6 +9,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import CopyIcon from 'img/copy-icon.svg'
 import EditIcon from 'img/edit-icon.svg'
 import Fish from 'img/koi-logo-bg.svg'
+import EthereumIcon from 'img/ethereum-logo.svg'
 import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
 
@@ -42,11 +43,13 @@ export const AccountInfo = (({
   const [accountAddress, setAccountAddress] = useState('')
   const [koiBalance, setKoiBalance] = useState(null)
   const [balance, setBalance] = useState(null)
+  const [walletType, setWalletType] = useState(TYPE.ARWEAVE)
 
   const onSubmit = async (newName) => {
 
-    const arweaveAccount = await Account.get({ address: account.address }, TYPE.ARWEAVE)
-    await arweaveAccount.set.accountName(newName)
+    const type = await Account.getTypeOfWallet(account.address)
+    const _account = await Account.get({ address: account.address }, type)
+    await _account.set.accountName(newName)
 
     const accountState = await Account.getAllState()
     setAccounts(accountState)
@@ -62,22 +65,28 @@ export const AccountInfo = (({
   }
 
   useEffect(() => {
-    if (type == 'arweave') {
-      setAccountAddress(get(koi, 'address'))
-      setKoiBalance(get(koi, 'koiBalance'))
-      setBalance(get(koi, 'arBalance'))
-    } else {
-      setAccountAddress(get(ethereum, 'ethAddress'))
-      setKoiBalance(get(koi, 'koiBalance'))
-      setBalance(get(ethereum, 'ethBalance'))
+    const loadData = async () => {
+      const type = await Account.getTypeOfWallet(account.address)
+      setWalletType(type)
     }
-  }, [koi])
+
+    loadData()
+    // if (type == 'arweave') {
+    //   setAccountAddress(get(koi, 'address'))
+    //   setKoiBalance(get(koi, 'koiBalance'))
+    //   setBalance(get(koi, 'arBalance'))
+    // } else {
+    //   setAccountAddress(get(ethereum, 'ethAddress'))
+    //   setKoiBalance(get(koi, 'koiBalance'))
+    //   setBalance(get(ethereum, 'ethBalance'))
+    // }
+  }, [])
 
   return (
     <div className='wallet-info'>
       <div className='wallet-info-row'>
         <div className='fish'>
-          <Fish />
+          {walletType == TYPE.ARWEAVE ? <Fish /> : <EthereumIcon />}
         </div>
         <div>
           <div className='name'>
@@ -114,7 +123,7 @@ export const AccountInfo = (({
           {<div hidden className='usd-exchange'>${fiatCurrencyFormat(account.koiBalance * price.KOI)} USD</div>}
         </div>
         <div className='ar-balance'>
-          <div className='balance'>{numberFormat(account.balance)} AR</div>
+          <div className='balance'>{numberFormat(account.balance)} {walletType == TYPE.ARWEAVE ? 'AR' : 'ETH'}</div>
           {<div className='usd-exchange'>{getSymbolFromCurrency(currency) || ''}{fiatCurrencyFormat(account.balance * price.AR)} {currency}</div>}
         </div>
       </div>

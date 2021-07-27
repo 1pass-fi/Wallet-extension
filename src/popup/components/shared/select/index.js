@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import DownArrowIcon from 'img/down-arrow-icon.svg'
 import './index.css'
@@ -9,7 +9,7 @@ export const Select = ({
   label='', 
   placeholder='' ,
   className='',
-  onChange
+  onChange,
 }) => {
   const [showMenu, setShowMenu] = useState(false)
   const [downArrow, setDownArrow] = useState(true)
@@ -28,6 +28,10 @@ export const Select = ({
     setDownArrow((prev) => {return !prev})
     setShowMenu((prev) => {return !prev})
   }
+
+  useEffect(() => {
+    setSelectedOption(defaultOption)
+  }, [options])
 
   return (
     <div className={`select-container ${className}`}>

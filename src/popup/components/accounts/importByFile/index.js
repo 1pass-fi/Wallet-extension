@@ -18,6 +18,8 @@ import { PATH, ERROR_MESSAGE, STORAGE } from 'koiConstants'
 import './index.css'
 import { setIsLoading } from 'popup/actions/loading'
 
+import useWalletTypeSelection from 'shared/useWalletTypeSelection'
+
 
 export const ImportByFile = ({ setError, importWallet }) => {
   const history = useHistory()
@@ -25,6 +27,8 @@ export const ImportByFile = ({ setError, importWallet }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isAccept, setIsAccept] = useState(false)
+
+  const { selectedType, WalletTypeSelection } = useWalletTypeSelection()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -44,7 +48,7 @@ export const ImportByFile = ({ setError, importWallet }) => {
         redirectPath = ((await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) ? PATH.CONNECT_SITE : redirectPath
 
         setIsLoading(true)
-        await importWallet(key, password)
+        await importWallet(key, password, selectedType)
         setIsLoading(false)
 
         history.push(redirectPath)
@@ -56,6 +60,7 @@ export const ImportByFile = ({ setError, importWallet }) => {
 
   return (
     <div className="account-import-key">
+      <WalletTypeSelection />
       <Card className="import-card">
         <div className="title">
           <ExportIcon className="title-icon" />

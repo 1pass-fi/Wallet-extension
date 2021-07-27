@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
 import { getKeyFile } from 'actions/koi'
+import { NOTIFICATION } from 'koiConstants'
 
 import WarningIcon from 'img/warning-icon.svg'
 
@@ -10,15 +11,20 @@ import InputField from 'shared/inputField'
 import Button from 'popup/components/shared/button'
 import Modal from 'popup/components/shared/modal/index'
 import { setNotification } from 'popup/actions/notification'
+import { setError } from 'popup/actions/error'
 
-export const KeyModal = ({ getKeyFile, setShowExportKeyModel, setNotification }) => {
+export const KeyModal = ({ address, getKeyFile, setShowExportKeyModel, setNotification, setError }) => {
   const [password, setPassword] = useState(null)
 
   const handleOnClick = async () => {
     if (password) {
-      await getKeyFile(password)
-      setNotification(NOTIFICATION.KEY_EXPORTED)
-      setShowExportKeyModel(false)
+      try {
+        await getKeyFile(password, address)
+        setNotification(NOTIFICATION.KEY_EXPORTED)
+        setShowExportKeyModel(false)
+      } catch (err) {
+        setError(err.message)
+      }
     }
   }
 
@@ -49,4 +55,4 @@ export const KeyModal = ({ getKeyFile, setShowExportKeyModel, setNotification })
   )
 }
 
-export default connect(null, { getKeyFile, setNotification })(KeyModal)
+export default connect(null, { getKeyFile, setNotification, setError })(KeyModal)

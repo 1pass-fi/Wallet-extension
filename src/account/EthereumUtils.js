@@ -7,7 +7,7 @@ export class EthereumUtils {
       if (isString(key)) {
         await eth.importWallet(key, 'seedPhrase')
       } else {
-        await eth.importWallet({ key }, 'key')
+        await eth.importWallet(key, 'key')
       }
 
       return eth.address
