@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { isString } from 'lodash'
+import { isString, isEmpty } from 'lodash'
 
 import './index.css'
 import CollectionList from 'options/components/collectionList'
@@ -9,6 +9,7 @@ import { loadCollections } from 'options/utils'
 
 import AddIcon from 'img/add-icon-green.svg'
 import storage from 'storage'
+import { Account } from 'account'
 
 const Header = ({ setShowCreateCollection, setStage, setPage, setTotalPage }) => {
   const history = useHistory()
@@ -40,24 +41,32 @@ export default () => {
     collections, 
     setCollections,
     collectionsLoaded,
-    setCollectionsLoaded
+    setCollectionsLoaded,
+    account
   } = useContext(GalleryContext)
 
   useEffect(() => {
     const getCollectionsFromStorage = async () => {
-      const savedCollections = await storage.arweaveWallet.get.collections() || []
+      const type = await Account.getTypeOfWallet(account.address)
+      const _account = await Account.get(account, type)
+
+      const savedCollections = await _account.get.collections() || []
       setCollections(savedCollections)
     }
 
-    getCollectionsFromStorage()
-  }, [])
+    if (!isEmpty(account)) getCollectionsFromStorage()
+  }, [account])
 
   useEffect(() => {
     const handleLoadCollection = async () => {
       try {
-        if (address) {
+        if (!isEmpty(account)) {
+          const type = await Account.getTypeOfWallet(account.address)
+          const _account = await Account.get(account, type)
+          
           setIsLoading(true)
-          const result = await loadCollections(address)
+          const result = await _account.method.loadCollections()
+          await _account.set.collections(result)
           console.log('result', result)
           if (!isString(result)) {
             setCollections(result)
@@ -69,10 +78,10 @@ export default () => {
         setIsLoading(false)
       }
     }
-    if (address && !collectionsLoaded) {
+    if (!isEmpty(account) && !collectionsLoaded) {
       handleLoadCollection()
     }
-  }, [address])
+  }, [account])
 
   return (
     <div className='collections-container'>

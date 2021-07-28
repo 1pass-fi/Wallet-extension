@@ -9,10 +9,16 @@ import { get, isNumber, isArray } from 'lodash'
 import moment from 'moment'
 
 import axios from 'axios'
+import { AccountChromeStorage } from 'storage/ChromeStorage'
+
+import { find } from 'lodash'
+import storage from 'storage'
 
 export class ArweaveMethod {
+  #chrome
   constructor(koi) {
     this.koi = koi
+    this.#chrome = new AccountChromeStorage(koi.address)
   }
 
   async getBalances() {
@@ -214,5 +220,62 @@ export class ArweaveMethod {
     } catch (err) {
       throw new Error(err.message)
     }
+  }
+
+  async loadCollections() {
+    try {
+      const savedCollection = await this.#chrome.getAssets() || []
+      // get list of transactions
+      let fetchedCollections = await this.koi.getCollectionsByWalletAddress(this.koi.address)
+  
+      if (savedCollection.length == fetchedCollections.length) return 'fetched'
+  
+      // get list of transaction ids
+      fetchedCollections = fetchedCollections.map(collection => get(collection, 'node.id'))
+      console.log(fetchedCollections)
+      fetchedCollections = await this.#readState(fetchedCollections)
+      
+      // read state from the transaction id to get needed data for the collection
+      fetchedCollections = await Promise.all(fetchedCollections.map(collection => this.#getNftsDataForCollections(collection)))
+  
+      // filter collection has NFTs that cannot be found on the storage.
+      fetchedCollections = fetchedCollections.filter(collection => {
+        return collection.nfts.every(nft => nft)
+      })
+      console.log('fetchedCollections', fetchedCollections)
+  
+      await storage.arweaveWallet.set.collections(fetchedCollections)
+      return fetchedCollections
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async #readState(txIds) {
+    const result = await Promise.all(txIds.map(async id => {
+      try {
+        let state = await this.koi.readState(id)
+        const viewsAndReward = await this.koi.getViewsAndEarnedKOII(state.collection)
+        state = {...state, id, ...viewsAndReward}
+        console.log('state', state)
+        return state
+      } catch (err) {
+        return null
+      }
+    }))
+    return result.filter(collection => collection)
+  }
+
+  async #getNftsDataForCollections (collection) {
+    const storageNfts = await this.#chrome.getAssets() || []
+
+    const { collection: nftIds } = collection
+    const nfts = nftIds.map(id => {
+      const nft = find(storageNfts, v => v.txId == id)
+      if (nft) return nft
+    })
+  
+    const resultCollection = { ...collection, nfts }
+    return resultCollection
   }
 }

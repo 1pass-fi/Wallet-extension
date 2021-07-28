@@ -86,6 +86,10 @@ export default ({ children }) => {
     noClick: true,
   })
 
+  /* 
+    Load for accounts
+    Select the first wallet as account by default
+  */
   useEffect(() => {
     const loadWallets = async () => {
       const allWallets = await Account.getAllWallets()

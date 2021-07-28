@@ -28,6 +28,7 @@
 
 .navbar .nav-item.active {
   border-right: 3px solid #ffffff;
+  width: 60px;
 }
 
 .navbar .top {
