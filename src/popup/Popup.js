@@ -105,7 +105,9 @@ const Popup = ({
       if (query.includes('create-wallet')) {
         history.push('/account/create')
       } else if (query.includes('upload-json')) {
-        history.push('/account/import/keyfile')
+        const params = new URLSearchParams(query)
+        const walletType = params.get('type')
+        history.push(`/account/import/keyfile?type=${walletType}`)
       } else if (query.includes('upload-seedphrase')) {
         history.push('/account/import/phrase')
       }

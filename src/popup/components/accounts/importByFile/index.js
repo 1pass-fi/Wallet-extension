@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 import { get } from 'lodash'
@@ -18,8 +18,6 @@ import { PATH, ERROR_MESSAGE, STORAGE } from 'koiConstants'
 import './index.css'
 import { setIsLoading } from 'popup/actions/loading'
 
-import useWalletTypeSelection from 'shared/useWalletTypeSelection'
-
 
 export const ImportByFile = ({ setError, importWallet }) => {
   const history = useHistory()
@@ -27,8 +25,8 @@ export const ImportByFile = ({ setError, importWallet }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isAccept, setIsAccept] = useState(false)
-
-  const { selectedType, WalletTypeSelection } = useWalletTypeSelection()
+  const { search} = useLocation()
+  const walletType = (new URLSearchParams(search)).get('type')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -48,7 +46,7 @@ export const ImportByFile = ({ setError, importWallet }) => {
         redirectPath = ((await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) ? PATH.CONNECT_SITE : redirectPath
 
         setIsLoading(true)
-        await importWallet(key, password, selectedType)
+        await importWallet(key, password, walletType)
         setIsLoading(false)
 
         history.push(redirectPath)
@@ -60,7 +58,6 @@ export const ImportByFile = ({ setError, importWallet }) => {
 
   return (
     <div className="account-import-key">
-      <WalletTypeSelection />
       <Card className="import-card">
         <div className="title">
           <ExportIcon className="title-icon" />

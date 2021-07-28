@@ -9,7 +9,6 @@ export default () => {
     <div className='seed-file-lock-screen'>
       <Header />
       <div className='content'>
-        <div className='get-started'>Let’s get started.</div>
         <AccountImport />
       </div>
     </div>
