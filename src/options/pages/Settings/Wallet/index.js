@@ -2,6 +2,7 @@ import React, { useState, useContext, useRef, useEffect } from 'react'
 import data from 'currency-codes/data'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { isEmpty, get } from 'lodash'
+import axios from 'axios'
 
 import { getChromeStorage, setChromeStorage } from 'utils'
 import { STORAGE, OS } from 'koiConstants'
@@ -9,27 +10,9 @@ import { GalleryContext } from 'options/galleryContext'
 
 import AccountOrder from './AccountOrder'
 import './index.css'
-import axios from 'axios'
+import AcceptedCurrencies from './currencies'
 
 import storage from 'storage'
-
-// const mockAccount = [
-//   {
-//     id: '1',
-//     name: 'account #1',
-//     address: '1234567890123456789012345678901234',
-//   },
-//   {
-//     id: '2',
-//     name: 'account #2',
-//     address: '6789012341234567890123456789012345',
-//   },
-//   {
-//     id: '3',
-//     name: 'account #3',
-//     address: '1234567890123456789012345679999999',
-//   },
-// ]
 
 const onImportSeedPhrase = () => {
   // Import seed phrase
@@ -66,12 +49,14 @@ export default () => {
     getOs()
   }, [])
 
-  const onCurrencyChange =  async (e) => {
+  const onCurrencyChange = async (e) => {
     try {
       const currency = e.target.value
       console.log(currency)
       // Fetch to check if we can get AR price in this currency
-      const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=${currency}`)
+      const response = await axios.get(
+        `https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=${currency}`
+      )
       const price = get(response, 'data.arweave')
       if (!price || isEmpty(price)) {
         setError(`We cannot get AR price for the currency ${currency}.`)
@@ -98,7 +83,6 @@ export default () => {
         <div className='header'>Wallet Settings</div>
 
         <div className='items'>
-
           {/* 
             Currently we can import only one wallet. This will hide for now.
           */}
@@ -129,11 +113,15 @@ export default () => {
               onChange={onCurrencyChange}
               defaultValue={currency}
             >
-              {data.map(({ code, currency }) => (
-                <option style={{color: textColor}} key={code} value={code}>{`${
-                  getSymbolFromCurrency(code) || ''
-                } ${currency} (${code})`}</option>
-              ))}
+              {data
+                .filter(({ code }) => AcceptedCurrencies.includes(code))
+                .map(({ code, currency }) => (
+                  <option style={{ color: textColor }} key={code} value={code}>
+                    {`${
+                      getSymbolFromCurrency(code) || ''
+                    } ${currency} (${code})`}
+                  </option>
+                ))}
             </select>
           </div>
 
