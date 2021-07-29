@@ -20,6 +20,7 @@ import { numberFormat, fiatCurrencyFormat, updateAccountName } from 'utils'
 import { NOTIFICATION } from 'koiConstants'
 import { Account } from 'account'
 import { setAccounts } from 'popup/actions/accounts'
+import { changeAccountName } from 'actions/koi'
 
 import { TYPE } from 'account/accountConstants'
 
@@ -30,18 +31,12 @@ export const AccountInfo = (({
   collapsed,
   setCollapsed,
   account,
-  setAccounts
+  changeAccountName
 }) => {
   const [openEditModal, setOpenEditModal] = useState(false)
 
   const onSubmit = async (newName) => {
-
-    const type = await Account.getTypeOfWallet(account.address)
-    const _account = await Account.get({ address: account.address }, type)
-    await _account.set.accountName(newName)
-
-    const accountState = await Account.getAllState()
-    setAccounts(accountState)
+    await changeAccountName(account.address, newName)
 
     setNotification(NOTIFICATION.ACCOUNT_NAME_UPDATED)
     setOpenEditModal(false)
@@ -115,6 +110,6 @@ const mapStateToProps = (state) => ({
   ethereum: state.ethereum
 })
 
-const mapDispatchToProps = { setAccountName, setNotification, setAccounts }
+const mapDispatchToProps = { setAccountName, setNotification, setAccounts, changeAccountName }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo)

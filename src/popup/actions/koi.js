@@ -313,16 +313,15 @@ export const connectSite = (inputData) => (dispatch) => {
   }
 }
 
-export const test = (data) => {
-  return new Promise((resolve, reject) => {
-    backgroundConnect.request(MESSAGES.TEST, response => {
-      resolve(response)
+export const changeAccountName = (address, newName) => async (dispatch) => {
+  try {
+    await backgroundRequest.wallet.changeAccountName({ address, newName })
 
-      if (response.error) {
-        reject(response.error)
-      }
-    }, data)
-  })
+    const allData = await popupAccount.getAllMetadata()
+    dispatch(setAccounts(allData))
+  } catch (err) {
+    dispatch(setError(err.message))
+  }
 }
 
 export const setKoi = (payload) => ({ type: SET_KOI, payload })

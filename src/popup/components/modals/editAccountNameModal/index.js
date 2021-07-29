@@ -31,7 +31,7 @@ const EditAccountNameModal = ({
       <InputField 
         type='text'
         className='account-name-input'
-        // value={account.accountName}
+        value={account.accountName}
         onChange={onChangeAccountName}
       />
       <div className="modal-action-buttons">

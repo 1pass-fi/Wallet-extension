@@ -495,6 +495,26 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         break
       }
 
+      case MESSAGES.CHANGE_ACCOUNT_NAME: {
+        try {
+          const { address, newName } = message.data
+          const credentials = await backgroundAccount.getCredentialByAddress(address)
+          const account = await backgroundAccount.getAccount(credentials)
+
+          await account.set.accountName(newName)
+
+          port.postMessage({
+            type: MESSAGES.CHANGE_ACCOUNT_NAME
+          })
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.CHANGE_ACCOUNT_NAME,
+            error: `BACKGROUND ERROR: ${err.message}`
+          })
+        }
+        break
+      }
+
       default:
         break
     }

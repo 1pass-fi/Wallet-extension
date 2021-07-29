@@ -364,6 +364,14 @@ export class BackgroundAccount extends GenericAccount {
   async removeFromImported(address) {
     this.importedAccount = this.importedAccount.filter(account => account.address !== address)
   }
+
+  async getCredentialByAddress(address) {
+    try {
+      return find(this.importedAccount, v => v.address == address)
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
 }
 
 export const backgroundAccount = new BackgroundAccount()

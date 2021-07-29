@@ -26,7 +26,7 @@ export default ({
           name={name}
           className='input'
           type={isDisplay ? 'text' : type}
-          value={value}
+          defaultValue={value}
           onChange={onChange}
           placeholder={placeholder}
         ></input>

@@ -96,4 +96,14 @@ export class WalletRequest extends Request {
   getWalletKey() {
     return this.promise(MESSAGES.GET_WALLET)
   }
+
+  /**
+   * 
+   * @param {Object} body request body
+   * @param {String} body.address address of an account
+   * @returns 
+   */
+  changeAccountName(body) {
+    return this.promise(MESSAGES.CHANGE_ACCOUNT_NAME, body)
+  }
 }
