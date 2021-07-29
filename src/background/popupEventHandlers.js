@@ -125,9 +125,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
       case MESSAGES.REMOVE_WALLET: {
         try {
-          const { address, type } = message.data
+          const { address } = message.data
           
-          await Account.remove(address, type)
+          await backgroundAccount.removeAccount(address)
 
           port.postMessage({
             type: MESSAGES.REMOVE_WALLET,

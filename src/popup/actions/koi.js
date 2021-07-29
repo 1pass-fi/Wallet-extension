@@ -65,28 +65,24 @@ export const importWallet = (key, password, type) => async (dispatch) => {
   }
 }
 
-export const removeWallet = (address, type) => async (dispatch, getState) => {
+export const removeWallet = (address) => async (dispatch, getState) => {
   try {
     /* 
       Remove all data of this address
       Remove address from list of addresses
     */
 
-    await backgroundRequest.wallet.removeWallet({ address, type })
+    await backgroundRequest.wallet.removeWallet({ address })
 
-    const accountStates = await Account.getAllState()
+    await popupAccount.loadImported()
+    const accountStates = await popupAccount.getAllMetadata()
     console.log('accountStates: ', accountStates)
+
     const { activities } = getState()
     const newActivities = activities.filter(activity => activity.address !== address)
+
     dispatch(setActivities(newActivities))
     dispatch(setAccounts(accountStates))
-
-    // dispatch(setAssets([]))
-    // dispatch(setTransactions([]))
-    // dispatch(clearActivities())
-    // dispatch(setCursor({ ownedCursor: null, recipientCursor: null, doneLoading: false }))
-    // dispatch(setKoi(koiData))
-    // dispatch(setIsLoading(false))
   } catch (err) {
     dispatch(setError(err.message))
   }

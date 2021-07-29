@@ -131,6 +131,7 @@ export const PATH = {
   HOME: '/account',
   LOGIN: '/account/login',
   ACTIVITY: '/activity',
+  WELCOME: '/account/welcome',
   // Gallery path
   NFT_IMAGE: 'https://arweave.net',
   VIEW_BLOCK: 'https://viewblock.io/arweave/address',

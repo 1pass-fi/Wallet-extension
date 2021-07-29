@@ -182,9 +182,9 @@ class GenericAccount {
       const type = await this.getType(address)
   
       switch(type) {
-        case IMPORTED.ARWEAVE:
+        case TYPE.ARWEAVE:
           return new Arweave(credentials)
-        case IMPORTED.ETHEREUM:
+        case TYPE.ETHEREUM:
           return new Ethereum(credentials)
       }
     } catch (err) {
@@ -209,8 +209,8 @@ class GenericAccount {
       const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE)
       const importedEthereum = await this.storage._getChrome(IMPORTED.ETHEREUM)
   
-      if (find(importedArweave, v => v.address == address)) return IMPORTED.ARWEAVE
-      if (find(importedEthereum, v => v.address == address)) return IMPORTED.ETHEREUM
+      if (find(importedArweave, v => v.address == address)) return TYPE.ARWEAVE
+      if (find(importedEthereum, v => v.address == address)) return TYPE.ETHEREUM
     } catch (err) {
       err.message
     }
@@ -339,6 +339,8 @@ export class BackgroundAccount extends GenericAccount {
       await this.storage._removeChrome(address)
       await this.storage._removeChrome(`${address}_assets`)
       await this.storage._removeChrome(`${address}_collections`)
+
+      await this.removeFromImported(address)
     } catch (err) {
       console.log(err.message)
     }
@@ -357,6 +359,10 @@ export class BackgroundAccount extends GenericAccount {
 
   async addToImported(credentials) {
     this.importedAccount.push(credentials)
+  }
+
+  async removeFromImported(address) {
+    this.importedAccount = this.importedAccount.filter(account => account.address !== address)
   }
 }
 

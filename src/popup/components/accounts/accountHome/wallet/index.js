@@ -11,48 +11,13 @@ import Card from 'shared/card'
 import { removeWallet, getKeyFile } from 'actions/koi'
 import { setNotification } from 'actions/notification'
 import { setAccountName } from 'actions/accountName'
-import { getAccountName, updateAccountName } from 'utils'
 import { setIsLoading } from 'popup/actions/loading'
 
 import storage from 'storage'
+import { setError } from 'popup/actions/error'
 
-export const Wallet = ({
-  removeWallet,
-  setAccountName,
-  setIsLoading,
-  account
-}) => {
-  const history = useHistory()
-  const [connectedSite, setConnectedSite] = useState([])
+export const Wallet = ({account}) => {
   const [collapsed, setCollapsed] = useState(true)
-
-  const handleRemoveWallet = async () => {
-    setIsLoading(true)
-    await removeWallet(account.address, account.type)
-    setIsLoading(false)
-  } 
-
-  const handleDeleteSite = async (site) => {
-    await storage.generic.method.deleteSite(site)
-    const connectedSite = await storage.generic.get.connectedSites() || []
-    setConnectedSite(connectedSite)
-  }
-
-  useEffect(() => {
-    const getConnectedSite = async () => {
-      const connectedSite = await storage.generic.get.connectedSites() || []
-      setConnectedSite(connectedSite)
-    }
-
-    const getName = async () => {
-      let name = await getAccountName()
-      if (!name) name = await updateAccountName('Account 1')
-      setAccountName(name)
-    }
-    
-    getName()
-    getConnectedSite()
-  }, [])
 
   return (
     <div className={collapsed ? 'wallet collapsed' : 'wallet'}>
@@ -61,10 +26,7 @@ export const Wallet = ({
         <Card className='address'>{account.address}</Card>
         <AccountConfig
           accountAddress={'address'}
-          sites={connectedSite}
-          handleDeleteSite={handleDeleteSite}
-          handleRemoveWallet={handleRemoveWallet}
-          accountName={account.accountName}
+          sites={[]}
           account={account}
         />
       </div>

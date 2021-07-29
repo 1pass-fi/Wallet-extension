@@ -1,5 +1,7 @@
 
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import './index.css'
 
@@ -15,6 +17,10 @@ import ExportPrivateKeyModal from './exportPrivateKeyModal'
 
 import { TYPE } from 'account/accountConstants'
 
+import { setIsLoading } from 'actions/loading'
+import { removeWallet } from 'actions/koi'
+
+import { popupAccount } from 'account'
 
 const AccountConfItem = ({ icon, title, onClick, className }) => {
   return (
@@ -25,18 +31,38 @@ const AccountConfItem = ({ icon, title, onClick, className }) => {
   )
 }
 
-export default (({
-  handleRemoveWallet,
-  sites,
-  handleDeleteSite,
-  account
-}) => {
+const AccountConfig = (({ sites, account, setIsLoading, removeWallet }) => {
+  const history = useHistory()
+
   const [showModal, setShowModal] = useState(false)
   const [showModalConnectedSite, setShowModalConnectedSite] = useState(false)
   const [showExportKeyModal, setShowExportKeyModel] = useState(false)
 
+  const handleRemoveWallet = async () => {
+    try {
+      setIsLoading(true)
+      await removeWallet(account.address)
+      setShowModal(false)
+      setIsLoading(false)
+
+      // if remove the last wallet, redirect to welcome screen
+      const totalAccount = await popupAccount.count()
+      if (totalAccount == 0) history.push(PATH.WELCOME)
+    } catch (err) {
+      setIsLoading(false)
+      console.log(err.message)
+    }
+  } 
+
+  const handleDeleteSite = async (site) => {
+    await storage.generic.method.deleteSite(site)
+    const connectedSite = await storage.generic.get.connectedSites() || []
+    setConnectedSite(connectedSite)
+  }
+
   return (
     <div className='wallet-conf'>
+
       <AccountConfItem
         icon={<ShareIconOne />}
         title={account.type == TYPE.ARWEAVE ? 'View Block Explorer' : 'Etherscan Explorer'}
@@ -62,6 +88,8 @@ export default (({
         title='Remove Account'
         onClick={() => setShowModal(true)}
       />
+
+      {/* REMOVE ACCOUNT MODAL */}
       {showModal && (
         <RemoveAccountModal
           accountName={account.accountName}
@@ -70,6 +98,8 @@ export default (({
           onSubmit={handleRemoveWallet}
         />
       )}
+
+      {/* CONNECTED SITE MODAL */}
       {showModalConnectedSite && (
         <RemoveConnectedSite
           sites={sites}
@@ -78,7 +108,15 @@ export default (({
           onClose={() => setShowModalConnectedSite(false)}
         />
       )}
-      {showExportKeyModal && <ExportPrivateKeyModal address={account.address} setShowExportKeyModel={setShowExportKeyModel}/>}
+      {/* EXPORT KEYFILE MODAL */}
+      {showExportKeyModal && (
+        <ExportPrivateKeyModal 
+          address={account.address} 
+          setShowExportKeyModel={setShowExportKeyModel}
+        />
+      )}
     </div>
   )
 })
+
+export default connect(null, { setIsLoading, removeWallet })(AccountConfig)
