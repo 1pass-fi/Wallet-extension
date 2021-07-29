@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Redirect, withRouter, useHistory } from 'react-router-dom'
 
-import LogoIcon from 'img/koi-logo.svg'
+import LogoIcon from 'img/koi-logo-42-31.svg'
 import SettingIcon from 'img/settings-icon.svg'
 import NavBar from './navBar'
 
