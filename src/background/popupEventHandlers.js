@@ -8,6 +8,7 @@ import { Arweave as ArweaveWallet } from 'account/Arweave'
 import { Ethereum as EthereumWallet } from 'account/Ethereum'
 import { TYPE } from 'account/accountConstants'
 
+import { backgroundAccount } from 'account'
 
 const arweave = Arweave.init({
   host: 'arweave.net',
@@ -37,7 +38,7 @@ import {
 
 export const loadBalances = async (koi, port) => {
   try {
-    const accounts = await Account.getAll()
+    const accounts = await backgroundAccount.getAllAccounts()
     await Promise.all(accounts.map(async account => {
       let { balance, koiBalance } = await account.method.getBalances()
       const address = await account.get.address()
@@ -87,36 +88,23 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           // Create new account
           switch(type) {
             case TYPE.ARWEAVE:
-              console.log('BACKGROUND', key)
               address = await ArweaveWallet.utils.loadWallet(koi, key)
-              console.log('BACKGROUND: ', address)
-              await Account.create(address, key, password, TYPE.ARWEAVE)
-              account = Account.get({ address, key }, TYPE.ARWEAVE)
-              console.log('BACKGROUND: ', account)
               break
             case TYPE.ETHEREUM:
               address = await EthereumWallet.utils.loadWallet(eth, key)
-              await Account.create(address, key, password, TYPE.ETHEREUM)
-              account = Account.get({ address, key }, TYPE.ETHEREUM)
           }
+
+          await backgroundAccount.createAccount(address, key, password, type)
+          account = await backgroundAccount.getAccount({ address, key })
+
           // Set seedPhrase if the key is seed phrase
           if (isString(key)) {
             const encryptedPhrase = await passworder.encrypt(password, key)
             account.set.seedPhrase(encryptedPhrase)
           }
-          const totalAccounts = (await Account.getAll()).length
+
+          const totalAccounts = await backgroundAccount.count()
           account.set.accountName(`Account#${totalAccounts}`)
-
-          /* 
-            Now we will have multiple accounts so don't need to do this removing
-          */
-          // await removeChromeStorage(STORAGE.CONTENT_LIST)
-          // await removeChromeStorage(STORAGE.ACTIVITIES_LIST)
-
-          // remove from new storage object
-          // await storage.arweaveWallet.remove.activities()
-          // await storage.arweaveWallet.remove.assets()
-          // await storage.generic.remove.connectedSites()
 
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,

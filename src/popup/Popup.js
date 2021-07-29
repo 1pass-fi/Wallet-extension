@@ -32,9 +32,7 @@ import axios from 'axios'
 
 import storage from 'storage'
 
-import { Account as AccountClass } from 'account'
-
-import { Ethereum } from 'background/eth'
+import { popupAccount } from 'account'
 
 const ContinueLoading = () => (
   <div className='continue-loading'>
@@ -65,7 +63,8 @@ const Popup = ({
   setPrice,
   setKoi,
   setCurrency,
-  setAccounts
+  setAccounts,
+  accounts
 }) => {
   const history = useHistory()
 
@@ -76,10 +75,13 @@ const Popup = ({
       load for wallet state of lock or unlock
       load for all accounts
     */
-    let accounts = await AccountClass.getAll()
+    await popupAccount.loadImported()
+    let accounts = await popupAccount.getAllAccounts()
+
     let unlocked = await storage.generic.get.unlocked()
-    accounts = await Promise.all(accounts.map(async account => await account.get.getAllFields()))
-    
+    accounts = await Promise.all(accounts.map(async account => await account.get.metadata()))
+
+    console.log('account metadata: ', accounts)
     unlocked = true
     setAccounts(accounts)
 
@@ -168,12 +170,6 @@ const Popup = ({
       return () => clearTimeout(timer)
     }
   }, [error, notification, warning])
-
-  // const test = async () => {
-  //   const eth = new Ethereum()
-  //   const wallet = eth.importWallet('program honey gym never cheap glance always come zebra slogan winner summer')
-  //   console.log(wallet)
-  // }
 
   return (
     <div className="popup">

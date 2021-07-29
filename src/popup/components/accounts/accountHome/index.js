@@ -74,7 +74,9 @@ export const AccountHome = ({ koi, ethereum, getBalances, accounts }) => {
         <Link to='/account/import' className="plus-button">
           <PlusIcon />
         </Link>} */}
-      <div className='accounts-wrapper'>{accounts.map((account, index) => <Wallet key={index} account={account}/>)}</div>
+      <div className='accounts-wrapper'>
+        {accounts.map((account, index) => <Wallet key={index} account={account}/>)}
+      </div>
       <div onClick={onAddAccount} className='home-plus-button-wrapper'>
         <div className='button'><PlusIcon /></div>
       </div>

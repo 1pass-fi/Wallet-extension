@@ -30,73 +30,6 @@ import { setIsLoading } from 'popup/actions/loading'
 import storage from 'storage'
 import { TYPE } from 'account/accountConstants'
 
-const WalletInfo = (({
-  accountName,
-  accountAddress,
-  koiBalance,
-  arBalance,
-  setNotification,
-  setAccountName,
-  price,
-  currency
-}) => {
-  const [openEditModal, setOpenEditModal] = useState(false)
-
-  const onSubmit = async (newName) => {
-    await updateAccountName(newName)
-    setNotification(NOTIFICATION.ACCOUNT_NAME_UPDATED)
-    setAccountName(newName)
-    setOpenEditModal(false)
-  }
-
-  const onClose = () => {
-    setOpenEditModal(false)
-  }
-
-  return (
-    <div className='wallet-info'>
-      <div className='wallet-info-row'>
-        <div>
-          <div className='name'>
-            <div className='text'>{accountName}</div>
-            <div className='icon' onClick={() => setOpenEditModal(true)}>
-              <EditIcon />
-            </div>
-          </div>
-          <div className='addr'>
-            <div>{`${accountAddress.slice(0, 6)}...${accountAddress.slice(
-              accountAddress.length - 4
-            )}`}</div>
-            <div onClick={() => setNotification(NOTIFICATION.COPIED)}>
-              <CopyToClipboard text={accountAddress}>
-                <div className="icon">
-                  <CopyIcon/>
-                </div>
-              </CopyToClipboard>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className='wallet-info-row wallet-balance'>
-        <div className='koi-balance'>
-          <div className='balance'>{numberFormat(koiBalance)} KOII</div>
-          {<div hidden className='usd-exchange'>${fiatCurrencyFormat(koiBalance * price.KOI)} USD</div>}
-        </div>
-        <div className='ar-balance'>
-          <div className='balance'>{numberFormat(arBalance)} AR</div>
-          {<div className='usd-exchange'>{getSymbolFromCurrency(currency) || ''}{fiatCurrencyFormat(arBalance * price.AR)} {currency}</div>}
-        </div>
-      </div>
-      { openEditModal && 
-        <EditAccountNameModal
-          onClose={onClose} 
-          onSubmit={onSubmit} 
-          currentName={accountName}
-          account={account}
-        /> }
-    </div>
-  )
-})
 
 const WalletConfItem = ({ icon, title, onClick, className }) => {
   return (
@@ -175,11 +108,7 @@ const WalletConf = (({
 export const Wallet = ({
   removeWallet,
   setAccountName,
-  accountName,
   setIsLoading,
-  type,
-  koi,
-  ethereum,
   account
 }) => {
   const history = useHistory()
@@ -217,7 +146,7 @@ export const Wallet = ({
   return (
     <div className={collapsed ? 'wallet collapsed' : 'wallet'}>
       <div className='wallet-wrapper'>
-        <AccountInfo account={account} type={type} setCollapsed={setCollapsed} collapsed={collapsed}/>
+        <AccountInfo account={account} setCollapsed={setCollapsed} collapsed={collapsed}/>
         <Card className='address'>{account.address}</Card>
         <WalletConf
           accountAddress={'address'}

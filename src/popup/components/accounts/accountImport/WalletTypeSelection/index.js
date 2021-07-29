@@ -7,6 +7,8 @@ import PolkadotLogo from 'img/chain/polkadot-logo.svg'
 import AvalancheLogo from 'img/chain/avalanche-logo.svg'
 import TezosLogo from 'img/chain/tezos-logo.svg'
 
+import { TYPE } from 'account/accountConstants'
+
 import Card from 'shared/card'
 
 import './index.css'
@@ -19,14 +21,14 @@ export default ({ triggerPopup, popupPath }) => {
   return (
     <Card className='wallet-type-selection'>
       <div className='title'>What type of wallet do you want to import?</div>
-      <div className='type-option' onClick={() => handleOnClick('ARWEAVE')}>
+      <div className='type-option' onClick={() => handleOnClick(TYPE.ARWEAVE)}>
         <KoiIcon />
         <div className='type-info'>
           <div className='type-text'>Koii Wallet</div>
           <div className='type-text-extra'>(Arweave)</div>
         </div>
       </div>
-      <div className='type-option' onClick={() => handleOnClick('ETHEREUM')}>
+      <div className='type-option' onClick={() => handleOnClick(TYPE.ETHEREUM)}>
         <EthereumLogo />
         <div className='type-info'>
           <div className='type-text'>Ethereum Wallet</div>

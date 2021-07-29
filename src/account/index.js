@@ -1,12 +1,13 @@
 import { Arweave } from './Arweave'
 import { Ethereum } from './Ethereum'
-import { ADDRESSES, TYPE } from './accountConstants'
+import { ADDRESSES, IMPORTED, TYPE } from './accountConstants'
 import { ChromeStorage } from 'storage/ChromeStorage'
 import passworder from 'browser-passworder'
 
 import { find } from 'lodash'
 
 import { getChromeStorage } from 'utils'
+import { WalletPopup } from 'account/Wallet'
 
 
 export class Account {
@@ -154,3 +155,210 @@ export class Account {
     if (find(ethereumWallets, v => v.address == address)) return TYPE.ETHEREUM
   }
 }
+
+
+/* 
+  Background and Popup will use different classes.
+  - On popup and contentscript, basically, we will only need to get data. PopupAccount's instance, when
+  run getAccount(), will return an instance of class WalletPopup which has the ability to get 
+  data of accounts.
+  - On background we will use a another class which is BackgroundAccount, an instance of this class, when
+  run getAccount(), will return an instance of Arweave or Ethereum class bases on type of chain of the 
+  input address. This account object will have ability to get, set and run method functions.
+  The idea when we separate the way of managing account on Background and Popup is to prevent saving
+  keyfile directly to the storage.
+  Keyfile, after an account is imported, will be pushed into an array which is an attribute of
+  backgroundAccount - instance of BackgroundAccount.
+*/
+class GenericAccount {
+  constructor() {
+    this.storage = new ChromeStorage()
+    this.importedAccount = []
+  }
+
+  async getAccount(credentials) {
+    try {
+      const { address } = credentials
+      const type = await this.getType(address)
+  
+      switch(type) {
+        case IMPORTED.ARWEAVE:
+          return new Arweave(credentials)
+        case IMPORTED.ETHEREUM:
+          return new Ethereum(credentials)
+      }
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async getAllAccounts() {
+    try {
+      const allAccounts = await Promise.all(this.importedAccount.map(async credentials => {
+        return await this.getAccount(credentials)
+      }))
+  
+      return allAccounts
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async getType(address) {
+    try {
+      const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE)
+      const importedEthereum = await this.storage._getChrome(IMPORTED.ETHEREUM)
+  
+      if (find(importedArweave, v => v.address == address)) return IMPORTED.ARWEAVE
+      if (find(importedEthereum, v => v.address == address)) return IMPORTED.ETHEREUM
+    } catch (err) {
+      err.message
+    }
+  }
+
+  async loadImported() {
+    try {
+      const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []
+      const importedEthereum = await this.storage._getChrome(IMPORTED.ETHEREUM) || []
+  
+      this.importedAccount = [...importedArweave, ...importedEthereum]
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async count() {
+    try {
+      const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []
+      const importedEthereum = await this.storage._getChrome(IMPORTED.ETHEREUM) || []
+  
+      return importedArweave.length + importedEthereum.length
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+}
+
+export class PopupAccount extends GenericAccount {
+  constructor() {
+    super()
+  }
+
+  async getAccount(credentials) {
+    try {
+      const { address } = credentials
+  
+      return new WalletPopup(address)
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async getAllAccounts() {
+    try {
+      const allAccounts = await Promise.all(this.importedAccount.map(async credentials => {
+        return await this.getAccount(credentials)
+      }))
+  
+      return allAccounts
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async getAllMetadata() {
+    try {
+      const allAccounts = await this.getAllAccounts()
+      return await Promise.all(allAccounts.map(async account => await account.get.metadata()))
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+}
+
+export class BackgroundAccount extends GenericAccount {
+  constructor() {
+    super()
+  }
+
+  async createAccount(address, key, password, type) {
+    try {
+      const encryptedKey = await passworder.encrypt(password, key)
+      console.log('BackgroundAccount encryptedKey', encryptedKey)
+      const payload = { ADDRESS: address, TYPE: type }
+      /* 
+        Beside adding wallet info into the array of wallets, we also need to save it's metadata directly to the storage,
+        the field name should be it's address. For example:
+        { exampleAddress: { BALANCE: 100, KOIBALANCE: 200, PRICE: 8.2 } }
+      */
+      await this.storage._setChrome(address, payload)
+
+      /* 
+        Base on the input type we will add the wallet into different array of wallet.
+        Currently we have Arweave and Ethereum.
+      */
+      let importedWallets
+      let chain
+      switch (type) {
+        case TYPE.ARWEAVE:
+          chain = IMPORTED.ARWEAVE
+          break
+        case TYPE.ETHEREUM:
+          chain = IMPORTED.ETHEREUM
+      }
+
+      importedWallets = await this.storage._getChrome(chain) || []
+      if (!find(importedWallets, v => v.address == address)) importedWallets.push({ address, encryptedKey })
+      await this.storage._setChrome(chain, importedWallets) // save to wallets array
+
+      const newImported = { address, key }
+      this.addToImported(newImported)
+
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async removeAccount(address) {
+    const type = await this.getType(address)
+    try {
+      let importedWallets
+      let chain
+      switch (type) {
+        case TYPE.ARWEAVE:
+          chain = IMPORTED.ARWEAVE
+          break
+        case TYPE.ETHEREUM:
+          chain = IMPORTED.ETHEREUM
+      }
+
+      importedWallets = await this.storage._getChrome(chain) || []
+      importedWallets = importedWallets.filter(payload => address !== payload.address)
+      await this.storage._setChrome(chain, importedWallets)
+
+      await this.storage._removeChrome(address)
+      await this.storage._removeChrome(`${address}_assets`)
+      await this.storage._removeChrome(`${address}_collections`)
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async unlockImportedAccount(password) {
+    if (password) {
+      await this.loadImported()
+  
+      this.importedAccount = await Promise.all(this.importedAccount.map(async credentials => {
+        const decryptedKey = await passworder.decrypt(password, credentials.encryptedKey)
+        credentials[key] = decryptedKey
+      }))
+    }
+  }
+
+  async addToImported(credentials) {
+    this.importedAccount.push(credentials)
+  }
+}
+
+export const backgroundAccount = new BackgroundAccount()
+export const popupAccount = new PopupAccount()

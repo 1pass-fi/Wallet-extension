@@ -81,7 +81,7 @@ export class WalletGet {
      * @returns {Array} list of collections
      */
   async collections() {
-    return await this.#accountStorage.getField(ACCOUNT.COLLECTIONS)
+    return await this.#accountStorage.getCollections()
   }
 
   async type() {
@@ -92,16 +92,13 @@ export class WalletGet {
     return await this.#accountStorage.getField(ACCOUNT.ENCRYPTED_KEY)
   }
 
-  async getAllFields() {
-    const address = await this.address()
-    const balance = await this.balance()
-    const price = await this.price()
-    const pendingTransactions = await this.pendingTransactions()
-    const accountName = await this.accountName()
-    const collections = await this.collections()
-    const koiBalance = await this.koiBalance()
+  async metadata() {
     const type = await this.type()
+    const address = await this.address()
+    const accountName = await this.accountName()
+    const balance = await this.balance()
+    const koiBalance = await this.koiBalance()
 
-    return  { address, balance, koiBalance, price, pendingTransactions, accountName, collections, type }
+    return  { address, balance, koiBalance, accountName, type }
   }
 }

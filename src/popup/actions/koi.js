@@ -29,13 +29,16 @@ import storage from 'storage'
 import { Account } from 'account'
 import { TYPE } from 'account/accountConstants'
 
+import { popupAccount } from 'account'
+
 export const getBalances = () => async (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
     try { 
-      const accountStates = await Account.getAllState()
+      const accountStates = await popupAccount.getAllMetadata()
       dispatch(setAccounts(accountStates))
     } catch (err) {
-      dispatch(err.message)
+      console.log(err.message)
+      dispatch(setError(err.message))
     }
   })
   backgroundConnect.addHandler(getBalanceSuccessHandler)
@@ -52,12 +55,10 @@ export const getBalances = () => async (dispatch) => {
 export const importWallet = (key, password, type) => async (dispatch) => {
   try {
     await backgroundRequest.wallet.importWallet({key, password, type})
+    await popupAccount.loadImported()
+    const accountsData = await popupAccount.getAllMetadata()
 
-    let accounts = await Account.getAll()
-    accounts = await Promise.all(accounts.map(async account => await account.get.getAllFields()))
-    console.log('all account data', accounts)
-
-    dispatch(setAccounts(accounts))
+    dispatch(setAccounts(accountsData))
     dispatch(getBalances())
   } catch (err) {
     dispatch(setError(err.message))
