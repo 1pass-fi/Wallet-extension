@@ -1,1 +1,84 @@
 
+import React, { useState } from 'react'
+
+import './index.css'
+
+import ShareIconOne from 'img/wallet/share-icon.svg'
+import ShareIconTwo from 'img/wallet/share2-icon.svg'
+import KeyIcon from 'img/wallet/key-icon.svg'
+import DeleteIcon from 'img/wallet/delete-icon.svg'
+import RemoveAccountModal from 'shared/modal/removeAccountModal'
+import RemoveConnectedSite from 'popup/components/modals/removeConnectedSites'
+
+import { PATH } from 'koiConstants'
+import ExportPrivateKeyModal from './exportPrivateKeyModal'
+
+import { TYPE } from 'account/accountConstants'
+
+
+const AccountConfItem = ({ icon, title, onClick, className }) => {
+  return (
+    <div className={'wallet-conf-item ' + className} onClick={onClick}>
+      {icon}
+      <p>{title}</p>
+    </div>
+  )
+}
+
+export default (({
+  handleRemoveWallet,
+  sites,
+  handleDeleteSite,
+  account
+}) => {
+  const [showModal, setShowModal] = useState(false)
+  const [showModalConnectedSite, setShowModalConnectedSite] = useState(false)
+  const [showExportKeyModal, setShowExportKeyModel] = useState(false)
+
+  return (
+    <div className='wallet-conf'>
+      <AccountConfItem
+        icon={<ShareIconOne />}
+        title={account.type == TYPE.ARWEAVE ? 'View Block Explorer' : 'Etherscan Explorer'}
+        onClick={() => {
+          const url = `${account.type == TYPE.ARWEAVE ? PATH.VIEW_BLOCK : PATH.ETHERSCAN}/${account.address}`
+          chrome.tabs.create({ url })
+        }}
+      />
+      <AccountConfItem
+        icon={<KeyIcon />}
+        title={'Export Private Key'}
+        onClick={() => setShowExportKeyModel(true)}
+      />
+      <AccountConfItem
+        className=''
+        icon={<ShareIconTwo />}
+        title='See Connected Sites'
+        onClick={() => setShowModalConnectedSite(true)}
+      />
+      <AccountConfItem
+        className='delete-wallet'
+        icon={<DeleteIcon />}
+        title='Remove Account'
+        onClick={() => setShowModal(true)}
+      />
+      {showModal && (
+        <RemoveAccountModal
+          accountName={account.accountName}
+          accountAddress={account.address}
+          onClose={() => setShowModal(false)}
+          onSubmit={handleRemoveWallet}
+        />
+      )}
+      {showModalConnectedSite && (
+        <RemoveConnectedSite
+          sites={sites}
+          accountName={account.accountName}
+          handleDeleteSite={handleDeleteSite}
+          onClose={() => setShowModalConnectedSite(false)}
+        />
+      )}
+      {showExportKeyModal && <ExportPrivateKeyModal address={account.address} setShowExportKeyModel={setShowExportKeyModel}/>}
+    </div>
+  )
+})
