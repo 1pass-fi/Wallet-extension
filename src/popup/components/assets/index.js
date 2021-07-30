@@ -1,18 +1,15 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { getChromeStorage } from 'utils'
 
 import { loadContent } from 'actions/koi'
 import { setAssets } from 'actions/assets'
 
-import { NOTIFICATION, STORAGE } from 'koiConstants'
+import { NOTIFICATION } from 'koiConstants'
 
 import AssetList from './AssetList'
 import { setContLoading } from 'actions/continueLoading'
 import { setError } from 'popup/actions/error'
 import { setNotification } from 'popup/actions/notification'
-import storage from 'storage'
-import { Account } from 'account'
 import { popupAccount } from 'account'
 
 const Assets = ({ 

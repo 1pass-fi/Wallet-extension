@@ -1,9 +1,10 @@
-import { MESSAGES, LONG_LIVED_HANDLER } from 'koiConstants'
+import { MESSAGES, LONG_LIVED_HANDLER, PORTS } from 'koiConstants'
 
 export class EventHandler {
-  constructor(type, callback) {
+  constructor(type, callback, id) {
     this.type = type
     this.callback = callback
+    this.id = id
   }
 }
 
@@ -17,9 +18,13 @@ export class BackgroundConnect {
       this.port.onMessage.addListener((message) => {
         const _this = this
         this.eventHandlers.forEach(handler => {
-          if (handler.type === message.type) {
-            handler.callback(message)
-            !LONG_LIVED_HANDLER.includes(handler.type) && _this.removeHandler(handler.type)
+          if (LONG_LIVED_HANDLER.includes(handler.type)) {
+            if (handler.type == message.type) handler.callback(message)
+          } else {
+            if (handler.type == message.type && handler.id == message.id) {
+              handler.callback(message)
+              _this.removeHandler(handler.type, handler.id)
+            }
           }
         })
       })
@@ -35,21 +40,27 @@ export class BackgroundConnect {
   }
 
   addHandler(aHandler) {
-    if (this.eventHandlers.every(handler => handler.type !== aHandler.type)) {
+    if (LONG_LIVED_HANDLER.includes(aHandler.type)) {
+      if (this.eventHandlers.every(handler => handler.type !== aHandler.type)) {
+        this.eventHandlers.push(aHandler)
+      }
+    } else {
       this.eventHandlers.push(aHandler)
     }
   }
 
-  request(type, callback, data) {
-    const newRequest = new EventHandler(type, callback, data)
+  request(type, callback, data, id) {
+    const newRequest = new EventHandler(type, callback, id)
     this.addHandler(newRequest)
     this.postMessage({
       type,
-      data
+      data,
+      id
     })
   }
 
-  removeHandler(handlerType) {
-    this.eventHandlers = this.eventHandlers.filter(handler => handler.type !== handlerType)
+  removeHandler(handlerType, id) {
+    this.eventHandlers = this.eventHandlers.filter(handler => 
+      !(handler.type == handlerType && handler.id == id))
   }
 }

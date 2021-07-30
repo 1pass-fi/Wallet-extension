@@ -14,7 +14,7 @@ import { STORAGE } from 'koiConstants'
 
 import './index.css'
 import storage from 'storage'
-import { Account } from 'account'
+import { Account, popupAccount } from 'account'
 import { setActivities } from 'popup/actions/activities'
 
 import CollapseIcon from 'img/collapse-icon.svg'
@@ -61,76 +61,35 @@ const AccountLabel = ({ accountName, collapsed, setCollapsed }) => {
   )
 }
 
-// const Activity = ({
-//   activities,
-//   loadActivities,
-//   cursor,
-//   transactions,
-//   setTransactions,
-//   setError,
-//   accountName,
-// }) => {
-//   useEffect(() => {
-//     async function handleLoadActivities() {
-//       const listPendingTransaction = await storage.arweaveWallet.get.pendingTransactions() || []
-//       const address = await storage.arweaveWallet.get.address()
-//       setTransactions(listPendingTransaction)
-      
-//       if (address) {
-//         await loadActivities(cursor)
-//       }
-//     }
-//     handleLoadActivities()
-//   }, [])
-  
-//   const handleLoadMore = async () => await loadActivities(cursor)
 
-//   return (
-//     <div className="activity-container">
-//       {activities.length !== 0 && <AccountLabel accountName={accountName} />}
-//       <PendingList transactions={transactions} />
-//       <ActivitiesList activities={activities} />
-//       {!cursor.doneLoading && (
-//         <Button
-//           className="load-more"
-//           type="outline"
-//           onClick={handleLoadMore}
-//           label="See More Activity"
-//         />
-//       )}
-//     </div>
-//   )
-// }
+/* 
+  Activities of single account
+*/
 const Activity = ({
   activityItems,
-  address,
+  account,
   cursor,
   loadActivities
 }) => {
-  const [accountName, setAccountName] = useState(null)
   const [transactions, setTransactions] = useState([])
   const [collapsed, setCollapsed] = useState(false)
 
   useEffect(() => {
     async function handleLoadActivities() {
-      const type = await Account.getTypeOfWallet(address)
-      const account = await Account.get({ address }, type)
-      const name = await account.get.accountName()
-      setAccountName(name)
-
-      const listPendingTransaction = await account.get.pendingTransactions() || []
-      setTransactions(listPendingTransaction)
-
-      await loadActivities(cursor, address)
+      await loadActivities(cursor, account.address)
+      
+      const _account = await popupAccount.getAccount({ address: account.address })
+      const pendingTransactions = await _account.get.pendingTransactions() || []
+      setTransactions(pendingTransactions)
     }
     handleLoadActivities()
   }, [])
 
-  const handleLoadMore = async () => await loadActivities(cursor, address)
+  const handleLoadMore = async () => await loadActivities(cursor, account.address)
 
   return (
     <div className={collapsed ? 'activity-container collapsed' : 'activity-container'}>
-      <AccountLabel collapsed={collapsed} setCollapsed={setCollapsed} accountName={accountName} />
+      <AccountLabel collapsed={collapsed} setCollapsed={setCollapsed} accountName={account.accountName} />
       <PendingList transactions={transactions} />
       <ActivitiesList activities={activityItems} />
       {!cursor.doneLoading && (
@@ -145,29 +104,29 @@ const Activity = ({
   )
 }
 
+/* 
+  Activities of all accounts
+*/
 const Activities = ({ activities, setActivities, loadActivities, accounts }) => {
   useEffect(() => {
-    async function handleLoadActivities() {
-      let allWallets = await Account.getAllWallets()
-      const allAddresses = allWallets.map(wallet => wallet.address)
-      const listOfPayloads = []
-      allAddresses.forEach(address => {
-        listOfPayloads.push({ address, activityItems: [], cursor: { ownedCursor: null, recipientCursor: null, doneLoading: null } })
+    async function loadActivitiesBoilerplate() {
+      const activitiesPayloads = []
+      accounts.forEach(account => {
+        activitiesPayloads.push({ account, activityItems: [], cursor: { ownedCursor: null, recipientCursor: null, doneLoading: null } })
       })
-      console.log('list of payloads: ', listOfPayloads)
-      if (isEmpty(activities)) setActivities(listOfPayloads)
+      if (isEmpty(activities)) setActivities(activitiesPayloads)
     }
 
-    handleLoadActivities()
+    loadActivitiesBoilerplate()
   }, [])
 
   return (
     <div>
-      {activities.map((activity, index) => 
+      {activities.map((activity, index) =>
         <Activity 
           key={index}
           activityItems={activity.activityItems}
-          address={activity.address}
+          account={activity.account}
           cursor={activity.cursor}
           loadActivities={loadActivities}
         />
@@ -176,7 +135,7 @@ const Activities = ({ activities, setActivities, loadActivities, accounts }) => 
   )
 }
 
-const mapStateToProps = (state) => ({ activities: state.activities })
+const mapStateToProps = (state) => ({ activities: state.activities, accounts: state.accounts })
 
 export default connect(mapStateToProps, {
   loadActivities,

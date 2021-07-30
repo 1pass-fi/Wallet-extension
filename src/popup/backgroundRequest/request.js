@@ -1,9 +1,12 @@
+import uniqid from 'uniqid'
+
 export class Request {
   constructor(backgroundConnect) {
     this.backgroundConnect = backgroundConnect
   }
 
   promise (messageType, body) {
+    const id = uniqid()
     return new Promise((resolve, reject) => {
       this.backgroundConnect.request(messageType, response => {
         console.log('RESPONSE FROM BACKGROUND: ', response)
@@ -11,7 +14,7 @@ export class Request {
           reject({ message: response.error })
         }
         resolve(response.data)
-      }, body)
+      }, body, id)
     })
   }
 }

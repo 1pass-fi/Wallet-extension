@@ -79,6 +79,7 @@ export const loadBalances = async (koi, port) => {
 
 export default async (koi, port, message, ports, resolveId, eth) => {
   try {
+    const messageId = message.id
     switch (message.type) {
       case MESSAGES.IMPORT_WALLET: {
         try {
@@ -93,7 +94,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             case TYPE.ETHEREUM:
               address = await EthereumWallet.utils.loadWallet(eth, key)
           }
-
           await backgroundAccount.createAccount(address, key, password, type)
           account = await backgroundAccount.getAccount({ address, key })
 
@@ -108,11 +108,13 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,
+            id: messageId
           })
         } catch (err) {
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,
-            error: `BACKGROUND ERROR: ${err.message}`
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
           })
         }
 
@@ -131,11 +133,13 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           port.postMessage({
             type: MESSAGES.REMOVE_WALLET,
+            id: messageId
           })
         } catch (err) {
           port.postMessage({
             type: MESSAGES.REMOVE_WALLET,
-            error: `BACKGROUND ERROR: ${err.message}`
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
           })
         }
         break
@@ -153,12 +157,14 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           }
           port.postMessage({
             type: MESSAGES.LOCK_WALLET,
-            data: { koiData }
+            data: { koiData },
+            id: messageId
           })
         } catch(err) {
           port.postMessage({
             type: MESSAGES.LOCK_WALLET,
-            error: `BACKGROUND ERROR: ${err.message}`           
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId      
           })        
         }
         break
@@ -174,7 +180,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           } catch (err) {
             port.postMessage({
               type: MESSAGES.UNLOCK_WALLET,
-              error: `${err.message}`
+              error: `${err.message}`,
+              id: messageId
             })  
           }
 
@@ -185,12 +192,14 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           port.postMessage({
             type: MESSAGES.UNLOCK_WALLET,
-            data: { koiData }
+            data: { koiData },
+            id: messageId
           })
         } catch (err) {
           port.postMessage({
             type: MESSAGES.UNLOCK_WALLET,
-            error: `BACKGROUND ERROR: ${err.message}`
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
           })
         }
         break
@@ -199,7 +208,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         const seedPhrase = await generateWallet(koi)
         port.postMessage({
           type: MESSAGES.GENERATE_WALLET_SUCCESS,
-          data: { seedPhrase }
+          data: { seedPhrase },
+          id: messageId
         })
         break
       }
@@ -223,12 +233,14 @@ export default async (koi, port, message, ports, resolveId, eth) => {
   
           port.postMessage({
             type: MESSAGES.SAVE_WALLET,
-            data: { koiData }
+            data: { koiData },
+            id: messageId
           })
         } catch (err) {
           port.postMessage({
             type: MESSAGES.SAVE_WALLET,
-            error: `BACKGROUND ERROR: ${err.message}`
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
           })
         }
         break
@@ -254,12 +266,14 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           port.postMessage({
             type: MESSAGES.LOAD_CONTENT,
+            id: messageId
           })
 
         } catch (err) {
           port.postMessage({
             type: MESSAGES.LOAD_CONTENT,
-            error: `BACKGROUND ERROR: ${err.message}`
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
           })
         }
         break
@@ -267,18 +281,30 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       case MESSAGES.LOAD_ACTIVITIES: {
         try {
           const { cursor, address } = message.data
-          const type = await Account.getTypeOfWallet(address)
-          const account = await Account.get({ address }, type)
+          const credentials = await backgroundAccount.getCredentialByAddress(address)
+          const account = await backgroundAccount.getAccount(credentials)
+
           const { activitiesList, nextOwnedCursor, nextRecipientCursor } = await account.method.loadMyActivities(cursor)
+          
+          // filter pending transactions
+          let pendingTransactions = await account.get.pendingTransactions() || []
+
+          pendingTransactions = pendingTransactions.filter(tx => {
+            return activitiesList.every(activity => activity.id !== tx.id)
+          })
+          await account.set.pendingTransactions(pendingTransactions)
+
           console.log(`Activities list of ${address}:`, activitiesList)
           port.postMessage({
             type: MESSAGES.LOAD_ACTIVITIES,
-            data: { activitiesList, nextOwnedCursor, nextRecipientCursor }
+            data: { activitiesList, nextOwnedCursor, nextRecipientCursor },
+            id: messageId
           })
         } catch (err) {
           port.postMessage({
             type: MESSAGES.LOAD_ACTIVITIES,
-            error: `BACKGROUND ERROR: ${err.message}`
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
           })          
         }
         break
@@ -294,18 +320,21 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const txId = await _account.method.transfer(token, target, qty)
           port.postMessage({
             type: MESSAGES.MAKE_TRANSFER,
-            data: { txId }
+            data: { txId },
+            id: messageId
           })
         } catch(err) {
           if (err.message == ERROR_MESSAGE.NOT_ENOUGH_KOI || err.message == ERROR_MESSAGE.NOT_ENOUGH_AR) {
             port.postMessage({
               type: MESSAGES.MAKE_TRANSFER,
-              error: err.message
+              error: err.message,
+              id: messageId
             })          
           } else {
             port.postMessage({
               type: MESSAGES.MAKE_TRANSFER,
-              error: `BACKGROUND ERROR: ${err.message}`
+              error: `BACKGROUND ERROR: ${err.message}`,
+              id: messageId
             })          
           }
         }
@@ -322,17 +351,20 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           } catch (err) {
             port.postMessage({
               type: MESSAGES.GET_KEY_FILE,
-              error: err.message
+              error: err.message,
+              id: messageId
             })  
           }
           port.postMessage({
             type: MESSAGES.GET_KEY_FILE,
-            data: { key }
+            data: { key },
+            id: messageId
           })
         } catch (err) {
           port.postMessage({
             type: MESSAGES.GET_KEY_FILE,
-            error: `BACKGROUND ERROR: ${err.message}`
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
           })
         }
         break
@@ -359,6 +391,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         removeChromeStorage(STORAGE.PENDING_REQUEST)
         port.postMessage({
           type: MESSAGES.CONNECT_SUCCESS,
+          id: messageId
         })
         ports[PORTS.CONTENT_SCRIPT].postMessage({
           type: MESSAGES.CONNECT_SUCCESS,
@@ -379,6 +412,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           transaction = await signTransaction(koi, tx)
           port.postMessage({
             type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
+            id: messageId
           })
           ports[PORTS.CONTENT_SCRIPT].postMessage({
             type: MESSAGES.CREATE_TRANSACTION_SUCCESS,
@@ -395,6 +429,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           chrome.browserAction.setBadgeText({ text: '' })
           port.postMessage({
             type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
+            id: messageId
           })
           ports[PORTS.CONTENT_SCRIPT].postMessage({
             type: MESSAGES.CREATE_TRANSACTION_ERROR,
@@ -414,7 +449,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       case MESSAGES.GET_WALLET: {
         port.postMessage({
           type: MESSAGES.GET_WALLET,
-          data: { key: koi['wallet'] }
+          data: { key: koi['wallet'] },
+          id: messageId
         })
         break
       }
@@ -425,12 +461,14 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const result = await exportNFTNew(koi, arweave, content, tags, fileType)
           port.postMessage({
             type: MESSAGES.UPLOAD_NFT,
-            data: result
+            data: result,
+            id: messageId
           })
         } catch (err) {
           port.postMessage({
             type: MESSAGES.UPLOAD_NFT,
-            error: `BACKGROUND ERROR: ${err.message}`
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
           })
         }
         break
@@ -445,12 +483,14 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           console.log('Transaction ID: ', txId)
           port.postMessage({
             type: MESSAGES.CREATE_COLLECTION,
-            data: txId
+            data: txId,
+            id: messageId
           })
         } catch (err) {
           port.postMessage({
             type: MESSAGES.CREATE_COLLECTION,
-            error: `BACKGROUND ERROR: ${err.message}`
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
           })
         }
         break
@@ -463,12 +503,14 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           port.postMessage({
             type: MESSAGES.CREATE_KID,
-            data: txId
+            data: txId,
+            id: messageId
           })
         } catch (err) {
           port.postMessage({
             type: MESSAGES.CREATE_KID,
-            error: `BACKGROUND ERROR: ${err.message}`
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
           })
         }
         break
@@ -481,12 +523,14 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const txId = await updateKid(koi, kidInfo, contractId)
           port.postMessage({
             type: MESSAGES.UPDATE_KID,
-            data: txId
+            data: txId,
+            id: messageId
           })
         } catch (err) {
           port.postMessage({
             type: MESSAGES.UPDATE_KID,
-            error: `BACKGROUND ERROR: ${err.message}`
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
           })
         }
         break
@@ -501,12 +545,14 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           await account.set.accountName(newName)
 
           port.postMessage({
-            type: MESSAGES.CHANGE_ACCOUNT_NAME
+            type: MESSAGES.CHANGE_ACCOUNT_NAME,
+            id: messageId
           })
         } catch (err) {
           port.postMessage({
             type: MESSAGES.CHANGE_ACCOUNT_NAME,
-            error: `BACKGROUND ERROR: ${err.message}`
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
           })
         }
         break

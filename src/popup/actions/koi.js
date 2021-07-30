@@ -43,7 +43,7 @@ export const getBalances = () => async (dispatch) => {
   })
   backgroundConnect.addHandler(getBalanceSuccessHandler)
   backgroundConnect.postMessage({
-    type: MESSAGES.GET_BALANCES
+    type: MESSAGES.GET_BALANCES,
   })
 }
 
@@ -176,28 +176,14 @@ export const loadActivities = (cursor, address) => async (dispatch, getState) =>
   /*
     the sdk will require cursors for the next request if we want to receive next set of activities (pagination).
   */
-  try { 
-    const type = await Account.getTypeOfWallet(address)
-    const account = await Account.get({ address }, type)
-
+  try {
     const { activitiesList,
       nextOwnedCursor: ownedCursor, 
-      nextRecipientCursor: recipientCursor } = await account.method.loadMyActivities(cursor)
-    // const { activitiesList,
-    //   nextOwnedCursor: ownedCursor, 
-    //   nextRecipientCursor: recipientCursor } = await backgroundRequest.activities.loadActivities({ cursor, address })
-    console.log('returned activities list: ', activitiesList)
-    // const type = await Account.getTypeOfWallet(address)
-    // const account = await Account.get({ address }, type)
-    let pendingTransactions = await account.get.pendingTransactions() || []
-    // filtering accpected pending transactions
-    pendingTransactions = pendingTransactions.filter(tx => {
-      return activitiesList.every(activity => activity.id !== tx.id)
-    })
-    await account.set.pendingTransactions(pendingTransactions)
+      nextRecipientCursor: recipientCursor } = await backgroundRequest.activities.loadActivities({ cursor, address })
+
     const { activities } = getState()
     const newActivities = activities.map(activity => {
-      if (activity.address == address) {
+      if (get(activity, 'account.address') == address) {
         activity.activityItems = [...activity.activityItems, ...activitiesList]
         const doneLoading = !activitiesList.length
         activity.cursor = { ownedCursor, recipientCursor, doneLoading }
