@@ -13,7 +13,7 @@ import { clearActivities } from './activities'
 
 import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 
-import { MESSAGES, PATH, STORAGE, REQUEST, NOTIFICATION, PORTS, ALL_NFT_LOADED } from 'koiConstants'
+import { MESSAGES, FILENAME } from 'koiConstants'
 
 import { SET_KOI } from 'actions/types'
 import { getChromeStorage, removeChromeStorage, setChromeStorage, generateWallet as generateWalletUtil, saveWalletToChrome } from 'utils'
@@ -272,13 +272,18 @@ export const signTransaction = (inputData) => (dispatch) => {
 
 export const getKeyFile = (password, address) => async (dispatch) => {
   try {
-    const { key, type } = await backgroundRequest.wallet.getKeyFile({ password, address })
+    const { key } = await backgroundRequest.wallet.getKeyFile({ password, address })
+    const type = await popupAccount.getType(address)
+
     let filename
-    if (type == TYPE.ARWEAVE) {
-      filename = 'arweave-key.json'
-    } else {
-      filename = 'ethereum-key.json'
+    switch(type) {
+      case TYPE.ARWEAVE:
+        filename = FILENAME.ARWEAVE
+        break
+      case TYPE.ETHEREUM:
+        filename = FILENAME.ETHEREUM
     }
+
     const result = JSON.stringify(key)
 
     const url = 'data:application/json;base64,' + btoa(result)

@@ -315,13 +315,10 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         try {
           const { password, address } = message.data
           let key
-          const type = await Account.getTypeOfWallet(address)
-          const _account = await Account.get({ address }, type)
-          const encryptedKey = await _account.get.encryptedKey()
-          console.log('encryptedKey: ', encryptedKey)
+          const encryptedKey = await backgroundAccount.getEncryptedKey(address)
+          if (!encryptedKey) throw new Error('Unable to find keyfile.')
           try {
             key = await passworder.decrypt(password, encryptedKey)
-            console.log('key: ', key)
           } catch (err) {
             port.postMessage({
               type: MESSAGES.GET_KEY_FILE,
@@ -330,7 +327,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           }
           port.postMessage({
             type: MESSAGES.GET_KEY_FILE,
-            data: { key, type }
+            data: { key }
           })
         } catch (err) {
           port.postMessage({

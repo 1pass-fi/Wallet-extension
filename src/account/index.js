@@ -4,7 +4,7 @@ import { ADDRESSES, IMPORTED, TYPE } from './accountConstants'
 import { ChromeStorage } from 'storage/ChromeStorage'
 import passworder from 'browser-passworder'
 
-import { find } from 'lodash'
+import { find, get } from 'lodash'
 
 import { getChromeStorage } from 'utils'
 import { WalletPopup } from 'account/Wallet'
@@ -284,7 +284,6 @@ export class BackgroundAccount extends GenericAccount {
   async createAccount(address, key, password, type) {
     try {
       const encryptedKey = await passworder.encrypt(password, key)
-      console.log('BackgroundAccount encryptedKey', encryptedKey)
       const payload = { ADDRESS: address, TYPE: type }
       /* 
         Beside adding wallet info into the array of wallets, we also need to save it's metadata directly to the storage,
@@ -368,6 +367,26 @@ export class BackgroundAccount extends GenericAccount {
   async getCredentialByAddress(address) {
     try {
       return find(this.importedAccount, v => v.address == address)
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async getEncryptedKey(address) {
+    try {
+      const type = await this.getType(address)
+      let importedWallets
+      switch(type) {
+        case TYPE.ARWEAVE:
+          importedWallets = await this.storage._getChrome(IMPORTED.ARWEAVE)
+          break
+        case TYPE.ETHEREUM:
+          importedWallets = await this.storage._getChrome(IMPORTED.ETHEREUM)
+      }
+
+      const wallet = find(importedWallets, v => v.address == address)
+      if (wallet) return get(wallet, 'encryptedKey')
+
     } catch (err) {
       console.log(err.message)
     }

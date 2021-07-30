@@ -253,3 +253,8 @@ export const WINDOW_SIZE = {
 }
 
 export const MOCK_COLLECTIONS_STORE = 'MOCK_COLLECTIONS_STORE'
+
+export const FILENAME = {
+  ARWEAVE: 'arweave-key.json',
+  ETHEREUM: 'ethereum-key.json'
+}
