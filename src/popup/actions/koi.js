@@ -156,9 +156,10 @@ export const loadContent = () => async (dispatch) => {
 
     const allAssets = []
 
-    const accounts = await Account.getAll()
-    await Promise.all(accounts.map(async (account) => {
-      const assets = await account.get.assets()
+    // update state
+    const allAccounts = await popupAccount.getAllAccounts()
+    await Promise.all(allAccounts.map(async (account) => {
+      const assets = await account.get.assets() || []
       const address = await account.get.address()
 
       const accountAssets = { owner: address, contents: assets }

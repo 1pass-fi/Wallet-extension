@@ -13,16 +13,25 @@ import { setError } from 'popup/actions/error'
 import { setNotification } from 'popup/actions/notification'
 import storage from 'storage'
 import { Account } from 'account'
+import { popupAccount } from 'account'
 
-const Assets = ({ assets, setAssets, loadContent, isContLoading, setContLoading, setError, setNotification }) => {
+const Assets = ({ 
+  assets, 
+  setAssets, 
+  loadContent, 
+  isContLoading, 
+  setContLoading, 
+  setError, 
+  setNotification }) => {
+
   useEffect(() => {
     async function handleLoadContent() {
       // load from local storage
-      const accounts = await Account.getAll()
+      const allAccounts = await popupAccount.getAllAccounts()
       const allAssets = []
 
-      await Promise.all(accounts.map(async account => {
-        const assets = await account.get.assets()
+      await Promise.all(allAccounts.map(async account => {
+        const assets = await account.get.assets() || []
         const address = await account.get.address()
 
         const accountAssets = { owner: address, contents: assets }

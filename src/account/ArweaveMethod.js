@@ -33,7 +33,6 @@ export class ArweaveMethod {
       console.log({ allContent })
       const myContent = (allContent.filter(content => get(content[Object.keys(content)[0]], 'owner') === this.koi.address)).map(content => Object.keys(content)[0])
       console.log({ myContent })
-      // const contentList = await storage.arweaveWallet.get.assets() || []
       const contentList = (await getChromeStorage(`${this.koi.address}_assets`))[`${this.koi.address}_assets`] || []
       if (myContent.length === contentList.length) return ALL_NFT_LOADED
       return Promise.all(myContent.map(async contentId => {

@@ -241,10 +241,10 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           */
 
           // load all accounts
-          const accounts = await Account.getAll()
-          await Promise.all(accounts.map(async account => {
-            let contentList = await account.method.loadMyContent()
+          const allAccounts = await backgroundAccount.getAllAccounts()
 
+          await Promise.all(allAccounts.map(async account => {
+            let contentList = await account.method.loadMyContent()
             if (isArray(contentList)) {
               contentList = contentList.filter(content => !!content.name) // remove failed loaded nfts
               console.log('CONTENT LIST: ', contentList)
