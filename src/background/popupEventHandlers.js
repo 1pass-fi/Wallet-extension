@@ -146,18 +146,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       }
       case MESSAGES.LOCK_WALLET: {
         try {
-          await storage.arweaveWallet.remove.address()
-          koi.address = null
-          koi.wallet = null
-  
-          const koiData = {
-            arBalance: null,
-            koiBalance: null,
-            address: null
-          }
+          await backgroundAccount.removeAllImported()
           port.postMessage({
             type: MESSAGES.LOCK_WALLET,
-            data: { koiData },
             id: messageId
           })
         } catch(err) {
@@ -176,7 +167,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           // throw error if password is incorrect
           try {
-            walletKey = await storage.arweaveWallet.method.decryptWalletKey(password)
+            await backgroundAccount.unlockImportedAccount(password)
           } catch (err) {
             port.postMessage({
               type: MESSAGES.UNLOCK_WALLET,
@@ -185,14 +176,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             })  
           }
 
-          const koiData = await utils.loadWallet(koi, walletKey, LOAD_KOI_BY.KEY)
-          
-          // set address to storage -> unlock
-          await storage.arweaveWallet.set.address(koi.address)
-
           port.postMessage({
             type: MESSAGES.UNLOCK_WALLET,
-            data: { koiData },
             id: messageId
           })
         } catch (err) {
@@ -551,6 +536,27 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         } catch (err) {
           port.postMessage({
             type: MESSAGES.CHANGE_ACCOUNT_NAME,
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
+          })
+        }
+        break
+      }
+
+      case MESSAGES.GET_LOCK_STATE: {
+        /* 
+          Return true if locked.
+        */
+        try {
+          const locked = isEmpty(backgroundAccount.importedAccount)
+          port.postMessage({
+            type: MESSAGES.GET_LOCK_STATE,
+            data: locked,
+            id: messageId
+          })
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.GET_LOCK_STATE,
             error: `BACKGROUND ERROR: ${err.message}`,
             id: messageId
           })

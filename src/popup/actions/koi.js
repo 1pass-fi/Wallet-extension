@@ -91,8 +91,7 @@ export const removeWallet = (address) => async (dispatch, getState) => {
 
 export const lockWallet = () => async (dispatch) => {
   try {
-    const { koiData } = await backgroundRequest.wallet.lockWallet()
-    dispatch(setKoi(koiData))
+    await backgroundRequest.wallet.lockWallet()
   } catch (err) {
     dispatch(setError(err.message))
   }
@@ -101,8 +100,7 @@ export const lockWallet = () => async (dispatch) => {
 
 export const unlockWallet = (password) => async (dispatch) => {
   try {
-    const { koiData } = await backgroundRequest.wallet.unlockWallet({ password })
-    dispatch(setKoi(koiData))
+    await backgroundRequest.wallet.unlockWallet({ password })
     dispatch(getBalances())
     return true
   } catch (err) {

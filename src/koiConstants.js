@@ -121,7 +121,8 @@ export const MESSAGES = {
   CREATE_COLLECTION: 'CREATE_COLLECTION',
   CREATE_KID: 'CREATE_KID',
   UPDATE_KID: 'UPDATE_KID',
-  CHANGE_ACCOUNT_NAME: 'CHANGE_ACCOUNT_NAME'
+  CHANGE_ACCOUNT_NAME: 'CHANGE_ACCOUNT_NAME',
+  GET_LOCK_STATE: 'GET_LOCK_STATE'
 }
 
 export const PATH = {
@@ -133,6 +134,7 @@ export const PATH = {
   LOGIN: '/account/login',
   ACTIVITY: '/activity',
   WELCOME: '/account/welcome',
+  SETTING: '/settings',
   // Gallery path
   NFT_IMAGE: 'https://arweave.net',
   VIEW_BLOCK: 'https://viewblock.io/arweave/address',
@@ -177,7 +179,8 @@ export const ERROR_MESSAGE = {
   CANNOT_GET_COSTS: 'Cannot get the upload costs.',
   INVALID_FRIEND_CODE: `That code isn't quite right. Check it and try again.`,
   COLLECTION_NFT_EMPTY: 'A collection has to contain at least one NFT.',
-  KID_FILE_TOO_LARGE: 'File too large. The maximum size for Profile Picture is 500KB'
+  KID_FILE_TOO_LARGE: 'File too large. The maximum size for Profile Picture is 500KB',
+  PASSWORD_REQUIRED: 'Password required.'
 }
 
 export const STORAGE = {

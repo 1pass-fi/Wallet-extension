@@ -1,6 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { isEmpty } from 'lodash'
 
 import { lockWallet } from 'actions/koi'
 import { setError } from 'actions/error'
@@ -14,11 +15,10 @@ import { getChromeStorage } from 'utils'
 import './index.css'
 import { setIsLoading } from 'popup/actions/loading'
 
-const Setting = ({ lockWallet, setError, setIsLoading }) => {
+const Setting = ({ lockWallet, setError, setIsLoading, accounts }) => {
   const history = useHistory()
   const handleOnClick = async () => {
-    const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[STORAGE.KOI_ADDRESS]
-    if (address) {
+    if (!isEmpty(accounts)) {
       setIsLoading(true)
       await lockWallet()
       setIsLoading(false)
@@ -39,4 +39,6 @@ const Setting = ({ lockWallet, setError, setIsLoading }) => {
   )
 }
 
-export default connect(null, { lockWallet, setError, setIsLoading })(Setting)
+const mapStateToProps = (state) => ({ accounts: state.accounts })
+
+export default connect(mapStateToProps, { lockWallet, setError, setIsLoading })(Setting)

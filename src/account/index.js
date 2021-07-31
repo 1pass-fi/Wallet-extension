@@ -8,6 +8,7 @@ import { find, get } from 'lodash'
 
 import { getChromeStorage } from 'utils'
 import { WalletPopup } from 'account/Wallet'
+import { ERROR_MESSAGE } from 'koiConstants'
 
 
 export class Account {
@@ -346,13 +347,20 @@ export class BackgroundAccount extends GenericAccount {
   }
 
   async unlockImportedAccount(password) {
-    if (password) {
-      await this.loadImported()
-  
-      this.importedAccount = await Promise.all(this.importedAccount.map(async credentials => {
-        const decryptedKey = await passworder.decrypt(password, credentials.encryptedKey)
-        credentials[key] = decryptedKey
-      }))
+    try {
+      if (password) {
+        await this.loadImported()
+        this.importedAccount = await Promise.all(this.importedAccount.map(async credentials => {
+          const decryptedKey = await passworder.decrypt(password, credentials.encryptedKey)
+          credentials['key'] = decryptedKey
+
+          return credentials
+        }))
+      } else {
+        throw new Error(ERROR_MESSAGE.PASSWORD_REQUIRED)
+      }
+    } catch (err) {
+      throw new Error(err.message)
     }
   }
 
@@ -390,6 +398,10 @@ export class BackgroundAccount extends GenericAccount {
     } catch (err) {
       console.log(err.message)
     }
+  }
+
+  async removeAllImported() {
+    this.importedAccount = []
   }
 }
 

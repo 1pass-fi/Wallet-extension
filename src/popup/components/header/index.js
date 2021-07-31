@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Redirect, withRouter, useHistory } from 'react-router-dom'
+import { isEmpty } from 'lodash'
 
 import LogoIcon from 'img/koi-logo.svg'
 import SettingIcon from 'img/settings-icon.svg'
 import NavBar from './navBar'
 
 import { getChromeStorage } from 'utils'
-import { STORAGE, NAVBAR_EXCLUDE_PATH } from 'koiConstants'
+import { STORAGE, NAVBAR_EXCLUDE_PATH, PATH } from 'koiConstants'
 import { setError } from 'actions/error'
 
 import './index.css'
 
-const Header = ({ location, setError, koi }) => {
+const Header = ({ location, setError, koi, accounts }) => {
   const [showGalleryButton, setShowGalleryButton] = useState(true)
 
   const history = useHistory()
@@ -24,13 +25,10 @@ const Header = ({ location, setError, koi }) => {
 
   /* istanbul ignore next */
   const onSettingButtonClick = async () => {
-    const address = (await getChromeStorage(STORAGE.KOI_ADDRESS))[
-      STORAGE.KOI_ADDRESS
-    ]
-    if (address) {
-      history.push('/setting')
-    } else {
+    if (isEmpty(accounts)) {
       setError('Please Import Wallet or Create new Wallet.')
+    } else {
+      history.push(PATH.SETTING)
     }
   }
 
@@ -73,6 +71,6 @@ const Header = ({ location, setError, koi }) => {
   )
 }
 
-const mapStateToProps = (state) => ({ koi: state.koi })
+const mapStateToProps = (state) => ({ koi: state.koi, accounts: state.accounts })
 
 export default connect(mapStateToProps, { setError })(withRouter(Header))

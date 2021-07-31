@@ -106,4 +106,8 @@ export class WalletRequest extends Request {
   changeAccountName(body) {
     return this.promise(MESSAGES.CHANGE_ACCOUNT_NAME, body)
   }
+
+  getLockState() {
+    return this.promise(MESSAGES.GET_LOCK_STATE)
+  }
 }

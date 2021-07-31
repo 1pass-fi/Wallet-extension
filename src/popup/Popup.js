@@ -27,6 +27,7 @@ import { setEthereum } from 'actions/ethereum'
 import { setAccounts } from 'actions/accounts'
 
 import { HEADER_EXCLUDE_PATH, REQUEST, DISCONNECTED_BACKGROUND } from 'koiConstants'
+import { backgroundRequest } from 'popup/backgroundRequest'
 
 import axios from 'axios'
 
@@ -77,13 +78,11 @@ const Popup = ({
     */
     getBalances()
     await popupAccount.loadImported()
-    let accounts = await popupAccount.getAllAccounts()
+    let accounts = await popupAccount.getAllMetadata()
 
-    let unlocked = await storage.generic.get.unlocked()
-    accounts = await Promise.all(accounts.map(async account => await account.get.metadata()))
+    const isLocked = await backgroundRequest.wallet.getLockState()
 
     console.log('account metadata: ', accounts)
-    unlocked = true
     setAccounts(accounts)
 
 
@@ -101,7 +100,7 @@ const Popup = ({
         history.push('/account')
       }
 
-      if (!unlocked) {
+      if (!isEmpty(accounts) && isLocked) {
         history.push('/account/login')
       }
 
@@ -194,7 +193,7 @@ const Popup = ({
                 <Route path='/activity'>
                   <Activity />
                 </Route>
-                <Route path='/setting'>
+                <Route path='/settings'>
                   <Setting />
                 </Route>
               </Switch>
