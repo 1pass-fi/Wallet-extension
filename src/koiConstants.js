@@ -180,7 +180,9 @@ export const ERROR_MESSAGE = {
   INVALID_FRIEND_CODE: `That code isn't quite right. Check it and try again.`,
   COLLECTION_NFT_EMPTY: 'A collection has to contain at least one NFT.',
   KID_FILE_TOO_LARGE: 'File too large. The maximum size for Profile Picture is 500KB',
-  PASSWORD_REQUIRED: 'Password required.'
+  PASSWORD_REQUIRED: 'Password required.',
+  SELECT_ACCOUNT: 'Please select account.',
+  SELECT_TOKEN: 'Please select token.'
 }
 
 export const STORAGE = {

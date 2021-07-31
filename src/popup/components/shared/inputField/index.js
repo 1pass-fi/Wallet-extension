@@ -29,6 +29,7 @@ export default ({
           defaultValue={value}
           onChange={onChange}
           placeholder={placeholder}
+          step='any'
         ></input>
         < ToggleDisplayIcon className='toggle-display' onClick={toggleDisplay} />
       </div>

@@ -198,29 +198,12 @@ export const loadActivities = (cursor, address) => async (dispatch, getState) =>
   }
 }
 
-export const makeTransfer = (from, qty, target, token) => async (dispatch) => {
+export const makeTransfer = (sender, qty, target, token) => async (dispatch) => {
   try {
-    const { address } = from
-    const type = await Account.getTypeOfWallet(address)
-    const _account = await Account.get({ address }, type)
-    const name = await _account.get.accountName()
-    if (token == 'KOII') token = 'KOI' // On the SDK the name of token KOII has not been updated. (still KOI) 
-    const { txId } = await backgroundRequest.wallet.makeTransfer({qty, target, token, from})
+    const { address } = sender
 
-    // Add new pending transaction
-    const pendingTransactions = await _account.get.pendingTransactions() || []
-    const newTransaction = {
-      id: txId,
-      activityName: (token === 'KOI' ? 'Sent KOII' : `Sent ${token}`),
-      expense: qty,
-      accountName: name,
-      date: moment().format('MMMM DD YYYY'),
-      source: target
-    }
-    pendingTransactions.unshift(newTransaction)
-    // save pending transactions
-    await _account.set.pendingTransactions(pendingTransactions)
-    dispatch(setTransactions(pendingTransactions))
+    if (token == 'KOII') token = 'KOI' // On the SDK the name of token KOII has not been updated. (still KOI) 
+    const { txId } = await backgroundRequest.wallet.makeTransfer({qty, target, token, address})
 
     console.log('TRANSACTION ID', txId)
   } catch (err) {

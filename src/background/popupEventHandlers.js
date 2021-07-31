@@ -1,6 +1,7 @@
 import { isArray, isString, isEmpty } from 'lodash'
 import Arweave from 'arweave'
 import passworder from 'browser-passworder'
+import moment from 'moment'
 
 import storage from 'storage'
 import { Account } from 'account'
@@ -10,13 +11,8 @@ import { TYPE } from 'account/accountConstants'
 
 import { backgroundAccount } from 'account'
 
-const arweave = Arweave.init({
-  host: 'arweave.net',
-  protocol: 'https',
-  port: 443,
-})
-
 import { MESSAGES, LOAD_KOI_BY, PORTS, STORAGE, ALL_NFT_LOADED, ERROR_MESSAGE } from 'koiConstants'
+
 import {
   saveWalletToChrome,
   utils,
@@ -35,6 +31,12 @@ import {
   createNewKid,
   updateKid
 } from 'utils'
+
+const arweave = Arweave.init({
+  host: 'arweave.net',
+  protocol: 'https',
+  port: 443,
+})
 
 export const loadBalances = async (koi, port) => {
   try {
@@ -273,7 +275,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           
           // filter pending transactions
           let pendingTransactions = await account.get.pendingTransactions() || []
-
           pendingTransactions = pendingTransactions.filter(tx => {
             return activitiesList.every(activity => activity.id !== tx.id)
           })
@@ -296,13 +297,28 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       }
       case MESSAGES.MAKE_TRANSFER: {
         try {
-          const { qty, target, token, from } = message.data
-          const { address, key } = from
-          const type = await Account.getTypeOfWallet(address)
-          const _account = await Account.get({ address, key }, type)
+          const { qty, target, token, address } = message.data
+          const credentials = await backgroundAccount.getCredentialByAddress(address)
+          const account = await backgroundAccount.getAccount(credentials)
+          const accountName = await account.get.accountName()
 
           console.log('QTY ', qty, 'TARGET ', target, 'TOKEN ', token)
-          const txId = await _account.method.transfer(token, target, qty)
+          const txId = await account.method.transfer(token, target, qty)
+
+          // add new pending transaction
+          const pendingTransactions = await account.get.pendingTransactions() || []
+          const newTransaction = {
+            id: txId,
+            activityName: (token === 'KOI' ? 'Sent KOII' : `Sent ${token}`),
+            expense: qty,
+            accountName,
+            date: moment().format('MMMM DD YYYY'),
+            source: target
+          }
+          pendingTransactions.unshift(newTransaction)
+          // save pending transactions
+          await account.set.pendingTransactions(pendingTransactions)
+
           port.postMessage({
             type: MESSAGES.MAKE_TRANSFER,
             data: { txId },

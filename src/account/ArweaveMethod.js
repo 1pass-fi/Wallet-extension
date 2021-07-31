@@ -10,6 +10,7 @@ import moment from 'moment'
 
 import axios from 'axios'
 import { AccountChromeStorage } from 'storage/ChromeStorage'
+import { ERROR_MESSAGE } from 'koiConstants'
 
 import { find } from 'lodash'
 import storage from 'storage'

@@ -22,7 +22,7 @@ import './index.css'
 import { setIsLoading } from 'popup/actions/loading'
 import { setNotification } from 'popup/actions/notification'
 
-import { Account } from 'account'
+import { popupAccount } from 'account'
 import { TYPE } from 'account/accountConstants'
 
 const SendKoiForm = ({
@@ -33,45 +33,53 @@ const SendKoiForm = ({
   setIsLoading,
   price,
   setNotification,
-  currency: moneyCurrency
+  currency: moneyCurrency,
+  accounts
 }) => {
   const history = useHistory()
 
-  const [address, setAddress] = useState('')
+  const [recipient, setRecipient] = useState('')
   const [amount, setAmount] = useState('')
   const [showModal, setShowModal] = useState(false)
-  const [wallets, setWallets] = useState([])
-  const [selectedAccount, setSelectedAccount] = useState(null)
   const [balance, setBalance] = useState(null)
   const [koiBalance, setKoiBalance] = useState(null)
-  const [tokens, setTokens] = useState([])
-  const [token, setToken] = useState(null)
 
-  const onChangeAddress = (e) => {
-    setAddress(e.target.value)
+  const [accountOptions, setAccountOptions] = useState([])
+  const [tokenOptions, setTokenOptions] = useState([])
+  const [selectedAccount, setSelectedAccount] = useState(null)
+  const [selectedToken, setSelectedToken] = useState(null)
+
+
+  const onChangeAccount = (selected) => {
+    const account = find(accountOptions, v => v.value == selected)
+    setSelectedAccount(account)
+  }
+
+  const onChangeToken = (selectedToken) => {
+    setSelectedToken(selectedToken)
+  }
+
+  const onChangeRecipientAddress = (e) => {
+    setRecipient(e.target.value)
   }
 
   const onChangeAmount = (e) => {
     setAmount(e.target.value)
   }
 
-  const onChangeToken = (selectedToken) => {
-    setToken(selectedToken)
-  }
-
-  const selectBalance = (cur) => {
-    return cur === 'KOII' ? koiBalance : arBalance
-  }
 
   const handleSubmitForm = (e) => {
     e.preventDefault()
-
     // validations
     try {
-      if (!(address.trim().length > 0 && amount.trim().length > 0)) {
+      if (!(recipient.trim().length > 0 && amount.trim().length > 0)) {
         setError(ERROR_MESSAGE.EMPTY_FIELDS)
       } else if (Number(amount) < 0) {
         setError(ERROR_MESSAGE.INVALID_AMOUNT)
+      } else if (!selectedAccount) {
+        setError(ERROR_MESSAGE.SELECT_ACCOUNT)
+      } else if (!selectedToken) {
+        setError(ERROR_MESSAGE.SELECT_TOKEN)
       } else {
         if (Number(amount) === 0) {
           setWarning(WARNING_MESSAGE.SEND_ZERO_KOI)
@@ -83,11 +91,11 @@ const SendKoiForm = ({
     }
   }
 
-  const hanldeTransaction = async () => {
+  const handleSendTransaction = async () => {
     try {
       setShowModal(false)
       setIsLoading(true)
-      await makeTransfer(selectedAccount, Number(amount), address, token)
+      await makeTransfer(selectedAccount, Number(amount), recipient, selectedToken)
       setIsLoading(false)
       setNotification(NOTIFICATION.TRANSACTION_SENT)
       history.push(PATH.ACTIVITY)
@@ -97,82 +105,88 @@ const SendKoiForm = ({
     } 
   }
 
-  const numberFormat = (num) => {
-    return new Intl.NumberFormat('en-US', { maximumFractionDigits: 8 }).format(num)
-  }
 
-  const onChangeAccount = (selected) => {
-    const wallet = find(wallets, v => v.value == selected)
-    setSelectedAccount(wallet)
-  }
 
   useEffect(() => {
-    const loadAccounts = async () => {
-      let allWallets = await Account.getAllWallets()
-      allWallets = await Promise.all(allWallets.map(async (wallet, index) => {
-        const type = await Account.getTypeOfWallet(wallet.address)
-        const _account = await Account.get(wallet, type)
-        const name = await _account.get.accountName()
-        return {value: name, id: index, label: name, ...wallet}
+    const getAccountOptions = async () => {
+      const options = accounts.map((account, index) => ({
+        id: index,
+        value: account.accountName,
+        label: account.accountName,
+        address: account.address,
+        type: account.type
       }))
-      console.log('allWallets', allWallets)
-      setWallets(allWallets)
+
+      setAccountOptions(options)
     }
 
-    loadAccounts()
+    getAccountOptions()
   }, [])
 
 
   useEffect(() => {
-    const loadBalances = async () => {
-      setToken(null)
-      const type = await Account.getTypeOfWallet(selectedAccount.address)
-      if (type == TYPE.ARWEAVE) setTokens([{value: 'AR', label: 'AR'}, {value: 'KOII', label: 'KOII'}])
-      if (type == TYPE.ETHEREUM) setTokens([{value: 'ETH', label: 'ETH'}])
-      console.log('selectedAccount: ', selectedAccount)
-      const _account = await Account.get(selectedAccount, type)
-      console.log(await _account.get.address())
-      const { koiBalance, balance } = await _account.method.getBalances()
-      console.log(koiBalance, balance)
-      setKoiBalance(koiBalance)
-      setBalance(balance)
+    const getTokenOptions = async () => {
+      setSelectedToken(null)
+      const account = await popupAccount.getAccount({ address: selectedAccount.address })
+      let options
+      switch (selectedAccount.type) {
+        case TYPE.ARWEAVE:
+          options = [{ value: 'AR', label: 'AR' }, { value: 'KOII', label: 'KOII' }]
+          setTokenOptions(options)
+          console.log(selectedAccount)
+          setBalance(await account.get.balance())
+          setKoiBalance(await account.get.koiBalance())
+          break
+        case TYPE.ETHEREUM:
+          options = [{ value: 'ETH', label: 'ETH' }]
+          setTokenOptions(options)
+          setBalance(await account.get.balance())
+      }
     }
 
-    if (selectedAccount) loadBalances()
+    if (selectedAccount) getTokenOptions()
   }, [selectedAccount])
 
 
   return (
     <form className="send-koi-form" onSubmit={handleSubmitForm}>
+      {/* AVAILABLE BALANCE */}
       <div className="koi-balance">
         <span>Available balance: </span>
-        <b>{`${(token == 'KOII' ? koiBalance : !!token && balance) || '___'} ${token ? token : 'token'}`}</b>
+        <b>{`${(selectedToken == 'KOII' ? koiBalance : !!selectedToken && balance) || '___'} ${selectedToken ? selectedToken : 'token'}`}</b>
         {/* <div hidden={token == 'KOII'} className="amount-in-usd">
           {getSymbolFromCurrency(moneyCurrency) || ''}{numberFormat(selectBalance(token) * price[token])} {moneyCurrency}
         </div> */}
       </div>
-      <Select 
+
+      {/* SELECT ACCOUNT */}
+      <Select
         className='currency-select'
-        options={wallets}
+        options={accountOptions}
         placeholder='Select your account'
         onChange={onChangeAccount}
       />
+      {/* SELECT TOKEN */}
       {selectedAccount && <Select
         className='currency-select'
-        options={tokens}
+        options={tokenOptions}
         placeholder='Select token'
         onChange={onChangeToken}
       />}
+
+      {/* RECIPIENT INPUT */}
       <div className="recipient">
         <InputField
           label="To"
           placeholder="Recipient’s wallet address"
           className="form-input"
           type="text"
-          onChange={onChangeAddress}
-          value={address}
+          onChange={onChangeRecipientAddress}
+          value={recipient}
         />
       </div>
+
+      {/* HINT */}
       <div className="warning">
         <div className="warning-icon">
           <WarningIcon />
@@ -182,10 +196,12 @@ const SendKoiForm = ({
           reverse the transaction.
         </div>
       </div>
+
+      {/* AMOUNT INPUT */}
       <div className="amount">
         <InputField
           label="Amount"
-          placeholder={`Amount of ${token} to send`}
+          placeholder={`Amount of ${selectedToken} to send`}
           className="form-input"
           type="number"
           onChange={onChangeAmount}
@@ -197,22 +213,35 @@ const SendKoiForm = ({
           </div>
         )} */}
       </div>
-      <Button label={`Send ${token ? token : 'token'}`} className="send-button" />
+
+      <Button label={`Send ${selectedToken ? selectedToken : 'token'}`} className="send-button" />
       {showModal && (
         <TransactionConfirmModal
           sentAmount={Number(amount)}
-          currency={token}
-          accountAddress={address}
+          currency={selectedToken}
+          accountAddress={recipient}
           onClose={() => {
             setShowModal(false)
           }}
-          onSubmit={hanldeTransaction}
+          onSubmit={handleSendTransaction}
         />
       )}
     </form>
   )
 }
 
-const mapStateToProps = (state) => ({ price: state.price, currency: state.currency })
+const mapStateToProps = (state) => ({ 
+  price: state.price, 
+  currency: state.currency,
+  accounts: state.accounts
+})
 
-export default connect(mapStateToProps, { setError, setWarning, makeTransfer, setIsLoading, setNotification })(SendKoiForm)
+const mapDispatchToProps = { 
+  setError, 
+  setWarning, 
+  makeTransfer, 
+  setIsLoading, 
+  setNotification 
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SendKoiForm)
