@@ -28,7 +28,8 @@
     "storage",
     "unlimitedStorage",
     "downloads",
-    "tabs"
+    "tabs",
+    "notifications"
   ],
   "icons": {
     "128": "img/icon.png"

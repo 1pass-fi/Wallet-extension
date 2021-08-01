@@ -51,7 +51,6 @@ export default () => {
     },
     (path) => {
       // On Mac and others
-      console.log({path})
       const url = chrome.extension.getURL(path)
       chrome.windows.create({
         url,
