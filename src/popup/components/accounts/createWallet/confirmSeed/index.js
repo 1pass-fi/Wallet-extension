@@ -28,7 +28,8 @@ export const ConfirmSeed = ({
   saveWallet,
   setError,
   setCreateWallet,
-  setIsLoading
+  setIsLoading,
+  walletType
 }) => {
   const wordLists = shuffle(seedPhrase.split(' '))
   const history = useHistory()
@@ -43,7 +44,7 @@ export const ConfirmSeed = ({
     try {
       if (seedPhrase === addedPhrase.map((item) => item.word).join(' ')) {
         setIsLoading(true)
-        await saveWallet(seedPhrase, password)
+        await saveWallet(seedPhrase, password, walletType)
         setIsLoading(false)
 
         if ((await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) {

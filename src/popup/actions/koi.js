@@ -20,7 +20,7 @@ import { backgroundRequest } from 'popup/backgroundRequest'
 
 import { TYPE } from 'account/accountConstants'
 
-import { popupAccount } from 'account'
+import { backgroundAccount, popupAccount } from 'account'
 
 export const getBalances = () => async (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
@@ -105,12 +105,11 @@ export const unlockWallet = (password) => async (dispatch) => {
 */
 export const generateWallet = (inputData) => async (dispatch) => {
   try {
-    const { stage, password } = inputData
+    const { stage, password, walletType } = inputData
 
     dispatch(setIsLoading(true))
-    const seedPhrase = await generateWalletUtil(koi)
-    const encryptedKey = await passworder.encrypt(password, koi.wallet)
-    await setChromeStorage({ 'createdWalletAddress': koi.address, 'createdWalletKey': encryptedKey })
+
+    const { seedPhrase } = await backgroundRequest.wallet.generateWallet({ walletType, password })
     dispatch(setCreateWallet({ seedPhrase, stage, password }))
   } catch (err) {
     dispatch(setError(err.message))
@@ -124,14 +123,17 @@ export const generateWallet = (inputData) => async (dispatch) => {
     - Address
   Get balances.
 */
-export const saveWallet = (seedPhrase, password) => async (dispatch) => {
+export const saveWallet = (seedPhrase, password, walletType) => async (dispatch) => {
   try {
-    const { koiData } = backgroundRequest.wallet.saveWallet({seedPhrase, password})
-    dispatch(setKoi(koiData))
-    dispatch(getBalances())
+    await backgroundRequest.wallet.saveWallet({seedPhrase, password, walletType})
+    const allData = await popupAccount.getAllMetadata()
+    dispatch(setAccounts(allData))
     dispatch(setIsLoading(false))
-    const encryptedSeedPhrase = await passworder.encrypt(password, seedPhrase)
-    setChromeStorage({ 'koiPhrase': encryptedSeedPhrase })
+
+    /* 
+      Need to handle saving encrypted seedphrase
+    */
+
     setCreateWallet({ stage: 1, password: null, seedPhrase: null })
     // We will move setCreateWallet() to the UI since now we can await for the action from UI code.
   } catch (err) {
@@ -231,7 +233,7 @@ export const signTransaction = (inputData) => (dispatch) => {
 
 export const getKeyFile = (password, address) => async (dispatch) => {
   try {
-    const { key } = await backgroundRequest.wallet.getKeyFile({ password, address })
+    let { key } = await backgroundRequest.wallet.getKeyFile({ password, address })
     const type = await popupAccount.getType(address)
 
     let filename

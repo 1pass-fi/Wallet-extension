@@ -1,7 +1,7 @@
 import get from 'lodash/get'
 import { ERROR_MESSAGE } from 'koiConstants'
 
-export const validatePassword = async ({ e, setError, generateWallet }) => {
+export const validatePassword = async ({ e, setError, generateWallet, walletType }) => {
   try {
     const pwd = get(e, 'target.pwd.value')
     const pwdConfirm = get(e, 'target.pwdConfirm.value')
@@ -13,7 +13,7 @@ export const validatePassword = async ({ e, setError, generateWallet }) => {
     } else if (!checked) {
       setError(ERROR_MESSAGE.CHECKED_TERMS)
     } else {
-      await generateWallet({ stage: 2, password: pwd })
+      await generateWallet({ stage: 2, password: pwd, walletType })
     }
   } catch (err) {
     setError(err.message)

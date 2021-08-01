@@ -13,14 +13,14 @@ import { validatePassword } from './utils'
 import { setIsLoading } from 'actions/loading'
 import { setCreatingWallet } from 'actions/creatingWallet'
 
-export const Password = ({ generateWallet, setError, setIsLoading, setCreatingWallet }) => {
+export const Password = ({ generateWallet, setError, setIsLoading, setCreatingWallet, walletType }) => {
 
   const handleOnSubmit = async (e) => {
     try {
       e.preventDefault()
       setIsLoading(true)
       setCreatingWallet(true) // show the creating wallet statement
-      await validatePassword({ e, setError, generateWallet })
+      await validatePassword({ e, setError, generateWallet, walletType })
       setCreatingWallet(false)
       setIsLoading(false)
     } catch (err) {

@@ -31,6 +31,8 @@ import {
   createNewKid,
   updateKid
 } from 'utils'
+import { Web } from '@_koi/sdk/web'
+import { Ethereum } from './eth'
 
 const arweave = Arweave.init({
   host: 'arweave.net',
@@ -192,35 +194,58 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         break
       }
       case MESSAGES.GENERATE_WALLET: {
-        const seedPhrase = await generateWallet(koi)
-        port.postMessage({
-          type: MESSAGES.GENERATE_WALLET_SUCCESS,
-          data: { seedPhrase },
-          id: messageId
-        })
+        try {
+          const { walletType, password } = message.data
+          let walletObj
+          let seedPhrase
+          let key
+          switch(walletType) {
+            case TYPE.ARWEAVE:
+              walletObj = new Web()
+              seedPhrase = await ArweaveWallet.utils.generateWallet(walletObj)
+              key = walletObj.wallet
+              break
+            case TYPE.ETHEREUM:
+              walletObj = new Ethereum()
+              seedPhrase = await EthereumWallet.utils.generateWallet(walletObj)
+              key = {key: walletObj.key} // key of eth wallet will be String
+          }
+          const encryptedKey = await passworder.encrypt(password, key)
+          await setChromeStorage({ 'createdWalletAddress': walletObj.address, 'createdWalletKey': encryptedKey })
+
+          port.postMessage({
+            type: MESSAGES.GENERATE_WALLET,
+            data: { seedPhrase },
+            id: messageId
+          })
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.GENERATE_WALLET,
+            id: messageId,
+            error: `BACKGROUND ERROR: ${err.message}`
+          })
+        }
         break
       }
       case MESSAGES.SAVE_WALLET: {
         try {
-          const { password } = message.data
+          const { password, walletType } = message.data
   
           const createdWalletAddress = (await getChromeStorage('createdWalletAddress'))['createdWalletAddress']
           const createdWalletKey = (await getChromeStorage('createdWalletKey'))['createdWalletKey']
-          const decryptedWalletKey = await passworder.decrypt(password, createdWalletKey)
-  
-          if (createdWalletAddress && decryptedWalletKey) {
-            koi.address = createdWalletAddress
-            koi.wallet = decryptedWalletKey
-          } else {
-            throw new Error('Create new wallet failed.')
-          }
 
-          await saveWalletToChrome(koi, password)
-          const koiData = await utils.loadWallet(koi, koi.address, LOAD_KOI_BY.ADDRESS)
-  
+          const decryptedWalletKey = await passworder.decrypt(password, createdWalletKey)
+
+
+          if (!(createdWalletAddress && decryptedWalletKey)) throw new Error(ERROR_MESSAGE.CREATE_WALLET_FAILED)
+
+          await backgroundAccount.createAccount(createdWalletAddress, decryptedWalletKey, password, walletType)
+          const account = await backgroundAccount.getAccount({ address: createdWalletAddress, key: decryptedWalletKey })
+          const totalAccounts = await backgroundAccount.count()
+          account.set.accountName(`Account#${totalAccounts}`)
+    
           port.postMessage({
             type: MESSAGES.SAVE_WALLET,
-            data: { koiData },
             id: messageId
           })
         } catch (err) {
@@ -354,7 +379,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
               type: MESSAGES.GET_KEY_FILE,
               error: err.message,
               id: messageId
-            })  
+            })
           }
           port.postMessage({
             type: MESSAGES.GET_KEY_FILE,

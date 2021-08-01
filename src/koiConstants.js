@@ -184,7 +184,8 @@ export const ERROR_MESSAGE = {
   KID_FILE_TOO_LARGE: 'File too large. The maximum size for Profile Picture is 500KB',
   PASSWORD_REQUIRED: 'Password required.',
   SELECT_ACCOUNT: 'Please select account.',
-  SELECT_TOKEN: 'Please select token.'
+  SELECT_TOKEN: 'Please select token.',
+  CREATE_WALLET_FAILED: 'Create new wallet failed.'
 }
 
 export const STORAGE = {

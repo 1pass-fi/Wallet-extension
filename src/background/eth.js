@@ -18,7 +18,7 @@ export class Ethereum {
     const createdWallet = this.#getWalletFromSeedPhrase(seedPhrase)
     this.key = createdWallet.privateKey
     this.address = createdWallet.address
-    return { seedPhrase, wallet: createdWallet}
+    return seedPhrase
   }
 
   importWallet(payload, type) {

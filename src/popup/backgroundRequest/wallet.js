@@ -110,4 +110,8 @@ export class WalletRequest extends Request {
   getLockState() {
     return this.promise(MESSAGES.GET_LOCK_STATE)
   }
+
+  generateWallet(body) {
+    return this.promise(MESSAGES.GENERATE_WALLET, body)
+  }
 }

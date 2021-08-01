@@ -16,4 +16,8 @@ export class EthereumUtils {
       throw new Error(err.message)
     }
   }
+
+  async generateWallet(eth) {
+    return eth.createNewWallet()
+  }
 }
