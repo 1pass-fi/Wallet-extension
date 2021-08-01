@@ -38,7 +38,7 @@ import { getNftsDataForCollections, loadCollections } from 'options/utils'
 import storage from 'storage'
 import { backgroundRequest } from 'popup/backgroundRequest'
 
-import { Account } from 'account'
+import { popupAccount } from 'account'
 
 export default ({ children }) => {
   const history = useHistory()
@@ -92,9 +92,11 @@ export default ({ children }) => {
   */
   useEffect(() => {
     const loadWallets = async () => {
-      const allWallets = await Account.getAllWallets()
-      setWallets(allWallets)
-      setAccount(allWallets[0])
+      await popupAccount.loadImported()
+      const allData = await popupAccount.getAllMetadata()
+      console.log('allData', allData)
+      setWallets(allData)
+      setAccount(allData[0])
     }
 
     loadWallets()
@@ -106,9 +108,17 @@ export default ({ children }) => {
         /* 
           Contents, koiBalance, arBalance, address, affiliateCode, showWelcomeScreen, accountName
         */
-        const type = await Account.getTypeOfWallet(account.address)
-        const aAccount = await Account.get(account, type)
-        let contentList = await aAccount.get.assets()
+
+        // Get all contents
+        const allAccounts = await popupAccount.getAllAccounts()
+        let allContent = []
+        await Promise.all(allAccounts.map(async account => {
+          const contents = await account.get.assets()
+          allContent = [...allContent, ...contents]
+        }))
+
+        const aAccount = await popupAccount.getAccount({ address: account.address })
+        // let contentList = await aAccount.get.assets()
       
         const addressStorage = account.address
 
@@ -131,7 +141,7 @@ export default ({ children }) => {
         }
 
         if (affiliateCodeStorage) setAffiliateCode(affiliateCodeStorage)
-        if (contentList) setCardInfos(contentList)
+        if (allContent) setCardInfos(allContent)
 
         // Set address state
         // Do actions when have address (have wallet imported and unlocked).
@@ -190,7 +200,7 @@ export default ({ children }) => {
           await storage.arweaveWallet.set.assets(responseContentList)
           if (isEmpty(responseContentList)) history.push('/create')
         } else {
-          if (isEmpty(contentList)) history.push('/create')
+          if (isEmpty(allContent)) history.push('/create')
         }
         setIsLoading(false)
 
@@ -203,7 +213,7 @@ export default ({ children }) => {
       }
     }
 
-    getData()
+    if (!isEmpty(account)) getData()
   }, [account])
 
   useEffect(() => {
@@ -217,12 +227,6 @@ export default ({ children }) => {
     }, 500),
     []
   )
-
-  // useEffect(() => {
-  //   if (isDragging && headerRef.current !== showCreateCollection) {
-  //     headerRef.current.scrollIntoView({ behavior: 'smooth' })
-  //   }
-  // }, [isDragging])
 
   useEffect(() => {
     if (error) {

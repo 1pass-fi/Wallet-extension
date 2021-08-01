@@ -30,7 +30,8 @@ export default ({ description, setStage, stage, title, file, username }) => {
     setError,
     inviteSpent,
     totalAr,
-    totalKoi } = useContext(GalleryContext)
+    totalKoi,
+    account } = useContext(GalleryContext)
   const {
     tags,
     price,
@@ -78,7 +79,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
       }
 
       // call the request function
-      const { txId, time } = await backgroundRequest.gallery.uploadNFT({content, tags, fileType})
+      const { txId, time } = await backgroundRequest.gallery.uploadNFT({content, tags, fileType, address: account.address})
       // console.log('RESPONSE DATA', txId, time)
 
       setIsLoading(false)

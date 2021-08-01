@@ -483,7 +483,14 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
       case MESSAGES.UPLOAD_NFT: {
         try {
-          const { content, tags, fileType } = message.data
+          const { content, tags, fileType, address } = message.data
+          const credentials = await backgroundAccount.getCredentialByAddress(address)
+          const { key } = credentials
+          const koi = new Web()
+
+          koi.address = address
+          koi.wallet = key
+
           const result = await exportNFTNew(koi, arweave, content, tags, fileType)
           port.postMessage({
             type: MESSAGES.UPLOAD_NFT,

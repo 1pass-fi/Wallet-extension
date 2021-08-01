@@ -27,13 +27,13 @@ export default ({ totalKoi, totalAr, headerRef }) => {
       <div className='header-left'>
         <KoiIcon className='logo' />
       </div>
-      <div className='account-select'>
+      {/* <div className='account-select'>
         <select
           onChange={onChangeAccountSelect}
         >
           {wallets.map(wallet => <option>{wallet.address}</option>)}
         </select>
-      </div>
+      </div> */}
       <div className='header-center'>{pathname == '/' && <SearchBar />}</div>
       <div className='header-right'>
         <div className='total-koi'>
