@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 
@@ -22,6 +22,8 @@ export const ImportByPhrase = ({ importWallet, setError, setIsLoading }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isAccept, setIsAccept] = useState(false)
+  const { search } = useLocation()
+  const walletType = (new URLSearchParams(search)).get('type')
 
   const onPhraseChange = (e) => {
     setPharse(e.target.value)
@@ -43,7 +45,7 @@ export const ImportByPhrase = ({ importWallet, setError, setIsLoading }) => {
         redirectPath = ((await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) ? PATH.CONNECT_SITE : redirectPath
 
         setIsLoading(true)
-        await importWallet(phrase, password)
+        await importWallet(phrase, password, walletType)
         setIsLoading(false)
 
         history.push(redirectPath)

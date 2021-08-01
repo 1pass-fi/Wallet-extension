@@ -25,7 +25,7 @@ export const ImportByFile = ({ setError, importWallet }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isAccept, setIsAccept] = useState(false)
-  const { search} = useLocation()
+  const { search } = useLocation()
   const walletType = (new URLSearchParams(search)).get('type')
 
   const handleSubmit = async (e) => {

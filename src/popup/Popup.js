@@ -105,13 +105,17 @@ const Popup = ({
       }
 
       if (query.includes('create-wallet')) {
-        history.push('/account/create')
+        const params = new URLSearchParams(query)
+        const walletType = params.get('type')
+        history.push(`/account/create?type=${walletType}`)
       } else if (query.includes('upload-json')) {
         const params = new URLSearchParams(query)
         const walletType = params.get('type')
         history.push(`/account/import/keyfile?type=${walletType}`)
       } else if (query.includes('upload-seedphrase')) {
-        history.push('/account/import/phrase')
+        const params = new URLSearchParams(query)
+        const walletType = params.get('type')
+        history.push(`/account/import/phrase?type=${walletType}`)
       }
     } catch (err) {
       console.log(err.message)

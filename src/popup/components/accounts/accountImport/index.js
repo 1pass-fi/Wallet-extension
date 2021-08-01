@@ -62,7 +62,7 @@ export default () => {
         left: Math.round((screenWidth - WINDOW_SIZE.MAC_WIDTH) / 2),
         top: Math.round((screenHeight - WINDOW_SIZE.MAC_HEIGHT) / 2),
       })
-      // window.close()
+      window.close()
     }
   )
 

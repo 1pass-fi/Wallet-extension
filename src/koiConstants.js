@@ -19,9 +19,11 @@ export const NAVBAR_EXCLUDE_PATH = [
   '/account/connect-site',
   '/account/sign-transaction',
   '/account/welcome',
+  '/account/create',
   '/account/create/success',
   '/account/import/keyfile',
   '/account/import/keyfile/success',
+  '/account/import/phrase',
   '/account/import/phrase/success'
 ]
 

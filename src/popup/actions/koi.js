@@ -1,32 +1,23 @@
-import { get, isString, isArray, isNumber } from 'lodash'
+import { get } from 'lodash'
 import passworder from 'browser-passworder'
 
 import { setIsLoading } from './loading'
-import { setContLoading } from './continueLoading'
 import { setError } from './error'
 import { setCreateWallet } from './createWallet'
 import { setAssets } from './assets'
 import { setActivities } from './activities'
-import { setTransactions } from './transactions'
-import { setCursor } from './cursor'
-import { clearActivities } from './activities'
 
 import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
 
 import { MESSAGES, FILENAME } from 'koiConstants'
 
 import { SET_KOI } from 'actions/types'
-import { getChromeStorage, removeChromeStorage, setChromeStorage, generateWallet as generateWalletUtil, saveWalletToChrome } from 'utils'
-import { utils } from 'utils'
-import { setNotification } from './notification'
+import { setChromeStorage, generateWallet as generateWalletUtil } from 'utils'
 import { setAccounts } from './accounts'
 
 import { koi } from 'background'
-import moment from 'moment'
 import { backgroundRequest } from 'popup/backgroundRequest'
 
-import storage from 'storage'
-import { Account } from 'account'
 import { TYPE } from 'account/accountConstants'
 
 import { popupAccount } from 'account'
