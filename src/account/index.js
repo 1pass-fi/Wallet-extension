@@ -275,6 +275,36 @@ export class PopupAccount extends GenericAccount {
       console.log(err.message)
     }
   }
+
+  async getAllAssets() {
+    try {
+      const allAccounts = await this.getAllAccounts()
+      let allAssets = []
+      await Promise.all(allAccounts.map(async account => {
+        const assets = await account.get.assets() || []
+        allAssets = [...allAssets, ...assets]
+      }))
+
+      return allAssets
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async getAllCollections() {
+    try {
+      const allAccounts = await this.getAllAccounts()
+      let allCollections = []
+      await Promise.all(allAccounts.map(async account => {
+        const collections = await account.get.collections() || []
+        allCollections = [...allCollections, ...collections]
+      }))
+
+      return allCollections
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
 }
 
 export class BackgroundAccount extends GenericAccount {

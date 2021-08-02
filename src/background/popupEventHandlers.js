@@ -612,6 +612,27 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         break
       }
 
+      case MESSAGES.LOAD_COLLECTIONS: {
+        try {
+          const allAccounts = await backgroundAccount.getAllAccounts()
+          await Promise.all(allAccounts.map(async account => {
+            const fetchedCollections = await account.method.loadCollections()
+            if (!isString(fetchedCollections)) await account.set.collections(fetchedCollections)
+          }))
+          port.postMessage({
+            type: MESSAGES.LOAD_COLLECTIONS,
+            id: messageId
+          })
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.LOAD_COLLECTIONS,
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
+          })
+        }
+        break
+      }
+
       default:
         break
     }

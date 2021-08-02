@@ -9,7 +9,8 @@ import { loadCollections } from 'options/utils'
 
 import AddIcon from 'img/add-icon-green.svg'
 import storage from 'storage'
-import { Account } from 'account'
+import { Account, popupAccount } from 'account'
+import { backgroundRequest } from 'popup/backgroundRequest'
 
 const Header = ({ setShowCreateCollection, setStage, setPage, setTotalPage }) => {
   const history = useHistory()
@@ -37,7 +38,6 @@ export default () => {
     setStage, 
     setIsLoading, 
     setError, 
-    address, 
     collections, 
     setCollections,
     collectionsLoaded,
@@ -47,11 +47,14 @@ export default () => {
 
   useEffect(() => {
     const getCollectionsFromStorage = async () => {
-      const type = await Account.getTypeOfWallet(account.address)
-      const _account = await Account.get(account, type)
-
-      const savedCollections = await _account.get.collections() || []
-      setCollections(savedCollections)
+      try {
+        const allCollections = await popupAccount.getAllCollections()
+        console.log('All Collections', allCollections)
+        setCollections(allCollections)
+      } catch (err) {
+        console.log(err.message)
+        setError(err.message)
+      }
     }
 
     if (!isEmpty(account)) getCollectionsFromStorage()
@@ -60,22 +63,18 @@ export default () => {
   useEffect(() => {
     const handleLoadCollection = async () => {
       try {
-        if (!isEmpty(account)) {
-          const type = await Account.getTypeOfWallet(account.address)
-          const _account = await Account.get(account, type)
-          
+        if (!isEmpty(account)) {          
           setIsLoading(true)
-          const result = await _account.method.loadCollections()
-          await _account.set.collections(result)
-          console.log('result', result)
-          if (!isString(result)) {
-            setCollections(result)
-          }
+          await backgroundRequest.gallery.loadCollections({ address: account.address })
+          const allCollections = await popupAccount.getAllCollections()
+          setCollections(allCollections)
           setIsLoading(false)
           setCollectionsLoaded(true)
         }
       } catch (err) {
         setIsLoading(false)
+        setError(err.message)
+        console.log(err.message)
       }
     }
     if (!isEmpty(account) && !collectionsLoaded) {

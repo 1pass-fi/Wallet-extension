@@ -224,7 +224,7 @@ export class ArweaveMethod {
 
   async loadCollections() {
     try {
-      const savedCollection = await this.#chrome.getAssets() || []
+      const savedCollection = await this.#chrome.getCollections() || []
       // get list of transactions
       let fetchedCollections = await this.koi.getCollectionsByWalletAddress(this.koi.address)
   

@@ -76,7 +76,8 @@ export class AccountChromeStorage extends ChromeStorage {
   }
 
   async getCollections() {
-    const assets = await this._getChrome(`${this.#address}_collections`)
+    const collections = await this._getChrome(`${this.#address}_collections`)
+    return collections
   }
 
   async setCollections(value) {

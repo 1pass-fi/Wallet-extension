@@ -98,24 +98,19 @@ export default ({ children }) => {
       setWallets(allData)
       setAccount(allData[0])
     }
-
+    setIsLoading(true)
     loadWallets()
   }, [])
 
   useEffect(() => {
-    const getData = async () => {
+    const getDataFromStorage = async () => {
       try {
         /* 
           Contents, koiBalance, arBalance, address, affiliateCode, showWelcomeScreen, accountName
         */
 
         // Get all contents
-        const allAccounts = await popupAccount.getAllAccounts()
-        let allContent = []
-        await Promise.all(allAccounts.map(async account => {
-          const contents = await account.get.assets()
-          allContent = [...allContent, ...contents]
-        }))
+        const allAssets = await popupAccount.getAllAssets()
 
         const aAccount = await popupAccount.getAccount({ address: account.address })
         // let contentList = await aAccount.get.assets()
@@ -129,8 +124,8 @@ export default ({ children }) => {
 
         const showViewStorage = await storage.setting.get.showViews()
         const showEarnedKoiStorage = await storage.setting.get.showEarnedKoi()
-        const affiliateCodeStorage = await storage.generic.get.affiliateCode()
         const showWelcomeScreen = await storage.setting.get.showWelcomeScreen()
+        const affiliateCodeStorage = await storage.generic.get.affiliateCode()
 
         if (showViewStorage) setShowViews(showViewStorage)
         if (showEarnedKoiStorage) setShowEarnedKoi(showEarnedKoiStorage) 
@@ -141,7 +136,7 @@ export default ({ children }) => {
         }
 
         if (affiliateCodeStorage) setAffiliateCode(affiliateCodeStorage)
-        if (allContent) setCardInfos(allContent)
+        if (allAssets) setCardInfos(allAssets)
 
         // Set address state
         // Do actions when have address (have wallet imported and unlocked).
@@ -173,7 +168,6 @@ export default ({ children }) => {
             setTotalAr(totalAr)
           }
           
-          setIsLoading(true)
           // Load affiliate code
           if (!affiliateCodeStorage) {
             koi.wallet = key
@@ -188,22 +182,6 @@ export default ({ children }) => {
           }
         }
 
-        // load content
-        /* 
-          background will return an array for loaded content list. (can be an empty array)
-          if all content has been fetched before, a string will be returned.
-        */
-        
-        const responseContentList = await backgroundRequest.assets.loadContent()
-        if (isArray(responseContentList)) {
-          setCardInfos(responseContentList)
-          await storage.arweaveWallet.set.assets(responseContentList)
-          if (isEmpty(responseContentList)) history.push('/create')
-        } else {
-          if (isEmpty(allContent)) history.push('/create')
-        }
-        setIsLoading(false)
-
         // Set accountName state
         if (arweaveAccountName) {
           setAccountName(arweaveAccountName)
@@ -213,8 +191,29 @@ export default ({ children }) => {
       }
     }
 
-    if (!isEmpty(account)) getData()
+    if (!isEmpty(account)) getDataFromStorage()
   }, [account])
+
+  /* 
+    Load for all assets
+  */
+  useEffect(() => {
+    const loadAssets = async () => {
+      try {
+        await backgroundRequest.assets.loadContent()
+        const allAssets =  await popupAccount.getAllAssets()
+        setCardInfos(allAssets)
+        if (isEmpty(allAssets)) history.push('/create')
+        setIsLoading(false)
+      } catch (err) {
+        console.log(err.message)
+        setIsLoading(false)
+        setError(err.message)
+      }
+    }
+
+    loadAssets()
+  }, [])
 
   useEffect(() => {
     setFile(acceptedFiles ? acceptedFiles[0] : {})

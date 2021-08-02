@@ -81,6 +81,6 @@ export class WalletSet {
      * @returns {Array} list of collections
      */
   async collections(value) {
-    return await this.#accountStorage.setField(ACCOUNT.COLLECTIONS, value)
+    return await this.#accountStorage.setCollections(value)
   }
 }
