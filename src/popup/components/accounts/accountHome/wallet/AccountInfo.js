@@ -21,6 +21,7 @@ import { NOTIFICATION } from 'koiConstants'
 import { Account } from 'account'
 import { setAccounts } from 'popup/actions/accounts'
 import { changeAccountName } from 'actions/koi'
+import useNetworkSelection from 'shared/useNetworkSelection'
 
 import { TYPE } from 'account/accountConstants'
 
@@ -34,7 +35,12 @@ export const AccountInfo = (({
   changeAccountName
 }) => {
   const [openEditModal, setOpenEditModal] = useState(false)
-
+  const {
+    NetworkSelectionTrigger,
+    NetworkSelection,
+    selectedNetwork,
+  } = useNetworkSelection('ETHEREUM')
+  console.log('render')
   const onSubmit = async (newName) => {
     await changeAccountName(account.address, newName)
 
@@ -71,6 +77,7 @@ export const AccountInfo = (({
               </CopyToClipboard>
             </div>
           </div>
+          <NetworkSelectionTrigger />
         </div>
       </div>
       <div className='wallet-balance-row'>
@@ -98,6 +105,7 @@ export const AccountInfo = (({
           currentName={account.name}
           account={account}
         /> }
+      <NetworkSelection />
     </div>
   )
 })
