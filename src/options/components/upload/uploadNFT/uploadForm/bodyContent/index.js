@@ -4,6 +4,7 @@ import union from 'lodash/union'
 
 import Checkbox from 'popup/components/shared/checkbox'
 import './index.css'
+import EditIcon from 'img/edit-icon-collection.svg'
 
 import { loadNFTCost } from 'utils'
 
@@ -21,7 +22,7 @@ export default ({
   setUsername,
 }) => {
   const { setTags, tags, isFriendCodeValid, price, setPrice } = useContext(UploadContext)
-  const { file } = useContext(GalleryContext)
+  const { file, account, setShowSelectAccount } = useContext(GalleryContext)
   const [tagInput, setTagInput] = useState('')
 
   const addTag = (e) => {
@@ -45,6 +46,16 @@ export default ({
   if (stage == 1) {
     return (
       <div className='right-column stage1'>
+        <div className='field'>
+          <div className='field-label change-account'>
+            <div onClick={() => setShowSelectAccount(true)} className='edit-icon'><EditIcon /></div>
+            Wallet
+          </div>
+          <div className='field-input select-account'>
+            {account.accountName}
+            <div className='address'>{`${account.address.slice(0,5)}...${account.address.slice(account.address.length - 4)}`}</div>
+          </div>
+        </div>
         <div className='field'>
           <label className='field-label'>Title</label>
           <input

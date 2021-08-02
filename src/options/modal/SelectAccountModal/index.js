@@ -6,7 +6,7 @@ import Modal from 'options/shared/modal'
 import { GalleryContext } from 'options/galleryContext'
 
 const SelectAccount = () => {
-  const { setAccount, wallets } = useContext(GalleryContext)
+  const { setAccount, wallets, account } = useContext(GalleryContext)
 
   const onSelectAccount = (e) => {
     const selectedAccountName = e.target.value
@@ -17,14 +17,14 @@ const SelectAccount = () => {
   return (
     <div className='select-account-modal'>
       <div className='title'>Select your account</div>
-      <select onChange={(e) => onSelectAccount(e)} className='select'>
+      <select defaultValue={account.accountName} onChange={(e) => onSelectAccount(e)} className='select'>
         {wallets.map((wallet) => <option>{wallet.accountName}</option>)}
       </select>
     </div>
   )
 }
 
-export default () => {
+export default ({ onClose }) => {
   return (
     <div>
       <Modal onClose={onClose}>

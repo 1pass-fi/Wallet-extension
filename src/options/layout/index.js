@@ -39,6 +39,7 @@ import storage from 'storage'
 import { backgroundRequest } from 'popup/backgroundRequest'
 
 import { popupAccount } from 'account'
+import SelectAccountModal from 'options/modal/SelectAccountModal'
 
 export default ({ children }) => {
   const history = useHistory()
@@ -77,6 +78,8 @@ export default ({ children }) => {
   })
   const [showExportModal, setShowExportModal] = useState(false)
   const [showWelcome, setShowWelcome] = useState(false)
+
+  const [showSelectAccount, setShowSelectAccount] = useState(false)
 
   const headerRef = useRef(null)
 
@@ -148,7 +151,7 @@ export default ({ children }) => {
 
           // Duplicate code. Will refactor.
           // Calculate balances when have pending transactions.
-          if (koiBalance && arBalance) {
+          if (isNumber(koiBalance) && isNumber(arBalance)) {
             let totalAr = arBalance
             let totalKoi = koiBalance
             console.log(totalAr, totalKoi)
@@ -302,7 +305,8 @@ export default ({ children }) => {
         setCollectionsLoaded,
         wallets,
         account,
-        setAccount
+        setAccount,
+        setShowSelectAccount,
       }}
     >
       {!isEmpty(wallets) ? <div
@@ -341,6 +345,15 @@ export default ({ children }) => {
             }}
           />
         )
+        }
+        {showSelectAccount && (
+          <SelectAccountModal 
+            onClose={() => {
+              setShowSelectAccount(false)
+            }}
+          />
+        )
+
         }
 
         {isLoading && <Loading />}

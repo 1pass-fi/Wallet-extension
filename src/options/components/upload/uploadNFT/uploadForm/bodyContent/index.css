@@ -19,6 +19,35 @@
   display: flex;
   align-items: center;
 }
+.uploadNFT-wrapper
+  .uploadNFT
+  .upload-form
+  .nft-infomation
+  .right-column.stage1
+  .field
+  .field-input.select-account {
+  border: 0px;
+  display: flex;
+  gap: 30px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  align-items: center;
+}
+.uploadNFT-wrapper
+  .uploadNFT
+  .upload-form
+  .nft-infomation
+  .right-column.stage1
+  .field
+  .field-input.select-account
+  .address {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    color: #49CE8B;
+    ;
+}
 
 .uploadNFT-wrapper
   .uploadNFT
@@ -31,6 +60,21 @@
   font-size: 16px;
   line-height: 16px;
   width: 114px;
+  position: relative;
+}
+.uploadNFT-wrapper
+  .uploadNFT
+  .upload-form
+  .nft-infomation
+  .right-column.stage1
+  .field
+  .field-label
+  .edit-icon {
+  width: 15.5px;
+  height: 18px;
+  position: absolute;
+  left: 71px;
+  cursor: pointer;
 }
 
 .uploadNFT-wrapper
