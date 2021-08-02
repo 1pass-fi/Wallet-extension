@@ -38,8 +38,8 @@ export const AccountInfo = (({
   const {
     NetworkSelection,
     selectedNetwork,
-  } = useNetworkSelection('ETHEREUM')
-  console.log('render')
+  } = useNetworkSelection(account.type)
+
   const onSubmit = async (newName) => {
     await changeAccountName(account.address, newName)
 

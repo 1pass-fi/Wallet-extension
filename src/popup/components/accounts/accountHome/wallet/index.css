@@ -7,6 +7,10 @@
   overflow-y: hidden;
 }
 
+.wallet:nth-child(2n) {
+  background: #EEEEEE;
+}
+
 .wallet.collapsed {
   height: 40px;
 }

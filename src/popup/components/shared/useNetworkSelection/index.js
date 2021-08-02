@@ -5,8 +5,10 @@ import CloseIcon from 'img/circle-close-icon-blue.svg'
 
 import './index.css'
 
+import { TYPE } from 'account/accountConstants'
+
 const NETWORKS = {
-  ETHEREUM: {
+  [TYPE.ETHEREUM]: {
     description: 'The default network for Ether transactions is Mainnet.',
     networks: [
       'Ethereum Mainnet',
@@ -21,8 +23,8 @@ const NETWORKS = {
 }
 
 export default (networkType) => {
-  const { networks, description } = useMemo(
-    () => get(NETWORKS, `${networkType}`),
+  const { networks = [], description = '' } = useMemo(
+    () => get(NETWORKS, `${networkType}`, {}),
     [networkType]
   )
   const [selectedNetwork, setSelectedNetwork] = useState(get(networks, '0', ''))
@@ -51,18 +53,21 @@ export default (networkType) => {
     }
   }, [ref])
 
-  const modalTriggerComponent = (props) => (
-    <>
-      <div
-        {...props}
-        onClick={toggleModal}
-        className={`${get(props, 'className', '')}  network-modal-trigger`}
-      >
-        {selectedNetwork}
-      </div>
-      { modal() }
-    </>
-  )
+  const modalTriggerComponent = (props) =>
+    networks ? (
+      <>
+        <div
+          {...props}
+          onClick={toggleModal}
+          className={`${get(props, 'className', '')}  network-modal-trigger`}
+        >
+          {selectedNetwork}
+        </div>
+        {modal()}
+      </>
+    ) : (
+      <></>
+    )
 
   const modal = () =>
     isShowModal ? (
