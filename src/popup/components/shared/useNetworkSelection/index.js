@@ -52,13 +52,16 @@ export default (networkType) => {
   }, [ref])
 
   const modalTriggerComponent = (props) => (
-    <div
-      {...props}
-      onClick={toggleModal}
-      className={`${get(props, 'className', '')}  network-modal-trigger`}
-    >
-      {selectedNetwork}
-    </div>
+    <>
+      <div
+        {...props}
+        onClick={toggleModal}
+        className={`${get(props, 'className', '')}  network-modal-trigger`}
+      >
+        {selectedNetwork}
+      </div>
+      { modal() }
+    </>
   )
 
   const modal = () =>
@@ -92,8 +95,7 @@ export default (networkType) => {
     )
 
   return {
-    NetworkSelectionTrigger: modalTriggerComponent,
-    NetworkSelection: modal,
+    NetworkSelection: modalTriggerComponent,
     selectedNetwork,
   }
 }

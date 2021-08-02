@@ -36,7 +36,6 @@ export const AccountInfo = (({
 }) => {
   const [openEditModal, setOpenEditModal] = useState(false)
   const {
-    NetworkSelectionTrigger,
     NetworkSelection,
     selectedNetwork,
   } = useNetworkSelection('ETHEREUM')
@@ -77,7 +76,7 @@ export const AccountInfo = (({
               </CopyToClipboard>
             </div>
           </div>
-          <NetworkSelectionTrigger />
+          <NetworkSelection />
         </div>
       </div>
       <div className='wallet-balance-row'>
@@ -105,7 +104,6 @@ export const AccountInfo = (({
           currentName={account.name}
           account={account}
         /> }
-      <NetworkSelection />
     </div>
   )
 })
