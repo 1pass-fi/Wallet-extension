@@ -1,0 +1,19 @@
+.select-account-modal {
+  width: 500px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+}
+
+.select-account-modal .title {
+  font-size: 25px;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.select-account-modal select {
+  width: 300px;
+  padding-left: 10px;
+}
