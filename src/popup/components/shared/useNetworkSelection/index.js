@@ -31,7 +31,6 @@ export default (networkType) => {
   const [isShowModal, setIsShowModal] = useState(false)
   const ref = useRef()
   const toggleModal = () => {
-    console.log(isShowModal)
     setIsShowModal(!isShowModal)
   }
 

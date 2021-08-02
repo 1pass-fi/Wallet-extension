@@ -16,19 +16,27 @@ import { setIsLoading } from 'popup/actions/loading'
 import storage from 'storage'
 import { setError } from 'popup/actions/error'
 
-export const Wallet = ({account}) => {
+export const Wallet = ({ account }) => {
   const [collapsed, setCollapsed] = useState(true)
 
   return (
-    <div className={collapsed ? 'wallet collapsed' : 'wallet'}>
+    <div className={`wallet ${collapsed ? 'collapsed': ''}`}>
       <div className='wallet-wrapper'>
-        <AccountInfo account={account} setCollapsed={setCollapsed} collapsed={collapsed}/>
-        <Card className='address'>{account.address}</Card>
-        <AccountConfig
-          accountAddress={'address'}
-          sites={[]}
+        <AccountInfo
           account={account}
+          setCollapsed={setCollapsed}
+          collapsed={collapsed}
         />
+        {!collapsed && (
+          <>
+            <Card className='address'>{account.address}</Card>
+            <AccountConfig
+              accountAddress={'address'}
+              sites={[]}
+              account={account}
+            />
+          </>
+        )}
       </div>
     </div>
   )
@@ -39,7 +47,7 @@ const mapStateToProps = (state) => ({
   price: state.price,
   accountName: state.accountName,
   currency: state.currency,
-  ethereum: state.ethereum
+  ethereum: state.ethereum,
 })
 
 export default connect(mapStateToProps, {
@@ -47,5 +55,5 @@ export default connect(mapStateToProps, {
   getKeyFile,
   setNotification,
   setAccountName,
-  setIsLoading
+  setIsLoading,
 })(Wallet)
