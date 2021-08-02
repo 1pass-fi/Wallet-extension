@@ -7,6 +7,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import CopyIcon from 'img/copy-icon.svg'
 import EditIcon from 'img/edit-icon.svg'
+import RearrangeIcon from 'img/rearrange-pads-icon.svg'
 import Fish from 'img/koi-logo-bg.svg'
 import EthereumIcon from 'img/ethereum-logo.svg'
 import CollapseIcon from 'img/collapse-icon.svg'
@@ -21,6 +22,7 @@ import { NOTIFICATION } from 'koiConstants'
 import { Account } from 'account'
 import { setAccounts } from 'popup/actions/accounts'
 import { changeAccountName } from 'actions/koi'
+import useNetworkSelection from 'shared/useNetworkSelection'
 
 import { TYPE } from 'account/accountConstants'
 
@@ -34,6 +36,10 @@ export const AccountInfo = (({
   changeAccountName
 }) => {
   const [openEditModal, setOpenEditModal] = useState(false)
+  const {
+    NetworkSelection,
+    selectedNetwork,
+  } = useNetworkSelection(account.type)
 
   const onSubmit = async (newName) => {
     await changeAccountName(account.address, newName)
@@ -48,6 +54,7 @@ export const AccountInfo = (({
 
   return (
     <div className='wallet-info'>
+      <RearrangeIcon className='rearrange-icon' />
       <div className='wallet-info-row'>
         <div className='fish'>
           {account.type == TYPE.ARWEAVE ? <Fish /> : <EthereumIcon />}
@@ -71,6 +78,7 @@ export const AccountInfo = (({
               </CopyToClipboard>
             </div>
           </div>
+          <NetworkSelection />
         </div>
       </div>
       <div className='wallet-balance-row'>
@@ -86,10 +94,12 @@ export const AccountInfo = (({
           <div className='balance'>{numberFormat(account.koiBalance)} KOII</div>
           {<div hidden className='usd-exchange'>${fiatCurrencyFormat(account.koiBalance * price.KOI)} USD</div>}
         </div>
-        <div className='ar-balance'>
-          <div className='balance'>{numberFormat(account.balance)} {account.type == TYPE.ARWEAVE ? 'AR' : 'ETH'}</div>
-          {<div className='usd-exchange'>{getSymbolFromCurrency(currency) || ''}{fiatCurrencyFormat(account.balance * price.AR)} {currency}</div>}
-        </div>
+        {!collapsed && 
+          <div className='ar-balance'>
+            <div className='balance'>{numberFormat(account.balance)} {account.type == TYPE.ARWEAVE ? 'AR' : 'ETH'}</div>
+            {<div className='usd-exchange'>{getSymbolFromCurrency(currency) || ''}{fiatCurrencyFormat(account.balance * price.AR)} {currency}</div>}
+          </div>
+        }
       </div>
       { openEditModal && 
         <EditAccountNameModal 

@@ -7,6 +7,10 @@
   overflow-y: hidden;
 }
 
+.wallet:nth-child(2n) {
+  background: #EEEEEE;
+}
+
 .wallet.collapsed {
   height: 40px;
 }
@@ -15,9 +19,18 @@
   padding: 0 48px;
 }
 
+.wallet .rearrange-icon {
+  position: relative;
+  width: 15px;
+  height: 30px;
+  top: 10px;
+  left: -30px;
+  cursor: pointer;
+}
+
 .wallet .wallet-wrapper .wallet-info {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-around;
   width: 330px;
   padding-bottom: 16px;
@@ -38,7 +51,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  height: 80px;
+  /* height: 80px; */
   width: 165px;
   flex-grow: 1;
   padding-left: 32px;
@@ -95,7 +108,7 @@
   align-items: flex-end;
   padding-right: 32px;
   width: 165px;
-  height: 80px;
+  /* height: 80px; */
   flex-direction: column;
   position: relative;
   user-select: none;
