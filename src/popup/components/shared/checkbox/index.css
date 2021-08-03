@@ -21,9 +21,9 @@
 
 .checkbox-input .checkbox-styled {
   width: 18px;
-  height: 18px; 
+  height: 18px;
   border: 1.5px solid #171753;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   border-radius: 2px;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .checkbox-container .checkbox-label {
-  font-family: 'Catamaran', sans-serif;
+  font-family: 'Sora', sans-serif;
   font-weight: 400;
   font-size: 18px;
   line-height: 20px;

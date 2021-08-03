@@ -108,6 +108,7 @@
 }
 
 .network-modal-trigger {
+  white-space: nowrap;
   cursor: pointer;
   font-size: 12px;
   line-height: 16px;

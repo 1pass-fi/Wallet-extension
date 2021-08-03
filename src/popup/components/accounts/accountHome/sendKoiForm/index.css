@@ -23,12 +23,12 @@
   margin: 15px 40px 0 40px;
 }
 
-.send-koi-form .recipient{
+.send-koi-form .recipient {
   margin: 28px 40px 20px 40px;
 }
 
 .send-koi-form .input-field.form-input .input {
-  font-family: 'Catamaran', sans-serif;
+  font-family: 'Sora', sans-serif;
   font-size: 14.5px;
 }
 .send-koi-form .input-field.form-input .label {
@@ -57,7 +57,7 @@
   align-content: flex-start;
 }
 
-.send-koi-form .amount{
+.send-koi-form .amount {
   margin: 0 40px 46px 40px;
 }
 
