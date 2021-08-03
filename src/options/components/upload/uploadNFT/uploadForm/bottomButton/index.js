@@ -31,7 +31,9 @@ export default ({ description, setStage, stage, title, file, username }) => {
     inviteSpent,
     totalAr,
     totalKoi,
-    account } = useContext(GalleryContext)
+    account,
+    setShowSuccessUploadNFT
+  } = useContext(GalleryContext)
   const {
     tags,
     price,
@@ -39,7 +41,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
     setCreatedAt,
     isFriendCodeValid,
     setIsFriendCodeValid,
-    setContentType
+    setContentType,
   } = useContext(UploadContext)
   const [friendCode, setFriendCode] = useState('')
 
@@ -145,6 +147,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
           setTransactionId(txId)
           setCreatedAt(time)
           setStage(3)
+          setShowSuccessUploadNFT(true)
         } catch (err) {
           setError(err.message)
         }

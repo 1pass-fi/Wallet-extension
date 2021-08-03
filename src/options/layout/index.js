@@ -40,7 +40,8 @@ import { backgroundRequest } from 'popup/backgroundRequest'
 
 import { popupAccount } from 'account'
 import SelectAccountModal from 'options/modal/SelectAccountModal'
-import { count } from 'yargs'
+import SuccessUploadNFT from 'options/modal/SuccessUploadModal'
+
 
 export default ({ children }) => {
   const history = useHistory()
@@ -81,6 +82,7 @@ export default ({ children }) => {
   const [showWelcome, setShowWelcome] = useState(false)
 
   const [showSelectAccount, setShowSelectAccount] = useState(false)
+  const [showSuccessUploadNFT, setShowSuccessUploadNFT] = useState(false)
 
   const headerRef = useRef(null)
 
@@ -330,6 +332,7 @@ export default ({ children }) => {
         account,
         setAccount,
         setShowSelectAccount,
+        setShowSuccessUploadNFT
       }}
     >
       {!isEmpty(wallets) ? <div
@@ -376,9 +379,15 @@ export default ({ children }) => {
             }}
           />
         )
-
         }
-
+        {showSuccessUploadNFT && (
+          <SuccessUploadNFT 
+            onClose={() => {
+              setShowSuccessUploadNFT(false)
+            }}
+          />
+        )
+        }
         {isLoading && <Loading />}
         {isDragging && isEmpty(file) && (
           <input name='fileField' {...getInputProps()} />

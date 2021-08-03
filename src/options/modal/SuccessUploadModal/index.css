@@ -1,0 +1,23 @@
+.success-upload-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 21px;
+  padding: 20px;
+  width: 537px;
+  height: 100%;
+  color: #ffffff;
+  text-align: center;
+}
+
+.success-upload-modal .title {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+}
+
+.success-upload-modal .description {
+  font-size: 16px;
+  line-height: 32px;
+  font-weight: 400;
+}
