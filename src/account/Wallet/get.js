@@ -92,6 +92,10 @@ export class WalletGet {
     return await this.#accountStorage.getField(ACCOUNT.ENCRYPTED_KEY)
   }
 
+  async kid() {
+    return await this.#accountStorage.getKID() 
+  }
+
   async metadata() {
     const type = await this.type()
     const address = await this.address()

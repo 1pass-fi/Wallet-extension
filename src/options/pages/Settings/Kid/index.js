@@ -1,6 +1,7 @@
 import React, { useRef, useState, useMemo, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import get from 'lodash/get'
+import { isEmpty } from 'lodash'
 
 import { getDisplayAddress, saveImageDataToStorage } from 'options/utils'
 
@@ -20,9 +21,10 @@ import { ERROR_MESSAGE, NOTIFICATION } from 'koiConstants'
 import { koi } from 'background'
 import { STORAGE } from 'koiConstants'
 import { setChromeStorage, getChromeStorage } from 'utils'
+import { popupAccount } from 'account'
 
 export default () => {
-  const { address, totalAr, totalKoi, setIsLoading, setError, setNotification } = useContext(GalleryContext)
+  const { account ,address, totalAr, totalKoi, setIsLoading, setError, setNotification } = useContext(GalleryContext)
 
   const fileRef = useRef()
   const [profileImage, setProfileImage] = useState()
@@ -57,7 +59,8 @@ export default () => {
         name,
         description,
         link,
-        addresses
+        addresses,
+        syncWallet
       }
   
       const hadKID = await hadKIDCheck()
@@ -132,51 +135,28 @@ export default () => {
     return false
   }
 
-  const getKIDFields = async (transactionId) => {
-    try {
-      const imageUrl = `https://arweave.net/${transactionId}`
-      const state = await koi.readState(transactionId)
-      return { imageUrl, ...state }
-    } catch (err) {
-      setError('Get KID Failed')
-      console.log(err)
-    }
-  }
-
   useEffect(() => {
-    const getKIDFromStorage = async () => {
+    const getKid = async () => {
       try {
-        const storage = await getChromeStorage(STORAGE.KID)
-        if (storage[STORAGE.KID]) {
-          const { imageUrl, description, link, name } = storage[STORAGE.KID]
+        setIsLoading(true)
+        const _account = await popupAccount.getAccount({ address: account.address })
+        let kid = await _account.get.kid()
+        if (kid) {
+          const { imageUrl, description, link, name } = kid
           setArweaveImage(imageUrl)
           setName(name)
           setDescription(description)
           setLink(link)
         }
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    getKIDFromStorage()
-  }, [])
 
-  useEffect(() => {
-    const getKid = async () => {
-      try {
-        setIsLoading(true)
-        const data = await koi.getKIDByWalletAddress(address)
-        const txId = get(data[0], 'node.id')
-        if (txId) {
-          const { imageUrl, description, link, name } = await getKIDFields(txId)
-          await setChromeStorage({ [STORAGE.KID]: { imageUrl, description, link, name } })
-          if (imageUrl) {
-            setArweaveImage(imageUrl)
-            setName(name)
-            setDescription(description)
-            setLink(link)
-          }
-        }
+        kid = await backgroundRequest.gallery.loadKID({ address: account.address })
+        const { imageUrl, description, link, name } = kid
+        setArweaveImage(imageUrl)
+        setName(name)
+        setDescription(description)
+        setLink(link)
+
+
         setIsLoading(false)
       } catch(err) {
         setIsLoading(false)
@@ -184,12 +164,14 @@ export default () => {
       }
     }
 
-    getKid()
-  }, [address])
+    if (!isEmpty(account)) getKid()
+  }, [account])
 
   return (
     <div className='kid-settings-page-wrapper'>
       <div className='kid-settings-page'>
+
+        {/* TITLE */}
         <div className='top-section'>
           <IDCardIcon className='id-card-icon' />
           <div className='title'>Decentralized Identity</div>
@@ -198,9 +180,10 @@ export default () => {
             email log-ins or giving your personal data straight to Big Tech.
             This information will be public.
           </div>
-          <div className='address'>KOII Wallet: {getDisplayAddress(address)} (Account 1)</div>
+          <div className='address'>KOII Wallet: {getDisplayAddress(address)} ({account.accountName})</div>
         </div>
 
+        {/* PROFILE PICTURE */}
         <div className='info-section'>
           <div className='left'>
             {arweaveImage || profileImage ? (
@@ -236,6 +219,7 @@ export default () => {
             </div> */}
           </div>
 
+          {/* FORM */}
           <div className='right'>
             <div className='field'>
               <label className='label'>

@@ -69,4 +69,19 @@ export class GalleryRequest extends Request {
   loadCollections(body) {
     return this.promise(MESSAGES.LOAD_COLLECTIONS, body)
   }
+  
+  /**
+   * 
+   * @param {Object} body
+   * @param {String} body.address Address of wallet
+   * @returns 
+   */
+  loadKID(body) {
+    return this.promise(MESSAGES.LOAD_KID, body)
+  }
+
+
+  createOrUpdateKID(body) {
+    return this.promise(MESSAGES.CREATE_UPDATE_KID, body)
+  }
 }

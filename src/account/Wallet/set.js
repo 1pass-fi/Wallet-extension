@@ -83,4 +83,8 @@ export class WalletSet {
   async collections(value) {
     return await this.#accountStorage.setCollections(value)
   }
+
+  async kid(value) {
+    return await this.#accountStorage.setKID(value)
+  }
 }

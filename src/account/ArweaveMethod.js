@@ -261,6 +261,38 @@ export class ArweaveMethod {
     }
   }
 
+  async loadKID() {
+    try {
+      const data = await this.koi.getKIDByWalletAddress(this.koi.address)
+      const txId = get(data[0], 'node.id')
+      if (txId) {
+        const imageUrl = `https://arweave.net/${txId}`
+        const state = await this.koi.readState(txId)
+        return { imageUrl, ...state }
+      }
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async createOrUpdateKID(kidInfo) {
+    try {
+      // Check had kid
+      const hadKID = await this.#hadKIDCheck()
+
+    } catch (err) {
+      
+    }
+  }
+
+  async #hadKIDCheck() {
+    const data = await this.koi.getKIDByWalletAddress(this.koi.address)
+    if (get(data[0], 'node.id')) {
+      return get(data([0], 'node.id'))
+    }
+    return false
+  }
+ 
   async #updateCollection(nftIds, collectionId) {
     return await this.koi.updateCollection(nftIds, collectionId)
   }

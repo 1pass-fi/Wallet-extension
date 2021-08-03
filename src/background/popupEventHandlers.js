@@ -634,6 +634,66 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         break
       }
 
+      case MESSAGES.LOAD_KID: {
+        try {
+          const { address } = message.data
+          console.log('LOAD_KID')
+          const credentials = await backgroundAccount.getCredentialByAddress(address)
+          const account = await backgroundAccount.getAccount(credentials)
+          
+          const kidData = await account.method.loadKID()
+          console.log('LOAD_KID', kidData)
+          await account.set.kid(kidData)
+          port.postMessage({
+            type: MESSAGES.LOAD_KID,
+            data: kidData,
+            id: messageId
+          })
+
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.LOAD_KID,
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
+          })
+        }
+        break
+      }
+
+      case MESSAGES.CREATE_UPDATE_KID: {
+        try {
+          const { kidInfo, address } = message.data
+          const { syncWallet } = kidInfo
+          let allAccounts
+          
+
+          if (syncWallet) {
+            allAccounts = await backgroundAccount.getAllAccounts()
+          } else {
+            const credentials = await backgroundAccount.getCredentialByAddress(address)
+            const account = await backgroundAccount.getAccount(credentials)
+            allAccounts = [account]
+          }
+
+          await Promise.all(allAccounts.map(async account => {
+            await account.method.createOrUpdateKID(kidInfo)
+          }))
+
+          port.postMessage({
+            type: MESSAGES.CREATE_UPDATE_KID,
+            id: messageId
+          })
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.CREATE_UPDATE_KID,
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
+          })
+        }
+
+        break
+      }
+
       default:
         break
     }
