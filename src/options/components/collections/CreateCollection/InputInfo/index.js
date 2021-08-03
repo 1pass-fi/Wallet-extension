@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { union, trim } from 'lodash'
 
 import './index.css'
 import Tag from '../Tag'
+import EditIcon from 'img/edit-icon-collection.svg'
+import { GalleryContext } from 'options/galleryContext'
 
 export default ({tags, setColletionName, setDescription, setTags, collectionName, description}) => {
   const [tagInput, setTagInput] = useState('')
+  const { account, setShowSelectAccount } = useContext(GalleryContext)
 
   const addTag = (e) => {
     if (e.keyCode === 13) {
@@ -25,6 +28,16 @@ export default ({tags, setColletionName, setDescription, setTags, collectionName
 
       {/* INPUT FORM */}
       <div className='form'>
+        <div className='field'>
+          <div className='label'>
+            Wallet
+            <div onClick={() => setShowSelectAccount(true)} className='edit-icon'><EditIcon /></div>
+          </div>
+          <div className='selected-account'>
+            {account.accountName}
+            <div className='address'>{`${account.address.slice(0,5)}...${account.address.slice(account.address.length - 4)}`}</div>
+          </div>
+        </div>
         <div className='field'>
           <div className='label'>Name your collection:</div>
           <div><input value={collectionName} onChange={(e) => setColletionName(e.target.value)}/></div>

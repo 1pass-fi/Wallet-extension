@@ -7,7 +7,7 @@
     flex-direction: column;
     align-items: center;
     width: 723px;
-    height: 325px;
+    height: 355px;
   }
 
 .create-collection
@@ -30,7 +30,7 @@
   .input-info
   .form {
     width: 100%;
-    height: 216px;
+    height: 315px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -45,6 +45,52 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    position: relative;
+  }
+
+/* SELECT WALLET */
+.create-collection
+  .wrapper
+  .content
+  .input-info
+  .form
+  .field
+  .label
+  .edit-icon {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 80px;
+    top: 0px;
+    cursor: pointer;
+  }
+.create-collection
+  .wrapper
+  .content
+  .input-info
+  .form
+  .field
+  .selected-account {
+    display: flex;
+    gap: 30px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #ffffff;
+    align-items: center;
+    width: 516px;
+  }
+.create-collection
+  .wrapper
+  .content
+  .input-info
+  .form
+  .field
+  .selected-account
+  .address {
+    color: #49CE8B;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
   }
 
 .create-collection

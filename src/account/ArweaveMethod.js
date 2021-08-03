@@ -251,6 +251,20 @@ export class ArweaveMethod {
     }
   }
 
+  async createCollection(collectionInfo, nftIds) {
+    try {
+      const collectionId = await this.koi.createCollection(collectionInfo)
+      console.log('Collection ID: ', collectionId)
+      return await this.#updateCollection(nftIds, collectionId)
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async #updateCollection(nftIds, collectionId) {
+    return await this.koi.updateCollection(nftIds, collectionId)
+  }
+
   async #readState(txIds) {
     const result = await Promise.all(txIds.map(async id => {
       try {

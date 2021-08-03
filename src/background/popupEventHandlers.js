@@ -509,10 +509,11 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
       case MESSAGES.CREATE_COLLECTION: {
         try {
-          const { nftIds, collectionInfo } = message.data
-          const collectionId = await koi.createCollection(collectionInfo)
-          console.log('Collection ID: ', collectionId)
-          const txId = await koi.updateCollection(nftIds, collectionId)
+          const { nftIds, collectionInfo, address } = message.data
+          const credentials = await backgroundAccount.getCredentialByAddress(address)
+          const account = await backgroundAccount.getAccount(credentials)
+          const txId = await account.method.createCollection(collectionInfo, nftIds)
+          
           console.log('Transaction ID: ', txId)
           port.postMessage({
             type: MESSAGES.CREATE_COLLECTION,

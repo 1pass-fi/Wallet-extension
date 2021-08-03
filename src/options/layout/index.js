@@ -40,6 +40,7 @@ import { backgroundRequest } from 'popup/backgroundRequest'
 
 import { popupAccount } from 'account'
 import SelectAccountModal from 'options/modal/SelectAccountModal'
+import { count } from 'yargs'
 
 export default ({ children }) => {
   const history = useHistory()
@@ -111,9 +112,16 @@ export default ({ children }) => {
         /* 
           Contents, koiBalance, arBalance, address, affiliateCode, showWelcomeScreen, accountName
         */
-
+        let allAssets
         // Get all contents
-        const allAssets = await popupAccount.getAllAssets()
+        if (showCreateCollection) {
+          const _account = await popupAccount.getAccount({ address: account.address })
+          const assets = await _account.get.assets()
+          setCollectionNFT([])
+          setCardInfos(assets)
+        } else {
+          allAssets = await popupAccount.getAllAssets()
+        }
 
         const aAccount = await popupAccount.getAccount({ address: account.address })
         // let contentList = await aAccount.get.assets()
@@ -217,6 +225,21 @@ export default ({ children }) => {
 
     loadAssets()
   }, [])
+
+  useEffect(() => {
+    const setAssetsForCreateCollection = async () => {
+      if (showCreateCollection) {
+        const _account = await popupAccount.getAccount({ address: account.address })
+        const assets = await _account.get.assets()
+        setCardInfos(assets)
+      } else {
+        const allAssets = await popupAccount.getAllAssets()
+        setCardInfos(allAssets)
+      }
+    }
+
+    setAssetsForCreateCollection()
+  }, [showCreateCollection])
 
   useEffect(() => {
     setFile(acceptedFiles ? acceptedFiles[0] : {})

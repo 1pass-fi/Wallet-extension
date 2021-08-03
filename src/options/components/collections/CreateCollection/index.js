@@ -34,7 +34,8 @@ export default () => {
     setCollections,
     totalAr,
     totalKoi,
-    setNotification
+    setNotification,
+    account
   } = useContext(GalleryContext)
   // const [stage, setStage] = useState(1)
 
@@ -73,7 +74,7 @@ export default () => {
         }
 
         setIsLoading(true)
-        const txId = await backgroundRequest.gallery.createNewCollection({ nftIds, collectionInfo })
+        const txId = await backgroundRequest.gallery.createNewCollection({ nftIds, collectionInfo, address: account.address })
         setIsLoading(false)
         console.log('Transaction Id: ', txId)
         setNotification(NOTIFICATION.CREATE_COLLECTION_SUCCESS)
