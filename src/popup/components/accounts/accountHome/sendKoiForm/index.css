@@ -13,7 +13,7 @@
 }
 
 .send-koi-form .koi-balance {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 20px;
   align-items: center;
   letter-spacing: 0.03em;
@@ -32,7 +32,7 @@
   font-size: 14.5px;
 }
 .send-koi-form .input-field.form-input .label {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .input-field.form-input .toggle-display {
@@ -70,7 +70,7 @@
 
 .send-koi-form .amount-in-usd {
   padding-left: 10px;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 20px;
   letter-spacing: 0.03em;
   color: #237b75;

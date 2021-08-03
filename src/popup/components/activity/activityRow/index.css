@@ -5,14 +5,14 @@
   flex-direction: column;
   justify-content: flex-start;
   background: #ffffff;
-  border-bottom: 1px solid #237B75
+  border-bottom: 1px solid #237b75;
 }
 
 .activity-info {
   padding: 25px 32px 15px 32px;
   display: flex;
   flex-direction: row;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
   line-height: 20px;
   color: #171753;
@@ -38,13 +38,12 @@
 
 .activity-info-row .title .subtitle {
   margin-left: 16px;
-  font-size: 12px;
-  color: #6C6C89;
-
+  font-size: 11px;
+  color: #6c6c89;
 }
 
 .activity-info-row .activity-status {
-  color: #237B75;
+  color: #237b75;
   font-size: 11px;
   font-weight: 500;
   line-height: 14px;
@@ -56,23 +55,23 @@
   transform: matrix(0.99, 0, -0.13, 1, 0, 0);
 }
 
-.activity-info-row .activity-status.completed{
+.activity-info-row .activity-status.completed {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #FFFFFF;
-  border: 1px solid #237B75;
+  background: #ffffff;
+  border: 1px solid #237b75;
   box-sizing: border-box;
   border-radius: 2px;
   height: 18px;
-  width: 68px; 
+  width: 68px;
 }
 
-.activity-info-row .activity-status.completed > a{
+.activity-info-row .activity-status.completed > a {
   text-decoration: none;
   line-height: 12px;
-  color: #237B75;   
-} 
+  color: #237b75;
+}
 
 .activity-info-row .activity-expense {
   text-align: right;
@@ -80,16 +79,14 @@
 }
 
 .activity-info-row .activity-expense.usd {
-  font-size: 12px;
-  color: #6D6DA0;
+  font-size: 11px;
+  color: #6d6da0;
 }
 
 .activity-info-row .activity-date {
   margin-top: 3px;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 14px;
-  color: #237B75;
+  color: #237b75;
   text-align: right;
 }
-
-

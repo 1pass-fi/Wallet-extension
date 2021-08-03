@@ -8,7 +8,7 @@
 }
 
 .wallet:nth-child(2n) {
-  background: #EEEEEE;
+  background: #eeeeee;
 }
 
 .wallet.collapsed {
@@ -41,7 +41,7 @@
   min-height: 28px;
   border: 1.5px solid #171753;
   color: #237b75;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 /* WALLET INFO ROW */
@@ -78,7 +78,7 @@
   display: flex;
   justify-content: space-between;
   width: 130px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 20px;
   color: #237b75;
@@ -123,7 +123,8 @@
   cursor: pointer;
 }
 
-.wallet .wallet-wrapper .wallet-info .wallet-balance-row .koi-balance, .ar-balance {
+.wallet .wallet-wrapper .wallet-info .wallet-balance-row .koi-balance,
+.ar-balance {
   height: 40px;
   text-align: right;
 }
@@ -135,18 +136,17 @@
 }
 
 .wallet .wallet-wrapper .wallet-info .wallet-balance-row .usd-exchange {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 20px;
   color: #6d6da0;
   padding-left: 4px;
 }
 
-
 .wallet .wallet-wrapper .wallet-conf {
   display: flex;
   flex-direction: column;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   margin-top: 23px;
 }
@@ -173,11 +173,10 @@
   margin-left: 18px;
 }
 
-
 .wallet .wallet-wrapper .wallet-conf .delete-wallet {
-  color: #FF4141
+  color: #ff4141;
 }
 
 .wallet .wallet-wrapper .lock-button {
-  margin-top: 10px
+  margin-top: 10px;
 }

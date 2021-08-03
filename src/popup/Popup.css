@@ -13,7 +13,7 @@
   justify-content: center;
   height: 600px;
   text-align: center;
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 400;
   line-height: 30px;
   gap: 30px;
@@ -23,7 +23,7 @@
 .popup .reconnect button {
   width: 236px;
   height: 40px;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   font-weight: 600;
   border: 1.5px solid #237b75;

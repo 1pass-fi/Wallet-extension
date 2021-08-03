@@ -6,7 +6,7 @@
 
 .sign-tx .account-section {
   padding: 10px 20px 0px 20px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
   background-color: white;
   display: flex;
@@ -48,10 +48,10 @@
 }
 
 .sign-tx .account-section .origin > a {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 20px;
-  color: #237B75;
+  color: #237b75;
   text-decoration: none;
 }
 
@@ -63,7 +63,7 @@
 
 .sign-tx .account-section .account .account-info .address {
   color: #237b75;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 20px;
   word-break: break-word;
 }
@@ -82,7 +82,7 @@
   height: 342px;
   padding: 22px 20px 80px;
   position: relative;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 20px;
 }
 
@@ -127,8 +127,9 @@
   align-items: flex-end;
 }
 
-.sign-tx .content-section .transaction-detail .send .detail-row .koi, .total .detail-row .koi {
-  font-size: 24px;
+.sign-tx .content-section .transaction-detail .send .detail-row .koi,
+.total .detail-row .koi {
+  font-size: 23px;
 }
 
 .sign-tx .content-section .transaction-detail .detail.total .row-label {
@@ -138,7 +139,7 @@
 
 .sign-tx .content-section .transaction-detail .detail .detail-row .usd {
   margin-top: 6px;
-  color: #6D6DA0;
+  color: #6d6da0;
 }
 
 .sign-tx .content-section .transaction-detail .button-group {
