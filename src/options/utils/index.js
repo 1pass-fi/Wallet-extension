@@ -42,8 +42,8 @@ export const saveImageDataToStorage = async (file) => {
   // save u8 to local storage
   u8 = JSON.stringify(u8, null, 2)
   // console.log('bottomButton- u8', u8)
-
   await setChromeStorage({ NFT_BIT_DATA: u8 })
+  await storage.generic.set.nftBitData(u8)
 }
 
 /**

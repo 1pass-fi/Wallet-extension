@@ -80,7 +80,14 @@ export class GalleryRequest extends Request {
     return this.promise(MESSAGES.LOAD_KID, body)
   }
 
-
+  /**
+   * 
+   * @param {Object} body
+   * @param {Object} body.kidInfo
+   * @param {String} body.address
+   * @param {Object} body.payload
+   * @returns 
+   */
   createOrUpdateKID(body) {
     return this.promise(MESSAGES.CREATE_UPDATE_KID, body)
   }

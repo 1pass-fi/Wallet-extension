@@ -662,11 +662,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
       case MESSAGES.CREATE_UPDATE_KID: {
         try {
-          const { kidInfo, address } = message.data
+          const { kidInfo, address, payload } = message.data
           const { syncWallet } = kidInfo
           let allAccounts
-          
-
           if (syncWallet) {
             allAccounts = await backgroundAccount.getAllAccounts()
           } else {
@@ -674,9 +672,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             const account = await backgroundAccount.getAccount(credentials)
             allAccounts = [account]
           }
-
           await Promise.all(allAccounts.map(async account => {
-            await account.method.createOrUpdateKID(kidInfo)
+            await account.method.createOrUpdateKID(kidInfo, payload)
           }))
 
           port.postMessage({

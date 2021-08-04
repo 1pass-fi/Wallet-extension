@@ -64,4 +64,13 @@ export class GenericSet {
   unlocked(value) {
     return this.#chrome._setChrome(GENERIC.UNLOCKED, value)
   }
+
+  /**
+   * 
+   * @param {Array} 8 bit array
+   * @returns 
+   */
+  nftBitData(value) {
+    return this.#chrome._setChrome(GENERIC.NFT_BIT_DATA, value)
+  }
 }

@@ -275,24 +275,27 @@ export class ArweaveMethod {
     }
   }
 
-  async createOrUpdateKID(kidInfo) {
+  async createOrUpdateKID(kidInfo, payload) {
     try {
       // Check had kid
       const hadKID = await this.#hadKIDCheck()
-
-    } catch (err) {
+      if (hadKID) {
+        // UPDATE KID
+        return await this.koi.updateKID(kidInfo, hadKID)
+      } else {
+        // Create new kid 
+        const { fileType } = payload
+        const { u8 } = await this.#getImageDataForNFT(fileType)
+        const image = { blobData: u8, contentType: fileType }
       
+        const txId = await this.koi.createKID(kidInfo, image)
+        return txId
+      }
+    } catch (err) {
+      console.log(err.message)
     }
   }
 
-  async #hadKIDCheck() {
-    const data = await this.koi.getKIDByWalletAddress(this.koi.address)
-    if (get(data[0], 'node.id')) {
-      return get(data([0], 'node.id'))
-    }
-    return false
-  }
- 
   async #updateCollection(nftIds, collectionId) {
     return await this.koi.updateCollection(nftIds, collectionId)
   }
@@ -323,5 +326,35 @@ export class ArweaveMethod {
   
     const resultCollection = { ...collection, nfts }
     return resultCollection
+  }
+
+  async #hadKIDCheck() {
+    const data = await this.koi.getKIDByWalletAddress(this.koi.address)
+    if (get(data[0], 'node.id')) {
+      return get(data[0], 'node.id')
+    }
+    return false
+  }
+
+  async #getImageDataForNFT(fileType) {
+    try {
+      let bitObject = await storage.generic.get.nftBitData()
+      if (!bitObject) return
+      // parse the JSON string on local storage
+      bitObject = JSON.parse(bitObject)
+      console.log('bitObject', bitObject)
+      // create 8 bit array from bit object
+      const u8 = Uint8Array.from(Object.values(bitObject))
+      console.log('u8', u8)
+      // create blob from u8
+      const blob = new Blob([u8], { type: 'contentType'})
+      console.log('blob', blob)
+      // create file from blob
+      const file = new File([blob], 'filename', { type: fileType })
+      console.log(file)
+      return { u8, file }
+    } catch (err) {
+      throw new Error('')
+    }
   }
 }

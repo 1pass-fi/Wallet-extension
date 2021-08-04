@@ -24,7 +24,7 @@ import { setChromeStorage, getChromeStorage } from 'utils'
 import { popupAccount } from 'account'
 
 export default () => {
-  const { account ,address, totalAr, totalKoi, setIsLoading, setError, setNotification } = useContext(GalleryContext)
+  const { account, address, totalAr, totalKoi, setIsLoading, setError, setNotification } = useContext(GalleryContext)
 
   const fileRef = useRef()
   const [profileImage, setProfileImage] = useState()
@@ -69,7 +69,6 @@ export default () => {
         For now we don't have a way to update KID with an image, therefore selecting image will be disabled
         on KID updating. 
       */
-      
       if (hadKID) {
         if (totalAr < 0.000002) {
           throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
@@ -78,9 +77,8 @@ export default () => {
         if (totalKoi < 1) {
           throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
         }
-
-        const txId = await backgroundRequest.gallery.updateKID({kidInfo, contractId: hadKID})
-        console.log('KID transaction id: ', txId)
+        const payload = { contractId: hadKID }
+        await backgroundRequest.gallery.createOrUpdateKID({ kidInfo, address: account.address, payload})
         setNotification(NOTIFICATION.UPDATE_KID_SUCCESS)
       } else {
         if (!get(profileImage, 'type') && !arweaveImage) {
@@ -104,9 +102,8 @@ export default () => {
         }
   
         await saveImageDataToStorage(profileImage)
-    
-        const txId = await backgroundRequest.gallery.createNewKID({ kidInfo, fileType })
-        console.log('KID transaction id: ', txId)
+        const payload = { fileType }
+        await backgroundRequest.gallery.createOrUpdateKID({ kidInfo, address: account.address, payload })
         setNotification(NOTIFICATION.CREATE_KID_SUCCESS)
       }
       setIsLoading(false)
@@ -150,12 +147,18 @@ export default () => {
         }
 
         kid = await backgroundRequest.gallery.loadKID({ address: account.address })
-        const { imageUrl, description, link, name } = kid
-        setArweaveImage(imageUrl)
-        setName(name)
-        setDescription(description)
-        setLink(link)
-
+        if (kid) {
+          const { imageUrl, description, link, name } = kid
+          setArweaveImage(imageUrl)
+          setName(name)
+          setDescription(description)
+          setLink(link)
+        } else {
+          setArweaveImage(null)
+          setName('')
+          setDescription('')
+          setLink('')
+        }
 
         setIsLoading(false)
       } catch(err) {
@@ -267,7 +270,7 @@ export default () => {
                   name='save-info'
                   type='checkbox'
                   value={syncWallet}
-                  checked
+                  defaultChecked={true}
                   onChange={(e) => setSyncWallet(e.target.value)}
                 ></input>
                 <label htmlFor='save-info' className='checkbox-label'>

@@ -55,4 +55,8 @@ export class GenericGet {
   unlocked() {
     return this.#chrome._getChrome(GENERIC.UNLOCKED)
   }
+
+  nftBitData() {
+    return this.#chrome._getChrome(GENERIC.NFT_BIT_DATA)
+  }
 }
