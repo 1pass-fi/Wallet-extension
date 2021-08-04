@@ -11,7 +11,7 @@ import Select from 'shared/select'
 import Button from 'shared/button'
 import TransactionConfirmModal from 'popup/components/modals/transactionConfirmModal'
 
-import WarningIcon from 'img/warning-icon.svg'
+import WarningIcon from 'img/warning-icon2.svg'
 
 import { makeTransfer, setKoi } from 'actions/koi'
 import { setError } from 'actions/error'
