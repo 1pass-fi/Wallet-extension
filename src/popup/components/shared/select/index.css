@@ -5,25 +5,25 @@
 }
 
 .select-container .label {
-	font-size: 15px;
-	height: 20px;
-	line-height: 20px;
-	margin-left: 10px;
-	text-transform: capitalize;
+  font-size: 13px;
+  height: 20px;
+  line-height: 20px;
+  margin-left: 10px;
+  text-transform: capitalize;
 }
 
 .select-container .select-wrapper .header {
   display: flex;
   flex-direction: row;
-	background: #FFFFFF;
-	position: relative;
-	width: 100%;
+  background: #ffffff;
+  position: relative;
+  width: 100%;
 }
 
 .select-container .select-wrapper .header .selected-option {
   padding-left: 10px;
   font-weight: 600;
-  font-size: 14.5px;  
+  font-size: 14.5px;
   color: #171753;
   flex-grow: 1;
   height: 28px;
@@ -35,8 +35,8 @@
 }
 
 .select-container .select-wrapper .header .selected-option::placeholder {
-	color: #237B75;
-	opacity: 0.7;
+  color: #237b75;
+  opacity: 0.7;
 }
 
 .select-container .select-wrapper .header .arrow-button {
@@ -48,7 +48,7 @@
   box-sizing: border-box;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
   border-radius: 0 2px 2px 0;
-  background-color:#171753;
+  background-color: #171753;
   cursor: pointer;
 }
 
@@ -63,7 +63,7 @@
   border-radius: 2px;
 }
 
-.select-container .select-wrapper .select-options .option{
+.select-container .select-wrapper .select-options .option {
   height: 28px;
   width: 100%;
   font-weight: 600;
@@ -74,6 +74,6 @@
   cursor: pointer;
 }
 
-.select-container .select-wrapper .select-options .option:hover{
+.select-container .select-wrapper .select-options .option:hover {
   background-color: rgba(66, 135, 245, 0.3);
 }

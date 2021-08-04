@@ -13,7 +13,7 @@
 .modal.reveal-seed-phrase .modal-description {
   padding: 11px 16px 19px;
 }
-.modal.reveal-seed-phrase .modal-description > span{
+.modal.reveal-seed-phrase .modal-description > span {
   display: block;
   margin-top: 10px;
 }
@@ -33,7 +33,7 @@
 .modal.reveal-seed-phrase .modal-warning .warning-message {
   margin-left: 9px;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.03em;
   color: #171753;

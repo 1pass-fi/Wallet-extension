@@ -18,7 +18,11 @@
 
 .backup-phrase-wrapper {
   align-items: center;
-  background: linear-gradient(90deg, rgba(3, 3, 50, 0.7) 0%, rgba(23, 23, 83, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(3, 3, 50, 0.7) 0%,
+    rgba(23, 23, 83, 1) 100%
+  );
   justify-content: center;
   box-sizing: border-box;
   display: flex;
@@ -35,7 +39,7 @@
   box-sizing: border-box;
   height: 568px;
   padding: 20px;
-  font-size: 15px;
+  font-size: 13px;
   color: #171753;
 }
 
@@ -59,7 +63,7 @@
 }
 
 .backup-phrase .title .text {
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 0.03em;
   line-height: 20px;
   margin-left: 20px;
@@ -89,7 +93,7 @@
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
   box-sizing: border-box;
   color: #434367;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   height: 119px;
   min-height: 119px;
@@ -106,7 +110,7 @@
   color: #237b75;
   cursor: pointer;
   display: flex;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 400;
   height: 20px;
   left: 13px;
@@ -126,7 +130,7 @@
   align-self: flex-start;
   padding: 9px 44px 8px 44px;
   line-height: 15px;
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .backup-phrase .qa {
@@ -146,7 +150,7 @@
 
 .backup-phrase .qa .qa-item {
   margin-bottom: 16px;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 20px;
   width: 297px;
 }

@@ -29,14 +29,14 @@
 }
 
 .network-selection-modal .network-selection-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 32px;
   padding: 0 20px;
 }
 
 .network-selection-modal .network-selection-description {
-  font-size: 15px;
+  font-size: 13px;
   line-height: 24px;
   margin-bottom: 14px;
   padding: 0 20px;
@@ -50,7 +50,7 @@
   align-items: center;
   cursor: pointer;
   display: flex;
-  font-size: 18px;
+  font-size: 16px;
   gap: 13px;
   height: 42px;
   line-height: 24px;

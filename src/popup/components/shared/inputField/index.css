@@ -3,7 +3,7 @@
 }
 
 .label {
-  font-size: 15px;
+  font-size: 13px;
   height: 20px;
   line-height: 20px;
   margin-left: 10px;
@@ -24,7 +24,7 @@
   box-sizing: border-box;
   color: #171753;
   font-family: 'Sora', sans-serif;
-  font-size: 15px;
+  font-size: 13px;
   height: 100%;
   letter-spacing: 0.03em;
   line-height: 18px;

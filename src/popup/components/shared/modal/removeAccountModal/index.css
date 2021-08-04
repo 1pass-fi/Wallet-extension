@@ -1,7 +1,7 @@
 .modal-title {
   padding: 0 34px;
   font-weight: 400;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 24px;
   text-align: center;
   letter-spacing: 0.03em;
@@ -11,7 +11,7 @@
 
 .modal-account-address {
   padding: 9px 28px;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 20px;
   text-align: center;
@@ -22,7 +22,7 @@
 
 .modal-description {
   padding: 19px 34px;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 22px;
   text-align: center;
@@ -38,7 +38,7 @@
   min-width: 132px;
   background-color: #ffffff;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 20px;
   text-align: center;
   letter-spacing: 0.03em;

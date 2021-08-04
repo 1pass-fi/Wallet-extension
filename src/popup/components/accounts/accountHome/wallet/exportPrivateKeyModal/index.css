@@ -2,7 +2,7 @@
   font-weight: 600;
 }
 
-.modal.export-file-modal .modal-description  {
+.modal.export-file-modal .modal-description {
   padding: 11px 16px 19px;
 }
 
@@ -20,7 +20,7 @@
 
 .modal.export-file-modal .warning-text {
   font-weight: 600;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 20px;
 }
 
