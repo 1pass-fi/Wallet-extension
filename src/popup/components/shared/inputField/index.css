@@ -3,45 +3,44 @@
 }
 
 .label {
-	font-size: 15px;
-	height: 20px;
-	line-height: 20px;
-	margin-left: 10px;
-	text-transform: capitalize;
+  font-size: 15px;
+  height: 20px;
+  line-height: 20px;
+  margin-left: 10px;
+  text-transform: capitalize;
 }
 
 .input-wrapper {
-	background: #FFFFFF;
-	height: 32px;
-	position: relative;
-	width: 330px;
+  background: #ffffff;
+  height: 32px;
+  position: relative;
+  width: 330px;
 }
 
 .input {
-	border-radius: 2px;
-	border: 1.5px solid #171753;
-	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
-	box-sizing: border-box;
-	color: #171753;
-	font-family: 'Catamaran', sans-serif;
-	font-size: 15px;
-	height: 100%;
-	letter-spacing: 0.03em;
-	line-height: 18px;
-	margin: 0;
-	padding: 8px;
-	width: 100%;
+  border-radius: 2px;
+  border: 1.5px solid #171753;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  color: #171753;
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  height: 100%;
+  letter-spacing: 0.03em;
+  line-height: 18px;
+  margin: 0;
+  padding: 8px;
+  width: 100%;
 }
 
 .input::placeholder {
-	color: #237B75;
-	opacity: 0.7;
+  color: #237b75;
+  opacity: 0.7;
 }
 
 .toggle-display {
-	cursor: pointer;
-	position: absolute;
-	right: 9px;
-	top: 4px;
+  cursor: pointer;
+  position: absolute;
+  right: 9px;
+  top: 4px;
 }
-

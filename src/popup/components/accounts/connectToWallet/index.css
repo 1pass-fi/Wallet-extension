@@ -23,7 +23,7 @@
 
 .select-wallet .header .connect-with-koi {
   color: #171753;
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 600;
   letter-spacing: 0.03em;
   line-height: 32px;
@@ -127,7 +127,7 @@
 }
 
 .select-wallet .content .trust-sites {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .select-wallet .content .wallet-option .wallet-info .wallet-name {
@@ -137,7 +137,7 @@
 
 .select-wallet .content .wallet-option .wallet-info .wallet-address {
   color: #237b75;
-  font-size: 14px;
+  font-size: 12px;
   letter-spacing: 0.03em;
   line-height: 20px;
 }
@@ -156,7 +156,7 @@
   padding-top: 11px;
   line-height: 18px;
   padding-bottom: 11px;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .select-wallet .content .button-line .button.reject {
@@ -196,4 +196,3 @@
 .select-wallet .content .allow-permission .button-line {
   padding: 0 17px;
 }
-

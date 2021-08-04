@@ -13,27 +13,27 @@
   justify-content: center;
   height: 600px;
   text-align: center;
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 400;
   line-height: 30px;
   gap: 30px;
-  color: #171753
+  color: #171753;
 }
 
 .popup .reconnect button {
   width: 236px;
   height: 40px;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
   font-weight: 600;
-  border: 1.5px solid #237B75;
+  border: 1.5px solid #237b75;
   background-color: #ffffff;
-  color: #237B75;
+  color: #237b75;
   border-radius: 3px;
   cursor: pointer;
 }
 
-.popup .reconnect button:hover{
+.popup .reconnect button:hover {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16), 0 8px 12px 0 rgba(0, 0, 0, 0.3);
 }
 
@@ -47,7 +47,7 @@ body {
   min-height: 70vh;
   align-items: center;
   justify-content: center;
-  font-family: 'Catamaran', sans-serif;
+  font-family: 'Sora', sans-serif;
   /* font-family: 'Sora', sans-serif; */
   font-weight: 400;
   overflow-x: hidden;
@@ -72,19 +72,19 @@ body #root {
 }
 
 .content {
-    display: flex;
-    background-color: #EEEEEE;
-    min-height: 54px;
-    align-items: center;
+  display: flex;
+  background-color: #eeeeee;
+  min-height: 54px;
+  align-items: center;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-input[type=number]{
+input[type='number'] {
   -moz-appearance: textfield;
 }
 

@@ -16,7 +16,7 @@
   line-height: 20px;
   text-align: center;
   letter-spacing: 0.03em;
-  color: #237B75;
+  color: #237b75;
   word-break: break-word;
 }
 
@@ -42,15 +42,15 @@
   line-height: 20px;
   text-align: center;
   letter-spacing: 0.03em;
-  font-family: 'Catamaran', sans-serif;
+  font-family: 'Sora', sans-serif;
 }
 
-.modal-action-button.close{
+.modal-action-button.close {
   margin-left: 20px;
   border: 1.5px solid #171753;
 }
 
-.modal-action-button.remove{
+.modal-action-button.remove {
   margin-right: 20px;
   border: 1.5px solid #ff4141;
   color: #ff4141;

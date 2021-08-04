@@ -1,47 +1,47 @@
 .dropzone {
-	background: #ECFFFE;
-	border-radius: 2px;
-	border: 1.5px solid #171753;
-	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
-	box-sizing: border-box;
-	height: 110px;
-	padding: 8px;
-	width: 330px;
+  background: #ecfffe;
+  border-radius: 2px;
+  border: 1.5px solid #171753;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  height: 110px;
+  padding: 8px;
+  width: 330px;
 }
 
 .dropzone .decorator {
-	border-radius: 3px;
-	border: 1px dashed #171753;
-	box-sizing: border-box;
-	height: 100%;
-	width: 100%;
+  border-radius: 3px;
+  border: 1px dashed #171753;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
 }
 
 .import-card {
-	height: 477px;
+  height: 477px;
 }
 
 .drag-active {
-	align-items: center;
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-	justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
 }
 
 .drag-active .export-icon {
-	height: 20px;
-	width: 20px;
+  height: 20px;
+  width: 20px;
 }
 
 .drag-active .import-description {
-	font-size: 14px;
-	height: 40px;
-	letter-spacing: 0.03em;
-	line-height: 20px;
-	margin-top: 8px;
-	overflow: hidden;
-	text-align: center;
-	width: 272px;
-  	text-overflow: ellipsis;
+  font-size: 12px;
+  height: 40px;
+  letter-spacing: 0.03em;
+  line-height: 20px;
+  margin-top: 8px;
+  overflow: hidden;
+  text-align: center;
+  width: 272px;
+  text-overflow: ellipsis;
 }

@@ -1,17 +1,22 @@
 .accounts-wrapper {
-    padding-bottom: 20px;
-    background-color: #ffffff;
+  padding-bottom: 20px;
+  background-color: #ffffff;
 }
 
 .home-plus-button-wrapper {
-    background: #EEEEEE;
-    height: 48px;
-    display: flex;
-    align-items: center;
+  background: #eeeeee;
+  height: 48px;
+  display: flex;
+  align-items: center;
 }
+
+.home-plus-button-wrapper.white {
+  background: #ffffff;
+}
+
 .home-plus-button-wrapper .button {
-    width: 24px;
-    height: 24px;
-    margin-left: 35px;
-    cursor: pointer;
+  width: 24px;
+  height: 24px;
+  margin-left: 35px;
+  cursor: pointer;
 }

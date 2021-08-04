@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
+import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport'
 
 import store from 'popup/store'
 
@@ -13,11 +13,10 @@ const customViewports = {
     },
   },
   ...MINIMAL_VIEWPORTS,
-
-};
+}
 
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {
       color: /(background|color)$/i,
@@ -26,19 +25,17 @@ export const parameters = {
   },
   viewport: {
     viewports: customViewports,
-    defaultViewport: 'Popup'
+    defaultViewport: 'Popup',
   },
-  layout: 'fullscreen'
+  layout: 'fullscreen',
 }
 
 export const decorators = [
   (Story) => (
     <Provider store={store}>
       <Router>
-        <div style={{ fontFamily: '\'Catamaran\', sans-serif' }}>
-          {Story()}
-        </div>
+        <div style={{ fontFamily: "'Sora', sans-serif" }}>{Story()}</div>
       </Router>
     </Provider>
-  )
-];
+  ),
+]

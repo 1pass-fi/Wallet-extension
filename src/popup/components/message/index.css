@@ -33,7 +33,7 @@
   border-radius: 3px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
   color: #171753;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   line-height: 20px;
   padding: 15px 15px;
@@ -70,21 +70,21 @@
 }
 
 .message.notification {
-  background: #ECFFFE;
+  background: #ecfffe;
 }
 
 .message.notification:after {
-  background-color: #ECFFFE;
-  border-bottom: 1px solid #ECFFFE;
-  border-right: 1px solid #ECFFFE;
+  background-color: #ecfffe;
+  border-bottom: 1px solid #ecfffe;
+  border-right: 1px solid #ecfffe;
 }
 
 .message.warning {
-  background: #FFC78F;
+  background: #ffc78f;
 }
 
 .message.warning:after {
-  background-color: #FFC78F;
-  border-bottom: 1px solid #FFC78F;
-  border-right: 1px solid #FFC78F;
+  background-color: #ffc78f;
+  border-bottom: 1px solid #ffc78f;
+  border-right: 1px solid #ffc78f;
 }
