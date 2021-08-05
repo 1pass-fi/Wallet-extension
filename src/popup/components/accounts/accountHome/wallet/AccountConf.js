@@ -26,7 +26,7 @@ const AccountConfItem = ({ icon, title, onClick, className }) => {
   return (
     <div className={'wallet-conf-item ' + className} onClick={onClick}>
       {icon}
-      <p>{title}</p>
+      {title}
     </div>
   )
 }

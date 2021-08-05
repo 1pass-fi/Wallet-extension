@@ -153,7 +153,6 @@ const Activities = ({
     }
 
     async function loadNotifications() {
-      console.log('activityNotifications', activityNotifications)
       setNotifications(activityNotifications)
       setActivityNotifications([])
       storage.generic.set.activityNotifications([])

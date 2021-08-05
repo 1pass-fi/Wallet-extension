@@ -23,7 +23,7 @@ header {
   cursor: pointer;
   display: inline-block;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   height: 33px;
   left: 133px;
   letter-spacing: 0.03em;
@@ -32,6 +32,7 @@ header {
   text-align: center;
   top: 19px;
   width: 160px;
+  letter-spacing: -1%;
 }
 
 .setting-button {

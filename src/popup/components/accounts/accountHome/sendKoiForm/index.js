@@ -26,6 +26,8 @@ import { setNotification } from 'popup/actions/notification'
 import { popupAccount } from 'account'
 import { TYPE } from 'account/accountConstants'
 
+import { formatNumber } from 'options/utils'
+
 const SendKoiForm = ({
   arBalance,
   setError,
@@ -163,13 +165,14 @@ const SendKoiForm = ({
             </div>
             <div className='selected-account-address'>
               {getDisplayAddress(selectedAccount.address, 4, 4)}
-              <EditIcon
+              <div className='edit-icon'><EditIcon
                 className='edit-icon'
                 onClick={() => setSelectedAccount({})}
-              />
+              /></div>
             </div>
           </div>
-          <div className='selected-account-right'>{`${0.0} KOII avalable`}</div>
+          <div className='selected-account-right'>{selectedToken ? 
+            `${selectedToken == 'KOII' ? formatNumber(koiBalance, 2) : formatNumber(balance, 6)} ${selectedToken} available` : ''}</div>
         </div>
       )}
       {/* SELECT ACCOUNT */}

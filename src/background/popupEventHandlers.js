@@ -111,7 +111,7 @@ export const loadBalances = async (koi, port) => {
 
             if (transaction.activityName.includes('Minted')) {
               let activityNotifications = await storage.generic.get.activityNotifications() || []
-              const title = transaction.activityName.split(' ')[2]
+              const title = transaction.activityName.slice(transaction.activityName.indexOf(`"`))
               const newNotification = {
                 id: transaction.id,
                 title,

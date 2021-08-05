@@ -75,6 +75,7 @@
 
 .activity-info-row .activity-status.completed > a {
   text-decoration: none;
+  font-size: 10px;
   line-height: 12px;
   color: #237b75;
 }

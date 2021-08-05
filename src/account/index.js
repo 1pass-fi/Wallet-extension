@@ -311,7 +311,7 @@ export class PopupAccount extends GenericAccount {
       const allAccounts = await this.getAllAccounts()
       let allPendingTransactions = []
       await Promise.all(allAccounts.map(async account => {
-        const transactions = await account.get.pendingTransactions()
+        const transactions = await account.get.pendingTransactions() || []
         allPendingTransactions = [...allPendingTransactions, ...transactions]
       }))
 
