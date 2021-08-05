@@ -9,5 +9,7 @@ const arweave = Arweave.init({
 
 export default async (txId) => {
   const response = await arweave.transactions.getStatus(txId)
+  console.log(response)
   return !isEmpty(get(response, 'confirmed'))
 }
+ 

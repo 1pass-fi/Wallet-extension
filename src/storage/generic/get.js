@@ -59,4 +59,8 @@ export class GenericGet {
   nftBitData() {
     return this.#chrome._getChrome(GENERIC.NFT_BIT_DATA)
   }
+
+  activityNotifications() {
+    return this.#chrome._getChrome(GENERIC.ACTIVITY_NOTIFICATIONS)
+  }
 }

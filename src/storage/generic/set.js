@@ -73,4 +73,8 @@ export class GenericSet {
   nftBitData(value) {
     return this.#chrome._setChrome(GENERIC.NFT_BIT_DATA, value)
   }
+
+  activityNotifications(value) {
+    return this.#chrome._setChrome(GENERIC.ACTIVITY_NOTIFICATIONS, value)
+  }
 }

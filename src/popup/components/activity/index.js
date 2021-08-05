@@ -47,6 +47,22 @@ export const PendingList = ({ transactions }) => {
       pending={true}
       id={transaction.id}
       source={transaction.source}
+      accountName={transaction.accountName}
+    />
+  ))
+}
+
+export const PendingConfirmationList = ({ transactions }) => {
+  return transactions.map((transaction, index) => (
+    <ActivityRow
+      key={index}
+      activityName={transaction.activityName}
+      expense={transaction.expense}
+      date={transaction.date}
+      pendingConfirmation={true}
+      id={transaction.id}
+      source={transaction.source}
+      accountName={transaction.accountName}
     />
   ))
 }
@@ -90,7 +106,6 @@ const Activity = ({
   return (
     <div className={collapsed ? 'activity-container collapsed' : 'activity-container'}>
       <AccountLabel collapsed={collapsed} setCollapsed={setCollapsed} accountName={account.accountName} />
-      <PendingList transactions={transactions} />
       <ActivitiesList activities={activityItems} />
       {!cursor.doneLoading && (
         <Button
@@ -108,6 +123,8 @@ const Activity = ({
   Activities of all accounts
 */
 const Activities = ({ activities, setActivities, loadActivities, accounts }) => {
+  const [pendingTransactions, setPendingTransactions] = useState([])
+
   useEffect(() => {
     async function loadActivitiesBoilerplate() {
       const activitiesPayloads = []
@@ -117,19 +134,29 @@ const Activities = ({ activities, setActivities, loadActivities, accounts }) => 
       if (isEmpty(activities)) setActivities(activitiesPayloads)
     }
 
+    async function loadPendingTransactions() {
+      const allPendingTransactions = await popupAccount.getAllPendingTransactions()
+      setPendingTransactions(allPendingTransactions)
+    }
+  
     loadActivitiesBoilerplate()
+    loadPendingTransactions()
   }, [])
 
   return (
     <div>
       {activities.map((activity, index) =>
-        <Activity 
-          key={index}
-          activityItems={activity.activityItems}
-          account={activity.account}
-          cursor={activity.cursor}
-          loadActivities={loadActivities}
-        />
+        <div>
+          <PendingList transactions={pendingTransactions} />
+          <Activity 
+            key={index}
+            activityItems={activity.activityItems}
+            account={activity.account}
+            cursor={activity.cursor}
+            loadActivities={loadActivities}
+          />
+        </div>
+
       )}
     </div>
   )

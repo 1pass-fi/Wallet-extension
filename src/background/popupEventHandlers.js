@@ -31,6 +31,10 @@ import {
   createNewKid,
   updateKid
 } from 'utils'
+
+import arweaveConfirmStatus from 'utils/arweaveConfirmStatus'
+import chromeNotification from 'utils/notifications'
+
 import { Web } from '@_koi/sdk/web'
 import { Ethereum } from './eth'
 
@@ -46,21 +50,80 @@ export const loadBalances = async (koi, port) => {
     await Promise.all(accounts.map(async account => {
       let { balance, koiBalance } = await account.method.getBalances()
       const address = await account.get.address()
-      // reduce balances by pending transaction expenses
+
       const pendingTransactions = await account.get.pendingTransactions() || []
+      const pendingConfirmationTransactions = await account.get.pendingConfirmationTransaction() || []
       console.log('pendingTransactions:', pendingTransactions)
-      pendingTransactions.forEach((transaction) => {
-        switch (transaction.activityName) {
-          case 'Sent KOII':
-            koiBalance -= transaction.expense
-            break
-          case 'Sent AR':
-            balance -= transaction.expense
-            break
-          case 'Sent ETH':
-            balance -= transaction.expense
-        }
-      })
+      console.log('pendingConfirmationTransactions:', pendingConfirmationTransactions)
+      if (!isEmpty(pendingTransactions)) {
+        // reduce balances by pending transaction expenses
+        pendingTransactions.forEach(async (transaction) => {
+          // reduce balances
+          
+          // check for confirmed state
+          const confirmed = await arweaveConfirmStatus(transaction.id)
+          if (confirmed) {
+            chromeNotification({
+              title: `Transaction ${transaction.activityName} is now in pending confirmation`,
+              message: `You can check on the state of your transaction on viewblock.`
+            })
+            let newTransactions = [...pendingTransactions]
+            console.log(newTransactions)
+            console.log(transaction)            
+            newTransactions = newTransactions.filter(aTransaction => aTransaction.id !== transaction.id)
+            await account.set.pendingTransactions(newTransactions)
+
+            await account.set.addPendingConfirmationTransaction(transaction)
+          } else {
+            switch (transaction.activityName) {
+              case 'Sent KOII':
+                koiBalance -= transaction.expense
+                break
+              case 'Sent AR':
+                balance -= transaction.expense
+                break
+              case 'Sent ETH':
+                balance -= transaction.expense
+            }
+          }
+        })
+      }
+
+      if (!isEmpty(pendingConfirmationTransactions)) {
+        // reduce balances by pending transaction expenses
+        pendingConfirmationTransactions.forEach(async (transaction) => {
+          // reduce balances
+          
+          // check for confirmed state
+          const { activitiesList: mostRecentActivities } = await account.method.loadMyActivities({ ownedCursor: null, recipientCursot: null })
+          console.log(mostRecentActivities)
+          const confirmed = !(mostRecentActivities.every(aTransaction => aTransaction.id !== transaction.id))
+          if (confirmed) {
+            chromeNotification({
+              title: `Transaction ${transaction.activityName} has been confirmed`,
+              message: `You can check on the state of your transaction on viewblock.`
+            })
+            let newTransactions = [...pendingConfirmationTransactions]
+            console.log(newTransactions)
+            console.log(transaction)            
+            newTransactions = newTransactions.filter(aTransaction => aTransaction.id !== transaction.id)
+            await account.set.pendingConfirmationTransaction(newTransactions)
+          } else {
+            switch (transaction.activityName) {
+              case 'Sent KOII':
+                koiBalance -= transaction.expense
+                break
+              case 'Sent AR':
+                balance -= transaction.expense
+                break
+              case 'Sent ETH':
+                balance -= transaction.expense
+            }
+          }
+        })
+      }
+
+
       console.log('UPDATE BALANCES FOR', address)
       console.log('koiBalance:', koiBalance,'; balance:', balance)
       await account.set.balance(balance)
@@ -483,8 +546,10 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
       case MESSAGES.UPLOAD_NFT: {
         try {
-          const { content, tags, fileType, address } = message.data
+          const { content, tags, fileType, address, price } = message.data
           const credentials = await backgroundAccount.getCredentialByAddress(address)
+          const account = await backgroundAccount.getAccount(credentials)
+          const accountName = await account.get.accountName()
           const { key } = credentials
           const koi = new Web()
 
@@ -492,6 +557,20 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           koi.wallet = key
 
           const result = await exportNFTNew(koi, arweave, content, tags, fileType)
+
+          const newPendingTransaction = {
+            id: result.txId,
+            activityName: `Minted NFT "${content.title}"`,
+            expense: price,
+            accountName,
+            date: moment().format('MMMM DD YYYY')
+          }
+
+          const pendingTransactions = await account.get.pendingTransactions() || []
+          pendingTransactions.unshift(newPendingTransaction)
+          await account.set.pendingTransactions(pendingTransactions)
+
+
           port.postMessage({
             type: MESSAGES.UPLOAD_NFT,
             data: result,

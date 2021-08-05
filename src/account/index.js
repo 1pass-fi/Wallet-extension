@@ -305,6 +305,21 @@ export class PopupAccount extends GenericAccount {
       console.log(err.message)
     }
   }
+
+  async getAllPendingTransactions() {
+    try {
+      const allAccounts = await this.getAllAccounts()
+      let allPendingTransactions = []
+      await Promise.all(allAccounts.map(async account => {
+        const transactions = await account.get.pendingTransactions()
+        allPendingTransactions = [...allPendingTransactions, ...transactions]
+      }))
+
+      return allPendingTransactions
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
 }
 
 export class BackgroundAccount extends GenericAccount {

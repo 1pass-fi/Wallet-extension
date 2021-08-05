@@ -665,8 +665,7 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
       })
       const response = await rawResponse.json()
       let resTx = await koi.registerData(tx.id, koi.address, koi.wallet, arweave)
-      console.log({resTx})
-
+      console.log('Transaction id', tx.id)
       return { txId: tx.id, time: createdAt }
     } catch(err) {
       console.log('err-@_koi/sdk', err)

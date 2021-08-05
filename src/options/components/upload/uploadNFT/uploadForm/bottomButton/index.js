@@ -81,7 +81,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
       }
 
       // call the request function
-      const { txId, time } = await backgroundRequest.gallery.uploadNFT({content, tags, fileType, address: account.address})
+      const { txId, time } = await backgroundRequest.gallery.uploadNFT({content, tags, fileType, address: account.address, price})
       // console.log('RESPONSE DATA', txId, time)
 
       setIsLoading(false)

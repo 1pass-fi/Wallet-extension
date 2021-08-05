@@ -17,7 +17,7 @@ const propTypes = {
   source: PropTypes.string,
 }
 
-const ActivityRow = ({activityName, expense, date, source, id, pending, price, currency }) => {
+const ActivityRow = ({activityName, expense, date, source, id, pending, price, currency, accountName, pendingConfirmation }) => {
   const dateFormat = (date) => {
     return moment(date).format('MMMM Do, YYYY')
   }
@@ -38,11 +38,14 @@ const ActivityRow = ({activityName, expense, date, source, id, pending, price, c
             }
           </div>
           {pending ? (
-            <div className="activity-status pending">Transaction pending</div>
+            <div>
+              <div>{accountName}</div>
+              <div className="activity-status pending">Transaction pending</div>
+            </div>
           ) : (
             <div className='activity-status completed'> 
               <a target="_blank" href={`${PATH.VIEW_BLOCK_TRANSACTION}/${id}`}>
-              view block
+                {pendingConfirmation ? 'pending confirmation' : 'view block'}
               </a>
             </div>
           )}

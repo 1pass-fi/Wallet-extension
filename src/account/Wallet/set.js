@@ -87,4 +87,14 @@ export class WalletSet {
   async kid(value) {
     return await this.#accountStorage.setKID(value)
   }
+
+  async pendingConfirmationTransaction(value) {
+    return await this.#accountStorage.setField(ACCOUNT.PENDING_CONFIRMATION_TRANSACTION, value)
+  }
+
+  async addPendingConfirmationTransaction(value) {
+    const transactions = await this.#accountStorage.getField(ACCOUNT.PENDING_CONFIRMATION_TRANSACTION) || []
+    transactions.unshift(value)
+    await this.#accountStorage.setField(ACCOUNT.PENDING_CONFIRMATION_TRANSACTION, transactions)
+  }
 }
