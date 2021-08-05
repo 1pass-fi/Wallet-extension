@@ -13,9 +13,9 @@ export const formatNumber = (value, decimal) => {
   )
 }
 
-export const getDisplayAddress = (address) => {
+export const getDisplayAddress = (address, head = 6, tail = 4) => {
   try {
-    if (isString(address)) return `${address.slice(0, 6)}...${address.slice(address.length - 4)}`
+    if (isString(address)) return `${address.slice(0, head)}...${address.slice(address.length - tail)}`
   } catch (err) {
     throw new Error(err.message)
   }

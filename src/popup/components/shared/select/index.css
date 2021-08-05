@@ -5,7 +5,7 @@
 }
 
 .select-container .label {
-  font-size: 13px;
+  font-size: 12px;
   height: 20px;
   line-height: 20px;
   margin-left: 10px;
@@ -37,6 +37,7 @@
 .select-container .select-wrapper .header .selected-option::placeholder {
   color: #237b75;
   opacity: 0.7;
+  font-weight: normal;
 }
 
 .select-container .select-wrapper .header .arrow-button {
