@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-
-import { find } from 'lodash'
+import find from 'lodash/find'
+import isEmpty from 'lodash/isEmpty'
 
 import getSymbolFromCurrency from 'currency-symbol-map'
 
@@ -10,9 +10,10 @@ import InputField from 'shared/inputField'
 import Select from 'shared/select'
 import Button from 'shared/button'
 import TransactionConfirmModal from 'popup/components/modals/transactionConfirmModal'
+import { getDisplayAddress } from 'options/utils'
 
-import WarningIcon from 'img/warning-icon.svg'
-
+import WarningIcon from 'img/warning-icon2.svg'
+import EditIcon from 'img/edit-icon.svg'
 import { makeTransfer, setKoi } from 'actions/koi'
 import { setError } from 'actions/error'
 import { setWarning } from 'actions/warning'
@@ -146,64 +147,80 @@ const SendKoiForm = ({
 
     if (selectedAccount) getTokenOptions()
   }, [selectedAccount])
-
+  console.log(selectedAccount)
 
   return (
-    <form className="send-koi-form" onSubmit={handleSubmitForm}>
+    <form className='send-koi-form' onSubmit={handleSubmitForm}>
       {/* AVAILABLE BALANCE */}
-      <div className="koi-balance">
-        <span>Available balance: </span>
+      {/* <div className="koi-balance">
         <b>{`${(selectedToken == 'KOII' ? koiBalance : !!selectedToken && balance) || '___'} ${selectedToken ? selectedToken : 'token'}`}</b>
-        {/* <div hidden={token == 'KOII'} className="amount-in-usd">
-          {getSymbolFromCurrency(moneyCurrency) || ''}{numberFormat(selectBalance(token) * price[token])} {moneyCurrency}
-        </div> */}
-      </div>
-
+      </div> */}
+      {!isEmpty(selectedAccount) && (
+        <div className='selected-account'>
+          <div className='selected-account-left'>
+            <div className='selected-account-label'>
+              {selectedAccount.label}
+            </div>
+            <div className='selected-account-address'>
+              {getDisplayAddress(selectedAccount.address, 4, 4)}
+              <EditIcon
+                className='edit-icon'
+                onClick={() => setSelectedAccount({})}
+              />
+            </div>
+          </div>
+          <div className='selected-account-right'>{`${0.0} KOII avalable`}</div>
+        </div>
+      )}
       {/* SELECT ACCOUNT */}
-      <Select
+      {isEmpty(selectedAccount) && <Select
         className='currency-select'
         options={accountOptions}
         placeholder='Select your account'
         onChange={onChangeAccount}
-      />
-      {/* SELECT TOKEN */}
-      {selectedAccount && <Select
-        className='currency-select'
-        options={tokenOptions}
-        placeholder='Select token'
-        onChange={onChangeToken}
+        label='From'
       />}
+      {/* SELECT TOKEN */}
+      {selectedAccount && (
+        <Select
+          className='currency-select'
+          options={tokenOptions}
+          label={'Select Currency'}
+          placeholder='Select token'
+          onChange={onChangeToken}
+        />
+      )}
 
       {/* RECIPIENT INPUT */}
-      <div className="recipient">
+      <div className='recipient'>
         <InputField
-          label="To"
-          placeholder="Recipient’s wallet address"
-          className="form-input"
-          type="text"
+          label='To'
+          placeholder='Recipient’s wallet address'
+          className='form-input'
+          type='text'
           onChange={onChangeRecipientAddress}
           value={recipient}
         />
       </div>
 
       {/* HINT */}
-      <div className="warning">
-        <div className="warning-icon">
+      <div className='warning'>
+        <div className='warning-icon'>
           <WarningIcon />
         </div>
-        <div className="warning-message">
+        <div className='warning-message'>
           Make sure you have the correct wallet address. There is no way to
           reverse the transaction.
         </div>
       </div>
 
       {/* AMOUNT INPUT */}
-      <div className="amount">
+      <div className='amount'>
         <InputField
-          label="Amount"
+          label='Amount'
           placeholder={`Amount of ${selectedToken} to send`}
-          className="form-input"
-          type="number"
+          className='form-input'
+          type='number'
           onChange={onChangeAmount}
           value={amount}
         />
@@ -214,7 +231,10 @@ const SendKoiForm = ({
         )} */}
       </div>
 
-      <Button label={`Send ${selectedToken ? selectedToken : 'token'}`} className="send-button" />
+      <Button
+        label={`Send ${selectedToken ? selectedToken : 'token'}`}
+        className='send-button'
+      />
       {showModal && (
         <TransactionConfirmModal
           sentAmount={Number(amount)}

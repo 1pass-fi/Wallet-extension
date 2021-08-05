@@ -23,7 +23,7 @@
 }
 
 .unlock-screen .screen-header .title {
-  font-size: 23px;
+  font-size: 21px;
   font-weight: 600;
   line-height: 32px;
   text-align: center;
@@ -41,7 +41,7 @@
 }
 
 .unlock-screen .screen-content .welcome {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   height: 20px;
 }
@@ -51,7 +51,7 @@
 }
 
 .unlock-screen .screen-content .unlock-button {
-  font-size: 23px;
+  font-size: 21px;
   font-weight: 600;
   height: 56px;
   line-height: 18px;
@@ -62,7 +62,7 @@
 .unlock-screen .screen-content .seed-phrase {
   margin-top: 64px;
   width: 100%;
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .unlock-screen .screen-content .seed-phrase .link-to-seed-phrase {

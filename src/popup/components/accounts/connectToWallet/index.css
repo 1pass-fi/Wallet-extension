@@ -23,7 +23,7 @@
 
 .select-wallet .header .connect-with-koi {
   color: #171753;
-  font-size: 23px;
+  font-size: 21px;
   font-weight: 600;
   letter-spacing: 0.03em;
   line-height: 32px;
@@ -33,7 +33,7 @@
 
 .select-wallet .header .company-url {
   color: #237b75;
-  font-size: 15px;
+  font-size: 13px;
   letter-spacing: 0.03em;
   line-height: 20px;
   text-align: center;
@@ -57,7 +57,7 @@
 }
 
 .select-wallet .content .select-account {
-  font-size: 15px;
+  font-size: 13px;
   letter-spacing: 0.03em;
   line-height: 20px;
   margin-bottom: 12px;
@@ -79,7 +79,7 @@
   border: 0;
   color: #171753;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 20px;
   margin-bottom: 12px;
   margin-left: 34px;
@@ -131,7 +131,7 @@
 }
 
 .select-wallet .content .wallet-option .wallet-info .wallet-name {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 20px;
 }
 
@@ -156,7 +156,7 @@
   padding-top: 11px;
   line-height: 18px;
   padding-bottom: 11px;
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .select-wallet .content .button-line .button.reject {
@@ -165,7 +165,7 @@
 
 /* ALLOW PERMISSION */
 .select-wallet .content .allow-permission {
-  font-size: 15px;
+  font-size: 13px;
   letter-spacing: 0.03em;
   line-height: 20px;
   margin-bottom: 12px;
@@ -173,7 +173,7 @@
 }
 
 .select-wallet .content .allow-permission .label {
-  font-size: 15px;
+  font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.03em;
   margin-left: 20px;

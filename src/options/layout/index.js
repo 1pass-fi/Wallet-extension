@@ -388,11 +388,10 @@ export default ({ children }) => {
           />
         )
         }
-        {isLoading && <Loading />}
         {isDragging && isEmpty(file) && (
           <input name='fileField' {...getInputProps()} />
         )}
-        <Header totalKoi={totalKoi} totalAr={totalAr} headerRef={headerRef} />
+        <Header totalKoi={totalKoi} totalAr={totalAr} headerRef={headerRef} isLoading={isLoading} />
         {children}
         <Footer showDropzone={showDropzone} />
         <Navbar />

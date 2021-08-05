@@ -6,7 +6,7 @@
 
 .sign-tx .account-section {
   padding: 10px 20px 0px 20px;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 400;
   background-color: white;
   display: flex;
@@ -56,7 +56,7 @@
 }
 
 .sign-tx .account-section .account .account-info .title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   line-height: 20px;
 }
@@ -88,7 +88,7 @@
 
 .sign-tx .content-section .transaction-detail .label {
   margin-left: 0;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .sign-tx .content-section .transaction-detail .details {
@@ -129,11 +129,11 @@
 
 .sign-tx .content-section .transaction-detail .send .detail-row .koi,
 .total .detail-row .koi {
-  font-size: 23px;
+  font-size: 21px;
 }
 
 .sign-tx .content-section .transaction-detail .detail.total .row-label {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
 }
 

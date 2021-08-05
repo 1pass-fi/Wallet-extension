@@ -47,11 +47,11 @@
 .send-koi-form .warning-icon {
   width: 24px;
   height: 24px;
-  margin: 8px 10px 8px 0;
+  margin: 0px 10px 8px 0;
 }
 
 .send-koi-form .warning-message {
-  font-size: 15px;
+  font-size: 12px;
   line-height: 20px;
   letter-spacing: 0.03em;
   align-content: flex-start;
@@ -77,4 +77,30 @@
 }
 .send-koi-form .koi-balance .amount-in-usd {
   padding-left: 116px;
+}
+
+.send-koi-form .selected-account {
+  display: flex;
+  width: 346px;
+}
+
+.send-koi-form .selected-account .selected-account-left {
+  width: 50%;
+  display: flex;
+  gap: 20px;
+}
+
+.send-koi-form .selected-account .selected-account-address {
+  color: #237B75;
+}
+
+.send-koi-form .selected-account .edit-icon {
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.send-koi-form .selected-account .selected-account-right {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
 }

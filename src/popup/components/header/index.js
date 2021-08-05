@@ -59,12 +59,16 @@ const Header = ({ location, setError, koi, accounts }) => {
         <button className='logo-button' onClick={onLogoButtonClick}>
           <LogoIcon className='logo' />
         </button>
-        {!NAVBAR_EXCLUDE_PATH.includes(location.pathname) && <button onClick={onGalleryClick} className='gallery-button'>
-          My NFT Gallery
-        </button>}
-        {!NAVBAR_EXCLUDE_PATH.includes(location.pathname) && <button className='setting-button' onClick={onSettingButtonClick}>
-          <SettingIcon />
-        </button>}
+        {!NAVBAR_EXCLUDE_PATH.includes(location.pathname) && (
+          <>
+            <button onClick={onGalleryClick} className='gallery-button'>
+              Go to Gallery
+            </button>
+            <button className='setting-button' onClick={onSettingButtonClick}>
+              <SettingIcon /> 
+            </button>
+          </>
+        )}
       </header>
       {!NAVBAR_EXCLUDE_PATH.includes(location.pathname) && <NavBar />}
     </>

@@ -21,18 +21,18 @@
 }
 
 .congratulations-section .title {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 20px;
 }
 
 .congratulations-section .details {
-  font-size: 15px;
+  font-size: 13px;
   line-height: 20px;
   margin-top: 13px;
 }
 
 .tips-section {
-  font-size: 15px;
+  font-size: 13px;
   line-height: 20px;
 }
 
@@ -47,7 +47,7 @@
   font-weight: 400;
 }
 
-.tips-section .details .tips-set{
+.tips-section .details .tips-set {
   margin-top: 11px;
   padding-left: 4px;
 }
@@ -76,6 +76,6 @@
   min-width: 156px;
 }
 
-.create-wallet-success-button.create{
+.create-wallet-success-button.create {
   min-height: 35px;
 }

@@ -11,7 +11,7 @@
 }
 
 .seed-phrase-lock-screen .content .welcome {
-  font-size: 18px;
+  font-size: 16px;
   margin-bottom: 12px;
 }
 
@@ -31,7 +31,7 @@
   width: 330px;
   height: 56px;
   font-weight: 600;
-  font-size: 23px;
+  font-size: 21px;
   line-height: 18px;
   letter-spacing: 0.03em;
   color: #ffffff;
@@ -42,7 +42,7 @@
   align-self: flex-start;
   margin-left: 48px;
   margin-top: 19px;
-  font-size: 15px;
+  font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.03em;
   color: #171753;

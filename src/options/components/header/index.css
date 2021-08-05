@@ -25,12 +25,19 @@
 
 .app-header .header-right {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex-direction: row;
+  justify-content: flex-end;
   margin-right: 25px;
-  align-items: flex-end;
+  align-items: flex-start;
+  gap: 10px;
   height: 80px;
   margin-top: 40px;
+}
+
+.app-header .header-right .koi-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .app-header .header-right .no-koi {
