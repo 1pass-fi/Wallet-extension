@@ -1,14 +1,10 @@
 .loading-screen {
-  top: 40%;
-  right: 50%;
-  transform: translate(50%, -50%);
-  position: fixed;
-  width: 100px;
-  z-index: 500;
+  width: 36px;
+  height: 36px;
   background-color: rgba(255, 255, 255, 0.85);
   border-radius: 50px;
 }
 
 .loading-screen .loading-icon {
-  width: 100px;
+  width: 36px;
 }
