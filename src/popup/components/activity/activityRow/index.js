@@ -39,7 +39,7 @@ const ActivityRow = ({activityName, expense, date, source, id, pending, price, c
           </div>
           {pending ? (
             <div>
-              <div>{accountName}</div>
+              <div className='account-name'>{accountName}</div>
               <div className="activity-status pending">Transaction pending</div>
             </div>
           ) : (

@@ -17,6 +17,7 @@ import creatingWallet from './creatingWallet'
 import currency from './currency'
 import ethereum from './ethereum'
 import accounts from './accounts'
+import activityNotifications from './activityNotifications'
 
 export default combineReducers({
   loading,
@@ -35,5 +36,6 @@ export default combineReducers({
   creatingWallet,
   currency,
   ethereum,
-  accounts
+  accounts,
+  activityNotifications
 })

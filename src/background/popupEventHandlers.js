@@ -64,8 +64,8 @@ export const loadBalances = async (koi, port) => {
           const confirmed = await arweaveConfirmStatus(transaction.id)
           if (confirmed) {
             chromeNotification({
-              title: `Transaction ${transaction.activityName} is now in pending confirmation`,
-              message: `You can check on the state of your transaction on viewblock.`
+              title: `Transaction is on pending confirmation`,
+              message: `Your transaction [${transaction.activityName}] is now on pending confirmation.`
             })
             let newTransactions = [...pendingTransactions]
             console.log(newTransactions)
@@ -100,14 +100,27 @@ export const loadBalances = async (koi, port) => {
           const confirmed = !(mostRecentActivities.every(aTransaction => aTransaction.id !== transaction.id))
           if (confirmed) {
             chromeNotification({
-              title: `Transaction ${transaction.activityName} has been confirmed`,
-              message: `You can check on the state of your transaction on viewblock.`
+              title: `Transaction has been confirmed`,
+              message: `Your transaction [${transaction.activityName}] has been confirmed.`
             })
             let newTransactions = [...pendingConfirmationTransactions]
             console.log(newTransactions)
             console.log(transaction)            
             newTransactions = newTransactions.filter(aTransaction => aTransaction.id !== transaction.id)
             await account.set.pendingConfirmationTransaction(newTransactions)
+
+            if (transaction.activityName.includes('Minted')) {
+              let activityNotifications = await storage.generic.get.activityNotifications() || []
+              const title = transaction.activityName.split(' ')[2]
+              const newNotification = {
+                id: transaction.id,
+                title,
+                date: transaction.date
+              }
+
+              activityNotifications = [...activityNotifications, newNotification]
+              await storage.generic.set.activityNotifications(activityNotifications)
+            }
           } else {
             switch (transaction.activityName) {
               case 'Sent KOII':

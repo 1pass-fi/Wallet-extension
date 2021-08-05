@@ -35,6 +35,12 @@
   overflow-y: hidden;
   width: 252px;
 }
+.activity-info-row .account-name {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  color: #237B75
+}
 
 .activity-info-row .title .subtitle {
   margin-left: 16px;

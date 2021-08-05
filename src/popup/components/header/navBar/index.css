@@ -17,6 +17,28 @@ nav {
   text-decoration: none;
 }
 
+.nav-item .activity-tab {
+  position: relative;
+}
+
+.nav-item .activity-tab .activity-notifications {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background-color: #E31515;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0px;
+  border-radius: 50%;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 700;
+  top: -4px;
+  right: -7px;
+}
+
 .nav-item-active div {
   border-bottom: 2px solid #171753;
   display: inline-block;

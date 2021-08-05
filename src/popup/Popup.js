@@ -25,6 +25,7 @@ import { setKoi, getBalances } from 'actions/koi'
 import { setCurrency } from 'actions/currency'
 import { setEthereum } from 'actions/ethereum'
 import { setAccounts } from 'actions/accounts'
+import { setActivityNotifications } from 'actions/activityNotification'
 
 import { HEADER_EXCLUDE_PATH, REQUEST, DISCONNECTED_BACKGROUND } from 'koiConstants'
 import { backgroundRequest } from 'popup/backgroundRequest'
@@ -65,7 +66,8 @@ const Popup = ({
   setKoi,
   setCurrency,
   setAccounts,
-  accounts
+  accounts,
+  setActivityNotifications
 }) => {
   const history = useHistory()
 
@@ -87,6 +89,12 @@ const Popup = ({
 
 
     const query = window.location.search // later we should refactor using react-hash-router
+
+    /* 
+      Load for activity notifications
+    */
+    const _activityNotifications = await storage.generic.get.activityNotifications() || []
+    setActivityNotifications(_activityNotifications)
 
     /* 
       When there's no imported account, redirect to welcome screen
@@ -217,7 +225,8 @@ const mapStateToProps = (state) => ({
   transactions: state.transactions,
   isContLoading: state.contLoading,
   price: state.price,
-  accounts: state.accounts
+  accounts: state.accounts,
+  activityNotifications: state.activityNotifications
 })
 
 const mapDispatchToProps = {
@@ -229,7 +238,8 @@ const mapDispatchToProps = {
   getBalances,
   setPrice,
   setCurrency,
-  setAccounts
+  setAccounts,
+  setActivityNotifications
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Popup))

@@ -6,11 +6,13 @@ import { isEmpty } from 'lodash'
 import { loadActivities } from 'actions/koi'
 import { setTransactions } from 'actions/transactions'
 import { setError } from 'actions/error'
+import { setActivityNotifications } from 'actions/activityNotification'
+
 import { getChromeStorage } from 'utils'
 
 import ActivityRow from './activityRow'
+import ConfirmedAsset from './ConfirmedAsset'
 import Button from 'shared/button'
-import { STORAGE } from 'koiConstants'
 
 import './index.css'
 import storage from 'storage'
@@ -20,9 +22,6 @@ import { setActivities } from 'popup/actions/activities'
 import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
 
-const propTypes = {
-  activities: PropTypes.array,
-}
 
 export const ActivitiesList = ({ activities }) => {
   return activities.map((activity, index) => (
@@ -48,6 +47,17 @@ export const PendingList = ({ transactions }) => {
       id={transaction.id}
       source={transaction.source}
       accountName={transaction.accountName}
+    />
+  ))
+}
+
+export const ConfirmedAssetList = ({ transactions }) => {
+  return transactions.map((transaction, index) => (
+    <ConfirmedAsset 
+      key={index}
+      title={transaction.title}
+      id={transaction.id}
+      date={transaction.date}
     />
   ))
 }
@@ -87,16 +97,11 @@ const Activity = ({
   cursor,
   loadActivities
 }) => {
-  const [transactions, setTransactions] = useState([])
   const [collapsed, setCollapsed] = useState(false)
 
   useEffect(() => {
     async function handleLoadActivities() {
       await loadActivities(cursor, account.address)
-      
-      const _account = await popupAccount.getAccount({ address: account.address })
-      const pendingTransactions = await _account.get.pendingTransactions() || []
-      setTransactions(pendingTransactions)
     }
     handleLoadActivities()
   }, [])
@@ -122,8 +127,16 @@ const Activity = ({
 /* 
   Activities of all accounts
 */
-const Activities = ({ activities, setActivities, loadActivities, accounts }) => {
+const Activities = ({ 
+  activities, 
+  setActivities, 
+  loadActivities, 
+  accounts, 
+  activityNotifications,
+  setActivityNotifications
+}) => {
   const [pendingTransactions, setPendingTransactions] = useState([])
+  const [notifications, setNotifications] = useState([])
 
   useEffect(() => {
     async function loadActivitiesBoilerplate() {
@@ -138,16 +151,25 @@ const Activities = ({ activities, setActivities, loadActivities, accounts }) => 
       const allPendingTransactions = await popupAccount.getAllPendingTransactions()
       setPendingTransactions(allPendingTransactions)
     }
-  
-    loadActivitiesBoilerplate()
+
+    async function loadNotifications() {
+      console.log('activityNotifications', activityNotifications)
+      setNotifications(activityNotifications)
+      setActivityNotifications([])
+      storage.generic.set.activityNotifications([])
+    }
+
+    loadNotifications()
     loadPendingTransactions()
+    loadActivitiesBoilerplate()
   }, [])
 
   return (
     <div>
+      <ConfirmedAssetList transactions={notifications}/>
+      <PendingList transactions={pendingTransactions} />
       {activities.map((activity, index) =>
         <div>
-          <PendingList transactions={pendingTransactions} />
           <Activity 
             key={index}
             activityItems={activity.activityItems}
@@ -162,11 +184,16 @@ const Activities = ({ activities, setActivities, loadActivities, accounts }) => 
   )
 }
 
-const mapStateToProps = (state) => ({ activities: state.activities, accounts: state.accounts })
+const mapStateToProps = (state) => ({ 
+  activities: state.activities, 
+  accounts: state.accounts, 
+  activityNotifications: state.activityNotifications 
+})
 
 export default connect(mapStateToProps, {
   loadActivities,
   setTransactions,
   setError,
-  setActivities
+  setActivities,
+  setActivityNotifications
 })(Activities)
