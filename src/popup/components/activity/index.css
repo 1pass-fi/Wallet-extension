@@ -1,3 +1,16 @@
+.activity-setting {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 418px;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #237B75;
+}
+
 .activity-container {
   width: 100%;
   background: #ffffff;

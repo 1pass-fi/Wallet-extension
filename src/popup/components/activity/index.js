@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { isEmpty } from 'lodash'
+import { isEmpty, orderBy } from 'lodash'
 
 import { loadActivities } from 'actions/koi'
 import { setTransactions } from 'actions/transactions'
@@ -18,6 +18,7 @@ import './index.css'
 import storage from 'storage'
 import { Account, popupAccount } from 'account'
 import { setActivities } from 'popup/actions/activities'
+import ToggleButton from 'shared/ToggleButton'
 
 import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
@@ -137,6 +138,8 @@ const Activities = ({
 }) => {
   const [pendingTransactions, setPendingTransactions] = useState([])
   const [notifications, setNotifications] = useState([])
+  const [allActivities, setAllActivities] = useState([])
+  const [showAllAccounts, setShowAllAccounts] = useState('false')
 
   useEffect(() => {
     async function loadActivitiesBoilerplate() {
@@ -163,11 +166,35 @@ const Activities = ({
     loadActivitiesBoilerplate()
   }, [])
 
+  useEffect(() => {
+    const getAllActivities = () => {
+      let _allActivities = []
+      activities.forEach(activity => {
+        _allActivities = [..._allActivities, ...activity.activityItems]
+      })
+      _allActivities = orderBy(_allActivities, 'time', 'desc')
+      setAllActivities(_allActivities)
+    }
+
+    getAllActivities()
+  }, [activities])
+
+  const handleLoadAllActivities = () => {
+    activities.forEach(activity => {
+      loadActivities(activity.cursor, activity.account.address)
+    })
+  }
+
   return (
     <div>
+      <div className='activity-setting'>
+        <>All Accounts</>
+        <ToggleButton value={!showAllAccounts} setValue={setShowAllAccounts}/>
+        <>Individual</>
+      </div>
       <ConfirmedAssetList transactions={notifications}/>
       <PendingList transactions={pendingTransactions} />
-      {activities.map((activity, index) =>
+      {!showAllAccounts && activities.map((activity, index) =>
         <div>
           <Activity 
             key={index}
@@ -177,8 +204,19 @@ const Activities = ({
             loadActivities={loadActivities}
           />
         </div>
-
       )}
+      {showAllAccounts &&
+        <div>
+          <ActivitiesList activities={allActivities}/>
+          <Button
+            className="load-more"
+            type="outline"
+            onClick={handleLoadAllActivities}
+            label="See More Activity"
+          />
+
+        </div>
+      }
     </div>
   )
 }
