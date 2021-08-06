@@ -642,6 +642,7 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
     console.log('uploader', uploader)
     
     // Upload progress
+
     while (!uploader.isComplete) {
       await uploader.uploadChunk()
       console.log(
