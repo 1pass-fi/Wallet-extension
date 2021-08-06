@@ -53,7 +53,7 @@ const SelectWallet = ({
             />
             {walletIcon[account.type]}
             <div className='wallet-info'>
-              <div className='wallet-name'>{account.name}</div>
+              <div className='wallet-name'>{account.accountName}</div>
               <div className='wallet-address'>
                 {account.address.substring(0, 6)}
                 ...

@@ -140,6 +140,8 @@ export const PATH = {
   ACTIVITY: '/activity',
   WELCOME: '/account/welcome',
   SETTING: '/settings',
+  CONNECT_SITE: '/account/connect-site',
+  SIGN_TRANSACTION: '/account/sign-transaction',
   // Gallery path
   NFT_IMAGE: 'https://arweave.net',
   VIEW_BLOCK: 'https://viewblock.io/arweave/address',
@@ -151,7 +153,6 @@ export const PATH = {
   ALL_CONTENT: 'https://bundler.openkoi.com:8888/state/getTopContentPredicted?frequency=all',
   SINGLE_CONTENT: 'https://bundler.openkoi.com:8888/state/getNFTState?tranxId=',
   VIEW_BLOCK_TRANSACTION: 'https://viewblock.io/arweave/tx',
-  CONNECT_SITE: '/account/connect-site',
   // Fetch AR price
   AR_PRICE: 'https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=usd',
   // Social sharing

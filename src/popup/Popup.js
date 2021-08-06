@@ -27,7 +27,7 @@ import { setEthereum } from 'actions/ethereum'
 import { setAccounts } from 'actions/accounts'
 import { setActivityNotifications } from 'actions/activityNotification'
 
-import { HEADER_EXCLUDE_PATH, REQUEST, DISCONNECTED_BACKGROUND } from 'koiConstants'
+import { HEADER_EXCLUDE_PATH, REQUEST, DISCONNECTED_BACKGROUND, PATH } from 'koiConstants'
 import { backgroundRequest } from 'popup/backgroundRequest'
 
 import axios from 'axios'
@@ -97,6 +97,11 @@ const Popup = ({
     setActivityNotifications(_activityNotifications)
 
     /* 
+      Load for pending request
+    */
+    const pendingRequest = await storage.generic.get.pendingRequest()
+
+    /* 
       When there's no imported account, redirect to welcome screen
       If not unlocked, redirect to lock screen
       Click on add account, go to welcome screen
@@ -124,6 +129,16 @@ const Popup = ({
         const params = new URLSearchParams(query)
         const walletType = params.get('type')
         history.push(`/account/import/phrase?type=${walletType}`)
+      }
+
+      if (pendingRequest) {
+        switch (pendingRequest.type) {
+          case REQUEST.PERMISSION:
+            history.push(PATH.CONNECT_SITE)
+            break
+          case REQUEST.TRANSACTION:
+            history.push(PATH.SIGN_TRANSACTION)
+        }
       }
     } catch (err) {
       console.log(err.message)
