@@ -70,6 +70,7 @@ export default ({ children }) => {
   const [showEarnedKoi, setShowEarnedKoi] = useState(true)
   const [accountName, setAccountName] = useState('')
   const [collectionsLoaded, setCollectionsLoaded] = useState(false)
+  const [isWaitingAddNFT, setIsWaitingAddNFT] = useState(false)
 
   const [demoCollections, setDemoCollections] = useState([])
   const [collections, setCollections] = useState([])
@@ -332,7 +333,9 @@ export default ({ children }) => {
         account,
         setAccount,
         setShowSelectAccount,
-        setShowSuccessUploadNFT
+        setShowSuccessUploadNFT,
+        isWaitingAddNFT,
+        setIsWaitingAddNFT
       }}
     >
       {!isEmpty(wallets) ? <div
@@ -391,7 +394,14 @@ export default ({ children }) => {
         {isDragging && isEmpty(file) && (
           <input name='fileField' {...getInputProps()} />
         )}
-        <Header totalKoi={totalKoi} totalAr={totalAr} headerRef={headerRef} isLoading={isLoading} />
+        <Header 
+          totalKoi={totalKoi} 
+          totalAr={totalAr} 
+          headerRef={headerRef} 
+          isLoading={isLoading} 
+          isWaitingAddNFT={isWaitingAddNFT}
+          setIsWaitingAddNFT={setIsWaitingAddNFT}
+        />
         {children}
         <Footer showDropzone={showDropzone} />
         <Navbar />

@@ -7,19 +7,27 @@ import ArUnit from 'img/ar-token.svg'
 import KoiUnit from 'img/koi-token.svg'
 import SearchBar from './SearchBar'
 import Loading from 'options/components/loading'
+import WaitingAddNFTMessage from './WaitingAddNFTMessage'
 
 import { formatNumber } from '../../utils'
 
 import './index.css'
 import { GalleryContext } from 'options/galleryContext'
 
-export default ({ totalKoi, totalAr, headerRef, isLoading }) => {
+export default ({
+  totalKoi,
+  totalAr,
+  headerRef,
+  isLoading,
+  isWaitingAddNFT,
+  setIsWaitingAddNFT,
+}) => {
   const { wallets, setAccount } = useContext(GalleryContext)
   const { pathname } = useLocation()
 
   const onChangeAccountSelect = (e) => {
     const accountAddress = e.target.value
-    const selectedAccount = find(wallets, v => v.address == accountAddress)
+    const selectedAccount = find(wallets, (v) => v.address == accountAddress)
     setAccount(selectedAccount)
   }
 
@@ -37,6 +45,9 @@ export default ({ totalKoi, totalAr, headerRef, isLoading }) => {
       </div> */}
       <div className='header-center'>{pathname == '/' && <SearchBar />}</div>
       <div className='header-right'>
+        {isLoading && isWaitingAddNFT && (
+          <WaitingAddNFTMessage onClose={() => setIsWaitingAddNFT(false)} />
+        )}
         {isLoading && <Loading />}
         <div className='koi-info'>
           <div className='total-koi'>

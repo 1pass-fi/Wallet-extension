@@ -19,9 +19,9 @@ const createTransactionId = []
 let autoLoadBalancesInterval
 let autoLoadBalancesPort
 const autoLoadBalances = (koi) => {
-  autoLoadBalancesInterval = setInterval(() => {
-    loadBalances(koi, autoLoadBalancesPort)
-  }, LOAD_BALANCES_TIME_INTERVAL)
+  // autoLoadBalancesInterval = setInterval(() => {
+  //   loadBalances(koi, autoLoadBalancesPort)
+  // }, LOAD_BALANCES_TIME_INTERVAL)
 }
 
 function cb(port) {
