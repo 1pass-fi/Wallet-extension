@@ -51,6 +51,7 @@ export default  ({ isEnable, buttonLabel, setPassword, setConfirmPassword, setIs
             onChange={onCheckbox}
             className='term-service-checkbox'
             name='checkbox'
+            id='check-terms'
           />
         </div>
         <label for='check-terms'>

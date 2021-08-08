@@ -3,12 +3,23 @@
   gap: 20px;
   justify-content: center;
   align-items: center;
-  height: 40px;
+  height: 54px;
   width: 418px;
   font-size: 13px;
   line-height: 20px;
   font-weight: 600;
   color: #237B75;
+  position: relative;
+}
+.activity-setting .collapse-extend-icon {
+  width: 13px;
+  height: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 26px;
+  cursor: pointer;
 }
 
 .activity-container {
@@ -63,4 +74,33 @@
 .all-activities {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 426px;
+}
+
+.all-activities .load-more-btn {
+  margin: 20px 0px;
+  width: 174px;
+  border: 1.5px solid #171753;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
+}
+
+.activities .select-accounts {
+  display: flex;
+  flex-direction: column;
+  padding: 25px 32px;
+  gap: 14px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  user-select: none;
+}
+.activities .select-accounts .account {
+  display: flex;
+  gap: 26px;
+}
+.activities .select-accounts .account label {
+  cursor: pointer;
 }

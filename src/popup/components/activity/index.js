@@ -7,12 +7,14 @@ import { loadActivities } from 'actions/koi'
 import { setTransactions } from 'actions/transactions'
 import { setError } from 'actions/error'
 import { setActivityNotifications } from 'actions/activityNotification'
+import { setSettings } from 'actions/settings'
 
 import { getChromeStorage } from 'utils'
 
 import ActivityRow from './activityRow'
 import ConfirmedAsset from './ConfirmedAsset'
 import Button from 'shared/button'
+import CheckBox from 'shared/checkbox'
 
 import './index.css'
 import storage from 'storage'
@@ -22,6 +24,8 @@ import ToggleButton from 'shared/ToggleButton'
 
 import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
+
+import { SHOW_ACTIVITIES_BY } from 'storage/storageConstants'
 
 
 export const ActivitiesList = ({ activities }) => {
@@ -33,6 +37,7 @@ export const ActivitiesList = ({ activities }) => {
       date={activity.date}
       id={activity.id}
       source={activity.source}
+      accountName={activity.accountName}
     />
   ))
 }
@@ -82,8 +87,8 @@ const AccountLabel = ({ accountName, collapsed, setCollapsed }) => {
   return (
     <div className="activity-account-label">
       <div className="text">{accountName}</div>
-      {!collapsed && <div onClick={() => setCollapsed(!collapsed)} className="collapse-icon"><CollapseIcon /></div>}
-      {collapsed && <div onClick={() => setCollapsed(!collapsed)} className="collapse-icon"><ExtendIcon /></div>}
+      {/* {!collapsed && <div onClick={() => setCollapsed(!collapsed)} className="collapse-icon"><CollapseIcon /></div>}
+      {collapsed && <div onClick={() => setCollapsed(!collapsed)} className="collapse-icon"><ExtendIcon /></div>} */}
     </div>
   )
 }
@@ -100,12 +105,12 @@ const Activity = ({
 }) => {
   const [collapsed, setCollapsed] = useState(false)
 
-  useEffect(() => {
-    async function handleLoadActivities() {
-      await loadActivities(cursor, account.address)
-    }
-    handleLoadActivities()
-  }, [])
+  // useEffect(() => {
+  //   async function handleLoadActivities() {
+  //     await loadActivities(cursor, account.address)
+  //   }
+  //   handleLoadActivities()
+  // }, [])
 
   const handleLoadMore = async () => await loadActivities(cursor, account.address)
 
@@ -134,22 +139,18 @@ const Activities = ({
   loadActivities, 
   accounts, 
   activityNotifications,
-  setActivityNotifications
+  setActivityNotifications,
+  settings,
+  setSettings
 }) => {
   const [pendingTransactions, setPendingTransactions] = useState([])
   const [notifications, setNotifications] = useState([])
   const [allActivities, setAllActivities] = useState([])
-  const [showAllAccounts, setShowAllAccounts] = useState('false')
+  const [showAllAccounts, setShowAllAccounts] = useState(settings.showAllAccounts)
+  const [accountsToShow, setAccountsToShow] = useState(settings.accountsToShowOnActivities)
+  const [selectAccountsCollapsed, setSelectAccountCollapsed] = useState(!isEmpty(settings.accountsToShowOnActivities))
 
   useEffect(() => {
-    async function loadActivitiesBoilerplate() {
-      const activitiesPayloads = []
-      accounts.forEach(account => {
-        activitiesPayloads.push({ account, activityItems: [], cursor: { ownedCursor: null, recipientCursor: null, doneLoading: null } })
-      })
-      if (isEmpty(activities)) setActivities(activitiesPayloads)
-    }
-
     async function loadPendingTransactions() {
       const allPendingTransactions = await popupAccount.getAllPendingTransactions()
       setPendingTransactions(allPendingTransactions)
@@ -161,9 +162,15 @@ const Activities = ({
       storage.generic.set.activityNotifications([])
     }
 
+    // async function getShowActivitiesBy() {
+    //   const _showActivitiesBy = await storage.setting.get.showActivitiesBy()
+    //   setShowAllAccounts(_showActivitiesBy == SHOW_ACTIVITIES_BY.ALL_ACCOUNTS)
+    // }
+
     loadNotifications()
     loadPendingTransactions()
-    loadActivitiesBoilerplate()
+    handleLoadAllActivities()
+    // getShowActivitiesBy()
   }, [])
 
   useEffect(() => {
@@ -179,23 +186,70 @@ const Activities = ({
     getAllActivities()
   }, [activities])
 
+  useEffect(() => {
+    const setShowActivitiesBy = async () => {
+      if (showAllAccounts) {
+        await storage.setting.set.showActivitiesBy(SHOW_ACTIVITIES_BY.ALL_ACCOUNTS)
+      } else {
+        await storage.setting.set.showActivitiesBy(SHOW_ACTIVITIES_BY.INDIVIDUAL)
+      }
+    }
+
+    setSettings({ showAllAccounts })
+    setShowActivitiesBy()
+  }, [showAllAccounts])
+
   const handleLoadAllActivities = () => {
+    console.log('activities state', activities)
     activities.forEach(activity => {
       loadActivities(activity.cursor, activity.account.address)
     })
   }
 
+  const handleSelectAccount = async (e) => {
+    let _accountToShows = [...accountsToShow]
+    if (_accountToShows.includes(e.target.id)) {
+      _accountToShows = _accountToShows.filter(address => address !== e.target.id)
+    } else {
+      _accountToShows.push(e.target.id)
+    }
+
+    setSettings({ accountsToShowOnActivities: _accountToShows })
+    setAccountsToShow(_accountToShows)
+    await storage.setting.set.accountsToShowOnActivities(_accountToShows)
+  }
+
   return (
-    <div>
+    <div className='activities'>
       <div className='activity-setting'>
         <>All Accounts</>
         <ToggleButton value={!showAllAccounts} setValue={setShowAllAccounts}/>
         <>Individual</>
+        {!showAllAccounts && <div onClick={() => setSelectAccountCollapsed(!selectAccountsCollapsed)} className='collapse-extend-icon'>
+          { selectAccountsCollapsed ?
+            <ExtendIcon />
+            :
+            <CollapseIcon />
+          }
+        </div>}
       </div>
+      {/* SELECT ACCOUNTS TO DISPLAY */}
+      {!showAllAccounts && !selectAccountsCollapsed && <div className='select-accounts'>
+        {accounts.map((account, index) => (
+          <div key={index} className='account'>
+            <CheckBox 
+              id={account.address} 
+              onChange={handleSelectAccount} 
+              defaultChecked={accountsToShow.includes(account.address)}
+            />
+            <label for={account.address}>{account.accountName}</label>
+          </div>
+        ))}
+      </div>}
       <ConfirmedAssetList transactions={notifications}/>
       <PendingList transactions={pendingTransactions} />
       {!showAllAccounts && activities.map((activity, index) =>
-        <div>
+        <div hidden={!accountsToShow.includes(activity.account.address)}>
           <Activity 
             key={index}
             activityItems={activity.activityItems}
@@ -206,10 +260,10 @@ const Activities = ({
         </div>
       )}
       {showAllAccounts &&
-        <div>
+        <div className='all-activities'>
           <ActivitiesList activities={allActivities}/>
           <Button
-            className="load-more"
+            className="load-more-btn"
             type="outline"
             onClick={handleLoadAllActivities}
             label="See More Activity"
@@ -222,9 +276,10 @@ const Activities = ({
 }
 
 const mapStateToProps = (state) => ({ 
-  activities: state.activities, 
+  activities: state.activities,
   accounts: state.accounts, 
-  activityNotifications: state.activityNotifications 
+  activityNotifications: state.activityNotifications,
+  settings: state.settings
 })
 
 export default connect(mapStateToProps, {
@@ -232,5 +287,6 @@ export default connect(mapStateToProps, {
   setTransactions,
   setError,
   setActivities,
-  setActivityNotifications
+  setActivityNotifications,
+  setSettings
 })(Activities)

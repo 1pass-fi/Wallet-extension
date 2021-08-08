@@ -35,4 +35,12 @@ export class SettingGet {
   showEarnedKoi() {
     return this.#chrome._getChrome(SETTING.SHOW_EARNED_KOI)
   }
+
+  showActivitiesBy() {
+    return this.#chrome._getChrome(SETTING.SHOW_ACTIVITIES_BY)
+  }
+
+  accountsToShowOnActivities() {
+    return this.#chrome._getChrome(SETTING.ACCOUNTS_SHOW_ACTIVITIES)
+  }
 }

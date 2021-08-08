@@ -40,4 +40,12 @@ export class SettingSet {
   showEarnedKoi(value) {
     return this.#chrome._setChrome(SETTING.SHOW_EARNED_KOI, value)
   }
+
+  showActivitiesBy(value) {
+    return this.#chrome._setChrome(SETTING.SHOW_ACTIVITIES_BY, value)
+  }
+
+  accountsToShowOnActivities(value) {
+    return this.#chrome._setChrome(SETTING.ACCOUNTS_SHOW_ACTIVITIES, value)
+  }
 }

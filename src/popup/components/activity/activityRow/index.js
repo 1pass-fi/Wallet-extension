@@ -24,7 +24,7 @@ const ActivityRow = ({activityName, expense, date, source, id, pending, price, c
   
   const token = activityName.includes('KOII') ? 'KOII' : 'AR'
   const sign = activityName.includes('Received') ? '+' : '-'
-  const sourceStr = source ? `${source.slice(0,7)}...${source.slice(source.length - 9)}` : ''
+  const sourceStr = source ? `${source.slice(0,4)}...${source.slice(source.length - 5)}` : ''
 
   return (
     <div className="activity-row-container">
@@ -37,9 +37,10 @@ const ActivityRow = ({activityName, expense, date, source, id, pending, price, c
               <div className='subtitle'> {sign === '+' ? 'from' : 'to'} {sourceStr}</div>
             }
           </div>
+          <div className='account-name'>{accountName}</div>
           {pending ? (
             <div>
-              <div className='account-name'>{accountName}</div>
+              
               <div className="activity-status pending">Transaction pending</div>
             </div>
           ) : (
