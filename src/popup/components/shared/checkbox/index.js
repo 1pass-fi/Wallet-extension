@@ -11,6 +11,7 @@ const Checkbox = ({
   onChange,
   className,
   isDisabled = false,
+  id
 }) => {
   const [selected, setSelected] = useState(defaultChecked)
   const handleOnClick = () => {
@@ -28,7 +29,7 @@ const Checkbox = ({
           disabled={isDisabled}
           onClick={handleOnClick}
           onChange = {onChange}
-          id='check-terms'
+          id={id}
         >
         </input>
         <div className='checkbox-styled' style={{background: greenBackround && selected ? '#9be7c4' : '#ffffff' }}> 

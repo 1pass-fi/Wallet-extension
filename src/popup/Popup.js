@@ -26,6 +26,8 @@ import { setCurrency } from 'actions/currency'
 import { setEthereum } from 'actions/ethereum'
 import { setAccounts } from 'actions/accounts'
 import { setActivityNotifications } from 'actions/activityNotification'
+import { setSettings } from 'actions/settings'
+import { setActivities } from 'actions/activities'
 
 import { HEADER_EXCLUDE_PATH, REQUEST, DISCONNECTED_BACKGROUND, PATH } from 'koiConstants'
 import { backgroundRequest } from 'popup/backgroundRequest'
@@ -35,6 +37,7 @@ import axios from 'axios'
 import storage from 'storage'
 
 import { popupAccount } from 'account'
+import { SHOW_ACTIVITIES_BY } from 'storage/storageConstants'
 
 const ContinueLoading = () => (
   <div className='continue-loading'>
@@ -60,18 +63,21 @@ const Popup = ({
   notification,
   setNotification,
   warning,
-  setWarning,
   getBalances,
   setPrice,
   setKoi,
   setCurrency,
   setAccounts,
   accounts,
-  setActivityNotifications
+  setActivityNotifications,
+  setSettings,
+  activities,
+  setActivities
 }) => {
   const history = useHistory()
 
   const [needToReconnect, setNeedToReconnect] = useState(false)
+  const [appLoaded, setAppLoaded] = useState(false)
 
   const loadApp = async () => {
     /* 
@@ -178,9 +184,41 @@ const Popup = ({
     }
   }
 
+  const loadSettings = async () => {
+    try {
+      const showActivitiesBy = await storage.setting.get.showActivitiesBy()
+      const accountsToShowOnActivities = await storage.setting.get.accountsToShowOnActivities() || []
+      const payload = {
+        showAllAccounts : showActivitiesBy == SHOW_ACTIVITIES_BY.ALL_ACCOUNTS,
+        accountsToShowOnActivities
+      }
+      console.log('payload', payload)
+      setSettings(payload)
+
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  const loadActivitiesBoilerplate = async () => {
+    const activitiesPayloads = []
+    const _accounts = await popupAccount.getAllMetadata() || []
+    console.log('_accounts', _accounts)
+    _accounts.forEach(account => {
+      activitiesPayloads.push({ account, activityItems: [], cursor: { ownedCursor: null, recipientCursor: null, doneLoading: null } })
+    })
+    if (isEmpty(activities)) setActivities(activitiesPayloads)
+  }
   useEffect(() => {
-    loadApp()
-    loadPrice()
+    const load = async () => {
+      await loadApp()
+      await loadPrice()
+      await loadSettings()
+      await loadActivitiesBoilerplate()
+      setAppLoaded(true)
+    }
+
+    load()
   }, [])
 
   useEffect(() => {
@@ -210,7 +248,7 @@ const Popup = ({
             {warning && <Message type='warning' children={warning} />}
             {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />}
             <div className='content'>
-              <Switch>
+              {<Switch>
                 <Route path='/account'>
                   <Account />
                 </Route>
@@ -223,7 +261,7 @@ const Popup = ({
                 <Route path='/settings'>
                   <Setting />
                 </Route>
-              </Switch>
+              </Switch>}
             </div>
           </div>
       }
@@ -241,7 +279,8 @@ const mapStateToProps = (state) => ({
   isContLoading: state.contLoading,
   price: state.price,
   accounts: state.accounts,
-  activityNotifications: state.activityNotifications
+  activityNotifications: state.activityNotifications,
+  activities: state.activities
 })
 
 const mapDispatchToProps = {
@@ -254,7 +293,9 @@ const mapDispatchToProps = {
   setPrice,
   setCurrency,
   setAccounts,
-  setActivityNotifications
+  setActivityNotifications,
+  setSettings,
+  setActivities
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Popup))

@@ -5,7 +5,7 @@
 
 import {PATH, ALL_NFT_LOADED } from 'koiConstants'
 import { getChromeStorage } from 'utils'
-import { get, isNumber, isArray } from 'lodash'
+import { get, isNumber, isArray, orderBy } from 'lodash'
 import moment from 'moment'
 
 import axios from 'axios'
@@ -113,6 +113,8 @@ export class ArweaveMethod {
       }
     
       let activitiesList = [...ownedData, ...recipientData]
+      // sort by time
+      activitiesList = orderBy(activitiesList, 'node.block.timestamp', 'desc')
       console.log('ACTIVITIES LIST BACKGROUND: ', activitiesList)
       // get next cursors
       const nextOwnedCursor = ownedData.length > 0 ? get(ownedData[ownedData.length - 1], 'cursor') : ownedCursor
@@ -191,7 +193,8 @@ export class ArweaveMethod {
             expense,
             accountName: 'Account 1',
             date: timeString,
-            source
+            source,
+            time
           }
         })
       }

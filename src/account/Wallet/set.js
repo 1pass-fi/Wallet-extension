@@ -97,4 +97,8 @@ export class WalletSet {
     transactions.unshift(value)
     await this.#accountStorage.setField(ACCOUNT.PENDING_CONFIRMATION_TRANSACTION, transactions)
   }
+
+  async pendingAssets(value) {
+    await this.#accountStorage.setPendingAssets(value)
+  }
 }

@@ -1,7 +1,8 @@
-import { isArray, isString, isEmpty } from 'lodash'
+import { isArray, isString, isEmpty, find } from 'lodash'
 import Arweave from 'arweave'
 import passworder from 'browser-passworder'
 import moment from 'moment'
+import axios from 'axios'
 
 import storage from 'storage'
 import { Account } from 'account'
@@ -9,9 +10,11 @@ import { Arweave as ArweaveWallet } from 'account/Arweave'
 import { Ethereum as EthereumWallet } from 'account/Ethereum'
 import { TYPE } from 'account/accountConstants'
 
+import { getImageDataForNFT } from 'utils'
+
 import { backgroundAccount } from 'account'
 
-import { MESSAGES, LOAD_KOI_BY, PORTS, STORAGE, ALL_NFT_LOADED, ERROR_MESSAGE } from 'koiConstants'
+import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH } from 'koiConstants'
 
 import {
   saveWalletToChrome,
@@ -349,6 +352,13 @@ export default async (koi, port, message, ports, resolveId, eth) => {
               contentList = contentList.filter(content => !!content.name) // remove failed loaded nfts
               console.log('CONTENT LIST: ', contentList)
               await account.set.assets(contentList)
+
+              // filter pending assets
+              let pendingAssets = await account.get.pendingAssets() || []
+              pendingAssets = pendingAssets.filter(asset => {
+                return contentList.every(content => content.txId !== asset.txId)
+              })
+              await account.set.pendingAssets(pendingAssets)
             }
           }))
 
@@ -583,6 +593,37 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           pendingTransactions.unshift(newPendingTransaction)
           await account.set.pendingTransactions(pendingTransactions)
 
+          // save pending nft to storage
+          let { file } = await getImageDataForNFT(fileType)
+
+          const url = URL.createObjectURL(file)
+
+          const base64String = Buffer.from((await axios.get(url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
+          let imageUrl = `data:image/jpeg;base64,${base64String}`
+          if (fileType.includes('video')) imageUrl = `data:video/mp4;base64,${base64String}`
+
+          let d = new Date()
+          let createdAt = Math.floor(d.getTime()/1000).toString()
+
+          const pendingNFT = {
+            name: content.title,
+            isKoiWallet: true,
+            earnedKoi: 0,
+            txId: result.txId,
+            imageUrl,
+            galleryUrl: `${PATH.GALLERY}#/details/${result.txId}`,
+            koiRockUrl: `${PATH.KOI_ROCK}/${result.txId}`,
+            isRegistered: true,
+            contentType: fileType,
+            totalViews: 0,
+            createdAt,
+            description: content.description,
+            pending: true
+          }
+
+          const allPendingAssets = await account.get.pendingAssets() || []
+          allPendingAssets.push(pendingNFT)
+          await account.set.pendingAssets(allPendingAssets)
 
           port.postMessage({
             type: MESSAGES.UPLOAD_NFT,

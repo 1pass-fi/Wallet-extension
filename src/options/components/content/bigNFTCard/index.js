@@ -36,6 +36,7 @@ export default ({
   totalViews,
   createdAt,
   description,
+  pending
 }) => {
   const history = useHistory()
   const {
@@ -87,7 +88,7 @@ export default ({
         </div>
         <div className='info'>
           <div className='nft-name'>{name}</div>
-          <div className='export-nft'>
+          {!pending && <div className='export-nft'>
             <ArweaveIcon className='arweave-icon' />
             Export this NFT to a&nbsp;
             <span
@@ -99,7 +100,7 @@ export default ({
               different chain
             </span>
             .
-          </div>
+          </div>}
           <div className='registered-date'>Registered: {registeredDate}</div>
           <div className='external-links'>
             <a
@@ -107,11 +108,11 @@ export default ({
               href={`https://viewblock.io/arweave/tx/${txId}`}
               target='_blank'
             >
-              explore block
+              {pending ? 'pending transaction' : 'explore block'}
             </a>
-            <a className='external-link' href={koiRockUrl} target='_blank'>
+            {!pending && <a className='external-link' href={koiRockUrl} target='_blank'>
               koi.rocks
-            </a>
+            </a>}
           </div>
           <div className='description'>{description}</div>
           {/* <div className='tags'>
@@ -121,7 +122,7 @@ export default ({
               </div>
             ))}
           </div> */}
-          <div className='earned'>
+          {!pending && <div className='earned'>
             {showViews && (
               <div className='views'>
                 {totalViews} {totalViews > 1 ? 'views' : 'view'}
@@ -130,8 +131,8 @@ export default ({
             {showEarnedKoi && (
               <div className='koi '>{formatNumber(earnedKoi)} KOII earned</div>
             )}
-          </div>
-          <div className='share-embed'>
+          </div>}
+          {!pending && <div className='share-embed'>
             <button
               className='share-button'
               onClick={() => {
@@ -146,8 +147,8 @@ export default ({
                 Embed
               </button>
             </CopyToClipboard>
-          </div>
-          <div className='social-icons'>
+          </div>}
+          {!pending && <div className='social-icons'>
             <TwitterIcon
               onClick={() => {
                 createShareWindow('twitter', txId)
@@ -172,7 +173,7 @@ export default ({
             >
               <EmailIcon className='social-icon' />
             </a>
-          </div>
+          </div>}
         </div>
       </div>
     </div>

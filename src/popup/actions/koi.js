@@ -168,9 +168,14 @@ export const loadActivities = (cursor, address) => async (dispatch, getState) =>
     the sdk will require cursors for the next request if we want to receive next set of activities (pagination).
   */
   try {
-    const { activitiesList,
+    let { activitiesList,
       nextOwnedCursor: ownedCursor, 
       nextRecipientCursor: recipientCursor } = await backgroundRequest.activities.loadActivities({ cursor, address })
+
+    const account = await popupAccount.getAccount({ address })
+    const accountName = await account.get.accountName()
+
+    activitiesList = activitiesList.map(activity => ({ ...activity, accountName }))
 
     const { activities } = getState()
     const newActivities = activities.map(activity => {

@@ -100,6 +100,10 @@ export class WalletGet {
     return await this.#accountStorage.getField(ACCOUNT.PENDING_CONFIRMATION_TRANSACTION)
   }
 
+  async pendingAssets() {
+    return await this.#accountStorage.getPendingAssets()
+  }
+
   async metadata() {
     const type = await this.type()
     const address = await this.address()
