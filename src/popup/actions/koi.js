@@ -15,7 +15,9 @@ import { SET_KOI } from 'actions/types'
 import { setChromeStorage, generateWallet as generateWalletUtil } from 'utils'
 import { setAccounts } from './accounts'
 
-import { koi } from 'background'
+import { Web } from '@_koi/sdk/web'
+export const koi = new Web()
+
 import { backgroundRequest } from 'popup/backgroundRequest'
 
 import { TYPE } from 'account/accountConstants'

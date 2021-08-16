@@ -18,7 +18,9 @@ import { loadNFTCost } from 'utils'
 
 import { ERROR_MESSAGE, NOTIFICATION } from 'koiConstants'
 
-import { koi } from 'background'
+import { Web } from '@_koi/sdk/web'
+export const koi = new Web()
+
 import { STORAGE } from 'koiConstants'
 import { setChromeStorage, getChromeStorage } from 'utils'
 import { popupAccount } from 'account'

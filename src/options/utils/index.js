@@ -3,7 +3,10 @@ import { isString } from 'lodash'
 import { getChromeStorage, setChromeStorage } from 'utils'
 import { MOCK_COLLECTIONS_STORE, STORAGE } from 'koiConstants'
 import { find, get } from 'lodash'
-import { koi } from 'background'
+
+import { Web } from '@_koi/sdk/web'
+export const koi = new Web()
+
 import storage from 'storage'
 
 export const formatNumber = (value, decimal) => {

@@ -7,7 +7,9 @@ import { get, isNumber, isArray } from 'lodash'
 import Arweave from 'arweave'
 import axios from 'axios'
 
-import { koi } from 'background'
+import { Web } from '@_koi/sdk/web'
+export const koi = new Web()
+
 import storage from 'storage'
 
 /* istanbul ignore next */

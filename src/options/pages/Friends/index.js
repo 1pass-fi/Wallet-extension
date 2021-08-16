@@ -9,7 +9,10 @@ import LinkedinIcon from 'img/social-icons/linkedin-icon.svg'
 import TwitterIcon from 'img/social-icons/twitter-icon.svg'
 
 import { GalleryContext } from 'options/galleryContext'
-import { koi } from 'background'
+
+import { Web } from '@_koi/sdk/web'
+export const koi = new Web()
+
 import { claimReward } from 'utils'
 import { shareFriendCode } from 'options/helpers'
 

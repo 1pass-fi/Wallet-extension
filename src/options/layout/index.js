@@ -31,7 +31,9 @@ import ExportNFT from 'options/modal/exportNFT'
 import Welcome from 'options/modal/welcomeScreen'
 
 import { getShareUrl, createShareWindow } from 'options/helpers'
-import { koi } from 'background'
+
+import { Web } from '@_koi/sdk/web'
+export const koi = new Web()
 
 import { getNftsDataForCollections, loadCollections } from 'options/utils'
 

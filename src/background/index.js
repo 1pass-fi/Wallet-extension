@@ -1,15 +1,17 @@
 import '@babel/polyfill'
 
-import { PORTS, LOAD_BALANCES_TIME_INTERVAL, OS } from 'koiConstants'
+import { PORTS, LOAD_BALANCES_TIME_INTERVAL, OS, MESSAGES } from 'koiConstants'
 import popUpEventHandlers, { loadBalances } from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
-import { Web } from '@_koi/sdk/web'
+
 import { Ethereum } from './eth'
 import storage from 'storage'
 // import { Web } from './koiMock'
 
 /* eslint-disable no-undef */
+import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
+
 export const eth = new Ethereum()
 console.log('Finnie is waiting for instructions.')
 
@@ -56,23 +58,10 @@ function cb(port) {
   }
 }
 
-if (chrome.runtime.onInstalled) {
-  chrome.runtime.onInstalled.addListener(() => {
-    chrome.runtime.getPlatformInfo((info) => {
-      window.localStorage.setItem(OS, info.os)
-    })
-    chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] })
-    storage.arweaveWallet.remove.address()
-    chrome.runtime.onConnect.addListener(cb)
-  })
+chrome.runtime.getPlatformInfo((info) => {
+  window.localStorage.setItem(OS, info.os)
+})
+chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] })
+storage.arweaveWallet.remove.address()
 
-  chrome.runtime.onStartup.addListener(() => {
-    chrome.runtime.getPlatformInfo((info) => {
-      window.localStorage.setItem(OS, info.os)
-    })
-    chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] })
-    storage.arweaveWallet.remove.address()
-
-    chrome.runtime.onConnect.addListener(cb)
-  })
-}
+chrome.runtime.onConnect.addListener(cb)

@@ -14,7 +14,10 @@ import { loadNFTCost } from 'utils'
 import { GalleryContext } from '../../../../../galleryContext'
 import { UploadContext } from '../../../index'
 import { submitInviteCode } from 'utils'
-import { koi } from 'background'
+
+import { Web } from '@_koi/sdk/web'
+export const koi = new Web()
+
 import './index.css'
 import { backgroundRequest } from 'popup/backgroundRequest'
 
