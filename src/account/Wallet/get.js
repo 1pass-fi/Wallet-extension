@@ -113,4 +113,8 @@ export class WalletGet {
 
     return  { address, balance, koiBalance, accountName, type }
   }
+
+  async connectedSite() {
+    return await this.#accountStorage.getField(ACCOUNT.CONNECTED_SITE)
+  }
 }

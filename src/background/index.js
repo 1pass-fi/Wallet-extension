@@ -1,58 +1,59 @@
 import '@babel/polyfill'
 
-import { PORTS, LOAD_BALANCES_TIME_INTERVAL, OS, MESSAGES } from 'koiConstants'
+import { PORTS, LOAD_BALANCES_TIME_INTERVAL, OS, PATH } from 'koiConstants'
 import popUpEventHandlers, { loadBalances } from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
-
-import { Ethereum } from './eth'
-import storage from 'storage'
+import { Web } from '@_koi/sdk/web'
 // import { Web } from './koiMock'
 
 /* eslint-disable no-undef */
-import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
-
-export const eth = new Ethereum()
 console.log('Finnie is waiting for instructions.')
 
 const ports = {}
 const permissionId = []
 const createTransactionId = []
+const sender = []
 let autoLoadBalancesInterval
 let autoLoadBalancesPort
 const autoLoadBalances = (koi) => {
-  // autoLoadBalancesInterval = setInterval(() => {
-  //   loadBalances(koi, autoLoadBalancesPort)
-  // }, LOAD_BALANCES_TIME_INTERVAL)
+  autoLoadBalancesInterval = setInterval(() => {
+    loadBalances(koi, autoLoadBalancesPort)
+  }, LOAD_BALANCES_TIME_INTERVAL)
 }
 
 function cb(port) {
   switch (port.name) {
     case PORTS.POPUP:
-      ports[PORTS.POPUP] = port
+      // ports[PORTS.POPUP] = port
 
-      port.onDisconnect.addListener(disconnect => {
+      port.onDisconnect.addListener((disconnect) => {
         console.log('port disconnected--', disconnect, port)
         autoLoadBalancesPort = undefined
       })
 
-      port.onMessage.addListener(message => {
-        popUpEventHandlers(koi, port, message, ports, { permissionId, createTransactionId }, eth)
+      port.onMessage.addListener((message) => {
+        popUpEventHandlers(
+          koi,
+          port,
+          message,
+          ports,
+          { permissionId, createTransactionId },
+          sender
+        )
 
-
-        autoLoadBalancesPort = port
-        if (!autoLoadBalancesInterval) {
-          autoLoadBalances(koi)
-        }
         if (koi.address) {
-
+          autoLoadBalancesPort = port
+          if (!autoLoadBalancesInterval) {
+            autoLoadBalances(koi)
+          }
         }
       })
       break
     case PORTS.CONTENT_SCRIPT:
-      ports[PORTS.CONTENT_SCRIPT] = port
+      // ports[PORTS.CONTENT_SCRIPT] = port
       port.onMessage.addListener(message => {
-        contentScriptEventHandlers(koi, port, message, ports, { permissionId, createTransactionId })
+        contentScriptEventHandlers(koi, port, message, ports, { permissionId, createTransactionId }, sender)
       })
       break
   }
@@ -61,7 +62,10 @@ function cb(port) {
 chrome.runtime.getPlatformInfo((info) => {
   window.localStorage.setItem(OS, info.os)
 })
-chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] })
-storage.arweaveWallet.remove.address()
-
+chrome.storage.local.remove('koiAddress')
 chrome.runtime.onConnect.addListener(cb)
+chrome.storage.local.remove('sitePermission')
+
+// chrome.runtime.onInstalled.addListener(function () {
+//   chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
+// })

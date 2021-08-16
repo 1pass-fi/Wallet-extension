@@ -8,7 +8,7 @@ import './index.css'
 import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
 
-import { Account } from 'account'
+import { popupAccount } from 'account'
 
 const propTypes = {
   assets: PropTypes.array,
@@ -22,7 +22,7 @@ const AssetList = ({ owner, assets, onAddAsset }) => {
   useEffect(() => {
     const getOwnerName = async () => {
       console.log('owner: ', owner)
-      const account = await Account.get({ address: owner }, TYPE.ARWEAVE)
+      const account = await popupAccount.getAccount({ address: owner })
       const name = await account.get.accountName()
       console.log(name)
       setOwnerName(name)

@@ -19,15 +19,6 @@ export class GenericMethod {
     }
   }
 
-  async checkSitePermission(site) {
-    try {
-      const approvedOrigin = await this.#chrome._getChrome(GENERIC.CONNECTED_SITE) || []
-      return approvedOrigin.includes(site)
-    } catch (err) {
-      throw new Error(err.message)
-    }
-  }
-
   async addSite(site) {
     try {
       let approvedOrigin = await this.#chrome._getChrome(GENERIC.CONNECTED_SITE) || []

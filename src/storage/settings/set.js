@@ -48,4 +48,8 @@ export class SettingSet {
   accountsToShowOnActivities(value) {
     return this.#chrome._setChrome(SETTING.ACCOUNTS_SHOW_ACTIVITIES, value)
   }
+
+  activatedAccount(value) {
+    return this.#chrome._setChrome(SETTING.ACTIVATED_ACCOUNT, value)
+  }
 }

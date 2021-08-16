@@ -186,8 +186,12 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             account.set.seedPhrase(encryptedPhrase)
           }
 
+          // Get total account to get a appropriate accountName
           const totalAccounts = await backgroundAccount.count()
           account.set.accountName(`Account#${totalAccounts}`)
+
+          // If total account = 1, set this account to activatedAccount
+          await storage.setting.set.activatedAccount(await account.get.address())
 
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,

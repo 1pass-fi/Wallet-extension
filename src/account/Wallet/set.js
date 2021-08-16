@@ -101,4 +101,8 @@ export class WalletSet {
   async pendingAssets(value) {
     await this.#accountStorage.setPendingAssets(value)
   }
+
+  async connectedSite(value) {
+    await this.#accountStorage.setField(ACCOUNT.CONNECTED_SITE, value)
+  }
 }
