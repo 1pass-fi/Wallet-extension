@@ -15,7 +15,8 @@ export class SettingMethod {
     try {
       // query for activated account
       const activatedAccount = await storage.setting.get.activatedAccount()
-      const account = popupAccount.getAccount({ address: activatedAccount })
+      if (!activatedAccount) return false
+      const account = await popupAccount.getAccount({ address: activatedAccount })
       const approvedOrigin = await account.get.connectedSite() || []
       return approvedOrigin.includes(site)
     } catch (err) {
