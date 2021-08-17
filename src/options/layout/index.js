@@ -18,6 +18,7 @@ import { MESSAGES, STORAGE, PORTS, MOCK_COLLECTIONS_STORE } from 'koiConstants'
 import { CreateEventHandler } from 'popup/actions/backgroundConnect'
 
 import './index.css'
+import StartUp from 'options/pages/StartUp'
 import Loading from 'options/components/loading'
 import Footer from 'options/components/footer'
 import Header from 'options/components/header'
@@ -105,6 +106,10 @@ export default ({ children }) => {
       const allData = await popupAccount.getAllMetadata()
       console.log('allData', allData)
       setWallets(allData)
+
+      /* 
+        Set 
+      */
       setAccount(allData[0])
     }
     setIsLoading(true)
@@ -119,6 +124,11 @@ export default ({ children }) => {
         */
         let allAssets
         // Get all contents
+
+        /* 
+          When show create collection form, filter NFTs by account.
+          To make sure: Account1 can only create a new collection from Account1's NFTs
+        */
         if (showCreateCollection) {
           const _account = await popupAccount.getAccount({ address: account.address })
           const assets = await _account.get.assets()
@@ -207,7 +217,7 @@ export default ({ children }) => {
       }
     }
 
-    if (!isEmpty(account)) getDataFromStorage()
+    if (!isEmpty(wallets)) getDataFromStorage()
   }, [account])
 
   /* 
@@ -228,7 +238,8 @@ export default ({ children }) => {
       }
     }
 
-    loadAssets()
+    if (!isEmpty())
+      loadAssets()
   }, [])
 
   useEffect(() => {
@@ -407,7 +418,10 @@ export default ({ children }) => {
         {children}
         <Footer showDropzone={showDropzone} />
         <Navbar />
-      </div> : <div className='app no-wallet'></div>}
+      </div> : 
+        <div className='app no-wallet'>
+          <StartUp />
+        </div>}
     </GalleryContext.Provider>
   )
 }

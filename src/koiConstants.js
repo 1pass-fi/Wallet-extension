@@ -311,3 +311,7 @@ export const FILENAME = {
   ARWEAVE: 'arweave-key.json',
   ETHEREUM: 'ethereum-key.json'
 }
+
+export const URL = {
+  TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf'
+}

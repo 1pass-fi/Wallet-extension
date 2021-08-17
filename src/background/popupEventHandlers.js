@@ -16,6 +16,8 @@ import { backgroundAccount } from 'account'
 
 import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH } from 'koiConstants'
 
+const generatedKey = { key: null, mnemonic: null, type: null }
+
 import {
   saveWalletToChrome,
   utils,
@@ -191,7 +193,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           account.set.accountName(`Account#${totalAccounts}`)
 
           // If total account = 1, set this account to activatedAccount
-          await storage.setting.set.activatedAccount(await account.get.address())
+          if (totalAccounts == 1) {
+            await storage.setting.set.activatedAccount(await account.get.address())
+          }
 
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,
@@ -278,7 +282,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       }
       case MESSAGES.GENERATE_WALLET: {
         try {
-          const { walletType, password } = message.data
+          const { walletType } = message.data
           let walletObj
           let seedPhrase
           let key
@@ -286,22 +290,24 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             case TYPE.ARWEAVE:
               walletObj = new Web()
               seedPhrase = await ArweaveWallet.utils.generateWallet(walletObj)
-              key = walletObj.wallet
               break
             case TYPE.ETHEREUM:
               walletObj = new Ethereum()
               seedPhrase = await EthereumWallet.utils.generateWallet(walletObj)
               key = {key: walletObj.key} // key of eth wallet will be String
           }
-          const encryptedKey = await passworder.encrypt(password, key)
-          await setChromeStorage({ 'createdWalletAddress': walletObj.address, 'createdWalletKey': encryptedKey })
+
+          generatedKey.key = walletObj.wallet
+          generatedKey.mnemonic = seedPhrase
+          generatedKey.type = walletType
 
           port.postMessage({
             type: MESSAGES.GENERATE_WALLET,
-            data: { seedPhrase },
+            data: seedPhrase.split(' '),
             id: messageId
           })
         } catch (err) {
+          generatedKey.key = null
           port.postMessage({
             type: MESSAGES.GENERATE_WALLET,
             id: messageId,
@@ -825,6 +831,51 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           })
         }
 
+        break
+      }
+
+      case MESSAGES.SAVE_WALLET_GALLERY: {
+        try {
+          const { password } = message.data
+          // Get key and seedphrase from koitool
+          const { key, mnemonic: seedPhrase, type } = generatedKey
+          // set to global koi object
+          koi.wallet = key
+          koi.mnemonic = seedPhrase
+
+          await koi.getWalletAddress()
+
+          const encryptedSeedPhrase = await passworder.encrypt(password, seedPhrase)
+          console.log('encryptedSeedPhrase', encryptedSeedPhrase)
+          // create new Account on background
+          await backgroundAccount.createAccount(koi.address, key, password, type)
+          const credentials = await backgroundAccount.getCredentialByAddress(koi.address)
+          const account = await backgroundAccount.getAccount(credentials)
+
+          account.set.seedPhrase(encryptedSeedPhrase)
+
+          // Get total account to get a appropriate accountName
+          const totalAccounts = await backgroundAccount.count()
+          account.set.accountName(`Account#${totalAccounts}`)
+          console.log('totalAccounts', totalAccounts)
+          // If total account = 1, set this account to activatedAccount
+          if (totalAccounts == 1) {
+            await storage.setting.set.activatedAccount(await account.get.address())
+          }
+
+          loadBalances(koi, port)
+          console.log('POSTING MESSAGE...')
+          port.postMessage({
+            type: MESSAGES.SAVE_WALLET_GALLERY,
+            id: messageId
+          })
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.SAVE_WALLET_GALLERY,
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
+          })
+        }
         break
       }
 

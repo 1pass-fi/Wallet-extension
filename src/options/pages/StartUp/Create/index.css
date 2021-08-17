@@ -1,0 +1,198 @@
+.create-wallet-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.create-wallet-wrapper * {
+  box-sizing: border-box;
+}
+
+.create-wallet {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.create-wallet .title {
+  text-align: center;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.create-wallet .description {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 24px;
+  max-width: 642px;
+}
+
+.create-wallet .wallet-types {
+  margin-top: 64px;
+  display: flex;
+  flex-direction: row;
+  gap: 56px;
+}
+
+.create-wallet .create-key-button {
+  width: 249px;
+  height: 40px;
+  background: #ffffff;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  line-height: 38px;
+  text-align: center;
+  color: #171753;
+  margin-top: 51px;
+  cursor: pointer;
+}
+
+.create-wallet .create-key-button:disabled {
+  color: #5b5a5a;
+}
+
+.create-wallet .warning-text {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  width: 365px;
+  height: 36px;
+  color: #ff4141;
+  display: inline-block;
+  margin-left: 12px;
+  margin-top: 27px;
+}
+
+.create-wallet .seed-phrase-wrapper {
+  position: relative;
+  width: 479px;
+  height: 116px;
+  background: #171753;
+  border: 2px solid #ffffff;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  margin-top: 12px;
+}
+
+.create-wallet .seed-phrase-wrapper .hide-seedphrase {
+  align-items: center;
+  background: #237b75;
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  height: 112px;
+  justify-content: space-between;
+  line-height: 16px;
+  padding: 22px;
+  position: absolute;
+  width: 475px;
+  cursor: pointer;
+}
+
+.create-wallet .seed-phrase-wrapper .seed-phrase-text {
+  font-size: 16px;
+  line-height: 32px;
+  color: #d6d6d6;
+  padding: 9px 20px 9px 15px;
+}
+
+.create-wallet .seed-phrase-wrapper .copy-phrase {
+  position: absolute;
+  bottom: 15px;
+  font-size: 14px;
+  line-height: 24px;
+  text-decoration-line: underline;
+  color: #5ed9d1;
+  vertical-align: middle;
+  left: 15px;
+  cursor: pointer;
+}
+
+.create-wallet .buttons {
+  margin-top: 28px;
+  width: 479px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.create-wallet .buttons .danger-button-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-wallet .buttons .danger-button-wrapper .danger-skip-text {
+  font-size: 10px;
+  line-height: 14px;
+  width: 204px;
+  color: #ff4141;
+  margin-top: 6px;
+}
+
+.create-wallet .confirm-password-wrapper {
+  width: 480px;
+}
+
+.create-wallet .create-key-button {
+  margin-top: 40px;
+}
+
+.create-wallet .selected-words-wrapper,
+.create-wallet .unselected-words {
+  width: 479px;
+  height: 116px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.create-wallet .selected-words-wrapper {
+  margin: 13px;
+  background: #171753;
+  border: 1.5px solid #ffffff;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  padding: 8px 15px;
+  justify-content: flex-start;
+}
+
+.create-wallet .unselected-words {
+  justify-content: space-between;
+  margin-top: 19px;
+}
+
+.create-wallet .selected-words .word,
+.create-wallet .unselected-words .word {
+  background: #ffffff;
+  border: 1px solid #237b75;
+  box-sizing: border-box;
+  width: 96px;
+  height: 28px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: #237b75;
+  cursor: pointer;
+}
+
+.create-wallet .selected-words .word {
+  margin-right: 20px;
+  margin-bottom: 8px;
+}
+
+.create-wallet .selected-words .word:nth-child(4n) {
+  margin-right: 0px;
+}
+
+.create-wallet .unselected-words .word:disabled {
+  visibility: hidden;
+}

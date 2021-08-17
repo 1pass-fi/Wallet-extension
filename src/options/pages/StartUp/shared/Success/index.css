@@ -1,0 +1,91 @@
+.success-page {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+}
+
+.success-page .title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.success-page .warning {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.success-page .warning .warning-title {
+  font-size: 14px;
+  line-height: 24px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+
+.success-page .warning .warning-icon {
+  margin-right: 8px;
+}
+
+.success-page .warning .warning-items {
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.success-page .get-koi-text {
+  font-size: 18px;
+  line-height: 24px;
+  margin-top: 29px;
+}
+
+.success-page .get-koi-text span {
+  color: #49ce8b;
+}
+
+.success-page .get-koi-text {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.success-page .get-koi-button {
+  background: #9be7c4;
+  border-radius: 3px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+  color: #171753;
+  color: #171753;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  height: 40px;
+  line-height: 24px;
+  line-height: 40px;
+  margin-top: 20px;
+  text-align: center;
+  text-align: center;
+  width: 249px;
+}
+
+.success-page .create-nft-text {
+  margin-top: 41px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.success-page .create-nft-text span {
+  color: #ffc78f;
+}
+
+.success-page .drag-media {
+  margin-top: 20px;
+}
+
+.success-page .drag-media .decorator {
+  border: 1.5px solid #ffa54b;
+  width: 720px;
+  height: 150px;
+}

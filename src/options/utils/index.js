@@ -135,3 +135,12 @@ export const loadCollections = async (address) => {
     console.log(err.message)
   }
 }
+
+export const JSONFileToObject = async (file) => {
+  try {
+    const fileText = await file.text()
+    return JSON.parse(fileText)
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}

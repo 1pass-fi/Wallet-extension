@@ -91,4 +91,16 @@ export class GalleryRequest extends Request {
   createOrUpdateKID(body) {
     return this.promise(MESSAGES.CREATE_UPDATE_KID, body)
   }
+
+  uploadJSONKeyFile(body) {
+    return this.promise(MESSAGES.IMPORT_WALLET, body)
+  }
+
+  generateNewWallet(body) {
+    return this.promise(MESSAGES.GENERATE_WALLET, body)
+  }
+
+  saveWallet(body) {
+    return this.promise(MESSAGES.SAVE_WALLET_GALLERY, body)
+  }
 }
