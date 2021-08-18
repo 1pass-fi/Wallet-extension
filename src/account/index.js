@@ -238,6 +238,11 @@ export class BackgroundAccount extends GenericAccount {
       await this.storage._removeChrome(`${address}_assets`)
       await this.storage._removeChrome(`${address}_collections`)
 
+      /* 
+        Have to handle removing this address from activatedAccount if this
+        address is the activated account.
+      */
+
       await this.removeFromImported(address)
     } catch (err) {
       console.log(err.message)

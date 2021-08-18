@@ -69,8 +69,8 @@ export const ConnectToWallet = ({ setError, connectSite, accounts }) => {
   useEffect(() => {
     const loadRequest = async () => {
       const request = await storage.generic.get.pendingRequest()
-      const address = await storage.arweaveWallet.get.address()
-      setAddress(address)
+      console.log('pending request', request)
+
       const requestOrigin = get(request, 'data.origin')
       const requestFavicon = get(request, 'data.favicon')
       setOrigin(requestOrigin)

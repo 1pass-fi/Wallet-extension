@@ -22,27 +22,14 @@ export default ({
   isWaitingAddNFT,
   setIsWaitingAddNFT,
 }) => {
-  const { wallets, setAccount } = useContext(GalleryContext)
   const { pathname } = useLocation()
 
-  const onChangeAccountSelect = (e) => {
-    const accountAddress = e.target.value
-    const selectedAccount = find(wallets, (v) => v.address == accountAddress)
-    setAccount(selectedAccount)
-  }
 
   return (
     <header className='app-header' ref={headerRef}>
       <div className='header-left'>
         <KoiIcon className='logo' />
       </div>
-      {/* <div className='account-select'>
-        <select
-          onChange={onChangeAccountSelect}
-        >
-          {wallets.map(wallet => <option>{wallet.address}</option>)}
-        </select>
-      </div> */}
       <div className='header-center'>{pathname == '/' && <SearchBar />}</div>
       <div className='header-right'>
         {isLoading && isWaitingAddNFT && (

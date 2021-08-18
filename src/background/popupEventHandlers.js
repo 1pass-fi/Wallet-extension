@@ -58,8 +58,8 @@ export const loadBalances = async (koi, port) => {
 
       const pendingTransactions = await account.get.pendingTransactions() || []
       const pendingConfirmationTransactions = await account.get.pendingConfirmationTransaction() || []
-      console.log('pendingTransactions:', pendingTransactions)
-      console.log('pendingConfirmationTransactions:', pendingConfirmationTransactions)
+      // console.log('pendingTransactions:', pendingTransactions)
+      // console.log('pendingConfirmationTransactions:', pendingConfirmationTransactions)
       if (!isEmpty(pendingTransactions)) {
         // reduce balances by pending transaction expenses
         pendingTransactions.forEach(async (transaction) => {
@@ -73,8 +73,8 @@ export const loadBalances = async (koi, port) => {
               message: `Your transaction [${transaction.activityName}] is now on pending confirmation.`
             })
             let newTransactions = [...pendingTransactions]
-            console.log(newTransactions)
-            console.log(transaction)            
+            // console.log(newTransactions)
+            // console.log(transaction)            
             newTransactions = newTransactions.filter(aTransaction => aTransaction.id !== transaction.id)
             await account.set.pendingTransactions(newTransactions)
 
@@ -142,8 +142,8 @@ export const loadBalances = async (koi, port) => {
       }
 
 
-      console.log('UPDATE BALANCES FOR', address)
-      console.log('koiBalance:', koiBalance,'; balance:', balance)
+      // console.log('UPDATE BALANCES FOR', address)
+      // console.log('koiBalance:', koiBalance,'; balance:', balance)
       await account.set.balance(balance)
       await account.set.koiBalance(koiBalance)
     }))
@@ -192,9 +192,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const totalAccounts = await backgroundAccount.count()
           account.set.accountName(`Account#${totalAccounts}`)
 
-          // If total account = 1, set this account to activatedAccount
+          // If total account = 1, set this accountAddress to activatedAccountAddress
           if (totalAccounts == 1) {
-            await storage.setting.set.activatedAccount(await account.get.address())
+            await storage.setting.set.activatedAccountAddress(await account.get.address())
           }
 
           port.postMessage({
@@ -495,7 +495,16 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         const { origin, confirm } = message.data
         const { permissionId } = resolveId
         if (confirm) {
-          await storage.generic.method.addSite(origin)
+          // add origin to the connected site of activated account
+          let activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
+          const credentials = await backgroundAccount.getCredentialByAddress(activatedAccountAddress)
+          const account = await backgroundAccount.getAccount(credentials)
+          
+          let connectedSite = await account.get.connectedSite() || []
+          connectedSite = [...connectedSite, origin]
+          await account.set.connectedSite(connectedSite)
+          // await storage.generic.method.addSite(origin)
+
           chrome.browserAction.setBadgeText({ text: '' })
           ports[PORTS.CONTENT_SCRIPT].postMessage({
             type: MESSAGES.KOI_CONNECT_SUCCESS,
@@ -858,9 +867,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const totalAccounts = await backgroundAccount.count()
           account.set.accountName(`Account#${totalAccounts}`)
           console.log('totalAccounts', totalAccounts)
-          // If total account = 1, set this account to activatedAccount
+          // If total account = 1, set this account to activatedAccountAddress
           if (totalAccounts == 1) {
-            await storage.setting.set.activatedAccount(await account.get.address())
+            await storage.setting.set.activatedAccountAddress(await account.get.address())
           }
 
           loadBalances(koi, port)

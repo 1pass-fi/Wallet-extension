@@ -121,6 +121,16 @@ const Popup = ({
 
       if (!isEmpty(accounts) && isLocked) {
         history.push('/account/login')
+      } else {
+        if (pendingRequest) {
+          switch (pendingRequest.type) {
+            case REQUEST.PERMISSION:
+              history.push(PATH.CONNECT_SITE)
+              break
+            case REQUEST.TRANSACTION:
+              history.push(PATH.SIGN_TRANSACTION)
+          }
+        }
       }
 
       if (query.includes('create-wallet')) {
@@ -137,15 +147,7 @@ const Popup = ({
         history.push(`/account/import/phrase?type=${walletType}`)
       }
 
-      if (pendingRequest) {
-        switch (pendingRequest.type) {
-          case REQUEST.PERMISSION:
-            history.push(PATH.CONNECT_SITE)
-            break
-          case REQUEST.TRANSACTION:
-            history.push(PATH.SIGN_TRANSACTION)
-        }
-      }
+
     } catch (err) {
       console.log(err.message)
       if (err.message === DISCONNECTED_BACKGROUND) {

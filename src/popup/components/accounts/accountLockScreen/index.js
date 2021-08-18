@@ -15,6 +15,7 @@ import { STORAGE, REQUEST } from 'koiConstants'
 import './index.css'
 import { setIsLoading } from 'popup/actions/loading'
 import { setError } from 'popup/actions/error'
+import storage from 'storage'
 
 
 const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {
@@ -29,8 +30,8 @@ const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {
       setIsLoading(false)
 
       if (unlocked) {
-        const storage = await getChromeStorage(STORAGE.PENDING_REQUEST)
-        switch (get(storage[STORAGE.PENDING_REQUEST], 'type')) {
+        const pendingRequest = await storage.generic.get.pendingRequest()
+        switch (get(pendingRequest, 'type')) {
           case REQUEST.PERMISSION:
             history.push('/account/connect-site')
             break

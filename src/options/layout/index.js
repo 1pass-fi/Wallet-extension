@@ -105,12 +105,18 @@ export default ({ children }) => {
       await popupAccount.loadImported()
       const allData = await popupAccount.getAllMetadata()
       console.log('allData', allData)
+
+      // All Account: [{ account1, account2 }]
       setWallets(allData)
 
       /* 
-        Set 
+        Set activatedAccount to account 
       */
-      setAccount(allData[0])
+      let activatedAccount = await storage.setting.get.activatedAccountAddress()
+      activatedAccount = await popupAccount.getAccount({ address: activatedAccount })
+      activatedAccount = await activatedAccount.get.metadata()
+
+      setAccount(activatedAccount)
     }
     setIsLoading(true)
     loadWallets()
@@ -226,6 +232,7 @@ export default ({ children }) => {
   useEffect(() => {
     const loadAssets = async () => {
       try {
+        console.log('RUNNING LOAD ASSETS')
         await backgroundRequest.assets.loadContent()
         const allAssets =  await popupAccount.getAllAssets()
         setCardInfos(allAssets)
@@ -238,8 +245,9 @@ export default ({ children }) => {
       }
     }
 
-    if (!isEmpty())
-      loadAssets()
+    // if (!isEmpty(wallets)
+    loadAssets()
+
   }, [])
 
   useEffect(() => {

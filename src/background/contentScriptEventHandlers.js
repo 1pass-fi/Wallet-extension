@@ -1,4 +1,4 @@
-import { isString, isNumber } from 'lodash'
+import { isString, isNumber, isEmpty } from 'lodash'
 
 import { REQUEST, MESSAGES, STORAGE, OS, WINDOW_SIZE, PORTS } from 'koiConstants'
 import { checkSitePermission, setChromeStorage, removeChromeStorage, getChromeStorage, transfer } from 'utils'
@@ -6,7 +6,7 @@ import { getSelectedTab, createWindow } from 'utils/extension'
 import signPort from 'utils/signPort'
 
 import storage from 'storage'
-import { popupAccount } from 'account'
+import { backgroundAccount, popupAccount } from 'account'
 
 let pendingMessages = {}
 
@@ -243,11 +243,10 @@ export default async (koi, port, message, ports, resolveId, sender) => {
             const { id } = message
             const { permissionId } = resolveId
 
-            const storage = await getChromeStorage([
-              STORAGE.KOI_KEY
-            ])
-            const hasKey = !!storage[STORAGE.KOI_KEY]
-            if (!hasKey) {
+            const savedAccountCount = await backgroundAccount.count()
+            let hasAccount = !isEmpty(backgroundAccount.importedAccount)
+
+            if (!hasAccount && !savedAccountCount) {
               const path = '/options.html'
               const url = chrome.extension.getURL(path)
               port.postMessage({
@@ -339,20 +338,20 @@ export default async (koi, port, message, ports, resolveId, sender) => {
           break
         }
         case MESSAGES.KOI_CONNECT: {
+          const { id } = message
+          const { permissionId } = resolveId
           try {
-            const { id } = message
-            const { permissionId } = resolveId
-
-            const storage = await getChromeStorage([
-              STORAGE.KOI_KEY
-            ])
-            const hasKey = !!storage[STORAGE.KOI_KEY]
-            if (!hasKey) {
+            /* 
+              check for having imported account
+            */
+            const savedAccountCount = await backgroundAccount.count()
+            let hasImportedAccount = !isEmpty(backgroundAccount.importedAccount)
+            if (!hasImportedAccount && !savedAccountCount) {
               const path = '/options.html'
               const url = chrome.extension.getURL(path)
               port.postMessage({
-                type: MESSAGES.KOI_CONNECT_SUCCESS,
-                data: { status: 401, data: 'Please import your wallet.' },
+                type: MESSAGES.CONNECT_ERROR,
+                data: 'Please import your wallet.',
                 id
               })
               chrome.tabs.create({ url })
@@ -407,11 +406,20 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                 {
                   beforeCreate: async () => {
                     chrome.browserAction.setBadgeText({ text: '1' })
-                    await setChromeStorage({
-                      'pendingRequest': {
-                        type: REQUEST.PERMISSION,
-                        data: { origin, favicon, isKoi: true }
-                      }
+                    /* 
+                      Save pending request to chrome storage
+                    */
+
+                    // await setChromeStorage({
+                    //   'pendingRequest': {
+                    //     type: REQUEST.PERMISSION,
+                    //     data: { origin, favicon, isKoi: true }
+                    //   }
+                    // })
+
+                    await storage.generic.set.pendingRequest({
+                      type: REQUEST.PERMISSION,
+                      data: { origin, favicon, isKoi: true }
                     })
                   },
                   afterClose: async () => {
@@ -430,6 +438,7 @@ export default async (koi, port, message, ports, resolveId, sender) => {
               })
             }
           } catch (err) {
+            console.log(err.message)
             port.postMessage({
               type: MESSAGES.KOI_CONNECT_SUCCESS,
               data: { status: 500, data: 'Something went wrong.' },

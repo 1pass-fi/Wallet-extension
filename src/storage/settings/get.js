@@ -44,7 +44,7 @@ export class SettingGet {
     return this.#chrome._getChrome(SETTING.ACCOUNTS_SHOW_ACTIVITIES)
   }
 
-  activatedAccount() {
+  activatedAccountAddress() {
     return this.#chrome._getChrome(SETTING.ACTIVATED_ACCOUNT)
   }
 }

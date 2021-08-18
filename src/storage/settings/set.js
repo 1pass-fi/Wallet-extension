@@ -49,7 +49,7 @@ export class SettingSet {
     return this.#chrome._setChrome(SETTING.ACCOUNTS_SHOW_ACTIVITIES, value)
   }
 
-  activatedAccount(value) {
+  activatedAccountAddress(value) {
     return this.#chrome._setChrome(SETTING.ACTIVATED_ACCOUNT, value)
   }
 }
