@@ -238,6 +238,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       case MESSAGES.LOCK_WALLET: {
         try {
           await backgroundAccount.removeAllImported()
+          await backgroundAccount.removeConnectedSite()
           port.postMessage({
             type: MESSAGES.LOCK_WALLET,
             id: messageId

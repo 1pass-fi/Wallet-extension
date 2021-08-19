@@ -79,17 +79,24 @@ export default async (koi, port, message, ports, resolveId, sender) => {
       switch (message.type) {
         case MESSAGES.GET_ADDRESS: {
           try {
+
+            // get activated account address
+            const activatedAddress = await storage.setting.get.activatedAccountAddress()
+            const credentials = await backgroundAccount.getCredentialByAddress(activatedAddress)
+            const account = await backgroundAccount.getAccount(credentials)
+            const address = await account.get.address()
+
             if (hadPermission) {
-              if (koi.address) {
+              if (address) {
                 port.postMessage({
                   type: MESSAGES.GET_ADDRESS_SUCCESS,
-                  data: koi.address,
+                  data: address,
                   id: message.id
                 })
               } else {
                 port.postMessage({
                   type: MESSAGES.GET_ADDRESS_ERROR,
-                  data: 'The site does not have the required permissions for this action.',
+                  data: 'Address not found.',
                   id: message.id
                 })
               }
@@ -112,10 +119,17 @@ export default async (koi, port, message, ports, resolveId, sender) => {
 
         case MESSAGES.KOI_GET_ADDRESS: {
           try {
-            if (koi.address) {
+            // get activated account address
+            const activatedAddress = await storage.setting.get.activatedAccountAddress()
+            const credentials = await backgroundAccount.getCredentialByAddress(activatedAddress)
+            const account = await backgroundAccount.getAccount(credentials)
+            const address = await account.get.address()
+
+
+            if (address) {
               port.postMessage({
                 type: MESSAGES.KOI_GET_ADDRESS_SUCCESS,
-                data: { status: 200, data: koi.address },
+                data: { status: 200, data: address },
                 id: message.id
               })
             } else {

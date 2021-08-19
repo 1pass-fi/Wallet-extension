@@ -8,6 +8,7 @@ import { find, get } from 'lodash'
 
 import { WalletPopup } from 'account/Wallet'
 import { ERROR_MESSAGE } from 'koiConstants'
+import { ACCOUNT } from 'account/accountConstants'
 
 
 /* 
@@ -305,6 +306,23 @@ export class BackgroundAccount extends GenericAccount {
 
   async removeAllImported() {
     this.importedAccount = []
+  }
+
+  async removeConnectedSite() {
+    try {
+      const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []
+      const importedEthereum = await this.storage._getChrome(IMPORTED.ETHEREUM) || []
+
+      const allCredentials = [...importedArweave, ...importedEthereum]
+
+      await Promise.all(allCredentials.map(async credential => {
+        const data = await this.storage._getChrome(credential.address)
+        data[ACCOUNT.CONNECTED_SITE] = []
+        await this.storage._setChrome(credential.address, data)
+      }))
+    } catch (err) {
+      console.log(err.message)
+    }
   }
 }
 

@@ -66,6 +66,6 @@ chrome.storage.local.remove('koiAddress')
 chrome.runtime.onConnect.addListener(cb)
 chrome.storage.local.remove('sitePermission')
 
-// chrome.runtime.onInstalled.addListener(function () {
-//   chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
-// })
+chrome.runtime.onInstalled.addListener(function () {
+  chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
+})
