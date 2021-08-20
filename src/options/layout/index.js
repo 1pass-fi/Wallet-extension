@@ -431,17 +431,19 @@ export default ({ children }) => {
         {isDragging && isEmpty(file) && (
           <input name='fileField' {...getInputProps()} />
         )}
-        <Header 
+
+        {!GALLERY_IMPORT_PATH.includes(pathname) && <Header 
           totalKoi={totalKoi} 
           totalAr={totalAr} 
           headerRef={headerRef} 
           isLoading={isLoading} 
           isWaitingAddNFT={isWaitingAddNFT}
           setIsWaitingAddNFT={setIsWaitingAddNFT}
-        />
+        />}
+
         {children}
-        <Footer showDropzone={showDropzone} />
-        <Navbar />
+        {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer showDropzone={showDropzone} />}
+        {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />}
       </div> : 
           <>
             {walletLoaded && <StartUp />}

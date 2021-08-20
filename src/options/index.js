@@ -22,16 +22,16 @@ const Gallery = () => {
     <Router>
       <Layout>
         <Switch>
-          <Route path='/welcome'>
+          <Route exact path='/welcome'>
             <Welcome />
           </Route>
-          <Route path='/create-wallet'>
+          <Route exact path='/create-wallet'>
             <CreateWallet />
           </Route>
-          <Route path='/upload-wallet'>
+          <Route exact path='/upload-wallet'>
             <UploadWallet />
           </Route>
-          <Route path='/import-wallet'>
+          <Route exact path='/import-wallet'>
             <ImportWallet />
           </Route>
           <Route exact path='/details/:txid'>
