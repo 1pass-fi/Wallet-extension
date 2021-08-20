@@ -15,7 +15,7 @@ import { backgroundRequest } from 'popup/backgroundRequest'
 import './index.css'
 
 export default () => {
-  const [step, setStep] = useState(2)
+  const [step, setStep] = useState(1)
   const [walletType, setWalletType] = useState('ARWEAVE')
   const [userSeedPhrase, setUserSeedPhrase] = useState('')
   const [password, setPassword] = useState('')
@@ -50,10 +50,11 @@ export default () => {
   }
 
   return (
-    <div className='import-wallet-wrapper'>
-      {isLoading && <Loading />}
-      <div className='import-wallet'>
-        {step === 1 && (
+    <div className='start-up'>
+      <div className='import-wallet-wrapper'>
+        {isLoading && <Loading />}
+        <div className='import-wallet'>
+          {step === 1 && (
           <>
             <div className='title'>Import a wallet with a recovery phrase</div>
             <div className='description'>
@@ -67,7 +68,7 @@ export default () => {
                     Koii Key&nbsp;<span>(Arweave)</span>
                   </div>
                 )}
-                selected={walletType === 'ARWEAVE'}
+                selected={false}
                 onClick={() => onTypeSelect('ARWEAVE')}
               />
 
@@ -80,14 +81,14 @@ export default () => {
                     <span>cross-chain transactions</span>.
                   </div>
                 )}
-                selected={walletType === 'ETHEREUM'}
+                selected={false}
                 onClick={() => onTypeSelect('ETHEREUM')}
               />
             </div>
           </>
-        )}
+          )}
 
-        {step === 2 && (
+          {step === 2 && (
           <>
             <div className='title'>Get a new key</div>
             <div className='description'>
@@ -114,7 +115,8 @@ export default () => {
               Import Key
             </Button>
           </>
-        )}
+          )}
+        </div>
       </div>
     </div>
   )

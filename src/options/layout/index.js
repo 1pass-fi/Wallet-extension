@@ -1,6 +1,6 @@
 import '@babel/polyfill'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { history, useHistory } from 'react-router-dom'
+import { history, useHistory, useLocation } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
@@ -14,7 +14,7 @@ import {
   setChromeStorage, 
   getTotalRewardKoi, 
   checkAffiliateInviteSpent } from 'utils'
-import { MESSAGES, STORAGE, PORTS, MOCK_COLLECTIONS_STORE } from 'koiConstants'
+import { MESSAGES, STORAGE, PORTS, MOCK_COLLECTIONS_STORE, GALLERY_IMPORT_PATH } from 'koiConstants'
 import { CreateEventHandler } from 'popup/actions/backgroundConnect'
 
 import './index.css'
@@ -44,9 +44,12 @@ import { backgroundRequest } from 'popup/backgroundRequest'
 import { popupAccount } from 'account'
 import SelectAccountModal from 'options/modal/SelectAccountModal'
 import SuccessUploadNFT from 'options/modal/SuccessUploadModal'
+import { includes } from 'currency-codes/data'
 
 
 export default ({ children }) => {
+  const { pathname } = useLocation()
+
   const history = useHistory()
   const [wallets, setWallets] = useState([])
   const [account, setAccount] = useState({})
@@ -88,6 +91,8 @@ export default ({ children }) => {
   const [showSelectAccount, setShowSelectAccount] = useState(false)
   const [showSuccessUploadNFT, setShowSuccessUploadNFT] = useState(false)
 
+  const [walletLoaded, setWalletLoaded] = useState(false)
+
   const headerRef = useRef(null)
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
@@ -108,22 +113,35 @@ export default ({ children }) => {
 
       // All Account: [{ account1, account2 }]
       setWallets(allData)
-
-      /* 
-        Set activatedAccount to account 
-      */
-      let activatedAccount = await storage.setting.get.activatedAccountAddress()
-      activatedAccount = await popupAccount.getAccount({ address: activatedAccount })
-      activatedAccount = await activatedAccount.get.metadata()
-
-      setAccount(activatedAccount)
+      setWalletLoaded(true)
     }
+    
     setIsLoading(true)
     loadWallets()
   }, [])
 
   useEffect(() => {
+    const loadActivatedAccount = async () => {
+      /* 
+        Set activatedAccount to account 
+      */
+      try {
+        let activatedAccount = await storage.setting.get.activatedAccountAddress()
+        activatedAccount = await popupAccount.getAccount({ address: activatedAccount })
+        activatedAccount = await activatedAccount.get.metadata()
+
+        setAccount(activatedAccount)
+      } catch (err) {
+        console.log(err.message)
+      }
+    }
+
+    if (walletLoaded) loadActivatedAccount()
+  }, [walletLoaded])
+
+  useEffect(() => {
     const getDataFromStorage = async () => {
+      console.log('RUNNING')
       try {
         /* 
           Contents, koiBalance, arBalance, address, affiliateCode, showWelcomeScreen, accountName
@@ -222,8 +240,8 @@ export default ({ children }) => {
         console.log(err.message)
       }
     }
-
-    if (!isEmpty(wallets)) getDataFromStorage()
+    
+    if (!isEmpty(wallets) && !GALLERY_IMPORT_PATH.includes(pathname)) getDataFromStorage()
   }, [account])
 
   /* 
@@ -232,7 +250,6 @@ export default ({ children }) => {
   useEffect(() => {
     const loadAssets = async () => {
       try {
-        console.log('RUNNING LOAD ASSETS')
         await backgroundRequest.assets.loadContent()
         const allAssets =  await popupAccount.getAllAssets()
         setCardInfos(allAssets)
@@ -245,9 +262,7 @@ export default ({ children }) => {
       }
     }
 
-    // if (!isEmpty(wallets)
-    loadAssets()
-
+    if (!isEmpty(wallets) && !GALLERY_IMPORT_PATH.includes(pathname)) loadAssets()
   }, [])
 
   useEffect(() => {
@@ -262,7 +277,7 @@ export default ({ children }) => {
       }
     }
 
-    setAssetsForCreateCollection()
+    if(!GALLERY_IMPORT_PATH.includes(pathname)) setAssetsForCreateCollection()
   }, [showCreateCollection])
 
   useEffect(() => {
@@ -304,6 +319,7 @@ export default ({ children }) => {
     setIsDragging(false)
   }
 
+  
 
   return (
     <GalleryContext.Provider
@@ -427,9 +443,10 @@ export default ({ children }) => {
         <Footer showDropzone={showDropzone} />
         <Navbar />
       </div> : 
-        <div className='app no-wallet'>
-          <StartUp />
-        </div>}
+          <>
+            {walletLoaded && <StartUp />}
+          </>
+      }
     </GalleryContext.Provider>
   )
 }

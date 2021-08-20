@@ -4,10 +4,12 @@ import { PORTS, LOAD_BALANCES_TIME_INTERVAL, OS, PATH } from 'koiConstants'
 import popUpEventHandlers, { loadBalances } from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from '@_koi/sdk/web'
+import { Ethereum } from './eth'
 // import { Web } from './koiMock'
 
 /* eslint-disable no-undef */
 export const koi = new Web()
+const eth = new Ethereum()
 console.log('Finnie is waiting for instructions.')
 
 const ports = {}
@@ -39,7 +41,7 @@ function cb(port) {
           message,
           ports,
           { permissionId, createTransactionId },
-          sender
+          eth
         )
 
         if (koi.address) {

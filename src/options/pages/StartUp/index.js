@@ -6,19 +6,21 @@ import Upload from './Upload'
 import Import from './Import'
 import Create from './Create'
 
+import './index.css'
+
 export default () => {
   return (
     <Switch>
-      <Route path='/create'>
+      <Route path='/create-wallet'>
         <Create />
       </Route>
-      <Route path='/upload'>
+      <Route path='/upload-wallet'>
         <Upload />
       </Route>
-      <Route path='/import'>
+      <Route path='/import-wallet'>
         <Import />
       </Route>
-      <Route path='*'>
+      <Route path='/*'>
         <Welcome />
       </Route>
     </Switch>

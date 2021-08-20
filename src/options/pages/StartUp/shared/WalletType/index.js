@@ -15,8 +15,8 @@ export default ({
   return (
     <div
       {...props}
-      className={`${get(props, 'className', '')}  ${
-        selected ? 'selected' : ''
+      className={`${get(props, 'className', '')}${
+        selected ? ' selected ' : ''
       } wallet-type`}
     >
       <Icon />

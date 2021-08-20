@@ -315,3 +315,5 @@ export const FILENAME = {
 export const URL = {
   TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf'
 }
+
+export const GALLERY_IMPORT_PATH = ['/welcome', '/upload-wallet', '/import-wallet', '/create-wallet']

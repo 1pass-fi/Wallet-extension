@@ -125,11 +125,12 @@ export default () => {
   }
   console.log(unselectedWords)
   return (
-    <div className='create-wallet-wrapper'>
-      {isLoading && <Loading />}
-      <div className='create-wallet'>
-        <div className='title'>Get a new key</div>
-        {step === 1 && (
+    <div className='start-up'>
+      <div className='create-wallet-wrapper'>
+        {isLoading && <Loading />}
+        <div className='create-wallet'>
+          <div className='title'>Get a new key</div>
+          {step === 1 && (
           <>
             {/* <div className='description'>What type of key do you need?</div> */}
             <div className='wallet-types'>
@@ -150,7 +151,7 @@ export default () => {
                 onClick={() => setWalletType('ARWEAVE')}
               />
 
-              {/* <WalletType
+              <WalletType
                 icon={EthereumLogo}
                 title={(props) => <div {...props}>Ethereum Key</div>}
                 description={(props) => (
@@ -161,7 +162,7 @@ export default () => {
                 )}
                 selected={walletType === 'ETHEREUM'}
                 onClick={() => setWalletType('ETHEREUM')}
-              /> */}
+              />
             </div>
             <button
               disabled={!walletType}
@@ -171,9 +172,9 @@ export default () => {
               Create Key
             </button>
           </>
-        )}
+          )}
 
-        {(step === 2 || step === 3) && (
+          {(step === 2 || step === 3) && (
           <>
             <div className='description'>
               Store your recovery phrase somewhere safe. This phrase makes it
@@ -188,9 +189,9 @@ export default () => {
               </div>
             </div>
           </>
-        )}
+          )}
 
-        {step === 2 && (
+          {step === 2 && (
           <>
             <div className='seed-phrase-wrapper'>
               {isHideSeedPhrase ? (
@@ -233,9 +234,9 @@ export default () => {
               </div>
             </div>
           </>
-        )}
+          )}
 
-        {step === 3 && (
+          {step === 3 && (
           <>
             <div className='selected-words-wrapper'>
               <div className='selected-words'>
@@ -282,9 +283,9 @@ export default () => {
               </div>
             </div>
           </>
-        )}
+          )}
 
-        {step === 4 && (
+          {step === 4 && (
           <>
             <div className='description'>
               Create a password for Finnie, so you have easy access to your new
@@ -301,7 +302,8 @@ export default () => {
               Create Key
             </Button>
           </>
-        )}
+          )}
+        </div>
       </div>
     </div>
   )

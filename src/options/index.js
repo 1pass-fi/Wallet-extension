@@ -12,12 +12,28 @@ import CollectionDetails from './pages/CollectionDetails'
 import Settings from './pages/Settings'
 import Faucet from './pages/Faucet'
 import Friends from './pages/Friends'
+import Welcome from './pages/StartUp/Welcome'
+import UploadWallet from './pages/StartUp/Upload'
+import ImportWallet from './pages/StartUp/Import'
+import CreateWallet from './pages/StartUp/Create'
 
 const Gallery = () => {
   return (
     <Router>
       <Layout>
         <Switch>
+          <Route path='/welcome'>
+            <Welcome />
+          </Route>
+          <Route path='/create-wallet'>
+            <CreateWallet />
+          </Route>
+          <Route path='/upload-wallet'>
+            <UploadWallet />
+          </Route>
+          <Route path='/import-wallet'>
+            <ImportWallet />
+          </Route>
           <Route exact path='/details/:txid'>
             <Details />
           </Route>

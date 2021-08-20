@@ -8,11 +8,11 @@ import './index.css'
 import { JSONFileToObject } from 'options/utils'
 import ConfirmPassword from '../../shared/ConfirmPassword'
 
-export default ({ nextStep, file }) => {
+export default ({ nextStep, file, walletType }) => {
   const [password, setPassword] = useState('')
   const onConfirm = async () => {
     const key = await JSONFileToObject(file)
-    await backgroundRequest.gallery.uploadJSONKeyFile({ password, key, type: TYPE.ARWEAVE })
+    await backgroundRequest.gallery.uploadJSONKeyFile({ password, key, type: walletType })
     // TODO: Handle password
     nextStep()
   }
