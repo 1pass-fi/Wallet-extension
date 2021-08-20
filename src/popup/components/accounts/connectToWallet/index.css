@@ -94,6 +94,7 @@
 }
 
 .select-wallet .content .wallet-option {
+  cursor: pointer;
   align-items: center;
   box-sizing: border-box;
   display: flex;
@@ -124,6 +125,7 @@
   flex-direction: column;
   margin-left: 21px;
   max-width: 100px;
+  user-select: none;
 }
 
 .select-wallet .content .trust-sites {
@@ -140,6 +142,7 @@
   font-size: 12px;
   letter-spacing: 0.03em;
   line-height: 20px;
+  width: 150px;
 }
 
 .select-wallet .content .button-line {

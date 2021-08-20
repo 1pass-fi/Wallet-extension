@@ -18,29 +18,12 @@ import { getChromeStorage, removeChromeStorage } from 'utils'
 
 import { STORAGE, REQUEST, ERROR_MESSAGE } from 'koiConstants'
 
+
 import './index.css'
 import storage from 'storage'
 
 export const ConnectToWallet = ({ setError, connectSite, accounts }) => {
-  const [checkedList, setCheckedList] = useState([])
-
-  const clearChecked = () => {
-    setCheckedList([])
-  }
-
-  const checkAll = () => {
-    setCheckedList(map(accounts, (account) => account.address))
-  }
-
-  const onChecked = (e, address) => {
-    if (e.target.checked) {
-      setCheckedList(union(checkedList, [address]))
-    } else {
-      setCheckedList(
-        filter(checkedList, (checkedAddress) => checkedAddress !== address)
-      )
-    }
-  }
+  const [checkedAddress, setCheckedAddress] = useState('')
 
   const [origin, setOrigin] = useState('')
   const [favicon, setFavicon] = useState('')
@@ -65,6 +48,15 @@ export const ConnectToWallet = ({ setError, connectSite, accounts }) => {
       setError(err.message)
     }
   }
+
+  useEffect(() => {
+    const loadActivatedAccount = async () => {
+      const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
+      setCheckedAddress(activatedAccountAddress)
+    }
+
+    loadActivatedAccount()
+  }, [])
 
   useEffect(() => {
     const loadRequest = async () => {
@@ -96,10 +88,8 @@ export const ConnectToWallet = ({ setError, connectSite, accounts }) => {
         <Card className='card-content'>
           {step === 1 && <SelectWallet
             accounts={accounts}
-            clearChecked={clearChecked}
-            checkAll={checkAll}
-            onChecked={onChecked}
-            checkedList={checkedList}
+            checkedAddress={checkedAddress}
+            setCheckedAddress={setCheckedAddress}
             setStep={setStep}
             handleOnClick={handleOnClick}
           />}

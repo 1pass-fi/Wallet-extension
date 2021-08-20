@@ -16,17 +16,16 @@ const walletIcon = {
 
 const SelectWallet = ({
   accounts,
-  checkedList,
-  clearChecked,
-  checkAll,
   onChecked,
   setStep,
+  checkedAddress,
+  setCheckedAddress,
   handleOnClick,
 }) => {
   return (
     <>
       <div className='select-account'>Select accounts</div>
-      {accounts.lenght > 1 && (
+      {/* {accounts.lenght > 1 && (
         <div>
           <button className='unselect-button' onClick={clearChecked}>
             -
@@ -35,21 +34,22 @@ const SelectWallet = ({
             Select all
           </button>
         </div>
-      )}
+      )} */}
       <div className='wallet-options'>
         {accounts.map((account) => (
           <div
             className={`wallet-option ${
-              includes(checkedList, account.address) && 'checked'
+              (account.address === checkedAddress) && 'checked'
             }`}
             key={account.address}
+            onClick={() => setCheckedAddress(account.address)}
           >
-            <Checkbox
-              defaultChecked={false}
+            {/* <Checkbox
+              value={account.address==checkedAddress}
               className='check-wallet'
               isDisabled={false}
-              onChange={(e) => onChecked(e, account.address)}
-            />
+              onChange={() => setCheckedAddress(account.address)}
+            /> */}
             {walletIcon[account.type]}
             <div className='wallet-info'>
               <div className='wallet-name'>{account.accountName}</div>
@@ -68,7 +68,7 @@ const SelectWallet = ({
           className='button connect'
           label='Connect'
           onClick={() => setStep(2)}
-          isEnable={!isEmpty(checkedList)}
+          isEnable={!isEmpty(checkedAddress)}
         />
         <Button
           className='button reject'
