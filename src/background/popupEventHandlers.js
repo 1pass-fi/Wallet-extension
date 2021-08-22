@@ -171,6 +171,28 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           let { key, password, type } = message.data
           let account
           let address
+
+          /* 
+            Check for having imported account.
+          */
+          const count = await backgroundAccount.count()
+          const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
+          const encryptedKey = await backgroundAccount.getEncryptedKey(activatedAccountAddress)
+
+          if (count) {
+            // Check input password
+            try {
+              await passworder.decrypt(password, encryptedKey)
+            } catch (err) {
+              port.postMessage({
+                type: MESSAGES.IMPORT_WALLET,
+                error: err.message,
+                id: messageId
+              })
+              return
+            }
+          }
+
           // Create new account
           switch(type) {
             case TYPE.ARWEAVE:
@@ -847,34 +869,32 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       case MESSAGES.SAVE_WALLET_GALLERY: {
         try {
           const { password } = message.data
-          // Get key and seedphrase from koitool
+          // Get key and seedphrase from koitool.
           const { key, mnemonic: seedPhrase, type } = generatedKey
-          // set to global koi object
-          koi.wallet = key
-          koi.mnemonic = seedPhrase
 
-          await koi.getWalletAddress()
+          koi.wallet = key
+          const addressFromKey = await koi.getWalletAddress()
 
           const encryptedSeedPhrase = await passworder.encrypt(password, seedPhrase)
-          console.log('encryptedSeedPhrase', encryptedSeedPhrase)
-          // create new Account on background
-          await backgroundAccount.createAccount(koi.address, key, password, type)
-          const credentials = await backgroundAccount.getCredentialByAddress(koi.address)
-          const account = await backgroundAccount.getAccount(credentials)
 
+          // create new Account on background.
+          await backgroundAccount.createAccount(addressFromKey, key, password, type)
+          // get account object to set encrypted seedphrase
+          const credentials = await backgroundAccount.getCredentialByAddress(addressFromKey)
+          const account = await backgroundAccount.getAccount(credentials)
           account.set.seedPhrase(encryptedSeedPhrase)
 
-          // Get total account to get a appropriate accountName
+          // Get total account to get a appropriate account name.
           const totalAccounts = await backgroundAccount.count()
           account.set.accountName(`Account#${totalAccounts}`)
           console.log('totalAccounts', totalAccounts)
-          // If total account = 1, set this account to activatedAccountAddress
+
+          // If total account = 1, set this account to activatedAccountAddress.
           if (totalAccounts == 1) {
             await storage.setting.set.activatedAccountAddress(await account.get.address())
           }
 
           loadBalances(koi, port)
-          console.log('POSTING MESSAGE...')
           port.postMessage({
             type: MESSAGES.SAVE_WALLET_GALLERY,
             id: messageId

@@ -37,7 +37,7 @@ const mockPhrase = [
 
 export default () => {
   const [step, setStep] = useState(1)
-  const [walletType, setWalletType] = useState('ARWEAVE')
+  const [walletType, setWalletType] = useState(TYPE.ARWEAVE)
   const [seedPhrase, setSeedPhrase] = useState(mockPhrase)
   const [isHideSeedPhrase, setIsHideSeedPhrase] = useState(true)
   const [password, setPassword] = useState('')
@@ -49,8 +49,11 @@ export default () => {
     setStep(step + 1)
   }
 
+
+  /* 
+    Generate 12 words phrase for new wallet.
+  */
   const generateSeedPhare = async () => {
-    // TODO: GeneratePhrase
     await setIsLoading(true)
     /* 
       Expected to receive an array of 12 words phrase. ['summer', 'vacation',...]
@@ -69,8 +72,10 @@ export default () => {
     nextStep()
   }
 
+  /* 
+    Save created account to the storage.
+  */
   const handleCreateKey = async () => {
-    // TODO: Create Key
     await backgroundRequest.gallery.saveWallet({ password })
     console.log({ walletType })
     console.log({ userSeedPhrase: userSeedPhrase.join(' ') })

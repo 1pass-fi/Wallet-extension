@@ -308,6 +308,10 @@ export class BackgroundAccount extends GenericAccount {
     this.importedAccount = []
   }
 
+  /* 
+    Remove connected sites of all accounts when user locked their wallet or when
+    extension just reloaded.
+  */
   async removeConnectedSite() {
     try {
       const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []

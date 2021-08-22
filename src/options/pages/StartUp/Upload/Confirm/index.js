@@ -13,13 +13,17 @@ import ConfirmPassword from '../../shared/ConfirmPassword'
 import InputPassword from '../../shared/InputPassword'
 
 export default ({ nextStep, file, walletType }) => {
+  const { setError } = useContext(GalleryContext)
   const { wallets } =  useContext(GalleryContext)
   const [password, setPassword] = useState('')
   const onConfirm = async () => {
-    const key = await JSONFileToObject(file)
-    await backgroundRequest.gallery.uploadJSONKeyFile({ password, key, type: walletType })
-    // TODO: Handle password
-    nextStep()
+    try {
+      const key = await JSONFileToObject(file)
+      await backgroundRequest.gallery.uploadJSONKeyFile({ password, key, type: walletType })
+      nextStep()
+    } catch (err) {
+      setError(err.message)
+    }
   }
 
   return (
