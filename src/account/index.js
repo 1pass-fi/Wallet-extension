@@ -1,5 +1,5 @@
-import { Arweave } from './Arweave'
-import { Ethereum } from './Ethereum'
+import { Arweave } from './Chains/Arweave/Arweave'
+import { Ethereum } from './Chains/Ethereum/Ethereum'
 import { IMPORTED, TYPE } from './accountConstants'
 import { ChromeStorage } from 'storage/ChromeStorage'
 import passworder from 'browser-passworder'
@@ -30,6 +30,13 @@ class GenericAccount {
     this.importedAccount = []
   }
 
+  /**
+   * 
+   * @param {Object} credentials
+   * @param {Object} credentials.key Wallet key
+   * @param {String} credentials.address Wallet address
+   * @returns {Arweave} account
+   */
   async getAccount(credentials) {
     try {
       const { address } = credentials
@@ -46,6 +53,10 @@ class GenericAccount {
     }
   }
 
+  /**
+   * 
+   * @returns 
+   */
   async getAllAccounts() {
     try {
       const allAccounts = await Promise.all(this.importedAccount.map(async credentials => {

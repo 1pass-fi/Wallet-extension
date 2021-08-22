@@ -63,4 +63,8 @@ export class GenericGet {
   activityNotifications() {
     return this.#chrome._getChrome(GENERIC.ACTIVITY_NOTIFICATIONS)
   }
+
+  tokenPrice() {
+    return this.#chrome._getChrome(GENERIC.TOKEN_PRICE)
+  }
 }

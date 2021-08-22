@@ -1,4 +1,4 @@
-import { Wallet } from './Wallet'
+import { Wallet } from '../../Wallet'
 import { ArweaveUtils } from './ArweaveUtils'
 import { ArweaveMethod } from './ArweaveMethod'
 

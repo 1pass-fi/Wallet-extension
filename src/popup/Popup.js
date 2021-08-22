@@ -161,12 +161,12 @@ const Popup = ({
 
   const loadPrice = async () => {
     try {
-      const price = await storage.arweaveWallet.get.price()
+      const price = await storage.generic.get.tokenPrice()
       let selectedCurrency = await storage.setting.get.selectedCurrency() || 'USD'
 
       console.log('Selected Currency: ', selectedCurrency)
 
-      const AR = price || 1
+      const { AR } = price || 1
 
       setPrice({ AR })
       setCurrency(selectedCurrency)
@@ -179,7 +179,7 @@ const Popup = ({
 
       if (isNumber(arPrice)) {
         await setPrice({ AR: arPrice })
-        await storage.arweaveWallet.set.price(arPrice)
+        await storage.generic.set.tokenPrice({...price, AR: arPrice})
       }
     } catch(err) {
       setError(err.message)

@@ -4,22 +4,15 @@ import { history, useHistory, useLocation } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
-import isArray from 'lodash/isArray'
-import { isNumber } from 'lodash'
 
-import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
 import {
   getAffiliateCode, 
-  getChromeStorage, 
-  setChromeStorage, 
   getTotalRewardKoi, 
   checkAffiliateInviteSpent } from 'utils'
-import { MESSAGES, STORAGE, PORTS, MOCK_COLLECTIONS_STORE, GALLERY_IMPORT_PATH } from 'koiConstants'
-import { CreateEventHandler } from 'popup/actions/backgroundConnect'
+import { GALLERY_IMPORT_PATH } from 'koiConstants'
 
 import './index.css'
 import StartUp from 'options/pages/StartUp'
-import Loading from 'options/components/loading'
 import Footer from 'options/components/footer'
 import Header from 'options/components/header'
 import Navbar from 'options/components/navbar'
@@ -31,12 +24,9 @@ import ShareNFT from 'options/modal/shareNFT'
 import ExportNFT from 'options/modal/exportNFT'
 import Welcome from 'options/modal/welcomeScreen'
 
-import { getShareUrl, createShareWindow } from 'options/helpers'
 
 import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
-
-import { getNftsDataForCollections, loadCollections } from 'options/utils'
 
 import storage from 'storage'
 import { backgroundRequest } from 'popup/backgroundRequest'
@@ -44,7 +34,6 @@ import { backgroundRequest } from 'popup/backgroundRequest'
 import { popupAccount } from 'account'
 import SelectAccountModal from 'options/modal/SelectAccountModal'
 import SuccessUploadNFT from 'options/modal/SuccessUploadModal'
-import { includes } from 'currency-codes/data'
 
 
 export default ({ children }) => {
@@ -102,8 +91,7 @@ export default ({ children }) => {
   })
 
   /* 
-    Load for accounts
-    Select the first wallet as account by default
+    Load accounts from chrome storage
   */
   useEffect(() => {
     const loadWallets = async () => {
@@ -120,6 +108,11 @@ export default ({ children }) => {
     loadWallets()
   }, [])
 
+  /* 
+    Load for activated (default) account.
+    This account will be used to display balances, kID, connect site.
+    On setting, user can change their activated (default) account.
+  */
   useEffect(() => {
     const loadActivatedAccount = async () => {
       /* 
@@ -139,113 +132,93 @@ export default ({ children }) => {
     if (walletLoaded) loadActivatedAccount()
   }, [walletLoaded])
 
+  /* 
+    Loads required data for gallery.
+    Runs when account state changed.
+  */
   useEffect(() => {
-    const getDataFromStorage = async () => {
-      console.log('RUNNING')
+    /* 
+      Meta data
+      - Balances
+      - Account Name
+      - Friend affiliate data
+    */
+    const getUserData = async () => {
       try {
-        /* 
-          Contents, koiBalance, arBalance, address, affiliateCode, showWelcomeScreen, accountName
-        */
-        let allAssets
-        // Get all contents
+        const activatedAccount = await popupAccount.getAccount({ address: account.address })
+        setAddress(account.address)
 
-        /* 
-          When show create collection form, filter NFTs by account.
-          To make sure: Account1 can only create a new collection from Account1's NFTs
-        */
-        if (showCreateCollection) {
-          const _account = await popupAccount.getAccount({ address: account.address })
-          const assets = await _account.get.assets()
-          setCollectionNFT([])
-          setCardInfos(assets)
-        } else {
-          allAssets = await popupAccount.getAllAssets()
-        }
+        // balances
+        const arBalance = await activatedAccount.get.balance()
+        const koiBalance = await activatedAccount.get.koiBalance()
+        // console.log('arBalance', arBalance)
+        // console.log('koiBalance', koiBalance)
+        setTotalKoi(koiBalance)
+        setTotalAr(arBalance)
 
-        const aAccount = await popupAccount.getAccount({ address: account.address })
-        // let contentList = await aAccount.get.assets()
-      
-        const addressStorage = account.address
+        // set account name
+        const accountName = await activatedAccount.get.accountName()
+        setAccountName(accountName)
 
-        const arBalance = await aAccount.get.balance()
-        const koiBalance = await aAccount.get.koiBalance()
 
-        const arweaveAccountName = await aAccount.get.accountName()
-
-        const showViewStorage = await storage.setting.get.showViews()
-        const showEarnedKoiStorage = await storage.setting.get.showEarnedKoi()
-        const showWelcomeScreen = await storage.setting.get.showWelcomeScreen()
         const affiliateCodeStorage = await storage.generic.get.affiliateCode()
-
-        if (showViewStorage) setShowViews(showViewStorage)
-        if (showEarnedKoiStorage) setShowEarnedKoi(showEarnedKoiStorage) 
-
-        if (!showWelcomeScreen) {
-          setShowWelcome(true)
-          await storage.setting.set.showWelcomeScreen(1)
-        }
-
         if (affiliateCodeStorage) setAffiliateCode(affiliateCodeStorage)
-        if (allAssets) setCardInfos(allAssets)
 
-        // Set address state
-        // Do actions when have address (have wallet imported and unlocked).
-        if (addressStorage) {
-          const { key } = await backgroundRequest.wallet.getWalletKey()
+        /* 
+          TODO: we should remove this getting key request
+          All actions that require wallet key should be executed on background.
+        */
+        const { key } = await backgroundRequest.wallet.getWalletKey()
+        setWallet(key)
 
-          setAddress(addressStorage)
-          setWallet(key)
+        /* 
+          TODO: Will add affiliate functions to method of account classes.
+        */
+        if (!affiliateCodeStorage) {
+          koi.wallet = key
+          koi.address = addressStorage
 
-          // Duplicate code. Will refactor.
-          // Calculate balances when have pending transactions.
-          if (isNumber(koiBalance) && isNumber(arBalance)) {
-            let totalAr = arBalance
-            let totalKoi = koiBalance
-            console.log(totalAr, totalKoi)
-            let pendingTransactions = await aAccount.get.pendingTransactions() || []
-            pendingTransactions.forEach((transaction) => {
-              if (isNumber(transaction.expense)) {
-                switch (transaction.activityName) {
-                  case 'Sent KOII':
-                    totalKoi -= transaction.expense
-                    break
-                  case 'Sent AR':
-                    totalAr -= transaction.expense
-                }
-              }
-            })
-            setTotalKoi(totalKoi)
-            setTotalAr(totalAr)
-          }
-          
-          // Load affiliate code
-          if (!affiliateCodeStorage) {
-            koi.wallet = key
-            koi.address = addressStorage
-
-            const code = await getAffiliateCode(koi)
-            const reward = await getTotalRewardKoi(koi)
-            const spent = await checkAffiliateInviteSpent(koi)
-            setAffiliateCode(code)
-            setTotalReward(reward)
-            setInviteSpent(spent)
-          }
-        }
-
-        // Set accountName state
-        if (arweaveAccountName) {
-          setAccountName(arweaveAccountName)
+          const code = await getAffiliateCode(koi)
+          const reward = await getTotalRewardKoi(koi)
+          const spent = await checkAffiliateInviteSpent(koi)
+          setAffiliateCode(code)
+          setTotalReward(reward)
+          setInviteSpent(spent)
         }
       } catch (err) {
         console.log(err.message)
       }
     }
+    /* 
+      Gallery setting
+      - Options: showViews, showEarnedKoi
+      - Flag: showWelcomeScreen - true for the first time opened, the false.
+    */
+    const loadSettings = async () => {
+
+      const showViewStorage = await storage.setting.get.showViews()
+      const showEarnedKoiStorage = await storage.setting.get.showEarnedKoi()
+      const showWelcomeScreen = await storage.setting.get.showWelcomeScreen()
+  
+      if (showViewStorage) setShowViews(showViewStorage)
+      if (showEarnedKoiStorage) setShowEarnedKoi(showEarnedKoiStorage) 
+  
+      if (!showWelcomeScreen) {
+        setShowWelcome(true)
+        await storage.setting.set.showWelcomeScreen(1)
+      }
+    }
     
-    if (!isEmpty(wallets) && !GALLERY_IMPORT_PATH.includes(pathname)) getDataFromStorage()
+    if (!isEmpty(wallets) && !GALLERY_IMPORT_PATH.includes(pathname)) {
+      console.log('Loading for user data and setting...')
+      getUserData()
+      loadSettings()
+    }
   }, [account])
 
   /* 
     Load for all assets
+    This list of assets will include assets of every imported accounts.
   */
   useEffect(() => {
     const loadAssets = async () => {
@@ -263,8 +236,14 @@ export default ({ children }) => {
     }
 
     if (!isEmpty(wallets) && !GALLERY_IMPORT_PATH.includes(pathname)) loadAssets()
-  }, [])
+  }, [account])
 
+  /* 
+    On open create collection form, allAssets list should be set to assets of the 
+    activated account.
+    This action happens for the purpose of to prevent user from creating collection that contains
+    an NFTs from another account - in case they imported more than one account.
+  */
   useEffect(() => {
     const setAssetsForCreateCollection = async () => {
       if (showCreateCollection) {

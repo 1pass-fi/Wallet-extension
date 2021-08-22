@@ -580,7 +580,7 @@ export const getImageDataForNFT = async (fileType) => {
 }
 
 export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
-  const bundlerUrl = 'https://bundler.openkoi.com:8888'
+  const bundlerUrl = 'https://devbundler.openkoi.com:8888'
   try {
     const { u8, file } = await getImageDataForNFT(fileType)
 

@@ -77,4 +77,8 @@ export class GenericSet {
   activityNotifications(value) {
     return this.#chrome._setChrome(GENERIC.ACTIVITY_NOTIFICATIONS, value)
   }
+
+  tokenPrice(value) {
+    return this.#chrome._setChrome(GENERIC.TOKEN_PRICE, value)
+  }
 }

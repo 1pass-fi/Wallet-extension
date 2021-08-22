@@ -5,9 +5,8 @@ import moment from 'moment'
 import axios from 'axios'
 
 import storage from 'storage'
-import { Account } from 'account'
-import { Arweave as ArweaveWallet } from 'account/Arweave'
-import { Ethereum as EthereumWallet } from 'account/Ethereum'
+import { Arweave as ArweaveWallet } from 'account/Chains/Arweave/Arweave'
+import { Ethereum as EthereumWallet } from 'account/Chains/Ethereum/Ethereum'
 import { TYPE } from 'account/accountConstants'
 
 import { getImageDataForNFT } from 'utils'
@@ -371,12 +370,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       }
       case MESSAGES.LOAD_CONTENT: {
         try {
-          /*
-            loadMyContent() will return an array of nfts.
-            loadMyContent() will return 'ALL_NFT_LOADED' if there was no new nft.
+          /* 
+            Load assets of all accounts then 
           */
-
-          // load all accounts
           const allAccounts = await backgroundAccount.getAllAccounts()
 
           await Promise.all(allAccounts.map(async account => {

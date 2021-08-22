@@ -34,4 +34,8 @@ export class GenericRemove {
   unlocked() {
     return this.#chrome._removeChrome(GENERIC.UNLOCKED)
   }
+
+  tokenPrice() {
+    return this.#chrome._removeChrome(GENERIC.TOKEN_PRICE)
+  }
 }

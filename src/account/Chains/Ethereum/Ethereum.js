@@ -1,4 +1,4 @@
-import { Wallet } from './Wallet'
+import { Wallet } from '../../Wallet'
 import { EthereumUtils } from './EthereumUtils'
 import { Ethereum as _Ethereum } from 'background/eth'
 import { EthereumMethod } from './EthereumMethod'
