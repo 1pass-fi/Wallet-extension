@@ -74,7 +74,7 @@ export default ({ setPassword }) => {
           onChange={(e) => setIsAcceptTermService(e.target.checked)}
         />
         <div className='term-of-service-text'>
-          <label for='term-of-service'>
+          <label htmlFor='term-of-service'>
           I agree with the&nbsp;
             <a target="_blank" href={URL.TERM_OF_SERVICE} className='link'>
             Terms of Service

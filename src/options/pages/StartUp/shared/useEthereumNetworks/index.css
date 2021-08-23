@@ -1,0 +1,101 @@
+.default-network {
+  font-size: 16px;
+  line-height: 16px;
+  margin-top: 19px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.default-network .question-icon {
+  margin-right: 8px;
+}
+
+.default-network span {
+  color: #49ce8b;
+}
+
+.network-options {
+  background: #171753;
+  border-radius: 3px;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0px 2px 16px 4px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  height: 301px;
+  margin-top: 19px;
+  opacity: 0.95;
+  width: 302px;
+}
+
+.network-options * {
+  box-sizing: border-box;
+}
+
+.network-options .option {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  font-size: 16px;
+  gap: 13px;
+  height: 42px;
+  line-height: 24px;
+  padding: 9px 40px;
+  width: 100%;
+}
+
+.network-options .option.active {
+  background: #ffc78f;
+  font-weight: 600;
+}
+
+.network-options .option .bubble {
+  border-radius: 6px;
+  height: 12px;
+  width: 12px;
+}
+
+.network-options .option:nth-child(1) .bubble {
+  background: #29b6af;
+  border: 1px solid #171753;
+}
+
+.network-options .option:nth-child(2) .bubble {
+  background: #ff4a8d;
+}
+
+.network-options .option:nth-child(3) .bubble {
+  background: #9064ff;
+}
+
+.network-options .option:nth-child(4) .bubble {
+  background: #f6c343;
+}
+
+.network-options .option:nth-child(5) .bubble {
+  background: #3099f2;
+}
+
+.network-options .option:nth-child(6) .bubble {
+  background: #d6d9dc;
+  border: 1px solid #171753;
+}
+
+.network-options .option:nth-child(7) .bubble {
+  background: #ffffff;
+  border: 1px solid #171753;
+}
+
+.submit-network-button {
+  background: #ffffff;
+  border-radius: 3px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+  color: #171753;
+  cursor: pointer;
+  font-weight: 600;
+  height: 40px;
+  margin-top: 31px;
+  width: 249px;
+  font-size: 16px;
+  padding: 8px 0px;
+  text-align: center;
+}
