@@ -435,126 +435,6 @@ export const loadNFTCost = async (size, address) => {
   return price / 1000000000000
 }
 
-export const getAffiliateCode = async (koi) => {
-  try {
-    const signedPayload = await koi.signPayload({ data: { address: koi.address } })
-    const { data } = await axios({
-      method: 'POST',
-      url: PATH.AFFILIATE_REGISTER,
-      data: {
-        address: koi.address,
-        signature: signedPayload.signature,
-        publicKey: signedPayload.owner
-      }
-    })
-
-    return get(data, 'data.affiliateCode')
-  } catch (err) {
-    console.log(err.message)
-    throw new Error('Cannot get affiliateCode')
-  }
-}
-
-export const claimReward = async (koi) => {
-  try {
-    const signedPayload = await koi.signPayload({ data: { address: koi.address } })
-    const { data } = await axios({
-      method: 'POST',
-      url: PATH.AFFILIATE_CLAIM_REWARD,
-      data: {
-        address: koi.address,
-        signature: signedPayload.signature,
-        publicKey: signedPayload.owner
-      }
-    })
-    return data
-  } catch (err) {
-    throw new Error(err.message)
-  }
-}
-
-export const getRegistrationReward = async (koi, nftId) => {
-  console.log('NFT ID: ', nftId)
-  try {
-    const signedPayload = await koi.signPayload({ data: { address: koi.address }})
-    const { data } = await axios({
-      method: 'POST',
-      url: PATH.AFFILIATE_REGISTRATION_REWARD,
-      data: {
-        address: koi.address,
-        signature: signedPayload.signature,
-        publicKey: signedPayload.owner,
-        nftId
-      }
-    })
-
-    return data
-  } catch (err) {
-    throw new Error(err.message)
-  }
-}
-
-export const submitInviteCode = async (koi, code) => {
-  try {
-    const signedPayload = await koi.signPayload({ data: { address: koi.address, code } })
-    const { data } = await axios({
-      method: 'POST',
-      url: PATH.AFFILIATE_SUBMIT_CODE,
-      data: {
-        address: koi.address,
-        code,
-        signature: signedPayload.signature,
-        publicKey: signedPayload.owner
-      }
-    })
-
-    return data
-  } catch (err) {
-    throw new Error(err.message)
-  }
-}
-
-export const getTotalRewardKoi = async (koi) => {
-  try {
-    const { data } = await axios({
-      method: 'POST',
-      url: PATH.AFFILIATE_TOTAL_REWARD,
-      data: {
-        address: [koi.address]
-      }
-    })
-    if (status !== 200) {
-      return 0
-    }
-
-    return get(data, 'data.totalReward')
-  } catch(err) {
-    throw new Error(err.message)
-  }
-}
-
-export const checkAffiliateInviteSpent = async (koi) => {
-  try {
-    const signedPayload = await koi.signPayload({ data: { address: koi.address, code: 'code' } })
-    const { data } = await axios({
-      method: 'POST',
-      url: PATH.AFFILIATE_SUBMIT_CODE,
-      data: {
-        address: koi.address,
-        code: 'code',
-        signature: signedPayload.signature,
-        publicKey: signedPayload.owner
-      }
-    })
-
-    if (((data.message).toLowerCase()).includes('already exists')) {
-      return true
-    }
-  } catch (err) {
-    throw new Error(err.message)
-  }
-}
-
 export const getImageDataForNFT = async (fileType) => {
   try {
     const storage = await getChromeStorage(NFT_BIT_DATA)
@@ -697,4 +577,126 @@ export const utils = {
   setChromeStorage,
   getChromeStorage,
   removeChromeStorage
+}
+
+
+export const getAffiliateCode = async (koi) => {
+  try {
+    const signedPayload = await koi.signPayload({ data: { address: koi.address } })
+    const { data } = await axios({
+      method: 'POST',
+      url: PATH.AFFILIATE_REGISTER,
+      data: {
+        address: koi.address,
+        signature: signedPayload.signature,
+        publicKey: signedPayload.owner
+      }
+    })
+
+    return get(data, 'data.affiliateCode')
+  } catch (err) {
+    console.log(err.message)
+    throw new Error('Cannot get affiliateCode')
+  }
+}
+
+export const claimReward = async (koi) => {
+  try {
+    const signedPayload = await koi.signPayload({ data: { address: koi.address } })
+    const { data } = await axios({
+      method: 'POST',
+      url: PATH.AFFILIATE_CLAIM_REWARD,
+      data: {
+        address: koi.address,
+        signature: signedPayload.signature,
+        publicKey: signedPayload.owner
+      }
+    })
+    return data
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
+export const getRegistrationReward = async (koi, nftId) => {
+  console.log('NFT ID: ', nftId)
+  try {
+    const signedPayload = await koi.signPayload({ data: { address: koi.address }})
+    const { data } = await axios({
+      method: 'POST',
+      url: PATH.AFFILIATE_REGISTRATION_REWARD,
+      data: {
+        address: koi.address,
+        signature: signedPayload.signature,
+        publicKey: signedPayload.owner,
+        nftId
+      }
+    })
+
+    return data
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
+export const submitInviteCode = async (koi, code) => {
+  try {
+    const signedPayload = await koi.signPayload({ data: { address: koi.address, code } })
+    const { data } = await axios({
+      method: 'POST',
+      url: PATH.AFFILIATE_SUBMIT_CODE,
+      data: {
+        address: koi.address,
+        code,
+        signature: signedPayload.signature,
+        publicKey: signedPayload.owner
+      }
+    })
+
+    return data
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
+
+export const getTotalRewardKoi = async (koi) => {
+  try {
+    const { data } = await axios({
+      method: 'POST',
+      url: PATH.AFFILIATE_TOTAL_REWARD,
+      data: {
+        address: [koi.address]
+      }
+    })
+    if (status !== 200) {
+      return 0
+    }
+
+    return get(data, 'data.totalReward')
+  } catch(err) {
+    throw new Error(err.message)
+  }
+}
+
+export const checkAffiliateInviteSpent = async (koi) => {
+  try {
+    const signedPayload = await koi.signPayload({ data: { address: koi.address, code: 'code' } })
+    const { data } = await axios({
+      method: 'POST',
+      url: PATH.AFFILIATE_SUBMIT_CODE,
+      data: {
+        address: koi.address,
+        code: 'code',
+        signature: signedPayload.signature,
+        publicKey: signedPayload.owner
+      }
+    })
+
+    if (((data.message).toLowerCase()).includes('already exists')) {
+      return true
+    }
+  } catch (err) {
+    throw new Error(err.message)
+  }
 }

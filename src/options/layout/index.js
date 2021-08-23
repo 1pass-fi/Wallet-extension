@@ -192,7 +192,7 @@ export default ({ children }) => {
     /* 
       Gallery setting
       - Options: showViews, showEarnedKoi
-      - Flag: showWelcomeScreen - true for the first time opened, the false.
+      - Flag: showWelcomeScreen - true for the first time opened, then false.
     */
     const loadSettings = async () => {
 
