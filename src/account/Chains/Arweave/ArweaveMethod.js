@@ -299,6 +299,132 @@ export class ArweaveMethod {
     }
   }
 
+  /* 
+    AFFILIATE CODE
+  */
+  async getAffiliateCode () {
+    try {
+      const signedPayload = await this.koi.signPayload({ data: { address: this.koi.address } })
+      const { data } = await axios({
+        method: 'POST',
+        url: PATH.AFFILIATE_REGISTER,
+        data: {
+          address: this.koi.address,
+          signature: signedPayload.signature,
+          publicKey: signedPayload.owner
+        }
+      })
+  
+      return get(data, 'data.affiliateCode')
+    } catch (err) {
+      console.log(err.message)
+      throw new Error('Cannot get affiliateCode')
+    }
+  }
+
+  async claimReward () {
+    try {
+      const signedPayload = await this.koi.signPayload({ data: { address: this.koi.address } })
+      const { data } = await axios({
+        method: 'POST',
+        url: PATH.AFFILIATE_CLAIM_REWARD,
+        data: {
+          address: this.koi.address,
+          signature: signedPayload.signature,
+          publicKey: signedPayload.owner
+        }
+      })
+      return data
+    } catch (err) {
+      throw new Error(err.message)
+    }
+  }
+
+  async getRegistrationReward (nftId) {
+    console.log('NFT ID: ', nftId)
+    try {
+      const signedPayload = await this.koi.signPayload({ data: { address: this.koi.address }})
+      const { data } = await axios({
+        method: 'POST',
+        url: PATH.AFFILIATE_REGISTRATION_REWARD,
+        data: {
+          address: this.koi.address,
+          signature: signedPayload.signature,
+          publicKey: signedPayload.owner,
+          nftId
+        }
+      })
+  
+      return data
+    } catch (err) {
+      throw new Error(err.message)
+    }
+  }
+
+  async submitInviteCode(code) {
+    try {
+      const signedPayload = await this.koi.signPayload({ data: { address: this.koi.address, code } })
+      const { data } = await axios({
+        method: 'POST',
+        url: PATH.AFFILIATE_SUBMIT_CODE,
+        data: {
+          address: this.koi.address,
+          code,
+          signature: signedPayload.signature,
+          publicKey: signedPayload.owner
+        }
+      })
+  
+      return data
+    } catch (err) {
+      throw new Error(err.message)
+    }
+  }
+  
+  async getTotalRewardKoi() {
+    try {
+      const { data } = await axios({
+        method: 'POST',
+        url: PATH.AFFILIATE_TOTAL_REWARD,
+        data: {
+          address: [this.koi.address]
+        }
+      })
+      if (status !== 200) {
+        return 0
+      }
+  
+      return get(data, 'data.totalReward')
+    } catch(err) {
+      throw new Error(err.message)
+    }
+  }
+
+  async checkAffiliateInviteSpent() {
+    try {
+      const signedPayload = await this.koi.signPayload({ data: { address: this.koi.address, code: 'code' } })
+      const { data } = await axios({
+        method: 'POST',
+        url: PATH.AFFILIATE_SUBMIT_CODE,
+        data: {
+          address: this.koi.address,
+          code: 'code',
+          signature: signedPayload.signature,
+          publicKey: signedPayload.owner
+        }
+      })
+  
+      if (((data.message).toLowerCase()).includes('already exists')) {
+        return true
+      }
+    } catch (err) {
+      throw new Error(err.message)
+    }
+  }
+
+  /* 
+    PRIVATE FUNCTIONS
+  */
   async #updateCollection(nftIds, collectionId) {
     return await this.koi.updateCollection(nftIds, collectionId)
   }

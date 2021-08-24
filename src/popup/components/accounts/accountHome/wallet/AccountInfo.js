@@ -92,11 +92,11 @@ export const AccountInfo = (({
             <ExtendIcon />
           </div>
         }
-        <div className='koi-balance'>
+        {account.type !== TYPE.ETHEREUM && <div className='koi-balance'>
           <div className='balance'>{numberFormat(account.koiBalance)} KOII</div>
           {<div hidden className='usd-exchange'>${fiatCurrencyFormat(account.koiBalance * price.KOI)} USD</div>}
-        </div>
-        {!collapsed && 
+        </div>}
+        {(account.type == TYPE.ETHEREUM || !collapsed) && 
           <div className='ar-balance'>
             <div className='balance'>{numberFormat(account.balance)} {account.type == TYPE.ARWEAVE ? 'AR' : 'ETH'}</div>
             {<div className='usd-exchange'>{getSymbolFromCurrency(currency) || ''}{fiatCurrencyFormat(account.balance * price.AR)} {currency}</div>}
