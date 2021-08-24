@@ -2,11 +2,13 @@ import Web3 from 'web3'
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
 import hdkey from 'ethereumjs-wallet/dist/hdkey'
 
+import { ETH_NETWORK_PROVIDER } from 'koiConstants'
+
 export class Ethereum {
   #provider
   #web3
-  constructor() {
-    this.#provider = 'https://ropsten.infura.io/v3/a14cb094aac040be922807d25abd33f1'
+  constructor(provider) {
+    this.#provider = provider || ETH_NETWORK_PROVIDER.MAINNET
     this.#web3 = new Web3(this.#provider)
     this.key = null
     this.address = null

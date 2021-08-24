@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
 }
 
 .default-network .question-icon {
@@ -22,9 +23,10 @@
   box-shadow: 0px 2px 16px 4px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   height: 301px;
-  margin-top: 19px;
   opacity: 0.95;
   width: 302px;
+  margin: auto;
+  margin-top: 19px;
 }
 
 .network-options * {

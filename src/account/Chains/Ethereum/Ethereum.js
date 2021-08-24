@@ -5,9 +5,9 @@ import { EthereumMethod } from './EthereumMethod'
 
 export class Ethereum extends Wallet {
   #eth
-  constructor({ address, key }) {
+  constructor({ address, key }, provider) {
     super(address)
-    this.#eth = new _Ethereum()
+    this.#eth = new _Ethereum(provider)
     this.#eth.address = address
     this.#eth.wallet = key
     this.method = new EthereumMethod(this.#eth)

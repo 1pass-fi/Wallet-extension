@@ -209,7 +209,7 @@ export default ({ children }) => {
       }
     }
     
-    if (!isEmpty(wallets) && !GALLERY_IMPORT_PATH.includes(pathname)) {
+    if (!isEmpty(wallets) || !GALLERY_IMPORT_PATH.includes(pathname)) {
       console.log('Loading for user data and setting...')
       getUserData()
       loadSettings()

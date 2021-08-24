@@ -6,6 +6,10 @@
   padding: 10px;
 }
 
+.success-page * {
+  color: #ffffff;
+}
+
 .success-page .title {
   font-size: 24px;
   font-weight: 600;

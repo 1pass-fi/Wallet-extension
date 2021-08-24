@@ -92,6 +92,10 @@
   align-items: center;
 }
 
+.wallet .wallet-wrapper .wallet-info .wallet-info-row .network-name {
+  white-space: nowrap;
+}
+
 .wallet .wallet-wrapper .wallet-info .wallet-info-row .name .text {
   overflow: hidden;
   text-overflow: ellipsis;

@@ -1,4 +1,13 @@
-import { LOAD_KOI_BY, PATH, STORAGE, ERROR_MESSAGE, NFT_BIT_DATA, ALL_NFT_LOADED } from 'koiConstants'
+import { 
+  LOAD_KOI_BY, 
+  PATH, 
+  STORAGE, 
+  ERROR_MESSAGE, 
+  NFT_BIT_DATA, 
+  ALL_NFT_LOADED,
+  ETH_NETWORK_NAME,
+  ETH_NETWORK_PROVIDER
+} from 'koiConstants'
 import passworder from 'browser-passworder'
 import moment from 'moment'
 import { get, isNumber, isArray } from 'lodash'
@@ -690,6 +699,31 @@ export const createNewKid = async (koi, kidInfo, fileType) => {
 
 export const updateKid = async (koi, kidInfo, contractId) => {
   return await koi.updateKID(kidInfo, contractId)
+}
+
+export const getProviderUrlFromName = (name) => {
+  switch(name) {
+    case ETH_NETWORK_NAME.MAINNET:
+      return ETH_NETWORK_PROVIDER.MAINNET
+    case ETH_NETWORK_NAME.ROPSTEN:
+      return ETH_NETWORK_PROVIDER.ROPSTEN
+    case ETH_NETWORK_NAME.KOVAN:
+      return ETH_NETWORK_PROVIDER.KOVAN
+    case ETH_NETWORK_NAME.RINKEBY:
+      return ETH_NETWORK_PROVIDER.RINKEBY
+  }
+}
+export const getProviderNameFromUrl = (name) => {
+  switch(name) {
+    case ETH_NETWORK_PROVIDER.MAINNET:
+      return ETH_NETWORK_NAME.MAINNET
+    case ETH_NETWORK_PROVIDER.ROPSTEN:
+      return ETH_NETWORK_NAME.ROPSTEN
+    case ETH_NETWORK_PROVIDER.KOVAN:
+      return ETH_NETWORK_NAME.KOVAN
+    case ETH_NETWORK_PROVIDER.RINKEBY:
+      return ETH_NETWORK_NAME.RINKEBY
+  }
 }
 
 export const utils = {

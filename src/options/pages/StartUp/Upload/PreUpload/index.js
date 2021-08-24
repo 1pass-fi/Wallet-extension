@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import isEmpty from 'lodash/isEmpty'
 
 import EthereumLogo from 'img/startup/ethereum-logo.svg'
@@ -9,7 +9,9 @@ import WalletType from '../../shared/WalletType'
 
 import { TYPE } from 'account/accountConstants'
 
-export default ({ file, setFile, nextStep, walletType, setWalletType }) => {
+import useEthereumNetworks from '../../shared/useEthereumNetworks'
+
+export default ({ nextStep, setWalletType}) => {
   return (
     <div>
       <div className='title'>Import a key with a .JSON file</div>
@@ -27,8 +29,11 @@ export default ({ file, setFile, nextStep, walletType, setWalletType }) => {
               <span>start here</span>.
             </div>
           )}
-          selected={walletType === TYPE.ARWEAVE}
-          onClick={() => setWalletType(TYPE.ARWEAVE)}
+          selected={false}
+          onClick={() => {
+            setWalletType(TYPE.ARWEAVE)
+            nextStep()
+          }}
         />
 
         <WalletType
@@ -40,25 +45,13 @@ export default ({ file, setFile, nextStep, walletType, setWalletType }) => {
               <span>cross-chain transactions</span>.
             </div>
           )}
-          selected={walletType === TYPE.ETHEREUM}
-          onClick={() => setWalletType(TYPE.ETHEREUM)}
+          selected={false}
+          onClick={() => {
+            setWalletType(TYPE.ETHEREUM)
+            nextStep()
+          }}
         />
       </div>
-      {walletType && <div className='upload-file'>
-        
-        <div className='description'>
-        Drag & drop an existing .JSON key file here or click to browse your
-        computer.
-        </div>
-        <Dropfile file={file} setFile={setFile} />
-        <button
-          disabled={isEmpty(file)}
-          onClick={nextStep}
-          className='upload-file-button white-button'
-        >
-        Upload File
-        </button>
-      </div>}
     </div>
   )
 }

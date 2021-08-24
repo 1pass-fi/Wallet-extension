@@ -12,14 +12,13 @@ import { JSONFileToObject } from 'options/utils'
 import ConfirmPassword from '../../shared/ConfirmPassword'
 import InputPassword from '../../shared/InputPassword'
 
-export default ({ nextStep, file, walletType }) => {
-  const { setError } = useContext(GalleryContext)
-  const { wallets } =  useContext(GalleryContext)
+export default ({ nextStep, file, walletType, selectedNetwork }) => {
+  const { setError, wallets } =  useContext(GalleryContext)
   const [password, setPassword] = useState('')
   const onConfirm = async () => {
     try {
       const key = await JSONFileToObject(file)
-      await backgroundRequest.gallery.uploadJSONKeyFile({ password, key, type: walletType })
+      await backgroundRequest.gallery.uploadJSONKeyFile({ password, key, type: walletType, provider: selectedNetwork })
       nextStep()
     } catch (err) {
       setError(err.message)

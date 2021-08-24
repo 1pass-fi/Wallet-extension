@@ -105,4 +105,8 @@ export class WalletSet {
   async connectedSite(value) {
     await this.#accountStorage.setField(ACCOUNT.CONNECTED_SITE, value)
   }
+
+  async provider(value) {
+    await this.#accountStorage.setField(ACCOUNT.PROVIDER, value)
+  }
 }

@@ -110,11 +110,16 @@ export class WalletGet {
     const accountName = await this.accountName()
     const balance = await this.balance()
     const koiBalance = await this.koiBalance()
+    const provider = await this.provider()
 
-    return  { address, balance, koiBalance, accountName, type }
+    return  { address, balance, koiBalance, accountName, type, provider }
   }
 
   async connectedSite() {
     return await this.#accountStorage.getField(ACCOUNT.CONNECTED_SITE)
+  }
+
+  async provider() {
+    return await this.#accountStorage.getField(ACCOUNT.PROVIDER)
   }
 }

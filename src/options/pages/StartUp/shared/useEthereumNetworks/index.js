@@ -2,18 +2,23 @@ import React, { useState } from 'react'
 import get from 'lodash/get'
 
 import QuestionIcon from 'img/startup/question-mark.svg'
+import { ETH_NETWORK_NAME } from 'koiConstants'
 
 import './index.css'
 
-export default ({ title: Title, description: Description }) => {
+export default ({ title: Title = () => <></>, description: Description = () => <></>}) => {
   const networks = [
-    'Ethereum Mainnet',
-    'Ropsten Test Network',
-    'Kovan Test Network',
-    'Rinkeby Test Network',
-    'Goerli Test Network',
-    'Localhost 8545',
-    'Custom RPC',
+    ETH_NETWORK_NAME.MAINNET,
+    ETH_NETWORK_NAME.ROPSTEN,
+    ETH_NETWORK_NAME.KOVAN,
+    ETH_NETWORK_NAME.RINKEBY
+    // 'Ethereum Mainnet',
+    // 'Ropsten Test Network',
+    // 'Kovan Test Network',
+    // 'Rinkeby Test Network',
+    // 'Goerli Test Network',
+    // 'Localhost 8545',
+    // 'Custom RPC',
   ]
 
   const [selectedNetwork, setSelectedNetwork] = useState(get(networks, '0', ''))
@@ -39,7 +44,7 @@ export default ({ title: Title, description: Description }) => {
           </div>
         ))}
       </div>
-      <div onClick={onSubmit} className='submit-network-button'>Select Network</div>
+      {onSubmit && <div onClick={onSubmit} className='submit-network-button'>Select Network</div>}
     </>
   )
 

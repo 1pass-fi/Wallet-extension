@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 
 import EthereumLogo from 'img/startup/ethereum-logo.svg'
 import FinnieLogo from 'img/startup/finnie-logo.svg'
@@ -10,17 +10,24 @@ import Button from '../shared/Button'
 import Success from '../shared/Success'
 import Loading from '../shared/Loading'
 import useEthereumNetworks from '../shared/useEthereumNetworks'
+import { GalleryContext } from 'options/galleryContext'
+import InputPassword from '../shared/InputPassword'
+
+import isEmpty from 'lodash/isEmpty'
 
 import { backgroundRequest } from 'popup/backgroundRequest'
+
+import { TYPE } from 'account/accountConstants'
 
 import './index.css'
 
 export default () => {
   const [step, setStep] = useState(1)
-  const [walletType, setWalletType] = useState('ARWEAVE')
+  const [walletType, setWalletType] = useState(null)
   const [userSeedPhrase, setUserSeedPhrase] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const { setError, wallets } =  useContext(GalleryContext)
   const { selectedNetwork, EthereumNetworks } = useEthereumNetworks({
     title: () => <div className='title'>Import Ethereum Key</div>,
     description: () => <div className='description'>Choose your Network.</div>,
@@ -38,15 +45,21 @@ export default () => {
     }
   }
 
+
   const onImportKey = async () => {
-    // TODO: import key here
     setIsLoading(true)
-    await backgroundRequest.gallery.updateJSONKeyfile({
-      key: userSeedPhrase,
-      password,
-    })
+    try {
+      await backgroundRequest.gallery.uploadJSONKeyFile({
+        key: userSeedPhrase,
+        password,
+        type: walletType,
+        provider: selectedNetwork
+      })
+      nextStep()
+    } catch (err) {
+      setError(err.message)
+    }
     setIsLoading(false)
-    nextStep()
   }
 
   if (step === 4) {
@@ -79,7 +92,7 @@ export default () => {
                     </div>
                   )}
                   selected={false}
-                  onClick={() => onTypeSelect('ARWEAVE')}
+                  onClick={() => onTypeSelect(TYPE.ARWEAVE)}
                 />
 
                 <WalletType
@@ -92,7 +105,7 @@ export default () => {
                     </div>
                   )}
                   selected={false}
-                  onClick={() => onTypeSelect('ETHEREUM')}
+                  onClick={() => onTypeSelect(TYPE.ETHEREUM)}
                 />
               </div>
             </>
@@ -123,12 +136,18 @@ export default () => {
                 setValue={setUserSeedPhrase}
               />
 
-              <div className='confirm-password-wrapper'>
-                <ConfirmPassword setPassword={setPassword} />
-              </div>
+
+               {isEmpty(wallets) ? <div className='confirm-password-wrapper'>
+                 <ConfirmPassword setPassword={setPassword} />
+               </div>
+                 :
+                 <div className='confirm-password-wrapper'>
+                   <InputPassword setPassword={setPassword} />
+                 </div>
+               }
 
               <Button
-                disabled={!(password && userSeedPhrase)}
+                disabled={!(password && userSeedPhrase) && isEmpty(wallets)}
                 className='import-key-button'
                 onClick={onImportKey}
               >

@@ -17,12 +17,13 @@ import EditAccountNameModal from 'popup/components/modals/editAccountNameModal'
 
 import { setNotification } from 'actions/notification'
 import { setAccountName } from 'actions/accountName'
-import { numberFormat, fiatCurrencyFormat, updateAccountName } from 'utils'
+import { fiatCurrencyFormat, getProviderNameFromUrl, numberFormat, updateAccountName } from 'utils'
 import { NOTIFICATION } from 'koiConstants'
 import { Account } from 'account'
 import { setAccounts } from 'popup/actions/accounts'
 import { changeAccountName } from 'actions/koi'
 import useNetworkSelection from 'shared/useNetworkSelection'
+
 
 import { TYPE } from 'account/accountConstants'
 
@@ -78,7 +79,8 @@ export const AccountInfo = (({
               </CopyToClipboard>
             </div>
           </div>
-          <NetworkSelection />
+          {/* <NetworkSelection /> */}
+          <div className='network-name'>{getProviderNameFromUrl(account.provider)}</div>
         </div>
       </div>
       <div className='wallet-balance-row'>

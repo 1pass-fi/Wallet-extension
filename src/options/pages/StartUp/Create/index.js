@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import isEqual from 'lodash/isEqual'
 import shuffle from 'lodash/shuffle'
@@ -13,12 +13,18 @@ import WalletType from '../shared/WalletType'
 import Success from '../shared/Success'
 import Button from '../shared/Button'
 import ConfirmPassword from '../shared/ConfirmPassword'
+import InputPassword from '../shared/InputPassword'
 import Loading from '../shared/Loading'
+
+import isEmpty from 'lodash/isEmpty'
+
+import useEthereumNetworks from '../shared/useEthereumNetworks'
 
 import { backgroundRequest } from 'popup/backgroundRequest'
 
 import './index.css'
 import { TYPE } from 'account/accountConstants'
+import { GalleryContext } from 'options/galleryContext'
 
 const mockPhrase = [
   'program',
@@ -36,8 +42,12 @@ const mockPhrase = [
 ]
 
 export default () => {
+  const { selectedNetwork, EthereumNetworks } = useEthereumNetworks({})
+
+  const { setError, wallets } = useContext(GalleryContext)
+
   const [step, setStep] = useState(1)
-  const [walletType, setWalletType] = useState(TYPE.ARWEAVE)
+  const [walletType, setWalletType] = useState(null)
   const [seedPhrase, setSeedPhrase] = useState(mockPhrase)
   const [isHideSeedPhrase, setIsHideSeedPhrase] = useState(true)
   const [password, setPassword] = useState('')
@@ -58,7 +68,7 @@ export default () => {
     /* 
       Expected to receive an array of 12 words phrase. ['summer', 'vacation',...]
     */
-    const phrase = await backgroundRequest.gallery.generateNewWallet({ walletType: TYPE.ARWEAVE })
+    const phrase = await backgroundRequest.gallery.generateNewWallet({ walletType })
     console.log('phrase', phrase)
     setSeedPhrase(phrase)
     setUnselectedWords(
@@ -69,22 +79,29 @@ export default () => {
       }))
     )
     await setIsLoading(false)
-    nextStep()
+
+    if (walletType == TYPE.ARWEAVE) {
+      setStep(3)
+    } else {
+      nextStep()
+    }
   }
 
   /* 
     Save created account to the storage.
   */
   const handleCreateKey = async () => {
-    await backgroundRequest.gallery.saveWallet({ password })
-    console.log({ walletType })
-    console.log({ userSeedPhrase: userSeedPhrase.join(' ') })
-    console.log({ password })
-    nextStep()
+    try {
+      await backgroundRequest.gallery.saveWallet({ password, provider: selectedNetwork })
+      nextStep()
+    } catch (err) {
+      console.log(err.message)
+      setError(err.message)
+    }
   }
 
   const gotoPasswordConfirm = () => {
-    setStep(4)
+    setStep(5)
   }
 
   const removeWord = (word) => {
@@ -121,10 +138,12 @@ export default () => {
     nextStep()
   }
 
-  if (step === 5) {
+  if (step === 6) {
     return (
-      <div className='create-wallet-wrapper'>
-        <Success />
+      <div className='start-up'>
+        <div className='create-wallet-wrapper'>
+          <Success />
+        </div>
       </div>
     )
   }
@@ -152,8 +171,8 @@ export default () => {
                     <span>start here</span>.
                   </div>
                 )}
-                selected={walletType === 'ARWEAVE'}
-                onClick={() => setWalletType('ARWEAVE')}
+                selected={walletType === TYPE.ARWEAVE}
+                onClick={() => setWalletType(TYPE.ARWEAVE)}
               />
 
               <WalletType
@@ -165,8 +184,8 @@ export default () => {
                     <span>cross-chain transactions</span>.
                   </div>
                 )}
-                selected={walletType === 'ETHEREUM'}
-                onClick={() => setWalletType('ETHEREUM')}
+                selected={walletType === TYPE.ETHEREUM}
+                onClick={() => setWalletType(TYPE.ETHEREUM)}
               />
             </div>
             <button
@@ -179,7 +198,9 @@ export default () => {
           </>
           )}
 
-          {(step === 2 || step === 3) && (
+          {step === 2 && (<EthereumNetworks onSubmit={nextStep} />)}
+
+          {(step === 3 || step === 4) && (
           <>
             <div className='description'>
               Store your recovery phrase somewhere safe. This phrase makes it
@@ -196,7 +217,7 @@ export default () => {
           </>
           )}
 
-          {step === 2 && (
+          {step === 3 && (
           <>
             <div className='seed-phrase-wrapper'>
               {isHideSeedPhrase ? (
@@ -241,7 +262,7 @@ export default () => {
           </>
           )}
 
-          {step === 3 && (
+          {step === 4 && (
           <>
             <div className='selected-words-wrapper'>
               <div className='selected-words'>
@@ -290,18 +311,25 @@ export default () => {
           </>
           )}
 
-          {step === 4 && (
+          {step === 5 && (
           <>
             <div className='description'>
               Create a password for Finnie, so you have easy access to your new
               key. Make sure it is unique and secure.
             </div>
-            <div className='confirm-password-wrapper'>
+
+            {isEmpty(wallets) ? <div className='confirm-password-wrapper'>
               <ConfirmPassword setPassword={setPassword} />
             </div>
+              :
+              <div className='confirm-password-wrapper'>
+                <InputPassword setPassword={setPassword} />
+              </div>
+            }
+
             <Button
               onClick={handleCreateKey}
-              disabled={!password}
+              disabled={!password && !isEmpty(wallets)}
               className='create-key-button'
             >
               Create Key

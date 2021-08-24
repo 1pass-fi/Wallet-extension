@@ -41,12 +41,14 @@ class GenericAccount {
     try {
       const { address } = credentials
       const type = await this.getType(address)
+
+      const provider = await this.#getProviderFromAddress(get(credentials, 'address'))
   
       switch(type) {
         case TYPE.ARWEAVE:
           return new Arweave(credentials)
         case TYPE.ETHEREUM:
-          return new Ethereum(credentials)
+          return new Ethereum(credentials, provider)
       }
     } catch (err) {
       console.log(err.message)
@@ -101,6 +103,11 @@ class GenericAccount {
     } catch (err) {
       console.log(err.message)
     }
+  }
+
+  async #getProviderFromAddress(address) {
+    const metadata = await this.storage._getChrome(address)
+    return get(metadata, ACCOUNT.PROVIDER)
   }
 }
 

@@ -9,13 +9,13 @@ import { Arweave as ArweaveWallet } from 'account/Chains/Arweave/Arweave'
 import { Ethereum as EthereumWallet } from 'account/Chains/Ethereum/Ethereum'
 import { TYPE } from 'account/accountConstants'
 
-import { getImageDataForNFT } from 'utils'
+import { getImageDataForNFT, getProviderUrlFromName } from 'utils'
 
 import { backgroundAccount } from 'account'
 
 import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH } from 'koiConstants'
 
-const generatedKey = { key: null, mnemonic: null, type: null }
+const generatedKey = { key: null, mnemonic: null, type: null, address: null }
 
 import {
   saveWalletToChrome,
@@ -167,7 +167,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
     switch (message.type) {
       case MESSAGES.IMPORT_WALLET: {
         try {
-          let { key, password, type } = message.data
+          let { key, password, type, provider } = message.data
           let account
           let address
 
@@ -200,6 +200,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             case TYPE.ETHEREUM:
               address = await EthereumWallet.utils.loadWallet(eth, key)
           }
+
+          console.log('ADDRESS', address)
+
           await backgroundAccount.createAccount(address, key, password, type)
           account = await backgroundAccount.getAccount({ address, key })
 
@@ -210,8 +213,12 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           }
 
           // Get total account to get a appropriate accountName
+          // Set account provider
           const totalAccounts = await backgroundAccount.count()
-          account.set.accountName(`Account#${totalAccounts}`)
+          await account.set.accountName(`Account#${totalAccounts}`)
+          const providerUrl = getProviderUrlFromName(provider)
+          console.log('PROVIDER URL', providerUrl)
+          if (provider) await account.set.provider(providerUrl)
 
           // If total account = 1, set this accountAddress to activatedAccountAddress
           if (totalAccounts == 1) {
@@ -308,20 +315,25 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           let walletObj
           let seedPhrase
           let key
+          let address
           switch(walletType) {
             case TYPE.ARWEAVE:
               walletObj = new Web()
               seedPhrase = await ArweaveWallet.utils.generateWallet(walletObj)
+              addresss = walletObj.address
               break
             case TYPE.ETHEREUM:
               walletObj = new Ethereum()
               seedPhrase = await EthereumWallet.utils.generateWallet(walletObj)
               key = {key: walletObj.key} // key of eth wallet will be String
+              address = walletObj.address
+              walletObj.wallet = key
           }
 
           generatedKey.key = walletObj.wallet
           generatedKey.mnemonic = seedPhrase
           generatedKey.type = walletType
+          generatedKey.address = address
 
           port.postMessage({
             type: MESSAGES.GENERATE_WALLET,
@@ -864,17 +876,39 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
       case MESSAGES.SAVE_WALLET_GALLERY: {
         try {
-          const { password } = message.data
+          let { password, provider } = message.data
           // Get key and seedphrase from koitool.
           const { key, mnemonic: seedPhrase, type } = generatedKey
+          if (type == TYPE.ARWEAVE) provider = null
+          /* 
+            Check for having imported account.
+          */
+          const count = await backgroundAccount.count()
+          const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
+          const encryptedKey = await backgroundAccount.getEncryptedKey(activatedAccountAddress)
+          
+          if (count) {
+            // Check input password
+            try {
+              await passworder.decrypt(password, encryptedKey)
+            } catch (err) {
+              port.postMessage({
+                type: MESSAGES.SAVE_WALLET_GALLERY,
+                error: err.message,
+                id: messageId
+              })
+              return
+            }
+          }
 
-          koi.wallet = key
-          const addressFromKey = await koi.getWalletAddress()
+          // get address from generatedKey object
+          let addressFromKey = generatedKey.address
 
           const encryptedSeedPhrase = await passworder.encrypt(password, seedPhrase)
 
           // create new Account on background.
           await backgroundAccount.createAccount(addressFromKey, key, password, type)
+
           // get account object to set encrypted seedphrase
           const credentials = await backgroundAccount.getCredentialByAddress(addressFromKey)
           const account = await backgroundAccount.getAccount(credentials)
@@ -882,8 +916,11 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           // Get total account to get a appropriate account name.
           const totalAccounts = await backgroundAccount.count()
-          account.set.accountName(`Account#${totalAccounts}`)
+          await account.set.accountName(`Account#${totalAccounts}`)
           console.log('totalAccounts', totalAccounts)
+          // Set network provider
+          const networkProvider = getProviderUrlFromName(provider)
+          if (networkProvider) await account.set.provider(networkProvider)
 
           // If total account = 1, set this account to activatedAccountAddress.
           if (totalAccounts == 1) {

@@ -10,6 +10,7 @@ export class EthereumUtils {
         await eth.importWallet(key, 'key')
       }
 
+      console.log('eth data', eth.key, eth.address)
       return eth.address
   
     } catch (err) {

@@ -3,6 +3,7 @@
   font-size: 40px;
   color: #ffffff;
   position: relative;
-  background: linear-gradient(90deg, #030332 0%, #171753 100%);
+  /* background: linear-gradient(90deg, #030332 0%, #171753 100%); */
+  background: #171753;
   min-height: 100vh;
 }

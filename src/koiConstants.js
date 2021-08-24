@@ -286,7 +286,8 @@ export const STATEMENT = {
   NO_REWARD: `You don't have any rewards available, share your code to get some!`,
 }
 
-export const LOAD_BALANCES_TIME_INTERVAL = 10000
+// export const LOAD_BALANCES_TIME_INTERVAL = 10000
+export const LOAD_BALANCES_TIME_INTERVAL = 300000
 
 export const NFT_BIT_DATA = 'NFT_BIT_DATA'
 
@@ -317,3 +318,17 @@ export const URL = {
 }
 
 export const GALLERY_IMPORT_PATH = ['/welcome', '/upload-wallet', '/import-wallet', '/create-wallet']
+
+export const ETH_NETWORK_PROVIDER = {
+  MAINNET: 'https://mainnet.infura.io/v3/a14cb094aac040be922807d25abd33f1',
+  ROPSTEN: 'https://ropsten.infura.io/v3/a14cb094aac040be922807d25abd33f1',
+  KOVAN: 'https://kovan.infura.io/v3/a14cb094aac040be922807d25abd33f1',
+  RINKEBY: 'https://rinkeby.infura.io/v3/a14cb094aac040be922807d25abd33f1'
+}
+
+export const ETH_NETWORK_NAME = {
+  MAINNET: 'Ethereum Mainnet',
+  ROPSTEN: 'Ropsten Test Network',
+  KOVAN: 'Kovan Test Network',
+  RINKEBY: 'Rinkeby Test Network'
+}
