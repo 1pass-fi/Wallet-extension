@@ -1,4 +1,5 @@
 import React, { useState, useContext, useRef, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import data from 'currency-codes/data'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { isEmpty, get } from 'lodash'
@@ -14,20 +15,10 @@ import AcceptedCurrencies from './currencies'
 
 import storage from 'storage'
 
-const onImportSeedPhrase = () => {
-  // Import seed phrase
-}
-
-const onImportKeyFile = () => {
-  // Import key file
-}
-
-const onCreateWallet = () => {
-  // Import create wallet
-}
-
 export default () => {
-  const { setError, setNotification } = useContext(GalleryContext)
+  const history = useHistory()
+  const { setError, setNotification, wallets, setWallets } = useContext(GalleryContext)
+
   const [currency, setCurrency] = useState('USD')
   const [textColor, setTextColor] = useState('#ffffff')
 
@@ -48,6 +39,18 @@ export default () => {
     getCurrency()
     getOs()
   }, [])
+
+  const onImportSeedPhrase = () => {
+    history.push('/import-wallet')
+  }
+  
+  const onImportKeyFile = () => {
+    history.push('/upload-wallet')
+  }
+  
+  const onCreateWallet = () => {
+    history.push('/create-wallet')
+  }
 
   const onCurrencyChange = async (e) => {
     try {
@@ -86,7 +89,7 @@ export default () => {
           {/* 
             Currently we can import only one wallet. This will hide for now.
           */}
-          {/* <div className='add-wallet item'>
+          <div className='add-wallet item'>
             <div className='title'>Add a Wallet</div>
             <div className='actions'>
               <div className='action' onClick={onImportSeedPhrase}>
@@ -99,7 +102,7 @@ export default () => {
                 Create New Wallet
               </div>
             </div>
-          </div> */}
+          </div>
 
           <div className='default-currency item'>
             <div className='title'>Default Currency</div>
@@ -125,16 +128,14 @@ export default () => {
             </select>
           </div>
 
-          {/* 
-            Currently we can import only one wallet. This will hide for now.
-          */}
-          {/* <div className='display-order item'>
-            <div className='title'>Display Order</div>
+
+          <div className='display-order item'>
+            <div className='title'>Wallet Priority</div>
             <div className='description'>
               Organize your wallet display (click and drag a wallet to move it).
             </div>
-            <AccountOrder accounts={accounts} setAccounts={setAccounts} />
-          </div> */}
+            <AccountOrder accounts={wallets} setAccounts={setWallets} />
+          </div>
 
           <div className='language-order item'>
             <div className='title'>Language</div>

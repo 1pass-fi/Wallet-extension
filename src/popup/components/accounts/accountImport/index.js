@@ -32,38 +32,41 @@ export default () => {
   const screenWidth = screen.availWidth
   const screenHeight = screen.availHeight
 
-  const handleOnClick = (path) => setPopupPath(path)
+  const handleOnClick = (path) => {
+    const url = chrome.extension.getURL(path)
+    chrome.tabs.create({ url })
+  }
 
-  const triggerPopup = performOnDifferentOs(
-    (path) => {
-      // On Windows
-      const url = chrome.extension.getURL(path)
-      chrome.windows.create({
-        url,
-        focused: true,
-        type: 'popup',
-        height: WINDOW_SIZE.WIN_HEIGHT,
-        width: WINDOW_SIZE.WIN_WIDTH,
-        left: Math.round((screenWidth - WINDOW_SIZE.WIN_WIDTH) / 2),
-        top: Math.round((screenHeight - WINDOW_SIZE.WIN_HEIGHT) / 2),
-      })
-      window.close()
-    },
-    (path) => {
-      // On Mac and others
-      const url = chrome.extension.getURL(path)
-      chrome.windows.create({
-        url,
-        focused: true,
-        type: 'popup',
-        height: WINDOW_SIZE.MAC_HEIGHT,
-        width: WINDOW_SIZE.MAC_WIDTH,
-        left: Math.round((screenWidth - WINDOW_SIZE.MAC_WIDTH) / 2),
-        top: Math.round((screenHeight - WINDOW_SIZE.MAC_HEIGHT) / 2),
-      })
-      window.close()
-    }
-  )
+  // const triggerPopup = performOnDifferentOs(
+  //   (path) => {
+  //     // On Windows
+  //     const url = chrome.extension.getURL(path)
+  //     chrome.windows.create({
+  //       url,
+  //       focused: true,
+  //       type: 'popup',
+  //       height: WINDOW_SIZE.WIN_HEIGHT,
+  //       width: WINDOW_SIZE.WIN_WIDTH,
+  //       left: Math.round((screenWidth - WINDOW_SIZE.WIN_WIDTH) / 2),
+  //       top: Math.round((screenHeight - WINDOW_SIZE.WIN_HEIGHT) / 2),
+  //     })
+  //     window.close()
+  //   },
+  //   (path) => {
+  //     // On Mac and others
+  //     const url = chrome.extension.getURL(path)
+  //     chrome.windows.create({
+  //       url,
+  //       focused: true,
+  //       type: 'popup',
+  //       height: WINDOW_SIZE.MAC_HEIGHT,
+  //       width: WINDOW_SIZE.MAC_WIDTH,
+  //       left: Math.round((screenWidth - WINDOW_SIZE.MAC_WIDTH) / 2),
+  //       top: Math.round((screenHeight - WINDOW_SIZE.MAC_HEIGHT) / 2),
+  //     })
+  //     window.close()
+  //   }
+  // )
 
   useEffect(() => {
     const loadSelections = async () => {
@@ -77,8 +80,7 @@ export default () => {
           description: 'Import an existing wallet using a 12-word seed phrase.',
           path: hasPendingRequest ? '/account/import/phrase' : '#',
           onClick: () => {
-            !hasPendingRequest &&
-              handleOnClick('/popup.html?page=upload-seedphrase')
+            handleOnClick('/options.html#/import-wallet')
           },
         },
         {
@@ -88,7 +90,7 @@ export default () => {
           description: 'Import an existing wallet by uploading a .JSON file.',
           path: hasPendingRequest ? '/account/import/keyfile' : '#',
           onClick: () => {
-            !hasPendingRequest && handleOnClick('/popup.html?page=upload-json')
+            handleOnClick('/options.html#/upload-wallet')
           },
         },
         {
@@ -98,8 +100,7 @@ export default () => {
           description: 'Start from the beginning.',
           path: hasPendingRequest ? '/account/create' : '#',
           onClick: () => {
-            !hasPendingRequest &&
-              handleOnClick('/popup.html?page=create-wallet')
+            handleOnClick('/options.html#/create-wallet')
           },
         },
       ])

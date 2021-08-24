@@ -76,6 +76,7 @@
   line-height: 16px;
   font-size: 16px;
   min-width: 170px;
+  justify-content: center;
 }
 
 .app-header .header-right .total-koi div {
@@ -89,12 +90,16 @@
   height: 24px;
 }
 
-.app-header .header-right .total-koi .ar-unit {
+/* .app-header .header-right .total-koi .ar-unit {
   margin-right: 6px;
   margin-left: 16px;
   background: #ffffff;
   width: 24px;
   height: 24px;
+} */
+
+.app-header .header-right .total-koi .koi-unit.ar {
+  margin-left: 16px;
 }
 
 .app-header .header-right .setting-button {

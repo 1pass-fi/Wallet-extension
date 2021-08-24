@@ -451,6 +451,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         try {
           const { qty, target, token, address } = message.data
           const credentials = await backgroundAccount.getCredentialByAddress(address)
+          console.log('credentials', credentials)
           const account = await backgroundAccount.getAccount(credentials)
           const accountName = await account.get.accountName()
 
@@ -935,6 +936,25 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         } catch (err) {
           port.postMessage({
             type: MESSAGES.SAVE_WALLET_GALLERY,
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
+          })
+        }
+        break
+      }
+
+      case MESSAGES.SET_DEFAULT_ACCOUNT: {
+        try {
+          const { address } = message.data
+
+          await storage.setting.set.activatedAccountAddress(address)
+          port.postMessage({
+            type: MESSAGES.SET_DEFAULT_ACCOUNT,
+            id: messageId
+          })
+        } catch (err)  {
+          port.postMessage({
+            type: MESSAGES.SET_DEFAULT_ACCOUNT,
             error: `BACKGROUND ERROR: ${err.message}`,
             id: messageId
           })

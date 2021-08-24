@@ -103,4 +103,13 @@ export class GalleryRequest extends Request {
   saveWallet(body) {
     return this.promise(MESSAGES.SAVE_WALLET_GALLERY, body)
   }
+
+  /**
+   * 
+   * @param {Object} body
+   * @param {String} body.address 
+   */
+  setDefaultAccount(body) {
+    return this.promise(MESSAGES.SET_DEFAULT_ACCOUNT, body)
+  }
 }

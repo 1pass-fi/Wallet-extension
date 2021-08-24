@@ -9,7 +9,7 @@ export class Ethereum extends Wallet {
     super(address)
     this.#eth = new _Ethereum(provider)
     this.#eth.address = address
-    this.#eth.wallet = key
+    this.#eth.wallet = key.key
     this.method = new EthereumMethod(this.#eth)
   }
 

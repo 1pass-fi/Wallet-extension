@@ -175,8 +175,8 @@ export default ({ children }) => {
           TODO: Will add affiliate functions to method of account classes.
         */
         if (!affiliateCodeStorage) {
-          koi.wallet = key
-          koi.address = addressStorage
+          koi.wallet = wallet
+          koi.address = account.address
 
           const code = await getAffiliateCode(koi)
           const reward = await getTotalRewardKoi(koi)

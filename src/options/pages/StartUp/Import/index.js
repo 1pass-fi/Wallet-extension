@@ -38,7 +38,7 @@ export default () => {
 
   const onTypeSelect = (type) => {
     setWalletType(type)
-    if (type === 'ARWEAVE') {
+    if (type === TYPE.ARWEAVE) {
       setStep(3)
     } else {
       nextStep()

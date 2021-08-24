@@ -34,6 +34,10 @@ export class EthereumMethod {
   }
 
   async transfer() {
-    return 'txid-adcd1234'
+    try {
+      console.log('ETH send transfer result', await this.eth.sendTransfer())
+    } catch (err) {
+      console.log('SEND TRANSACTION ERRROR', err.message)
+    }
   }
 }
