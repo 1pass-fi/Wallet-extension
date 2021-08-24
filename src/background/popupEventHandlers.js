@@ -13,7 +13,7 @@ import { getImageDataForNFT, getProviderUrlFromName } from 'utils'
 
 import { backgroundAccount } from 'account'
 
-import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH } from 'koiConstants'
+import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS } from 'koiConstants'
 
 const generatedKey = { key: null, mnemonic: null, type: null, address: null }
 
@@ -955,6 +955,51 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         } catch (err)  {
           port.postMessage({
             type: MESSAGES.SET_DEFAULT_ACCOUNT,
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
+          })
+        }
+        break
+      }
+
+      case MESSAGES.FRIEND_REFERRAL: {
+        try {
+          const { endpoints, payload } = message.data
+          const defaultAddress = await storage.setting.get.activatedAccountAddress()
+          const credentials = await backgroundAccount.getCredentialByAddress(defaultAddress)
+          const account = await backgroundAccount.getAccount(credentials)
+          let result
+          switch (endpoints) {
+            case FRIEND_REFERRAL_ENDPOINTS.GET_AFFILIATE_CODE: {
+              result = await account.method.getAffiliateCode()
+              break
+            }
+
+            case FRIEND_REFERRAL_ENDPOINTS.GET_TOTAL_REWARD: {
+              result = await account.method.getTotalRewardKoi()
+              break
+            }
+
+            case FRIEND_REFERRAL_ENDPOINTS.CHECK_AFFILIATE_INVITE_SPENT: {
+              result = await account.method.checkAffiliateInviteSpent()
+              break
+            }
+
+            case FRIEND_REFERRAL_ENDPOINTS.CLAIM_REWARD: {
+              result = await account.method.claimReward()
+              break
+            }
+          }
+
+          port.postMessage({
+            type: MESSAGES.FRIEND_REFERRAL,
+            data: result,
+            id: messageId
+          })
+
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.FRIEND_REFERRAL,
             error: `BACKGROUND ERROR: ${err.message}`,
             id: messageId
           })

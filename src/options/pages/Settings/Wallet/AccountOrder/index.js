@@ -94,7 +94,7 @@ export default ({ accounts, setAccounts }) => {
     activatedAccount = await popupAccount.getAccount({ address: activatedAccount })
     activatedAccount = await activatedAccount.get.metadata()
 
-    setAccounts(activatedAccount)
+    setAccount(activatedAccount)
   }
 
   const handleSetDefaultAccount = async (address) => {

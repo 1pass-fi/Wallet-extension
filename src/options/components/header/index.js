@@ -58,7 +58,7 @@ export default ({
               <div>{formatNumber(totalAr, 6)}</div>
             </>}
           </div>
-          {!totalKoi && (
+          {!totalKoi && !!(account.type == TYPE.ARWEAVE) && (
             <a
               target='_blank'
               href='https://koi.rocks/faucet?step=0'

@@ -112,4 +112,8 @@ export class GalleryRequest extends Request {
   setDefaultAccount(body) {
     return this.promise(MESSAGES.SET_DEFAULT_ACCOUNT, body)
   }
+
+  friendReferral(body) {
+    return this.promise(MESSAGES.FRIEND_REFERRAL, body)
+  }
 }

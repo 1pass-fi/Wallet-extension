@@ -24,7 +24,7 @@ export class EthereumMethod {
   }
 
   async loadMyContent() {
-
+    return []
   }
 
   async loadMyActivities (cursor) {
@@ -39,5 +39,9 @@ export class EthereumMethod {
     } catch (err) {
       console.log('SEND TRANSACTION ERRROR', err.message)
     }
+  }
+
+  async loadCollections() {
+    return []
   }
 }

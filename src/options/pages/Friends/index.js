@@ -17,7 +17,8 @@ import { claimReward } from 'utils'
 import { shareFriendCode } from 'options/helpers'
 
 import './index.css'
-import { STATEMENT } from 'koiConstants'
+import { FRIEND_REFERRAL_ENDPOINTS, STATEMENT } from 'koiConstants'
+import { backgroundRequest } from 'popup/backgroundRequest'
 
 export default () => {
   const { 
@@ -37,7 +38,9 @@ export default () => {
       if (wallet) {
         koi.wallet = wallet
         koi.address = address
-        const { message, status } = await claimReward(koi)
+        const { message, status } = await backgroundRequest.gallery.friendReferral({
+          endpoints: FRIEND_REFERRAL_ENDPOINTS.CLAIM_REWARD
+        })
   
         if (status != 200) {
           switch (message) {
