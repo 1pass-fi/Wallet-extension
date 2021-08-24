@@ -6,10 +6,11 @@ import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
 
 import {
-  getAffiliateCode, 
-  getTotalRewardKoi, 
-  checkAffiliateInviteSpent } from 'utils'
-import { GALLERY_IMPORT_PATH } from 'koiConstants'
+  getAffiliateCode,
+  getTotalRewardKoi,
+  checkAffiliateInviteSpent,
+} from 'utils'
+import { GALLERY_IMPORT_PATH, MESSAGES } from 'koiConstants'
 
 import './index.css'
 import StartUp from 'options/pages/StartUp'
@@ -24,7 +25,6 @@ import ShareNFT from 'options/modal/shareNFT'
 import ExportNFT from 'options/modal/exportNFT'
 import Welcome from 'options/modal/welcomeScreen'
 
-
 import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
 
@@ -35,6 +35,7 @@ import { popupAccount } from 'account'
 import SelectAccountModal from 'options/modal/SelectAccountModal'
 import SuccessUploadNFT from 'options/modal/SuccessUploadModal'
 
+import { EventHandler, popupBackgroundConnect } from 'utils/backgroundConnect'
 
 export default ({ children }) => {
   const { pathname } = useLocation()
@@ -91,6 +92,38 @@ export default ({ children }) => {
   })
 
   /* 
+    Add event handler for Get balances
+  */
+  useEffect(() => {
+    const handleAddHandler = () => {
+      const loadBalancesSuccess = new EventHandler(
+        MESSAGES.GET_BALANCES_SUCCESS,
+        async () => {
+          try {
+            let activatedAccount = await storage.setting.get.activatedAccountAddress()
+            activatedAccount = await popupAccount.getAccount({
+              address: activatedAccount,
+            })
+            const activatedAccountData = await activatedAccount.get.metadata()
+
+            const { balance: _balance, koiBalance } = activatedAccountData
+            if (koiBalance) setTotalKoi(koiBalance)
+            setTotalAr(_balance)
+
+            setNotification('Your balances have been updated.')
+          } catch (err) {
+            setError(err.message)
+          }
+        }
+      )
+
+      popupBackgroundConnect.addHandler(loadBalancesSuccess)
+    }
+
+    handleAddHandler()
+  })
+
+  /* 
     Load accounts from chrome storage
   */
   useEffect(() => {
@@ -103,7 +136,7 @@ export default ({ children }) => {
       setWallets(allData)
       setWalletLoaded(true)
     }
-    
+
     setIsLoading(true)
     loadWallets()
   }, [])
@@ -120,7 +153,9 @@ export default ({ children }) => {
       */
       try {
         let activatedAccount = await storage.setting.get.activatedAccountAddress()
-        activatedAccount = await popupAccount.getAccount({ address: activatedAccount })
+        activatedAccount = await popupAccount.getAccount({
+          address: activatedAccount,
+        })
         activatedAccount = await activatedAccount.get.metadata()
 
         setAccount(activatedAccount)
@@ -145,7 +180,9 @@ export default ({ children }) => {
     */
     const getUserData = async () => {
       try {
-        const activatedAccount = await popupAccount.getAccount({ address: account.address })
+        const activatedAccount = await popupAccount.getAccount({
+          address: account.address,
+        })
         setAddress(account.address)
 
         // balances
@@ -159,7 +196,6 @@ export default ({ children }) => {
         // set account name
         const accountName = await activatedAccount.get.accountName()
         setAccountName(accountName)
-
 
         const affiliateCodeStorage = await storage.generic.get.affiliateCode()
         if (affiliateCodeStorage) setAffiliateCode(affiliateCodeStorage)
@@ -195,20 +231,19 @@ export default ({ children }) => {
       - Flag: showWelcomeScreen - true for the first time opened, then false.
     */
     const loadSettings = async () => {
-
       const showViewStorage = await storage.setting.get.showViews()
       const showEarnedKoiStorage = await storage.setting.get.showEarnedKoi()
       const showWelcomeScreen = await storage.setting.get.showWelcomeScreen()
-  
+
       if (showViewStorage) setShowViews(showViewStorage)
-      if (showEarnedKoiStorage) setShowEarnedKoi(showEarnedKoiStorage) 
-  
+      if (showEarnedKoiStorage) setShowEarnedKoi(showEarnedKoiStorage)
+
       if (!showWelcomeScreen) {
         setShowWelcome(true)
         await storage.setting.set.showWelcomeScreen(1)
       }
     }
-    
+
     if (!isEmpty(wallets) || !GALLERY_IMPORT_PATH.includes(pathname)) {
       console.log('Loading for user data and setting...')
       getUserData()
@@ -224,7 +259,7 @@ export default ({ children }) => {
     const loadAssets = async () => {
       try {
         await backgroundRequest.assets.loadContent()
-        const allAssets =  await popupAccount.getAllAssets()
+        const allAssets = await popupAccount.getAllAssets()
         setCardInfos(allAssets)
         if (isEmpty(allAssets)) history.push('/create')
         setIsLoading(false)
@@ -235,7 +270,8 @@ export default ({ children }) => {
       }
     }
 
-    if (!isEmpty(wallets) && !GALLERY_IMPORT_PATH.includes(pathname)) loadAssets()
+    if (!isEmpty(wallets) && !GALLERY_IMPORT_PATH.includes(pathname))
+      loadAssets()
   }, [account])
 
   /* 
@@ -247,7 +283,9 @@ export default ({ children }) => {
   useEffect(() => {
     const setAssetsForCreateCollection = async () => {
       if (showCreateCollection) {
-        const _account = await popupAccount.getAccount({ address: account.address })
+        const _account = await popupAccount.getAccount({
+          address: account.address,
+        })
         const assets = await _account.get.assets()
         setCardInfos(assets)
       } else {
@@ -256,7 +294,7 @@ export default ({ children }) => {
       }
     }
 
-    if(!GALLERY_IMPORT_PATH.includes(pathname)) setAssetsForCreateCollection()
+    if (!GALLERY_IMPORT_PATH.includes(pathname)) setAssetsForCreateCollection()
   }, [showCreateCollection])
 
   useEffect(() => {
@@ -297,8 +335,6 @@ export default ({ children }) => {
     setFile({})
     setIsDragging(false)
   }
-
-  
 
   return (
     <GalleryContext.Provider
@@ -351,83 +387,86 @@ export default ({ children }) => {
         setShowSelectAccount,
         setShowSuccessUploadNFT,
         isWaitingAddNFT,
-        setIsWaitingAddNFT
+        setIsWaitingAddNFT,
       }}
     >
-      {!isEmpty(wallets) ? <div
-        {...getRootProps({ className: 'app dropzone' })}
-        onDragOver={() => modifyDraging(true)}
-        onDragLeave={() => modifyDraging(false)}
-        onClick={(e) => {
-          if (e.target.className === 'modal-container') {
-            setShowShareModal(false)
-            setShowExportModal(false)
-            setShowWelcome(false)
-          }
-        }}
-      >
-        {error && <Message children={error}/>}
-        {notification && <Message children={notification} type='notification'/> }
-        {showShareModal.show && (
-          <ShareNFT
-            txid={showShareModal.txid}
-            onClose={() => {
-              setShowShareModal({ ...showShareModal, show: false })
-            }}
-          />
-        )}
-        {showExportModal && (
-          <ExportNFT
-            onClose={() => {
+      {!isEmpty(wallets) ? (
+        <div
+          {...getRootProps({ className: 'app dropzone' })}
+          onDragOver={() => modifyDraging(true)}
+          onDragLeave={() => modifyDraging(false)}
+          onClick={(e) => {
+            if (e.target.className === 'modal-container') {
+              setShowShareModal(false)
               setShowExportModal(false)
-            }}
-          />
-        )}
-        {showWelcome && (
-          <Welcome 
-            onClose={() => {
               setShowWelcome(false)
-            }}
-          />
-        )
-        }
-        {showSelectAccount && (
-          <SelectAccountModal 
-            onClose={() => {
-              setShowSelectAccount(false)
-            }}
-          />
-        )
-        }
-        {showSuccessUploadNFT && (
-          <SuccessUploadNFT 
-            onClose={() => {
-              setShowSuccessUploadNFT(false)
-            }}
-          />
-        )
-        }
-        {isDragging && isEmpty(file) && (
-          <input name='fileField' {...getInputProps()} />
-        )}
+            }
+          }}
+        >
+          {error && <Message children={error} />}
+          {notification && (
+            <Message children={notification} type='notification' />
+          )}
+          {showShareModal.show && (
+            <ShareNFT
+              txid={showShareModal.txid}
+              onClose={() => {
+                setShowShareModal({ ...showShareModal, show: false })
+              }}
+            />
+          )}
+          {showExportModal && (
+            <ExportNFT
+              onClose={() => {
+                setShowExportModal(false)
+              }}
+            />
+          )}
+          {showWelcome && (
+            <Welcome
+              onClose={() => {
+                setShowWelcome(false)
+              }}
+            />
+          )}
+          {showSelectAccount && (
+            <SelectAccountModal
+              onClose={() => {
+                setShowSelectAccount(false)
+              }}
+            />
+          )}
+          {showSuccessUploadNFT && (
+            <SuccessUploadNFT
+              onClose={() => {
+                setShowSuccessUploadNFT(false)
+              }}
+            />
+          )}
+          {isDragging && isEmpty(file) && (
+            <input name='fileField' {...getInputProps()} />
+          )}
 
-        {!GALLERY_IMPORT_PATH.includes(pathname) && <Header 
-          totalKoi={totalKoi} 
-          totalAr={totalAr} 
-          headerRef={headerRef} 
-          isLoading={isLoading} 
-          isWaitingAddNFT={isWaitingAddNFT}
-          setIsWaitingAddNFT={setIsWaitingAddNFT}
-        />}
+          {!GALLERY_IMPORT_PATH.includes(pathname) && (
+            <Header
+              totalKoi={totalKoi}
+              totalAr={totalAr}
+              headerRef={headerRef}
+              isLoading={isLoading}
+              isWaitingAddNFT={isWaitingAddNFT}
+              setIsWaitingAddNFT={setIsWaitingAddNFT}
+            />
+          )}
 
-        {children}
-        {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer showDropzone={showDropzone} />}
-        {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />}
-      </div> : 
-          <>
-            {walletLoaded && <StartUp />}
-          </>
-      }
+          {children}
+          {!GALLERY_IMPORT_PATH.includes(pathname) && (
+            <Footer showDropzone={showDropzone} />
+          )}
+          {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />}
+        </div>
+      ) : (
+        <>{walletLoaded && <StartUp />}</>
+      )}
     </GalleryContext.Provider>
   )
 }

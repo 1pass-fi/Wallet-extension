@@ -130,6 +130,7 @@ export default ({ accounts, setAccounts }) => {
             style={getListStyle(snapshot.isDraggingOver)}
             className='account-order'
           >
+            <div className='account-header'>DEFAULT</div>
             {accounts.map((item, index) => (
               <Draggable key={item.id} draggableId={item.address} index={index}>
                 {(provided, snapshot) => (

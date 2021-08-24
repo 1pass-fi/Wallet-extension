@@ -72,11 +72,11 @@
   border-radius: 4px;
   color: #171753;
   font-weight: 600;
-  padding: 6px 11px;
+  padding: 6px 50px 6px 11px;
   line-height: 16px;
   font-size: 16px;
   min-width: 170px;
-  justify-content: center;
+  position: relative;
 }
 
 .app-header .header-right .total-koi div {
@@ -90,16 +90,21 @@
   height: 24px;
 }
 
-/* .app-header .header-right .total-koi .ar-unit {
-  margin-right: 6px;
-  margin-left: 16px;
-  background: #ffffff;
-  width: 24px;
-  height: 24px;
-} */
-
 .app-header .header-right .total-koi .koi-unit.ar {
   margin-left: 16px;
+}
+
+.app-header .header-right .total-koi .reload-icon {
+  background: #237b75;
+  border-radius: 0px 4px 4px 0px;
+  cursor: pointer;
+  position: absolute;
+  right: -1px;
+  top: 0px;
+  padding: 8.5px;
+  box-sizing: border-box;
+  height: 36.5px;
+  width: 36.5px;
 }
 
 .app-header .header-right .setting-button {

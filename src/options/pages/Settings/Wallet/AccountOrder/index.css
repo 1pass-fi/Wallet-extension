@@ -1,3 +1,10 @@
+.account-order .account-header {
+  color: #171753;
+  font-size: 8px;
+  margin-left: 22px;
+  height: 9px;
+}
+
 .account-order .account {
   align-items: center;
   display: flex;
