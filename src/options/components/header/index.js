@@ -6,6 +6,8 @@ import KoiIcon from 'img/finnie-koi-logo-white.svg'
 import ArUnit from 'img/ar-token.svg'
 import KoiUnit from 'img/koi-token.svg'
 import EthereumUnit from 'img/ethereum-logo.svg'
+import ReloadIcon from 'img/reload-icon.svg'
+
 import SearchBar from './SearchBar'
 import Loading from 'options/components/loading'
 import WaitingAddNFTMessage from './WaitingAddNFTMessage'
@@ -15,6 +17,9 @@ import { formatNumber } from '../../utils'
 import './index.css'
 import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'account/accountConstants'
+import { MESSAGES } from 'koiConstants'
+
+import { popupBackgroundConnect } from 'utils/backgroundConnect'
 
 export default ({
   totalKoi,
@@ -25,8 +30,13 @@ export default ({
   setIsWaitingAddNFT,
 }) => {
   const { pathname } = useLocation()
-  const { account } =  useContext(GalleryContext)
+  const { account } = useContext(GalleryContext)
 
+  const handleLoadBalances = () => {
+    popupBackgroundConnect.postMessage({
+      type: MESSAGES.GET_BALANCES,
+    })
+  }
 
   return (
     <header className='app-header' ref={headerRef}>
@@ -41,22 +51,24 @@ export default ({
         {isLoading && <Loading />}
         <div className='koi-info'>
           <div className='total-koi'>
-            {account.type === TYPE.ARWEAVE && 
-            <>
-              <KoiUnit className='koi-unit' />
-              <div>{formatNumber(totalKoi)}</div>
-
-            </>}
-            {account.type === TYPE.ARWEAVE ?
-            <>
-              <ArUnit className='koi-unit ar' />
-              <div>{formatNumber(totalAr, 6)}</div>
-            </>
-              :
-            <>
-              <EthereumUnit className='koi-unit' />
-              <div>{formatNumber(totalAr, 6)}</div>
-            </>}
+            {account.type === TYPE.ARWEAVE && (
+              <>
+                <KoiUnit className='koi-unit' />
+                <div>{formatNumber(totalKoi)}</div>
+              </>
+            )}
+            {account.type === TYPE.ARWEAVE ? (
+              <>
+                <ArUnit className='koi-unit ar' />
+                <div>{formatNumber(totalAr, 6)}</div>
+              </>
+            ) : (
+              <>
+                <EthereumUnit className='koi-unit' />
+                <div>{formatNumber(totalAr, 6)}</div>
+              </>
+            )}
+            <ReloadIcon onClick={handleLoadBalances} className='reload-icon' />
           </div>
           {!totalKoi && !!(account.type == TYPE.ARWEAVE) && (
             <a

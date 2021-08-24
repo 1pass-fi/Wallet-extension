@@ -64,3 +64,5 @@ export class BackgroundConnect {
       !(handler.type == handlerType && handler.id == id))
   }
 }
+
+export const popupBackgroundConnect = new BackgroundConnect(PORTS.POPUP)

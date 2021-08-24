@@ -1,3 +1,10 @@
+.account-order .account-header {
+  color: #171753;
+  font-size: 8px;
+  margin-left: 22px;
+  height: 9px;
+}
+
 .account-order .account {
   align-items: center;
   display: flex;
@@ -13,6 +20,30 @@
 
 .account-order .account .arrange-icon {
   margin-right: 14px;
+}
+
+.account-order .account .set-default-checkbox {
+  background: #9be7c4;
+  border-radius: 2px;
+  border: 1.5px solid #171753;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  cursor: pointer;
+  margin-right: 24px;
+  height: 16px;
+  width: 16px;
+  position: relative;
+}
+
+.account-order .account .set-default-checkbox.active::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 4px;
+  height: 8px;
+  border-right: 2px solid #171753;
+  border-bottom: 2px solid #171753;
+  transform: rotate(45deg) translate(1px, -3px);
 }
 
 .account-order .account .account-name {
