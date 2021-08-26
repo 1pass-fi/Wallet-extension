@@ -288,7 +288,7 @@ export const STATEMENT = {
   NO_REWARD: `You don't have any rewards available, share your code to get some!`,
 }
 
-export const LOAD_BALANCES_TIME_INTERVAL = 300000
+export const LOAD_BALANCES_TIME_INTERVAL = 5000
 
 export const NFT_BIT_DATA = 'NFT_BIT_DATA'
 

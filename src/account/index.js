@@ -10,6 +10,7 @@ import { WalletPopup } from 'account/Wallet'
 import { ERROR_MESSAGE } from 'koiConstants'
 import { ACCOUNT } from 'account/accountConstants'
 
+import storage from 'storage'
 
 /* 
   Background and Popup will use different classes.
@@ -230,7 +231,6 @@ export class BackgroundAccount extends GenericAccount {
 
       const newImported = { address, key }
       this.addToImported(newImported)
-
     } catch (err) {
       console.log(err.message)
     }
@@ -258,11 +258,24 @@ export class BackgroundAccount extends GenericAccount {
       await this.storage._removeChrome(`${address}_collections`)
 
       /* 
-        Have to handle removing this address from activatedAccount if this
-        address is the activated account.
+      Have to handle removing this address from activatedAccount if this
+      address is the activated account.
       */
-
+     
       await this.removeFromImported(address)
+      if (this.importedAccount.length){
+        const currentActivatedAccount = await storage.setting.get.activatedAccountAddress()
+        if (address !== currentActivatedAccount) {
+          return
+        }
+        /*
+          set new activatedAccount after remove activatedAccount
+        */
+        const defaultActivatedAccount = this.importedAccount[0].address
+        await storage.setting.set.activatedAccountAddress(defaultActivatedAccount)
+      } else {
+        await storage.setting.set.activatedAccountAddress(null)
+      }
     } catch (err) {
       console.log(err.message)
     }

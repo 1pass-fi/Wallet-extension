@@ -141,8 +141,8 @@ export const loadBalances = async (koi, port) => {
       }
 
 
-      // console.log('UPDATE BALANCES FOR', address)
-      // console.log('koiBalance:', koiBalance,'; balance:', balance)
+      console.log('UPDATE BALANCES FOR', address)
+      console.log('koiBalance:', koiBalance,'; balance:', balance)
       await account.set.balance(balance)
       await account.set.koiBalance(koiBalance)
     }))
