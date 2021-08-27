@@ -43,7 +43,7 @@ export class EthereumMethod {
           console.log({ content })
           if (content.image_url) {
             let u8 = Buffer.from((await axios.get(content.image_url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
-            let imageUrl = `data:image/jpeg;base64,${u8}`
+            let imageUrl = `data:${content.contentType};base64,${u8}`
             if (content.animation_url) {
               u8 = Buffer.from((await axios.get(content.animation_url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
               imageUrl = `data:video/mp4;base64,${u8}`

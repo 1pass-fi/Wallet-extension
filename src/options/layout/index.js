@@ -270,7 +270,8 @@ export default ({ children }) => {
       try {
         await backgroundRequest.assets.loadContent()
         const allAssets = await popupAccount.getAllAssets()
-        setCardInfos(allAssets)
+        const validAssets = allAssets.filter(asset => asset.name !== '...')
+        setCardInfos(validAssets)
         if (isEmpty(allAssets)) history.push('/create')
         setIsLoading(false)
       } catch (err) {

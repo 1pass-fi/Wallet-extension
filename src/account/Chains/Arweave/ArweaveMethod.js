@@ -45,7 +45,7 @@ export class ArweaveMethod {
             let url = `${PATH.NFT_IMAGE}/${content.txIdContent}`
             if (content.fileLocation) url = content.fileLocation
             const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
-            let imageUrl = `data:image/jpeg;base64,${u8}`
+            let imageUrl = `data:${content.contentType};base64,${u8}`
             if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
             return {
               name: content.title,
