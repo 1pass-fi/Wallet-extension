@@ -11,6 +11,7 @@
   background: #ffffff;
   display: flex;
   justify-content: center;
+  flex-direction: column;
 }
 
 .global-button.lock {

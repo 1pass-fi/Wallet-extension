@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
 import Fish from 'img/koi-logo-bg.svg'
+import Ethereum from 'img/ethereum-logo.svg'
 import EditIcon from 'img/edit-icon.svg'
 import Button from 'popup/components/shared/button'
 import RevealSeedPhraseModal from '../revealSeedPhraseModal'
@@ -13,10 +14,12 @@ import './index.css'
 import { setError } from 'popup/actions/error'
 import { setNotification } from 'popup/actions/notification'
 import { setAccountName } from 'popup/actions/accountName'
+import { changeAccountName } from 'actions/koi'
 import { NOTIFICATION } from 'koiConstants'
+import { TYPE } from 'account/accountConstants'
 
 
-const AccountSettingRow = ({ accountName, setError, setNotification, setAccountName }) => {
+const AccountSettingRow = ({ account, setError, setNotification, changeAccountName }) => {
   const [seedPhrase, setSeedPhrase] = useState('')
   const [showRevealModal, setShowRevealModal] = useState(false)
   const [showSeedPhraseModal, setShowSeedPhraseModal] = useState(false)
@@ -26,9 +29,8 @@ const AccountSettingRow = ({ accountName, setError, setNotification, setAccountN
     setOpenEditModal(false)
   }
 
-  const onSubmit = async (newName) => {
-    await updateAccountName(newName)
-    setAccountName(newName)
+  const changeName = async (newName) => {
+    await changeAccountName(account.address, newName)
     setNotification(NOTIFICATION.ACCOUNT_NAME_UPDATED)
     setOpenEditModal(false)
   }
@@ -55,12 +57,16 @@ const AccountSettingRow = ({ accountName, setError, setNotification, setAccountN
       <div className="account-setting-row">
         <div className="display-row icon">
           <div className="logo-icon">
-            <Fish />
+            {account.type === TYPE.ARWEAVE ?
+              <Fish />
+              :
+              <Ethereum />
+            }
           </div>
         </div>
         <div className="display-row account-info">
           <div className="account-name-line">
-            <div className="name">{accountName}</div>
+            <div className="name">{account.accountName}</div>
             <div className="edit-icon" onClick={() => setOpenEditModal(true)}>
               <EditIcon />
             </div>
@@ -73,13 +79,11 @@ const AccountSettingRow = ({ accountName, setError, setNotification, setAccountN
           />
         </div>
       </div>
-      {openEditModal && <EditAccountNameModal onClose={onClose} onSubmit={onSubmit} currentName={accountName}/>}
+      {openEditModal && <EditAccountNameModal onClose={onClose} onSubmit={changeName}  account={account}/>}
       {showRevealModal && <RevealSeedPhraseModal onClose={() => {setShowRevealModal(false)}} onReveal={onRevealSeedPhare} />}
       {showSeedPhraseModal && <SeedPhraseModal onClose={() => {setShowSeedPhraseModal(false)}} seedPhrase={seedPhrase}/>}
     </>
   )
 }
 
-export const mapStateToProps = (state) => ({accountName: state.accountName})
-
-export default connect(mapStateToProps, { setError, setNotification, setAccountName })(AccountSettingRow)
+export default connect(null, { setError, setNotification, changeAccountName })(AccountSettingRow)

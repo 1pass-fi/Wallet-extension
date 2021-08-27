@@ -33,7 +33,11 @@ const Setting = ({ lockWallet, setError, setIsLoading, accounts }) => {
     <div className='setting-container'>
       <GlobalButton type='lock' className='lock' onClick={handleOnClick} />
       <div className='setting-mock-content'>
-        <AccountSettingRow accountName='Account 1' /> 
+        {
+          accounts.map(account =>
+            <AccountSettingRow key={account.id} account={account} />
+          )
+        }
       </div>
     </div>
   )

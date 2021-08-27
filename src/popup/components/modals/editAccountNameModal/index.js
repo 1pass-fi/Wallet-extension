@@ -8,18 +8,20 @@ import InputField from 'popup/components/shared/inputField'
 import './index.css'
 
 const propTypes = {
-  currentName: PropTypes.string,
+  accunt: PropTypes.shape({
+    accountName: PropTypes.string,
+    address: PropTypes.string,
+  }),
   onClose: PropTypes.func,
   onSubmit: PropTypes.func,
 }
 
 const EditAccountNameModal = ({
-  currentName,
   onClose,
   onSubmit,
   account
 }) => {
-  const [accountName, setAccountName] = useState(currentName)
+  const [accountName, setAccountName] = useState(account.accountName)
   
   const onChangeAccountName = (e) => {
     setAccountName(e.target.value)

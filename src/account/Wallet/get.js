@@ -93,7 +93,7 @@ export class WalletGet {
   }
 
   async kid() {
-    return await this.#accountStorage.getKID() 
+    return await this.#accountStorage.getKID()
   }
 
   async pendingConfirmationTransaction() {
@@ -112,7 +112,7 @@ export class WalletGet {
     const koiBalance = await this.koiBalance()
     const provider = await this.provider()
 
-    return  { address, balance, koiBalance, accountName, type, provider }
+    return { address, balance, koiBalance, accountName, type, provider }
   }
 
   async connectedSite() {
