@@ -20,7 +20,7 @@ import { RATE } from 'constants/koiConstants'
 // styles
 import './index.css'
 
-export const AccountHome = ({ koi, ethereum, getBalances, accounts }) => {
+export const AccountHome = ({ getBalances, accounts }) => {
   let currencies = []
   for (const [key, _] of Object.entries(RATE)) {
     currencies.push({ label: key, value: key, id: key })
@@ -45,15 +45,6 @@ export const AccountHome = ({ koi, ethereum, getBalances, accounts }) => {
     })
   }, [])
 
-  const onSendSuccess = () => {
-    setShowForm(false)
-    setCurrency(defaultCurrency)
-  }
-
-  const onChangeCurrency = (newCurrency) => {
-    setCurrency(newCurrency)
-  }
-
   const onClickGlobalSendButton = () => {
     if (showForm) {
       setCurrency(defaultCurrency)
@@ -69,22 +60,9 @@ export const AccountHome = ({ koi, ethereum, getBalances, accounts }) => {
 
   return (
     <div>
-      {/* {koi.address && <GlobalButton onClick={onClickGlobalSendButton} currency={currency}/>} */}
       <GlobalButton onClick={onClickGlobalSendButton} currency={currency} />
-      {showForm && (
-        <SendKoiForm
-          koiBalance={koi.koiBalance}
-          arBalance={koi.arBalance}
-          onUpdateCurrency={onChangeCurrency}
-          currencies={currencies}
-          onSendSuccess={onSendSuccess}
-        />
-      )}
-      {/* {koi.address ? <Wallet accountAddress={koi.address} koiBalance={koi.koiBalance} arBalance={koi.arBalance} /> :
-        <Link to='/account/import' className="plus-button">
-          <PlusIcon />
-        </Link>} */}
-      <div className='accounts-wrapper'>
+      {showForm && <SendKoiForm />}
+      <div className="accounts-wrapper">
         {accounts.map((account, index) => (
           <Wallet key={index} account={account} />
         ))}
@@ -95,7 +73,7 @@ export const AccountHome = ({ koi, ethereum, getBalances, accounts }) => {
           accounts.length % 2 === 0 ? 'white' : ''
         }`}
       >
-        <div className='button'>
+        <div className="button">
           <PlusIcon />
         </div>
       </div>
@@ -104,8 +82,6 @@ export const AccountHome = ({ koi, ethereum, getBalances, accounts }) => {
 }
 
 const mapStateToProps = (state) => ({
-  koi: state.koi,
-  ethereum: state.ethereum,
   accounts: state.accounts,
 })
 
