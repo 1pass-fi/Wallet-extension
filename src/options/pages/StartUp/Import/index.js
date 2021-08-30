@@ -64,8 +64,10 @@ export default () => {
 
   if (step === 4) {
     return (
-      <div className='create-wallet-wrapper'>
-        <Success />
+      <div className='start-up'>
+        <div className='create-wallet-wrapper'>
+          <Success />
+        </div>
       </div>
     )
   }

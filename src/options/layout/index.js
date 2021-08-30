@@ -76,7 +76,7 @@ export default ({ children }) => {
     show: false,
     txid: null,
   })
-  const [showExportModal, setShowExportModal] = useState(false)
+  const [showExportModal, setShowExportModal] = useState({})
   const [showWelcome, setShowWelcome] = useState(false)
 
   const [showSelectAccount, setShowSelectAccount] = useState(false)
@@ -425,8 +425,9 @@ export default ({ children }) => {
               }}
             />
           )}
-          {showExportModal && (
+          {!isEmpty(showExportModal) && (
             <ExportNFT
+              info={showExportModal}
               onClose={() => {
                 setShowExportModal(false)
               }}

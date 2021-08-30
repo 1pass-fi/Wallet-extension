@@ -323,7 +323,7 @@ export default ({ info, onClose }) => {
           </div>
         </div>
 
-        <div className='close-button' onClick={onOneClick}>
+        <div className='close-button' onClick={onClose}>
           <CloseIcon />
         </div>
 
