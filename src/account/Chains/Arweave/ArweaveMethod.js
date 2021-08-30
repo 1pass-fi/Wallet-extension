@@ -11,6 +11,7 @@ import moment from 'moment'
 import axios from 'axios'
 import { AccountChromeStorage } from 'storage/ChromeStorage'
 import { ERROR_MESSAGE } from 'koiConstants'
+import { TYPE } from 'account/accountConstants'
 
 import { find } from 'lodash'
 import storage from 'storage'
@@ -59,7 +60,8 @@ export class ArweaveMethod {
               contentType: content.contentType,
               totalViews: content.totalViews,
               createdAt: content.createdAt,
-              description: content.description
+              description: content.description,
+              type: TYPE.ARWEAVE
             }
           } else {  
             console.log('Failed load content: ', content)
@@ -75,7 +77,8 @@ export class ArweaveMethod {
               contentType: content.contentType || 'image',
               totalViews: content.totalViews,
               createdAt: content.createdAt,
-              description: content.description
+              description: content.description,
+              type: TYPE.ARWEAVE
             }
           }
         } catch (err) {
@@ -484,6 +487,14 @@ export class ArweaveMethod {
       return { u8, file }
     } catch (err) {
       throw new Error('')
+    }
+  }
+
+  async nftBridge(txId, toAddress, type) {
+    switch (type) {
+      case TYPE.ETHEREUM:
+        // TODO 30Aug: this 
+        return true
     }
   }
 }

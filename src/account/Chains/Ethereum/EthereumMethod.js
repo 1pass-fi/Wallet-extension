@@ -8,6 +8,8 @@ import { getChromeStorage } from 'utils'
 import { get, isNumber, isArray } from 'lodash'
 import moment from 'moment'
 
+import { TYPE } from 'account/accountConstants'
+
 import axios from 'axios'
 
 import web3 from 'web3'
@@ -60,7 +62,8 @@ export class EthereumMethod {
               contentType: content.animation_url ? 'video' : 'image',
               totalViews: 0,
               createdAt: Date.parse(get(content, 'collection.created_date'))/1000,
-              description: content.description
+              description: content.description,
+              type: TYPE.ETHEREUM
             }
           } else {  
             console.log('Failed load content: ', content)
@@ -75,7 +78,8 @@ export class EthereumMethod {
               contentType: content.animation_url ? 'video' : 'image',
               totalViews: 0,
               createdAt: Date.parse(get(content, 'collection.created_date'))/1000,
-              description: content.description
+              description: content.description,
+              type: TYPE.ETHEREUM
             }
           }
         } catch (err) {
@@ -106,5 +110,13 @@ export class EthereumMethod {
 
   async loadCollections() {
     return []
+  }
+
+  async nftBridge(txId, toAddress, type) {
+    switch (type) {
+      case TYPE.ARWEAVE:
+        // TODO 30Aug: this 
+        return true
+    }
   }
 }

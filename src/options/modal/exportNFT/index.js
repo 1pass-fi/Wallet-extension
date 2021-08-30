@@ -3,15 +3,20 @@ import Modal from 'options/shared/modal'
 
 import './index.css'
 
+import ArweaveLogo from 'img/arweave-icon.svg'
 import EthereumLogo from 'img/chain/ethereum-logo.svg'
 import BinanceLogo from 'img/chain/binance-logo.svg'
 import Avalanche from 'img/chain/avalanche-logo.svg'
 import PolkadotLogo from 'img/chain/polkadot-logo.svg'
 import TezosLogo from 'img/chain/tezos-logo.svg'
 
-import Ethereum from './Ethereum'
+import ExportWallet from './ExportWallet'
+
+import { TYPE } from 'account/accountConstants'
 
 const Chain = ({ Icon, title }) => {
+
+
   return (
     <div className='export-nft chain container'>
       <div className='export-nft chain icon'>
@@ -25,6 +30,17 @@ const Chain = ({ Icon, title }) => {
 const ExportNFT = ({ info }) => {
   const [isShowEthereum, setIsShowEthereum] = useState(false)
 
+  // TARGET WALLET TYPE
+  const [type, setType] = useState(null)
+
+  // ACCOUNT CLICK TYPE
+  const { type: _type } = info
+
+  const handleOnClick = (walletType) => {
+    setIsShowEthereum(true)
+    setType(walletType)
+  }
+
   return (
     <div className='export-nft container'>
       <div className='export-nft title container'>
@@ -34,11 +50,16 @@ const ExportNFT = ({ info }) => {
           without making a duplicate.
         </div>
       </div>
-
-      <div className='ethereum' onClick={() => setIsShowEthereum(true)}>
-        <EthereumLogo className='logo' />
+      {_type === TYPE.ARWEAVE && 
+      <div className='logo-wrapper' onClick={() => handleOnClick(TYPE.ETHEREUM)}>
+        <EthereumLogo className='logo'/>
         <div className='text'>Ethereum</div>
-      </div>
+      </div>}
+      {_type === TYPE.ETHEREUM &&
+      <div className='logo-wrapper' onClick={() => handleOnClick(TYPE.ARWEAVE)}>
+        <ArweaveLogo className='logo'/>
+        <div className='text'>Arweave</div>
+      </div>}
 
       <div className='coming-soon'>Coming soon:</div>
 
@@ -50,7 +71,7 @@ const ExportNFT = ({ info }) => {
       </div>
 
       {isShowEthereum && (
-        <Ethereum info={info} onClose={() => setIsShowEthereum(false)} />
+        <ExportWallet info={info} onClose={() => setIsShowEthereum(false)} type={type}/>
       )}
     </div>
   )

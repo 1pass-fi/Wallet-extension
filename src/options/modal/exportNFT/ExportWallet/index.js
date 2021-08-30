@@ -1,12 +1,17 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState, useMemo } from 'react'
 import isEmpty from 'lodash/isEmpty'
+
 import CloseIcon from 'img/close-x-icon.svg'
 import GoBackIcon from 'img/goback-icon.svg'
+import ArweaveLogo from 'img/arweave-icon.svg'
 import EthereumLogo from 'img/ethereum-logo-18.svg'
 import StackIcon from 'img/stack-icon.svg'
 import StackWhiteIcon from 'img/stack-white-icon.svg'
 import WarningIcon from 'img/dangerous-logo.svg'
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
+
+import { GalleryContext } from 'options/galleryContext'
+import { TYPE } from 'account/accountConstants'
 
 import { formatNumber, getDisplayAddress } from 'options/utils'
 
@@ -59,22 +64,29 @@ const DESCRIPTIONS = {
   ),
 }
 
-const AddressDropdown = ({ accounts = [], onChange }) => {
+const AddressDropdown = ({ accounts = [], onChange, type }) => {
   return (
     <div className='accounts'>
-      {accounts.map((account) => (
-        <div
-          key={account.id}
-          className='account'
-          onClick={() => onChange(account)}
-        >
-          <EthereumLogo />
-          <div className='info'>
-            <div className='name'>{account.name}</div>
-            <div className='address'>{getDisplayAddress(account.address)}</div>
-          </div>
-        </div>
-      ))}
+      {accounts.map((account) => {
+        if (account.type == type) {
+          return (
+            <div
+              key={account.address}
+              className='account'
+              onClick={() => onChange(account)}
+            >
+              <div className='logo'>
+                {account.type === TYPE.ARWEAVE && <ArweaveLogo />}
+                {account.type === TYPE.ETHEREUM && <EthereumLogo />}
+              </div>
+              <div className='info'>
+                <div className='name'>{account.accountName}</div>
+                <div className='address'>{getDisplayAddress(account.address)}</div>
+              </div>
+            </div>
+          )
+        }
+      })}
       <div className='different-address' onClick={() => onChange({})}>
         <div className='name'>Enter a different address...</div>
       </div>
@@ -82,25 +94,30 @@ const AddressDropdown = ({ accounts = [], onChange }) => {
   )
 }
 
-export default ({ info, onClose }) => {
+export default ({ info, onClose, type }) => {
   const [address, setAddress] = useState('')
   const [numberTransfer, setNumberTransfer] = useState(1)
   const [isShowDropdown, setIsShowDropdown] = useState(false)
   const [chosenAccount, setChosenAccount] = useState({})
   const [step, setStep] = useState(1)
   const addressInputRef = useRef()
-  const accounts = [
-    {
-      id: '1',
-      name: 'Account 1',
-      address: '0x1234567891234567891234567891234567',
-    },
-    {
-      id: '2',
-      name: 'Account 2',
-      address: '22222220x123456789123456789123456789',
-    },
-  ]
+
+  const { wallets } = useContext(GalleryContext)
+
+  const accounts = useMemo(() => wallets, [wallets])
+
+  // const accounts = [
+  //   {
+  //     id: '1',
+  //     name: 'Account 1',
+  //     address: '0x1234567891234567891234567891234567',
+  //   },
+  //   {
+  //     id: '2',
+  //     name: 'Account 2',
+  //     address: '22222220x123456789123456789123456789',
+  //   },
+  // ]
   const totalTransfer = 12
 
   const { name, earnedKoi, totalViews, imageUrl } = info
@@ -187,8 +204,16 @@ export default ({ info, onClose }) => {
             {step == TRANSFER_STEPS.INPUT_INFO && (
               <>
                 <div className='eth-address'>
-                  <label className='label'>ETH Address</label>
-                  <EthereumLogo className='input-logo' />
+                  {type === TYPE.ETHEREUM && 
+                  <>
+                    <label className='label'>ETH Address</label>
+                    <EthereumLogo className='input-logo' />
+                  </>}
+                  {type === TYPE.ARWEAVE && 
+                  <>
+                    <label className='label'>AR Address</label>
+                    <ArweaveLogo className='input-logo' />
+                  </>}
                   <input
                     ref={(ip) => (addressInputRef.current = ip)}
                     value={address}
@@ -205,6 +230,7 @@ export default ({ info, onClose }) => {
                       <AddressDropdown
                         accounts={accounts}
                         onChange={onAddressDropdownChange}
+                        type={type}
                       />
                     )}
                   </div>

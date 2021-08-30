@@ -22,7 +22,7 @@
   font-weight: 400;
 }
 
-.export-nft .ethereum {
+.export-nft .logo-wrapper {
   align-items: center;
   border-radius: 3px;
   border: 2px solid #ffffff;
@@ -38,11 +38,18 @@
   width: 212px;
 }
 
-.export-nft .ethereum .text {
+.export-nft .logo-wrapper .text {
   font-size: 18px;
   font-weight: 600;
   line-height: 32px;
   margin-left: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.export-nft .logo-wrapper .logo {
+  width: 56px;
+  height: 56px;
 }
 
 .export-nft .coming-soon {

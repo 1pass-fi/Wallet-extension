@@ -124,6 +124,11 @@
   position: relative;
 }
 
+.transfer-wallet-modal .content .right .eth-address .input-logo {
+  height: 26px;
+  width: 26px;
+}
+
 .transfer-wallet-modal .content .right .number-to-transfer.confirm {
   display: flex;
   font-size: 16px;
@@ -364,6 +369,11 @@ input::-webkit-inner-spin-button {
   cursor: pointer;
   align-items: center;
   gap: 10px;
+}
+
+.transfer-wallet-modal .address-dropdown .accounts .account .logo {
+  width: 26px;
+  height: 26px;
 }
 
 .transfer-wallet-modal .address-dropdown .account .info {

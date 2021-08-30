@@ -20,6 +20,7 @@ import Navbar from 'options/components/navbar'
 import Message from 'options/components/message'
 
 import { GalleryContext } from 'options/galleryContext'
+import { TYPE } from 'account/accountConstants'
 
 import ShareNFT from 'options/modal/shareNFT'
 import ExportNFT from 'options/modal/exportNFT'
@@ -214,7 +215,7 @@ export default ({ children }) => {
         /* 
           TODO: Will add affiliate functions to method of account classes.
         */
-        if (!affiliateCodeStorage) {
+        if (!affiliateCodeStorage && account.type === TYPE.ARWEAVE) {
           koi.wallet = wallet
           koi.address = account.address
 
