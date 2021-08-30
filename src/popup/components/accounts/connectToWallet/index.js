@@ -36,7 +36,7 @@ export const ConnectToWallet = ({ setError, connectSite, accounts }) => {
       if (accept) {
         if (!(await storage.generic.get.pendingRequest())) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
         console.log('ORIGIN POPUP', origin)
-        connectSite({ origin, confirm: true })
+        connectSite({ origin, confirm: true, address: checkedAddress })
         await storage.generic.remove.pendingRequest()
       } else {
         // action koi
@@ -51,8 +51,8 @@ export const ConnectToWallet = ({ setError, connectSite, accounts }) => {
 
   useEffect(() => {
     const loadActivatedAccount = async () => {
-      const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
-      setCheckedAddress(activatedAccountAddress)
+      const connectSiteAccountAddress = await storage.setting.get.connectSiteAccountAddress()
+      setCheckedAddress(connectSiteAccountAddress)
     }
 
     loadActivatedAccount()

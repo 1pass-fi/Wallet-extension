@@ -52,4 +52,8 @@ export class SettingSet {
   activatedAccountAddress(value) {
     return this.#chrome._setChrome(SETTING.ACTIVATED_ACCOUNT, value)
   }
+
+  connectSiteAccountAddress(value) {
+    return this.#chrome._setChrome(SETTING.CONNECT_SITE_ACCOUNT, value)
+  }
 }

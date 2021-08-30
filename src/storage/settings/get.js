@@ -47,4 +47,8 @@ export class SettingGet {
   activatedAccountAddress() {
     return this.#chrome._getChrome(SETTING.ACTIVATED_ACCOUNT)
   }
+
+  connectSiteAccountAddress() {
+    return this.#chrome._getChrome(SETTING.CONNECT_SITE_ACCOUNT)
+  }
 }

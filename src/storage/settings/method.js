@@ -13,11 +13,13 @@ export class SettingMethod {
 
   async checkSitePermission(site) {
     try {
-      // query for activated account
-      const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
-      if (!activatedAccountAddress) return false
-      
-      const account = await popupAccount.getAccount({ address: activatedAccountAddress })
+      /* 
+        query for connect_site_account
+      */
+      const connectSiteAccountAddress = await storage.setting.get.connectSiteAccountAddress()
+      if (!connectSiteAccountAddress) return false
+
+      const account = await popupAccount.getAccount({ address: connectSiteAccountAddress })
       const approvedOrigin = await account.get.connectedSite() || []
       return approvedOrigin.includes(site)
     } catch (err) {

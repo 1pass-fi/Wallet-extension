@@ -447,7 +447,7 @@ export default async (koi, port, message, ports, resolveId, sender) => {
             } else {
               port.postMessage({
                 type: MESSAGES.KOI_CONNECT_SUCCESS,
-                data: { status: 400, data: 'This site has already connected.' },
+                data: { status: 200, data: 'This site has already connected.' },
                 id
               })
             }
@@ -634,10 +634,16 @@ export default async (koi, port, message, ports, resolveId, sender) => {
 
         case MESSAGES.KOI_DISCONNECT: {
           try {
-            const storage = await getChromeStorage(STORAGE.SITE_PERMISSION)
-            let approvedSite = storage[STORAGE.SITE_PERMISSION] || []
-            if (hadPermission) approvedSite = approvedSite.filter(site => site !== origin)
-            await setChromeStorage({ 'sitePermission': approvedSite })
+            if (hadPermission) {
+              const connectedAccountAddress = await storage.setting.get.connectSiteAccountAddress()
+              const credentials = await backgroundAccount.getCredentialByAddress(connectedAccountAddress)
+              const account = await backgroundAccount.getAccount(credentials)
+              
+              let connectedSite = await account.get.connectedSite()
+              connectedSite = connectedSite.filter(site => site !== origin)
+              await account.set.connectedSite(connectedSite)
+            }
+
             port.postMessage({
               type: MESSAGES.KOI_DISCONNECT_SUCCESS,
               data: { status: 200, data: 'Disconnected.' },

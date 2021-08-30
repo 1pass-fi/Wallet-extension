@@ -524,16 +524,17 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         break
       }
       case MESSAGES.CONNECT: {
-        const { origin, confirm } = message.data
+        const { origin, confirm, address } = message.data
         const { permissionId } = resolveId
+
         if (confirm) {
-          // add origin to the connected site of activated account
-          let activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
-          const credentials = await backgroundAccount.getCredentialByAddress(activatedAccountAddress)
+          // add origin to the connected site of connect_site_account
+          await storage.setting.set.connectSiteAccountAddress(address)
+          const credentials = await backgroundAccount.getCredentialByAddress(address)
           const account = await backgroundAccount.getAccount(credentials)
           
           let connectedSite = await account.get.connectedSite() || []
-          connectedSite = [...connectedSite, origin]
+          if (!connectedSite.includes(origin)) connectedSite = [...connectedSite, origin]
           await account.set.connectedSite(connectedSite)
           // await storage.generic.method.addSite(origin)
 
