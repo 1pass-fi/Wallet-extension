@@ -56,4 +56,8 @@ export class SettingSet {
   connectSiteAccountAddress(value) {
     return this.#chrome._setChrome(SETTING.CONNECT_SITE_ACCOUNT, value)
   }
+
+  siteAddressDictionary(value) {
+    return this.#chrome._setChrome(SETTING.SITE_ADDRESS_DICTIONARY, value)
+  }
 }

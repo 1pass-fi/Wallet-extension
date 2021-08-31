@@ -528,15 +528,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         const { permissionId } = resolveId
 
         if (confirm) {
-          // add origin to the connected site of connect_site_account
-          await storage.setting.set.connectSiteAccountAddress(address)
-          const credentials = await backgroundAccount.getCredentialByAddress(address)
-          const account = await backgroundAccount.getAccount(credentials)
-          
-          let connectedSite = await account.get.connectedSite() || []
-          if (!connectedSite.includes(origin)) connectedSite = [...connectedSite, origin]
-          await account.set.connectedSite(connectedSite)
-          // await storage.generic.method.addSite(origin)
+          const siteAddressDict = await storage.setting.get.siteAddressDictionary() || {}
+          siteAddressDict[origin] = address
+          await storage.setting.set.siteAddressDictionary(siteAddressDict)
 
           chrome.browserAction.setBadgeText({ text: '' })
           ports[PORTS.CONTENT_SCRIPT].postMessage({

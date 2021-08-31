@@ -1,7 +1,7 @@
 import { ChromeStorage } from '../ChromeStorage'
 import { SETTING } from '../storageConstants'
 
-import { popupAccount } from 'account'
+import { backgroundAccount, popupAccount } from 'account'
 import storage from 'storage'
 
 
@@ -13,15 +13,18 @@ export class SettingMethod {
 
   async checkSitePermission(site) {
     try {
-      /* 
-        query for connect_site_account
-      */
-      const connectSiteAccountAddress = await storage.setting.get.connectSiteAccountAddress()
-      if (!connectSiteAccountAddress) return false
 
-      const account = await popupAccount.getAccount({ address: connectSiteAccountAddress })
-      const approvedOrigin = await account.get.connectedSite() || []
-      return approvedOrigin.includes(site)
+
+      /* 
+        check existed address for a site on siteAddressDictionary
+      */
+      const siteAddressDictionary = await storage.setting.get.siteAddressDictionary() || {}
+      const respectiveAddress = siteAddressDictionary[site]
+      const accountExists = !backgroundAccount.importedAccount.every(credentials => {
+        return credentials.address !== respectiveAddress
+      })
+      if (!accountExists) return false
+      return true
     } catch (err) {
       throw new Error(err.message)
     }

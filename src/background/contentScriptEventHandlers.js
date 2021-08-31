@@ -119,10 +119,8 @@ export default async (koi, port, message, ports, resolveId, sender) => {
 
         case MESSAGES.KOI_GET_ADDRESS: {
           try {
-
-
-            // get activated account address
-            const activatedAddress = await storage.setting.get.connectSiteAccountAddress()
+            const siteAddressDictionary = await storage.setting.get.siteAddressDictionary()
+            const activatedAddress = siteAddressDictionary[origin]
 
             if (activatedAddress) {
               port.postMessage({
@@ -354,7 +352,7 @@ export default async (koi, port, message, ports, resolveId, sender) => {
           const { permissionId } = resolveId
           try {
             /* 
-              check for having imported account
+              check for having 0 imported account
             */
             const savedAccountCount = await backgroundAccount.count()
             let hasImportedAccount = !isEmpty(backgroundAccount.importedAccount)
@@ -633,13 +631,9 @@ export default async (koi, port, message, ports, resolveId, sender) => {
         case MESSAGES.KOI_DISCONNECT: {
           try {
             if (hadPermission) {
-              const connectedAccountAddress = await storage.setting.get.connectSiteAccountAddress()
-              const credentials = await backgroundAccount.getCredentialByAddress(connectedAccountAddress)
-              const account = await backgroundAccount.getAccount(credentials)
-              
-              let connectedSite = await account.get.connectedSite()
-              connectedSite = connectedSite.filter(site => site !== origin)
-              await account.set.connectedSite(connectedSite)
+              const siteAdressDictionary = await storage.setting.get.siteAddressDictionary() || {}
+              delete siteAdressDictionary[origin]
+              await storage.setting.set.siteAddressDictionary(siteAdressDictionary)
             }
 
             port.postMessage({
