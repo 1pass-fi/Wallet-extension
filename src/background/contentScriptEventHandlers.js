@@ -119,17 +119,15 @@ export default async (koi, port, message, ports, resolveId, sender) => {
 
         case MESSAGES.KOI_GET_ADDRESS: {
           try {
+
+
             // get activated account address
-            const activatedAddress = await storage.setting.get.activatedAccountAddress()
-            const credentials = await backgroundAccount.getCredentialByAddress(activatedAddress)
-            const account = await backgroundAccount.getAccount(credentials)
-            const address = await account.get.address()
+            const activatedAddress = await storage.setting.get.connectSiteAccountAddress()
 
-
-            if (address) {
+            if (activatedAddress) {
               port.postMessage({
                 type: MESSAGES.KOI_GET_ADDRESS_SUCCESS,
-                data: { status: 200, data: address },
+                data: { status: 200, data: activatedAddress },
                 id: message.id
               })
             } else {
@@ -439,7 +437,7 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                   afterClose: async () => {
                     chrome.browserAction.setBadgeText({ text: '' })
                     port.postMessage(onClosedMessage)
-                    await removeChromeStorage('pendingRequest')
+                    await storage.generic.set.pendingRequest(null)
                   },
                 }
               )

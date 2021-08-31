@@ -52,7 +52,11 @@ export const ConnectToWallet = ({ setError, connectSite, accounts }) => {
   useEffect(() => {
     const loadActivatedAccount = async () => {
       const connectSiteAccountAddress = await storage.setting.get.connectSiteAccountAddress()
-      setCheckedAddress(connectSiteAccountAddress)
+      if (!connectSiteAccountAddress) {
+        setCheckedAddress(accounts[0].address)
+      } else {
+        setCheckedAddress(connectSiteAccountAddress)
+      }
     }
 
     loadActivatedAccount()
