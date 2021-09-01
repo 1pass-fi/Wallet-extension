@@ -418,8 +418,14 @@ input::-webkit-inner-spin-button {
   display: flex;
 }
 
+.transfer-wallet-modal .send-to .account .info {
+  align-self: center;
+}
+
 .transfer-wallet-modal .send-to .account .account-logo {
   margin-top: 5px;
+  height: 26px;
+  width: 26px;
 }
 
 .transfer-wallet-modal .send-to .account .name {
@@ -431,7 +437,7 @@ input::-webkit-inner-spin-button {
 }
 
 .transfer-wallet-modal .send-to .account .address {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 24px;
 }
 

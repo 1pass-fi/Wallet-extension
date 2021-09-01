@@ -1001,6 +1001,40 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         break
       }
 
+      case  MESSAGES.TRANSFER_NFT: {
+        try {
+          const { senderAddress, targetAddress, txId, numOfTransfers } = message.data
+
+          // get credentials of sender address
+          const credentials = await backgroundAccount.getCredentialByAddress(senderAddress)
+          const account = await backgroundAccount.getAccount(credentials)
+          const typeOfWallet = await backgroundAccount.getType(targetAddress)
+          const result = await account.method.nftBridge(txId, targetAddress, typeOfWallet)
+
+          if (result){
+            port.postMessage({
+              type: MESSAGES.TRANSFER_NFT,
+              data: result,
+              id: messageId
+            })
+          } else {
+            port.postMessage({
+              type: MESSAGES.TRANSFER_NFT,
+              error: 'Transfer NFT failed',
+              id: messageId
+            })
+            
+          }
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.TRANSFER_NFT,
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
+          })
+        }
+        break
+      }
+      
       default:
         break
     }

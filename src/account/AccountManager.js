@@ -362,6 +362,3 @@ export class BackgroundAccountManager extends AccountManager {
     }
   }
 }
-
-export const backgroundAccount = new BackgroundAccountManager()
-export const popupAccount = new PopupAccountManager()

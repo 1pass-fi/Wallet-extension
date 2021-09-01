@@ -104,7 +104,6 @@ export default ({ accounts, setAccounts }) => {
       address: activatedAccount,
     })
     activatedAccount = await activatedAccount.get.metadata()
-    console.log('HEY')
     console.log(activatedAccount)
     setAccount(activatedAccount)
   }

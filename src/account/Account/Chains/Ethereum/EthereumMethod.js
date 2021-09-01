@@ -63,7 +63,8 @@ export class EthereumMethod {
               totalViews: 0,
               createdAt: Date.parse(get(content, 'collection.created_date'))/1000,
               description: content.description,
-              type: TYPE.ETHEREUM
+              type: TYPE.ETHEREUM,
+              address: this.eth.address
             }
           } else {  
             console.log('Failed load content: ', content)
@@ -79,7 +80,8 @@ export class EthereumMethod {
               totalViews: 0,
               createdAt: Date.parse(get(content, 'collection.created_date'))/1000,
               description: content.description,
-              type: TYPE.ETHEREUM
+              type: TYPE.ETHEREUM,
+              address: this.eth.address
             }
           }
         } catch (err) {
@@ -113,10 +115,13 @@ export class EthereumMethod {
   }
 
   async nftBridge(txId, toAddress, type) {
+    console.log('ETH - NFT Bridge', type)
     switch (type) {
       case TYPE.ARWEAVE:
-        // TODO 30Aug: this 
+        // TODO MinhV
         return true
+      default:
+        return false
     }
   }
 }

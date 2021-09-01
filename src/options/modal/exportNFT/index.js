@@ -30,10 +30,7 @@ const Chain = ({ Icon, title }) => {
 const ExportNFT = ({ info }) => {
   const [isShowEthereum, setIsShowEthereum] = useState(false)
 
-  // TARGET WALLET TYPE
   const [type, setType] = useState(null)
-
-  // ACCOUNT CLICK TYPE
   const { type: _type } = info
 
   const handleOnClick = (walletType) => {

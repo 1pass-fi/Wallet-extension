@@ -22,7 +22,8 @@ const ActivityRow = ({activityName, expense, date, source, id, pending, price, c
     return moment(date).format('MMMM Do, YYYY')
   }
   
-  const token = activityName.includes('KOII') ? 'KOII' : 'AR'
+  let token = activityName.includes('KOII') ? 'KOII' : 'AR'
+  token = activityName.includes('ETH') && 'ETH'
   const sign = activityName.includes('Received') ? '+' : '-'
   const sourceStr = source ? `${source.slice(0,4)}...${source.slice(source.length - 5)}` : ''
 

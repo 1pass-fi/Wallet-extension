@@ -37,7 +37,8 @@ export default ({
   createdAt,
   description,
   pending,
-  type
+  type,
+  address
 }) => {
   const history = useHistory()
   const {
@@ -94,7 +95,7 @@ export default ({
             Export this NFT to a&nbsp;
             <span
               onClick={() => {
-                setShowExportModal({ earnedKoi, totalViews, name, imageUrl, type })
+                setShowExportModal({ earnedKoi, totalViews, name, imageUrl, type, txId, address })
               }}
               className='different-chain'
             >
