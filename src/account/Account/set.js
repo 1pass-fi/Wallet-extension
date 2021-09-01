@@ -1,12 +1,12 @@
-import { AccountChromeStorage } from '../../storage/ChromeStorage'
+import { AccountStorageUtils } from '../AccountStorageUtils'
 import { ACCOUNT } from '../accountConstants'
 
-export class WalletSet {
+export class AccountSetter {
   #address
   #accountStorage
   constructor(address) {
     this.#address = address
-    this.#accountStorage = new AccountChromeStorage(this.#address)
+    this.#accountStorage = new AccountStorageUtils(this.#address)
   }
 
   /**

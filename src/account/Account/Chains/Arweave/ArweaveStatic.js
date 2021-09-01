@@ -1,4 +1,4 @@
-export class ArweaveUtils {
+export class ArweaveStatic {
 
   async loadWallet(koiObj, key) {
     try {

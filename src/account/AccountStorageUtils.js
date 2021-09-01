@@ -1,34 +1,6 @@
-export class ChromeStorage {
-  _getChrome(key) {
-    return new Promise((resolve, reject) => {
-      chrome.storage.local.get(key, result => {
-        if (result[key]) {
-          resolve(result[key])
-          return
-        }
-        resolve(null)
-      })
-    })
-  }
+import { ChromeStorage } from 'storage/ChromeStorage'
 
-  _setChrome(key, value) {
-    return new Promise((resolve, reject) => {
-      chrome.storage.local.set({ [key]: value }, () => {
-        resolve()
-      })
-    })
-  }
-
-  _removeChrome(key) {
-    return new Promise((resolve, reject) => {
-      chrome.storage.local.remove(key, () => {
-        resolve()
-      })
-    })
-  }
-}
-
-export class AccountChromeStorage extends ChromeStorage {
+export class AccountStorageUtils extends ChromeStorage {
   #address
   constructor(address) {
     super()

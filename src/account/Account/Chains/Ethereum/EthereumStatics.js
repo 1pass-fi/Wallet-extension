@@ -1,6 +1,6 @@
 import { isString } from 'lodash'
 
-export class EthereumUtils {
+export class EthereumStatic {
 
   async loadWallet (eth, key) {
     try {

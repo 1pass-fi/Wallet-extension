@@ -5,8 +5,7 @@ import moment from 'moment'
 import axios from 'axios'
 
 import storage from 'storage'
-import { Arweave as ArweaveWallet } from 'account/Chains/Arweave/Arweave'
-import { Ethereum as EthereumWallet } from 'account/Chains/Ethereum/Ethereum'
+import { ArweaveAccount, EthereumAccount } from 'account/Account'
 import { TYPE } from 'account/accountConstants'
 
 import { getImageDataForNFT, getProviderUrlFromName } from 'utils'
@@ -195,10 +194,10 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           // Create new account
           switch(type) {
             case TYPE.ARWEAVE:
-              address = await ArweaveWallet.utils.loadWallet(koi, key)
+              address = await ArweaveAccount.utils.loadWallet(koi, key)
               break
             case TYPE.ETHEREUM:
-              address = await EthereumWallet.utils.loadWallet(eth, key)
+              address = await EthereumAccount.utils.loadWallet(eth, key)
           }
 
           console.log('ADDRESS', address)
@@ -319,12 +318,12 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           switch(walletType) {
             case TYPE.ARWEAVE:
               walletObj = new Web()
-              seedPhrase = await ArweaveWallet.utils.generateWallet(walletObj)
+              seedPhrase = await ArweaveAccount.utils.generateWallet(walletObj)
               addresss = walletObj.address
               break
             case TYPE.ETHEREUM:
               walletObj = new Ethereum()
-              seedPhrase = await EthereumWallet.utils.generateWallet(walletObj)
+              seedPhrase = await EthereumAccount.utils.generateWallet(walletObj)
               key = {key: walletObj.key} // key of eth wallet will be String
               address = walletObj.address
               walletObj.wallet = key
