@@ -131,7 +131,7 @@ export default ({
         // </button>
       )}
       {showViews && <div className='nft-views'>
-        {totalViews} views
+        {totalViews} {totalViews > 1 ? 'views' : 'view'}
       </div>}
       
       {isRegistered && (

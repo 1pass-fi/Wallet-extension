@@ -61,7 +61,8 @@ export class ArweaveMethod {
               totalViews: content.totalViews,
               createdAt: content.createdAt,
               description: content.description,
-              type: TYPE.ARWEAVE
+              type: TYPE.ARWEAVE,
+              address: this.koi.address
             }
           } else {  
             console.log('Failed load content: ', content)
@@ -78,7 +79,8 @@ export class ArweaveMethod {
               totalViews: content.totalViews,
               createdAt: content.createdAt,
               description: content.description,
-              type: TYPE.ARWEAVE
+              type: TYPE.ARWEAVE,
+              address: this.koi.address
             }
           }
         } catch (err) {
@@ -491,10 +493,12 @@ export class ArweaveMethod {
   }
 
   async nftBridge(txId, toAddress, type) {
+    console.log('AR - NFT Bridge', type)
     switch (type) {
       case TYPE.ETHEREUM:
-        // TODO 30Aug: this 
         return true
+      default:
+        return false
     }
   }
 }

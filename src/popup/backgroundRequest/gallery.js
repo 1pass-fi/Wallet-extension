@@ -116,4 +116,8 @@ export class GalleryRequest extends Request {
   friendReferral(body) {
     return this.promise(MESSAGES.FRIEND_REFERRAL, body)
   }
+
+  transferNFT(body){
+    return this.promise(MESSAGES.TRANSFER_NFT, body)
+  }
 }

@@ -14,13 +14,20 @@ import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'account/accountConstants'
 
 import { formatNumber, getDisplayAddress } from 'options/utils'
+import { backgroundRequest } from 'popup/backgroundRequest'
 
 import './index.css'
 
-const STEPS_CONTENT = [
+const STEPS_CONTENT_ETH = [
   'Deposit NFT to lock it in vault contract',
   'Mint ETH NFT',
   'Send NFT to ETH wallet',
+]
+
+const STEPS_CONTENT_AR = [
+  'Deposit NFT to lock it in vault contract',
+  'Mint AR NFT',
+  'Send NFT to AR wallet',
 ]
 
 const TRANSFER_STEPS = {
@@ -29,13 +36,19 @@ const TRANSFER_STEPS = {
   SUCCESS: 3,
 }
 
-const TITLES = {
+const TITLES_ETH = {
   1: <div className='title'>Transfer your media to an Ethereum wallet.</div>,
   2: <div className='title'>Confirm Transfer</div>,
   3: <div className='title'>Your NFT is heading to Ethereum!</div>,
 }
 
-const DESCRIPTIONS = {
+const TITLES_AR = {
+  1: <div className='title'>Transfer your media to an Arweave wallet.</div>,
+  2: <div className='title'>Confirm Transfer</div>,
+  3: <div className='title'>Your NFT is heading to Arweave!</div>,
+}
+
+const DESCRIPTIONS_ETH = {
   1: (
     <div className='description'>
       This process takes usually around 10-15 minutes. With one click, the Koii
@@ -60,6 +73,35 @@ const DESCRIPTIONS = {
     <div className='description'>
       Keep in mind that this process takes usually around 10-15 minutes and can
       take longer, depending on current Ethereum traffic.
+    </div>
+  ),
+}
+
+const DESCRIPTIONS_AR = {
+  1: (
+    <div className='description'>
+      This process takes usually around 10-15 minutes. With one click, the Koii
+      contract will complete the process below.&nbsp;
+      <a href='#' className='link'>
+        Learn more
+      </a>
+      .
+    </div>
+  ),
+  2: (
+    <div className='description'>
+      This process takes usually around 10-15 minutes. With one click, the Koii
+      contract will complete the process below.&nbsp;
+      <a href='#' className='link'>
+        Learn more
+      </a>
+      .
+    </div>
+  ),
+  3: (
+    <div className='description'>
+      Keep in mind that this process takes usually around 10-15 minutes and can
+      take longer, depending on current Arweave traffic.
     </div>
   ),
 }
@@ -102,25 +144,13 @@ export default ({ info, onClose, type }) => {
   const [step, setStep] = useState(1)
   const addressInputRef = useRef()
 
-  const { wallets } = useContext(GalleryContext)
+  const { account, setError, wallets } = useContext(GalleryContext)
 
   const accounts = useMemo(() => wallets, [wallets])
 
-  // const accounts = [
-  //   {
-  //     id: '1',
-  //     name: 'Account 1',
-  //     address: '0x1234567891234567891234567891234567',
-  //   },
-  //   {
-  //     id: '2',
-  //     name: 'Account 2',
-  //     address: '22222220x123456789123456789123456789',
-  //   },
-  // ]
-  const totalTransfer = 12
+  const totalTransfer = 12 // TODO this
 
-  const { name, earnedKoi, totalViews, imageUrl } = info
+  const { name, earnedKoi, totalViews, imageUrl, txId, address: _ownerAddress } = info
 
   const onAddressInputChange = (e) => {
     // handle input and dropdown
@@ -150,15 +180,31 @@ export default ({ info, onClose, type }) => {
   }
 
   const onOneClick = () => {
-    // TODO: Verify file chosenAccount / chosenAccount.dddress
-    console.log({ chosenAccount })
-    setStep(step + 1)
+    console.log(chosenAccount)
+    console.log(numberTransfer)
+
+    if (isEmpty(chosenAccount) || isEmpty(chosenAccount.address)) {
+      setError('Please select an address.')
+    } else if (!numberTransfer || numberTransfer == 0){
+      setError('Please give a number of transfer')
+    } else {
+      setStep(step + 1)
+    }
   }
 
-  const onConfirm = () => {
-    // TODO: Handle submit
-    console.log('confirm')
-    setStep(step + 1)
+  const onConfirm = async () => {
+    try {
+      const result = await backgroundRequest.gallery.transferNFT({
+        senderAddress: _ownerAddress, 
+        targetAddress: chosenAccount.address, 
+        txId: txId,
+        numOfTransfers: numberTransfer
+      })
+      setStep(step + 1)
+    } catch (error) {
+      console.log(error)
+      setError(error.message)
+    }
   }
 
   const onSeeActivity = () => {
@@ -177,16 +223,38 @@ export default ({ info, onClose, type }) => {
   return (
     <div className='transfer-wallet-modal-wrapper'>
       <div className='transfer-wallet-modal'>
-        {TITLES[step]}
-        {DESCRIPTIONS[step]}
+        {type === TYPE.ARWEAVE &&
+        <>
+          {TITLES_AR[step]}
+          {DESCRIPTIONS_AR[step]}
+        </>  
+        }
+        {type === TYPE.ETHEREUM &&
+        <>
+          {TITLES_ETH[step]}
+          {DESCRIPTIONS_ETH[step]}
+        </>  
+        }
 
         <div className='steps'>
-          {STEPS_CONTENT.map((step, index) => (
+          {type === TYPE.ARWEAVE &&
+          <>
+          {STEPS_CONTENT_AR.map((step, index) => (
             <div className='step' key={step}>
               <div className='number'>{index + 1}</div>
               <div className='text'>{step}</div>
             </div>
           ))}
+          </>}
+          {type === TYPE.ETHEREUM &&
+          <>
+          {STEPS_CONTENT_ETH.map((step, index) => (
+            <div className='step' key={step}>
+              <div className='number'>{index + 1}</div>
+              <div className='text'>{step}</div>
+            </div>
+          ))}
+          </>}
         </div>
 
         <div className='content'>
@@ -263,7 +331,8 @@ export default ({ info, onClose, type }) => {
                 <div className='send-to'>
                   <div className='label'>Sending to:</div>
                   <div className='account'>
-                    <EthereumLogo className='account-logo' />
+                    {type === TYPE.ARWEAVE && <ArweaveLogo className='account-logo' />}
+                    {type === TYPE.ETHEREUM && <EthereumLogo className='account-logo' />}
                     <div className='info'>
                       {chosenAccount.name && (
                         <div className='name'>{chosenAccount.name}</div>
@@ -324,20 +393,23 @@ export default ({ info, onClose, type }) => {
                 <div className='text'>Estimated costs:</div>
                 <div className='number'>
                   <div className='koi-number'>415.29 KOII</div>
-                  <div className='ar-number'>0.00014 AR</div>
+                  {type === TYPE.ARWEAVE && <div className='ar-number'>0.00014 AR</div>}
+                  {type === TYPE.ETHEREUM && <div className='eth-number'>0.0000011 ETH</div>}
                 </div>
               </div>
             )}
 
             {step == TRANSFER_STEPS.INPUT_INFO && (
               <div className='transfer-button' onClick={onOneClick}>
-                One-Click Transfer to ETH
+                {type === TYPE.ARWEAVE && 'One-Click Transfer to AR'}
+                {type === TYPE.ETHEREUM && 'One-Click Transfer to ETH'}
               </div>
             )}
 
             {step == TRANSFER_STEPS.CONFIRM && (
               <div className='transfer-button' onClick={onConfirm}>
-                Confirm Transfer to ETH
+                {type === TYPE.ARWEAVE && 'Confirm Transfer to AR'}
+                {type === TYPE.ETHEREUM && 'Confirm Transfer to ETH'}
               </div>
             )}
 
