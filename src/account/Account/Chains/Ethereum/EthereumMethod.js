@@ -118,7 +118,6 @@ export class EthereumMethod {
     console.log('ETH - NFT Bridge', type)
     switch (type) {
       case TYPE.ARWEAVE:
-        // TODO MinhV
         return true
       default:
         return false

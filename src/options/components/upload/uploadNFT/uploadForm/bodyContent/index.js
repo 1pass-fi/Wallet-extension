@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import trim from 'lodash/trim'
 import union from 'lodash/union'
+import get from 'lodash/get'
 
 import Checkbox from 'popup/components/shared/checkbox'
 import './index.css'
@@ -53,7 +54,7 @@ export default ({
           </div>
           <div className='field-input select-account'>
             {account.accountName}
-            <div className='address'>{`${account.address.slice(0,5)}...${account.address.slice(account.address.length - 4)}`}</div>
+            <div className='address'>{`${get(account, 'address', '').slice(0,5)}...${get(account, 'address', '').slice(account.address.length - 4)}`}</div>
           </div>
         </div>
         <div className='field'>
