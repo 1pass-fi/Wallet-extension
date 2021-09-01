@@ -1,5 +1,6 @@
 import React from 'react'
 import UploadNFTIcon from 'img/uploadNFT-icon.svg'
+import ElectronIcon from 'img/startup/electron.svg'
 
 import './index.css'
 
@@ -7,12 +8,10 @@ export default ({ className = '' }) => {
   return (
     <div className={className + ' drag-active'}>
       <div className='description'>
-        <div className='description-title'>Create an Atomic NFT</div>
+        <ElectronIcon className='upload-nft-icon' />
         <div className='description-detail'>
-          Drop your file here to store it forever and start earning attention
-          rewards.
+          Drag a media file here to get started.
         </div>
-        <UploadNFTIcon className='upload-nft-icon' />
       </div>
     </div>
   )

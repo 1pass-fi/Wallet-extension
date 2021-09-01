@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import WarningIcon from 'img/startup/warning.svg'
 import ElectronIcon from 'img/startup/electron.svg'
 import Dropfile from '../Dropfile'
+import { GalleryContext } from 'options/galleryContext'
 
 import './index.css'
 
 export default () => {
-  const [file, setFile] = useState()
+  const { file, setFile } = useContext(GalleryContext)
 
   const openFaucet = () => {
     chrome.tabs.create({ url: 'https://koi.rocks/faucet' })
@@ -52,13 +53,6 @@ export default () => {
       </div>
       <div className='get-koi-button' onClick={openFaucet}>Get Free KOII</div>
 
-      {/* CREATE NFT BUTTON */}
-      <div className='create-nft-text'>
-        If you already have KOII,&nbsp;<span>create an NFT</span>&nbsp;to earn
-        attention rewards!
-      </div>
-      <div className='get-koi-button' onClick={openCreateNFTPage}>Create an NFT</div>
-      {/* 
       <div className='create-nft-text'>
         If you already have KOII,&nbsp;<span>create an NFT</span>&nbsp;to earn
         attention rewards!
@@ -71,7 +65,7 @@ export default () => {
         fileType={['image/*', 'video/*', 'audio/*']}
         className='drag-media'
         description='Drag a media file here to get started.'
-      /> */}
+      />
     </div>
   )
 }

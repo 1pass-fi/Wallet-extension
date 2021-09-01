@@ -18,7 +18,7 @@ const SelectAccount = () => {
     <div className='select-account-modal'>
       <div className='title'>Select your account</div>
       <select defaultValue={account.accountName} onChange={(e) => onSelectAccount(e)} className='select'>
-        {wallets.map((wallet) => <option>{wallet.accountName}</option>)}
+        {wallets.map((wallet, idx) => <option key={wallet.accountName + idx}>{wallet.accountName}</option>)}
       </select>
     </div>
   )

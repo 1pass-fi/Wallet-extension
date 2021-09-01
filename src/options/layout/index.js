@@ -1,6 +1,6 @@
 import '@babel/polyfill'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { history, useHistory, useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
@@ -69,6 +69,7 @@ export default ({ children }) => {
   const [collectionsLoaded, setCollectionsLoaded] = useState(false)
   const [isWaitingAddNFT, setIsWaitingAddNFT] = useState(false)
   const [isLocked, setIsLocked] = useState(false)
+  const [needUpdateWallet, setNeedUpdateWallet] = useState(true)
 
   const [demoCollections, setDemoCollections] = useState([])
   const [collections, setCollections] = useState([])
@@ -127,6 +128,7 @@ export default ({ children }) => {
 
   /* 
     Load accounts from chrome storage
+    Passing file to dependency array to support create new NFT in case import new wallet
   */
   useEffect(() => {
     const loadWallets = async () => {
@@ -144,7 +146,7 @@ export default ({ children }) => {
 
     setIsLoading(true)
     loadWallets()
-  }, [])
+  }, [file])
 
   /* 
     Load for activated (default) account.
@@ -170,7 +172,7 @@ export default ({ children }) => {
     }
 
     if (walletLoaded) loadActivatedAccount()
-  }, [walletLoaded])
+  }, [walletLoaded, file])
 
   /* 
     Loads required data for gallery.
@@ -314,6 +316,13 @@ export default ({ children }) => {
     if (!isEmpty(acceptedFiles)) history.push('/create')
   }, [acceptedFiles])
 
+  /*
+    Redirect to create NFT page to support create new NFT in case import new wallet
+  */
+  useEffect(() => {
+    if (!isEmpty(file)) history.push('/create')
+  }, [file])
+
   const modifyDraging = useCallback(
     throttle((newValue) => {
       setIsDragging(newValue)
@@ -348,58 +357,64 @@ export default ({ children }) => {
     setIsDragging(false)
   }
 
+  const _setError = (message) => {
+    setError(null)
+    setError(message)
+  }
+
   return (
     <GalleryContext.Provider
       value={{
-        searchTerm,
-        setSearchTerm,
+        account,
+        accountName,
         address,
+        affiliateCode,
         cardInfos,
+        collectionNFT,
+        collections,
+        collectionsLoaded,
+        demoCollections,
         file,
-        setFile,
+        inviteSpent,
         isDragging,
+        isWaitingAddNFT,
         onClearFile,
         onCloseUploadModal,
-        setIsLoading,
-        setShowExportModal,
-        setShowShareModal,
-        wallet,
-        affiliateCode,
-        setError,
-        setNotification,
-        totalReward,
-        inviteSpent,
-        showCreateCollection,
-        collectionNFT,
-        setCollectionNFT,
-        totalPage,
-        setTotalPage,
-        setShowCreateCollection,
-        totalKoi,
-        totalAr,
-        stage,
-        setStage,
         page,
-        setPage,
-        demoCollections,
-        setDemoCollections,
-        collections,
-        setCollections,
-        showViews,
-        showEarnedKoi,
-        setShowViews,
-        setShowEarnedKoi,
-        accountName,
-        setShowWelcome,
-        collectionsLoaded,
-        setCollectionsLoaded,
-        wallets,
-        account,
+        searchTerm,
         setAccount,
-        setShowSelectAccount,
-        setShowSuccessUploadNFT,
-        isWaitingAddNFT,
+        setCollectionNFT,
+        setCollections,
+        setCollectionsLoaded,
+        setDemoCollections,
+        setError: _setError,
+        setFile,
+        setIsLoading,
         setIsWaitingAddNFT,
+        setNeedUpdateWallet,
+        setNotification,
+        setPage,
+        setSearchTerm,
+        setShowCreateCollection,
+        setShowEarnedKoi,
+        setShowExportModal,
+        setShowSelectAccount,
+        setShowShareModal,
+        setShowSuccessUploadNFT,
+        setShowViews,
+        setShowWelcome,
+        setStage,
+        setTotalPage,
+        showCreateCollection,
+        showEarnedKoi,
+        showViews,
+        stage,
+        totalAr,
+        totalKoi,
+        totalPage,
+        totalReward,
+        wallet,
+        wallets,
       }}
     >
       {!isEmpty(wallets) ? 

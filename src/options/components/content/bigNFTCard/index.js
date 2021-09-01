@@ -11,6 +11,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import moment from 'moment'
 
 import ArweaveIcon from 'img/arweave-icon.svg'
+import EthereumIcon from 'img/ethereum-logo-18.svg'
 import EmailIcon from 'img/social-icons/email-icon.svg'
 import FacebookIcon from 'img/social-icons/facebook-icon.svg'
 import LinkedinIcon from 'img/social-icons/linkedin-icon.svg'
@@ -23,6 +24,7 @@ import { GalleryContext } from 'options/galleryContext'
 
 import './index.css'
 import { formatNumber } from '../../../utils'
+import { TYPE } from 'constants/accountConstants'
 
 export default ({
   txId,
@@ -91,7 +93,8 @@ export default ({
         <div className='info'>
           <div className='nft-name'>{name}</div>
           {!pending && <div className='export-nft'>
-            <ArweaveIcon className='arweave-icon' />
+            {type === TYPE.ARWEAVE && <ArweaveIcon className='arweave-icon' />}
+            {type === TYPE.ETHEREUM && <EthereumIcon className='arweave-icon' />}
             Export this NFT to a&nbsp;
             <span
               onClick={() => {

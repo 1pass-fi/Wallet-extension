@@ -115,7 +115,6 @@ export default ({ stage, setStage }) => {
               setUsername={setUsername}
               description={description}
               setDescription={setDescription}
-              username={username}
             />
           </div>
           <BottomButton
