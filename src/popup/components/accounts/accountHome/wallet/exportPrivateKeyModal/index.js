@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
 import { getKeyFile } from 'actions/koi'
-import { NOTIFICATION } from 'koiConstants'
+import { NOTIFICATION } from 'constants/koiConstants'
 
 import WarningIcon from 'img/warning-icon.svg'
 

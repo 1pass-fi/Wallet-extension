@@ -4,15 +4,15 @@ import passworder from 'browser-passworder'
 import moment from 'moment'
 import axios from 'axios'
 
-import storage from 'storage'
-import { ArweaveAccount, EthereumAccount } from 'account/Account'
-import { TYPE } from 'account/accountConstants'
+import storage from 'services/storage'
+import { ArweaveAccount, EthereumAccount } from 'services/account/Account'
+import { TYPE } from 'constants/accountConstants'
 
 import { getImageDataForNFT, getProviderUrlFromName } from 'utils'
 
-import { backgroundAccount } from 'account'
+import { backgroundAccount } from 'services/account'
 
-import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS } from 'koiConstants'
+import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 
 const generatedKey = { key: null, mnemonic: null, type: null, address: null }
 

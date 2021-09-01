@@ -12,7 +12,7 @@ import TezosLogo from 'img/chain/tezos-logo.svg'
 
 import ExportWallet from './ExportWallet'
 
-import { TYPE } from 'account/accountConstants'
+import { TYPE } from 'constants/accountConstants'
 
 const Chain = ({ Icon, title }) => {
 

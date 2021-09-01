@@ -10,12 +10,12 @@ import { Link } from 'react-router-dom'
 
 import { unlockWallet } from 'actions/koi'
 import { getChromeStorage } from 'utils'
-import { STORAGE, REQUEST } from 'koiConstants'
+import { STORAGE, REQUEST } from 'constants/koiConstants'
 
 import './index.css'
 import { setIsLoading } from 'popup/actions/loading'
 import { setError } from 'popup/actions/error'
-import storage from 'storage'
+import storage from 'services/storage'
 
 
 const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {

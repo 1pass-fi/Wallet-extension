@@ -3,7 +3,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { CSVLink } from 'react-csv'
 
 import CloseIcon from 'img/close-x-icon.svg'
-import { backgroundRequest } from 'popup/backgroundRequest'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request'
 import { GalleryContext } from 'options/galleryContext'
 import { getChromeStorage, decryptSeedPhraseFromChrome } from 'utils'
 import './index.css'

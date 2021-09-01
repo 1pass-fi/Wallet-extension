@@ -1,13 +1,13 @@
 import numeral from 'numeral'
 import { isString } from 'lodash'
 import { getChromeStorage, setChromeStorage } from 'utils'
-import { MOCK_COLLECTIONS_STORE, STORAGE } from 'koiConstants'
+import { MOCK_COLLECTIONS_STORE, STORAGE } from 'constants/koiConstants'
 import { find, get } from 'lodash'
 
 import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
 
-import storage from 'storage'
+import storage from 'services/storage'
 
 export const formatNumber = (value, decimal) => {
   const zeroArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

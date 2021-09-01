@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import ToggleButton from 'options/components/toggleButton'
 
 import { setChromeStorage, getChromeStorage } from 'utils'
-import { STORAGE } from 'koiConstants'
+import { STORAGE } from 'constants/koiConstants'
 
 import './index.css'
 import { isEmpty } from 'lodash'

@@ -17,8 +17,8 @@ import { claimReward } from 'utils'
 import { shareFriendCode } from 'options/helpers'
 
 import './index.css'
-import { FRIEND_REFERRAL_ENDPOINTS, STATEMENT } from 'koiConstants'
-import { backgroundRequest } from 'popup/backgroundRequest'
+import { FRIEND_REFERRAL_ENDPOINTS, STATEMENT } from 'constants/koiConstants'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request'
 
 export default () => {
   const { 

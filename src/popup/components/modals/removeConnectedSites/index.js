@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { REQUEST, STORAGE, ERROR_MESSAGE } from 'koiConstants'
+import { REQUEST, STORAGE, ERROR_MESSAGE } from 'constants/koiConstants'
 import { setChromeStorage } from 'utils'
 import { getSelectedTab } from 'utils/extension'
 import { setError } from 'popup/actions/error'
@@ -13,7 +13,7 @@ import PlusIcon from 'img/plus-icon.svg'
 
 import './index.css'
 
-import storage from 'storage'
+import storage from 'services/storage'
 
 const propTypes = {
   sites: PropTypes.array,

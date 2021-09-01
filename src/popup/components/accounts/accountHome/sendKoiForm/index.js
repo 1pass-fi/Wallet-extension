@@ -17,14 +17,14 @@ import EditIcon from 'img/edit-icon.svg'
 import { makeTransfer, setKoi } from 'actions/koi'
 import { setError } from 'actions/error'
 import { setWarning } from 'actions/warning'
-import { ERROR_MESSAGE, WARNING_MESSAGE, RATE, NOTIFICATION, PATH } from 'koiConstants'
+import { ERROR_MESSAGE, WARNING_MESSAGE, RATE, NOTIFICATION, PATH } from 'constants/koiConstants'
 
 import './index.css'
 import { setIsLoading } from 'popup/actions/loading'
 import { setNotification } from 'popup/actions/notification'
 
-import { popupAccount } from 'account'
-import { TYPE } from 'account/accountConstants'
+import { popupAccount } from 'services/account'
+import { TYPE } from 'constants/accountConstants'
 
 import { formatNumber } from 'options/utils'
 

@@ -20,10 +20,10 @@ import isEmpty from 'lodash/isEmpty'
 
 import useEthereumNetworks from '../shared/useEthereumNetworks'
 
-import { backgroundRequest } from 'popup/backgroundRequest'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request'
 
 import './index.css'
-import { TYPE } from 'account/accountConstants'
+import { TYPE } from 'constants/accountConstants'
 import { GalleryContext } from 'options/galleryContext'
 
 const mockPhrase = [

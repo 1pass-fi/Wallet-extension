@@ -15,8 +15,8 @@ import { setError } from 'popup/actions/error'
 import { setNotification } from 'popup/actions/notification'
 import { setAccountName } from 'popup/actions/accountName'
 import { changeAccountName } from 'actions/koi'
-import { NOTIFICATION } from 'koiConstants'
-import { TYPE } from 'account/accountConstants'
+import { NOTIFICATION } from 'constants/koiConstants'
+import { TYPE } from 'constants/accountConstants'
 
 
 const AccountSettingRow = ({ account, setError, setNotification, changeAccountName }) => {

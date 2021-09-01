@@ -7,7 +7,7 @@ import {
   ALL_NFT_LOADED,
   ETH_NETWORK_NAME,
   ETH_NETWORK_PROVIDER
-} from 'koiConstants'
+} from 'constants/koiConstants'
 import passworder from 'browser-passworder'
 import moment from 'moment'
 import { get, isNumber, isArray } from 'lodash'
@@ -19,7 +19,7 @@ import axios from 'axios'
 import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
 
-import storage from 'storage'
+import storage from 'services/storage'
 
 /* istanbul ignore next */
 const arweave = Arweave.init({ host: 'arweave.net', protocol: 'https', port: 443, })

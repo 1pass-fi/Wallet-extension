@@ -29,15 +29,15 @@ import { setActivityNotifications } from 'actions/activityNotification'
 import { setSettings } from 'actions/settings'
 import { setActivities } from 'actions/activities'
 
-import { HEADER_EXCLUDE_PATH, REQUEST, DISCONNECTED_BACKGROUND, PATH } from 'koiConstants'
-import { backgroundRequest } from 'popup/backgroundRequest'
+import { HEADER_EXCLUDE_PATH, REQUEST, DISCONNECTED_BACKGROUND, PATH } from 'constants/koiConstants'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request'
 
 import axios from 'axios'
 
-import storage from 'storage'
+import storage from 'services/storage'
 
-import { popupAccount } from 'account'
-import { SHOW_ACTIVITIES_BY } from 'storage/storageConstants'
+import { popupAccount } from 'services/account'
+import { SHOW_ACTIVITIES_BY } from 'constants/storageConstants'
 
 const ContinueLoading = () => (
   <div className='continue-loading'>

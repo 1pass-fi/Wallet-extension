@@ -1,6 +1,6 @@
 import '@babel/polyfill'
 
-import { PORTS, LOAD_BALANCES_TIME_INTERVAL, OS, PATH } from 'koiConstants'
+import { PORTS, LOAD_BALANCES_TIME_INTERVAL, OS, PATH } from 'constants/koiConstants'
 import popUpEventHandlers, { loadBalances } from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from '@_koi/sdk/web'

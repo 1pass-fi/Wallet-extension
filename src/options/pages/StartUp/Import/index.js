@@ -15,9 +15,9 @@ import InputPassword from '../shared/InputPassword'
 
 import isEmpty from 'lodash/isEmpty'
 
-import { backgroundRequest } from 'popup/backgroundRequest'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request'
 
-import { TYPE } from 'account/accountConstants'
+import { TYPE } from 'constants/accountConstants'
 
 import './index.css'
 

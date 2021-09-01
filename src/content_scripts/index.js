@@ -1,7 +1,8 @@
 import '@babel/polyfill'
 
-import { BackgroundConnect, EventHandler } from 'utils/backgroundConnect'
-import { PORTS, MESSAGES } from 'koiConstants'
+import { EventHandler } from 'services/request/backgroundConnect'
+import { contentBackgroundConnect as backgroundConnect } from 'services/request'
+import { PORTS, MESSAGES } from 'constants/koiConstants'
 import { setChromeStorage } from 'utils'
 import { get } from 'lodash'
 
@@ -48,7 +49,7 @@ const messageTypes = [
   // MESSAGES.ENCRYPT_SUCCESS,
   // MESSAGES.ENCRYPT_ERROR
 ]
-export const backgroundConnect = new BackgroundConnect(PORTS.CONTENT_SCRIPT)
+
 messageTypes.forEach(messageType => {
   backgroundConnect.addHandler(new EventHandler(messageType, (message) => {
     window.postMessage(message)

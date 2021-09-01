@@ -10,7 +10,7 @@ import Button from 'shared/button'
 import { getChromeStorage, removeChromeStorage, transactionAmountFormat, fiatCurrencyFormat } from 'utils'
 import { utils } from 'utils'
 
-import { STORAGE, REQUEST, ERROR_MESSAGE, RATE } from 'koiConstants'
+import { STORAGE, REQUEST, ERROR_MESSAGE, RATE } from 'constants/koiConstants'
 import { signTransaction } from 'actions/koi'
 import { setError } from 'actions/error'
 

@@ -1,4 +1,4 @@
-import { PATH } from 'koiConstants'
+import { PATH } from 'constants/koiConstants'
 const MOCK_ADDRESS = '123456789012345678901234567890123456789012'
 const MOCK_PHASE = '1faculty 2photo 3tornado 4doll 5matrix 6bench 7thumb 8team 9move 10diesel 11room 12tube'
 const MOCK_KEY = 'ajsdaskdjsdhkashdj'

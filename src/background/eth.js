@@ -3,7 +3,7 @@ import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
 import hdkey from 'ethereumjs-wallet/dist/hdkey'
 import Tx from 'ethereumjs-tx'
 
-import { ETH_NETWORK_PROVIDER } from 'koiConstants'
+import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 
 export class Ethereum {
   #provider

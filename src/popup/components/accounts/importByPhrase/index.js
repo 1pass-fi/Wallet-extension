@@ -12,7 +12,7 @@ import CreatePassword from 'shared/createPassword'
 import { importWallet } from 'actions/koi'
 import { setError } from 'actions/error'
 
-import { PATH, ERROR_MESSAGE, STORAGE } from 'koiConstants'
+import { PATH, ERROR_MESSAGE, STORAGE } from 'constants/koiConstants'
 import { setIsLoading } from 'popup/actions/loading'
 import { getChromeStorage } from 'utils'
 

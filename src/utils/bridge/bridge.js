@@ -32,7 +32,7 @@ const fromEthToArweave = async () => {
       console.log('*****RECEIPT1: ', result)
     }
 
-    const depositResult = await koiTokenContract.methods.deposit('0xff3096ED566445c9F24F615b3afD6677AD4Dcba4', '79815999319843347607878690319208729376727520789855333437166829176352736804865', 1, 'ou-OUmrWuT0hnSiUMoyhGEbd3s5b_ce8QK0vhNwmno4').send({from: addresses[0]})
+    const depositResult = await koiTokenContract.methods.deposit('0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656', '79815999319843347607878690319208729376727520789855333437166829176352736804865', 1, 'ou-OUmrWuT0hnSiUMoyhGEbd3s5b_ce8QK0vhNwmno4').send({from: addresses[0]})
     console.log('*****RECEIPT2: ', depositResult)
   } catch (err) {
     console.log(err.message)

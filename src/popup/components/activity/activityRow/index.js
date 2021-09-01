@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import { PATH } from 'koiConstants' 
+import { PATH } from 'constants/koiConstants' 
 import { transactionAmountFormat } from 'utils'
 
 import './index.css'

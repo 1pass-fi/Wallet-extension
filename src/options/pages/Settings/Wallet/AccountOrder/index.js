@@ -5,12 +5,12 @@ import get from 'lodash/get'
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
 import RearrangePadsIcon from 'img/rearrange-pads-icon.svg'
 import { getDisplayAddress } from 'options/utils'
-import storage from 'storage'
+import storage from 'services/storage'
 
 import './index.css'
 import { GalleryContext } from 'options/galleryContext'
-import { backgroundRequest } from 'popup/backgroundRequest'
-import { popupAccount } from 'account'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request'
+import { popupAccount } from 'services/account'
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list)

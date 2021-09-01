@@ -5,7 +5,7 @@ import CloseIcon from 'img/circle-close-icon-blue.svg'
 
 import './index.css'
 
-import { TYPE } from 'account/accountConstants'
+import { TYPE } from 'constants/accountConstants'
 
 const NETWORKS = {
   [TYPE.ETHEREUM]: {

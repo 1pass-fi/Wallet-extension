@@ -1,4 +1,4 @@
-import { OS } from 'koiConstants'
+import { OS } from 'constants/koiConstants'
 import { getChromeStorage } from 'utils'
 
 let currentWindow

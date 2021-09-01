@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 
-import { backgroundRequest } from 'popup/backgroundRequest'
-import { TYPE } from 'account/accountConstants'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request'
+import { TYPE } from 'constants/accountConstants'
 import { GalleryContext } from 'options/galleryContext'
 
 import isEmpty from 'lodash/isEmpty'

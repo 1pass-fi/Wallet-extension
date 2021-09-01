@@ -6,7 +6,7 @@ import get from 'lodash/get'
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
 import { getDisplayAddress } from 'options/utils'
 import { getChromeStorage } from 'utils'
-import { STORAGE } from 'koiConstants'
+import { STORAGE } from 'constants/koiConstants'
 
 import { GalleryContext } from 'options/galleryContext'
 

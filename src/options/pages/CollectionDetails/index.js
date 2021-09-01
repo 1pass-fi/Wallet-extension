@@ -11,7 +11,7 @@ import { GalleryContext } from 'options/galleryContext'
 
 import GoBack from 'img/goback-icon.svg'
 import { getChromeStorage } from 'utils'
-import { STORAGE } from 'koiConstants'
+import { STORAGE } from 'constants/koiConstants'
 
 export default () => {
   const history = useHistory()

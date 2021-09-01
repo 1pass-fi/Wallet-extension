@@ -19,9 +19,9 @@ import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
 
 import './index.css'
-import { backgroundRequest } from 'popup/backgroundRequest'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request'
 
-import { ERROR_MESSAGE, NFT_BIT_DATA } from 'koiConstants'
+import { ERROR_MESSAGE, NFT_BIT_DATA } from 'constants/koiConstants'
 
 export default ({ description, setStage, stage, title, file, username }) => {
   const createNftButtonRef = useRef(null)

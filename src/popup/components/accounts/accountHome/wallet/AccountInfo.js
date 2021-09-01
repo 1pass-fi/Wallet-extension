@@ -18,14 +18,13 @@ import EditAccountNameModal from 'popup/components/modals/editAccountNameModal'
 import { setNotification } from 'actions/notification'
 import { setAccountName } from 'actions/accountName'
 import { fiatCurrencyFormat, getProviderNameFromUrl, numberFormat, updateAccountName } from 'utils'
-import { NOTIFICATION } from 'koiConstants'
-import { Account } from 'account'
+import { NOTIFICATION } from 'constants/koiConstants'
 import { setAccounts } from 'popup/actions/accounts'
 import { changeAccountName } from 'actions/koi'
 import useNetworkSelection from 'shared/useNetworkSelection'
 
 
-import { TYPE } from 'account/accountConstants'
+import { TYPE } from 'constants/accountConstants'
 
 export const AccountInfo = (({
   setNotification,

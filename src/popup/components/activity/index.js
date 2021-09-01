@@ -17,15 +17,15 @@ import Button from 'shared/button'
 import CheckBox from 'shared/checkbox'
 
 import './index.css'
-import storage from 'storage'
-import { Account, popupAccount } from 'account'
+import storage from 'services/storage'
+import { popupAccount } from 'services/account'
 import { setActivities } from 'popup/actions/activities'
 import ToggleButton from 'shared/ToggleButton'
 
 import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
 
-import { SHOW_ACTIVITIES_BY } from 'storage/storageConstants'
+import { SHOW_ACTIVITIES_BY } from 'constants/storageConstants'
 
 
 export const ActivitiesList = ({ activities }) => {

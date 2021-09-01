@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { URL } from 'koiConstants'
+import { URL } from 'constants/koiConstants'
 
 import InputField from '../InputField'
 import './index.css'

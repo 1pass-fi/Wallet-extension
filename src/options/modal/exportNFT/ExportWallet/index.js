@@ -11,10 +11,10 @@ import WarningIcon from 'img/dangerous-logo.svg'
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
 
 import { GalleryContext } from 'options/galleryContext'
-import { TYPE } from 'account/accountConstants'
+import { TYPE } from 'constants/accountConstants'
 
 import { formatNumber, getDisplayAddress } from 'options/utils'
-import { backgroundRequest } from 'popup/backgroundRequest'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request'
 
 import './index.css'
 

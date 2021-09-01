@@ -6,14 +6,14 @@ import { isEmpty, get } from 'lodash'
 import axios from 'axios'
 
 import { getChromeStorage, setChromeStorage } from 'utils'
-import { STORAGE, OS } from 'koiConstants'
+import { STORAGE, OS } from 'constants/koiConstants'
 import { GalleryContext } from 'options/galleryContext'
 
 import AccountOrder from './AccountOrder'
 import './index.css'
 import AcceptedCurrencies from './currencies'
 
-import storage from 'storage'
+import storage from 'services/storage'
 
 export default () => {
   const history = useHistory()

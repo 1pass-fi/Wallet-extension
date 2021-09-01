@@ -7,9 +7,7 @@ import { setCreateWallet } from './createWallet'
 import { setAssets } from './assets'
 import { setActivities } from './activities'
 
-import backgroundConnect, { CreateEventHandler } from './backgroundConnect'
-
-import { MESSAGES, FILENAME } from 'koiConstants'
+import { MESSAGES, FILENAME } from 'constants/koiConstants'
 
 import { SET_KOI } from 'actions/types'
 import { setChromeStorage, generateWallet as generateWalletUtil } from 'utils'
@@ -18,11 +16,12 @@ import { setAccounts } from './accounts'
 import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
 
-import { backgroundRequest } from 'popup/backgroundRequest'
+import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect as backgroundConnect } from 'services/request'
+import { EventHandler as CreateEventHandler } from 'services/request/backgroundConnect'
 
-import { TYPE } from 'account/accountConstants'
+import { TYPE } from 'constants/accountConstants'
 
-import { backgroundAccount, popupAccount } from 'account'
+import { backgroundAccount, popupAccount } from 'services/account'
 
 export const getBalances = () => async (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {

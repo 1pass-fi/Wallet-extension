@@ -18,7 +18,7 @@ import { setCreateWallet } from 'actions/createWallet'
 import { setIsLoading } from 'popup/actions/loading'
 
 import { getChromeStorage } from 'utils'
-import { STORAGE, PATH } from 'koiConstants'
+import { STORAGE, PATH } from 'constants/koiConstants'
 
 import './index.css'
 

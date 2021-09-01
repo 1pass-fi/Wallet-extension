@@ -13,7 +13,7 @@ import CancelIcon from 'img/x-icon.svg'
 import Card from 'shared/card'
 import Button from 'shared/button'
 
-import { NOTIFICATION } from 'koiConstants'
+import { NOTIFICATION } from 'constants/koiConstants'
 import { setNotification } from 'actions/notification'
 
 import './index.css'

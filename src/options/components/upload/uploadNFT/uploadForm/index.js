@@ -14,7 +14,7 @@ import './index.css'
 import BigCard from '../../bigNFTCard'
 import { UploadContext } from '../../index'
 import { GalleryContext } from 'options/galleryContext'
-import { PATH } from 'koiConstants'
+import { PATH } from 'constants/koiConstants'
 import { stringTruncate } from '../../../../utils'
 
 const Tag = ({ tag, stage }) => {

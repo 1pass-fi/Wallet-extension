@@ -8,7 +8,7 @@ import SettingIcon from 'img/settings-icon.svg'
 import NavBar from './navBar'
 
 import { getChromeStorage } from 'utils'
-import { STORAGE, NAVBAR_EXCLUDE_PATH, PATH } from 'koiConstants'
+import { STORAGE, NAVBAR_EXCLUDE_PATH, PATH } from 'constants/koiConstants'
 import { setError } from 'actions/error'
 
 import './index.css'

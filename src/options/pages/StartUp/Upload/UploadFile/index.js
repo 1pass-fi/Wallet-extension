@@ -7,7 +7,7 @@ import FinnieLogo from 'img/startup/finnie-logo.svg'
 import Dropfile from '../../shared/Dropfile'
 import WalletType from '../../shared/WalletType'
 
-import { TYPE } from 'account/accountConstants'
+import { TYPE } from 'constants/accountConstants'
 
 import useEthereumNetworks from '../../shared/useEthereumNetworks'
 

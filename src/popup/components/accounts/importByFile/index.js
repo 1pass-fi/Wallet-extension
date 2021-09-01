@@ -13,7 +13,7 @@ import { importWallet } from 'actions/koi'
 import { setError } from 'actions/error'
 
 import { JSONFileToObject, getChromeStorage } from 'utils'
-import { PATH, ERROR_MESSAGE, STORAGE } from 'koiConstants'
+import { PATH, ERROR_MESSAGE, STORAGE } from 'constants/koiConstants'
 
 import './index.css'
 import { setIsLoading } from 'popup/actions/loading'

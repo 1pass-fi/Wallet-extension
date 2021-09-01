@@ -10,7 +10,7 @@ import {
   getTotalRewardKoi,
   checkAffiliateInviteSpent,
 } from 'utils'
-import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'koiConstants'
+import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 
 import './index.css'
 import StartUp from 'options/pages/StartUp'
@@ -20,7 +20,7 @@ import Navbar from 'options/components/navbar'
 import Message from 'options/components/message'
 
 import { GalleryContext } from 'options/galleryContext'
-import { TYPE } from 'account/accountConstants'
+import { TYPE } from 'constants/accountConstants'
 
 import ShareNFT from 'options/modal/shareNFT'
 import ExportNFT from 'options/modal/exportNFT'
@@ -29,14 +29,14 @@ import Welcome from 'options/modal/welcomeScreen'
 import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
 
-import storage from 'storage'
-import { backgroundRequest } from 'popup/backgroundRequest'
+import storage from 'services/storage'
+import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect } from 'services/request'
 
-import { popupAccount } from 'account'
+import { popupAccount } from 'services/account'
 import SelectAccountModal from 'options/modal/SelectAccountModal'
 import SuccessUploadNFT from 'options/modal/SuccessUploadModal'
 
-import { EventHandler, popupBackgroundConnect } from 'utils/backgroundConnect'
+import { EventHandler } from 'services/request/backgroundConnect'
 
 export default ({ children }) => {
   const { pathname } = useLocation()

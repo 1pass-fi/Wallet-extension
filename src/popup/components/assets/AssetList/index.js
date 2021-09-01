@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { TYPE } from 'account/accountConstants' 
+import { TYPE } from 'constants/accountConstants' 
 import PropTypes from 'prop-types'
 
 import AssetRow from '../AssetRow'
@@ -8,7 +8,7 @@ import './index.css'
 import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
 
-import { popupAccount } from 'account'
+import { popupAccount } from 'services/account'
 
 const propTypes = {
   assets: PropTypes.array,

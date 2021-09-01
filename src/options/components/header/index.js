@@ -16,10 +16,10 @@ import { formatNumber } from '../../utils'
 
 import './index.css'
 import { GalleryContext } from 'options/galleryContext'
-import { TYPE } from 'account/accountConstants'
-import { MESSAGES } from 'koiConstants'
+import { TYPE } from 'constants/accountConstants'
+import { MESSAGES } from 'constants/koiConstants'
 
-import { popupBackgroundConnect } from 'utils/backgroundConnect'
+import { popupBackgroundConnect } from 'services/request'
 
 export default ({
   totalKoi,

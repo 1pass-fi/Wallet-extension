@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import get from 'lodash/get'
 
 import QuestionIcon from 'img/startup/question-mark.svg'
-import { ETH_NETWORK_NAME } from 'koiConstants'
+import { ETH_NETWORK_NAME } from 'constants/koiConstants'
 
 import './index.css'
 

@@ -9,14 +9,12 @@ import Success from './Success'
 import CloseIcon from 'img/close-x-icon.svg'
 import GoBackIcon from 'img/goback-icon.svg'
 import { GalleryContext } from 'options/galleryContext'
-import { ERROR_MESSAGE } from 'koiConstants'
-import { backgroundRequest } from 'popup/backgroundRequest'
+import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request'
 
 import { mockSaveCollections } from 'options/utils'
 import { mockGetCollections } from 'options/utils'
 import { getNftsDataForCollections } from 'options/utils'
-
-import { NOTIFICATION } from 'koiConstants'
 
 export default () => {
   const { collectionNFT,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TYPE } from 'account/accountConstants'
+import { TYPE } from 'constants/accountConstants'
 
 import EthereumLogo from 'img/chain/ethereum-logo.svg'
 import KoiIcon from 'img/finnie-koi-logo-white.svg'

@@ -13,17 +13,17 @@ import ChangeProfileImageIcon from 'img/change-profile-image-icon.svg'
 
 import './index.css'
 import { GalleryContext } from 'options/galleryContext'
-import { backgroundRequest } from 'popup/backgroundRequest'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request'
 import { loadNFTCost } from 'utils'
 
-import { ERROR_MESSAGE, NOTIFICATION } from 'koiConstants'
+import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'
 
 import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
 
-import { STORAGE } from 'koiConstants'
+import { STORAGE } from 'constants/koiConstants'
 import { setChromeStorage, getChromeStorage } from 'utils'
-import { popupAccount } from 'account'
+import { popupAccount } from 'services/account'
 
 export default () => {
   const { account, address, totalAr, totalKoi, setIsLoading, setError, setNotification } = useContext(GalleryContext)

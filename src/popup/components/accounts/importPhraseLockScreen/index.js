@@ -8,7 +8,7 @@ import Button from 'shared/button'
 import { importWallet } from 'actions/koi'
 import { setError } from 'actions/error'
 import Header from 'shared/header'
-import { PATH, STORAGE } from 'koiConstants'
+import { PATH, STORAGE } from 'constants/koiConstants'
 import { getChromeStorage } from 'utils'
 
 import './index.css'

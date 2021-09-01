@@ -13,7 +13,7 @@ import { setNotification } from 'actions/notification'
 import { setAccountName } from 'actions/accountName'
 import { setIsLoading } from 'popup/actions/loading'
 
-import storage from 'storage'
+import storage from 'services/storage'
 import { setError } from 'popup/actions/error'
 
 export const Wallet = ({ account }) => {

@@ -9,7 +9,7 @@ import { setError } from 'actions/error'
 import GlobalButton from 'popup/components/shared/globalButton'
 import AccountSettingRow from './accountSettingRow'
 
-import { STORAGE, PATH } from 'koiConstants'
+import { STORAGE, PATH } from 'constants/koiConstants'
 import { getChromeStorage } from 'utils'
 
 import './index.css'

@@ -1,4 +1,4 @@
-import { PATH } from 'koiConstants'
+import { PATH } from 'constants/koiConstants'
 
 export const getShareUrl = (network, txid) => {
   switch (network) {

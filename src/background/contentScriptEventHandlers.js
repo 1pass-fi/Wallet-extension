@@ -1,12 +1,12 @@
 import { isString, isNumber, isEmpty } from 'lodash'
 
-import { REQUEST, MESSAGES, STORAGE, OS, WINDOW_SIZE, PORTS } from 'koiConstants'
+import { REQUEST, MESSAGES, STORAGE, OS, WINDOW_SIZE, PORTS } from 'constants/koiConstants'
 import { checkSitePermission, setChromeStorage, removeChromeStorage, getChromeStorage, transfer } from 'utils'
 import { getSelectedTab, createWindow } from 'utils/extension'
 import signPort from 'utils/signPort'
 
-import storage from 'storage'
-import { backgroundAccount, popupAccount } from 'account'
+import storage from 'services/storage'
+import { backgroundAccount, popupAccount } from 'services/account'
 
 let pendingMessages = {}
 

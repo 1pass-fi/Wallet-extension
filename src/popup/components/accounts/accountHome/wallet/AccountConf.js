@@ -12,15 +12,15 @@ import DeleteIcon from 'img/wallet/delete-icon.svg'
 import RemoveAccountModal from 'shared/modal/removeAccountModal'
 import RemoveConnectedSite from 'popup/components/modals/removeConnectedSites'
 
-import { PATH } from 'koiConstants'
+import { PATH } from 'constants/koiConstants'
 import ExportPrivateKeyModal from './exportPrivateKeyModal'
 
-import { TYPE } from 'account/accountConstants'
+import { TYPE } from 'constants/accountConstants'
 
 import { setIsLoading } from 'actions/loading'
 import { removeWallet } from 'actions/koi'
 
-import { popupAccount } from 'account'
+import { popupAccount } from 'services/account'
 
 const AccountConfItem = ({ icon, title, onClick, className }) => {
   return (

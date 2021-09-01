@@ -4,13 +4,13 @@ import { connect } from 'react-redux'
 import { loadContent } from 'actions/koi'
 import { setAssets } from 'actions/assets'
 
-import { NOTIFICATION } from 'koiConstants'
+import { NOTIFICATION } from 'constants/koiConstants'
 
 import AssetList from './AssetList'
 import { setContLoading } from 'actions/continueLoading'
 import { setError } from 'popup/actions/error'
 import { setNotification } from 'popup/actions/notification'
-import { popupAccount } from 'account'
+import { popupAccount } from 'services/account'
 
 const Assets = ({ 
   assets, 

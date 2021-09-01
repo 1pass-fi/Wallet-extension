@@ -8,9 +8,9 @@ import { GalleryContext } from 'options/galleryContext'
 import { loadCollections } from 'options/utils'
 
 import AddIcon from 'img/add-icon-green.svg'
-import storage from 'storage'
-import { Account, popupAccount } from 'account'
-import { backgroundRequest } from 'popup/backgroundRequest'
+import storage from 'services/storage'
+import { popupAccount } from 'services/account'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request'
 
 const Header = ({ setShowCreateCollection, setStage, setPage, setTotalPage }) => {
   const history = useHistory()

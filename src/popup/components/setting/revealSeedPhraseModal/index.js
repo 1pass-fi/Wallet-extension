@@ -10,10 +10,8 @@ import WarningIcon from 'img/warning-icon.svg'
 
 import './index.css'
 import { setError } from 'actions/error'
-import { ERROR_MESSAGE } from 'koiConstants'
+import { ERROR_MESSAGE, STORAGE } from 'constants/koiConstants'
 import { getChromeStorage } from 'utils'
-
-import { STORAGE } from 'koiConstants'
 
 const NoSeedphrase = ({onClose}) => (
   <div>

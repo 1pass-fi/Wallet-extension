@@ -7,7 +7,7 @@ import PolkadotLogo from 'img/chain/polkadot-logo.svg'
 import AvalancheLogo from 'img/chain/avalanche-logo.svg'
 import TezosLogo from 'img/chain/tezos-logo.svg'
 
-import { TYPE } from 'account/accountConstants'
+import { TYPE } from 'constants/accountConstants'
 
 import Card from 'shared/card'
 

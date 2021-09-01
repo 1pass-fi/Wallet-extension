@@ -7,7 +7,7 @@ import PlusIcon from 'img/plus-icon-outline.svg'
 import './index.css'
 import Card from 'shared/card'
 import { getChromeStorage } from 'utils'
-import { STORAGE, WINDOW_SIZE } from 'koiConstants'
+import { STORAGE, WINDOW_SIZE } from 'constants/koiConstants'
 import { performOnDifferentOs, performOnWindows } from 'utils/extension'
 import WalletTypeSelection from './WalletTypeSelection'
 

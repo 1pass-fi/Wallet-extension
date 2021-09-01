@@ -16,11 +16,11 @@ import { connectSite } from 'actions/koi'
 
 import { getChromeStorage, removeChromeStorage } from 'utils'
 
-import { STORAGE, REQUEST, ERROR_MESSAGE } from 'koiConstants'
+import { STORAGE, REQUEST, ERROR_MESSAGE } from 'constants/koiConstants'
 
 
 import './index.css'
-import storage from 'storage'
+import storage from 'services/storage'
 
 export const ConnectToWallet = ({ setError, connectSite, accounts }) => {
   const [checkedAddress, setCheckedAddress] = useState('')
