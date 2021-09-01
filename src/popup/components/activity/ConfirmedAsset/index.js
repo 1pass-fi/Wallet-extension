@@ -1,13 +1,14 @@
+// modules
 import React from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import { PATH } from 'constants/koiConstants' 
-import { transactionAmountFormat } from 'utils'
+// assets
 import ShareIcon from 'img/share-icon-purple.svg'
 
+// styles
 import './index.css'
+
 
 const ConfirmedAsset = ({ id, title, date }) => {
   const dateFormat = (date) => {

@@ -1,17 +1,28 @@
+// modules
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { Redirect, withRouter, useHistory } from 'react-router-dom'
+import { withRouter, useHistory } from 'react-router-dom'
 import { isEmpty } from 'lodash'
 
+// assets
 import LogoIcon from 'img/koi-logo-42-31.svg'
 import SettingIcon from 'img/settings-icon.svg'
+
+// components
 import NavBar from './navBar'
 
-import { getChromeStorage } from 'utils'
-import { STORAGE, NAVBAR_EXCLUDE_PATH, PATH } from 'constants/koiConstants'
+// actions
 import { setError } from 'actions/error'
 
+// utils
+import { getChromeStorage } from 'utils'
+
+// constants
+import { STORAGE, NAVBAR_EXCLUDE_PATH, PATH } from 'constants/koiConstants'
+
+// styles
 import './index.css'
+
 
 const Header = ({ location, setError, koi, accounts }) => {
   const [showGalleryButton, setShowGalleryButton] = useState(true)

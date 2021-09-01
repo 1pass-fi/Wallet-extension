@@ -1,9 +1,13 @@
+// modules
 import React from 'react'
 
+// assets
 import SendKoiIcon from 'img/send-koi-icon.svg'
 import BackgroundLockIcon from 'img/background-lock-icon.svg'
 
+// styles
 import './index.css'
+
 
 const GlobalButton = ({ onClick, type = 'send', currency=''}) => {
   return (

@@ -1,10 +1,12 @@
+// modules
 import React, { useState } from 'react'
+
+// constants
 import { TYPE } from 'constants/accountConstants'
 
-import EthereumLogo from 'img/chain/ethereum-logo.svg'
-import KoiIcon from 'img/finnie-koi-logo-white.svg'
-
+// styles
 import './index.css'
+
 
 export default () => {
   const typeList = [TYPE.ARWEAVE, TYPE.ETHEREUM]

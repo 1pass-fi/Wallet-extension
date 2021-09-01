@@ -1,21 +1,30 @@
+// modules
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
-
-import KoiIcon from 'img/koi-logo.svg'
-import InputField from 'shared/inputField'
-import Button from 'shared/button'
 import { Link } from 'react-router-dom'
 
-import { unlockWallet } from 'actions/koi'
-import { getChromeStorage } from 'utils'
-import { STORAGE, REQUEST } from 'constants/koiConstants'
+// assets
+import KoiIcon from 'img/koi-logo.svg'
 
-import './index.css'
+// components
+import InputField from 'shared/inputField'
+import Button from 'shared/button'
+
+// actions
+import { unlockWallet } from 'actions/koi'
 import { setIsLoading } from 'popup/actions/loading'
 import { setError } from 'popup/actions/error'
+
+// constants
+import { REQUEST } from 'constants/koiConstants'
+
+// services
 import storage from 'services/storage'
+
+// styles
+import './index.css'
 
 
 const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {

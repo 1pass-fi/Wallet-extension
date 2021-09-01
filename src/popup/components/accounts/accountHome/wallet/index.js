@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+// modules
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
+// components
 import AccountInfo from './AccountInfo'
 import AccountConfig from './AccountConf'
-import './index.css'
-
 import Card from 'shared/card'
 
+// actions
 import { removeWallet, getKeyFile } from 'actions/koi'
 import { setNotification } from 'actions/notification'
 import { setAccountName } from 'actions/accountName'
 import { setIsLoading } from 'popup/actions/loading'
 
-import storage from 'services/storage'
-import { setError } from 'popup/actions/error'
+// styles
+import './index.css'
 
 export const Wallet = ({ account }) => {
   const [collapsed, setCollapsed] = useState(true)

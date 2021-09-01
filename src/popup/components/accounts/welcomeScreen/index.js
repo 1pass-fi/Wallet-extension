@@ -1,8 +1,13 @@
+// modules
 import React from 'react'
 import AccountImport from '../accountImport'
 
-import './index.css'
+// components
 import Header from 'shared/header'
+
+// styles
+import './index.css'
+
 
 export default () => {
   return (

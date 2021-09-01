@@ -1,7 +1,12 @@
+// modules
 import React, { useEffect, useState } from 'react'
 
+// assets
 import DownArrowIcon from 'img/down-arrow-icon.svg'
+
+// styles
 import './index.css'
+
 
 export const Select = ({ 
   options,

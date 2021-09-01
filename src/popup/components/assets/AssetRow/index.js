@@ -1,14 +1,19 @@
+// modules
 import React from 'react'
 import PropTypes from 'prop-types'
 
+// assets
 import ShareIcon from 'img/share-icon-green.svg'
 import GalleryIcon from 'img/gallery-icon.svg'
 import Fish from 'img/koi-logo.svg'
 import AlternativeWalletIcon from 'img/arweave-icon.svg'
 import RearrangePadsIcon from 'img/rearrange-pads-icon.svg'
-import './index.css'
 
+// utils
 import { numberFormat } from 'utils'
+
+// styles
+import './index.css'
 
 const propTypes = {
   isGrey: PropTypes.bool,

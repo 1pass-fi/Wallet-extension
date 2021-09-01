@@ -1,7 +1,9 @@
+// modules
 import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
+// styles
 import './index.css'
 
 export const Navbar = ({ activityNotifications }) => {

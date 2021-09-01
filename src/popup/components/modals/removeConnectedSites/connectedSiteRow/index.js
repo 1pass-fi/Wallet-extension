@@ -1,7 +1,13 @@
+// modules
 import React from 'react'
+
+// components
 import PropTypes from 'prop-types'
+
+// assets
 import DeleteIcon from 'img/wallet/delete-icon.svg'
 
+// styles
 import './index.css'
 
 const propTypes = {

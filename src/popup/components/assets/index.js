@@ -1,16 +1,23 @@
+// modules
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
+// actions
 import { loadContent } from 'actions/koi'
 import { setAssets } from 'actions/assets'
+import { setContLoading } from 'actions/continueLoading'
+import { setError } from 'actions/error'
+import { setNotification } from 'popup/actions/notification'
 
+// constants
 import { NOTIFICATION } from 'constants/koiConstants'
 
+// components
 import AssetList from './AssetList'
-import { setContLoading } from 'actions/continueLoading'
-import { setError } from 'popup/actions/error'
-import { setNotification } from 'popup/actions/notification'
+
+// services
 import { popupAccount } from 'services/account'
+
 
 const Assets = ({ 
   assets, 

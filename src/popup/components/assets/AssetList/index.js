@@ -1,19 +1,26 @@
+// modules
 import React, { useState, useEffect } from 'react'
-import { TYPE } from 'constants/accountConstants' 
 import PropTypes from 'prop-types'
 
+// components
 import AssetRow from '../AssetRow'
+
+// assets
 import PlusIcon from 'img/plus-icon.svg'
-import './index.css'
 import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
 
+// services
 import { popupAccount } from 'services/account'
+
+// styles
+import './index.css'
 
 const propTypes = {
   assets: PropTypes.array,
   onAddAsset: PropTypes.func,
 }
+
 
 const AssetList = ({ owner, assets, onAddAsset }) => {
   const [ownerName, setOwnerName] = useState(null)

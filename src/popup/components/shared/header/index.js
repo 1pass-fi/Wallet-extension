@@ -1,8 +1,12 @@
+// modules
 import React from 'react'
 
+// assets
 import KoiIcon from 'img/koi-logo.svg'
 
+// styles
 import './index.css'
+
 
 export default () => {
   return (

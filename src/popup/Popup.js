@@ -1,10 +1,12 @@
+// modules
 import '@babel/polyfill'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch, useHistory, withRouter } from 'react-router-dom'
+import axios from 'axios'
 import { get, isNumber, isEmpty } from 'lodash'
 
-import './Popup.css'
+// components
 import Header from 'components/header'
 import Loading from 'components/loading'
 import Account from 'components/accounts'
@@ -12,10 +14,8 @@ import Assets from 'components/assets'
 import Activity from 'components/activity'
 import Setting from 'components/setting'
 import Message from 'components/message'
-import continueLoadingIcon from 'img/continue-load.gif'
 
-import KoiLogo from 'img/koi-logo.svg'
-
+// actions
 import { setIsLoading } from 'actions/loading'
 import { setError } from 'actions/error'
 import { setNotification } from 'actions/notification'
@@ -23,21 +23,27 @@ import { setWarning } from 'actions/warning'
 import { setPrice } from 'actions/price'
 import { setKoi, getBalances } from 'actions/koi'
 import { setCurrency } from 'actions/currency'
-import { setEthereum } from 'actions/ethereum'
 import { setAccounts } from 'actions/accounts'
 import { setActivityNotifications } from 'actions/activityNotification'
 import { setSettings } from 'actions/settings'
 import { setActivities } from 'actions/activities'
 
-import { HEADER_EXCLUDE_PATH, REQUEST, DISCONNECTED_BACKGROUND, PATH } from 'constants/koiConstants'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request'
+// assets
+import continueLoadingIcon from 'img/continue-load.gif'
+import KoiLogo from 'img/koi-logo.svg'
 
-import axios from 'axios'
-
+// services
 import storage from 'services/storage'
-
+import { popupBackgroundRequest as backgroundRequest } from 'services/request'
 import { popupAccount } from 'services/account'
+
+// constants
+import { HEADER_EXCLUDE_PATH, REQUEST, DISCONNECTED_BACKGROUND, PATH } from 'constants/koiConstants'
 import { SHOW_ACTIVITIES_BY } from 'constants/storageConstants'
+
+// styles
+import './Popup.css'
+
 
 const ContinueLoading = () => (
   <div className='continue-loading'>

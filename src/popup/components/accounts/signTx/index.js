@@ -1,20 +1,30 @@
+// modules
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+// assets
 import ArweaveIcon from 'img/arweave-icon.svg'
 import KoiIcon from 'img/koi-logo-bg.svg'
+
+// components
 import Card from 'shared/card'
 import Button from 'shared/button'
 
+// utils
 import { getChromeStorage, removeChromeStorage, transactionAmountFormat, fiatCurrencyFormat } from 'utils'
 import { utils } from 'utils'
 
-import { STORAGE, REQUEST, ERROR_MESSAGE, RATE } from 'constants/koiConstants'
+// constants
+import { STORAGE, ERROR_MESSAGE } from 'constants/koiConstants'
+
+// actions
 import { signTransaction } from 'actions/koi'
 import { setError } from 'actions/error'
 
+// styles
 import './index.css'
+
 
 export const SignTx = ({ signTransaction, setError, accountName, price }) => {
   const history = useHistory()

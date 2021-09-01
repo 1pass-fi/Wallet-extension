@@ -1,31 +1,38 @@
+// modules
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import { isEmpty, orderBy } from 'lodash'
 
+// actions
 import { loadActivities } from 'actions/koi'
 import { setTransactions } from 'actions/transactions'
 import { setError } from 'actions/error'
 import { setActivityNotifications } from 'actions/activityNotification'
 import { setSettings } from 'actions/settings'
 
-import { getChromeStorage } from 'utils'
-
+// components
 import ActivityRow from './activityRow'
 import ConfirmedAsset from './ConfirmedAsset'
 import Button from 'shared/button'
 import CheckBox from 'shared/checkbox'
-
-import './index.css'
-import storage from 'services/storage'
-import { popupAccount } from 'services/account'
-import { setActivities } from 'popup/actions/activities'
 import ToggleButton from 'shared/ToggleButton'
 
+// services
+import storage from 'services/storage'
+import { popupAccount } from 'services/account'
+
+// actions
+import { setActivities } from 'popup/actions/activities'
+
+// assets
 import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
 
+// constants
 import { SHOW_ACTIVITIES_BY } from 'constants/storageConstants'
+
+// styles
+import './index.css'
 
 
 export const ActivitiesList = ({ activities }) => {

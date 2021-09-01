@@ -1,10 +1,15 @@
+// modules
 import React from 'react'
 import PropTypes from 'prop-types'
 
+// components
 import Modal from 'popup/components/shared/modal/index'
 import Button from 'popup/components/shared/button/'
+
+// utils
 import { numberFormat } from 'utils'
 
+// styles
 import './index.css'
 
 const propTypes = {

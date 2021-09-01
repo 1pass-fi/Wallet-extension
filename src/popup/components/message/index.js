@@ -1,6 +1,9 @@
+// modules
 import React, { useEffect, useState } from 'react'
 
+// styles
 import './index.css'
+
 
 export default ({ children, type='error' }) => {
   const [isDisabled, setIsDisabled] = useState(false)

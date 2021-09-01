@@ -1,5 +1,7 @@
+// modules
 import React from 'react'
 
+// assets
 import EthereumLogo from 'img/walletTypeSelection/ethereum-logo.svg'
 import KoiIcon from 'img/walletTypeSelection/finnie-koi-logo.svg'
 import BinanceLogo from 'img/chain/binance-logo.svg'
@@ -7,11 +9,15 @@ import PolkadotLogo from 'img/chain/polkadot-logo.svg'
 import AvalancheLogo from 'img/chain/avalanche-logo.svg'
 import TezosLogo from 'img/chain/tezos-logo.svg'
 
+// constants
 import { TYPE } from 'constants/accountConstants'
 
+// components
 import Card from 'shared/card'
 
+// styles
 import './index.css'
+
 
 export default ({ triggerPopup, popupPath }) => {
   const handleOnClick = (walletType) => {

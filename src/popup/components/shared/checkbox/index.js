@@ -1,7 +1,12 @@
+// modules
 import React, { useState } from 'react'
 
+// assets
 import CheckMarkIcon from 'img/check-mark.svg'
+
+// styles
 import './index.css'
+
 
 const Checkbox = ({
   defaultChecked = false,

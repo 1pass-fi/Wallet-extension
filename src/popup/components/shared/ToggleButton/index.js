@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+// modules
+import React from 'react'
 
+// styles
 import './index.css'
+
 
 export default ({ value, setValue }) => {
   const onToggle = (e) => {

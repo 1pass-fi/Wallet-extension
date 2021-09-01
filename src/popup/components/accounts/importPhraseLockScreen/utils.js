@@ -1,4 +1,5 @@
-import { PATH, ERROR_MESSAGE } from 'constants/koiConstants'
+// constants
+import { ERROR_MESSAGE } from 'constants/koiConstants'
 
 export const validatePhrase = async ({
   phrase,

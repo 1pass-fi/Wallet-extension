@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+// modules
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import './index.css'
 import getSymbolFromCurrency from 'currency-symbol-map'
-
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
+// assets
 import CopyIcon from 'img/copy-icon.svg'
 import EditIcon from 'img/edit-icon.svg'
 import RearrangeIcon from 'img/rearrange-pads-icon.svg'
@@ -13,18 +13,26 @@ import EthereumIcon from 'img/ethereum-logo.svg'
 import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
 
+// components
 import EditAccountNameModal from 'popup/components/modals/editAccountNameModal'
-
-import { setNotification } from 'actions/notification'
-import { setAccountName } from 'actions/accountName'
-import { fiatCurrencyFormat, getProviderNameFromUrl, numberFormat, updateAccountName } from 'utils'
-import { NOTIFICATION } from 'constants/koiConstants'
-import { setAccounts } from 'popup/actions/accounts'
-import { changeAccountName } from 'actions/koi'
 import useNetworkSelection from 'shared/useNetworkSelection'
 
+// actions
+import { setAccounts } from 'popup/actions/accounts'
+import { changeAccountName } from 'actions/koi'
+import { setNotification } from 'actions/notification'
+import { setAccountName } from 'actions/accountName'
 
+// utils
+import { fiatCurrencyFormat, getProviderNameFromUrl, numberFormat } from 'utils'
+
+// constants
+import { NOTIFICATION } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
+
+// styles
+import './index.css'
+
 
 export const AccountInfo = (({
   setNotification,

@@ -1,11 +1,16 @@
+// modules
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import get from 'lodash/get'
 
+// assets
 import CloseIcon from 'img/circle-close-icon-blue.svg'
 
+// constants
+import { TYPE } from 'constants/accountConstants'
+
+// styles
 import './index.css'
 
-import { TYPE } from 'constants/accountConstants'
 
 const NETWORKS = {
   [TYPE.ETHEREUM]: {

@@ -1,19 +1,24 @@
+// modules
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { isEmpty } from 'lodash'
 
+// actions
 import { lockWallet } from 'actions/koi'
 import { setError } from 'actions/error'
+import { setIsLoading } from 'popup/actions/loading'
 
+// components
 import GlobalButton from 'popup/components/shared/globalButton'
 import AccountSettingRow from './accountSettingRow'
 
-import { STORAGE, PATH } from 'constants/koiConstants'
-import { getChromeStorage } from 'utils'
+// constants
+import { PATH } from 'constants/koiConstants'
 
+// styles
 import './index.css'
-import { setIsLoading } from 'popup/actions/loading'
+
 
 const Setting = ({ lockWallet, setError, setIsLoading, accounts }) => {
   const history = useHistory()

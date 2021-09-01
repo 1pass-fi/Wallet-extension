@@ -1,12 +1,15 @@
+// modules
 import React from 'react'
-import includes from 'lodash/includes'
 import isEmpty from 'lodash/isEmpty'
 
+// assets
 import KoiIcon from 'img/koi-logo.svg'
 import ArweaveIcon from 'img/arweave-icon.svg'
 
-import Checkbox from 'popup/components/shared/checkbox'
+// components
 import Button from 'popup/components/shared/button'
+
+// styles
 import '../index.css'
 
 const walletIcon = {

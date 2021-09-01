@@ -1,27 +1,23 @@
+// modules
 import { get } from 'lodash'
-import passworder from 'browser-passworder'
 
+// actions
 import { setIsLoading } from './loading'
 import { setError } from './error'
 import { setCreateWallet } from './createWallet'
 import { setAssets } from './assets'
 import { setActivities } from './activities'
-
-import { MESSAGES, FILENAME } from 'constants/koiConstants'
-
-import { SET_KOI } from 'actions/types'
-import { setChromeStorage, generateWallet as generateWalletUtil } from 'utils'
 import { setAccounts } from './accounts'
 
-import { Web } from '@_koi/sdk/web'
-export const koi = new Web()
-
-import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect as backgroundConnect } from 'services/request'
-import { EventHandler as CreateEventHandler } from 'services/request/backgroundConnect'
-
+// constants
+import { MESSAGES, FILENAME } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
+import { SET_KOI } from 'actions/types'
 
-import { backgroundAccount, popupAccount } from 'services/account'
+// services
+import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect as backgroundConnect } from 'services/request'
+import { popupAccount } from 'services/account'
+import { EventHandler as CreateEventHandler } from 'services/request/backgroundConnect'
 
 export const getBalances = () => async (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
@@ -42,6 +38,7 @@ export const getBalances = () => async (dispatch) => {
 /**
  * @param {String} key Wallet key or Seed phrase
  * @param {String} password Input password
+ * @param {String} type Wallet type from constants/accountConstants
  * @returns {Void}
  */
 export const importWallet = (key, password, type) => async (dispatch) => {
@@ -59,14 +56,9 @@ export const importWallet = (key, password, type) => async (dispatch) => {
 
 export const removeWallet = (address) => async (dispatch, getState) => {
   try {
-    /* 
-      Remove all data of this address
-      Remove address from list of addresses
-    */
-
     await backgroundRequest.wallet.removeWallet({ address })
 
-    await popupAccount.loadImported()
+    await popupAccount.loadImported() // update accounts list for popupAccount
     const accountStates = await popupAccount.getAllMetadata()
     console.log('accountStates: ', accountStates)
 

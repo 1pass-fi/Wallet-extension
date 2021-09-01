@@ -1,9 +1,14 @@
-import React, { useState, useMemo } from 'react'
+// modules
+import React from 'react'
 
+// components
 import InputField from '../inputField/index'
 import ButtonShared from '../button/index'
 import CheckBox from '../checkbox'
+
+// styles
 import './index.css'
+
 
 export default  ({ isEnable, buttonLabel, setPassword, setConfirmPassword, setIsAccept }) => {
   // const [password, setPassword] = useState('')

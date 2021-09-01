@@ -1,19 +1,29 @@
+// modules
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { REQUEST, STORAGE, ERROR_MESSAGE } from 'constants/koiConstants'
-import { setChromeStorage } from 'utils'
-import { getSelectedTab } from 'utils/extension'
-import { setError } from 'popup/actions/error'
-import Modal from 'popup/components/shared/modal'
-import ConnectedSiteRow from './connectedSiteRow'
+// assets
 import PlusIcon from 'img/plus-icon.svg'
 
+// components
+import Modal from 'popup/components/shared/modal'
+import ConnectedSiteRow from './connectedSiteRow'
+
+// constants
+import { REQUEST, ERROR_MESSAGE } from 'constants/koiConstants'
+
+// actions
+import { setError } from 'popup/actions/error'
+import { getSelectedTab } from 'utils/extension'
+
+// services
+import storage from 'services/storage'
+
+// styles
 import './index.css'
 
-import storage from 'services/storage'
 
 const propTypes = {
   sites: PropTypes.array,

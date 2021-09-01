@@ -1,17 +1,26 @@
+// modules
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import PropsType from 'prop-types'
 
+// components
 import Modal from 'popup/components/shared/modal'
 import Input from 'popup/components/shared/inputField'
 import Button from 'popup/components/shared/button'
 
+// assets
 import WarningIcon from 'img/warning-icon.svg'
 
-import './index.css'
+// actions
 import { setError } from 'actions/error'
+
+// constants
 import { ERROR_MESSAGE, STORAGE } from 'constants/koiConstants'
+
+// utils
 import { getChromeStorage } from 'utils'
+
+// styles
+import './index.css'
 
 const NoSeedphrase = ({onClose}) => (
   <div>

@@ -1,11 +1,16 @@
+// modules
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
+// constants
 import { PATH } from 'constants/koiConstants' 
+
+// utils
 import { transactionAmountFormat } from 'utils'
 
+// styles
 import './index.css'
 
 const propTypes = {

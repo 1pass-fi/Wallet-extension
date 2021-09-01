@@ -1,26 +1,27 @@
+// modules
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import union from 'lodash/union'
-import filter from 'lodash/filter'
-import map from 'lodash/map'
 import { get } from 'lodash'
 
+// components
 import Card from 'popup/components/shared/card'
-
 import AllowPermission from './allowPermission'
 import SelectWallet from './selectWallet'
 
+// actions
 import { setError } from 'actions/error'
 import { connectSite } from 'actions/koi'
 
-import { getChromeStorage, removeChromeStorage } from 'utils'
+// constants
+import { ERROR_MESSAGE } from 'constants/koiConstants'
 
-import { STORAGE, REQUEST, ERROR_MESSAGE } from 'constants/koiConstants'
-
-
-import './index.css'
+// services
 import storage from 'services/storage'
+
+// styles
+import './index.css'
+
 
 export const ConnectToWallet = ({ setError, connectSite, accounts }) => {
   const [checkedAddress, setCheckedAddress] = useState('')

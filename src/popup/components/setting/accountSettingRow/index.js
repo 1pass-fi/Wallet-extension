@@ -1,22 +1,32 @@
+// modules
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
+// assets
 import Fish from 'img/koi-logo-bg.svg'
 import Ethereum from 'img/ethereum-logo.svg'
 import EditIcon from 'img/edit-icon.svg'
+
+// components
 import Button from 'popup/components/shared/button'
 import RevealSeedPhraseModal from '../revealSeedPhraseModal'
 import EditAccountNameModal from 'popup/components/modals/editAccountNameModal'
 import { SeedPhraseModal } from '../seedPhraseModal'
-import { decryptSeedPhraseFromChrome, updateAccountName } from 'utils'
 
-import './index.css'
-import { setError } from 'popup/actions/error'
-import { setNotification } from 'popup/actions/notification'
-import { setAccountName } from 'popup/actions/accountName'
+// utils
+import { decryptSeedPhraseFromChrome } from 'utils'
+
+// actions
+import { setError } from 'actions/error'
+import { setNotification } from 'actions/notification'
 import { changeAccountName } from 'actions/koi'
+
+// constants
 import { NOTIFICATION } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
+
+// styles
+import './index.css'
 
 
 const AccountSettingRow = ({ account, setError, setNotification, changeAccountName }) => {

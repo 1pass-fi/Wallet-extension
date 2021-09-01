@@ -1,17 +1,24 @@
+// modules
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+// components
 import GlobalButton from 'shared/globalButton'
 import SendKoiForm from './sendKoiForm'
-
-import PlusIcon from 'img/plus-icon.svg'
-import { Link } from 'react-router-dom'
-import './index.css'
-
 import Wallet from './wallet'
+
+// assets
+import PlusIcon from 'img/plus-icon.svg'
+
+// actions
 import { getBalances } from 'actions/koi'
-import { RATE, STORAGE } from 'constants/koiConstants'
+
+// constants
+import { RATE } from 'constants/koiConstants'
+
+// styles
+import './index.css'
 
 export const AccountHome = ({ koi, ethereum, getBalances, accounts }) => {
   let currencies = []

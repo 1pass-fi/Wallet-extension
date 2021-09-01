@@ -1,7 +1,12 @@
+// modules
 import React, { useState } from 'react'
 
+// assets
 import ToggleDisplayIcon from 'img/toggle-display.svg'
+
+// styles
 import './index.css'
+
 
 export default ({
   label,

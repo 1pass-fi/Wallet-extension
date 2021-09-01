@@ -1,12 +1,17 @@
+// modules
 import React from 'react'
 import PropTypes from 'prop-types'
+
+// assets
 import CloseIcon from 'img/close-icon.svg'
 
+// styles
 import './index.css'
 
 const propTypes = {
   onClose: PropTypes.func,
 }
+
 
 const Modal = ({ onClose, children, className = '' }) => {
   return (

@@ -1,42 +1,47 @@
+// modules
 import React, { useState, useEffect, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
 
-import getSymbolFromCurrency from 'currency-symbol-map'
-
+// components
 import InputField from 'shared/inputField'
 import Select from 'shared/select'
 import Button from 'shared/button'
 import TransactionConfirmModal from 'popup/components/modals/transactionConfirmModal'
-import { getDisplayAddress } from 'options/utils'
 
+// assets
 import WarningIcon from 'img/warning-icon2.svg'
 import EditIcon from 'img/edit-icon.svg'
-import { makeTransfer, setKoi } from 'actions/koi'
+
+// actions
+import { makeTransfer } from 'actions/koi'
 import { setError } from 'actions/error'
 import { setWarning } from 'actions/warning'
-import { ERROR_MESSAGE, WARNING_MESSAGE, RATE, NOTIFICATION, PATH } from 'constants/koiConstants'
-
-import './index.css'
 import { setIsLoading } from 'popup/actions/loading'
 import { setNotification } from 'popup/actions/notification'
 
-import { popupAccount } from 'services/account'
+// constants
+import { ERROR_MESSAGE, WARNING_MESSAGE, NOTIFICATION, PATH } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
 
-import { formatNumber } from 'options/utils'
+// services
+import { popupAccount } from 'services/account'
+
+// utils
+import { getDisplayAddress, formatNumber } from 'options/utils'
+
+// styles
+import './index.css'
+
 
 const SendKoiForm = ({
-  arBalance,
   setError,
   setWarning,
   makeTransfer,
   setIsLoading,
-  price,
   setNotification,
-  currency: moneyCurrency,
   accounts
 }) => {
   const history = useHistory()

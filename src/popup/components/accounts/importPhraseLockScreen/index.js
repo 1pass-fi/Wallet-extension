@@ -1,19 +1,29 @@
+// modules
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+// components
 import InputField from 'shared/inputField'
 import TextAreaField from 'shared/textAreaField'
 import Button from 'shared/button'
+import Header from 'shared/header'
+
+// constants
+import { PATH, STORAGE } from 'constants/koiConstants'
+
+// actions
 import { importWallet } from 'actions/koi'
 import { setError } from 'actions/error'
-import Header from 'shared/header'
-import { PATH, STORAGE } from 'constants/koiConstants'
-import { getChromeStorage } from 'utils'
+import { setIsLoading } from 'actions/loading'
 
-import './index.css'
+// utils
+import { getChromeStorage } from 'utils'
 import { validatePhrase } from './utils'
-import { setIsLoading } from 'popup/actions/loading'
+
+// styles
+import './index.css'
+
 
 const ImportPhrase = ({ setError, importWallet, setIsLoading }) => {
   const history = useHistory()

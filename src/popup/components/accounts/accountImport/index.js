@@ -1,15 +1,25 @@
+// modules
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+// assets
 import ExportIcon from 'img/export-icon.svg'
 import ImportIcon from 'img/import-icon.svg'
 import PlusIcon from 'img/plus-icon-outline.svg'
-import './index.css'
+
+// components
 import Card from 'shared/card'
-import { getChromeStorage } from 'utils'
-import { STORAGE, WINDOW_SIZE } from 'constants/koiConstants'
-import { performOnDifferentOs, performOnWindows } from 'utils/extension'
 import WalletTypeSelection from './WalletTypeSelection'
+
+// utils
+import { getChromeStorage } from 'utils'
+
+// constants
+import { STORAGE } from 'constants/koiConstants'
+
+// styles
+import './index.css'
+
 
 const CardOption = ({ SvgImage, title, description, path, onClick }) => {
   return (
