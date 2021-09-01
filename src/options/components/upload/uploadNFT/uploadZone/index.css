@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .uploadNFT-wrapper .uploadNFT .drag-active .description .description-title {
@@ -18,6 +19,6 @@
   line-height: 16px;
 }
 
-.uploadNFT-wrapper .uploadNFT .drag-active .description .upload-nft-icon {
+/* .uploadNFT-wrapper .uploadNFT .drag-active .description .upload-nft-icon {
   margin-top: 38px;
-}
+} */

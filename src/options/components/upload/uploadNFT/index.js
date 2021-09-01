@@ -13,7 +13,11 @@ export default () => {
   
   return (
     <div className='uploadNFT-wrapper'>
-      <div className={stage === 3 ? 'uploadNFT stage3' : 'uploadNFT'}>
+      {isEmpty(file) && <div className='drop-box-title'>
+        Create an Atomic NFT to <span>start earning rewards</span>
+      </div>}
+      {/* <div className={stage === 3 ? 'uploadNFT stage3' : 'uploadNFT'}> */}
+      <div className={isEmpty(file) ? `uploadNFT dropbox` : `uploadNFT stage${stage}`}>
         {isEmpty(file) ? <UploadZone /> : <UploadForm stage={stage} setStage={setStage}/>}
       </div>
     </div>
