@@ -29,6 +29,10 @@ const Setting = ({ lockWallet, setError, setIsLoading, accounts }) => {
       setIsLoading(false)
 
       history.push(PATH.LOGIN)
+
+      chrome.tabs.query({url: chrome.extension.getURL('*')}, tabs => {
+        tabs.map(tab => chrome.tabs.reload(tab.id))
+      })
     } else {
       setError('Cannot lock wallet.')
     }

@@ -18,6 +18,7 @@ import Footer from 'options/components/footer'
 import Header from 'options/components/header'
 import Navbar from 'options/components/navbar'
 import Message from 'options/components/message'
+import LockScreen from 'options/components/lockScreen'
 
 import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
@@ -490,7 +491,7 @@ export default ({ children }) => {
           {children}
           {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer showDropzone={showDropzone} />}
           {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />}
-        </div> : <div>Please unlock your wallet</div>}
+        </div> : <LockScreen />}
         </> 
         : 
         <>

@@ -1,0 +1,16 @@
+.app-content {
+  min-height: 100vh;
+  background: linear-gradient(
+    90deg, #030332 0%, #171753 100%);
+}
+
+.lock-Screen {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 45;
+}

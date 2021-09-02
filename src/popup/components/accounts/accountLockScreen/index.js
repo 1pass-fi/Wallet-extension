@@ -50,6 +50,10 @@ const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {
           default:
             history.push('/account')
         }
+
+        chrome.tabs.query({url: chrome.extension.getURL('*')}, tabs => {
+          tabs.map(tab => chrome.tabs.reload(tab.id))
+        })
       }
     } catch (err) {
       setError(err.message)
