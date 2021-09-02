@@ -290,6 +290,7 @@ export const STATEMENT = {
 }
 
 export const LOAD_BALANCES_TIME_INTERVAL = 300000
+export const LOAD_TRANSACTION_STATE_INTERVAL = 30000
 
 export const NFT_BIT_DATA = 'NFT_BIT_DATA'
 
@@ -345,4 +346,9 @@ export const FRIEND_REFERRAL_ENDPOINTS = {
 export const OPEN_SEA_API = {
   MAINNET: '',
   RINKEBY: ''
+}
+
+export const STREAM = {
+  BALANCES: 'STREAM_BALANCES',
+  TRANSACTION_STATE: 'STREAM_TRANSACTION_STATE'
 }

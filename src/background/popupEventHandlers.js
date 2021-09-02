@@ -14,6 +14,8 @@ import { backgroundAccount } from 'services/account'
 
 import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 
+import { popupPorts } from '.'
+
 const generatedKey = { key: null, mnemonic: null, type: null, address: null }
 
 import {
@@ -47,114 +49,84 @@ const arweave = Arweave.init({
   port: 443,
 })
 
-export const loadBalances = async (koi, port) => {
+const sendMessageToAllPorts = (message) => {
+  console.log('POPUP port count: ', popupPorts.length)
+  popupPorts.forEach((port) => port.postMessage(message))
+}
+
+/* 
+  Reload balances every 5 minutes
+  Subtract balances by pending transaction expenses
+*/
+export const loadBalances = async () => {
   try {
     const accounts = await backgroundAccount.getAllAccounts()
     await Promise.all(accounts.map(async account => {
       let { balance, koiBalance } = await account.method.getBalances()
-      const address = await account.get.address()
 
       const pendingTransactions = await account.get.pendingTransactions() || []
-      const pendingConfirmationTransactions = await account.get.pendingConfirmationTransaction() || []
-      // console.log('pendingTransactions:', pendingTransactions)
-      // console.log('pendingConfirmationTransactions:', pendingConfirmationTransactions)
       if (!isEmpty(pendingTransactions)) {
-        // reduce balances by pending transaction expenses
         pendingTransactions.forEach(async (transaction) => {
-          // reduce balances
-          
-          // check for confirmed state
-          const confirmed = await arweaveConfirmStatus(transaction.id)
-          if (confirmed) {
-            chromeNotification({
-              title: `Transaction is on pending confirmation`,
-              message: `Your transaction [${transaction.activityName}] is now on pending confirmation.`
-            })
-            let newTransactions = [...pendingTransactions]
-            // console.log(newTransactions)
-            // console.log(transaction)            
-            newTransactions = newTransactions.filter(aTransaction => aTransaction.id !== transaction.id)
-            await account.set.pendingTransactions(newTransactions)
-
-            await account.set.addPendingConfirmationTransaction(transaction)
-          } else {
-            switch (transaction.activityName) {
-              case 'Sent KOII':
-                koiBalance -= transaction.expense
-                break
-              case 'Sent AR':
-                balance -= transaction.expense
-                break
-              case 'Sent ETH':
-                balance -= transaction.expense
-            }
+          switch (transaction.activityName) {
+            case 'Sent KOII':
+              koiBalance -= transaction.expense
+              break
+            case 'Sent AR':
+              balance -= transaction.expense
+              break
+            case 'Sent ETH':
+              balance -= transaction.expense
           }
         })
       }
 
-      if (!isEmpty(pendingConfirmationTransactions)) {
-        // reduce balances by pending transaction expenses
-        pendingConfirmationTransactions.forEach(async (transaction) => {
-          // reduce balances
-          
-          // check for confirmed state
-          const { activitiesList: mostRecentActivities } = await account.method.loadMyActivities({ ownedCursor: null, recipientCursot: null })
-          console.log(mostRecentActivities)
-          const confirmed = !(mostRecentActivities.every(aTransaction => aTransaction.id !== transaction.id))
-          if (confirmed) {
-            chromeNotification({
-              title: `Transaction has been confirmed`,
-              message: `Your transaction [${transaction.activityName}] has been confirmed.`
-            })
-            let newTransactions = [...pendingConfirmationTransactions]
-            console.log(newTransactions)
-            console.log(transaction)            
-            newTransactions = newTransactions.filter(aTransaction => aTransaction.id !== transaction.id)
-            await account.set.pendingConfirmationTransaction(newTransactions)
-
-            if (transaction.activityName.includes('Minted')) {
-              let activityNotifications = await storage.generic.get.activityNotifications() || []
-              const title = transaction.activityName.slice(transaction.activityName.indexOf(`"`))
-              const newNotification = {
-                id: transaction.id,
-                title,
-                date: transaction.date
-              }
-
-              activityNotifications = [...activityNotifications, newNotification]
-              await storage.generic.set.activityNotifications(activityNotifications)
-            }
-          } else {
-            switch (transaction.activityName) {
-              case 'Sent KOII':
-                koiBalance -= transaction.expense
-                break
-              case 'Sent AR':
-                balance -= transaction.expense
-                break
-              case 'Sent ETH':
-                balance -= transaction.expense
-            }
-          }
-        })
-      }
-
-
-      console.log('UPDATE BALANCES FOR', address)
-      console.log('koiBalance:', koiBalance,'; balance:', balance)
       await account.set.balance(balance)
       await account.set.koiBalance(koiBalance)
     }))
 
-    if (port) {
-      try {
-        port.postMessage({
-          type: MESSAGES.GET_BALANCES_SUCCESS,
-        })
-      } catch (error) {
+    const message = { type: MESSAGES.GET_BALANCES_SUCCESS }
+    sendMessageToAllPorts(message)
+  } catch (error) {
+    console.error(error)
+  }
+}
 
-      }
-    }
+/* 
+  Load state for pending transactions every 30 seconds
+*/
+export const loadTransactionState = async () => {
+  try {
+    const accounts = await backgroundAccount.getAllAccounts()
+    await Promise.all(accounts.map(async account => {
+      const pendingTransactions = await account.get.pendingTransactions() || []
+
+      pendingTransactions.forEach(async () => {
+        const confirmed = await arweaveConfirmStatus(transaction.id)
+
+        if (confirmed) {
+          chromeNotification({
+            title: `Transaction confirmed`,
+            message: `Your transaction [${transaction.activityName}] has been confirmed.`
+          })
+          let newTransactions = [...pendingTransactions]           
+          newTransactions = newTransactions.filter(aTransaction => aTransaction.id !== transaction.id)
+          await account.set.pendingTransactions(newTransactions)
+
+          if (transaction.activityName.includes('Minted')) {
+            let activityNotifications = await storage.generic.get.activityNotifications() || []
+            const title = transaction.activityName.slice(transaction.activityName.indexOf(`"`))
+            const newNotification = {
+              id: transaction.id,
+              title,
+              date: transaction.date
+            }
+
+            activityNotifications = [...activityNotifications, newNotification]
+            await storage.generic.set.activityNotifications(activityNotifications)
+          }
+        }
+      })
+    }))
   } catch (error) {
     console.error(error)
   }

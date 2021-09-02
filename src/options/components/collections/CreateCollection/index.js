@@ -10,7 +10,7 @@ import CloseIcon from 'img/close-x-icon.svg'
 import GoBackIcon from 'img/goback-icon.svg'
 import { GalleryContext } from 'options/galleryContext'
 import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import { mockSaveCollections } from 'options/utils'
 import { mockGetCollections } from 'options/utils'

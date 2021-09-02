@@ -9,7 +9,7 @@ import storage from 'services/storage'
 
 import './index.css'
 import { GalleryContext } from 'options/galleryContext'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { popupAccount } from 'services/account'
 
 const reorder = (list, startIndex, endIndex) => {

@@ -14,7 +14,7 @@ import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
 
 import { formatNumber, getDisplayAddress } from 'options/utils'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import './index.css'
 

@@ -18,7 +18,7 @@ import { shareFriendCode } from 'options/helpers'
 
 import './index.css'
 import { FRIEND_REFERRAL_ENDPOINTS, STATEMENT } from 'constants/koiConstants'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 export default () => {
   const { 

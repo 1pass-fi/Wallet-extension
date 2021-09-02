@@ -10,7 +10,7 @@ import { loadCollections } from 'options/utils'
 import AddIcon from 'img/add-icon-green.svg'
 import storage from 'services/storage'
 import { popupAccount } from 'services/account'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 const Header = ({ setShowCreateCollection, setStage, setPage, setTotalPage }) => {
   const history = useHistory()

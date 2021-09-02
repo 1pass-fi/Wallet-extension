@@ -34,7 +34,7 @@ import KoiLogo from 'img/koi-logo.svg'
 
 // services
 import storage from 'services/storage'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { popupAccount } from 'services/account'
 
 // constants
