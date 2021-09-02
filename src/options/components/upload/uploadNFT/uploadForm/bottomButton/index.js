@@ -19,7 +19,7 @@ import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
 
 import './index.css'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import { ERROR_MESSAGE, NFT_BIT_DATA } from 'constants/koiConstants'
 

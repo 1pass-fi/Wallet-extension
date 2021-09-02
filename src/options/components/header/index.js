@@ -19,7 +19,7 @@ import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
 
-import { popupBackgroundConnect } from 'services/request'
+import { popupBackgroundConnect } from 'services/request/popup'
 
 export default ({
   totalKoi,

@@ -1,13 +1,12 @@
 import '@babel/polyfill'
 
-import { PORTS, LOAD_BALANCES_TIME_INTERVAL, OS, PATH } from 'constants/koiConstants'
+import { PORTS, LOAD_BALANCES_TIME_INTERVAL, LOAD_TRANSACTION_STATE_INTERVAL, OS, PATH } from 'constants/koiConstants'
 import popUpEventHandlers, { loadBalances } from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from '@_koi/sdk/web'
 import { Ethereum } from './eth'
 // import { Web } from './koiMock'
 
-/* eslint-disable no-undef */
 export const koi = new Web()
 const eth = new Ethereum()
 console.log('Finnie is waiting for instructions.')
@@ -16,48 +15,50 @@ const ports = {}
 const permissionId = []
 const createTransactionId = []
 const sender = []
-let autoLoadBalancesInterval
-let autoLoadBalancesPort
-const autoLoadBalances = (koi) => {
-  autoLoadBalancesInterval = setInterval(() => {
-    loadBalances(koi, autoLoadBalancesPort)
-  }, LOAD_BALANCES_TIME_INTERVAL)
-}
+
+export const popupPorts = []
+
+// Balances stream
+setInterval(() => {
+  loadBalances()
+}, LOAD_BALANCES_TIME_INTERVAL)
+
+// Transaction stream
+setInterval(() => {
+  // load for transaction state
+}, LOAD_TRANSACTION_STATE_INTERVAL)
 
 function cb(port) {
-  switch (port.name) {
-    case PORTS.POPUP:
-      // ports[PORTS.POPUP] = port
+  console.log('port name', port.name)
+  if ((port.name).includes(PORTS.POPUP)) {
+    popupPorts.push(port)
 
-      port.onDisconnect.addListener((disconnect) => {
-        console.log('port disconnected--', disconnect, port)
-        autoLoadBalancesPort = undefined
-      })
-
-      port.onMessage.addListener((message) => {
-        popUpEventHandlers(
-          koi,
-          port,
-          message,
-          ports,
-          { permissionId, createTransactionId },
-          eth
-        )
-
-        if (koi.address) {
-          autoLoadBalancesPort = port
-          if (!autoLoadBalancesInterval) {
-            autoLoadBalances(koi)
-          }
+    port.onDisconnect.addListener((disconnect) => {
+      console.log('port disconnected--', disconnect, port)
+      for (let i = 0; i < popupPorts.length; i++) {
+        if (port.name == popupPorts[i].name) {
+          popupPorts.splice(i)
+          break
         }
-      })
-      break
-    case PORTS.CONTENT_SCRIPT:
-      // ports[PORTS.CONTENT_SCRIPT] = port
-      port.onMessage.addListener(message => {
-        contentScriptEventHandlers(koi, port, message, ports, { permissionId, createTransactionId }, sender)
-      })
-      break
+      }
+    })
+
+    port.onMessage.addListener((message) => {
+      popUpEventHandlers(
+        koi,
+        port,
+        message,
+        ports,
+        { permissionId, createTransactionId },
+        eth
+      )
+    })
+  }
+
+  if ((port.name).includes(PORTS.CONTENT_SCRIPT)) {
+    port.onMessage.addListener(message => {
+      contentScriptEventHandlers(koi, port, message, ports, { permissionId, createTransactionId }, sender)
+    })
   }
 }
 

@@ -13,7 +13,7 @@ import ChangeProfileImageIcon from 'img/change-profile-image-icon.svg'
 
 import './index.css'
 import { GalleryContext } from 'options/galleryContext'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { loadNFTCost } from 'utils'
 
 import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'

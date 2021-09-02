@@ -31,13 +31,13 @@ import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
 
 import storage from 'services/storage'
-import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect } from 'services/request'
+import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect } from 'services/request/popup'
 
 import { popupAccount } from 'services/account'
 import SelectAccountModal from 'options/modal/SelectAccountModal'
 import SuccessUploadNFT from 'options/modal/SuccessUploadModal'
 
-import { EventHandler } from 'services/request/backgroundConnect'
+import { EventHandler } from 'services/request/src/backgroundConnect'
 
 export default ({ children }) => {
   const { pathname } = useLocation()

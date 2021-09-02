@@ -1,7 +1,7 @@
 import '@babel/polyfill'
 
-import { EventHandler } from 'services/request/backgroundConnect'
-import { contentBackgroundConnect as backgroundConnect } from 'services/request'
+import { EventHandler } from 'services/request/src/backgroundConnect'
+import { contentBackgroundConnect as backgroundConnect } from 'services/request/contentScript'
 import { PORTS, MESSAGES } from 'constants/koiConstants'
 import { setChromeStorage } from 'utils'
 import { get } from 'lodash'

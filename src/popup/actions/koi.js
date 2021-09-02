@@ -15,9 +15,9 @@ import { TYPE } from 'constants/accountConstants'
 import { SET_KOI } from 'actions/types'
 
 // services
-import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect as backgroundConnect } from 'services/request'
+import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect as backgroundConnect } from 'services/request/popup'
 import { popupAccount } from 'services/account'
-import { EventHandler as CreateEventHandler } from 'services/request/backgroundConnect'
+import { EventHandler as CreateEventHandler } from 'services/request/src/backgroundConnect'
 
 export const getBalances = () => async (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {

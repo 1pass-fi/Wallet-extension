@@ -20,7 +20,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import useEthereumNetworks from '../shared/useEthereumNetworks'
 
-import { popupBackgroundRequest as backgroundRequest } from 'services/request'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import './index.css'
 import { TYPE } from 'constants/accountConstants'

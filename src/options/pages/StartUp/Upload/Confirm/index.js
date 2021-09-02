@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 
-import { popupBackgroundRequest as backgroundRequest } from 'services/request'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { TYPE } from 'constants/accountConstants'
 import { GalleryContext } from 'options/galleryContext'
 

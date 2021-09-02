@@ -1,11 +1,9 @@
-import { popupBackgroundConnect } from './backgroundConnect'
-
 import { GalleryRequest } from './gallery'
 import { AssetRequest } from './assets'
 import { ActivityRequest } from './activities'
 import { WalletRequest } from './wallet'
 
-class BackgroundRequest {
+export class BackgroundRequest {
   constructor(backgroundConnect) {
     this.backgroundConnect = backgroundConnect
     this.wallet = new WalletRequest(this.backgroundConnect)
@@ -14,5 +12,3 @@ class BackgroundRequest {
     this.gallery = new GalleryRequest(this.backgroundConnect)
   }
 }
-
-export const popupBackgroundRequest = new BackgroundRequest(popupBackgroundConnect)
