@@ -73,18 +73,17 @@ export default ({ children }) => {
 
   const [demoCollections, setDemoCollections] = useState([])
   const [collections, setCollections] = useState([])
-
   const [showShareModal, setShowShareModal] = useState({
     show: false,
     txid: null,
   })
   const [showExportModal, setShowExportModal] = useState({})
   const [showWelcome, setShowWelcome] = useState(false)
-
   const [showSelectAccount, setShowSelectAccount] = useState(false)
   const [showSuccessUploadNFT, setShowSuccessUploadNFT] = useState(false)
-
   const [walletLoaded, setWalletLoaded] = useState(false)
+
+  const [importedAddress, setImportedAddress] = useState(null)
 
   const headerRef = useRef(null)
 
@@ -415,6 +414,8 @@ export default ({ children }) => {
         totalReward,
         wallet,
         wallets,
+        importedAddress,
+        setImportedAddress
       }}
     >
       {!isEmpty(wallets) ? 

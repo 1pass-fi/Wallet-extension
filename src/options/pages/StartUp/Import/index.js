@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import EthereumLogo from 'img/startup/ethereum-logo.svg'
 import FinnieLogo from 'img/startup/finnie-logo.svg'
@@ -27,7 +27,8 @@ export default () => {
   const [userSeedPhrase, setUserSeedPhrase] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const { setError, wallets } =  useContext(GalleryContext)
+
+  const { setError, wallets, setImportedAddress } =  useContext(GalleryContext)
   const { selectedNetwork, EthereumNetworks } = useEthereumNetworks({
     title: () => <div className='title'>Import Ethereum Key</div>,
     description: () => <div className='description'>Choose your Network.</div>,
@@ -49,12 +50,13 @@ export default () => {
   const onImportKey = async () => {
     setIsLoading(true)
     try {
-      await backgroundRequest.gallery.uploadJSONKeyFile({
+      const address = await backgroundRequest.gallery.uploadJSONKeyFile({
         key: userSeedPhrase,
         password,
         type: walletType,
         provider: selectedNetwork
       })
+      setImportedAddress(address)
       nextStep()
     } catch (err) {
       setError(err.message)

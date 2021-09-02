@@ -44,7 +44,7 @@ const mockPhrase = [
 export default () => {
   const { selectedNetwork, EthereumNetworks } = useEthereumNetworks({})
 
-  const { setError, wallets } = useContext(GalleryContext)
+  const { setError, wallets, setImportedAddress } = useContext(GalleryContext)
 
   const [step, setStep] = useState(1)
   const [walletType, setWalletType] = useState(null)
@@ -92,7 +92,8 @@ export default () => {
   */
   const handleCreateKey = async () => {
     try {
-      await backgroundRequest.gallery.saveWallet({ password, provider: selectedNetwork })
+      const address = await backgroundRequest.gallery.saveWallet({ password, provider: selectedNetwork })
+      setImportedAddress(address)
       nextStep()
     } catch (err) {
       console.log(err.message)

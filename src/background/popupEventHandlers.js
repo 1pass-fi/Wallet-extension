@@ -226,6 +226,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,
+            data: address,
             id: messageId
           })
         } catch (err) {
@@ -925,6 +926,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           loadBalances(koi, port)
           port.postMessage({
             type: MESSAGES.SAVE_WALLET_GALLERY,
+            data: addressFromKey,
             id: messageId
           })
         } catch (err) {

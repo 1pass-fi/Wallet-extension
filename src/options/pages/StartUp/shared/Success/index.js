@@ -65,6 +65,7 @@ export default () => {
         fileType={['image/*', 'video/*', 'audio/*']}
         className='drag-media'
         description='Drag a media file here to get started.'
+        type='image'
       />
     </div>
   )

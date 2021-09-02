@@ -5,13 +5,18 @@ import './index.css'
 import Modal from 'options/shared/modal'
 import { GalleryContext } from 'options/galleryContext'
 
+import storage from 'services/storage'
+
 const SelectAccount = () => {
   const { setAccount, wallets, account } = useContext(GalleryContext)
 
-  const onSelectAccount = (e) => {
+  const onSelectAccount = async (e) => {
     const selectedAccountName = e.target.value
     const selectedAccount = find(wallets, v => v.accountName == selectedAccountName)
     setAccount(selectedAccount)
+
+    // set default account to storage
+    await storage.setting.set.activatedAccountAddress(selectedAccount.address)
   }
 
   return (
