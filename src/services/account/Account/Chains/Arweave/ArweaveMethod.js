@@ -14,6 +14,9 @@ import { TYPE } from 'constants/accountConstants'
 
 import { find } from 'lodash'
 import storage from 'services/storage'
+import arweave from 'services/arweave'
+
+import _signPort from 'utils/signPort'
 
 export class ArweaveMethod {
   #chrome
@@ -499,5 +502,42 @@ export class ArweaveMethod {
       default:
         return false
     }
+  }
+
+  async signTransaction(transaction) {
+    try {
+      let tx
+      console.log({ transaction })
+      if (transaction.data) {
+        console.log('TRANSACTION WITH DATA')
+        transaction.data = JSON.parse(transaction.data)
+        const data = Uint8Array.from(Object.values(transaction.data))
+        tx = await arweave.createTransaction({ data })
+        tx.data_root = transaction.data_root
+        const { tags } = transaction
+        tags.forEach((tag) => {
+          console.log('TAG', atob(tag.name), atob(tag.value))
+          tx.addTag(atob(tag.name), atob(tag.value))
+        })
+      } else {
+        console.log('TRANSFER TRANSACTION')
+        tx = await arweave.createTransaction({ target: transaction.target, quantity: transaction.quantity })
+      }
+      console.log({ tx })
+      console.log(await arweave.transactions.getPrice(tx.data_size))
+      const result = await this.koi.signTransaction(tx)
+      result.data = []
+      return result
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async registerData(txId) {
+    return await this.koi.registerData(txId, this.koi.address)
+  }
+
+  async signPort(txId) {
+    return await _signPort(txId, this.koi)
   }
 }

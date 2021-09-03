@@ -367,7 +367,7 @@ export default async (koi, port, message, ports, resolveId, sender) => {
               chrome.tabs.create({ url })
               return
             }
-  
+            
             if (!hadPermission) {
               permissionId.push(id)
   
@@ -582,17 +582,15 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                 {
                   beforeCreate: async () => {
                     chrome.browserAction.setBadgeText({ text: '1' })
-                    await setChromeStorage({
-                      'pendingRequest': {
-                        type: REQUEST.TRANSACTION,
-                        data: { transaction, qty, address, origin, favicon, fee, isKoi: true }
-                      }
+                    await storage.generic.set.pendingRequest({
+                      type: REQUEST.TRANSACTION,
+                      data: { transaction, qty, address, origin, favicon, fee, isKoi: true }
                     })
                   },
                   afterClose: async () => {
                     chrome.browserAction.setBadgeText({ text: '' })
                     port.postMessage(onClosedMessage)
-                    await removeChromeStorage('pendingRequest')
+                    await storage.generic.set.pendingRequest({})
                   },
                 }
               )
@@ -685,7 +683,13 @@ export default async (koi, port, message, ports, resolveId, sender) => {
         case MESSAGES.KOI_REGISTER_DATA: {
           try {
             const { txId } = message.data
-            const resTx = await koi.registerData(txId, koi.address)
+            const siteAddressDict = await storage.setting.get.siteAddressDictionary()
+            const address = siteAddressDict[origin]
+
+            const credentials = await backgroundAccount.getCredentialByAddress(address)
+            const account = await backgroundAccount.getAccount(credentials)
+            
+            const resTx = await account.method.registerData(txId)
             console.log('registerData txId', resTx)
             port.postMessage({
               type: MESSAGES.KOI_REGISTER_DATA_SUCCESS,
@@ -738,7 +742,13 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                   id: message.id
                 })
               } else {
-                const header = await signPort(txId, koi)
+                const siteAddressDict = await storage.setting.get.siteAddressDictionary()
+                const address = siteAddressDict[origin]
+
+                const credentials = await backgroundAccount.getCredentialByAddress(address)
+                const account = await backgroundAccount.getAccount(credentials)
+                
+                const header = await account.method.signPort(txId)
                 port.postMessage({
                   type: MESSAGES.KOI_SIGN_PORT_SUCCESS,
                   data: { status: 200, data: header },
@@ -766,7 +776,13 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                 id: message.id
               })
             } else {
-              const txId = await transfer(koi, qty, target, 'KOI')
+              const siteAddressDict = await storage.setting.get.siteAddressDictionary()
+              const address = siteAddressDict[origin]
+
+              const credentials = await backgroundAccount.getCredentialByAddress(address)
+              const account = await backgroundAccount.getAccount(credentials)
+
+              const txId = await account.method.transfer('KOI', target, qty)
               port.postMessage({
                 type: MESSAGES.KOI_SEND_KOI_SUCCESS,
                 data: { status: 200, data: txId },
@@ -781,32 +797,6 @@ export default async (koi, port, message, ports, resolveId, sender) => {
           }
           break
         }
-
-        // case ENCRYPT: {
-        //   try {
-        //     const { data } = message.data
-        //     if (hadPermission) {
-        //       const result = await koiEncrypt(data)
-        //       port.postMessage({
-        //         type: MESSAGES.ENCRYPT_SUCCESS,
-        //         data: result,
-        //         id: message.id
-        //       })
-        //     } else {
-        //       port.postMessage({
-        //         type: MESSAGES.ENCRYPT_ERROR,
-        //         data: 'The site does not have the required permissions for this action',
-        //         id: message.id
-        //       })
-        //     }
-        //   } catch (err) {
-        //     port.postMessage({
-        //       type: MESSAGES.ENCRYPT_ERROR,
-        //       data: 'Something went wrong'
-        //     })
-        //   }
-        //   break
-        // }
 
         default:
           break

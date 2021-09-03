@@ -81,4 +81,8 @@ export class GenericSet {
   tokenPrice(value) {
     return this.#chrome._setChrome(GENERIC.TOKEN_PRICE, value)
   }
+
+  transactionData(value) {
+    return this.#chrome._setChrome(GENERIC.TRANSACTION_DATA, value)
+  }
 }

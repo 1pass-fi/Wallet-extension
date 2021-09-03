@@ -52,7 +52,7 @@ export class SettingGet {
     return this.#chrome._getChrome(SETTING.CONNECT_SITE_ACCOUNT)
   }
 
-  siteAddressDictionary() {
-    return this.#chrome._getChrome(SETTING.SITE_ADDRESS_DICTIONARY)
+  async siteAddressDictionary() {
+    return await this.#chrome._getChrome(SETTING.SITE_ADDRESS_DICTIONARY) || {}
   }
 }

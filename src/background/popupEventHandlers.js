@@ -533,13 +533,21 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       }
       case MESSAGES.SIGN_TRANSACTION: {
         const { createTransactionId } = resolveId
-        const { tx, confirm } = message.data
+        let { tx, confirm, origin } = message.data
         let transaction = null
+
+        const siteAddressDict = await storage.setting.get.siteAddressDictionary()
+        const address = siteAddressDict[origin]
+        if (!address) confirm = false
+
+        const credentials = await backgroundAccount.getCredentialByAddress(address)
+        const account = await backgroundAccount.getAccount(credentials)
+
         if (confirm) {
           chrome.browserAction.setBadgeText({ text: '' })
-          const transactionData = (await getChromeStorage('transactionData'))['transactionData'] || []
+          const transactionData = await storage.generic.get.transactionData()
           tx.data = transactionData
-          transaction = await signTransaction(koi, tx)
+          transaction = await account.method.signTransaction(tx)
           port.postMessage({
             type: MESSAGES.SIGN_TRANSACTION_SUCCESS,
             id: messageId

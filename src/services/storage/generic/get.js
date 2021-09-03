@@ -10,8 +10,8 @@ export class GenericGet {
    * 
    * @returns {Object} Pending transaction object
    */
-  pendingRequest() {
-    return this.#chrome._getChrome(GENERIC.PENDING_REQUEST)
+  async pendingRequest() {
+    return await this.#chrome._getChrome(GENERIC.PENDING_REQUEST) || {}
   }
   /**
    * 
@@ -66,5 +66,9 @@ export class GenericGet {
 
   tokenPrice() {
     return this.#chrome._getChrome(GENERIC.TOKEN_PRICE)
+  }
+
+  async transactionData() {
+    return this.#chrome._getChrome(GENERIC.TRANSACTION_DATA) || []
   }
 }

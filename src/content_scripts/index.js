@@ -6,6 +6,8 @@ import { PORTS, MESSAGES } from 'constants/koiConstants'
 import { setChromeStorage } from 'utils'
 import { get } from 'lodash'
 
+import storage from 'services/storage'
+
 console.log('Finnie is ready to connect to the site.')
 
 const messageTypes = [
@@ -45,9 +47,6 @@ const messageTypes = [
   MESSAGES.KOI_SIGN_PORT_ERROR,
   MESSAGES.KOI_SEND_KOI_SUCCESS,
   MESSAGES.KOI_SEND_KOI_ERROR
-  // MESSAGES.ENCRYPT,
-  // MESSAGES.ENCRYPT_SUCCESS,
-  // MESSAGES.ENCRYPT_ERROR
 ]
 
 messageTypes.forEach(messageType => {
@@ -73,15 +72,19 @@ window.addEventListener('message', async function (event) {
     case MESSAGES.GET_PUBLIC_KEY:
     case MESSAGES.KOI_SIGN_PORT:
     case MESSAGES.KOI_SEND_KOI:
-    // case MESSAGES.ENCRYPT:
       backgroundConnect.postMessage(event.data)
       break
     case MESSAGES.KOI_CREATE_TRANSACTION:
     case MESSAGES.CREATE_TRANSACTION:
+      /* 
+        The Chrome tool doesn't allow sending message with big data.
+        Save data of transaction to Chrome storage.
+      */
       transaction = get(event, 'data.data.transaction')
       console.log('content-script transaction', transaction)
       data = transaction.data
-      await setChromeStorage({ 'transactionData': data })
+      await storage.generic.set.transactionData(data)
+
       event.data.data.transaction.data = []
       backgroundConnect.postMessage(event.data)
       break

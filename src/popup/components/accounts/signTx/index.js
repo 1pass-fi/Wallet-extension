@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { isEmpty } from 'lodash'
 
 // assets
 import ArweaveIcon from 'img/arweave-icon.svg'
@@ -24,6 +25,7 @@ import { setError } from 'actions/error'
 
 // styles
 import './index.css'
+import storage from 'services/storage'
 
 
 export const SignTx = ({ signTransaction, setError, accountName, price }) => {
@@ -48,12 +50,12 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
 
   useEffect(() => {
     const loadRequest = async () => {
-      const request = (await utils.getChromeStorage(STORAGE.PENDING_REQUEST))[
-        STORAGE.PENDING_REQUEST
-      ]
-      const address = (await utils.getChromeStorage(STORAGE.KOI_ADDRESS))[
-        STORAGE.KOI_ADDRESS
-      ]
+      const request = await storage.generic.get.pendingRequest()
+      const { origin } = request.data
+      const siteAddressDict = await storage.setting.get.siteAddressDictionary()
+
+      const address = siteAddressDict[origin]
+      
       const {
         origin: requestOrigin,
         qty,
@@ -74,14 +76,14 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
   const handleOnClick = async (confirm) => {
     try {
       if (confirm) {
-        if (!(await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-        const request = (await getChromeStorage(STORAGE.PENDING_REQUEST))[STORAGE.PENDING_REQUEST]
-        const { transaction } = request.data
-        signTransaction({ tx: transaction, confirm: true })
-        removeChromeStorage(STORAGE.PENDING_REQUEST)
+        const request = await storage.generic.get.pendingRequest()
+        if (isEmpty(request)) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
+        const { transaction, origin } = request.data
+        signTransaction({ tx: transaction, confirm: true , origin})
+        await storage.generic.set.pendingRequest({})
       } else {
         signTransaction({ tx: null, confirm: false })
-        removeChromeStorage(STORAGE.PENDING_REQUEST)
+        await storage.generic.set.pendingRequest({})
       }
 
       history.push('/account')

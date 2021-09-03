@@ -28,12 +28,12 @@ const fromEthToArweave = async () => {
     console.log('isApprove', isApprove)
 
     if (isApprove === false) {
-      // give router contract acces to make transaction on behalf of the user
+      // give router contract access to make transaction on behalf of the user
       const result = await nftContract.methods.setApprovalForAll('0xD1183ad3B7934466aCB98D17B85Ced15999EA3AC', true).send({from: addresses[0]})
       console.log('*****RECEIPT1: ', result)
     }
 
-    const depositResult = await koiRouterContract.methods.deposit('0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656', '79815999319843347607878690319208729376727520789855333437166829176352736804865', 1, 'ou-OUmrWuT0hnSiUMoyhGEbd3s5b_ce8QK0vhNwmno4').send({from: addresses[0]})
+    const depositResult = await koiRouterContract.methods.deposit('0xff3096ed566445c9f24f615b3afd6677ad4dcba4', '42', 1, 'ou-OUmrWuT0hnSiUMoyhGEbd3s5b_ce8QK0vhNwmno4').send({from: addresses[0]})
     console.log('*****RECEIPT2: ', depositResult)
   } catch (err) {
     console.log(err.message)
