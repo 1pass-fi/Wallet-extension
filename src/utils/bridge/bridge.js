@@ -17,12 +17,12 @@ const fromEthToArweave = async () => {
     /* 
       create contract from koiToken/user nft contract address, it can be koiNFt contract or any other nfts contract
     */
-    const nftContract = new web3.eth.Contract(ABI,'0xff3096ED566445c9F24F615b3afD6677AD4Dcba4')
+    const nftContract = new web3.eth.Contract(ABI2,'0xff3096ED566445c9F24F615b3afD6677AD4Dcba4')
     
     /* 
       create contract from koiRouter contract address 0xD1183ad3B7934466aCB98D17B85Ced15999EA3AC
     */
-    const koiRouterContract = new web3.eth.Contract(ABI2, '0xD1183ad3B7934466aCB98D17B85Ced15999EA3AC')
+    const koiRouterContract = new web3.eth.Contract(ABI, '0xD1183ad3B7934466aCB98D17B85Ced15999EA3AC')
 
     const isApprove = await nftContract.methods.isApprovedForAll(addresses[0], '0xD1183ad3B7934466aCB98D17B85Ced15999EA3AC').call()
     console.log('isApprove', isApprove)
