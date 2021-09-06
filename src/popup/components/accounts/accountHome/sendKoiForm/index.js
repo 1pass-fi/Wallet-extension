@@ -57,7 +57,6 @@ const SendKoiForm = ({
   const [selectedAccount, setSelectedAccount] = useState(null)
   const [selectedToken, setSelectedToken] = useState(null)
 
-
   const onChangeAccount = (selected) => {
     const account = find(accountOptions, v => v.value == selected)
     setSelectedAccount(account)
@@ -75,27 +74,22 @@ const SendKoiForm = ({
     setAmount(e.target.value)
   }
 
-
   const handleSubmitForm = (e) => {
     e.preventDefault()
     // validations
-    try {
-      if (!(recipient.trim().length > 0 && amount.trim().length > 0)) {
-        setError(ERROR_MESSAGE.EMPTY_FIELDS)
-      } else if (Number(amount) < 0) {
-        setError(ERROR_MESSAGE.INVALID_AMOUNT)
-      } else if (!selectedAccount) {
-        setError(ERROR_MESSAGE.SELECT_ACCOUNT)
-      } else if (!selectedToken) {
-        setError(ERROR_MESSAGE.SELECT_TOKEN)
-      } else {
-        if (Number(amount) === 0) {
-          setWarning(WARNING_MESSAGE.SEND_ZERO_KOI)
-        }
-        setShowModal(true)
+    if (!(recipient.trim().length > 0 && amount.trim().length > 0)) {
+      setError(ERROR_MESSAGE.EMPTY_FIELDS)
+    } else if (Number(amount) < 0) {
+      setError(ERROR_MESSAGE.INVALID_AMOUNT)
+    } else if (!selectedAccount) {
+      setError(ERROR_MESSAGE.SELECT_ACCOUNT)
+    } else if (!selectedToken) {
+      setError(ERROR_MESSAGE.SELECT_TOKEN)
+    } else {
+      if (Number(amount) === 0) {
+        setWarning(WARNING_MESSAGE.SEND_ZERO_KOI)
       }
-    } catch (err) {
-      setError(err.message)
+      setShowModal(true)
     }
   }
 
@@ -107,16 +101,14 @@ const SendKoiForm = ({
       setIsLoading(false)
       setNotification(NOTIFICATION.TRANSACTION_SENT)
       history.push(PATH.ACTIVITY)
-    } catch (err) {
+    } catch (err) /* istanbul ignore next */ {
       setIsLoading(false)
       setError(err.message)
     } 
   }
 
-
-
   useEffect(() => {
-    const getAccountOptions = async () => {
+    const getAccountOptions = () => {
       const options = accounts.map((account, index) => ({
         id: index,
         value: account.accountName,
@@ -131,7 +123,6 @@ const SendKoiForm = ({
     getAccountOptions()
   }, [])
 
-
   useEffect(() => {
     const getTokenOptions = async () => {
       setSelectedToken(null)
@@ -141,7 +132,6 @@ const SendKoiForm = ({
         case TYPE.ARWEAVE:
           options = [{ value: 'AR', label: 'AR' }, { value: 'KOII', label: 'KOII' }]
           setTokenOptions(options)
-          console.log(selectedAccount)
           setBalance(await account.get.balance())
           setKoiBalance(await account.get.koiBalance())
           break
@@ -154,14 +144,10 @@ const SendKoiForm = ({
 
     if (selectedAccount) getTokenOptions()
   }, [selectedAccount])
-  console.log(selectedAccount)
 
   return (
     <form className='send-koi-form' onSubmit={handleSubmitForm}>
       {/* AVAILABLE BALANCE */}
-      {/* <div className="koi-balance">
-        <b>{`${(selectedToken == 'KOII' ? koiBalance : !!selectedToken && balance) || '___'} ${selectedToken ? selectedToken : 'token'}`}</b>
-      </div> */}
       {!isEmpty(selectedAccount) && (
         <div className='selected-account'>
           <div className='selected-account-left'>
@@ -171,6 +157,7 @@ const SendKoiForm = ({
             <div className='selected-account-address'>
               {getDisplayAddress(selectedAccount.address, 4, 4)}
               <div className='edit-icon'><EditIcon
+                data-testid='editBtn'
                 className='edit-icon'
                 onClick={() => setSelectedAccount({})}
               /></div>
@@ -189,7 +176,7 @@ const SendKoiForm = ({
         label='From'
       />}
       {/* SELECT TOKEN */}
-      {selectedAccount && (
+      {!isEmpty(selectedAccount) && (
         <Select
           className='currency-select'
           options={tokenOptions}
@@ -232,11 +219,6 @@ const SendKoiForm = ({
           onChange={onChangeAmount}
           value={amount}
         />
-        {/* {amount.trim().length > 0 && (
-          <div hidden={token == 'KOII'} className="amount-in-usd">
-            {getSymbolFromCurrency(moneyCurrency) || ''} {numberFormat(Number(amount) * price[token])} {moneyCurrency}
-          </div>
-        )} */}
       </div>
 
       <Button
