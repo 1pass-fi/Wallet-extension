@@ -17,6 +17,8 @@ import { GalleryContext } from 'options/galleryContext'
 import { PATH } from 'constants/koiConstants'
 import { stringTruncate } from '../../../../utils'
 
+import ReactTooltip from 'react-tooltip'
+
 const Tag = ({ tag, stage }) => {
   const { tags, setTags } = useContext(UploadContext)
 
@@ -132,10 +134,10 @@ export default ({ stage, setStage }) => {
               onCloseUploadModal()
             }}
           >
-            <CloseIcon />
+            <CloseIcon data-tip='Close'/>
           </div>
           <div className='goback-button' onClick={onGoBack}>
-            <GoBackIcon />
+            <GoBackIcon data-tip='Back'/>
           </div>
         </div>
       ) : (
@@ -171,6 +173,7 @@ export default ({ stage, setStage }) => {
           </div>
         </div>
       )}
+      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }

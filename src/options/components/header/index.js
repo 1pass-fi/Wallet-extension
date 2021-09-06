@@ -21,6 +21,8 @@ import { MESSAGES } from 'constants/koiConstants'
 
 import { popupBackgroundConnect } from 'services/request/popup'
 
+import ReactTooltip from 'react-tooltip'
+
 export default ({
   totalKoi,
   totalAr,
@@ -68,7 +70,7 @@ export default ({
                 <div>{formatNumber(totalAr, 6)}</div>
               </>
             )}
-            <ReloadIcon onClick={handleLoadBalances} className='reload-icon' />
+            <ReloadIcon data-tip='Refresh Balance' onClick={handleLoadBalances} className='reload-icon' />
           </div>
           {!totalKoi && !!(account.type == TYPE.ARWEAVE) && (
             <a
@@ -82,6 +84,7 @@ export default ({
             </a>
           )}
         </div>
+        <ReactTooltip place='top' type="dark" effect="float"/>
       </div>
     </header>
   )

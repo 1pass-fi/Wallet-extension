@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import ReactTooltip from 'react-tooltip'
 
 // assets
 import CopyIcon from 'img/copy-icon.svg'
@@ -71,7 +72,7 @@ export const AccountInfo = (({
           <div className='name'>
             <div className='text'>{account.accountName}</div>
             <div onClick={() => setOpenEditModal(true)}>
-              <div className='icon'><EditIcon /></div>
+              <div className='icon'><EditIcon data-tip='Edit Account Name' /></div>
             </div>
           </div>
           <div className='addr'>
@@ -81,7 +82,7 @@ export const AccountInfo = (({
             <div onClick={() => setNotification(NOTIFICATION.COPIED)}>
               <CopyToClipboard text={account.address}>
                 <div className="icon">
-                  <CopyIcon/>
+                  <CopyIcon data-tip='Copy Address'/>
                 </div>
               </CopyToClipboard>
             </div>
@@ -92,11 +93,11 @@ export const AccountInfo = (({
       </div>
       <div className='wallet-balance-row'>
         {!collapsed ? 
-          <div className='collapse-icon' onClick={() => setCollapsed(true)}>
+          <div data-tip='Collapse' className='collapse-icon' onClick={() => setCollapsed(true)}>
             <CollapseIcon />
           </div> :
-          <div className='collapse-icon' onClick={() => setCollapsed(false)}>
-            <ExtendIcon />
+          <div data-tip='Expand' className='collapse-icon' onClick={() => setCollapsed(false)}>
+            <ExtendIcon/>
           </div>
         }
         {account.type !== TYPE.ETHEREUM && <div className='koi-balance'>
@@ -117,6 +118,7 @@ export const AccountInfo = (({
           currentName={account.name}
           account={account}
         /> }
+      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 })

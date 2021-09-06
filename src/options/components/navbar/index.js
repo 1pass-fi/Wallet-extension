@@ -14,6 +14,8 @@ import { GalleryContext } from 'options/galleryContext'
 
 import SlideNavbar from './SlideNav'
 
+import ReactTooltip from 'react-tooltip'
+
 export default () => {
   const { affiliateCode } = useContext(GalleryContext)
   const { pathname } = useLocation()
@@ -29,16 +31,19 @@ export default () => {
         <div className='top'>
           <Link to='/'>
             <HomeIcon
+              data-tip='Gallery'
               className={`nav-item ${pathname == '/' ? 'active' : ''}`}
             />
           </Link>
           <Link to='/create'>
             <CreateNFTIcon
+              data-tip='Create NFT'
               className={`nav-item ${pathname == '/create' ? 'active' : ''}`}
             />
           </Link>
           <Link to='/collections'>
             <CollectionIcon
+              data-tip='Collections'
               className={`nav-item ${
                 pathname == '/collections' ? 'active' : ''
               }`}
@@ -46,6 +51,7 @@ export default () => {
           </Link>
           <Link to='/settings'>
             <SettingIcon
+              data-tip='Settings'
               className={`nav-item ${
                 pathname.includes('/settings') ? 'active' : ''
               }`}
@@ -55,6 +61,7 @@ export default () => {
         <div className='bottom'>
           <Link to='/friends'>
             <FriendIcon
+              data-tip='Refer a Friend'
               className={`nav-item friend ${
                 pathname == '/friends' ? 'active' : ''
               }`}
@@ -68,6 +75,7 @@ export default () => {
       {pathname.includes('/settings') && (
         <SlideNavbar isExpand={isExpandSubNavbar} />
       )}
+      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }

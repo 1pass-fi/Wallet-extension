@@ -16,6 +16,8 @@ import { mockSaveCollections } from 'options/utils'
 import { mockGetCollections } from 'options/utils'
 import { getNftsDataForCollections } from 'options/utils'
 
+import ReactTooltip from 'react-tooltip'
+
 export default () => {
   const { collectionNFT,
     setCollectionNFT, 
@@ -168,12 +170,12 @@ export default () => {
           className='close-button'
           onClick={onClose}
         >
-          <CloseIcon />
+          <CloseIcon data-tip='Close'/>
         </div>
 
         {/* GO BACK BUTTON */}
         {stage !== 4 && <div className='goback-button' onClick={onGoBack}>
-          <GoBackIcon />
+          <GoBackIcon data-tip='Back'/>
         </div>}
 
         {/* CONFIRM BUTTON */}
@@ -187,6 +189,7 @@ export default () => {
         </div>
         }
       </div>
+      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }
