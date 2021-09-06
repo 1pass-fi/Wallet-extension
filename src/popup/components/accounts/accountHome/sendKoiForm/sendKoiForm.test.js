@@ -5,13 +5,13 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
 import SendKoiForm from '.'
-import { TYPE } from 'account/accountConstants'
+import { TYPE } from 'constants/accountConstants'
 import { makeTransfer } from 'actions/koi'
-import { ERROR_MESSAGE, WARNING_MESSAGE, PATH } from 'koiConstants'
+import { ERROR_MESSAGE, WARNING_MESSAGE, PATH } from 'constants/koiConstants'
 import rootReducer from 'popup/reducers'
 import { act, fireEvent, render, screen } from 'popup/test-utils'
 
-jest.mock('account', () => {
+jest.mock('services/account', () => {
   return {
     popupAccount: {
       getAccount: jest.fn().mockReturnValue({
