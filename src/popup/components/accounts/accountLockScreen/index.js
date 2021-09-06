@@ -52,7 +52,7 @@ const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {
         }
 
         chrome.tabs.query({url: chrome.extension.getURL('*')}, tabs => {
-          tabs.map(tab => chrome.tabs.reload(tab.id))
+          tabs.map(tab => tab.url.includes('options') && chrome.tabs.reload(tab.id))
         })
       }
     } catch (err) {
