@@ -7,6 +7,7 @@ import signPort from 'utils/signPort'
 
 import storage from 'services/storage'
 import { backgroundAccount, popupAccount } from 'services/account'
+import { TYPE } from 'constants/accountConstants'
 
 let pendingMessages = {}
 
@@ -76,21 +77,18 @@ export default async (koi, port, message, ports, resolveId, sender) => {
         }
       }
 
+      /* get siteAddressDicitonary and activatedAddress */
+      const siteAddressDictionary = await storage.setting.get.siteAddressDictionary()
+      const activatedAddress = siteAddressDictionary[origin]
+
       switch (message.type) {
         case MESSAGES.GET_ADDRESS: {
           try {
-
-            // get activated account address
-            const activatedAddress = await storage.setting.get.activatedAccountAddress()
-            const credentials = await backgroundAccount.getCredentialByAddress(activatedAddress)
-            const account = await backgroundAccount.getAccount(credentials)
-            const address = await account.get.address()
-
             if (hadPermission) {
-              if (address) {
+              if (activatedAddress) {
                 port.postMessage({
                   type: MESSAGES.GET_ADDRESS_SUCCESS,
-                  data: address,
+                  data: activatedAddress,
                   id: message.id
                 })
               } else {
@@ -119,9 +117,6 @@ export default async (koi, port, message, ports, resolveId, sender) => {
 
         case MESSAGES.KOI_GET_ADDRESS: {
           try {
-            const siteAddressDictionary = await storage.setting.get.siteAddressDictionary()
-            const activatedAddress = siteAddressDictionary[origin]
-
             if (activatedAddress) {
               port.postMessage({
                 type: MESSAGES.KOI_GET_ADDRESS_SUCCESS,
@@ -147,11 +142,14 @@ export default async (koi, port, message, ports, resolveId, sender) => {
 
         case MESSAGES.GET_ALL_ADDRESSES: {
           try {
+            const accounts = await backgroundAccount.getAllAccounts()
+            const addresses = await Promise.all(accounts.map(async account => await account.get.address()))
+
             if (hadPermission) {
-              if (koi.address) {
+              if (!isEmpty(addresses)) {
                 port.postMessage({
                   type: MESSAGES.GET_ALL_ADDRESSES_SUCCESS,
-                  data: [koi.address],
+                  data: addresses,
                   id: message.id
                 })
               } else {
@@ -316,17 +314,15 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                 {
                   beforeCreate: async () => {
                     chrome.browserAction.setBadgeText({ text: '1' })
-                    await setChromeStorage({
-                      'pendingRequest': {
-                        type: REQUEST.PERMISSION,
-                        data: { origin, favicon, isKoi: false }
-                      }
+                    await storage.generic.set.pendingRequest({
+                      type: REQUEST.PERMISSION,
+                      data: { origin, favicon, isKoi: false }
                     })
                   },
                   afterClose: async () => {
                     chrome.browserAction.setBadgeText({ text: '' })
                     port.postMessage(onClosedMessage)
-                    await removeChromeStorage('pendingRequest')
+                    await storage.generic.set.pendingRequest({})
                   },
                 }
               )
@@ -481,6 +477,9 @@ export default async (koi, port, message, ports, resolveId, sender) => {
               data: 'Transaction rejected on closed.',
               id
             }
+
+            const screenWidth = screen.availWidth
+            const screenHeight = screen.availHeight
   
             chrome.runtime.getPlatformInfo((info) => {
               let windowData
@@ -490,16 +489,20 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                   url: chrome.extension.getURL('/popup.html'),
                   focused: true,
                   type: 'popup',
-                  height: 628,
-                  width: 426,
+                  height: WINDOW_SIZE.WIN_HEIGHT,
+                  width: WINDOW_SIZE.WIN_WIDTH,
+                  left: Math.round((screenWidth - WINDOW_SIZE.WIN_WIDTH) / 2),
+                  top: Math.round((screenHeight - WINDOW_SIZE.WIN_HEIGHT) / 2)
                 }
               } else [
                 windowData = {
                   url: chrome.extension.getURL('/popup.html'),
                   focused: true,
                   type: 'popup',
-                  height: 628,
-                  width: 426,  
+                  height: WINDOW_SIZE.MAC_HEIGHT,
+                  width: WINDOW_SIZE.MAC_WIDTH,
+                  left: Math.round((screenWidth - WINDOW_SIZE.MAC_WIDTH) / 2),
+                  top: Math.round((screenHeight - WINDOW_SIZE.MAC_HEIGHT) / 2)
                 }
               ]
               createWindow (
@@ -507,17 +510,15 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                 {
                   beforeCreate: async () => {
                     chrome.browserAction.setBadgeText({ text: '1' })
-                    await setChromeStorage({
-                      'pendingRequest': {
-                        type: REQUEST.TRANSACTION,
-                        data: { transaction, qty, address, origin, favicon, fee, isKoi: false }
-                      }
+                    await storage.generic.set.pendingRequest({
+                      type: REQUEST.TRANSACTION,
+                      data: { transaction, qty, address, origin, favicon, fee, isKoi: false }
                     })
                   },
                   afterClose: async () => {
                     chrome.browserAction.setBadgeText({ text: '' })
                     port.postMessage(onClosedMessage)
-                    await removeChromeStorage('pendingRequest')
+                    await storage.generic.set.pendingRequest({})
                   },
                 }
               )
@@ -556,6 +557,9 @@ export default async (koi, port, message, ports, resolveId, sender) => {
               data: { status: 403, data: 'Transaction rejected on closed.' },
               id
             }
+
+            const screenWidth = screen.availWidth
+            const screenHeight = screen.availHeight
   
             chrome.runtime.getPlatformInfo((info) => {
               let windowData
@@ -565,16 +569,20 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                   url: chrome.extension.getURL('/popup.html'),
                   focused: true,
                   type: 'popup',
-                  height: 628,
-                  width: 426,
+                  height: WINDOW_SIZE.WIN_HEIGHT,
+                  width: WINDOW_SIZE.WIN_WIDTH,
+                  left: Math.round((screenWidth - WINDOW_SIZE.WIN_WIDTH) / 2),
+                  top: Math.round((screenHeight - WINDOW_SIZE.WIN_HEIGHT) / 2)
                 }
               } else [
                 windowData = {
                   url: chrome.extension.getURL('/popup.html'),
                   focused: true,
                   type: 'popup',
-                  height: 628,
-                  width: 426,  
+                  height: WINDOW_SIZE.MAC_HEIGHT,
+                  width: WINDOW_SIZE.MAC_WIDTH,
+                  left: Math.round((screenWidth - WINDOW_SIZE.MAC_WIDTH) / 2),
+                  top: Math.round((screenHeight - WINDOW_SIZE.MAC_HEIGHT) / 2)
                 }
               ]
               createWindow(
@@ -608,10 +616,10 @@ export default async (koi, port, message, ports, resolveId, sender) => {
 
         case MESSAGES.DISCONNECT: {
           try {
-            const storage = await getChromeStorage(STORAGE.SITE_PERMISSION)
-            let approvedSite = storage[STORAGE.SITE_PERMISSION] || []
-            approvedSite = approvedSite.filter(site => site !== origin)
-            await setChromeStorage({ 'sitePermission': approvedSite })
+            if (hadPermission) {
+              delete siteAddressDictionary[origin]
+              await storage.setting.set.siteAddressDictionary(siteAddressDictionary)
+            }
             port.postMessage({
               type: MESSAGES.DISCONNECT_SUCCESS,
               id: message.id
@@ -629,9 +637,8 @@ export default async (koi, port, message, ports, resolveId, sender) => {
         case MESSAGES.KOI_DISCONNECT: {
           try {
             if (hadPermission) {
-              const siteAdressDictionary = await storage.setting.get.siteAddressDictionary() || {}
-              delete siteAdressDictionary[origin]
-              await storage.setting.set.siteAddressDictionary(siteAdressDictionary)
+              delete siteAddressDictionary[origin]
+              await storage.setting.set.siteAddressDictionary(siteAddressDictionary)
             }
 
             port.postMessage({
@@ -652,10 +659,12 @@ export default async (koi, port, message, ports, resolveId, sender) => {
         case MESSAGES.GET_WALLET_NAMES: {
           try {
             if (hadPermission) {
-              const storage = await getChromeStorage(STORAGE.ACCOUNT_NAME)
-              const accountName = storage[STORAGE.ACCOUNT_NAME]
+              const credentials = await backgroundAccount.getCredentialByAddress(activatedAddress)
+              const account = await backgroundAccount.getAccount(credentials)
+              const metadata = await account.get.metadata()
+
               const payload = {
-                [koi.address]: accountName
+                [metadata.address]: metadata.accountName
               }
               port.postMessage({
                 type: MESSAGES.GET_WALLET_NAMES_SUCCESS,
@@ -683,10 +692,7 @@ export default async (koi, port, message, ports, resolveId, sender) => {
         case MESSAGES.KOI_REGISTER_DATA: {
           try {
             const { txId } = message.data
-            const siteAddressDict = await storage.setting.get.siteAddressDictionary()
-            const address = siteAddressDict[origin]
-
-            const credentials = await backgroundAccount.getCredentialByAddress(address)
+            const credentials = await backgroundAccount.getCredentialByAddress(activatedAddress)
             const account = await backgroundAccount.getAccount(credentials)
             
             const resTx = await account.method.registerData(txId)
@@ -709,9 +715,12 @@ export default async (koi, port, message, ports, resolveId, sender) => {
         case MESSAGES.GET_PUBLIC_KEY: {
           try {
             if (hadPermission) {
+              const credentials = await backgroundAccount.getCredentialByAddress(activatedAddress)
+              const { key } = credentials 
+
               port.postMessage({
                 type: MESSAGES.GET_PUBLIC_KEY_SUCCESS,
-                data: koi.wallet.n,
+                data: key.n,
                 id: message.id
               })
             } else {
@@ -742,10 +751,7 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                   id: message.id
                 })
               } else {
-                const siteAddressDict = await storage.setting.get.siteAddressDictionary()
-                const address = siteAddressDict[origin]
-
-                const credentials = await backgroundAccount.getCredentialByAddress(address)
+                const credentials = await backgroundAccount.getCredentialByAddress(activatedAddress)
                 const account = await backgroundAccount.getAccount(credentials)
                 
                 const header = await account.method.signPort(txId)
@@ -776,10 +782,7 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                 id: message.id
               })
             } else {
-              const siteAddressDict = await storage.setting.get.siteAddressDictionary()
-              const address = siteAddressDict[origin]
-
-              const credentials = await backgroundAccount.getCredentialByAddress(address)
+              const credentials = await backgroundAccount.getCredentialByAddress(activatedAddress)
               const account = await backgroundAccount.getAccount(credentials)
 
               const txId = await account.method.transfer('KOI', target, qty)
