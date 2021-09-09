@@ -734,3 +734,30 @@ export const checkAffiliateInviteSpent = async (koi) => {
     throw new Error(err.message)
   }
 }
+
+export const saveUploadFormData = async (file, metadata) => {
+  try {
+    const url = URL.createObjectURL(file)
+    const fileType = file.type
+    const fileName = file.name
+  
+    const response = await fetch(url)
+    const blob = await response.blob()
+    const dataBuffer = await blob.arrayBuffer()
+  
+    let u8 = new Int8Array(dataBuffer)
+    u8 = JSON.stringify(u8, null, 2)
+  
+    const payload = {
+      data: u8,
+      fileType,
+      fileName,
+      metadata
+    }
+  
+    await storage.generic.set.savedNFTForm(payload)
+  } catch (err) {
+    await setChromeStorage({ [STORAGE.NFT_UPLOAD_DATA]: {} })
+  }
+
+}

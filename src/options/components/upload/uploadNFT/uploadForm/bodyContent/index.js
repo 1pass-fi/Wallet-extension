@@ -37,12 +37,14 @@ export default ({
 
   useEffect(() => {
     const getPrice = async () => {
-      const arPrice = await loadNFTCost(file.size)
-      setPrice(arPrice)
+      if (file) {
+        const arPrice = await loadNFTCost(file.size)
+        setPrice(arPrice)        
+      }
     }
 
     getPrice()
-  }, [])
+  }, [file])
 
   if (stage == 1) {
     return (
@@ -54,7 +56,7 @@ export default ({
           </div>
           <div className='field-input select-account'>
             {account.accountName}
-            <div className='address'>{`${get(account, 'address', '').slice(0,5)}...${get(account, 'address', '').slice(account.address.length - 4)}`}</div>
+            <div className='address'>{account.address && `${get(account, 'address', '').slice(0,5)}...${get(account, 'address', '').slice(account.address.length - 4)}`}</div>
           </div>
         </div>
         <div className='field'>

@@ -1,6 +1,6 @@
-import React, { useMemo, useState, useContext } from 'react'
+import React, { useMemo, useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { trim } from 'lodash'
+import { isEmpty } from 'lodash'
 
 import CloseIcon from 'img/close-x-icon.svg'
 import GoBackIcon from 'img/goback-icon.svg'
@@ -18,6 +18,7 @@ import { PATH } from 'constants/koiConstants'
 import { stringTruncate } from '../../../../utils'
 
 import ReactTooltip from 'react-tooltip'
+import storage from 'services/storage'
 
 const Tag = ({ tag, stage }) => {
   const { tags, setTags } = useContext(UploadContext)
@@ -39,19 +40,32 @@ export default ({ stage, setStage }) => {
   const { file, setFile, onClearFile, onCloseUploadModal } = useContext(
     GalleryContext
   )
-  const { tags, setTags, transactionId, createdAt, contentType } = useContext(UploadContext)
+  const { tags, setTags, transactionId, createdAt, contentType, setHasSavedData } = useContext(UploadContext)
   // const [stage, setStage] = useState(1)
   const [title, setTitle] = useState('')
   const [username, setUsername] = useState('')
   const [description, setDescription] = useState('')
-  const url = useMemo(() => URL.createObjectURL(file), [file])
+  const url = useMemo(()=> {
+    try {
+      if (file) {
+        const _url = URL.createObjectURL(file)
+        return _url
+      }
+      return ''
+    } catch (err) {
+      console.log('INPUT ERROR - IMAGE', err.message)
+    }
+  }, [file])
+
   const fileType = useMemo(() => getFileType(file), [file])
-  const onGoBack = () => {
+  const onGoBack = async () => {
     if (stage != 1) {
       setStage(stage - 1)
     } else {
       onClearFile()
       setTags([])
+      await storage.generic.set.savedNFTForm({})
+      setHasSavedData(false)
     }
   }
 
@@ -68,6 +82,44 @@ export default ({ stage, setStage }) => {
     history.push('/')
     setFile({})
   }
+
+  /* 
+    Get saved form data from chrome storage
+  */
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const payload = await storage.generic.get.savedNFTForm()
+        if (!isEmpty(payload)) {
+          let bitObject = payload.data
+          if (!bitObject) return
+  
+          bitObject = JSON.parse(bitObject)
+
+  
+          const u8 = Uint8Array.from(Object.values(bitObject))
+          const blob = new Blob([u8], { type: payload.fileType})
+          const file = new File([blob], payload.fileName, { type: payload.fileType })
+  
+          if (payload.metadata) {
+            const { title, username, description, tags } = payload.metadata
+            setTitle(title)
+            setUsername(username)
+            setDescription(description)
+            setTags(tags)
+            setFile(file)
+          }
+        }
+      } catch (err) {
+        console.log('Failed load form data')
+        await storage.generic.set.savedNFTForm({})
+        setHasSavedData(false)
+      }
+    }
+  
+    loadData()
+  }, [])
+  
 
   return (
     <div>
@@ -129,9 +181,11 @@ export default ({ stage, setStage }) => {
           />
           <div
             className='close-button'
-            onClick={() => {
+            onClick={async () => {
               setTags([])
               onCloseUploadModal()
+              await storage.generic.set.savedNFTForm({})
+              setHasSavedData(false)
             }}
           >
             <CloseIcon data-tip='Close'/>

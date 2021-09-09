@@ -71,4 +71,8 @@ export class GenericGet {
   async transactionData() {
     return this.#chrome._getChrome(GENERIC.TRANSACTION_DATA) || []
   }
+
+  async savedNFTForm() {
+    return this.#chrome._getChrome(GENERIC.SAVED_NFT_FORM) || {}
+  }
 }

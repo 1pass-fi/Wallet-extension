@@ -3,7 +3,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import isEmpty from 'lodash/isEmpty'
 import isNumber from 'lodash/isNumber'
 
-import { exportNFT, getChromeStorage, setChromeStorage } from 'utils'
+import { exportNFT, getChromeStorage, saveUploadFormData, setChromeStorage } from 'utils'
 const arweave = Arweave.init({
   host: 'arweave.net',
   protocol: 'https',
@@ -22,6 +22,7 @@ import './index.css'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import { ERROR_MESSAGE, NFT_BIT_DATA } from 'constants/koiConstants'
+import storage from 'services/storage'
 
 export default ({ description, setStage, stage, title, file, username }) => {
   const createNftButtonRef = useRef(null)
@@ -87,6 +88,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
       const { txId, time } = await backgroundRequest.gallery.uploadNFT({content, tags, fileType, address: account.address, price})
       // console.log('RESPONSE DATA', txId, time)
 
+      await storage.generic.set.savedNFTForm({})
       setIsLoading(false)
 
       return {
@@ -111,11 +113,26 @@ export default ({ description, setStage, stage, title, file, username }) => {
     return (
       <button
         className='create-ntf-button'
-        onClick={() => {
+        onClick={async () => {
           try {            
             if (file.size > 15 * 1024 ** 2) throw new Error(ERROR_MESSAGE.FILE_TOO_LARGE)
+            /* 
+              Save the current form data to chrome storage
+              delete when transaction is successful
+            */
+            setIsLoading(true)
+            const metadata = {
+              title,
+              username,
+              description,
+              tags
+            }
+            await saveUploadFormData(file, metadata)
+
+            setIsLoading(false)
             setStage(2)
           } catch(error) {
+            setIsLoading(false)
             setError(error.message)
           } 
         }}
