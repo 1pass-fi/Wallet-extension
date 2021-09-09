@@ -48,3 +48,10 @@
   color: #49ce8b;
   text-decoration: underline;
 }
+
+.password-error {
+  color: #ff4141;
+  margin-top: 5px;
+  width: 100%;
+  font-size: 12px;
+}

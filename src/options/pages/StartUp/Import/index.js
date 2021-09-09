@@ -58,8 +58,12 @@ export default () => {
     }
   }
 
+  const trimmedPhrase = userSeedPhrase.replace(/\s+/g,' ').trim()
+  const isValidPhrase = trimmedPhrase.split(' ').length === 12
 
   const onImportKey = async () => {
+    if (!isValidPhrase) return
+
     setIsLoading(true)
     try {
       const address = await backgroundRequest.gallery.uploadJSONKeyFile({
@@ -155,6 +159,7 @@ export default () => {
                 value={userSeedPhrase}
                 setValue={setUserSeedPhrase}
               />
+              {(userSeedPhrase && !isValidPhrase) && <div className="error-message">Seed Phrase is invalid</div>}
 
 
                {isEmpty(wallets) ? <div className='confirm-password-wrapper'>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import isEmpty from 'lodash/isEmpty'
 
 import { URL } from 'constants/koiConstants'
 
@@ -14,18 +15,17 @@ export default ({ setPassword }) => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isAcceptTermService, setIsAcceptTermService] = useState(false)
 
-  const isValid =
-    tempPassword === confirmPassword &&
-    passwordRegex.test(tempPassword) &&
-    isAcceptTermService
+  const isValid = passwordRegex.test(tempPassword)
+
+  const isMatch = tempPassword === confirmPassword || !isValid
 
   useEffect(() => {
-    if (isValid) {
+    if (isValid && isMatch && isAcceptTermService) {
       setPassword(tempPassword)
     } else {
       setPassword('')
     }
-  }, [isValid])
+  }, [isValid, isMatch, isAcceptTermService])
 
   return (
     <>
@@ -34,26 +34,29 @@ export default ({ setPassword }) => {
         value={tempPassword}
         setValue={setTempPassword}
       />
+      {!isEmpty(tempPassword) && !isValid && (
+        <div className="password-error">Password is not strong enough</div>
+      )}
 
-      <div className='requirements'>
+      <div className="requirements">
         <div>Requirements</div>
-        <ul className='requirement-items'>
-          <div className='requirement-row'>
-            <div className='requirement-column'>
-              <li className='requirement-item'>minimum 8 characters</li>
+        <ul className="requirement-items">
+          <div className="requirement-row">
+            <div className="requirement-column">
+              <li className="requirement-item">minimum 8 characters</li>
             </div>
-            <div className='requirement-column'>
-              <li className='requirement-item'>1 number</li>
+            <div className="requirement-column">
+              <li className="requirement-item">1 number</li>
             </div>
           </div>
-          <div className='requirement-row'>
-            <div className='requirement-column'>
-              <li className='requirement-item'>
+          <div className="requirement-row">
+            <div className="requirement-column">
+              <li className="requirement-item">
                 1 uppercase & 1 lowercase letter
               </li>
             </div>
-            <div className='requirement-column'>
-              <li className='requirement-item'>1 symbol (e.g. !@#$%)</li>
+            <div className="requirement-column">
+              <li className="requirement-item">1 symbol (e.g. !@#$%)</li>
             </div>
           </div>
         </ul>
@@ -64,20 +67,23 @@ export default ({ setPassword }) => {
         value={confirmPassword}
         setValue={setConfirmPassword}
       />
+      {!isEmpty(confirmPassword) && !isMatch && (
+        <div className="password-error">Password does not match</div>
+      )}
 
-      <div className='term-of-service'>
+      <div className="term-of-service">
         <input
-          id='term-of-service'
-          type='checkbox'
-          className='checkbox'
+          id="term-of-service"
+          type="checkbox"
+          className="checkbox"
           value={isAcceptTermService}
           onChange={(e) => setIsAcceptTermService(e.target.checked)}
         />
-        <div className='term-of-service-text'>
-          <label htmlFor='term-of-service'>
-          I agree with the&nbsp;
-            <a target="_blank" href={URL.TERM_OF_SERVICE} className='link'>
-            Terms of Service
+        <div className="term-of-service-text">
+          <label for="term-of-service">
+            I agree with the&nbsp;
+            <a target="_blank" href={URL.TERMS_OF_SERVICE} className="link">
+              Terms of Service
             </a>
           </label>
         </div>

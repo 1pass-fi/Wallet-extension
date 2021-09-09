@@ -42,3 +42,10 @@
 .import-wallet .import-key-button {
   margin-top: 40px;
 }
+
+.import-wallet .error-message {
+  color: #ff4141;
+  margin-top: 5px;
+  width: 479px;
+  font-size: 12px;
+}
