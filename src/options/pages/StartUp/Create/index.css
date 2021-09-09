@@ -15,6 +15,7 @@
   flex-direction: column;
   padding: 10px;
   position: relative;
+  padding-top: 40px;
 }
 
 .create-wallet .title {
