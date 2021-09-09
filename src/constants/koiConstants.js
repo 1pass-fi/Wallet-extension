@@ -234,7 +234,8 @@ export const ERROR_MESSAGE = {
   SELECT_ACCOUNT: 'Please select account.',
   SELECT_TOKEN: 'Please select token.',
   CREATE_WALLET_FAILED: 'Create new wallet failed.',
-  INVALID_JSON_KEY: 'Invalid JSON key. Please make sure that you chose a valid key.'
+  INVALID_JSON_KEY: 'Invalid JSON key. Please make sure that you chose a valid key.',
+  SEND_ZERO_KOI: 'Whoops! Enter the amount of tokens you want to send.'
 }
 
 export const STORAGE = {
@@ -280,10 +281,6 @@ export const NOTIFICATION = {
   CREATE_COLLECTION_SUCCESS: 'Collection created successfully. It may take a while until you can get your data updated.',
   CREATE_KID_SUCCESS: 'Created KID successfully. It may take a while until you can get your data updated.',
   UPDATE_KID_SUCCESS: 'Updated KID successfully. It may take a while until you can get your data updated.'
-}
-
-export const WARNING_MESSAGE = {
-  SEND_ZERO_KOI: 'You are about to send 0 tokens. There will still be a very small fee. Make sure the transaction is correct before finalizing it.',
 }
 
 export const STATEMENT = {
