@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import ReactTooltip from 'react-tooltip'
+
 import CloseIcon from 'img/circle-close-icon.svg'
 
 import './index.css'
@@ -27,11 +29,12 @@ const Modal = ({ onClose, children, className = '' }) => {
   return (
     <div className='modal-container'>
       <div className={`modal ${className}`} ref={ref}>
-        <div className='modal-close-icon'>
+        <div data-tip='Close' className='modal-close-icon'>
           <CloseIcon onClick={onClose} />
         </div>
         {children}
       </div>
+      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }

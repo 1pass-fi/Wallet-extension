@@ -70,7 +70,9 @@ export default ({
                 <div>{formatNumber(totalAr, 6)}</div>
               </>
             )}
-            <ReloadIcon data-tip='Refresh Balance' onClick={handleLoadBalances} className='reload-icon' />
+            <div data-tip='Refresh Balance'>
+              <ReloadIcon onClick={handleLoadBalances} className='reload-icon' />
+            </div>
           </div>
           {!totalKoi && !!(account.type == TYPE.ARWEAVE) && (
             <a

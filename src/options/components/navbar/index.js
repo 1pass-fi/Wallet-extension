@@ -30,42 +30,48 @@ export default () => {
       <div className='navbar'>
         <div className='top'>
           <Link to='/'>
-            <HomeIcon
-              data-tip='Gallery'
-              className={`nav-item ${pathname == '/' ? 'active' : ''}`}
-            />
+            <div data-tip='Gallery'>
+              <HomeIcon
+                className={`nav-item ${pathname == '/' ? 'active' : ''}`}
+              />
+            </div>
           </Link>
           <Link to='/create'>
-            <CreateNFTIcon
-              data-tip='Create NFT'
-              className={`nav-item ${pathname == '/create' ? 'active' : ''}`}
-            />
+            <div data-tip='Create NFT'>
+              <CreateNFTIcon
+                className={`nav-item ${pathname == '/create' ? 'active' : ''}`}
+              />
+            </div>
           </Link>
           <Link to='/collections'>
-            <CollectionIcon
-              data-tip='Collections'
-              className={`nav-item ${
-                pathname == '/collections' ? 'active' : ''
-              }`}
-            />
+            <div data-tip='Collections'>
+              <CollectionIcon
+                
+                className={`nav-item ${
+                  pathname == '/collections' ? 'active' : ''
+                }`}
+              />
+            </div>
           </Link>
           <Link to='/settings'>
-            <SettingIcon
-              data-tip='Settings'
-              className={`nav-item ${
-                pathname.includes('/settings') ? 'active' : ''
-              }`}
-            />
+            <div data-tip='Settings'>
+              <SettingIcon
+                className={`nav-item ${
+                  pathname.includes('/settings') ? 'active' : ''
+                }`}
+              />
+            </div>
           </Link>
         </div>
         <div className='bottom'>
           <Link to='/friends'>
-            <FriendIcon
-              data-tip='Refer a Friend'
-              className={`nav-item friend ${
-                pathname == '/friends' ? 'active' : ''
-              }`}
-            />
+            <div data-tip='Refer a Friend'>
+              <FriendIcon
+                className={`nav-item friend ${
+                  pathname == '/friends' ? 'active' : ''
+                }`}
+              />
+            </div>
           </Link>
           <div className='address'>{`${
             affiliateCode && affiliateCode.slice(0, 5)

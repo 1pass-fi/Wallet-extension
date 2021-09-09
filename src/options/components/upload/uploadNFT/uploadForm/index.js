@@ -136,7 +136,7 @@ export default ({ stage, setStage }) => {
           >
             <CloseIcon data-tip='Close'/>
           </div>
-          <div className='goback-button' onClick={onGoBack}>
+          <div data-tip='Back' className='goback-button' onClick={onGoBack}>
             <GoBackIcon data-tip='Back'/>
           </div>
         </div>
