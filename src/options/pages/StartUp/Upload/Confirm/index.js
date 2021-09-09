@@ -12,8 +12,10 @@ import { JSONFileToObject } from 'options/utils'
 import ConfirmPassword from '../../shared/ConfirmPassword'
 import InputPassword from '../../shared/InputPassword'
 import {ERROR_MESSAGE} from 'constants/koiConstants'
+import GoBackBtn from 'options/components/GoBackButton'
 
-export default ({ nextStep, file, walletType, selectedNetwork }) => {
+
+export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) => {
   const { setError, wallets, setImportedAddress } =  useContext(GalleryContext)
   const [password, setPassword] = useState('')
   const onConfirm = async () => {
@@ -55,6 +57,7 @@ export default ({ nextStep, file, walletType, selectedNetwork }) => {
       >
         Import Key
       </button>
+      <GoBackBtn goToPreviousStep={previousStep} />
     </div>
   )
 }
