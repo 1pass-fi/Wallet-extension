@@ -233,7 +233,8 @@ export const ERROR_MESSAGE = {
   PASSWORD_REQUIRED: 'Password required.',
   SELECT_ACCOUNT: 'Please select account.',
   SELECT_TOKEN: 'Please select token.',
-  CREATE_WALLET_FAILED: 'Create new wallet failed.'
+  CREATE_WALLET_FAILED: 'Create new wallet failed.',
+  INVALID_JSON_KEY: 'Invalid JSON key. Please make sure that you chose a valid key.'
 }
 
 export const STORAGE = {

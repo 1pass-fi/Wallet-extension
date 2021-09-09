@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { TYPE } from 'constants/accountConstants'
@@ -11,6 +11,7 @@ import './index.css'
 import { JSONFileToObject } from 'options/utils'
 import ConfirmPassword from '../../shared/ConfirmPassword'
 import InputPassword from '../../shared/InputPassword'
+import {ERROR_MESSAGE} from 'constants/koiConstants'
 
 export default ({ nextStep, file, walletType, selectedNetwork }) => {
   const { setError, wallets, setImportedAddress } =  useContext(GalleryContext)
@@ -18,12 +19,16 @@ export default ({ nextStep, file, walletType, selectedNetwork }) => {
   const onConfirm = async () => {
     try {
       const key = await JSONFileToObject(file)
+
+      // TODO: JSON validation
+      // if (!key.n) throw new Error('Invalid JSON file')
+
       const address = await backgroundRequest.gallery.uploadJSONKeyFile({ password, key, type: walletType, provider: selectedNetwork })
-      console.log('returned address', address)
       setImportedAddress(address)
       nextStep()
     } catch (err) {
-      setError(err.message)
+      console.log(err.message)
+      setError(ERROR_MESSAGE.INVALID_JSON_KEY)
     }
   }
 
