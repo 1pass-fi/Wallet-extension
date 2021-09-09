@@ -24,7 +24,7 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 import { ERROR_MESSAGE, NFT_BIT_DATA } from 'constants/koiConstants'
 import storage from 'services/storage'
 
-export default ({ description, setStage, stage, title, file, username }) => {
+export default ({ description, setStage, stage, title, file, username, isNSFW }) => {
   const createNftButtonRef = useRef(null)
   const { setIsLoading, 
     address, 
@@ -82,10 +82,11 @@ export default ({ description, setStage, stage, title, file, username }) => {
         title,
         owner: username,
         description,
+        isNSFW
       }
 
       // call the request function
-      const { txId, time } = await backgroundRequest.gallery.uploadNFT({content, tags, fileType, address: account.address, price})
+      const { txId, time } = await backgroundRequest.gallery.uploadNFT({content, tags, fileType, address: account.address, price, isNSFW})
       // console.log('RESPONSE DATA', txId, time)
 
       await storage.generic.set.savedNFTForm({})

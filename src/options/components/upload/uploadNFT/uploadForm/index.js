@@ -45,6 +45,8 @@ export default ({ stage, setStage }) => {
   const [title, setTitle] = useState('')
   const [username, setUsername] = useState('')
   const [description, setDescription] = useState('')
+  const [isNSFW, setIsNSFW] = useState(false)
+
   const url = useMemo(()=> {
     try {
       if (file) {
@@ -76,6 +78,7 @@ export default ({ stage, setStage }) => {
     setUsername('')
     setDescription('')
     setStage(1)
+    setIsNSFW(false)
   }
 
   const handleGoToGallery = () => {
@@ -102,12 +105,13 @@ export default ({ stage, setStage }) => {
           const file = new File([blob], payload.fileName, { type: payload.fileType })
   
           if (payload.metadata) {
-            const { title, username, description, tags } = payload.metadata
+            const { title, username, description, tags, isNSFW } = payload.metadata
             setTitle(title)
             setUsername(username)
             setDescription(description)
             setTags(tags)
             setFile(file)
+            setIsNSFW(isNSFW)
           }
         }
       } catch (err) {
@@ -169,6 +173,8 @@ export default ({ stage, setStage }) => {
               setUsername={setUsername}
               description={description}
               setDescription={setDescription}
+              isNSFW={isNSFW}
+              setIsNSFW={setIsNSFW}
             />
           </div>
           <BottomButton
@@ -178,6 +184,7 @@ export default ({ stage, setStage }) => {
             description={description}
             file={file}
             username={username}
+            isNSFW={isNSFW}
           />
           <div
             className='close-button'

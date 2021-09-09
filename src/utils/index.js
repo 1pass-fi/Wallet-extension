@@ -516,6 +516,7 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
     tx.addTag('App-Version', '0.3.0')
     tx.addTag('Contract-Src', 'I8xgq3361qpR8_DvqcGpkCYAUTMktyAgvkm6kGhJzEQ')
     tx.addTag('Init-State', JSON.stringify(initialState))
+    tx.addTag('NSFW', content.isNSFW)
 
     try {
       await arweave.transactions.sign(tx, koi.wallet)

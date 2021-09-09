@@ -138,6 +138,35 @@
   height: 88px;
   resize: none;
 }
+
+.uploadNFT-wrapper
+  .uploadNFT
+  .upload-form
+  .nft-infomation
+  .right-column.stage1
+  .field
+  .select-option {
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  line-height: 20px;
+  width: 422px;
+}
+
+.uploadNFT-wrapper
+  .uploadNFT
+  .upload-form
+  .nft-infomation
+  .right-column.stage1
+  .field
+  .select-option
+  .checkbox-input {
+  background: #171753;
+  width: 16px;
+  height: 16px;
+  margin-right: 12px;
+  cursor: pointer;
+}
 /* UPLOAD FORM STAGE 1 END */
 
 /* UPLOAD FORM STAGE 2 START */

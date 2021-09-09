@@ -21,6 +21,8 @@ export default ({
   setDescription,
   setTitle,
   setUsername,
+  isNSFW,
+  setIsNSFW
 }) => {
   const { setTags, tags, isFriendCodeValid, price, setPrice } = useContext(UploadContext)
   const { file, account, setShowSelectAccount } = useContext(GalleryContext)
@@ -99,6 +101,19 @@ export default ({
             onChange={(e) => setTagInput(e.target.value)}
             onKeyDown={addTag}
           ></input>
+        </div>
+        <div className='field'>
+          <label className='field-label'>NSFW</label>
+          <div className='select-option'>
+            <input
+              className='checkbox-input'
+              type='checkbox'
+              checked={isNSFW}
+              onChange={(e) => setIsNSFW(e.target.checked)}
+              id='nsfw'
+            />
+            <div><label for='nsfw'>This content is ‘Not Safe for Work,’ explicit, or 18+.</label></div>
+          </div>
         </div>
       </div>
     )
