@@ -7,3 +7,12 @@
   background: #171753;
   min-height: 100vh;
 }
+
+.startup-logo {
+  width: 72px;
+  height: 72px;
+  position: absolute;
+  top: 25px;
+  left: 8px;
+  z-index: 1;
+}

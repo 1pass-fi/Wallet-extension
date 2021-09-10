@@ -9,6 +9,7 @@ import React, {
 import { useHistory } from 'react-router-dom'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import moment from 'moment'
+import ReactTooltip from 'react-tooltip'
 
 import ArweaveIcon from 'img/arweave-icon.svg'
 import EthereumIcon from 'img/ethereum-logo-18.svg'
@@ -86,7 +87,7 @@ export default ({
               autoPlay
             />
           )}
-          <div onClick={handleGoBack} className='go-back-icon'>
+          <div data-tip='Back' onClick={handleGoBack} className='go-back-icon'>
             <GoBackIcon />
           </div>
         </div>
@@ -181,6 +182,7 @@ export default ({
           </div>}
         </div>
       </div>
+      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }

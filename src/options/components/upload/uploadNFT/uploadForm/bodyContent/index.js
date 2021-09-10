@@ -21,13 +21,17 @@ export default ({
   setDescription,
   setTitle,
   setUsername,
+  isNSFW,
+  setIsNSFW,
+  tagInput,
+  setTagInput
 }) => {
   const { setTags, tags, isFriendCodeValid, price, setPrice } = useContext(UploadContext)
   const { file, account, setShowSelectAccount } = useContext(GalleryContext)
-  const [tagInput, setTagInput] = useState('')
 
   const addTag = (e) => {
-    if (e.keyCode === 13) {
+    const { keyCode } = e
+    if (keyCode === 13 || keyCode === 188) {
       let newTags = tagInput.split(',')
       newTags = newTags.map((tag) => trim(tag)).filter((tag) => tag.replace(/\s/g, '').length)
       setTags(union(tags, newTags))
@@ -37,12 +41,14 @@ export default ({
 
   useEffect(() => {
     const getPrice = async () => {
-      const arPrice = await loadNFTCost(file.size)
-      setPrice(arPrice)
+      if (file) {
+        const arPrice = await loadNFTCost(file.size)
+        setPrice(arPrice)        
+      }
     }
 
     getPrice()
-  }, [])
+  }, [file])
 
   if (stage == 1) {
     return (
@@ -54,7 +60,7 @@ export default ({
           </div>
           <div className='field-input select-account'>
             {account.accountName}
-            <div className='address'>{`${get(account, 'address', '').slice(0,5)}...${get(account, 'address', '').slice(account.address.length - 4)}`}</div>
+            <div className='address'>{account.address && `${get(account, 'address', '').slice(0,5)}...${get(account, 'address', '').slice(account.address.length - 4)}`}</div>
           </div>
         </div>
         <div className='field'>
@@ -95,8 +101,21 @@ export default ({
             className='field-input'
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={addTag}
+            onKeyUp={addTag}
           ></input>
+        </div>
+        <div className='field'>
+          <label className='field-label'>NSFW</label>
+          <div className='select-option'>
+            <input
+              className='checkbox-input'
+              type='checkbox'
+              checked={isNSFW}
+              onChange={(e) => setIsNSFW(e.target.checked)}
+              id='nsfw'
+            />
+            <div><label for='nsfw'>This content is ‘Not Safe for Work,’ explicit, or 18+.</label></div>
+          </div>
         </div>
       </div>
     )

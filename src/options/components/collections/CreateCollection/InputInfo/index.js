@@ -11,7 +11,8 @@ export default ({tags, setColletionName, setDescription, setTags, collectionName
   const { account, setShowSelectAccount } = useContext(GalleryContext)
 
   const addTag = (e) => {
-    if (e.keyCode === 13) {
+    const { keyCode } = e
+    if (keyCode === 13 || keyCode === 188) {
       let newTags = tagInput.split(',')
       newTags = newTags.map((tag) => trim(tag)).filter((tag) => tag.replace(/\s/g, '').length)
       setTags(union(tags, newTags))
@@ -56,7 +57,7 @@ export default ({tags, setColletionName, setDescription, setTags, collectionName
           <div><input 
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={addTag}
+            onKeyUp={addTag}
           /></div>
         </div>
       </div>

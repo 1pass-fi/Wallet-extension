@@ -23,7 +23,8 @@ import { setIsLoading } from 'popup/actions/loading'
 import { setNotification } from 'popup/actions/notification'
 
 // constants
-import { ERROR_MESSAGE, WARNING_MESSAGE, NOTIFICATION, PATH } from 'constants/koiConstants'
+import { ERROR_MESSAGE, NOTIFICATION, PATH } from 'constants/koiConstants'
+
 import { TYPE } from 'constants/accountConstants'
 
 // services
@@ -38,7 +39,6 @@ import './index.css'
 
 const SendKoiForm = ({
   setError,
-  setWarning,
   makeTransfer,
   setIsLoading,
   setNotification,
@@ -79,18 +79,25 @@ const SendKoiForm = ({
     // validations
     if (!(recipient.trim().length > 0 && amount.trim().length > 0)) {
       setError(ERROR_MESSAGE.EMPTY_FIELDS)
-    } else if (Number(amount) < 0) {
-      setError(ERROR_MESSAGE.INVALID_AMOUNT)
-    } else if (!selectedAccount) {
-      setError(ERROR_MESSAGE.SELECT_ACCOUNT)
-    } else if (!selectedToken) {
-      setError(ERROR_MESSAGE.SELECT_TOKEN)
-    } else {
-      if (Number(amount) === 0) {
-        setWarning(WARNING_MESSAGE.SEND_ZERO_KOI)
-      }
-      setShowModal(true)
+      return
     }
+    if (Number(amount) < 0) {
+      setError(ERROR_MESSAGE.INVALID_AMOUNT)
+      return
+    }
+    if (isEmpty(selectedAccount)) {
+      setError(ERROR_MESSAGE.SELECT_ACCOUNT)
+      return
+    } 
+    if (isEmpty(selectedToken)) {
+      setError(ERROR_MESSAGE.SELECT_TOKEN)
+      return
+    } 
+    if (Number(amount) === 0) {
+      setError(ERROR_MESSAGE.SEND_ZERO_KOI)
+      return
+    }
+    setShowModal(true)
   }
 
   const handleSendTransaction = async () => {
@@ -248,7 +255,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = { 
   setError, 
-  setWarning, 
   makeTransfer, 
   setIsLoading, 
   setNotification 

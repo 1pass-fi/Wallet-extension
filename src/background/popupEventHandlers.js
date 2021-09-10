@@ -292,7 +292,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             case TYPE.ARWEAVE:
               walletObj = new Web()
               seedPhrase = await ArweaveAccount.utils.generateWallet(walletObj)
-              addresss = walletObj.address
+              address = walletObj.address
               break
             case TYPE.ETHEREUM:
               walletObj = new Ethereum()

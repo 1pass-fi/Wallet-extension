@@ -13,6 +13,7 @@ export default ({ choosenTxid = '' }) => {
   const [isFriendCodeValid, setIsFriendCodeValid] = useState(false)
   const [price, setPrice] = useState(null)
   const [contentType, setContentType] = useState(null)
+  const [hasSavedData, setHasSavedData] = useState(false)
 
   useEffect(() => {
     window.scroll({ top: 0, behavior: 'smooth' })
@@ -32,7 +33,9 @@ export default ({ choosenTxid = '' }) => {
         price,
         setPrice,
         contentType,
-        setContentType
+        setContentType,
+        hasSavedData,
+        setHasSavedData
       }}
     >
       <div className='app-content'>

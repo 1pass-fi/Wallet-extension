@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
 import PreUpload from './PreUpload'
 import Confirm from './Confirm'
@@ -12,10 +13,20 @@ export default () => {
   const [file, setFile] = useState({})
   const [walletType, setWalletType] = useState(null)
   const [selectedNetwork, setSelectedNetwork] = useState(null)
+  const history = useHistory()
 
   const nextStep = () => {
     setStep(step + 1)
   }
+
+  const previousStep = () => {
+    if (step === 1) {
+      history.push('/')
+    } else {
+      setStep(step - 1)
+    }
+  }
+
 
   return (
     <div className='start-up'>
@@ -24,6 +35,7 @@ export default () => {
           <PreUpload  
             nextStep={nextStep}
             setWalletType={setWalletType}
+            previousStep={previousStep}
           />
         )}
 
@@ -33,13 +45,15 @@ export default () => {
           selectedNetwork={selectedNetwork}
           setSelectedNetwork={setSelectedNetwork}
           walletType={walletType}
-          nextStep={nextStep} />}
+          nextStep={nextStep}
+          previousStep={previousStep} />}
 
         {step === 3 && <Confirm 
           walletType={walletType} 
           nextStep={nextStep} 
           selectedNetwork={selectedNetwork} 
-          file={file} />}
+          file={file}
+          previousStep={previousStep} />}
 
         {step === 4 && <Success />}
       </div>

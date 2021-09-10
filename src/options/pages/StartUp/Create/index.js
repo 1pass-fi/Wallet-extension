@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import isEqual from 'lodash/isEqual'
 import shuffle from 'lodash/shuffle'
@@ -15,6 +16,7 @@ import Button from '../shared/Button'
 import ConfirmPassword from '../shared/ConfirmPassword'
 import InputPassword from '../shared/InputPassword'
 import Loading from '../shared/Loading'
+import GoBackBtn from '../../../components/GoBackButton'
 
 import isEmpty from 'lodash/isEmpty'
 
@@ -54,11 +56,23 @@ export default () => {
   const [selectedWords, setSelectedWords] = useState([])
   const [unselectedWords, setUnselectedWords] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const history = useHistory()
 
   const nextStep = () => {
     setStep(step + 1)
   }
 
+  const previousStep = () => {
+    if (step === 1) {
+      history.push('/')
+    } else if (step === 3 && walletType === TYPE.ARWEAVE) {
+      setStep(1)
+    } else if (step === 5){
+      setStep(3)
+    } else {
+      setStep(step - 1)
+    }
+  }
 
   /* 
     Generate 12 words phrase for new wallet.
@@ -196,10 +210,16 @@ export default () => {
             >
               Create Key
             </button>
+            <GoBackBtn goToPreviousStep={previousStep} />
           </>
           )}
 
-          {step === 2 && (<EthereumNetworks onSubmit={nextStep} />)}
+          {step === 2 && (
+          <>
+            <EthereumNetworks onSubmit={nextStep} />
+            <GoBackBtn goToPreviousStep={previousStep} />
+          </>
+          )}
 
           {(step === 3 || step === 4) && (
           <>
@@ -260,6 +280,7 @@ export default () => {
                 </div>
               </div>
             </div>
+            <GoBackBtn goToPreviousStep={previousStep} />
           </>
           )}
 
@@ -309,6 +330,7 @@ export default () => {
                 </div>
               </div>
             </div>
+            <GoBackBtn goToPreviousStep={previousStep} />
           </>
           )}
 
@@ -335,6 +357,7 @@ export default () => {
             >
               Create Key
             </Button>
+            <GoBackBtn goToPreviousStep={previousStep} />
           </>
           )}
         </div>

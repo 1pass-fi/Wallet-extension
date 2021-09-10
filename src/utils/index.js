@@ -516,6 +516,7 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
     tx.addTag('App-Version', '0.3.0')
     tx.addTag('Contract-Src', 'I8xgq3361qpR8_DvqcGpkCYAUTMktyAgvkm6kGhJzEQ')
     tx.addTag('Init-State', JSON.stringify(initialState))
+    tx.addTag('NSFW', content.isNSFW)
 
     try {
       await arweave.transactions.sign(tx, koi.wallet)
@@ -733,4 +734,31 @@ export const checkAffiliateInviteSpent = async (koi) => {
   } catch (err) {
     throw new Error(err.message)
   }
+}
+
+export const saveUploadFormData = async (file, metadata) => {
+  try {
+    const url = URL.createObjectURL(file)
+    const fileType = file.type
+    const fileName = file.name
+  
+    const response = await fetch(url)
+    const blob = await response.blob()
+    const dataBuffer = await blob.arrayBuffer()
+  
+    let u8 = new Int8Array(dataBuffer)
+    u8 = JSON.stringify(u8, null, 2)
+  
+    const payload = {
+      data: u8,
+      fileType,
+      fileName,
+      metadata
+    }
+  
+    await storage.generic.set.savedNFTForm(payload)
+  } catch (err) {
+    await setChromeStorage({ [STORAGE.NFT_UPLOAD_DATA]: {} })
+  }
+
 }

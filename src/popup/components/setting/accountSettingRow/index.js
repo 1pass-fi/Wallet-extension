@@ -1,6 +1,7 @@
 // modules
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import ReactTooltip from 'react-tooltip'
 
 // assets
 import Fish from 'img/koi-logo-bg.svg'
@@ -77,7 +78,7 @@ const AccountSettingRow = ({ account, setError, setNotification, changeAccountNa
         <div className="display-row account-info">
           <div className="account-name-line">
             <div className="name">{account.accountName}</div>
-            <div className="edit-icon" onClick={() => setOpenEditModal(true)}>
+            <div data-tip='Edit Account Name' className="edit-icon" onClick={() => setOpenEditModal(true)}>
               <EditIcon />
             </div>
           </div>
@@ -88,6 +89,7 @@ const AccountSettingRow = ({ account, setError, setNotification, changeAccountNa
             onClick={() => {setShowRevealModal(true)}}
           />
         </div>
+        <ReactTooltip place='top' type="dark" effect="float"/>
       </div>
       {openEditModal && <EditAccountNameModal onClose={onClose} onSubmit={changeName}  account={account}/>}
       {showRevealModal && <RevealSeedPhraseModal onClose={() => {setShowRevealModal(false)}} onReveal={onRevealSeedPhare} />}

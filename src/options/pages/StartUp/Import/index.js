@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
 import EthereumLogo from 'img/startup/ethereum-logo.svg'
 import FinnieLogo from 'img/startup/finnie-logo.svg'
@@ -12,6 +13,7 @@ import Loading from '../shared/Loading'
 import useEthereumNetworks from '../shared/useEthereumNetworks'
 import { GalleryContext } from 'options/galleryContext'
 import InputPassword from '../shared/InputPassword'
+import GoBackBtn from '../../../components/GoBackButton'
 
 import isEmpty from 'lodash/isEmpty'
 
@@ -27,6 +29,7 @@ export default () => {
   const [userSeedPhrase, setUserSeedPhrase] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const history = useHistory()
 
   const { setError, wallets, setImportedAddress } =  useContext(GalleryContext)
   const { selectedNetwork, EthereumNetworks } = useEthereumNetworks({
@@ -35,6 +38,15 @@ export default () => {
   })
   const nextStep = () => {
     setStep(step + 1)
+  }
+  const previousStep = () => {
+    if (step === 1) {
+      history.push('/')
+    } else if (step === 3 && walletType === TYPE.ARWEAVE) {
+      setStep(1)
+    } else {
+      setStep(step - 1)
+    }
   }
 
   const onTypeSelect = (type) => {
@@ -46,8 +58,12 @@ export default () => {
     }
   }
 
+  const trimmedPhrase = userSeedPhrase.replace(/\s+/g,' ').trim()
+  const isValidPhrase = trimmedPhrase.split(' ').length === 12
 
   const onImportKey = async () => {
+    if (!isValidPhrase) return
+
     setIsLoading(true)
     try {
       const address = await backgroundRequest.gallery.uploadJSONKeyFile({
@@ -112,6 +128,7 @@ export default () => {
                   onClick={() => onTypeSelect(TYPE.ETHEREUM)}
                 />
               </div>
+              <GoBackBtn goToPreviousStep={previousStep} />
             </>
           )}
 
@@ -122,7 +139,10 @@ export default () => {
             //     <div className='description'>Choose your Network.</div>
             //   )}
             // />
-            <EthereumNetworks onSubmit={nextStep} />
+            <>
+              <EthereumNetworks onSubmit={nextStep} />
+              <GoBackBtn goToPreviousStep={previousStep} />
+            </>
           )}
 
           {step === 3 && (
@@ -139,6 +159,7 @@ export default () => {
                 value={userSeedPhrase}
                 setValue={setUserSeedPhrase}
               />
+              {(userSeedPhrase && !isValidPhrase) && <div className="error-message">Seed Phrase is invalid</div>}
 
 
                {isEmpty(wallets) ? <div className='confirm-password-wrapper'>
@@ -157,6 +178,7 @@ export default () => {
               >
                 Import Key
               </Button>
+              <GoBackBtn goToPreviousStep={previousStep} />
             </>
           )}
         </div>

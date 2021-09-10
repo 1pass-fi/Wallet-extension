@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { isEmpty, orderBy } from 'lodash'
+import ReactTooltip from 'react-tooltip'
 
 // actions
 import { loadActivities } from 'actions/koi'
@@ -233,10 +234,11 @@ const Activities = ({
         <ToggleButton value={!showAllAccounts} setValue={setShowAllAccounts}/>
         <>Individual</>
         {!showAllAccounts && <div onClick={() => setSelectAccountCollapsed(!selectAccountsCollapsed)} className='collapse-extend-icon'>
+          {/* TOOLTIP NOT WORKING HERE */}
           { selectAccountsCollapsed ?
-            <ExtendIcon />
+            <ExtendIcon data-tip='Expand' />
             :
-            <CollapseIcon />
+            <CollapseIcon data-tip='Collapse' />
           }
         </div>}
       </div>
@@ -278,6 +280,7 @@ const Activities = ({
 
         </div>
       }
+      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }

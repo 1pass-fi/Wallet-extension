@@ -164,9 +164,8 @@ export default ({ children }) => {
           address: activatedAccount,
         })
         activatedAccount = await activatedAccount.get.metadata()
-
         setAccount(activatedAccount)
-      } catch (err) {
+      } catch (err) { 
         console.log(err.message)
       }
     }
@@ -487,7 +486,6 @@ export default ({ children }) => {
             isWaitingAddNFT={isWaitingAddNFT}
             setIsWaitingAddNFT={setIsWaitingAddNFT}
           />}
-
           {children}
           {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer showDropzone={showDropzone} />}
           {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />}
@@ -495,7 +493,12 @@ export default ({ children }) => {
         </> 
         : 
         <>
-          {walletLoaded && <StartUp />}
+          {walletLoaded && 
+          <div>
+            {error && <Message children={error}/>}
+            {notification && <Message children={notification} type='notification'/> }
+            <StartUp />
+          </div>}
         </>
       }
     </GalleryContext.Provider>

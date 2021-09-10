@@ -72,7 +72,9 @@ export const AccountInfo = (({
           <div className='name'>
             <div className='text'>{account.accountName}</div>
             <div onClick={() => setOpenEditModal(true)}>
-              <div className='icon'><EditIcon data-tip='Edit Account Name' /></div>
+              <div className='icon' data-tip='Edit Account Name'>
+                <EditIcon />
+              </div>
             </div>
           </div>
           <div className='addr'>
@@ -81,8 +83,8 @@ export const AccountInfo = (({
             </div>
             <div onClick={() => setNotification(NOTIFICATION.COPIED)}>
               <CopyToClipboard text={account.address}>
-                <div className="icon">
-                  <CopyIcon data-tip='Copy Address'/>
+                <div data-tip='Copy Address' className="icon">
+                  <CopyIcon />
                 </div>
               </CopyToClipboard>
             </div>

@@ -85,4 +85,8 @@ export class GenericSet {
   transactionData(value) {
     return this.#chrome._setChrome(GENERIC.TRANSACTION_DATA, value)
   }
+
+  savedNFTForm(value) {
+    return this.#chrome._setChrome(GENERIC.SAVED_NFT_FORM, value)
+  }
 }

@@ -1,19 +1,17 @@
-import React, { useEffect } from 'react'
-import isEmpty from 'lodash/isEmpty'
+import React from 'react'
 
 import EthereumLogo from 'img/startup/ethereum-logo.svg'
 import FinnieLogo from 'img/startup/finnie-logo.svg'
 
-import Dropfile from '../../shared/Dropfile'
 import WalletType from '../../shared/WalletType'
+import GoBackBtn from 'options/components/GoBackButton'
 
 import { TYPE } from 'constants/accountConstants'
 
-import useEthereumNetworks from '../../shared/useEthereumNetworks'
 
-export default ({ nextStep, setWalletType}) => {
+export default ({ nextStep, setWalletType, previousStep}) => {
   return (
-    <div>
+    <div className='upload-file-form'>
       <div className='title'>Import a key with a .JSON file</div>
       <div className='wallet-types'>
         <WalletType
@@ -52,6 +50,7 @@ export default ({ nextStep, setWalletType}) => {
           }}
         />
       </div>
+      <GoBackBtn goToPreviousStep={previousStep} />
     </div>
   )
 }

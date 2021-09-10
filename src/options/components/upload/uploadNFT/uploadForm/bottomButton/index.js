@@ -1,9 +1,12 @@
-import React, { useContext, useState, useRef } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import isEmpty from 'lodash/isEmpty'
 import isNumber from 'lodash/isNumber'
+import trim from 'lodash/trim'
+import union from 'lodash/union'
+import get from 'lodash/get'
 
-import { exportNFT, getChromeStorage, setChromeStorage } from 'utils'
+import { exportNFT, getChromeStorage, saveUploadFormData, setChromeStorage } from 'utils'
 const arweave = Arweave.init({
   host: 'arweave.net',
   protocol: 'https',
@@ -22,8 +25,9 @@ import './index.css'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import { ERROR_MESSAGE, NFT_BIT_DATA } from 'constants/koiConstants'
+import storage from 'services/storage'
 
-export default ({ description, setStage, stage, title, file, username }) => {
+export default ({ description, setStage, stage, title, file, username, isNSFW, tagInput, setTagInput }) => {
   const createNftButtonRef = useRef(null)
   const { setIsLoading, 
     address, 
@@ -39,6 +43,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
   } = useContext(GalleryContext)
   const {
     tags,
+    setTags,
     price,
     setTransactionId,
     setCreatedAt,
@@ -47,6 +52,7 @@ export default ({ description, setStage, stage, title, file, username }) => {
     setContentType,
   } = useContext(UploadContext)
   const [friendCode, setFriendCode] = useState('')
+  const [clicked, setClicked] = useState(false)
 
   const handleUploadNFT = async () => {
     // file size checking
@@ -81,12 +87,14 @@ export default ({ description, setStage, stage, title, file, username }) => {
         title,
         owner: username,
         description,
+        isNSFW
       }
 
       // call the request function
-      const { txId, time } = await backgroundRequest.gallery.uploadNFT({content, tags, fileType, address: account.address, price})
+      const { txId, time } = await backgroundRequest.gallery.uploadNFT({content, tags, fileType, address: account.address, price, isNSFW})
       // console.log('RESPONSE DATA', txId, time)
 
+      await storage.generic.set.savedNFTForm({})
       setIsLoading(false)
 
       return {
@@ -107,17 +115,50 @@ export default ({ description, setStage, stage, title, file, username }) => {
     }
   }
 
+  const addTagOnSubmit =  async (tagInput) => {
+    let newTags = tagInput.split(',')
+    newTags = newTags.map((tag) => trim(tag)).filter((tag) => tag.replace(/\s/g, '').length)
+    setTags(union(tags, newTags))
+    setTagInput('')
+  }
+
+  useEffect(() => {
+    const cacheData = async () => {
+      try {            
+  
+        if (file.size > 15 * 1024 ** 2) throw new Error(ERROR_MESSAGE.FILE_TOO_LARGE)
+        /* 
+          Save the current form data to chrome storage
+          delete when transaction is successful
+        */
+        setIsLoading(true)
+        const metadata = {
+          title,
+          username,
+          description,
+          tags
+        }
+
+        await saveUploadFormData(file, metadata)
+  
+        setIsLoading(false)
+        setStage(2)
+      } catch(error) {
+        setIsLoading(false)
+        setError(error.message)
+      }
+    }
+    
+    if (clicked) cacheData()
+  }, [clicked])
+
   if (stage == 1) {
     return (
       <button
         className='create-ntf-button'
         onClick={() => {
-          try {            
-            if (file.size > 15 * 1024 ** 2) throw new Error(ERROR_MESSAGE.FILE_TOO_LARGE)
-            setStage(2)
-          } catch(error) {
-            setError(error.message)
-          } 
+          addTagOnSubmit(tagInput)
+          setClicked(true)
         }}
         disabled={isEmpty(title) | isEmpty(description)}
       >
