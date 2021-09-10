@@ -13,8 +13,6 @@ export class SettingMethod {
 
   async checkSitePermission(site) {
     try {
-
-
       /* 
         check existed address for a site on siteAddressDictionary
       */
