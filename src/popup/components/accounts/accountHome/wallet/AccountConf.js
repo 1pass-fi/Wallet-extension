@@ -110,6 +110,7 @@ const AccountConfig = (({ sites, account, setIsLoading, removeWallet }) => {
       {/* CONNECTED SITE MODAL */}
       {showModalConnectedSite && (
         <RemoveConnectedSite
+          account={account}
           sites={sites}
           accountName={account.accountName}
           handleDeleteSite={handleDeleteSite}

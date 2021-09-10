@@ -1,5 +1,5 @@
 // modules
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -40,7 +40,7 @@ const ModalTitle = ({ accountName }) => {
   )
 }
 
-const ManualConnectSite = ({ isGreyBackground, setError }) => {
+const ManualConnectSite = ({ isGreyBackground, setError, sites }) => {
   const history = useHistory()
 
   const onManualConnect = async () => {
@@ -48,8 +48,7 @@ const ManualConnectSite = ({ isGreyBackground, setError }) => {
       const tab = await getSelectedTab()
       const origin = (new URL(tab.url)).origin
       const favicon = tab.favIconUrl
-
-      if (!(await storage.generic.method.checkSitePermission(origin))) {
+      if (!(sites.includes(origin))) {
         await storage.generic.set.pendingRequest({
           type: REQUEST.PERMISSION,
           data: { origin, favicon }
@@ -78,7 +77,30 @@ const ManualConnectSite = ({ isGreyBackground, setError }) => {
   )
 }
 
-const RemoveConnectedSites = ({ sites, accountName, handleDeleteSite, onClose, setError }) => {
+const RemoveConnectedSites = ({ accountName, onClose, setError, account }) => {
+  const [sites, setSites] = useState([]) 
+
+  const handleDeleteSite = async (inputSite) => {
+    const siteAddressDictionary = await storage.setting.get.siteAddressDictionary()
+    delete siteAddressDictionary[inputSite]
+    await storage.setting.set.siteAddressDictionary(siteAddressDictionary)
+
+    let _sites = sites.filter(site => site !== inputSite)
+    setSites(_sites)
+  }
+
+  useEffect(() => {
+    const loadConnectedSites = async () => {
+      const address = account.address
+      const siteAddressDictionary = await storage.setting.get.siteAddressDictionary()
+      let sites = Object.keys(siteAddressDictionary)
+      sites = sites.filter(site => siteAddressDictionary[site] == address)
+      setSites(sites)
+    }
+
+    loadConnectedSites()
+  }, [])
+
   return (
     <Modal onClose={onClose}>
       <ModalTitle accountName={accountName} />
@@ -95,6 +117,7 @@ const RemoveConnectedSites = ({ sites, accountName, handleDeleteSite, onClose, s
       <ManualConnectSite
         setError={setError}
         isGreyBackground={sites.length % 2 === 0}
+        sites={sites}
       />
     </Modal>
   )
