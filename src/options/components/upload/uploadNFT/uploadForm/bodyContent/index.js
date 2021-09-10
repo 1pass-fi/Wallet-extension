@@ -13,6 +13,14 @@ import { formatNumber } from 'options/utils'
 import { GalleryContext } from 'options/galleryContext'
 import { UploadContext } from '../../../index'
 
+const Empty = ({ setClicked }) => {
+  useEffect(() => {
+    setClicked(false)
+  })
+
+  return (<></>)
+}
+
 export default ({
   stage,
   title,
@@ -24,7 +32,8 @@ export default ({
   isNSFW,
   setIsNSFW,
   tagInput,
-  setTagInput
+  setTagInput,
+  setClicked
 }) => {
   const { setTags, tags, isFriendCodeValid, price, setPrice } = useContext(UploadContext)
   const { file, account, setShowSelectAccount } = useContext(GalleryContext)
@@ -53,6 +62,7 @@ export default ({
   if (stage == 1) {
     return (
       <div className='right-column stage1'>
+        <Empty setClicked={setClicked} />
         <div className='field'>
           <div className='field-label change-account'>
             <div onClick={() => setShowSelectAccount(true)} className='edit-icon'><EditIcon /></div>

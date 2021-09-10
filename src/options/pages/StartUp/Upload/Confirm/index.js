@@ -25,6 +25,8 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
       // TODO: JSON validation
       // if (!key.n) throw new Error('Invalid JSON file')
 
+      if (walletType === TYPE.ARWEAVE) selectedNetwork = null
+
       const address = await backgroundRequest.gallery.uploadJSONKeyFile({ password, key, type: walletType, provider: selectedNetwork })
       setImportedAddress(address)
       nextStep()

@@ -32,7 +32,7 @@ export default () => {
   const history = useHistory()
 
   const { setError, wallets, setImportedAddress } =  useContext(GalleryContext)
-  const { selectedNetwork, EthereumNetworks } = useEthereumNetworks({
+  let { selectedNetwork, EthereumNetworks } = useEthereumNetworks({
     title: () => <div className='title'>Import Ethereum Key</div>,
     description: () => <div className='description'>Choose your Network.</div>,
   })
@@ -66,6 +66,8 @@ export default () => {
 
     setIsLoading(true)
     try {
+      if (walletType === TYPE.ARWEAVE) selectedNetwork = null
+
       const address = await backgroundRequest.gallery.uploadJSONKeyFile({
         key: userSeedPhrase,
         password,

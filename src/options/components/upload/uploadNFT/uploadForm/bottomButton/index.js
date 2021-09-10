@@ -27,7 +27,9 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 import { ERROR_MESSAGE, NFT_BIT_DATA } from 'constants/koiConstants'
 import storage from 'services/storage'
 
-export default ({ description, setStage, stage, title, file, username, isNSFW, tagInput, setTagInput }) => {
+export default ({ description, setStage, stage, title, file, username, isNSFW, tagInput, setTagInput,
+  setClicked, clicked
+}) => {
   const createNftButtonRef = useRef(null)
   const { setIsLoading, 
     address, 
@@ -52,7 +54,6 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
     setContentType,
   } = useContext(UploadContext)
   const [friendCode, setFriendCode] = useState('')
-  const [clicked, setClicked] = useState(false)
 
   const handleUploadNFT = async () => {
     // file size checking
@@ -136,7 +137,8 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
           title,
           username,
           description,
-          tags
+          tags,
+          isNSFW
         }
 
         await saveUploadFormData(file, metadata)
