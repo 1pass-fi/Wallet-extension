@@ -22,14 +22,16 @@ export default ({
   setTitle,
   setUsername,
   isNSFW,
-  setIsNSFW
+  setIsNSFW,
+  tagInput,
+  setTagInput
 }) => {
   const { setTags, tags, isFriendCodeValid, price, setPrice } = useContext(UploadContext)
   const { file, account, setShowSelectAccount } = useContext(GalleryContext)
-  const [tagInput, setTagInput] = useState('')
 
   const addTag = (e) => {
-    if (e.keyCode === 13) {
+    const { keyCode } = e
+    if (keyCode === 13 || keyCode === 188) {
       let newTags = tagInput.split(',')
       newTags = newTags.map((tag) => trim(tag)).filter((tag) => tag.replace(/\s/g, '').length)
       setTags(union(tags, newTags))
@@ -99,7 +101,7 @@ export default ({
             className='field-input'
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={addTag}
+            onKeyUp={addTag}
           ></input>
         </div>
         <div className='field'>

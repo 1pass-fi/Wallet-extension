@@ -1,7 +1,10 @@
-import React, { useContext, useState, useRef } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import isEmpty from 'lodash/isEmpty'
 import isNumber from 'lodash/isNumber'
+import trim from 'lodash/trim'
+import union from 'lodash/union'
+import get from 'lodash/get'
 
 import { exportNFT, getChromeStorage, saveUploadFormData, setChromeStorage } from 'utils'
 const arweave = Arweave.init({
@@ -24,7 +27,7 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 import { ERROR_MESSAGE, NFT_BIT_DATA } from 'constants/koiConstants'
 import storage from 'services/storage'
 
-export default ({ description, setStage, stage, title, file, username, isNSFW }) => {
+export default ({ description, setStage, stage, title, file, username, isNSFW, tagInput, setTagInput }) => {
   const createNftButtonRef = useRef(null)
   const { setIsLoading, 
     address, 
@@ -40,6 +43,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW })
   } = useContext(GalleryContext)
   const {
     tags,
+    setTags,
     price,
     setTransactionId,
     setCreatedAt,
@@ -48,6 +52,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW })
     setContentType,
   } = useContext(UploadContext)
   const [friendCode, setFriendCode] = useState('')
+  const [clicked, setClicked] = useState(false)
 
   const handleUploadNFT = async () => {
     // file size checking
@@ -110,32 +115,50 @@ export default ({ description, setStage, stage, title, file, username, isNSFW })
     }
   }
 
+  const addTagOnSubmit =  async (tagInput) => {
+    let newTags = tagInput.split(',')
+    newTags = newTags.map((tag) => trim(tag)).filter((tag) => tag.replace(/\s/g, '').length)
+    setTags(union(tags, newTags))
+    setTagInput('')
+  }
+
+  useEffect(() => {
+    const cacheData = async () => {
+      try {            
+  
+        if (file.size > 15 * 1024 ** 2) throw new Error(ERROR_MESSAGE.FILE_TOO_LARGE)
+        /* 
+          Save the current form data to chrome storage
+          delete when transaction is successful
+        */
+        setIsLoading(true)
+        const metadata = {
+          title,
+          username,
+          description,
+          tags
+        }
+
+        await saveUploadFormData(file, metadata)
+  
+        setIsLoading(false)
+        setStage(2)
+      } catch(error) {
+        setIsLoading(false)
+        setError(error.message)
+      }
+    }
+    
+    if (clicked) cacheData()
+  }, [clicked])
+
   if (stage == 1) {
     return (
       <button
         className='create-ntf-button'
-        onClick={async () => {
-          try {            
-            if (file.size > 15 * 1024 ** 2) throw new Error(ERROR_MESSAGE.FILE_TOO_LARGE)
-            /* 
-              Save the current form data to chrome storage
-              delete when transaction is successful
-            */
-            setIsLoading(true)
-            const metadata = {
-              title,
-              username,
-              description,
-              tags
-            }
-            await saveUploadFormData(file, metadata)
-
-            setIsLoading(false)
-            setStage(2)
-          } catch(error) {
-            setIsLoading(false)
-            setError(error.message)
-          } 
+        onClick={() => {
+          addTagOnSubmit(tagInput)
+          setClicked(true)
         }}
         disabled={isEmpty(title) | isEmpty(description)}
       >

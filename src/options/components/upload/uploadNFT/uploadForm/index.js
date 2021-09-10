@@ -46,6 +46,7 @@ export default ({ stage, setStage }) => {
   const [username, setUsername] = useState('')
   const [description, setDescription] = useState('')
   const [isNSFW, setIsNSFW] = useState(false)
+  const [tagInput, setTagInput] = useState('')
 
   const url = useMemo(()=> {
     try {
@@ -175,6 +176,8 @@ export default ({ stage, setStage }) => {
               setDescription={setDescription}
               isNSFW={isNSFW}
               setIsNSFW={setIsNSFW}
+              tagInput={tagInput}
+              setTagInput={setTagInput}
             />
           </div>
           <BottomButton
@@ -185,6 +188,8 @@ export default ({ stage, setStage }) => {
             file={file}
             username={username}
             isNSFW={isNSFW}
+            tagInput={tagInput}
+            setTagInput={setTagInput}
           />
           <div
             className='close-button'
