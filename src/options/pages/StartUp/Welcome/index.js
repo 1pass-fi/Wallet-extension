@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactTooltip from 'react-tooltip'
 
 import UploadIcon from 'img/startup/upload.svg'
 import ImportIcon from 'img/startup/import.svg'
@@ -23,13 +24,13 @@ export default () => {
           </div>
 
           <div className='actions'>
-            <Link to='/create-wallet' className='action'>
+            <Link data-tip='New Key' to='/create-wallet' className='action'>
               <CreateIcon className='icon' />
               <div className='action-title'>Get a new key</div>
               <div className='action-description'>Start from the beginning.</div>
             </Link>
 
-            <Link to='/upload-wallet' className='action'>
+            <Link data-tip='.JSON file' to='/upload-wallet' className='action'>
               <UploadIcon className='icon' />
               <div className='action-title'>Upload a .JSON file</div>
               <div className='action-description'>
@@ -37,7 +38,7 @@ export default () => {
               </div>
             </Link>
 
-            <Link to='/import-wallet' className='action'>
+            <Link data-tip='Seed phrase' to='/import-wallet' className='action'>
               <ImportIcon className='icon' />
               <div className='action-title'>Import with a seed phrase</div>
               <div className='action-description'>
@@ -54,6 +55,7 @@ export default () => {
           </div>
         </div>
       </div>
+      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }
