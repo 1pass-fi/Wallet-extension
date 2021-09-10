@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
+import passworder from 'browser-passworder'
 
 // assets
 import Fish from 'img/koi-logo-bg.svg'
@@ -26,6 +27,9 @@ import { changeAccountName } from 'actions/koi'
 import { NOTIFICATION } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
 
+// services
+import { popupAccount } from 'services/account'
+
 // styles
 import './index.css'
 
@@ -46,14 +50,17 @@ const AccountSettingRow = ({ account, setError, setNotification, changeAccountNa
     setOpenEditModal(false)
   }
 
-  const onRevealSeedPhare = async (password) => {
+  const onRevealSeedPhrase = async (password) => {
     try {
-      const phrase = await decryptSeedPhraseFromChrome(password)
-      if (!phrase) {
+      const _account = await popupAccount.getAccount({ address: account.address })
+      const encryptedSeed = await _account.get.seedPhrase()
+
+      if (!encryptedSeed) {
         setShowRevealModal(false)
         setError('Seed Phrase not found.')
-      } else { 
-        setSeedPhrase(phrase)
+      } else {
+        const decryptedSeed = await passworder.decrypt(password, encryptedSeed)
+        setSeedPhrase(decryptedSeed)
         setShowRevealModal(false)
         setShowSeedPhraseModal(true)
       }
@@ -92,7 +99,7 @@ const AccountSettingRow = ({ account, setError, setNotification, changeAccountNa
         <ReactTooltip place='top' type="dark" effect="float"/>
       </div>
       {openEditModal && <EditAccountNameModal onClose={onClose} onSubmit={changeName}  account={account}/>}
-      {showRevealModal && <RevealSeedPhraseModal onClose={() => {setShowRevealModal(false)}} onReveal={onRevealSeedPhare} />}
+      {showRevealModal && <RevealSeedPhraseModal account={account} onClose={() => {setShowRevealModal(false)}} onReveal={onRevealSeedPhrase} />}
       {showSeedPhraseModal && <SeedPhraseModal onClose={() => {setShowSeedPhraseModal(false)}} seedPhrase={seedPhrase}/>}
     </>
   )

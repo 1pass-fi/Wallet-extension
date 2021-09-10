@@ -16,8 +16,8 @@ import { setError } from 'actions/error'
 // constants
 import { ERROR_MESSAGE, STORAGE } from 'constants/koiConstants'
 
-// utils
-import { getChromeStorage } from 'utils'
+// services
+import { popupAccount } from 'services/account'
 
 // styles
 import './index.css'
@@ -37,7 +37,7 @@ const NoSeedphrase = ({onClose}) => (
   </div>
 )
 
-export const RevealSeedPhraseModal = ({ onReveal, onClose, setError }) => {
+export const RevealSeedPhraseModal = ({ onReveal, onClose, setError, account }) => {
   const [password, setPassword] = useState('')
   const [hasSeedPhrase, setHasSeedPhrase] = useState(true)
 
@@ -55,8 +55,10 @@ export const RevealSeedPhraseModal = ({ onReveal, onClose, setError }) => {
 
   useEffect(() => {
     async function getHasSeedPhrase() {
-      const seedPhrase = (await getChromeStorage(STORAGE.KOI_PHRASE))[STORAGE.KOI_PHRASE]
-      if (!seedPhrase) setHasSeedPhrase(false)
+      const _account = await popupAccount.getAccount({ address: account.address })
+      const encryptedSeed = await _account.get.seedPhrase()
+
+      if (!encryptedSeed) setHasSeedPhrase(false)
     }
 
     getHasSeedPhrase()
