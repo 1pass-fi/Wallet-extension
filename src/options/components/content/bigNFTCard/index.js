@@ -75,9 +75,10 @@ export default ({
     <div className='big-nft-card-wrapper'>
       <div className='big-nft-card'>
         <div className='nft-preview'>
-          {contentType.includes('image') ? (
+          {contentType.includes('image') && (
             <img src={imageUrl} className='nft-img' />
-          ) : (
+          )}
+          {contentType.includes('video') && (
             <video
               width={320}
               height={240}
@@ -87,6 +88,14 @@ export default ({
               autoPlay
             />
           )}
+          {contentType.includes('html') && (
+            <div className='nft-img-iframe'>
+              <div className='iframe-wrapper'>
+                <iframe frameBorder="0" src={imageUrl}/>
+              </div>
+            </div>
+          )}
+
           <div data-tip='Back' onClick={handleGoBack} className='go-back-icon'>
             <GoBackIcon />
           </div>

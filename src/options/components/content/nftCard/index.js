@@ -101,12 +101,13 @@ export default ({
   return choosen !== txId ? (
     <div onClick={showCreateCollection ? addToCollection : () => {}} disabled={disabled} className='nft-card'>
       <Link to={!showCreateCollection ? `/details/${txId}` : '#'}>
-        {contentType.includes('image') ? (
+        {contentType.includes('image') && (
           <div className={selectedCollection ? 'nft-img selected' : 'nft-img'}>
             <img src={imageUrl} />
             {selectedCollection && <div className='nft-img-checked-icon'><CheckIcon /></div>}
           </div>
-        ) : (
+        )}
+        {contentType.includes('video') && (
           <div className={selectedCollection ? 'nft-img selected' : 'nft-img'}><video
             width={200}
             height={200}
@@ -118,7 +119,13 @@ export default ({
           />
           {selectedCollection && <div className='nft-img-checked-icon'><CheckIcon /></div>}
           </div>
-          
+        )}
+        {contentType.includes('html') && (
+          <div className='nft-img-iframe'>
+            <div className='iframe-wrapper'>
+              <iframe frameBorder="0" src={imageUrl} />
+            </div>
+          </div>
         )}
       </Link>
       <div className='nft-name'>{name}</div>

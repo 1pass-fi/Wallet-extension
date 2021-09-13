@@ -33,34 +33,45 @@ export class ArweaveMethod {
 
   async loadMyContent() {
     try {
-      const { data: allContent } = await axios.get(PATH.ALL_CONTENT)
+      const attentionState = await this.koi.getState('attention')
+      const { nfts: allContent } = attentionState
       console.log({ allContent })
-      const myContent = (allContent.filter(content => get(content[Object.keys(content)[0]], 'owner') === this.koi.address)).map(content => Object.keys(content)[0])
-      console.log({ myContent })
+
+      const myContent = allContent[this.koi.address] || []
+      console.log(myContent)
+
       const contentList = (await getChromeStorage(`${this.koi.address}_assets`))[`${this.koi.address}_assets`] || []
       if (myContent.length === contentList.length) return ALL_NFT_LOADED
+
       return Promise.all(myContent.map(async contentId => {
         try {
-          console.log(`${PATH.SINGLE_CONTENT}${contentId}`)
-          const { data: content } = await axios.get(`${PATH.SINGLE_CONTENT}${contentId}`)
+          console.log('ContentId: ', contentId)
+          const content = await this.koi.getNftState(contentId)
           console.log({ content })
+
           if (content.title) {
-            let url = `${PATH.NFT_IMAGE}/${content.txIdContent}`
-            if (content.fileLocation) url = content.fileLocation
-            const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
-            let imageUrl = `data:${content.contentType};base64,${u8}`
-            if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
+            let imageUrl
+            if (content.contentType.includes('html')) {
+              imageUrl = `https://arweave.net/${content.id}`
+            } else {
+              let url = `${PATH.NFT_IMAGE}/${content.id}`
+              if (content.fileLocation) url = content.fileLocation
+              const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
+              imageUrl = `data:${content.contentType};base64,${u8}`
+              if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
+            }
+
             return {
               name: content.title,
               isKoiWallet: content.ticker === 'KOINFT',
-              earnedKoi: content.totalReward,
-              txId: content.txIdContent,
+              earnedKoi: content.reward,
+              txId: content.id,
               imageUrl,
-              galleryUrl: `${PATH.GALLERY}#/details/${content.txIdContent}`,
-              koiRockUrl: `${PATH.KOI_ROCK}/${content.txIdContent}`,
+              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+              koiRockUrl: `${PATH.KOI_ROCK}/${content.id}`,
               isRegistered: true,
               contentType: content.contentType,
-              totalViews: content.totalViews,
+              totalViews: content.attention,
               createdAt: content.createdAt,
               description: content.description,
               type: TYPE.ARWEAVE,
@@ -71,14 +82,14 @@ export class ArweaveMethod {
             return {
               name: '...',
               isKoiWallet: true,
-              earnedKoi: content.totalReward,
-              txId: content.txIdContent,
+              earnedKoi: content.reward,
+              txId: content.id,
               imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
-              galleryUrl: `${PATH.GALLERY}#/details/${content.txIdContent}`,
-              koiRockUrl: `${PATH.KOI_ROCK}/${content.txIdContent}`,
+              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+              koiRockUrl: `${PATH.KOI_ROCK}/${content.id}`,
               isRegistered: true,
               contentType: content.contentType || 'image',
-              totalViews: content.totalViews,
+              totalViews: content.attention,
               createdAt: content.createdAt,
               description: content.description,
               type: TYPE.ARWEAVE,
