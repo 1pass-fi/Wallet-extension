@@ -50,7 +50,7 @@ export default ({
         </div>
         <div className='info'>
           <div className='nft-name'>{name}</div>
-          <div className='export-nft'>
+          {/* <div className='export-nft'>
             <ArweaveIcon className='arweave-icon' />
             Export this NFT to a&nbsp;
             <span
@@ -67,8 +67,8 @@ export default ({
               different chain
             </span>
             .
-          </div>
-          <div className='registered-date'>Registered: {registeredDate}</div>
+          </div> */}
+          {/* <div className='registered-date'>Registered: {registeredDate}</div> */}
           <div className='external-links'>
             <a
               className='external-link-pending'
@@ -77,9 +77,9 @@ export default ({
             >
               transaction pending
             </a>
-            <a className='external-link' href={koiRockUrl} target='_blank'>
+            {/* <a className='external-link' href={koiRockUrl} target='_blank'>
               koi.rocks
-            </a>
+            </a> */}
           </div>
           <div className='description'>{description}</div>
           <div className='tags'>
@@ -95,7 +95,7 @@ export default ({
             </div>
             <div className='koi '>{formatNumber(earnedKoi)} KOI earned</div>
           </div> */}
-          <div className='share-embed'>
+          {/* <div className='share-embed'>
             <button
               className='share-button'
               onClick={() => {
@@ -131,7 +131,7 @@ export default ({
             >
               <EmailIcon className='social-icon' />
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

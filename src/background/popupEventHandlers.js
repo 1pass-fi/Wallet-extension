@@ -656,6 +656,11 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             data: result,
             id: messageId
           })
+          port.postMessage({
+            type: MESSAGES.UPLOAD_NFT_SUCCESS,
+            data: result,
+            id: messageId
+          })
         } catch (err) {
           port.postMessage({
             type: MESSAGES.UPLOAD_NFT,
