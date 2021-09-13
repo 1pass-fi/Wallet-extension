@@ -63,3 +63,7 @@
   align-items: center;
   padding-top: 40px;
 }
+
+.upload-file-form .upload-file .dropzone {
+  margin-top: 15px;
+}
