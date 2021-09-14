@@ -81,7 +81,7 @@ export const AccountInfo = (({
             <div>
               {`${account.address.slice(0, 6)}...${account.address.slice(account.address.length - 4)}`}
             </div>
-            <div onClick={() => setNotification(NOTIFICATION.COPIED)}>
+            <div onClick={() => setNotification(NOTIFICATION.ADDRESS_COPIED)}>
               <CopyToClipboard text={account.address}>
                 <div data-tip='Copy Address' className="icon">
                   <CopyIcon />

@@ -6,7 +6,7 @@ export default () => {
   return (
     <div className='app-content'>
       <div className='lock-Screen'>
-          Please unlock your wallet
+        Unlock Finnie
       </div>
     </div>
   )

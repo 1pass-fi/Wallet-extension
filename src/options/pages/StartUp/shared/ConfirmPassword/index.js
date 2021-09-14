@@ -35,7 +35,7 @@ export default ({ setPassword }) => {
         setValue={setTempPassword}
       />
       {!isEmpty(tempPassword) && !isValid && (
-        <div className="password-error">Password is not strong enough</div>
+        <div className="password-error">That password doesn't meet the requirements, please try again.</div>
       )}
 
       <div className="requirements">
@@ -68,7 +68,7 @@ export default ({ setPassword }) => {
         setValue={setConfirmPassword}
       />
       {!isEmpty(confirmPassword) && !isMatch && (
-        <div className="password-error">Password does not match</div>
+        <div className="password-error">These passwords don't match, try entering them again.</div>
       )}
 
       <div className="term-of-service">

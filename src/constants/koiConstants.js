@@ -273,14 +273,15 @@ export const RATE = {
 }
 
 export const NOTIFICATION = {
-  COPIED: 'Copied to clipboard.',
+  ADDRESS_COPIED: 'Address copied!',
+  SEED_PHRASE_COPIED: 'Seed phrase copied!',
   KEY_EXPORTED: 'Private key downloaded.',
-  ACCOUNT_NAME_UPDATED: 'Account name updated.',
+  ACCOUNT_NAME_UPDATED: 'Account nickname updated.',
   NFT_LOADED: 'Your assets list is up to date.',
   TRANSACTION_SENT: 'Transaction sent.',
   CREATE_COLLECTION_SUCCESS: 'Collection created successfully. It may take a while until you can get your data updated.',
   CREATE_KID_SUCCESS: 'Created KID successfully. It may take a while until you can get your data updated.',
-  UPDATE_KID_SUCCESS: 'Updated KID successfully. It may take a while until you can get your data updated.'
+  UPDATE_KID_SUCCESS: 'kID updated! It may take several minutes before the update is reflected in Finnie.'
 }
 
 export const STATEMENT = {
