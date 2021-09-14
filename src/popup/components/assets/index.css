@@ -1,0 +1,44 @@
+.assets-tab .assets-setting {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  height: 54px;
+  width: 418px;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #237b75;
+  position: relative;
+}
+
+.assets-tab .assets-setting .collapse-extend-icon {
+  width: 13px;
+  height: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 26px;
+  cursor: pointer;
+}
+
+.assets-tab .select-accounts {
+  display: flex;
+  flex-direction: column;
+  padding: 25px 32px;
+  gap: 14px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  user-select: none;
+}
+
+.assets-tab .select-accounts .account {
+  display: flex;
+  flex-direction: row;
+  gap: 26px;
+}
+.assets-tab .select-accounts .account label {
+  cursor: pointer;
+}
