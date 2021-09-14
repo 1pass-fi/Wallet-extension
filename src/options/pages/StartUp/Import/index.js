@@ -161,7 +161,7 @@ export default () => {
                 value={userSeedPhrase}
                 setValue={setUserSeedPhrase}
               />
-              {(userSeedPhrase && !isValidPhrase) && <div className="error-message">Seed Phrase is invalid</div>}
+              {(userSeedPhrase && !isValidPhrase) && <div className="error-message">We don't recognize this recovery phrase. Please try entering it again.</div>}
 
 
                {isEmpty(wallets) ? <div className='confirm-password-wrapper'>

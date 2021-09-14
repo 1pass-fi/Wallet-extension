@@ -28,8 +28,8 @@ const NoSeedphrase = ({onClose}) => (
       Reveal Seed Phrase
     </div>
     <div className='modal-description'> 
-      We cannot find your seed phrase on the storage. 
-      To be able to reveal your seed phrase, you have to import your wallet using your seed phrase.
+      This key does not have a recovery phrase. If you have a recovery phrase for this key, please import it again using the recovery phrase.<br/>
+      Note: recovery phrases must be generated at the same time as the key.
     </div>
     <div className='modal-button-no-seedphrase'>
       <Button label='Got it' type='outline' onClick={onClose} className='modal-action-button close'/>

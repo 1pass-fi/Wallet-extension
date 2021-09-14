@@ -41,7 +41,7 @@ export const SeedPhraseModal = ({ seedPhrase, setNotification, onClose }) => {
         <div className='phrase-display-box'>
           {seedPhrase}
           <CopyToClipboard className='copy-button' text={seedPhrase}>
-            <div onClick={() => setNotification(NOTIFICATION.COPIED)}>
+            <div onClick={() => setNotification(NOTIFICATION.SEED_PHRASE_COPIED)}>
               copy phrase
               <CopyIcon className='copy-icon' />
             </div>
