@@ -54,7 +54,7 @@ export class ArweaveMethod {
       // if (myContent.length === contentList.length) return ALL_NFT_LOADED
       if (!newContents.length) return ALL_NFT_LOADED
 
-      console.log('excute storage new contents...', newContents)
+      console.log('Storage new contents...', newContents)
 
       const newContentList = await Promise.all(newContents.map(async contentId => {
         try {

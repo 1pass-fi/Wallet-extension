@@ -11,7 +11,11 @@ export class AssetRequest extends Request {
    * 
    * @returns {Object} contentList: [{nft}, {nft}]
    */
-  loadContent() {
+  loadContent(body) {
+    return this.promise(MESSAGES.LOAD_CONTENT, body)
+  }
+
+  loadAllContent() {
     return this.promise(MESSAGES.LOAD_CONTENT)
   }
 }

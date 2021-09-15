@@ -79,7 +79,7 @@ const Assets = ({
       // fetch data
       try {
         setContLoading(true)
-        const allNftLoaded = await loadContent()
+        const allNftLoaded = await loadAllContent()
         setContLoading(false)
 
         if (allNftLoaded) setNotification(NOTIFICATION.NFT_LOADED)

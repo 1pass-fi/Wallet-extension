@@ -91,6 +91,7 @@ export default ({ children }) => {
   const [walletLoaded, setWalletLoaded] = useState(false)
 
   const [importedAddress, setImportedAddress] = useState(null)
+  const [newAddress, setNewAddress] = useState(null)
 
   const headerRef = useRef(null)
 
@@ -181,18 +182,19 @@ export default ({ children }) => {
       await popupAccount.loadImported()
       const allData = await popupAccount.getAllMetadata()
       console.log('allData', allData)
-
       const _isLocked = await backgroundRequest.wallet.getLockState()
 
       // All Account: [{ account1, account2 }]
       setWallets(allData)
-      setIsLocked(_isLocked)
       setWalletLoaded(true)
+      if(!isEmpty(allData)){
+        setIsLocked(_isLocked)
+      }
     }
 
     setIsLoading(true)
     loadWallets()
-  }, [file])
+  }, [])
 
   /* 
     Load for activated (default) account.
@@ -217,7 +219,7 @@ export default ({ children }) => {
     }
 
     if (walletLoaded) loadActivatedAccount()
-  }, [walletLoaded, file])
+  }, [walletLoaded])
 
   /* 
     Loads required data for gallery.
@@ -316,7 +318,14 @@ export default ({ children }) => {
   useEffect(() => {
     const loadAssets = async () => {
       try {
-        await backgroundRequest.assets.loadContent()
+        if (newAddress) {
+          console.log('load content', newAddress)
+          await backgroundRequest.assets.loadContent({ address: newAddress })
+        } else {
+          console.log('load contents')
+          await backgroundRequest.assets.loadAllContent()
+        }
+
         const allAssets = await popupAccount.getAllAssets()
         const validAssets = allAssets.filter(asset => asset.name !== '...')
         setCardInfos(validAssets)
@@ -329,9 +338,20 @@ export default ({ children }) => {
       }
     }
 
-    if (!isEmpty(wallets) && !GALLERY_IMPORT_PATH.includes(pathname))
+    if (!isEmpty(wallets) && !GALLERY_IMPORT_PATH.includes(pathname)) {
       loadAssets()
-  }, [account])
+    }
+  }, [wallets])
+
+  useEffect(() => {
+    const loadWallets = async () => {
+      await popupAccount.loadImported()
+      const allData = await popupAccount.getAllMetadata()
+      setWallets(allData)
+    }
+
+    if (newAddress) loadWallets()
+  }, [newAddress])
 
   /* 
     On open create collection form, allAssets list should be set to assets of the 
@@ -461,7 +481,8 @@ export default ({ children }) => {
         wallet,
         wallets,
         importedAddress,
-        setImportedAddress
+        setImportedAddress,
+        setNewAddress
       }}
     >
       {!isEmpty(wallets) ?
@@ -536,12 +557,12 @@ export default ({ children }) => {
         </>
         :
         <>
-          {walletLoaded &&
-            <div>
-              {error && <Message children={error} />}
-              {notification && <Message children={notification} type='notification' />}
-              <StartUp />
-            </div>}
+          {walletLoaded && 
+          <div>
+            {error && <Message children={error} />}
+            {notification && <Message children={notification} type='notification' />}
+            <StartUp />
+          </div>}
         </>
       }
     </GalleryContext.Provider>
