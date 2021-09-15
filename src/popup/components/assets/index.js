@@ -7,6 +7,7 @@ import { loadContent } from 'actions/koi'
 import { setContLoading } from 'actions/continueLoading'
 import { setError } from 'actions/error'
 import { setNotification } from 'popup/actions/notification'
+import { setAssetsTabSettings } from 'popup/actions/assetsSettings'
 
 // constants
 import { NOTIFICATION } from 'constants/koiConstants'
@@ -20,6 +21,9 @@ import ToggleButton from 'shared/ToggleButton'
 import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
 
+// services
+import storage from 'services/storage'
+
 // styles
 import './index.css'
 
@@ -30,12 +34,45 @@ const Assets = ({
   setContLoading,
   setError,
   setNotification,
-  settings,
+  assetsSettings: { showAllAccounts, selectAccountsCollapsed, accountsToShow },
+  setAssetsTabSettings,
 }) => {
-  const [showAllAccounts, setShowAllAccounts] = useState(false)
-  const [selectAccountsCollapsed, setSelectAccountCollapsed] = useState(true)
-  const [accountsToShow, setAccountsToShow] = useState([])
   const [filteredAssets, setFilteredAssets] = useState([])
+
+  const updateSettings = async (settings) => {
+    const newSettings = {
+      showAllAccounts,
+      selectAccountsCollapsed,
+      accountsToShow,
+      ...settings,
+    }
+
+    setAssetsTabSettings(newSettings)
+    await storage.setting.set.assetsTabSettings(newSettings)
+  }
+
+  const setShowAllAccounts = async (_showAllAccounts) => {
+    await updateSettings({ showAllAccounts: _showAllAccounts })
+  }
+
+  const setSelectAccountCollapsed = async (_selectAccountsCollapsed) => {
+    await updateSettings({ selectAccountsCollapsed: _selectAccountsCollapsed })
+  }
+
+  const setAccountsToShow = async (_accountsToShow) => {
+    await updateSettings({ accountsToShow: _accountsToShow })
+  }
+
+  const handleSelectAccount = async (e) => {
+    const selectedAddress = e.target.id
+    if (accountsToShow.includes(selectedAddress)) {
+      await setAccountsToShow(
+        accountsToShow.filter((address) => address !== selectedAddress)
+      )
+    } else {
+      await setAccountsToShow([...accountsToShow, selectedAddress])
+    }
+  }
 
   useEffect(() => {
     const handleLoadContent = async () => {
@@ -67,22 +104,6 @@ const Assets = ({
 
     setFilteredAssets(showAssets)
   }, [accountsToShow, showAllAccounts, assets])
-
-  const handleSelectAccount = (e) => {
-    const selectedAddress = e.target.id
-    if (accountsToShow.includes(selectedAddress)) {
-      setAccountsToShow(
-        accountsToShow.filter((address) => address !== selectedAddress)
-      )
-    } else {
-      setAccountsToShow([...accountsToShow, selectedAddress])
-    }
-  }
-
-  const onAddAsset = () => {
-    const url = chrome.extension.getURL('options.html#/create')
-    chrome.tabs.create({ url })
-  }
 
   return (
     <div className="assets-tab">
@@ -124,7 +145,6 @@ const Assets = ({
           showAccountName={!showAllAccounts}
           owner={asset.owner}
           assets={asset.contents || []}
-          onAddAsset={onAddAsset}
           key={index}
         />
       ))}
@@ -135,6 +155,7 @@ const Assets = ({
 const mapStateToProps = (state) => ({
   assets: state.assets,
   accounts: state.accounts,
+  assetsSettings: state.assetsSettings,
 })
 
 export default connect(mapStateToProps, {
@@ -142,4 +163,5 @@ export default connect(mapStateToProps, {
   setContLoading,
   setError,
   setNotification,
+  setAssetsTabSettings,
 })(Assets)

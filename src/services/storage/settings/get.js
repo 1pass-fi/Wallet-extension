@@ -55,4 +55,8 @@ export class SettingGet {
   async siteAddressDictionary() {
     return await this.#chrome._getChrome(SETTING.SITE_ADDRESS_DICTIONARY) || {}
   }
+
+  async assetsTabSettings() {
+    return await this.#chrome._getChrome(SETTING.ASSETS_TAB_SETTINGS) || {}
+  }
 }
