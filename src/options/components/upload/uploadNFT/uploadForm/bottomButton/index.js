@@ -31,17 +31,18 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
   setClicked, clicked
 }) => {
   const createNftButtonRef = useRef(null)
-  const { setIsLoading, 
-    address, 
-    wallet, 
-    setFile, 
+  const {
+    address,
+    wallet,
+    setFile,
     setNotification,
     setError,
     inviteSpent,
     totalAr,
     totalKoi,
     account,
-    setShowSuccessUploadNFT
+    setIsLoading,
+    setShowUploadingModal
   } = useContext(GalleryContext)
   const {
     tags,
@@ -54,6 +55,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
     setContentType,
   } = useContext(UploadContext)
   const [friendCode, setFriendCode] = useState('')
+  const [isClickEnable, setIsClickEnable] = useState(true)
 
   const handleUploadNFT = async () => {
     // file size checking
@@ -66,7 +68,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
       // get the file type
       const fileType = file.type
       setContentType(file.type)
-      
+
       // get arrayBuffer
       const response = await fetch(url)
       const blob = await response.blob()
@@ -91,8 +93,9 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
         isNSFW
       }
 
+
       // call the request function
-      const { txId, time } = await backgroundRequest.gallery.uploadNFT({content, tags, fileType, address: account.address, price, isNSFW})
+      const { txId, time } = await backgroundRequest.gallery.uploadNFT({ content, tags, fileType, address: account.address, price, isNSFW })
       // console.log('RESPONSE DATA', txId, time)
 
       await storage.generic.set.savedNFTForm({})
@@ -116,7 +119,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
     }
   }
 
-  const addTagOnSubmit =  async (tagInput) => {
+  const addTagOnSubmit = async (tagInput) => {
     let newTags = tagInput.split(',')
     newTags = newTags.map((tag) => trim(tag)).filter((tag) => tag.replace(/\s/g, '').length)
     setTags(union(tags, newTags))
@@ -125,8 +128,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
 
   useEffect(() => {
     const cacheData = async () => {
-      try {            
-  
+      try {
         if (file.size > 15 * 1024 ** 2) throw new Error(ERROR_MESSAGE.FILE_TOO_LARGE)
         /* 
           Save the current form data to chrome storage
@@ -142,15 +144,17 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
         }
 
         await saveUploadFormData(file, metadata)
-  
+
         setIsLoading(false)
+        setIsClickEnable(true)
         setStage(2)
-      } catch(error) {
+      } catch (error) {
         setIsLoading(false)
+        setIsClickEnable(true)
         setError(error.message)
       }
     }
-    
+
     if (clicked) cacheData()
   }, [clicked])
 
@@ -159,10 +163,11 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
       <button
         className='create-ntf-button'
         onClick={() => {
+          setIsClickEnable(false)
           addTagOnSubmit(tagInput)
           setClicked(true)
         }}
-        disabled={isEmpty(title) | isEmpty(description)}
+        disabled={isEmpty(title) || isEmpty(description) || !isClickEnable}
       >
         Create New NFT
       </button>
@@ -176,7 +181,6 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
       if (isNumber(price)) {
         try {
           const koiPrice = isFriendCodeValid ? 0 : 1
-
           if (totalKoi < koiPrice) {
             setError(ERROR_MESSAGE.NOT_ENOUGH_KOI)
             return
@@ -188,12 +192,14 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
           }
 
           createNftButtonRef.current.disabled = true
-          const { txId, time } = await handleUploadNFT()
+          setShowUploadingModal(true)
+          setIsLoading(true)
+          const { txId, time } = handleUploadNFT()
           // const { txId, time } = await mockUploadNFT()
           setTransactionId(txId)
           setCreatedAt(time)
           setStage(3)
-          setShowSuccessUploadNFT(true)
+          setIsClickEnable(true)
         } catch (err) {
           setError(err.message)
         }
@@ -208,7 +214,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
         if (wallet) {
           koi.wallet = wallet
           koi.address = address
-  
+
           const { status, message } = await submitInviteCode(koi, friendCode)
           // const { status, message } = { status: 201, message: 'mock message' }
           if (status === 201) {
@@ -223,7 +229,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
                 setError(message)
             }
           }
-          
+
         }
       } catch (err) {
         setError(err.message)
@@ -238,7 +244,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
           <div className='friends-referal'>
             <div className='referal-title'>Friend Referral Code</div>
             <div className='referal-description'>
-            Skip the KOII cost with a referral code
+              Skip the KOII cost with a referral code
             </div>
             {isFriendCodeValid ? (
               <div className='success-noti'>Success!</div>
@@ -253,7 +259,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
                   className='submit-friend-code-button'
                   onClick={checkFriendCode}
                 >
-                Submit
+                  Submit
                 </div>
               </div>
             )}
@@ -262,7 +268,12 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
         <button
           ref={createNftButtonRef}
           className='create-ntf-button stage2'
-          onClick={handleUploadStage2}
+          onClick={() => {
+            setIsClickEnable(false)
+            handleUploadStage2()
+          }
+          }
+          disabled={!isClickEnable}
         >
           Confirm Registration
         </button>

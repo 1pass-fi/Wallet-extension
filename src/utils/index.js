@@ -6,7 +6,8 @@ import {
   NFT_BIT_DATA, 
   ALL_NFT_LOADED,
   ETH_NETWORK_NAME,
-  ETH_NETWORK_PROVIDER
+  ETH_NETWORK_PROVIDER,
+  ATTENTION_CONTRACT
 } from 'constants/koiConstants'
 import passworder from 'browser-passworder'
 import moment from 'moment'
@@ -469,34 +470,20 @@ export const getImageDataForNFT = async (fileType) => {
 }
 
 export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
-  const bundlerUrl = 'https://devbundler.openkoi.com:8888'
   try {
-    const { u8, file } = await getImageDataForNFT(fileType)
-
-    let metadata = {
-      owner: koi.address,
-      name: 'koi nft',
-      description: 'first koi nft',
-      ticker: 'KOINFT'
-    }
-
-    metadata.title = content.title
-    metadata.name = content.owner
-    metadata.description = content.description
-    metadata.owner = koi.address
-    metadata.ticker = 'KOINFT'
+    const { u8 } = await getImageDataForNFT(fileType)
 
     const balances = {}
-    balances[metadata.owner] = 1
+    balances[koi.address] = 1
 
     let d = new Date()
     let createdAt = Math.floor(d.getTime()/1000).toString()
     const initialState = {
-      'owner': metadata.owner,
-      'title': metadata.title,
-      'name': metadata.name,
-      'description': metadata.description,
-      'ticker': metadata.ticker,
+      'owner': koi.address,
+      'title': content.title,
+      'name': content.name,
+      'description': content.description,
+      'ticker': 'KOINFT',
       'balances': balances,
       'contentType': fileType,
       'createdAt': createdAt,
@@ -543,27 +530,15 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
       )
     }
 
-    try {
-      initialState.tx = tx
-      initialState.registerDataParams = { id : tx.id, ownerAddress: koi.address }
-      const formData  = new FormData()
-      formData.append('file', file)
-      formData.append('data', JSON.stringify(initialState))
-      const rawResponse = await fetch(`${bundlerUrl}/handleNFTUpload`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: formData
-      })
-      const response = await rawResponse.json()
-      let resTx = await koi.registerData(tx.id, koi.address, koi.wallet, arweave)
-      console.log('Transaction id', tx.id)
-      return { txId: tx.id, time: createdAt }
-    } catch(err) {
-      console.log('err-@_koi/sdk', err)
-      throw new Error('Upload failed.')
-    }
+    console.log('BURN KOII', await koi.burnKoi(
+      ATTENTION_CONTRACT,
+      'nft',
+      tx.id
+    ))
+    
+    console.log('MIGRATE', await koi.migrate(ATTENTION_CONTRACT))
+    return { txId: tx.id, time: createdAt }
+
   } catch(err) {
     console.log(err.message)
     throw new Error(err.message)

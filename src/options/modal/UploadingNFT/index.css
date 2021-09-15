@@ -1,0 +1,20 @@
+.pending-upload-modal {
+  display: flex;
+  align-items: center;
+  width: 187px;
+  height: 100%;
+  color: #ffffff;
+  text-align: center;
+}
+
+.pending-upload-modal .title {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+}
+
+.pending-upload-modal .description {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}

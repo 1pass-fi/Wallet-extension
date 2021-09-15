@@ -19,6 +19,8 @@ import Header from 'options/components/header'
 import Navbar from 'options/components/navbar'
 import Message from 'options/components/message'
 import LockScreen from 'options/components/lockScreen'
+import Loading from 'options/components/loading'
+import Uploaded from 'options/components/uploaded'
 
 import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
@@ -26,6 +28,8 @@ import { TYPE } from 'constants/accountConstants'
 import ShareNFT from 'options/modal/shareNFT'
 import ExportNFT from 'options/modal/exportNFT'
 import Welcome from 'options/modal/welcomeScreen'
+import UploadingNFT from 'options/modal/UploadingNFT'
+import SuccessUploadNFT from 'options/modal/SuccessUploadNFT'
 
 import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
@@ -35,7 +39,6 @@ import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect } f
 
 import { popupAccount } from 'services/account'
 import SelectAccountModal from 'options/modal/SelectAccountModal'
-import SuccessUploadNFT from 'options/modal/SuccessUploadModal'
 
 import { EventHandler } from 'services/request/src/backgroundConnect'
 
@@ -72,6 +75,10 @@ export default ({ children }) => {
   const [isLocked, setIsLocked] = useState(false)
   const [needUpdateWallet, setNeedUpdateWallet] = useState(true)
 
+  const [showUploadingModal, setShowUploadingModal] = useState(false)
+  const [showSuccessUploadModal, setShowSuccessUploadModal] = useState(false)
+  const [showUploadedIcon, setShowUploadedIcon] = useState(false)
+
   const [demoCollections, setDemoCollections] = useState([])
   const [collections, setCollections] = useState([])
   const [showShareModal, setShowShareModal] = useState({
@@ -81,7 +88,6 @@ export default ({ children }) => {
   const [showExportModal, setShowExportModal] = useState({})
   const [showWelcome, setShowWelcome] = useState(false)
   const [showSelectAccount, setShowSelectAccount] = useState(false)
-  const [showSuccessUploadNFT, setShowSuccessUploadNFT] = useState(false)
   const [walletLoaded, setWalletLoaded] = useState(false)
 
   const [importedAddress, setImportedAddress] = useState(null)
@@ -93,6 +99,46 @@ export default ({ children }) => {
     accept: ['image/*', 'video/*', 'audio/*'],
     noClick: true,
   })
+
+  useEffect(() => {
+    if (showUploadedIcon) {
+      const timer = setTimeout(() => setShowUploadedIcon(false), 6000)
+      return () => clearTimeout(timer)
+    }
+  }, [showUploadedIcon])
+
+  useEffect(() => {
+    if (showSuccessUploadModal) {
+      const timer = setTimeout(() => setShowSuccessUploadModal(false), 6000)
+      return () => clearTimeout(timer)
+    }
+  }, [showSuccessUploadModal])
+
+
+  /*
+    Add event handler for Upload NFT success
+  */
+  useEffect(() => {
+    const uploadNFTHandler = new EventHandler(
+      MESSAGES.UPLOAD_NFT_SUCCESS,
+      async () => {
+        try {
+          // const pendingNFTs = (await getChromeStorage(STORAGE.PENDING_ASSETS))[STORAGE.PENDING_ASSETS] || []
+          // const contentList = (await getChromeStorage(STORAGE.CONTENT_LIST))[STORAGE.CONTENT_LIST] || []
+          // setCardInfos([...contentList, ...pendingNFTs])
+
+          setIsLoading(false)
+          setShowUploadingModal(false)
+          setShowUploadedIcon(true)
+          setShowSuccessUploadModal(true)
+        } catch (err) {
+          console.log('error: ', err)
+        }
+      }
+    )
+
+    popupBackgroundConnect.addHandler(uploadNFTHandler)
+  }, [])
 
   /* 
     Add event handler for Get balances
@@ -165,7 +211,7 @@ export default ({ children }) => {
         })
         activatedAccount = await activatedAccount.get.metadata()
         setAccount(activatedAccount)
-      } catch (err) { 
+      } catch (err) {
         console.log(err.message)
       }
     }
@@ -399,7 +445,7 @@ export default ({ children }) => {
         setShowExportModal,
         setShowSelectAccount,
         setShowShareModal,
-        setShowSuccessUploadNFT,
+        setShowUploadingModal,
         setShowViews,
         setShowWelcome,
         setStage,
@@ -418,87 +464,84 @@ export default ({ children }) => {
         setImportedAddress
       }}
     >
-      {!isEmpty(wallets) ? 
-       <>
-        {!isLocked ? <div
-          {...getRootProps({ className: 'app dropzone' })}
-          onDragOver={() => modifyDraging(true)}
-          onDragLeave={() => modifyDraging(false)}
-          onClick={(e) => {
-            if (e.target.className === 'modal-container') {
-              setShowShareModal(false)
-              setShowExportModal(false)
-              setShowWelcome(false)
-            }
-          }}
-        >
-          {error && <Message children={error}/>}
-          {notification && <Message children={notification} type='notification'/> }
-          {showShareModal.show && (
-            <ShareNFT
-              txid={showShareModal.txid}
-              onClose={() => {
-                setShowShareModal({ ...showShareModal, show: false })
-              }}
-            />
-          )}
-          {!isEmpty(showExportModal) && (
-            <ExportNFT
-              info={showExportModal}
-              onClose={() => {
-                setShowExportModal(false)
-              }}
-            />
-          )}
-          {showWelcome && (
-            <Welcome 
-              onClose={() => {
-                setShowWelcome(false)
-              }}
-            />
-          )
-          }
-          {showSelectAccount && (
-            <SelectAccountModal 
-              onClose={() => {
-                setShowSelectAccount(false)
-              }}
-            />
-          )
-          }
-          {showSuccessUploadNFT && (
-            <SuccessUploadNFT 
-              onClose={() => {
-                setShowSuccessUploadNFT(false)
-              }}
-            />
-          )
-          }
-          {isDragging && isEmpty(file) && (
-            <input name='fileField' {...getInputProps()} />
-          )}
-
-          {!GALLERY_IMPORT_PATH.includes(pathname) && <Header 
-            totalKoi={totalKoi} 
-            totalAr={totalAr} 
-            headerRef={headerRef} 
-            isLoading={isLoading} 
-            isWaitingAddNFT={isWaitingAddNFT}
-            setIsWaitingAddNFT={setIsWaitingAddNFT}
-          />}
-          {children}
-          {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer showDropzone={showDropzone} />}
-          {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />}
-        </div> : <LockScreen />}
-        </> 
-        : 
+      {!isEmpty(wallets) ?
         <>
-          {walletLoaded && 
-          <div>
-            {error && <Message children={error}/>}
-            {notification && <Message children={notification} type='notification'/> }
-            <StartUp />
-          </div>}
+          {!isLocked ? <div
+            {...getRootProps({ className: 'app dropzone' })}
+            onDragOver={() => modifyDraging(true)}
+            onDragLeave={() => modifyDraging(false)}
+            onClick={(e) => {
+              if (e.target.className === 'modal-container') {
+                setShowShareModal(false)
+                setShowExportModal(false)
+                setShowWelcome(false)
+              }
+            }}
+          >
+            {error && <Message children={error} />}
+            {notification && <Message children={notification} type='notification' />}
+            {showShareModal.show && (
+              <ShareNFT
+                txid={showShareModal.txid}
+                onClose={() => {
+                  setShowShareModal({ ...showShareModal, show: false })
+                }}
+              />
+            )}
+            {!isEmpty(showExportModal) && (
+              <ExportNFT
+                info={showExportModal}
+                onClose={() => {
+                  setShowExportModal(false)
+                }}
+              />
+            )}
+
+            {showUploadingModal && <UploadingNFT />}
+            {showSuccessUploadModal && <SuccessUploadNFT />}
+            {showUploadedIcon && <Uploaded />}
+
+            {showWelcome && (
+              <Welcome
+                onClose={() => {
+                  setShowWelcome(false)
+                }}
+              />
+            )
+            }
+            {showSelectAccount && (
+              <SelectAccountModal
+                onClose={() => {
+                  setShowSelectAccount(false)
+                }}
+              />
+            )
+            }
+            {isDragging && isEmpty(file) && (
+              <input name='fileField' {...getInputProps()} />
+            )}
+
+            {!GALLERY_IMPORT_PATH.includes(pathname) && <Header
+              totalKoi={totalKoi}
+              totalAr={totalAr}
+              headerRef={headerRef}
+              isLoading={isLoading}
+              isWaitingAddNFT={isWaitingAddNFT}
+              setIsWaitingAddNFT={setIsWaitingAddNFT}
+            />}
+            {children}
+            {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer showDropzone={showDropzone} />}
+            {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />}
+          </div> : <LockScreen />}
+        </>
+        :
+        <>
+          {walletLoaded &&
+            <div>
+              {error && <Message children={error} />}
+              {notification && <Message children={notification} type='notification' />}
+              <StartUp />
+            </div>}
         </>
       }
     </GalleryContext.Provider>

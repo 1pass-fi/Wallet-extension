@@ -214,11 +214,10 @@ export default ({ stage, setStage }) => {
         <div className='success-screen'>
           <div className='message'>
             <div className='title'>
-              Congratulations! Your NFT is ready for action{' '}
+              Congratulations! Your NFT is on its way.{' '}
             </div>
             <div className='description'>
-              Share your newly minted media with everyone you know to start
-              earning attention rewards.
+              Your NFT is in the process to be stored forever! Check back soon to share it and start earning attention rewards.
             </div>
             <div className='btns'>
               <button onClick={handleRegisterMore} className='btn'>
