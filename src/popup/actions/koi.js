@@ -136,19 +136,24 @@ export const saveWallet = (seedPhrase, password, walletType) => async (dispatch)
 
 export const loadContent = () => async (dispatch) => {
   try {
-    await backgroundRequest.assets.loadContent()
-
-    const allAssets = []
-
-    // update state
     const allAccounts = await popupAccount.getAllAccounts()
-    await Promise.all(allAccounts.map(async (account) => {
+    let allAssets = []
+    
+    allAssets = await Promise.all(allAccounts.map(async (account) => {
       const assets = await account.get.assets() || []
       const address = await account.get.address()
 
-      const accountAssets = { owner: address, contents: assets }
+      return { owner: address, contents: assets }
+    }))
+    dispatch(setAssets(allAssets))
 
-      allAssets.push(accountAssets)
+    await backgroundRequest.assets.loadContent()
+    // update state
+    allAssets = await Promise.all(allAccounts.map(async (account) => {
+      const assets = await account.get.assets() || []
+      const address = await account.get.address()
+
+      return { owner: address, contents: assets }
     }))
     dispatch(setAssets(allAssets))
   } catch (err) {

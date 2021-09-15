@@ -7,8 +7,6 @@ import AssetRow from '../AssetRow'
 
 // assets
 import PlusIcon from 'img/plus-icon.svg'
-import CollapseIcon from 'img/collapse-icon.svg'
-import ExtendIcon from 'img/extend-icon.svg'
 
 // services
 import { popupAccount } from 'services/account'
@@ -18,13 +16,10 @@ import './index.css'
 
 const propTypes = {
   assets: PropTypes.array,
-  onAddAsset: PropTypes.func,
 }
 
-
-const AssetList = ({ owner, assets, onAddAsset }) => {
+const AssetList = ({ showAccountName, owner, assets }) => {
   const [ownerName, setOwnerName] = useState(null)
-  const [collapsed, setCollapsed] = useState(false)
 
   useEffect(() => {
     const getOwnerName = async () => {
@@ -36,21 +31,14 @@ const AssetList = ({ owner, assets, onAddAsset }) => {
     }
 
     getOwnerName()
-  }, [])
+  }, [owner])
 
   return (
-    <div className={collapsed ? 'assets collapsed' : 'assets'}>
-      <div className="owner">
-        {ownerName}
-        {!collapsed && <div onClick={() => setCollapsed(!collapsed)} className="collapse-icon"><CollapseIcon /></div>}
-        {collapsed && <div onClick={() => setCollapsed(!collapsed)} className="collapse-icon"><ExtendIcon /></div>}
-      </div>
-      {assets.map((asset, index) => <AssetRow key={index} {...asset} isGrey={index % 2 === 0} />)}
-      <div className="assets-add-more-row">
-        <div onClick={onAddAsset} className="assets-plus-icon">
-          <PlusIcon />
-        </div>
-      </div>
+    <div className={'assets'}>
+      {showAccountName && <div className="owner">{ownerName}</div>}
+      {assets.map((asset, index) => (
+        <AssetRow key={index} {...asset} isGrey={index % 2 !== 0} />
+      ))}
     </div>
   )
 }

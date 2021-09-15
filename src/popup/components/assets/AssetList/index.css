@@ -18,10 +18,6 @@
   overflow-y: hidden;
 }
 
-.assets.collapsed {
-  height: 52px;
-}
-
 .assets .owner {
   width: 380px;
   height: 52px;
@@ -36,16 +32,4 @@
   position: relative;
   justify-content: space-between;
   padding-right: 23px;
-}
-
-.assets .owner .collapse-icon {
-  width: 20px;
-  height: 20px;
-  color: white;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  border-radius: 5px;
-  cursor: pointer;
-  padding: 3px;
 }

@@ -60,4 +60,8 @@ export class SettingSet {
   siteAddressDictionary(value) {
     return this.#chrome._setChrome(SETTING.SITE_ADDRESS_DICTIONARY, value)
   }
+
+  assetsTabSettings(value) {
+    return this.#chrome._setChrome(SETTING.ASSETS_TAB_SETTINGS, value)
+  }
 }

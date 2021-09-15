@@ -1,85 +1,167 @@
 // modules
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { connect } from 'react-redux'
 
 // actions
 import { loadContent } from 'actions/koi'
-import { setAssets } from 'actions/assets'
 import { setContLoading } from 'actions/continueLoading'
 import { setError } from 'actions/error'
 import { setNotification } from 'popup/actions/notification'
+import { setAssetsTabSettings } from 'popup/actions/assetsSettings'
 
 // constants
 import { NOTIFICATION } from 'constants/koiConstants'
 
 // components
 import AssetList from './AssetList'
+import CheckBox from 'shared/checkbox'
+import ToggleButton from 'shared/ToggleButton'
+
+// assets
+import CollapseIcon from 'img/collapse-icon.svg'
+import ExtendIcon from 'img/extend-icon.svg'
 
 // services
-import { popupAccount } from 'services/account'
+import storage from 'services/storage'
 
+// styles
+import './index.css'
 
-const Assets = ({ 
-  assets, 
-  setAssets, 
-  loadContent, 
-  isContLoading, 
-  setContLoading, 
-  setError, 
-  setNotification }) => {
+const Assets = ({
+  accounts,
+  assets,
+  loadContent,
+  setContLoading,
+  setError,
+  setNotification,
+  assetsSettings: { showAllAccounts, selectAccountsCollapsed, accountsToShow },
+  setAssetsTabSettings,
+}) => {
+  const [filteredAssets, setFilteredAssets] = useState([])
+
+  const updateSettings = async (settings) => {
+    const newSettings = {
+      showAllAccounts,
+      selectAccountsCollapsed,
+      accountsToShow,
+      ...settings,
+    }
+
+    setAssetsTabSettings(newSettings)
+    await storage.setting.set.assetsTabSettings(newSettings)
+  }
+
+  const setShowAllAccounts = async (_showAllAccounts) => {
+    await updateSettings({ showAllAccounts: _showAllAccounts })
+  }
+
+  const setSelectAccountCollapsed = async (_selectAccountsCollapsed) => {
+    await updateSettings({ selectAccountsCollapsed: _selectAccountsCollapsed })
+  }
+
+  const setAccountsToShow = async (_accountsToShow) => {
+    await updateSettings({ accountsToShow: _accountsToShow })
+  }
+
+  const handleSelectAccount = async (e) => {
+    const selectedAddress = e.target.id
+    if (accountsToShow.includes(selectedAddress)) {
+      await setAccountsToShow(
+        accountsToShow.filter((address) => address !== selectedAddress)
+      )
+    } else {
+      await setAccountsToShow([...accountsToShow, selectedAddress])
+    }
+  }
 
   useEffect(() => {
-    async function handleLoadContent() {
-      // load from local storage
-      const allAccounts = await popupAccount.getAllAccounts()
-      const allAssets = []
-
-      await Promise.all(allAccounts.map(async account => {
-        const assets = await account.get.assets() || []
-        const address = await account.get.address()
-
-        const accountAssets = { owner: address, contents: assets }
-        allAssets.push(accountAssets)
-      }))
-
-      setAssets(allAssets)
-      
-
+    const handleLoadContent = async () => {
       // fetch data
-      if (!isContLoading) {
-        try {
-          setContLoading(true)
-          const allNftLoaded = await loadContent()
-          setContLoading(false)
+      try {
+        setContLoading(true)
+        const allNftLoaded = await loadContent()
+        setContLoading(false)
 
-          if (allNftLoaded) setNotification(NOTIFICATION.NFT_LOADED)
-        } catch (err) {
-          setContLoading(false)
-          setError(err.message)
-        }
+        if (allNftLoaded) setNotification(NOTIFICATION.NFT_LOADED)
+      } catch (err) {
+        setContLoading(false)
+        setError(err.message)
       }
     }
+
     handleLoadContent()
   }, [])
 
-  const onAddAsset = () => {
-    const url = chrome.extension.getURL('options.html#/create')
-    chrome.tabs.create({ url })
-  }
+  useEffect(() => {
+    let showAssets = []
+    if (showAllAccounts) {
+      showAssets = assets
+    } else {
+      showAssets = assets.filter((asset) =>
+        accountsToShow.includes(asset.owner)
+      )
+    }
+
+    setFilteredAssets(showAssets)
+  }, [accountsToShow, showAllAccounts, assets])
+
   return (
-    <div>
-      {
-        assets.map((asset, index) => <AssetList 
-          owner={asset.owner} 
-          assets={asset.contents || []} 
-          onAddAsset={onAddAsset} 
+    <div className="assets-tab">
+      <div className="assets-setting">
+        All Accounts
+        <ToggleButton value={!showAllAccounts} setValue={setShowAllAccounts} />
+        Individual
+        {!showAllAccounts && (
+          <div
+            onClick={() => setSelectAccountCollapsed(!selectAccountsCollapsed)}
+            className="collapse-extend-icon"
+          >
+            {selectAccountsCollapsed ? (
+              <ExtendIcon data-tip="Expand" />
+            ) : (
+              <CollapseIcon data-tip="Collapse" />
+            )}
+          </div>
+        )}
+      </div>
+
+      {!showAllAccounts && !selectAccountsCollapsed && (
+        <div className="select-accounts">
+          {accounts.map((account) => (
+            <div key={account.address} className="account">
+              <CheckBox
+                id={account.address}
+                onChange={handleSelectAccount}
+                defaultChecked={accountsToShow.includes(account.address)}
+              />
+              <label htmlFor={account.address}>{account.accountName}</label>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {filteredAssets.map((asset, index) => (
+        <AssetList
+          showAccountName={!showAllAccounts}
+          owner={asset.owner}
+          assets={asset.contents || []}
           key={index}
-        />)
-      }
+        />
+      ))}
     </div>
   )
 }
 
-const mapStateToProps = (state) => ({ assets: state.assets, isContLoading: state.contLoading })
+const mapStateToProps = (state) => ({
+  assets: state.assets,
+  accounts: state.accounts,
+  assetsSettings: state.assetsSettings,
+})
 
-export default connect(mapStateToProps, { loadContent, setAssets, setContLoading, setError, setNotification })(Assets)
+export default connect(mapStateToProps, {
+  loadContent,
+  setContLoading,
+  setError,
+  setNotification,
+  setAssetsTabSettings,
+})(Assets)

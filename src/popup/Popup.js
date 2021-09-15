@@ -27,6 +27,7 @@ import { setAccounts } from 'actions/accounts'
 import { setActivityNotifications } from 'actions/activityNotification'
 import { setSettings } from 'actions/settings'
 import { setActivities } from 'actions/activities'
+import { setAssetsTabSettings } from 'actions/assetsSettings'
 
 // assets
 import continueLoadingIcon from 'img/continue-load.gif'
@@ -78,7 +79,8 @@ const Popup = ({
   setActivityNotifications,
   setSettings,
   activities,
-  setActivities
+  setActivities,
+  setAssetsTabSettings
 }) => {
   const history = useHistory()
 
@@ -208,6 +210,16 @@ const Popup = ({
     }
   }
 
+  const loadAssetsTabSettings = async () => {
+    try {
+      const assetsTabSettings = await storage.setting.get.assetsTabSettings()
+
+      setAssetsTabSettings(assetsTabSettings)
+    } catch (error) {
+      setError(error.message)
+    }
+  }
+
   const loadActivitiesBoilerplate = async () => {
     const activitiesPayloads = []
     const _accounts = await popupAccount.getAllMetadata() || []
@@ -223,6 +235,7 @@ const Popup = ({
       await loadPrice()
       await loadSettings()
       await loadActivitiesBoilerplate()
+      await loadAssetsTabSettings()
       setAppLoaded(true)
     }
 
@@ -303,7 +316,8 @@ const mapDispatchToProps = {
   setAccounts,
   setActivityNotifications,
   setSettings,
-  setActivities
+  setActivities,
+  setAssetsTabSettings
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Popup))
