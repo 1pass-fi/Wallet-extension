@@ -37,13 +37,26 @@ export class ArweaveMethod {
       const { nfts: allContent } = attentionState
       console.log({ allContent })
 
+      // get nft list for this koi address
       const myContent = allContent[this.koi.address] || []
-      console.log(myContent)
+      console.log({myContent})
 
+      // get nft list for this koi address from Chrome storage
       const contentList = (await getChromeStorage(`${this.koi.address}_assets`))[`${this.koi.address}_assets`] || []
-      if (myContent.length === contentList.length) return ALL_NFT_LOADED
+      console.log({contentList})
 
-      return Promise.all(myContent.map(async contentId => {
+      // detect new nft(s) that were not saved in Chrome storage
+      const storageContents = contentList.map(nft => nft.txId)
+      const newContents = myContent.filter((nftId) => {
+        return storageContents.indexOf(nftId) === -1
+      })
+
+      // if (myContent.length === contentList.length) return ALL_NFT_LOADED
+      if (!newContents.length) return ALL_NFT_LOADED
+
+      console.log('excute storage new contents...', newContents)
+
+      const newContentList = await Promise.all(newContents.map(async contentId => {
         try {
           console.log('ContentId: ', contentId)
           const content = await this.koi.getNftState(contentId)
@@ -105,6 +118,8 @@ export class ArweaveMethod {
         }
   
       }))
+
+      return [...contentList, ...newContentList]
     } catch (err) {
       throw new Error(err.message)
     }
