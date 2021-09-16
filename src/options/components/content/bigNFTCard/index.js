@@ -158,12 +158,12 @@ export default ({
             </button>
             {isCopied && <div className='copy-noti'>Link copied!</div>}
             <CopyToClipboard text={embed}>
-              <button onClick={onCopy} className='embed-button'>
+              <button onClick={onCopy} className='embed-button' disabled={!txId}>
                 Embed
               </button>
             </CopyToClipboard>
           </div>}
-          {!pending && <div className='social-icons'>
+          {!pending && txId && <div className='social-icons'>
             <TwitterIcon
               onClick={() => {
                 createShareWindow('twitter', txId)
