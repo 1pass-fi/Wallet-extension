@@ -147,7 +147,7 @@ export const loadContent = () => async (dispatch) => {
     }))
     dispatch(setAssets(allAssets))
 
-    await backgroundRequest.assets.loadContent()
+    await backgroundRequest.assets.loadAllContent()
     // update state
     allAssets = await Promise.all(allAccounts.map(async (account) => {
       const assets = await account.get.assets() || []

@@ -16,6 +16,7 @@ export default () => {
   const history = useHistory()
 
   const nextStep = () => {
+    console.log('step', step)
     setStep(step + 1)
   }
 

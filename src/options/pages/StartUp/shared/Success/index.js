@@ -8,7 +8,7 @@ import { GalleryContext } from 'options/galleryContext'
 import './index.css'
 
 export default () => {
-  const { file, setFile } = useContext(GalleryContext)
+  const { file, importedAddress, setNewAddress, setFile } = useContext(GalleryContext)
 
   const openFaucet = () => {
     chrome.tabs.create({ url: 'https://koi.rocks/faucet' })
@@ -21,6 +21,12 @@ export default () => {
     chrome.tabs.create({ url })
     window.close()
   }
+
+  useEffect(() => {
+    return () => {
+      setNewAddress(importedAddress)
+    }
+  }, [])
 
   return (
     <div className='success-page'>

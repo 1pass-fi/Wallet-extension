@@ -972,7 +972,7 @@ describe('Tests for actions/koi', () => {
   })
 
 
-  describe('Tests for loadContent()', () => {
+  describe('Tests for loadAllContent()', () => {
     let inputData, history
 
     beforeEach(() => {
@@ -982,7 +982,7 @@ describe('Tests for actions/koi', () => {
       history = { push }
 
       let dispatch = store.dispatch
-      loadContent()(dispatch)
+      loadAllContent()(dispatch)
     })
 
     describe('background loadContent success', () => {

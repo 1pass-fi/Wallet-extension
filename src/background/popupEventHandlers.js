@@ -357,7 +357,18 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           /* 
             Load assets of all accounts then 
           */
-          const allAccounts = await backgroundAccount.getAllAccounts()
+          let allAccounts
+          const { address } = message.data
+          if (address) {
+            const credentials = await backgroundAccount.getCredentialByAddress(address)
+            const account = await backgroundAccount.getAccount(credentials)
+            allAccounts = [account]
+          } else {
+            allAccounts = await backgroundAccount.getAllAccounts()
+          }
+
+          console.log('load content for account(s): ', allAccounts)
+
 
           await Promise.all(allAccounts.map(async account => {
             let contentList = await account.method.loadMyContent()
