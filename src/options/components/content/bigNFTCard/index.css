@@ -185,6 +185,10 @@
   width: 103px;
 }
 
+.big-nft-card .info .share-embed .embed-button:disabled {
+  cursor: not-allowed;
+} 
+
 .big-nft-card .info .social-icons {
   display: flex;
   flex-direction: row;
