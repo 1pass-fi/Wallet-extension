@@ -1,3 +1,5 @@
+export const IS_SHOW_ETHEREUM = false
+
 export const LOAD_KOI_BY = {
   ADDRESS: 'address',
   KEY: 'key',
