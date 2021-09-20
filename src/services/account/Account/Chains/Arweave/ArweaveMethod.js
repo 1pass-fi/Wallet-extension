@@ -3,7 +3,7 @@
   Load activities, assets,...
 */
 
-import {PATH, ALL_NFT_LOADED, ERROR_MESSAGE } from 'constants/koiConstants'
+import { PATH, ALL_NFT_LOADED, ERROR_MESSAGE } from 'constants/koiConstants'
 import { getChromeStorage } from 'utils'
 import { get, isNumber, isArray, orderBy } from 'lodash'
 import moment from 'moment'
@@ -37,21 +37,20 @@ export class ArweaveMethod {
       const { nfts: allContent } = attentionState
       console.log({ allContent })
 
-      // get nft list for this koi address
+      // get nft id list for this koi address
       const myContent = allContent[this.koi.address] || []
-      console.log({myContent})
+      console.log({ myContent })
 
       // get nft list for this koi address from Chrome storage
       const contentList = (await getChromeStorage(`${this.koi.address}_assets`))[`${this.koi.address}_assets`] || []
-      console.log({contentList})
+      console.log({ contentList })
 
       // detect new nft(s) that were not saved in Chrome storage
-      const storageContents = contentList.map(nft => nft.txId)
+      const storageContentIds = contentList.map(nft => nft.txId)
       const newContents = myContent.filter((nftId) => {
-        return storageContents.indexOf(nftId) === -1
+        return storageContentIds.indexOf(nftId) === -1
       })
 
-      // if (myContent.length === contentList.length) return ALL_NFT_LOADED
       if (!newContents.length) return ALL_NFT_LOADED
 
       console.log('Storage new contents...', newContents)
@@ -63,17 +62,7 @@ export class ArweaveMethod {
           console.log({ content })
 
           if (content.title) {
-            let imageUrl
-            if (content.contentType.includes('html')) {
-              imageUrl = `https://arweave.net/${content.id}`
-            } else {
-              let url = `${PATH.NFT_IMAGE}/${content.id}`
-              if (content.fileLocation) url = content.fileLocation
-              const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
-              imageUrl = `data:${content.contentType};base64,${u8}`
-              if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
-            }
-
+            const imageUrl = `${PATH.NFT_IMAGE}/${content.id}`
             return {
               name: content.title,
               isKoiWallet: content.ticker === 'KOINFT',
@@ -90,7 +79,7 @@ export class ArweaveMethod {
               type: TYPE.ARWEAVE,
               address: this.koi.address
             }
-          } else {  
+          } else {
             console.log('Failed load content: ', content)
             return {
               name: '...',
@@ -116,35 +105,101 @@ export class ArweaveMethod {
             isKoiWallet: false
           }
         }
-  
       }))
+      const res = {
+        contents: [...contentList, ...newContentList],
+        newContents
+      }
 
-      return [...contentList, ...newContentList]
+      return res
     } catch (err) {
       throw new Error(err.message)
     }
   }
 
-  async loadMyActivities (cursor) {
+  async storageAssets(contents) {
+    try {
+      console.log('STORAGE ASSETS', contents)
+      return await Promise.all(contents.map(async contentId => {
+        try {
+          const content = await this.koi.getNftState(contentId)
+          let url = `${PATH.NFT_IMAGE}/${content.id}`
+          
+          if (content.title) {
+            let imageUrl
+            const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
+            imageUrl = `data:${content.contentType};base64,${u8}`
+            if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
+    
+            return {
+              name: content.title,
+              isKoiWallet: content.ticker === 'KOINFT',
+              earnedKoi: content.reward,
+              txId: content.id,
+              imageUrl,
+              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+              koiRockUrl: `${PATH.KOI_ROCK}/${content.id}`,
+              isRegistered: true,
+              contentType: content.contentType,
+              totalViews: content.attention,
+              createdAt: content.createdAt,
+              description: content.description,
+              type: TYPE.ARWEAVE,
+              address: this.koi.address
+            }
+          } else {
+            console.log('Failed load content: ', content)
+            return {
+              name: '...',
+              isKoiWallet: true,
+              earnedKoi: content.reward,
+              txId: content.id,
+              imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
+              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+              koiRockUrl: `${PATH.KOI_ROCK}/${content.id}`,
+              isRegistered: true,
+              contentType: content.contentType || 'image',
+              totalViews: content.attention,
+              createdAt: content.createdAt,
+              description: content.description,
+              type: TYPE.ARWEAVE,
+              address: this.koi.address
+            }
+          }
+        } catch (err) {
+          console.log('ERROR ContentId: ', contentId)
+          const content = await this.koi.getNftState(contentId)
+          console.log('ERROR storage content', { content })
+          console.log(err.message)
+          throw new Error(err.message)
+        }
+      }))
+    } catch (err) {
+      console.log(err.message)
+      throw new Error(err.message)
+    }
+  }
+
+  async loadMyActivities(cursor) {
     try {
       const { ownedCursor, recipientCursor } = cursor
-  
+
       let ownedData
       let recipientData
-      
+
       // fetch data base on inputed cursors
       if (ownedCursor) {
         ownedData = get(await this.koi.getOwnedTxs(this.koi.address, 10, ownedCursor), 'data.transactions.edges') || []
       } else {
         ownedData = get(await this.koi.getOwnedTxs(this.koi.address), 'data.transactions.edges') || []
       }
-    
+
       if (recipientCursor) {
         recipientData = get(await this.koi.getRecipientTxs(this.koi.address, 10, recipientCursor), 'data.transactions.edges') || []
       } else {
         recipientData = get(await this.koi.getRecipientTxs(this.koi.address), 'data.transactions.edges') || []
       }
-    
+
       let activitiesList = [...ownedData, ...recipientData]
       // sort by time
       activitiesList = orderBy(activitiesList, 'node.block.timestamp', 'desc')
@@ -152,25 +207,25 @@ export class ArweaveMethod {
       // get next cursors
       const nextOwnedCursor = ownedData.length > 0 ? get(ownedData[ownedData.length - 1], 'cursor') : ownedCursor
       const nextRecipientCursor = recipientData.length > 0 ? get(recipientData[recipientData.length - 1], 'cursor') : recipientCursor
-  
+
       if (activitiesList.length > 0) {
-  
+
         // filter activities has node.block (success fetched activities) field then loop through to get necessary fields
         activitiesList = activitiesList.filter(activity => !!get(activity, 'node.block')).map(activity => {
           const time = get(activity, 'node.block.timestamp')
-          const timeString = isNumber(time) ? moment(time*1000).format('MMMM DD YYYY') : ''
+          const timeString = isNumber(time) ? moment(time * 1000).format('MMMM DD YYYY') : ''
           const id = get(activity, 'node.id')
           let activityName = 'Sent AR'
           let expense = Number(get(activity, 'node.quantity.ar')) + Number(get(activity, 'node.fee.ar'))
-  
+
           // get input tag
           let inputTag = (get(activity, 'node.tags'))
           if (!isArray(inputTag)) inputTag = []
           inputTag = inputTag.filter(tag => tag.name === 'Input')
-  
+
           // get Init State tag
           const initStateTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Init-State')
-  
+
           // get action tag
           const actionTag = ((get(activity, 'node.tags')).filter(tag => tag.name === 'Action'))
           let source = get(activity, 'node.recipient')
@@ -186,13 +241,13 @@ export class ArweaveMethod {
             } else if (inputFunction.function === 'updateKID') {
               activityName = 'Updated KID'
             }
-  
+
             if (inputFunction.function === 'registerData') {
               activityName = 'Registered NFT'
               source = null
             }
           }
-  
+
           if (initStateTag[0]) {
             if (actionTag[0].value.includes('KID/Create')) {
               const initState = JSON.parse(initStateTag[0].value)
@@ -205,7 +260,7 @@ export class ArweaveMethod {
               activityName = `Minted NFT "${initState.title}"`
             }
           }
-  
+
           if (get(activity, 'node.owner.address') !== this.koi.address) {
             activityName = 'Received AR'
             source = get(activity, 'node.owner.address')
@@ -219,7 +274,7 @@ export class ArweaveMethod {
               }
             }
           }
-  
+
           return {
             id,
             activityName,
@@ -232,7 +287,7 @@ export class ArweaveMethod {
         })
       }
       return { activitiesList, nextOwnedCursor, nextRecipientCursor }
-    } catch(err) {
+    } catch (err) {
       throw new Error(err.message)
     }
   }
@@ -252,7 +307,7 @@ export class ArweaveMethod {
       }
       const txId = await this.koi.transfer(qty, target, token)
       return txId
- 
+
     } catch (err) {
       throw new Error(err.message)
     }
@@ -263,23 +318,23 @@ export class ArweaveMethod {
       const savedCollection = await this.#chrome.getCollections() || []
       // get list of transactions
       let fetchedCollections = await this.koi.getCollectionsByWalletAddress(this.koi.address)
-  
+
       if (savedCollection.length == fetchedCollections.length) return 'fetched'
-  
+
       // get list of transaction ids
       fetchedCollections = fetchedCollections.map(collection => get(collection, 'node.id'))
       console.log(fetchedCollections)
       fetchedCollections = await this.#readState(fetchedCollections)
-      
+
       // read state from the transaction id to get needed data for the collection
       fetchedCollections = await Promise.all(fetchedCollections.map(collection => this.#getNftsDataForCollections(collection)))
-  
+
       // filter collection has NFTs that cannot be found on the storage.
       fetchedCollections = fetchedCollections.filter(collection => {
         return collection.nfts.every(nft => nft)
       })
       console.log('fetchedCollections', fetchedCollections)
-  
+
       await storage.arweaveWallet.set.collections(fetchedCollections)
       return fetchedCollections
     } catch (err) {
@@ -323,7 +378,7 @@ export class ArweaveMethod {
         const { fileType } = payload
         const { u8 } = await this.#getImageDataForNFT(fileType)
         const image = { blobData: u8, contentType: fileType }
-      
+
         const txId = await this.koi.createKID(kidInfo, image)
         return txId
       }
@@ -335,7 +390,7 @@ export class ArweaveMethod {
   /* 
     AFFILIATE CODE
   */
-  async getAffiliateCode () {
+  async getAffiliateCode() {
     try {
       const signedPayload = await this.koi.signPayload({ data: { address: this.koi.address } })
       const { data } = await axios({
@@ -347,7 +402,7 @@ export class ArweaveMethod {
           publicKey: signedPayload.owner
         }
       })
-  
+
       return get(data, 'data.affiliateCode')
     } catch (err) {
       console.log(err.message)
@@ -355,7 +410,7 @@ export class ArweaveMethod {
     }
   }
 
-  async claimReward () {
+  async claimReward() {
     try {
       const signedPayload = await this.koi.signPayload({ data: { address: this.koi.address } })
       const { data } = await axios({
@@ -373,10 +428,10 @@ export class ArweaveMethod {
     }
   }
 
-  async getRegistrationReward (nftId) {
+  async getRegistrationReward(nftId) {
     console.log('NFT ID: ', nftId)
     try {
-      const signedPayload = await this.koi.signPayload({ data: { address: this.koi.address }})
+      const signedPayload = await this.koi.signPayload({ data: { address: this.koi.address } })
       const { data } = await axios({
         method: 'POST',
         url: PATH.AFFILIATE_REGISTRATION_REWARD,
@@ -387,7 +442,7 @@ export class ArweaveMethod {
           nftId
         }
       })
-  
+
       return data
     } catch (err) {
       throw new Error(err.message)
@@ -407,13 +462,13 @@ export class ArweaveMethod {
           publicKey: signedPayload.owner
         }
       })
-  
+
       return data
     } catch (err) {
       throw new Error(err.message)
     }
   }
-  
+
   async getTotalRewardKoi() {
     try {
       const { data } = await axios({
@@ -426,9 +481,9 @@ export class ArweaveMethod {
       if (status !== 200) {
         return 0
       }
-  
+
       return get(data, 'data.totalReward')
-    } catch(err) {
+    } catch (err) {
       throw new Error(err.message)
     }
   }
@@ -446,7 +501,7 @@ export class ArweaveMethod {
           publicKey: signedPayload.owner
         }
       })
-  
+
       if (((data.message).toLowerCase()).includes('already exists')) {
         return true
       }
@@ -467,7 +522,7 @@ export class ArweaveMethod {
       try {
         let state = await this.koi.readState(id)
         const viewsAndReward = await this.koi.getViewsAndEarnedKOII(state.collection)
-        state = {...state, id, ...viewsAndReward}
+        state = { ...state, id, ...viewsAndReward }
         console.log('state', state)
         return state
       } catch (err) {
@@ -477,7 +532,7 @@ export class ArweaveMethod {
     return result.filter(collection => collection)
   }
 
-  async #getNftsDataForCollections (collection) {
+  async #getNftsDataForCollections(collection) {
     const storageNfts = await this.#chrome.getAssets() || []
 
     const { collection: nftIds } = collection
@@ -485,7 +540,7 @@ export class ArweaveMethod {
       const nft = find(storageNfts, v => v.txId == id)
       if (nft) return nft
     })
-  
+
     const resultCollection = { ...collection, nfts }
     return resultCollection
   }
@@ -509,7 +564,7 @@ export class ArweaveMethod {
       const u8 = Uint8Array.from(Object.values(bitObject))
       console.log('u8', u8)
       // create blob from u8
-      const blob = new Blob([u8], { type: 'contentType'})
+      const blob = new Blob([u8], { type: 'contentType' })
       console.log('blob', blob)
       // create file from blob
       const file = new File([blob], 'filename', { type: fileType })

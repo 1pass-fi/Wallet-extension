@@ -29,7 +29,6 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
 
       const address = await backgroundRequest.gallery.uploadJSONKeyFile({ password, key, type: walletType, provider: selectedNetwork })
       setImportedAddress(address)
-      console.log('imported')
       nextStep()
     } catch (err) {
       console.log(err.message)

@@ -353,6 +353,21 @@ export default ({ children }) => {
     if (newAddress) loadWallets()
   }, [newAddress])
 
+  useEffect(() => {
+    const loadAssets = async () => {
+      try {
+        console.log('load content for imported address', importedAddress)
+        await backgroundRequest.assets.loadContent({ address: importedAddress })
+      } catch (err) {
+        console.log(err.message)
+      }
+    }
+
+    if (importedAddress) {
+      loadAssets()
+    }
+  }, [importedAddress])
+
   /* 
     On open create collection form, allAssets list should be set to assets of the 
     activated account.

@@ -3,6 +3,7 @@ import Arweave from 'arweave'
 import passworder from 'browser-passworder'
 import moment from 'moment'
 import axios from 'axios'
+import differenceBy from 'lodash/differenceBy'
 
 import storage from 'services/storage'
 import { ArweaveAccount, EthereumAccount } from 'services/account/Account'
@@ -108,7 +109,7 @@ export const loadTransactionState = async () => {
             title: `Transaction confirmed`,
             message: `Your transaction [${transaction.activityName}] has been confirmed.`
           })
-          let newTransactions = [...pendingTransactions]           
+          let newTransactions = [...pendingTransactions]
           newTransactions = newTransactions.filter(aTransaction => aTransaction.id !== transaction.id)
           await account.set.pendingTransactions(newTransactions)
 
@@ -127,6 +128,56 @@ export const loadTransactionState = async () => {
         }
       })
     }))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+/*
+  Load NFT Content
+*/
+export const cacheNFTs = async (contents, account) => {
+  try {
+
+    if (isArray(contents)) {
+      const contentList = contents.filter(content => !!content.name) // remove failed loaded nfts
+      console.log('Load NFTs ', contentList)
+      await account.set.assets(contentList)
+
+      // filter pending assets
+      let pendingAssets = await account.get.pendingAssets() || []
+      console.log('Load NFTs - current pending assets ', pendingAssets)
+      pendingAssets = pendingAssets.filter(asset => {
+        return contents.every(content => content.txId !== asset.txId)
+      })
+      await account.set.pendingAssets(pendingAssets)
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+/*
+  Load new NFT contents
+    Step 1: get all NFTs of account in current Chrome storage
+    Step 2: detect no-need-update NFTs from above list.
+    Step 3: append up-to-date NFTs and new NFTs
+*/
+export const saveNewNFTsToStorage = async (newContentIds, account) => {
+  try {
+    if (isArray(newContentIds)) {
+      let newNFTContents = await account.method.storageAssets(newContentIds)
+      newNFTContents = newNFTContents.filter(content => !!content.name) // remove failed loaded nfts
+
+      let allNFTs = await account.get.assets()
+
+      const oldNFTs = differenceBy(allNFTs, newNFTContents, 'txId')
+
+      console.log('Storage new NFTs - oldNFTs', oldNFTs)
+      console.log('Storage new NFTs - newNFTContents', newNFTContents)
+      allNFTs = [...oldNFTs, ...newNFTContents]
+      account.set.assets(allNFTs)
+    }
   } catch (error) {
     console.error(error)
   }
@@ -164,7 +215,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           }
 
           // Create new account
-          switch(type) {
+          switch (type) {
             case TYPE.ARWEAVE:
               address = await ArweaveAccount.utils.loadWallet(koi, key)
               break
@@ -219,7 +270,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       case MESSAGES.REMOVE_WALLET: {
         try {
           const { address } = message.data
-          
+
           await backgroundAccount.removeAccount(address)
 
           port.postMessage({
@@ -243,12 +294,12 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             type: MESSAGES.LOCK_WALLET,
             id: messageId
           })
-        } catch(err) {
+        } catch (err) {
           port.postMessage({
             type: MESSAGES.LOCK_WALLET,
             error: `BACKGROUND ERROR: ${err.message}`,
-            id: messageId      
-          })        
+            id: messageId
+          })
         }
         break
       }
@@ -265,7 +316,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
               type: MESSAGES.UNLOCK_WALLET,
               error: `${err.message}`,
               id: messageId
-            })  
+            })
           }
 
           port.postMessage({
@@ -288,7 +339,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           let seedPhrase
           let key
           let address
-          switch(walletType) {
+          switch (walletType) {
             case TYPE.ARWEAVE:
               walletObj = new Web()
               seedPhrase = await ArweaveAccount.utils.generateWallet(walletObj)
@@ -297,7 +348,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             case TYPE.ETHEREUM:
               walletObj = new Ethereum()
               seedPhrase = await EthereumAccount.utils.generateWallet(walletObj)
-              key = {key: walletObj.key} // key of eth wallet will be String
+              key = { key: walletObj.key } // key of eth wallet will be String
               address = walletObj.address
               walletObj.wallet = key
           }
@@ -325,7 +376,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       case MESSAGES.SAVE_WALLET: {
         try {
           const { password, walletType } = message.data
-  
+
           const createdWalletAddress = (await getChromeStorage('createdWalletAddress'))['createdWalletAddress']
           const createdWalletKey = (await getChromeStorage('createdWalletKey'))['createdWalletKey']
 
@@ -338,7 +389,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const account = await backgroundAccount.getAccount({ address: createdWalletAddress, key: decryptedWalletKey })
           const totalAccounts = await backgroundAccount.count()
           account.set.accountName(`Account#${totalAccounts}`)
-    
+
           port.postMessage({
             type: MESSAGES.SAVE_WALLET,
             id: messageId
@@ -368,29 +419,16 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           }
 
           console.log('load content for account(s): ', allAccounts)
-
-
           await Promise.all(allAccounts.map(async account => {
-            let contentList = await account.method.loadMyContent()
-            if (isArray(contentList)) {
-              contentList = contentList.filter(content => !!content.name) // remove failed loaded nfts
-              console.log('CONTENT LIST: ', contentList)
-              await account.set.assets(contentList)
+            const { contents, newContentIds } = await account.method.loadMyContent()
+            await cacheNFTs(contents, account)
+            port.postMessage({
+              type: MESSAGES.LOAD_CONTENT,
+              id: messageId
+            })
+            await saveNewNFTsToStorage(newContentIds, account)
 
-              // filter pending assets
-              let pendingAssets = await account.get.pendingAssets() || []
-              pendingAssets = pendingAssets.filter(asset => {
-                return contentList.every(content => content.txId !== asset.txId)
-              })
-              await account.set.pendingAssets(pendingAssets)
-            }
           }))
-
-          port.postMessage({
-            type: MESSAGES.LOAD_CONTENT,
-            id: messageId
-          })
-
         } catch (err) {
           port.postMessage({
             type: MESSAGES.LOAD_CONTENT,
@@ -400,6 +438,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         }
         break
       }
+
       case MESSAGES.LOAD_ACTIVITIES: {
         try {
           const { cursor, address } = message.data
@@ -407,7 +446,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const account = await backgroundAccount.getAccount(credentials)
 
           const { activitiesList, nextOwnedCursor, nextRecipientCursor } = await account.method.loadMyActivities(cursor)
-          
+
           // filter pending transactions
           let pendingTransactions = await account.get.pendingTransactions() || []
           pendingTransactions = pendingTransactions.filter(tx => {
@@ -426,7 +465,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             type: MESSAGES.LOAD_ACTIVITIES,
             error: `BACKGROUND ERROR: ${err.message}`,
             id: messageId
-          })          
+          })
         }
         break
       }
@@ -460,19 +499,19 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             data: { txId },
             id: messageId
           })
-        } catch(err) {
+        } catch (err) {
           if (err.message == ERROR_MESSAGE.NOT_ENOUGH_KOI || err.message == ERROR_MESSAGE.NOT_ENOUGH_AR) {
             port.postMessage({
               type: MESSAGES.MAKE_TRANSFER,
               error: err.message,
               id: messageId
-            })          
+            })
           } else {
             port.postMessage({
               type: MESSAGES.MAKE_TRANSFER,
               error: `BACKGROUND ERROR: ${err.message}`,
               id: messageId
-            })          
+            })
           }
         }
         break
@@ -635,12 +674,12 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           const url = URL.createObjectURL(file)
 
-          const base64String = Buffer.from((await axios.get(url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
+          const base64String = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
           let imageUrl = `data:image/jpeg;base64,${base64String}`
           if (fileType.includes('video')) imageUrl = `data:video/mp4;base64,${base64String}`
 
           let d = new Date()
-          let createdAt = Math.floor(d.getTime()/1000).toString()
+          let createdAt = Math.floor(d.getTime() / 1000).toString()
 
           const pendingNFT = {
             name: content.title,
@@ -688,7 +727,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const credentials = await backgroundAccount.getCredentialByAddress(address)
           const account = await backgroundAccount.getAccount(credentials)
           const txId = await account.method.createCollection(collectionInfo, nftIds)
-          
+
           console.log('Transaction ID: ', txId)
           port.postMessage({
             type: MESSAGES.CREATE_COLLECTION,
@@ -815,7 +854,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           console.log('LOAD_KID')
           const credentials = await backgroundAccount.getCredentialByAddress(address)
           const account = await backgroundAccount.getAccount(credentials)
-          
+
           const kidData = await account.method.loadKID()
           console.log('LOAD_KID', kidData)
           await account.set.kid(kidData)
@@ -878,7 +917,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const count = await backgroundAccount.count()
           const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
           const encryptedKey = await backgroundAccount.getEncryptedKey(activatedAccountAddress)
-          
+
           if (count) {
             // Check input password
             try {
@@ -944,7 +983,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             type: MESSAGES.SET_DEFAULT_ACCOUNT,
             id: messageId
           })
-        } catch (err)  {
+        } catch (err) {
           port.postMessage({
             type: MESSAGES.SET_DEFAULT_ACCOUNT,
             error: `BACKGROUND ERROR: ${err.message}`,
@@ -999,7 +1038,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         break
       }
 
-      case  MESSAGES.TRANSFER_NFT: {
+      case MESSAGES.TRANSFER_NFT: {
         try {
           const { senderAddress, targetAddress, txId, numOfTransfers } = message.data
 
@@ -1009,7 +1048,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const typeOfWallet = await backgroundAccount.getType(targetAddress)
           const result = await account.method.nftBridge(txId, targetAddress, typeOfWallet)
 
-          if (result){
+          if (result) {
             port.postMessage({
               type: MESSAGES.TRANSFER_NFT,
               data: result,
@@ -1021,7 +1060,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
               error: 'Transfer NFT failed',
               id: messageId
             })
-            
+
           }
         } catch (err) {
           port.postMessage({
@@ -1032,7 +1071,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         }
         break
       }
-      
+
       default:
         break
     }
