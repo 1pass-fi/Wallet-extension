@@ -4,11 +4,12 @@
 */
 
 import { PATH, ALL_NFT_LOADED, ERROR_MESSAGE } from 'constants/koiConstants'
-import { getChromeStorage } from 'utils'
+import { getChromeStorage, setChromeStorage } from 'utils'
 import { get, isNumber, isArray, orderBy } from 'lodash'
 import moment from 'moment'
-
+import { smartweave } from 'smartweave'
 import axios from 'axios'
+
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 import { TYPE } from 'constants/accountConstants'
 
@@ -331,8 +332,6 @@ export class ArweaveMethod {
         return collection.nfts.every(nft => nft)
       })
       console.log('fetchedCollections', fetchedCollections)
-
-      await storage.arweaveWallet.set.collections(fetchedCollections)
       return fetchedCollections
     } catch (err) {
       console.log(err.message)
@@ -355,7 +354,7 @@ export class ArweaveMethod {
       const txId = get(data[0], 'node.id')
       if (txId) {
         const imageUrl = `https://arweave.net/${txId}`
-        const state = await this.koi.readState(txId)
+        const state = await smartweave.readContract(arweave ,txId)
         return { imageUrl, ...state }
       }
     } catch (err) {
@@ -517,7 +516,7 @@ export class ArweaveMethod {
   async #readState(txIds) {
     const result = await Promise.all(txIds.map(async id => {
       try {
-        let state = await this.koi.readState(id)
+        let state = await smartweave.readContract(arweave, id)
         const viewsAndReward = await this.koi.getViewsAndEarnedKOII(state.collection)
         state = { ...state, id, ...viewsAndReward }
         console.log('state', state)
