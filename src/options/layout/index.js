@@ -5,11 +5,6 @@ import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
 
-import {
-  getAffiliateCode,
-  getTotalRewardKoi,
-  checkAffiliateInviteSpent,
-} from 'utils'
 import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 
 import './index.css'
@@ -19,7 +14,6 @@ import Header from 'options/components/header'
 import Navbar from 'options/components/navbar'
 import Message from 'options/components/message'
 import LockScreen from 'options/components/lockScreen'
-import Loading from 'options/components/loading'
 import Uploaded from 'options/components/uploaded'
 
 import { GalleryContext } from 'options/galleryContext'
@@ -31,9 +25,6 @@ import Welcome from 'options/modal/welcomeScreen'
 import UploadingNFT from 'options/modal/UploadingNFT'
 import SuccessUploadNFT from 'options/modal/SuccessUploadNFT'
 
-import { Web } from '@_koi/sdk/web'
-export const koi = new Web()
-
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect } from 'services/request/popup'
 
@@ -44,8 +35,10 @@ import { EventHandler } from 'services/request/src/backgroundConnect'
 
 export default ({ children }) => {
   const { pathname } = useLocation()
-
   const history = useHistory()
+
+  const headerRef = useRef(null)
+
   const [wallets, setWallets] = useState([])
   const [account, setAccount] = useState({})
   const [isDragging, setIsDragging] = useState(false)
@@ -55,7 +48,6 @@ export default ({ children }) => {
   const [file, setFile] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [address, setAddress] = useState(null)
-  const [wallet, setWallet] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [affiliateCode, setAffiliateCode] = useState(null)
   const [error, setError] = useState(null)
@@ -73,7 +65,6 @@ export default ({ children }) => {
   const [collectionsLoaded, setCollectionsLoaded] = useState(false)
   const [isWaitingAddNFT, setIsWaitingAddNFT] = useState(false)
   const [isLocked, setIsLocked] = useState(false)
-  const [needUpdateWallet, setNeedUpdateWallet] = useState(true)
 
   const [showUploadingModal, setShowUploadingModal] = useState(false)
   const [showSuccessUploadModal, setShowSuccessUploadModal] = useState(false)
@@ -93,7 +84,7 @@ export default ({ children }) => {
   const [importedAddress, setImportedAddress] = useState(null)
   const [newAddress, setNewAddress] = useState(null)
 
-  const headerRef = useRef(null)
+
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
@@ -101,81 +92,10 @@ export default ({ children }) => {
     noClick: true,
   })
 
-  useEffect(() => {
-    if (showUploadedIcon) {
-      const timer = setTimeout(() => setShowUploadedIcon(false), 6000)
-      return () => clearTimeout(timer)
-    }
-  }, [showUploadedIcon])
-
-  useEffect(() => {
-    if (showSuccessUploadModal) {
-      const timer = setTimeout(() => setShowSuccessUploadModal(false), 6000)
-      return () => clearTimeout(timer)
-    }
-  }, [showSuccessUploadModal])
-
-
-  /*
-    Add event handler for Upload NFT success
-  */
-  useEffect(() => {
-    const uploadNFTHandler = new EventHandler(
-      MESSAGES.UPLOAD_NFT_SUCCESS,
-      async () => {
-        try {
-          // const pendingNFTs = (await getChromeStorage(STORAGE.PENDING_ASSETS))[STORAGE.PENDING_ASSETS] || []
-          // const contentList = (await getChromeStorage(STORAGE.CONTENT_LIST))[STORAGE.CONTENT_LIST] || []
-          // setCardInfos([...contentList, ...pendingNFTs])
-
-          setIsLoading(false)
-          setShowUploadingModal(false)
-          setShowUploadedIcon(true)
-          setShowSuccessUploadModal(true)
-        } catch (err) {
-          console.log('error: ', err)
-        }
-      }
-    )
-
-    popupBackgroundConnect.addHandler(uploadNFTHandler)
-  }, [])
-
   /* 
-    Add event handler for Get balances
-  */
-  useEffect(() => {
-    const handleAddHandler = () => {
-      const loadBalancesSuccess = new EventHandler(
-        MESSAGES.GET_BALANCES_SUCCESS,
-        async () => {
-          try {
-            let activatedAccount = await storage.setting.get.activatedAccountAddress()
-            activatedAccount = await popupAccount.getAccount({
-              address: activatedAccount,
-            })
-            const activatedAccountData = await activatedAccount.get.metadata()
-
-            const { balance: _balance, koiBalance } = activatedAccountData
-            if (koiBalance) setTotalKoi(koiBalance)
-            setTotalAr(_balance)
-
-            setNotification('Your balances have been updated.')
-          } catch (err) {
-            setError(err.message)
-          }
-        }
-      )
-
-      popupBackgroundConnect.addHandler(loadBalancesSuccess)
-    }
-
-    handleAddHandler()
-  })
-
-  /* 
-    Load accounts from chrome storage
-    Passing file to dependency array to support create new NFT in case import new wallet
+    STEP 1:
+    - Load accounts from chrome storage
+    - Passing file to dependency array to support create new NFT in case import new wallet
   */
   useEffect(() => {
     const loadWallets = async () => {
@@ -184,9 +104,10 @@ export default ({ children }) => {
       console.log('allData', allData)
       const _isLocked = await backgroundRequest.wallet.getLockState()
 
-      // All Account: [{ account1, account2 }]
       setWallets(allData)
       setWalletLoaded(true)
+
+      // go to lock screen if having imported account 
       if(!isEmpty(allData)){
         setIsLocked(_isLocked)
       }
@@ -196,8 +117,10 @@ export default ({ children }) => {
     loadWallets()
   }, [])
 
-  /* 
-    Load for activated (default) account.
+  /*
+    STEP 2: 
+    - Load for activated (default) account.
+
     This account will be used to display balances, kID, connect site.
     On setting, user can change their activated (default) account.
   */
@@ -222,28 +145,22 @@ export default ({ children }) => {
   }, [walletLoaded])
 
   /* 
-    Loads required data for gallery.
-    Runs when account state changed.
+   STEP 3: ( run on default account changed)
+   - Load data for set default account
   */
   useEffect(() => {
-    /* 
-      Meta data
-      - Balances
-      - Account Name
-      - Friend affiliate data
-    */
     const getUserData = async () => {
       try {
         const activatedAccount = await popupAccount.getAccount({
           address: account.address,
         })
+
+        // not sure if we still need this state
         setAddress(account.address)
 
         // balances
         const arBalance = await activatedAccount.get.balance()
         const koiBalance = await activatedAccount.get.koiBalance()
-        // console.log('arBalance', arBalance)
-        // console.log('koiBalance', koiBalance)
         setTotalKoi(koiBalance)
         setTotalAr(arBalance)
 
@@ -251,23 +168,14 @@ export default ({ children }) => {
         const accountName = await activatedAccount.get.accountName()
         setAccountName(accountName)
 
+        // get affiliate code from storage
         const affiliateCodeStorage = await storage.generic.get.affiliateCode()
         if (affiliateCodeStorage) setAffiliateCode(affiliateCodeStorage)
-
-        /* 
-          TODO: we should remove this getting key request
-          All actions that require wallet key should be executed on background.
-        */
-        const { key } = await backgroundRequest.wallet.getWalletKey()
-        setWallet(key)
 
         /* 
           TODO: Will add affiliate functions to method of account classes.
         */
         if (!affiliateCodeStorage && account.type === TYPE.ARWEAVE) {
-          koi.wallet = wallet
-          koi.address = account.address
-
           const code = await backgroundRequest.gallery.friendReferral({
             endpoints: FRIEND_REFERRAL_ENDPOINTS.GET_AFFILIATE_CODE,
           })
@@ -282,15 +190,24 @@ export default ({ children }) => {
           setInviteSpent(spent)
         }
       } catch (err) {
+        console.log('ERRORRRRR')
         console.log(err.message)
       }
     }
-    /* 
-      Gallery setting
-      - Options: showViews, showEarnedKoi
-      - Flag: showWelcomeScreen - true for the first time opened, then false.
-    */
-    const loadSettings = async () => {
+
+    if (!isEmpty(wallets) || !GALLERY_IMPORT_PATH.includes(pathname)) {
+      console.log('Loading for user data...')
+      getUserData()
+    }
+  }, [account])
+
+  /* 
+    Load gallery settings
+    - Options: showViews, showEarnedKoi
+    - Flag: showWelcomeScreen - true for the first time opened, then false.
+  */
+  useEffect(() => {
+    const loadGallerySettings = async () => {
       const showViewStorage = await storage.setting.get.showViews()
       const showEarnedKoiStorage = await storage.setting.get.showEarnedKoi()
       const showWelcomeScreen = await storage.setting.get.showWelcomeScreen()
@@ -305,24 +222,28 @@ export default ({ children }) => {
     }
 
     if (!isEmpty(wallets) || !GALLERY_IMPORT_PATH.includes(pathname)) {
-      console.log('Loading for user data and setting...')
-      getUserData()
-      loadSettings()
+      loadGallerySettings()
     }
-  }, [account])
+  }, [walletLoaded])
 
   /* 
-    Load for all assets
-    This list of assets will include assets of every imported accounts.
+    Load assets:
+    - Load NFTs for a specified wallet or all wallets
+
+    Run on wallets state changed
   */
   useEffect(() => {
     const loadAssets = async () => {
       try {
+        /* 
+          newAddress: not isEmpty -> load assets for wallet that just imported
+          newAddress: isEmpty -> load assets of all wallets (when just opened the gallery page and having imported wallets)
+        */
         if (newAddress) {
-          console.log('load content', newAddress)
+          console.log('loading content for', newAddress)
           await backgroundRequest.assets.loadContent({ address: newAddress })
         } else {
-          console.log('load contents')
+          console.log('loading all contents')
           await backgroundRequest.assets.loadAllContent()
         }
 
@@ -343,20 +264,26 @@ export default ({ children }) => {
     }
   }, [wallets])
 
+  /* 
+    Reload wallets when a new wallet just imported
+  */
   useEffect(() => {
-    const loadWallets = async () => {
+    const reloadWallets = async () => {
       await popupAccount.loadImported()
       const allData = await popupAccount.getAllMetadata()
       setWallets(allData)
     }
 
-    if (newAddress) loadWallets()
+    if (newAddress) reloadWallets()
   }, [newAddress])
 
+  /* 
+    Pre-load assets when import/upload/create new wallet
+  */
   useEffect(() => {
-    const loadAssets = async () => {
+    const preloadAssets = async () => {
       try {
-        console.log('load content for imported address', importedAddress)
+        console.log('pre-load content for imported address', importedAddress)
         await backgroundRequest.assets.loadContent({ address: importedAddress })
       } catch (err) {
         console.log(err.message)
@@ -364,7 +291,7 @@ export default ({ children }) => {
     }
 
     if (importedAddress) {
-      loadAssets()
+      preloadAssets()
     }
   }, [importedAddress])
 
@@ -391,10 +318,6 @@ export default ({ children }) => {
     if (!GALLERY_IMPORT_PATH.includes(pathname)) setAssetsForCreateCollection()
   }, [showCreateCollection])
 
-  useEffect(() => {
-    setFile(acceptedFiles ? acceptedFiles[0] : {})
-    if (!isEmpty(acceptedFiles)) history.push('/create')
-  }, [acceptedFiles])
 
   /*
     Redirect to create NFT page to support create new NFT in case import new wallet
@@ -403,13 +326,21 @@ export default ({ children }) => {
     if (!isEmpty(file)) history.push('/create')
   }, [file])
 
-  const modifyDraging = useCallback(
-    throttle((newValue) => {
-      setIsDragging(newValue)
-    }, 500),
-    []
-  )
+  /* 
+    set error with null then with a message to make sure it will be re-rendered on setError
+  */
+  const _setError = (message) => {
+    setError(null)
+    setError(message)
+  }
+  
 
+
+
+
+  /* 
+    set state timer
+  */
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => setError(null), 4000)
@@ -424,9 +355,28 @@ export default ({ children }) => {
     }
   }, [notification])
 
-  const showDropzone = () => {
-    modifyDraging(true)
-  }
+  useEffect(() => {
+    if (showUploadedIcon) {
+      const timer = setTimeout(() => setShowUploadedIcon(false), 6000)
+      return () => clearTimeout(timer)
+    }
+  }, [showUploadedIcon])
+
+  useEffect(() => {
+    if (showSuccessUploadModal) {
+      const timer = setTimeout(() => setShowSuccessUploadModal(false), 6000)
+      return () => clearTimeout(timer)
+    }
+  }, [showSuccessUploadModal])
+
+
+  /* 
+    set file stuffs
+  */
+  useEffect(() => {
+    setFile(acceptedFiles ? acceptedFiles[0] : {})
+    if (!isEmpty(acceptedFiles)) history.push('/create')
+  }, [acceptedFiles])
 
   const onClearFile = () => {
     setFile({})
@@ -437,10 +387,73 @@ export default ({ children }) => {
     setIsDragging(false)
   }
 
-  const _setError = (message) => {
-    setError(null)
-    setError(message)
+  /* 
+    PLEASE FIND OUT WHAT IT DOES AND LEAVE A COMMENT HERE
+  */
+  const modifyDraging = useCallback(
+    throttle((newValue) => {
+      setIsDragging(newValue)
+    }, 1),
+    []
+  )
+  const showDropzone = () => {
+    modifyDraging(true)
   }
+
+
+  /* 
+    Add backgroundConnect eventHandler
+  */
+  useEffect(() => {
+    const handleAddHandler = () => {
+      const loadBalancesSuccess = new EventHandler(
+        MESSAGES.GET_BALANCES_SUCCESS,
+        async () => {
+          try {
+            let activatedAccount = await storage.setting.get.activatedAccountAddress()
+            activatedAccount = await popupAccount.getAccount({
+              address: activatedAccount,
+            })
+            const activatedAccountData = await activatedAccount.get.metadata()
+  
+            const { balance: _balance, koiBalance } = activatedAccountData
+            if (koiBalance) setTotalKoi(koiBalance)
+            setTotalAr(_balance)
+  
+            setNotification('Your balances have been updated.')
+          } catch (err) {
+            setError(err.message)
+          }
+        }
+      )
+  
+      const uploadNFTHandler = new EventHandler(
+        MESSAGES.UPLOAD_NFT_SUCCESS,
+        async () => {
+          try {
+            /* 
+              Showing pending NFT
+            */
+            // const pendingNFTs = (await getChromeStorage(STORAGE.PENDING_ASSETS))[STORAGE.PENDING_ASSETS] || []
+            // const contentList = (await getChromeStorage(STORAGE.CONTENT_LIST))[STORAGE.CONTENT_LIST] || []
+            // setCardInfos([...contentList, ...pendingNFTs])
+    
+            setIsLoading(false)
+            setShowUploadingModal(false)
+            setShowUploadedIcon(true)
+            setShowSuccessUploadModal(true)
+          } catch (err) {
+            console.log('error: ', err)
+          }
+        }
+      )
+    
+      popupBackgroundConnect.addHandler(uploadNFTHandler)
+      popupBackgroundConnect.addHandler(loadBalancesSuccess)
+    }
+  
+    handleAddHandler()
+  }, [])
 
   return (
     <GalleryContext.Provider
@@ -471,7 +484,6 @@ export default ({ children }) => {
         setFile,
         setIsLoading,
         setIsWaitingAddNFT,
-        setNeedUpdateWallet,
         setNotification,
         setPage,
         setSearchTerm,
@@ -493,7 +505,6 @@ export default ({ children }) => {
         totalKoi,
         totalPage,
         totalReward,
-        wallet,
         wallets,
         importedAddress,
         setImportedAddress,
