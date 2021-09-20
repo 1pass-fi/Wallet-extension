@@ -46,9 +46,9 @@ export class ArweaveMethod {
       console.log({ contentList })
 
       // detect new nft(s) that were not saved in Chrome storage
-      const storageContents = contentList.map(nft => nft.txId)
+      const storageContentIds = contentList.map(nft => nft.txId)
       const newContents = myContent.filter((nftId) => {
-        return storageContents.indexOf(nftId) === -1
+        return storageContentIds.indexOf(nftId) === -1
       })
 
       if (!newContents.length) return ALL_NFT_LOADED

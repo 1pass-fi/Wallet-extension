@@ -136,7 +136,7 @@ export const loadTransactionState = async () => {
 /*
   Load NFT Content
 */
-export const loadNFTs = async (contents, account) => {
+export const cacheNFTs = async (contents, account) => {
   try {
 
     if (isArray(contents)) {
@@ -420,13 +420,13 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           console.log('load content for account(s): ', allAccounts)
           await Promise.all(allAccounts.map(async account => {
-            const { contents, newContents } = await account.method.loadMyContent()
-            await loadNFTs(contents, account)
+            const { contents, newContentIds } = await account.method.loadMyContent()
+            await cacheNFTs(contents, account)
             port.postMessage({
               type: MESSAGES.LOAD_CONTENT,
               id: messageId
             })
-            await saveNewNFTsToStorage(newContents, account)
+            await saveNewNFTsToStorage(newContentIds, account)
 
           }))
         } catch (err) {
