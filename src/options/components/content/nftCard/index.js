@@ -114,7 +114,6 @@ export default ({
             src={imageUrl}
             className='nft-img'
             controls
-            autoPlay
             muted
           />
           {selectedCollection && <div className='nft-img-checked-icon'><CheckIcon /></div>}

@@ -44,7 +44,6 @@ export default ({
               src={imageUrl}
               className='nft-img'
               controls
-              autoPlay
             />
           )}
         </div>

@@ -34,7 +34,6 @@ export default ({ nft }) => {
               src={url}
               className='nft-img'
               controls
-              autoPlay
               muted
             />
           )}

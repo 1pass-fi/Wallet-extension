@@ -172,7 +172,6 @@ export default ({ collection }) => {
               src={get(displayNft, 'imageUrl')}
               className='nft-img'
               controls
-              autoPlay
               muted
             />
           )}
