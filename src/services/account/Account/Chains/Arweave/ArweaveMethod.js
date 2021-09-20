@@ -123,9 +123,9 @@ export class ArweaveMethod {
       return await Promise.all(contents.map(async contentId => {
         try {
           const content = await this.koi.getNftState(contentId)
-          let url = `${PATH.NFT_IMAGE}/${content.id}`
           
           if (content.title) {
+            let url = `${PATH.NFT_IMAGE}/${content.id}`
             let imageUrl
             const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
             imageUrl = `data:${content.contentType};base64,${u8}`
@@ -167,9 +167,6 @@ export class ArweaveMethod {
             }
           }
         } catch (err) {
-          console.log('ERROR ContentId: ', contentId)
-          const content = await this.koi.getNftState(contentId)
-          console.log('ERROR storage content', { content })
           console.log(err.message)
           throw new Error(err.message)
         }
