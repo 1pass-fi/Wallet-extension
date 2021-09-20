@@ -146,7 +146,7 @@ export const cacheNFTs = async (contents, account) => {
 
       // filter pending assets
       let pendingAssets = await account.get.pendingAssets() || []
-      console.log('Load NFTs - current pending assets ', pendingAssets)
+      console.log('Cache NFTs - current pending assets ', pendingAssets)
       pendingAssets = pendingAssets.filter(asset => {
         return contents.every(content => content.txId !== asset.txId)
       })

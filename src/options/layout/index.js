@@ -433,10 +433,16 @@ export default ({ children }) => {
           try {
             /* 
               Showing pending NFT
+                - Get current activated account
+                - Get pending assets for activated account
+                - Set the pending NFT to cardInfo list
             */
-            // const pendingNFTs = (await getChromeStorage(STORAGE.PENDING_ASSETS))[STORAGE.PENDING_ASSETS] || []
-            // const contentList = (await getChromeStorage(STORAGE.CONTENT_LIST))[STORAGE.CONTENT_LIST] || []
-            // setCardInfos([...contentList, ...pendingNFTs])
+            let activatedAccount = await storage.setting.get.activatedAccountAddress()
+            activatedAccount = await popupAccount.getAccount({
+              address: activatedAccount,
+            })
+            const pendingAssets = await activatedAccount.get.pendingAssets() || []
+            setCardInfos([...cardInfos, ...pendingAssets])
     
             setIsLoading(false)
             setShowUploadingModal(false)
