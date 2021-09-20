@@ -141,7 +141,7 @@ export const cacheNFTs = async (contents, account) => {
 
     if (isArray(contents)) {
       const contentList = contents.filter(content => !!content.name) // remove failed loaded nfts
-      console.log('Load NFTs ', contentList)
+      console.log('Cache NFTs ', contentList)
       await account.set.assets(contentList)
 
       // filter pending assets
@@ -163,12 +163,12 @@ export const cacheNFTs = async (contents, account) => {
     Step 2: detect no-need-update NFTs from above list.
     Step 3: append up-to-date NFTs and new NFTs
 */
-export const saveNewNFTsToStorage = async (newContentIds, account) => {
+export const saveNewNFTsToStorage = async (newContents, account) => {
   try {
-    if (isArray(newContentIds)) {
-      let newNFTContents = await account.method.storageAssets(newContentIds)
+    if (isArray(newContents)) {
+      console.log('Storage new NFTs ', newContents)
+      let newNFTContents = await account.method.storageAssets(newContents)
       newNFTContents = newNFTContents.filter(content => !!content.name) // remove failed loaded nfts
-
       let allNFTs = await account.get.assets()
 
       const oldNFTs = differenceBy(allNFTs, newNFTContents, 'txId')
@@ -420,13 +420,13 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           console.log('load content for account(s): ', allAccounts)
           await Promise.all(allAccounts.map(async account => {
-            const { contents, newContentIds } = await account.method.loadMyContent()
+            const { contents, newContents } = await account.method.loadMyContent()
             await cacheNFTs(contents, account)
             port.postMessage({
               type: MESSAGES.LOAD_CONTENT,
               id: messageId
             })
-            await saveNewNFTsToStorage(newContentIds, account)
+            await saveNewNFTsToStorage(newContents, account)
 
           }))
         } catch (err) {
