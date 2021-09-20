@@ -14,6 +14,7 @@ import useEthereumNetworks from '../shared/useEthereumNetworks'
 import { GalleryContext } from 'options/galleryContext'
 import InputPassword from '../shared/InputPassword'
 import GoBackBtn from '../../../components/GoBackButton'
+import { IS_SHOW_ETHEREUM } from 'constants/koiConstants'
 
 import isEmpty from 'lodash/isEmpty'
 
@@ -116,8 +117,7 @@ export default () => {
                   selected={false}
                   onClick={() => onTypeSelect(TYPE.ARWEAVE)}
                 />
-
-                <WalletType
+                {IS_SHOW_ETHEREUM && <WalletType
                   icon={EthereumLogo}
                   title={(props) => <div {...props}>Ethereum Key</div>}
                   description={(props) => (
@@ -128,7 +128,7 @@ export default () => {
                   )}
                   selected={false}
                   onClick={() => onTypeSelect(TYPE.ETHEREUM)}
-                />
+                />}
               </div>
               <GoBackBtn goToPreviousStep={previousStep} />
             </>

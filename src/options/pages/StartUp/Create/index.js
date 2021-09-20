@@ -17,6 +17,7 @@ import ConfirmPassword from '../shared/ConfirmPassword'
 import InputPassword from '../shared/InputPassword'
 import Loading from '../shared/Loading'
 import GoBackBtn from '../../../components/GoBackButton'
+import { IS_SHOW_ETHEREUM } from 'constants/koiConstants'
 
 import isEmpty from 'lodash/isEmpty'
 
@@ -192,7 +193,7 @@ export default () => {
                 onClick={() => setWalletType(TYPE.ARWEAVE)}
               />
 
-              <WalletType
+              {IS_SHOW_ETHEREUM && <WalletType
                 icon={EthereumLogo}
                 title={(props) => <div {...props}>Ethereum Key</div>}
                 description={(props) => (
@@ -203,7 +204,7 @@ export default () => {
                 )}
                 selected={walletType === TYPE.ETHEREUM}
                 onClick={() => setWalletType(TYPE.ETHEREUM)}
-              />
+              />}
             </div>
             <button
               disabled={!walletType}
