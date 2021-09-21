@@ -316,7 +316,7 @@ export default ({ children }) => {
     }
 
     if (!GALLERY_IMPORT_PATH.includes(pathname)) setAssetsForCreateCollection()
-  }, [showCreateCollection])
+  }, [showCreateCollection, account])
 
 
   /*
