@@ -307,15 +307,13 @@ export default ({ children }) => {
         const _account = await popupAccount.getAccount({
           address: account.address,
         })
-        const assets = await _account.get.assets()
+        let assets = await _account.get.assets()
+        assets = assets.filter(asset => asset.name !== '...')
         setCardInfos(assets)
-      } else {
-        const allAssets = await popupAccount.getAllAssets()
-        setCardInfos(allAssets)
       }
     }
 
-    if (!GALLERY_IMPORT_PATH.includes(pathname)) setAssetsForCreateCollection()
+    if (!GALLERY_IMPORT_PATH.includes(pathname) && !isEmpty(account)) setAssetsForCreateCollection()
   }, [showCreateCollection, account])
 
 
@@ -482,6 +480,7 @@ export default ({ children }) => {
         page,
         searchTerm,
         setAccount,
+        setCardInfos,
         setCollectionNFT,
         setCollections,
         setCollectionsLoaded,
