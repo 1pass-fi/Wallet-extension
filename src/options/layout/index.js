@@ -76,6 +76,7 @@ export default ({ children }) => {
     show: false,
     txid: null,
   })
+  const [pendingNFTTitle, setPendingNFTTitle] = useState('')
   const [showExportModal, setShowExportModal] = useState({})
   const [showWelcome, setShowWelcome] = useState(false)
   const [showSelectAccount, setShowSelectAccount] = useState(false)
@@ -478,6 +479,7 @@ export default ({ children }) => {
         onClearFile,
         onCloseUploadModal,
         page,
+        pendingNFTTitle,
         searchTerm,
         setAccount,
         setCardInfos,
@@ -491,6 +493,7 @@ export default ({ children }) => {
         setIsWaitingAddNFT,
         setNotification,
         setPage,
+        setPendingNFTTitle,
         setSearchTerm,
         setShowCreateCollection,
         setShowEarnedKoi,
