@@ -611,7 +611,11 @@ export class ArweaveMethod {
   }
 
   async registerData(txId) {
-    return await this.koi.registerData(txId, this.koi.address)
+    const _txId = await this.koi.burnKoiAttention(txId)
+    console.log('BURN KOII')
+    await this.koi.migrateAttention()
+    console.log('MIGRATE')
+    return _txId
   }
 
   async signPort(txId) {
