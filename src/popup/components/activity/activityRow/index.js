@@ -3,9 +3,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import ReactTooltip from 'react-tooltip'
 
 // constants
-import { PATH } from 'constants/koiConstants' 
+import { NOTIFICATION, PATH } from 'constants/koiConstants' 
+
+// actions
+import { setNotification } from 'actions/notification'
 
 // utils
 import { transactionAmountFormat } from 'utils'
@@ -22,7 +27,7 @@ const propTypes = {
   source: PropTypes.string,
 }
 
-const ActivityRow = ({activityName, expense, date, source, id, pending, price, currency, accountName, pendingConfirmation }) => {
+const ActivityRow = ({setNotification, activityName, expense, date, source, id, pending, price, currency, accountName, pendingConfirmation }) => {
   const dateFormat = (date) => {
     return moment(date).format('MMMM Do, YYYY')
   }
@@ -45,12 +50,15 @@ const ActivityRow = ({activityName, expense, date, source, id, pending, price, c
           </div>
           <div className='account-name'>{accountName}</div>
           {pending ? (
-            <div>
-              
-              <div className="activity-status pending">Transaction pending</div>
+            <div onClick={() => {setNotification(NOTIFICATION.TRANSACTION_COPIED)}} className='activity-status pending'>
+              <CopyToClipboard text={id}>
+                <div data-tip='Copy id' className="icon">
+                  transaction pending
+                </div>
+              </CopyToClipboard>
             </div>
           ) : (
-            <div className='activity-status completed'> 
+            <div className='activity-status completed'>
               <a target="_blank" href={`${PATH.VIEW_BLOCK_TRANSACTION}/${id}`}>
                 {pendingConfirmation ? 'pending confirmation' : 'view block'}
               </a>
@@ -65,6 +73,7 @@ const ActivityRow = ({activityName, expense, date, source, id, pending, price, c
           <div className='activity-date'>{ dateFormat(date) }</div>
         </div>
       </div>
+      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }
@@ -72,5 +81,6 @@ const ActivityRow = ({activityName, expense, date, source, id, pending, price, c
 ActivityRow.propTypes = propTypes
 
 const mapStateToProps = (state) => ({ price: state.price, currency: state.currency })
+const mapDispatchToProps = { setNotification }
 
-export default connect(mapStateToProps)(ActivityRow)
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityRow)
