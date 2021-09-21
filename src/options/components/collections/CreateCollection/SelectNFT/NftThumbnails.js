@@ -47,7 +47,6 @@ export const NftThumbnails = ({
                             height={140}
                             src={nft.url}
                             className='nft-img'
-                            autoPlay
                             controls
                             muted
                           /></div>

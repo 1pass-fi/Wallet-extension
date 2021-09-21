@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { isEmpty } from 'lodash'
 
 import './index.css'
@@ -12,6 +12,8 @@ import { GalleryContext } from 'options/galleryContext'
 import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
+import { popupAccount } from 'services/account'
+
 import { mockSaveCollections } from 'options/utils'
 import { mockGetCollections } from 'options/utils'
 import { getNftsDataForCollections } from 'options/utils'
@@ -21,6 +23,7 @@ import ReactTooltip from 'react-tooltip'
 export default () => {
   const { collectionNFT,
     setCollectionNFT, 
+    setCardInfos,
     setShowCreateCollection,
     stage, 
     setStage,
@@ -117,6 +120,14 @@ export default () => {
         }
     }
   }
+
+  useEffect(() => {
+    return async () => {
+      let allAssets = await popupAccount.getAllAssets()
+      allAssets = allAssets.filter(asset => asset.name !== '...')
+      setCardInfos(allAssets)
+    }
+  }, [])
 
   return (
     <div className='create-collection'>

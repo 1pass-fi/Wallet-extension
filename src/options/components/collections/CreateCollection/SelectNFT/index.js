@@ -277,7 +277,6 @@ export default ({nfts, tags, collectionName, description, stage}) => {
                   src={nft.url}
                   className='nft-img'
                   controls
-                  autoPlay
                   muted
                 />
               }

@@ -4,10 +4,11 @@ import { REQUEST, MESSAGES, STORAGE, OS, WINDOW_SIZE, PORTS } from 'constants/ko
 import { checkSitePermission, setChromeStorage, removeChromeStorage, getChromeStorage, transfer } from 'utils'
 import { getSelectedTab, createWindow } from 'utils/extension'
 import signPort from 'utils/signPort'
-
+import arweave from 'services/arweave'
 import storage from 'services/storage'
 import { backgroundAccount, popupAccount } from 'services/account'
 import { TYPE } from 'constants/accountConstants'
+
 
 let pendingMessages = {}
 
@@ -535,6 +536,7 @@ export default async (koi, port, message, ports, resolveId, sender) => {
         }
 
         case MESSAGES.KOI_CREATE_TRANSACTION: {
+          const { id } = message
           try {
             const { transaction } = message.data
             console.log('ORIGIN', origin)
@@ -542,13 +544,12 @@ export default async (koi, port, message, ports, resolveId, sender) => {
             console.log('TRANSACTION', transaction)
             console.log('PERMISSION CREATE TRANSACTION', hadPermission)
   
-            const { id } = message
             const { createTransactionId } = resolveId
             createTransactionId.push(id)
   
             const qty = transaction.quantity
             const address = transaction.target
-            const fee = transaction.fee / 1000000000000
+            const fee = await arweave.transactions.getPrice(transaction.data_size, koi.address) / 1000000000000
             console.log('QUANTITY', qty)
             console.log('ADDRESS', address)
   
@@ -574,7 +575,7 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                   left: Math.round((screenWidth - WINDOW_SIZE.WIN_WIDTH) / 2),
                   top: Math.round((screenHeight - WINDOW_SIZE.WIN_HEIGHT) / 2)
                 }
-              } else [
+              } else {
                 windowData = {
                   url: chrome.extension.getURL('/popup.html'),
                   focused: true,
@@ -584,7 +585,7 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                   left: Math.round((screenWidth - WINDOW_SIZE.MAC_WIDTH) / 2),
                   top: Math.round((screenHeight - WINDOW_SIZE.MAC_HEIGHT) / 2)
                 }
-              ]
+              }
               createWindow(
                 windowData,
                 {

@@ -487,7 +487,8 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
       'balances': balances,
       'contentType': fileType,
       'createdAt': createdAt,
-      'tags': tags
+      'tags': tags,
+      'locked': []
     }
 
     let tx
@@ -501,7 +502,7 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
     tx.addTag('Action', 'marketplace/Create')
     tx.addTag('App-Name', 'SmartWeaveContract')
     tx.addTag('App-Version', '0.3.0')
-    tx.addTag('Contract-Src', 'I8xgq3361qpR8_DvqcGpkCYAUTMktyAgvkm6kGhJzEQ')
+    tx.addTag('Contract-Src', 'r_ibeOTHJW8McJvivPJjHxjMwkYfAKRjs-LjAeaBcLc')
     tx.addTag('Init-State', JSON.stringify(initialState))
     tx.addTag('NSFW', content.isNSFW)
 
@@ -530,13 +531,8 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
       )
     }
 
-    console.log('BURN KOII', await koi.burnKoi(
-      ATTENTION_CONTRACT,
-      'nft',
-      tx.id
-    ))
-    
-    console.log('MIGRATE', await koi.migrate(ATTENTION_CONTRACT))
+    console.log('BURN KOII', await koi.burnKoiAttention(tx.id))
+    console.log('MIGRATE', await koi.migrateAttention())
     return { txId: tx.id, time: createdAt }
 
   } catch(err) {

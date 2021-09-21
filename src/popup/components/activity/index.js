@@ -287,7 +287,7 @@ const Activities = ({
 
 const mapStateToProps = (state) => ({ 
   activities: state.activities,
-  accounts: state.accounts, 
+  accounts: state.accounts,
   activityNotifications: state.activityNotifications,
   settings: state.settings
 })

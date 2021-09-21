@@ -58,7 +58,16 @@
 }
 
 .activity-info-row .activity-status.pending {
-  transform: matrix(0.99, 0, -0.13, 1, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #237b75;
+  box-sizing: border-box;
+  border-radius: 2px;
+  height: 18px;
+  width: 130px;
+  cursor: pointer;
 }
 
 .activity-info-row .activity-status.completed {

@@ -307,16 +307,14 @@ export default ({ children }) => {
         const _account = await popupAccount.getAccount({
           address: account.address,
         })
-        const assets = await _account.get.assets()
+        let assets = await _account.get.assets()
+        assets = assets.filter(asset => asset.name !== '...')
         setCardInfos(assets)
-      } else {
-        const allAssets = await popupAccount.getAllAssets()
-        setCardInfos(allAssets)
       }
     }
 
-    if (!GALLERY_IMPORT_PATH.includes(pathname)) setAssetsForCreateCollection()
-  }, [showCreateCollection])
+    if (!GALLERY_IMPORT_PATH.includes(pathname) && !isEmpty(account)) setAssetsForCreateCollection()
+  }, [showCreateCollection, account])
 
 
   /*
@@ -433,10 +431,16 @@ export default ({ children }) => {
           try {
             /* 
               Showing pending NFT
+                - Get current activated account
+                - Get pending assets for activated account
+                - Set the pending NFT to cardInfo list
             */
-            // const pendingNFTs = (await getChromeStorage(STORAGE.PENDING_ASSETS))[STORAGE.PENDING_ASSETS] || []
-            // const contentList = (await getChromeStorage(STORAGE.CONTENT_LIST))[STORAGE.CONTENT_LIST] || []
-            // setCardInfos([...contentList, ...pendingNFTs])
+            let activatedAccount = await storage.setting.get.activatedAccountAddress()
+            activatedAccount = await popupAccount.getAccount({
+              address: activatedAccount,
+            })
+            const pendingAssets = await activatedAccount.get.pendingAssets() || []
+            setCardInfos([...cardInfos, ...pendingAssets])
     
             setIsLoading(false)
             setShowUploadingModal(false)
@@ -476,6 +480,7 @@ export default ({ children }) => {
         page,
         searchTerm,
         setAccount,
+        setCardInfos,
         setCollectionNFT,
         setCollections,
         setCollectionsLoaded,
