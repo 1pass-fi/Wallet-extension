@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 
 // components
 import GlobalButton from 'shared/globalButton'
+import Button from 'shared/button'
 import SendKoiForm from './sendKoiForm'
 import Wallet from './wallet'
 
@@ -58,6 +59,11 @@ export const AccountHome = ({ getBalances, accounts }) => {
     history.push('/account/welcome')
   }
 
+  const goToGallery = () => {
+    const url = chrome.extension.getURL('options.html')
+    chrome.tabs.create({ url })
+  }
+
   return (
     <div>
       <GlobalButton onClick={onClickGlobalSendButton} currency={currency} />
@@ -76,6 +82,11 @@ export const AccountHome = ({ getBalances, accounts }) => {
         <div className="button">
           <PlusIcon />
         </div>
+      </div>
+      <div className={'home-gallery-button-wrapper'}>
+        <button onClick={goToGallery} className="gallery-button">
+          Go to My Gallery
+        </button>
       </div>
     </div>
   )

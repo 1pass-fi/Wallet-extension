@@ -29,8 +29,8 @@ const Header = ({ location, setError, koi, accounts }) => {
 
   const history = useHistory()
   /* istanbul ignore next */
-  const onGalleryClick = () => {
-    const url = chrome.extension.getURL('options.html')
+  const onCreateNFTClick = () => {
+    const url = chrome.extension.getURL('options.html#/create')
     chrome.tabs.create({ url })
   }
 
@@ -72,8 +72,8 @@ const Header = ({ location, setError, koi, accounts }) => {
         </button>
         {!NAVBAR_EXCLUDE_PATH.includes(location.pathname) && (
           <>
-            <button onClick={onGalleryClick} className='gallery-button'>
-              Go to Gallery
+            <button onClick={onCreateNFTClick} className='create-nft-button'>
+              Create NFT
             </button>
             <button className='setting-button' onClick={onSettingButtonClick}>
               <SettingIcon /> 
