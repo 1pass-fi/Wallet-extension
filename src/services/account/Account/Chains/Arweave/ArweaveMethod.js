@@ -240,7 +240,9 @@ export class ArweaveMethod {
               activityName = 'Updated KID'
             }
 
-            if (inputFunction.function === 'registerData') {
+            if (inputFunction.function === 'registerData' ||
+                inputFunction.function === 'burnKoi' ||
+                inputFunction.function === 'migratePreRegister') {
               activityName = 'Registered NFT'
               source = null
             }
