@@ -42,7 +42,8 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
     totalKoi,
     account,
     setIsLoading,
-    setShowUploadingModal
+    setShowUploadingModal,
+    setPendingNFTTitle
   } = useContext(GalleryContext)
   const {
     tags,
@@ -98,6 +99,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
       const { txId, time } = await backgroundRequest.gallery.uploadNFT({ content, tags, fileType, address: account.address, price, isNSFW })
       // console.log('RESPONSE DATA', txId, time)
 
+      setPendingNFTTitle(title)
       await storage.generic.set.savedNFTForm({})
       setIsLoading(false)
 
