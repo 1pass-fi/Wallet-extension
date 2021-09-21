@@ -196,13 +196,12 @@ const Popup = ({
 
   const loadSettings = async () => {
     try {
-      const showActivitiesBy = await storage.setting.get.showActivitiesBy()
+      const showActivitiesBy = await storage.setting.get.showActivitiesBy() || SHOW_ACTIVITIES_BY.ALL_ACCOUNTS
       const accountsToShowOnActivities = await storage.setting.get.accountsToShowOnActivities() || []
       const payload = {
         showAllAccounts : showActivitiesBy == SHOW_ACTIVITIES_BY.ALL_ACCOUNTS,
         accountsToShowOnActivities
       }
-      console.log('payload', payload)
       setSettings(payload)
 
     } catch (err) {

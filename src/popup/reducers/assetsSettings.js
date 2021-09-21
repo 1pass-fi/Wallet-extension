@@ -1,8 +1,8 @@
 import { SET_ASSETS_TAB_SETTINGS } from 'actions/types'
 
 const initialState = {
-  showAllAccounts: false,
-  selectAccountsCollapsed: true,
+  showAllAccounts: true,
+  selectAccountsCollapsed: false,
   accountsToShow: [],
 }
 
