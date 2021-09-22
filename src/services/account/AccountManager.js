@@ -1,5 +1,5 @@
 import passworder from 'browser-passworder'
-import { find, get } from 'lodash'
+import { find, get, isEmpty } from 'lodash'
 
 import { Account, ArweaveAccount, EthereumAccount } from './Account/index'
 
@@ -104,10 +104,16 @@ class AccountManager {
     }
   }
 
+  async hasArweave() {
+    const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []
+    return !isEmpty(importedArweave)
+  }
+
   async #getProviderFromAddress(address) {
     const metadata = await this.storage._getChrome(address)
     return get(metadata, ACCOUNT.PROVIDER)
   }
+
 }
 
 /* 
