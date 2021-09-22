@@ -1,14 +1,15 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { union, trim } from 'lodash'
 
 import './index.css'
 import Tag from '../Tag'
 import EditIcon from 'img/edit-icon-collection.svg'
 import { GalleryContext } from 'options/galleryContext'
+import { TYPE } from 'constants/accountConstants'
 
 export default ({tags, setColletionName, setDescription, setTags, collectionName, description}) => {
   const [tagInput, setTagInput] = useState('')
-  const { account, setShowSelectAccount } = useContext(GalleryContext)
+  const { account, setAccount, setShowSelectAccount, arWallets } = useContext(GalleryContext)
 
   const addTag = (e) => {
     const { keyCode } = e
@@ -19,6 +20,12 @@ export default ({tags, setColletionName, setDescription, setTags, collectionName
       setTagInput('')
     }
   }
+
+  useEffect(() => {
+    if(account.type !== TYPE.ARWEAVE){
+      setAccount(arWallets[0])
+    }
+  }, [])
 
   return (
     <div className='input-info'>

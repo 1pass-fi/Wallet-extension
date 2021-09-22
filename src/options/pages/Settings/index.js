@@ -7,6 +7,8 @@ import Security from './Security'
 import About from './About'
 import Wallet from './Wallet'
 
+import HasArweave from 'options/shared/hasArweave'
+
 export default () => {
   return (
     <Switch>
@@ -23,7 +25,9 @@ export default () => {
         <About />
       </Route>
       <Route path='*'>
-        <Kid />
+        <HasArweave content='Koi Identity only supports AR wallets.' checkingDefaultAccount={true}>
+          <Kid />
+        </HasArweave>
       </Route>
     </Switch>
   )

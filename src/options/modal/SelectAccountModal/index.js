@@ -8,7 +8,7 @@ import { GalleryContext } from 'options/galleryContext'
 import storage from 'services/storage'
 
 const SelectAccount = () => {
-  const { setAccount, wallets, account } = useContext(GalleryContext)
+  const { setAccount, arWallets: wallets, account } = useContext(GalleryContext)
 
   const onSelectAccount = async (e) => {
     const selectedAccountName = e.target.value

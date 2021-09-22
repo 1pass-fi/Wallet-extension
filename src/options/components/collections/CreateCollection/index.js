@@ -25,7 +25,7 @@ export default () => {
     setCollectionNFT, 
     setCardInfos,
     setShowCreateCollection,
-    stage, 
+    stage,
     setStage,
     setError,
     demoCollections,

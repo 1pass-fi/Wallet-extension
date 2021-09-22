@@ -6,6 +6,7 @@ import get from 'lodash/get'
 import Checkbox from 'popup/components/shared/checkbox'
 import './index.css'
 import EditIcon from 'img/edit-icon-collection.svg'
+import { TYPE } from 'constants/accountConstants'
 
 import { loadNFTCost } from 'utils'
 
@@ -36,7 +37,7 @@ export default ({
   setClicked
 }) => {
   const { setTags, tags, isFriendCodeValid, price, setPrice } = useContext(UploadContext)
-  const { file, account, setShowSelectAccount } = useContext(GalleryContext)
+  const { file, account, setAccount, setShowSelectAccount, arWallets } = useContext(GalleryContext)
 
   const addTag = (e) => {
     const { keyCode } = e
@@ -58,6 +59,12 @@ export default ({
 
     getPrice()
   }, [file])
+
+  useEffect(() => {
+    if(account.type !== TYPE.ARWEAVE){
+      setAccount(arWallets[0])
+    }
+  }, [])
 
   if (stage == 1) {
     return (

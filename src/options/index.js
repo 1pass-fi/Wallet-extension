@@ -48,13 +48,17 @@ const Gallery = () => {
             <Faucet />
           </Route>
           <Route exact path='/friends'>
-            <Friends />
+            <HasArweave content='This feature only supports AR wallets' checkingDefaultAccount={true}>
+              <Friends />
+            </HasArweave>
           </Route>
           <Route exact path='/collections/:collectionId'>
             <CollectionDetails />
           </Route>
           <Route exact path='/collections'>
-            <Collections />
+            <HasArweave content='This feature only supports AR wallets'>
+              <Collections />
+            </HasArweave>
           </Route>
           <Route path='/settings'>
             <Settings />
