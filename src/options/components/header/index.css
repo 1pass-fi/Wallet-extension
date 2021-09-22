@@ -66,7 +66,7 @@
   display: flex;
   align-items: center;
   background: #ffffff;
-  border: 1.5px solid #171753;
+  /* border: 1.5px solid #171753; */
   box-sizing: border-box;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
   border-radius: 4px;
@@ -101,9 +101,9 @@
   position: absolute;
   right: -1px;
   top: 0px;
-  padding: 8.5px;
+  padding: 8.5px 8.5px 8.3px 8.5px;
   box-sizing: border-box;
-  height: 36.5px;
+  height: 36.1px;
   width: 36.5px;
 }
 

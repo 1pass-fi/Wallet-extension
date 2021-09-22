@@ -210,7 +210,7 @@ export default ({nfts, tags, collectionName, description, stage}) => {
       {/* INFO */}
       <div className='info'>
         <div className='nft-title'>
-          <div className='edit-icon'><EditIcon /></div>
+          {/* <div className='edit-icon'><EditIcon /></div> */}
           <>{collectionName}</>
         </div>
         <div className='description'>{description}</div>
