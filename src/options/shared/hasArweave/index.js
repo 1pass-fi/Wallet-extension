@@ -6,7 +6,7 @@ import './index.css'
 import { GalleryContext } from 'options/galleryContext'
 
 const ArweaveOnly = ({ content }) => {
-  return <div class='ar-only-message'>{content}</div>
+  return <div className='ar-only-message'>{content}</div>
 }
 
 export default (({ children, content, checkingDefaultAccount }) => {
@@ -21,5 +21,5 @@ export default (({ children, content, checkingDefaultAccount }) => {
     showArweaveForm()
   }, [])
 
-  return ((checkingDefaultAccount && account.TYPE !== TYPE.ARWEAVE) || !hasArWallet) ? <ArweaveOnly content={content}/> : children
+  return ((checkingDefaultAccount && account.type !== TYPE.ARWEAVE) || !hasArWallet) ? <ArweaveOnly content={content} /> : children
 })
