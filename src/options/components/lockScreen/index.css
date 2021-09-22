@@ -5,12 +5,13 @@
 }
 
 .lock-Screen {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
   color: #ffffff;
+  text-align: center;
   letter-spacing: 0.05em;
   font-size: 28px;
   font-weight: 600;
-  line-height: 45;
+  top: 50%;
+  position:absolute ;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
