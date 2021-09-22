@@ -1,4 +1,4 @@
-export const IS_SHOW_ETHEREUM = true
+export const SHOW_ETHEREUM = true
 
 export const LOAD_KOI_BY = {
   ADDRESS: 'address',
