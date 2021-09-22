@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
+import { TYPE } from 'constants/accountConstants'
 import { popupAccount } from 'services/account'
 import './index.css'
+import { GalleryContext } from 'options/galleryContext'
 
 const ArweaveOnly = ({ content }) => {
   return <div class='ar-only-message'>{content}</div>
 }
 
-export default (({ children, content }) => {
+export default (({ children, content, checkingDefaultAccount }) => {
   const [hasArWallet, setHasArWallet] = useState(false)
+  const { account } = useContext(GalleryContext)
+
   useEffect(() => {
     const showArweaveForm = async () => {
       setHasArWallet(await popupAccount.hasArweave())
@@ -17,10 +21,5 @@ export default (({ children, content }) => {
     showArweaveForm()
   }, [])
 
-  useEffect(() => {
-    console.log('HAS AR WALLET', hasArWallet)
-  }, [hasArWallet])
-
-
-  return !hasArWallet ? <ArweaveOnly content={content}/> : children
+  return ((checkingDefaultAccount && account.TYPE !== TYPE.ARWEAVE) || !hasArWallet) ? <ArweaveOnly content={content}/> : children
 })
