@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
-import { Link } from 'react-router-dom'
 
 // assets
 import KoiIcon from 'img/koi-logo.svg'
@@ -83,13 +82,13 @@ const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {
           label={'Unlock'}
           onClick={handleOnSubmit}
         />
-        <div className='seed-phrase'>
+        {/* <div className='seed-phrase'>
           Import my account using my&nbsp;
           <Link to='/account/login/phrase' className='link-to-seed-phrase'>
             seed phrase
           </Link>
           {'.'}
-        </div>
+        </div> */}
       </div>
     </div>
   )
