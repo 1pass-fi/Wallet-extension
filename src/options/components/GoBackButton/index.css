@@ -1,7 +1,3 @@
 .goback-button {
-    cursor: pointer;
-    height: 16px;
-    position: absolute;
-    left: 10px;
-    width: 16px;
-  }
+  cursor: pointer;
+}

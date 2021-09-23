@@ -98,6 +98,7 @@ export default () => {
       <div className='import-wallet-wrapper'>
         {isLoading && <Loading />}
         <div className='import-wallet'>
+          <GoBackBtn goToPreviousStep={previousStep} />
           {step === 1 && (
             <>
               <div className='title'>
@@ -130,22 +131,10 @@ export default () => {
                   onClick={() => onTypeSelect(TYPE.ETHEREUM)}
                 />}
               </div>
-              <GoBackBtn goToPreviousStep={previousStep} />
             </>
           )}
 
-          {step === 2 && (
-            // <SelectEthereumNetwork
-            //   title={() => <div className='title'>Import Ethereum Key</div>}
-            //   description={() => (
-            //     <div className='description'>Choose your Network.</div>
-            //   )}
-            // />
-            <>
-              <EthereumNetworks onSubmit={nextStep} />
-              <GoBackBtn goToPreviousStep={previousStep} />
-            </>
-          )}
+          {step === 2 && <EthereumNetworks onSubmit={nextStep} />}
 
           {step === 3 && (
             <>
@@ -180,7 +169,6 @@ export default () => {
               >
                 Import Key
               </Button>
-              <GoBackBtn goToPreviousStep={previousStep} />
             </>
           )}
         </div>

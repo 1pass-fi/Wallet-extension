@@ -39,7 +39,7 @@
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
-  color: #237B75
+  color: #237b75;
 }
 
 .activity-info-row .title .subtitle {
@@ -57,19 +57,6 @@
   white-space: nowrap;
 }
 
-.activity-info-row .activity-status.pending {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #ffffff;
-  border: 1px solid #237b75;
-  box-sizing: border-box;
-  border-radius: 2px;
-  height: 18px;
-  width: 130px;
-  cursor: pointer;
-}
-
 .activity-info-row .activity-status.completed {
   display: flex;
   justify-content: center;
@@ -79,7 +66,15 @@
   box-sizing: border-box;
   border-radius: 2px;
   height: 18px;
-  width: 68px;
+  width: 90px;
+}
+
+.activity-pending {
+  margin-top: 5px;
+  text-decoration: none;
+  font-size: 10px;
+  line-height: 12px;
+  color: #237b75;
 }
 
 .activity-info-row .activity-status.completed > a {

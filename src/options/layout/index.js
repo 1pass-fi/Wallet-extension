@@ -4,6 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
+import get from 'lodash/get'
 
 import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 
@@ -38,6 +39,7 @@ export default ({ children }) => {
   const history = useHistory()
 
   const headerRef = useRef(null)
+  const inputFileRef = useRef(null)
 
   const [wallets, setWallets] = useState([])
   const [arWallets, setArWallets] = useState([])
@@ -340,10 +342,6 @@ export default ({ children }) => {
     setError(message)
   }
   
-
-
-
-
   /* 
     set state timer
   */
@@ -380,7 +378,7 @@ export default ({ children }) => {
     set file stuffs
   */
   useEffect(() => {
-    setFile(acceptedFiles ? acceptedFiles[0] : {})
+    setFile(!isEmpty(acceptedFiles) ? acceptedFiles[0] : {})
     if (!isEmpty(acceptedFiles)) history.push('/create')
   }, [acceptedFiles])
 
@@ -466,6 +464,13 @@ export default ({ children }) => {
   
     handleAddHandler()
   }, [])
+
+  const handleSetFile = (e) => {
+    const file = get(e, 'target.files')[0]
+    if (file) {
+      if (get(file, 'type').includes('image') || get(file, 'type').includes('video')) setFile(file)
+    }
+  }
 
   return (
     <GalleryContext.Provider
@@ -592,8 +597,9 @@ export default ({ children }) => {
               isWaitingAddNFT={isWaitingAddNFT}
               setIsWaitingAddNFT={setIsWaitingAddNFT}
             />}
+            <input onChange={(e) => handleSetFile(e)} type='file' ref={inputFileRef} style={{display: 'none'}}/>
             {children}
-            {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer showDropzone={showDropzone} />}
+            {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer inputFileRef={inputFileRef} showDropzone={showDropzone} />}
             {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />}
           </div> : <LockScreen />}
         </>

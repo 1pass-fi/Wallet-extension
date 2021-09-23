@@ -3,14 +3,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
-import ReactTooltip from 'react-tooltip'
 
 // constants
-import { NOTIFICATION, PATH } from 'constants/koiConstants' 
-
-// actions
-import { setNotification } from 'actions/notification'
+import { PATH } from 'constants/koiConstants'
 
 // utils
 import { transactionAmountFormat } from 'utils'
@@ -27,7 +22,7 @@ const propTypes = {
   source: PropTypes.string,
 }
 
-const ActivityRow = ({setNotification, activityName, expense, date, source, id, pending, price, currency, accountName, pendingConfirmation }) => {
+const ActivityRow = ({ activityName, expense, date, source, id, pending, price, currency, accountName, pendingConfirmation }) => {
   const dateFormat = (date) => {
     return moment(date).format('MMMM Do, YYYY')
   }
@@ -49,21 +44,12 @@ const ActivityRow = ({setNotification, activityName, expense, date, source, id, 
             }
           </div>
           <div className='account-name'>{accountName}</div>
-          {pending ? (
-            <div onClick={() => {setNotification(NOTIFICATION.TRANSACTION_COPIED)}} className='activity-status pending'>
-              <CopyToClipboard text={id}>
-                <div data-tip='Copy id' className="icon">
-                  transaction pending
-                </div>
-              </CopyToClipboard>
-            </div>
-          ) : (
-            <div className='activity-status completed'>
-              <a target="_blank" href={`${PATH.VIEW_BLOCK_TRANSACTION}/${id}`}>
-                {pendingConfirmation ? 'pending confirmation' : 'view block'}
-              </a>
-            </div>
-          )}
+          <div className='activity-status completed'>
+            <a target="_blank" href={`${PATH.VIEW_BLOCK_TRANSACTION}/${id}`}>
+              {pendingConfirmation ? 'pending confirmation' : 'block explore'}
+            </a>
+          </div>
+          { pending && <div className='activity-pending'>Transaction pending</div> }
         </div>
         <div className='activity-info-row'>
           <div className='activity-expense'>{ (expense != null && expense > 0) ? sign : ''}{transactionAmountFormat(expense)} {token}</div>
@@ -73,7 +59,6 @@ const ActivityRow = ({setNotification, activityName, expense, date, source, id, 
           <div className='activity-date'>{ dateFormat(date) }</div>
         </div>
       </div>
-      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }
@@ -81,6 +66,5 @@ const ActivityRow = ({setNotification, activityName, expense, date, source, id, 
 ActivityRow.propTypes = propTypes
 
 const mapStateToProps = (state) => ({ price: state.price, currency: state.currency })
-const mapDispatchToProps = { setNotification }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActivityRow)
+export default connect(mapStateToProps)(ActivityRow)

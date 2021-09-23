@@ -172,6 +172,7 @@ export default () => {
         {isLoading && <Loading />}
         <div className='create-wallet'>
           <div className='title'>Get a new key</div>
+          <GoBackBtn goToPreviousStep={previousStep} />
           {step === 1 && (
           <>
             {/* <div className='description'>What type of key do you need?</div> */}
@@ -213,16 +214,10 @@ export default () => {
             >
               Create Key
             </button>
-            <GoBackBtn goToPreviousStep={previousStep} />
           </>
           )}
 
-          {step === 2 && (
-          <>
-            <EthereumNetworks onSubmit={nextStep} />
-            <GoBackBtn goToPreviousStep={previousStep} />
-          </>
-          )}
+          {step === 2 && <EthereumNetworks onSubmit={nextStep} />}
 
           {(step === 3 || step === 4) && (
           <>
@@ -283,7 +278,6 @@ export default () => {
                 </div>
               </div>
             </div>
-            <GoBackBtn goToPreviousStep={previousStep} />
           </>
           )}
 
@@ -333,7 +327,6 @@ export default () => {
                 </div>
               </div>
             </div>
-            <GoBackBtn goToPreviousStep={previousStep} />
           </>
           )}
 
@@ -360,7 +353,6 @@ export default () => {
             >
               Create Key
             </Button>
-            <GoBackBtn goToPreviousStep={previousStep} />
           </>
           )}
         </div>
