@@ -46,7 +46,9 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending, price, 
           <div className='account-name'>{accountName}</div>
           <div className='activity-status completed'>
             <a target="_blank" href={`${PATH.VIEW_BLOCK_TRANSACTION}/${id}`}>
-              {pendingConfirmation ? 'pending confirmation' : 'block explore'}
+              {pendingConfirmation
+                ? 'pending confirmation'
+                : `${pending ? 'explore' : 'view'} block`}
             </a>
           </div>
           { pending && <div className='activity-pending'>Transaction pending</div> }
