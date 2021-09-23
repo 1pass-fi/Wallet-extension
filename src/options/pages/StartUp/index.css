@@ -12,7 +12,12 @@
   width: 72px;
   height: 72px;
   position: absolute;
-  top: 25px;
   left: 8px;
   z-index: 1;
+}
+
+.start-up .goback-button {
+  position: fixed;
+  top: 36px;
+  left: 150px;
 }
