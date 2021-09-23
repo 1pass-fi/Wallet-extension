@@ -126,19 +126,19 @@ export default ({
             </div>
           </div>
         )}
+        <div className='nft-name'>{name}</div>
+        {isRegistered && showEarnedKoi ? (
+          <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOII</div>
+        ) : (
+          <></>
+          // <button className='register-button'>
+          //   <KoiIcon className='icon' /> Register &amp; Earn
+          // </button>
+        )}
+        {showViews && <div className='nft-views'>
+          {totalViews} {totalViews > 1 ? 'views' : 'view'}
+        </div>}
       </Link>
-      <div className='nft-name'>{name}</div>
-      {isRegistered && showEarnedKoi ? (
-        <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOII</div>
-      ) : (
-        <></>
-        // <button className='register-button'>
-        //   <KoiIcon className='icon' /> Register &amp; Earn
-        // </button>
-      )}
-      {showViews && <div className='nft-views'>
-        {totalViews} {totalViews > 1 ? 'views' : 'view'}
-      </div>}
       
       {isRegistered && (
         <>

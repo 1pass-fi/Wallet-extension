@@ -67,7 +67,7 @@
 }
 
 .nft-card .nft-img.selected {
-  border: 2px solid #FFC78F;
+  border: 2px solid #ffc78f;
 }
 
 .nft-card .nft-img .nft-img-checked-icon {
@@ -131,4 +131,8 @@
   -webkit-user-drag: none;
   box-sizing: border-box;
   padding-top: 35px;
+}
+
+.nft-card > a {
+  text-decoration: none;
 }
