@@ -278,7 +278,6 @@ export const RATE = {
 export const NOTIFICATION = {
   ADDRESS_COPIED: 'Address copied!',
   SEED_PHRASE_COPIED: 'Seed phrase copied!',
-  TRANSACTION_COPIED: 'Copied transaction id to clipboard',
   KEY_EXPORTED: 'Private key downloaded.',
   ACCOUNT_NAME_UPDATED: 'Account nickname updated.',
   NFT_LOADED: 'Your assets list is up to date.',
