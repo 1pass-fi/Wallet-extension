@@ -5,13 +5,14 @@ import AddButton from 'img/add-button.svg'
 
 import './index.css'
 
-export default ({ showDropzone }) => {
+export default ({ showDropzone, inputFileRef }) => {
   const history = useHistory()
   return (
     <footer className='footer-wrapper'>
       <div className='footer-content'>
         <AddButton className='add-nft-button' onClick={() => {
-          // showDropzone()
+          showDropzone()
+          inputFileRef.current.click()
           history.push('/create')
         }} 
         />
