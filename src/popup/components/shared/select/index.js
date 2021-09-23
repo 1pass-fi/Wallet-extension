@@ -68,7 +68,7 @@ export const Select = ({
                 <button
                   className="option"
                   value={option.value}
-                  key={option.id}
+                  key={option.id + option.label}
                   onClick={handleSelect}
                 >{option.label}</button>
               )

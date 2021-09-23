@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "Your companion forever.",
     "scripts": {
-        "test": "jest --coverage",
+        "test": "jest",
         "start:chrome": "npm run chrome-launch",
         "start:firefox": "npm run firefox-launch",
         "start:views": "node scripts/start.js",
@@ -168,12 +168,6 @@
         ],
         "coveragePathIgnorePatterns": [
             "/node_modules/",
-            "/sidebar/",
-            "/options/",
-            "/libs/",
-            "/background/",
-            "/content_scripts/",
-            "/lib/",
             ".stories.js",
             "extension.js"
         ],
