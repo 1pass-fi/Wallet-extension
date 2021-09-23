@@ -40,6 +40,7 @@ export default ({ children }) => {
   const headerRef = useRef(null)
 
   const [wallets, setWallets] = useState([])
+  const [arWallets, setArWallets] = useState([])
   const [account, setAccount] = useState({})
   const [isDragging, setIsDragging] = useState(false)
   const [cardInfos, setCardInfos] = useState([])
@@ -101,15 +102,18 @@ export default ({ children }) => {
   useEffect(() => {
     const loadWallets = async () => {
       await popupAccount.loadImported()
-      const allData = await popupAccount.getAllMetadata()
-      console.log('allData', allData)
+
+      const allAccounts  = await popupAccount.getAllMetadata()
+      setWallets(allAccounts)
+
+      const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE)
+      setArWallets(arAccounts)
+
       const _isLocked = await backgroundRequest.wallet.getLockState()
 
-      setWallets(allData)
       setWalletLoaded(true)
-
       // go to lock screen if having imported account 
-      if(!isEmpty(allData)){
+      if(!isEmpty(allAccounts)){
         setIsLocked(_isLocked)
       }
     }
@@ -273,6 +277,9 @@ export default ({ children }) => {
       await popupAccount.loadImported()
       const allData = await popupAccount.getAllMetadata()
       setWallets(allData)
+
+      const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE)
+      setArWallets(arAccounts)
     }
 
     if (newAddress) reloadWallets()
@@ -516,7 +523,8 @@ export default ({ children }) => {
         wallets,
         importedAddress,
         setImportedAddress,
-        setNewAddress
+        setNewAddress,
+        arWallets
       }}
     >
       {!isEmpty(wallets) ?

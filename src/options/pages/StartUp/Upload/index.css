@@ -13,9 +13,7 @@
 .upload-file-wrapper .wallet-types {
   margin-top: 64px;
   display: flex;
-  /* TODO LongP hide Ethereum
-  justify-content: space-between; */
-  justify-content: center;
+  justify-content: space-between;
   width: 569px;
 }
 

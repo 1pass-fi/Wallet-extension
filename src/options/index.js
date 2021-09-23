@@ -17,6 +17,8 @@ import UploadWallet from './pages/StartUp/Upload'
 import ImportWallet from './pages/StartUp/Import'
 import CreateWallet from './pages/StartUp/Create'
 
+import HasArweave from 'options/shared/hasArweave'
+
 const Gallery = () => {
   return (
     <Router>
@@ -38,19 +40,25 @@ const Gallery = () => {
             <Details />
           </Route>
           <Route exact path='/create'>
-            <Create />
+            <HasArweave content='This feature only supports AR wallets'>
+              <Create />
+            </HasArweave>
           </Route>
           <Route exact path='/faucet'>
             <Faucet />
           </Route>
           <Route exact path='/friends'>
-            <Friends />
+            <HasArweave content='This feature only supports AR wallets' checkingDefaultAccount={true}>
+              <Friends />
+            </HasArweave>
           </Route>
           <Route exact path='/collections/:collectionId'>
             <CollectionDetails />
           </Route>
           <Route exact path='/collections'>
-            <Collections />
+            <HasArweave content='This feature only supports AR wallets'>
+              <Collections />
+            </HasArweave>
           </Route>
           <Route path='/settings'>
             <Settings />

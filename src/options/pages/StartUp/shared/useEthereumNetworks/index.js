@@ -9,8 +9,8 @@ import './index.css'
 export default ({ title: Title = () => <></>, description: Description = () => <></>}) => {
   const networks = [
     ETH_NETWORK_NAME.MAINNET,
-    ETH_NETWORK_NAME.ROPSTEN,
-    ETH_NETWORK_NAME.KOVAN,
+    // ETH_NETWORK_NAME.ROPSTEN,
+    // ETH_NETWORK_NAME.KOVAN,
     ETH_NETWORK_NAME.RINKEBY
     // 'Ethereum Mainnet',
     // 'Ropsten Test Network',

@@ -1,0 +1,11 @@
+.ar-only-message {
+  color: #ffffff;
+	text-align: center;
+  letter-spacing: 0.05em;
+  font-size: 28px;
+  font-weight: 600;
+  top: 40%;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

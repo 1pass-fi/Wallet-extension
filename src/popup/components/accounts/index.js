@@ -7,7 +7,6 @@ import AccountHome from './accountHome'
 import AccountImport from './accountImport'
 import ConnectToWallet from './connectToWallet'
 import Login from './accountLockScreen'
-import ImportPhraseLockScreen from './importPhraseLockScreen'
 import ConnectSite from './connectToWallet'
 import SignTx from './signTx'
 import WelcomeScreen from './welcomeScreen'
@@ -27,9 +26,6 @@ const Account = () => {
       </Route>
       <Route path='/account/import'>
         <AccountImport />
-      </Route>
-      <Route path='/account/login/phrase'>
-        <ImportPhraseLockScreen />
       </Route>
       <Route path='/account/login'>
         <Login />

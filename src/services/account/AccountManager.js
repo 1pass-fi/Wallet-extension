@@ -1,5 +1,5 @@
 import passworder from 'browser-passworder'
-import { find, get } from 'lodash'
+import { find, get, isEmpty } from 'lodash'
 
 import { Account, ArweaveAccount, EthereumAccount } from './Account/index'
 
@@ -58,13 +58,19 @@ class AccountManager {
    * 
    * @returns 
    */
-  async getAllAccounts() {
+  async getAllAccounts(network) {
     try {
-      const allAccounts = await Promise.all(this.importedAccount.map(async credentials => {
-        return await this.getAccount(credentials)
-      }))
-  
-      return allAccounts
+      if (!network) {
+        const allAccounts = await Promise.all(this.importedAccount.map(async credentials => {
+          return await this.getAccount(credentials)
+        }))
+        return allAccounts
+      } else {
+        let accounts
+        accounts = this.importedAccount.filter(a => a.type == network)
+        accounts = await Promise.all(accounts.map(async credentials => await this.getAccount(credentials)))
+        return accounts
+      }
     } catch (err) {
       console.log(err.message)
     }
@@ -104,10 +110,16 @@ class AccountManager {
     }
   }
 
+  async hasArweave() {
+    const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []
+    return !isEmpty(importedArweave)
+  }
+
   async #getProviderFromAddress(address) {
     const metadata = await this.storage._getChrome(address)
     return get(metadata, ACCOUNT.PROVIDER)
   }
+
 }
 
 /* 
@@ -128,21 +140,9 @@ export class PopupAccountManager extends AccountManager {
     }
   }
 
-  async getAllAccounts() {
+  async getAllMetadata(network) {
     try {
-      const allAccounts = await Promise.all(this.importedAccount.map(async credentials => {
-        return await this.getAccount(credentials)
-      }))
-  
-      return allAccounts
-    } catch (err) {
-      console.log(err.message)
-    }
-  }
-
-  async getAllMetadata() {
-    try {
-      const allAccounts = await this.getAllAccounts()
+      const allAccounts = await this.getAllAccounts(network)
       return await Promise.all(allAccounts.map(async account => await account.get.metadata()))
     } catch (err) {
       console.log(err.message)
@@ -227,7 +227,7 @@ export class BackgroundAccountManager extends AccountManager {
       }
 
       importedWallets = await this.storage._getChrome(chain) || []
-      if (!find(importedWallets, v => v.address == address)) importedWallets.push({ address, encryptedKey })
+      if (!find(importedWallets, v => v.address == address)) importedWallets.push({ address, encryptedKey, type })
       await this.storage._setChrome(chain, importedWallets) // save to wallets array
 
       const newImported = { address, key }

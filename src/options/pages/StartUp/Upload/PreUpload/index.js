@@ -7,7 +7,7 @@ import WalletType from '../../shared/WalletType'
 import GoBackBtn from 'options/components/GoBackButton'
 
 import { TYPE } from 'constants/accountConstants'
-import { IS_SHOW_ETHEREUM } from 'constants/koiConstants'
+import { SHOW_ETHEREUM } from 'constants/koiConstants'
 
 
 export default ({ nextStep, setWalletType, previousStep}) => {
@@ -35,7 +35,7 @@ export default ({ nextStep, setWalletType, previousStep}) => {
           }}
         />
 
-        {IS_SHOW_ETHEREUM && <WalletType
+        {SHOW_ETHEREUM && <WalletType
           icon={EthereumLogo}
           title={(props) => <div {...props}>Ethereum Key</div>}
           description={(props) => (
