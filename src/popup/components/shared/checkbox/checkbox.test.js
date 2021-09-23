@@ -5,24 +5,6 @@ import React from 'react'
 import Checkbox from '.'
 
 describe('Test for Checkbox component', () => {
-  describe('with empty label', () => {
-    it('render correctly', () => {
-      const { container } = render(<Checkbox />)
-      expect(container).toMatchSnapshot('empty-label')
-      const label = container.getElementsByClassName('checkbox-label')
-      expect(label.length).toEqual(0)
-    })
-  }) 
-
-  describe('with non empty label', () => {
-    it('render correctly', () => {
-      const { container } = render(<Checkbox label='label'/>)
-      expect(container).toMatchSnapshot('non-empty-label')
-      const label = container.getElementsByClassName('checkbox-label')
-      expect(label[0].innerHTML).toEqual('label')
-    })
-  })
-
   describe('clicked checkbox ', () => {
     describe('with allow green background on checked', () => {
       it('toogle checkmark visibility states and checkbox background color', () => {

@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import SendKoiForm from '.'
 import { TYPE } from 'constants/accountConstants'
 import { makeTransfer } from 'actions/koi'
-import { ERROR_MESSAGE, WARNING_MESSAGE, PATH } from 'constants/koiConstants'
+import { ERROR_MESSAGE, PATH } from 'constants/koiConstants'
 import rootReducer from 'popup/reducers'
 import { act, fireEvent, render, screen } from 'popup/test-utils'
 
@@ -323,9 +323,7 @@ describe('SendKoiForm component', () => {
 
           await submitForm()
 
-          expect(store.getState().warning).toEqual(
-            WARNING_MESSAGE.SEND_ZERO_KOI
-          )
+          expect(store.getState().error).toEqual(ERROR_MESSAGE.SEND_ZERO_KOI)
         })
       })
     })
