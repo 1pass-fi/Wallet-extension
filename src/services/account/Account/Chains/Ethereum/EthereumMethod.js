@@ -29,7 +29,9 @@ export class EthereumMethod {
     try {
       console.log('ETH ADDRESS', this.eth.address)
       console.log('ETH PROVIDER', this.eth.provider)
-      const { data: ethContents } = await axios.get('https://rinkeby-api.opensea.io/api/v1/assets?owner=0xb6F8a936dd47F924999C1fd25f22EE18e4A74d2C&order_direction=desc&offset=0&limit=50')
+      let path = PATH.OPENSEA_API_MAINNET
+      if ((this.eth.provider).includes('rinkeby')) path = PATH.OPENSEA_API_RINEKY
+      const { data: ethContents } = await axios.get(`${path}/assets?owner=${this.eth.address}&order_direction=desc&offset=0&limit=50`)
       console.log({ ethContents })
 
       // const ethContent = get(ethContents, 'assets').filter(asset => get(asset, 'owner.address').toUpperCase() === this.eth.address.toUpperCase()).map(asset => asset)

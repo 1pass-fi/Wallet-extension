@@ -253,9 +253,8 @@ export default async (koi, port, message, ports, resolveId, sender) => {
             const { permissionId } = resolveId
 
             const savedAccountCount = await backgroundAccount.count()
-            let hasAccount = !isEmpty(backgroundAccount.importedAccount)
 
-            if (!hasAccount && !savedAccountCount) {
+            if (!savedAccountCount) {
               const path = '/options.html'
               const url = chrome.extension.getURL(path)
               port.postMessage({
@@ -265,6 +264,17 @@ export default async (koi, port, message, ports, resolveId, sender) => {
               })
               chrome.tabs.create({ url })
               return
+            } else {
+              const arWalletCount = await backgroundAccount.count(TYPE.ARWEAVE)
+              if (!arWalletCount) {
+                port.postMessage({
+                  type: MESSAGES.CONNECT_ERROR,
+                  data: {status: 401, data: 'Please import an Arweave wallet to Finnie.'},
+                  id
+                })
+  
+                return
+              }
             }
   
             if (!hadPermission) {
@@ -352,17 +362,29 @@ export default async (koi, port, message, ports, resolveId, sender) => {
               check for having 0 imported account
             */
             const savedAccountCount = await backgroundAccount.count()
-            let hasImportedAccount = !isEmpty(backgroundAccount.importedAccount)
-            if (!hasImportedAccount && !savedAccountCount) {
+            if (!savedAccountCount) {
               const path = '/options.html'
               const url = chrome.extension.getURL(path)
               port.postMessage({
-                type: MESSAGES.CONNECT_ERROR,
-                data: 'Please import your wallet.',
+                type: MESSAGES.KOI_CONNECT_SUCCESS,
+                data: {status: 401, data: 'Please import your wallet.'},
                 id
               })
               chrome.tabs.create({ url })
               return
+            } else {
+              const arWalletCount = await backgroundAccount.count(TYPE.ARWEAVE)
+              console.log('arWalletCount', arWalletCount)
+              if (!arWalletCount) {
+                console.log('RUNNNNN')
+                port.postMessage({
+                  type: MESSAGES.KOI_CONNECT_SUCCESS,
+                  data: {status: 401, data: 'Please import an Arweave wallet to Finnie.'},
+                  id
+                })
+  
+                return
+              }
             }
             
             if (!hadPermission) {

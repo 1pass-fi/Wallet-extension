@@ -99,11 +99,18 @@ class AccountManager {
     }
   }
 
-  async count() {
+  async count(network) {
     try {
       const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []
       const importedEthereum = await this.storage._getChrome(IMPORTED.ETHEREUM) || []
-  
+      
+      switch(network) {
+        case TYPE.ARWEAVE:
+          return importedArweave.length
+        case TYPE.ETHEREUM:
+          return importedEthereum.length
+      }
+      
       return importedArweave.length + importedEthereum.length
     } catch (err) {
       console.log(err.message)

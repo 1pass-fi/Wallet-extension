@@ -9,7 +9,6 @@ import PlusIcon from 'img/plus-icon-outline.svg'
 
 // components
 import Card from 'shared/card'
-import WalletTypeSelection from './WalletTypeSelection'
 
 // utils
 import { getChromeStorage } from 'utils'
@@ -121,19 +120,10 @@ export default () => {
 
   return (
     <div className='account-import'>
-      {popupPath ? (
-        <WalletTypeSelection
-          triggerPopup={triggerPopup}
-          popupPath={popupPath}
-        />
-      ) : (
-        <>
-          <div className='get-started'>Let’s get started.</div>
-          {selections.map((content) => (
-            <CardOption {...content} />
-          ))}
-        </>
-      )}
+      <div className='get-started'>Let’s get started.</div>
+      {selections.map((content) => (
+        <CardOption {...content} />
+      ))}
     </div>
   )
 }

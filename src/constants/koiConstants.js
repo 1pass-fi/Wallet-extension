@@ -211,7 +211,10 @@ export const PATH = {
   AFFILIATE_CLAIM_REWARD: 'https://koi.rocks:8888/api/v1/cliamReward',
   AFFILIATE_REGISTRATION_REWARD: 'https://koi.rocks:8888/api/v1/freeRegistrationReward',
   AFFILIATE_SUBMIT_CODE: 'https://koi.rocks:8888/api/v1/submitCode',
-  AFFILIATE_TOTAL_REWARD: 'https://koi.rocks:8888/api/v1/totalRewardForAffiliate'
+  AFFILIATE_TOTAL_REWARD: 'https://koi.rocks:8888/api/v1/totalRewardForAffiliate',
+  // Opensea nft APIs
+  OPENSEA_API_RINEKY: 'https://rinkeby-api.opensea.io/api/v1',
+  OPENSEA_API_MAINNET: 'https://api.opensea.io/api/v1'
 }
 
 export const ERROR_MESSAGE = {

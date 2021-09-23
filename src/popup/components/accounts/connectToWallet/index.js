@@ -15,20 +15,23 @@ import { connectSite } from 'actions/koi'
 
 // constants
 import { ERROR_MESSAGE } from 'constants/koiConstants'
+import { TYPE } from 'constants/accountConstants'
 
 // services
 import storage from 'services/storage'
 
 // styles
 import './index.css'
+import { popupAccount } from 'services/account'
 
 
-export const ConnectToWallet = ({ setError, connectSite, accounts }) => {
+export const ConnectToWallet = ({ setError, connectSite }) => {
   const [checkedAddress, setCheckedAddress] = useState('')
 
   const [origin, setOrigin] = useState('')
   const [favicon, setFavicon] = useState('')
   const [step, setStep] = useState(1)
+  const [accounts, setAccounts] = useState([])
 
   const history = useHistory()
 
@@ -74,7 +77,13 @@ export const ConnectToWallet = ({ setError, connectSite, accounts }) => {
       setFavicon(requestFavicon)
     }
 
+    const loadArAccounts = async () => {
+      const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE) || []
+      setAccounts(arAccounts)
+    }
+
     loadRequest()
+    loadArAccounts()
   }, [])
 
   return (
