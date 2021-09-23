@@ -168,12 +168,6 @@
         ],
         "coveragePathIgnorePatterns": [
             "/node_modules/",
-            "/sidebar/",
-            "/options/",
-            "/libs/",
-            "/background/",
-            "/content_scripts/",
-            "/lib/",
             ".stories.js",
             "extension.js"
         ],
