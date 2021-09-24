@@ -5,6 +5,7 @@ import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
 import get from 'lodash/get'
+import find from 'lodash/find'
 
 import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 
@@ -25,6 +26,7 @@ import ExportNFT from 'options/modal/exportNFT'
 import Welcome from 'options/modal/welcomeScreen'
 import UploadingNFT from 'options/modal/UploadingNFT'
 import SuccessUploadNFT from 'options/modal/SuccessUploadNFT'
+import TransferNFT from 'options/modal/TransferNFT'
 
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect } from 'services/request/popup'
@@ -72,6 +74,7 @@ export default ({ children }) => {
   const [showUploadingModal, setShowUploadingModal] = useState(false)
   const [showSuccessUploadModal, setShowSuccessUploadModal] = useState(false)
   const [showUploadedIcon, setShowUploadedIcon] = useState(false)
+  const [showTransferNFT, setShowTransferNFT] = useState({ show: false })
 
   const [demoCollections, setDemoCollections] = useState([])
   const [collections, setCollections] = useState([])
@@ -472,6 +475,12 @@ export default ({ children }) => {
     }
   }
 
+  // NFT sharing
+  const handleShareNFT = (txId) => {
+    const toShareNFT = find(cardInfos, { txId })
+    setShowTransferNFT({show: true, cardInfo: toShareNFT})
+  }
+
   return (
     <GalleryContext.Provider
       value={{
@@ -485,6 +494,7 @@ export default ({ children }) => {
         collectionsLoaded,
         demoCollections,
         file,
+        handleShareNFT,
         inviteSpent,
         isDragging,
         isWaitingAddNFT,
@@ -518,6 +528,7 @@ export default ({ children }) => {
         setStage,
         setTotalPage,
         showCreateCollection,
+        showTransferNFT,
         showEarnedKoi,
         showViews,
         stage,
@@ -561,6 +572,15 @@ export default ({ children }) => {
                 info={showExportModal}
                 onClose={() => {
                   setShowExportModal(false)
+                }}
+              />
+            )}
+
+            {showTransferNFT.show && (
+              <TransferNFT
+                cardInfo={showTransferNFT.cardInfo}
+                onClose={() => {
+                  setShowTransferNFT({show: false})
                 }}
               />
             )}

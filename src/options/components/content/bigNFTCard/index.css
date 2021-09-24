@@ -155,7 +155,7 @@
   margin-left: 33px;
 }
 
-.big-nft-card .info .share-embed {
+.big-nft-card .info .share-transfer {
   color: #171753;
   display: flex;
   flex-direction: row;
@@ -166,16 +166,22 @@
   position: relative;
 }
 
-.big-nft-card .info .share-embed .share-button {
+.big-nft-card .info .share-transfer .share-button {
   background: #ffc78f;
   border-radius: 2px;
   border: 0;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
   cursor: pointer;
   width: 247px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  text-align: center;
 }
 
-.big-nft-card .info .share-embed .embed-button {
+.big-nft-card .info .share-transfer .transfer-button {
   background: #ffffff;
   border-radius: 2px;
   border: 0;
@@ -183,33 +189,37 @@
   cursor: pointer;
   margin-left: 13px;
   width: 103px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  text-align: center;
 }
 
-.big-nft-card .info .share-embed .embed-button:disabled {
+.big-nft-card .info .share-transfer .transfer-button:disabled {
   cursor: not-allowed;
-} 
+}
 
 .big-nft-card .info .social-icons {
   display: flex;
   flex-direction: row;
-  gap: 50px;
+  gap: 48px;
   margin-top: 17px;
+  justify-content: center;
+  align-items: center;
 }
 
 .big-nft-card .info .social-icons .social-icon {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  max-height: 32px;
   cursor: pointer;
 }
 
-
-.big-nft-card .info .share-embed .copy-noti{
+.big-nft-card .info .copy-noti {
   font-size: 14px;
   line-height: 16px;
   color: #ffc78f;
-  right: -100px;
-  top: 8px;
-  position: absolute;
   width: 80px;
   height: 30px;
   white-space: nowrap;
