@@ -109,7 +109,7 @@ export const AccountInfo = (({
         {(account.type == TYPE.ETHEREUM || !collapsed) && 
           <div className='ar-balance'>
             <div className='balance'>{numberFormat(account.balance)} {account.type == TYPE.ARWEAVE ? 'AR' : 'ETH'}</div>
-            {<div className='usd-exchange'>{getSymbolFromCurrency(currency) || ''}{fiatCurrencyFormat(account.balance * price.AR)} {currency}</div>}
+            {account.type == TYPE.ARWEAVE && <div className='usd-exchange'>{getSymbolFromCurrency(currency) || ''}{fiatCurrencyFormat(account.balance * price.AR)} {currency}</div>}
           </div>
         }
       </div>

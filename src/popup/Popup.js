@@ -115,7 +115,7 @@ const Popup = ({
     */
     const pendingRequest = await storage.generic.get.pendingRequest()
 
-    /* 
+    /*
       When there's no imported account, redirect to welcome screen
       If not unlocked, redirect to lock screen
       Click on add account, go to welcome screen

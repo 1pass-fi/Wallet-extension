@@ -303,6 +303,7 @@ export class BackgroundAccountManager extends AccountManager {
         throw new Error(ERROR_MESSAGE.PASSWORD_REQUIRED)
       }
     } catch (err) {
+      this.importedAccount = []
       throw new Error(err.message)
     }
   }
