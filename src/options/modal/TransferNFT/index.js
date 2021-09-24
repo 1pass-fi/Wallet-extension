@@ -136,12 +136,17 @@ export default ({
     address,
   },
 }) => {
+  let validName = name
+  if (name.length > 14){
+    validName = name.slice(0,12) + '...'
+  }
+
   return (
     <div>
       <Modal onClose={onClose}>
         <TransferNFT
           txId={txId}
-          name={name}
+          name={validName}
           imageUrl={imageUrl}
           earnedKoi={earnedKoi}
           totalViews={totalViews}
