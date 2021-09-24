@@ -5,6 +5,7 @@ import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
 import get from 'lodash/get'
+import find from 'lodash/find'
 
 import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 
@@ -475,8 +476,9 @@ export default ({ children }) => {
   }
 
   // NFT sharing
-  const handleShareNFT = () => {
-    setShowTransferNFT({show: true})
+  const handleShareNFT = (txId) => {
+    const toShareNFT = find(cardInfos, { txId })
+    setShowTransferNFT({show: true, cardInfo: toShareNFT})
   }
 
   return (
@@ -576,11 +578,7 @@ export default ({ children }) => {
 
             {showTransferNFT.show && (
               <TransferNFT
-                name={'Fortune Cookie'}
-                imageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgoiKZ08vHhWH8Gbny1XV5XKyoP5ELhZHxqg&usqp=CAU"
-                ownerName="Kaylakroot"
-                earnedKoi={123}
-                totalViews={95}
+                cardInfo={showTransferNFT.cardInfo}
                 onClose={() => {
                   setShowTransferNFT({show: false})
                 }}

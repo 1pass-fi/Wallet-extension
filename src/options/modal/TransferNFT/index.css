@@ -34,12 +34,22 @@
   flex-direction: column;
 }
 
-.transfer-nft.container .asset-info img {
+.transfer-nft.container .asset-info .nft-img {
   width: 208px;
   height: 208px;
   object-fit: contain;
   background: #020221;
   border-radius: 4px;
+}
+
+.transfer-nft.container .asset-info .nft-img-iframe {
+  overflow: hidden;
+  width: 208px;
+  height: 208px;
+  background: #020221;
+  -webkit-user-drag: none;
+  box-sizing: border-box;
+  padding-top: 35px;
 }
 
 .transfer-nft.container .asset-info .asset-name {

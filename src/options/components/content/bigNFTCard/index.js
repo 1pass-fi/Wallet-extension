@@ -146,7 +146,7 @@ export default ({
             >
               Share
             </button>
-            <button onClick={handleShareNFT} className='transfer-button'>
+            <button onClick={() => handleShareNFT(txId)} className='transfer-button'>
               Send
             </button>
           </div>}
