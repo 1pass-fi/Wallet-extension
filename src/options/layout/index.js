@@ -25,6 +25,7 @@ import ExportNFT from 'options/modal/exportNFT'
 import Welcome from 'options/modal/welcomeScreen'
 import UploadingNFT from 'options/modal/UploadingNFT'
 import SuccessUploadNFT from 'options/modal/SuccessUploadNFT'
+import TransferNFT from 'options/modal/TransferNFT'
 
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect } from 'services/request/popup'
@@ -72,6 +73,7 @@ export default ({ children }) => {
   const [showUploadingModal, setShowUploadingModal] = useState(false)
   const [showSuccessUploadModal, setShowSuccessUploadModal] = useState(false)
   const [showUploadedIcon, setShowUploadedIcon] = useState(false)
+  const [showTransferNFT, setShowTransferNFT] = useState({ show: false })
 
   const [demoCollections, setDemoCollections] = useState([])
   const [collections, setCollections] = useState([])
@@ -472,6 +474,11 @@ export default ({ children }) => {
     }
   }
 
+  // NFT sharing
+  const handleShareNFT = () => {
+    setShowTransferNFT({show: true})
+  }
+
   return (
     <GalleryContext.Provider
       value={{
@@ -485,6 +492,7 @@ export default ({ children }) => {
         collectionsLoaded,
         demoCollections,
         file,
+        handleShareNFT,
         inviteSpent,
         isDragging,
         isWaitingAddNFT,
@@ -518,6 +526,7 @@ export default ({ children }) => {
         setStage,
         setTotalPage,
         showCreateCollection,
+        showTransferNFT,
         showEarnedKoi,
         showViews,
         stage,
@@ -561,6 +570,19 @@ export default ({ children }) => {
                 info={showExportModal}
                 onClose={() => {
                   setShowExportModal(false)
+                }}
+              />
+            )}
+
+            {showTransferNFT.show && (
+              <TransferNFT
+                name={'Fortune Cookie'}
+                imageUrl="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgoiKZ08vHhWH8Gbny1XV5XKyoP5ELhZHxqg&usqp=CAU"
+                ownerName="Kaylakroot"
+                earnedKoi={123}
+                totalViews={95}
+                onClose={() => {
+                  setShowTransferNFT({show: false})
                 }}
               />
             )}

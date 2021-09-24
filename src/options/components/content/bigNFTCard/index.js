@@ -45,6 +45,7 @@ export default ({
     setShowShareModal,
     showViews,
     showEarnedKoi,
+    handleShareNFT
   } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const { registeredDate, tags } = {
@@ -145,7 +146,7 @@ export default ({
             >
               Share
             </button>
-            <button className='transfer-button'>
+            <button onClick={handleShareNFT} className='transfer-button'>
               Send
             </button>
           </div>}

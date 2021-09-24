@@ -195,12 +195,11 @@
   line-height: 24px;
   letter-spacing: -0.01em;
   text-align: center;
-
 }
 
 .big-nft-card .info .share-transfer .transfer-button:disabled {
   cursor: not-allowed;
-} 
+}
 
 .big-nft-card .info .social-icons {
   display: flex;
@@ -217,7 +216,7 @@
   cursor: pointer;
 }
 
-.big-nft-card .info .copy-noti{
+.big-nft-card .info .copy-noti {
   font-size: 14px;
   line-height: 16px;
   color: #ffc78f;
