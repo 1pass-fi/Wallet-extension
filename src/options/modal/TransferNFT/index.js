@@ -1,28 +1,51 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import Modal from 'options/shared/modal'
 import TransferFrom from './TransferForm'
 import ConfirmTransfer from './ConfirmTransfer'
+import TransferSuccess from './TransferSuccess'
 
+import { GalleryContext } from 'options/galleryContext'
 import { formatNumber } from 'options/utils'
+import { popupBackgroundRequest } from 'services/request/popup'
 
 import './index.css'
 
 const TransferNFT = ({
   txId,
-  ownerName,
   name,
   imageUrl,
   earnedKoi,
   totalViews,
   contentType,
+  address,
+  onClose,
 }) => {
-  const [stage, setStage] = useState(1)
+  const { setError } = useContext(GalleryContext)
 
+  const [stage, setStage] = useState(1)
   const [receiverAddress, setReceiverAddress] = useState('')
   const [numberToTransfer, setNumberToTransfer] = useState(1)
+  const [sendBtnDisable, setSendBtnDisable] = useState(false)
 
-  const handleBtnClick = () => setStage((stage) => stage + 1)
+  const goToNextStage = () => setStage((stage) => stage + 1)
+
+  const handleTransferNFT = async () => {
+    try {
+      setSendBtnDisable(true)
+      const res = await popupBackgroundRequest.gallery._transferNFT({
+        nftId: txId,
+        senderAddress: address,
+        recipientAddress: receiverAddress,
+      })
+
+      setSendBtnDisable(false)
+      goToNextStage()
+    } catch (error) {
+      setSendBtnDisable(false)
+      setError('Whoops! Something went wrong!')
+    }
+  }
 
   return (
     <div className="transfer-nft wrapper">
@@ -35,6 +58,7 @@ const TransferNFT = ({
         )}
 
         {stage === 2 && <>Confirm your Transfer</>}
+        {stage === 3 && <>The NFT is on its way!</>}
       </div>
 
       <div className="transfer-nft container">
@@ -75,14 +99,23 @@ const TransferNFT = ({
               setReceiverAddress={setReceiverAddress}
               numberToTransfer={numberToTransfer}
               setNumberToTransfer={setNumberToTransfer}
-              handleBtnClick={handleBtnClick}
+              handleBtnClick={goToNextStage}
             />
           )}
-
           {stage === 2 && (
             <ConfirmTransfer
               receiverAddress={receiverAddress}
               goBack={() => setStage(1)}
+              handleBtnClick={async () => await handleTransferNFT()}
+              sendBtnDisable={sendBtnDisable}
+            />
+          )}
+
+          {stage === 3 && (
+            <TransferSuccess
+              name={name}
+              receiverAddress={receiverAddress}
+              onClose={onClose}
             />
           )}
         </div>
@@ -93,7 +126,15 @@ const TransferNFT = ({
 
 export default ({
   onClose,
-  cardInfo: { txId, name, imageUrl, earnedKoi, totalViews, contentType },
+  cardInfo: {
+    txId,
+    name,
+    imageUrl,
+    earnedKoi,
+    totalViews,
+    contentType,
+    address,
+  },
 }) => {
   return (
     <div>
@@ -101,11 +142,12 @@ export default ({
         <TransferNFT
           txId={txId}
           name={name}
-          ownerName={'Kayla'}
           imageUrl={imageUrl}
           earnedKoi={earnedKoi}
           totalViews={totalViews}
           contentType={contentType}
+          address={address}
+          onClose={onClose}
         />
       </Modal>
     </div>

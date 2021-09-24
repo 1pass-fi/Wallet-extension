@@ -1,19 +1,27 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 
 import WarningIcon from 'img/warning-icon-outline.svg'
-import EditIcon from 'img/edit-icon-collection.svg'
+import CheckIcon from 'img/green-tick.svg'
 import './index.css'
 
-const ConfirmTransfer = ({
-  receiverAddress,
-  goBack,
-  handleBtnClick,
-  sendBtnDisable,
-}) => {
-  return (
-    <div className="confirm-transfer">
-      <div className="label">Receiver's Wallet Address:</div>
+const TransferSuccess = ({ receiverAddress, name, onClose }) => {
+  const history = useHistory()
 
+  const backToGallery = () => {
+    onClose()
+    history.push('/')
+  }
+
+  return (
+    <div className="transfer-success">
+      <div className="green-tick">
+        <CheckIcon />
+      </div>
+      <div className="label">
+        <span className="asset-name">{name}</span> has been sent successfully
+        to:
+      </div>
       <div className="receiver-field">
         <div className="receiver-address">
           {receiverAddress.length > 24
@@ -21,9 +29,6 @@ const ConfirmTransfer = ({
               receiverAddress.length - 4
             )}`
             : receiverAddress}
-        </div>
-        <div className="edit-icon" onClick={goBack}>
-          <EditIcon />
         </div>
       </div>
 
@@ -37,15 +42,11 @@ const ConfirmTransfer = ({
         </div>
       </div>
 
-      <button
-        className="submit-btn"
-        onClick={handleBtnClick}
-        disabled={sendBtnDisable}
-      >
-        Send My NFT
+      <button className="submit-btn" onClick={backToGallery}>
+        Back To Gallery
       </button>
     </div>
   )
 }
 
-export default ConfirmTransfer
+export default TransferSuccess
