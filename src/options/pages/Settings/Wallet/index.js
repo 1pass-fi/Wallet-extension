@@ -132,7 +132,7 @@ export default () => {
           <div className='display-order item'>
             <div className='title'>Wallet Priority</div>
             <div className='description'>
-              Organize your wallet display (click and drag a wallet to move it).
+              Organize your default wallet
             </div>
             <AccountOrder accounts={wallets} setAccounts={setWallets} />
           </div>

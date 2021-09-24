@@ -34,22 +34,6 @@ export default ({ nextStep, setWalletType, previousStep}) => {
             nextStep()
           }}
         />
-
-        {SHOW_ETHEREUM && <WalletType
-          icon={EthereumLogo}
-          title={(props) => <div {...props}>Ethereum Key</div>}
-          description={(props) => (
-            <div {...props}>
-                    Ethereum keys are great for&nbsp;
-              <span>cross-chain transactions</span>.
-            </div>
-          )}
-          selected={false}
-          onClick={() => {
-            setWalletType(TYPE.ETHEREUM)
-            nextStep()
-          }}
-        />}
       </div>
       <GoBackBtn goToPreviousStep={previousStep} />
     </div>

@@ -79,17 +79,17 @@ const AccountConfig = (({ sites, account, setIsLoading, removeWallet }) => {
           chrome.tabs.create({ url })
         }}
       />
-      <AccountConfItem
+      {account.type === TYPE.ARWEAVE && <AccountConfItem
         icon={<KeyIcon />}
         title={'Export Private Key'}
         onClick={() => setShowExportKeyModel(true)}
-      />
-      <AccountConfItem
+      />}
+      {account.type === TYPE.ARWEAVE && <AccountConfItem
         className=''
         icon={<ShareIconTwo />}
         title='See Connected Sites'
         onClick={() => setShowModalConnectedSite(true)}
-      />
+      />}
       <AccountConfItem
         className='delete-wallet'
         icon={<DeleteIcon />}

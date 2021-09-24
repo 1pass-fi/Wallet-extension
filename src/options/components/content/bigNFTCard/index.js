@@ -113,8 +113,8 @@ export default ({
             </span>
             .
           </div>}
-          <div className='registered-date'>Registered: {registeredDate}</div>
-          <div className='external-links'>
+          {type === TYPE.ARWEAVE && <div className='registered-date'>Registered: {registeredDate}</div>}
+          {type === TYPE.ARWEAVE && <div className='external-links'>
             <a
               className='external-link'
               href={`https://viewblock.io/arweave/tx/${txId}`}
@@ -122,12 +122,12 @@ export default ({
             >
               {pending ? 'pending transaction' : 'explore block'}
             </a>
-            {!pending && <a className='external-link' href={koiRockUrl} target='_blank'>
+            {type === TYPE.ARWEAVE && !pending && <a className='external-link' href={koiRockUrl} target='_blank'>
               koi.rocks
             </a>}
-          </div>
+          </div>}
           <div className='description'>{description}</div>
-          {!pending && <div className='earned'>
+          {type === TYPE.ARWEAVE && !pending && <div className='earned'>
             {showViews && (
               <div className='views'>
                 {totalViews} {totalViews > 1 ? 'views' : 'view'}
@@ -137,7 +137,7 @@ export default ({
               <div className='koi '>{formatNumber(earnedKoi)} KOII earned</div>
             )}
           </div>}
-          {!pending && <div className='share-transfer'>
+          {type === TYPE.ARWEAVE && !pending && <div className='share-transfer'>
             <button
               className='share-button'
               onClick={() => {
@@ -150,7 +150,7 @@ export default ({
               Send
             </button>
           </div>}
-          {!pending && txId && <div className='social-icons'>
+          {type === TYPE.ARWEAVE && !pending && txId && <div className='social-icons'>
             <TwitterIcon
               onClick={() => {
                 createShareWindow('twitter', txId)

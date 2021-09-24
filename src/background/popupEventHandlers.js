@@ -51,7 +51,6 @@ const arweave = Arweave.init({
 })
 
 const sendMessageToAllPorts = (message) => {
-  console.log('POPUP port count: ', popupPorts.length)
   popupPorts.forEach((port) => port.postMessage(message))
 }
 
@@ -695,7 +694,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             totalViews: 0,
             createdAt,
             description: content.description,
-            pending: true
+            pending: true,
+            type: TYPE.ARWEAVE
           }
 
           const allPendingAssets = await account.get.pendingAssets() || []
@@ -852,7 +852,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       case MESSAGES.LOAD_KID: {
         try {
           const { address } = message.data
-          console.log('LOAD_KID')
           const credentials = await backgroundAccount.getCredentialByAddress(address)
           const account = await backgroundAccount.getAccount(credentials)
 

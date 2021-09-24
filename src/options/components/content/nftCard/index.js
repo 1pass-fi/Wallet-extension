@@ -10,6 +10,7 @@ import { formatNumber } from '../../../utils'
 import './index.css'
 import { Link } from 'react-router-dom'
 import { GalleryContext } from 'options/galleryContext'
+import { TYPE } from 'constants/accountConstants'
 
 export default ({
   txId,
@@ -21,7 +22,8 @@ export default ({
   choosen,
   disabled,
   contentType,
-  totalViews
+  totalViews,
+  type
 }) => {
   const { showCreateCollection, 
     collectionNFT,
@@ -135,7 +137,7 @@ export default ({
           //   <KoiIcon className='icon' /> Register &amp; Earn
           // </button>
         )}
-        {showViews && <div className='nft-views'>
+        {type !== TYPE.ETHEREUM && showViews && <div className='nft-views'>
           {totalViews} {totalViews > 1 ? 'views' : 'view'}
         </div>}
       </Link>

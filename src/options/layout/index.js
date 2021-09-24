@@ -449,7 +449,9 @@ export default ({ children }) => {
               address: activatedAccount,
             })
             const pendingAssets = await activatedAccount.get.pendingAssets() || []
-            setCardInfos([...cardInfos, ...pendingAssets])
+            setCardInfos(prevState => {
+              return [...prevState, ...pendingAssets]
+            })
     
             setIsLoading(false)
             setShowUploadingModal(false)

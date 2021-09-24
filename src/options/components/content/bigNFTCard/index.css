@@ -206,7 +206,7 @@
   flex-direction: row;
   gap: 48px;
   margin-top: 17px;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
