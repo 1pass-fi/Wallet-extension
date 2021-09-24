@@ -224,7 +224,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           }
 
           console.log('ADDRESS', address)
-
+          if (isString(key)) key = koi.wallet
           await backgroundAccount.createAccount(address, key, password, type)
           account = await backgroundAccount.getAccount({ address, key })
 
