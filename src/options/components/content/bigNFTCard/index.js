@@ -1,9 +1,6 @@
 import React, {
   useState,
   useContext,
-  forwardRef,
-  useImperativeHandle,
-  useRef,
   useMemo,
 } from 'react'
 import { useHistory } from 'react-router-dom'
@@ -18,6 +15,7 @@ import FacebookIcon from 'img/social-icons/facebook-icon.svg'
 import LinkedinIcon from 'img/social-icons/linkedin-icon.svg'
 import TwitterIcon from 'img/social-icons/twitter-icon.svg'
 import GoBackIcon from 'img/goback-icon.svg'
+import EmbedIcon from 'img/embed-btn.svg'
 
 import { createShareWindow } from '../../../helpers'
 
@@ -32,9 +30,7 @@ export default ({
   name,
   imageUrl,
   earnedKoi,
-  isRegistered,
   koiRockUrl,
-  setChoosen,
   contentType,
   totalViews,
   createdAt,
@@ -130,13 +126,6 @@ export default ({
             </a>}
           </div>
           <div className='description'>{description}</div>
-          {/* <div className='tags'>
-            {tags.map((tag, index) => (
-              <div key={index} className='tag-item'>
-                {tag}
-              </div>
-            ))}
-          </div> */}
           {!pending && <div className='earned'>
             {showViews && (
               <div className='views'>
@@ -147,7 +136,7 @@ export default ({
               <div className='koi '>{formatNumber(earnedKoi)} KOII earned</div>
             )}
           </div>}
-          {!pending && <div className='share-embed'>
+          {!pending && <div className='share-transfer'>
             <button
               className='share-button'
               onClick={() => {
@@ -156,12 +145,9 @@ export default ({
             >
               Share
             </button>
-            {isCopied && <div className='copy-noti'>Link copied!</div>}
-            <CopyToClipboard text={embed}>
-              <button onClick={onCopy} className='embed-button' disabled={!txId}>
-                Embed
-              </button>
-            </CopyToClipboard>
+            <button className='transfer-button'>
+              Send
+            </button>
           </div>}
           {!pending && txId && <div className='social-icons'>
             <TwitterIcon
@@ -188,6 +174,10 @@ export default ({
             >
               <EmailIcon className='social-icon' />
             </a>
+            <CopyToClipboard text={embed}>
+              <EmbedIcon onClick={onCopy} className='social-icon' disabled={!txId}/>
+            </CopyToClipboard>
+            {isCopied && <div className='copy-noti'>Link copied!</div>}
           </div>}
         </div>
       </div>
