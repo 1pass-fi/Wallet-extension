@@ -35,23 +35,28 @@ export class EthereumMethod {
       console.log({ ethContents })
 
       // const ethContent = get(ethContents, 'assets').filter(asset => get(asset, 'owner.address').toUpperCase() === this.eth.address.toUpperCase()).map(asset => asset)
-      const ethContent = get(ethContents, 'assets')
-      console.log({ ethContent })
+      const ethAssets = get(ethContents, 'assets')
+      console.log({ ethAssets })
 
       const contentList = (await getChromeStorage(`${this.eth.address}_assets`))[`${this.eth.address}_assets`] || []
+      console.log({ contentList })
 
-      if (ethContent.length === contentList.length) return ALL_NFT_LOADED
+      // detect new nft(s) that were not saved in Chrome storage
+      const storageContentIds = contentList.map(nft => nft.txId)
 
-      return Promise.all(ethContent.map(async content => {
+      const newContents = ethAssets.filter((ethAsset) => {
+        return storageContentIds.indexOf(ethAsset.token_id) === -1
+      })
+
+      if (!newContents.length) return ALL_NFT_LOADED
+
+      console.log('Storage new contents...', newContents)
+
+      const newContentList = await Promise.all(newContents.map(async content => {
         try {
           console.log({ content })
           if (content.image_url) {
-            let u8 = Buffer.from((await axios.get(content.image_url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
-            let imageUrl = `data:${content.contentType};base64,${u8}`
-            if (content.animation_url) {
-              u8 = Buffer.from((await axios.get(content.animation_url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
-              imageUrl = `data:video/mp4;base64,${u8}`
-            }
+            const imageUrl = content.image_url
             return {
               name: content.name,
               isKoiWallet: false,
@@ -87,13 +92,82 @@ export class EthereumMethod {
             }
           }
         } catch (err) {
+          console.log(err.message)
           return {
             isRegistered: false,
             isKoiWallet: false
           }
         }
       }))
+
+      const res = {
+        contents: [...contentList, ...newContentList],
+        newContents
+      }
+      return res
     } catch(err) {
+      throw new Error(err.message)
+    }
+  }
+
+  async storageAssets(contents) {
+    try {
+      console.log('STORAGE ASSETS - ETH', contents)
+      return await Promise.all(contents.map(async content => {
+        try {
+          console.log('storage content: ', { content })
+          if (content.image_url) {
+            let u8 = Buffer.from((await axios.get(content.image_url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
+            let imageUrl = `data:${content.contentType};base64,${u8}`
+            if (content.animation_url) {
+              u8 = Buffer.from((await axios.get(content.animation_url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
+              imageUrl = `data:video/mp4;base64,${u8}`
+            }
+    
+            return {
+              name: content.name,
+              isKoiWallet: false,
+              txId: content.token_id,
+              imageUrl,
+              galleryUrl: `${PATH.GALLERY}#/details/${content.token_id}`,
+              koiRockUrl: `${PATH.KOI_ROCK}/${content.token_id}`,
+              // TODO handle this field later
+              isRegistered: false,
+              contentType: content.animation_url ? 'video' : 'image',
+              totalViews: 0,
+              createdAt: Date.parse(get(content, 'collection.created_date'))/1000,
+              description: content.description,
+              type: TYPE.ETHEREUM,
+              address: this.eth.address
+            }
+          } else {  
+            console.log('Failed load content: ', content)
+            return {
+              name: '...',
+              isKoiWallet: false,
+              txId: content.token_id,
+              imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
+              galleryUrl: `${PATH.GALLERY}#/details/${content.token_id}`,
+              koiRockUrl: `${PATH.KOI_ROCK}/${content.token_id}`,
+              isRegistered: false,
+              contentType: content.animation_url ? 'video' : 'image',
+              totalViews: 0,
+              createdAt: Date.parse(get(content, 'collection.created_date'))/1000,
+              description: content.description,
+              type: TYPE.ETHEREUM,
+              address: this.eth.address
+            }
+          }
+        } catch (err) {
+          console.log(err.message)
+          return {
+            isRegistered: false,
+            isKoiWallet: false
+          }
+        }
+      }))
+    } catch (err) {
+      console.log(err.message)
       throw new Error(err.message)
     }
   }
