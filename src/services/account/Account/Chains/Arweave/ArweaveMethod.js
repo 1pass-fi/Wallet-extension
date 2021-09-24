@@ -46,8 +46,13 @@ export class ArweaveMethod {
       const contentList = (await getChromeStorage(`${this.koi.address}_assets`))[`${this.koi.address}_assets`] || []
       console.log({ contentList })
 
+      const validContents = contentList.filter((content) => {
+        return myContent.indexOf(content.txId) !== -1
+      })
+      console.log({ validContents })
+
       // detect new nft(s) that were not saved in Chrome storage
-      const storageContentIds = contentList.map(nft => nft.txId)
+      const storageContentIds = validContents.map(nft => nft.txId)
       const newContents = myContent.filter((nftId) => {
         return storageContentIds.indexOf(nftId) === -1
       })
@@ -108,7 +113,7 @@ export class ArweaveMethod {
         }
       }))
       const res = {
-        contents: [...contentList, ...newContentList],
+        contents: [...validContents, ...newContentList],
         newContents
       }
 

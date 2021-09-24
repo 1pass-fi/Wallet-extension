@@ -41,8 +41,14 @@ export class EthereumMethod {
       const contentList = (await getChromeStorage(`${this.eth.address}_assets`))[`${this.eth.address}_assets`] || []
       console.log({ contentList })
 
+      const ethAssetIds = ethAssets.map(ethAsset => ethAsset.token_id)
+      const validContents = contentList.filter((content) => {
+        return ethAssetIds.indexOf(content.txId) !== -1
+      })
+      console.log({ validContents })
+
       // detect new nft(s) that were not saved in Chrome storage
-      const storageContentIds = contentList.map(nft => nft.txId)
+      const storageContentIds = validContents.map(nft => nft.txId)
 
       const newContents = ethAssets.filter((ethAsset) => {
         return storageContentIds.indexOf(ethAsset.token_id) === -1
@@ -101,7 +107,7 @@ export class EthereumMethod {
       }))
 
       const res = {
-        contents: [...contentList, ...newContentList],
+        contents: [...validContents, ...newContentList],
         newContents
       }
       return res
@@ -115,21 +121,16 @@ export class EthereumMethod {
       console.log('STORAGE ASSETS - ETH', contents)
       return await Promise.all(contents.map(async content => {
         try {
-          console.log('storage content: ', { content })
           if (content.image_url) {
             let u8 = Buffer.from((await axios.get(content.image_url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
             let imageUrl = `data:image/jpeg;base64,${u8}`
-            console.log('storage ASSETS IMG: ', { imageUrl })
             if (content.image_url.endsWith('.svg')){
               imageUrl = `data:image/svg+xml;base64,${u8}`
-              console.log('storage ASSETS SVG: ', { imageUrl })
             }
 
             if (content.animation_url) {
-              console.log('storage ASSETS VIDEO URL: ', content.animation_url)
               u8 = Buffer.from((await axios.get(content.animation_url, { responseType: 'arraybuffer'})).data, 'binary').toString('base64')
               imageUrl = `data:video/mp4;base64,${u8}`
-              console.log('storage ASSETS VIDEO: ', { imageUrl })
             }
     
             return {
