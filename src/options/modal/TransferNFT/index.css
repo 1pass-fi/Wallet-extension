@@ -77,3 +77,28 @@
 .transfer-nft.container .right-side {
   width: 400px;
 }
+
+.transfer-nft.wrapper .submit-btn {
+  position: absolute;
+  bottom: 32px;
+
+  padding: 5px 64px;
+  width: 240px;
+  align-self: center;
+
+  background: #ffffff;
+  border-radius: 2px;
+  border: 0;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.transfer-nft.wrapper .submit-btn:disabled {
+  cursor: not-allowed;
+  background-color: gray;
+}

@@ -1,4 +1,5 @@
 import React from 'react'
+import isEmpty from 'lodash/isEmpty'
 
 import StackIcon from 'img/stack-icon.svg'
 import WarningIcon from 'img/warning-icon-outline.svg'
@@ -9,6 +10,7 @@ const TransferFrom = ({
   setReceiverAddress,
   numberToTransfer,
   setNumberToTransfer,
+  handleBtnClick,
 }) => {
   return (
     <div className="transfer-form">
@@ -45,6 +47,7 @@ const TransferFrom = ({
           value={numberToTransfer}
           onChange={(e) => setNumberToTransfer(e.target.value)}
           className="input"
+          disabled={true}
         />
         <div className="description">
           Many NFTs will only have 1 item minted. If this is the case for your
@@ -52,7 +55,13 @@ const TransferFrom = ({
         </div>
       </div>
 
-      <button className="submit-btn">Send My NFT</button>
+      <button
+        onClick={handleBtnClick}
+        className="submit-btn"
+        disabled={isEmpty(receiverAddress)}
+      >
+        Send My NFT
+      </button>
     </div>
   )
 }

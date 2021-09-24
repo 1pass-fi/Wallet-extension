@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import Modal from 'options/shared/modal'
 import TransferFrom from './TransferForm'
+import ConfirmTransfer from './ConfirmTransfer'
 
 import { formatNumber } from 'options/utils'
 
@@ -16,13 +17,24 @@ const TransferNFT = ({
   totalViews,
   contentType,
 }) => {
+  const [stage, setStage] = useState(1)
+
   const [receiverAddress, setReceiverAddress] = useState('')
   const [numberToTransfer, setNumberToTransfer] = useState(1)
+
+  const handleBtnClick = () => setStage((stage) => stage + 1)
 
   return (
     <div className="transfer-nft wrapper">
       <div className="title">
-        Transfer <span className="title__asset-name">{name}</span> to a friend.
+        {stage === 1 && (
+          <>
+            Transfer <span className="title__asset-name">{name}</span> to a
+            friend.
+          </>
+        )}
+
+        {stage === 2 && <>Confirm your Transfer</>}
       </div>
 
       <div className="transfer-nft container">
@@ -57,12 +69,22 @@ const TransferNFT = ({
         </div>
 
         <div className="right-side">
-          <TransferFrom
-            receiverAddress={receiverAddress}
-            setReceiverAddress={setReceiverAddress}
-            numberToTransfer={numberToTransfer}
-            setNumberToTransfer={setNumberToTransfer}
-          />
+          {stage === 1 && (
+            <TransferFrom
+              receiverAddress={receiverAddress}
+              setReceiverAddress={setReceiverAddress}
+              numberToTransfer={numberToTransfer}
+              setNumberToTransfer={setNumberToTransfer}
+              handleBtnClick={handleBtnClick}
+            />
+          )}
+
+          {stage === 2 && (
+            <ConfirmTransfer
+              receiverAddress={receiverAddress}
+              goBack={() => setStage(1)}
+            />
+          )}
         </div>
       </div>
     </div>
