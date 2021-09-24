@@ -180,10 +180,8 @@ export class EthereumMethod {
     }
   }
 
-  async loadMyActivities (cursor) {
-    return {activitiesList: [
-      {id: '1', activityName: 'Sent ETH', expense: 0.32, accountName: 'Account 1', date: 'July 20 2021', source:'0x1234567890'}
-    ]}
+  async loadMyActivities () {
+    return {activitiesList: []}
   }
 
   async transfer() {
