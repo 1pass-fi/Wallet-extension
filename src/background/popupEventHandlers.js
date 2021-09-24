@@ -1073,6 +1073,30 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         break
       }
 
+      case MESSAGES.REAL_TRANSFER_NFT: {
+        try {
+          const { nftId, senderAddress, recipientAddress } = message.data
+
+          const credentials = await backgroundAccount.getCredentialByAddress(senderAddress)
+          const account = await backgroundAccount.getAccount(credentials)
+
+          const txId = await account.method.transferNFT(nftId, recipientAddress)
+
+          port.postMessage({
+            type: MESSAGES.REAL_TRANSFER_NFT,
+            data: txId,
+            id: messageId
+          })
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.REAL_TRANSFER_NFT,
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId
+          })
+        }
+        break
+      }
+
       default:
         break
     }

@@ -117,7 +117,20 @@ export class GalleryRequest extends Request {
     return this.promise(MESSAGES.FRIEND_REFERRAL, body)
   }
 
+  // TODO: PLEASE CHANGE THE FUNCTION NAME ASAP
   transferNFT(body){
     return this.promise(MESSAGES.TRANSFER_NFT, body)
+  }
+
+  /**
+   * 
+   * @param {Object} body
+   * @param {String} body.nftId 
+   * @param {String} body.senderAddress
+   * @param {String} body.recipientAddress
+   * @returns 
+   */
+  _transferNFT(body) {
+    return this.promise(MESSAGES.REAL_TRANSFER_NFT, body)
   }
 }

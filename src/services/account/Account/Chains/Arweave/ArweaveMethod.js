@@ -623,4 +623,9 @@ export class ArweaveMethod {
   async signPort(txId) {
     return await _signPort(txId, this.koi)
   }
+
+  async transferNFT(nftId, address) {
+    const txId = await this.koi.transferNft(nftId, 1, address)
+    return txId
+  }
 }
