@@ -185,11 +185,11 @@ export class EthereumMethod {
     return {activitiesList: []}
   }
 
-  async transfer() {
+  async transfer(_, recipient, qty) {
     try {
-      console.log('ETH send transfer result', await this.eth.sendTransfer())
+      await this.eth.transferEth(recipient, qty)
     } catch (err) {
-      console.log('SEND TRANSACTION ERRROR', err.message)
+      console.log('SEND TRANSACTION ERROR', err.message)
     }
   }
 

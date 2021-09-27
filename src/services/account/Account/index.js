@@ -42,7 +42,7 @@ export class EthereumAccount extends BackgroundAccount {
     this.#eth = new Ethereum(provider)
     this.#eth.address = address
     this.#eth.provider = provider
-    this.#eth.wallet = key.key
+    this.#eth.key = key
     this.method = new EthereumMethod(this.#eth)
   }
 

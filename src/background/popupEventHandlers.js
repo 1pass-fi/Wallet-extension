@@ -181,7 +181,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           let { key, password, type, provider } = message.data
           let account
           let address
-
           /* 
             Check for having imported account.
           */
@@ -212,8 +211,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
               address = await EthereumAccount.utils.loadWallet(eth, key)
           }
 
-          console.log('ADDRESS', address)
-          if (isString(key)) key = koi.wallet
+          if (isString(key) && type == TYPE.ARWEAVE) key = koi.wallet
+          if (type == TYPE.ETHEREUM) key = eth.key
           await backgroundAccount.createAccount(address, key, password, type)
           account = await backgroundAccount.getAccount({ address, key })
 
