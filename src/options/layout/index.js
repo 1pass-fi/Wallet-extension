@@ -387,6 +387,7 @@ export default ({ children }) => {
 
   const onClearFile = () => {
     setFile({})
+    inputFileRef.current.value = null
   }
 
   const onCloseUploadModal = () => {
@@ -630,7 +631,7 @@ export default ({ children }) => {
               />}
               <input onChange={(e) => handleSetFile(e)} type='file' ref={inputFileRef} style={{ display: 'none' }} />
               {children}
-              {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer inputFileRef={inputFileRef} showDropzone={showDropzone} />}
+              {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer onClearFile={onClearFile} inputFileRef={inputFileRef} showDropzone={showDropzone} />}
               {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />}
             </div> : <LockScreen />}
           </>

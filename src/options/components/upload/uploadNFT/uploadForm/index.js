@@ -35,6 +35,18 @@ const Tag = ({ tag, stage }) => {
   )
 }
 
+const SuccessPageTitle = ({ setStage }) => {
+  useEffect(() => {
+    return () => setStage(1)
+  }, [])
+
+  return (
+    <div className='title'>
+    Congratulations! Your NFT is on its way.{' '}
+    </div>
+  )
+}
+
 export default ({ stage, setStage }) => {
   const history = useHistory()
   const { file, setFile, onClearFile, onCloseUploadModal } = useContext(
@@ -213,9 +225,7 @@ export default ({ stage, setStage }) => {
       ) : (
         <div className='success-screen'>
           <div className='message'>
-            <div className='title'>
-              Congratulations! Your NFT is on its way.{' '}
-            </div>
+            <SuccessPageTitle setStage={setStage}/>
             <div className='description'>
               Your NFT is in the process to be stored forever! Check back soon to share it and start earning attention rewards.
             </div>
