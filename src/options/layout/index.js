@@ -551,7 +551,8 @@ export default ({ children }) => {
         importedAddress,
         setImportedAddress,
         setNewAddress,
-        arWallets
+        arWallets,
+        inputFileRef
       }}
     >
       <div className='app-background'>
