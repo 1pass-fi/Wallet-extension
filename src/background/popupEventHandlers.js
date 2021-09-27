@@ -64,22 +64,6 @@ export const loadBalances = async () => {
     await Promise.all(accounts.map(async account => {
       let { balance, koiBalance } = await account.method.getBalances()
 
-      const pendingTransactions = await account.get.pendingTransactions() || []
-      if (!isEmpty(pendingTransactions)) {
-        pendingTransactions.forEach(async (transaction) => {
-          switch (transaction.activityName) {
-            case 'Sent KOII':
-              koiBalance -= transaction.expense
-              break
-            case 'Sent AR':
-              balance -= transaction.expense
-              break
-            case 'Sent ETH':
-              balance -= transaction.expense
-          }
-        })
-      }
-
       await account.set.balance(balance)
       await account.set.koiBalance(koiBalance)
     }))

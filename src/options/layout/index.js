@@ -424,10 +424,18 @@ export default ({ children }) => {
             const activatedAccountData = await activatedAccount.get.metadata()
   
             const { balance: _balance, koiBalance } = activatedAccountData
-            if (koiBalance) setTotalKoi(koiBalance)
-            setTotalAr(_balance)
-  
-            setNotification('Your balances have been updated.')
+            let balancesUpdated = false
+
+            setTotalKoi(prev => {
+              if (prev !== koiBalance) balancesUpdated = true
+              return koiBalance
+            })
+            setTotalAr(prev => {
+              if (prev !== _balance) balancesUpdated = true
+              return _balance
+            })
+
+            if (balancesUpdated) setNotification('Your balances have been updated.')
           } catch (err) {
             setError(err.message)
           }
@@ -452,7 +460,7 @@ export default ({ children }) => {
             setCardInfos(prevState => {
               return [...prevState, ...pendingAssets]
             })
-    
+
             setIsLoading(false)
             setShowUploadingModal(false)
             setShowUploadedIcon(true)
