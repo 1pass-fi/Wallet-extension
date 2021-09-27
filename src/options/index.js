@@ -36,9 +36,6 @@ const Gallery = () => {
           <Route exact path='/import-wallet'>
             <ImportWallet />
           </Route>
-          <Route exact path='/details/:txid'>
-            <Details />
-          </Route>
           <Route exact path='/create'>
             <HasArweave content='This feature only supports AR wallets'>
               <Create />
@@ -67,6 +64,9 @@ const Gallery = () => {
             <Home />
           </Route>
         </Switch>
+        <Route exact path='/details/:txid'>
+          <Details />
+        </Route>
       </Layout>
     </Router>
   )

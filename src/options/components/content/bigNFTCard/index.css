@@ -1,8 +1,11 @@
 .big-nft-card-wrapper {
-  display: flex;
+  position: fixed;
+  top: calc((100vh - 470px) / 2);
   width: 100%;
-  /* height: calc(100vh - 170px); */
-  padding-top: calc((100vh - 740px) / 2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .big-nft-card {
@@ -10,7 +13,6 @@
   display: flex;
   flex-direction: row;
   letter-spacing: 0.03em;
-  width: 100%;
 }
 
 .big-nft-card .nft-preview {
@@ -217,6 +219,7 @@
 }
 
 .big-nft-card .info .copy-noti {
+  position: absolute;
   font-size: 14px;
   line-height: 16px;
   color: #ffc78f;
