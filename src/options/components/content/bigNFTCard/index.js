@@ -65,7 +65,8 @@ export default ({
   }
 
   const handleGoBack = () => {
-    history.goBack()
+    if (history.length > 1) return history.goBack()
+    history.push('/')
   }
 
   return (
