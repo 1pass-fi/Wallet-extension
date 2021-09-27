@@ -11,17 +11,26 @@ import { ERROR_MESSAGE } from 'constants/koiConstants'
 import storage from 'services/storage'
 
 /* 
-  Background and Popup will use different classes.
-  - On popup and contentscript, basically, we will only need to get data. PopupAccount's instance, when
-  run getAccount(), will return an instance of class WalletPopup which has the ability to get 
-  data of accounts.
-  - On background we will use a another class which is BackgroundAccount, an instance of this class, when
-  run getAccount(), will return an instance of Arweave or Ethereum class bases on type of chain of the 
-  input address. This account object will have ability to get, set and run method functions.
-  The idea when we separate the way of managing account on Background and Popup is to prevent saving
-  keyfile directly to the storage.
-  Keyfile, after an account is imported, will be pushed into an array which is an attribute of
-  backgroundAccount - instance of BackgroundAccount.
+  AccountManager classes will be used in account management.
+  There are 3 actions we will do with an account instance:
+    - Get data from Chrome storage
+    - Set data to Chrome storage
+    - Run method functions
+
+  On UI side, an instance of PopupAccount class will be used.
+  On background side, an instance of BackgroundAccount class will be used.
+
+  The different between PopupAccount and BackgroundAccount:
+    - PopupAccount will have functionalities to get the data. It cannot be used to set data to the storage.
+    - BackgroundAccount will have full functionalities of get, set, and run method.
+  
+  To get an instance of a specified account, we need to run getAccount() function which will require a credential object
+  as it's parameter. For example:
+    backgroundAccount.getAccount({ address, key }) will return an account instance that could be used to get, set or running method functions
+    popupAccount.getAccount({ address }) will return an account instance the could be use to get data.
+
+  backgroundAccount and popupAccount will be exported in ./index.
+  
 */
 class AccountManager {
   constructor() {
@@ -55,8 +64,8 @@ class AccountManager {
   }
 
   /**
-   * 
-   * @returns 
+   * @param {String} network TYPE.ARWEAVE or TYPE.ETHEREUM (TYPE could be imported from constants/accountConstants)
+   * @returns {Array} [account1, account2]
    */
   async getAllAccounts(network) {
     try {
@@ -76,6 +85,11 @@ class AccountManager {
     }
   }
 
+  /**
+   * 
+   * @param {String} address 
+   * @returns {String} walletType TYPE.ARWEAVE or TYPE.ETHEREUM
+   */
   async getType(address) {
     try {
       const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE)
@@ -88,6 +102,12 @@ class AccountManager {
     }
   }
 
+  /**
+   * This function will load wallet data from Chrome storage to this.importedAccount
+   *  For example: On the storage we have: [{address1, key1}, {address2, key2}]
+   * after run loadImported() we will have:
+   * this.importedAccount = [{address1, key1}, {address2, key2}]
+   */
   async loadImported() {
     try {
       const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []
@@ -99,6 +119,12 @@ class AccountManager {
     }
   }
 
+  /**
+   * Input {network} to get count of a specified wallet type
+   * If network = undefined, the function will return count of all imported accounts.
+   * @param {String} network TYPE.ARWEAVE or TYPE.ETHEREUM
+   * @returns {Number} count
+   */
   async count(network) {
     try {
       const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []
@@ -117,6 +143,13 @@ class AccountManager {
     }
   }
 
+  /**
+   * This function will be used to check if an Arweave wallet has been imported.
+   * The reason why we need this function is to handle the situation of when the user has only Ethereum wallet imported.
+   * If there's an imported Ethereum wallet, and no imported Arweave wallet, we have to hide some functionalities that will work
+   * with Arweave only.
+   * @returns {Boolean} hasArweave 
+   */
   async hasArweave() {
     const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []
     return !isEmpty(importedArweave)
@@ -129,14 +162,21 @@ class AccountManager {
 
 }
 
+
 /* 
-  Get data only.
+  This class will be used to get data for accounts on UI code.  
 */
 export class PopupAccountManager extends AccountManager {
   constructor() {
     super()
   }
 
+  /**
+   * 
+   * @param {Object} credentials
+   * @param {String} credentials.address wallet address
+   * @returns {Account} account
+   */
   async getAccount(credentials) {
     try {
       const { address } = credentials
@@ -147,6 +187,11 @@ export class PopupAccountManager extends AccountManager {
     }
   }
 
+  /**
+   * 
+   * @param {String} network TYPE.ARWEAVE or TYPE.ETHEREUM
+   * @returns 
+   */
   async getAllMetadata(network) {
     try {
       const allAccounts = await this.getAllAccounts(network)
@@ -156,6 +201,10 @@ export class PopupAccountManager extends AccountManager {
     }
   }
 
+  /**
+   * Return an array of all assets and pendingAssets
+   * @returns 
+   */
   async getAllAssets() {
     try {
       const allAccounts = await this.getAllAccounts()
@@ -220,7 +269,7 @@ export class BackgroundAccountManager extends AccountManager {
       await this.storage._setChrome(address, payload)
 
       /* 
-        Base on the input type we will add the wallet into different array of wallet.
+        Base on the "type", we will add the wallet into different array of wallet.
         Currently we have Arweave and Ethereum.
       */
       let importedWallets
