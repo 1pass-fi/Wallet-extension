@@ -554,7 +554,7 @@ export default ({ children }) => {
         arWallets
       }}
     >
-      <div style={{ background: 'linear-gradient(90deg, #030332 0%, #171753 100%)', width: '100vw', height: '100vh' }}>
+      <div className='app-background'>
         {!isEmpty(wallets) ?
           <>
             {!isLocked ? <div

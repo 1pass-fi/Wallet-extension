@@ -1,5 +1,5 @@
 /* START CONTENT */
-.app .app-content .cards {
+.app .app-content-upload .cards {
   max-width: 987px;
   margin: auto;
   padding: 40px 104px;
@@ -9,14 +9,14 @@
   justify-content: center;
 }
 
-.app .app-content .cards .small-cards {
+.app .app-content-upload .cards .small-cards {
   width: 100%;
   gap: 10px 148px;
   display: flex;
   flex-wrap: wrap;
 }
 
-.app .app-content .title {
+.app .app-content-upload .title {
   font-weight: 500;
   font-size: 24px;
   line-height: 32px;

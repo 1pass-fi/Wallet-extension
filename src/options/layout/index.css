@@ -12,3 +12,8 @@
   font-size: 40px;
   color: #ffffff;
 }
+
+.app-background {
+  background: linear-gradient(90deg, #030332 0%, #171753 100%);
+  height: 100vh;
+}
