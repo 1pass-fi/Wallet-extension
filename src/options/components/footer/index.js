@@ -5,7 +5,7 @@ import AddButton from 'img/add-button.svg'
 
 import './index.css'
 
-export default ({ showDropzone, inputFileRef }) => {
+export default ({ showDropzone, inputFileRef, onClearFile }) => {
   const history = useHistory()
   return (
     <footer className='footer-wrapper'>
@@ -14,6 +14,7 @@ export default ({ showDropzone, inputFileRef }) => {
           showDropzone()
           inputFileRef.current.click()
           history.push('/create')
+          onClearFile()
         }} 
         />
         <div className='footer-text'>

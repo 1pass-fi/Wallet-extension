@@ -38,7 +38,7 @@ export default ({ choosenTxid = '' }) => {
         setHasSavedData
       }}
     >
-      <div className='app-content'>
+      <div className='app-content-upload'>
         <UploadNFT />
       </div>
     </UploadContext.Provider>

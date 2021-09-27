@@ -387,6 +387,7 @@ export default ({ children }) => {
 
   const onClearFile = () => {
     setFile({})
+    inputFileRef.current.value = null
   }
 
   const onCloseUploadModal = () => {
@@ -424,10 +425,18 @@ export default ({ children }) => {
             const activatedAccountData = await activatedAccount.get.metadata()
   
             const { balance: _balance, koiBalance } = activatedAccountData
-            if (koiBalance) setTotalKoi(koiBalance)
-            setTotalAr(_balance)
-  
-            setNotification('Your balances have been updated.')
+            let balancesUpdated = false
+
+            setTotalKoi(prev => {
+              if (prev !== koiBalance) balancesUpdated = true
+              return koiBalance
+            })
+            setTotalAr(prev => {
+              if (prev !== _balance) balancesUpdated = true
+              return _balance
+            })
+
+            if (balancesUpdated) setNotification('Your balances have been updated.')
           } catch (err) {
             setError(err.message)
           }
@@ -452,7 +461,7 @@ export default ({ children }) => {
             setCardInfos(prevState => {
               return [...prevState, ...pendingAssets]
             })
-    
+
             setIsLoading(false)
             setShowUploadingModal(false)
             setShowUploadedIcon(true)
@@ -542,99 +551,102 @@ export default ({ children }) => {
         importedAddress,
         setImportedAddress,
         setNewAddress,
-        arWallets
+        arWallets,
+        inputFileRef
       }}
     >
-      {!isEmpty(wallets) ?
-        <>
-          {!isLocked ? <div
-            {...getRootProps({ className: 'app dropzone' })}
-            onDragOver={() => modifyDraging(true)}
-            onDragLeave={() => modifyDraging(false)}
-            onClick={(e) => {
-              if (e.target.className === 'modal-container') {
-                setShowShareModal(false)
-                setShowExportModal(false)
-                setShowWelcome(false)
-              }
-            }}
-          >
-            {error && <Message children={error} />}
-            {notification && <Message children={notification} type='notification' />}
-            {showShareModal.show && (
-              <ShareNFT
-                txid={showShareModal.txid}
-                onClose={() => {
-                  setShowShareModal({ ...showShareModal, show: false })
-                }}
-              />
-            )}
-            {!isEmpty(showExportModal) && (
-              <ExportNFT
-                info={showExportModal}
-                onClose={() => {
+      <div className='app-background'>
+        {!isEmpty(wallets) ?
+          <>
+            {!isLocked ? <div
+              {...getRootProps({ className: 'app dropzone' })}
+              onDragOver={() => modifyDraging(true)}
+              onDragLeave={() => modifyDraging(false)}
+              onClick={(e) => {
+                if (e.target.className === 'modal-container') {
+                  setShowShareModal(false)
                   setShowExportModal(false)
-                }}
-              />
-            )}
-
-            {showTransferNFT.show && (
-              <TransferNFT
-                cardInfo={showTransferNFT.cardInfo}
-                onClose={() => {
-                  setShowTransferNFT({show: false})
-                }}
-              />
-            )}
-
-            {showUploadingModal && <UploadingNFT />}
-            {showSuccessUploadModal && <SuccessUploadNFT />}
-            {showUploadedIcon && <Uploaded />}
-
-            {showWelcome && (
-              <Welcome
-                onClose={() => {
                   setShowWelcome(false)
-                }}
-              />
-            )
-            }
-            {showSelectAccount && (
-              <SelectAccountModal
-                onClose={() => {
-                  setShowSelectAccount(false)
-                }}
-              />
-            )
-            }
-            {isDragging && isEmpty(file) && (
-              <input name='fileField' {...getInputProps()} />
-            )}
+                }
+              }}
+            >
+              {error && <Message children={error} />}
+              {notification && <Message children={notification} type='notification' />}
+              {showShareModal.show && (
+                <ShareNFT
+                  txid={showShareModal.txid}
+                  onClose={() => {
+                    setShowShareModal({ ...showShareModal, show: false })
+                  }}
+                />
+              )}
+              {!isEmpty(showExportModal) && (
+                <ExportNFT
+                  info={showExportModal}
+                  onClose={() => {
+                    setShowExportModal(false)
+                  }}
+                />
+              )}
 
-            {!GALLERY_IMPORT_PATH.includes(pathname) && <Header
-              totalKoi={totalKoi}
-              totalAr={totalAr}
-              headerRef={headerRef}
-              isLoading={isLoading}
-              isWaitingAddNFT={isWaitingAddNFT}
-              setIsWaitingAddNFT={setIsWaitingAddNFT}
-            />}
-            <input onChange={(e) => handleSetFile(e)} type='file' ref={inputFileRef} style={{display: 'none'}}/>
-            {children}
-            {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer inputFileRef={inputFileRef} showDropzone={showDropzone} />}
-            {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />}
-          </div> : <LockScreen />}
-        </>
-        :
-        <>
-          {walletLoaded && 
-          <div>
-            {error && <Message children={error} />}
-            {notification && <Message children={notification} type='notification' />}
-            <StartUp />
-          </div>}
-        </>
-      }
+              {showTransferNFT.show && (
+                <TransferNFT
+                  cardInfo={showTransferNFT.cardInfo}
+                  onClose={() => {
+                    setShowTransferNFT({ show: false })
+                  }}
+                />
+              )}
+
+              {showUploadingModal && <UploadingNFT />}
+              {showSuccessUploadModal && <SuccessUploadNFT />}
+              {showUploadedIcon && <Uploaded />}
+
+              {showWelcome && (
+                <Welcome
+                  onClose={() => {
+                    setShowWelcome(false)
+                  }}
+                />
+              )
+              }
+              {showSelectAccount && (
+                <SelectAccountModal
+                  onClose={() => {
+                    setShowSelectAccount(false)
+                  }}
+                />
+              )
+              }
+              {isDragging && isEmpty(file) && (
+                <input name='fileField' {...getInputProps()} />
+              )}
+
+              {!GALLERY_IMPORT_PATH.includes(pathname) && <Header
+                totalKoi={totalKoi}
+                totalAr={totalAr}
+                headerRef={headerRef}
+                isLoading={isLoading}
+                isWaitingAddNFT={isWaitingAddNFT}
+                setIsWaitingAddNFT={setIsWaitingAddNFT}
+              />}
+              <input onChange={(e) => handleSetFile(e)} type='file' ref={inputFileRef} style={{ display: 'none' }} />
+              {children}
+              {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer onClearFile={onClearFile} inputFileRef={inputFileRef} showDropzone={showDropzone} />}
+              {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />}
+            </div> : <LockScreen />}
+          </>
+          :
+          <>
+            {walletLoaded &&
+              <div>
+                {error && <Message children={error} />}
+                {notification && <Message children={notification} type='notification' />}
+                <StartUp />
+              </div>}
+          </>
+        }
+      </div>
     </GalleryContext.Provider>
   )
 }

@@ -208,7 +208,6 @@ const Activities = ({
   }, [showAllAccounts])
 
   const handleLoadAllActivities = () => {
-    console.log('activities state', activities)
     activities.forEach(activity => {
       loadActivities(activity.cursor, activity.account.address)
     })

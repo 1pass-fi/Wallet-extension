@@ -6,7 +6,8 @@
   letter-spacing: 0.03em;
   justify-content: center;
   margin: auto;
-  padding: 150px 40px 104px;
+  padding: 40px 104px;
+  padding-top: 150px;
 }
 
 .uploadNFT-wrapper .drop-box-title {
