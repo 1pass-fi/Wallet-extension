@@ -448,11 +448,9 @@ export default ({ children }) => {
         MESSAGES.RELOAD_GALLERY,
         async () => {
           try {
-            console.log('reload gallery page...')
             chrome.tabs.query({url: chrome.extension.getURL('*')}, tabs => {
               tabs.map(tab => chrome.tabs.reload(tab.id))
             })
-            console.log('reload gallery page - DONE')
           } catch (err) {
             console.log('reload gallery page - error: ', err)
           }
