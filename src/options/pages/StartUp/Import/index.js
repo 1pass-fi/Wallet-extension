@@ -30,6 +30,7 @@ export default () => {
   const [userSeedPhrase, setUserSeedPhrase] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showFormError, setShowFormError] = useState(false)
   const history = useHistory()
 
   const { setError, wallets, setImportedAddress } =  useContext(GalleryContext)
@@ -41,6 +42,7 @@ export default () => {
     setStep(step + 1)
   }
   const previousStep = () => {
+    setShowFormError(false)
     if (step === 1) {
       history.push('/')
     } else if (step === 3 && walletType === TYPE.ARWEAVE) {
@@ -63,6 +65,11 @@ export default () => {
   const isValidPhrase = trimmedPhrase.split(' ').length === 12
 
   const onImportKey = async () => {
+    if (!(password && userSeedPhrase) && isEmpty(wallets)) {
+      setShowFormError(true)
+      return
+    }
+    
     if (!isValidPhrase) return
 
     setIsLoading(true)
@@ -154,7 +161,7 @@ export default () => {
 
 
                {isEmpty(wallets) ? <div className='confirm-password-wrapper'>
-                 <ConfirmPassword setPassword={setPassword} />
+                 <ConfirmPassword setPassword={setPassword} showError={showFormError}/>
                </div>
                  :
                  <div className='confirm-password-wrapper'>
@@ -163,7 +170,6 @@ export default () => {
                }
 
               <Button
-                disabled={!(password && userSeedPhrase) && isEmpty(wallets)}
                 className='import-key-button'
                 onClick={onImportKey}
               >

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { TYPE } from 'constants/accountConstants'
@@ -18,7 +18,13 @@ import GoBackBtn from 'options/components/GoBackButton'
 export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) => {
   const { setError, wallets, setImportedAddress } =  useContext(GalleryContext)
   const [password, setPassword] = useState('')
+  const [showFormError, setShowFormError] = useState(false)
+
   const onConfirm = async () => {
+    if(!password && isEmpty(wallets)) {
+      setShowFormError(true)
+      return
+    }
     try {
       const key = await JSONFileToObject(file)
 
@@ -50,10 +56,9 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
         </div>
       }
 
-      {isEmpty(wallets) ? <ConfirmPassword setPassword={setPassword} /> : <InputPassword setPassword={setPassword} />}
+      {isEmpty(wallets) ? <ConfirmPassword setPassword={setPassword} showError={showFormError}/> : <InputPassword setPassword={setPassword} />}
 
       <button
-        disabled={!password && isEmpty(wallets)}
         onClick={onConfirm}
         className='upload-file-button white-button'
       >

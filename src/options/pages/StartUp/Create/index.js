@@ -57,6 +57,8 @@ export default () => {
   const [selectedWords, setSelectedWords] = useState([])
   const [unselectedWords, setUnselectedWords] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [showFormError, setShowFormError] = useState(false)
+
   const history = useHistory()
 
   const nextStep = () => {
@@ -64,6 +66,7 @@ export default () => {
   }
 
   const previousStep = () => {
+    setShowFormError(false)
     if (step === 1) {
       history.push('/')
     } else if (step === 3 && walletType === TYPE.ARWEAVE) {
@@ -106,6 +109,10 @@ export default () => {
     Save created account to the storage.
   */
   const handleCreateKey = async () => {
+    if(!password && isEmpty(wallets)) {
+      setShowFormError(true)
+      return
+    }
     try {
       if (walletType === TYPE.ARWEAVE) selectedNetwork = null
 
@@ -338,7 +345,7 @@ export default () => {
             </div>
 
             {isEmpty(wallets) ? <div className='confirm-password-wrapper'>
-              <ConfirmPassword setPassword={setPassword} />
+              <ConfirmPassword setPassword={setPassword} showError={showFormError}/>
             </div>
               :
               <div className='confirm-password-wrapper'>
@@ -348,7 +355,6 @@ export default () => {
 
             <Button
               onClick={handleCreateKey}
-              disabled={!password && !isEmpty(wallets)}
               className='create-key-button'
             >
               Create Key
