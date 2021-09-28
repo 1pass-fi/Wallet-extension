@@ -10,7 +10,7 @@ const passwordRegex = new RegExp(
   '(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%].*).{8,}'
 )
 
-export default ({ setPassword }) => {
+export default ({ setPassword, showError }) => {
   const [tempPassword, setTempPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isAcceptTermService, setIsAcceptTermService] = useState(false)
@@ -34,8 +34,11 @@ export default ({ setPassword }) => {
         value={tempPassword}
         setValue={setTempPassword}
       />
-      {!isEmpty(tempPassword) && !isValid && (
+      {showError && !isEmpty(tempPassword) && !isValid && (
         <div className="password-error">That password doesn't meet the requirements, please try again.</div>
+      )}
+      {showError && isEmpty(tempPassword) && (
+        <div className="password-error">Please input your password.</div>
       )}
 
       <div className="requirements">
@@ -67,10 +70,12 @@ export default ({ setPassword }) => {
         value={confirmPassword}
         setValue={setConfirmPassword}
       />
-      {!isEmpty(confirmPassword) && !isMatch && (
+      {showError && !isEmpty(confirmPassword) && !isMatch && (
         <div className="password-error">These passwords don't match, try entering them again.</div>
       )}
-
+      {showError && isEmpty(confirmPassword) && (
+        <div className="password-error">Please confirm your password.</div>
+      )}
       <div className="term-of-service">
         <input
           id="term-of-service"
@@ -88,6 +93,9 @@ export default ({ setPassword }) => {
           </label>
         </div>
       </div>
+      {showError && !isAcceptTermService && (
+        <div className="password-error">Please accept the Terms of Service.</div>
+      )}
     </>
   )
 }
