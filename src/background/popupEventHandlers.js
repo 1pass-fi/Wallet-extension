@@ -54,6 +54,12 @@ const sendMessageToAllPorts = (message) => {
   popupPorts.forEach((port) => port.postMessage(message))
 }
 
+export const galleryShouldReload = async () => {
+  console.log('send reload gallery message')
+  const reloadMessage = { type: MESSAGES.RELOAD_GALLERY }
+  sendMessageToAllPorts(reloadMessage)
+}
+
 /* 
   Reload balances every 5 minutes
   Subtract balances by pending transaction expenses
@@ -261,6 +267,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             type: MESSAGES.REMOVE_WALLET,
             id: messageId
           })
+          
+          galleryShouldReload()
         } catch (err) {
           port.postMessage({
             type: MESSAGES.REMOVE_WALLET,
@@ -781,6 +789,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             type: MESSAGES.CHANGE_ACCOUNT_NAME,
             id: messageId
           })
+          
+          galleryShouldReload()
         } catch (err) {
           port.postMessage({
             type: MESSAGES.CHANGE_ACCOUNT_NAME,
