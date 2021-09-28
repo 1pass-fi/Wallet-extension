@@ -3,3 +3,7 @@
   position: relative;
   padding-top: 40px;
 }
+
+.upload-file .title {
+  padding: 0px;
+}
