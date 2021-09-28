@@ -13,6 +13,7 @@
   display: flex;
   flex-direction: row;
   letter-spacing: 0.03em;
+  max-width: 944px;
 }
 
 .big-nft-card .nft-preview {
@@ -38,6 +39,7 @@
 
 .big-nft-card .info {
   margin-left: 32px;
+  max-width: 442px;
 }
 
 .big-nft-card .info .nft-name {
@@ -220,6 +222,7 @@
 
 .big-nft-card .info .copy-noti {
   position: absolute;
+  margin: 16px auto auto 360px;
   font-size: 14px;
   line-height: 16px;
   color: #ffc78f;
@@ -227,6 +230,7 @@
   height: 30px;
   white-space: nowrap;
   font-weight: 400;
+  user-select: none;
 }
 
 .iframe-wrapper {
