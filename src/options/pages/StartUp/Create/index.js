@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import isEqual from 'lodash/isEqual'
@@ -73,8 +73,10 @@ export default () => {
       setStep(1)
     } else if (step === 5){
       setStep(3)
+    } else if (step === 6) {
+      setStep(1)
     } else {
-      setStep(step - 1)
+      setStep(prev => prev - 1)
     }
   }
 
@@ -163,23 +165,17 @@ export default () => {
     nextStep()
   }
 
-  if (step === 6) {
-    return (
-      <div className='start-up'>
-        <div className='create-wallet-wrapper'>
-          <Success />
-        </div>
-      </div>
-    )
-  }
-  console.log(unselectedWords)
+  useEffect(() => {
+    if (step !== 3) setIsHideSeedPhrase(true)
+  }, [step])
+
   return (
     <div className='start-up'>
       <div className='create-wallet-wrapper'>
         {isLoading && <Loading />}
         <div className='create-wallet'>
-          <div className='title'>Get a new key</div>
-          <GoBackBtn goToPreviousStep={previousStep} />
+          {step !== 6 && <div className='title'>Get a new key</div>}
+          {step !== 6 && <GoBackBtn goToPreviousStep={previousStep} />}
           {step === 1 && (
           <>
             {/* <div className='description'>What type of key do you need?</div> */}
@@ -273,7 +269,6 @@ export default () => {
               </Button>
               <div className='danger-button-wrapper'>
                 <Button
-                  disabled={isHideSeedPhrase}
                   className='danger'
                   onClick={gotoPasswordConfirm}
                 >
@@ -361,7 +356,11 @@ export default () => {
             </Button>
           </>
           )}
+
         </div>
+        { step === 6 &&
+            <Success />
+        }
       </div>
     </div>
   )

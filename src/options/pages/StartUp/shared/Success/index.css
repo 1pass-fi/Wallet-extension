@@ -4,6 +4,7 @@
   flex-direction: column;
   justify-content: center;
   padding: 10px;
+  padding-top: 40px;
 }
 
 .success-page * {
