@@ -23,57 +23,61 @@ export default () => {
 
   return (
     <div
-      className='navbar-container'
+      className="navbar-container"
       onMouseEnter={() => setIsExpandSubNavbar(true)}
       onMouseLeave={() => setIsExpandSubNavbar(false)}
     >
-      <div className='navbar'>
-        <div className='top'>
-          <Link to='/'>
-            <div data-tip='Gallery'>
-              <HomeIcon
-                className={`nav-item ${pathname == '/' ? 'active' : ''}`}
-              />
+      <div className="navbar">
+        <div className="top">
+          <Link to="/">
+            <div
+              data-tip="Gallery"
+              className={`nav-item ${pathname == '/' ? 'active' : ''}`}
+            >
+              <HomeIcon className="nav-item" />
             </div>
           </Link>
-          <Link to='/create'>
-            <div data-tip='Create NFT'>
-              <CreateNFTIcon
-                className={`nav-item ${pathname == '/create' ? 'active' : ''}`}
-              />
+          <Link to="/create">
+            <div
+              data-tip="Create NFT"
+              className={`nav-item ${pathname == '/create' ? 'active' : ''}`}
+            >
+              <CreateNFTIcon className="nav-item" />
             </div>
           </Link>
-          <Link to='/collections'>
-            <div data-tip='Collections'>
-              <CollectionIcon
-                
-                className={`nav-item ${
-                  pathname == '/collections' ? 'active' : ''
-                }`}
-              />
+          <Link to="/collections">
+            <div
+              data-tip="Collections"
+              className={`nav-item ${
+                pathname == '/collections' ? 'active' : ''
+              }`}
+            >
+              <CollectionIcon className="nav-item" />
             </div>
           </Link>
-          <Link to='/settings'>
-            <div data-tip='Settings'>
-              <SettingIcon
-                className={`nav-item ${
-                  pathname.includes('/settings') ? 'active' : ''
-                }`}
-              />
+          <Link to="/settings">
+            <div
+              data-tip="Settings"
+              className={`nav-item ${
+                pathname.includes('/settings') ? 'active' : ''
+              }`}
+            >
+              <SettingIcon className="nav-item" />
             </div>
           </Link>
         </div>
-        <div className='bottom'>
-          <Link to='/friends'>
-            <div data-tip='Refer a Friend'>
-              <FriendIcon
-                className={`nav-item friend ${
-                  pathname == '/friends' ? 'active' : ''
-                }`}
-              />
+        <div className="bottom">
+          <Link to="/friends">
+            <div
+              data-tip="Refer a Friend"
+              className={`nav-item friend ${
+                pathname == '/friends' ? 'active' : ''
+              }`}
+            >
+              <FriendIcon className="nav-item" />
             </div>
           </Link>
-          <div className='address'>{`${
+          <div className="address">{`${
             affiliateCode && affiliateCode.slice(0, 5)
           }...`}</div>
         </div>
@@ -81,7 +85,7 @@ export default () => {
       {pathname.includes('/settings') && (
         <SlideNavbar isExpand={isExpandSubNavbar} />
       )}
-      <ReactTooltip place='top' type="dark" effect="float"/>
+      <ReactTooltip place="top" type="dark" effect="float" />
     </div>
   )
 }

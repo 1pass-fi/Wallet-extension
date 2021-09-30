@@ -19,7 +19,7 @@
 .navbar .nav-item {
   cursor: pointer;
   height: 32px;
-  width: calc(100% - 3px);
+  width: 60px;
 }
 
 .navbar .nav-item.active path {

@@ -40,8 +40,8 @@ export const SeedPhraseModal = ({ seedPhrase, setNotification, onClose }) => {
         </div>
         <div className='phrase-display-box'>
           {seedPhrase}
-          <CopyToClipboard className='copy-button' text={seedPhrase}>
-            <div onClick={() => setNotification(NOTIFICATION.SEED_PHRASE_COPIED)}>
+          <CopyToClipboard  text={seedPhrase}>
+            <div className='copy-button' onClick={() => setNotification(NOTIFICATION.SEED_PHRASE_COPIED)}>
               copy phrase
               <CopyIcon className='copy-icon' />
             </div>
@@ -56,15 +56,17 @@ export const SeedPhraseModal = ({ seedPhrase, setNotification, onClose }) => {
           <div className='qa-icon'>
             <InfoIcon />
           </div>
-          <div className='qa-item'>
+          <div>
+            <div className='qa-item'>
             Store your backup phrase in a password manager.
-          </div>
-          <div className='qa-item'>
+            </div>
+            <div className='qa-item'>
             Write the phrase on a piece of paper and keep it in a safe location
             (or multiple).
+            </div>
+            <div className='qa-item'>Memorize this phrase</div>
+            <div className='qa-item'>Koii cannot recover this phrase for you.</div>
           </div>
-          <div className='qa-item'>Memorize this phrase</div>
-          <div className='qa-item'>Koii cannot recover this phrase for you.</div>
         </div>
       </div>
     </Modal>   

@@ -12,14 +12,6 @@ export default () => {
 
   const openFaucet = () => {
     chrome.tabs.create({ url: 'https://koi.rocks/faucet' })
-    window.close()
-  }
-  
-  const openCreateNFTPage = () => {
-    const path = '/options.html#/create'
-    const url = chrome.extension.getURL(path)
-    chrome.tabs.create({ url })
-    window.close()
   }
 
   useEffect(() => {
@@ -53,11 +45,13 @@ export default () => {
         </div>
       </div>
 
-      {/* GET FREE KOI BUTTON */}
+      
       <div className='get-koi-text'>
         Get some&nbsp;<span>free KOII</span>&nbsp;from the faucet.
       </div>
+      {/* GET FREE KOI BUTTON */}
       <div className='get-koi-button' onClick={openFaucet}>Get Free KOII</div>
+
 
       <div className='create-nft-text'>
         If you already have KOII,&nbsp;<span>create an NFT</span>&nbsp;to earn

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useLocation } from 'react-router'
-import { find } from 'lodash'
+import { Link } from 'react-router-dom'
 
 import KoiIcon from 'img/finnie-koi-logo-white.svg'
 import ArUnit from 'img/ar-token.svg'
@@ -43,7 +43,9 @@ export default ({
   return (
     <header className='app-header' ref={headerRef}>
       <div className='header-left'>
-        <KoiIcon className='logo' />
+        <Link to='/'>
+          <KoiIcon className='logo' />
+        </Link>
       </div>
       <div className='header-center'>{pathname == '/' && <SearchBar />}</div>
       <div className='header-right'>

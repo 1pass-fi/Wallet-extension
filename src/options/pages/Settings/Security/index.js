@@ -4,6 +4,7 @@ import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
 
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
+import EthereumIcon from 'img/ethereum-logo-18.svg'
 import { getDisplayAddress } from 'options/utils'
 import { getChromeStorage } from 'utils'
 import { STORAGE } from 'constants/koiConstants'
@@ -16,9 +17,10 @@ import {
 } from './ExportModal'
 
 import './index.css'
+import { TYPE } from 'constants/accountConstants'
 
 export default () => {
-  const { address, accountName } = useContext(GalleryContext)
+  const { address, accountName, wallets, arWallets } = useContext(GalleryContext)
   const [seedPhrase, setSeedPhrase] = useState('')
   const [hasSeedPhrase, setHasSeedPhrase] = useState(false)
 
@@ -43,45 +45,7 @@ export default () => {
     checkSeedPhrase()
   }, [])
   
-  const accounts = useMemo(() => [
-    {
-      id: 1,
-      name: accountName,
-      address,
-      seedPhrase: [],
-      hasSeedPhrase: false,
-      keyfile: { id: '1' },
-    },
-    // {
-    //   id: 2,
-    //   name: 'account #2',
-    //   address: '6789012341234567890123456789012345',
-    //   seedPhrase: [
-    //     'shoelace',
-    //     'bookstore',
-    //     ' divulge',
-    //     ' restaurant',
-    //     ' potato',
-    //     ' infant',
-    //     ' leaflet',
-    //     ' solar',
-    //     ' maritime',
-    //     ' photograph',
-    //     ' balloon',
-    //     ' museum',
-    //   ],
-    //   keyfile: {},
-    // },
-    // {
-    //   id: 3,
-    //   name: 'account #3',
-    //   address: '1234567890123456789012345679999999',
-    //   seedPhrase: [],
-    //   keyfile: { id: '2' },
-    // },
-  ], [address, accountName])
-
-  const onSeedPharseClick = (account) => {
+  const onSeedPhraseClick = (account) => {
     setSelectedAccount(account)
     setShowExportBackupPhraseModal(true)
   }
@@ -109,7 +73,7 @@ export default () => {
           }`,
         }}
       >
-        <div className='header'>Security Settings Settings</div>
+        <div className='header'>Security Settings</div>
         <div className='content'>
           <div className='backup-seedphrase'>
             <div className='title'>Get my Backup (seed) Phrase</div>
@@ -117,22 +81,24 @@ export default () => {
               Select a wallet to see its recovery phrase.
             </div>
             <div className='seedphrase'>
-              {accounts.map((account) => (
-                <div
-                  key={account.id}
-                  className='account'
-                  disabled={!hasSeedPhrase}
-                  onClick={() => onSeedPharseClick(account)}
-                >
-                  <div className='name-icon'>
-                    <FinnieIcon className='finnie-icon' />
-                    <div className='account-name'>{account.name}</div>
+              {wallets.map((account) => {
+                if (account.seedPhrase) return (
+                  <div
+                    key={account.id}
+                    className='account'
+                    onClick={() => onSeedPhraseClick(account)}
+                  >
+                    <div className='name-icon'>
+                      {account.type === TYPE.ARWEAVE && <FinnieIcon className='finnie-icon' />}
+                      {account.type === TYPE.ETHEREUM && <EthereumIcon className='finnie-icon'/>}
+                      <div className='account-name'>{account.accountName}</div>
+                    </div>
+                    <div className='account-address'>
+                      {getDisplayAddress(account.address)}
+                    </div>
                   </div>
-                  <div className='account-address'>
-                    {getDisplayAddress(account.address)}
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
 
@@ -142,16 +108,15 @@ export default () => {
               Select a wallet to download its private key.
             </div>
             <div className='keyfile'>
-              {accounts.map((account) => (
+              {arWallets.map((account) => (
                 <div
                   key={account.id}
                   className='account'
-                  disabled={isEmpty(get(account, 'keyfile', ''))}
                   onClick={() => onKeyFileClick(account)}
                 >
                   <div className='name-icon'>
                     <FinnieIcon className='finnie-icon' />
-                    <div className='account-name'>{account.name}</div>
+                    <div className='account-name'>{account.accountName}</div>
                   </div>
                   <div className='account-address'>
                     {getDisplayAddress(account.address)}

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router'
+import { Link } from 'react-router-dom'
 
 import KoiIcon from 'img/finnie-koi-logo-white.svg'
 
@@ -13,7 +14,10 @@ import './index.css'
 export default () => {
   return (
     <>
-      <KoiIcon className="startup-logo" />
+      <Link to="/">
+        <KoiIcon className="startup-logo" />
+      </Link>
+
       <Switch>
         <Route path="/create-wallet">
           <Create />

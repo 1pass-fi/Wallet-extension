@@ -1,11 +1,15 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { CSVLink } from 'react-csv'
+import passworder from 'browser-passworder'
 
 import CloseIcon from 'img/close-x-icon.svg'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { GalleryContext } from 'options/galleryContext'
 import { getChromeStorage, decryptSeedPhraseFromChrome } from 'utils'
+
+import { popupAccount } from 'services/account'
+
 import './index.css'
 
 export const ExportBackupPhraseModal = ({ account, closeModal }) => {
@@ -32,7 +36,9 @@ export const ExportBackupPhraseModal = ({ account, closeModal }) => {
 
   const onRevealSeedphrase = async () => {
     try {
-      const seedPhrase = await decryptSeedPhraseFromChrome(password)
+      const _account = await popupAccount.getAccount({ address: account.address })
+      const encryptedSeedPhrase = await _account.get.seedPhrase()
+      const seedPhrase = await passworder.decrypt(password, encryptedSeedPhrase)
       setSeedPhrase(seedPhrase)
       setIsRevealed(true)
 
@@ -138,7 +144,7 @@ export const ExportBackupKeyFileModal = ({ account, closeModal }) => {
 
   const onExportKeyfile = async () => {
     try {
-      const { key } = await backgroundRequest.gallery.getKeyFile({ password })
+      const { key } = await backgroundRequest.gallery.getKeyFile({ password, address: account.address })
       const filename = 'arweave-key.json'
       const result = JSON.stringify(key)
   

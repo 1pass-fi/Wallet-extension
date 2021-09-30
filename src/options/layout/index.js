@@ -586,7 +586,7 @@ export default ({ children }) => {
               }}
             >
               {error && <Message children={error} />}
-              {notification && <Message children={notification} type='notification' />}
+              {notification && !GALLERY_IMPORT_PATH.includes(pathname) && <Message children={notification} type='notification' />}
               {showShareModal.show && (
                 <ShareNFT
                   txid={showShareModal.txid}

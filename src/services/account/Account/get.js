@@ -111,8 +111,9 @@ export class AccountGetter {
     const balance = await this.balance()
     const koiBalance = await this.koiBalance()
     const provider = await this.provider()
+    const seedPhrase = await this.seedPhrase()
 
-    return { address, balance, koiBalance, accountName, type, provider }
+    return { address, balance, koiBalance, accountName, type, provider, seedPhrase }
   }
 
   async connectedSite() {

@@ -84,9 +84,9 @@ export const AccountHome = ({ getBalances, accounts }) => {
         </div>
       </div>
       <div className={'home-gallery-button-wrapper'}>
-        <button onClick={goToGallery} className="gallery-button">
+        <div onClick={goToGallery} className="gallery-button">
           Go to My Gallery
-        </button>
+        </div>
       </div>
     </div>
   )

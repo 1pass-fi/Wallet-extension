@@ -46,25 +46,25 @@
   background: #f5f5f5;
   border-radius: 3px;
   margin-top: 12px;
-  padding: 9px 0;
   width: 376px;
 }
 
-.security-settings .content .account[disabled] {
+/* .security-settings .content .account[disabled] {
   background: #ffffff;
   cursor: unset;
   pointer-events: none;
-}
+  height: 36px;
+} */
 
 .security-settings .content .account {
   align-items: center;
-  background: #bef0ed;
+  /* background: #bef0ed; */
   cursor: pointer;
   display: flex;
   flex-direction: row;
-  height: 36px;
   justify-content: space-between;
   padding: 7px 41px 7px 14px;
+  height: 45px;
 }
 
 .security-settings .content .account .name-icon {
