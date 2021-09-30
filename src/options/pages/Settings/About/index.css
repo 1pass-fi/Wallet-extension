@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   min-height: calc(100vh - 140px);
+  padding: 58px 122px;
 }
 
 .about-settings-wrapper .header {

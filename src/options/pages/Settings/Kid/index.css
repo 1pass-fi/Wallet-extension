@@ -2,7 +2,7 @@
   align-items: center;
   display: flex;
   justify-content: center;
-  min-height: calc(100vh - 140px);
+  padding: 58px 122px;
 }
 
 .kid-settings-page-wrapper * {
