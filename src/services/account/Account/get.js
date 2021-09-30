@@ -67,7 +67,7 @@ export class AccountGetter {
      * @returns {Array} List of pending transacitons
      */
   async pendingTransactions() {
-    return await this.#accountStorage.getField(ACCOUNT.PENDING_TRANSACTION)
+    return await this.#accountStorage.getField(ACCOUNT.PENDING_TRANSACTION) || []
   }
   /**
      * 

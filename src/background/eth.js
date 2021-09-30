@@ -53,7 +53,7 @@ export class Ethereum {
     rawTx.gas = estimateGas
     let signTx = await this.#web3.eth.accounts.signTransaction(rawTx, this.key)
     const receipt = await this.#web3.eth.sendSignedTransaction(signTx.rawTransaction)
-    return receipt
+    return receipt.transactionHash
   }
 
   async estimateGasEth(object) {
@@ -67,6 +67,10 @@ export class Ethereum {
     const estimateGas = await this.#web3.eth.estimateGas(object)
     const totalGasInWei = gasPrice * estimateGas
     return this.#web3.utils.fromWei(totalGasInWei.toString(), 'ether')
+  }
+
+  async getTransactionStatus(txHash) {
+    return this.#web3.eth.getTransactionReceipt(txHash)
   }
 
   /*

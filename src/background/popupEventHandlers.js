@@ -17,6 +17,8 @@ import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINT
 
 import { popupPorts } from '.'
 
+import showNotification from 'utils/notifications'
+
 const generatedKey = { key: null, mnemonic: null, type: null, address: null }
 
 import {
@@ -58,6 +60,30 @@ const reloadGallery = () => {
   const reloadMessage = { type: MESSAGES.RELOAD_GALLERY }
   sendMessageToAllPorts(reloadMessage)
 }
+
+export const updatePendingTransactions = async () => {
+  const allAccounts = await backgroundAccount.getAllAccounts()
+  allAccounts.forEach(async account => {
+    let pendingTransactions = await account.get.pendingTransactions()
+    pendingTransactions = await Promise.all(pendingTransactions.map(async transaction => {
+      const confirmed = await account.method.transactionConfirmedStatus(transaction.id)
+
+      if (confirmed) {
+        console.log(`Transaction confirmed`, transaction)
+        showNotification({
+          title: `Transaction confirmed`,
+          message: `Your transaction ${transaction.activityName} has been confirmed`
+        })
+        return
+      }
+      return transaction
+    }))
+
+    pendingTransactions = pendingTransactions.filter(transaction => !!transaction)
+    await account.set.pendingTransactions(pendingTransactions)
+  })
+}
+
 
 /* 
   Reload balances every 5 minutes

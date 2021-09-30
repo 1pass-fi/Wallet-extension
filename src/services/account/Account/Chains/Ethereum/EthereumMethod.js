@@ -5,7 +5,7 @@
 
 import {PATH, ALL_NFT_LOADED } from 'constants/koiConstants'
 import { getChromeStorage } from 'utils'
-import { get, isNumber, isArray } from 'lodash'
+import { get } from 'lodash'
 import moment from 'moment'
 
 import { TYPE } from 'constants/accountConstants'
@@ -187,7 +187,7 @@ export class EthereumMethod {
 
   async transfer(_, recipient, qty) {
     try {
-      await this.eth.transferEth(recipient, qty)
+      return await this.eth.transferEth(recipient, qty)
     } catch (err) {
       console.log('SEND TRANSACTION ERROR', err.message)
     }
@@ -205,5 +205,10 @@ export class EthereumMethod {
       default:
         return false
     }
+  }
+
+  async transactionConfirmedStatus(txHash) {
+    const response = await this.eth.getTransactionStatus(txHash)
+    return get(response, 'status')
   }
 }
