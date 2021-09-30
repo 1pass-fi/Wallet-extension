@@ -17,6 +17,8 @@ import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINT
 
 import { popupPorts } from '.'
 
+import showNotification from 'utils/notifications'
+
 const generatedKey = { key: null, mnemonic: null, type: null, address: null }
 
 import {
@@ -58,6 +60,30 @@ const reloadGallery = () => {
   const reloadMessage = { type: MESSAGES.RELOAD_GALLERY }
   sendMessageToAllPorts(reloadMessage)
 }
+
+export const updatePendingTransactions = async () => {
+  const allAccounts = await backgroundAccount.getAllAccounts()
+  allAccounts.forEach(async account => {
+    let pendingTransactions = await account.get.pendingTransactions()
+    pendingTransactions = await Promise.all(pendingTransactions.map(async transaction => {
+      const confirmed = await account.method.transactionConfirmedStatus(transaction.id)
+
+      if (confirmed) {
+        console.log(`Transaction confirmed`, transaction)
+        showNotification({
+          title: `Transaction confirmed`,
+          message: `Your transaction ${transaction.activityName} has been confirmed`
+        })
+        return
+      }
+      return transaction
+    }))
+
+    pendingTransactions = pendingTransactions.filter(transaction => !!transaction)
+    await account.set.pendingTransactions(pendingTransactions)
+  })
+}
+
 
 /* 
   Reload balances every 5 minutes
@@ -181,7 +207,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           let { key, password, type, provider } = message.data
           let account
           let address
-
           /* 
             Check for having imported account.
           */
@@ -212,8 +237,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
               address = await EthereumAccount.utils.loadWallet(eth, key)
           }
 
-          console.log('ADDRESS', address)
-          if (isString(key)) key = koi.wallet
+          if (isString(key) && type == TYPE.ARWEAVE) key = koi.wallet
+          if (type == TYPE.ETHEREUM) key = eth.key
           await backgroundAccount.createAccount(address, key, password, type)
           account = await backgroundAccount.getAccount({ address, key })
 

@@ -1,7 +1,7 @@
 import '@babel/polyfill'
 
 import { PORTS, LOAD_BALANCES_TIME_INTERVAL, LOAD_TRANSACTION_STATE_INTERVAL, OS, PATH } from 'constants/koiConstants'
-import popUpEventHandlers, { loadBalances } from './popupEventHandlers'
+import popUpEventHandlers, { loadBalances, updatePendingTransactions } from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from '@_koi/sdk/web'
 import { Ethereum } from './eth'
@@ -25,7 +25,7 @@ setInterval(() => {
 
 // Transaction stream
 setInterval(() => {
-  // load for transaction state
+  updatePendingTransactions()
 }, LOAD_TRANSACTION_STATE_INTERVAL)
 
 function cb(port) {

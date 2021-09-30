@@ -116,7 +116,7 @@ const SendKoiForm = ({
 
   useEffect(() => {
     const getAccountOptions = async () => {
-      const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE)
+      const arAccounts = await popupAccount.getAllMetadata()
       const options = arAccounts.map((account, index) => ({
         id: index,
         value: account.accountName,

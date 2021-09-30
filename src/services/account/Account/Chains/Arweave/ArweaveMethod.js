@@ -13,7 +13,7 @@ import axios from 'axios'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 import { TYPE } from 'constants/accountConstants'
 
-import { find } from 'lodash'
+import { find, isEmpty } from 'lodash'
 import storage from 'services/storage'
 import arweave from 'services/arweave'
 
@@ -632,5 +632,10 @@ export class ArweaveMethod {
   async transferNFT(nftId, address) {
     const txId = await this.koi.transferNft(nftId, 1, address)
     return txId
+  }
+
+  async transactionConfirmedStatus(id) {
+    const response = await arweave.transactions.getStatus(id)
+    return !isEmpty(get(response, 'confirmed'))
   }
 }
