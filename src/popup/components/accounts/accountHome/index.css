@@ -30,6 +30,9 @@
 }
 
 .home-gallery-button-wrapper .gallery-button {
+  width: 160px;
+  height: 33px;
+
   background-color: #ffffff;
   border-radius: 3px;
   border: 1.5px solid #171753;
@@ -37,16 +40,13 @@
   box-sizing: border-box;
   color: #171753;
   cursor: pointer;
-  display: inline-block;
-  font-size: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   font-weight: 600;
-  height: 33px;
-  left: 133px;
-  letter-spacing: 0.03em;
+  font-size: 16px;
   line-height: 24px;
-  padding: 5px 3px 21px;
-  text-align: center;
-  top: 19px;
-  width: 160px;
-  letter-spacing: -1%;
+  letter-spacing: -0.01em;
 }

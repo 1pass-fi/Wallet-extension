@@ -72,9 +72,9 @@ const Header = ({ location, setError, koi, accounts }) => {
         </button>
         {!NAVBAR_EXCLUDE_PATH.includes(location.pathname) && (
           <>
-            <button onClick={onCreateNFTClick} className='create-nft-button'>
+            <div onClick={onCreateNFTClick} className='create-nft-button'>
               Create NFT
-            </button>
+            </div>
             <button className='setting-button' onClick={onSettingButtonClick}>
               <SettingIcon /> 
             </button>
