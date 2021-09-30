@@ -19,15 +19,14 @@
 }
 
 .app .app-content .title {
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 32px;
-  letter-spacing: 0.03em;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
   color: #ffffff;
-  margin-left: 104px;
   position: absolute;
-  top: 80px;
-  left: 20px
+  top: 58px;
+  left: 120px;
 }
 
 /* END CONTENT */

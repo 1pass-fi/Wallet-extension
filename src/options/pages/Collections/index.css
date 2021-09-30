@@ -1,8 +1,7 @@
 .collections-container {
   margin: auto;
   color: #ffffff;
-  padding: 120px;
-  padding-top: 150px;
+  padding: 58px 120px;
 }
 
 .collections-container__header {
@@ -16,6 +15,7 @@
   line-height: 40px;
   font-weight: 400;
   text-align: left;
+  letter-spacing: -0.02em;
 }
 
 .collections-container__header__add-icon {
