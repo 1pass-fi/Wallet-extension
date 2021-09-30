@@ -1,6 +1,6 @@
 // modules
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 // assets
 import ExportIcon from 'img/export-icon.svg'
@@ -9,6 +9,7 @@ import PlusIcon from 'img/plus-icon-outline.svg'
 
 // components
 import Card from 'shared/card'
+import Button from 'shared/button'
 
 // utils
 import { getChromeStorage } from 'utils'
@@ -35,8 +36,11 @@ const CardOption = ({ SvgImage, title, description, path, onClick }) => {
 }
 
 export default () => {
+  const history = useHistory()
+
   const [selections, setSelections] = useState([])
   const [popupPath, setPopupPath] = useState('')
+  const [hasOldKey, setHasOldKey] = useState(false)
 
   const screenWidth = screen.availWidth
   const screenHeight = screen.availHeight
@@ -118,8 +122,25 @@ export default () => {
     loadSelections()
   }, [])
 
+  useEffect(() => {
+    const hasOldWallet = async () => {
+      const key = await getChromeStorage('koiKey')
+      if (key['koiKey']) setHasOldKey(true)
+    }
+
+    hasOldWallet()
+  }, [])
+
   return (
-    <div className='account-import'>
+    <div className='account-import' style={{height: hasOldKey ? '600px' : '437px'}}>
+      {hasOldKey && <div className='recover-key'>
+        <div className='title'>Recover my key</div>
+        <div>We made some exciting updates to the latest version of Finnie, including multiple wallets and an Ethereum bridge.</div>
+        <div>If you need a copy of your key or recovery phrase, get it here. <b>Never delete</b> the Finnie extension without first backing up a copy of your recovery phrase or key.</div>
+        <div className='btn-wrapper'>
+          <Button onClick={() => history.push('/account/recovery')} label='Recover My Key'/>
+        </div>
+      </div>}
       <div className='get-started'>Let’s get started.</div>
       {selections.map((content) => (
         <CardOption {...content} />

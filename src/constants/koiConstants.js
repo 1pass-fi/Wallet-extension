@@ -13,7 +13,8 @@ export const HEADER_EXCLUDE_PATH = [
   '/account/welcome',
   '/account/create/success',
   '/account/import/keyfile/success',
-  '/account/import/phrase/success'
+  '/account/import/phrase/success',
+  '/account/recovery'
 ]
 export const NAVBAR_EXCLUDE_PATH = [
   '/account/login',
@@ -26,7 +27,8 @@ export const NAVBAR_EXCLUDE_PATH = [
   '/account/import/keyfile',
   '/account/import/keyfile/success',
   '/account/import/phrase',
-  '/account/import/phrase/success'
+  '/account/import/phrase/success',
+  '/account/recovery'
 ]
 
 export const LONG_LIVED_HANDLER = [

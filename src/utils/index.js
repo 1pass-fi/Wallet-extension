@@ -12,7 +12,6 @@ import {
 import passworder from 'browser-passworder'
 import moment from 'moment'
 import { get, isNumber, isArray } from 'lodash'
-import 
 
 
 import Arweave from 'arweave'
@@ -735,15 +734,16 @@ export const saveUploadFormData = async (file, metadata) => {
 }
 
 export const getOldWallet = async (password) => {
-  const encryptedKey = await getChromeStorage('koiKey')
-  const encryptedSeedphrase = await getChromeStorage('seedphrase')
+  const encryptedKey = (await getChromeStorage('koiKey'))['koiKey']
+  const encryptedSeedphrase = (await getChromeStorage('koiPhrase'))['koiPhrase']
+  let key, seedphrase
+  
+  if (encryptedKey) {
+    key = await passworder.decrypt(password, encryptedKey)
+  }
 
-  console.log('encryptedKey', encryptedKey)
-  console.log('encryptedSeedphrase', encryptedSeedphrase)
-
-  const key = await passworder.decrypt(password, encryptedKey)
-  const seedphrase = await passworder.decrypt(password, encryptedSeedphrase)
-
-  console.log('decrypted key', key)
-  console.log('decrypted seedphrase', seedphrase)
+  if (encryptedSeedphrase) {
+    seedphrase = await passworder.decrypt(password, encryptedSeedphrase)
+  }
+  return { key, seedphrase }
 }
