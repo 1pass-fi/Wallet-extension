@@ -13,13 +13,6 @@ export default () => {
   const openFaucet = () => {
     chrome.tabs.create({ url: 'https://koi.rocks/faucet' })
   }
-  
-  const goToHomePage = () => {
-    const path = '/options.html#'
-    const url = chrome.extension.getURL(path)
-    chrome.tabs.create({ url })
-    window.close()
-  }
 
   useEffect(() => {
     return () => {
@@ -64,8 +57,6 @@ export default () => {
         If you already have KOII,&nbsp;<span>create an NFT</span>&nbsp;to earn
         attention rewards!
       </div>
-      {/* GO TO GALLERY BUTTON */}
-      <div className='get-koi-button' onClick={goToHomePage}>Go to My Gallery</div>
 
       <Dropfile
         Icon={ElectronIcon}
