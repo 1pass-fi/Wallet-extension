@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import ShareIcon from 'img/share-icon-green.svg'
 import GalleryIcon from 'img/gallery-icon.svg'
 import Fish from 'img/koi-logo.svg'
-import AlternativeWalletIcon from 'img/arweave-icon.svg'
+import AlternativeWalletIcon from 'img/ethereum-logo.svg'
 import RearrangePadsIcon from 'img/rearrange-pads-icon.svg'
 
 // utils
@@ -33,14 +33,15 @@ const EarnedKoi = ({ isRegistered, earnedKoi }) =>
   isRegistered ? (
     <div className='koi-earned'>{numberFormat(earnedKoi)} KOII earned</div>
   ) : (
-    <button className='register-button'>
-      <div className='register-button-icon'>
-        <div className='assets fish-icon'>
-          <Fish />
-        </div>
-      </div>
-      <span>Register</span>
-    </button>
+    <></>
+    // <button className='register-button'>
+    //   <div className='register-button-icon'>
+    //     <div className='assets fish-icon'>
+    //       <Fish />
+    //     </div>
+    //   </div>
+    //   <span>Register</span>
+    // </button>
   )
 
 const Actions = ({ isRegistered, koiRockUrl, galleryUrl }) => {

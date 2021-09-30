@@ -21,6 +21,7 @@ export default ({ choosenTxid = '', detail }) => {
   } = useContext(GalleryContext)
   const { pathname } = useLocation()
   const [showCards, setShowCards] = useState(true)
+  const [pathnameLoaded, setPathnameLoaded] = useState(false)
 
   useEffect(() => {
     if (pathname.includes('details')) {
@@ -28,6 +29,7 @@ export default ({ choosenTxid = '', detail }) => {
     } else {
       setShowCards(true)
     }
+    setPathnameLoaded(true)
   }, [pathname])
 
   return (
@@ -43,7 +45,7 @@ export default ({ choosenTxid = '', detail }) => {
       )}
 
       <div className="cards">
-        {
+        { pathnameLoaded &&
           <div className="small-cards">
             {cardInfos.map(
               (cardInfo) =>

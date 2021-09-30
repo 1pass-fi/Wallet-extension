@@ -57,7 +57,6 @@ export const RevealSeedPhraseModal = ({ onReveal, onClose, setError, account }) 
     async function getHasSeedPhrase() {
       const _account = await popupAccount.getAccount({ address: account.address })
       const encryptedSeed = await _account.get.seedPhrase()
-
       if (!encryptedSeed) setHasSeedPhrase(false)
     }
 

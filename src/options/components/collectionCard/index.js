@@ -152,35 +152,36 @@ export default ({ collection }) => {
         className={`nft-collection-card ${isExpand ? 'expand' : ''}`}
         ref={ref}
       >
-        <div className='preview-nft'>
-          {displayNftIndex > 0 && (
-            <div className='prev-nft' onClick={displayPrevNft}>
-              <PrevArrowIcon />
-            </div>
-          )}
-          {displayNftIndex < pieces - 1 && (
-            <div className='next-nft' onClick={displayNextNft}>
-              <NextArrowIcon />
-            </div>
-          )}
-          {(get(displayNft, 'contentType') || 'image').includes('image') ? (
-            <img src={get(displayNft, 'imageUrl')} className='nft-img' />
-          ) : (
-            <video
-              width={200}
-              height={200}
-              src={get(displayNft, 'imageUrl')}
-              className='nft-img'
-              controls
-              muted
-            />
-          )}
-        </div>
-        {/* <Link className='nft-name' to={`/details/${id}`}>
+        <Link className='nft-name' to={`/collections/${id}`}>
+          <div className='preview-nft'>
+            {displayNftIndex > 0 && (
+              <div className='prev-nft' onClick={displayPrevNft}>
+                <PrevArrowIcon />
+              </div>
+            )}
+            {displayNftIndex < pieces - 1 && (
+              <div className='next-nft' onClick={displayNextNft}>
+                <NextArrowIcon />
+              </div>
+            )}
+            {(get(displayNft, 'contentType') || 'image').includes('image') ? (
+              <img src={get(displayNft, 'imageUrl')} className='nft-img' />
+            ) : (
+              <video
+                width={200}
+                height={200}
+                src={get(displayNft, 'imageUrl')}
+                className='nft-img'
+                controls
+                muted
+              />
+            )}
+          </div>
+          {/* <Link className='nft-name' to={`/details/${id}`}>
           {name}
         </Link> */}
-        <Link className='nft-name' to={`/collections/${id}`}>
-          {stringTruncate(name, 20)}
+          <div className='nft-name'>{stringTruncate(name, 20)}</div>
+
         </Link>
 
         {showViews && <div className='nft-view'>{views} Views </div>}

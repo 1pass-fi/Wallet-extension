@@ -15,20 +15,22 @@
   align-items: center;
   justify-content: flex-start;
   position: relative;
+  padding: 120px;
+  padding-top: 150px;
 }
 
 .collection-details .go-back-button {
   width: 30px;
   height: 30px;
   position: absolute;
-  top: 8px;
-  left: 36px;
+  top: 150px;
+  left: 120px;
   cursor: pointer;
 }
 
 .collection-details .title {
   font-size: 32px;
-  line-height: 40px;
+  line-height: 32px;
 }
 
 .collection-details .views {

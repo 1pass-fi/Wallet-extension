@@ -143,17 +143,6 @@ window.addEventListener('message', async function (event) {
       // encrypt: () => buildPromise(MESSAGE_TYPES.ENCRYPT)
     }
 
-    window.koiWallet = {
-      getAddress: () => buildPromise(MESSAGE_TYPES.KOI_GET_ADDRESS),
-      getPermissions: () => buildPromise(MESSAGE_TYPES.KOI_GET_PERMISSION),
-      connect: () => buildPromise(MESSAGE_TYPES.KOI_CONNECT),
-      sign: (transaction) => buildPromise(MESSAGE_TYPES.KOI_CREATE_TRANSACTION, { transaction }),
-      disconnect: () => buildPromise(MESSAGE_TYPES.KOI_DISCONNECT),
-      registerData: (txId) => buildPromise(MESSAGE_TYPES.KOI_REGISTER_DATA, { txId }),
-      signPort: (txId) => buildPromise(MESSAGE_TYPES.KOI_SIGN_PORT, { txId }),
-      sendKoi: (target, qty) => buildPromise(MESSAGE_TYPES.KOI_SEND_KOI, { target, qty })
-    }
-
     window.koii = {
       arweaveWallet: window.arweaveWallet,
       koiiWallet: window.koiWallet
@@ -255,6 +244,8 @@ window.addEventListener('message', async function (event) {
          */
       sendKoii: (target, qty) => buildPromise(MESSAGE_TYPES.KOI_SEND_KOI, { target, qty })      
     }
+
+    window.koiWallet = window.koiiWallet
   
     window.addEventListener('message', function (event) {
       // console.log('EVENT', event)

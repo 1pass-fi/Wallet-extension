@@ -3,6 +3,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import get from 'lodash/get'
 
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
+import EthereumIcon from 'img/ethereum-logo-18.svg'
 import RearrangePadsIcon from 'img/rearrange-pads-icon.svg'
 import { getDisplayAddress } from 'options/utils'
 import storage from 'services/storage'
@@ -11,6 +12,7 @@ import './index.css'
 import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { popupAccount } from 'services/account'
+import { TYPE } from 'constants/accountConstants'
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list)
@@ -151,7 +153,8 @@ export default ({ accounts, setAccounts }) => {
                             selectedAddress === item.address ? 'active' : ''
                           }`}
                         ></div>
-                        <FinnieIcon className='finnie-icon' />
+                        {item.type == TYPE.ARWEAVE && <FinnieIcon className='finnie-icon' />}
+                        {item.type == TYPE.ETHEREUM && <EthereumIcon className='finnie-icon' />}
                         <div className='account-name'>{item.accountName}</div>
                       </div>
                       <div className='account-address'>

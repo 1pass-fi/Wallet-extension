@@ -207,6 +207,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           let { key, password, type, provider } = message.data
           let account
           let address
+
+          let seedPhrase
+          if (isString(key)) seedPhrase = key
           /* 
             Check for having imported account.
           */
@@ -242,11 +245,13 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           await backgroundAccount.createAccount(address, key, password, type)
           account = await backgroundAccount.getAccount({ address, key })
 
-          // Set seedPhrase if the key is seed phrase
-          if (isString(key)) {
-            const encryptedPhrase = await passworder.encrypt(password, key)
+          // Set seedPhrase if the key is seed phrase for arweave
+          if (seedPhrase) {
+            const encryptedPhrase = await passworder.encrypt(password, seedPhrase)
             account.set.seedPhrase(encryptedPhrase)
           }
+
+          // Set seedPhrase ethereum
 
           // Get total account to get a appropriate accountName
           // Set account provider

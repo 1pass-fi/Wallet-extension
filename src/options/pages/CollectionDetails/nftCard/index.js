@@ -24,22 +24,23 @@ export default ({ nft }) => {
   return (
     <div className='nft-simple-card-wrapper'>
       <div className='nft-simple-card'>
-        <div className='preview-nft'>
-          {contentType.includes('image') ? (
-            <img src={url} className='nft-img' />
-          ) : (
-            <video
-              width={200}
-              height={200}
-              src={url}
-              className='nft-img'
-              controls
-              muted
-            />
-          )}
-        </div>
-        <Link className='nft-name' to={`/details/${txId}`}>
-          {stringTruncate(name, 20)}
+        <Link to={`/details/${txId}`}>
+          <div className='preview-nft'>
+            {contentType.includes('image') ? (
+              <img src={url} className='nft-img' />
+            ) : (
+              <video
+                width={200}
+                height={200}
+                src={url}
+                className='nft-img'
+                controls
+                muted
+              />
+            )}
+          </div>
+          <div className='nft-name'>{stringTruncate(name, 20)}</div>
+
         </Link>
 
         {showViews && <div className='nft-view'>{views} Views </div>}

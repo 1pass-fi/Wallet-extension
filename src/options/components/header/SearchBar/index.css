@@ -27,10 +27,8 @@
 }
 
 .search-bar .search-button {
-  background: #ffffff;
+  background-color: #ffffff;
   border: 0;
-  cursor: pointer;
-  box-sizing: border-box;
   padding: 0;
   display: flex;
   justify-content: center;
