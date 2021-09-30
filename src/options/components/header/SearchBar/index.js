@@ -32,9 +32,9 @@ export default () => {
         className='search-input'
         placeholder='search my gallery'
       />
-      <button className='search-button'>
+      <div className='search-button'>
         <SearchIcon className='search-icon' />
-      </button>
+      </div>
     </div>
   )
 }
