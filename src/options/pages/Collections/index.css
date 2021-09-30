@@ -1,5 +1,4 @@
 .collections-container {
-  width: 941px;
   margin: auto;
   color: #ffffff;
   padding: 120px;
@@ -54,7 +53,6 @@
   font-weight: 700;
   padding-bottom: 14px;
 }
-
 
 .collections-container__content__second__list__item {
   display: flex;
