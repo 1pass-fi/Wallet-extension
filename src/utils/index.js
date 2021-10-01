@@ -731,5 +731,19 @@ export const saveUploadFormData = async (file, metadata) => {
   } catch (err) {
     await setChromeStorage({ [STORAGE.NFT_UPLOAD_DATA]: {} })
   }
+}
 
+export const getOldWallet = async (password) => {
+  const encryptedKey = (await getChromeStorage('koiKey'))['koiKey']
+  const encryptedSeedphrase = (await getChromeStorage('koiPhrase'))['koiPhrase']
+  let key, seedphrase
+  
+  if (encryptedKey) {
+    key = await passworder.decrypt(password, encryptedKey)
+  }
+
+  if (encryptedSeedphrase) {
+    seedphrase = await passworder.decrypt(password, encryptedSeedphrase)
+  }
+  return { key, seedphrase }
 }

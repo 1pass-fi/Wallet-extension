@@ -33,3 +33,24 @@
   font-size: 12px;
   line-height: 20px;
 }
+
+.account-import .recover-key {
+  width: 397px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.account-import .recover-key .title {
+  font-size: 15px;
+}
+
+.account-import .btn-wrapper .recover-button {
+  width: 200px;
+  color: #ffffff
+}
+
+.account-import .btn-wrapper {
+  width: 397px;
+  text-align: center;
+}

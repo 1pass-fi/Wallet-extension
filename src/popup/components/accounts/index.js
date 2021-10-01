@@ -10,6 +10,7 @@ import Login from './accountLockScreen'
 import ConnectSite from './connectToWallet'
 import SignTx from './signTx'
 import WelcomeScreen from './welcomeScreen'
+import Recovery from './recoverKeyfile'
 
 // styles
 import './index.css'
@@ -38,6 +39,9 @@ const Account = () => {
       </Route>
       <Route path='/account/welcome'>
         <WelcomeScreen />
+      </Route>
+      <Route path='/account/recovery'>
+        <Recovery />
       </Route>
     </Switch>
   )

@@ -1,0 +1,25 @@
+.recover-key-wrapper {
+  width: 397px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recover-key-wrapper .title {
+  font-size: 15px;
+}
+
+.recover-key-wrapper .recovery-form {
+  width: 397px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.recover-key-wrapper .recovery-form .recovery-button {
+  width: 330px;
+}
