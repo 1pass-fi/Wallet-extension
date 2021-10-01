@@ -189,7 +189,7 @@ export class EthereumMethod {
     try {
       return await this.eth.transferEth(recipient, qty)
     } catch (err) {
-      console.log('SEND TRANSACTION ERROR', err.message)
+      throw new Error(err.message)
     }
   }
 

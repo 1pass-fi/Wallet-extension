@@ -104,6 +104,15 @@ const SendKoiForm = ({
     try {
       setShowModal(false)
       setIsLoading(true)
+      if (selectedAccount.type === TYPE.ETHEREUM) {
+        const account = await popupAccount.getAccount({ address: selectedAccount.address })
+        const provider = await account.get.provider()
+        if (provider.includes('mainnet')) {
+          setError(ERROR_MESSAGE.SEND_WITH_ETH)
+          setIsLoading(false)
+          return
+        }
+      }
       await makeTransfer(selectedAccount, Number(amount), recipient, selectedToken)
       setIsLoading(false)
       setNotification(NOTIFICATION.TRANSACTION_SENT)

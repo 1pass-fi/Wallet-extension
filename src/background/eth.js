@@ -38,10 +38,15 @@ export class Ethereum {
   }
 
   async getBalance() {
+    
     return this.#web3.eth.getBalance(this.address)
   }
 
   async transferEth(toAddress, amount) {
+    if (this.#web3.eth.currentProvider.host.includes('mainnet')) {
+      throw new Error('We currently only support Ethereum transfers on the Rinkeby network.')
+    }
+
     const amountToSend = this.#web3.utils.toWei(amount.toString(), 'ether') // Convert to wei value
     const rawTx = {
       to: toAddress,
