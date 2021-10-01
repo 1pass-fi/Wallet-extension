@@ -17,70 +17,25 @@ export default ({ onClose }) => {
           </div>
 
           <div className='paragraph'>
-            The wallet currently supports 'Drag and Drop' to archive your
-            content permanently on Arweave. You will start earning KOII whenever
-            they are viewed. Creating NFTs takes less than one minute and costs
-            less than $00.01. Check out our tutorial here if it’s your first
-            time creating with Finnie.
+          The Ethereum bridge has arrived! We are so excited to announce that you can now transfer your Koii NFTs to any Ethereum marketplace, and transfer them back to your Finnie wallet to earn attention rewards via Proof of Real Traffic.
           </div>
 
           <div className='paragraph'>New features with this release:</div>
-          <ul className='paragraph'>
-            <li className='list-item'>
-              Create and update collections from media in my gallery
-            </li>
-            <li className='list-item'>Search my gallery</li>
-            <li className='list-item'>
-              Create a Koii decentralized identity (kID). Finnie will use your
-              kID to connect keys & wallets across chains (coming soon)
-            </li>
-            <li className='list-item'>
-              Invite a Friend referral codes (earn up to 5 KOII for friends who
-              use Finnie to upload an NFT)
-            </li>
-          </ul>
+          Finnie can now hold multiple keys (e.g. two KOII wallets and two ETH wallets) and you can send NFTs to any other Arweave wallet. You will be able to view the NFTs from all your wallets right in the Gallery.
+          <div className='paragraph'>
+          Finnie also supports Dynamic NFTs like the Narcissus Flower.
+          </div>
+          <div className='paragraph'>
+          Based on your feedback, we've made updates to speed up load times and fix bugs, and added usability improvements like hover tags on buttons.
+          </div>
 
-          <div className='paragraph'>What we’re currently working on:</div>
-          <ul className='paragraph'>
-            <li className='list-item'>
-              Ethereum bridge: soon Finnie will be able to hold Arweave/Koii AND
-              Ethereum keys, which means media from OpenSea can be imported to
-              Arweave (store it forever, no rug pulls!) or Atomic NFTs can be
-              sold on Ethereum-based platforms
-            </li>
-            <li className='list-item'>
-              Direct buying & selling on Koii with 0% commissions (yeah, you
-              read that correctly. NO commissions)
-            </li>
-            <li className='list-item'>Make an offer to buy an NFT</li>
-            <li className='list-item'>Customizable Galleries</li>
-            <li className='list-item'>
-              Verification badges: make sure the artist you’re buying from is
-              the real deal
-            </li>
-            <li className='list-item'>
-              Curated collection (collections with pieces that are owned by
-              multiple people
-            </li>
-          </ul>
 
           <div className='report-request paragraph'>
-            <a
-              href='https://docs.google.com/forms/d/1AUecQDPLSkq9TTbDetjj7L61azuQY6JU43fX6FCqtaQ/'
+            Have a feature? submit it <a
+              href='https://koii.me/featurerequest'
               className='link'
               target='_blank'
-            >
-              Report
-            </a>
-            &nbsp;a bug or &nbsp;
-            <a
-              href='https://docs.google.com/forms/d/13nYOjTOlnjXnFAxf-fuNXvyTL5bEUQC27sR7VI-z_zE/'
-              className='link'
-              target='_blank'
-            >
-              request
-            </a>
-            &nbsp; a feature.
+            >here</a>
           </div>
         </div>
       </div>

@@ -46,8 +46,6 @@ export default ({
     setFile(acceptedFiles ? acceptedFiles[0] : {})
 
     const handleSetDefaultAccount = async () => {
-      console.log('importedAddress state', importedAddress)
-
       await storage.setting.set.activatedAccountAddress(importedAddress)
       const account = await popupAccount.getAccount({ address: importedAddress })
       const data = await account.get.metadata()

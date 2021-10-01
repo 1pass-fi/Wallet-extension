@@ -37,7 +37,10 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
       setImportedAddress(address)
       nextStep()
     } catch (err) {
-      console.log(err.message)
+      if (err.message == 'Incorrect password') {
+        setError(err.message)
+        return
+      }
       setError(ERROR_MESSAGE.INVALID_JSON_KEY)
     }
   }

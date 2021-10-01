@@ -201,7 +201,6 @@ export default ({ children }) => {
           setInviteSpent(spent)
         }
       } catch (err) {
-        console.log('ERRORRRRR')
         console.log(err.message)
       }
     }
@@ -286,6 +285,15 @@ export default ({ children }) => {
 
       const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE)
       setArWallets(arAccounts)
+
+      if (get(popupAccount, 'importedAccount.length') === 1) {
+        let activatedAccount = await storage.setting.get.activatedAccountAddress()
+        activatedAccount = await popupAccount.getAccount({
+          address: activatedAccount,
+        })
+        activatedAccount = await activatedAccount.get.metadata()
+        setAccount(activatedAccount)
+      }
     }
 
     if (newAddress) reloadWallets()
@@ -660,7 +668,6 @@ export default ({ children }) => {
             {walletLoaded &&
               <div>
                 {error && <Message children={error} />}
-                {notification && <Message children={notification} type='notification' />}
                 <StartUp />
               </div>}
           </>

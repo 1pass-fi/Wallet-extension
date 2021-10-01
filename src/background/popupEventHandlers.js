@@ -266,6 +266,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             await storage.setting.set.activatedAccountAddress(await account.get.address())
           }
 
+          loadBalances()
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,
             data: address,
@@ -981,7 +982,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             await storage.setting.set.activatedAccountAddress(await account.get.address())
           }
 
-          loadBalances(koi, port)
+          loadBalances()
           port.postMessage({
             type: MESSAGES.SAVE_WALLET_GALLERY,
             data: addressFromKey,

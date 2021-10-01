@@ -89,7 +89,6 @@ export default () => {
       Expected to receive an array of 12 words phrase. ['summer', 'vacation',...]
     */
     const phrase = await backgroundRequest.gallery.generateNewWallet({ walletType })
-    console.log('phrase', phrase)
     setSeedPhrase(phrase)
     setUnselectedWords(
       shuffle(phrase).map((content, id) => ({
