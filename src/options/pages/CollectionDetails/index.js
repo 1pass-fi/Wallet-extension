@@ -30,7 +30,6 @@ export default () => {
   }, [])
 
   const collection = useMemo(() => {
-    console.log('RUNNING')
     console.log(collections)
     const collection = find(collections, collection => collection.id == collectionId)
     console.log(collection)

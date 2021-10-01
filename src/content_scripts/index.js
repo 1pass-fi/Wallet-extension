@@ -139,8 +139,6 @@ window.addEventListener('message', async function (event) {
       },
       disconnect: () => buildPromise(MESSAGE_TYPES.DISCONNECT),
       getActivePublicKey: () => buildPromise(MESSAGE_TYPES.GET_PUBLIC_KEY),
-      addToken: () => console.log('Comming soon!'),
-      // encrypt: () => buildPromise(MESSAGE_TYPES.ENCRYPT)
     }
 
     window.koii = {

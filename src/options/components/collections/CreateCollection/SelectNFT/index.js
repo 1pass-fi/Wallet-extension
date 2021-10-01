@@ -192,7 +192,6 @@ export default ({nfts, tags, collectionName, description, stage}) => {
   // Runs when drop
   const onDragEnd = (result) => {
     /* Reoder nfts */
-    console.log(result)
     const destId = result.destination.index
     const sourceId = result.source.index
 

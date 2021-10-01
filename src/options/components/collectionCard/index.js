@@ -152,7 +152,7 @@ export default ({ collection }) => {
         className={`nft-collection-card ${isExpand ? 'expand' : ''}`}
         ref={ref}
       >
-        <Link className='nft-name' to={`/collections/${id}`}>
+        <Link className='link-tag' to={`/collections/${id}`}>
           <div className='preview-nft'>
             {displayNftIndex > 0 && (
               <div className='prev-nft' onClick={displayPrevNft}>

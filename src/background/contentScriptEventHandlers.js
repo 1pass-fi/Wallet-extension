@@ -374,9 +374,7 @@ export default async (koi, port, message, ports, resolveId, sender) => {
               return
             } else {
               const arWalletCount = await backgroundAccount.count(TYPE.ARWEAVE)
-              console.log('arWalletCount', arWalletCount)
               if (!arWalletCount) {
-                console.log('RUNNNNN')
                 port.postMessage({
                   type: MESSAGES.KOI_CONNECT_SUCCESS,
                   data: {status: 401, data: 'Please import an Arweave wallet to Finnie.'},

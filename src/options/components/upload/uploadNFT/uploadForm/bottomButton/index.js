@@ -178,7 +178,6 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
 
   if (stage == 2) {
     const handleUploadStage2 = async () => {
-      console.log(price)
       // Costs validations
       if (isNumber(price)) {
         try {

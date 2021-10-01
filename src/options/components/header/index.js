@@ -43,9 +43,9 @@ export default ({
   return (
     <header className='app-header' ref={headerRef}>
       <div className='header-left'>
-        <Link to='/'>
+        {/* <Link to='/'>
           <KoiIcon className='logo' />
-        </Link>
+        </Link> */}
       </div>
       <div className='header-center'>{pathname == '/' && <SearchBar />}</div>
       <div className='header-right'>

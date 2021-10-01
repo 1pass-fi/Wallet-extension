@@ -39,20 +39,16 @@ export const createWindow = (windowData, { beforeCreate = () => {}, afterClose =
   })
 }
 
-export const getSelectedTab = (timeout = 0, retries = 0) => {
+export const getSelectedTab = (timeout = 200, retries = 0) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (retries > 3) {
-        reject('Unsupported url')
-        return
-      }
-      chrome.tabs.getSelected(null, tab => {
-        if (tab.url.startsWith('chrome-extension://')) {
-          getSelectedTab(100, retries + 1).then(resolve).catch(reject)
-        } else {
+      try {
+        chrome.tabs.getSelected(null, tab => {
           resolve(tab)
-        }
-      })
+        })
+      } catch (err) {
+        reject(err)
+      }
     }, timeout)
   })
 }

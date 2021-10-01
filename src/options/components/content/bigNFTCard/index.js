@@ -72,6 +72,9 @@ export default ({
   return (
     <div className='big-nft-card-wrapper'>
       <div className='big-nft-card'>
+        <div data-tip='Back' onClick={handleGoBack} className='go-back-icon'>
+          <GoBackIcon />
+        </div>
         <div className='nft-preview'>
           {contentType.includes('image') && (
             <img src={imageUrl} className='nft-img' />
@@ -93,10 +96,6 @@ export default ({
               </div>
             </div>
           )}
-
-          <div data-tip='Back' onClick={handleGoBack} className='go-back-icon'>
-            <GoBackIcon />
-          </div>
         </div>
         <div className='info'>
           <div className='nft-name'>{name}</div>

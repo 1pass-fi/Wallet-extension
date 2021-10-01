@@ -122,78 +122,27 @@ export default ({ accounts, setAccounts }) => {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd} onDragUpdate={onDragUpdate}>
-      <Droppable droppableId='droppable'>
-        {(provided, snapshot) => (
-          <div
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}
-            className='account-order'
-          >
-            <div className='account-header'>DEFAULT</div>
-            {accounts.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.address} index={index}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    style={getItemStyle(
-                      snapshot.isDragging,
-                      provided.draggableProps.style
-                    )}
-                  >
-                    <div className='account'>
-                      <div className='name-icon'>
-                        <RearrangePadsIcon className='arrange-icon' />
-                        <div
-                          onClick={() => handleSetDefaultAccount(item.address)}
-                          className={`set-default-checkbox ${
-                            selectedAddress === item.address ? 'active' : ''
-                          }`}
-                        ></div>
-                        {item.type == TYPE.ARWEAVE && <FinnieIcon className='finnie-icon' />}
-                        {item.type == TYPE.ETHEREUM && <EthereumIcon className='finnie-icon' />}
-                        <div className='account-name'>{item.accountName}</div>
-                      </div>
-                      <div className='account-address'>
-                        {getDisplayAddress(item.address)}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </Draggable>
-            ))}
-
-            {provided.placeholder}
+    <div className='account-order'>
+      <div className='account-header'>DEFAULT</div>
+      {accounts.map((item, index) => (
+        <div className='account'>
+          <div className='name-icon'>
+            {/* <RearrangePadsIcon className='arrange-icon' /> */}
             <div
-              style={{
-                position: 'absolute',
-                top: placeholderProps.clientY,
-                left: placeholderProps.clientX,
-                height: placeholderProps.clientHeight,
-                background: '#F5F5F5 ',
-                width: placeholderProps.clientWidth,
-              }}
-            />
+              onClick={() => handleSetDefaultAccount(item.address)}
+              className={`set-default-checkbox ${
+                selectedAddress === item.address ? 'active' : ''
+              }`}
+            ></div>
+            {item.type == TYPE.ARWEAVE && <FinnieIcon className='finnie-icon' />}
+            {item.type == TYPE.ETHEREUM && <EthereumIcon className='finnie-icon' />}
+            <div className='account-name'>{item.accountName}</div>
           </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+          <div className='account-address'>
+            {getDisplayAddress(item.address)}
+          </div>
+        </div>
+      ))}
+    </div>
   )
 }
-// <div className='account-order'>
-//   {accounts.map((item, index) => (
-//     <div className='account'>
-//       <div className='name-icon'>
-//         <RearrangePadsIcon className='arrange-icon' />
-//         <FinnieIcon className='finnie-icon' />
-//         <div className='account-name'>{item.accountName}</div>
-//       </div>
-//       <div className='account-address'>
-//         {getDisplayAddress(item.address)}
-//       </div>
-//     </div>
-//   ))}
-// </div>

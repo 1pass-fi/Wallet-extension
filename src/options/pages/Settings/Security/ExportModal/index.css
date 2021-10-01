@@ -1,7 +1,7 @@
 .export-phrase-modal-wrapper {
-  height: 100vh;
-  position: fixed;
-  width: 100vw;
+  top: 50vh;
+  position: absolute;
+  right: 50vw;
 }
 
 .export-phrase-modal {

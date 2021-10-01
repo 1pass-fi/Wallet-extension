@@ -180,9 +180,6 @@ export default ({ info, onClose, type }) => {
   }
 
   const onOneClick = () => {
-    console.log(chosenAccount)
-    console.log(numberTransfer)
-
     if (isEmpty(chosenAccount) || isEmpty(chosenAccount.address)) {
       setError('Please select an address.')
     } else if (!numberTransfer || numberTransfer == 0){
@@ -212,7 +209,6 @@ export default ({ info, onClose, type }) => {
   }
 
   const onGoBack = () => {
-    console.log(step)
     if (step == TRANSFER_STEPS.INPUT_INFO) {
       onClose()
     } else {

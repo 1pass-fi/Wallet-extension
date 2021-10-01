@@ -24,10 +24,8 @@
 .big-nft-card .go-back-icon {
   width: 30px;
   height: 30px;
-  position: absolute;
-  top: 0px;
-  left: -50px;
   cursor: pointer;
+  margin-right: 11px;
 }
 
 .big-nft-card .nft-img {

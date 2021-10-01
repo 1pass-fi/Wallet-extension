@@ -98,7 +98,6 @@ const Popup = ({
 
     const isLocked = await backgroundRequest.wallet.getLockState()
 
-    console.log('account metadata: ', accounts)
     setAccounts(accounts)
 
 

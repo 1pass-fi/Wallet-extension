@@ -30,6 +30,10 @@
   width: 256px;
 }
 
+.nft-collection-card .link-tag {
+  text-decoration: none;
+}
+
 .nft-collection-card.expand {
   background: #171753;
   z-index: 1;
