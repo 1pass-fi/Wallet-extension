@@ -1,6 +1,6 @@
 import '@babel/polyfill'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useHistory, useLocation, Link } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
@@ -27,6 +27,7 @@ import Welcome from 'options/modal/welcomeScreen'
 import UploadingNFT from 'options/modal/UploadingNFT'
 import SuccessUploadNFT from 'options/modal/SuccessUploadNFT'
 import TransferNFT from 'options/modal/TransferNFT'
+import KoiIcon from 'img/finnie-koi-logo-white.svg'
 
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect } from 'services/request/popup'
@@ -637,6 +638,9 @@ export default ({ children }) => {
                 <input name='fileField' {...getInputProps()} />
               )}
 
+              <Link to="/">
+                <div className="startup-logo"><KoiIcon /></div>
+              </Link>
               {!GALLERY_IMPORT_PATH.includes(pathname) && <Header
                 totalKoi={totalKoi}
                 totalAr={totalAr}
@@ -645,7 +649,7 @@ export default ({ children }) => {
                 isWaitingAddNFT={isWaitingAddNFT}
                 setIsWaitingAddNFT={setIsWaitingAddNFT}
               />}
-              <input onChange={(e) => handleSetFile(e)} type='file' ref={inputFileRef} style={{ display: 'none' }} />
+              <input onChange={(e) => handleSetFile(e)} onClick={(e) => e.target.value = null} type='file' ref={inputFileRef} style={{ display: 'none' }} />
               {children}
               {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer onClearFile={onClearFile} inputFileRef={inputFileRef} showDropzone={showDropzone} />}
               {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />}

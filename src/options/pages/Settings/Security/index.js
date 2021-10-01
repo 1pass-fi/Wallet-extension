@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
 
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
-import EthereumIcon from 'img/ethereum-logo-18.svg'
+import EthereumIcon from 'img/ethereum-logo.svg'
 import { getDisplayAddress } from 'options/utils'
 import { getChromeStorage } from 'utils'
 import { STORAGE } from 'constants/koiConstants'
@@ -89,8 +89,8 @@ export default () => {
                     onClick={() => onSeedPhraseClick(account)}
                   >
                     <div className='name-icon'>
-                      {account.type === TYPE.ARWEAVE && <FinnieIcon className='finnie-icon' />}
-                      {account.type === TYPE.ETHEREUM && <EthereumIcon className='finnie-icon'/>}
+                      {account.type === TYPE.ARWEAVE && <div className='finnie-icon'><FinnieIcon /></div>}
+                      {account.type === TYPE.ETHEREUM && <div className='finnie-icon'><EthereumIcon /></div>}
                       <div className='account-name'>{account.accountName}</div>
                     </div>
                     <div className='account-address'>
