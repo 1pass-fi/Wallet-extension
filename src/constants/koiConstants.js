@@ -353,6 +353,7 @@ export const FRIEND_REFERRAL_ENDPOINTS = {
   CLAIM_REWARD: 'CLAIM_REWARD'
 }
 
+// TODO
 export const OPEN_SEA_API = {
   MAINNET: '',
   RINKEBY: ''
