@@ -1,17 +1,28 @@
 .app-content {
   min-height: 100vh;
-  background: linear-gradient(
-    90deg, #030332 0%, #171753 100%);
+  background: linear-gradient(90deg, #030332 0%, #171753 100%);
 }
 
 .lock-Screen {
   color: #ffffff;
   text-align: center;
   letter-spacing: 0.05em;
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 600;
-  top: 50%;
-  position:absolute ;
+  line-height: 32px;
+  top: 30%;
+  position: absolute;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.lock-Screen .unlock-button {
+  margin-top: 45px;
+  width: 249px;
+  height: 40px;
+  background: white;
+  color: #171753;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
 }
