@@ -6,7 +6,7 @@ import FinnieLogo from 'img/startup/finnie-logo.svg'
 
 import WalletType from '../shared/WalletType'
 import ConfirmPassword from '../shared/ConfirmPassword'
-import InputField from '../shared/InputField'
+import InputSeedPhraseField from '../shared/InputSeedPhraseField'
 import Button from '../shared/Button'
 import Success from '../shared/Success'
 import Loading from '../shared/Loading'
@@ -151,7 +151,7 @@ export default () => {
                 sure your password is unique and secure.
               </div>
 
-              <InputField
+              <InputSeedPhraseField
                 label='12-word Recovery Phrase'
                 placeholder='Paste your recovery phrase here'
                 value={userSeedPhrase}
