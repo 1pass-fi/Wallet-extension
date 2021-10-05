@@ -4,11 +4,15 @@
   flex-direction: column;
   justify-content: center;
   padding: 10px;
-  padding-top: 40px;
+  padding-top: 64px;
+  width: 720px;
+  position: relative;
+  margin: auto;
 }
 
 .success-page * {
   color: #ffffff;
+  text-align: center;
 }
 
 .success-page .title {
@@ -39,50 +43,88 @@
 .success-page .warning .warning-items {
   font-size: 14px;
   line-height: 24px;
+  padding-top: 10px;
 }
 
-.success-page .get-koi-text {
+.success-page .warning .warning-items .warning-item {
+  text-align: left;
+}
+
+.success-page .warning .got-it-button {
+  margin-top: 45px;
+  width: 249px;
+  height: 40px;
+  background: white;
+  color: #171753;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.success-page .goback-button {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  margin-right: 11px;
+  position: absolute;
+  top: 64px;
+  left: 0px;
+}
+
+.success-page .content {
+  padding-top: 32px;
+}
+
+.success-page .content .content-message {
+  width: 610px;
+  height: 56px;
   font-size: 18px;
   line-height: 24px;
-  margin-top: 29px;
-}
-
-.success-page .get-koi-text span {
-  color: #49ce8b;
-}
-
-.success-page .get-koi-text {
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
-}
-
-.success-page .get-koi-button {
-  background: #9be7c4;
-  border-radius: 3px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
-  color: #171753;
-  color: #171753;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-  height: 40px;
-  line-height: 24px;
-  line-height: 40px;
-  margin-top: 20px;
   text-align: center;
-  text-align: center;
+  color: #FFFFFF;
+}
+
+.success-page .content .content-message span {
+  color: #9BE7B4;
+}
+
+.success-page .content .faucet-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: auto;
+  margin-top: 31px;
+  width: 552px;
+}
+
+.success-page .content .faucet-button {
   width: 249px;
+  height: 40px;
+  text-align: center;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+  border-radius: 3px;
+}
+
+.success-page .content .faucet-button.faucet {
+  letter-spacing: -0.01em;
+  color: #171753;
+  background: #FFFFFF;
+}
+
+.success-page .content .faucet-button.skip {
+  background: #171753;
+  border: 1.5px solid #FFFFFF;
+  box-sizing: border-box;
 }
 
 .success-page .create-nft-text {
-  margin-top: 41px;
   font-size: 18px;
   line-height: 24px;
+  text-align: center;
 }
 
 .success-page .create-nft-text span {
-  color: #ffc78f;
+  color: #FFA54B;
 }
 
 .success-page .drag-media {
@@ -92,5 +134,23 @@
 .success-page .drag-media .decorator {
   border: 1.5px solid #ffa54b;
   width: 720px;
-  height: 150px;
+  height: 210px;
+}
+
+.success-page .create-kid-text {
+  font-size: 18px;
+  line-height: 24px;
+  margin-top: 64px;
+}
+
+.success-page .go-to-kid {
+  font-size: 18px;
+  line-height: 24px;
+  margin-top: 16px;
+  width: 249px;
+  height: 40px;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+  border-radius: 3px;
+  color: #171753;
 }

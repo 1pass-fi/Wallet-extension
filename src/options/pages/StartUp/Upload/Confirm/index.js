@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { TYPE } from 'constants/accountConstants'
@@ -16,9 +17,11 @@ import GoBackBtn from 'options/components/GoBackButton'
 
 
 export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) => {
-  const { setError, wallets, setImportedAddress } =  useContext(GalleryContext)
+  const { setError, wallets, setImportedAddress, setNewAddress } =  useContext(GalleryContext)
   const [password, setPassword] = useState('')
   const [showFormError, setShowFormError] = useState(false)
+
+  const history = useHistory()
 
   const onConfirm = async () => {
     if(!password && isEmpty(wallets)) {
@@ -35,7 +38,9 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
 
       const address = await backgroundRequest.gallery.uploadJSONKeyFile({ password, key, type: walletType, provider: selectedNetwork })
       setImportedAddress(address)
-      nextStep()
+      setNewAddress(address)
+
+      history.push('/success')
     } catch (err) {
       if (err.message == 'Incorrect password') {
         setError(err.message)

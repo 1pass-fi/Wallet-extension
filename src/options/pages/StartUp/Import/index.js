@@ -8,7 +8,6 @@ import WalletType from '../shared/WalletType'
 import ConfirmPassword from '../shared/ConfirmPassword'
 import InputSeedPhraseField from '../shared/InputSeedPhraseField'
 import Button from '../shared/Button'
-import Success from '../shared/Success'
 import Loading from '../shared/Loading'
 import useEthereumNetworks from '../shared/useEthereumNetworks'
 import { GalleryContext } from 'options/galleryContext'
@@ -33,7 +32,7 @@ export default () => {
   const [showFormError, setShowFormError] = useState(false)
   const history = useHistory()
 
-  const { setError, wallets, setImportedAddress } =  useContext(GalleryContext)
+  const { setError, wallets, setImportedAddress, setNewAddress } =  useContext(GalleryContext)
   let { selectedNetwork, EthereumNetworks } = useEthereumNetworks({
     title: () => <div className='title'>Import Ethereum Key</div>,
     description: () => <div className='description'>Choose your Network.</div>,
@@ -83,21 +82,13 @@ export default () => {
         provider: selectedNetwork
       })
       setImportedAddress(address)
-      nextStep()
+      setNewAddress(address)
+
+      history.push('/success')
     } catch (err) {
       setError(err.message)
     }
     setIsLoading(false)
-  }
-
-  if (step === 4) {
-    return (
-      <div className='start-up'>
-        <div className='create-wallet-wrapper'>
-          <Success />
-        </div>
-      </div>
-    )
   }
 
   return (
