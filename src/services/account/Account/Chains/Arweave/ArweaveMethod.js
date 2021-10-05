@@ -32,26 +32,47 @@ export class ArweaveMethod {
     return { balance, koiBalance }
   }
 
+  /**
+   * 
+   * @returns res.contents NFTs array of an specified address at the moment this function invoked
+   * @returns res.newContent NFT IDs array that will be used for "saveNewNFTsToStorage"
+   */
   async loadMyContent() {
     try {
       const attentionState = await this.koi.getState('attention')
       const { nfts: allContent } = attentionState
-      console.log({ allContent })
 
-      // get nft id list for this koi address
-      const myContent = allContent[this.koi.address] || []
-      console.log({ myContent })
+      /* 
+        get nft id list for this koi address
+      */
+      let myContent = await this.koi.getNftIdsByOwner(this.koi.address)
+      myContent = myContent.filter(id => {
+        const nftOwners = allContent[id]
+        const balances = Object.values(nftOwners)
+        const isOwner = nftOwners[this.koi.address] === Math.max(...balances)
 
-      // get nft list for this koi address from Chrome storage
+        return isOwner
+      })
+
+      /* 
+        get nft list for this koi address from Chrome storage
+      */
       const contentList = (await getChromeStorage(`${this.koi.address}_assets`))[`${this.koi.address}_assets`] || []
-      console.log({ contentList })
+      console.log('Saved contents: ', contentList.length)
 
+      /*
+        There're two cases that NFTs will be filtered:
+        - Failed load content (removed on functions cacheNFTs on "background/popupEventHandlers")
+        - Sent NFTs (this address no longer own these NFTs)
+      */
       const validContents = contentList.filter((content) => {
         return myContent.indexOf(content.txId) !== -1
       })
-      console.log({ validContents })
+      console.log('Up to date saved content: ', validContents.length)
 
-      // detect new nft(s) that were not saved in Chrome storage
+      /* 
+        detect new nft(s) that were not saved in Chrome storage
+      */
       const storageContentIds = validContents.map(nft => nft.txId)
       const newContents = myContent.filter((nftId) => {
         return storageContentIds.indexOf(nftId) === -1
@@ -59,59 +80,10 @@ export class ArweaveMethod {
 
       if (!newContents.length) return ALL_NFT_LOADED
 
-      console.log('Storage new contents...', newContents)
+      console.log('New contents: ', newContents.length)
 
-      const newContentList = await Promise.all(newContents.map(async contentId => {
-        try {
-          console.log('ContentId: ', contentId)
-          const content = await this.koi.getNftState(contentId)
-          console.log({ content })
+      const newContentList = await this.getNftData(newContents)
 
-          if (content.title) {
-            const imageUrl = `${PATH.NFT_IMAGE}/${content.id}`
-            return {
-              name: content.title,
-              isKoiWallet: content.ticker === 'KOINFT',
-              earnedKoi: content.reward,
-              txId: content.id,
-              imageUrl,
-              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
-              koiRockUrl: `${PATH.KOI_ROCK}/${content.id}`,
-              isRegistered: true,
-              contentType: content.contentType,
-              totalViews: content.attention,
-              createdAt: content.createdAt,
-              description: content.description,
-              type: TYPE.ARWEAVE,
-              address: this.koi.address
-            }
-          } else {
-            console.log('Failed load content: ', content)
-            return {
-              name: '...',
-              isKoiWallet: true,
-              earnedKoi: content.reward,
-              txId: content.id,
-              imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
-              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
-              koiRockUrl: `${PATH.KOI_ROCK}/${content.id}`,
-              isRegistered: true,
-              contentType: content.contentType || 'image',
-              totalViews: content.attention,
-              createdAt: content.createdAt,
-              description: content.description,
-              type: TYPE.ARWEAVE,
-              address: this.koi.address
-            }
-          }
-        } catch (err) {
-          console.log(err.message)
-          return {
-            isRegistered: false,
-            isKoiWallet: false
-          }
-        }
-      }))
       const res = {
         contents: [...validContents, ...newContentList],
         newContents
@@ -119,66 +91,6 @@ export class ArweaveMethod {
 
       return res
     } catch (err) {
-      throw new Error(err.message)
-    }
-  }
-
-  async storageAssets(contents) {
-    try {
-      console.log('STORAGE ASSETS', contents)
-      return await Promise.all(contents.map(async contentId => {
-        try {
-          const content = await this.koi.getNftState(contentId)
-          
-          if (content.title) {
-            let url = `${PATH.NFT_IMAGE}/${content.id}`
-            let imageUrl
-            const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
-            imageUrl = `data:${content.contentType};base64,${u8}`
-            if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
-    
-            return {
-              name: content.title,
-              isKoiWallet: content.ticker === 'KOINFT',
-              earnedKoi: content.reward,
-              txId: content.id,
-              imageUrl,
-              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
-              koiRockUrl: `${PATH.KOI_ROCK}/${content.id}`,
-              isRegistered: true,
-              contentType: content.contentType,
-              totalViews: content.attention,
-              createdAt: content.createdAt,
-              description: content.description,
-              type: TYPE.ARWEAVE,
-              address: this.koi.address
-            }
-          } else {
-            console.log('Failed load content: ', content)
-            return {
-              name: '...',
-              isKoiWallet: true,
-              earnedKoi: content.reward,
-              txId: content.id,
-              imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
-              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
-              koiRockUrl: `${PATH.KOI_ROCK}/${content.id}`,
-              isRegistered: true,
-              contentType: content.contentType || 'image',
-              totalViews: content.attention,
-              createdAt: content.createdAt,
-              description: content.description,
-              type: TYPE.ARWEAVE,
-              address: this.koi.address
-            }
-          }
-        } catch (err) {
-          console.log(err.message)
-          throw new Error(err.message)
-        }
-      }))
-    } catch (err) {
-      console.log(err.message)
       throw new Error(err.message)
     }
   }
@@ -637,5 +549,66 @@ export class ArweaveMethod {
   async transactionConfirmedStatus(id) {
     const response = await arweave.transactions.getStatus(id)
     return !isEmpty(get(response, 'confirmed'))
+  }
+
+  async getNftData(nftIds, getBase64) {
+    try {
+      return await Promise.all(nftIds.map(async contentId => {
+        try {
+          const content = await this.koi.getNftState(contentId)
+          
+          if (content.title) {
+            let url = `${PATH.NFT_IMAGE}/${content.id}`
+            let imageUrl = url
+            if (getBase64) {
+              const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
+              imageUrl = `data:${content.contentType};base64,${u8}`
+              if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
+            }
+
+            return {
+              name: content.title,
+              isKoiWallet: content.ticker === 'KOINFT',
+              earnedKoi: content.reward,
+              txId: content.id,
+              imageUrl,
+              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+              koiRockUrl: `${PATH.KOI_ROCK}/${content.id}`,
+              isRegistered: true,
+              contentType: content.contentType,
+              totalViews: content.attention,
+              createdAt: content.createdAt,
+              description: content.description,
+              type: TYPE.ARWEAVE,
+              address: this.koi.address
+            }
+          } else {
+            console.log('Failed load content: ', content)
+            return {
+              name: '...',
+              isKoiWallet: true,
+              earnedKoi: content.reward,
+              txId: content.id,
+              imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
+              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+              koiRockUrl: `${PATH.KOI_ROCK}/${content.id}`,
+              isRegistered: true,
+              contentType: content.contentType || 'image',
+              totalViews: content.attention,
+              createdAt: content.createdAt,
+              description: content.description,
+              type: TYPE.ARWEAVE,
+              address: this.koi.address
+            }
+          }
+        } catch (err) {
+          console.log(err.message)
+          throw new Error(err.message)
+        }
+      }))
+    } catch (err) {
+      console.log(err.message)
+      return []
+    }
   }
 }
