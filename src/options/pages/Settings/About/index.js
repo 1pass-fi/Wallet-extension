@@ -80,7 +80,7 @@ export default ({ version = '0.2.1' }) => {
             </div>
             <div className='report-request'>
               <a
-                href='https://docs.google.com/forms/d/1AUecQDPLSkq9TTbDetjj7L61azuQY6JU43fX6FCqtaQ/'
+                href='https://koii.me/support/'
                 className='link'
                 target='_blank'
               >
@@ -88,7 +88,7 @@ export default ({ version = '0.2.1' }) => {
               </a>
               &nbsp;a bug or &nbsp;
               <a
-                href='https://docs.google.com/forms/d/13nYOjTOlnjXnFAxf-fuNXvyTL5bEUQC27sR7VI-z_zE/'
+                href='https://koii.me/featurerequest/'
                 className='link'
                 target='_blank'
               >

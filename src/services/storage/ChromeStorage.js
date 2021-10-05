@@ -2,7 +2,7 @@ export class ChromeStorage {
   _getChrome(key) {
     return new Promise((resolve, reject) => {
       chrome.storage.local.get(key, result => {
-        if (result[key]) {
+        if (result[key] !== undefined) {
           resolve(result[key])
           return
         }

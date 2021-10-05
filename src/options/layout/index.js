@@ -152,7 +152,20 @@ export default ({ children }) => {
       }
     }
 
-    if (walletLoaded) loadActivatedAccount()
+    const getCollectionsFromStorage = async () => {
+      try {
+        const allCollections = await popupAccount.getAllCollections()
+        setCollections(allCollections)
+      } catch (err) {
+        setError(err.message)
+      }
+    }
+
+    if (walletLoaded) {
+      loadActivatedAccount()
+      getCollectionsFromStorage()
+    }
+
   }, [walletLoaded])
 
   /* 
@@ -222,8 +235,8 @@ export default ({ children }) => {
       const showEarnedKoiStorage = await storage.setting.get.showEarnedKoi()
       const showWelcomeScreen = await storage.setting.get.showWelcomeScreen()
 
-      if (showViewStorage) setShowViews(showViewStorage)
-      if (showEarnedKoiStorage) setShowEarnedKoi(showEarnedKoiStorage)
+      if (showViewStorage !== null) setShowViews(showViewStorage)
+      if (showEarnedKoiStorage !== null) setShowEarnedKoi(showEarnedKoiStorage)
 
       if (!showWelcomeScreen) {
         setShowWelcome(true)
@@ -576,7 +589,8 @@ export default ({ children }) => {
         setImportedAddress,
         setNewAddress,
         arWallets,
-        inputFileRef
+        inputFileRef,
+        walletLoaded
       }}
     >
       <div className='app-background'>

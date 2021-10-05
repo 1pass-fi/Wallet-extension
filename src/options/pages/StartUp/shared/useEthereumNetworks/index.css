@@ -48,6 +48,7 @@
 .network-options .option.active {
   background: #ffc78f;
   font-weight: 600;
+  color: #171753
 }
 
 .network-options .option .bubble {

@@ -8,7 +8,7 @@ export default ({ value, setValue }) => {
   }
   return (
     <label className='switch'>
-      <input type='checkbox' id='togBtn' value={value} onChange={onToggle} />
+      <input type='checkbox' id='togBtn' defaultChecked={value} onChange={onToggle} />
       {value ? (
         <span className='on'>ON</span>
       ) : (

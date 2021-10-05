@@ -128,7 +128,7 @@ const SendKoiForm = ({
       const arAccounts = await popupAccount.getAllMetadata()
       const options = arAccounts.map((account, index) => ({
         id: index,
-        value: account.accountName,
+        value: account.address,
         label: account.accountName, 
         address: account.address,
         type: account.type

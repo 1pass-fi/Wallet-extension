@@ -11,12 +11,7 @@ export default ({ value, setValue }) => {
   }
   return (
     <label className='switch'>
-      <input type='checkbox' id='togBtn' value={value} onChange={onToggle} />
-      {/* {value ? (
-        <span className='on'>ON</span>
-      ) : (
-        <span className='off'>OFF</span>
-      )} */}
+      <input type='checkbox' defaultChecked={!value} id='togBtn' onChange={onToggle} />
       <div className={`slider round ${value ? 'checked' : ''}`}></div>
     </label>
   )

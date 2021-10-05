@@ -87,10 +87,11 @@ export default ({ setPassword, showError }) => {
         <div className="term-of-service-text">
           <label for="term-of-service">
             I agree with the&nbsp;
-            <a target="_blank" href={URL.TERMS_OF_SERVICE} className="link">
-              Terms of Service
-            </a>
           </label>
+          <a target="_blank" href={URL.TERM_OF_SERVICE} className="link">
+              Terms of Service
+          </a>
+
         </div>
       </div>
       {showError && !isAcceptTermService && (
