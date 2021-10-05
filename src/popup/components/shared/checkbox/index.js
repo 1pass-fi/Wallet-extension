@@ -1,5 +1,5 @@
 // modules
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // assets
 import CheckMarkIcon from 'img/check-mark.svg'
@@ -16,32 +16,36 @@ const Checkbox = ({
   onChange,
   className,
   isDisabled = false,
-  id
+  id,
 }) => {
   const [selected, setSelected] = useState(defaultChecked)
   const handleOnClick = () => {
-    setSelected((prev) => {return !prev})
+    setSelected((prev) => { return !prev })
   }
+
+  useEffect(() => {
+    setSelected(defaultChecked)
+  }, [defaultChecked])
 
   return (
     <div className={`checkbox-container ${className}`}>
-      <div className='checkbox-input'>        
-        <input 
+      <div className='checkbox-input'>
+        <input
           className='checkbox-hidden'
           type='checkbox'
           name={name}
           defaultChecked={defaultChecked}
           disabled={isDisabled}
           onClick={handleOnClick}
-          onChange = {onChange}
+          onChange={onChange}
           id={id}
         >
         </input>
-        <div className='checkbox-styled' style={{background: greenBackround && selected ? '#9be7c4' : '#ffffff' }}> 
-          <div className='check-mark-icon' style={{visibility: selected ? 'visible' : 'hidden'}}>
+        <div className='checkbox-styled' style={{ background: greenBackround && selected ? '#9be7c4' : '#ffffff' }}>
+          <div className='check-mark-icon' style={{ visibility: selected ? 'visible' : 'hidden' }}>
             <CheckMarkIcon />
           </div>
-        </div>     
+        </div>
       </div>
       {
         label.length > 0 &&

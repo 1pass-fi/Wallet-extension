@@ -8,6 +8,7 @@ import ArweaveIcon from 'img/arweave-icon.svg'
 
 // components
 import Button from 'popup/components/shared/button'
+import Checkbox from 'popup/components/shared/checkbox'
 
 // styles
 import '../index.css'
@@ -25,6 +26,7 @@ const SelectWallet = ({
   setCheckedAddress,
   handleOnClick,
 }) => {
+
   return (
     <>
       <div className='select-account'>Select accounts</div>
@@ -45,14 +47,26 @@ const SelectWallet = ({
               (account.address === checkedAddress) && 'checked'
             }`}
             key={account.address}
-            onClick={() => setCheckedAddress(account.address)}
+            onClick={() => {
+              if (account.address === checkedAddress) {
+                setCheckedAddress('')
+              } else {
+                setCheckedAddress(account.address)
+              }
+            }}
           >
-            {/* <Checkbox
-              value={account.address==checkedAddress}
+            <Checkbox
+              defaultChecked={account.address === checkedAddress}
               className='check-wallet'
               isDisabled={false}
-              onChange={() => setCheckedAddress(account.address)}
-            /> */}
+              onChange={() => {
+                if (account.address === checkedAddress) {
+                  setCheckedAddress('')
+                } else {
+                  setCheckedAddress(account.address)
+                }
+              }}
+            />
             {walletIcon[account.type]}
             <div className='wallet-info'>
               <div className='wallet-name'>{account.accountName}</div>
