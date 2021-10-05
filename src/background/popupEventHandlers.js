@@ -147,24 +147,25 @@ export const loadTransactionState = async () => {
   }
 }
 
-/*
-  Load NFT Content
-*/
+
+/**
+ * 
+ * @param {Array} contents Up to date NFTs
+ * @param {Account} account NFTs owner
+ */
 export const cacheNFTs = async (contents, account) => {
   try {
 
     if (isArray(contents)) {
       const contentList = contents.filter(content => !!content.name) // remove failed loaded nfts
-      console.log('Cache NFTs ', contentList)
+      console.log('Cache NFTs: ', contentList.length)
       await account.set.assets(contentList)
 
       // filter pending assets
       let pendingAssets = await account.get.pendingAssets() || []
-      console.log('Cache NFTs - current pending assets ', pendingAssets)
       pendingAssets = pendingAssets.filter(asset => {
         return contents.every(content => content.txId !== asset.txId)
       })
-      console.log('Cache NFTs - new pending assets ', pendingAssets)
       await account.set.pendingAssets(pendingAssets)
     }
   } catch (error) {
@@ -181,15 +182,13 @@ export const cacheNFTs = async (contents, account) => {
 export const saveNewNFTsToStorage = async (newContents, account) => {
   try {
     if (isArray(newContents)) {
-      console.log('Storage new NFTs ', newContents)
-      let newNFTContents = await account.method.storageAssets(newContents)
+      let newNFTContents = await account.method.getNftData(newContents, true)
       newNFTContents = newNFTContents.filter(content => !!content.name) // remove failed loaded nfts
       let allNFTs = await account.get.assets()
 
       const oldNFTs = differenceBy(allNFTs, newNFTContents, 'txId')
 
-      console.log('Storage new NFTs - oldNFTs', oldNFTs)
-      console.log('Storage new NFTs - newNFTContents', newNFTContents)
+      console.log('Stored NFTs: ', newNFTContents.length)
       allNFTs = [...oldNFTs, ...newNFTContents]
       account.set.assets(allNFTs)
     }
@@ -440,7 +439,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             allAccounts = await backgroundAccount.getAllAccounts()
           }
 
-          console.log('load content for account(s): ', allAccounts)
           await Promise.all(allAccounts.map(async account => {
             const { contents, newContents } = await account.method.loadMyContent()
             await cacheNFTs(contents, account)
