@@ -1,7 +1,6 @@
 // modules
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 import { get } from 'lodash'
 
 // components
@@ -33,8 +32,6 @@ export const ConnectToWallet = ({ setError, connectSite }) => {
   const [step, setStep] = useState(1)
   const [accounts, setAccounts] = useState([])
 
-  const history = useHistory()
-
   const handleOnClick = async (accept) => {
     try {
       if (accept) {
@@ -54,17 +51,10 @@ export const ConnectToWallet = ({ setError, connectSite }) => {
   }
 
   useEffect(() => {
-    const loadActivatedAccount = async () => {
-      const connectSiteAccountAddress = await storage.setting.get.connectSiteAccountAddress()
-      if (!connectSiteAccountAddress) {
-        setCheckedAddress(accounts[0].address)
-      } else {
-        setCheckedAddress(connectSiteAccountAddress)
-      }
+    if (accounts.length > 0){
+      setCheckedAddress(accounts[0].address)
     }
-
-    loadActivatedAccount()
-  }, [])
+  }, [accounts])
 
   useEffect(() => {
     const loadRequest = async () => {
