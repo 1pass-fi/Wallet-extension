@@ -10,6 +10,7 @@ import EmailIcon from 'img/social/email-icon.svg'
 import LinkedInIcon from 'img/social-icons/linkedin-icon.svg'
 
 import { createShareWindow } from '../../helpers'
+import { PATH } from 'constants/koiConstants'
 
 const TextBox = ({ title, text, buttonText, url }) => {
   const [isCopied, setIsCopied] = useState(false)
@@ -36,7 +37,7 @@ const TextBox = ({ title, text, buttonText, url }) => {
 }
 
 const ShareNFT = ({ txid }) => {
-  const shareUrl = `https://koi.rocks/content-detail/${txid}`
+  const shareUrl = `${PATH.KOII_LIVE}/${txid}`
   const embedUrl = `<iframe width="100%" src="https://koi.rocks/embed/${txid}" title="Koi NFT image" frameborder="0" allowfullscreen></iframe>`
 
   return (

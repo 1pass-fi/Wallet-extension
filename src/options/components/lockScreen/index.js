@@ -9,8 +9,9 @@ export default () => {
     <div className='app-content'>
       <KoiIcon className="startup-logo" />
       <div className='lock-Screen'>
-        <div className='unlock-message'>Unlock Finnie to view your gallery or create a new NFT</div>
-        <Button className='unlock-button' label={'Unlock Finnie'} />
+        <div className='unlock-message'>Unlock Finnie</div>
+        {/* <div className='unlock-message'>Unlock Finnie to view your gallery or create a new NFT</div> */}
+        {/* <Button className='unlock-button' label={'Unlock Finnie'} /> */}
       </div>
     </div>
   )
