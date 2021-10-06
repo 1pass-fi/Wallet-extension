@@ -22,7 +22,6 @@ const TransferFrom = ({
           type="text"
           value={receiverAddress}
           onChange={(e) => setReceiverAddress(e.target.value)}
-          className="input"
         />
         <div className="warning">
           <div className="warning-icon">
@@ -46,13 +45,12 @@ const TransferFrom = ({
           max={1}
           value={numberToTransfer}
           onChange={(e) => setNumberToTransfer(e.target.value)}
-          className="input"
           disabled={true}
         />
-        <div className="description">
+        {/* <div className="description">
           Many NFTs will only have 1 item minted. If this is the case for your
           transfer, this box will auto-fill.
-        </div>
+        </div> */}
       </div>
 
       <button

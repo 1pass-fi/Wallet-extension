@@ -273,7 +273,7 @@ export default ({ children }) => {
         const allAssets = await popupAccount.getAllAssets()
         const validAssets = allAssets.filter(asset => asset.name !== '...')
         setCardInfos(validAssets)
-        if (isEmpty(allAssets)) history.push('/create')
+        if (isEmpty(allAssets) && pathname === '/') history.push('/create')
         setIsLoading(false)
       } catch (err) {
         console.log(err.message)

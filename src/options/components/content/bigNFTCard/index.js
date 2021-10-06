@@ -122,7 +122,7 @@ export default ({
             >
               {pending ? 'pending transaction' : 'explore block'}
             </a>
-            {type === TYPE.ARWEAVE && !pending && <a className='external-link' href={koiRockUrl} target='_blank'>
+            {type === TYPE.ARWEAVE && !pending && <a className='external-link koii' href={koiRockUrl} target='_blank'>
               koi.rocks
             </a>}
           </div>}

@@ -1,4 +1,5 @@
 import React, { useState, useContext, useRef, useEffect } from 'react'
+import ReactTooltip from 'react-tooltip'
 
 import HomeIcon from 'img/navbar/home.svg'
 import CollectionIcon from 'img/navbar/collection.svg'
@@ -11,15 +12,32 @@ import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 
 import { GalleryContext } from 'options/galleryContext'
+import { TYPE } from 'constants/accountConstants'
+
+import { popupAccount } from 'services/account'
 
 import SlideNavbar from './SlideNav'
 
-import ReactTooltip from 'react-tooltip'
+
 
 export default () => {
-  const { affiliateCode } = useContext(GalleryContext)
+  const { affiliateCode, account } = useContext(GalleryContext)
   const { pathname } = useLocation()
+
   const [isExpandSubNavbar, setIsExpandSubNavbar] = useState(false)
+  const [clickable, setClickable] = useState(true)
+  const [hasArweave, setHasArweave] = useState(true)
+  
+  useEffect(() => {
+    const showArweaveForm = async () => {
+      const hasArweave = await popupAccount.hasArweave()
+      const defaultAccountIsArweave = account.type === TYPE.ARWEAVE
+      setClickable(hasArweave && defaultAccountIsArweave)
+      setHasArweave(hasArweave)
+    }
+
+    showArweaveForm()
+  }, [account])
 
   return (
     <div
@@ -37,17 +55,19 @@ export default () => {
               <HomeIcon className="nav-item" />
             </div>
           </Link>
-          <Link to="/create">
+
+          <Link to={hasArweave ? '/create' : '#'}>
             <div
-              data-tip="Create NFT"
+              data-tip={hasArweave ? 'Create NFT' : 'This feature only works with Koii NFTs. Transfer your NFT to Arweave to use it.'}
               className={`nav-item ${pathname == '/create' ? 'active' : ''}`}
             >
               <CreateNFTIcon className="nav-item" />
             </div>
           </Link>
-          <Link to="/collections">
+
+          <Link to={hasArweave ? '/collections' : '#'}>
             <div
-              data-tip="Collections"
+              data-tip={hasArweave ? 'Collections' : 'This feature is only compatible with Koii wallets. Create a Koii wallet to use it.'}
               className={`nav-item ${
                 pathname == '/collections' ? 'active' : ''
               }`}
@@ -55,6 +75,7 @@ export default () => {
               <CollectionIcon className="nav-item" />
             </div>
           </Link>
+
           <Link to="/settings">
             <div
               data-tip="Settings"
@@ -66,10 +87,11 @@ export default () => {
             </div>
           </Link>
         </div>
+
         <div className="bottom">
-          <Link to="/friends">
+          <Link to={clickable ? '/friends' : '#'}>
             <div
-              data-tip="Refer a Friend"
+              data-tip={clickable ? 'Refer a Friend' : 'This feature is only compatible with Koii wallets. Create a Koii wallet to use it.'}
               className={`nav-item friend ${
                 pathname == '/friends' ? 'active' : ''
               }`}

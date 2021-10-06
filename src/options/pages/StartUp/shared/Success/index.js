@@ -13,7 +13,7 @@ import './index.css'
 
 export default () => {
   const [step, setStep] = useState(1)
-  const { file, importedAddress, setNewAddress, setFile } = useContext(GalleryContext)
+  const { file, setFile } = useContext(GalleryContext)
   const history = useHistory()
 
   const openFaucet = () => {

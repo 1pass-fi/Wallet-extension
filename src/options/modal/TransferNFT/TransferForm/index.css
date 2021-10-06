@@ -55,6 +55,8 @@
 
 .transfer-nft.wrapper .transfer-form .number-to-transfer input {
   padding-left: 40px;
+  background-color: #ffffff;
+  cursor: not-allowed;
 }
 
 .transfer-nft.wrapper .transfer-form .number-to-transfer .total-available {
@@ -75,3 +77,5 @@
 .transfer-nft.wrapper .transfer-form .number-to-transfer .description {
   font-size: 10px;
 }
+
+

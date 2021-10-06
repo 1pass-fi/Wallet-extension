@@ -95,9 +95,13 @@
   display: inline-block;
   font-size: 14px;
   height: 24px;
-  line-height: 20px;
   padding: 2px 5px;
   text-decoration: none;
+}
+.big-nft-card .info .external-links .external-link.koii {
+  background: #171753;
+  color: #ffffff;
+  border: 1px solid #ffffff
 }
 
 .big-nft-card .info .external-links .external-link:first-of-type {
