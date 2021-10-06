@@ -25,7 +25,7 @@ export default ({ file, setFile, nextStep, walletType, setSelectedNetwork, previ
         Drag & drop an existing .JSON key file here or click to browse your
         computer.
         </div>
-        <Dropfile file={file} setFile={setFile} />
+        <Dropfile className='upload-key' file={file} setFile={setFile} />
         <button
           disabled={isEmpty(file)}
           onClick={nextStep}

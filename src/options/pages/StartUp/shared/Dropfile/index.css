@@ -1,8 +1,8 @@
-/* .dropzone {
+.dropzone-startup {
   margin-top: 67px;
-} */
+}
 
-.dropzone .decorator {
+.dropzone-startup .decorator {
   background: #171753;
   border-radius: 3px;
   border: 1.5px solid #ffffff;
@@ -11,10 +11,15 @@
   cursor: pointer;
   height: 186px;
   padding: 6px;
-  width: 549px;
+  width: 548px;
+}
+.dropzone-startup.drag-media .decorator {
+  border: 1.5px solid #FFA54B;
+  width: 719px;
+  height: 186px;
 }
 
-.dropzone .drag-active {
+.dropzone-startup .decorator .drag-active {
   align-items: center;
   background: #171753;
   border-radius: 3px;
@@ -26,8 +31,12 @@
   justify-content: space-around;
   width: 100%;
 }
+.dropzone-startup.drag-media .decorator .drag-active {
+  justify-content: center;
+  gap: 15px;
+}
 
-.dropzone .drag-active .import-description {
+.dropzone-startup .decorator .drag-active .import-description {
   font-size: 18px;
   line-height: 24px;
   max-width: 400px;
@@ -36,7 +45,7 @@
   white-space: nowrap;
 }
 
-.dropzone .export-icon {
+.dropzone-startup .decorator .drag-active .export-icon {
   background: #6969bf;
   border-radius: 50%;
   height: 116px;

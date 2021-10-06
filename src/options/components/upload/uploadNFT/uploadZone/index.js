@@ -10,7 +10,7 @@ export default ({ className = '' }) => {
 
   return (
     <div onClick={() => inputFileRef.current.click()} className={className + ' drag-active'}>
-      <div className='description'>
+      <div className='description-create-nft'>
         <ElectronIcon className='upload-nft-icon' />
         <div className='description-detail'>
           Drag a media file here to get started.
