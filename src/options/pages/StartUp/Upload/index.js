@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom'
 
 import PreUpload from './PreUpload'
 import Confirm from './Confirm'
-import Success from '../shared/Success'
 import UploadFile from './UploadFile'
 
 import './index.css'
@@ -54,8 +53,6 @@ export default () => {
           selectedNetwork={selectedNetwork} 
           file={file}
           previousStep={previousStep} />}
-
-        {step === 4 && <Success />}
       </div>
     </div>
   )

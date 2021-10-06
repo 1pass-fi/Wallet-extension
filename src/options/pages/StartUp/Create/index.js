@@ -11,7 +11,6 @@ import LockIcon from 'img/startup/lock-icon.svg'
 import ShareIcon from 'img/startup/share-icon.svg'
 
 import WalletType from '../shared/WalletType'
-import Success from '../shared/Success'
 import Button from '../shared/Button'
 import ConfirmPassword from '../shared/ConfirmPassword'
 import InputPassword from '../shared/InputPassword'
@@ -47,7 +46,7 @@ const mockPhrase = [
 export default () => {
   let { selectedNetwork, EthereumNetworks } = useEthereumNetworks({})
 
-  const { setError, wallets, setImportedAddress } = useContext(GalleryContext)
+  const { setError, wallets, setImportedAddress, setNewAddress } = useContext(GalleryContext)
 
   const [step, setStep] = useState(1)
   const [walletType, setWalletType] = useState(null)
@@ -119,7 +118,9 @@ export default () => {
 
       const address = await backgroundRequest.gallery.saveWallet({ password, provider: selectedNetwork })
       setImportedAddress(address)
-      nextStep()
+      setNewAddress(address)
+
+      history.push('/success')
     } catch (err) {
       console.log(err.message)
       setError(err.message)
@@ -357,9 +358,6 @@ export default () => {
           )}
 
         </div>
-        { step === 6 &&
-            <Success />
-        }
       </div>
     </div>
   )

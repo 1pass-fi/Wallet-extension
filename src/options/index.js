@@ -17,6 +17,8 @@ import UploadWallet from './pages/StartUp/Upload'
 import ImportWallet from './pages/StartUp/Import'
 import CreateWallet from './pages/StartUp/Create'
 
+import Success from './pages/StartUp/shared/Success'
+
 import HasArweave from 'options/shared/hasArweave'
 
 const Gallery = () => {
@@ -59,6 +61,9 @@ const Gallery = () => {
           </Route>
           <Route path='/settings'>
             <Settings />
+          </Route>
+          <Route path='/success'>
+            <Success />
           </Route>
           <Route path='*'>
             <Home />
