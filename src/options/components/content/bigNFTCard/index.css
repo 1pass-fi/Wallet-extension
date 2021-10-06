@@ -37,7 +37,7 @@
 
 .big-nft-card .info {
   margin-left: 32px;
-  max-width: 442px;
+  max-width: 512px;
 }
 
 .big-nft-card .info .nft-name {
@@ -56,14 +56,69 @@
   display: flex;
   font-size: 16px;
   font-weight: 500;
-  height: 20px;
-  line-height: 20px;
+  width: 512px;
+  height: 24px;
 }
 
-.big-nft-card .info .export-nft .arweave-icon {
+.big-nft-card .info .export-nft .wallet-icon {
   height: 24px;
-  margin-right: 9px;
   width: 24px;
+  margin-right: 9px;
+}
+
+.big-nft-card .transfer-nft-wrapper {
+  display: flex;
+  height: 24px;
+}
+
+.big-nft-card .export-nft .transfer-text {
+  height: 24px;
+  letter-spacing: 0.03em;
+}
+
+.big-nft-card .info .export-nft .wallet-logo {
+  display: flex;
+  margin-left: 10px;
+  width: 115px;
+  background: #171753;
+  border: 1px solid #FFFFFF;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
+}
+
+.big-nft-card .info .export-nft .wallet-logo .logo {
+  height: 24px;
+}
+
+.big-nft-card .other-chains {
+  display: flex;
+  margin-left: 16px;
+}
+
+.big-nft-card .other-chains .chains-container {
+  display: flex;
+  height: 24px;
+  padding-left: 5px;
+}
+
+.export-nft .other-chains .coming-soon {
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.big-nft-card .export-nft .logo {
+  height: 24px;
+  width: 24px;
+}
+
+.big-nft-card .info .export-nft .wallet-logo .text {
+  /* margin-right: 5px; */
+  width: 79px;
+  height: 24px;
+
+  font-size: 16px;
+  padding-left: 3px;
 }
 
 .big-nft-card .info .export-nft .different-chain {

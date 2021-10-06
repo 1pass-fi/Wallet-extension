@@ -9,7 +9,14 @@ import moment from 'moment'
 import ReactTooltip from 'react-tooltip'
 
 import ArweaveIcon from 'img/arweave-icon.svg'
-import EthereumIcon from 'img/ethereum-logo-18.svg'
+
+import EthereumLogo from 'img/chain/ethereum-logo.svg'
+import BinanceLogo from 'img/chain/binance-logo.svg'
+import Avalanche from 'img/chain/avalanche-logo.svg'
+import PolkadotLogo from 'img/chain/polkadot-logo.svg'
+import TezosLogo from 'img/chain/tezos-logo.svg'
+import DfinityLogo from 'img/chain/dfinity-logo.svg'
+
 import EmailIcon from 'img/social-icons/email-icon.svg'
 import FacebookIcon from 'img/social-icons/facebook-icon.svg'
 import LinkedinIcon from 'img/social-icons/linkedin-icon.svg'
@@ -48,6 +55,7 @@ export default ({
     handleShareNFT
   } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
+  const [isShowChain, setIsShowChain] = useState(false)
   const { registeredDate, tags } = {
     registeredDate: moment(createdAt * 1000).format('MMMM Do, YYYY'),
     tags: ['crypto', 'puppies', 'electropop', 'cubism'],
@@ -92,7 +100,7 @@ export default ({
           {contentType.includes('html') && (
             <div className='nft-img-iframe'>
               <div className='iframe-wrapper'>
-                <iframe frameBorder="0" src={imageUrl}/>
+                <iframe frameBorder="0" src={imageUrl} />
               </div>
             </div>
           )}
@@ -100,18 +108,46 @@ export default ({
         <div className='info'>
           <div className='nft-name'>{name}</div>
           {!pending && <div className='export-nft'>
-            {type === TYPE.ARWEAVE && <ArweaveIcon className='arweave-icon' />}
-            {type === TYPE.ETHEREUM && <EthereumIcon className='arweave-icon' />}
-            Transfer this NFT to a&nbsp;
-            <span
-              onClick={() => {
-                setShowExportModal({ earnedKoi, totalViews, name, imageUrl, type, txId, address })
-              }}
-              className='different-chain'
-            >
-              different chain
-            </span>
-            .
+            {type === TYPE.ARWEAVE && <div className='wallet-icon'><ArweaveIcon /></div>}
+            {type === TYPE.ETHEREUM && <div className='wallet-icon'><EthereumLogo /></div>}
+
+            {isShowChain ?
+              <>
+                <div className='transfer-nft-wrapper'>
+                  <div className='transfer-text'>Transfer to</div>
+                  <div className='wallet-logo' onClick={() => setIsShowChain(false)}>
+                    <EthereumLogo className='logo' />
+                    <div className='text'>Ethereum</div>
+                  </div>
+                </div>
+
+                <div className='other-chains'>
+                  <div className='coming-soon'>Coming soon:</div>
+                  <div className='chains-container'>
+                    <TezosLogo data-tip='Tezos' className='logo' />
+                    <Avalanche data-tip='Avalanche' className='logo' />
+                    <BinanceLogo data-tip='Binance Smartchain' className='logo' />
+                    <PolkadotLogo data-tip='Polkadot' className='logo' />
+                    <DfinityLogo data-tip='Dfinity' className='logo' />
+                  </div>
+                  <ReactTooltip place='top' type="dark" effect="float" />
+                </div>
+              </>
+              :
+              <>
+                <div className='transfer-text'>
+                  Transfer this NFT to a&nbsp;
+                  <span
+                    onClick={() => {
+                      setIsShowChain(true)
+                    }}
+                    className='different-chain'
+                  >
+                    different chain
+                  </span>
+                  .
+                </div>
+              </>}
           </div>}
           {type === TYPE.ARWEAVE && <div className='registered-date'>Registered: {registeredDate}</div>}
           {type === TYPE.ARWEAVE && <div className='external-links'>
@@ -176,13 +212,13 @@ export default ({
               <EmailIcon className='social-icon' />
             </a>
             <CopyToClipboard text={embed}>
-              <EmbedIcon onClick={onCopy} className='social-icon' disabled={!txId}/>
+              <EmbedIcon onClick={onCopy} className='social-icon' disabled={!txId} />
             </CopyToClipboard>
             {isCopied && <div className='copy-noti'>Link copied!</div>}
           </div>}
         </div>
       </div>
-      <ReactTooltip place='top' type="dark" effect="float"/>
+      <ReactTooltip place='top' type="dark" effect="float" />
     </div>
   )
 }
