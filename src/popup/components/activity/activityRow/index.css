@@ -76,6 +76,9 @@
   line-height: 12px;
   color: #237b75;
 }
+.activity-pending.expired {
+  color: #FF4141;
+}
 
 .activity-info-row .activity-status.completed > a {
   text-decoration: none;

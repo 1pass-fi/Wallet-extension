@@ -22,7 +22,7 @@ const propTypes = {
   source: PropTypes.string,
 }
 
-const ActivityRow = ({ activityName, expense, date, source, id, pending, price, currency, accountName, pendingConfirmation }) => {
+const ActivityRow = ({ activityName, expense, date, source, id, pending, price, currency, accountName, pendingConfirmation, expired }) => {
   const dateFormat = (date) => {
     return moment(date).format('MMMM Do, YYYY')
   }
@@ -51,7 +51,9 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending, price, 
                 : `${pending ? 'explore' : 'view'} block`}
             </a>
           </div>
-          { pending && <div className='activity-pending'>Transaction pending</div> }
+          { pending && <div className={!expired ? 'activity-pending' : 'activity-pending expired'}>
+            {!expired ? 'Transaction pending' : 'Transaction expired'}
+          </div> }
         </div>
         <div className='activity-info-row'>
           <div className='activity-expense'>{ (expense != null && expense > 0) ? sign : ''}{transactionAmountFormat(expense)} {token}</div>

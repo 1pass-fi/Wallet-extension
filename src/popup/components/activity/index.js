@@ -61,6 +61,7 @@ export const PendingList = ({ transactions }) => {
       id={transaction.id}
       source={transaction.source}
       accountName={transaction.accountName}
+      expired={transaction.expired}
     />
   ))
 }

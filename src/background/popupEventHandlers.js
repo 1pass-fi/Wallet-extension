@@ -13,7 +13,7 @@ import { getImageDataForNFT, getProviderUrlFromName } from 'utils'
 
 import { backgroundAccount } from 'services/account'
 
-import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
+import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS, EXPRIRED_TIME } from 'constants/koiConstants'
 
 import { popupPorts } from '.'
 
@@ -76,6 +76,7 @@ export const updatePendingTransactions = async () => {
         })
         return
       }
+      if ((Date.now() - transaction.createdAt) > EXPRIRED_TIME) transaction.expired = true
       return transaction
     }))
 
@@ -508,7 +509,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             expense: qty,
             accountName,
             date: moment().format('MMMM DD YYYY'),
-            source: target
+            source: target,
+            createdAt: Date.now()
           }
           pendingTransactions.unshift(newTransaction)
           // save pending transactions
@@ -682,7 +684,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             activityName: `Minted NFT "${content.title}"`,
             expense: price,
             accountName,
-            date: moment().format('MMMM DD YYYY')
+            date: moment().format('MMMM DD YYYY'),
+            createdAt: Date.now()
           }
 
           const pendingTransactions = await account.get.pendingTransactions() || []
