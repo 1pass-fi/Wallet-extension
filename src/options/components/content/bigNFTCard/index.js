@@ -8,7 +8,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import moment from 'moment'
 import ReactTooltip from 'react-tooltip'
 
-import ArweaveIcon from 'img/arweave-icon.svg'
+import ArweaveLogo from 'img/arweave-icon.svg'
 
 import EthereumLogo from 'img/chain/ethereum-logo.svg'
 import BinanceLogo from 'img/chain/binance-logo.svg'
@@ -56,6 +56,7 @@ export default ({
   } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const [isShowChain, setIsShowChain] = useState(false)
+  const [isShowExport, setIsShowExport] = useState(false)
   const { registeredDate, tags } = {
     registeredDate: moment(createdAt * 1000).format('MMMM Do, YYYY'),
     tags: ['crypto', 'puppies', 'electropop', 'cubism'],
@@ -108,16 +109,33 @@ export default ({
         <div className='info'>
           <div className='nft-name'>{name}</div>
           {!pending && <div className='export-nft'>
-            {type === TYPE.ARWEAVE && <div className='wallet-icon'><ArweaveIcon /></div>}
-            {type === TYPE.ETHEREUM && <div className='wallet-icon'><EthereumLogo /></div>}
+            {type === TYPE.ARWEAVE && <div className='wallet-icon'
+              onMouseOver={() => { setIsShowChain(true) }}
+              onMouseLeave={() => { setIsShowChain(false) }}>
+              <ArweaveLogo />
+            </div>}
+            {type === TYPE.ETHEREUM && <div className='wallet-icon'
+              onMouseOver={() => { setIsShowChain(true) }}
+              onMouseLeave={() => { setIsShowChain(false) }}>
+              <EthereumLogo />
+            </div>}
 
-            {isShowChain ?
-              <>
+            {isShowChain || isShowExport ?
+              <div className='transfer-nft' onMouseLeave={() => { setIsShowChain(false) }}>
                 <div className='transfer-nft-wrapper'>
                   <div className='transfer-text'>Transfer to</div>
-                  <div className='wallet-logo' onClick={() => setIsShowChain(false)}>
-                    <EthereumLogo className='logo' />
-                    <div className='text'>Ethereum</div>
+                  <div className='wallet-logo' onClick={() => setShowExportModal({ earnedKoi, totalViews, name, imageUrl, type, txId, address })}>
+                    {type === TYPE.ARWEAVE &&
+                      <>
+                        <EthereumLogo className='logo' />
+                        <div className='text'>Ethereum</div>
+                      </>}
+                    {type === TYPE.ETHEREUM &&
+                      <>
+                        <ArweaveLogo className='logo' />
+                        <div className='text'>Arweave</div>
+                      </>}
+
                   </div>
                 </div>
 
@@ -132,14 +150,18 @@ export default ({
                   </div>
                   <ReactTooltip place='top' type="dark" effect="float" />
                 </div>
-              </>
+              </div>
               :
               <>
-                <div className='transfer-text'>
-                  Transfer this NFT to a&nbsp;
+                <div className='transfer-text' >
+                  <div onMouseOver={() => { setIsShowChain(true) }} >
+                    Transfer this NFT to a&nbsp;
+                  </div>
+
                   <span
                     onClick={() => {
                       setIsShowChain(true)
+                      setIsShowExport(true)
                     }}
                     className='different-chain'
                   >

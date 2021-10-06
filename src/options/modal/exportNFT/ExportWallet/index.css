@@ -129,6 +129,10 @@
   width: 26px;
 }
 
+.transfer-wallet-modal .content .right .number-to-transfer .description {
+  text-align: left;
+}
+
 .transfer-wallet-modal .content .right .number-to-transfer.confirm {
   display: flex;
   font-size: 16px;
@@ -198,6 +202,7 @@
   line-height: 20px;
   padding: 9px 0px 7px 30px;
   width: 392px;
+  cursor: not-allowed;
 }
 
 .transfer-wallet-modal

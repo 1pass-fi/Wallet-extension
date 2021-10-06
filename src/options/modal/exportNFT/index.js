@@ -25,51 +25,13 @@ const Chain = ({ Icon, title }) => {
   )
 }
 
-const ExportNFT = ({ info }) => {
-  const [isShowEthereum, setIsShowEthereum] = useState(false)
-
-  const [type, setType] = useState(null)
-  const { type: _type } = info
-
-  const handleOnClick = (walletType) => {
-    setIsShowEthereum(true)
-    setType(walletType)
-  }
-
-  console.log('info', info)
+const ExportNFT = ({ info, onClose }) => {
+  const { type } = info
+  const walletType = (type === TYPE.ARWEAVE) ? TYPE.ETHEREUM : TYPE.ARWEAVE
 
   return (
     <div className='export-nft container'>
-      <div className='export-nft title container'>
-        Share to earn Attention Rewards
-        <div className='export-nft title description'>
-          List your NFT on any exchange or display it in a gallery on any chain,
-          without making a duplicate.
-        </div>
-      </div>
-      {_type === TYPE.ARWEAVE && 
-      <div className='logo-wrapper' onClick={() => handleOnClick(TYPE.ETHEREUM)}>
-        <EthereumLogo className='logo'/>
-        <div className='text'>Ethereum</div>
-      </div>}
-      {_type === TYPE.ETHEREUM &&
-      <div className='logo-wrapper' onClick={() => handleOnClick(TYPE.ARWEAVE)}>
-        <ArweaveLogo className='logo'/>
-        <div className='text'>Arweave</div>
-      </div>}
-
-      <div className='coming-soon'>Coming soon:</div>
-
-      <div className='export-nft chains container'>
-        <Chain Icon={TezosLogo} title='Tezos' />
-        <Chain Icon={PolkadotLogo} title='Polkadot' />
-        <Chain Icon={BinanceLogo} title='Binance' />
-        <Chain Icon={Avalanche} title='Avalanche' />
-      </div>
-
-      {isShowEthereum && (
-        <ExportWallet info={info} onClose={() => setIsShowEthereum(false)} type={type}/>
-      )}
+      <ExportWallet info={info} type={walletType} onClose={onClose} />
     </div>
   )
 }
@@ -78,7 +40,7 @@ export default ({ onClose, info }) => {
   return (
     <div>
       <Modal onClose={onClose}>
-        <ExportNFT info={info} />
+        <ExportNFT info={info} onClose={onClose} />
       </Modal>
     </div>
   )

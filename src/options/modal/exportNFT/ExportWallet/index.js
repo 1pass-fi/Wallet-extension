@@ -18,18 +18,6 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 
 import './index.css'
 
-const STEPS_CONTENT_ETH = [
-  'Deposit NFT to lock it in vault contract',
-  'Mint ETH NFT',
-  'Send NFT to ETH wallet',
-]
-
-const STEPS_CONTENT_AR = [
-  'Deposit NFT to lock it in vault contract',
-  'Mint AR NFT',
-  'Send NFT to AR wallet',
-]
-
 const TRANSFER_STEPS = {
   INPUT_INFO: 1,
   CONFIRM: 2,
@@ -52,7 +40,7 @@ const DESCRIPTIONS_ETH = {
   1: (
     <div className='description'>
       This process takes usually around 10-15 minutes. With one click, the Koii
-      contract will complete the process below.&nbsp;
+      contract will move your NFT to Ethereum.&nbsp;
       <a href='#' className='link'>
         Learn more
       </a>
@@ -62,7 +50,7 @@ const DESCRIPTIONS_ETH = {
   2: (
     <div className='description'>
       This process takes usually around 10-15 minutes. With one click, the Koii
-      contract will complete the process below.&nbsp;
+      contract will move your NFT to Ethereum.&nbsp;
       <a href='#' className='link'>
         Learn more
       </a>
@@ -81,7 +69,7 @@ const DESCRIPTIONS_AR = {
   1: (
     <div className='description'>
       This process takes usually around 10-15 minutes. With one click, the Koii
-      contract will complete the process below.&nbsp;
+      contract will move your NFT to Arweave.&nbsp;
       <a href='#' className='link'>
         Learn more
       </a>
@@ -91,7 +79,7 @@ const DESCRIPTIONS_AR = {
   2: (
     <div className='description'>
       This process takes usually around 10-15 minutes. With one click, the Koii
-      contract will complete the process below.&nbsp;
+      contract will move your NFT to Arweave.&nbsp;
       <a href='#' className='link'>
         Learn more
       </a>
@@ -148,7 +136,7 @@ export default ({ info, onClose, type }) => {
 
   const accounts = useMemo(() => wallets, [wallets])
 
-  const totalTransfer = 12 // TODO this
+  const totalTransfer = 1 // TODO this
 
   const { name, earnedKoi, totalViews, imageUrl, txId, address: _ownerAddress } = info
 
@@ -182,7 +170,7 @@ export default ({ info, onClose, type }) => {
   const onOneClick = () => {
     if (isEmpty(chosenAccount) || isEmpty(chosenAccount.address)) {
       setError('Please select an address.')
-    } else if (!numberTransfer || numberTransfer == 0){
+    } else if (!numberTransfer || numberTransfer == 0) {
       setError('Please give a number of transfer')
     } else {
       setStep(step + 1)
@@ -192,8 +180,8 @@ export default ({ info, onClose, type }) => {
   const onConfirm = async () => {
     try {
       const result = await backgroundRequest.gallery.transferNFT({
-        senderAddress: _ownerAddress, 
-        targetAddress: chosenAccount.address, 
+        senderAddress: _ownerAddress,
+        targetAddress: chosenAccount.address,
         txId: txId,
         numOfTransfers: numberTransfer
       })
@@ -220,19 +208,19 @@ export default ({ info, onClose, type }) => {
     <div className='transfer-wallet-modal-wrapper'>
       <div className='transfer-wallet-modal'>
         {type === TYPE.ARWEAVE &&
-        <>
-          {TITLES_AR[step]}
-          {DESCRIPTIONS_AR[step]}
-        </>  
+          <>
+            {TITLES_AR[step]}
+            {DESCRIPTIONS_AR[step]}
+          </>
         }
         {type === TYPE.ETHEREUM &&
-        <>
-          {TITLES_ETH[step]}
-          {DESCRIPTIONS_ETH[step]}
-        </>  
+          <>
+            {TITLES_ETH[step]}
+            {DESCRIPTIONS_ETH[step]}
+          </>
         }
 
-        <div className='steps'>
+        {/* <div className='steps'>
           {type === TYPE.ARWEAVE &&
           <>
           {STEPS_CONTENT_AR.map((step, index) => (
@@ -251,7 +239,7 @@ export default ({ info, onClose, type }) => {
             </div>
           ))}
           </>}
-        </div>
+        </div> */}
 
         <div className='content'>
           <div className='left'>
@@ -268,16 +256,16 @@ export default ({ info, onClose, type }) => {
             {step == TRANSFER_STEPS.INPUT_INFO && (
               <>
                 <div className='eth-address'>
-                  {type === TYPE.ETHEREUM && 
-                  <>
-                    <label className='label'>ETH Address</label>
-                    <EthereumLogo className='input-logo' />
-                  </>}
-                  {type === TYPE.ARWEAVE && 
-                  <>
-                    <label className='label'>AR Address</label>
-                    <ArweaveLogo className='input-logo' />
-                  </>}
+                  {type === TYPE.ETHEREUM &&
+                    <>
+                      <label className='label'>ETH Address</label>
+                      <EthereumLogo className='input-logo' />
+                    </>}
+                  {type === TYPE.ARWEAVE &&
+                    <>
+                      <label className='label'>AR Address</label>
+                      <ArweaveLogo className='input-logo' />
+                    </>}
                   <input
                     ref={(ip) => (addressInputRef.current = ip)}
                     value={address}
@@ -288,7 +276,7 @@ export default ({ info, onClose, type }) => {
                   <div className='address-dropdown'>
                     <div
                       className='dropdown-button'
-                      onClick={() => setIsShowDropdown(true)}
+                      onClick={() => setIsShowDropdown(isShowDropdown => !isShowDropdown)}
                     ></div>
                     {isShowDropdown && (
                       <AddressDropdown
@@ -312,11 +300,11 @@ export default ({ info, onClose, type }) => {
                     max={totalTransfer}
                     value={numberTransfer}
                     onChange={onNumberTransferChange}
+                    disabled={true}
                     className='input'
                   />
                   <div className='description'>
-                    Many NFTs will only have 1 item minted. If this is the case
-                    for your transfer, this box will auto-fill.
+                    Many NFTs will only have 1 item minted.
                   </div>
                 </div>
               </>
@@ -330,8 +318,8 @@ export default ({ info, onClose, type }) => {
                     {type === TYPE.ARWEAVE && <ArweaveLogo className='account-logo' />}
                     {type === TYPE.ETHEREUM && <EthereumLogo className='account-logo' />}
                     <div className='info'>
-                      {chosenAccount.name && (
-                        <div className='name'>{chosenAccount.name}</div>
+                      {chosenAccount.accountName && (
+                        <div className='name'>{chosenAccount.accountName}</div>
                       )}
                       <div className='address'>{chosenAccount.address}</div>
                     </div>
@@ -367,8 +355,8 @@ export default ({ info, onClose, type }) => {
                 <div className='send-to'>
                   <div className='account'>
                     <div className='info'>
-                      {chosenAccount.name && (
-                        <div className='name'>{chosenAccount.name}</div>
+                      {chosenAccount.accountName && (
+                        <div className='name'>{chosenAccount.accountName}</div>
                       )}
                       <div className='address'>{chosenAccount.address}</div>
                     </div>
@@ -409,11 +397,11 @@ export default ({ info, onClose, type }) => {
               </div>
             )}
 
-            {step == TRANSFER_STEPS.SUCCESS && (
+            {/* {step == TRANSFER_STEPS.SUCCESS && (
               <div className='transfer-button success' onClick={onSeeActivity}>
                 See My Activity
               </div>
-            )}
+            )} */}
           </div>
         </div>
 

@@ -66,6 +66,10 @@
   margin-right: 9px;
 }
 
+.big-nft-card .transfer-nft {
+  display: flex;
+}
+
 .big-nft-card .transfer-nft-wrapper {
   display: flex;
   height: 24px;
@@ -74,6 +78,7 @@
 .big-nft-card .export-nft .transfer-text {
   height: 24px;
   letter-spacing: 0.03em;
+  display: flex;
 }
 
 .big-nft-card .info .export-nft .wallet-logo {
@@ -85,6 +90,7 @@
   box-sizing: border-box;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
   border-radius: 2px;
+  cursor: pointer;
 }
 
 .big-nft-card .info .export-nft .wallet-logo .logo {
