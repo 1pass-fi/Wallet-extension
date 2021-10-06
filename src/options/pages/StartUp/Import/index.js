@@ -84,7 +84,10 @@ export default () => {
       setImportedAddress(address)
       setNewAddress(address)
 
-      history.push('/success')
+      history.push({
+        pathname: '/success',
+        state: 'import-key-state'
+      })
     } catch (err) {
       setError(err.message)
     }

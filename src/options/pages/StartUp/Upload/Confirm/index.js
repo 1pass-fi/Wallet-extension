@@ -40,7 +40,10 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
       setImportedAddress(address)
       setNewAddress(address)
 
-      history.push('/success')
+      history.push({
+        pathname: '/success',
+        state: 'upload-key-state'
+      })
     } catch (err) {
       if (err.message == 'Incorrect password') {
         setError(err.message)
