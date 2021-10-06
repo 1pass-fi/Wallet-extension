@@ -102,7 +102,7 @@ export default ({
           {!pending && <div className='export-nft'>
             {type === TYPE.ARWEAVE && <ArweaveIcon className='arweave-icon' />}
             {type === TYPE.ETHEREUM && <EthereumIcon className='arweave-icon' />}
-            Export this NFT to a&nbsp;
+            Transfer this NFT to a&nbsp;
             <span
               onClick={() => {
                 setShowExportModal({ earnedKoi, totalViews, name, imageUrl, type, txId, address })
