@@ -19,7 +19,7 @@
 }
 
 .uploadNFT-wrapper .drop-box-title span {
-  color: #9BE7B4;
+  color: #9be7b4;
 }
 
 .uploadNFT-wrapper .uploadNFT {
@@ -37,14 +37,14 @@
   width: 719px;
   height: 280px;
   background-color: #171753;
-  border: 1.5px solid #FFA54B;
+  border: 1.5px solid #ffa54b;
+  cursor: pointer;
 }
 
 .uploadNFT-wrapper .uploadNFT.stage3 {
   border: 0px;
   height: 100%;
 }
-
 
 .uploadNFT-wrapper .uploadNFT.success {
   border-color: #9be7c4;
