@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { find } from 'lodash'
+import { find, includes } from 'lodash'
 
 import ShareIcon from 'img/share-icon.svg'
 import CopyLinkIcon from 'img/share-icon-2.svg'
@@ -21,7 +21,7 @@ export default ({
   koiRockUrl,
   choosen,
   disabled,
-  contentType,
+  contentType = 'image',
   totalViews,
   type
 }) => {
@@ -38,6 +38,21 @@ export default ({
   } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const [selectedCollection, setSelectedCollection] = useState(false)
+
+  useEffect(() => {
+    console.log('NFT name: ', name)
+    console.log('NFT ID: ', txId)
+    console.log({   
+      imageUrl,
+      earnedKoi,
+      isRegistered,
+      koiRockUrl,
+      choosen,
+      disabled,
+      contentType,
+      totalViews,
+      type })
+  }, [])
 
   const onCopy = () => {
     setIsCopied(true)
@@ -103,13 +118,13 @@ export default ({
   return choosen !== txId ? (
     <div onClick={showCreateCollection ? addToCollection : () => {}} disabled={disabled} className='nft-card'>
       <Link to={!showCreateCollection ? `/details/${txId}` : '#'}>
-        {contentType.includes('image') && (
+        {includes(contentType, 'image') && (
           <div className={selectedCollection ? 'nft-img selected' : 'nft-img'}>
             <img src={imageUrl} />
             {selectedCollection && <div className='nft-img-checked-icon'><CheckIcon /></div>}
           </div>
         )}
-        {contentType.includes('video') && (
+        {includes(contentType, 'video') && (
           <div className={selectedCollection ? 'nft-img selected' : 'nft-img'}><video
             width={200}
             height={200}
@@ -121,7 +136,7 @@ export default ({
           {selectedCollection && <div className='nft-img-checked-icon'><CheckIcon /></div>}
           </div>
         )}
-        {contentType.includes('html') && (
+        {includes(contentType ,'html') && (
           <div className='nft-img-iframe'>
             <div className='iframe-wrapper'>
               <iframe frameBorder="0" src={imageUrl} />

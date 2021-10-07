@@ -556,8 +556,9 @@ export class ArweaveMethod {
       return await Promise.all(nftIds.map(async contentId => {
         try {
           const content = await this.koi.getNftState(contentId)
-          
+          console.log('debug - NFT: ', content)
           if (content.title) {
+            if (!get(content, 'contentType')) content.contentType = 'image/png'
             let url = `${PATH.NFT_IMAGE}/${content.id}`
             let imageUrl = url
             if (getBase64) {
