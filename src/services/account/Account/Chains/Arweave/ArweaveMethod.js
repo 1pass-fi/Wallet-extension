@@ -5,7 +5,7 @@
 
 import { PATH, ALL_NFT_LOADED, ERROR_MESSAGE } from 'constants/koiConstants'
 import { getChromeStorage, setChromeStorage } from 'utils'
-import { get, isNumber, isArray, orderBy } from 'lodash'
+import { get, isNumber, isArray, orderBy, includes } from 'lodash'
 import moment from 'moment'
 import { smartweave } from 'smartweave'
 import axios from 'axios'
@@ -556,14 +556,21 @@ export class ArweaveMethod {
       return await Promise.all(nftIds.map(async contentId => {
         try {
           const content = await this.koi.getNftState(contentId)
-          
           if (content.title) {
+            if (!get(content, 'contentType')) {
+              const response = await fetch(`${PATH.NFT_IMAGE}/${content.id}`)
+              const blob = await response.blob()
+              const type = get(blob, 'type') || 'image/png'
+              content.contentType = type
+            }
             let url = `${PATH.NFT_IMAGE}/${content.id}`
             let imageUrl = url
             if (getBase64) {
-              const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
-              imageUrl = `data:${content.contentType};base64,${u8}`
-              if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
+              if (!includes(content.contentType, 'html')) {
+                const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
+                imageUrl = `data:${content.contentType};base64,${u8}`
+                if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
+              }
             }
 
             return {

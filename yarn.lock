@@ -2,19 +2,19 @@
 # yarn lockfile v1
 
 
-"@_koi/kohaku@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@_koi/kohaku/-/kohaku-1.0.11.tgz#c598255194bc89d1fa2619187320ec54ec1f7e40"
-  integrity sha512-No6Hush8nbpTh/kOotT2TfZJtSEm9r87fLcsEC9lavtq3qROHpnLQ/oRHA2cUhAyby5ni80wdvkSYxeJd2uKgQ==
+"@_koi/kohaku@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@_koi/kohaku/-/kohaku-1.0.12.tgz#2f59111ea59a49e235361f7a1189b80405619e2d"
+  integrity sha512-2BIrkRmC21ycP9s+dIlSCnoRaVUZK7XQPXAqVZbUwUmTW65SzTXPnDQt8PagxmhXTfUnurAG9i/Vbe9cLDHPlg==
   dependencies:
     smartweave "^0.4.41"
 
-"@_koi/sdk@2.4.0-beta.2":
-  version "2.4.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@_koi/sdk/-/sdk-2.4.0-beta.2.tgz#b9d7462148b9f7f9d9e330d0a74d1ddc2d04a0bc"
-  integrity sha512-FKJUxy+F8MXGFSUxxI5bi7Hh9M0zeURyWcfPb8kVBn2jiVVv1ITnwjI4iy1jqpjIPqvYE7QEx+TVBPnT/Vr/iQ==
+"@_koi/sdk@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@_koi/sdk/-/sdk-2.4.0.tgz#d7d99fe94746933835154f228bdf173dc20f7094"
+  integrity sha512-axJmhU5yLqA4wcdsIZjuAGWnNE/BYCL0zkpJjxFqdL2nN4x6t6HW7xWKJuuHXcZnnKJFtKr9rUyAPetJhnnkcA==
   dependencies:
-    "@_koi/kohaku" "^1.0.11"
+    "@_koi/kohaku" "^1.0.12"
     arweave "^1.10.13"
     axios "^0.21.1"
     dotenv "^9.0.2"
@@ -20520,7 +20520,7 @@ uuid@^7.0.3:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.3.tgz#c5c9f2c8cf25dc0a372c4df1441c41f5bd0c680b"
   integrity sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==
 
-uuid@^8.3.0:
+uuid@^8.3.0, uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
