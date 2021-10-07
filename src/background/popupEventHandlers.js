@@ -101,7 +101,6 @@ export const loadBalances = async () => {
 
     const message = { type: MESSAGES.GET_BALANCES_SUCCESS }
     sendMessageToAllPorts(message)
-    console.log('Message sent to all ports')
   } catch (error) {
     console.error(error)
   }

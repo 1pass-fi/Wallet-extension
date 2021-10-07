@@ -39,21 +39,6 @@ export default ({
   const [isCopied, setIsCopied] = useState(false)
   const [selectedCollection, setSelectedCollection] = useState(false)
 
-  useEffect(() => {
-    console.log('NFT name: ', name)
-    console.log('NFT ID: ', txId)
-    console.log({   
-      imageUrl,
-      earnedKoi,
-      isRegistered,
-      koiRockUrl,
-      choosen,
-      disabled,
-      contentType,
-      totalViews,
-      type })
-  }, [])
-
   const onCopy = () => {
     setIsCopied(true)
     setTimeout(() => setIsCopied(false), 3000)
