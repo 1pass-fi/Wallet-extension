@@ -29,15 +29,13 @@ setInterval(() => {
 }, LOAD_TRANSACTION_STATE_INTERVAL)
 
 function cb(port) {
-  console.log('port name', port.name)
   if ((port.name).includes(PORTS.POPUP)) {
     popupPorts.push(port)
-
     port.onDisconnect.addListener((disconnect) => {
       console.log('port disconnected--', disconnect, port)
       for (let i = 0; i < popupPorts.length; i++) {
-        if (port.name == popupPorts[i].name) {
-          popupPorts.splice(i)
+        if (port.name === popupPorts[i].name) {
+          popupPorts.splice(i, 1)
           break
         }
       }

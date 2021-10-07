@@ -1,4 +1,4 @@
-import uniqid from 'uniqid'
+import { v4 as uuid } from 'uuid'
 
 import { MESSAGES, LONG_LIVED_HANDLER, PORTS } from 'constants/koiConstants'
 
@@ -15,7 +15,7 @@ export class BackgroundConnect {
   constructor(portName) {
     try {
       this.eventHandlers = []
-      this.port = chrome.runtime.connect({ name: `${portName}-${uniqid()}` })
+      this.port = chrome.runtime.connect({ name: `${portName}-${uuid()}` })
       this.port.onMessage.addListener((message) => {
         const _this = this
         this.eventHandlers.forEach(handler => {
