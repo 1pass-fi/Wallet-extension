@@ -4,12 +4,17 @@ import React from 'react'
 import Button from 'popup/components/shared/button/'
 import Modal from 'popup/components/shared/modal/index'
 
+// service
+import { popupBackgroundRequest as request } from 'services/request/popup'
+
 // styles
 import './index.css'
 
 const ExpiredTxModal = ({ onClose, txInfo }) => {
-  const handleDeleteTx = (txInfo) => {
-    console.log({...txInfo, wantToResend: false})
+  const handleDeleteTx = async (txInfo) => {
+    await request.wallet.handleExpiredTransaction({...txInfo, wantToResend: false})
+
+    // TODO: update UI
   }
   return (
     <Modal onClose={onClose} className="expired-transaction-modal">

@@ -23,7 +23,7 @@ const propTypes = {
   source: PropTypes.string,
 }
 
-const ActivityRow = ({ activityName, expense, date, source, id, pending=true, price, currency, accountName, pendingConfirmation, expired=true, handleExpiredAction, address }) => {
+const ActivityRow = ({ activityName, expense, date, source, id, pending, price, currency, accountName, pendingConfirmation, expired, handleExpiredAction, address }) => {
   const dateFormat = (date) => {
     return moment(date).format('MMMM Do, YYYY')
   }
