@@ -45,6 +45,10 @@
   background-color: #ffffff;
 }
 
+.import-wallet .import-key-button:disabled {
+  cursor: not-allowed;
+}
+
 .import-wallet .error-message {
   color: #ff4141;
   margin-top: 5px;

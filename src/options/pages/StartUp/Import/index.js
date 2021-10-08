@@ -161,6 +161,7 @@ export default () => {
                }
 
               <Button
+                disabled={isEmpty(userSeedPhrase)}
                 className='import-key-button'
                 onClick={onImportKey}
               >
