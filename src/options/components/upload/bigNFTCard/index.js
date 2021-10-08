@@ -125,7 +125,7 @@ export default ({
               className='social-icon'
             />
             <a
-              href={`mailto:?subject=Check out my NFT, now stored on Koi— forever!&body=https://koi.rocks/content-detail/${txId}`}
+              href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koi.rocks/content-detail/${txId}`}
               title='Share by Email'
             >
               <EmailIcon className='social-icon' />
