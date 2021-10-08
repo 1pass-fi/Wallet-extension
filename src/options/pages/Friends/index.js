@@ -13,7 +13,6 @@ import { GalleryContext } from 'options/galleryContext'
 import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
 
-import { claimReward } from 'utils'
 import { shareFriendCode } from 'options/helpers'
 
 import './index.css'

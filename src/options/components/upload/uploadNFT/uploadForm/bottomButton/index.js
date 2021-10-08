@@ -6,6 +6,8 @@ import trim from 'lodash/trim'
 import union from 'lodash/union'
 import get from 'lodash/get'
 
+import { FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
+
 import { exportNFT, getChromeStorage, saveUploadFormData, setChromeStorage } from 'utils'
 const arweave = Arweave.init({
   host: 'arweave.net',
@@ -184,11 +186,13 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
           const koiPrice = isFriendCodeValid ? 0 : 1
           if (totalKoi < koiPrice) {
             setError(ERROR_MESSAGE.NOT_ENOUGH_KOI)
+            setIsClickEnable(true)
             return
           }
 
           if (totalAr <= price) {
             setError(ERROR_MESSAGE.NOT_ENOUGH_AR)
+            setIsClickEnable(true)
             return
           }
 
@@ -202,21 +206,23 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
           setStage(3)
           setIsClickEnable(true)
         } catch (err) {
+          setIsClickEnable(true)
           setError(err.message)
         }
       } else {
+        setIsClickEnable(true)
         setError(ERROR_MESSAGE.CANNOT_GET_COSTS)
       }
     }
 
-    const checkFriendCode = async () => {
+    const submitFriendCode = async () => {
       setIsLoading(true)
       try {
-        if (wallet) {
-          koi.wallet = wallet
-          koi.address = address
-
-          const { status, message } = await submitInviteCode(koi, friendCode)
+        if (account) {
+          const { status, message } = await backgroundRequest.gallery.friendReferral({ 
+            endpoints: FRIEND_REFERRAL_ENDPOINTS.SUBMIT_CODE,
+            friendCode 
+          })
           // const { status, message } = { status: 201, message: 'mock message' }
           if (status === 201) {
             setIsFriendCodeValid(true)
@@ -258,7 +264,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
                 />
                 <div
                   className='submit-friend-code-button'
-                  onClick={checkFriendCode}
+                  onClick={submitFriendCode}
                 >
                   Submit
                 </div>

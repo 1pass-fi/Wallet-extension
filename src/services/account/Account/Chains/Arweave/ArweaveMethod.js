@@ -374,6 +374,7 @@ export class ArweaveMethod {
           address: this.koi.address,
           code,
           signature: signedPayload.signature,
+          
           publicKey: signedPayload.owner
         }
       })
@@ -393,7 +394,7 @@ export class ArweaveMethod {
           address: [this.koi.address]
         }
       })
-      if (status !== 200) {
+      if (data.status !== 200) {
         return 0
       }
 
