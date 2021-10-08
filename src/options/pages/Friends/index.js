@@ -23,7 +23,7 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 export default () => {
   const { 
     affiliateCode, 
-    wallet,
+    account,
     address, 
     setIsLoading, 
     setError, 
@@ -35,9 +35,7 @@ export default () => {
   const handleClaimReward = async () => {
     try {
       setIsLoading(true)
-      if (wallet) {
-        koi.wallet = wallet
-        koi.address = address
+      if (account) {
         const { message, status } = await backgroundRequest.gallery.friendReferral({
           endpoints: FRIEND_REFERRAL_ENDPOINTS.CLAIM_REWARD
         })
