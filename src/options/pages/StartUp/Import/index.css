@@ -42,6 +42,11 @@
 
 .import-wallet .import-key-button {
   margin-top: 40px;
+  background-color: #ffffff;
+}
+
+.import-wallet .import-key-button:disabled {
+  cursor: not-allowed;
 }
 
 .import-wallet .error-message {

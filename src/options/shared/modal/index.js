@@ -29,12 +29,12 @@ const Modal = ({ onClose, children, className = '' }) => {
   return (
     <div className='modal-container'>
       <div className={`modal ${className}`} ref={ref}>
-        <div data-tip='Close' className='modal-close-icon'>
+        <div data-tip='Close' data-for='close-btn' className='modal-close-icon'>
           <CloseIcon onClick={onClose} />
         </div>
         {children}
       </div>
-      <ReactTooltip place='top' type="dark" effect="float"/>
+      <ReactTooltip place='top' id='close-btn' type="dark" effect="float"/>
     </div>
   )
 }

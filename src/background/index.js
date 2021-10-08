@@ -1,10 +1,13 @@
 import '@babel/polyfill'
 
 import { PORTS, LOAD_BALANCES_TIME_INTERVAL, LOAD_TRANSACTION_STATE_INTERVAL, OS, PATH } from 'constants/koiConstants'
+import { IMPORTED } from 'constants/accountConstants'
 import popUpEventHandlers, { loadBalances, updatePendingTransactions } from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from '@_koi/sdk/web'
 import { Ethereum } from './eth'
+
+import { getChromeStorage } from 'utils'
 // import { Web } from './koiMock'
 
 export const koi = new Web()
@@ -67,6 +70,8 @@ chrome.storage.local.remove('koiAddress')
 chrome.runtime.onConnect.addListener(cb)
 chrome.storage.local.remove('sitePermission')
 
-chrome.runtime.onInstalled.addListener(function () {
-  chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
+chrome.runtime.onInstalled.addListener(async function () {
+  const arweaveAccount = (await getChromeStorage(IMPORTED.ARWEAVE))[IMPORTED.ARWEAVE] || []
+  const ethereumAccount = (await getChromeStorage(IMPORTED.ETHEREUM))[IMPORTED.ETHEREUM] || []
+  if (!arweaveAccount.length && !ethereumAccount.length) chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
 })

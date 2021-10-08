@@ -37,8 +37,8 @@ const TextBox = ({ title, text, buttonText, url }) => {
 }
 
 const ShareNFT = ({ txid }) => {
-  const shareUrl = `${PATH.KOII_LIVE}/${txid}`
-  const embedUrl = `<iframe width="100%" src="https://koi.rocks/embed/${txid}" title="Koi NFT image" frameborder="0" allowfullscreen></iframe>`
+  const shareUrl = `${PATH.KOII_LIVE}/${txid}.html`
+  const embedUrl = `<iframe width="100%" src="https://koi.rocks/embed/${txid}" title="Koii NFT image" frameborder="0" allowfullscreen></iframe>`
 
   return (
     <div className="share-nft container">
@@ -86,7 +86,7 @@ const ShareNFT = ({ txid }) => {
               />
             </div>
             <a
-              href={`mailto:?subject=Check out my NFT, now stored on Koi— forever!&body=https://koi.rocks/content-detail/${txid}`}
+              href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koi.rocks/content-detail/${txid}`}
               title="Share by Email"
             >
               <EmailIcon />

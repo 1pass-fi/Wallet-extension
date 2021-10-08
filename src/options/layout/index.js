@@ -493,8 +493,11 @@ export default ({ children }) => {
             activatedAccount = await popupAccount.getAccount({
               address: activatedAccount,
             })
-            const pendingAssets = await activatedAccount.get.pendingAssets() || []
+            let pendingAssets = await activatedAccount.get.pendingAssets() || []
             setCardInfos(prevState => {
+              pendingAssets = pendingAssets.filter((nft) => {
+                return prevState.every((prevNft) => nft.txId !== prevNft.txId)
+              })
               return [...prevState, ...pendingAssets]
             })
 

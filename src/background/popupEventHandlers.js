@@ -1017,7 +1017,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
       case MESSAGES.FRIEND_REFERRAL: {
         try {
-          const { endpoints, payload } = message.data
+          const { endpoints, friendCode } = message.data
           const defaultAddress = await storage.setting.get.activatedAccountAddress()
           const credentials = await backgroundAccount.getCredentialByAddress(defaultAddress)
           const account = await backgroundAccount.getAccount(credentials)
@@ -1041,6 +1041,10 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             case FRIEND_REFERRAL_ENDPOINTS.CLAIM_REWARD: {
               result = await account.method.claimReward()
               break
+            }
+
+            case FRIEND_REFERRAL_ENDPOINTS.SUBMIT_CODE: {
+              result = await account.method.submitInviteCode(friendCode)
             }
           }
 

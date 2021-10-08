@@ -312,6 +312,7 @@ export class BackgroundAccountManager extends AccountManager {
 
       await this.storage._removeChrome(address)
       await this.storage._removeChrome(`${address}_assets`)
+      await this.storage._removeChrome(`${address}_pendingAssets`)
       await this.storage._removeChrome(`${address}_collections`)
 
       /* 
