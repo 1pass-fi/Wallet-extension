@@ -492,7 +492,7 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
     }
 
     let tx
-    
+
     tx = await arweave.createTransaction({
       data: u8
     })
@@ -531,8 +531,10 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
       )
     }
 
-    console.log('BURN KOII', await koi.burnKoiAttention(tx.id))
-    console.log('MIGRATE', await koi.migrateAttention())
+    if (registrationData.status !== 200) {
+      console.log('BURN KOII', await koi.burnKoiAttention(tx.id))
+      console.log('MIGRATE', await koi.migrateAttention())
+    }
     return { txId: tx.id, time: createdAt }
 
   } catch(err) {
