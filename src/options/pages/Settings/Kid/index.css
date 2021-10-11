@@ -1,159 +1,70 @@
-.kid-settings-page-wrapper {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  padding: 58px 122px;
-}
-
-.kid-settings-page-wrapper * {
+.kid-page-wrapper * {
   box-sizing: border-box;
 }
 
-.kid-settings-page {
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-}
-
-.kid-settings-page .top-section {
-  align-items: center;
+.kid-page-wrapper {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  padding: 58px 122px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  color: white;
+  font-style: normal;
+  font-weight: 400;
 }
 
-.kid-settings-page .top-section .title {
+.kid-page-wrapper .title-section {
+  width: 100%;
+  height: 212.5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kid-page-wrapper .title-section h2 {
   font-size: 24px;
-  line-height: 32px;
-  margin-top: 19px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
 }
 
-.kid-settings-page .top-section .description {
+.kid-page-wrapper .title-section .leading {
   font-size: 16px;
-  line-height: 28px;
-  margin-top: 17px;
-  max-width: 759px;
+  letter-spacing: -0.01em;
 }
 
-.kid-settings-page .top-section .address {
-  color: #49ce8b;
+.kid-page-wrapper .title-section .wallet-address {
   font-size: 18px;
   font-weight: 600;
-  line-height: 24px;
-  margin-top: 22px;
+  letter-spacing: 0.03em;
+  color: #49ce8b;
 }
 
-.kid-settings-page .info-section {
+.kid-page-wrapper .form-section {
+  margin-top: 30px;
+  width: 100%;
   display: flex;
-  flex-direction: row;
-  gap: 63px;
-  margin-top: 20px;
+  justify-content: space-between;
 }
 
-.kid-settings-page .info-section .left {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  width: 182px;
+.kid-page-wrapper .form-img {
+  width: 258px;
 }
 
-.kid-settings-page .info-section .left .profile-image {
-  background: #281f79;
-  border-radius: 50%;
-  height: 150px;
-  width: 150px;
-}
-
-.kid-settings-page .info-section .left .profile-image-input {
-  display: none;
-}
-
-.kid-settings-page .info-section .left .select-image-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  background: #171753;
-  border-radius: 2px;
-  border: 1.5px solid #ffffff;
-  cursor: pointer;
-  font-size: 16px;
-  height: 32px;
-  line-height: 32px;
-  margin-top: 20px;
-  text-align: center;
-  width: 182px;
-}
-
-.kid-settings-page .info-section .left .create-nft-text {
-  font-size: 12px;
-  line-height: 16px;
-  margin-top: 4px;
-}
-
-.kid-settings-page .info-section .left .create-nft-text .create-nft-link {
-  color: #ffffff;
-}
-
-.kid-settings-page .info-section .right {
-  display: flex;
-  flex-direction: column;
-}
-
-.kid-settings-page .info-section .right .field {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 20px;
-}
-
-.kid-settings-page .info-section .right .field .label {
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 16px;
-  width: 135px;
-}
-
-.kid-settings-page .info-section .right .field .label .extra {
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 16px;
-}
-
-.kid-settings-page .info-section .right .field .input,
-.kid-settings-page .info-section .right .field .text-area {
-  border-radius: 3px;
-  border: 1px solid #ffffff;
-  box-sizing: border-box;
+.kid-page-wrapper .kid-input .kid-input-area-field {
+  background: transparent;
   width: 422px;
-}
-
-.kid-settings-page .info-section .right .field .input {
-  height: 32px;
-}
-
-.kid-settings-page .info-section .right .field .text-area {
-  height: 84px;
-  resize: none;
-}
-
-.kid-settings-page .info-section .right .field .checkbox-label {
-  color: #ffffff;
-  font-size: 14px;
-  line-height: 24px;
-  transform: matrix(0.99, 0, -0.14, 1, 0, 0);
-}
-
-.kid-settings-page .info-section .right .save-button {
-  background: #ffffff;
-  border-radius: 3px;
+  height: 95px;
   border: 1px solid #ffffff;
-  box-sizing: border-box;
-  color: #171753;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-  height: 32px;
-  line-height: 32px;
-  margin-left: 135px;
-  text-align: center;
-  width: 189px;
+  border-radius: 3px;
+  resize: none;
+
+  padding: 8px;
+  color: white;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
