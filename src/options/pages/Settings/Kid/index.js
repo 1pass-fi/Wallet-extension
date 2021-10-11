@@ -38,10 +38,9 @@ const KidPage = () => {
   }
 
   const addSocialNetworks = () => {
-    console.log('clickedddd', socialNetworks)
     setSocialNetworks({
       ...socialNetworks,
-      [`Network${Object.keys(socialNetworks).length - 4}`]: '',
+      [`network${Object.keys(socialNetworks).length - 4}`]: '',
     })
   }
 
