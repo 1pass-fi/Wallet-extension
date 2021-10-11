@@ -20,6 +20,7 @@ import isEmpty from 'lodash/isEmpty'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import { TYPE } from 'constants/accountConstants'
+import wordList from 'utils/wordList.json'
 
 import './index.css'
 
@@ -27,6 +28,7 @@ export default () => {
   const [step, setStep] = useState(1)
   const [walletType, setWalletType] = useState(null)
   const [userSeedPhrase, setUserSeedPhrase] = useState('')
+  const [seedPhraseError, setSeedPhraseError] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [showFormError, setShowFormError] = useState(false)
@@ -60,8 +62,22 @@ export default () => {
     }
   }
 
-  const trimmedPhrase = userSeedPhrase.replace(/\s+/g,' ').trim()
-  const isValidPhrase = trimmedPhrase.split(' ').length === 12
+  const checkSeedPhraseInWordList = phrase => phrase.every(word => wordList.includes(word))
+
+  const invalidPhraseMsg = 'We don\'t recognize this recovery phrase. Double check for any spelling mistakes and enter your phrase again.'
+  const onSeedPhraseChange = (newPhrase) => {
+    const removedDoubleSpacePhrase = newPhrase.replace(/\s+/g,' ')
+    const hasTwelveWords = removedDoubleSpacePhrase?.trim()?.split(' ').length === 12
+
+    if(!hasTwelveWords) {
+      setSeedPhraseError(invalidPhraseMsg)
+    } else if (!checkSeedPhraseInWordList(removedDoubleSpacePhrase.split(' '))) {
+      setSeedPhraseError(invalidPhraseMsg)
+    } else {
+      setSeedPhraseError('')
+    }
+    setUserSeedPhrase(newPhrase.replace(/\s+/g,' '))
+  }
 
   const onImportKey = async () => {
     if (!(password && userSeedPhrase) && isEmpty(wallets)) {
@@ -69,7 +85,7 @@ export default () => {
       return
     }
     
-    if (!isValidPhrase) return
+    if (!isEmpty(seedPhraseError)) return
 
     setIsLoading(true)
     try {
@@ -149,9 +165,9 @@ export default () => {
                 label='12-word Recovery Phrase'
                 placeholder='Paste your recovery phrase here'
                 value={userSeedPhrase}
-                setValue={setUserSeedPhrase}
+                setValue={onSeedPhraseChange}
               />
-              {(userSeedPhrase && !isValidPhrase) && <div className="error-message">We don't recognize this recovery phrase. Please try entering it again.</div>}
+              {!isEmpty(seedPhraseError) && <div className="error-message">{seedPhraseError}</div>}
 
 
                {isEmpty(wallets) ? <div className='confirm-password-wrapper'>
