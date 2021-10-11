@@ -13,7 +13,7 @@
 }
 
 .modal {
-  margin-top: 125px;
+  margin: auto 0;
   min-height: 247px;
   width: 377px;
   background-color: #ffffff;
@@ -28,10 +28,9 @@
 }
 
 .modal-close-icon {
-  display:flex;
+  display: flex;
   align-self: flex-end;
   margin-top: 10px;
   margin-right: 10px;
   cursor: pointer;
 }
-

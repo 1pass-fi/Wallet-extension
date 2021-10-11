@@ -3,6 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import ReactTooltip from 'react-tooltip'
 
 // constants
 import { PATH } from 'constants/koiConstants'
@@ -22,7 +23,7 @@ const propTypes = {
   source: PropTypes.string,
 }
 
-const ActivityRow = ({ activityName, expense, date, source, id, pending, price, currency, accountName, pendingConfirmation, expired }) => {
+const ActivityRow = ({ activityName, expense, date, source, id, pending, price, currency, accountName, pendingConfirmation, expired, handleExpiredAction, address }) => {
   const dateFormat = (date) => {
     return moment(date).format('MMMM Do, YYYY')
   }
@@ -52,7 +53,7 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending, price, 
             </a>
           </div>
           { pending && <div className={!expired ? 'activity-pending' : 'activity-pending expired'}>
-            {!expired ? 'Transaction pending' : 'Transaction expired'}
+            {!expired ? 'Transaction pending' : <span data-tip="Take an action" onClick={() => handleExpiredAction({txId: id, address})}>Transaction expired</span>}
           </div> }
         </div>
         <div className='activity-info-row'>
@@ -62,6 +63,7 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending, price, 
           } 
           <div className='activity-date'>{ dateFormat(date) }</div>
         </div>
+        <ReactTooltip place='top' type="dark" effect="float"/>
       </div>
     </div>
   )

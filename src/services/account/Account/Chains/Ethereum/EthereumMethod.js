@@ -108,7 +108,7 @@ export class EthereumMethod {
 
   async transactionConfirmedStatus(txHash) {
     const response = await this.eth.getTransactionStatus(txHash)
-    return get(response, 'status')
+    return { dropped: false, confirmed: get(response, 'status') }
   }
 
   async getNftData(contents, getBase64) {

@@ -66,7 +66,8 @@ export const updatePendingTransactions = async () => {
   allAccounts.forEach(async account => {
     let pendingTransactions = await account.get.pendingTransactions()
     pendingTransactions = await Promise.all(pendingTransactions.map(async transaction => {
-      const confirmed = await account.method.transactionConfirmedStatus(transaction.id)
+      const { dropped, confirmed } = await account.method.transactionConfirmedStatus(transaction.id)
+      if (dropped) transaction.expired = true
 
       if (confirmed) {
         console.log(`Transaction confirmed`, transaction)
@@ -76,7 +77,6 @@ export const updatePendingTransactions = async () => {
         })
         return
       }
-      if ((Date.now() - transaction.createdAt) > EXPRIRED_TIME) transaction.expired = true
       return transaction
     }))
 
@@ -510,7 +510,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             accountName,
             date: moment().format('MMMM DD YYYY'),
             source: target,
-            createdAt: Date.now()
+            address
           }
           pendingTransactions.unshift(newTransaction)
           // save pending transactions
@@ -685,7 +685,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             expense: price,
             accountName,
             date: moment().format('MMMM DD YYYY'),
-            createdAt: Date.now()
+            address
           }
 
           const pendingTransactions = await account.get.pendingTransactions() || []
@@ -1120,6 +1120,32 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             type: MESSAGES.REAL_TRANSFER_NFT,
             error: `BACKGROUND ERROR: ${err.message}`,
             id: messageId
+          })
+        }
+        break
+      }
+
+      case MESSAGES.HANDLE_EXPIRED_TRANSACTION: {
+        try {
+          const { txId, address, wantToResend } = message.data
+          if (wantToResend) {
+            // TODO: Resend
+          } else {
+            const credentials = await backgroundAccount.getCredentialByAddress(address)
+            const account = await backgroundAccount.getAccount(credentials)
+            let pendingTransactions = await account.get.pendingTransactions()
+            pendingTransactions = pendingTransactions.filter(transaction => {
+              return transaction.id  !== txId
+            })
+
+            await account.set.pendingTransactions(pendingTransactions)
+          }
+
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.HANDLE_EXPIRED_TRANSACTION,
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId            
           })
         }
         break

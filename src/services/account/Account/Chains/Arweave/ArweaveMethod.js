@@ -549,7 +549,9 @@ export class ArweaveMethod {
 
   async transactionConfirmedStatus(id) {
     const response = await arweave.transactions.getStatus(id)
-    return !isEmpty(get(response, 'confirmed'))
+    const dropped = response.status === 404
+    const confirmed = !isEmpty(get(response, 'confirmed'))
+    return { dropped, confirmed } 
   }
 
   async getNftData(nftIds, getBase64) {

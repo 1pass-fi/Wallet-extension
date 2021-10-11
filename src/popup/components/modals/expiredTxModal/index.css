@@ -1,0 +1,11 @@
+.expired-transaction-modal .modal-action-button.delete {
+  border: 1.5px solid #171753;
+}
+
+.expired-transaction-modal .modal-action-button.close {
+  min-height: 35px;
+}
+
+.expired-transaction-modal .modal-title {
+  margin-top: 28px;
+}
