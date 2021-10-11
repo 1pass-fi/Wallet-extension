@@ -47,7 +47,7 @@
   margin-top: 30px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .kid-page-wrapper .form-img {
@@ -75,4 +75,20 @@
   font-weight: 600;
   letter-spacing: 0.03em;
   color: #49ce8b;
+}
+
+.kid-page-wrapper .add-more {
+  width: fit-content;
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 58px;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.kid-page-wrapper .add-more-icon {
+  height: 22px;
+  margin-right: 9px;
 }

@@ -3,6 +3,7 @@ import map from 'lodash/map'
 import upperFirst from 'lodash/upperFirst'
 
 import IDCardIcon from 'img/id-card-icon.svg'
+import AddIcon from 'img/navbar/create-nft.svg'
 import KidInputField from './kidInputField'
 
 import './index.css'
@@ -29,6 +30,14 @@ const KidPage = () => {
 
   const onChangeSocialNetwork = (e) => {
     setSocialNetworks({ ...socialNetworks, [e.target.name]: e.target.value })
+  }
+
+  const addSocialNetworks = () => {
+    console.log('clickedddd', socialNetworks)
+    setSocialNetworks({
+      ...socialNetworks,
+      [`Network${Object.keys(socialNetworks).length - 4}`]: '',
+    })
   }
 
   return (
@@ -90,6 +99,11 @@ const KidPage = () => {
               setValue={onChangeSocialNetwork}
             />
           ))}
+
+          <div className="add-more" onClick={addSocialNetworks}>
+            <AddIcon className="add-more-icon" />
+            Add more
+          </div>
         </div>
       </div>
     </div>

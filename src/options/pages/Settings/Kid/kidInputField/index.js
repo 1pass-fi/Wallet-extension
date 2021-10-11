@@ -1,6 +1,6 @@
 import React from 'react'
 
-import lowercase from 'lodash/lowercase'
+import toLower from 'lodash/toLower'
 
 import './index.css'
 
@@ -14,7 +14,7 @@ const KidInputField = ({ label, isRequired, description = '', example = '', valu
       <div className="kid-input-input-section">
         <input
           className="kid-input-field"
-          name={lowercase(label)}
+          name={toLower(label)}
           type="text"
           value={value}
           onChange={(e) => setValue(e)}
