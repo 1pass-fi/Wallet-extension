@@ -7,10 +7,12 @@
   height: 100%;
   width: 100%;
   padding: 58px 122px;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   color: white;
   font-style: normal;
   font-weight: 400;
@@ -47,11 +49,41 @@
   margin-top: 30px;
   width: 100%;
   display: flex;
+  gap: 33px;
   justify-content: center;
 }
 
 .kid-page-wrapper .form-img {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 258px;
+  object-fit: contain;
+}
+
+.kid-page-wrapper .form-img .img {
+  margin-bottom: 23px;
+}
+
+.kid-page-wrapper .form-img .avt-desc {
+  margin: 10px 0px 26px 0px;
+
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  width: 182px;
+  text-align: center;
+}
+
+.kid-page-wrapper .form-img .avt-desc a {
+  color: white;
+}
+
+.kid-page-wrapper .form-img .profile-cover {
+  margin-bottom: 17px;
+  width: 100%;
+  height: 154px;
+  border-radius: 3px;
 }
 
 .kid-page-wrapper .kid-input .kid-input-area-field {
@@ -81,7 +113,6 @@
   width: fit-content;
   font-size: 16px;
   font-weight: 400;
-  margin-bottom: 58px;
   letter-spacing: 0.03em;
   display: flex;
   align-items: center;
@@ -91,4 +122,9 @@
 .kid-page-wrapper .add-more-icon {
   height: 22px;
   margin-right: 9px;
+}
+
+.kid-page-wrapper .save-kid-btn {
+  margin: 16px auto 32px auto;
+  width: 189px;
 }

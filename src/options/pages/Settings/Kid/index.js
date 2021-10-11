@@ -1,10 +1,15 @@
 import React, { useState } from 'react'
 import map from 'lodash/map'
 import upperFirst from 'lodash/upperFirst'
+import { Link } from 'react-router-dom'
 
 import IDCardIcon from 'img/id-card-icon.svg'
 import AddIcon from 'img/navbar/create-nft.svg'
+import EditIcon from 'img/edit-icon-collection.svg'
+import DefaultAvt from 'img/default-avt-green.svg'
 import KidInputField from './kidInputField'
+import ProfileCover from 'img/profile-cover-placeholder.png'
+import Button from '../../../shared/Button'
 
 import './index.css'
 
@@ -52,7 +57,19 @@ const KidPage = () => {
         <div className="wallet-address">KOII Wallet: 12345...12345 (Account 1)</div>
       </div>
       <div className="form-section">
-        <div className="form-img">Place holder</div>
+        <div className="form-img">
+          <div className="img">
+            <DefaultAvt />
+          </div>
+          <Button startIcon={EditIcon} text="Change Avatar" />
+          <div className="avt-desc">
+            Or <Link to="/create">create an NFT</Link> to add a new image to your gallery
+          </div>
+          <img className="profile-cover" src={ProfileCover} alt="profile-cover"></img>
+          <Button startIcon={EditIcon} text="Change Background" />
+          <div className="avt-desc">This is yout cover image</div>
+        </div>
+
         <div className="form-text">
           <KidInputField
             label="Name"
@@ -103,6 +120,9 @@ const KidPage = () => {
           <div className="add-more" onClick={addSocialNetworks}>
             <AddIcon className="add-more-icon" />
             Add more
+          </div>
+          <div className="save-kid-btn">
+            <Button variant="filled" text="Save & Update" />
           </div>
         </div>
       </div>
