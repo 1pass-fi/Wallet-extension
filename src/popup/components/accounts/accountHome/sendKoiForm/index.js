@@ -32,6 +32,7 @@ import { popupAccount } from 'services/account'
 
 // utils
 import { getDisplayAddress, formatNumber } from 'options/utils'
+import { fiatCurrencyFormat } from 'utils'
 
 // styles
 import './index.css'
@@ -42,7 +43,8 @@ const SendKoiForm = ({
   makeTransfer,
   setIsLoading,
   setNotification,
-  accounts
+  accounts,
+  price
 }) => {
   const history = useHistory()
 
@@ -236,6 +238,7 @@ const SendKoiForm = ({
           onChange={onChangeAmount}
           value={amount}
         />
+        {selectedToken === 'AR' && <div className='amount-exchanged'>${fiatCurrencyFormat(amount * price.AR)} USD</div>}
       </div>
 
       <Button
@@ -260,7 +263,7 @@ const SendKoiForm = ({
 const mapStateToProps = (state) => ({ 
   price: state.price, 
   currency: state.currency,
-  accounts: state.accounts
+  accounts: state.accounts,
 })
 
 const mapDispatchToProps = { 
