@@ -60,6 +60,14 @@
 .send-koi-form .amount {
   margin: 0 40px 46px 40px;
 }
+.send-koi-form .amount-exchanged {
+  padding-left: 10px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  color: #237b75;
+}
 
 .send-koi-form .send-button {
   margin-bottom: 46px;
@@ -94,7 +102,7 @@
 }
 
 .send-koi-form .selected-account .selected-account-address {
-  color: #237B75;
+  color: #237b75;
   display: flex;
 }
 
