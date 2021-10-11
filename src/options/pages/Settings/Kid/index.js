@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import map from 'lodash/map'
+import upperFirst from 'lodash/upperFirst'
 
 import IDCardIcon from 'img/id-card-icon.svg'
 import KidInputField from './kidInputField'
@@ -13,12 +15,22 @@ const KidPage = () => {
     description: '',
   })
 
+  const [socialNetworks, setSocialNetworks] = useState({
+    twitter: '',
+    instagram: '',
+    facebook: '',
+    website: '',
+    tiktok: '',
+  })
+
   const onChangeUserInfo = (e) => {
     setuserKID({ ...userKID, [e.target.name]: e.target.value })
   }
 
-            <div className='field'>
-              <label className='label'>Description</label>
+  const onChangeSocialNetwork = (e) => {
+    setSocialNetworks({ ...socialNetworks, [e.target.name]: e.target.value })
+  }
+
   return (
     <div className="kid-page-wrapper">
       <div className="title-section">
@@ -67,6 +79,17 @@ const KidPage = () => {
               />
             </div>
           </div>
+
+          <div className="section-name">Social Networks</div>
+          {map(socialNetworks, (val, key) => (
+            <KidInputField
+              key={key}
+              label={upperFirst(key)}
+              isRequired={false}
+              value={val}
+              setValue={onChangeSocialNetwork}
+            />
+          ))}
         </div>
       </div>
     </div>
