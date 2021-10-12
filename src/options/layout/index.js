@@ -532,6 +532,59 @@ export default ({ children }) => {
     setShowTransferNFT({show: true, cardInfo: toShareNFT})
   }
 
+  // retry-upload
+  const retryExportNFT = async (txId) => {
+    const nftInfo = find(cardInfos, { txId })
+    console.log('NFT info', nftInfo)
+
+    const metadata = {
+      title: nftInfo.name,
+      username: nftInfo.owner,
+      description: nftInfo.description,
+      tags: nftInfo.tags,
+      isNSFW: nftInfo.isNSFW
+    }
+
+    const imgBase64 = nftInfo.imageUrl.slice(nftInfo.imageUrl.indexOf(',') + 1)
+    const imgUpload = _base64ToArrayBuffer(imgBase64)
+
+
+    // create blob from u8
+    const blob = new Blob([imgUpload], { type: 'contentType'})
+
+    // create file from blob
+    const bitObject = new File([blob], nftInfo.name, { type: nftInfo.contentType })
+    const file = {
+      type: nftInfo.contentType,
+      name: nftInfo.name,
+      u8: bitObject 
+    }
+
+    console.log('retry export NFT...')
+
+    const content = {
+      title,
+      owner: username,
+      description,
+      isNSFW
+    }
+    const tags = nftInfo.tags
+    const fileType = nftInfo.contentType
+    
+    const result = await backgroundRequest.gallery.uploadNFT({ content, tags, fileType, address: account.address, price, isNSFW })
+    console.log('retry export NFT - DONE', result)
+  }
+
+  const _base64ToArrayBuffer = (base64) => {
+    const binary_string = window.atob(base64)
+    const len = binary_string.length
+    const bytes = new Uint8Array(len)
+    for (var i = 0; i < len; i++) {
+      bytes[i] = binary_string.charCodeAt(i)
+    }
+    return bytes.buffer
+  }
+
   return (
     <GalleryContext.Provider
       value={{
@@ -546,6 +599,7 @@ export default ({ children }) => {
         demoCollections,
         file,
         handleShareNFT,
+        retryExportNFT,
         inviteSpent,
         isDragging,
         isWaitingAddNFT,

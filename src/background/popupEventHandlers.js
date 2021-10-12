@@ -693,6 +693,10 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           const pendingNFT = {
             name: content.title,
+            owner: content.owner,
+            description: content.description,
+            isNSFW: content.isNSFW,
+            tags: tags,
             isKoiWallet: true,
             earnedKoi: 0,
             txId: result.txId,
@@ -703,7 +707,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             contentType: fileType,
             totalViews: 0,
             createdAt,
-            description: content.description,
             pending: true,
             type: TYPE.ARWEAVE,
             expired: false
