@@ -496,13 +496,17 @@ export class ArweaveMethod {
     }
   }
 
-  async nftBridge(txId, toAddress, type) {
-    console.log('AR - NFT Bridge', type)
-    switch (type) {
-      case TYPE.ETHEREUM:
-        return true
-      default:
-        return false
+  async nftBridge({txId, toAddress, typeOfWallet: type}) {
+    try {
+      switch (type) {
+        case TYPE.ETHEREUM:
+          await this.#fromArweaveToEthereum({ txId, toAddress })
+          return true
+        default:
+          throw new Error()
+      }
+    } catch (err) {
+      return false
     }
   }
 
@@ -809,4 +813,53 @@ export class ArweaveMethod {
     }
     return bytes.buffer
   }
+
+  async #fromArweaveToEthereum ({ txId: nftId, toAddress: ethereumAddress }) {
+    try {
+      // lock nft
+      const key = this.koi.wallet
+  
+      const  lockInput = {
+        function: 'lock',
+        delegatedOwner: '6E4APc5fYbTrEsX3NFkDpxoI-eaChDmRu5nqNKOn37E',
+        qty: 1,
+        address: ethereumAddress,
+        network: 'ethereum'
+      }
+      const lockTransactionId = await smartweave.interactWrite(arweave, key, nftId, lockInput)
+      console.log('[Arweave to Ethereum 1/3] Lock transactionId: ', lockTransactionId)
+  
+      // transfer 10 KOII
+      const koiiContract = this.koi.contractId
+      const transferInput = {
+        'function': 'transfer',
+        'qty': 10,
+        'target': '6E4APc5fYbTrEsX3NFkDpxoI-eaChDmRu5nqNKOn37E',
+        'nftId': nftId,
+        'lockTx': lockTransactionId
+      }
+      const transferTransactionId = await smartweave.interactWrite(arweave, key, koiiContract, transferInput)
+      console.log('[Arweave to Ethereum 2/3] Transfer transactionId: ', transferTransactionId)
+  
+      // send post request
+      const payload = {
+        'arNFTId': nftId,
+        'arUserAddress': this.koi.address,
+        'burnKOItx': transferTransactionId,
+        'lockedNFTtx': lockTransactionId
+      }
+  
+      const rawResposne = await fetch('https://devbundler.openkoi.com:8885/mintEthToken', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+
+      console.log('[Arweave to Ethereum 3/3] Send submit request: ', await rawResposne.json())
+    } catch (err) {
+      console.log('BRDIGE ERROR: ', err.message)
+    }
 }

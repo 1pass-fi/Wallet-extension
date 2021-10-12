@@ -1080,7 +1080,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const credentials = await backgroundAccount.getCredentialByAddress(senderAddress)
           const account = await backgroundAccount.getAccount(credentials)
           const typeOfWallet = await backgroundAccount.getType(targetAddress)
-          const result = await account.method.nftBridge(txId, targetAddress, typeOfWallet)
+          const result = await account.method.nftBridge({ txId, toAddress: targetAddress, typeOfWallet })
 
           if (result) {
             port.postMessage({
