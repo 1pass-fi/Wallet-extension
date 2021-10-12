@@ -44,7 +44,8 @@ export default ({
   description,
   pending,
   type,
-  address
+  address,
+  expired
 }) => {
   const history = useHistory()
   const {

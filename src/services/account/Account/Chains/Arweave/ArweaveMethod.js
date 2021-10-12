@@ -548,9 +548,11 @@ export class ArweaveMethod {
   }
 
   async transactionConfirmedStatus(id) {
-    const response = await arweave.transactions.getStatus(id)
-    const dropped = response.status === 404
-    const confirmed = !isEmpty(get(response, 'confirmed'))
+    // const response = await arweave.transactions.getStatus(id)
+    // const dropped = response.status === 404
+    // const confirmed = !isEmpty(get(response, 'confirmed'))
+    const confirmed = false
+    const dropped = true
     return { dropped, confirmed } 
   }
 

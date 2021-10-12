@@ -4,6 +4,8 @@ import passworder from 'browser-passworder'
 import moment from 'moment'
 import axios from 'axios'
 import differenceBy from 'lodash/differenceBy'
+import includes from 'lodash/includes'
+import { v4 as uuid } from 'uuid'
 
 import storage from 'services/storage'
 import { ArweaveAccount, EthereumAccount } from 'services/account/Account'
@@ -65,9 +67,34 @@ export const updatePendingTransactions = async () => {
   const allAccounts = await backgroundAccount.getAllAccounts()
   allAccounts.forEach(async account => {
     let pendingTransactions = await account.get.pendingTransactions()
+
+    /* 
+      Check for expired or confirmed.
+      Expired: dropped true
+      Confirmed: confirmed true
+    */
     pendingTransactions = await Promise.all(pendingTransactions.map(async transaction => {
+      const isNFT = includes(transaction.activityName, 'Minted NFT')
       const { dropped, confirmed } = await account.method.transactionConfirmedStatus(transaction.id)
-      if (dropped) transaction.expired = true
+      /* 
+        Set the pending transaction expired to true
+        If it is a transaction of minting NFT, set appropriate pending NFT expired to true
+      */
+      if (dropped) {
+        transaction.expired = true
+        if (isNFT) {
+          let pendingAssets = await account.get.pendingAssets()
+          console.log('pendingAssets', pendingAssets)
+          pendingAssets = pendingAssets.map(nft => {
+            console.log('NFT' ,nft)
+            if (nft.txId === transaction.id) nft.expired = true
+            return nft
+          })
+
+          await account.set.pendingAssets(pendingAssets)
+        }
+      } 
+
 
       if (confirmed) {
         console.log(`Transaction confirmed`, transaction)
@@ -106,48 +133,6 @@ export const loadBalances = async () => {
     console.error(error)
   }
 }
-
-/* 
-  Load state for pending transactions every 30 seconds
-*/
-export const loadTransactionState = async () => {
-  try {
-    const accounts = await backgroundAccount.getAllAccounts()
-    await Promise.all(accounts.map(async account => {
-      const pendingTransactions = await account.get.pendingTransactions() || []
-
-      pendingTransactions.forEach(async () => {
-        const confirmed = await arweaveConfirmStatus(transaction.id)
-
-        if (confirmed) {
-          chromeNotification({
-            title: `Transaction confirmed`,
-            message: `Your transaction [${transaction.activityName}] has been confirmed.`
-          })
-          let newTransactions = [...pendingTransactions]
-          newTransactions = newTransactions.filter(aTransaction => aTransaction.id !== transaction.id)
-          await account.set.pendingTransactions(newTransactions)
-
-          if (transaction.activityName.includes('Minted')) {
-            let activityNotifications = await storage.generic.get.activityNotifications() || []
-            const title = transaction.activityName.slice(transaction.activityName.indexOf(`"`))
-            const newNotification = {
-              id: transaction.id,
-              title,
-              date: transaction.date
-            }
-
-            activityNotifications = [...activityNotifications, newNotification]
-            await storage.generic.set.activityNotifications(activityNotifications)
-          }
-        }
-      })
-    }))
-  } catch (error) {
-    console.error(error)
-  }
-}
-
 
 /**
  * 
@@ -677,7 +662,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           koi.address = address
           koi.wallet = key
 
-          const result = await exportNFTNew(koi, arweave, content, tags, fileType)
+          const result = { txId: uuid(), createdAt: 0 }
+          // const result = await exportNFTNew(koi, arweave, content, tags, fileType)
 
           const newPendingTransaction = {
             id: result.txId,
@@ -685,7 +671,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             expense: price,
             accountName,
             date: moment().format('MMMM DD YYYY'),
-            address
+            address,
+            expired: false
           }
 
           const pendingTransactions = await account.get.pendingTransactions() || []
@@ -718,7 +705,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             createdAt,
             description: content.description,
             pending: true,
-            type: TYPE.ARWEAVE
+            type: TYPE.ARWEAVE,
+            expired: false
           }
 
           const allPendingAssets = await account.get.pendingAssets() || []
