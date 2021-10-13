@@ -12,7 +12,13 @@ import { TYPE } from 'constants/accountConstants'
 
 import axios from 'axios'
 
-import web3 from 'web3'
+import HDWalletProvider from '@truffle/hdwallet-provider'
+import Web3 from 'web3'
+import koiRouterABI from './abi/KoiRouter.json'
+import koiTokenABI from './abi/KoiToken.json'
+
+const KOI_ROUTER_CONTRACT = '0x8ce759A419aC0fE872e93C698F6e352246FDb50B'
+const KOI_TOKEN_CONTRACT = '0x8FE956c094271D1ad00Eab8257CC7dF71d76dD11'
 
 export class EthereumMethod {
   constructor(eth) {
@@ -20,7 +26,7 @@ export class EthereumMethod {
   }
 
   async getBalances() {
-    const balance = web3.utils.fromWei(await this.eth.getBalance())
+    const balance = Web3.utils.fromWei(await this.eth.getBalance())
     const koiBalance = 100
     return { balance, koiBalance }
   }
@@ -100,13 +106,46 @@ export class EthereumMethod {
     return []
   }
 
-  async nftBridge(txId, toAddress, type) {
+  async nftBridge({ txId, toAddress, type = TYPE.ARWEAVE }) {
     console.log('ETH - NFT Bridge', type)
     switch (type) {
       case TYPE.ARWEAVE:
+        await this.#bridgeEthtoAr({ txId, toAddress })
         return true
       default:
         return false
+    }
+  }
+
+  async #bridgeEthtoAr({ txId: tokenId, toAddress }) {
+    // TODO: check user balance
+    // TODO: Check nft type and dynamically get address
+    const provider = new HDWalletProvider(this.eth.key, this.eth.getCurrentNetWork())
+    const web3 = new Web3(provider)
+
+    const userAddress = this.eth.address
+
+    const koiRouterContract = new web3.eth.Contract(koiRouterABI, KOI_ROUTER_CONTRACT)
+    const tokenContract = new web3.eth.Contract(koiTokenABI, KOI_TOKEN_CONTRACT)
+
+    const isApproved = await tokenContract.methods
+      .isApprovedForAll(userAddress, KOI_ROUTER_CONTRACT)
+      .call()
+
+    if (!isApproved) {
+      const res = await tokenContract.methods
+        .setApprovalForAll(KOI_ROUTER_CONTRACT, true)
+        .send({ from: userAddress })
+      console.log('Receipt set approval for all', res)
+    }
+
+    try {
+      const depositResult = await koiRouterContract.methods
+        .deposit(KOI_TOKEN_CONTRACT, tokenId, 1, toAddress)
+        .send({ from: userAddress, value: web3.utils.toWei('0.00015', 'ether'), gasPrice: 1000000000, gasLimit: 100000 })
+      console.log('====== Deposit receipt ', depositResult)
+    } catch (error) {
+      console.log('======= Deposit error', error)
     }
   }
 

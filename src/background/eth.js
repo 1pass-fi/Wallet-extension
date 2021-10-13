@@ -15,6 +15,10 @@ export class Ethereum {
     this.address = null
   }
 
+  getCurrentNetWork () {
+    return this.#provider
+  }
+
   createNewWallet() {
     const seedPhrase = this.#generateMnemonic()
 
