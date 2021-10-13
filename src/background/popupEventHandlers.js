@@ -88,24 +88,26 @@ export const updatePendingTransactions = async () => {
             but on this scope, id will be remained.
             Try NOT to use transaction id to handle logic (filter, find,...)
           */
-          await account.method.resendTransaction(transaction.id)
+          return await account.method.resendTransaction(transaction.id)
         } else {
-          transaction.expired = true
-          if (isNFT) {
-            // set expired true for the pending nft
-            let pendingAssets = await account.get.pendingAssets()
-            pendingAssets = pendingAssets.map(nft => {
-              if (nft.txId === transaction.id) nft.expired = true
-              return nft
-            })
-    
-            await account.set.pendingAssets(pendingAssets)
+          if (transaction.expired !== true){
+            transaction.expired = true
+            if (isNFT) {
+              // set expired true for the pending nft
+              let pendingAssets = await account.get.pendingAssets()
+              pendingAssets = pendingAssets.map(nft => {
+                if (nft.txId === transaction.id) nft.expired = true
+                return nft
+              })
+      
+              await account.set.pendingAssets(pendingAssets)
+            }
           }
         }
       }
 
       if (confirmed) {
-        console.log(`Transaction confirmed`, transaction)
+        console.log('Transaction confirmed', transaction)
         showNotification({
           title: `Transaction confirmed`,
           message: `Your transaction ${transaction.activityName} has been confirmed`

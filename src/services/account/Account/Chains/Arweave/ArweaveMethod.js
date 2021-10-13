@@ -742,13 +742,13 @@ export class ArweaveMethod {
     if (transaction) {
       const { activityName } = transaction
       if (activityName.includes('Sent AR')) {
-        newTxId = this.resendAr(txId)
+        newTxId = await this.resendAr(txId)
       }
       if (activityName.includes('Sent KOII')) {
-        newTxId = this.resendKoii(txId)
+        newTxId = await this.resendKoii(txId)
       }
       if (activityName.includes('Minted')) {
-        newTxId = this.reuploadNFT(txId)
+        newTxId = await this.reuploadNFT(txId)
       }
 
       /* 
@@ -777,6 +777,8 @@ export class ArweaveMethod {
  
         await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
       }
+
+      return transaction
     }
   }
 
