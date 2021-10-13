@@ -20,6 +20,8 @@ import koiTokenABI from './abi/KoiToken.json'
 const KOI_ROUTER_CONTRACT = '0x8ce759A419aC0fE872e93C698F6e352246FDb50B'
 const KOI_TOKEN_CONTRACT = '0x8FE956c094271D1ad00Eab8257CC7dF71d76dD11'
 
+const ACCEPT_TOKEN_TYPE = ['ERC1155', 'ERC721']
+
 export class EthereumMethod {
   constructor(eth) {
     this.eth = eth
@@ -106,27 +108,29 @@ export class EthereumMethod {
     return []
   }
 
-  async nftBridge({ txId, toAddress, type = TYPE.ARWEAVE }) {
+  async nftBridge({ txId, toAddress, type = TYPE.ARWEAVE, tokenAddress, tokenSchema }) {
     console.log('ETH - NFT Bridge', type)
     switch (type) {
       case TYPE.ARWEAVE:
-        await this.#bridgeEthtoAr({ txId, toAddress })
+        await this.#bridgeEthtoAr({ txId, toAddress, tokenAddress, tokenSchema })
         return true
       default:
         return false
     }
   }
 
-  async #bridgeEthtoAr({ txId: tokenId, toAddress }) {
+  async #bridgeEthtoAr({ txId: tokenId, toAddress, tokenAddress, tokenSchema }) {
     // TODO: check user balance
-    // TODO: Check nft type and dynamically get address
+    // TODO: Check nft type
+    console.log('Token schema', tokenSchema)
+
     const provider = new HDWalletProvider(this.eth.key, this.eth.getCurrentNetWork())
     const web3 = new Web3(provider)
 
     const userAddress = this.eth.address
 
     const koiRouterContract = new web3.eth.Contract(koiRouterABI, KOI_ROUTER_CONTRACT)
-    const tokenContract = new web3.eth.Contract(koiTokenABI, KOI_TOKEN_CONTRACT)
+    const tokenContract = new web3.eth.Contract(koiTokenABI, tokenAddress)
 
     const isApproved = await tokenContract.methods
       .isApprovedForAll(userAddress, KOI_ROUTER_CONTRACT)
@@ -141,7 +145,7 @@ export class EthereumMethod {
 
     try {
       const depositResult = await koiRouterContract.methods
-        .deposit(KOI_TOKEN_CONTRACT, tokenId, 1, toAddress)
+        .deposit(tokenAddress, tokenId, 1, toAddress)
         .send({ from: userAddress, value: web3.utils.toWei('0.00015', 'ether'), gasPrice: 1000000000, gasLimit: 100000 })
       console.log('====== Deposit receipt ', depositResult)
     } catch (error) {
@@ -188,7 +192,9 @@ export class EthereumMethod {
               createdAt: Date.parse(get(content, 'collection.created_date')) / 1000,
               description: content.description,
               type: TYPE.ETHEREUM,
-              address: this.eth.address
+              address: this.eth.address,
+              tokenAddress: content?.asset_contract?.address,
+              tokenSchema: content?.asset_contract?.schema_name // ERC compatiblility. eg: ERC1155,...
             }
           } else {
             console.log('Failed load content: ', content)

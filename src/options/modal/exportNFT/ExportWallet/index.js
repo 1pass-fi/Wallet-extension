@@ -138,7 +138,7 @@ export default ({ info, onClose, type }) => {
 
   const totalTransfer = 1 // TODO this
 
-  const { locked, name, earnedKoi, totalViews, imageUrl, txId, address: _ownerAddress } = info
+  const { locked, name, earnedKoi, totalViews, imageUrl, txId, address: _ownerAddress, tokenAddress, tokenSchema } = info
 
   const onAddressInputChange = (e) => {
     // handle input and dropdown
@@ -183,7 +183,9 @@ export default ({ info, onClose, type }) => {
         senderAddress: _ownerAddress,
         targetAddress: chosenAccount.address,
         txId: txId,
-        numOfTransfers: numberTransfer
+        numOfTransfers: numberTransfer,
+        tokenAddress,
+        tokenSchema
       })
       setStep(step + 1)
     } catch (error) {

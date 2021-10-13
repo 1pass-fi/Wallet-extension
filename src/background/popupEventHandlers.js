@@ -1074,13 +1074,13 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
       case MESSAGES.TRANSFER_NFT: {
         try {
-          const { senderAddress, targetAddress, txId, numOfTransfers } = message.data
+          const { senderAddress, targetAddress, txId, numOfTransfers, tokenAddress, tokenSchema } = message.data
 
           // get credentials of sender address
           const credentials = await backgroundAccount.getCredentialByAddress(senderAddress)
           const account = await backgroundAccount.getAccount(credentials)
           const typeOfWallet = await backgroundAccount.getType(targetAddress)
-          const result = await account.method.nftBridge({ txId, toAddress: targetAddress, typeOfWallet })
+          const result = await account.method.nftBridge({ txId, toAddress: targetAddress, typeOfWallet, tokenAddress, tokenSchema })
 
           if (result) {
             port.postMessage({
