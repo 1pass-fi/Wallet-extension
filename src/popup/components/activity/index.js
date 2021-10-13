@@ -301,6 +301,8 @@ const Activities = ({
               ...prev,
               isShow: false,
             }))}
+            setPendingTransactions={setPendingTransactions}
+            pendingTransactions={pendingTransactions}
           />
         )
       }

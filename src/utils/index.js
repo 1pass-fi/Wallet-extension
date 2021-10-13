@@ -749,3 +749,7 @@ export const getOldWallet = async (password) => {
   }
   return { key, seedphrase }
 }
+
+export const winstonToAr = (value) => {
+  return value / 1000000000000
+}

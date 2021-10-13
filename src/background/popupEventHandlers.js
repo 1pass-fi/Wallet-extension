@@ -74,45 +74,46 @@ export const updatePendingTransactions = async () => {
       Confirmed: confirmed true
     */
     pendingTransactions = await Promise.all(pendingTransactions.map(async transaction => {
-      const isNFT = includes(transaction.activityName, 'Minted NFT')
-      const { dropped, confirmed } = await account.method.transactionConfirmedStatus(transaction.id)
-
       /* 
-        if retried <= 1, silently resend transaction
-        if retried > 1, notice user with an expired transaction
+        Don't need to check the status for expired transaction
       */
-      if (dropped) {
-        if (transaction.retried < MAX_RETRIED ) {
-          /* 
-            NOTE: after we run this function, the transaction Id will be changed on the chrome storage
-            but on this scope, id will be remained.
-            Try NOT to use transaction id to handle logic (filter, find,...)
-          */
-          return await account.method.resendTransaction(transaction.id)
-        } else {
-          if (transaction.expired !== true){
-            transaction.expired = true
-            if (isNFT) {
-              // set expired true for the pending nft
-              let pendingAssets = await account.get.pendingAssets()
-              pendingAssets = pendingAssets.map(nft => {
-                if (nft.txId === transaction.id) nft.expired = true
-                return nft
-              })
-      
-              await account.set.pendingAssets(pendingAssets)
+      if (!transaction.expired) {
+        const isNFT = includes(transaction.activityName, 'Minted NFT')
+        const { dropped, confirmed } = await account.method.transactionConfirmedStatus(transaction.id)
+        console.log('DROPPED', dropped)
+  
+        /* 
+          if retried <= 1, silently resend transaction
+          if retried > 1, notice user with an expired transaction
+        */
+        if (dropped) {
+          if (transaction.retried < MAX_RETRIED ) {
+            return await account.method.resendTransaction(transaction.id)
+          } else {
+            if (transaction.expired !== true){
+              transaction.expired = true
+              if (isNFT) {
+                // set expired true for the pending nft
+                let pendingAssets = await account.get.pendingAssets()
+                pendingAssets = pendingAssets.map(nft => {
+                  if (nft.txId === transaction.id) nft.expired = true
+                  return nft
+                })
+        
+                await account.set.pendingAssets(pendingAssets)
+              }
             }
           }
         }
-      }
-
-      if (confirmed) {
-        console.log('Transaction confirmed', transaction)
-        showNotification({
-          title: `Transaction confirmed`,
-          message: `Your transaction ${transaction.activityName} has been confirmed`
-        })
-        return
+  
+        if (confirmed) {
+          console.log('Transaction confirmed', transaction)
+          showNotification({
+            title: `Transaction confirmed`,
+            message: `Your transaction ${transaction.activityName} has been confirmed`
+          })
+          return
+        }
       }
       return transaction
     }))
@@ -673,8 +674,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           koi.address = address
           koi.wallet = key
 
-          const result = { txId: uuid(), createdAt: 0 }
-          // const result = await exportNFTNew(koi, arweave, content, tags, fileType)
+          // const result = { txId: uuid(), createdAt: 0 }
+          const result = await exportNFTNew(koi, arweave, content, tags, fileType)
 
           const newPendingTransaction = {
             id: result.txId,
@@ -1132,19 +1133,28 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       case MESSAGES.HANDLE_EXPIRED_TRANSACTION: {
         try {
           const { txId, address, wantToResend } = message.data
+
+          const credentials = await backgroundAccount.getCredentialByAddress(address)
+          const account = await backgroundAccount.getAccount(credentials)
+
           if (wantToResend) {
-            // TODO: Resend
+            const resentTransaction = await account.method.resendTransaction(txId)
+            port.postMessage({
+              type: MESSAGES.HANDLE_EXPIRED_TRANSACTION,
+              data: resentTransaction.id,
+              id: messageId
+            })
           } else {
-            const credentials = await backgroundAccount.getCredentialByAddress(address)
-            const account = await backgroundAccount.getAccount(credentials)
             let pendingTransactions = await account.get.pendingTransactions()
             pendingTransactions = pendingTransactions.filter(transaction => {
               return transaction.id  !== txId
             })
-
             await account.set.pendingTransactions(pendingTransactions)
+            port.postMessage({
+              type: MESSAGES.HANDLE_EXPIRED_TRANSACTION,
+              id: messageId
+            })
           }
-
         } catch (err) {
           port.postMessage({
             type: MESSAGES.HANDLE_EXPIRED_TRANSACTION,

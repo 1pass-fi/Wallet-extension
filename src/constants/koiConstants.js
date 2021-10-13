@@ -248,7 +248,8 @@ export const ERROR_MESSAGE = {
   CREATE_WALLET_FAILED: 'Create new wallet failed.',
   INVALID_JSON_KEY: 'Invalid JSON key. Please make sure that you chose a valid key.',
   SEND_ZERO_KOI: 'Whoops! Enter the amount of tokens you want to send.',
-  SEND_WITH_ETH: 'We currently only support Ethereum transfers on the Rinkeby network.'
+  SEND_WITH_ETH: 'We currently only support Ethereum transfers on the Rinkeby network.',
+  EXPIRED_TRANSACTION_ACTION_ERROR: 'Something went wrong when trying to delete or resend your transaction'
 }
 
 export const STORAGE = {

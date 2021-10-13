@@ -18,6 +18,8 @@ import arweave from 'services/arweave'
 
 import _signPort from 'utils/signPort'
 
+import { winstonToAr } from 'utils'
+
 export class ArweaveMethod {
   #chrome
   constructor(koi) {
@@ -157,8 +159,8 @@ export class ArweaveMethod {
             }
 
             if (inputFunction.function === 'registerData' ||
-                inputFunction.function === 'burnKoi' ||
-                inputFunction.function === 'migratePreRegister') {
+              inputFunction.function === 'burnKoi' ||
+              inputFunction.function === 'migratePreRegister') {
               activityName = 'Registered NFT'
               source = null
             }
@@ -272,7 +274,7 @@ export class ArweaveMethod {
       const txId = get(data[0], 'node.id')
       if (txId) {
         const imageUrl = `https://arweave.net/${txId}`
-        const state = await smartweave.readContract(arweave ,txId)
+        const state = await smartweave.readContract(arweave, txId)
         return { imageUrl, ...state }
       }
     } catch (err) {
@@ -373,7 +375,7 @@ export class ArweaveMethod {
           address: this.koi.address,
           code,
           signature: signedPayload.signature,
-          
+
           publicKey: signedPayload.owner
         }
       })
@@ -547,12 +549,21 @@ export class ArweaveMethod {
   }
 
   async transactionConfirmedStatus(id) {
-    // const response = await arweave.transactions.getStatus(id)
-    // const dropped = response.status === 404
-  // const confirmed = !isEmpty(get(response, 'confirmed'))
-    const confirmed = false
+    // const mocked = window.localStorage.getItem('mocked')
+    // let confirmed, dropped
+    // if (mocked === 'true') {
+    //   const response = await arweave.transactions.getStatus(id)
+    //   console.log('pending transaction status', response)
+    //   dropped = response.status === 404
+    //   confirmed = !isEmpty(get(response, 'confirmed'))      
+    // } else {
+    //   dropped = true
+    //   confirmed = false
+    //   window.localStorage.setItem('mocked', true)
+    // }
     const dropped = true
-    return { dropped, confirmed } 
+    const confirmed = false
+    return { dropped, confirmed }
   }
 
   async getNftData(nftIds, getBase64) {
@@ -631,17 +642,25 @@ export class ArweaveMethod {
       let pendingAssets = await this.#chrome.getPendingAssets()
       let nft = find(pendingAssets, (nft) => nft.txId === txId)
 
-      if (nft) {
-        // base64 to u8
-        const imgBase64 = nftInfo.imageUrl.slice(nft.imageUrl.indexOf(',') + 1)
-        const arrayBuffer = this.#base64ToArrayBuffer(imgBase64)
-        const u8 = Uint8Array.from(arrayBuffer)
+      console.log('NFT to reupload', nft)
 
+      if (nft) {
+        // base64 to arrayBufffer
+        const imgBase64 = nft.imageUrl.slice(nft.imageUrl.indexOf(',') + 1)
+        console.log('base64 reupload', imgBase64)
+        const arrayBuffer = this.#base64ToArrayBuffer(imgBase64)
+        console.log('array buffer reupload', arrayBuffer)
+        
         // check the price (validation)
         const fileSize = arrayBuffer.byteLength
-        const price = await arweave.transactions.getPrice(fileSize)
+        console.log('fileSize', fileSize)
+        let price = await arweave.transactions.getPrice(fileSize)
+        price = winstonToAr(price)
+        console.log('price', price)
         const currentAr = await this.koi.getWalletBalance()
+        console.log('currentAr', currentAr)
         const currentKoii = await this.koi.getKoiBalance()
+        console.log('currentKoii', currentKoii)
         if (currentAr < price) throw new Error('Not enough AR.')
         if (currentKoii < 1) throw new Error('Not enough Koii.')
 
@@ -660,21 +679,23 @@ export class ArweaveMethod {
           'tags': nft.tags,
           'locked': []
         }
-    
+
         let tx
-    
+
         tx = await arweave.createTransaction({
-          data: u8
+          data: arrayBuffer
         })
-    
-        tx.addTag('Content-Type', fileType)
+
+        console.log('reupload transaction', tx)
+
+        tx.addTag('Content-Type', nft.contentType)
         tx.addTag('Network', 'Koii')
         tx.addTag('Action', 'marketplace/Create')
         tx.addTag('App-Name', 'SmartWeaveContract')
         tx.addTag('App-Version', '0.3.0')
         tx.addTag('Contract-Src', 'r_ibeOTHJW8McJvivPJjHxjMwkYfAKRjs-LjAeaBcLc')
         tx.addTag('Init-State', JSON.stringify(initialState))
-        tx.addTag('NSFW', content.isNSFW)
+        tx.addTag('NSFW', nft.isNSFW)
 
         // sign transaction
         try {
@@ -698,8 +719,8 @@ export class ArweaveMethod {
         }
 
         // register
-        console.log('BURN KOII', await koi.burnKoiAttention(tx.id))
-        console.log('MIGRATE', await koi.migrateAttention())
+        console.log('BURN KOII', await this.koi.burnKoiAttention(tx.id))
+        console.log('MIGRATE', await this.koi.migrateAttention())
 
         // change txid of the current pending asset
         pendingAssets = pendingAssets.map((thisNft) => {
@@ -717,18 +738,22 @@ export class ArweaveMethod {
     }
   }
 
-  async resendKoii(txId) {
+  async resendKoii(pendingTransaction) {
     try {
-
+      const { expense: qty, source: target } = pendingTransaction
+      console.log('RESEND KOII')
+      return await this.transfer('KOI', target, qty)
     } catch (err) {
       console.log(err.message)
       return false
     }
   }
 
-  async resendAr(txId) {
+  async resendAr(pendingTransaction) {
     try {
-
+      const { expense: qty, source: target } = pendingTransaction
+      console.log('RESEND AR')
+      return await this.transfer('AR', target, qty)
     } catch (err) {
       return false
     }
@@ -745,10 +770,10 @@ export class ArweaveMethod {
         newTxId = await this.resendAr(txId)
       }
       if (activityName.includes('Sent KOII')) {
-        newTxId = await this.resendKoii(txId)
+        newTxId = await this.resendKoii(transaction)
       }
       if (activityName.includes('Minted')) {
-        newTxId = await this.reuploadNFT(txId)
+        newTxId = await this.reuploadNFT(transaction)
       }
 
       /* 
@@ -758,23 +783,23 @@ export class ArweaveMethod {
         pendingTransactions = pendingTransactions.map(transaction => {
           if (transaction.id === txId) {
             transaction.id = newTxId
-            if (transaction.retried !== undefined) transaction.retried = 0 
+            if (transaction.retried !== undefined) transaction.retried = 0
             transaction.retried++
           }
           return transaction
         })
- 
+
         await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
       } else {
         // TODO: refactor
         pendingTransactions = pendingTransactions.map(transaction => {
           if (transaction.id === txId) {
-            if (transaction.retried !== undefined) transaction.retried = 0 
+            if (transaction.retried !== undefined) transaction.retried = 0
             transaction.retried++
           }
           return transaction
         })
- 
+
         await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
       }
 
