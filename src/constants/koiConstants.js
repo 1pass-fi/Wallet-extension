@@ -249,6 +249,8 @@ export const ERROR_MESSAGE = {
   INVALID_JSON_KEY: 'Invalid JSON key. Please make sure that you chose a valid key.',
   SEND_ZERO_KOI: 'Whoops! Enter the amount of tokens you want to send.',
   SEND_WITH_ETH: 'We currently only support Ethereum transfers on the Rinkeby network.',
+  INVALID_TOKEN_SCHEMA: 'Invalid token schema. Please use nft with token schema of ERC1155 or ERC721',
+  NOT_ENOUGH_ETH: `You don't have enough ETH.`,
   EXPIRED_TRANSACTION_ACTION_ERROR: 'Something went wrong when trying to delete or resend your transaction'
 }
 
@@ -369,5 +371,7 @@ export const STREAM = {
 }
 
 export const ATTENTION_CONTRACT = 'CdPAQNONoR83Shj3CbI_9seC-LqgI1oLaRJhSwP90-o'
+
+export const VALID_TOKEN_SCHEMA = ['ERC1155', 'ERC721']
 
 export const MAX_RETRIED = 1

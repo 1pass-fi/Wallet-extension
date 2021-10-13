@@ -5,10 +5,10 @@
 
 import { PATH, ALL_NFT_LOADED } from 'constants/koiConstants'
 import { getChromeStorage } from 'utils'
-import { get } from 'lodash'
-import moment from 'moment'
+import { get, includes } from 'lodash'
 
 import { TYPE } from 'constants/accountConstants'
+import { VALID_TOKEN_SCHEMA, ERROR_MESSAGE } from 'constants/koiConstants'
 
 import axios from 'axios'
 
@@ -121,8 +121,16 @@ export class EthereumMethod {
 
   async #bridgeEthtoAr({ txId: tokenId, toAddress, tokenAddress, tokenSchema }) {
     // TODO: check user balance
-    // TODO: Check nft type
+    const { balance } = await this.getBalances()
     console.log('Token schema', tokenSchema)
+    console.log('User balance', balance)
+    console.log('Recipient', toAddress)
+
+    /* 
+      Validations
+    */
+    if (!includes(VALID_TOKEN_SCHEMA, tokenSchema)) throw new Error(ERROR_MESSAGE.INVALID_TOKEN_SCHEMA)
+    if (balance < 0.00015) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_ETH)
 
     const provider = new HDWalletProvider(this.eth.key, this.eth.getCurrentNetWork())
     const web3 = new Web3(provider)
@@ -227,5 +235,10 @@ export class EthereumMethod {
       console.log(err.message)
       return []
     }
+  }
+
+  async getBridgeStatus() {
+    // pooling
+    return { confirmed: false, dropped: false }
   }
 }
