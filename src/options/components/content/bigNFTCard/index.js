@@ -66,7 +66,7 @@ export default ({
 
   const embed = useMemo(
     () =>
-      `<iframe width="100%" src="https://koi.rocks/embed/${txId}" title="Koi NFT image" frameborder="0" allowfullscreen></iframe>`,
+      `<iframe width="100%" src="https://koi.rocks/embed/${txId}" title="Koii NFT image" frameborder="0" allowfullscreen></iframe>`,
     [txId]
   )
 

@@ -25,7 +25,7 @@ export default () => {
         <About />
       </Route>
       <Route path='*'>
-        <HasArweave content='Koi Identity only supports AR wallets.' checkingDefaultAccount={true}>
+        <HasArweave content='Koii Identity only supports AR wallets.' checkingDefaultAccount={true}>
           <Kid />
         </HasArweave>
       </Route>

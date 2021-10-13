@@ -185,7 +185,7 @@ export default ({ collection }) => {
         </Link>
 
         {showViews && <div className='nft-view'>{views} Views </div>}
-        {showEarnedKoi && <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>}
+        {showEarnedKoi && <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOII</div>}
         <div className='nft-stats'>
           {/* <div className='contributors'>{contributors}</div> */}
           <div className='pieces'>{nfts.length}</div>

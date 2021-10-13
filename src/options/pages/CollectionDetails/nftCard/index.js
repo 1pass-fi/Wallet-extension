@@ -44,7 +44,7 @@ export default ({ nft }) => {
         </Link>
 
         {showViews && <div className='nft-view'>{views} Views </div>}
-        {showEarnedKoi && <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOI</div>}
+        {showEarnedKoi && <div className='nft-earned-koi'>{formatNumber(earnedKoi)} KOII</div>}
 
         <div>
           {isCopied && <div className='copy-noti'>Link copied!</div>}

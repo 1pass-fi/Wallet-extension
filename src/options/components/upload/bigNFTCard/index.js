@@ -92,7 +92,7 @@ export default ({
             <div className='views'>
               {totalViews} {totalViews > 1 ? 'views' : 'view'}
             </div>
-            <div className='koi '>{formatNumber(earnedKoi)} KOI earned</div>
+            <div className='koi '>{formatNumber(earnedKoi)} KOII earned</div>
           </div> */}
           {/* <div className='share-embed'>
             <button

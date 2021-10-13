@@ -184,7 +184,7 @@ export class ArweaveMethod {
             if (inputTag[0]) {
               inputFunction = JSON.parse(inputTag[0].value)
               if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
-                activityName = 'Received KOI'
+                activityName = 'Received KOII'
                 expense = inputFunction.qty
                 source = inputFunction.target
               }
