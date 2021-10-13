@@ -592,7 +592,8 @@ export class ArweaveMethod {
               createdAt: content.createdAt,
               description: content.description,
               type: TYPE.ARWEAVE,
-              address: this.koi.address
+              address: this.koi.address,
+              locked: content.locked
             }
           } else {
             console.log('Failed load content: ', content)
@@ -610,7 +611,8 @@ export class ArweaveMethod {
               createdAt: content.createdAt,
               description: content.description,
               type: TYPE.ARWEAVE,
-              address: this.koi.address
+              address: this.koi.address,
+              locked: content.locked
             }
           }
         } catch (err) {

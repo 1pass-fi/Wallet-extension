@@ -45,7 +45,8 @@ export default ({
   pending,
   type,
   address,
-  expired
+  expired,
+  locked
 }) => {
   const history = useHistory()
   const {
@@ -125,7 +126,7 @@ export default ({
               <div className='transfer-nft' onMouseLeave={() => { setIsShowChain(false) }}>
                 <div className='transfer-nft-wrapper'>
                   <div className='transfer-text'>Transfer to</div>
-                  <div className='wallet-logo' onClick={() => setShowExportModal({ earnedKoi, totalViews, name, imageUrl, type, txId, address })}>
+                  <div className='wallet-logo' onClick={() => setShowExportModal({ locked, earnedKoi, totalViews, name, imageUrl, type, txId, address })}>
                     {type === TYPE.ARWEAVE &&
                       <>
                         <EthereumLogo className='logo' />
