@@ -15,7 +15,7 @@ import { getImageDataForNFT, getProviderUrlFromName } from 'utils'
 
 import { backgroundAccount } from 'services/account'
 
-import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS, EXPRIRED_TIME } from 'constants/koiConstants'
+import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS, MAX_RETRIED } from 'constants/koiConstants'
 
 import { popupPorts } from '.'
 
@@ -76,25 +76,33 @@ export const updatePendingTransactions = async () => {
     pendingTransactions = await Promise.all(pendingTransactions.map(async transaction => {
       const isNFT = includes(transaction.activityName, 'Minted NFT')
       const { dropped, confirmed } = await account.method.transactionConfirmedStatus(transaction.id)
+
       /* 
-        Set the pending transaction expired to true
-        If it is a transaction of minting NFT, set appropriate pending NFT expired to true
+        if retried <= 1, silently resend transaction
+        if retried > 1, notice user with an expired transaction
       */
       if (dropped) {
-        transaction.expired = true
-        if (isNFT) {
-          let pendingAssets = await account.get.pendingAssets()
-          console.log('pendingAssets', pendingAssets)
-          pendingAssets = pendingAssets.map(nft => {
-            console.log('NFT' ,nft)
-            if (nft.txId === transaction.id) nft.expired = true
-            return nft
-          })
-
-          await account.set.pendingAssets(pendingAssets)
+        if (transaction.retried < MAX_RETRIED ) {
+          /* 
+            NOTE: after we run this function, the transaction Id will be changed on the chrome storage
+            but on this scope, id will be remained.
+            Try NOT to use transaction id to handle logic (filter, find,...)
+          */
+          await account.method.resendTransaction(transaction.id)
+        } else {
+          transaction.expired = true
+          if (isNFT) {
+            // set expired true for the pending nft
+            let pendingAssets = await account.get.pendingAssets()
+            pendingAssets = pendingAssets.map(nft => {
+              if (nft.txId === transaction.id) nft.expired = true
+              return nft
+            })
+    
+            await account.set.pendingAssets(pendingAssets)
+          }
         }
-      } 
-
+      }
 
       if (confirmed) {
         console.log(`Transaction confirmed`, transaction)
@@ -495,7 +503,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             accountName,
             date: moment().format('MMMM DD YYYY'),
             source: target,
-            address
+            address,
+            retried: 0
           }
           pendingTransactions.unshift(newTransaction)
           // save pending transactions
@@ -672,7 +681,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             accountName,
             date: moment().format('MMMM DD YYYY'),
             address,
-            expired: false
+            expired: false,
+            retried: 0
           }
 
           const pendingTransactions = await account.get.pendingTransactions() || []
@@ -709,7 +719,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             createdAt,
             pending: true,
             type: TYPE.ARWEAVE,
-            expired: false
+            expired: false,
+            retried: 0
           }
 
           const allPendingAssets = await account.get.pendingAssets() || []

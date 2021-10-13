@@ -368,3 +368,5 @@ export const STREAM = {
 }
 
 export const ATTENTION_CONTRACT = 'CdPAQNONoR83Shj3CbI_9seC-LqgI1oLaRJhSwP90-o'
+
+export const MAX_RETRIED = 1
