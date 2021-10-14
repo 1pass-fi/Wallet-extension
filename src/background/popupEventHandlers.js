@@ -79,7 +79,13 @@ export const updatePendingTransactions = async () => {
       */
       if (!transaction.expired) {
         const isNFT = includes(transaction.activityName, 'Minted NFT')
-        const { dropped, confirmed } = await account.method.transactionConfirmedStatus(transaction.id)
+        let status
+        if (includes(transaction.activityName, 'BRIDGE')) {
+          status = await account.method.getBridgeStatus(transaction.id)
+        } else {
+          status = await account.method.transactionConfirmedStatus(transaction.id)
+        }
+        const { dropped, confirmed } = status
         console.log('DROPPED', dropped)
   
         /* 
@@ -90,7 +96,7 @@ export const updatePendingTransactions = async () => {
           if (transaction.retried < MAX_RETRIED ) {
             return await account.method.resendTransaction(transaction.id)
           } else {
-            if (transaction.expired !== true){
+            if (transaction.expired !== true) {
               transaction.expired = true
               if (isNFT) {
                 // set expired true for the pending nft
@@ -1074,13 +1080,22 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
       case MESSAGES.TRANSFER_NFT: {
         try {
-          const { senderAddress, targetAddress, txId, numOfTransfers } = message.data
+          const { senderAddress, targetAddress, txId, numOfTransfers, tokenAddress, tokenSchema } = message.data
 
           // get credentials of sender address
           const credentials = await backgroundAccount.getCredentialByAddress(senderAddress)
           const account = await backgroundAccount.getAccount(credentials)
           const typeOfWallet = await backgroundAccount.getType(targetAddress)
-          const result = await account.method.nftBridge(txId, targetAddress, typeOfWallet)
+          const accountName = await account.get.accountName()
+
+          const result = await account.method.nftBridge({ 
+            txId, 
+            toAddress: targetAddress, 
+            typeOfWallet, 
+            tokenAddress, 
+            tokenSchema, 
+            accountName
+          })
 
           if (result) {
             port.postMessage({

@@ -249,6 +249,8 @@ export const ERROR_MESSAGE = {
   INVALID_JSON_KEY: 'Invalid JSON key. Please make sure that you chose a valid key.',
   SEND_ZERO_KOI: 'Whoops! Enter the amount of tokens you want to send.',
   SEND_WITH_ETH: 'We currently only support Ethereum transfers on the Rinkeby network.',
+  INVALID_TOKEN_SCHEMA: 'Invalid token schema. Please use nft with token schema of ERC1155 or ERC721',
+  NOT_ENOUGH_ETH: `You don't have enough ETH.`,
   EXPIRED_TRANSACTION_ACTION_ERROR: 'Something went wrong when trying to delete or resend your transaction'
 }
 
@@ -330,7 +332,13 @@ export const FILENAME = {
 }
 
 export const URL = {
-  TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf'
+  TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf',
+  GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchBridgeDetails'
+}
+
+export const BRIDGE_FLOW = {
+  AR_TO_ETH: 'ArweaveToEthereum', 
+  ETH_TO_AR: 'EthereumToArweave'
 }
 
 export const GALLERY_IMPORT_PATH = ['/welcome', '/upload-wallet', '/import-wallet', '/create-wallet']
@@ -369,5 +377,12 @@ export const STREAM = {
 }
 
 export const ATTENTION_CONTRACT = 'CdPAQNONoR83Shj3CbI_9seC-LqgI1oLaRJhSwP90-o'
+
+export const VALID_TOKEN_SCHEMA = ['ERC1155', 'ERC721']
+
+export const ACTIVITY_NAME = {
+  BRIDGE_AR_TO_ETH: 'BRIDGE_AR_TO_ETH',
+  BRIDGE_ETH_TO_AR: 'BRIDGE_ETH_TO_AR'
+}
 
 export const MAX_RETRIED = 1

@@ -46,7 +46,10 @@ export default ({
   type,
   address,
   expired,
-  locked
+  locked,
+  tokenAddress,
+  tokenSchema,
+  isBridging
 }) => {
   const history = useHistory()
   const {
@@ -122,11 +125,13 @@ export default ({
               <EthereumLogo />
             </div>}
 
-            {isShowChain || isShowExport ?
+
+            {isBridging && <div className='transfer-nft-wrapper'>This NFT is being transferred to {type === TYPE.ARWEAVE ? 'Ethereum' : 'Arweave'}.</div>}            
+            {!isBridging && (isShowChain || isShowExport ?
               <div className='transfer-nft' onMouseLeave={() => { setIsShowChain(false) }}>
                 <div className='transfer-nft-wrapper'>
                   <div className='transfer-text'>Transfer to</div>
-                  <div className='wallet-logo' onClick={() => setShowExportModal({ locked, earnedKoi, totalViews, name, imageUrl, type, txId, address })}>
+                  <div className='wallet-logo' onClick={() => setShowExportModal({ locked, earnedKoi, totalViews, name, imageUrl, type, txId, address, tokenAddress, tokenSchema })}>
                     {type === TYPE.ARWEAVE &&
                       <>
                         <EthereumLogo className='logo' />
@@ -137,7 +142,6 @@ export default ({
                         <ArweaveLogo className='logo' />
                         <div className='text'>Arweave</div>
                       </>}
-
                   </div>
                 </div>
 
@@ -159,7 +163,6 @@ export default ({
                   <div onMouseOver={() => { setIsShowChain(true) }} >
                     Transfer this NFT to a&nbsp;
                   </div>
-
                   <span
                     onClick={() => {
                       setIsShowChain(true)
@@ -171,7 +174,8 @@ export default ({
                   </span>
                   .
                 </div>
-              </>}
+              </>)
+            }
           </div>}
           {type === TYPE.ARWEAVE && <div className='registered-date'>Registered: {registeredDate}</div>}
           {type === TYPE.ARWEAVE && <div className='external-links'>

@@ -130,15 +130,16 @@ export default ({ info, onClose, type }) => {
   const [isShowDropdown, setIsShowDropdown] = useState(false)
   const [chosenAccount, setChosenAccount] = useState({})
   const [step, setStep] = useState(1)
+  const [isBridging, setIsBridging] = useState(false)
   const addressInputRef = useRef()
 
-  const { account, setError, wallets } = useContext(GalleryContext)
+  const { setCardInfos, setError, wallets } = useContext(GalleryContext)
 
   const accounts = useMemo(() => wallets, [wallets])
 
   const totalTransfer = 1 // TODO this
 
-  const { locked, name, earnedKoi, totalViews, imageUrl, txId, address: _ownerAddress } = info
+  const { locked, name, earnedKoi, totalViews, imageUrl, txId, address: _ownerAddress, tokenAddress, tokenSchema } = info
 
   const onAddressInputChange = (e) => {
     // handle input and dropdown
@@ -179,14 +180,28 @@ export default ({ info, onClose, type }) => {
 
   const onConfirm = async () => {
     try {
+      setIsBridging(true)
       const result = await backgroundRequest.gallery.transferNFT({
         senderAddress: _ownerAddress,
-        targetAddress: chosenAccount.address,
+        targetAddress: address,
         txId: txId,
-        numOfTransfers: numberTransfer
+        numOfTransfers: numberTransfer,
+        tokenAddress,
+        tokenSchema
       })
-      setStep(step + 1)
+      /* 
+        manually update state
+      */
+      if (result) {
+        setCardInfos(prev => prev.map(nft => {
+          if (nft.txId === txId) nft.isBridging = true
+          return nft
+        }))
+        setStep(step + 1)
+      }
+      setIsBridging(false)
     } catch (error) {
+      setIsBridging(false)
       console.log(error)
       setError(error.message)
     }
@@ -371,20 +386,20 @@ export default ({ info, onClose, type }) => {
 
                     <div className='transaction-pending'>transaction pending</div>
 
-                    <div className='complete-tip'>
-                      When complete, transactions will appear in the Activity tab in
-                      the dropdown
-                    </div>
-                  </>
+                <div className='complete-tip'>
+                  When complete, transactions will appear in the Activity tab in
+                  the dropdown
+                </div>
+              </>
                 )}
 
                 {step != TRANSFER_STEPS.SUCCESS && (
                   <div className='estimate-cost'>
                     <div className='text'>Estimated costs:</div>
                     <div className='number'>
-                      <div className='koi-number'>415.29 KOII</div>
-                      {type === TYPE.ARWEAVE && <div className='ar-number'>0.00014 AR</div>}
-                      {type === TYPE.ETHEREUM && <div className='eth-number'>0.0000011 ETH</div>}
+                      <div className='koi-number'>
+                        {type !== TYPE.ARWEAVE ? '10 KOII' : '0.00015 ETH'}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -397,9 +412,11 @@ export default ({ info, onClose, type }) => {
                 )}
 
                 {step == TRANSFER_STEPS.CONFIRM && (
-                  <div className='transfer-button' onClick={onConfirm}>
-                    {type === TYPE.ARWEAVE && 'Confirm Transfer to AR'}
-                    {type === TYPE.ETHEREUM && 'Confirm Transfer to ETH'}
+                  <div className='transfer-button' onClick={onConfirm} disabled={isBridging}>
+                    {isBridging ? 
+                      'Briding your NFT...' : 
+                      type === TYPE.ARWEAVE ? 'Confirm Transfer to AR' : 'Confirm Transfer to ETH'
+                    }
                   </div>
                 )}
 
