@@ -54,6 +54,7 @@ export class ArweaveMethod {
 
         return isOwner
       })
+      console.log('Fetched contents: ', myContent)
 
       /* 
         get nft list for this koi address from Chrome storage
@@ -79,9 +80,12 @@ export class ArweaveMethod {
         return storageContentIds.indexOf(nftId) === -1
       })
 
-      if (!newContents.length) return ALL_NFT_LOADED
-
       console.log('New contents: ', newContents.length)
+
+      if (!newContents.length && myContent.length === contentList.length){
+        console.log('ALL NFT LOADED')
+        return ALL_NFT_LOADED
+      }
 
       const newContentList = await this.getNftData(newContents)
 
