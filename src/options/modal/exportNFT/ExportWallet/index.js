@@ -222,7 +222,8 @@ export default ({ info, onClose, type }) => {
   return (
     <div className='transfer-wallet-modal-wrapper'>
       <div className='transfer-wallet-modal'>
-        {!locked ?
+        {console.log('TYPE', type)}
+        {(locked === undefined && type === TYPE.ETHEREUM) ?
           <div className='unsupported-nft'>
             Finnie currently does not support old NFTs. Please use the export function with new NFTs.
           </div>
@@ -414,7 +415,7 @@ export default ({ info, onClose, type }) => {
                 {step == TRANSFER_STEPS.CONFIRM && (
                   <div className='transfer-button' onClick={onConfirm} disabled={isBridging}>
                     {isBridging ? 
-                      'Briding your NFT...' : 
+                      'Bridging your NFT...' : 
                       type === TYPE.ARWEAVE ? 'Confirm Transfer to AR' : 'Confirm Transfer to ETH'
                     }
                   </div>
