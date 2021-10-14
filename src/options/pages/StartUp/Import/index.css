@@ -45,6 +45,11 @@
   background-color: #ffffff;
 }
 
+.import-wallet .seed-phrase-button {
+  margin-top: 40px;
+  background-color: #ffffff;
+}
+
 .import-wallet .import-key-button:disabled {
   cursor: not-allowed;
 }
@@ -52,6 +57,6 @@
 .import-wallet .error-message {
   color: #ff4141;
   margin-top: 5px;
-  width: 479px;
+  /* width: 479px; */
   font-size: 12px;
 }
