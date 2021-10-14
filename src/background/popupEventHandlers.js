@@ -15,7 +15,7 @@ import { getImageDataForNFT, getProviderUrlFromName } from 'utils'
 
 import { backgroundAccount } from 'services/account'
 
-import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS, MAX_RETRIED } from 'constants/koiConstants'
+import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS, EXPRIRED_TIME, ACTIVITY_NAME, MAX_RETRIED } from 'constants/koiConstants'
 
 import { popupPorts } from '.'
 
@@ -1080,7 +1080,16 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const credentials = await backgroundAccount.getCredentialByAddress(senderAddress)
           const account = await backgroundAccount.getAccount(credentials)
           const typeOfWallet = await backgroundAccount.getType(targetAddress)
-          const result = await account.method.nftBridge({ txId, toAddress: targetAddress, typeOfWallet, tokenAddress, tokenSchema })
+          const accountName = await account.get.accountName()
+
+          const result = await account.method.nftBridge({ 
+            txId, 
+            toAddress: targetAddress, 
+            typeOfWallet, 
+            tokenAddress, 
+            tokenSchema, 
+            accountName
+          })
 
           if (result) {
             port.postMessage({

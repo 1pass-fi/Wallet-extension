@@ -332,7 +332,8 @@ export const FILENAME = {
 }
 
 export const URL = {
-  TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf'
+  TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf',
+  GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchEthBridgeDetails'
 }
 
 export const GALLERY_IMPORT_PATH = ['/welcome', '/upload-wallet', '/import-wallet', '/create-wallet']
@@ -373,5 +374,10 @@ export const STREAM = {
 export const ATTENTION_CONTRACT = 'CdPAQNONoR83Shj3CbI_9seC-LqgI1oLaRJhSwP90-o'
 
 export const VALID_TOKEN_SCHEMA = ['ERC1155', 'ERC721']
+
+export const ACTIVITY_NAME = {
+  BRIDGE_AR_TO_ETH: 'BRIDGE_AR_TO_ETH',
+  BRIDGE_ETH_TO_AR: 'BRIDGE_ETH_TO_AR'
+}
 
 export const MAX_RETRIED = 1

@@ -48,7 +48,8 @@ export default ({
   expired,
   locked,
   tokenAddress,
-  tokenSchema
+  tokenSchema,
+  isBridging
 }) => {
   const history = useHistory()
   const {
@@ -111,7 +112,7 @@ export default ({
           )}
         </div>
         <div className='info'>
-          <div className='nft-name'>{name}</div>
+          {!isBridging && <div className='nft-name'>{name}</div>}
           {!pending && <div className='export-nft'>
             {type === TYPE.ARWEAVE && <div className='wallet-icon'
               onMouseOver={() => { setIsShowChain(true) }}

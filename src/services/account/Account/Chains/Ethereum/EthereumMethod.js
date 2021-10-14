@@ -3,12 +3,14 @@
   Load activities, assets,...
 */
 
-import { PATH, ALL_NFT_LOADED } from 'constants/koiConstants'
+import { PATH, ALL_NFT_LOADED, ACTIVITY_NAME } from 'constants/koiConstants'
+import { ACCOUNT } from 'constants/accountConstants'
 import { getChromeStorage } from 'utils'
 import { get, includes } from 'lodash'
+import moment from 'moment'
 
 import { TYPE } from 'constants/accountConstants'
-import { VALID_TOKEN_SCHEMA, ERROR_MESSAGE } from 'constants/koiConstants'
+import { VALID_TOKEN_SCHEMA, ERROR_MESSAGE, URL } from 'constants/koiConstants'
 
 import axios from 'axios'
 
@@ -16,6 +18,7 @@ import HDWalletProvider from '@truffle/hdwallet-provider'
 import Web3 from 'web3'
 import koiRouterABI from './abi/KoiRouter.json'
 import koiTokenABI from './abi/KoiToken.json'
+import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 
 const KOI_ROUTER_CONTRACT = '0x8ce759A419aC0fE872e93C698F6e352246FDb50B'
 const KOI_TOKEN_CONTRACT = '0x8FE956c094271D1ad00Eab8257CC7dF71d76dD11'
@@ -23,8 +26,10 @@ const KOI_TOKEN_CONTRACT = '0x8FE956c094271D1ad00Eab8257CC7dF71d76dD11'
 const ACCEPT_TOKEN_TYPE = ['ERC1155', 'ERC721']
 
 export class EthereumMethod {
+  #chrome
   constructor(eth) {
     this.eth = eth
+    this.#chrome = new AccountStorageUtils(eth.address)
   }
 
   async getBalances() {
@@ -108,11 +113,37 @@ export class EthereumMethod {
     return []
   }
 
-  async nftBridge({ txId, toAddress, type = TYPE.ARWEAVE, tokenAddress, tokenSchema }) {
+  async nftBridge({ txId, toAddress, type = TYPE.ARWEAVE, tokenAddress, tokenSchema, accountName }) {
     console.log('ETH - NFT Bridge', type)
+    let bridgePending
+    let pendingTransactions = await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION)
+    let assets = await this.#chrome.getAssets()
     switch (type) {
       case TYPE.ARWEAVE:
-        await this.#bridgeEthtoAr({ txId, toAddress, tokenAddress, tokenSchema })
+        // await this.#bridgeEthtoAr({ txId, toAddress, tokenAddress, tokenSchema })
+        /* 
+          Create pending bridge
+        */
+        bridgePending = {
+          id: txId,
+          activityName: ACTIVITY_NAME.BRIDGE_ETH_TO_AR,
+          expense: 0,
+          accountName,
+          date: moment().format('MMMM DD YYYY'),
+          source: toAddress,
+          address: this.eth.address
+        }
+        pendingTransactions.unshift(bridgePending)
+        /* 
+          Set isBridging:true to asset
+        */
+        assets = assets.map((nft) => {
+          if (nft.txId === txId) nft.isBridging = true
+          return nft
+        })
+        await this.#chrome.setAssets(assets)
+        await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
+
         return true
       default:
         return false
@@ -237,8 +268,25 @@ export class EthereumMethod {
     }
   }
 
-  async getBridgeStatus() {
+  async getBridgeStatus(txId) {
     // pooling
+    const payload = {
+      'ethereumNFTId': txId
+    }
+
+    let response = await fetch(URL.GET_BRIDGE_STATUS, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+    response = await response.json()
+    console.log('Bridge status', response)
+
+    let isBridged = get(response, 'data[0].isBridged')
+    console.log('isBridged', isBridged)
     return { confirmed: false, dropped: false }
   }
 }

@@ -3,7 +3,7 @@
   Load activities, assets,...
 */
 
-import { PATH, ALL_NFT_LOADED, ERROR_MESSAGE } from 'constants/koiConstants'
+import { PATH, ALL_NFT_LOADED, ERROR_MESSAGE, URL, ACTIVITY_NAME } from 'constants/koiConstants'
 import { getChromeStorage, setChromeStorage } from 'utils'
 import { get, isNumber, isArray, orderBy, includes, find, isEmpty } from 'lodash'
 import moment from 'moment'
@@ -496,16 +496,48 @@ export class ArweaveMethod {
     }
   }
 
-  async nftBridge({txId, toAddress, typeOfWallet: type}) {
+  async nftBridge({txId, toAddress, typeOfWallet: type, accountName}) {
     try {
+      let bridgePending
+      let pendingTransactions = await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION)
+      let assets = await this.#chrome.getAssets()
       switch (type) {
         case TYPE.ETHEREUM:
-          await this.#fromArweaveToEthereum({ txId, toAddress })
-          return true
+          // await this.#fromArweaveToEthereum({ txId, toAddress })
+
+          /* 
+            Create pending bridge
+          */
+          bridgePending = {
+            id: txId,
+            activityName: ACTIVITY_NAME.BRIDGE_AR_TO_ETH,
+            expense: 0,
+            accountName,
+            date: moment().format('MMMM DD YYYY'),
+            source: toAddress,
+            address: this.koi.address
+          }
+          pendingTransactions.unshift(bridgePending)
+          
+
+          /* 
+            Set isBridging:true to asset
+          */
+          assets = assets.map((nft) => {
+            if (nft.txId === txId) nft.isBridging = true
+            return nft
+          })
+          await this.#chrome.setAssets(assets)
+          await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
+          break
+
         default:
           throw new Error()
       }
+
+      return true
     } catch (err) {
+      console.log('BRIDGE ERROR: ', err.message)
       return false
     }
   }
@@ -862,4 +894,25 @@ export class ArweaveMethod {
     } catch (err) {
       console.log('BRDIGE ERROR: ', err.message)
     }
+
+  async getBridgeStatus(txId) {
+    // pooling
+    const payload = {
+      'arNFTId': txId
+    }
+
+    let response = await fetch(URL.GET_BRIDGE_STATUS, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+    response = await response.json()
+    console.log('Bridge status', response)
+
+    let isBridged = get(response, 'data[0].isBridged')
+    console.log('isBridged', isBridged)
+    return { confirmed: isBridged, dropped: false }
 }

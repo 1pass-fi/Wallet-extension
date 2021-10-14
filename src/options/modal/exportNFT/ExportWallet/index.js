@@ -132,7 +132,7 @@ export default ({ info, onClose, type }) => {
   const [step, setStep] = useState(1)
   const addressInputRef = useRef()
 
-  const { account, setError, wallets } = useContext(GalleryContext)
+  const { setCardInfos, setError, wallets } = useContext(GalleryContext)
 
   const accounts = useMemo(() => wallets, [wallets])
 
@@ -187,6 +187,16 @@ export default ({ info, onClose, type }) => {
         tokenAddress,
         tokenSchema
       })
+      /* 
+        manually update state
+      */
+      if (result) {
+        setCardInfos(prev => prev.map(nft => {
+          if (nft.txId === txId) nft.isBridging = true
+          return nft
+        }))
+      }
+      
       setStep(step + 1)
     } catch (error) {
       console.log(error)
