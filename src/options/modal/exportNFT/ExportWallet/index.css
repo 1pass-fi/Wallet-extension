@@ -104,6 +104,10 @@
   font-size: 24px;
   font-weight: 600;
   line-height: 30px;
+  width: 208px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .transfer-wallet-modal .content .left .views {
@@ -164,12 +168,7 @@
   z-index: 20;
 }
 
-.transfer-wallet-modal
-  .content
-  .right
-  .eth-address
-  .address-dropdown
-  .dropdown-button {
+.transfer-wallet-modal .content .right .eth-address .address-dropdown .dropdown-button {
   background: #171753;
   border: 1px solid #ffffff;
   cursor: pointer;
@@ -177,12 +176,7 @@
   width: 32px;
 }
 
-.transfer-wallet-modal
-  .content
-  .right
-  .eth-address
-  .address-dropdown
-  .dropdown-button:after {
+.transfer-wallet-modal .content .right .eth-address .address-dropdown .dropdown-button:after {
   border-bottom: 2px solid #ffffff;
   border-right: 2px solid #ffffff;
   content: ' ';
@@ -207,27 +201,18 @@
   font-size: 16px;
   height: 32px;
   line-height: 20px;
-  padding: 9px 0px 7px 30px;
+  padding: 9px 0px 9px 30px;
   width: 392px;
-  cursor: not-allowed;
 }
 
-.transfer-wallet-modal
-  .content
-  .right
-  .number-to-transfer
-  input::-webkit-outer-spin-button,
+.transfer-wallet-modal .content .right .number-to-transfer input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-.transfer-wallet-modal
-  .content
-  .right
-  .number-to-transfer
-  input[type='number'] {
+.transfer-wallet-modal .content .right .number-to-transfer input[type='number'] {
   -moz-appearance: textfield;
 }
 

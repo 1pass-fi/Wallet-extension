@@ -112,7 +112,7 @@ export default ({
           )}
         </div>
         <div className='info'>
-          {!isBridging && <div className='nft-name'>{name}</div>}
+          <div className='nft-name'>{name}</div>
           {!pending && <div className='export-nft'>
             {type === TYPE.ARWEAVE && <div className='wallet-icon'
               onMouseOver={() => { setIsShowChain(true) }}
@@ -125,7 +125,9 @@ export default ({
               <EthereumLogo />
             </div>}
 
-            {isShowChain || isShowExport ?
+
+            {isBridging && <div className='transfer-nft-wrapper'>This NFT is being transferred to {type === TYPE.ARWEAVE ? 'Ethereum' : 'Arweave'}.</div>}            
+            {!isBridging && (isShowChain || isShowExport ?
               <div className='transfer-nft' onMouseLeave={() => { setIsShowChain(false) }}>
                 <div className='transfer-nft-wrapper'>
                   <div className='transfer-text'>Transfer to</div>
@@ -140,7 +142,6 @@ export default ({
                         <ArweaveLogo className='logo' />
                         <div className='text'>Arweave</div>
                       </>}
-
                   </div>
                 </div>
 
@@ -162,7 +163,6 @@ export default ({
                   <div onMouseOver={() => { setIsShowChain(true) }} >
                     Transfer this NFT to a&nbsp;
                   </div>
-
                   <span
                     onClick={() => {
                       setIsShowChain(true)
@@ -174,7 +174,8 @@ export default ({
                   </span>
                   .
                 </div>
-              </>}
+              </>)
+            }
           </div>}
           {type === TYPE.ARWEAVE && <div className='registered-date'>Registered: {registeredDate}</div>}
           {type === TYPE.ARWEAVE && <div className='external-links'>

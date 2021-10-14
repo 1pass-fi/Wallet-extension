@@ -15,7 +15,7 @@ import { getImageDataForNFT, getProviderUrlFromName } from 'utils'
 
 import { backgroundAccount } from 'services/account'
 
-import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS, EXPRIRED_TIME, ACTIVITY_NAME, MAX_RETRIED } from 'constants/koiConstants'
+import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS, MAX_RETRIED } from 'constants/koiConstants'
 
 import { popupPorts } from '.'
 
@@ -79,7 +79,13 @@ export const updatePendingTransactions = async () => {
       */
       if (!transaction.expired) {
         const isNFT = includes(transaction.activityName, 'Minted NFT')
-        const { dropped, confirmed } = await account.method.transactionConfirmedStatus(transaction.id)
+        let status
+        if (includes(transaction.activityName, 'BRIDGE')) {
+          status = await account.method.getBridgeStatus(transaction.id)
+        } else {
+          status = await account.method.transactionConfirmedStatus(transaction.id)
+        }
+        const { dropped, confirmed } = status
         console.log('DROPPED', dropped)
   
         /* 
@@ -90,7 +96,7 @@ export const updatePendingTransactions = async () => {
           if (transaction.retried < MAX_RETRIED ) {
             return await account.method.resendTransaction(transaction.id)
           } else {
-            if (transaction.expired !== true){
+            if (transaction.expired !== true) {
               transaction.expired = true
               if (isNFT) {
                 // set expired true for the pending nft

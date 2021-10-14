@@ -333,7 +333,12 @@ export const FILENAME = {
 
 export const URL = {
   TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf',
-  GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchEthBridgeDetails'
+  GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchBridgeDetails'
+}
+
+export const BRIDGE_FLOW = {
+  AR_TO_ETH: 'ArweaveToEthereum', 
+  ETH_TO_AR: 'EthereumToArweave'
 }
 
 export const GALLERY_IMPORT_PATH = ['/welcome', '/upload-wallet', '/import-wallet', '/create-wallet']
