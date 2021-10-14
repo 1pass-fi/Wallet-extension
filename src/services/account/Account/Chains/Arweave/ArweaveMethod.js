@@ -5,19 +5,20 @@
 
 import { PATH, ALL_NFT_LOADED, ERROR_MESSAGE } from 'constants/koiConstants'
 import { getChromeStorage, setChromeStorage } from 'utils'
-import { get, isNumber, isArray, orderBy, includes } from 'lodash'
+import { get, isNumber, isArray, orderBy, includes, find, isEmpty } from 'lodash'
 import moment from 'moment'
 import { smartweave } from 'smartweave'
 import axios from 'axios'
 
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
-import { TYPE } from 'constants/accountConstants'
+import { TYPE, ACCOUNT } from 'constants/accountConstants'
 
-import { find, isEmpty } from 'lodash'
 import storage from 'services/storage'
 import arweave from 'services/arweave'
 
 import _signPort from 'utils/signPort'
+
+import { winstonToAr } from 'utils'
 
 export class ArweaveMethod {
   #chrome
@@ -53,6 +54,7 @@ export class ArweaveMethod {
 
         return isOwner
       })
+      console.log('Fetched contents: ', myContent)
 
       /* 
         get nft list for this koi address from Chrome storage
@@ -78,9 +80,12 @@ export class ArweaveMethod {
         return storageContentIds.indexOf(nftId) === -1
       })
 
-      if (!newContents.length) return ALL_NFT_LOADED
-
       console.log('New contents: ', newContents.length)
+
+      if (!newContents.length && myContent.length === contentList.length){
+        console.log('ALL NFT LOADED')
+        return ALL_NFT_LOADED
+      }
 
       const newContentList = await this.getNftData(newContents)
 
@@ -158,8 +163,8 @@ export class ArweaveMethod {
             }
 
             if (inputFunction.function === 'registerData' ||
-                inputFunction.function === 'burnKoi' ||
-                inputFunction.function === 'migratePreRegister') {
+              inputFunction.function === 'burnKoi' ||
+              inputFunction.function === 'migratePreRegister') {
               activityName = 'Registered NFT'
               source = null
             }
@@ -185,7 +190,7 @@ export class ArweaveMethod {
             if (inputTag[0]) {
               inputFunction = JSON.parse(inputTag[0].value)
               if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
-                activityName = 'Received KOI'
+                activityName = 'Received KOII'
                 expense = inputFunction.qty
                 source = inputFunction.target
               }
@@ -273,7 +278,7 @@ export class ArweaveMethod {
       const txId = get(data[0], 'node.id')
       if (txId) {
         const imageUrl = `https://arweave.net/${txId}`
-        const state = await smartweave.readContract(arweave ,txId)
+        const state = await smartweave.readContract(arweave, txId)
         return { imageUrl, ...state }
       }
     } catch (err) {
@@ -374,7 +379,7 @@ export class ArweaveMethod {
           address: this.koi.address,
           code,
           signature: signedPayload.signature,
-          
+
           publicKey: signedPayload.owner
         }
       })
@@ -549,9 +554,9 @@ export class ArweaveMethod {
 
   async transactionConfirmedStatus(id) {
     const response = await arweave.transactions.getStatus(id)
-    const dropped = response.status === 404
-    const confirmed = !isEmpty(get(response, 'confirmed'))
-    return { dropped, confirmed } 
+    dropped = response.status === 404
+    confirmed = !isEmpty(get(response, 'confirmed'))    
+    return { dropped, confirmed }
   }
 
   async getNftData(nftIds, getBase64) {
@@ -590,7 +595,8 @@ export class ArweaveMethod {
               createdAt: content.createdAt,
               description: content.description,
               type: TYPE.ARWEAVE,
-              address: this.koi.address
+              address: this.koi.address,
+              locked: content.locked
             }
           } else {
             console.log('Failed load content: ', content)
@@ -608,7 +614,8 @@ export class ArweaveMethod {
               createdAt: content.createdAt,
               description: content.description,
               type: TYPE.ARWEAVE,
-              address: this.koi.address
+              address: this.koi.address,
+              locked: content.locked
             }
           }
         } catch (err) {
@@ -620,5 +627,186 @@ export class ArweaveMethod {
       console.log(err.message)
       return []
     }
+  }
+
+  async reuploadNFT(txId) {
+    try {
+      // get the pending assets
+      let pendingAssets = await this.#chrome.getPendingAssets()
+      let nft = find(pendingAssets, (nft) => nft.txId === txId)
+
+      console.log('NFT to reupload', nft)
+
+      if (nft) {
+        // base64 to arrayBufffer
+        const imgBase64 = nft.imageUrl.slice(nft.imageUrl.indexOf(',') + 1)
+        console.log('base64 reupload', imgBase64)
+        const arrayBuffer = this.#base64ToArrayBuffer(imgBase64)
+        console.log('array buffer reupload', arrayBuffer)
+        
+        // check the price (validation)
+        const fileSize = arrayBuffer.byteLength
+        console.log('fileSize', fileSize)
+        let price = await arweave.transactions.getPrice(fileSize)
+        price = winstonToAr(price)
+        console.log('price', price)
+        const currentAr = await this.koi.getWalletBalance()
+        console.log('currentAr', currentAr)
+        const currentKoii = await this.koi.getKoiBalance()
+        console.log('currentKoii', currentKoii)
+        if (currentAr < price) throw new Error('Not enough AR.')
+        if (currentKoii < 1) throw new Error('Not enough Koii.')
+
+        // create new transaction
+        const balances = {}
+        balances[this.koi.address] = 1
+        const initialState = {
+          'owner': this.koi.address,
+          'title': nft.name,
+          'name': nft.owner,
+          'description': nft.description,
+          'ticker': 'KOINFT',
+          'balances': balances,
+          'contentType': nft.contentType,
+          'createdAt': nft.createdAt,
+          'tags': nft.tags,
+          'locked': []
+        }
+
+        let tx
+
+        tx = await arweave.createTransaction({
+          data: arrayBuffer
+        })
+
+        console.log('reupload transaction', tx)
+
+        tx.addTag('Content-Type', nft.contentType)
+        tx.addTag('Network', 'Koii')
+        tx.addTag('Action', 'marketplace/Create')
+        tx.addTag('App-Name', 'SmartWeaveContract')
+        tx.addTag('App-Version', '0.3.0')
+        tx.addTag('Contract-Src', 'r_ibeOTHJW8McJvivPJjHxjMwkYfAKRjs-LjAeaBcLc')
+        tx.addTag('Init-State', JSON.stringify(initialState))
+        tx.addTag('NSFW', nft.isNSFW)
+
+        // sign transaction
+        try {
+          await arweave.transactions.sign(tx, this.koi.wallet)
+        } catch (err) {
+          console.log('transaction sign error')
+          console.log('err-sign', err)
+          throw new Error(err.message)
+        }
+        console.log(tx)
+
+        // upload transaction
+        let uploader = await arweave.transactions.getUploader(tx)
+        console.log('uploader', uploader)
+        while (!uploader.isComplete) {
+          await uploader.uploadChunk()
+          console.log(
+            uploader.pctComplete + '% complete',
+            uploader.uploadedChunks + '/' + uploader.totalChunks
+          )
+        }
+
+        // register
+        console.log('BURN KOII', await this.koi.burnKoiAttention(tx.id))
+        console.log('MIGRATE', await this.koi.migrateAttention())
+
+        // change txid of the current pending asset
+        pendingAssets = pendingAssets.map((thisNft) => {
+          if (thisNft.txId === nft.txId) thisNft.txId = tx.id
+          return nft
+        })
+
+        await this.#chrome.setPendingAssets(pendingAssets)
+
+        return tx.id
+      }
+    } catch (err) {
+      console.log(err.message)
+      return false
+    }
+  }
+
+  async resendKoii(pendingTransaction) {
+    try {
+      const { expense: qty, source: target } = pendingTransaction
+      console.log('RESEND KOII')
+      return await this.transfer('KOI', target, qty)
+    } catch (err) {
+      console.log(err.message)
+      return false
+    }
+  }
+
+  async resendAr(pendingTransaction) {
+    try {
+      const { expense: qty, source: target } = pendingTransaction
+      console.log('RESEND AR')
+      return await this.transfer('AR', target, qty)
+    } catch (err) {
+      return false
+    }
+  }
+
+  async resendTransaction(txId) {
+    let pendingTransactions = await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION)
+    // find the appropriate transaction
+    let transaction = find(pendingTransactions, (tx) => tx.id === txId)
+    let newTxId
+    if (transaction) {
+      const { activityName } = transaction
+      if (activityName.includes('Sent AR')) {
+        newTxId = await this.resendAr(txId)
+      }
+      if (activityName.includes('Sent KOII')) {
+        newTxId = await this.resendKoii(transaction)
+      }
+      if (activityName.includes('Minted')) {
+        newTxId = await this.reuploadNFT(transaction)
+      }
+
+      /* 
+        Set newTxId for the pending transaction
+      */
+      if (newTxId) {
+        pendingTransactions = pendingTransactions.map(transaction => {
+          if (transaction.id === txId) {
+            transaction.id = newTxId
+            if (transaction.retried !== undefined) transaction.retried = 0
+            transaction.retried++
+          }
+          return transaction
+        })
+
+        await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
+      } else {
+        // TODO: refactor
+        pendingTransactions = pendingTransactions.map(transaction => {
+          if (transaction.id === txId) {
+            if (transaction.retried !== undefined) transaction.retried = 0
+            transaction.retried++
+          }
+          return transaction
+        })
+
+        await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
+      }
+
+      return transaction
+    }
+  }
+
+  #base64ToArrayBuffer = (base64) => {
+    const binary_string = window.atob(base64)
+    const len = binary_string.length
+    const bytes = new Uint8Array(len)
+    for (var i = 0; i < len; i++) {
+      bytes[i] = binary_string.charCodeAt(i)
+    }
+    return bytes.buffer
   }
 }

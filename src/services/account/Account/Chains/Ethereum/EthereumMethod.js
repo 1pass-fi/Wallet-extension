@@ -37,6 +37,7 @@ export class EthereumMethod {
       */
       const { data: ethContents } = await axios.get(`${path}/assets?owner=${this.eth.address}&order_direction=desc&offset=0&limit=50`)
       const ethAssets = get(ethContents, 'assets')
+      console.log('Fetched contents: ', ethAssets)
 
       /* 
         get nft list for this ETH address from Chrome storage
@@ -64,9 +65,12 @@ export class EthereumMethod {
         return storageContentIds.indexOf(ethAsset.token_id) === -1
       })
 
-      if (!newContents.length) return ALL_NFT_LOADED
-
       console.log('New contents: ', newContents.length)
+
+      if (!newContents.length && ethAssets.length === contentList.length){
+        console.log('ALL NFT LOADED')
+        return ALL_NFT_LOADED
+      }
 
       const newContentList = await this.getNftData(newContents, false)
 

@@ -123,7 +123,7 @@ export default ({ stage, setStage }) => {
             setTitle(title)
             setUsername(username)
             setDescription(description)
-            setTags(tags)
+            if(tags) setTags(tags)
             setFile(file)
             setIsNSFW(isNSFW)
           }

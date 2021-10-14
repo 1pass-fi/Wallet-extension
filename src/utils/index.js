@@ -255,7 +255,7 @@ export const loadMyActivities = async (koiObj, cursor) => {
           if (inputTag[0]) {
             inputFunction = JSON.parse(inputTag[0].value)
             if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
-              activityName = 'Received KOI'
+              activityName = 'Received KOII'
               expense = inputFunction.qty
               source = inputFunction.target
             }
@@ -498,7 +498,7 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
     })
 
     tx.addTag('Content-Type', fileType)
-    tx.addTag('Network', 'Koi')
+    tx.addTag('Network', 'Koii')
     tx.addTag('Action', 'marketplace/Create')
     tx.addTag('App-Name', 'SmartWeaveContract')
     tx.addTag('App-Version', '0.3.0')
@@ -748,4 +748,8 @@ export const getOldWallet = async (password) => {
     seedphrase = await passworder.decrypt(password, encryptedSeedphrase)
   }
   return { key, seedphrase }
+}
+
+export const winstonToAr = (value) => {
+  return value / 1000000000000
 }

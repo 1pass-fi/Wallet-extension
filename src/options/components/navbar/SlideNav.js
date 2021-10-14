@@ -19,7 +19,7 @@ export default ({ isExpand }) => {
           className={`item ${pathname == '/settings/k-id' ? 'active' : ''}`}
           to='/settings/k-id'
         >
-          Koi Identity (kID)
+          Koii Identity (kID)
         </Link>
         <Link
           className={`item ${pathname == '/settings/gallery' ? 'active' : ''}`}

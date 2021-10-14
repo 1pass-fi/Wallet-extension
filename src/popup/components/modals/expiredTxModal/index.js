@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 // components
 import Button from 'popup/components/shared/button/'
@@ -7,13 +8,44 @@ import Modal from 'popup/components/shared/modal/index'
 // service
 import { popupBackgroundRequest as request } from 'services/request/popup'
 
+// actions
+import { setError } from 'actions/error'
+import { setIsLoading } from 'actions/loading'
+
+// constants
+import { ERROR_MESSAGE } from 'constants/koiConstants'
+
 // styles
 import './index.css'
 
-const ExpiredTxModal = ({ onClose, txInfo }) => {
-  const handleDeleteTx = async (txInfo) => {
-    await request.wallet.handleExpiredTransaction({...txInfo, wantToResend: false})
-
+const ExpiredTxModal = ({ onClose, txInfo, setError, setPendingTransactions, setIsLoading }) => {
+  const expiredTxAction = async (txInfo, wantToResend) => {
+    try {
+      setIsLoading(true)
+      const resentTransactionId = await request.wallet.handleExpiredTransaction({...txInfo, wantToResend})
+      /* 
+        Resent: resentTransactionId !== null
+        Deleted: resentTransactionId === null
+      */
+      if (resentTransactionId) {
+        setPendingTransactions(prev => {
+          return prev.map(transaction => {
+            if (transaction.id === txInfo.txId) transaction.expired = false
+            return transaction
+          })
+        })
+      } else {
+        setPendingTransactions(prev => prev.filter(transaction => transaction.id !== txInfo.txId))
+      }
+      setIsLoading(false)
+      onClose()
+    } catch (err) {
+      console.log(err.message)
+      setIsLoading(false)
+      setError(ERROR_MESSAGE.EXPIRED_TRANSACTION_ACTION_ERROR)
+      onClose()
+    }
+    
     // TODO: update UI
   }
   return (
@@ -22,14 +54,14 @@ const ExpiredTxModal = ({ onClose, txInfo }) => {
         <strong>Delete this transaction</strong>
       </div>
       <div className="modal-description">
-        Are you sure you want to delete this transaction?
+        Do you want to delete or resend the transaction?
       </div>
       <div className="modal-action-buttons">
-        <Button label="Delete" className="modal-action-button delete" onClick={() => handleDeleteTx(txInfo)} />
+        <Button label="Delete" className="modal-action-button delete" onClick={() => expiredTxAction(txInfo, false)} />
         <Button
-          onClick={onClose}
+          onClick={() => expiredTxAction(txInfo, true)}
           type="outline"
-          label="No, Go Back"
+          label="Resend"
           className="modal-action-button close"
         />
       </div>
@@ -37,4 +69,4 @@ const ExpiredTxModal = ({ onClose, txInfo }) => {
   )
 }
 
-export default ExpiredTxModal
+export default connect(null, { setError, setIsLoading })(ExpiredTxModal)
