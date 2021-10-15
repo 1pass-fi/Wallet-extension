@@ -80,7 +80,7 @@ export const updatePendingTransactions = async () => {
       if (!transaction.expired) {
         const isNFT = includes(transaction.activityName, 'Minted NFT')
         let status
-        if (includes(transaction.activityName, 'BRIDGE')) {
+        if (includes(transaction.activityName, 'Bridged')) {
           status = await account.method.getBridgeStatus(transaction.id)
         } else {
           status = await account.method.transactionConfirmedStatus(transaction.id)

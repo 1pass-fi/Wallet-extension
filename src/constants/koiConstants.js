@@ -381,8 +381,8 @@ export const ATTENTION_CONTRACT = 'CdPAQNONoR83Shj3CbI_9seC-LqgI1oLaRJhSwP90-o'
 export const VALID_TOKEN_SCHEMA = ['ERC1155', 'ERC721']
 
 export const ACTIVITY_NAME = {
-  BRIDGE_AR_TO_ETH: 'BRIDGE_AR_TO_ETH',
-  BRIDGE_ETH_TO_AR: 'BRIDGE_ETH_TO_AR'
+  BRIDGE_AR_TO_ETH: 'Bridged NFT from Arweave to Ethereum',
+  BRIDGE_ETH_TO_AR: 'Bridged NFT from Ethereum to Arweave'
 }
 
 export const MAX_RETRIED = 1

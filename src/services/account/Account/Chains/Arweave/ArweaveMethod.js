@@ -54,7 +54,7 @@ export class ArweaveMethod {
 
         return isOwner
       })
-      console.log('Fetched contents: ', myContent)
+      console.log('Fetched contents: ', myContent.length)
 
       /* 
         get nft list for this koi address from Chrome storage
@@ -160,6 +160,8 @@ export class ArweaveMethod {
               activityName = 'Updated Collection'
             } else if (inputFunction.function === 'updateKID') {
               activityName = 'Updated KID'
+            } else if (inputFunction.function === 'lock') {
+              activityName = 'Locked NFT'
             }
 
             if (inputFunction.function === 'registerData' ||
