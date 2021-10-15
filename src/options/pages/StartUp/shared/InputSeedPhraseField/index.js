@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 
 import EyeIcon from 'img/startup/eye.svg'
 import SeedPhraseErrorIcon from 'img/seed-phrase-error.svg'
@@ -17,6 +17,8 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
   const [inputWord, setInputWord] = useState('')
   const [showInput, setShowInput] = useState(false)
 
+  const inputRef = useRef(null)
+
   useEffect(() => {
     const seedPhrase = selectedWords.join(' ')
     setUserSeedPhrase(seedPhrase)
@@ -28,6 +30,10 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
       setSelectedWords(currentSeedPhrase)
     }
   }, [userSeedPhrase])
+
+  useEffect(() => {
+    if (showInput) inputRef.current.focus()
+  }, [showInput])
 
   const addWord = (word) => {
     setSelectedWords([...selectedWords, word])
@@ -142,9 +148,12 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
     <div className='input-field'>
       <EyeIcon className='hide-icon' onClick={() => setIsShow(!isShow)} />
       <label className='label'>{label}</label>
-      <div className='selected-words-wrapper'>
+      <div className='selected-words-wrapper' onClick={() => {
+        setShowInput(true)
+        inputRef.current.focus()
+      }}>
         <div className='selected-words'>
-          {(!userSeedPhrase && !showInput) && <div className='seed-phrase-message' onClick={() => setShowInput(true)}>
+          {(!userSeedPhrase && !showInput) && <div className='seed-phrase-message'>
             Start typing then select from the options below, or copy/paste.
           </div>}
           {(selectedWords.length > 0) && selectedWords.map((word, index) => (
@@ -161,7 +170,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
             value={inputWord}
             onChange={(e) => updateSuggestWords(e.target.value)}
             className='inputSeedPhrase'
-            autoFocus
+            ref={inputRef}
           />}
         </div>
       </div>
@@ -179,7 +188,10 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
             <button
               key={word}
               className='word'
-              onClick={() => addWord(word)}
+              onClick={() => {
+                addWord(word)
+                inputRef.current.focus()
+              }}
             >
               {word}
             </button>
