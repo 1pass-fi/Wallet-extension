@@ -3,9 +3,9 @@
   Load activities, assets,...
 */
 
-import { PATH, ALL_NFT_LOADED, ERROR_MESSAGE, URL, ACTIVITY_NAME, BRIDGE_FLOW } from 'constants/koiConstants'
+import { PATH, ALL_NFT_LOADED, ERROR_MESSAGE, URL, ACTIVITY_NAME, BRIDGE_FLOW, DELIGATED_OWNER } from 'constants/koiConstants'
 import { getChromeStorage, setChromeStorage } from 'utils'
-import { get, isNumber, isArray, orderBy, includes, find, isEmpty } from 'lodash'
+import { get, isNumber, isArray, orderBy, includes, find, isEmpty, isString } from 'lodash'
 import moment from 'moment'
 import { smartweave } from 'smartweave'
 import axios from 'axios'
@@ -54,7 +54,7 @@ export class ArweaveMethod {
 
         return isOwner
       })
-      console.log('Fetched contents: ', myContent)
+      console.log('Fetched contents: ', myContent.length)
 
       /* 
         get nft list for this koi address from Chrome storage
@@ -160,6 +160,8 @@ export class ArweaveMethod {
               activityName = 'Updated Collection'
             } else if (inputFunction.function === 'updateKID') {
               activityName = 'Updated KID'
+            } else if (inputFunction.function === 'lock') {
+              activityName = 'Locked NFT'
             }
 
             if (inputFunction.function === 'registerData' ||
@@ -517,7 +519,8 @@ export class ArweaveMethod {
               accountName,
               date: moment().format('MMMM DD YYYY'),
               source: toAddress,
-              address: this.koi.address
+              address: this.koi.address,
+              retried: 1
             }
             pendingTransactions.unshift(bridgePending)
             /* 
@@ -529,11 +532,13 @@ export class ArweaveMethod {
             })
             await this.#chrome.setAssets(assets)
             await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
+          } else {
+            return false
           }
           break
 
         default:
-          throw new Error()
+          return false
       }
 
       return true
@@ -592,7 +597,7 @@ export class ArweaveMethod {
   async transactionConfirmedStatus(id) {
     const response = await arweave.transactions.getStatus(id)
     const dropped = response.status === 404
-    const confirmed = !isEmpty(get(response, 'confirmed'))    
+    const confirmed = !isEmpty(get(response, 'confirmed'))
     return { dropped, confirmed }
   }
 
@@ -805,6 +810,10 @@ export class ArweaveMethod {
       if (activityName.includes('Minted')) {
         newTxId = await this.reuploadNFT(transaction)
       }
+      if (includes(activityName, 'Bridged')) {
+        await this.#fromArweaveToEthereum({ txId, toAddress: transaction.source })
+        newTxId = txId
+      }
 
       /* 
         Set newTxId for the pending transaction
@@ -813,6 +822,7 @@ export class ArweaveMethod {
         pendingTransactions = pendingTransactions.map(transaction => {
           if (transaction.id === txId) {
             transaction.id = newTxId
+            transaction.expired = false
             if (transaction.retried !== undefined) transaction.retried = 0
             transaction.retried++
           }
@@ -849,12 +859,13 @@ export class ArweaveMethod {
 
   async #fromArweaveToEthereum ({ txId: nftId, toAddress: ethereumAddress }) {
     try {
+      if (!isString(nftId) || !isString(ethereumAddress)) throw new Error('Invalid input for bridging')
+
       // lock nft
       const key = this.koi.wallet
-  
       const  lockInput = {
         function: 'lock',
-        delegatedOwner: '6E4APc5fYbTrEsX3NFkDpxoI-eaChDmRu5nqNKOn37E',
+        delegatedOwner: DELIGATED_OWNER,
         qty: 1,
         address: ethereumAddress,
         network: 'ethereum'
@@ -896,12 +907,11 @@ export class ArweaveMethod {
       return true
     } catch (err) {
       console.log('BRDIGE ERROR: ', err.message)
+      return false
     }
-
   }
 
   async getBridgeStatus(txId) {
-    // pooling
     const payload = {
       arNFTId: txId,
       flow: BRIDGE_FLOW.AR_TO_ETH

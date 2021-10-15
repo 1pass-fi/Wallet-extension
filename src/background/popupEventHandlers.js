@@ -64,8 +64,14 @@ const reloadGallery = () => {
 }
 
 export const updatePendingTransactions = async () => {
+  /* 
+    Get all exist accounts
+  */
   const allAccounts = await backgroundAccount.getAllAccounts()
   allAccounts.forEach(async account => {
+    /* 
+      Get all pending transactions of each account
+    */
     let pendingTransactions = await account.get.pendingTransactions()
 
     /* 
@@ -80,19 +86,19 @@ export const updatePendingTransactions = async () => {
       if (!transaction.expired) {
         const isNFT = includes(transaction.activityName, 'Minted NFT')
         let status
-        if (includes(transaction.activityName, 'BRIDGE')) {
+        if (includes(transaction.activityName, 'Bridged')) {
           status = await account.method.getBridgeStatus(transaction.id)
         } else {
           status = await account.method.transactionConfirmedStatus(transaction.id)
         }
         const { dropped, confirmed } = status
-        console.log('DROPPED', dropped)
   
         /* 
-          if retried <= 1, silently resend transaction
-          if retried > 1, notice user with an expired transaction
+          if retried <= MAX_RETRIED, silently resend transaction
+          if retried > MAX_RETRIED, notice user with an expired transaction
         */
         if (dropped) {
+          
           if (transaction.retried < MAX_RETRIED ) {
             return await account.method.resendTransaction(transaction.id)
           } else {
@@ -1154,6 +1160,11 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           if (wantToResend) {
             const resentTransaction = await account.method.resendTransaction(txId)
+            let pendingTransactions = await account.get.pendingTransactions()
+            pendingTransactions = pendingTransactions.map(transaction => {
+              if (transaction.id === txId) return resentTransaction
+              return transaction
+            })
             port.postMessage({
               type: MESSAGES.HANDLE_EXPIRED_TRANSACTION,
               data: resentTransaction.id,

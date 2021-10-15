@@ -305,7 +305,7 @@ export const STATEMENT = {
 }
 
 export const LOAD_BALANCES_TIME_INTERVAL = 300000
-export const LOAD_TRANSACTION_STATE_INTERVAL = 10000
+export const LOAD_TRANSACTION_STATE_INTERVAL = 120000
 
 export const NFT_BIT_DATA = 'NFT_BIT_DATA'
 
@@ -381,8 +381,10 @@ export const ATTENTION_CONTRACT = 'CdPAQNONoR83Shj3CbI_9seC-LqgI1oLaRJhSwP90-o'
 export const VALID_TOKEN_SCHEMA = ['ERC1155', 'ERC721']
 
 export const ACTIVITY_NAME = {
-  BRIDGE_AR_TO_ETH: 'BRIDGE_AR_TO_ETH',
-  BRIDGE_ETH_TO_AR: 'BRIDGE_ETH_TO_AR'
+  BRIDGE_AR_TO_ETH: 'Bridged NFT from Arweave to Ethereum',
+  BRIDGE_ETH_TO_AR: 'Bridged NFT from Ethereum to Arweave'
 }
 
 export const MAX_RETRIED = 1
+
+export const DELIGATED_OWNER = '6E4APc5fYbTrEsX3NFkDpxoI-eaChDmRu5nqNKOn37E'
