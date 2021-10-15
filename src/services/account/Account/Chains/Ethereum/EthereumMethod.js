@@ -129,7 +129,10 @@ export class EthereumMethod {
             accountName,
             date: moment().format('MMMM DD YYYY'),
             source: toAddress,
-            address: this.eth.address
+            address: this.eth.address,
+            tokenAddress,
+            tokenSchema,
+            retried: 1
           }
           pendingTransactions.unshift(bridgePending)
           /* 
@@ -288,5 +291,53 @@ export class EthereumMethod {
     let isBridged = get(response, 'data[0].isBridged')
     console.log('isBridged', isBridged)
     return { confirmed: isBridged, dropped: false }
+  }
+
+  async resendTransaction(txId) {
+    let pendingTransactions = await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION)
+    // find the appropriate transaction
+    let transaction = find(pendingTransactions, (tx) => tx.id === txId)
+    let newTxId
+    if (transaction) {
+      const { activityName } = transaction
+      if (includes(activityName, 'Bridged')) {
+        await this.#bridgeEthtoAr({ 
+          txId, 
+          toAddress: transaction.source, 
+          tokenAddress: transaction.tokenAddress,  
+          tokenSchema: transaction.tokenSchema
+        })
+        newTxId = txId
+      }
+
+      /* 
+        Set newTxId for the pending transaction
+      */
+      if (newTxId) {
+        pendingTransactions = pendingTransactions.map(transaction => {
+          if (transaction.id === txId) {
+            transaction.id = newTxId
+            if (transaction.retried !== undefined) transaction.retried = 0
+            transaction.retried++
+          }
+          return transaction
+        })
+
+        await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
+      } else {
+        // TODO: refactor
+        pendingTransactions = pendingTransactions.map(transaction => {
+          if (transaction.id === txId) {
+            if (transaction.retried !== undefined) transaction.retried = 0
+            transaction.retried++
+          }
+          return transaction
+        })
+
+        await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
+      }
+
+      return transaction
+    }
   }
 }

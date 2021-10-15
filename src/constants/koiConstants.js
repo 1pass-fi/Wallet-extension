@@ -386,3 +386,5 @@ export const ACTIVITY_NAME = {
 }
 
 export const MAX_RETRIED = 1
+
+export const DELIGATED_OWNER = '6E4APc5fYbTrEsX3NFkDpxoI-eaChDmRu5nqNKOn37E'
