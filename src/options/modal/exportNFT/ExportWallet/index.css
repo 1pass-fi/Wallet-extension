@@ -311,6 +311,10 @@ input::-webkit-inner-spin-button {
   width: 276px;
 }
 
+.transfer-wallet-modal .content .right .transfer-button:disabled {
+  cursor: wait;
+}
+
 .transfer-wallet-modal .content .right .transfer-button.success {
   color: #ffffff;
   background: #171753;

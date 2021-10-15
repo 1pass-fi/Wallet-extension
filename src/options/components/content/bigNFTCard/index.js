@@ -62,6 +62,7 @@ export default ({
   const [isCopied, setIsCopied] = useState(false)
   const [isShowChain, setIsShowChain] = useState(false)
   const [isShowExport, setIsShowExport] = useState(false)
+  const [showMessage, setShowMessage] = useState(false)
   const { registeredDate, tags } = {
     registeredDate: moment(createdAt * 1000).format('MMMM Do, YYYY'),
     tags: ['crypto', 'puppies', 'electropop', 'cubism'],
@@ -72,10 +73,20 @@ export default ({
       `<iframe width="100%" src="https://koi.rocks/embed/${txId}" title="Koii NFT image" frameborder="0" allowfullscreen></iframe>`,
     [txId]
   )
+  
+  const isDisableFeatures = isBridging || type !== TYPE.ARWEAVE
 
   const onCopy = () => {
     setIsCopied(true)
     setTimeout(() => setIsCopied(false), 3000)
+  }
+
+  const handleToggleMessage = () => {
+    if(type !== TYPE.ARWEAVE && !isBridging) {
+      setShowMessage(prev => !prev)
+    } else {
+      setShowMessage(false)
+    }
   }
 
   const handleGoBack = () => {
@@ -114,19 +125,29 @@ export default ({
         <div className='info'>
           <div className='nft-name'>{name}</div>
           {!pending && <div className='export-nft'>
-            {type === TYPE.ARWEAVE && <div className='wallet-icon'
+            {(type === TYPE.ARWEAVE && !isBridging) && <div className='wallet-icon'
               onMouseOver={() => { setIsShowChain(true) }}
               onMouseLeave={() => { setIsShowChain(false) }}>
               <ArweaveLogo />
             </div>}
-            {type === TYPE.ETHEREUM && <div className='wallet-icon'
+            {(type === TYPE.ETHEREUM && !isBridging) && <div className='wallet-icon'
               onMouseOver={() => { setIsShowChain(true) }}
               onMouseLeave={() => { setIsShowChain(false) }}>
               <EthereumLogo />
             </div>}
 
 
-            {isBridging && <div className='transfer-nft-wrapper'>This NFT is being transferred to {type === TYPE.ARWEAVE ? 'Ethereum' : 'Arweave'}.</div>}            
+            {isBridging && <div className='transfer-nft-wrapper'>
+              <span className='overlapped-icons'>
+                <div className='overlapped-ar'>
+                  <ArweaveLogo />
+                </div>
+                <div className='overlapped-eth'>
+                  <EthereumLogo />
+                </div>
+              </span>
+              This NFT is being transferred to {type === TYPE.ARWEAVE ? 'Ethereum' : 'Arweave'}.
+            </div>}
             {!isBridging && (isShowChain || isShowExport ?
               <div className='transfer-nft' onMouseLeave={() => { setIsShowChain(false) }}>
                 <div className='transfer-nft-wrapper'>
@@ -177,21 +198,21 @@ export default ({
               </>)
             }
           </div>}
-          {type === TYPE.ARWEAVE && <div className='registered-date'>Registered: {registeredDate}</div>}
-          {type === TYPE.ARWEAVE && <div className='external-links'>
+          <div className='registered-date'>Registered: {registeredDate}</div>
+          <div className='external-links'>
             <a
-              className='external-link'
+              className={`external-link ${isDisableFeatures && 'disabled'}`}
               href={`https://viewblock.io/arweave/tx/${txId}`}
               target='_blank'
             >
               {pending ? 'pending transaction' : 'explore block'}
             </a>
-            {type === TYPE.ARWEAVE && !pending && <a className='external-link koii' href={koiRockUrl} target='_blank'>
+            {!pending && <a className={`external-link koii ${isDisableFeatures && 'disabled'}`} href={koiRockUrl} target='_blank'>
               koi.rocks
             </a>}
-          </div>}
+          </div>
           <div className='description'>{description}</div>
-          {type === TYPE.ARWEAVE && !pending && <div className='earned'>
+          {!pending && <div className={`earned ${isDisableFeatures && 'disabled'}`}>
             {showViews && (
               <div className='views'>
                 {totalViews} {totalViews > 1 ? 'views' : 'view'}
@@ -201,20 +222,24 @@ export default ({
               <div className='koi '>{formatNumber(earnedKoi)} KOII earned</div>
             )}
           </div>}
-          {type === TYPE.ARWEAVE && !pending && <div className='share-transfer'>
+          {!pending && <div className='share-transfer' onMouseEnter={handleToggleMessage} onMouseLeave={handleToggleMessage}>
+            {showMessage && <div className='disabled-msg'>
+              Some of Finnie’s features are still in development for other blockchains.
+            </div>}
             <button
               className='share-button'
               onClick={() => {
                 setShowShareModal({ show: true, txid: txId })
               }}
+              disabled={isDisableFeatures}
             >
               Share
             </button>
-            <button onClick={() => handleShareNFT(txId)} className='transfer-button'>
+            <button onClick={() => handleShareNFT(txId)} className='transfer-button' disabled={isDisableFeatures}>
               Send
             </button>
           </div>}
-          {type === TYPE.ARWEAVE && !pending && txId && <div className='social-icons'>
+          {!pending && txId && <div className={`social-icons ${isDisableFeatures && 'disabled'}`}>
             <TwitterIcon
               onClick={() => {
                 createShareWindow('twitter', txId)
@@ -234,6 +259,7 @@ export default ({
               className='social-icon'
             />
             <a
+              className={isDisableFeatures && 'disabled'}
               href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koi.rocks/content-detail/${txId}`}
               title='Share by Email'
             >

@@ -86,7 +86,7 @@
   margin-left: 10px;
   width: 115px;
   background: #171753;
-  border: 1px solid #FFFFFF;
+  border: 1px solid #ffffff;
   box-sizing: border-box;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
   border-radius: 2px;
@@ -142,8 +142,11 @@
 }
 
 .big-nft-card .info .external-links {
-  height: 24px;
   margin-top: 6px;
+}
+
+.big-nft-card .info .external-links * {
+  box-sizing: border-box;
 }
 
 .big-nft-card .info .external-links .external-link {
@@ -156,13 +159,29 @@
   display: inline-block;
   font-size: 14px;
   height: 24px;
-  padding: 2px 5px;
+  padding: 4px 8px;
   text-decoration: none;
+  text-align: center;
 }
+
+.big-nft-card .info .external-links .external-link.disabled {
+  background-color: #b0b0b0;
+  color: #434367;
+}
+
 .big-nft-card .info .external-links .external-link.koii {
   background: #171753;
   color: #ffffff;
-  border: 1px solid #ffffff
+  border: 1px solid #ffffff;
+}
+.big-nft-card a.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+.big-nft-card .info .external-links .external-link.koii.disabled {
+  background-color: #434367;
+  border: 1px solid #b0b0b0;
+  color: #b0b0b0;
 }
 
 .big-nft-card .info .external-links .external-link:first-of-type {
@@ -264,10 +283,6 @@
   text-align: center;
 }
 
-.big-nft-card .info .share-transfer .transfer-button:disabled {
-  cursor: not-allowed;
-}
-
 .big-nft-card .info .social-icons {
   display: flex;
   flex-direction: row;
@@ -281,6 +296,13 @@
   width: 32px;
   max-height: 32px;
   cursor: pointer;
+}
+
+.big-nft-card .info .social-icons.disabled .social-icon {
+  pointer-events: none;
+  cursor: default;
+  filter: brightness(0) saturate(100%) invert(90%) sepia(1%) saturate(21%) hue-rotate(11deg)
+    brightness(79%) contrast(91%);
 }
 
 .big-nft-card .info .copy-noti {
@@ -315,4 +337,77 @@
   object-fit: contain;
   width: 470px;
   padding-top: 90px;
+}
+
+.big-nft-card .transfer-nft-wrapper .overlapped-icons {
+  position: relative;
+  width: 36px;
+}
+
+.big-nft-card .transfer-nft-wrapper .overlapped-icons .overlapped-ar {
+  position: absolute;
+  width: 24px;
+}
+
+.big-nft-card .transfer-nft-wrapper .overlapped-icons .overlapped-eth {
+  position: absolute;
+  width: 24px;
+  left: 8px;
+}
+
+.big-nft-card .info .share-transfer button:disabled {
+  cursor: not-allowed;
+  background-color: #b0b0b0;
+  color: #434367;
+}
+
+.big-nft-card .info .earned.disabled {
+  color: #b0b0b0;
+}
+
+.big-nft-card .info .share-transfer .disabled-msg {
+  position: absolute;
+  top: -71px;
+  left: 107px;
+
+  width: 222px;
+  height: 43px;
+  padding: 6px;
+
+  border: 1px solid #ffffff;
+  border-radius: 2px;
+  background-color: #171753;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+}
+
+.big-nft-card .info .share-transfer .disabled-msg::before {
+  content: '';
+  position: absolute;
+  bottom: -11px;
+  left: 15px;
+  border-width: 10px 10px 0;
+  border-style: solid;
+  border-color: white transparent;
+  display: block;
+  width: 0;
+}
+
+.big-nft-card .info .share-transfer .disabled-msg::after {
+  content: '';
+  position: absolute;
+  bottom: -9px;
+  left: 16px;
+  border-width: 9px 9px 0;
+  border-style: solid;
+  border-color: #171753 transparent;
+  display: block;
+  width: 0;
 }
