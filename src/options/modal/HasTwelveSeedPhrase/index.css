@@ -1,0 +1,35 @@
+.has-twelve-seedphrase-modal {
+  display: flex;
+  position: absolute;
+  width: 261px;
+  height: 50px;
+  left: 384px;
+  top: 490px;
+  background: #171753;
+  border: 1px solid #ffffff;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
+}
+
+.has-twelve-seedphrase-modal:after {
+  content: "";
+  height: 10px;
+  position: absolute;
+  right: 220px;
+  top: 36px;
+  -webkit-transform: rotate(45deg) translate(50%, 50%);
+  transform: rotate(45deg) translate(50%, 50%);
+  width: 10px;
+  border-bottom: 1px solid #ecfffe;
+  border-right: 1px solid #ecfffe;
+}
+
+.has-twelve-seedphrase-modal .twelve-seedphrase-description {
+  margin: auto;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  height: 32px;
+  width: 236px;
+}

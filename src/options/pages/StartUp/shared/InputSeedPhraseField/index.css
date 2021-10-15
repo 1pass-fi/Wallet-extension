@@ -1,43 +1,128 @@
-.input-field {
+.import-wallet .input-field {
   display: flex;
   flex-direction: column;
   margin-top: 33px;
   position: relative;
 }
 
-.input-field .hide-icon {
+.import-wallet .input-field .hide-icon {
   cursor: pointer;
   position: absolute;
-  right: 5px;
+  right: 10px;
   top: 22px;
 }
 
-.input-field .label {
+.import-wallet .input-field .label {
   font-size: 12px;
   line-height: 16px;
+  user-select: none;
 }
 
-.input-field .input {
+.import-wallet .input-field .inputSeedPhrase {
   background: #171753;
-  border-radius: 3px;
-  border: 1.5px solid #ffffff;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
-  color: #ffffff;
-  font-size: 14px;
-  height: 36px;
-  line-height: 24px;
-  width: 479px;
   padding-right: 24px;
+  border: none;
+  /* color: #5ed9d1; */
+  height: 28px;
+  width: 96px;
+  color: #FFFFFF;
+  text-overflow: clip;
 }
 
-.input-field .input::placeholder {
+.import-wallet .input-field .inputSeedPhrase:focus{
+  outline: none;
+}
+
+.import-wallet .input-field .seed-phrase-message {
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.01em;
   color: #5ed9d1;
+  /* color: #FFFFFF; */
 }
 
-.input-field .input.textarea {
+/* .import-wallet .input-field .inputSeedPhrase.textarea {
   height: 60px;
   resize: none;
+} */
+
+.import-wallet .input-field .selected-words-wrapper,
+.import-wallet .input-field .unselected-words {
+  height: 165px;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: scroll;
+  /* display: flex;
+  flex-direction: row; */
+  overflow-x: hidden;
+}
+
+.import-wallet .input-field .selected-words-wrapper {
+  height: 121px;
+  width: 505px;
+  /* margin: 13px; */
+  background: #171753;
+  border: 1.5px solid #ffffff;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  padding: 8px 15px;
+  justify-content: flex-start;
+}
+
+.selected-words .word,
+.unselected-words .word {
+  background: #ffffff;
+  border: 1px solid #237b75;
+  box-sizing: border-box;
+  width: 96px;
+  height: 28px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: #237b75;
+  cursor: pointer;
+  margin-bottom: 5px;
+  user-select: none;
+}
+
+.import-wallet .input-field .unselected-words {
+  width: 468px;
+  justify-content: flex-start;
+  column-gap: 20px;
+  margin-top: 20px;
+  padding-left: 19px;
+}
+
+.import-wallet .input-field .selected-words {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.import-wallet .input-field .selected-words .word {
+  margin-right: 20px;
+  margin-bottom: 8px;
+}
+
+/* 
+.import-wallet .input-field .selected-words .word:nth-child(4n) {
+  margin-right: 0px;
+} */
+
+.seed-phrase-error-icon {
+  margin-right: 9px;
+}
+
+.import-wallet .input-field .error-message {
+  height: 165px;
+  margin: auto;
+  margin-top: 20px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.import-wallet .seed-phrase-button:disabled {
+  cursor: not-allowed;
 }
