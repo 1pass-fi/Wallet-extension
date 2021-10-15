@@ -413,12 +413,12 @@ export default ({ info, onClose, type }) => {
                 )}
 
                 {step == TRANSFER_STEPS.CONFIRM && (
-                  <div className='transfer-button' onClick={onConfirm} disabled={isBridging}>
+                  <button className='transfer-button' onClick={onConfirm} disabled={isBridging}>
                     {isBridging ? 
                       'Bridging your NFT...' : 
                       type === TYPE.ARWEAVE ? 'Confirm Transfer to AR' : 'Confirm Transfer to ETH'
                     }
-                  </div>
+                  </button>
                 )}
 
                 {/* {step == TRANSFER_STEPS.SUCCESS && (
