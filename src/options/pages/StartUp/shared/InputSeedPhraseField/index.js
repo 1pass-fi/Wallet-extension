@@ -112,6 +112,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
         if (!checkSeedPhraseInWordList(seedPhrase)) {
           setSeedPhraseError('That’s not a valid recovery word. Check the spelling and try again.')
         }
+        return
       }
 
       /*
