@@ -75,7 +75,7 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending, price, 
     }
 
     loadDisplayData()
-  }, [])
+  }, [expired])
 
   return (
     <div className="activity-row-container">
@@ -110,18 +110,18 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending, price, 
             - Pending: explore block (expect receving 404 on viewblock.io)
             Different text, do same thing.
           */}
-          <div className='activity-status completed'>
+          {!includes(activityName, 'Bridged') && <div className='activity-status completed'>
             <a target="_blank" href={`${PATH.VIEW_BLOCK_TRANSACTION}/${id}`}>
               {get(displayInfo, 'blockButtonText')}
             </a>
-          </div>
+          </div>}
 
           {/* 
             pending status
             - Transaction pending: waiting for confirmation
             - Transaction expired: click to make an action - delete or resend
           */}
-          { pending && <div className={!expired ? 'activity-pending' : 'activity-pending expired'}>
+          {!includes(activityName, 'Bridged') && pending && <div className={!expired ? 'activity-pending' : 'activity-pending expired'}>
             {!expired ? 
               get(displayInfo, 'pendingOrExpired') : 
               <span data-tip="Take an action" onClick={() => handleExpiredAction({txId: id, address})}>

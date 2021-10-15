@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useState, useMemo } from 'react'
 import isEmpty from 'lodash/isEmpty'
+import ReactTooltip from 'react-tooltip'
 
 import CloseIcon from 'img/close-x-icon.svg'
 import GoBackIcon from 'img/goback-icon.svg'
@@ -203,7 +204,7 @@ export default ({ info, onClose, type }) => {
     } catch (error) {
       setIsBridging(false)
       console.log(error)
-      setError(error.message)
+      setError('Bridge NFT failed')
     }
   }
 
@@ -225,8 +226,12 @@ export default ({ info, onClose, type }) => {
         {console.log('TYPE', type)}
         {(locked === undefined && type === TYPE.ETHEREUM) ?
           <div className='unsupported-nft'>
-            Finnie currently does not support old NFTs. Please use the export function with new NFTs.
+            The Ethereum bridge does not currently support this NFT. Try the bridge with a <span
+              style={{textDecoration: 'underline'}} data-for='cannot-bridge' data-tip='created in October 2021 or later'>more recent NFT.
+            </span>
+            <ReactTooltip place='top' id='cannot-bridge' type="dark" effect="float"/>
           </div>
+          
           :
           <>
             {type === TYPE.ARWEAVE &&

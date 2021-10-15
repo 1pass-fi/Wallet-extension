@@ -135,15 +135,17 @@ export class EthereumMethod {
             retried: 1
           }
           pendingTransactions.unshift(bridgePending)
-          /* 
+          /*
            Set isBridging:true to asset
-         */
+          */
           assets = assets.map((nft) => {
             if (nft.txId === txId) nft.isBridging = true
             return nft
           })
           await this.#chrome.setAssets(assets)
           await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
+        } else {
+          return false
         }
 
         return true
@@ -154,10 +156,6 @@ export class EthereumMethod {
 
   async #bridgeEthtoAr({ txId: tokenId, toAddress, tokenAddress, tokenSchema }) {
     const { balance } = await this.getBalances()
-    console.log('Token schema', tokenSchema)
-    console.log('User balance', balance)
-    console.log('Recipient', toAddress)
-
     /* 
       Validations
     */
@@ -191,6 +189,7 @@ export class EthereumMethod {
       return true
     } catch (error) {
       console.log('======= Deposit error', error)
+      return false
     }
   }
 
@@ -271,7 +270,6 @@ export class EthereumMethod {
   }
 
   async getBridgeStatus(txId) {
-    // pooling
     const payload = {
       ethereumNFTId: txId,
       flow: BRIDGE_FLOW.ETH_TO_AR

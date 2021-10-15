@@ -597,7 +597,7 @@ export class ArweaveMethod {
   async transactionConfirmedStatus(id) {
     const response = await arweave.transactions.getStatus(id)
     const dropped = response.status === 404
-    const confirmed = !isEmpty(get(response, 'confirmed'))    
+    const confirmed = !isEmpty(get(response, 'confirmed'))
     return { dropped, confirmed }
   }
 
@@ -822,6 +822,7 @@ export class ArweaveMethod {
         pendingTransactions = pendingTransactions.map(transaction => {
           if (transaction.id === txId) {
             transaction.id = newTxId
+            transaction.expired = false
             if (transaction.retried !== undefined) transaction.retried = 0
             transaction.retried++
           }
