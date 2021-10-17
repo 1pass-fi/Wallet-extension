@@ -47,7 +47,7 @@ export class EthereumMethod {
       */
       const { data: ethContents } = await axios.get(`${path}/assets?owner=${this.eth.address}&order_direction=desc&offset=0&limit=50`)
       const ethAssets = get(ethContents, 'assets')
-      console.log('Fetched contents: ', ethAssets)
+      console.log('Fetched contents: ', ethAssets.length)
 
       /* 
         get nft list for this ETH address from Chrome storage

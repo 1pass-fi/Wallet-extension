@@ -606,7 +606,7 @@ export class ArweaveMethod {
       return await Promise.all(nftIds.map(async contentId => {
         try {
           const content = await this.koi.getNftState(contentId)
-          if (content.title) {
+          if (content.title || content.name) {
             if (!get(content, 'contentType')) {
               const response = await fetch(`${PATH.NFT_IMAGE}/${content.id}`)
               const blob = await response.blob()
@@ -624,7 +624,7 @@ export class ArweaveMethod {
             }
 
             return {
-              name: content.title,
+              name: content.title || content.name,
               isKoiWallet: content.ticker === 'KOINFT',
               earnedKoi: content.reward,
               txId: content.id,
