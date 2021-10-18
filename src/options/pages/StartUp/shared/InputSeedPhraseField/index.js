@@ -32,7 +32,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
   }, [userSeedPhrase])
 
   useEffect(() => {
-    if (showInput) inputRef.current.focus()
+    if (showInput) inputRef.current?.focus()
   }, [showInput])
 
   const addWord = (word) => {
@@ -179,7 +179,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
       <label className='label'>{label}</label>
       <div className='selected-words-wrapper' onClick={() => {
         setShowInput(true)
-        inputRef.current.focus()
+        inputRef.current?.focus()
       }}>
         <div className='selected-words'>
           {(!userSeedPhrase && !showInput) && <div className='seed-phrase-message'>
@@ -212,21 +212,23 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
           <SeedPhraseErrorIcon className='seed-phrase-error-icon' />
           {seedPhraseError}
         </div> :
-
-        <div className='unselected-words'>
-          {suggestWords.map((word) => (
-            <button
-              key={word}
-              className='word'
-              onClick={() => {
-                addWord(word)
-                inputRef.current.focus()
-              }}
-            >
-              {word}
-            </button>
-          ))}
-        </div>}
+        <div style={{height: '164px'}}>
+          <div className='unselected-words'>
+            {suggestWords.map((word) => (
+              <button
+                key={word}
+                className='word'
+                onClick={() => {
+                  addWord(word)
+                  inputRef.current.focus()
+                }}
+              >
+                {word}
+              </button>
+            ))}
+          </div>
+        </div>
+      }
     </div>
   )
 }

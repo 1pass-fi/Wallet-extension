@@ -48,7 +48,8 @@
 
 .import-wallet .input-field .selected-words-wrapper,
 .import-wallet .input-field .unselected-words {
-  height: 165px;
+  min-height: 61px;
+  max-height: 165px;
   display: flex;
   flex-wrap: wrap;
   overflow: scroll;

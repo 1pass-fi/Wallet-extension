@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useState, useMemo } from 'react'
 import isEmpty from 'lodash/isEmpty'
+import includes from 'lodash/includes'
 import ReactTooltip from 'react-tooltip'
 
 import CloseIcon from 'img/close-x-icon.svg'
