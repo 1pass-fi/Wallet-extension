@@ -251,7 +251,8 @@ export const ERROR_MESSAGE = {
   SEND_WITH_ETH: 'We currently only support Ethereum transfers on the Rinkeby network.',
   INVALID_TOKEN_SCHEMA: 'Invalid token schema. Please use nft with token schema of ERC1155 or ERC721',
   NOT_ENOUGH_ETH: `You don't have enough ETH.`,
-  EXPIRED_TRANSACTION_ACTION_ERROR: 'Something went wrong when trying to delete or resend your transaction'
+  EXPIRED_TRANSACTION_ACTION_ERROR: 'Something went wrong when trying to delete or resend your transaction',
+  BRIDGE_WITH_ETH_MAINNET: 'We currently only support Ethereum NFT bridging on the Rinkeby network.'
 }
 
 export const STORAGE = {
