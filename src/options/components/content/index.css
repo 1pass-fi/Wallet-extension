@@ -12,10 +12,10 @@
 
 .app .app-content .cards .small-cards {
   width: 100%;
-  gap: 10px 148px;
+  gap: 10px 157px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
 .app .app-content .title {
@@ -30,3 +30,10 @@
 }
 
 /* END CONTENT */
+
+
+@media only screen and (max-width: 1170px) {
+  .app .app-content .cards .small-cards {
+    justify-content: space-around;
+  }
+}

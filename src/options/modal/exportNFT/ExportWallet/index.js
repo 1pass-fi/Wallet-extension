@@ -435,14 +435,15 @@ export default ({ info, onClose, type }) => {
             </div>
 
           </>}
-        <div className='close-button' onClick={onClose}>
+        <div className='close-button' data-tip='Close' onClick={onClose}>
           <CloseIcon />
         </div>
 
-        <div className='goback-button' onClick={onGoBack}>
+        <div className='goback-button' data-tip='Back' onClick={onGoBack}>
           <GoBackIcon />
         </div>
       </div>
+      <ReactTooltip place='top' type='dark' effect='float' />
     </div>
   )
 }

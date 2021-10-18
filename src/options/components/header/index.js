@@ -6,7 +6,7 @@ import KoiIcon from 'img/finnie-koi-logo-white.svg'
 import ArUnit from 'img/ar-token.svg'
 import KoiUnit from 'img/koi-token.svg'
 import EthereumUnit from 'img/ethereum-logo.svg'
-import ReloadIcon from 'img/reload-icon.svg'
+import ReloadIcon from 'img/refresh-balance-icon.svg'
 
 import SearchBar from './SearchBar'
 import Loading from 'options/components/loading'
@@ -72,9 +72,10 @@ export default ({
                 <div>{formatNumber(totalAr, 6)}</div>
               </>
             )}
-            <div data-tip='Refresh Balance'>
-              <ReloadIcon onClick={handleLoadBalances} className='reload-icon' />
-            </div>
+
+          </div>
+          <div data-tip='Refresh Balance' className='reload-icon'>
+            <ReloadIcon onClick={handleLoadBalances}  />
           </div>
           {!totalKoi && !!(account.type == TYPE.ARWEAVE) && (
             <a

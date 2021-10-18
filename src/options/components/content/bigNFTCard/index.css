@@ -162,6 +162,7 @@
   padding: 4px 8px;
   text-decoration: none;
   text-align: center;
+  line-height: 14px;
 }
 
 .big-nft-card .info .external-links .external-link.disabled {
