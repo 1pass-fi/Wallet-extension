@@ -18,6 +18,8 @@ import { formatNumber, getDisplayAddress } from 'options/utils'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import './index.css'
+import { popupAccount } from 'services/account'
+import { ERROR_MESSAGE } from 'constants/koiConstants'
 
 const TRANSFER_STEPS = {
   INPUT_INFO: 1,
@@ -182,6 +184,19 @@ export default ({ info, onClose, type }) => {
   const onConfirm = async () => {
     try {
       setIsBridging(true)
+      /* 
+        Ethereum provider validation
+      */
+      const { address } = info
+      if (address) {
+        const account = await popupAccount.getAccount({ address })
+        const provider = await account.get.provider()
+        if (includes(provider, 'mainnet')) {
+          setError(ERROR_MESSAGE.BRIDGE_WITH_ETH_MAINNET)
+          setIsBridging(false)
+          return
+        }
+      }
       const result = await backgroundRequest.gallery.transferNFT({
         senderAddress: _ownerAddress,
         targetAddress: address,

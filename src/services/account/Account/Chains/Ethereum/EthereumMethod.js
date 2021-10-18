@@ -115,6 +115,10 @@ export class EthereumMethod {
     let pendingTransactions = await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION)
     let assets = await this.#chrome.getAssets()
     let success
+
+    const provider = this.eth.getCurrentNetWork()
+    if (includes(provider, 'mainnet')) return false
+
     switch (type) {
       case TYPE.ARWEAVE:
         success = await this.#bridgeEthtoAr({ txId, toAddress, tokenAddress, tokenSchema })
@@ -155,10 +159,12 @@ export class EthereumMethod {
   }
 
   async #bridgeEthtoAr({ txId: tokenId, toAddress, tokenAddress, tokenSchema }) {
+    console.log('BRIDGING...')
     const { balance } = await this.getBalances()
     /* 
       Validations
     */
+
     if (!includes(VALID_TOKEN_SCHEMA, tokenSchema)) throw new Error(ERROR_MESSAGE.INVALID_TOKEN_SCHEMA)
     if (balance < 0.00015) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_ETH)
 
