@@ -112,7 +112,7 @@ export class EthereumMethod {
 
   async nftBridge({ txId, toAddress, type = TYPE.ARWEAVE, tokenAddress, tokenSchema, accountName }) {
     let bridgePending
-    let pendingTransactions = await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION)
+    let pendingTransactions = await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION) || []
     let assets = await this.#chrome.getAssets()
     let success
 

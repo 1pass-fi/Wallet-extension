@@ -504,7 +504,7 @@ export class ArweaveMethod {
   async nftBridge({txId, toAddress, typeOfWallet: type, accountName}) {
     try {
       let bridgePending
-      let pendingTransactions = await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION)
+      let pendingTransactions = await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION) || []
       let assets = await this.#chrome.getAssets()
       let success
       switch (type) {

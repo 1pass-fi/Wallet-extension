@@ -188,15 +188,22 @@ export default ({ info, onClose, type }) => {
       /* 
         Ethereum provider validation
       */
-      const { address } = info
-      if (address) {
-        const account = await popupAccount.getAccount({ address })
-        const provider = await account.get.provider()
-        if (includes(provider, 'mainnet')) {
-          setError(ERROR_MESSAGE.BRIDGE_WITH_ETH_MAINNET)
-          setIsBridging(false)
-          return
+      try {
+        const { address: senderAddress } = info
+        let walletType = await popupAccount.getType(senderAddress)
+        if (senderAddress && walletType === TYPE.ETHEREUM) {
+          const account = await popupAccount.getAccount({ address: senderAddress })
+          const provider = await account.get.provider()
+          if (includes(provider, 'mainnet')) {
+            setError(ERROR_MESSAGE.BRIDGE_WITH_ETH_MAINNET)
+            setIsBridging(false)
+            return
+          }
         }
+
+      } catch (err) {
+        console.log('Validation error: ', err.message)
+        return
       }
       const result = await backgroundRequest.gallery.transferNFT({
         senderAddress: _ownerAddress,
@@ -219,7 +226,7 @@ export default ({ info, onClose, type }) => {
       setIsBridging(false)
     } catch (error) {
       setIsBridging(false)
-      console.log(error)
+      console.log('ERROR', error)
       setError('Bridge NFT failed')
     }
   }
@@ -239,7 +246,6 @@ export default ({ info, onClose, type }) => {
   return (
     <div className='transfer-wallet-modal-wrapper'>
       <div className='transfer-wallet-modal'>
-        {console.log('TYPE', type)}
         {(locked === undefined && type === TYPE.ETHEREUM) ?
           <div className='unsupported-nft'>
             The Ethereum bridge does not currently support this NFT. Try the bridge with a <span
