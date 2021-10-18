@@ -51,6 +51,20 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
     }
   }
 
+  /*
+   * When the input key is Backspace and the user's input is empty:
+   *  remove last item from selectWords list 
+   * - keyCode of 'Backspace': 8
+   */
+  const handleKeyDown = (e) => {
+    if(e.keyCode === 8 && isEmpty(inputWord)){
+      const newArr = [...selectedWords]
+      newArr.pop()
+      setSelectedWords(newArr)
+    }
+  }
+
+
   const seedPhraseArr = (inputField) => {
     const removedDoubleSpacePhrase = inputField.replace(/\s+/g, ' ')
     const seedPhrase = removedDoubleSpacePhrase?.trim()?.split(' ')
@@ -121,6 +135,20 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
        *  - else, clear suggestWords and show the spelling error
        */
       if (inputField?.endsWith(' ')) {
+        const suggestWordList = wordList.filter((word) => {
+          return word.startsWith(inputField?.trim())
+        })
+        /*
+         * If there is only one suggested word for the user's input: 
+         *  - When the user enters a space, this suggested word is automatically set to the selectWords list.
+         */
+        if (suggestWordList.length === 1) {
+          setSelectedWords([...selectedWords, suggestWordList[0]])
+          setInputWord('')
+          setSuggestWords([])
+          return
+        }
+
         if (checkSeedPhraseInWordList(seedPhrase)) {
           setSelectedWords([...selectedWords, seedPhrase])
           setInputWord('')
@@ -169,6 +197,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
           {(showInput || userSeedPhrase) && <input
             type={isShow ? 'text' : 'password'}
             value={inputWord}
+            onKeyDown={(e) => handleKeyDown(e)}
             onChange={(e) => updateSuggestWords(e.target.value)}
             className='inputSeedPhrase'
             ref={inputRef}
