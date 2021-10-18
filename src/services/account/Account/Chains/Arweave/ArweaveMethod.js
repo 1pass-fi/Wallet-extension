@@ -56,7 +56,7 @@ export class ArweaveMethod {
       })
       console.log('Fetched contents: ', myContent.length)
 
-      /* 
+      /*
         get nft list for this koi address from Chrome storage
       */
       const contentList = (await getChromeStorage(`${this.koi.address}_assets`))[`${this.koi.address}_assets`] || []
@@ -87,6 +87,9 @@ export class ArweaveMethod {
         return ALL_NFT_LOADED
       }
 
+      /* 
+        Array of new NFT with data filled
+      */
       const newContentList = await this.getNftData(newContents)
 
       const res = {
@@ -601,6 +604,9 @@ export class ArweaveMethod {
     return { dropped, confirmed }
   }
 
+  /* 
+    Get data for input nftIds
+  */
   async getNftData(nftIds, getBase64) {
     try {
       return await Promise.all(nftIds.map(async contentId => {
