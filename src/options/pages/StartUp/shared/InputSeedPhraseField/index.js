@@ -11,7 +11,7 @@ import isEmpty from 'lodash/isEmpty'
 const checkSeedPhraseInWordList = phrase => phrase.every(word => wordList.includes(word))
 
 export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError, setSeedPhraseError }) => {
-  const [isShow, setIsShow] = useState(false)
+  const [isShow, setIsShow] = useState(true)
   const [suggestWords, setSuggestWords] = useState([])
   const [selectedWords, setSelectedWords] = useState([])
   const [inputWord, setInputWord] = useState('')
@@ -102,11 +102,6 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
       setSuggestWords([])
       return
     }
-
-    /*
-     * When has input word from user, display the input field.
-     */
-    setIsShow(true)
 
     /*
      * check the number of words
@@ -223,7 +218,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
                   inputRef.current.focus()
                 }}
               >
-                {word}
+                {isShow && word}
               </button>
             ))}
           </div>

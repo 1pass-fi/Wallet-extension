@@ -48,6 +48,15 @@
 .import-wallet .seed-phrase-button {
   margin-top: 40px;
   background-color: #ffffff;
+  width: 249px;
+}
+
+.import-wallet .non-koii-phrase {
+  margin-top: 16px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
 }
 
 .import-wallet .import-key-button:disabled {
