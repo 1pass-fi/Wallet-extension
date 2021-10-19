@@ -57,7 +57,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
    * - keyCode of 'Backspace': 8
    */
   const handleKeyDown = (e) => {
-    if(e.keyCode === 8 && isEmpty(inputWord)){
+    if (e.keyCode === 8 && isEmpty(inputWord)) {
       const newArr = [...selectedWords]
       newArr.pop()
       setSelectedWords(newArr)
@@ -194,7 +194,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
               {isShow && word}
             </div>
           ))}
-          {(showInput || userSeedPhrase) && <input
+          {((showInput || userSeedPhrase) && selectedWords.length < 12) && <input
             type={isShow ? 'text' : 'password'}
             value={inputWord}
             onKeyDown={(e) => handleKeyDown(e)}
@@ -212,7 +212,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
           <SeedPhraseErrorIcon className='seed-phrase-error-icon' />
           {seedPhraseError}
         </div> :
-        <div style={{height: '164px'}}>
+        <div style={{ height: '164px' }}>
           <div className='unselected-words'>
             {suggestWords.map((word) => (
               <button
