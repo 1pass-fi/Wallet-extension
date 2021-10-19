@@ -2,13 +2,15 @@ import '@babel/polyfill'
 
 import { EventHandler } from 'services/request/src/backgroundConnect'
 import { contentBackgroundConnect as backgroundConnect } from 'services/request/contentScript'
-import { PORTS, MESSAGES } from 'constants/koiConstants'
+import { PORTS, MESSAGES, ALLOWED_ORIGIN } from 'constants/koiConstants'
 import { setChromeStorage } from 'utils'
-import { get } from 'lodash'
+import { get, includes } from 'lodash'
 
 import storage from 'services/storage'
 
-console.log('Finnie is ready to connect to the site.')
+if (includes(ALLOWED_ORIGIN, window.origin)) {
+  console.log('Finnie is ready to connect to the site.')
+}
 
 const messageTypes = [
   MESSAGES.GET_ADDRESS_SUCCESS,
