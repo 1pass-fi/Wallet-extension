@@ -114,4 +114,8 @@ export class WalletRequest extends Request {
   generateWallet(body) {
     return this.promise(MESSAGES.GENERATE_WALLET, body)
   }
+
+  handleExpiredTransaction(body) {
+    return this.promise(MESSAGES.HANDLE_EXPIRED_TRANSACTION, body)
+  }
 }

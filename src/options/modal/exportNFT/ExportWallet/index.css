@@ -27,6 +27,13 @@
   width: 690px;
 }
 
+.transfer-wallet-modal .unsupported-nft {
+  font-size: 18px;
+  margin: auto;
+  line-height: 32px;
+  text-align: center;
+}
+
 .transfer-wallet-modal .title {
   font-size: 24px;
   line-height: 32px;
@@ -97,6 +104,10 @@
   font-size: 24px;
   font-weight: 600;
   line-height: 30px;
+  width: 208px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .transfer-wallet-modal .content .left .views {
@@ -129,6 +140,10 @@
   width: 26px;
 }
 
+.transfer-wallet-modal .content .right .number-to-transfer .description {
+  text-align: left;
+}
+
 .transfer-wallet-modal .content .right .number-to-transfer.confirm {
   display: flex;
   font-size: 16px;
@@ -153,25 +168,16 @@
   z-index: 20;
 }
 
-.transfer-wallet-modal
-  .content
-  .right
-  .eth-address
-  .address-dropdown
-  .dropdown-button {
+.transfer-wallet-modal .content .right .eth-address .address-dropdown .dropdown-button {
   background: #171753;
   border: 1px solid #ffffff;
   cursor: pointer;
   height: 32px;
   width: 32px;
+
 }
 
-.transfer-wallet-modal
-  .content
-  .right
-  .eth-address
-  .address-dropdown
-  .dropdown-button:after {
+.transfer-wallet-modal .content .right .eth-address .address-dropdown .dropdown-button:after {
   border-bottom: 2px solid #ffffff;
   border-right: 2px solid #ffffff;
   content: ' ';
@@ -179,8 +185,8 @@
   height: 3px;
   padding: 3px;
   position: absolute;
-  right: 9px;
-  top: 7px;
+  right: 10px;
+  top: 8px;
   transform: rotate(45deg);
   width: 3px;
   width: 3px;
@@ -196,26 +202,18 @@
   font-size: 16px;
   height: 32px;
   line-height: 20px;
-  padding: 9px 0px 7px 30px;
+  padding: 9px 0px 14px 30px;
   width: 392px;
 }
 
-.transfer-wallet-modal
-  .content
-  .right
-  .number-to-transfer
-  input::-webkit-outer-spin-button,
+.transfer-wallet-modal .content .right .number-to-transfer input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-.transfer-wallet-modal
-  .content
-  .right
-  .number-to-transfer
-  input[type='number'] {
+.transfer-wallet-modal .content .right .number-to-transfer input[type='number'] {
   -moz-appearance: textfield;
 }
 
@@ -312,6 +310,10 @@ input::-webkit-inner-spin-button {
   text-align: center;
   user-select: none;
   width: 276px;
+}
+
+.transfer-wallet-modal .content .right .transfer-button:disabled {
+  cursor: wait;
 }
 
 .transfer-wallet-modal .content .right .transfer-button.success {

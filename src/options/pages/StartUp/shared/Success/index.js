@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
 
 import WarningIcon from 'img/startup/warning.svg'
@@ -15,6 +15,13 @@ export default () => {
   const [step, setStep] = useState(1)
   const { file, setFile } = useContext(GalleryContext)
   const history = useHistory()
+  const location = useLocation()
+
+  useEffect(() => {
+    if(!location.state){
+      history.push('/')
+    }
+  }, [])
 
   const openFaucet = () => {
     chrome.tabs.create({ url: 'https://koi.rocks/faucet' })

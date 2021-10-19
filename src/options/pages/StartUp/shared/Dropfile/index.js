@@ -13,7 +13,9 @@ import storage from 'services/storage'
 const DragActive = ({ description, Icon }) => {
   return (
     <div className='drag-active'>
-      {Icon ? <Icon /> : <ExportIcon className='export-icon' />}
+      <div className='export-icon'>
+        {Icon ? <Icon /> : <ExportIcon />}
+      </div>
       <div className='import-description'>{description}</div>
     </div>
   )

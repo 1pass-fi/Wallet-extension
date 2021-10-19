@@ -17,6 +17,7 @@ import ConfirmedAsset from './ConfirmedAsset'
 import Button from 'shared/button'
 import CheckBox from 'shared/checkbox'
 import ToggleButton from 'shared/ToggleButton'
+import ExpiredTxModal from 'popup/components/modals/expiredTxModal'
 
 // services
 import storage from 'services/storage'
@@ -50,7 +51,7 @@ export const ActivitiesList = ({ activities }) => {
   ))
 }
 
-export const PendingList = ({ transactions }) => {
+export const PendingList = ({ transactions, handleExpiredAction }) => {
   return transactions.map((transaction, index) => (
     <ActivityRow
       key={index}
@@ -61,6 +62,9 @@ export const PendingList = ({ transactions }) => {
       id={transaction.id}
       source={transaction.source}
       accountName={transaction.accountName}
+      expired={transaction.expired}
+      handleExpiredAction={handleExpiredAction}
+      address={transaction.address}
     />
   ))
 }
@@ -157,6 +161,15 @@ const Activities = ({
   const [showAllAccounts, setShowAllAccounts] = useState(settings.showAllAccounts)
   const [accountsToShow, setAccountsToShow] = useState(settings.accountsToShowOnActivities)
   const [selectAccountsCollapsed, setSelectAccountCollapsed] = useState(!isEmpty(settings.accountsToShowOnActivities))
+  const [deleteTransactionModalStatus, setDeleteTransactionModalStatus] = useState({
+    isShow: false,
+    txInfo: {},
+  })
+
+
+  const handleExpiredAction = (txInfo) => {
+    setDeleteTransactionModalStatus({isShow: true, txInfo})
+  }
 
   useEffect(() => {
     async function loadPendingTransactions() {
@@ -255,7 +268,7 @@ const Activities = ({
         ))}
       </div>}
       <ConfirmedAssetList transactions={notifications}/>
-      <PendingList transactions={pendingTransactions} />
+      <PendingList transactions={pendingTransactions} handleExpiredAction={handleExpiredAction}/>
       {!showAllAccounts && activities.map((activity, index) =>
         <div hidden={!accountsToShow.includes(activity.account.address)}>
           <Activity 
@@ -280,6 +293,19 @@ const Activities = ({
         </div>
       }
       <ReactTooltip place='top' type="dark" effect="float"/>
+      {
+        deleteTransactionModalStatus.isShow && (
+          <ExpiredTxModal
+            txInfo={deleteTransactionModalStatus.txInfo}
+            onClose={() => setDeleteTransactionModalStatus((prev) => ({
+              ...prev,
+              isShow: false,
+            }))}
+            setPendingTransactions={setPendingTransactions}
+            pendingTransactions={pendingTransactions}
+          />
+        )
+      }
     </div>
   )
 }

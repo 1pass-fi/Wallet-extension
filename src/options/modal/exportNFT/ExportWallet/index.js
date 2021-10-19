@@ -1,5 +1,7 @@
 import React, { useContext, useRef, useState, useMemo } from 'react'
 import isEmpty from 'lodash/isEmpty'
+import includes from 'lodash/includes'
+import ReactTooltip from 'react-tooltip'
 
 import CloseIcon from 'img/close-x-icon.svg'
 import GoBackIcon from 'img/goback-icon.svg'
@@ -17,18 +19,8 @@ import { formatNumber, getDisplayAddress } from 'options/utils'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import './index.css'
-
-const STEPS_CONTENT_ETH = [
-  'Deposit NFT to lock it in vault contract',
-  'Mint ETH NFT',
-  'Send NFT to ETH wallet',
-]
-
-const STEPS_CONTENT_AR = [
-  'Deposit NFT to lock it in vault contract',
-  'Mint AR NFT',
-  'Send NFT to AR wallet',
-]
+import { popupAccount } from 'services/account'
+import { ERROR_MESSAGE } from 'constants/koiConstants'
 
 const TRANSFER_STEPS = {
   INPUT_INFO: 1,
@@ -52,7 +44,7 @@ const DESCRIPTIONS_ETH = {
   1: (
     <div className='description'>
       This process takes usually around 10-15 minutes. With one click, the Koii
-      contract will complete the process below.&nbsp;
+      contract will move your NFT to Ethereum.&nbsp;
       <a href='#' className='link'>
         Learn more
       </a>
@@ -62,7 +54,7 @@ const DESCRIPTIONS_ETH = {
   2: (
     <div className='description'>
       This process takes usually around 10-15 minutes. With one click, the Koii
-      contract will complete the process below.&nbsp;
+      contract will move your NFT to Ethereum.&nbsp;
       <a href='#' className='link'>
         Learn more
       </a>
@@ -81,7 +73,7 @@ const DESCRIPTIONS_AR = {
   1: (
     <div className='description'>
       This process takes usually around 10-15 minutes. With one click, the Koii
-      contract will complete the process below.&nbsp;
+      contract will move your NFT to Arweave.&nbsp;
       <a href='#' className='link'>
         Learn more
       </a>
@@ -91,7 +83,7 @@ const DESCRIPTIONS_AR = {
   2: (
     <div className='description'>
       This process takes usually around 10-15 minutes. With one click, the Koii
-      contract will complete the process below.&nbsp;
+      contract will move your NFT to Arweave.&nbsp;
       <a href='#' className='link'>
         Learn more
       </a>
@@ -142,15 +134,16 @@ export default ({ info, onClose, type }) => {
   const [isShowDropdown, setIsShowDropdown] = useState(false)
   const [chosenAccount, setChosenAccount] = useState({})
   const [step, setStep] = useState(1)
+  const [isBridging, setIsBridging] = useState(false)
   const addressInputRef = useRef()
 
-  const { account, setError, wallets } = useContext(GalleryContext)
+  const { setCardInfos, setError, wallets } = useContext(GalleryContext)
 
   const accounts = useMemo(() => wallets, [wallets])
 
-  const totalTransfer = 12 // TODO this
+  const totalTransfer = 1 // TODO this
 
-  const { name, earnedKoi, totalViews, imageUrl, txId, address: _ownerAddress } = info
+  const { locked, name, earnedKoi, totalViews, imageUrl, txId, address: _ownerAddress, tokenAddress, tokenSchema } = info
 
   const onAddressInputChange = (e) => {
     // handle input and dropdown
@@ -182,7 +175,7 @@ export default ({ info, onClose, type }) => {
   const onOneClick = () => {
     if (isEmpty(chosenAccount) || isEmpty(chosenAccount.address)) {
       setError('Please select an address.')
-    } else if (!numberTransfer || numberTransfer == 0){
+    } else if (!numberTransfer || numberTransfer == 0) {
       setError('Please give a number of transfer')
     } else {
       setStep(step + 1)
@@ -191,16 +184,50 @@ export default ({ info, onClose, type }) => {
 
   const onConfirm = async () => {
     try {
+      setIsBridging(true)
+      /* 
+        Ethereum provider validation
+      */
+      try {
+        const { address: senderAddress } = info
+        let walletType = await popupAccount.getType(senderAddress)
+        if (senderAddress && walletType === TYPE.ETHEREUM) {
+          const account = await popupAccount.getAccount({ address: senderAddress })
+          const provider = await account.get.provider()
+          if (includes(provider, 'mainnet')) {
+            setError(ERROR_MESSAGE.BRIDGE_WITH_ETH_MAINNET)
+            setIsBridging(false)
+            return
+          }
+        }
+
+      } catch (err) {
+        console.log('Validation error: ', err.message)
+        return
+      }
       const result = await backgroundRequest.gallery.transferNFT({
-        senderAddress: _ownerAddress, 
-        targetAddress: chosenAccount.address, 
+        senderAddress: _ownerAddress,
+        targetAddress: address,
         txId: txId,
-        numOfTransfers: numberTransfer
+        numOfTransfers: numberTransfer,
+        tokenAddress,
+        tokenSchema
       })
-      setStep(step + 1)
+      /* 
+        manually update state
+      */
+      if (result) {
+        setCardInfos(prev => prev.map(nft => {
+          if (nft.txId === txId) nft.isBridging = true
+          return nft
+        }))
+        setStep(step + 1)
+      }
+      setIsBridging(false)
     } catch (error) {
-      console.log(error)
-      setError(error.message)
+      setIsBridging(false)
+      console.log('ERROR', error)
+      setError('Bridge NFT failed')
     }
   }
 
@@ -219,20 +246,30 @@ export default ({ info, onClose, type }) => {
   return (
     <div className='transfer-wallet-modal-wrapper'>
       <div className='transfer-wallet-modal'>
-        {type === TYPE.ARWEAVE &&
-        <>
-          {TITLES_AR[step]}
-          {DESCRIPTIONS_AR[step]}
-        </>  
-        }
-        {type === TYPE.ETHEREUM &&
-        <>
-          {TITLES_ETH[step]}
-          {DESCRIPTIONS_ETH[step]}
-        </>  
-        }
+        {(locked === undefined && type === TYPE.ETHEREUM) ?
+          <div className='unsupported-nft'>
+            The Ethereum bridge does not currently support this NFT. Try the bridge with a <span
+              style={{textDecoration: 'underline'}} data-for='cannot-bridge' data-tip='created in October 2021 or later'>more recent NFT.
+            </span>
+            <ReactTooltip place='top' id='cannot-bridge' type="dark" effect="float"/>
+          </div>
+          
+          :
+          <>
+            {type === TYPE.ARWEAVE &&
+              <>
+                {TITLES_AR[step]}
+                {DESCRIPTIONS_AR[step]}
+              </>
+            }
+            {type === TYPE.ETHEREUM &&
+              <>
+                {TITLES_ETH[step]}
+                {DESCRIPTIONS_ETH[step]}
+              </>
+            }
 
-        <div className='steps'>
+            {/* <div className='steps'>
           {type === TYPE.ARWEAVE &&
           <>
           {STEPS_CONTENT_AR.map((step, index) => (
@@ -251,180 +288,184 @@ export default ({ info, onClose, type }) => {
             </div>
           ))}
           </>}
-        </div>
+        </div> */}
 
-        <div className='content'>
-          <div className='left'>
-            <img className='nft-url' src={imageUrl} />
-            <div className='name'>{name}</div>
-            <div className='views'>{totalViews} views</div>
-            <div className='earned-koi'>
-              <FinnieIcon />
-              {formatNumber(earnedKoi)} KOII earned
-            </div>
-          </div>
+            <div className='content'>
+              <div className='left'>
+                <img className='nft-url' src={imageUrl} />
+                <div className='name'>{name}</div>
+                <div className='views'>{totalViews} views</div>
+                <div className='earned-koi'>
+                  <FinnieIcon />
+                  {formatNumber(earnedKoi)} KOII earned
+                </div>
+              </div>
 
-          <div className='right'>
-            {step == TRANSFER_STEPS.INPUT_INFO && (
-              <>
-                <div className='eth-address'>
-                  {type === TYPE.ETHEREUM && 
+              <div className='right'>
+                {step == TRANSFER_STEPS.INPUT_INFO && (
                   <>
-                    <label className='label'>ETH Address</label>
-                    <EthereumLogo className='input-logo' />
-                  </>}
-                  {type === TYPE.ARWEAVE && 
-                  <>
-                    <label className='label'>AR Address</label>
-                    <ArweaveLogo className='input-logo' />
-                  </>}
-                  <input
-                    ref={(ip) => (addressInputRef.current = ip)}
-                    value={address}
-                    onChange={onAddressInputChange}
-                    className='input'
-                    placeholder='select from connected wallets or enter a new address'
-                  />
-                  <div className='address-dropdown'>
-                    <div
-                      className='dropdown-button'
-                      onClick={() => setIsShowDropdown(true)}
-                    ></div>
-                    {isShowDropdown && (
-                      <AddressDropdown
-                        accounts={accounts}
-                        onChange={onAddressDropdownChange}
-                        type={type}
+                    <div className='eth-address'>
+                      {type === TYPE.ETHEREUM &&
+                        <>
+                          <label className='label'>ETH Address</label>
+                          <EthereumLogo className='input-logo' />
+                        </>}
+                      {type === TYPE.ARWEAVE &&
+                        <>
+                          <label className='label'>AR Address</label>
+                          <ArweaveLogo className='input-logo' />
+                        </>}
+                      <input
+                        ref={(ip) => (addressInputRef.current = ip)}
+                        value={address}
+                        onChange={onAddressInputChange}
+                        className='input'
+                        placeholder='select from connected wallets or enter a new address'
                       />
-                    )}
-                  </div>
-                </div>
-                <div className='number-to-transfer'>
-                  <div className='total-available'>
-                    total available:&nbsp; {totalTransfer}
-                  </div>
-                  <label className='label'>Number to transfer:</label>
-                  <StackIcon className='input-logo' />
-                  <input
-                    type='number'
-                    min={1}
-                    step={1}
-                    max={totalTransfer}
-                    value={numberTransfer}
-                    onChange={onNumberTransferChange}
-                    className='input'
-                  />
-                  <div className='description'>
-                    Many NFTs will only have 1 item minted. If this is the case
-                    for your transfer, this box will auto-fill.
-                  </div>
-                </div>
-              </>
-            )}
-
-            {step == TRANSFER_STEPS.CONFIRM && (
-              <>
-                <div className='send-to'>
-                  <div className='label'>Sending to:</div>
-                  <div className='account'>
-                    {type === TYPE.ARWEAVE && <ArweaveLogo className='account-logo' />}
-                    {type === TYPE.ETHEREUM && <EthereumLogo className='account-logo' />}
-                    <div className='info'>
-                      {chosenAccount.name && (
-                        <div className='name'>{chosenAccount.name}</div>
-                      )}
-                      <div className='address'>{chosenAccount.address}</div>
+                      <div className='address-dropdown'>
+                        <div
+                          className='dropdown-button'
+                          onClick={() => setIsShowDropdown(isShowDropdown => !isShowDropdown)}
+                        ></div>
+                        {isShowDropdown && (
+                          <AddressDropdown
+                            accounts={accounts}
+                            onChange={onAddressDropdownChange}
+                            type={type}
+                          />
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </div>
-
-                <div className='warning'>
-                  <WarningIcon className='warning-icon' />
-                  <div className='warning-text'>
-                    Make sure this is the correct address. Once sent, there is
-                    no way to undo the transaction.
-                  </div>
-                </div>
-
-                <div className='number-to-transfer confirm'>
-                  <div className='total-available'>
-                    total available:&nbsp; {totalTransfer}
-                  </div>
-                  <StackWhiteIcon className='logo' />
-                  <div>
-                    <span>Transfer</span> {numberTransfer} Edition
-                  </div>
-                </div>
-              </>
-            )}
-
-            {step == TRANSFER_STEPS.SUCCESS && (
-              <>
-                <div className='number-to-transfer success'>
-                  <div> {numberTransfer} Edition</div>
-                </div>
-
-                <div className='send-to'>
-                  <div className='account'>
-                    <div className='info'>
-                      {chosenAccount.name && (
-                        <div className='name'>{chosenAccount.name}</div>
-                      )}
-                      <div className='address'>{chosenAccount.address}</div>
+                    <div className='number-to-transfer'>
+                      <div className='total-available'>
+                        total available:&nbsp; {totalTransfer}
+                      </div>
+                      <label className='label'>Number to transfer:</label>
+                      <StackIcon className='input-logo' />
+                      <input
+                        type='number'
+                        min={1}
+                        step={1}
+                        max={totalTransfer}
+                        value={numberTransfer}
+                        onChange={onNumberTransferChange}
+                        disabled={true}
+                        className='input'
+                      />
+                      <div className='description'>
+                        Many NFTs will only have 1 item minted.
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </>
+                )}
 
-                <div className='transaction-pending'>transaction pending</div>
+                {step == TRANSFER_STEPS.CONFIRM && (
+                  <>
+                    <div className='send-to'>
+                      <div className='label'>Sending to:</div>
+                      <div className='account'>
+                        {type === TYPE.ARWEAVE && <ArweaveLogo className='account-logo' />}
+                        {type === TYPE.ETHEREUM && <EthereumLogo className='account-logo' />}
+                        <div className='info'>
+                          {chosenAccount.accountName && (
+                            <div className='name'>{chosenAccount.accountName}</div>
+                          )}
+                          <div className='address'>{chosenAccount.address}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className='warning'>
+                      <WarningIcon className='warning-icon' />
+                      <div className='warning-text'>
+                        Make sure this is the correct address. Once sent, there is
+                        no way to undo the transaction.
+                      </div>
+                    </div>
+
+                    <div className='number-to-transfer confirm'>
+                      <div className='total-available'>
+                        total available:&nbsp; {totalTransfer}
+                      </div>
+                      <StackWhiteIcon className='logo' />
+                      <div>
+                        <span>Transfer</span> {numberTransfer} Edition
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {step == TRANSFER_STEPS.SUCCESS && (
+                  <>
+                    <div className='number-to-transfer success'>
+                      <div> {numberTransfer} Edition</div>
+                    </div>
+
+                    <div className='send-to'>
+                      <div className='account'>
+                        <div className='info'>
+                          {chosenAccount.accountName && (
+                            <div className='name'>{chosenAccount.accountName}</div>
+                          )}
+                          <div className='address'>{chosenAccount.address}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className='transaction-pending'>transaction pending</div>
 
                 <div className='complete-tip'>
                   When complete, transactions will appear in the Activity tab in
                   the dropdown
                 </div>
               </>
-            )}
+                )}
 
-            {step != TRANSFER_STEPS.SUCCESS && (
-              <div className='estimate-cost'>
-                <div className='text'>Estimated costs:</div>
-                <div className='number'>
-                  <div className='koi-number'>415.29 KOII</div>
-                  {type === TYPE.ARWEAVE && <div className='ar-number'>0.00014 AR</div>}
-                  {type === TYPE.ETHEREUM && <div className='eth-number'>0.0000011 ETH</div>}
-                </div>
-              </div>
-            )}
+                {step != TRANSFER_STEPS.SUCCESS && (
+                  <div className='estimate-cost'>
+                    <div className='text'>Estimated costs:</div>
+                    <div className='number'>
+                      <div className='koi-number'>
+                        {type !== TYPE.ARWEAVE ? '10 KOII' : '0.00015 ETH'}
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-            {step == TRANSFER_STEPS.INPUT_INFO && (
-              <div className='transfer-button' onClick={onOneClick}>
-                {type === TYPE.ARWEAVE && 'One-Click Transfer to AR'}
-                {type === TYPE.ETHEREUM && 'One-Click Transfer to ETH'}
-              </div>
-            )}
+                {step == TRANSFER_STEPS.INPUT_INFO && (
+                  <div className='transfer-button' onClick={onOneClick}>
+                    {type === TYPE.ARWEAVE && 'One-Click Transfer to AR'}
+                    {type === TYPE.ETHEREUM && 'One-Click Transfer to ETH'}
+                  </div>
+                )}
 
-            {step == TRANSFER_STEPS.CONFIRM && (
-              <div className='transfer-button' onClick={onConfirm}>
-                {type === TYPE.ARWEAVE && 'Confirm Transfer to AR'}
-                {type === TYPE.ETHEREUM && 'Confirm Transfer to ETH'}
-              </div>
-            )}
+                {step == TRANSFER_STEPS.CONFIRM && (
+                  <button className='transfer-button' onClick={onConfirm} disabled={isBridging}>
+                    {isBridging ? 
+                      'Bridging your NFT...' : 
+                      type === TYPE.ARWEAVE ? 'Confirm Transfer to AR' : 'Confirm Transfer to ETH'
+                    }
+                  </button>
+                )}
 
-            {step == TRANSFER_STEPS.SUCCESS && (
+                {/* {step == TRANSFER_STEPS.SUCCESS && (
               <div className='transfer-button success' onClick={onSeeActivity}>
                 See My Activity
               </div>
-            )}
-          </div>
-        </div>
+            )} */}
+              </div>
+            </div>
 
-        <div className='close-button' onClick={onClose}>
+          </>}
+        <div className='close-button' data-tip='Close' onClick={onClose}>
           <CloseIcon />
         </div>
 
-        <div className='goback-button' onClick={onGoBack}>
+        <div className='goback-button' data-tip='Back' onClick={onGoBack}>
           <GoBackIcon />
         </div>
       </div>
+      <ReactTooltip place='top' type='dark' effect='float' />
     </div>
   )
 }

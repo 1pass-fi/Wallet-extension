@@ -120,7 +120,10 @@ export default () => {
       setImportedAddress(address)
       setNewAddress(address)
 
-      history.push('/success')
+      history.push({
+        pathname: '/success',
+        state: 'create-key-state'
+      })
     } catch (err) {
       console.log(err.message)
       setError(err.message)

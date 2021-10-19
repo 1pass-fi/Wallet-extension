@@ -6,7 +6,7 @@ import KoiIcon from 'img/finnie-koi-logo-white.svg'
 import ArUnit from 'img/ar-token.svg'
 import KoiUnit from 'img/koi-token.svg'
 import EthereumUnit from 'img/ethereum-logo.svg'
-import ReloadIcon from 'img/reload-icon.svg'
+import ReloadIcon from 'img/refresh-balance-icon.svg'
 
 import SearchBar from './SearchBar'
 import Loading from 'options/components/loading'
@@ -49,31 +49,36 @@ export default ({
       </div>
       <div className='header-center'>{pathname == '/' && <SearchBar />}</div>
       <div className='header-right'>
-        {isLoading && isWaitingAddNFT && (
-          <WaitingAddNFTMessage onClose={() => setIsWaitingAddNFT(false)} />
-        )}
-        {isLoading && <Loading />}
-        <div className='koi-info'>
-          <div className='total-koi'>
-            {account.type === TYPE.ARWEAVE && (
+        <div>
+          {isLoading && isWaitingAddNFT && (
+            <WaitingAddNFTMessage onClose={() => setIsWaitingAddNFT(false)} />
+          )}
+          {isLoading && <Loading />}
+        </div>
+        <div className='header-right-balances'>
+          <div className='koi-info'>
+            <div className='total-koi'>
+              {account.type === TYPE.ARWEAVE && (
               <>
                 <KoiUnit className='koi-unit' />
                 <div>{formatNumber(totalKoi)}</div>
               </>
-            )}
-            {account.type === TYPE.ARWEAVE ? (
+              )}
+              {account.type === TYPE.ARWEAVE ? (
               <>
                 <ArUnit className='koi-unit ar' />
                 <div>{formatNumber(totalAr, 6)}</div>
               </>
-            ) : (
+              ) : (
               <>
                 <EthereumUnit className='koi-unit' />
                 <div>{formatNumber(totalAr, 6)}</div>
               </>
-            )}
-            <div data-tip='Refresh Balance'>
-              <ReloadIcon onClick={handleLoadBalances} className='reload-icon' />
+              )}
+
+            </div>
+            <div data-tip='Refresh Balance' className='reload-icon'>
+              <ReloadIcon onClick={handleLoadBalances}  />
             </div>
           </div>
           {!totalKoi && !!(account.type == TYPE.ARWEAVE) && (
@@ -88,6 +93,7 @@ export default ({
             </a>
           )}
         </div>
+
         <ReactTooltip place='top' type="dark" effect="float"/>
       </div>
     </header>

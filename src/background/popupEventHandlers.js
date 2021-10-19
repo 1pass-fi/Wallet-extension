@@ -4,6 +4,8 @@ import passworder from 'browser-passworder'
 import moment from 'moment'
 import axios from 'axios'
 import differenceBy from 'lodash/differenceBy'
+import includes from 'lodash/includes'
+import { v4 as uuid } from 'uuid'
 
 import storage from 'services/storage'
 import { ArweaveAccount, EthereumAccount } from 'services/account/Account'
@@ -13,7 +15,7 @@ import { getImageDataForNFT, getProviderUrlFromName } from 'utils'
 
 import { backgroundAccount } from 'services/account'
 
-import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
+import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS, MAX_RETRIED } from 'constants/koiConstants'
 
 import { popupPorts } from '.'
 
@@ -62,19 +64,68 @@ const reloadGallery = () => {
 }
 
 export const updatePendingTransactions = async () => {
+  /* 
+    Get all exist accounts
+  */
   const allAccounts = await backgroundAccount.getAllAccounts()
   allAccounts.forEach(async account => {
+    /* 
+      Get all pending transactions of each account
+    */
     let pendingTransactions = await account.get.pendingTransactions()
-    pendingTransactions = await Promise.all(pendingTransactions.map(async transaction => {
-      const confirmed = await account.method.transactionConfirmedStatus(transaction.id)
 
-      if (confirmed) {
-        console.log(`Transaction confirmed`, transaction)
-        showNotification({
-          title: `Transaction confirmed`,
-          message: `Your transaction ${transaction.activityName} has been confirmed`
-        })
-        return
+    /* 
+      Check for expired or confirmed.
+      Expired: dropped true
+      Confirmed: confirmed true
+    */
+    pendingTransactions = await Promise.all(pendingTransactions.map(async transaction => {
+      /* 
+        Don't need to check the status for expired transaction
+      */
+      if (!transaction.expired) {
+        const isNFT = includes(transaction.activityName, 'Minted NFT')
+        let status
+        if (includes(transaction.activityName, 'Bridged')) {
+          status = await account.method.getBridgeStatus(transaction.id)
+        } else {
+          status = await account.method.transactionConfirmedStatus(transaction.id)
+        }
+        const { dropped, confirmed } = status
+  
+        /* 
+          if retried <= MAX_RETRIED, silently resend transaction
+          if retried > MAX_RETRIED, notice user with an expired transaction
+        */
+        if (dropped) {
+          
+          if (transaction.retried < MAX_RETRIED ) {
+            return await account.method.resendTransaction(transaction.id)
+          } else {
+            if (transaction.expired !== true) {
+              transaction.expired = true
+              if (isNFT) {
+                // set expired true for the pending nft
+                let pendingAssets = await account.get.pendingAssets()
+                pendingAssets = pendingAssets.map(nft => {
+                  if (nft.txId === transaction.id) nft.expired = true
+                  return nft
+                })
+        
+                await account.set.pendingAssets(pendingAssets)
+              }
+            }
+          }
+        }
+  
+        if (confirmed) {
+          console.log('Transaction confirmed', transaction)
+          showNotification({
+            title: `Transaction confirmed`,
+            message: `Your transaction ${transaction.activityName} has been confirmed`
+          })
+          return
+        }
       }
       return transaction
     }))
@@ -105,48 +156,6 @@ export const loadBalances = async () => {
     console.error(error)
   }
 }
-
-/* 
-  Load state for pending transactions every 30 seconds
-*/
-export const loadTransactionState = async () => {
-  try {
-    const accounts = await backgroundAccount.getAllAccounts()
-    await Promise.all(accounts.map(async account => {
-      const pendingTransactions = await account.get.pendingTransactions() || []
-
-      pendingTransactions.forEach(async () => {
-        const confirmed = await arweaveConfirmStatus(transaction.id)
-
-        if (confirmed) {
-          chromeNotification({
-            title: `Transaction confirmed`,
-            message: `Your transaction [${transaction.activityName}] has been confirmed.`
-          })
-          let newTransactions = [...pendingTransactions]
-          newTransactions = newTransactions.filter(aTransaction => aTransaction.id !== transaction.id)
-          await account.set.pendingTransactions(newTransactions)
-
-          if (transaction.activityName.includes('Minted')) {
-            let activityNotifications = await storage.generic.get.activityNotifications() || []
-            const title = transaction.activityName.slice(transaction.activityName.indexOf(`"`))
-            const newNotification = {
-              id: transaction.id,
-              title,
-              date: transaction.date
-            }
-
-            activityNotifications = [...activityNotifications, newNotification]
-            await storage.generic.set.activityNotifications(activityNotifications)
-          }
-        }
-      })
-    }))
-  } catch (error) {
-    console.error(error)
-  }
-}
-
 
 /**
  * 
@@ -508,7 +517,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             expense: qty,
             accountName,
             date: moment().format('MMMM DD YYYY'),
-            source: target
+            source: target,
+            address,
+            retried: 0
           }
           pendingTransactions.unshift(newTransaction)
           // save pending transactions
@@ -675,6 +686,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           koi.address = address
           koi.wallet = key
 
+          // const result = { txId: uuid(), createdAt: 0 }
           const result = await exportNFTNew(koi, arweave, content, tags, fileType)
 
           const newPendingTransaction = {
@@ -682,7 +694,10 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             activityName: `Minted NFT "${content.title}"`,
             expense: price,
             accountName,
-            date: moment().format('MMMM DD YYYY')
+            date: moment().format('MMMM DD YYYY'),
+            address,
+            expired: false,
+            retried: 0
           }
 
           const pendingTransactions = await account.get.pendingTransactions() || []
@@ -703,6 +718,10 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           const pendingNFT = {
             name: content.title,
+            owner: content.owner,
+            description: content.description,
+            isNSFW: content.isNSFW,
+            tags: tags,
             isKoiWallet: true,
             earnedKoi: 0,
             txId: result.txId,
@@ -713,9 +732,10 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             contentType: fileType,
             totalViews: 0,
             createdAt,
-            description: content.description,
             pending: true,
-            type: TYPE.ARWEAVE
+            type: TYPE.ARWEAVE,
+            expired: false,
+            retried: 0
           }
 
           const allPendingAssets = await account.get.pendingAssets() || []
@@ -1066,13 +1086,22 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
       case MESSAGES.TRANSFER_NFT: {
         try {
-          const { senderAddress, targetAddress, txId, numOfTransfers } = message.data
+          const { senderAddress, targetAddress, txId, numOfTransfers, tokenAddress, tokenSchema } = message.data
 
           // get credentials of sender address
           const credentials = await backgroundAccount.getCredentialByAddress(senderAddress)
           const account = await backgroundAccount.getAccount(credentials)
           const typeOfWallet = await backgroundAccount.getType(targetAddress)
-          const result = await account.method.nftBridge(txId, targetAddress, typeOfWallet)
+          const accountName = await account.get.accountName()
+
+          const result = await account.method.nftBridge({ 
+            txId, 
+            toAddress: targetAddress, 
+            typeOfWallet, 
+            tokenAddress, 
+            tokenSchema, 
+            accountName
+          })
 
           if (result) {
             port.postMessage({
@@ -1117,6 +1146,46 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             type: MESSAGES.REAL_TRANSFER_NFT,
             error: `BACKGROUND ERROR: ${err.message}`,
             id: messageId
+          })
+        }
+        break
+      }
+
+      case MESSAGES.HANDLE_EXPIRED_TRANSACTION: {
+        try {
+          const { txId, address, wantToResend } = message.data
+
+          const credentials = await backgroundAccount.getCredentialByAddress(address)
+          const account = await backgroundAccount.getAccount(credentials)
+
+          if (wantToResend) {
+            const resentTransaction = await account.method.resendTransaction(txId)
+            let pendingTransactions = await account.get.pendingTransactions()
+            pendingTransactions = pendingTransactions.map(transaction => {
+              if (transaction.id === txId) return resentTransaction
+              return transaction
+            })
+            port.postMessage({
+              type: MESSAGES.HANDLE_EXPIRED_TRANSACTION,
+              data: resentTransaction.id,
+              id: messageId
+            })
+          } else {
+            let pendingTransactions = await account.get.pendingTransactions()
+            pendingTransactions = pendingTransactions.filter(transaction => {
+              return transaction.id  !== txId
+            })
+            await account.set.pendingTransactions(pendingTransactions)
+            port.postMessage({
+              type: MESSAGES.HANDLE_EXPIRED_TRANSACTION,
+              id: messageId
+            })
+          }
+        } catch (err) {
+          port.postMessage({
+            type: MESSAGES.HANDLE_EXPIRED_TRANSACTION,
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId            
           })
         }
         break

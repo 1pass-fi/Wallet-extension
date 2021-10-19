@@ -101,7 +101,7 @@ export class AccountGetter {
   }
 
   async pendingAssets() {
-    return await this.#accountStorage.getPendingAssets()
+    return await this.#accountStorage.getPendingAssets() || []
   }
 
   async metadata() {

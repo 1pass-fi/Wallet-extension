@@ -6,7 +6,7 @@ export default ({ stage }) => {
       <>
         <div className='description-title'>Create an Atomic NFT</div>
         <div className='description-detail'>
-          An Atomic NFT is store permanently on Arweave and earns attention rewards forever through Koi. 
+          An Atomic NFT is store permanently on Arweave and earns attention rewards forever through Koii. 
         </div>
       </>
     )

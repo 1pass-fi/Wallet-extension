@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import EthereumLogo from 'img/startup/ethereum-logo.svg'
@@ -14,12 +14,14 @@ import { GalleryContext } from 'options/galleryContext'
 import InputPassword from '../shared/InputPassword'
 import GoBackBtn from '../../../components/GoBackButton'
 import { SHOW_ETHEREUM } from 'constants/koiConstants'
+import HasTwelveSeedPhrase from 'options/modal/HasTwelveSeedPhrase'
 
 import isEmpty from 'lodash/isEmpty'
 
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import { TYPE } from 'constants/accountConstants'
+import wordList from 'utils/wordList.json'
 
 import './index.css'
 
@@ -27,12 +29,13 @@ export default () => {
   const [step, setStep] = useState(1)
   const [walletType, setWalletType] = useState(null)
   const [userSeedPhrase, setUserSeedPhrase] = useState('')
+  const [seedPhraseError, setSeedPhraseError] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [showFormError, setShowFormError] = useState(false)
   const history = useHistory()
 
-  const { setError, wallets, setImportedAddress, setNewAddress } =  useContext(GalleryContext)
+  const { setError, wallets, setImportedAddress, setNewAddress } = useContext(GalleryContext)
   let { selectedNetwork, EthereumNetworks } = useEthereumNetworks({
     title: () => <div className='title'>Import Ethereum Key</div>,
     description: () => <div className='description'>Choose your Network.</div>,
@@ -60,16 +63,36 @@ export default () => {
     }
   }
 
-  const trimmedPhrase = userSeedPhrase.replace(/\s+/g,' ').trim()
-  const isValidPhrase = trimmedPhrase.split(' ').length === 12
+  const [showHasTwelveSeedPhrase, setShowHasTwelveSeedPhrase] = useState(false)
 
-  const onImportKey = async () => {
-    if (!(password && userSeedPhrase) && isEmpty(wallets)) {
+  useEffect(() => {
+    if (showHasTwelveSeedPhrase) {
+      const timer = setTimeout(() => setShowHasTwelveSeedPhrase(false), 2500)
+      return () => clearTimeout(timer)
+    }
+  }, [showHasTwelveSeedPhrase])
+
+  const onImportSeedPhrase = async () => {
+    if (!userSeedPhrase && isEmpty(wallets)) {
       setShowFormError(true)
       return
     }
-    
-    if (!isValidPhrase) return
+
+    const hasTwelveWords = userSeedPhrase?.trim()?.split(' ').length === 12
+
+    if (!hasTwelveWords) {
+      setShowHasTwelveSeedPhrase(true)
+      return
+    }
+
+    nextStep()
+  }
+
+  const onImportKey = async () => {
+    if (!password && isEmpty(wallets)) {
+      setShowFormError(true)
+      return
+    }
 
     setIsLoading(true)
     try {
@@ -84,7 +107,10 @@ export default () => {
       setImportedAddress(address)
       setNewAddress(address)
 
-      history.push('/success')
+      history.push({
+        pathname: '/success',
+        state: 'import-key-state'
+      })
     } catch (err) {
       setError(err.message)
     }
@@ -136,7 +162,7 @@ export default () => {
 
           {step === 3 && (
             <>
-              <div className='title'>Get a new key</div>
+              <div className='title'>Import a wallet</div>
               <div className='description'>
                 Paste your seed phrase, then create a password for Finnie. Make
                 sure your password is unique and secure.
@@ -144,24 +170,41 @@ export default () => {
 
               <InputSeedPhraseField
                 label='12-word Recovery Phrase'
-                placeholder='Paste your recovery phrase here'
-                value={userSeedPhrase}
-                setValue={setUserSeedPhrase}
+                userSeedPhrase={userSeedPhrase}
+                setUserSeedPhrase={setUserSeedPhrase}
+                seedPhraseError={seedPhraseError}
+                setSeedPhraseError={setSeedPhraseError}
               />
-              {(userSeedPhrase && !isValidPhrase) && <div className="error-message">We don't recognize this recovery phrase. Please try entering it again.</div>}
-
-
-               {isEmpty(wallets) ? <div className='confirm-password-wrapper'>
-                 <ConfirmPassword setPassword={setPassword} showError={showFormError}/>
-               </div>
-                 :
-                 <div className='confirm-password-wrapper'>
-                   <InputPassword setPassword={setPassword} />
-                 </div>
-               }
 
               <Button
-                disabled={isEmpty(userSeedPhrase)}
+                disabled={isEmpty(userSeedPhrase) || !isEmpty(seedPhraseError)}
+                className='seed-phrase-button'
+                onClick={onImportSeedPhrase}
+              >
+                Continue
+              </Button>
+              {showHasTwelveSeedPhrase && <HasTwelveSeedPhrase />}
+            </>
+          )}
+
+          {step === 4 && (
+            <>
+              <div className='title'>Import a wallet</div>
+              <div className='description'>
+                Create a password for Finnie, so you have easy access to your new key. Make
+                sure your password is unique and secure.
+              </div>
+
+              {isEmpty(wallets) ? <div className='confirm-password-wrapper'>
+                <ConfirmPassword setPassword={setPassword} showError={showFormError} />
+              </div>
+                :
+                <div className='confirm-password-wrapper'>
+                  <InputPassword setPassword={setPassword} />
+                </div>
+              }
+
+              <Button
                 className='import-key-button'
                 onClick={onImportKey}
               >

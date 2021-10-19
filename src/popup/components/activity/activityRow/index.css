@@ -77,6 +77,13 @@
   color: #237b75;
 }
 
+.activity-pending.expired {
+  color: #ff4141;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .activity-info-row .activity-status.completed > a {
   text-decoration: none;
   font-size: 10px;

@@ -178,7 +178,8 @@ export const MESSAGES = {
   TRANSFER_NFT: 'TRANSFER_NFT',
   UPLOAD_NFT_SUCCESS: 'UPLOAD_NFT_SUCCESS',
   REAL_TRANSFER_NFT: 'REAL_TRANSFER_NFT',
-  RELOAD_GALLERY: 'RELOAD_GALLERY'
+  RELOAD_GALLERY: 'RELOAD_GALLERY',
+  HANDLE_EXPIRED_TRANSACTION: 'HANDLE_EXPIRED_TRANSACTION'
 }
 
 export const PATH = {
@@ -247,7 +248,11 @@ export const ERROR_MESSAGE = {
   CREATE_WALLET_FAILED: 'Create new wallet failed.',
   INVALID_JSON_KEY: 'Invalid JSON key. Please make sure that you chose a valid key.',
   SEND_ZERO_KOI: 'Whoops! Enter the amount of tokens you want to send.',
-  SEND_WITH_ETH: 'We currently only support Ethereum transfers on the Rinkeby network.'
+  SEND_WITH_ETH: 'We currently only support Ethereum transfers on the Rinkeby network.',
+  INVALID_TOKEN_SCHEMA: 'Invalid token schema. Please use nft with token schema of ERC1155 or ERC721',
+  NOT_ENOUGH_ETH: `You don't have enough ETH.`,
+  EXPIRED_TRANSACTION_ACTION_ERROR: 'Something went wrong when trying to delete or resend your transaction',
+  BRIDGE_WITH_ETH_MAINNET: 'We currently only support Ethereum NFT bridging on the Rinkeby network.'
 }
 
 export const STORAGE = {
@@ -301,7 +306,7 @@ export const STATEMENT = {
 }
 
 export const LOAD_BALANCES_TIME_INTERVAL = 300000
-export const LOAD_TRANSACTION_STATE_INTERVAL = 10000
+export const LOAD_TRANSACTION_STATE_INTERVAL = 120000
 
 export const NFT_BIT_DATA = 'NFT_BIT_DATA'
 
@@ -328,7 +333,13 @@ export const FILENAME = {
 }
 
 export const URL = {
-  TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf'
+  TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf',
+  GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchBridgeDetails'
+}
+
+export const BRIDGE_FLOW = {
+  AR_TO_ETH: 'ArweaveToEthereum', 
+  ETH_TO_AR: 'EthereumToArweave'
 }
 
 export const GALLERY_IMPORT_PATH = ['/welcome', '/upload-wallet', '/import-wallet', '/create-wallet']
@@ -367,3 +378,14 @@ export const STREAM = {
 }
 
 export const ATTENTION_CONTRACT = 'CdPAQNONoR83Shj3CbI_9seC-LqgI1oLaRJhSwP90-o'
+
+export const VALID_TOKEN_SCHEMA = ['ERC1155', 'ERC721']
+
+export const ACTIVITY_NAME = {
+  BRIDGE_AR_TO_ETH: 'Bridged NFT from Arweave to Ethereum',
+  BRIDGE_ETH_TO_AR: 'Bridged NFT from Ethereum to Arweave'
+}
+
+export const MAX_RETRIED = 1
+
+export const DELIGATED_OWNER = '6E4APc5fYbTrEsX3NFkDpxoI-eaChDmRu5nqNKOn37E'

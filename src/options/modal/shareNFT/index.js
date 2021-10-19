@@ -86,7 +86,7 @@ const ShareNFT = ({ txid }) => {
               />
             </div>
             <a
-              href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koi.rocks/content-detail/${txid}`}
+              href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koii.live/content-detail/${txid}`}
               title="Share by Email"
             >
               <EmailIcon />
