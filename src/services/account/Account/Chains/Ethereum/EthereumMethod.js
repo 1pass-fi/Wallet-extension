@@ -206,11 +206,10 @@ export class EthereumMethod {
 
   async getNftData(contents, getBase64) {
     try {
-      return await Promise.all(contents.map(async content => {
+      let fetchedNFTs = await Promise.all(contents.map(async content => {
         try {
-          if (content.image_url) {
+          if (content.image_url && content.name) {
             let imageUrl = content.image_url
-
             if (getBase64) {
               let u8 = Buffer.from((await axios.get(content.image_url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
               imageUrl = `data:image/jpeg;base64,${u8}`
@@ -231,7 +230,6 @@ export class EthereumMethod {
               imageUrl,
               galleryUrl: `${PATH.GALLERY}#/details/${content.token_id}`,
               koiRockUrl: `${PATH.KOI_ROCK}/${content.token_id}`,
-              // TODO handle this field later
               isRegistered: false,
               contentType: content.animation_url ? 'video' : 'image',
               totalViews: 0,
@@ -243,31 +241,18 @@ export class EthereumMethod {
               tokenSchema: content?.asset_contract?.schema_name // ERC compatiblility. eg: ERC1155,...
             }
           } else {
-            console.log('Failed load content: ', content)
-            return {
-              name: '...',
-              isKoiWallet: false,
-              txId: content.token_id,
-              imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
-              galleryUrl: `${PATH.GALLERY}#/details/${content.token_id}`,
-              koiRockUrl: `${PATH.KOI_ROCK}/${content.token_id}`,
-              isRegistered: false,
-              contentType: content.animation_url ? 'video' : 'image',
-              totalViews: 0,
-              createdAt: Date.parse(get(content, 'collection.created_date')) / 1000,
-              description: content.description,
-              type: TYPE.ETHEREUM,
-              address: this.eth.address
-            }
+            console.log('Not enough data NFT: ', content)
+            return null
           }
         } catch (err) {
-          console.log(err.message)
-          return {
-            isRegistered: false,
-            isKoiWallet: false
-          }
+          console.log('Failed loaded NFT: ', content)
+          return null
         }
       }))
+
+      // Filter failed load contents
+      fetchedNFTs = fetchedNFTs.filter(nft => !!nft)
+      return fetchedNFTs
 
     } catch (err) {
       console.log(err.message)
