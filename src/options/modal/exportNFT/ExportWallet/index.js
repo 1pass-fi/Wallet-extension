@@ -3,8 +3,7 @@ import isEmpty from 'lodash/isEmpty'
 import includes from 'lodash/includes'
 import ReactTooltip from 'react-tooltip'
 
-import CloseIcon from 'img/close-x-icon.svg'
-import GoBackIcon from 'img/goback-icon.svg'
+import GoBackIcon from 'img/goback-icon-26px.svg'
 import ArweaveLogo from 'img/arweave-icon.svg'
 import EthereumLogo from 'img/ethereum-logo-18.svg'
 import StackIcon from 'img/stack-icon.svg'
@@ -244,7 +243,7 @@ export default ({ info, onClose, type }) => {
   }
 
   return (
-    <div className='transfer-wallet-modal-wrapper'>
+    <>
       <div className='transfer-wallet-modal'>
         {(locked === undefined && type === TYPE.ETHEREUM) ?
           <div className='unsupported-nft'>
@@ -268,27 +267,6 @@ export default ({ info, onClose, type }) => {
                 {DESCRIPTIONS_ETH[step]}
               </>
             }
-
-            {/* <div className='steps'>
-          {type === TYPE.ARWEAVE &&
-          <>
-          {STEPS_CONTENT_AR.map((step, index) => (
-            <div className='step' key={step}>
-              <div className='number'>{index + 1}</div>
-              <div className='text'>{step}</div>
-            </div>
-          ))}
-          </>}
-          {type === TYPE.ETHEREUM &&
-          <>
-          {STEPS_CONTENT_ETH.map((step, index) => (
-            <div className='step' key={step}>
-              <div className='number'>{index + 1}</div>
-              <div className='text'>{step}</div>
-            </div>
-          ))}
-          </>}
-        </div> */}
 
             <div className='content'>
               <div className='left'>
@@ -455,17 +433,12 @@ export default ({ info, onClose, type }) => {
             )} */}
               </div>
             </div>
-
           </>}
-        <div className='close-button' data-tip='Close' onClick={onClose}>
-          <CloseIcon />
-        </div>
-
         <div className='goback-button' data-tip='Back' onClick={onGoBack}>
           <GoBackIcon />
         </div>
       </div>
       <ReactTooltip place='top' type='dark' effect='float' />
-    </div>
+    </>
   )
 }

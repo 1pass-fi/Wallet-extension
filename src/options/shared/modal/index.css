@@ -15,7 +15,7 @@
 .modal {
   margin: auto;
   min-width: 377px;
-  background-color: #0B0B3F;
+  background-color: #0b0b3f;
   border: 1px solid #ffffff;
   box-sizing: border-box;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
@@ -27,6 +27,7 @@
 }
 
 .modal-close-icon {
+  z-index: 22;
   position: absolute;
   right: 10px;
   top: 10px;

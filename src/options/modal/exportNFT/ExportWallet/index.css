@@ -8,21 +8,18 @@
   z-index: 5;
 }
 
-.transfer-wallet-modal-wrapper * {
+.transfer-wallet-modal * {
   box-sizing: border-box;
   color: #ffffff;
 }
 
 .transfer-wallet-modal {
   align-items: center;
-  background: linear-gradient(90deg, #030332 0%, #171753 100%);
-  border-radius: 2px;
-  border: 1px solid #ffffff;
   display: flex;
   flex-direction: column;
   height: 540px;
   justify-content: space-between;
-  padding: 27px 32px 35px;
+  padding: 16px 34px;
   position: relative;
   width: 690px;
 }
@@ -174,7 +171,6 @@
   cursor: pointer;
   height: 32px;
   width: 32px;
-
 }
 
 .transfer-wallet-modal .content .right .eth-address .address-dropdown .dropdown-button:after {
@@ -202,7 +198,7 @@
   font-size: 16px;
   height: 32px;
   line-height: 20px;
-  padding: 9px 0px 14px 30px;
+  padding: 9px 0px 8px 30px;
   width: 392px;
 }
 
@@ -335,18 +331,16 @@ input::-webkit-inner-spin-button {
   top: 22px;
 }
 
-.transfer-wallet-modal .close-button {
-  cursor: pointer;
-  position: absolute;
-  right: 7px;
-  top: 7px;
-}
-
 .transfer-wallet-modal .goback-button {
   cursor: pointer;
-  left: 7px;
+  left: 10px;
   position: absolute;
-  top: 7px;
+  top: 10px;
+  width: 37px;
+  height: 37px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Dropdown */
@@ -454,4 +448,12 @@ input::-webkit-inner-spin-button {
   width: 100%;
   font-size: 18px;
   line-height: 32px;
+}
+
+.transfer-wallet-modal .content .right .number-to-transfer .input-logo {
+  top: 25px;
+}
+
+.transfer-wallet-modal .content .right .eth-address input {
+  padding-bottom: 12px;
 }
