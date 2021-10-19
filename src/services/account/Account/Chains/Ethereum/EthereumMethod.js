@@ -190,7 +190,7 @@ export class EthereumMethod {
     try {
       const depositResult = await koiRouterContract.methods
         .deposit(tokenAddress, tokenId, 1, toAddress)
-        .send({ from: userAddress, value: web3.utils.toWei('0.00015', 'ether'), gasPrice: 1000000000, gasLimit: 100000 })
+        .send({ from: userAddress, value: web3.utils.toWei('0.00015', 'ether') })
       console.log('====== Deposit receipt ', depositResult)
       return true
     } catch (error) {
