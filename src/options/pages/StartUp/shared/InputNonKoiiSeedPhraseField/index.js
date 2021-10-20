@@ -7,7 +7,7 @@ import './index.css'
 export default ({ label = '', value, setValue, placeholder = '' }) => {
   const [isShow, setIsShow] = useState(false)
   return (
-    <div className='input-field'>
+    <div className='input-seedphrase-field'>
       <EyeIcon className='hide-icon' onClick={() => setIsShow(!isShow)} />
       <label className='label'>{label}</label>
       {!isShow ? <input

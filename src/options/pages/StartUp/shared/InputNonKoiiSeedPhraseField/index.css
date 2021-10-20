@@ -1,4 +1,4 @@
-.import-wallet .input-field {
+.import-wallet .input-seedphrase-field {
   display: flex;
   flex-direction: column;
   margin-top: 33px;
@@ -6,19 +6,19 @@
   height: 300px;
 }
 
-.import-wallet .input-field .hide-icon {
+.import-wallet .input-seedphrase-field .hide-icon {
   cursor: pointer;
   position: absolute;
   right: 5px;
   top: 22px;
 }
 
-.import-wallet .input-field .label {
+.import-wallet .input-seedphrase-field .label {
   font-size: 12px;
   line-height: 16px;
 }
 
-.import-wallet .input-field .input {
+.import-wallet .input-seedphrase-field .input {
   background: #171753;
   border-radius: 3px;
   border: 1.5px solid #ffffff;
@@ -31,14 +31,14 @@
   padding-right: 24px;
 }
 
-.import-wallet .input-field .input::placeholder {
+.import-wallet .input-seedphrase-field .input::placeholder {
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.01em;
   color: #5ed9d1;
 }
 
-.import-wallet .input-field .input.textarea {
+.import-wallet .input-seedphrase-field .input.textarea {
   height: 60px;
   resize: none;
 }

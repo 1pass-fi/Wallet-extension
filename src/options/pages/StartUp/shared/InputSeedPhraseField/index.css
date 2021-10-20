@@ -1,4 +1,4 @@
-.import-wallet .input-field {
+.import-wallet .input-seedphrase-field {
   display: flex;
   flex-direction: column;
   margin-top: 33px;
@@ -6,24 +6,24 @@
   height: 300px;
 }
 
-.import-wallet .input-field label {
+.import-wallet .input-seedphrase-field label {
   padding-left: 5px;
 }
 
-.import-wallet .input-field .hide-icon {
+.import-wallet .input-seedphrase-field .hide-icon {
   cursor: pointer;
   position: absolute;
   right: 10px;
   top: 22px;
 }
 
-.import-wallet .input-field .label {
+.import-wallet .input-seedphrase-field .label {
   font-size: 12px;
   line-height: 16px;
   user-select: none;
 }
 
-.import-wallet .input-field .inputSeedPhrase {
+.import-wallet .input-seedphrase-field .inputSeedPhrase {
   background: #171753;
   padding-right: 24px;
   border: none;
@@ -34,11 +34,11 @@
   text-overflow: clip;
 }
 
-.import-wallet .input-field .inputSeedPhrase:focus{
+.import-wallet .input-seedphrase-field .inputSeedPhrase:focus{
   outline: none;
 }
 
-.import-wallet .input-field .seed-phrase-message {
+.import-wallet .input-seedphrase-field .seed-phrase-message {
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.01em;
@@ -46,13 +46,13 @@
   /* color: #FFFFFF; */
 }
 
-/* .import-wallet .input-field .inputSeedPhrase.textarea {
+/* .import-wallet .input-seedphrase-field .inputSeedPhrase.textarea {
   height: 60px;
   resize: none;
 } */
 
-.import-wallet .input-field .selected-words-wrapper,
-.import-wallet .input-field .unselected-words {
+.import-wallet .input-seedphrase-field .selected-words-wrapper,
+.import-wallet .input-seedphrase-field .unselected-words {
   min-height: 61px;
   max-height: 165px;
   display: flex;
@@ -63,7 +63,7 @@
   overflow-x: hidden;
 }
 
-.import-wallet .input-field .selected-words-wrapper {
+.import-wallet .input-seedphrase-field .selected-words-wrapper {
   height: 120px;
   width: 505px;
   /* margin: 13px; */
@@ -94,7 +94,7 @@
   user-select: none;
 }
 
-.import-wallet .input-field .unselected-words {
+.import-wallet .input-seedphrase-field .unselected-words {
   width: 468px;
   justify-content: flex-start;
   column-gap: 20px;
@@ -102,18 +102,18 @@
   padding-left: 19px;
 }
 
-.import-wallet .input-field .selected-words {
+.import-wallet .input-seedphrase-field .selected-words {
   display: flex;
   flex-wrap: wrap;
 }
 
-.import-wallet .input-field .selected-words .word {
+.import-wallet .input-seedphrase-field .selected-words .word {
   margin-right: 20px;
   margin-bottom: 8px;
 }
 
 /* 
-.import-wallet .input-field .selected-words .word:nth-child(4n) {
+.import-wallet .input-seedphrase-field .selected-words .word:nth-child(4n) {
   margin-right: 0px;
 } */
 
@@ -121,7 +121,7 @@
   margin-right: 9px;
 }
 
-.import-wallet .input-field .error-message {
+.import-wallet .input-seedphrase-field .error-message {
   height: 165px;
   margin: auto;
   margin-top: 20px;

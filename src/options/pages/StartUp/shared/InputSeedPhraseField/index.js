@@ -169,7 +169,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
   }
 
   return (
-    <div className='input-field'>
+    <div className='input-seedphrase-field'>
       <EyeIcon className='hide-icon' onClick={() => setIsShow(!isShow)} />
       <label className='label'>{label}</label>
       <div className='selected-words-wrapper' onClick={() => {
