@@ -1,0 +1,67 @@
+.addressBookBtn {
+  box-sizing: border-box;
+  background-color: transparent;
+  border-radius: 2px;
+  border: 1px solid white;
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: -0.01em;
+
+  padding: 0px 15px;
+  height: 27px;
+
+  cursor: pointer;
+}
+
+.addressBookBtn:disabled {
+  cursor: not-allowed;
+}
+
+.addressBookBtn:active {
+  background-color: #22256b;
+}
+
+.addressBookBtn .startIcon {
+  width: 12.44px;
+  height: 12.32px;
+  margin-right: 6px;
+}
+
+.addressBookBtn.big {
+  width: 178px;
+  height: 41px;
+
+  font-size: 18px;
+  line-height: 23px;
+  letter-spacing: -0.01em;
+}
+.addressBookBtn.big .startIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.addressBookBtn.text-red {
+  border: 1px solid #ffa6a6;
+  color: #ffa6a6;
+}
+
+.addressBookBtn.text-red .startIcon {
+  filter: brightness(0) saturate(100%) invert(82%) sepia(66%) saturate(2091%) hue-rotate(297deg)
+    brightness(101%) contrast(133%);
+}
+
+.addressBookBtn.text-green {
+  border: 1px solid #9be7c4;
+  color: #9be7c4;
+}
+
+.addressBookBtn.text-green .startIcon {
+  filter: brightness(0) saturate(100%) invert(93%) sepia(16%) saturate(786%) hue-rotate(84deg)
+    brightness(96%) contrast(89%);
+}
