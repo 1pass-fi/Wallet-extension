@@ -226,7 +226,11 @@ export default ({ info, onClose, type }) => {
     } catch (error) {
       setIsBridging(false)
       console.log('ERROR', error)
-      setError('Bridge NFT failed')
+      if (error.message === ERROR_MESSAGE.NFT_NOT_EXIST_ON_CHAIN) {
+        setError (ERROR_MESSAGE.NFT_NOT_EXIST_ON_CHAIN)
+      } else {
+        setError(ERROR_MESSAGE.BRIDGE_NFT_FAILED)
+      }
     }
   }
 

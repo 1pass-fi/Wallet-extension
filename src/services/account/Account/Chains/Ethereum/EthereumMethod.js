@@ -6,7 +6,7 @@
 import { PATH, ALL_NFT_LOADED, ACTIVITY_NAME } from 'constants/koiConstants'
 import { ACCOUNT } from 'constants/accountConstants'
 import { getChromeStorage } from 'utils'
-import { get, includes } from 'lodash'
+import { get, includes, isNumber } from 'lodash'
 import moment from 'moment'
 
 import { TYPE } from 'constants/accountConstants'
@@ -118,43 +118,46 @@ export class EthereumMethod {
 
     const provider = this.eth.getCurrentNetWork()
     if (includes(provider, 'mainnet')) return false
-
-    switch (type) {
-      case TYPE.ARWEAVE:
-        success = await this.#bridgeEthtoAr({ txId, toAddress, tokenAddress, tokenSchema })
-        /* 
-          Create pending bridge
-        */
-        if (success) {
-          bridgePending = {
-            id: txId,
-            activityName: ACTIVITY_NAME.BRIDGE_ETH_TO_AR,
-            expense: 0,
-            accountName,
-            date: moment().format('MMMM DD YYYY'),
-            source: toAddress,
-            address: this.eth.address,
-            tokenAddress,
-            tokenSchema,
-            retried: 1
-          }
-          pendingTransactions.unshift(bridgePending)
-          /*
-           Set isBridging:true to asset
+    try {
+      switch (type) {
+        case TYPE.ARWEAVE:
+          success = await this.#bridgeEthtoAr({ txId, toAddress, tokenAddress, tokenSchema })
+          /* 
+            Create pending bridge
           */
-          assets = assets.map((nft) => {
-            if (nft.txId === txId) nft.isBridging = true
-            return nft
-          })
-          await this.#chrome.setAssets(assets)
-          await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
-        } else {
+          if (success) {
+            bridgePending = {
+              id: txId,
+              activityName: ACTIVITY_NAME.BRIDGE_ETH_TO_AR,
+              expense: 0,
+              accountName,
+              date: moment().format('MMMM DD YYYY'),
+              source: toAddress,
+              address: this.eth.address,
+              tokenAddress,
+              tokenSchema,
+              retried: 1
+            }
+            pendingTransactions.unshift(bridgePending)
+            /*
+             Set isBridging:true to asset
+            */
+            assets = assets.map((nft) => {
+              if (nft.txId === txId) nft.isBridging = true
+              return nft
+            })
+            await this.#chrome.setAssets(assets)
+            await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
+          } else {
+            return false
+          }
+  
+          return true
+        default:
           return false
-        }
-
-        return true
-      default:
-        return false
+      }
+    } catch (err) {
+      throw new Error(err.message)
     }
   }
 
@@ -176,6 +179,10 @@ export class EthereumMethod {
     const koiRouterContract = new web3.eth.Contract(koiRouterABI, KOI_ROUTER_CONTRACT)
     const tokenContract = new web3.eth.Contract(koiTokenABI, tokenAddress)
 
+    /* 
+      Check for approval
+      If not approved, setApprovalForAll()
+    */
     const isApproved = await tokenContract.methods
       .isApprovedForAll(userAddress, KOI_ROUTER_CONTRACT)
       .call()
@@ -185,6 +192,25 @@ export class EthereumMethod {
         .setApprovalForAll(KOI_ROUTER_CONTRACT, true)
         .send({ from: userAddress })
       console.log('Receipt set approval for all', res)
+    }
+
+    /* 
+      Check for total supply
+      Syed message from Discord:
+      "Basically opensea handles in such a way to avoid paying gases. It only mints the NFT when you transfer or sell your NFT else its just shown on the opensea ui indicating you as owner but on the ethereum chain there is not as such NFT which you own."
+    */
+    let totalSupply
+    try {
+      totalSupply = await tokenContract.methods.totalSupply(web3.utils.toBN(tokenAddress)).call()
+      if (!isNumber(totalSupply)) totalSupply = Number(totalSupply)
+    } catch (err) {
+      console.log('Get total supply error: ', err.message)
+    }
+
+    if (isNumber(totalSupply)) {
+      if (!(totalSupply > 0)) {
+        throw new Error(ERROR_MESSAGE.NFT_NOT_EXIST_ON_CHAIN)
+      }
     }
 
     try {
