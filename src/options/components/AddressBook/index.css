@@ -5,13 +5,20 @@
 .navbar-container .address-book-container {
   background-color: #55557f;
   height: 486px;
-  width: 238px;
-  left: 60px;
+
   position: fixed;
+  left: 60px;
   top: 50%;
   transform: translateY(-50%);
-  transition: left 0.5s;
+
   z-index: 10;
+  box-shadow: 3px 0px 10px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+}
+
+.navbar-container .address-book-container .address-book-contacts {
+  width: 238px;
 }
 
 .navbar-container .address-book-container input {
