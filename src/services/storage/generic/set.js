@@ -89,4 +89,12 @@ export class GenericSet {
   savedNFTForm(value) {
     return this.#chrome._setChrome(GENERIC.SAVED_NFT_FORM, value)
   }
+
+  /**
+   * 
+   * @param {Array} value [{user1}, {user2}]
+   */
+  addressBook(value) {
+    return this.#chrome._getChrome(GENERIC.ADDRESS_BOOK, value)
+  }
 }
