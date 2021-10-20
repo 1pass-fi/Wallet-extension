@@ -11,7 +11,7 @@ import isEmpty from 'lodash/isEmpty'
 const checkSeedPhraseInWordList = phrase => phrase.every(word => wordList.includes(word))
 
 export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError, setSeedPhraseError }) => {
-  const [isShow, setIsShow] = useState(false)
+  const [isShow, setIsShow] = useState(true)
   const [suggestWords, setSuggestWords] = useState([])
   const [selectedWords, setSelectedWords] = useState([])
   const [inputWord, setInputWord] = useState('')
@@ -57,7 +57,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
    * - keyCode of 'Backspace': 8
    */
   const handleKeyDown = (e) => {
-    if(e.keyCode === 8 && isEmpty(inputWord)){
+    if (e.keyCode === 8 && isEmpty(inputWord)) {
       const newArr = [...selectedWords]
       newArr.pop()
       setSelectedWords(newArr)
@@ -102,11 +102,6 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
       setSuggestWords([])
       return
     }
-
-    /*
-     * When has input word from user, display the input field.
-     */
-    setIsShow(true)
 
     /*
      * check the number of words
@@ -194,7 +189,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
               {isShow && word}
             </div>
           ))}
-          {(showInput || userSeedPhrase) && <input
+          {((showInput || userSeedPhrase) && selectedWords.length < 12) && <input
             type={isShow ? 'text' : 'password'}
             value={inputWord}
             onKeyDown={(e) => handleKeyDown(e)}
@@ -212,7 +207,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
           <SeedPhraseErrorIcon className='seed-phrase-error-icon' />
           {seedPhraseError}
         </div> :
-        <div style={{height: '164px'}}>
+        <div style={{ height: '164px' }}>
           <div className='unselected-words'>
             {suggestWords.map((word) => (
               <button
@@ -223,7 +218,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
                   inputRef.current.focus()
                 }}
               >
-                {word}
+                {isShow && word}
               </button>
             ))}
           </div>

@@ -7,6 +7,7 @@ import FinnieLogo from 'img/startup/finnie-logo.svg'
 import WalletType from '../shared/WalletType'
 import ConfirmPassword from '../shared/ConfirmPassword'
 import InputSeedPhraseField from '../shared/InputSeedPhraseField'
+import InputNonKoiiSeedPhraseField from '../shared/InputNonKoiiSeedPhraseField'
 import Button from '../shared/Button'
 import Loading from '../shared/Loading'
 import useEthereumNetworks from '../shared/useEthereumNetworks'
@@ -34,6 +35,7 @@ export default () => {
   const [isLoading, setIsLoading] = useState(false)
   const [showFormError, setShowFormError] = useState(false)
   const history = useHistory()
+  const [isKoiiPhrase, setIsKoiiPhrase] = useState(true)
 
   const { setError, wallets, setImportedAddress, setNewAddress } = useContext(GalleryContext)
   let { selectedNetwork, EthereumNetworks } = useEthereumNetworks({
@@ -167,14 +169,18 @@ export default () => {
                 Paste your seed phrase, then create a password for Finnie. Make
                 sure your password is unique and secure.
               </div>
-
-              <InputSeedPhraseField
+              {isKoiiPhrase ? <InputSeedPhraseField
                 label='12-word Recovery Phrase'
                 userSeedPhrase={userSeedPhrase}
                 setUserSeedPhrase={setUserSeedPhrase}
                 seedPhraseError={seedPhraseError}
                 setSeedPhraseError={setSeedPhraseError}
-              />
+              /> : <InputNonKoiiSeedPhraseField
+                label='Non-KOII Recovery Phrase'
+                value={userSeedPhrase}
+                setValue={setUserSeedPhrase}
+                placeholder='Paste your recovery phrase here'
+              />}
 
               <Button
                 disabled={isEmpty(userSeedPhrase) || !isEmpty(seedPhraseError)}
@@ -183,6 +189,15 @@ export default () => {
               >
                 Continue
               </Button>
+              <span
+                onClick={() => {
+                  setIsKoiiPhrase(!isKoiiPhrase)
+                  setUserSeedPhrase('')
+                }}
+                className='non-koii-phrase'
+              >
+                {isKoiiPhrase ? 'I have a non-Koii recovery phrase.' : 'I have a Koii recovery phrase.'}
+              </span>
               {showHasTwelveSeedPhrase && <HasTwelveSeedPhrase />}
             </>
           )}
