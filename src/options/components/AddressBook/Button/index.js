@@ -31,10 +31,10 @@ const Button = ({
   )
 }
 
-Button.PropTypes = {
+Button.propTypes = {
   startIcon: PropTypes.elementType,
   text: PropTypes.string.isRequired,
-  variant: PropTypes.oneOf('normal', 'delete', 'cancel').isRequired,
+  variant: PropTypes.oneOf(['normal', 'delete', 'cancel']).isRequired,
   isLoading: PropTypes.bool,
 }
 

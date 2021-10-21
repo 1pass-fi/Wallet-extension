@@ -10,11 +10,11 @@ import Button from '../Button'
 
 import './index.css'
 
-const CreateContactForm = () => {
+const CreateContactForm = ({ onClose }) => {
   return (
     <div className="ab-contact-form">
       <div className="ab-contact-form__body">
-        <div className="ab-close-icon">
+        <div className="ab-close-icon" onClick={onClose}>
           <CloseIcon />
         </div>
 
