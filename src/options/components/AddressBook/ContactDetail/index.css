@@ -1,0 +1,144 @@
+.ab-contact-detail {
+  width: 411px;
+  height: 486px;
+
+  background-color: #55557f;
+  box-shadow: inset 8px 0 10px -6px rgba(0, 0, 0, 0.16);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  padding: 11px 11px 0px 39px;
+  color: #ffffff;
+  overflow-y: scroll;
+}
+
+.ab-contact-detail .ab-contact-detail__header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.ab-contact-detail .startIcon {
+  height: 14.443427085876465px;
+  width: 12.4404296875px;
+}
+
+.ab-contact-detail .ab-contact-detail__avatar {
+  margin-bottom: 15px;
+}
+
+.ab-contact-detail .ab-contact-detail__name {
+  font-size: 25px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-align: center;
+
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ab-contact-detail__notes-label {
+  margin-top: 11px;
+  margin-bottom: 5px;
+  color: #9be7c4;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: justify;
+}
+
+.ab-contact-detail .ab-contact-detail__notes {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0em;
+  text-align: center;
+
+  height: 40px;
+  width: 100%;
+  overflow-y: scroll;
+  margin-bottom: 11px;
+}
+
+.ab-contact-detail .ab-contact-detail__address-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.ab-contact-detail .ab-contact-detail__address-group .ab-contact-detail__address-name {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #9be7c4;
+  /* align-self: flex-start; */
+  margin-bottom: 11px;
+}
+
+.ab-contact-detail .ab-contact-detail__address-group .ab-contact-detail__address-info {
+  display: flex;
+  width: 216px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ab-contact-detail .ab-contact-detail__address-value {
+  width: 153px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ab-contact-detail .ab-contact-detail__did-label {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #ffc78f;
+  align-self: flex-start;
+  margin-top: 20px;
+  margin-bottom: 11px;
+}
+
+.ab-contact-detail .ab-contact-detail__did-link {
+  /* width: 269px; */
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+  align-self: flex-start;
+
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ab-contact-detail .ab-trash-icon {
+  position: absolute;
+  bottom: 11px;
+  right: 11px;
+  width: 21px;
+  cursor: pointer;
+  height: 24px;
+}
+
+/* 
+  Icons resize
+*/
+.ab-contact-detail .ab-close-icon {
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+}
+
+.ab-contact-detail .ab-copy-icon {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) saturate(100%) invert(90%) sepia(19%) saturate(608%) hue-rotate(90deg)
+    brightness(96%) contrast(87%);
+}

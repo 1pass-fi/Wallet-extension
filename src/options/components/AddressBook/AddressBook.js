@@ -5,6 +5,7 @@ import AddIcon from 'img/navbar/create-nft.svg'
 
 import SearchBar from './SearchBar'
 import CreateContactForm from './CreateContactForm'
+import ContactDetail from './ContactDetail'
 import './index.css'
 
 import storage from 'services/storage'
@@ -12,6 +13,7 @@ import storage from 'services/storage'
 const AddressBook = () => {
   const [addresses, setAddresses] = useState([])
   const [showCreateForm, setShowCreateForm] = useState(false)
+  const [selectedContact, setSelectedContact] = useState({})
 
   useEffect(() => {
     const getStorageAddresses = async () => {
@@ -47,7 +49,11 @@ const AddressBook = () => {
             <div className="address-book__list__body__name">Empty address book!</div>
           ) : (
             addresses.map((add, idx) => (
-              <div className="address-book__list__body__name" key={`${add.name}-${idx}`}>
+              <div
+                onClick={() => setSelectedContact(add)}
+                className="address-book__list__body__name"
+                key={`${add.name}-${idx}`}
+              >
                 {add.name}
               </div>
             ))
@@ -59,6 +65,9 @@ const AddressBook = () => {
           storeNewAddress={storeNewAddress}
           onClose={() => setShowCreateForm(false)}
         />
+      )}
+      {!isEmpty(selectedContact) && (
+        <ContactDetail onClose={() => setSelectedContact({})} contact={selectedContact} />
       )}
     </div>
   )
