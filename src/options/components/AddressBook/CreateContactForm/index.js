@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import ReactTooltip from 'react-tooltip'
 
 import CloseIcon from 'img/ab-close-icon.svg'
 import CopyIcon from 'img/copy-icon.svg'
@@ -86,12 +88,16 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
                   onChange={(e) => handleUserAddressValueChange(idx, e)}
                   value={address.value}
                 />
-                <div className="ab-copy-icon">
-                  <CopyIcon />
+                <div className="ab-copy-icon" data-tip="Copy to clipboard">
+                  <CopyToClipboard text={address.value}>
+                    <CopyIcon />
+                  </CopyToClipboard>
                 </div>
               </div>
               <div
                 className="ab-trash-icon"
+                data-tip="Remove this address"
+                data-for="remove"
                 onClick={() => {
                   const newAddresses = [...userAddresses]
                   newAddresses.splice(idx, 1)
@@ -133,12 +139,9 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
                 value={userInfo.didValue}
                 onChange={handleUserInfoChange}
               />
-              <div className="ab-copy-icon">
+              <div className="ab-copy-icon" data-tip="Copy to clipboard">
                 <CopyIcon />
               </div>
-            </div>
-            <div className="ab-trash-icon">
-              <TrashIcon />
             </div>
           </div>
         </div>
@@ -151,6 +154,9 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
           variant="normal"
         />
       </div>
+
+      <ReactTooltip place="top" effect="float" />
+      <ReactTooltip id="remove" place="left" effect="float" />
     </div>
   )
 }
