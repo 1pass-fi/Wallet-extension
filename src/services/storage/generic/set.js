@@ -95,6 +95,6 @@ export class GenericSet {
    * @param {Array} value [{user1}, {user2}]
    */
   addressBook(value) {
-    return this.#chrome._getChrome(GENERIC.ADDRESS_BOOK, value)
+    return this.#chrome._setChrome(GENERIC.ADDRESS_BOOK, value)
   }
 }
