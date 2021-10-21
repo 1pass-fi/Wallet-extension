@@ -1,18 +1,23 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import ReactTooltip from 'react-tooltip'
+import isEmpty from 'lodash/isEmpty'
 
 import CloseIcon from 'img/ab-close-icon.svg'
 import CopyIcon from 'img/copy-icon.svg'
 import TrashIcon from 'img/trash-bin.svg'
 import AddIcon from 'img/navbar/create-nft.svg'
 import TickIcon from 'img/ab-circle-tick.svg'
+import Avatar from 'img/ab-avatar.png'
 
+import { GalleryContext } from 'options/galleryContext'
 import Button from '../Button'
 
 import './index.css'
 
 const CreateContactForm = ({ onClose, storeNewAddress }) => {
+  const { setNotification, setError } = useContext(GalleryContext)
+
   const [userInfo, setUserInfo] = useState({
     name: '',
     notes: '',
@@ -21,6 +26,28 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
   })
 
   const [userAddresses, setUserAddresses] = useState([{ name: '', value: '' }])
+
+  const clearForm = () => {
+    setUserInfo({
+      name: '',
+      notes: '',
+      didName: '',
+      didValue: '',
+    })
+
+    setUserAddresses([{ name: '', value: '' }])
+  }
+
+  const handleSubmit = async () => {
+    if (isEmpty(userInfo.name)) {
+      setError('Address must have name!')
+      return
+    }
+
+    await storeNewAddress({ ...userInfo, addresses: userAddresses })
+    setNotification('Successfully added address to address book!')
+    clearForm()
+  }
 
   const handleUserInfoChange = (e) => {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value })
@@ -47,11 +74,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
           <CloseIcon />
         </div>
 
-        <img
-          className="ab-contact-form__avatar"
-          src="https://i.pravatar.cc/300?img=3"
-          alt="avatar"
-        />
+        <img className="ab-contact-form__avatar" src={Avatar} alt="avatar" />
 
         <input
           className="ab-contact-form__name"
@@ -147,12 +170,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
         </div>
       </div>
       <div className="ab-contact-form__footer">
-        <Button
-          startIcon={TickIcon}
-          onClick={() => storeNewAddress({ ...userInfo, addresses: userAddresses })}
-          text="Save"
-          variant="normal"
-        />
+        <Button startIcon={TickIcon} onClick={handleSubmit} text="Save" variant="normal" />
       </div>
 
       <ReactTooltip place="top" effect="float" />
