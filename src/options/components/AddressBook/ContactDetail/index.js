@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import ReactTooltip from 'react-tooltip'
 
 import EditIcon from 'img/edit-icon-collection.svg'
 import CloseIcon from 'img/ab-close-icon.svg'
@@ -8,14 +9,17 @@ import Button from '../Button'
 import Avatar from 'img/ab-avatar.png'
 import CopyIcon from 'img/copy-icon.svg'
 import TrashIcon from 'img/trash-bin.svg'
+import ConfirmDeleteContactModal from '../ConfirmDeleteContactModal'
 
 import './index.css'
 
-const ContactDetail = ({ contact, onClose }) => {
+const ContactDetail = ({ contact, onClose, removeAddress, showEditForm }) => {
+  const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false)
+
   return (
     <div className="ab-contact-detail">
       <div className="ab-contact-detail__header">
-        <Button startIcon={EditIcon} text="Edit" variant="normal" />
+        <Button startIcon={EditIcon} onClick={showEditForm} text="Edit" variant="normal" />
         <div className="ab-close-icon" onClick={onClose}>
           <CloseIcon />
         </div>
@@ -56,10 +60,21 @@ const ContactDetail = ({ contact, onClose }) => {
         className="ab-trash-icon"
         data-tip="Remove this Contact"
         data-for="remove"
-        onClick={() => {}}
+        onClick={() => {
+          setShowConfirmDeleteModal(true)
+        }}
       >
         <TrashIcon />
       </div>
+      {showConfirmDeleteModal && (
+        <ConfirmDeleteContactModal
+          contact={contact}
+          removeAddress={removeAddress}
+          onClose={() => setShowConfirmDeleteModal(false)}
+        />
+      )}
+      <ReactTooltip place="top" effect="float" />
+      <ReactTooltip id="remove" place="left" effect="float" />
     </div>
   )
 }
