@@ -307,8 +307,9 @@ export const STATEMENT = {
   NO_REWARD: `You don't have any rewards available, share your code to get some!`,
 }
 
-export const LOAD_BALANCES_TIME_INTERVAL = 300000
+export const LOAD_BALANCES_TIME_INTERVAL = 300000 // for arweave
 export const LOAD_TRANSACTION_STATE_INTERVAL = 120000
+export const LOAD_ETH_BALANCES_TIME_INTERVAL = 3600000
 
 export const NFT_BIT_DATA = 'NFT_BIT_DATA'
 

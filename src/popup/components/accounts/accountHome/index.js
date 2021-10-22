@@ -34,8 +34,6 @@ export const AccountHome = ({ getBalances, accounts }) => {
   const history = useHistory()
 
   useEffect(() => {
-    getBalances()
-
     return history.listen((location) => {
       const openSendForm =
         new URLSearchParams(location.search).get('openSendForm') === 'true'

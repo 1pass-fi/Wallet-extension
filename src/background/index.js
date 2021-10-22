@@ -1,11 +1,12 @@
 import '@babel/polyfill'
 
-import { PORTS, LOAD_BALANCES_TIME_INTERVAL, LOAD_TRANSACTION_STATE_INTERVAL, OS, PATH } from 'constants/koiConstants'
+import { PORTS, LOAD_BALANCES_TIME_INTERVAL, LOAD_TRANSACTION_STATE_INTERVAL, OS, PATH, LOAD_ETH_BALANCES_TIME_INTERVAL } from 'constants/koiConstants'
 import { IMPORTED } from 'constants/accountConstants'
 import popUpEventHandlers, { loadBalances, updatePendingTransactions } from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from '@_koi/sdk/web'
 import { Ethereum } from './eth'
+import { TYPE } from 'constants/accountConstants'
 
 import { getChromeStorage } from 'utils'
 // import { Web } from './koiMock'
@@ -21,15 +22,21 @@ const sender = []
 
 export const popupPorts = []
 
-// Balances stream
+// AR balance stream
 setInterval(() => {
-  loadBalances()
+  loadBalances(TYPE.ARWEAVE)
 }, LOAD_BALANCES_TIME_INTERVAL)
+
+// ETH balance stream
+setInterval(() => {
+  loadBalances(TYPE.ETHEREUM)
+}, LOAD_ETH_BALANCES_TIME_INTERVAL)
 
 // Transaction stream
 setInterval(() => {
   updatePendingTransactions()
 }, LOAD_TRANSACTION_STATE_INTERVAL)
+
 
 function cb(port) {
   if ((port.name).includes(PORTS.POPUP)) {

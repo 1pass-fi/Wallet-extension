@@ -121,7 +121,7 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending, price, 
             - Transaction pending: waiting for confirmation
             - Transaction expired: click to make an action - delete or resend
           */}
-          {!includes(activityName, 'Bridged') && pending && <div className={!expired ? 'activity-pending' : 'activity-pending expired'}>
+          {pending && <div className={!expired ? 'activity-pending' : 'activity-pending expired'}>
             {!expired ? 
               get(displayInfo, 'pendingOrExpired') : 
               <span data-tip="Take an action" onClick={() => handleExpiredAction({txId: id, address})}>
