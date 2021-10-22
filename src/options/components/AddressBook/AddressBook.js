@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import isEmpty from 'lodash/isEmpty'
 
 import AddIcon from 'img/navbar/create-nft.svg'
@@ -13,12 +13,29 @@ import './index.css'
 import storage from 'services/storage'
 import { v4 as uuid } from 'uuid'
 
-const AddressBook = () => {
+const AddressBook = ({ onClose }) => {
   const [addresses, setAddresses] = useState([])
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [showEditForm, setShowEditForm] = useState(false)
   const [selectedContact, setSelectedContact] = useState({})
   const [showDeleteContactModal, setShowDeleteContactModal] = useState(false)
+
+  const ref = useRef(null)
+  const modalRef = useRef(null)
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && modalRef.current.contains(event.target)) {
+        return
+      } else if (ref.current && !ref.current.contains(event.target)) {
+        onClose()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [ref, modalRef])
 
   useEffect(() => {
     const getStorageAddresses = async () => {
@@ -39,7 +56,7 @@ const AddressBook = () => {
     setAddresses(currentAB)
   }
 
-  const removeAddress = async (toRemoveId) => {
+  const removeContact = async (toRemoveId) => {
     // get Address book value from storage instead of the state for data consistency
     let currentAB = (await storage.generic.get.addressBook()) || []
     currentAB = currentAB.filter((add) => add.id != toRemoveId)
@@ -53,9 +70,9 @@ const AddressBook = () => {
     // get Address book value from storage instead of the state for data consistency
     const currentAB = (await storage.generic.get.addressBook()) || []
 
-    for (let contact of currentAB) {
-      if (contact.id === address.id) {
-        contact = address
+    for (const i in currentAB) {
+      if (currentAB[i].id === address.id) {
+        currentAB[i] = address
         break
       }
     }
@@ -69,7 +86,7 @@ const AddressBook = () => {
 
   return (
     <>
-      <div className="address-book-container">
+      <div className="address-book-container" ref={ref}>
         <div className="address-book-contacts">
           <div className="address-book__list__header">
             <SearchBar />
@@ -132,7 +149,8 @@ const AddressBook = () => {
         <DeleteContactModal
           onClose={() => setShowDeleteContactModal(false)}
           contact={selectedContact}
-          removeAddress={removeAddress}
+          removeContact={removeContact}
+          ref={modalRef}
         />
       )}
     </>

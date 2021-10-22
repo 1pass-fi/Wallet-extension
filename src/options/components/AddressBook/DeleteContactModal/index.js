@@ -7,12 +7,12 @@ import TickIcon from 'img/ab-circle-tick.svg'
 
 import './index.css'
 
-const DeleteContactModal = ({ contact, onClose, removeAddress }) => {
-  const ref = useRef(null)
+const DeleteContactModal = React.forwardRef(({ contact, onClose, removeContact }, ref) => {
+  const innerRef = useRef(null)
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (innerRef.current && !innerRef.current.contains(event.target)) {
         onClose()
       }
     }
@@ -21,11 +21,11 @@ const DeleteContactModal = ({ contact, onClose, removeAddress }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [ref])
+  }, [innerRef])
 
   return (
-    <div className="address-book-modal-wrapper">
-      <div className="ab-confirm-delete-contact-modal" ref={ref}>
+    <div className="address-book-modal-wrapper" ref={ref}>
+      <div className="ab-confirm-delete-contact-modal" ref={innerRef}>
         <div data-tip="Close" data-for="close" className="ab-close-icon" onClick={onClose}>
           <CloseIcon />
         </div>
@@ -36,7 +36,7 @@ const DeleteContactModal = ({ contact, onClose, removeAddress }) => {
           <Button
             startIcon={TickIcon}
             onClick={() => {
-              removeAddress(contact.id)
+              removeContact(contact.id)
               onClose()
             }}
             text="Yes, Delete"
@@ -48,6 +48,6 @@ const DeleteContactModal = ({ contact, onClose, removeAddress }) => {
       <ReactTooltip id="close" />
     </div>
   )
-}
+})
 
 export default DeleteContactModal

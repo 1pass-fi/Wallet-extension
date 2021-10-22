@@ -120,7 +120,7 @@ export default () => {
       {pathname.includes('/settings') && !showAddressBook  && (
         <SlideNavbar isExpand={isExpandSubNavbar} />
       )}
-      {showAddressBook && <AddressBook />}
+      {showAddressBook && <AddressBook onClose={() => setShowAddressBook(false)}/>}
       <ReactTooltip place="top" type="dark" effect="float" />
     </div>
   )

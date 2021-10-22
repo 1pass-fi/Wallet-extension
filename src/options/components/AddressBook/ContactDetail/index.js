@@ -9,7 +9,6 @@ import Button from '../Button'
 import Avatar from 'img/ab-avatar.png'
 import CopyIcon from 'img/copy-icon.svg'
 import TrashIcon from 'img/trash-bin.svg'
-import ConfirmDeleteContactModal from '../ConfirmDeleteContactModal'
 
 import './index.css'
 

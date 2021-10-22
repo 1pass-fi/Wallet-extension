@@ -16,6 +16,7 @@
 }
 
 .ab-confirm-delete-contact-modal {
+  z-index: 21;
   box-sizing: border-box;
   width: 475px;
   height: 240px;
@@ -31,6 +32,7 @@
 }
 
 .ab-confirm-delete-contact-modal .ab-close-icon {
+  cursor: pointer;
   align-self: flex-end;
   width: 25px;
   height: 25px;
