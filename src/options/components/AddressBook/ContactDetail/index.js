@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import ReactTooltip from 'react-tooltip'
 
@@ -13,9 +13,7 @@ import ConfirmDeleteContactModal from '../ConfirmDeleteContactModal'
 
 import './index.css'
 
-const ContactDetail = ({ contact, onClose, removeAddress, showEditForm }) => {
-  const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false)
-
+const ContactDetail = ({ contact, onClose, showEditForm, setShowDeleteContactModal }) => {
   return (
     <div className="ab-contact-detail">
       <div className="ab-contact-detail__header">
@@ -61,18 +59,11 @@ const ContactDetail = ({ contact, onClose, removeAddress, showEditForm }) => {
         data-tip="Remove this Contact"
         data-for="remove"
         onClick={() => {
-          setShowConfirmDeleteModal(true)
+          setShowDeleteContactModal(true)
         }}
       >
         <TrashIcon />
       </div>
-      {showConfirmDeleteModal && (
-        <ConfirmDeleteContactModal
-          contact={contact}
-          removeAddress={removeAddress}
-          onClose={() => setShowConfirmDeleteModal(false)}
-        />
-      )}
       <ReactTooltip place="top" effect="float" />
       <ReactTooltip id="remove" place="left" effect="float" />
     </div>

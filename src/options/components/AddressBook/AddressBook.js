@@ -7,6 +7,7 @@ import SearchBar from './SearchBar'
 import CreateContactForm from './CreateContactForm'
 import ContactDetail from './ContactDetail'
 import EditContactForm from './EditContactForm'
+import DeleteContactModal from './DeleteContactModal'
 import './index.css'
 
 import storage from 'services/storage'
@@ -17,6 +18,7 @@ const AddressBook = () => {
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [showEditForm, setShowEditForm] = useState(false)
   const [selectedContact, setSelectedContact] = useState({})
+  const [showDeleteContactModal, setShowDeleteContactModal] = useState(false)
 
   useEffect(() => {
     const getStorageAddresses = async () => {
@@ -66,65 +68,74 @@ const AddressBook = () => {
   }
 
   return (
-    <div className="address-book-container">
-      <div className="address-book-contacts">
-        <div className="address-book__list__header">
-          <SearchBar />
-          <div
-            className="address-book-add-icon"
-            onClick={() => {
-              setShowCreateForm(true)
-              setShowEditForm(false)
-              setSelectedContact({})
-            }}
-          >
-            <AddIcon />
+    <>
+      <div className="address-book-container">
+        <div className="address-book-contacts">
+          <div className="address-book__list__header">
+            <SearchBar />
+            <div
+              className="address-book-add-icon"
+              onClick={() => {
+                setShowCreateForm(true)
+                setShowEditForm(false)
+                setSelectedContact({})
+              }}
+            >
+              <AddIcon />
+            </div>
+          </div>
+
+          <div className="address-book__list__body">
+            {isEmpty(addresses) ? (
+              <div className="address-book__list__body__name">Empty address book!</div>
+            ) : (
+              addresses.map((add) => (
+                <div
+                  onClick={() => {
+                    setSelectedContact(add)
+                    setShowCreateForm(false)
+                  }}
+                  className="address-book__list__body__name"
+                  key={add.id}
+                >
+                  {add.name}
+                </div>
+              ))
+            )}
           </div>
         </div>
-
-        <div className="address-book__list__body">
-          {isEmpty(addresses) ? (
-            <div className="address-book__list__body__name">Empty address book!</div>
-          ) : (
-            addresses.map((add) => (
-              <div
-                onClick={() => {
-                  setSelectedContact(add)
-                  setShowCreateForm(false)
-                }}
-                className="address-book__list__body__name"
-                key={add.id}
-              >
-                {add.name}
-              </div>
-            ))
-          )}
-        </div>
+        {showCreateForm && (
+          <CreateContactForm
+            storeNewAddress={storeNewAddress}
+            onClose={() => setShowCreateForm(false)}
+          />
+        )}
+        {!isEmpty(selectedContact) && !showEditForm && (
+          <ContactDetail
+            onClose={() => setSelectedContact({})}
+            contact={selectedContact}
+            setShowDeleteContactModal={setShowDeleteContactModal}
+            showEditForm={() => {
+              setShowEditForm(true)
+            }}
+          />
+        )}
+        {showEditForm && (
+          <EditContactForm
+            onClose={() => setShowEditForm(false)}
+            contact={selectedContact}
+            updateAddress={updateAddress}
+          />
+        )}
       </div>
-      {showCreateForm && (
-        <CreateContactForm
-          storeNewAddress={storeNewAddress}
-          onClose={() => setShowCreateForm(false)}
-        />
-      )}
-      {!isEmpty(selectedContact) && !showEditForm && (
-        <ContactDetail
-          onClose={() => setSelectedContact({})}
+      {showDeleteContactModal && (
+        <DeleteContactModal
+          onClose={() => setShowDeleteContactModal(false)}
           contact={selectedContact}
           removeAddress={removeAddress}
-          showEditForm={() => {
-            setShowEditForm(true)
-          }}
         />
       )}
-      {showEditForm && (
-        <EditContactForm
-          onClose={() => setShowEditForm(false)}
-          contact={selectedContact}
-          updateAddress={updateAddress}
-        />
-      )}
-    </div>
+    </>
   )
 }
 
