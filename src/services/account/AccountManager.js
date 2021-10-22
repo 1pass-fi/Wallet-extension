@@ -286,7 +286,7 @@ export class BackgroundAccountManager extends AccountManager {
       if (!find(importedWallets, v => v.address == address)) importedWallets.push({ address, encryptedKey, type })
       await this.storage._setChrome(chain, importedWallets) // save to wallets array
 
-      const newImported = { address, key }
+      const newImported = { address, key, type }
       this.addToImported(newImported)
     } catch (err) {
       console.log(err.message)

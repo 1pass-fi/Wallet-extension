@@ -137,15 +137,16 @@ export const updatePendingTransactions = async () => {
 
 
 /* 
-  Reload balances every 5 minutes
-  Subtract balances by pending transaction expenses
+  Reload arweave balances every 5 minutes
+  Reload ethereum balance every 1 hour
+  (setInterval on ../index.js)
 */
-export const loadBalances = async () => {
+export const loadBalances = async (type) => {
   try {
-    const accounts = await backgroundAccount.getAllAccounts()
+    const accounts = await backgroundAccount.getAllAccounts(type) // !type will return accounts of all types.
     await Promise.all(accounts.map(async account => {
       let { balance, koiBalance } = await account.method.getBalances()
-
+      console.log(`Load ${type ? type : ''} balance for: `, await account.get.accountName())
       await account.set.balance(balance)
       await account.set.koiBalance(koiBalance)
     }))
@@ -291,7 +292,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         break
       }
       case MESSAGES.GET_BALANCES: {
-        loadBalances(koi, port)
+        loadBalances(TYPE.ARWEAVE)
         break
       }
 
