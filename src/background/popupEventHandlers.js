@@ -5,6 +5,7 @@ import moment from 'moment'
 import axios from 'axios'
 import differenceBy from 'lodash/differenceBy'
 import includes from 'lodash/includes'
+import orderBy from 'lodash/orderBy'
 import { v4 as uuid } from 'uuid'
 
 import storage from 'services/storage'
@@ -135,6 +136,29 @@ export const updatePendingTransactions = async () => {
   })
 }
 
+export const reloadArweaveActivities = async () => {
+  const arweaveAccount = await backgroundAccount.getAllAccounts(TYPE.ARWEAVE)
+  let allActivities = []
+
+  console.log('arweaveAccount', arweaveAccount)
+
+  await Promise.all(arweaveAccount.map(async account => {
+    await account.method.updateActivities()
+  }))
+
+  // UPDATE ALL ACTIVITIES ON STORAGE
+  for (let i = 0; i < arweaveAccount.length; i++) {
+    const activities = await arweaveAccount[i].get.activities()
+    allActivities = [...allActivities, ...activities]
+  }
+  allActivities = orderBy(allActivities, 'time', 'desc')
+  console.log('ACTIVITIES LOADED: ', allActivities.length)
+  await storage.generic.set.allActivities(allActivities)
+}
+
+export const reloadEthActivities = async () => {
+  const ethereumAccount = await backgroundAccount.getAllAccounts(TYPE.ETHEREUM)
+}
 
 /* 
   Reload arweave balances every 5 minutes
@@ -304,6 +328,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             Get balance for this account
           */
           loadBalances()
+          account.method.updateActivities()
 
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,

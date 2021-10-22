@@ -60,4 +60,12 @@ export class AccountStorageUtils extends ChromeStorage {
   async setPendingAssets(value) {
     await this._setChrome(`${this.#address}_pendingAssets`, value)
   }
+
+  async getActivities() {
+    return await this._getChrome(`${this.#address}_activities`) || []
+  }
+
+  async setActivities(value) {
+    await this._setChrome(`${this.#address}_activities`, value)
+  }
 }

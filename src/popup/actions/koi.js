@@ -1,5 +1,5 @@
 // modules
-import { get } from 'lodash'
+import { get, isNumber } from 'lodash'
 
 // actions
 import { setIsLoading } from './loading'
@@ -18,6 +18,7 @@ import { SET_KOI } from 'actions/types'
 import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect as backgroundConnect } from 'services/request/popup'
 import { popupAccount } from 'services/account'
 import { EventHandler as CreateEventHandler } from 'services/request/src/backgroundConnect'
+import storage from 'services/storage'
 
 export const getBalances = () => async (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
@@ -162,37 +163,78 @@ export const loadContent = () => async (dispatch) => {
 }
 
 export const loadActivities = (cursor, address) => async (dispatch, getState) => {
+  // cursor = { offset, limit, doneLoading }
   /*
     the sdk will require cursors for the next request if we want to receive next set of activities (pagination).
   */
   try {
-    let { activitiesList,
-      nextOwnedCursor: ownedCursor, 
-      nextRecipientCursor: recipientCursor } = await backgroundRequest.activities.loadActivities({ cursor, address })
+    let allActivities
+    let { offset, limit } = cursor
 
-    const account = await popupAccount.getAccount({ address })
-    const accountName = await account.get.accountName()
+    if (address === 'all') {
+      allActivities = await storage.generic.get.allActivities()
+    } else {
+      const account = await popupAccount.getAccount({ address })
+      allActivities = await account.get.activities()
+    }
 
-    activitiesList = activitiesList.map(activity => ({ ...activity, accountName }))
+    const activitiesList = allActivities.slice(offset, offset + limit - 1)
+    offset = offset + limit
 
-    const { activities } = getState()
-    const newActivities = activities.map(activity => {
-      if (get(activity, 'account.address') == address) {
-        activity.activityItems = [...activity.activityItems, ...activitiesList]
+    let { activities } = getState()
+
+    const newActivities = await Promise.all(activities.map(async activity => {
+      if (get(activity, 'account.address') === address) {
+        const activitiesItems = [...activity.activityItems ,...activitiesList]
+        activity.activityItems = activitiesItems
         const doneLoading = !activitiesList.length
-        activity.cursor = { ownedCursor, recipientCursor, doneLoading }
+        activity.cursor = { offset, limit, doneLoading }
       }
 
       return activity
-    })
+    }))
 
     console.log('New Activities: ', newActivities)
 
     dispatch(setActivities(newActivities))
   } catch (err) {
+    console.log('ERROR', err.message)
     dispatch(setError(err.message))
   }
 }
+// export const loadActivities = (cursor, address) => async (dispatch, getState) => {
+//   /*
+//     the sdk will require cursors for the next request if we want to receive next set of activities (pagination).
+//   */
+//   try {
+//     let { activitiesList,
+//       nextOwnedCursor: ownedCursor, 
+//       nextRecipientCursor: recipientCursor } = await backgroundRequest.activities.loadActivities({ cursor, address })
+
+//     const account = await popupAccount.getAccount({ address })
+//     const accountName = await account.get.accountName()
+
+//     activitiesList = activitiesList.map(activity => ({ ...activity, accountName }))
+
+//     const { activities } = getState()
+//     const newActivities = await Promise.all(activities.map(async activity => {
+//       if (get(activity, 'account.address') == address) {
+//         const activitiesItems = await account.get.activities()
+//         activity.activityItems = activitiesItems
+//         const doneLoading = !activitiesList.length
+//         activity.cursor = { ownedCursor, recipientCursor, doneLoading }
+//       }
+
+//       return activity
+//     }))
+
+//     console.log('New Activities: ', newActivities)
+
+//     dispatch(setActivities(newActivities))
+//   } catch (err) {
+//     dispatch(setError(err.message))
+//   }
+// }
 
 export const makeTransfer = (sender, qty, target, token) => async (dispatch) => {
   try {

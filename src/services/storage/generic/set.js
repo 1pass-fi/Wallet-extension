@@ -97,4 +97,8 @@ export class GenericSet {
   addressBook(value) {
     return this.#chrome._setChrome(GENERIC.ADDRESS_BOOK, value)
   }
+
+  allActivities(value) {
+    return this.#chrome._setChrome(GENERIC.ALL_ACTIVITIES, value)
+  }
 }

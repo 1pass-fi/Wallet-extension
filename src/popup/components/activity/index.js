@@ -13,7 +13,6 @@ import { setSettings } from 'actions/settings'
 
 // components
 import ActivityRow from './activityRow'
-import ConfirmedAsset from './ConfirmedAsset'
 import Button from 'shared/button'
 import CheckBox from 'shared/checkbox'
 import ToggleButton from 'shared/ToggleButton'
@@ -37,7 +36,7 @@ import { SHOW_ACTIVITIES_BY } from 'constants/storageConstants'
 import './index.css'
 
 
-export const ActivitiesList = ({ activities }) => {
+export const ActivitiesList = ({ activities = [] }) => {
   return activities.map((activity, index) => (
     <ActivityRow
       key={index}
@@ -69,38 +68,10 @@ export const PendingList = ({ transactions, handleExpiredAction }) => {
   ))
 }
 
-export const ConfirmedAssetList = ({ transactions }) => {
-  return transactions.map((transaction, index) => (
-    <ConfirmedAsset 
-      key={index}
-      title={transaction.title}
-      id={transaction.id}
-      date={transaction.date}
-    />
-  ))
-}
-
-export const PendingConfirmationList = ({ transactions }) => {
-  return transactions.map((transaction, index) => (
-    <ActivityRow
-      key={index}
-      activityName={transaction.activityName}
-      expense={transaction.expense}
-      date={transaction.date}
-      pendingConfirmation={true}
-      id={transaction.id}
-      source={transaction.source}
-      accountName={transaction.accountName}
-    />
-  ))
-}
-
 const AccountLabel = ({ accountName, collapsed, setCollapsed }) => {
   return (
     <div className="activity-account-label">
       <div className="text">{accountName}</div>
-      {/* {!collapsed && <div onClick={() => setCollapsed(!collapsed)} className="collapse-icon"><CollapseIcon /></div>}
-      {collapsed && <div onClick={() => setCollapsed(!collapsed)} className="collapse-icon"><ExtendIcon /></div>} */}
     </div>
   )
 }
@@ -117,18 +88,11 @@ const Activity = ({
 }) => {
   const [collapsed, setCollapsed] = useState(false)
 
-  // useEffect(() => {
-  //   async function handleLoadActivities() {
-  //     await loadActivities(cursor, account.address)
-  //   }
-  //   handleLoadActivities()
-  // }, [])
-
   const handleLoadMore = async () => await loadActivities(cursor, account.address)
 
   return (
     <div className={collapsed ? 'activity-container collapsed' : 'activity-container'}>
-      <AccountLabel collapsed={collapsed} setCollapsed={setCollapsed} accountName={account.accountName} />
+      {account.address !== 'all' && <AccountLabel collapsed={collapsed} setCollapsed={setCollapsed} accountName={account.accountName} />}
       <ActivitiesList activities={activityItems} />
       {!cursor.doneLoading && (
         <Button
@@ -220,12 +184,6 @@ const Activities = ({
     setShowActivitiesBy()
   }, [showAllAccounts])
 
-  const handleLoadAllActivities = () => {
-    activities.forEach(activity => {
-      loadActivities(activity.cursor, activity.account.address)
-    })
-  }
-
   const handleSelectAccount = async (e) => {
     let _accountToShows = [...accountsToShow]
     if (_accountToShows.includes(e.target.id)) {
@@ -237,6 +195,12 @@ const Activities = ({
     setSettings({ accountsToShowOnActivities: _accountToShows })
     setAccountsToShow(_accountToShows)
     await storage.setting.set.accountsToShowOnActivities(_accountToShows)
+  }
+
+  const handleLoadAllActivities = () => {
+    activities.forEach(activity => {
+      loadActivities(activity.cursor, activity.account.address)
+    })
   }
 
   return (
@@ -267,8 +231,9 @@ const Activities = ({
           </div>
         ))}
       </div>}
-      <ConfirmedAssetList transactions={notifications}/>
       <PendingList transactions={pendingTransactions} handleExpiredAction={handleExpiredAction}/>
+
+      {/* SHOW ACCOUNTS INDIVIDUALLY */}
       {!showAllAccounts && activities.map((activity, index) =>
         <div hidden={!accountsToShow.includes(activity.account.address)}>
           <Activity 
@@ -280,19 +245,20 @@ const Activities = ({
           />
         </div>
       )}
-      {showAllAccounts &&
-        <div className='all-activities'>
-          <ActivitiesList activities={allActivities}/>
-          <Button
-            className="load-more-btn"
-            type="outline"
-            onClick={handleLoadAllActivities}
-            label="See More Activity"
-          />
 
+      {/* SHOW ACTIVITIES OF ALL ACCOUNT */}
+      {showAllAccounts && activities.map((activity, index) =>
+        <div hidden={activity.account.address !== 'all'}>
+          <Activity 
+            key={index}
+            activityItems={activity.activityItems}
+            account={activity.account}
+            cursor={activity.cursor}
+            loadActivities={loadActivities}
+          />
         </div>
-      }
-      <ReactTooltip place='top' type="dark" effect="float"/>
+      )}
+
       {
         deleteTransactionModalStatus.isShow && (
           <ExpiredTxModal
@@ -306,6 +272,7 @@ const Activities = ({
           />
         )
       }
+      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }

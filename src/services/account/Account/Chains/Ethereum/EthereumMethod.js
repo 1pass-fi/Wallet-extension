@@ -92,7 +92,25 @@ export class EthereumMethod {
     }
   }
 
+  async updateActivites() {
+    const network = 'RINKEBY'
+    const walletAddress = this.eth.address
+    const offset = 0
+    const etherscanAPIKey = 'USBA7QPN747A6KGYFCSY42KZ1W9JGFI2YB'
+    let resp = await axios.get(`https://api${network == 'RINKEBY' ? '-rinkeby' : ''}.etherscan.io/api?module=account&action=txlist&address=${walletAddress}&startblock=0&endblock=99999999&page=1&offset=${offset}&sort=asc&apikey=${etherscanAPIKey}`)
+    console.log('ACTIVITY ETHEREUM', resp.data)
+
+    return { activitiesList: [] }
+  }
+
   async loadMyActivities() {
+    const network = 'RINKEBY'
+    const walletAddress = this.eth.address
+    const offset = 0
+    const etherscanAPIKey = 'USBA7QPN747A6KGYFCSY42KZ1W9JGFI2YB'
+    let resp = await axios.get(`https://api${network == 'RINKEBY' ? '-rinkeby' : ''}.etherscan.io/api?module=account&action=txlist&address=${walletAddress}&startblock=0&endblock=99999999&page=1&offset=${offset}&sort=asc&apikey=${etherscanAPIKey}`)
+    console.log('ACTIVITY ETHEREUM', resp.data)
+
     return { activitiesList: [] }
   }
 

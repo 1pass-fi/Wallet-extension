@@ -220,10 +220,18 @@ const Popup = ({
   const loadActivitiesBoilerplate = async () => {
     const activitiesPayloads = []
     const _accounts = await popupAccount.getAllMetadata() || []
-    console.log('_accounts', _accounts)
     _accounts.forEach(account => {
-      activitiesPayloads.push({ account, activityItems: [], cursor: { ownedCursor: null, recipientCursor: null, doneLoading: null } })
+      activitiesPayloads.push({ account, activityItems: [], cursor: { offset: 0, limit: 20, doneLoading: null } })
     })
+  
+    const allActivitiesPayload = {
+      account: { address: 'all' },
+      activityItems: [],
+      cursor: { offset: 0, limit: 20, doneLoading: null }
+    }
+
+    activitiesPayloads.push(allActivitiesPayload)
+
     if (isEmpty(activities)) setActivities(activitiesPayloads)
   }
   useEffect(() => {

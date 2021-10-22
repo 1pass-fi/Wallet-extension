@@ -308,8 +308,10 @@ export const STATEMENT = {
 }
 
 export const LOAD_BALANCES_TIME_INTERVAL = 300000 // for arweave
+export const LOAD_ETH_BALANCES_TIME_INTERVAL = 900000 // for ethereum
 export const LOAD_TRANSACTION_STATE_INTERVAL = 120000
-export const LOAD_ETH_BALANCES_TIME_INTERVAL = 900000
+export const RELOAD_ARWEAVE_ACTIVITIES = 20000
+export const RELOAD_ETHEREUM_ACTIVITIES = 108000000 // 3 hours
 
 export const NFT_BIT_DATA = 'NFT_BIT_DATA'
 
