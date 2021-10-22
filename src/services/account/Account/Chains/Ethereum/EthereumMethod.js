@@ -199,19 +199,20 @@ export class EthereumMethod {
       Syed message from Discord:
       "Basically opensea handles in such a way to avoid paying gases. It only mints the NFT when you transfer or sell your NFT else its just shown on the opensea ui indicating you as owner but on the ethereum chain there is not as such NFT which you own."
     */
-    let totalSupply
-    try {
-      totalSupply = await tokenContract.methods.totalSupply(web3.utils.toBN(tokenAddress)).call()
-      if (!isNumber(totalSupply)) totalSupply = Number(totalSupply)
-    } catch (err) {
-      console.log('Get total supply error: ', err.message)
-    }
+    // let totalSupply
+    // try {
+    //   totalSupply = await tokenContract.methods.totalSupply(web3.utils.toBN(tokenAddress)).call()
+    //   if (!isNumber(totalSupply)) totalSupply = Number(totalSupply)
+    //   console.log('Total Supply', totalSupply)
+    // } catch (err) {
+    //   console.log('Get total supply error: ', err.message)
+    // }
 
-    if (isNumber(totalSupply)) {
-      if (!(totalSupply > 0)) {
-        throw new Error(ERROR_MESSAGE.NFT_NOT_EXIST_ON_CHAIN)
-      }
-    }
+    // if (isNumber(totalSupply)) {
+    //   if (!(totalSupply > 0)) {
+    //     throw new Error(ERROR_MESSAGE.NFT_NOT_EXIST_ON_CHAIN)
+    //   }
+    // }
 
     try {
       const depositResult = await koiRouterContract.methods

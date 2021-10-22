@@ -81,7 +81,8 @@
 .transfer-wallet-modal .content .left {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 7px;
 }
 
 .transfer-wallet-modal .content .left .nft-url {

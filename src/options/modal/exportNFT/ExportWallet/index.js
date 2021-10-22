@@ -276,11 +276,11 @@ export default ({ info, onClose, type }) => {
               <div className='left'>
                 <img className='nft-url' src={imageUrl} />
                 <div className='name'>{name}</div>
-                <div className='views'>{totalViews} views</div>
-                <div className='earned-koi'>
+                {type === TYPE.ETHEREUM && <div className='views'>{totalViews} views</div>}
+                {type === TYPE.ETHEREUM && <div className='earned-koi'>
                   <FinnieIcon />
                   {formatNumber(earnedKoi)} KOII earned
-                </div>
+                </div>}
               </div>
 
               <div className='right'>
