@@ -1120,7 +1120,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         } catch (err) {
           port.postMessage({
             type: MESSAGES.TRANSFER_NFT,
-            error: `BACKGROUND ERROR: ${err.message}`,
+            error: err.message,
             id: messageId
           })
         }
