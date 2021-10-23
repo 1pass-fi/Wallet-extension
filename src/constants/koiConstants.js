@@ -348,10 +348,10 @@ export const BRIDGE_FLOW = {
 export const GALLERY_IMPORT_PATH = ['/welcome', '/upload-wallet', '/import-wallet', '/create-wallet']
 
 export const ETH_NETWORK_PROVIDER = {
-  MAINNET: 'https://mainnet.infura.io/v3/a14cb094aac040be922807d25abd33f1',
-  ROPSTEN: 'https://ropsten.infura.io/v3/a14cb094aac040be922807d25abd33f1',
-  KOVAN: 'https://kovan.infura.io/v3/a14cb094aac040be922807d25abd33f1',
-  RINKEBY: 'https://rinkeby.infura.io/v3/a14cb094aac040be922807d25abd33f1'
+  MAINNET: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
+  ROPSTEN: 'https://ropsten.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
+  KOVAN: 'https://kovan.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
+  RINKEBY: 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
 }
 
 export const ETH_NETWORK_NAME = {

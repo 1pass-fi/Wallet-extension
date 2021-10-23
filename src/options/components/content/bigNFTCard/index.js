@@ -260,7 +260,7 @@ export default ({
             />
             <a
               className={isDisableFeatures && 'disabled'}
-              href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koii.live/content-detail/${txId}`}
+              href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koii.live/${txId}.html`}
               title='Share by Email'
             >
               <EmailIcon className='social-icon' />

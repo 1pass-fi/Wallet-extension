@@ -92,7 +92,6 @@ const Popup = ({
       load for wallet state of lock or unlock
       load for all accounts
     */
-    getBalances()
     await popupAccount.loadImported()
     let accounts = await popupAccount.getAllMetadata()
 

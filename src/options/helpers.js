@@ -3,11 +3,11 @@ import { PATH } from 'constants/koiConstants'
 export const getShareUrl = (network, txid) => {
   switch (network) {
     case 'twitter':
-      return `${PATH.SHARE_TWITTER}?url=https%3A%2F%2Fkoi.rocks%2Fcontent-detail%2F${txid}&text=Check%20out%20my%20NFT%2C%20now%20stored%20on%20Koi%E2%80%94%20forever!`
+      return `${PATH.SHARE_TWITTER}?url=https%3A%2F%2Fkoii.live%2F${txid}%2Ehtml&text=Check%20out%20my%20NFT%2C%20now%20stored%20on%20Koii%E2%80%94%20forever!`
     case 'facebook':
-      return `${PATH.SHARE_FACEBOOK}?u=https%3A%2F%2Fkoi.rocks%2Fcontent-detail%2F${txid}&quote=Check%20out%20my%20NFT%2C%20now%20stored%20on%20Koi%E2%80%94%20forever!`
+      return `${PATH.SHARE_FACEBOOK}?u=https%3A%2F%2Fkoii.live%2F${txid}%2Ehtml&quote=Check%20out%20my%20NFT%2C%20now%20stored%20on%20Koii%E2%80%94%20forever!`
     case 'linkedin':
-      return `${PATH.SHARE_LINKEDIN}?url=https%3A%2F%2Fkoi.rocks%2Fcontent-detail%2F${txid}`
+      return `${PATH.SHARE_LINKEDIN}?url=https%3A%2F%2Fkoii.live%2F${txid}%2Ehtml`
   }
 }
 
