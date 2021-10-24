@@ -55,6 +55,7 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending, price, 
         if (!includes(activityName, 'Bridge')) {
           let sign = includes(activityName, 'Received') ? '+' : '-'
           let token = includes(activityName, 'KOII') ? 'KOII' : 'AR'
+          if (includes(activityName, 'ETH')) token = 'ETH'
   
           expenseText = `${expense !== null && expense > 0 ? sign : ''}${transactionAmountFormat(expense)} ${token}`
   
@@ -145,7 +146,7 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending, price, 
           {/* 
             to usd
           */}
-          { expense != null && 
+          { expense != null && !includes(activityName, 'ETH') &&
             <div hidden={activityName.includes('KOII')} className='activity-expense usd'>{get(displayInfo, 'toUsdText')}</div>
           } 
           {/* 

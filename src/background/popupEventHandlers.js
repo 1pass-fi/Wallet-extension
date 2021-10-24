@@ -292,7 +292,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         break
       }
       case MESSAGES.GET_BALANCES: {
-        loadBalances(TYPE.ARWEAVE)
+        loadBalances()
         break
       }
 
@@ -379,7 +379,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             case TYPE.ETHEREUM:
               walletObj = new Ethereum()
               seedPhrase = await EthereumAccount.utils.generateWallet(walletObj)
-              key = { key: walletObj.key } // key of eth wallet will be String
+              key = walletObj.key // key of eth wallet will be String
               address = walletObj.address
               walletObj.wallet = key
           }
@@ -503,7 +503,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         try {
           const { qty, target, token, address } = message.data
           const credentials = await backgroundAccount.getCredentialByAddress(address)
-          console.log('credentials', credentials)
           const account = await backgroundAccount.getAccount(credentials)
           const accountName = await account.get.accountName()
 

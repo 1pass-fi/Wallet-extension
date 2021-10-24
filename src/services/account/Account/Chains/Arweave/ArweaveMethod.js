@@ -507,6 +507,9 @@ export class ArweaveMethod {
       let pendingTransactions = await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION) || []
       let assets = await this.#chrome.getAssets()
       let success
+
+      if (!type) type = TYPE.ETHEREUM
+
       switch (type) {
         case TYPE.ETHEREUM:
           success = await this.#fromArweaveToEthereum({ txId, toAddress })
