@@ -15,6 +15,8 @@ import { v4 as uuid } from 'uuid'
 
 const AddressBook = ({ onClose }) => {
   const [addresses, setAddresses] = useState([])
+  const [filterAddresses, setFilterAddresses] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [showEditForm, setShowEditForm] = useState(false)
   const [selectedContact, setSelectedContact] = useState({})
@@ -45,6 +47,13 @@ const AddressBook = ({ onClose }) => {
 
     getStorageAddresses()
   }, [])
+
+  useEffect(() => {
+    const filterAddresses = addresses.filter((add) => {
+      return add.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    })
+    setFilterAddresses(filterAddresses)
+  }, [searchTerm, addresses])
 
   const storeNewAddress = async (newAddress) => {
     // get Address book value from storage instead of the state for data consistency
@@ -89,7 +98,7 @@ const AddressBook = ({ onClose }) => {
       <div className="address-book-container" ref={ref}>
         <div className="address-book-contacts">
           <div className="address-book__list__header">
-            <SearchBar />
+            <SearchBar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
             <div
               className="address-book-add-icon"
               onClick={() => {
@@ -106,7 +115,7 @@ const AddressBook = ({ onClose }) => {
             {isEmpty(addresses) ? (
               <div className="address-book__list__body__name">Empty address book!</div>
             ) : (
-              addresses.map((add) => (
+              filterAddresses.map((add) => (
                 <div
                   onClick={() => {
                     setSelectedContact(add)
