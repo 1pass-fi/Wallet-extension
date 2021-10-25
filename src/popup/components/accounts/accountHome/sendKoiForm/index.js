@@ -110,9 +110,9 @@ const SendKoiForm = ({
         const account = await popupAccount.getAccount({ address: selectedAccount.address })
         const provider = await account.get.provider()
         if (provider.includes('mainnet')) {
-          setError(ERROR_MESSAGE.SEND_WITH_ETH)
-          setIsLoading(false)
-          return
+          // setError(ERROR_MESSAGE.SEND_WITH_ETH)
+          // setIsLoading(false)
+          // return
         }
       }
       await makeTransfer(selectedAccount, Number(amount), recipient, selectedToken)

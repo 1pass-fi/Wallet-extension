@@ -172,6 +172,8 @@ export class EthereumMethod {
       }
     }
 
+    console.log('koiRouterContractAddress', koiRouterContractAddress)
+
     if (!koiRouterContractAddress) throw new Error('Something went wrong.')
 
     console.log('KOI ROUTER CONTRACT', koiRouterContractAddress)
