@@ -78,7 +78,6 @@ export default () => {
 
   const onImportSeedPhrase = async () => {
     if (isSeedPhrase) {
-      console.log({ userSeedPhrase })
       if (!userSeedPhrase && isEmpty(wallets)) {
         setShowFormError(true)
         return
@@ -89,12 +88,17 @@ export default () => {
         return
       }
     } else {
-      console.log({ privateKey })
+      const isPrivateKey = privateKey?.trim()?.split(' ').length === 1
+      if (!isPrivateKey) {
+        setShowHasTwelveSeedPhrase(true)
+        return
+      }
     }
     nextStep()
   }
 
   const onImportKey = async () => {
+    const keyImport = isSeedPhrase ? userSeedPhrase : privateKey
     if (!password && isEmpty(wallets)) {
       setShowFormError(true)
       return
@@ -105,7 +109,7 @@ export default () => {
       if (walletType === TYPE.ARWEAVE) selectedNetwork = null
 
       const address = await backgroundRequest.gallery.uploadJSONKeyFile({
-        key: userSeedPhrase,
+        key: keyImport,
         password,
         type: walletType,
         provider: selectedNetwork,
@@ -238,7 +242,7 @@ export default () => {
                     : 'I have a Koii recovery phrase.'}
                 </span>
               )}
-              {showHasTwelveSeedPhrase && <HasTwelveSeedPhrase />}
+              {showHasTwelveSeedPhrase && <HasTwelveSeedPhrase isSeedPhrase={isSeedPhrase} />}
             </>
           )}
 
