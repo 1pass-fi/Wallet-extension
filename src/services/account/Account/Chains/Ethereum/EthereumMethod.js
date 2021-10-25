@@ -10,7 +10,7 @@ import { get, includes, isNumber } from 'lodash'
 import moment from 'moment'
 
 import { TYPE } from 'constants/accountConstants'
-import { VALID_TOKEN_SCHEMA, ERROR_MESSAGE, URL, BRIDGE_FLOW } from 'constants/koiConstants'
+import { VALID_TOKEN_SCHEMA, ERROR_MESSAGE, URL, BRIDGE_FLOW, KOI_ROUTER_CONTRACT, ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 
 import axios from 'axios'
 
@@ -19,8 +19,6 @@ import Web3 from 'web3'
 import koiRouterABI from './abi/KoiRouter.json'
 import koiTokenABI from './abi/KoiToken.json'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
-
-const KOI_ROUTER_CONTRACT = '0x8ce759A419aC0fE872e93C698F6e352246FDb50B'
 
 export class EthereumMethod {
   #chrome
@@ -116,8 +114,6 @@ export class EthereumMethod {
     let assets = await this.#chrome.getAssets()
     let success
 
-    const provider = this.eth.getCurrentNetWork()
-    if (includes(provider, 'mainnet')) return false
     try {
       switch (type) {
         case TYPE.ARWEAVE:
@@ -162,12 +158,29 @@ export class EthereumMethod {
   }
 
   async #bridgeEthtoAr({ txId: tokenId, toAddress, tokenAddress, tokenSchema }) {
+    if (!this.eth.provider) throw new Error('Something went wrong.')
+    let koiRouterContractAddress = null
+
+    switch (this.eth.provider) {
+      case ETH_NETWORK_PROVIDER.MAINNET: {
+        koiRouterContractAddress = KOI_ROUTER_CONTRACT.MAINNET
+        break
+      }
+
+      case ETH_NETWORK_PROVIDER.RINKEBY: {
+        koiRouterContractAddress = KOI_ROUTER_CONTRACT.RINKEBY
+      }
+    }
+
+    if (!koiRouterContractAddress) throw new Error('Something went wrong.')
+
+    console.log('KOI ROUTER CONTRACT', koiRouterContractAddress)
+
     console.log('BRIDGING...')
     const { balance } = await this.getBalances()
     /* 
       Validations
     */
-
     if (!includes(VALID_TOKEN_SCHEMA, tokenSchema)) throw new Error(ERROR_MESSAGE.INVALID_TOKEN_SCHEMA)
     if (balance < 0.00015) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_ETH)
 
@@ -176,7 +189,7 @@ export class EthereumMethod {
 
     const userAddress = this.eth.address
 
-    const koiRouterContract = new web3.eth.Contract(koiRouterABI, KOI_ROUTER_CONTRACT)
+    const koiRouterContract = new web3.eth.Contract(koiRouterABI, koiRouterContractAddress)
     const tokenContract = new web3.eth.Contract(koiTokenABI, tokenAddress)
 
     /* 
@@ -184,35 +197,18 @@ export class EthereumMethod {
       If not approved, setApprovalForAll()
     */
     const isApproved = await tokenContract.methods
-      .isApprovedForAll(userAddress, KOI_ROUTER_CONTRACT)
+      .isApprovedForAll(userAddress, koiRouterContractAddress)
       .call()
+   
+    console.log('isApproved', isApproved)
 
     if (!isApproved) {
+      console.log('SET APPROVAL...')
       const res = await tokenContract.methods
-        .setApprovalForAll(KOI_ROUTER_CONTRACT, true)
+        .setApprovalForAll(koiRouterContractAddress, true)
         .send({ from: userAddress })
       console.log('Receipt set approval for all', res)
     }
-
-    /* 
-      Check for total supply
-      Syed message from Discord:
-      "Basically opensea handles in such a way to avoid paying gases. It only mints the NFT when you transfer or sell your NFT else its just shown on the opensea ui indicating you as owner but on the ethereum chain there is not as such NFT which you own."
-    */
-    // let totalSupply
-    // try {
-    //   totalSupply = await tokenContract.methods.totalSupply(web3.utils.toBN(tokenAddress)).call()
-    //   if (!isNumber(totalSupply)) totalSupply = Number(totalSupply)
-    //   console.log('Total Supply', totalSupply)
-    // } catch (err) {
-    //   console.log('Get total supply error: ', err.message)
-    // }
-
-    // if (isNumber(totalSupply)) {
-    //   if (!(totalSupply > 0)) {
-    //     throw new Error(ERROR_MESSAGE.NFT_NOT_EXIST_ON_CHAIN)
-    //   }
-    // }
 
     try {
       const depositResult = await koiRouterContract.methods
@@ -224,6 +220,7 @@ export class EthereumMethod {
       console.log('======= Deposit error', error)
       return false
     }
+
   }
 
   async transactionConfirmedStatus(txHash) {

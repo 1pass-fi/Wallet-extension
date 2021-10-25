@@ -398,3 +398,8 @@ export const ALLOWED_ORIGIN = [
   'https://dev.koi.rocks',
   'https://www.verto.exchange'
 ]
+
+export const KOI_ROUTER_CONTRACT = {
+  MAINNET: 'mainnet',
+  RINKEBY: '0x8ce759A419aC0fE872e93C698F6e352246FDb50B'
+}

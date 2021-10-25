@@ -194,16 +194,14 @@ export default ({ info, onClose, type }) => {
           const account = await popupAccount.getAccount({ address: senderAddress })
           const provider = await account.get.provider()
           if (includes(provider, 'mainnet')) {
-            setError(ERROR_MESSAGE.BRIDGE_WITH_ETH_MAINNET)
-            setIsBridging(false)
-            return
+
           }
         }
-
       } catch (err) {
         console.log('Validation error: ', err.message)
         return
       }
+
       const result = await backgroundRequest.gallery.transferNFT({
         senderAddress: _ownerAddress,
         targetAddress: address,
