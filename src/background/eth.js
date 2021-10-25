@@ -31,8 +31,8 @@ export class Ethereum {
 
   importWallet(payload, type) {
     let wallet
-    if (type == 'key') {
-      wallet = this.#web3.eth.accounts.privateKeyToAccount(payload.key)
+    if (type === 'key') {
+      wallet = this.#web3.eth.accounts.privateKeyToAccount(payload)
     } else {
       wallet = this.#getWalletFromSeedPhrase(payload)
     }

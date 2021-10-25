@@ -213,21 +213,36 @@ export default async (koi, port, message, ports, resolveId, eth) => {
     switch (message.type) {
       case MESSAGES.IMPORT_WALLET: {
         try {
-          let { key, password, type, provider } = message.data
-          let account
-          let address
-
-          let seedPhrase
-          if (isString(key)) seedPhrase = key
           /* 
-            Check for having imported account.
+            Get data from popup message
+          */
+          let { key: keyOrSeedphrase, password, type, provider } = message.data
+          let address, walletKey, seedphrase
+
+          let account
+
+          /* 
+            Determine if have seedphrase
+          */
+          if (type === TYPE.ARWEAVE) {
+            if (isString(keyOrSeedphrase)) seedphrase = keyOrSeedphrase
+          }
+          if (type === TYPE.ETHEREUM) {
+            if (isString(keyOrSeedphrase)) {
+              const totalWords = keyOrSeedphrase.split(' ')
+              if (totalWords === 12) seedphrase = keyOrSeedphrase
+            }
+          }
+
+          /* 
+            Password validation
+            - If no imported account -> skip
           */
           const count = await backgroundAccount.count()
-          const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
-          const encryptedKey = await backgroundAccount.getEncryptedKey(activatedAccountAddress)
-
           if (count) {
-            // Check input password
+            const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
+            const encryptedKey = await backgroundAccount.getEncryptedKey(activatedAccountAddress)
+
             try {
               await passworder.decrypt(password, encryptedKey)
             } catch (err) {
@@ -240,47 +255,62 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             }
           }
 
-          // Create new account
-          switch (type) {
+          /* 
+            Create new account on storage
+          */
+          switch(type) {
             case TYPE.ARWEAVE:
-              address = await ArweaveAccount.utils.loadWallet(koi, key)
+              address = await ArweaveAccount.utils.loadWallet(koi, keyOrSeedphrase)
               break
             case TYPE.ETHEREUM:
-              address = await EthereumAccount.utils.loadWallet(eth, key)
+              address = await EthereumAccount.utils.loadWallet(eth, keyOrSeedphrase)
           }
 
-          if (isString(key) && type == TYPE.ARWEAVE) key = koi.wallet
-          if (type == TYPE.ETHEREUM) key = eth.key
-          await backgroundAccount.createAccount(address, key, password, type)
-          account = await backgroundAccount.getAccount({ address, key })
+          if (isString(keyOrSeedphrase && type === TYPE.ARWEAVE)) walletKey = koi.wallet
+          if (type === TYPE.ETHEREUM) walletKey = eth.key
+          await backgroundAccount.createAccount(address, walletKey, password, type)
+          
+          account = await backgroundAccount.getAccount({ address, key: walletKey })
 
-          // Set seedPhrase if the key is seed phrase for arweave
-          if (seedPhrase) {
-            const encryptedPhrase = await passworder.encrypt(password, seedPhrase)
-            account.set.seedPhrase(encryptedPhrase)
+          /* 
+            Set seedPhrase field if any
+          */
+          if (seedphrase) {
+            const encryptedPhrase = await passworder.encrypt(password, seedphrase)
+            await account.set.seedPhrase(encryptedPhrase)
           }
 
-          // Set seedPhrase ethereum
+          /* 
+            Set the provider if any (ethereum wallet will habe)
+          */
+          const providerUrl = getProviderUrlFromName(provider)
+          if (provider) await account.set.provider(providerUrl)
+  
 
-          // Get total account to get a appropriate accountName
-          // Set account provider
+          /* 
+            Get a default name for this account
+          */
           const totalAccounts = await backgroundAccount.count()
           await account.set.accountName(`Account#${totalAccounts}`)
-          const providerUrl = getProviderUrlFromName(provider)
-          console.log('PROVIDER URL', providerUrl)
-          if (provider) await account.set.provider(providerUrl)
 
-          // If total account = 1, set this accountAddress to activatedAccountAddress
+          /* 
+            If total account = 1, set this accountAddress to activatedAccountAddress
+          */
           if (totalAccounts == 1) {
             await storage.setting.set.activatedAccountAddress(await account.get.address())
           }
-
+         
+          /* 
+            Get balance for this account
+          */
           loadBalances()
+
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,
             data: address,
             id: messageId
           })
+
         } catch (err) {
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,
@@ -291,6 +321,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
         break
       }
+
       case MESSAGES.GET_BALANCES: {
         loadBalances()
         break
