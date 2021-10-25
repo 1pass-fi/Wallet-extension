@@ -8,6 +8,7 @@ import WalletType from '../shared/WalletType'
 import ConfirmPassword from '../shared/ConfirmPassword'
 import InputSeedPhraseField from '../shared/InputSeedPhraseField'
 import InputNonKoiiSeedPhraseField from '../shared/InputNonKoiiSeedPhraseField'
+import InputPrivateKeyField from '../shared/InputPrivateKeyField'
 import Button from '../shared/Button'
 import Loading from '../shared/Loading'
 import useEthereumNetworks from '../shared/useEthereumNetworks'
@@ -22,7 +23,6 @@ import isEmpty from 'lodash/isEmpty'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import { TYPE } from 'constants/accountConstants'
-import wordList from 'utils/wordList.json'
 
 import './index.css'
 
@@ -30,12 +30,14 @@ export default () => {
   const [step, setStep] = useState(1)
   const [walletType, setWalletType] = useState(null)
   const [userSeedPhrase, setUserSeedPhrase] = useState('')
+  const [privateKey, setPrivateKey] = useState('')
   const [seedPhraseError, setSeedPhraseError] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [showFormError, setShowFormError] = useState(false)
   const history = useHistory()
   const [isKoiiPhrase, setIsKoiiPhrase] = useState(true)
+  const [isSeedPhrase, setIsSeedPhrase] = useState(true)
 
   const { setError, wallets, setImportedAddress, setNewAddress } = useContext(GalleryContext)
   let { selectedNetwork, EthereumNetworks } = useEthereumNetworks({
@@ -75,18 +77,20 @@ export default () => {
   }, [showHasTwelveSeedPhrase])
 
   const onImportSeedPhrase = async () => {
-    if (!userSeedPhrase && isEmpty(wallets)) {
-      setShowFormError(true)
-      return
+    if (isSeedPhrase) {
+      console.log({ userSeedPhrase })
+      if (!userSeedPhrase && isEmpty(wallets)) {
+        setShowFormError(true)
+        return
+      }
+      const hasTwelveWords = userSeedPhrase?.trim()?.split(' ').length === 12
+      if (!hasTwelveWords) {
+        setShowHasTwelveSeedPhrase(true)
+        return
+      }
+    } else {
+      console.log({ privateKey })
     }
-
-    const hasTwelveWords = userSeedPhrase?.trim()?.split(' ').length === 12
-
-    if (!hasTwelveWords) {
-      setShowHasTwelveSeedPhrase(true)
-      return
-    }
-
     nextStep()
   }
 
@@ -104,14 +108,14 @@ export default () => {
         key: userSeedPhrase,
         password,
         type: walletType,
-        provider: selectedNetwork
+        provider: selectedNetwork,
       })
       setImportedAddress(address)
       setNewAddress(address)
 
       history.push({
         pathname: '/success',
-        state: 'import-key-state'
+        state: 'import-key-state',
       })
     } catch (err) {
       setError(err.message)
@@ -127,12 +131,8 @@ export default () => {
           <GoBackBtn goToPreviousStep={previousStep} />
           {step === 1 && (
             <>
-              <div className='title'>
-                Import a wallet with a recovery phrase
-              </div>
-              <div className='description'>
-                What type of key are you importing?
-              </div>
+              <div className='title'>Import a wallet with a recovery phrase</div>
+              <div className='description'>What type of key are you importing?</div>
               <div className='wallet-types'>
                 <WalletType
                   icon={FinnieLogo}
@@ -144,18 +144,20 @@ export default () => {
                   selected={false}
                   onClick={() => onTypeSelect(TYPE.ARWEAVE)}
                 />
-                {SHOW_ETHEREUM && <WalletType
-                  icon={EthereumLogo}
-                  title={(props) => <div {...props}>Ethereum Key</div>}
-                  description={(props) => (
-                    <div {...props}>
-                      Ethereum keys are great for&nbsp;
-                      <span>cross-chain transactions</span>.
-                    </div>
-                  )}
-                  selected={false}
-                  onClick={() => onTypeSelect(TYPE.ETHEREUM)}
-                />}
+                {SHOW_ETHEREUM && (
+                  <WalletType
+                    icon={EthereumLogo}
+                    title={(props) => <div {...props}>Ethereum Key</div>}
+                    description={(props) => (
+                      <div {...props}>
+                        Ethereum keys are great for&nbsp;
+                        <span>cross-chain transactions</span>.
+                      </div>
+                    )}
+                    selected={false}
+                    onClick={() => onTypeSelect(TYPE.ETHEREUM)}
+                  />
+                )}
               </div>
             </>
           )}
@@ -166,38 +168,76 @@ export default () => {
             <>
               <div className='title'>Import a wallet</div>
               <div className='description'>
-                Paste your seed phrase, then create a password for Finnie. Make
-                sure your password is unique and secure.
+                {isSeedPhrase ? (
+                  <>
+                    Paste your seed phrase, then create a password for Finnie. Make sure your
+                    password is unique and secure.
+                  </>
+                ) : (
+                  <>
+                    Import your private key, then create a password for Finnie. Make sure your
+                    password is unique and secure.
+                  </>
+                )}
               </div>
-              {isKoiiPhrase ? <InputSeedPhraseField
-                label='12-word Recovery Phrase'
-                userSeedPhrase={userSeedPhrase}
-                setUserSeedPhrase={setUserSeedPhrase}
-                seedPhraseError={seedPhraseError}
-                setSeedPhraseError={setSeedPhraseError}
-              /> : <InputNonKoiiSeedPhraseField
-                label='Non-KOII Recovery Phrase'
-                value={userSeedPhrase}
-                setValue={setUserSeedPhrase}
-                placeholder='Paste your recovery phrase here'
-              />}
+              {isKoiiPhrase && isSeedPhrase && (
+                <InputSeedPhraseField
+                  label='12-word Recovery Phrase'
+                  userSeedPhrase={userSeedPhrase}
+                  setUserSeedPhrase={setUserSeedPhrase}
+                  seedPhraseError={seedPhraseError}
+                  setSeedPhraseError={setSeedPhraseError}
+                  walletType={walletType}
+                  setIsSeedPhrase={setIsSeedPhrase}
+                />
+              )}
+
+              {!isKoiiPhrase && isSeedPhrase && (
+                <InputNonKoiiSeedPhraseField
+                  label='Non-KOII Recovery Phrase'
+                  value={userSeedPhrase}
+                  setValue={setUserSeedPhrase}
+                  placeholder='Paste your recovery phrase here'
+                  walletType={walletType}
+                  setIsSeedPhrase={setIsSeedPhrase}
+                />
+              )}
+
+              {!isSeedPhrase && walletType === TYPE.ETHEREUM && (
+                <InputPrivateKeyField
+                  label='Import your private key'
+                  placeholder='Copy & paste your private key here.'
+                  setIsSeedPhrase={setIsSeedPhrase}
+                  value={privateKey}
+                  setValue={setPrivateKey}
+                />
+              )}
 
               <Button
-                disabled={isEmpty(userSeedPhrase) || !isEmpty(seedPhraseError)}
+                disabled={
+                  (isEmpty(userSeedPhrase) && isEmpty(privateKey)) ||
+                  (isKoiiPhrase && isSeedPhrase && !isEmpty(seedPhraseError))
+                }
                 className='seed-phrase-button'
                 onClick={onImportSeedPhrase}
               >
                 Continue
               </Button>
-              <span
-                onClick={() => {
-                  setIsKoiiPhrase(!isKoiiPhrase)
-                  setUserSeedPhrase('')
-                }}
-                className='non-koii-phrase'
-              >
-                {isKoiiPhrase ? 'I have a non-Koii recovery phrase.' : 'I have a Koii recovery phrase.'}
-              </span>
+              {isSeedPhrase && (
+                <span
+                  onClick={() => {
+                    setIsKoiiPhrase(!isKoiiPhrase)
+                    setIsSeedPhrase(true)
+                    setUserSeedPhrase('')
+                    setSeedPhraseError('')
+                  }}
+                  className='non-koii-phrase'
+                >
+                  {isKoiiPhrase
+                    ? 'I have a non-Koii recovery phrase.'
+                    : 'I have a Koii recovery phrase.'}
+                </span>
+              )}
               {showHasTwelveSeedPhrase && <HasTwelveSeedPhrase />}
             </>
           )}
@@ -206,23 +246,21 @@ export default () => {
             <>
               <div className='title'>Import a wallet</div>
               <div className='description'>
-                Create a password for Finnie, so you have easy access to your new key. Make
-                sure your password is unique and secure.
+                Create a password for Finnie, so you have easy access to your new key. Make sure
+                your password is unique and secure.
               </div>
 
-              {isEmpty(wallets) ? <div className='confirm-password-wrapper'>
-                <ConfirmPassword setPassword={setPassword} showError={showFormError} />
-              </div>
-                :
+              {isEmpty(wallets) ? (
+                <div className='confirm-password-wrapper'>
+                  <ConfirmPassword setPassword={setPassword} showError={showFormError} />
+                </div>
+              ) : (
                 <div className='confirm-password-wrapper'>
                   <InputPassword setPassword={setPassword} />
                 </div>
-              }
+              )}
 
-              <Button
-                className='import-key-button'
-                onClick={onImportKey}
-              >
+              <Button className='import-key-button' onClick={onImportKey}>
                 Import Key
               </Button>
             </>

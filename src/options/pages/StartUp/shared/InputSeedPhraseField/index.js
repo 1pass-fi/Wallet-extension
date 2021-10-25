@@ -8,9 +8,19 @@ import wordList from 'utils/wordList.json'
 
 import isEmpty from 'lodash/isEmpty'
 
-const checkSeedPhraseInWordList = phrase => phrase.every(word => wordList.includes(word))
+import { TYPE } from 'constants/accountConstants'
 
-export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError, setSeedPhraseError }) => {
+const checkSeedPhraseInWordList = (phrase) => phrase.every((word) => wordList.includes(word))
+
+export default ({
+  label = '',
+  userSeedPhrase,
+  setUserSeedPhrase,
+  seedPhraseError,
+  setSeedPhraseError,
+  walletType,
+  setIsSeedPhrase,
+}) => {
   const [isShow, setIsShow] = useState(true)
   const [suggestWords, setSuggestWords] = useState([])
   const [selectedWords, setSelectedWords] = useState([])
@@ -53,7 +63,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
 
   /*
    * When the input key is Backspace and the user's input is empty:
-   *  remove last item from selectWords list 
+   *  remove last item from selectWords list
    * - keyCode of 'Backspace': 8
    */
   const handleKeyDown = (e) => {
@@ -63,7 +73,6 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
       setSelectedWords(newArr)
     }
   }
-
 
   const seedPhraseArr = (inputField) => {
     const removedDoubleSpacePhrase = inputField.replace(/\s+/g, ' ')
@@ -134,7 +143,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
           return word.startsWith(inputField?.trim())
         })
         /*
-         * If there is only one suggested word for the user's input: 
+         * If there is only one suggested word for the user's input:
          *  - When the user enters a space, this suggested word is automatically set to the selectWords list.
          */
         if (suggestWordList.length === 1) {
@@ -172,41 +181,58 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
     <div className='input-seedphrase-field'>
       <EyeIcon className='hide-icon' onClick={() => setIsShow(!isShow)} />
       <label className='label'>{label}</label>
-      <div className='selected-words-wrapper' onClick={() => {
-        setShowInput(true)
-        inputRef.current?.focus()
-      }}>
+      <div
+        className='selected-words-wrapper'
+        onClick={() => {
+          setShowInput(true)
+          inputRef.current?.focus()
+        }}
+      >
         <div className='selected-words'>
-          {(!userSeedPhrase && !showInput) && <div className='seed-phrase-message'>
-            Start typing then select from the options below, or copy/paste.
-          </div>}
-          {(selectedWords.length > 0) && selectedWords.map((word, index) => (
-            <div
-              key={word + index}
-              className='word'
-              onClick={() => removeWord({ word, index })}
-            >
-              {isShow && word}
+          {!userSeedPhrase && !showInput && (
+            <div className='seed-phrase-message'>
+              Start typing then select from the options below, or copy/paste.
             </div>
-          ))}
-          {((showInput || userSeedPhrase) && selectedWords.length < 12) && <input
-            type={isShow ? 'text' : 'password'}
-            value={inputWord}
-            onKeyDown={(e) => handleKeyDown(e)}
-            onChange={(e) => updateSuggestWords(e.target.value)}
-            className='inputSeedPhrase'
-            ref={inputRef}
-          />}
+          )}
+          {selectedWords.length > 0 &&
+            selectedWords.map((word, index) => (
+              <div key={word + index} className='word' onClick={() => removeWord({ word, index })}>
+                {isShow && word}
+              </div>
+            ))}
+          {(showInput || userSeedPhrase) && selectedWords.length < 12 && (
+            <input
+              type={isShow ? 'text' : 'password'}
+              value={inputWord}
+              onKeyDown={(e) => handleKeyDown(e)}
+              onChange={(e) => updateSuggestWords(e.target.value)}
+              className='inputSeedPhrase'
+              ref={inputRef}
+            />
+          )}
         </div>
       </div>
 
+      {walletType === TYPE.ETHEREUM && (
+        <div className='import-private-key'>
+          Have a private key?{' '}
+          <span
+            onClick={() => {
+              setIsSeedPhrase(false)
+            }}
+            className='import-private-key-link'
+          >
+            Import it instead.
+          </span>
+        </div>
+      )}
 
-
-      {!isEmpty(seedPhraseError) ?
-        <div className="error-message">
+      {!isEmpty(seedPhraseError) ? (
+        <div className='error-message'>
           <SeedPhraseErrorIcon className='seed-phrase-error-icon' />
           {seedPhraseError}
-        </div> :
+        </div>
+      ) : (
         <div style={{ height: '164px' }}>
           <div className='unselected-words'>
             {suggestWords.map((word) => (
@@ -223,7 +249,7 @@ export default ({ label = '', userSeedPhrase, setUserSeedPhrase, seedPhraseError
             ))}
           </div>
         </div>
-      }
+      )}
     </div>
   )
 }
