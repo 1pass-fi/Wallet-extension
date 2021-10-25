@@ -254,6 +254,7 @@ const SendKoiForm = ({
             setShowModal(false)
           }}
           onSubmit={handleSendTransaction}
+          selectedAccount={selectedAccount}
         />
       )}
     </form>

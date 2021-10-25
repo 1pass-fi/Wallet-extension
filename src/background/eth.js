@@ -1,7 +1,8 @@
 import Web3 from 'web3'
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
 import hdkey from 'ethereumjs-wallet/dist/hdkey'
-import Tx from 'ethereumjs-tx'
+
+import { Web } from '@_koi/sdk/web'
 
 import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 
@@ -42,40 +43,15 @@ export class Ethereum {
   }
 
   async getBalance() {
-    
     return this.#web3.eth.getBalance(this.address)
   }
 
   async transferEth(toAddress, amount) {
-    if (this.#web3.eth.currentProvider.host.includes('mainnet')) {
-      throw new Error('We currently only support Ethereum transfers on the Rinkeby network.')
-    }
+    const koiTools = new Web()
+    koiTools.initializeEthWalletAndProvider(this.address, this.#provider)
 
-    const amountToSend = this.#web3.utils.toWei(amount.toString(), 'ether') // Convert to wei value
-    const rawTx = {
-      to: toAddress,
-      value: amountToSend,
-      gas: 0
-    }
-
-    const estimateGas = await this.#web3.eth.estimateGas(rawTx)
-    rawTx.gas = estimateGas
-    let signTx = await this.#web3.eth.accounts.signTransaction(rawTx, this.key)
-    const receipt = await this.#web3.eth.sendSignedTransaction(signTx.rawTransaction)
+    const receipt = await koiTools.transferEth(toAddress, amount, this.key)
     return receipt.transactionHash
-  }
-
-  async estimateGasEth(object) {
-    if (!this.#web3) {
-      throw Error('Ethereum Wallet and Network not initialized')
-    }
-    if (!object) {
-      throw Error('Ethereum private key not provided')
-    }
-    const gasPrice = await this.#web3.eth.getGasPrice()
-    const estimateGas = await this.#web3.eth.estimateGas(object)
-    const totalGasInWei = gasPrice * estimateGas
-    return this.#web3.utils.fromWei(totalGasInWei.toString(), 'ether')
   }
 
   async getTransactionStatus(txHash) {
