@@ -22,17 +22,6 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
 
   const [userAddresses, setUserAddresses] = useState(contact.addresses)
 
-  const clearForm = () => {
-    setUserInfo({
-      name: '',
-      notes: '',
-      didName: '',
-      didValue: '',
-    })
-
-    setUserAddresses([{ name: '', value: '' }])
-  }
-
   const handleSubmit = async () => {
     if (isEmpty(userInfo.name)) {
       setError('Address must have name!')
@@ -41,7 +30,6 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
 
     await updateAddress({ ...userInfo, addresses: userAddresses })
     setNotification('Successfully update address!')
-    clearForm()
   }
 
   const handleUserInfoChange = (e) => {

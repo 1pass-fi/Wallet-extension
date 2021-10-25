@@ -261,13 +261,13 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           switch(type) {
             case TYPE.ARWEAVE:
               address = await ArweaveAccount.utils.loadWallet(koi, keyOrSeedphrase)
+              walletKey = koi.wallet
               break
             case TYPE.ETHEREUM:
               address = await EthereumAccount.utils.loadWallet(eth, keyOrSeedphrase)
+              walletKey = eth.key
+              break
           }
-
-          if (isString(keyOrSeedphrase && type === TYPE.ARWEAVE)) walletKey = koi.wallet
-          if (type === TYPE.ETHEREUM) walletKey = eth.key
           await backgroundAccount.createAccount(address, walletKey, password, type)
           
           account = await backgroundAccount.getAccount({ address, key: walletKey })
