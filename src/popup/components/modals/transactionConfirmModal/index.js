@@ -63,7 +63,7 @@ const TransactionConfirmModal = ({
     <Modal onClose={onClose} className='transaction-modal'>
       <ModalTitle amount={sentAmount} currency={currency}/>
       <div className="modal-account-address confirm-transaction">{accountAddress}</div>
-      {gasFee && <div>Gas fee {gasFee} ETH</div>}
+      {gasFee !== 0 && <div>Gas fee {gasFee} ETH</div>}
       <div className="modal-description">
         * Yes, I have confirmed this is the correct wallet address.
       </div>
