@@ -16,6 +16,7 @@ import Avalanche from 'img/chain/avalanche-logo.svg'
 import PolkadotLogo from 'img/chain/polkadot-logo.svg'
 import TezosLogo from 'img/chain/tezos-logo.svg'
 import DfinityLogo from 'img/chain/dfinity-logo.svg'
+import WarningIcon from 'img/warning-icon-outline.svg'
 
 import EmailIcon from 'img/social-icons/email-icon.svg'
 import FacebookIcon from 'img/social-icons/facebook-icon.svg'
@@ -212,64 +213,97 @@ export default ({
             </a>}
           </div>
           <div className='description'>{description}</div>
-          {!pending && <div className={`earned ${isDisableFeatures && 'disabled'}`}>
-            {showViews && (
-              <div className='views'>
-                {totalViews} {totalViews > 1 ? 'views' : 'view'}
+          {type !== TYPE.ARWEAVE ? (
+            <>
+              <div className='ethreum-nft-message-wrapper'>
+                <div className='ethreum-nft-icon'>
+                  <WarningIcon  />
+                </div>
+                <div className='ethreum-nft-message'>
+                  NFTs cannot earn attention rewards or display their dynamic elements 
+                  while on Ethereum.
+                </div>
               </div>
-            )}
-            {showEarnedKoi && (
-              <div className='koi '>{formatNumber(earnedKoi)} KOII earned</div>
-            )}
-          </div>}
-          {!pending && <div className='share-transfer' onMouseEnter={handleToggleMessage} onMouseLeave={handleToggleMessage}>
-            {showMessage && <div className='disabled-msg'>
-              Some of Finnie’s features are still in development for other blockchains.
-            </div>}
-            <button
-              className='share-button'
-              onClick={() => {
-                setShowShareModal({ show: true, txid: txId })
-              }}
-              disabled={isDisableFeatures}
-            >
-              Share
-            </button>
-            <button onClick={() => handleShareNFT(txId)} className='transfer-button' disabled={isDisableFeatures}>
-              Send
-            </button>
-          </div>}
-          {!pending && txId && <div className={`social-icons ${isDisableFeatures && 'disabled'}`}>
-            <TwitterIcon
-              onClick={() => {
-                createShareWindow('twitter', txId)
-              }}
-              className='social-icon'
-            />
-            <FacebookIcon
-              onClick={() => {
-                createShareWindow('facebook', txId)
-              }}
-              className='social-icon'
-            />
-            <LinkedinIcon
-              onClick={() => {
-                createShareWindow('linkedin', txId)
-              }}
-              className='social-icon'
-            />
-            <a
-              className={isDisableFeatures && 'disabled'}
-              href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koii.live/${txId}.html`}
-              title='Share by Email'
-            >
-              <EmailIcon className='social-icon' />
-            </a>
-            <CopyToClipboard text={embed}>
-              <EmbedIcon onClick={onCopy} className='social-icon' disabled={!txId} />
-            </CopyToClipboard>
-            {isCopied && <div className='copy-noti'>Link copied!</div>}
-          </div>}
+              <button className='bridge-to-arweave' disabled={pending} onClick={() => setShowExportModal({ locked, earnedKoi, totalViews, name, imageUrl, type, txId, address, tokenAddress, tokenSchema })}>Bridge to Arweave</button>
+            </>
+          ) : (
+            <>
+              {!pending && (
+                <div className={`earned ${isDisableFeatures && 'disabled'}`}>
+                  {showViews && (
+                    <div className='views'>
+                      {totalViews} {totalViews > 1 ? 'views' : 'view'}
+                    </div>
+                  )}
+                  {showEarnedKoi && (
+                    <div className='koi '>{formatNumber(earnedKoi)} KOII earned</div>
+                  )}
+                </div>
+              )}
+              {!pending && (
+                <div
+                  className='share-transfer'
+                  onMouseEnter={handleToggleMessage}
+                  onMouseLeave={handleToggleMessage}
+                >
+                  {showMessage && (
+                    <div className='disabled-msg'>
+                      Some of Finnie’s features are still in development for other blockchains.
+                    </div>
+                  )}
+                  <button
+                    className='share-button'
+                    onClick={() => {
+                      setShowShareModal({ show: true, txid: txId })
+                    }}
+                    disabled={isDisableFeatures}
+                  >
+                    Share
+                  </button>
+                  <button
+                    onClick={() => handleShareNFT(txId)}
+                    className='transfer-button'
+                    disabled={isDisableFeatures}
+                  >
+                    Send
+                  </button>
+                </div>
+              )}
+              {!pending && txId && (
+                <div className={`social-icons ${isDisableFeatures && 'disabled'}`}>
+                  <TwitterIcon
+                    onClick={() => {
+                      createShareWindow('twitter', txId)
+                    }}
+                    className='social-icon'
+                  />
+                  <FacebookIcon
+                    onClick={() => {
+                      createShareWindow('facebook', txId)
+                    }}
+                    className='social-icon'
+                  />
+                  <LinkedinIcon
+                    onClick={() => {
+                      createShareWindow('linkedin', txId)
+                    }}
+                    className='social-icon'
+                  />
+                  <a
+                    className={isDisableFeatures && 'disabled'}
+                    href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koii.live/${txId}.html`}
+                    title='Share by Email'
+                  >
+                    <EmailIcon className='social-icon' />
+                  </a>
+                  <CopyToClipboard text={embed}>
+                    <EmbedIcon onClick={onCopy} className='social-icon' disabled={!txId} />
+                  </CopyToClipboard>
+                  {isCopied && <div className='copy-noti'>Link copied!</div>}
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
       <ReactTooltip place='top' type="dark" effect="float" />

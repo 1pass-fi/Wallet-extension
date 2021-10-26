@@ -409,3 +409,46 @@
   display: block;
   width: 0;
 }
+
+.big-nft-card .info .ethreum-nft-message-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  align-items: center;
+}
+
+.big-nft-card .info .ethreum-nft-message-wrapper .ethreum-nft-icon {
+  width: 22px;
+  height: 28px;
+}
+
+.big-nft-card .info .ethreum-nft-message-wrapper .ethreum-nft-message {
+  width: 379px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  margin-left: 16px;
+  color: #ffa54b;
+}
+
+.big-nft-card .info .bridge-to-arweave {
+  margin-top: 22px;
+  width: 429px;
+  height: 32px;
+  background: #ffffff;
+  box-shadow: 0px 2px 4px rgb(0 0 0 / 16%);
+  border-radius: 2px;
+
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  text-align: center;
+  cursor: pointer;
+}
+
+.big-nft-card .info .bridge-to-arweave:disabled {
+  cursor: not-allowed;
+}
