@@ -489,9 +489,10 @@ export default async (koi, port, message, ports, resolveId, sender) => {
   
             const qty = transaction.quantity / 1000000000000
             const address = transaction.target
-            const fee = 0
+            const fee = await arweave.transactions.getPrice(transaction.data_size) / 1000000000000
             console.log('QUANTITY', qty)
             console.log('ADDRESS', address)
+            console.log('fee', fee)
   
             const onClosedMessage = {
               type: MESSAGES.CREATE_TRANSACTION_ERROR,

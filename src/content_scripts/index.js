@@ -132,6 +132,7 @@ window.addEventListener('message', async function (event) {
           data_root: transaction.data_root,
           tags: transaction.tags,
           quantity: transaction.quantity,
+          data_size: transaction.data_size
         }
         return buildPromise(MESSAGE_TYPES.CREATE_TRANSACTION, { transaction: plainTransaction })
       },
