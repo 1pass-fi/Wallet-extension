@@ -42,6 +42,8 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
   const [qty, setQty] = useState(null)
   const [currency, setCurrency] =  useState('AR')
   const [fee, setFee] = useState(null)
+  const [koiiTransfer, setKoiiTransfer] = useState(false)
+  const [koiiQuantity, setKoiiQuantity] = useState(0)
 
   const walletIcon = {
     koi: <KoiIcon className='icon' />,
@@ -61,6 +63,8 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
         qty,
         fee,
         address: targetAddress,
+        isKoiTransfer,
+        koiiQty
       } = request.data
 
       setSourceAccount({ address, type: 'koi' })
@@ -68,6 +72,8 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
       setOrigin(requestOrigin)
       setQty(qty)
       setFee(fee)
+      setKoiiTransfer(isKoiTransfer)
+      setKoiiQuantity(koiiQty)
     }
 
     loadRequest()
@@ -146,6 +152,9 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
               <div className='detail total'>
                 <div className='detail-row row-label'>Total</div>
                 <div className='detail-row amount'>
+                  {koiiTransfer &&
+                    <div className='koi'>{transactionAmountFormat(koiiQuantity)} KOII</div>
+                  }
                   <div className='koi'>{transactionAmountFormat(qty+fee)} AR</div>
                   <div className='usd'>~{fiatCurrencyFormat((qty+fee)*price.AR)} USD</div>
                 </div>

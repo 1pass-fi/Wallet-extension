@@ -490,9 +490,22 @@ export default async (koi, port, message, ports, resolveId, sender) => {
             const qty = transaction.quantity / 1000000000000
             const address = transaction.target
             const fee = await arweave.transactions.getPrice(transaction.data_size) / 1000000000000
-            console.log('QUANTITY', qty)
-            console.log('ADDRESS', address)
-            console.log('fee', fee)
+
+
+            let functionName
+            let koiiQty
+            let isKoiTransfer = false
+            // handle get input
+            try {
+              const valueString = atob(transaction.tags[3].value)
+              const inputValue = JSON.parse(valueString)
+              functionName = inputValue.function
+              koiiQty = inputValue.qty
+            } catch (err) {
+              console.log('GET INPUT ERROR')
+            }
+
+            if (functionName === 'transfer' && isNumber(koiiQty)) isKoiTransfer = true
   
             const onClosedMessage = {
               type: MESSAGES.CREATE_TRANSACTION_ERROR,
@@ -534,7 +547,7 @@ export default async (koi, port, message, ports, resolveId, sender) => {
                     chrome.browserAction.setBadgeText({ text: '1' })
                     await storage.generic.set.pendingRequest({
                       type: REQUEST.TRANSACTION,
-                      data: { transaction, qty, address, origin, favicon, fee, isKoi: false }
+                      data: { transaction, qty, address, origin, favicon, fee, isKoi: false, isKoiTransfer, koiiQty }
                     })
                   },
                   afterClose: async () => {
