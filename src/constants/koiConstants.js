@@ -337,7 +337,9 @@ export const FILENAME = {
 
 export const URL = {
   TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf',
-  GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchBridgeDetails'
+  GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchBridgeDetails',
+  ETHERSCAN_MAINNET: 'https://etherscan.io',
+  ETHERSCAN_RINKEBY: 'https://rinkeby.etherscan.io'
 }
 
 export const BRIDGE_FLOW = {

@@ -10,13 +10,33 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 190px;
+  width: 185px;
   color: #ffffff;
   font-size: 20px;
   font-weight: 600;
   letter-spacing: 0.03em;
   line-height: 24px;
   margin-bottom: 2px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
+.nft-card .nft-warning-button {
+  width: 216px;
+  height: 32px;
+  border: 1.5px solid #FF4141;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+.nft-card .nft-warning-button .nft-warning-button-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
 }
 
 .nft-card .nft-earned-koi {
@@ -94,12 +114,19 @@
   top: 225px;
   right: 5px;
   position: absolute;
-  width: 18px;
+  width: 20px;
   height: 18px;
 }
 
 .nft-card .nft-path {
   top: 255px;
+  right: 5px;
+  position: absolute;
+  width: 18px;
+  height: 18px;
+}
+.nft-card .nft-path-eth {
+  top: 226px;
   right: 5px;
   position: absolute;
   width: 18px;

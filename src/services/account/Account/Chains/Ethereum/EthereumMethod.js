@@ -232,8 +232,17 @@ export class EthereumMethod {
 
   async getNftData(contents, getBase64) {
     try {
+      const provider = this.eth.provider
+      let etherscanUrl
+      if (provider === ETH_NETWORK_PROVIDER.MAINNET) etherscanUrl = URL.ETHERSCAN_MAINNET
+      if (provider === ETH_NETWORK_PROVIDER.RINKEBY) etherscanUrl = URL.ETHERSCAN_RINKEBY
+
       let fetchedNFTs = await Promise.all(contents.map(async content => {
         try {
+          const tokenId = content?.token_id
+          const addressContract = content?.asset_contract?.address
+          const koiRockUrl = `${etherscanUrl}/token/${addressContract}?a=${tokenId}`
+
           if (content.image_url && content.name) {
             let imageUrl = content.image_url
             if (getBase64) {
@@ -255,7 +264,7 @@ export class EthereumMethod {
               txId: content.token_id,
               imageUrl,
               galleryUrl: `${PATH.GALLERY}#/details/${content.token_id}`,
-              koiRockUrl: `${PATH.KOI_ROCK}/${content.token_id}`,
+              koiRockUrl,
               isRegistered: false,
               contentType: content.animation_url ? 'video' : 'image',
               totalViews: 0,
