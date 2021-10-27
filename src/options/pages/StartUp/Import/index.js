@@ -60,6 +60,9 @@ export default () => {
 
   const onTypeSelect = (type) => {
     setWalletType(type)
+
+    // if a user re-selects Wallet Type, set isSeedPhrase to TRUE to ensure that the Private Key is not displayed on import Arweave wallet.
+    setIsSeedPhrase(true)
     if (type === TYPE.ARWEAVE) {
       setStep(3)
     } else {
@@ -217,9 +220,15 @@ export default () => {
                 />
               )}
 
+              {/*
+               * Allow to Import when:
+               * - Seed Phrase / Private Key is not empty.
+               * - validate Seed phrase success in case 12-words Koii seed phrase
+               */}
               <Button
                 disabled={
-                  (isEmpty(userSeedPhrase) && isEmpty(privateKey)) ||
+                  (isSeedPhrase && isEmpty(userSeedPhrase)) ||
+                  (!isSeedPhrase && isEmpty(privateKey)) ||
                   (isKoiiPhrase && isSeedPhrase && !isEmpty(seedPhraseError))
                 }
                 className='seed-phrase-button'
