@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { find, includes } from 'lodash'
 
-import ShareIcon from 'img/share-icon.svg'
-import CopyLinkIcon from 'img/share-icon-2.svg'
+import ShareIcon from 'img/share-icon-3.svg'
+import CopyLinkIcon from 'img/share-icon-4.svg'
 import CheckIcon from 'img/check-icon.svg'
 
 import { formatNumber } from '../../../utils'
@@ -11,6 +11,7 @@ import './index.css'
 import { Link } from 'react-router-dom'
 import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
+import WarningIcon from 'img/warning-icon3.svg'
 
 export default ({
   txId,
@@ -23,7 +24,12 @@ export default ({
   disabled,
   contentType = 'image',
   totalViews,
-  type
+  type,
+  locked,
+  address,
+  tokenAddress,
+  tokenSchema,
+  isBridging
 }) => {
   const { showCreateCollection, 
     collectionNFT,
@@ -34,7 +40,8 @@ export default ({
     page,
     setPage,
     showViews,
-    showEarnedKoi
+    showEarnedKoi,
+    setShowExportModal
   } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const [selectedCollection, setSelectedCollection] = useState(false)
@@ -140,7 +147,22 @@ export default ({
         {type !== TYPE.ETHEREUM && showViews && <div className='nft-views'>
           {totalViews} {totalViews > 1 ? 'views' : 'view'}
         </div>}
+        { type === TYPE.ETHEREUM &&
+          <button disabled={isBridging} className='nft-warning-button' onClick={() => {
+            setShowExportModal({ locked, earnedKoi, totalViews, name, imageUrl, type, txId, address, tokenAddress, tokenSchema })
+          }}>
+            <div className='nft-warning-button-content'>
+              <WarningIcon/>
+              Back Up This NFT
+            </div>
+          </button>
+        }
       </Link>
+      {type === TYPE.ETHEREUM &&
+            <a target='_blank' href={koiRockUrl} className='nft-path-eth'>
+              <ShareIcon />
+            </a>
+      }
       
       {isRegistered && (
         <>

@@ -21,6 +21,7 @@ import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
 
 import storage from 'services/storage'
+import Web3 from 'web3'
 
 /* istanbul ignore next */
 const arweave = Arweave.init({ host: 'arweave.net', protocol: 'https', port: 443, })
@@ -752,4 +753,17 @@ export const getOldWallet = async (password) => {
 
 export const winstonToAr = (value) => {
   return value / 1000000000000
+}
+
+export const calculateGasFee = async ({ amount, senderAddress, toAddress, provider }) => {
+  const web3 = new Web3()
+  const koiTool = new Web()
+  koiTool.initializeEthWalletAndProvider(senderAddress, provider)
+  const amountToSend = web3.utils.toWei(amount.toString(), 'ether') // Convert to wei value
+  const rawTx = {
+    to: toAddress,
+    value: amountToSend,
+    gas: 0
+  }
+  return koiTool.estimateGasEth(rawTx)
 }

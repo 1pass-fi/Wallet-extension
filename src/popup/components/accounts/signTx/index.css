@@ -129,7 +129,8 @@
 
 .sign-tx .content-section .transaction-detail .send .detail-row .koi,
 .total .detail-row .koi {
-  font-size: 21px;
+  font-size: 19px;
+  margin-bottom: 5px;
 }
 
 .sign-tx .content-section .transaction-detail .detail.total .row-label {

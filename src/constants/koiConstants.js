@@ -337,7 +337,9 @@ export const FILENAME = {
 
 export const URL = {
   TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf',
-  GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchBridgeDetails'
+  GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchBridgeDetails',
+  ETHERSCAN_MAINNET: 'https://etherscan.io',
+  ETHERSCAN_RINKEBY: 'https://rinkeby.etherscan.io'
 }
 
 export const BRIDGE_FLOW = {
@@ -398,3 +400,8 @@ export const ALLOWED_ORIGIN = [
   'https://dev.koi.rocks',
   'https://www.verto.exchange'
 ]
+
+export const KOI_ROUTER_CONTRACT = {
+  MAINNET: '0x5B8Db3177f9904b4f8510D7FD074A44Abf610528',
+  RINKEBY: '0x8ce759A419aC0fE872e93C698F6e352246FDb50B'
+}
