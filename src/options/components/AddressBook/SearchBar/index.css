@@ -1,0 +1,35 @@
+.ab-search-bar-wrapper {
+  width: 166px;
+  height: 34px;
+  position: absolute;
+}
+
+.ab-search-bar {
+  border: 0px;
+  border-radius: 4px;
+
+  width: 166px;
+  height: 34px;
+
+  padding-left: 12px;
+  padding-right: 32px;
+
+  color: #211c52;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.ab-search-bar::placeholder {
+  color: #211c52;
+  opacity: 1; /* Firefox */
+}
+
+.ab-search-bar__search-icon {
+  width: 18px;
+  height: 18px;
+
+  position: relative;
+  left: 137px;
+  top: -27px;
+}

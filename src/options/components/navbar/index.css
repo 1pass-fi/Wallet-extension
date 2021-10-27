@@ -56,3 +56,14 @@
   height: 23px;
   line-height: 11px;
 }
+
+.navbar .nav-item.addressBookIcon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 36px;
+}
+
+.navbar .nav-item.active .addressBookIcon {
+  margin-right: -3px;
+}

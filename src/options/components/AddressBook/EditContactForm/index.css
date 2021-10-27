@@ -1,0 +1,224 @@
+.ab-contact-form {
+  width: 411px;
+  height: 486px;
+
+  background-color: #55557f;
+  box-shadow: inset 8px 0 10px -6px rgba(0, 0, 0, 0.16);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.ab-contact-form__body {
+  height: 433px;
+  width: 100%;
+
+  padding: 22px 32px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  overflow-y: scroll;
+
+  box-shadow: inset 0 -10px 10px -10px rgba(0, 0, 0, 0.16);
+  direction: rtl;
+}
+
+.ab-contact-form__body * {
+  direction: ltr;
+}
+
+.ab-contact-form__avatar {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 100%;
+
+  margin-bottom: 7px;
+}
+
+/* 
+  Styling general input
+*/
+.ab-contact-form input {
+  color: white;
+  background-color: #22256b;
+  border-radius: 4px;
+
+  padding-left: 5px;
+}
+
+.ab-contact-form input::placeholder {
+  color: white;
+  opacity: 1;
+}
+
+.ab-contact-form__name {
+  width: 184px;
+  height: 32px;
+
+  font-weight: 300;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+
+  text-align: center;
+}
+
+/*
+  Notes section
+*/
+
+.ab-contact-form__notes-label {
+  margin-top: 11px;
+  margin-bottom: 5px;
+  color: #9be7c4;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.ab-contact-form__notes {
+  width: 100%;
+  height: 22px;
+  margin-bottom: 27px;
+
+  text-align: center;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+/*
+  Addresses section
+*/
+
+.ab-contact-form__input-group {
+  width: 100%;
+  margin-bottom: 14px;
+
+  font-size: 12px;
+  letter-spacing: -0.01em;
+}
+
+.ab-contact-form__input-group .input-group__first-row {
+  width: 100%;
+  margin-bottom: 13px;
+}
+
+.ab-contact-form__input-group .input-group__second-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ab-contact-form__input-group .second-row__left {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 223px;
+}
+
+.ab-contact-form__input-group .input-group__label {
+  height: 22px;
+  width: 223px;
+
+  font-weight: 600;
+  color: #9be7c4;
+}
+
+.ab-contact-form__input-group .input-group__label::placeholder {
+  color: #9be7c4;
+}
+
+.ab-contact-form__input-group .input-group__input-value {
+  width: 197px;
+  height: 22px;
+}
+
+.ab-contact-form__input-group--did .input-group__label {
+  height: 22px;
+  width: 223px;
+
+  font-weight: 600;
+  color: #ffc78f;
+}
+
+.ab-contact-form__input-group--did .input-group__label::placeholder {
+  color: #ffc78f;
+  opacity: 1;
+}
+
+/*
+  Add more button
+*/
+
+.ab-contact-form__add-more {
+  cursor: pointer;
+
+  align-self: flex-end;
+  margin-bottom: 27px;
+
+  display: flex;
+
+  color: #9be7c4;
+
+  font-size: 14px;
+}
+
+/*
+  Footer section
+*/
+
+.ab-contact-form__footer {
+  height: 53px;
+  width: 400px;
+
+  align-self: flex-end;
+
+  padding-left: 21px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* 
+  Icons resize
+*/
+.ab-contact-form .ab-close-icon {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 25px;
+  height: 25px;
+}
+
+.ab-contact-form .ab-copy-icon {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+
+  filter: brightness(0) saturate(100%) invert(90%) sepia(19%) saturate(608%) hue-rotate(90deg)
+    brightness(96%) contrast(87%);
+}
+
+.ab-contact-form .ab-trash-icon {
+  cursor: pointer;
+  width: 15px;
+  height: 17px;
+}
+
+.ab-contact-form .ab-form-add-icon {
+  cursor: pointer;
+
+  margin-right: 9px;
+  width: 20px;
+  height: 20px;
+
+  filter: brightness(0) saturate(100%) invert(90%) sepia(19%) saturate(608%) hue-rotate(90deg)
+    brightness(96%) contrast(87%);
+}

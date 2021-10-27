@@ -6,6 +6,7 @@ import CollectionIcon from 'img/navbar/collection.svg'
 import CreateNFTIcon from 'img/navbar/create-nft.svg'
 import SettingIcon from 'img/navbar/setting.svg'
 import FriendIcon from 'img/navbar/friend.svg'
+import AddressBookIcon from 'img/navbar/address-book-icon.svg'
 
 import './index.css'
 import { useLocation } from 'react-router'
@@ -16,6 +17,7 @@ import { TYPE } from 'constants/accountConstants'
 
 import { popupAccount } from 'services/account'
 
+import AddressBook from 'options/components/AddressBook'
 import SlideNavbar from './SlideNav'
 
 
@@ -27,6 +29,7 @@ export default () => {
   const [isExpandSubNavbar, setIsExpandSubNavbar] = useState(false)
   const [clickable, setClickable] = useState(true)
   const [hasArweave, setHasArweave] = useState(true)
+  const [showAddressBook, setShowAddressBook] = useState(false)
   
   useEffect(() => {
     const showArweaveForm = async () => {
@@ -86,6 +89,16 @@ export default () => {
               <SettingIcon className="nav-item" />
             </div>
           </Link>
+
+          <div
+            data-tip='Address Book'
+            className={`nav-item addressBookIcon-wrapper ${
+              showAddressBook ? 'active' : ''
+            }`}
+            onClick={() => setShowAddressBook(prev => !prev)}
+          >
+            <AddressBookIcon className="addressBookIcon" />
+          </div>
         </div>
 
         <div className="bottom">
@@ -104,9 +117,10 @@ export default () => {
           }...`}</div>
         </div>
       </div>
-      {pathname.includes('/settings') && (
+      {pathname.includes('/settings') && !showAddressBook  && (
         <SlideNavbar isExpand={isExpandSubNavbar} />
       )}
+      {showAddressBook && <AddressBook onClose={() => setShowAddressBook(false)}/>}
       <ReactTooltip place="top" type="dark" effect="float" />
     </div>
   )
