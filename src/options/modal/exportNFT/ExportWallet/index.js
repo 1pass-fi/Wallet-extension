@@ -10,6 +10,7 @@ import StackIcon from 'img/stack-icon.svg'
 import StackWhiteIcon from 'img/stack-white-icon.svg'
 import WarningIcon from 'img/dangerous-logo.svg'
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
+import QuestionIcon from 'img/question-tooltip.svg'
 
 import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
@@ -364,7 +365,7 @@ export default ({ info, onClose, type }) => {
                         disabled={true}
                         className='input'
                       />
-                      <div className='description'>
+                      <div className='description-one-item'>
                         Many NFTs will only have 1 item minted.
                       </div>
                     </div>
@@ -434,15 +435,42 @@ export default ({ info, onClose, type }) => {
                 )}
 
                 {step != TRANSFER_STEPS.SUCCESS && (
-                  <div className='estimate-cost'>
-                    <div className='text'>Estimated costs:</div>
-                    <div className='number'>
-                      <div className='koi-number'>
-                        {type !== TYPE.ARWEAVE ? '10 KOII' : '0.00015 ETH'}
+                  type !== TYPE.ARWEAVE ? (
+                    <div className="estimate-cost">
+                      <div className="text">Estimated costs:</div>
+                      <div className="number">
+                        <div className="koi-number">10 KOII</div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  ) : (
+                    <div className="estimate-cost--eth">
+                      <div className="cost">
+                        <span>Cost:</span>
+                        <span>0.000150 ETH</span>
+                      </div>
+                      <div className="cost">
+                        <div
+                          className="question-mark-icon"
+                          data-tip="Gas fees are paid to crypto miners who process transactions on the Ethereum network. Koii does not profit from gas fees. <br/> <br/>
+                          Gas fees are set by the network and fluctuate based on network traffic and transaction complexity.<br/> <br/>
+                          This estimate will update about every 30 seconds."
+                          data-for="gas-estimate-note"
+                        >
+                          <QuestionIcon />
+                        </div>
+                        <span>Gas estimate:</span>
+                        <span>0.000412 ETH</span>
+                      </div>
+                      <div className="estimate-note">
+                        {'update in < 30 sec.'}
+                      </div>
+                      <div className="total-cost">
+                        <span>Total: </span>
+                        <span className="total-number">0.001500 ETH</span>
+                      </div>
+                    </div>
+                  )
+                )}                
 
                 {step == TRANSFER_STEPS.INPUT_INFO && (
                   <div className='transfer-button' onClick={onOneClick}>
@@ -471,8 +499,12 @@ export default ({ info, onClose, type }) => {
         <div className='goback-button' data-tip='Back' onClick={onGoBack}>
           <GoBackIcon />
         </div>
+        <div className='foot-note'>
+          This feature is in beta.
+        </div>
       </div>
       <ReactTooltip place='top' type='dark' effect='float' />
+      <ReactTooltip id="gas-estimate-note" border="true" className="gas-estimate-note-tooltip" multiline="true" place='left' effect='float' />
     </>
   )
 }

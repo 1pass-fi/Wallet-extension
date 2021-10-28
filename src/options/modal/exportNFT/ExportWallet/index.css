@@ -17,8 +17,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 540px;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 16px 34px;
   position: relative;
   width: 690px;
@@ -41,6 +40,9 @@
   line-height: 24px;
   max-width: 500px;
   text-align: center;
+
+  margin-top: 5px;
+  margin-bottom: 23px;
 }
 
 .transfer-wallet-modal .steps {
@@ -74,7 +76,7 @@
   display: flex;
   gap: 30px;
   height: 320px;
-  justify-content: flex-start;
+  justify-content: space-around;
   width: 100%;
 }
 
@@ -150,6 +152,8 @@
 }
 .transfer-wallet-modal .content .right .eth-address,
 .transfer-wallet-modal .content .right .number-to-transfer {
+  margin-top: 36p;
+  margin-bottom: 36px;
   width: 100%;
   position: relative;
 }
@@ -159,8 +163,11 @@
   width: 26px;
 }
 
-.transfer-wallet-modal .content .right .number-to-transfer .description {
+.transfer-wallet-modal .content .right .number-to-transfer .description-one-item {
+  font-size: 10px;
+  letter-spacing: 0.03em;
   text-align: left;
+  margin-top: 6px;
 }
 
 .transfer-wallet-modal .content .right .number-to-transfer.confirm {
@@ -312,6 +319,56 @@ input::-webkit-inner-spin-button {
 
 .transfer-wallet-modal .content .right .estimate-cost .number * {
   color: #49ce8b;
+}
+
+.transfer-wallet-modal .content .right .estimate-cost--eth {
+  width: 276px;
+
+  display: flex;
+  flex-direction: column;
+
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0.03em;
+
+  position: relative;
+}
+
+.transfer-wallet-modal .content .right .estimate-cost--eth .cost {
+  display: flex;
+  width: 100%;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.transfer-wallet-modal .content .right .estimate-cost--eth .estimate-note {
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  color: #5ed9d1;
+}
+
+.transfer-wallet-modal .content .right .estimate-cost--eth .total-cost {
+  margin-top: 14px;
+  margin-bottom: 18px;
+
+  display: flex;
+  width: 100%;
+
+  justify-content: space-between;
+  align-items: center;
+
+  font-weight: 600;
+}
+
+.transfer-wallet-modal .content .right .estimate-cost--eth .total-number {
+  color: #49ce8b;
+}
+
+.transfer-wallet-modal .content .right .estimate-cost--eth .question-mark-icon {
+  position: absolute;
+  left: -20px;
+  top: 22px;
 }
 
 .transfer-wallet-modal .content .right .transfer-button {
@@ -482,4 +539,33 @@ input::-webkit-inner-spin-button {
 
 .transfer-wallet-modal .content .right .eth-address input {
   padding-bottom: 12px;
+}
+
+.transfer-wallet-modal .foot-note {
+  font-size: 10px;
+  margin-top: 38px;
+  font-weight: 400px;
+  letter-spacing: 0.03em;
+}
+
+.gas-estimate-note-tooltip {
+  box-sizing: border-box;
+  padding: 11px 10px !important;
+
+  width: 212px !important;
+
+  background-color: #171753 !important;
+  opacity: 1 !important;
+  color: white !important;
+
+  border-radius: 3px !important;
+  text-align: left !important;
+}
+
+.gas-estimate-note-tooltip span {
+  text-align: left !important;
+
+  font-size: 12px !important;
+  line-height: 16px !important;
+  letter-spacing: 0.03em !important;
 }
