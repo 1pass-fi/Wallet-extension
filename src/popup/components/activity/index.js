@@ -8,11 +8,10 @@ import ReactTooltip from 'react-tooltip'
 import { loadActivities } from 'actions/koi'
 import { setTransactions } from 'actions/transactions'
 import { setError } from 'actions/error'
-import { setActivityNotifications } from 'actions/activityNotification'
 import { setSettings } from 'actions/settings'
 
 // components
-import ActivityRow from './activityRow'
+import ActivityItem from './activityRow'
 import Button from 'shared/button'
 import CheckBox from 'shared/checkbox'
 import ToggleButton from 'shared/ToggleButton'
@@ -38,7 +37,7 @@ import './index.css'
 
 export const ActivitiesList = ({ activities = [] }) => {
   return activities.map((activity, index) => (
-    <ActivityRow
+    <ActivityItem
       key={index}
       activityName={activity.activityName}
       expense={activity.expense}
@@ -46,13 +45,14 @@ export const ActivitiesList = ({ activities = [] }) => {
       id={activity.id}
       source={activity.source}
       accountName={activity.accountName}
+      network={activity.network}
     />
   ))
 }
 
 export const PendingList = ({ transactions, handleExpiredAction }) => {
   return transactions.map((transaction, index) => (
-    <ActivityRow
+    <ActivityItem
       key={index}
       activityName={transaction.activityName}
       expense={transaction.expense}
@@ -76,11 +76,7 @@ const AccountLabel = ({ accountName, collapsed, setCollapsed }) => {
   )
 }
 
-
-/* 
-  Activities of single account
-*/
-const Activity = ({
+const ActivityOneAccount = ({
   activityItems,
   account,
   cursor,
@@ -106,33 +102,76 @@ const Activity = ({
   )
 }
 
-/* 
-  Activities of all accounts
-*/
-const Activities = ({ 
-  activities, 
-  setActivities, 
+const Activity = ({ 
+  activities,
+  setActivities,
   loadActivities, 
-  accounts, 
-  activityNotifications,
-  setActivityNotifications,
-  settings,
-  setSettings
+  accounts,
+  activitySettings,
+  setActivitySettings
 }) => {
   const [pendingTransactions, setPendingTransactions] = useState([])
-  const [notifications, setNotifications] = useState([])
-  const [allActivities, setAllActivities] = useState([])
-  const [showAllAccounts, setShowAllAccounts] = useState(settings.showAllAccounts)
-  const [accountsToShow, setAccountsToShow] = useState(settings.accountsToShowOnActivities)
-  const [selectAccountsCollapsed, setSelectAccountCollapsed] = useState(!isEmpty(settings.accountsToShowOnActivities))
+  const [showAllAccounts, setShowAllAccounts] = useState(activitySettings.showAllAccounts)
+  const [accountsToShow, setAccountsToShow] = useState(activitySettings.accountsToShowOnActivities)
+  const [selectAccountsCollapsed, setSelectAccountCollapsed] = useState(!isEmpty(activitySettings.accountsToShowOnActivities))
+  const [boilerplateLoaded, setBoilerplateLoaded] = useState(false)
   const [deleteTransactionModalStatus, setDeleteTransactionModalStatus] = useState({
     isShow: false,
     txInfo: {},
   })
 
+  /* 
+    Activites will be shown by looping through an array of an object that contains
+    essential data.
+    The reason is we are displaying activities in both "allAccounts" and "Individual"
+    For "Individual", to individually tracking account's activities, it requires to seperate each account from
+    others.
+  */
+  const loadActivitiesBoilerplate = async () => {
+    const activitiesPayloads = []
+    const _accounts = await popupAccount.getAllMetadata() || []
+    _accounts.forEach(account => {
+      activitiesPayloads.push({ account, activityItems: [], cursor: { offset: 0, limit: 20, doneLoading: null } })
+    })
+  
+    /* 
+      Currently we are storing activities of all accounts into an seperate place on storage to do sortation
+      We will abstract "All Accounts" as an account with the address of "all"
+      Take a look at actions/koi loadActivities()
+    */
+    const allActivitiesPayload = {
+      account: { address: 'all' },
+      activityItems: [],
+      cursor: { offset: 0, limit: 20, doneLoading: null }
+    }
+
+    activitiesPayloads.push(allActivitiesPayload)
+
+    setActivities(activitiesPayloads)
+    setBoilerplateLoaded(true)
+  }
+
+  const handleLoadAllActivities = () => {
+    activities.forEach(activity => {
+      loadActivities(activity.cursor, activity.account.address)
+    })
+  }
 
   const handleExpiredAction = (txInfo) => {
     setDeleteTransactionModalStatus({isShow: true, txInfo})
+  }
+
+  const handleSelectAccount = async (e) => {
+    let _accountToShows = [...accountsToShow]
+    if (_accountToShows.includes(e.target.id)) {
+      _accountToShows = _accountToShows.filter(address => address !== e.target.id)
+    } else {
+      _accountToShows.push(e.target.id)
+    }
+
+    setActivitySettings({ accountsToShowOnActivities: _accountToShows })
+    setAccountsToShow(_accountToShows)
+    await storage.setting.set.accountsToShowOnActivities(_accountToShows)
   }
 
   useEffect(() => {
@@ -141,35 +180,9 @@ const Activities = ({
       setPendingTransactions(allPendingTransactions)
     }
 
-    async function loadNotifications() {
-      setNotifications(activityNotifications)
-      setActivityNotifications([])
-      storage.generic.set.activityNotifications([])
-    }
-
-    // async function getShowActivitiesBy() {
-    //   const _showActivitiesBy = await storage.setting.get.showActivitiesBy()
-    //   setShowAllAccounts(_showActivitiesBy == SHOW_ACTIVITIES_BY.ALL_ACCOUNTS)
-    // }
-
-    loadNotifications()
     loadPendingTransactions()
-    handleLoadAllActivities()
-    // getShowActivitiesBy()
+    loadActivitiesBoilerplate()
   }, [])
-
-  useEffect(() => {
-    const getAllActivities = () => {
-      let _allActivities = []
-      activities.forEach(activity => {
-        _allActivities = [..._allActivities, ...activity.activityItems]
-      })
-      _allActivities = orderBy(_allActivities, 'time', 'desc')
-      setAllActivities(_allActivities)
-    }
-
-    getAllActivities()
-  }, [activities])
 
   useEffect(() => {
     const setShowActivitiesBy = async () => {
@@ -180,28 +193,13 @@ const Activities = ({
       }
     }
 
-    setSettings({ showAllAccounts })
+    setActivitySettings({ showAllAccounts })
     setShowActivitiesBy()
   }, [showAllAccounts])
 
-  const handleSelectAccount = async (e) => {
-    let _accountToShows = [...accountsToShow]
-    if (_accountToShows.includes(e.target.id)) {
-      _accountToShows = _accountToShows.filter(address => address !== e.target.id)
-    } else {
-      _accountToShows.push(e.target.id)
-    }
-
-    setSettings({ accountsToShowOnActivities: _accountToShows })
-    setAccountsToShow(_accountToShows)
-    await storage.setting.set.accountsToShowOnActivities(_accountToShows)
-  }
-
-  const handleLoadAllActivities = () => {
-    activities.forEach(activity => {
-      loadActivities(activity.cursor, activity.account.address)
-    })
-  }
+  useEffect(() => {
+    if (boilerplateLoaded) handleLoadAllActivities()
+  }, [boilerplateLoaded])
 
   return (
     <div className='activities'>
@@ -236,7 +234,7 @@ const Activities = ({
       {/* SHOW ACCOUNTS INDIVIDUALLY */}
       {!showAllAccounts && activities.map((activity, index) =>
         <div hidden={!accountsToShow.includes(activity.account.address)}>
-          <Activity 
+          <ActivityOneAccount 
             key={index}
             activityItems={activity.activityItems}
             account={activity.account}
@@ -249,7 +247,7 @@ const Activities = ({
       {/* SHOW ACTIVITIES OF ALL ACCOUNT */}
       {showAllAccounts && activities.map((activity, index) =>
         <div hidden={activity.account.address !== 'all'}>
-          <Activity 
+          <ActivityOneAccount 
             key={index}
             activityItems={activity.activityItems}
             account={activity.account}
@@ -280,8 +278,7 @@ const Activities = ({
 const mapStateToProps = (state) => ({ 
   activities: state.activities,
   accounts: state.accounts,
-  activityNotifications: state.activityNotifications,
-  settings: state.settings
+  activitySettings: state.settings
 })
 
 export default connect(mapStateToProps, {
@@ -289,6 +286,5 @@ export default connect(mapStateToProps, {
   setTransactions,
   setError,
   setActivities,
-  setActivityNotifications,
-  setSettings
-})(Activities)
+  setActivitySettings: setSettings
+})(Activity)

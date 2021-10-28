@@ -163,10 +163,6 @@ export const loadContent = () => async (dispatch) => {
 }
 
 export const loadActivities = (cursor, address) => async (dispatch, getState) => {
-  // cursor = { offset, limit, doneLoading }
-  /*
-    the sdk will require cursors for the next request if we want to receive next set of activities (pagination).
-  */
   try {
     let allActivities
     let { offset, limit } = cursor
@@ -185,7 +181,7 @@ export const loadActivities = (cursor, address) => async (dispatch, getState) =>
 
     const newActivities = await Promise.all(activities.map(async activity => {
       if (get(activity, 'account.address') === address) {
-        const activitiesItems = [...activity.activityItems ,...activitiesList]
+        const activitiesItems = [...activity.activityItems, ...activitiesList]
         activity.activityItems = activitiesItems
         const doneLoading = !activitiesList.length
         activity.cursor = { offset, limit, doneLoading }
@@ -202,39 +198,6 @@ export const loadActivities = (cursor, address) => async (dispatch, getState) =>
     dispatch(setError(err.message))
   }
 }
-// export const loadActivities = (cursor, address) => async (dispatch, getState) => {
-//   /*
-//     the sdk will require cursors for the next request if we want to receive next set of activities (pagination).
-//   */
-//   try {
-//     let { activitiesList,
-//       nextOwnedCursor: ownedCursor, 
-//       nextRecipientCursor: recipientCursor } = await backgroundRequest.activities.loadActivities({ cursor, address })
-
-//     const account = await popupAccount.getAccount({ address })
-//     const accountName = await account.get.accountName()
-
-//     activitiesList = activitiesList.map(activity => ({ ...activity, accountName }))
-
-//     const { activities } = getState()
-//     const newActivities = await Promise.all(activities.map(async activity => {
-//       if (get(activity, 'account.address') == address) {
-//         const activitiesItems = await account.get.activities()
-//         activity.activityItems = activitiesItems
-//         const doneLoading = !activitiesList.length
-//         activity.cursor = { ownedCursor, recipientCursor, doneLoading }
-//       }
-
-//       return activity
-//     }))
-
-//     console.log('New Activities: ', newActivities)
-
-//     dispatch(setActivities(newActivities))
-//   } catch (err) {
-//     dispatch(setError(err.message))
-//   }
-// }
 
 export const makeTransfer = (sender, qty, target, token) => async (dispatch) => {
   try {

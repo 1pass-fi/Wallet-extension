@@ -310,8 +310,8 @@ export const STATEMENT = {
 export const LOAD_BALANCES_TIME_INTERVAL = 300000 // for arweave
 export const LOAD_ETH_BALANCES_TIME_INTERVAL = 900000 // for ethereum
 export const LOAD_TRANSACTION_STATE_INTERVAL = 120000
-export const RELOAD_ARWEAVE_ACTIVITIES = 20000
-export const RELOAD_ETHEREUM_ACTIVITIES = 108000000 // 3 hours
+export const RELOAD_ARWEAVE_ACTIVITIES = 300000 // 5 minutes
+export const RELOAD_ETHEREUM_ACTIVITIES = 3600000 // 1 hour
 
 export const NFT_BIT_DATA = 'NFT_BIT_DATA'
 
@@ -341,7 +341,7 @@ export const URL = {
   TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf',
   GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchBridgeDetails',
   ETHERSCAN_MAINNET: 'https://etherscan.io',
-  ETHERSCAN_RINKEBY: 'https://rinkeby.etherscan.io'
+  ETHERSCAN_RINKEBY: 'https://rinkeby.etherscan.io',
 }
 
 export const BRIDGE_FLOW = {
@@ -406,4 +406,9 @@ export const ALLOWED_ORIGIN = [
 export const KOI_ROUTER_CONTRACT = {
   MAINNET: '0x5B8Db3177f9904b4f8510D7FD074A44Abf610528',
   RINKEBY: '0x8ce759A419aC0fE872e93C698F6e352246FDb50B'
+}
+
+export const ETHERSCAN_API = {
+  MAINNET: 'https://api.etherscan.io',
+  RINKEY: 'https://api-rinkeby.etherscan.io'
 }

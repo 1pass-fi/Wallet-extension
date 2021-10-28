@@ -39,12 +39,12 @@ setInterval(() => {
 
 // Reload arweave activities
 setInterval(() => {
-  reloadArweaveActivities()
+  reloadArweaveActivities(TYPE.ARWEAVE)
 }, RELOAD_ARWEAVE_ACTIVITIES)
 
 // Reload ethereum activities
 setInterval(() => {
-  reloadEthActivities()
+  reloadArweaveActivities(TYPE.ETHEREUM)
 }, RELOAD_ETHEREUM_ACTIVITIES)
 
 

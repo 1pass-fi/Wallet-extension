@@ -7,7 +7,7 @@ import ReactTooltip from 'react-tooltip'
 import { includes, get } from 'lodash'
 
 // constants
-import { PATH } from 'constants/koiConstants'
+import { ETHERSCAN_API, ETH_NETWORK_PROVIDER, PATH, URL } from 'constants/koiConstants'
 
 // utils
 import { transactionAmountFormat } from 'utils'
@@ -24,7 +24,21 @@ const propTypes = {
   source: PropTypes.string,
 }
 
-const ActivityRow = ({ activityName, expense, date, source, id, pending, price, currency, accountName, expired, handleExpiredAction, address }) => {
+const ActivityRow = ({ 
+  activityName,
+  expense, 
+  date, 
+  source, 
+  id, 
+  pending, 
+  price, 
+  currency,
+  accountName, 
+  expired, 
+  handleExpiredAction, 
+  address,
+  network 
+}) => {
   const [displayInfo, setDisplayInfo] = useState({})
   const [loaded, setLoaded] = useState(false)
 
@@ -37,7 +51,7 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending, price, 
       try {
         let info = {}
         let recipientOrSender
-        let fromToAddress, blockButtonText, pendingOrExpired, expenseText, toUsdText, dateString
+        let fromToAddress, blockButtonText, pendingOrExpired, expenseText, toUsdText, dateString, blockUrl
   
         recipientOrSender = source ? `${source.slice(0,4)}...${source.slice(source.length - 5)}` : ''
   
@@ -50,7 +64,16 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending, price, 
         }
     
         blockButtonText = pending ? 'explore block' : 'view block'
+        if (network) blockButtonText = 'etherscan'
+
         pendingOrExpired = expired ? 'Transaction expired' : 'Transaction pending'
+
+        if (!network) {
+          blockUrl = `${PATH.VIEW_BLOCK_TRANSACTION}/${id}`
+        } else {
+          if (network === ETH_NETWORK_PROVIDER.MAINNET) blockUrl = `${URL.ETHERSCAN_MAINNET}/tx/${id}`
+          if (network === ETH_NETWORK_PROVIDER.RINKEBY) blockUrl = `${URL.ETHERSCAN_RINKEBY}/tx/${id}`
+        }
   
         if (!includes(activityName, 'Bridge')) {
           let sign = includes(activityName, 'Received') ? '+' : '-'
@@ -67,7 +90,7 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending, price, 
 
         dateString = dateFormat(date)
 
-        info = { fromToAddress, blockButtonText, pendingOrExpired, expenseText, toUsdText, dateString }
+        info = { fromToAddress, blockButtonText, pendingOrExpired, expenseText, toUsdText, dateString, blockUrl }
         setDisplayInfo(info)
         setLoaded(true)
       } catch (err) {
@@ -112,7 +135,7 @@ const ActivityRow = ({ activityName, expense, date, source, id, pending, price, 
             Different text, do same thing.
           */}
           {!includes(activityName, 'Bridged') && <div className='activity-status completed'>
-            <a target="_blank" href={`${PATH.VIEW_BLOCK_TRANSACTION}/${id}`}>
+            <a target="_blank" href={get(displayInfo, 'blockUrl')}>
               {get(displayInfo, 'blockButtonText')}
             </a>
           </div>}

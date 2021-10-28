@@ -217,29 +217,11 @@ const Popup = ({
     }
   }
 
-  const loadActivitiesBoilerplate = async () => {
-    const activitiesPayloads = []
-    const _accounts = await popupAccount.getAllMetadata() || []
-    _accounts.forEach(account => {
-      activitiesPayloads.push({ account, activityItems: [], cursor: { offset: 0, limit: 20, doneLoading: null } })
-    })
-  
-    const allActivitiesPayload = {
-      account: { address: 'all' },
-      activityItems: [],
-      cursor: { offset: 0, limit: 20, doneLoading: null }
-    }
-
-    activitiesPayloads.push(allActivitiesPayload)
-
-    if (isEmpty(activities)) setActivities(activitiesPayloads)
-  }
   useEffect(() => {
     const load = async () => {
       await loadApp()
       await loadPrice()
       await loadSettings()
-      await loadActivitiesBoilerplate()
       await loadAssetsTabSettings()
       setAppLoaded(true)
     }

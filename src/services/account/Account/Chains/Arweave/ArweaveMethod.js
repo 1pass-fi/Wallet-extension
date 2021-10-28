@@ -156,81 +156,86 @@ export class ArweaveMethod {
     const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
 
     fetchedData = fetchedData.filter(activity => !!get(activity, 'node.block')).map(activity => {
-      const time = get(activity, 'node.block.timestamp')
-      const timeString = isNumber(time) ? moment(time * 1000).format('MMMM DD YYYY') : ''
-      const id = get(activity, 'node.id')
-      let activityName = 'Sent AR'
-      let expense = Number(get(activity, 'node.quantity.ar')) + Number(get(activity, 'node.fee.ar'))
-
-      // get input tag
-      let inputTag = (get(activity, 'node.tags'))
-      if (!isArray(inputTag)) inputTag = []
-      inputTag = inputTag.filter(tag => tag.name === 'Input')
-
-      // get Init State tag
-      const initStateTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Init-State')
-
-      // get action tag
-      const actionTag = ((get(activity, 'node.tags')).filter(tag => tag.name === 'Action'))
-      let source = get(activity, 'node.recipient')
-      let inputFunction
-      if (inputTag[0]) {
-        inputFunction = JSON.parse(inputTag[0].value)
-        if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
-          activityName = 'Sent KOII'
-          expense = inputFunction.qty
-          source = inputFunction.target
-        } else if (inputFunction.function === 'updateCollection') {
-          activityName = 'Updated Collection'
-        } else if (inputFunction.function === 'updateKID') {
-          activityName = 'Updated KID'
-        } else if (inputFunction.function === 'lock') {
-          activityName = 'Locked NFT'
-        }
-
-        if (inputFunction.function === 'registerData' ||
-          inputFunction.function === 'burnKoi' ||
-          inputFunction.function === 'migratePreRegister') {
-          activityName = 'Registered NFT'
-          source = null
-        }
-      }
-
-      if (initStateTag[0]) {
-        if (actionTag[0].value.includes('KID/Create')) {
-          const initState = JSON.parse(initStateTag[0].value)
-          activityName = `Created KID "${initState.name}"`
-        } else if (actionTag[0].value.includes('Collection/Create')) {
-          const initState = JSON.parse(initStateTag[0].value)
-          activityName = `Created Collection "${initState.name}"`
-        } else {
-          const initState = JSON.parse(initStateTag[0].value)
-          activityName = `Minted NFT "${initState.title}"`
-        }
-      }
-
-      if (get(activity, 'node.owner.address') !== this.koi.address) {
-        activityName = 'Received AR'
-        source = get(activity, 'node.owner.address')
-        expense -= Number(get(activity, 'node.fee.ar'))
+      try {
+        const time = get(activity, 'node.block.timestamp')
+        const timeString = isNumber(time) ? moment(time * 1000).format('MMMM DD YYYY') : ''
+        const id = get(activity, 'node.id')
+        let activityName = 'Sent AR'
+        let expense = Number(get(activity, 'node.quantity.ar')) + Number(get(activity, 'node.fee.ar'))
+  
+        // get input tag
+        let inputTag = (get(activity, 'node.tags'))
+        if (!isArray(inputTag)) inputTag = []
+        inputTag = inputTag.filter(tag => tag.name === 'Input')
+  
+        // get Init State tag
+        const initStateTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Init-State')
+  
+        // get action tag
+        const actionTag = ((get(activity, 'node.tags')).filter(tag => tag.name === 'Action'))
+        let source = get(activity, 'node.recipient')
+        let inputFunction
         if (inputTag[0]) {
           inputFunction = JSON.parse(inputTag[0].value)
           if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
-            activityName = 'Received KOII'
+            activityName = 'Sent KOII'
             expense = inputFunction.qty
             source = inputFunction.target
+          } else if (inputFunction.function === 'updateCollection') {
+            activityName = 'Updated Collection'
+          } else if (inputFunction.function === 'updateKID') {
+            activityName = 'Updated KID'
+          } else if (inputFunction.function === 'lock') {
+            activityName = 'Locked NFT'
+          }
+  
+          if (inputFunction.function === 'registerData' ||
+            inputFunction.function === 'burnKoi' ||
+            inputFunction.function === 'migratePreRegister') {
+            activityName = 'Registered NFT'
+            source = null
           }
         }
-      }
-
-      return {
-        id,
-        activityName,
-        expense,
-        accountName,
-        date: timeString,
-        source,
-        time
+  
+        if (initStateTag[0]) {
+          if (actionTag[0].value.includes('KID/Create')) {
+            const initState = JSON.parse(initStateTag[0].value)
+            activityName = `Created KID "${initState.name}"`
+          } else if (actionTag[0].value.includes('Collection/Create')) {
+            const initState = JSON.parse(initStateTag[0].value)
+            activityName = `Created Collection "${initState.name}"`
+          } else {
+            const initState = JSON.parse(initStateTag[0].value)
+            activityName = `Minted NFT "${initState.title}"`
+          }
+        }
+  
+        if (get(activity, 'node.owner.address') !== this.koi.address) {
+          activityName = 'Received AR'
+          source = get(activity, 'node.owner.address')
+          expense -= Number(get(activity, 'node.fee.ar'))
+          if (inputTag[0]) {
+            inputFunction = JSON.parse(inputTag[0].value)
+            if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
+              activityName = 'Received KOII'
+              expense = inputFunction.qty
+              source = inputFunction.target
+            }
+          }
+        }
+  
+        return {
+          id,
+          activityName,
+          expense,
+          accountName,
+          date: timeString,
+          source,
+          time,
+          address: this.koi.address
+        }
+      } catch (err) {
+        return {}
       }
     })
 
