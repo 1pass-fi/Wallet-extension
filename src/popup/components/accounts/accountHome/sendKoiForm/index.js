@@ -12,8 +12,9 @@ import Button from 'shared/button'
 import TransactionConfirmModal from 'popup/components/modals/transactionConfirmModal'
 
 // assets
-import WarningIcon from 'img/warning-icon2.svg'
+import DownArrowIcon from 'img/down-arrow-icon.svg'
 import EditIcon from 'img/edit-icon.svg'
+import WarningIcon from 'img/warning-icon-1.svg'
 
 // actions
 import { makeTransfer } from 'actions/koi'
@@ -29,6 +30,7 @@ import { TYPE } from 'constants/accountConstants'
 
 // services
 import { popupAccount } from 'services/account'
+import storage from 'services/storage'
 
 // utils
 import { getDisplayAddress, formatNumber } from 'options/utils'
@@ -55,6 +57,10 @@ const SendKoiForm = ({
   const [koiBalance, setKoiBalance] = useState(null)
 
   const [accountOptions, setAccountOptions] = useState([])
+  const [addressOptions, setAddressOptions] = useState([])
+  const [isShowDropdown, setIsShowDropdown] = useState(false)
+  const addressInputRef = useRef()
+
   const [tokenOptions, setTokenOptions] = useState([])
   const [selectedAccount, setSelectedAccount] = useState(null)
   const [selectedToken, setSelectedToken] = useState(null)
@@ -70,6 +76,17 @@ const SendKoiForm = ({
 
   const onChangeRecipientAddress = (e) => {
     setRecipient(e.target.value)
+  }
+
+  const onAddressDropdownChange = (account) => {
+    if (isEmpty(account)) {
+      setRecipient('')
+      addressInputRef.current.focus()
+    } else {
+      setRecipient(account.address)
+    }
+
+    setIsShowDropdown(false)
   }
 
   const onChangeAmount = (e) => {
@@ -164,6 +181,57 @@ const SendKoiForm = ({
     if (selectedAccount) getTokenOptions()
   }, [selectedAccount])
 
+  useEffect(() => {
+    const getAddressList = async () => {
+      const currentAB = (await storage.generic.get.addressBook()) || []
+      let options = []
+
+      for (const i in currentAB) {
+        currentAB[i].addresses?.map((address, index) => {
+          const addressName = isEmpty(address.name) ? currentAB[i].name : currentAB[i].name + ' (' + address?.name + ')'
+          options.push({
+            id: currentAB[i].id + index,
+            name: addressName,
+            address: address.value,
+          }) 
+        })
+      }
+
+      // remove invalid addresses
+      options = options?.filter((address) => {
+        return !isEmpty(address.address)
+      })
+
+      setAddressOptions(options)
+    }
+
+    getAddressList()
+  }, [])
+
+  const AddressDropdown = ({ accounts = [], onChange }) => {
+    return (
+      <div className='accounts'>
+        <div className='different-address' onClick={() => onChange({})}>
+          <div className='name'>Enter Address Manually</div>
+        </div>
+        {accounts.map((account) => {
+          return (
+            <div
+              key={account.id}
+              className='account'
+              onClick={() => onChange(account)}
+            >
+              <div className='info'>
+                <div className='name'>{account.name}</div>
+                <div className='address'>{getDisplayAddress(account.address)}</div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
   return (
     <form className='send-koi-form' onSubmit={handleSubmitForm}>
       {/* AVAILABLE BALANCE */}
@@ -207,14 +275,32 @@ const SendKoiForm = ({
 
       {/* RECIPIENT INPUT */}
       <div className='recipient'>
-        <InputField
-          label='To'
-          placeholder='Recipient’s wallet address'
-          className='form-input'
-          type='text'
-          onChange={onChangeRecipientAddress}
-          value={recipient}
-        />
+        <div className='label'>To</div>
+        <div className='recipient-input'>
+          <input
+            ref={(ip) => (addressInputRef.current = ip)}
+            value={recipient}
+            onChange={onChangeRecipientAddress}
+            className='recipient-input-field'
+            placeholder='Recipient’s wallet address'
+          />
+          <div className='address-dropdown'>
+            <div 
+              className="arrow-button" 
+              onClick={() => setIsShowDropdown(isShowDropdown => !isShowDropdown)}
+            >
+              <div className='arrow-icon' style={{transform: !isShowDropdown ? 'none' : 'rotateX(180deg)'}}>
+                <DownArrowIcon />
+              </div>
+            </div>
+          </div>
+          {isShowDropdown && (
+            <AddressDropdown
+              accounts={addressOptions}
+              onChange={onAddressDropdownChange}
+            />
+          )}
+        </div>
       </div>
 
       {/* HINT */}
@@ -232,7 +318,7 @@ const SendKoiForm = ({
       <div className='amount'>
         <InputField
           label='Amount'
-          placeholder={`Amount of ${selectedToken} to send`}
+          placeholder={`Amount ${selectedToken ? 'of ' + selectedToken : ''} to send`}
           className='form-input'
           type='number'
           onChange={onChangeAmount}

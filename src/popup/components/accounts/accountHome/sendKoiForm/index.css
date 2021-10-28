@@ -24,7 +24,7 @@
 }
 
 .send-koi-form .recipient {
-  margin: 28px 40px 20px 40px;
+  margin: 37px 40px 20px 40px;
 }
 
 .send-koi-form .input-field.form-input .input {
@@ -45,8 +45,9 @@
 }
 
 .send-koi-form .warning-icon {
-  width: 24px;
-  height: 24px;
+  height: 33px;
+  width: 26px;
+  border-radius: 0px;
   margin: 0px 10px 8px 0;
 }
 
@@ -74,6 +75,11 @@
   width: 183px;
   height: 32px;
   font-weight: 600;
+
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: center;
 }
 
 .send-koi-form .amount-in-usd {
@@ -115,4 +121,115 @@
   width: 30%;
   display: flex;
   justify-content: flex-end;
+}
+
+/* RECIPIENT */
+.recipient .recipient-input {
+  display: flex;
+}
+.recipient .recipient-input-field {
+  width: 298px;
+  height: 28px;
+  padding-left: 10px;
+  font-weight: 600;
+  font-size: 14.5px;
+  font-family: 'Sora', sans-serif;
+  color: #171753;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  height: 28px;
+  border: 1.5px solid #171753;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgb(0 0 0 / 16%);
+  border-radius: 2px 0 0 2px;
+}
+
+.recipient .recipient-input-field::placeholder {
+  font-weight: normal;
+  font-family: 'Sora', sans-serif;
+  color: #237b75;
+  opacity: 0.7;
+}
+
+.recipient .address-dropdown .arrow-button {
+  border: none;
+  padding: 0;
+  width: 48px;
+  height: 28px;
+  border: 1.5px solid #171753;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 0 2px 2px 0;
+  background-color: #171753;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dropdown */
+.recipient .accounts {
+  background: #ffffff;
+  border: 1.5px solid #171753;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0px;
+  position: absolute;
+  margin-top: 28px;
+
+  width: 346px;
+  max-height: 169px;
+  overflow-y: scroll;
+  z-index: 20;
+}
+
+.recipient .account {
+  display: flex;
+  flex-direction: row;
+  padding: 4px 16px 4px 10px;
+  cursor: pointer;
+  align-items: center;
+  gap: 10px;
+}
+
+.recipient .accounts .account .logo {
+  width: 26px;
+  height: 26px;
+}
+
+.recipient .account .info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.recipient .account:hover,
+.recipient .different-address:hover {
+  background: #bef0ed;
+}
+
+.recipient .account .name {
+  color: #171753;
+  font-size: 12px;
+  line-height: 32px;
+}
+
+.recipient .account .address {
+  font-size: 12px;
+  line-height: 32px;
+  color: #237b75;
+}
+
+.recipient .different-address {
+  padding: 4px 16px 4px 10px;
+  cursor: pointer;
+}
+.recipient .different-address .name {
+  color: #237b75;
+  font-size: 12px;
+  line-height: 32px;
 }
