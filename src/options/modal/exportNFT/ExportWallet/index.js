@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
+import React, { useContext, useRef, useState, useMemo, useEffect } from 'react'
 import isEmpty from 'lodash/isEmpty'
 import includes from 'lodash/includes'
 import ReactTooltip from 'react-tooltip'
+import Web3 from 'web3'
 
 import GoBackIcon from 'img/goback-icon-26px.svg'
 import ArweaveLogo from 'img/arweave-icon.svg'
@@ -14,10 +15,13 @@ import QuestionIcon from 'img/question-tooltip.svg'
 
 import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
+import { ETH_NETWORK_PROVIDER, KOI_ROUTER_CONTRACT } from 'constants/koiConstants'
 
 import { formatNumber, getDisplayAddress } from 'options/utils'
 import { getAddressesFromAddressBook } from 'utils'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import koiRouterABI from 'services/account/Account/Chains/Ethereum/abi/KoiRouter.json'
+
 
 import './index.css'
 import { popupAccount } from 'services/account'
@@ -136,6 +140,9 @@ export default ({ info, onClose, type }) => {
   const [chosenAccount, setChosenAccount] = useState({})
   const [step, setStep] = useState(1)
   const [isBridging, setIsBridging] = useState(false)
+  const [estimateGasUnit, setEstimateGasUnit] = useState(0)
+  const [currentGasPrice, setCurrentGasPrice] = useState(0)
+  const [totalGasCost, setTotalGasCost] = useState(0)
   const [addressOptions, setAddressOptions] = useState([])
 
   const addressInputRef = useRef()
@@ -157,6 +164,44 @@ export default ({ info, onClose, type }) => {
     getAddressList()
   }, [])
 
+  useEffect(() => {
+    const estimateGas = async () => {
+      // Use this wallet type since the type from the props is the receiver type, not the nft type
+      const walletType = await popupAccount.getType(_ownerAddress)
+      
+      if(walletType === TYPE.ETHEREUM) {
+        const account = await popupAccount.getAccount({ address: _ownerAddress })
+        const provider = await account.get.provider()
+        
+        const koiRouterContractAddress = provider === ETH_NETWORK_PROVIDER.MAINNET ? KOI_ROUTER_CONTRACT.MAINNET : KOI_ROUTER_CONTRACT.RINKEBY
+        
+        const web3 = new Web3(provider)
+        const koiRouterContract = new web3.eth.Contract(koiRouterABI, koiRouterContractAddress)
+        
+        const newEstimateGasUnit = await koiRouterContract.methods
+          .deposit(tokenAddress, txId, 1, address)
+          .estimateGas({ from: _ownerAddress, value: web3.utils.toWei('0.00015', 'ether') })
+          
+        const currentGasPrice = await web3.eth.getGasPrice()
+
+        console.log('========', currentGasPrice)
+
+        setEstimateGasUnit(newEstimateGasUnit)
+        setCurrentGasPrice(currentGasPrice)
+      }
+    }
+
+    estimateGas()
+  }, [])
+
+
+  useEffect(() => {
+    const currentGasBN = Web3.utils.toBN(currentGasPrice)
+    const newTotalGas = Web3.utils.fromWei(currentGasBN.muln(estimateGasUnit))
+  
+    setTotalGasCost(newTotalGas)
+  }, [currentGasPrice, estimateGasUnit])
+  
   const onAddressInputChange = (e) => {
     // handle input and dropdown
     setAddress(e.target.value)
@@ -197,23 +242,6 @@ export default ({ info, onClose, type }) => {
   const onConfirm = async () => {
     try {
       setIsBridging(true)
-      /* 
-        Ethereum provider validation
-      */
-      try {
-        const { address: senderAddress } = info
-        let walletType = await popupAccount.getType(senderAddress)
-        if (senderAddress && walletType === TYPE.ETHEREUM) {
-          const account = await popupAccount.getAccount({ address: senderAddress })
-          const provider = await account.get.provider()
-          if (includes(provider, 'mainnet')) {
-
-          }
-        }
-      } catch (err) {
-        console.log('Validation error: ', err.message)
-        return
-      }
 
       const result = await backgroundRequest.gallery.transferNFT({
         senderAddress: _ownerAddress,
@@ -267,7 +295,6 @@ export default ({ info, onClose, type }) => {
             </span>
             <ReactTooltip place='top' id='cannot-bridge' type="dark" effect="float"/>
           </div>
-          
           :
           <>
             {type === TYPE.ARWEAVE &&
@@ -459,14 +486,14 @@ export default ({ info, onClose, type }) => {
                           <QuestionIcon />
                         </div>
                         <span>Gas estimate:</span>
-                        <span>0.000412 ETH</span>
+                        <span>{formatNumber(totalGasCost, 6)} ETH</span>
                       </div>
                       <div className="estimate-note">
                         {'update in < 30 sec.'}
                       </div>
                       <div className="total-cost">
                         <span>Total: </span>
-                        <span className="total-number">0.001500 ETH</span>
+                        <span className="total-number">{formatNumber(Number(totalGasCost) + 0.00015, 6)} ETH</span>
                       </div>
                     </div>
                   )
@@ -504,7 +531,7 @@ export default ({ info, onClose, type }) => {
         </div>
       </div>
       <ReactTooltip place='top' type='dark' effect='float' />
-      <ReactTooltip id="gas-estimate-note" border="true" className="gas-estimate-note-tooltip" multiline="true" place='left' effect='float' />
+      <ReactTooltip id="gas-estimate-note" border={true} className="gas-estimate-note-tooltip" multiline={true} place='left' effect='float' />
     </>
   )
 }
