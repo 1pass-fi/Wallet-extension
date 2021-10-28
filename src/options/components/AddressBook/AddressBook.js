@@ -63,6 +63,10 @@ const AddressBook = ({ onClose }) => {
     await storage.generic.set.addressBook(currentAB)
 
     setAddresses(currentAB)
+
+    // after save contact successful, show the contact detail view
+    setShowCreateForm(false)
+    setSelectedContact(newAddress)
   }
 
   const removeContact = async (toRemoveId) => {

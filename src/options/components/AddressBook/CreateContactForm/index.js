@@ -46,7 +46,6 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
 
     await storeNewAddress({ ...userInfo, addresses: userAddresses })
     setNotification('Successfully added address to address book!')
-    clearForm()
   }
 
   const handleUserInfoChange = (e) => {
