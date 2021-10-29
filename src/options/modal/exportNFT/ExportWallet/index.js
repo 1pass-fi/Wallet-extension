@@ -140,6 +140,7 @@ export default ({ info, onClose, type }) => {
   const [chosenAccount, setChosenAccount] = useState({})
   const [step, setStep] = useState(1)
   const [isBridging, setIsBridging] = useState(false)
+  const [walletType, setWalletType] = useState('')
   const [estimateGasUnit, setEstimateGasUnit] = useState(0)
   const [currentGasPrice, setCurrentGasPrice] = useState(0)
   const [totalGasCost, setTotalGasCost] = useState(0)
@@ -165,10 +166,17 @@ export default ({ info, onClose, type }) => {
   }, [])
 
   useEffect(() => {
+    // Use this wallet type since the current type is of the receipient
+    const getWalletType = async () => {
+      const type = await popupAccount.getType(_ownerAddress)
+      setWalletType(type)
+    }
+
+    getWalletType()
+  }, [])
+
+  useEffect(() => {
     const estimateGas = async () => {
-      // Use this wallet type since the type from the props is the receiver type, not the nft type
-      const walletType = await popupAccount.getType(_ownerAddress)
-      
       if(walletType === TYPE.ETHEREUM) {
         const account = await popupAccount.getAccount({ address: _ownerAddress })
         const provider = await account.get.provider()
@@ -182,17 +190,33 @@ export default ({ info, onClose, type }) => {
           .deposit(tokenAddress, txId, 1, address)
           .estimateGas({ from: _ownerAddress, value: web3.utils.toWei('0.00015', 'ether') })
           
-        const currentGasPrice = await web3.eth.getGasPrice()
-
-        console.log('========', currentGasPrice)
-
         setEstimateGasUnit(newEstimateGasUnit)
-        setCurrentGasPrice(currentGasPrice)
       }
     }
 
     estimateGas()
-  }, [])
+  }, [walletType])
+  
+  useEffect(() => {
+    const getCurrentGasPrice = async () => {
+      if(walletType === TYPE.ETHEREUM) {
+        const account = await popupAccount.getAccount({ address: _ownerAddress })
+        const provider = await account.get.provider()
+
+        const web3 = new Web3(provider)
+          
+        const currentGasPrice = await web3.eth.getGasPrice()
+        setCurrentGasPrice(currentGasPrice)
+      }
+    }
+
+    getCurrentGasPrice()
+    const intervalId = setInterval(() => {
+      getCurrentGasPrice()
+    }, 30000)
+
+    return () => clearInterval(intervalId)
+  }, [walletType])
 
 
   useEffect(() => {
@@ -273,9 +297,6 @@ export default ({ info, onClose, type }) => {
     }
   }
 
-  const onSeeActivity = () => {
-    // TODO
-  }
 
   const onGoBack = () => {
     if (step == TRANSFER_STEPS.INPUT_INFO) {
