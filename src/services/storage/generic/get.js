@@ -79,4 +79,8 @@ export class GenericGet {
   async addressBook() {
     return await this.#chrome._getChrome(GENERIC.ADDRESS_BOOK) || []
   }
+
+  async allActivities() {
+    return await this.#chrome._getChrome(GENERIC.ALL_ACTIVITIES) || []
+  }
 }

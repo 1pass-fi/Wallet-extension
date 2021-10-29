@@ -1,6 +1,6 @@
 import { SET_CURSOR } from 'actions/types'
 
-const initialState = { ownedCursor: null, recipientCursor: null, doneLoading: false }
+const initialState = { offset: 0, limit: 20, doneLoading: false }
 
 export default (state = initialState, action) => {
   const { type, payload } = action

@@ -48,13 +48,7 @@ export class AccountGetter {
   async assets() {
     return await this.#accountStorage.getAssets()
   }
-  /**
-     *
-     * @returns {Array} List of Activities
-     */
-  async activities() {
-    return await this.#accountStorage.getField(ACCOUNT.ACTIVITIES)
-  }
+
   /**
      * 
      * @returns {Number} Price of token
@@ -116,11 +110,15 @@ export class AccountGetter {
     return { address, balance, koiBalance, accountName, type, provider, seedPhrase }
   }
 
-  async connectedSite() {
+  async conectedSite() {
     return await this.#accountStorage.getField(ACCOUNT.CONNECTED_SITE)
   }
 
   async provider() {
     return await this.#accountStorage.getField(ACCOUNT.PROVIDER)
+  }
+
+  async activities() {
+    return await this.#accountStorage.getActivities() || []
   }
 }

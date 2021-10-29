@@ -3,7 +3,7 @@
   Load activities, assets,...
 */
 
-import { PATH, ALL_NFT_LOADED, ACTIVITY_NAME } from 'constants/koiConstants'
+import { PATH, ALL_NFT_LOADED, ACTIVITY_NAME, ETHERSCAN_API } from 'constants/koiConstants'
 import { ACCOUNT } from 'constants/accountConstants'
 import { getChromeStorage } from 'utils'
 import { get, includes, isNumber } from 'lodash'
@@ -92,8 +92,80 @@ export class EthereumMethod {
     }
   }
 
-  async loadMyActivities() {
-    return { activitiesList: [] }
+  async updateActivities() {
+    let baseUrl, url, network
+
+    network = this.eth.getCurrentNetWork()
+
+    switch (network) {
+      case ETH_NETWORK_PROVIDER.RINKEBY:
+        baseUrl = ETHERSCAN_API.RINKEY
+        break
+      default:
+        baseUrl = ETHERSCAN_API.MAINNET
+    }
+
+    const walletAddress = this.eth.address
+    const offset = 1000
+    const etherscanAPIKey = 'USBA7QPN747A6KGYFCSY42KZ1W9JGFI2YB'
+
+    url = [
+      `${baseUrl}/`,
+      'api?module=account',
+      '&action=txlist',
+      `&address=${walletAddress}`,
+      '&startblock=0&endblock=99999999',
+      `&page=1&offset=${offset}`,
+      '&sort=desc',
+      `&apikey=${etherscanAPIKey}`
+    ]
+
+    url = url.join('')
+
+    let resp = await axios.get(url)
+
+    let fetchedData = resp.data.result
+    const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
+    fetchedData = fetchedData.map(activity => {
+      try {
+        let id, activityName, expense, date, source, time
+  
+        id = activity.hash
+        if (activity.from === this.eth.address.toLowerCase()) {
+          activityName = 'Sent ETH'
+        } else {
+          activityName = 'Received ETH'
+        }
+  
+        const gasFee = (activity.gasUsed * activity.gasPrice) / 1000000000000000000
+        const expenseValue = activity.value / 1000000000000000000
+  
+        expense = gasFee + expenseValue
+  
+        date = moment(Number(activity.timeStamp) * 1000).format('MMMM DD YYYY')
+        source = activity.to
+        time = activity.timeStamp
+  
+        return {
+          id,
+          activityName,
+          expense,
+          accountName,
+          date,
+          source,
+          time,
+          network,
+          address: this.eth.address
+        }
+      } catch (err) {
+        console.error(err.message)
+        return {}
+      }
+    })
+
+    console.log('RESULT: ', fetchedData.length)
+
+    await this.#chrome.setActivities(fetchedData)
   }
 
   async transfer(_, recipient, qty) {

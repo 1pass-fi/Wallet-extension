@@ -103,120 +103,147 @@ export class ArweaveMethod {
     }
   }
 
-  async loadMyActivities(cursor) {
-    try {
-      const { ownedCursor, recipientCursor } = cursor
+  async updateActivities() {
+    let fetchedData = []
 
-      let ownedData
-      let recipientData
+    /* 
+      "cursor" of a transaction will be used like an offset value
+      we use "cursor" in order to track the position of a transaction on chain.
+      For example: the 10th transaction has cursor of "abc"
+      If we want to get the 11th transaction, instead of quering all transactions from 1 to 11, we can use cursor with value "abc"
+      and request for just one transaction after that cursor.
+    */
+    let ownedCursor
+    let recipientCursor
 
-      // fetch data base on inputed cursors
-      if (ownedCursor) {
-        ownedData = get(await this.koi.getOwnedTxs(this.koi.address, 10, ownedCursor), 'data.transactions.edges') || []
-      } else {
-        ownedData = get(await this.koi.getOwnedTxs(this.koi.address), 'data.transactions.edges') || []
+    let hasNextPageOwned = true
+    let hasNextPageRecipient = true
+
+    // get 500 latest transactions
+    for (let i = 0; i < 5; i++) {
+      try {
+        console.log(`Load activities [${i+1}/5]`)
+
+        // get graphql resposne
+        let ownedResponse, recipientResponse
+        if (hasNextPageOwned) ownedResponse = await this.koi.getOwnedTxs(this.koi.address, 100, ownedCursor)
+        if (hasNextPageRecipient) recipientResponse = await this.koi.getRecipientTxs(this.koi.address, 100, recipientCursor)
+
+        // get hasNextPage
+        hasNextPageOwned = get(ownedResponse, 'data.transactions.pageInfo.hasNextPage')
+        hasNextPageRecipient = get(recipientResponse, 'data.transactions.pageInfo.hasNextPage')
+  
+        // get transactions
+        const ownedTransactions = get(ownedResponse, 'data.transactions.edges') || []
+        const recipientTransactions = get(recipientResponse, 'data.transactions.edges') || []
+
+        // update cursor
+        if (hasNextPageOwned) ownedCursor = ownedTransactions[ownedTransactions.length - 1].cursor
+        if (hasNextPageRecipient) recipientCursor = recipientCursor[recipientTransactions.length - 1].cursor
+
+        if (isArray(ownedTransactions) && isArray(recipientTransactions)) fetchedData = [...fetchedData, ...ownedTransactions, ...recipientTransactions]
+      } catch (err) {
+        console.log('Update activities failed', err.message)
       }
+    }
 
-      if (recipientCursor) {
-        recipientData = get(await this.koi.getRecipientTxs(this.koi.address, 10, recipientCursor), 'data.transactions.edges') || []
-      } else {
-        recipientData = get(await this.koi.getRecipientTxs(this.koi.address), 'data.transactions.edges') || []
-      }
+    console.log('TOTAL FETCHED: ', fetchedData.length)
 
-      let activitiesList = [...ownedData, ...recipientData]
-      // sort by time
-      activitiesList = orderBy(activitiesList, 'node.block.timestamp', 'desc')
-      console.log('ACTIVITIES LIST BACKGROUND: ', activitiesList)
-      // get next cursors
-      const nextOwnedCursor = ownedData.length > 0 ? get(ownedData[ownedData.length - 1], 'cursor') : ownedCursor
-      const nextRecipientCursor = recipientData.length > 0 ? get(recipientData[recipientData.length - 1], 'cursor') : recipientCursor
+    // sort by time - desc
+    fetchedData = orderBy(fetchedData, 'node.block.timestamp', 'desc')
 
-      if (activitiesList.length > 0) {
+    // get accountName
+    const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
 
-        // filter activities has node.block (success fetched activities) field then loop through to get necessary fields
-        activitiesList = activitiesList.filter(activity => !!get(activity, 'node.block')).map(activity => {
-          const time = get(activity, 'node.block.timestamp')
-          const timeString = isNumber(time) ? moment(time * 1000).format('MMMM DD YYYY') : ''
-          const id = get(activity, 'node.id')
-          let activityName = 'Sent AR'
-          let expense = Number(get(activity, 'node.quantity.ar')) + Number(get(activity, 'node.fee.ar'))
-
-          // get input tag
-          let inputTag = (get(activity, 'node.tags'))
-          if (!isArray(inputTag)) inputTag = []
-          inputTag = inputTag.filter(tag => tag.name === 'Input')
-
-          // get Init State tag
-          const initStateTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Init-State')
-
-          // get action tag
-          const actionTag = ((get(activity, 'node.tags')).filter(tag => tag.name === 'Action'))
-          let source = get(activity, 'node.recipient')
-          let inputFunction
+    fetchedData = fetchedData.filter(activity => !!get(activity, 'node.block')).map(activity => {
+      try {
+        const time = get(activity, 'node.block.timestamp')
+        const timeString = isNumber(time) ? moment(time * 1000).format('MMMM DD YYYY') : ''
+        const id = get(activity, 'node.id')
+        let activityName = 'Sent AR'
+        let expense = Number(get(activity, 'node.quantity.ar')) + Number(get(activity, 'node.fee.ar'))
+  
+        // get input tag
+        let inputTag = (get(activity, 'node.tags'))
+        if (!isArray(inputTag)) inputTag = []
+        inputTag = inputTag.filter(tag => tag.name === 'Input')
+  
+        // get Init State tag
+        const initStateTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Init-State')
+  
+        // get action tag
+        const actionTag = ((get(activity, 'node.tags')).filter(tag => tag.name === 'Action'))
+        let source = get(activity, 'node.recipient')
+        let inputFunction
+        if (inputTag[0]) {
+          inputFunction = JSON.parse(inputTag[0].value)
+          if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
+            activityName = 'Sent KOII'
+            expense = inputFunction.qty
+            source = inputFunction.target
+          } else if (inputFunction.function === 'updateCollection') {
+            activityName = 'Updated Collection'
+          } else if (inputFunction.function === 'updateKID') {
+            activityName = 'Updated KID'
+          } else if (inputFunction.function === 'lock') {
+            activityName = 'Locked NFT'
+          }
+  
+          if (inputFunction.function === 'registerData' ||
+            inputFunction.function === 'burnKoi' ||
+            inputFunction.function === 'migratePreRegister') {
+            activityName = 'Registered NFT'
+            source = null
+          }
+        }
+  
+        if (initStateTag[0]) {
+          if (actionTag[0].value.includes('KID/Create')) {
+            const initState = JSON.parse(initStateTag[0].value)
+            activityName = `Created KID "${initState.name}"`
+          } else if (actionTag[0].value.includes('Collection/Create')) {
+            const initState = JSON.parse(initStateTag[0].value)
+            activityName = `Created Collection "${initState.name}"`
+          } else {
+            const initState = JSON.parse(initStateTag[0].value)
+            activityName = `Minted NFT "${initState.title}"`
+          }
+        }
+  
+        if (get(activity, 'node.owner.address') !== this.koi.address) {
+          activityName = 'Received AR'
+          source = get(activity, 'node.owner.address')
+          expense -= Number(get(activity, 'node.fee.ar'))
           if (inputTag[0]) {
             inputFunction = JSON.parse(inputTag[0].value)
             if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
-              activityName = 'Sent KOII'
+              activityName = 'Received KOII'
               expense = inputFunction.qty
               source = inputFunction.target
-            } else if (inputFunction.function === 'updateCollection') {
-              activityName = 'Updated Collection'
-            } else if (inputFunction.function === 'updateKID') {
-              activityName = 'Updated KID'
-            } else if (inputFunction.function === 'lock') {
-              activityName = 'Locked NFT'
-            }
-
-            if (inputFunction.function === 'registerData' ||
-              inputFunction.function === 'burnKoi' ||
-              inputFunction.function === 'migratePreRegister') {
-              activityName = 'Registered NFT'
-              source = null
             }
           }
-
-          if (initStateTag[0]) {
-            if (actionTag[0].value.includes('KID/Create')) {
-              const initState = JSON.parse(initStateTag[0].value)
-              activityName = `Created KID "${initState.name}"`
-            } else if (actionTag[0].value.includes('Collection/Create')) {
-              const initState = JSON.parse(initStateTag[0].value)
-              activityName = `Created Collection "${initState.name}"`
-            } else {
-              const initState = JSON.parse(initStateTag[0].value)
-              activityName = `Minted NFT "${initState.title}"`
-            }
-          }
-
-          if (get(activity, 'node.owner.address') !== this.koi.address) {
-            activityName = 'Received AR'
-            source = get(activity, 'node.owner.address')
-            expense -= Number(get(activity, 'node.fee.ar'))
-            if (inputTag[0]) {
-              inputFunction = JSON.parse(inputTag[0].value)
-              if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
-                activityName = 'Received KOII'
-                expense = inputFunction.qty
-                source = inputFunction.target
-              }
-            }
-          }
-
-          return {
-            id,
-            activityName,
-            expense,
-            accountName: 'Account 1',
-            date: timeString,
-            source,
-            time
-          }
-        })
+        }
+  
+        return {
+          id,
+          activityName,
+          expense,
+          accountName,
+          date: timeString,
+          source,
+          time,
+          address: this.koi.address
+        }
+      } catch (err) {
+        return {}
       }
-      return { activitiesList, nextOwnedCursor, nextRecipientCursor }
-    } catch (err) {
-      throw new Error(err.message)
-    }
+    })
+
+    console.log('RESULT: ', fetchedData.length)
+    /* 
+      Set activities to the local storage
+    */
+    await this.#chrome.setActivities(fetchedData)
   }
 
   async transfer(token, target, qty) {
@@ -856,6 +883,29 @@ export class ArweaveMethod {
     }
   }
 
+  async getBridgeStatus(txId) {
+    const payload = {
+      arNFTId: txId,
+      flow: BRIDGE_FLOW.AR_TO_ETH
+    }
+
+    let response = await fetch(URL.GET_BRIDGE_STATUS, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+    response = await response.json()
+    console.log('Bridge status', response)
+
+    let isBridged = get(response, 'data[0].isBridged')
+    console.log('isBridged', isBridged)
+    return { confirmed: isBridged, dropped: false }
+  }
+
+  /* PRIVATE */
   #base64ToArrayBuffer = (base64) => {
     const binary_string = window.atob(base64)
     const len = binary_string.length
@@ -918,27 +968,5 @@ export class ArweaveMethod {
       console.log('BRDIGE ERROR: ', err.message)
       return false
     }
-  }
-
-  async getBridgeStatus(txId) {
-    const payload = {
-      arNFTId: txId,
-      flow: BRIDGE_FLOW.AR_TO_ETH
-    }
-
-    let response = await fetch(URL.GET_BRIDGE_STATUS, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    })
-    response = await response.json()
-    console.log('Bridge status', response)
-
-    let isBridged = get(response, 'data[0].isBridged')
-    console.log('isBridged', isBridged)
-    return { confirmed: isBridged, dropped: false }
   }
 }

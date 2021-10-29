@@ -5,6 +5,7 @@ import moment from 'moment'
 import axios from 'axios'
 import differenceBy from 'lodash/differenceBy'
 import includes from 'lodash/includes'
+import orderBy from 'lodash/orderBy'
 import { v4 as uuid } from 'uuid'
 
 import storage from 'services/storage'
@@ -135,6 +136,27 @@ export const updatePendingTransactions = async () => {
   })
 }
 
+export const reloadArweaveActivities = async (type) => {
+  console.log('Get activities for ', type)
+  // REFRESH ACTIVITIES FOR ACCOUNTS OF INPUT TYPE
+  const accountsForInputType = await backgroundAccount.getAllAccounts(type) // all accounts if !type
+  await Promise.all(accountsForInputType.map(async account => {
+    await account.method.updateActivities()
+  }))
+
+  // UPDATE ALL ACTIVITIES ON STORAGE
+  let allActivities = []
+  const allAccounts = await backgroundAccount.getAllAccounts()
+
+  for (let i = 0; i < allAccounts.length; i++) {
+    const activities = await allAccounts[i].get.activities()
+    allActivities = [...allActivities, ...activities]
+  }
+
+  allActivities = orderBy(allActivities, 'time', 'desc')
+  console.log('ACTIVITIES LOADED: ', allActivities.length)
+  await storage.generic.set.allActivities(allActivities)
+}
 
 /* 
   Reload arweave balances every 5 minutes
@@ -304,6 +326,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             Get balance for this account
           */
           loadBalances()
+          reloadArweaveActivities()
 
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,
@@ -864,6 +887,29 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           await account.set.accountName(newName)
 
+          // change accountName for activities
+          let activities = await account.get.activities()
+          activities = activities.map(activity => {
+            activity.accountName = newName
+            return activity
+          })
+          await account.set.activities(activities)
+
+          // change accountName for allActivities
+          let allActivities = await storage.generic.get.allActivities()
+          allActivities = allActivities.map(activity => {
+            if (activity?.address === address) activity.accountName = newName
+            return activity
+          })
+          await storage.generic.set.allActivities(allActivities)
+
+          // change accountName for pending transactions
+          let pendingTransactions = await account.get.pendingTransactions()
+          pendingTransactions = pendingTransactions.map(transaction => {
+            transaction.accountName = newName
+            return transaction
+          })
+
           port.postMessage({
             type: MESSAGES.CHANGE_ACCOUNT_NAME,
             id: messageId
@@ -1032,6 +1078,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           }
 
           loadBalances()
+          reloadArweaveActivities()
           port.postMessage({
             type: MESSAGES.SAVE_WALLET_GALLERY,
             data: addressFromKey,

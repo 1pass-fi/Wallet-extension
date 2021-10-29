@@ -109,4 +109,8 @@ export class AccountSetter {
   async provider(value) {
     await this.#accountStorage.setField(ACCOUNT.PROVIDER, value)
   }
+
+  async activities(value) {
+    await this.#accountStorage.setActivities(value)
+  }
 }
