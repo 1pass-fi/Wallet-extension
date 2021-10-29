@@ -265,31 +265,39 @@ export class EthereumMethod {
       Check for approval
       If not approved, setApprovalForAll()
     */
-    const isApproved = await tokenContract.methods
-      .isApprovedForAll(userAddress, koiRouterContractAddress)
-      .call()
-   
-    console.log('isApproved', isApproved)
+    try {
+      const isApproved = await tokenContract.methods
+        .isApprovedForAll(userAddress, koiRouterContractAddress)
+        .call()
+      console.log('isApproved', isApproved)
+    } catch (error) {
+      console.log('====== get isApprovedForAll error', error)
+    }
 
     if (!isApproved) {
-      console.log('SET APPROVAL...')
-      const res = await tokenContract.methods
-        .setApprovalForAll(koiRouterContractAddress, true)
-        .send({ from: userAddress })
-      console.log('Receipt set approval for all', res)
+      try {
+        console.log('SET APPROVAL...')
+        const res = await tokenContract.methods
+          .setApprovalForAll(koiRouterContractAddress, true)
+          .send({ from: userAddress })
+        console.log('====== setApprovalForAll receipt', res)
+        return true
+      } catch (error) {
+        console.log('======= setApprovalForAll error', error)
+        return false
+      }
+    } else {
+      try {
+        const depositResult = await koiRouterContract.methods
+          .deposit(tokenAddress, tokenId, 1, toAddress)
+          .send({ from: userAddress, value: web3.utils.toWei('0.00015', 'ether') })
+        console.log('====== Deposit receipt ', depositResult)
+        return true
+      } catch (error) {
+        console.log('======= Deposit error', error)
+        return false
+      }
     }
-
-    try {
-      const depositResult = await koiRouterContract.methods
-        .deposit(tokenAddress, tokenId, 1, toAddress)
-        .send({ from: userAddress, value: web3.utils.toWei('0.00015', 'ether') })
-      console.log('====== Deposit receipt ', depositResult)
-      return true
-    } catch (error) {
-      console.log('======= Deposit error', error)
-      return false
-    }
-
   }
 
   async transactionConfirmedStatus(txHash) {
