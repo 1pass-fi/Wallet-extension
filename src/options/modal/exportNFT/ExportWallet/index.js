@@ -21,7 +21,7 @@ import { formatNumber, getDisplayAddress } from 'options/utils'
 import { getAddressesFromAddressBook } from 'utils'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import koiRouterABI from 'services/account/Account/Chains/Ethereum/abi/KoiRouter.json'
-
+import koiTokenABI from 'services/account/Account/Chains/Ethereum/abi/KoiToken.json'
 
 import './index.css'
 import { popupAccount } from 'services/account'
@@ -144,6 +144,7 @@ export default ({ info, onClose, type }) => {
   const [estimateGasUnit, setEstimateGasUnit] = useState(0)
   const [currentGasPrice, setCurrentGasPrice] = useState(0)
   const [totalGasCost, setTotalGasCost] = useState(0)
+  const [isApproved, setIsApproved] = useState(false)
   const [addressOptions, setAddressOptions] = useState([])
 
   const addressInputRef = useRef()
@@ -171,8 +172,24 @@ export default ({ info, onClose, type }) => {
       const type = await popupAccount.getType(_ownerAddress)
       setWalletType(type)
     }
+    
+    const getApprovalStatus = async () => {
+      const account = await popupAccount.getAccount({ address: _ownerAddress })
+      const provider = await account.get.provider()
+      const web3 = new Web3(provider) 
 
+      const tokenContract = new web3.eth.Contract(koiTokenABI, tokenAddress)
+      const koiRouterContractAddress = provider === ETH_NETWORK_PROVIDER.MAINNET ? KOI_ROUTER_CONTRACT.MAINNET : KOI_ROUTER_CONTRACT.RINKEBY
+
+      const isApproved = await tokenContract.methods
+        .isApprovedForAll(_ownerAddress, koiRouterContractAddress)
+        .call()
+
+      setIsApproved(isApproved)
+    }
+    
     getWalletType()
+    getApprovalStatus()
   }, [])
 
   useEffect(() => {
@@ -185,17 +202,25 @@ export default ({ info, onClose, type }) => {
         
         const web3 = new Web3(provider)
         const koiRouterContract = new web3.eth.Contract(koiRouterABI, koiRouterContractAddress)
+        const tokenContract = new web3.eth.Contract(koiTokenABI, tokenAddress)
         
-        const newEstimateGasUnit = await koiRouterContract.methods
-          .deposit(tokenAddress, txId, 1, address)
-          .estimateGas({ from: _ownerAddress, value: web3.utils.toWei('0.00015', 'ether') })
-          
+        let newEstimateGasUnit = 0
+        if(isApproved) {
+          newEstimateGasUnit = await koiRouterContract.methods
+            .deposit(tokenAddress, txId, 1, address)
+            .estimateGas({ from: _ownerAddress, value: web3.utils.toWei('0.00015', 'ether') })
+        } else {
+          newEstimateGasUnit = await tokenContract.methods
+            .setApprovalForAll(koiRouterContractAddress, true)
+            .estimateGas({ from: _ownerAddress })
+        }
+
         setEstimateGasUnit(newEstimateGasUnit)
       }
     }
 
     estimateGas()
-  }, [walletType])
+  }, [walletType, isApproved])
   
   useEffect(() => {
     const getCurrentGasPrice = async () => {
@@ -216,7 +241,7 @@ export default ({ info, onClose, type }) => {
     }, 30000)
 
     return () => clearInterval(intervalId)
-  }, [walletType])
+  }, [walletType, isApproved])
 
 
   useEffect(() => {
@@ -492,10 +517,12 @@ export default ({ info, onClose, type }) => {
                     </div>
                   ) : (
                     <div className="estimate-cost--eth">
-                      <div className="cost">
-                        <span>Cost:</span>
-                        <span>0.000150 ETH</span>
-                      </div>
+                      {isApproved && (
+                        <div className="cost">
+                          <span>Cost:</span>
+                          <span>0.000150 ETH</span>
+                        </div>
+                      )}
                       <div className="cost">
                         <div
                           className="question-mark-icon"
@@ -514,17 +541,30 @@ export default ({ info, onClose, type }) => {
                       </div>
                       <div className="total-cost">
                         <span>Total: </span>
-                        <span className="total-number">{formatNumber(Number(totalGasCost) + 0.00015, 6)} ETH</span>
+                        <span className="total-number">{isApproved ? formatNumber(Number(totalGasCost) + 0.00015, 6) : formatNumber(Number(totalGasCost), 6)} ETH</span>
                       </div>
                     </div>
                   )
                 )}                
 
                 {step == TRANSFER_STEPS.INPUT_INFO && (
-                  <div className='transfer-button' onClick={onOneClick}>
-                    {type === TYPE.ARWEAVE && 'One-Click Transfer to AR'}
-                    {type === TYPE.ETHEREUM && 'One-Click Transfer to ETH'}
-                  </div>
+                  <>
+                    {type === TYPE.ARWEAVE && !isApproved && (
+                      <div className="transfer-button" onClick={() => console.log('hiiii')}>
+                        Set approval for all
+                      </div>
+                    )}
+                    {type === TYPE.ARWEAVE && isApproved && (
+                      <div className='transfer-button' onClick={onOneClick}>
+                        One-Click Transfer to AR
+                      </div> 
+                    )} 
+                    {type === TYPE.ETHEREUM && (
+                      <div className='transfer-button' onClick={onOneClick}>
+                        One-Click Transfer to ETH
+                      </div>
+                    )}
+                  </>
                 )}
 
                 {step == TRANSFER_STEPS.CONFIRM && (
