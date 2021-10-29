@@ -145,6 +145,7 @@ export default ({ info, onClose, type }) => {
   const [currentGasPrice, setCurrentGasPrice] = useState(0)
   const [totalGasCost, setTotalGasCost] = useState(0)
   const [isApproved, setIsApproved] = useState(false)
+  const [settingApproval, setSettingApproval] = useState(false)
   const [addressOptions, setAddressOptions] = useState([])
 
   const addressInputRef = useRef()
@@ -189,7 +190,7 @@ export default ({ info, onClose, type }) => {
     }
     
     getWalletType()
-    getApprovalStatus()
+    // getApprovalStatus()
   }, [])
 
   useEffect(() => {
@@ -322,6 +323,27 @@ export default ({ info, onClose, type }) => {
     }
   }
 
+  const handleSetApproval = async () => {
+    try {
+      setSettingApproval(true)
+
+      // Using this same function as tranfering, since the logic is all handled by the backend
+      await backgroundRequest.gallery.transferNFT({
+        senderAddress: _ownerAddress,
+        targetAddress: address,
+        txId: txId,
+        numOfTransfers: numberTransfer,
+        tokenAddress,
+        tokenSchema
+      }) 
+
+      setIsApproved(true)
+      setSettingApproval(false)
+    } catch (error) {
+      setSettingApproval(false)
+      setError('Something went wrong. Please try again later!')
+    }
+  }
 
   const onGoBack = () => {
     if (step == TRANSFER_STEPS.INPUT_INFO) {
@@ -550,8 +572,8 @@ export default ({ info, onClose, type }) => {
                 {step == TRANSFER_STEPS.INPUT_INFO && (
                   <>
                     {type === TYPE.ARWEAVE && !isApproved && (
-                      <div className="transfer-button" onClick={() => console.log('hiiii')}>
-                        Set approval for all
+                      <div className="transfer-button" onClick={handleSetApproval} disabled={settingApproval}>
+                        {settingApproval ? 'Setting approval...' : 'Set approval for all'}
                       </div>
                     )}
                     {type === TYPE.ARWEAVE && isApproved && (
