@@ -389,6 +389,10 @@ input::-webkit-inner-spin-button {
   color: #171753;
   font-size: 16px;
   line-height: 32px;
+  width: 210px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .transfer-wallet-modal .address-dropdown .account .address {

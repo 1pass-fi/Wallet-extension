@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import ReactTooltip from 'react-tooltip'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
 
@@ -15,6 +16,8 @@ import TransactionConfirmModal from 'popup/components/modals/transactionConfirmM
 import DownArrowIcon from 'img/down-arrow-icon.svg'
 import EditIcon from 'img/edit-icon.svg'
 import WarningIcon from 'img/warning-icon-1.svg'
+import ArweaveLogo from 'img/arweave-icon.svg'
+import EthereumLogo from 'img/ethereum-logo-18.svg'
 
 // actions
 import { makeTransfer } from 'actions/koi'
@@ -34,7 +37,7 @@ import storage from 'services/storage'
 
 // utils
 import { getDisplayAddress, formatNumber } from 'options/utils'
-import { fiatCurrencyFormat } from 'utils'
+import { fiatCurrencyFormat, getAddressesFromAddressBook } from 'utils'
 
 // styles
 import './index.css'
@@ -183,50 +186,38 @@ const SendKoiForm = ({
 
   useEffect(() => {
     const getAddressList = async () => {
-      const currentAB = (await storage.generic.get.addressBook()) || []
-      let options = []
-
-      for (const i in currentAB) {
-        currentAB[i].addresses?.map((address, index) => {
-          const addressName = isEmpty(address.name) ? currentAB[i].name : currentAB[i].name + ' (' + address?.name + ')'
-          options.push({
-            id: currentAB[i].id + index,
-            name: addressName,
-            address: address.value,
-          }) 
-        })
-      }
-
-      // remove invalid addresses
-      options = options?.filter((address) => {
-        return !isEmpty(address.address)
-      })
-
+      const options = await getAddressesFromAddressBook()
       setAddressOptions(options)
     }
 
     getAddressList()
   }, [])
 
-  const AddressDropdown = ({ accounts = [], onChange }) => {
+  const AddressDropdown = ({ accounts = [], onChange, type }) => {
     return (
       <div className='accounts'>
         <div className='different-address' onClick={() => onChange({})}>
           <div className='name'>Enter Address Manually</div>
         </div>
         {accounts.map((account) => {
-          return (
-            <div
-              key={account.id}
-              className='account'
-              onClick={() => onChange(account)}
-            >
-              <div className='info'>
-                <div className='name'>{account.name}</div>
-                <div className='address'>{getDisplayAddress(account.address)}</div>
+          if (account.type === type) {
+            return (
+              <div
+                key={account.id}
+                className='account'
+                onClick={() => onChange(account)}
+              >
+                <div className='logo'>
+                  {account.type === TYPE.ARWEAVE && <ArweaveLogo />}
+                  {account.type === TYPE.ETHEREUM && <EthereumLogo />}
+                </div>
+                <div className='info'>
+                  <div className='name'>{account.accountName}</div>
+                  <div className='address'>{getDisplayAddress(account.address)}</div>
+                </div>
               </div>
-            </div>
-          )
+            )
+          }
         })}
       </div>
     )
@@ -246,7 +237,10 @@ const SendKoiForm = ({
               <div className='edit-icon'><EditIcon
                 data-testid='editBtn'
                 className='edit-icon'
-                onClick={() => setSelectedAccount({})}
+                onClick={() => {
+                  setSelectedAccount({})
+                  setIsShowDropdown(false)
+                }}
               /></div>
             </div>
           </div>
@@ -284,20 +278,29 @@ const SendKoiForm = ({
             className='recipient-input-field'
             placeholder='Recipient’s wallet address'
           />
-          <div className='address-dropdown'>
-            <div 
-              className="arrow-button" 
-              onClick={() => setIsShowDropdown(isShowDropdown => !isShowDropdown)}
+          <div className='address-dropdown' 
+            data-tip={isEmpty(selectedAccount) ? 'Please choose Sender Account first!' : ''}
+            data-for='arrow-button'>
+            <button 
+              className='arrow-button'
+              disabled={isEmpty(selectedAccount)}
+              onClick={(e) => {
+                e.preventDefault()
+                setIsShowDropdown(isShowDropdown => !isShowDropdown)
+              }}
             >
               <div className='arrow-icon' style={{transform: !isShowDropdown ? 'none' : 'rotateX(180deg)'}}>
                 <DownArrowIcon />
               </div>
-            </div>
+            </button>
+            <ReactTooltip place='top' effect='float' />
+            <ReactTooltip id='arrow-button' place='left' effect='float' />
           </div>
-          {isShowDropdown && (
+          {(isShowDropdown && !isEmpty(selectedAccount)) && (
             <AddressDropdown
               accounts={addressOptions}
               onChange={onAddressDropdownChange}
+              type={selectedAccount.type}
             />
           )}
         </div>
@@ -318,7 +321,7 @@ const SendKoiForm = ({
       <div className='amount'>
         <InputField
           label='Amount'
-          placeholder={`Amount ${selectedToken ? 'of ' + selectedToken : ''} to send`}
+          placeholder={`Amount ${selectedToken ? 'of ' + selectedToken + ' ' : ''}to send`}
           className='form-input'
           type='number'
           onChange={onChangeAmount}

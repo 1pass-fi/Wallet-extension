@@ -12,6 +12,7 @@ import Avatar from 'img/ab-avatar.png'
 
 import { GalleryContext } from 'options/galleryContext'
 import Button from '../Button'
+import { TYPE } from 'constants/accountConstants'
 
 import './index.css'
 
@@ -21,22 +22,12 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
   const [userInfo, setUserInfo] = useState({
     name: '',
     notes: '',
-    didName: '',
+    didName: 'DID link',
     didValue: '',
   })
 
-  const [userAddresses, setUserAddresses] = useState([{ name: '', value: '' }])
-
-  const clearForm = () => {
-    setUserInfo({
-      name: '',
-      notes: '',
-      didName: '',
-      didValue: '',
-    })
-
-    setUserAddresses([{ name: '', value: '' }])
-  }
+  // TODO need to ask Kayla's confirmation about TYPE of address
+  const [userAddresses, setUserAddresses] = useState([{ name: 'Address #1', value: '', type: TYPE.ARWEAVE }])
 
   const handleSubmit = async () => {
     if (isEmpty(userInfo.name)) {
@@ -134,7 +125,8 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
 
         <div
           className="ab-contact-form__add-more"
-          onClick={() => setUserAddresses([...userAddresses, { name: '', value: '' }])}
+          // TODO need to ask Kayla's confirmation about TYPE of address
+          onClick={() => setUserAddresses([...userAddresses, { name: `Address #${userAddresses.length + 1}`, value: '', type: TYPE.ARWEAVE }])}
         >
           <div className="ab-form-add-icon">
             <AddIcon />
