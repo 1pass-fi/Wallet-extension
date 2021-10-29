@@ -15,7 +15,7 @@ import TransactionConfirmModal from 'popup/components/modals/transactionConfirmM
 // assets
 import DownArrowIcon from 'img/down-arrow-icon.svg'
 import EditIcon from 'img/edit-icon.svg'
-import WarningIcon from 'img/warning-icon-1.svg'
+import WarningIcon from 'img/warning-icon-outline-orange.svg'
 import ArweaveLogo from 'img/arweave-icon.svg'
 import EthereumLogo from 'img/ethereum-logo-18.svg'
 
