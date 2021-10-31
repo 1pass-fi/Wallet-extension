@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 
 import './index.css'
 
-export default ({ version = '0.2.8' }) => {
+export default ({ version = '0.2.9' }) => {
   const { setShowWelcome } = useContext(GalleryContext)
 
   return (

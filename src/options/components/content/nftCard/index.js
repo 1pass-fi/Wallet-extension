@@ -149,7 +149,7 @@ export default ({
         </div>}
         { type === TYPE.ETHEREUM &&
           <button disabled={isBridging} className='nft-warning-button' onClick={() => {
-            setShowExportModal({ locked, earnedKoi, totalViews, name, imageUrl, type, txId, address, tokenAddress, tokenSchema })
+            setShowExportModal({ locked, earnedKoi, totalViews, name, imageUrl, type, txId, address, tokenAddress, tokenSchema, contentType })
           }}>
             <div className='nft-warning-button-content'>
               <WarningIcon/>

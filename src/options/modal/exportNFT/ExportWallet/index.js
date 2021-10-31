@@ -284,11 +284,11 @@ export default ({ info, onClose, type }) => {
 
             <div className='content'>
               <div className='left'>
-                {(contentType.includes('image') ||
-                    contentType.includes('svg+xml')) && (
+                {(includes(contentType, 'image') ||
+                    includes(contentType, 'svg+xml')) && (
                   <img src={imageUrl} className="nft-img" />
                 )}
-                {contentType.includes('video') && (
+                {includes(contentType, 'video') && (
                   <video
                     width={320}
                     height={240}
@@ -298,7 +298,7 @@ export default ({ info, onClose, type }) => {
                     autoPlay
                   />
                 )}
-                {contentType.includes('html') && (
+                {includes(contentType, 'html') && (
                   <div className="nft-img-iframe">
                     <div className="iframe-wrapper">
                       <iframe frameBorder="0" src={imageUrl} />
