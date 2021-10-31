@@ -129,8 +129,8 @@ export default ({
           </div>
         )}
         {includes(contentType ,'html') && (
-          <div className='nft-img-iframe'>
-            <div className='iframe-wrapper'>
+          <div className='nft-img-iframe-nft-card'>
+            <div className='iframe-wrapper-nft-card'>
               <iframe frameBorder="0" src={imageUrl} />
             </div>
           </div>

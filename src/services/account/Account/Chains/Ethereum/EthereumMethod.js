@@ -233,18 +233,13 @@ export class EthereumMethod {
     if (!this.eth.provider) throw new Error('Something went wrong.')
     let koiRouterContractAddress = null
 
-    switch (this.eth.provider) {
-      case ETH_NETWORK_PROVIDER.MAINNET: {
-        koiRouterContractAddress = KOI_ROUTER_CONTRACT.MAINNET
-        break
-      }
-
-      case ETH_NETWORK_PROVIDER.RINKEBY: {
-        koiRouterContractAddress = KOI_ROUTER_CONTRACT.RINKEBY
-      }
+    if (includes(this.eth.provider, 'mainnet')) {
+      koiRouterContractAddress = KOI_ROUTER_CONTRACT.MAINNET
     }
 
-    console.log('koiRouterContractAddress', koiRouterContractAddress)
+    if (includes(this.eth.provider, 'rinkeby')) {
+      koiRouterContractAddress = KOI_ROUTER_CONTRACT.RINKEBY
+    }
 
     if (!koiRouterContractAddress) throw new Error('Something went wrong.')
 

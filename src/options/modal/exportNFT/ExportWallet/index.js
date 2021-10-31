@@ -145,7 +145,7 @@ export default ({ info, onClose, type }) => {
 
   const totalTransfer = 1 // TODO this
 
-  const { locked, name, earnedKoi, totalViews, imageUrl, txId, address: _ownerAddress, tokenAddress, tokenSchema } = info
+  const { contentType, locked, name, earnedKoi, totalViews, imageUrl, txId, address: _ownerAddress, tokenAddress, tokenSchema } = info
 
   useEffect(() => {
     const getAddressList = async () => {
@@ -284,7 +284,27 @@ export default ({ info, onClose, type }) => {
 
             <div className='content'>
               <div className='left'>
-                <img className='nft-url' src={imageUrl} />
+                {(contentType.includes('image') ||
+                    contentType.includes('svg+xml')) && (
+                  <img src={imageUrl} className="nft-img" />
+                )}
+                {contentType.includes('video') && (
+                  <video
+                    width={320}
+                    height={240}
+                    src={imageUrl}
+                    className="nft-img"
+                    controls
+                    autoPlay
+                  />
+                )}
+                {contentType.includes('html') && (
+                  <div className="nft-img-iframe">
+                    <div className="iframe-wrapper">
+                      <iframe frameBorder="0" src={imageUrl} />
+                    </div>
+                  </div>
+                )}
                 <div className='name'>{name}</div>
                 {type === TYPE.ETHEREUM && <div className='views'>{totalViews} views</div>}
                 {type === TYPE.ETHEREUM && <div className='earned-koi'>

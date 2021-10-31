@@ -85,17 +85,38 @@
   gap: 7px;
 }
 
-.transfer-wallet-modal .content .left .nft-url {
-  -webkit-user-drag: none;
-  align-items: center;
-  background: #020221;
-  box-sizing: border-box;
-  display: flex;
-  height: 208px;
-  justify-content: center;
-  object-fit: contain;
-  position: relative;
+.transfer-wallet-modal .content .left .nft-img {
+  -webkit-user-drag: none; 
   width: 208px;
+  height: 208px;
+  object-fit: contain;
+  background: #020221;
+  border-radius: 4px;
+}
+
+.transfer-wallet-modal .content .left .nft-img-iframe {
+  overflow: hidden;
+  width: 208px;
+  height: 208px;
+  background: #020221;
+  -webkit-user-drag: none;
+  box-sizing: border-box;
+  padding-top: 35px;
+
+}
+
+.transfer-wallet-modal .nft-img-iframe .iframe-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.transfer-wallet-modal .iframe-wrapper iframe {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(1.25) translateX(10%) translateY(-10%);
 }
 
 .transfer-wallet-modal .content .left .name {

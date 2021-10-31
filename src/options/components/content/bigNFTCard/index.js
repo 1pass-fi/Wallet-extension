@@ -116,8 +116,8 @@ export default ({
             />
           )}
           {contentType.includes('html') && (
-            <div className='nft-img-iframe'>
-              <div className='iframe-wrapper'>
+            <div className='nft-img-iframe-big-card'>
+              <div className='iframe-wrapper-big-card'>
                 <iframe frameBorder="0" src={imageUrl} />
               </div>
             </div>
@@ -153,7 +153,7 @@ export default ({
               <div className='transfer-nft' onMouseLeave={() => { setIsShowChain(false) }}>
                 <div className='transfer-nft-wrapper'>
                   <div className='transfer-text'>Transfer to</div>
-                  <div className='wallet-logo' onClick={() => setShowExportModal({ locked, earnedKoi, totalViews, name, imageUrl, type, txId, address, tokenAddress, tokenSchema })}>
+                  <div className='wallet-logo' onClick={() => setShowExportModal({ contentType, locked, earnedKoi, totalViews, name, imageUrl, type, txId, address, tokenAddress, tokenSchema })}>
                     {type === TYPE.ARWEAVE &&
                       <>
                         <EthereumLogo className='logo' />

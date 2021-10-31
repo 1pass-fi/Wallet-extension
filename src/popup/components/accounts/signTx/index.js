@@ -156,7 +156,7 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
                     <div className='koi'>{transactionAmountFormat(koiiQuantity)} KOII</div>
                   }
                   <div className='koi'>{transactionAmountFormat(qty+fee)} AR</div>
-                  <div className='usd'>~{fiatCurrencyFormat((qty+fee)*price.AR)} USD</div>
+                  {/* <div className='usd'>~{fiatCurrencyFormat((qty+fee)*price.AR)} USD</div> */}
                 </div>
               </div>
             }

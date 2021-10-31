@@ -52,6 +52,20 @@
   padding-top: 35px;
 }
 
+.transfer-nft.container .nft-img-iframe .iframe-wrapper {
+  position: relative;
+  height: 208px;
+  width: 208px;
+}
+
+.transfer-nft.container .iframe-wrapper iframe {
+  position: absolute;
+  top: 0;
+  height: 208px;
+  width: 208px;
+  transform: translateY(-20%);
+}
+
 .transfer-nft.container .asset-info .asset-name {
   letter-spacing: 0.03em;
   margin-top: 9px;

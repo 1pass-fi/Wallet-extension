@@ -316,25 +316,24 @@
   user-select: none;
 }
 
-.iframe-wrapper {
+.iframe-wrapper-big-card {
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 */
-  padding-top: 25px;
-  height: 0;
+  height: 470px;
+  width: 470px;
 }
-.iframe-wrapper iframe {
+.iframe-wrapper-big-card iframe {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  height: 470px;
+  width: 470px;
+  transform: scale(1.0);
 }
 
-.big-nft-card .nft-img-iframe {
+.big-nft-card .nft-img-iframe-big-card {
   height: 470px;
   object-fit: contain;
   width: 470px;
-  padding-top: 90px;
 }
 
 .big-nft-card .transfer-nft-wrapper .overlapped-icons {
