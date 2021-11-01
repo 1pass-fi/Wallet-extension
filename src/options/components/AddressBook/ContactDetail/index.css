@@ -39,7 +39,7 @@
 
   width: 100%;
   white-space: nowrap;
-  overflow: hidden;
+  overflow-x: clip;
   text-overflow: ellipsis;
 }
 
@@ -58,6 +58,7 @@
   letter-spacing: 0em;
   text-align: center;
 
+  min-height: 40px;
   height: 40px;
   width: 100%;
   overflow-y: scroll;
@@ -77,6 +78,9 @@
   color: #9be7c4;
   /* align-self: flex-start; */
   margin-bottom: 11px;
+  white-space: nowrap;
+  overflow-x: clip;
+  text-overflow: ellipsis;
 }
 
 .ab-contact-detail .ab-contact-detail__address-group .ab-contact-detail__address-info {
@@ -89,7 +93,7 @@
 .ab-contact-detail .ab-contact-detail__address-value {
   width: 153px;
   white-space: nowrap;
-  overflow: hidden;
+  overflow-x: clip;
   text-overflow: ellipsis;
 }
 
@@ -101,6 +105,11 @@
   align-self: flex-start;
   margin-top: 20px;
   margin-bottom: 11px;
+
+  width: 90%;
+  white-space: nowrap;
+  overflow-x: clip;
+  text-overflow: ellipsis;
 }
 
 .ab-contact-detail .ab-contact-detail__did-link {
@@ -111,9 +120,9 @@
   color: #ffffff;
   align-self: flex-start;
 
-  width: 100%;
+  width: 90%;
   white-space: nowrap;
-  overflow: hidden;
+  overflow-x: clip;
   text-overflow: ellipsis;
 }
 

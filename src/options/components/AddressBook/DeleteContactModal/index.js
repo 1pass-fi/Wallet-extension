@@ -30,7 +30,7 @@ const DeleteContactModal = React.forwardRef(({ contact, onClose, removeContact }
           <CloseIcon />
         </div>
         <div className="ab-confirm-delete-message">
-          Are you sure you want to delete <span>{contact.name}</span> ’s information?
+          Are you sure you want to delete <span>{contact.name.length < 13 ? contact.name : contact.name.slice(0,13) + '...'}</span> ’s information?
         </div>
         <div className="ab-confirm-delete-buttons">
           <Button
