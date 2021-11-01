@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
+import React, { useContext, useRef, useState, useMemo, useEffect } from 'react'
 import isEmpty from 'lodash/isEmpty'
 import includes from 'lodash/includes'
 import ReactTooltip from 'react-tooltip'
+import Web3 from 'web3'
 
 import GoBackIcon from 'img/goback-icon-26px.svg'
 import ArweaveLogo from 'img/arweave-icon.svg'
@@ -10,13 +11,17 @@ import StackIcon from 'img/stack-icon.svg'
 import StackWhiteIcon from 'img/stack-white-icon.svg'
 import WarningIcon from 'img/dangerous-logo.svg'
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
+import QuestionIcon from 'img/question-tooltip.svg'
 
 import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
+import { ETH_NETWORK_PROVIDER, KOI_ROUTER_CONTRACT } from 'constants/koiConstants'
 
 import { formatNumber, getDisplayAddress } from 'options/utils'
 import { getAddressesFromAddressBook } from 'utils'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import koiRouterABI from 'services/account/Account/Chains/Ethereum/abi/KoiRouter.json'
+import koiTokenABI from 'services/account/Account/Chains/Ethereum/abi/KoiToken.json'
 
 import './index.css'
 import { popupAccount } from 'services/account'
@@ -135,6 +140,13 @@ export default ({ info, onClose, type }) => {
   const [chosenAccount, setChosenAccount] = useState({})
   const [step, setStep] = useState(1)
   const [isBridging, setIsBridging] = useState(false)
+  const [walletType, setWalletType] = useState('')
+  const [estimateGasUnit, setEstimateGasUnit] = useState(0)
+  const [currentGasPrice, setCurrentGasPrice] = useState(0)
+  const [totalGasCost, setTotalGasCost] = useState(0)
+  const [isApproved, setIsApproved] = useState(false)
+  const [settingApproval, setSettingApproval] = useState(false)
+  const [approvedStatusLoaded, setApprovedStatusLoaded] = useState(false)
   const [addressOptions, setAddressOptions] = useState([])
 
   const addressInputRef = useRef()
@@ -156,6 +168,92 @@ export default ({ info, onClose, type }) => {
     getAddressList()
   }, [])
 
+  useEffect(() => {
+    // Use this wallet type since the current type is of the receipient
+    const getWalletType = async () => {
+      const type = await popupAccount.getType(_ownerAddress)
+      setWalletType(type)
+    }
+    
+    const getApprovalStatus = async () => {
+      const account = await popupAccount.getAccount({ address: _ownerAddress })
+      const provider = await account.get.provider()
+      const web3 = new Web3(provider) 
+
+      const tokenContract = new web3.eth.Contract(koiTokenABI, tokenAddress)
+      const koiRouterContractAddress = provider === ETH_NETWORK_PROVIDER.MAINNET ? KOI_ROUTER_CONTRACT.MAINNET : KOI_ROUTER_CONTRACT.RINKEBY
+
+      const isApproved = await tokenContract.methods
+        .isApprovedForAll(_ownerAddress, koiRouterContractAddress)
+        .call()
+
+      setIsApproved(isApproved)
+      setApprovedStatusLoaded(true)
+    }
+    
+    getWalletType()
+    getApprovalStatus()
+  }, [])
+
+  useEffect(() => {
+    const estimateGas = async () => {
+      if(walletType === TYPE.ETHEREUM) {
+        const account = await popupAccount.getAccount({ address: _ownerAddress })
+        const provider = await account.get.provider()
+        
+        const koiRouterContractAddress = provider === ETH_NETWORK_PROVIDER.MAINNET ? KOI_ROUTER_CONTRACT.MAINNET : KOI_ROUTER_CONTRACT.RINKEBY
+        
+        const web3 = new Web3(provider)
+        const koiRouterContract = new web3.eth.Contract(koiRouterABI, koiRouterContractAddress)
+        const tokenContract = new web3.eth.Contract(koiTokenABI, tokenAddress)
+        
+        let newEstimateGasUnit = 0
+        if(isApproved) {
+          newEstimateGasUnit = await koiRouterContract.methods
+            .deposit(tokenAddress, txId, 1, address)
+            .estimateGas({ from: _ownerAddress, value: web3.utils.toWei('0.00015', 'ether') })
+        } else {
+          newEstimateGasUnit = await tokenContract.methods
+            .setApprovalForAll(koiRouterContractAddress, true)
+            .estimateGas({ from: _ownerAddress })
+        }
+
+        setEstimateGasUnit(newEstimateGasUnit)
+      }
+    }
+
+    estimateGas()
+  }, [walletType, isApproved])
+  
+  useEffect(() => {
+    const getCurrentGasPrice = async () => {
+      if(walletType === TYPE.ETHEREUM && !isBridging) {
+        const account = await popupAccount.getAccount({ address: _ownerAddress })
+        const provider = await account.get.provider()
+
+        const web3 = new Web3(provider)
+          
+        const currentGasPrice = await web3.eth.getGasPrice()
+        setCurrentGasPrice(currentGasPrice)
+      }
+    }
+
+    getCurrentGasPrice()
+    const intervalId = setInterval(() => {
+      getCurrentGasPrice()
+    }, 30000)
+
+    return () => clearInterval(intervalId)
+  }, [walletType, isApproved, isBridging])
+
+
+  useEffect(() => {
+    const currentGasBN = Web3.utils.toBN(currentGasPrice)
+    const newTotalGas = Web3.utils.fromWei(currentGasBN.muln(estimateGasUnit))
+  
+    setTotalGasCost(newTotalGas)
+  }, [currentGasPrice, estimateGasUnit])
+  
   const onAddressInputChange = (e) => {
     // handle input and dropdown
     setAddress(e.target.value)
@@ -196,23 +294,6 @@ export default ({ info, onClose, type }) => {
   const onConfirm = async () => {
     try {
       setIsBridging(true)
-      /* 
-        Ethereum provider validation
-      */
-      try {
-        const { address: senderAddress } = info
-        let walletType = await popupAccount.getType(senderAddress)
-        if (senderAddress && walletType === TYPE.ETHEREUM) {
-          const account = await popupAccount.getAccount({ address: senderAddress })
-          const provider = await account.get.provider()
-          if (includes(provider, 'mainnet')) {
-
-          }
-        }
-      } catch (err) {
-        console.log('Validation error: ', err.message)
-        return
-      }
 
       const result = await backgroundRequest.gallery.transferNFT({
         senderAddress: _ownerAddress,
@@ -244,8 +325,26 @@ export default ({ info, onClose, type }) => {
     }
   }
 
-  const onSeeActivity = () => {
-    // TODO
+  const handleSetApproval = async () => {
+    try {
+      setSettingApproval(true)
+
+      // Using this same function as tranfering, since the logic is all handled by the backend
+      await backgroundRequest.gallery.transferNFT({
+        senderAddress: _ownerAddress,
+        targetAddress: address,
+        txId: txId,
+        numOfTransfers: numberTransfer,
+        tokenAddress,
+        tokenSchema
+      }) 
+
+      setIsApproved(true)
+      setSettingApproval(false)
+    } catch (error) {
+      setSettingApproval(false)
+      setError('Something went wrong. Please try again later!')
+    }
   }
 
   const onGoBack = () => {
@@ -266,7 +365,6 @@ export default ({ info, onClose, type }) => {
             </span>
             <ReactTooltip place='top' id='cannot-bridge' type="dark" effect="float"/>
           </div>
-          
           :
           <>
             {type === TYPE.ARWEAVE &&
@@ -364,7 +462,7 @@ export default ({ info, onClose, type }) => {
                         disabled={true}
                         className='input'
                       />
-                      <div className='description'>
+                      <div className='description-one-item'>
                         Many NFTs will only have 1 item minted.
                       </div>
                     </div>
@@ -434,21 +532,63 @@ export default ({ info, onClose, type }) => {
                 )}
 
                 {step != TRANSFER_STEPS.SUCCESS && (
-                  <div className='estimate-cost'>
-                    <div className='text'>Estimated costs:</div>
-                    <div className='number'>
-                      <div className='koi-number'>
-                        {type !== TYPE.ARWEAVE ? '10 KOII' : '0.00015 ETH'}
+                  type !== TYPE.ARWEAVE ? (
+                    <div className="estimate-cost">
+                      <div className="text">Estimated costs:</div>
+                      <div className="number">
+                        <div className="koi-number">10 KOII</div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  ) : (
+                    <div className="estimate-cost--eth">
+                      {isApproved && (
+                        <div className="cost">
+                          <span>Cost:</span>
+                          <span>0.000150 ETH</span>
+                        </div>
+                      )}
+                      <div className="cost">
+                        <div
+                          className="question-mark-icon"
+                          data-tip="Gas fees are paid to crypto miners who process transactions on the Ethereum network. Koii does not profit from gas fees. <br/> <br/>
+                          Gas fees are set by the network and fluctuate based on network traffic and transaction complexity.<br/> <br/>
+                          This estimate will update about every 30 seconds."
+                          data-for="gas-estimate-note"
+                        >
+                          <QuestionIcon />
+                        </div>
+                        <span>Gas estimate:</span>
+                        <span>{formatNumber(totalGasCost, 6)} ETH</span>
+                      </div>
+                      <div className="estimate-note">
+                        {'update in < 30 sec.'}
+                      </div>
+                      <div className="total-cost">
+                        <span>Total: </span>
+                        <span className="total-number">{isApproved ? formatNumber(Number(totalGasCost) + 0.00015, 6) : formatNumber(Number(totalGasCost), 6)} ETH</span>
+                      </div>
+                    </div>
+                  )
+                )}                
 
                 {step == TRANSFER_STEPS.INPUT_INFO && (
-                  <div className='transfer-button' onClick={onOneClick}>
-                    {type === TYPE.ARWEAVE && 'One-Click Transfer to AR'}
-                    {type === TYPE.ETHEREUM && 'One-Click Transfer to ETH'}
-                  </div>
+                  <>
+                    {type === TYPE.ARWEAVE && !isApproved && (
+                      <button className="transfer-button" onClick={handleSetApproval} disabled={settingApproval || !approvedStatusLoaded}>
+                        {settingApproval ? 'Setting approval...' : 'Set approval for all'}
+                      </button>
+                    )}
+                    {type === TYPE.ARWEAVE && isApproved && (
+                      <button className='transfer-button' onClick={onOneClick}>
+                        One-Click Transfer to AR
+                      </button> 
+                    )} 
+                    {type === TYPE.ETHEREUM && (
+                      <button className='transfer-button' onClick={onOneClick}>
+                        One-Click Transfer to ETH
+                      </button>
+                    )}
+                  </>
                 )}
 
                 {step == TRANSFER_STEPS.CONFIRM && (
@@ -471,8 +611,12 @@ export default ({ info, onClose, type }) => {
         <div className='goback-button' data-tip='Back' onClick={onGoBack}>
           <GoBackIcon />
         </div>
+        <div className='foot-note'>
+          This feature is in beta.
+        </div>
       </div>
       <ReactTooltip place='top' type='dark' effect='float' />
+      <ReactTooltip id="gas-estimate-note" border={true} className="gas-estimate-note-tooltip" multiline={true} place='left' effect='float' />
     </>
   )
 }

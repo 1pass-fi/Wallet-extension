@@ -563,6 +563,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           console.log('QTY ', qty, 'TARGET ', target, 'TOKEN ', token)
           const txId = await account.method.transfer(token, target, qty)
 
+          const network = await account.get.provider()
+
           // add new pending transaction
           const pendingTransactions = await account.get.pendingTransactions() || []
           const newTransaction = {
@@ -573,7 +575,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             date: moment().format('MMMM DD YYYY'),
             source: target,
             address,
-            retried: 0
+            retried: 0,
+            network
           }
           pendingTransactions.unshift(newTransaction)
           // save pending transactions

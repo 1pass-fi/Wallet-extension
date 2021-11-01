@@ -64,6 +64,7 @@ export const PendingList = ({ transactions, handleExpiredAction }) => {
       expired={transaction.expired}
       handleExpiredAction={handleExpiredAction}
       address={transaction.address}
+      network={transaction.network}
     />
   ))
 }
