@@ -186,8 +186,18 @@
 
   width: 346px;
   max-height: 169px;
-  overflow-y: scroll;
+  overflow-y: overlay;
   z-index: 20;
+}
+.recipient .accounts::-webkit-scrollbar {
+  width: 3px;
+}
+.recipient .accounts::-webkit-scrollbar-track {
+  background: #f8f8f8;
+}
+
+.recipient .accounts::-webkit-scrollbar-thumb {
+  background: #888;
 }
 
 .recipient .account {
