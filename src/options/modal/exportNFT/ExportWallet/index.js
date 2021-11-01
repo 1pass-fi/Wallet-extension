@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState, useMemo } from 'react'
+import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
 import isEmpty from 'lodash/isEmpty'
 import includes from 'lodash/includes'
 import ReactTooltip from 'react-tooltip'
@@ -15,6 +15,7 @@ import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
 
 import { formatNumber, getDisplayAddress } from 'options/utils'
+import { getAddressesFromAddressBook } from 'utils'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import './index.css'
@@ -100,11 +101,11 @@ const DESCRIPTIONS_AR = {
 const AddressDropdown = ({ accounts = [], onChange, type }) => {
   return (
     <div className='accounts'>
-      {accounts.map((account) => {
+      {accounts.map((account, index) => {
         if (account.type == type) {
           return (
             <div
-              key={account.address}
+              key={account.address + index}
               className='account'
               onClick={() => onChange(account)}
             >
@@ -134,6 +135,8 @@ export default ({ info, onClose, type }) => {
   const [chosenAccount, setChosenAccount] = useState({})
   const [step, setStep] = useState(1)
   const [isBridging, setIsBridging] = useState(false)
+  const [addressOptions, setAddressOptions] = useState([])
+
   const addressInputRef = useRef()
 
   const { setCardInfos, setError, wallets } = useContext(GalleryContext)
@@ -143,6 +146,15 @@ export default ({ info, onClose, type }) => {
   const totalTransfer = 1 // TODO this
 
   const { locked, name, earnedKoi, totalViews, imageUrl, txId, address: _ownerAddress, tokenAddress, tokenSchema } = info
+
+  useEffect(() => {
+    const getAddressList = async () => {
+      const options = await getAddressesFromAddressBook()
+      setAddressOptions(options)
+    }
+
+    getAddressList()
+  }, [])
 
   const onAddressInputChange = (e) => {
     // handle input and dropdown
@@ -309,7 +321,7 @@ export default ({ info, onClose, type }) => {
                         ></div>
                         {isShowDropdown && (
                           <AddressDropdown
-                            accounts={accounts}
+                            accounts={[...accounts, ...addressOptions]}
                             onChange={onAddressDropdownChange}
                             type={type}
                           />

@@ -12,6 +12,7 @@ import Avatar from 'img/ab-avatar.png'
 
 import { GalleryContext } from 'options/galleryContext'
 import Button from '../Button'
+import { TYPE } from 'constants/accountConstants'
 
 import './index.css'
 
@@ -118,7 +119,8 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
 
         <div
           className="ab-contact-form__add-more"
-          onClick={() => setUserAddresses([...userAddresses, { name: '', value: '' }])}
+          // TODO need to ask Kayla's confirmation about TYPE of address
+          onClick={() => setUserAddresses([...userAddresses, { name: `Address #${userAddresses.length + 1}`, value: '', type: TYPE.ARWEAVE }])}
         >
           <div className="ab-form-add-icon">
             <AddIcon />

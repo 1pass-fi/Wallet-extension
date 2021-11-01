@@ -11,7 +11,7 @@ import {
 } from 'constants/koiConstants'
 import passworder from 'browser-passworder'
 import moment from 'moment'
-import { get, isNumber, isArray } from 'lodash'
+import { get, isArray, isEmpty, isNumber } from 'lodash'
 
 
 import Arweave from 'arweave'
@@ -766,4 +766,30 @@ export const calculateGasFee = async ({ amount, senderAddress, toAddress, provid
     gas: 0
   }
   return koiTool.estimateGasEth(rawTx)
+}
+
+export const getAddressesFromAddressBook = async () => {
+  const currentAB = (await storage.generic.get.addressBook()) || []
+  let options = []
+
+  for (const i in currentAB) {
+    currentAB[i].addresses?.map((address, index) => {
+      const addressName = isEmpty(address.name)
+        ? currentAB[i].name
+        : currentAB[i].name + ' (' + address?.name + ')'
+      options.push({
+        id: currentAB[i].id + index,
+        accountName: addressName,
+        address: address.value,
+        type: address.type,
+      })
+    })
+  }
+
+  // remove invalid addresses
+  options = options?.filter((address) => {
+    return !isEmpty(address.address)
+  })
+
+  return options
 }

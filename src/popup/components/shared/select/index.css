@@ -36,8 +36,8 @@
 
 .select-container .select-wrapper .header .selected-option::placeholder {
   color: #237b75;
-  opacity: 0.7;
   font-weight: normal;
+  font-family: 'Sora', sans-serif;
 }
 
 .select-container .select-wrapper .header .arrow-button {
@@ -54,14 +54,14 @@
 }
 
 .select-container .select-wrapper .select-options {
-  margin-top: 2px;
   display: flex;
   flex-direction: column;
-  width: 298px;
+  width: 346px;
   border: 1.5px solid #171753;
   box-sizing: border-box;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
   border-radius: 2px;
+  position: absolute;
 }
 
 .select-container .select-wrapper .select-options .option {
@@ -76,5 +76,5 @@
 }
 
 .select-container .select-wrapper .select-options .option:hover {
-  background-color: rgba(66, 135, 245, 0.3);
+  background-color: #c6dbfc;
 }
