@@ -3,7 +3,7 @@
   Load activities, assets,...
 */
 
-import { PATH, ALL_NFT_LOADED, ACTIVITY_NAME, ETHERSCAN_API } from 'constants/koiConstants'
+import { PATH, ALL_NFT_LOADED, ACTIVITY_NAME, ETHERSCAN_API, ETH_NFT_BRIDGE_ACTION } from 'constants/koiConstants'
 import { ACCOUNT } from 'constants/accountConstants'
 import { getChromeStorage } from 'utils'
 import { get, includes, isNumber } from 'lodash'
@@ -184,42 +184,47 @@ export class EthereumMethod {
     let bridgePending
     let pendingTransactions = await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION) || []
     let assets = await this.#chrome.getAssets()
-    let success
+    let success, action, result
 
     try {
       switch (type) {
         case TYPE.ARWEAVE:
-          success = await this.#bridgeEthtoAr({ txId, toAddress, tokenAddress, tokenSchema })
+          result = await this.#bridgeEthtoAr({ txId, toAddress, tokenAddress, tokenSchema })
+          success = get(result, 'success')
+          action = get(result, 'action')
+
           /* 
             Create pending bridge
           */
           if (success) {
-            bridgePending = {
-              id: txId,
-              activityName: ACTIVITY_NAME.BRIDGE_ETH_TO_AR,
-              expense: 0,
-              accountName,
-              date: moment().format('MMMM DD YYYY'),
-              source: toAddress,
-              address: this.eth.address,
-              tokenAddress,
-              tokenSchema,
-              retried: 1
+            if (action === ETH_NFT_BRIDGE_ACTION.DEPOSIT) {
+              bridgePending = {
+                id: txId,
+                activityName: ACTIVITY_NAME.BRIDGE_ETH_TO_AR,
+                expense: 0,
+                accountName,
+                date: moment().format('MMMM DD YYYY'),
+                source: toAddress,
+                address: this.eth.address,
+                tokenAddress,
+                tokenSchema,
+                retried: 1
+              }
+              pendingTransactions.unshift(bridgePending)
+              /*
+               Set isBridging:true to asset
+              */
+              assets = assets.map((nft) => {
+                if (nft.txId === txId) nft.isBridging = true
+                return nft
+              })
+              await this.#chrome.setAssets(assets)
+              await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
             }
-            pendingTransactions.unshift(bridgePending)
-            /*
-             Set isBridging:true to asset
-            */
-            assets = assets.map((nft) => {
-              if (nft.txId === txId) nft.isBridging = true
-              return nft
-            })
-            await this.#chrome.setAssets(assets)
-            await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
           } else {
             return false
           }
-  
+
           return true
         default:
           return false
@@ -265,8 +270,9 @@ export class EthereumMethod {
       Check for approval
       If not approved, setApprovalForAll()
     */
+    let isApproved = false
     try {
-      const isApproved = await tokenContract.methods
+      isApproved = await tokenContract.methods
         .isApprovedForAll(userAddress, koiRouterContractAddress)
         .call()
       console.log('isApproved', isApproved)
@@ -281,10 +287,10 @@ export class EthereumMethod {
           .setApprovalForAll(koiRouterContractAddress, true)
           .send({ from: userAddress })
         console.log('====== setApprovalForAll receipt', res)
-        return true
+        return { success: true, action: ETH_NFT_BRIDGE_ACTION.SET_APPROVAL }
       } catch (error) {
         console.log('======= setApprovalForAll error', error)
-        return false
+        return { success: false, action: ETH_NFT_BRIDGE_ACTION.SET_APPROVAL }
       }
     } else {
       try {
@@ -292,10 +298,10 @@ export class EthereumMethod {
           .deposit(tokenAddress, tokenId, 1, toAddress)
           .send({ from: userAddress, value: web3.utils.toWei('0.00015', 'ether') })
         console.log('====== Deposit receipt ', depositResult)
-        return true
+        return { success: true, action: ETH_NFT_BRIDGE_ACTION.DEPOSIT }
       } catch (error) {
         console.log('======= Deposit error', error)
-        return false
+        return { success: false, action: ETH_NFT_BRIDGE_ACTION.SET_APPROVAL }
       }
     }
   }
@@ -401,7 +407,7 @@ export class EthereumMethod {
       const { activityName } = transaction
       if (includes(activityName, 'Bridged')) {
         await this.#bridgeEthtoAr({ 
-          txId, 
+          txId,
           toAddress: transaction.source, 
           tokenAddress: transaction.tokenAddress,  
           tokenSchema: transaction.tokenSchema

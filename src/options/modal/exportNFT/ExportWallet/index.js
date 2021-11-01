@@ -146,6 +146,7 @@ export default ({ info, onClose, type }) => {
   const [totalGasCost, setTotalGasCost] = useState(0)
   const [isApproved, setIsApproved] = useState(false)
   const [settingApproval, setSettingApproval] = useState(false)
+  const [approvedStatusLoaded, setApprovedStatusLoaded] = useState(false)
   const [addressOptions, setAddressOptions] = useState([])
 
   const addressInputRef = useRef()
@@ -187,10 +188,11 @@ export default ({ info, onClose, type }) => {
         .call()
 
       setIsApproved(isApproved)
+      setApprovedStatusLoaded(true)
     }
     
     getWalletType()
-    // getApprovalStatus()
+    getApprovalStatus()
   }, [])
 
   useEffect(() => {
@@ -225,7 +227,7 @@ export default ({ info, onClose, type }) => {
   
   useEffect(() => {
     const getCurrentGasPrice = async () => {
-      if(walletType === TYPE.ETHEREUM) {
+      if(walletType === TYPE.ETHEREUM && !isBridging) {
         const account = await popupAccount.getAccount({ address: _ownerAddress })
         const provider = await account.get.provider()
 
@@ -242,7 +244,7 @@ export default ({ info, onClose, type }) => {
     }, 30000)
 
     return () => clearInterval(intervalId)
-  }, [walletType, isApproved])
+  }, [walletType, isApproved, isBridging])
 
 
   useEffect(() => {
@@ -572,19 +574,19 @@ export default ({ info, onClose, type }) => {
                 {step == TRANSFER_STEPS.INPUT_INFO && (
                   <>
                     {type === TYPE.ARWEAVE && !isApproved && (
-                      <div className="transfer-button" onClick={handleSetApproval} disabled={settingApproval}>
+                      <button className="transfer-button" onClick={handleSetApproval} disabled={settingApproval || !approvedStatusLoaded}>
                         {settingApproval ? 'Setting approval...' : 'Set approval for all'}
-                      </div>
+                      </button>
                     )}
                     {type === TYPE.ARWEAVE && isApproved && (
-                      <div className='transfer-button' onClick={onOneClick}>
+                      <button className='transfer-button' onClick={onOneClick}>
                         One-Click Transfer to AR
-                      </div> 
+                      </button> 
                     )} 
                     {type === TYPE.ETHEREUM && (
-                      <div className='transfer-button' onClick={onOneClick}>
+                      <button className='transfer-button' onClick={onOneClick}>
                         One-Click Transfer to ETH
-                      </div>
+                      </button>
                     )}
                   </>
                 )}

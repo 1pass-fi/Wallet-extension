@@ -412,3 +412,8 @@ export const ETHERSCAN_API = {
   MAINNET: 'https://api.etherscan.io',
   RINKEY: 'https://api-rinkeby.etherscan.io'
 }
+
+export const ETH_NFT_BRIDGE_ACTION = {
+  SET_APPROVAL: 'SET_APPROVAL',
+  DEPOSIT: 'DEPOSIT'
+}

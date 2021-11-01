@@ -224,7 +224,7 @@ export default ({
                   while on Ethereum.
                 </div>
               </div>
-              <button className='bridge-to-arweave' disabled={pending} onClick={() => setShowExportModal({ locked, earnedKoi, totalViews, name, imageUrl, type, txId, address, tokenAddress, tokenSchema })}>Bridge to Arweave</button>
+              <button className='bridge-to-arweave' disabled={pending || isBridging} onClick={() => setShowExportModal({ locked, earnedKoi, totalViews, name, imageUrl, type, txId, address, tokenAddress, tokenSchema, contentType })}>Bridge to Arweave</button>
             </>
           ) : (
             <>
