@@ -174,7 +174,10 @@ export default ({ info, onClose, type }) => {
       const newWalletType = await popupAccount.getType(_ownerAddress)
       setWalletType(newWalletType)
 
-      if (newWalletType !== TYPE.ETHEREUM) return
+      if (newWalletType !== TYPE.ETHEREUM) {
+        setApprovedStatusLoaded(true)
+        return
+      }
 
       const account = await popupAccount.getAccount({ address: _ownerAddress })
       const provider = await account.get.provider()
