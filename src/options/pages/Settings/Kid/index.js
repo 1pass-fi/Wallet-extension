@@ -10,6 +10,11 @@ import ProfileCover from 'img/profile-cover-placeholder.png'
 import RemoveLinkAccount from 'img/remove-account-links.svg'
 import Button from '../../../shared/Button'
 
+import AceEditor from 'react-ace'
+
+import 'ace-builds/src-noconflict/mode-java'
+import 'ace-builds/src-noconflict/theme-github'
+
 import './index.css'
 
 const KidPage = () => {
@@ -141,11 +146,20 @@ const KidPage = () => {
               </div>
             </div>
           ))}
-
           <div className="add-more" onClick={addLinkAccount}>
             <AddIcon className="add-more-icon" />
             Add more
           </div>
+          <AceEditor
+            mode="css"
+            theme="github"
+            onChange={(val) => {
+              console.log(val)
+            }}
+            showGutter={false}
+            name="UNIQUE_ID_OF_DIV"
+            editorProps={{ $blockScrolling: true }}
+          />
           <div className="save-kid-btn">
             <Button variant="filled" text="Save & Update" />
           </div>

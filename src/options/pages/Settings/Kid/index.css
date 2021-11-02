@@ -172,3 +172,11 @@
   margin: 16px auto 32px auto;
   width: 189px;
 }
+
+.ace_editor,
+.ace_editor * {
+  font-family: 'Courier New', Courier, monospace !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+}
