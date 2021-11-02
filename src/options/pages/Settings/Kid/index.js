@@ -28,17 +28,17 @@ const KidPage = () => {
   }
 
   const handleChangeLinkAccountName = (idx, e) => {
-    const prevNetworks = [...linkAccounts]
-    prevNetworks[idx]['name'] = e.target.value
+    const prevLinkAccounts = [...linkAccounts]
+    prevLinkAccounts[idx]['name'] = e.target.value
 
-    setLinkAccounts(prevNetworks)
+    setLinkAccounts(prevLinkAccounts)
   }
 
   const handleChangeLinkAccountValue = (idx, e) => {
-    const prevNetworks = [...linkAccounts]
-    prevNetworks[idx]['value'] = e.target.value
+    const prevLinkAccounts = [...linkAccounts]
+    prevLinkAccounts[idx]['value'] = e.target.value
 
-    setLinkAccounts(prevNetworks)
+    setLinkAccounts(prevLinkAccounts)
   }
 
   const addLinkAccount = () => {
@@ -136,7 +136,7 @@ const KidPage = () => {
                 placeholder="https://koii.network/"
                 onChange={(e) => handleChangeLinkAccountValue(idx, e)}
               />
-              <div className="remove-logo" onClick={(idx) => removeLinkAccount(idx)}>
+              <div className="remove-logo" onClick={() => removeLinkAccount(idx)}>
                 <RemoveLinkAccount />
               </div>
             </div>
