@@ -18,6 +18,7 @@ import Arweave from 'arweave'
 import axios from 'axios'
 
 import { Web } from '@_koi/sdk/web'
+import { koiTools } from 'services/arweave'
 export const koi = new Web()
 
 import storage from 'services/storage'
@@ -757,15 +758,14 @@ export const winstonToAr = (value) => {
 
 export const calculateGasFee = async ({ amount, senderAddress, toAddress, provider }) => {
   const web3 = new Web3()
-  const koiTool = new Web()
-  koiTool.initializeEthWalletAndProvider(senderAddress, provider)
+  koiTools.initializeEthWalletAndProvider(senderAddress, provider)
   const amountToSend = web3.utils.toWei(amount.toString(), 'ether') // Convert to wei value
   const rawTx = {
     to: toAddress,
     value: amountToSend,
     gas: 0
   }
-  return koiTool.estimateGasEth(rawTx)
+  return koiTools.estimateGasEth(rawTx)
 }
 
 export const getAddressesFromAddressBook = async () => {

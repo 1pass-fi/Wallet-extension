@@ -52,11 +52,15 @@ const TransactionConfirmModal = ({
         toAddress: accountAddress,
         provider: provider
       })
-
       setGasFee(gasFee)
     }
 
     loadGasFee()
+    const loadGasFeeInterval = setInterval(() => {
+      loadGasFee()
+    }, 3000)
+
+    return (() => clearInterval(loadGasFeeInterval))
   }, [])
 
   return (

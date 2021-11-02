@@ -254,7 +254,8 @@ export const ERROR_MESSAGE = {
   EXPIRED_TRANSACTION_ACTION_ERROR: 'Something went wrong when trying to delete or resend your transaction',
   BRIDGE_WITH_ETH_MAINNET: 'We currently only support Ethereum NFT bridging on the Rinkeby network.',
   NFT_NOT_EXIST_ON_CHAIN: `This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie.`,
-  BRIDGE_NFT_FAILED: 'Bridge NFT failed'
+  BRIDGE_NFT_FAILED: 'Bridge NFT failed',
+  ACCOUNT_EXIST: 'This account has already been imported.'
 }
 
 export const STORAGE = {

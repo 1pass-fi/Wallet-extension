@@ -65,97 +65,107 @@ const reloadGallery = () => {
 }
 
 export const updatePendingTransactions = async () => {
-  /* 
-    Get all exist accounts
-  */
-  const allAccounts = await backgroundAccount.getAllAccounts()
-  allAccounts.forEach(async account => {
+  try {
     /* 
-      Get all pending transactions of each account
+      Get all exist accounts
     */
-    let pendingTransactions = await account.get.pendingTransactions()
-
-    /* 
-      Check for expired or confirmed.
-      Expired: dropped true
-      Confirmed: confirmed true
-    */
-    pendingTransactions = await Promise.all(pendingTransactions.map(async transaction => {
+    const allAccounts = await backgroundAccount.getAllAccounts()
+    allAccounts.forEach(async account => {
       /* 
-        Don't need to check the status for expired transaction
+        Get all pending transactions of each account
       */
-      if (!transaction.expired) {
-        const isNFT = includes(transaction.activityName, 'Minted NFT')
-        let status
-        if (includes(transaction.activityName, 'Bridged')) {
-          status = await account.method.getBridgeStatus(transaction.id)
-        } else {
-          status = await account.method.transactionConfirmedStatus(transaction.id)
-        }
-        const { dropped, confirmed } = status
+      let pendingTransactions = await account.get.pendingTransactions()
   
+      /* 
+        Check for expired or confirmed.
+        Expired: dropped true
+        Confirmed: confirmed true
+      */
+      pendingTransactions = await Promise.all(pendingTransactions.map(async transaction => {
         /* 
-          if retried <= MAX_RETRIED, silently resend transaction
-          if retried > MAX_RETRIED, notice user with an expired transaction
+          Don't need to check the status for expired transaction
         */
-        if (dropped) {
-          
-          if (transaction.retried < MAX_RETRIED ) {
-            return await account.method.resendTransaction(transaction.id)
+        if (!transaction.expired) {
+          const isNFT = includes(transaction.activityName, 'Minted NFT')
+          let status
+          if (includes(transaction.activityName, 'Bridged')) {
+            status = await account.method.getBridgeStatus(transaction.id)
           } else {
-            if (transaction.expired !== true) {
-              transaction.expired = true
-              if (isNFT) {
-                // set expired true for the pending nft
-                let pendingAssets = await account.get.pendingAssets()
-                pendingAssets = pendingAssets.map(nft => {
-                  if (nft.txId === transaction.id) nft.expired = true
-                  return nft
-                })
-        
-                await account.set.pendingAssets(pendingAssets)
+            status = await account.method.transactionConfirmedStatus(transaction.id)
+          }
+          const { dropped, confirmed } = status
+    
+          /* 
+            if retried <= MAX_RETRIED, silently resend transaction
+            if retried > MAX_RETRIED, notice user with an expired transaction
+          */
+          if (dropped) {
+            
+            if (transaction.retried < MAX_RETRIED ) {
+              return await account.method.resendTransaction(transaction.id)
+            } else {
+              if (transaction.expired !== true) {
+                transaction.expired = true
+                if (isNFT) {
+                  // set expired true for the pending nft
+                  let pendingAssets = await account.get.pendingAssets()
+                  pendingAssets = pendingAssets.map(nft => {
+                    if (nft.txId === transaction.id) nft.expired = true
+                    return nft
+                  })
+          
+                  await account.set.pendingAssets(pendingAssets)
+                }
               }
             }
           }
+    
+          if (confirmed) {
+            console.log('Transaction confirmed', transaction)
+            showNotification({
+              title: `Transaction confirmed`,
+              message: `Your transaction ${transaction.activityName} has been confirmed`
+            })
+            return
+          }
         }
+        return transaction
+      }))
   
-        if (confirmed) {
-          console.log('Transaction confirmed', transaction)
-          showNotification({
-            title: `Transaction confirmed`,
-            message: `Your transaction ${transaction.activityName} has been confirmed`
-          })
-          return
-        }
-      }
-      return transaction
-    }))
-
-    pendingTransactions = pendingTransactions.filter(transaction => !!transaction)
-    await account.set.pendingTransactions(pendingTransactions)
-  })
+      pendingTransactions = pendingTransactions.filter(transaction => !!transaction)
+      await account.set.pendingTransactions(pendingTransactions)
+    })
+  } catch (err) {
+    console.log('Update pending transaction error: ', err.message)
+  }
 }
 
+// will change the name of this function to reloadActivities()
 export const reloadArweaveActivities = async (type) => {
-  console.log('Get activities for ', type)
-  // REFRESH ACTIVITIES FOR ACCOUNTS OF INPUT TYPE
-  const accountsForInputType = await backgroundAccount.getAllAccounts(type) // all accounts if !type
-  await Promise.all(accountsForInputType.map(async account => {
-    await account.method.updateActivities()
-  }))
-
-  // UPDATE ALL ACTIVITIES ON STORAGE
-  let allActivities = []
-  const allAccounts = await backgroundAccount.getAllAccounts()
-
-  for (let i = 0; i < allAccounts.length; i++) {
-    const activities = await allAccounts[i].get.activities()
-    allActivities = [...allActivities, ...activities]
+  try {
+    console.log('Get activities for ', type)
+    // REFRESH ACTIVITIES FOR ACCOUNTS OF INPUT TYPE
+    const accountsForInputType = await backgroundAccount.getAllAccounts(type) // all accounts if !type
+    await Promise.all(accountsForInputType.map(async account => {
+      console.log('AccountName: ', await account.get.accountName())
+      await account.method.updateActivities()
+    }))
+  
+    // UPDATE ALL ACTIVITIES ON STORAGE
+    let allActivities = []
+    const allAccounts = await backgroundAccount.getAllAccounts()
+  
+    for (let i = 0; i < allAccounts.length; i++) {
+      const activities = await allAccounts[i].get.activities()
+      allActivities = [...allActivities, ...activities]
+    }
+  
+    allActivities = orderBy(allActivities, 'time', 'desc')
+    console.log('ACTIVITIES LOADED: ', allActivities.length)
+    await storage.generic.set.allActivities(allActivities)
+  } catch (err) {
+    console.log('Update activities error: ', err.message)
   }
-
-  allActivities = orderBy(allActivities, 'time', 'desc')
-  console.log('ACTIVITIES LOADED: ', allActivities.length)
-  await storage.generic.set.allActivities(allActivities)
 }
 
 /* 
@@ -176,7 +186,7 @@ export const loadBalances = async (type) => {
     const message = { type: MESSAGES.GET_BALANCES_SUCCESS }
     sendMessageToAllPorts(message)
   } catch (error) {
-    console.error(error)
+    console.error('Load balances error: ', error.message)
   }
 }
 
@@ -230,8 +240,12 @@ export const saveNewNFTsToStorage = async (newContents, account) => {
 }
 
 export const updateNfts = async () => {
-  const accounts = await backgroundAccount.getAllAccounts(TYPE.ARWEAVE)
-  accounts.forEach(account => account.method.updateNftStates())
+  try {
+    const accounts = await backgroundAccount.getAllAccounts(TYPE.ARWEAVE)
+    accounts.forEach(account => account.method.updateNftStates())
+  } catch (err) {
+    console.log('Update NFTs error: ', err.message)
+  }
 }
 
 export default async (koi, port, message, ports, resolveId, eth) => {
@@ -295,6 +309,22 @@ export default async (koi, port, message, ports, resolveId, eth) => {
               walletKey = eth.key
               break
           }
+
+          // if account existed -> send error
+          const accountExist = !backgroundAccount.importedAccount.every(credentials => {
+            return credentials.address !== address
+          })
+
+          if (accountExist) {
+            port.postMessage({
+              type: MESSAGES.IMPORT_WALLET,
+              error: ERROR_MESSAGE.ACCOUNT_EXIST,
+              id: messageId
+            })
+
+            return
+          }
+
           await backgroundAccount.createAccount(address, walletKey, password, type)
           
           account = await backgroundAccount.getAccount({ address, key: walletKey })
@@ -367,6 +397,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           })
 
           reloadGallery()
+          reloadArweaveActivities()
         } catch (err) {
           port.postMessage({
             type: MESSAGES.REMOVE_WALLET,
@@ -396,7 +427,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       case MESSAGES.UNLOCK_WALLET: {
         try {
           const { password } = message.data
-          let walletKey
 
           // throw error if password is incorrect
           try {
@@ -408,6 +438,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
               id: messageId
             })
           }
+          
+          loadBalances()
+          reloadArweaveActivities()
 
           port.postMessage({
             type: MESSAGES.UNLOCK_WALLET,
