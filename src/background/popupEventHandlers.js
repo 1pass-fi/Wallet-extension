@@ -229,6 +229,11 @@ export const saveNewNFTsToStorage = async (newContents, account) => {
   }
 }
 
+export const updateNfts = async () => {
+  const accounts = await backgroundAccount.getAllAccounts(TYPE.ARWEAVE)
+  accounts.forEach(account => account.method.updateNftStates())
+}
+
 export default async (koi, port, message, ports, resolveId, eth) => {
   try {
     const messageId = message.id

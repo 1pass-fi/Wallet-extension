@@ -707,6 +707,17 @@ export class ArweaveMethod {
     }
   }
 
+  async updateNftStates() {
+    console.log('Update Nft state...')
+    const allNfts = await this.#chrome.getAssets()
+    const nftIds = await allNfts.map(nft => nft.txId)
+
+    const updatedNfts = await this.getNftData(nftIds)
+
+    console.log('Updated Nft: ', updatedNfts.length)
+    await this.#chrome.setAssets(updatedNfts)
+  }
+
   async reuploadNFT(txId) {
     try {
       // get the pending assets
