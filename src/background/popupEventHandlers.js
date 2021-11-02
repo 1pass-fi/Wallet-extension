@@ -620,6 +620,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           // save pending transactions
           await account.set.pendingTransactions(pendingTransactions)
 
+          loadBalances()
+          reloadArweaveActivities()
+          
           port.postMessage({
             type: MESSAGES.MAKE_TRANSFER,
             data: { txId },

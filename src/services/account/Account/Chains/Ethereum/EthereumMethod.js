@@ -133,17 +133,18 @@ export class EthereumMethod {
         id = activity.hash
         if (activity.from === this.eth.address.toLowerCase()) {
           activityName = 'Sent ETH'
+          source = activity.to
         } else {
           activityName = 'Received ETH'
+          source = activity.from
         }
   
         const gasFee = (activity.gasUsed * activity.gasPrice) / 1000000000000000000
         const expenseValue = activity.value / 1000000000000000000
-  
+
         expense = gasFee + expenseValue
-  
         date = moment(Number(activity.timeStamp) * 1000).format('MMMM DD YYYY')
-        source = activity.to
+        
         time = activity.timeStamp
   
         return {
