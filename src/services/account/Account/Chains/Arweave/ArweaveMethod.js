@@ -120,9 +120,9 @@ export class ArweaveMethod {
     let hasNextPageRecipient = true
 
     // get 500 latest transactions
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3; i++) {
       try {
-        console.log(`Load activities [${i+1}/5]`)
+        console.log(`Load activities [${i+1}/3]`)
 
         // get graphql resposne
         let ownedResponse, recipientResponse

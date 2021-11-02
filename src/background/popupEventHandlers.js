@@ -136,6 +136,7 @@ export const updatePendingTransactions = async () => {
   })
 }
 
+// will change the name of this function to reloadActivities()
 export const reloadArweaveActivities = async (type) => {
   console.log('Get activities for ', type)
   // REFRESH ACTIVITIES FOR ACCOUNTS OF INPUT TYPE
@@ -367,6 +368,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           })
 
           reloadGallery()
+          reloadArweaveActivities()
         } catch (err) {
           port.postMessage({
             type: MESSAGES.REMOVE_WALLET,
@@ -396,7 +398,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       case MESSAGES.UNLOCK_WALLET: {
         try {
           const { password } = message.data
-          let walletKey
 
           // throw error if password is incorrect
           try {
@@ -408,6 +409,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
               id: messageId
             })
           }
+          
+          loadBalances()
+          reloadArweaveActivities()
 
           port.postMessage({
             type: MESSAGES.UNLOCK_WALLET,
