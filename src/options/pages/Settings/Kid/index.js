@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import map from 'lodash/map'
-import upperFirst from 'lodash/upperFirst'
 import { Link } from 'react-router-dom'
 
 import IDCardIcon from 'img/id-card-icon.svg'
@@ -9,39 +7,48 @@ import EditIcon from 'img/edit-icon-collection.svg'
 import DefaultAvt from 'img/default-avt-green.svg'
 import KidInputField from './kidInputField'
 import ProfileCover from 'img/profile-cover-placeholder.png'
+import RemoveLinkAccount from 'img/remove-account-links.svg'
 import Button from '../../../shared/Button'
 
 import './index.css'
 
 const KidPage = () => {
   const [userKID, setuserKID] = useState({
+    kidLink: '',
     name: '',
     country: '',
     pronouns: '',
     description: '',
   })
 
-  const [socialNetworks, setSocialNetworks] = useState({
-    twitter: '',
-    instagram: '',
-    facebook: '',
-    website: '',
-    tiktok: '',
-  })
+  const [linkAccounts, setLinkAccounts] = useState([{ name: '', value: '' }])
 
   const onChangeUserInfo = (e) => {
     setuserKID({ ...userKID, [e.target.name]: e.target.value })
   }
 
-  const onChangeSocialNetwork = (e) => {
-    setSocialNetworks({ ...socialNetworks, [e.target.name]: e.target.value })
+  const handleChangeLinkAccountName = (idx, e) => {
+    const prevNetworks = [...linkAccounts]
+    prevNetworks[idx]['name'] = e.target.value
+
+    setLinkAccounts(prevNetworks)
   }
 
-  const addSocialNetworks = () => {
-    setSocialNetworks({
-      ...socialNetworks,
-      [`network${Object.keys(socialNetworks).length - 4}`]: '',
-    })
+  const handleChangeLinkAccountValue = (idx, e) => {
+    const prevNetworks = [...linkAccounts]
+    prevNetworks[idx]['value'] = e.target.value
+
+    setLinkAccounts(prevNetworks)
+  }
+
+  const addLinkAccount = () => {
+    setLinkAccounts([...linkAccounts, { name: '', value: '' }])
+  }
+
+  const removeLinkAccount = (idx) => {
+    const newLinkAccount = [...linkAccounts]
+    newLinkAccount.splice(idx, 1)
+    setLinkAccounts(newLinkAccount)
   }
 
   return (
@@ -70,6 +77,12 @@ const KidPage = () => {
         </div>
 
         <div className="form-text">
+          <KidInputField
+            label="kID"
+            isRequired={true}
+            value={userKID.kidLink}
+            setValue={onChangeUserInfo}
+          />
           <KidInputField
             label="Name"
             isRequired={true}
@@ -105,18 +118,31 @@ const KidPage = () => {
             </div>
           </div>
 
-          <div className="section-name">Social Networks</div>
-          {map(socialNetworks, (val, key) => (
-            <KidInputField
-              key={key}
-              label={upperFirst(key)}
-              isRequired={false}
-              value={val}
-              setValue={onChangeSocialNetwork}
-            />
+          <div className="section-name">Link Accounts</div>
+          <p className="link-account-desc">
+            These links will appear on your kID link and your leaderboard profile
+          </p>
+          {linkAccounts.map((linkAccounts, idx) => (
+            <div className="link-accounts-input-line">
+              <input
+                className="link-accounts-input-name"
+                value={linkAccounts.name}
+                placeholder="Label (e.g. “Website”)"
+                onChange={(e) => handleChangeLinkAccountName(idx, e)}
+              />
+              <input
+                className="link-accounts-input-value"
+                value={linkAccounts.value}
+                placeholder="https://koii.network/"
+                onChange={(e) => handleChangeLinkAccountValue(idx, e)}
+              />
+              <div className="remove-logo" onClick={(idx) => removeLinkAccount(idx)}>
+                <RemoveLinkAccount />
+              </div>
+            </div>
           ))}
 
-          <div className="add-more" onClick={addSocialNetworks}>
+          <div className="add-more" onClick={addLinkAccount}>
             <AddIcon className="add-more-icon" />
             Add more
           </div>

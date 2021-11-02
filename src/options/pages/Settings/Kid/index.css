@@ -102,14 +102,58 @@
 }
 
 .kid-page-wrapper .form-section .section-name {
-  margin-bottom: 19px;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.03em;
   color: #49ce8b;
 }
 
+.kid-page-wrapper .link-account-desc {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  margin-top: 0px;
+}
+
+.kid-page-wrapper .link-accounts-input-line {
+  position: relative;
+  margin-top: 18px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kid-page-wrapper .link-accounts-input-line .remove-logo {
+  position: absolute;
+  cursor: pointer;
+  top: 6px;
+  right: -32px;
+}
+
+.kid-page-wrapper .link-accounts-input-line input {
+  background: transparent;
+  height: 32px;
+  border: 1px solid #ffffff;
+  border-radius: 3px;
+  padding: 8px;
+
+  color: white;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.kid-page-wrapper .link-accounts-input-line .link-accounts-input-name {
+  width: 168px;
+}
+
+.kid-page-wrapper .link-accounts-input-line .link-accounts-input-value {
+  width: 420px;
+}
+
 .kid-page-wrapper .add-more {
+  margin-top: 27px;
   width: fit-content;
   font-size: 16px;
   font-weight: 400;
