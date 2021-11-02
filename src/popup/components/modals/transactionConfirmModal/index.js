@@ -55,6 +55,7 @@ const TransactionConfirmModal = ({
       setGasFee(gasFee)
     }
 
+    loadGasFee()
     const loadGasFeeInterval = setInterval(() => {
       loadGasFee()
     }, 3000)

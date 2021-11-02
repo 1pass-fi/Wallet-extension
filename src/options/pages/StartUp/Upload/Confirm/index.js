@@ -45,7 +45,12 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
         state: 'upload-key-state'
       })
     } catch (err) {
-      if (err.message == 'Incorrect password') {
+      if (err.message === 'Incorrect password') {
+        setError(err.message)
+        return
+      }
+
+      if (err.message === ERROR_MESSAGE.ACCOUNT_EXIST) {
         setError(err.message)
         return
       }

@@ -309,6 +309,22 @@ export default async (koi, port, message, ports, resolveId, eth) => {
               walletKey = eth.key
               break
           }
+
+          // if account existed -> send error
+          const accountExist = !backgroundAccount.importedAccount.every(credentials => {
+            return credentials.address !== address
+          })
+
+          if (accountExist) {
+            port.postMessage({
+              type: MESSAGES.IMPORT_WALLET,
+              error: ERROR_MESSAGE.ACCOUNT_EXIST,
+              id: messageId
+            })
+
+            return
+          }
+
           await backgroundAccount.createAccount(address, walletKey, password, type)
           
           account = await backgroundAccount.getAccount({ address, key: walletKey })
