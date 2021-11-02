@@ -246,7 +246,7 @@ export default ({ info, onClose, type }) => {
     getCurrentGasPrice()
     const intervalId = setInterval(() => {
       getCurrentGasPrice()
-    }, 30000)
+    }, 3000)
 
     return () => clearInterval(intervalId)
   }, [walletType, isApproved, isBridging])
