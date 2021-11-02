@@ -54,7 +54,7 @@
 
 .ab-contact-form input::placeholder {
   color: white;
-  opacity: 1;
+  opacity: 0.7;
 }
 
 .ab-contact-form__name {
@@ -147,7 +147,7 @@
 
 .ab-contact-form__input-group--did .input-group__label::placeholder {
   color: #ffc78f;
-  opacity: 1;
+  opacity: 0.7;
 }
 
 /*
