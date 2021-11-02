@@ -1,8 +1,8 @@
 import '@babel/polyfill'
 
-import { PORTS, LOAD_BALANCES_TIME_INTERVAL, LOAD_TRANSACTION_STATE_INTERVAL, OS, PATH, RELOAD_ARWEAVE_ACTIVITIES, RELOAD_ETHEREUM_ACTIVITIES, LOAD_ETH_BALANCES_TIME_INTERVAL } from 'constants/koiConstants'
+import { PORTS, LOAD_BALANCES_TIME_INTERVAL, LOAD_TRANSACTION_STATE_INTERVAL, OS, PATH, RELOAD_ARWEAVE_ACTIVITIES, RELOAD_ETHEREUM_ACTIVITIES, LOAD_ETH_BALANCES_TIME_INTERVAL, UPDATE_NFT_STATE_TIME_INTERVAL } from 'constants/koiConstants'
 import { IMPORTED } from 'constants/accountConstants'
-import popUpEventHandlers, { loadBalances, updatePendingTransactions, reloadArweaveActivities, reloadEthActivities } from './popupEventHandlers'
+import popUpEventHandlers, { loadBalances, updatePendingTransactions, reloadArweaveActivities, reloadEthActivities, updateNfts } from './popupEventHandlers'
 import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from '@_koi/sdk/web'
 import { Ethereum } from './eth'
@@ -46,6 +46,10 @@ setInterval(() => {
 setInterval(() => {
   reloadArweaveActivities(TYPE.ETHEREUM)
 }, RELOAD_ETHEREUM_ACTIVITIES)
+
+setInterval(() => {
+  updateNfts()
+}, UPDATE_NFT_STATE_TIME_INTERVAL)
 
 
 function cb(port) {
