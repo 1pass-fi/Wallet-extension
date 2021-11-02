@@ -5,10 +5,13 @@ import ReactTooltip from 'react-tooltip'
 import EditIcon from 'img/edit-icon-collection.svg'
 import CloseIcon from 'img/ab-close-icon.svg'
 import FinnieKoiiIcon from 'img/finnie-koi-white-icon.svg'
+import EthereumIcon from 'img/ethereum-icon.svg'
 import Button from '../Button'
 import Avatar from 'img/ab-avatar.png'
 import CopyIcon from 'img/copy-icon.svg'
 import TrashIcon from 'img/trash-bin.svg'
+
+import { TYPE } from 'constants/accountConstants'
 
 import './index.css'
 
@@ -35,7 +38,8 @@ const ContactDetail = ({ contact, onClose, showEditForm, setShowDeleteContactMod
           <div className="ab-contact-detail__address-name">{address.name}</div>
           <div className="ab-contact-detail__address-info">
             <div className="ab-contact-detail__address-wallet">
-              <FinnieKoiiIcon />
+              {address.type === TYPE.ARWEAVE && <FinnieKoiiIcon />}
+              {address.type === TYPE.ETHEREUM && <EthereumIcon />}
             </div>
             <div className="ab-contact-detail__address-value">{address.value}</div>
             <div className="ab-copy-icon" data-tip="Copy to clipboard">

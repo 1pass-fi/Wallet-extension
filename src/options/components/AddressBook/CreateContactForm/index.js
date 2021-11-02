@@ -14,6 +14,8 @@ import { GalleryContext } from 'options/galleryContext'
 import Button from '../Button'
 import { TYPE } from 'constants/accountConstants'
 
+import Web3 from 'web3'
+
 import './index.css'
 
 const CreateContactForm = ({ onClose, storeNewAddress }) => {
@@ -34,6 +36,17 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
       setError('Address must have name!')
       return
     }
+
+    // TODO need to ask Kayla's confirmation about TYPE of address
+    const classifiedAddresses = [...userAddresses]
+    classifiedAddresses.forEach((address) => {
+      if (Web3.utils.isAddress(address.value)) {
+        address.type = TYPE.ETHEREUM
+      } else {
+        address.type = TYPE.ARWEAVE
+      }
+    })
+    setUserAddresses(classifiedAddresses)
 
     await storeNewAddress({ ...userInfo, addresses: userAddresses })
     setNotification('Successfully added address to address book!')

@@ -170,18 +170,24 @@ export default ({ info, onClose, type }) => {
 
   useEffect(() => {
     // Use this wallet type since the current type is of the receipient
-    const getWalletType = async () => {
-      const type = await popupAccount.getType(_ownerAddress)
-      setWalletType(type)
-    }
-    
-    const getApprovalStatus = async () => {
+    const getWalletTypeAndApprovalStatus = async () => {
+      const newWalletType = await popupAccount.getType(_ownerAddress)
+      setWalletType(newWalletType)
+
+      if (newWalletType !== TYPE.ETHEREUM) {
+        setApprovedStatusLoaded(true)
+        return
+      }
+
       const account = await popupAccount.getAccount({ address: _ownerAddress })
       const provider = await account.get.provider()
-      const web3 = new Web3(provider) 
+      const web3 = new Web3(provider)
 
       const tokenContract = new web3.eth.Contract(koiTokenABI, tokenAddress)
-      const koiRouterContractAddress = provider === ETH_NETWORK_PROVIDER.MAINNET ? KOI_ROUTER_CONTRACT.MAINNET : KOI_ROUTER_CONTRACT.RINKEBY
+      const koiRouterContractAddress =
+        provider === ETH_NETWORK_PROVIDER.MAINNET
+          ? KOI_ROUTER_CONTRACT.MAINNET
+          : KOI_ROUTER_CONTRACT.RINKEBY
 
       const isApproved = await tokenContract.methods
         .isApprovedForAll(_ownerAddress, koiRouterContractAddress)
@@ -190,9 +196,8 @@ export default ({ info, onClose, type }) => {
       setIsApproved(isApproved)
       setApprovedStatusLoaded(true)
     }
-    
-    getWalletType()
-    getApprovalStatus()
+
+    getWalletTypeAndApprovalStatus()
   }, [])
 
   useEffect(() => {
