@@ -236,7 +236,7 @@ export default ({
                     </div>
                   )}
                   {showEarnedKoi && (
-                    <div className='koi '>{formatNumber(earnedKoi)} KOII earned</div>
+                    <div className='koi'>{formatNumber(earnedKoi)} KOII earned</div>
                   )}
                 </div>
               )}
@@ -290,7 +290,7 @@ export default ({
                     className='social-icon'
                   />
                   <a
-                    className={isDisableFeatures && 'disabled'}
+                    className={isDisableFeatures ? 'disabled' : ''}
                     href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koii.live/${txId}.html`}
                     title='Share by Email'
                   >
