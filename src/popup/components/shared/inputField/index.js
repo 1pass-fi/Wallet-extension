@@ -8,7 +8,7 @@ import ToggleDisplayIcon from 'img/toggle-display.svg'
 import './index.css'
 
 
-export default ({
+export default React.forwardRef(({
   label,
   value,
   onChange,
@@ -16,7 +16,7 @@ export default ({
   placeholder = '',
   className = '',
   type = 'password',
-}) => {
+}, ref) => {
   const [isDisplay, setDisplay] = useState(false)
   const toggleDisplay = () => {
     setDisplay(!isDisplay)
@@ -35,9 +35,10 @@ export default ({
           onChange={onChange}
           placeholder={placeholder}
           step='any'
+          ref={ref}
         ></input>
         < ToggleDisplayIcon className='toggle-display' onClick={toggleDisplay} />
       </div>
     </div>
   )
-}
+})
