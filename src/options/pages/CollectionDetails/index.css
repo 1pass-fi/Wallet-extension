@@ -27,23 +27,106 @@
   cursor: pointer;
 }
 
-.collection-details .title {
-  font-size: 32px;
-  line-height: 32px;
+.collection-header-buttons {
+  position: absolute;
+  top: 13px;
+  width: 100%;
+  display: flex;
+  padding-left: 179px;
+  padding-right: 277px;
+  box-sizing: border-box;
+  justify-content: space-between;
+  /* background-color: red; */
 }
 
-.collection-details .views {
+.collection-header-buttons .edit-collection-buttons {
+  display: flex;
+}
+
+.collection-header-buttons .edit-collection-buttons .edit-collection-button {
+  display: flex;
+  width: auto;
+  margin-right: 27px;
+  border-radius: 2px;
+  cursor: pointer;
   font-weight: 600;
   font-size: 16px;
-  line-height: 24px;
-  margin-top: 12px;
-  text-transform: uppercase;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
 }
 
-.collection-details .earned-koi {
-  font-size: 14px;
-  line-height: 24px;
-  text-transform: uppercase;
+.collection-header-buttons .edit-collection-buttons .edit-collection-button.save-changes-button {
+  background: #5ed9d1;
+  width: 137px;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.16);
+}
+
+.collection-header-buttons .edit-collection-buttons .edit-collection-button.cancel-button {
+  width: 107px;
+  color: white;
+
+  border: 1px solid #ffffff;
+  box-sizing: border-box;
+  filter: drop-shadow(0px 2px 12px rgba(0, 0, 0, 0.16));
+}
+
+.collection-header-buttons .share-collection-button {
+  width: 79px;
+  height: 34px;
+  background: #ffc78f;
+  border-radius: 2px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  margin-right: 54px;
+
+  text-align: center;
+  letter-spacing: -0.01em;
+  color: #171753;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.collection-details .collection-details-abc {
+  width: 100%;
+  padding-left: 115px;
+}
+
+.collection-details .collection-detail-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.collection-details .collection-detail-header .title {
+  font-size: 32px;
+  line-height: 32px;
+  display: flex;
+}
+
+.collection-details .collection-detail-header .title .collection-icon {
+  margin-left: 29px;
+  width: 27px;
+  height: 27px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+
+.collection-details .collection-detail-header .title .collection-icon.edit-icon {
+  filter: brightness(0) saturate(100%) invert(90%) sepia(70%) saturate(4951%) hue-rotate(301deg)
+    brightness(108%) contrast(101%);
+}
+
+.collection-details .collection-detail-header .toggle-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.collection-details .collection-detail-header .toggle-wrapper {
+  cursor: pointer;
 }
 
 .collection-details .description {
@@ -61,4 +144,36 @@
   gap: 20px;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+.collection-details__views-count {
+  margin-top: 16px;
+  display: flex;
+
+  justify-content: flex-start;
+  gap: 32px;
+  align-items: center;
+}
+
+.collection-details .earned-koi {
+  display: flex;
+  align-items: baseline;
+}
+
+.collection-details__views-count__text {
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 400;
+
+  margin-left: 5px;
+}
+
+.collection-details__views-count__number {
+  font-size: 25px;
+}
+
+.collection-details .views {
+  display: flex;
+  align-items: baseline;
+  font-weight: 600;
 }
