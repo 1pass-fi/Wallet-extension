@@ -15,6 +15,7 @@ export const Select = ({
   placeholder='' ,
   className='',
   onChange,
+  isAccountAddress
 }) => {
   const [showMenu, setShowMenu] = useState(false)
   const [downArrow, setDownArrow] = useState(true)
@@ -70,7 +71,7 @@ export const Select = ({
                   value={option.value}
                   key={option.id + option.label}
                   onClick={handleSelect}
-                >{option.label}</button>
+                >{option.label} {isAccountAddress && <button value={option.value} className='address-text'>{option.address.slice(0, 6)}</button>}</button>
               )
             })}
           </div>
