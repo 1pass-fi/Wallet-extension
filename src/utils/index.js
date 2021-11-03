@@ -793,3 +793,13 @@ export const getAddressesFromAddressBook = async () => {
 
   return options
 }
+
+export const validateArweaveWallet = (arAddress) => {
+  const arAddressRegex = new RegExp(
+    '^[A-Za-z0-9-_]+$'
+  )
+  const isValidCharacters = arAddressRegex.test(arAddress)
+  const isValidLength = arAddress.length === 43
+
+  return isValidCharacters && isValidLength
+}
