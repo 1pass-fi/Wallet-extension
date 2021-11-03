@@ -1,193 +1,55 @@
-import { isArray, isString, isEmpty, find } from 'lodash'
-import Arweave from 'arweave'
+import { 
+  isArray, 
+  isString, 
+  isEmpty, 
+  differenceBy, 
+} from 'lodash'
 import passworder from 'browser-passworder'
 import moment from 'moment'
 import axios from 'axios'
-import differenceBy from 'lodash/differenceBy'
-import includes from 'lodash/includes'
-import orderBy from 'lodash/orderBy'
-import { v4 as uuid } from 'uuid'
+import { Web } from '@_koi/sdk/web'
 
+// Services
 import storage from 'services/storage'
 import { ArweaveAccount, EthereumAccount } from 'services/account/Account'
-import { TYPE } from 'constants/accountConstants'
-
-import { getImageDataForNFT, getProviderUrlFromName } from 'utils'
-
 import { backgroundAccount } from 'services/account'
+import arweave from 'services/arweave'
+import { Ethereum } from 'services/ethereum'
 
-import { MESSAGES, PORTS, STORAGE, ERROR_MESSAGE, PATH, FRIEND_REFERRAL_ENDPOINTS, MAX_RETRIED } from 'constants/koiConstants'
+// Constants
+import { TYPE } from 'constants/accountConstants'
+import { 
+  MESSAGES, 
+  PORTS, 
+  STORAGE, 
+  ERROR_MESSAGE, 
+  PATH, 
+  FRIEND_REFERRAL_ENDPOINTS 
+} from 'constants/koiConstants'
 
-import { popupPorts } from '.'
+import helpers from '../helpers'
 
-import showNotification from 'utils/notifications'
-
-const generatedKey = { key: null, mnemonic: null, type: null, address: null }
-
+// Utils
 import {
-  saveWalletToChrome,
-  utils,
-  loadMyContent,
-  loadMyActivities,
-  clearChromeStorage,
-  decryptWalletKeyFromChrome,
-  setChromeStorage,
+  getImageDataForNFT,
+  getProviderUrlFromName,
   removeChromeStorage,
   getChromeStorage,
-  generateWallet,
-  transfer,
-  signTransaction,
-  getBalances,
   exportNFTNew,
   createNewKid,
   updateKid
 } from 'utils'
 
-import arweaveConfirmStatus from 'utils/arweaveConfirmStatus'
-import chromeNotification from 'utils/notifications'
+import { popupPorts } from '..'
+const generatedKey = { key: null, mnemonic: null, type: null, address: null }
 
-import { Web } from '@_koi/sdk/web'
-import { Ethereum } from './eth'
-
-const arweave = Arweave.init({
-  host: 'arweave.net',
-  protocol: 'https',
-  port: 443,
-})
-
-const sendMessageToAllPorts = (message) => {
+export const sendMessageToAllPorts = (message) => {
   popupPorts.forEach((port) => port.postMessage(message))
 }
 
 const reloadGallery = () => {
   const reloadMessage = { type: MESSAGES.RELOAD_GALLERY }
   sendMessageToAllPorts(reloadMessage)
-}
-
-export const updatePendingTransactions = async () => {
-  try {
-    /* 
-      Get all exist accounts
-    */
-    const allAccounts = await backgroundAccount.getAllAccounts()
-    allAccounts.forEach(async account => {
-      /* 
-        Get all pending transactions of each account
-      */
-      let pendingTransactions = await account.get.pendingTransactions()
-  
-      /* 
-        Check for expired or confirmed.
-        Expired: dropped true
-        Confirmed: confirmed true
-      */
-      pendingTransactions = await Promise.all(pendingTransactions.map(async transaction => {
-        /* 
-          Don't need to check the status for expired transaction
-        */
-        if (!transaction.expired) {
-          const isNFT = includes(transaction.activityName, 'Minted NFT')
-          let status
-          if (includes(transaction.activityName, 'Bridged')) {
-            status = await account.method.getBridgeStatus(transaction.id)
-          } else {
-            status = await account.method.transactionConfirmedStatus(transaction.id)
-          }
-          const { dropped, confirmed } = status
-    
-          /* 
-            if retried <= MAX_RETRIED, silently resend transaction
-            if retried > MAX_RETRIED, notice user with an expired transaction
-          */
-          if (dropped) {
-            
-            if (transaction.retried < MAX_RETRIED ) {
-              return await account.method.resendTransaction(transaction.id)
-            } else {
-              if (transaction.expired !== true) {
-                transaction.expired = true
-                if (isNFT) {
-                  // set expired true for the pending nft
-                  let pendingAssets = await account.get.pendingAssets()
-                  pendingAssets = pendingAssets.map(nft => {
-                    if (nft.txId === transaction.id) nft.expired = true
-                    return nft
-                  })
-          
-                  await account.set.pendingAssets(pendingAssets)
-                }
-              }
-            }
-          }
-    
-          if (confirmed) {
-            console.log('Transaction confirmed', transaction)
-            showNotification({
-              title: `Transaction confirmed`,
-              message: `Your transaction ${transaction.activityName} has been confirmed`
-            })
-            return
-          }
-        }
-        return transaction
-      }))
-  
-      pendingTransactions = pendingTransactions.filter(transaction => !!transaction)
-      await account.set.pendingTransactions(pendingTransactions)
-    })
-  } catch (err) {
-    console.log('Update pending transaction error: ', err.message)
-  }
-}
-
-// will change the name of this function to reloadActivities()
-export const reloadArweaveActivities = async (type) => {
-  try {
-    console.log('Get activities for ', type)
-    // REFRESH ACTIVITIES FOR ACCOUNTS OF INPUT TYPE
-    const accountsForInputType = await backgroundAccount.getAllAccounts(type) // all accounts if !type
-    await Promise.all(accountsForInputType.map(async account => {
-      console.log('AccountName: ', await account.get.accountName())
-      await account.method.updateActivities()
-    }))
-  
-    // UPDATE ALL ACTIVITIES ON STORAGE
-    let allActivities = []
-    const allAccounts = await backgroundAccount.getAllAccounts()
-  
-    for (let i = 0; i < allAccounts.length; i++) {
-      const activities = await allAccounts[i].get.activities()
-      allActivities = [...allActivities, ...activities]
-    }
-  
-    allActivities = orderBy(allActivities, 'time', 'desc')
-    console.log('ACTIVITIES LOADED: ', allActivities.length)
-    await storage.generic.set.allActivities(allActivities)
-  } catch (err) {
-    console.log('Update activities error: ', err.message)
-  }
-}
-
-/* 
-  Reload arweave balances every 5 minutes
-  Reload ethereum balance every 1 hour
-  (setInterval on ../index.js)
-*/
-export const loadBalances = async (type) => {
-  try {
-    const accounts = await backgroundAccount.getAllAccounts(type) // !type will return accounts of all types.
-    await Promise.all(accounts.map(async account => {
-      let { balance, koiBalance } = await account.method.getBalances()
-      console.log(`Load ${type ? type : ''} balance for: `, await account.get.accountName())
-      await account.set.balance(balance)
-      await account.set.koiBalance(koiBalance)
-    }))
-
-    const message = { type: MESSAGES.GET_BALANCES_SUCCESS }
-    sendMessageToAllPorts(message)
-  } catch (error) {
-    console.error('Load balances error: ', error.message)
-  }
 }
 
 /**
@@ -360,8 +222,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           /* 
             Get balance for this account
           */
-          loadBalances()
-          reloadArweaveActivities()
+          helpers.loadBalances()
+          helpers.loadActivities()
 
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,
@@ -381,7 +243,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       }
 
       case MESSAGES.GET_BALANCES: {
-        loadBalances()
+        helpers.loadBalances()
         break
       }
 
@@ -397,7 +259,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           })
 
           reloadGallery()
-          reloadArweaveActivities()
+          helpers.loadActivities()
         } catch (err) {
           port.postMessage({
             type: MESSAGES.REMOVE_WALLET,
@@ -439,8 +301,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             })
           }
           
-          loadBalances()
-          reloadArweaveActivities()
+          helpers.loadBalances()
+          helpers.loadActivities()
 
           port.postMessage({
             type: MESSAGES.UNLOCK_WALLET,
@@ -620,8 +482,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           // save pending transactions
           await account.set.pendingTransactions(pendingTransactions)
 
-          loadBalances()
-          reloadArweaveActivities()
+          helpers.loadBalances()
+          helpers.loadActivities()
           
           port.postMessage({
             type: MESSAGES.MAKE_TRANSFER,
@@ -1121,8 +983,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             await storage.setting.set.activatedAccountAddress(await account.get.address())
           }
 
-          loadBalances()
-          reloadArweaveActivities()
+          helpers.loadBalances()
+          helpers.loadActivities()
           port.postMessage({
             type: MESSAGES.SAVE_WALLET_GALLERY,
             data: addressFromKey,
