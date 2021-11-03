@@ -1,10 +1,6 @@
 // Services
 import { backgroundAccount } from 'services/account'
 
-// Constants
-import { MESSAGES } from 'constants/koiConstants'
-
-import { sendMessageToAllPorts } from '../handlers/popupEventHandlers'
 
 export default async (type) => {
   try {
@@ -15,9 +11,6 @@ export default async (type) => {
       await account.set.balance(balance)
       await account.set.koiBalance(koiBalance)
     }))
-
-    const message = { type: MESSAGES.GET_BALANCES_SUCCESS }
-    sendMessageToAllPorts(message)
   } catch (error) {
     console.error('Load balances error: ', error.message)
   }

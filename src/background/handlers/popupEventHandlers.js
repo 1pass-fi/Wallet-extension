@@ -24,7 +24,7 @@ import {
   STORAGE, 
   ERROR_MESSAGE, 
   PATH, 
-  FRIEND_REFERRAL_ENDPOINTS 
+  FRIEND_REFERRAL_ENDPOINTS
 } from 'constants/koiConstants'
 
 import helpers from '../helpers'
@@ -40,16 +40,11 @@ import {
   updateKid
 } from 'utils'
 
-import { popupPorts } from '..'
 const generatedKey = { key: null, mnemonic: null, type: null, address: null }
-
-export const sendMessageToAllPorts = (message) => {
-  popupPorts.forEach((port) => port.postMessage(message))
-}
 
 const reloadGallery = () => {
   const reloadMessage = { type: MESSAGES.RELOAD_GALLERY }
-  sendMessageToAllPorts(reloadMessage)
+  helpers.sendMessageToPopupPorts(reloadMessage)
 }
 
 /**
@@ -101,14 +96,6 @@ export const saveNewNFTsToStorage = async (newContents, account) => {
   }
 }
 
-export const updateNfts = async () => {
-  try {
-    const accounts = await backgroundAccount.getAllAccounts(TYPE.ARWEAVE)
-    accounts.forEach(account => account.method.updateNftStates())
-  } catch (err) {
-    console.log('Update NFTs error: ', err.message)
-  }
-}
 
 export default async (koi, port, message, ports, resolveId, eth) => {
   try {
@@ -223,8 +210,9 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             Get balance for this account
           */
           helpers.loadBalances()
-          helpers.loadActivities()
+          helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
 
+          helpers.loadActivities()
           port.postMessage({
             type: MESSAGES.IMPORT_WALLET,
             data: address,
@@ -244,6 +232,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
       case MESSAGES.GET_BALANCES: {
         helpers.loadBalances()
+        helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
         break
       }
 
@@ -302,6 +291,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           }
           
           helpers.loadBalances()
+          helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
+
           helpers.loadActivities()
 
           port.postMessage({
@@ -483,6 +474,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           await account.set.pendingTransactions(pendingTransactions)
 
           helpers.loadBalances()
+          helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
+
           helpers.loadActivities()
           
           port.postMessage({
@@ -984,6 +977,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           }
 
           helpers.loadBalances()
+          helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
+          
           helpers.loadActivities()
           port.postMessage({
             type: MESSAGES.SAVE_WALLET_GALLERY,

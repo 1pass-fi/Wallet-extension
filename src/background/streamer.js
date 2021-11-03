@@ -2,7 +2,7 @@
   Update user data.
 */
 import helpers from './helpers'
-import { TIME_INTERVAL } from 'constants/koiConstants'
+import { TIME_INTERVAL, MESSAGES } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
 
 
@@ -22,10 +22,12 @@ export default () => {
 
     loadBalancesArweaveInterval = setInterval(() => {
       helpers.loadBalances(TYPE.ARWEAVE)
+      helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
     }, TIME_INTERVAL.LOAD_BALANCES_ARWEAVE)
 
     loadBalancesEthereumInterval = setInterval(() => {
       helpers.loadBalances(TYPE.ETHEREUM)
+      helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
     }, TIME_INTERVAL.LOAD_BALANCES_ETHEREUM)
 
     loadActivitiesArweaveInterval = setInterval(() => {
