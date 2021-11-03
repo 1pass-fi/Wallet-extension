@@ -1,11 +1,13 @@
 // modules
 import React, { useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
+import ReactTooltip from 'react-tooltip'
 
 // assets
 import ExportIcon from 'img/export-icon.svg'
 import ImportIcon from 'img/import-icon.svg'
 import PlusIcon from 'img/plus-icon-outline.svg'
+import GoBackIcon from 'img/goback-icon-26px.svg'
 
 // components
 import Card from 'shared/card'
@@ -48,6 +50,10 @@ export default () => {
   const handleOnClick = (path) => {
     const url = chrome.extension.getURL(path)
     chrome.tabs.create({ url })
+  }
+
+  const goBackAccountHome = () => {
+    history.push('/account/')
   }
 
   // const triggerPopup = performOnDifferentOs(
@@ -141,10 +147,14 @@ export default () => {
           <Button onClick={() => history.push('/account/recovery')} label='Recover My Key'/>
         </div>
       </div>}
-      <div className='get-started'>Let’s get started.</div>
+      <div className='account-import-header'>
+        <GoBackIcon data-tip='Back' className='go-back-icon' onClick={goBackAccountHome}/>
+        <div className='get-started'>Let’s get started.</div>
+      </div>
       {selections.map((content) => (
         <CardOption {...content} />
       ))}
+      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }
