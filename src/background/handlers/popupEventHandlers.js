@@ -210,7 +210,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             Get balance for this account
           */
           helpers.loadBalances()
-          helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
 
           helpers.loadActivities()
           port.postMessage({
@@ -232,7 +231,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
       case MESSAGES.GET_BALANCES: {
         helpers.loadBalances()
-        helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
         break
       }
 
@@ -291,8 +289,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           }
           
           helpers.loadBalances()
-          helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
-
           helpers.loadActivities()
 
           port.postMessage({
@@ -474,8 +470,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           await account.set.pendingTransactions(pendingTransactions)
 
           helpers.loadBalances()
-          helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
-
           helpers.loadActivities()
           
           port.postMessage({
@@ -976,9 +970,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             await storage.setting.set.activatedAccountAddress(await account.get.address())
           }
 
-          helpers.loadBalances()
-          helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
-          
+          helpers.loadBalances()          
           helpers.loadActivities()
           port.postMessage({
             type: MESSAGES.SAVE_WALLET_GALLERY,
