@@ -14,7 +14,7 @@ import { GalleryContext } from 'options/galleryContext'
 import Button from '../Button'
 import { TYPE } from 'constants/accountConstants'
 
-import Web3 from 'web3'
+import { isEthereumAddress } from 'utils'
 
 import './index.css'
 
@@ -34,7 +34,7 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
     // TODO need to ask Kayla's confirmation about TYPE of address
     const classifiedAddresses = [...userAddresses]
     classifiedAddresses.forEach((address) => {
-      if (Web3.utils.isAddress(address.value)) {
+      if (isEthereumAddress(address.value)) {
         address.type = TYPE.ETHEREUM
       } else {
         address.type = TYPE.ARWEAVE
