@@ -66,7 +66,7 @@
 
 .select-container .select-wrapper .select-options .option {
   height: 28px;
-  width: 346px;
+  width: 100%;
   font-weight: 600;
   color: #171753;
   margin: 0;
