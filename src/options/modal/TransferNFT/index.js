@@ -13,7 +13,7 @@ import { popupBackgroundRequest } from 'services/request/popup'
 import './index.css'
 import { setAssets } from 'options/actions/assets'
 
-import { validateArweaveWallet } from 'utils'
+import { isArweaveAddress } from 'utils'
 
 const TransferNFT = ({
   txId,
@@ -38,7 +38,7 @@ const TransferNFT = ({
   const dispatch = useDispatch()
 
   const handleValidateArAddress = () => {
-    const isValid = validateArweaveWallet(receiverAddress)
+    const isValid = isArweaveAddress(receiverAddress)
     if (!isValid) {
       setError('Invalid Wallet Address')
     } else {
