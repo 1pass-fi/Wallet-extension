@@ -803,3 +803,15 @@ export const validateArweaveWallet = (arAddress) => {
 
   return isValidCharacters && isValidLength
 }
+
+export const isArweaveAddress = (arAddress) => {
+  const arAddressRegex = new RegExp('^[A-Za-z0-9-_]+$')
+  const isValidCharacters = arAddressRegex.test(arAddress)
+  const isValidLength = arAddress.length === 43
+
+  return isValidCharacters && isValidLength
+}
+
+export const isEthereumAddress = (ethAddress) => {
+  return Web3.utils.isAddress(ethAddress?.toUpperCase())
+}
