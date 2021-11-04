@@ -26,7 +26,7 @@ import { setChromeStorage, getChromeStorage } from 'utils'
 import { popupAccount } from 'services/account'
 
 export default () => {
-  const { account, address, totalAr, totalKoi, setIsLoading, setError, setNotification } = useContext(GalleryContext)
+  const { account, totalAr, totalKoi, setIsLoading, setError, setNotification } = useContext(GalleryContext)
 
   const fileRef = useRef()
   const [profileImage, setProfileImage] = useState()
@@ -54,7 +54,7 @@ export default () => {
     try {
       setIsLoading(true)
       const addresses = {
-        Arweave: address
+        Arweave: account.address
       }
   
       const kidInfo = {
@@ -127,7 +127,7 @@ export default () => {
   )
 
   const hadKIDCheck = async () => {
-    const data = await koi.getKIDByWalletAddress(address)
+    const data = await koi.getKIDByWalletAddress(account.address)
     if (get(data[0], 'node.id')) {
       return get(data[0], 'node.id')
     }
@@ -185,7 +185,7 @@ export default () => {
             email log-ins or giving your personal data straight to Big Tech.
             This information will be public.
           </div>
-          <div className='address'>KOII Wallet: {getDisplayAddress(address)} ({account.accountName})</div>
+          <div className='address'>KOII Wallet: {getDisplayAddress(account.address)} ({account.accountName})</div>
         </div>
 
         {/* PROFILE PICTURE */}

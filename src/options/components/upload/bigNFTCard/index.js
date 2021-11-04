@@ -23,8 +23,6 @@ export default ({
   tags: tagss,
   description: aDescription
 }) => {
-  const { setShowExportModal, setShowShareModal } = useContext(GalleryContext)
-
   const { registeredDate, description, tags } = {
     registeredDate: moment(createdAt * 1000).format('MMMM Do, YYYY'),
     description: aDescription,

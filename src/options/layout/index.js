@@ -44,61 +44,61 @@ export default ({ children }) => {
   const headerRef = useRef(null)
   const inputFileRef = useRef(null)
 
+  const [walletLoaded, setWalletLoaded] = useState(false) // flag to do something after all accounts loaded
+  const [isLocked, setIsLocked] = useState(false) // show "unlock finnie" on locked
+  const [isLoading, setIsLoading] = useState(false) // loading state
+
   const [wallets, setWallets] = useState([]) // all accounts data
   const [arWallets, setArWallets] = useState([]) // ar accounts data
   const [account, setAccount] = useState({}) // default account
-  const [isDragging, setIsDragging] = useState(false) // ???
-  const [cardInfos, setCardInfos] = useState([]) // all NFTs data
+
   const [totalKoi, setTotalKoi] = useState(0) // Koii balance
   const [totalAr, setTotalAr] = useState(0) // Ar balance
-  const [file, setFile] = useState({}) // file for create nft
-  const [isLoading, setIsLoading] = useState(false) // loading state
-  const [address, setAddress] = useState(null) // ???
-  const [searchTerm, setSearchTerm] = useState('') // search bar
   const [affiliateCode, setAffiliateCode] = useState(null) // friend code
-  const [error, setError] = useState(null) // error message
-  const [notification, setNotification] = useState(null) // notification message
   const [totalReward, setTotalReward] = useState(null) // total reward friend referral
   const [inviteSpent, setInviteSpent] = useState(false) // spent invitation ?
-  const [showCreateCollection, setShowCreateCollection] = useState(false) // show create collection on home page
-  const [collectionNFT, setCollectionNFT] = useState([]) // selected nfts for creating new collection
-  const [totalPage, setTotalPage] = useState(1) // total page of selected nfts collection form (5 nft / page)
-  const [stage, setStage] = useState(1) // for collection ?
-  const [page, setPage] = useState(0) // for collection ?
-  const [showViews, setShowViews] = useState(true) // show view on setting
-  const [showEarnedKoi, setShowEarnedKoi] = useState(true) // show earned koii on setting
-  const [accountName, setAccountName] = useState('') // accountName of default wallet ???
-  const [collectionsLoaded, setCollectionsLoaded] = useState(false) // ???
-  const [isWaitingAddNFT, setIsWaitingAddNFT] = useState(false) // ???
-  const [isLocked, setIsLocked] = useState(false) // show "unlock finnie" on locked
 
-  const [showUploadingModal, setShowUploadingModal] = useState(false) // show uploading modal on top
-  const [showSuccessUploadModal, setShowSuccessUploadModal] = useState(false) // show success upload modal on top
-  const [showUploadedIcon, setShowUploadedIcon] = useState(false) // show updated Icon on top
-  const [showTransferNFT, setShowTransferNFT] = useState({ show: false }) // to show transfer modal
-
-  const [demoCollections, setDemoCollections] = useState([]) // ???
-  const [collections, setCollections] = useState([]) // ???
-  const [showShareModal, setShowShareModal] = useState({
-    show: false,
-    txid: null,
-  }) // show share modal for nft ???
-  const [pendingNFTTitle, setPendingNFTTitle] = useState('') // ???
-  const [showExportModal, setShowExportModal] = useState({}) // show bridge modal
-  const [showWelcome, setShowWelcome] = useState(false) // show welcome modal
   const [showSelectAccount, setShowSelectAccount] = useState(false) // choose account on upload nft
-  const [walletLoaded, setWalletLoaded] = useState(false) // flag to do something after all accounts loaded
-
   const [importedAddress, setImportedAddress] = useState(null) // just imported account
-  const [newAddress, setNewAddress] = useState(null) // ???
+  const [newAddress, setNewAddress] = useState(null) // just imported address
+  const [showWelcome, setShowWelcome] = useState(false) // show welcome modal
 
-
-
+  const [isDragging, setIsDragging] = useState(false) // ???
+  const [file, setFile] = useState({}) // file for create nft
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
     accept: ['image/*', 'video/*', 'audio/*'],
     noClick: true,
   })
+
+  const [cardInfos, setCardInfos] = useState([]) // all NFTs data
+
+  const [searchTerm, setSearchTerm] = useState('') // search bar
+  const [error, setError] = useState(null) // error message
+  const [notification, setNotification] = useState(null) // notification message
+
+  const [stage, setStage] = useState(1) // for upload NFT flow (Header - Bottom)
+  const [showViews, setShowViews] = useState(true) // show view on setting
+  const [showEarnedKoi, setShowEarnedKoi] = useState(true) // show earned koii on setting
+
+  const [pendingNFTTitle, setPendingNFTTitle] = useState('') // title of new NFT
+  const [showUploadingModal, setShowUploadingModal] = useState(false) // show uploading modal on top
+  const [showSuccessUploadModal, setShowSuccessUploadModal] = useState(false) // show success upload modal on top
+  const [showUploadedIcon, setShowUploadedIcon] = useState(false) // show updated Icon on top
+  const [showTransferNFT, setShowTransferNFT] = useState({ show: false }) // to show transfer modal
+
+  const [showShareModal, setShowShareModal] = useState({
+    show: false,
+    txid: null,
+  }) // show share modal for big NFT content
+  const [showExportModal, setShowExportModal] = useState({}) // show bridge modal
+
+  const [showCreateCollection, setShowCreateCollection] = useState(false) // show create collection on home page
+  const [collectionNFT, setCollectionNFT] = useState([]) // selected nfts for creating new collection
+  const [page, setPage] = useState(0) // for collection ?
+  const [totalPage, setTotalPage] = useState(1) // total page of selected nfts collection form (5 nft / page)
+  const [collectionsLoaded, setCollectionsLoaded] = useState(false) // flag for loading collection status
+  const [collections, setCollections] = useState([]) // ???
 
   /* 
     STEP 1:
@@ -178,18 +178,11 @@ export default ({ children }) => {
           address: account.address,
         })
 
-        // not sure if we still need this state
-        setAddress(account.address)
-
         // balances
         const arBalance = await activatedAccount.get.balance()
         const koiBalance = await activatedAccount.get.koiBalance()
         setTotalKoi(koiBalance)
         setTotalAr(arBalance)
-
-        // set account name
-        const accountName = await activatedAccount.get.accountName()
-        setAccountName(accountName)
 
         // get affiliate code from storage
         const affiliateCodeStorage = await storage.generic.get.affiliateCode()
@@ -588,20 +581,16 @@ export default ({ children }) => {
     <GalleryContext.Provider
       value={{
         account,
-        accountName,
-        address,
         affiliateCode,
         cardInfos,
         collectionNFT,
         collections,
         collectionsLoaded,
-        demoCollections,
         file,
         handleShareNFT,
         retryExportNFT,
         inviteSpent,
         isDragging,
-        isWaitingAddNFT,
         onClearFile,
         onCloseUploadModal,
         page,
@@ -612,11 +601,9 @@ export default ({ children }) => {
         setCollectionNFT,
         setCollections,
         setCollectionsLoaded,
-        setDemoCollections,
         setError: _setError,
         setFile,
         setIsLoading,
-        setIsWaitingAddNFT,
         setNotification,
         setPage,
         setPendingNFTTitle,
@@ -724,8 +711,6 @@ export default ({ children }) => {
                 totalAr={totalAr}
                 headerRef={headerRef}
                 isLoading={isLoading}
-                isWaitingAddNFT={isWaitingAddNFT}
-                setIsWaitingAddNFT={setIsWaitingAddNFT}
               />}
               <input onChange={(e) => handleSetFile(e)} onClick={(e) => e.target.value = null} type='file' ref={inputFileRef} style={{ display: 'none' }} />
               {children}

@@ -28,8 +28,6 @@ export default ({
   totalAr,
   headerRef,
   isLoading,
-  isWaitingAddNFT,
-  setIsWaitingAddNFT,
 }) => {
   const { pathname } = useLocation()
   const { account } = useContext(GalleryContext)
@@ -50,9 +48,6 @@ export default ({
       <div className='header-center'>{pathname == '/' && <SearchBar />}</div>
       <div className='header-right'>
         <div>
-          {isLoading && isWaitingAddNFT && (
-            <WaitingAddNFTMessage onClose={() => setIsWaitingAddNFT(false)} />
-          )}
           {isLoading && <Loading />}
         </div>
         <div className='header-right-balances'>

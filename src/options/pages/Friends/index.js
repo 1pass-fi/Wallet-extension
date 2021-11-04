@@ -23,7 +23,6 @@ export default () => {
   const { 
     affiliateCode, 
     account,
-    address, 
     setIsLoading, 
     setError, 
     setNotification, 

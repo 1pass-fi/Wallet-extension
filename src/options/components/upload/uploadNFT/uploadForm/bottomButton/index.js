@@ -34,7 +34,6 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
 }) => {
   const createNftButtonRef = useRef(null)
   const {
-    address,
     wallet,
     setFile,
     setNotification,

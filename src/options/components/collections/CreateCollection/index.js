@@ -28,13 +28,9 @@ export default () => {
     stage,
     setStage,
     setError,
-    demoCollections,
-    setDemoCollections,
     setPage,
     setTotalPage,
-    address,
     setIsLoading,
-    setCollections,
     totalAr,
     totalKoi,
     setNotification,
@@ -73,7 +69,7 @@ export default () => {
           name: collectionName,
           description,
           tags,
-          owner: address
+          owner: account.address
         }
 
         setIsLoading(true)

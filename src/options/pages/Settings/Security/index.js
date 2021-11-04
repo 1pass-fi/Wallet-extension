@@ -20,7 +20,7 @@ import './index.css'
 import { TYPE } from 'constants/accountConstants'
 
 export default () => {
-  const { address, accountName, wallets, arWallets } = useContext(GalleryContext)
+  const { wallets, arWallets } = useContext(GalleryContext)
   const [seedPhrase, setSeedPhrase] = useState('')
   const [hasSeedPhrase, setHasSeedPhrase] = useState(false)
 
