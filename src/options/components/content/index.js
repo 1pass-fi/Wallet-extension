@@ -4,6 +4,7 @@ import includes from 'lodash/includes'
 import toLower from 'lodash/toLower'
 import isEqual from 'lodash/isEqual'
 import { useLocation } from 'react-router'
+import {useSelector } from 'react-redux'
 
 import { GalleryContext } from 'options/galleryContext'
 import CreateCollection from 'options/components/collections/CreateCollection'

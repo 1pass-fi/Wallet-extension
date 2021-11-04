@@ -2,12 +2,16 @@ import '@babel/polyfill'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useHistory, useLocation, Link } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
+import { useDispatch, useSelector } from 'react-redux'
+
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
 import get from 'lodash/get'
 import find from 'lodash/find'
 
 import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
+
+import { setAccounts } from 'options/actions/accounts'
 
 import './index.css'
 import StartUp from 'options/pages/StartUp'
@@ -50,8 +54,8 @@ export default ({ children }) => {
 
   const [wallets, setWallets] = useState([]) // all accounts data
   const [arWallets, setArWallets] = useState([]) // ar accounts data
+  
   const [account, setAccount] = useState({}) // default account
-
   const [totalKoi, setTotalKoi] = useState(0) // Koii balance
   const [totalAr, setTotalAr] = useState(0) // Ar balance
   const [affiliateCode, setAffiliateCode] = useState(null) // friend code
@@ -100,6 +104,10 @@ export default ({ children }) => {
   const [collectionsLoaded, setCollectionsLoaded] = useState(false) // flag for loading collection status
   const [collections, setCollections] = useState([]) // ???
 
+
+  const accounts = useSelector(state => state.accounts)
+  const dispatch = useDispatch()
+
   /* 
     STEP 1:
     - Load accounts from chrome storage
@@ -110,6 +118,7 @@ export default ({ children }) => {
 
       const allAccounts  = await popupAccount.getAllMetadata()
       setWallets(allAccounts)
+      dispatch(setAccounts(allAccounts))
 
       const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE)
       setArWallets(arAccounts)
@@ -287,6 +296,7 @@ export default ({ children }) => {
       await popupAccount.loadImported()
       const allData = await popupAccount.getAllMetadata()
       setWallets(allData)
+      dispatch(setAccounts(allData))
 
       const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE)
       setArWallets(arAccounts)
@@ -627,7 +637,7 @@ export default ({ children }) => {
         totalKoi,
         totalPage,
         totalReward,
-        wallets,
+        wallets: accounts,
         importedAddress,
         setImportedAddress,
         setNewAddress,

@@ -125,7 +125,7 @@ export default ({ accounts, setAccounts }) => {
     <div className='account-order'>
       <div className='account-header'>DEFAULT</div>
       {accounts.map((item, index) => (
-        <div className='account'>
+        <div className='account' key={item.address}>
           <div className='name-icon'>
             {/* <RearrangePadsIcon className='arrange-icon' /> */}
             <div

@@ -1,4 +1,6 @@
 import React, { useContext, useRef, useState, useMemo, useEffect } from 'react'
+import { useSelector } from 'react-redux'
+
 import isEmpty from 'lodash/isEmpty'
 import includes from 'lodash/includes'
 import ReactTooltip from 'react-tooltip'
@@ -151,9 +153,9 @@ export default ({ info, onClose, type }) => {
 
   const addressInputRef = useRef()
 
-  const { setCardInfos, setError, wallets } = useContext(GalleryContext)
+  const { setCardInfos, setError } = useContext(GalleryContext)
 
-  const accounts = useMemo(() => wallets, [wallets])
+  const accounts = useSelector(state => state.accounts)
 
   const totalTransfer = 1 // TODO this
 

@@ -18,11 +18,13 @@ import {
 
 import './index.css'
 import { TYPE } from 'constants/accountConstants'
+import { useSelector } from 'react-redux'
 
 export default () => {
-  const { wallets, arWallets } = useContext(GalleryContext)
+  const { arWallets } = useContext(GalleryContext)
   const [seedPhrase, setSeedPhrase] = useState('')
   const [hasSeedPhrase, setHasSeedPhrase] = useState(false)
+  const accounts = useSelector(state => state.accounts)
 
   const [
     showExportBackupPhraseModal,
@@ -81,7 +83,7 @@ export default () => {
               Select a wallet to see its recovery phrase.
             </div>
             <div className='seedphrase'>
-              {wallets.map((account) => {
+              {accounts.map((account) => {
                 if (account.seedPhrase) return (
                   <div
                     key={account.id}
@@ -110,7 +112,7 @@ export default () => {
             <div className='keyfile'>
               {arWallets.map((account) => (
                 <div
-                  key={account.id}
+                  key={account.address}
                   className='account'
                   onClick={() => onKeyFileClick(account)}
                 >
