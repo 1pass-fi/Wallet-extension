@@ -1,55 +1,28 @@
 import '@babel/polyfill'
-
-import { PORTS, LOAD_BALANCES_TIME_INTERVAL, LOAD_TRANSACTION_STATE_INTERVAL, OS, PATH, RELOAD_ARWEAVE_ACTIVITIES, RELOAD_ETHEREUM_ACTIVITIES, LOAD_ETH_BALANCES_TIME_INTERVAL, UPDATE_NFT_STATE_TIME_INTERVAL } from 'constants/koiConstants'
-import { IMPORTED } from 'constants/accountConstants'
-import popUpEventHandlers, { loadBalances, updatePendingTransactions, reloadArweaveActivities, reloadEthActivities, updateNfts } from './popupEventHandlers'
-import contentScriptEventHandlers from './contentScriptEventHandlers'
 import { Web } from '@_koi/sdk/web'
-import { Ethereum } from './eth'
-import { TYPE } from 'constants/accountConstants'
+
+// Constants
+import { PORTS, OS, PATH } from 'constants/koiConstants'
+import { IMPORTED } from 'constants/accountConstants'
+
+// Handlers
+import popupEventHandlers from './handlers/popupEventHandlers'
+import contentScriptEventHandlers from './handlers/contentScriptEventHandlers'
+
+import { Ethereum } from 'services/ethereum'
 
 import { getChromeStorage } from 'utils'
-// import { Web } from './koiMock'
 
-export const koi = new Web()
+import streamer from './streamer'
+
+const koi = new Web()
 const eth = new Ethereum()
-console.log('Finnie is waiting for instructions.')
-
 const ports = {}
 const permissionId = []
 const createTransactionId = []
 const sender = []
 
 export const popupPorts = []
-
-// AR balance stream
-setInterval(() => {
-  loadBalances(TYPE.ARWEAVE)
-}, LOAD_BALANCES_TIME_INTERVAL)
-
-// ETH balance stream
-setInterval(() => {
-  loadBalances(TYPE.ETHEREUM)
-}, LOAD_ETH_BALANCES_TIME_INTERVAL)
-
-// Transaction stream
-setInterval(() => {
-  updatePendingTransactions()
-}, LOAD_TRANSACTION_STATE_INTERVAL)
-
-// Reload arweave activities
-setInterval(() => {
-  reloadArweaveActivities(TYPE.ARWEAVE)
-}, RELOAD_ARWEAVE_ACTIVITIES)
-
-// Reload ethereum activities
-setInterval(() => {
-  reloadArweaveActivities(TYPE.ETHEREUM)
-}, RELOAD_ETHEREUM_ACTIVITIES)
-
-setInterval(() => {
-  updateNfts()
-}, UPDATE_NFT_STATE_TIME_INTERVAL)
 
 
 function cb(port) {
@@ -66,7 +39,7 @@ function cb(port) {
     })
 
     port.onMessage.addListener((message) => {
-      popUpEventHandlers(
+      popupEventHandlers(
         koi,
         port,
         message,
@@ -96,3 +69,5 @@ chrome.runtime.onInstalled.addListener(async function () {
   const ethereumAccount = (await getChromeStorage(IMPORTED.ETHEREUM))[IMPORTED.ETHEREUM] || []
   if (!arweaveAccount.length && !ethereumAccount.length) chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
 })
+
+streamer()

@@ -43,8 +43,20 @@ export class EthereumMethod {
       /* 
         get nft list for this ETH address
       */
-      const { data: ethContents } = await axios.get(`${path}/assets?owner=${this.eth.address}&order_direction=desc&offset=0&limit=50`)
-      const ethAssets = get(ethContents, 'assets')
+      let ethAssets = []
+      for (let i = 0; i < 3; i++) {
+        let assets = []
+        const url = `${path}/assets?owner=${this.eth.address}&order_direction=desc&offset=${i*50}&limit=50`
+        try {
+          const { data } = await axios.get(url)
+          assets = get(data, 'assets') || []
+        } catch (err) {
+          console.error('Fetched ETH nft error: ', err.message)
+        }
+
+        ethAssets = [...ethAssets, ...assets]
+      }
+
       console.log('Fetched contents: ', ethAssets.length)
 
       /* 

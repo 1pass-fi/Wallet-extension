@@ -2,7 +2,7 @@ import { AccountGetter } from './get'
 import { AccountSetter } from './set'
 
 import { Web } from '@_koi/sdk/web'
-import { Ethereum } from 'background/eth'
+import { Ethereum } from 'services/ethereum'
 
 import { ArweaveMethod } from './Chains/Arweave/ArweaveMethod'
 import { ArweaveStatic } from './Chains/Arweave/ArweaveStatic'
