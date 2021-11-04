@@ -50,7 +50,8 @@ export default ({
   locked,
   tokenAddress,
   tokenSchema,
-  isBridging
+  isBridging,
+  isSending
 }) => {
   const history = useHistory()
   const {
@@ -75,7 +76,7 @@ export default ({
     [txId]
   )
   
-  const isDisableFeatures = isBridging || type !== TYPE.ARWEAVE
+  const isDisableFeatures = isBridging || isSending || type !== TYPE.ARWEAVE
 
   const onCopy = () => {
     setIsCopied(true)
@@ -126,30 +127,32 @@ export default ({
         <div className='info'>
           <div className='nft-name'>{name}</div>
           {!pending && <div className='export-nft'>
-            {(type === TYPE.ARWEAVE && !isBridging) && <div className='wallet-icon'
+            {(type === TYPE.ARWEAVE && !isBridging && !isSending) && <div className='wallet-icon'
               onMouseOver={() => { setIsShowChain(true) }}
               onMouseLeave={() => { setIsShowChain(false) }}>
               <ArweaveLogo />
             </div>}
-            {(type === TYPE.ETHEREUM && !isBridging) && <div className='wallet-icon'
+            {(type === TYPE.ETHEREUM && !isBridging && !isSending) && <div className='wallet-icon'
               onMouseOver={() => { setIsShowChain(true) }}
               onMouseLeave={() => { setIsShowChain(false) }}>
               <EthereumLogo />
             </div>}
 
 
-            {isBridging && <div className='transfer-nft-wrapper'>
+            {(isBridging || isSending) && <div className='transfer-nft-wrapper'>
               <span className='overlapped-icons'>
                 <div className='overlapped-ar'>
                   <ArweaveLogo />
                 </div>
                 <div className='overlapped-eth'>
-                  <EthereumLogo />
+                  {isBridging && <EthereumLogo />}
+                  {isSending && <ArweaveLogo />}
                 </div>
               </span>
-              This NFT is being transferred to {type === TYPE.ARWEAVE ? 'Ethereum' : 'Arweave'}.
+              {isBridging && `This NFT is being transferred to ${type === TYPE.ARWEAVE ? 'Ethereum' : 'Arweave'}.`}
+              {isSending && 'This NFT is being sent'}
             </div>}
-            {!isBridging && (isShowChain || isShowExport ?
+            {(!isBridging && !isSending) && (isShowChain || isShowExport ?
               <div className='transfer-nft' onMouseLeave={() => { setIsShowChain(false) }}>
                 <div className='transfer-nft-wrapper'>
                   <div className='transfer-text'>Transfer to</div>
@@ -224,7 +227,7 @@ export default ({
                   while on Ethereum.
                 </div>
               </div>
-              <button className='bridge-to-arweave' disabled={pending || isBridging} onClick={() => setShowExportModal({ locked, earnedKoi, totalViews, name, imageUrl, type, txId, address, tokenAddress, tokenSchema, contentType })}>Bridge to Arweave</button>
+              <button className='bridge-to-arweave' disabled={pending || isBridging || isSending} onClick={() => setShowExportModal({ locked, earnedKoi, totalViews, name, imageUrl, type, txId, address, tokenAddress, tokenSchema, contentType })}>Bridge to Arweave</button>
             </>
           ) : (
             <>

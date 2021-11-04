@@ -624,6 +624,15 @@ export class ArweaveMethod {
 
   async transferNFT(nftId, address) {
     const txId = await this.koi.transferNft(nftId, 1, address)
+
+    // update nft state
+    let allNfts = await this.#chrome.getAssets()
+    allNfts = allNfts.map(nft => {
+      if (nft.txId === nftId) nft.isSending = true
+      return nft
+    })
+    await this.#chrome.setAssets(allNfts)
+
     return txId
   }
 

@@ -255,6 +255,7 @@ const SendKoiForm = ({
         placeholder='Select your account'
         onChange={onChangeAccount}
         label='From'
+        isAccountAddress={true}
       />}
       {/* SELECT TOKEN */}
       {!isEmpty(selectedAccount) && (

@@ -21,7 +21,7 @@ const TransferNFT = ({
   address,
   onClose,
 }) => {
-  const { setError } = useContext(GalleryContext)
+  const { setError, setCardInfos } = useContext(GalleryContext)
 
   const [stage, setStage] = useState(1)
   const [receiverAddress, setReceiverAddress] = useState('')
@@ -38,6 +38,12 @@ const TransferNFT = ({
         senderAddress: address,
         recipientAddress: receiverAddress,
       })
+
+      // manually update cardInfos state
+      setCardInfos(prev => prev.map(nft => {
+        if (nft.txId === txId) nft.isSending = true
+        return nft
+      }))
 
       setSendBtnDisable(false)
       goToNextStage()

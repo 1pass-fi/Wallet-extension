@@ -1,5 +1,5 @@
 // modules
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { get } from 'lodash'
@@ -30,6 +30,8 @@ const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {
   const history = useHistory()
 
   const [password, setPassword] = useState('')
+
+  const inputRef = useRef(null)
 
   const handleOnSubmit = async () => {
     try {
@@ -63,6 +65,10 @@ const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {
     setPassword(e.target.value)
   }
 
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
+
   return (
     <div className='unlock-screen'>
       <div className='screen-header'>
@@ -76,6 +82,7 @@ const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {
           label={'Enter your password'}
           value={password}
           onChange={onPasswordChange}
+          ref={inputRef}
         />
         <Button
           className='unlock-button'

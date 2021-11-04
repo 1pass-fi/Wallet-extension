@@ -112,9 +112,7 @@ export default () => {
               <FriendIcon className="nav-item" />
             </div>
           </Link>
-          <div className="address">{`${
-            affiliateCode && affiliateCode.slice(0, 5)
-          }...`}</div>
+          <div className='address'>{affiliateCode && `${affiliateCode.slice(0, 5)}...`}</div>
         </div>
       </div>
       {pathname.includes('/settings') && !showAddressBook  && (
