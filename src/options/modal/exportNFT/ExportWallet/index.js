@@ -31,6 +31,9 @@ import { ERROR_MESSAGE } from 'constants/koiConstants'
 
 import { setAssets } from 'options/actions/assets'
 
+import { isArweaveAddress } from 'utils'
+import { isEthereumAddress } from 'utils'
+
 const TRANSFER_STEPS = {
   INPUT_INFO: 1,
   CONFIRM: 2,
@@ -295,7 +298,24 @@ export default ({ info, onClose, type }) => {
   const onOneClick = () => {
     if (isEmpty(chosenAccount) || isEmpty(chosenAccount.address)) {
       setError('Please select an address.')
-    } else if (!numberTransfer || numberTransfer == 0) {
+      return
+    }
+
+    if (type === TYPE.ARWEAVE) {
+      if (!isArweaveAddress(chosenAccount.address)) {
+        setError('Invalid AR Address')
+        return
+      }
+    }
+
+    if (type === TYPE.ETHEREUM) {
+      if (!isEthereumAddress(chosenAccount.address)) {
+        setError('Invalid ETH Address')
+        return
+      }
+    }
+
+    if (!numberTransfer || numberTransfer == 0) {
       setError('Please give a number of transfer')
     } else {
       setStep(step + 1)
