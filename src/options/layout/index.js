@@ -52,7 +52,6 @@ export default ({ children }) => {
   const [isLocked, setIsLocked] = useState(false) // show "unlock finnie" on locked
   const [isLoading, setIsLoading] = useState(false) // loading state
 
-  const [wallets, setWallets] = useState([]) // all accounts data
   const [arWallets, setArWallets] = useState([]) // ar accounts data
   
   const [account, setAccount] = useState({}) // default account
@@ -117,7 +116,6 @@ export default ({ children }) => {
       await popupAccount.loadImported()
 
       const allAccounts  = await popupAccount.getAllMetadata()
-      setWallets(allAccounts)
       dispatch(setAccounts(allAccounts))
 
       const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE)
@@ -219,7 +217,7 @@ export default ({ children }) => {
       }
     }
 
-    if (!isEmpty(wallets) || !GALLERY_IMPORT_PATH.includes(pathname)) {
+    if (!isEmpty(accounts) || !GALLERY_IMPORT_PATH.includes(pathname)) {
       console.log('Loading for user data...')
       getUserData()
     }
@@ -245,7 +243,7 @@ export default ({ children }) => {
       }
     }
 
-    if (!isEmpty(wallets) || !GALLERY_IMPORT_PATH.includes(pathname)) {
+    if (!isEmpty(accounts) || !GALLERY_IMPORT_PATH.includes(pathname)) {
       loadGallerySettings()
     }
   }, [walletLoaded])
@@ -283,10 +281,10 @@ export default ({ children }) => {
       }
     }
 
-    if (!isEmpty(wallets) && !GALLERY_IMPORT_PATH.includes(pathname)) {
+    if (!isEmpty(accounts) && !GALLERY_IMPORT_PATH.includes(pathname)) {
       loadAssets()
     }
-  }, [wallets])
+  }, [accounts])
 
   /* 
     Reload wallets when a new wallet just imported
@@ -295,7 +293,6 @@ export default ({ children }) => {
     const reloadWallets = async () => {
       await popupAccount.loadImported()
       const allData = await popupAccount.getAllMetadata()
-      setWallets(allData)
       dispatch(setAccounts(allData))
 
       const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE)
@@ -637,7 +634,6 @@ export default ({ children }) => {
         totalKoi,
         totalPage,
         totalReward,
-        wallets: accounts,
         importedAddress,
         setImportedAddress,
         setNewAddress,
@@ -647,7 +643,7 @@ export default ({ children }) => {
       }}
     >
       <div className='app-background'>
-        {!isEmpty(wallets) ?
+        {!isEmpty(accounts) ?
           <>
             {!isLocked ? <div
               {...getRootProps({ className: 'app dropzone' })}
