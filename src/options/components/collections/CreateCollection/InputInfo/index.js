@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { union, trim } from 'lodash'
 
 import './index.css'
@@ -6,10 +7,13 @@ import Tag from '../Tag'
 import EditIcon from 'img/edit-icon-collection.svg'
 import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
+import { getArAccounts } from 'options/selectors/accounts'
 
 export default ({tags, setColletionName, setDescription, setTags, collectionName, description}) => {
   const [tagInput, setTagInput] = useState('')
-  const { account, setAccount, setShowSelectAccount, arWallets } = useContext(GalleryContext)
+  const { account, setAccount, setShowSelectAccount } = useContext(GalleryContext)
+
+  const arAccounts = useSelector(getArAccounts)
 
   const addTag = (e) => {
     const { keyCode } = e
@@ -23,7 +27,7 @@ export default ({tags, setColletionName, setDescription, setTags, collectionName
 
   useEffect(() => {
     if(account.type !== TYPE.ARWEAVE){
-      setAccount(arWallets[0])
+      setAccount(arAccounts[0])
     }
   }, [])
 

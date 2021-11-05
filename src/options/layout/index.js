@@ -52,8 +52,6 @@ export default ({ children }) => {
   const [walletLoaded, setWalletLoaded] = useState(false) // flag to do something after all accounts loaded
   const [isLocked, setIsLocked] = useState(false) // show "unlock finnie" on locked
   const [isLoading, setIsLoading] = useState(false) // loading state
-
-  const [arWallets, setArWallets] = useState([]) // ar accounts data
   
   const [account, setAccount] = useState({}) // default account
   const [totalKoi, setTotalKoi] = useState(0) // Koii balance
@@ -118,9 +116,6 @@ export default ({ children }) => {
 
       const allAccounts  = await popupAccount.getAllMetadata()
       dispatch(setAccounts(allAccounts))
-
-      const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE)
-      setArWallets(arAccounts)
 
       const _isLocked = await backgroundRequest.wallet.getLockState()
 
@@ -293,8 +288,6 @@ export default ({ children }) => {
   useEffect(() => {
     const reloadWallets = async () => {
       await popupAccount.loadImported()
-      const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE)
-      setArWallets(arAccounts)
 
       if (get(popupAccount, 'importedAccount.length') === 1) {
         let activatedAccount = await storage.setting.get.activatedAccountAddress()
@@ -638,7 +631,6 @@ export default ({ children }) => {
         importedAddress,
         setImportedAddress,
         setNewAddress,
-        arWallets,
         inputFileRef,
         walletLoaded
       }}

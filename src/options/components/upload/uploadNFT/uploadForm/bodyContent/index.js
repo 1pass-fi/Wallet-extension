@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import trim from 'lodash/trim'
 import union from 'lodash/union'
 import get from 'lodash/get'
@@ -7,6 +8,7 @@ import Checkbox from 'popup/components/shared/checkbox'
 import './index.css'
 import EditIcon from 'img/edit-icon-collection.svg'
 import { TYPE } from 'constants/accountConstants'
+import { getArAccounts } from 'options/selectors/accounts'
 
 import { loadNFTCost } from 'utils'
 
@@ -37,7 +39,9 @@ export default ({
   setClicked
 }) => {
   const { setTags, tags, isFriendCodeValid, price, setPrice } = useContext(UploadContext)
-  const { file, account, setAccount, setShowSelectAccount, arWallets } = useContext(GalleryContext)
+  const { file, account, setAccount, setShowSelectAccount } = useContext(GalleryContext)
+
+  const arAccounts = useSelector(getArAccounts)
 
   const addTag = (e) => {
     const { keyCode } = e
@@ -62,7 +66,7 @@ export default ({
 
   useEffect(() => {
     if(account.type !== TYPE.ARWEAVE){
-      setAccount(arWallets[0])
+      setAccount(arAccounts[0])
     }
   }, [])
 
@@ -131,7 +135,7 @@ export default ({
               onChange={(e) => setIsNSFW(e.target.checked)}
               id='nsfw'
             />
-            <div><label for='nsfw'>This content is ‘Not Safe for Work,’ explicit, or 18+.</label></div>
+            <div><label htmlFor='nsfw'>This content is ‘Not Safe for Work,’ explicit, or 18+.</label></div>
           </div>
         </div>
       </div>
