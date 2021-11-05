@@ -11,7 +11,7 @@ import find from 'lodash/find'
 
 import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 
-import { addAccountByAddress, setAccounts } from 'options/actions/accounts'
+import { setAccounts } from 'options/actions/accounts'
 
 import './index.css'
 import StartUp from 'options/pages/StartUp'
@@ -56,6 +56,7 @@ export default ({ children }) => {
   const [account, setAccount] = useState({}) // default account
   const [totalKoi, setTotalKoi] = useState(0) // Koii balance
   const [totalAr, setTotalAr] = useState(0) // Ar balance
+
   const [affiliateCode, setAffiliateCode] = useState(null) // friend code
   const [totalReward, setTotalReward] = useState(null) // total reward friend referral
   const [inviteSpent, setInviteSpent] = useState(false) // spent invitation ?
@@ -300,7 +301,6 @@ export default ({ children }) => {
     }
 
     if (newAddress) {
-      dispatch(addAccountByAddress(newAddress))
       reloadWallets() 
     }
   }, [newAddress])

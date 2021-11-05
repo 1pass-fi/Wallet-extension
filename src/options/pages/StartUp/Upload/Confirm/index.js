@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { TYPE } from 'constants/accountConstants'
@@ -15,6 +15,7 @@ import ConfirmPassword from '../../shared/ConfirmPassword'
 import InputPassword from '../../shared/InputPassword'
 import {ERROR_MESSAGE} from 'constants/koiConstants'
 import GoBackBtn from 'options/components/GoBackButton'
+import { addAccountByAddress } from 'options/actions/accounts'
 
 
 export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) => {
@@ -22,6 +23,7 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
   const [password, setPassword] = useState('')
   const [showFormError, setShowFormError] = useState(false)
 
+  const dispatch = useDispatch()
   const accounts = useSelector(state => state.accounts)
 
   const history = useHistory()
@@ -42,6 +44,7 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
       const address = await backgroundRequest.gallery.uploadJSONKeyFile({ password, key, type: walletType, provider: selectedNetwork })
       setImportedAddress(address)
       setNewAddress(address)
+      dispatch(addAccountByAddress(address))
 
       history.push({
         pathname: '/success',

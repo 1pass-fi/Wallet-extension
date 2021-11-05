@@ -1,4 +1,5 @@
 import React, { useContext, useMemo, useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import isEqual from 'lodash/isEqual'
@@ -23,11 +24,11 @@ import isEmpty from 'lodash/isEmpty'
 import useEthereumNetworks from '../shared/useEthereumNetworks'
 
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import { addAccountByAddress } from 'options/actions/accounts'
 
 import './index.css'
 import { TYPE } from 'constants/accountConstants'
 import { GalleryContext } from 'options/galleryContext'
-import { useSelector } from 'react-redux'
 
 const mockPhrase = [
   'program',
@@ -59,6 +60,7 @@ export default () => {
   const [isLoading, setIsLoading] = useState(false)
   const [showFormError, setShowFormError] = useState(false)
 
+  const dispatch = useDispatch()
   const accounts = useSelector(state => state.accounts)
 
   const history = useHistory()
@@ -122,6 +124,7 @@ export default () => {
       const address = await backgroundRequest.gallery.saveWallet({ password, provider: selectedNetwork })
       setImportedAddress(address)
       setNewAddress(address)
+      dispatch(addAccountByAddress(address))
 
       history.push({
         pathname: '/success',
