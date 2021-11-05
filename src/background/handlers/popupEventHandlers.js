@@ -445,7 +445,6 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const { qty, target, token, address } = message.data
           const credentials = await backgroundAccount.getCredentialByAddress(address)
           const account = await backgroundAccount.getAccount(credentials)
-          const accountName = await account.get.accountName()
 
           console.log('QTY ', qty, 'TARGET ', target, 'TOKEN ', token)
           const txId = await account.method.transfer(token, target, qty)
@@ -453,21 +452,16 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const network = await account.get.provider()
 
           // add new pending transaction
-          const pendingTransactions = await account.get.pendingTransactions() || []
-          const newTransaction = {
+          const pendingTransactionPayload = {
             id: txId,
             activityName: (token === 'KOI' ? 'Sent KOII' : `Sent ${token}`),
             expense: qty,
-            accountName,
-            date: moment().format('MMMM DD YYYY'),
-            source: target,
+            target,
             address,
-            retried: 0,
-            network
+            network,
+            retried: 0
           }
-          pendingTransactions.unshift(newTransaction)
-          // save pending transactions
-          await account.set.pendingTransactions(pendingTransactions)
+          await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
 
           helpers.loadBalances()
           helpers.loadActivities()

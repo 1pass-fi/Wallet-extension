@@ -8,6 +8,8 @@ import updatePendingTransactions from './updatePendingTransactions'
 import loadActivities from './loadActivities'
 import loadNftStates from './loadNftStates'
 import sendMessageToPorts from './sendMessageToPorts'
+import pendingTransactionFactory from './pendingTransaction'
+
 
 const checkHasAccounts = (fn) => (...args) => {
   if (backgroundAccount.importedAccount.length > 0) return fn(...args)
@@ -25,7 +27,8 @@ const helpers = {
   updatePendingTransactions: checkHasAccounts(updatePendingTransactions),
   loadActivities: checkHasAccounts(loadActivities),
   loadNftStates: checkHasAccounts(loadNftStates),
-  sendMessageToPopupPorts: () => {}
+  sendMessageToPopupPorts: () => {},
+  pendingTransactionFactory
 }
 
 // popupPorts will be undefined as first synchronous run
