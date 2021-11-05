@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { union, trim } from 'lodash'
 
 import './index.css'
@@ -8,11 +8,15 @@ import EditIcon from 'img/edit-icon-collection.svg'
 import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
 import { getArAccounts } from 'options/selectors/accounts'
+import { setDefaultAccount } from 'options/actions/defaultAccount'
 
 export default ({tags, setColletionName, setDescription, setTags, collectionName, description}) => {
   const [tagInput, setTagInput] = useState('')
-  const { account, setAccount, setShowSelectAccount } = useContext(GalleryContext)
+  const { setShowSelectAccount } = useContext(GalleryContext)
 
+  const dispatch = useDispatch()
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
   const arAccounts = useSelector(getArAccounts)
 
   const addTag = (e) => {
@@ -26,8 +30,8 @@ export default ({tags, setColletionName, setDescription, setTags, collectionName
   }
 
   useEffect(() => {
-    if(account.type !== TYPE.ARWEAVE){
-      setAccount(arAccounts[0])
+    if(defaultAccount.type !== TYPE.ARWEAVE){
+      dispatch(setDefaultAccount(arAccounts[0]))
     }
   }, [])
 
@@ -46,8 +50,8 @@ export default ({tags, setColletionName, setDescription, setTags, collectionName
             <div onClick={() => setShowSelectAccount(true)} className='edit-icon'><EditIcon /></div>
           </div>
           <div className='selected-account'>
-            {account.accountName}
-            <div className='address'>{`${account.address.slice(0,5)}...${account.address.slice(account.address.length - 4)}`}</div>
+            {defaultAccount.accountName}
+            <div className='address'>{`${defaultAccount.address.slice(0,5)}...${defaultAccount.address.slice(defaultAccount.address.length - 4)}`}</div>
           </div>
         </div>
         <div className='field'>

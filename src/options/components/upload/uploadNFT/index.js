@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
 
@@ -11,9 +12,11 @@ import storage from 'services/storage'
 import { UploadContext } from '..'
 
 export default () => {
-  const { file, account } = useContext(GalleryContext)
+  const { file } = useContext(GalleryContext)
   const { setHasSavedData, hasSavedData } = useContext(UploadContext)
   const [stage, setStage] = useState(1)
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
 
   /* 
     Load saved form data if any
@@ -24,8 +27,8 @@ export default () => {
       if (!isEmpty(payload)) setHasSavedData(true)
     }
   
-    if (!isEmpty(account)) loadSavedForm()
-  }, [account])
+    if (!isEmpty(defaultAccount)) loadSavedForm()
+  }, [defaultAccount])
 
   return (
     <div className='uploadNFT-wrapper'>

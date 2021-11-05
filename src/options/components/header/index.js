@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 
@@ -10,7 +11,6 @@ import ReloadIcon from 'img/refresh-balance-icon.svg'
 
 import SearchBar from './SearchBar'
 import Loading from 'options/components/loading'
-import WaitingAddNFTMessage from './WaitingAddNFTMessage'
 
 import { formatNumber } from '../../utils'
 
@@ -30,7 +30,7 @@ export default ({
   isLoading,
 }) => {
   const { pathname } = useLocation()
-  const { account } = useContext(GalleryContext)
+  const defaultAccount = useSelector(state => state.defaultAccount)
 
   const handleLoadBalances = () => {
     popupBackgroundConnect.postMessage({
@@ -53,13 +53,13 @@ export default ({
         <div className='header-right-balances'>
           <div className='koi-info'>
             <div className='total-koi'>
-              {account.type === TYPE.ARWEAVE && (
+              {defaultAccount.type === TYPE.ARWEAVE && (
               <>
                 <KoiUnit className='koi-unit' />
                 <div>{formatNumber(totalKoi)}</div>
               </>
               )}
-              {account.type === TYPE.ARWEAVE ? (
+              {defaultAccount.type === TYPE.ARWEAVE ? (
               <>
                 <ArUnit className='koi-unit ar' />
                 <div>{formatNumber(totalAr, 6)}</div>
@@ -76,7 +76,7 @@ export default ({
               <ReloadIcon onClick={handleLoadBalances}  />
             </div>
           </div>
-          {!totalKoi && !!(account.type == TYPE.ARWEAVE) && (
+          {!totalKoi && !!(defaultAccount.type == TYPE.ARWEAVE) && (
             <a
               target='_blank'
               href='https://koi.rocks/faucet?step=0'

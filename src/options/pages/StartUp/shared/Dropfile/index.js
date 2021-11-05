@@ -1,4 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useDropzone } from 'react-dropzone'
 import isEmpty from 'lodash/isEmpty'
 
@@ -9,6 +10,7 @@ import { GalleryContext } from 'options/galleryContext'
 
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
+import { setDefaultAccount } from 'options/actions/defaultAccount'
 
 const DragActive = ({ description, Icon }) => {
   return (
@@ -42,7 +44,9 @@ export default ({
     accept: fileType ? fileType : 'application/json',
   })
 
-  const { importedAddress, setAccount } = useContext(GalleryContext)
+  const { importedAddress } = useContext(GalleryContext)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setFile(acceptedFiles ? acceptedFiles[0] : {})
@@ -51,7 +55,7 @@ export default ({
       await storage.setting.set.activatedAccountAddress(importedAddress)
       const account = await popupAccount.getAccount({ address: importedAddress })
       const data = await account.get.metadata()
-      setAccount(data)
+      dispatch(setDefaultAccount(data))
     }
 
     if (!isEmpty(acceptedFiles) && type == 'image') handleSetDefaultAccount()

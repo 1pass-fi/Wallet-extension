@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useContext, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import trim from 'lodash/trim'
 import union from 'lodash/union'
 import get from 'lodash/get'
@@ -9,6 +9,7 @@ import './index.css'
 import EditIcon from 'img/edit-icon-collection.svg'
 import { TYPE } from 'constants/accountConstants'
 import { getArAccounts } from 'options/selectors/accounts'
+import { setDefaultAccount } from 'options/actions/defaultAccount'
 
 import { loadNFTCost } from 'utils'
 
@@ -39,8 +40,11 @@ export default ({
   setClicked
 }) => {
   const { setTags, tags, isFriendCodeValid, price, setPrice } = useContext(UploadContext)
-  const { file, account, setAccount, setShowSelectAccount } = useContext(GalleryContext)
+  const { file, setShowSelectAccount } = useContext(GalleryContext)
 
+  const dispatch = useDispatch()
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
   const arAccounts = useSelector(getArAccounts)
 
   const addTag = (e) => {
@@ -65,8 +69,8 @@ export default ({
   }, [file])
 
   useEffect(() => {
-    if(account.type !== TYPE.ARWEAVE){
-      setAccount(arAccounts[0])
+    if(defaultAccount.type !== TYPE.ARWEAVE){
+      dispatch(setDefaultAccount(arAccounts[0]))
     }
   }, [])
 
@@ -80,8 +84,8 @@ export default ({
             Wallet
           </div>
           <div className='field-input select-account'>
-            {get(account, 'accountName')}
-            <div className='address'>{account.address && `${get(account, 'address', '').slice(0,5)}...${get(account, 'address', '').slice(account.address.length - 4)}`}</div>
+            {get(defaultAccount, 'accountName')}
+            <div className='address'>{defaultAccount.address && `${get(defaultAccount, 'address', '').slice(0,5)}...${get(defaultAccount, 'address', '').slice(defaultAccount.address.length - 4)}`}</div>
           </div>
         </div>
         <div className='field'>

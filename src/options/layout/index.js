@@ -12,6 +12,7 @@ import find from 'lodash/find'
 import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 
 import { setAccounts } from 'options/actions/accounts'
+import { setDefaultAccount } from 'options/actions/defaultAccount'
 
 import './index.css'
 import StartUp from 'options/pages/StartUp'
@@ -56,7 +57,6 @@ export default ({ children }) => {
   const [account, setAccount] = useState({}) // default account
   const [totalKoi, setTotalKoi] = useState(0) // Koii balance
   const [totalAr, setTotalAr] = useState(0) // Ar balance
-
   const [affiliateCode, setAffiliateCode] = useState(null) // friend code
   const [totalReward, setTotalReward] = useState(null) // total reward friend referral
   const [inviteSpent, setInviteSpent] = useState(false) // spent invitation ?
@@ -150,6 +150,7 @@ export default ({ children }) => {
         })
         activatedAccount = await activatedAccount.get.metadata()
         setAccount(activatedAccount)
+        dispatch(setDefaultAccount(activatedAccount))
       } catch (err) {
         console.log(err.message)
       }
@@ -297,6 +298,7 @@ export default ({ children }) => {
         })
         activatedAccount = await activatedAccount.get.metadata()
         setAccount(activatedAccount)
+        dispatch(setDefaultAccount(activatedAccount))
       }
     }
 
@@ -581,7 +583,6 @@ export default ({ children }) => {
   return (
     <GalleryContext.Provider
       value={{
-        account,
         affiliateCode,
         cardInfos,
         collectionNFT,
@@ -597,7 +598,6 @@ export default ({ children }) => {
         page,
         pendingNFTTitle,
         searchTerm,
-        setAccount,
         setCardInfos,
         setCollectionNFT,
         setCollections,

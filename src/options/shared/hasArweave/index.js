@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import { TYPE } from 'constants/accountConstants'
 import { popupAccount } from 'services/account'
 import './index.css'
-import { GalleryContext } from 'options/galleryContext'
 
 const ArweaveOnly = ({ content }) => {
   return <div className='ar-only-message'>{content}</div>
@@ -11,7 +11,9 @@ const ArweaveOnly = ({ content }) => {
 
 export default (({ children, content, checkingDefaultAccount }) => {
   const [hasArWallet, setHasArWallet] = useState(false)
-  const { account } = useContext(GalleryContext)
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
+
 
   useEffect(() => {
     const showArweaveForm = async () => {
@@ -21,5 +23,5 @@ export default (({ children, content, checkingDefaultAccount }) => {
     showArweaveForm()
   }, [])
 
-  return ((checkingDefaultAccount && account.type !== TYPE.ARWEAVE) || !hasArWallet) ? <ArweaveOnly content={content} /> : children
+  return ((checkingDefaultAccount && defaultAccount.type !== TYPE.ARWEAVE) || !hasArWallet) ? <ArweaveOnly content={content} /> : children
 })

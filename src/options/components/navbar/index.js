@@ -1,4 +1,5 @@
-import React, { useState, useContext, useRef, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 
 import HomeIcon from 'img/navbar/home.svg'
@@ -23,24 +24,26 @@ import SlideNavbar from './SlideNav'
 
 
 export default () => {
-  const { affiliateCode, account } = useContext(GalleryContext)
+  const { affiliateCode } = useContext(GalleryContext)
   const { pathname } = useLocation()
 
   const [isExpandSubNavbar, setIsExpandSubNavbar] = useState(false)
   const [clickable, setClickable] = useState(true)
   const [hasArweave, setHasArweave] = useState(true)
   const [showAddressBook, setShowAddressBook] = useState(false)
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
   
   useEffect(() => {
     const showArweaveForm = async () => {
       const hasArweave = await popupAccount.hasArweave()
-      const defaultAccountIsArweave = account.type === TYPE.ARWEAVE
+      const defaultAccountIsArweave = defaultAccount.type === TYPE.ARWEAVE
       setClickable(hasArweave && defaultAccountIsArweave)
       setHasArweave(hasArweave)
     }
 
     showArweaveForm()
-  }, [account])
+  }, [defaultAccount])
 
   return (
     <div
