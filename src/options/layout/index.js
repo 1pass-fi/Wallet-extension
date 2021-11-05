@@ -54,7 +54,6 @@ export default ({ children }) => {
   const [isLocked, setIsLocked] = useState(false) // show "unlock finnie" on locked
   const [isLoading, setIsLoading] = useState(false) // loading state
   
-  const [account, setAccount] = useState({}) // default account
   const [totalKoi, setTotalKoi] = useState(0) // Koii balance
   const [totalAr, setTotalAr] = useState(0) // Ar balance
   const [affiliateCode, setAffiliateCode] = useState(null) // friend code
@@ -103,9 +102,9 @@ export default ({ children }) => {
   const [collectionsLoaded, setCollectionsLoaded] = useState(false) // flag for loading collection status
   const [collections, setCollections] = useState([]) // ???
 
-
-  const accounts = useSelector(state => state.accounts)
   const dispatch = useDispatch()
+
+  const [accounts, defaultAccount] = useSelector(state => [state.accounts, state.defaultAccount])
 
   /* 
     STEP 1:
@@ -149,7 +148,6 @@ export default ({ children }) => {
           address: activatedAccount,
         })
         activatedAccount = await activatedAccount.get.metadata()
-        setAccount(activatedAccount)
         dispatch(setDefaultAccount(activatedAccount))
       } catch (err) {
         console.log(err.message)
@@ -180,7 +178,7 @@ export default ({ children }) => {
     const getUserData = async () => {
       try {
         const activatedAccount = await popupAccount.getAccount({
-          address: account.address,
+          address: defaultAccount.address,
         })
 
         // balances
@@ -196,7 +194,7 @@ export default ({ children }) => {
         /* 
           TODO: Will add affiliate functions to method of account classes.
         */
-        if (!affiliateCodeStorage && account.type === TYPE.ARWEAVE) {
+        if (!affiliateCodeStorage && defaultAccount.type === TYPE.ARWEAVE) {
           const code = await backgroundRequest.gallery.friendReferral({
             endpoints: FRIEND_REFERRAL_ENDPOINTS.GET_AFFILIATE_CODE,
           })
@@ -219,7 +217,7 @@ export default ({ children }) => {
       console.log('Loading for user data...')
       getUserData()
     }
-  }, [account])
+  }, [defaultAccount])
 
   /* 
     Load gallery settings
@@ -297,7 +295,6 @@ export default ({ children }) => {
           address: activatedAccount,
         })
         activatedAccount = await activatedAccount.get.metadata()
-        setAccount(activatedAccount)
         dispatch(setDefaultAccount(activatedAccount))
       }
     }
@@ -335,7 +332,7 @@ export default ({ children }) => {
     const setAssetsForCreateCollection = async () => {
       if (showCreateCollection) {
         const _account = await popupAccount.getAccount({
-          address: account.address,
+          address: defaultAccount.address,
         })
         let assets = await _account.get.assets()
         assets = assets.filter(asset => asset.name !== '...')
@@ -343,8 +340,8 @@ export default ({ children }) => {
       }
     }
 
-    if (!GALLERY_IMPORT_PATH.includes(pathname) && !isEmpty(account)) setAssetsForCreateCollection()
-  }, [showCreateCollection, account])
+    if (!GALLERY_IMPORT_PATH.includes(pathname) && !isEmpty(defaultAccount)) setAssetsForCreateCollection()
+  }, [showCreateCollection, defaultAccount])
 
 
   /*
@@ -566,7 +563,7 @@ export default ({ children }) => {
     const tags = nftInfo.tags
     const fileType = nftInfo.contentType
     
-    const result = await backgroundRequest.gallery.uploadNFT({ content, tags, fileType, address: account.address, price, isNSFW })
+    const result = await backgroundRequest.gallery.uploadNFT({ content, tags, fileType, address: defaultAccount.address, price, isNSFW })
     console.log('retry export NFT - DONE', result)
   }
 
