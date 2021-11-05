@@ -1,4 +1,8 @@
-import { SET_DEFAULT_ACCOUNT, SET_DEFAULT_ACCOUNT_BY_ADDRESS } from 'options/actions/types'
+import {
+  UPDATE_DEFAULT_ACCOUNT,
+  SET_DEFAULT_ACCOUNT,
+  SET_DEFAULT_ACCOUNT_BY_ADDRESS,
+} from 'options/actions/types'
 
 const initialState = {
   type: '',
@@ -17,6 +21,8 @@ export default function defaultAccountReducer(state = initialState, action) {
     case SET_DEFAULT_ACCOUNT:
     case SET_DEFAULT_ACCOUNT_BY_ADDRESS:
       return payload
+    case UPDATE_DEFAULT_ACCOUNT:
+      return { ...state, ...payload }
     default:
       return state
   }

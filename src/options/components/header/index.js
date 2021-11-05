@@ -24,13 +24,13 @@ import { popupBackgroundConnect } from 'services/request/popup'
 import ReactTooltip from 'react-tooltip'
 
 export default ({
-  totalKoi,
-  totalAr,
   headerRef,
   isLoading,
 }) => {
   const { pathname } = useLocation()
+  
   const defaultAccount = useSelector(state => state.defaultAccount)
+  const { balance, koiBalance } = defaultAccount
 
   const handleLoadBalances = () => {
     popupBackgroundConnect.postMessage({
@@ -56,18 +56,18 @@ export default ({
               {defaultAccount.type === TYPE.ARWEAVE && (
               <>
                 <KoiUnit className='koi-unit' />
-                <div>{formatNumber(totalKoi)}</div>
+                <div>{formatNumber(koiBalance)}</div>
               </>
               )}
               {defaultAccount.type === TYPE.ARWEAVE ? (
               <>
                 <ArUnit className='koi-unit ar' />
-                <div>{formatNumber(totalAr, 6)}</div>
+                <div>{formatNumber(balance, 6)}</div>
               </>
               ) : (
               <>
                 <EthereumUnit className='koi-unit' />
-                <div>{formatNumber(totalAr, 6)}</div>
+                <div>{formatNumber(balance, 6)}</div>
               </>
               )}
 
@@ -76,7 +76,7 @@ export default ({
               <ReloadIcon onClick={handleLoadBalances}  />
             </div>
           </div>
-          {!totalKoi && !!(defaultAccount.type == TYPE.ARWEAVE) && (
+          {!koiBalance && !!(defaultAccount.type == TYPE.ARWEAVE) && (
             <a
               target='_blank'
               href='https://koi.rocks/faucet?step=0'

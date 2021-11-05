@@ -2,7 +2,7 @@ import '@babel/polyfill'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useHistory, useLocation, Link } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, useStore } from 'react-redux'
 
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
@@ -10,9 +10,6 @@ import get from 'lodash/get'
 import find from 'lodash/find'
 
 import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
-
-import { setAccounts } from 'options/actions/accounts'
-import { setDefaultAccount } from 'options/actions/defaultAccount'
 
 import './index.css'
 import StartUp from 'options/pages/StartUp'
@@ -41,7 +38,9 @@ import { popupAccount } from 'services/account'
 import SelectAccountModal from 'options/modal/SelectAccountModal'
 
 import { EventHandler } from 'services/request/src/backgroundConnect'
-import Wallets from 'arweave/node/wallets'
+
+import { setAccounts } from 'options/actions/accounts'
+import { setDefaultAccount, updateDefaultAccount } from 'options/actions/defaultAccount'
 
 export default ({ children }) => {
   const { pathname } = useLocation()
@@ -50,12 +49,10 @@ export default ({ children }) => {
   const headerRef = useRef(null)
   const inputFileRef = useRef(null)
 
-  const [walletLoaded, setWalletLoaded] = useState(false) // flag to do something after all accounts loaded
+  const [walletLoaded, setWalletLoaded] = useState(false) // LOCAL STATE
   const [isLocked, setIsLocked] = useState(false) // show "unlock finnie" on locked
   const [isLoading, setIsLoading] = useState(false) // loading state
   
-  const [totalKoi, setTotalKoi] = useState(0) // Koii balance
-  const [totalAr, setTotalAr] = useState(0) // Ar balance
   const [affiliateCode, setAffiliateCode] = useState(null) // friend code
   const [totalReward, setTotalReward] = useState(null) // total reward friend referral
   const [inviteSpent, setInviteSpent] = useState(false) // spent invitation ?
@@ -104,7 +101,8 @@ export default ({ children }) => {
 
   const dispatch = useDispatch()
 
-  const [accounts, defaultAccount] = useSelector(state => [state.accounts, state.defaultAccount])
+  const accounts = useSelector(state => state.accounts)
+  const defaultAccount = useSelector(state => state.defaultAccount)
 
   /* 
     STEP 1:
@@ -177,16 +175,6 @@ export default ({ children }) => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const activatedAccount = await popupAccount.getAccount({
-          address: defaultAccount.address,
-        })
-
-        // balances
-        const arBalance = await activatedAccount.get.balance()
-        const koiBalance = await activatedAccount.get.koiBalance()
-        setTotalKoi(koiBalance)
-        setTotalAr(arBalance)
-
         // get affiliate code from storage
         const affiliateCodeStorage = await storage.generic.get.affiliateCode()
         if (affiliateCodeStorage) setAffiliateCode(affiliateCodeStorage)
@@ -422,7 +410,7 @@ export default ({ children }) => {
     modifyDraging(true)
   }
 
-
+  const store = useStore()
   /* 
     Add backgroundConnect eventHandler
   */
@@ -432,25 +420,22 @@ export default ({ children }) => {
         MESSAGES.GET_BALANCES_SUCCESS,
         async () => {
           try {
+            const { defaultAccount } = store.getState()
+
             let activatedAccount = await storage.setting.get.activatedAccountAddress()
             activatedAccount = await popupAccount.getAccount({
               address: activatedAccount,
             })
             const activatedAccountData = await activatedAccount.get.metadata()
-  
-            const { balance: _balance, koiBalance } = activatedAccountData
-            let balancesUpdated = false
+            const { balance, koiBalance } = activatedAccountData
 
-            setTotalKoi(prev => {
-              if (prev !== koiBalance) balancesUpdated = true
-              return koiBalance
-            })
-            setTotalAr(prev => {
-              if (prev !== _balance) balancesUpdated = true
-              return _balance
-            })
+            const balancesUpdated = defaultAccount.balance !== balance || defaultAccount.koiBalance !== koiBalance
+            if (balancesUpdated) {
+              dispatch(updateDefaultAccount({balance, koiBalance}))
+              setNotification('Your balances have been updated.')
+            }
 
-            if (balancesUpdated) setNotification('Your balances have been updated.')
+            console.log('defaultAccount', defaultAccount)
           } catch (err) {
             setError(err.message)
           }
@@ -474,6 +459,8 @@ export default ({ children }) => {
       const uploadNFTHandler = new EventHandler(
         MESSAGES.UPLOAD_NFT_SUCCESS,
         async () => {
+          const state = store.getState()
+
           try {
             /* 
               Showing pending NFT
@@ -621,8 +608,6 @@ export default ({ children }) => {
         showEarnedKoi,
         showViews,
         stage,
-        totalAr,
-        totalKoi,
         totalPage,
         totalReward,
         importedAddress,
@@ -703,8 +688,6 @@ export default ({ children }) => {
                 <div className="startup-logo"><KoiIcon /></div>
               </Link>
               {!GALLERY_IMPORT_PATH.includes(pathname) && <Header
-                totalKoi={totalKoi}
-                totalAr={totalAr}
                 headerRef={headerRef}
                 isLoading={isLoading}
               />}

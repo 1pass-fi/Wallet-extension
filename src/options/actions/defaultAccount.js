@@ -1,4 +1,8 @@
-import { SET_DEFAULT_ACCOUNT, SET_DEFAULT_ACCOUNT_BY_ADDRESS } from './types'
+import {
+  UPDATE_DEFAULT_ACCOUNT,
+  SET_DEFAULT_ACCOUNT,
+  SET_DEFAULT_ACCOUNT_BY_ADDRESS,
+} from './types'
 
 import { popupAccount } from 'services/account'
 
@@ -18,5 +22,12 @@ export const setDefaultAccount = (account) => async (dispatch) => {
   return dispatch({
     type: SET_DEFAULT_ACCOUNT,
     payload: account,
+  })
+}
+
+export const updateDefaultAccount = (newAccountInfo) => (dispatch) => {
+  return dispatch({
+    type: UPDATE_DEFAULT_ACCOUNT,
+    payload: newAccountInfo,
   })
 }

@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { isEmpty } from 'lodash'
+import ReactTooltip from 'react-tooltip'
 
 import './index.css'
 import InputInfo from './InputInfo'
@@ -13,12 +15,7 @@ import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import { popupAccount } from 'services/account'
-
-import { mockSaveCollections } from 'options/utils'
-import { mockGetCollections } from 'options/utils'
-import { getNftsDataForCollections } from 'options/utils'
-
-import ReactTooltip from 'react-tooltip'
+import { getBalance } from 'options/selectors/defaultAccount'
 
 export default () => {
   const { collectionNFT,
@@ -31,8 +28,6 @@ export default () => {
     setPage,
     setTotalPage,
     setIsLoading,
-    totalAr,
-    totalKoi,
     setNotification,
     account
   } = useContext(GalleryContext)
@@ -42,6 +37,7 @@ export default () => {
   const [description, setDescription] = useState('')
   const [tags, setTags] = useState([])
 
+  const [balance, koiBalance] = useSelector(getBalance)
 
   const onClose = () => {
     setShowCreateCollection(false)
@@ -59,8 +55,8 @@ export default () => {
     try {
 
       // Balances validations.
-      if (totalAr < 0.000004) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
-      if (totalKoi < 1) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
+      if (balance < 0.000004) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
+      if (koiBalance < 1) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
       const nfts = collectionNFT.filter(nft => nft.id)
       if (!isEmpty(nfts)) {
         const nftIds = nfts.map(nft => nft.id)

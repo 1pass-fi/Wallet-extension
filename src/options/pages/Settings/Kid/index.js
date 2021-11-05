@@ -18,6 +18,7 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 import { loadNFTCost } from 'utils'
 
 import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'
+import { getBalance } from 'options/selectors/defaultAccount'
 
 import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
@@ -27,7 +28,7 @@ import { setChromeStorage, getChromeStorage } from 'utils'
 import { popupAccount } from 'services/account'
 
 export default () => {
-  const { totalAr, totalKoi, setIsLoading, setError, setNotification } = useContext(GalleryContext)
+  const { setIsLoading, setError, setNotification } = useContext(GalleryContext)
 
   const fileRef = useRef()
   const [profileImage, setProfileImage] = useState()
@@ -38,6 +39,7 @@ export default () => {
   const [arweaveImage, setArweaveImage] = useState(null)
 
   const defaultAccount = useSelector(state => state.defaultAccount)
+  const [balance, koiBalance] = useSelector(getBalance)
 
   const onSelectClick = () => {
     fileRef.current.click()
@@ -75,11 +77,11 @@ export default () => {
         on KID updating. 
       */
       if (hadKID) {
-        if (totalAr < 0.000002) {
+        if (balance < 0.000002) {
           throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
         }
   
-        if (totalKoi < 1) {
+        if (koiBalance < 1) {
           throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
         }
         const payload = { contractId: hadKID }
@@ -94,11 +96,11 @@ export default () => {
         const arCost = await loadNFTCost(profileImage.size)
   
         // Validations
-        if (totalAr < arCost) {
+        if (balance < arCost) {
           throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
         }
   
-        if (totalKoi < 1) {
+        if (koiBalance < 1) {
           throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
         }
   
