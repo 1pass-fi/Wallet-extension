@@ -7,7 +7,7 @@ export default function accountsReducer(state = initialState, action) {
 
   switch (type) {
     case SET_ACCOUNTS:
-      return [...state, ...payload]
+      return payload
     default:
       return state
   }
