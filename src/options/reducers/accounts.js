@@ -1,4 +1,4 @@
-import { SET_ACCOUNTS } from 'options/actions/types'
+import { ADD_ACCOUNT_BY_ADDRESS, SET_ACCOUNTS } from 'options/actions/types'
 
 const initialState = []
 
@@ -8,6 +8,8 @@ export default function accountsReducer(state = initialState, action) {
   switch (type) {
     case SET_ACCOUNTS:
       return payload
+    case ADD_ACCOUNT_BY_ADDRESS:
+      return [...state, payload]
     default:
       return state
   }

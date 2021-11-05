@@ -11,7 +11,7 @@ import find from 'lodash/find'
 
 import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 
-import { setAccounts } from 'options/actions/accounts'
+import { addAccountByAddress, setAccounts } from 'options/actions/accounts'
 
 import './index.css'
 import StartUp from 'options/pages/StartUp'
@@ -40,6 +40,7 @@ import { popupAccount } from 'services/account'
 import SelectAccountModal from 'options/modal/SelectAccountModal'
 
 import { EventHandler } from 'services/request/src/backgroundConnect'
+import Wallets from 'arweave/node/wallets'
 
 export default ({ children }) => {
   const { pathname } = useLocation()
@@ -292,9 +293,6 @@ export default ({ children }) => {
   useEffect(() => {
     const reloadWallets = async () => {
       await popupAccount.loadImported()
-      const allData = await popupAccount.getAllMetadata()
-      dispatch(setAccounts(allData))
-
       const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE)
       setArWallets(arAccounts)
 
@@ -308,7 +306,10 @@ export default ({ children }) => {
       }
     }
 
-    if (newAddress) reloadWallets()
+    if (newAddress) {
+      dispatch(addAccountByAddress(newAddress))
+      reloadWallets() 
+    }
   }, [newAddress])
 
   /* 
