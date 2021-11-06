@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import trim from 'lodash/trim'
 import union from 'lodash/union'
 import get from 'lodash/get'
+import isString from 'lodash/isString'
 
 import Checkbox from 'popup/components/shared/checkbox'
 import './index.css'
@@ -16,6 +17,7 @@ import { loadNFTCost } from 'utils'
 import { formatNumber } from 'options/utils'
 import { GalleryContext } from 'options/galleryContext'
 import { UploadContext } from '../../../index'
+import storage from 'services/storage'
 
 const Empty = ({ setClicked }) => {
   useEffect(() => {
@@ -69,9 +71,17 @@ export default ({
   }, [file])
 
   useEffect(() => {
-    if(defaultAccount.type !== TYPE.ARWEAVE){
-      dispatch(setDefaultAccount(arAccounts[0]))
+    const handleSetDefaultAccount = async () => {
+      // TODO: validate address here
+      if(defaultAccount.type !== TYPE.ARWEAVE) {
+        if (isString(arAccounts[0].address)) {
+          storage.setting.set.activatedAccountAddress(arAccounts[0].address)
+        }
+        dispatch(setDefaultAccount(arAccounts[0]))
+      }
     }
+
+    handleSetDefaultAccount()
   }, [])
 
   if (stage == 1) {

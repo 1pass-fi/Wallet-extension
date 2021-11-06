@@ -40,7 +40,6 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
     setFile,
     setNotification,
     setError,
-    inviteSpent,
     account,
     setIsLoading,
     setShowUploadingModal,
@@ -59,6 +58,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
   const [friendCode, setFriendCode] = useState('')
   const [isClickEnable, setIsClickEnable] = useState(true)
 
+  const defaultAccount = useSelector(state => state.defaultAccount)
   const [balance, koiBalance] = useSelector(getBalance)
 
 
@@ -249,7 +249,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
     return (
       <div className='confirmation-bottom-button'>
         {
-          !inviteSpent &&
+          !defaultAccount.inviteSpent &&
           <div className='friends-referal'>
             <div className='referal-title'>Friend Referral Code</div>
             <div className='referal-description'>

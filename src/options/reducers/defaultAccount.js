@@ -12,6 +12,9 @@ const initialState = {
   koiBalance: 0,
   provider: '',
   seedPhrase: '',
+  affiliateCode: 'loading...',
+  totalReward: 0,
+  inviteSpent: true
 }
 
 export default function defaultAccountReducer(state = initialState, action) {

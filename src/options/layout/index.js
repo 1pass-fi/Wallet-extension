@@ -1,5 +1,5 @@
 import '@babel/polyfill'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import { useHistory, useLocation, Link } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
 import { useDispatch, useSelector, useStore } from 'react-redux'
@@ -39,8 +39,8 @@ import SelectAccountModal from 'options/modal/SelectAccountModal'
 
 import { EventHandler } from 'services/request/src/backgroundConnect'
 
-import { setAccounts } from 'options/actions/accounts'
-import { setDefaultAccount, updateDefaultAccount } from 'options/actions/defaultAccount'
+import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/accounts'
+import { setDefaultAccount } from 'options/actions/defaultAccount'
 
 export default ({ children }) => {
   const { pathname } = useLocation()
@@ -53,10 +53,6 @@ export default ({ children }) => {
   const [isLocked, setIsLocked] = useState(false) // show "unlock finnie" on locked
   const [isLoading, setIsLoading] = useState(false) // loading state
   
-  const [affiliateCode, setAffiliateCode] = useState(null) // friend code
-  const [totalReward, setTotalReward] = useState(null) // total reward friend referral
-  const [inviteSpent, setInviteSpent] = useState(false) // spent invitation ?
-
   const [showSelectAccount, setShowSelectAccount] = useState(false) // choose account on upload nft
   const [importedAddress, setImportedAddress] = useState(null) // just imported account
   const [newAddress, setNewAddress] = useState(null) // just imported address
@@ -110,11 +106,7 @@ export default ({ children }) => {
   */
   useEffect(() => {
     const loadWallets = async () => {
-      await popupAccount.loadImported()
-
-      const allAccounts  = await popupAccount.getAllMetadata()
-      dispatch(setAccounts(allAccounts))
-
+      const allAccounts = await dispatch(loadAllAccounts()) // will load default account also
       const _isLocked = await backgroundRequest.wallet.getLockState()
 
       setWalletLoaded(true)
@@ -130,28 +122,8 @@ export default ({ children }) => {
 
   /*
     STEP 2: 
-    - Load for activated (default) account.
-
-    This account will be used to display balances, kID, connect site.
-    On setting, user can change their activated (default) account.
   */
   useEffect(() => {
-    const loadActivatedAccount = async () => {
-      /* 
-        Set activatedAccount to account 
-      */
-      try {
-        let activatedAccount = await storage.setting.get.activatedAccountAddress()
-        activatedAccount = await popupAccount.getAccount({
-          address: activatedAccount,
-        })
-        activatedAccount = await activatedAccount.get.metadata()
-        dispatch(setDefaultAccount(activatedAccount))
-      } catch (err) {
-        console.log(err.message)
-      }
-    }
-
     const getCollectionsFromStorage = async () => {
       try {
         const allCollections = await popupAccount.getAllCollections()
@@ -161,9 +133,13 @@ export default ({ children }) => {
       }
     }
 
+    const getAffiliateCode = () => {
+      dispatch(loadAllFriendReferralData())
+    }
+
     if (walletLoaded) {
-      loadActivatedAccount()
       getCollectionsFromStorage()
+      getAffiliateCode()
     }
 
   }, [walletLoaded])
@@ -172,40 +148,7 @@ export default ({ children }) => {
    STEP 3: ( run on default account changed)
    - Load data for set default account
   */
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        // get affiliate code from storage
-        const affiliateCodeStorage = await storage.generic.get.affiliateCode()
-        if (affiliateCodeStorage) setAffiliateCode(affiliateCodeStorage)
 
-        /* 
-          TODO: Will add affiliate functions to method of account classes.
-        */
-        if (!affiliateCodeStorage && defaultAccount.type === TYPE.ARWEAVE) {
-          const code = await backgroundRequest.gallery.friendReferral({
-            endpoints: FRIEND_REFERRAL_ENDPOINTS.GET_AFFILIATE_CODE,
-          })
-          const reward = await backgroundRequest.gallery.friendReferral({
-            endpoints: FRIEND_REFERRAL_ENDPOINTS.GET_TOTAL_REWARD
-          })
-          const spent = await backgroundRequest.gallery.friendReferral({
-            endpoints: FRIEND_REFERRAL_ENDPOINTS.CHECK_AFFILIATE_INVITE_SPENT
-          })
-          setAffiliateCode(code)
-          setTotalReward(reward)
-          setInviteSpent(spent)
-        }
-      } catch (err) {
-        console.log(err.message)
-      }
-    }
-
-    if (!isEmpty(accounts) || !GALLERY_IMPORT_PATH.includes(pathname)) {
-      console.log('Loading for user data...')
-      getUserData()
-    }
-  }, [defaultAccount])
 
   /* 
     Load gallery settings
@@ -233,31 +176,45 @@ export default ({ children }) => {
   }, [walletLoaded])
 
   /* 
+    Load all NFTs
+  */
+  useEffect(() => {
+    const loadAllContents = async () => {
+      console.log('loading all contents')
+      let allAssets = await popupAccount.getAllAssets()
+      let validAssets = allAssets.filter(asset => asset.name !== '...')
+      setCardInfos(validAssets)
+
+      await backgroundRequest.assets.loadAllContent()
+      allAssets = await popupAccount.getAllAssets()
+      validAssets = allAssets.filter(asset => asset.name !== '...')
+      setCardInfos(validAssets)
+      if (isEmpty(allAssets) && pathname === '/') history.push('/create')
+      setIsLoading(false)
+    }
+
+    loadAllContents()
+  }, [walletLoaded])
+
+  /* 
     Load assets:
     - Load NFTs for a specified wallet or all wallets
 
     Run on wallets state changed
   */
   useEffect(() => {
-    const loadAssets = async () => {
+    const loadAssetsForNewAddress = async () => {
       try {
-        /* 
-          newAddress: not isEmpty -> load assets for wallet that just imported
-          newAddress: isEmpty -> load assets of all wallets (when just opened the gallery page and having imported wallets)
-        */
         if (newAddress) {
           console.log('loading content for', newAddress)
           await backgroundRequest.assets.loadContent({ address: newAddress })
-        } else {
-          console.log('loading all contents')
-          await backgroundRequest.assets.loadAllContent()
-        }
 
-        const allAssets = await popupAccount.getAllAssets()
-        const validAssets = allAssets.filter(asset => asset.name !== '...')
-        setCardInfos(validAssets)
-        if (isEmpty(allAssets) && pathname === '/') history.push('/create')
-        setIsLoading(false)
+          const allAssets = await popupAccount.getAllAssets()
+          const validAssets = allAssets.filter(asset => asset.name !== '...')
+          setCardInfos(validAssets)
+          if (isEmpty(allAssets) && pathname === '/') history.push('/create')
+          setIsLoading(false)
+        }
       } catch (err) {
         console.log(err.message)
         setIsLoading(false)
@@ -265,18 +222,19 @@ export default ({ children }) => {
       }
     }
 
-    if (!isEmpty(accounts) && !GALLERY_IMPORT_PATH.includes(pathname)) {
-      loadAssets()
-    }
-  }, [accounts])
+    loadAssetsForNewAddress()
+  }, [newAddress])
 
   /* 
     Reload wallets when a new wallet just imported
   */
   useEffect(() => {
-    const reloadWallets = async () => {
+    const updateAccounts = async () => {
       await popupAccount.loadImported()
 
+      /* 
+        Set default account if imported account is the first account
+      */
       if (get(popupAccount, 'importedAccount.length') === 1) {
         let activatedAccount = await storage.setting.get.activatedAccountAddress()
         activatedAccount = await popupAccount.getAccount({
@@ -288,27 +246,28 @@ export default ({ children }) => {
     }
 
     if (newAddress) {
-      reloadWallets() 
+      updateAccounts()
+      dispatch(loadAllFriendReferralData())
     }
   }, [newAddress])
 
   /* 
     Pre-load assets when import/upload/create new wallet
   */
-  useEffect(() => {
-    const preloadAssets = async () => {
-      try {
-        console.log('pre-load content for imported address', importedAddress)
-        await backgroundRequest.assets.loadContent({ address: importedAddress })
-      } catch (err) {
-        console.log(err.message)
-      }
-    }
+  // useEffect(() => {
+  //   const preloadAssets = async () => {
+  //     try {
+  //       console.log('pre-load content for imported address', importedAddress)
+  //       await backgroundRequest.assets.loadContent({ address: importedAddress })
+  //     } catch (err) {
+  //       console.log(err.message)
+  //     }
+  //   }
 
-    if (importedAddress) {
-      preloadAssets()
-    }
-  }, [importedAddress])
+  //   if (importedAddress) {
+  //     preloadAssets()
+  //   }
+  // }, [importedAddress])
 
   /* 
     On open create collection form, allAssets list should be set to assets of the 
@@ -431,7 +390,8 @@ export default ({ children }) => {
 
             const balancesUpdated = defaultAccount.balance !== balance || defaultAccount.koiBalance !== koiBalance
             if (balancesUpdated) {
-              dispatch(updateDefaultAccount({balance, koiBalance}))
+              await dispatch(loadAllAccounts())
+
               setNotification('Your balances have been updated.')
             }
 
@@ -567,7 +527,6 @@ export default ({ children }) => {
   return (
     <GalleryContext.Provider
       value={{
-        affiliateCode,
         cardInfos,
         collectionNFT,
         collections,
@@ -575,7 +534,6 @@ export default ({ children }) => {
         file,
         handleShareNFT,
         retryExportNFT,
-        inviteSpent,
         isDragging,
         onClearFile,
         onCloseUploadModal,
@@ -609,7 +567,6 @@ export default ({ children }) => {
         showViews,
         stage,
         totalPage,
-        totalReward,
         importedAddress,
         setImportedAddress,
         setNewAddress,

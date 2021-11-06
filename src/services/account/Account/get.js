@@ -106,8 +106,22 @@ export class AccountGetter {
     const koiBalance = await this.koiBalance()
     const provider = await this.provider()
     const seedPhrase = await this.seedPhrase()
+    const affiliateCode = await this.affiliateCode()
+    const inviteSpent = await this.inviteSpent()
+    const totalReward = await this.totalReward()
 
-    return { address, balance, koiBalance, accountName, type, provider, seedPhrase }
+    return { 
+      address, 
+      balance, 
+      koiBalance, 
+      accountName, 
+      type, 
+      provider, 
+      seedPhrase,
+      affiliateCode,
+      inviteSpent,
+      totalReward 
+    }
   }
 
   async conectedSite() {
@@ -120,5 +134,17 @@ export class AccountGetter {
 
   async activities() {
     return await this.#accountStorage.getActivities() || []
+  }
+
+  async affiliateCode() {
+    return await this.#accountStorage.getField(ACCOUNT.AFFILIATE_CODE) || ''
+  }
+
+  async inviteSpent() {
+    return await this.#accountStorage.getField(ACCOUNT.INVITE_SPENT)
+  }
+
+  async totalReward() {
+    return await this.#accountStorage.getField(ACCOUNT.TOTAL_REWARD)
   }
 }

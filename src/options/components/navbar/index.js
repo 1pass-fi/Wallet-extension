@@ -24,7 +24,6 @@ import SlideNavbar from './SlideNav'
 
 
 export default () => {
-  const { affiliateCode } = useContext(GalleryContext)
   const { pathname } = useLocation()
 
   const [isExpandSubNavbar, setIsExpandSubNavbar] = useState(false)
@@ -115,7 +114,7 @@ export default () => {
               <FriendIcon className="nav-item" />
             </div>
           </Link>
-          <div className='address'>{affiliateCode && `${affiliateCode.slice(0, 5)}...`}</div>
+          <div className='address'>{defaultAccount.affiliateCode && `${defaultAccount.affiliateCode.slice(0, 5)}...`}</div>
         </div>
       </div>
       {pathname.includes('/settings') && !showAddressBook  && (

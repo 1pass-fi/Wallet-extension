@@ -1170,6 +1170,42 @@ export default async (koi, port, message, ports, resolveId, eth) => {
         break
       }
 
+      case MESSAGES.LOAD_FRIEND_REFERRAL_DATA: {
+        try {
+          const { address } = message.data
+          let accounts = []
+          if (isString(address)) {
+            const credential = await backgroundAccount.getCredentialByAddress(address)
+            const account = await backgroundAccount.getAccount(credential)
+            accounts = [...accounts, account]
+          } else {
+            accounts = await backgroundAccount.getAllAccounts(TYPE.ARWEAVE)
+          }
+          await Promise.all(accounts.map(async account => {
+            const code = await account.method.getAffiliateCode()
+            const spent = await account.method.checkAffiliateInviteSpent()
+            const totalReward = await account.method.getTotalRewardKoi()
+
+            await account.set.affiliateCode(code)
+            await account.set.inviteSpent(spent)
+            await account.set.totalReward(totalReward)
+          }))
+
+          port.postMessage({
+            type: MESSAGES.LOAD_FRIEND_REFERRAL_DATA,
+            id: messageId
+          })
+
+        } catch {
+          port.postMessage({
+            type: MESSAGES.LOAD_FRIEND_REFERRAL_DATA,
+            error: `BACKGROUND ERROR: ${err.message}`,
+            id: messageId            
+          })
+        }
+        break
+      }
+
       default:
         break
     }
