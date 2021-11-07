@@ -26,7 +26,6 @@ export default () => {
     stage,
     setStage,
     setError,
-    setPage,
     setTotalPage,
     setIsLoading,
     setNotification,
@@ -45,8 +44,8 @@ export default () => {
 
   const onClose = () => {
     setShowCreateCollection(false)
-    setCreateCollection({ selectedNfts: [] })
-    setPage(0)
+    dispatch(setCreateCollection({ selectedNfts: [] }))
+    dispatch(setCreateCollection({ currentPage: 0 }))
     setTotalPage(1)
     setStage(1)
   }

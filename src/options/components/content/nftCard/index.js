@@ -38,8 +38,6 @@ export default ({
     totalPage, 
     setTotalPage,
     stage,
-    page,
-    setPage,
     showViews,
     showEarnedKoi,
     setShowExportModal
@@ -82,7 +80,7 @@ export default ({
         }
         if (nfts.length / 5 !== totalPage) {
           setTotalPage(nfts.length / 5)
-          setPage(totalPage)
+          dispatch(setCreateCollection({ currentPage: totalPage}))
         }
         dispatch(setCreateCollection({ selectedNfts: [...nfts]}))
       } else {
@@ -94,8 +92,9 @@ export default ({
         if ((notEmptySlots.length % 5 === 0 && notEmptySlots.length > 0)) {
           nfts = notEmptySlots
         }
-        if (((totalPage - nfts.length / 5) === 1) && page === totalPage - 1) {
-          setPage(page - 1)
+        if (((totalPage - nfts.length / 5) === 1) && createCollection.currentPage === totalPage - 1) {
+          dispatch(setCreateCollection({ currentPage: createCollection.currentPage - 1}))
+
         }
         setTotalPage(nfts.length / 5)
         dispatch(setCreateCollection({ selectedNfts: [...nfts]}))

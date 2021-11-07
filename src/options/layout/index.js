@@ -59,7 +59,6 @@ export default ({ children }) => {
     Collection states
   */
   const [showCreateCollection, setShowCreateCollection] = useState(false) // show create collection on home page
-  const [page, setPage] = useState(0) // for collection ?
   const [totalPage, setTotalPage] = useState(1) // total page of selected nfts collection form (5 nft / page)
 
   const [collectionsLoaded, setCollectionsLoaded] = useState(false) // flag for loading collection status
@@ -567,7 +566,6 @@ export default ({ children }) => {
         isDragging,
         onClearFile,
         onCloseUploadModal,
-        page,
         pendingNFTTitle,
         searchTerm,
         setCardInfos,
@@ -577,7 +575,6 @@ export default ({ children }) => {
         setFile,
         setIsLoading,
         setNotification,
-        setPage,
         setPendingNFTTitle,
         setSearchTerm,
         setShowCreateCollection,

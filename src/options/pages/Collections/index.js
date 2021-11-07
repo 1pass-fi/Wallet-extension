@@ -13,13 +13,16 @@ import storage from 'services/storage'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
-const Header = ({ setShowCreateCollection, setStage, setPage, setTotalPage }) => {
+import { setCreateCollection } from 'options/actions/createCollection'
+
+const Header = ({ setShowCreateCollection, setStage, setTotalPage }) => {
   const history = useHistory()
+  const dispatch = useDispatch()
 
   const handleOnClick = () => {
     setStage(1)
     setTotalPage(1)
-    setPage(0)
+    dispatch(setCreateCollection({ currentPage: 0}))
     setShowCreateCollection(true)
     history.push('/')
   }
@@ -33,8 +36,8 @@ const Header = ({ setShowCreateCollection, setStage, setPage, setTotalPage }) =>
 }
 
 export default () => {
-  const { setShowCreateCollection, 
-    setPage, 
+  const { 
+    setShowCreateCollection,  
     setTotalPage,
     setStage, 
     setIsLoading, 
@@ -46,6 +49,7 @@ export default () => {
   } = useContext(GalleryContext)
 
   const defaultAccount = useSelector(state => state.defaultAccount)
+  
 
   useEffect(() => {
     const getCollectionsFromStorage = async () => {
@@ -90,7 +94,6 @@ export default () => {
         <Header 
           setShowCreateCollection={setShowCreateCollection}
           setStage={setStage}
-          setPage={setPage}
           setTotalPage={setTotalPage}
         />
         <CollectionList collections={collections}/>
