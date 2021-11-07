@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { isEmpty } from 'lodash'
+import { useSelector, useDispatch } from 'react-redux'
+
 
 import './index.css'
 import Tag from '../Tag'
@@ -8,15 +10,20 @@ import { NftThumbnails } from './NftThumbnails'
 import EditIcon from 'img/edit-icon-collection.svg'
 import { GalleryContext } from 'options/galleryContext'
 
+import { setCreateCollection } from 'options/actions/createCollection'
+
 
 export default ({nfts, tags, collectionName, description, stage}) => {
-  const { collectionNFT, setCollectionNFT, totalPage, setTotalPage, page, setPage} = useContext(GalleryContext)
+  const { totalPage, setTotalPage, page, setPage} = useContext(GalleryContext)
 
   const [middleNfts, setMiddleNfts] = useState([{}, {}, {}, {}, {}])
   const [leftNfts, setLeftNfts] = useState([{}, {}, {}, {}, {}])
   const [rightNfts, setRightNfts] = useState([{}, {}, {}, {}, {}])
 
   const prevPageRef = useRef()
+  const createCollection = useSelector(state => state.createCollection)
+
+  const dispatch = useDispatch()
 
 
   /* 
@@ -166,14 +173,14 @@ export default ({nfts, tags, collectionName, description, stage}) => {
     The code for selecting new NFT is in: options/components/content/nftCard
   */
   const removeFromCollection = (id) => {
-    let nfts = [...collectionNFT]
+    let nfts = [...createCollection.selectedNfts]
     nfts = nfts.filter((nft) => nft.id !== id)
     nfts.push({})
     const notEmptySlots = nfts.filter((nft) => nft.id)
     if ((notEmptySlots.length % 5 === 0 && notEmptySlots.length > 0)) {
       nfts = notEmptySlots
     }
-    setCollectionNFT([...nfts])
+    dispatch(setCreateCollection({ selectedNfts: [...nfts]}))
     if (((totalPage - nfts.length / 5) === 1) && page === totalPage - 1) {
       setPage(page - 1)
     }
@@ -195,9 +202,9 @@ export default ({nfts, tags, collectionName, description, stage}) => {
     const destId = result.destination.index
     const sourceId = result.source.index
 
-    if (collectionNFT[destId].url && collectionNFT[sourceId].url) {
-      const newArray = reorder(collectionNFT, sourceId, destId)
-      setCollectionNFT([...newArray])
+    if (createCollection.selectedNfts[destId].url && createCollection.selectedNfts[sourceId].url) {
+      const newArray = reorder(createCollection.selectedNfts, sourceId, destId)
+      dispatch(setCreateCollection({selectedNfts: [...newArray]}))
       setMiddleNfts(newArray.slice(page*5, page*5 + 5))
     }
   }
@@ -266,7 +273,7 @@ export default ({nfts, tags, collectionName, description, stage}) => {
         Shows all selected NFTs
       */
       <div className='selected-nft'>
-        {(collectionNFT.map((nft, index) => {
+        {(createCollection.selectedNfts.map((nft, index) => {
           if (nft.url) return (
             <div className='nft-wrapper' key={index}>
               {(nft.contentType.includes('image')) ? <img src={nft.url}></img> :

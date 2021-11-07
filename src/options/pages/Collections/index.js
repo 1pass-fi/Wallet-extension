@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { isString, isEmpty } from 'lodash'
+import { useDispatch, useSelector } from 'react-redux'
 
 import './index.css'
 import CollectionList from 'options/components/collectionList'
@@ -42,8 +43,9 @@ export default () => {
     setCollections,
     collectionsLoaded,
     setCollectionsLoaded,
-    account
   } = useContext(GalleryContext)
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
 
   useEffect(() => {
     const getCollectionsFromStorage = async () => {
@@ -57,15 +59,15 @@ export default () => {
       }
     }
 
-    if (!isEmpty(account)) getCollectionsFromStorage()
-  }, [account])
+    if (!isEmpty(defaultAccount)) getCollectionsFromStorage()
+  }, [defaultAccount])
 
   useEffect(() => {
     const handleLoadCollection = async () => {
       try {
-        if (!isEmpty(account)) {          
+        if (!isEmpty(defaultAccount)) {          
           setIsLoading(true)
-          await backgroundRequest.gallery.loadCollections({ address: account.address })
+          await backgroundRequest.gallery.loadCollections({ address: defaultAccount.address })
           const allCollections = await popupAccount.getAllCollections()
           setCollections(allCollections)
           setIsLoading(false)
@@ -77,10 +79,10 @@ export default () => {
         console.log(err.message)
       }
     }
-    if (!isEmpty(account) && !collectionsLoaded) {
+    if (!isEmpty(defaultAccount) && !collectionsLoaded) {
       handleLoadCollection()
     }
-  }, [account])
+  }, [defaultAccount])
 
   return (
     <div className='collections-container'>

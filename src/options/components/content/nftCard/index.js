@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { find, includes } from 'lodash'
+import { useSelector, useDispatch } from 'react-redux'
 
 import ShareIcon from 'img/share-icon-3.svg'
 import CopyLinkIcon from 'img/share-icon-4.svg'
@@ -12,6 +13,8 @@ import { Link } from 'react-router-dom'
 import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
 import WarningIcon from 'img/warning-icon3.svg'
+
+import { setCreateCollection } from 'options/actions/createCollection'
 
 export default ({
   txId,
@@ -32,8 +35,6 @@ export default ({
   isBridging
 }) => {
   const { showCreateCollection, 
-    collectionNFT,
-    setCollectionNFT,
     totalPage, 
     setTotalPage,
     stage,
@@ -45,6 +46,9 @@ export default ({
   } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const [selectedCollection, setSelectedCollection] = useState(false)
+  
+  const createCollection = useSelector(state => state.createCollection)
+  const dispatch = useDispatch()
 
   const onCopy = () => {
     setIsCopied(true)
@@ -57,9 +61,9 @@ export default ({
   */
   const addToCollection = () => {
     if (stage == 2) {
-      if (!find(collectionNFT, v => v.id == txId)) {
+      if (!find(createCollection.selectedNfts, v => v.id == txId)) {
         /* Click to select this picture */
-        let nfts = [...collectionNFT]
+        let nfts = [...createCollection.selectedNfts]
         nfts = nfts.filter((nft) => !!nft.url)
         nfts.push({ 
           id: txId, 
@@ -80,10 +84,10 @@ export default ({
           setTotalPage(nfts.length / 5)
           setPage(totalPage)
         }
-        setCollectionNFT([...nfts])
+        dispatch(setCreateCollection({ selectedNfts: [...nfts]}))
       } else {
         /* Click to unselect this picture */
-        let nfts = [...collectionNFT]
+        let nfts = [...createCollection.selectedNfts]
         nfts = nfts.filter((nft) => nft.id !== txId)
         nfts.push({})
         const notEmptySlots = nfts.filter((nft) => nft.id)
@@ -94,18 +98,19 @@ export default ({
           setPage(page - 1)
         }
         setTotalPage(nfts.length / 5)
-        setCollectionNFT([...nfts])
+        dispatch(setCreateCollection({ selectedNfts: [...nfts]}))
       }
     }
   }
 
+  // TODO: remove useEffect
   useEffect(() => {
-    if (find(collectionNFT, v => v.id == txId)) {
+    if (find(createCollection.selectedNfts, v => v.id == txId)) {
       setSelectedCollection(true)
     } else {
       setSelectedCollection(false)
     }
-  }, [collectionNFT])
+  }, [createCollection.selectedNfts])
 
   return choosen !== txId ? (
     <div onClick={showCreateCollection ? addToCollection : () => {}} disabled={disabled} className='nft-card'>

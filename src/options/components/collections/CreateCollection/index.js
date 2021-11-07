@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { isEmpty } from 'lodash'
 import ReactTooltip from 'react-tooltip'
 
@@ -17,9 +17,10 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 import { popupAccount } from 'services/account'
 import { getBalance } from 'options/selectors/defaultAccount'
 
+import { setCreateCollection } from 'options/actions/createCollection'
+
 export default () => {
-  const { collectionNFT,
-    setCollectionNFT, 
+  const { 
     setCardInfos,
     setShowCreateCollection,
     stage,
@@ -33,15 +34,18 @@ export default () => {
   } = useContext(GalleryContext)
   // const [stage, setStage] = useState(1)
 
+  const dispatch = useDispatch()
+
   const [collectionName, setCollectionName] = useState('')
   const [description, setDescription] = useState('')
   const [tags, setTags] = useState([])
 
   const [balance, koiBalance] = useSelector(getBalance)
+  const createCollection = useSelector(state => state.createCollection)
 
   const onClose = () => {
     setShowCreateCollection(false)
-    setCollectionNFT([])
+    setCreateCollection({ selectedNfts: [] })
     setPage(0)
     setTotalPage(1)
     setStage(1)
@@ -57,7 +61,7 @@ export default () => {
       // Balances validations.
       if (balance < 0.000004) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
       if (koiBalance < 1) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
-      const nfts = collectionNFT.filter(nft => nft.id)
+      const nfts = createCollection.selectedNfts.filter(nft => nft.id)
       if (!isEmpty(nfts)) {
         const nftIds = nfts.map(nft => nft.id)
         console.log('Nfts list: ', nftIds)
@@ -92,7 +96,7 @@ export default () => {
         }
         break
       case 2:
-        nfts = collectionNFT.filter(nft => nft.id)
+        nfts = createCollection.selectedNfts.filter(nft => nft.id)
         if (isEmpty(nfts)) {
           setError(ERROR_MESSAGE.COLLECTION_NFT_EMPTY)
         } else {
@@ -152,10 +156,9 @@ export default () => {
               Stage 3: preview the collections
             */
             (stage == 2 || stage == 3) && <SelectNFT 
-              nfts={isEmpty(collectionNFT) ? [{}, {}, {}, {}, {}] : collectionNFT} tags={tags} 
+              nfts={isEmpty(createCollection.selectedNfts) ? [{}, {}, {}, {}, {}] : createCollection.selectedNfts} tags={tags} 
               collectionName={collectionName}
               description={description}
-              setNfts={setCollectionNFT}
               stage={stage}
               description={description}
             />
