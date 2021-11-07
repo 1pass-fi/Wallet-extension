@@ -41,6 +41,7 @@ import { EventHandler } from 'services/request/src/backgroundConnect'
 
 import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/accounts'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
+import { setCollections } from 'options/actions/collections'
 
 export default ({ children }) => {
   const { pathname } = useLocation()
@@ -59,13 +60,6 @@ export default ({ children }) => {
     Create collection states
   */
   const [showCreateCollection, setShowCreateCollection] = useState(false) // show create collection on home page
-  
-  
-  /* 
-  Display collections state
-  */
-  const [collectionsLoaded, setCollectionsLoaded] = useState(false) // flag for loading collection status
-  const [collections, setCollections] = useState([]) // ???
 
   /* 
     NFTs state
@@ -154,7 +148,7 @@ export default ({ children }) => {
     const getCollectionsFromStorage = async () => {
       try {
         const allCollections = await popupAccount.getAllCollections()
-        setCollections(allCollections)
+        dispatch(setCollections({ collections: allCollections }))
       } catch (err) {
         setError(err.message)
       }
@@ -555,8 +549,6 @@ export default ({ children }) => {
     <GalleryContext.Provider
       value={{
         cardInfos,
-        collections,
-        collectionsLoaded,
         file,
         handleShareNFT,
         retryExportNFT,
@@ -566,8 +558,6 @@ export default ({ children }) => {
         pendingNFTTitle,
         searchTerm,
         setCardInfos,
-        setCollections,
-        setCollectionsLoaded,
         setError: _setError,
         setFile,
         setIsLoading,

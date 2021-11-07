@@ -9,3 +9,6 @@ export const UPDATE_DEFAULT_ACCOUNT = 'UPDATE_DEFAULT_ACCOUNT'
 
 // Create collections
 export const SET_CREATE_COLLECTION = 'SET_CREATE_COLLECTION'
+
+// Collections
+export const SET_COLLECTIONS = 'SET_COLLECTIONS'

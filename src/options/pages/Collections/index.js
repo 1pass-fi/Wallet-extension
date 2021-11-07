@@ -14,6 +14,7 @@ import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import { setCreateCollection } from 'options/actions/createCollection'
+import { setCollections } from 'options/actions/collections'
 
 const Header = ({ setShowCreateCollection }) => {
   const history = useHistory()
@@ -44,21 +45,20 @@ export default () => {
     setShowCreateCollection,
     setIsLoading, 
     setError, 
-    collections, 
-    setCollections,
-    collectionsLoaded,
-    setCollectionsLoaded,
   } = useContext(GalleryContext)
 
   const defaultAccount = useSelector(state => state.defaultAccount)
+  const collectionState = useSelector(state => state.collections)
   
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const getCollectionsFromStorage = async () => {
       try {
         const allCollections = await popupAccount.getAllCollections()
         console.log('All Collections', allCollections)
-        setCollections(allCollections)
+        dispatch(setCollections({ collections: allCollections }))
+
       } catch (err) {
         console.log(err.message)
         setError(err.message)
@@ -75,9 +75,9 @@ export default () => {
           setIsLoading(true)
           await backgroundRequest.gallery.loadCollections({ address: defaultAccount.address })
           const allCollections = await popupAccount.getAllCollections()
-          setCollections(allCollections)
+          dispatch(setCollections({ collections: allCollections }))
+          dispatch(setCollections({ collectionsLoaded: true }))
           setIsLoading(false)
-          setCollectionsLoaded(true)
         }
       } catch (err) {
         setIsLoading(false)
@@ -85,7 +85,7 @@ export default () => {
         console.log(err.message)
       }
     }
-    if (!isEmpty(defaultAccount) && !collectionsLoaded) {
+    if (!isEmpty(defaultAccount) && !collectionState.collectionsLoaded) {
       handleLoadCollection()
     }
   }, [defaultAccount])
@@ -96,7 +96,7 @@ export default () => {
         <Header 
           setShowCreateCollection={setShowCreateCollection}
         />
-        <CollectionList collections={collections}/>
+        <CollectionList />
       </div>
     </div>
   )
