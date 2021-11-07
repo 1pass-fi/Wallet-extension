@@ -2,13 +2,16 @@ import React, { useContext, useEffect } from 'react'
 import Layout from 'options/layout'
 import Content from 'options/components/content'
 import { GalleryContext } from 'options/galleryContext'
+import { useSelector } from 'react-redux'
 
 
 export default () => {
-  const { stage, setShowCreateCollection } = useContext(GalleryContext)
+  const { setShowCreateCollection } = useContext(GalleryContext)
+
+  const createCollection = useSelector(state => state.createCollection)
 
   useEffect(() => {
-    if (stage !== 1) {
+    if (createCollection.stage !== 1) {
       setShowCreateCollection(false)
     }
   }, [])

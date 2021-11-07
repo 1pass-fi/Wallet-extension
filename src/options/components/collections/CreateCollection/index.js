@@ -23,15 +23,11 @@ export default () => {
   const { 
     setCardInfos,
     setShowCreateCollection,
-    stage,
-    setStage,
     setError,
     setIsLoading,
     setNotification,
     account
   } = useContext(GalleryContext)
-  // const [stage, setStage] = useState(1)
-
   const dispatch = useDispatch()
 
   const [collectionName, setCollectionName] = useState('')
@@ -43,14 +39,18 @@ export default () => {
 
   const onClose = () => {
     setShowCreateCollection(false)
-    dispatch(setCreateCollection({ selectedNfts: [] }))
-    dispatch(setCreateCollection({ currentPage: 0 }))
-    dispatch(setCreateCollection({ totalPage: 1 }))
-    setStage(1)
+    const payload = {
+      selectedNfts: [],
+      currentPage: 0,
+      totalPage: 1,
+      stage: 1
+    }
+
+    dispatch(setCreateCollection(payload))
   }
 
   const onGoBack = () => {
-    setStage(stage !== 1 ? stage - 1 : 1)
+    dispatch(setCreateCollection({ stage: createCollection.stage !== 1 ? createCollection.stage - 1 : 1 }))
   }
 
   const handleCreateNewCollection = async () => {
@@ -85,12 +85,12 @@ export default () => {
 
   const confirmButtonOnClick = async () => {
     let nfts
-    switch (stage) {
+    switch (createCollection.stage) {
       case 1:
         if (!collectionName || !description) {
           setError(ERROR_MESSAGE.EMPTY_FIELDS)
         } else {
-          setStage(stage + 1)
+          dispatch(setCreateCollection({ stage: createCollection.stage + 1 }))
         }
         break
       case 2:
@@ -98,7 +98,7 @@ export default () => {
         if (isEmpty(nfts)) {
           setError(ERROR_MESSAGE.COLLECTION_NFT_EMPTY)
         } else {
-          setStage(stage + 1)
+          dispatch(setCreateCollection({ stage: createCollection.stage + 1 }))
         }
         break
       case 3:
@@ -106,7 +106,7 @@ export default () => {
           setIsLoading(true)
           await handleCreateNewCollection()
           setIsLoading(false)
-          setStage(stage + 1)
+          dispatch(setCreateCollection({ stage: createCollection.stage + 1 }))
           break
         } catch (err) {
           setIsLoading(false)
@@ -125,11 +125,11 @@ export default () => {
 
   return (
     <div className='create-collection'>
-      <div className={stage == 4 ? 'wrapper stage4' : 'wrapper'}>
+      <div className={createCollection.stage == 4 ? 'wrapper stage4' : 'wrapper'}>
         {/* TITLE */}
-        {stage !== 4 && <div className='form-title'>Create a new collection</div>}
+        {createCollection.stage !== 4 && <div className='form-title'>Create a new collection</div>}
         {/* {stage == 4 && <div className='form-title stage4'>Your collection {collectionName} is ready to share!</div>} */}
-        {stage == 4 && <div className='form-title stage4'>Your collection {collectionName} is ready to share!</div>}
+        {createCollection.stage == 4 && <div className='form-title stage4'>Your collection {collectionName} is ready to share!</div>}
 
         {/* FORM BODY */}
         <div className='content'>
@@ -140,7 +140,7 @@ export default () => {
                 - Description
                 - Tags
             */
-            stage == 1 && <InputInfo
+            createCollection.stage == 1 && <InputInfo
               tags={tags}
               setColletionName={setCollectionName}
               setDescription={setDescription}
@@ -153,11 +153,9 @@ export default () => {
               Stage 2: select NFTs to put into the collection
               Stage 3: preview the collections
             */
-            (stage == 2 || stage == 3) && <SelectNFT 
+            (createCollection.stage == 2 || createCollection.stage == 3) && <SelectNFT 
               nfts={isEmpty(createCollection.selectedNfts) ? [{}, {}, {}, {}, {}] : createCollection.selectedNfts} tags={tags} 
               collectionName={collectionName}
-              description={description}
-              stage={stage}
               description={description}
             />
           }
@@ -165,7 +163,7 @@ export default () => {
             /* 
               Created successfully screen.
             */
-            stage == 4 && <Success collectionName={collectionName} description={description} tags={tags}/>
+            createCollection.stage == 4 && <Success collectionName={collectionName} description={description} tags={tags}/>
           }
         </div>
 
@@ -178,17 +176,17 @@ export default () => {
         </div>
 
         {/* GO BACK BUTTON */}
-        {stage !== 4 && <div className='goback-button' onClick={onGoBack}>
+        {createCollection.stage !== 4 && <div className='goback-button' onClick={onGoBack}>
           <GoBackIcon data-tip='Back'/>
         </div>}
 
         {/* CONFIRM BUTTON */}
-        { stage !== 4 &&
+        { createCollection.stage !== 4 &&
         <div onClick={confirmButtonOnClick} className='confirm-button'>
           <button>
-            {stage === 1 && 'Select NFTs'}
-            {stage === 2 && 'Create collection'}
-            {stage === 3 && 'Confirm Registration on Smartweave'}
+            {createCollection.stage === 1 && 'Select NFTs'}
+            {createCollection.stage === 2 && 'Create collection'}
+            {createCollection.stage === 3 && 'Confirm Registration on Smartweave'}
           </button>
         </div>
         }

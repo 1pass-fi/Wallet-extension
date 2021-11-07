@@ -13,7 +13,7 @@ import { GalleryContext } from 'options/galleryContext'
 import { setCreateCollection } from 'options/actions/createCollection'
 
 
-export default ({nfts, tags, collectionName, description, stage}) => {
+export default ({nfts, tags, collectionName, description}) => {
   const [middleNfts, setMiddleNfts] = useState([{}, {}, {}, {}, {}])
   const [leftNfts, setLeftNfts] = useState([{}, {}, {}, {}, {}])
   const [rightNfts, setRightNfts] = useState([{}, {}, {}, {}, {}])
@@ -209,7 +209,7 @@ export default ({nfts, tags, collectionName, description, stage}) => {
 
   return (
     <div className='select-nft'>
-      {createCollection.currentPage == 0 && stage == 2 && <div className='cover-image-tag'>cover image</div>}
+      {createCollection.currentPage == 0 && createCollection.stage == 2 && <div className='cover-image-tag'>cover image</div>}
       
       {/* INFO */}
       <div className='info'>
@@ -226,10 +226,10 @@ export default ({nfts, tags, collectionName, description, stage}) => {
       </div>
 
       {/* HINT */}
-      {stage === 2 && <div className='hint'>Click on each NFT from your gallery to include</div>}
+      {createCollection.stage === 2 && <div className='hint'>Click on each NFT from your gallery to include</div>}
 
       {/* NFTs */}
-      {stage === 2 &&
+      {createCollection.stage === 2 &&
 
       /* 
         To perform the scrolling animation we will create 3 NftThumbnails components arranged respectively from the left to right.
@@ -263,7 +263,7 @@ export default ({nfts, tags, collectionName, description, stage}) => {
 
       }
 
-      {stage === 3 &&
+      {createCollection.stage === 3 &&
       /* 
         Shows all selected NFTs
       */
@@ -288,7 +288,7 @@ export default ({nfts, tags, collectionName, description, stage}) => {
       }
 
       {/* PAGES */}
-      {stage === 2 && <div className='page'>
+      {createCollection.stage === 2 && <div className='page'>
         {[...Array(createCollection.totalPage)].map((a, index) => 
           <div 
             key={index} 
@@ -298,7 +298,7 @@ export default ({nfts, tags, collectionName, description, stage}) => {
       </div>}
 
       {/* PRICE */}
-      {stage === 3 && 
+      {createCollection.stage === 3 && 
       <div className='price'>
         <div>Estimated costs:</div>
         <div className='price-amount'>

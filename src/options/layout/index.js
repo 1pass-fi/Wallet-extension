@@ -56,24 +56,22 @@ export default ({ children }) => {
   const [isLocked, setIsLocked] = useState(false)
 
   /* 
-    Collection states
+    Create collection states
   */
   const [showCreateCollection, setShowCreateCollection] = useState(false) // show create collection on home page
-
+  
+  
+  /* 
+  Display collections state
+  */
   const [collectionsLoaded, setCollectionsLoaded] = useState(false) // flag for loading collection status
   const [collections, setCollections] = useState([]) // ???
-
 
   /* 
     NFTs state
   */
   const [cardInfos, setCardInfos] = useState([])
 
-  /* 
-    Upload NFT state
-  */
-  const [stage, setStage] = useState(1) // for upload NFT flow (Header - Bottom)
-  
   /* 
     Settings state
   */
@@ -584,12 +582,10 @@ export default ({ children }) => {
         setShowUploadingModal,
         setShowViews,
         setShowWelcome,
-        setStage,
         showCreateCollection,
         showTransferNFT,
         showEarnedKoi,
         showViews,
-        stage,
         importedAddress,
         setImportedAddress,
         setNewAddress,

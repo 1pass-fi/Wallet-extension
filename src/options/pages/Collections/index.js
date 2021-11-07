@@ -15,15 +15,19 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 
 import { setCreateCollection } from 'options/actions/createCollection'
 
-const Header = ({ setShowCreateCollection, setStage }) => {
+const Header = ({ setShowCreateCollection }) => {
   const history = useHistory()
   const dispatch = useDispatch()
 
   const handleOnClick = () => {
-    setStage(1)
-    dispatch(setCreateCollection({ totalPage: 1 }))
-    dispatch(setCreateCollection({ currentPage: 0}))
     setShowCreateCollection(true)
+    const payload = {
+      stage: 1,
+      totalPage: 1,
+      currentPage: 0
+    }
+    dispatch(setCreateCollection(payload))
+
     history.push('/')
   }
 
@@ -37,8 +41,7 @@ const Header = ({ setShowCreateCollection, setStage }) => {
 
 export default () => {
   const { 
-    setShowCreateCollection,  
-    setStage, 
+    setShowCreateCollection,
     setIsLoading, 
     setError, 
     collections, 
@@ -92,7 +95,6 @@ export default () => {
       <div>
         <Header 
           setShowCreateCollection={setShowCreateCollection}
-          setStage={setStage}
         />
         <CollectionList collections={collections}/>
       </div>

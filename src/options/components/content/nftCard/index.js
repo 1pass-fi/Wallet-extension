@@ -36,7 +36,6 @@ export default ({
 }) => {
   const { 
     showCreateCollection,
-    stage,
     showViews,
     showEarnedKoi,
     setShowExportModal
@@ -57,7 +56,7 @@ export default ({
     Take a look at: options/components/collection/CreateCollection
   */
   const addToCollection = () => {
-    if (stage == 2) {
+    if (createCollection.stage === 2) {
       if (!find(createCollection.selectedNfts, v => v.id == txId)) {
         /* Click to select this picture */
         let nfts = [...createCollection.selectedNfts]
