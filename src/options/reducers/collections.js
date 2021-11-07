@@ -5,7 +5,7 @@ const initialState = {
   collections: [],
 }
 
-export default function createCollectionReducer(state = initialState, action) {
+export default function collectionsReducer(state = initialState, action) {
   const { type, payload } = action
 
   switch (type) {

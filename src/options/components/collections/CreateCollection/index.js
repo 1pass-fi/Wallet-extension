@@ -18,15 +18,14 @@ import { popupAccount } from 'services/account'
 import { getBalance } from 'options/selectors/defaultAccount'
 
 import { setCreateCollection } from 'options/actions/createCollection'
+import { setAssets } from 'options/actions/assets'
 
 export default () => {
   const { 
-    setCardInfos,
     setShowCreateCollection,
     setError,
     setIsLoading,
     setNotification,
-    account
   } = useContext(GalleryContext)
   const dispatch = useDispatch()
 
@@ -35,7 +34,10 @@ export default () => {
   const [tags, setTags] = useState([])
 
   const [balance, koiBalance] = useSelector(getBalance)
+
   const createCollection = useSelector(state => state.createCollection)
+  const assets = useSelector(state => state.assets)
+  const defaultAccount = useSelector(state => state.defaultAccount)
 
   const onClose = () => {
     setShowCreateCollection(false)
@@ -67,11 +69,11 @@ export default () => {
           name: collectionName,
           description,
           tags,
-          owner: account.address
+          owner: defaultAccount.address
         }
 
         setIsLoading(true)
-        const txId = await backgroundRequest.gallery.createNewCollection({ nftIds, collectionInfo, address: account.address })
+        const txId = await backgroundRequest.gallery.createNewCollection({ nftIds, collectionInfo, address: defaultAccount.address })
         setIsLoading(false)
         console.log('Transaction Id: ', txId)
         setNotification(NOTIFICATION.CREATE_COLLECTION_SUCCESS)
@@ -119,7 +121,7 @@ export default () => {
     return async () => {
       let allAssets = await popupAccount.getAllAssets()
       allAssets = allAssets.filter(asset => asset.name !== '...')
-      setCardInfos(allAssets)
+      setAssets({ nfts: allAssets })
     }
   }, [])
 

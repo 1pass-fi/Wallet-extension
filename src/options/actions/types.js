@@ -12,3 +12,6 @@ export const SET_CREATE_COLLECTION = 'SET_CREATE_COLLECTION'
 
 // Collections
 export const SET_COLLECTIONS = 'SET_COLLECTIONS'
+
+// Assets (NFT)
+export const SET_ASSETS = 'SET_ASSETS'

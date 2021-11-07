@@ -40,7 +40,6 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
     setFile,
     setNotification,
     setError,
-    account,
     setIsLoading,
     setShowUploadingModal,
     setPendingNFTTitle
@@ -100,7 +99,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
 
 
       // call the request function
-      const { txId, time } = await backgroundRequest.gallery.uploadNFT({ content, tags, fileType, address: account.address, price, isNSFW })
+      const { txId, time } = await backgroundRequest.gallery.uploadNFT({ content, tags, fileType, address: defaultAccount.address, price, isNSFW })
       // console.log('RESPONSE DATA', txId, time)
 
       setPendingNFTTitle(title)

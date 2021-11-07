@@ -4,7 +4,7 @@ import includes from 'lodash/includes'
 import toLower from 'lodash/toLower'
 import isEqual from 'lodash/isEqual'
 import { useLocation } from 'react-router'
-import {useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { GalleryContext } from 'options/galleryContext'
 import CreateCollection from 'options/components/collections/CreateCollection'
@@ -15,7 +15,6 @@ import './index.css'
 
 export default ({ choosenTxid = '', detail }) => {
   const {
-    cardInfos,
     isDragging,
     searchTerm,
     showCreateCollection,
@@ -23,6 +22,8 @@ export default ({ choosenTxid = '', detail }) => {
   const { pathname } = useLocation()
   const [showCards, setShowCards] = useState(true)
   const [pathnameLoaded, setPathnameLoaded] = useState(false)
+
+  const assets = useSelector(state => state.assets)
 
   useEffect(() => {
     if (pathname.includes('details')) {
@@ -48,7 +49,7 @@ export default ({ choosenTxid = '', detail }) => {
       <div className="cards">
         { pathnameLoaded &&
           <div className="small-cards">
-            {cardInfos.map(
+            {assets.nfts.map(
               (cardInfo) =>
                 isEqual(get(cardInfo, 'txId', ''), choosenTxid) ||
                 (includes(

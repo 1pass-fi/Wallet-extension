@@ -42,6 +42,7 @@ import { EventHandler } from 'services/request/src/backgroundConnect'
 import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/accounts'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setCollections } from 'options/actions/collections'
+import { setAssets } from 'options/actions/assets'
 
 export default ({ children }) => {
   const { pathname } = useLocation()
@@ -62,15 +63,11 @@ export default ({ children }) => {
   const [showCreateCollection, setShowCreateCollection] = useState(false) // show create collection on home page
 
   /* 
-    NFTs state
-  */
-  const [cardInfos, setCardInfos] = useState([])
-
-  /* 
     Settings state
   */
   const [showViews, setShowViews] = useState(true) // show view on setting
   const [showEarnedKoi, setShowEarnedKoi] = useState(true) // show earned koii on setting
+  const [showWelcome, setShowWelcome] = useState(false) // show welcome modal
 
 
   /* 
@@ -86,6 +83,7 @@ export default ({ children }) => {
     txid: null,
   }) // show share modal for big NFT content
   const [showExportModal, setShowExportModal] = useState({}) // show bridge modal
+  const [showSelectAccount, setShowSelectAccount] = useState(false) // choose account on upload nft
 
 
   /* 
@@ -95,12 +93,15 @@ export default ({ children }) => {
   const [error, setError] = useState(null) // error message
   const [notification, setNotification] = useState(null) // notification message
 
-  
-  const [showSelectAccount, setShowSelectAccount] = useState(false) // choose account on upload nft
+  /* 
+    Import new account
+  */
   const [importedAddress, setImportedAddress] = useState(null) // just imported account
   const [newAddress, setNewAddress] = useState(null) // just imported address
-  const [showWelcome, setShowWelcome] = useState(false) // show welcome modal
 
+  /* 
+    File
+  */
   const [isDragging, setIsDragging] = useState(false) // ???
   const [file, setFile] = useState({}) // file for create nft
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
@@ -119,7 +120,7 @@ export default ({ children }) => {
   */
   const accounts = useSelector(state => state.accounts)
   const defaultAccount = useSelector(state => state.defaultAccount)
-  const createCollection = useSelector(state => state.createCollection)
+  const assets = useSelector(state => state.assets)
 
   /* 
     STEP 1:
@@ -204,12 +205,12 @@ export default ({ children }) => {
       console.log('loading all contents')
       let allAssets = await popupAccount.getAllAssets()
       let validAssets = allAssets.filter(asset => asset.name !== '...')
-      setCardInfos(validAssets)
+      dispatch(setAssets({ nfts: validAssets }))
 
       await backgroundRequest.assets.loadAllContent()
       allAssets = await popupAccount.getAllAssets()
       validAssets = allAssets.filter(asset => asset.name !== '...')
-      setCardInfos(validAssets)
+      dispatch(setAssets({ nfts: validAssets }))
       if (isEmpty(allAssets) && pathname === '/') history.push('/create')
       setIsLoading(false)
     }
@@ -232,7 +233,7 @@ export default ({ children }) => {
 
           const allAssets = await popupAccount.getAllAssets()
           const validAssets = allAssets.filter(asset => asset.name !== '...')
-          setCardInfos(validAssets)
+          dispatch(setAssets({ nfts: validAssets }))
           if (isEmpty(allAssets) && pathname === '/') history.push('/create')
           setIsLoading(false)
         }
@@ -304,7 +305,7 @@ export default ({ children }) => {
         })
         let assets = await _account.get.assets()
         assets = assets.filter(asset => asset.name !== '...')
-        setCardInfos(assets)
+        dispatch(setAssets({ nfts: assets }))
       }
     }
 
@@ -440,7 +441,7 @@ export default ({ children }) => {
       const uploadNFTHandler = new EventHandler(
         MESSAGES.UPLOAD_NFT_SUCCESS,
         async () => {
-          const state = store.getState()
+          const { assets } = store.getState()
 
           try {
             /* 
@@ -454,12 +455,12 @@ export default ({ children }) => {
               address: activatedAccount,
             })
             let pendingAssets = await activatedAccount.get.pendingAssets() || []
-            setCardInfos(prevState => {
-              pendingAssets = pendingAssets.filter((nft) => {
-                return prevState.every((prevNft) => nft.txId !== prevNft.txId)
-              })
-              return [...prevState, ...pendingAssets]
+
+            pendingAssets = pendingAssets.filter(nft => {
+              return assets.nfts.every(prevNft => nft.txId !== prevNft.txId)
             })
+
+            dispatch(setAssets({ nfts: [...assets.nfts, ...pendingAssets] }))
 
             setIsLoading(false)
             setShowUploadingModal(false)
@@ -488,13 +489,13 @@ export default ({ children }) => {
 
   // NFT sharing
   const handleShareNFT = (txId) => {
-    const toShareNFT = find(cardInfos, { txId })
+    const toShareNFT = find(assets.nfts, { txId })
     setShowTransferNFT({show: true, cardInfo: toShareNFT})
   }
 
   // retry-upload
   const retryExportNFT = async (txId) => {
-    const nftInfo = find(cardInfos, { txId })
+    const nftInfo = find(assets.nfts, { txId })
     console.log('NFT info', nftInfo)
 
     const metadata = {
@@ -548,7 +549,6 @@ export default ({ children }) => {
   return (
     <GalleryContext.Provider
       value={{
-        cardInfos,
         file,
         handleShareNFT,
         retryExportNFT,
@@ -557,7 +557,6 @@ export default ({ children }) => {
         onCloseUploadModal,
         pendingNFTTitle,
         searchTerm,
-        setCardInfos,
         setError: _setError,
         setFile,
         setIsLoading,
