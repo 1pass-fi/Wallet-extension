@@ -34,9 +34,8 @@ export default ({
   tokenSchema,
   isBridging
 }) => {
-  const { showCreateCollection, 
-    totalPage, 
-    setTotalPage,
+  const { 
+    showCreateCollection,
     stage,
     showViews,
     showEarnedKoi,
@@ -78,9 +77,9 @@ export default ({
             nfts.push({})
           }
         }
-        if (nfts.length / 5 !== totalPage) {
-          setTotalPage(nfts.length / 5)
-          dispatch(setCreateCollection({ currentPage: totalPage}))
+        if (nfts.length / 5 !== createCollection.totalPage) {
+          dispatch(setCreateCollection({ totalPage: nfts.length / 5 }))
+          dispatch(setCreateCollection({ currentPage: createCollection.totalPage}))
         }
         dispatch(setCreateCollection({ selectedNfts: [...nfts]}))
       } else {
@@ -92,11 +91,11 @@ export default ({
         if ((notEmptySlots.length % 5 === 0 && notEmptySlots.length > 0)) {
           nfts = notEmptySlots
         }
-        if (((totalPage - nfts.length / 5) === 1) && createCollection.currentPage === totalPage - 1) {
+        if (((createCollection.totalPage - nfts.length / 5) === 1) && createCollection.currentPage === createCollection.totalPage - 1) {
           dispatch(setCreateCollection({ currentPage: createCollection.currentPage - 1}))
 
         }
-        setTotalPage(nfts.length / 5)
+        dispatch(setCreateCollection({ totalPage: nfts.length / 5 }))
         dispatch(setCreateCollection({ selectedNfts: [...nfts]}))
       }
     }

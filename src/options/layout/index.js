@@ -59,7 +59,6 @@ export default ({ children }) => {
     Collection states
   */
   const [showCreateCollection, setShowCreateCollection] = useState(false) // show create collection on home page
-  const [totalPage, setTotalPage] = useState(1) // total page of selected nfts collection form (5 nft / page)
 
   const [collectionsLoaded, setCollectionsLoaded] = useState(false) // flag for loading collection status
   const [collections, setCollections] = useState([]) // ???
@@ -586,13 +585,11 @@ export default ({ children }) => {
         setShowViews,
         setShowWelcome,
         setStage,
-        setTotalPage,
         showCreateCollection,
         showTransferNFT,
         showEarnedKoi,
         showViews,
         stage,
-        totalPage,
         importedAddress,
         setImportedAddress,
         setNewAddress,

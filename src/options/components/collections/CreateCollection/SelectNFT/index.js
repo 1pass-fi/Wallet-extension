@@ -14,8 +14,6 @@ import { setCreateCollection } from 'options/actions/createCollection'
 
 
 export default ({nfts, tags, collectionName, description, stage}) => {
-  const { totalPage, setTotalPage } = useContext(GalleryContext)
-
   const [middleNfts, setMiddleNfts] = useState([{}, {}, {}, {}, {}])
   const [leftNfts, setLeftNfts] = useState([{}, {}, {}, {}, {}])
   const [rightNfts, setRightNfts] = useState([{}, {}, {}, {}, {}])
@@ -181,10 +179,10 @@ export default ({nfts, tags, collectionName, description, stage}) => {
       nfts = notEmptySlots
     }
     dispatch(setCreateCollection({ selectedNfts: [...nfts]}))
-    if (((totalPage - nfts.length / 5) === 1) && createCollection.currentPage === totalPage - 1) {
+    if (((createCollection.totalPage - nfts.length / 5) === 1) && createCollection.currentPage === createCollection.totalPage - 1) {
       dispatch(setCreateCollection({ currentPage: createCollection.currentPage - 1 }))
     }
-    setTotalPage(nfts.length / 5)
+    dispatch(setCreateCollection({ totalPage: (nfts.length / 5) }))
 
   }
 
@@ -291,7 +289,7 @@ export default ({nfts, tags, collectionName, description, stage}) => {
 
       {/* PAGES */}
       {stage === 2 && <div className='page'>
-        {[...Array(totalPage)].map((a, index) => 
+        {[...Array(createCollection.totalPage)].map((a, index) => 
           <div 
             key={index} 
             className={createCollection.currentPage === index ? 'pageNum active': 'pageNum'}
