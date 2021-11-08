@@ -13,6 +13,8 @@ import { popupBackgroundRequest } from 'services/request/popup'
 import './index.css'
 import { setAssets } from 'options/actions/assets'
 
+import { isArweaveAddress } from 'utils'
+
 const TransferNFT = ({
   txId,
   name,
@@ -34,6 +36,15 @@ const TransferNFT = ({
 
   const assets = useSelector(state => state.assets)
   const dispatch = useDispatch()
+
+  const handleValidateArAddress = () => {
+    const isValid = isArweaveAddress(receiverAddress)
+    if (!isValid) {
+      setError('Invalid Wallet Address')
+    } else {
+      goToNextStage()
+    }
+  }
 
   const handleTransferNFT = async () => {
     try {
@@ -111,7 +122,7 @@ const TransferNFT = ({
               setReceiverAddress={setReceiverAddress}
               numberToTransfer={numberToTransfer}
               setNumberToTransfer={setNumberToTransfer}
-              handleBtnClick={goToNextStage}
+              handleBtnClick={handleValidateArAddress}
             />
           )}
           {stage === 2 && (

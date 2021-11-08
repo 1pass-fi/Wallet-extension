@@ -37,7 +37,7 @@ import storage from 'services/storage'
 
 // utils
 import { getDisplayAddress, formatNumber } from 'options/utils'
-import { fiatCurrencyFormat, getAddressesFromAddressBook } from 'utils'
+import { fiatCurrencyFormat, getAddressesFromAddressBook, isArweaveAddress, isEthereumAddress } from 'utils'
 
 // styles
 import './index.css'
@@ -119,6 +119,17 @@ const SendKoiForm = ({
       setError(ERROR_MESSAGE.SEND_ZERO_KOI)
       return
     }
+
+    if (selectedAccount.type === TYPE.ARWEAVE && !isArweaveAddress(recipient)) {
+      setError('Invalid AR Address')
+      return
+    }
+
+    if (selectedAccount.type === TYPE.ETHEREUM && !isEthereumAddress(recipient)) {
+      setError('Invalid ETH Address')
+      return
+    }
+
     setShowModal(true)
   }
 
