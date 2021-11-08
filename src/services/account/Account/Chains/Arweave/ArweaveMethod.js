@@ -179,7 +179,6 @@ export class ArweaveMethod {
           inputFunction = JSON.parse(inputTag[0].value)
           if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
             activityName = 'Sent KOII'
-            console.log('inputFunction', inputFunction)
             if (inputFunction.isSendNft) activityName = 'Sent NFT'
             expense = inputFunction.qty
             source = inputFunction.target
@@ -383,7 +382,6 @@ export class ArweaveMethod {
   }
 
   async getRegistrationReward(nftId) {
-    console.log('NFT ID: ', nftId)
     try {
       const signedPayload = await this.koi.signPayload({ data: { address: this.koi.address } })
       const { data } = await axios({
@@ -935,6 +933,15 @@ export class ArweaveMethod {
     let isBridged = get(response, 'data[0].isBridged')
     console.log('isBridged', isBridged)
     return { confirmed: isBridged, dropped: false }
+  }
+
+  async signTx(transaction) {
+    await arweave.transactions.sign(transaction, this.koi.wallet)
+  }
+
+  async registerNft(nftId) {
+    await this.koi.burnKoiAttention(nftId)
+    await this.koi.migrateAttention()
   }
 
   async #interactWrite(input, contract) {

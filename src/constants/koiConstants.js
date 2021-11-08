@@ -256,7 +256,14 @@ export const ERROR_MESSAGE = {
   BRIDGE_WITH_ETH_MAINNET: 'We currently only support Ethereum NFT bridging on the Rinkeby network.',
   NFT_NOT_EXIST_ON_CHAIN: `This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie.`,
   BRIDGE_NFT_FAILED: 'Bridge NFT failed',
-  ACCOUNT_EXIST: 'This account has already been imported.'
+  ACCOUNT_EXIST: 'This account has already been imported.',
+  UPLOAD_NFT: {
+    CREATE_TRANSACTION_ERROR: 'Create transaction error',
+    SIGN_TRANSACTION_ERROR: 'Sign transaction error',
+    UPLOAD_ERROR: 'Upload NFT error',
+    REGISTER_ERROR: 'Register NFT error',
+    INVALID_CONTENT: 'Invalid content'
+  }
 }
 
 export const STORAGE = {

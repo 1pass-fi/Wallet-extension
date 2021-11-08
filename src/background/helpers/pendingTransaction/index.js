@@ -1,6 +1,7 @@
-import { createPendingAsset, createPendingTransaction } from './pendingTransactionFactory'
+import createPendingTransaction from './createPendingTransaction'
+import createPendingAsset from './createPendingAsset'
 
 export default {
-  createPendingAsset,
-  createPendingTransaction
+  createPendingTransaction,
+  createPendingAsset
 }

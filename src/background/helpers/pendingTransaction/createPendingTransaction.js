@@ -5,7 +5,7 @@ import { backgroundAccount } from 'services/account'
 
 import moment from 'moment'
 
-export const createPendingTransaction = async ({
+export default async ({
   id,
   activityName,
   expense,
@@ -34,8 +34,4 @@ export const createPendingTransaction = async ({
 
   pendingTransactions.push(initialTransaction)
   await account.set.pendingTransactions(pendingTransactions)
-}
-
-export const createPendingAsset = (payload) => {
-
 }

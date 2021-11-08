@@ -617,71 +617,116 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
       case MESSAGES.UPLOAD_NFT: {
         try {
-          const { content, tags, fileType, address, price } = message.data
+          const { content, tags, fileType, address, price, imageId } = message.data
           const credentials = await backgroundAccount.getCredentialByAddress(address)
           const account = await backgroundAccount.getAccount(credentials)
-          const accountName = await account.get.accountName()
-          const { key } = credentials
-          const koi = new Web()
+          
+          const { u8, imageId: _imageId, file } = await helpers.uploadNft.getImageDataForNFT()
+          const createdAt = Math.floor(Date.now()/1000).toString()
 
-          koi.address = address
-          koi.wallet = key
 
+          // check for imageId
+          console.log('Upload NFT [1/6]: check for imageId')
+          if (imageId !== _imageId) throw new Error(ERROR_MESSAGE.UPLOAD_NFT.INVALID_CONTENT)
+
+
+          // create transaction
+          console.log('Upload NFT [2/6]: create transaction')
+          let transaction
+          try {
+            transaction = await helpers.uploadNft.createTransaction({
+              u8,
+              nftContent: content,
+              nftTags: tags,
+              fileType,
+              ownerAddress: address,
+              createdAt
+            })
+          } catch (err) {
+            console.error(err.message)
+            throw new Error(ERROR_MESSAGE.UPLOAD_NFT.CREATE_TRANSACTION_ERROR)
+          }
+          console.log('Created transaction: ', transaction)
+
+          
+          // sign transaction
+          console.log('Upload NFT [3/6]: sign transaction')
+          try {
+            await account.method.signTx(transaction)
+          } catch (err) {
+            console.error(err.message)
+            throw new Error(ERROR_MESSAGE.UPLOAD_NFT.SIGN_TRANSACTION_ERROR)
+          }
+          console.log('Signed transaction: ', transaction)
+
+
+          // get registrationReward data (true -> don't need to register this nft)
+          console.log('Upload NFT [4/6]: check hasRegistrationReward')
+          let hasRegistrationReward
+          try {
+            const registrationReward = await account.method.getRegistrationReward(transaction.id)
+            hasRegistrationReward = registrationReward.status === 200
+          } catch (err) {
+            console.error(err.message)
+            hasRegistrationReward = false
+          }
+          console.log('Has registration reward: ', hasRegistrationReward)
+          
+
+          // post transaction
+          console.log('Upload NFT [5/6]: post transaction')
+          try {
+            const uploader = await arweave.transactions.getUploader(transaction)
+            await uploader.uploadChunk()
+          } catch (err) {
+            console.error(err.message)
+            throw new Error(ERROR_MESSAGE.UPLOAD_NFT.UPLOAD_ERROR)
+          }
+          console.log('NFT uploaded')
+
+
+          // register NFT
+          console.log('Register NFT [6/6]: register nft')
+          if (!hasRegistrationReward) {
+            try {
+              await account.method.registerNft(transaction.id)
+            } catch (err) {
+              console.error(err.message)
+              throw new Error(ERROR_MESSAGE.UPLOAD_NFT.REGISTER_ERROR)
+            }
+          }
+          console.log('NFT registered')
+
+          const result = { txId: transaction.id, createdAt }
+          console.log('Upload NFT result', result)
           // const result = { txId: uuid(), createdAt: 0 }
-          const result = await exportNFTNew(koi, arweave, content, tags, fileType)
 
-          const newPendingTransaction = {
-            id: result.txId,
+
+          // save pending transaction to storage
+          const payload = {
+            id: transaction.id,
             activityName: `Minted NFT "${content.title}"`,
             expense: price,
-            accountName,
-            date: moment().format('MMMM DD YYYY'),
+            target: null,
             address,
-            expired: false,
+            network: null,
             retried: 0
           }
-
-          const pendingTransactions = await account.get.pendingTransactions() || []
-          pendingTransactions.unshift(newPendingTransaction)
-          await account.set.pendingTransactions(pendingTransactions)
-
+          await helpers.pendingTransactionFactory.createPendingTransaction(payload)
+          
+          
           // save pending nft to storage
-          let { file } = await getImageDataForNFT(fileType)
-
-          const url = URL.createObjectURL(file)
-
-          const base64String = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
-          let imageUrl = `data:image/jpeg;base64,${base64String}`
-          if (fileType.includes('video')) imageUrl = `data:video/mp4;base64,${base64String}`
-
-          let d = new Date()
-          let createdAt = Math.floor(d.getTime() / 1000).toString()
-
-          const pendingNFT = {
-            name: content.title,
-            owner: content.owner,
-            description: content.description,
-            isNSFW: content.isNSFW,
-            tags: tags,
-            isKoiWallet: true,
-            earnedKoi: 0,
-            txId: result.txId,
-            imageUrl,
-            galleryUrl: `${PATH.GALLERY}#/details/${result.txId}`,
-            koiRockUrl: `${PATH.KOI_ROCK}/${result.txId}`,
-            isRegistered: true,
-            contentType: fileType,
-            totalViews: 0,
-            createdAt,
-            pending: true,
-            type: TYPE.ARWEAVE,
-            expired: false,
-            retried: 0
+          const nftPayload = {
+            file,
+            nftContent: content,
+            nftTags: tags,
+            nftId: transaction.id,
+            fileType,
+            ownerAddress: address,
+            createdAt
           }
+          await helpers.pendingTransactionFactory.createPendingAsset(nftPayload)
 
-          const allPendingAssets = await account.get.pendingAssets() || []
-          allPendingAssets.push(pendingNFT)
-          await account.set.pendingAssets(allPendingAssets)
 
           port.postMessage({
             type: MESSAGES.UPLOAD_NFT,
