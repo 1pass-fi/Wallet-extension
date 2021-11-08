@@ -272,24 +272,7 @@ export default ({ children }) => {
       dispatch(loadAllFriendReferralData())
     }
   }, [newAddress])
-
-  /* 
-    Pre-load assets when import/upload/create new wallet
-  */
-  // useEffect(() => {
-  //   const preloadAssets = async () => {
-  //     try {
-  //       console.log('pre-load content for imported address', importedAddress)
-  //       await backgroundRequest.assets.loadContent({ address: importedAddress })
-  //     } catch (err) {
-  //       console.log(err.message)
-  //     }
-  //   }
-
-  //   if (importedAddress) {
-  //     preloadAssets()
-  //   }
-  // }, [importedAddress])
+  
 
   /* 
     On open create collection form, allAssets list should be set to assets of the 
