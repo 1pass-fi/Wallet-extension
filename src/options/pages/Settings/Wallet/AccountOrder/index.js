@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import get from 'lodash/get'
 
@@ -13,6 +14,7 @@ import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { popupAccount } from 'services/account'
 import { TYPE } from 'constants/accountConstants'
+import { setDefaultAccountByAddress } from 'options/actions/defaultAccount'
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list)
@@ -44,14 +46,15 @@ const queryAttr = 'data-rbd-drag-handle-draggable-id'
 
 export default ({ accounts, setAccounts }) => {
   const [placeholderProps, setPlaceholderProps] = useState({})
-  const { account, setAccount, setNotification, setError } = useContext(
-    GalleryContext
-  )
+  const { setNotification, setError } = useContext(GalleryContext)
   const [selectedAddress, setSelectedAddress] = useState()
 
+  const dispatch = useDispatch()
+  const defaultAccount = useSelector(state => state.defaultAccount)
+
   useEffect(() => {
-    setSelectedAddress(get(account, 'address', ''))
-  }, [account])
+    setSelectedAddress(get(defaultAccount, 'address', ''))
+  }, [defaultAccount])
 
   const onDragEnd = (result) => {
     // dropped outside the list
@@ -101,13 +104,8 @@ export default ({ accounts, setAccounts }) => {
   }
 
   const reloadDefaultAccount = async () => {
-    let activatedAccount = await storage.setting.get.activatedAccountAddress()
-    activatedAccount = await popupAccount.getAccount({
-      address: activatedAccount,
-    })
-    activatedAccount = await activatedAccount.get.metadata()
-    console.log(activatedAccount)
-    setAccount(activatedAccount)
+    const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
+    dispatch(setDefaultAccountByAddress(defaultAccountAddress))
   }
 
   const handleSetDefaultAccount = async (address) => {
@@ -125,7 +123,7 @@ export default ({ accounts, setAccounts }) => {
     <div className='account-order'>
       <div className='account-header'>DEFAULT</div>
       {accounts.map((item, index) => (
-        <div className='account'>
+        <div className='account' key={item.address}>
           <div className='name-icon'>
             {/* <RearrangePadsIcon className='arrange-icon' /> */}
             <div

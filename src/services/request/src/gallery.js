@@ -133,4 +133,8 @@ export class GalleryRequest extends Request {
   _transferNFT(body) {
     return this.promise(MESSAGES.REAL_TRANSFER_NFT, body)
   }
+
+  loadFriendReferralData(body) {
+    return this.promise(MESSAGES.LOAD_FRIEND_REFERRAL_DATA, body)
+  }
 }

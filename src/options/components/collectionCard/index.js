@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef, useContext } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { isEmpty, get } from 'lodash'
+import { useSelector } from 'react-redux'
 
 import ShareIcon from 'img/share-icon.svg'
 import CopyLinkIcon from 'img/share-icon-2.svg'
@@ -21,7 +22,6 @@ export default ({ collection }) => {
     name,
     nfts,
     totalViews: views,
-    totalReward: earnedKoi,
     contributors,
     pieces,
     tags,
@@ -34,6 +34,10 @@ export default ({ collection }) => {
   const [displayTags, setDisplayTags] = useState([])
   const [expandTag, setExpandTag] = useState('')
   const [isExpand, setIsExpand] = useState(false)
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
+  const earnedKoi = defaultAccount.totalReward
+
   const ref = useRef()
 
   const displayNft = useMemo(() => nfts[displayNftIndex], [

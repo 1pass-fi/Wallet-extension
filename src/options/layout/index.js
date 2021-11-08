@@ -1,7 +1,9 @@
 import '@babel/polyfill'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import { useHistory, useLocation, Link } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
+import { useDispatch, useSelector, useStore } from 'react-redux'
+
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
 import get from 'lodash/get'
@@ -37,6 +39,11 @@ import SelectAccountModal from 'options/modal/SelectAccountModal'
 
 import { EventHandler } from 'services/request/src/backgroundConnect'
 
+import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/accounts'
+import { setDefaultAccount } from 'options/actions/defaultAccount'
+import { setCollections } from 'options/actions/collections'
+import { setAssets } from 'options/actions/assets'
+
 export default ({ children }) => {
   const { pathname } = useLocation()
   const history = useHistory()
@@ -44,77 +51,84 @@ export default ({ children }) => {
   const headerRef = useRef(null)
   const inputFileRef = useRef(null)
 
-  const [wallets, setWallets] = useState([])
-  const [arWallets, setArWallets] = useState([])
-  const [account, setAccount] = useState({})
-  const [isDragging, setIsDragging] = useState(false)
-  const [cardInfos, setCardInfos] = useState([])
-  const [totalKoi, setTotalKoi] = useState(0)
-  const [totalAr, setTotalAr] = useState(0)
-  const [file, setFile] = useState({})
-  const [isLoading, setIsLoading] = useState(false)
-  const [address, setAddress] = useState(null)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [affiliateCode, setAffiliateCode] = useState(null)
-  const [error, setError] = useState(null)
-  const [notification, setNotification] = useState(null)
-  const [totalReward, setTotalReward] = useState(null)
-  const [inviteSpent, setInviteSpent] = useState(false)
-  const [showCreateCollection, setShowCreateCollection] = useState(false)
-  const [collectionNFT, setCollectionNFT] = useState([])
-  const [totalPage, setTotalPage] = useState(1)
-  const [stage, setStage] = useState(1)
-  const [page, setPage] = useState(0)
-  const [showViews, setShowViews] = useState(true)
-  const [showEarnedKoi, setShowEarnedKoi] = useState(true)
-  const [accountName, setAccountName] = useState('')
-  const [collectionsLoaded, setCollectionsLoaded] = useState(false)
-  const [isWaitingAddNFT, setIsWaitingAddNFT] = useState(false)
+  /* 
+    Local state
+  */
+  const [walletLoaded, setWalletLoaded] = useState(false)
   const [isLocked, setIsLocked] = useState(false)
 
-  const [showUploadingModal, setShowUploadingModal] = useState(false)
-  const [showSuccessUploadModal, setShowSuccessUploadModal] = useState(false)
-  const [showUploadedIcon, setShowUploadedIcon] = useState(false)
-  const [showTransferNFT, setShowTransferNFT] = useState({ show: false })
+  /* 
+    Create collection states
+  */
+  const [showCreateCollection, setShowCreateCollection] = useState(false) // show create collection on home page
 
-  const [demoCollections, setDemoCollections] = useState([])
-  const [collections, setCollections] = useState([])
+  /* 
+    Settings state
+  */
+  const [showViews, setShowViews] = useState(true) // show view on setting
+  const [showEarnedKoi, setShowEarnedKoi] = useState(true) // show earned koii on setting
+  const [showWelcome, setShowWelcome] = useState(false) // show welcome modal
+
+
+  /* 
+    Modal state
+  */
+  const [pendingNFTTitle, setPendingNFTTitle] = useState('') // title of new NFT to show on modal
+  const [showUploadingModal, setShowUploadingModal] = useState(false) // show uploading modal on top
+  const [showSuccessUploadModal, setShowSuccessUploadModal] = useState(false) // show success upload modal on top
+  const [showUploadedIcon, setShowUploadedIcon] = useState(false) // show updated Icon on top
+  const [showTransferNFT, setShowTransferNFT] = useState({ show: false }) // to show transfer modal
   const [showShareModal, setShowShareModal] = useState({
     show: false,
     txid: null,
-  })
-  const [pendingNFTTitle, setPendingNFTTitle] = useState('')
-  const [showExportModal, setShowExportModal] = useState({})
-  const [showWelcome, setShowWelcome] = useState(false)
-  const [showSelectAccount, setShowSelectAccount] = useState(false)
-  const [walletLoaded, setWalletLoaded] = useState(false)
-
-  const [importedAddress, setImportedAddress] = useState(null)
-  const [newAddress, setNewAddress] = useState(null)
+  }) // show share modal for big NFT content
+  const [showExportModal, setShowExportModal] = useState({}) // show bridge modal
+  const [showSelectAccount, setShowSelectAccount] = useState(false) // choose account on upload nft
 
 
+  /* 
+    Notification state
+  */
+  const [isLoading, setIsLoading] = useState(false) // loading state
+  const [error, setError] = useState(null) // error message
+  const [notification, setNotification] = useState(null) // notification message
 
+  /* 
+    Import new account
+  */
+  const [importedAddress, setImportedAddress] = useState(null) // just imported account
+  const [newAddress, setNewAddress] = useState(null) // just imported address
+
+  /* 
+    File
+  */
+  const [isDragging, setIsDragging] = useState(false) // ???
+  const [file, setFile] = useState({}) // file for create nft
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
     accept: ['image/*', 'video/*', 'audio/*'],
     noClick: true,
   })
 
+
+  const [searchTerm, setSearchTerm] = useState('') // search bar
+
+  const dispatch = useDispatch()
+
+  /* 
+    GET STATE FROM STORE
+  */
+  const accounts = useSelector(state => state.accounts)
+  const defaultAccount = useSelector(state => state.defaultAccount)
+  const assets = useSelector(state => state.assets)
+
   /* 
     STEP 1:
     - Load accounts from chrome storage
-    - Passing file to dependency array to support create new NFT in case import new wallet
   */
   useEffect(() => {
     const loadWallets = async () => {
-      await popupAccount.loadImported()
-
-      const allAccounts  = await popupAccount.getAllMetadata()
-      setWallets(allAccounts)
-
-      const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE)
-      setArWallets(arAccounts)
-
+      const allAccounts = await dispatch(loadAllAccounts()) // will load default account also
       const _isLocked = await backgroundRequest.wallet.getLockState()
 
       setWalletLoaded(true)
@@ -130,40 +144,24 @@ export default ({ children }) => {
 
   /*
     STEP 2: 
-    - Load for activated (default) account.
-
-    This account will be used to display balances, kID, connect site.
-    On setting, user can change their activated (default) account.
   */
   useEffect(() => {
-    const loadActivatedAccount = async () => {
-      /* 
-        Set activatedAccount to account 
-      */
-      try {
-        let activatedAccount = await storage.setting.get.activatedAccountAddress()
-        activatedAccount = await popupAccount.getAccount({
-          address: activatedAccount,
-        })
-        activatedAccount = await activatedAccount.get.metadata()
-        setAccount(activatedAccount)
-      } catch (err) {
-        console.log(err.message)
-      }
-    }
-
     const getCollectionsFromStorage = async () => {
       try {
         const allCollections = await popupAccount.getAllCollections()
-        setCollections(allCollections)
+        dispatch(setCollections({ collections: allCollections }))
       } catch (err) {
         setError(err.message)
       }
     }
 
+    const getAffiliateCode = () => {
+      dispatch(loadAllFriendReferralData())
+    }
+
     if (walletLoaded) {
-      loadActivatedAccount()
       getCollectionsFromStorage()
+      getAffiliateCode()
     }
 
   }, [walletLoaded])
@@ -172,57 +170,7 @@ export default ({ children }) => {
    STEP 3: ( run on default account changed)
    - Load data for set default account
   */
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const activatedAccount = await popupAccount.getAccount({
-          address: account.address,
-        })
 
-        // not sure if we still need this state
-        setAddress(account.address)
-
-        // balances
-        const arBalance = await activatedAccount.get.balance()
-        const koiBalance = await activatedAccount.get.koiBalance()
-        setTotalKoi(koiBalance)
-        setTotalAr(arBalance)
-
-        // set account name
-        const accountName = await activatedAccount.get.accountName()
-        setAccountName(accountName)
-
-        // get affiliate code from storage
-        const affiliateCodeStorage = await storage.generic.get.affiliateCode()
-        if (affiliateCodeStorage) setAffiliateCode(affiliateCodeStorage)
-
-        /* 
-          TODO: Will add affiliate functions to method of account classes.
-        */
-        if (!affiliateCodeStorage && account.type === TYPE.ARWEAVE) {
-          const code = await backgroundRequest.gallery.friendReferral({
-            endpoints: FRIEND_REFERRAL_ENDPOINTS.GET_AFFILIATE_CODE,
-          })
-          const reward = await backgroundRequest.gallery.friendReferral({
-            endpoints: FRIEND_REFERRAL_ENDPOINTS.GET_TOTAL_REWARD
-          })
-          const spent = await backgroundRequest.gallery.friendReferral({
-            endpoints: FRIEND_REFERRAL_ENDPOINTS.CHECK_AFFILIATE_INVITE_SPENT
-          })
-          setAffiliateCode(code)
-          setTotalReward(reward)
-          setInviteSpent(spent)
-        }
-      } catch (err) {
-        console.log(err.message)
-      }
-    }
-
-    if (!isEmpty(wallets) || !GALLERY_IMPORT_PATH.includes(pathname)) {
-      console.log('Loading for user data...')
-      getUserData()
-    }
-  }, [account])
 
   /* 
     Load gallery settings
@@ -244,9 +192,30 @@ export default ({ children }) => {
       }
     }
 
-    if (!isEmpty(wallets) || !GALLERY_IMPORT_PATH.includes(pathname)) {
+    if (!isEmpty(accounts) || !GALLERY_IMPORT_PATH.includes(pathname)) {
       loadGallerySettings()
     }
+  }, [walletLoaded])
+
+  /* 
+    Load all NFTs
+  */
+  useEffect(() => {
+    const loadAllContents = async () => {
+      console.log('loading all contents')
+      let allAssets = await popupAccount.getAllAssets()
+      let validAssets = allAssets.filter(asset => asset.name !== '...')
+      dispatch(setAssets({ nfts: validAssets }))
+
+      await backgroundRequest.assets.loadAllContent()
+      allAssets = await popupAccount.getAllAssets()
+      validAssets = allAssets.filter(asset => asset.name !== '...')
+      dispatch(setAssets({ nfts: validAssets }))
+      if (isEmpty(allAssets) && pathname === '/') history.push('/create')
+      setIsLoading(false)
+    }
+
+    loadAllContents()
   }, [walletLoaded])
 
   /* 
@@ -256,25 +225,18 @@ export default ({ children }) => {
     Run on wallets state changed
   */
   useEffect(() => {
-    const loadAssets = async () => {
+    const loadAssetsForNewAddress = async () => {
       try {
-        /* 
-          newAddress: not isEmpty -> load assets for wallet that just imported
-          newAddress: isEmpty -> load assets of all wallets (when just opened the gallery page and having imported wallets)
-        */
         if (newAddress) {
           console.log('loading content for', newAddress)
           await backgroundRequest.assets.loadContent({ address: newAddress })
-        } else {
-          console.log('loading all contents')
-          await backgroundRequest.assets.loadAllContent()
-        }
 
-        const allAssets = await popupAccount.getAllAssets()
-        const validAssets = allAssets.filter(asset => asset.name !== '...')
-        setCardInfos(validAssets)
-        if (isEmpty(allAssets) && pathname === '/') history.push('/create')
-        setIsLoading(false)
+          const allAssets = await popupAccount.getAllAssets()
+          const validAssets = allAssets.filter(asset => asset.name !== '...')
+          dispatch(setAssets({ nfts: validAssets }))
+          if (isEmpty(allAssets) && pathname === '/') history.push('/create')
+          setIsLoading(false)
+        }
       } catch (err) {
         console.log(err.message)
         setIsLoading(false)
@@ -282,53 +244,35 @@ export default ({ children }) => {
       }
     }
 
-    if (!isEmpty(wallets) && !GALLERY_IMPORT_PATH.includes(pathname)) {
-      loadAssets()
-    }
-  }, [wallets])
+    loadAssetsForNewAddress()
+  }, [newAddress])
 
   /* 
     Reload wallets when a new wallet just imported
   */
   useEffect(() => {
-    const reloadWallets = async () => {
+    const updateAccounts = async () => {
       await popupAccount.loadImported()
-      const allData = await popupAccount.getAllMetadata()
-      setWallets(allData)
 
-      const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE)
-      setArWallets(arAccounts)
-
+      /* 
+        Set default account if imported account is the first account
+      */
       if (get(popupAccount, 'importedAccount.length') === 1) {
         let activatedAccount = await storage.setting.get.activatedAccountAddress()
         activatedAccount = await popupAccount.getAccount({
           address: activatedAccount,
         })
         activatedAccount = await activatedAccount.get.metadata()
-        setAccount(activatedAccount)
+        dispatch(setDefaultAccount(activatedAccount))
       }
     }
 
-    if (newAddress) reloadWallets()
+    if (newAddress) {
+      updateAccounts()
+      dispatch(loadAllFriendReferralData())
+    }
   }, [newAddress])
-
-  /* 
-    Pre-load assets when import/upload/create new wallet
-  */
-  useEffect(() => {
-    const preloadAssets = async () => {
-      try {
-        console.log('pre-load content for imported address', importedAddress)
-        await backgroundRequest.assets.loadContent({ address: importedAddress })
-      } catch (err) {
-        console.log(err.message)
-      }
-    }
-
-    if (importedAddress) {
-      preloadAssets()
-    }
-  }, [importedAddress])
+  
 
   /* 
     On open create collection form, allAssets list should be set to assets of the 
@@ -340,16 +284,16 @@ export default ({ children }) => {
     const setAssetsForCreateCollection = async () => {
       if (showCreateCollection) {
         const _account = await popupAccount.getAccount({
-          address: account.address,
+          address: defaultAccount.address,
         })
         let assets = await _account.get.assets()
         assets = assets.filter(asset => asset.name !== '...')
-        setCardInfos(assets)
+        dispatch(setAssets({ nfts: assets }))
       }
     }
 
-    if (!GALLERY_IMPORT_PATH.includes(pathname) && !isEmpty(account)) setAssetsForCreateCollection()
-  }, [showCreateCollection, account])
+    if (!GALLERY_IMPORT_PATH.includes(pathname) && !isEmpty(defaultAccount)) setAssetsForCreateCollection()
+  }, [showCreateCollection, defaultAccount])
 
 
   /*
@@ -430,7 +374,7 @@ export default ({ children }) => {
     modifyDraging(true)
   }
 
-
+  const store = useStore()
   /* 
     Add backgroundConnect eventHandler
   */
@@ -440,25 +384,23 @@ export default ({ children }) => {
         MESSAGES.GET_BALANCES_SUCCESS,
         async () => {
           try {
+            const { defaultAccount } = store.getState()
+
             let activatedAccount = await storage.setting.get.activatedAccountAddress()
             activatedAccount = await popupAccount.getAccount({
               address: activatedAccount,
             })
             const activatedAccountData = await activatedAccount.get.metadata()
-  
-            const { balance: _balance, koiBalance } = activatedAccountData
-            let balancesUpdated = false
+            const { balance, koiBalance } = activatedAccountData
 
-            setTotalKoi(prev => {
-              if (prev !== koiBalance) balancesUpdated = true
-              return koiBalance
-            })
-            setTotalAr(prev => {
-              if (prev !== _balance) balancesUpdated = true
-              return _balance
-            })
+            const balancesUpdated = defaultAccount.balance !== balance || defaultAccount.koiBalance !== koiBalance
+            if (balancesUpdated) {
+              await dispatch(loadAllAccounts())
 
-            if (balancesUpdated) setNotification('Your balances have been updated.')
+              setNotification('Your balances have been updated.')
+            }
+
+            console.log('defaultAccount', defaultAccount)
           } catch (err) {
             setError(err.message)
           }
@@ -482,6 +424,8 @@ export default ({ children }) => {
       const uploadNFTHandler = new EventHandler(
         MESSAGES.UPLOAD_NFT_SUCCESS,
         async () => {
+          const { assets } = store.getState()
+
           try {
             /* 
               Showing pending NFT
@@ -494,12 +438,12 @@ export default ({ children }) => {
               address: activatedAccount,
             })
             let pendingAssets = await activatedAccount.get.pendingAssets() || []
-            setCardInfos(prevState => {
-              pendingAssets = pendingAssets.filter((nft) => {
-                return prevState.every((prevNft) => nft.txId !== prevNft.txId)
-              })
-              return [...prevState, ...pendingAssets]
+
+            pendingAssets = pendingAssets.filter(nft => {
+              return assets.nfts.every(prevNft => nft.txId !== prevNft.txId)
             })
+
+            dispatch(setAssets({ nfts: [...assets.nfts, ...pendingAssets] }))
 
             setIsLoading(false)
             setShowUploadingModal(false)
@@ -528,13 +472,13 @@ export default ({ children }) => {
 
   // NFT sharing
   const handleShareNFT = (txId) => {
-    const toShareNFT = find(cardInfos, { txId })
+    const toShareNFT = find(assets.nfts, { txId })
     setShowTransferNFT({show: true, cardInfo: toShareNFT})
   }
 
   // retry-upload
   const retryExportNFT = async (txId) => {
-    const nftInfo = find(cardInfos, { txId })
+    const nftInfo = find(assets.nfts, { txId })
     console.log('NFT info', nftInfo)
 
     const metadata = {
@@ -571,7 +515,7 @@ export default ({ children }) => {
     const tags = nftInfo.tags
     const fileType = nftInfo.contentType
     
-    const result = await backgroundRequest.gallery.uploadNFT({ content, tags, fileType, address: account.address, price, isNSFW })
+    const result = await backgroundRequest.gallery.uploadNFT({ content, tags, fileType, address: defaultAccount.address, price, isNSFW })
     console.log('retry export NFT - DONE', result)
   }
 
@@ -588,38 +532,18 @@ export default ({ children }) => {
   return (
     <GalleryContext.Provider
       value={{
-        account,
-        accountName,
-        address,
-        affiliateCode,
-        cardInfos,
-        collectionNFT,
-        collections,
-        collectionsLoaded,
-        demoCollections,
         file,
         handleShareNFT,
         retryExportNFT,
-        inviteSpent,
         isDragging,
-        isWaitingAddNFT,
         onClearFile,
         onCloseUploadModal,
-        page,
         pendingNFTTitle,
         searchTerm,
-        setAccount,
-        setCardInfos,
-        setCollectionNFT,
-        setCollections,
-        setCollectionsLoaded,
-        setDemoCollections,
         setError: _setError,
         setFile,
         setIsLoading,
-        setIsWaitingAddNFT,
         setNotification,
-        setPage,
         setPendingNFTTitle,
         setSearchTerm,
         setShowCreateCollection,
@@ -630,28 +554,19 @@ export default ({ children }) => {
         setShowUploadingModal,
         setShowViews,
         setShowWelcome,
-        setStage,
-        setTotalPage,
         showCreateCollection,
         showTransferNFT,
         showEarnedKoi,
         showViews,
-        stage,
-        totalAr,
-        totalKoi,
-        totalPage,
-        totalReward,
-        wallets,
         importedAddress,
         setImportedAddress,
         setNewAddress,
-        arWallets,
         inputFileRef,
         walletLoaded
       }}
     >
       <div className='app-background'>
-        {!isEmpty(wallets) ?
+        {!isEmpty(accounts) ?
           <>
             {!isLocked ? <div
               {...getRootProps({ className: 'app dropzone' })}
@@ -721,12 +636,8 @@ export default ({ children }) => {
                 <div className="startup-logo"><KoiIcon /></div>
               </Link>
               {!GALLERY_IMPORT_PATH.includes(pathname) && <Header
-                totalKoi={totalKoi}
-                totalAr={totalAr}
                 headerRef={headerRef}
                 isLoading={isLoading}
-                isWaitingAddNFT={isWaitingAddNFT}
-                setIsWaitingAddNFT={setIsWaitingAddNFT}
               />}
               <input onChange={(e) => handleSetFile(e)} onClick={(e) => e.target.value = null} type='file' ref={inputFileRef} style={{ display: 'none' }} />
               {children}

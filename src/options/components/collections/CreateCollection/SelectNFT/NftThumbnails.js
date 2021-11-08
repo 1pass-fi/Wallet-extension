@@ -1,5 +1,6 @@
 import React from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { useSelector } from 'react-redux'
 
 import './index.css'
 import DeleteIcon from 'img/delete-icon-collection.svg'
@@ -13,12 +14,13 @@ import DeleteIcon from 'img/delete-icon-collection.svg'
 
 export const NftThumbnails = ({
   removeFromCollection, 
-  page,
   nfts, 
   onDragEnd, 
   className,
   numRef
 }) => {
+  const createCollection = useSelector(state => state.createCollection)
+
   return (
     <div>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -30,7 +32,7 @@ export const NftThumbnails = ({
               className='nft'
             >
               {nfts.map((nft, index) => (
-                <Draggable key={index} draggableId={'draggable' + index} index={index + page*5}>
+                <Draggable key={index} draggableId={'draggable' + index} index={index + createCollection.currentPage*5}>
                   {(provided) => (
                     <div
                       key={index}

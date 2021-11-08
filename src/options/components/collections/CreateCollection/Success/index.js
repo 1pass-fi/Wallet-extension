@@ -1,5 +1,5 @@
-import { GalleryContext } from 'options/galleryContext'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Twitter from 'img/social-icons/twitter-icon.svg'
 import Facebook from 'img/social-icons/facebook-icon.svg'
@@ -8,6 +8,8 @@ import Email from 'img/social-icons/email-icon.svg'
 
 import './index.css'
 import Tag from '../Tag'
+
+import { setCreateCollection } from 'options/actions/createCollection'
 
 const Share = () => {
   return (
@@ -27,12 +29,14 @@ const Share = () => {
 }
 
 export default ({ collectionName, description, tags }) => {
-  const { collectionNFT, setCollectionNFT } = useContext(GalleryContext)
   const [nfts, setNfts] = useState([])
 
+  const createCollection = useSelector(state => state.createCollection)
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    setNfts([...collectionNFT])
-    setCollectionNFT([])
+    setNfts([...createCollection.selectedNfts])
+    dispatch(setCreateCollection({ selectedNfts: [] }))
   }, [])
 
   return (

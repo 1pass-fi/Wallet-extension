@@ -1,5 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
 import data from 'currency-codes/data'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { isEmpty, get } from 'lodash'
@@ -17,12 +19,14 @@ import storage from 'services/storage'
 
 export default () => {
   const history = useHistory()
-  const { setError, setNotification, wallets, setWallets } = useContext(GalleryContext)
+  const { setError, setNotification } = useContext(GalleryContext)
 
   const [currency, setCurrency] = useState('USD')
   const [textColor, setTextColor] = useState('#ffffff')
 
   const sellectCurrencyRef = useRef()
+
+  const accounts = useSelector(state => state.accounts)
 
   useEffect(() => {
     const getCurrency = async () => {
@@ -134,7 +138,7 @@ export default () => {
             <div className='description'>
               Organize your default wallet
             </div>
-            <AccountOrder accounts={wallets} setAccounts={setWallets} />
+            <AccountOrder accounts={accounts} setAccounts={() => {}} />
           </div>
 
           <div className='language-order item'>

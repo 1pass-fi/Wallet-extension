@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { TYPE } from 'constants/accountConstants'
@@ -14,17 +15,21 @@ import ConfirmPassword from '../../shared/ConfirmPassword'
 import InputPassword from '../../shared/InputPassword'
 import {ERROR_MESSAGE} from 'constants/koiConstants'
 import GoBackBtn from 'options/components/GoBackButton'
+import { addAccountByAddress } from 'options/actions/accounts'
 
 
 export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) => {
-  const { setError, wallets, setImportedAddress, setNewAddress } =  useContext(GalleryContext)
+  const { setError, setImportedAddress, setNewAddress } =  useContext(GalleryContext)
   const [password, setPassword] = useState('')
   const [showFormError, setShowFormError] = useState(false)
+
+  const dispatch = useDispatch()
+  const accounts = useSelector(state => state.accounts)
 
   const history = useHistory()
 
   const onConfirm = async () => {
-    if(!password && isEmpty(wallets)) {
+    if(!password && isEmpty(accounts)) {
       setShowFormError(true)
       return
     }
@@ -39,6 +44,7 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
       const address = await backgroundRequest.gallery.uploadJSONKeyFile({ password, key, type: walletType, provider: selectedNetwork })
       setImportedAddress(address)
       setNewAddress(address)
+      dispatch(addAccountByAddress(address))
 
       history.push({
         pathname: '/success',
@@ -61,7 +67,7 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
   return (
     <div className='upload-file confirm'>
       <div className='title'>Import a key with a .JSON file</div>
-      {isEmpty(wallets) ? <div className='description'>
+      {isEmpty(accounts) ? <div className='description'>
         Create a password for Finnie.
         <br />
         Make sure it is unique and secure.
@@ -72,7 +78,7 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
         </div>
       }
 
-      {isEmpty(wallets) ? <ConfirmPassword setPassword={setPassword} showError={showFormError}/> : <InputPassword setPassword={setPassword} />}
+      {isEmpty(accounts) ? <ConfirmPassword setPassword={setPassword} showError={showFormError}/> : <InputPassword setPassword={setPassword} />}
 
       <button
         onClick={onConfirm}

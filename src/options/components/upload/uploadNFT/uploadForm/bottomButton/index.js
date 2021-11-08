@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
+import { useSelector } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import isEmpty from 'lodash/isEmpty'
 import isNumber from 'lodash/isNumber'
@@ -7,6 +8,7 @@ import union from 'lodash/union'
 import get from 'lodash/get'
 
 import { FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
+import { getBalance } from 'options/selectors/defaultAccount'
 
 import { exportNFT, getChromeStorage, saveUploadFormData, setChromeStorage } from 'utils'
 const arweave = Arweave.init({
@@ -34,15 +36,10 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
 }) => {
   const createNftButtonRef = useRef(null)
   const {
-    address,
     wallet,
     setFile,
     setNotification,
     setError,
-    inviteSpent,
-    totalAr,
-    totalKoi,
-    account,
     setIsLoading,
     setShowUploadingModal,
     setPendingNFTTitle
@@ -59,6 +56,10 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
   } = useContext(UploadContext)
   const [friendCode, setFriendCode] = useState('')
   const [isClickEnable, setIsClickEnable] = useState(true)
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
+  const [balance, koiBalance] = useSelector(getBalance)
+
 
   const handleUploadNFT = async () => {
     // file size checking
@@ -98,7 +99,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
 
 
       // call the request function
-      const { txId, time } = await backgroundRequest.gallery.uploadNFT({ content, tags, fileType, address: account.address, price, isNSFW })
+      const { txId, time } = await backgroundRequest.gallery.uploadNFT({ content, tags, fileType, address: defaultAccount.address, price, isNSFW })
       // console.log('RESPONSE DATA', txId, time)
 
       setPendingNFTTitle(title)
@@ -184,13 +185,13 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
       if (isNumber(price)) {
         try {
           const koiPrice = isFriendCodeValid ? 0 : 1
-          if (totalKoi < koiPrice) {
+          if (koiBalance < koiPrice) {
             setError(ERROR_MESSAGE.NOT_ENOUGH_KOI)
             setIsClickEnable(true)
             return
           }
 
-          if (totalAr <= price) {
+          if (balance <= price) {
             setError(ERROR_MESSAGE.NOT_ENOUGH_AR)
             setIsClickEnable(true)
             return
@@ -247,7 +248,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
     return (
       <div className='confirmation-bottom-button'>
         {
-          !inviteSpent &&
+          !defaultAccount.inviteSpent &&
           <div className='friends-referal'>
             <div className='referal-title'>Friend Referral Code</div>
             <div className='referal-description'>

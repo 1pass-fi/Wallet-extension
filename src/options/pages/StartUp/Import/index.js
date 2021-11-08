@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 import EthereumLogo from 'img/startup/ethereum-logo.svg'
 import FinnieLogo from 'img/startup/finnie-logo.svg'
@@ -23,6 +24,7 @@ import isEmpty from 'lodash/isEmpty'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import { TYPE } from 'constants/accountConstants'
+import { addAccountByAddress } from 'options/actions/accounts'
 
 import './index.css'
 
@@ -39,7 +41,10 @@ export default () => {
   const [isKoiiPhrase, setIsKoiiPhrase] = useState(true)
   const [isSeedPhrase, setIsSeedPhrase] = useState(true)
 
-  const { setError, wallets, setImportedAddress, setNewAddress } = useContext(GalleryContext)
+  const dispatch = useDispatch()
+  const accounts = useSelector(state => state.accounts)
+
+  const { setError, setImportedAddress, setNewAddress } = useContext(GalleryContext)
   let { selectedNetwork, EthereumNetworks } = useEthereumNetworks({
     title: () => <div className='title'>Import Ethereum Key</div>,
     description: () => <div className='description'>Choose your Network.</div>,
@@ -81,7 +86,7 @@ export default () => {
 
   const onImportSeedPhrase = async () => {
     if (isSeedPhrase) {
-      if (!userSeedPhrase && isEmpty(wallets)) {
+      if (!userSeedPhrase && isEmpty(accounts)) {
         setShowFormError(true)
         return
       }
@@ -102,7 +107,7 @@ export default () => {
 
   const onImportKey = async () => {
     const keyImport = isSeedPhrase ? userSeedPhrase : privateKey
-    if (!password && isEmpty(wallets)) {
+    if (!password && isEmpty(accounts)) {
       setShowFormError(true)
       return
     }
@@ -119,6 +124,7 @@ export default () => {
       })
       setImportedAddress(address)
       setNewAddress(address)
+      dispatch(addAccountByAddress(address))
 
       history.push({
         pathname: '/success',
@@ -263,7 +269,7 @@ export default () => {
                 your password is unique and secure.
               </div>
 
-              {isEmpty(wallets) ? (
+              {isEmpty(accounts) ? (
                 <div className='confirm-password-wrapper'>
                   <ConfirmPassword setPassword={setPassword} showError={showFormError} />
                 </div>

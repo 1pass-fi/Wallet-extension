@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { isEmpty } from 'lodash'
+import { useSelector, useDispatch } from 'react-redux'
+
 
 import './index.css'
 import Tag from '../Tag'
@@ -8,15 +10,18 @@ import { NftThumbnails } from './NftThumbnails'
 import EditIcon from 'img/edit-icon-collection.svg'
 import { GalleryContext } from 'options/galleryContext'
 
+import { setCreateCollection } from 'options/actions/createCollection'
 
-export default ({nfts, tags, collectionName, description, stage}) => {
-  const { collectionNFT, setCollectionNFT, totalPage, setTotalPage, page, setPage} = useContext(GalleryContext)
 
+export default ({nfts, tags, collectionName, description}) => {
   const [middleNfts, setMiddleNfts] = useState([{}, {}, {}, {}, {}])
   const [leftNfts, setLeftNfts] = useState([{}, {}, {}, {}, {}])
   const [rightNfts, setRightNfts] = useState([{}, {}, {}, {}, {}])
 
   const prevPageRef = useRef()
+  const createCollection = useSelector(state => state.createCollection)
+
+  const dispatch = useDispatch()
 
 
   /* 
@@ -43,7 +48,7 @@ export default ({nfts, tags, collectionName, description, stage}) => {
   }
 
   useEffect(() => {
-    prevPageRef.current = page
+    prevPageRef.current = createCollection.currentPage
   })
   
 
@@ -62,10 +67,10 @@ export default ({nfts, tags, collectionName, description, stage}) => {
     let nftListMiddle
     let nftListRight
 
-    if (page == (prevPage || 0)) {
-      nftListMiddle = checkEmptySlice(nfts.slice(page*5, page*5 + 5))
-      nftListLeft = checkEmptySlice(nfts.slice(page*5 - 5, page*5))
-      nftListRight = checkEmptySlice(nfts.slice(page*5 + 5, page*5 + 10))
+    if (createCollection.currentPage == (prevPage || 0)) {
+      nftListMiddle = checkEmptySlice(nfts.slice(createCollection.currentPage*5, createCollection.currentPage*5 + 5))
+      nftListLeft = checkEmptySlice(nfts.slice(createCollection.currentPage*5 - 5, createCollection.currentPage*5))
+      nftListRight = checkEmptySlice(nfts.slice(createCollection.currentPage*5 + 5, createCollection.currentPage*5 + 10))
       setMiddleNfts(nftListMiddle)
       setLeftNfts(nftListLeft)
       setRightNfts(nftListRight)
@@ -82,9 +87,9 @@ export default ({nfts, tags, collectionName, description, stage}) => {
     let nftListMiddle, nftListLeft, nftListRight
 
     /* Page increment: Move to left */
-    if ((prevPage || 0) < page) {
+    if ((prevPage || 0) < createCollection.currentPage) {
       // Delay updating nfts until the animation finished.
-      let thisPage = page -1
+      let thisPage = createCollection.currentPage -1
  
       nftListMiddle = checkEmptySlice(nfts.slice(thisPage*5, thisPage*5 + 5))
       nftListLeft = checkEmptySlice(nfts.slice(thisPage*5 - 5, thisPage*5))
@@ -115,9 +120,9 @@ export default ({nfts, tags, collectionName, description, stage}) => {
 
         // 700ms is the duration of the animation
         setTimeout(() => {
-          let nftListMiddle = checkEmptySlice(nfts.slice(page*5, page*5 + 5))
-          let nftListLeft = checkEmptySlice(nfts.slice(page*5 - 5, page*5))
-          let nftListRight = checkEmptySlice(nfts.slice(page*5 + 5, page*5 + 10))
+          let nftListMiddle = checkEmptySlice(nfts.slice(createCollection.currentPage*5, createCollection.currentPage*5 + 5))
+          let nftListLeft = checkEmptySlice(nfts.slice(createCollection.currentPage*5 - 5, createCollection.currentPage*5))
+          let nftListRight = checkEmptySlice(nfts.slice(createCollection.currentPage*5 + 5, createCollection.currentPage*5 + 10))
           setMiddleNfts(nftListMiddle)
           setLeftNfts(nftListLeft)
           setRightNfts(nftListRight)
@@ -126,9 +131,9 @@ export default ({nfts, tags, collectionName, description, stage}) => {
     }
 
     /* Page decrement: Move to right */
-    if ((prevPage || 0) > page) {
+    if ((prevPage || 0) > createCollection.currentPage) {
       // apply the same logic with Move to left.
-      let thisPage = page + 1
+      let thisPage = createCollection.currentPage + 1
       
       nftListMiddle = checkEmptySlice(nfts.slice(thisPage*5, thisPage*5 + 5))
       nftListLeft = checkEmptySlice(nfts.slice(thisPage*5 - 5, thisPage*5))
@@ -150,34 +155,34 @@ export default ({nfts, tags, collectionName, description, stage}) => {
           setMiddleNfts(nftListLeft)
         }, 690)
         setTimeout(() => {
-          let nftListMiddle = checkEmptySlice(nfts.slice(page*5, page*5 + 5))
-          let nftListLeft = checkEmptySlice(nfts.slice(page*5 - 5, page*5))
-          let nftListRight = checkEmptySlice(nfts.slice(page*5 + 5, page*5 + 10))
+          let nftListMiddle = checkEmptySlice(nfts.slice(createCollection.currentPage*5, createCollection.currentPage*5 + 5))
+          let nftListLeft = checkEmptySlice(nfts.slice(createCollection.currentPage*5 - 5, createCollection.currentPage*5))
+          let nftListRight = checkEmptySlice(nfts.slice(createCollection.currentPage*5 + 5, createCollection.currentPage*5 + 10))
           setMiddleNfts(nftListMiddle)
           setLeftNfts(nftListLeft)
           setRightNfts(nftListRight)
         }, 700)
       }, 1)
     }
-  }, [page])
+  }, [createCollection.currentPage])
 
   /* 
     Handles removing an NFT from the list.
     The code for selecting new NFT is in: options/components/content/nftCard
   */
   const removeFromCollection = (id) => {
-    let nfts = [...collectionNFT]
+    let nfts = [...createCollection.selectedNfts]
     nfts = nfts.filter((nft) => nft.id !== id)
     nfts.push({})
     const notEmptySlots = nfts.filter((nft) => nft.id)
     if ((notEmptySlots.length % 5 === 0 && notEmptySlots.length > 0)) {
       nfts = notEmptySlots
     }
-    setCollectionNFT([...nfts])
-    if (((totalPage - nfts.length / 5) === 1) && page === totalPage - 1) {
-      setPage(page - 1)
+    dispatch(setCreateCollection({ selectedNfts: [...nfts]}))
+    if (((createCollection.totalPage - nfts.length / 5) === 1) && createCollection.currentPage === createCollection.totalPage - 1) {
+      dispatch(setCreateCollection({ currentPage: createCollection.currentPage - 1 }))
     }
-    setTotalPage(nfts.length / 5)
+    dispatch(setCreateCollection({ totalPage: (nfts.length / 5) }))
 
   }
 
@@ -195,16 +200,16 @@ export default ({nfts, tags, collectionName, description, stage}) => {
     const destId = result.destination.index
     const sourceId = result.source.index
 
-    if (collectionNFT[destId].url && collectionNFT[sourceId].url) {
-      const newArray = reorder(collectionNFT, sourceId, destId)
-      setCollectionNFT([...newArray])
-      setMiddleNfts(newArray.slice(page*5, page*5 + 5))
+    if (createCollection.selectedNfts[destId].url && createCollection.selectedNfts[sourceId].url) {
+      const newArray = reorder(createCollection.selectedNfts, sourceId, destId)
+      dispatch(setCreateCollection({selectedNfts: [...newArray]}))
+      setMiddleNfts(newArray.slice(createCollection.currentPage*5, createCollection.currentPage*5 + 5))
     }
   }
 
   return (
     <div className='select-nft'>
-      {page == 0 && stage == 2 && <div className='cover-image-tag'>cover image</div>}
+      {createCollection.currentPage == 0 && createCollection.stage == 2 && <div className='cover-image-tag'>cover image</div>}
       
       {/* INFO */}
       <div className='info'>
@@ -221,10 +226,10 @@ export default ({nfts, tags, collectionName, description, stage}) => {
       </div>
 
       {/* HINT */}
-      {stage === 2 && <div className='hint'>Click on each NFT from your gallery to include</div>}
+      {createCollection.stage === 2 && <div className='hint'>Click on each NFT from your gallery to include</div>}
 
       {/* NFTs */}
-      {stage === 2 &&
+      {createCollection.stage === 2 &&
 
       /* 
         To perform the scrolling animation we will create 3 NftThumbnails components arranged respectively from the left to right.
@@ -235,7 +240,6 @@ export default ({nfts, tags, collectionName, description, stage}) => {
       <div className='thumbnails-animation'>
         <NftThumbnails
           removeFromCollection={removeFromCollection}
-          page={page}
           nfts={leftNfts}
           onDragEnd={onDragEnd}
           className='left'
@@ -243,7 +247,6 @@ export default ({nfts, tags, collectionName, description, stage}) => {
         />
         <NftThumbnails
           removeFromCollection={removeFromCollection}
-          page={page}
           nfts={middleNfts}
           onDragEnd={onDragEnd}
           className='middle'
@@ -251,7 +254,6 @@ export default ({nfts, tags, collectionName, description, stage}) => {
         />
         <NftThumbnails
           removeFromCollection={removeFromCollection}
-          page={page}
           nfts={rightNfts}
           onDragEnd={onDragEnd}
           className='right'
@@ -261,12 +263,12 @@ export default ({nfts, tags, collectionName, description, stage}) => {
 
       }
 
-      {stage === 3 &&
+      {createCollection.stage === 3 &&
       /* 
         Shows all selected NFTs
       */
       <div className='selected-nft'>
-        {(collectionNFT.map((nft, index) => {
+        {(createCollection.selectedNfts.map((nft, index) => {
           if (nft.url) return (
             <div className='nft-wrapper' key={index}>
               {(nft.contentType.includes('image')) ? <img src={nft.url}></img> :
@@ -286,17 +288,17 @@ export default ({nfts, tags, collectionName, description, stage}) => {
       }
 
       {/* PAGES */}
-      {stage === 2 && <div className='page'>
-        {[...Array(totalPage)].map((a, index) => 
+      {createCollection.stage === 2 && <div className='page'>
+        {[...Array(createCollection.totalPage)].map((a, index) => 
           <div 
             key={index} 
-            className={page === index ? 'pageNum active': 'pageNum'}
-            onClick={() => setPage(index)}
+            className={createCollection.currentPage === index ? 'pageNum active': 'pageNum'}
+            onClick={() => dispatch(setCreateCollection({ currentPage: index }))}
           ></div>)}
       </div>}
 
       {/* PRICE */}
-      {stage === 3 && 
+      {createCollection.stage === 3 && 
       <div className='price'>
         <div>Estimated costs:</div>
         <div className='price-amount'>

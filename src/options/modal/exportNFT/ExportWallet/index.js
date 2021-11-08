@@ -1,4 +1,6 @@
 import React, { useContext, useRef, useState, useMemo, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+
 import isEmpty from 'lodash/isEmpty'
 import includes from 'lodash/includes'
 import ReactTooltip from 'react-tooltip'
@@ -26,6 +28,8 @@ import koiTokenABI from 'services/account/Account/Chains/Ethereum/abi/KoiToken.j
 import './index.css'
 import { popupAccount } from 'services/account'
 import { ERROR_MESSAGE } from 'constants/koiConstants'
+
+import { setAssets } from 'options/actions/assets'
 
 const TRANSFER_STEPS = {
   INPUT_INFO: 1,
@@ -151,9 +155,11 @@ export default ({ info, onClose, type }) => {
 
   const addressInputRef = useRef()
 
-  const { setCardInfos, setError, wallets } = useContext(GalleryContext)
+  const { setError } = useContext(GalleryContext)
 
-  const accounts = useMemo(() => wallets, [wallets])
+  const accounts = useSelector(state => state.accounts)
+  const assets = useSelector(state => state.assets)
+  const dispatch = useDispatch()
 
   const totalTransfer = 1 // TODO this
 
@@ -312,10 +318,11 @@ export default ({ info, onClose, type }) => {
         manually update state
       */
       if (result) {
-        setCardInfos(prev => prev.map(nft => {
+        const nfts = assets.nfts.map(nft => {
           if (nft.txId === txId) nft.isBridging = true
           return nft
-        }))
+        })
+        dispatch(setAssets({ nfts }))
         setStep(step + 1)
       }
       setIsBridging(false)

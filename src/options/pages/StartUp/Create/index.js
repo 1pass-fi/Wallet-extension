@@ -1,4 +1,5 @@
 import React, { useContext, useMemo, useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import isEqual from 'lodash/isEqual'
@@ -23,6 +24,7 @@ import isEmpty from 'lodash/isEmpty'
 import useEthereumNetworks from '../shared/useEthereumNetworks'
 
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import { addAccountByAddress } from 'options/actions/accounts'
 
 import './index.css'
 import { TYPE } from 'constants/accountConstants'
@@ -46,7 +48,7 @@ const mockPhrase = [
 export default () => {
   let { selectedNetwork, EthereumNetworks } = useEthereumNetworks({})
 
-  const { setError, wallets, setImportedAddress, setNewAddress } = useContext(GalleryContext)
+  const { setError, setImportedAddress, setNewAddress } = useContext(GalleryContext)
 
   const [step, setStep] = useState(1)
   const [walletType, setWalletType] = useState(null)
@@ -57,6 +59,9 @@ export default () => {
   const [unselectedWords, setUnselectedWords] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [showFormError, setShowFormError] = useState(false)
+
+  const dispatch = useDispatch()
+  const accounts = useSelector(state => state.accounts)
 
   const history = useHistory()
 
@@ -109,7 +114,7 @@ export default () => {
     Save created account to the storage.
   */
   const handleCreateKey = async () => {
-    if(!password && isEmpty(wallets)) {
+    if(!password && isEmpty(accounts)) {
       setShowFormError(true)
       return
     }
@@ -119,6 +124,7 @@ export default () => {
       const address = await backgroundRequest.gallery.saveWallet({ password, provider: selectedNetwork })
       setImportedAddress(address)
       setNewAddress(address)
+      dispatch(addAccountByAddress(address))
 
       history.push({
         pathname: '/success',
@@ -342,7 +348,7 @@ export default () => {
               key. Make sure it is unique and secure.
             </div>
 
-            {isEmpty(wallets) ? <div className='confirm-password-wrapper'>
+            {isEmpty(accounts) ? <div className='confirm-password-wrapper'>
               <ConfirmPassword setPassword={setPassword} showError={showFormError}/>
             </div>
               :

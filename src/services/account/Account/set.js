@@ -113,4 +113,16 @@ export class AccountSetter {
   async activities(value) {
     await this.#accountStorage.setActivities(value)
   }
+
+  async affiliateCode(value) {
+    return await this.#accountStorage.setField(ACCOUNT.AFFILIATE_CODE, value)
+  }
+
+  async inviteSpent(value) {
+    return await this.#accountStorage.setField(ACCOUNT.INVITE_SPENT, value)
+  }
+
+  async totalReward(value) {
+    return await this.#accountStorage.setField(ACCOUNT.TOTAL_REWARD, value)
+  }
 }

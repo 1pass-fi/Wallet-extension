@@ -1,18 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import trim from 'lodash/trim'
 import union from 'lodash/union'
 import get from 'lodash/get'
+import isString from 'lodash/isString'
 
 import Checkbox from 'popup/components/shared/checkbox'
 import './index.css'
 import EditIcon from 'img/edit-icon-collection.svg'
 import { TYPE } from 'constants/accountConstants'
+import { getArAccounts } from 'options/selectors/accounts'
+import { setDefaultAccount } from 'options/actions/defaultAccount'
 
 import { loadNFTCost } from 'utils'
 
 import { formatNumber } from 'options/utils'
 import { GalleryContext } from 'options/galleryContext'
 import { UploadContext } from '../../../index'
+import storage from 'services/storage'
 
 const Empty = ({ setClicked }) => {
   useEffect(() => {
@@ -37,7 +42,12 @@ export default ({
   setClicked
 }) => {
   const { setTags, tags, isFriendCodeValid, price, setPrice } = useContext(UploadContext)
-  const { file, account, setAccount, setShowSelectAccount, arWallets } = useContext(GalleryContext)
+  const { file, setShowSelectAccount } = useContext(GalleryContext)
+
+  const dispatch = useDispatch()
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
+  const arAccounts = useSelector(getArAccounts)
 
   const addTag = (e) => {
     const { keyCode } = e
@@ -61,9 +71,17 @@ export default ({
   }, [file])
 
   useEffect(() => {
-    if(account.type !== TYPE.ARWEAVE){
-      setAccount(arWallets[0])
+    const handleSetDefaultAccount = async () => {
+      // TODO: validate address here
+      if(defaultAccount.type !== TYPE.ARWEAVE) {
+        if (isString(arAccounts[0].address)) {
+          storage.setting.set.activatedAccountAddress(arAccounts[0].address)
+        }
+        dispatch(setDefaultAccount(arAccounts[0]))
+      }
     }
+
+    handleSetDefaultAccount()
   }, [])
 
   if (stage == 1) {
@@ -76,8 +94,8 @@ export default ({
             Wallet
           </div>
           <div className='field-input select-account'>
-            {get(account, 'accountName')}
-            <div className='address'>{account.address && `${get(account, 'address', '').slice(0,5)}...${get(account, 'address', '').slice(account.address.length - 4)}`}</div>
+            {get(defaultAccount, 'accountName')}
+            <div className='address'>{defaultAccount.address && `${get(defaultAccount, 'address', '').slice(0,5)}...${get(defaultAccount, 'address', '').slice(defaultAccount.address.length - 4)}`}</div>
           </div>
         </div>
         <div className='field'>
@@ -131,7 +149,7 @@ export default ({
               onChange={(e) => setIsNSFW(e.target.checked)}
               id='nsfw'
             />
-            <div><label for='nsfw'>This content is ‘Not Safe for Work,’ explicit, or 18+.</label></div>
+            <div><label htmlFor='nsfw'>This content is ‘Not Safe for Work,’ explicit, or 18+.</label></div>
           </div>
         </div>
       </div>

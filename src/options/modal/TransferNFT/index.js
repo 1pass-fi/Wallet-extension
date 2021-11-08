@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Modal from 'options/shared/modal'
 import TransferFrom from './TransferForm'
@@ -10,6 +11,7 @@ import { formatNumber } from 'options/utils'
 import { popupBackgroundRequest } from 'services/request/popup'
 
 import './index.css'
+import { setAssets } from 'options/actions/assets'
 
 const TransferNFT = ({
   txId,
@@ -21,7 +23,7 @@ const TransferNFT = ({
   address,
   onClose,
 }) => {
-  const { setError, setCardInfos } = useContext(GalleryContext)
+  const { setError } = useContext(GalleryContext)
 
   const [stage, setStage] = useState(1)
   const [receiverAddress, setReceiverAddress] = useState('')
@@ -29,6 +31,9 @@ const TransferNFT = ({
   const [sendBtnDisable, setSendBtnDisable] = useState(false)
 
   const goToNextStage = () => setStage((stage) => stage + 1)
+
+  const assets = useSelector(state => state.assets)
+  const dispatch = useDispatch()
 
   const handleTransferNFT = async () => {
     try {
@@ -39,11 +44,12 @@ const TransferNFT = ({
         recipientAddress: receiverAddress,
       })
 
-      // manually update cardInfos state
-      setCardInfos(prev => prev.map(nft => {
+      // manually update nfts state
+      const nfts = assets.nfts.map(nft => {
         if (nft.txId === txId) nft.isSending = true
         return nft
-      }))
+      })
+      dispatch(setAssets({ nfts }))
 
       setSendBtnDisable(false)
       goToNextStage()

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 
@@ -10,7 +11,6 @@ import ReloadIcon from 'img/refresh-balance-icon.svg'
 
 import SearchBar from './SearchBar'
 import Loading from 'options/components/loading'
-import WaitingAddNFTMessage from './WaitingAddNFTMessage'
 
 import { formatNumber } from '../../utils'
 
@@ -24,15 +24,13 @@ import { popupBackgroundConnect } from 'services/request/popup'
 import ReactTooltip from 'react-tooltip'
 
 export default ({
-  totalKoi,
-  totalAr,
   headerRef,
   isLoading,
-  isWaitingAddNFT,
-  setIsWaitingAddNFT,
 }) => {
   const { pathname } = useLocation()
-  const { account } = useContext(GalleryContext)
+  
+  const defaultAccount = useSelector(state => state.defaultAccount)
+  const { balance, koiBalance } = defaultAccount
 
   const handleLoadBalances = () => {
     popupBackgroundConnect.postMessage({
@@ -50,29 +48,26 @@ export default ({
       <div className='header-center'>{pathname == '/' && <SearchBar />}</div>
       <div className='header-right'>
         <div>
-          {isLoading && isWaitingAddNFT && (
-            <WaitingAddNFTMessage onClose={() => setIsWaitingAddNFT(false)} />
-          )}
           {isLoading && <Loading />}
         </div>
         <div className='header-right-balances'>
           <div className='koi-info'>
             <div className='total-koi'>
-              {account.type === TYPE.ARWEAVE && (
+              {defaultAccount.type === TYPE.ARWEAVE && (
               <>
                 <KoiUnit className='koi-unit' />
-                <div>{formatNumber(totalKoi)}</div>
+                <div>{formatNumber(koiBalance)}</div>
               </>
               )}
-              {account.type === TYPE.ARWEAVE ? (
+              {defaultAccount.type === TYPE.ARWEAVE ? (
               <>
                 <ArUnit className='koi-unit ar' />
-                <div>{formatNumber(totalAr, 6)}</div>
+                <div>{formatNumber(balance, 6)}</div>
               </>
               ) : (
               <>
                 <EthereumUnit className='koi-unit' />
-                <div>{formatNumber(totalAr, 6)}</div>
+                <div>{formatNumber(balance, 6)}</div>
               </>
               )}
 
@@ -81,7 +76,7 @@ export default ({
               <ReloadIcon onClick={handleLoadBalances}  />
             </div>
           </div>
-          {!totalKoi && !!(account.type == TYPE.ARWEAVE) && (
+          {!koiBalance && !!(defaultAccount.type == TYPE.ARWEAVE) && (
             <a
               target='_blank'
               href='https://koi.rocks/faucet?step=0'

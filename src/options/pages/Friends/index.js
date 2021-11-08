@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { useSelector } from 'react-redux'
 
 import BlockRewardIcon from 'img/block-reward-icon.svg'
 import LinkIcon from 'img/link-icon.svg'
@@ -21,20 +22,21 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 
 export default () => {
   const { 
-    affiliateCode, 
-    account,
-    address, 
     setIsLoading, 
     setError, 
     setNotification, 
-    totalReward } = useContext(GalleryContext)
+  } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
-  const code = affiliateCode
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
+  const code = defaultAccount.affiliateCode
+
+
 
   const handleClaimReward = async () => {
     try {
       setIsLoading(true)
-      if (account) {
+      if (defaultAccount) { // ????????????????? WTF
         const { message, status } = await backgroundRequest.gallery.friendReferral({
           endpoints: FRIEND_REFERRAL_ENDPOINTS.CLAIM_REWARD
         })
@@ -103,7 +105,7 @@ export default () => {
           <div className='reward-box'>
             <BlockRewardIcon className='reward-icon' />
             <div className='reward-text'>
-              You’ve earned <span className='koi-quantity'>{totalReward} KOII</span> by
+              You’ve earned <span className='koi-quantity'>{defaultAccount.totalReward} KOII</span> by
               using your referral code.
               <br />
               <strong> Keep sharing for free KOII.</strong>

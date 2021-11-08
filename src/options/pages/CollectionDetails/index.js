@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { useParams } from 'react-router'
 import { find, isEmpty } from 'lodash'
 import { formatNumber } from 'options/utils'
+import { useDispatch, useSelector } from 'react-redux'
 
 import NFTCard from './nftCard'
 import './index.css'
@@ -13,31 +14,36 @@ import GoBack from 'img/goback-icon.svg'
 import { getChromeStorage } from 'utils'
 import { STORAGE } from 'constants/koiConstants'
 
+import { setCollections } from 'options/actions/collections'
+
 export default () => {
   const history = useHistory()
 
-  const { showViews, showEarnedKoi, collections, setCollections } = useContext(GalleryContext)
+  const { showViews, showEarnedKoi } = useContext(GalleryContext)
   const { collectionId } = useParams()
+
+  const collectionState = useSelector(state => state.collections)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const getCollectionsFromStorage = async () => {
       const storage = await getChromeStorage(STORAGE.COLLECTIONS)
       const savedCollection = storage[STORAGE.COLLECTIONS] || []
-      setCollections(savedCollection)
+      dispatch(setCollections({ collections: savedCollection }))
     }
 
-    if (isEmpty(collections)) getCollectionsFromStorage()
+    if (isEmpty(collectionState.collections)) getCollectionsFromStorage()
   }, [])
 
   const collection = useMemo(() => {
-    console.log(collections)
-    const collection = find(collections, collection => collection.id == collectionId)
+    console.log(collectionState.collections)
+    const collection = find(collectionState.collections, collection => collection.id == collectionId)
     console.log(collection)
     if (collection) {
       return collection
     }
     return { title: '', totalViews: 0, totalReward: 0, description: '', nfts: [] }
-  }, [collections])
+  }, [collectionState.collections])
 
   const handleGoBack = () => {
     history.push('/collections')

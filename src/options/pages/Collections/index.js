@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { isString, isEmpty } from 'lodash'
+import { useDispatch, useSelector } from 'react-redux'
 
 import './index.css'
 import CollectionList from 'options/components/collectionList'
@@ -12,14 +13,22 @@ import storage from 'services/storage'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
-const Header = ({ setShowCreateCollection, setStage, setPage, setTotalPage }) => {
+import { setCreateCollection } from 'options/actions/createCollection'
+import { setCollections } from 'options/actions/collections'
+
+const Header = ({ setShowCreateCollection }) => {
   const history = useHistory()
+  const dispatch = useDispatch()
 
   const handleOnClick = () => {
-    setStage(1)
-    setTotalPage(1)
-    setPage(0)
     setShowCreateCollection(true)
+    const payload = {
+      stage: 1,
+      totalPage: 1,
+      currentPage: 0
+    }
+    dispatch(setCreateCollection(payload))
+
     history.push('/')
   }
 
@@ -32,44 +41,43 @@ const Header = ({ setShowCreateCollection, setStage, setPage, setTotalPage }) =>
 }
 
 export default () => {
-  const { setShowCreateCollection, 
-    setPage, 
-    setTotalPage,
-    setStage, 
+  const { 
+    setShowCreateCollection,
     setIsLoading, 
     setError, 
-    collections, 
-    setCollections,
-    collectionsLoaded,
-    setCollectionsLoaded,
-    account
   } = useContext(GalleryContext)
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
+  const collectionState = useSelector(state => state.collections)
+  
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const getCollectionsFromStorage = async () => {
       try {
         const allCollections = await popupAccount.getAllCollections()
         console.log('All Collections', allCollections)
-        setCollections(allCollections)
+        dispatch(setCollections({ collections: allCollections }))
+
       } catch (err) {
         console.log(err.message)
         setError(err.message)
       }
     }
 
-    if (!isEmpty(account)) getCollectionsFromStorage()
-  }, [account])
+    if (!isEmpty(defaultAccount)) getCollectionsFromStorage()
+  }, [defaultAccount])
 
   useEffect(() => {
     const handleLoadCollection = async () => {
       try {
-        if (!isEmpty(account)) {          
+        if (!isEmpty(defaultAccount)) {          
           setIsLoading(true)
-          await backgroundRequest.gallery.loadCollections({ address: account.address })
+          await backgroundRequest.gallery.loadCollections({ address: defaultAccount.address })
           const allCollections = await popupAccount.getAllCollections()
-          setCollections(allCollections)
+          dispatch(setCollections({ collections: allCollections }))
+          dispatch(setCollections({ collectionsLoaded: true }))
           setIsLoading(false)
-          setCollectionsLoaded(true)
         }
       } catch (err) {
         setIsLoading(false)
@@ -77,21 +85,18 @@ export default () => {
         console.log(err.message)
       }
     }
-    if (!isEmpty(account) && !collectionsLoaded) {
+    if (!isEmpty(defaultAccount) && !collectionState.collectionsLoaded) {
       handleLoadCollection()
     }
-  }, [account])
+  }, [defaultAccount])
 
   return (
     <div className='collections-container'>
       <div>
         <Header 
           setShowCreateCollection={setShowCreateCollection}
-          setStage={setStage}
-          setPage={setPage}
-          setTotalPage={setTotalPage}
         />
-        <CollectionList collections={collections}/>
+        <CollectionList />
       </div>
     </div>
   )

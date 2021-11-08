@@ -1,15 +1,13 @@
-import React, { useContext, useState, useMemo, useEffect } from 'react'
-import passworder from 'browser-passworder'
-import isEmpty from 'lodash/isEmpty'
-import get from 'lodash/get'
+import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
+
 
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
 import EthereumIcon from 'img/ethereum-logo.svg'
 import { getDisplayAddress } from 'options/utils'
 import { getChromeStorage } from 'utils'
 import { STORAGE } from 'constants/koiConstants'
-
-import { GalleryContext } from 'options/galleryContext'
+import { getArAccounts } from 'options/selectors/accounts'
 
 import {
   ExportBackupPhraseModal,
@@ -20,9 +18,11 @@ import './index.css'
 import { TYPE } from 'constants/accountConstants'
 
 export default () => {
-  const { address, accountName, wallets, arWallets } = useContext(GalleryContext)
   const [seedPhrase, setSeedPhrase] = useState('')
   const [hasSeedPhrase, setHasSeedPhrase] = useState(false)
+
+  const accounts = useSelector(state => state.accounts)
+  const arAccounts = useSelector(getArAccounts)
 
   const [
     showExportBackupPhraseModal,
@@ -81,7 +81,7 @@ export default () => {
               Select a wallet to see its recovery phrase.
             </div>
             <div className='seedphrase'>
-              {wallets.map((account) => {
+              {accounts.map((account) => {
                 if (account.seedPhrase) return (
                   <div
                     key={account.id}
@@ -108,9 +108,9 @@ export default () => {
               Select a wallet to download its private key.
             </div>
             <div className='keyfile'>
-              {arWallets.map((account) => (
+              {arAccounts.map((account) => (
                 <div
-                  key={account.id}
+                  key={account.address}
                   className='account'
                   onClick={() => onKeyFileClick(account)}
                 >

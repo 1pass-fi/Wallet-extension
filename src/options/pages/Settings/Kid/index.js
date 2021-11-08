@@ -1,5 +1,6 @@
 import React, { useRef, useState, useMemo, useContext, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
 import get from 'lodash/get'
 import { isEmpty } from 'lodash'
 
@@ -17,6 +18,7 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 import { loadNFTCost } from 'utils'
 
 import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'
+import { getBalance } from 'options/selectors/defaultAccount'
 
 import { Web } from '@_koi/sdk/web'
 export const koi = new Web()
@@ -26,7 +28,7 @@ import { setChromeStorage, getChromeStorage } from 'utils'
 import { popupAccount } from 'services/account'
 
 export default () => {
-  const { account, address, totalAr, totalKoi, setIsLoading, setError, setNotification } = useContext(GalleryContext)
+  const { setIsLoading, setError, setNotification } = useContext(GalleryContext)
 
   const fileRef = useRef()
   const [profileImage, setProfileImage] = useState()
@@ -35,6 +37,9 @@ export default () => {
   const [link, setLink] = useState('')
   const [syncWallet, setSyncWallet] = useState(false)
   const [arweaveImage, setArweaveImage] = useState(null)
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
+  const [balance, koiBalance] = useSelector(getBalance)
 
   const onSelectClick = () => {
     fileRef.current.click()
@@ -54,7 +59,7 @@ export default () => {
     try {
       setIsLoading(true)
       const addresses = {
-        Arweave: address
+        Arweave: defaultAccount.address
       }
   
       const kidInfo = {
@@ -72,15 +77,15 @@ export default () => {
         on KID updating. 
       */
       if (hadKID) {
-        if (totalAr < 0.000002) {
+        if (balance < 0.000002) {
           throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
         }
   
-        if (totalKoi < 1) {
+        if (koiBalance < 1) {
           throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
         }
         const payload = { contractId: hadKID }
-        await backgroundRequest.gallery.createOrUpdateKID({ kidInfo, address: account.address, payload})
+        await backgroundRequest.gallery.createOrUpdateKID({ kidInfo, address: defaultAccount.address, payload})
         setNotification(NOTIFICATION.UPDATE_KID_SUCCESS)
       } else {
         if (!get(profileImage, 'type') && !arweaveImage) {
@@ -91,11 +96,11 @@ export default () => {
         const arCost = await loadNFTCost(profileImage.size)
   
         // Validations
-        if (totalAr < arCost) {
+        if (balance < arCost) {
           throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
         }
   
-        if (totalKoi < 1) {
+        if (koiBalance < 1) {
           throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
         }
   
@@ -105,7 +110,7 @@ export default () => {
   
         await saveImageDataToStorage(profileImage)
         const payload = { fileType }
-        await backgroundRequest.gallery.createOrUpdateKID({ kidInfo, address: account.address, payload })
+        await backgroundRequest.gallery.createOrUpdateKID({ kidInfo, address: defaultAccount.address, payload })
         setNotification(NOTIFICATION.CREATE_KID_SUCCESS)
       }
       setIsLoading(false)
@@ -127,7 +132,7 @@ export default () => {
   )
 
   const hadKIDCheck = async () => {
-    const data = await koi.getKIDByWalletAddress(address)
+    const data = await koi.getKIDByWalletAddress(defaultAccount.address)
     if (get(data[0], 'node.id')) {
       return get(data[0], 'node.id')
     }
@@ -138,7 +143,7 @@ export default () => {
     const getKid = async () => {
       try {
         setIsLoading(true)
-        const _account = await popupAccount.getAccount({ address: account.address })
+        const _account = await popupAccount.getAccount({ address: defaultAccount.address })
         let kid = await _account.get.kid()
         if (kid) {
           const { imageUrl, description, link, name } = kid
@@ -148,7 +153,7 @@ export default () => {
           setLink(link)
         }
 
-        kid = await backgroundRequest.gallery.loadKID({ address: account.address })
+        kid = await backgroundRequest.gallery.loadKID({ address: defaultAccount.address })
         if (kid) {
           const { imageUrl, description, link, name } = kid
           setArweaveImage(imageUrl)
@@ -169,8 +174,8 @@ export default () => {
       }
     }
 
-    if (!isEmpty(account)) getKid()
-  }, [account])
+    if (!isEmpty(defaultAccount)) getKid()
+  }, [defaultAccount])
 
   return (
     <div className='kid-settings-page-wrapper'>
@@ -185,7 +190,7 @@ export default () => {
             email log-ins or giving your personal data straight to Big Tech.
             This information will be public.
           </div>
-          <div className='address'>KOII Wallet: {getDisplayAddress(address)} ({account.accountName})</div>
+          <div className='address'>KOII Wallet: {getDisplayAddress(defaultAccount.address)} ({defaultAccount.accountName})</div>
         </div>
 
         {/* PROFILE PICTURE */}
