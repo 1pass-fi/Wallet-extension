@@ -14,7 +14,7 @@ import { GalleryContext } from 'options/galleryContext'
 import Button from '../Button'
 import { TYPE } from 'constants/accountConstants'
 
-import { isEthereumAddress } from 'utils'
+import { isArweaveAddress, isEthereumAddress } from 'utils'
 
 import './index.css'
 
@@ -37,15 +37,25 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
       return
     }
 
+    let isValid = true
+
     // TODO need to ask Kayla's confirmation about TYPE of address
     const classifiedAddresses = [...userAddresses]
     classifiedAddresses.forEach((address) => {
-      if (isEthereumAddress(address.value)) {
+      if (isArweaveAddress(address.value)) {
+        address.type = TYPE.ARWEAVE
+      } else if (isEthereumAddress(address.value)) {
         address.type = TYPE.ETHEREUM
       } else {
-        address.type = TYPE.ARWEAVE
+        isValid = false
       }
     })
+
+    if (!isValid) {
+      setError('Invalid Address list!')
+      return
+    }
+
     setUserAddresses(classifiedAddresses)
 
     await storeNewAddress({ ...userInfo, addresses: userAddresses })
