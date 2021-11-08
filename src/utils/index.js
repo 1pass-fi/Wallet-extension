@@ -354,43 +354,6 @@ export const JSONFileToObject = async (file) => {
 }
 
 /* istanbul ignore next */
-// export const checkSitePermission = async (origin) => {
-//   try {
-//     let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
-//     if (!approvedOrigin) approvedOrigin = []
-//     return approvedOrigin.includes(origin)
-//   } catch (err) {
-//     throw new Error(err.message)
-//   }
-// }
-
-/* istanbul ignore next */
-// export const saveOriginToChrome = async (origin) => {
-//   try {
-//     let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
-//     if (!approvedOrigin) approvedOrigin = []
-//     approvedOrigin.push(origin)
-//     await setChromeStorage({ 'sitePermission': approvedOrigin })
-//   } catch (err) {
-//     console.log(err.message)
-//     throw new Error(err.message)
-//   }
-// }
-
-/* istanbul ignore next */
-// export const deleteOriginFromChrome = async (aOrigin) => {
-//   try {
-//     let approvedOrigin = (await getChromeStorage(STORAGE.SITE_PERMISSION))[STORAGE.SITE_PERMISSION]
-//     if (!approvedOrigin) approvedOrigin = []
-//     approvedOrigin = approvedOrigin.filter(origin => origin !== aOrigin)
-//     await setChromeStorage({ 'sitePermission': approvedOrigin })
-//   } catch (err) {
-//     console.log(err.message)
-//     throw new Error(err.message)
-//   }
-// }
-
-/* istanbul ignore next */
 export const signTransaction = async (koiObj, transaction) => {
   try {
     let tx

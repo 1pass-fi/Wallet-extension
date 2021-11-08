@@ -3,7 +3,7 @@
   Load activities, assets,...
 */
 
-import { PATH, ALL_NFT_LOADED, ERROR_MESSAGE, URL, ACTIVITY_NAME, BRIDGE_FLOW, DELIGATED_OWNER } from 'constants/koiConstants'
+import { PATH, ALL_NFT_LOADED, ERROR_MESSAGE, URL, ACTIVITY_NAME, BRIDGE_FLOW, DELIGATED_OWNER, KOII_CONTRACT } from 'constants/koiConstants'
 import { getChromeStorage, setChromeStorage } from 'utils'
 import { get, isNumber, isArray, orderBy, includes, find, isEmpty, isString } from 'lodash'
 import moment from 'moment'
@@ -179,6 +179,7 @@ export class ArweaveMethod {
           inputFunction = JSON.parse(inputTag[0].value)
           if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
             activityName = 'Sent KOII'
+            if (inputFunction.isSendNft) activityName = 'Sent NFT'
             expense = inputFunction.qty
             source = inputFunction.target
           } else if (inputFunction.function === 'updateCollection') {
@@ -381,7 +382,6 @@ export class ArweaveMethod {
   }
 
   async getRegistrationReward(nftId) {
-    console.log('NFT ID: ', nftId)
     try {
       const signedPayload = await this.koi.signPayload({ data: { address: this.koi.address } })
       const { data } = await axios({
@@ -623,8 +623,15 @@ export class ArweaveMethod {
   }
 
   async transferNFT(nftId, address) {
-    const txId = await this.koi.transferNft(nftId, 1, address)
-
+    const input = {
+      function: 'transfer',
+      qty: 1,
+      target: address,
+      isSendNft: true
+    }
+    
+    const txId = await this.#interactWrite(input, nftId)
+    
     // update nft state
     let allNfts = await this.#chrome.getAssets()
     allNfts = allNfts.map(nft => {
@@ -926,6 +933,21 @@ export class ArweaveMethod {
     let isBridged = get(response, 'data[0].isBridged')
     console.log('isBridged', isBridged)
     return { confirmed: isBridged, dropped: false }
+  }
+
+  async signTx(transaction) {
+    await arweave.transactions.sign(transaction, this.koi.wallet)
+  }
+
+  async registerNft(nftId) {
+    await this.koi.burnKoiAttention(nftId)
+    await this.koi.migrateAttention()
+  }
+
+  async #interactWrite(input, contract) {
+    const _contract = contract || KOII_CONTRACT
+
+    return await smartweave.interactWrite(arweave, this.koi.wallet, _contract, input)
   }
 
   /* PRIVATE */

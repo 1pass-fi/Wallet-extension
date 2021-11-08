@@ -6,6 +6,7 @@ import isNumber from 'lodash/isNumber'
 import trim from 'lodash/trim'
 import union from 'lodash/union'
 import get from 'lodash/get'
+import { v4 as uuid } from 'uuid'
 
 import { FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 import { getBalance } from 'options/selectors/defaultAccount'
@@ -87,7 +88,9 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
       u8 = JSON.stringify(u8, null, 2)
       // console.log('bottomButton- u8', u8)
 
-      await setChromeStorage({ NFT_BIT_DATA: u8 })
+      const imageId = uuid()
+
+      await storage.generic.set.nftBitData({ bitObject: u8, imageId })
       // console.log(await getChromeStorage(NFT_BIT_DATA))
       // prepare metadata
       const content = {
@@ -99,7 +102,15 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
 
 
       // call the request function
-      const { txId, time } = await backgroundRequest.gallery.uploadNFT({ content, tags, fileType, address: defaultAccount.address, price, isNSFW })
+      const { txId, time } = await backgroundRequest.gallery.uploadNFT({ 
+        content, 
+        tags, 
+        fileType, 
+        address: defaultAccount.address, 
+        price, 
+        isNSFW,
+        imageId 
+      })
       // console.log('RESPONSE DATA', txId, time)
 
       setPendingNFTTitle(title)

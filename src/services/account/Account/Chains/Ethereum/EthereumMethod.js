@@ -355,9 +355,9 @@ export class EthereumMethod {
             return {
               name: content.name,
               isKoiWallet: false,
-              txId: content.token_id,
+              txId: `${content.token_id}_${content.asset_contract?.address}`,
               imageUrl,
-              galleryUrl: `${PATH.GALLERY}#/details/${content.token_id}`,
+              galleryUrl: `${PATH.GALLERY}#/details/${content.token_id}_${content.asset_contract?.address}`,
               koiRockUrl,
               isRegistered: false,
               contentType: content.animation_url ? 'video' : 'image',
