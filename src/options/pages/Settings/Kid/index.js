@@ -19,8 +19,10 @@ import CloseIcon from 'img/ab-close-icon.svg'
 import './index.css'
 
 const KidPage = () => {
+  const kidLinkPrefix = 'https://koii.me/u/'
+
   const [userKID, setuserKID] = useState({
-    kidLink: '',
+    kidLink: kidLinkPrefix,
     name: '',
     country: '',
     pronouns: '',
@@ -36,7 +38,15 @@ const KidPage = () => {
   const toggleExpandedCssEditor = () => setExpandedCssEditor((prev) => !prev)
 
   const onChangeUserInfo = (e) => {
-    setuserKID({ ...userKID, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    if (name === 'kid') {
+      setuserKID({
+        ...userKID,
+        kidLink: `${kidLinkPrefix}${value.slice(kidLinkPrefix.length)}`.replaceAll(' ', ''),
+      })
+    } else {
+      setuserKID({ ...userKID, [name]: value })
+    }
   }
 
   const handleChangeLinkAccountName = (idx, e) => {
@@ -135,7 +145,7 @@ const KidPage = () => {
             These links will appear on your kID link and your leaderboard profile
           </p>
           {linkAccounts.map((linkAccounts, idx) => (
-            <div className="link-accounts-input-line">
+            <div className="link-accounts-input-line" key={idx}>
               <input
                 className="link-accounts-input-name"
                 value={linkAccounts.name}
