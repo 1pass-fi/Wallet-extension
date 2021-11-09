@@ -1,35 +1,33 @@
-import React, { useContext, useMemo, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
-import { useParams } from 'react-router'
-import { find, isEmpty } from 'lodash'
-import ReactTooltip from 'react-tooltip'
-
-
-import { formatNumber } from 'options/utils'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import NFTCard from './nftCard'
-import './index.css'
-
-import { GalleryContext } from 'options/galleryContext'
-
-import GoBack from 'img/goback-icon.svg'
-import EditIcon from 'img/edit-icon-collection.svg'
-import AddIcon from 'img/add-icon-green.svg'
-import ToggleButton from 'options/components/toggleButton'
+import { useParams } from 'react-router'
+import { useHistory } from 'react-router-dom'
+import { find, isEmpty } from 'lodash'
 
 import { getChromeStorage } from 'utils'
 import { STORAGE } from 'constants/koiConstants'
+import NFTCard from './nftCard'
+import EditCollection from './EditCollection'
+import CollectionInfo from './CollectionInfo'
 
 import { setCollections } from 'options/actions/collections'
+import { GalleryContext } from 'options/galleryContext'
+
+import GoBack from 'img/goback-icon.svg'
+import GalleryViewIcon from 'img/gallery-view-icon.svg'
+import GridViewIcon from 'img/grid-view-icon.svg'
+import ListViewIcon from 'img/list-view-icon.svg'
+
+import './index.css'
 
 export default () => {
-  const history = useHistory()
+  const [editCollection, setEditCollection] = useState(false)
+  const [publishCollection, setPublishCollection] = useState(false)
 
-  const { showViews, showEarnedKoi } = useContext(GalleryContext)
+  const { setNotification, showEarnedKoi, showViews } = useContext(GalleryContext)
   const { collectionId } = useParams()
 
-  const collectionState = useSelector(state => state.collections)
+  const collectionState = useSelector((state) => state.collections)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -43,89 +41,95 @@ export default () => {
   }, [])
 
   const collection = useMemo(() => {
-    try {
-      console.log(collectionState.collections)
-      const collection = find(collectionState.collections, collection => collection.id == collectionId)
-      console.log(collection)
-      if (collection) {
-        return collection
-      }
-      return { title: '', totalViews: 0, totalReward: 0, description: '', nfts: [] }
-    } catch (err) {
-      return { title: '', totalViews: 0, totalReward: 0, description: '', nfts: [] }
+    console.log(collectionState.collections)
+    const collection = find(
+      collectionState.collections,
+      (collection) => collection.id == collectionId
+    )
+    console.log(collection)
+    if (collection) {
+      return collection
     }
   }, [collectionState.collections])
+
+  const history = useHistory()
 
   const handleGoBack = () => {
     history.push('/collections')
   }
 
-  const editCollection= () => {
-    console.log('Edit Collection')
-  }
-
-  const handlePublish= () => {
-    console.log('Publish Collection')
-  }
-
   return (
-    <div className="collection-details-wrapper">
-      <div className="collection-header-buttons">
-        <div className="edit-collection-buttons">
-          <div className="edit-collection-button save-changes-button">Save Changes</div>
-          <div className="edit-collection-button cancel-button">Cancel</div>
+    <div className='collection-wrapper'>
+      <div className='collection-header-buttons'>
+        {editCollection && (
+          <div className='edit-collection-buttons'>
+            <div
+              className='edit-collection-button save-changes-button'
+              onClick={() => {
+                setNotification('Save Collection successfully!')
+                setEditCollection(false)
+              }}
+            >
+              Save Changes
+            </div>
+            <div
+              className='edit-collection-button cancel-button'
+              onClick={() => setEditCollection(false)}
+            >
+              Cancel
+            </div>
+          </div>
+        )}
+        <div
+          className='share-collection-button'
+          onClick={() => setNotification('Share Collection successfully!')}
+        >
+          Share
         </div>
-        <div className="share-collection-button">Share</div>
       </div>
-      <div className="collection-details">
-        <div onClick={handleGoBack} className="go-back-button">
+      <div className='collection-details-wrapper'>
+        <div onClick={handleGoBack} className='go-back-button'>
           <GoBack />
         </div>
-        <div className="collection-details-abc">
-          <div className="collection-detail-header">
-            <div className="title">
-              <div>{collection.name}</div>
-              <div className="collection-icon edit-icon" data-tip="Edit Collection" onClick={editCollection}>
-                <EditIcon />
-              </div>
-              <div className="collection-icon" data-tip="Add NFT">
-                <AddIcon />
-              </div>
+        {editCollection ? (
+          <EditCollection
+            collection={collection}
+            showViews={showViews}
+            showEarnedKoi={showEarnedKoi}
+            publishCollection={publishCollection}
+            setPublishCollection={setPublishCollection}
+            setEditCollection={setEditCollection}
+          />
+        ) : (
+          <CollectionInfo
+            collection={collection}
+            showViews={showViews}
+            showEarnedKoi={showEarnedKoi}
+            publishCollection={publishCollection}
+            setPublishCollection={setPublishCollection}
+            setEditCollection={setEditCollection}
+          />
+        )}
+        <div className='collection-view-wrapper'>
+          <div className='collection-view-icons'>
+            <div className='grid-view-icon'>
+              <GridViewIcon />
             </div>
-
-            <div className="toggle-wrapper">
-              <div className="toggle-label">published</div>
-              <div className="toggle-button" onClick={handlePublish}><ToggleButton /></div>
+            <div className='list-view-icon'>
+              <ListViewIcon />
             </div>
-
+            <div className='gallery-view-icon'>
+              <GalleryViewIcon />
+            </div>
           </div>
-          <div className="collection-details__views-count">
-            {showViews && (
-              <div className="views">
-                <div className="collection-details__views-count__number">
-                  {collection.totalViews}
-                </div>
-                <span className="collection-details__views-count__text">Views</span>
-              </div>
-            )}
-            {showEarnedKoi && (
-              <div className="earned-koi">
-                <div className="collection-details__views-count__number">
-                  {formatNumber(collection.totalReward, 2)}
-                </div>
-                <span className="collection-details__views-count__text">KOII earned</span>
-              </div>
-            )}
-          </div>
-          <div className="description">{collection.description}</div>
+          <div className='collection-view-message'>coming soon</div>
         </div>
-        <div className="cards">
+        <div className='cards'>
           {collection.nfts.map((nft, index) => (
             <NFTCard key={index} nft={nft} />
           ))}
         </div>
       </div>
-      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }
