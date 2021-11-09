@@ -102,6 +102,7 @@
 }
 
 .kid-page-wrapper .form-section .section-name {
+  margin-top: 56px;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.03em;
@@ -168,15 +169,36 @@
   margin-right: 9px;
 }
 
-.kid-page-wrapper .save-kid-btn {
-  margin: 16px auto 32px auto;
-  width: 189px;
+.kid-page-wrapper .custom-css-settings {
+  margin-top: 20px;
+  width: 233px;
+
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 16px;
 }
 
 .ace_editor,
 .ace_editor * {
-  font-family: 'Courier New', Courier, monospace !important;
-  font-size: 12px !important;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace !important;
   font-weight: 400 !important;
   letter-spacing: 0 !important;
+}
+
+#ACE_EDITOR_ID {
+  margin-top: 16px;
+  width: 610px !important;
+  height: 167px !important;
+
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 4px;
+
+  height: 167px;
+}
+
+.kid-page-wrapper .save-kid-btn {
+  margin: 29px auto 32px auto;
+  width: 189px;
 }

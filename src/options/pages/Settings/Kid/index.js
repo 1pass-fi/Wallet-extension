@@ -9,11 +9,12 @@ import KidInputField from './kidInputField'
 import ProfileCover from 'img/profile-cover-placeholder.png'
 import RemoveLinkAccount from 'img/remove-account-links.svg'
 import Button from '../../../shared/Button'
+import ToggleButton from 'options/components/toggleButton'
 
 import AceEditor from 'react-ace'
 
-import 'ace-builds/src-noconflict/mode-java'
-import 'ace-builds/src-noconflict/theme-github'
+import 'ace-builds/src-noconflict/mode-css'
+import 'ace-builds/src-noconflict/theme-monokai'
 
 import './index.css'
 
@@ -27,6 +28,9 @@ const KidPage = () => {
   })
 
   const [linkAccounts, setLinkAccounts] = useState([{ name: '', value: '' }])
+
+  const [usingCustomCss, setUsingCustomCss] = useState(false)
+  const [customCss, setCustomCss] = useState('')
 
   const onChangeUserInfo = (e) => {
     setuserKID({ ...userKID, [e.target.name]: e.target.value })
@@ -150,16 +154,31 @@ const KidPage = () => {
             <AddIcon className="add-more-icon" />
             Add more
           </div>
-          <AceEditor
-            mode="css"
-            theme="github"
-            onChange={(val) => {
-              console.log(val)
-            }}
-            showGutter={false}
-            name="UNIQUE_ID_OF_DIV"
-            editorProps={{ $blockScrolling: true }}
-          />
+
+          <div className="section-name">Add Custom CSS</div>
+          <div className="custom-css-settings">
+            <div>Custom CSS</div>
+            <ToggleButton value={usingCustomCss} setValue={setUsingCustomCss} />
+          </div>
+          {usingCustomCss && (
+            <AceEditor
+              mode="css"
+              theme="monokai"
+              onChange={(val) => {
+                setCustomCss(val)
+              }}
+              showGutter={false}
+              name="ACE_EDITOR_ID"
+              editorProps={{ $blockScrolling: true }}
+              highlightActiveLine={false}
+              showPrintMargin={false}
+              fontSize={14}
+              onLoad={function (editor) {
+                editor.renderer.setPadding(10)
+                editor.renderer.setScrollMargin(10)
+              }}
+            />
+          )}
           <div className="save-kid-btn">
             <Button variant="filled" text="Save & Update" />
           </div>
