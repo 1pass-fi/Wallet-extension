@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import AceEditor from 'react-ace'
+import 'ace-builds/src-noconflict/mode-css'
+import 'ace-builds/src-noconflict/theme-monokai'
 
 import IDCardIcon from 'img/id-card-icon.svg'
 import AddIcon from 'img/navbar/create-nft.svg'
@@ -10,11 +13,8 @@ import ProfileCover from 'img/profile-cover-placeholder.png'
 import RemoveLinkAccount from 'img/remove-account-links.svg'
 import Button from '../../../shared/Button'
 import ToggleButton from 'options/components/toggleButton'
-
-import AceEditor from 'react-ace'
-
-import 'ace-builds/src-noconflict/mode-css'
-import 'ace-builds/src-noconflict/theme-monokai'
+import ExpandIcon from 'img/share-icon.svg'
+import CloseIcon from 'img/ab-close-icon.svg'
 
 import './index.css'
 
@@ -28,9 +28,12 @@ const KidPage = () => {
   })
 
   const [linkAccounts, setLinkAccounts] = useState([{ name: '', value: '' }])
+  const [customCss, setCustomCss] = useState('')
 
   const [usingCustomCss, setUsingCustomCss] = useState(false)
-  const [customCss, setCustomCss] = useState('')
+  const [expandedCssEditor, setExpandedCssEditor] = useState(false)
+
+  const toggleExpandedCssEditor = () => setExpandedCssEditor((prev) => !prev)
 
   const onChangeUserInfo = (e) => {
     setuserKID({ ...userKID, [e.target.name]: e.target.value })
@@ -160,25 +163,59 @@ const KidPage = () => {
             <div>Custom CSS</div>
             <ToggleButton value={usingCustomCss} setValue={setUsingCustomCss} />
           </div>
-          {usingCustomCss && (
-            <AceEditor
-              mode="css"
-              theme="monokai"
-              onChange={(val) => {
-                setCustomCss(val)
-              }}
-              showGutter={false}
-              name="ACE_EDITOR_ID"
-              editorProps={{ $blockScrolling: true }}
-              highlightActiveLine={false}
-              showPrintMargin={false}
-              fontSize={14}
-              onLoad={function (editor) {
-                editor.renderer.setPadding(10)
-                editor.renderer.setScrollMargin(10)
-              }}
-            />
-          )}
+          {usingCustomCss &&
+            (!expandedCssEditor ? (
+              <div className="small-editor-wrapper">
+                <AceEditor
+                  mode="css"
+                  theme="monokai"
+                  onChange={(val) => {
+                    setCustomCss(val)
+                  }}
+                  value={customCss}
+                  showGutter={false}
+                  name="small-editor-id"
+                  editorProps={{ $blockScrolling: true }}
+                  highlightActiveLine={false}
+                  showPrintMargin={false}
+                  fontSize={14}
+                  onLoad={function (editor) {
+                    editor.renderer.setPadding(10)
+                    editor.renderer.setScrollMargin(10)
+                  }}
+                />
+                <div className="editor-expand-icon" onClick={toggleExpandedCssEditor}>
+                  <ExpandIcon />
+                </div>
+              </div>
+            ) : (
+              <div className="expanded-editor-wrapper">
+                <div className="expanded-editor-absolute-wrapper">
+                  <AceEditor
+                    mode="css"
+                    theme="monokai"
+                    onChange={(val) => {
+                      setCustomCss(val)
+                    }}
+                    value={customCss}
+                    showGutter={false}
+                    name="expanded-editor-id"
+                    editorProps={{ $blockScrolling: true }}
+                    highlightActiveLine={false}
+                    showPrintMargin={false}
+                    fontSize={14}
+                    onLoad={function (editor) {
+                      editor.renderer.setPadding(10)
+                      editor.renderer.setScrollMargin(10)
+                    }}
+                  />
+                  <div className="editor-close-icon" onClick={toggleExpandedCssEditor}>
+                    <CloseIcon />
+                  </div>
+                </div>
+              </div>
+            ))}
+
           <div className="save-kid-btn">
             <Button variant="filled" text="Save & Update" />
           </div>

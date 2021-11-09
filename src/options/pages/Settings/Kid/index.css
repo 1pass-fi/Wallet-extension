@@ -186,7 +186,20 @@
   letter-spacing: 0 !important;
 }
 
-#ACE_EDITOR_ID {
+.kid-page-wrapper .small-editor-wrapper {
+  position: relative;
+}
+
+.kid-page-wrapper .editor-expand-icon {
+  width: 14px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  cursor: pointer;
+}
+
+#small-editor-id {
   margin-top: 16px;
   width: 610px !important;
   height: 167px !important;
@@ -194,8 +207,42 @@
   background-color: transparent;
   border: 1px solid white;
   border-radius: 4px;
+}
 
-  height: 167px;
+.kid-page-wrapper .expanded-editor-wrapper {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 999;
+
+  background-color: rgba(23, 23, 83, 0.6);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.kid-page-wrapper .expanded-editor-wrapper .expanded-editor-absolute-wrapper {
+  position: absolute;
+}
+
+#expanded-editor-id {
+  width: 956px !important;
+  height: 569px !important;
+  background-color: #171753;
+  border: 1px solid white;
+  border-radius: 4px;
+}
+
+.kid-page-wrapper .editor-close-icon {
+  width: 16px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  cursor: pointer;
 }
 
 .kid-page-wrapper .save-kid-btn {
