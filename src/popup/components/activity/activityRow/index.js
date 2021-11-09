@@ -165,11 +165,11 @@ const ActivityRow = ({
           {/* 
             expense
           */}
-          {activityName !== 'Sent NFT' && <div className='activity-expense'>{get(displayInfo, 'expenseText')}</div>}
+          {<div className='activity-expense'>{get(displayInfo, 'expenseText')}</div>}
           {/* 
             to usd
           */}
-          { expense != null && !includes(activityName, 'ETH') && activityName !== 'Sent NFT' &&
+          { expense != null && !includes(activityName, 'ETH') &&
             <div hidden={activityName.includes('KOII')} className='activity-expense usd'>{get(displayInfo, 'toUsdText')}</div>
           } 
           {/* 

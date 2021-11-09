@@ -179,8 +179,11 @@ export class ArweaveMethod {
           inputFunction = JSON.parse(inputTag[0].value)
           if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
             activityName = 'Sent KOII'
-            if (inputFunction.isSendNft) activityName = 'Sent NFT'
-            expense = inputFunction.qty
+            if (inputFunction.isSendNft) {
+              activityName = 'Sent NFT'
+            } else {
+              expense = inputFunction.qty
+            }
             source = inputFunction.target
           } else if (inputFunction.function === 'updateCollection') {
             activityName = 'Updated Collection'

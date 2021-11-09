@@ -1146,6 +1146,17 @@ export default async (koi, port, message, ports, resolveId, eth) => {
 
           const txId = await account.method.transferNFT(nftId, recipientAddress)
 
+          const payload = {
+            id: txId,
+            activityName: 'Sent NFT',
+            expense: 0.000001,
+            target: recipientAddress,
+            address: senderAddress,
+            network: null,
+            retried: 0
+          }
+          await helpers.pendingTransactionFactory.createPendingTransaction(payload)
+
           port.postMessage({
             type: MESSAGES.REAL_TRANSFER_NFT,
             data: txId,

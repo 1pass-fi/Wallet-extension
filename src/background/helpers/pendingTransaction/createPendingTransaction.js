@@ -29,7 +29,8 @@ export default async ({
     source: target,
     senderAddress: target,
     retried,
-    network
+    network,
+    timestamp: Date.now()
   }
 
   pendingTransactions.push(initialTransaction)

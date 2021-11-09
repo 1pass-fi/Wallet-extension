@@ -51,7 +51,7 @@ export const ActivitiesList = ({ activities = [] }) => {
 }
 
 export const PendingList = ({ transactions, handleExpiredAction }) => {
-  return transactions.map((transaction, index) => (
+  return orderBy(transactions, 'timestamp', 'desc').map((transaction, index) => (
     <ActivityItem
       key={index}
       activityName={transaction.activityName}
