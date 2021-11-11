@@ -215,7 +215,7 @@ export default ({ children }) => {
       setIsLoading(false)
     }
 
-    loadAllContents()
+    if (walletLoaded) loadAllContents()
   }, [walletLoaded])
 
   /* 

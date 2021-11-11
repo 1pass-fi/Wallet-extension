@@ -22,12 +22,10 @@ export default () => {
 
     loadBalancesArweaveInterval = setInterval(() => {
       helpers.loadBalances(TYPE.ARWEAVE)
-      helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
     }, TIME_INTERVAL.LOAD_BALANCES_ARWEAVE)
 
     loadBalancesEthereumInterval = setInterval(() => {
       helpers.loadBalances(TYPE.ETHEREUM)
-      helpers.sendMessageToPopupPorts({ type: MESSAGES.GET_BALANCES_SUCCESS })
     }, TIME_INTERVAL.LOAD_BALANCES_ETHEREUM)
 
     loadActivitiesArweaveInterval = setInterval(() => {
@@ -35,8 +33,8 @@ export default () => {
     }, TIME_INTERVAL.LOAD_ARWEAVE_ACTIVITIES)
 
     loadActivitiesEthereumInterval = setInterval(() => {
-      helpers.loadActivities(TYPE.ARWEAVE)
-    }, TIME_INTERVAL.LOAD_ARWEAVE_ACTIVITIES)
+      helpers.loadActivities(TYPE.ETHEREUM)
+    }, TIME_INTERVAL.LOAD_ETHEREUM_ACTIVITIES)
 
     loadNftStatesInterval = setInterval(() => {
       helpers.loadNftStates(TYPE.ARWEAVE)
