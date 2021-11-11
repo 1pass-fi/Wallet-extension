@@ -1210,11 +1210,11 @@ export default async (koi, port, message, ports, resolveId, eth) => {
               id: messageId
             })
           } else {
-            let pendingTransactions = await account.get.pendingTransactions()
-            pendingTransactions = pendingTransactions.filter(transaction => {
-              return transaction.id  !== txId
-            })
-            await account.set.pendingTransactions(pendingTransactions)
+            // remove transaction
+            await helpers
+              .pendingTransactionFactory
+              .removeTransaction(account, transaction)
+
             port.postMessage({
               type: MESSAGES.HANDLE_EXPIRED_TRANSACTION,
               id: messageId
