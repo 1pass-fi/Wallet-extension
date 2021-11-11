@@ -9,7 +9,7 @@ export default async ({ u8, nftContent, nftTags, fileType, ownerAddress, created
     const initialState = {
       'owner': ownerAddress,
       'title': nftContent.title,
-      'name': nftContent.name,
+      'name': nftContent.owner, // inputted username
       'description': nftContent.description,
       'ticker': ticker,
       'balances': balances,

@@ -3,6 +3,7 @@ import {
   isString, 
   isEmpty, 
   differenceBy, 
+  find
 } from 'lodash'
 import passworder from 'browser-passworder'
 import moment from 'moment'
@@ -24,7 +25,8 @@ import {
   STORAGE, 
   ERROR_MESSAGE, 
   PATH, 
-  FRIEND_REFERRAL_ENDPOINTS
+  FRIEND_REFERRAL_ENDPOINTS,
+  PENDING_TRANSACTION_TYPE
 } from 'constants/koiConstants'
 
 import helpers from '../helpers'
@@ -445,6 +447,7 @@ export default async (koi, port, message, ports, resolveId, eth) => {
           const { qty, target, token, address } = message.data
           const credentials = await backgroundAccount.getCredentialByAddress(address)
           const account = await backgroundAccount.getAccount(credentials)
+          const transactionType = token === 'KOI' ? PENDING_TRANSACTION_TYPE.SEND_KOII : PENDING_TRANSACTION_TYPE.SEND_AR
 
           console.log('QTY ', qty, 'TARGET ', target, 'TOKEN ', token)
           const txId = await account.method.transfer(token, target, qty)
@@ -459,7 +462,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             target,
             address,
             network,
-            retried: 0
+            retried: 1,
+            transactionType
           }
           await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
 
@@ -710,7 +714,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             target: null,
             address,
             network: null,
-            retried: 0
+            retried: 1,
+            transactionType: PENDING_TRANSACTION_TYPE.MINT_NFT
           }
           await helpers.pendingTransactionFactory.createPendingTransaction(payload)
           
@@ -1153,9 +1158,20 @@ export default async (koi, port, message, ports, resolveId, eth) => {
             target: recipientAddress,
             address: senderAddress,
             network: null,
-            retried: 0
+            retried: 1,
+            transactionType: PENDING_TRANSACTION_TYPE.SEND_NFT,
+            contract: nftId
           }
           await helpers.pendingTransactionFactory.createPendingTransaction(payload)
+
+          // update isSending for nft
+          let allAssets = await account.get.assets()
+          allAssets = allAssets.map(asset => {
+            if (asset.txId === nftId) asset.isSending = true
+            return asset
+          })
+
+          await account.set.assets(allAssets)
 
           port.postMessage({
             type: MESSAGES.REAL_TRANSFER_NFT,
@@ -1175,20 +1191,22 @@ export default async (koi, port, message, ports, resolveId, eth) => {
       case MESSAGES.HANDLE_EXPIRED_TRANSACTION: {
         try {
           const { txId, address, wantToResend } = message.data
-
           const credentials = await backgroundAccount.getCredentialByAddress(address)
           const account = await backgroundAccount.getAccount(credentials)
 
+          const pendingTransactions = await account.get.pendingTransactions()
+          const transaction = find(pendingTransactions, tx => tx.id === txId)
+
+          if (!transaction) throw new Error('Transaction not found')
+        
           if (wantToResend) {
-            const resentTransaction = await account.method.resendTransaction(txId)
-            let pendingTransactions = await account.get.pendingTransactions()
-            pendingTransactions = pendingTransactions.map(transaction => {
-              if (transaction.id === txId) return resentTransaction
-              return transaction
-            })
+            const newTransactionId = await helpers
+              .pendingTransactionFactory
+              .resendTransaction(account, transaction)
+
             port.postMessage({
               type: MESSAGES.HANDLE_EXPIRED_TRANSACTION,
-              data: resentTransaction.id,
+              data: newTransactionId,
               id: messageId
             })
           } else {

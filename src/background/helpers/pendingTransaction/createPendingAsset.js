@@ -41,7 +41,7 @@ export default async ({
     pending: true,
     type: TYPE.ARWEAVE,
     expired: false,
-    retried: 0
+    retried: 1
   }
 
   const allPendingAssets = await account.get.pendingAssets() || []

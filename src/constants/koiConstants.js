@@ -263,6 +263,11 @@ export const ERROR_MESSAGE = {
     UPLOAD_ERROR: 'Upload NFT error',
     REGISTER_ERROR: 'Register NFT error',
     INVALID_CONTENT: 'Invalid content'
+  },
+  RESEND: {
+    KOII: 'Resend KOII failed',
+    AR: 'Resend AR failed',
+    NOT_ENOUGH_BALANCE: 'Not enough AR or KOII'
   }
 }
 
@@ -431,3 +436,10 @@ export const ETH_NFT_BRIDGE_ACTION = {
 }
 
 export const KOII_CONTRACT = 'QA7AIFVx1KBBmzC7WUNhJbDsHlSJArUT0jWrhZMZPS8'
+
+export const PENDING_TRANSACTION_TYPE = {
+  SEND_KOII: 'SEND_KOII',
+  SEND_AR: 'SEND_AR',
+  MINT_NFT: 'MINT_NFT',
+  SEND_NFT: 'SEND_NFT'
+}

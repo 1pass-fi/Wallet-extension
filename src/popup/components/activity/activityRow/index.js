@@ -66,7 +66,7 @@ const ActivityRow = ({
         blockButtonText = pending ? 'explore block' : 'view block'
         if (network) blockButtonText = 'etherscan'
 
-        pendingOrExpired = expired ? 'Transaction expired' : 'Transaction pending'
+        pendingOrExpired = expired ? 'Transaction failed' : 'Transaction pending'
 
         if (!network) {
           blockUrl = `${PATH.VIEW_BLOCK_TRANSACTION}/${id}`

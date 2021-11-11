@@ -30,7 +30,10 @@ const ExpiredTxModal = ({ onClose, txInfo, setError, setPendingTransactions, set
       if (resentTransactionId) {
         setPendingTransactions(prev => {
           return prev.map(transaction => {
-            if (transaction.id === txInfo.txId) transaction.expired = false
+            if (transaction.id === txInfo.txId) {
+              transaction.expired = false
+              transaction.id = resentTransactionId
+            }
             return transaction
           })
         })
@@ -45,9 +48,8 @@ const ExpiredTxModal = ({ onClose, txInfo, setError, setPendingTransactions, set
       setError(ERROR_MESSAGE.EXPIRED_TRANSACTION_ACTION_ERROR)
       onClose()
     }
-    
-    // TODO: update UI
   }
+
   return (
     <Modal onClose={onClose} className="expired-transaction-modal">
       <div className="modal-title">
