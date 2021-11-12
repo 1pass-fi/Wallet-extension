@@ -46,7 +46,7 @@ export class AccountGetter {
      * @returns {Array} List of NFTs
      */
   async assets() {
-    return await this.#accountStorage.getAssets()
+    return await this.#accountStorage.getAssets() || []
   }
 
   /**

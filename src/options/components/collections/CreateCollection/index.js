@@ -121,7 +121,7 @@ export default () => {
     return async () => {
       let allAssets = await popupAccount.getAllAssets()
       allAssets = allAssets.filter(asset => asset.name !== '...')
-      setAssets({ nfts: allAssets })
+      dispatch(setAssets({ nfts: allAssets }))
     }
   }, [])
 

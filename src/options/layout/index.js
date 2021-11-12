@@ -282,17 +282,15 @@ export default ({ children }) => {
   */
   useEffect(() => {
     const setAssetsForCreateCollection = async () => {
-      if (showCreateCollection) {
-        const _account = await popupAccount.getAccount({
-          address: defaultAccount.address,
-        })
-        let assets = await _account.get.assets()
-        assets = assets.filter(asset => asset.name !== '...')
-        dispatch(setAssets({ nfts: assets }))
-      }
+      const _account = await popupAccount.getAccount({
+        address: defaultAccount.address,
+      })
+      let assets = await _account.get.assets()
+      assets = assets.filter(asset => asset.name !== '...')
+      dispatch(setAssets({ nfts: assets }))
     }
 
-    if (!GALLERY_IMPORT_PATH.includes(pathname) && !isEmpty(defaultAccount)) setAssetsForCreateCollection()
+    if (showCreateCollection) setAssetsForCreateCollection()
   }, [showCreateCollection, defaultAccount])
 
 

@@ -210,11 +210,12 @@ export class PopupAccountManager extends AccountManager {
     try {
       const allAccounts = await this.getAllAccounts()
       let allAssets = []
-      await Promise.all(allAccounts.map(async account => {
+      for (let i = 0; i < allAccounts.length; i++) {
+        const account = allAccounts[i]
         const assets = await account.get.assets() || []
         const pendingAssets = await account.get.pendingAssets() || []
         allAssets = [...allAssets, ...assets, ...pendingAssets]
-      }))
+      }
 
       return allAssets
     } catch (err) {

@@ -14,20 +14,21 @@ const removeTransaction = async (account, transaction) => {
     return _transaction.id !== transaction.id
   })
 
-  if (transaction.transactionType === PENDING_TRANSACTION_TYPE.MINT_NFT ||
-    transaction.transactionType === PENDING_TRANSACTION_TYPE.SEND_NFT) {
-    let allAssets = await account.get.assets()
-    
-    if (transaction.transactionType === PENDING_TRANSACTION_TYPE.MINT_NFT) {
-      allAssets = allAssets.filter(asset => asset.txId !== transaction.id)
-    } else {
-      allAssets = allAssets.map(asset => {
-        if (asset.txId === transaction.contract) asset.isSending = false
-        return asset
-      })
-    }
+  if (transaction.transactionType === PENDING_TRANSACTION_TYPE.MINT_NFT) {
+    let pendingAssets = await account.get.pendingAssets()
+    pendingAssets = pendingAssets.filter(asset => asset.txId !== transaction.id)
 
+    await account.set.pendingAssets(pendingAssets)
+  }
+
+  if (transaction.transactionType === PENDING_TRANSACTION_TYPE.SEND_NFT) {
+    let allAssets = await account.get.assets()
+    allAssets = allAssets.map(asset => {
+      if (asset.txId === transaction.contract) asset.isSending = false
+      return asset
+    })
     await account.set.assets(allAssets)
+
   }
 
   await account.set.pendingTransactions(allPendingTransactions)

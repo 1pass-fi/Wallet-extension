@@ -1215,6 +1215,8 @@ export default async (koi, port, message, ports, resolveId, eth) => {
               .pendingTransactionFactory
               .removeTransaction(account, transaction)
 
+            reloadGallery()
+
             port.postMessage({
               type: MESSAGES.HANDLE_EXPIRED_TRANSACTION,
               id: messageId
