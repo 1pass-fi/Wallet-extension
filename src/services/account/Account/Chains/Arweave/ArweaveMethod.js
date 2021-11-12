@@ -648,6 +648,7 @@ export class ArweaveMethod {
 
   async transactionConfirmedStatus(id) {
     const response = await arweave.transactions.getStatus(id)
+    console.log('response', response)
     const dropped = response.status === 404
     const confirmed = !isEmpty(get(response, 'confirmed'))
     return { dropped, confirmed }
@@ -680,7 +681,8 @@ export class ArweaveMethod {
 
             return {
               name: content.title || content.name,
-              isKoiWallet: content.ticker === 'KOINFT',
+              // isKoiWallet: content.ticker === 'KOINFT',
+              isKoiWallet: true,
               earnedKoi: content.reward,
               txId: content.id,
               imageUrl,

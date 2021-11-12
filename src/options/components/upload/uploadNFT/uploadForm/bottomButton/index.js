@@ -230,7 +230,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
     const submitFriendCode = async () => {
       setIsLoading(true)
       try {
-        if (account) {
+        if (defaultAccount) {
           const { status, message } = await backgroundRequest.gallery.friendReferral({ 
             endpoints: FRIEND_REFERRAL_ENDPOINTS.SUBMIT_CODE,
             friendCode 
@@ -248,7 +248,6 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
                 setError(message)
             }
           }
-
         }
       } catch (err) {
         setError(err.message)
