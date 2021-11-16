@@ -153,6 +153,8 @@
   flex-wrap: wrap;
 }
 
+
+
 .create-wallet .selected-words-wrapper {
   margin: 13px;
   background: #171753;
@@ -188,6 +190,12 @@
 .create-wallet .selected-words .word {
   margin-right: 20px;
   margin-bottom: 8px;
+}
+
+.create-wallet .confirm-phrase-error-message {
+  font-size: 12px;
+  color: #ff4141;
+  width: 479px;
 }
 
 .create-wallet .selected-words .word:nth-child(4n) {

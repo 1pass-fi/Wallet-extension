@@ -307,6 +307,11 @@ export default () => {
                 ))}
               </div>
             </div>
+            {!isEqual(seedPhrase, userSeedPhrase) && userSeedPhrase.length === 12 && 
+              <div className='confirm-phrase-error-message'>
+                That recovery phrase doesn't match. Please check the order and try again.
+              </div>
+            }
 
             <div className='unselected-words'>
               {unselectedWords.map(({ id, content, isHide }) => (
@@ -344,8 +349,10 @@ export default () => {
           {step === 5 && (
           <>
             <div className='description'>
-              Create a password for Finnie, so you have easy access to your new
-              key. Make sure it is unique and secure.
+              {isEmpty(accounts) ? 
+                'Create a password for Finnie, so you have easy access to your new key. Make sure it is unique and secure.'
+                : 'Re-enter your Finnie password so we can securely store your new key.'
+              }
             </div>
 
             {isEmpty(accounts) ? <div className='confirm-password-wrapper'>

@@ -74,7 +74,7 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
       </div>
         :
         <div className='description'>
-        Confirm your Finnie password
+        Re-enter your Finnie password so we can securely store your new key.
         </div>
       }
 

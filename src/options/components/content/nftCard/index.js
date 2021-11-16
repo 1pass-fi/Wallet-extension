@@ -133,8 +133,10 @@ export default ({
         {includes(contentType ,'html') && (
           <div className='nft-img-iframe-nft-card'>
             <div className='iframe-wrapper-nft-card'>
-              <iframe frameBorder="0" src={imageUrl} />
+              <div className={selectedCollection ? 'iframe-layer selected' : 'iframe-layer'}></div>
+              <iframe className={selectedCollection ? 'selected' : ''} frameBorder="0" src={imageUrl} />
             </div>
+            {selectedCollection && <div className='nft-img-checked-icon'><CheckIcon /></div>}
           </div>
         )}
         <div className='nft-name'>{name}</div>

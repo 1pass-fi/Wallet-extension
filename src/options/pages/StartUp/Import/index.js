@@ -265,8 +265,10 @@ export default () => {
             <>
               <div className='title'>Import a wallet</div>
               <div className='description'>
-                Create a password for Finnie, so you have easy access to your new key. Make sure
-                your password is unique and secure.
+                {isEmpty(accounts) ? 
+                  'Create a password for Finnie, so you have easy access to your new key. Make sure it is unique and secure.'
+                  : 'Re-enter your Finnie password so we can securely store your new key.'
+                }
               </div>
 
               {isEmpty(accounts) ? (

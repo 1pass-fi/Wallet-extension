@@ -43,16 +43,28 @@ export const NftThumbnails = ({
                       {...provided.dragHandleProps}
                     >
                       <div ref={ref => numRef.current[index] = ref} className={nft.url ? `nft-wrapper ${className}` : `nft-wrapper empty ${className}`}>
-                        {nft.url && ( nft.contentType.includes('image') ? <img src={nft.url}></img> :
-                          <div><video
-                            width={140}
-                            height={140}
-                            src={nft.url}
-                            className='nft-img'
-                            controls
-                            muted
-                          /></div>
-                        )}
+                        {nft?.url && nft?.contentType?.includes('image') && 
+                          <img src={nft.url}></img>
+                        }
+                        {nft?.url && nft?.contentType?.includes('video') &&                           
+                          <div>
+                            <video
+                              width={140}
+                              height={140}
+                              src={nft.url}
+                              className='nft-img'
+                              controls
+                              muted
+                            />
+                            <div className='video-layer'></div>
+                          </div>
+                        }
+                        {nft?.url && nft?.contentType?.includes('html') &&
+                          <div className='iframe-wrapper'>
+                            <iframe frameBorder="0" src={nft.url}/>
+                            <div className='iframe-layer'></div>
+                          </div>
+                        }
                         {nft.url && <div onClick={() => removeFromCollection(nft.id)} className='delete-icon'><DeleteIcon /></div>}
                       </div>
                     </div>

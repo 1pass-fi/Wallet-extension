@@ -135,6 +135,14 @@
 }
 /* -- END CARD */
 
+.nft-card .nft-img-iframe-nft-card .nft-img-checked-icon {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: -20px;
+  right: -20px;
+}
+
 .nft-card .nft-img-iframe-nft-card .iframe-wrapper-nft-card {
   position: relative;
   height: 216px;
@@ -146,6 +154,19 @@
   top: 0;
   width: 216px;
   height: 216px;
+}
+.nft-card .nft-img-iframe-nft-card .iframe-wrapper-nft-card .selected {
+  border: 2px solid #ffc78f;
+}
+
+.nft-card .nft-img-iframe-nft-card .iframe-wrapper-nft-card .iframe-layer {
+  position: absolute;
+  top: 0;
+  width: 216px;
+  height: 216px;
+  z-index: 100;
+  background-color: red;
+  opacity: 0;
 }
 
 .nft-card .nft-img-iframe-nft-card {

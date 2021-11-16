@@ -52,7 +52,10 @@ export default ({ collectionName, description, tags }) => {
         {nfts.map((nft, index) => {
           if (nft.url) return (
             <div className='nft-wrapper' key={index}>
-              {nft.contentType.includes('image') ? <img src={nft.url}></img> :
+              {nft?.contentType?.includes('image') && 
+                <img src={nft.url}></img>
+              }
+              {nft?.contentType.includes('video') && 
                 <video
                   width={118}
                   height={118}
@@ -61,6 +64,11 @@ export default ({ collectionName, description, tags }) => {
                   controls
                   muted
                 />
+              }
+              {nft?.contentType?.includes('html') &&
+                <div className='iframe-wrapper-success'>
+                  <iframe frameBorder="0" src={nft.url}/>
+                </div>
               }
             </div>
           )

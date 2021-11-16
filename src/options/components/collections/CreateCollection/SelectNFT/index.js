@@ -271,7 +271,10 @@ export default ({nfts, tags, collectionName, description}) => {
         {(createCollection.selectedNfts.map((nft, index) => {
           if (nft.url) return (
             <div className='nft-wrapper' key={index}>
-              {(nft.contentType.includes('image')) ? <img src={nft.url}></img> :
+              {nft?.contentType?.includes('image') && 
+                <img src={nft.url}></img>
+              }
+              {nft?.contentType.includes('video') && 
                 <video
                   width={88}
                   height={88}
@@ -280,6 +283,11 @@ export default ({nfts, tags, collectionName, description}) => {
                   controls
                   muted
                 />
+              }
+              {nft?.contentType?.includes('html') &&
+                <div className='iframe-wrapper'>
+                  <iframe frameBorder="0" src={nft.url}/>
+                </div>
               }
             </div>
           )
