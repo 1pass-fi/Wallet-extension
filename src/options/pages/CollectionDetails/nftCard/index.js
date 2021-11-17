@@ -26,9 +26,10 @@ export default ({ nft }) => {
       <div className='nft-simple-card'>
         <Link className='link-tag' to={`/details/${txId}`}>
           <div className='preview-nft'>
-            {contentType.includes('image') ? (
+            {contentType?.includes('image') &&
               <img src={url} className='nft-img' />
-            ) : (
+            }
+            {contentType?.includes('video') &&
               <video
                 width={200}
                 height={200}
@@ -37,7 +38,13 @@ export default ({ nft }) => {
                 controls
                 muted
               />
-            )}
+            }
+            {contentType?.includes('html') &&
+              <div className='iframe-wrapper'>
+                <iframe frameBorder='0' src={url}/>
+                <div className='iframe-layer'></div>
+              </div>
+            }
           </div>
           <div className='nft-name'>{stringTruncate(name, 20)}</div>
 

@@ -168,9 +168,10 @@ export default ({ collection }) => {
                 <NextArrowIcon />
               </div>
             )}
-            {(get(displayNft, 'contentType') || 'image').includes('image') ? (
+            {displayNft?.contentType?.includes('image') && 
               <img src={get(displayNft, 'imageUrl')} className='nft-img' />
-            ) : (
+            }
+            {displayNft?.contentType?.includes('video') &&
               <video
                 width={200}
                 height={200}
@@ -179,7 +180,13 @@ export default ({ collection }) => {
                 controls
                 muted
               />
-            )}
+            }
+            {displayNft?.contentType?.includes('html') &&
+              <div className='iframe-wrapper'>
+                <iframe frameBorder='0' src={get(displayNft, 'imageUrl')}/>
+                <div className='iframe-layer'></div>
+              </div>
+            }
           </div>
           {/* <Link className='nft-name' to={`/details/${id}`}>
           {name}

@@ -26,12 +26,33 @@
   position: absolute;
   width: 256px;
 }
+.nft-simple-card .iframe-wrapper {
+  position: relative;
+  height: 216px;
+  width: 216px;
+  user-select: none;
+}
+.nft-simple-card .iframe-wrapper iframe {
+  position: absolute;
+  top: 0;
+  width: 216px;
+  height: 216px;
+}
+.nft-simple-card .iframe-wrapper .iframe-layer {
+  position: absolute;
+  top: 0;
+  width: 216px;
+  height: 216px;
+  z-index: 100;
+  background-color: red;
+  opacity: 0;}
 
 .nft-simple-card .link-tag {
   text-decoration: none;
 }
 
 .nft-simple-card .nft-name {
+  padding-top: 5px;
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;

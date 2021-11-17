@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import isEmpty from 'lodash/isEmpty'
 import includes from 'lodash/includes'
+import find from 'lodash/find'
 import ReactTooltip from 'react-tooltip'
 import Web3 from 'web3'
 
@@ -296,6 +297,8 @@ export default ({ info, onClose, type }) => {
   }
 
   const onOneClick = () => {
+    const account = find(accounts, account => account.address === _ownerAddress)
+
     if (isEmpty(chosenAccount) || isEmpty(chosenAccount.address)) {
       setError('Please select an address.')
       return
@@ -317,9 +320,15 @@ export default ({ info, onClose, type }) => {
 
     if (!numberTransfer || numberTransfer == 0) {
       setError('Please give a number of transfer')
-    } else {
-      setStep(step + 1)
+      return
     }
+
+    if (account?.balance < 0.000001 || account?.koiBalance < 10) {
+      setError('Not enough AR or KOII')
+      return
+    }
+
+    setStep(step + 1)
   }
 
   const onConfirm = async () => {

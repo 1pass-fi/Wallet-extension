@@ -43,6 +43,27 @@
   position: relative;
   user-select: none;
 }
+.nft-collection-card .preview-nft .iframe-wrapper {
+  position: relative;
+  height: 216px;
+  width: 216px;
+  user-select: none;
+}
+.nft-collection-card .preview-nft .iframe-wrapper iframe {
+  position: absolute;
+  top: 0;
+  width: 216px;
+  height: 216px;
+}
+.nft-collection-card .preview-nft .iframe-wrapper .iframe-layer {
+  position: absolute;
+  top: 0;
+  width: 216px;
+  height: 216px;
+  z-index: 100;
+  background-color: red;
+  opacity: 0;
+}
 
 .nft-collection-card .preview-nft .prev-nft {
   left: 10px;
@@ -61,6 +82,7 @@
 }
 
 .nft-collection-card .nft-name {
+  padding-top: 5px;
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;
