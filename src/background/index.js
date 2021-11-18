@@ -2,7 +2,7 @@ import '@babel/polyfill'
 import { Web } from '@_koi/sdk/web'
 
 // Constants
-import { PORTS, OS, PATH } from 'constants/koiConstants'
+import { PORTS, OS, PATH, MESSAGES } from 'constants/koiConstants'
 import { IMPORTED } from 'constants/accountConstants'
 
 // Handlers
@@ -15,11 +15,14 @@ import { getChromeStorage } from 'utils'
 
 import streamer from './streamer'
 
+// emitter
+import popupEvents from './handlers/popupEvents'
+
 const koi = new Web()
 const eth = new Ethereum()
-const ports = {}
-const permissionId = []
-const createTransactionId = []
+export const ports = {}
+export const permissionId = []
+export const createTransactionId = []
 const sender = []
 
 export const popupPorts = []
@@ -39,6 +42,15 @@ function cb(port) {
     })
 
     port.onMessage.addListener((message) => {
+      const updatedEndpoints = [
+        MESSAGES.GET_BALANCES,
+        MESSAGES.IMPORT_WALLET
+      ]
+      if (updatedEndpoints.includes(message.type)) {
+        const payload = { data: message.data, port, id: message.id }
+        popupEvents.sendMessage(message.type, payload)
+        return
+      }
       popupEventHandlers(
         koi,
         port,
