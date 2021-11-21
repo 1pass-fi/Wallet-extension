@@ -49,8 +49,9 @@ export class ArweaveMethod {
       let myContent = await this.koi.getNftIdsByOwner(this.koi.address)
       myContent = myContent.filter(id => {
         const nftOwners = allContent[id]
-        const balances = Object.values(nftOwners)
-        const isOwner = nftOwners[this.koi.address] === Math.max(...balances)
+        // const balances = Object.values(nftOwners)
+        // const isOwner = nftOwners[this.koi.address] === Math.max(...balances)
+        const isOwner = nftOwners[this.koi.address] > 0
 
         return isOwner
       })
