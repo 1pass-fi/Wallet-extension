@@ -6,7 +6,6 @@ import { PORTS, OS, PATH, MESSAGES } from 'constants/koiConstants'
 import { IMPORTED } from 'constants/accountConstants'
 
 // Handlers
-import popupEventHandlers from './handlers/popupEventHandlers'
 import contentScriptEventHandlers from './handlers/contentScriptEventHandlers'
 
 import { Ethereum } from 'services/ethereum'
@@ -27,6 +26,8 @@ const sender = []
 
 export const popupPorts = []
 
+export const generatedKey = { key: null, mnemonic: null, type: null, address: null }
+
 
 function cb(port) {
   if ((port.name).includes(PORTS.POPUP)) {
@@ -42,23 +43,8 @@ function cb(port) {
     })
 
     port.onMessage.addListener((message) => {
-      const updatedEndpoints = [
-        MESSAGES.GET_BALANCES,
-        MESSAGES.IMPORT_WALLET
-      ]
-      if (updatedEndpoints.includes(message.type)) {
-        const payload = { data: message.data, port, id: message.id }
-        popupEvents.sendMessage(message.type, payload)
-        return
-      }
-      popupEventHandlers(
-        koi,
-        port,
-        message,
-        ports,
-        { permissionId, createTransactionId },
-        eth
-      )
+      const payload = { data: message.data, port, id: message.id }
+      popupEvents.sendMessage(message.type, payload)
     })
   }
 

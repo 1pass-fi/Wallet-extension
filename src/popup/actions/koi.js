@@ -213,29 +213,13 @@ export const makeTransfer = (sender, qty, target, token) => async (dispatch) => 
   }
 }
 
-export const signTransaction = (inputData) => (dispatch) => {
+export const signTransaction = (inputData) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true))
-    const signSuccessHandler = new CreateEventHandler(MESSAGES.SIGN_TRANSACTION_SUCCESS, response => {
-      dispatch(setIsLoading(false))
-      window.close()
-    })
-    const signFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
-      console.log('=== BACKGROUND ERROR ===')
-      const errorMessage = response.data
-      dispatch(setIsLoading(false))
-      dispatch(setError(errorMessage))
-      window.close()
-    })
-    backgroundConnect.addHandler(signSuccessHandler)
-    backgroundConnect.addHandler(signFailedHandler)
-    backgroundConnect.postMessage({
-      type: MESSAGES.SIGN_TRANSACTION,
-      data: inputData
-    })
+    await backgroundRequest.wallet.signTransaction(inputData)
+    window.close()
   } catch (err) {
-    dispatch(setError(err.message))
-    dispatch(setIsLoading(false))
+    window.close()
   }
 }
 
@@ -265,23 +249,10 @@ export const getKeyFile = (password, address) => async (dispatch) => {
   }
 }
 
-export const connectSite = (inputData) => (dispatch) => {
+export const connectSite = (inputData) => async (dispatch) => {
   try {
-    const connectSuccessHandler = new CreateEventHandler(MESSAGES.CONNECT_SUCCESS, response => {
-      window.close()
-    })
-    const connectFailedHandler = new CreateEventHandler(MESSAGES.ERROR, response => {
-      console.log('=== BACKGROUND ERROR 1===')
-      const errorMessage = response.data
-      dispatch(setError(errorMessage))
-      window.close()
-    })
-    backgroundConnect.addHandler(connectSuccessHandler)
-    backgroundConnect.addHandler(connectFailedHandler)
-    backgroundConnect.postMessage({
-      type: MESSAGES.CONNECT,
-      data: inputData
-    })
+    await backgroundRequest.wallet.connect(inputData)
+    window.close()
   } catch (err) {
     dispatch(setError(err.message))
   }
