@@ -15,7 +15,11 @@ import { setDefaultAccount } from 'options/actions/defaultAccount'
 const DragActive = ({ description, Icon }) => {
   return (
     <div className='drag-active'>
-      <div className='export-icon'>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }} className='export-icon'>
         {Icon ? <Icon /> : <ExportIcon />}
       </div>
       <div className='import-description'>{description}</div>
