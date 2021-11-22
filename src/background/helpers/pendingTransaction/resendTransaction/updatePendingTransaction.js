@@ -18,7 +18,7 @@ export default async (account, transaction, newTxId) => {
       return asset
     })
 
-    await account.set.pendingTransactions(pendingAssets)
+    await account.set.pendingAssets(pendingAssets)
   }
 
   await account.set.pendingTransactions(pendingTransactions)
