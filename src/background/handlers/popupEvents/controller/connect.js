@@ -36,6 +36,11 @@ export default async (payload, next) => {
         data: { status: 401, data: 'Connection rejected.' },
         id: permissionId[permissionId.length - 1],
       })
+      ports[PORTS.CONTENT_SCRIPT].postMessage({
+        type: MESSAGES.CONNECT_ERROR,
+        data: 'User cancelled the login.',
+        id: permissionId[permissionId.length - 1],
+      })
     }
 
     removeChromeStorage(STORAGE.PENDING_REQUEST)

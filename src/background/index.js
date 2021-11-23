@@ -5,9 +5,6 @@ import { Web } from '@_koi/sdk/web'
 import { PORTS, OS, PATH, MESSAGES } from 'constants/koiConstants'
 import { IMPORTED } from 'constants/accountConstants'
 
-// Handlers
-import contentScriptEventHandlers from './handlers/contentScriptEventHandlers'
-
 import { Ethereum } from 'services/ethereum'
 
 import { getChromeStorage } from 'utils'
@@ -16,6 +13,7 @@ import streamer from './streamer'
 
 // emitter
 import popupEvents from './handlers/popupEvents'
+import contentScriptEvents from './handlers/contentScriptEvents'
 
 const koi = new Web()
 const eth = new Ethereum()
@@ -50,7 +48,8 @@ function cb(port) {
 
   if ((port.name).includes(PORTS.CONTENT_SCRIPT)) {
     port.onMessage.addListener(message => {
-      contentScriptEventHandlers(koi, port, message, ports, { permissionId, createTransactionId }, sender)
+      const payload = { data: message.data, port, id: message.id }
+      contentScriptEvents.sendMessage(message.type, payload)
     })
   }
 }
