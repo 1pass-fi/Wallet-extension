@@ -22,7 +22,24 @@ export default async (payload, next) => {
 
     if (confirm) {
       chrome.browserAction.setBadgeText({ text: '' })
-      const transactionData = await storage.generic.get.transactionData()
+      const {data: transactionData, id} = await storage.generic.get.transactionData()
+
+      if (id !== createTransactionId[createTransactionId.length - 1]) {
+        next()
+
+        ports[PORTS.CONTENT_SCRIPT].postMessage({
+          type: MESSAGES.CREATE_TRANSACTION_ERROR,
+          id: createTransactionId[createTransactionId.length - 1],
+          data: 'Invalid data input'
+        })
+        ports[PORTS.CONTENT_SCRIPT].postMessage({
+          type: MESSAGES.KOI_CREATE_TRANSACTION_SUCCESS,
+          id: createTransactionId[createTransactionId.length - 1],
+          data: { status: 400, data: 'Invalid data input' }
+        })
+        return
+      }
+
       tx.data = transactionData
       transaction = await account.method.signTransaction(tx)
 
