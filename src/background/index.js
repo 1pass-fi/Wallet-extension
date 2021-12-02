@@ -1,11 +1,8 @@
 import '@babel/polyfill'
-import { Web } from '@_koi/sdk/web'
 
 // Constants
-import { PORTS, OS, PATH, MESSAGES } from 'constants/koiConstants'
+import { PORTS, OS, PATH } from 'constants/koiConstants'
 import { IMPORTED } from 'constants/accountConstants'
-
-import { Ethereum } from 'services/ethereum'
 
 import { getChromeStorage } from 'utils'
 
@@ -15,12 +12,9 @@ import streamer from './streamer'
 import popupEvents from './handlers/popupEvents'
 import contentScriptEvents from './handlers/contentScriptEvents'
 
-const koi = new Web()
-const eth = new Ethereum()
 export const ports = {}
 export const permissionId = []
 export const createTransactionId = []
-const sender = []
 
 export const popupPorts = []
 
