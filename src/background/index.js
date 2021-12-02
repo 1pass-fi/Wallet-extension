@@ -2,12 +2,8 @@ import '@babel/polyfill'
 import { Web } from '@_koi/sdk/web'
 
 // Constants
-import { PORTS, OS, PATH } from 'constants/koiConstants'
+import { PORTS, OS, PATH, MESSAGES } from 'constants/koiConstants'
 import { IMPORTED } from 'constants/accountConstants'
-
-// Handlers
-import popupEventHandlers from './handlers/popupEventHandlers'
-import contentScriptEventHandlers from './handlers/contentScriptEventHandlers'
 
 import { Ethereum } from 'services/ethereum'
 
@@ -15,14 +11,20 @@ import { getChromeStorage } from 'utils'
 
 import streamer from './streamer'
 
+// emitter
+import popupEvents from './handlers/popupEvents'
+import contentScriptEvents from './handlers/contentScriptEvents'
+
 const koi = new Web()
 const eth = new Ethereum()
-const ports = {}
-const permissionId = []
-const createTransactionId = []
+export const ports = {}
+export const permissionId = []
+export const createTransactionId = []
 const sender = []
 
 export const popupPorts = []
+
+export const generatedKey = { key: null, mnemonic: null, type: null, address: null }
 
 
 function cb(port) {
@@ -39,20 +41,15 @@ function cb(port) {
     })
 
     port.onMessage.addListener((message) => {
-      popupEventHandlers(
-        koi,
-        port,
-        message,
-        ports,
-        { permissionId, createTransactionId },
-        eth
-      )
+      const payload = { data: message.data, port, id: message.id }
+      popupEvents.sendMessage(message.type, payload)
     })
   }
 
   if ((port.name).includes(PORTS.CONTENT_SCRIPT)) {
     port.onMessage.addListener(message => {
-      contentScriptEventHandlers(koi, port, message, ports, { permissionId, createTransactionId }, sender)
+      const payload = { data: message.data, port, id: message.id }
+      contentScriptEvents.sendMessage(message.type, payload)
     })
   }
 }

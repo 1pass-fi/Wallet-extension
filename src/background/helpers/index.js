@@ -10,6 +10,7 @@ import loadNftStates from './loadNftStates'
 import sendMessageToPorts from './sendMessageToPorts'
 import pendingTransactionFactory from './pendingTransaction'
 import uploadNft from './uploadNft'
+import saveContent from './saveContent'
 
 
 const checkHasAccounts = (fn) => (...args) => {
@@ -30,7 +31,8 @@ const helpers = {
   loadNftStates: checkHasAccounts(loadNftStates),
   sendMessageToPopupPorts: () => {},
   pendingTransactionFactory,
-  uploadNft
+  uploadNft,
+  saveContent
 }
 
 // popupPorts will be undefined as first synchronous run

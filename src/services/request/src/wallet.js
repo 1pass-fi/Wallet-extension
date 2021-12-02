@@ -118,4 +118,12 @@ export class WalletRequest extends Request {
   handleExpiredTransaction(body) {
     return this.promise(MESSAGES.HANDLE_EXPIRED_TRANSACTION, body)
   }
+
+  connect(body) {
+    return this.promise(MESSAGES.HANDLE_CONNECT, body)
+  }
+
+  signTransaction(body) {
+    return this.promise(MESSAGES.HANDLE_SIGN_TRANSACTION, body)
+  }
 }
