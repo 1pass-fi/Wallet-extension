@@ -12,10 +12,6 @@ import streamer from './streamer'
 import popupEvents from './handlers/popupEvents'
 import contentScriptEvents from './handlers/contentScriptEvents'
 
-export const ports = {}
-export const permissionId = []
-export const createTransactionId = []
-
 export const popupPorts = []
 
 export const generatedKey = { key: null, mnemonic: null, type: null, address: null }

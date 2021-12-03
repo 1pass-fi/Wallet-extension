@@ -11,12 +11,12 @@ import {
 // Utils
 import { removeChromeStorage } from 'utils'
 
-import { permissionId, ports } from 'background'
-
+import cache from 'background/cache'
 
 export default async (payload, next) => {
   try {
     const { origin, confirm, address } = payload.data
+    const contentScriptPort = cache.getContentScriptPort()
 
     if (confirm) {
       const siteAddressDict = await storage.setting.get.siteAddressDictionary() || {}
@@ -24,34 +24,34 @@ export default async (payload, next) => {
       await storage.setting.set.siteAddressDictionary(siteAddressDict)
 
       chrome.browserAction.setBadgeText({ text: '' })
-      ports[PORTS.CONTENT_SCRIPT].postMessage({
+
+      contentScriptPort.port.postMessage({
         type: MESSAGES.KOI_CONNECT_SUCCESS,
         data: { status: 200, data: 'Connected.' },
-        id: permissionId[permissionId.length - 1],
+        id: contentScriptPort.id
       })
     } else {
       chrome.browserAction.setBadgeText({ text: '' })
-      ports[PORTS.CONTENT_SCRIPT].postMessage({
+      contentScriptPort.port.postMessage({
         type: MESSAGES.KOI_CONNECT_SUCCESS,
         data: { status: 401, data: 'Connection rejected.' },
-        id: permissionId[permissionId.length - 1],
+        id: contentScriptPort.id
       })
-      ports[PORTS.CONTENT_SCRIPT].postMessage({
+      
+      contentScriptPort.port.postMessage({
         type: MESSAGES.CONNECT_ERROR,
         data: 'User cancelled the login.',
-        id: permissionId[permissionId.length - 1],
+        id: contentScriptPort.id
       })
     }
 
     removeChromeStorage(STORAGE.PENDING_REQUEST)
-    ports[PORTS.CONTENT_SCRIPT].postMessage({
+    contentScriptPort.port.postMessage({
       type: MESSAGES.CONNECT_SUCCESS,
-      id: permissionId[permissionId.length - 1],
+      id: contentScriptPort.id
     })
 
     next()
-
-    permissionId.length = 0
   } catch (err) {
     console.error(err.message)
     next({ error: 'Connect error' })

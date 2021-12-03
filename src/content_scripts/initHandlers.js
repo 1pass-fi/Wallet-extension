@@ -60,7 +60,6 @@ export default async () => {
       - Receive message from client page -> forward message to background
   */
   window.addEventListener('message', async function (event) {
-    let transaction, data
     switch (event.data.type) {
       case MESSAGES.GET_ADDRESS:
       case MESSAGES.GET_PERMISSION:
@@ -84,18 +83,22 @@ export default async () => {
           The Chrome tool doesn't allow sending message with big data.
           Save data of transaction to Chrome storage.
         */
-        transaction = get(event, 'data.data.transaction')
-        console.log('content-script transaction', transaction)
-        data = transaction.data
-
-        // TODO: add message id here
-        await storage.generic.set.transactionData({ data, id: event.data.id })
-  
-        event.data.data.transaction.data = []
+        await saveTransactionData(event)
+        
         backgroundConnect.postMessage(event.data)
         break
       default:
         break
     }
   })
+}
+
+const saveTransactionData = async (event) => {
+  const transaction = get(event, 'data.data.transaction')
+  console.log('content-script transaction', transaction)
+  const data = transaction.data
+
+  await storage.generic.set.transactionData({ data, id: event.data.id })
+
+  event.data.data.transaction.data = []
 }

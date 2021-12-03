@@ -2,84 +2,89 @@
 import { REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 
 // Utils
-import { createWindow } from 'utils/extension'
+import { createWindow, getPlatformInfo } from 'utils/extension'
 
 // Services
 import arweave from 'services/arweave'
 import storage from 'services/storage'
 
-import { createTransactionId } from 'background'
-
 
 export default async (payload, tab, next) => {
   try {
-    const { id } = payload
-    const { origin, favicon, hadPermission } = tab
-
     const { transaction } = payload.data
-    console.log('ORIGIN', origin)
-    console.log('TRANSACTION', transaction)
+    const { origin, favicon, hadPermission, hasPendingRequest } = tab
 
     if (!hadPermission) {
       next({ data: { status: 400, data: 'Do not have permissions.' } })
       return
     }
 
+    if (hasPendingRequest) {
+      next({ data: { status: 400, data: 'Request pending.' } })
+      return
+    }
+
+    const [isKoiTransfer, koiiQty] = getKoiiQty(transaction)
+
     const qty = transaction.quantity
     const address = transaction.target
     const fee = await arweave.transactions.getPrice(transaction.data_size) / 1000000000000
-    console.log('QUANTITY', qty)
-    console.log('ADDRESS', address)
 
     const screenWidth = screen.availWidth
     const screenHeight = screen.availHeight
 
-    chrome.runtime.getPlatformInfo((info) => {
-      let windowData
+    const isWin = (await getPlatformInfo()) === 'win'
+    const width = isWin ? WINDOW_SIZE.WIN_WIDTH : WINDOW_SIZE.MAC_WIDTH
+    const height = isWin ? WINDOW_SIZE.WIN_HEIGHT : WINDOW_SIZE.MAC_HEIGHT
 
-      if (info.os == 'win') {
-        windowData = {
-          url: chrome.extension.getURL('/popup.html'),
-          focused: true,
-          type: 'popup',
-          height: WINDOW_SIZE.WIN_HEIGHT,
-          width: WINDOW_SIZE.WIN_WIDTH,
-          left: Math.round((screenWidth - WINDOW_SIZE.WIN_WIDTH) / 2),
-          top: Math.round((screenHeight - WINDOW_SIZE.WIN_HEIGHT) / 2)
-        }
-      } else {
-        windowData = {
-          url: chrome.extension.getURL('/popup.html'),
-          focused: true,
-          type: 'popup',
-          height: WINDOW_SIZE.MAC_HEIGHT,
-          width: WINDOW_SIZE.MAC_WIDTH,
-          left: Math.round((screenWidth - WINDOW_SIZE.MAC_WIDTH) / 2),
-          top: Math.round((screenHeight - WINDOW_SIZE.MAC_HEIGHT) / 2)
-        }
+    const windowData = {
+      url: chrome.extension.getURL('/popup.html'),
+      focused: true,
+      type: 'popup',
+      height,
+      width,
+      left: Math.round((screenWidth - width) / 2),
+      top: Math.round((screenHeight - height) / 2)
+    }
+
+    createWindow(
+      windowData,
+      {
+        beforeCreate: async () => {
+          chrome.browserAction.setBadgeText({ text: '1' })
+          await storage.generic.set.pendingRequest({
+            type: REQUEST.TRANSACTION,
+            data: { transaction, qty, address, origin, favicon, fee, isKoi: true, isKoiTransfer, koiiQty }
+          })
+        },
+        afterClose: async () => {
+          chrome.browserAction.setBadgeText({ text: '' })
+          next({ data: { status: 403, data: 'Transaction rejected on closed.' } })
+          await storage.generic.set.pendingRequest({})
+        },
       }
-      createWindow(
-        windowData,
-        {
-          beforeCreate: async () => {
-            chrome.browserAction.setBadgeText({ text: '1' })
-            await storage.generic.set.pendingRequest({
-              type: REQUEST.TRANSACTION,
-              data: { transaction, qty, address, origin, favicon, fee, isKoi: true }
-            })
-          },
-          afterClose: async () => {
-            chrome.browserAction.setBadgeText({ text: '' })
-            next({ data: { status: 403, data: 'Transaction rejected on closed.' } })
-            await storage.generic.set.pendingRequest({})
-          },
-        }
-      )
+    )
 
-      createTransactionId.push(id)
-    })
   } catch (err) {
     console.error(err.message)
     next({ data: { status: 500, data: 'Sign transaction error' } })
   }
+}
+
+const getKoiiQty = (transaction) => {
+  let isKoiTransfer = false
+  let koiiQty = 0
+
+  try {
+    const valueString = Buffer.from(transaction.tags[3].value, 'base64')
+    const inputValue = JSON.parse(valueString)
+    const functionName = inputValue.function
+    
+    if (functionName === 'transfer' && isNumber(koiiQty)) isKoiTransfer = true
+    koiiQty = inputValue.qty
+  } catch (err) {
+    console.log('Get koii qty error: ', err.message)
+  }
+
+  return [isKoiTransfer, koiiQty]
 }

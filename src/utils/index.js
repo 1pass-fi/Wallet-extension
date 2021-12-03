@@ -768,3 +768,8 @@ export const isArweaveAddress = (arAddress) => {
 export const isEthereumAddress = (ethAddress) => {
   return Web3.utils.isAddress(ethAddress?.toUpperCase())
 }
+
+export const calculateArFee = async (dataSize) => {
+  const fee = await arweave.transactions.getPrice(dataSize)
+  return winstonToAr(fee)
+}
