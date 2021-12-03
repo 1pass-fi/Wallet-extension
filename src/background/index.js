@@ -12,19 +12,15 @@ import streamer from './streamer'
 import popupEvents from './handlers/popupEvents'
 import contentScriptEvents from './handlers/contentScriptEvents'
 
-export const popupPorts = []
+import cache from './cache'
 
 function cb(port) {
   if ((port.name).includes(PORTS.POPUP)) {
-    popupPorts.push(port)
+    cache.addPopupPort(port)
+
     port.onDisconnect.addListener((disconnect) => {
       console.log('port disconnected--', disconnect, port)
-      for (let i = 0; i < popupPorts.length; i++) {
-        if (port.name === popupPorts[i].name) {
-          popupPorts.splice(i, 1)
-          break
-        }
-      }
+      cache.removePopupPort(port)
     })
 
     port.onMessage.addListener((message) => {

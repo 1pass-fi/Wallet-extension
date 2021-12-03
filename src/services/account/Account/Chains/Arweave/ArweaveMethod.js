@@ -30,7 +30,7 @@ export class ArweaveMethod {
   async getBalances() {
     const balance = await this.koi.getWalletBalance()
     const koiBalance = await this.koi.getKoiBalance()
-    return { balance, koiBalance }
+    return { balance: Date.now(), koiBalance: Date.now() }
   }
 
   /**
