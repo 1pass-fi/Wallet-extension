@@ -95,8 +95,8 @@ export default async () => {
 
 const saveTransactionData = async (event) => {
   const transaction = get(event, 'data.data.transaction')
-  console.log('content-script transaction', transaction)
-  const data = transaction.data
+  console.log('Sending transaction to Finnie...')
+  const data = transaction.data || null
 
   await storage.generic.set.transactionData({ data, id: event.data.id })
 

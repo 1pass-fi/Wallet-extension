@@ -6,6 +6,7 @@ import { backgroundAccount } from 'services/account'
 import { MESSAGES, PORTS } from 'constants/koiConstants'
 
 import cache from 'background/cache'
+import helpers from 'background/helpers'
 
 export default async (payload, next) => {
   try {
@@ -45,7 +46,8 @@ export default async (payload, next) => {
       }
 
       tx.data = transactionData
-      transaction = await account.method.signTransaction(tx)
+      transaction = await helpers.cloneTransaction(tx)
+      await account.method.signTx(transaction)
 
       next()
 
@@ -80,5 +82,16 @@ export default async (payload, next) => {
   } catch (err) {
     console.error(err.message)
     next({ error: 'Sign transaction error' })
+
+    contentScriptPort.port.postMessage({
+      type: MESSAGES.CREATE_TRANSACTION_ERROR,
+      data: { message: 'Sign transaction error'},
+      id: contentScriptPort.id
+    })
+    contentScriptPort.port.postMessage({
+      type: MESSAGES.KOI_CREATE_TRANSACTION_SUCCESS,
+      data: { status: 500, data: 'Sign transaction error' },
+      id: contentScriptPort.id
+    })
   }
 }

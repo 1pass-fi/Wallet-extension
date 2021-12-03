@@ -34,7 +34,7 @@ export default () => {
     connect: () => buildPromise(MESSAGE_TYPES.CONNECT),
     sign: (transaction) => {
       let plainTransaction = {
-        data: JSON.stringify(transaction.data),
+        data: transaction.data ? JSON.stringify(transaction.data): null,
         data_root: transaction.data_root,
         tags: transaction.tags,
         quantity: transaction.quantity,
@@ -94,18 +94,20 @@ export default () => {
     /**
        * sign
        * @param {Transaction} transaction 
-       * @returns {Object} { status: 200 } (On sign succeeded, the inputted transaction will be sign)
+       * @returns {Object} { status: 200 } (On sign succeeded, the inputted transaction will be signed)
        * @returns {Object} { status: 403, data: 'Transaction rejected.' }
        */
     sign: (transaction) => {
       // create a plainTransaction
       let plainTransaction = {
-        data: JSON.stringify(transaction.data),
+        data: transaction.data ? JSON.stringify(transaction.data) : null,
         data_root: transaction.data_root,
         tags: transaction.tags,
         quantity: transaction.quantity,
-        data_size: transaction.data_size
+        data_size: transaction.data_size,
+        target: transaction.target
       }
+
       return buildPromise(MESSAGE_TYPES.KOI_CREATE_TRANSACTION, { transaction: plainTransaction })
         .then((response) => {
           console.log(response)
