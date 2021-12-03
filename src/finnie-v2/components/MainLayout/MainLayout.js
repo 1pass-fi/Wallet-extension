@@ -2,12 +2,16 @@ import React from 'react'
 
 import NavBar from 'finnie-v2/components/NavBar'
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ title, children }) => {
   return (
-    <>
+    <div className="w-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
       <NavBar />
-      <div>{children}</div>
-    </>
+      <div className="sticky top-16 z-50 bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800 text-white w-full text-3xl tracking-wider h-18.75 px-13.75 pt-7.25">
+        {title.toUpperCase()}
+      </div>
+
+      <main>{children}</main>
+    </div>
   )
 }
 

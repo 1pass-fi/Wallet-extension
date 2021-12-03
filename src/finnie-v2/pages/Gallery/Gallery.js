@@ -4,8 +4,8 @@ import MainLayout from 'finnie-v2/components/MainLayout'
 
 const Gallery = () => {
   return (
-    <MainLayout>
-      <div>This is from the gallery</div>
+    <MainLayout title="Gallery">
+      <div className="text-white">This is Gallery Page</div>
     </MainLayout>
   )
 }
