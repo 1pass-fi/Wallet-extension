@@ -14,9 +14,6 @@ import contentScriptEvents from './handlers/contentScriptEvents'
 
 export const popupPorts = []
 
-export const generatedKey = { key: null, mnemonic: null, type: null, address: null }
-
-
 function cb(port) {
   if ((port.name).includes(PORTS.POPUP)) {
     popupPorts.push(port)

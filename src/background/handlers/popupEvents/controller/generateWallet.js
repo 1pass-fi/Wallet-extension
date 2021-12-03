@@ -7,7 +7,7 @@ import { Ethereum } from 'services/ethereum'
 // Constants
 import { TYPE } from 'constants/accountConstants'
 
-import { generatedKey } from 'background'
+import cache from 'background/cache'
 
 export default async (payload, next) => {
   try {
@@ -30,10 +30,12 @@ export default async (payload, next) => {
         walletObj.wallet = key
     }
 
+    const generatedKey = cache.getGeneratedKey()
     generatedKey.key = walletObj.wallet
     generatedKey.mnemonic = seedPhrase
     generatedKey.type = walletType
     generatedKey.address = address
+    cache.setGeneratedKey(generatedKey)
 
     next({ data: seedPhrase.split(' ') })    
   } catch (err) {

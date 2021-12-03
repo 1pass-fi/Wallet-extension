@@ -12,11 +12,13 @@ import helpers from 'background/helpers'
 // Utils
 import { getProviderUrlFromName } from 'utils'
 
-import { generatedKey } from 'background'
+import cache from 'background/cache'
 
 export default async (payload, next) => {
   try {
     let { password, provider } = payload.data
+    const generatedKey = cache.getGeneratedKey()
+
     // Get key and seedphrase from koitool.
     const { key, mnemonic: seedPhrase, type } = generatedKey
     if (type == TYPE.ARWEAVE) provider = null
