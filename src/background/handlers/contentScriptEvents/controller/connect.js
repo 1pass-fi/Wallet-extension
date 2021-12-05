@@ -12,7 +12,6 @@ import { backgroundAccount } from 'services/account'
 
 export default async (payload, tab, next) => {
   try {
-    const { id } = payload
     const { hadPermission, origin, favicon, hasPendingRequest } = tab 
 
     const savedAccountCount = await backgroundAccount.count()

@@ -3,7 +3,7 @@ import '@babel/polyfill'
 import { EventHandler } from 'services/request/src/backgroundConnect'
 import { contentBackgroundConnect as backgroundConnect } from 'services/request/contentScript'
 import { MESSAGES } from 'constants/koiConstants'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 
 
 import storage from 'services/storage'
@@ -94,6 +94,12 @@ export default async () => {
 }
 
 const saveTransactionData = async (event) => {
+  // check for hasPendingRequest
+  const pendingRequest = await storage.generic.get.pendingRequest()
+  const hasPendingRequest = !isEmpty(pendingRequest)
+
+  if (hasPendingRequest) return
+
   const transaction = get(event, 'data.data.transaction')
   console.log('Sending transaction to Finnie...')
   const data = transaction.data || null

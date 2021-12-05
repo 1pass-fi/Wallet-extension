@@ -1,7 +1,9 @@
 import EventEmitter from 'events'
-import { get } from 'lodash'
+import { get, includes } from 'lodash'
 
 import { MESSAGES } from 'constants/koiConstants'
+
+import cache from 'background/cache'
 
 export default class PopupEvents extends EventEmitter {
   sendMessage(endpoint, payload) {
@@ -11,6 +13,11 @@ export default class PopupEvents extends EventEmitter {
     })
 
     promise.then(result => {
+      const twoStepEndpoints = [
+        MESSAGES.HANDLE_CONNECT,
+        MESSAGES.HANDLE_SIGN_TRANSACTION
+      ]
+
       if (get(result, 'error')) {
         port.postMessage({
           type: endpoint,
@@ -33,6 +40,28 @@ export default class PopupEvents extends EventEmitter {
           })
         }
       }
+
+      if (includes(twoStepEndpoints, endpoint))
+        this.#sendMessageToContentScript(result.data, result.status)
+    })
+  }
+
+  #sendMessageToContentScript(messageData, status) {
+    const isError = status !== 200
+    const contentScriptPort = cache.getContentScriptPort()
+
+    let data = { status, data: messageData }
+    let endpoint = contentScriptPort.endpoint + '_SUCCESS'
+
+    if (!includes(contentScriptPort.endpoint, 'KOI')) {
+      if (isError) endpoint = contentScriptPort.endpoint + '_ERROR'
+      data = messageData
+    }
+
+    contentScriptPort.port.postMessage({
+      type: endpoint,
+      data,
+      id: contentScriptPort.id
     })
   }
 }

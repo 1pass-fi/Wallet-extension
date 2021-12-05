@@ -24,16 +24,17 @@ export default class ContentScriptEvents extends EventEmitter {
     })
 
     const twoStepEndpoints = [
-      MESSAGES.KOI_CONNECT,
       MESSAGES.CONNECT,
       MESSAGES.CREATE_TRANSACTION,
+      MESSAGES.KOI_CONNECT,
       MESSAGES.KOI_CREATE_TRANSACTION
     ] 
 
     if (twoStepEndpoints.includes(endpoint) && !tabData.hasPendingRequest) {
       const contentScriptPort = {
         port,
-        id: payload.id
+        id: payload.id,
+        endpoint
       }
 
       cache.setContentScriptPort(contentScriptPort)

@@ -110,19 +110,19 @@ export default () => {
 
       return buildPromise(MESSAGE_TYPES.KOI_CREATE_TRANSACTION, { transaction: plainTransaction })
         .then((response) => {
-          console.log(response)
           const signedTransaction = response.data   
 
-          // add signature to the transaction    
-          transaction.setSignature({
-            id: signedTransaction.id,
-            owner: signedTransaction.owner,
-            tags: signedTransaction.tags,
-            signature: signedTransaction.signature,
-          })
-          return { status: 200 }
+          if (response.data.signature) {
+            transaction.setSignature({
+              id: signedTransaction.id,
+              owner: signedTransaction.owner,
+              tags: signedTransaction.tags,
+              signature: signedTransaction.signature,
+            })
+          }
+  
+          return response
         })
-
     } ,
 
     /**

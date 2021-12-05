@@ -2,9 +2,6 @@
 import storage from 'services/storage'
 import { backgroundAccount } from 'services/account'
 
-// Constants
-import { MESSAGES, PORTS } from 'constants/koiConstants'
-
 import cache from 'background/cache'
 import helpers from 'background/helpers'
 
@@ -30,18 +27,7 @@ export default async (payload, next) => {
       const {data: transactionData, id} = await storage.generic.get.transactionData()
 
       if (id !== contentScriptPort.id) {
-        next()
-
-        contentScriptPort.port.postMessage({
-          type: MESSAGES.CREATE_TRANSACTION_ERROR,
-          data: 'Invalid data input',
-          id: contentScriptPort.id
-        })
-        contentScriptPort.port.postMessage({
-          type: MESSAGES.KOI_CREATE_TRANSACTION_SUCCESS,
-          data: { status: 400, data: 'Invalid data input' },
-          id: contentScriptPort.id
-        })
+        next({ data: 'Invalid data input', status: 400 })
         return
       }
 
@@ -49,49 +35,16 @@ export default async (payload, next) => {
       transaction = await helpers.cloneTransaction(tx)
       await account.method.signTx(transaction)
 
-      next()
-
-      contentScriptPort.port.postMessage({
-        type: MESSAGES.CREATE_TRANSACTION_SUCCESS,
-        data: transaction,
-        id: contentScriptPort.id
-      })
-      contentScriptPort.port.postMessage({
-        type: MESSAGES.KOI_CREATE_TRANSACTION_SUCCESS,
-        data: { status: 200, data: transaction },
-        id: contentScriptPort.id
-      })
+      next({ data: transaction, status: 200 })
     } else {
       /* 
         Sign transaction rejected
       */
       chrome.browserAction.setBadgeText({ text: '' })
-      next()
-
-      contentScriptPort.port.postMessage({
-        type: MESSAGES.CREATE_TRANSACTION_ERROR,
-        data: { message: 'Transaction rejected.'},
-        id: contentScriptPort.id
-      })
-      contentScriptPort.port.postMessage({
-        type: MESSAGES.KOI_CREATE_TRANSACTION_SUCCESS,
-        data: { status: 403, data: 'Transaction rejected.' },
-        id: contentScriptPort.id
-      })
+      next({ data: 'Transaction rejected', status: 403 })
     }  
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Sign transaction error' })
-
-    contentScriptPort.port.postMessage({
-      type: MESSAGES.CREATE_TRANSACTION_ERROR,
-      data: { message: 'Sign transaction error'},
-      id: contentScriptPort.id
-    })
-    contentScriptPort.port.postMessage({
-      type: MESSAGES.KOI_CREATE_TRANSACTION_SUCCESS,
-      data: { status: 500, data: 'Sign transaction error' },
-      id: contentScriptPort.id
-    })
+    next({ data: 'Sign transaction error', status: 500 })
   }
 }
