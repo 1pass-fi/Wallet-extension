@@ -6,6 +6,7 @@ import storage from 'services/storage'
 import { ArweaveAccount, EthereumAccount } from 'services/account/Account'
 import { backgroundAccount } from 'services/account'
 import { koiTools as koi } from 'services/arweave'
+import eth from 'services/ethereum'
 
 // Constants
 import { TYPE } from 'constants/accountConstants'

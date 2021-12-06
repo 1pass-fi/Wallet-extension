@@ -81,3 +81,5 @@ export class Ethereum {
     return generateMnemonic()
   }
 }
+
+export default new Ethereum()
