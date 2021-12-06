@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import Button from 'finnie-v2/components/Button'
 import NavBar from 'finnie-v2/components/NavBar'
@@ -56,18 +56,33 @@ const NFTDetail = () => {
               </div>
               <div className="text-sm mb-2">{`Registered: ${formatDatetime(nft.createdAt)}`}</div>
               <div className="flex w-68 gap-4 mb-5">
-                <Button
-                  icon={BlockIcon}
-                  text="Explore Block"
-                  variant="inversed"
-                  className="border-opacity-20"
-                />
-                <Button icon={LeaderboardIcon} text="Leaderboard" variant="warning" />
+                <a href={`https://viewblock.io/arweave/tx/${nft.txId}`} target="_blank">
+                  <Button
+                    icon={BlockIcon}
+                    text="Explore Block"
+                    variant="inversed"
+                    className="border-opacity-20"
+                  />
+                </a>
+                <a href={`https://koi.rocks/`} target="_blank">
+                  <Button icon={LeaderboardIcon} text="Leaderboard" variant="warning" />
+                </a>
               </div>
               <p className="w-full h-18 overflow-y-scroll text-sm leading-6 pr-4">
                 {nft.description}
               </p>
-              <div className="flex items-center justify-between h-11.5 mt-18.75 gap-5">
+              <div className="flex flex-wrap gap-x-2.5 gap-y-1 h-11 overflow-y-scroll">
+                {nft.tags &&
+                  nft.tags.map((tag) => (
+                    <div
+                      key={tag}
+                      className="bg-lightBlue text-indigo tracking-finnieSpacing-wide text-xs rounded-full h-5 py-0.5 px-3"
+                    >
+                      {tag}
+                    </div>
+                  ))}
+              </div>
+              <div className="flex items-center justify-between h-11.5 mt-7.5 gap-5">
                 <Button
                   size="lg"
                   icon={ShareIcon}

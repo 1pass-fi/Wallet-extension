@@ -37,6 +37,7 @@ module.exports = {
         '2xs': '10px'
       },
       spacing: {
+        0.5: '0.125rem',
         1.5: '0.375rem',
         1.75: '0.4375rem',
         3.75: '0.9375rem',
