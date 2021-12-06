@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
 
+import { setAssets } from 'options/actions/assets'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 
 import { popupAccount } from 'services/account'
@@ -27,6 +28,19 @@ const SecondVer = () => {
 
   useEffect(() => {
     updateDefaultAccountData()
+  }, [])
+
+  useEffect(() => {
+    const loadNFTCards = async () => {
+      await popupAccount.loadImported()
+
+      const allAssets = await popupAccount.getAllAssets()
+      const validAssets = allAssets.filter((asset) => asset.name !== '...')
+
+      dispatch(setAssets({ nfts: validAssets }))
+    }
+
+    loadNFTCards()
   }, [])
 
   return (

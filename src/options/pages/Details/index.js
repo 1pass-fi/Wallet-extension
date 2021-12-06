@@ -8,7 +8,7 @@ import find from 'lodash/find'
 export default () => {
   const { txid } = useParams()
 
-  const assets = useSelector(state => state.assets)
+  const assets = useSelector((state) => state.assets)
 
   const choosenCard = find(assets.nfts, { txId: txid })
 
