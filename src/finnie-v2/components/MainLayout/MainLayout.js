@@ -10,7 +10,9 @@ const MainLayout = ({ title, children }) => {
         {title.toUpperCase()}
       </div>
 
-      <main>{children}</main>
+      <div className="flex justify-center">
+        <main className="px-20 lg:px-40">{children}</main>
+      </div>
     </div>
   )
 }
