@@ -1,40 +1,14 @@
 import React from 'react'
 
 import { TYPE } from 'constants/accountConstants'
-import formatNumber from 'finnie-v2/utils/formatNumber'
-import formatLongString from 'finnie-v2/utils/formatLongString'
 
-import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
-import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+import NFTCardArweave from './NFTCardArweave'
+import NFTCardEthereum from './NFTCardEthereum'
 
 const NFTCard = ({ nft }) => {
-  return (
-    <div className="relative text-white rounded bg-blue-800 w-46.75 h-62.5 pt-1.75 px-1.75">
-      <div className="w-42.5 h-37.75">
-        <img src={nft.imageUrl} className="w-fulll h-full object-cover rounded" />
-      </div>
-      <div className="pl-1.75 flex flex-col mt-3.75 gap-y-1">
-        <div className="font-semibold text-xs tracking-finnieSpacing-wide">
-          {formatLongString(nft.name, 24)}
-        </div>
-        <div className="text-2xs font-light tracking-finnieSpacing-wide text-warnings">
-          Category
-        </div>
-        <div className="text-2xs tracking-finnieSpacing-wide text-turquoiseBlue">
-          {nft.totalViews + ` views`}
-        </div>
-        <div className="text-2xs tracking-finnieSpacing-wide text-lightBlue">
-          {formatNumber(nft.earnedKoi, 2) + ` KOII earned`}
-        </div>
-      </div>
-      {nft.type === TYPE.ARWEAVE && (
-        <KoiiLogo className="absolute w-5 h-5 bottom-1.75 right-1.75" />
-      )}
-      {nft.type === TYPE.ETHEREUM && (
-        <EthereumLogo className="absolute w-5 h-5 bottom-1.75 right-1.75" />
-      )}
-    </div>
-  )
+  if (nft.type === TYPE.ARWEAVE) return <NFTCardArweave nft={nft} />
+  if (nft.type === TYPE.ETHEREUM) return <NFTCardEthereum nft={nft} />
+  return null
 }
 
 export default NFTCard

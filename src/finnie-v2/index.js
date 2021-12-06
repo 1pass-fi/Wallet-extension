@@ -8,6 +8,7 @@ import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 
 import Gallery from './pages/Gallery'
+import NFTDetail from './pages/NFTDetail'
 
 import './style.css'
 
@@ -30,7 +31,10 @@ const SecondVer = () => {
 
   return (
     <Switch>
-      <Route path="*">
+      <Route exact path="/v2/nfts/:id">
+        <NFTDetail />
+      </Route>
+      <Route exact path="*">
         <Gallery />
       </Route>
     </Switch>

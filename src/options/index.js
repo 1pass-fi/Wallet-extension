@@ -30,7 +30,7 @@ const Gallery = () => {
     <Provider store={store}>
       <Router>
         <Switch>
-          <Route exact path="/v2">
+          <Route path="/v2">
             <SecondVer />
           </Route>
           <Layout>
