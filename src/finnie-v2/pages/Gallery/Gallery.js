@@ -9,10 +9,10 @@ const Gallery = () => {
 
   return (
     <MainLayout title="Gallery">
-      <div className="text-white font-semibold text-base w-202 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-3.75 place-items-center">
-        {filteredNfts.length === 0
-          ? 'No NFTs found'
-          : filteredNfts.map((nft) => <NFTCard nft={nft} key={nft.txId} />)}
+      <div className="w-202 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-3.75 place-items-center">
+        {filteredNfts.map((nft) => (
+          <NFTCard nft={nft} key={nft.txId} />
+        ))}
       </div>
     </MainLayout>
   )

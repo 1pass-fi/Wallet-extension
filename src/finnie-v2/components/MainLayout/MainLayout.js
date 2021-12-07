@@ -16,7 +16,7 @@ const MainLayout = ({ title, children }) => {
           <aside className="fixed w-57.75">
             <Sidebar />
           </aside>
-          <main className="ml-65.5">{children}</main>
+          <main className="ml-65.5 pb-5">{children}</main>
         </div>
       </div>
     </div>
