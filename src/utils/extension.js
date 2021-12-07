@@ -61,3 +61,9 @@ export const performOnDifferentOs = (win, others) => (payload) => {
     others(payload)
   }
 }
+
+export const getPlatformInfo = () => new Promise(resolve => {
+  chrome.runtime.getPlatformInfo((info) => {
+    resolve(info.os)
+  })
+})

@@ -9,12 +9,9 @@ import { createWindow } from 'utils/extension'
 import storage from 'services/storage'
 import { backgroundAccount } from 'services/account'
 
-import { permissionId } from 'background'
-
 
 export default async (payload, tab, next) => {
   try {
-    const { id } = payload
     const { hadPermission, origin, favicon, hasPendingRequest } = tab 
 
     const savedAccountCount = await backgroundAccount.count()
@@ -82,8 +79,6 @@ export default async (payload, tab, next) => {
           },
         }
       )
-
-      permissionId.push(id)
     } else {
       next({ data: 'This site has already connected.' })
     }

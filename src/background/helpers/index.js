@@ -1,5 +1,4 @@
 import { backgroundAccount } from 'services/account'
-import { popupPorts } from '../index'
 
 import { MESSAGES } from 'constants/koiConstants'
 
@@ -11,7 +10,9 @@ import sendMessageToPorts from './sendMessageToPorts'
 import pendingTransactionFactory from './pendingTransaction'
 import uploadNft from './uploadNft'
 import saveContent from './saveContent'
+import cloneTransaction from './cloneTransaction'
 
+import cache from 'background/cache'
 
 const checkHasAccounts = (fn) => (...args) => {
   if (backgroundAccount.importedAccount.length > 0) return fn(...args)
@@ -19,7 +20,7 @@ const checkHasAccounts = (fn) => (...args) => {
 
 const sendMessageAfterRun = (fn, message) => async (...args) => {
   await fn(...args)
-  sendMessageToPorts(popupPorts)(message)
+  sendMessageToPorts(cache.getPopupPorts())(message)
 }
 
 const helpers = {
@@ -32,12 +33,13 @@ const helpers = {
   sendMessageToPopupPorts: () => {},
   pendingTransactionFactory,
   uploadNft,
-  saveContent
+  saveContent,
+  cloneTransaction
 }
 
 // popupPorts will be undefined as first synchronous run
 setTimeout(() => {
-  helpers.sendMessageToPopupPorts = sendMessageToPorts(popupPorts)
+  helpers.sendMessageToPopupPorts = sendMessageToPorts(cache.getPopupPorts())
 }, 0)
 
 export default helpers

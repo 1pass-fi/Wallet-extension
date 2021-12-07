@@ -10,6 +10,8 @@ import { getSelectedTab } from 'utils/extension'
 // Services
 import storage from 'services/storage'
 
+import cache from 'background/cache'
+
 import { ports } from 'background'
 
 export default class ContentScriptEvents extends EventEmitter {
@@ -22,14 +24,20 @@ export default class ContentScriptEvents extends EventEmitter {
     })
 
     const twoStepEndpoints = [
-      MESSAGES.KOI_CONNECT,
       MESSAGES.CONNECT,
       MESSAGES.CREATE_TRANSACTION,
+      MESSAGES.KOI_CONNECT,
       MESSAGES.KOI_CREATE_TRANSACTION
     ] 
 
-    if (twoStepEndpoints.includes(endpoint)) {
-      ports[PORTS.CONTENT_SCRIPT] = port
+    if (twoStepEndpoints.includes(endpoint) && !tabData.hasPendingRequest) {
+      const contentScriptPort = {
+        port,
+        id: payload.id,
+        endpoint
+      }
+
+      cache.setContentScriptPort(contentScriptPort)
     }
 
     promise.then(result => {

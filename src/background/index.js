@@ -1,11 +1,8 @@
 import '@babel/polyfill'
-import { Web } from '@_koi/sdk/web'
 
 // Constants
-import { PORTS, OS, PATH, MESSAGES } from 'constants/koiConstants'
+import { PORTS, OS, PATH } from 'constants/koiConstants'
 import { IMPORTED } from 'constants/accountConstants'
-
-import { Ethereum } from 'services/ethereum'
 
 import { getChromeStorage } from 'utils'
 
@@ -15,29 +12,15 @@ import streamer from './streamer'
 import popupEvents from './handlers/popupEvents'
 import contentScriptEvents from './handlers/contentScriptEvents'
 
-const koi = new Web()
-const eth = new Ethereum()
-export const ports = {}
-export const permissionId = []
-export const createTransactionId = []
-const sender = []
-
-export const popupPorts = []
-
-export const generatedKey = { key: null, mnemonic: null, type: null, address: null }
-
+import cache from './cache'
 
 function cb(port) {
   if ((port.name).includes(PORTS.POPUP)) {
-    popupPorts.push(port)
+    cache.addPopupPort(port)
+
     port.onDisconnect.addListener((disconnect) => {
       console.log('port disconnected--', disconnect, port)
-      for (let i = 0; i < popupPorts.length; i++) {
-        if (port.name === popupPorts[i].name) {
-          popupPorts.splice(i, 1)
-          break
-        }
-      }
+      cache.removePopupPort(port)
     })
 
     port.onMessage.addListener((message) => {
