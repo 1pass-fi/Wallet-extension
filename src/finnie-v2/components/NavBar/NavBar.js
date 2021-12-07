@@ -16,7 +16,7 @@ const NavBar = () => {
       <div className="flex items-center">
         <KoiiLogo className="h-8 w-10.75" />
         <nav className="ml-6.25 tracking-finnieSpacing-wider">
-          <NavLink to="/gallery">Gallery</NavLink>
+          <NavLink to="/v2/gallery">Gallery</NavLink>
         </nav>
       </div>
 
