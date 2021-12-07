@@ -37,7 +37,7 @@ const SecondVer = () => {
       const allAssets = await popupAccount.getAllAssets()
       const validAssets = allAssets.filter((asset) => asset.name !== '...')
 
-      dispatch(setAssets({ nfts: validAssets }))
+      dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
     }
 
     loadNFTCards()

@@ -73,7 +73,8 @@ module.exports = {
         68: '17rem',
         100.25: '25.0625rem',
         101: '25.25rem',
-        115: '28.75rem'
+        115: '28.75rem',
+        202: '50.5rem'
       },
       letterSpacing: {
         'finnieSpacing-tighter': '-0.02em',

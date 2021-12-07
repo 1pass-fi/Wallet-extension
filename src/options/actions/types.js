@@ -15,3 +15,4 @@ export const SET_COLLECTIONS = 'SET_COLLECTIONS'
 
 // Assets (NFT)
 export const SET_ASSETS = 'SET_ASSETS'
+export const SET_FILTER_NFTS = 'SET_FILTER_NFTS'

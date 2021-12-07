@@ -1,7 +1,8 @@
-import { SET_ASSETS } from '../actions/types'
+import { SET_ASSETS, SET_FILTER_NFTS } from '../actions/types'
 
 const initialState = {
-  nfts: []
+  nfts: [],
+  filteredNfts: []
 }
 
 export default function assetsReducer(state = initialState, action) {
@@ -10,6 +11,8 @@ export default function assetsReducer(state = initialState, action) {
   switch (type) {
     case SET_ASSETS:
       return { ...state, ...payload }
+    case SET_FILTER_NFTS:
+      return { ...state, filteredNfts: payload }
     default:
       return state
   }
