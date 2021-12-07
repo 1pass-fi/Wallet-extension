@@ -8,9 +8,12 @@ export const setAssets = (payload) => (dispatch) => {
   })
 }
 
-export const filterNft = (searchStr) => (dispatch) => {
+export const filterNft = ({ searchStr, chainType }) => (dispatch) => {
   const nfts = store.getState().assets.nfts
-  const filteredNfts = nfts.filter((nft) => nft.name.includes(searchStr))
+  let filteredNfts = nfts.filter((nft) => nft.name.includes(searchStr))
+  if (chainType) {
+    filteredNfts = filteredNfts.filter((nft) => nft.type === chainType)
+  }
 
   dispatch({
     type: SET_FILTER_NFTS,
