@@ -25,6 +25,7 @@ import sendNft from './sendNft'
 import handleExpiredTransaction from './handleExpiredTransaction'
 import loadFriendReferralData from './loadFriendReferralData'
 import createDID from './createDID'
+import updateDID from './updateDID'
 
 
 export default {
@@ -54,5 +55,6 @@ export default {
   sendNft,
   handleExpiredTransaction,
   loadFriendReferralData,
-  createDID
+  createDID,
+  updateDID
 }

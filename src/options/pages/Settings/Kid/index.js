@@ -36,10 +36,13 @@ const KidPage = () => {
     description: '',
   })
 
+  const [hadData, setHadData] = useState(false)
+  const [didID, setDidID] = useState(null)
+
   const [profilePictureId, setProfilePictureId] = useState(null)
   const [bannerId, setBannerId] = useState(null)
 
-  const [linkAccounts, setLinkAccounts] = useState([{ title: '', link: '' }])
+  const [linkAccounts, setLinkAccounts] = useState([{ title: 'face', link: 'abcd' }])
   const [customCss, setCustomCss] = useState('')
 
   const [usingCustomCss, setUsingCustomCss] = useState(false)
@@ -137,8 +140,13 @@ const KidPage = () => {
     }
 
     // console.log(state)
+    let result
+    if (hadData) {
+      result = await backgroundRequest.gallery.updateDID({ didData: state, txId: didID })
+    } else {
+      result = await backgroundRequest.gallery.createDID({ didData: state })
+    }
 
-    const result = await backgroundRequest.gallery.createDID({ didData: state })
     console.log('result', result)
   }
 
@@ -231,13 +239,13 @@ const KidPage = () => {
             <div className="link-accounts-input-line" key={idx}>
               <input
                 className="link-accounts-input-name"
-                value={linkAccounts.name}
+                value={linkAccounts.title}
                 placeholder="Label (e.g. “Website”)"
                 onChange={(e) => handleChangeLinkAccountName(idx, e)}
               />
               <input
                 className="link-accounts-input-value"
-                value={linkAccounts.value}
+                value={linkAccounts.link}
                 placeholder="https://koii.network/"
                 onChange={(e) => handleChangeLinkAccountValue(idx, e)}
               />

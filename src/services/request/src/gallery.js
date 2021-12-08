@@ -141,4 +141,8 @@ export class GalleryRequest extends Request {
   createDID(body) {
     return this.promise(MESSAGES.HANDLE_CREATE_DID, body)
   }
+
+  updateDID(body) {
+    return this.promise(MESSAGES.HANDLE_UPDATE_DID, body)
+  }
 }
