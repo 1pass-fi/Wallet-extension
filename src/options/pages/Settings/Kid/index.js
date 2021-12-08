@@ -1,8 +1,10 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import AceEditor from 'react-ace'
 import 'ace-builds/src-noconflict/mode-css'
 import 'ace-builds/src-noconflict/theme-monokai'
+import { includes } from 'lodash'
 
 import IDCardIcon from 'img/id-card-icon.svg'
 import AddIcon from 'img/navbar/create-nft.svg'
@@ -15,6 +17,7 @@ import Button from '../../../shared/Button'
 import ToggleButton from 'options/components/toggleButton'
 import ExpandIcon from 'img/share-icon.svg'
 import CloseIcon from 'img/ab-close-icon.svg'
+import GoBackIcon from 'img/goback-icon-26px.svg'
 
 import parseCss from 'utils/parseCss'
 
@@ -34,13 +37,43 @@ const KidPage = () => {
   })
 
   const [profilePictureId, setProfilePictureId] = useState(null)
-  const [bannerId, setBannerId] = useState(null) 
+  const [bannerId, setBannerId] = useState(null)
 
   const [linkAccounts, setLinkAccounts] = useState([{ title: '', link: '' }])
   const [customCss, setCustomCss] = useState('')
 
   const [usingCustomCss, setUsingCustomCss] = useState(false)
   const [expandedCssEditor, setExpandedCssEditor] = useState(false)
+
+  const [showModal, setShowModal] = useState(false)
+  const [modalType, setModalType] = useState('')
+  const assets = useSelector((state) => state.assets)
+  const modalRef = useRef(null)
+
+  const close = () => setShowModal(false)
+  const handleSelectNFTProfileImg = (nft) => {
+    if (modalType === 'AVATAR') {
+      setProfilePictureId(nft.txId)
+      setShowModal(false)
+    }
+    if (modalType === 'BACKGROUND') {
+      setBannerId(nft.txId)
+      setShowModal(false)
+    }
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        close()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [modalRef])
 
   const toggleExpandedCssEditor = () => setExpandedCssEditor((prev) => !prev)
 
@@ -96,16 +129,18 @@ const KidPage = () => {
       name: userKID.name,
       description: userKID.description,
       links: linkAccounts,
-      picture: 'Rmz-ZNlaKBSAg30DR6-2Xyx4JFKvfkwn9j_YVFl0HVM',
-      banner: 'xmGWfLSUNJ5LPNbTUKVWJhXsSf-tkmA5cEAl0UsNjQg',
+      picture: profilePictureId,
+      banner: bannerId,
       addresses: [],
       styles: parseCss(customCss),
-      code: customCss
+      code: customCss,
     }
+
+    // console.log(state)
 
     const result = await backgroundRequest.gallery.createDID({ didData: state })
     console.log('result', result)
-  } 
+  }
 
   return (
     <div className="kid-page-wrapper">
@@ -123,12 +158,26 @@ const KidPage = () => {
           <div className="img">
             <img className="profile-picture" src={profileSrc}></img>
           </div>
-          <Button startIcon={EditIcon} text="Change Avatar" />
+          <Button
+            startIcon={EditIcon}
+            onClick={() => {
+              setShowModal(true)
+              setModalType('AVATAR')
+            }}
+            text="Change Avatar"
+          />
           <div className="avt-desc">
             Or <Link to="/create">create an NFT</Link> to add a new image to your gallery
           </div>
           <img className="profile-cover" src={bannerSrc} alt="profile-cover"></img>
-          <Button startIcon={EditIcon} text="Change Background" />
+          <Button
+            startIcon={EditIcon}
+            onClick={() => {
+              setShowModal(true)
+              setModalType('BACKGROUND')
+            }}
+            text="Change Background"
+          />
           <div className="avt-desc">This is yout cover image</div>
         </div>
 
@@ -264,6 +313,29 @@ const KidPage = () => {
             <Button onClick={handleSubmit} variant="filled" text="Save & Update" />
           </div>
         </div>
+        {showModal && (
+          <div ref={modalRef} className="select-nft-profile-modal">
+            <GoBackIcon onClick={close} className="go-back-icon" />
+            <CloseIcon onClick={close} className="close-icon" />
+            <div className="nfts">
+              {assets.nfts.map((nft) => {
+                if (includes(nft.contentType, 'image'))
+                  return (
+                    <div
+                      className="nft"
+                      onClick={() => handleSelectNFTProfileImg(nft)}
+                      key={nft.txId}
+                    >
+                      <div className="nft-image">
+                        <img src={nft.imageUrl} />
+                      </div>
+                      <div className="nft-name">{nft.name}</div>
+                    </div>
+                  )
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
