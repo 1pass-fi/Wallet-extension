@@ -11,6 +11,7 @@ import pendingTransactionFactory from './pendingTransaction'
 import uploadNft from './uploadNft'
 import saveContent from './saveContent'
 import cloneTransaction from './cloneTransaction'
+import did from './did'
 
 import cache from 'background/cache'
 
@@ -34,7 +35,8 @@ const helpers = {
   pendingTransactionFactory,
   uploadNft,
   saveContent,
-  cloneTransaction
+  cloneTransaction,
+  did
 }
 
 // popupPorts will be undefined as first synchronous run

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import AceEditor from 'react-ace'
 import 'ace-builds/src-noconflict/mode-css'
@@ -16,6 +16,10 @@ import ToggleButton from 'options/components/toggleButton'
 import ExpandIcon from 'img/share-icon.svg'
 import CloseIcon from 'img/ab-close-icon.svg'
 
+import parseCss from 'utils/parseCss'
+
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+
 import './index.css'
 
 const KidPage = () => {
@@ -29,13 +33,26 @@ const KidPage = () => {
     description: '',
   })
 
-  const [linkAccounts, setLinkAccounts] = useState([{ name: '', value: '' }])
+  const [profilePictureId, setProfilePictureId] = useState(null)
+  const [bannerId, setBannerId] = useState(null) 
+
+  const [linkAccounts, setLinkAccounts] = useState([{ title: '', link: '' }])
   const [customCss, setCustomCss] = useState('')
 
   const [usingCustomCss, setUsingCustomCss] = useState(false)
   const [expandedCssEditor, setExpandedCssEditor] = useState(false)
 
   const toggleExpandedCssEditor = () => setExpandedCssEditor((prev) => !prev)
+
+  const profileSrc = useMemo(() => {
+    if (profilePictureId) return `https://arweave.net/${profilePictureId}`
+    return ProfileCover
+  }, [profilePictureId])
+
+  const bannerSrc = useMemo(() => {
+    if (bannerId) return `https://arweave.net/${bannerId}/`
+    return ProfileCover
+  }, [bannerId])
 
   const onChangeUserInfo = (e) => {
     const { name, value } = e.target
@@ -51,14 +68,14 @@ const KidPage = () => {
 
   const handleChangeLinkAccountName = (idx, e) => {
     const prevLinkAccounts = [...linkAccounts]
-    prevLinkAccounts[idx]['name'] = e.target.value
+    prevLinkAccounts[idx]['title'] = e.target.value
 
     setLinkAccounts(prevLinkAccounts)
   }
 
   const handleChangeLinkAccountValue = (idx, e) => {
     const prevLinkAccounts = [...linkAccounts]
-    prevLinkAccounts[idx]['value'] = e.target.value
+    prevLinkAccounts[idx]['link'] = e.target.value
 
     setLinkAccounts(prevLinkAccounts)
   }
@@ -72,6 +89,23 @@ const KidPage = () => {
     newLinkAccount.splice(idx, 1)
     setLinkAccounts(newLinkAccount)
   }
+
+  const handleSubmit = async () => {
+    console.log('===== STATE =====')
+    const state = {
+      name: userKID.name,
+      description: userKID.description,
+      links: linkAccounts,
+      picture: 'Rmz-ZNlaKBSAg30DR6-2Xyx4JFKvfkwn9j_YVFl0HVM',
+      banner: 'xmGWfLSUNJ5LPNbTUKVWJhXsSf-tkmA5cEAl0UsNjQg',
+      addresses: [],
+      styles: parseCss(customCss),
+      code: customCss
+    }
+
+    const result = await backgroundRequest.gallery.createDID({ didData: state })
+    console.log('result', result)
+  } 
 
   return (
     <div className="kid-page-wrapper">
@@ -87,13 +121,13 @@ const KidPage = () => {
       <div className="form-section">
         <div className="form-img">
           <div className="img">
-            <DefaultAvt />
+            <img className="profile-picture" src={profileSrc}></img>
           </div>
           <Button startIcon={EditIcon} text="Change Avatar" />
           <div className="avt-desc">
             Or <Link to="/create">create an NFT</Link> to add a new image to your gallery
           </div>
-          <img className="profile-cover" src={ProfileCover} alt="profile-cover"></img>
+          <img className="profile-cover" src={bannerSrc} alt="profile-cover"></img>
           <Button startIcon={EditIcon} text="Change Background" />
           <div className="avt-desc">This is yout cover image</div>
         </div>
@@ -227,7 +261,7 @@ const KidPage = () => {
             ))}
 
           <div className="save-kid-btn">
-            <Button variant="filled" text="Save & Update" />
+            <Button onClick={handleSubmit} variant="filled" text="Save & Update" />
           </div>
         </div>
       </div>

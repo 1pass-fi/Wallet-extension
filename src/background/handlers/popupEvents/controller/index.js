@@ -24,6 +24,7 @@ import bridgeNft from './bridgeNft'
 import sendNft from './sendNft'
 import handleExpiredTransaction from './handleExpiredTransaction'
 import loadFriendReferralData from './loadFriendReferralData'
+import createDID from './createDID'
 
 
 export default {
@@ -52,5 +53,6 @@ export default {
   bridgeNft,
   sendNft,
   handleExpiredTransaction,
-  loadFriendReferralData
+  loadFriendReferralData,
+  createDID
 }

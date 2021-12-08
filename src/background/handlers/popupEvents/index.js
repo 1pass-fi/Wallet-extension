@@ -33,6 +33,7 @@ const getEmitter = () => {
   popupEvents.on(MESSAGES.REAL_TRANSFER_NFT, controller.sendNft)
   popupEvents.on(MESSAGES.HANDLE_EXPIRED_TRANSACTION, controller.handleExpiredTransaction)
   popupEvents.on(MESSAGES.LOAD_FRIEND_REFERRAL_DATA, controller.loadFriendReferralData)
+  popupEvents.on(MESSAGES.HANDLE_CREATE_DID, controller.createDID)
 
   return popupEvents
 }
