@@ -16,7 +16,8 @@ export default class PopupEvents extends EventEmitter {
       const twoStepEndpoints = [
         MESSAGES.HANDLE_CONNECT,
         MESSAGES.HANDLE_SIGN_TRANSACTION,
-        MESSAGES.HANDLE_CREATE_DID
+        MESSAGES.HANDLE_CREATE_DID,
+        MESSAGES.HANDLE_UPDATE_DID
       ]
 
       if (get(result, 'error')) {
@@ -43,7 +44,7 @@ export default class PopupEvents extends EventEmitter {
       }
 
       if (includes(twoStepEndpoints, endpoint))
-        this.#sendMessageToContentScript(result.data, result.status)
+        this.#sendMessageToContentScript(result.data || result.error, result.status)
     })
   }
 

@@ -155,10 +155,18 @@ export default () => {
     
     /**
      * createDID
-     * @param {Object} didData 
+     * @param {*} didData 
      * @returns 
      */
-    createDID: (didData) => buildPromise(MESSAGE_TYPES.CREATE_DID, { didData })
+    createDID: (didData) => buildPromise(MESSAGE_TYPES.KOI_CREATE_DID, { didData }),
+
+    /**
+     * 
+     * @param {*} didData 
+     * @param {*} txId 
+     * @returns 
+     */
+    updateDID: (didData, txId) => buildPromise(MESSAGE_TYPES.KOI_UPDATE_DID, { didData, txId })
   }
 
   window.koiWallet = window.koiiWallet
