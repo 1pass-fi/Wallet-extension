@@ -15,7 +15,8 @@ export default class PopupEvents extends EventEmitter {
     promise.then(result => {
       const twoStepEndpoints = [
         MESSAGES.HANDLE_CONNECT,
-        MESSAGES.HANDLE_SIGN_TRANSACTION
+        MESSAGES.HANDLE_SIGN_TRANSACTION,
+        MESSAGES.HANDLE_CREATE_DID
       ]
 
       if (get(result, 'error')) {

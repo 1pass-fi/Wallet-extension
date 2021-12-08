@@ -64,7 +64,8 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
         fee,
         address: targetAddress,
         isKoiTransfer,
-        koiiQty
+        koiiQty,
+        isCreateDID
       } = request.data
 
       setSourceAccount({ address, type: 'koi' })
@@ -72,7 +73,7 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
       setOrigin(requestOrigin)
       setQty(qty)
       setFee(fee)
-      setKoiiTransfer(isKoiTransfer)
+      setKoiiTransfer(isKoiTransfer || isCreateDID)
       setKoiiQuantity(koiiQty)
     }
 

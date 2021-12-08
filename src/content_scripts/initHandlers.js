@@ -42,6 +42,8 @@ export default async () => {
     MESSAGES.KOI_SIGN_PORT_ERROR,
     MESSAGES.KOI_SEND_KOI_SUCCESS,
     MESSAGES.KOI_SEND_KOI_ERROR,
+    MESSAGES.CREATE_DID_SUCCESS,
+    MESSAGES.CREATE_DID_ERROR,
     MESSAGES.ERROR
   ]
   
@@ -75,6 +77,7 @@ export default async () => {
       case MESSAGES.GET_PUBLIC_KEY:
       case MESSAGES.KOI_SIGN_PORT:
       case MESSAGES.KOI_SEND_KOI:
+      case MESSAGES.CREATE_DID:
         backgroundConnect.postMessage(event.data)
         break
       case MESSAGES.KOI_CREATE_TRANSACTION:

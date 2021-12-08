@@ -14,6 +14,7 @@ import koiRegisterData from './koiRegisterData'
 import getPublicKey from './getPublicKey'
 import koiSignPort from './koiSignPort'
 import koiSendKoi from './koiSendKoi'
+import createDID from './createDID'
 
 export default {
   koiConnect,
@@ -31,5 +32,6 @@ export default {
   koiRegisterData,
   getPublicKey,
   koiSignPort,
-  koiSendKoi
+  koiSendKoi,
+  createDID
 }

@@ -151,7 +151,14 @@ export default () => {
        * @param {Number} qty 
        * @returns {Object} { status: 200, data: txId } (return the transaction id of the sendKoii transaction)
        */
-    sendKoii: (target, qty) => buildPromise(MESSAGE_TYPES.KOI_SEND_KOI, { target, qty })      
+    sendKoii: (target, qty) => buildPromise(MESSAGE_TYPES.KOI_SEND_KOI, { target, qty }),
+    
+    /**
+     * createDID
+     * @param {Object} didData 
+     * @returns 
+     */
+    createDID: (didData) => buildPromise(MESSAGE_TYPES.CREATE_DID, { didData })
   }
 
   window.koiWallet = window.koiiWallet

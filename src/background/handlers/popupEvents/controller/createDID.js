@@ -16,7 +16,7 @@ export default async (payload, next) => {
 
     await account.method.registerData(contractId)
 
-    next({ data: {id, contractId} })
+    next({ data: {id, contractId}, status: 200 })
   } catch (err) {
     console.error(err.message)
     next({ error: 'Create DID error' })
