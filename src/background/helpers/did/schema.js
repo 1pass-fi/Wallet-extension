@@ -29,5 +29,12 @@ export default Joi.object({
   ),
   addresses:Joi.array(),
   styles:Joi.object(),
-  code:Joi.string()
+  code:Joi.string(),
+  country:Joi.string().required().message({
+    'string.empty': 'country is required',
+  }),
+  pronouns:Joi.string(),
+  kID:Joi.string().required().message({
+    'string.empty': 'kID is required'
+  })
 })
