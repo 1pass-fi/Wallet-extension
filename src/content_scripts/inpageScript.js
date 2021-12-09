@@ -166,7 +166,7 @@ export default () => {
      * @param {*} txId 
      * @returns 
      */
-    updateDID: (didData, txId) => buildPromise(MESSAGE_TYPES.KOI_UPDATE_DID, { didData, txId })
+    updateDID: (didData, txId) => buildPromise(MESSAGE_TYPES.KOI_UPDATE_DID, { didData, txId, newKID })
   }
 
   window.koiWallet = window.koiiWallet

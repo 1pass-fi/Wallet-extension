@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { get } from 'lodash'
 
-export default async (address) => {
+export default async (address, contractId) => {
   try {
     const BLOCk_TEMPLATE = `
     pageInfo {
@@ -21,20 +21,41 @@ export default async (address) => {
       }
     }`
   
-    const query = `
-    query {
-      transactions(tags: [{
-        name: "Koii-Did",
-        values: ["CreateContract"]
-      }, {
-        name: "Owner",
-        values: ["${address}"]
+    let query
+    /* 
+      if contractId -> get CreateReactApp transaction
+    */
+    if (!contractId) {
+      query = `
+      query {
+        transactions(tags: [{
+          name: "Koii-Did",
+          values: ["CreateContract"]
+        }, {
+          name: "Owner",
+          values: ["${address}"]
+        }
+      ]) {
+        ${BLOCk_TEMPLATE}
       }
-    ]) {
-      ${BLOCk_TEMPLATE}
+      }
+      `
+    } else {
+      query = `
+      query {
+        transactions(tags: [{
+          name: "Koii-Did",
+          values: ["CreateReactApp"]
+        }, {
+          name: "Contract-Id",
+          values: ["${contractId}"]
+        }
+      ]) {
+        ${BLOCk_TEMPLATE}
+      }
+      }
+      `
     }
-    }
-    `
   
     const URL_ARWEAVE_GQL = 'https://arweave.net/graphql'
   

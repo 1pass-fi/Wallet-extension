@@ -468,3 +468,5 @@ export const DID_CONTRACT_ID = {
   REACT_APP: 'zgIsvUYTA-k57beohwcRAQHkXxXUP1kzVInGDiGghos',
   CONTRACT_SRC: 'uzBLFhO-uWSoUBJmjxkblcMEtMgXXljsB4cTZwydnFE'
 }
+
+export const BRANDLY_API_KEY = 'API_KEY'
