@@ -6,9 +6,12 @@ import storage from 'services/storage'
 
 export default async (payload, next) => {
   try {
-    const { didData } = payload.data
+    const { didData, activatedAddress } = payload.data
 
-    const address = await storage.setting.get.activatedAccountAddress()
+    let address
+    if (activatedAddress) address = activatedAddress
+    else address = await storage.setting.get.activatedAccountAddress()
+
     const credentials = await backgroundAccount.getCredentialByAddress(address)
     const account = await backgroundAccount.getAccount(credentials)
 
@@ -17,7 +20,10 @@ export default async (payload, next) => {
     await account.method.registerData(contractId)
 
     const kIDCreated = await helpers.did.koiiMe.mapKoiiMe({ txId: id, kID: didData.kID })
-    if (!kIDCreated) throw new Error('Map KoiiMe error')
+    if (!kIDCreated) {
+      next({ error: 'Map koiime error', status: 400 })
+      return
+    }
 
     next({ data: {id, contractId}, status: 200 })
   } catch (err) {

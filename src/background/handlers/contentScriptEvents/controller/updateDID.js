@@ -6,10 +6,11 @@ import { createWindow, getPlatformInfo } from 'utils/extension'
 
 // Services
 import storage from 'services/storage'
+import helpers from 'background/helpers'
 
 
 export default async (payload, tab, next) => {
-  const { didData, txId } = payload.data
+  const { didData, txId, newkID } = payload.data
   const { origin, favicon, hadPermission, hasPendingRequest, activatedAddress } = tab
 
   if (!hadPermission) {
@@ -36,7 +37,9 @@ export default async (payload, tab, next) => {
 
   const transaction = {
     didData,
-    txId
+    txId,
+    newkID,
+    activatedAddress
   }
 
   const screenWidth = screen.availWidth

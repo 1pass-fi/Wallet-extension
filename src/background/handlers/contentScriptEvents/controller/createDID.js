@@ -38,7 +38,8 @@ export default async (payload, tab, next) => {
   const koiiQty = 1
 
   const transaction = {
-    didData
+    didData,
+    activatedAddress
   }
 
   const screenWidth = screen.availWidth

@@ -28,7 +28,8 @@ export default class ContentScriptEvents extends EventEmitter {
       MESSAGES.CREATE_TRANSACTION,
       MESSAGES.KOI_CONNECT,
       MESSAGES.KOI_CREATE_TRANSACTION,
-      MESSAGES.KOI_CREATE_DID
+      MESSAGES.KOI_CREATE_DID,
+      MESSAGES.KOI_UPDATE_DID
     ] 
 
     if (twoStepEndpoints.includes(endpoint) && !tabData.hasPendingRequest) {

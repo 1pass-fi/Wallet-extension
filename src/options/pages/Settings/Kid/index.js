@@ -289,7 +289,7 @@ const KidPage = () => {
           return
         }
       }
-  
+
       let result 
       if (hadData) {
         result = await backgroundRequest.gallery.updateDID({ 
@@ -297,17 +297,16 @@ const KidPage = () => {
           txId: didID, 
           newkID: oldkID !== kID 
         })
-        console.log('result', result)
         setNotification(NOTIFICATION.UPDATE_KID_SUCCESS)
       } else {
         result = await backgroundRequest.gallery.createDID({ didData: state })
         setNotification(NOTIFICATION.CREATE_KID_SUCCESS)
       }
-  
+      console.log('result', result)
       setIsLoading(false)
     } catch (err) {
       console.error(err.message)
-      setError('Create or Update DID error')
+      setError(err.message)
       setIsLoading(false)
     }
   }
