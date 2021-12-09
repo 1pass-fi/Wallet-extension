@@ -28,6 +28,7 @@ import { checkAvailable } from 'background/helpers/did/koiiMe'
 import { getBalance } from 'options/selectors/defaultAccount'
 
 import storage from 'services/storage'
+import { getDisplayAddress } from 'options/utils'
 
 import './index.css'
 import { NOTIFICATION } from 'constants/koiConstants'
@@ -52,15 +53,19 @@ const KidPage = () => {
   } = useContext(GalleryContext)
 
   const [oldkID, setOldkID] = useState('')
+  const [disableUpdateKID, setDisableUpdateKID] = useState(true)
 
   const kidLinkPrefix = 'https://koii.me/u/'
 
   const assets = useSelector((state) => state.assets)
   const [balance, koiBalance] = useSelector(getBalance)
+  const defaultAccount = useSelector(state => state.defaultAccount)
+
   const modalRef = useRef(null)
 
   const close = () => setShowModal(false)
   const handleSelectNFTProfileImg = (nft) => {
+    setDisableUpdateKID(false)
     if (modalType === 'AVATAR') {
       setProfilePictureId(nft.txId)
       setShowModal(false)
@@ -75,6 +80,7 @@ const KidPage = () => {
     const getDID = async () => {
       try {
         setIsLoading(true)
+        setDisableUpdateKID(true)
         const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
         let state, id
         try {
@@ -96,9 +102,7 @@ const KidPage = () => {
             kID: ''
           }
         }
-  
 
-  
         const _userKID = {
           kidLink: state.kID ? `https://koii.me/u/${state.kID}` : 'https://koii.me/u/',
           name: state.name,
@@ -156,6 +160,7 @@ const KidPage = () => {
   }, [bannerId])
 
   const onChangeUserInfo = (e) => {
+    setDisableUpdateKID(false)
     const { name, value } = e.target
     if (name === 'kid') {
       setuserKID({
@@ -169,6 +174,7 @@ const KidPage = () => {
   }
 
   const handleChangeLinkAccountName = (idx, e) => {
+    setDisableUpdateKID(false)
     const prevLinkAccounts = [...linkAccounts]
     prevLinkAccounts[idx]['title'] = e.target.value
 
@@ -176,6 +182,7 @@ const KidPage = () => {
   }
 
   const handleChangeLinkAccountValue = (idx, e) => {
+    setDisableUpdateKID(false)
     const prevLinkAccounts = [...linkAccounts]
     prevLinkAccounts[idx]['link'] = e.target.value
 
@@ -320,7 +327,7 @@ const KidPage = () => {
           Connect to the decentralized internet with just your wallet. No more email log-ins or
           giving your personal data straight to Big Tech. This information will be public.
         </p>
-        <div className="wallet-address">KOII Wallet: 12345...12345 (Account 1)</div>
+        <div className="wallet-address">KOII Wallet: {getDisplayAddress(defaultAccount.address)} ({defaultAccount.accountName})</div>
       </div>
       <div className="form-section">
         <div className="form-img">
@@ -347,7 +354,7 @@ const KidPage = () => {
             }}
             text="Change Background"
           />
-          <div className="avt-desc">This is yout cover image</div>
+          <div className="avt-desc">This is your cover image</div>
         </div>
 
         <div className="form-text">
@@ -479,7 +486,7 @@ const KidPage = () => {
             ))}
 
           <div className="save-kid-btn">
-            <Button onClick={handleSubmit} variant="filled" text="Save & Update" />
+            <Button disabled={disableUpdateKID} onClick={handleSubmit} variant="filled" text="Save & Update" />
           </div>
         </div>
         {showModal && (
