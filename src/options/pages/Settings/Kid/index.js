@@ -23,14 +23,20 @@ import parseCss from 'utils/parseCss'
 import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
+import { checkAvailable } from 'background/helpers/did/koiiMe'
+
+import { getBalance } from 'options/selectors/defaultAccount'
+
 import storage from 'services/storage'
 
 import './index.css'
+import { NOTIFICATION } from 'constants/koiConstants'
 
 const KidPage = () => {
   const { 
     setIsLoading,
     setError,
+    setNotification,
     userKID, setuserKID,
     hadData, setHadData,
     didID, setDidID,
@@ -41,10 +47,16 @@ const KidPage = () => {
     usingCustomCss, setUsingCustomCss,
     expandedCssEditor, setExpandedCssEditor,
     showModal, setShowModal,
-    modalType, setModalType
+    modalType, setModalType,
+    kID, setkID
   } = useContext(GalleryContext)
 
+  const [oldkID, setOldkID] = useState('')
+
+  const kidLinkPrefix = 'https://koii.me/u/'
+
   const assets = useSelector((state) => state.assets)
+  const [balance, koiBalance] = useSelector(getBalance)
   const modalRef = useRef(null)
 
   const close = () => setShowModal(false)
@@ -64,10 +76,17 @@ const KidPage = () => {
       try {
         setIsLoading(true)
         const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
-        let state
+        let state, id
         try {
-          state = await backgroundRequest.gallery.getDID({ address: defaultAccountAddress })
+          const result = await backgroundRequest.gallery.getDID({ address: defaultAccountAddress })
+          state = result.state
+
+          if (!isEmpty(state)) {
+            setHadData(true)
+          }
+          id = result.id
         } catch (err) {
+          console.error(err.message)
           state = {
             links: [{ title: '', link: '' }],
             name: '',
@@ -78,17 +97,19 @@ const KidPage = () => {
           }
         }
   
-        if (!isEmpty(state)) {
-          setHadData(true)
-        }
+
   
         const _userKID = {
+          kidLink: state.kID ? `https://koii.me/u/${state.kID}` : 'https://koii.me/u/',
           name: state.name,
           description: state.description,
           country: state.country,
           pronouns: state.pronouns
         }
-  
+
+        console.log('userKID', _userKID)
+
+        setDidID(id)
         setuserKID(prev => ({...prev, ..._userKID}))
   
         setProfilePictureId(state.picture)
@@ -96,6 +117,8 @@ const KidPage = () => {
         setCustomCss(state.code)
   
         setLinkAccounts(state.links)
+        setkID(state.kID)
+        setOldkID(state.kID)
         setIsLoading(false)
       } catch (err) {
         console.error(err.message)
@@ -139,6 +162,7 @@ const KidPage = () => {
         ...userKID,
         kidLink: `${kidLinkPrefix}${value.slice(kidLinkPrefix.length)}`.replaceAll(' ', ''),
       })
+      setkID(value.slice(18))
     } else {
       setuserKID({ ...userKID, [name]: value })
     }
@@ -159,7 +183,7 @@ const KidPage = () => {
   }
 
   const addLinkAccount = () => {
-    setLinkAccounts([...linkAccounts, { name: '', value: '' }])
+    setLinkAccounts([...linkAccounts, { title: '', link: '' }])
   }
 
   const removeLinkAccount = (idx) => {
@@ -169,26 +193,123 @@ const KidPage = () => {
   }
 
   const handleSubmit = async () => {
-    const state = {
-      name: userKID.name,
-      description: userKID.description,
-      links: linkAccounts,
-      picture: profilePictureId,
-      banner: bannerId,
-      addresses: [],
-      styles: parseCss(customCss),
-      code: customCss,
-    }
+    try {
+      setIsLoading(true)
+      const state = {
+        name: userKID.name,
+        description: userKID.description,
+        links: linkAccounts,
+        picture: profilePictureId,
+        banner: bannerId,
+        addresses: [],
+        styles: parseCss(customCss),
+        code: customCss,
+        country: userKID.country,
+        pronouns: userKID.pronouns,
+        kID
+      }
 
-    // console.log(state)
-    let result
-    if (hadData) {
-      result = await backgroundRequest.gallery.updateDID({ didData: state, txId: didID })
-    } else {
-      result = await backgroundRequest.gallery.createDID({ didData: state })
-    }
+      state.links = state.links.filter(link => !isEmpty(link.title) && !isEmpty(link.link))
 
-    console.log('result', result)
+      // Validation
+      const pattern = /^[A-Za-z0-9]+$/
+      const available = await checkAvailable(kID)
+      if (!kID) {
+        setError('kID field must be filled in')
+        setIsLoading(false)
+        return
+      }
+  
+      if (!pattern.test(kID)) {
+        setError('A kID can only contain A-Z, a-z, 0-9')
+        setIsLoading(false)
+        return
+      }
+  
+      if (kID.length < 5) {
+        setError('A kID must contain at least 5 characters')
+        setIsLoading(false)
+        return
+      }
+  
+      if (!available && (oldkID !== kID)) {
+        setError('Such kID already exists. Please try another kID')
+        setIsLoading(false)
+        return
+      }
+  
+      if (!userKID.name) {
+        setError('Name field must be filled in')
+        setIsLoading(false)
+        return
+      }
+  
+      if (!userKID.country) {
+        setError('Country field must be filled in')
+        setIsLoading(false)
+        return
+      }
+  
+      if (!userKID.description) {
+        setError('Description field must be filled in')
+        setIsLoading(false)
+        return
+      }
+  
+      if (!profilePictureId) {
+        setError('Please select an avatar')
+        setIsLoading(false)
+        return
+      }
+  
+      if (!bannerId) {
+        setError('Please select a cover image')
+        setIsLoading(false)
+        return
+      }
+  
+      if (hadData) {
+        // balance validate update
+        if (balance < 0.00007) {
+          setError('Not enough AR')
+          setIsLoading(false)
+          return
+        }
+      } else {
+        // balance validate create
+        if (balance < 0.0005) {
+          setError('Not enough AR')
+          setIsLoading(false)
+          return
+        }
+
+        if (koiBalance < 1) {
+          setError('Not enough KOII')
+          setIsLoading(false)
+          return
+        }
+      }
+  
+      let result 
+      if (hadData) {
+        result = await backgroundRequest.gallery.updateDID({ 
+          didData: state, 
+          txId: didID, 
+          newkID: oldkID !== kID 
+        })
+        console.log('result', result)
+        setNotification(NOTIFICATION.UPDATE_KID_SUCCESS)
+      } else {
+        result = await backgroundRequest.gallery.createDID({ didData: state })
+        setNotification(NOTIFICATION.CREATE_KID_SUCCESS)
+      }
+  
+      setIsLoading(false)
+    } catch (err) {
+      console.error(err.message)
+      setError('Create or Update DID error')
+      setIsLoading(false)
+    }
   }
 
   return (

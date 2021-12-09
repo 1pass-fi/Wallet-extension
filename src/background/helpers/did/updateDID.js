@@ -17,6 +17,7 @@ export default async (payload, txId, account) => {
   let data = didSchema.validate(payload, {})
 
   if (data.error) {
+    console.error(data.error)
     throw new Error(ERROR_MESSAGE.DID.INVALID_DATA_INPUT)
   }
 
@@ -24,22 +25,13 @@ export default async (payload, txId, account) => {
 
   const { key: walletKey } = await backgroundAccount.getCredentialByAddress(ownerAddress)
 
-  return arweave.transactions.get(txId).then(async (transaction) => {
-    for (const tag of transaction.get('tags')) {
-      let key = tag.get('name', { decode: true, string: true })
-      let value = tag.get('value', { decode: true, string: true })
-      if (key === 'Contract-Id') {
-        let txId = await smartweave.interactWrite(
-          arweave,
-          walletKey,
-          value,
-          {
-            function: 'updateData',
-            data,
-          }
-        )
-        return txId
-      }
+  return await smartweave.interactWrite(
+    arweave,
+    walletKey,
+    txId,
+    {
+      function: 'updateData',
+      data,
     }
-  })
+  )
 }

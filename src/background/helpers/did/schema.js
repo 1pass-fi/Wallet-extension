@@ -30,11 +30,11 @@ export default Joi.object({
   addresses:Joi.array(),
   styles:Joi.object(),
   code:Joi.string(),
-  country:Joi.string().required().message({
+  country:Joi.string().required().messages({
     'string.empty': 'country is required',
   }),
   pronouns:Joi.string(),
-  kID:Joi.string().required().message({
-    'string.empty': 'kID is required'
+  kID:Joi.string().required().messages({
+    'string.empty': 'kID is required',
   })
 })

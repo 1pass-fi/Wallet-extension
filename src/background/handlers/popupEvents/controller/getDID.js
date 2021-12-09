@@ -16,7 +16,7 @@ export default async (payload, next) => {
 
     const state = await smartweave.readContract(arweave, txId)
 
-    next({ data: state.data })
+    next({ data: { state: state.data, id: txId } })
   } catch (err) {
     console.log(err.message)
     next({ error: 'Get DID error' })

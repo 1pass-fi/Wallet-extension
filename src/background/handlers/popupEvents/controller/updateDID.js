@@ -6,7 +6,9 @@ import storage from 'services/storage'
 
 export default async (payload, next) => {
   try {
-    const { didData, txId, newKID } = payload.data
+    const { didData, txId, newkID } = payload.data
+
+    console.log({ didData, txId, newkID })
 
     const address = await storage.setting.get.activatedAccountAddress()
     const credentials = await backgroundAccount.getCredentialByAddress(address)
@@ -14,7 +16,7 @@ export default async (payload, next) => {
 
     const transactionId = await helpers.did.updateDID(didData, txId, account)
 
-    if (newKID) {
+    if (newkID) {
       const reactAppId = await helpers.did.getDID(null, txId)
       const kidCreated = await helpers.did.koiiMe.mapKoiiMe({ txId: reactAppId, kID: didData.kID })
 

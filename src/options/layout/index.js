@@ -44,6 +44,8 @@ import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setCollections } from 'options/actions/collections'
 import { setAssets } from 'options/actions/assets'
 
+import arweave from 'services/arweave'
+
 export default ({ children }) => {
   const { pathname } = useLocation()
   const history = useHistory()
@@ -121,6 +123,7 @@ export default ({ children }) => {
     pronouns: '',
     description: '',
   })
+  const [kID, setkID] = useState('')
   const [hadData, setHadData] = useState(false)
   const [didID, setDidID] = useState(null) // use for updateDID
   const [profilePictureId, setProfilePictureId] = useState(null)
@@ -593,7 +596,8 @@ export default ({ children }) => {
         usingCustomCss, setUsingCustomCss,
         expandedCssEditor, setExpandedCssEditor,
         showModal, setShowModal,
-        modalType, setModalType
+        modalType, setModalType,
+        kID, setkID
       }}
     >
       <div className='app-background'>
