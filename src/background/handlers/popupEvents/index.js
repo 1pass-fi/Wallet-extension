@@ -35,6 +35,7 @@ const getEmitter = () => {
   popupEvents.on(MESSAGES.LOAD_FRIEND_REFERRAL_DATA, controller.loadFriendReferralData)
   popupEvents.on(MESSAGES.HANDLE_CREATE_DID, controller.createDID)
   popupEvents.on(MESSAGES.HANDLE_UPDATE_DID, controller.updateDID)
+  popupEvents.on(MESSAGES.GET_DID, controller.getDID)
 
   return popupEvents
 }

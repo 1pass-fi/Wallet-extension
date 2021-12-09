@@ -26,6 +26,7 @@ import handleExpiredTransaction from './handleExpiredTransaction'
 import loadFriendReferralData from './loadFriendReferralData'
 import createDID from './createDID'
 import updateDID from './updateDID'
+import getDID from './getDID'
 
 
 export default {
@@ -56,5 +57,6 @@ export default {
   handleExpiredTransaction,
   loadFriendReferralData,
   createDID,
-  updateDID
+  updateDID,
+  getDID
 }

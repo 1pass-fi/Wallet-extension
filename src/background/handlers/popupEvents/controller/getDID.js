@@ -1,0 +1,24 @@
+import { smartweave } from 'smartweave'
+
+import helpers from 'background/helpers'
+
+// Services
+import arweave from 'services/arweave'
+
+
+export default async (payload, next) => {
+  try {
+    const { address } = payload.data
+
+    const txId = await helpers.did.getDID(address)
+
+    if (!txId) throw new Error('Fetch DID ID error')
+
+    const state = await smartweave.readContract(arweave, txId)
+
+    next({ data: state.data })
+  } catch (err) {
+    console.log(err.message)
+    next({ error: 'Get DID error' })
+  }
+}

@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react'
+import React, { useState, useEffect, useMemo, useRef, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import AceEditor from 'react-ace'
 import 'ace-builds/src-noconflict/mode-css'
 import 'ace-builds/src-noconflict/theme-monokai'
-import { includes } from 'lodash'
+import { includes, isEmpty } from 'lodash'
 
 import IDCardIcon from 'img/id-card-icon.svg'
 import AddIcon from 'img/navbar/create-nft.svg'
 import EditIcon from 'img/edit-icon-collection.svg'
-import DefaultAvt from 'img/default-avt-green.svg'
+import DefaultAvt from 'img/default-avt-green.png'
 import KidInputField from './kidInputField'
 import ProfileCover from 'img/profile-cover-placeholder.png'
 import RemoveLinkAccount from 'img/remove-account-links.svg'
@@ -20,36 +20,30 @@ import CloseIcon from 'img/ab-close-icon.svg'
 import GoBackIcon from 'img/goback-icon-26px.svg'
 
 import parseCss from 'utils/parseCss'
-
+import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+
+import storage from 'services/storage'
 
 import './index.css'
 
 const KidPage = () => {
-  const kidLinkPrefix = 'https://koii.me/u/'
+  const { 
+    setIsLoading,
+    setError,
+    userKID, setuserKID,
+    hadData, setHadData,
+    didID, setDidID,
+    profilePictureId, setProfilePictureId,
+    bannerId, setBannerId,
+    linkAccounts, setLinkAccounts,
+    customCss, setCustomCss,
+    usingCustomCss, setUsingCustomCss,
+    expandedCssEditor, setExpandedCssEditor,
+    showModal, setShowModal,
+    modalType, setModalType
+  } = useContext(GalleryContext)
 
-  const [userKID, setuserKID] = useState({
-    kidLink: kidLinkPrefix,
-    name: '',
-    country: '',
-    pronouns: '',
-    description: '',
-  })
-
-  const [hadData, setHadData] = useState(false)
-  const [didID, setDidID] = useState(null)
-
-  const [profilePictureId, setProfilePictureId] = useState(null)
-  const [bannerId, setBannerId] = useState(null)
-
-  const [linkAccounts, setLinkAccounts] = useState([{ title: 'face', link: 'abcd' }])
-  const [customCss, setCustomCss] = useState('')
-
-  const [usingCustomCss, setUsingCustomCss] = useState(false)
-  const [expandedCssEditor, setExpandedCssEditor] = useState(false)
-
-  const [showModal, setShowModal] = useState(false)
-  const [modalType, setModalType] = useState('')
   const assets = useSelector((state) => state.assets)
   const modalRef = useRef(null)
 
@@ -64,6 +58,54 @@ const KidPage = () => {
       setShowModal(false)
     }
   }
+
+  useEffect(() => {
+    const getDID = async () => {
+      try {
+        setIsLoading(true)
+        const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
+        let state
+        try {
+          state = await backgroundRequest.gallery.getDID({ address: defaultAccountAddress })
+        } catch (err) {
+          state = {
+            links: [{ title: '', link: '' }],
+            name: '',
+            description: '',
+            country: '',
+            pronouns: '',
+            kID: ''
+          }
+        }
+  
+        if (!isEmpty(state)) {
+          setHadData(true)
+        }
+  
+        const _userKID = {
+          name: state.name,
+          description: state.description,
+          country: state.country,
+          pronouns: state.pronouns
+        }
+  
+        setuserKID(prev => ({...prev, ..._userKID}))
+  
+        setProfilePictureId(state.picture)
+        setBannerId(state.banner)
+        setCustomCss(state.code)
+  
+        setLinkAccounts(state.links)
+        setIsLoading(false)
+      } catch (err) {
+        console.error(err.message)
+        setError('Get DID error')
+      }
+    }
+
+    setIsLoading()
+    getDID()
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -82,7 +124,7 @@ const KidPage = () => {
 
   const profileSrc = useMemo(() => {
     if (profilePictureId) return `https://arweave.net/${profilePictureId}`
-    return ProfileCover
+    return DefaultAvt
   }, [profilePictureId])
 
   const bannerSrc = useMemo(() => {
@@ -127,7 +169,6 @@ const KidPage = () => {
   }
 
   const handleSubmit = async () => {
-    console.log('===== STATE =====')
     const state = {
       name: userKID.name,
       description: userKID.description,
