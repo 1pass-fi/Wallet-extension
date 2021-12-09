@@ -61,6 +61,7 @@ export default async (payload, account) => {
   tx.addTag('App-Name', 'SmartWeaveContract')
   tx.addTag('App-Version', '0.3.0') 
   tx.addTag('Contract-Id', contractId)
+  tx.addTag('Koii-Did', 'CreateReactApp')
 
   await account.method.signTx(tx)
   console.log('signed tx', tx)
@@ -72,19 +73,18 @@ export default async (payload, account) => {
 
 const deploySmartcontract = async (state, address) => {
   try {
-    const src = await arweave.transactions.getData(DID_CONTRACT_ID.CONTRACT_SRC, {
-      decode: true,
-      string: true
-    })
-
     const { key } = await backgroundAccount.getCredentialByAddress(address)
     if (!key) throw new Error(ERROR_MESSAGE.DID.KEY_NOT_FOUND)
 
-    return await smartweave.createContract(
+    return await smartweave.createContractFromTx(
       arweave,
       key,
-      src,
-      JSON.stringify(state)
+      DID_CONTRACT_ID.CONTRACT_SRC,
+      JSON.stringify(state),
+      [
+        {name: 'Koii-Did', value: 'CreateContract'},
+        {name: 'Owner', value: address}
+      ]
     )
   } catch (err) {
     console.error(err.message)

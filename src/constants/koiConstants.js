@@ -469,4 +469,4 @@ export const DID_CONTRACT_ID = {
   CONTRACT_SRC: 'uzBLFhO-uWSoUBJmjxkblcMEtMgXXljsB4cTZwydnFE'
 }
 
-export const BRANDLY_API_KEY = 'API_KEY'
+export const BRANDLY_API_KEY = '0a42d7da05744a0693aa72ec5e9d7232'
