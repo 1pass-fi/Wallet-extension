@@ -239,54 +239,63 @@ const KidPage = () => {
       if (!kID) {
         setError('kID field must be filled in')
         setIsLoading(false)
+        setDisableUpdateKID(false)
         return
       }
   
       if (!pattern.test(kID)) {
         setError('A kID can only contain A-Z, a-z, 0-9')
         setIsLoading(false)
+        setDisableUpdateKID(false)
         return
       }
   
       if (kID.length < 5) {
         setError('A kID must contain at least 5 characters')
         setIsLoading(false)
+        setDisableUpdateKID(false)
         return
       }
   
       if (!available && (oldkID !== kID)) {
         setError('Such kID already exists. Please try another kID')
         setIsLoading(false)
+        setDisableUpdateKID(false)
         return
       }
   
       if (!userKID.name) {
         setError('Name field must be filled in')
         setIsLoading(false)
+        setDisableUpdateKID(false)
         return
       }
   
       if (!userKID.country) {
         setError('Country field must be filled in')
         setIsLoading(false)
+        setDisableUpdateKID(false)
         return
       }
   
       if (!userKID.description) {
         setError('Description field must be filled in')
         setIsLoading(false)
+        setDisableUpdateKID(false)
         return
       }
   
       if (!profilePictureId) {
         setError('Please select an avatar')
         setIsLoading(false)
+        setDisableUpdateKID(false)
         return
       }
   
       if (!bannerId) {
         setError('Please select a cover image')
         setIsLoading(false)
+        setDisableUpdateKID(false)
         return
       }
   
@@ -295,6 +304,7 @@ const KidPage = () => {
         if (balance < 0.00007) {
           setError('Not enough AR')
           setIsLoading(false)
+          setDisableUpdateKID(false)
           return
         }
       } else {
@@ -302,12 +312,14 @@ const KidPage = () => {
         if (balance < 0.0005) {
           setError('Not enough AR')
           setIsLoading(false)
+          setDisableUpdateKID(false)
           return
         }
 
         if (koiBalance < 1) {
           setError('Not enough KOII')
           setIsLoading(false)
+          setDisableUpdateKID(false)
           return
         }
       }
