@@ -88,7 +88,7 @@
 }
 
 .transfer-wallet-modal .content .left .nft-img {
-  -webkit-user-drag: none; 
+  -webkit-user-drag: none;
   width: 208px;
   height: 208px;
   object-fit: contain;
@@ -104,7 +104,6 @@
   -webkit-user-drag: none;
   box-sizing: border-box;
   padding-top: 35px;
-
 }
 
 .transfer-wallet-modal .nft-img-iframe .iframe-wrapper {
@@ -229,6 +228,7 @@
   line-height: 20px;
   padding: 9px 0px 8px 30px;
   width: 392px;
+  padding-right: 32px;
 }
 
 .transfer-wallet-modal .content .right .number-to-transfer input::-webkit-outer-spin-button,
