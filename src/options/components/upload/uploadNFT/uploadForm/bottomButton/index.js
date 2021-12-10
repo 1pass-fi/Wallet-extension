@@ -58,13 +58,10 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
   const [friendCode, setFriendCode] = useState('')
   const [isClickEnable, setIsClickEnable] = useState(true)
 
-  const defaultAccount = useSelector(state => state.defaultAccount)
+  const defaultAccount = useSelector((state) => state.defaultAccount)
   const [balance, koiBalance] = useSelector(getBalance)
 
-
   const handleUploadNFT = async () => {
-    // file size checking
-    if (file.size > 15 * 1024 ** 2) throw new Error(ERROR_MESSAGE.FILE_TOO_LARGE)
     setIsLoading(true)
     try {
       const url = URL.createObjectURL(file)
@@ -97,19 +94,18 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
         title,
         owner: username,
         description,
-        isNSFW
+        isNSFW,
       }
 
-
       // call the request function
-      const { txId, time } = await backgroundRequest.gallery.uploadNFT({ 
-        content, 
-        tags, 
-        fileType, 
-        address: defaultAccount.address, 
-        price, 
+      const { txId, time } = await backgroundRequest.gallery.uploadNFT({
+        content,
+        tags,
+        fileType,
+        address: defaultAccount.address,
+        price,
         isNSFW,
-        imageId 
+        imageId,
       })
       // console.log('RESPONSE DATA', txId, time)
 
@@ -119,19 +115,11 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
 
       return {
         txId,
-        time
+        time,
       }
-
     } catch (err) {
       setIsLoading(false)
       throw new Error(err.message)
-    }
-  }
-
-  const mockUploadNFT = async () => {
-    return {
-      txId: 'ABCD1234',
-      time: Date.now()
     }
   }
 
@@ -145,21 +133,24 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
   useEffect(() => {
     const cacheData = async () => {
       try {
-        if (file.size > 15 * 1024 ** 2) throw new Error(ERROR_MESSAGE.FILE_TOO_LARGE)
-        /* 
-          Save the current form data to chrome storage
-          delete when transaction is successful
-        */
         setIsLoading(true)
-        const metadata = {
-          title,
-          username,
-          description,
-          tags,
-          isNSFW
-        }
 
-        await saveUploadFormData(file, metadata)
+        // cache file (<= 5Mb) to storage
+        if (file.size <= 5 * 1024 ** 2) {
+          /* 
+            Save the current form data to chrome storage
+            delete when transaction is successful
+          */
+          const metadata = {
+            title,
+            username,
+            description,
+            tags,
+            isNSFW,
+          }
+
+          await saveUploadFormData(file, metadata)
+        }
 
         setIsLoading(false)
         setIsClickEnable(true)
@@ -212,7 +203,6 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
           setShowUploadingModal(true)
           setIsLoading(true)
           const { txId, time } = handleUploadNFT()
-          // const { txId, time } = await mockUploadNFT()
           setTransactionId(txId)
           setCreatedAt(time)
           setStage(3)
@@ -231,9 +221,9 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
       setIsLoading(true)
       try {
         if (defaultAccount) {
-          const { status, message } = await backgroundRequest.gallery.friendReferral({ 
+          const { status, message } = await backgroundRequest.gallery.friendReferral({
             endpoints: FRIEND_REFERRAL_ENDPOINTS.SUBMIT_CODE,
-            friendCode 
+            friendCode,
           })
           // const { status, message } = { status: 201, message: 'mock message' }
           if (status === 201) {
