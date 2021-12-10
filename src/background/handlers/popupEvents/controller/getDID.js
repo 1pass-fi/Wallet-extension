@@ -12,7 +12,10 @@ export default async (payload, next) => {
 
     const txId = await helpers.did.getDID(address)
 
-    if (!txId) throw new Error('Fetch DID ID error')
+    if (!txId) {
+      next({ error: 'DID not found' })
+      return
+    }
 
     const state = await smartweave.readContract(arweave, txId)
 

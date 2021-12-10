@@ -80,7 +80,6 @@ const KidPage = () => {
     const getDID = async () => {
       try {
         setIsLoading(true)
-        setDisableUpdateKID(true)
         const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
         let state, id
         try {
@@ -92,14 +91,16 @@ const KidPage = () => {
           }
           id = result.id
         } catch (err) {
-          console.error(err.message)
+          console.log(err.message)
           state = {
             links: [{ title: '', link: '' }],
             name: '',
             description: '',
             country: '',
             pronouns: '',
-            kID: ''
+            kID: '',
+            code: '',
+            styles: []
           }
         }
 
@@ -202,6 +203,7 @@ const KidPage = () => {
   const handleSubmit = async () => {
     try {
       setIsLoading(true)
+      setDisableUpdateKID(true)
       const state = {
         name: userKID.name,
         description: userKID.description,

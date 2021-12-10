@@ -179,10 +179,6 @@ export class ArweaveMethod {
         // get Koii-Did tag
         const koiiDidTag = ((get(activity, 'node.tags')).filter(tag => tag.name === 'Koii-Did'))
 
-        if (!isEmpty(koiiDidTag)) {
-          console.log('didTag', koiiDidTag)
-        }
-
         let source = get(activity, 'node.recipient')
         let inputFunction
         if (inputTag[0]) {
