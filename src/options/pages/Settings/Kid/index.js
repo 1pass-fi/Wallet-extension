@@ -18,6 +18,7 @@ import ToggleButton from 'options/components/toggleButton'
 import ExpandIcon from 'img/share-icon.svg'
 import CloseIcon from 'img/ab-close-icon.svg'
 import GoBackIcon from 'img/goback-icon-26px.svg'
+import CloseIconBlue from 'img/close-icon-blue.svg'
 
 import parseCss from 'utils/parseCss'
 import { GalleryContext } from 'options/galleryContext'
@@ -32,6 +33,7 @@ import { getDisplayAddress } from 'options/utils'
 
 import './index.css'
 import { NOTIFICATION } from 'constants/koiConstants'
+import { TYPE } from 'constants/accountConstants'
 
 const KidPage = () => {
   const { 
@@ -49,11 +51,13 @@ const KidPage = () => {
     expandedCssEditor, setExpandedCssEditor,
     showModal, setShowModal,
     modalType, setModalType,
-    kID, setkID
+    kID, setkID,
   } = useContext(GalleryContext)
 
   const [oldkID, setOldkID] = useState('')
   const [disableUpdateKID, setDisableUpdateKID] = useState(true)
+  const [confirmed, setConfirmed] = useState(false)
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
 
   const kidLinkPrefix = 'https://koii.me/u/'
 
@@ -88,10 +92,14 @@ const KidPage = () => {
 
           if (!isEmpty(state)) {
             setHadData(true)
+          } else {
+            setHadData(false)
           }
+
           id = result.id
         } catch (err) {
           console.log(err.message)
+          setHadData(false)
           state = {
             links: [{ title: '', link: '' }],
             name: '',
@@ -120,6 +128,7 @@ const KidPage = () => {
         setProfilePictureId(state.picture)
         setBannerId(state.banner)
         setCustomCss(state.code)
+        setUsingCustomCss(!isEmpty(state.code))
   
         setLinkAccounts(state.links)
         setkID(state.kID)
@@ -134,6 +143,10 @@ const KidPage = () => {
     setIsLoading()
     getDID()
   }, [])
+
+  useEffect(() => {
+    if (!usingCustomCss) setCustomCss('')
+  }, [usingCustomCss])
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -301,20 +314,26 @@ const KidPage = () => {
 
       let result 
       if (hadData) {
+        /* Update */
         result = await backgroundRequest.gallery.updateDID({ 
           didData: state, 
           txId: didID, 
           newkID: oldkID !== kID 
         })
         setNotification(NOTIFICATION.UPDATE_KID_SUCCESS)
+        setShowConfirmModal(false)
       } else {
+        /* Create */
         result = await backgroundRequest.gallery.createDID({ didData: state })
         setNotification(NOTIFICATION.CREATE_KID_SUCCESS)
+        setConfirmed(true)
       }
+
       console.log('result', result)
       setIsLoading(false)
     } catch (err) {
       console.error(err.message)
+      setShowConfirmModal(false)
       setError(err.message)
       setIsLoading(false)
     }
@@ -434,6 +453,7 @@ const KidPage = () => {
             <div>Custom CSS</div>
             <ToggleButton value={usingCustomCss} setValue={setUsingCustomCss} />
           </div>
+          <div className='hint'>Hint: Use description, name, links, background class</div>
           {usingCustomCss &&
             (!expandedCssEditor ? (
               <div className="small-editor-wrapper">
@@ -442,6 +462,7 @@ const KidPage = () => {
                   theme="monokai"
                   onChange={(val) => {
                     setCustomCss(val)
+                    setDisableUpdateKID(false)
                   }}
                   value={customCss}
                   showGutter={false}
@@ -467,6 +488,7 @@ const KidPage = () => {
                     theme="monokai"
                     onChange={(val) => {
                       setCustomCss(val)
+                      setDisableUpdateKID(false)
                     }}
                     value={customCss}
                     showGutter={false}
@@ -488,7 +510,7 @@ const KidPage = () => {
             ))}
 
           <div className="save-kid-btn">
-            <Button disabled={disableUpdateKID} onClick={handleSubmit} variant="filled" text="Save & Update" />
+            <Button disabled={disableUpdateKID} onClick={() => setShowConfirmModal(true)} variant="filled" text="Save & Update" />
           </div>
         </div>
         {showModal && (
@@ -497,7 +519,7 @@ const KidPage = () => {
             <CloseIcon onClick={close} className="close-icon" />
             <div className="nfts">
               {assets.nfts.map((nft) => {
-                if (includes(nft.contentType, 'image'))
+                if (includes(nft.contentType, 'image') && nft.type === TYPE.ARWEAVE)
                   return (
                     <div
                       className="nft"
@@ -514,9 +536,60 @@ const KidPage = () => {
             </div>
           </div>
         )}
+
+        {showConfirmModal && (
+          <div className='confirm-did-modal'>
+            <div className='title'>
+              {!confirm ? 'Confirm your DID' : 'Decentralized ID Confirmed'}
+              <CloseIconBlue onClick={() => setShowConfirmModal(false)} className="close-icon" />
+            </div>
+            <div className='content'>
+              
+              {!confirmed &&
+                <div>
+                  <div className='content-title'>Confirm your personalized Decentralized ID profile.</div>
+                  <div className='cost'>
+                    <div className='cost-title'>
+                    Estimated Costs:
+                    </div>
+                    {!hadData && <div className="cost-koii-fee">
+                    1 KOII
+                    </div>}
+                    <div className="cost-ar-fee">{hadData ? '0.00007' : '0.0005'} AR</div>
+                    <div className="cost-storage-fee"> Storage Fee</div>
+                  </div>
+
+                </div>
+              }
+              {confirmed && 
+                <div className='success'>
+                  <div className='success-title'>Your DID is finalizing!</div>
+                  <div className='success-message'>
+                    Your Decentralized ID is your<br></br>
+                    passport entry to DeFi. Your<br></br>
+                    <a className='profile-link' href={`https://koii.me/u/${kID}`}>profile link</a> should be ready soon.
+                  </div>
+                </div>
+              }
+              {!confirmed && <button
+                className='confirm-button'
+                disabled={disableUpdateKID} 
+                onClick={handleSubmit}>{hadData ? 'Update DID' : 'Create DID'}
+              </button>}
+              {confirmed && <button
+                className='confirm-button'
+                onClick={() => setShowConfirmModal(false)}>OK
+              </button>}
+
+            </div>
+          </div>
+        )}
+        
       </div>
     </div>
   )
 }
+
+
 
 export default KidPage

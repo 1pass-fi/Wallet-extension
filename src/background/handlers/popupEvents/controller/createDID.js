@@ -15,7 +15,12 @@ export default async (payload, next) => {
     const credentials = await backgroundAccount.getCredentialByAddress(address)
     const account = await backgroundAccount.getAccount(credentials)
 
-    const [id, contractId] = await helpers.did.createDID(didData, account)
+    let id, contractId
+    try {
+      [id, contractId] = await helpers.did.createDID(didData, account)
+    } catch (err) {
+      next({ error: err.message, status: 400 })
+    }
     
     await account.method.registerData(contractId)
 

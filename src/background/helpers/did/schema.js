@@ -29,7 +29,7 @@ export default Joi.object({
   ),
   addresses:Joi.array(),
   styles:Joi.object(),
-  code:Joi.string(),
+  code:Joi.string().empty(''),
   country:Joi.string().required().messages({
     'string.empty': 'country is required',
   }),

@@ -1,6 +1,6 @@
 const { toJSON } = require('cssjson')
 const camelCase = require('camelcase')
-const classes = ['description','name','links', 'background']
+const classes = ['description', 'name', 'links', 'background']
 
 export default (css) => {
   var json = toJSON(css)

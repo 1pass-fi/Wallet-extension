@@ -182,11 +182,14 @@
 .kid-page-wrapper .custom-css-settings {
   margin-top: 20px;
   width: 233px;
-
   display: flex;
   justify-content: space-between;
-
   font-size: 16px;
+}
+.kid-page-wrapper .hint {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-top: 10px;
 }
 
 .ace_editor,
@@ -308,7 +311,6 @@
   width: 126px;
   height: 112px;
   object-fit: contain;
-  background: #020221;
   -webkit-user-drag: none;
   box-sizing: border-box;
   margin-bottom: 2px;
@@ -342,4 +344,113 @@
 
 .select-nft-profile-modal ::-webkit-scrollbar-thumb:hover {
   background: gray;
+}
+
+.confirm-did-modal {
+  position: fixed;
+  width: 565px;
+  height: 340px;
+  background-color: #ffffff;
+  margin: auto;
+  z-index: 100;
+}
+
+.confirm-did-modal .title {
+  position: relative;
+  width: 565px;
+  height: 67px;
+  font-size: 20px;
+  line-height: 24px;
+  color: #171753;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F5F5F5;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+  border-radius: 4px 4px 0px 0px;
+  box-sizing: border-box;
+  font-weight: 600;
+}
+
+.confirm-did-modal .title .close-icon {
+  position: absolute;
+  width: 27px;
+  height: 27px;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.confirm-did-modal .content {
+  color: #171753;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-align: center;
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 222px;
+}
+
+.confirm-did-modal .content .content-title {
+  margin-bottom: 19px;
+}
+
+.confirm-did-modal .content .cost .cost-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.confirm-did-modal .content .cost .cost-koii-fee {
+  margin-bottom: 10px;
+}
+
+.confirm-did-modal .content .cost .cost-storage-fee {
+  margin-top: 4px;
+  color: #237B75;
+  font-size: 10px;
+}
+
+.confirm-did-modal .content .confirm-button {
+  height: 41px;
+  width: 175px;
+  background-color: #373765;
+  border-radius: 4px;
+  cursor: pointer;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  text-align: center;
+  margin-top: auto;
+}
+
+.confirm-did-modal .content .confirm-button:disabled {
+  cursor: not-allowed;
+}
+
+/* .confirm-did-modal .success {
+  margin-top: 76px;
+  margin-left: 200px;
+} */
+
+.confirm-did-modal .success .success-title {
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+  text-align: start;
+}
+
+.confirm-did-modal .success .success-message {
+  margin-top: 29px;
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  line-height: 23px;
+  font-weight: 400;
+  text-align: start;
+}
+
+.confirm-did-modal .success .profile-link {
+  color: #247B75;
 }

@@ -14,8 +14,14 @@ export default async (payload, next) => {
 
     const credentials = await backgroundAccount.getCredentialByAddress(address)
     const account = await backgroundAccount.getAccount(credentials)
-
-    const transactionId = await helpers.did.updateDID(didData, txId, account)
+    
+    let transactionId
+    try {
+      transactionId = await helpers.did.updateDID(didData, txId, account)
+    } catch (err) {
+      next({ error: err.message, status: 400 })
+      return
+    }
 
     if (newkID) {
       const reactAppId = await helpers.did.getDID(null, txId)
@@ -30,6 +36,6 @@ export default async (payload, next) => {
     next({ data: transactionId, status: 200 })
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Create DID error', status: 500 })
+    next({ error: 'Update DID error', status: 500 })
   }
 }
