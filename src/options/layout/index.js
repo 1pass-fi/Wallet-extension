@@ -44,6 +44,8 @@ import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setCollections } from 'options/actions/collections'
 import { setAssets } from 'options/actions/assets'
 
+import arweave from 'services/arweave'
+
 export default ({ children }) => {
   const { pathname } = useLocation()
   const history = useHistory()
@@ -109,6 +111,29 @@ export default ({ children }) => {
     accept: ['image/*', 'video/*', 'audio/*'],
     noClick: true,
   })
+
+  /* 
+    DID state
+  */
+  const kidLinkPrefix = 'https://koii.me/u/'
+  const [userKID, setuserKID] = useState({
+    kidLink: kidLinkPrefix,
+    name: '',
+    country: '',
+    pronouns: '',
+    description: '',
+  })
+  const [kID, setkID] = useState('')
+  const [hadData, setHadData] = useState(false)
+  const [didID, setDidID] = useState(null) // use for updateDID
+  const [profilePictureId, setProfilePictureId] = useState(null)
+  const [bannerId, setBannerId] = useState(null)
+  const [linkAccounts, setLinkAccounts] = useState([{ title: '', link: '' }])
+  const [customCss, setCustomCss] = useState('')
+  const [usingCustomCss, setUsingCustomCss] = useState(false)
+  const [expandedCssEditor, setExpandedCssEditor] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [modalType, setModalType] = useState('')
 
 
   const [searchTerm, setSearchTerm] = useState('') // search bar
@@ -560,7 +585,19 @@ export default ({ children }) => {
         setImportedAddress,
         setNewAddress,
         inputFileRef,
-        walletLoaded
+        walletLoaded,
+        userKID, setuserKID,
+        hadData, setHadData,
+        didID, setDidID,
+        profilePictureId, setProfilePictureId,
+        bannerId, setBannerId,
+        linkAccounts, setLinkAccounts,
+        customCss, setCustomCss,
+        usingCustomCss, setUsingCustomCss,
+        expandedCssEditor, setExpandedCssEditor,
+        showModal, setShowModal,
+        modalType, setModalType,
+        kID, setkID
       }}
     >
       <div className='app-background'>

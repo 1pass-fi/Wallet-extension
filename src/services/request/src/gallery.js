@@ -137,4 +137,16 @@ export class GalleryRequest extends Request {
   loadFriendReferralData(body) {
     return this.promise(MESSAGES.LOAD_FRIEND_REFERRAL_DATA, body)
   }
+
+  createDID(body) {
+    return this.promise(MESSAGES.HANDLE_CREATE_DID, body)
+  }
+
+  updateDID(body) {
+    return this.promise(MESSAGES.HANDLE_UPDATE_DID, body)
+  }
+
+  getDID(body) {
+    return this.promise(MESSAGES.GET_DID, body)
+  }
 }

@@ -24,6 +24,8 @@ const getEmitter = () => {
   contentScriptEvents.on(MESSAGES.GET_PUBLIC_KEY, controller.getPublicKey)
   contentScriptEvents.on(MESSAGES.KOI_SIGN_PORT, controller.koiSignPort)
   contentScriptEvents.on(MESSAGES.KOI_SEND_KOI, controller.koiSendKoi)
+  contentScriptEvents.on(MESSAGES.KOI_CREATE_DID, controller.createDID)
+  contentScriptEvents.on(MESSAGES.KOI_UPDATE_DID, controller.updateDID)
 
   return contentScriptEvents
 }

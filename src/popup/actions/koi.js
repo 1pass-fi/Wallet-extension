@@ -216,7 +216,16 @@ export const makeTransfer = (sender, qty, target, token) => async (dispatch) => 
 export const signTransaction = (inputData) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true))
-    await backgroundRequest.wallet.signTransaction(inputData)
+    const { isUpdate, isCreate } = inputData
+
+    if (isUpdate) {
+      await backgroundRequest.gallery.updateDID(inputData.tx)
+    } else if (isCreate) {
+      await backgroundRequest.gallery.createDID(inputData.tx)
+    } else {
+      await backgroundRequest.wallet.signTransaction(inputData)
+    }
+    
     window.close()
   } catch (err) {
     window.close()

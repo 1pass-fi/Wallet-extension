@@ -1,0 +1,39 @@
+.kid-input {
+  margin-bottom: 22px;
+  display: flex;
+  width: 601px;
+  justify-content: space-between;
+  font-style: normal;
+}
+
+.kid-input-label-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.kid-input .description {
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+
+.kid-input-label {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.kid-input-field {
+  background: transparent;
+  width: 422px;
+  height: 32px;
+  border: 1px solid #ffffff;
+  border-radius: 3px;
+  padding: 8px;
+
+  color: white;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}

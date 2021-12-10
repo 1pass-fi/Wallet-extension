@@ -162,6 +162,9 @@ export class ArweaveMethod {
         let activityName = 'Sent AR'
         let expense = Number(get(activity, 'node.quantity.ar')) + Number(get(activity, 'node.fee.ar'))
   
+        /* 
+          GET TAGS
+        */
         // get input tag
         let inputTag = (get(activity, 'node.tags'))
         if (!isArray(inputTag)) inputTag = []
@@ -172,6 +175,10 @@ export class ArweaveMethod {
   
         // get action tag
         const actionTag = ((get(activity, 'node.tags')).filter(tag => tag.name === 'Action'))
+
+        // get Koii-Did tag
+        const koiiDidTag = ((get(activity, 'node.tags')).filter(tag => tag.name === 'Koii-Did'))
+
         let source = get(activity, 'node.recipient')
         let inputFunction
         if (inputTag[0]) {
@@ -190,12 +197,16 @@ export class ArweaveMethod {
             activityName = 'Updated KID'
           } else if (inputFunction.function === 'lock') {
             activityName = 'Locked NFT'
+          } else if (inputFunction.function === 'updateData') {
+            activityName = 'Updated DID'
+          } else if (inputFunction.function === 'burnKoi') {
+            activityName = 'Burnt KOII'
+            expense = 1
           }
   
           if (inputFunction.function === 'registerData' ||
-            inputFunction.function === 'burnKoi' ||
             inputFunction.function === 'migratePreRegister') {
-            activityName = 'Registered NFT'
+            activityName = 'Registered Data'
             source = null
           }
         }
@@ -225,6 +236,11 @@ export class ArweaveMethod {
               source = inputFunction.target
             }
           }
+        }
+
+        if (!isEmpty(koiiDidTag)) {
+          if (get(koiiDidTag, '[0].value') === 'CreateReactApp') activityName = 'Created DID'
+          if (get(koiiDidTag, '[0].value') === 'CreateContract') activityName = 'Initialized DID data'
         }
   
         return {

@@ -1,159 +1,456 @@
-.kid-settings-page-wrapper {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  padding: 58px 122px;
-}
-
-.kid-settings-page-wrapper * {
+.kid-page-wrapper * {
   box-sizing: border-box;
 }
 
-.kid-settings-page {
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-}
+.kid-page-wrapper {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  padding: 58px 122px;
 
-.kid-settings-page .top-section {
-  align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+
+  color: white;
+  font-style: normal;
+  font-weight: 400;
 }
 
-.kid-settings-page .top-section .title {
+.kid-page-wrapper .title-section {
+  width: 100%;
+  height: 212.5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kid-page-wrapper .title-section h2 {
   font-size: 24px;
-  line-height: 32px;
-  margin-top: 19px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
 }
 
-.kid-settings-page .top-section .description {
+.kid-page-wrapper .title-section .leading {
   font-size: 16px;
-  line-height: 28px;
-  margin-top: 17px;
-  max-width: 759px;
+  letter-spacing: -0.01em;
 }
 
-.kid-settings-page .top-section .address {
-  color: #49ce8b;
+.kid-page-wrapper .title-section .wallet-address {
   font-size: 18px;
   font-weight: 600;
-  line-height: 24px;
-  margin-top: 22px;
+  letter-spacing: 0.03em;
+  color: #49ce8b;
 }
 
-.kid-settings-page .info-section {
+.kid-page-wrapper .form-section {
+  margin-top: 30px;
+  width: 100%;
   display: flex;
-  flex-direction: row;
-  gap: 63px;
-  margin-top: 20px;
+  gap: 33px;
+  justify-content: center;
 }
 
-.kid-settings-page .info-section .left {
-  align-items: center;
+.kid-page-wrapper .form-img {
   display: flex;
   flex-direction: column;
-  width: 182px;
+  align-items: center;
+  width: 258px;
+  object-fit: contain;
 }
 
-.kid-settings-page .info-section .left .profile-image {
-  background: #281f79;
+.kid-page-wrapper .form-img .img {
   border-radius: 50%;
-  height: 150px;
-  width: 150px;
+  width: 149px;
+  height: 149px;
+  margin-bottom: 23px;
 }
 
-.kid-settings-page .info-section .left .profile-image-input {
-  display: none;
-}
+.kid-page-wrapper .form-img .avt-desc {
+  margin: 10px 0px 26px 0px;
 
-.kid-settings-page .info-section .left .select-image-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  background: #171753;
-  border-radius: 2px;
-  border: 1.5px solid #ffffff;
-  cursor: pointer;
-  font-size: 16px;
-  height: 32px;
-  line-height: 32px;
-  margin-top: 20px;
-  text-align: center;
-  width: 182px;
-}
-
-.kid-settings-page .info-section .left .create-nft-text {
-  font-size: 12px;
-  line-height: 16px;
-  margin-top: 4px;
-}
-
-.kid-settings-page .info-section .left .create-nft-text .create-nft-link {
-  color: #ffffff;
-}
-
-.kid-settings-page .info-section .right {
-  display: flex;
-  flex-direction: column;
-}
-
-.kid-settings-page .info-section .right .field {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 20px;
-}
-
-.kid-settings-page .info-section .right .field .label {
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 16px;
-  width: 135px;
-}
-
-.kid-settings-page .info-section .right .field .label .extra {
   font-size: 12px;
   font-weight: 400;
-  line-height: 16px;
+  letter-spacing: 0.03em;
+  width: 182px;
+  text-align: center;
 }
 
-.kid-settings-page .info-section .right .field .input,
-.kid-settings-page .info-section .right .field .text-area {
+.kid-page-wrapper .form-img .avt-desc a {
+  color: white;
+}
+
+.kid-page-wrapper .form-img .profile-cover {
+  margin-bottom: 17px;
+  width: 100%;
+  height: 154px;
   border-radius: 3px;
-  border: 1px solid #ffffff;
-  box-sizing: border-box;
+  object-fit: contain;
+}
+.kid-page-wrapper .form-img .profile-picture {
+  border-radius: 50%;
+  width: 149px;
+  height: 149px;
+  object-fit: cover;
+}
+
+.kid-page-wrapper .kid-input .kid-input-area-field {
+  background: transparent;
   width: 422px;
-}
-
-.kid-settings-page .info-section .right .field .input {
-  height: 32px;
-}
-
-.kid-settings-page .info-section .right .field .text-area {
-  height: 84px;
-  resize: none;
-}
-
-.kid-settings-page .info-section .right .field .checkbox-label {
-  color: #ffffff;
-  font-size: 14px;
-  line-height: 24px;
-  transform: matrix(0.99, 0, -0.14, 1, 0, 0);
-}
-
-.kid-settings-page .info-section .right .save-button {
-  background: #ffffff;
-  border-radius: 3px;
+  height: 95px;
   border: 1px solid #ffffff;
-  box-sizing: border-box;
-  color: #171753;
-  cursor: pointer;
+  border-radius: 3px;
+  resize: none;
+
+  padding: 8px;
+  color: white;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.kid-page-wrapper .form-section .section-name {
+  margin-top: 56px;
   font-size: 16px;
   font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #49ce8b;
+}
+
+.kid-page-wrapper .link-account-desc {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  margin-top: 0px;
+}
+
+.kid-page-wrapper .link-accounts-input-line {
+  position: relative;
+  margin-top: 18px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kid-page-wrapper .link-accounts-input-line .remove-logo {
+  position: absolute;
+  cursor: pointer;
+  top: 6px;
+  right: -32px;
+}
+
+.kid-page-wrapper .link-accounts-input-line input {
+  background: transparent;
   height: 32px;
-  line-height: 32px;
-  margin-left: 135px;
-  text-align: center;
+  border: 1px solid #ffffff;
+  border-radius: 3px;
+  padding: 8px;
+
+  color: white;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.kid-page-wrapper .link-accounts-input-line .link-accounts-input-name {
+  width: 168px;
+}
+
+.kid-page-wrapper .link-accounts-input-line .link-accounts-input-value {
+  width: 420px;
+}
+
+.kid-page-wrapper .add-more {
+  margin-top: 27px;
+  width: fit-content;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.kid-page-wrapper .add-more-icon {
+  height: 22px;
+  margin-right: 9px;
+}
+
+.kid-page-wrapper .custom-css-settings {
+  margin-top: 20px;
+  width: 233px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+}
+.kid-page-wrapper .hint {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-top: 10px;
+}
+
+.ace_editor,
+.ace_editor * {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+}
+
+.kid-page-wrapper .small-editor-wrapper {
+  position: relative;
+}
+
+.kid-page-wrapper .editor-expand-icon {
+  width: 14px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  cursor: pointer;
+}
+
+#small-editor-id {
+  margin-top: 16px;
+  width: 610px !important;
+  height: 167px !important;
+
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 4px;
+}
+
+.kid-page-wrapper .expanded-editor-wrapper {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 999;
+
+  background-color: rgba(23, 23, 83, 0.6);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.kid-page-wrapper .expanded-editor-wrapper .expanded-editor-absolute-wrapper {
+  position: absolute;
+}
+
+#expanded-editor-id {
+  width: 956px !important;
+  height: 569px !important;
+  background-color: #171753;
+  border: 1px solid white;
+  border-radius: 4px;
+}
+
+.kid-page-wrapper .editor-close-icon {
+  width: 16px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  cursor: pointer;
+}
+
+.kid-page-wrapper .save-kid-btn {
+  margin: 29px auto 32px auto;
   width: 189px;
+}
+
+.select-nft-profile-modal {
+  position: absolute;
+  width: 526px;
+  height: 504px;
+  margin: 0px auto auto 200px;
+
+  background: #353563;
+  border-radius: 4px;
+}
+
+.select-nft-profile-modal .go-back-icon {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  cursor: pointer;
+}
+
+.select-nft-profile-modal .close-icon {
+  width: 26px;
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  cursor: pointer;
+}
+
+.select-nft-profile-modal .nfts {
+  max-height: 409px;
+  width: 468px;
+  margin: 67px 40px;
+  overflow-y: scroll;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 8px 16px;
+}
+
+.select-nft-profile-modal .nfts .nft {
+  width: 126px;
+  cursor: pointer;
+}
+
+.select-nft-profile-modal .nfts .nft-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 126px;
+  height: 112px;
+  object-fit: contain;
+  -webkit-user-drag: none;
+  box-sizing: border-box;
+  margin-bottom: 2px;
+}
+
+.select-nft-profile-modal .nfts .nft-image img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.select-nft-profile-modal .nfts .nft-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.select-nft-profile-modal ::-webkit-scrollbar-track {
+  background: #211c52;
+  opacity: 0.5;
+  border-radius: 2px;
+  border: 0px;
+}
+
+.select-nft-profile-modal ::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 2px;
+  border: 0px;
+  height: 90px;
+  width: 3px;
+}
+
+.select-nft-profile-modal ::-webkit-scrollbar-thumb:hover {
+  background: gray;
+}
+
+.confirm-did-modal {
+  position: fixed;
+  width: 565px;
+  height: 340px;
+  background-color: #ffffff;
+  margin: auto;
+  z-index: 100;
+}
+
+.confirm-did-modal .title {
+  position: relative;
+  width: 565px;
+  height: 67px;
+  font-size: 20px;
+  line-height: 24px;
+  color: #171753;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F5F5F5;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+  border-radius: 4px 4px 0px 0px;
+  box-sizing: border-box;
+  font-weight: 600;
+}
+
+.confirm-did-modal .title .close-icon {
+  position: absolute;
+  width: 27px;
+  height: 27px;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.confirm-did-modal .content {
+  color: #171753;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-align: center;
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 222px;
+}
+
+.confirm-did-modal .content .content-title {
+  margin-bottom: 19px;
+}
+
+.confirm-did-modal .content .cost .cost-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.confirm-did-modal .content .cost .cost-koii-fee {
+  margin-bottom: 10px;
+}
+
+.confirm-did-modal .content .cost .cost-storage-fee {
+  margin-top: 4px;
+  color: #237B75;
+  font-size: 10px;
+}
+
+.confirm-did-modal .content .confirm-button {
+  height: 41px;
+  width: 175px;
+  background-color: #373765;
+  border-radius: 4px;
+  cursor: pointer;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  text-align: center;
+  margin-top: auto;
+}
+
+.confirm-did-modal .content .confirm-button:disabled {
+  cursor: not-allowed;
+}
+
+/* .confirm-did-modal .success {
+  margin-top: 76px;
+  margin-left: 200px;
+} */
+
+.confirm-did-modal .success .success-title {
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+  text-align: start;
+}
+
+.confirm-did-modal .success .success-message {
+  margin-top: 29px;
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  line-height: 23px;
+  font-weight: 400;
+  text-align: start;
+}
+
+.confirm-did-modal .success .profile-link {
+  color: #247B75;
 }

@@ -44,6 +44,8 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
   const [fee, setFee] = useState(null)
   const [koiiTransfer, setKoiiTransfer] = useState(false)
   const [koiiQuantity, setKoiiQuantity] = useState(0)
+  const [isUpdate, setIsUpdate] = useState(false)
+  const [isCreate, setIsCreate] = useState(false)
 
   const walletIcon = {
     koi: <KoiIcon className='icon' />,
@@ -64,7 +66,9 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
         fee,
         address: targetAddress,
         isKoiTransfer,
-        koiiQty
+        koiiQty,
+        isCreateDID,
+        isUpdateDID
       } = request.data
 
       setSourceAccount({ address, type: 'koi' })
@@ -72,8 +76,10 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
       setOrigin(requestOrigin)
       setQty(qty)
       setFee(fee)
-      setKoiiTransfer(isKoiTransfer)
+      setKoiiTransfer(isKoiTransfer || isCreateDID)
       setKoiiQuantity(koiiQty)
+      setIsUpdate(isUpdateDID)
+      setIsCreate(isCreateDID)
     }
 
     loadRequest()
@@ -85,7 +91,7 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
         const request = await storage.generic.get.pendingRequest()
         if (isEmpty(request)) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
         const { transaction, origin } = request.data
-        signTransaction({ tx: transaction, confirm: true , origin})
+        signTransaction({ tx: transaction, confirm: true , origin, isUpdate, isCreate})
         await storage.generic.set.pendingRequest({})
       } else {
         signTransaction({ tx: null, confirm: false })
