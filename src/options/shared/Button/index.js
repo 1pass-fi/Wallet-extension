@@ -4,7 +4,7 @@ import './index.css'
 
 const Button = ({ startIcon: StartIcon, endIcon: EndIcon, text, onClick, variant, disabled=false }) => {
   return (
-    <div className={`custom-btn ${variant === 'filled' ? 'filled' : 'outline'} ${disabled === true && 'disabled'}`} onClick={onClick}>
+    <button disabled={disabled} className={`custom-btn ${variant === 'filled' ? 'filled' : 'outline'}`} onClick={onClick}>
       {StartIcon && (
         <div className="btn-icon">
           <StartIcon />
@@ -12,7 +12,7 @@ const Button = ({ startIcon: StartIcon, endIcon: EndIcon, text, onClick, variant
       )}
       <span>{text}</span>
       {EndIcon && <EndIcon />}
-    </div>
+    </button>
   )
 }
 

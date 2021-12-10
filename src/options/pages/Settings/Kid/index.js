@@ -590,6 +590,4 @@ const KidPage = () => {
   )
 }
 
-
-
 export default KidPage

@@ -30,7 +30,7 @@
   text-align: left;
 }
 
-.custom-btn.disabled {
+.custom-btn:disabled {
   cursor: not-allowed;
 }
 
