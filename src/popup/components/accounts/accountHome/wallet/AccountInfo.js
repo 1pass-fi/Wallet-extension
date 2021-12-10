@@ -21,6 +21,7 @@ import useNetworkSelection from 'shared/useNetworkSelection'
 // actions
 import { setAccounts } from 'popup/actions/accounts'
 import { changeAccountName } from 'actions/koi'
+import { setError } from 'actions/error'
 import { setNotification } from 'actions/notification'
 import { setAccountName } from 'actions/accountName'
 
@@ -28,14 +29,15 @@ import { setAccountName } from 'actions/accountName'
 import { fiatCurrencyFormat, getProviderNameFromUrl, numberFormat } from 'utils'
 
 // constants
-import { NOTIFICATION } from 'constants/koiConstants'
+import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
 
 // styles
 import './index.css'
 
 
-export const AccountInfo = (({
+export const AccountInfo = ({
+  setError,
   setNotification,
   price,
   currency,
@@ -51,6 +53,11 @@ export const AccountInfo = (({
   } = useNetworkSelection(account.type)
 
   const onSubmit = async (newName) => {
+    if(!newName || !newName.trim()) {
+      setError(ERROR_MESSAGE.ACCOUNT_NAME_EMPTY)
+      return
+    }
+
     await changeAccountName(account.address, newName)
 
     setNotification(NOTIFICATION.ACCOUNT_NAME_UPDATED)
@@ -123,7 +130,7 @@ export const AccountInfo = (({
       <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
-})
+}
 
 const mapStateToProps = (state) => ({
   accountName: state.accountName,
@@ -133,6 +140,6 @@ const mapStateToProps = (state) => ({
   ethereum: state.ethereum
 })
 
-const mapDispatchToProps = { setAccountName, setNotification, setAccounts, changeAccountName }
+const mapDispatchToProps = { setAccountName, setError, setNotification, setAccounts, changeAccountName }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo)

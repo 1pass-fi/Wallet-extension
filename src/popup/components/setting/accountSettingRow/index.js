@@ -24,7 +24,7 @@ import { setNotification } from 'actions/notification'
 import { changeAccountName } from 'actions/koi'
 
 // constants
-import { NOTIFICATION } from 'constants/koiConstants'
+import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
 
 // services
@@ -45,6 +45,11 @@ const AccountSettingRow = ({ account, setError, setNotification, changeAccountNa
   }
 
   const changeName = async (newName) => {
+    if(!newName || !newName.trim()) {
+      setError(ERROR_MESSAGE.ACCOUNT_NAME_EMPTY)
+      return
+    }
+
     await changeAccountName(account.address, newName)
     setNotification(NOTIFICATION.ACCOUNT_NAME_UPDATED)
     setOpenEditModal(false)
