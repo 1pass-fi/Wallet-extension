@@ -2,6 +2,7 @@ import React from 'react'
 
 import NavBar from 'finnie-v2/components/NavBar'
 import Sidebar from 'finnie-v2/components/Sidebar'
+import AccountSettings from '../AccountSettings/AccountSettings'
 
 const MainLayout = ({ title, children }) => {
   return (
@@ -12,6 +13,7 @@ const MainLayout = ({ title, children }) => {
         <div className="sticky top-16 z-50 bg-transparent text-white w-full text-3xl tracking-wider h-18.75 px-13.75 pt-7.25">
           {title.toUpperCase()}
         </div>
+        <AccountSettings />
         <div className="pl-4.25">
           <aside className="fixed z-51 w-57.75 pt-4">
             <Sidebar />
