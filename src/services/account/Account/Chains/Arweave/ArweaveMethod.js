@@ -311,7 +311,7 @@ export class ArweaveMethod {
       console.log('fetchedCollections', fetchedCollections)
       return fetchedCollections
     } catch (err) {
-      console.log(err.message)
+      throw new Error(err.message)
     }
   }
 

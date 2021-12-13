@@ -68,7 +68,7 @@ const TransactionConfirmModal = ({
 
         const fee = await arweave.transactions.getPrice(0, accountAddress)
 
-        setArFee(fee) // ask for a proper way to get the exact ar fee
+        setArFee(0.0008) // TODO: find for a proper way to get the exact ar fee
       }
 
       if (currency === 'KOII') setArFee(0.00005)

@@ -14,6 +14,6 @@ export default async (_, next) => {
     next()
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Load collection error' })
+    next({ error: err.message })
   }
 }

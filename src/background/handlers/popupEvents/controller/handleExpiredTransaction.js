@@ -37,6 +37,6 @@ export default async (payload, next) => {
     }
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Handle expired transaction error' })
+    next({ error: err.message })
   }
 }

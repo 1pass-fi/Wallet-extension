@@ -19,7 +19,7 @@ export default async (payload, next) => {
 
     next({ data: {key} })
   } catch (err) {
-    console.log(error.message)
-    next({ error: 'Get key error' })
+    console.error(err.message)
+    next({ error: err.message })
   }
 }

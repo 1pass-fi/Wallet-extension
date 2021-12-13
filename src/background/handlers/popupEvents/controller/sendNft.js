@@ -39,6 +39,6 @@ export default async (payload, next) => {
     next({ data: txId })
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Send NFT error' })
+    next({ error: err.message })
   }
 }

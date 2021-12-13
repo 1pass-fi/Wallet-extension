@@ -10,6 +10,6 @@ export default async (payload, next) => {
     next()
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Set default account error' })
+    next({ error: err.message })
   }
 }

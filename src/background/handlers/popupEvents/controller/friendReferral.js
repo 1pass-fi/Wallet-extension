@@ -42,6 +42,6 @@ export default async (payload, next) => {
     next({ data: result })
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Get friend referral error' })
+    next({ error: err.message })
   }
 }

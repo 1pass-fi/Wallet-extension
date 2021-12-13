@@ -19,6 +19,6 @@ export default async (payload, next) => {
     next()
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Remove wallet error' })
+    next({ error: err.message })
   }
 }
