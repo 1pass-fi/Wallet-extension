@@ -272,7 +272,7 @@ export const ERROR_MESSAGE = {
   NFT_NOT_EXIST_ON_CHAIN: `This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie.`,
   BRIDGE_NFT_FAILED: 'Bridge NFT failed',
   ACCOUNT_EXIST: 'This account has already been imported.',
-  ACCOUNT_NAME_EMPTY: 'Account name should not be empty.',
+  ACCOUNT_NAME_EMPTY: 'Enter a name for this key.',
   UPLOAD_NFT: {
     CREATE_TRANSACTION_ERROR: 'Create transaction error',
     SIGN_TRANSACTION_ERROR: 'Sign transaction error',
