@@ -7,10 +7,8 @@ import CreateIcon from 'img/v2/create-icon.svg'
 import GalleryIcon from 'img/v2/gallery-icon.svg'
 import CollectionIcon from 'img/v2/collection-icon.svg'
 import MagnifierIcon from 'img/v2/magnifier-icon.svg'
-import SettingIcon from 'img/v2/setting-icon.svg'
 import FilterIcon from 'img/v2/filter-icon.svg'
 import ArrowIcon from 'img/v2/arrow-icon.svg'
-import ArrowVerticalIcon from 'img/v2/arrow-vertical-icon.svg'
 
 import { filterNft } from 'options/actions/assets'
 import { TYPE } from 'constants/accountConstants'
@@ -18,8 +16,7 @@ import { TYPE } from 'constants/accountConstants'
 const navItems = [
   { icon: CreateIcon, path: '/v2/create' },
   { icon: GalleryIcon, path: '/v2/gallery' },
-  { icon: CollectionIcon, path: '/v2/collection' },
-  { icon: SettingIcon, path: '/v2/settings' }
+  { icon: CollectionIcon, path: '/v2/collection' }
 ]
 
 const Sidebar = () => {
@@ -46,7 +43,7 @@ const Sidebar = () => {
 
   return (
     <div>
-      <nav className="flex items-center justify-between gapx-3 mb-5">
+      <nav className="flex items-center justify-evenly gapx-3 mb-5">
         {navItems.map(({ icon: Icon, path }) => (
           <NavLink
             key={path}
@@ -76,17 +73,13 @@ const Sidebar = () => {
             <hr className="rounded bg-white" />
             <div className="flex items-center justify-between h-12 pl-1.5 pr-3 font-semibold text-sm text-white">
               Chains
-              {showFilterChains ? (
-                <ArrowVerticalIcon
-                  className="w-3 h-1.5 cursor-pointer"
-                  onClick={() => setShowFilterChains(!showFilterChains)}
-                />
-              ) : (
-                <ArrowIcon
-                  className="w-1.5 h-3 cursor-pointer"
-                  onClick={() => setShowFilterChains(!showFilterChains)}
-                />
-              )}
+              <ArrowIcon
+                className={clsx(
+                  showFilterChains && 'transform rotate-90',
+                  'w-1.5 h-3 cursor-pointer'
+                )}
+                onClick={() => setShowFilterChains(!showFilterChains)}
+              />
             </div>
             <hr className="rounded border border-trueGray-100 border-opacity-20" />
             {showFilterChains && (
