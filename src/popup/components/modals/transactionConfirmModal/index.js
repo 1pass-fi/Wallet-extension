@@ -7,11 +7,14 @@ import Modal from 'popup/components/shared/modal/index'
 import Button from 'popup/components/shared/button/'
 
 // utils
-import { numberFormat, calculateGasFee } from 'utils'
+import { numberFormat, calculateGasFee, winstonToAr } from 'utils'
 
 // styles
 import './index.css'
 import { popupAccount } from 'services/account'
+
+import arweave from 'services/arweave'
+import { TYPE } from 'constants/accountConstants'
 
 const propTypes = {
   sentAmount: PropTypes.number,
@@ -37,9 +40,10 @@ const TransactionConfirmModal = ({
   currency,
   onClose,
   onSubmit,
-  selectedAccount
+  selectedAccount,
 }) => {
   const [gasFee, setGasFee] = useState(0)
+  const [arFee, setArFee] = useState(0)
 
   useEffect(() => {
     const loadGasFee = async () => {
@@ -55,10 +59,30 @@ const TransactionConfirmModal = ({
       setGasFee(gasFee)
     }
 
-    loadGasFee()
-    const loadGasFeeInterval = setInterval(() => {
+    const loadArFee = async () => {
+      if (currency === 'AR') {
+        const tx = await arweave.createTransaction({
+          quantity: `${sentAmount * 1000000000000}`,
+          target: accountAddress
+        })
+
+        const fee = await arweave.transactions.getPrice(0, accountAddress)
+
+        setArFee(fee) // ask for a proper way to get the exact ar fee
+      }
+
+      if (currency === 'KOII') setArFee(0.00005)
+    }
+
+    let loadGasFeeInterval
+    if (selectedAccount.type === TYPE.ETHEREUM) {
       loadGasFee()
-    }, 3000)
+      loadGasFeeInterval = setInterval(() => {
+        loadGasFee()
+      }, 3000)
+    } 
+
+    if (selectedAccount.type === TYPE.ARWEAVE) loadArFee()
 
     return (() => clearInterval(loadGasFeeInterval))
   }, [])
@@ -68,6 +92,7 @@ const TransactionConfirmModal = ({
       <ModalTitle amount={sentAmount} currency={currency}/>
       <div className="modal-account-address confirm-transaction">{accountAddress}</div>
       {gasFee !== 0 && <div>Gas fee {gasFee} ETH</div>}
+      {arFee !== 0 && <div>AR fee {arFee} AR</div>}
       <div className="modal-description">
         * Yes, I have confirmed this is the correct wallet address.
       </div>

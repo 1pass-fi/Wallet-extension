@@ -38,6 +38,6 @@ export default async (payload, next) => {
     next({ data: { txId } })
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Make transfer error' })
+    next({ error: err.message })
   }
 }
