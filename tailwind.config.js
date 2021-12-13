@@ -15,7 +15,8 @@ module.exports = {
           900: '#211C52'
         },
         trueGray: {
-          100: '#F5F5F5'
+          100: '#F5F5F5',
+          500: '#8A8A8A'
         },
         blueGray: {
           900: '#07073F'

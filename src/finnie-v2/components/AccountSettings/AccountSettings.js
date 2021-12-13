@@ -7,26 +7,42 @@ const accountSettingItems = [
   { text: 'Gallery Settings', path: '/v2/settings/gallery' },
   { text: 'Wallet Settings', path: '/v2/settings/wallet' },
   { text: 'Security', path: '/v2/settings/security' },
-  { text: 'Customization', path: '/v2/settings/#' },
+  { text: 'Customization', path: '/v2/settings/#', disabled: true },
   { text: 'About', path: '/v2/settings/about' }
 ]
 
-const AccountSettings = ({ dropdown }) => {
+const AccountSettings = React.forwardRef(({ className }, ref) => {
   return (
     <div
+      ref={ref}
       className={clsx(
-        dropdown ? 'h-97.75' : 'h-68.5',
-        'flex flex-col w-58.5 bg-blue-700 text-white px-2 justify-evenly gapy-3'
+        'z-50 flex flex-col w-58.5 bg-blue-700 text-white px-2 justify-evenly font-semibold text-sm',
+        className
       )}
     >
-      {accountSettingItems.map(({ text, path }) => (
-        <NavLink key={path} to={path} activeClassName="underline-offset-1"> 
-          {text}
-          <hr className="rounded bg-white" />
-        </NavLink>
-      ))}
+      {accountSettingItems.map(({ text, path, disabled }, idx) =>
+        disabled ? (
+          <div
+            className={clsx(
+              'h-16 text-trueGray-500 cursor-default flex items-center',
+              idx !== 0 && 'border-t-2 border-opacity-20 '
+            )}
+          >
+            {text}
+          </div>
+        ) : (
+          <NavLink
+            key={path}
+            to={path}
+            className={clsx('h-16 flex items-center', idx !== 0 && 'border-t-2 border-opacity-20 ')}
+            activeClassName="underline underline-offset-1"
+          >
+            {text}
+          </NavLink>
+        )
+      )}
     </div>
   )
-}
+})
 
 export default AccountSettings
