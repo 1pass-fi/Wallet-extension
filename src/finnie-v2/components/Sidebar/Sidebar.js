@@ -13,6 +13,7 @@ import ArrowIcon from 'img/v2/arrow-icon.svg'
 import UploadNftForm from './UploadNftForm'
 import { filterNft } from 'options/actions/assets'
 import { TYPE } from 'constants/accountConstants'
+import AccountSettings from 'finnie-v2/components/AccountSettings'
 
 const navItems = [
   { icon: CreateIcon, path: '/v2/create' },
@@ -110,6 +111,9 @@ const Sidebar = () => {
         </Route>
         <Route path="/v2/create">
           <UploadNftForm />
+        </Route>
+        <Route exact path="/v2/settings/*">
+          <AccountSettings />
         </Route>
       </div>
     </div>

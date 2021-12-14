@@ -16,7 +16,7 @@ const AccountSettings = React.forwardRef(({ className }, ref) => {
     <div
       ref={ref}
       className={clsx(
-        'z-50 flex flex-col w-58.5 bg-blue-700 text-white px-2 justify-evenly font-semibold text-sm',
+        'z-50 flex flex-col w-58.5 bg-blue-700 text-white px-2 justify-evenly font-semibold text-sm rounded shadow-md',
         className
       )}
     >

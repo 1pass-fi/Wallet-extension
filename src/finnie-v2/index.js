@@ -12,6 +12,9 @@ import Gallery from './pages/Gallery'
 import NFTDetail from './pages/NFTDetail'
 
 import './style.css'
+import Settings from 'options/pages/Settings'
+import Layout from 'options/layout'
+import MainLayout from './components/MainLayout'
 
 const SecondVer = () => {
   const dispatch = useDispatch()
@@ -47,6 +50,15 @@ const SecondVer = () => {
     <Switch>
       <Route exact path="/v2/nfts/:id">
         <NFTDetail />
+      </Route>
+      <Route exact path="/v2/settings/*">
+        <Layout>
+          <MainLayout title="Settings">
+            <div className="transform flex justify-start" style={{ width: '862px' }}>
+              <Settings />
+            </div>
+          </MainLayout>
+        </Layout>
       </Route>
       <Route exact path="*">
         <Gallery />

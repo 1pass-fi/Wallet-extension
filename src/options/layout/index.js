@@ -741,7 +741,8 @@ export default ({ children }) => {
                 <input name='fileField' {...getInputProps()} />
               )}
 
-              <Link to="/">
+              {children}
+              {/* <Link to="/">
                 <div className="startup-logo"><KoiIcon /></div>
               </Link>
               {!GALLERY_IMPORT_PATH.includes(pathname) && <Header
@@ -751,7 +752,7 @@ export default ({ children }) => {
               <input onChange={(e) => handleSetFile(e)} onClick={(e) => e.target.value = null} type='file' ref={inputFileRef} style={{ display: 'none' }} />
               {children}
               {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer onClearFile={onClearFile} inputFileRef={inputFileRef} showDropzone={showDropzone} />}
-              {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />}
+              {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />} */}
             </div> : <LockScreen />}
           </>
           :
