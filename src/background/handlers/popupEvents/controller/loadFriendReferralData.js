@@ -31,6 +31,6 @@ export default async (payload, next) => {
     next()
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Load friend referral data error' })
+    next({ error: err.message })
   }
 }

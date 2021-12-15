@@ -123,6 +123,6 @@ export default async (payload, next) => {
     next({ data: result })
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Upload NFT error' })
+    next({ error: err.message })
   }
 }

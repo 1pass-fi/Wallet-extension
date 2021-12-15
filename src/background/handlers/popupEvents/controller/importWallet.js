@@ -10,7 +10,7 @@ import eth from 'services/ethereum'
 
 // Constants
 import { TYPE } from 'constants/accountConstants'
-import { MESSAGES, ERROR_MESSAGE } from 'constants/koiConstants'
+import { ERROR_MESSAGE } from 'constants/koiConstants'
 
 // Utils
 import { getProviderUrlFromName } from 'utils'
@@ -125,6 +125,6 @@ export default async (payload, next) => {
     next({ data: address })
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Import wallet error' })    
+    next({ error: err.message })    
   }
 }

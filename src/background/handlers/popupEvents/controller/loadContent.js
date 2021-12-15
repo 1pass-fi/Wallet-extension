@@ -29,6 +29,6 @@ export default async (payload, next) => {
 
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Load content error' })
+    next({ error: err.message })
   }
 }

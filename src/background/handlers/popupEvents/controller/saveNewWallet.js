@@ -72,6 +72,6 @@ export default async (payload, next) => {
 
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Save new wallet error' })
+    next({ error: err.message })
   }
 }

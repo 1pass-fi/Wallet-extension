@@ -40,6 +40,6 @@ export default async (payload, next) => {
     next({ data: seedPhrase.split(' ') })    
   } catch (err) {
     console.error(err.message)
-    next({ error: 'Generate wallet error' })
+    next({ error: err.message })
   }
 }

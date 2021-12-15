@@ -1,5 +1,4 @@
 import errorHandler from '../../errorHandler'
-import { ERROR_MESSAGE } from 'constants/koiConstants'
 
 const resendNft = async (account, transaction) => {
   const targetAddress = transaction?.source
@@ -8,4 +7,4 @@ const resendNft = async (account, transaction) => {
   return await account.method.transferNFT(contractAddress, targetAddress)
 }
 
-export default errorHandler(resendNft, ERROR_MESSAGE.RESEND.KOII)
+export default errorHandler(resendNft)

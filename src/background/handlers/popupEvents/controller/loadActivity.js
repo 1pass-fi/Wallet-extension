@@ -21,6 +21,6 @@ export default async (payload, next) => {
     await account.set.pendingTransactions(pendingTransactions)
     next({ data: { activitiesList, nextOwnedCursor, nextRecipientCursor } })
   } catch (err) {
-    next({ error: 'Load activity error' })
+    next({ error: err.message })
   }
 }

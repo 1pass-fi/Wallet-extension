@@ -267,15 +267,17 @@ export class ArweaveMethod {
 
   async transfer(token, target, qty) {
     try {
-      let balance
+      let balance, arBalance
       switch (token) {
         case 'KOI':
           balance = await this.koi.getKoiBalance()
+          arBalance = await this.koi.getWalletBalance()
+          if (arBalance < 0.00005) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
           if (qty > balance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
           break
         case 'AR':
           balance = await this.koi.getWalletBalance()
-          if (qty > balance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
+          if (qty + 0.0008 > balance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
           break
       }
       const txId = await this.koi.transfer(qty, target, token)
@@ -309,7 +311,7 @@ export class ArweaveMethod {
       console.log('fetchedCollections', fetchedCollections)
       return fetchedCollections
     } catch (err) {
-      console.log(err.message)
+      throw new Error(err.message)
     }
   }
 
