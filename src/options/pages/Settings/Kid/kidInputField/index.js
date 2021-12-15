@@ -4,7 +4,7 @@ import toLower from 'lodash/toLower'
 
 import './index.css'
 
-const KidInputField = ({ label, isRequired, description = '', example = '', value, setValue }) => {
+const KidInputField = ({ label, isRequired, description = '', example = '', value, setValue, disabled }) => {
   return (
     <div className="kid-input">
       <div className="kid-input-label-section">
@@ -18,6 +18,7 @@ const KidInputField = ({ label, isRequired, description = '', example = '', valu
           type="text"
           value={value}
           onChange={(e) => setValue(e)}
+          disabled={disabled}
         />
         <div className="description">{example}</div>
       </div>

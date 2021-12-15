@@ -3,6 +3,7 @@ import { backgroundAccount } from 'services/account'
 import helpers from 'background/helpers'
 
 import storage from 'services/storage'
+import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 
 export default async (payload, next) => {
   try {
@@ -29,6 +30,40 @@ export default async (payload, next) => {
       next({ error: 'Map koiime error', status: 400 })
       return
     }
+
+    // create pending transactions
+    const createDIDPending = {
+      id,
+      activityName: 'Created DID',
+      expense: 0.0005,
+      target: null,
+      address,
+      network: null,
+      retried: 1,
+      transactionType: PENDING_TRANSACTION_TYPE.CREATE_DID,
+      contract: null,
+      data: {
+        dataContractID: contractId
+      }
+    }
+
+    const createDIDDataPending = {
+      id: contractId,
+      activityName: 'Initialized DID Data',
+      expense: 0.00004,
+      target: null,
+      address,
+      network: null,
+      retried: 1,
+      transactionType: PENDING_TRANSACTION_TYPE.CREATE_DID_DATA,
+      contract: null,
+      data: {
+        didData
+      }
+    }
+
+    await helpers.pendingTransactionFactory.createPendingTransaction(createDIDPending)
+    await helpers.pendingTransactionFactory.createPendingTransaction(createDIDDataPending)
 
     next({ data: {id, contractId}, status: 200 })
   } catch (err) {

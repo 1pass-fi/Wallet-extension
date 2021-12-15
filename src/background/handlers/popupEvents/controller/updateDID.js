@@ -3,6 +3,7 @@ import { backgroundAccount } from 'services/account'
 import helpers from 'background/helpers'
 
 import storage from 'services/storage'
+import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 
 export default async (payload, next) => {
   try {
@@ -15,7 +16,7 @@ export default async (payload, next) => {
     const credentials = await backgroundAccount.getCredentialByAddress(address)
     const account = await backgroundAccount.getAccount(credentials)
     
-    let transactionId
+    let transactionId = 'transactionId'
     try {
       transactionId = await helpers.did.updateDID(didData, txId, account)
     } catch (err) {
@@ -32,6 +33,25 @@ export default async (payload, next) => {
         return
       }
     }
+
+    // create pending transaction
+    const pendingPayload = {
+      id: transactionId,
+      activityName: 'Updated DID',
+      expense: 0.00007,
+      target: null,
+      address,
+      network: null,
+      retried: 1,
+      transactionType: PENDING_TRANSACTION_TYPE.UPDATE_DID,
+      contract: null,
+      data: {
+        didData,
+        didtransactionID: txId
+      }
+    }
+
+    await helpers.pendingTransactionFactory.createPendingTransaction(pendingPayload)
 
     next({ data: transactionId, status: 200 })
   } catch (err) {

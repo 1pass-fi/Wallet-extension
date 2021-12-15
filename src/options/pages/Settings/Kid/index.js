@@ -5,6 +5,7 @@ import AceEditor from 'react-ace'
 import 'ace-builds/src-noconflict/mode-css'
 import 'ace-builds/src-noconflict/theme-monokai'
 import { includes, isEmpty } from 'lodash'
+import ReactTooltip from 'react-tooltip'
 
 import IDCardIcon from 'img/id-card-icon.svg'
 import AddIcon from 'img/navbar/create-nft.svg'
@@ -32,8 +33,9 @@ import storage from 'services/storage'
 import { getDisplayAddress } from 'options/utils'
 
 import './index.css'
-import { NOTIFICATION } from 'constants/koiConstants'
+import { NOTIFICATION, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
+import { popupAccount } from 'services/account'
 
 const KidPage = () => {
   const { 
@@ -59,6 +61,8 @@ const KidPage = () => {
   const [confirmed, setConfirmed] = useState(false)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
 
+  const [isPending, setIsPending] = useState(false)
+
   const kidLinkPrefix = 'https://koii.me/u/'
 
   const assets = useSelector((state) => state.assets)
@@ -81,6 +85,23 @@ const KidPage = () => {
   }
 
   useEffect(() => {
+    const getPendingStatus = async () => {
+      const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
+      const account = await popupAccount.getAccount({ address: defaultAccountAddress })
+      const pendingTransactions = await account.get.pendingTransactions()
+
+      for (const transaction of pendingTransactions) {
+        const didTransactionTypes = [
+          PENDING_TRANSACTION_TYPE.UPDATE_DID,
+          PENDING_TRANSACTION_TYPE.CREATE_DID_DATA,
+          PENDING_TRANSACTION_TYPE.CREATE_DID
+        ]
+        
+        if (didTransactionTypes.includes(transaction.transactionType))
+          setIsPending(true); break
+      }
+    }
+
     const getDID = async () => {
       try {
         setIsLoading(true)
@@ -142,6 +163,7 @@ const KidPage = () => {
 
     setIsLoading()
     getDID()
+    getPendingStatus()
   }, [])
 
   useEffect(() => {
@@ -343,6 +365,7 @@ const KidPage = () => {
 
       console.log('result', result)
       setIsLoading(false)
+      setIsPending(true)
     } catch (err) {
       console.error(err.message)
       setShowConfirmModal(false)
@@ -522,7 +545,15 @@ const KidPage = () => {
             ))}
 
           <div className="save-kid-btn">
-            <Button disabled={disableUpdateKID} onClick={() => setShowConfirmModal(true)} variant="filled" text="Save & Update" />
+            <div data-tip={isPending ? 'Transaction pending' : ''}>
+              <Button 
+                disabled={disableUpdateKID || isPending} 
+                onClick={() => setShowConfirmModal(true)} 
+                variant="filled" 
+                text="Save & Update"
+              />
+            </div>
+            <ReactTooltip place="top" effect="float" />
           </div>
         </div>
         {showModal && (

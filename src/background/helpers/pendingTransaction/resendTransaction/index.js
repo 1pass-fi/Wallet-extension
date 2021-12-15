@@ -4,7 +4,10 @@ import resendKoii from './resendKoii'
 import resendAr from './resendAr'
 import resendMintNft from './resendMintNft'
 import resendNft from './resendNft'
+import resendUpdateDID from './resendUpdateDID'
 import updatePendingTransaction from './updatePendingTransaction'
+import resendCreateDID from './resendCreateDID'
+import resendCreateDIDData from './resendCreateDIDData'
 import errorHandler from 'background/helpers/errorHandler'
 
 import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
@@ -28,6 +31,15 @@ const resendTransaction = async (account, transaction) => {
       break
     case PENDING_TRANSACTION_TYPE.SEND_NFT:
       newTransactionId = await resendNft(account, transaction)
+      break
+    case PENDING_TRANSACTION_TYPE.UPDATE_DID:
+      newTransactionId = await resendUpdateDID(account, transaction)
+      break
+    case PENDING_TRANSACTION_TYPE.CREATE_DID:
+      newTransactionId = await resendCreateDID(account, transaction)
+      break
+    case PENDING_TRANSACTION_TYPE.CREATE_DID_DATA:
+      newTransactionId = await resendCreateDIDData(account, transaction)
       break
     default:
       throw new Error('Invalid input transaction')
