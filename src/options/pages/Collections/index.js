@@ -72,15 +72,15 @@ export default () => {
     const handleLoadCollection = async () => {
       try {
         if (!isEmpty(defaultAccount)) {          
-          setIsLoading(true)
+          setIsLoading(prev => ++prev)
           await backgroundRequest.gallery.loadCollections({ address: defaultAccount.address })
           const allCollections = await popupAccount.getAllCollections()
           dispatch(setCollections({ collections: allCollections }))
           dispatch(setCollections({ collectionsLoaded: true }))
-          setIsLoading(false)
+          setIsLoading(prev => --prev)
         }
       } catch (err) {
-        setIsLoading(false)
+        setIsLoading(prev => --prev)
         setError(err.message)
         console.log(err.message)
       }
