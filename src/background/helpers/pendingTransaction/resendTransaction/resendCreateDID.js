@@ -9,10 +9,6 @@ import { DID_CONTRACT_ID } from 'constants/koiConstants'
 import errorHandler from '../../errorHandler'
 
 const resendCreateDID = async (account, transaction) => {
-  const target = transaction?.source
-  const qty = transaction?.expense
-  if (!target || !qty) throw new Error('Invalid transaction input')
-
   const contractId = get(transaction, 'data.dataContractID')
   if (!contractId) throw new Error('Contract ID not found.')
 

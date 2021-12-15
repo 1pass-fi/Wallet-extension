@@ -47,7 +47,7 @@ export default async (payload, next) => {
       contract: null,
       data: {
         didData,
-        didtransactionID: txId
+        didTransactionID: txId
       }
     }
 
