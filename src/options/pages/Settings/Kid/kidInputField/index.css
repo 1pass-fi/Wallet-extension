@@ -41,3 +41,8 @@
 .kid-input-field:disabled {
   cursor: not-allowed;
 }
+
+.kid-input .error {
+  color: red;
+  margin-top: 5px;
+}

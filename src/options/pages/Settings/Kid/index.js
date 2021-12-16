@@ -62,11 +62,18 @@ const KidPage = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false)
 
   const [isPending, setIsPending] = useState(false)
+  const [balance, koiBalance] = useSelector(getBalance)
+
+  const [fieldError, setFieldError] = useState({
+    kid: '',
+    name: '',
+    country: '',
+    description: ''
+  })
 
   const kidLinkPrefix = 'https://koii.me/u/'
 
   const assets = useSelector((state) => state.assets)
-  const [balance, koiBalance] = useSelector(getBalance)
   const defaultAccount = useSelector(state => state.defaultAccount)
 
   const modalRef = useRef(null)
@@ -195,6 +202,12 @@ const KidPage = () => {
   }, [bannerId])
 
   const onChangeUserInfo = (e) => {
+    setFieldError({
+      kid: '',
+      name: '',
+      country: '',
+      description: ''
+    })
     setDisableUpdateKID(false)
     const { name, value } = e.target
     if (name === 'kid') {
@@ -234,6 +247,103 @@ const KidPage = () => {
     setLinkAccounts(newLinkAccount)
   }
 
+  const validateFields = async () => {
+    setIsLoading(prev => ++prev)
+    // Validation
+    const pattern = /^[A-Za-z0-9]+$/
+    const available = await checkAvailable(kID)
+    if (!kID) {
+      setFieldError(prev =>({...prev, kid: 'kID field must be filled in'}))
+      setIsLoading(prev => --prev)
+      setDisableUpdateKID(false)
+      return
+    }
+  
+    if (!pattern.test(kID)) {
+      setFieldError(prev =>({...prev, kid: 'Please try a kID without special characters'}))
+      setIsLoading(prev => --prev)
+      setDisableUpdateKID(false)
+      return
+    }
+  
+    if (kID.length < 5) {
+      setFieldError(prev =>({...prev, kid: 'This username is unavailable, please try a different one'}))
+      setIsLoading(prev => --prev)
+      setDisableUpdateKID(false)
+      return
+    }
+  
+    if (!available && (oldkID !== kID)) {
+      setFieldError(prev =>({...prev, kid: 'This username is unavailable, please try a different one'}))
+      setIsLoading(prev => --prev)
+      setDisableUpdateKID(false)
+      return
+    }
+  
+    if (!userKID.name) {
+      setFieldError(prev =>({...prev, name: 'Name field must be filled in'}))
+      setIsLoading(prev => --prev)
+      setDisableUpdateKID(false)
+      return
+    }
+  
+    if (!userKID.country) {
+      setFieldError(prev =>({...prev, country: 'Country field must be filled in'}))
+      setIsLoading(prev => --prev)
+      setDisableUpdateKID(false)
+      return
+    }
+  
+    if (!userKID.description) {
+      setFieldError(prev =>({...prev, description: 'Description field must be filled in'}))
+      setIsLoading(prev => --prev)
+      setDisableUpdateKID(false)
+      return
+    }
+  
+    if (!profilePictureId) {
+      setError('Please select an avatar')
+      setIsLoading(prev => --prev)
+      setDisableUpdateKID(false)
+      return
+    }
+  
+    if (!bannerId) {
+      setError('Please select a cover image')
+      setIsLoading(prev => --prev)
+      setDisableUpdateKID(false)
+      return
+    }
+  
+    if (hadData) {
+      // balance validate update
+      if (balance < 0.00007) {
+        setError(`You don't have enough AR`)
+        setIsLoading(prev => --prev)
+        setDisableUpdateKID(false)
+        return
+      }
+    } else {
+      // balance validate create
+      if (balance < 0.0005) {
+        setError(`You don't have enough AR`)
+        setIsLoading(prev => --prev)
+        setDisableUpdateKID(false)
+        return
+      }
+
+      if (koiBalance < 1) {
+        setError(`You don't have enough KOII`)
+        setIsLoading(prev => --prev)
+        setDisableUpdateKID(false)
+        return
+      }
+    }
+
+    setIsLoading(prev => --prev)
+    return true
+  }
+
   const handleSubmit = async () => {
     try {
       setIsLoading(prev => ++prev)
@@ -253,97 +363,6 @@ const KidPage = () => {
       }
 
       state.links = state.links.filter(link => !isEmpty(link.title) && !isEmpty(link.link))
-
-      // Validation
-      const pattern = /^[A-Za-z0-9]+$/
-      const available = await checkAvailable(kID)
-      if (!kID) {
-        setError('kID field must be filled in')
-        setIsLoading(prev => --prev)
-        setDisableUpdateKID(false)
-        return
-      }
-  
-      if (!pattern.test(kID)) {
-        setError('A kID can only contain A-Z, a-z, 0-9')
-        setIsLoading(prev => --prev)
-        setDisableUpdateKID(false)
-        return
-      }
-  
-      if (kID.length < 5) {
-        setError('A kID must contain at least 5 characters')
-        setIsLoading(prev => --prev)
-        setDisableUpdateKID(false)
-        return
-      }
-  
-      if (!available && (oldkID !== kID)) {
-        setError('Such kID already exists. Please try another kID')
-        setIsLoading(prev => --prev)
-        setDisableUpdateKID(false)
-        return
-      }
-  
-      if (!userKID.name) {
-        setError('Name field must be filled in')
-        setIsLoading(prev => --prev)
-        setDisableUpdateKID(false)
-        return
-      }
-  
-      if (!userKID.country) {
-        setError('Country field must be filled in')
-        setIsLoading(prev => --prev)
-        setDisableUpdateKID(false)
-        return
-      }
-  
-      if (!userKID.description) {
-        setError('Description field must be filled in')
-        setIsLoading(prev => --prev)
-        setDisableUpdateKID(false)
-        return
-      }
-  
-      if (!profilePictureId) {
-        setError('Please select an avatar')
-        setIsLoading(prev => --prev)
-        setDisableUpdateKID(false)
-        return
-      }
-  
-      if (!bannerId) {
-        setError('Please select a cover image')
-        setIsLoading(prev => --prev)
-        setDisableUpdateKID(false)
-        return
-      }
-  
-      if (hadData) {
-        // balance validate update
-        if (balance < 0.00007) {
-          setError('Not enough AR')
-          setIsLoading(prev => --prev)
-          setDisableUpdateKID(false)
-          return
-        }
-      } else {
-        // balance validate create
-        if (balance < 0.0005) {
-          setError('Not enough AR')
-          setIsLoading(prev => --prev)
-          setDisableUpdateKID(false)
-          return
-        }
-
-        if (koiBalance < 1) {
-          setError('Not enough KOII')
-          setIsLoading(prev => --prev)
-          setDisableUpdateKID(false)
-          return
-        }
-      }
 
       let result 
       if (hadData) {
@@ -418,6 +437,7 @@ const KidPage = () => {
             isRequired={true}
             value={userKID.kidLink}
             setValue={onChangeUserInfo}
+            error={fieldError.kid}
           />
           <KidInputField
             label="Name"
@@ -425,12 +445,14 @@ const KidPage = () => {
             description="or pseudonym"
             value={userKID.name}
             setValue={onChangeUserInfo}
+            error={fieldError.name}
           />
           <KidInputField
             label="Country"
             isRequired={true}
             value={userKID.country}
             setValue={onChangeUserInfo}
+            error={fieldError.country}
           />
           <KidInputField
             label="Pronouns"
@@ -451,6 +473,7 @@ const KidPage = () => {
                 className="kid-input-area-field"
                 type="text"
               />
+              <span className="error">{fieldError.description}</span>
             </div>
           </div>
 
@@ -547,7 +570,10 @@ const KidPage = () => {
             <div data-tip={isPending ? 'Transaction pending' : ''}>
               <Button 
                 disabled={disableUpdateKID || isPending} 
-                onClick={() => setShowConfirmModal(true)} 
+                onClick={async () => {
+                  const validated = await validateFields()
+                  if (validated) setShowConfirmModal(true)
+                }} 
                 variant="filled" 
                 text="Save & Update"
               />
