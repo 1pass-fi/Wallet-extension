@@ -72,9 +72,9 @@ export default () => {
           owner: defaultAccount.address
         }
 
-        setIsLoading(true)
+        setIsLoading(prev => ++prev)
         const txId = await backgroundRequest.gallery.createNewCollection({ nftIds, collectionInfo, address: defaultAccount.address })
-        setIsLoading(false)
+        setIsLoading(prev => --prev)
         console.log('Transaction Id: ', txId)
         setNotification(NOTIFICATION.CREATE_COLLECTION_SUCCESS)
       } else {
@@ -105,13 +105,13 @@ export default () => {
         break
       case 3:
         try {
-          setIsLoading(true)
+          setIsLoading(prev => ++prev)
           await handleCreateNewCollection()
-          setIsLoading(false)
+          setIsLoading(prev => --prev)
           dispatch(setCreateCollection({ stage: createCollection.stage + 1 }))
           break
         } catch (err) {
-          setIsLoading(false)
+          setIsLoading(prev => --prev)
           setError(err.message)
         }
     }

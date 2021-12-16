@@ -62,7 +62,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
   const [balance, koiBalance] = useSelector(getBalance)
 
   const handleUploadNFT = async () => {
-    setIsLoading(true)
+    setIsLoading(prev => ++prev)
     try {
       const url = URL.createObjectURL(file)
       // console.log('bottomButton- file', file)
@@ -111,14 +111,14 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
 
       setPendingNFTTitle(title)
       await storage.generic.set.savedNFTForm({})
-      setIsLoading(false)
+      setIsLoading(prev => --prev)
 
       return {
         txId,
         time,
       }
     } catch (err) {
-      setIsLoading(false)
+      setIsLoading(prev => --prev)
       throw new Error(err.message)
     }
   }
@@ -133,7 +133,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
   useEffect(() => {
     const cacheData = async () => {
       try {
-        setIsLoading(true)
+        setIsLoading(prev => ++prev)
 
         // cache file (<= 5Mb) to storage
         if (file.size <= 5 * 1024 ** 2) {
@@ -152,11 +152,11 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
           await saveUploadFormData(file, metadata)
         }
 
-        setIsLoading(false)
+        setIsLoading(prev => --prev)
         setIsClickEnable(true)
         setStage(2)
       } catch (error) {
-        setIsLoading(false)
+        setIsLoading(prev => --prev)
         setIsClickEnable(true)
         setError(error.message)
       }
@@ -201,7 +201,6 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
 
           createNftButtonRef.current.disabled = true
           setShowUploadingModal(true)
-          setIsLoading(true)
           const { txId, time } = handleUploadNFT()
           setTransactionId(txId)
           setCreatedAt(time)
@@ -218,7 +217,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
     }
 
     const submitFriendCode = async () => {
-      setIsLoading(true)
+      setIsLoading(prev => ++prev)
       try {
         if (defaultAccount) {
           const { status, message } = await backgroundRequest.gallery.friendReferral({
@@ -242,7 +241,7 @@ export default ({ description, setStage, stage, title, file, username, isNSFW, t
       } catch (err) {
         setError(err.message)
       }
-      setIsLoading(false)
+      setIsLoading(prev => --prev)
     }
 
     return (

@@ -35,7 +35,7 @@ export default () => {
 
   const handleClaimReward = async () => {
     try {
-      setIsLoading(true)
+      setIsLoading(prev => ++prev)
       if (defaultAccount) { // ????????????????? WTF
         const { message, status } = await backgroundRequest.gallery.friendReferral({
           endpoints: FRIEND_REFERRAL_ENDPOINTS.CLAIM_REWARD
@@ -56,7 +56,7 @@ export default () => {
     } catch (err) {
       setError(err.message)
     }
-    setIsLoading(false)
+    setIsLoading(prev => --prev)
   }
 
   return (

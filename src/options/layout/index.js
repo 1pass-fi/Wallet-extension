@@ -91,7 +91,7 @@ export default ({ children }) => {
   /* 
     Notification state
   */
-  const [isLoading, setIsLoading] = useState(false) // loading state
+  const [isLoading, setIsLoading] = useState(0) // loading state
   const [error, setError] = useState(null) // error message
   const [notification, setNotification] = useState(null) // notification message
 
@@ -153,6 +153,7 @@ export default ({ children }) => {
   */
   useEffect(() => {
     const loadWallets = async () => {
+      setIsLoading(prev => ++prev)
       const allAccounts = await dispatch(loadAllAccounts()) // will load default account also
       const _isLocked = await backgroundRequest.wallet.getLockState()
 
@@ -161,9 +162,8 @@ export default ({ children }) => {
       if(!isEmpty(allAccounts)){
         setIsLocked(_isLocked)
       }
+      setIsLoading(prev => --prev)
     }
-
-    setIsLoading(true)
     loadWallets()
   }, [])
 
@@ -227,6 +227,7 @@ export default ({ children }) => {
   */
   useEffect(() => {
     const loadAllContents = async () => {
+      setIsLoading(prev => ++prev)
       console.log('loading all contents')
       let allAssets = await popupAccount.getAllAssets()
       let validAssets = allAssets.filter(asset => asset.name !== '...')
@@ -237,7 +238,7 @@ export default ({ children }) => {
       validAssets = allAssets.filter(asset => asset.name !== '...')
       dispatch(setAssets({ nfts: validAssets }))
       if (isEmpty(allAssets) && pathname === '/') history.push('/create')
-      setIsLoading(false)
+      setIsLoading(prev => --prev)
     }
 
     if (walletLoaded) loadAllContents()
@@ -253,6 +254,7 @@ export default ({ children }) => {
     const loadAssetsForNewAddress = async () => {
       try {
         if (newAddress) {
+          setIsLoading(prev => ++prev)
           console.log('loading content for', newAddress)
           await backgroundRequest.assets.loadContent({ address: newAddress })
 
@@ -260,11 +262,11 @@ export default ({ children }) => {
           const validAssets = allAssets.filter(asset => asset.name !== '...')
           dispatch(setAssets({ nfts: validAssets }))
           if (isEmpty(allAssets) && pathname === '/') history.push('/create')
-          setIsLoading(false)
+          setIsLoading(prev => --prev)
         }
       } catch (err) {
         console.log(err.message)
-        setIsLoading(false)
+        setIsLoading(prev => --prev)
         setError(err.message)
       }
     }
@@ -450,6 +452,7 @@ export default ({ children }) => {
           const { assets } = store.getState()
 
           try {
+            setIsLoading(prev => ++prev)
             /* 
               Showing pending NFT
                 - Get current activated account
@@ -468,7 +471,7 @@ export default ({ children }) => {
 
             dispatch(setAssets({ nfts: [...assets.nfts, ...pendingAssets] }))
 
-            setIsLoading(false)
+            setIsLoading(prev => --prev)
             setShowUploadingModal(false)
             setShowUploadedIcon(true)
             setShowSuccessUploadModal(true)
