@@ -16,7 +16,7 @@ export default async (payload, next) => {
     const credentials = await backgroundAccount.getCredentialByAddress(address)
     const account = await backgroundAccount.getAccount(credentials)
     
-    let transactionId = 'transactionId'
+    let transactionId
     try {
       transactionId = await helpers.did.updateDID(didData, txId, account)
     } catch (err) {
