@@ -9,9 +9,14 @@ import CollectionIcon from 'img/v2/collection-icon.svg'
 import MagnifierIcon from 'img/v2/magnifier-icon.svg'
 import FilterIcon from 'img/v2/filter-icon.svg'
 import ArrowIcon from 'img/v2/arrow-icon.svg'
+import CrossIcon from 'img/v2/cross-icon.svg'
+
+import Button from 'finnie-v2/components/Button'
+import InputField from './InputField'
 
 import { filterNft } from 'options/actions/assets'
 import { TYPE } from 'constants/accountConstants'
+import formatLongString from 'finnie-v2/utils/formatLongString'
 
 const navItems = [
   { icon: CreateIcon, path: '/v2/create' },
@@ -24,6 +29,22 @@ const Sidebar = () => {
   const [searchStr, setSearchStr] = useState('')
   const [showFilterChains, setShowFilterChains] = useState(false)
   const [chainType, setChainType] = useState('')
+  const [nftContent, setNftContent] = useState({
+    title: '',
+    owner: '',
+    description: '',
+    isNSFW: false
+  })
+  const [tagInput, setTagInput] = useState('')
+  const [tags, setTags] = useState([])
+
+  useEffect(() => {
+    dispatch(filterNft({ searchStr, chainType }))
+  }, [searchStr, chainType])
+
+  const handleNftContentChange = (e) => {
+    setNftContent({ ...nftContent, [e.target.name]: e.target.value })
+  }
 
   const handleSearchFieldChange = (searchStr) => {
     setSearchStr(searchStr)
@@ -36,10 +57,21 @@ const Sidebar = () => {
     }
     setChainType(selectChainType)
   }
+  const handleTagsChange = (e) => {
+    setTagInput(e.target.value)
+    const { keyCode } = e
+    if (keyCode === 13 || keyCode === 188) {
+      let newTags = tagInput.split(',')
+      newTags = newTags.map((tag) => trim(tag)).filter((tag) => tag.replace(/\s/g, '').length)
+      setTags(union(tags, newTags))
+      setTagInput('')
+    }
+    setTags([])
+  }
 
-  useEffect(() => {
-    dispatch(filterNft({ searchStr, chainType }))
-  }, [searchStr, chainType])
+  const handleCreateNFT = () => {
+    console.log(nftContent)
+  }
 
   return (
     <div>
@@ -104,6 +136,61 @@ const Sidebar = () => {
                 </div>
               </div>
             )}
+          </div>
+        </Route>
+        <Route path="/v2/create">
+          <div className="flex flex-col px-4 pt-4">
+            <InputField
+              className="my-1"
+              label="NFT Title"
+              value={nftContent.title}
+              setValue={handleNftContentChange}
+              required={true}
+              name="title"
+            />
+            <InputField
+              className="my-1"
+              label="Username"
+              value={nftContent.owner}
+              setValue={handleNftContentChange}
+              required={true}
+              name="owner"
+            />
+            <InputField
+              className="my-1"
+              label="Description"
+              value={nftContent.description}
+              setValue={handleNftContentChange}
+              required={true}
+              type="textarea"
+              name="description"
+            />
+            <InputField
+              description="Separate with a “,” and hit space bar"
+              className="mt-2"
+              label="Tags"
+              value={tagInput}
+              setValue={handleTagsChange}
+              required={false}
+            />
+            <div className="h-19 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1 mb-5">
+              {tags.map((tag) => (
+                <div
+                  key={tag}
+                  className="h-3.75 flex justify-evenly items-center rounded-full bg-lightBlue text-2xs py-0.5 px-1.5 cursor-pointer"
+                >
+                  <CrossIcon className="mr-0.5 w-1.75 h-1.75" />
+                  {formatLongString(tag, 25)}
+                </div>
+              ))}
+            </div>
+
+            <Button
+              onClick={handleCreateNFT}
+              variant="light"
+              text="Create NFT"
+              className="text-sm font-semibold"
+            />
           </div>
         </Route>
       </div>

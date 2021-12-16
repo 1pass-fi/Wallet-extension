@@ -2,6 +2,7 @@ import React from 'react'
 import clsx from 'clsx'
 
 const variants = {
+  light: 'bg-trueGray-100 text-indigo',
   primary: 'bg-success text-indigo',
   warning: 'bg-warning-200 text-indigo shadow',
   inversed: 'border border-solid border-white text-white',
