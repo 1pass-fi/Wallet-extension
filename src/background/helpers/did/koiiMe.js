@@ -24,6 +24,36 @@ export const mapKoiiMe = async ({ txId, kID }) => {
   }
 
   try {
+    const { status, data } = await axios({
+      method: 'POST',
+      url,
+      headers: requestHeaders,
+      data: linkRequest
+    })
+
+    return {kIDCreated: status === 200, id: data.id }
+  } catch (err) {
+    console.log(err.errors)
+    return false
+  }
+
+}
+
+export const updateKoiiMe = async (brandlyID, txId) => {
+  const url = `https://api.rebrandly.com/v1/links/${brandlyID}`
+  const destination = `https://arweave.net/${txId}`
+
+  const linkRequest = {
+    id: brandlyID,
+    destination
+  }
+
+  const requestHeaders = {
+    'ContentType': 'application/json',
+    'apiKey': BRANDLY_API_KEY
+  }
+
+  try {
     const { status } = await axios({
       method: 'POST',
       url,
@@ -33,10 +63,8 @@ export const mapKoiiMe = async ({ txId, kID }) => {
 
     return status === 200
   } catch (err) {
-    console.log(err.errors)
     return false
   }
-
 }
 
 export const checkAvailable = async (kID) => {
@@ -54,5 +82,6 @@ export const checkAvailable = async (kID) => {
 
 export default {
   mapKoiiMe,
-  checkAvailable
+  checkAvailable,
+  updateKoiiMe
 }

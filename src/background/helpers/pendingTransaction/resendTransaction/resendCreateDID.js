@@ -7,12 +7,20 @@ import arweave from 'services/arweave'
 import { DID_CONTRACT_ID } from 'constants/koiConstants'
 
 import errorHandler from '../../errorHandler'
+import koiiMe from 'background/helpers/did/koiiMe'
 
 const resendCreateDID = async (account, transaction) => {
   const contractId = get(transaction, 'data.dataContractID')
+  const brandlyId = get(transaction, 'data.brandlyID')
   if (!contractId) throw new Error('Contract ID not found.')
+  if (!brandlyId) throw new Error('Brandly ID not found.')
 
-  return await createReactAppDID(contractId, account)
+  const txId = await createReactAppDID(contractId, account)
+
+  // map koiime to new react app
+  await koiiMe.updateKoiiMe(brandlyId, txId)
+
+  return txId
 }
 
 const createReactAppDID = async (contractId, account) => {

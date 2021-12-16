@@ -25,7 +25,7 @@ export default async (payload, next) => {
     
     await account.method.registerData(contractId)
 
-    const kIDCreated = await helpers.did.koiiMe.mapKoiiMe({ txId: id, kID: didData.kID })
+    const { kIDCreated, id: brandlyID } = await helpers.did.koiiMe.mapKoiiMe({ txId: id, kID: didData.kID })
     if (!kIDCreated) {
       next({ error: 'Map koiime error', status: 400 })
       return
@@ -43,7 +43,8 @@ export default async (payload, next) => {
       transactionType: PENDING_TRANSACTION_TYPE.CREATE_DID,
       contract: null,
       data: {
-        dataContractID: contractId
+        dataContractID: contractId,
+        brandlyID
       }
     }
 
@@ -58,7 +59,8 @@ export default async (payload, next) => {
       transactionType: PENDING_TRANSACTION_TYPE.CREATE_DID_DATA,
       contract: null,
       data: {
-        didData
+        didData,
+        brandlyID
       }
     }
 
