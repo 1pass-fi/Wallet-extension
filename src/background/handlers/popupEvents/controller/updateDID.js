@@ -3,6 +3,7 @@ import { backgroundAccount } from 'services/account'
 import helpers from 'background/helpers'
 
 import storage from 'services/storage'
+import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 
 export default async (payload, next) => {
   try {
@@ -25,13 +26,32 @@ export default async (payload, next) => {
 
     if (newkID) {
       const reactAppId = await helpers.did.getDID(null, txId)
-      const kidCreated = await helpers.did.koiiMe.mapKoiiMe({ txId: reactAppId, kID: didData.kID })
+      const { kIDCreated } = await helpers.did.koiiMe.mapKoiiMe({ txId: reactAppId, kID: didData.kID })
 
-      if (!kidCreated) {
+      if (!kIDCreated) {
         next({ error: 'Map koiime error', status: 400 })
         return
       }
     }
+
+    // create pending transaction
+    const pendingPayload = {
+      id: transactionId,
+      activityName: 'Updated DID',
+      expense: 0.00007,
+      target: null,
+      address,
+      network: null,
+      retried: 1,
+      transactionType: PENDING_TRANSACTION_TYPE.UPDATE_DID,
+      contract: null,
+      data: {
+        didData,
+        didTransactionID: txId
+      }
+    }
+
+    await helpers.pendingTransactionFactory.createPendingTransaction(pendingPayload)
 
     next({ data: transactionId, status: 200 })
   } catch (err) {

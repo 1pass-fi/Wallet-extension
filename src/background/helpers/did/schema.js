@@ -33,7 +33,7 @@ export default Joi.object({
   country:Joi.string().required().messages({
     'string.empty': 'country is required',
   }),
-  pronouns:Joi.string(),
+  pronouns:Joi.string().empty(''),
   kID:Joi.string().required().messages({
     'string.empty': 'kID is required',
   })

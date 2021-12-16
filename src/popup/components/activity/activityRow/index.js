@@ -148,7 +148,7 @@ const ActivityRow = ({
           {pending && <div className={!expired ? 'activity-pending' : 'activity-pending expired'}>
             {!expired ? 
               get(displayInfo, 'pendingOrExpired') : 
-              <span data-tip="Take an action" onClick={() => handleExpiredAction({txId: id, address})}>
+              <span data-tip="Take an action" onClick={() => handleExpiredAction({txId: id, address, activityName})}>
                 {get(displayInfo, 'pendingOrExpired')}
               </span>}
           </div> }

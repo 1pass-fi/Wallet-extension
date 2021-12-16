@@ -34,6 +34,14 @@ const ExpiredTxModal = ({ onClose, txInfo, setError, setPendingTransactions, set
               transaction.expired = false
               transaction.id = resentTransactionId
             }
+
+            if (txInfo.activityName === 'Initialized DID Data' &&
+              transaction.address === txInfo.address &&
+              transaction.activityName === 'Created DID'
+            ) {
+              transaction.expired = false
+              transaction.id = resentTransactionId
+            }
             return transaction
           })
         })
@@ -45,7 +53,7 @@ const ExpiredTxModal = ({ onClose, txInfo, setError, setPendingTransactions, set
     } catch (err) {
       console.log(err.message)
       setIsLoading(false)
-      setError(ERROR_MESSAGE.EXPIRED_TRANSACTION_ACTION_ERROR)
+      setError(err.message)
       onClose()
     }
   }
@@ -53,7 +61,7 @@ const ExpiredTxModal = ({ onClose, txInfo, setError, setPendingTransactions, set
   return (
     <Modal onClose={onClose} className="expired-transaction-modal">
       <div className="modal-title">
-        <strong>Delete this transaction</strong>
+        <strong>Take an action</strong>
       </div>
       <div className="modal-description">
         Do you want to delete or resend the transaction?
