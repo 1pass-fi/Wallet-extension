@@ -454,3 +454,13 @@
 .confirm-did-modal .success .profile-link {
   color: #247B75;
 }
+
+.kid-input .error {
+  color: red;
+  margin-top: 5px;
+}
+
+.kid-input .kid-input-input-section {
+  display: flex;
+  flex-direction: column;
+}
