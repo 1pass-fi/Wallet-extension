@@ -88,6 +88,10 @@ const Sidebar = () => {
     }
   }
 
+  const removeTag = (removeTag) => {
+    setTags(tags.filter((tag) => tag !== removeTag))
+  }
+
   const handleCreateNFT = () => {
     console.log(nftContent)
   }
@@ -208,6 +212,7 @@ const Sidebar = () => {
             <div className="max-h-19 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1 mb-5">
               {tags.map((tag) => (
                 <div
+                  onClick={() => removeTag(tag)}
                   key={tag}
                   className="max-h-3.75 flex justify-evenly items-center rounded-full bg-lightBlue text-2xs py-0.5 px-1.5 cursor-pointer"
                 >
