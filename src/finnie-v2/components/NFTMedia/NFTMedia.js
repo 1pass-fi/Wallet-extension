@@ -9,6 +9,9 @@ const NFTMedia = ({ contentType, source }) => {
   if (includes(contentType, 'video')) {
     return <video src={source} className="w-full h-full object-cover rounded" muted controls />
   }
+  if (includes(contentType, 'audio')) {
+    return <audio src={source} className="w-full h-full object-cover rounded" controls />
+  }
   if (includes(contentType, 'html')) {
     return <iframe className="w-full h-full rounded" frameBorder="0" src={source} />
   }

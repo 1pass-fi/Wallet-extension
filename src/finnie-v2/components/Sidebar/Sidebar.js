@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink, Route } from 'react-router-dom'
 import clsx from 'clsx'
-import union from 'lodash/union'
 import initial from 'lodash/initial'
+import isEmpty from 'lodash/isEmpty'
+import union from 'lodash/union'
 
 import CreateIcon from 'img/v2/create-icon.svg'
 import GalleryIcon from 'img/v2/gallery-icon.svg'
@@ -13,12 +14,15 @@ import FilterIcon from 'img/v2/filter-icon.svg'
 import ArrowIcon from 'img/v2/arrow-icon.svg'
 import CrossIcon from 'img/v2/cross-icon.svg'
 
-import Button from 'finnie-v2/components/Button'
 import InputField from './InputField'
+import Button from 'finnie-v2/components/Button'
+import DropFile from 'finnie-v2/components/DropFile'
+import NFTMedia from 'finnie-v2/components/NFTMedia'
 
 import { filterNft } from 'options/actions/assets'
 import { TYPE } from 'constants/accountConstants'
 import formatLongString from 'finnie-v2/utils/formatLongString'
+import { getFileType } from 'finnie-v2/utils/getFileType'
 
 const navItems = [
   { icon: CreateIcon, path: '/v2/create' },
@@ -28,6 +32,7 @@ const navItems = [
 
 const Sidebar = () => {
   const dispatch = useDispatch()
+
   const [searchStr, setSearchStr] = useState('')
   const [showFilterChains, setShowFilterChains] = useState(false)
   const [chainType, setChainType] = useState('')
@@ -39,6 +44,20 @@ const Sidebar = () => {
   })
   const [tagInput, setTagInput] = useState('')
   const [tags, setTags] = useState([])
+  const [file, setFile] = useState({})
+
+  const fileType = useMemo(() => getFileType(file), [file])
+  const url = useMemo(() => {
+    try {
+      if (file) {
+        const _url = URL.createObjectURL(file)
+        return _url
+      }
+      return ''
+    } catch (err) {
+      console.log('INPUT ERROR - IMAGE', err.message)
+    }
+  }, [file])
 
   useEffect(() => {
     dispatch(filterNft({ searchStr, chainType }))
@@ -186,11 +205,11 @@ const Sidebar = () => {
                 Separate with a “,” and hit space bar
               </div>
             </div>
-            <div className="h-19 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1 mb-5">
+            <div className="max-h-19 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1 mb-5">
               {tags.map((tag) => (
                 <div
                   key={tag}
-                  className="h-3.75 flex justify-evenly items-center rounded-full bg-lightBlue text-2xs py-0.5 px-1.5 cursor-pointer"
+                  className="max-h-3.75 flex justify-evenly items-center rounded-full bg-lightBlue text-2xs py-0.5 px-1.5 cursor-pointer"
                 >
                   <CrossIcon className="mr-0.5 w-1.75 h-1.75" />
                   {formatLongString(tag, 25)}
@@ -212,6 +231,27 @@ const Sidebar = () => {
               >
                 This content is <span className="text-warning">Explicit or 18+.</span>
               </div>
+            </div>
+
+            <div className="w-50 h-36.25 border border-dashed border-success rounded mb-4.25">
+              {!isEmpty(file) ? (
+                <div className="w-full h-full relative object-cover">
+                  <CrossIcon
+                    onClick={() => setFile({})}
+                    className="z-50 absolute top-2 right-2 w-4 h-4 cursor-pointer bg-white rounded-full p-1 shadow-lg"
+                  />
+                  <NFTMedia contentType={fileType} source={url} />
+                </div>
+              ) : (
+                <DropFile
+                  file={file}
+                  setFile={setFile}
+                  fileType={['image/*', 'video/*', 'audio/*']}
+                  // className="drag-media"
+                  className="w-full h-full"
+                  description="Click to upload an Atomic NFT"
+                />
+              )}
             </div>
 
             <Button
