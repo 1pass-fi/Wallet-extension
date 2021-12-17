@@ -13,7 +13,7 @@ const MainLayout = ({ title, children }) => {
           {title.toUpperCase()}
         </div>
         <div className="pl-4.25">
-          <aside className="fixed w-57.75 pt-4">
+          <aside className="fixed z-51 w-57.75 pt-4">
             <Sidebar />
           </aside>
           <main className="ml-65.5 pb-5">{children}</main>

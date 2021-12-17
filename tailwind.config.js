@@ -2,6 +2,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      zIndex: {
+        51: '51'
+      },
       colors: {
         bittersweet: {
           200: '#F97664'
@@ -29,7 +32,8 @@ module.exports = {
           200: '#FFA54B'
         },
         success: {
-          DEFAULT: '#9BE7C4'
+          DEFAULT: '#9BE7C4',
+          700: '#237B75'
         },
         turquoiseBlue: {
           DEFAULT: '#5ED9D1'
@@ -53,6 +57,7 @@ module.exports = {
         5.25: '1.3125rem',
         6.25: '1.5625rem',
         6.5: '1.625rem',
+        7: '1.75rem',
         7.25: '1.8125rem',
         7.5: '1.875rem',
         8.5: '2.125rem',
@@ -62,18 +67,21 @@ module.exports = {
         11.5: '2.875rem',
         13.75: '3.4375rem',
         16.5: '4.125rem',
+        16.75: '4.1875rem',
         17.25: '4.3125rem',
         18: '4.5rem',
         18.75: '4.6875rem',
         19: '4.75rem',
         20.75: '5.1875rem',
         22.5: '5.625rem',
+        27: '6.75rem',
         34.75: '8.6875rem',
         36.25: '9.0625rem',
         37.5: '9.375rem',
         37.75: '9.4375rem',
         39.75: '9.9375rem',
         42.5: '10.625rem',
+        43.75: '10.9375rem',
         46: '11.5rem',
         48.5: '12.125rem',
         46.75: '11.6875rem',
@@ -82,9 +90,12 @@ module.exports = {
         62.5: '15.625rem',
         65.5: '16.375rem',
         68: '17rem',
+        98: '24.5rem',
         100.25: '25.0625rem',
         101: '25.25rem',
+        108: '27rem',
         115: '28.75rem',
+        146.5: '36.625rem',
         202: '50.5rem'
       },
       letterSpacing: {

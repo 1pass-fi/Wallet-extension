@@ -9,4 +9,10 @@ const formatLongString = (inputStr, maxLength) => {
   return `${inputStr.substring(0, splitPoint1)}...${inputStr.substring(splitPoint2)}`
 }
 
+export const formatLongStringTruncate = (inputStr, maxLength) => {
+  const strLength = inputStr.length
+  if (strLength <= maxLength) return inputStr
+  return `${inputStr.substring(0, maxLength)}...`
+}
+
 export default formatLongString
