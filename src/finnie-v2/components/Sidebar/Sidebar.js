@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink, Route } from 'react-router-dom'
 import clsx from 'clsx'
+import union from 'lodash/union'
+import initial from 'lodash/initial'
 
 import CreateIcon from 'img/v2/create-icon.svg'
 import GalleryIcon from 'img/v2/gallery-icon.svg'
@@ -57,16 +59,14 @@ const Sidebar = () => {
     }
     setChainType(selectChainType)
   }
-  const handleTagsChange = (e) => {
-    setTagInput(e.target.value)
-    const { keyCode } = e
-    if (keyCode === 13 || keyCode === 188) {
-      let newTags = tagInput.split(',')
-      newTags = newTags.map((tag) => trim(tag)).filter((tag) => tag.replace(/\s/g, '').length)
+
+  const handleTagsKeyUp = (e) => {
+    if (e.key === ' ' && tagInput.endsWith(', ')) {
+      const newTags = initial(tagInput.split(','))
+      console.log(newTags)
       setTags(union(tags, newTags))
       setTagInput('')
     }
-    setTags([])
   }
 
   const handleCreateNFT = () => {
@@ -139,7 +139,7 @@ const Sidebar = () => {
           </div>
         </Route>
         <Route path="/v2/create">
-          <div className="flex flex-col px-4 pt-4">
+          <div className="flex flex-col px-4 pt-4 pb-8">
             <InputField
               className="my-1"
               label="NFT Title"
@@ -165,14 +165,27 @@ const Sidebar = () => {
               type="textarea"
               name="description"
             />
-            <InputField
-              description="Separate with a “,” and hit space bar"
-              className="mt-2"
-              label="Tags"
-              value={tagInput}
-              setValue={handleTagsChange}
-              required={false}
-            />
+            <div className="my-1 flex flex-col w-full">
+              <label
+                htmlFor="tags"
+                className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1"
+              >
+                Tags
+              </label>
+              <input
+                className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white"
+                name="tags"
+                placeholder="Tags,"
+                id="tags"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                onKeyUp={(e) => handleTagsKeyUp(e)}
+              />
+
+              <div className="text-warning mt-1 uppercase text-3xs">
+                Separate with a “,” and hit space bar
+              </div>
+            </div>
             <div className="h-19 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1 mb-5">
               {tags.map((tag) => (
                 <div
@@ -183,6 +196,22 @@ const Sidebar = () => {
                   {formatLongString(tag, 25)}
                 </div>
               ))}
+            </div>
+
+            <div className="flex mb-4 cursor-pointer">
+              <input
+                className="rounded-sm border border-white w-3.75 h-3.75"
+                name="isNSFW"
+                type="checkbox"
+                checked={nftContent.isNSFW}
+                onChange={() => setNftContent((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
+              ></input>
+              <div
+                className="text-white ml-2 text-11px select-none"
+                onClick={() => setNftContent((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
+              >
+                This content is <span className="text-warning">Explicit or 18+.</span>
+              </div>
             </div>
 
             <Button
