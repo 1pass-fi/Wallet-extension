@@ -3,6 +3,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        bittersweet: {
+          200: '#F97664'
+        },
         indigo: {
           DEFAULT: '#171753',
           800: '#0a0a45',

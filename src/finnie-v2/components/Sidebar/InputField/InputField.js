@@ -9,6 +9,7 @@ const InputField = ({
   type = 'input',
   required = false,
   description = '',
+  error = '',
   className
 }) => {
   return (
@@ -37,6 +38,7 @@ const InputField = ({
         />
       )}
       <div className="text-warning mt-1 uppercase text-3xs">{description}</div>
+      <span className="text-3xs text-bittersweet-200">{error}</span>
     </div>
   )
 }

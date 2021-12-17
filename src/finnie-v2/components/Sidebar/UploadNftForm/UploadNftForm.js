@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import initial from 'lodash/initial'
 import union from 'lodash/union'
@@ -20,6 +21,14 @@ const UploadNftForm = () => {
     description: '',
     isNSFW: false
   })
+
+  const [errors, setErrors] = useState({
+    title: '',
+    owner: '',
+    description: '',
+    file: ''
+  })
+
   const [tagInput, setTagInput] = useState('')
   const [tags, setTags] = useState([])
   const [file, setFile] = useState({})
@@ -37,14 +46,25 @@ const UploadNftForm = () => {
     }
   }, [file])
 
+  useEffect(() => {
+    if (!isEmpty(file)) {
+      setErrors((prev) => ({ ...prev, file: '' }))
+    }
+  }, [file])
+
   const handleNftContentChange = (e) => {
+    setErrors({
+      title: '',
+      owner: '',
+      description: '',
+      file: ''
+    })
     setNftContent({ ...nftContent, [e.target.name]: e.target.value })
   }
 
   const handleTagsKeyUp = (e) => {
     if (e.key === ' ' && tagInput.endsWith(', ')) {
       const newTags = initial(tagInput.split(','))
-      console.log(newTags)
       setTags(union(tags, newTags))
       setTagInput('')
     }
@@ -54,9 +74,29 @@ const UploadNftForm = () => {
     setTags(tags.filter((tag) => tag !== removeTag))
   }
 
+  const validateForm = () => {
+    const keys = ['title', 'description', 'owner']
+    let isValid = true
+
+    for (const key of keys) {
+      if (isEmpty(nftContent[key])) {
+        isValid = false
+        setErrors((prev) => ({ ...prev, [key]: `${capitalize(key)} cannot be empty` }))
+      }
+    }
+
+    if (isEmpty(file)) {
+      isValid = false
+      setErrors((prev) => ({ ...prev, file: 'Please select a file' }))
+    }
+
+    return isValid
+  }
+
   const handleCreateNFT = () => {
-    console.log(file)
-    console.log(nftContent)
+    if (validateForm()) {
+      return
+    }
   }
 
   return (
@@ -68,6 +108,7 @@ const UploadNftForm = () => {
         setValue={handleNftContentChange}
         required={true}
         name="title"
+        error={errors.title}
       />
       <InputField
         className="my-1"
@@ -76,6 +117,7 @@ const UploadNftForm = () => {
         setValue={handleNftContentChange}
         required={true}
         name="owner"
+        error={errors.owner}
       />
       <InputField
         className="my-1"
@@ -85,6 +127,7 @@ const UploadNftForm = () => {
         required={true}
         type="textarea"
         name="description"
+        error={errors.description}
       />
       <div className="my-1 flex flex-col w-full">
         <label htmlFor="tags" className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
@@ -133,7 +176,7 @@ const UploadNftForm = () => {
         </div>
       </div>
 
-      <div className="w-50 h-36.25 border border-dashed border-success rounded mb-4.25">
+      <div className="w-50 h-36.25 border border-dashed border-success rounded">
         {!isEmpty(file) ? (
           <div className="w-full h-full relative object-cover">
             <CrossIcon
@@ -147,12 +190,12 @@ const UploadNftForm = () => {
             file={file}
             setFile={setFile}
             fileType={['image/*', 'video/*', 'audio/*']}
-            // className="drag-media"
             className="w-full h-full"
             description="Click to upload an Atomic NFT"
           />
         )}
       </div>
+      <span className="text-3xs text-bittersweet-200 mb-4.25">{errors.file}</span>
 
       <Button
         onClick={handleCreateNFT}

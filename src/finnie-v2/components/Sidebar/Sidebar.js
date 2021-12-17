@@ -10,7 +10,7 @@ import MagnifierIcon from 'img/v2/magnifier-icon.svg'
 import FilterIcon from 'img/v2/filter-icon.svg'
 import ArrowIcon from 'img/v2/arrow-icon.svg'
 
-import UploadNftForm from 'finnie-v2/components/UploadNftForm'
+import UploadNftForm from './UploadNftForm'
 import { filterNft } from 'options/actions/assets'
 import { TYPE } from 'constants/accountConstants'
 
