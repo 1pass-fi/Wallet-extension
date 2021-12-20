@@ -1,0 +1,118 @@
+.transfer-nft.wrapper {
+  width: 745px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 34px;
+  color: white;
+
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.transfer-nft.wrapper .title {
+  letter-spacing: -0.02em;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.transfer-nft.wrapper .title .title__asset-name {
+  font-weight: 600;
+  color: #5ed9d1;
+}
+
+.transfer-nft.container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.transfer-nft.container .asset-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.transfer-nft.container .asset-info .nft-img {
+  width: 208px;
+  height: 208px;
+  object-fit: contain;
+  background: #020221;
+  border-radius: 4px;
+}
+
+.transfer-nft.container .asset-info .nft-img-iframe {
+  overflow: hidden;
+  width: 208px;
+  height: 208px;
+  background: #020221;
+  -webkit-user-drag: none;
+  box-sizing: border-box;
+  padding-top: 35px;
+}
+
+.transfer-nft.container .nft-img-iframe .iframe-wrapper {
+  position: relative;
+  height: 208px;
+  width: 208px;
+}
+
+.transfer-nft.container .iframe-wrapper iframe {
+  position: absolute;
+  top: 0;
+  height: 208px;
+  width: 208px;
+  transform: translateY(-20%);
+}
+
+.transfer-nft.container .asset-info .asset-name {
+  letter-spacing: 0.03em;
+  margin-top: 9px;
+}
+
+.transfer-nft.container .asset-info .asset-owner {
+  font-size: 16px;
+  color: #5ed9d1;
+  margin: 2px 0px;
+}
+
+.transfer-nft.container .asset-info .asset-total-views {
+  letter-spacing: -0.02em;
+  margin: 2px 0px;
+}
+
+.transfer-nft.container .asset-info .asset-koii-earned {
+  color: #5ed9d1;
+  font-size: 14px;
+  margin: 2px 0px;
+}
+
+.transfer-nft.container .right-side {
+  width: 400px;
+}
+
+.transfer-nft.wrapper .submit-btn {
+  position: absolute;
+  bottom: 32px;
+
+  padding: 5px 50px;
+  width: 240px;
+  align-self: center;
+
+  background: #ffffff;
+  border-radius: 2px;
+  border: 0;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.transfer-nft.wrapper .submit-btn:disabled {
+  cursor: not-allowed;
+  background-color: gray;
+}

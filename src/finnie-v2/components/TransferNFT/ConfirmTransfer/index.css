@@ -1,0 +1,48 @@
+.transfer-nft.wrapper .confirm-transfer {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  font-style: normal;
+  letter-spacing: 0.03em;
+
+  height: 100%;
+  padding-top: 40px;
+}
+
+.transfer-nft.wrapper .confirm-transfer .label {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.transfer-nft.wrapper .confirm-transfer .receiver-field {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 9px 0px 26px 0px;
+}
+
+.transfer-nft.wrapper .confirm-transfer .receiver-address {
+  font-size: 18px;
+  width: 90%;
+  color: #5ed9d1;
+}
+
+.transfer-nft.wrapper .confirm-transfer .edit-icon {
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+}
+
+.transfer-nft.wrapper .confirm-transfer .warning {
+  display: flex;
+  flex-direction: row;
+}
+
+.transfer-nft.wrapper .confirm-transfer .warning-icon {
+  width: 32px;
+  height: 20px;
+}
+
+.transfer-nft.wrapper .confirm-transfer .warning-text {
+  margin-left: 8px;
+}
