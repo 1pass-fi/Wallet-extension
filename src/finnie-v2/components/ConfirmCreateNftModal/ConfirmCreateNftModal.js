@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { v4 as uuid } from 'uuid'
 
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
@@ -9,10 +11,72 @@ import NFTMedia from 'finnie-v2/components/NFTMedia'
 import Button from 'finnie-v2/components/Button'
 
 import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
+import { formatNumber } from 'options/utils'
+
+import storage from 'services/storage'
+import arweave from 'services/arweave'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
   const [step, setStep] = useState(1)
+  const [estimateCostKOII, setEstimateCostKOII] = useState(1)
+  const [estimateCostAr, setEstimateCostAr] = useState(0)
+
   const modalRef = useRef(null)
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
+
+  const handleUploadNFT = async () => {
+    try {
+      // set isLoading
+
+      const response = await fetch(url)
+      const blob = await response.blob()
+      const dataBuffer = await blob.arrayBuffer()
+  
+      let u8 = new Int8Array(dataBuffer)
+      u8 = JSON.stringify(u8, null, 2)
+  
+      const imageId = uuid()
+  
+      await storage.generic.set.nftBitData({ bitObject: u8, imageId })
+  
+      const content = {
+        title: nftContent.title,
+        owner: nftContent.owner,
+        description: nftContent.description,
+        isNSFW: nftContent.isNSFW
+      }
+  
+      const { txId } = await backgroundRequest.gallery.uploadNFT({
+        content,
+        tags,
+        fileType,
+        address: defaultAccount.address,
+        price: estimateCostAr,
+        imageId
+      })
+  
+      if (txId) setStep(2)
+      // set isLoading
+    } catch (err) {
+      console.error(err.message)
+      // set Error
+    }
+  }
+
+  useEffect(() => {
+    const getPrice = async () => {
+      const response = await fetch(url)
+      const blob = await response.blob()
+      const length = await (await blob.arrayBuffer()).byteLength
+
+      const arPrice = await arweave.transactions.getPrice(length)
+      setEstimateCostAr(arweave.ar.winstonToAr(arPrice))
+    }
+
+    getPrice()
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -26,9 +90,6 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [modalRef])
-
-  const estimateCostKOII = 953.121
-  const estimateCostAr = 10.536
 
   return (
     <div className="w-full h-full flex items-center justify-center min-w-screen min-h-screen bg-black bg-opacity-25 fixed z-51 top-0 left-0">
@@ -79,12 +140,12 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
                 </div>
                 <div className="finnieSpacing-wider text-sm leading-5">{estimateCostKOII} KOII</div>
                 <div className="finnieSpacing-wider text-sm leading-5">
-                  {estimateCostAr} AR <span className="text-2xs text-success-700">Storage Fee</span>
+                  {formatNumber(estimateCostAr, 6)} AR <span className="text-2xs text-success-700">Storage Fee</span>
                 </div>
               </div>
             </div>
             <Button
-              onClick={() => setStep(2)}
+              onClick={handleUploadNFT}
               className="h-9 mt-8 font-semibold text-sm rounded w-43.75"
               variant="indigo"
               text="Create NFT"
