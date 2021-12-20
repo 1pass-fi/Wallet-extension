@@ -19,7 +19,7 @@ const Button = ({
   text,
   variant = 'primary',
   icon: Icon,
-  loading,
+  isLoading,
   size = 'sm',
   className,
   ...props
@@ -30,8 +30,10 @@ const Button = ({
         'flex items-center justify-center rounded-sm',
         variants[variant],
         sizes[size],
-        className
+        className,
+        isLoading && 'bg-white bg-opacity-30 cursor-not-allowed'
       )}
+      disabled={isLoading}
       {...props}
     >
       {Icon && <Icon className={clsx(size === 'sm' ? 'w-5 h-5 pr-1' : 'w-8 h-8 pr-2')} />}

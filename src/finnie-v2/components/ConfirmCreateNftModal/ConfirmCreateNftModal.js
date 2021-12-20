@@ -11,43 +11,46 @@ import NFTMedia from 'finnie-v2/components/NFTMedia'
 import Button from 'finnie-v2/components/Button'
 
 import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
-import { formatNumber } from 'options/utils'
+import formatNumber from 'finnie-v2/utils/formatNumber'
 
 import storage from 'services/storage'
 import arweave from 'services/arweave'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
+  const estimateCostKOII = 1
+
   const [step, setStep] = useState(1)
-  const [estimateCostKOII, setEstimateCostKOII] = useState(1)
   const [estimateCostAr, setEstimateCostAr] = useState(0)
+  const [disableCreateNFT, setDisableCreateNFT] = useState(false)
 
   const modalRef = useRef(null)
 
-  const defaultAccount = useSelector(state => state.defaultAccount)
+  const defaultAccount = useSelector((state) => state.defaultAccount)
 
   const handleUploadNFT = async () => {
     try {
       // set isLoading
+      setDisableCreateNFT(true)
 
       const response = await fetch(url)
       const blob = await response.blob()
       const dataBuffer = await blob.arrayBuffer()
-  
+
       let u8 = new Int8Array(dataBuffer)
       u8 = JSON.stringify(u8, null, 2)
-  
+
       const imageId = uuid()
-  
+
       await storage.generic.set.nftBitData({ bitObject: u8, imageId })
-  
+
       const content = {
         title: nftContent.title,
         owner: nftContent.owner,
         description: nftContent.description,
         isNSFW: nftContent.isNSFW
       }
-  
+
       const { txId } = await backgroundRequest.gallery.uploadNFT({
         content,
         tags,
@@ -56,12 +59,14 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
         price: estimateCostAr,
         imageId
       })
-  
+
       if (txId) setStep(2)
       // set isLoading
+      setDisableCreateNFT(false)
     } catch (err) {
       console.error(err.message)
       // set Error
+      setDisableCreateNFT(false)
     }
   }
 
@@ -149,6 +154,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
               className="h-9 mt-8 font-semibold text-sm rounded w-43.75"
               variant="indigo"
               text="Create NFT"
+              isLoading={disableCreateNFT}
             />
           </>
         )}
