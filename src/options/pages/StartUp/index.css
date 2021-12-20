@@ -8,6 +8,14 @@
   min-height: 100vh;
 }
 
+.start-up button {
+  color: #171753;
+}
+
+.start-up button:disabled {
+  color: gray;
+}
+
 .startup-logo {
   width: 72px;
   height: 72px;

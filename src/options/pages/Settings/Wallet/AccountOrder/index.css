@@ -1,10 +1,10 @@
 .account-order {
-   width: 446px;
-   background-color: #F5F5F5;
-   padding: 0px 34px;
-   border-radius: 3px;
-   border: 0px;
-   margin-top: 12px;
+  width: 446px;
+  background-color: #f5f5f5;
+  padding: 0px 34px;
+  border-radius: 3px;
+  border: 0px;
+  margin-top: 12px;
 }
 
 .account-order .account-header {
@@ -50,8 +50,8 @@
   content: '';
   display: block;
   position: absolute;
-  width: 4px;
-  height: 8px;
+  width: 6px;
+  height: 10px;
   border-right: 2px solid #171753;
   border-bottom: 2px solid #171753;
   transform: rotate(45deg) translate(1px, -3px);
