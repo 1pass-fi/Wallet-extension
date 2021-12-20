@@ -39,7 +39,6 @@ const DropFile = ({
   }, [acceptedFiles])
 
   return (
-    // <div {...getRootProps({ className: `dropzone-startup ${className}` })}>
     <div {...getRootProps({ className: 'dropzone w-full h-full' })}>
       <div className="cursor-pointer h-full flex items-center justify-center">
         <input name="fileField" data-testid="fileInput" {...getInputProps()} />

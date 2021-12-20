@@ -103,6 +103,10 @@ const UploadNftForm = () => {
 
   const closeConfirmModal = () => {
     setShowConfirmModal(false)
+    setNftContent({ title: '', owner: '', description: '', isNSFW: false })
+    setTagInput('')
+    setTags([])
+    setFile({})
   }
 
   return (
