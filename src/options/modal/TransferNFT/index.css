@@ -1,5 +1,5 @@
 .transfer-nft.wrapper {
-  width: 677px;
+  width: 745px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -93,6 +93,7 @@
 }
 
 .transfer-nft.wrapper .submit-btn {
+  color: #171753;
   position: absolute;
   bottom: 32px;
 

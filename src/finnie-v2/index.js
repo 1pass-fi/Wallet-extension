@@ -47,23 +47,23 @@ const SecondVer = () => {
   }, [])
 
   return (
-    <Switch>
-      <Route exact path="/v2/nfts/:id">
-        <NFTDetail />
-      </Route>
-      <Route exact path="/v2/settings/*">
-        <Layout>
+    <Layout>
+      <Switch>
+        <Route exact path="/v2/nfts/:id">
+          <NFTDetail />
+        </Route>
+        <Route exact path="/v2/settings/*">
           <MainLayout title="Settings">
             <div className="transform flex justify-start" style={{ width: '862px' }}>
               <Settings />
             </div>
           </MainLayout>
-        </Layout>
-      </Route>
-      <Route exact path="*">
-        <Gallery />
-      </Route>
-    </Switch>
+        </Route>
+        <Route exact path="*">
+          <Gallery />
+        </Route>
+      </Switch>
+    </Layout>
   )
 }
 

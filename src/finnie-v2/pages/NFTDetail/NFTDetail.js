@@ -1,15 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import isEmpty from 'lodash/isEmpty'
 
 import Button from 'finnie-v2/components/Button'
 import NavBar from 'finnie-v2/components/NavBar'
 import NFTMedia from 'finnie-v2/components/NFTMedia'
-
-import ExportNFT from 'finnie-v2/components/ExportNFT'
-import ShareNFT from 'finnie-v2/components/ShareNFT'
-import TransferNFT from 'finnie-v2/components/TransferNFT'
 
 import BlockIcon from 'img/v2/block-icon.svg'
 import LeaderboardIcon from 'img/v2/leaderboard-icon.svg'
@@ -21,17 +16,14 @@ import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import { TYPE } from 'constants/accountConstants'
 import formatDatetime from 'finnie-v2/utils/formatDatetime'
 import formatNumber from 'finnie-v2/utils/formatNumber'
+import { GalleryContext } from 'options/galleryContext'
 
 import getAssetByTxId from 'finnie-v2/selectors/getAssetByTxId'
 
 const NFTDetail = () => {
   const { id } = useParams()
-  const [showShareModal, setShowShareModal] = useState({
-    show: false,
-    txid: ''
-  })
-  const [showTransferNFT, setShowTransferNFT] = useState({ show: false })
-  const [showExportModal, setShowExportModal] = useState({})
+
+  const { setShowExportModal, setShowShareModal, handleShareNFT } = useContext(GalleryContext)
 
   const nft = useSelector(getAssetByTxId(id))
   const isArweaveNft = nft?.type === TYPE.ARWEAVE
@@ -110,7 +102,7 @@ const NFTDetail = () => {
                   variant="inversed"
                   className="h-full w-5/12"
                   text="Transfer NFT"
-                  onClick={() => setShowTransferNFT({ show: true, cardInfo: nft })}
+                  onClick={() => handleShareNFT(nft.txId)}
                 />
               </div>
               <Button
@@ -119,40 +111,11 @@ const NFTDetail = () => {
                 variant="lightBlue"
                 text="Bridge your NFT to a different Blockchain"
                 className="h-11.5 absolute bottom-0 w-full"
-                onClick={() =>
-                  setShowExportModal(nft)
-                }
+                onClick={() => setShowExportModal(nft)}
               />
             </div>
           </div>
         </div>
-      )}
-
-      {showShareModal.show && (
-        <ShareNFT
-          txid={showShareModal.txid}
-          onClose={() => {
-            setShowShareModal({ ...showShareModal, show: false })
-          }}
-        />
-      )}
-
-      {showTransferNFT.show && (
-        <TransferNFT
-          cardInfo={showTransferNFT.cardInfo}
-          onClose={() => {
-            setShowTransferNFT({ show: false })
-          }}
-        />
-      )}
-
-      {!isEmpty(showExportModal) && (
-        <ExportNFT
-          info={showExportModal}
-          onClose={() => {
-            setShowExportModal(false)
-          }}
-        />
       )}
     </div>
   )

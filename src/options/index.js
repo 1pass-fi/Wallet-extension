@@ -78,7 +78,7 @@ const Gallery = () => {
                 <Success />
               </Route>
               <Route path="*">
-                <Home />
+                <SecondVer />
               </Route>
             </Switch>
 
