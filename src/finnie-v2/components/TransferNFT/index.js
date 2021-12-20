@@ -27,6 +27,9 @@ const TransferNFT = ({
 }) => {
   // TODO ThuanN
   // const { setError } = useContext(GalleryContext)
+  const setError = (errorMsg) => {
+    console.log(errorMsg)
+  }
 
   const [stage, setStage] = useState(1)
   const [receiverAddress, setReceiverAddress] = useState('')
@@ -41,8 +44,7 @@ const TransferNFT = ({
   const handleValidateArAddress = () => {
     const isValid = isArweaveAddress(receiverAddress)
     if (!isValid) {
-      // TODO ThuanN
-      // setError('Invalid Wallet Address')
+      setError('Invalid Wallet Address')
     } else {
       goToNextStage()
     }
@@ -68,8 +70,7 @@ const TransferNFT = ({
       goToNextStage()
     } catch (error) {
       setSendBtnDisable(false)
-      // TODO ThuanN
-      // setError('Whoops! Something went wrong!')
+      setError('Whoops! Something went wrong!')
     }
   }
 
