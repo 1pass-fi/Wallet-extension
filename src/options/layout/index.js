@@ -682,6 +682,7 @@ export default ({ children }) => {
         searchTerm,
         setError: _setError,
         setFile,
+        isLoading,
         setIsLoading,
         setNotification,
         setPendingNFTTitle,

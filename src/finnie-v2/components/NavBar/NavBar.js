@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState, useContext } from 'react'
+import React, { createRef, useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { NavLink } from 'react-router-dom'
@@ -7,12 +7,13 @@ import Balance from 'finnie-v2/components/Balance'
 import DefaultAvatar from 'img/v2/default-avatar.svg'
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-white.svg'
 import NotificationIcon from 'img/v2/bell-icon.svg'
+
 import AccountSettings from 'finnie-v2/components/AccountSettings'
+import Loading from 'options/components/loading'
 import { GalleryContext } from 'options/galleryContext'
 
 const NavBar = () => {
-  const { profilePictureId } = useContext(GalleryContext)
-
+  const { isLoading, profilePictureId } = useContext(GalleryContext)
   const [showDropdown, setShowDropdown] = useState(false)
   const dropdownRef = createRef()
 
@@ -44,7 +45,8 @@ const NavBar = () => {
       </div>
 
       <div className="flex items-center">
-        <NotificationIcon className="h-5 w-3.75 mr-6.5" />
+        {isLoading !== 0 && <Loading />}
+        <NotificationIcon className="h-5 w-3.75 mx-6.5" />
         <Balance koiiBalance={defaultAccount.koiBalance} arBalance={defaultAccount.balance} />
         <div className="relative">
           <div

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { v4 as uuid } from 'uuid'
 
@@ -9,6 +9,7 @@ import ModalBackground from 'img/v2/modal-background.svg'
 
 import NFTMedia from 'finnie-v2/components/NFTMedia'
 import Button from 'finnie-v2/components/Button'
+import { GalleryContext } from 'options/galleryContext'
 
 import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
 import formatNumber from 'finnie-v2/utils/formatNumber'
@@ -19,6 +20,8 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 
 const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
   const estimateCostKOII = 1
+
+  const { setError, setIsLoading } = useContext(GalleryContext)
 
   const [step, setStep] = useState(1)
   const [estimateCostAr, setEstimateCostAr] = useState(0)
@@ -32,6 +35,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
     try {
       // set isLoading
       setDisableCreateNFT(true)
+      setIsLoading((prev) => ++prev)
 
       const response = await fetch(url)
       const blob = await response.blob()
@@ -62,10 +66,13 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
 
       if (txId) setStep(2)
       // set isLoading
+      setIsLoading((prev) => --prev)
       setDisableCreateNFT(false)
     } catch (err) {
       console.error(err.message)
       // set Error
+      setError(err.message)
+      setIsLoading((prev) => --prev)
       setDisableCreateNFT(false)
     }
   }
