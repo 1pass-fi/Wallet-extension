@@ -46,7 +46,7 @@ const queryAttr = 'data-rbd-drag-handle-draggable-id'
 
 export default ({ accounts, setAccounts }) => {
   const [placeholderProps, setPlaceholderProps] = useState({})
-  const { setNotification, setError } = useContext(GalleryContext)
+  const { setNotification, setError, getDID } = useContext(GalleryContext)
   const [selectedAddress, setSelectedAddress] = useState()
 
   const dispatch = useDispatch()
@@ -112,6 +112,7 @@ export default ({ accounts, setAccounts }) => {
     try {
       await backgroundRequest.gallery.setDefaultAccount({ address })
       await reloadDefaultAccount()
+      getDID()
       setSelectedAddress(address)
       setNotification(`Set default account successfully.`)
     } catch (err) {

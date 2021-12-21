@@ -163,6 +163,62 @@ export default ({ children }) => {
   /*
     STEP 2: 
   */
+  const getDID = async () => {
+    try {
+      setIsLoading(prev => ++prev)
+      const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
+      let state, id
+      try {
+        const result = await backgroundRequest.gallery.getDID({ address: defaultAccountAddress })
+        state = result.state
+
+        if (!isEmpty(state)) {
+          setHadData(true)
+        } else {
+          setHadData(false)
+        }
+
+        id = result.id
+      } catch (err) {
+        console.log(err.message)
+        setHadData(false)
+        state = {
+          links: [{ title: '', link: '' }],
+          name: '',
+          description: '',
+          country: '',
+          pronouns: '',
+          kID: '',
+          code: '',
+          styles: []
+        }
+      }
+
+      const _userKID = {
+        kidLink: state.kID ? `https://koii.me/u/${state.kID}` : 'https://koii.me/u/',
+        name: state.name,
+        description: state.description,
+        country: state.country,
+        pronouns: state.pronouns
+      }
+
+      setDidID(id)
+      setuserKID(prev => ({...prev, ..._userKID}))
+  
+      setProfilePictureId(state.picture)
+      setBannerId(state.banner)
+      setCustomCss(state.code)
+      setUsingCustomCss(!isEmpty(state.code))
+  
+      setLinkAccounts(state.links)
+      setkID(state.kID)
+      setOldkID(state.kID)
+      setIsLoading(prev => --prev)
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
   useEffect(() => {
     const getCollectionsFromStorage = async () => {
       try {
@@ -175,62 +231,6 @@ export default ({ children }) => {
 
     const getAffiliateCode = () => {
       dispatch(loadAllFriendReferralData())
-    }
-
-    const getDID = async () => {
-      try {
-        setIsLoading(prev => ++prev)
-        const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
-        let state, id
-        try {
-          const result = await backgroundRequest.gallery.getDID({ address: defaultAccountAddress })
-          state = result.state
-
-          if (!isEmpty(state)) {
-            setHadData(true)
-          } else {
-            setHadData(false)
-          }
-
-          id = result.id
-        } catch (err) {
-          console.log(err.message)
-          setHadData(false)
-          state = {
-            links: [{ title: '', link: '' }],
-            name: '',
-            description: '',
-            country: '',
-            pronouns: '',
-            kID: '',
-            code: '',
-            styles: []
-          }
-        }
-
-        const _userKID = {
-          kidLink: state.kID ? `https://koii.me/u/${state.kID}` : 'https://koii.me/u/',
-          name: state.name,
-          description: state.description,
-          country: state.country,
-          pronouns: state.pronouns
-        }
-
-        setDidID(id)
-        setuserKID(prev => ({...prev, ..._userKID}))
-  
-        setProfilePictureId(state.picture)
-        setBannerId(state.banner)
-        setCustomCss(state.code)
-        setUsingCustomCss(!isEmpty(state.code))
-  
-        setLinkAccounts(state.links)
-        setkID(state.kID)
-        setOldkID(state.kID)
-        setIsLoading(prev => --prev)
-      } catch (err) {
-        setError(err.message)
-      }
     }
 
     if (walletLoaded) {
@@ -715,7 +715,8 @@ export default ({ children }) => {
         showModal, setShowModal,
         modalType, setModalType,
         kID, setkID,
-        oldkID, setOldkID
+        oldkID, setOldkID,
+        getDID
       }}
     >
       <div className='app-background'>
