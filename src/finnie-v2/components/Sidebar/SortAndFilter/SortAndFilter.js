@@ -6,6 +6,8 @@ import ArrowIcon from 'img/v2/arrow-icon.svg'
 import FilterIcon from 'img/v2/filter-icon.svg'
 import MagnifierIcon from 'img/v2/magnifier-icon.svg'
 
+import ToggleButton from 'finnie-v2/components/ToggleButton'
+
 const SortAndFilter = ({ handleSearchFieldChange, handleSelectChains, selectedChain }) => {
   const [showFilterChains, setShowFilterChains] = useState(false)
 
@@ -37,24 +39,16 @@ const SortAndFilter = ({ handleSearchFieldChange, handleSelectChains, selectedCh
         <hr className="rounded border border-trueGray-100 border-opacity-20" />
         {showFilterChains && (
           <div className="flex text-white text-xs justify-between items-center text-center mt-2.75">
-            <div
-              className={clsx(
-                selectedChain === TYPE.ETHEREUM ? 'bg-lightBlue text-indigo' : 'border-white',
-                'h-7 w-24 border text-white text-xs rounded flex items-center justify-center cursor-pointer finnieSpacing-wider'
-              )}
+            <ToggleButton
+              isActive={selectedChain === TYPE.ETHEREUM}
               onClick={() => handleSelectChains(TYPE.ETHEREUM)}
-            >
-              Ethereum
-            </div>
-            <div
-              className={clsx(
-                selectedChain === TYPE.ARWEAVE ? 'bg-lightBlue text-indigo' : 'border-white',
-                'h-7 w-24 border border-white rounded flex items-center justify-center cursor-pointer finnieSpacing-wider'
-              )}
+              text="ETHEREUM"
+            />
+            <ToggleButton
+              isActive={selectedChain === TYPE.ARWEAVE}
               onClick={() => handleSelectChains(TYPE.ARWEAVE)}
-            >
-              Arweave
-            </div>
+              text="ARWEAVE"
+            />
           </div>
         )}
       </div>
