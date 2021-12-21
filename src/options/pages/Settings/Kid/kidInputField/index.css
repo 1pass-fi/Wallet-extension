@@ -54,9 +54,10 @@
 
 .kid-input .kid-input-input-section .field .prefix-link {
   font-size: 15px;
+  margin-right: 12px;
   width: 128px;
 }
 
 .kid-input .kid-input-input-section .field .kid-input-field.kid {
-  width: 300px;
+  width: 282px;
 }
