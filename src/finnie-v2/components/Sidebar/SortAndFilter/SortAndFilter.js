@@ -8,8 +8,17 @@ import MagnifierIcon from 'img/v2/magnifier-icon.svg'
 
 import ToggleButton from 'finnie-v2/components/ToggleButton'
 
-const SortAndFilter = ({ handleSearchFieldChange, handleSelectChains, selectedChain }) => {
+import { SORT_TYPES } from 'options/actions/assets'
+
+const SortAndFilter = ({
+  handleSearchFieldChange,
+  handleSelectChains,
+  selectedChain,
+  sortBy,
+  handleSort
+}) => {
   const [showFilterChains, setShowFilterChains] = useState(false)
+  const [showSortBy, setShowSortBy] = useState(false)
 
   return (
     <div>
@@ -28,6 +37,35 @@ const SortAndFilter = ({ handleSearchFieldChange, handleSelectChains, selectedCh
         </div>
         <hr className="rounded bg-white" />
         <div
+          onClick={() => setShowSortBy(!showSortBy)}
+          className="flex items-center justify-between h-12 pl-1.5 pr-3 font-semibold text-sm text-white cursor-pointer"
+        >
+          Sort By
+          <ArrowIcon
+            className={clsx(showSortBy && 'transform rotate-90', 'w-1.5 h-3 cursor-pointer')}
+          />
+        </div>
+        <hr className="rounded border border-trueGray-100 border-opacity-20" />
+        {showSortBy && (
+          <div className="flex text-white text-xs gap-x-2.5 gap-y-2 items-center flex-wrap text-center mt-2.75">
+            <ToggleButton
+              isActive={sortBy === SORT_TYPES.NEWEST}
+              onClick={() => handleSort(SORT_TYPES.NEWEST)}
+              text="Recently Added"
+            />
+            <ToggleButton
+              isActive={sortBy === SORT_TYPES.OLDEST}
+              onClick={() => handleSort(SORT_TYPES.OLDEST)}
+              text="Oldest"
+            />
+            <ToggleButton
+              isActive={sortBy === SORT_TYPES.MOST_VIEWED}
+              onClick={() => handleSort(SORT_TYPES.MOST_VIEWED)}
+              text="Most viewed"
+            />
+          </div>
+        )}
+        <div
           onClick={() => setShowFilterChains(!showFilterChains)}
           className="flex items-center justify-between h-12 pl-1.5 pr-3 font-semibold text-sm text-white cursor-pointer"
         >
@@ -38,7 +76,7 @@ const SortAndFilter = ({ handleSearchFieldChange, handleSelectChains, selectedCh
         </div>
         <hr className="rounded border border-trueGray-100 border-opacity-20" />
         {showFilterChains && (
-          <div className="flex text-white text-xs justify-between items-center text-center mt-2.75">
+          <div className="flex text-white text-xs gap-x-2.5 gap-y-2 items-center flex-wrap text-center mt-2.75">
             <ToggleButton
               isActive={selectedChain === TYPE.ETHEREUM}
               onClick={() => handleSelectChains(TYPE.ETHEREUM)}

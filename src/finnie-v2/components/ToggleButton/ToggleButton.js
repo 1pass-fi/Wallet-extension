@@ -6,7 +6,7 @@ const ToggleButton = ({ isActive, onClick, text }) => {
     <div
       className={clsx(
         isActive ? 'bg-lightBlue text-indigo' : 'border-white',
-        'h-7 w-24 border text-white text-xs rounded flex items-center justify-center cursor-pointer finnieSpacing-wider'
+        'h-7 min-w-21 p-1 border text-white text-xs rounded flex items-center justify-center cursor-pointer finnieSpacing-wider flex-grow'
       )}
       onClick={onClick}
     >

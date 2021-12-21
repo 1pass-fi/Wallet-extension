@@ -7,12 +7,11 @@ const initialState = {
 
 export default function assetsReducer(state = initialState, action) {
   const { type, payload } = action
-
   switch (type) {
     case SET_ASSETS:
       return { ...state, ...payload }
     case SET_FILTER_NFTS:
-      return { ...state, filteredNfts: payload }
+      return { ...state, filteredNfts: [...payload] }
     default:
       return state
   }

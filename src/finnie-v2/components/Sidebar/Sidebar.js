@@ -22,10 +22,11 @@ const Sidebar = () => {
 
   const [searchStr, setSearchStr] = useState('')
   const [chainType, setChainType] = useState('')
+  const [sortBy, setSortBy] = useState('')
 
   useEffect(() => {
-    dispatch(filterNft({ searchStr, chainType }))
-  }, [searchStr, chainType])
+    dispatch(filterNft({ searchStr, chainType, sortType: sortBy }))
+  }, [searchStr, chainType, sortBy])
 
   const handleSearchFieldChange = (searchStr) => {
     setSearchStr(searchStr)
@@ -37,6 +38,10 @@ const Sidebar = () => {
       return
     }
     setChainType(selectChainType)
+  }
+
+  const handleSort = (sortType) => {
+    setSortBy(sortType)
   }
 
   return (
@@ -58,6 +63,8 @@ const Sidebar = () => {
           <SortAndFilter
             handleSearchFieldChange={handleSearchFieldChange}
             handleSelectChains={handleSelectChains}
+            handleSort={handleSort}
+            sortBy={sortBy}
             selectedChain={chainType}
           />
         </Route>
