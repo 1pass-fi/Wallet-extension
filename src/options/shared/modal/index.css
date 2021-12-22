@@ -13,7 +13,7 @@
 }
 
 .modal {
-  margin: 224px auto 0 auto;
+  margin: auto;
   min-width: 377px;
   background-color: #0b0b3f;
   border: 1px solid #ffffff;
@@ -26,6 +26,11 @@
   position: relative;
 }
 
+@media only screen and (min-width: 1320px) {
+  .modal {
+    margin-top: 224px;
+  }
+}
 .modal-close-icon {
   z-index: 22;
   position: absolute;
