@@ -16,6 +16,11 @@
   color: gray;
 }
 
+.start-up input {
+  padding-left: 4px;
+  padding-right: 30px;
+}
+
 .startup-logo {
   width: 72px;
   height: 72px;
