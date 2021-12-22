@@ -37,9 +37,7 @@ const NavBar = () => {
   return (
     <header className="sticky top-0 z-50 w-full h-16 flex items-center bg-indigo-900 px-5.25 text-white text-sm justify-between">
       <div className="flex items-center">
-        <div className="h-8 w-10.75">
-          <KoiiLogo className="h-8 w-10.75" />
-        </div>
+        <KoiiLogo className="h-8 w-10.75" />
         <nav className="ml-6.25 tracking-finnieSpacing-wider">
           <NavLink to="/v2/gallery">Gallery</NavLink>
         </nav>
@@ -48,19 +46,19 @@ const NavBar = () => {
       <div className="flex items-center">
         <NotificationIcon className="h-5 w-3.75 mr-6.5" />
         <Balance koiiBalance={defaultAccount.koiBalance} arBalance={defaultAccount.balance} />
-        <div className="cursor-pointer relative">
-          <div className="w-10 h-10 ml-6.5" onClick={toggleDropdownMenu}>
-            {profilePictureId ? 
-              <div style={{borderRadius:'50%', display:'flex', justifyContent: 'center', alignItems:'center',
-                overflow:'hidden', width:'40px', height:'40px', 
-              }} >
-                <img 
-                  style={{minHeight:'100%', minWidth:'100%', width:'auto', height:'auto', objectFit:'cover'}} 
-                  src={`https://arweave.net/${profilePictureId}`}
-                />
-              </div> :
-              <DefaultAvatar />
-            }
+        <div className="relative">
+          <div
+            className="w-10 h-10 cursor-pointer rounded-full ml-6.5"
+            onClick={toggleDropdownMenu}
+          >
+            {profilePictureId ? (
+              <img
+                className="object-cover rounded-full w-full h-full"
+                src={`https://arweave.net/${profilePictureId}`}
+              />
+            ) : (
+              <DefaultAvatar className="object-cover rounded-full w-full h-full" />
+            )}
           </div>
           {showDropdown && (
             <AccountSettings
