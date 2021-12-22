@@ -14,25 +14,15 @@ import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'consta
 
 import './index.css'
 import StartUp from 'options/pages/StartUp'
-import Footer from 'options/components/footer'
-import Header from 'options/components/header'
-import Navbar from 'options/components/navbar'
 import Message from 'options/components/message'
 import LockScreen from 'options/components/lockScreen'
-import Uploaded from 'options/components/uploaded'
 
 import { GalleryContext } from 'options/galleryContext'
-import { TYPE } from 'constants/accountConstants'
 
 import ShareNFT from 'options/modal/shareNFT'
 import ExportNFT from 'options/modal/exportNFT'
 import Welcome from 'options/modal/welcomeScreen'
-import UploadingNFT from 'options/modal/UploadingNFT'
-import SuccessUploadNFT from 'options/modal/SuccessUploadNFT'
 import TransferNFT from 'options/modal/TransferNFT'
-import ProfilePictureModal from 'options/modal/ProfilePictureModal'
-
-import KoiIcon from 'img/finnie-koi-logo-white.svg'
 
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect } from 'services/request/popup'
@@ -46,8 +36,6 @@ import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/acco
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setCollections } from 'options/actions/collections'
 import { setAssets } from 'options/actions/assets'
-
-import arweave from 'services/arweave'
 
 export default ({ children }) => {
   const { pathname } = useLocation()
@@ -716,11 +704,6 @@ export default ({ children }) => {
                 />
               )}
 
-              {showUploadingModal && <UploadingNFT />}
-              {showSuccessUploadModal && <SuccessUploadNFT />}
-              {showUploadedIcon && <Uploaded />}
-              {showProfilePictureModal && <ProfilePictureModal />}
-
               {showWelcome && (
                 <Welcome
                   onClose={() => {
@@ -742,17 +725,6 @@ export default ({ children }) => {
               )}
 
               {children}
-              {/* <Link to="/">
-                <div className="startup-logo"><KoiIcon /></div>
-              </Link>
-              {!GALLERY_IMPORT_PATH.includes(pathname) && <Header
-                headerRef={headerRef}
-                isLoading={isLoading}
-              />}
-              <input onChange={(e) => handleSetFile(e)} onClick={(e) => e.target.value = null} type='file' ref={inputFileRef} style={{ display: 'none' }} />
-              {children}
-              {!GALLERY_IMPORT_PATH.includes(pathname) && <Footer onClearFile={onClearFile} inputFileRef={inputFileRef} showDropzone={showDropzone} />}
-              {!GALLERY_IMPORT_PATH.includes(pathname) && <Navbar />} */}
             </div> : <LockScreen />}
           </>
           :
