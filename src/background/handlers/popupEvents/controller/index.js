@@ -27,7 +27,8 @@ import loadFriendReferralData from './loadFriendReferralData'
 import createDID from './createDID'
 import updateDID from './updateDID'
 import getDID from './getDID'
-import test from './test'
+import updateCollection from './updateCollection'
+import test from './test
 
 
 export default {
@@ -60,5 +61,6 @@ export default {
   createDID,
   updateDID,
   getDID,
+  updateCollection,
   test
 }
