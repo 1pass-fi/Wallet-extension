@@ -28,7 +28,8 @@ import createDID from './createDID'
 import updateDID from './updateDID'
 import getDID from './getDID'
 import updateCollection from './updateCollection'
-import test from './test
+import getKey from './getKey'
+import test from './test'
 
 
 export default {
@@ -62,5 +63,6 @@ export default {
   updateDID,
   getDID,
   updateCollection,
+  getKey,
   test
 }

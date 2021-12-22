@@ -37,6 +37,7 @@ const getEmitter = () => {
   popupEvents.on(MESSAGES.HANDLE_UPDATE_DID, controller.updateDID)
   popupEvents.on(MESSAGES.GET_DID, controller.getDID)
   popupEvents.on(MESSAGES.UPDATE_COLLECTION, controller.updateCollection)
+  popupEvents.on(MESSAGES.GET_KEY, controller.getKey)
 
   popupEvents.on(MESSAGES.TEST, controller.test)
 

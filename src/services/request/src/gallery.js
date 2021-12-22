@@ -154,6 +154,10 @@ export class GalleryRequest extends Request {
     return this.promise(MESSAGES.UPDATE_COLLECTION, body)
   }
 
+  getKey(body) {
+    return this.promise(MESSAGES.GET_KEY, body)
+  }
+
   test(body) {
     return this.promise(MESSAGES.TEST, body)
   }
