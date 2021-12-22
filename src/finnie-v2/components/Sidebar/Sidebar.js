@@ -45,8 +45,8 @@ const Sidebar = () => {
   }
 
   return (
-    <div>
-      <nav className="flex items-center justify-evenly gapx-3 mb-5">
+    <>
+      <nav className="flex w-57.75 items-center justify-evenly gapx-3 mb-5">
         {navItems.map(({ icon: Icon, path }) => (
           <NavLink
             key={path}
@@ -58,24 +58,26 @@ const Sidebar = () => {
           </NavLink>
         ))}
       </nav>
-      <div className="bg-trueGray-100 bg-opacity-20 rounded">
-        <Route path="/v2/gallery">
-          <SortAndFilter
-            handleSearchFieldChange={handleSearchFieldChange}
-            handleSelectChains={handleSelectChains}
-            handleSort={handleSort}
-            sortBy={sortBy}
-            selectedChain={chainType}
-          />
-        </Route>
-        <Route path="/v2/create">
-          <UploadNftForm />
-        </Route>
-        <Route exact path="/v2/settings/*">
-          <AccountSettings />
-        </Route>
+      <div style={{ height: '60vh' }} className="rounded overflow-y-scroll">
+        <div className="bg-trueGray-100 bg-opacity-20 rounded w-57.75">
+          <Route path="/v2/gallery">
+            <SortAndFilter
+              handleSearchFieldChange={handleSearchFieldChange}
+              handleSelectChains={handleSelectChains}
+              handleSort={handleSort}
+              sortBy={sortBy}
+              selectedChain={chainType}
+            />
+          </Route>
+          <Route path="/v2/create">
+            <UploadNftForm />
+          </Route>
+          <Route exact path="/v2/settings/*">
+            <AccountSettings />
+          </Route>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
