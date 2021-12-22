@@ -34,7 +34,9 @@ export const filterNft = ({ searchStr, chainType, sortBy }) => async (dispatch) 
     let filteredNfts = store.getState().assets.nfts
 
     if (!isEmpty(searchStr)) {
-      filteredNfts = filteredNfts.filter((nft) => nft.name.includes(searchStr))
+      filteredNfts = filteredNfts.filter((nft) =>
+        nft.name?.toLowerCase().includes(searchStr.toLowerCase())
+      )
     }
 
     if (!isEmpty(chainType)) {
