@@ -28,10 +28,9 @@ const Button = ({
     <button
       className={clsx(
         'flex items-center justify-center rounded-sm',
-        variants[variant],
         sizes[size],
         className,
-        isLoading && 'bg-white bg-opacity-30 cursor-not-allowed'
+        isLoading ? 'bg-white bg-opacity-30 text-black cursor-not-allowed' : variants[variant]
       )}
       disabled={isLoading}
       {...props}

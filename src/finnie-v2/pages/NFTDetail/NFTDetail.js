@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
@@ -26,7 +26,9 @@ const NFTDetail = () => {
   const { setShowExportModal, setShowShareModal, handleShareNFT } = useContext(GalleryContext)
 
   const nft = useSelector(getAssetByTxId(id))
+
   const isArweaveNft = nft?.type === TYPE.ARWEAVE
+  const isDisableFeatures = nft.isBridging || nft.isSending || nft.type !== TYPE.ARWEAVE
 
   return (
     <div className="min-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
@@ -42,16 +44,18 @@ const NFTDetail = () => {
                 <ArweaveLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
               )}
 
-              <div className="flex justify-between items-center h-17.25 mt-6.5 tracking-finnieSpacing-tight text-lg text-center">
-                <div className="w-48.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
-                  KOII earned <br />
-                  {formatNumber(nft.earnedKoi, 3)}
+              {nft.type === TYPE.ARWEAVE && !nft.pending && (
+                <div className="flex justify-between items-center h-17.25 mt-6.5 tracking-finnieSpacing-tight text-lg text-center">
+                  <div className="w-48.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                    KOII earned <br />
+                    {formatNumber(nft.earnedKoi, 3)}
+                  </div>
+                  <div className="w-46 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                    Total Views <br />
+                    {nft.totalViews}
+                  </div>
                 </div>
-                <div className="w-46 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
-                  Total Views <br />
-                  {nft.totalViews}
-                </div>
-              </div>
+              )}
             </div>
 
             <div className="w-115 h-101 relative">
@@ -62,6 +66,7 @@ const NFTDetail = () => {
               <div className="flex w-68 gap-4 mb-5">
                 <a href={`https://viewblock.io/arweave/tx/${nft.txId}`} target="_blank">
                   <Button
+                    isLoading={isDisableFeatures}
                     icon={BlockIcon}
                     text="Explore Block"
                     variant="inversed"
@@ -69,7 +74,12 @@ const NFTDetail = () => {
                   />
                 </a>
                 <a href={`https://koi.rocks/`} target="_blank">
-                  <Button icon={LeaderboardIcon} text="Leaderboard" variant="warning" />
+                  <Button
+                    isLoading={isDisableFeatures}
+                    icon={LeaderboardIcon}
+                    text="Leaderboard"
+                    variant="warning"
+                  />
                 </a>
               </div>
               <p className="w-full h-18 overflow-y-scroll text-sm leading-6 pr-4">
@@ -88,6 +98,7 @@ const NFTDetail = () => {
               </div>
               <div className="flex items-center justify-between h-11.5 mt-7.5 gap-5">
                 <Button
+                  isLoading={isDisableFeatures}
                   size="lg"
                   icon={ShareIcon}
                   className="h-full w-7/12"
@@ -97,6 +108,7 @@ const NFTDetail = () => {
                   }}
                 />
                 <Button
+                  isLoading={isDisableFeatures}
                   size="lg"
                   icon={LinkIcon}
                   variant="inversed"
