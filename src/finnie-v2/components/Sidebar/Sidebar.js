@@ -25,7 +25,7 @@ const Sidebar = () => {
   const [sortBy, setSortBy] = useState('')
 
   useEffect(() => {
-    dispatch(filterNft({ searchStr, chainType, sortType: sortBy }))
+    dispatch(filterNft({ searchStr, chainType, sortBy }))
   }, [searchStr, chainType, sortBy])
 
   const handleSearchFieldChange = (searchStr) => {

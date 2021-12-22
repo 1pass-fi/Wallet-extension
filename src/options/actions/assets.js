@@ -16,8 +16,8 @@ export const SORT_TYPES = {
   MOST_VIEWED: 'MOST_VIEWED'
 }
 
-const sortNfts = (nfts, sortType) => {
-  switch (sortType) {
+const sortNfts = (nfts, sortBy) => {
+  switch (sortBy) {
     case SORT_TYPES.NEWEST:
       return nfts.sort((a, b) => a.createdAt - b.createdAt)
     case SORT_TYPES.OLDEST:
@@ -29,7 +29,7 @@ const sortNfts = (nfts, sortType) => {
   }
 }
 
-export const filterNft = ({ searchStr, chainType, sortType }) => async (dispatch) => {
+export const filterNft = ({ searchStr, chainType, sortBy }) => async (dispatch) => {
   try {
     let filteredNfts = store.getState().assets.nfts
 
@@ -41,8 +41,8 @@ export const filterNft = ({ searchStr, chainType, sortType }) => async (dispatch
       filteredNfts = filteredNfts.filter((nft) => nft.type === chainType)
     }
 
-    if (!isEmpty(sortType)) {
-      filteredNfts = sortNfts(filteredNfts, sortType)
+    if (!isEmpty(sortBy)) {
+      filteredNfts = sortNfts(filteredNfts, sortBy)
     }
 
     dispatch({
