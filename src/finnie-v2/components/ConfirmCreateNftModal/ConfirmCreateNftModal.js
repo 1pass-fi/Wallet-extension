@@ -161,7 +161,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
               className="h-9 mt-8 font-semibold text-sm rounded w-43.75"
               variant="indigo"
               text="Create NFT"
-              isLoading={disableCreateNFT}
+              disabled={disableCreateNFT}
             />
           </>
         )}

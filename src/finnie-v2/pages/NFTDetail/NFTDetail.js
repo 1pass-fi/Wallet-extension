@@ -28,7 +28,7 @@ const NFTDetail = () => {
   const nft = useSelector(getAssetByTxId(id))
 
   const isArweaveNft = nft?.type === TYPE.ARWEAVE
-  const isDisableFeatures = nft.isBridging || nft.isSending || nft.type !== TYPE.ARWEAVE
+  const disabledFeatures = nft.isBridging || nft.isSending || nft.type !== TYPE.ARWEAVE
 
   return (
     <div className="min-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
@@ -66,7 +66,7 @@ const NFTDetail = () => {
               <div className="flex w-68 gap-4 mb-5">
                 <a href={`https://viewblock.io/arweave/tx/${nft.txId}`} target="_blank">
                   <Button
-                    isLoading={isDisableFeatures}
+                    disabled={disabledFeatures}
                     icon={BlockIcon}
                     text="Explore Block"
                     variant="inversed"
@@ -75,7 +75,7 @@ const NFTDetail = () => {
                 </a>
                 <a href={`https://koi.rocks/`} target="_blank">
                   <Button
-                    isLoading={isDisableFeatures}
+                    disabled={disabledFeatures}
                     icon={LeaderboardIcon}
                     text="Leaderboard"
                     variant="warning"
@@ -98,7 +98,7 @@ const NFTDetail = () => {
               </div>
               <div className="flex items-center justify-between h-11.5 mt-7.5 gap-5">
                 <Button
-                  isLoading={isDisableFeatures}
+                  disabled={disabledFeatures}
                   size="lg"
                   icon={ShareIcon}
                   className="h-full w-7/12"
@@ -108,7 +108,7 @@ const NFTDetail = () => {
                   }}
                 />
                 <Button
-                  isLoading={isDisableFeatures}
+                  disabled={disabledFeatures}
                   size="lg"
                   icon={LinkIcon}
                   variant="inversed"

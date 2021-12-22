@@ -15,24 +15,15 @@ const sizes = {
   lg: 'text-base px-4 py-1.75'
 }
 
-const Button = ({
-  text,
-  variant = 'primary',
-  icon: Icon,
-  isLoading,
-  size = 'sm',
-  className,
-  ...props
-}) => {
+const Button = ({ text, variant = 'primary', icon: Icon, size = 'sm', className, ...props }) => {
   return (
     <button
       className={clsx(
-        'flex items-center justify-center rounded-sm',
+        variants[variant],
+        'flex items-center justify-center rounded-sm disabled:opacity-60 disabled:cursor-not-allowed',
         sizes[size],
-        className,
-        isLoading ? 'bg-white bg-opacity-30 text-black cursor-not-allowed' : variants[variant]
+        className
       )}
-      disabled={isLoading}
       {...props}
     >
       {Icon && <Icon className={clsx(size === 'sm' ? 'w-5 h-5 pr-1' : 'w-8 h-8 pr-2')} />}
