@@ -154,6 +154,12 @@ export class GalleryRequest extends Request {
     return this.promise(MESSAGES.UPDATE_COLLECTION, body)
   }
 
+  /**
+   * @typedef {Object} GetKeyPayload
+   * @property {string} address
+   * @param {GetKeyPayload} body 
+   * @returns {Promise<any>}
+   */
   getKey(body) {
     return this.promise(MESSAGES.GET_KEY, body)
   }
