@@ -21,7 +21,7 @@ const InputField = ({
       {type === 'textarea' ? (
         <textarea
           name={name}
-          className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-20.75 text-white px-1"
+          className="w-full resize-none bg-trueGray-100 bg-opacity-10 border-b border-white h-20.75 text-white px-1"
           placeholder={label}
           id={label}
           value={value}

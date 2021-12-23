@@ -15,6 +15,7 @@ import './style.css'
 import Settings from 'options/pages/Settings'
 import Layout from 'options/layout'
 import MainLayout from './components/MainLayout'
+import BatchUploadModal from './components/BatchUploadModal'
 
 const SecondVer = () => {
   const dispatch = useDispatch()
@@ -60,7 +61,10 @@ const SecondVer = () => {
           </MainLayout>
         </Route>
         <Route exact path="*">
-          <Gallery />
+          <>
+            <Gallery />
+            <BatchUploadModal />
+          </>
         </Route>
       </Switch>
     </Layout>
