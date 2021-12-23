@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import clsx from 'clsx'
 
 import BackIcon from 'img/v2/back-icon.svg'
 import CheckMarkIcon from 'img/v2/check-mark-icon-blue.svg'
@@ -13,36 +14,74 @@ import NFTMedia from 'finnie-v2/components/NFTMedia'
 import InputField from 'finnie-v2/components/SideBar/InputField'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
-const fileNames = [
-  'TATUAJE DE FUTBOL',
-  'TATUAJE DE FUTBOL',
-  'TATUAJE DE FUTBOL',
-  'upYNfnwU1Y0ezUiIkr03lvLonglonglonglonglong stringLv',
-  'TATUAJE DE FUTBOLTATUAJE DE FUTBOLTATUAJE DE FUTBOLTATUAJE DE FUTBOL',
-  'upYNfnwU1Y0ezUiIkr03lvLonglonglonglonglong stringLv',
-  'upYNfnwU1Y0ezUiIkr03lvLonglonglonglonglong stringLv',
-  'upYNfnwU1Y0ezUiIkr03lvLonglonglonglonglong stringLv',
-  'upYNfnwU1Y0ezUiIkr03lvLonglonglonglonglong stringLv',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)',
-  'CueCard #11-Twitter (2)'
+const files = [
+  {
+    info: {
+      isNSFW: true,
+      ownerName: 'Minh Vu',
+      ownerAddress: 'asdkjakdkajshdkads',
+      title: 'NFT 1',
+      description: 'Description 1',
+      tags: [],
+      contentType: 'image',
+      createdAt: 0
+    },
+    uploaded: false,
+    file:
+      'https://duongma.com/wp-content/uploads/2019/12/christmas-background-space-greeting-text-noel-flat-lay-composition-fir-branches-red-berries-lying-light-127105018.jpg',
+    name: 'Img 1'
+  },
+  {
+    info: {
+      isNSFW: true,
+      ownerName: 'Minh Vu',
+      ownerAddress: 'asdkjakdkajshdkads',
+      title: 'NFT 2',
+      description: 'Description 1',
+      tags: [],
+      contentType: 'image',
+      createdAt: 0
+    },
+    uploaded: false,
+    file: 'https://seotrends.com.vn/wp-content/uploads/2021/07/anh-nen-noel-dep-1024x661.jpg',
+    name: 'Img 2'
+  },
+  {
+    info: {
+      isNSFW: true,
+      ownerName: 'Minh Vu',
+      ownerAddress: 'asdkjakdkajshdkads',
+      title: 'NFT 3',
+      description: 'Description 1',
+      tags: [],
+      contentType: 'image',
+      createdAt: 0
+    },
+    uploaded: false,
+    file: 'https://taimienphi.vn/tmp/cf/aut/background-giang-sinh-noel-dep-1.jpg',
+    name: 'Img 3'
+  },
+  {
+    info: {
+      isNSFW: true,
+      ownerName: 'Minh Vu',
+      ownerAddress: 'asdkjakdkajshdkads',
+      title: 'NFT 4',
+      description: 'Description 1',
+      tags: [],
+      contentType: 'image',
+      createdAt: 0
+    },
+    uploaded: false,
+    file:
+      'https://mondaycareer.com/wp-content/uploads/2020/11/background-%C4%91%E1%BA%B9p-noel-3.jpg',
+    name: 'Img 4'
+  }
 ]
 
 const BatchUploadModal = () => {
+  const [currentNftIdx, setCurrentNftIdx] = useState(0)
+
   return (
     <div className="fixed top-0 left-0 z-51 w-screen h-screen flex items-center justify-center">
       <div className="w-221.5 h-116.75 bg-blue-800 rounded shadow-md pt-3 px-4 relative">
@@ -56,12 +95,16 @@ const BatchUploadModal = () => {
             <div className="w-66.75">
               <div className="text-xl text-white">UPLOADED FILES</div>
               <div className="list-disc overflow-y-scroll overflow-x-none h-68 mt-4 pl-4 pr-1.5">
-                {fileNames.map((fileName, idx) => (
+                {files.map(({ name }, idx) => (
                   <div
-                    className="my-0.5 bg-trueGray-300 bg-opacity-20 h-8 flex text-white items-center justify-between font-light text-xs tracking-finnieSpacing-wide pr-2.75"
+                    onClick={() => setCurrentNftIdx(idx)}
+                    className={clsx(
+                      currentNftIdx === idx && 'bg-trueGray-300 bg-opacity-20',
+                      'my-0.5 cursor-pointer h-8 flex text-white items-center justify-between font-light text-xs tracking-finnieSpacing-wide pr-2.75'
+                    )}
                     key={idx}
                   >
-                    {formatLongString(fileName, 25)}
+                    {formatLongString(name, 25)}
                     <RemoveNFTIcon className="w-2.75 h-2.75 cursor-pointer" />
                   </div>
                 ))}
@@ -71,10 +114,7 @@ const BatchUploadModal = () => {
               <div className="text-xl text-white">EDIT NFT INFO:</div>
               <div className="flex mt-4">
                 <div className="h-68 w-68 rounded shadow-lg object-cover">
-                  <NFTMedia
-                    contentType="image"
-                    source="https://arweave.net/pCPt4Yf5XTztJuOwvQBxsr8a7skvYa-gtwYF9YdYacc"
-                  />
+                  <NFTMedia contentType="image" source={files[currentNftIdx].file} />
                 </div>
                 <div className="ml-3.5 w-55.5 flex flex-col justify-between">
                   <InputField label="NFT Title" required={true} />
@@ -97,18 +137,16 @@ const BatchUploadModal = () => {
                     </div>
 
                     <div className="max-h-9 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1.5">
-                      {['tag21', 'tags afdasf', 'new ta2', 'tag22', 'tags afdasf', 'new tag'].map(
-                        (tag) => (
-                          <div
-                            onClick={() => removeTag(tag)}
-                            key={tag}
-                            className="max-h-3.75 flex justify-evenly items-center rounded-full bg-lightBlue text-2xs py-0.5 px-1.5 cursor-pointer"
-                          >
-                            <CrossIcon className="mr-0.5 w-1.75 h-1.75" />
-                            {formatLongString(tag, 25)}
-                          </div>
-                        )
-                      )}
+                      {['tag21', 'tags afdasf', 'new tag'].map((tag) => (
+                        <div
+                          onClick={() => removeTag(tag)}
+                          key={tag}
+                          className="max-h-3.75 flex justify-evenly items-center rounded-full bg-lightBlue text-2xs py-0.5 px-1.5 cursor-pointer"
+                        >
+                          <CrossIcon className="mr-0.5 w-1.75 h-1.75" />
+                          {formatLongString(tag, 25)}
+                        </div>
+                      ))}
                     </div>
                   </div>
 
