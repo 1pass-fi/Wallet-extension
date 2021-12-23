@@ -76,6 +76,99 @@ const files = [
     file:
       'https://mondaycareer.com/wp-content/uploads/2020/11/background-%C4%91%E1%BA%B9p-noel-3.jpg',
     name: 'Img 4'
+  },
+  {
+    info: {
+      isNSFW: true,
+      ownerName: 'Minh Vu',
+      ownerAddress: 'asdkjakdkajshdkads',
+      title: 'NFT 1',
+      description: 'Description 1',
+      tags: [],
+      contentType: 'image',
+      createdAt: 0
+    },
+    uploaded: false,
+    file:
+      'https://duongma.com/wp-content/uploads/2019/12/christmas-background-space-greeting-text-noel-flat-lay-composition-fir-branches-red-berries-lying-light-127105018.jpg',
+    name: 'Img 5'
+  },
+  {
+    info: {
+      isNSFW: true,
+      ownerName: 'Minh Vu',
+      ownerAddress: 'asdkjakdkajshdkads',
+      title: 'NFT 2',
+      description: 'Description 1',
+      tags: [],
+      contentType: 'image',
+      createdAt: 0
+    },
+    uploaded: false,
+    file: 'https://seotrends.com.vn/wp-content/uploads/2021/07/anh-nen-noel-dep-1024x661.jpg',
+    name: 'Img 6'
+  },
+  {
+    info: {
+      isNSFW: true,
+      ownerName: 'Minh Vu',
+      ownerAddress: 'asdkjakdkajshdkads',
+      title: 'NFT 3',
+      description: 'Description 1',
+      tags: [],
+      contentType: 'image',
+      createdAt: 0
+    },
+    uploaded: false,
+    file: 'https://taimienphi.vn/tmp/cf/aut/background-giang-sinh-noel-dep-1.jpg',
+    name: 'Img 7'
+  },
+  {
+    info: {
+      isNSFW: true,
+      ownerName: 'Minh Vu',
+      ownerAddress: 'asdkjakdkajshdkads',
+      title: 'NFT 4',
+      description: 'Description 1',
+      tags: [],
+      contentType: 'image',
+      createdAt: 0
+    },
+    uploaded: false,
+    file:
+      'https://mondaycareer.com/wp-content/uploads/2020/11/background-%C4%91%E1%BA%B9p-noel-3.jpg',
+    name: 'Img 8'
+  },
+  {
+    info: {
+      isNSFW: true,
+      ownerName: 'Minh Vu',
+      ownerAddress: 'asdkjakdkajshdkads',
+      title: 'NFT 1',
+      description: 'Description 1',
+      tags: [],
+      contentType: 'image',
+      createdAt: 0
+    },
+    uploaded: false,
+    file:
+      'https://duongma.com/wp-content/uploads/2019/12/christmas-background-space-greeting-text-noel-flat-lay-composition-fir-branches-red-berries-lying-light-127105018.jpg',
+    name: 'Img 9'
+  },
+  {
+    info: {
+      isNSFW: true,
+      ownerName: 'Minh Vu',
+      ownerAddress: 'asdkjakdkajshdkads',
+      title: 'NFT 2',
+      description: 'Description 1',
+      tags: [],
+      contentType: 'image',
+      createdAt: 0
+    },
+    uploaded: false,
+    file: 'https://seotrends.com.vn/wp-content/uploads/2021/07/anh-nen-noel-dep-1024x661.jpg',
+    name: 'Img 10'
   }
 ]
 
@@ -84,13 +177,20 @@ const BatchUploadModal = () => {
 
   return (
     <div className="fixed top-0 left-0 z-51 w-screen h-screen flex items-center justify-center">
-      <div className="w-221.5 h-116.75 bg-blue-800 rounded shadow-md pt-3 px-4 relative">
+      <div className="w-221.5 h-116.75 bg-blue-800 rounded shadow-md pt-3 px-4 relative select-none">
         <div className="w-full flex justify-between">
           <BackIcon className="w-9 h-9 cursor-pointer" />
           <CloseIcon className="w-9 h-9 cursor-pointer" />
         </div>
         <div className="flex w-full mt-4 items-center justify-between">
-          <NextButton className="w-3.75 h-6.75 cursor-pointer" />
+          <div className="w-3.75">
+            {currentNftIdx !== 0 && (
+              <PreviousButton
+                onClick={() => setCurrentNftIdx((prev) => prev - 1)}
+                className=" h-6.75 cursor-pointer"
+              />
+            )}
+          </div>
           <div className="flex">
             <div className="w-66.75">
               <div className="text-xl text-white">UPLOADED FILES</div>
@@ -164,7 +264,14 @@ const BatchUploadModal = () => {
               </div>
             </div>
           </div>
-          <PreviousButton className="w-3.75 h-6.75 cursor-pointer" />
+          <div className="w-3.75">
+            {currentNftIdx < files.length - 1 && (
+              <NextButton
+                onClick={() => setCurrentNftIdx((prev) => prev + 1)}
+                className="h-6.75 cursor-pointer"
+              />
+            )}
+          </div>
         </div>
         <Button
           text="Save Changes"
