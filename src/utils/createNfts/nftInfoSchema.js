@@ -5,7 +5,7 @@ export default Joi.object({
   ownerName: Joi.string().required(),
   ownerAddress: Joi.string().required(),
   title: Joi.string().required(),
-  description: Joi.string.required(),
+  description: Joi.string().required(),
   tags: Joi.array().items(Joi.string()),
   contentType: Joi.string().required(),
   createdAt: Joi.number().required()

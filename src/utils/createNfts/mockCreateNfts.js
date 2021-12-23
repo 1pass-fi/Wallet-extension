@@ -1,22 +1,24 @@
+import { v4 as uuid } from 'uuid'
+
 import arweave from 'services/arweave'
 import nftInfoSchema from './nftInfoSchema'
 
 export default async (nfts, setNfts) => {
-  return Promise.all(nfts.map(async (nft, index) => {
+  nfts = [...nfts]
+  return await Promise.all(nfts.map(async (nft, index) => {
     // validate
     const info = nftInfoSchema.validate(nft.info)
     if (info.error) throw new Error(info.error.message)
 
-    const transaction = await arweave.createTransaction({data: []})
     await mockUploadNft()
-    setNfts(prev => {prev[index].uploaded = true; return prev})
+    setNfts(prev => {prev[index].uploaded = true; return [...prev]})
 
-    return transaction.id
+    return uuid() // mock transactionId
   }))
 }
 
 const mockUploadNft = () => {
-  const time = (3 + Math.floor(Math.random() * 3)) * 1000
+  const time = (2 + Math.floor(Math.random() * 5)) * 1000
 
   return new Promise(resolve => {
     setTimeout(() => {
