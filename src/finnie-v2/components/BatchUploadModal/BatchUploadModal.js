@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import clsx from 'clsx'
+import initial from 'lodash/initial'
+import union from 'lodash/union'
 
 import BackIcon from 'img/v2/back-icon.svg'
 import CheckMarkIcon from 'img/v2/check-mark-icon-blue.svg'
@@ -203,6 +205,44 @@ const BatchUploadModal = () => {
       name: 'Img 12'
     }
   ])
+  const [tagInput, setTagInput] = useState([])
+
+  const handleNftContentChange = (e, idx) => {
+    let updatedFiles = [...files]
+    let info = updatedFiles[idx].info
+    info = { ...info, [e.target.name]: e.target.value }
+    updatedFiles[idx] = { ...updatedFiles[idx], info }
+    setFiles(updatedFiles)
+  }
+
+  const handleTagsKeyUp = (e, idx) => {
+    if (e.key === ' ' && tagInput[idx].endsWith(', ')) {
+      let updatedFiles = [...files]
+      let info = updatedFiles[idx].info
+
+      const newTags = initial(tagInput[idx].split(','))
+      info.tags = union(info.tags, newTags)
+
+      info = { ...info, tags: info.tags }
+      updatedFiles[idx] = { ...updatedFiles[idx], info }
+
+      setFiles(updatedFiles)
+
+      setTagInput({ ...tagInput, [idx]: '' })
+    }
+  }
+
+  const removeTag = (removeTag, idx) => {
+    let updatedFiles = [...files]
+    let info = updatedFiles[idx].info
+    info.tags = info.tags.filter((tag) => tag !== removeTag)
+
+
+    info = { ...info, tags: info.tags }
+    updatedFiles[idx] = { ...updatedFiles[idx], info }
+
+    setFiles(updatedFiles)
+  }
 
   return (
     <div className="fixed top-0 left-0 z-51 w-screen h-screen flex items-center justify-center">
@@ -267,8 +307,21 @@ const BatchUploadModal = () => {
                   <NFTMedia contentType="image" source={files[currentNftIdx].file} />
                 </div>
                 <div className="ml-3.5 w-55.5 flex flex-col justify-between">
-                  <InputField label="NFT Title" required={true} />
-                  <InputField label="Description" required={true} type="textarea" />
+                  <InputField
+                    label="NFT Title"
+                    required={true}
+                    name="title"
+                    value={files[currentNftIdx].info.title}
+                    setValue={(e) => handleNftContentChange(e, currentNftIdx)}
+                  />
+                  <InputField
+                    label="Description"
+                    required={true}
+                    type="textarea"
+                    name="description"
+                    value={files[currentNftIdx].info.description}
+                    setValue={(e) => handleNftContentChange(e, currentNftIdx)}
+                  />
                   <div>
                     <label
                       htmlFor="tags"
@@ -281,15 +334,20 @@ const BatchUploadModal = () => {
                       name="tags"
                       placeholder="Tags,"
                       id="tags"
+                      value={tagInput[currentNftIdx] ? tagInput[currentNftIdx] : ''}
+                      onChange={(e) =>
+                        setTagInput({ ...tagInput, [currentNftIdx]: e.target.value })
+                      }
+                      onKeyUp={(e) => handleTagsKeyUp(e, currentNftIdx)}
                     />
                     <div className="text-warning mt-1 uppercase text-3xs">
                       Separate with a “,” and hit space bar
                     </div>
 
                     <div className="max-h-9 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1.5">
-                      {['tag21', 'tags afdasf', 'new tag'].map((tag) => (
+                      {files[currentNftIdx].info.tags.map((tag) => (
                         <div
-                          onClick={() => removeTag(tag)}
+                          onClick={() => removeTag(tag, currentNftIdx)}
                           key={tag}
                           className="max-h-3.75 flex justify-evenly items-center rounded-full bg-lightBlue text-2xs py-0.5 px-1.5 cursor-pointer"
                         >
