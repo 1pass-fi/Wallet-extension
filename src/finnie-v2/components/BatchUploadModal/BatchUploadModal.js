@@ -6,15 +6,12 @@ import union from 'lodash/union'
 import BackIcon from 'img/v2/back-icon.svg'
 import CheckMarkIcon from 'img/v2/check-mark-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-white.svg'
-import CrossIcon from 'img/v2/cross-icon.svg'
-import RemoveNFTIcon from 'img/v2/cross-icon-orange.svg'
 import NextButton from 'img/v2/arrow-right-orange.svg'
 import PreviousButton from 'img/v2/arrow-left-orange.svg'
 
 import Button from 'finnie-v2/components/Button'
-import NFTMedia from 'finnie-v2/components/NFTMedia'
-import InputField from 'finnie-v2/components/SideBar/InputField'
-import formatLongString from 'finnie-v2/utils/formatLongString'
+import UploadedFiles from './UploadedFiles'
+import EditNftInfo from './EditNftInfo'
 
 const BatchUploadModal = () => {
   const [currentNftIdx, setCurrentNftIdx] = useState(0)
@@ -261,118 +258,25 @@ const BatchUploadModal = () => {
           </div>
           <div className="flex">
             <div className="w-66.75">
-              <div className="text-xl text-white">UPLOADED FILES</div>
-              <div className="list-disc overflow-y-scroll overflow-x-none h-68 mt-4 pl-4 pr-1.5">
-                {files.map(({ name }, idx) => (
-                  <div
-                    className={clsx(
-                      currentNftIdx === idx && 'bg-trueGray-300 bg-opacity-20',
-                      'my-0.5 cursor-pointer h-8 flex text-white items-center justify-between font-light text-xs tracking-finnieSpacing-wide pr-2.75'
-                    )}
-                    key={idx}
-                  >
-                    <span
-                      onClick={() => setCurrentNftIdx(idx)}
-                      className="h-full flex-grow flex items-center"
-                    >
-                      {formatLongString(name, 25)}
-                    </span>
-                    <RemoveNFTIcon
-                      onClick={() => {
-                        // TODO - close modal when there is no item
-
-                        if (currentNftIdx === files.length - 1) {
-                          setCurrentNftIdx((prev) => prev - 1)
-                        }
-
-                        if (idx < currentNftIdx) {
-                          setCurrentNftIdx((prev) => prev - 1)
-                        }
-
-                        const newFiles = [...files]
-                        newFiles.splice(idx, 1)
-                        setFiles(newFiles)
-
-                        const newTagInputs = { ...tagInputs }
-                        delete newTagInputs[idx]
-                        setTagInputs(newTagInputs)
-                      }}
-                      className="w-2.75 h-2.75 cursor-pointer"
-                    />
-                  </div>
-                ))}
-              </div>
+              <UploadedFiles
+                files={files}
+                currentNftIdx={currentNftIdx}
+                setCurrentNftIdx={setCurrentNftIdx}
+                tagInputs={tagInputs}
+                setTagInputs={setTagInputs}
+                setFiles={setFiles}
+              />
             </div>
             <div className="ml-5.5">
-              <div className="text-xl text-white">EDIT NFT INFO:</div>
-              <div className="flex mt-4">
-                <div className="h-68 w-68 rounded shadow-lg object-cover">
-                  <NFTMedia contentType="image" source={files[currentNftIdx].file} />
-                </div>
-                <div className="ml-3.5 w-55.5 flex flex-col justify-between">
-                  <InputField
-                    label="NFT Title"
-                    required={true}
-                    name="title"
-                    value={files[currentNftIdx].info.title}
-                    setValue={(e) => handleNftContentChange(e, currentNftIdx)}
-                  />
-                  <InputField
-                    label="Description"
-                    required={true}
-                    type="textarea"
-                    name="description"
-                    value={files[currentNftIdx].info.description}
-                    setValue={(e) => handleNftContentChange(e, currentNftIdx)}
-                  />
-                  <div>
-                    <label
-                      htmlFor="tags"
-                      className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1"
-                    >
-                      Tags
-                    </label>
-                    <input
-                      className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white"
-                      name="tags"
-                      placeholder="Tags,"
-                      id="tags"
-                      value={tagInputs[currentNftIdx] ? tagInputs[currentNftIdx] : ''}
-                      onChange={(e) =>
-                        setTagInputs({ ...tagInputs, [currentNftIdx]: e.target.value })
-                      }
-                      onKeyUp={(e) => handleTagsKeyUp(e, currentNftIdx)}
-                    />
-                    <div className="text-warning mt-1 uppercase text-3xs">
-                      Separate with a “,” and hit space bar
-                    </div>
-
-                    <div className="max-h-9 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1.5">
-                      {files[currentNftIdx].info.tags.map((tag) => (
-                        <div
-                          onClick={() => removeTag(tag, currentNftIdx)}
-                          key={tag}
-                          className="max-h-3.75 flex justify-evenly items-center rounded-full bg-lightBlue text-2xs py-0.5 px-1.5 cursor-pointer"
-                        >
-                          <CrossIcon className="mr-0.5 w-1.75 h-1.75" />
-                          {formatLongString(tag, 25)}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="flex cursor-pointer">
-                    <input
-                      className="rounded-sm border border-white w-3.75 h-3.75"
-                      name="isNSFW"
-                      type="checkbox"
-                    ></input>
-                    <div className="text-white ml-2 text-11px select-none">
-                      This content is <span className="text-warning">Explicit or 18+.</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <EditNftInfo
+                handleNftContentChange={handleNftContentChange}
+                removeTag={removeTag}
+                handleTagsKeyUp={handleTagsKeyUp}
+                setTagInputs={setTagInputs}
+                files={files}
+                currentNftIdx={currentNftIdx}
+                tagInputs={tagInputs}
+              />
             </div>
           </div>
           <div className="w-3.75">

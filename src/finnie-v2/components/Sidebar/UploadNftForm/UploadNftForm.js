@@ -6,7 +6,7 @@ import union from 'lodash/union'
 
 import CrossIcon from 'img/v2/cross-icon.svg'
 
-import InputField from 'finnie-v2/components/SideBar/InputField'
+import InputField from 'finnie-v2/components/InputField'
 import Button from 'finnie-v2/components/Button'
 import ConfirmCreateNftModal from 'finnie-v2/components/ConfirmCreateNftModal'
 import DropFile from 'finnie-v2/components/DropFile'
