@@ -1,4 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useEffect } from 'react'
+import initial from 'lodash/initial'
+import union from 'lodash/union'
 
 import NFTMedia from 'finnie-v2/components/NFTMedia'
 import InputField from 'finnie-v2/components/InputField'
@@ -6,28 +9,61 @@ import formatLongString from 'finnie-v2/utils/formatLongString'
 
 import CrossIcon from 'img/v2/cross-icon.svg'
 
-const EditNftInfo = ({
-  handleTagsKeyUp,
-  handleNftContentChange,
-  removeTag,
-  tagInputs,
-  setTagInputs,
-  files,
-  currentNftIdx
-}) => {
+const EditNftInfo = ({ currentNftIdx, nftInfo, file, updateNftInfo, tagInputs, setTagInputs }) => {
+  const [nftDetail, setNftDetail] = useState(nftInfo)
+
+  useEffect(() => {
+    setNftDetail(nftInfo)
+  }, [nftInfo])
+
+  const handleNftContentChange = (e, idx) => {
+    let updatedNftDetail = { ...nftDetail }
+
+    updatedNftDetail = { ...updatedNftDetail, [e.target.name]: e.target.value }
+
+    setNftDetail(updatedNftDetail)
+    updateNftInfo(idx, updatedNftDetail)
+  }
+
+  const removeTag = (removeTag, idx) => {
+    let updatedNftDetail = { ...nftDetail }
+    updatedNftDetail.tags = updatedNftDetail.tags.filter((tag) => tag !== removeTag)
+
+    updatedNftDetail = { ...updatedNftDetail, tags: updatedNftDetail.tags }
+    setNftDetail(updatedNftDetail)
+    updateNftInfo(idx, updatedNftDetail)
+  }
+
+  const handleTagsKeyUp = (e, idx) => {
+    if (e.key === ' ' && tagInputs[idx].endsWith(', ')) {
+      let updatedNftDetail = { ...nftDetail }
+      const newTags = initial(tagInputs[idx].split(','))
+      updatedNftDetail.tags = union(updatedNftDetail.tags, newTags)
+
+      updatedNftDetail = { ...updatedNftDetail, tags: updatedNftDetail.tags }
+      setNftDetail(updatedNftDetail)
+
+      updateNftInfo(idx, updatedNftDetail)
+
+      let updatedTagInputs = [...tagInputs]
+      updatedTagInputs[idx] = ''
+      setTagInputs(updatedTagInputs)
+    }
+  }
+
   return (
     <>
       <div className="text-xl text-white">EDIT NFT INFO:</div>
       <div className="flex mt-4">
         <div className="h-68 w-68 rounded shadow-lg object-cover">
-          <NFTMedia contentType="image" source={files[currentNftIdx].file} />
+          <NFTMedia contentType="image" source={file} />
         </div>
         <div className="ml-3.5 w-55.5 flex flex-col justify-between">
           <InputField
             label="NFT Title"
             required={true}
             name="title"
-            value={files[currentNftIdx].info.title}
+            value={nftDetail.title}
             setValue={(e) => handleNftContentChange(e, currentNftIdx)}
           />
           <InputField
@@ -35,7 +71,7 @@ const EditNftInfo = ({
             required={true}
             type="textarea"
             name="description"
-            value={files[currentNftIdx].info.description}
+            value={nftDetail.description}
             setValue={(e) => handleNftContentChange(e, currentNftIdx)}
           />
           <div>
@@ -46,12 +82,16 @@ const EditNftInfo = ({
               Tags
             </label>
             <input
-              className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white"
+              className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1"
               name="tags"
               placeholder="Tags,"
               id="tags"
               value={tagInputs[currentNftIdx] ? tagInputs[currentNftIdx] : ''}
-              onChange={(e) => setTagInputs({ ...tagInputs, [currentNftIdx]: e.target.value })}
+              onChange={(e) => {
+                const updatedTagInputs = [...tagInputs]
+                updatedTagInputs[currentNftIdx] = e.target.value
+                setTagInputs(updatedTagInputs)
+              }}
               onKeyUp={(e) => handleTagsKeyUp(e, currentNftIdx)}
             />
             <div className="text-warning mt-1 uppercase text-3xs">
@@ -59,7 +99,7 @@ const EditNftInfo = ({
             </div>
 
             <div className="max-h-9 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1.5">
-              {files[currentNftIdx].info.tags.map((tag) => (
+              {nftDetail.tags.map((tag) => (
                 <div
                   onClick={() => removeTag(tag, currentNftIdx)}
                   key={tag}

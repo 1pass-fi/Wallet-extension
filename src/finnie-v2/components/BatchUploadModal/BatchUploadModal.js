@@ -1,7 +1,4 @@
 import React, { useState } from 'react'
-import clsx from 'clsx'
-import initial from 'lodash/initial'
-import union from 'lodash/union'
 
 import BackIcon from 'img/v2/back-icon.svg'
 import CheckMarkIcon from 'img/v2/check-mark-icon-blue.svg'
@@ -202,42 +199,22 @@ const BatchUploadModal = () => {
       name: 'Img 12'
     }
   ])
-  const [tagInputs, setTagInputs] = useState({})
+  const [tagInputs, setTagInputs] = useState([])
 
-  const handleNftContentChange = (e, idx) => {
+  const updateNftInfo = (idx, info) => {
     let updatedFiles = [...files]
-    let info = updatedFiles[idx].info
-    info = { ...info, [e.target.name]: e.target.value }
     updatedFiles[idx] = { ...updatedFiles[idx], info }
     setFiles(updatedFiles)
   }
 
-  const handleTagsKeyUp = (e, idx) => {
-    if (e.key === ' ' && tagInputs[idx].endsWith(', ')) {
-      let updatedFiles = [...files]
-      let info = updatedFiles[idx].info
+  const removeNft = (idx) => {
+    const newFiles = [...files]
+    newFiles.splice(idx, 1)
+    setFiles(newFiles)
 
-      const newTags = initial(tagInputs[idx].split(','))
-      info.tags = union(info.tags, newTags)
-
-      info = { ...info, tags: info.tags }
-      updatedFiles[idx] = { ...updatedFiles[idx], info }
-
-      setFiles(updatedFiles)
-
-      setTagInputs({ ...tagInputs, [idx]: '' })
-    }
-  }
-
-  const removeTag = (removeTag, idx) => {
-    let updatedFiles = [...files]
-    let info = updatedFiles[idx].info
-    info.tags = info.tags.filter((tag) => tag !== removeTag)
-
-    info = { ...info, tags: info.tags }
-    updatedFiles[idx] = { ...updatedFiles[idx], info }
-
-    setFiles(updatedFiles)
+    const newTagInputs = [...tagInputs]
+    newTagInputs.splice(idx, 1)
+    setTagInputs(newTagInputs)
   }
 
   return (
@@ -262,20 +239,17 @@ const BatchUploadModal = () => {
                 files={files}
                 currentNftIdx={currentNftIdx}
                 setCurrentNftIdx={setCurrentNftIdx}
-                tagInputs={tagInputs}
-                setTagInputs={setTagInputs}
-                setFiles={setFiles}
+                removeNft={removeNft}
               />
             </div>
             <div className="ml-5.5">
               <EditNftInfo
-                handleNftContentChange={handleNftContentChange}
-                removeTag={removeTag}
-                handleTagsKeyUp={handleTagsKeyUp}
-                setTagInputs={setTagInputs}
-                files={files}
                 currentNftIdx={currentNftIdx}
+                nftInfo={files[currentNftIdx].info}
+                file={files[currentNftIdx].file}
+                updateNftInfo={updateNftInfo}
                 tagInputs={tagInputs}
+                setTagInputs={setTagInputs}
               />
             </div>
           </div>

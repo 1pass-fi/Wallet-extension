@@ -5,14 +5,7 @@ import RemoveNFTIcon from 'img/v2/cross-icon-orange.svg'
 
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
-const UploadedFiles = ({
-  files,
-  currentNftIdx,
-  setCurrentNftIdx,
-  tagInputs,
-  setTagInputs,
-  setFiles
-}) => {
+const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft }) => {
   return (
     <>
       <div className="text-xl text-white">UPLOADED FILES</div>
@@ -43,13 +36,7 @@ const UploadedFiles = ({
                   setCurrentNftIdx((prev) => prev - 1)
                 }
 
-                const newFiles = [...files]
-                newFiles.splice(idx, 1)
-                setFiles(newFiles)
-
-                const newTagInputs = { ...tagInputs }
-                delete newTagInputs[idx]
-                setTagInputs(newTagInputs)
+                removeNft(idx)
               }}
               className="w-2.75 h-2.75 cursor-pointer"
             />
