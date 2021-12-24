@@ -205,7 +205,7 @@ const BatchUploadModal = () => {
       name: 'Img 12'
     }
   ])
-  const [tagInput, setTagInput] = useState([])
+  const [tagInputs, setTagInputs] = useState({})
 
   const handleNftContentChange = (e, idx) => {
     let updatedFiles = [...files]
@@ -216,11 +216,11 @@ const BatchUploadModal = () => {
   }
 
   const handleTagsKeyUp = (e, idx) => {
-    if (e.key === ' ' && tagInput[idx].endsWith(', ')) {
+    if (e.key === ' ' && tagInputs[idx].endsWith(', ')) {
       let updatedFiles = [...files]
       let info = updatedFiles[idx].info
 
-      const newTags = initial(tagInput[idx].split(','))
+      const newTags = initial(tagInputs[idx].split(','))
       info.tags = union(info.tags, newTags)
 
       info = { ...info, tags: info.tags }
@@ -228,7 +228,7 @@ const BatchUploadModal = () => {
 
       setFiles(updatedFiles)
 
-      setTagInput({ ...tagInput, [idx]: '' })
+      setTagInputs({ ...tagInputs, [idx]: '' })
     }
   }
 
@@ -236,7 +236,6 @@ const BatchUploadModal = () => {
     let updatedFiles = [...files]
     let info = updatedFiles[idx].info
     info.tags = info.tags.filter((tag) => tag !== removeTag)
-
 
     info = { ...info, tags: info.tags }
     updatedFiles[idx] = { ...updatedFiles[idx], info }
@@ -293,6 +292,10 @@ const BatchUploadModal = () => {
                         const newFiles = [...files]
                         newFiles.splice(idx, 1)
                         setFiles(newFiles)
+
+                        const newTagInputs = { ...tagInputs }
+                        delete newTagInputs[idx]
+                        setTagInputs(newTagInputs)
                       }}
                       className="w-2.75 h-2.75 cursor-pointer"
                     />
@@ -334,9 +337,9 @@ const BatchUploadModal = () => {
                       name="tags"
                       placeholder="Tags,"
                       id="tags"
-                      value={tagInput[currentNftIdx] ? tagInput[currentNftIdx] : ''}
+                      value={tagInputs[currentNftIdx] ? tagInputs[currentNftIdx] : ''}
                       onChange={(e) =>
-                        setTagInput({ ...tagInput, [currentNftIdx]: e.target.value })
+                        setTagInputs({ ...tagInputs, [currentNftIdx]: e.target.value })
                       }
                       onKeyUp={(e) => handleTagsKeyUp(e, currentNftIdx)}
                     />
