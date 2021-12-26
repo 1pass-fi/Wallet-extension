@@ -7,6 +7,7 @@ import GalleryIcon from 'img/v2/gallery-icon.svg'
 import CollectionIcon from 'img/v2/collection-icon.svg'
 
 import UploadNftForm from './UploadNftForm'
+import CreateCollectionForm from './CreateCollectionForm'
 import { filterNft } from 'options/actions/assets'
 import AccountSettings from 'finnie-v2/components/AccountSettings'
 import SortAndFilter from './SortAndFilter/SortAndFilter'
@@ -71,6 +72,9 @@ const Sidebar = () => {
           </Route>
           <Route path="/v2/create">
             <UploadNftForm />
+          </Route>
+          <Route path="/v2/collection">
+            <CreateCollectionForm />
           </Route>
           <Route exact path="/v2/settings/*">
             <AccountSettings />

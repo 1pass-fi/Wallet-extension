@@ -20,7 +20,9 @@ const DropFile = ({
   fileType = '',
   className = '',
   Icon,
-  description = '.JSON key file'
+  description = '.JSON key file',
+  isCreateCollection,
+  setFiles
 }) => {
   const {
     acceptedFiles,
@@ -30,12 +32,14 @@ const DropFile = ({
     isDragAccept,
     isDragReject
   } = useDropzone({
-    maxFiles: 1,
+    maxFiles: isCreateCollection ? Infinity : 1,
     accept: fileType ? fileType : 'application/json'
   })
 
   useEffect(() => {
-    setFile(acceptedFiles ? acceptedFiles[0] : {})
+    console.log('accepted files', acceptedFiles)
+    if (!isCreateCollection) setFile(acceptedFiles ? acceptedFiles[0] : {})
+    else setFiles(acceptedFiles)
   }, [acceptedFiles])
 
   return (
