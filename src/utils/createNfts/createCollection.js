@@ -5,10 +5,11 @@ import { popupBackgroundRequest as request } from 'services/request/popup'
 
 import nftInfoSchema from './nftInfoSchema'
 
-/* 
+/*
   Return nft ids of uploaded nfts
 */
-export default async (nfts, setNfts, address) => {
+export default async ({nfts, setNfts, address, collectionData}) => {
+  nfts = [...nfts]
   const key = await request.gallery.getKey({address})
 
   let info = nftInfoSchema.validate(nfts.info)
@@ -16,7 +17,7 @@ export default async (nfts, setNfts, address) => {
 
   info = info.value
 
-  return await Promise.all(nfts.map(async ({ info, file }, index) => {
+  const nftIds = await Promise.all(nfts.map(async ({ info, file }, index) => {
     const buffer = await getBufferFromFile(file)
     const transaction = await createTransaction(buffer, info)
 
@@ -31,14 +32,19 @@ export default async (nfts, setNfts, address) => {
     await koii.getWalletAddress()
     await registerData(koii, transaction.id)
 
-    setNfts(prev => {prev[index].uploaded = true; return prev})
+    setNfts(prev => {prev[index].uploaded = true; return [...prev]})
 
     return transaction.id
   }))
+
+  // create collection
+  collectionData.collection = nftIds
+  const txId = await request.gallery.createNewCollection({ collectionData, address })
+  return txId
 }
 
 const getBufferFromFile = async (file) => {
-  const url = URL.createObjectURL(file)
+  const url = file
 
   const response = await fetch(url)
   const blob = await response.blob()
