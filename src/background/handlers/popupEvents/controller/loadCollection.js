@@ -1,14 +1,14 @@
-import { isString } from 'lodash'
 // Services
 import { backgroundAccount } from 'services/account'
+import helpers from 'background/helpers'
 
 
 export default async (_, next) => {
   try {
     const allAccounts = await backgroundAccount.getAllAccounts()
     await Promise.all(allAccounts.map(async account => {
-      const fetchedCollections = await account.method.loadCollections()
-      if (!isString(fetchedCollections)) await account.set.collections(fetchedCollections)
+      const fetchedCollections = await helpers.collections.getCollections(account)
+      await account.set.collections(fetchedCollections)
     }))
 
     next()

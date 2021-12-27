@@ -36,7 +36,7 @@ export class AccountStorageUtils extends ChromeStorage {
   }
 
   async getCollections() {
-    const collections = await this._getChrome(`${this.#address}_collections`)
+    const collections = await this._getChrome(`${this.#address}_collections`) || []
     return collections
   }
 
