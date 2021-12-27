@@ -8,6 +8,7 @@ import CrossIcon from 'img/v2/cross-icon.svg'
 
 import InputField from 'finnie-v2/components/InputField'
 import Button from 'finnie-v2/components/Button'
+import ConfirmModal from 'finnie-v2/components/ConfirmModal'
 import BatchUploadModal from 'finnie-v2/components/BatchUploadModal'
 import DropFile from 'finnie-v2/components/DropFile'
 
@@ -108,7 +109,13 @@ const CreateCollectionForm = () => {
   return (
     <>
       <div className="flex flex-col px-4 pt-4 pb-8">
-        <input type='file' multiple style={{display:'none'}} ref={selectFiles} onChange={(e) => setFiles(getFilesFromFileList(e))}/>
+        <input
+          type="file"
+          multiple
+          style={{ display: 'none' }}
+          ref={selectFiles}
+          onChange={(e) => setFiles(getFilesFromFileList(e))}
+        />
         <InputField
           className="my-1"
           label="Collection Title"
@@ -175,7 +182,7 @@ const CreateCollectionForm = () => {
           </div>
         </div>
         <div className="w-50 h-36.25 border border-dashed border-success rounded">
-          { isEmpty(files) ?
+          {isEmpty(files) ? (
             <DropFile
               files={files}
               setFiles={setFiles}
@@ -183,15 +190,27 @@ const CreateCollectionForm = () => {
               className="w-full h-full"
               description="Select multiple files from your computer."
               isCreateCollection={true}
-            /> :
+            />
+          ) : (
             <div onClick={handleReselectFiles}>
-              <ul style={{listStyleType:'circle', color:'white', fontSize:'10px', padding:'10px', paddingLeft:'20px', height:'145px', overflowY:'overlay', cursor:'pointer'}}>
+              <ul
+                style={{
+                  listStyleType: 'circle',
+                  color: 'white',
+                  fontSize: '10px',
+                  padding: '10px',
+                  paddingLeft: '20px',
+                  height: '145px',
+                  overflowY: 'overlay',
+                  cursor: 'pointer'
+                }}
+              >
                 {files.map((file) => (
-                  <li style={{marginBottom:'5px'}}>{file.name}</li>
+                  <li style={{ marginBottom: '5px' }}>{file.name}</li>
                 ))}
               </ul>
             </div>
-          }
+          )}
         </div>
         <span className="text-3xs text-bittersweet-200 mb-4.25">{errors.files}</span>
 
@@ -202,12 +221,8 @@ const CreateCollectionForm = () => {
           className="text-sm font-semibold"
         />
       </div>
-      {showCreateModal && (
-        <BatchUploadModal
-          close={closeCreateModal}
-          inputFiles={files}
-        />
-      )}
+      {showCreateModal && <BatchUploadModal close={closeCreateModal} inputFiles={files} />}
+      <ConfirmModal />
     </>
   )
 }
