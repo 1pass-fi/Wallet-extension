@@ -8,11 +8,11 @@ import CrossIcon from 'img/v2/cross-icon.svg'
 
 import InputField from 'finnie-v2/components/InputField'
 import Button from 'finnie-v2/components/Button'
-import ConfirmModal from 'finnie-v2/components/ConfirmModal'
 import BatchUploadModal from 'finnie-v2/components/BatchUploadModal'
 import DropFile from 'finnie-v2/components/DropFile'
-
 import formatLongString from 'finnie-v2/utils/formatLongString'
+
+import ConfirmModal from './ConfirmModal'
 
 const CreateCollectionForm = () => {
   const selectFiles = useRef(null)
@@ -35,6 +35,7 @@ const CreateCollectionForm = () => {
   const [tags, setTags] = useState([])
   const [files, setFiles] = useState([])
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [showingConfirmModal, setShowingConfirmModal] = useState(false)
 
   const handleCollectionContentChange = (e) => {
     setErrors({
@@ -104,6 +105,15 @@ const CreateCollectionForm = () => {
     }
 
     return _files
+  }
+
+  const showConfirmModal = () => {
+    setShowingConfirmModal(true)
+  }
+
+  const closeConfirmModal = () => {
+    setShowingConfirmModal(false)
+    setShowCreateModal(true)
   }
 
   return (
@@ -221,8 +231,14 @@ const CreateCollectionForm = () => {
           className="text-sm font-semibold"
         />
       </div>
-      {showCreateModal && <BatchUploadModal close={closeCreateModal} inputFiles={files} />}
-      <ConfirmModal />
+      {showCreateModal && (
+        <BatchUploadModal
+          close={closeCreateModal}
+          inputFiles={files}
+          showConfirmModal={showConfirmModal}
+        />
+      )}
+      {showingConfirmModal && <ConfirmModal close={closeConfirmModal} />}
     </>
   )
 }

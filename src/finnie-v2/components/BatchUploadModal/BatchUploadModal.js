@@ -10,7 +10,7 @@ import Button from 'finnie-v2/components/Button'
 import UploadedFiles from './UploadedFiles'
 import EditNftInfo from './EditNftInfo'
 
-const BatchUploadModal = ({ close, inputFiles }) => {
+const BatchUploadModal = ({ close, inputFiles, showConfirmModal }) => {
   const [currentNftIdx, setCurrentNftIdx] = useState(0)
 
   useEffect(() => {
@@ -76,7 +76,9 @@ const BatchUploadModal = ({ close, inputFiles }) => {
       <div className="w-221.5 h-116.75 bg-blue-800 rounded shadow-md pt-3 px-4 relative select-none">
         <div className="w-full flex justify-between">
           <BackIcon className="w-9 h-9 cursor-pointer" />
-          <div onClick={close}><CloseIcon className="w-9 h-9 cursor-pointer" /></div>
+          <div onClick={close}>
+            <CloseIcon className="w-9 h-9 cursor-pointer" />
+          </div>
         </div>
         <div className="flex w-full mt-4 items-center justify-between">
           <div className="w-3.75">
@@ -122,6 +124,10 @@ const BatchUploadModal = ({ close, inputFiles }) => {
           variant="light"
           icon={CheckMarkIcon}
           size="lg"
+          onClick={() => {
+            close()
+            showConfirmModal()
+          }}
         />
 
         <div className="flex absolute cursor-pointer" style={{ left: '620px', bottom: '30px' }}>
