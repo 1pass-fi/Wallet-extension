@@ -61,13 +61,8 @@ export class GalleryRequest extends Request {
     return this.promise(MESSAGES.GET_KEY_FILE, body)
   }
 
-  /**
-   * @param {Object} body
-   * @param {String} body.address Address of wallet
-   * @returns
-   */
-  loadCollections(body) {
-    return this.promise(MESSAGES.LOAD_COLLECTIONS, body)
+  loadCollections() {
+    return this.promise(MESSAGES.LOAD_COLLECTIONS)
   }
   
   /**

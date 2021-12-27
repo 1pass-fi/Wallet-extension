@@ -220,11 +220,21 @@ export default ({ children }) => {
   }
 
   useEffect(() => {
-    const getCollectionsFromStorage = async () => {
+    const loadCollections = async () => {
       try {
-        const allCollections = await popupAccount.getAllCollections()
+        /* Load collections from storage */
+        setIsLoading(prev => ++prev)
+        let allCollections = await popupAccount.getAllCollections()
         dispatch(setCollections({ collections: allCollections }))
+
+        await backgroundRequest.gallery.loadCollections()
+
+        /* Fetch for collections */
+        allCollections = await popupAccount.getAllCollections()
+        dispatch(setCollections({ collections: allCollections }))
+        setIsLoading(prev => --prev)
       } catch (err) {
+        setIsLoading(prev => --prev)
         setError(err.message)
       }
     }
@@ -234,7 +244,7 @@ export default ({ children }) => {
     }
 
     if (walletLoaded) {
-      getCollectionsFromStorage()
+      loadCollections()
       getAffiliateCode()
       getDID()
     }
