@@ -63,7 +63,7 @@ const SecondVer = () => {
         <Route exact path="*">
           <>
             <Gallery />
-            <BatchUploadModal />
+            {/* <BatchUploadModal /> */}
           </>
         </Route>
       </Switch>

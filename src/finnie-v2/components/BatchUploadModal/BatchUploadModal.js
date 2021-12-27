@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import BackIcon from 'img/v2/back-icon.svg'
 import CheckMarkIcon from 'img/v2/check-mark-icon-blue.svg'
@@ -10,193 +10,47 @@ import Button from 'finnie-v2/components/Button'
 import UploadedFiles from './UploadedFiles'
 import EditNftInfo from './EditNftInfo'
 
-const BatchUploadModal = () => {
+const BatchUploadModal = ({ close, inputFiles }) => {
   const [currentNftIdx, setCurrentNftIdx] = useState(0)
+
+  useEffect(() => {
+    const nfts = inputFiles.map((f, index) => {
+      const url = URL.createObjectURL(f)
+      return {
+        info: {
+          isNSFW: false,
+          ownerName: '',
+          ownerAddress: '',
+          title: '',
+          description: '',
+          tags: [],
+          contentType: '',
+          createdAt: Date.now()
+        },
+        uploaded: false,
+        file: url,
+        name: f.name
+      }
+    })
+
+    setFiles(nfts)
+  }, [])
+
   const [files, setFiles] = useState([
     {
       info: {
-        isNSFW: true,
-        ownerName: 'Minh Vu',
-        ownerAddress: 'asdkjakdkajshdkads',
-        title: 'NFT 1',
-        description: 'Description 1',
+        isNSFW: false,
+        ownerName: '',
+        ownerAddress: '',
+        title: '',
+        description: '',
         tags: [],
-        contentType: 'image',
+        contentType: '',
         createdAt: 0
       },
       uploaded: false,
-      file:
-        'https://duongma.com/wp-content/uploads/2019/12/christmas-background-space-greeting-text-noel-flat-lay-composition-fir-branches-red-berries-lying-light-127105018.jpg',
-      name: 'Img 1'
-    },
-    {
-      info: {
-        isNSFW: true,
-        ownerName: 'Minh Vu',
-        ownerAddress: 'asdkjakdkajshdkads',
-        title: 'NFT 2',
-        description: 'Description 1',
-        tags: [],
-        contentType: 'image',
-        createdAt: 0
-      },
-      uploaded: false,
-      file: 'https://seotrends.com.vn/wp-content/uploads/2021/07/anh-nen-noel-dep-1024x661.jpg',
-      name: 'Img 2'
-    },
-    {
-      info: {
-        isNSFW: true,
-        ownerName: 'Minh Vu',
-        ownerAddress: 'asdkjakdkajshdkads',
-        title: 'NFT 3',
-        description: 'Description 1',
-        tags: [],
-        contentType: 'image',
-        createdAt: 0
-      },
-      uploaded: false,
-      file: 'https://taimienphi.vn/tmp/cf/aut/background-giang-sinh-noel-dep-1.jpg',
-      name: 'Img 3'
-    },
-    {
-      info: {
-        isNSFW: true,
-        ownerName: 'Minh Vu',
-        ownerAddress: 'asdkjakdkajshdkads',
-        title: 'NFT 4',
-        description: 'Description 1',
-        tags: [],
-        contentType: 'image',
-        createdAt: 0
-      },
-      uploaded: false,
-      file:
-        'https://mondaycareer.com/wp-content/uploads/2020/11/background-%C4%91%E1%BA%B9p-noel-3.jpg',
-      name: 'Img 4'
-    },
-    {
-      info: {
-        isNSFW: true,
-        ownerName: 'Minh Vu',
-        ownerAddress: 'asdkjakdkajshdkads',
-        title: 'NFT 1',
-        description: 'Description 1',
-        tags: [],
-        contentType: 'image',
-        createdAt: 0
-      },
-      uploaded: false,
-      file:
-        'https://duongma.com/wp-content/uploads/2019/12/christmas-background-space-greeting-text-noel-flat-lay-composition-fir-branches-red-berries-lying-light-127105018.jpg',
-      name: 'Img 5'
-    },
-    {
-      info: {
-        isNSFW: true,
-        ownerName: 'Minh Vu',
-        ownerAddress: 'asdkjakdkajshdkads',
-        title: 'NFT 2',
-        description: 'Description 1',
-        tags: [],
-        contentType: 'image',
-        createdAt: 0
-      },
-      uploaded: false,
-      file: 'https://seotrends.com.vn/wp-content/uploads/2021/07/anh-nen-noel-dep-1024x661.jpg',
-      name: 'Img 6'
-    },
-    {
-      info: {
-        isNSFW: true,
-        ownerName: 'Minh Vu',
-        ownerAddress: 'asdkjakdkajshdkads',
-        title: 'NFT 3',
-        description: 'Description 1',
-        tags: [],
-        contentType: 'image',
-        createdAt: 0
-      },
-      uploaded: false,
-      file: 'https://taimienphi.vn/tmp/cf/aut/background-giang-sinh-noel-dep-1.jpg',
-      name: 'Img 7'
-    },
-    {
-      info: {
-        isNSFW: true,
-        ownerName: 'Minh Vu',
-        ownerAddress: 'asdkjakdkajshdkads',
-        title: 'NFT 4',
-        description: 'Description 1',
-        tags: [],
-        contentType: 'image',
-        createdAt: 0
-      },
-      uploaded: false,
-      file:
-        'https://mondaycareer.com/wp-content/uploads/2020/11/background-%C4%91%E1%BA%B9p-noel-3.jpg',
-      name: 'Img 8'
-    },
-    {
-      info: {
-        isNSFW: true,
-        ownerName: 'Minh Vu',
-        ownerAddress: 'asdkjakdkajshdkads',
-        title: 'NFT 1',
-        description: 'Description 1',
-        tags: [],
-        contentType: 'image',
-        createdAt: 0
-      },
-      uploaded: false,
-      file:
-        'https://duongma.com/wp-content/uploads/2019/12/christmas-background-space-greeting-text-noel-flat-lay-composition-fir-branches-red-berries-lying-light-127105018.jpg',
-      name: 'Img 9'
-    },
-    {
-      info: {
-        isNSFW: true,
-        ownerName: 'Minh Vu',
-        ownerAddress: 'asdkjakdkajshdkads',
-        title: 'NFT 2',
-        description: 'Description 1',
-        tags: [],
-        contentType: 'image',
-        createdAt: 0
-      },
-      uploaded: false,
-      file: 'https://seotrends.com.vn/wp-content/uploads/2021/07/anh-nen-noel-dep-1024x661.jpg',
-      name: 'Img 10'
-    },
-    {
-      info: {
-        isNSFW: true,
-        ownerName: 'Minh Vu',
-        ownerAddress: 'asdkjakdkajshdkads',
-        title: 'NFT 2',
-        description: 'Description 1',
-        tags: [],
-        contentType: 'image',
-        createdAt: 0
-      },
-      uploaded: false,
-      file: 'https://seotrends.com.vn/wp-content/uploads/2021/07/anh-nen-noel-dep-1024x661.jpg',
-      name: 'Img 11'
-    },
-    {
-      info: {
-        isNSFW: true,
-        ownerName: 'Minh Vu',
-        ownerAddress: 'asdkjakdkajshdkads',
-        title: 'NFT 2',
-        description: 'Description 1',
-        tags: [],
-        contentType: 'image',
-        createdAt: 0
-      },
-      uploaded: false,
-      file: 'https://seotrends.com.vn/wp-content/uploads/2021/07/anh-nen-noel-dep-1024x661.jpg',
-      name: 'Img 12'
+      file: '',
+      name: ''
     }
   ])
   const [tagInputs, setTagInputs] = useState([])
@@ -222,7 +76,7 @@ const BatchUploadModal = () => {
       <div className="w-221.5 h-116.75 bg-blue-800 rounded shadow-md pt-3 px-4 relative select-none">
         <div className="w-full flex justify-between">
           <BackIcon className="w-9 h-9 cursor-pointer" />
-          <CloseIcon className="w-9 h-9 cursor-pointer" />
+          <div onClick={close}><CloseIcon className="w-9 h-9 cursor-pointer" /></div>
         </div>
         <div className="flex w-full mt-4 items-center justify-between">
           <div className="w-3.75">

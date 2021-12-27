@@ -58,7 +58,7 @@ const CreateCollectionForm = () => {
   }
 
   const validateForm = () => {
-    const keys = ['title', 'description', 'owner']
+    const keys = ['title', 'description']
     let isValid = true
 
     for (const key of keys) {
@@ -84,7 +84,7 @@ const CreateCollectionForm = () => {
   }
 
   const closeCreateModal = () => {
-    setShowConfirmModal(false)
+    setShowCreateModal(false)
     setNftContent({ title: '', owner: '', description: '', isNSFW: false })
     setTagInput('')
     setTags([])
@@ -205,6 +205,7 @@ const CreateCollectionForm = () => {
       {showCreateModal && (
         <BatchUploadModal
           close={closeCreateModal}
+          inputFiles={files}
         />
       )}
     </>
