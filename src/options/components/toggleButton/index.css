@@ -5,7 +5,7 @@
   height: 24px;
 }
 
-.switch input {
+.switch .switch-checkbox {
   display: none;
 }
 

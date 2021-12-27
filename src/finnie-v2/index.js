@@ -10,12 +10,12 @@ import storage from 'services/storage'
 
 import Gallery from './pages/Gallery'
 import NFTDetail from './pages/NFTDetail'
+import CollectionDetails from 'options/pages/CollectionDetails'
 
 import './style.css'
 import Settings from 'options/pages/Settings'
 import Layout from 'options/layout'
 import MainLayout from './components/MainLayout'
-import BatchUploadModal from './components/BatchUploadModal'
 
 const SecondVer = () => {
   const dispatch = useDispatch()
@@ -52,6 +52,9 @@ const SecondVer = () => {
       <Switch>
         <Route exact path="/v2/nfts/:id">
           <NFTDetail />
+        </Route>
+        <Route exact path="/v2/collection/:collectionId">
+          <CollectionDetails />
         </Route>
         <Route exact path="/v2/settings/*">
           <MainLayout title="Settings">

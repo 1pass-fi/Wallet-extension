@@ -16,16 +16,14 @@
   align-items: center;
   justify-content: flex-start;
   position: relative;
-  padding: 39px 122px 58px;
-  margin: auto;
+  margin: 112px auto 0 auto;
 }
 
 .collection-details-wrapper .go-back-button {
   width: 30px;
   height: 30px;
   position: absolute;
-  top: 45px;
-  left: 122px;
+  left: 0px;
   cursor: pointer;
 }
 
@@ -150,6 +148,7 @@
   flex-direction: column;
   width: 100%;
   padding-left: 115px;
+  padding-right: 4px;
 }
 
 .collection-details-wrapper .collection-view-icons {
@@ -165,11 +164,16 @@
 }
 
 .collection-details-wrapper .cards {
-  display: flex;
-  justify-content: space-around;
-  gap: 20px;
-  flex-direction: row;
+  display: inline-flex;
   flex-wrap: wrap;
+  column-gap: 136px;
+  row-gap: 20px;
+
+  /* display: flex;
+  justify-content: flex-start;
+  gap: 136px;
+  flex-direction: row;
+  flex-wrap: wrap; */
 }
 
 .collection-details__views-count {

@@ -16,9 +16,9 @@ const CollectionInfo = ({
   setPublishCollection,
   setEditCollection,
 }) => {
-  console.log('Collection Info', collection)
 
   const handlePublish = () => {
+    // TODO - implement publish collection feature
     console.log('Publish Collection')
   }
 

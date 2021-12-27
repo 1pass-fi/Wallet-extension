@@ -7,13 +7,15 @@ export default ({ value, setValue }) => {
     setValue(e.target.checked)
   }
   return (
-    <label className='switch'>
-      <input type='checkbox' id='togBtn' defaultChecked={value} onChange={onToggle} />
-      {value ? (
-        <span className='on'>ON</span>
-      ) : (
-        <span className='off'>OFF</span>
-      )}
+    <label className="switch">
+      <input
+        className="switch-checkbox"
+        type="checkbox"
+        id="togBtn"
+        defaultChecked={value}
+        onChange={onToggle}
+      />
+      {value ? <span className="on">ON</span> : <span className="off">OFF</span>}
       <div className={`slider round ${value ? 'checked' : ''}`}></div>
     </label>
   )

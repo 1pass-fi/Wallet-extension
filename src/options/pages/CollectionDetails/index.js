@@ -18,6 +18,8 @@ import GalleryViewIcon from 'img/gallery-view-icon.svg'
 import GridViewIcon from 'img/grid-view-icon.svg'
 import ListViewIcon from 'img/list-view-icon.svg'
 
+import NavBar from 'finnie-v2/components/NavBar'
+
 import './index.css'
 
 export default () => {
@@ -28,6 +30,7 @@ export default () => {
   const { collectionId } = useParams()
 
   const collectionState = useSelector((state) => state.collections)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -41,12 +44,11 @@ export default () => {
   }, [])
 
   const collection = useMemo(() => {
-    console.log(collectionState.collections)
     const collection = find(
       collectionState.collections,
       (collection) => collection.id == collectionId
     )
-    console.log(collection)
+
     if (collection) {
       return collection
     }
@@ -55,16 +57,18 @@ export default () => {
   const history = useHistory()
 
   const handleGoBack = () => {
-    history.push('/collections')
+    history.push('/v2/collection')
   }
 
   return (
-    <div className='collection-wrapper'>
-      <div className='collection-header-buttons'>
+    // <div className="collection-wrapper">
+    <div className="min-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
+      <NavBar />
+      {/* <div className="collection-header-buttons">
         {editCollection && (
-          <div className='edit-collection-buttons'>
+          <div className="edit-collection-buttons">
             <div
-              className='edit-collection-button save-changes-button'
+              className="edit-collection-button save-changes-button"
               onClick={() => {
                 setNotification('Save Collection successfully!')
                 setEditCollection(false)
@@ -73,7 +77,7 @@ export default () => {
               Save Changes
             </div>
             <div
-              className='edit-collection-button cancel-button'
+              className="edit-collection-button cancel-button"
               onClick={() => setEditCollection(false)}
             >
               Cancel
@@ -81,14 +85,14 @@ export default () => {
           </div>
         )}
         <div
-          className='share-collection-button'
+          className="share-collection-button"
           onClick={() => setNotification('Share Collection successfully!')}
         >
           Share
         </div>
-      </div>
-      <div className='collection-details-wrapper'>
-        <div onClick={handleGoBack} className='go-back-button'>
+      </div> */}
+      <div className="collection-details-wrapper">
+        <div onClick={handleGoBack} className="go-back-button">
           <GoBack />
         </div>
         {editCollection ? (
@@ -110,22 +114,22 @@ export default () => {
             setEditCollection={setEditCollection}
           />
         )}
-        <div className='collection-view-wrapper'>
-          <div className='collection-view-icons'>
-            <div className='grid-view-icon'>
+        <div className="collection-view-wrapper">
+          <div className="collection-view-icons">
+            <div className="grid-view-icon">
               <GridViewIcon />
             </div>
-            <div className='list-view-icon'>
+            <div className="list-view-icon">
               <ListViewIcon />
             </div>
-            <div className='gallery-view-icon'>
+            <div className="gallery-view-icon">
               <GalleryViewIcon />
             </div>
           </div>
-          <div className='collection-view-message'>coming soon</div>
+          <div className="collection-view-message">coming soon</div>
         </div>
-        <div className='cards'>
-          {collection.nfts.map((nft, index) => (
+        <div className="cards">
+          {collection?.collection?.map((nft, index) => (
             <NFTCard key={index} nft={nft} />
           ))}
         </div>
