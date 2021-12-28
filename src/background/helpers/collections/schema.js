@@ -6,5 +6,5 @@ export default Joi.object({
   tags: Joi.array().items(Joi.string()).required(),
   title: Joi.string().required(),
   collection: Joi.array().items(Joi.string()),
-  previewImageIndex: Joi.number().required()
+  previewImageIndex: Joi.number().required(),
 })

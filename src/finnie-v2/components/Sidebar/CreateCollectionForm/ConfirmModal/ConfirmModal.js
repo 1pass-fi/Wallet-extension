@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
+import ProgressBar from '@ramonak/react-progress-bar'
+
 
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
@@ -11,9 +13,10 @@ import arweave from 'services/arweave'
 
 const ONE_MILLION = 1000000
 
-const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, close, goBack }) => {
+const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, close, goBack, nfts }) => {
   const [step, setStep] = useState(1)
   const [arPrice, setArPrice] = useState(0)
+  const [displayProgressBar, setDisplayProgressBar] = useState(false)
 
   const confirmCreateCollection = async () => {
     await handleConfirmCreateCollection()
@@ -28,6 +31,10 @@ const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, clo
 
     getPrice()
   }, [filesSize])
+
+  const uploaded = useMemo(() => {
+    return nfts.filter(nft => nft.uploaded).length
+  }, [nfts])
 
   return (
     <div className="fixed top-0 left-0 bg-black bg-opacity-25 z-50 w-full h-full flex items-center justify-center">
@@ -68,9 +75,10 @@ const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, clo
                   variant="indigo"
                   text="Create Collection"
                   className="font-semibold tracking-wider py-3 rounded"
-                  onClick={confirmCreateCollection}
+                  onClick={() => {confirmCreateCollection(); setDisplayProgressBar(true)}}
                 />
               </div>
+              {displayProgressBar && <ProgressBar completed={uploaded} maxCompleted={nfts.length} customLabel=' '/>}
             </>
           </section>
         )}

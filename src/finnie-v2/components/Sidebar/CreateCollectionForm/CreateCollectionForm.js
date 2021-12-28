@@ -4,6 +4,7 @@ import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import initial from 'lodash/initial'
 import union from 'lodash/union'
+import ProgressBar from '@ramonak/react-progress-bar'
 
 import CrossIcon from 'img/v2/cross-icon.svg'
 
@@ -26,7 +27,8 @@ const CreateCollectionForm = () => {
     title: '',
     owner: '',
     description: '',
-    isNSFW: false
+    isNSFW: false,
+    tags: []
   })
 
   const [errors, setErrors] = useState({
@@ -115,11 +117,20 @@ const CreateCollectionForm = () => {
   }
 
   const handleConfirmCreateCollection = async () => {
+    const tempData = {
+      ...collectionInfo,
+      name: collectionInfo.owner || 'owner',
+      previewImageIndex: 0
+    }
+
+    delete tempData.owner
+    delete tempData.isNSFW
+
     await createCollection({
       nfts,
       setNfts,
       address,
-      collectionData: collectionInfo
+      collectionData: tempData
     })
   }
 
@@ -250,11 +261,11 @@ const CreateCollectionForm = () => {
                   paddingLeft: '20px',
                   height: '145px',
                   overflowY: 'overlay',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
                 }}
               >
-                {files.map((file) => (
-                  <li style={{ marginBottom: '5px' }}>{file.name}</li>
+                {files.map((file, index) => (
+                  <li key={index} style={{ marginBottom: '5px' }}>{file.name}</li>
                 ))}
               </ul>
             </div>
@@ -285,6 +296,7 @@ const CreateCollectionForm = () => {
           close={closeConfirmModal}
           handleConfirmCreateCollection={handleConfirmCreateCollection}
           goBack={confirmModalGoback}
+          nfts={nfts}
         />
       )}
     </>

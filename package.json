@@ -45,6 +45,7 @@
         "@babel/preset-env": "^7.2.3",
         "@babel/preset-react": "^7.0.0",
         "@polymer/paper-button": "^3.0.1",
+        "@ramonak/react-progress-bar": "^4.2.0",
         "@storybook/addon-actions": "^6.2.9",
         "@storybook/addon-essentials": "^6.2.9",
         "@storybook/addon-links": "^6.2.9",

@@ -12,6 +12,7 @@ import EditNftInfo from './EditNftInfo'
 
 const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }) => {
   const [currentNftIdx, setCurrentNftIdx] = useState(0)
+  const [updateAll, setUpdateAll] = useState(false)
 
   useEffect(() => {
     const nfts = inputFiles.map((f, index) => {
@@ -24,12 +25,13 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
           title: '',
           description: '',
           tags: [],
-          contentType: '',
+          contentType: f.type,
           createdAt: Date.now()
         },
         uploaded: false,
         file: url,
-        name: f.name
+        name: f.name,
+        url
       }
     })
 
@@ -40,8 +42,15 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
 
   const updateNftInfo = (idx, info) => {
     let updatedNfts = [...nfts]
-    updatedNfts[idx] = { ...updatedNfts[idx], info }
-    setNfts(nfts)
+
+    if (!updateAll) {
+      updatedNfts[idx] = { ...updatedNfts[idx], info }
+      setNfts(updatedNfts)
+    } else {``
+      updatedNfts = updatedNfts.map(nft => ({ ...nft, info }))
+    }
+
+    setNfts(updatedNfts)
   }
 
   const removeNft = (idx) => {
@@ -52,6 +61,13 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
     const newTagInputs = [...tagInputs]
     newTagInputs.splice(idx, 1)
     setTagInputs(newTagInputs)
+  }
+
+  const handleUpdateAll = (e) => {
+    setUpdateAll(e.target.checked)
+    let _nfts = [...nfts]
+    _nfts = _nfts.map(nft => {nft.info = _nfts[currentNftIdx].info; return nft})
+    setNfts(_nfts)
   }
 
   return (
@@ -118,6 +134,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
             className="rounded-sm border border-success w-3.75 h-3.75"
             name="applyNfts"
             type="checkbox"
+            onChange={handleUpdateAll}
           ></input>
           <div className="text-success ml-2 text-11px select-none">Use this info for all NFTS</div>
         </div>
