@@ -15,7 +15,7 @@ import SortAndFilter from './SortAndFilter/SortAndFilter'
 const navItems = [
   { icon: CreateIcon, path: '/v2/create' },
   { icon: GalleryIcon, path: '/v2/gallery' },
-  { icon: CollectionIcon, path: '/v2/collection' }
+  { icon: CollectionIcon, path: '/v2/collections' }
 ]
 
 const Sidebar = () => {
@@ -73,7 +73,7 @@ const Sidebar = () => {
           <Route path="/v2/create">
             <UploadNftForm />
           </Route>
-          <Route path="/v2/collection">
+          <Route path="/v2/collections">
             <CreateCollectionForm />
           </Route>
           <Route exact path="/v2/settings/*">

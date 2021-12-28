@@ -57,7 +57,7 @@ export default () => {
   const history = useHistory()
 
   const handleGoBack = () => {
-    history.push('/v2/collection')
+    history.push('/v2/collections')
   }
 
   return (

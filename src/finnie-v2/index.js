@@ -8,6 +8,7 @@ import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 
+import Collection from './pages/Collection'
 import Gallery from './pages/Gallery'
 import NFTDetail from './pages/NFTDetail'
 import CollectionDetails from 'options/pages/CollectionDetails'
@@ -53,7 +54,7 @@ const SecondVer = () => {
         <Route exact path="/v2/nfts/:id">
           <NFTDetail />
         </Route>
-        <Route exact path="/v2/collection/:collectionId">
+        <Route exact path="/v2/collections/:collectionId">
           <CollectionDetails />
         </Route>
         <Route exact path="/v2/settings/*">
@@ -63,11 +64,11 @@ const SecondVer = () => {
             </div>
           </MainLayout>
         </Route>
+        <Route exact path="/v2/collections">
+          <Collection />
+        </Route>
         <Route exact path="*">
-          <>
-            <Gallery />
-            {/* <BatchUploadModal /> */}
-          </>
+          <Gallery />
         </Route>
       </Switch>
     </Layout>
