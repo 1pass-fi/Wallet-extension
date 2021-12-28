@@ -17,7 +17,7 @@ import ConfirmModal from './ConfirmModal'
 const CreateCollectionForm = () => {
   const selectFiles = useRef(null)
 
-  const [nftContent, setNftContent] = useState({
+  const [collectionInfo, setCollectionInfo] = useState({
     title: '',
     owner: '',
     description: '',
@@ -69,7 +69,7 @@ const CreateCollectionForm = () => {
       description: '',
       files: ''
     })
-    setNftContent({ ...nftContent, [e.target.name]: e.target.value })
+    setCollectionInfo({ ...collectionInfo, [e.target.name]: e.target.value })
   }
 
   const handleTagsKeyUp = (e) => {
@@ -89,7 +89,7 @@ const CreateCollectionForm = () => {
     let isValid = true
 
     for (const key of keys) {
-      if (isEmpty(nftContent[key])) {
+      if (isEmpty(collectionInfo[key])) {
         isValid = false
         setErrors((prev) => ({ ...prev, [key]: `${capitalize(key)} cannot be empty` }))
       }
@@ -134,7 +134,6 @@ const CreateCollectionForm = () => {
 
   const closeConfirmModal = () => {
     setShowingConfirmModal(false)
-    setShowCreateModal(true)
   }
 
   return (
@@ -150,7 +149,7 @@ const CreateCollectionForm = () => {
         <InputField
           className="my-1"
           label="Collection Title"
-          value={nftContent.title}
+          value={collectionInfo.title}
           setValue={handleCollectionContentChange}
           required={true}
           name="title"
@@ -159,7 +158,7 @@ const CreateCollectionForm = () => {
         <InputField
           className="my-1"
           label="Description"
-          value={nftContent.description}
+          value={collectionInfo.description}
           setValue={handleCollectionContentChange}
           required={true}
           type="textarea"
@@ -202,12 +201,12 @@ const CreateCollectionForm = () => {
             className="rounded-sm border border-white w-3.75 h-3.75"
             name="isNSFW"
             type="checkbox"
-            checked={nftContent.isNSFW}
-            onChange={() => setNftContent((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
+            checked={collectionInfo.isNSFW}
+            onChange={() => setCollectionInfo((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
           ></input>
           <div
             className="text-white ml-2 text-11px select-none"
-            onClick={() => setNftContent((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
+            onClick={() => setCollectionInfo((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
           >
             This content is <span className="text-warning">Explicit or 18+.</span>
           </div>
