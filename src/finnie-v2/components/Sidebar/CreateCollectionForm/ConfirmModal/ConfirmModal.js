@@ -1,13 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import ModalBackground from 'img/v2/modal-background.svg'
 
 import Button from 'finnie-v2/components/Button'
+import formatNumber from 'finnie-v2/utils/formatNumber'
 
-const ConfirmModal = () => {
+import arweave from 'services/arweave'
+
+const ONE_MILLION = 1000000
+
+const ConfirmModal = ({ filesSize, numOfNfts }) => {
   const [step, setStep] = useState(1)
+  const [arPrice, setArPrice] = useState(0)
+
+  useEffect(() => {
+    const getPrice = async () => {
+      const newArPrice = await arweave.transactions.getPrice(filesSize)
+      setArPrice(arweave.ar.winstonToAr(newArPrice))
+    }
+
+    getPrice()
+  }, [filesSize])
 
   return (
     <div className="fixed top-0 left-0 bg-black bg-opacity-25 z-50 w-full h-full flex items-center justify-center">
@@ -29,13 +44,15 @@ const ConfirmModal = () => {
                   <div className="font-semibold tracking-finnieSpacing-wide">
                     Files to be minted:
                   </div>
-                  <div>25 pieces</div>
-                  <div className="font-semibold tracking-finnieSpacing-wide">Size: 356 MB</div>
+                  <div>{numOfNfts} pieces</div>
+                  <div className="font-semibold tracking-finnieSpacing-wide">
+                    Size: {formatNumber(filesSize / ONE_MILLION, 2)} MB
+                  </div>
                 </div>
                 <div>
                   <div className="font-semibold tracking-finnieSpacing-wide">Estimated Costs:</div>
-                  <div>953.121 KOII</div>
-                  <div>10.463 AR</div>
+                  <div>{numOfNfts} KOII</div>
+                  <div>{formatNumber(arPrice, 5)} AR</div>
                   <div className="text-2xs tracking-finnieSpacing-wider text-success-700">
                     Storage Fee
                   </div>

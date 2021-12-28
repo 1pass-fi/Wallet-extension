@@ -10,7 +10,7 @@ import Button from 'finnie-v2/components/Button'
 import UploadedFiles from './UploadedFiles'
 import EditNftInfo from './EditNftInfo'
 
-const BatchUploadModal = ({ close, inputFiles, showConfirmModal }) => {
+const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }) => {
   const [currentNftIdx, setCurrentNftIdx] = useState(0)
 
   useEffect(() => {
@@ -33,38 +33,21 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal }) => {
       }
     })
 
-    setFiles(nfts)
+    setNfts(nfts)
   }, [])
 
-  const [files, setFiles] = useState([
-    {
-      info: {
-        isNSFW: false,
-        ownerName: '',
-        ownerAddress: '',
-        title: '',
-        description: '',
-        tags: [],
-        contentType: '',
-        createdAt: 0
-      },
-      uploaded: false,
-      file: '',
-      name: ''
-    }
-  ])
   const [tagInputs, setTagInputs] = useState([])
 
   const updateNftInfo = (idx, info) => {
-    let updatedFiles = [...files]
-    updatedFiles[idx] = { ...updatedFiles[idx], info }
-    setFiles(updatedFiles)
+    let updatedNfts = [...nfts]
+    updatedNfts[idx] = { ...updatedNfts[idx], info }
+    setNfts(nfts)
   }
 
   const removeNft = (idx) => {
-    const newFiles = [...files]
-    newFiles.splice(idx, 1)
-    setFiles(newFiles)
+    const newNfts = [...nfts]
+    newNfts.splice(idx, 1)
+    setNfts(newNfts)
 
     const newTagInputs = [...tagInputs]
     newTagInputs.splice(idx, 1)
@@ -92,7 +75,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal }) => {
           <div className="flex">
             <div className="w-66.75">
               <UploadedFiles
-                files={files}
+                files={nfts}
                 currentNftIdx={currentNftIdx}
                 setCurrentNftIdx={setCurrentNftIdx}
                 removeNft={removeNft}
@@ -101,8 +84,8 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal }) => {
             <div className="ml-5.5">
               <EditNftInfo
                 currentNftIdx={currentNftIdx}
-                nftInfo={files[currentNftIdx].info}
-                file={files[currentNftIdx].file}
+                nftInfo={nfts[currentNftIdx].info}
+                file={nfts[currentNftIdx].file}
                 updateNftInfo={updateNftInfo}
                 tagInputs={tagInputs}
                 setTagInputs={setTagInputs}
@@ -110,7 +93,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal }) => {
             </div>
           </div>
           <div className="w-3.75">
-            {currentNftIdx < files.length - 1 && (
+            {currentNftIdx < nfts.length - 1 && (
               <NextButton
                 onClick={() => setCurrentNftIdx((prev) => prev + 1)}
                 className="h-6.75 cursor-pointer"

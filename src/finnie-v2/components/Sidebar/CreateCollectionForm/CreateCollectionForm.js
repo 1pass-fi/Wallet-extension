@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
 import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import initial from 'lodash/initial'
@@ -36,6 +36,31 @@ const CreateCollectionForm = () => {
   const [files, setFiles] = useState([])
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [showingConfirmModal, setShowingConfirmModal] = useState(false)
+
+  const [nfts, setNfts] = useState([
+    {
+      info: {
+        isNSFW: false,
+        ownerName: '',
+        ownerAddress: '',
+        title: '',
+        description: '',
+        tags: [],
+        contentType: '',
+        createdAt: 0
+      },
+      uploaded: false,
+      file: '',
+      name: ''
+    }
+  ])
+
+  const filesSize = useMemo(() => {
+    return files.reduce((sum, f) => {
+      let size = sum + f.size
+      return size
+    }, 0)
+  }, [files])
 
   const handleCollectionContentChange = (e) => {
     setErrors({
@@ -87,10 +112,6 @@ const CreateCollectionForm = () => {
 
   const closeCreateModal = () => {
     setShowCreateModal(false)
-    setNftContent({ title: '', owner: '', description: '', isNSFW: false })
-    setTagInput('')
-    setTags([])
-    setFiles([])
   }
 
   const handleReselectFiles = () => {
@@ -233,12 +254,16 @@ const CreateCollectionForm = () => {
       </div>
       {showCreateModal && (
         <BatchUploadModal
+          nfts={nfts}
+          setNfts={setNfts}
           close={closeCreateModal}
           inputFiles={files}
           showConfirmModal={showConfirmModal}
         />
       )}
-      {showingConfirmModal && <ConfirmModal close={closeConfirmModal} />}
+      {showingConfirmModal && (
+        <ConfirmModal numOfNfts={nfts.length} filesSize={filesSize} close={closeConfirmModal} />
+      )}
     </>
   )
 }
