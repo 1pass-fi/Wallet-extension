@@ -1,10 +1,13 @@
 import React, { useState, useRef, useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import initial from 'lodash/initial'
 import union from 'lodash/union'
 
 import CrossIcon from 'img/v2/cross-icon.svg'
+
+import createCollection from 'utils/createNfts/createCollection'
 
 import InputField from 'finnie-v2/components/InputField'
 import Button from 'finnie-v2/components/Button'
@@ -15,6 +18,8 @@ import formatLongString from 'finnie-v2/utils/formatLongString'
 import ConfirmModal from './ConfirmModal'
 
 const CreateCollectionForm = () => {
+  const address = useSelector((state) => state.defaultAccount.address)
+
   const selectFiles = useRef(null)
 
   const [collectionInfo, setCollectionInfo] = useState({
@@ -104,10 +109,18 @@ const CreateCollectionForm = () => {
   }
 
   const handleCreateCollection = () => {
-    console.log('files', files)
     if (validateForm()) {
       setShowCreateModal(true)
     }
+  }
+
+  const handleConfirmCreateCollection = async () => {
+    await createCollection({
+      nfts,
+      setNfts,
+      address,
+      collectionData: collectionInfo
+    })
   }
 
   const closeCreateModal = () => {
@@ -134,6 +147,11 @@ const CreateCollectionForm = () => {
 
   const closeConfirmModal = () => {
     setShowingConfirmModal(false)
+  }
+
+  const confirmModalGoback = () => {
+    setShowingConfirmModal(false)
+    setShowCreateModal(true)
   }
 
   return (
@@ -261,7 +279,13 @@ const CreateCollectionForm = () => {
         />
       )}
       {showingConfirmModal && (
-        <ConfirmModal numOfNfts={nfts.length} filesSize={filesSize} close={closeConfirmModal} />
+        <ConfirmModal
+          numOfNfts={nfts.length}
+          filesSize={filesSize}
+          close={closeConfirmModal}
+          handleConfirmCreateCollection={handleConfirmCreateCollection}
+          goBack={confirmModalGoback}
+        />
       )}
     </>
   )

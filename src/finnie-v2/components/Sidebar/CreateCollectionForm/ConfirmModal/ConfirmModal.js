@@ -11,9 +11,14 @@ import arweave from 'services/arweave'
 
 const ONE_MILLION = 1000000
 
-const ConfirmModal = ({ filesSize, numOfNfts }) => {
+const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, close, goBack }) => {
   const [step, setStep] = useState(1)
   const [arPrice, setArPrice] = useState(0)
+
+  const confirmCreateCollection = async () => {
+    await handleConfirmCreateCollection()
+    setStep(2)
+  }
 
   useEffect(() => {
     const getPrice = async () => {
@@ -28,9 +33,9 @@ const ConfirmModal = ({ filesSize, numOfNfts }) => {
     <div className="fixed top-0 left-0 bg-black bg-opacity-25 z-50 w-full h-full flex items-center justify-center">
       <div className="relative w-146.5 h-83 bg-trueGray-100 rounded text-indigo">
         <div className="h-16.75 px-4 shadow-md flex items-center justify-between">
-          <BackIcon className="w-7 cursor-pointer" />
+          <BackIcon className="w-7 cursor-pointer" onClick={goBack} />
           <span className="font-semibold text-xl">Confirm Your Collection</span>
-          <CloseIcon className="w-7 cursor-pointer" />
+          <CloseIcon className="w-7 cursor-pointer" onClick={close} />
         </div>
         {step === 1 && (
           <section className="py-5 text-center text-base px-16.5">
@@ -63,7 +68,7 @@ const ConfirmModal = ({ filesSize, numOfNfts }) => {
                   variant="indigo"
                   text="Create Collection"
                   className="font-semibold tracking-wider py-3 rounded"
-                  onClick={() => setStep(2)}
+                  onClick={confirmCreateCollection}
                 />
               </div>
             </>
@@ -82,7 +87,7 @@ const ConfirmModal = ({ filesSize, numOfNfts }) => {
                 variant="indigo"
                 text="OK"
                 className="w-43.75 font-semibold tracking-wider py-3 rounded"
-                onClick={() => setStep(2)}
+                onClick={close}
               />
             </div>
           </section>
