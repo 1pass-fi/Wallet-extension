@@ -54,15 +54,18 @@ const SecondVer = () => {
         <Route exact path="/v2/nfts/:id">
           <NFTDetail />
         </Route>
-        <Route exact path="/v2/collections/:collectionId">
-          <CollectionDetails />
-        </Route>
         <Route exact path="/v2/settings/*">
           <MainLayout title="Settings">
             <div className="transform flex justify-start" style={{ width: '862px' }}>
               <Settings />
             </div>
           </MainLayout>
+        </Route>
+        <Route exact path="/v2/collections/create">
+          <Collection />
+        </Route>
+        <Route exact path="/v2/collections/:collectionId">
+          <CollectionDetails />
         </Route>
         <Route exact path="/v2/collections">
           <Collection />

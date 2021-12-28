@@ -225,13 +225,13 @@ export default ({ children }) => {
         /* Load collections from storage */
         setIsLoading(prev => ++prev)
         let allCollections = await popupAccount.getAllCollections()
-        dispatch(setCollections({ collections: allCollections }))
+        dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
 
         await backgroundRequest.gallery.loadCollections()
 
         /* Fetch for collections */
         allCollections = await popupAccount.getAllCollections()
-        dispatch(setCollections({ collections: allCollections }))
+        dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
         setIsLoading(prev => --prev)
       } catch (err) {
         setIsLoading(prev => --prev)

@@ -9,6 +9,7 @@ import CollectionIcon from 'img/v2/collection-icon.svg'
 import UploadNftForm from './UploadNftForm'
 import CreateCollectionForm from './CreateCollectionForm'
 import { filterNft } from 'options/actions/assets'
+import { filterCollection } from 'options/actions/collections'
 import AccountSettings from 'finnie-v2/components/AccountSettings'
 import SortAndFilter from './SortAndFilter/SortAndFilter'
 
@@ -25,9 +26,23 @@ const Sidebar = () => {
   const [chainType, setChainType] = useState('')
   const [sortBy, setSortBy] = useState('')
 
+  const [searchStrCollection, setSearchStrCollection] = useState('')
+  const [chainTypeCollection, setChainTypeCollection] = useState('')
+  const [sortByCollection, setSortByCollection] = useState('')
+
   useEffect(() => {
     dispatch(filterNft({ searchStr, chainType, sortBy }))
   }, [searchStr, chainType, sortBy])
+
+  useEffect(() => {
+    dispatch(
+      filterCollection({
+        searchStr: searchStrCollection,
+        chainType: chainTypeCollection,
+        sortBy: sortByCollection
+      })
+    )
+  }, [searchStrCollection, chainTypeCollection, sortByCollection])
 
   const handleSearchFieldChange = (searchStr) => {
     setSearchStr(searchStr)
@@ -43,6 +58,22 @@ const Sidebar = () => {
 
   const handleSort = (sortType) => {
     setSortBy(sortType)
+  }
+
+  const handleSearchFieldChangeCollection = (searchStrCollection) => {
+    setSearchStrCollection(searchStrCollection)
+  }
+
+  const handleSelectChainsCollection = (selectChainTypeCollection) => {
+    if (selectChainTypeCollection === chainTypeCollection) {
+      setChainTypeCollection('')
+      return
+    }
+    setChainTypeCollection(selectChainTypeCollection)
+  }
+
+  const handleSortCollection = (sortTypeCollection) => {
+    setSortByCollection(sortTypeCollection)
   }
 
   return (
@@ -73,7 +104,17 @@ const Sidebar = () => {
           <Route path="/v2/create">
             <UploadNftForm />
           </Route>
-          <Route path="/v2/collections">
+          <Route exact path="/v2/collections">
+            <SortAndFilter
+              handleSearchFieldChange={handleSearchFieldChangeCollection}
+              handleSelectChains={handleSelectChainsCollection}
+              handleSort={handleSortCollection}
+              sortBy={sortByCollection}
+              selectedChain={chainTypeCollection}
+              type="Collections"
+            />
+          </Route>
+          <Route exact path="/v2/collections/create">
             <CreateCollectionForm />
           </Route>
           <Route exact path="/v2/settings/*">
