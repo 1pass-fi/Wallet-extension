@@ -76,6 +76,7 @@ const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, clo
                   text="Create Collection"
                   className="font-semibold tracking-wider py-3 rounded"
                   onClick={() => {confirmCreateCollection(); setDisplayProgressBar(true)}}
+                  disabled={displayProgressBar}
                 />
               </div>
               {displayProgressBar && <ProgressBar completed={uploaded} maxCompleted={nfts.length} customLabel=' '/>}

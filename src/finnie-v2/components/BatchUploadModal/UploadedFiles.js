@@ -16,6 +16,7 @@ const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft }) =>
               currentNftIdx === idx && 'bg-trueGray-300 bg-opacity-20',
               'my-0.5 cursor-pointer h-8 flex text-white items-center justify-between font-light text-xs tracking-finnieSpacing-wide pr-2.75'
             )}
+            style={{paddingLeft: '5px'}}
             key={idx}
           >
             <span

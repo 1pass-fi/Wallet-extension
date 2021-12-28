@@ -117,10 +117,11 @@ const EditNftInfo = ({ currentNftIdx, nftInfo, file, updateNftInfo, tagInputs, s
               className="rounded-sm border border-white w-3.75 h-3.75"
               name="isNSFW"
               type="checkbox"
+              id="nsfw"
             ></input>
-            <div className="text-white ml-2 text-11px select-none">
+            <label style={{cursor:'pointer'}} for="nsfw" className="text-white ml-2 text-11px select-none">
               This content is <span className="text-warning">Explicit or 18+.</span>
-            </div>
+            </label>
           </div>
         </div>
       </div>

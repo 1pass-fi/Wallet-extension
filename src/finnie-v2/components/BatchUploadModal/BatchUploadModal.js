@@ -135,8 +135,9 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
             name="applyNfts"
             type="checkbox"
             onChange={handleUpdateAll}
+            id='update-all'
           ></input>
-          <div className="text-success ml-2 text-11px select-none">Use this info for all NFTS</div>
+          <label style={{cursor:'pointer'}} for='update-all' className="text-success ml-2 text-11px select-none">Use this info for all NFTS</label>
         </div>
       </div>
     </div>
