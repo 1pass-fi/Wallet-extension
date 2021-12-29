@@ -7,4 +7,5 @@ export default Joi.object({
   title: Joi.string().required(),
   collection: Joi.array().items(Joi.string()),
   previewImageIndex: Joi.number().required(),
+  owner: Joi.string().required()
 })

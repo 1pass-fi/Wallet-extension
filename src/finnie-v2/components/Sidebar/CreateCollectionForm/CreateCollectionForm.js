@@ -28,7 +28,8 @@ const CreateCollectionForm = () => {
     owner: '',
     description: '',
     isNSFW: false,
-    tags: []
+    tags: [],
+    name: '',
   })
 
   const [errors, setErrors] = useState({
@@ -119,11 +120,11 @@ const CreateCollectionForm = () => {
   const handleConfirmCreateCollection = async () => {
     const tempData = {
       ...collectionInfo,
-      name: collectionInfo.owner || 'owner',
-      previewImageIndex: 0
+      name: collectionInfo.title,
+      previewImageIndex: 0,
+      owner: address
     }
 
-    delete tempData.owner
     delete tempData.isNSFW
 
     await createCollection({

@@ -20,7 +20,7 @@ export default async (payload, account) => {
   tx.addTag('Action', 'Collection/Create')
   tx.addTag('App-Name', 'SmartWeaveContract')
   tx.addTag('App-Version', '0.1.0')
-  tx.addTag('Contract-Src', 'RQkRA0If851aQRJyY8y_h6dyd5qM9-gDSzxozDu8pso')
+  tx.addTag('Contract-Src', 'hx7gHGUTocasv8HAjv8FtaOsbHe8VoSKimFHpXiK5jA')
   tx.addTag('Wallet-Address', address) 
   tx.addTag('Init-State', JSON.stringify(collectionData))
 
