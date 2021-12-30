@@ -3,6 +3,8 @@ import React from 'react'
 import NavBar from 'finnie-v2/components/NavBar'
 import Sidebar from 'finnie-v2/components/Sidebar'
 
+import ActivityCenterDropdown from '../ActivityCenterDropdown'
+
 const MainLayout = ({ title, children }) => {
   return (
     <div className="w-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
@@ -16,6 +18,7 @@ const MainLayout = ({ title, children }) => {
           <aside className="fixed z-51 w-61 pt-4">
             <Sidebar />
           </aside>
+          <ActivityCenterDropdown />
           <main className="ml-65.5 pb-5">{children}</main>
         </div>
       </div>
