@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import { isEmpty } from 'lodash'
 import clsx from 'clsx'
 
 import storage from 'services/storage'
 import ActivityRow from './ActivityRow'
 
 import './ActivityCenterDropdown.css'
+import { popupAccount } from 'services/account'
 
 const ACTIVITY = 'ACTIVITY'
 const COMMUNITY = 'COMMUNITY'
@@ -22,6 +24,23 @@ const ActivityCenterDropdown = () => {
     }
     loadActivities()
   }, [])
+
+  useEffect(() => {
+    const setSeen = async () => {
+      const allAccounts = await popupAccount.getAllAccounts()
+      allAccounts.forEach(async account => {
+        let accountActivities = await account.get.activities()
+        accountActivities = accountActivities.map(a => {a.seen = true; return a})
+        await account.set.activities(accountActivities)
+      })
+
+      let allActivities = await storage.generic.get.allActivities()
+      allActivities = allActivities.map(a => {a.seen = true; return a})
+      await storage.generic.set.allActivities(allActivities)
+    }
+
+    if (!isEmpty(activities)) setSeen()
+  }, [activities])
 
   return (
     <div className="w-90.5 h-130.75 bg-white box-border border-0 rounded-1 fixed right-16.25 top-18.25 z-50 p-2.75">
@@ -58,6 +77,7 @@ const ActivityCenterDropdown = () => {
           currency={'USD'}
           accountName={activity.accountName}
           expired={false}
+          seen={activity.seen}
         />)}
         <div className='w-full text-center'><button className='w-20 h-5 bg-blue-800 text-white m-2 font-semibold rounded' onClick={() => setPages(prev => ++prev)}>See more</button></div>
       </div>}

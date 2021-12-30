@@ -12,6 +12,7 @@ import { EthereumStatic } from './Chains/Ethereum/EthereumStatics'
 export class Account {
   constructor(address) {
     this.get = new AccountGetter(address)
+    this.set = new AccountSetter(address)
   }
 }
 
