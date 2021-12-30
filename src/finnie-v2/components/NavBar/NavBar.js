@@ -9,6 +9,8 @@ import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-white.svg'
 import NotificationIcon from 'img/v2/bell-icon.svg'
 
 import AccountSettings from 'finnie-v2/components/AccountSettings'
+import ActivityCenterDropdown from 'finnie-v2/components/ActivityCenterDropdown'
+
 import Loading from 'options/components/loading'
 import { GalleryContext } from 'options/galleryContext'
 
@@ -68,6 +70,7 @@ const NavBar = () => {
               className="absolute top-14 right-0 rounded shadow-2xl"
             />
           )}
+          <ActivityCenterDropdown />
         </div>
       </div>
     </header>

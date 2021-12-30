@@ -37,7 +37,8 @@ module.exports = {
         },
         success: {
           DEFAULT: '#9BE7C4',
-          700: '#237B75'
+          700: '#237B75',
+          900: '#49CE8B'
         },
         turquoiseBlue: {
           DEFAULT: '#5ED9D1'
@@ -143,7 +144,7 @@ module.exports = {
         'finnieSpacing-wider': '0.03em'
       },
       borderRadius: {
-        '1': '0.25rem'
+        1: '0.25rem'
       }
     }
   },

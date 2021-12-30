@@ -19,8 +19,6 @@ const ActivityRow = ({
   currency,
   accountName, 
   expired, 
-  handleExpiredAction, 
-  address,
   network,
   seen
 }) => {
@@ -104,10 +102,10 @@ const ActivityRow = ({
             {get(displayInfo, 'expenseText')}
           </div>
           <div className='text-xs text-blue-800 font-semibold'>{get(displayInfo, 'dateString')}</div>
-          <div className='flex justify-end text-xs text-success-700 font-semibold leading-5'>
+          <a href={displayInfo.blockUrl} target="_blank" rel="noopener noreferrer" className='flex justify-end text-xs text-success-700 underline font-semibold leading-5'>
             <div className='pr-1.375'><ViewBlockIcon /></div>
           Explore Block
-          </div>
+          </a>
         </div>
       </div>}
     </div>

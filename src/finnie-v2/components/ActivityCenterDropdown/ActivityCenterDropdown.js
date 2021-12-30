@@ -53,15 +53,15 @@ const ActivityCenterDropdown = () => {
         'text-center text-sm px-4.25'
       )}>
         <div 
-          className={clsx('cursor-pointer', tab === COMMUNITY ? 'font-semibold border-b-2 border-success-700' : 'text-sm text-blue-800')}
+          className={clsx('cursor-pointer text-blue-800', tab === COMMUNITY ? 'font-semibold border-b-2 border-success-900' : 'text-sm')}
           onClick={() => setTab(COMMUNITY)}
         >Community</div>
         <div 
-          className={clsx('cursor-pointer', tab === ACTIVITY ? 'font-semibold border-b-2 border-success-700' : 'text-sm text-blue-800')}
+          className={clsx('cursor-pointer text-blue-800', tab === ACTIVITY ? 'font-semibold border-b-2 border-success-900' : 'text-sm ')}
           onClick={() => setTab(ACTIVITY)}
         >Activity</div>
         <div 
-          className={clsx('cursor-pointer', tab === NOTIFICATION ? 'font-semibold border-b-2 border-success-700' : 'text-sm text-blue-800')}
+          className={clsx('cursor-pointer text-blue-800', tab === NOTIFICATION ? 'font-semibold border-b-2 border-success-900' : 'text-sm')}
           onClick={() => setTab(NOTIFICATION)}
         >Notification</div>
       </div>
