@@ -1,6 +1,6 @@
 import '@babel/polyfill'
 import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react'
-import { useHistory, useLocation, Link } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
 import { useDispatch, useSelector, useStore } from 'react-redux'
 
@@ -11,6 +11,7 @@ import find from 'lodash/find'
 import includes from 'lodash/includes'
 
 import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
+import sendMessage from 'finnie-v2/utils/sendMessage'
 
 import './index.css'
 import StartUp from 'options/pages/StartUp'
@@ -489,8 +490,7 @@ export default ({ children }) => {
             const balancesUpdated = defaultAccount.balance !== balance || defaultAccount.koiBalance !== koiBalance
             if (balancesUpdated) {
               await dispatch(loadAllAccounts())
-
-              setNotification('Your balances have been updated.')
+              sendMessage.success({ title: 'Balances updated', message: 'Your balances have been updated.' })
             }
 
             console.log('defaultAccount', defaultAccount)

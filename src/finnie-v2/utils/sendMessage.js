@@ -13,7 +13,8 @@ const sendMessage = (type) => ({ title, message }) => {
     animationIn: ['animate__animated', 'animate__fadeIn'],
     animationOut: ['animate__animated', 'animate__fadeOut'],
     dismiss: {
-      duration: 5000,
+      pauseOnHover: true,
+      duration: 7000,
       onScreen: true
     }
   })
