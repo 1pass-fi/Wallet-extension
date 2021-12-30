@@ -28,7 +28,7 @@ const CollectionInfo = ({
         <div className='collection-detail-header'>
           <div className='title'>
             <div>{collection.name}</div>
-            <div
+            {/* <div
               className='collection-icon edit-icon'
               data-tip='Edit Collection'
               data-for='remove'
@@ -42,7 +42,7 @@ const CollectionInfo = ({
               onClick={() => setEditCollection(true)}
             >
               <AddIcon />
-            </div>
+            </div> */}
           </div>
 
           <div className='toggle-wrapper'>

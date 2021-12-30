@@ -24,10 +24,7 @@ const CollectionCard = ({ collection }) => {
         {nft ? (
           <NFTMedia contentType={nft.contentType} source={nft.imageUrl} />
         ) : (
-          <NFTMedia
-            contentType="image"
-            source={`https://arweave.net/${collection.collection[0]}`}
-          />
+          <NFTMedia contentType="not-register-data" />
         )}
       </div>
       <div className="text-base absolute w-47.25 left-0 bottom-7 flex justify-center">
