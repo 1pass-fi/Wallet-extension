@@ -1,4 +1,7 @@
 import React from 'react'
+import ReactNotification from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
+import './MainLayout.css'
 
 import NavBar from 'finnie-v2/components/NavBar'
 import Sidebar from 'finnie-v2/components/Sidebar'
@@ -19,6 +22,7 @@ const MainLayout = ({ title, children }) => {
             <Sidebar />
           </aside>
           <ActivityCenterDropdown />
+          <ReactNotification />
           <main className="ml-65.5 pb-5">{children}</main>
         </div>
       </div>

@@ -131,6 +131,7 @@
         "react-dev-utils": "^7.0.1",
         "react-dom": "^16.7.0",
         "react-dropzone": "^11.3.2",
+        "react-notifications-component": "^3.1.0",
         "react-redux": "^7.2.4",
         "react-router-dom": "^5.2.0",
         "react-tooltip": "^4.2.21",
