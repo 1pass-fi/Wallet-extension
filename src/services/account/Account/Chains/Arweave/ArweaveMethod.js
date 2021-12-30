@@ -736,6 +736,78 @@ export class ArweaveMethod {
     }
   }
 
+  async getNfts(nftIds, getBase64) {
+    try {
+      return await Promise.all(nftIds.map(async contentId => {
+        try {
+          const content = await this.koi.getNftState(contentId)
+          if (content.title || content.name) {
+            if (!get(content, 'contentType')) {
+              const response = await fetch(`${PATH.NFT_IMAGE}/${content.id}`)
+              const blob = await response.blob()
+              const type = get(blob, 'type') || 'image/png'
+              content.contentType = type
+            }
+            let url = `${PATH.NFT_IMAGE}/${content.id}`
+            let imageUrl = url
+            if (getBase64) {
+              if (!includes(content.contentType, 'html')) {
+                const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
+                imageUrl = `data:${content.contentType};base64,${u8}`
+                if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
+              }
+            }
+
+            return {
+              name: content.title || content.name,
+              // isKoiWallet: content.ticker === 'KOINFT',
+              isKoiWallet: true,
+              earnedKoi: content.reward,
+              txId: content.id,
+              imageUrl,
+              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+              koiRockUrl: `${PATH.KOII_LIVE}/${content.id}`,
+              isRegistered: true,
+              contentType: content.contentType,
+              totalViews: content.attention,
+              createdAt: content.createdAt,
+              description: content.description,
+              type: TYPE.ARWEAVE,
+              address: this.koi.address,
+              locked: content.locked,
+              tags: content.tags
+            }
+          } else {
+            console.log('Failed load content: ', content)
+            return {
+              name: '...',
+              isKoiWallet: true,
+              earnedKoi: content.reward,
+              txId: content.id,
+              imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
+              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+              koiRockUrl: `${PATH.KOII_LIVE}/${content.id}`,
+              isRegistered: true,
+              contentType: content.contentType || 'image',
+              totalViews: content.attention,
+              createdAt: content.createdAt,
+              description: content.description,
+              type: TYPE.ARWEAVE,
+              address: this.koi.address,
+              locked: content.locked,
+              tags: content.tags
+            }
+          }
+        } catch (err) {
+          console.log(err.message)
+        }
+      }))
+    } catch (err) {
+      console.log(err.message)
+      return []
+    }
+  }
+
   async updateNftStates() {
     console.log('Update Nft state...')
     const allNfts = await this.#chrome.getAssets()

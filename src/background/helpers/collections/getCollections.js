@@ -5,6 +5,7 @@ import { get } from 'lodash'
 import { ArweaveAccount } from 'services/account/Account'
 import arweave from 'services/arweave'
 
+const bundlerUrl = 'https://mainnet.koii.live'
 
 export default async (account) => {
   try {
@@ -22,7 +23,9 @@ export default async (account) => {
 
     fetchedCollections = await readState(fetchedCollections)
 
-    return fetchedCollections
+    const collectionNfts = await resolveNfts(fetchedCollections, account)
+
+    return { fetchedCollections, collectionNfts }
   } catch (err) {
     console.error(err.message)
   }
@@ -91,3 +94,18 @@ const gql = async (request) => {
   return data
 }
 
+const resolveNfts = async (collections, account) => {
+  let collectionNftIds = collections.map((collection) => collection.collection)
+  collectionNftIds = [].concat.apply([], collectionNftIds)
+
+  const allAssets = await account.get.assets()
+  const nftIds = allAssets.map((asset) => asset.txId)
+
+  const missingNftIds = collectionNftIds.filter((collectionNftId) => {
+    return nftIds.indexOf(collectionNftId) === -1
+  })
+
+  let collectionNfts = await account.method.getNfts(missingNftIds)
+  collectionNfts = collectionNfts.filter((collection) => collection)
+  return collectionNfts
+}

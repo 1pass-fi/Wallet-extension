@@ -223,6 +223,22 @@ export class PopupAccountManager extends AccountManager {
     }
   }
 
+  async getAllCollectionNfts() {
+    try {
+      const allAccounts = await this.getAllAccounts()
+      let allCollectionNfts = []
+      await Promise.all(allAccounts.map(async account => {
+        const collections = await account.get.collectionNfts() || []
+        allCollectionNfts = [...allCollectionNfts, ...collections]
+
+      }))
+
+      return allCollectionNfts
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
   async getAllCollections() {
     try {
       const allAccounts = await this.getAllAccounts()

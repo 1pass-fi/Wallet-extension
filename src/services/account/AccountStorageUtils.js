@@ -44,6 +44,15 @@ export class AccountStorageUtils extends ChromeStorage {
     await this._setChrome(`${this.#address}_collections`, value)
   }
 
+  async getCollectionNfts() {
+    const collectionNfts = (await this._getChrome(`${this.#address}_collectionNFTs`)) || []
+    return collectionNfts
+  }
+
+  async setCollectionNfts(value) {
+    await this._setChrome(`${this.#address}_collectionNFTs`, value)
+  }
+
   async getKID() {
     const KID = await this._getChrome(`${this.#address}_kid`)
     return KID

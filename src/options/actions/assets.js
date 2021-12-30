@@ -1,11 +1,18 @@
 import isEmpty from 'lodash/isEmpty'
 
 import store from '../store'
-import { SET_ASSETS, SET_FILTER_NFTS } from './types'
+import { SET_ASSETS, SET_COLLECTION_NFTS, SET_FILTER_NFTS } from './types'
 
 export const setAssets = (payload) => (dispatch) => {
   dispatch({
     type: SET_ASSETS,
+    payload
+  })
+}
+
+export const setCollectionNfts = (payload) => (dispatch) => {
+  dispatch({
+    type: SET_COLLECTION_NFTS,
     payload
   })
 }

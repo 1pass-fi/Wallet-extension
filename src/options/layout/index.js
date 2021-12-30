@@ -35,7 +35,7 @@ import { EventHandler } from 'services/request/src/backgroundConnect'
 import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/accounts'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setCollections } from 'options/actions/collections'
-import { setAssets } from 'options/actions/assets'
+import { setAssets, setCollectionNfts } from 'options/actions/assets'
 
 export default ({ children }) => {
   const { pathname } = useLocation()
@@ -225,13 +225,17 @@ export default ({ children }) => {
         /* Load collections from storage */
         setIsLoading(prev => ++prev)
         let allCollections = await popupAccount.getAllCollections()
+        let allCollectionNfts = await popupAccount.getAllCollectionNfts()
         dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
+        dispatch(setCollectionNfts({ collectionNfts: allCollectionNfts }))
 
         await backgroundRequest.gallery.loadCollections()
 
         /* Fetch for collections */
         allCollections = await popupAccount.getAllCollections()
+        allCollectionNfts = await popupAccount.getAllCollectionNfts()
         dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
+        dispatch(setCollectionNfts({ collectionNfts: allCollectionNfts }))
         setIsLoading(prev => --prev)
       } catch (err) {
         setIsLoading(prev => --prev)

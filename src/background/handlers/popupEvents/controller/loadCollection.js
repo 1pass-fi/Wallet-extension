@@ -2,14 +2,16 @@
 import { backgroundAccount } from 'services/account'
 import helpers from 'background/helpers'
 
-
 export default async (_, next) => {
   try {
     const allAccounts = await backgroundAccount.getAllAccounts()
-    await Promise.all(allAccounts.map(async account => {
-      const fetchedCollections = await helpers.collections.getCollections(account)
-      await account.set.collections(fetchedCollections)
-    }))
+    await Promise.all(
+      allAccounts.map(async (account) => {
+        const { fetchedCollections, collectionNfts } = await helpers.collections.getCollections(account)
+        await account.set.collections(fetchedCollections)
+        await account.set.collectionNfts(collectionNfts)
+      })
+    )
 
     next()
   } catch (err) {

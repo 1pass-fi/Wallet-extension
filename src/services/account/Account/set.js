@@ -77,6 +77,10 @@ export class AccountSetter {
     return await this.#accountStorage.setCollections(value)
   }
 
+  async collectionNfts(value) {
+    return await this.#accountStorage.setCollectionNfts(value)
+  }
+
   async kid(value) {
     return await this.#accountStorage.setKID(value)
   }

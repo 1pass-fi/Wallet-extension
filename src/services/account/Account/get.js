@@ -78,6 +78,10 @@ export class AccountGetter {
     return await this.#accountStorage.getCollections()
   }
 
+  async collectionNfts() {
+    return await this.#accountStorage.getCollectionNfts()
+  }
+
   async type() {
     return await this.#accountStorage.getField(ACCOUNT.TYPE)
   }

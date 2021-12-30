@@ -52,6 +52,7 @@ export default () => {
     if (collection) {
       return collection
     }
+    return { title: '', totalViews: 0, totalReward: 0, description: '', collection: [] }
   }, [collectionState.collections])
 
   const history = useHistory()
