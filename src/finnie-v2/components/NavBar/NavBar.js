@@ -17,16 +17,27 @@ import { GalleryContext } from 'options/galleryContext'
 const NavBar = () => {
   const { isLoading, profilePictureId } = useContext(GalleryContext)
   const [showDropdown, setShowDropdown] = useState(false)
+  const [showNotificationsCenter, setShowNotificationsCenter] = useState(false)
+
   const dropdownRef = createRef()
+  const notificationRef = createRef()
+  const navbarRef = createRef()
 
   const defaultAccount = useSelector((state) => state.defaultAccount)
 
   const toggleDropdownMenu = () => setShowDropdown(!showDropdown)
   const closeDropdownMenu = () => setShowDropdown(false)
 
+  const toggleNotificationsCenter = () => setShowNotificationsCenter(!showNotificationsCenter)
+  const closeNotificationsCenter = () => setShowNotificationsCenter(false)
+
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        !navbarRef.current.contains(event.target)
+      ) {
         closeDropdownMenu()
       }
     }
@@ -37,6 +48,23 @@ const NavBar = () => {
     }
   }, [dropdownRef])
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target) &&
+        !navbarRef.current.contains(event.target)
+      ) {
+        closeNotificationsCenter()
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [notificationRef])
+
   return (
     <header className="sticky top-0 z-50 w-full h-16 flex items-center bg-indigo-900 px-5.25 text-white text-sm justify-between">
       <div className="flex items-center">
@@ -46,9 +74,12 @@ const NavBar = () => {
         </nav>
       </div>
 
-      <div className="flex items-center">
+      <div className="flex items-center" ref={navbarRef}>
         {isLoading !== 0 && <Loading />}
-        <NotificationIcon className="h-5 w-3.75 mx-6.5" />
+        <NotificationIcon
+          className="h-5 w-3.75 mx-6.5 cursor-pointer"
+          onClick={toggleNotificationsCenter}
+        />
         <Balance koiiBalance={defaultAccount.koiBalance} arBalance={defaultAccount.balance} />
         <div className="relative">
           <div
@@ -70,7 +101,7 @@ const NavBar = () => {
               className="absolute top-14 right-0 rounded shadow-2xl"
             />
           )}
-          <ActivityCenterDropdown />
+          {showNotificationsCenter && <ActivityCenterDropdown ref={notificationRef} />}
         </div>
       </div>
     </header>
