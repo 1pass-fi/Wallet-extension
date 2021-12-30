@@ -5,7 +5,7 @@
 
 import { PATH, ALL_NFT_LOADED, ERROR_MESSAGE, URL, ACTIVITY_NAME, BRIDGE_FLOW, DELIGATED_OWNER, KOII_CONTRACT } from 'constants/koiConstants'
 import { getChromeStorage, setChromeStorage } from 'utils'
-import { get, isNumber, isArray, orderBy, includes, find, isEmpty, isString } from 'lodash'
+import { get, isNumber, isArray, orderBy, includes, find, isEmpty, isString, findIndex } from 'lodash'
 import moment from 'moment'
 import { smartweave } from 'smartweave'
 import axios from 'axios'
@@ -255,7 +255,8 @@ export class ArweaveMethod {
           date: timeString,
           source,
           time,
-          address: this.koi.address
+          address: this.koi.address,
+          seen: true
         }
       } catch (err) {
         return {}
@@ -263,6 +264,17 @@ export class ArweaveMethod {
     })
 
     console.log('RESULT: ', fetchedData.length)
+
+    const oldActivites = await this.#chrome.getActivities(fetchedData) || []
+    const newestOfOldActivites = oldActivites[0]
+
+    const idx = findIndex(fetchedData, data => data.id === newestOfOldActivites.id)
+
+    for(let i = 0; i < idx; i++) {
+      fetchedData[i].seen = false
+    }
+
+
     /* 
       Set activities to the local storage
     */
