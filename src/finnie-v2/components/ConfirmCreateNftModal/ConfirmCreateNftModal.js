@@ -7,6 +7,12 @@ import CloseIcon from 'img/v2/close-icon-blue.svg'
 import CrossIcon from 'img/v2/cross-icon-white.svg'
 import ModalBackground from 'img/v2/modal-background.svg'
 
+import TwitterIcon from 'img/v2/share-modal-icons/twitter-icon.svg'
+import FacebookIcon from 'img/v2/share-modal-icons/facebook-icon.svg'
+import LinkedIn from 'img/v2/share-modal-icons/linkedin-icon.svg'
+import MailIcon from 'img/v2/share-modal-icons/mail-icon.svg'
+import EmbedIcon from 'img/v2/share-modal-icons/embed-icon.svg'
+
 import NFTMedia from 'finnie-v2/components/NFTMedia'
 import Button from 'finnie-v2/components/Button'
 import { GalleryContext } from 'options/galleryContext'
@@ -23,7 +29,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
 
   const { setError, setIsLoading } = useContext(GalleryContext)
 
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(3)
   const [estimateCostAr, setEstimateCostAr] = useState(0)
   const [disableCreateNFT, setDisableCreateNFT] = useState(false)
 
@@ -115,6 +121,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
           )}
           {step === 1 && <div className="m-auto">Create Your Atomic NFT</div>}
           {step === 2 && <div className="m-auto">You just made a new NFT!</div>}
+          {step === 3 && <div className="m-auto">Share to earn Attention Rewards</div>}
 
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
@@ -173,17 +180,53 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
                 Your NFT is being created!
               </div>
               <div className="font-light text-base">
-                It might take a moment to be reflected in your wallet.
+                It will take a few minutes to reflect on your wallet. In the meantime...
               </div>
             </div>
-            <Button
-              onClick={close}
-              className="h-10 mt-16 font-semibold text-sm rounded w-43.75 mx-auto"
-              variant="indigo"
-              text="OK"
-            />
+            <div className='flex w-101 justify-between m-auto'>
+              <Button
+                onClick={close}
+                className="h-10 mt-16 font-semibold text-base rounded w-43.75 mx-auto"
+                variant="indigo"
+                text="Transfer"
+              />
+              <Button
+                onClick={() => setStep(3)}
+                className="h-10 mt-16 font-semibold text-base rounded w-43.75 mx-auto"
+                variant="inversedIndigo"
+                text="Share"
+              />              
+            </div>
           </div>
         )}
+        {
+          step === 3 && (
+            <div className="relative w-full h-full text-center">
+              <div className='w-112 text-sm mt-6'>
+                  Earn attention rewards for ever through Koii. Copy this link and share on your favorite social platforms:
+              </div>
+              <div className='mt-6 text-base font-semibold'>
+                Share Link
+              </div>
+              <div className='w-94.5 m-auto mt-2 rounded-1 text-sm leading-6 text-blue-800 border-1.5 border-solid border-blue-800'>
+                https://permalinkgoeshere.com/whatever123456123
+              </div>
+              <Button
+                onClick={close}
+                className="h-10 mt-5 font-semibold text-base rounded w-43.75 mx-auto"
+                variant="indigo"
+                text="Copy link"
+              />
+              <div className='flex w-77.25 m-auto mt-7.5 justify-between'>
+                <TwitterIcon />
+                <FacebookIcon />
+                <LinkedIn />
+                <MailIcon />
+                <EmbedIcon />
+              </div>
+            </div>
+          )
+        } 
       </div>
     </div>
   )

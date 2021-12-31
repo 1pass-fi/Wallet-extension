@@ -7,6 +7,7 @@ const variants = {
   primary: 'bg-success text-indigo',
   warning: 'bg-warning-200 text-indigo shadow',
   inversed: 'border border-solid border-white text-white',
+  inversedIndigo: 'border-2 border-solid border-blue-800 text-indigo',
   lightBlue: 'bg-lightBlue text-indigo'
 }
 
@@ -20,7 +21,7 @@ const Button = ({ text, variant = 'primary', icon: Icon, size = 'sm', className,
     <button
       className={clsx(
         variants[variant],
-        'flex items-center justify-center rounded-sm disabled:opacity-60 disabled:cursor-not-allowed',
+        'flex items-center justify-center rounded-sm disabled:opacity-60 disabled:cursor-not-allowed border',
         sizes[size],
         className
       )}
