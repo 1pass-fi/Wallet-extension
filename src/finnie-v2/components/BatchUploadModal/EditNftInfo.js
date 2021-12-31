@@ -19,7 +19,8 @@ const EditNftInfo = ({ currentNftIdx, nftInfo, file, updateNftInfo, tagInputs, s
   const handleNftContentChange = (e, idx) => {
     let updatedNftDetail = { ...nftDetail }
 
-    updatedNftDetail = { ...updatedNftDetail, [e.target.name]: e.target.value }
+    if (e.target.name === 'isNSFW') updatedNftDetail = { ...updatedNftDetail, [e.target.name]: e.target.checked }
+    else updatedNftDetail = { ...updatedNftDetail, [e.target.name]: e.target.value }
 
     setNftDetail(updatedNftDetail)
     updateNftInfo(idx, updatedNftDetail)
@@ -118,6 +119,8 @@ const EditNftInfo = ({ currentNftIdx, nftInfo, file, updateNftInfo, tagInputs, s
               name="isNSFW"
               type="checkbox"
               id="nsfw"
+              checked={nftDetail.isNSFW}
+              onChange={(e) => handleNftContentChange(e, currentNftIdx)}
             ></input>
             <label style={{cursor:'pointer'}} for="nsfw" className="text-white ml-2 text-11px select-none">
               This content is <span className="text-warning">Explicit or 18+.</span>

@@ -277,7 +277,7 @@ const CreateCollectionForm = () => {
         <Button
           onClick={handleCreateCollection}
           variant="light"
-          text="Create Collection"
+          text="Add NFT Details"
           className="text-sm font-semibold"
         />
       </div>

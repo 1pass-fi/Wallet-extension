@@ -22,7 +22,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
           isNSFW: false,
           ownerName: '',
           ownerAddress: '',
-          title: '',
+          title: f.name.split('.').slice(0, -1).join('.'),
           description: '',
           tags: [],
           contentType: f.type,
@@ -46,8 +46,11 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
     if (!updateAll) {
       updatedNfts[idx] = { ...updatedNfts[idx], info }
       setNfts(updatedNfts)
-    } else {``
-      updatedNfts = updatedNfts.map(nft => ({ ...nft, info }))
+    } else {
+      updatedNfts = updatedNfts.map(nft => {
+        const title = nft.info.title
+        return { ...nft, info: {...info, title} }
+      })
     }
 
     setNfts(updatedNfts)
@@ -66,7 +69,11 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
   const handleUpdateAll = (e) => {
     setUpdateAll(e.target.checked)
     let _nfts = [...nfts]
-    _nfts = _nfts.map(nft => {nft.info = _nfts[currentNftIdx].info; return nft})
+    _nfts = _nfts.map(nft => {
+      const title = nft.info.title
+      nft.info = {..._nfts[currentNftIdx].info, title}
+      return nft
+    })
     setNfts(_nfts)
   }
 
@@ -137,7 +144,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
             onChange={handleUpdateAll}
             id='update-all'
           ></input>
-          <label style={{cursor:'pointer'}} for='update-all' className="text-success ml-2 text-11px select-none">Use this info for all NFTS</label>
+          <label style={{cursor:'pointer'}} for='update-all' className="text-success ml-2 text-11px select-none w-55.5">Apply these details (except the title) to all NFTs in this collection.</label>
         </div>
       </div>
     </div>
