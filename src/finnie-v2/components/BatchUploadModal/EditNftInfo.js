@@ -57,7 +57,7 @@ const EditNftInfo = ({ currentNftIdx, nftInfo, file, updateNftInfo, tagInputs, s
       <div className="text-xl text-white">EDIT NFT INFO:</div>
       <div className="flex mt-4">
         <div className="h-68 w-68 rounded shadow-lg object-cover">
-          <NFTMedia contentType="image" source={file} />
+          <NFTMedia contentType={nftInfo.contentType} source={file} />
         </div>
         <div className="ml-3.5 w-55.5 flex flex-col justify-between">
           <InputField

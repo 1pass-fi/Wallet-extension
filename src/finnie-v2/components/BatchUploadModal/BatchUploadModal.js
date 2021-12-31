@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
+import sendMessage from 'finnie-v2/utils/sendMessage'
+
 import BackIcon from 'img/v2/back-icon.svg'
 import CheckMarkIcon from 'img/v2/check-mark-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-white.svg'
@@ -77,6 +79,32 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
     setNfts(_nfts)
   }
 
+  const nftsValidation = () => {
+    try {
+      let validated = true
+
+      for (const index in nfts) {
+        const nft = nfts[index]
+        if (!nft.info.title) {
+          validated = false
+          setCurrentNftIdx(index)
+          sendMessage.danger({ title: 'NFT validation error', message: 'Title required' })
+          break
+        }
+
+        if (!nft.info.description) {
+          validated = false
+          setCurrentNftIdx(index)
+          sendMessage.danger({ title: 'NFT validation error', message: 'Description required' })
+          break
+        }
+      }
+      return validated
+    } catch (err) {
+      console.error(err.message)
+    }
+  }
+
   return (
     <div className="fixed top-0 left-0 z-51 w-screen h-screen flex items-center justify-center">
       <div className="w-221.5 h-116.75 bg-blue-800 rounded shadow-md pt-3 px-4 relative select-none">
@@ -131,6 +159,8 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
           icon={CheckMarkIcon}
           size="lg"
           onClick={() => {
+            const validated = nftsValidation()
+            if (!validated) return
             close()
             showConfirmModal()
           }}
