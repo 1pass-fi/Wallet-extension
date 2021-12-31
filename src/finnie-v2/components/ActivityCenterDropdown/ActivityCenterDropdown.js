@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+
 import { isEmpty } from 'lodash'
 import clsx from 'clsx'
 
@@ -55,9 +57,9 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
     >
       <div className="flex justify-between items-center h-12 border-b-2 border-gray-underline">
         <div className="text-base font-semibold text-blue-800">ACTIVITY CENTER</div>
-        <a className="text-sm font-normal text-success-700 underline" href="#">
+        <Link className="text-sm font-normal text-success-700 underline" to="/v2/notifications">
           See All
-        </a>
+        </Link>
       </div>
       <div
         className={clsx(
@@ -97,6 +99,7 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
         <div style={{ overflowY: 'overlay' }} id="activities" className="h-97.5">
           {activities.slice(0, pages * 10).map((activity) => (
             <ActivityRow
+              key={activity.id}
               activityName={activity.activityName}
               expense={activity.expense}
               date={activity.date}

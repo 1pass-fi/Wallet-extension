@@ -11,6 +11,7 @@ import storage from 'services/storage'
 import Collection from './pages/Collection'
 import Gallery from './pages/Gallery'
 import NFTDetail from './pages/NFTDetail'
+import Notifications from './pages/Notifications'
 import CollectionDetails from 'options/pages/CollectionDetails'
 
 import './style.css'
@@ -69,6 +70,9 @@ const SecondVer = () => {
         </Route>
         <Route exact path="/v2/collections">
           <Collection />
+        </Route>
+        <Route path="/v2/notifications">
+          <Notifications />
         </Route>
         <Route exact path="*">
           <Gallery />

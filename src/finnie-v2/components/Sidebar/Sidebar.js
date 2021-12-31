@@ -11,7 +11,8 @@ import CreateCollectionForm from './CreateCollectionForm'
 import { filterNft } from 'options/actions/assets'
 import { filterCollection } from 'options/actions/collections'
 import AccountSettings from 'finnie-v2/components/AccountSettings'
-import SortAndFilter from './SortAndFilter/SortAndFilter'
+import SortAndFilter from './SortAndFilter'
+import NotificationsCenterLinks from './NotificationsCenterLinks'
 
 const navItems = [
   { icon: CreateIcon, path: '/v2/create' },
@@ -119,6 +120,9 @@ const Sidebar = () => {
           </Route>
           <Route exact path="/v2/settings/*">
             <AccountSettings />
+          </Route>
+          <Route path="/v2/notifications">
+            <NotificationsCenterLinks />
           </Route>
         </div>
       </div>
