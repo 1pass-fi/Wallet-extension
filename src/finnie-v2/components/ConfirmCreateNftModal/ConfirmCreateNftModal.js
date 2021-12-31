@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { v4 as uuid } from 'uuid'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
@@ -29,9 +30,10 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
 
   const { setError, setIsLoading } = useContext(GalleryContext)
 
-  const [step, setStep] = useState(3)
+  const [step, setStep] = useState(1)
   const [estimateCostAr, setEstimateCostAr] = useState(0)
   const [disableCreateNFT, setDisableCreateNFT] = useState(false)
+  const [nftId, setNftId] = useState(null)
 
   const modalRef = useRef(null)
 
@@ -70,7 +72,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
         imageId
       })
 
-      if (txId) setStep(2)
+      if (txId) setStep(2); setNftId(txId)
       // set isLoading
       setIsLoading((prev) => --prev)
       setDisableCreateNFT(false)
@@ -208,15 +210,14 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
               <div className='mt-6 text-base font-semibold'>
                 Share Link
               </div>
-              <div className='w-94.5 m-auto mt-2 rounded-1 text-sm leading-6 text-blue-800 border-1.5 border-solid border-blue-800'>
-                https://permalinkgoeshere.com/whatever123456123
-              </div>
-              <Button
-                onClick={close}
-                className="h-10 mt-5 font-semibold text-base rounded w-43.75 mx-auto"
-                variant="indigo"
-                text="Copy link"
-              />
+              <input type='text' value={`https://arweave.net/${nftId}`} disabled className='w-94.5 m-auto mt-2 rounded-1 text-sm leading-6 text-blue-800 border-1.5 border-solid border-blue-800 px-1' />
+              <CopyToClipboard text={`https://arweave.net/${nftId}`}>
+                <Button
+                  className="h-10 mt-5 font-semibold text-base rounded w-43.75 mx-auto"
+                  variant="indigo"
+                  text="Copy link"
+                />
+              </CopyToClipboard>
               <div className='flex w-77.25 m-auto mt-7.5 justify-between'>
                 <TwitterIcon />
                 <FacebookIcon />
