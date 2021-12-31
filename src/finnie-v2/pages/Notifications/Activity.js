@@ -1,30 +1,21 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import ViewBlockIcon from 'img/v2/view-block.svg'
+import ActivityRow from './ActivityRow'
 
-import formatLongString from 'finnie-v2/utils/formatLongString'
+import storage from 'services/storage'
 
 const Activity = () => {
+  const [activities, setActivities] = useState([])
+
+  useEffect(() => {
+    const loadActivities = async () => {
+      const allActivities = await storage.generic.get.allActivities()
+      setActivities(allActivities)
+    }
+    loadActivities()
+  }, [])
+
   const columns = useMemo(() => ['Date', 'Action', 'From', 'To', 'Amount', ''], [])
-  const data = useMemo(
-    () => [
-      {
-        date: '11/12/2021',
-        action: 'Sent Koii',
-        from: 'ETH Account',
-        to: '6VJYLb6lvBISrgRbhd1ODHzJ1xAh3ZA3OdSY20E88Bg',
-        amount: '-15 KOII'
-      },
-      {
-        date: '11/12/2021',
-        action: 'Sent Koii',
-        from: 'ETH Account',
-        to: '6VJYLb6lvBISrgRbhd1ODHzJ1xAh3ZA3OdSY20E88Bg',
-        amount: '-15 KOII'
-      }
-    ],
-    []
-  )
 
   return (
     <div className="pt-4 text-white">
@@ -33,30 +24,15 @@ const Activity = () => {
         <thead>
           <tr className="text-base h-13.75 font-semibold border-b border-white px-4">
             {columns.map((col, idx) => (
-              <th key={idx}>{col}</th>
+              <th className="px-1" key={idx}>
+                {col}
+              </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {data.map((item, idx) => (
-            <tr key={idx} className="h-15 border-b border-blue-700 px-4">
-              <td>{item.date}</td>
-              <td>{item.action}</td>
-              <td>{item.from}</td>
-              <td>{formatLongString(item.to, 20)}</td>
-              <td>{item.amount}</td>
-              <td>
-                <a
-                  href="https://google.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex justify-end text-xs text-turquoiseBlue underline font-semibold leading-5"
-                >
-                  <ViewBlockIcon className="pr-1.375" />
-                  Explore Block
-                </a>
-              </td>
-            </tr>
+          {activities.map((activity, idx) => (
+            <ActivityRow activity={activity} key={idx} />
           ))}
         </tbody>
       </table>
