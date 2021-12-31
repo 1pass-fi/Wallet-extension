@@ -265,7 +265,7 @@ export class ArweaveMethod {
 
     console.log('RESULT: ', fetchedData.length)
 
-    const oldActivites = await this.#chrome.getActivities(fetchedData) || []
+    const oldActivites = await this.#chrome.getActivities() || []
     const newestOfOldActivites = oldActivites[0]
 
     if (newestOfOldActivites) {
