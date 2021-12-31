@@ -5,7 +5,7 @@ import RemoveNFTIcon from 'img/v2/cross-icon-orange.svg'
 
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
-const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft }) => {
+const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft, error }) => {
   return (
     <>
       <div className="text-xl text-white">UPLOADED FILES</div>
@@ -14,9 +14,10 @@ const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft }) =>
           <div
             className={clsx(
               currentNftIdx === idx && 'bg-trueGray-300 bg-opacity-20',
-              'my-0.5 cursor-pointer h-8 flex text-white items-center justify-between font-light text-xs tracking-finnieSpacing-wide pr-2.75'
+              !(error[idx].title === '' && error[idx].description === '') &&
+                'bg-red-finnie bg-opacity-20',
+              'my-0.5 pl-1 cursor-pointer h-8 flex text-white items-center justify-between font-light text-xs tracking-finnieSpacing-wide pr-2.75'
             )}
-            style={{paddingLeft: '5px'}}
             key={idx}
           >
             <span

@@ -9,7 +9,16 @@ import formatLongString from 'finnie-v2/utils/formatLongString'
 
 import CrossIcon from 'img/v2/cross-icon.svg'
 
-const EditNftInfo = ({ currentNftIdx, nftInfo, file, updateNftInfo, tagInputs, setTagInputs }) => {
+const EditNftInfo = ({
+  currentNftIdx,
+  nftInfo,
+  file,
+  updateNftInfo,
+  tagInputs,
+  setTagInputs,
+  error,
+  setError
+}) => {
   const [nftDetail, setNftDetail] = useState(nftInfo)
 
   useEffect(() => {
@@ -19,7 +28,14 @@ const EditNftInfo = ({ currentNftIdx, nftInfo, file, updateNftInfo, tagInputs, s
   const handleNftContentChange = (e, idx) => {
     let updatedNftDetail = { ...nftDetail }
 
-    if (e.target.name === 'isNSFW') updatedNftDetail = { ...updatedNftDetail, [e.target.name]: e.target.checked }
+    if (e.target.name === 'title' || e.target.name === 'description') {
+      let newError = [...error]
+      newError[currentNftIdx][e.target.name] = ''
+      setError(newError)
+    }
+
+    if (e.target.name === 'isNSFW')
+      updatedNftDetail = { ...updatedNftDetail, [e.target.name]: e.target.checked }
     else updatedNftDetail = { ...updatedNftDetail, [e.target.name]: e.target.value }
 
     setNftDetail(updatedNftDetail)
@@ -66,6 +82,7 @@ const EditNftInfo = ({ currentNftIdx, nftInfo, file, updateNftInfo, tagInputs, s
             name="title"
             value={nftDetail.title}
             setValue={(e) => handleNftContentChange(e, currentNftIdx)}
+            error={error[currentNftIdx].title}
           />
           <InputField
             label="Description"
@@ -74,6 +91,7 @@ const EditNftInfo = ({ currentNftIdx, nftInfo, file, updateNftInfo, tagInputs, s
             name="description"
             value={nftDetail.description}
             setValue={(e) => handleNftContentChange(e, currentNftIdx)}
+            error={error[currentNftIdx].description}
           />
           <div>
             <label
@@ -122,7 +140,11 @@ const EditNftInfo = ({ currentNftIdx, nftInfo, file, updateNftInfo, tagInputs, s
               checked={nftDetail.isNSFW}
               onChange={(e) => handleNftContentChange(e, currentNftIdx)}
             ></input>
-            <label style={{cursor:'pointer'}} for="nsfw" className="text-white ml-2 text-11px select-none">
+            <label
+              style={{ cursor: 'pointer' }}
+              for="nsfw"
+              className="text-white ml-2 text-11px select-none"
+            >
               This content is <span className="text-warning">Explicit or 18+.</span>
             </label>
           </div>

@@ -15,6 +15,7 @@ import EditNftInfo from './EditNftInfo'
 const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }) => {
   const [currentNftIdx, setCurrentNftIdx] = useState(0)
   const [updateAll, setUpdateAll] = useState(false)
+  const [error, setError] = useState(inputFiles.map(() => ({ title: '', description: '' })))
 
   useEffect(() => {
     const nfts = inputFiles.map((f, index) => {
@@ -49,9 +50,9 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
       updatedNfts[idx] = { ...updatedNfts[idx], info }
       setNfts(updatedNfts)
     } else {
-      updatedNfts = updatedNfts.map(nft => {
+      updatedNfts = updatedNfts.map((nft) => {
         const title = nft.info.title
-        return { ...nft, info: {...info, title} }
+        return { ...nft, info: { ...info, title } }
       })
     }
 
@@ -60,6 +61,9 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
 
   const removeNft = (idx) => {
     const newNfts = [...nfts]
+    const newError = [...error]
+    newError.splice(idx, 1)
+    setError(newError)
     newNfts.splice(idx, 1)
     setNfts(newNfts)
 
@@ -71,38 +75,52 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
   const handleUpdateAll = (e) => {
     setUpdateAll(e.target.checked)
     let _nfts = [...nfts]
-    _nfts = _nfts.map(nft => {
+    _nfts = _nfts.map((nft) => {
       const title = nft.info.title
-      nft.info = {..._nfts[currentNftIdx].info, title}
+      nft.info = { ..._nfts[currentNftIdx].info, title }
       return nft
     })
     setNfts(_nfts)
   }
 
-  const nftsValidation = () => {
+  const nftsValidate = () => {
     try {
       let validated = true
+
+      let newError = [...error]
 
       for (const index in nfts) {
         const nft = nfts[index]
         if (!nft.info.title) {
           validated = false
-          setCurrentNftIdx(index)
-          sendMessage.danger({ title: 'NFT validation error', message: 'Title required' })
-          break
+          newError[index].title = 'Title cannot be empty'
         }
 
         if (!nft.info.description) {
           validated = false
-          setCurrentNftIdx(index)
-          sendMessage.danger({ title: 'NFT validation error', message: 'Description required' })
-          break
+          newError[index].description = 'Description cannot be empty'
         }
       }
+
+      if (!validated) {
+        sendMessage.danger({
+          title: 'Validation error',
+          message: 'Please check you nfts information'
+        })
+      }
+
+      setError(newError)
+
       return validated
     } catch (err) {
       console.error(err.message)
     }
+  }
+
+  const handleSaveChangesClick = () => {
+    if (!nftsValidate()) return
+    close()
+    showConfirmModal()
   }
 
   return (
@@ -126,6 +144,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
           <div className="flex">
             <div className="w-66.75">
               <UploadedFiles
+                error={error}
                 files={nfts}
                 currentNftIdx={currentNftIdx}
                 setCurrentNftIdx={setCurrentNftIdx}
@@ -134,6 +153,8 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
             </div>
             <div className="ml-5.5">
               <EditNftInfo
+                error={error}
+                setError={setError}
                 currentNftIdx={currentNftIdx}
                 nftInfo={nfts[currentNftIdx].info}
                 file={nfts[currentNftIdx].file}
@@ -158,12 +179,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
           variant="light"
           icon={CheckMarkIcon}
           size="lg"
-          onClick={() => {
-            const validated = nftsValidation()
-            if (!validated) return
-            close()
-            showConfirmModal()
-          }}
+          onClick={handleSaveChangesClick}
         />
 
         <div className="flex absolute cursor-pointer" style={{ left: '620px', bottom: '30px' }}>
@@ -172,9 +188,15 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
             name="applyNfts"
             type="checkbox"
             onChange={handleUpdateAll}
-            id='update-all'
+            id="update-all"
           ></input>
-          <label style={{cursor:'pointer'}} for='update-all' className="text-success ml-2 text-11px select-none w-55.5">Apply these details (except the title) to all NFTs in this collection.</label>
+          <label
+            style={{ cursor: 'pointer' }}
+            for="update-all"
+            className="text-success ml-2 text-11px select-none w-55.5"
+          >
+            Apply these details (except the title) to all NFTs in this collection.
+          </label>
         </div>
       </div>
     </div>
