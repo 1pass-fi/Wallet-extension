@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { v4 as uuid } from 'uuid'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -13,6 +13,7 @@ import FacebookIcon from 'img/v2/share-modal-icons/facebook-icon.svg'
 import LinkedIn from 'img/v2/share-modal-icons/linkedin-icon.svg'
 import MailIcon from 'img/v2/share-modal-icons/mail-icon.svg'
 import EmbedIcon from 'img/v2/share-modal-icons/embed-icon.svg'
+import ShareIcon from 'img/v2/share-modal-icons/share-icon.svg'
 
 import NFTMedia from 'finnie-v2/components/NFTMedia'
 import Button from 'finnie-v2/components/Button'
@@ -20,6 +21,9 @@ import { GalleryContext } from 'options/galleryContext'
 
 import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
 import formatNumber from 'finnie-v2/utils/formatNumber'
+import shareSocialNetwork from 'finnie-v2/utils/shareSocialNetwork'
+
+import { SOCIAL_NETWORKS } from 'constants/koiConstants'
 
 import storage from 'services/storage'
 import arweave from 'services/arweave'
@@ -34,6 +38,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
   const [estimateCostAr, setEstimateCostAr] = useState(0)
   const [disableCreateNFT, setDisableCreateNFT] = useState(false)
   const [nftId, setNftId] = useState(null)
+  const [showShareLink, setShowShareLink] = useState(true)
 
   const modalRef = useRef(null)
 
@@ -110,6 +115,14 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [modalRef])
+
+  const shareLink = useMemo(() => {
+    return `https://koii.live/${nftId}.html`
+  }, [nftId])
+
+  const embedLink = useMemo(() => {
+    return `https://koi.rocks/embed/${nftId}" title="Koii NFT image" frameborder="0" allowfullscreen></iframe>`
+  }, [nftId])
 
   return (
     <div className="w-full h-full flex items-center justify-center min-w-screen min-h-screen bg-black bg-opacity-25 fixed z-51 top-0 left-0">
@@ -208,22 +221,23 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
                   Earn attention rewards for ever through Koii. Copy this link and share on your favorite social platforms:
               </div>
               <div className='mt-6 text-base font-semibold'>
-                Share Link
+                {showShareLink ? 'Share Link' : 'Embed Link'}
               </div>
-              <input type='text' value={`https://arweave.net/${nftId}`} disabled className='w-94.5 m-auto mt-2 rounded-1 text-sm leading-6 text-blue-800 border-1.5 border-solid border-blue-800 px-1' />
-              <CopyToClipboard text={`https://arweave.net/${nftId}`}>
+              {showShareLink && <input type='text' value={shareLink} disabled className='w-94.5 m-auto mt-2 rounded-1 text-sm leading-6 text-blue-800 border-1.5 border-solid border-blue-800 px-1' />}
+              {!showShareLink && <textarea value={embedLink} disabled className='w-94.5 h-20 m-auto mt-2 rounded-1 text-sm leading-6 text-blue-800 border-1.5 border-solid border-blue-800 px-1' />}
+              <CopyToClipboard text={showShareLink ? shareLink : embedLink}>
                 <Button
                   className="h-10 mt-5 font-semibold text-base rounded w-43.75 mx-auto"
                   variant="indigo"
                   text="Copy link"
                 />
               </CopyToClipboard>
-              <div className='flex w-77.25 m-auto mt-7.5 justify-between'>
-                <TwitterIcon />
-                <FacebookIcon />
-                <LinkedIn />
-                <MailIcon />
-                <EmbedIcon />
+              <div className='flex w-77.25 m-auto mt-5 justify-between'>
+                <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.TWITTER, nftId)}><TwitterIcon /></div>
+                <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.FACEBOOK, nftId)}><FacebookIcon /></div>
+                <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.LINKEDIN, nftId)}><LinkedIn /></div>
+                <div className='cursor-pointer'><MailIcon /></div>
+                <div onClick={() => setShowShareLink(prev => !prev)} className='cursor-pointer'>{showShareLink ? <EmbedIcon /> : <ShareIcon />}</div>
               </div>
             </div>
           )

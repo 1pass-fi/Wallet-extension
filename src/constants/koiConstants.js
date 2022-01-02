@@ -485,3 +485,9 @@ export const DID_CONTRACT_ID = {
 }
 
 export const BRANDLY_API_KEY = '0a42d7da05744a0693aa72ec5e9d7232'
+
+export const SOCIAL_NETWORKS = {
+  FACEBOOK: 'FACEBOOK',
+  TWITTER: 'TWITTER',
+  LINKEDIN: 'LINKEDIN'
+}
