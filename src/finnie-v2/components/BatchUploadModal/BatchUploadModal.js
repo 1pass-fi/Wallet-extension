@@ -87,26 +87,23 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
     try {
       let validated = true
 
+      let hadError = false
+
       let newError = [...error]
 
       for (const index in nfts) {
         const nft = nfts[index]
         if (!nft.info.title) {
+          if (!hadError) setCurrentNftIdx(index); hadError = true
           validated = false
           newError[index].title = 'Title cannot be empty'
         }
 
         if (!nft.info.description) {
+          if (!hadError) setCurrentNftIdx(index); hadError = true
           validated = false
           newError[index].description = 'Description cannot be empty'
         }
-      }
-
-      if (!validated) {
-        sendMessage.danger({
-          title: 'Validation error',
-          message: 'Please check you nfts information'
-        })
       }
 
       setError(newError)
