@@ -175,14 +175,16 @@ export class EthereumMethod {
         return {}
       }
     })
-
+    
     const oldActivites = await this.#chrome.getActivities() || []
     const newestOfOldActivites = oldActivites[0]
 
-    const idx = findIndex(fetchedData, data => data.id === newestOfOldActivites.id)
-
-    for(let i = 0; i < idx; i++) {
-      fetchedData[i].seen = false
+    if (newestOfOldActivites) {
+      const idx = findIndex(fetchedData, data => data.id === newestOfOldActivites.id)
+  
+      for(let i = 0; i < idx; i++) {
+        fetchedData[i].seen = false
+      }
     }
 
     await this.#chrome.setActivities(fetchedData)

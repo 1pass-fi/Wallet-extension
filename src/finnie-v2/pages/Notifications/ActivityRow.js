@@ -6,7 +6,7 @@ import ViewBlockIcon from 'img/v2/view-block.svg'
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-bg-white.svg'
 import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 
-import { PATH, URL } from 'constants/koiConstants'
+import { PATH, URL,ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import clsx from 'clsx'

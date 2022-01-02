@@ -57,7 +57,7 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
     >
       <div className="flex justify-between items-center h-12 border-b-2 border-gray-underline">
         <div className="text-base font-semibold text-blue-800">ACTIVITY CENTER</div>
-        <Link className="text-sm font-normal text-success-700 underline" to="/v2/notifications">
+        <Link className="text-sm font-normal text-success-700 underline" to="/v2/notifications/">
           See All
         </Link>
       </div>
