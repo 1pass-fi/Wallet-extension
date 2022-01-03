@@ -97,7 +97,6 @@ export default async (payload, next) => {
 
     const result = { txId: transaction.id, createdAt }
     console.log('Upload NFT result', result)
-    // const result = { txId: uuid(), createdAt: 0 }
 
 
     // save pending transaction to storage
@@ -122,7 +121,8 @@ export default async (payload, next) => {
       nftId: transaction.id,
       fileType,
       ownerAddress: address,
-      createdAt
+      createdAt,
+      address
     }
     await helpers.pendingTransactionFactory.createPendingAsset(nftPayload)
 

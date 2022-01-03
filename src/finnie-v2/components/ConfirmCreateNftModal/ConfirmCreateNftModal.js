@@ -32,7 +32,7 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
   const estimateCostKOII = 1
 
-  const { setError, setIsLoading } = useContext(GalleryContext)
+  const { setError, setIsLoading, handleShareNFT, refreshNFTs } = useContext(GalleryContext)
 
   const [step, setStep] = useState(1)
   const [estimateCostAr, setEstimateCostAr] = useState(0)
@@ -77,7 +77,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
         imageId
       })
 
-      if (txId) setStep(2); setNftId(txId)
+      if (txId) setStep(2); setNftId(txId); refreshNFTs()
       // set isLoading
       setIsLoading((prev) => --prev)
       setDisableCreateNFT(false)
@@ -200,7 +200,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
             </div>
             <div className='flex w-101 justify-between m-auto'>
               <Button
-                onClick={close}
+                onClick={() => {close(); handleShareNFT(nftId)}}
                 className="h-10 mt-16 font-semibold text-base rounded w-43.75 mx-auto"
                 variant="indigo"
                 text="Transfer"

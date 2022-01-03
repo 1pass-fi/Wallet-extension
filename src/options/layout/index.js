@@ -570,6 +570,18 @@ export default ({ children }) => {
     setShowTransferNFT({show: true, cardInfo: toShareNFT})
   }
 
+  /* 
+    Refresh NFTs
+  */
+  const refreshNFTs = async () => {
+    let allAssets = await popupAccount.getAllAssets()
+    let validAssets = allAssets.filter(asset => asset.name !== '...')
+
+    console.log('validAssets', validAssets.length)
+
+    dispatch(setAssets({ nfts: validAssets }))
+  }
+
   // retry-upload
   const retryExportNFT = async (txId) => {
     const nftInfo = find(assets.nfts, { txId })
@@ -731,7 +743,8 @@ export default ({ children }) => {
         modalType, setModalType,
         kID, setkID,
         oldkID, setOldkID,
-        getDID
+        getDID,
+        refreshNFTs
       }}
     >
       <div className='app-background'>
