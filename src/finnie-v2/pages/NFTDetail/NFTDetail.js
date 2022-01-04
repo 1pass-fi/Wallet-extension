@@ -63,12 +63,12 @@ const NFTDetail = () => {
                 {nft.name}
               </div>
               <div className="text-sm mb-2">{`Registered: ${formatDatetime(nft.createdAt)}`}</div>
-              <div className="flex w-68 gap-4 mb-5">
+              <div className="flex gap-4 mb-5">
                 <a href={`https://viewblock.io/arweave/tx/${nft.txId}`} target="_blank">
                   <Button
                     disabled={disabledFeatures}
                     icon={BlockIcon}
-                    text="Explore Block"
+                    text={nft.pending ? 'Pending Transaction' : 'Explore Block'}
                     variant="inversed"
                     className="border-opacity-20"
                   />
@@ -96,35 +96,41 @@ const NFTDetail = () => {
                     </div>
                   ))}
               </div>
-              <div className="flex items-center justify-between h-11.5 mt-7.5 gap-5">
+
+              {!nft.pending && (
+                <div className="flex items-center justify-between h-11.5 mt-7.5 gap-5">
+                  <Button
+                    disabled={disabledFeatures}
+                    size="lg"
+                    icon={ShareIcon}
+                    className="h-full w-7/12"
+                    text="Share for Rewards"
+                    onClick={() => {
+                      setShowShareModal({ show: true, txid: nft.txId })
+                    }}
+                  />
+                  <Button
+                    disabled={disabledFeatures}
+                    size="lg"
+                    icon={LinkIcon}
+                    variant="inversed"
+                    className="h-full w-5/12"
+                    text="Transfer NFT"
+                    onClick={() => handleShareNFT(nft.txId)}
+                  />
+                </div>
+              )}
+
+              {!nft.pending && (
                 <Button
-                  disabled={disabledFeatures}
                   size="lg"
-                  icon={ShareIcon}
-                  className="h-full w-7/12"
-                  text="Share for Rewards"
-                  onClick={() => {
-                    setShowShareModal({ show: true, txid: nft.txId })
-                  }}
+                  icon={isArweaveNft ? EthLogo : ArweaveLogo}
+                  variant="lightBlue"
+                  text="Bridge your NFT to a different Blockchain"
+                  className="h-11.5 absolute bottom-0 w-full"
+                  onClick={() => setShowExportModal(nft)}
                 />
-                <Button
-                  disabled={disabledFeatures}
-                  size="lg"
-                  icon={LinkIcon}
-                  variant="inversed"
-                  className="h-full w-5/12"
-                  text="Transfer NFT"
-                  onClick={() => handleShareNFT(nft.txId)}
-                />
-              </div>
-              <Button
-                size="lg"
-                icon={isArweaveNft ? EthLogo : ArweaveLogo}
-                variant="lightBlue"
-                text="Bridge your NFT to a different Blockchain"
-                className="h-11.5 absolute bottom-0 w-full"
-                onClick={() => setShowExportModal(nft)}
-              />
+              )}
             </div>
           </div>
         </div>
