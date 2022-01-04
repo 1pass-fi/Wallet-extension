@@ -1,12 +1,13 @@
 import React, { useContext, useState, useRef, useEffect, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import isEmpty from 'lodash/isEmpty'
 
 import TransferFrom from './TransferForm'
 import ConfirmTransfer from './ConfirmTransfer'
 import TransferSuccess from './TransferSuccess'
 
 import { GalleryContext } from 'options/galleryContext'
-import { formatNumber } from 'options/utils'
 import { popupBackgroundRequest } from 'services/request/popup'
 
 import './index.css'
@@ -25,7 +26,14 @@ const TransferNFT = ({
   onClose,
   cardInfo: { txId, name, imageUrl, earnedKoi, totalViews, contentType, address }
 }) => {
-  const formattedName = useMemo(() => formatLongStringTruncate(name, 50), name)
+  const history = useHistory()
+
+  const backToGallery = () => {
+    onClose()
+    history.push('/v2/gallery')
+  }
+
+  const formattedName = useMemo(() => formatLongStringTruncate(name, 50), [name])
   const { setError } = useContext(GalleryContext)
 
   const modalRef = useRef(null)
@@ -113,16 +121,10 @@ const TransferNFT = ({
                 setReceiverAddress={setReceiverAddress}
                 numberToTransfer={numberToTransfer}
                 setNumberToTransfer={setNumberToTransfer}
-                handleBtnClick={handleValidateArAddress}
               />
             )}
             {stage === 2 && (
-              <ConfirmTransfer
-                receiverAddress={receiverAddress}
-                goBack={() => setStage(1)}
-                handleBtnClick={async () => await handleTransferNFT()}
-                sendBtnDisable={sendBtnDisable}
-              />
+              <ConfirmTransfer receiverAddress={receiverAddress} goBack={() => setStage(1)} />
             )}
 
             {stage === 3 && (
@@ -133,6 +135,32 @@ const TransferNFT = ({
               />
             )}
           </div>
+        </div>
+
+        <div className="button-wrapper">
+          {stage === 1 && (
+            <button
+              onClick={handleValidateArAddress}
+              className="submit-btn"
+              disabled={isEmpty(receiverAddress)}
+            >
+              Send NFT
+            </button>
+          )}
+          {stage == 2 && (
+            <button
+              className="submit-btn"
+              onClick={async () => await handleTransferNFT()}
+              disabled={sendBtnDisable}
+            >
+              Send NFT
+            </button>
+          )}
+          {stage == 3 && (
+            <button className="submit-btn" onClick={backToGallery}>
+              Back To Gallery
+            </button>
+          )}
         </div>
       </div>
     </div>

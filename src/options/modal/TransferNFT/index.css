@@ -21,7 +21,6 @@
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
   width: 100%;
   border-radius: 4px 4px 0 0;
-  margin-bottom: 26px;
 }
 
 .new-modal-header-icon {
@@ -31,14 +30,16 @@
 }
 
 .transfer-nft.wrapper {
+  position: relative;
   border-radius: 4px;
   background-color: #f5f5f5;
   color: #171753;
   width: 783px;
-  height: 438px;
+  height: 463px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 25px;
 
   font-size: 24px;
   font-style: normal;
@@ -60,7 +61,6 @@
   font-weight: 600;
   font-size: 18px;
   line-height: 23px;
-  margin-bottom: 25px;
 }
 
 .transfer-nft.container {
@@ -81,15 +81,27 @@
   width: 470px;
 }
 
+.transfer-nft.wrapper .button-wrapper {
+  width: 100%;
+  position: absolute;
+  bottom: 25px;
+  left: 0px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .transfer-nft.wrapper .submit-btn {
-  color: #171753;
+  color: white;
 
   padding: 5px 50px;
-  width: 240px;
+  min-width: 173px;
+  height: 39px;
   align-self: center;
 
-  background: #ffffff;
-  border-radius: 2px;
+  background: #373765;
+  border-radius: 4px;
   border: 0;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
 
@@ -102,5 +114,5 @@
 
 .transfer-nft.wrapper .submit-btn:disabled {
   cursor: not-allowed;
-  background-color: gray;
+  opacity: 0.7;
 }

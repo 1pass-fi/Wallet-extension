@@ -65,8 +65,11 @@
 .transfer-nft.wrapper .transfer-form .number-to-transfer .total-available {
   right: 0px;
   top: 3px;
+  position: absolute;
+
   font-size: 12px;
-  color: #5ed9d1;
+  letter-spacing: 0.03em;
+  color: #237b75;
 }
 
 .transfer-nft.wrapper .transfer-form .number-to-transfer .description {

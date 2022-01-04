@@ -1,5 +1,4 @@
 import React from 'react'
-import isEmpty from 'lodash/isEmpty'
 
 import StackIcon from 'img/stack-icon.svg'
 import WarningIcon from 'img/warning-icon-outline.svg'
@@ -9,8 +8,7 @@ const TransferFrom = ({
   receiverAddress,
   setReceiverAddress,
   numberToTransfer,
-  setNumberToTransfer,
-  handleBtnClick
+  setNumberToTransfer
 }) => {
   return (
     <div className="transfer-form">
@@ -45,10 +43,6 @@ const TransferFrom = ({
         />
         <div className="description">Many NFTs will only have 1 item minted.</div>
       </div>
-
-      <button onClick={handleBtnClick} className="submit-btn" disabled={isEmpty(receiverAddress)}>
-        Send My NFT
-      </button>
     </div>
   )
 }

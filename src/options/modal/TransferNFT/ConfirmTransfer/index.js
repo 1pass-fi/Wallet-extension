@@ -4,12 +4,7 @@ import WarningIcon from 'img/warning-icon-outline.svg'
 import EditIcon from 'img/edit-icon-collection.svg'
 import './index.css'
 
-const ConfirmTransfer = ({
-  receiverAddress,
-  goBack,
-  handleBtnClick,
-  sendBtnDisable,
-}) => {
+const ConfirmTransfer = ({ receiverAddress, goBack }) => {
   return (
     <div className="confirm-transfer">
       <div className="label">Receiver's Wallet Address:</div>
@@ -32,18 +27,9 @@ const ConfirmTransfer = ({
           <WarningIcon />
         </div>
         <div className="warning-text">
-          Transfer of ownership can take up to 10 minutes after you confirm the
-          purchase.
+          Transfer of ownership can take up to 10 minutes after you confirm the purchase.
         </div>
       </div>
-
-      <button
-        className="submit-btn"
-        onClick={handleBtnClick}
-        disabled={sendBtnDisable}
-      >
-        Send My NFT
-      </button>
     </div>
   )
 }
