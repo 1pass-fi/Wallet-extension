@@ -189,7 +189,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
           ></input>
           <label
             style={{ cursor: 'pointer' }}
-            for="update-all"
+            htmlFor="update-all"
             className="text-success ml-2 text-11px select-none w-55.5"
           >
             Apply these details (except the title) to all NFTs in this collection.

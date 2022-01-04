@@ -142,7 +142,7 @@ const EditNftInfo = ({
             ></input>
             <label
               style={{ cursor: 'pointer' }}
-              for="nsfw"
+              htmlFor="nsfw"
               className="text-white ml-2 text-11px select-none"
             >
               This content is <span className="text-warning">Explicit or 18+.</span>
