@@ -68,7 +68,9 @@ const NavBar = () => {
   return (
     <header className="sticky top-0 z-50 w-full h-16 flex items-center bg-indigo-900 px-5.25 text-white text-sm justify-between">
       <div className="flex items-center">
-        <KoiiLogo className="h-8 w-10.75" />
+        <NavLink to="/v2/">
+          <KoiiLogo className="h-8 w-10.75" />
+        </NavLink>
         <nav className="ml-6.25 tracking-finnieSpacing-wider">
           <NavLink to="/v2/gallery">Gallery</NavLink>
         </nav>
