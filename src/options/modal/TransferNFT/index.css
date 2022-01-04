@@ -34,10 +34,10 @@
   border-radius: 4px;
   background-color: #f5f5f5;
   color: #171753;
-  width: 745px;
+  width: 783px;
+  height: 438px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 
   font-size: 24px;
@@ -46,8 +46,9 @@
 }
 
 .transfer-nft.wrapper .title {
-  letter-spacing: -0.02em;
-  text-align: center;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0.01em;
 }
 
 .transfer-nft.wrapper .title .title__asset-name {
@@ -55,81 +56,32 @@
   color: #5ed9d1;
 }
 
+.transfer-nft__nft-name {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+}
+
 .transfer-nft.container {
   width: 100%;
   padding: 0px 30px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   position: relative;
 }
 
-.transfer-nft.container .asset-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.transfer-nft.container .asset-info .nft-img {
-  width: 208px;
-  height: 208px;
-  object-fit: contain;
-  background: #020221;
-  border-radius: 4px;
-}
-
-.transfer-nft.container .asset-info .nft-img-iframe {
-  overflow: hidden;
-  width: 208px;
-  height: 208px;
-  background: #020221;
-  -webkit-user-drag: none;
-  box-sizing: border-box;
-  padding-top: 35px;
-}
-
-.transfer-nft.container .nft-img-iframe .iframe-wrapper {
-  position: relative;
-  height: 208px;
-  width: 208px;
-}
-
-.transfer-nft.container .iframe-wrapper iframe {
-  position: absolute;
-  top: 0;
-  height: 208px;
-  width: 208px;
-  transform: translateY(-20%);
-}
-
-.transfer-nft.container .asset-info .asset-name {
-  letter-spacing: 0.03em;
-  margin-top: 9px;
-}
-
-.transfer-nft.container .asset-info .asset-owner {
-  font-size: 16px;
-  color: #5ed9d1;
-  margin: 2px 0px;
-}
-
-.transfer-nft.container .asset-info .asset-total-views {
-  letter-spacing: -0.02em;
-  margin: 2px 0px;
-}
-
-.transfer-nft.container .asset-info .asset-koii-earned {
-  color: #5ed9d1;
-  font-size: 14px;
-  margin: 2px 0px;
+.transfer-nft.container .media {
+  width: 201px;
+  height: 201px;
 }
 
 .transfer-nft.container .right-side {
-  width: 400px;
+  width: 470px;
 }
 
 .transfer-nft.wrapper .submit-btn {
   color: #171753;
-  position: absolute;
-  bottom: 32px;
 
   padding: 5px 50px;
   width: 240px;

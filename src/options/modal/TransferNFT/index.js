@@ -16,6 +16,7 @@ import { isArweaveAddress } from 'utils'
 
 // v2
 import { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
+import NFTMedia from 'finnie-v2/components/NFTMedia'
 
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import BackIcon from 'img/v2/back-icon-blue.svg'
@@ -24,7 +25,7 @@ const TransferNFT = ({
   onClose,
   cardInfo: { txId, name, imageUrl, earnedKoi, totalViews, contentType, address }
 }) => {
-  const formattedName = useMemo(() => formatLongStringTruncate(name), name)
+  const formattedName = useMemo(() => formatLongStringTruncate(name, 50), name)
   const { setError } = useContext(GalleryContext)
 
   const modalRef = useRef(null)
@@ -98,32 +99,11 @@ const TransferNFT = ({
           <CloseIcon className="new-modal-header-icon" onClick={onClose} />
         </section>
 
+        <div className="transfer-nft__nft-name">{formattedName}</div>
+
         <div className="transfer-nft container">
-          <div className="asset-info">
-            {(contentType.includes('image') || contentType.includes('svg+xml')) && (
-              <img src={imageUrl} className="nft-img" />
-            )}
-            {contentType.includes('video') && (
-              <video
-                width={320}
-                height={240}
-                src={imageUrl}
-                className="nft-img"
-                controls
-                autoPlay
-              />
-            )}
-            {contentType.includes('html') && (
-              <div className="nft-img-iframe">
-                <div className="iframe-wrapper">
-                  <iframe frameBorder="0" src={imageUrl} />
-                </div>
-              </div>
-            )}
-            <div className="asset-name">{formattedName}</div>
-            {/* <div className="asset-owner">{ownerName}</div> */}
-            <div className="asset-total-views">{totalViews} views</div>
-            <div className="asset-koii-earned">{formatNumber(earnedKoi)} KOII earned</div>
+          <div className="media">
+            <NFTMedia contentType={contentType} source={imageUrl} />
           </div>
 
           <div className="right-side">
@@ -160,29 +140,3 @@ const TransferNFT = ({
 }
 
 export default TransferNFT
-// export default ({
-//   onClose,
-//   cardInfo: { txId, name, imageUrl, earnedKoi, totalViews, contentType, address }
-// }) => {
-//   let validName = name
-//   if (name.length > 14) {
-//     validName = name.slice(0, 12) + '...'
-//   }
-
-//   return (
-//     <div>
-//       <Modal onClose={onClose}>
-//         <TransferNFT
-//           txId={txId}
-//           name={validName}
-//           imageUrl={imageUrl}
-//           earnedKoi={earnedKoi}
-//           totalViews={totalViews}
-//           contentType={contentType}
-//           address={address}
-//           onClose={onClose}
-//         />
-//       </Modal>
-//     </div>
-//   )
-// }
