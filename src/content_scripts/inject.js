@@ -8,9 +8,6 @@ export default async (fn) => {
   script.text = `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(MESSAGES)}');(${fn.toString()})();`
   arweaveScript.src = 'https://unpkg.com/arweave/bundles/web.bundle.js'
 
-  const disabledOrigins = await storage.setting.get.disabledOrigins()
-  const origin = window.location.origin
-
-  if (!disabledOrigins.includes(origin)) document.documentElement.appendChild(arweaveScript)
-  if (!disabledOrigins.includes(origin)) document.documentElement.appendChild(script)
+  document.documentElement.appendChild(arweaveScript)
+  document.documentElement.appendChild(script)
 }
