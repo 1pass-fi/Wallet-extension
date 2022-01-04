@@ -98,7 +98,9 @@ const TransferNFT = ({
     <div className="new-modal-wrapper">
       <div className="transfer-nft wrapper" ref={modalRef}>
         <section className="new-modal-header">
-          <BackIcon className="new-modal-header-icon" />
+          <div className="new-modal-header-icon">
+            {stage === 2 && <BackIcon onClick={() => setStage(1)} />}
+          </div>
           <div className="title">
             {stage === 1 && <>Transfer your NFT to a friend</>}
             {stage === 2 && <>Confirm your Transfer</>}
