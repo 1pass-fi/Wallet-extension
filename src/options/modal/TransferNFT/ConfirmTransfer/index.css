@@ -6,7 +6,6 @@
   letter-spacing: 0.03em;
 
   height: 100%;
-  padding-top: 40px;
 }
 
 .transfer-nft.wrapper .confirm-transfer .label {
@@ -18,18 +17,20 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 9px 0px 26px 0px;
+  align-items: baseline;
+  margin-bottom: 20px;
 }
 
 .transfer-nft.wrapper .confirm-transfer .receiver-address {
-  font-size: 18px;
+  font-size: 14px;
   width: 90%;
-  color: #5ed9d1;
+  letter-spacing: 0.003em;
+  color: #237b75;
 }
 
 .transfer-nft.wrapper .confirm-transfer .edit-icon {
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 21px;
   cursor: pointer;
 }
 
@@ -39,10 +40,13 @@
 }
 
 .transfer-nft.wrapper .confirm-transfer .warning-icon {
-  width: 32px;
-  height: 20px;
+  width: 36px;
 }
 
 .transfer-nft.wrapper .confirm-transfer .warning-text {
   margin-left: 8px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 20px;
+  letter-spacing: 0.001em;
 }

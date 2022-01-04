@@ -1,7 +1,7 @@
 import React from 'react'
 
-import WarningIcon from 'img/warning-icon-outline.svg'
-import EditIcon from 'img/edit-icon-collection.svg'
+import WarningIcon from 'img/v2/warning-icon.svg'
+import EditIcon from 'img/v2/edit-icon-gray.svg'
 import './index.css'
 
 const ConfirmTransfer = ({ receiverAddress, goBack }) => {
@@ -10,13 +10,7 @@ const ConfirmTransfer = ({ receiverAddress, goBack }) => {
       <div className="label">Receiver's Wallet Address:</div>
 
       <div className="receiver-field">
-        <div className="receiver-address">
-          {receiverAddress.length > 24
-            ? `${receiverAddress.slice(0, 20)}...${receiverAddress.slice(
-              receiverAddress.length - 4
-            )}`
-            : receiverAddress}
-        </div>
+        <div className="receiver-address">{receiverAddress}</div>
         <div className="edit-icon" onClick={goBack}>
           <EditIcon />
         </div>

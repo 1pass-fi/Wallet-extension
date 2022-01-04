@@ -1,7 +1,6 @@
 import React from 'react'
 
-import StackIcon from 'img/stack-icon.svg'
-import WarningIcon from 'img/warning-icon-outline.svg'
+import WarningIcon from 'img/v2/warning-icon.svg'
 import './index.css'
 
 const TransferFrom = ({
