@@ -28,6 +28,7 @@ export default async (account) => {
     return { fetchedCollections, collectionNfts }
   } catch (err) {
     console.error(err.message)
+    return { fetchedCollections: [], collectionNfts: []}
   }
 }
 
