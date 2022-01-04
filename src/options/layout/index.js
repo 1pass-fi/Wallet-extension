@@ -12,6 +12,7 @@ import includes from 'lodash/includes'
 
 import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 import sendMessage from 'finnie-v2/utils/sendMessage'
+import classifyAssets from 'finnie-v2/utils/classifyAssets'
 
 import './index.css'
 import StartUp from 'options/pages/StartUp'
@@ -141,6 +142,7 @@ export default ({ children }) => {
   const accounts = useSelector(state => state.accounts)
   const defaultAccount = useSelector(state => state.defaultAccount)
   const assets = useSelector(state => state.assets)
+  const collectionState = useSelector(state => state.collections)
 
   /* 
     STEP 1:
@@ -221,41 +223,37 @@ export default ({ children }) => {
     }
   }
 
-  useEffect(() => {
-    const loadCollections = async () => {
-      try {
-        /* Load collections from storage */
-        setIsLoading(prev => ++prev)
-        let allCollections = await popupAccount.getAllCollections()
-        let allCollectionNfts = await popupAccount.getAllCollectionNfts()
-        dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
-        dispatch(setCollectionNfts({ collectionNfts: allCollectionNfts }))
+  // useEffect(() => {
+  //   const loadCollections = async () => {
+  //     try {
+  //       /* Load collections from storage */
+  //       setIsLoading(prev => ++prev)
 
-        await backgroundRequest.gallery.loadCollections()
+  //       await backgroundRequest.gallery.loadCollections()
 
-        /* Fetch for collections */
-        allCollections = await popupAccount.getAllCollections()
-        allCollectionNfts = await popupAccount.getAllCollectionNfts()
-        dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
-        dispatch(setCollectionNfts({ collectionNfts: allCollectionNfts }))
-        setIsLoading(prev => --prev)
-      } catch (err) {
-        setIsLoading(prev => --prev)
-        setError(err.message)
-      }
-    }
+  //       /* Fetch for collections */
+  //       allCollections = await popupAccount.getAllCollections()
+  //       allCollectionNfts = await popupAccount.getAllCollectionNfts()
+  //       dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
+  //       dispatch(setCollectionNfts({ collectionNfts: allCollectionNfts }))
+  //       setIsLoading(prev => --prev)
+  //     } catch (err) {
+  //       setIsLoading(prev => --prev)
+  //       setError(err.message)
+  //     }
+  //   }
 
-    const getAffiliateCode = () => {
-      dispatch(loadAllFriendReferralData())
-    }
+  //   const getAffiliateCode = () => {
+  //     dispatch(loadAllFriendReferralData())
+  //   }
 
-    if (walletLoaded) {
-      loadCollections()
-      getAffiliateCode()
-      getDID()
-    }
+  //   if (walletLoaded) {
+  //     loadCollections()
+  //     getAffiliateCode()
+  //     getDID()
+  //   }
 
-  }, [walletLoaded])
+  // }, [walletLoaded])
 
   /* 
    STEP 3: ( run on default account changed)
@@ -291,24 +289,20 @@ export default ({ children }) => {
   /* 
     Load all NFTs
   */
-  useEffect(() => {
-    const loadAllContents = async () => {
-      setIsLoading(prev => ++prev)
-      console.log('loading all contents')
-      let allAssets = await popupAccount.getAllAssets()
-      let validAssets = allAssets.filter(asset => asset.name !== '...' && !includes(asset.name, 'DID Profile Page'))
-      dispatch(setAssets({ nfts: validAssets }))
+  // useEffect(() => {
+  //   const loadAllContents = async () => {
+  //     setIsLoading(prev => ++prev)
 
-      await backgroundRequest.assets.loadAllContent()
-      allAssets = await popupAccount.getAllAssets()
-      validAssets = allAssets.filter(asset => asset.name !== '...' && !includes(asset.name, 'DID Profile Page'))
-      dispatch(setAssets({ nfts: validAssets }))
-      if (isEmpty(allAssets) && pathname === '/') history.push('/create')
-      setIsLoading(prev => --prev)
-    }
+  //     await backgroundRequest.assets.loadAllContent()
+  //     allAssets = await popupAccount.getAllAssets()
+  //     validAssets = allAssets.filter(asset => asset.name !== '...')
+  //     dispatch(setAssets({ nfts: validAssets }))
+  //     if (isEmpty(allAssets) && pathname === '/') history.push('/create')
+  //     setIsLoading(prev => --prev)
+  //   }
 
-    if (walletLoaded) loadAllContents()
-  }, [walletLoaded])
+  //   if (walletLoaded) loadAllContents()
+  // }, [walletLoaded])
 
   useEffect(() => {
     if (defaultAccount) getDID()
@@ -645,65 +639,35 @@ export default ({ children }) => {
     return bytes.buffer
   }
 
-  const getDID = async () => {
-    try {
+  useEffect(() => {
+    // load nfts and collection from store, set to state
+    const loadAssetsFromStorage = async () => {
       setIsLoading(prev => ++prev)
-      const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
-      let state, id
-      try {
-        const result = await backgroundRequest.gallery.getDID({ address: defaultAccountAddress })
-        state = result.state
+      let allCollections = await popupAccount.getAllCollections()
+      let allCollectionNfts = await popupAccount.getAllCollectionNfts()
+      dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
+      dispatch(setCollectionNfts({ collectionNfts: allCollectionNfts }))
 
-        if (!isEmpty(state)) {
-          setHadData(true)
-        } else {
-          setHadData(false)
-        }
+      console.log('all Collections', allCollections)
+      console.log('loading all contents')
+      let allAssets = await popupAccount.getAllAssets()
+      let validAssets = allAssets.filter(asset => asset.name !== '...')
 
-        id = result.id
-      } catch (err) {
-        console.log(err.message)
-        setHadData(false)
-        state = {
-          links: [{ title: '', link: '' }],
-          name: '',
-          description: '',
-          country: '',
-          pronouns: '',
-          kID: '',
-          code: '',
-          styles: []
-        }
-      }
+      validAssets = classifyAssets(validAssets, allCollections)
+      console.log('valid assets', validAssets)
 
-      const _userKID = {
-        kidLink: state.kID ? `https://koii.id/${state.kID}` : 'https://koii.id/',
-        name: state.name,
-        description: state.description,
-        country: state.country,
-        pronouns: state.pronouns
-      }
+      dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
 
-      console.log('userKID', _userKID)
-
-      setDidID(id)
-      setuserKID(prev => ({...prev, ..._userKID}))
-
-      setProfilePictureId(state.picture)
-      setBannerId(state.banner)
-      setCustomCss(state.code)
-      setUsingCustomCss(!isEmpty(state.code))
-
-      setLinkAccounts(state.links)
-      setkID(state.kID)
-      setOldkID(state.kID)
-      setIsLoading(prev => --prev)
-    } catch (err) {
-      console.error(err.message)
-      setError('Get DID error')
       setIsLoading(prev => --prev)
     }
-  }
+
+    const fetchAssets = async () => {
+
+    }
+
+    loadAssetsFromStorage()
+    fetchAssets()
+  }, [walletLoaded])
 
   return (
     <GalleryContext.Provider

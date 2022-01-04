@@ -125,7 +125,9 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
             <div className="w-full text-center">
               <button
                 className="w-20 h-5 bg-blue-800 text-white m-2 font-semibold rounded"
-                onClick={() => setPages((prev) => ++prev)}
+                onClick={() => {
+                  setPages((prev) => ++prev)
+                }}
               >
                 See more
               </button>

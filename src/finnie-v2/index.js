@@ -36,19 +36,6 @@ const SecondVer = () => {
     updateDefaultAccountData()
   }, [])
 
-  useEffect(() => {
-    const loadNFTCards = async () => {
-      await popupAccount.loadImported()
-
-      const allAssets = await popupAccount.getAllAssets()
-      const validAssets = allAssets.filter((asset) => asset.name !== '...')
-
-      dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
-    }
-
-    loadNFTCards()
-  }, [])
-
   return (
     <Layout>
       <Switch>

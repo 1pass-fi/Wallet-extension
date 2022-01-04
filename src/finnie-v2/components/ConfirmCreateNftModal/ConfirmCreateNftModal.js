@@ -73,7 +73,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
         tags,
         fileType,
         address: defaultAccount.address,
-        price: estimateCostAr,
+        price: estimateCostAr, 
         imageId
       })
 
