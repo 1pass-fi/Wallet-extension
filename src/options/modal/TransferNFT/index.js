@@ -107,7 +107,14 @@ const TransferNFT = ({
           <CloseIcon className="new-modal-header-icon" onClick={onClose} />
         </section>
 
-        <div className="transfer-nft__nft-name">{formattedName}</div>
+        <div className="transfer-nft__nft-name-wrapper">
+          <div className="transfer-nft__nft-name">{formattedName}</div>
+          {stage === 3 && (
+            <>
+              <span>&nbsp;has been sent to:</span>
+            </>
+          )}
+        </div>
 
         <div className="transfer-nft container">
           <div className="media">

@@ -1,38 +1,19 @@
 import React from 'react'
 
-import WarningIcon from 'img/warning-icon-outline.svg'
-import CheckIcon from 'img/green-tick.svg'
+import CheckIcon from 'img/v2/green-tick-icon.svg'
 import './index.css'
 
 const TransferSuccess = ({ receiverAddress, name, onClose }) => {
   return (
     <div className="transfer-success">
-      <div className="green-tick">
-        <CheckIcon />
-      </div>
-      <div className="label">
-        <span className="asset-name">{name}</span> has been sent successfully
-        to:
-      </div>
-      <div className="receiver-field">
-        <div className="receiver-address">
-          {receiverAddress.length > 24
-            ? `${receiverAddress.slice(0, 20)}...${receiverAddress.slice(
-              receiverAddress.length - 4
-            )}`
-            : receiverAddress}
+      <div className="successfully-sent">
+        <div className="green-tick">
+          <CheckIcon />
         </div>
+        <div>Succesfully Sent</div>
       </div>
-
-      <div className="warning">
-        <div className="warning-icon">
-          <WarningIcon />
-        </div>
-        <div className="warning-text">
-          Transfer of ownership can take up to 10 minutes after you confirm the
-          purchase.
-        </div>
-      </div>
+      <div className="label">Receiver's Wallet Address:</div>
+      <div className="receiver-address">{receiverAddress}</div>
     </div>
   )
 }

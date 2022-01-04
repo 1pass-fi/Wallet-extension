@@ -52,15 +52,20 @@
   letter-spacing: 0.01em;
 }
 
-.transfer-nft.wrapper .title .title__asset-name {
-  font-weight: 600;
-  color: #5ed9d1;
+.transfer-nft__nft-name-wrapper {
+  display: flex;
+  width: full;
+  justify-content: center;
+  align-items: center;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 23px;
+  color: #373765;
 }
 
 .transfer-nft__nft-name {
   font-weight: 600;
-  font-size: 18px;
-  line-height: 23px;
+  color: #373765;
 }
 
 .transfer-nft.container {
