@@ -80,7 +80,7 @@ const NavBar = () => {
           className="h-5 w-3.75 mx-6.5 cursor-pointer"
           onClick={toggleNotificationsCenter}
         />
-        <Balance koiiBalance={defaultAccount.koiBalance} arBalance={defaultAccount.balance} />
+        <Balance account={defaultAccount} />
         <div className="relative">
           <div
             className="w-10 h-10 cursor-pointer rounded-full ml-6.5"
