@@ -37,6 +37,7 @@ import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/acco
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setCollections } from 'options/actions/collections'
 import { setAssets, setCollectionNfts } from 'options/actions/assets'
+import { addNotification } from 'options/actions/notifications'
 
 export default ({ children }) => {
   const { pathname } = useLocation()
@@ -549,12 +550,13 @@ export default ({ children }) => {
         }
       )
 
-      const notificationHandler = {
-        type: MESSAGES.PUSH_NOTIFICATIONS,
-        callback: (notification) => {
-          console.log(notification)
+      const notificationHandler = new EventHandler(
+        MESSAGES.PUSH_NOTIFICATIONS,
+        async ({ payload: notification }) => {
+          dispatch(addNotification(notification))
+          setNotification(notification.message)
         }
-      }
+      )
     
       popupBackgroundConnect.addHandler(loadBalancesSuccess)
       popupBackgroundConnect.addHandler(reloadGalleryHandler)

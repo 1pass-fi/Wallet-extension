@@ -1,4 +1,4 @@
-import { ADD_NOTIFICATION, SET_NOTIFICATIONS } from './types'
+import { ADD_NOTIFICATION, SET_NOTIFICATIONS, VIEW_NOTIFICATIONS } from './types'
 
 export const setNotifications = (notifications) => (dispatch) => {
   dispatch({

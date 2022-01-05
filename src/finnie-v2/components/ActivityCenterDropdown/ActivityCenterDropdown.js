@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
-import { isEmpty } from 'lodash'
 import clsx from 'clsx'
+import { isEmpty } from 'lodash'
+
+import ActivityRow from './ActivityRow'
+import NotificationTab from './NotificationTab'
 
 import storage from 'services/storage'
-import ActivityRow from './ActivityRow'
+import { popupAccount } from 'services/account'
 
 import './ActivityCenterDropdown.css'
-import { popupAccount } from 'services/account'
 
 const ACTIVITY = 'ACTIVITY'
 const COMMUNITY = 'COMMUNITY'
@@ -18,6 +20,8 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
   const [tab, setTab] = useState(ACTIVITY)
   const [activities, setActivities] = useState([])
   const [pages, setPages] = useState(1)
+
+  const notificationsData = useSelector((state) => state.notificationsData)
 
   useEffect(() => {
     const loadActivities = async () => {
@@ -98,6 +102,7 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
           Notification
         </div>
       </div>
+
       {tab === ACTIVITY && (
         <div style={{ overflowY: 'overlay' }} id="activities" className="h-97.5">
           {activities.slice(0, pages * 10).map((activity) => (
@@ -128,6 +133,8 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
           )}
         </div>
       )}
+
+      {tab === NOTIFICATION && <NotificationTab notificationsData={notificationsData} />}
     </div>
   )
 })

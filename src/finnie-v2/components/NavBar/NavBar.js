@@ -1,7 +1,7 @@
 import React, { createRef, useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-
 import { NavLink } from 'react-router-dom'
+import clsx from 'clsx'
 
 import Balance from 'finnie-v2/components/Balance'
 import DefaultAvatar from 'img/v2/default-avatar.svg'
@@ -24,6 +24,7 @@ const NavBar = () => {
   const navbarRef = createRef()
 
   const defaultAccount = useSelector((state) => state.defaultAccount)
+  const notificationsData = useSelector((state) => state.notificationsData)
 
   const toggleDropdownMenu = () => setShowDropdown(!showDropdown)
   const closeDropdownMenu = () => setShowDropdown(false)
@@ -78,10 +79,22 @@ const NavBar = () => {
 
       <div className="flex items-center" ref={navbarRef}>
         {isLoading !== 0 && <Loading />}
-        <NotificationIcon
-          className="h-5 w-3.75 mx-6.5 cursor-pointer"
-          onClick={toggleNotificationsCenter}
-        />
+        <div className="relative mx-6.5">
+          <NotificationIcon
+            className="h-6 w-4.5 cursor-pointer"
+            onClick={toggleNotificationsCenter}
+          />
+          {notificationsData.new > 0 && (
+            <span
+              className={clsx(
+                notificationsData.new > 99 ? 'text-3xs' : 'text-2xs',
+                'flex items-center justify-center rounded-full w-4.25 h-4.25 bg-red-finnie absolute text-white font-semibold -top-1 -right-1.75'
+              )}
+            >
+              {notificationsData.new > 99 ? `99+` : notificationsData.new}
+            </span>
+          )}
+        </div>
         <Balance account={defaultAccount} />
         <div className="relative">
           <div
