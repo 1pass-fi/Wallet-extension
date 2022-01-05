@@ -20,7 +20,7 @@ const NFTCard = ({ nft }) => {
         <div className="font-semibold text-xs tracking-finnieSpacing-wide">
           {formatLongString(nft.name, 22)}
         </div>
-        <div className="text-2xs font-light tracking-finnieSpacing-wide text-warning">Category</div>
+        {/* <div className="text-2xs font-light tracking-finnieSpacing-wide text-warning">Category</div> */}
       </div>
       <EthereumLogo className="absolute w-5 h-5 bottom-1.75 right-1.75" />
     </Link>

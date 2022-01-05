@@ -223,37 +223,17 @@ export default ({ children }) => {
     }
   }
 
-  // useEffect(() => {
-  //   const loadCollections = async () => {
-  //     try {
-  //       /* Load collections from storage */
-  //       setIsLoading(prev => ++prev)
+  useEffect(() => {
+    const getAffiliateCode = () => {
+      dispatch(loadAllFriendReferralData())
+    }
 
-  //       await backgroundRequest.gallery.loadCollections()
+    if (walletLoaded) {
+      getAffiliateCode()
+      getDID()
+    }
 
-  //       /* Fetch for collections */
-  //       allCollections = await popupAccount.getAllCollections()
-  //       allCollectionNfts = await popupAccount.getAllCollectionNfts()
-  //       dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
-  //       dispatch(setCollectionNfts({ collectionNfts: allCollectionNfts }))
-  //       setIsLoading(prev => --prev)
-  //     } catch (err) {
-  //       setIsLoading(prev => --prev)
-  //       setError(err.message)
-  //     }
-  //   }
-
-  //   const getAffiliateCode = () => {
-  //     dispatch(loadAllFriendReferralData())
-  //   }
-
-  //   if (walletLoaded) {
-  //     loadCollections()
-  //     getAffiliateCode()
-  //     getDID()
-  //   }
-
-  // }, [walletLoaded])
+  }, [walletLoaded])
 
   /* 
    STEP 3: ( run on default account changed)
@@ -285,28 +265,6 @@ export default ({ children }) => {
       loadGallerySettings()
     }
   }, [walletLoaded])
-
-  /* 
-    Load all NFTs
-  */
-  // useEffect(() => {
-  //   const loadAllContents = async () => {
-  //     setIsLoading(prev => ++prev)
-
-  //     await backgroundRequest.assets.loadAllContent()
-  //     allAssets = await popupAccount.getAllAssets()
-  //     validAssets = allAssets.filter(asset => asset.name !== '...')
-  //     dispatch(setAssets({ nfts: validAssets }))
-  //     if (isEmpty(allAssets) && pathname === '/') history.push('/create')
-  //     setIsLoading(prev => --prev)
-  //   }
-
-  //   if (walletLoaded) loadAllContents()
-  // }, [walletLoaded])
-
-  useEffect(() => {
-    if (defaultAccount) getDID()
-  }, [defaultAccount])
 
   /* 
     Load assets:
@@ -655,14 +613,43 @@ export default ({ children }) => {
 
       validAssets = classifyAssets(validAssets, allCollections)
       console.log('valid assets', validAssets)
-
       dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
 
       setIsLoading(prev => --prev)
     }
 
     const fetchAssets = async () => {
+      let allCollections = await popupAccount.getAllCollections() 
+      let allCollectionNfts = await popupAccount.getAllCollectionNfts()
+      let allAssets, validAssets
 
+      const loadCollection = async () => {
+        console.log('LOADING COLLECTION')
+        await backgroundRequest.gallery.loadCollections()
+        allCollections = await popupAccount.getAllCollections()
+        allCollectionNfts = await popupAccount.getAllCollectionNfts()
+        dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
+        dispatch(setCollectionNfts({ collectionNfts: allCollectionNfts }))
+      }
+
+      const loadNfts = async () => {
+        console.log('LOADING NFTS')
+        await backgroundRequest.assets.loadAllContent()
+        allAssets = await popupAccount.getAllAssets()
+        validAssets = allAssets.filter(asset => asset.name !== '...')
+
+        validAssets = classifyAssets(validAssets, allCollections)
+        dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
+      }
+
+      setIsLoading(prev => ++prev)
+      await Promise.all([loadCollection, loadNfts].map(f => f()))
+      validAssets = classifyAssets(validAssets, allCollections)
+      if (isEmpty(validAssets) && pathname === '/') history.push('/create')
+      else {
+        dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
+      }
+      setIsLoading(prev => --prev)
     }
 
     loadAssetsFromStorage()
