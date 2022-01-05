@@ -548,10 +548,18 @@ export default ({ children }) => {
           }
         }
       )
+
+      const notificationHandler = {
+        type: MESSAGES.PUSH_NOTIFICATIONS,
+        callback: (notification) => {
+          console.log(notification)
+        }
+      }
     
       popupBackgroundConnect.addHandler(loadBalancesSuccess)
       popupBackgroundConnect.addHandler(reloadGalleryHandler)
       popupBackgroundConnect.addHandler(uploadNFTHandler)
+      popupBackgroundConnect.addHandler(notificationHandler)
     }
   
     handleAddHandler()
