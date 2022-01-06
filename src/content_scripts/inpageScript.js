@@ -343,7 +343,7 @@ const inpageScriptWithoutArweaveWallet = () => {
      * @param {*} txId 
      * @returns 
      */
-    updateDID: (didData, txId, newkID) => buildPromise(MESSAGE_TYPES.KOI_UPDATE_DID, { didData, txId, newkID })
+    updateDID: (didData, txId, newkID) => buildPromise(MESSAGE_TYPES.KOI_UPDATE_DID, { didData, txId, newkID }),
   }
 
   window.koiWallet = window.koiiWallet
