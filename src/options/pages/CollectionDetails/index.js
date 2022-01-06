@@ -26,7 +26,7 @@ export default () => {
   const [editCollection, setEditCollection] = useState(false)
   const [publishCollection, setPublishCollection] = useState(false)
 
-  const { setNotification, showEarnedKoi, showViews } = useContext(GalleryContext)
+  const { showEarnedKoi, showViews } = useContext(GalleryContext)
   const { collectionId } = useParams()
 
   const collectionState = useSelector((state) => state.collections)
@@ -58,7 +58,7 @@ export default () => {
   const history = useHistory()
 
   const handleGoBack = () => {
-    history.push('/v2/collections')
+    history.push('/collections')
   }
 
   return (

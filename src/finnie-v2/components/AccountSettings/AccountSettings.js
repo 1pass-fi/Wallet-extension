@@ -3,12 +3,12 @@ import clsx from 'clsx'
 import { NavLink } from 'react-router-dom'
 
 const accountSettingItems = [
-  { text: 'Koii Identity (kID)', path: '/v2/settings/kID' },
-  { text: 'Gallery Settings', path: '/v2/settings/gallery' },
-  { text: 'Wallet Settings', path: '/v2/settings/wallet' },
-  { text: 'Security', path: '/v2/settings/security' },
-  { text: 'Customization', path: '/v2/settings/#', disabled: true },
-  { text: 'About', path: '/v2/settings/about' }
+  { text: 'Koii Identity (kID)', path: '/settings/kID' },
+  { text: 'Gallery Settings', path: '/settings/gallery' },
+  { text: 'Wallet Settings', path: '/settings/wallet' },
+  { text: 'Security', path: '/settings/security' },
+  { text: 'Customization', path: '/settings/#', disabled: true },
+  { text: 'About', path: '/settings/about' }
 ]
 
 const AccountSettings = React.forwardRef(({ className }, ref) => {

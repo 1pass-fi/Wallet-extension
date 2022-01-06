@@ -9,7 +9,7 @@ const Notifications = () => {
   return (
     <MainLayout title="Notification Center">
       <Switch>
-        <Route exact path="/v2/notifications/*">
+        <Route exact path="/notifications/*">
           <Activity />
         </Route>
       </Switch>

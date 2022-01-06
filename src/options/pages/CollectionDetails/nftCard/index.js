@@ -42,7 +42,7 @@ export default ({ nft }) => {
     return (
       <div className="nft-simple-card-wrapper">
         <div className="nft-simple-card">
-          <Link className="link-tag" to={`/v2/nfts/${txId}`}>
+          <Link className="link-tag" to={`/nfts/${txId}`}>
             <div className="preview-nft">
               {contentType?.includes('image') && <img src={url} className="nft-img" />}
               {contentType?.includes('video') && (

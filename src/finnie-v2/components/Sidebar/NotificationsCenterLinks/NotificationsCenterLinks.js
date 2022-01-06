@@ -3,11 +3,11 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 const navItems = [
-  { name: 'Community', path: '/v2/notifications/community' },
-  { name: 'Activity', path: '/v2/notifications/activity' },
-  { name: 'Assets', path: '/v2/notifications/assets' },
-  { name: 'Notification Settings', path: '/v2/notifications/notification-setting' },
-  { name: 'About', path: '/v2/notifications/about' }
+  { name: 'Community', path: '/notifications/community' },
+  { name: 'Activity', path: '/notifications/activity' },
+  { name: 'Assets', path: '/notifications/assets' },
+  { name: 'Notification Settings', path: '/notifications/notification-setting' },
+  { name: 'About', path: '/notifications/about' }
 ]
 
 const NotificationsCenterLinks = () => {

@@ -12,20 +12,20 @@ import HasArweave from 'options/shared/hasArweave'
 export default () => {
   return (
     <Switch>
-      <Route exact path='/v2/settings/security'>
+      <Route exact path="/settings/security">
         <Security />
       </Route>
-      <Route exact path='/v2/settings/wallet'>
+      <Route exact path="/settings/wallet">
         <Wallet />
       </Route>
-      <Route exact path='/v2/settings/gallery'>
+      <Route exact path="/settings/gallery">
         <Gallery />
       </Route>
-      <Route exact path='/v2/settings/about'>
+      <Route exact path="/settings/about">
         <About />
       </Route>
-      <Route path='/v2/settings/*'>
-        <HasArweave content='Koii Identity only supports AR wallets.' checkingDefaultAccount={true}>
+      <Route path="/settings/*">
+        <HasArweave content="Koii Identity only supports AR wallets." checkingDefaultAccount={true}>
           <Kid />
         </HasArweave>
       </Route>

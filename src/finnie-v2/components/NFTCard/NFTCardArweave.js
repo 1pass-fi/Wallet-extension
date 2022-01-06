@@ -11,7 +11,7 @@ import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 const NFTCard = ({ nft }) => {
   return (
     <Link
-      to={`/v2/nfts/${nft.txId}`}
+      to={`/nfts/${nft.txId}`}
       className="relative text-white rounded bg-blue-800 w-46.75 h-62.5 pt-1.75 px-1.75"
     >
       <div className="flex justify-center items-center w-full h-37.75">

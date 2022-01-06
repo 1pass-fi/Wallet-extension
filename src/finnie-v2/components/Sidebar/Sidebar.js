@@ -15,9 +15,9 @@ import SortAndFilter from './SortAndFilter'
 import NotificationsCenterLinks from './NotificationsCenterLinks'
 
 const navItems = [
-  { icon: CreateIcon, path: '/v2/create' },
-  { icon: GalleryIcon, path: '/v2/gallery' },
-  { icon: CollectionIcon, path: '/v2/collections' }
+  { icon: CreateIcon, path: '/create' },
+  { icon: GalleryIcon, path: '/gallery' },
+  { icon: CollectionIcon, path: '/collections' }
 ]
 
 const Sidebar = () => {
@@ -93,7 +93,7 @@ const Sidebar = () => {
       </nav>
       <div style={{ height: '60vh' }} className="rounded overflow-y-scroll">
         <div className="bg-trueGray-100 bg-opacity-20 rounded w-57.75">
-          <Route path="/v2/gallery">
+          <Route path="/gallery">
             <SortAndFilter
               handleSearchFieldChange={handleSearchFieldChange}
               handleSelectChains={handleSelectChains}
@@ -102,10 +102,10 @@ const Sidebar = () => {
               selectedChain={chainType}
             />
           </Route>
-          <Route path="/v2/create">
+          <Route path="/create">
             <UploadNftForm />
           </Route>
-          <Route exact path="/v2/collections">
+          <Route exact path="/collections">
             <SortAndFilter
               handleSearchFieldChange={handleSearchFieldChangeCollection}
               handleSelectChains={handleSelectChainsCollection}
@@ -115,13 +115,13 @@ const Sidebar = () => {
               type="Collections"
             />
           </Route>
-          <Route exact path="/v2/collections/create">
+          <Route exact path="/collections/create">
             <CreateCollectionForm />
           </Route>
-          <Route exact path="/v2/settings/*">
+          <Route exact path="/settings/*">
             <AccountSettings />
           </Route>
-          <Route path="/v2/notifications">
+          <Route path="/notifications">
             <NotificationsCenterLinks />
           </Route>
         </div>

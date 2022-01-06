@@ -14,7 +14,7 @@ const Collection = () => {
     <MainLayout title="Gallery">
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-6 place-items-center">
         <Link
-          to="/v2/collections/create"
+          to="/collections/create"
           className="w-50 h-60 flex flex-col items-center justify-center border border-dashed border-white rounded"
         >
           <CreateIcon className="w-11.25 h-11.25" />

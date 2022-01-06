@@ -13,7 +13,7 @@ const CollectionCard = ({ collection }) => {
 
   return (
     <Link
-      to={`/v2/collections/${collection.id}`}
+      to={`/collections/${collection.id}`}
       className="relative text-white rounded w-50 h-60 pt-1.75 px-1.75"
     >
       <div className="rounded shadow absolute top-0 left-3.5 bg-blue-800 w-47.25 h-56.5" />

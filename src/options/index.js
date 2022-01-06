@@ -5,12 +5,7 @@ import { Provider } from 'react-redux'
 
 import './index.css'
 import Layout from './layout'
-import Home from './pages/Home'
-import Details from './pages/Details'
 import Create from './pages/Create'
-import Collections from './pages/Collections'
-import CollectionDetails from './pages/CollectionDetails'
-import Settings from './pages/Settings'
 import Faucet from './pages/Faucet'
 import Friends from './pages/Friends'
 import Welcome from './pages/StartUp/Welcome'
@@ -30,9 +25,6 @@ const Gallery = () => {
     <Provider store={store}>
       <Router>
         <Switch>
-          <Route path="/v2">
-            <SecondVer />
-          </Route>
           <Layout>
             <Switch>
               <Route exact path="/welcome">
@@ -63,17 +55,6 @@ const Gallery = () => {
                   <Friends />
                 </HasArweave>
               </Route>
-              <Route exact path="/collections/:collectionId">
-                <CollectionDetails />
-              </Route>
-              <Route exact path="/collections">
-                <HasArweave content="This feature only supports AR wallets">
-                  <Collections />
-                </HasArweave>
-              </Route>
-              <Route path="/settings">
-                <Settings />
-              </Route>
               <Route path="/success">
                 <Success />
               </Route>
@@ -81,10 +62,6 @@ const Gallery = () => {
                 <SecondVer />
               </Route>
             </Switch>
-
-            <Route exact path="/details/:txid">
-              <Details />
-            </Route>
           </Layout>
         </Switch>
       </Router>

@@ -1,6 +1,6 @@
 import React, { createRef, useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import clsx from 'clsx'
 
 import Balance from 'finnie-v2/components/Balance'
@@ -69,11 +69,11 @@ const NavBar = () => {
   return (
     <header className="sticky top-0 z-50 w-full h-16 flex items-center bg-indigo-900 px-5.25 text-white text-sm justify-between">
       <div className="flex items-center">
-        <NavLink to="/v2/">
+        <Link to="/">
           <KoiiLogo className="h-8 w-10.75" />
-        </NavLink>
+        </Link>
         <nav className="ml-6.25 tracking-finnieSpacing-wider">
-          <NavLink to="/v2/gallery">Gallery</NavLink>
+          <NavLink to="/gallery">Gallery</NavLink>
         </nav>
       </div>
 
