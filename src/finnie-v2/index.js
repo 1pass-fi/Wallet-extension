@@ -18,7 +18,6 @@ import CollectionDetails from 'options/pages/CollectionDetails'
 import './style.css'
 import Settings from 'options/pages/Settings'
 import Success from 'options/pages/StartUp/shared/Success'
-import Layout from 'options/layout'
 import MainLayout from './components/MainLayout'
 
 const SecondVer = () => {
@@ -39,41 +38,39 @@ const SecondVer = () => {
   }, [])
 
   return (
-    <Layout>
-      <Switch>
-        <Route exact path="/nfts/:id">
-          <NFTDetail />
-        </Route>
-        <Route exact path="/settings/*">
-          <MainLayout title="Settings">
-            <div className="transform flex justify-start" style={{ width: '862px' }}>
-              <Settings />
-            </div>
-          </MainLayout>
-        </Route>
-        <Route exact path="/collections/create">
-          <Collection />
-        </Route>
-        <Route exact path="/collections/:collectionId">
-          <CollectionDetails />
-        </Route>
-        <Route exact path="/collections">
-          <Collection />
-        </Route>
-        <Route path="/notifications">
-          <Notifications />
-        </Route>
-        <Route path="/success">
-          <>
-            <NavBar />
-            <Success />
-          </>
-        </Route>
-        <Route exact path="*">
-          <Gallery />
-        </Route>
-      </Switch>
-    </Layout>
+    <Switch>
+      <Route exact path="/nfts/:id">
+        <NFTDetail />
+      </Route>
+      <Route exact path="/settings/*">
+        <MainLayout title="Settings">
+          <div className="transform flex justify-start" style={{ width: '862px' }}>
+            <Settings />
+          </div>
+        </MainLayout>
+      </Route>
+      <Route exact path="/collections/create">
+        <Collection />
+      </Route>
+      <Route exact path="/collections/:collectionId">
+        <CollectionDetails />
+      </Route>
+      <Route exact path="/collections">
+        <Collection />
+      </Route>
+      <Route path="/notifications">
+        <Notifications />
+      </Route>
+      <Route path="/success">
+        <>
+          <NavBar />
+          <Success />
+        </>
+      </Route>
+      <Route exact path="*">
+        <Gallery />
+      </Route>
+    </Switch>
   )
 }
 

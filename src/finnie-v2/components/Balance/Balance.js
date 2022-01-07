@@ -36,7 +36,7 @@ const Balance = ({ account }) => {
         <>
           <EthereumLogo className="w-6 h-6 mr-2" />
           <span className="font-semibold text-sm">
-            {formatNumber(account.balance, 4) === 'NaN' ? formatNumber(account.balance, 4) : '0'}
+            {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'}
           </span>
         </>
       )}
