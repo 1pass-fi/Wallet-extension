@@ -6,7 +6,6 @@ import { Provider } from 'react-redux'
 import './index.css'
 import Layout from './layout'
 import Create from './pages/Create'
-import Faucet from './pages/Faucet'
 import Friends from './pages/Friends'
 import Welcome from './pages/StartUp/Welcome'
 import UploadWallet from './pages/StartUp/Upload'
@@ -43,9 +42,6 @@ const Gallery = () => {
                 <HasArweave content="This feature only supports AR wallets">
                   <Create />
                 </HasArweave>
-              </Route>
-              <Route exact path="/faucet">
-                <Faucet />
               </Route>
               <Route exact path="/friends">
                 <HasArweave
