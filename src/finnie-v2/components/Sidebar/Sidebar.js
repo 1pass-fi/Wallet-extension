@@ -15,7 +15,7 @@ import SortAndFilter from './SortAndFilter'
 import NotificationsCenterLinks from './NotificationsCenterLinks'
 
 const navItems = [
-  { icon: CreateIcon, path: '/create' },
+  { icon: CreateIcon, path: '/gallery/create-nft' },
   { icon: GalleryIcon, path: '/gallery' },
   { icon: CollectionIcon, path: '/collections' }
 ]
@@ -102,7 +102,7 @@ const Sidebar = () => {
               selectedChain={chainType}
             />
           </Route>
-          <Route path="/create">
+          <Route path="/gallery/create-nft">
             <UploadNftForm />
           </Route>
           <Route exact path="/collections">
