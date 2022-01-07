@@ -40,6 +40,8 @@ import { setCollections } from 'options/actions/collections'
 import { setAssets, setCollectionNfts } from 'options/actions/assets'
 import { addNotification } from 'options/actions/notifications'
 
+import { checkAvailable } from 'background/helpers/did/koiiMe'
+
 export default ({ children }) => {
   const { pathname } = useLocation()
   const history = useHistory()
@@ -199,7 +201,7 @@ export default ({ children }) => {
       }
 
       const _userKID = {
-        kidLink: state.kID ? `https://koii.me/u/${state.kID}` : 'https://koii.me/u/',
+        kidLink: state.kID ? `https://koii.id/${state.kID}` : 'https://koii.id/',
         name: state.name,
         description: state.description,
         country: state.country,

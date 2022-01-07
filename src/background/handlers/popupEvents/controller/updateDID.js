@@ -30,7 +30,7 @@ export default async (payload, next) => {
       const { kIDCreated } = await helpers.did.koiiMe.mapKoiiMe({ txId: reactAppId, kID: didData.kID, account })
 
       if (!kIDCreated) {
-        next({ error: 'Map koiime error', status: 400 })
+        next({ error: 'Map koii.id error', status: 400 })
         return
       }
     }

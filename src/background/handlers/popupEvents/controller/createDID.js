@@ -19,6 +19,9 @@ export default async (payload, next) => {
     let id, contractId
     try {
       [id, contractId] = await helpers.did.createDID(didData, account)
+      console.log('react app', id)
+      console.log('did', contractId)
+
     } catch (err) {
       next({ error: err.message, status: 400 })
     }
@@ -26,8 +29,9 @@ export default async (payload, next) => {
     await account.method.registerData(contractId)
 
     const { kIDCreated, id: brandlyID } = await helpers.did.koiiMe.mapKoiiMe({ txId: id, kID: didData.kID, account })
+
     if (!kIDCreated) {
-      next({ error: 'Map koiime error', status: 400 })
+      next({ error: 'Map koii.id error', status: 400 })
       return
     }
 
