@@ -11,7 +11,7 @@ const MainLayout = ({ title, children }) => {
     <div className="w-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
       <NavBar />
       <div className="w-full z-40 fixed top-16 h-18.75 bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800" />
-      <div className="w-full 2xl:w-2/3 mx-auto">
+      <div className="w-full 2xl:w-5/6 mx-auto">
         <div className="sticky top-16 z-40 bg-transparent text-white w-full text-3xl tracking-wider h-18.75 px-13.75 pt-7.25">
           {title.toUpperCase()}
         </div>
