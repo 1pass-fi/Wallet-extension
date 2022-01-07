@@ -7,7 +7,7 @@ import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 
 const resendCreateDIDData = async (account, transaction) => {
   const didData = get(transaction, 'data.didData')
-  const brandlyId = get(transaction, 'data.brandlyID')
+  const kID = get(transaction, 'data.didData.kID')
   if (!didData) throw new Error('DID Data not found.')
   if (!brandlyId) throw new Error('Brandly ID not found.')
 
