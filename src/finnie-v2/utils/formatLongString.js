@@ -1,4 +1,10 @@
+import isString from 'lodash/isString'
+
 const formatLongString = (inputStr, maxLength) => {
+  if (!isString(inputStr)) {
+    return ''
+  }
+
   const strLength = inputStr.length
 
   if (strLength <= maxLength) return inputStr
