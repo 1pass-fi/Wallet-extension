@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
 
-import { setAssets } from 'options/actions/assets'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
+
+import NavBar from 'finnie-v2/components/NavBar'
 
 import Collection from './pages/Collection'
 import Gallery from './pages/Gallery'
@@ -16,6 +17,7 @@ import CollectionDetails from 'options/pages/CollectionDetails'
 
 import './style.css'
 import Settings from 'options/pages/Settings'
+import Success from 'options/pages/StartUp/shared/Success'
 import Layout from 'options/layout'
 import MainLayout from './components/MainLayout'
 
@@ -60,6 +62,12 @@ const SecondVer = () => {
         </Route>
         <Route path="/notifications">
           <Notifications />
+        </Route>
+        <Route path="/success">
+          <>
+            <NavBar />
+            <Success />
+          </>
         </Route>
         <Route exact path="*">
           <Gallery />

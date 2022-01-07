@@ -14,7 +14,6 @@ import CreateWallet from './pages/StartUp/Create'
 
 import SecondVer from '../finnie-v2'
 
-import Success from './pages/StartUp/shared/Success'
 import HasArweave from 'options/shared/hasArweave'
 
 import store from './store'
@@ -50,9 +49,6 @@ const Gallery = () => {
                 >
                   <Friends />
                 </HasArweave>
-              </Route>
-              <Route path="/success">
-                <Success />
               </Route>
               <Route path="*">
                 <SecondVer />
