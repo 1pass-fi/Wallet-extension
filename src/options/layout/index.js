@@ -8,7 +8,6 @@ import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
 import get from 'lodash/get'
 import find from 'lodash/find'
-import includes from 'lodash/includes'
 
 import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 import sendMessage from 'finnie-v2/utils/sendMessage'
@@ -82,7 +81,6 @@ export default ({ children }) => {
   }) // show share modal for big NFT content
   const [showExportModal, setShowExportModal] = useState({}) // show bridge modal
   const [showSelectAccount, setShowSelectAccount] = useState(false) // choose account on upload nft
-  const [showProfilePictureModal, setShowProfilePictureModal] = useState(false)
 
 
   /* 
@@ -274,29 +272,30 @@ export default ({ children }) => {
 
     Run on wallets state changed
   */
-  useEffect(() => {
-    const loadAssetsForNewAddress = async () => {
-      try {
-        if (newAddress) {
-          setIsLoading(prev => ++prev)
-          console.log('loading content for', newAddress)
-          await backgroundRequest.assets.loadContent({ address: newAddress })
+  // useEffect(() => {
+  //   const loadAssetsForNewAddress = async () => {
+  //     try {
+  //       if (newAddress) {
+  //         setIsLoading(prev => ++prev)
+  //         console.log('loading content for', newAddress)
+  //         await backgroundRequest.assets.loadContent({ address: newAddress })
 
-          const allAssets = await popupAccount.getAllAssets()
-          const validAssets = allAssets.filter(asset => asset.name !== '...' && !includes(asset.name, 'DID Profile Page'))
-          dispatch(setAssets({ nfts: validAssets }))
-          if (isEmpty(allAssets) && pathname === '/') history.push('/create')
-          setIsLoading(prev => --prev)
-        }
-      } catch (err) {
-        console.log(err.message)
-        setIsLoading(prev => --prev)
-        setError(err.message)
-      }
-    }
+  //         const allAssets = await popupAccount.getAllAssets()
+  //         const validAssets = allAssets.filter(asset => asset.name !== '...')
+  //         dispatch(setAssets({ nfts: validAssets }))
+  //         if (isEmpty(allAssets) && pathname === '/') history.push('/create')
+  //         setIsLoading(prev => --prev)
+  //       }
+  //     } catch (err) {
+  //       console.log(err.message)
+  //       setIsLoading(prev => --prev)
+  //       setError(err.message)
+  //     }
+  //   }
 
-    loadAssetsForNewAddress()
-  }, [newAddress])
+  //   loadAssetsForNewAddress()
+  //   getDID()
+  // }, [newAddress])
 
   /* 
     Reload wallets when a new wallet just imported
@@ -639,8 +638,7 @@ export default ({ children }) => {
         await backgroundRequest.assets.loadAllContent()
         allAssets = await popupAccount.getAllAssets()
         validAssets = allAssets.filter(asset => asset.name !== '...')
-
-        validAssets = classifyAssets(validAssets, allCollections)
+        validAssets = classifyAssets(validAssets, [...allCollections])
         dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
       }
 
@@ -656,7 +654,7 @@ export default ({ children }) => {
 
     loadAssetsFromStorage()
     fetchAssets()
-  }, [walletLoaded])
+  }, [walletLoaded, newAddress])
 
   return (
     <GalleryContext.Provider
