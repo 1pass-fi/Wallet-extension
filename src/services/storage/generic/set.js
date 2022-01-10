@@ -101,4 +101,8 @@ export class GenericSet {
   allActivities(value) {
     return this.#chrome._setChrome(GENERIC.ALL_ACTIVITIES, value)
   }
+
+  async pushNotification(value) {
+    return await this.#chrome._setChrome(GENERIC.PUSH_NOTIFICATION, value)
+  }
 }

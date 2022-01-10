@@ -82,5 +82,9 @@ export class GenericGet {
 
   async allActivities() {
     return await this.#chrome._getChrome(GENERIC.ALL_ACTIVITIES) || []
+  } 
+
+  async pushNotification() {
+    return await this.#chrome._getChrome(GENERIC.PUSH_NOTIFICATION) || []
   }
 }

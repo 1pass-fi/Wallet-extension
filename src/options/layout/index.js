@@ -43,7 +43,7 @@ import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/acco
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setCollections } from 'options/actions/collections'
 import { setAssets, setCollectionNfts } from 'options/actions/assets'
-import { addNotification } from 'options/actions/notifications'
+import { addNotification, setNotifications } from 'options/actions/notifications'
 
 
 export default ({ children }) => {
@@ -168,8 +168,15 @@ export default ({ children }) => {
       dispatch(loadAllFriendReferralData())
     }
 
+    const loadNotifications = async () => {
+      const allNotifications = await storage.generic.get.pushNotification()
+      console.log('all notificatoin =======', allNotifications)
+      dispatch(setNotifications(allNotifications))
+    }
+
     if (walletLoaded) {
       getAffiliateCode()
+      loadNotifications()
     }
 
   }, [walletLoaded])
