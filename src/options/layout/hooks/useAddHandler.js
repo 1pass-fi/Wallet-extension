@@ -101,7 +101,7 @@ export default ({ setError, setModalStates, setNotification, setIsLoading, }) =>
         MESSAGES.PUSH_NOTIFICATIONS,
         async ({ payload: notification }) => {
           dispatch(addNotification(notification))
-          setNotification(notification.message)
+          sendMessage.success({ title: notification.title, message: notification.message })
         }
       )
     

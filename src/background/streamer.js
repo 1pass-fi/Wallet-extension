@@ -9,7 +9,7 @@ import cache from './cache'
 import storage from 'services/storage'
 import { v4 as uuid } from 'uuid'
 
-const testNotificaiton = async () => {
+const testNotification = async () => {
   const sendPopupPorts = sendMessageToPorts(cache.getPopupPorts())
 
   const txId = uuid()

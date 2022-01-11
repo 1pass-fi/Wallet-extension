@@ -4,6 +4,9 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
 import { useDispatch, useSelector, useStore } from 'react-redux'
 
+import ReactNotification from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css'
+
 import useError from './hooks/useError'
 import useDID from './hooks/useDID'
 import useModal from './hooks/useModal'
@@ -424,6 +427,7 @@ export default ({ children }) => {
           </>
         }
       </div>
+      <ReactNotification />
     </GalleryContext.Provider>
   )
 }
