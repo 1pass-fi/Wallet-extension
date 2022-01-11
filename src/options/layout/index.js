@@ -28,6 +28,7 @@ import Message from 'options/components/message'
 import LockScreen from 'options/components/lockScreen'
 
 import { GalleryContext } from 'options/galleryContext'
+import { DidContext } from 'options/context'
 
 import ShareNFT from 'options/modal/shareNFT'
 import ExportNFT from 'options/modal/exportNFT'
@@ -343,16 +344,20 @@ export default ({ children }) => {
         inputFileRef,
         walletLoaded,
         refreshNFTs,
-        ...didStates,
-        ...setDIDStates,
         ...modalStates,
         ...setModalStates,
         ...settingStates,
         ...setSettingStates
       }}
     >
-      <div className='app-background'>
-        {!isEmpty(accounts) ?
+      <DidContext.Provider 
+        value={{
+          ...didStates,
+          ...setDIDStates,
+        }}
+      >
+        <div className='app-background'>
+          {!isEmpty(accounts) ?
           <>
             {!isLocked ? <div
               {...getRootProps({ className: 'app dropzone' })}
@@ -417,7 +422,7 @@ export default ({ children }) => {
               {children}
             </div> : <LockScreen />}
           </>
-          :
+            :
           <>
             {walletLoaded &&
               <div>
@@ -425,9 +430,10 @@ export default ({ children }) => {
                 <StartUp />
               </div>}
           </>
-        }
-      </div>
-      <ReactNotification />
+          }
+        </div>
+        <ReactNotification />
+      </DidContext.Provider>
     </GalleryContext.Provider>
   )
 }

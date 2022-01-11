@@ -13,9 +13,11 @@ import ActivityCenterDropdown from 'finnie-v2/components/ActivityCenterDropdown'
 
 import Loading from 'options/components/loading'
 import { GalleryContext } from 'options/galleryContext'
+import { DidContext } from 'options/context'
 
 const NavBar = () => {
-  const { isLoading, profilePictureId } = useContext(GalleryContext)
+  const { isLoading } = useContext(GalleryContext)
+  const { profilePictureId } = useContext(DidContext)
   const [showDropdown, setShowDropdown] = useState(false)
   const [showNotificationsCenter, setShowNotificationsCenter] = useState(false)
 

@@ -36,12 +36,16 @@ import './index.css'
 import { NOTIFICATION, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
 import { popupAccount } from 'services/account'
+import { DidContext } from 'options/context'
 
 const KidPage = () => {
   const { 
     setIsLoading,
     setError,
     setNotification,
+  } = useContext(GalleryContext)
+
+  const {
     userKID, setuserKID,
     hadData, setHadData,
     didID, setDidID,
@@ -55,7 +59,7 @@ const KidPage = () => {
     modalType, setModalType,
     kID, setkID,
     oldkID, setOldkID
-  } = useContext(GalleryContext)
+  } = useContext(DidContext)
 
   const [disableUpdateKID, setDisableUpdateKID] = useState(true)
   const [confirmed, setConfirmed] = useState(false)
