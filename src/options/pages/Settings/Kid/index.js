@@ -101,7 +101,8 @@ const KidPage = () => {
         const didTransactionTypes = [
           PENDING_TRANSACTION_TYPE.UPDATE_DID,
           PENDING_TRANSACTION_TYPE.CREATE_DID_DATA,
-          PENDING_TRANSACTION_TYPE.CREATE_DID
+          PENDING_TRANSACTION_TYPE.CREATE_DID,
+          PENDING_TRANSACTION_TYPE.REGISTER_KID
         ]
         
         if (didTransactionTypes.includes(transaction.transactionType))

@@ -18,7 +18,7 @@ const resendCreateDID = async (account, transaction) => {
   const txId = await createReactAppDID(contractId, account)
 
   // map koiime to new react app
-  await koiiMe.updateKoiiMe(brandlyId, txId)
+  await koiiMe.updateKoiiMe(brandlyId, txId, account)
 
   return txId
 }

@@ -14,7 +14,7 @@ const resendCreateDIDData = async (account, transaction) => {
   const [id, contractId] = await did.createDID(didData, account)
 
   // map koiime to new react app
-  await koiiMe.updateKoiiMe(brandlyId, id)
+  await koiiMe.updateKoiiMe(brandlyId, id, account)
 
   // update the pending create DID if any
   let pendingTransactions = await account.get.pendingTransactions()

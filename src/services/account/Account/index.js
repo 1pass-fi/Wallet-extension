@@ -32,6 +32,10 @@ export class ArweaveAccount extends BackgroundAccount {
     this.method = new ArweaveMethod(this.#koi)
   }
 
+  getKey() {
+    return this.#koi.wallet
+  }
+
   static utils = new ArweaveStatic()
 }
 

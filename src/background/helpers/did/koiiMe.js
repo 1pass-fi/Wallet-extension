@@ -37,7 +37,11 @@ export const mapKoiiMe = async ({ txId, kID, account }) => {
       expense: 0.00004,
       address: ownerAddress,
       retried: 1,
-      transcationType: PENDING_TRANSACTION_TYPE.REGISTER_KID
+      transcationType: PENDING_TRANSACTION_TYPE.REGISTER_KID,
+      data: {
+        txId,
+        kID
+      }
     }
 
     console.log('did register', transactionId)
@@ -78,7 +82,11 @@ export const updateKoiiMe = async (kID, txId, account) => {
       expense: 0.00004,
       address: ownerAddress,
       retried: 1,
-      transcationType: PENDING_TRANSACTION_TYPE.REGISTER_KID
+      transcationType: PENDING_TRANSACTION_TYPE.REGISTER_KID,
+      data: {
+        txId,
+        kID
+      }
     }
     await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransaction)
 

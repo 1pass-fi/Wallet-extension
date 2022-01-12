@@ -25,7 +25,7 @@ export default async (payload, next) => {
     
     await account.method.registerData(contractId)
 
-    const { kIDCreated, id: brandlyID } = await helpers.did.koiiMe.mapKoiiMe({ txId: id, kID: didData.kID })
+    const { kIDCreated, id: brandlyID } = await helpers.did.koiiMe.mapKoiiMe({ txId: id, kID: didData.kID, account })
     if (!kIDCreated) {
       next({ error: 'Map koiime error', status: 400 })
       return
