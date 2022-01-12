@@ -46,3 +46,17 @@
   color: red;
   margin-top: 5px;
 }
+
+.kid-input .kid-input-input-section .field {
+  display: flex;
+  align-items: center;
+}
+
+.kid-input .kid-input-input-section .field .prefix-link {
+  font-size: 15px;
+  width: 128px;
+}
+
+.kid-input .kid-input-input-section .field .kid-input-field.kid {
+  width: 300px;
+}

@@ -54,9 +54,9 @@ const KidPage = () => {
     showModal, setShowModal,
     modalType, setModalType,
     kID, setkID,
+    oldkID, setOldkID
   } = useContext(GalleryContext)
 
-  const [oldkID, setOldkID] = useState('')
   const [disableUpdateKID, setDisableUpdateKID] = useState(true)
   const [confirmed, setConfirmed] = useState(false)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
@@ -71,7 +71,7 @@ const KidPage = () => {
     description: ''
   })
 
-  const kidLinkPrefix = 'https://koii.me/u/'
+  const kidLinkPrefix = 'https://koii.id/'
 
   const assets = useSelector((state) => state.assets)
   const defaultAccount = useSelector(state => state.defaultAccount)
@@ -141,7 +141,7 @@ const KidPage = () => {
         }
 
         const _userKID = {
-          kidLink: state.kID ? `https://koii.me/u/${state.kID}` : 'https://koii.me/u/',
+          kidLink: state.kID ? `https://koii.id/${state.kID}` : 'https://koii.id/',
           name: state.name,
           description: state.description,
           country: state.country,
@@ -213,9 +213,9 @@ const KidPage = () => {
     if (name === 'kid') {
       setuserKID({
         ...userKID,
-        kidLink: `${kidLinkPrefix}${value.slice(kidLinkPrefix.length)}`.replaceAll(' ', ''),
+        kidLink: `${kidLinkPrefix}${value}`,
       })
-      setkID(value.slice(18))
+      setkID(value)
     } else {
       setuserKID({ ...userKID, [name]: value })
     }
@@ -426,6 +426,7 @@ const KidPage = () => {
               setShowModal(true)
               setModalType('BACKGROUND')
             }}
+            customClass='change-background-btn'
             text="Change Background"
           />
           <div className="avt-desc">This is your cover image</div>
@@ -435,7 +436,7 @@ const KidPage = () => {
           <KidInputField
             label="kID"
             isRequired={true}
-            value={userKID.kidLink}
+            value={kID}
             setValue={onChangeUserInfo}
             error={fieldError.kid}
           />
@@ -510,7 +511,22 @@ const KidPage = () => {
             <div>Custom CSS</div>
             <ToggleButton value={usingCustomCss} setValue={setUsingCustomCss} />
           </div>
-          <div className='hint'>Hint: Use description, name, links, background class</div>
+          { usingCustomCss &&
+            <div>
+              <div className='hint'>Hint: use one of these classes</div>
+              <ul style={{listStyleType: 'circle', paddingLeft:'40px', color:'rgba(255,255,255,0.8)'}}>
+                <li>description</li>
+                <li>name</li>
+                <li>links</li>
+                <li>background</li>
+                <li>content-area</li>
+                <li>wallet-address</li>
+                <li>did-label</li>
+                <li>address-name</li>
+                <li>address-value</li>
+                <li>show-address-button</li>
+              </ul>
+            </div>}
           {usingCustomCss &&
             (!expandedCssEditor ? (
               <div className="small-editor-wrapper">
@@ -635,7 +651,7 @@ const KidPage = () => {
                   <div className='success-message'>
                     Your Decentralized ID is your<br></br>
                     passport entry to DeFi. Your<br></br>
-                    <a className='profile-link' href={`https://koii.me/u/${kID}`}>profile link</a> should be ready soon.
+                    <a className='profile-link' href={`https://koii.id/${kID}`}>profile link</a> should be ready soon.
                   </div>
                 </div>
               }

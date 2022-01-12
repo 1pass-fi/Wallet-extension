@@ -21,14 +21,17 @@ const KidInputField = ({
         <span className="description">{description}</span>
       </div>
       <div className="kid-input-input-section">
-        <input
-          className="kid-input-field"
-          name={toLower(label)}
-          type="text"
-          value={value}
-          onChange={(e) => setValue(e)}
-          disabled={disabled}
-        />
+        <div className='field'>
+          {label === 'kID' && <div className='prefix-link'>https://koii.id/</div>}
+          <input
+            className={`kid-input-field ${label === 'kID' && 'kid'}`}
+            name={toLower(label)}
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e)}
+            disabled={disabled}
+          />
+        </div>
         <div className="description">{example}</div>
         <span className="error">{error}</span>
       </div>

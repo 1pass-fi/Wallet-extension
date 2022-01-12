@@ -115,7 +115,7 @@ export default ({ children }) => {
   /* 
     DID state
   */
-  const kidLinkPrefix = 'https://koii.me/u/'
+  const kidLinkPrefix = 'https://koii.id/'
   const [userKID, setuserKID] = useState({
     kidLink: kidLinkPrefix,
     name: '',
@@ -134,7 +134,7 @@ export default ({ children }) => {
   const [expandedCssEditor, setExpandedCssEditor] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [modalType, setModalType] = useState('')
-
+  const [oldkID, setOldkID] = useState('')
 
   const [searchTerm, setSearchTerm] = useState('') // search bar
 
@@ -600,7 +600,8 @@ export default ({ children }) => {
         expandedCssEditor, setExpandedCssEditor,
         showModal, setShowModal,
         modalType, setModalType,
-        kID, setkID
+        kID, setkID,
+        oldkID, setOldkID
       }}
     >
       <div className='app-background'>

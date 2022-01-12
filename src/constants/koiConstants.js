@@ -470,7 +470,8 @@ export const PENDING_TRANSACTION_TYPE = {
 
 export const DID_CONTRACT_ID = {
   REACT_APP: 'zgIsvUYTA-k57beohwcRAQHkXxXUP1kzVInGDiGghos',
-  CONTRACT_SRC: 'uzBLFhO-uWSoUBJmjxkblcMEtMgXXljsB4cTZwydnFE'
+  CONTRACT_SRC: 'uzBLFhO-uWSoUBJmjxkblcMEtMgXXljsB4cTZwydnFE',
+  KID_CONTRACT: 'k3R7xJfWMdKuqBWHxo5N6Wye_xcPJjZ5cmaBXOkKGeQ'
 }
 
 export const BRANDLY_API_KEY = '0a42d7da05744a0693aa72ec5e9d7232'
