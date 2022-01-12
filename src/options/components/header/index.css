@@ -43,7 +43,7 @@
 
 .app-header .header-right .koi-info {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .app-header .header-right .no-koi {
@@ -113,6 +113,19 @@
   background-color: #237B75;
   border-radius: 0px 4px 4px 0px;
   border: 0px;
+}
+.app-header .header-right .koi-info .kid-profile-picture {
+  margin-left: 10px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.app-header .header-right .koi-info .kid-profile-picture img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
 }
 
 .app-header .header-right .setting-button {

@@ -8,6 +8,7 @@ import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
 import get from 'lodash/get'
 import find from 'lodash/find'
+import includes from 'lodash/includes'
 
 import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 
@@ -29,6 +30,8 @@ import Welcome from 'options/modal/welcomeScreen'
 import UploadingNFT from 'options/modal/UploadingNFT'
 import SuccessUploadNFT from 'options/modal/SuccessUploadNFT'
 import TransferNFT from 'options/modal/TransferNFT'
+import ProfilePictureModal from 'options/modal/ProfilePictureModal'
+
 import KoiIcon from 'img/finnie-koi-logo-white.svg'
 
 import storage from 'services/storage'
@@ -86,6 +89,7 @@ export default ({ children }) => {
   }) // show share modal for big NFT content
   const [showExportModal, setShowExportModal] = useState({}) // show bridge modal
   const [showSelectAccount, setShowSelectAccount] = useState(false) // choose account on upload nft
+  const [showProfilePictureModal, setShowProfilePictureModal] = useState(false)
 
 
   /* 
@@ -230,12 +234,12 @@ export default ({ children }) => {
       setIsLoading(prev => ++prev)
       console.log('loading all contents')
       let allAssets = await popupAccount.getAllAssets()
-      let validAssets = allAssets.filter(asset => asset.name !== '...')
+      let validAssets = allAssets.filter(asset => asset.name !== '...' && !includes(asset.name, 'DID Profile Page'))
       dispatch(setAssets({ nfts: validAssets }))
 
       await backgroundRequest.assets.loadAllContent()
       allAssets = await popupAccount.getAllAssets()
-      validAssets = allAssets.filter(asset => asset.name !== '...')
+      validAssets = allAssets.filter(asset => asset.name !== '...' && !includes(asset.name, 'DID Profile Page'))
       dispatch(setAssets({ nfts: validAssets }))
       if (isEmpty(allAssets) && pathname === '/') history.push('/create')
       setIsLoading(prev => --prev)
@@ -243,6 +247,10 @@ export default ({ children }) => {
 
     if (walletLoaded) loadAllContents()
   }, [walletLoaded])
+
+  useEffect(() => {
+    if (defaultAccount) getDID()
+  }, [defaultAccount])
 
   /* 
     Load assets:
@@ -259,7 +267,7 @@ export default ({ children }) => {
           await backgroundRequest.assets.loadContent({ address: newAddress })
 
           const allAssets = await popupAccount.getAllAssets()
-          const validAssets = allAssets.filter(asset => asset.name !== '...')
+          const validAssets = allAssets.filter(asset => asset.name !== '...' && !includes(asset.name, 'DID Profile Page'))
           dispatch(setAssets({ nfts: validAssets }))
           if (isEmpty(allAssets) && pathname === '/') history.push('/create')
           setIsLoading(prev => --prev)
@@ -555,6 +563,66 @@ export default ({ children }) => {
     return bytes.buffer
   }
 
+  const getDID = async () => {
+    try {
+      setIsLoading(prev => ++prev)
+      const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
+      let state, id
+      try {
+        const result = await backgroundRequest.gallery.getDID({ address: defaultAccountAddress })
+        state = result.state
+
+        if (!isEmpty(state)) {
+          setHadData(true)
+        } else {
+          setHadData(false)
+        }
+
+        id = result.id
+      } catch (err) {
+        console.log(err.message)
+        setHadData(false)
+        state = {
+          links: [{ title: '', link: '' }],
+          name: '',
+          description: '',
+          country: '',
+          pronouns: '',
+          kID: '',
+          code: '',
+          styles: []
+        }
+      }
+
+      const _userKID = {
+        kidLink: state.kID ? `https://koii.id/${state.kID}` : 'https://koii.id/',
+        name: state.name,
+        description: state.description,
+        country: state.country,
+        pronouns: state.pronouns
+      }
+
+      console.log('userKID', _userKID)
+
+      setDidID(id)
+      setuserKID(prev => ({...prev, ..._userKID}))
+
+      setProfilePictureId(state.picture)
+      setBannerId(state.banner)
+      setCustomCss(state.code)
+      setUsingCustomCss(!isEmpty(state.code))
+
+      setLinkAccounts(state.links)
+      setkID(state.kID)
+      setOldkID(state.kID)
+      setIsLoading(prev => --prev)
+    } catch (err) {
+      console.error(err.message)
+      setError('Get DID error')
+      setIsLoading(prev => --prev)
+    }
+  }
+
   return (
     <GalleryContext.Provider
       value={{
@@ -601,7 +669,8 @@ export default ({ children }) => {
         showModal, setShowModal,
         modalType, setModalType,
         kID, setkID,
-        oldkID, setOldkID
+        oldkID, setOldkID,
+        setShowProfilePictureModal
       }}
     >
       <div className='app-background'>
@@ -650,6 +719,7 @@ export default ({ children }) => {
               {showUploadingModal && <UploadingNFT />}
               {showSuccessUploadModal && <SuccessUploadNFT />}
               {showUploadedIcon && <Uploaded />}
+              {showProfilePictureModal && <ProfilePictureModal />}
 
               {showWelcome && (
                 <Welcome

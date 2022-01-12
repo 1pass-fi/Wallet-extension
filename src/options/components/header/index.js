@@ -8,6 +8,7 @@ import ArUnit from 'img/ar-token.svg'
 import KoiUnit from 'img/koi-token.svg'
 import EthereumUnit from 'img/ethereum-logo.svg'
 import ReloadIcon from 'img/refresh-balance-icon.svg'
+import DidProfilePicture from 'img/did-profile-picture.svg'
 
 import SearchBar from './SearchBar'
 import Loading from 'options/components/loading'
@@ -28,6 +29,8 @@ export default ({
   isLoading,
 }) => {
   const { pathname } = useLocation()
+
+  const { setShowProfilePictureModal, profilePictureId } = useContext(GalleryContext)
   
   const defaultAccount = useSelector(state => state.defaultAccount)
   const { balance, koiBalance } = defaultAccount
@@ -74,6 +77,11 @@ export default ({
             </div>
             <div data-tip='Refresh Balance' className='reload-icon'>
               <ReloadIcon onClick={handleLoadBalances}  />
+            </div>
+            <div onClick={() => setShowProfilePictureModal(prev => !prev)} className='kid-profile-picture'>
+              {!profilePictureId ? <DidProfilePicture /> : 
+                <img src={`https://arweave.net/${profilePictureId}`}/>
+              }
             </div>
           </div>
           {!koiBalance && !!(defaultAccount.type == TYPE.ARWEAVE) && (
