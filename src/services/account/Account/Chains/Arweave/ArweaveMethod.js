@@ -202,6 +202,10 @@ export class ArweaveMethod {
           } else if (inputFunction.function === 'burnKoi') {
             activityName = 'Burnt KOII'
             expense = 1
+          } else if (inputFunction.function === 'register') {
+            activityName = 'Registered KID'
+          } else if (inputFunction.function === 'unregsiter') {
+            activityName = 'Unregistered KID'
           }
   
           if (inputFunction.function === 'registerData' ||

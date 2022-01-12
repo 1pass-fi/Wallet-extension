@@ -26,6 +26,7 @@ const getEmitter = () => {
   contentScriptEvents.on(MESSAGES.KOI_SEND_KOI, controller.koiSendKoi)
   contentScriptEvents.on(MESSAGES.KOI_CREATE_DID, controller.createDID)
   contentScriptEvents.on(MESSAGES.KOI_UPDATE_DID, controller.updateDID)
+  contentScriptEvents.on(MESSAGES.SIGNATURE, controller.signature)
 
   return contentScriptEvents
 }

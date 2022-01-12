@@ -64,4 +64,8 @@ export class SettingSet {
   assetsTabSettings(value) {
     return this.#chrome._setChrome(SETTING.ASSETS_TAB_SETTINGS, value)
   }
+
+  disabledOrigin(value) {
+    return this.#chrome._setChrome(SETTING.DISABLED_ORIGINS, value)
+  }
 }

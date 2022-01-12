@@ -46,6 +46,8 @@ export default async () => {
     MESSAGES.KOI_CREATE_DID_ERROR,
     MESSAGES.KOI_UPDATE_DID_SUCCESS,
     MESSAGES.KOI_UPDATE_DID_ERROR,
+    MESSAGES.SIGNATURE_SUCCESS,
+    MESSAGES.SIGNATURE_ERROR,
     MESSAGES.ERROR
   ]
   
@@ -81,6 +83,7 @@ export default async () => {
       case MESSAGES.KOI_SEND_KOI:
       case MESSAGES.KOI_CREATE_DID:
       case MESSAGES.KOI_UPDATE_DID:
+      case MESSAGES.SIGNATURE:
         backgroundConnect.postMessage(event.data)
         break
       case MESSAGES.KOI_CREATE_TRANSACTION:

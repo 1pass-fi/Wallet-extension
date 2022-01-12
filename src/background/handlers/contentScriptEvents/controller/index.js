@@ -16,6 +16,7 @@ import koiSignPort from './koiSignPort'
 import koiSendKoi from './koiSendKoi'
 import createDID from './createDID'
 import updateDID from './updateDID'
+import signature from './signature'
 
 export default {
   koiConnect,
@@ -35,5 +36,6 @@ export default {
   koiSignPort,
   koiSendKoi,
   createDID,
-  updateDID
+  updateDID,
+  signature
 }

@@ -22,6 +22,7 @@ import storage from 'services/storage'
 // styles
 import './index.css'
 import { popupAccount } from 'services/account'
+import disableOrigin from 'utils/disableOrigin'
 
 
 export const ConnectToWallet = ({ setError, connectSite }) => {
@@ -31,6 +32,7 @@ export const ConnectToWallet = ({ setError, connectSite }) => {
   const [favicon, setFavicon] = useState('')
   const [step, setStep] = useState(1)
   const [accounts, setAccounts] = useState([])
+  const [isKoi, setIsKoi] = useState(true)
 
   const handleOnClick = async (accept) => {
     try {
@@ -63,8 +65,10 @@ export const ConnectToWallet = ({ setError, connectSite }) => {
 
       const requestOrigin = get(request, 'data.origin')
       const requestFavicon = get(request, 'data.favicon')
+      const isKoi = get(request, 'data.isKoi')
       setOrigin(requestOrigin)
       setFavicon(requestFavicon)
+      setIsKoi(isKoi)
     }
 
     const loadArAccounts = async () => {
@@ -75,6 +79,11 @@ export const ConnectToWallet = ({ setError, connectSite }) => {
     loadRequest()
     loadArAccounts()
   }, [])
+
+  const handleDisableFinnie = async () => {
+    await disableOrigin.addDisabledOrigin(origin)
+    window.close()
+  }
 
   return (
     <div className='select-wallet'>
@@ -99,7 +108,14 @@ export const ConnectToWallet = ({ setError, connectSite }) => {
           />}
           {step === 2 && <AllowPermission handleOnClick={handleOnClick} />}
         </Card>
+
+        {!isKoi && step === 1 && <div className='disable-finnie'>
+          <button onClick={handleDisableFinnie}>Pause Finnie</button>
+          <div>Finnie will no longer inject code into this page</div>
+          <div>You might need to refresh the page</div>
+        </div>}
       </div>
+
     </div>
   )
 }
