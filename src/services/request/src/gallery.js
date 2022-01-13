@@ -149,4 +149,8 @@ export class GalleryRequest extends Request {
   getDID(body) {
     return this.promise(MESSAGES.GET_DID, body)
   }
+
+  test(body) {
+    return this.promise(MESSAGES.TEST, body)
+  }
 }
