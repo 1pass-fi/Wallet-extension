@@ -1,13 +1,16 @@
-import { includes } from 'lodash'
+import { includes, get } from 'lodash'
 
 // Services
 import { backgroundAccount } from 'services/account'
 
 // Constants
-import { MAX_RETRIED } from 'constants/koiConstants'
+import { MAX_RETRIED, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 
 // Utils
 import showNotification from 'utils/notifications'
+import axios from 'axios'
+import helpers from 'options/actions/helpers'
+import did from './did'
 
 
 export default async () => {
@@ -72,6 +75,16 @@ export default async () => {
               title: `Transaction confirmed`,
               message: `Your transaction ${transaction.activityName} has been confirmed`
             })
+
+            if (get(transaction, 'transactionType') === PENDING_TRANSACTION_TYPE.CREATE_DID_DATA) {
+              try {
+                console.log('Call hook: ', get(transaction, 'data.didData.kID'))
+                const kID = get(transaction, 'data.didData.kID')
+                await did.kidHookCall(kID)
+              } catch (err) {
+                console.error(err.message)
+              }
+            }
             return
           }
         }
