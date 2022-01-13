@@ -204,7 +204,7 @@ export class ArweaveMethod {
             expense = 1
           } else if (inputFunction.function === 'register') {
             activityName = 'Registered KID'
-          } else if (inputFunction.function === 'unregsiter') {
+          } else if (inputFunction.function === 'unregister') {
             activityName = 'Unregistered KID'
           }
   

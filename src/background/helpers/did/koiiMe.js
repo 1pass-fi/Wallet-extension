@@ -37,7 +37,7 @@ export const mapKoiiMe = async ({ txId, kID, account }) => {
       expense: 0.00004,
       address: ownerAddress,
       retried: 1,
-      transcationType: PENDING_TRANSACTION_TYPE.REGISTER_KID,
+      transactionType: PENDING_TRANSACTION_TYPE.REGISTER_KID,
       data: {
         txId,
         kID
@@ -66,23 +66,16 @@ export const updateKoiiMe = async (kID, txId, account) => {
       function: 'unregister',
       name: kID,
     }
-    await smartweave.interactWrite(arweave, wallet, DID_CONTRACT_ID.KID_CONTRACT, unregisterInput)
-
-    const registerInput = {
-      function: 'register',
-      name: kID,
-      address: txId
-    }
-    const transactionId = await smartweave.interactWrite(arweave, wallet, DID_CONTRACT_ID.KID_CONTRACT, registerInput)
+    const transactionId = await smartweave.interactWrite(arweave, wallet, DID_CONTRACT_ID.KID_CONTRACT, unregisterInput)
 
     // create pending transaction
     const pendingTransaction = {
       id: transactionId,
-      activityName: 'Registered KID',
+      activityName: 'Updated KID',
       expense: 0.00004,
       address: ownerAddress,
       retried: 1,
-      transcationType: PENDING_TRANSACTION_TYPE.REGISTER_KID,
+      transactionType: PENDING_TRANSACTION_TYPE.UPDATE_KID,
       data: {
         txId,
         kID
@@ -92,6 +85,7 @@ export const updateKoiiMe = async (kID, txId, account) => {
 
     return !!transactionId
   } catch (err) {
+    console.error(err.message)
     return false
   }
 }

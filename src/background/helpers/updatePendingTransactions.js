@@ -85,6 +85,18 @@ export default async () => {
                 console.error(err.message)
               }
             }
+
+            if (get(transaction, 'transactionType') === PENDING_TRANSACTION_TYPE.UPDATE_KID){
+              try {
+                console.log('Re-register KID', get(transaction, 'data.kID'))
+                const { txId, kID } = get(transaction, 'data')
+                if (txId && kID) {
+                  await did.koiiMe.mapKoiiMe({ txId, kID, account })
+                }
+              } catch (err) {
+                console.error(err.message)
+              }
+            }
             return
           }
         }
