@@ -66,7 +66,13 @@ export default async (payload, account) => {
   await account.method.signTx(tx)
   console.log('signed tx', tx)
   const uploader = await arweave.transactions.getUploader(tx)
-  await uploader.uploadChunk()
+  while (!uploader.isComplete) {
+    await uploader.uploadChunk()
+    console.log(
+      uploader.pctComplete + '% complete',
+      uploader.uploadedChunks + '/' + uploader.totalChunks
+    )
+  }
   console.log('react id', tx.id)
   return [tx.id, contractId]
 }

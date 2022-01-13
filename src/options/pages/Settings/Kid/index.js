@@ -111,7 +111,7 @@ const KidPage = () => {
     }
 
     const getDID = async () => {
-      try {
+      try {    
         setIsLoading(prev => ++prev)
         const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
         let state, id
@@ -349,13 +349,23 @@ const KidPage = () => {
     try {
       setIsLoading(prev => ++prev)
       setDisableUpdateKID(true)
+
+      const ethAccounts = await popupAccount.getAllAccounts(TYPE.ETHEREUM)
+      const ethAddress = await ethAccounts[0]?.get?.address()
+
+      const addresses = userKID['addresses'] || { 'arweave': defaultAccount.address }
+      
+      if (ethAddress) {
+        addresses['ether'] = ethAddress
+      }
+
       const state = {
         name: userKID.name,
         description: userKID.description,
         links: linkAccounts,
         picture: profilePictureId,
         banner: bannerId,
-        addresses: [],
+        addresses,
         styles: parseCss(customCss),
         code: customCss,
         country: userKID.country,

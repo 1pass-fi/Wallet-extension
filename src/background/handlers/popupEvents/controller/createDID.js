@@ -44,7 +44,8 @@ export default async (payload, next) => {
       contract: null,
       data: {
         dataContractID: contractId,
-        brandlyID
+        brandlyID,
+        kID: didData.kID
       }
     }
 
@@ -60,7 +61,8 @@ export default async (payload, next) => {
       contract: null,
       data: {
         didData,
-        brandlyID
+        brandlyID,
+        reactAppId: id
       }
     }
 

@@ -69,7 +69,13 @@ export default async (payload, next) => {
     console.log('Upload NFT [5/6]: post transaction')
     try {
       const uploader = await arweave.transactions.getUploader(transaction)
-      await uploader.uploadChunk()
+      while (!uploader.isComplete) {
+        await uploader.uploadChunk()
+        console.log(
+          uploader.pctComplete + '% complete',
+          uploader.uploadedChunks + '/' + uploader.totalChunks
+        )
+      }
     } catch (err) {
       console.error(err.message)
       throw new Error(ERROR_MESSAGE.UPLOAD_NFT.UPLOAD_ERROR)

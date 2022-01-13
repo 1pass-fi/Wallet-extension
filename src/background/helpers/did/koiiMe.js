@@ -24,10 +24,6 @@ export const mapKoiiMe = async ({ txId, kID, account }) => {
       address: txId
     }
 
-    console.log('input', input)
-    console.log('wallet', wallet)
-    console.log('did contract', DID_CONTRACT_ID.KID_CONTRACT)
-
     const transactionId = await smartweave.interactWrite(arweave, wallet, DID_CONTRACT_ID.KID_CONTRACT, input)
 
     // create pending transaction
@@ -44,7 +40,7 @@ export const mapKoiiMe = async ({ txId, kID, account }) => {
       }
     }
 
-    console.log('did register', transactionId)
+    console.log('kid register: ', transactionId)
 
     await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransaction)
     return {kIDCreated: transactionId, id: 'abcd' }

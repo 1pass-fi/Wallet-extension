@@ -1,6 +1,17 @@
 const { toJSON } = require('cssjson')
 const camelCase = require('camelcase')
-const classes = ['description', 'name', 'links', 'background']
+const classes = [
+  'description', 
+  'name', 
+  'links', 
+  'background',
+  'content-area',
+  'wallet-address',
+  'did-label',
+  'address-name',
+  'address-value',
+  'show-address-button',
+]
 
 export default (css) => {
   var json = toJSON(css)
@@ -10,15 +21,18 @@ export default (css) => {
   let data = {}
 
   for (let key of keys) {
-    console.log(key)
+
     let e = json[key]['attributes']
     let attributes = Object.keys(e)
     let newAttributes = {}
     for (let attribute of attributes) {
       newAttributes[camelCase(attribute)] = e[attribute]
     }
-    if (classes.includes(key.split('.')[1]))
-      data[key.split('.')[1]] = newAttributes
+    
+    key = key.split('.')[1] || undefined
+    console.log(key)
+    if (key && classes.includes(key))
+      data[key] = newAttributes
   }
 
   return data

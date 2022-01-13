@@ -78,9 +78,9 @@ export default async () => {
 
             if (get(transaction, 'transactionType') === PENDING_TRANSACTION_TYPE.CREATE_DID_DATA) {
               try {
-                console.log('Call hook: ', get(transaction, 'data.didData.kID'))
-                const kID = get(transaction, 'data.didData.kID')
-                await did.kidHookCall(kID)
+                console.log('Call hook: ', get(transaction, 'data.reactAppId'))
+                const reactAppId = get(transaction, 'data.reactAppId')
+                await did.kidHookCall(reactAppId)
               } catch (err) {
                 console.error(err.message)
               }
