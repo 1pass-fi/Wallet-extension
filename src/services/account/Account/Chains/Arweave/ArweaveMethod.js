@@ -513,10 +513,12 @@ export class ArweaveMethod {
     const storageNfts = await this.#chrome.getAssets() || []
 
     const { collection: nftIds } = collection
-    const nfts = nftIds.map(id => {
+    let nfts = nftIds.map(id => {
       const nft = find(storageNfts, v => v.txId == id)
       if (nft) return nft
     })
+
+    if (!nfts) nfts = []
 
     const resultCollection = { ...collection, nfts }
     return resultCollection

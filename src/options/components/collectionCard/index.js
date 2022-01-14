@@ -40,7 +40,14 @@ export default ({ collection }) => {
 
   const ref = useRef()
 
-  const displayNft = useMemo(() => nfts[displayNftIndex], [
+  const displayNft = useMemo(() => {
+    try {
+      return nfts[displayNftIndex]
+    } catch (error) {
+      console.error(err.message)
+      return 0
+    }
+  }, [
     displayNftIndex,
     nfts,
   ])

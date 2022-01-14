@@ -36,13 +36,17 @@ export default () => {
   }, [])
 
   const collection = useMemo(() => {
-    console.log(collectionState.collections)
-    const collection = find(collectionState.collections, collection => collection.id == collectionId)
-    console.log(collection)
-    if (collection) {
-      return collection
+    try {
+      console.log(collectionState.collections)
+      const collection = find(collectionState.collections, collection => collection.id == collectionId)
+      console.log(collection)
+      if (collection) {
+        return collection
+      }
+      return { title: '', totalViews: 0, totalReward: 0, description: '', nfts: [] }
+    } catch (err) {
+      return { title: '', totalViews: 0, totalReward: 0, description: '', nfts: [] }
     }
-    return { title: '', totalViews: 0, totalReward: 0, description: '', nfts: [] }
   }, [collectionState.collections])
 
   const handleGoBack = () => {
