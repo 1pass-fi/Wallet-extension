@@ -476,7 +476,7 @@ export const PENDING_TRANSACTION_TYPE = {
 }
 
 export const DID_CONTRACT_ID = {
-  REACT_APP: 'zgIsvUYTA-k57beohwcRAQHkXxXUP1kzVInGDiGghos',
+  REACT_APP: 'LMMRbRlTmFgBfOHvTGQOm8Fs5Jn2mFqJ76-xbx2RqtY',
   CONTRACT_SRC: 'ksif9_PVstOS7PHB9gRXfYr_WqvogzGdSctt23rr2Eo',
   KID_CONTRACT: 'k3R7xJfWMdKuqBWHxo5N6Wye_xcPJjZ5cmaBXOkKGeQ'
 }
