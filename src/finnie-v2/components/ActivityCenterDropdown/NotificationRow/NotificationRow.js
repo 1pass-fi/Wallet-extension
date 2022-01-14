@@ -33,7 +33,7 @@ const NotificationRow = ({ notification, newNotification = false }) => {
           </div>
         )}
         <div className="text-xs text-blue-800 font-semibold leading-5">{notification.title}</div>
-        <div className="text-xs text-blue-800 leading-5">{notification.message}</div>
+        <div className="text-xs text-blue-800 leading-5 h-5.25 overflow-hidden">{notification.message}</div>
       </div>
       <div className="w-full flex justify-between">
         <div className="text-xs text-blue-800 font-semibold leading-5">{notification.account}</div>

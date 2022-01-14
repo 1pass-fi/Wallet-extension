@@ -37,5 +37,6 @@
 }
 
 .notifications-component {
-  z-index: 10
+  z-index: 40;
+  top: 100px
 }
