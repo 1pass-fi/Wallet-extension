@@ -50,9 +50,7 @@ export default ({
       </div>
       <div className='header-center'>{pathname == '/' && <SearchBar />}</div>
       <div className='header-right'>
-        <div>
-          {isLoading && <Loading />}
-        </div>
+        {isLoading ? <div><Loading /></div> : <></>}
         <div className='header-right-balances'>
           <div className='koi-info'>
             <div className='total-koi'>

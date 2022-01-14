@@ -24,8 +24,9 @@ export default async (payload, next) => {
       return
     }
 
+    let reactAppId = await helpers.did.getDID(null, txId)
+
     if (newkID) {
-      const reactAppId = await helpers.did.getDID(null, txId)
       const { kIDCreated } = await helpers.did.koiiMe.mapKoiiMe({ txId: reactAppId, kID: didData.kID, account })
 
       if (!kIDCreated) {
@@ -47,7 +48,8 @@ export default async (payload, next) => {
       contract: null,
       data: {
         didData,
-        didTransactionID: txId
+        didTransactionID: txId,
+        reactAppId
       }
     }
 

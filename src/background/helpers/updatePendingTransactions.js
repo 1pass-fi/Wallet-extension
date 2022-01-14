@@ -49,7 +49,7 @@ export default async () => {
             if retried > MAX_RETRIED, notice user with an expired transaction
           */
           if (dropped) {
-            
+
             if (transaction.retried < MAX_RETRIED ) {
               return await account.method.resendTransaction(transaction.id)
             } else {
@@ -93,6 +93,16 @@ export default async () => {
                 if (txId && kID) {
                   await did.koiiMe.mapKoiiMe({ txId, kID, account })
                 }
+              } catch (err) {
+                console.error(err.message)
+              }
+            }
+
+            if (get(transaction, 'transactionType') === PENDING_TRANSACTION_TYPE.UPDATE_DID) {
+              try {
+                console.log('Call hook: ', get(transaction, 'data.reactAppId'))
+                const reactAppId = get(transaction, 'data.reactAppId')
+                await did.kidHookCall(reactAppId)
               } catch (err) {
                 console.error(err.message)
               }
