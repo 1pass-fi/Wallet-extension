@@ -1,16 +1,20 @@
 import React from 'react'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import ReactTooltip from 'react-tooltip'
 
 import toLower from 'lodash/toLower'
 
+import ShareIcon from 'img/share-icon-3.svg'
+
 import './index.css'
 
-const KidInputField = ({ 
-  label, 
-  isRequired, 
-  description = '', 
-  example = '', 
-  value, 
-  setValue, 
+const KidInputField = ({
+  label,
+  isRequired,
+  description = '',
+  example = '',
+  value,
+  setValue,
   disabled,
   error
 }) => {
@@ -21,8 +25,8 @@ const KidInputField = ({
         <span className="description">{description}</span>
       </div>
       <div className="kid-input-input-section">
-        <div className='field'>
-          {label === 'kID' && <div className='prefix-link'>https://koii.id/</div>}
+        <div className="field">
+          {label === 'kID' && <div className="prefix-link">https://koii.id/</div>}
           <input
             className={`kid-input-field ${label === 'kID' && 'kid'}`}
             name={toLower(label)}
@@ -31,6 +35,14 @@ const KidInputField = ({
             onChange={(e) => setValue(e)}
             disabled={disabled}
           />
+          {label === 'kID' && (
+            <>
+              <CopyToClipboard text={`https://koii.id/${value}`}>
+                <ShareIcon data-tip="Copy" id="kid-share-icon" />
+              </CopyToClipboard>
+              <ReactTooltip />
+            </>
+          )}
         </div>
         <div className="description">{example}</div>
         <span className="error">{error}</span>
