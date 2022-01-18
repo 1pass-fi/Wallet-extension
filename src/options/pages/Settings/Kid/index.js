@@ -58,7 +58,8 @@ const KidPage = () => {
     showModal, setShowModal,
     modalType, setModalType,
     kID, setkID,
-    oldkID, setOldkID
+    oldkID, setOldkID,
+    getDID
   } = useContext(DidContext)
 
   const [disableUpdateKID, setDisableUpdateKID] = useState(true)
@@ -95,6 +96,7 @@ const KidPage = () => {
     }
   }
 
+
   useEffect(() => {
     const getPendingStatus = async () => {
       const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
@@ -111,65 +113,6 @@ const KidPage = () => {
         
         if (didTransactionTypes.includes(transaction.transactionType))
           setIsPending(true); break
-      }
-    }
-
-    const getDID = async () => {
-      try {    
-        setIsLoading(prev => ++prev)
-        const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
-        let state, id
-        try {
-          const result = await backgroundRequest.gallery.getDID({ address: defaultAccountAddress })
-          state = result.state
-
-          if (!isEmpty(state)) {
-            setHadData(true)
-          } else {
-            setHadData(false)
-          }
-
-          id = result.id
-        } catch (err) {
-          console.log(err.message)
-          setHadData(false)
-          state = {
-            links: [{ title: '', link: '' }],
-            name: '',
-            description: '',
-            country: '',
-            pronouns: '',
-            kID: '',
-            code: '',
-            styles: []
-          }
-        }
-
-        const _userKID = {
-          kidLink: state.kID ? `https://koii.id/${state.kID}` : 'https://koii.id/',
-          name: state.name,
-          description: state.description,
-          country: state.country,
-          pronouns: state.pronouns
-        }
-
-        console.log('userKID', _userKID)
-
-        setDidID(id)
-        setuserKID(prev => ({...prev, ..._userKID}))
-  
-        setProfilePictureId(state.picture)
-        setBannerId(state.banner)
-        setCustomCss(state.code)
-        setUsingCustomCss(!isEmpty(state.code))
-  
-        setLinkAccounts(state.links)
-        setkID(state.kID)
-        setOldkID(state.kID)
-        setIsLoading(prev => --prev)
-      } catch (err) {
-        console.error(err.message)
-        setError('Get DID error')
       }
     }
 
