@@ -5,7 +5,6 @@
 .kid-page-wrapper {
   box-sizing: border-box;
   height: 100%;
-  width: 892px;
   margin: auto;
   padding-top: 41.5px;
   padding-bottom: 41.5px;
@@ -179,11 +178,10 @@
 }
 
 .kid-page-wrapper .kid-input .kid-input-area-field {
-  background: transparent;
-  width: 422px;
+  background-color: rgba(245, 245, 245, 0.1);
+  width: 348px;
   height: 95px;
-  border: 1px solid #ffffff;
-  border-radius: 3px;
+  border-bottom: 1px solid #ffffff;
   resize: none;
 
   padding: 8px;
@@ -209,27 +207,23 @@
 }
 
 .kid-page-wrapper .link-accounts-input-line {
-  position: relative;
   margin-top: 18px;
   display: flex;
-  width: 100%;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 }
 
 .kid-page-wrapper .link-accounts-input-line .remove-logo {
-  position: absolute;
+  background-color: rgba(245, 245, 245, 0.1);
+  border-radius: 50%;
   cursor: pointer;
-  top: 6px;
-  right: -32px;
 }
 
 .kid-page-wrapper .link-accounts-input-line input {
-  background: transparent;
+  background-color: rgba(245, 245, 245, 0.1);
   height: 32px;
-  border: 1px solid #ffffff;
-  border-radius: 3px;
-  padding: 8px;
+  border-bottom: 1px solid #ffffff;
+  padding: 3px 7px;
 
   color: white;
   font-size: 15px;
@@ -242,7 +236,8 @@
 }
 
 .kid-page-wrapper .link-accounts-input-line .link-accounts-input-value {
-  width: 420px;
+  width: 260px;
+  margin: 0 12px;
 }
 
 .kid-page-wrapper .add-more {
@@ -283,6 +278,7 @@
 
 .kid-page-wrapper .small-editor-wrapper {
   position: relative;
+  width: 503px;
 }
 
 .kid-page-wrapper .editor-expand-icon {
@@ -296,7 +292,7 @@
 
 #small-editor-id {
   margin-top: 16px;
-  width: 610px !important;
+  width: 503px !important;
   height: 167px !important;
 
   background-color: transparent;

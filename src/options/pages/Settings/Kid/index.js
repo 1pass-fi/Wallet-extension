@@ -45,9 +45,7 @@ const KidPage = () => {
     userKID,
     setuserKID,
     hadData,
-    setHadData,
     didID,
-    setDidID,
     profilePictureId,
     setProfilePictureId,
     bannerId,
@@ -67,8 +65,8 @@ const KidPage = () => {
     kID,
     setkID,
     oldkID,
-    setOldkID,
-    getDID
+    getDID,
+    setCssTemplate
   } = useContext(DidContext)
 
   const [disableUpdateKID, setDisableUpdateKID] = useState(true)
@@ -129,7 +127,51 @@ const KidPage = () => {
   }, [])
 
   useEffect(() => {
-    if (!usingCustomCss) setCustomCss('')
+    if (!usingCustomCss)
+      setCssTemplate({
+        children: {
+          '.description': {
+            children: {},
+            attributes: {}
+          },
+          '.name': {
+            children: {},
+            attributes: {}
+          },
+          '.links': {
+            children: {},
+            attributes: {}
+          },
+          '.background': {
+            children: {},
+            attributes: {}
+          },
+          '.content-area': {
+            children: {},
+            attributes: {}
+          },
+          '.wallet-address': {
+            children: {},
+            attributes: {}
+          },
+          '.did-label': {
+            children: {},
+            attributes: {}
+          },
+          '.address-name': {
+            children: {},
+            attributes: {}
+          },
+          '.address-value': {
+            children: {},
+            attributes: {}
+          },
+          '.show-address-button': {
+            children: {},
+            attributes: {}
+          }
+        }
+      })
   }, [usingCustomCss])
 
   useEffect(() => {
@@ -467,13 +509,13 @@ const KidPage = () => {
               <input
                 className="link-accounts-input-name"
                 value={linkAccounts.title}
-                placeholder="Label (e.g. “Website”)"
+                placeholder="Label e.g. “Website”"
                 onChange={(e) => handleChangeLinkAccountName(idx, e)}
               />
               <input
                 className="link-accounts-input-value"
                 value={linkAccounts.link}
-                placeholder="https://koii.network/"
+                placeholder="URL e.g. https://koii.network/"
                 onChange={(e) => handleChangeLinkAccountValue(idx, e)}
               />
               <div className="remove-logo" onClick={() => removeLinkAccount(idx)}>

@@ -22,7 +22,6 @@ const KidInputField = ({
     <div className="kid-input">
       <div className="kid-input-label-section">
         <label className="kid-input-label">{`${label}${isRequired ? '*' : ''}`}</label>
-        <span className="description">{description}</span>
       </div>
       <div className="kid-input-input-section">
         <div className="field">
@@ -44,6 +43,7 @@ const KidInputField = ({
             </>
           )}
         </div>
+        <span className="description">{description}</span>
         <div className="description">{example}</div>
         <span className="error">{error}</span>
       </div>
