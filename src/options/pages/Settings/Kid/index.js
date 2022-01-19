@@ -367,43 +367,49 @@ const KidPage = () => {
   return (
     <div className="kid-page-wrapper">
       <div className="title-section">
-        <IDCardIcon />
-        <h2>Decentralized Identity</h2>
-        <p className="leading">
-          Connect to the decentralized internet with just your wallet. No more email log-ins or
-          giving your personal data straight to Big Tech. This information will be public.
-        </p>
-        <div className="wallet-address">
-          KOII Wallet: {getDisplayAddress(defaultAccount.address)} ({defaultAccount.accountName})
+        <div className="title-section__header-group">
+          <IDCardIcon />
+          <h2>Decentralized Identity</h2>
         </div>
+        <p className="leading">
+          Create a personalized profile for your web3 identity. Link it to your Twitter bio to
+          receive airdrops from Koii partners and other surprises.
+        </p>
       </div>
       <div className="form-section">
         <div className="form-img">
-          <div className="img">
+          <div className="form-img__img-name">PROFILE IMAGE</div>
+          <div className="avatar">
+            <div
+              className="edit-avatar-layer"
+              onClick={() => {
+                setShowModal(true)
+                setModalType('AVATAR')
+              }}
+            >
+              <EditIcon className="edit-avatar-layer__icon" />
+            </div>
             <img className="profile-picture" src={profileSrc}></img>
           </div>
-          <Button
-            startIcon={EditIcon}
-            onClick={() => {
-              setShowModal(true)
-              setModalType('AVATAR')
-            }}
-            text="Change Avatar"
-          />
           <div className="avt-desc">
-            Or <Link to="/create">create an NFT</Link> to add a new image to your gallery
+            <Link to="/gallery/create-nft">Or create a new NFT</Link>
           </div>
-          <img className="profile-cover" src={bannerSrc} alt="profile-cover"></img>
-          <Button
-            startIcon={EditIcon}
-            onClick={() => {
-              setShowModal(true)
-              setModalType('BACKGROUND')
-            }}
-            customClass="change-background-btn"
-            text="Change Background"
-          />
-          <div className="avt-desc">This is your cover image</div>
+          <div className="form-img__img-name">COVER IMAGE</div>
+          <div className="cover">
+            <div
+              className="edit-cover-layer"
+              onClick={() => {
+                setShowModal(true)
+                setModalType('BACKGROUND')
+              }}
+            >
+              <EditIcon className="edit-cover-layer__icon" />
+            </div>
+            <img className="profile-cover" src={bannerSrc} alt="profile-cover" />
+          </div>
+          <div className="avt-desc">
+            <Link to="/gallery/create-nft">Or select an NFT to make it your profile picture</Link>
+          </div>
         </div>
 
         <div className="form-text">
