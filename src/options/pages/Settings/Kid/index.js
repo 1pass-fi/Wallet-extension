@@ -39,26 +39,35 @@ import { popupAccount } from 'services/account'
 import { DidContext } from 'options/context'
 
 const KidPage = () => {
-  const { 
-    setIsLoading,
-    setError,
-    setNotification,
-  } = useContext(GalleryContext)
+  const { setIsLoading, setError, setNotification } = useContext(GalleryContext)
 
   const {
-    userKID, setuserKID,
-    hadData, setHadData,
-    didID, setDidID,
-    profilePictureId, setProfilePictureId,
-    bannerId, setBannerId,
-    linkAccounts, setLinkAccounts,
-    customCss, setCustomCss,
-    usingCustomCss, setUsingCustomCss,
-    expandedCssEditor, setExpandedCssEditor,
-    showModal, setShowModal,
-    modalType, setModalType,
-    kID, setkID,
-    oldkID, setOldkID,
+    userKID,
+    setuserKID,
+    hadData,
+    setHadData,
+    didID,
+    setDidID,
+    profilePictureId,
+    setProfilePictureId,
+    bannerId,
+    setBannerId,
+    linkAccounts,
+    setLinkAccounts,
+    customCss,
+    setCustomCss,
+    usingCustomCss,
+    setUsingCustomCss,
+    expandedCssEditor,
+    setExpandedCssEditor,
+    showModal,
+    setShowModal,
+    modalType,
+    setModalType,
+    kID,
+    setkID,
+    oldkID,
+    setOldkID,
     getDID
   } = useContext(DidContext)
 
@@ -79,7 +88,7 @@ const KidPage = () => {
   const kidLinkPrefix = 'https://koii.id/'
 
   const assets = useSelector((state) => state.assets)
-  const defaultAccount = useSelector(state => state.defaultAccount)
+  const defaultAccount = useSelector((state) => state.defaultAccount)
 
   const modalRef = useRef(null)
 
@@ -96,7 +105,6 @@ const KidPage = () => {
     }
   }
 
-
   useEffect(() => {
     const getPendingStatus = async () => {
       const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
@@ -110,9 +118,9 @@ const KidPage = () => {
           PENDING_TRANSACTION_TYPE.CREATE_DID,
           PENDING_TRANSACTION_TYPE.REGISTER_KID
         ]
-        
-        if (didTransactionTypes.includes(transaction.transactionType))
-          setIsPending(true); break
+
+        if (didTransactionTypes.includes(transaction.transactionType)) setIsPending(true)
+        break
       }
     }
 
@@ -161,7 +169,7 @@ const KidPage = () => {
     if (name === 'kid') {
       setuserKID({
         ...userKID,
-        kidLink: `${kidLinkPrefix}${value}`,
+        kidLink: `${kidLinkPrefix}${value}`
       })
       setkID(value)
     } else {
@@ -196,78 +204,84 @@ const KidPage = () => {
   }
 
   const validateFields = async () => {
-    setIsLoading(prev => ++prev)
+    setIsLoading((prev) => ++prev)
     // Validation
     const pattern = /^[A-Za-z0-9]+$/
     const available = await checkAvailable(kID)
     if (!kID) {
-      setFieldError(prev =>({...prev, kid: 'kID field must be filled in'}))
-      setIsLoading(prev => --prev)
+      setFieldError((prev) => ({ ...prev, kid: 'kID field must be filled in' }))
+      setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
       return
     }
-  
+
     if (!pattern.test(kID)) {
-      setFieldError(prev =>({...prev, kid: 'Please try a kID without special characters'}))
-      setIsLoading(prev => --prev)
+      setFieldError((prev) => ({ ...prev, kid: 'Please try a kID without special characters' }))
+      setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
       return
     }
-  
+
     if (kID.length < 5) {
-      setFieldError(prev =>({...prev, kid: 'This username is unavailable, please try a different one'}))
-      setIsLoading(prev => --prev)
+      setFieldError((prev) => ({
+        ...prev,
+        kid: 'This username is unavailable, please try a different one'
+      }))
+      setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
       return
     }
-  
-    if (!available && (oldkID !== kID)) {
-      setFieldError(prev =>({...prev, kid: 'This username is unavailable, please try a different one'}))
-      setIsLoading(prev => --prev)
+
+    if (!available && oldkID !== kID) {
+      setFieldError((prev) => ({
+        ...prev,
+        kid: 'This username is unavailable, please try a different one'
+      }))
+      setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
       return
     }
-  
+
     if (!userKID.name) {
-      setFieldError(prev =>({...prev, name: 'Name field must be filled in'}))
-      setIsLoading(prev => --prev)
+      setFieldError((prev) => ({ ...prev, name: 'Name field must be filled in' }))
+      setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
       return
     }
-  
+
     if (!userKID.country) {
-      setFieldError(prev =>({...prev, country: 'Country field must be filled in'}))
-      setIsLoading(prev => --prev)
+      setFieldError((prev) => ({ ...prev, country: 'Country field must be filled in' }))
+      setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
       return
     }
-  
+
     if (!userKID.description) {
-      setFieldError(prev =>({...prev, description: 'Description field must be filled in'}))
-      setIsLoading(prev => --prev)
+      setFieldError((prev) => ({ ...prev, description: 'Description field must be filled in' }))
+      setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
       return
     }
-  
+
     if (!profilePictureId) {
       setError('Please select an avatar')
-      setIsLoading(prev => --prev)
+      setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
       return
     }
-  
+
     if (!bannerId) {
       setError('Please select a cover image')
-      setIsLoading(prev => --prev)
+      setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
       return
     }
-  
+
     if (hadData) {
       // balance validate update
       if (balance < 0.00007) {
         setError(`You don't have enough AR`)
-        setIsLoading(prev => --prev)
+        setIsLoading((prev) => --prev)
         setDisableUpdateKID(false)
         return
       }
@@ -275,33 +289,33 @@ const KidPage = () => {
       // balance validate create
       if (balance < 0.0005) {
         setError(`You don't have enough AR`)
-        setIsLoading(prev => --prev)
+        setIsLoading((prev) => --prev)
         setDisableUpdateKID(false)
         return
       }
 
       if (koiBalance < 1) {
         setError(`You don't have enough KOII`)
-        setIsLoading(prev => --prev)
+        setIsLoading((prev) => --prev)
         setDisableUpdateKID(false)
         return
       }
     }
 
-    setIsLoading(prev => --prev)
+    setIsLoading((prev) => --prev)
     return true
   }
 
   const handleSubmit = async () => {
     try {
-      setIsLoading(prev => ++prev)
+      setIsLoading((prev) => ++prev)
       setDisableUpdateKID(true)
 
       const ethAccounts = await popupAccount.getAllAccounts(TYPE.ETHEREUM)
       const ethAddress = await ethAccounts[0]?.get?.address()
 
-      const addresses = userKID['addresses'] || { 'arweave': defaultAccount.address }
-      
+      const addresses = userKID['addresses'] || { arweave: defaultAccount.address }
+
       if (ethAddress) {
         addresses['ether'] = ethAddress
       }
@@ -320,15 +334,15 @@ const KidPage = () => {
         kID
       }
 
-      state.links = state.links.filter(link => !isEmpty(link.title) && !isEmpty(link.link))
+      state.links = state.links.filter((link) => !isEmpty(link.title) && !isEmpty(link.link))
 
-      let result 
+      let result
       if (hadData) {
         /* Update */
-        result = await backgroundRequest.gallery.updateDID({ 
-          didData: state, 
-          txId: didID, 
-          newkID: oldkID !== kID 
+        result = await backgroundRequest.gallery.updateDID({
+          didData: state,
+          txId: didID,
+          newkID: oldkID !== kID
         })
         setNotification(NOTIFICATION.UPDATE_KID_SUCCESS)
         setShowConfirmModal(false)
@@ -340,13 +354,13 @@ const KidPage = () => {
       }
 
       console.log('result', result)
-      setIsLoading(prev => --prev)
+      setIsLoading((prev) => --prev)
       setIsPending(true)
     } catch (err) {
       console.error(err.message)
       setShowConfirmModal(false)
       setError(err.message)
-      setIsLoading(prev => --prev)
+      setIsLoading((prev) => --prev)
     }
   }
 
@@ -359,7 +373,9 @@ const KidPage = () => {
           Connect to the decentralized internet with just your wallet. No more email log-ins or
           giving your personal data straight to Big Tech. This information will be public.
         </p>
-        <div className="wallet-address">KOII Wallet: {getDisplayAddress(defaultAccount.address)} ({defaultAccount.accountName})</div>
+        <div className="wallet-address">
+          KOII Wallet: {getDisplayAddress(defaultAccount.address)} ({defaultAccount.accountName})
+        </div>
       </div>
       <div className="form-section">
         <div className="form-img">
@@ -384,7 +400,7 @@ const KidPage = () => {
               setShowModal(true)
               setModalType('BACKGROUND')
             }}
-            customClass='change-background-btn'
+            customClass="change-background-btn"
             text="Change Background"
           />
           <div className="avt-desc">This is your cover image</div>
@@ -469,10 +485,16 @@ const KidPage = () => {
             <div>Custom CSS</div>
             <ToggleButton value={usingCustomCss} setValue={setUsingCustomCss} />
           </div>
-          { usingCustomCss &&
+          {usingCustomCss && (
             <div>
-              <div className='hint'>Hint: use one of these classes</div>
-              <ul style={{listStyleType: 'circle', paddingLeft:'40px', color:'rgba(255,255,255,0.8)'}}>
+              <div className="hint">Hint: use one of these classes</div>
+              <ul
+                style={{
+                  listStyleType: 'circle',
+                  paddingLeft: '40px',
+                  color: 'rgba(255,255,255,0.8)'
+                }}
+              >
                 <li>description</li>
                 <li>name</li>
                 <li>links</li>
@@ -484,7 +506,8 @@ const KidPage = () => {
                 <li>address-value</li>
                 <li>show-address-button</li>
               </ul>
-            </div>}
+            </div>
+          )}
           {usingCustomCss &&
             (!expandedCssEditor ? (
               <div className="small-editor-wrapper">
@@ -542,13 +565,13 @@ const KidPage = () => {
 
           <div className="save-kid-btn">
             <div data-tip={isPending ? 'Transaction pending' : ''}>
-              <Button 
-                disabled={disableUpdateKID || isPending} 
+              <Button
+                disabled={disableUpdateKID || isPending}
                 onClick={async () => {
                   const validated = await validateFields()
                   if (validated) setShowConfirmModal(true)
-                }} 
-                variant="filled" 
+                }}
+                variant="filled"
                 text="Save & Update"
               />
             </div>
@@ -580,53 +603,55 @@ const KidPage = () => {
         )}
 
         {showConfirmModal && (
-          <div className='confirm-did-modal'>
-            <div className='title'>
+          <div className="confirm-did-modal">
+            <div className="title">
               {!confirm ? 'Confirm your DID' : 'Decentralized ID Confirmed'}
               <CloseIconBlue onClick={() => setShowConfirmModal(false)} className="close-icon" />
             </div>
-            <div className='content'>
-              
-              {!confirmed &&
+            <div className="content">
+              {!confirmed && (
                 <div>
-                  <div className='content-title'>Confirm your personalized Decentralized ID profile.</div>
-                  <div className='cost'>
-                    <div className='cost-title'>
-                    Estimated Costs:
-                    </div>
-                    {!hadData && <div className="cost-koii-fee">
-                    1 KOII
-                    </div>}
+                  <div className="content-title">
+                    Confirm your personalized Decentralized ID profile.
+                  </div>
+                  <div className="cost">
+                    <div className="cost-title">Estimated Costs:</div>
+                    {!hadData && <div className="cost-koii-fee">1 KOII</div>}
                     <div className="cost-ar-fee">{hadData ? '0.00007' : '0.0005'} AR</div>
                     <div className="cost-storage-fee"> Storage Fee</div>
                   </div>
-
                 </div>
-              }
-              {confirmed && 
-                <div className='success'>
-                  <div className='success-title'>Your DID is finalizing!</div>
-                  <div className='success-message'>
+              )}
+              {confirmed && (
+                <div className="success">
+                  <div className="success-title">Your DID is finalizing!</div>
+                  <div className="success-message">
                     Your Decentralized ID is your<br></br>
                     passport entry to DeFi. Your<br></br>
-                    <a className='profile-link' href={`https://koii.id/${kID}`}>profile link</a> should be ready soon.
+                    <a className="profile-link" href={`https://koii.id/${kID}`}>
+                      profile link
+                    </a>{' '}
+                    should be ready soon.
                   </div>
                 </div>
-              }
-              {!confirmed && <button
-                className='confirm-button'
-                disabled={disableUpdateKID} 
-                onClick={handleSubmit}>{hadData ? 'Update DID' : 'Create DID'}
-              </button>}
-              {confirmed && <button
-                className='confirm-button'
-                onClick={() => setShowConfirmModal(false)}>OK
-              </button>}
-
+              )}
+              {!confirmed && (
+                <button
+                  className="confirm-button"
+                  disabled={disableUpdateKID}
+                  onClick={handleSubmit}
+                >
+                  {hadData ? 'Update DID' : 'Create DID'}
+                </button>
+              )}
+              {confirmed && (
+                <button className="confirm-button" onClick={() => setShowConfirmModal(false)}>
+                  OK
+                </button>
+              )}
             </div>
           </div>
         )}
-        
       </div>
     </div>
   )
