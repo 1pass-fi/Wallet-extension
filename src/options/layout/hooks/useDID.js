@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
 import { isEmpty } from 'lodash'
+import { toCSS, toJSON } from 'cssjson'
 
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+
+import fromStyleToCss from './fromStyleToCss'
 
 export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
   const kidLinkPrefix = 'https://koii.id/'
@@ -20,11 +23,56 @@ export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
   const [bannerId, setBannerId] = useState(null)
   const [linkAccounts, setLinkAccounts] = useState([{ title: '', link: '' }])
   const [customCss, setCustomCss] = useState('')
-  const [usingCustomCss, setUsingCustomCss] = useState(false)
+  const [usingCustomCss, setUsingCustomCss] = useState(true)
   const [expandedCssEditor, setExpandedCssEditor] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [modalType, setModalType] = useState('')
   const [oldkID, setOldkID] = useState('')
+  const [cssTemplate, setCssTemplate] = useState({
+    'children': {
+      '.description': {
+        'children': {},
+        'attributes': {}
+      },
+      '.name': {
+        'children': {},
+        'attributes': {}
+      },
+      '.links': {
+        'children': {},
+        'attributes': {}
+      },
+      '.background': {
+        'children': {},
+        'attributes': {}
+      },
+      '.content-area': {
+        'children': {},
+        'attributes': {}
+      },
+      '.wallet-address': {
+        'children': {},
+        'attributes': {}
+      },
+      '.did-label': {
+        'children': {},
+        'attributes': {}
+      },
+      '.address-name': {
+        'children': {},
+        'attributes': {}
+      },
+      '.address-value': {
+        'children': {},
+        'attributes': {}
+      },
+      '.show-address-button': {
+        'children': {},
+        'attributes': {}
+      },
+
+    }
+  })
 
   const getDID = async () => {
     try {
@@ -65,14 +113,17 @@ export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
         pronouns: state.pronouns
       }
   
-      console.log('STATE=======', state)
+      const newStyle = fromStyleToCss(state.styles)
+      const _cssTemplate = {...cssTemplate}
+      _cssTemplate['children'] = {..._cssTemplate['children'], ...newStyle}
+      setCssTemplate(_cssTemplate)
 
       setDidID(id)
       setuserKID(prev => ({...prev, ..._userKID}))
     
       setProfilePictureId(state.picture)
       setBannerId(state.banner)
-      setCustomCss(state.code)
+      // setCustomCss(state.code)
       setUsingCustomCss(!isEmpty(state.code))
     
       setLinkAccounts(state.links)
@@ -83,6 +134,14 @@ export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
       setError(err.message)
     }
   }
+
+  useEffect(() => {
+    const displayCssTemplate = () => {
+      setCustomCss(toCSS(cssTemplate))
+    }
+
+    displayCssTemplate()
+  }, [cssTemplate])
 
   useEffect(() => {
     if (walletLoaded) getDID()
@@ -103,7 +162,8 @@ export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
       showModal,
       modalType,
       oldkID,
-      getDID
+      getDID,
+      cssTemplate
     },
     {
       setuserKID,
@@ -118,7 +178,8 @@ export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
       setExpandedCssEditor,
       setShowModal,
       setModalType,
-      setOldkID
+      setOldkID,
+      setCssTemplate
     },
     getDID
   ]
