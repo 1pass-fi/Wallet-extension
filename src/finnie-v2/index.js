@@ -16,9 +16,8 @@ import Notifications from './pages/Notifications'
 import CollectionDetails from 'options/pages/CollectionDetails'
 
 import './style.css'
-import Settings from 'options/pages/Settings'
 import Success from 'options/pages/StartUp/shared/Success'
-import MainLayout from './components/MainLayout'
+import Settings from './pages/Settings/Settings'
 
 const SecondVer = () => {
   const dispatch = useDispatch()
@@ -43,11 +42,7 @@ const SecondVer = () => {
         <NFTDetail />
       </Route>
       <Route exact path="/settings/*">
-        <MainLayout title="Settings">
-          <div className="transform flex justify-start" style={{ width: '862px' }}>
-            <Settings />
-          </div>
-        </MainLayout>
+        <Settings />
       </Route>
       <Route exact path="/collections/create">
         <Collection />
