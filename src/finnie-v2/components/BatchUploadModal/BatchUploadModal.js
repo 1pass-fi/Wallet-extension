@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext, useMemo } from 'react'
+import { useSelector } from 'react-redux'
 
-import sendMessage from 'finnie-v2/utils/sendMessage'
 
 import BackIcon from 'img/v2/back-icon.svg'
 import CheckMarkIcon from 'img/v2/check-mark-icon-blue.svg'
@@ -11,35 +11,80 @@ import PreviousButton from 'img/v2/arrow-left-orange.svg'
 import Button from 'finnie-v2/components/Button'
 import UploadedFiles from './UploadedFiles'
 import EditNftInfo from './EditNftInfo'
+import { GalleryContext } from 'options/galleryContext'
 
 const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }) => {
+  const { selectedNftIds } = useContext(GalleryContext)
+
   const [currentNftIdx, setCurrentNftIdx] = useState(0)
   const [updateAll, setUpdateAll] = useState(false)
-  const [error, setError] = useState(inputFiles.map(() => ({ title: '', description: '' })))
+  const [error, setError] = useState([])
+
+  const assets = useSelector(state => state.assets)
+
+  const [selectedNfts, setSelectedNfts] = useState([])
+
+  const nftList = useMemo(() => [...nfts, ...selectedNfts], [nfts, selectedNfts])
 
   useEffect(() => {
-    const nfts = inputFiles.map((f, index) => {
-      const url = URL.createObjectURL(f)
-      return {
-        info: {
-          isNSFW: false,
-          ownerName: '',
-          ownerAddress: '',
-          title: f.name.split('.').slice(0, -1).join('.'),
-          description: '',
-          tags: [],
-          contentType: f.type,
-          createdAt: Date.now()
-        },
-        uploaded: false,
-        file: url,
-        name: f.name,
-        url
-      }
-    })
+    const getInputtedNfts = () => {
+      const nfts = inputFiles.map((f, index) => {
+        const url = URL.createObjectURL(f)
+        return {
+          info: {
+            isNSFW: false,
+            ownerName: '',
+            ownerAddress: '',
+            title: f.name.split('.').slice(0, -1).join('.'),
+            description: '',
+            tags: [],
+            contentType: f.type,
+            createdAt: Date.now()
+          },
+          uploaded: false,
+          file: url,
+          name: f.name,
+          url
+        }
+      })
 
-    setNfts(nfts)
+      setNfts(nfts)
+    }
+
+    const getSelectedNfts = async () => {
+      console.log('nft length =====', assets.nfts.length)
+      let nfts = assets.nfts.filter(nft => selectedNftIds.includes(nft.txId))
+      nfts = nfts.map(nft => {
+        return {
+          info: {
+            isNSFW: false,
+            ownerName: '',
+            ownerAddress: nft.address,
+            title: nft.name,
+            description: nft.description,
+            tags: [],
+            contentType: nft.contentType,
+            createdAt: nft.createdAt,
+            existingNft: true
+          },
+          uploaded: false,
+          file: nft.imageUrl,
+          name: nft.name,
+          url: nft.imageUrl
+        }
+      })
+      console.log('selected nfts ======', nfts)
+
+      setSelectedNfts(nfts)
+    }
+
+    getInputtedNfts()
+    getSelectedNfts()
   }, [])
+
+  useEffect(() => {
+    setError(nftList.map(() => ({ title: '', description: '' })))
+  }, [nftList])
 
   const [tagInputs, setTagInputs] = useState([])
 
@@ -77,7 +122,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
     let _nfts = [...nfts]
     _nfts = _nfts.map((nft) => {
       const title = nft.info.title
-      nft.info = { ..._nfts[currentNftIdx].info, title }
+      nft.info = { ...nftList[currentNftIdx].info, existingNft: false, title }
       return nft
     })
     setNfts(_nfts)
@@ -142,7 +187,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
             <div className="w-66.75">
               <UploadedFiles
                 error={error}
-                files={nfts}
+                files={nftList}
                 currentNftIdx={currentNftIdx}
                 setCurrentNftIdx={setCurrentNftIdx}
                 removeNft={removeNft}
@@ -153,8 +198,8 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
                 error={error}
                 setError={setError}
                 currentNftIdx={currentNftIdx}
-                nftInfo={nfts[currentNftIdx].info}
-                file={nfts[currentNftIdx].file}
+                nftInfo={nftList[currentNftIdx].info}
+                file={nftList[currentNftIdx].file}
                 updateNftInfo={updateNftInfo}
                 tagInputs={tagInputs}
                 setTagInputs={setTagInputs}
@@ -162,7 +207,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
             </div>
           </div>
           <div className="w-3.75">
-            {currentNftIdx < nfts.length - 1 && (
+            {currentNftIdx < nftList.length - 1 && (
               <NextButton
                 onClick={() => setCurrentNftIdx((prev) => prev + 1)}
                 className="h-6.75 cursor-pointer"

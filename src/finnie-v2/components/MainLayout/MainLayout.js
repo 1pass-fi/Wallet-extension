@@ -7,7 +7,9 @@ import Sidebar from 'finnie-v2/components/Sidebar'
 
 const MainLayout = ({ title, children }) => {
   const location = useLocation()
-  const EXCLUDE_PATH = []
+  const EXCLUDE_PATH = [
+    '/success'
+  ]
 
   console.log('PATHNAME', location.pathname)
 

@@ -115,7 +115,7 @@ const Sidebar = () => {
               type="Collections"
             />
           </Route>
-          <Route exact path="/collections/create">
+          <Route path="/collections/create">
             <CreateCollectionForm />
           </Route>
           <Route exact path="/settings/*">

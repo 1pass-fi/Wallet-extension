@@ -92,6 +92,8 @@ export default ({ children }) => {
 
   const [searchTerm, setSearchTerm] = useState('') // search bar
 
+  const [selectedNftIds, setSelectedNftIds] = useState([])
+
   const dispatch = useDispatch()
 
   /* HOOKS */
@@ -344,6 +346,7 @@ export default ({ children }) => {
         inputFileRef,
         walletLoaded,
         refreshNFTs,
+        selectedNftIds, setSelectedNftIds,
         ...modalStates,
         ...setModalStates,
         ...settingStates,

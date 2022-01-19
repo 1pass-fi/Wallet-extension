@@ -47,6 +47,8 @@ const SecondVer = () => {
         return 'Collections'
       case '/collections/create':
         return 'Create Collection'
+      case '/collections/create/select-nft':
+        return 'Select your NFTs'
       default: 
         return 'Page Title'
     }

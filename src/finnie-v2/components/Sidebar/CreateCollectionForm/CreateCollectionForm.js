@@ -1,4 +1,5 @@
 import React, { useState, useRef, useMemo } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
@@ -7,6 +8,7 @@ import union from 'lodash/union'
 import ProgressBar from '@ramonak/react-progress-bar'
 
 import CrossIcon from 'img/v2/cross-icon.svg'
+import AddIcon from 'img/v2/create-collection-form/add-icon.svg'
 
 import createCollection from 'utils/createNfts/createCollection'
 
@@ -19,6 +21,8 @@ import formatLongString from 'finnie-v2/utils/formatLongString'
 import ConfirmModal from './ConfirmModal'
 
 const CreateCollectionForm = () => {
+  const history = useHistory()
+
   const address = useSelector((state) => state.defaultAccount.address)
 
   const selectFiles = useRef(null)
@@ -44,6 +48,7 @@ const CreateCollectionForm = () => {
   const [files, setFiles] = useState([])
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [showingConfirmModal, setShowingConfirmModal] = useState(false)
+  const [selectedIds, setSelectedIds] = useState([])
 
   const [nfts, setNfts] = useState([
     {
@@ -166,6 +171,10 @@ const CreateCollectionForm = () => {
     setShowCreateModal(true)
   }
 
+  const openSelectNftModal = () => {
+    history.push('/collections/create/select-nft')
+  }
+
   return (
     <>
       <div className="flex flex-col px-4 pt-4 pb-8">
@@ -273,7 +282,10 @@ const CreateCollectionForm = () => {
           )}
         </div>
         <span className="text-3xs text-bittersweet-200 mb-4.25">{errors.files}</span>
-
+        <div onClick={openSelectNftModal} className='flex text-xs text-success w-full mb-3.5 cursor-pointer'>
+          <div className='w-4.5 h-4.5 mr-1.5'><AddIcon /></div>
+          Add from my existing NFTs
+        </div>
         <Button
           onClick={handleCreateCollection}
           variant="light"

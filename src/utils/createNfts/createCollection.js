@@ -37,15 +37,15 @@ export default async ({nfts, setNfts, address, collectionData}) => {
   
       await arweave.transactions.sign(transaction, key)
       const uploader = await arweave.transactions.getUploader(transaction)
-      while (!uploader.isComplete) {
-        await uploader.uploadChunk()
-      }
-      // await mockUploadNft()
+      // while (!uploader.isComplete) {
+      //   await uploader.uploadChunk()
+      // }
+      await mockUploadNft()
   
       const koii = new Web()
       koii.wallet = key
       await koii.getWalletAddress()
-      await registerData(koii, transaction.id)
+      // await registerData(koii, transaction.id)
   
       setNfts(prev => {prev[index].uploaded = true; return [...prev]})
   
@@ -100,10 +100,10 @@ export default async ({nfts, setNfts, address, collectionData}) => {
   collectionData.collection = nftIds
 
   console.log('collectionData', collectionData)
-  const txId = await request.gallery.createNewCollection({ collectionData, address })
-  // const txId = 'collectionId'
+  // const txId = await request.gallery.createNewCollection({ collectionData, address })
+  const txId = 'collectionId'
 
-  // await mockUploadNft()
+  await mockUploadNft()
   return txId
 }
 

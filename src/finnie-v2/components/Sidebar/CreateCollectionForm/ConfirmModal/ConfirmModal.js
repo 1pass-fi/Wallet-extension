@@ -79,7 +79,7 @@ const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, clo
                   disabled={displayProgressBar}
                 />
               </div>
-              {displayProgressBar && <ProgressBar completed={uploaded} maxCompleted={nfts.length} customLabel=' '/>}
+              {displayProgressBar && <ProgressBar bgColor='#49CE8B' completed={uploaded} maxCompleted={nfts.length} customLabel=' '/>}
             </>
           </section>
         )}
