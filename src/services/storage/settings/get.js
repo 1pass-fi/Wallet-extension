@@ -59,4 +59,8 @@ export class SettingGet {
   async assetsTabSettings() {
     return await this.#chrome._getChrome(SETTING.ASSETS_TAB_SETTINGS) || {}
   }
+
+  async disabledOrigins() {
+    return await this.#chrome._getChrome(SETTING.DISABLED_ORIGINS) || []
+  }
 }

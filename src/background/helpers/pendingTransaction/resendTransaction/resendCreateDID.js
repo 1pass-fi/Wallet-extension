@@ -11,14 +11,14 @@ import koiiMe from 'background/helpers/did/koiiMe'
 
 const resendCreateDID = async (account, transaction) => {
   const contractId = get(transaction, 'data.dataContractID')
-  const brandlyId = get(transaction, 'data.brandlyID')
+  const kID = get(transaction, 'data.kID')
   if (!contractId) throw new Error('Contract ID not found.')
-  if (!brandlyId) throw new Error('Brandly ID not found.')
+  if (!kID) throw new Error('Koii ID not found.')
 
   const txId = await createReactAppDID(contractId, account)
 
   // map koiime to new react app
-  await koiiMe.updateKoiiMe(brandlyId, txId)
+  await koiiMe.updateKoiiMe(kID, txId, account)
 
   return txId
 }
@@ -46,7 +46,13 @@ const createReactAppDID = async (contractId, account) => {
   await account.method.signTx(tx)
   console.log('signed tx', tx)
   const uploader = await arweave.transactions.getUploader(tx)
-  await uploader.uploadChunk()
+  while (!uploader.isComplete) {
+    await uploader.uploadChunk()
+    console.log(
+      uploader.pctComplete + '% complete',
+      uploader.uploadedChunks + '/' + uploader.totalChunks
+    )
+  }
   console.log('react id', tx.id)
 
   return tx.id

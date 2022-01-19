@@ -46,3 +46,28 @@
   color: red;
   margin-top: 5px;
 }
+
+.kid-input .kid-input-input-section .field {
+  display: flex;
+  align-items: center;
+}
+
+.kid-input .kid-input-input-section .field .prefix-link {
+  font-size: 15px;
+  width: 128px;
+}
+
+.kid-input .kid-input-input-section .field .kid-input-field.kid {
+  width: 255px;
+}
+
+#kid-share-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 14px;
+  cursor: pointer;
+}
+
+#kid-share-icon:focus {
+  outline: none;
+}

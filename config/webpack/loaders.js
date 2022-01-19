@@ -1,6 +1,5 @@
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-
 // NOTE: Loader `include` paths are relative to this module
 const paths = require('../paths')
 
@@ -38,6 +37,7 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
               },
               stage: 3,
             }),
+            require('tailwindcss')
           ],
           sourceMap: isEnvProduction && shouldUseSourceMap,
         },

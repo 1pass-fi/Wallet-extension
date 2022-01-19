@@ -1,5 +1,5 @@
 // modules
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { isEmpty } from 'lodash'
@@ -8,6 +8,7 @@ import { isEmpty } from 'lodash'
 import { lockWallet } from 'actions/koi'
 import { setError } from 'actions/error'
 import { setIsLoading } from 'popup/actions/loading'
+import { setNotification } from 'popup/actions/notification'
 
 // components
 import GlobalButton from 'popup/components/shared/globalButton'
@@ -18,9 +19,35 @@ import { PATH } from 'constants/koiConstants'
 
 // styles
 import './index.css'
+import disableOrigin from 'utils/disableOrigin'
+import storage from 'services/storage'
 
 
-const Setting = ({ lockWallet, setError, setIsLoading, accounts }) => {
+const Setting = ({ lockWallet, setError, setIsLoading, accounts, setNotification }) => {
+  const [currentTabOrigin, setCurrentTabOrigin] = useState('')
+
+  const loadDisabledOrigins = () => {
+    chrome.windows.getCurrent(w => {
+      try {
+        const windowId = w.id
+        chrome.tabs.getSelected(windowId, tab => {
+          const origin = tab.url.split('/')[0] + '//' + tab.url.split('/')[2]
+          console.log('origin', origin)
+          storage.setting.get.disabledOrigins().then(disabledOrigins => {
+            if (disabledOrigins.includes(origin)) setCurrentTabOrigin(origin)
+            else setCurrentTabOrigin('')
+          })
+        })
+      } catch (err) {
+
+      }
+    })
+  }
+
+  useEffect(() => {
+    loadDisabledOrigins()
+  }, [])
+
   const history = useHistory()
   const handleOnClick = async () => {
     if (!isEmpty(accounts)) {
@@ -38,6 +65,13 @@ const Setting = ({ lockWallet, setError, setIsLoading, accounts }) => {
     }
   }
 
+  const handleEnableFinnie = async () => {
+    console.log('origin', currentTabOrigin)
+    await disableOrigin.removeDisabledOrigin(currentTabOrigin)
+    loadDisabledOrigins()
+    setNotification('Page allowed')
+  }
+
   return (
     <div className='setting-container'>
       <GlobalButton type='lock' className='lock' onClick={handleOnClick} />
@@ -48,10 +82,11 @@ const Setting = ({ lockWallet, setError, setIsLoading, accounts }) => {
           )
         }
       </div>
+      {currentTabOrigin && <div className='allow-finnie'><button onClick={handleEnableFinnie}>Allow Finnie on this page</button></div>}
     </div>
   )
 }
 
 const mapStateToProps = (state) => ({ accounts: state.accounts })
 
-export default connect(mapStateToProps, { lockWallet, setError, setIsLoading })(Setting)
+export default connect(mapStateToProps, { lockWallet, setError, setIsLoading, setNotification })(Setting)

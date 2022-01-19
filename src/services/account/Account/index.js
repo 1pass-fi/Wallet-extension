@@ -12,6 +12,7 @@ import { EthereumStatic } from './Chains/Ethereum/EthereumStatics'
 export class Account {
   constructor(address) {
     this.get = new AccountGetter(address)
+    this.set = new AccountSetter(address)
   }
 }
 
@@ -30,6 +31,10 @@ export class ArweaveAccount extends BackgroundAccount {
     this.#koi.address = address
     this.#koi.wallet = key
     this.method = new ArweaveMethod(this.#koi)
+  }
+
+  getKey() {
+    return this.#koi.wallet
   }
 
   static utils = new ArweaveStatic()

@@ -24,12 +24,13 @@ export default async (payload, next) => {
       return
     }
 
+    let reactAppId = await helpers.did.getDID(null, txId)
+
     if (newkID) {
-      const reactAppId = await helpers.did.getDID(null, txId)
-      const { kIDCreated } = await helpers.did.koiiMe.mapKoiiMe({ txId: reactAppId, kID: didData.kID })
+      const { kIDCreated } = await helpers.did.koiiMe.mapKoiiMe({ txId: reactAppId, kID: didData.kID, account })
 
       if (!kIDCreated) {
-        next({ error: 'Map koiime error', status: 400 })
+        next({ error: 'Map koii.id error', status: 400 })
         return
       }
     }
@@ -47,7 +48,8 @@ export default async (payload, next) => {
       contract: null,
       data: {
         didData,
-        didTransactionID: txId
+        didTransactionID: txId,
+        reactAppId
       }
     }
 

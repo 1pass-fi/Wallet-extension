@@ -1,0 +1,10 @@
+#activities::-webkit-scrollbar-thumb {
+  background: #373765;
+  border-radius: 0.5;
+  width: 3.19px
+}
+
+#activities::-webkit-scrollbar-track {
+  background: rgba(214, 214, 214, 0.5);
+  border-radius: 0.5;
+}

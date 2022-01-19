@@ -27,7 +27,7 @@ export default Joi.object({
       }),
     })
   ),
-  addresses:Joi.array(),
+  addresses:Joi.object(),
   styles:Joi.object(),
   code:Joi.string().empty(''),
   country:Joi.string().required().messages({

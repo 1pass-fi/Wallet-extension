@@ -2,9 +2,9 @@ import React from 'react'
 
 import './index.css'
 
-const Button = ({ startIcon: StartIcon, endIcon: EndIcon, text, onClick, variant, disabled=false }) => {
+const Button = ({ startIcon: StartIcon, endIcon: EndIcon, text, onClick, variant, disabled=false, customClass }) => {
   return (
-    <button disabled={disabled} className={`custom-btn ${variant === 'filled' ? 'filled' : 'outline'}`} onClick={onClick}>
+    <button disabled={disabled} className={`custom-btn ${variant === 'filled' ? 'filled' : 'outline'} ${customClass}`} onClick={onClick}>
       {StartIcon && (
         <div className="btn-icon">
           <StartIcon />

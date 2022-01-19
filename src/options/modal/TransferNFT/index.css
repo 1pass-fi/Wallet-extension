@@ -1,11 +1,45 @@
-.transfer-nft.wrapper {
-  width: 677px;
+.new-modal-wrapper {
+  width: 100%;
+  height: 100vh;
+  z-index: 55;
+  top: 0;
+  left: 0;
+  position: fixed;
+  background-color: rgba(23, 23, 83, 0.6);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 16px 34px;
-  color: white;
+  justify-content: center;
+}
+
+.new-modal-header {
+  display: flex;
+  height: 67px;
+  padding: 0px 15px;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+}
+
+.new-modal-header-icon {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.transfer-nft.wrapper {
+  position: relative;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  color: #171753;
+  width: 783px;
+  height: 463px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
 
   font-size: 24px;
   font-style: normal;
@@ -13,95 +47,66 @@
 }
 
 .transfer-nft.wrapper .title {
-  letter-spacing: -0.02em;
-  text-align: center;
-  margin-bottom: 16px;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0.01em;
 }
 
-.transfer-nft.wrapper .title .title__asset-name {
+.transfer-nft__nft-name-wrapper {
+  display: flex;
+  width: full;
+  justify-content: center;
+  align-items: center;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 23px;
+  color: #373765;
+}
+
+.transfer-nft__nft-name {
   font-weight: 600;
-  color: #5ed9d1;
+  color: #373765;
 }
 
 .transfer-nft.container {
   width: 100%;
+  padding: 0px 30px;
   display: flex;
   justify-content: space-between;
-}
-
-.transfer-nft.container .asset-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.transfer-nft.container .asset-info .nft-img {
-  width: 208px;
-  height: 208px;
-  object-fit: contain;
-  background: #020221;
-  border-radius: 4px;
-}
-
-.transfer-nft.container .asset-info .nft-img-iframe {
-  overflow: hidden;
-  width: 208px;
-  height: 208px;
-  background: #020221;
-  -webkit-user-drag: none;
-  box-sizing: border-box;
-  padding-top: 35px;
-}
-
-.transfer-nft.container .nft-img-iframe .iframe-wrapper {
+  align-items: center;
   position: relative;
-  height: 208px;
-  width: 208px;
 }
 
-.transfer-nft.container .iframe-wrapper iframe {
-  position: absolute;
-  top: 0;
-  height: 208px;
-  width: 208px;
-  transform: translateY(-20%);
-}
-
-.transfer-nft.container .asset-info .asset-name {
-  letter-spacing: 0.03em;
-  margin-top: 9px;
-}
-
-.transfer-nft.container .asset-info .asset-owner {
-  font-size: 16px;
-  color: #5ed9d1;
-  margin: 2px 0px;
-}
-
-.transfer-nft.container .asset-info .asset-total-views {
-  letter-spacing: -0.02em;
-  margin: 2px 0px;
-}
-
-.transfer-nft.container .asset-info .asset-koii-earned {
-  color: #5ed9d1;
-  font-size: 14px;
-  margin: 2px 0px;
+.transfer-nft.container .media {
+  width: 201px;
+  height: 201px;
 }
 
 .transfer-nft.container .right-side {
-  width: 400px;
+  width: 470px;
+}
+
+.transfer-nft.wrapper .button-wrapper {
+  width: 100%;
+  position: absolute;
+  bottom: 25px;
+  left: 0px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .transfer-nft.wrapper .submit-btn {
-  position: absolute;
-  bottom: 32px;
+  color: white;
 
   padding: 5px 50px;
-  width: 240px;
+  min-width: 173px;
+  height: 39px;
   align-self: center;
 
-  background: #ffffff;
-  border-radius: 2px;
+  background: #373765;
+  border-radius: 4px;
   border: 0;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
 
@@ -114,5 +119,5 @@
 
 .transfer-nft.wrapper .submit-btn:disabled {
   cursor: not-allowed;
-  background-color: gray;
+  opacity: 0.7;
 }

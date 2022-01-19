@@ -42,13 +42,15 @@
 .select-wallet .content {
   min-height: 354px;
   padding: 29px 24px 24px;
+  display: flex;
+  flex-direction: column;
 }
 
 .select-wallet .content .card-content {
   align-items: flex-start;
   box-sizing: border-box;
   display: flex;
-  padding: 20px 0px 24px;
+  padding: 20px 0px 24px ;
   width: 378px;
 }
 
@@ -199,4 +201,20 @@
 
 .select-wallet .content .allow-permission .button-line {
   padding: 0 17px;
+  padding-left: 24px;
+}
+
+.select-wallet .disable-finnie {
+  width: 100%;
+  padding-top: 24px;
+}
+
+.select-wallet .disable-finnie button {
+  width: 100px;
+  height: 24px;
+  background-color: white;
+  border-radius: 2px;
+  border: 1px solid #171753;
+  margin-bottom: 4px;
+  background-color: rgb(245,245,245);
 }

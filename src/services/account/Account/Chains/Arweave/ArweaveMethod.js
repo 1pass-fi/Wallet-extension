@@ -5,7 +5,7 @@
 
 import { PATH, ALL_NFT_LOADED, ERROR_MESSAGE, URL, ACTIVITY_NAME, BRIDGE_FLOW, DELIGATED_OWNER, KOII_CONTRACT } from 'constants/koiConstants'
 import { getChromeStorage, setChromeStorage } from 'utils'
-import { get, isNumber, isArray, orderBy, includes, find, isEmpty, isString } from 'lodash'
+import { get, isNumber, isArray, orderBy, includes, find, isEmpty, isString, findIndex } from 'lodash'
 import moment from 'moment'
 import { smartweave } from 'smartweave'
 import axios from 'axios'
@@ -202,6 +202,10 @@ export class ArweaveMethod {
           } else if (inputFunction.function === 'burnKoi') {
             activityName = 'Burnt KOII'
             expense = 1
+          } else if (inputFunction.function === 'register') {
+            activityName = 'Registered KID'
+          } else if (inputFunction.function === 'unregister') {
+            activityName = 'Unregistered KID'
           }
   
           if (inputFunction.function === 'registerData' ||
@@ -251,7 +255,8 @@ export class ArweaveMethod {
           date: timeString,
           source,
           time,
-          address: this.koi.address
+          address: this.koi.address,
+          seen: true
         }
       } catch (err) {
         return {}
@@ -259,6 +264,18 @@ export class ArweaveMethod {
     })
 
     console.log('RESULT: ', fetchedData.length)
+
+    const oldActivites = await this.#chrome.getActivities() || []
+    const newestOfOldActivites = oldActivites[0]
+
+    if (newestOfOldActivites) {
+      const idx = findIndex(fetchedData, data => data.id === newestOfOldActivites.id)
+  
+      for(let i = 0; i < idx; i++) {
+        fetchedData[i].seen = false
+      }
+    }
+
     /* 
       Set activities to the local storage
     */
@@ -509,10 +526,12 @@ export class ArweaveMethod {
     const storageNfts = await this.#chrome.getAssets() || []
 
     const { collection: nftIds } = collection
-    const nfts = nftIds.map(id => {
+    let nfts = nftIds.map(id => {
       const nft = find(storageNfts, v => v.txId == id)
       if (nft) return nft
     })
+
+    if (!nfts) nfts = []
 
     const resultCollection = { ...collection, nfts }
     return resultCollection
@@ -683,7 +702,8 @@ export class ArweaveMethod {
               description: content.description,
               type: TYPE.ARWEAVE,
               address: this.koi.address,
-              locked: content.locked
+              locked: content.locked,
+              tags: content.tags
             }
           } else {
             console.log('Failed load content: ', content)
@@ -702,12 +722,85 @@ export class ArweaveMethod {
               description: content.description,
               type: TYPE.ARWEAVE,
               address: this.koi.address,
-              locked: content.locked
+              locked: content.locked,
+              tags: content.tags
             }
           }
         } catch (err) {
           console.log(err.message)
           throw new Error(err.message)
+        }
+      }))
+    } catch (err) {
+      console.log(err.message)
+      return []
+    }
+  }
+
+  async getNfts(nftIds, getBase64) {
+    try {
+      return await Promise.all(nftIds.map(async contentId => {
+        try {
+          const content = await this.koi.getNftState(contentId)
+          if (content.title || content.name) {
+            if (!get(content, 'contentType')) {
+              const response = await fetch(`${PATH.NFT_IMAGE}/${content.id}`)
+              const blob = await response.blob()
+              const type = get(blob, 'type') || 'image/png'
+              content.contentType = type
+            }
+            let url = `${PATH.NFT_IMAGE}/${content.id}`
+            let imageUrl = url
+            if (getBase64) {
+              if (!includes(content.contentType, 'html')) {
+                const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
+                imageUrl = `data:${content.contentType};base64,${u8}`
+                if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
+              }
+            }
+
+            return {
+              name: content.title || content.name,
+              // isKoiWallet: content.ticker === 'KOINFT',
+              isKoiWallet: true,
+              earnedKoi: content.reward,
+              txId: content.id,
+              imageUrl,
+              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+              koiRockUrl: `${PATH.KOII_LIVE}/${content.id}`,
+              isRegistered: true,
+              contentType: content.contentType,
+              totalViews: content.attention,
+              createdAt: content.createdAt,
+              description: content.description,
+              type: TYPE.ARWEAVE,
+              address: this.koi.address,
+              locked: content.locked,
+              tags: content.tags
+            }
+          } else {
+            console.log('Failed load content: ', content)
+            return {
+              name: '...',
+              isKoiWallet: true,
+              earnedKoi: content.reward,
+              txId: content.id,
+              imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
+              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+              koiRockUrl: `${PATH.KOII_LIVE}/${content.id}`,
+              isRegistered: true,
+              contentType: content.contentType || 'image',
+              totalViews: content.attention,
+              createdAt: content.createdAt,
+              description: content.description,
+              type: TYPE.ARWEAVE,
+              address: this.koi.address,
+              locked: content.locked,
+              tags: content.tags
+            }
+          }
+        } catch (err) {
+          console.log(err.message)
         }
       }))
     } catch (err) {

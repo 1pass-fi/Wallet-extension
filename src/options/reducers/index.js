@@ -5,11 +5,13 @@ import defaultAccount from './defaultAccount'
 import createCollection from './createCollection'
 import collections from './collections'
 import assets from './assets'
+import notificationsData from './notifications'
 
-export default combineReducers({ 
-  accounts, 
-  defaultAccount, 
-  createCollection, 
+export default combineReducers({
+  accounts,
+  defaultAccount,
+  createCollection,
   collections,
-  assets
+  assets,
+  notificationsData
 })

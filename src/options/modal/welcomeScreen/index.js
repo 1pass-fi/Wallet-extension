@@ -8,30 +8,29 @@ export default ({ onClose }) => {
     <Modal onClose={onClose}>
       <div className='welcome-message'>
         <div className='title'>
-          Finnie Wallet <span>v0.3.0 Notes</span>
+          Finnie Wallet <span>v0.2.10 Notes</span>
         </div>
         <div className='content'>
           <div className='paragraph'>
-            Welcome to Finnie, the best wallet for holding digital assets like
-            NFTs.
+          Decentralized Identities (DID) are here! Now you can link your different keys to one ID and create a personalized profile too. Each DID is an NFT stored on Arweave and it can be updated right from Finnie.
           </div>
 
           <div className='paragraph'>
-          The Ethereum bridge has arrived! We are so excited to announce that you can now transfer your Koii NFTs to any Ethereum marketplace, and transfer them back to your Finnie wallet to earn attention rewards via Proof of Real Traffic.
+          With your profile, you can add a profile photo (show off your coolest PFP) and a cover photo from your NFT collection. Add a description and any links you want, so people can follow you on social media or find your portfolio.
           </div>
 
-          <div className='paragraph'>New features with this release:</div>
-          Finnie can now hold multiple keys (e.g. two KOII wallets and two ETH wallets) and you can send NFTs to any other Arweave wallet. You will be able to view the NFTs from all your wallets right in the Gallery.
           <div className='paragraph'>
-          Finnie also supports Dynamic NFTs like the Narcissus Flower.
+          We fixed a bug that affected signing transactions and sending AR, so now Finnie should be compatible with other Arweave apps. You can now pause Finnie for a specific webpage if you need to for any reason. If you encounter a problem, please let us know with a <a style={{ color: '#49ce8b' }} href='https://koii.me/support'
+              className='link'
+              target='_blank'>bug report.</a>
           </div>
           <div className='paragraph'>
-          Based on your feedback, we've made updates to speed up load times and fix bugs, and added usability improvements like hover tags on buttons.
+          We’re currently working on speeding up transaction times and giving Finnie a new look, so keep an eye out!
           </div>
 
 
           <div className='report-request paragraph'>
-            Have a feature? submit it <a
+            Have a request? submit it <a
               href='https://koii.me/featurerequest'
               className='link'
               target='_blank'

@@ -12,7 +12,8 @@ export default async ({
   nftId,
   fileType,
   ownerAddress,
-  createdAt
+  createdAt,
+  address
 }) => {
   const credentials = await backgroundAccount.getCredentialByAddress(ownerAddress)
   const account = await backgroundAccount.getAccount(credentials)
@@ -41,7 +42,8 @@ export default async ({
     pending: true,
     type: TYPE.ARWEAVE,
     expired: false,
-    retried: 1
+    retried: 1,
+    address
   }
 
   const allPendingAssets = await account.get.pendingAssets() || []

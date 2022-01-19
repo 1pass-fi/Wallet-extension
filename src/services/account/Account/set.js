@@ -50,13 +50,6 @@ export class AccountSetter {
   }
   /**
      * 
-     * @returns {Array} List of Activities
-     */
-  async activities(value) {
-    return await this.#accountStorage.setField(ACCOUNT.ACTIVITIES, value)
-  }
-  /**
-     * 
      * @returns {Number} Price of token
      */
   async price(value) {
@@ -82,6 +75,10 @@ export class AccountSetter {
      */
   async collections(value) {
     return await this.#accountStorage.setCollections(value)
+  }
+
+  async collectionNfts(value) {
+    return await this.#accountStorage.setCollectionNfts(value)
   }
 
   async kid(value) {

@@ -26,3 +26,17 @@
   top: 8px;
   z-index: 500;
 }
+
+.notification__item--success {
+  background-color: #49CE8B;
+  border-left: 5px solid #237B75;
+}
+
+.notification__item--danger {
+  background-color: #FF4141
+}
+
+.notifications-component {
+  z-index: 40;
+  top: 100px
+}

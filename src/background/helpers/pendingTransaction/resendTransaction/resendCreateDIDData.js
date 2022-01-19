@@ -7,14 +7,14 @@ import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 
 const resendCreateDIDData = async (account, transaction) => {
   const didData = get(transaction, 'data.didData')
-  const brandlyId = get(transaction, 'data.brandlyID')
+  const kID = get(transaction, 'data.didData.kID')
   if (!didData) throw new Error('DID Data not found.')
   if (!brandlyId) throw new Error('Brandly ID not found.')
 
   const [id, contractId] = await did.createDID(didData, account)
 
   // map koiime to new react app
-  await koiiMe.updateKoiiMe(brandlyId, id)
+  await koiiMe.updateKoiiMe(didData?.kID, id, account)
 
   // update the pending create DID if any
   let pendingTransactions = await account.get.pendingTransactions()

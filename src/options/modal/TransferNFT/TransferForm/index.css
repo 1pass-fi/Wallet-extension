@@ -5,25 +5,27 @@
   font-style: normal;
   letter-spacing: 0.03em;
 }
-.transfer-nft.wrapper .transfer-form .leading {
-  font-weight: 400;
-}
 
 .transfer-nft.wrapper .transfer-form .label {
   font-weight: 600;
+  letter-spacing: 0.001em;
 }
 
 .transfer-nft.wrapper .transfer-form input {
-  border-radius: 2px;
-  border: 1px solid #ffffff;
   box-sizing: border-box;
-  color: #171753;
-  font-size: 16px;
-  height: 32px;
-  line-height: 20px;
+
   padding: 9px 9px;
+  height: 36px;
   width: 100%;
   margin: 8px 0px;
+
+  color: #171753;
+  font-size: 16px;
+  line-height: 20px;
+
+  background-color: rgba(214, 214, 214, 0.5);
+  border-radius: 4px 4px 0px 0px;
+  border-bottom: solid 2px #5d5d82;
 }
 
 .transfer-nft.wrapper .transfer-form .receiver-address {
@@ -34,13 +36,15 @@
 .transfer-nft.wrapper .transfer-form .warning {
   display: flex;
   flex-direction: row;
-  font-size: 12px;
-  color: #ffa54b;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 400;
+  color: #ff4141;
+  letter-spacing: 0.001em;
 }
 
 .transfer-nft.wrapper .transfer-form .warning-icon {
-  width: 32px;
-  height: 20px;
+  width: 15px;
 }
 
 .transfer-nft.wrapper .transfer-form .warning-text {
@@ -54,28 +58,21 @@
 }
 
 .transfer-nft.wrapper .transfer-form .number-to-transfer input {
-  padding-left: 40px;
-  background-color: #ffffff;
+  padding: 0 9px;
   cursor: not-allowed;
 }
 
 .transfer-nft.wrapper .transfer-form .number-to-transfer .total-available {
-  position: absolute;
   right: 0px;
   top: 3px;
+  position: absolute;
 
   font-size: 12px;
-  color: #5ed9d1;
-}
-
-.transfer-nft.wrapper .transfer-form .number-to-transfer .input-logo {
-  position: absolute;
-  left: 10px;
-  top: 32px;
+  letter-spacing: 0.03em;
+  color: #237b75;
 }
 
 .transfer-nft.wrapper .transfer-form .number-to-transfer .description {
   font-size: 10px;
+  letter-spacing: 0.001em;
 }
-
-

@@ -36,12 +36,21 @@ export class AccountStorageUtils extends ChromeStorage {
   }
 
   async getCollections() {
-    const collections = await this._getChrome(`${this.#address}_collections`)
+    const collections = await this._getChrome(`${this.#address}_collections`) || []
     return collections
   }
 
   async setCollections(value) {
     await this._setChrome(`${this.#address}_collections`, value)
+  }
+
+  async getCollectionNfts() {
+    const collectionNfts = (await this._getChrome(`${this.#address}_collectionNFTs`)) || []
+    return collectionNfts
+  }
+
+  async setCollectionNfts(value) {
+    await this._setChrome(`${this.#address}_collectionNFTs`, value)
   }
 
   async getKID() {

@@ -6,7 +6,7 @@
 import { PATH, ALL_NFT_LOADED, ACTIVITY_NAME, ETHERSCAN_API, ETH_NFT_BRIDGE_ACTION } from 'constants/koiConstants'
 import { ACCOUNT } from 'constants/accountConstants'
 import { getChromeStorage } from 'utils'
-import { get, includes, isNumber } from 'lodash'
+import { get, includes, findIndex } from 'lodash'
 import moment from 'moment'
 
 import { TYPE } from 'constants/accountConstants'
@@ -175,8 +175,17 @@ export class EthereumMethod {
         return {}
       }
     })
+    
+    const oldActivites = await this.#chrome.getActivities() || []
+    const newestOfOldActivites = oldActivites[0]
 
-    console.log('RESULT: ', fetchedData.length)
+    if (newestOfOldActivites) {
+      const idx = findIndex(fetchedData, data => data.id === newestOfOldActivites.id)
+  
+      for(let i = 0; i < idx; i++) {
+        fetchedData[i].seen = false
+      }
+    }
 
     await this.#chrome.setActivities(fetchedData)
   }

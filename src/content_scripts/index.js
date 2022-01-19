@@ -3,6 +3,7 @@ import { includes } from 'lodash'
 
 // constants
 import { ALLOWED_ORIGIN } from 'constants/koiConstants'
+import storage from 'services/storage'
 
 import inject from './inject'
 import inpageScript from './inpageScript'
@@ -15,7 +16,12 @@ if (includes(ALLOWED_ORIGIN, window.origin)) {
 async function contentScript () {
   await initHanlders()
 
-  inject(inpageScript)
+  const disabledOrigins = await storage.setting.get.disabledOrigins()
+  const origin = window.location.origin
+
+  const disabled = disabledOrigins.includes(origin)
+
+  inject(inpageScript(disabled))
 
   const arweaveWalletLoaded = new CustomEvent('arweaveWalletLoaded')
   const finnieWalletLoaded = new CustomEvent('finnieWalletLoaded')

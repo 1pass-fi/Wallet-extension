@@ -17,3 +17,16 @@
 .global-button.lock {
   margin-top: 22px;
 }
+
+.setting-container .allow-finnie {
+  padding: 20px;
+  text-align: center
+}
+
+.setting-container .allow-finnie button {
+  width: 200px;
+  height: 27px;
+  font-weight: 800;
+  font-size: 14px;
+  color: #171753;
+}

@@ -69,7 +69,13 @@ export default async (payload, next) => {
     console.log('Upload NFT [5/6]: post transaction')
     try {
       const uploader = await arweave.transactions.getUploader(transaction)
-      await uploader.uploadChunk()
+      while (!uploader.isComplete) {
+        await uploader.uploadChunk()
+        console.log(
+          uploader.pctComplete + '% complete',
+          uploader.uploadedChunks + '/' + uploader.totalChunks
+        )
+      }
     } catch (err) {
       console.error(err.message)
       throw new Error(ERROR_MESSAGE.UPLOAD_NFT.UPLOAD_ERROR)
@@ -91,7 +97,6 @@ export default async (payload, next) => {
 
     const result = { txId: transaction.id, createdAt }
     console.log('Upload NFT result', result)
-    // const result = { txId: uuid(), createdAt: 0 }
 
 
     // save pending transaction to storage
@@ -116,7 +121,8 @@ export default async (payload, next) => {
       nftId: transaction.id,
       fileType,
       ownerAddress: address,
-      createdAt
+      createdAt,
+      address
     }
     await helpers.pendingTransactionFactory.createPendingAsset(nftPayload)
 

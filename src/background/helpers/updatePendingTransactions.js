@@ -1,13 +1,16 @@
-import { includes } from 'lodash'
+import { includes, get } from 'lodash'
 
 // Services
 import { backgroundAccount } from 'services/account'
 
 // Constants
-import { MAX_RETRIED } from 'constants/koiConstants'
+import { MAX_RETRIED, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 
 // Utils
 import showNotification from 'utils/notifications'
+import axios from 'axios'
+import helpers from 'options/actions/helpers'
+import did from './did'
 
 
 export default async () => {
@@ -46,7 +49,7 @@ export default async () => {
             if retried > MAX_RETRIED, notice user with an expired transaction
           */
           if (dropped) {
-            
+
             if (transaction.retried < MAX_RETRIED ) {
               return await account.method.resendTransaction(transaction.id)
             } else {
@@ -72,6 +75,38 @@ export default async () => {
               title: `Transaction confirmed`,
               message: `Your transaction ${transaction.activityName} has been confirmed`
             })
+
+            if (get(transaction, 'transactionType') === PENDING_TRANSACTION_TYPE.CREATE_DID_DATA) {
+              try {
+                console.log('Call hook: ', get(transaction, 'data.reactAppId'))
+                const reactAppId = get(transaction, 'data.reactAppId')
+                await did.kidHookCall(reactAppId)
+              } catch (err) {
+                console.error(err.message)
+              }
+            }
+
+            if (get(transaction, 'transactionType') === PENDING_TRANSACTION_TYPE.UPDATE_KID){
+              try {
+                console.log('Re-register KID', get(transaction, 'data.kID'))
+                const { txId, kID } = get(transaction, 'data')
+                if (txId && kID) {
+                  await did.koiiMe.mapKoiiMe({ txId, kID, account })
+                }
+              } catch (err) {
+                console.error(err.message)
+              }
+            }
+
+            if (get(transaction, 'transactionType') === PENDING_TRANSACTION_TYPE.UPDATE_DID) {
+              try {
+                console.log('Call hook: ', get(transaction, 'data.reactAppId'))
+                const reactAppId = get(transaction, 'data.reactAppId')
+                await did.kidHookCall(reactAppId)
+              } catch (err) {
+                console.error(err.message)
+              }
+            }
             return
           }
         }

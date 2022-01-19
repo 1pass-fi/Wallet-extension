@@ -43,7 +43,13 @@ const resendMintNft = async (account, transaction) => {
   
   // post 
   const uploader = await arweave.transactions.getUploader(newTransaction)
-  await uploader.uploadChunk()
+  while (!uploader.isComplete) {
+    await uploader.uploadChunk()
+    console.log(
+      uploader.pctComplete + '% complete',
+      uploader.uploadedChunks + '/' + uploader.totalChunks
+    )
+  }
 
   // register NFT
   await account.method.registerNft(newTransaction.id)

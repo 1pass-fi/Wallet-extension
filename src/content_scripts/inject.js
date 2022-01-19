@@ -1,6 +1,7 @@
 import { MESSAGES } from 'constants/koiConstants'
+import storage from 'services/storage'
 
-export default (fn) => {
+export default async (fn) => {
   const script = document.createElement('script')
   const arweaveScript = document.createElement('script')
 

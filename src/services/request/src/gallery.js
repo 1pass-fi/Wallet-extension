@@ -21,8 +21,8 @@ export class GalleryRequest extends Request {
   /**
    * 
    * @param {Object} body 
-   * @param {Array} body.nftIds An array of NFT IDs
-   * @param {Object} body.collectionInfo { name: String, description: String, tags: Array }
+   * @param {Object} body.collectionData An array of NFT IDs
+   * @param {String} body.address { name: String, description: String, tags: Array }
    */
   createNewCollection(body) {
     return this.promise(MESSAGES.CREATE_COLLECTION, body)
@@ -61,13 +61,8 @@ export class GalleryRequest extends Request {
     return this.promise(MESSAGES.GET_KEY_FILE, body)
   }
 
-  /**
-   * @param {Object} body
-   * @param {String} body.address Address of wallet
-   * @returns
-   */
-  loadCollections(body) {
-    return this.promise(MESSAGES.LOAD_COLLECTIONS, body)
+  loadCollections() {
+    return this.promise(MESSAGES.LOAD_COLLECTIONS)
   }
   
   /**
@@ -148,5 +143,31 @@ export class GalleryRequest extends Request {
 
   getDID(body) {
     return this.promise(MESSAGES.GET_DID, body)
+  }
+
+  /**
+   * 
+   * @param {Object} body
+   * @param {Object} body.collectionData
+   * @param {String} body.collectionId
+   * @param {String} body.address
+   * @returns 
+   */
+  updateCollection(body) {
+    return this.promise(MESSAGES.UPDATE_COLLECTION, body)
+  }
+
+  /**
+   * @typedef {Object} GetKeyPayload
+   * @property {string} address
+   * @param {GetKeyPayload} body 
+   * @returns {Promise<any>}
+   */
+  getKey(body) {
+    return this.promise(MESSAGES.GET_KEY, body)
+  }
+
+  test(body) {
+    return this.promise(MESSAGES.TEST, body)
   }
 }
