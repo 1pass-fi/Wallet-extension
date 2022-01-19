@@ -200,7 +200,7 @@
 }
 
 .kid-page-wrapper .link-account-desc {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.03em;
   margin-top: 0px;
@@ -302,8 +302,8 @@
 
 .kid-page-wrapper .expanded-editor-wrapper {
   position: fixed;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
   z-index: 999;
@@ -320,8 +320,8 @@
 }
 
 #expanded-editor-id {
-  width: 956px !important;
-  height: 569px !important;
+  width: 700px !important;
+  height: 500px !important;
   background-color: #171753;
   border: 1px solid white;
   border-radius: 4px;
