@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react'
+import React, { useState, useRef, useMemo, useEffect, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import capitalize from 'lodash/capitalize'
@@ -19,9 +19,12 @@ import DropFile from 'finnie-v2/components/DropFile'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
 import ConfirmModal from './ConfirmModal'
+import { GalleryContext } from 'options/galleryContext'
 
 const CreateCollectionForm = () => {
   const history = useHistory()
+
+  const { selectedNftIds, setSelectedNftIds } = useContext(GalleryContext)
 
   const address = useSelector((state) => state.defaultAccount.address)
 
@@ -48,25 +51,8 @@ const CreateCollectionForm = () => {
   const [files, setFiles] = useState([])
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [showingConfirmModal, setShowingConfirmModal] = useState(false)
-  const [selectedIds, setSelectedIds] = useState([])
 
-  const [nfts, setNfts] = useState([
-    {
-      info: {
-        isNSFW: false,
-        ownerName: '',
-        ownerAddress: '',
-        title: '',
-        description: '',
-        tags: [],
-        contentType: '',
-        createdAt: 0
-      },
-      uploaded: false,
-      file: '',
-      name: ''
-    }
-  ])
+  const [nfts, setNfts] = useState([])
 
   const filesSize = useMemo(() => {
     return files.reduce((sum, f) => {
@@ -74,6 +60,28 @@ const CreateCollectionForm = () => {
       return size
     }, 0)
   }, [files])
+
+  const resetState = () => {
+    setCollectionInfo({
+      title: '',
+      owner: '',
+      description: '',
+      isNSFW: false,
+      tags: [],
+      name: '',
+    })
+    setErrors({
+      title: '',
+      owner: '',
+      description: '',
+      files: ''
+    })
+    setTagInput('')
+    setTags([])
+    setFiles([])
+    setShowCreateModal(false)
+    setNfts([])
+  }
 
   const handleCollectionContentChange = (e) => {
     setErrors({
@@ -108,9 +116,9 @@ const CreateCollectionForm = () => {
       }
     }
 
-    if (isEmpty(files)) {
+    if (isEmpty(files) && isEmpty(selectedNftIds)) {
       isValid = false
-      setErrors((prev) => ({ ...prev, files: 'Please select a file' }))
+      setErrors((prev) => ({ ...prev, files: 'Please select a file or select an nft' }))
     }
 
     return isValid
@@ -174,6 +182,21 @@ const CreateCollectionForm = () => {
   const openSelectNftModal = () => {
     history.push('/collections/create/select-nft')
   }
+
+  useEffect(() => {
+    return () => {
+      setSelectedNftIds([])
+    }
+  }, [])
+
+  useEffect(() => {
+    setErrors({
+      title: '',
+      owner: '',
+      description: '',
+      files: ''
+    })
+  }, [selectedNftIds])
 
   return (
     <>
@@ -310,6 +333,7 @@ const CreateCollectionForm = () => {
           handleConfirmCreateCollection={handleConfirmCreateCollection}
           goBack={confirmModalGoback}
           nfts={nfts}
+          resetState={resetState}
         />
       )}
     </>

@@ -13,20 +13,28 @@ import arweave from 'services/arweave'
 
 const ONE_MILLION = 1000000
 
-const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, close, goBack, nfts }) => {
+const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, close, goBack, nfts, resetState }) => {
   const [step, setStep] = useState(1)
   const [arPrice, setArPrice] = useState(0)
   const [displayProgressBar, setDisplayProgressBar] = useState(false)
 
   const confirmCreateCollection = async () => {
     await handleConfirmCreateCollection()
+    resetState()
     setStep(2)
   }
 
   useEffect(() => {
     const getPrice = async () => {
-      const newArPrice = await arweave.transactions.getPrice(filesSize)
-      setArPrice(arweave.ar.winstonToAr(newArPrice))
+      let newArPrice = 0.00004
+      console.log('FILESIZE ======', filesSize)
+
+      if (filesSize) {
+        newArPrice = await arweave.transactions.getPrice(filesSize) + 0.00004
+        newArPrice = arweave.ar.winstonToAr(newArPrice)
+      }
+      
+      setArPrice(newArPrice)
     }
 
     getPrice()
