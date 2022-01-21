@@ -103,6 +103,8 @@ export default ({ children }) => {
   const [modalStates, setModalStates] = useModal()
   const [settingStates, setSettingStates] = useSetting({ walletLoaded })
   useAddHandler({ setError, setNotification, setModalStates, setIsLoading })
+
+  const [nftLoaded, setNftLoaded] = useState(false)
   
 
   /* 
@@ -277,11 +279,11 @@ export default ({ children }) => {
       console.log('loading all contents')
       let allAssets = await popupAccount.getAllAssets()
       let validAssets = allAssets.filter(asset => asset.name !== '...')
-
+      
       validAssets = classifyAssets(validAssets, allCollections)
       console.log('valid assets', validAssets)
       dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
-
+      
       setIsLoading(prev => --prev)
     }
 
@@ -300,7 +302,6 @@ export default ({ children }) => {
       }
 
       const loadNfts = async () => {
-        console.log('LOADING NFTS')
         await backgroundRequest.assets.loadAllContent()
         allAssets = await popupAccount.getAllAssets()
         validAssets = allAssets.filter(asset => asset.name !== '...')
@@ -347,6 +348,7 @@ export default ({ children }) => {
         walletLoaded,
         refreshNFTs,
         selectedNftIds, setSelectedNftIds,
+        nftLoaded,
         ...modalStates,
         ...setModalStates,
         ...settingStates,

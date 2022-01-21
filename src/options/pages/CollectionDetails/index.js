@@ -31,6 +31,8 @@ export default () => {
 
   const collectionState = useSelector((state) => state.collections)
 
+  const assets = useSelector(state => state.assets)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -61,37 +63,13 @@ export default () => {
     history.push('/collections')
   }
 
+  const nftLoaded = useMemo(() => {
+    return !isEmpty(assets.nfts)
+  }, [assets.nfts])
+
   return (
     // <div className="collection-wrapper">
     <div className="min-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
-      <NavBar />
-      {/* <div className="collection-header-buttons">
-        {editCollection && (
-          <div className="edit-collection-buttons">
-            <div
-              className="edit-collection-button save-changes-button"
-              onClick={() => {
-                setNotification('Save Collection successfully!')
-                setEditCollection(false)
-              }}
-            >
-              Save Changes
-            </div>
-            <div
-              className="edit-collection-button cancel-button"
-              onClick={() => setEditCollection(false)}
-            >
-              Cancel
-            </div>
-          </div>
-        )}
-        <div
-          className="share-collection-button"
-          onClick={() => setNotification('Share Collection successfully!')}
-        >
-          Share
-        </div>
-      </div> */}
       <div className="collection-details-wrapper">
         <div onClick={handleGoBack} className="go-back-button">
           <GoBack />
@@ -117,7 +95,7 @@ export default () => {
         )}
         <div className="collection-view-wrapper">
           <div className="collection-view-icons">
-            <div className="grid-view-icon">
+            <div className="grid-view-icon">collection 
               <GridViewIcon />
             </div>
             <div className="list-view-icon">
@@ -130,7 +108,7 @@ export default () => {
           <div className="collection-view-message">coming soon</div>
         </div>
         <div className="cards">
-          {collection?.collection?.map((nft, index) => (
+          {nftLoaded && collection?.collection?.map((nft, index) => (
             <NFTCard key={index} nft={nft} />
           ))}
         </div>
