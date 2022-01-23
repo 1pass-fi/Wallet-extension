@@ -104,7 +104,6 @@ export default ({ children }) => {
   const [settingStates, setSettingStates] = useSetting({ walletLoaded })
   useAddHandler({ setError, setNotification, setModalStates, setIsLoading })
 
-  const [nftLoaded, setNftLoaded] = useState(false)
   
 
   /* 
@@ -348,7 +347,6 @@ export default ({ children }) => {
         walletLoaded,
         refreshNFTs,
         selectedNftIds, setSelectedNftIds,
-        nftLoaded,
         ...modalStates,
         ...setModalStates,
         ...settingStates,

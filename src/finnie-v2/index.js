@@ -13,7 +13,7 @@ import Collection from './pages/Collection'
 import Gallery from './pages/Gallery'
 import NFTDetail from './pages/NFTDetail'
 import Notifications from './pages/Notifications'
-import CollectionDetails from 'options/pages/CollectionDetails'
+import CollectionDetails from 'options/pages/CollectionDetails/CollectionDetails'
 import SelectNfts from 'finnie-v2/components/SelectNfts'
 
 import './style.css'
@@ -39,19 +39,24 @@ const SecondVer = () => {
   }, [])
 
   const pageTitle = useMemo(() => {
+    let title = ''
     switch(location.pathname) {
       case '/':
       case '/gallery':
-        return 'Gallery'
+        title = 'Gallery'; break
       case '/collections':
-        return 'Collections'
+        title = 'Collections'; break
       case '/collections/create':
-        return 'Create Collection'
+        title = 'Create Collection'; break
       case '/collections/create/select-nft':
-        return 'Select your NFTs'
+        title = 'Select your NFTs'; break
       default: 
-        return 'Page Title'
+        title = ''
     }
+
+    if (location.pathname.includes('collections')) title = 'Collections'
+
+    return title
   }, [location.pathname])
 
   return (
@@ -71,7 +76,7 @@ const SecondVer = () => {
         <Route exact path="/collections/create">
           <Collection />
         </Route>
-        <Route exact path="/collections/:collectionId">
+        <Route path="/collections/:collectionId">
           <CollectionDetails />
         </Route>
         <Route exact path="/collections">
