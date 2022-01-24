@@ -9,6 +9,7 @@ import ReactTooltip from 'react-tooltip'
 
 import IDCardIcon from 'img/id-card-icon.svg'
 import AddIcon from 'img/navbar/create-nft.svg'
+import CheckIcon from 'img/check-icon-circle.svg'
 import EditIcon from 'img/edit-icon-collection.svg'
 import DefaultAvt from 'img/default-avt-green.png'
 import KidInputField from './kidInputField'
@@ -450,7 +451,7 @@ const KidPage = () => {
             <img className="profile-cover" src={bannerSrc} alt="profile-cover" />
           </div>
           <div className="avt-desc">
-            <Link to="/gallery/create-nft">Or select an NFT to make it your profile picture</Link>
+            Or select <Link to="/gallery/create-nft">an NFT</Link> to make it your profile picture
           </div>
         </div>
 
@@ -620,7 +621,8 @@ const KidPage = () => {
                   if (validated) setShowConfirmModal(true)
                 }}
                 variant="filled"
-                text="Save & Update"
+                text={hadData ? 'Save Changes' : 'Create My DID'}
+                startIcon={CheckIcon}
               />
             </div>
             <ReactTooltip place="top" effect="float" />
