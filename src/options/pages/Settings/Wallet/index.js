@@ -12,11 +12,13 @@ import { STORAGE, OS } from 'constants/koiConstants'
 import { GalleryContext } from 'options/galleryContext'
 import storage from 'services/storage'
 
-import AccountOrder from './AccountOrder'
+// import AccountOrder from './AccountOrder'
 import AcceptedCurrencies from './currencies'
 
+import AccountManagement from 'finnie-v2/components/AccountManagement'
+import DropDown from 'finnie-v2/components/DropDown'
+
 import './index.css'
-import DropDown from 'finnie-v2/components/DropDown/DropDown'
 
 export default () => {
   const history = useHistory()
@@ -122,8 +124,12 @@ export default () => {
 
           <div className="display-order item">
             <div className="title">Wallet Priority</div>
-            <div className="description">Organize your default wallet</div>
-            <AccountOrder accounts={accounts} setAccounts={() => {}} />
+            <div className="description">
+              Organize your wallet display and select a default key. This key will be automatically
+              selected to create NFTs and send tokens.
+            </div>
+            {/* <AccountOrder accounts={accounts} setAccounts={() => {}} /> */}
+            <AccountManagement accounts={accounts} />
           </div>
 
           <div className="language-order item">
