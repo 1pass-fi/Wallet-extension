@@ -59,6 +59,7 @@ module.exports = {
         '32px': '32px'
       },
       spacing: {
+        0.25: '0.0625rem',
         0.5: '0.125rem',
         1.375: '0.34375rem',
         1.5: '0.375rem',
@@ -154,7 +155,8 @@ module.exports = {
         'finnieSpacing-wider': '0.03em'
       },
       borderRadius: {
-        1: '0.25rem'
+        1: '0.25rem',
+        finnie: '3px'
       },
       borderWidth: {
         1.5: '1.5px'

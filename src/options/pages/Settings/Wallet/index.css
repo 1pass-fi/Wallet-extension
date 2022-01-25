@@ -1,6 +1,5 @@
 .wallet-settings-wrapper * {
   box-sizing: border-box;
-  color: #ffffff;
   font-family: Sora;
 }
 
@@ -9,6 +8,7 @@
   display: flex;
   justify-content: center;
   max-width: 100%;
+  color: #ffffff;
 }
 
 .wallet-settings-wrapper .header {
@@ -43,6 +43,7 @@
 .wallet-settings .items .item .description {
   font-size: 14px;
   line-height: 24px;
+  margin-bottom: 25px;
 }
 
 .wallet-settings .items .item .coming-soon {
@@ -99,4 +100,8 @@
   height: 32px;
   margin-top: 12px;
   width: 280px;
+}
+
+.wallet-settings .default-currency__dropdown {
+  width: 246px;
 }

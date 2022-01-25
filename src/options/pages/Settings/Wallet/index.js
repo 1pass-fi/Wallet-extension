@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react'
+import React, { useState, useContext, useMemo, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -16,32 +16,35 @@ import AccountOrder from './AccountOrder'
 import AcceptedCurrencies from './currencies'
 
 import './index.css'
+import DropDown from 'finnie-v2/components/DropDown/DropDown'
 
 export default () => {
   const history = useHistory()
   const { setError, setNotification } = useContext(GalleryContext)
 
   const [currency, setCurrency] = useState('USD')
-  const [textColor, setTextColor] = useState('#ffffff')
-
-  const sellectCurrencyRef = useRef()
 
   const accounts = useSelector((state) => state.accounts)
+
+  const currenciesData = useMemo(
+    () =>
+      data
+        .filter(({ code }) => AcceptedCurrencies.includes(code))
+        .map(({ code, currency }) => ({
+          label: `${getSymbolFromCurrency(code) || ''} ${currency} (${code})`,
+          value: code
+        })),
+    [data]
+  )
 
   useEffect(() => {
     const getCurrency = async () => {
       const storage = await getChromeStorage(STORAGE.CURRENCY)
-      const currency = storage[STORAGE.CURRENCY] || 'USD'
-      sellectCurrencyRef.current.value = currency
-    }
-
-    const getOs = () => {
-      const os = window.localStorage.getItem(OS)
-      if (os == 'win') setTextColor('#171753')
+      const storedCurrency = storage[STORAGE.CURRENCY] || 'USD'
+      setCurrency(storedCurrency)
     }
 
     getCurrency()
-    getOs()
   }, [])
 
   const onImportSeedPhrase = () => {
@@ -56,10 +59,8 @@ export default () => {
     history.push('/create-wallet')
   }
 
-  const onCurrencyChange = async (e) => {
+  const onCurrencyChange = async (currency) => {
     try {
-      const currency = e.target.value
-      console.log(currency)
       // Fetch to check if we can get AR price in this currency
       const response = await axios.get(
         `https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=${currency}`
@@ -68,7 +69,6 @@ export default () => {
       if (!price || isEmpty(price)) {
         setError(`We cannot get AR price for the currency ${currency}.`)
         setCurrency('USD')
-        sellectCurrencyRef.current.value = 'USD'
       } else {
         setCurrency(currency)
         await setChromeStorage({ [STORAGE.CURRENCY]: currency })
@@ -109,20 +109,15 @@ export default () => {
               Select the exchange currency to display next to tokens (currently, only fiat
               currencies are supported).
             </div>
-            <select
-              ref={sellectCurrencyRef}
-              className="currency"
-              onChange={onCurrencyChange}
-              defaultValue={currency}
-            >
-              {data
-                .filter(({ code }) => AcceptedCurrencies.includes(code))
-                .map(({ code, currency }) => (
-                  <option style={{ color: textColor }} key={code} value={code}>
-                    {`${getSymbolFromCurrency(code) || ''} ${currency} (${code})`}
-                  </option>
-                ))}
-            </select>
+            <div className="default-currency__dropdown">
+              <DropDown
+                options={currenciesData}
+                value={currency}
+                onChange={onCurrencyChange}
+                variant="dark"
+                size="lg"
+              />
+            </div>
           </div>
 
           <div className="display-order item">
