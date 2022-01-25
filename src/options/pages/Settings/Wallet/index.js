@@ -2,20 +2,20 @@ import React, { useState, useContext, useRef, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
+import axios from 'axios'
 import data from 'currency-codes/data'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { isEmpty, get } from 'lodash'
-import axios from 'axios'
 
 import { getChromeStorage, setChromeStorage } from 'utils'
 import { STORAGE, OS } from 'constants/koiConstants'
 import { GalleryContext } from 'options/galleryContext'
+import storage from 'services/storage'
 
 import AccountOrder from './AccountOrder'
-import './index.css'
 import AcceptedCurrencies from './currencies'
 
-import storage from 'services/storage'
+import './index.css'
 
 export default () => {
   const history = useHistory()
@@ -26,7 +26,7 @@ export default () => {
 
   const sellectCurrencyRef = useRef()
 
-  const accounts = useSelector(state => state.accounts)
+  const accounts = useSelector((state) => state.accounts)
 
   useEffect(() => {
     const getCurrency = async () => {
@@ -47,11 +47,11 @@ export default () => {
   const onImportSeedPhrase = () => {
     history.push('/import-wallet')
   }
-  
+
   const onImportKeyFile = () => {
     history.push('/upload-wallet')
   }
-  
+
   const onCreateWallet = () => {
     history.push('/create-wallet')
   }
@@ -82,41 +82,36 @@ export default () => {
     }
   }
 
-  // const [accounts, setAccounts] = useState(mockAccount)
-
   return (
-    <div className='wallet-settings-wrapper'>
-      <div className='wallet-settings'>
-        <div className='header'>Wallet Settings</div>
+    <div className="wallet-settings-wrapper">
+      <div className="wallet-settings">
+        <div className="header">Wallet Settings</div>
 
-        <div className='items'>
-          {/* 
-            Currently we can import only one wallet. This will hide for now.
-          */}
-          <div className='add-wallet item'>
-            <div className='title'>Add a Wallet</div>
-            <div className='actions'>
-              <div className='action action--seed-phrase' onClick={onImportSeedPhrase}>
+        <div className="items">
+          <div className="add-wallet item">
+            <div className="title">Add a Wallet</div>
+            <div className="actions">
+              <div className="action action--seed-phrase" onClick={onImportSeedPhrase}>
                 Import from Seed Phrase
               </div>
-              <div className='action action--json' onClick={onImportKeyFile}>
+              <div className="action action--json" onClick={onImportKeyFile}>
                 Import from .JSON File
               </div>
-              <div className='action action--create-new' onClick={onCreateWallet}>
+              <div className="action action--create-new" onClick={onCreateWallet}>
                 Create New Wallet
               </div>
             </div>
           </div>
 
-          <div className='default-currency item'>
-            <div className='title'>Default Currency</div>
-            <div className='description'>
-              Select the exchange currency to display next to tokens (currently,
-              only fiat currencies are supported).
+          <div className="default-currency item">
+            <div className="title">Default Currency</div>
+            <div className="description">
+              Select the exchange currency to display next to tokens (currently, only fiat
+              currencies are supported).
             </div>
             <select
               ref={sellectCurrencyRef}
-              className='currency'
+              className="currency"
               onChange={onCurrencyChange}
               defaultValue={currency}
             >
@@ -124,28 +119,21 @@ export default () => {
                 .filter(({ code }) => AcceptedCurrencies.includes(code))
                 .map(({ code, currency }) => (
                   <option style={{ color: textColor }} key={code} value={code}>
-                    {`${
-                      getSymbolFromCurrency(code) || ''
-                    } ${currency} (${code})`}
+                    {`${getSymbolFromCurrency(code) || ''} ${currency} (${code})`}
                   </option>
                 ))}
             </select>
           </div>
 
-
-          <div className='display-order item'>
-            <div className='title'>Wallet Priority</div>
-            <div className='description'>
-              Organize your default wallet
-            </div>
+          <div className="display-order item">
+            <div className="title">Wallet Priority</div>
+            <div className="description">Organize your default wallet</div>
             <AccountOrder accounts={accounts} setAccounts={() => {}} />
           </div>
 
-          <div className='language-order item'>
-            <div className='title'>Language</div>
-            <div className='description coming-soon'>
-              Language options are coming soon!
-            </div>
+          <div className="language-order item">
+            <div className="title">Language</div>
+            <div className="description coming-soon">Language options are coming soon!</div>
           </div>
         </div>
       </div>
