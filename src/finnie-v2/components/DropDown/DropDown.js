@@ -22,14 +22,14 @@ const variants = {
 
 const sizes = {
   sm: {
-    wrapper: 'text-sm',
+    wrapper: 'text-xs',
     header: 'h-5 pl-1',
-    row: 'pl-1'
+    row: 'pl-1 h-5'
   },
   lg: {
     wrapper: 'text-base',
     header: 'h-8 pl-2',
-    row: 'pl-2'
+    row: 'pl-2 h-8'
   }
 }
 
@@ -94,13 +94,13 @@ const DropDown = ({ options, value, onChange, variant = 'dark', size = 'lg' }) =
       {listOpened && (
         <div
           className={clsx(
-            'absolute w-full h-36 flex flex-col overflow-y-auto rounded-b-finnie select-none',
+            'z-50 absolute w-full max-h-36 flex flex-col overflow-y-auto rounded-b-finnie select-none',
             variants[variant].body
           )}
         >
           {options.map((item, idx) => (
             <button
-              className={(clsx('text-left', sizes[size].row), variants[variant].row)}
+              className={clsx('text-left', sizes[size].row, variants[variant].row)}
               key={idx}
               onClick={() => selectItem(item)}
             >
