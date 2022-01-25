@@ -96,13 +96,13 @@ export default () => {
           <div className='add-wallet item'>
             <div className='title'>Add a Wallet</div>
             <div className='actions'>
-              <div className='action' onClick={onImportSeedPhrase}>
+              <div className='action action--seed-phrase' onClick={onImportSeedPhrase}>
                 Import from Seed Phrase
               </div>
-              <div className='action' onClick={onImportKeyFile}>
+              <div className='action action--json' onClick={onImportKeyFile}>
                 Import from .JSON File
               </div>
-              <div className='action' onClick={onCreateWallet}>
+              <div className='action action--create-new' onClick={onCreateWallet}>
                 Create New Wallet
               </div>
             </div>
