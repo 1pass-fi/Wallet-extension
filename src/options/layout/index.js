@@ -113,6 +113,8 @@ export default ({ children }) => {
   const defaultAccount = useSelector(state => state.defaultAccount)
   const assets = useSelector(state => state.assets)
 
+  /* EDITING COLLECTION ID */
+  const [editingCollectionId, setEditingCollectionId] = useState(null)
 
 
   const onClearFile = () => {
@@ -347,6 +349,7 @@ export default ({ children }) => {
         walletLoaded,
         refreshNFTs,
         selectedNftIds, setSelectedNftIds,
+        editingCollectionId, setEditingCollectionId,
         ...modalStates,
         ...setModalStates,
         ...settingStates,

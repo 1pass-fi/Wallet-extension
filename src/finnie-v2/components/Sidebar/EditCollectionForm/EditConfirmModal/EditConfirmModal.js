@@ -13,13 +13,13 @@ import arweave from 'services/arweave'
 
 const ONE_MILLION = 1000000
 
-const EditConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, close, goBack, nfts, resetState }) => {
+const EditConfirmModal = ({ filesSize, numOfNfts, handleConfirmUpdateCollection, close, goBack, nfts, resetState }) => {
   const [step, setStep] = useState(1)
   const [arPrice, setArPrice] = useState(0)
   const [displayProgressBar, setDisplayProgressBar] = useState(false)
 
   const confirmCreateCollection = async () => {
-    await handleConfirmCreateCollection()
+    await handleConfirmUpdateCollection()
     resetState()
     setStep(2)
   }

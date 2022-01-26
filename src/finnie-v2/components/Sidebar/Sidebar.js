@@ -120,7 +120,7 @@ const Sidebar = () => {
           <Route path="/collections/create">
             <CreateCollectionForm />
           </Route>
-          <Route path="/collections/:collectionId/edit">
+          <Route path="/collections/edit">
             <EditCollectionForm />
           </Route>
           <Route exact path="/settings/*">

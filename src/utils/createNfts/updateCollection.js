@@ -13,7 +13,7 @@ import { ACCOUNT, TYPE } from 'constants/accountConstants'
 /*
   Return nft ids of uploaded nfts
 */
-export default async ({nfts, setNfts, address, collectionData}) => {
+export default async ({nfts, setNfts, address, collectionData, collectionId}) => {
   console.log('collectionData', collectionData)
 
   nfts = [...nfts]
@@ -45,7 +45,6 @@ export default async ({nfts, setNfts, address, collectionData}) => {
       const koii = new Web()
       koii.wallet = key
       await koii.getWalletAddress()
-      await registerData(koii, transaction.id)
   
       setNfts(prev => {prev[index].uploaded = true; return [...prev]})
   
@@ -100,7 +99,7 @@ export default async ({nfts, setNfts, address, collectionData}) => {
   collectionData.collection = nftIds
 
   console.log('collectionData', collectionData)
-  const txId = await request.gallery.createNewCollection({ collectionData, address })
+  const txId = await request.gallery.updateCollection({ collectionData, collectionId, address })
   // const txId = 'collectionId'
 
   // await mockUploadNft()
@@ -153,10 +152,6 @@ const addTag = ({ transaction, contentType, initialState, isNSFW }) => {
   transaction.addTag('NSFW', isNSFW)
 }
 
-const registerData = async (koii, txId) => {
-  await koii.burnKoiAttention(txId)
-  await koii.migrateAttention()
-}
 
 const addPendingTransaction = async (address, transaction, isAsset) => {
   try {

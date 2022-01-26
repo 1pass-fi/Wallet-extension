@@ -14,8 +14,6 @@ import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 
 export default ({ nft }) => {
   const nftInfo = useSelector(getAssetByTxId(nft))
-  console.log('NFT INFO =====', nftInfo)
-
 
   return (
     <Link

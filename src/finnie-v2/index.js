@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo } from 'react'
-import { useDispatch } from 'react-redux'
-import { Switch, Route, useLocation } from 'react-router-dom'
+import React, { useContext, useEffect, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Switch, Route, useLocation, useParams } from 'react-router-dom'
+import { find } from 'lodash'
 
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 
@@ -8,6 +9,8 @@ import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 
 import NavBar from 'finnie-v2/components/NavBar'
+
+import getCollectionByTxId from './selectors/getCollectionByTxid'
 
 import Collection from './pages/Collection'
 import Gallery from './pages/Gallery'
@@ -18,11 +21,26 @@ import SelectNfts from 'finnie-v2/components/SelectNfts'
 
 import './style.css'
 import Success from 'options/pages/StartUp/shared/Success'
+import MainLayout from './components/MainLayout'
+import { GalleryContext } from 'options/galleryContext'
 import Settings from './pages/Settings/Settings'
 
 const SecondVer = () => {
   const dispatch = useDispatch()
   const location = useLocation()
+
+  const { editingCollectionId } = useContext(GalleryContext)
+  const collections = useSelector(state => state.collections)
+
+  const collectionName = useMemo(() => {
+    if (collections && editingCollectionId) {
+      const collection = find(collections.collections, c => {
+        return c.id === editingCollectionId
+      })
+      if (collection) return collection.name
+      return null
+    }
+  }, [editingCollectionId, collections])
 
   const updateDefaultAccountData = async () => {
     const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
@@ -56,8 +74,9 @@ const SecondVer = () => {
 
     if (location.pathname.includes('collections')) title = 'Collections'
 
+    if (location.pathname.includes('/collections') && collectionName) title = collectionName
     return title
-  }, [location.pathname])
+  }, [location.pathname, collectionName])
 
   return (
     <MainLayout title={pageTitle}>
@@ -71,6 +90,9 @@ const SecondVer = () => {
           </div>
         </Route>
         <Route exact path="/collections/create/select-nft">
+          <SelectNfts />
+        </Route>
+        <Route exact path="/collections/edit/select-nft/:collectionId">
           <SelectNfts />
         </Route>
         <Route exact path="/collections/create">

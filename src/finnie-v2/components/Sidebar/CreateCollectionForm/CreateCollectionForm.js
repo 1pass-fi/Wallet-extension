@@ -5,7 +5,6 @@ import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import initial from 'lodash/initial'
 import union from 'lodash/union'
-import ProgressBar from '@ramonak/react-progress-bar'
 
 import CrossIcon from 'img/v2/cross-icon.svg'
 import AddIcon from 'img/v2/create-collection-form/add-icon.svg'
@@ -51,7 +50,6 @@ const CreateCollectionForm = () => {
   const [files, setFiles] = useState([])
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [showingConfirmModal, setShowingConfirmModal] = useState(false)
-
   const [nfts, setNfts] = useState([])
 
   const filesSize = useMemo(() => {

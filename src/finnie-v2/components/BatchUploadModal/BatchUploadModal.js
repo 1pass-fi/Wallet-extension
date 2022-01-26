@@ -29,101 +29,32 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
 
   const nftList = useMemo(() => [...nfts, ...selectedNfts], [nfts, selectedNfts])
 
-  useEffect(() => {
-    const getInputtedNfts = () => {
-      if (isEmpty(nfts)) {
-        const nfts = inputFiles.map((f, index) => {
-          const url = URL.createObjectURL(f)
-          return {
-            info: {
-              isNSFW: false,
-              ownerName: '',
-              ownerAddress: '',
-              title: f.name.split('.').slice(0, -1).join('.'),
-              description: '',
-              tags: [],
-              contentType: f.type,
-              createdAt: Date.now()
-            },
-            uploaded: false,
-            file: url,
-            name: f.name,
-            url
-          }
-        })
-  
-        setNfts(nfts)
-      }
-    }
-
-    const getSelectedNfts = async () => {
-      console.log('nft length =====', assets.nfts.length)
-      let nfts = assets.nfts.filter(nft => selectedNftIds.includes(nft.txId))
-      nfts = nfts.map(nft => {
-        return {
-          info: {
-            isNSFW: false,
-            ownerName: '',
-            ownerAddress: nft.address,
-            title: nft.name,
-            description: nft.description,
-            tags: [],
-            contentType: nft.contentType,
-            createdAt: nft.createdAt,
-            existingNft: true
-          },
-          uploaded: false,
-          file: nft.imageUrl,
-          name: nft.name,
-          url: nft.imageUrl
-        }
-      })
-      console.log('selected nfts ======', nfts)
-
-      setSelectedNfts(nfts)
-    }
-
-    getInputtedNfts()
-    getSelectedNfts()
-    setNftLoaded(true)
-  }, [])
-
-  useEffect(() => {
-    const getSelectedNfts = async () => {
-      console.log('nft length =====', assets.nfts.length)
-      let nfts = assets.nfts.filter(nft => selectedNftIds.includes(nft.txId))
-      nfts = nfts.map(nft => {
-        return {
-          info: {
-            isNSFW: false,
-            ownerName: '',
-            ownerAddress: nft.address,
-            title: nft.name,
-            description: nft.description,
-            tags: [],
-            contentType: nft.contentType,
-            createdAt: nft.createdAt,
-            existingNft: true
-          },
-          uploaded: false,
-          file: nft.imageUrl,
-          name: nft.name,
-          url: nft.imageUrl
-        }
-      })
-      console.log('selected nfts ======', nfts)
-
-      setSelectedNfts(nfts)
-    }
-
-    getSelectedNfts()
-  }, [selectedNftIds])
-
-  useEffect(() => {
-    setError(nftList.map(() => ({ title: '', description: '' })))
-  }, [nftList])
-
   const [tagInputs, setTagInputs] = useState([])
+
+  const getDataForSelectedNfts = () => {
+    let existingNfts = assets.nfts.filter(nft => selectedNftIds.includes(nft.txId))
+    existingNfts = existingNfts.map(nft => {
+      return {
+        info: {
+          isNSFW: false,
+          ownerName: '',
+          ownerAddress: nft.address,
+          title: nft.name,
+          description: nft.description,
+          tags: [],
+          contentType: nft.contentType,
+          createdAt: nft.createdAt,
+          existingNft: true
+        },
+        uploaded: false,
+        file: nft.imageUrl,
+        name: nft.name,
+        url: nft.imageUrl
+      }
+    })
+
+    setSelectedNfts(existingNfts)
+  }
 
   const updateNftInfo = (idx, info) => {
     let updatedNfts = [...nfts]
@@ -210,6 +141,53 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
     close()
     showConfirmModal()
   }
+
+  useEffect(() => {
+    const initializeNftsData = () => {
+      /* isEmpty(nfts) -> initialize data for first time only */
+      if (isEmpty(nfts)) {
+        const nfts = inputFiles.map((f, index) => {
+          const url = URL.createObjectURL(f)
+          return {
+            info: {
+              isNSFW: false,
+              ownerName: '',
+              ownerAddress: '',
+              title: f.name.split('.').slice(0, -1).join('.'),
+              description: '',
+              tags: [],
+              contentType: f.type,
+              createdAt: Date.now()
+            },
+            uploaded: false,
+            file: url,
+            name: f.name,
+            url
+          }
+        })
+  
+        setNfts(nfts)
+      }
+
+      getDataForSelectedNfts()
+    }
+
+    initializeNftsData()
+    setNftLoaded(true)
+  }, [])
+
+  useEffect(() => {
+    getDataForSelectedNfts()
+  }, [selectedNftIds])
+
+  useEffect(() => {
+    const initializeErrorMessage = () => {
+      setError(nftList.map(() => ({ title: '', description: '' })))
+    }
+
+    initializeErrorMessage()
+  }, [nftList])
+
 
   return (
     <>
