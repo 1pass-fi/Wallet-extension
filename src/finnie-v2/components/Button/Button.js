@@ -6,6 +6,7 @@ const variants = {
   indigo: 'bg-blue-800 text-white',
   primary: 'bg-success text-indigo',
   warning: 'bg-warning-200 text-indigo shadow',
+  warning300: 'bg-warning-300 text-indigo shadow',
   inversed: 'border border-solid border-white text-white',
   inversedIndigo: 'border-2 border-solid border-blue-800 text-indigo',
   lightBlue: 'bg-lightBlue text-indigo'
@@ -13,6 +14,7 @@ const variants = {
 
 const sizes = {
   sm: 'text-xs px-3 py-1.5',
+  md: 'text-base px-4 py-1.75',
   lg: 'text-base px-4 py-1.75'
 }
 
@@ -27,7 +29,15 @@ const Button = ({ text, variant = 'primary', icon: Icon, size = 'sm', className,
       )}
       {...props}
     >
-      {Icon && <Icon className={clsx(size === 'sm' ? 'w-5 h-5 pr-1' : 'w-8 h-8 pr-2')} />}
+      {Icon && (
+        <Icon
+          className={clsx(
+            size === 'sm' && 'w-5 h-5 pr-1',
+            size === 'md' && 'w-6 h-6 pr-2',
+            size === 'lg' && 'w-8 h-8 pr-2'
+          )}
+        />
+      )}
       {text}
     </button>
   )
