@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
-import EthereumIcon from 'img/ethereum-logo.svg'
 import { getDisplayAddress } from 'options/utils'
 import { getChromeStorage } from 'utils'
 import { STORAGE } from 'constants/koiConstants'
@@ -10,11 +9,14 @@ import { getArAccounts } from 'options/selectors/accounts'
 
 import { ExportBackupPhraseModal, ExportBackupKeyFileModal } from './ExportModal'
 
+import {
+  AccountManagementGetPhrase,
+  AccountManagementExportKey
+} from 'finnie-v2/components/AccountManagement'
+
 import './index.css'
-import { TYPE } from 'constants/accountConstants'
 
 export default () => {
-  const [seedPhrase, setSeedPhrase] = useState('')
   const [hasSeedPhrase, setHasSeedPhrase] = useState(false)
 
   const accounts = useSelector((state) => state.accounts)
@@ -64,9 +66,12 @@ export default () => {
         <div className="header">Security Settings</div>
         <div className="content">
           <div className="backup-seedphrase">
-            <div className="title">Get my Backup (seed) Phrase</div>
-            <div className="description">Select a wallet to see its recovery phrase.</div>
-            <div className="seedphrase">
+            <div className="title">Get my Recovery Phrase</div>
+            <div className="description">
+              Select a wallet to see its recovery phrase (sometimes called a ‘seed phrase’).
+            </div>
+            <AccountManagementGetPhrase accounts={accounts} />
+            {/* <div className="seedphrase">
               {accounts.map((account) => {
                 if (account.seedPhrase)
                   return (
@@ -92,13 +97,14 @@ export default () => {
                     </div>
                   )
               })}
-            </div>
+            </div> */}
           </div>
 
           <div className="backup-keyfile">
             <div className="title">Export my Private Key</div>
-            <div className="description">Select a wallet to download its private key.</div>
-            <div className="keyfile">
+            <div className="description">Select an account to download the private key.</div>
+            <AccountManagementExportKey accounts={accounts} />
+            {/* <div className="keyfile">
               {arAccounts.map((account) => (
                 <div
                   key={account.address}
@@ -112,7 +118,12 @@ export default () => {
                   <div className="account-address">{getDisplayAddress(account.address)}</div>
                 </div>
               ))}
-            </div>
+            </div> */}
+          </div>
+
+          <div className="change-password">
+            <div className="title">Change my password</div>
+            <button className="update-password-btn">Update Password</button>
           </div>
         </div>
       </div>
