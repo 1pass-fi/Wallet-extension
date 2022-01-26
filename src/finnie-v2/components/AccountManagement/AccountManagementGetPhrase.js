@@ -62,7 +62,7 @@ const AccountManagement = ({ accounts }) => {
               </td>
               <td>{formatLongString(account.address, 22)}</td>
               <td className="w-50 pr-10">
-                <button className="bg-blue-800 text-center text-white text-xs tracking-finnieSpacing-wide h-6 w-32">
+                <button className="bg-blue-800 text-center text-white text-xs tracking-finnieSpacing-wide h-6 w-32 rounded-sm shadow-sm">
                   Get Phrase
                 </button>
               </td>

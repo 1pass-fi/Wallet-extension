@@ -1,6 +1,4 @@
 import React from 'react'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
-import ReactTooltip from 'react-tooltip'
 
 import toLower from 'lodash/toLower'
 
@@ -35,12 +33,9 @@ const KidInputField = ({
             disabled={disabled}
           />
           {label === 'kID' && (
-            <>
-              <CopyToClipboard text={`https://koii.id/${value}`}>
-                <ShareIcon data-tip="Copy" id="kid-share-icon" />
-              </CopyToClipboard>
-              <ReactTooltip />
-            </>
+            <a href={`https://koii.id/${value}`} target="_blank">
+              <ShareIcon id="kid-share-icon" />
+            </a>
           )}
         </div>
         <span className="description">{description}</span>

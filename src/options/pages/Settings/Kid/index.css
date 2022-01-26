@@ -345,11 +345,18 @@
 .select-nft-profile-modal {
   position: absolute;
   width: 526px;
-  height: 504px;
   margin: 0px auto auto 200px;
 
   background: #353563;
   border-radius: 4px;
+}
+
+.select-nft-profile-modal .title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 32px;
+  margin-top: 16px;
+  text-align: center;
 }
 
 .select-nft-profile-modal .go-back-icon {
@@ -370,7 +377,7 @@
 .select-nft-profile-modal .nfts {
   max-height: 409px;
   width: 468px;
-  margin: 67px 40px;
+  margin: 60px 40px;
   overflow-y: scroll;
   display: grid;
   grid-template-columns: auto auto auto;

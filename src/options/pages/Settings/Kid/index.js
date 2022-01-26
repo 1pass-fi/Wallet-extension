@@ -640,6 +640,9 @@ const KidPage = () => {
           <div ref={modalRef} className="select-nft-profile-modal">
             <GoBackIcon onClick={close} className="go-back-icon" />
             <CloseIcon onClick={close} className="close-icon" />
+            <div className="title">
+              SELECT {modalType === 'AVATAR' ? 'PROFILE' : 'COVER'} PICTURE
+            </div>
             <div className="nfts">
               {assets.nfts.map((nft) => {
                 if (includes(nft.contentType, 'image') && nft.type === TYPE.ARWEAVE)
