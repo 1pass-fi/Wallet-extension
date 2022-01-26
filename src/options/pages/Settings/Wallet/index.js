@@ -20,6 +20,8 @@ import DropDown from 'finnie-v2/components/DropDown'
 
 import './index.css'
 
+const mockedWalletDisplayOptions = [{ value: 'accountsummary', label: 'Account Summary' }]
+
 export default () => {
   const history = useHistory()
   const { setError, setNotification } = useContext(GalleryContext)
@@ -94,10 +96,10 @@ export default () => {
             <div className="title">Add a Wallet</div>
             <div className="actions">
               <div className="action action--seed-phrase" onClick={onImportSeedPhrase}>
-                Import from Seed Phrase
+                Import Seed Phrase
               </div>
               <div className="action action--json" onClick={onImportKeyFile}>
-                Import from .JSON File
+                Import .JSON File
               </div>
               <div className="action action--create-new" onClick={onCreateWallet}>
                 Create New Wallet
@@ -108,8 +110,10 @@ export default () => {
           <div className="default-currency item">
             <div className="title">Default Currency</div>
             <div className="description">
-              Select the exchange currency to display next to tokens (currently, only fiat
-              currencies are supported).
+              Select the exchange currency displayed next to your tokens and transactions.
+            </div>
+            <div className="notes">
+              We can only show the exchange rate for fiat currencies at this time.
             </div>
             <div className="default-currency__dropdown">
               <DropDown
@@ -130,6 +134,23 @@ export default () => {
             </div>
             {/* <AccountOrder accounts={accounts} setAccounts={() => {}} /> */}
             <AccountManagement accounts={accounts} />
+          </div>
+
+          <div className="default-currency item">
+            <div className="title">Wallet display</div>
+            <div className="description">
+              Select a wallet or your account summary as the default when opening the Finnie
+              extension.
+            </div>
+            <div className="default-currency__dropdown">
+              <DropDown
+                options={mockedWalletDisplayOptions}
+                value={mockedWalletDisplayOptions[0].value}
+                onChange={() => {}}
+                variant="dark"
+                size="lg"
+              />
+            </div>
           </div>
 
           <div className="language-order item">

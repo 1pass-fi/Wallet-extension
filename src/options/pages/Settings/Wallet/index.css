@@ -43,7 +43,13 @@
 .wallet-settings .items .item .description {
   font-size: 14px;
   line-height: 24px;
-  margin-bottom: 25px;
+  margin-bottom: 18px;
+}
+.wallet-settings .items .item .notes {
+  font-size: 12px;
+  line-height: 16px;
+  margin-bottom: 18px;
+  color: #bef0ed;
 }
 
 .wallet-settings .items .item .coming-soon {
