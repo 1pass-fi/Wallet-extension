@@ -6,11 +6,9 @@ import SettingsV1 from 'options/pages/Settings'
 
 const Settings = () => {
   return (
-    <MainLayout title="Settings">
-      <div className="transform flex justify-start">
-        <SettingsV1 />
-      </div>
-    </MainLayout>
+    <div className="transform flex justify-start">
+      <SettingsV1 />
+    </div>
   )
 }
 
