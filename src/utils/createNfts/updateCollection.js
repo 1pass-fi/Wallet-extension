@@ -13,9 +13,7 @@ import { ACCOUNT, TYPE } from 'constants/accountConstants'
 /*
   Return nft ids of uploaded nfts
 */
-export default async ({nfts, setNfts, address, collectionData, collectionId}) => {
-  console.log('collectionData', collectionData)
-
+export default async ({nfts, setNfts, address, collectionData, collectionId, selectedNftIds}) => {
   nfts = [...nfts]
   const key = await request.gallery.getKey({address})
 
@@ -24,11 +22,8 @@ export default async ({nfts, setNfts, address, collectionData, collectionId}) =>
 
   info = info.value
 
-  const nftIds = await Promise.all(nfts.map(async ({ info, url }, index) => {
+  let nftIds = await Promise.all(nfts.map(async ({ info, url }, index) => {
     try {
-      console.log('info', info)
-      console.log('url', url)
-
       const buffer = await getBufferFromUrl(url)
       const transaction = await createTransaction(buffer, info)
       let price = await arweave.transactions.getPrice(buffer.byteLength)
@@ -45,6 +40,7 @@ export default async ({nfts, setNfts, address, collectionData, collectionId}) =>
       const koii = new Web()
       koii.wallet = key
       await koii.getWalletAddress()
+      await registerData(koii, transaction.id)
   
       setNfts(prev => {prev[index].uploaded = true; return [...prev]})
   
@@ -94,8 +90,9 @@ export default async ({nfts, setNfts, address, collectionData, collectionId}) =>
     }
   }))
 
+  nftIds = [...nftIds, ...selectedNftIds]
 
-  // create collection
+  // update collection
   collectionData.collection = nftIds
 
   console.log('collectionData', collectionData)
@@ -172,6 +169,11 @@ const addPendingTransaction = async (address, transaction, isAsset) => {
   }
 }
 
+const registerData = async (koii, txId) => {
+  await koii.burnKoiAttention(txId)
+  await koii.migrateAttention()
+}
+
 const mockUploadNft = () => {
   const time = (2 + Math.floor(Math.random() * 5)) * 1000
 
@@ -181,4 +183,3 @@ const mockUploadNft = () => {
     }, time)
   })
 }
-

@@ -24,6 +24,7 @@ import getCollectionByTxId from 'finnie-v2/selectors/getCollectionByTxid'
 
 const EditCollectionForm = () => {
   const history = useHistory()
+
   const { editingCollectionId: collectionId } = useContext(GalleryContext)
   const address = useSelector((state) => state.defaultAccount.address)
 
@@ -146,7 +147,8 @@ const EditCollectionForm = () => {
       setNfts,
       address,
       collectionData: tempData,
-      collectionId
+      collectionId,
+      selectedNftIds
     })
   }
 
@@ -200,6 +202,10 @@ const EditCollectionForm = () => {
       setCollectionInfo(newCollectionInfo)
     }
   }, [collection])
+
+  useEffect(() => {
+    setCollectionInfo(prev => ({...prev, tags}))
+  }, [tags])
 
   useEffect(() => {
     return () => {

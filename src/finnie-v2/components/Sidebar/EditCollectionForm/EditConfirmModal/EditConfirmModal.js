@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 import ProgressBar from '@ramonak/react-progress-bar'
 
 
@@ -10,10 +11,15 @@ import Button from 'finnie-v2/components/Button'
 import formatNumber from 'finnie-v2/utils/formatNumber'
 
 import arweave from 'services/arweave'
+import { GalleryContext } from 'options/galleryContext'
 
 const ONE_MILLION = 1000000
 
 const EditConfirmModal = ({ filesSize, numOfNfts, handleConfirmUpdateCollection, close, goBack, nfts, resetState }) => {
+  const history = useHistory()
+
+  const { editingCollectionId } = useContext(GalleryContext)
+
   const [step, setStep] = useState(1)
   const [arPrice, setArPrice] = useState(0)
   const [displayProgressBar, setDisplayProgressBar] = useState(false)
@@ -23,6 +29,12 @@ const EditConfirmModal = ({ filesSize, numOfNfts, handleConfirmUpdateCollection,
     resetState()
     setStep(2)
   }
+
+  useEffect(() => {
+    return () => {
+      history.push(`/collections/${editingCollectionId}`)
+    }
+  }, [])
 
   useEffect(() => {
     const getPrice = async () => {
@@ -80,7 +92,7 @@ const EditConfirmModal = ({ filesSize, numOfNfts, handleConfirmUpdateCollection,
               <div className="absolute bottom-5.5 w-full flex left-0 justify-center">
                 <Button
                   variant="indigo"
-                  text="Create Collection"
+                  text="Update Collection"
                   className="font-semibold tracking-wider py-3 rounded"
                   onClick={() => {confirmCreateCollection(); setDisplayProgressBar(true)}}
                   disabled={displayProgressBar}
