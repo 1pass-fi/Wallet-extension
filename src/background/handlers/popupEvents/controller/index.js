@@ -29,6 +29,7 @@ import updateDID from './updateDID'
 import getDID from './getDID'
 import updateCollection from './updateCollection'
 import getKey from './getKey'
+import updatePassword from './updatePassword'
 import test from './test'
 
 
@@ -64,5 +65,6 @@ export default {
   getDID,
   updateCollection,
   getKey,
+  updatePassword,
   test
 }

@@ -126,4 +126,15 @@ export class WalletRequest extends Request {
   signTransaction(body) {
     return this.promise(MESSAGES.HANDLE_SIGN_TRANSACTION, body)
   }
+
+  /**
+   * 
+   * @param {Object} body
+   * @param {String} body.oldPassword
+   * @param {String} body.newPassword
+   * @returns 
+   */
+  updatePassword(body) {
+    return this.promise(MESSAGES.UPDATE_PASSWORD, body)
+  }
 }
