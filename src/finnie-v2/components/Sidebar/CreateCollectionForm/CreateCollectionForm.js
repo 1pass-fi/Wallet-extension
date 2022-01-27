@@ -142,8 +142,11 @@ const CreateCollectionForm = () => {
       nfts,
       setNfts,
       address,
-      collectionData: tempData
+      collectionData: tempData,
+      selectedNftIds
     })
+
+    setSelectedNftIds([])
   }
 
   const closeCreateModal = () => {
