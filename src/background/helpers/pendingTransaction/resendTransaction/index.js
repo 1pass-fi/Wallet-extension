@@ -9,8 +9,10 @@ import updatePendingTransaction from './updatePendingTransaction'
 import resendCreateDID from './resendCreateDID'
 import resendCreateDIDData from './resendCreateDIDData'
 import resendCreateCollection from './resendCreateCollection'
-import errorHandler from 'background/helpers/errorHandler'
 import resendRegisterKid from './resendRegisterKid'
+import resendUpdateCollection from './resendUpdateCollection'
+
+import errorHandler from 'background/helpers/errorHandler'
 
 import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 import { BackgroundAccount } from 'services/account/Account'
@@ -48,6 +50,9 @@ const resendTransaction = async (account, transaction) => {
       break
     case PENDING_TRANSACTION_TYPE.REGISTER_KID:
       newTransactionId = await resendRegisterKid(account, transaction)
+      break
+    case PENDING_TRANSACTION_TYPE.UPDATE_COLLECTION:
+      newTransactionId = await resendUpdateCollection(account, transaction)
       break
     default:
       throw new Error('Invalid input transaction')
