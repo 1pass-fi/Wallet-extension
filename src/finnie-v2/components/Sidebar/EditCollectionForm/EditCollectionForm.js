@@ -5,11 +5,11 @@ import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import initial from 'lodash/initial'
 import union from 'lodash/union'
+import get from 'lodash/get'
 
 import CrossIcon from 'img/v2/cross-icon.svg'
-import AddIcon from 'img/v2/create-collection-form/add-icon.svg'
 
-import createCollection from 'utils/createNfts/createCollection'
+import updateCollection from 'utils/createNfts/updateCollection'
 
 import InputField from 'finnie-v2/components/InputField'
 import Button from 'finnie-v2/components/Button'
@@ -17,17 +17,21 @@ import BatchUploadModal from 'finnie-v2/components/BatchUploadModal'
 import DropFile from 'finnie-v2/components/DropFile'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
-import ConfirmModal from './ConfirmModal'
+import ConfirmModal  from './EditConfirmModal'
 import { GalleryContext } from 'options/galleryContext'
 
-const CreateCollectionForm = () => {
+import getCollectionByTxId from 'finnie-v2/selectors/getCollectionByTxid'
+
+const EditCollectionForm = () => {
   const history = useHistory()
-
-  const { selectedNftIds, setSelectedNftIds } = useContext(GalleryContext)
-
+  const { editingCollectionId: collectionId } = useContext(GalleryContext)
   const address = useSelector((state) => state.defaultAccount.address)
 
+  const collection = useSelector(getCollectionByTxId(collectionId))
+
   const selectFiles = useRef(null)
+
+  const { selectedNftIds, setSelectedNftIds } = useContext(GalleryContext)
 
   const [collectionInfo, setCollectionInfo] = useState({
     title: '',
@@ -50,6 +54,7 @@ const CreateCollectionForm = () => {
   const [files, setFiles] = useState([])
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [showingConfirmModal, setShowingConfirmModal] = useState(false)
+
   const [nfts, setNfts] = useState([])
 
   const filesSize = useMemo(() => {
@@ -122,13 +127,11 @@ const CreateCollectionForm = () => {
     return isValid
   }
 
-  const handleCreateCollection = () => {
-    if (validateForm()) {
-      setShowCreateModal(true)
-    }
+  const handleUpdateCollection = () => {
+    if (validateForm()) setShowCreateModal(true)
   }
 
-  const handleConfirmCreateCollection = async () => {
+  const handleConfirmUpdateCollection = async () => {
     const tempData = {
       ...collectionInfo,
       name: collectionInfo.title,
@@ -138,11 +141,12 @@ const CreateCollectionForm = () => {
 
     delete tempData.isNSFW
 
-    await createCollection({
+    await updateCollection({
       nfts,
       setNfts,
       address,
-      collectionData: tempData
+      collectionData: tempData,
+      collectionId
     })
   }
 
@@ -177,9 +181,25 @@ const CreateCollectionForm = () => {
     setShowCreateModal(true)
   }
 
-  const openSelectNftModal = () => {
-    history.push('/collections/create/select-nft')
-  }
+  /* Load collection data */
+  useEffect(() => {
+    if (!isEmpty(collection)) {
+      const name = get(collection, 'name')
+      const description = get(collection, 'description')
+      const tags = get(collection, 'tags') || []
+
+      const newCollectionInfo = {
+        ...collectionInfo,
+        title: name,
+        description,
+        tags
+      }
+
+      setTags(tags)
+
+      setCollectionInfo(newCollectionInfo)
+    }
+  }, [collection])
 
   useEffect(() => {
     return () => {
@@ -208,7 +228,7 @@ const CreateCollectionForm = () => {
         />
         <InputField
           className="my-1"
-          label="Collection Title"
+          label="Edit Title"
           value={collectionInfo.title}
           setValue={handleCollectionContentChange}
           required={true}
@@ -217,7 +237,7 @@ const CreateCollectionForm = () => {
         />
         <InputField
           className="my-1"
-          label="Description"
+          label="Edit Description"
           value={collectionInfo.description}
           setValue={handleCollectionContentChange}
           required={true}
@@ -227,7 +247,7 @@ const CreateCollectionForm = () => {
         />
         <div className="my-1 flex flex-col w-full">
           <label htmlFor="tags" className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
-            Tags
+            Edit Tags
           </label>
           <input
             className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white  px-1"
@@ -303,14 +323,10 @@ const CreateCollectionForm = () => {
           )}
         </div>
         <span className="text-3xs text-bittersweet-200 mb-4.25">{errors.files}</span>
-        <div onClick={openSelectNftModal} className='flex text-xs text-success w-full mb-3.5 cursor-pointer'>
-          <div className='w-4.5 h-4.5 mr-1.5'><AddIcon /></div>
-          Add from my existing NFTs
-        </div>
         <Button
-          onClick={handleCreateCollection}
+          onClick={handleUpdateCollection}
           variant="light"
-          text="Add NFT Details"
+          text="Edit NFT Details"
           className="text-sm font-semibold"
         />
       </div>
@@ -328,7 +344,7 @@ const CreateCollectionForm = () => {
           numOfNfts={nfts.length}
           filesSize={filesSize}
           close={closeConfirmModal}
-          handleConfirmCreateCollection={handleConfirmCreateCollection}
+          handleConfirmUpdateCollection={handleConfirmUpdateCollection}
           goBack={confirmModalGoback}
           nfts={nfts}
           resetState={resetState}
@@ -338,4 +354,4 @@ const CreateCollectionForm = () => {
   )
 }
 
-export default CreateCollectionForm
+export default EditCollectionForm

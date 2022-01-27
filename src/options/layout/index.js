@@ -92,6 +92,8 @@ export default ({ children }) => {
 
   const [searchTerm, setSearchTerm] = useState('') // search bar
 
+  const [selectedNftIds, setSelectedNftIds] = useState([])
+
   const dispatch = useDispatch()
 
   /* HOOKS */
@@ -101,6 +103,7 @@ export default ({ children }) => {
   const [modalStates, setModalStates] = useModal()
   const [settingStates, setSettingStates] = useSetting({ walletLoaded })
   useAddHandler({ setError, setNotification, setModalStates, setIsLoading })
+
   
 
   /* 
@@ -110,6 +113,8 @@ export default ({ children }) => {
   const defaultAccount = useSelector(state => state.defaultAccount)
   const assets = useSelector(state => state.assets)
 
+  /* EDITING COLLECTION ID */
+  const [editingCollectionId, setEditingCollectionId] = useState(null)
 
 
   const onClearFile = () => {
@@ -275,11 +280,11 @@ export default ({ children }) => {
       console.log('loading all contents')
       let allAssets = await popupAccount.getAllAssets()
       let validAssets = allAssets.filter(asset => asset.name !== '...')
-
+      
       validAssets = classifyAssets(validAssets, allCollections)
       console.log('valid assets', validAssets)
       dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
-
+      
       setIsLoading(prev => --prev)
     }
 
@@ -298,7 +303,6 @@ export default ({ children }) => {
       }
 
       const loadNfts = async () => {
-        console.log('LOADING NFTS')
         await backgroundRequest.assets.loadAllContent()
         allAssets = await popupAccount.getAllAssets()
         validAssets = allAssets.filter(asset => asset.name !== '...')
@@ -344,6 +348,8 @@ export default ({ children }) => {
         inputFileRef,
         walletLoaded,
         refreshNFTs,
+        selectedNftIds, setSelectedNftIds,
+        editingCollectionId, setEditingCollectionId,
         ...modalStates,
         ...setModalStates,
         ...settingStates,

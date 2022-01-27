@@ -68,7 +68,7 @@ const EditNftInfo = ({
     }
   }
 
-  return (
+  return (  
     <>
       <div className="text-xl text-white">EDIT NFT INFO:</div>
       <div className="flex mt-4">
@@ -82,7 +82,8 @@ const EditNftInfo = ({
             name="title"
             value={nftDetail.title}
             setValue={(e) => handleNftContentChange(e, currentNftIdx)}
-            error={error[currentNftIdx].title}
+            error={error[currentNftIdx]?.title}
+            isDisable={nftInfo.existingNft}
           />
           <InputField
             label="Description"
@@ -91,7 +92,8 @@ const EditNftInfo = ({
             name="description"
             value={nftDetail.description}
             setValue={(e) => handleNftContentChange(e, currentNftIdx)}
-            error={error[currentNftIdx].description}
+            error={error[currentNftIdx]?.description}
+            isDisable={nftInfo.existingNft}
           />
           <div>
             <label
@@ -112,6 +114,7 @@ const EditNftInfo = ({
                 setTagInputs(updatedTagInputs)
               }}
               onKeyUp={(e) => handleTagsKeyUp(e, currentNftIdx)}
+              disabled={nftInfo.existingNft}
             />
             <div className="text-warning mt-1 uppercase text-3xs">
               Separate with a “,” and hit space bar
@@ -139,6 +142,7 @@ const EditNftInfo = ({
               id="nsfw"
               checked={nftDetail.isNSFW}
               onChange={(e) => handleNftContentChange(e, currentNftIdx)}
+              disabled={nftInfo.existingNft}
             ></input>
             <label
               style={{ cursor: 'pointer' }}

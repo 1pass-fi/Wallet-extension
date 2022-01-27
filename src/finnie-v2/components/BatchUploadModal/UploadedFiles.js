@@ -10,12 +10,13 @@ const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft, erro
     <>
       <div className="text-xl text-white">UPLOADED FILES</div>
       <div className="list-disc overflow-y-scroll overflow-x-none h-68 mt-4 pl-4 pr-1.5">
-        {files.map(({ name }, idx) => (
+        {files.map(({ name, info: { existingNft } }, idx) => (
           <div
             className={clsx(
               currentNftIdx === idx && 'bg-trueGray-300 bg-opacity-20',
-              !(error[idx].title === '' && error[idx].description === '') &&
+              !(error[idx]?.title === '' && error[idx]?.description === '') &&
                 'bg-red-finnie bg-opacity-20',
+              existingNft && 'bg-black bg-opacity-10',
               'my-0.5 pl-1 cursor-pointer h-8 flex text-white items-center justify-between font-light text-xs tracking-finnieSpacing-wide pr-2.75'
             )}
             key={idx}
