@@ -24,6 +24,7 @@ import Success from 'options/pages/StartUp/shared/Success'
 import MainLayout from './components/MainLayout'
 import { GalleryContext } from 'options/galleryContext'
 import Settings from './pages/Settings/Settings'
+import FriendReferral from './pages/FriendReferral'
 
 const SecondVer = () => {
   const dispatch = useDispatch()

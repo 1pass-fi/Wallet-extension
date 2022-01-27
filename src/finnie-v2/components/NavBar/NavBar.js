@@ -77,6 +77,15 @@ const NavBar = () => {
         <nav className="ml-6.25 tracking-finnieSpacing-wider">
           <NavLink to="/gallery">Gallery</NavLink>
         </nav>
+        <nav className="ml-9 tracking-finnieSpacing-wider">
+          <NavLink to="/gallery/create-nft">Create</NavLink>
+        </nav>
+        <nav className="ml-9 tracking-finnieSpacing-wider">
+          <NavLink to="/#">Address book</NavLink>
+        </nav>
+        <nav className="ml-9 tracking-finnieSpacing-wider">
+          <NavLink to="/friend-referral">Refer a friend</NavLink>
+        </nav>
       </div>
 
       <div className="flex items-center" ref={navbarRef}>
