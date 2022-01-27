@@ -27,7 +27,6 @@ const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, clo
   useEffect(() => {
     const getPrice = async () => {
       let newArPrice = 0.00004
-      console.log('FILESIZE ======', filesSize)
 
       if (filesSize) {
         newArPrice = await arweave.transactions.getPrice(filesSize) + 0.00004

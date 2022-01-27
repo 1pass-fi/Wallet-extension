@@ -13,7 +13,7 @@ import { ACCOUNT, TYPE } from 'constants/accountConstants'
 /*
   Return nft ids of uploaded nfts
 */
-export default async ({nfts, setNfts, address, collectionData}) => {
+export default async ({nfts, setNfts, address, collectionData, selectedNftIds}) => {
   console.log('collectionData', collectionData)
 
   nfts = [...nfts]
@@ -24,7 +24,7 @@ export default async ({nfts, setNfts, address, collectionData}) => {
 
   info = info.value
 
-  const nftIds = await Promise.all(nfts.map(async ({ info, url }, index) => {
+  let nftIds = await Promise.all(nfts.map(async ({ info, url }, index) => {
     try {
       console.log('info', info)
       console.log('url', url)
@@ -95,6 +95,7 @@ export default async ({nfts, setNfts, address, collectionData}) => {
     }
   }))
 
+  nftIds = [...nftIds, ...selectedNftIds]
 
   // create collection
   collectionData.collection = nftIds
