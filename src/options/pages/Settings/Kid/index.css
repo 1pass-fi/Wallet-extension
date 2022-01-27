@@ -137,6 +137,7 @@
   height: 165px;
 
   border: 1px solid white;
+  border-radius: 3px;
 
   display: flex;
   justify-content: center;

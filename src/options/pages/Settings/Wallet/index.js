@@ -1,65 +1,70 @@
-import React, { useState, useContext, useRef, useEffect } from 'react'
+import React, { useState, useContext, useMemo, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
+import axios from 'axios'
 import data from 'currency-codes/data'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { isEmpty, get } from 'lodash'
-import axios from 'axios'
 
 import { getChromeStorage, setChromeStorage } from 'utils'
 import { STORAGE, OS } from 'constants/koiConstants'
 import { GalleryContext } from 'options/galleryContext'
+import storage from 'services/storage'
 
-import AccountOrder from './AccountOrder'
-import './index.css'
+// import AccountOrder from './AccountOrder'
 import AcceptedCurrencies from './currencies'
 
-import storage from 'services/storage'
+import AccountManagement from 'finnie-v2/components/AccountManagement'
+import DropDown from 'finnie-v2/components/DropDown'
+
+import './index.css'
+
+const mockedWalletDisplayOptions = [{ value: 'accountsummary', label: 'Account Summary' }]
 
 export default () => {
   const history = useHistory()
   const { setError, setNotification } = useContext(GalleryContext)
 
   const [currency, setCurrency] = useState('USD')
-  const [textColor, setTextColor] = useState('#ffffff')
 
-  const sellectCurrencyRef = useRef()
+  const accounts = useSelector((state) => state.accounts)
 
-  const accounts = useSelector(state => state.accounts)
+  const currenciesData = useMemo(
+    () =>
+      data
+        .filter(({ code }) => AcceptedCurrencies.includes(code))
+        .map(({ code, currency }) => ({
+          label: `${getSymbolFromCurrency(code) || ''} ${currency} (${code})`,
+          value: code
+        })),
+    [data]
+  )
 
   useEffect(() => {
     const getCurrency = async () => {
       const storage = await getChromeStorage(STORAGE.CURRENCY)
-      const currency = storage[STORAGE.CURRENCY] || 'USD'
-      sellectCurrencyRef.current.value = currency
-    }
-
-    const getOs = () => {
-      const os = window.localStorage.getItem(OS)
-      if (os == 'win') setTextColor('#171753')
+      const storedCurrency = storage[STORAGE.CURRENCY] || 'USD'
+      setCurrency(storedCurrency)
     }
 
     getCurrency()
-    getOs()
   }, [])
 
   const onImportSeedPhrase = () => {
     history.push('/import-wallet')
   }
-  
+
   const onImportKeyFile = () => {
     history.push('/upload-wallet')
   }
-  
+
   const onCreateWallet = () => {
     history.push('/create-wallet')
   }
 
-  const onCurrencyChange = async (e) => {
+  const onCurrencyChange = async (currency) => {
     try {
-      const currency = e.target.value
-      console.log(currency)
       // Fetch to check if we can get AR price in this currency
       const response = await axios.get(
         `https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=${currency}`
@@ -68,7 +73,6 @@ export default () => {
       if (!price || isEmpty(price)) {
         setError(`We cannot get AR price for the currency ${currency}.`)
         setCurrency('USD')
-        sellectCurrencyRef.current.value = 'USD'
       } else {
         setCurrency(currency)
         await setChromeStorage({ [STORAGE.CURRENCY]: currency })
@@ -82,70 +86,76 @@ export default () => {
     }
   }
 
-  // const [accounts, setAccounts] = useState(mockAccount)
-
   return (
-    <div className='wallet-settings-wrapper'>
-      <div className='wallet-settings'>
-        <div className='header'>Wallet Settings</div>
+    <div className="wallet-settings-wrapper">
+      <div className="wallet-settings">
+        <div className="header">Wallet Settings</div>
 
-        <div className='items'>
-          {/* 
-            Currently we can import only one wallet. This will hide for now.
-          */}
-          <div className='add-wallet item'>
-            <div className='title'>Add a Wallet</div>
-            <div className='actions'>
-              <div className='action' onClick={onImportSeedPhrase}>
-                Import from Seed Phrase
+        <div className="items">
+          <div className="add-wallet item">
+            <div className="title">Add a Wallet</div>
+            <div className="actions">
+              <div className="action action--seed-phrase" onClick={onImportSeedPhrase}>
+                Import Seed Phrase
               </div>
-              <div className='action' onClick={onImportKeyFile}>
-                Import from .JSON File
+              <div className="action action--json" onClick={onImportKeyFile}>
+                Import .JSON File
               </div>
-              <div className='action' onClick={onCreateWallet}>
+              <div className="action action--create-new" onClick={onCreateWallet}>
                 Create New Wallet
               </div>
             </div>
           </div>
 
-          <div className='default-currency item'>
-            <div className='title'>Default Currency</div>
-            <div className='description'>
-              Select the exchange currency to display next to tokens (currently,
-              only fiat currencies are supported).
+          <div className="default-currency item">
+            <div className="title">Default Currency</div>
+            <div className="description">
+              Select the exchange currency displayed next to your tokens and transactions.
             </div>
-            <select
-              ref={sellectCurrencyRef}
-              className='currency'
-              onChange={onCurrencyChange}
-              defaultValue={currency}
-            >
-              {data
-                .filter(({ code }) => AcceptedCurrencies.includes(code))
-                .map(({ code, currency }) => (
-                  <option style={{ color: textColor }} key={code} value={code}>
-                    {`${
-                      getSymbolFromCurrency(code) || ''
-                    } ${currency} (${code})`}
-                  </option>
-                ))}
-            </select>
+            <div className="notes">
+              We can only show the exchange rate for fiat currencies at this time.
+            </div>
+            <div className="default-currency__dropdown">
+              <DropDown
+                options={currenciesData}
+                value={currency}
+                onChange={onCurrencyChange}
+                variant="dark"
+                size="lg"
+              />
+            </div>
           </div>
 
-
-          <div className='display-order item'>
-            <div className='title'>Wallet Priority</div>
-            <div className='description'>
-              Organize your default wallet
+          <div className="display-order item">
+            <div className="title">Wallet Priority</div>
+            <div className="description">
+              Organize your wallet display and select a default key. This key will be automatically
+              selected to create NFTs and send tokens.
             </div>
-            <AccountOrder accounts={accounts} setAccounts={() => {}} />
+            {/* <AccountOrder accounts={accounts} setAccounts={() => {}} /> */}
+            <AccountManagement accounts={accounts} />
           </div>
 
-          <div className='language-order item'>
-            <div className='title'>Language</div>
-            <div className='description coming-soon'>
-              Language options are coming soon!
+          <div className="default-currency item">
+            <div className="title">Wallet display</div>
+            <div className="description">
+              Select a wallet or your account summary as the default when opening the Finnie
+              extension.
             </div>
+            <div className="default-currency__dropdown">
+              <DropDown
+                options={mockedWalletDisplayOptions}
+                value={mockedWalletDisplayOptions[0].value}
+                onChange={() => {}}
+                variant="dark"
+                size="lg"
+              />
+            </div>
+          </div>
+
+          <div className="language-order item">
+            <div className="title">Language</div>
+            <div className="description coming-soon">Language options are coming soon!</div>
           </div>
         </div>
       </div>
