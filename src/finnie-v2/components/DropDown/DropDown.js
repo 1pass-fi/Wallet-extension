@@ -7,16 +7,16 @@ import DownIconWhite from 'img/v2/dropdown/down-icon-white.svg'
 
 const variants = {
   dark: {
-    wrapper: 'border border-white',
+    wrapper: 'border border-white bg-blue-800',
     header: 'border-b-white text-white bg-blue-800',
-    body: 'border border-white bg-blue-800 border-t-none',
-    row: 'hover:bg-white hover:bg-opacity-20'
+    body: 'border border-white bg-blue-800 ',
+    row: 'hover:bg-lightBlue hover:text-blue-600'
   },
   light: {
-    wrapper: 'border border-blue-800',
-    header: 'border-b-blue-800 text-blue-800 bg-white',
-    body: 'border border-blue-800 text-blue-800 bg-white border-t-none',
-    row: 'hover:bg-blue-800 hover:bg-opacity-20'
+    wrapper: 'border border-blue-800 bg-blue-600',
+    header: 'border-b-blue-800 text-white',
+    body: 'border border-blue-800 bg-blue-600 text-white',
+    row: 'hover:bg-lightBlue hover:text-blue-600'
   }
 }
 
@@ -79,16 +79,11 @@ const DropDown = ({ options, value, onChange, variant = 'dark', size = 'lg' }) =
         {find(options, { value })?.label || ''}
         <div
           className={clsx(
-            'absolute -right-0.25 top-0 flex items-center justify-center rounded-r-finnie',
-            size === 'lg' ? 'w-8 h-8' : 'w-5 h-5',
-            variant === 'light' ? 'bg-blue-800' : 'bg-white'
+            'absolute top-0 rounded-r-finnie flex items-center justify-center bg-white',
+            size === 'lg' ? 'w-8 h-8 -right-0.25' : 'w-5 h-5 right-0'
           )}
         >
-          {variant === 'light' ? (
-            <DownIconWhite className="h-1.75 w-3.25" />
-          ) : (
-            <DownIconBlue className="h-1.75 w-3.25" />
-          )}
+          <DownIconBlue className="h-1.75 w-3.25" />
         </div>
       </div>
       {listOpened && (

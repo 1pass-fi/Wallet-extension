@@ -479,6 +479,7 @@ const KidPage = () => {
             <DropDown
               options={countriesList}
               value={userKID.country}
+              variant="light"
               onChange={(value) => {
                 setDisableUpdateKID(false)
                 setuserKID({ ...userKID, country: value })
