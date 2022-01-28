@@ -80,9 +80,9 @@ const NavBar = () => {
         <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/gallery/create-nft">Create</NavLink>
         </nav>
-        <nav className="ml-9 tracking-finnieSpacing-wider">
+        {/* <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/#">Address book</NavLink>
-        </nav>
+        </nav> */}
         <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/friend-referral">Refer a friend</NavLink>
         </nav>
