@@ -31,11 +31,11 @@ const SecondVer = () => {
   const location = useLocation()
 
   const { editingCollectionId } = useContext(GalleryContext)
-  const collections = useSelector(state => state.collections)
+  const collections = useSelector((state) => state.collections)
 
   const collectionName = useMemo(() => {
     if (collections && editingCollectionId) {
-      const collection = find(collections.collections, c => {
+      const collection = find(collections.collections, (c) => {
         return c.id === editingCollectionId
       })
       if (collection) return collection.name
@@ -59,17 +59,21 @@ const SecondVer = () => {
 
   const pageTitle = useMemo(() => {
     let title = ''
-    switch(location.pathname) {
+    switch (location.pathname) {
       case '/':
       case '/gallery':
-        title = 'Gallery'; break
+        title = 'Gallery'
+        break
       case '/collections':
-        title = 'Collections'; break
+        title = 'Collections'
+        break
       case '/collections/create':
-        title = 'Create Collection'; break
+        title = 'Create Collection'
+        break
       case '/collections/create/select-nft':
-        title = 'Select your NFTs'; break
-      default: 
+        title = 'Select your NFTs'
+        break
+      default:
         title = ''
     }
 
@@ -90,7 +94,7 @@ const SecondVer = () => {
           <NFTDetail />
         </Route>
         <Route exact path="/settings/*">
-          <div className="transform flex justify-start" style={{ width: '862px' }}>
+          <div className="flex justify-start" style={{ width: '862px', maxWidth: '100%' }}>
             <Settings />
           </div>
         </Route>
