@@ -17,9 +17,12 @@ module.exports = {
         trueGray: {
           100: '#F5F5F5',
           300: '#C4C4C4',
+          400: '#D6D6D6',
           500: '#8A8A8A'
         },
         blueGray: {
+          500: '#8787A6',
+          600: '#5C5C85',
           900: '#07073F'
         },
         blue: {

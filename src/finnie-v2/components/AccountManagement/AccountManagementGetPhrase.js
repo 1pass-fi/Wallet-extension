@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import isEmpty from 'lodash/isEmpty'
 import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -23,6 +24,7 @@ const AccountManagement = ({ accounts }) => {
 
   const changeTab = (newTab) => setCurrentTab(newTab)
 
+  console.log('==============', accounts)
   return (
     <>
       <div className="flex items-center justify-start gap-10 font-bold text-xs mb-4">
@@ -47,27 +49,44 @@ const AccountManagement = ({ accounts }) => {
           </tr>
         </thead>
         <tbody className="text-xs tracking-finnieSpacing-wide">
-          {showAccounts.map((account, idx) => (
-            <tr key={idx} className={clsx('text-left h-8', idx % 2 === 1 && 'bg-lightBlue')}>
-              <td className="pl-2">
-                <CheckBox checked={defaultAccountAddress === account.address} />
-              </td>
-              <td>
-                {currentTab === 'AR' ? (
-                  <ArLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
-                ) : (
-                  <EthLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
+          {showAccounts.map((account, idx) => {
+            const hasSeedPhrase = !isEmpty(account.seedPhrase)
+            return (
+              <tr
+                key={idx}
+                className={clsx(
+                  'text-left h-8',
+                  idx % 2 === 1 && 'bg-lightBlue',
+                  !hasSeedPhrase && 'bg-trueGray-100 text-blueGray-500'
                 )}
-                {formatLongString(account.accountName, 12)}
-              </td>
-              <td>{formatLongString(account.address, 22)}</td>
-              <td className="w-50 pr-10">
-                <button className="bg-blue-800 text-center text-white text-xs tracking-finnieSpacing-wide h-6 w-32 rounded-sm shadow-sm">
-                  Get Phrase
-                </button>
-              </td>
-            </tr>
-          ))}
+              >
+                <td className="pl-2">
+                  <CheckBox checked={defaultAccountAddress === account.address} />
+                </td>
+                <td>
+                  {currentTab === 'AR' ? (
+                    <ArLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
+                  ) : (
+                    <EthLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
+                  )}
+                  {formatLongString(account.accountName, 12)}
+                </td>
+                <td>{formatLongString(account.address, 22)}</td>
+                <td className="w-50 pr-10">
+                  <button
+                    className={clsx(
+                      'text-center text-xs tracking-finnieSpacing-wide h-6 w-32 rounded-sm shadow-sm',
+                      !hasSeedPhrase
+                        ? 'bg-trueGray-400 text-blueGray-600 cursor-not-allowed'
+                        : 'text-white bg-blue-800'
+                    )}
+                  >
+                    {hasSeedPhrase ? 'Get Phrase' : 'Unavailable'}
+                  </button>
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </>
