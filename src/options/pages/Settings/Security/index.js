@@ -16,6 +16,8 @@ import {
 
 import './index.css'
 import ChangePasswordModal from 'finnie-v2/components/Settings/Security/ChangePasswordModal'
+import ExportPrivateKeyModal from 'finnie-v2/components/Settings/Security/ExportPrivateKeyModal'
+import RecoveryPhraseModal from 'finnie-v2/components/Settings/Security/RecoveryPhraseModal'
 
 export default () => {
   const [hasSeedPhrase, setHasSeedPhrase] = useState(false)
@@ -58,14 +60,7 @@ export default () => {
 
   return (
     <div className="security-settings-wrapper">
-      <div
-        className="security-settings"
-        style={{
-          filter: `${
-            showExportBackupPhraseModal || showExportBackupKeyfileModal ? 'blur(8px)' : 'none'
-          }`
-        }}
-      >
+      <div className="security-settings">
         <div className="header">Security Settings</div>
         <div className="content">
           <div className="backup-seedphrase">
@@ -106,7 +101,11 @@ export default () => {
           <div className="backup-keyfile">
             <div className="title">Export my Private Key</div>
             <div className="description">Select an account to download the private key.</div>
-            <AccountManagementExportKey accounts={accounts} />
+            <AccountManagementExportKey
+              accounts={accounts}
+              setSelectedAccount={setSelectedAccount}
+              setShowExportBackupKeyfileModal={setShowExportBackupKeyfileModal}
+            />
             {/* <div className="keyfile">
               {arAccounts.map((account) => (
                 <div
@@ -141,7 +140,10 @@ export default () => {
       )}
 
       {showExportBackupKeyfileModal && (
-        <ExportBackupKeyFileModal account={selectedAccount} closeModal={closeModal} />
+        <ExportPrivateKeyModal
+          account={selectedAccount}
+          close={() => setShowExportBackupKeyfileModal(false)}
+        />
       )}
 
       {showChangePasswordModal && (

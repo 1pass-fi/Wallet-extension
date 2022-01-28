@@ -11,7 +11,7 @@ import CheckBox from './CheckBox'
 
 const tabs = ['AR', 'ETH']
 
-const AccountManagement = ({ accounts }) => {
+const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupKeyfileModal }) => {
   const defaultAccountAddress = useSelector((state) => state.defaultAccount?.address)
 
   const [currentTab, setCurrentTab] = useState('AR')
@@ -47,7 +47,14 @@ const AccountManagement = ({ accounts }) => {
         </thead>
         <tbody className="text-xs tracking-finnieSpacing-wide">
           {showAccounts.map((account, idx) => (
-            <tr key={idx} className={clsx('text-left h-8', idx % 2 === 1 && 'bg-lightBlue')}>
+            <tr
+              key={idx}
+              className={(clsx('text-left h-8', idx % 2 === 1 && 'bg-lightBlue'), 'cursor-pointer')}
+              onClick={() => {
+                setSelectedAccount(account)
+                setShowExportBackupKeyfileModal(true)
+              }}
+            >
               <td className="pl-2">
                 <CheckBox checked={defaultAccountAddress === account.address} />
               </td>

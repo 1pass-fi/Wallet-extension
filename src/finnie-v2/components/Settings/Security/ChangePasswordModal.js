@@ -77,7 +77,7 @@ const ChangePasswordModal = ({ close }) => {
   }
 
   return (
-    <div className="w-full h-full flex items-center justify-center min-w-screen min-h-screen bg-black bg-opacity-25 fixed z-51 top-0 left-0">
+    <div className="fixed z-51 top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-25">
       <div
         style={
           step === 1
