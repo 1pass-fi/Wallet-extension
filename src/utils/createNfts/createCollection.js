@@ -14,8 +14,6 @@ import { ACCOUNT, TYPE } from 'constants/accountConstants'
   Return nft ids of uploaded nfts
 */
 export default async ({nfts, setNfts, address, collectionData, selectedNftIds}) => {
-  console.log('collectionData', collectionData)
-
   nfts = [...nfts]
   const key = await request.gallery.getKey({address})
 
@@ -26,9 +24,6 @@ export default async ({nfts, setNfts, address, collectionData, selectedNftIds}) 
 
   let nftIds = await Promise.all(nfts.map(async ({ info, url }, index) => {
     try {
-      console.log('info', info)
-      console.log('url', url)
-
       const buffer = await getBufferFromUrl(url)
       const transaction = await createTransaction(buffer, info)
       let price = await arweave.transactions.getPrice(buffer.byteLength)

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
@@ -27,8 +27,13 @@ const NFTDetail = () => {
 
   const nft = useSelector(getAssetByTxId(id))
 
-  const isArweaveNft = nft?.type === TYPE.ARWEAVE
-  const disabledFeatures = nft.isBridging || nft.isSending || nft.type !== TYPE.ARWEAVE
+  const isArweaveNft = useMemo(() => {
+    return nft?.type === TYPE.ARWEAVE
+  }, [nft])
+
+  const disabledFeatures = useMemo(() => {
+    return nft?.isBridging || nft?.isSending || nft?.type !== TYPE.ARWEAVE
+  }, [nft])
 
   return (
     <div className="min-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">

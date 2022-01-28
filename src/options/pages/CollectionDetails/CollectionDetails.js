@@ -53,7 +53,7 @@ const CollectionDetails = () => {
 
   return (
     <div className='w-full relative'>
-      <div onClick={openEditCollectionForm} className='w-5 h-5.5 absolute -top-12.5 z-50 cursor-pointer'><EditIcon /></div>
+      <div onClick={openEditCollectionForm} className='w-5 h-5.5 absolute -top-12.5 z-40 cursor-pointer'><EditIcon /></div>
       {/* DESCRIPTION */}
       <div 
         className='text-white w-full h-25.5 text-sm leading-6 pr-3 mb-3'
