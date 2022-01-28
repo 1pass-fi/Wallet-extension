@@ -17,7 +17,7 @@ import SortAndFilter from './SortAndFilter'
 import NotificationsCenterLinks from './NotificationsCenterLinks'
 
 const navItems = [
-  { icon: CreateIcon, path: '/gallery/create-nft' },
+  { icon: CreateIcon, path: '/create-nft' },
   { icon: GalleryIcon, path: '/gallery' },
   { icon: CollectionIcon, path: '/collections' }
 ]
@@ -87,7 +87,7 @@ const Sidebar = () => {
             key={path}
             to={path}
             className="flex items-center justify-center w-13.75 h-11.25"
-            activeClassName="rounded bg-trueGray-100 bg-opacity-20"
+            activeClassName="rounded-t border-b border-white bg-trueGray-100 bg-opacity-20"
           >
             <Icon className="w-7.5 h-7" />
           </NavLink>
@@ -95,7 +95,7 @@ const Sidebar = () => {
       </nav>
       <div style={{ height: '60vh' }} className="rounded overflow-y-scroll">
         <div className="bg-trueGray-100 bg-opacity-20 rounded w-57.75">
-          <Route path="/gallery">
+          <Route exact path="/gallery">
             <SortAndFilter
               handleSearchFieldChange={handleSearchFieldChange}
               handleSelectChains={handleSelectChains}
@@ -104,7 +104,7 @@ const Sidebar = () => {
               selectedChain={chainType}
             />
           </Route>
-          <Route path="/gallery/create-nft">
+          <Route path="/create-nft">
             <UploadNftForm />
           </Route>
           <Route exact path="/collections">

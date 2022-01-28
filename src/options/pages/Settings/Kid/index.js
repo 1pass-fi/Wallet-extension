@@ -438,7 +438,7 @@ const KidPage = () => {
             <img className="profile-picture" src={profileSrc}></img>
           </div>
           <div className="avt-desc">
-            <Link to="/gallery/create-nft">Or create a new NFT</Link>
+            <Link to="/create-nft">Or create a new NFT</Link>
           </div>
           <div className="form-img__img-name">COVER IMAGE</div>
           <div className="cover">
@@ -454,7 +454,7 @@ const KidPage = () => {
             <img className="profile-cover" src={bannerSrc} alt="profile-cover" />
           </div>
           <div className="avt-desc">
-            Or select <Link to="/gallery/create-nft">an NFT</Link> to make it your profile picture
+            Or select <Link to="/create-nft">an NFT</Link> to make it your profile picture
           </div>
         </div>
 

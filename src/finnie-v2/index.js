@@ -83,6 +83,8 @@ const SecondVer = () => {
 
     if (location.pathname.includes('settings')) title = 'Settings'
 
+    if (location.pathname.includes('create-nft')) title = 'Gallery'
+
     if (location.pathname.includes('/collections') && collectionName) title = collectionName
     return title
   }, [location.pathname, collectionName])

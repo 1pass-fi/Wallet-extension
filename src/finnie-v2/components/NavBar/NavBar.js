@@ -78,7 +78,7 @@ const NavBar = () => {
           <NavLink to="/gallery">Gallery</NavLink>
         </nav>
         <nav className="ml-9 tracking-finnieSpacing-wider">
-          <NavLink to="/gallery/create-nft">Create</NavLink>
+          <NavLink to="/create-nft">Create</NavLink>
         </nav>
         {/* <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/#">Address book</NavLink>
