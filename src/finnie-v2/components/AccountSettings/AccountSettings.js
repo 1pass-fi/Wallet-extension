@@ -7,7 +7,6 @@ const accountSettingItems = [
   { text: 'Gallery Settings', path: '/settings/gallery' },
   { text: 'Wallet Settings', path: '/settings/wallet' },
   { text: 'Security', path: '/settings/security' },
-  { text: 'Customization', path: '/settings/#', disabled: true },
   { text: 'About', path: '/settings/about' }
 ]
 
