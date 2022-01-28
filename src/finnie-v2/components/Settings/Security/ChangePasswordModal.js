@@ -22,6 +22,8 @@ const ChangePasswordModal = ({ close }) => {
 
   const { setError, setIsLoading } = useContext(GalleryContext)
 
+  const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%].*).{8,}')
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -47,6 +49,13 @@ const ChangePasswordModal = ({ close }) => {
       validPassword = false
     } else {
       setConfirmPasswordError('')
+    }
+
+    if (!passwordRegex.test(newPassword)) {
+      validPassword = false
+      setConfirmPasswordError(
+        'Password must have at least 8 characters, 1 number, 1 uppercase, 1 lowercase and 1 symbol (e.g. !@#$%).'
+      )
     }
 
     return validPassword
@@ -151,7 +160,7 @@ const ChangePasswordModal = ({ close }) => {
 
             {!isEmpty(confirmPasswordError) && (
               <div
-                style={{ width: '382px', height: '24px' }}
+                style={{ width: '382px' }}
                 className="pl-1.75 flex items-center mt-2 bg-warning rounded"
               >
                 <NoticeIcon className="w-4.25" />

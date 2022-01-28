@@ -3,6 +3,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { CSVLink } from 'react-csv'
 import passworder from 'browser-passworder'
 import isEmpty from 'lodash/isEmpty'
+import capitalize from 'lodash/capitalize'
 
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
@@ -151,7 +152,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
                 ?.split(' ')
                 .map((word, idx) => (
                   <div className="m-2" key={idx}>
-                    {word}
+                    {capitalize(word)}
                   </div>
                 ))}
             </div>
