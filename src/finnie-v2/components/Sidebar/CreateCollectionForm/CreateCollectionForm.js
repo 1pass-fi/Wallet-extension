@@ -19,11 +19,13 @@ import formatLongString from 'finnie-v2/utils/formatLongString'
 
 import ConfirmModal from './ConfirmModal'
 import { GalleryContext } from 'options/galleryContext'
+import arweave from 'services/arweave'
+import { popupAccount } from 'services/account'
 
 const CreateCollectionForm = () => {
   const history = useHistory()
 
-  const { selectedNftIds, setSelectedNftIds } = useContext(GalleryContext)
+  const { selectedNftIds, setSelectedNftIds, setError } = useContext(GalleryContext)
 
   const address = useSelector((state) => state.defaultAccount.address)
 
@@ -129,24 +131,41 @@ const CreateCollectionForm = () => {
   }
 
   const handleConfirmCreateCollection = async () => {
-    const tempData = {
-      ...collectionInfo,
-      name: collectionInfo.title,
-      previewImageIndex: 0,
-      owner: address
+    try {
+      let arPrice = await arweave.transactions.getPrice(filesSize) + 0.00004
+      arPrice = arweave.ar.winstonToAr(arPrice)
+      const koiPrice = nfts.length
+  
+      const account = await popupAccount.getAccount({ address })
+      const arBalance = await account.get.balance()
+      const koiBalance = await account.get.koiBalance()
+      
+      if (koiPrice > koiBalance) throw new Error('Not enough KOII')
+      if (arPrice > arBalance) throw new Error('Not enough AR')
+  
+      const tempData = {
+        ...collectionInfo,
+        name: collectionInfo.title,
+        previewImageIndex: 0,
+        owner: address
+      }
+  
+      delete tempData.isNSFW
+  
+      await createCollection({
+        nfts,
+        setNfts,
+        address,
+        collectionData: tempData,
+        selectedNftIds
+      })
+  
+      setSelectedNftIds([])
+    } catch (err) {
+      console.error(err.message)
+      setError(err.message)
+      setShowingConfirmModal(false)
     }
-
-    delete tempData.isNSFW
-
-    await createCollection({
-      nfts,
-      setNfts,
-      address,
-      collectionData: tempData,
-      selectedNftIds
-    })
-
-    setSelectedNftIds([])
   }
 
   const closeCreateModal = () => {

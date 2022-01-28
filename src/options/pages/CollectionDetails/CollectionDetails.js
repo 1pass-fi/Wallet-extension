@@ -100,7 +100,7 @@ const CollectionDetails = () => {
           data-tip={updatePending ? 'Transaction pending' : ''}
           disabled={updatePending || usedOldContractSrc}
           onClick={openEditCollectionForm} 
-          className='w-5 h-5.5 absolute -top-12.5 z-40 cursor-pointer disabled:cursor-not-allowed'>
+          className='w-5 h-5.5 z-40 cursor-pointer disabled:cursor-not-allowed mb-2'>
           <EditIcon />
         </button>
       </div>

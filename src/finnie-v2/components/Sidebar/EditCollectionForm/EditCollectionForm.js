@@ -10,6 +10,8 @@ import get from 'lodash/get'
 import CrossIcon from 'img/v2/cross-icon.svg'
 
 import updateCollection from 'utils/createNfts/updateCollection'
+import arweave from 'services/arweave'
+import { popupAccount } from 'services/account'
 
 import InputField from 'finnie-v2/components/InputField'
 import Button from 'finnie-v2/components/Button'
@@ -23,16 +25,21 @@ import { GalleryContext } from 'options/galleryContext'
 import getCollectionByTxId from 'finnie-v2/selectors/getCollectionByTxid'
 
 const EditCollectionForm = () => {
-  const history = useHistory()
-
-  const { editingCollectionId: collectionId } = useContext(GalleryContext)
-  const address = useSelector((state) => state.defaultAccount.address)
+  const { editingCollectionId: collectionId, setError } = useContext(GalleryContext)
 
   const collection = useSelector(getCollectionByTxId(collectionId))
 
   const selectFiles = useRef(null)
 
   const { selectedNftIds, setSelectedNftIds } = useContext(GalleryContext)
+
+  const address = useMemo(() => {
+    if (collection) {
+      return get(collection, 'owner')
+    }
+    return null
+  }, [])
+
 
   const [collectionInfo, setCollectionInfo] = useState({
     title: '',
@@ -133,23 +140,43 @@ const EditCollectionForm = () => {
   }
 
   const handleConfirmUpdateCollection = async () => {
-    const tempData = {
-      ...collectionInfo,
-      name: collectionInfo.title,
-      previewImageIndex: 0,
-      owner: address
+    try {
+      if (!address) throw new Error('Address not found')
+
+      let arPrice = await arweave.transactions.getPrice(filesSize) + 0.00004
+      arPrice = arweave.ar.winstonToAr(arPrice)
+      const koiPrice = nfts.length
+  
+      const account = await popupAccount.getAccount({ address })
+      const arBalance = await account.get.balance()
+      const koiBalance = await account.get.koiBalance()
+      
+      if (koiPrice > koiBalance) throw new Error('Not enough KOII')
+      if (arPrice > arBalance) throw new Error('Not enough AR')
+  
+      const tempData = {
+        ...collectionInfo,
+        name: collectionInfo.title,
+        previewImageIndex: 0,
+        owner: address
+      }
+  
+      delete tempData.isNSFW
+  
+      await updateCollection({
+        nfts,
+        setNfts,
+        address,
+        collectionData: tempData,
+        collectionId,
+        selectedNftIds
+      })
+    } catch (err) {
+      setError(err.message)
+      setShowingConfirmModal(false)
     }
 
-    delete tempData.isNSFW
-
-    await updateCollection({
-      nfts,
-      setNfts,
-      address,
-      collectionData: tempData,
-      collectionId,
-      selectedNftIds
-    })
+    setSelectedNftIds([])
   }
 
   const closeCreateModal = () => {

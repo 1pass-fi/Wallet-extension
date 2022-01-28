@@ -83,9 +83,9 @@ const ShareCodeModal = ({ code, close }) => {
           >
             <MailIcon />
           </a>
-          <div className="cursor-pointer" onClick={() => {}}>
+          {/* <div className="cursor-pointer" onClick={() => {}}>
             <EmbedIcon />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
