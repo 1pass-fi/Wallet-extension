@@ -15,7 +15,7 @@ export default async (payload, next) => {
     }
 
     const chromeStorage = new ChromeStorage()
-    let importedArweave = await chromeStorage._getChrome(IMPORTED.ARWEAVE)
+    let importedArweave = await chromeStorage._getChrome(IMPORTED.ARWEAVE) || []
     let importedEthereum = (await chromeStorage._getChrome(IMPORTED.ETHEREUM)) || []
 
     importedArweave = await Promise.all(importedArweave.map(async accountData => {

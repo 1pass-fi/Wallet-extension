@@ -182,4 +182,3 @@ const mockUploadNft = () => {
     }, time)
   })
 }
-

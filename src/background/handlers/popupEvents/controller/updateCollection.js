@@ -15,12 +15,12 @@ export default async (payload, next) => {
 
     const pendingTransaction = {
       id: txId,
-      activityName: `Updated Collection ${collectionData.name}`,
+      activityName: `Updated Collection "${collectionData.name}"`,
       expense: 0.00004,
       address,
       retried: 1,
       transactionType: PENDING_TRANSACTION_TYPE.UPDATE_COLLECTION,
-      data: { collectionData }
+      data: { collectionData, collectionId }
     }
 
     await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransaction)
