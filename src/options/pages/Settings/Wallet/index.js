@@ -136,7 +136,8 @@ export default () => {
             <AccountManagement accounts={accounts} />
           </div>
 
-          <div className="default-currency item">
+          {/* Still in use */}
+          {/* <div className="default-currency item">
             <div className="title">Wallet display</div>
             <div className="description">
               Select a wallet or your account summary as the default when opening the Finnie
@@ -151,7 +152,7 @@ export default () => {
                 size="lg"
               />
             </div>
-          </div>
+          </div> */}
 
           <div className="language-order item">
             <div className="title">Language</div>

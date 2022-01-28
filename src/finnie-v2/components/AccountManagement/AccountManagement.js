@@ -22,19 +22,20 @@ const AccountManagement = ({ accounts }) => {
     [currentTab]
   )
 
-  const options = useMemo(
-    () =>
-      currentTab === 'ETH'
-        ? [
-          { label: 'Ethereum Mainnet', value: 'mainnet' },
-          { label: 'Rinkeby Testnet', value: 'testnet' }
-        ]
-        : [
-          { label: 'AR Mainnet', value: 'mainnet' },
-          { label: 'AR Testnet', value: 'testnet' }
-        ],
-    [currentTab]
-  )
+  // Still in use
+  // const options = useMemo(
+  //   () =>
+  //     currentTab === 'ETH'
+  //       ? [
+  //         { label: 'Ethereum Mainnet', value: 'mainnet' },
+  //         { label: 'Rinkeby Testnet', value: 'testnet' }
+  //       ]
+  //       : [
+  //         { label: 'AR Mainnet', value: 'mainnet' },
+  //         { label: 'AR Testnet', value: 'testnet' }
+  //       ],
+  //   [currentTab]
+  // )
 
   const changeTab = (newTab) => setCurrentTab(newTab)
 
@@ -52,13 +53,13 @@ const AccountManagement = ({ accounts }) => {
           >{`${tab} wallets`}</div>
         ))}
       </div>
-      <table className="w-full bg-trueGray-100 rounded-finnie text-indigo">
+      <table className="w-2/3 bg-trueGray-100 rounded-finnie text-indigo">
         <thead className="text-4xs font-normal">
           <tr className="text-left h-8">
             <td className="pl-2">DEFAULT</td>
             <td className="text-center">ACCOUNT NAME</td>
             <td>ADDRESS</td>
-            <td>LAYER</td>
+            {/* <td>LAYER</td> */}
           </tr>
         </thead>
         <tbody className="text-xs tracking-finnieSpacing-wide">
@@ -76,9 +77,10 @@ const AccountManagement = ({ accounts }) => {
                 {formatLongString(account.accountName, 12)}
               </td>
               <td>{formatLongString(account.address, 22)}</td>
-              <td className="w-50 pr-10">
+              {/* Still in use */}
+              {/* <td className="w-50 pr-10">
                 <DropDown size="sm" variant="light" options={options} value="mainnet" />
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>
