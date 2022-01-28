@@ -12,7 +12,7 @@ import CheckBox from './CheckBox'
 
 const tabs = ['AR', 'ETH']
 
-const AccountManagement = ({ accounts }) => {
+const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupPhraseModal }) => {
   const defaultAccountAddress = useSelector((state) => state.defaultAccount?.address)
 
   const [currentTab, setCurrentTab] = useState('AR')
@@ -24,7 +24,6 @@ const AccountManagement = ({ accounts }) => {
 
   const changeTab = (newTab) => setCurrentTab(newTab)
 
-  console.log('==============', accounts)
   return (
     <>
       <div className="flex items-center justify-start gap-10 font-bold text-xs mb-4">
@@ -80,6 +79,11 @@ const AccountManagement = ({ accounts }) => {
                         ? 'bg-trueGray-400 text-blueGray-600 cursor-not-allowed'
                         : 'text-white bg-blue-800'
                     )}
+                    disabled={!hasSeedPhrase}
+                    onClick={() => {
+                      setSelectedAccount(account)
+                      setShowExportBackupPhraseModal(true)
+                    }}
                   >
                     {hasSeedPhrase ? 'Get Phrase' : 'Unavailable'}
                   </button>

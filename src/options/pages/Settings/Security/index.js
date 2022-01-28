@@ -7,8 +7,6 @@ import { getChromeStorage } from 'utils'
 import { STORAGE } from 'constants/koiConstants'
 import { getArAccounts } from 'options/selectors/accounts'
 
-import { ExportBackupPhraseModal, ExportBackupKeyFileModal } from './ExportModal'
-
 import {
   AccountManagementGetPhrase,
   AccountManagementExportKey
@@ -42,20 +40,11 @@ export default () => {
     checkSeedPhrase()
   }, [])
 
-  const onSeedPhraseClick = (account) => {
-    setSelectedAccount(account)
-    setShowExportBackupPhraseModal(true)
-  }
-
-  const onKeyFileClick = (account) => {
-    setSelectedAccount(account)
-    setShowExportBackupKeyfileModal(true)
-  }
-
   const closeModal = () => {
     setSelectedAccount({})
     setShowExportBackupKeyfileModal(false)
     setShowExportBackupPhraseModal(false)
+    setShowChangePasswordModal(false)
   }
 
   return (
@@ -68,7 +57,11 @@ export default () => {
             <div className="description">
               Select a wallet to see its recovery phrase (sometimes called a ‘seed phrase’).
             </div>
-            <AccountManagementGetPhrase accounts={accounts} />
+            <AccountManagementGetPhrase
+              accounts={accounts}
+              setSelectedAccount={setSelectedAccount}
+              setShowExportBackupPhraseModal={setShowExportBackupPhraseModal}
+            />
             {/* <div className="seedphrase">
               {accounts.map((account) => {
                 if (account.seedPhrase)
@@ -136,19 +129,14 @@ export default () => {
       </div>
 
       {showExportBackupPhraseModal && (
-        <ExportBackupPhraseModal account={selectedAccount} closeModal={closeModal} />
+        <RecoveryPhraseModal account={selectedAccount} close={closeModal} />
       )}
 
       {showExportBackupKeyfileModal && (
-        <ExportPrivateKeyModal
-          account={selectedAccount}
-          close={() => setShowExportBackupKeyfileModal(false)}
-        />
+        <ExportPrivateKeyModal account={selectedAccount} close={closeModal} />
       )}
 
-      {showChangePasswordModal && (
-        <ChangePasswordModal close={() => setShowChangePasswordModal(false)} />
-      )}
+      {showChangePasswordModal && <ChangePasswordModal close={closeModal} />}
     </div>
   )
 }
