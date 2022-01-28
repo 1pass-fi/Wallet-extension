@@ -70,11 +70,11 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
       </div>
       <div
         className={clsx(
-          'flex justify-between items-center h-15.75 border-gray-underline border-b-2',
+          'flex justify-evenly items-center h-15.75 border-gray-underline border-b-2',
           'text-center text-sm px-4.25'
         )}
       >
-        <div
+        {/* <div
           className={clsx(
             'cursor-pointer text-blue-800',
             tab === COMMUNITY ? 'font-semibold border-b-2 border-success-900' : 'text-sm'
@@ -82,7 +82,7 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
           onClick={() => setTab(COMMUNITY)}
         >
           Community
-        </div>
+        </div> */}
         <div
           className={clsx(
             'cursor-pointer text-blue-800',

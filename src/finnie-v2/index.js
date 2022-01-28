@@ -75,6 +75,8 @@ const SecondVer = () => {
 
     if (location.pathname.includes('collections')) title = 'Collections'
 
+    if (location.pathname.includes('notifications')) title = 'Notification Center'
+
     if (location.pathname.includes('/collections') && collectionName) title = collectionName
     return title
   }, [location.pathname, collectionName])
