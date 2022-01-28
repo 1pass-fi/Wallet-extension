@@ -4,6 +4,7 @@ import passworder from 'browser-passworder'
 import { IMPORTED } from 'constants/accountConstants'
 
 import { ChromeStorage } from 'services/storage/ChromeStorage'
+import { backgroundAccount } from 'services/account'
 
 export default async (payload, next) => {
   try {
@@ -39,6 +40,14 @@ export default async (payload, next) => {
 
       return accountData
     }))
+
+    const allAccounts = await backgroundAccount.getAllAccounts()
+    allAccounts.forEach(async account => {
+      const encryptedSeedPhrase = await account.get.seedPhrase()
+      const seedPhrase = await passworder.decrypt(oldPassword, encryptedSeedPhrase)
+      const newEncryptedSeedPhrase = await passworder.encrypt(newPassword, seedPhrase)
+      await account.set.seedPhrase(newEncryptedSeedPhrase)
+    })
 
     await chromeStorage._setChrome(IMPORTED.ARWEAVE, importedArweave)
     await chromeStorage._setChrome(IMPORTED.ETHEREUM, importedEthereum)
