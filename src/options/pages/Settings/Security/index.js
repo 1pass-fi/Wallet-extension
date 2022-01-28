@@ -15,6 +15,7 @@ import {
 } from 'finnie-v2/components/AccountManagement'
 
 import './index.css'
+import ChangePasswordModal from 'finnie-v2/components/Settings/Security/ChangePasswordModal'
 
 export default () => {
   const [hasSeedPhrase, setHasSeedPhrase] = useState(false)
@@ -25,6 +26,8 @@ export default () => {
   const [showExportBackupPhraseModal, setShowExportBackupPhraseModal] = useState(false)
 
   const [showExportBackupKeyfileModal, setShowExportBackupKeyfileModal] = useState(false)
+
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
 
   const [selectedAccount, setSelectedAccount] = useState()
 
@@ -123,7 +126,12 @@ export default () => {
 
           <div className="change-password">
             <div className="title">Change my password</div>
-            <button className="update-password-btn">Update Password</button>
+            <button
+              className="update-password-btn"
+              onClick={() => setShowChangePasswordModal(true)}
+            >
+              Update Password
+            </button>
           </div>
         </div>
       </div>
@@ -134,6 +142,10 @@ export default () => {
 
       {showExportBackupKeyfileModal && (
         <ExportBackupKeyFileModal account={selectedAccount} closeModal={closeModal} />
+      )}
+
+      {showChangePasswordModal && (
+        <ChangePasswordModal close={() => setShowChangePasswordModal(false)} />
       )}
     </div>
   )

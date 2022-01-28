@@ -37,7 +37,7 @@ const GetRewardsModal = ({ redeemRewards, rewards, close }) => {
         <div className="mt-9 w-115 text-sm tracking-finnieSpacing-tight text-center">
           Redeem your Referral Rewards Now.
         </div>
-        <div className="mt-5.25 w-115 text-sm tracking-finnieSpacing-tight text-center">
+        {/* <div className="mt-5.25 w-115 text-sm tracking-finnieSpacing-tight text-center">
           Click here to transfer:
         </div>
         <div className="mt-5.25 w-115 text-2xl font-semibold tracking-finnieSpacing-tight text-center">
@@ -45,10 +45,10 @@ const GetRewardsModal = ({ redeemRewards, rewards, close }) => {
         </div>
         <div className="mt-5.25 w-115 text-sm tracking-finnieSpacing-tight text-center">
           to your primary wallet.
-        </div>
+        </div> */}
         <Button
           style={{ width: '228px', height: '46px' }}
-          className="mt-6 text-base font-semibold"
+          className="my-auto text-base font-semibold"
           text="Redeem Rewards"
           variant="indigo"
           icon={ShareIcon}
