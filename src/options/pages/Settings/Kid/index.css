@@ -543,3 +543,17 @@
   display: flex;
   flex-direction: column;
 }
+
+.kid-input__country {
+  width: 348px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 22px;
+}
+
+.kid-input__country__label {
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}

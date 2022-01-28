@@ -39,6 +39,9 @@ import { TYPE } from 'constants/accountConstants'
 import { popupAccount } from 'services/account'
 import { DidContext } from 'options/context'
 
+import DropDown from 'finnie-v2/components/DropDown'
+import countriesList from './countries.json'
+
 const KidPage = () => {
   const { setIsLoading, setError, setNotification } = useContext(GalleryContext)
 
@@ -471,13 +474,17 @@ const KidPage = () => {
             setValue={onChangeUserInfo}
             error={fieldError.name}
           />
-          <KidInputField
-            label="Country"
-            isRequired={true}
-            value={userKID.country}
-            setValue={onChangeUserInfo}
-            error={fieldError.country}
-          />
+          <div className="kid-input__country">
+            <div className="kid-input__country__label">Country*</div>
+            <DropDown
+              options={countriesList}
+              value={userKID.country}
+              onChange={(value) => {
+                setDisableUpdateKID(false)
+                setuserKID({ ...userKID, country: value })
+              }}
+            />
+          </div>
           <KidInputField
             label="Pronouns"
             isRequired={false}

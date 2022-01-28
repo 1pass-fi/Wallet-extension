@@ -76,7 +76,7 @@ const DropDown = ({ options, value, onChange, variant = 'dark', size = 'lg' }) =
           variants[variant].header
         )}
       >
-        {find(options, { value }).label}
+        {find(options, { value })?.label || ''}
         <div
           className={clsx(
             'absolute -right-0.25 top-0 flex items-center justify-center rounded-r-finnie',
