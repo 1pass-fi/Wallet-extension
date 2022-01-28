@@ -1,6 +1,6 @@
 import clsx from 'clsx'
-import React, { useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useMemo, useState, useContext } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import DropDown from 'finnie-v2/components/DropDown'
 import formatLongString from 'finnie-v2/utils/formatLongString'
@@ -8,11 +8,21 @@ import formatLongString from 'finnie-v2/utils/formatLongString'
 import ArLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 
+import storage from 'services/storage'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import { setDefaultAccountByAddress } from 'options/actions/defaultAccount'
+import { GalleryContext } from 'options/galleryContext'
+import { DidContext } from 'options/context'
+
 import CheckBox from './CheckBox'
 
 const tabs = ['AR', 'ETH']
 
 const AccountManagement = ({ accounts }) => {
+  const { setNotification, setError } = useContext(GalleryContext)
+  const { getDID } = useContext(DidContext)
+
+  const dispatch = useDispatch()
   const defaultAccountAddress = useSelector((state) => state.defaultAccount?.address)
 
   const [currentTab, setCurrentTab] = useState('AR')
@@ -22,6 +32,23 @@ const AccountManagement = ({ accounts }) => {
     [currentTab]
   )
 
+  const reloadDefaultAccount = async () => {
+    const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
+    dispatch(setDefaultAccountByAddress(defaultAccountAddress))
+  }
+
+  const handleSetDefaultAccount = async (address) => {
+    try {
+      await backgroundRequest.gallery.setDefaultAccount({ address })
+      await reloadDefaultAccount()
+      getDID()
+      setNotification(`Set default account successfully.`)
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
+  // @TODO
   // Still in use
   // const options = useMemo(
   //   () =>
@@ -66,7 +93,10 @@ const AccountManagement = ({ accounts }) => {
           {showAccounts.map((account, idx) => (
             <tr key={idx} className={clsx('text-left h-8', idx % 2 === 1 && 'bg-lightBlue')}>
               <td className="pl-2">
-                <CheckBox checked={defaultAccountAddress === account.address} />
+                <CheckBox
+                  onClick={() => handleSetDefaultAccount(account.address)}
+                  checked={defaultAccountAddress === account.address}
+                />
               </td>
               <td>
                 {currentTab === 'AR' ? (
