@@ -241,7 +241,7 @@ export default ({ children }) => {
     Redirect to create NFT page to support create new NFT in case import new wallet
   */
   useEffect(() => {
-    if (!isEmpty(file)) history.push('/create')
+    // if (!isEmpty(file)) history.push('/create')
   }, [file])
 
   /* 
@@ -263,7 +263,7 @@ export default ({ children }) => {
   */
   useEffect(() => {
     setFile(!isEmpty(acceptedFiles) ? acceptedFiles[0] : {})
-    if (!isEmpty(acceptedFiles)) history.push('/create')
+    // if (!isEmpty(acceptedFiles)) history.push('/create')
   }, [acceptedFiles])
 
 
@@ -282,7 +282,9 @@ export default ({ children }) => {
       let validAssets = allAssets.filter(asset => asset.name !== '...')
       
       validAssets = classifyAssets(validAssets, allCollections)
-      console.log('valid assets', validAssets)
+      console.log('valid assets', validAssets.length)
+      validAssets = validAssets.filter(nft => !get(nft, 'name')?.includes('DID Profile Page'))
+
       dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
       
       setIsLoading(prev => --prev)
@@ -307,14 +309,14 @@ export default ({ children }) => {
         allAssets = await popupAccount.getAllAssets()
         validAssets = allAssets.filter(asset => asset.name !== '...')
         validAssets = classifyAssets(validAssets, allCollections)
-
+        validAssets = validAssets.filter(nft => !get(nft, 'name')?.includes('DID Profile Page'))
         dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
       }
 
       setIsLoading(prev => ++prev)
       await Promise.all([loadCollection, loadNfts].map(f => f()))
       validAssets = classifyAssets(validAssets, allCollections)
-      if (isEmpty(validAssets) && pathname === '/') history.push('/create')
+      if (isEmpty(validAssets) && pathname === '/') {}
       else {
         dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
       }

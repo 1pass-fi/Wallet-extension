@@ -19,7 +19,7 @@ export default async (account) => {
 
     console.log(`Fetched collections of ${address}: ${fetchedCollections.length}`)
 
-    if (savedCollections.length === fetchedCollections.length) return savedCollections
+    // if (savedCollections.length === fetchedCollections.length) return savedCollections
 
     fetchedCollections = await readState(fetchedCollections)
 
