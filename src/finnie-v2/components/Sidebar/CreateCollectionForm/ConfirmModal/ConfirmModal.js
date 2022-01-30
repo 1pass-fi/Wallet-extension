@@ -21,6 +21,7 @@ const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, clo
   const confirmCreateCollection = async () => {
     await handleConfirmCreateCollection()
     resetState()
+    setDisplayProgressBar(false)
     setStep(2)
   }
 
@@ -51,6 +52,17 @@ const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, clo
           <span className="font-semibold text-xl">Confirm Your Collection</span>
           <CloseIcon className="w-7 cursor-pointer" onClick={close} />
         </div>
+        {displayProgressBar && 
+          <ProgressBar 
+            bgColor='#49CE8B' 
+            completed={uploaded} 
+            maxCompleted={nfts.length} 
+            customLabel=' '
+            width='100%'
+            height='8px'
+            borderRadius='0ox'
+          />
+        }
         {step === 1 && (
           <section className="py-5 text-center text-base px-16.5">
             <>
@@ -86,7 +98,6 @@ const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, clo
                   disabled={displayProgressBar}
                 />
               </div>
-              {displayProgressBar && <ProgressBar bgColor='#49CE8B' completed={uploaded} maxCompleted={nfts.length} customLabel=' '/>}
             </>
           </section>
         )}
