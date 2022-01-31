@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { NavLink } from 'react-router-dom'
 
 const accountSettingItems = [
-  { text: 'Koii Identity (kID)', path: '/settings/kID' },
+  { text: 'Koii Identity (DID)', path: '/settings/kID' },
   { text: 'Gallery Settings', path: '/settings/gallery' },
   { text: 'Wallet Settings', path: '/settings/wallet' },
   { text: 'Security', path: '/settings/security' },
