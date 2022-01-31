@@ -194,7 +194,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
               <div className="font-semibold text-xl tracking-finnieSpacing-wide">
                 Your NFT is being created!
               </div>
-              <div className="font-light text-base">
+              <div className="text-base">
                 It will take a few minutes to reflect on your wallet. In the meantime...
               </div>
             </div>

@@ -261,12 +261,13 @@ const EditCollectionForm = () => {
         />
         <InputField
           className="my-1"
-          label="Edit Title"
+          label="Edit Collection Title"
           value={collectionInfo.title}
           setValue={handleCollectionContentChange}
           required={true}
           name="title"
           error={errors.title}
+          placeholder={`Finnie’s Friends`}
         />
         <InputField
           className="my-1"
@@ -277,6 +278,7 @@ const EditCollectionForm = () => {
           type="textarea"
           name="description"
           error={errors.description}
+          placeholder={`When you’ve got friends like mine, the internet is a wonderful place to be.`}
         />
         <div className="my-1 flex flex-col w-full">
           <label htmlFor="tags" className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
@@ -285,16 +287,12 @@ const EditCollectionForm = () => {
           <input
             className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white  px-1"
             name="tags"
-            placeholder="Tags,"
+            placeholder={`Separate with a “,” and hit space bar`}
             id="tags"
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
             onKeyUp={(e) => handleTagsKeyUp(e)}
           />
-
-          <div className="text-warning mt-1 uppercase text-3xs">
-            Separate with a “,” and hit space bar
-          </div>
         </div>
         <div className="max-h-19 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1 mb-5">
           {tags.map((tag) => (

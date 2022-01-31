@@ -12,7 +12,8 @@ const InputField = ({
   description = '',
   error = '',
   className,
-  isDisable
+  isDisable,
+  placeholder
 }) => {
   return (
     <div className={clsx(className, 'flex flex-col w-full')}>
@@ -25,7 +26,7 @@ const InputField = ({
           <textarea
             name={name}
             className="w-full resize-none bg-trueGray-100 bg-opacity-10 border-b border-white h-20.75 text-white px-1"
-            placeholder={label}
+            placeholder={placeholder || label}
             id={label}
             value={value}
             onChange={(e) => setValue(e)}
@@ -38,7 +39,7 @@ const InputField = ({
           <input
             name={name}
             className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1"
-            placeholder={label}
+            placeholder={placeholder || label}
             id={label}
             value={value}
             onChange={(e) => setValue(e)}

@@ -17,7 +17,7 @@ const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft, erro
               !(error[idx]?.title === '' && error[idx]?.description === '') &&
                 'bg-red-finnie bg-opacity-20',
               existingNft && 'bg-black bg-opacity-10',
-              'my-0.5 pl-1 cursor-pointer h-8 flex text-white items-center justify-between font-light text-xs tracking-finnieSpacing-wide pr-2.75'
+              'my-0.5 pl-1 cursor-pointer h-8 flex text-white items-center justify-between text-xs tracking-finnieSpacing-wide pr-2.75'
             )}
             key={idx}
           >
