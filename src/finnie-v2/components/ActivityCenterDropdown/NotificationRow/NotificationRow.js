@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import moment from 'moment'
 import React from 'react'
 import { useDispatch } from 'react-redux'
@@ -30,7 +31,10 @@ const NotificationRow = ({ notification, newNotification = false }) => {
   return (
     <div
       onClick={setRead}
-      className="flex flex-col px-4.25 pl-5 h-18.25 border-b-2 border-gray-underline cursor-pointer"
+      className={clsx(
+        'flex flex-col px-4.25 pl-5 h-18.25 border-b-2 border-gray-underline cursor-pointer text-xs text-blue-800 leading-5',
+        newNotification && 'font-semibold'
+      )}
     >
       <div className="w-full flex flex-col relative pt-2">
         {newNotification && (
@@ -38,14 +42,12 @@ const NotificationRow = ({ notification, newNotification = false }) => {
             <GreenDotIcon />
           </div>
         )}
-        <div className="text-xs text-blue-800 font-semibold leading-5">{notification.title}</div>
-        <div className="text-xs text-blue-800 leading-5 h-5.25 overflow-hidden">
-          {notification.message}
-        </div>
+        <div>{notification.title}</div>
+        <div className="h-5.25 overflow-hidden">{notification.message}</div>
       </div>
       <div className="w-full flex justify-between">
-        <div className="text-xs text-blue-800 font-semibold leading-5">{notification.account}</div>
-        <div className="text-xs text-blue-800 font-semibold">{dateFormat(notification.date)}</div>
+        <div>{notification.account}</div>
+        <div>{dateFormat(notification.date)}</div>
       </div>
     </div>
   )

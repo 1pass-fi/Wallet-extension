@@ -6,6 +6,9 @@ module.exports = {
         51: '51'
       },
       colors: {
+        teal: {
+          100: '#BEEFEC'
+        },
         bittersweet: {
           200: '#F97664'
         },

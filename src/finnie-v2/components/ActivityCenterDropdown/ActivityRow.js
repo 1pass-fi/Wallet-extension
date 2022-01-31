@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 import { get, includes } from 'lodash'
@@ -107,40 +108,41 @@ const ActivityRow = ({
   return (
     <div>
       {loaded && (
-        <div className="flex justify-between px-4.25 pl-5 h-18.25 border-b-2 border-gray-underline">
+        <div
+          className={clsx(
+            'flex justify-between px-4.25 pl-5 h-18.25 border-b-2 border-gray-underline',
+            !seen && 'font-semibold'
+          )}
+        >
           <div className="w-full flex flex-col relative pt-2">
             {!seen && (
               <div className="absolute -left-4.25 top-3.25">
                 <GreenDotIcon />
               </div>
             )}
-            <div className="text-xs text-blue-800 font-semibold leading-5">{activityName}</div>
+            <div className="text-xs text-blue-800 leading-5">{activityName}</div>
             {(activityName.includes('Received') || activityName.includes('Sent')) && (
-              <div className="text-xs text-blue-800 font-semibold">
+              <div className="text-xs text-blue-800">
                 {activityName.includes('Sent') ? 'to' : 'from'}{' '}
                 <span className="text-success-700">iLyb...o45CQ</span>
               </div>
             )}
-            <div className="text-xs text-blue-800 font-semibold leading-5">{accountName}</div>
+            <div className="text-xs text-blue-800 leading-5">{accountName}</div>
           </div>
-          <div className="w-full flex flex-col text-right pt-2">
+          <div className="w-full flex flex-col items-end text-right pt-2">
             <div
-              className={`text-xs ${
-                get(displayInfo, 'expenseText').includes('-')
-                  ? 'text-red-finnie'
-                  : 'text-success-700'
-              } font-semibold leading-5`}
+              className={`text-xs rounded-sm px-1 text-blue-800 ${
+                get(displayInfo, 'expenseText').includes('-') ? 'bg-warning' : 'bg-teal-100'
+              } ${!seen && 'bg-opacity-50'} leading-5`}
             >
               {get(displayInfo, 'expenseText')}
             </div>
-            <div className="text-xs text-blue-800 font-semibold">
-              {get(displayInfo, 'dateString')}
-            </div>
+            <div className="text-xs text-blue-800">{get(displayInfo, 'dateString')}</div>
             <a
               href={displayInfo.blockUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex justify-end text-xs text-success-700 underline font-semibold leading-5"
+              className="flex justify-end text-xs text-success-700 underline leading-5"
             >
               <div className="pr-1.375">
                 <ViewBlockIcon />
