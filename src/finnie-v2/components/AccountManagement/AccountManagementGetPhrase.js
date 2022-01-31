@@ -8,6 +8,7 @@ import formatLongString from 'finnie-v2/utils/formatLongString'
 import ArLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 
+import Hint from 'finnie-v2/components/Hint'
 import CheckBox from './CheckBox'
 
 const tabs = ['AR', 'ETH']
@@ -71,7 +72,7 @@ const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupPh
                   {formatLongString(account.accountName, 12)}
                 </td>
                 <td>{formatLongString(account.address, 22)}</td>
-                <td className="w-50 pr-10">
+                <td className="w-50 ">
                   <button
                     className={clsx(
                       'text-center text-xs tracking-finnieSpacing-wide h-6 w-32 rounded-sm shadow-sm',
@@ -87,6 +88,13 @@ const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupPh
                   >
                     {hasSeedPhrase ? 'Get Phrase' : 'Unavailable'}
                   </button>
+                  {!hasSeedPhrase && (
+                    <Hint
+                      className="inline ml-4.25"
+                      text="This key was not <br>generated with a<br>recovery phrase.<br>Keys can only<br>generate recovery<br>phrases at creation."
+                      place="right"
+                    />
+                  )}
                 </td>
               </tr>
             )
