@@ -211,7 +211,7 @@ const UploadNftForm = () => {
           onClick={handleCreateNFT}
           variant="light"
           text="Create NFT"
-          className="text-sm font-semibold"
+          className="text-sm"
         />
       </div>
       {showConfirmModal && (

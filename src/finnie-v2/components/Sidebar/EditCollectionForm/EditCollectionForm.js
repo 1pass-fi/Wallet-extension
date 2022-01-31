@@ -360,7 +360,7 @@ const EditCollectionForm = () => {
           onClick={handleUpdateCollection}
           variant="light"
           text="Edit NFT Details"
-          className="text-sm font-semibold"
+          className="text-sm"
         />
       </div>
       {showCreateModal && (
