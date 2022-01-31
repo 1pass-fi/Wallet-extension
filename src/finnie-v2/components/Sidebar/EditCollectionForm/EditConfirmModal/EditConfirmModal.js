@@ -91,9 +91,16 @@ const EditConfirmModal = ({ filesSize, numOfNfts, handleConfirmUpdateCollection,
               </div>
               <div className="absolute bottom-5.5 w-full flex left-0 justify-center">
                 <Button
+                  variant="inversedIndigo"
+                  text="Cancel"
+                  className="font-semibold tracking-wider py-3 rounded w-42.5 h-10 text-base mr-11"
+                  onClick={close}
+                  disabled={displayProgressBar}
+                />
+                <Button
                   variant="indigo"
-                  text="Update Collection"
-                  className="font-semibold tracking-wider py-3 rounded"
+                  text="Update"
+                  className="font-semibold tracking-wider py-3 rounded w-42.5 h-10 text-base mr-11"
                   onClick={() => {confirmCreateCollection(); setDisplayProgressBar(true)}}
                   disabled={displayProgressBar}
                 />

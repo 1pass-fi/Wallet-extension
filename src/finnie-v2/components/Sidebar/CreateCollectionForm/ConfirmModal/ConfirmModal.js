@@ -91,9 +91,16 @@ const ConfirmModal = ({ filesSize, numOfNfts, handleConfirmCreateCollection, clo
               </div>
               <div className="absolute bottom-5.5 w-full flex left-0 justify-center">
                 <Button
+                  variant="inversedIndigo"
+                  text="Cancel"
+                  className="font-semibold tracking-wider py-3 rounded w-42.5 h-10 text-base mr-11"
+                  onClick={close}
+                  disabled={displayProgressBar}
+                />
+                <Button
                   variant="indigo"
-                  text="Create Collection"
-                  className="font-semibold tracking-wider py-3 rounded"
+                  text="Confirm"
+                  className="font-semibold tracking-wider py-3 rounded w-42.5 h-10 text-base"
                   onClick={() => {confirmCreateCollection(); setDisplayProgressBar(true)}}
                   disabled={displayProgressBar}
                 />
