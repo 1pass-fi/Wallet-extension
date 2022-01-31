@@ -89,7 +89,7 @@ const DropDown = ({ options, value, onChange, variant = 'dark', size = 'lg' }) =
       {listOpened && (
         <div
           className={clsx(
-            'z-50 absolute w-full max-h-36 flex flex-col overflow-y-auto rounded-b-finnie select-none',
+            'z-50 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none',
             variants[variant].body
           )}
         >
