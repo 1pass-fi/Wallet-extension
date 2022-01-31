@@ -129,6 +129,14 @@
 }
 
 /* ============= COVER ============== */
+.cover-desc {
+  margin-top: 18px;
+  text-align: center;
+}
+.cover-desc a {
+  text-decoration: underline;
+}
+
 .kid-page-wrapper .form-img .cover {
   position: relative;
 

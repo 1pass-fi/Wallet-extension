@@ -4,6 +4,8 @@ import toLower from 'lodash/toLower'
 
 import ShareIcon from 'img/share-icon-3.svg'
 
+import Hint from 'finnie-v2/components/Hint/Hint'
+
 import './index.css'
 
 const KidInputField = ({
@@ -20,6 +22,13 @@ const KidInputField = ({
     <div className="kid-input">
       <div className="kid-input-label-section">
         <label className="kid-input-label">{`${label}${isRequired ? '*' : ''}`}</label>
+        {label === 'kID' && (
+          <Hint
+            className="inline ml-1.5 relative -top-4"
+            text="You can share your DID profile<br>with anyone using this URL."
+            variant="white"
+          />
+        )}
       </div>
       <div className="kid-input-input-section">
         <div className="field">

@@ -40,6 +40,8 @@ import { popupAccount } from 'services/account'
 import { DidContext } from 'options/context'
 
 import DropDown from 'finnie-v2/components/DropDown'
+import Hint from 'finnie-v2/components/Hint'
+
 import countriesList from './countries.json'
 
 const KidPage = () => {
@@ -453,8 +455,16 @@ const KidPage = () => {
             </div>
             <img className="profile-cover" src={bannerSrc} alt="profile-cover" />
           </div>
-          <div className="avt-desc">
-            Or select <Link to="/create-nft">an NFT</Link> to make it your profile picture
+          <div className="cover-desc">
+            Or create <Link to="/create-nft">an NFT</Link> to make it{' '}
+            <Hint
+              variant="white"
+              className="inline ml-0.5"
+              place="bottom"
+              text="For best results, your cover<br>image should be 1400x400px"
+            />{' '}
+            <br></br>
+            your cover image
           </div>
         </div>
 

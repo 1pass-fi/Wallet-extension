@@ -7,11 +7,6 @@
   font-style: normal;
 }
 
-.kid-input-label-section {
-  display: flex;
-  flex-direction: column;
-}
-
 .kid-input .description {
   font-size: 12px;
   font-weight: 400;
