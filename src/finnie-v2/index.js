@@ -96,7 +96,7 @@ const SecondVer = () => {
           <NFTDetail />
         </Route>
         <Route exact path="/settings/*">
-          <div className="flex justify-start" style={{ width: '862px', maxWidth: '100%' }}>
+          <div className="flex justify-start" style={{ maxWidth: '100%' }}>
             <Settings />
           </div>
         </Route>
