@@ -21,7 +21,7 @@ const Share = () => {
       <div className='share-social'>
         <div className='twitter'><Twitter/></div>
         <div className='facebook'><Facebook/></div>
-        <div className='linkedin'><LinkedIn/></div>
+        {/* <div className='linkedin'><LinkedIn/></div> */}
         <div className='email'><Email/></div>
       </div>
     </div>

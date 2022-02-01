@@ -235,8 +235,13 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
               <div className='flex w-77.25 m-auto mt-5 justify-between'>
                 <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.TWITTER, nftId)}><TwitterIcon /></div>
                 <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.FACEBOOK, nftId)}><FacebookIcon /></div>
-                <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.LINKEDIN, nftId)}><LinkedIn /></div>
-                <div className='cursor-pointer'><MailIcon /></div>
+                {/* <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.LINKEDIN, nftId)}><LinkedIn /></div> */}
+                <a
+                  href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koii.live/content-detail/${nftId}`}
+                  title="Share by Email"
+                >
+                  <div className='cursor-pointer'><MailIcon /></div>
+                </a>
                 <div onClick={() => setShowShareLink(prev => !prev)} className='cursor-pointer'>{showShareLink ? <EmbedIcon /> : <ShareIcon />}</div>
               </div>
             </div>

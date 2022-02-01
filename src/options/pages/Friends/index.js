@@ -93,7 +93,7 @@ export default () => {
           <div className='social-media'>
             <TwitterIcon onClick={() => shareFriendCode(code, 'twitter')} className='social-icon' />
             <FacebookIcon onClick={() => shareFriendCode(code, 'facebook')} className='social-icon' />
-            <LinkedinIcon onClick={() => shareFriendCode(code, 'linkedin')} className='social-icon' />
+            {/* <LinkedinIcon onClick={() => shareFriendCode(code, 'linkedin')} className='social-icon' /> */}
             <a href={`mailto:?subject=Use my Koii Friend Referral code&body=Use my code to get 1 free NFT upload on koi.rocks: \n${code}`} title="Share by Email">
               <EmailIcon className='social-icon' />
             </a>

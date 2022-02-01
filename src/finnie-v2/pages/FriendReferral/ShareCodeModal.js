@@ -74,9 +74,9 @@ const ShareCodeModal = ({ code, close }) => {
           <div className="cursor-pointer" onClick={() => shareFriendCode(code, 'facebook')}>
             <FacebookIcon />
           </div>
-          <div className="cursor-pointer" onClick={() => shareFriendCode(code, 'linkedin')}>
+          {/* <div className="cursor-pointer" onClick={() => shareFriendCode(code, 'linkedin')}>
             <LinkedIn />
-          </div>
+          </div> */}
           <a
             href={`mailto:?subject=Use my Koii Friend Referral code&body=Use my code to get 1 free NFT upload on koi.rocks: \n${code}`}
             title="Share by Email"
