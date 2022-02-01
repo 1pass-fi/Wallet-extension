@@ -36,9 +36,6 @@ const FriendReferral = () => {
           endpoints: FRIEND_REFERRAL_ENDPOINTS.CLAIM_REWARD
         })
 
-        console.log({status})
-        console.log({message})
-
         if (status != 200) {
           switch (message) {
             case `Affiliate Invites doesn't exists or already claimed`:
@@ -63,7 +60,7 @@ const FriendReferral = () => {
       <div className="absolute w-full mx-auto">
         <FriendReferralBg className="ml-9" />
       </div>
-      <div className="absolute top-32 left-18.75 text-white">
+      <div className="mt-16.75 mx-auto transform -translate-x-83 w-max text-white">
         <div className="font-semibold text-3xl leading-10 capitalize">
           Give a Little, Get a Little
         </div>
@@ -76,10 +73,10 @@ const FriendReferral = () => {
           your referral code. <span className="font-semibold">Keep sharing for free KOII.</span>
         </div>
       </div>
-      <div className="m-auto absolute top-0 left-0 right-0 bottom-0">
+      <div className="m-auto absolute top-48 left-0 right-0 bottom-0">
         <ShuttleIcon
           style={{ width: '182px', height: '293px', animation: 'spin 8s linear infinite' }}
-          className="mt-32 m-auto"
+          className="mx-auto"
         />
         <div className="mt-8 text-success text-lg leading-7 font-semibold text-center">
           YOUR CODE IS
