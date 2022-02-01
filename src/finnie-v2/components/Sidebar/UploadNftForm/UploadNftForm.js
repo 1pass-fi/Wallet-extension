@@ -123,7 +123,7 @@ const UploadNftForm = () => {
           name="title"
           error={errors.title}
         />
-        <InputField
+        {/* <InputField
           className="my-1"
           label="Username"
           value={nftContent.owner}
@@ -131,7 +131,7 @@ const UploadNftForm = () => {
           required={true}
           name="owner"
           error={errors.owner}
-        />
+        /> */}
         <InputField
           className="my-1"
           label="Description"
