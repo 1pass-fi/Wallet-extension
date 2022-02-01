@@ -44,7 +44,7 @@ const ShareCodeModal = ({ code, close }) => {
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
         <div className="mt-7 w-115 text-sm tracking-finnieSpacing-tight text-center">
-          Earn attention rewards for ever through Koii. Copy this link and share on your favorite
+          Earn attention rewards forever through Koii. Copy this link and share on your favorite
           social platforms:
         </div>
         <div className="mt-4 text-base font-bold leading-7">Share Code</div>
