@@ -38,6 +38,14 @@
   cursor: not-allowed;
 }
 
+.kid-input-field:focus {
+  outline: none;
+  border: 2px solid #237B75;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding-left: 5px;
+}
+
 .kid-input .error {
   color: red;
   margin-top: 5px;

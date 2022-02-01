@@ -22,6 +22,8 @@ import { GalleryContext } from 'options/galleryContext'
 import arweave from 'services/arweave'
 import { popupAccount } from 'services/account'
 
+import './CreateCollectionForm.css'
+
 const CreateCollectionForm = () => {
   const history = useHistory()
 
@@ -254,7 +256,7 @@ const CreateCollectionForm = () => {
             Tags
           </label>
           <input
-            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white  px-1"
+            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 create-collection-tag-input"
             name="tags"
             placeholder="Separate with a “,” and hit space bar"
             id="tags"

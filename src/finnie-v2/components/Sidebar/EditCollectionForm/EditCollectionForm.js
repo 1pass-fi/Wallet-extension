@@ -24,6 +24,8 @@ import { GalleryContext } from 'options/galleryContext'
 
 import getCollectionByTxId from 'finnie-v2/selectors/getCollectionByTxid'
 
+import './EditCollectionForm.css'
+
 const EditCollectionForm = () => {
   const { editingCollectionId: collectionId, setError } = useContext(GalleryContext)
 
@@ -285,7 +287,7 @@ const EditCollectionForm = () => {
             Edit Tags
           </label>
           <input
-            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white  px-1"
+            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 edit-collection-tag-input"
             name="tags"
             placeholder={`Separate with a “,” and hit space bar`}
             id="tags"

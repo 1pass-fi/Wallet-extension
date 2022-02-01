@@ -1,0 +1,7 @@
+.edit-collection-tag-input:focus {
+  outline: none;
+  border: 2px solid #237B75;
+  border-radius: 2px;
+  box-sizing: border-box;
+  padding-left: 2px;
+}

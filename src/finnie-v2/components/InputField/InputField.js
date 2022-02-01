@@ -2,6 +2,8 @@ import React from 'react'
 import clsx from 'clsx'
 import ReactTooltip from 'react-tooltip'
 
+import './InputField.css'
+
 const InputField = ({
   value,
   setValue,
@@ -25,7 +27,7 @@ const InputField = ({
         <div data-tip={isDisable ? 'This NFT version does not support updating' : ''}>
           <textarea
             name={name}
-            className="w-full resize-none bg-trueGray-100 bg-opacity-10 border-b border-white h-20.75 text-white px-1"
+            className="w-full resize-none bg-trueGray-100 bg-opacity-10 border-b border-white h-20.75 text-white px-1 text-area-component"
             placeholder={placeholder || label}
             id={label}
             value={value}
@@ -38,13 +40,12 @@ const InputField = ({
         <div data-tip={isDisable ? 'This NFT version does not support updating' : ''}>
           <input
             name={name}
-            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1"
+            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 input-field-component"
             placeholder={placeholder || label}
             id={label}
             value={value}
             onChange={(e) => setValue(e)}
             disabled={isDisable}
-            
           />
         </div>
       )}

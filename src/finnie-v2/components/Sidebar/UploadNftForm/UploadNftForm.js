@@ -15,6 +15,8 @@ import NFTMedia from 'finnie-v2/components/NFTMedia'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 import { getFileType } from 'finnie-v2/utils/getFileType'
 
+import './UploadNftForm.css'
+
 const UploadNftForm = () => {
   const [nftContent, setNftContent] = useState({
     title: '',
@@ -145,7 +147,7 @@ const UploadNftForm = () => {
             Tags
           </label>
           <input
-            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white  px-1"
+            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 upload-nft-tag-input"
             name="tags"
             placeholder="Tags,"
             id="tags"
