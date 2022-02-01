@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useRef } from 'react'
 import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import initial from 'lodash/initial'
@@ -36,6 +36,8 @@ const UploadNftForm = () => {
   const [tags, setTags] = useState([])
   const [file, setFile] = useState({})
   const [showConfirmModal, setShowConfirmModal] = useState(false)
+
+  const titleFieldRef = useRef(null)
 
   const fileType = useMemo(() => getFileType(file), [file])
   const url = useMemo(() => {
@@ -79,13 +81,14 @@ const UploadNftForm = () => {
   }
 
   const validateForm = () => {
-    const keys = ['title', 'description', 'owner']
+    const keys = ['title', 'description']
     let isValid = true
 
     for (const key of keys) {
       if (isEmpty(nftContent[key])) {
         isValid = false
         setErrors((prev) => ({ ...prev, [key]: `${capitalize(key)} cannot be empty` }))
+        titleFieldRef.current.scrollIntoView()
       }
     }
 
@@ -93,6 +96,7 @@ const UploadNftForm = () => {
       isValid = false
       setErrors((prev) => ({ ...prev, file: 'Please select a file' }))
     }
+
 
     return isValid
   }
@@ -117,15 +121,17 @@ const UploadNftForm = () => {
   return (
     <>
       <div className="flex flex-col px-4 pt-4 pb-8">
-        <InputField
-          className="my-1"
-          label="NFT Title"
-          value={nftContent.title}
-          setValue={handleNftContentChange}
-          required={true}
-          name="title"
-          error={errors.title}
-        />
+        <div ref={titleFieldRef}>
+          <InputField
+            className="my-1"
+            label="NFT Title"
+            value={nftContent.title}
+            setValue={handleNftContentChange}
+            required={true}
+            name="title"
+            error={errors.title}
+          />
+        </div>
         {/* <InputField
           className="my-1"
           label="Username"
