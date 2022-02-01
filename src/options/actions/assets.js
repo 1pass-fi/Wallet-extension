@@ -4,9 +4,10 @@ import store from '../store'
 import { SET_ASSETS, SET_COLLECTION_NFTS, SET_FILTER_NFTS } from './types'
 
 export const setAssets = (payload) => (dispatch) => {
+  const nfts = payload.nfts?.sort((a, b) => a.createdAt - b.createdAt)
   dispatch({
     type: SET_ASSETS,
-    payload
+    payload: { ...payload, nfts }
   })
 }
 
