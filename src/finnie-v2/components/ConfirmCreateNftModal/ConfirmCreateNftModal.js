@@ -29,7 +29,7 @@ import storage from 'services/storage'
 import arweave from 'services/arweave'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
-const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
+const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetState }) => {
   const estimateCostKOII = 1
 
   const { setError, setIsLoading, handleShareNFT, refreshNFTs } = useContext(GalleryContext)
@@ -77,7 +77,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
         imageId
       })
 
-      if (txId) setStep(2); setNftId(txId); refreshNFTs()
+      if (txId) setStep(2); setNftId(txId); refreshNFTs(); resetState()
       // set isLoading
       setIsLoading((prev) => --prev)
       setDisableCreateNFT(false)
