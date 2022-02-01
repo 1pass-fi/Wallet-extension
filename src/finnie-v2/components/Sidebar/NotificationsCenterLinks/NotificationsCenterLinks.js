@@ -9,8 +9,7 @@ const navItems = [
   { name: 'Activity', path: '/notifications/activity' },
   { name: 'Transaction Status', path: '/notifications/transaction' },
   { name: 'Assets', path: '/notifications/assets', disabled: true },
-  { name: 'Notification Settings', path: '/notifications/notification-setting', disabled: true },
-  { name: 'About', path: '/notifications/about', disabled: true }
+  { name: 'Notification Settings', path: '/notifications/notification-setting', disabled: true }
 ]
 
 const NotificationsCenterLinks = () => {

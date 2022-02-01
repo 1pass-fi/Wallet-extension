@@ -6,12 +6,12 @@ import ViewBlockIcon from 'img/v2/view-block.svg'
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-bg-white.svg'
 import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 
-import { PATH, URL, ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
+import { PATH, URL, ETH_NETWORK_PROVIDER, MAX_RETRIED } from 'constants/koiConstants'
 import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
 import clsx from 'clsx'
 
 const TransactionRow = ({
-  transaction: { activityName, address, date, expense, id, source, network }
+  transaction: { activityName, address, date, expense, id, source, network, retried }
 }) => {
   const displayInfo = useMemo(() => {
     const dateString = moment(date).format('MM/DD/YYYY')
@@ -44,6 +44,8 @@ const TransactionRow = ({
       to = source
     }
 
+    let status = retried < MAX_RETRIED ? 'Failed' : 'Pending'
+
     return {
       tokenType,
       dateString: dateString,
@@ -52,7 +54,8 @@ const TransactionRow = ({
       to,
       amount: expense,
       url,
-      receiving: includes(activityName, 'Received')
+      receiving: includes(activityName, 'Received'),
+      status
     }
   }, [])
 
@@ -68,7 +71,14 @@ const TransactionRow = ({
         )}
         {formatLongString(displayInfo.from, 20)}
       </td>
-      <td className={clsx('px-1', 'text-warning text-xs')}>Pending</td>
+      <td
+        className={clsx(
+          'px-1 text-xs',
+          displayInfo.status === 'Pending' ? 'text-warning' : 'text-red-finnie'
+        )}
+      >
+        {displayInfo.status}
+      </td>
       <td className="px-1">
         <a
           href={displayInfo.url}
