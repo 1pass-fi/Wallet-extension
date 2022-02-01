@@ -21,6 +21,7 @@ import ExpandIcon from 'img/share-icon.svg'
 import CloseIcon from 'img/ab-close-icon.svg'
 import GoBackIcon from 'img/goback-icon-26px.svg'
 import CloseIconBlue from 'img/close-icon-blue.svg'
+import MagnifierIcon from 'img/v2/magnifier-icon.svg'
 
 import parseCss from 'utils/parseCss'
 import { GalleryContext } from 'options/galleryContext'
@@ -75,9 +76,15 @@ const KidPage = () => {
     setCssTemplate
   } = useContext(DidContext)
 
+  const defaultAccount = useSelector((state) => state.defaultAccount)
+  const assets = useSelector((state) => state.assets.nfts)
+
   const [disableUpdateKID, setDisableUpdateKID] = useState(true)
   const [confirmed, setConfirmed] = useState(false)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
+
+  const [nftSearchText, setNftSearchText] = useState('')
+  const [filteredAssets, setFilteredAssets] = useState(assets)
 
   const [isPending, setIsPending] = useState(false)
   const [balance, koiBalance] = useSelector(getBalance)
@@ -91,8 +98,16 @@ const KidPage = () => {
 
   const kidLinkPrefix = 'https://koii.id/'
 
-  const assets = useSelector((state) => state.assets)
-  const defaultAccount = useSelector((state) => state.defaultAccount)
+  const onSearchNft = (e) => {
+    const text = e.target.value
+    setNftSearchText(text)
+
+    const matchedAssets = assets.filter((asset) =>
+      includes(asset.name?.toLowerCase(), text.toLowerCase())
+    )
+
+    setFilteredAssets(matchedAssets)
+  }
 
   const modalRef = useRef(null)
 
@@ -653,8 +668,12 @@ const KidPage = () => {
             <div className="title">
               SELECT {modalType === 'AVATAR' ? 'PROFILE' : 'COVER'} PICTURE
             </div>
+            <div className="select-nft-modal-search">
+              <input placeholder="Search NFTs" value={nftSearchText} onChange={onSearchNft} />
+              <MagnifierIcon className="magnifier-icon" />
+            </div>
             <div className="nfts">
-              {assets.nfts.map((nft) => {
+              {filteredAssets.map((nft) => {
                 if (includes(nft.contentType, 'image') && nft.type === TYPE.ARWEAVE)
                   return (
                     <div

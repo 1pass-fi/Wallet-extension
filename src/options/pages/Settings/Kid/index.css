@@ -199,11 +199,11 @@
 }
 .kid-page-wrapper .kid-input .kid-input-area-field:focus {
   outline: none;
-  border: 2px solid #237B75;
+  border: 2px solid #237b75;
   border-radius: 4px;
   box-sizing: border-box;
   padding-left: 6px;
-  padding-top: 6px
+  padding-top: 6px;
 }
 
 .kid-page-wrapper .form-section .section-name {
@@ -577,4 +577,36 @@
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.03em;
+}
+
+.select-nft-modal-search {
+  position: relative;
+  width: 231px;
+
+  margin: 14px auto 0px auto;
+}
+
+.select-nft-modal-search input {
+  width: 100%;
+  height: 34px;
+
+  border-radius: 4px;
+
+  padding: 8px 40px 8px 13px;
+
+  font-size: 14px;
+  font-weight: 400;
+
+  color: #211c52;
+}
+
+.select-nft-modal-search input::placeholder {
+  color: #211c52;
+}
+
+.select-nft-modal-search .magnifier-icon {
+  position: absolute;
+  width: 18px;
+  top: 8px;
+  right: 21px;
 }
