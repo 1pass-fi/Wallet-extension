@@ -1,11 +1,9 @@
 import clsx from 'clsx'
 import React from 'react'
-import ReactTooltip from 'react-tooltip'
 
+import ToolTip from 'finnie-v2/components/ToolTip'
 import QuestionMarkBlue from 'img/v2/question-mark-icon-blue.svg'
 import QuestionMarkWhite from 'img/v2/question-mark-icon-white.svg'
-
-import './index.css'
 
 const Hint = ({ text, className, variant = 'blue', ...props }) => {
   return (
@@ -24,16 +22,7 @@ const Hint = ({ text, className, variant = 'blue', ...props }) => {
           data-tip={text}
         />
       )}
-      <ReactTooltip
-        className="tooltip"
-        border={true}
-        borderColor="white"
-        backgroundColor="#353563"
-        id={`hint-${text.replaceAll(' ', '')}`}
-        effect="float"
-        multiline={true}
-        {...props}
-      />
+      <ToolTip id={`hint-${text.replaceAll(' ', '')}`} {...props} />
     </>
   )
 }
