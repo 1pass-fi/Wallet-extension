@@ -7,8 +7,10 @@ import ToolTip from 'finnie-v2/components/ToolTip'
 const navItems = [
   { name: 'Community', path: '/notifications/community', disabled: true },
   { name: 'Activity', path: '/notifications/activity' },
+  { name: 'Transaction Status', path: '/notifications/transaction' },
   { name: 'Assets', path: '/notifications/assets', disabled: true },
-  { name: 'Notification Settings', path: '/notifications/notification-setting', disabled: true }
+  { name: 'Notification Settings', path: '/notifications/notification-setting', disabled: true },
+  { name: 'About', path: '/notifications/about', disabled: true }
 ]
 
 const NotificationsCenterLinks = () => {
@@ -21,6 +23,7 @@ const NotificationsCenterLinks = () => {
               'h-16 text-trueGray-500 cursor-default flex items-center',
               idx !== 0 && 'border-t-2 border-opacity-20 '
             )}
+            key={idx}
             data-tip="Coming soon"
           >
             {name}
