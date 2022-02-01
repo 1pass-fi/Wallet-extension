@@ -24,12 +24,12 @@ const sizes = {
   sm: {
     wrapper: 'text-xs',
     header: 'h-5 pl-1',
-    row: 'pl-1 h-5'
+    row: 'pl-1 min-h-5'
   },
   lg: {
     wrapper: 'text-base',
     header: 'h-8 pl-2',
-    row: 'pl-2 h-8'
+    row: 'pl-2 min-h-8'
   }
 }
 
