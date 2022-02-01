@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { NavLink, Route } from 'react-router-dom'
+import { NavLink, Route, Switch } from 'react-router-dom'
 
 import CreateIcon from 'img/v2/create-icon.svg'
 import GalleryIcon from 'img/v2/gallery-icon.svg'
@@ -95,40 +95,42 @@ const Sidebar = () => {
       </nav>
       <div style={{ height: '60vh' }} className="rounded overflow-y-scroll">
         <div className="bg-trueGray-100 bg-opacity-20 rounded w-57.75">
-          <Route exact path="/gallery">
-            <SortAndFilter
-              handleSearchFieldChange={handleSearchFieldChange}
-              handleSelectChains={handleSelectChains}
-              handleSort={handleSort}
-              sortBy={sortBy}
-              selectedChain={chainType}
-            />
-          </Route>
-          <Route path="/create-nft">
-            <UploadNftForm />
-          </Route>
-          <Route exact path="/collections">
-            <SortAndFilter
-              handleSearchFieldChange={handleSearchFieldChangeCollection}
-              handleSelectChains={handleSelectChainsCollection}
-              handleSort={handleSortCollection}
-              sortBy={sortByCollection}
-              selectedChain={chainTypeCollection}
-              type="Collections"
-            />
-          </Route>
-          <Route path="/collections/create">
-            <CreateCollectionForm />
-          </Route>
-          <Route path="/collections/edit">
-            <EditCollectionForm />
-          </Route>
-          <Route exact path="/settings/*">
-            <AccountSettings />
-          </Route>
-          <Route path="/notifications">
-            <NotificationsCenterLinks />
-          </Route>
+          <Switch>
+            <Route path="/create-nft">
+              <UploadNftForm />
+            </Route>
+            <Route exact path="/collections">
+              <SortAndFilter
+                handleSearchFieldChange={handleSearchFieldChangeCollection}
+                handleSelectChains={handleSelectChainsCollection}
+                handleSort={handleSortCollection}
+                sortBy={sortByCollection}
+                selectedChain={chainTypeCollection}
+                type="Collections"
+              />
+            </Route>
+            <Route path="/collections/create">
+              <CreateCollectionForm />
+            </Route>
+            <Route path="/collections/edit">
+              <EditCollectionForm />
+            </Route>
+            <Route exact path="/settings/*">
+              <AccountSettings />
+            </Route>
+            <Route path="/notifications">
+              <NotificationsCenterLinks />
+            </Route>
+            <Route path="*">
+              <SortAndFilter
+                handleSearchFieldChange={handleSearchFieldChange}
+                handleSelectChains={handleSelectChains}
+                handleSort={handleSort}
+                sortBy={sortBy}
+                selectedChain={chainType}
+              />
+            </Route>
+          </Switch>
         </div>
       </div>
     </>
