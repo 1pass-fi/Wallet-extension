@@ -81,38 +81,40 @@ const SecondVer = () => {
         <CollectionDetails />
       </Route>
       <MainLayout title={pageTitle}>
-        <Route exact path="/nfts/:id">
-          <NFTDetail />
-        </Route>
-        <Route exact path="/settings/*">
-          <div className="flex justify-start" style={{ maxWidth: '100%' }}>
-            <Settings />
-          </div>
-        </Route>
-        <Route exact path="/collections/create/select-nft">
-          <SelectNfts />
-        </Route>
-        <Route exact path="/collections/edit/select-nft/:collectionId">
-          <SelectNfts />
-        </Route>
-        <Route exact path="/collections">
-          <Collection />
-        </Route>
-        <Route path="/notifications">
-          <Notifications />
-        </Route>
-        <Route path="/success">
-          <>
-            <NavBar />
-            <Success />
-          </>
-        </Route>
-        <Route exact path="/gallery">
-          <Gallery />
-        </Route>
-        <Route path="*">
-          <Gallery />
-        </Route>
+        <Switch>
+          <Route exact path="/nfts/:id">
+            <NFTDetail />
+          </Route>
+          <Route exact path="/settings/*">
+            <div className="flex justify-start" style={{ maxWidth: '100%' }}>
+              <Settings />
+            </div>
+          </Route>
+          <Route exact path="/collections/create/select-nft">
+            <SelectNfts />
+          </Route>
+          <Route exact path="/collections/edit/select-nft/:collectionId">
+            <SelectNfts />
+          </Route>
+          <Route exact path="/collections">
+            <Collection />
+          </Route>
+          <Route path="/notifications">
+            <Notifications />
+          </Route>
+          <Route path="/success">
+            <>
+              <NavBar />
+              <Success />
+            </>
+          </Route>
+          <Route exact path="/gallery">
+            <Gallery />
+          </Route>
+          <Route path="*">
+            <Gallery />
+          </Route>
+        </Switch>
       </MainLayout>
     </Switch>
   )
