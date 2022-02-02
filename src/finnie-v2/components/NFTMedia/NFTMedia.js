@@ -1,16 +1,44 @@
+import clsx from 'clsx'
 import React from 'react'
 
 import { includes } from 'lodash'
 
-const NFTMedia = ({ contentType, source }) => {
+const NFTMedia = ({ contentType, source, showFull = false }) => {
   if (includes(contentType, 'image')) {
-    return <img src={source} className="w-full h-full object-cover rounded" />
+    return (
+      <img
+        src={source}
+        className={clsx(
+          'w-full h-full rounded',
+          showFull ? 'object-contain bg-black' : 'object-cover'
+        )}
+      />
+    )
   }
   if (includes(contentType, 'video')) {
-    return <video src={source} className="w-full h-full object-cover rounded" muted controls />
+    return (
+      <video
+        src={source}
+        className={clsx(
+          'w-full h-full rounded',
+          showFull ? 'object-contain bg-black' : 'object-cover'
+        )}
+        muted
+        controls
+      />
+    )
   }
   if (includes(contentType, 'audio')) {
-    return <audio src={source} className="w-full h-full object-cover rounded" controls />
+    return (
+      <audio
+        src={source}
+        className={clsx(
+          'w-full h-full rounded',
+          showFull ? 'object-contain bg-black' : 'object-cover'
+        )}
+        controls
+      />
+    )
   }
   if (includes(contentType, 'html')) {
     return (

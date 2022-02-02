@@ -42,7 +42,7 @@ const NFTDetail = () => {
         <div className="flex h-full w-full text-white">
           <div className="mx-auto mt-28 flex flex-col md:flex-row">
             <div className="w-100.25 h-101 mr-7 relative">
-              <NFTMedia contentType={nft.contentType} source={nft.imageUrl} />
+              <NFTMedia contentType={nft.contentType} source={nft.imageUrl} showFull={true} />
               {!isArweaveNft ? (
                 <EthLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
               ) : (
