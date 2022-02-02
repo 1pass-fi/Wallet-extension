@@ -195,10 +195,8 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
       <div className="fixed top-0 left-0 z-51 w-screen h-screen flex items-center justify-center">
         <div className="w-221.5 h-116.75 bg-blue-800 rounded shadow-md pt-3 px-4 relative select-none">
           <div className="w-full flex justify-between">
-            <BackIcon className="w-9 h-9 cursor-pointer" />
-            <div onClick={close}>
-              <CloseIcon className="w-9 h-9 cursor-pointer" />
-            </div>
+            <BackIcon onClick={close} className="w-9 h-9 cursor-pointer" />
+            <CloseIcon onClick={close} className="w-9 h-9 cursor-pointer" />
           </div>
           <div className="flex w-full mt-4 items-center justify-between">
             <div className="w-3.75">
