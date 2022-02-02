@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useMemo } from 'react'
+import { useDispatch } from 'react-redux'
 import { Switch, Route, useLocation, useParams } from 'react-router-dom'
-import { find } from 'lodash'
 
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 
@@ -10,38 +9,21 @@ import storage from 'services/storage'
 
 import NavBar from 'finnie-v2/components/NavBar'
 
-import getCollectionByTxId from './selectors/getCollectionByTxid'
-
 import Collection from './pages/Collection'
 import Gallery from './pages/Gallery'
 import NFTDetail from './pages/NFTDetail'
 import Notifications from './pages/Notifications'
-import CollectionDetails from 'options/pages/CollectionDetails/CollectionDetails'
+import CollectionDetails from './pages/CollectionDetails'
 import SelectNfts from 'finnie-v2/components/SelectNfts'
 
 import './style.css'
 import Success from 'options/pages/StartUp/shared/Success'
 import MainLayout from './components/MainLayout'
-import { GalleryContext } from 'options/galleryContext'
 import Settings from './pages/Settings/Settings'
-import FriendReferral from './pages/FriendReferral'
 
 const SecondVer = () => {
   const dispatch = useDispatch()
   const location = useLocation()
-
-  const { editingCollectionId } = useContext(GalleryContext)
-  const collections = useSelector((state) => state.collections)
-
-  const collectionName = useMemo(() => {
-    if (collections && editingCollectionId) {
-      const collection = find(collections.collections, (c) => {
-        return c.id === editingCollectionId
-      })
-      if (collection) return collection.name
-      return null
-    }
-  }, [editingCollectionId, collections])
 
   const updateDefaultAccountData = async () => {
     const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
@@ -85,13 +67,20 @@ const SecondVer = () => {
 
     if (location.pathname.includes('create-nft')) title = 'Gallery'
 
-    if (location.pathname.includes('/collections') && collectionName) title = collectionName
     return title
-  }, [location.pathname, collectionName])
+  }, [location.pathname])
 
   return (
-    <MainLayout title={pageTitle}>
-      <Switch>
+    <Switch>
+      <Route exact path="/collections/create">
+        <MainLayout title="Collections">
+          <Collection />
+        </MainLayout>
+      </Route>
+      <Route exact path="/collections/:collectionId">
+        <CollectionDetails />
+      </Route>
+      <MainLayout title={pageTitle}>
         <Route exact path="/nfts/:id">
           <NFTDetail />
         </Route>
@@ -105,12 +94,6 @@ const SecondVer = () => {
         </Route>
         <Route exact path="/collections/edit/select-nft/:collectionId">
           <SelectNfts />
-        </Route>
-        <Route exact path="/collections/create">
-          <Collection />
-        </Route>
-        <Route path="/collections/:collectionId">
-          <CollectionDetails />
         </Route>
         <Route exact path="/collections">
           <Collection />
@@ -130,8 +113,8 @@ const SecondVer = () => {
         <Route path="*">
           <Gallery />
         </Route>
-      </Switch>
-    </MainLayout>
+      </MainLayout>
+    </Switch>
   )
 }
 
