@@ -87,7 +87,7 @@ const NFTDetail = () => {
                   />
                 </a>
               </div>
-              <p className="w-full h-18 overflow-y-scroll text-sm leading-6 pr-4">
+              <p className="w-full h-18 overflow-y-scroll text-sm leading-6 pr-4 whitespace-pre-line">
                 {nft.description}
               </p>
               <div className="flex flex-wrap gap-x-2.5 gap-y-1 h-11 overflow-y-scroll">
