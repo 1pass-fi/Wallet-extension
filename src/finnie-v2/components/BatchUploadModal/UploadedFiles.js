@@ -5,7 +5,7 @@ import RemoveNFTIcon from 'img/v2/cross-icon-orange.svg'
 
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
-const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft, error }) => {
+const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft, error, selectNft }) => {
   return (
     <>
       <div className="text-xl text-white">UPLOADED FILES</div>
@@ -21,10 +21,7 @@ const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft, erro
             )}
             key={idx}
           >
-            <span
-              onClick={() => setCurrentNftIdx(idx)}
-              className="h-full flex-grow flex items-center"
-            >
+            <span onClick={() => selectNft(idx)} className="h-full flex-grow flex items-center">
               {formatLongString(name, 25)}
             </span>
             <RemoveNFTIcon
