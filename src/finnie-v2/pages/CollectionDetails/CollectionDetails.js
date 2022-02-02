@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React, { useMemo, useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { find, isEmpty, get } from 'lodash'
@@ -9,6 +10,10 @@ import { useParams } from 'react-router-dom'
 import EditIcon from 'img/v2/collection-detail/edit-icon.svg'
 
 import NftCard from './NftCard'
+
+import NavBar from 'finnie-v2/components/NavBar'
+import Sidebar from 'finnie-v2/components/Sidebar'
+
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 import { COLLECTION_CONTRACT_SRC } from 'constants/koiConstants'
@@ -19,8 +24,8 @@ const CollectionDetails = () => {
   const { setEditingCollectionId, setSelectedNftIds } = useContext(GalleryContext)
   const { collectionId } = useParams()
 
-  const collectionState = useSelector(state => state.collections)
-  const assets = useSelector(state => state.assets)
+  const collectionState = useSelector((state) => state.collections)
+  const assets = useSelector((state) => state.assets)
 
   const [updatePending, setUpdatePending] = useState(false)
   const [usedOldContractSrc, setUsedOldContractSrc] = useState(false)
@@ -46,7 +51,7 @@ const CollectionDetails = () => {
 
     // set nft ids
     const nftIds = collection?.collection || []
-    setSelectedNftIds(nftIds) 
+    setSelectedNftIds(nftIds)
 
     history.push(`/collections/edit/select-nft/${collectionId}`)
   }
@@ -64,15 +69,15 @@ const CollectionDetails = () => {
         const account = await popupAccount.getAccount({ address: owner })
         const pendingTransactions = await account.get.pendingTransactions()
 
-        const isPending = !(pendingTransactions.every(tx => {
+        const isPending = !pendingTransactions.every((tx) => {
           try {
             const _collectionId = get(tx, 'data.collectionId')
-            return _collectionId !== collectionId 
+            return _collectionId !== collectionId
           } catch (err) {
             console.error(err.message)
             return true
           }
-        }))
+        })
 
         setUpdatePending(isPending)
       }
@@ -94,31 +99,55 @@ const CollectionDetails = () => {
   }, [updatePending, usedOldContractSrc])
 
   return (
-    <div className='w-full relative'>
-      <div data-tip={editButtonDataTip}>
-        <button 
-          data-tip={updatePending ? 'Transaction pending' : ''}
-          disabled={updatePending || usedOldContractSrc}
-          onClick={openEditCollectionForm} 
-          className='w-5 h-5.5 z-40 cursor-pointer disabled:cursor-not-allowed mb-2'>
-          <EditIcon />
-        </button>
+    <>
+      <div className="w-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
+        <NavBar />
+        <div className="w-full 2xl:w-5/6 mx-auto">
+          <div className="px-4.25 pt-6">
+            <aside className="fixed z-51 w-61">
+              <div
+                className={clsx(
+                  'text-base uppercase text-white w-61 text-center mb-8 break-words',
+                  collection.title?.length > 45 ? 'text-base' : 'text-2xl'
+                )}
+              >
+                {collection.title}
+
+                <div className="inline ml-1" data-tip={editButtonDataTip}>
+                  <button
+                    data-tip={updatePending ? 'Transaction pending' : ''}
+                    disabled={updatePending || usedOldContractSrc}
+                    onClick={openEditCollectionForm}
+                    className="inline w-4 z-40 cursor-pointer disabled:cursor-not-allowed mb-2"
+                  >
+                    <EditIcon />
+                  </button>
+                </div>
+              </div>
+              <Sidebar />
+            </aside>
+            <main className="ml-65.5 pb-5">
+              <div className="w-full relative">
+                <div
+                  className="text-white w-full h-25.5 text-sm leading-6 pr-3 mb-3"
+                  style={{
+                    overflowY: 'overlay'
+                  }}
+                >
+                  {get(collection, 'description')}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-5 gap-y-3.75 place-items-stretch">
+                  {nftLoaded &&
+                    collection?.collection?.map((nft, index) => <NftCard key={index} nft={nft} />)}
+                </div>
+                <ReactTooltip place="top" type="dark" effect="float" />
+              </div>
+            </main>
+          </div>
+        </div>
       </div>
-      {/* DESCRIPTION */}
-      <div 
-        className='text-white w-full h-25.5 text-sm leading-6 pr-3 mb-3'
-        style={{
-          overflowY: 'overlay'
-        }}
-      >{get(collection, 'description')}</div>
-      {/* NFT CARDS */}
-      <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-5 gap-y-3.75 place-items-stretch'>
-        {nftLoaded && collection?.collection?.map((nft, index) => (
-          <NftCard key={index} nft={nft} />
-        ))}
-      </div>
-      <ReactTooltip place='top' type="dark" effect="float"/>
-    </div>
+    </>
   )
 }
 
