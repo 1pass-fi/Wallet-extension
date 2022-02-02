@@ -63,7 +63,7 @@ export default ({ version = '0.2.10' }) => {
             <div className="title">Need help?</div>
             <div className="description">
               Reach out to Koii's &nbsp;
-              <a href="mailto:support@koii.network" target="_blank" className="link">
+              <a href="https://koii.me/support/" target="_blank" className="link">
                 support team
               </a>
               &nbsp; or &nbsp;{' '}
