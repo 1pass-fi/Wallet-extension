@@ -64,11 +64,9 @@ const NFTDetail = () => {
             </div>
 
             <div className="w-115 h-101 relative">
-              <div className="finnieSpacing-tighter font-semibold text-5xl mb-2 truncate">
-                {nft.name}
-              </div>
+              <div className="finnieSpacing-tighter font-semibold text-5xl mb-2">{nft.name}</div>
               <div className="text-sm mb-2">{`Registered: ${formatDatetime(nft.createdAt)}`}</div>
-              <div className="flex gap-4 mb-5">
+              <div className="flex gap-4 mb-4">
                 <a href={`https://viewblock.io/arweave/tx/${nft.txId}`} target="_blank">
                   <Button
                     disabled={disabledFeatures}
@@ -87,10 +85,10 @@ const NFTDetail = () => {
                   />
                 </a>
               </div>
-              <p className="w-full h-18 overflow-y-scroll text-sm leading-6 pr-4 whitespace-pre-line">
+              <p className="w-full max-h-12 overflow-y-scroll overflow-x-none break-words text-sm leading-6 pr-4 whitespace-pre-line">
                 {nft.description}
               </p>
-              <div className="flex flex-wrap gap-x-2.5 gap-y-1 h-11 overflow-y-scroll">
+              <div className="mt-2 flex flex-wrap gap-x-2.5 gap-y-1 h-11 overflow-y-scroll">
                 {nft.tags &&
                   nft.tags.map((tag) => (
                     <div
@@ -102,40 +100,42 @@ const NFTDetail = () => {
                   ))}
               </div>
 
-              {!nft.pending && (
-                <div className="flex items-center justify-between h-11.5 mt-7.5 gap-5">
-                  <Button
-                    disabled={disabledFeatures}
-                    size="lg"
-                    icon={ShareIcon}
-                    className="h-full w-7/12"
-                    text="Share for Rewards"
-                    onClick={() => {
-                      setShowShareModal({ show: true, txid: nft.txId })
-                    }}
-                  />
-                  <Button
-                    disabled={disabledFeatures}
-                    size="lg"
-                    icon={LinkIcon}
-                    variant="inversed"
-                    className="h-full w-5/12"
-                    text="Transfer NFT"
-                    onClick={() => handleShareNFT(nft.txId)}
-                  />
-                </div>
-              )}
+              <div className="absolute bottom-0 w-full">
+                {!nft.pending && (
+                  <div className="w-full flex items-center justify-between h-11.5 mt-7.5 gap-5 mb-6">
+                    <Button
+                      disabled={disabledFeatures}
+                      size="lg"
+                      icon={ShareIcon}
+                      className="h-full w-7/12"
+                      text="Share for Rewards"
+                      onClick={() => {
+                        setShowShareModal({ show: true, txid: nft.txId })
+                      }}
+                    />
+                    <Button
+                      disabled={disabledFeatures}
+                      size="lg"
+                      icon={LinkIcon}
+                      variant="inversed"
+                      className="h-full w-5/12"
+                      text="Transfer NFT"
+                      onClick={() => handleShareNFT(nft.txId)}
+                    />
+                  </div>
+                )}
 
-              {!nft.pending && (
-                <Button
-                  size="lg"
-                  icon={isArweaveNft ? EthLogo : ArweaveLogo}
-                  variant="lightBlue"
-                  text="Bridge your NFT to a different Blockchain"
-                  className="h-11.5 absolute bottom-0 w-full"
-                  onClick={() => setShowExportModal(nft)}
-                />
-              )}
+                {!nft.pending && (
+                  <Button
+                    size="lg"
+                    icon={isArweaveNft ? EthLogo : ArweaveLogo}
+                    variant="lightBlue"
+                    text="Bridge your NFT to a different Blockchain"
+                    className="h-11.5 w-full"
+                    onClick={() => setShowExportModal(nft)}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
