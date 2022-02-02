@@ -483,22 +483,28 @@ const KidPage = () => {
           </div>
         </div>
 
-        <div className="form-text">
-          <KidInputField
-            label="kID"
-            isRequired={true}
-            value={kID}
-            setValue={onChangeUserInfo}
-            error={fieldError.kid}
-          />
-          <KidInputField
-            label="Name"
-            isRequired={true}
-            description="or pseudonym"
-            value={userKID.name}
-            setValue={onChangeUserInfo}
-            error={fieldError.name}
-          />
+        <div className="form-text" >
+          <div data-tip={isPending ? 'DID transactions pending' : ''}>
+            <KidInputField
+              label="kID"
+              isRequired={true}
+              value={kID}
+              setValue={onChangeUserInfo}
+              error={fieldError.kid}
+              disabled={isPending}
+            />
+          </div>
+          <div data-tip={isPending ? 'DID transactions pending' : ''}>
+            <KidInputField
+              label="Name"
+              isRequired={true}
+              description="or pseudonym"
+              value={userKID.name}
+              setValue={onChangeUserInfo}
+              error={fieldError.name}
+              disabled={isPending}
+            />
+          </div>
           <div className="kid-input__country">
             <div className="kid-input__country__label">Country*</div>
             <DropDown
@@ -511,24 +517,28 @@ const KidPage = () => {
               }}
             />
           </div>
-          <KidInputField
-            label="Pronouns"
-            isRequired={false}
-            example="For example: 'she/her' or 'they/them'"
-            value={userKID.pronouns}
-            setValue={onChangeUserInfo}
-          />
+          <div data-tip={isPending ? 'DID transactions pending' : ''}>
+            <KidInputField
+              label="Pronouns"
+              isRequired={false}
+              example="For example: 'she/her' or 'they/them'"
+              value={userKID.pronouns}
+              setValue={onChangeUserInfo}
+              disabled={isPending}
+            />            
+          </div>
           <div className="kid-input">
             <div className="kid-input-label-section">
               <label className="kid-input-label">Description*</label>
             </div>
-            <div className="kid-input-input-section">
+            <div className="kid-input-input-section" data-tip={isPending ? 'DID transactions pending' : ''}>
               <textarea
                 value={userKID.description}
                 onChange={(e) => onChangeUserInfo(e)}
                 name="description"
                 className="kid-input-area-field"
                 type="text"
+                disabled={isPending}
               />
               <span className="error">{fieldError.description}</span>
             </div>
@@ -646,7 +656,7 @@ const KidPage = () => {
             ))}
 
           <div className="save-kid-btn">
-            <div data-tip={isPending ? 'Transaction pending' : ''}>
+            <div data-tip={isPending ? 'DID transactions pending' : ''}>
               <Button
                 disabled={disableUpdateKID || isPending}
                 onClick={async () => {
@@ -743,6 +753,7 @@ const KidPage = () => {
           </div>
         )}
       </div>
+      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }
