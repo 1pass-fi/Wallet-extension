@@ -5,6 +5,9 @@ module.exports = {
       zIndex: {
         51: '51'
       },
+      screens: {
+        lg: '1090px'
+      },
       colors: {
         teal: {
           100: '#BEEFEC'
