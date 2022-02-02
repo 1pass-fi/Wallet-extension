@@ -195,22 +195,25 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                 Your NFT is being created!
               </div>
               <div className="text-base">
-                It will take a few minutes to reflect on your wallet. In the meantime...
+                It will take a few minutes to reflect on your wallet.
               </div>
+              {/* <div className="text-base">
+                It will take a few minutes to reflect on your wallet. In the meantime...
+              </div> */}
             </div>
             <div className='flex w-101 justify-between m-auto'>
-              <Button
+              {/* <Button
                 onClick={() => {close(); handleShareNFT(nftId)}}
                 className="h-10 mt-16 font-semibold text-base rounded w-43.75 mx-auto"
                 variant="indigo"
                 text="Transfer"
-              />
-              <Button
+              /> */}
+              {/* <Button
                 onClick={() => setStep(3)}
                 className="h-10 mt-16 font-semibold text-base rounded w-43.75 mx-auto"
                 variant="inversedIndigo"
                 text="Share"
-              />              
+              />               */}
             </div>
           </div>
         )}
