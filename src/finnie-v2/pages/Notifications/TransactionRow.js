@@ -11,7 +11,7 @@ import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/form
 import clsx from 'clsx'
 
 const TransactionRow = ({
-  transaction: { activityName, address, date, expense, id, source, network, retried }
+  transaction: { activityName, address, date, expense, id, source, network, retried, expired }
 }) => {
   const displayInfo = useMemo(() => {
     const dateString = moment(date).format('MM/DD/YYYY')
@@ -44,7 +44,7 @@ const TransactionRow = ({
       to = source
     }
 
-    let status = retried < MAX_RETRIED ? 'Failed' : 'Pending'
+    let status = expired ? 'Failed' : 'Pending'
 
     return {
       tokenType,
