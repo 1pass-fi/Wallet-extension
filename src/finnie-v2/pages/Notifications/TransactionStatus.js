@@ -31,7 +31,7 @@ const TransactionStatus = () => {
           </tr>
         </thead>
         <tbody>
-          {transactionData.map((transaction, idx) => (
+          {transactionData?.reverse()?.map((transaction, idx) => (
             <TransactionRow transaction={transaction} key={idx} />
           ))}
         </tbody>
