@@ -1,6 +1,7 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
+import { isEmpty, find } from 'lodash'
 
 import Button from 'finnie-v2/components/Button'
 import NavBar from 'finnie-v2/components/NavBar'
@@ -19,15 +20,29 @@ import formatDatetime from 'finnie-v2/utils/formatDatetime'
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import { GalleryContext } from 'options/galleryContext'
 
-import getAssetByTxId from 'finnie-v2/selectors/getAssetByTxId'
-
 const NFTDetail = () => {
   const history = useHistory()
   const { id } = useParams()
+  const assets = useSelector(state => state.assets)
+
+  const [ownerImported, setOwnerImported] = useState(true)
+  const [nft, setNft] = useState({})
 
   const { setShowExportModal, setShowShareModal, handleShareNFT, showViews, showEarnedKoi } = useContext(GalleryContext)
 
-  const nft = useSelector(getAssetByTxId(id))
+  useEffect(() => {
+    const getNft = () => {
+      let nft = find(assets.nfts, { txId: id })
+
+      if (isEmpty(nft)) {
+        nft = find(assets.collectionNfts, { txId: id })
+        setOwnerImported(false)
+      }
+      setNft(nft)
+    }
+
+    if (assets && isEmpty(nft)) getNft()
+  }, [assets])
 
   const isArweaveNft = useMemo(() => {
     return nft?.type === TYPE.ARWEAVE
@@ -121,7 +136,7 @@ const NFTDetail = () => {
                       }}
                     />
                     <Button
-                      disabled={disabledFeatures}
+                      disabled={disabledFeatures || !ownerImported}
                       size="lg"
                       icon={LinkIcon}
                       variant="inversed"
@@ -140,6 +155,7 @@ const NFTDetail = () => {
                     text="Bridge your NFT to a different Blockchain"
                     className="h-11.5 w-full"
                     onClick={() => setShowExportModal(nft)}
+                    disabled={!ownerImported}
                   />
                 )}
               </div>
