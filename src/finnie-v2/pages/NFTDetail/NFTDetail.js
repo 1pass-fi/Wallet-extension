@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { isEmpty, find } from 'lodash'
 
+import ToolTip from 'finnie-v2/components/ToolTip'
+
 import Button from 'finnie-v2/components/Button'
 import NavBar from 'finnie-v2/components/NavBar'
 import NFTMedia from 'finnie-v2/components/NFTMedia'
@@ -37,6 +39,8 @@ const NFTDetail = () => {
       if (isEmpty(nft)) {
         nft = find(assets.collectionNfts, { txId: id })
         setOwnerImported(false)
+      } else {
+        setOwnerImported(true)
       }
       setNft(nft)
     }
@@ -135,30 +139,43 @@ const NFTDetail = () => {
                         setShowShareModal({ show: true, txid: nft.txId })
                       }}
                     />
-                    <Button
-                      disabled={disabledFeatures || !ownerImported}
-                      size="lg"
-                      icon={LinkIcon}
-                      variant="inversed"
+                    <div
+                      data-tip={!ownerImported ? `This NFT is owned by a wallet with the address ${nft.address}.<br>
+                      Please import this wallet and continue to transfer NFT.` : ''}
                       className="h-full w-5/12"
-                      text="Transfer NFT"
-                      onClick={() => handleShareNFT(nft.txId)}
-                    />
+                    >
+                      <Button
+                        disabled={disabledFeatures || !ownerImported}
+                        size="lg"
+                        icon={LinkIcon}
+                        variant="inversed"
+                        text="Transfer NFT"
+                        className="w-full h-full"
+                        onClick={() => handleShareNFT(nft.txId)}
+                      />
+                    </div>
                   </div>
                 )}
 
                 {!nft.pending && (
-                  <Button
-                    size="lg"
-                    icon={isArweaveNft ? EthLogo : ArweaveLogo}
-                    variant="lightBlue"
-                    text="Bridge your NFT to a different Blockchain"
+                  <div
                     className="h-11.5 w-full"
-                    onClick={() => setShowExportModal(nft)}
-                    disabled={!ownerImported}
-                  />
+                    data-tip={!ownerImported ? `This NFT is owned by a wallet with the address ${nft.address}.<br>
+                    Please import this wallet and continue to bridge NFT.` : ''}
+                  >
+                    <Button
+                      size="lg"
+                      icon={isArweaveNft ? EthLogo : ArweaveLogo}
+                      variant="lightBlue"
+                      text="Bridge your NFT to a different Blockchain"
+                      onClick={() => setShowExportModal(nft)}
+                      disabled={!ownerImported}
+                      className="w-full h-full"
+                    />
+                  </div>
                 )}
               </div>
+              <ToolTip />
             </div>
           </div>
         </div>

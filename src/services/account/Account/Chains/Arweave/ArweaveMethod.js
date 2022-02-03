@@ -774,7 +774,7 @@ export class ArweaveMethod {
               createdAt: content.createdAt,
               description: content.description,
               type: TYPE.ARWEAVE,
-              address: this.koi.address,
+              address: content.owner,
               locked: content.locked,
               tags: content.tags
             }
@@ -794,7 +794,7 @@ export class ArweaveMethod {
               createdAt: content.createdAt,
               description: content.description,
               type: TYPE.ARWEAVE,
-              address: this.koi.address,
+              address: content.owner,
               locked: content.locked,
               tags: content.tags
             }
