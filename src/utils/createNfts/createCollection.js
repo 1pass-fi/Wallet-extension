@@ -9,6 +9,7 @@ import { getChromeStorage, setChromeStorage } from '../'
 
 import { PENDING_TRANSACTION_TYPE, PATH } from 'constants/koiConstants'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
+import storage from 'services/storage'
 
 /*
   Return nft ids of uploaded nfts
@@ -22,10 +23,13 @@ export default async ({nfts, setNfts, address, collectionData, selectedNftIds}) 
 
   info = info.value
 
+  const ownerAddress = await storage.setting.get.activatedAccountAddress()
+
   let nftIds = await Promise.all(nfts.map(async ({ info, url }, index) => {
     try {
       const buffer = await getBufferFromUrl(url)
       const createdAt = Math.floor(info?.createdAt / 1000)
+      info.ownerAddress = ownerAddress
 
       const transaction = await createTransaction(buffer, info)
       let price = await arweave.transactions.getPrice(buffer.byteLength)

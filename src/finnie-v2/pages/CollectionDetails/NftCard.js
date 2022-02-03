@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { get } from 'lodash'
 
@@ -11,8 +11,10 @@ import getAssetByTxId from 'finnie-v2/selectors/getAssetByTxId'
 import NFTMedia from 'finnie-v2/components/NFTMedia'
 
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+import { GalleryContext } from 'options/galleryContext'
 
 export default ({ nft }) => {
+  const { showViews, showEarnedKoi } = useContext(GalleryContext)
   const nftInfo = useSelector(getAssetByTxId(nft))
 
   return (
@@ -30,12 +32,12 @@ export default ({ nft }) => {
         <div className="text-2xs tracking-finnieSpacing-wide text-warning">
           {formatLongString(get(nft, 'collection')?.join(', '), 30)}
         </div>
-        <div className="text-2xs tracking-finnieSpacing-wide text-turquoiseBlue">
+        {showViews && <div className="text-2xs tracking-finnieSpacing-wide text-turquoiseBlue">
           {get(nftInfo, 'totalViews') + ` views`}
-        </div>
-        <div className="text-2xs tracking-finnieSpacing-wide text-lightBlue">
+        </div>}
+        {showEarnedKoi && <div className="text-2xs tracking-finnieSpacing-wide text-lightBlue">
           {formatNumber(get(nftInfo, 'earnedKoi'), 2) + ` KOII earned`}
-        </div>
+        </div>}
       </div>
       <KoiiLogo className="absolute w-5 h-5 bottom-1.75 right-1.75" />
     </Link>

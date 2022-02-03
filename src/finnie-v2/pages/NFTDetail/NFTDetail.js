@@ -23,7 +23,7 @@ import getAssetByTxId from 'finnie-v2/selectors/getAssetByTxId'
 const NFTDetail = () => {
   const { id } = useParams()
 
-  const { setShowExportModal, setShowShareModal, handleShareNFT } = useContext(GalleryContext)
+  const { setShowExportModal, setShowShareModal, handleShareNFT, showViews, showEarnedKoi } = useContext(GalleryContext)
 
   const nft = useSelector(getAssetByTxId(id))
 
@@ -51,14 +51,14 @@ const NFTDetail = () => {
 
               {nft.type === TYPE.ARWEAVE && !nft.pending && (
                 <div className="flex justify-between items-center h-17.25 mt-6.5 tracking-finnieSpacing-tight text-lg text-center">
-                  <div className="w-48.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                  {showEarnedKoi && <div className="w-48.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
                     KOII earned <br />
                     {formatNumber(nft.earnedKoi, 3)}
-                  </div>
-                  <div className="w-46 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                  </div>}
+                  {showViews && <div className="w-46 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
                     Total Views <br />
                     {nft.totalViews}
-                  </div>
+                  </div>}
                 </div>
               )}
             </div>
