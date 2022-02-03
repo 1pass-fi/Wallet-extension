@@ -49,7 +49,7 @@ const SecondVer = () => {
       case '/collections':
         title = 'Collections'
         break
-      case '/collections/create':
+      case '/collections/create.new-collection':
         title = 'Create Collection'
         break
       case '/collections/create/select-nft':
@@ -72,11 +72,6 @@ const SecondVer = () => {
 
   return (
     <Switch>
-      <Route exact path="/collections/create">
-        <MainLayout title="Collections">
-          <Collection />
-        </MainLayout>
-      </Route>
       <Route exact path="/collections/:collectionId">
         <CollectionDetails />
       </Route>
@@ -89,6 +84,9 @@ const SecondVer = () => {
             <div className="flex justify-start" style={{ maxWidth: '100%' }}>
               <Settings />
             </div>
+          </Route>
+          <Route exact path="/collections/create/new-collection">
+            <Collection />
           </Route>
           <Route exact path="/collections/create/select-nft">
             <SelectNfts />
