@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 import Button from 'finnie-v2/components/Button'
 import NavBar from 'finnie-v2/components/NavBar'
@@ -12,6 +12,7 @@ import ShareIcon from 'img/v2/share-icon.svg'
 import LinkIcon from 'img/v2/link-icon.svg'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import GoBackIcon from 'img/v2/back-icon.svg'
 
 import { TYPE } from 'constants/accountConstants'
 import formatDatetime from 'finnie-v2/utils/formatDatetime'
@@ -21,6 +22,7 @@ import { GalleryContext } from 'options/galleryContext'
 import getAssetByTxId from 'finnie-v2/selectors/getAssetByTxId'
 
 const NFTDetail = () => {
+  const history = useHistory()
   const { id } = useParams()
 
   const { setShowExportModal, setShowShareModal, handleShareNFT, showViews, showEarnedKoi } = useContext(GalleryContext)
@@ -35,8 +37,13 @@ const NFTDetail = () => {
     return nft?.isBridging || nft?.isSending || nft?.type !== TYPE.ARWEAVE
   }, [nft])
 
+  const handleGoBack = () => {
+    history.goBack()
+  }
+
   return (
     <div className="min-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
+      <div onClick={handleGoBack} className='w-11 h-11 absolute top-44 left-23 cursor-pointer'><GoBackIcon /></div>
       <NavBar />
       {nft && (
         <div className="flex h-full w-full text-white">
