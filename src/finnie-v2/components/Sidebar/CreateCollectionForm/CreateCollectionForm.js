@@ -5,9 +5,11 @@ import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import initial from 'lodash/initial'
 import union from 'lodash/union'
+import find from 'lodash/find'
 
 import CrossIcon from 'img/v2/cross-icon.svg'
 import AddIcon from 'img/v2/create-collection-form/add-icon.svg'
+import PhotoIcon from 'img/v2/photo-icon.svg'
 
 import createCollection from 'utils/createNfts/createCollection'
 
@@ -30,6 +32,7 @@ const CreateCollectionForm = () => {
   const { selectedNftIds, setSelectedNftIds, setError } = useContext(GalleryContext)
 
   const address = useSelector((state) => state.defaultAccount.address)
+  const _nfts = useSelector((state) => state.assets.nfts)
 
   const selectFiles = useRef(null)
 
@@ -294,7 +297,7 @@ const CreateCollectionForm = () => {
           </div>
         </div>
         <div className="w-50 h-36.25 border border-dashed border-success rounded">
-          {isEmpty(files) ? (
+          {isEmpty(files) && isEmpty(selectedNftIds) ? (
             <DropFile
               files={files}
               setFiles={setFiles}
@@ -320,6 +323,15 @@ const CreateCollectionForm = () => {
                 {files.map((file, index) => (
                   <li key={index} style={{ marginBottom: '5px' }}>{file.name}</li>
                 ))}
+                {selectedNftIds.map((id, index) => (
+                  <li key={index} style={{ marginBottom: '5px' }}>
+                    <div className='flex w-full justify-between'>
+                      <div className='w-28 truncate'>{find(_nfts, nft => nft.txId === id)?.name}</div>
+                      <div><PhotoIcon /></div>
+                    </div>
+                  </li>
+                ))
+                }
               </ul>
             </div>
           )}

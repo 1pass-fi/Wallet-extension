@@ -6,8 +6,10 @@ import isEmpty from 'lodash/isEmpty'
 import initial from 'lodash/initial'
 import union from 'lodash/union'
 import get from 'lodash/get'
+import find from 'lodash/find'
 
 import CrossIcon from 'img/v2/cross-icon.svg'
+import PhotoIcon from 'img/v2/photo-icon.svg'
 
 import updateCollection from 'utils/createNfts/updateCollection'
 import arweave from 'services/arweave'
@@ -27,13 +29,13 @@ import getCollectionByTxId from 'finnie-v2/selectors/getCollectionByTxid'
 import './EditCollectionForm.css'
 
 const EditCollectionForm = () => {
-  const { editingCollectionId: collectionId, setError } = useContext(GalleryContext)
+  const { editingCollectionId: collectionId, setError, selectedNftIds, setSelectedNftIds} = useContext(GalleryContext)
 
   const collection = useSelector(getCollectionByTxId(collectionId))
+  const _nfts = useSelector((state) => state.assets.nfts)
+  const collectionNfts = useSelector(state => state.assets.collectionNfts)
 
   const selectFiles = useRef(null)
-
-  const { selectedNftIds, setSelectedNftIds } = useContext(GalleryContext)
 
   const address = useMemo(() => {
     if (collection) {
@@ -41,7 +43,6 @@ const EditCollectionForm = () => {
     }
     return null
   }, [])
-
 
   const [collectionInfo, setCollectionInfo] = useState({
     title: '',
@@ -325,7 +326,7 @@ const EditCollectionForm = () => {
           </div>
         </div>
         <div className="w-50 h-36.25 border border-dashed border-success rounded">
-          {isEmpty(files) ? (
+          {isEmpty(files) && isEmpty(selectedNftIds) ? (
             <DropFile
               files={files}
               setFiles={setFiles}
@@ -351,6 +352,15 @@ const EditCollectionForm = () => {
                 {files.map((file, index) => (
                   <li key={index} style={{ marginBottom: '5px' }}>{file.name}</li>
                 ))}
+                {selectedNftIds.map((id, index) => (
+                  <li key={index} style={{ marginBottom: '5px' }}>
+                    <div className='flex w-full justify-between'>
+                      <div className='w-28 truncate'>{find(_nfts, nft => nft.txId === id)?.name || find(collectionNfts, nft => nft.txId === id)?.name || id}</div>
+                      <div><PhotoIcon /></div>
+                    </div>
+                  </li>
+                ))
+                }
               </ul>
             </div>
           )}
