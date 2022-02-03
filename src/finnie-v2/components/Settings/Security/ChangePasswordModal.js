@@ -10,6 +10,8 @@ import Button from 'finnie-v2/components/Button'
 import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
+import './ChangePasswordModal.css'
+
 const ChangePasswordModal = ({ close }) => {
   const [step, setStep] = useState(1)
   const [oldPassword, setOldPassword] = useState('')
@@ -109,7 +111,7 @@ const ChangePasswordModal = ({ close }) => {
         </div>
 
         {step === 1 && (
-          <div style={{ height: '305px' }} className="flex flex-col justify-evenly mt-6.5">
+          <div style={{ height: '305px' }} className="flex flex-col justify-evenly mt-6.5 change-my-password">
             <div
               style={{ width: '382px' }}
               className="text-sm font-semibold tracking-finnieSpacing-tight text-left"

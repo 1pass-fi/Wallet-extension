@@ -199,7 +199,7 @@
 }
 .kid-page-wrapper .kid-input .kid-input-area-field:focus {
   outline: none;
-  border: 2px solid #237b75;
+  border: 2px solid #5ed9d1;
   border-radius: 4px;
   box-sizing: border-box;
   padding-left: 6px;
@@ -249,10 +249,26 @@
 .kid-page-wrapper .link-accounts-input-line .link-accounts-input-name {
   width: 168px;
 }
+.kid-page-wrapper .link-accounts-input-line .link-accounts-input-name:focus {
+  outline: none;
+  border: 2px solid #5ed9d1;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding-left: 5px;
+  padding-top: 2px;
+}
 
 .kid-page-wrapper .link-accounts-input-line .link-accounts-input-value {
   width: 260px;
   margin: 0 12px;
+}
+.kid-page-wrapper .link-accounts-input-line .link-accounts-input-value:focus {
+  outline: none;
+  border: 2px solid #5ed9d1;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding-left: 5px;
+  padding-top: 2px;
 }
 
 .kid-page-wrapper .add-more {
@@ -598,6 +614,13 @@
   font-weight: 400;
 
   color: #211c52;
+}
+.select-nft-modal-search input:focus {
+  outline: none;
+  border: 2px solid #5ed9d1;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding-left: 13px;
 }
 
 .select-nft-modal-search input::placeholder {
