@@ -30,7 +30,7 @@ export default ({ nft }) => {
           {formatLongString(get(nftInfo, 'name'), 22)}
         </div>
         <div className="text-2xs tracking-finnieSpacing-wide text-warning">
-          {formatLongString(get(nft, 'collection')?.join(', '), 30)}
+          {formatLongString(get(nft, 'collection')?.join(', '), 22)}
         </div>
         {showViews && <div className="text-2xs tracking-finnieSpacing-wide text-turquoiseBlue">
           {get(nftInfo, 'totalViews') + ` views`}
