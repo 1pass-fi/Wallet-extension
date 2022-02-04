@@ -210,7 +210,12 @@ export default ({ children }) => {
       }
     }
 
+    const loadDID = async () => {
+      backgroundRequest.gallery.getDID({ address: newAddress })
+    }
+
     if (newAddress) {
+      loadDID()
       updateAccounts()
       dispatch(loadAllFriendReferralData())
     }

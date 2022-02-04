@@ -6,6 +6,7 @@ import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import fromStyleToCss from './fromStyleToCss'
+import { popupAccount } from 'services/account'
 
 export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
   const kidLinkPrefix = 'https://koii.id/'
@@ -80,7 +81,10 @@ export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
       const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
       let state, id
       try {
-        const result = await backgroundRequest.gallery.getDID({ address: defaultAccountAddress })
+        const account = await popupAccount.getAccount({ address: defaultAccountAddress })
+        let result = await account.get.didData()
+        if (isEmpty(result)) result = await backgroundRequest.gallery.getDID({ address: defaultAccountAddress })
+        else backgroundRequest.gallery.getDID({ address: defaultAccountAddress })
         state = result.state
   
         if (!isEmpty(state)) {
