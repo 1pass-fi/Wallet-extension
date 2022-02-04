@@ -111,7 +111,7 @@ const CollectionDetails = () => {
                   collection.title?.length > 45 ? 'text-base' : 'text-2xl'
                 )}
               >
-                {collection.title}
+                {collection.title || collection.name}
 
                 <div className="inline ml-1" data-tip={editButtonDataTip}>
                   <button
