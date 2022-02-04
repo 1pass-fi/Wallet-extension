@@ -373,7 +373,7 @@
 }
 
 .select-nft-profile-modal {
-  position: absolute;
+  position: fixed;
   width: 526px;
   margin: 0px auto auto 200px;
 
