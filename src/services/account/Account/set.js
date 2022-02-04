@@ -122,4 +122,8 @@ export class AccountSetter {
   async totalReward(value) {
     return await this.#accountStorage.setField(ACCOUNT.TOTAL_REWARD, value)
   }
+
+  async didData(value) {
+    return await this.#accountStorage.setField(ACCOUNT.DID_DATA, value)
+  }
 }

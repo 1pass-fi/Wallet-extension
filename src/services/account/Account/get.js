@@ -151,4 +151,8 @@ export class AccountGetter {
   async totalReward() {
     return await this.#accountStorage.getField(ACCOUNT.TOTAL_REWARD)
   }
+
+  async didData() {
+    return await this.#accountStorage.getField(ACCOUNT.DID_DATA) || {}
+  }
 }
