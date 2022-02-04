@@ -8,7 +8,7 @@ const accountSettingItems = [
   { text: 'Wallet Settings', path: '/settings/wallet' },
   { text: 'Security', path: '/settings/security' },
   { text: 'About', path: '/settings/about' },
-  { text: 'Need Help', path: '/settings/need-help' }
+  { text: 'Need Help?', path: '/settings/need-help' }
 ]
 
 const AccountSettings = React.forwardRef(({ className }, ref) => {

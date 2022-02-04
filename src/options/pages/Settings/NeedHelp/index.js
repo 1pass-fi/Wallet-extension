@@ -31,7 +31,7 @@ export default ({ version = '0.2.10' }) => {
             <div className="title">HAVE QUESTIONS?</div>
             <div className="description">
               Check out the &nbsp;
-              <a href="#" className="link">
+              <a href="https://koii.network/faq" target="_blank" rel="noopener" className="link">
                 FAQ page
               </a>
               &nbsp; for general questions.
