@@ -42,9 +42,13 @@ const NFTMedia = ({ contentType, source, showFull = false }) => {
   }
   if (includes(contentType, 'html')) {
     return (
-      <div className="w-full h-full relative">
+      <div className="w-full h-full relative flex items-center justify-center">
         <div className="w-full h-full absolute top-0 left-0 bg-transparent"></div>
-        <iframe className="w-full h-full rounded" frameBorder="0" src={source} />
+        <iframe
+          className={clsx('h-full rounded', showFull ? 'w-full' : 'w-37.75')}
+          frameBorder="0"
+          src={source}
+        />
       </div>
     )
   }
