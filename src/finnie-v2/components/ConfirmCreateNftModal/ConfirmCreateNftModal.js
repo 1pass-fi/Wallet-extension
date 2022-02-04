@@ -221,7 +221,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
           step === 3 && (
             <div className="relative w-full h-full text-center">
               <div className='w-112 text-sm mt-6'>
-                  Earn attention rewards forever through Koii. Copy this link and share on your favorite social platforms:
+                  Earn attention rewards forever through Koii. Copy this link and share on your favorite social platforms.
               </div>
               <div className='mt-6 text-base font-semibold'>
                 {showShareLink ? 'Share Link' : 'Embed Link'}

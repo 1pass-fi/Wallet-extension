@@ -8,6 +8,7 @@ import ToolTip from 'finnie-v2/components/ToolTip'
 import Button from 'finnie-v2/components/Button'
 import NavBar from 'finnie-v2/components/NavBar'
 import NFTMedia from 'finnie-v2/components/NFTMedia'
+import ShareNFTModal from './ShareNFTModal'
 
 import BlockIcon from 'img/v2/block-icon.svg'
 import LeaderboardIcon from 'img/v2/leaderboard-icon.svg'
@@ -29,8 +30,9 @@ const NFTDetail = () => {
 
   const [ownerImported, setOwnerImported] = useState(true)
   const [nft, setNft] = useState({})
+  const [showShareNFTModal, setShowShareNFTModal] = useState(false)
 
-  const { setShowExportModal, setShowShareModal, handleShareNFT, showViews, showEarnedKoi } = useContext(GalleryContext)
+  const { setShowExportModal, handleShareNFT, showViews, showEarnedKoi } = useContext(GalleryContext)
 
   useEffect(() => {
     const getNft = () => {
@@ -136,7 +138,7 @@ const NFTDetail = () => {
                       className="h-full w-7/12"
                       text="Share for Rewards"
                       onClick={() => {
-                        setShowShareModal({ show: true, txid: nft.txId })
+                        setShowShareNFTModal(true)
                       }}
                     />
                     <div
@@ -179,6 +181,9 @@ const NFTDetail = () => {
             </div>
           </div>
         </div>
+      )}
+      {showShareNFTModal && (
+        <ShareNFTModal txId={id} close={() => setShowShareNFTModal(false)} />
       )}
     </div>
   )

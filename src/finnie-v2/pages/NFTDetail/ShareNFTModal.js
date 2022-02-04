@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import Button from 'finnie-v2/components/Button'
-import { shareFriendCode } from 'options/helpers'
+import { createShareWindow } from 'options/helpers'
+import { PATH } from 'constants/koiConstants'
 
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import CopyIcon from 'img/v2/copy-icon-white.svg'
+import ShareIcon from 'img/v2/share-nft-icon.svg'
 
 import TwitterIcon from 'img/v2/share-modal-icons/twitter-icon.svg'
 import FacebookIcon from 'img/v2/share-modal-icons/facebook-icon.svg'
@@ -14,9 +16,13 @@ import LinkedIn from 'img/v2/share-modal-icons/linkedin-icon.svg'
 import MailIcon from 'img/v2/share-modal-icons/mail-icon.svg'
 import EmbedIcon from 'img/v2/share-modal-icons/embed-icon.svg'
 
-const ShareCodeModal = ({ code, close }) => {
+const ShareNFTModal = ({ txId, close }) => {
   const [isCopied, setIsCopied] = useState(false)
   const modalRef = useRef(null)
+  const [showEmbedLink, setShowEmbedLink] = useState(false)
+
+  const shareUrl = `${PATH.KOII_LIVE}/${txId}.html`
+  const embedUrl = `<iframe width="100%" src="https://koi.rocks/embed/${txId}" title="Koii NFT image" frameborder="0" allowfullscreen></iframe>`
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -34,7 +40,7 @@ const ShareCodeModal = ({ code, close }) => {
   return (
     <div className="w-full h-full flex items-center justify-center min-w-screen min-h-screen bg-black bg-opacity-25 fixed z-51 top-0 left-0">
       <div
-        style={{ width: '586px', height: '360px' }}
+        style={{ width: '586px' }}
         className="rounded bg-trueGray-100 flex flex-col items-center text-indigo"
         ref={modalRef}
       >
@@ -47,19 +53,31 @@ const ShareCodeModal = ({ code, close }) => {
           Earn attention rewards forever through Koii. Copy this link and share on your favorite
           social platforms.
         </div>
-        <div className="mt-4 text-base font-bold leading-7">Share Code</div>
-        <div
-          style={{ width: '386px', height: '32px' }}
-          className="flex items-center justify-center mt-1.5 mb-5 border-2 border-indigo text-sm tracking-finnieSpacing-tight text-center"
-        >
-          {code}
+        <div className="mt-4 text-base font-bold leading-7">
+          {showEmbedLink ? 'Embed Link' : 'Share Link'}
         </div>
+        {showEmbedLink ? (
+          <textarea
+            style={{ height: '92px', width: '386px' }}
+            className="flex items-center justify-center px-2 mt-1.5 mb-5 border-2 border-indigo text-sm tracking-finnieSpacing-tight"
+            disabled
+          >
+            {embedUrl}
+          </textarea>
+        ) : (
+          <div
+            style={{ height: '32px' }}
+            className="truncate hover:text-clip flex items-center justify-center px-2 mt-1.5 mb-5 border-2 border-indigo text-sm tracking-finnieSpacing-tight"
+          >
+            {shareUrl}
+          </div>
+        )}
 
-        <CopyToClipboard text={code}>
+        <CopyToClipboard text={showEmbedLink ? embedUrl : shareUrl}>
           <Button
             style={{ width: '200px', height: '40px' }}
             className="text-base font-semibold"
-            text={isCopied ? 'Copied' : 'Copy Code'}
+            text={isCopied ? 'Copied' : 'Copy Link'}
             variant="indigo"
             icon={CopyIcon}
             size={'md'}
@@ -67,28 +85,34 @@ const ShareCodeModal = ({ code, close }) => {
           />
         </CopyToClipboard>
 
-        <div className="flex w-77.25 m-auto mt-7.5 justify-between">
-          <div className="cursor-pointer" onClick={() => shareFriendCode(code, 'twitter')}>
+        <div className="flex w-77.25 m-auto mt-7.5 justify-between pb-8">
+          <div className="cursor-pointer" onClick={() => createShareWindow('twitter', txId)}>
             <TwitterIcon />
           </div>
-          <div className="cursor-pointer" onClick={() => shareFriendCode(code, 'facebook')}>
+          <div className="cursor-pointer" onClick={() => createShareWindow('facebook', txId)}>
             <FacebookIcon />
           </div>
-          {/* <div className="cursor-pointer" onClick={() => shareFriendCode(code, 'linkedin')}>
+          {/* <div className="cursor-pointer" onClick={() => createShareWindow('linkedin', txId)}>
             <LinkedIn />
           </div> */}
           <a
-            href={`mailto:?subject=Use my Koii Friend Referral code&body=Use my code to get 1 free NFT upload on koi.rocks: \n${code}`}
+            href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koii.live/content-detail/${txId}`}
             title="Share by Email"
           >
             <MailIcon />
           </a>
-          {/* <div className="cursor-pointer" onClick={() => {}}>
-            <EmbedIcon />
-          </div> */}
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              setShowEmbedLink((prev) => !prev)
+              setIsCopied(false)
+            }}
+          >
+            {showEmbedLink ? <ShareIcon /> : <EmbedIcon />}
+          </div>
         </div>
       </div>
     </div>
   )
 }
-export default ShareCodeModal
+export default ShareNFTModal
