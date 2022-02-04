@@ -10,6 +10,8 @@ import { getChromeStorage, setChromeStorage } from '../'
 import { PENDING_TRANSACTION_TYPE, PATH } from 'constants/koiConstants'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
 
+import storage from 'services/storage'
+
 /*
   Return nft ids of uploaded nfts
 */

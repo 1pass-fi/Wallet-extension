@@ -73,7 +73,7 @@ const ConfirmModal = ({
             customLabel=" "
             width="100%"
             height="8px"
-            borderRadius="0ox"
+            borderRadius="0px"
           />
         )}
         {step === 1 && (
