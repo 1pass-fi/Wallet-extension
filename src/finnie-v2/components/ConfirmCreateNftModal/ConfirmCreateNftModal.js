@@ -158,7 +158,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                 <div className="text-sm tracking-finnieSpacing-tight leading-5">
                   {formatLongStringTruncate(nftContent.description, 32)}
                 </div>
-                <div className="h-9 w-full flex flex-wrap gap-1 overflow-y-scroll">
+                <div className="max-h-9 w-full flex flex-wrap gap-1 overflow-y-scroll">
                   {tags.map((tag) => (
                     <div
                       key={tag}
