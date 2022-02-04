@@ -44,8 +44,8 @@ const ShareCodeModal = ({ code, close }) => {
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
         <div className="mt-7 w-115 text-sm tracking-finnieSpacing-tight text-center">
-          Earn attention rewards for ever through Koii. Copy this link and share on your favorite
-          social platforms:
+          Earn attention rewards forever through Koii. Copy this link and share on your favorite
+          social platforms.
         </div>
         <div className="mt-4 text-base font-bold leading-7">Share Code</div>
         <div
@@ -74,18 +74,18 @@ const ShareCodeModal = ({ code, close }) => {
           <div className="cursor-pointer" onClick={() => shareFriendCode(code, 'facebook')}>
             <FacebookIcon />
           </div>
-          <div className="cursor-pointer" onClick={() => shareFriendCode(code, 'linkedin')}>
+          {/* <div className="cursor-pointer" onClick={() => shareFriendCode(code, 'linkedin')}>
             <LinkedIn />
-          </div>
+          </div> */}
           <a
             href={`mailto:?subject=Use my Koii Friend Referral code&body=Use my code to get 1 free NFT upload on koi.rocks: \n${code}`}
             title="Share by Email"
           >
             <MailIcon />
           </a>
-          <div className="cursor-pointer" onClick={() => {}}>
+          {/* <div className="cursor-pointer" onClick={() => {}}>
             <EmbedIcon />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

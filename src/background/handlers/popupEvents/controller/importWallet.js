@@ -38,7 +38,7 @@ export default async (payload, next) => {
     if (type === TYPE.ETHEREUM) {
       if (isString(keyOrSeedphrase)) {
         const totalWords = keyOrSeedphrase.split(' ')
-        if (totalWords === 12) seedphrase = keyOrSeedphrase
+        if (totalWords.length === 12) seedphrase = keyOrSeedphrase
       }
     }
   

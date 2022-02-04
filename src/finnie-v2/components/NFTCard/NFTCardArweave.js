@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 import formatNumber from 'finnie-v2/utils/formatNumber'
@@ -7,8 +7,11 @@ import formatLongString from 'finnie-v2/utils/formatLongString'
 import NFTMedia from 'finnie-v2/components/NFTMedia'
 
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+import { GalleryContext } from 'options/galleryContext'
 
 const NFTCard = ({ nft }) => {
+  const { showViews, showEarnedKoi } = useContext(GalleryContext)
+
   return (
     <Link
       to={`/nfts/${nft.txId}`}
@@ -21,15 +24,15 @@ const NFTCard = ({ nft }) => {
         <div className="font-semibold text-xs tracking-finnieSpacing-wide">
           {formatLongString(nft.name, 22)}
         </div>
-        <div className="text-2xs font-light tracking-finnieSpacing-wide text-warning">
-          {formatLongString(nft.collection?.join(', '), 30)}
+        <div className="text-2xs tracking-finnieSpacing-wide text-warning">
+          {formatLongString(nft.collection?.join(', '), 22)}
         </div>
-        <div className="text-2xs tracking-finnieSpacing-wide text-turquoiseBlue">
+        {showViews && <div className="text-2xs tracking-finnieSpacing-wide text-turquoiseBlue">
           {nft.totalViews + ` views`}
-        </div>
-        <div className="text-2xs tracking-finnieSpacing-wide text-lightBlue">
+        </div>}
+        {showEarnedKoi && <div className="text-2xs tracking-finnieSpacing-wide text-lightBlue">
           {formatNumber(nft.earnedKoi, 2) + ` KOII earned`}
-        </div>
+        </div>}
       </div>
       <KoiiLogo className="absolute w-5 h-5 bottom-1.75 right-1.75" />
     </Link>

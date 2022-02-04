@@ -7,16 +7,16 @@ import DownIconWhite from 'img/v2/dropdown/down-icon-white.svg'
 
 const variants = {
   dark: {
-    wrapper: 'border border-white',
+    wrapper: 'border border-white bg-blue-800',
     header: 'border-b-white text-white bg-blue-800',
-    body: 'border border-white bg-blue-800 border-t-none',
-    row: 'hover:bg-white hover:bg-opacity-20'
+    body: 'border border-white bg-blue-800 ',
+    row: 'hover:bg-lightBlue hover:text-blue-600'
   },
   light: {
-    wrapper: 'border border-blue-800',
-    header: 'border-b-blue-800 text-blue-800 bg-white',
-    body: 'border border-blue-800 text-blue-800 bg-white border-t-none',
-    row: 'hover:bg-blue-800 hover:bg-opacity-20'
+    wrapper: 'border border-blue-800 bg-blue-600',
+    header: 'border-b-blue-800 text-white',
+    body: 'border border-blue-800 bg-blue-600 text-white',
+    row: 'hover:bg-lightBlue hover:text-blue-600'
   }
 }
 
@@ -24,12 +24,12 @@ const sizes = {
   sm: {
     wrapper: 'text-xs',
     header: 'h-5 pl-1',
-    row: 'pl-1 h-5'
+    row: 'pl-1 min-h-5'
   },
   lg: {
     wrapper: 'text-base',
     header: 'h-8 pl-2',
-    row: 'pl-2 h-8'
+    row: 'pl-2 min-h-8'
   }
 }
 
@@ -76,25 +76,20 @@ const DropDown = ({ options, value, onChange, variant = 'dark', size = 'lg' }) =
           variants[variant].header
         )}
       >
-        {find(options, { value }).label}
+        {find(options, { value })?.label || ''}
         <div
           className={clsx(
-            'absolute -right-0.25 top-0 flex items-center justify-center rounded-r-finnie',
-            size === 'lg' ? 'w-8 h-8' : 'w-5 h-5',
-            variant === 'light' ? 'bg-blue-800' : 'bg-white'
+            'absolute top-0 rounded-r-finnie flex items-center justify-center bg-white',
+            size === 'lg' ? 'w-8 h-8 -right-0.25' : 'w-5 h-5 right-0'
           )}
         >
-          {variant === 'light' ? (
-            <DownIconWhite className="h-1.75 w-3.25" />
-          ) : (
-            <DownIconBlue className="h-1.75 w-3.25" />
-          )}
+          <DownIconBlue className="h-1.75 w-3.25" />
         </div>
       </div>
       {listOpened && (
         <div
           className={clsx(
-            'z-50 absolute w-full max-h-36 flex flex-col overflow-y-auto rounded-b-finnie select-none',
+            'z-50 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none',
             variants[variant].body
           )}
         >

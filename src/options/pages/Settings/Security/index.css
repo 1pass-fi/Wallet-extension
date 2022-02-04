@@ -1,18 +1,20 @@
 .security-settings-wrapper * {
   box-sizing: border-box;
-  color: #ffffff;
 }
 
 .security-settings-wrapper {
   align-items: center;
   display: flex;
   justify-content: center;
+  max-width: 100%;
+  color: #ffffff;
 }
 
 .security-settings .header {
   font-size: 32px;
   line-height: 40px;
   margin-bottom: 40px;
+  color: #9be7c4;
 }
 
 .security-settings {
@@ -22,21 +24,29 @@
 .security-settings .content {
   padding-left: 20px;
 }
+.security-settings .content .backup-keyfile,
+.security-settings .content .backup-seedphrase {
+  border-bottom: 1px solid white;
+  padding-bottom: 36px;
+}
 
-.security-settings .content .backup-seedphrase .title,
-.security-settings .content .backup-keyfile .title {
+.security-settings .content .title,
+.security-settings .content .title {
   font-size: 16px;
   font-weight: 600;
   line-height: 32px;
+  text-transform: uppercase;
 }
 
-.security-settings .content .backup-seedphrase .description,
-.security-settings .content .backup-keyfile .description {
+.security-settings .content .description,
+.security-settings .content .description {
   font-size: 14px;
   line-height: 24px;
+  margin-bottom: 19px;
 }
 
-.security-settings .content .backup-keyfile {
+.security-settings .content .backup-keyfile,
+.security-settings .content .change-password {
   margin-top: 35px;
 }
 
@@ -47,13 +57,6 @@
   margin-top: 12px;
   width: 376px;
 }
-
-/* .security-settings .content .account[disabled] {
-  background: #ffffff;
-  cursor: unset;
-  pointer-events: none;
-  height: 36px;
-} */
 
 .security-settings .content .account {
   align-items: center;
@@ -90,4 +93,20 @@
   justify-self: flex-end;
   letter-spacing: 0.01em;
   line-height: 16px;
+}
+.security-settings .content .change-password button {
+  margin-top: 13px;
+  font-size: 14px;
+  line-height: 15px;
+  color: #171753;
+  text-align: center;
+
+  cursor: pointer;
+
+  height: 38px;
+  width: 219px;
+
+  border-radius: 2px;
+  background-color: #bef0ed;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
 }

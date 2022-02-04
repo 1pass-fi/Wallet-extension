@@ -29,7 +29,7 @@ import storage from 'services/storage'
 import arweave from 'services/arweave'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
-const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
+const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetState }) => {
   const estimateCostKOII = 1
 
   const { setError, setIsLoading, handleShareNFT, refreshNFTs } = useContext(GalleryContext)
@@ -77,7 +77,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
         imageId
       })
 
-      if (txId) setStep(2); setNftId(txId); refreshNFTs()
+      if (txId) setStep(2); setNftId(txId); refreshNFTs(); resetState()
       // set isLoading
       setIsLoading((prev) => --prev)
       setDisableCreateNFT(false)
@@ -158,7 +158,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
                 <div className="text-sm tracking-finnieSpacing-tight leading-5">
                   {formatLongStringTruncate(nftContent.description, 32)}
                 </div>
-                <div className="h-4 w-full flex flex-wrap gap-1 overflow-y-scroll">
+                <div className="max-h-9 w-full flex flex-wrap gap-1 overflow-y-scroll">
                   {tags.map((tag) => (
                     <div
                       key={tag}
@@ -194,23 +194,26 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
               <div className="font-semibold text-xl tracking-finnieSpacing-wide">
                 Your NFT is being created!
               </div>
-              <div className="font-light text-base">
-                It will take a few minutes to reflect on your wallet. In the meantime...
+              <div className="text-base">
+                It will take a few minutes to reflect on your wallet.
               </div>
+              {/* <div className="text-base">
+                It will take a few minutes to reflect on your wallet. In the meantime...
+              </div> */}
             </div>
             <div className='flex w-101 justify-between m-auto'>
-              <Button
+              {/* <Button
                 onClick={() => {close(); handleShareNFT(nftId)}}
                 className="h-10 mt-16 font-semibold text-base rounded w-43.75 mx-auto"
                 variant="indigo"
                 text="Transfer"
-              />
-              <Button
+              /> */}
+              {/* <Button
                 onClick={() => setStep(3)}
                 className="h-10 mt-16 font-semibold text-base rounded w-43.75 mx-auto"
                 variant="inversedIndigo"
                 text="Share"
-              />              
+              />               */}
             </div>
           </div>
         )}
@@ -218,7 +221,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
           step === 3 && (
             <div className="relative w-full h-full text-center">
               <div className='w-112 text-sm mt-6'>
-                  Earn attention rewards for ever through Koii. Copy this link and share on your favorite social platforms:
+                  Earn attention rewards forever through Koii. Copy this link and share on your favorite social platforms.
               </div>
               <div className='mt-6 text-base font-semibold'>
                 {showShareLink ? 'Share Link' : 'Embed Link'}
@@ -235,8 +238,13 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close }) => {
               <div className='flex w-77.25 m-auto mt-5 justify-between'>
                 <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.TWITTER, nftId)}><TwitterIcon /></div>
                 <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.FACEBOOK, nftId)}><FacebookIcon /></div>
-                <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.LINKEDIN, nftId)}><LinkedIn /></div>
-                <div className='cursor-pointer'><MailIcon /></div>
+                {/* <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.LINKEDIN, nftId)}><LinkedIn /></div> */}
+                <a
+                  href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koii.live/content-detail/${nftId}`}
+                  title="Share by Email"
+                >
+                  <div className='cursor-pointer'><MailIcon /></div>
+                </a>
                 <div onClick={() => setShowShareLink(prev => !prev)} className='cursor-pointer'>{showShareLink ? <EmbedIcon /> : <ShareIcon />}</div>
               </div>
             </div>

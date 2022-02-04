@@ -9,6 +9,7 @@ import { getChromeStorage, setChromeStorage } from '../'
 
 import { PENDING_TRANSACTION_TYPE, PATH } from 'constants/koiConstants'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
+import storage from 'services/storage'
 
 /*
   Return nft ids of uploaded nfts
@@ -22,9 +23,14 @@ export default async ({nfts, setNfts, address, collectionData, selectedNftIds}) 
 
   info = info.value
 
+  const ownerAddress = await storage.setting.get.activatedAccountAddress()
+
   let nftIds = await Promise.all(nfts.map(async ({ info, url }, index) => {
     try {
       const buffer = await getBufferFromUrl(url)
+      const createdAt = Math.floor(info?.createdAt / 1000)
+      info.ownerAddress = ownerAddress
+
       const transaction = await createTransaction(buffer, info)
       let price = await arweave.transactions.getPrice(buffer.byteLength)
       price = arweave.ar.winstonToAr(price)
@@ -76,7 +82,7 @@ export default async ({nfts, setNfts, address, collectionData, selectedNftIds}) 
         isRegistered: true,
         contentType: fileType,
         totalViews: 0,
-        createdAt: info.createdAt,
+        createdAt,
         pending: true,
         type: TYPE.ARWEAVE,
         expired: false,
@@ -110,8 +116,8 @@ const getBufferFromUrl = async (url) => {
 }
 
 const createTransaction = async (buffer, info) => {
-  const { isNSFW, ownerName, ownerAddress, title, description, tags, contentType, createdAt } = info
-
+  let { isNSFW, ownerName, ownerAddress, title, description, tags, contentType, createdAt } = info
+  createdAt = Math.floor(createdAt / 1000)
   try {
     const balances = { [ownerAddress]: 1 }
     const ticker = 'KOINFT'
@@ -182,4 +188,3 @@ const mockUploadNft = () => {
     }, time)
   })
 }
-

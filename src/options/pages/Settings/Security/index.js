@@ -1,38 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
-import EthereumIcon from 'img/ethereum-logo.svg'
 import { getDisplayAddress } from 'options/utils'
 import { getChromeStorage } from 'utils'
 import { STORAGE } from 'constants/koiConstants'
 import { getArAccounts } from 'options/selectors/accounts'
 
 import {
-  ExportBackupPhraseModal,
-  ExportBackupKeyFileModal,
-} from './ExportModal'
+  AccountManagementGetPhrase,
+  AccountManagementExportKey
+} from 'finnie-v2/components/AccountManagement'
 
 import './index.css'
-import { TYPE } from 'constants/accountConstants'
+import ChangePasswordModal from 'finnie-v2/components/Settings/Security/ChangePasswordModal'
+import ExportPrivateKeyModal from 'finnie-v2/components/Settings/Security/ExportPrivateKeyModal'
+import RecoveryPhraseModal from 'finnie-v2/components/Settings/Security/RecoveryPhraseModal'
 
 export default () => {
-  const [seedPhrase, setSeedPhrase] = useState('')
   const [hasSeedPhrase, setHasSeedPhrase] = useState(false)
 
-  const accounts = useSelector(state => state.accounts)
+  const accounts = useSelector((state) => state.accounts)
   const arAccounts = useSelector(getArAccounts)
 
-  const [
-    showExportBackupPhraseModal,
-    setShowExportBackupPhraseModal,
-  ] = useState(false)
+  const [showExportBackupPhraseModal, setShowExportBackupPhraseModal] = useState(false)
 
-  const [
-    showExportBackupKeyfileModal,
-    setShowExportBackupKeyfileModal,
-  ] = useState(false)
+  const [showExportBackupKeyfileModal, setShowExportBackupKeyfileModal] = useState(false)
+
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
 
   const [selectedAccount, setSelectedAccount] = useState()
 
@@ -44,103 +39,104 @@ export default () => {
 
     checkSeedPhrase()
   }, [])
-  
-  const onSeedPhraseClick = (account) => {
-    setSelectedAccount(account)
-    setShowExportBackupPhraseModal(true)
-  }
-
-  const onKeyFileClick = (account) => {
-    setSelectedAccount(account)
-    setShowExportBackupKeyfileModal(true)
-  }
 
   const closeModal = () => {
     setSelectedAccount({})
     setShowExportBackupKeyfileModal(false)
     setShowExportBackupPhraseModal(false)
+    setShowChangePasswordModal(false)
   }
 
   return (
-    <div className='security-settings-wrapper'>
-      <div
-        className='security-settings'
-        style={{
-          filter: `${
-            showExportBackupPhraseModal || showExportBackupKeyfileModal
-              ? 'blur(8px)'
-              : 'none'
-          }`,
-        }}
-      >
-        <div className='header'>Security Settings</div>
-        <div className='content'>
-          <div className='backup-seedphrase'>
-            <div className='title'>Get my Backup (seed) Phrase</div>
-            <div className='description'>
-              Select a wallet to see its recovery phrase.
+    <div className="security-settings-wrapper">
+      <div className="security-settings">
+        <div className="header">Security Settings</div>
+        <div className="content">
+          <div className="backup-seedphrase">
+            <div className="title">Get my Recovery Phrase</div>
+            <div className="description">
+              Select a wallet to see its recovery phrase (sometimes called a ‘seed phrase’).
             </div>
-            <div className='seedphrase'>
+            <AccountManagementGetPhrase
+              accounts={accounts}
+              setSelectedAccount={setSelectedAccount}
+              setShowExportBackupPhraseModal={setShowExportBackupPhraseModal}
+            />
+            {/* <div className="seedphrase">
               {accounts.map((account) => {
-                if (account.seedPhrase) return (
-                  <div
-                    key={account.id}
-                    className='account'
-                    onClick={() => onSeedPhraseClick(account)}
-                  >
-                    <div className='name-icon'>
-                      {account.type === TYPE.ARWEAVE && <div className='finnie-icon'><FinnieIcon /></div>}
-                      {account.type === TYPE.ETHEREUM && <div className='finnie-icon'><EthereumIcon /></div>}
-                      <div className='account-name'>{account.accountName}</div>
+                if (account.seedPhrase)
+                  return (
+                    <div
+                      key={account.id}
+                      className="account"
+                      onClick={() => onSeedPhraseClick(account)}
+                    >
+                      <div className="name-icon">
+                        {account.type === TYPE.ARWEAVE && (
+                          <div className="finnie-icon">
+                            <FinnieIcon />
+                          </div>
+                        )}
+                        {account.type === TYPE.ETHEREUM && (
+                          <div className="finnie-icon">
+                            <EthereumIcon />
+                          </div>
+                        )}
+                        <div className="account-name">{account.accountName}</div>
+                      </div>
+                      <div className="account-address">{getDisplayAddress(account.address)}</div>
                     </div>
-                    <div className='account-address'>
-                      {getDisplayAddress(account.address)}
-                    </div>
-                  </div>
-                )
+                  )
               })}
-            </div>
+            </div> */}
           </div>
 
-          <div className='backup-keyfile'>
-            <div className='title'>Export my Private Key</div>
-            <div className='description'>
-              Select a wallet to download its private key.
-            </div>
-            <div className='keyfile'>
+          <div className="backup-keyfile">
+            <div className="title">Export my Private Key</div>
+            <div className="description">Select an account to download the private key.</div>
+            <AccountManagementExportKey
+              accounts={accounts}
+              setSelectedAccount={setSelectedAccount}
+              setShowExportBackupKeyfileModal={setShowExportBackupKeyfileModal}
+            />
+            {/* <div className="keyfile">
               {arAccounts.map((account) => (
                 <div
                   key={account.address}
-                  className='account'
+                  className="account"
                   onClick={() => onKeyFileClick(account)}
                 >
-                  <div className='name-icon'>
-                    <FinnieIcon className='finnie-icon' />
-                    <div className='account-name'>{account.accountName}</div>
+                  <div className="name-icon">
+                    <FinnieIcon className="finnie-icon" />
+                    <div className="account-name">{account.accountName}</div>
                   </div>
-                  <div className='account-address'>
-                    {getDisplayAddress(account.address)}
-                  </div>
+                  <div className="account-address">{getDisplayAddress(account.address)}</div>
                 </div>
               ))}
-            </div>
+            </div> */}
+          </div>
+
+          <div className="change-password">
+            <div className="title">Change my password</div>
+            <button
+              className="update-password-btn"
+              onClick={() => setShowChangePasswordModal(true)}
+            >
+              Update Password
+            </button>
           </div>
         </div>
       </div>
 
       {showExportBackupPhraseModal && (
-        <ExportBackupPhraseModal
-          account={selectedAccount}
-          closeModal={closeModal}
-        />
+        <RecoveryPhraseModal account={selectedAccount} close={closeModal} />
       )}
 
       {showExportBackupKeyfileModal && (
-        <ExportBackupKeyFileModal
-          account={selectedAccount}
-          closeModal={closeModal}
-        />
+        <ExportPrivateKeyModal account={selectedAccount} close={closeModal} />
       )}
+
+      {showChangePasswordModal && <ChangePasswordModal close={closeModal} />}
     </div>
   )
 }

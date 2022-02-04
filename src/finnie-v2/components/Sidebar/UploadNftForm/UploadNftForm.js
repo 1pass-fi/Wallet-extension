@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useRef } from 'react'
 import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import initial from 'lodash/initial'
@@ -14,6 +14,8 @@ import NFTMedia from 'finnie-v2/components/NFTMedia'
 
 import formatLongString from 'finnie-v2/utils/formatLongString'
 import { getFileType } from 'finnie-v2/utils/getFileType'
+
+import './UploadNftForm.css'
 
 const UploadNftForm = () => {
   const [nftContent, setNftContent] = useState({
@@ -34,6 +36,8 @@ const UploadNftForm = () => {
   const [tags, setTags] = useState([])
   const [file, setFile] = useState({})
   const [showConfirmModal, setShowConfirmModal] = useState(false)
+
+  const titleFieldRef = useRef(null)
 
   const fileType = useMemo(() => getFileType(file), [file])
   const url = useMemo(() => {
@@ -77,13 +81,14 @@ const UploadNftForm = () => {
   }
 
   const validateForm = () => {
-    const keys = ['title', 'description', 'owner']
+    const keys = ['title', 'description']
     let isValid = true
 
     for (const key of keys) {
       if (isEmpty(nftContent[key])) {
         isValid = false
         setErrors((prev) => ({ ...prev, [key]: `${capitalize(key)} cannot be empty` }))
+        titleFieldRef.current.scrollIntoView()
       }
     }
 
@@ -91,6 +96,7 @@ const UploadNftForm = () => {
       isValid = false
       setErrors((prev) => ({ ...prev, file: 'Please select a file' }))
     }
+
 
     return isValid
   }
@@ -103,6 +109,9 @@ const UploadNftForm = () => {
 
   const closeConfirmModal = () => {
     setShowConfirmModal(false)
+  }
+
+  const resetState = () => {
     setNftContent({ title: '', owner: '', description: '', isNSFW: false })
     setTagInput('')
     setTags([])
@@ -112,24 +121,18 @@ const UploadNftForm = () => {
   return (
     <>
       <div className="flex flex-col px-4 pt-4 pb-8">
-        <InputField
-          className="my-1"
-          label="NFT Title"
-          value={nftContent.title}
-          setValue={handleNftContentChange}
-          required={true}
-          name="title"
-          error={errors.title}
-        />
-        <InputField
-          className="my-1"
-          label="Username"
-          value={nftContent.owner}
-          setValue={handleNftContentChange}
-          required={true}
-          name="owner"
-          error={errors.owner}
-        />
+        <div ref={titleFieldRef}>
+          <InputField
+            className="my-1"
+            label="NFT Title"
+            value={nftContent.title}
+            setValue={handleNftContentChange}
+            required={true}
+            name="title"
+            error={errors.title}
+            placeholder={'Find the perfect name'}
+          />
+        </div>
         <InputField
           className="my-1"
           label="Description"
@@ -139,24 +142,21 @@ const UploadNftForm = () => {
           type="textarea"
           name="description"
           error={errors.description}
+          placeholder={'Tell the world about this one'}
         />
         <div className="my-1 flex flex-col w-full">
           <label htmlFor="tags" className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
             Tags
           </label>
           <input
-            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white  px-1"
+            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 upload-nft-tag-input"
             name="tags"
-            placeholder="Tags,"
+            placeholder="Separate with a “,” and hit space bar"
             id="tags"
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
             onKeyUp={(e) => handleTagsKeyUp(e)}
           />
-
-          <div className="text-warning mt-1 uppercase text-3xs">
-            Separate with a “,” and hit space bar
-          </div>
         </div>
         <div className="max-h-19 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1 mb-5">
           {tags.map((tag) => (
@@ -211,7 +211,7 @@ const UploadNftForm = () => {
           onClick={handleCreateNFT}
           variant="light"
           text="Create NFT"
-          className="text-sm font-semibold"
+          className="text-sm"
         />
       </div>
       {showConfirmModal && (
@@ -221,6 +221,7 @@ const UploadNftForm = () => {
           fileType={fileType}
           url={url}
           close={closeConfirmModal}
+          resetState={resetState}
         />
       )}
     </>

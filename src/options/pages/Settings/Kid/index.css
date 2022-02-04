@@ -101,7 +101,6 @@
   height: 214px;
   width: 214px;
   border-radius: 50%;
-  z-index: 2;
 
   display: flex;
   justify-content: center;
@@ -130,6 +129,14 @@
 }
 
 /* ============= COVER ============== */
+.cover-desc {
+  margin-top: 18px;
+  text-align: center;
+}
+.cover-desc a {
+  text-decoration: underline;
+}
+
 .kid-page-wrapper .form-img .cover {
   position: relative;
 
@@ -150,7 +157,6 @@
   left: -1px;
   width: 270px;
   height: 165px;
-  z-index: 2;
   border-radius: 3px;
   display: flex;
   justify-content: center;
@@ -190,6 +196,14 @@
   font-size: 15px;
   font-weight: 400;
   letter-spacing: -0.01em;
+}
+.kid-page-wrapper .kid-input .kid-input-area-field:focus {
+  outline: none;
+  border: 2px solid #5ed9d1;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding-left: 6px;
+  padding-top: 6px;
 }
 
 .kid-page-wrapper .form-section .section-name {
@@ -235,10 +249,26 @@
 .kid-page-wrapper .link-accounts-input-line .link-accounts-input-name {
   width: 168px;
 }
+.kid-page-wrapper .link-accounts-input-line .link-accounts-input-name:focus {
+  outline: none;
+  border: 2px solid #5ed9d1;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding-left: 5px;
+  padding-top: 2px;
+}
 
 .kid-page-wrapper .link-accounts-input-line .link-accounts-input-value {
   width: 260px;
   margin: 0 12px;
+}
+.kid-page-wrapper .link-accounts-input-line .link-accounts-input-value:focus {
+  outline: none;
+  border: 2px solid #5ed9d1;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding-left: 5px;
+  padding-top: 2px;
 }
 
 .kid-page-wrapper .add-more {
@@ -343,13 +373,20 @@
 }
 
 .select-nft-profile-modal {
-  position: absolute;
+  position: fixed;
   width: 526px;
-  height: 504px;
   margin: 0px auto auto 200px;
 
   background: #353563;
   border-radius: 4px;
+}
+
+.select-nft-profile-modal .title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 32px;
+  margin-top: 16px;
+  text-align: center;
 }
 
 .select-nft-profile-modal .go-back-icon {
@@ -370,7 +407,7 @@
 .select-nft-profile-modal .nfts {
   max-height: 409px;
   width: 468px;
-  margin: 67px 40px;
+  margin: 60px 40px;
   overflow-y: scroll;
   display: grid;
   grid-template-columns: auto auto auto;
@@ -542,4 +579,57 @@
 .kid-input .kid-input-input-section {
   display: flex;
   flex-direction: column;
+}
+
+.kid-input__country {
+  width: 348px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 22px;
+}
+
+.kid-input__country__label {
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+
+.select-nft-modal-search {
+  position: relative;
+  width: 231px;
+
+  margin: 14px auto 0px auto;
+}
+
+.select-nft-modal-search input {
+  width: 100%;
+  height: 34px;
+
+  border-radius: 4px;
+
+  padding: 8px 40px 8px 13px;
+
+  font-size: 14px;
+  font-weight: 400;
+
+  color: #211c52;
+}
+.select-nft-modal-search input:focus {
+  outline: none;
+  border: 2px solid #5ed9d1;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding-left: 13px;
+}
+
+.select-nft-modal-search input::placeholder {
+  color: #211c52;
+}
+
+.select-nft-modal-search .magnifier-icon {
+  position: absolute;
+  width: 18px;
+  top: 8px;
+  right: 21px;
 }

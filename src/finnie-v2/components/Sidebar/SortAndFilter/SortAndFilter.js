@@ -10,6 +10,8 @@ import ToggleButton from 'finnie-v2/components/ToggleButton'
 
 import { SORT_TYPES } from 'options/actions/assets'
 
+import './SortAndFilter.css'
+
 const SortAndFilter = ({
   handleSearchFieldChange,
   handleSelectChains,
@@ -25,7 +27,7 @@ const SortAndFilter = ({
     <div>
       <div className="relative w-full">
         <input
-          className="w-full h-8.5 pl-3.5 pr-11.25 rounded-t text-indigo-900 font-light text-sm placeholder-current"
+          className="w-full h-8.5 pl-3.5 pr-11.25 rounded-t text-indigo-900 text-sm placeholder-current side-bar-search-field"
           placeholder={type === 'Gallery' ? 'Search NFTs' : 'Search Collections'}
           onChange={(e) => handleSearchFieldChange(e.target.value)}
         ></input>

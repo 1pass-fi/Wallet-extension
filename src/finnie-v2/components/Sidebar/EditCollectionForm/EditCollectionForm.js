@@ -6,10 +6,14 @@ import isEmpty from 'lodash/isEmpty'
 import initial from 'lodash/initial'
 import union from 'lodash/union'
 import get from 'lodash/get'
+import find from 'lodash/find'
 
 import CrossIcon from 'img/v2/cross-icon.svg'
+import PhotoIcon from 'img/v2/photo-icon.svg'
 
 import updateCollection from 'utils/createNfts/updateCollection'
+import arweave from 'services/arweave'
+import { popupAccount } from 'services/account'
 
 import InputField from 'finnie-v2/components/InputField'
 import Button from 'finnie-v2/components/Button'
@@ -22,17 +26,23 @@ import { GalleryContext } from 'options/galleryContext'
 
 import getCollectionByTxId from 'finnie-v2/selectors/getCollectionByTxid'
 
-const EditCollectionForm = () => {
-  const history = useHistory()
+import './EditCollectionForm.css'
 
-  const { editingCollectionId: collectionId } = useContext(GalleryContext)
-  const address = useSelector((state) => state.defaultAccount.address)
+const EditCollectionForm = () => {
+  const { editingCollectionId: collectionId, setError, selectedNftIds, setSelectedNftIds} = useContext(GalleryContext)
 
   const collection = useSelector(getCollectionByTxId(collectionId))
+  const _nfts = useSelector((state) => state.assets.nfts)
+  const collectionNfts = useSelector(state => state.assets.collectionNfts)
 
   const selectFiles = useRef(null)
 
-  const { selectedNftIds, setSelectedNftIds } = useContext(GalleryContext)
+  const address = useMemo(() => {
+    if (collection) {
+      return get(collection, 'owner')
+    }
+    return null
+  }, [])
 
   const [collectionInfo, setCollectionInfo] = useState({
     title: '',
@@ -133,23 +143,43 @@ const EditCollectionForm = () => {
   }
 
   const handleConfirmUpdateCollection = async () => {
-    const tempData = {
-      ...collectionInfo,
-      name: collectionInfo.title,
-      previewImageIndex: 0,
-      owner: address
+    try {
+      if (!address) throw new Error('Address not found')
+
+      let arPrice = await arweave.transactions.getPrice(filesSize) + 0.00004
+      arPrice = arweave.ar.winstonToAr(arPrice)
+      const koiPrice = nfts.length
+  
+      const account = await popupAccount.getAccount({ address })
+      const arBalance = await account.get.balance()
+      const koiBalance = await account.get.koiBalance()
+      
+      if (koiPrice > koiBalance) throw new Error('Not enough KOII')
+      if (arPrice > arBalance) throw new Error('Not enough AR')
+  
+      const tempData = {
+        ...collectionInfo,
+        name: collectionInfo.title,
+        previewImageIndex: 0,
+        owner: address
+      }
+  
+      delete tempData.isNSFW
+  
+      await updateCollection({
+        nfts,
+        setNfts,
+        address,
+        collectionData: tempData,
+        collectionId,
+        selectedNftIds
+      })
+    } catch (err) {
+      setError(err.message)
+      setShowingConfirmModal(false)
     }
 
-    delete tempData.isNSFW
-
-    await updateCollection({
-      nfts,
-      setNfts,
-      address,
-      collectionData: tempData,
-      collectionId,
-      selectedNftIds
-    })
+    setSelectedNftIds([])
   }
 
   const closeCreateModal = () => {
@@ -234,12 +264,13 @@ const EditCollectionForm = () => {
         />
         <InputField
           className="my-1"
-          label="Edit Title"
+          label="Edit Collection Title"
           value={collectionInfo.title}
           setValue={handleCollectionContentChange}
           required={true}
           name="title"
           error={errors.title}
+          placeholder={`Finnie’s Friends`}
         />
         <InputField
           className="my-1"
@@ -250,24 +281,21 @@ const EditCollectionForm = () => {
           type="textarea"
           name="description"
           error={errors.description}
+          placeholder={`When you’ve got friends like mine, the internet is a wonderful place to be.`}
         />
         <div className="my-1 flex flex-col w-full">
           <label htmlFor="tags" className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
             Edit Tags
           </label>
           <input
-            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white  px-1"
+            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 edit-collection-tag-input"
             name="tags"
-            placeholder="Tags,"
+            placeholder={`Separate with a “,” and hit space bar`}
             id="tags"
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
             onKeyUp={(e) => handleTagsKeyUp(e)}
           />
-
-          <div className="text-warning mt-1 uppercase text-3xs">
-            Separate with a “,” and hit space bar
-          </div>
         </div>
         <div className="max-h-19 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1 mb-5">
           {tags.map((tag) => (
@@ -298,7 +326,7 @@ const EditCollectionForm = () => {
           </div>
         </div>
         <div className="w-50 h-36.25 border border-dashed border-success rounded">
-          {isEmpty(files) ? (
+          {isEmpty(files) && isEmpty(selectedNftIds) ? (
             <DropFile
               files={files}
               setFiles={setFiles}
@@ -324,6 +352,15 @@ const EditCollectionForm = () => {
                 {files.map((file, index) => (
                   <li key={index} style={{ marginBottom: '5px' }}>{file.name}</li>
                 ))}
+                {selectedNftIds.map((id, index) => (
+                  <li key={index} style={{ marginBottom: '5px' }}>
+                    <div className='flex w-full justify-between'>
+                      <div className='w-28 truncate'>{find(_nfts, nft => nft.txId === id)?.name || find(collectionNfts, nft => nft.txId === id)?.name || id}</div>
+                      <div><PhotoIcon /></div>
+                    </div>
+                  </li>
+                ))
+                }
               </ul>
             </div>
           )}
@@ -333,7 +370,7 @@ const EditCollectionForm = () => {
           onClick={handleUpdateCollection}
           variant="light"
           text="Edit NFT Details"
-          className="text-sm font-semibold"
+          className="text-sm"
         />
       </div>
       {showCreateModal && (

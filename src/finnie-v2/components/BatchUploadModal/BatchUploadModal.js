@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { isEmpty } from 'lodash'
 
-
 import BackIcon from 'img/v2/back-icon.svg'
 import CheckMarkIcon from 'img/v2/check-mark-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-white.svg'
@@ -17,13 +16,13 @@ import { GalleryContext } from 'options/galleryContext'
 const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }) => {
   const { selectedNftIds, setSelectedNftIds } = useContext(GalleryContext)
 
-  const [nftLoadded, setNftLoaded] = useState(false) 
+  const [nftLoadded, setNftLoaded] = useState(false)
 
   const [currentNftIdx, setCurrentNftIdx] = useState(0)
   const [updateAll, setUpdateAll] = useState(false)
   const [error, setError] = useState([])
 
-  const assets = useSelector(state => state.assets)
+  const assets = useSelector((state) => state.assets)
 
   const [selectedNfts, setSelectedNfts] = useState([])
 
@@ -32,8 +31,8 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
   const [tagInputs, setTagInputs] = useState([])
 
   const getDataForSelectedNfts = () => {
-    let existingNfts = assets.nfts.filter(nft => selectedNftIds.includes(nft.txId))
-    existingNfts = existingNfts.map(nft => {
+    let existingNfts = assets.nfts.filter((nft) => selectedNftIds.includes(nft.txId))
+    existingNfts = existingNfts.map((nft) => {
       return {
         info: {
           isNSFW: false,
@@ -81,7 +80,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
     setError(newError)
 
     if (idx >= nfts.length) {
-      const index = idx - (nfts.length)
+      const index = idx - nfts.length
       newSelectedNftIds.splice(index, 1)
       setSelectedNftIds(newSelectedNftIds)
     } else {
@@ -116,13 +115,15 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
       for (const index in nfts) {
         const nft = nfts[index]
         if (!nft?.info?.title) {
-          if (!hadError) setCurrentNftIdx(index); hadError = true
+          if (!hadError) setCurrentNftIdx(index)
+          hadError = true
           validated = false
           newError[index].title = 'Title cannot be empty'
         }
 
         if (!nft?.info?.description) {
-          if (!hadError) setCurrentNftIdx(index); hadError = true
+          if (!hadError) setCurrentNftIdx(index)
+          hadError = true
           validated = false
           newError[index].description = 'Description cannot be empty'
         }
@@ -165,7 +166,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
             url
           }
         })
-  
+
         setNfts(nfts)
       }
 
@@ -188,88 +189,93 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
     initializeErrorMessage()
   }, [nftList])
 
+  const selectNft = (idx) => {
+    setUpdateAll(false)
+    setCurrentNftIdx(idx)
+  }
 
   return (
     <>
-    {nftLoadded &&
-      <div className="fixed top-0 left-0 z-51 w-screen h-screen flex items-center justify-center">
-        <div className="w-221.5 h-116.75 bg-blue-800 rounded shadow-md pt-3 px-4 relative select-none">
-          <div className="w-full flex justify-between">
-            <BackIcon className="w-9 h-9 cursor-pointer" />
-            <div onClick={close}>
-              <CloseIcon className="w-9 h-9 cursor-pointer" />
+      {nftLoadded && (
+        <div className="fixed top-0 left-0 z-51 w-screen h-screen flex items-center justify-center">
+          <div className="w-221.5 h-116.75 bg-blue-800 rounded shadow-md pt-3 px-4 relative select-none">
+            <div className="w-full flex justify-between">
+              <BackIcon onClick={close} className="w-9 h-9 cursor-pointer" />
+              <CloseIcon onClick={close} className="w-9 h-9 cursor-pointer" />
             </div>
-          </div>
-          <div className="flex w-full mt-4 items-center justify-between">
-            <div className="w-3.75">
-              {currentNftIdx !== 0 && (
-                <PreviousButton
-                  onClick={() => setCurrentNftIdx((prev) => prev - 1)}
-                  className=" h-6.75 cursor-pointer"
-                />
-              )}
-            </div>
-            <div className="flex">
-              <div className="w-66.75">
-                <UploadedFiles
-                  error={error}
-                  files={nftList}
-                  currentNftIdx={currentNftIdx}
-                  setCurrentNftIdx={setCurrentNftIdx}
-                  removeNft={removeNft}
-                />
+            <div className="flex w-full mt-4 items-center justify-between">
+              <div className="w-3.75">
+                {currentNftIdx !== 0 && (
+                  <PreviousButton
+                    onClick={() => selectNft(currentNftIdx - 1)}
+                    className=" h-6.75 cursor-pointer"
+                  />
+                )}
               </div>
-              <div className="ml-5.5">
-                <EditNftInfo
-                  error={error}
-                  setError={setError}
-                  currentNftIdx={currentNftIdx}
-                  nftInfo={nftList[currentNftIdx]?.info}
-                  file={nftList[currentNftIdx].file}
-                  updateNftInfo={updateNftInfo}
-                  tagInputs={tagInputs}
-                  setTagInputs={setTagInputs}
-                />
+              <div className="flex">
+                <div className="w-66.75">
+                  <UploadedFiles
+                    error={error}
+                    files={nftList}
+                    currentNftIdx={currentNftIdx}
+                    setCurrentNftIdx={setCurrentNftIdx}
+                    removeNft={removeNft}
+                    selectNft={selectNft}
+                  />
+                </div>
+                <div className="ml-5.5">
+                  <EditNftInfo
+                    error={error}
+                    setError={setError}
+                    currentNftIdx={currentNftIdx}
+                    nftInfo={nftList[currentNftIdx]?.info}
+                    file={nftList[currentNftIdx]?.file}
+                    updateNftInfo={updateNftInfo}
+                    tagInputs={tagInputs}
+                    setTagInputs={setTagInputs}
+                  />
+                </div>
+              </div>
+              <div className="w-3.75">
+                {currentNftIdx < nftList.length - 1 && (
+                  <NextButton
+                    onClick={() => {
+                      selectNft(currentNftIdx + 1)
+                    }}
+                    className="h-6.75 cursor-pointer"
+                  />
+                )}
               </div>
             </div>
-            <div className="w-3.75">
-              {currentNftIdx < nftList.length - 1 && (
-                <NextButton
-                  onClick={() => setCurrentNftIdx((prev) => prev + 1)}
-                  className="h-6.75 cursor-pointer"
-                />
-              )}
+            <Button
+              text="Save Changes"
+              className="mx-auto mt-6.5"
+              variant="light"
+              icon={CheckMarkIcon}
+              size="lg"
+              onClick={handleSaveChangesClick}
+            />
+
+            <div className="flex absolute cursor-pointer" style={{ left: '620px', bottom: '30px' }}>
+              <input
+                className="rounded-sm border border-success w-3.75 h-3.75"
+                name="applyNfts"
+                type="checkbox"
+                onChange={handleUpdateAll}
+                id="update-all"
+                checked={updateAll}
+              ></input>
+              <label
+                style={{ cursor: 'pointer' }}
+                htmlFor="update-all"
+                className="text-success ml-2 text-11px select-none w-55.5"
+              >
+                Apply these details (except the title) to all NFTs in this collection.
+              </label>
             </div>
-          </div>
-          <Button
-            text="Save Changes"
-            className="mx-auto mt-6.5"
-            variant="light"
-            icon={CheckMarkIcon}
-            size="lg"
-            onClick={handleSaveChangesClick}
-          />
-  
-          <div className="flex absolute cursor-pointer" style={{ left: '620px', bottom: '30px' }}>
-            <input
-              className="rounded-sm border border-success w-3.75 h-3.75"
-              name="applyNfts"
-              type="checkbox"
-              onChange={handleUpdateAll}
-              id="update-all"
-            ></input>
-            <label
-              style={{ cursor: 'pointer' }}
-              htmlFor="update-all"
-              className="text-success ml-2 text-11px select-none w-55.5"
-            >
-              Apply these details (except the title) to all NFTs in this collection.
-            </label>
           </div>
         </div>
-      </div>
-    }
-
+      )}
     </>
   )
 }

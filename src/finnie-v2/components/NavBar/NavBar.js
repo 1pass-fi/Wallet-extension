@@ -7,6 +7,7 @@ import Balance from 'finnie-v2/components/Balance'
 import DefaultAvatar from 'img/v2/default-avatar.svg'
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-white.svg'
 import NotificationIcon from 'img/v2/bell-icon.svg'
+import ArrowIcon from 'img/v2/settings/uparrow.svg'
 
 import AccountSettings from 'finnie-v2/components/AccountSettings'
 import ActivityCenterDropdown from 'finnie-v2/components/ActivityCenterDropdown'
@@ -78,11 +79,11 @@ const NavBar = () => {
           <NavLink to="/gallery">Gallery</NavLink>
         </nav>
         <nav className="ml-9 tracking-finnieSpacing-wider">
-          <NavLink to="/gallery/create-nft">Create</NavLink>
+          <NavLink to="/create-nft">Create</NavLink>
         </nav>
-        <nav className="ml-9 tracking-finnieSpacing-wider">
+        {/* <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/#">Address book</NavLink>
-        </nav>
+        </nav> */}
         <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/friend-referral">Refer a friend</NavLink>
         </nav>
@@ -122,10 +123,10 @@ const NavBar = () => {
             )}
           </div>
           {showDropdown && (
-            <AccountSettings
-              ref={dropdownRef}
-              className="absolute top-14 right-0 rounded shadow-2xl"
-            />
+            <div className="absolute top-14 right-0 rounded shadow-2xl">
+              <ArrowIcon className="absolute -top-2 right-2.5" />
+              <AccountSettings ref={dropdownRef} type="light" />
+            </div>
           )}
           {showNotificationsCenter && <ActivityCenterDropdown ref={notificationRef} />}
         </div>

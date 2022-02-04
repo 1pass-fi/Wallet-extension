@@ -3,15 +3,15 @@ import clsx from 'clsx'
 import { NavLink } from 'react-router-dom'
 
 const accountSettingItems = [
-  { text: 'Koii Identity (kID)', path: '/settings/kID' },
+  { text: 'Koii Identity (DID)', path: '/settings/kID' },
   { text: 'Gallery Settings', path: '/settings/gallery' },
   { text: 'Wallet Settings', path: '/settings/wallet' },
   { text: 'Security', path: '/settings/security' },
-  { text: 'Customization', path: '/settings/#', disabled: true },
-  { text: 'About', path: '/settings/about' }
+  { text: 'About', path: '/settings/about' },
+  { text: 'Need Help?', path: '/settings/need-help' }
 ]
 
-const AccountSettings = React.forwardRef(({ className }, ref) => {
+const AccountSettingsDark = React.forwardRef(({ className }, ref) => {
   return (
     <div
       ref={ref}
@@ -24,7 +24,7 @@ const AccountSettings = React.forwardRef(({ className }, ref) => {
         disabled ? (
           <div
             className={clsx(
-              'h-16 text-trueGray-500 cursor-default flex items-center',
+              'h-9.75 text-trueGray-500 cursor-default flex items-center',
               idx !== 0 && 'border-t-2 border-opacity-20 '
             )}
           >
@@ -34,7 +34,10 @@ const AccountSettings = React.forwardRef(({ className }, ref) => {
           <NavLink
             key={path}
             to={path}
-            className={clsx('h-16 flex items-center', idx !== 0 && 'border-t-2 border-opacity-20 ')}
+            className={clsx(
+              'h-9.75 flex items-center',
+              idx !== 0 && 'border-t-2 border-opacity-20 '
+            )}
             activeClassName="underline underline-offset-1"
           >
             {text}
@@ -45,4 +48,4 @@ const AccountSettings = React.forwardRef(({ className }, ref) => {
   )
 })
 
-export default AccountSettings
+export default AccountSettingsDark

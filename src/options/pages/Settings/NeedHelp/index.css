@@ -1,0 +1,76 @@
+.need-help-settings-wrapper * {
+  box-sizing: border-box;
+  color: #ffffff;
+  font-family: Sora;
+}
+
+.need-help-settings-wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+}
+
+.need-help-settings-wrapper .header {
+  font-size: 32px;
+  line-height: 40px;
+  margin-bottom: 40px;
+  color: #9be7c4;
+}
+
+.need-help-settings {
+  width: 802px;
+}
+
+.need-help-settings .items {
+  margin-top: 40px;
+}
+
+.need-help-settings .items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.need-help-settings .items .item {
+  margin-left: 40px;
+  border-bottom: 1px solid white;
+  padding-bottom: 18px;
+}
+
+.need-help-settings .items .item .title {
+  font-size: 16px;
+  font-weight: 600;
+  height: 32px;
+  line-height: 32px;
+  text-transform: uppercase;
+}
+
+.need-help-settings .items .item.version-notes {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.need-help-settings .items .item .version-note button {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 15px;
+  background-color: #bef0ed;
+  color: #171753;
+  border-radius: 2px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+  height: 38px;
+  width: 219px;
+  cursor: pointer;
+}
+
+.need-help-settings .items .item .description {
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.need-help-settings .items .item .link {
+  color: #9be7c4;
+  text-decoration: underline;
+}

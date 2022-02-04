@@ -2,10 +2,11 @@ import clsx from 'clsx'
 import React from 'react'
 
 import RemoveNFTIcon from 'img/v2/cross-icon-orange.svg'
+import PhotoIcon from 'img/v2/photo-icon.svg'
 
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
-const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft, error }) => {
+const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft, error, selectNft }) => {
   return (
     <>
       <div className="text-xl text-white">UPLOADED FILES</div>
@@ -16,17 +17,14 @@ const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft, erro
               currentNftIdx === idx && 'bg-trueGray-300 bg-opacity-20',
               !(error[idx]?.title === '' && error[idx]?.description === '') &&
                 'bg-red-finnie bg-opacity-20',
-              existingNft && 'bg-black bg-opacity-10',
-              'my-0.5 pl-1 cursor-pointer h-8 flex text-white items-center justify-between font-light text-xs tracking-finnieSpacing-wide pr-2.75'
+              'my-0.5 pl-1 cursor-pointer h-8 flex text-white items-center justify-between text-xs tracking-finnieSpacing-wide pr-2.75'
             )}
             key={idx}
           >
-            <span
-              onClick={() => setCurrentNftIdx(idx)}
-              className="h-full flex-grow flex items-center"
-            >
+            <span onClick={() => selectNft(idx)} className="h-full flex-grow flex items-center">
               {formatLongString(name, 25)}
             </span>
+            {existingNft && <div className='mr-2'><PhotoIcon /></div>}
             <RemoveNFTIcon
               onClick={() => {
                 // TODO - close modal when there is no item

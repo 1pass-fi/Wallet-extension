@@ -21,6 +21,7 @@ import ExpandIcon from 'img/share-icon.svg'
 import CloseIcon from 'img/ab-close-icon.svg'
 import GoBackIcon from 'img/goback-icon-26px.svg'
 import CloseIconBlue from 'img/close-icon-blue.svg'
+import MagnifierIcon from 'img/v2/magnifier-icon.svg'
 
 import parseCss from 'utils/parseCss'
 import { GalleryContext } from 'options/galleryContext'
@@ -38,6 +39,11 @@ import { NOTIFICATION, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
 import { popupAccount } from 'services/account'
 import { DidContext } from 'options/context'
+
+import DropDown from 'finnie-v2/components/DropDown'
+import Hint from 'finnie-v2/components/Hint'
+
+import countriesList from './countries.json'
 
 const KidPage = () => {
   const { setIsLoading, setError, setNotification } = useContext(GalleryContext)
@@ -70,9 +76,15 @@ const KidPage = () => {
     setCssTemplate
   } = useContext(DidContext)
 
+  const defaultAccount = useSelector((state) => state.defaultAccount)
+  const assets = useSelector((state) => state.assets.nfts)
+
   const [disableUpdateKID, setDisableUpdateKID] = useState(true)
   const [confirmed, setConfirmed] = useState(false)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
+
+  const [nftSearchText, setNftSearchText] = useState('')
+  const [filteredAssets, setFilteredAssets] = useState(assets)
 
   const [isPending, setIsPending] = useState(false)
   const [balance, koiBalance] = useSelector(getBalance)
@@ -86,8 +98,16 @@ const KidPage = () => {
 
   const kidLinkPrefix = 'https://koii.id/'
 
-  const assets = useSelector((state) => state.assets)
-  const defaultAccount = useSelector((state) => state.defaultAccount)
+  const onSearchNft = (e) => {
+    const text = e.target.value
+    setNftSearchText(text)
+
+    const matchedAssets = assets.filter((asset) =>
+      includes(asset.name?.toLowerCase(), text.toLowerCase())
+    )
+
+    setFilteredAssets(matchedAssets)
+  }
 
   const modalRef = useRef(null)
 
@@ -435,7 +455,7 @@ const KidPage = () => {
             <img className="profile-picture" src={profileSrc}></img>
           </div>
           <div className="avt-desc">
-            <Link to="/gallery/create-nft">Or create a new NFT</Link>
+            <Link to="/create-nft">Or create a new NFT</Link>
           </div>
           <div className="form-img__img-name">COVER IMAGE</div>
           <div className="cover">
@@ -450,52 +470,75 @@ const KidPage = () => {
             </div>
             <img className="profile-cover" src={bannerSrc} alt="profile-cover" />
           </div>
-          <div className="avt-desc">
-            Or select <Link to="/gallery/create-nft">an NFT</Link> to make it your profile picture
+          <div className="cover-desc">
+            Or create <Link to="/create-nft">an NFT</Link> to make it{' '}
+            <Hint
+              variant="white"
+              className="inline ml-0.5"
+              place="bottom"
+              text="For best results, your cover<br>image should be 1400x400px"
+            />{' '}
+            <br></br>
+            your cover image
           </div>
         </div>
 
-        <div className="form-text">
-          <KidInputField
-            label="kID"
-            isRequired={true}
-            value={kID}
-            setValue={onChangeUserInfo}
-            error={fieldError.kid}
-          />
-          <KidInputField
-            label="Name"
-            isRequired={true}
-            description="or pseudonym"
-            value={userKID.name}
-            setValue={onChangeUserInfo}
-            error={fieldError.name}
-          />
-          <KidInputField
-            label="Country"
-            isRequired={true}
-            value={userKID.country}
-            setValue={onChangeUserInfo}
-            error={fieldError.country}
-          />
-          <KidInputField
-            label="Pronouns"
-            isRequired={false}
-            example="For example: 'she/her' or 'they/them'"
-            value={userKID.pronouns}
-            setValue={onChangeUserInfo}
-          />
+        <div className="form-text" >
+          <div data-tip={isPending ? 'DID transactions pending' : ''}>
+            <KidInputField
+              label="kID"
+              isRequired={true}
+              value={kID}
+              setValue={onChangeUserInfo}
+              error={fieldError.kid}
+              disabled={isPending}
+            />
+          </div>
+          <div data-tip={isPending ? 'DID transactions pending' : ''}>
+            <KidInputField
+              label="Name"
+              isRequired={true}
+              description="or pseudonym"
+              value={userKID.name}
+              setValue={onChangeUserInfo}
+              error={fieldError.name}
+              disabled={isPending}
+            />
+          </div>
+          <div className="kid-input__country">
+            <div className="kid-input__country__label">Country*</div>
+            <DropDown
+              options={countriesList}
+              value={userKID.country}
+              variant="light"
+              onChange={(value) => {
+                setDisableUpdateKID(false)
+                setuserKID({ ...userKID, country: value })
+              }}
+            />
+          </div>
+          <div data-tip={isPending ? 'DID transactions pending' : ''}>
+            <KidInputField
+              label="Pronouns"
+              isRequired={false}
+              example="For example: 'she/her' or 'they/them'"
+              value={userKID.pronouns}
+              setValue={onChangeUserInfo}
+              disabled={isPending}
+            />            
+          </div>
           <div className="kid-input">
             <div className="kid-input-label-section">
               <label className="kid-input-label">Description*</label>
             </div>
-            <div className="kid-input-input-section">
+            <div className="kid-input-input-section" data-tip={isPending ? 'DID transactions pending' : ''}>
               <textarea
                 value={userKID.description}
                 onChange={(e) => onChangeUserInfo(e)}
                 name="description"
                 className="kid-input-area-field"
                 type="text"
+                disabled={isPending}
               />
               <span className="error">{fieldError.description}</span>
             </div>
@@ -613,7 +656,7 @@ const KidPage = () => {
             ))}
 
           <div className="save-kid-btn">
-            <div data-tip={isPending ? 'Transaction pending' : ''}>
+            <div data-tip={isPending ? 'DID transactions pending' : ''}>
               <Button
                 disabled={disableUpdateKID || isPending}
                 onClick={async () => {
@@ -632,8 +675,15 @@ const KidPage = () => {
           <div ref={modalRef} className="select-nft-profile-modal">
             <GoBackIcon onClick={close} className="go-back-icon" />
             <CloseIcon onClick={close} className="close-icon" />
+            <div className="title">
+              SELECT {modalType === 'AVATAR' ? 'PROFILE' : 'COVER'} PICTURE
+            </div>
+            <div className="select-nft-modal-search">
+              <input placeholder="Search NFTs" value={nftSearchText} onChange={onSearchNft} />
+              <MagnifierIcon className="magnifier-icon" />
+            </div>
             <div className="nfts">
-              {assets.nfts.map((nft) => {
+              {filteredAssets.map((nft) => {
                 if (includes(nft.contentType, 'image') && nft.type === TYPE.ARWEAVE)
                   return (
                     <div
@@ -703,6 +753,7 @@ const KidPage = () => {
           </div>
         )}
       </div>
+      <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
 }

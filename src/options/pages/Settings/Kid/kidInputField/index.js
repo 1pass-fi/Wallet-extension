@@ -1,10 +1,10 @@
 import React from 'react'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
-import ReactTooltip from 'react-tooltip'
 
 import toLower from 'lodash/toLower'
 
 import ShareIcon from 'img/share-icon-3.svg'
+
+import Hint from 'finnie-v2/components/Hint/Hint'
 
 import './index.css'
 
@@ -22,6 +22,13 @@ const KidInputField = ({
     <div className="kid-input">
       <div className="kid-input-label-section">
         <label className="kid-input-label">{`${label}${isRequired ? '*' : ''}`}</label>
+        {label === 'kID' && (
+          <Hint
+            className="inline ml-1.5 relative -top-4"
+            text="You can share your DID profile<br>with anyone using this URL."
+            variant="white"
+          />
+        )}
       </div>
       <div className="kid-input-input-section">
         <div className="field">
@@ -35,12 +42,9 @@ const KidInputField = ({
             disabled={disabled}
           />
           {label === 'kID' && (
-            <>
-              <CopyToClipboard text={`https://koii.id/${value}`}>
-                <ShareIcon data-tip="Copy" id="kid-share-icon" />
-              </CopyToClipboard>
-              <ReactTooltip />
-            </>
+            <a href={`https://koii.id/${value}`} target="_blank">
+              <ShareIcon id="kid-share-icon" />
+            </a>
           )}
         </div>
         <span className="description">{description}</span>
