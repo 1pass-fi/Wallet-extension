@@ -9,13 +9,12 @@ import { getChromeStorage, setChromeStorage } from '../'
 
 import { PENDING_TRANSACTION_TYPE, PATH } from 'constants/koiConstants'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
-
 import storage from 'services/storage'
 
 /*
   Return nft ids of uploaded nfts
 */
-export default async ({nfts, setNfts, address, collectionData, collectionId, selectedNftIds}) => {
+export default async ({nfts, setNfts, address, collectionData, selectedNftIds, collectionId}) => {
   nfts = [...nfts]
   const key = await request.gallery.getKey({address})
 
@@ -99,12 +98,18 @@ export default async ({nfts, setNfts, address, collectionData, collectionId, sel
 
   nftIds = [...nftIds, ...selectedNftIds]
 
-  // update collection
+  // create collection
   collectionData.collection = nftIds
 
   console.log('collectionData', collectionData)
-  const txId = await request.gallery.updateCollection({ collectionData, collectionId, address })
-  // const txId = 'collectionId'
+  let txId
+  if (collectionId) {
+    txId = await request.gallery.updateCollection({ collectionData, collectionId, address })
+    // txId = 'mocked-update-collection'
+  } else {
+    txId = await request.gallery.createNewCollection({ collectionData, address })
+    // txId = 'mocked-create-collection'
+  }
 
   // await mockUploadNft()
   return txId
@@ -119,7 +124,6 @@ const getBufferFromUrl = async (url) => {
 const createTransaction = async (buffer, info) => {
   let { isNSFW, ownerName, ownerAddress, title, description, tags, contentType, createdAt } = info
   createdAt = Math.floor(createdAt / 1000)
-
   try {
     const balances = { [ownerAddress]: 1 }
     const ticker = 'KOINFT'
@@ -157,6 +161,10 @@ const addTag = ({ transaction, contentType, initialState, isNSFW }) => {
   transaction.addTag('NSFW', isNSFW)
 }
 
+const registerData = async (koii, txId) => {
+  await koii.burnKoiAttention(txId)
+  await koii.migrateAttention()
+}
 
 const addPendingTransaction = async (address, transaction, isAsset) => {
   try {
@@ -175,11 +183,6 @@ const addPendingTransaction = async (address, transaction, isAsset) => {
   } catch (err) {
     console.error(err.message)
   }
-}
-
-const registerData = async (koii, txId) => {
-  await koii.burnKoiAttention(txId)
-  await koii.migrateAttention()
 }
 
 const mockUploadNft = () => {
