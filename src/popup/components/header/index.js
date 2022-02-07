@@ -30,7 +30,7 @@ const Header = ({ location, setError, koi, accounts }) => {
   const history = useHistory()
   /* istanbul ignore next */
   const onCreateNFTClick = () => {
-    const url = chrome.extension.getURL('options.html#/create')
+    const url = chrome.extension.getURL('options.html#/create-nft')
     chrome.tabs.create({ url })
   }
 
