@@ -98,6 +98,11 @@ const KidPage = () => {
 
   const kidLinkPrefix = 'https://koii.id/'
 
+  var urlExpression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/
+  var urlRegex = new RegExp(urlExpression)
+
+  const [linkAccountErrors, setLinkAccountErrors] = useState([])
+
   const onSearchNft = (e) => {
     const text = e.target.value
     setNftSearchText(text)
@@ -266,6 +271,24 @@ const KidPage = () => {
     setLinkAccounts(newLinkAccount)
   }
 
+  const validateLinkAccounts = () => {
+    let validLinkAccounts = true
+    let linkErrors = []
+    linkAccounts.forEach((linkAccount, idx) => {
+      linkErrors[idx] = ''
+      if (!linkAccount['link'].startsWith('http://') && !linkAccount['link'].startsWith('https://')){
+        linkErrors[idx] = 'Links must begin with https:// or http://'
+        validLinkAccounts = false
+      } else if(!urlRegex.test(linkAccount['link'])) {
+        linkErrors[idx] = 'That doesn\'t seem like a valid website. Please try again.'
+        validLinkAccounts = false
+      }
+    })
+
+    setLinkAccountErrors(linkErrors)
+    return validLinkAccounts
+  }
+
   const validateFields = async () => {
     setIsLoading((prev) => ++prev)
     // Validation
@@ -321,6 +344,12 @@ const KidPage = () => {
 
     if (!userKID.description) {
       setFieldError((prev) => ({ ...prev, description: 'Description field must be filled in' }))
+      setIsLoading((prev) => --prev)
+      setDisableUpdateKID(false)
+      return
+    }
+
+    if (!validateLinkAccounts()) {
       setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
       return
@@ -546,25 +575,30 @@ const KidPage = () => {
 
           <div className="section-name">Link Accounts</div>
           <p className="link-account-desc">
-            These links will appear on your kID link and your leaderboard profile
+            These links will appear on your DID profile. For best practice, each link should begin with https://
           </p>
           {linkAccounts.map((linkAccounts, idx) => (
-            <div className="link-accounts-input-line" key={idx}>
-              <input
-                className="link-accounts-input-name"
-                value={linkAccounts.title}
-                placeholder="Label e.g. “Website”"
-                onChange={(e) => handleChangeLinkAccountName(idx, e)}
-              />
-              <input
-                className="link-accounts-input-value"
-                value={linkAccounts.link}
-                placeholder="URL e.g. https://koii.network/"
-                onChange={(e) => handleChangeLinkAccountValue(idx, e)}
-              />
-              <div className="remove-logo" onClick={() => removeLinkAccount(idx)}>
-                <RemoveLinkAccount />
+            <div className="link-accounts-wrapper" key={idx}>
+              <div className="link-accounts-input-line">
+                <input
+                  className="link-accounts-input-name"
+                  value={linkAccounts.title}
+                  placeholder="Label e.g. “Website”"
+                  onChange={(e) => handleChangeLinkAccountName(idx, e)}
+                />
+                <input
+                  className="link-accounts-input-value"
+                  value={linkAccounts.link}
+                  placeholder="URL e.g. https://koii.network/"
+                  onChange={(e) => handleChangeLinkAccountValue(idx, e)}
+                />
+                <div className="remove-logo" onClick={() => removeLinkAccount(idx)}>
+                  <RemoveLinkAccount />
+                </div>
               </div>
+              <span className="link-accounts-error" style={{ color: 'red', marginTop: '5px' }}>
+                {linkAccountErrors[idx]}
+              </span>
             </div>
           ))}
           <div className="add-more" onClick={addLinkAccount}>
