@@ -98,8 +98,8 @@ const KidPage = () => {
 
   const kidLinkPrefix = 'https://koii.id/'
 
-  var urlExpression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/
-  var urlRegex = new RegExp(urlExpression)
+  const urlExpression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/i
+  const urlRegex = new RegExp(urlExpression)
 
   const [linkAccountErrors, setLinkAccountErrors] = useState([])
 
@@ -276,7 +276,7 @@ const KidPage = () => {
     let linkErrors = []
     linkAccounts.forEach((linkAccount, idx) => {
       linkErrors[idx] = ''
-      if (!linkAccount['link'].startsWith('http://') && !linkAccount['link'].startsWith('https://')){
+      if (!linkAccount['link'].toLowerCase().startsWith('http://') && !linkAccount['link'].toLowerCase().startsWith('https://')) {
         linkErrors[idx] = 'Links must begin with https:// or http://'
         validLinkAccounts = false
       } else if(!urlRegex.test(linkAccount['link'])) {
