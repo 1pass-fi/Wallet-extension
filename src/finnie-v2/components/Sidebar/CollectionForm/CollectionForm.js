@@ -5,15 +5,14 @@ import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import initial from 'lodash/initial'
 import union from 'lodash/union'
-import get from 'lodash/get'
 import find from 'lodash/find'
+import get from 'lodash/get'
 
 import CrossIcon from 'img/v2/cross-icon.svg'
+import AddIcon from 'img/v2/create-collection-form/add-icon.svg'
 import PhotoIcon from 'img/v2/photo-icon.svg'
 
-import updateCollection from 'utils/createNfts/updateCollection'
-import arweave from 'services/arweave'
-import { popupAccount } from 'services/account'
+import createOrUpdateCollection from 'utils/collectionHelper'
 
 import InputField from 'finnie-v2/components/InputField'
 import Button from 'finnie-v2/components/Button'
@@ -21,28 +20,25 @@ import BatchUploadModal from 'finnie-v2/components/BatchUploadModal'
 import DropFile from 'finnie-v2/components/DropFile'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
-import ConfirmModal  from './EditConfirmModal'
+import ConfirmModal from './ConfirmModal'
 import { GalleryContext } from 'options/galleryContext'
+import arweave from 'services/arweave'
+import { popupAccount } from 'services/account'
 
 import getCollectionByTxId from 'finnie-v2/selectors/getCollectionByTxid'
 
-import './EditCollectionForm.css'
+import './CollectionForm.css'
 
-const EditCollectionForm = () => {
-  const { editingCollectionId: collectionId, setError, selectedNftIds, setSelectedNftIds} = useContext(GalleryContext)
+const CollectionForm = ({ isUpdate }) => {
+  const history = useHistory()
+
+  const { selectedNftIds, setSelectedNftIds, editingCollectionId: collectionId, setError } = useContext(GalleryContext)
 
   const collection = useSelector(getCollectionByTxId(collectionId))
+  const address = useSelector((state) => state.defaultAccount.address)
   const _nfts = useSelector((state) => state.assets.nfts)
-  const collectionNfts = useSelector(state => state.assets.collectionNfts)
 
   const selectFiles = useRef(null)
-
-  const address = useMemo(() => {
-    if (collection) {
-      return get(collection, 'owner')
-    }
-    return null
-  }, [])
 
   const [collectionInfo, setCollectionInfo] = useState({
     title: '',
@@ -63,9 +59,8 @@ const EditCollectionForm = () => {
   const [tagInput, setTagInput] = useState('')
   const [tags, setTags] = useState([])
   const [files, setFiles] = useState([])
-  const [showCreateModal, setShowCreateModal] = useState(false)
+  const [showBatchUploadModal, setShowBatchUploadModal] = useState(false)
   const [showingConfirmModal, setShowingConfirmModal] = useState(false)
-
   const [nfts, setNfts] = useState([])
 
   const filesSize = useMemo(() => {
@@ -93,7 +88,7 @@ const EditCollectionForm = () => {
     setTagInput('')
     setTags([])
     setFiles([])
-    setShowCreateModal(false)
+    setShowBatchUploadModal(false)
     setNfts([])
   }
 
@@ -138,14 +133,14 @@ const EditCollectionForm = () => {
     return isValid
   }
 
-  const handleUpdateCollection = () => {
-    if (validateForm()) setShowCreateModal(true)
+  const openBatchModal = () => {
+    if (validateForm()) {
+      setShowBatchUploadModal(true)
+    }
   }
 
-  const handleConfirmUpdateCollection = async () => {
+  const handleConfirmCollection = async () => {
     try {
-      if (!address) throw new Error('Address not found')
-
       let arPrice = await arweave.transactions.getPrice(filesSize) + 0.00004
       arPrice = arweave.ar.winstonToAr(arPrice)
       const koiPrice = nfts.length
@@ -165,25 +160,25 @@ const EditCollectionForm = () => {
       }
   
       delete tempData.isNSFW
-  
-      await updateCollection({
+      await createOrUpdateCollection({
         nfts,
         setNfts,
         address,
         collectionData: tempData,
-        collectionId,
-        selectedNftIds
+        selectedNftIds,
+        collectionId: isUpdate ? collectionId : null
       })
+  
+      setSelectedNftIds([])
     } catch (err) {
+      console.error(err.message)
       setError(err.message)
       setShowingConfirmModal(false)
     }
-
-    setSelectedNftIds([])
   }
 
   const closeCreateModal = () => {
-    setShowCreateModal(false)
+    setShowBatchUploadModal(false)
   }
 
   const handleReselectFiles = () => {
@@ -210,32 +205,34 @@ const EditCollectionForm = () => {
 
   const confirmModalGoback = () => {
     setShowingConfirmModal(false)
-    setShowCreateModal(true)
+    setShowBatchUploadModal(true)
+  }
+
+  const openSelectNftModal = () => {
+    history.push('/collections/create/select-nft')
   }
 
   /* Load collection data */
   useEffect(() => {
-    if (!isEmpty(collection)) {
-      const name = get(collection, 'name')
-      const description = get(collection, 'description')
-      const tags = get(collection, 'tags') || []
-
-      const newCollectionInfo = {
-        ...collectionInfo,
-        title: name,
-        description,
-        tags
+    if (isUpdate) {
+      if (!isEmpty(collection)) {
+        const name = get(collection, 'name')
+        const description = get(collection, 'description')
+        const tags = get(collection, 'tags') || []
+    
+        const newCollectionInfo = {
+          ...collectionInfo,
+          title: name,
+          description,
+          tags
+        }
+    
+        setTags(tags)
+    
+        setCollectionInfo(newCollectionInfo)
       }
-
-      setTags(tags)
-
-      setCollectionInfo(newCollectionInfo)
     }
   }, [collection])
-
-  useEffect(() => {
-    setCollectionInfo(prev => ({...prev, tags}))
-  }, [tags])
 
   useEffect(() => {
     return () => {
@@ -252,6 +249,18 @@ const EditCollectionForm = () => {
     })
   }, [selectedNftIds])
 
+  const label = {
+    title: isUpdate ? 'Edit Collection Title' : 'Collection Title',
+    description: isUpdate ? 'Edit Description' : 'Description',
+    tags: 'tags'
+  }
+
+  const placeholder = {
+    title: `Finnie's Friends`,
+    description: `When you’ve got friends like mine, the internet is a wonderful place to be.`,
+    tags: `Separate with a “,” and hit space bar`
+  }
+
   return (
     <>
       <div className="flex flex-col px-4 pt-4 pb-8">
@@ -264,33 +273,33 @@ const EditCollectionForm = () => {
         />
         <InputField
           className="my-1"
-          label="Edit Collection Title"
+          label={label.title}
           value={collectionInfo.title}
           setValue={handleCollectionContentChange}
           required={true}
           name="title"
           error={errors.title}
-          placeholder={`Finnie’s Friends`}
+          placeholder={placeholder.title}
         />
         <InputField
           className="my-1"
-          label="Edit Description"
+          label={label.description}
           value={collectionInfo.description}
           setValue={handleCollectionContentChange}
           required={true}
           type="textarea"
           name="description"
           error={errors.description}
-          placeholder={`When you’ve got friends like mine, the internet is a wonderful place to be.`}
+          placeholder={placeholder.description}
         />
         <div className="my-1 flex flex-col w-full">
           <label htmlFor="tags" className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
-            Edit Tags
+            {label.tags}
           </label>
           <input
-            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 edit-collection-tag-input"
+            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 create-collection-tag-input"
             name="tags"
-            placeholder={`Separate with a “,” and hit space bar`}
+            placeholder={placeholder.tags}
             id="tags"
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
@@ -355,7 +364,7 @@ const EditCollectionForm = () => {
                 {selectedNftIds.map((id, index) => (
                   <li key={index} style={{ marginBottom: '5px' }}>
                     <div className='flex w-full justify-between'>
-                      <div className='w-28 truncate'>{find(_nfts, nft => nft.txId === id)?.name || find(collectionNfts, nft => nft.txId === id)?.name || id}</div>
+                      <div className='w-28 truncate'>{find(_nfts, nft => nft.txId === id)?.name}</div>
                       <div><PhotoIcon /></div>
                     </div>
                   </li>
@@ -366,14 +375,18 @@ const EditCollectionForm = () => {
           )}
         </div>
         <span className="text-3xs text-bittersweet-200 mb-4.25">{errors.files}</span>
+        {!isUpdate && <div onClick={openSelectNftModal} className='flex text-xs text-success w-full mb-3.5 cursor-pointer'>
+          <div className='w-4.5 h-4.5 mr-1.5'><AddIcon /></div>
+          Add from my existing NFTs
+        </div>}
         <Button
-          onClick={handleUpdateCollection}
+          onClick={openBatchModal}
           variant="light"
-          text="Edit NFT Details"
+          text="Add NFT Details"
           className="text-sm"
         />
       </div>
-      {showCreateModal && (
+      {showBatchUploadModal && (
         <BatchUploadModal
           nfts={nfts}
           setNfts={setNfts}
@@ -387,14 +400,15 @@ const EditCollectionForm = () => {
           numOfNfts={nfts.length}
           filesSize={filesSize}
           close={closeConfirmModal}
-          handleConfirmUpdateCollection={handleConfirmUpdateCollection}
+          handleConfirmCollection={handleConfirmCollection}
           goBack={confirmModalGoback}
           nfts={nfts}
           resetState={resetState}
+          isUpdate={isUpdate}
         />
       )}
     </>
   )
 }
 
-export default EditCollectionForm
+export default CollectionForm

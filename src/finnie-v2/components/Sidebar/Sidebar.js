@@ -7,8 +7,7 @@ import GalleryIcon from 'img/v2/gallery-icon.svg'
 import CollectionIcon from 'img/v2/collection-icon.svg'
 
 import UploadNftForm from './UploadNftForm'
-import CreateCollectionForm from './CreateCollectionForm'
-import EditCollectionForm from './EditCollectionForm'
+import CollectionForm from './CollectionForm'
 
 import { filterNft } from 'options/actions/assets'
 import { filterCollection } from 'options/actions/collections'
@@ -110,10 +109,10 @@ const Sidebar = () => {
               />
             </Route>
             <Route path="/collections/create">
-              <CreateCollectionForm />
+              <CollectionForm />
             </Route>
             <Route path="/collections/edit">
-              <EditCollectionForm />
+              <CollectionForm isUpdate={true}/>
             </Route>
             <Route exact path="/settings/*">
               <AccountSettings />
