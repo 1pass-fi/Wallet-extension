@@ -23,7 +23,7 @@ export default ({ version = '0.2.10' }) => {
               <a href="https://koii.me/featurerequest/" target="_blank" className="link">
                 request
               </a>
-              .
+              &nbsp; a feature.
             </div>
           </div>
 
