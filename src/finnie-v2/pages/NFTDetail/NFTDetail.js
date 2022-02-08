@@ -104,7 +104,7 @@ const NFTDetail = () => {
                     className="border-opacity-20"
                   />
                 </a>
-                <a href={`https://koi.rocks/`} target="_blank">
+                <a href={`https://koi.rocks/content-details/${nft.txId}`} target="_blank">
                   <Button
                     disabled={disabledFeatures}
                     icon={LeaderboardIcon}
