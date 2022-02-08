@@ -120,7 +120,7 @@ const ConfirmModal = ({
                 <Button
                   variant="inversedIndigo"
                   text="Cancel"
-                  className="tracking-wider py-3 rounded w-42.5 h-10 text-base mr-11"
+                  className="font-semibold tracking-wider py-3 rounded w-42.5 h-10 text-base mr-11"
                   onClick={close}
                   disabled={displayProgressBar}
                 />

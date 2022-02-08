@@ -103,6 +103,9 @@ const KidPage = () => {
 
   const [linkAccountErrors, setLinkAccountErrors] = useState([])
 
+  const kidInput = useRef(null)
+  const descriptionInput = useRef(null)
+
   const onSearchNft = (e) => {
     const text = e.target.value
     setNftSearchText(text)
@@ -298,6 +301,7 @@ const KidPage = () => {
       setFieldError((prev) => ({ ...prev, kid: 'kID field must be filled in' }))
       setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
+      kidInput.current.scrollIntoView()
       return
     }
 
@@ -325,6 +329,7 @@ const KidPage = () => {
       }))
       setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
+      kidInput.current.scrollIntoView()
       return
     }
 
@@ -332,6 +337,7 @@ const KidPage = () => {
       setFieldError((prev) => ({ ...prev, name: 'Name field must be filled in' }))
       setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
+      kidInput.current.scrollIntoView()
       return
     }
 
@@ -339,6 +345,7 @@ const KidPage = () => {
       setFieldError((prev) => ({ ...prev, country: 'Country field must be filled in' }))
       setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
+      kidInput.current.scrollIntoView()
       return
     }
 
@@ -346,12 +353,14 @@ const KidPage = () => {
       setFieldError((prev) => ({ ...prev, description: 'Description field must be filled in' }))
       setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
+      descriptionInput.current.scrollIntoView()
       return
     }
 
     if (!validateLinkAccounts()) {
       setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
+      descriptionInput.current.scrollIntoView()
       return
     }
 
@@ -458,7 +467,7 @@ const KidPage = () => {
 
   return (
     <div className="kid-page-wrapper">
-      <div className="title-section">
+      <div ref={kidInput} className="title-section">
         <div className="title-section__header-group">
           <IDCardIcon />
           <h2>Decentralized Identity</h2>
@@ -560,7 +569,7 @@ const KidPage = () => {
             <div className="kid-input-label-section">
               <label className="kid-input-label">Description*</label>
             </div>
-            <div className="kid-input-input-section" data-tip={isPending ? 'DID transactions pending' : ''}>
+            <div ref={descriptionInput} className="kid-input-input-section" data-tip={isPending ? 'DID transactions pending' : ''}>
               <textarea
                 value={userKID.description}
                 onChange={(e) => onChangeUserInfo(e)}

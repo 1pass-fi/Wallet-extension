@@ -39,6 +39,7 @@ const CollectionForm = ({ isUpdate }) => {
   const _nfts = useSelector((state) => state.assets.nfts)
 
   const selectFiles = useRef(null)
+  const titleField = useRef(null)
 
   const [collectionInfo, setCollectionInfo] = useState({
     title: '',
@@ -136,6 +137,8 @@ const CollectionForm = ({ isUpdate }) => {
   const openBatchModal = () => {
     if (validateForm()) {
       setShowBatchUploadModal(true)
+    } else {
+      titleField.current.scrollIntoView()
     }
   }
 
@@ -271,16 +274,18 @@ const CollectionForm = ({ isUpdate }) => {
           ref={selectFiles}
           onChange={(e) => setFiles(getFilesFromFileList(e))}
         />
-        <InputField
-          className="my-1"
-          label={label.title}
-          value={collectionInfo.title}
-          setValue={handleCollectionContentChange}
-          required={true}
-          name="title"
-          error={errors.title}
-          placeholder={placeholder.title}
-        />
+        <div ref={titleField}>
+          <InputField
+            className="my-1"
+            label={label.title}
+            value={collectionInfo.title}
+            setValue={handleCollectionContentChange}
+            required={true}
+            name="title"
+            error={errors.title}
+            placeholder={placeholder.title}
+          />
+        </div>
         <InputField
           className="my-1"
           label={label.description}
