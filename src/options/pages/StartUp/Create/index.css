@@ -59,6 +59,10 @@
   color: #5b5a5a;
 }
 
+.create-wallet .warning {
+  display: flex;
+  margin-top: 27px;
+}
 .create-wallet .warning-text {
   font-weight: 600;
   font-size: 14px;
@@ -66,9 +70,7 @@
   width: 365px;
   height: 36px;
   color: #ff4141;
-  display: inline-block;
   margin-left: 12px;
-  margin-top: 27px;
 }
 
 .create-wallet .seed-phrase-wrapper {
@@ -152,8 +154,6 @@
   display: flex;
   flex-wrap: wrap;
 }
-
-
 
 .create-wallet .selected-words-wrapper {
   margin: 13px;
