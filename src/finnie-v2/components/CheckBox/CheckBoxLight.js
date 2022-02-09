@@ -3,12 +3,13 @@ import React from 'react'
 
 import CheckIcon from 'img/v2/check-icon-white.svg'
 
-const CheckBox = ({ onClick, checked = false, ...props }) => {
+const CheckBoxLight = ({ onClick, checked = false, className, ...props }) => {
   return (
     <div
       className={clsx(
         'w-4 h-4 inline-block border border-blue-800 rounded-sm cursor-pointer shadow',
-        checked && 'bg-blue-600 flex justify-center items-center'
+        checked && 'bg-blue-600 flex justify-center items-center',
+        className
       )}
       onClick={onClick}
       {...props}
@@ -18,4 +19,4 @@ const CheckBox = ({ onClick, checked = false, ...props }) => {
   )
 }
 
-export default CheckBox
+export default CheckBoxLight
