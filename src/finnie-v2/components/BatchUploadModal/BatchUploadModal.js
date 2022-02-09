@@ -32,7 +32,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
   const [tagInputs, setTagInputs] = useState([])
 
   const getDataForSelectedNfts = () => {
-    let existingNfts = assets.nfts.filter((nft) => selectedNftIds.includes(nft.txId))
+    let existingNfts = [...assets.nfts, ...assets.collectionNfts].filter((nft) => selectedNftIds.includes(nft.txId))
     existingNfts = existingNfts.map((nft) => {
       return {
         info: {
@@ -73,6 +73,10 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
   }
 
   const removeNft = (idx) => {
+    if ([...nfts, ...selectedNftIds].length === 1) {
+      close()
+    }
+
     const newNfts = [...nfts]
     const newError = [...error]
     const newSelectedNftIds = [...selectedNftIds]

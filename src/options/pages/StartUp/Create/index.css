@@ -117,6 +117,8 @@
   vertical-align: middle;
   left: 15px;
   cursor: pointer;
+  display: flex;
+  align-items: center;  
 }
 
 .create-wallet .buttons {
