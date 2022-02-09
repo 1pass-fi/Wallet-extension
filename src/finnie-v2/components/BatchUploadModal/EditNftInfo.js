@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import initial from 'lodash/initial'
@@ -150,10 +151,13 @@ const EditNftInfo = ({
             />
 
             <div
-              style={{ cursor: 'pointer' }}
-              htmlFor="nsfw"
-              className="text-white ml-2 text-11px select-none"
-              onClick={() => handleNftContentNSFTChange(currentNftIdx)}
+              className={clsx(
+                'text-white ml-2 text-11px select-none cursor-pointer',
+                nftInfo.existingNft && 'cursor-not-allowed'
+              )}
+              onClick={
+                !nftInfo.existingNft ? () => handleNftContentNSFTChange(currentNftIdx) : () => {}
+              }
             >
               This content is <span className="text-warning">Explicit or 18+.</span>
             </div>
