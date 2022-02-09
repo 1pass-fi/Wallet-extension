@@ -26,18 +26,22 @@ export default ({ nft }) => {
         <NFTMedia contentType={get(nftInfo, 'contentType')} source={get(nftInfo, 'imageUrl')} />
       </div>
       <div className="pl-1.75 flex flex-col mt-3.75 gap-y-1">
-        <div className="font-semibold text-xs tracking-finnieSpacing-wide">
-          {formatLongString(get(nftInfo, 'name'), 22)}
+        <div className="font-semibold text-xs tracking-finnieSpacing-wide h-8 text-ellipsis overflow-hidden">
+          {get(nftInfo, 'name')}
         </div>
         <div className="text-2xs tracking-finnieSpacing-wide text-warning">
           {formatLongString(get(nft, 'collection')?.join(', '), 22)}
         </div>
-        {showViews && <div className="text-2xs tracking-finnieSpacing-wide text-turquoiseBlue">
-          {get(nftInfo, 'totalViews') + ` views`}
-        </div>}
-        {showEarnedKoi && <div className="text-2xs tracking-finnieSpacing-wide text-lightBlue">
-          {formatNumber(get(nftInfo, 'earnedKoi'), 2) + ` KOII earned`}
-        </div>}
+        {showViews && (
+          <div className="text-2xs tracking-finnieSpacing-wide text-turquoiseBlue">
+            {get(nftInfo, 'totalViews') + ` views`}
+          </div>
+        )}
+        {showEarnedKoi && (
+          <div className="text-2xs tracking-finnieSpacing-wide text-lightBlue">
+            {formatNumber(get(nftInfo, 'earnedKoi'), 2) + ` KOII earned`}
+          </div>
+        )}
       </div>
       <KoiiLogo className="absolute w-5 h-5 bottom-1.75 right-1.75" />
     </Link>
