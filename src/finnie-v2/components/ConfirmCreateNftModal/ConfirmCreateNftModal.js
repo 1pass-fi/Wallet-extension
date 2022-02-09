@@ -85,7 +85,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
         imageId
       })
 
-      if (txId) setStep(2); setNftId(txId); refreshNFTs(); resetState()
+      if (txId) setStep(2); setNftId(txId); resetState()
       // set isLoading
       setIsLoading((prev) => --prev)
       setDisableCreateNFT(false)
