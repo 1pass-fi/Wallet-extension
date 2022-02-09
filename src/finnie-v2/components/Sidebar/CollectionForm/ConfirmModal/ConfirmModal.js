@@ -120,14 +120,14 @@ const ConfirmModal = ({
                 <Button
                   variant="inversedIndigo"
                   text="Cancel"
-                  className="font-semibold tracking-wider py-3 rounded w-42.5 h-10 text-base mr-11"
+                  className="tracking-wider py-3 rounded w-42.5 h-10 text-base mr-11"
                   onClick={close}
                   disabled={displayProgressBar}
                 />
                 <Button
                   variant="indigo"
                   text={isUpdate ? 'Update' : 'Confirm'}
-                  className="tracking-wider py-3 rounded w-42.5 h-10 text-base"
+                  className="font-semibold tracking-wider py-3 rounded w-42.5 h-10 text-base"
                   onClick={() => {
                     confirmCollection()
                     setDisplayProgressBar(true)
