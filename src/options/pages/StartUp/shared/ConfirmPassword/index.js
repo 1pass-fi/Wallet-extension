@@ -3,6 +3,8 @@ import isEmpty from 'lodash/isEmpty'
 
 import { URL } from 'constants/koiConstants'
 
+import CheckBox from 'finnie-v2/components/CheckBox'
+
 import InputField from '../InputField'
 import './index.css'
 
@@ -78,7 +80,7 @@ export default ({ setPassword, showError }) => {
           className="w-3.75 h-3.75"
         />
         <div className="term-of-service-text">
-          <label htmlFor="term-of-service">I agree with the&nbsp;</label>
+          <div onClick={() => setIsAcceptTermService((prev) => !prev)}>I agree with the&nbsp;</div>
           <a target="_blank" href={URL.TERM_OF_SERVICE} className="link">
             Terms of Service
           </a>
