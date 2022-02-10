@@ -17,8 +17,8 @@ const NFTCard = ({ nft }) => {
         <NFTMedia contentType={nft.contentType} source={nft.imageUrl} />
       </div>
       <div className="pl-1.75 flex flex-col mt-3.75 gap-y-1">
-        <div className="font-semibold text-xs tracking-finnieSpacing-wide">
-          {formatLongString(nft.name, 22)}
+        <div className="font-semibold text-xs tracking-finnieSpacing-wide h-8 text-ellipsis overflow-hidden">
+          {nft.name}
         </div>
         {/* <div className="text-2xs tracking-finnieSpacing-wide text-warning">Category</div> */}
       </div>

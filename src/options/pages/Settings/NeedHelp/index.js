@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 
 import './index.css'
 
-export default ({ version = '0.2.10' }) => {
+export default ({ version = '0.3.0' }) => {
   const { setShowWelcome } = useContext(GalleryContext)
 
   return (
@@ -23,7 +23,7 @@ export default ({ version = '0.2.10' }) => {
               <a href="https://koii.me/featurerequest/" target="_blank" className="link">
                 request
               </a>
-              .
+              &nbsp; a feature.
             </div>
           </div>
 

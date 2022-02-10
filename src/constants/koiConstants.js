@@ -483,7 +483,7 @@ export const PENDING_TRANSACTION_TYPE = {
 }
 
 export const DID_CONTRACT_ID = {
-  REACT_APP: 'dhhcBicSD-5EgpWIvA47rjcc_dK7FXXVsUW9YBUT6zg',
+  REACT_APP: 'bnqaesZHMO_tzIzeGdOnIUv6kxDQOIvGQlbQQ1ForZ0',
   CONTRACT_SRC: 'ksif9_PVstOS7PHB9gRXfYr_WqvogzGdSctt23rr2Eo',
   KID_CONTRACT: 'k3R7xJfWMdKuqBWHxo5N6Wye_xcPJjZ5cmaBXOkKGeQ'
 }
@@ -497,3 +497,4 @@ export const SOCIAL_NETWORKS = {
 }
 
 export const COLLECTION_CONTRACT_SRC = 'ClhqZ72XVD1g4ycDpRkSuTUtgBiNWr1JHaEdi2bg5CI'
+export const NFT_CONTRACT_SRC = '14l2t0DtenMRKPasR6Xi3pmQm3rqopD4cUr6Q5oD8lc'

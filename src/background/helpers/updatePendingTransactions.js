@@ -4,13 +4,17 @@ import { includes, get } from 'lodash'
 import { backgroundAccount } from 'services/account'
 
 // Constants
-import { MAX_RETRIED, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
+import { MAX_RETRIED, MESSAGES, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 
 // Utils
 import showNotification from 'utils/notifications'
 import axios from 'axios'
 import helpers from 'options/actions/helpers'
 import did from './did'
+
+import cache from 'background/cache'
+import sendMessageToPorts from './sendMessageToPorts'
+import storage from 'services/storage'
 
 
 export default async () => {
@@ -71,9 +75,16 @@ export default async () => {
     
           if (confirmed) {
             console.log('Transaction confirmed', transaction)
-            showNotification({
-              title: `Transaction confirmed`,
-              message: `Your transaction ${transaction.activityName} has been confirmed`
+            const message = { title: `Transaction confirmed`, message: `Your transaction ${transaction.activityName} has been confirmed`, txId: transaction.id, new: true }
+            showNotification(message)
+
+            const notifications = await storage.generic.get.pushNotification()
+            notifications.unshift(message)
+            await storage.generic.set.pushNotification(notifications)
+
+            sendMessageToPorts(cache.getPopupPorts())({ 
+              type: MESSAGES.PUSH_NOTIFICATIONS,
+              payload: message
             })
 
             if (get(transaction, 'transactionType') === PENDING_TRANSACTION_TYPE.CREATE_DID_DATA) {

@@ -9,6 +9,7 @@ import CrossIcon from 'img/v2/cross-icon.svg'
 import InputField from 'finnie-v2/components/InputField'
 import Button from 'finnie-v2/components/Button'
 import ConfirmCreateNftModal from 'finnie-v2/components/ConfirmCreateNftModal'
+import CheckBox from 'finnie-v2/components/CheckBox'
 import DropFile from 'finnie-v2/components/DropFile'
 import NFTMedia from 'finnie-v2/components/NFTMedia'
 
@@ -97,7 +98,6 @@ const UploadNftForm = () => {
       setErrors((prev) => ({ ...prev, file: 'Please select a file' }))
     }
 
-
     return isValid
   }
 
@@ -172,13 +172,12 @@ const UploadNftForm = () => {
         </div>
 
         <div className="flex mb-4 cursor-pointer">
-          <input
-            className="rounded-sm border border-white w-3.75 h-3.75"
-            name="isNSFW"
-            type="checkbox"
+          <CheckBox
             checked={nftContent.isNSFW}
-            onChange={() => setNftContent((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
-          ></input>
+            onClick={() => setNftContent((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
+            theme="dark"
+            className="w-3.75 h-3.75"
+          />
           <div
             className="text-white ml-2 text-11px select-none"
             onClick={() => setNftContent((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
@@ -207,12 +206,7 @@ const UploadNftForm = () => {
         )}
         <span className="text-3xs text-bittersweet-200 mb-4.25">{errors.file}</span>
 
-        <Button
-          onClick={handleCreateNFT}
-          variant="light"
-          text="Create NFT"
-          className="text-sm"
-        />
+        <Button onClick={handleCreateNFT} variant="light" text="Create NFT" className="text-sm" />
       </div>
       {showConfirmModal && (
         <ConfirmCreateNftModal

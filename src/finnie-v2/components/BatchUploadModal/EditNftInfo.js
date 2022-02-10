@@ -1,8 +1,10 @@
+import clsx from 'clsx'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import initial from 'lodash/initial'
 import union from 'lodash/union'
 
+import CheckBox from 'finnie-v2/components/CheckBox'
 import NFTMedia from 'finnie-v2/components/NFTMedia'
 import InputField from 'finnie-v2/components/InputField'
 import formatLongString from 'finnie-v2/utils/formatLongString'
@@ -34,11 +36,16 @@ const EditNftInfo = ({
       setError(newError)
     }
 
-    if (e.target.name === 'isNSFW')
-      updatedNftDetail = { ...updatedNftDetail, [e.target.name]: e.target.checked }
-    else updatedNftDetail = { ...updatedNftDetail, [e.target.name]: e.target.value }
+    updatedNftDetail = { ...updatedNftDetail, [e.target.name]: e.target.value }
 
     setNftDetail(updatedNftDetail)
+    updateNftInfo(idx, updatedNftDetail)
+  }
+
+  const handleNftContentNSFTChange = (idx) => {
+    const updatedNftDetail = { ...nftDetail, isNSFW: !nftDetail.isNSFW }
+    setNftDetail(updatedNftDetail)
+
     updateNftInfo(idx, updatedNftDetail)
   }
 
@@ -68,7 +75,7 @@ const EditNftInfo = ({
     }
   }
 
-  return (  
+  return (
     <>
       <div className="text-xl text-white">EDIT NFT INFO:</div>
       <div className="flex mt-4">
@@ -135,22 +142,25 @@ const EditNftInfo = ({
           </div>
 
           <div className="flex cursor-pointer">
-            <input
-              className="rounded-sm border border-white w-3.75 h-3.75"
-              name="isNSFW"
-              type="checkbox"
-              id="nsfw"
+            <CheckBox
               checked={nftDetail.isNSFW}
-              onChange={(e) => handleNftContentChange(e, currentNftIdx)}
+              onClick={() => handleNftContentNSFTChange(currentNftIdx)}
               disabled={nftInfo.existingNft}
-            ></input>
-            <label
-              style={{ cursor: 'pointer' }}
-              htmlFor="nsfw"
-              className="text-white ml-2 text-11px select-none"
+              className="w-3.75 h-3.75"
+              theme="dark"
+            />
+
+            <div
+              className={clsx(
+                'text-white ml-2 text-11px select-none cursor-pointer',
+                nftInfo.existingNft && 'cursor-not-allowed'
+              )}
+              onClick={
+                !nftInfo.existingNft ? () => handleNftContentNSFTChange(currentNftIdx) : () => {}
+              }
             >
               This content is <span className="text-warning">Explicit or 18+.</span>
-            </label>
+            </div>
           </div>
         </div>
       </div>

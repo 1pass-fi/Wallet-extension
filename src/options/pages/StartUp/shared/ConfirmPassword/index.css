@@ -36,6 +36,11 @@
   width: 100%;
   user-select: none;
 }
+.term-of-service .term-of-service-text {
+  display: flex;
+  margin-left: 8px;
+  cursor: pointer;
+}
 
 .term-of-service .checkbox {
   cursor: pointer;

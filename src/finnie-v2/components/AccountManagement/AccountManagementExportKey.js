@@ -7,7 +7,7 @@ import formatLongString from 'finnie-v2/utils/formatLongString'
 import ArLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 
-import CheckBox from './CheckBox'
+import CheckBox from 'finnie-v2/components/CheckBox'
 
 const tabs = ['AR', 'ETH']
 

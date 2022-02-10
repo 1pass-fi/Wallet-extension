@@ -85,7 +85,7 @@ export default ({ setError, setModalStates, setNotification, setIsLoading, }) =>
               return assets.nfts.every(prevNft => nft.txId !== prevNft.txId)
             })
 
-            dispatch(setAssets({ nfts: [...assets.nfts, ...pendingAssets] }))
+            dispatch(setAssets({ nfts: [...assets.nfts, ...pendingAssets], filteredNfts: [...assets.nfts, ...pendingAssets] }))
 
             setIsLoading(prev => --prev)
             setModalStates.setShowUploadingModal(false)

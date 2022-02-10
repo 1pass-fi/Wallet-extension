@@ -98,6 +98,14 @@ const KidPage = () => {
 
   const kidLinkPrefix = 'https://koii.id/'
 
+  const urlExpression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/i
+  const urlRegex = new RegExp(urlExpression)
+
+  const [linkAccountErrors, setLinkAccountErrors] = useState([])
+
+  const kidInput = useRef(null)
+  const descriptionInput = useRef(null)
+
   const onSearchNft = (e) => {
     const text = e.target.value
     setNftSearchText(text)
@@ -266,6 +274,24 @@ const KidPage = () => {
     setLinkAccounts(newLinkAccount)
   }
 
+  const validateLinkAccounts = () => {
+    let validLinkAccounts = true
+    let linkErrors = []
+    linkAccounts.forEach((linkAccount, idx) => {
+      linkErrors[idx] = ''
+      if (!linkAccount['link'].toLowerCase().startsWith('http://') && !linkAccount['link'].toLowerCase().startsWith('https://')) {
+        linkErrors[idx] = 'Links must begin with https:// or http://'
+        validLinkAccounts = false
+      } else if(!urlRegex.test(linkAccount['link'])) {
+        linkErrors[idx] = 'That doesn\'t seem like a valid website. Please try again.'
+        validLinkAccounts = false
+      }
+    })
+
+    setLinkAccountErrors(linkErrors)
+    return validLinkAccounts
+  }
+
   const validateFields = async () => {
     setIsLoading((prev) => ++prev)
     // Validation
@@ -275,6 +301,7 @@ const KidPage = () => {
       setFieldError((prev) => ({ ...prev, kid: 'kID field must be filled in' }))
       setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
+      kidInput.current.scrollIntoView()
       return
     }
 
@@ -302,6 +329,7 @@ const KidPage = () => {
       }))
       setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
+      kidInput.current.scrollIntoView()
       return
     }
 
@@ -309,6 +337,7 @@ const KidPage = () => {
       setFieldError((prev) => ({ ...prev, name: 'Name field must be filled in' }))
       setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
+      kidInput.current.scrollIntoView()
       return
     }
 
@@ -316,6 +345,7 @@ const KidPage = () => {
       setFieldError((prev) => ({ ...prev, country: 'Country field must be filled in' }))
       setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
+      kidInput.current.scrollIntoView()
       return
     }
 
@@ -323,6 +353,14 @@ const KidPage = () => {
       setFieldError((prev) => ({ ...prev, description: 'Description field must be filled in' }))
       setIsLoading((prev) => --prev)
       setDisableUpdateKID(false)
+      descriptionInput.current.scrollIntoView()
+      return
+    }
+
+    if (!validateLinkAccounts()) {
+      setIsLoading((prev) => --prev)
+      setDisableUpdateKID(false)
+      descriptionInput.current.scrollIntoView()
       return
     }
 
@@ -429,7 +467,7 @@ const KidPage = () => {
 
   return (
     <div className="kid-page-wrapper">
-      <div className="title-section">
+      <div ref={kidInput} className="title-section">
         <div className="title-section__header-group">
           <IDCardIcon />
           <h2>Decentralized Identity</h2>
@@ -531,7 +569,7 @@ const KidPage = () => {
             <div className="kid-input-label-section">
               <label className="kid-input-label">Description*</label>
             </div>
-            <div className="kid-input-input-section" data-tip={isPending ? 'DID transactions pending' : ''}>
+            <div ref={descriptionInput} className="kid-input-input-section" data-tip={isPending ? 'DID transactions pending' : ''}>
               <textarea
                 value={userKID.description}
                 onChange={(e) => onChangeUserInfo(e)}
@@ -546,25 +584,30 @@ const KidPage = () => {
 
           <div className="section-name">Link Accounts</div>
           <p className="link-account-desc">
-            These links will appear on your kID link and your leaderboard profile
+            These links will appear on your DID profile. For best practice, each link should begin with https://
           </p>
           {linkAccounts.map((linkAccounts, idx) => (
-            <div className="link-accounts-input-line" key={idx}>
-              <input
-                className="link-accounts-input-name"
-                value={linkAccounts.title}
-                placeholder="Label e.g. “Website”"
-                onChange={(e) => handleChangeLinkAccountName(idx, e)}
-              />
-              <input
-                className="link-accounts-input-value"
-                value={linkAccounts.link}
-                placeholder="URL e.g. https://koii.network/"
-                onChange={(e) => handleChangeLinkAccountValue(idx, e)}
-              />
-              <div className="remove-logo" onClick={() => removeLinkAccount(idx)}>
-                <RemoveLinkAccount />
+            <div className="link-accounts-wrapper" key={idx}>
+              <div className="link-accounts-input-line">
+                <input
+                  className="link-accounts-input-name"
+                  value={linkAccounts.title}
+                  placeholder="Label e.g. “Website”"
+                  onChange={(e) => handleChangeLinkAccountName(idx, e)}
+                />
+                <input
+                  className="link-accounts-input-value"
+                  value={linkAccounts.link}
+                  placeholder="URL e.g. https://koii.network/"
+                  onChange={(e) => handleChangeLinkAccountValue(idx, e)}
+                />
+                <div className="remove-logo" onClick={() => removeLinkAccount(idx)}>
+                  <RemoveLinkAccount />
+                </div>
               </div>
+              <span className="link-accounts-error" style={{ color: 'red', marginTop: '5px' }}>
+                {linkAccountErrors[idx]}
+              </span>
             </div>
           ))}
           <div className="add-more" onClick={addLinkAccount}>

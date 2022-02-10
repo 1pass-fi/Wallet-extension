@@ -3,12 +3,12 @@ import isEmpty from 'lodash/isEmpty'
 
 import { URL } from 'constants/koiConstants'
 
+import CheckBox from 'finnie-v2/components/CheckBox'
+
 import InputField from '../InputField'
 import './index.css'
 
-const passwordRegex = new RegExp(
-  '(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%].*).{8,}'
-)
+const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%].*).{8,}')
 
 export default ({ setPassword, showError }) => {
   const [tempPassword, setTempPassword] = useState('')
@@ -29,13 +29,11 @@ export default ({ setPassword, showError }) => {
 
   return (
     <>
-      <InputField
-        label={'New Password'}
-        value={tempPassword}
-        setValue={setTempPassword}
-      />
+      <InputField label={'New Password'} value={tempPassword} setValue={setTempPassword} />
       {showError && !isEmpty(tempPassword) && !isValid && (
-        <div className="password-error">That password doesn't meet the requirements, please try again.</div>
+        <div className="password-error">
+          That password doesn't meet the requirements, please try again.
+        </div>
       )}
       {showError && isEmpty(tempPassword) && (
         <div className="password-error">Please input your password.</div>
@@ -54,9 +52,7 @@ export default ({ setPassword, showError }) => {
           </div>
           <div className="requirement-row">
             <div className="requirement-column">
-              <li className="requirement-item">
-                1 uppercase & 1 lowercase letter
-              </li>
+              <li className="requirement-item">1 uppercase & 1 lowercase letter</li>
             </div>
             <div className="requirement-column">
               <li className="requirement-item">1 symbol (e.g. !@#$%)</li>
@@ -77,21 +73,17 @@ export default ({ setPassword, showError }) => {
         <div className="password-error">Please confirm your password.</div>
       )}
       <div className="term-of-service">
-        <input
-          id="term-of-service"
-          type="checkbox"
-          className="checkbox"
-          value={isAcceptTermService}
-          onChange={(e) => setIsAcceptTermService(e.target.checked)}
+        <CheckBox
+          checked={isAcceptTermService}
+          onClick={() => setIsAcceptTermService((prev) => !prev)}
+          theme="dark"
+          className="w-3.75 h-3.75"
         />
         <div className="term-of-service-text">
-          <label htmlFor="term-of-service">
-            I agree with the&nbsp;
-          </label>
+          <div onClick={() => setIsAcceptTermService((prev) => !prev)}>I agree with the&nbsp;</div>
           <a target="_blank" href={URL.TERM_OF_SERVICE} className="link">
-              Terms of Service
+            Terms of Service
           </a>
-
         </div>
       </div>
       {showError && !isAcceptTermService && (

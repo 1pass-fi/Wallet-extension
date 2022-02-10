@@ -25,6 +25,7 @@ import shareSocialNetwork from 'finnie-v2/utils/shareSocialNetwork'
 
 import { SOCIAL_NETWORKS } from 'constants/koiConstants'
 
+import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 import arweave from 'services/arweave'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
@@ -49,6 +50,13 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
       // set isLoading
       setDisableCreateNFT(true)
       setIsLoading((prev) => ++prev)
+  
+      const account = await popupAccount.getAccount({ address: defaultAccount.address })
+      const arBalance = await account.get.balance()
+      const koiBalance = await account.get.koiBalance()
+      
+      if (estimateCostKOII > koiBalance) throw new Error('Not enough KOII')
+      if (estimateCostAr > arBalance) throw new Error('Not enough AR')
 
       const response = await fetch(url)
       const blob = await response.blob()
@@ -77,7 +85,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
         imageId
       })
 
-      if (txId) setStep(2); setNftId(txId); refreshNFTs(); resetState()
+      if (txId) setStep(2); setNftId(txId); resetState()
       // set isLoading
       setIsLoading((prev) => --prev)
       setDisableCreateNFT(false)

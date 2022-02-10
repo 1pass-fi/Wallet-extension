@@ -9,6 +9,7 @@ import NextButton from 'img/v2/arrow-right-orange.svg'
 import PreviousButton from 'img/v2/arrow-left-orange.svg'
 
 import Button from 'finnie-v2/components/Button'
+import CheckBox from 'finnie-v2/components/CheckBox'
 import UploadedFiles from './UploadedFiles'
 import EditNftInfo from './EditNftInfo'
 import { GalleryContext } from 'options/galleryContext'
@@ -31,7 +32,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
   const [tagInputs, setTagInputs] = useState([])
 
   const getDataForSelectedNfts = () => {
-    let existingNfts = assets.nfts.filter((nft) => selectedNftIds.includes(nft.txId))
+    let existingNfts = [...assets.nfts, ...assets.collectionNfts].filter((nft) => selectedNftIds.includes(nft.txId))
     existingNfts = existingNfts.map((nft) => {
       return {
         info: {
@@ -72,6 +73,10 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
   }
 
   const removeNft = (idx) => {
+    if ([...nfts, ...selectedNftIds].length === 1) {
+      close()
+    }
+
     const newNfts = [...nfts]
     const newError = [...error]
     const newSelectedNftIds = [...selectedNftIds]
@@ -93,8 +98,8 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
     setTagInputs(newTagInputs)
   }
 
-  const handleUpdateAll = (e) => {
-    setUpdateAll(e.target.checked)
+  const handleUpdateAll = () => {
+    setUpdateAll((prev) => !prev)
     let _nfts = [...nfts]
     _nfts = _nfts.map((nft) => {
       const title = nft?.info?.title
@@ -257,21 +262,19 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
             />
 
             <div className="flex absolute cursor-pointer" style={{ left: '620px', bottom: '30px' }}>
-              <input
-                className="rounded-sm border border-success w-3.75 h-3.75"
-                name="applyNfts"
-                type="checkbox"
-                onChange={handleUpdateAll}
-                id="update-all"
+              <CheckBox
                 checked={updateAll}
-              ></input>
-              <label
+                onClick={handleUpdateAll}
+                className="w-3.75 h-3.75 border-success"
+                theme="dark"
+              />
+              <div
                 style={{ cursor: 'pointer' }}
-                htmlFor="update-all"
                 className="text-success ml-2 text-11px select-none w-55.5"
+                onClick={handleUpdateAll}
               >
                 Apply these details (except the title) to all NFTs in this collection.
-              </label>
+              </div>
             </div>
           </div>
         </div>

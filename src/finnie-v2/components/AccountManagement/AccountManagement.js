@@ -14,7 +14,7 @@ import { setDefaultAccountByAddress } from 'options/actions/defaultAccount'
 import { GalleryContext } from 'options/galleryContext'
 import { DidContext } from 'options/context'
 
-import CheckBox from './CheckBox'
+import CheckBox from 'finnie-v2/components/CheckBox'
 
 const tabs = ['AR', 'ETH']
 

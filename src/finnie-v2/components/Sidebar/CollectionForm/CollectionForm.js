@@ -17,6 +17,7 @@ import createOrUpdateCollection from 'utils/collectionHelper'
 import InputField from 'finnie-v2/components/InputField'
 import Button from 'finnie-v2/components/Button'
 import BatchUploadModal from 'finnie-v2/components/BatchUploadModal'
+import CheckBox from 'finnie-v2/components/CheckBox'
 import DropFile from 'finnie-v2/components/DropFile'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
@@ -32,13 +33,20 @@ import './CollectionForm.css'
 const CollectionForm = ({ isUpdate }) => {
   const history = useHistory()
 
-  const { selectedNftIds, setSelectedNftIds, editingCollectionId: collectionId, setError } = useContext(GalleryContext)
+  const {
+    selectedNftIds,
+    setSelectedNftIds,
+    editingCollectionId: collectionId,
+    setError
+  } = useContext(GalleryContext)
 
   const collection = useSelector(getCollectionByTxId(collectionId))
   const address = useSelector((state) => state.defaultAccount.address)
   const _nfts = useSelector((state) => state.assets.nfts)
+  const collectionNfts = useSelector(state => state.assets.collectionNfts)
 
   const selectFiles = useRef(null)
+  const titleField = useRef(null)
 
   const [collectionInfo, setCollectionInfo] = useState({
     title: '',
@@ -46,7 +54,7 @@ const CollectionForm = ({ isUpdate }) => {
     description: '',
     isNSFW: false,
     tags: [],
-    name: '',
+    name: ''
   })
 
   const [errors, setErrors] = useState({
@@ -77,7 +85,7 @@ const CollectionForm = ({ isUpdate }) => {
       description: '',
       isNSFW: false,
       tags: [],
-      name: '',
+      name: ''
     })
     setErrors({
       title: '',
@@ -136,29 +144,31 @@ const CollectionForm = ({ isUpdate }) => {
   const openBatchModal = () => {
     if (validateForm()) {
       setShowBatchUploadModal(true)
+    } else {
+      titleField.current.scrollIntoView()
     }
   }
 
   const handleConfirmCollection = async () => {
     try {
-      let arPrice = await arweave.transactions.getPrice(filesSize) + 0.00004
+      let arPrice = (await arweave.transactions.getPrice(filesSize)) + 0.00004
       arPrice = arweave.ar.winstonToAr(arPrice)
       const koiPrice = nfts.length
-  
+
       const account = await popupAccount.getAccount({ address })
       const arBalance = await account.get.balance()
       const koiBalance = await account.get.koiBalance()
-      
+
       if (koiPrice > koiBalance) throw new Error('Not enough KOII')
       if (arPrice > arBalance) throw new Error('Not enough AR')
-  
+
       const tempData = {
         ...collectionInfo,
         name: collectionInfo.title,
         previewImageIndex: 0,
         owner: address
       }
-  
+
       delete tempData.isNSFW
       await createOrUpdateCollection({
         nfts,
@@ -168,7 +178,7 @@ const CollectionForm = ({ isUpdate }) => {
         selectedNftIds,
         collectionId: isUpdate ? collectionId : null
       })
-  
+
       setSelectedNftIds([])
     } catch (err) {
       console.error(err.message)
@@ -219,16 +229,16 @@ const CollectionForm = ({ isUpdate }) => {
         const name = get(collection, 'name')
         const description = get(collection, 'description')
         const tags = get(collection, 'tags') || []
-    
+
         const newCollectionInfo = {
           ...collectionInfo,
           title: name,
           description,
           tags
         }
-    
+
         setTags(tags)
-    
+
         setCollectionInfo(newCollectionInfo)
       }
     }
@@ -271,16 +281,18 @@ const CollectionForm = ({ isUpdate }) => {
           ref={selectFiles}
           onChange={(e) => setFiles(getFilesFromFileList(e))}
         />
-        <InputField
-          className="my-1"
-          label={label.title}
-          value={collectionInfo.title}
-          setValue={handleCollectionContentChange}
-          required={true}
-          name="title"
-          error={errors.title}
-          placeholder={placeholder.title}
-        />
+        <div ref={titleField}>
+          <InputField
+            className="my-1"
+            label={label.title}
+            value={collectionInfo.title}
+            setValue={handleCollectionContentChange}
+            required={true}
+            name="title"
+            error={errors.title}
+            placeholder={placeholder.title}
+          />
+        </div>
         <InputField
           className="my-1"
           label={label.description}
@@ -320,13 +332,12 @@ const CollectionForm = ({ isUpdate }) => {
         </div>
 
         <div className="flex mb-4 cursor-pointer">
-          <input
-            className="rounded-sm border border-white w-3.75 h-3.75"
-            name="isNSFW"
-            type="checkbox"
+          <CheckBox
             checked={collectionInfo.isNSFW}
-            onChange={() => setCollectionInfo((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
-          ></input>
+            onClick={() => setCollectionInfo((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
+            theme="dark"
+            className="w-3.75 h-3.75"
+          />
           <div
             className="text-white ml-2 text-11px select-none"
             onClick={() => setCollectionInfo((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
@@ -355,30 +366,42 @@ const CollectionForm = ({ isUpdate }) => {
                   paddingLeft: '20px',
                   height: '145px',
                   overflowY: 'overlay',
-                  cursor: 'pointer',
+                  cursor: 'pointer'
                 }}
               >
                 {files.map((file, index) => (
-                  <li key={index} style={{ marginBottom: '5px' }}>{file.name}</li>
+                  <li key={index} style={{ marginBottom: '5px' }}>
+                    {file.name}
+                  </li>
                 ))}
                 {selectedNftIds.map((id, index) => (
                   <li key={index} style={{ marginBottom: '5px' }}>
-                    <div className='flex w-full justify-between'>
-                      <div className='w-28 truncate'>{find(_nfts, nft => nft.txId === id)?.name}</div>
-                      <div><PhotoIcon /></div>
+                    <div className="flex w-full justify-between">
+                      <div className="w-28 truncate">
+                        {find(_nfts, nft => nft.txId === id)?.name || find(collectionNfts, nft => nft.txId === id)?.name || id}
+                      </div>
+                      <div>
+                        <PhotoIcon />
+                      </div>
                     </div>
                   </li>
-                ))
-                }
+                ))}
               </ul>
             </div>
           )}
         </div>
         <span className="text-3xs text-bittersweet-200 mb-4.25">{errors.files}</span>
-        {!isUpdate && <div onClick={openSelectNftModal} className='flex text-xs text-success w-full mb-3.5 cursor-pointer'>
-          <div className='w-4.5 h-4.5 mr-1.5'><AddIcon /></div>
-          Add from my existing NFTs
-        </div>}
+        {!isUpdate && (
+          <div
+            onClick={openSelectNftModal}
+            className="flex text-xs text-success w-full mb-3.5 cursor-pointer"
+          >
+            <div className="w-4.5 h-4.5 mr-1.5">
+              <AddIcon />
+            </div>
+            Add from my existing NFTs
+          </div>
+        )}
         <Button
           onClick={openBatchModal}
           variant="light"

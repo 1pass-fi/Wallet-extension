@@ -221,6 +221,11 @@
   margin-top: 0px;
 }
 
+.kid-page-wrapper .link-accounts-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .kid-page-wrapper .link-accounts-input-line {
   margin-top: 18px;
   display: flex;
