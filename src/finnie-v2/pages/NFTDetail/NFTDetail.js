@@ -23,6 +23,8 @@ import formatDatetime from 'finnie-v2/utils/formatDatetime'
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import { GalleryContext } from 'options/galleryContext'
 
+import { popupBackgroundRequest as request } from 'services/request/popup'
+
 import ToggleButton from './ToogleButton'
 
 const NFTDetail = () => {
@@ -66,6 +68,14 @@ const NFTDetail = () => {
 
   const handleGoBack = () => {
     history.goBack()
+  }
+
+  const handleUpdateNft = async (input) => {
+    try {
+      await request.gallery.updateNft({ address: nft.address, txId: nft.txId, ...input })
+    } catch (err) {
+      console.error(err.message)
+    }
   }
 
   return (
@@ -113,7 +123,12 @@ const NFTDetail = () => {
                       : 'When set to public, this NFT will show up in your DID gallery and on the Koii Leaderboard.'
                   }
                 >
-                  <ToggleButton value={privateNFT} setValue={setPrivateNFT} />
+                  <ToggleButton 
+                    value={privateNFT} 
+                    setValue={setPrivateNFT} 
+                    disabled={isString(nft?.isPrivate)}
+                    hanldeUpdateNft={handleUpdateNft}
+                  />
                 </div>
                 {`Registered: ${formatDatetime(nft.createdAt)}`}
               </div>

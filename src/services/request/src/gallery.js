@@ -167,6 +167,18 @@ export class GalleryRequest extends Request {
     return this.promise(MESSAGES.GET_KEY, body)
   }
 
+  /**
+   * 
+   * @param {Object} body
+   * @param {Boolean} body.isPrivate
+   * @param {String} body.txId
+   * @param {String} body.address
+   * @returns 
+   */
+  updateNft(body) {
+    return this.promise(MESSAGES.UPDATE_NFT, body)
+  }
+
   test(body) {
     return this.promise(MESSAGES.TEST, body)
   }

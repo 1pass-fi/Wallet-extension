@@ -39,6 +39,7 @@ const getEmitter = () => {
   popupEvents.on(MESSAGES.UPDATE_COLLECTION, controller.updateCollection)
   popupEvents.on(MESSAGES.GET_KEY, controller.getKey)
   popupEvents.on(MESSAGES.UPDATE_PASSWORD, controller.updatePassword)
+  popupEvents.on(MESSAGES.UPDATE_NFT, controller.updateNft)
 
   popupEvents.on(MESSAGES.TEST, controller.test)
 

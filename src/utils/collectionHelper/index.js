@@ -138,7 +138,8 @@ const createTransaction = async (buffer, info) => {
       'contentType': contentType,
       'createdAt': createdAt,
       'tags': tags,
-      'locked': []
+      'locked': [],
+      'isPrivate': false
     }
 
     const transaction = await arweave.createTransaction({ data: buffer })

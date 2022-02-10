@@ -17,7 +17,8 @@ export default async ({ u8, nftContent, nftTags, fileType, ownerAddress, created
       'contentType': fileType,
       'createdAt': createdAt,
       'tags': nftTags,
-      'locked': []
+      'locked': [],
+      'isPrivate': false
     }
 
     const transaction = await arweave.createTransaction({ data: u8 })

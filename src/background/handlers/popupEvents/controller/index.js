@@ -30,6 +30,7 @@ import getDID from './getDID'
 import updateCollection from './updateCollection'
 import getKey from './getKey'
 import updatePassword from './updatePassword'
+import updateNft from './updateNft'
 import test from './test'
 
 
@@ -66,5 +67,6 @@ export default {
   updateCollection,
   getKey,
   updatePassword,
+  updateNft,
   test
 }
