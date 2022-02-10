@@ -101,10 +101,11 @@ const NFTDetail = () => {
   }
 
   const nftTooltipMessage = useMemo(() => {
+    if (nft?.pending) return 'Transaction pending'
     if (isPendingUpdate) return 'Pending update'
     else
       return 'When set to public, this NFT <br>will show up in your DID gallery <br>and on the Koii Leaderboard.'
-  }, [isPendingUpdate])
+  }, [isPendingUpdate, nft])
 
   return (
     <div className="min-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
@@ -155,7 +156,7 @@ const NFTDetail = () => {
                   <ToggleButton
                     value={privateNFT}
                     setValue={setPrivateNFT}
-                    disabled={isString(nft?.isPrivate) || isPendingUpdate}
+                    disabled={isString(nft?.isPrivate) || isPendingUpdate || nft?.pending}
                     handleUpdateNft={handleUpdateNft}
                   />
                 </div>
