@@ -497,3 +497,4 @@ export const SOCIAL_NETWORKS = {
 }
 
 export const COLLECTION_CONTRACT_SRC = 'ClhqZ72XVD1g4ycDpRkSuTUtgBiNWr1JHaEdi2bg5CI'
+export const NFT_CONTRACT_SRC = '14l2t0DtenMRKPasR6Xi3pmQm3rqopD4cUr6Q5oD8lc'

@@ -1,4 +1,5 @@
 import arweave from 'services/arweave'
+import { NFT_CONTRACT_SRC } from 'constants/koiConstants'
 
 export default async ({ u8, nftContent, nftTags, fileType, ownerAddress, createdAt }) => {
   try {
@@ -34,7 +35,7 @@ const addTag = ({ transaction, fileType, initialState, isNSFW }) => {
   transaction.addTag('Action', 'marketplace/Create')
   transaction.addTag('App-Name', 'SmartWeaveContract')
   transaction.addTag('App-Version', '0.3.0')
-  transaction.addTag('Contract-Src', 'r_ibeOTHJW8McJvivPJjHxjMwkYfAKRjs-LjAeaBcLc')
+  transaction.addTag('Contract-Src', NFT_CONTRACT_SRC)
   transaction.addTag('Init-State', JSON.stringify(initialState))
   transaction.addTag('NSFW', isNSFW)
 }
