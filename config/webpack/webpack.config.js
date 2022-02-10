@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const PnpWebpackPlugin = require('pnp-webpack-plugin')
+const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin')
 
 const paths = require('../paths')
 const initLoaders = require('./loaders')
@@ -81,6 +82,7 @@ module.exports = function (webpackEnv) {
       plugins: [
         PnpWebpackPlugin,
         plugins.moduleScopePlugin,
+        new TsconfigPathsPlugin(),
       ],
     },
     resolveLoader: {
@@ -91,6 +93,7 @@ module.exports = function (webpackEnv) {
     module: {
       strictExportPresence: true,
       rules: [
+        { test: /\.tsx?$/, loader: 'ts-loader' },
         { parser: { requireEnsure: false } },
         loaders.eslintLoader,
         {

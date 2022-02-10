@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
+    "allowJs": true,
+    "target": "es5",
     "baseUrl": ".",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "*": ["src/*"],
       "shared/*": ["src/popup/components/shared/*"],
@@ -8,6 +12,7 @@
       "actions/*": ["./src/popup/actions/*"],
       "stories": ["stories"],
       "options/*": ["./src/options/*"]
-    }
-  }
+    },
+  },
+  "include": ["./src/**/*"],
 }
