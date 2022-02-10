@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { isEmpty, isString, find } from 'lodash'
+import { isEmpty, isString, find, get } from 'lodash'
 
 import ToolTip from 'finnie-v2/components/ToolTip'
 
@@ -26,6 +26,7 @@ import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 
 import ToggleButton from './ToogleButton'
+import { popupAccount } from 'services/account'
 
 const NFTDetail = () => {
   const history = useHistory()
@@ -36,10 +37,30 @@ const NFTDetail = () => {
   const [nft, setNft] = useState({})
   const [showShareNFTModal, setShowShareNFTModal] = useState(false)
   const [privateNFT, setPrivateNFT] = useState(false)
+  const [isPendingUpdate, setIsPendingUpdate] = useState(false)
 
   const { setShowExportModal, handleShareNFT, showViews, showEarnedKoi } = useContext(
     GalleryContext
   )
+
+  useEffect(() => {
+    const loadPendingUpdate = async () => {
+      const owner = nft.address
+      const account = await popupAccount.getAccount({ address: owner })
+      const pendingTransactions = await account.get.pendingTransactions()
+
+      pendingTransactions?.every((pendingTransaction) => {
+        const transactionId = get(pendingTransaction, 'data.txId')
+        if (transactionId === nft.txId) {
+          setIsPendingUpdate(transactionId === nft.txId)
+          return false
+        }
+        return true
+      })
+    }
+
+    if (!isEmpty(nft)) loadPendingUpdate()
+  }, [nft, privateNFT])
 
   useEffect(() => {
     const getNft = () => {
@@ -74,9 +95,16 @@ const NFTDetail = () => {
     try {
       await request.gallery.updateNft({ address: nft.address, txId: nft.txId, ...input })
     } catch (err) {
+      // TODO handle setPrivateNFT
       console.error(err.message)
     }
   }
+
+  const nftTooltipMessage = useMemo(() => {
+    if (isPendingUpdate) return 'Pending update'
+    else
+      return 'When set to public, this NFT <br>will show up in your DID gallery <br>and on the Koii Leaderboard.'
+  }, [isPendingUpdate])
 
   return (
     <div className="min-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
@@ -121,14 +149,14 @@ const NFTDetail = () => {
                   data-tip={
                     isString(nft?.isPrivate)
                       ? 'The public/private feature <br>does not currently support this NFT. <br>Try the public/private feature with <br>a more recent NFT.'
-                      : 'When set to public, this NFT <br>will show up in your DID gallery <br>and on the Koii Leaderboard.'
+                      : nftTooltipMessage
                   }
                 >
                   <ToggleButton
                     value={privateNFT}
                     setValue={setPrivateNFT}
-                    disabled={isString(nft?.isPrivate)}
-                    hanldeUpdateNft={handleUpdateNft}
+                    disabled={isString(nft?.isPrivate) || isPendingUpdate}
+                    handleUpdateNft={handleUpdateNft}
                   />
                 </div>
                 {`Registered: ${formatDatetime(nft.createdAt)}`}
