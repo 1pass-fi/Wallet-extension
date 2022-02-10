@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { isEmpty, find } from 'lodash'
+import { isEmpty, isString, find } from 'lodash'
 
 import ToolTip from 'finnie-v2/components/ToolTip'
 
@@ -23,16 +23,21 @@ import formatDatetime from 'finnie-v2/utils/formatDatetime'
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import { GalleryContext } from 'options/galleryContext'
 
+import ToggleButton from './ToogleButton'
+
 const NFTDetail = () => {
   const history = useHistory()
   const { id } = useParams()
-  const assets = useSelector(state => state.assets)
+  const assets = useSelector((state) => state.assets)
 
   const [ownerImported, setOwnerImported] = useState(true)
   const [nft, setNft] = useState({})
   const [showShareNFTModal, setShowShareNFTModal] = useState(false)
+  const [privateNFT, setPrivateNFT] = useState(false)
 
-  const { setShowExportModal, handleShareNFT, showViews, showEarnedKoi } = useContext(GalleryContext)
+  const { setShowExportModal, handleShareNFT, showViews, showEarnedKoi } = useContext(
+    GalleryContext
+  )
 
   useEffect(() => {
     const getNft = () => {
@@ -45,6 +50,7 @@ const NFTDetail = () => {
         setOwnerImported(true)
       }
       setNft(nft)
+      isString(nft?.isPrivate) ? setPrivateNFT(false) : setPrivateNFT(nft?.isPrivate)
     }
 
     if (assets && isEmpty(nft)) getNft()
@@ -64,7 +70,9 @@ const NFTDetail = () => {
 
   return (
     <div className="min-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
-      <div onClick={handleGoBack} className='w-11 h-11 absolute top-44 left-23 cursor-pointer'><GoBackIcon /></div>
+      <div onClick={handleGoBack} className="w-11 h-11 absolute top-44 left-23 cursor-pointer">
+        <GoBackIcon />
+      </div>
       <NavBar />
       {nft && (
         <div className="flex h-full w-full text-white">
@@ -79,21 +87,36 @@ const NFTDetail = () => {
 
               {nft.type === TYPE.ARWEAVE && !nft.pending && (
                 <div className="flex justify-between items-center h-17.25 mt-6.5 tracking-finnieSpacing-tight text-lg text-center">
-                  {showEarnedKoi && <div className="w-48.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
-                    KOII earned <br />
-                    {formatNumber(nft.earnedKoi, 3)}
-                  </div>}
-                  {showViews && <div className="w-46 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
-                    Total Views <br />
-                    {nft.totalViews}
-                  </div>}
+                  {showEarnedKoi && (
+                    <div className="w-48.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                      KOII earned <br />
+                      {formatNumber(nft.earnedKoi, 3)}
+                    </div>
+                  )}
+                  {showViews && (
+                    <div className="w-46 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                      Total Views <br />
+                      {nft.totalViews}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
 
             <div className="w-115 h-101 relative">
               <div className="finnieSpacing-tighter font-semibold text-5xl mb-2">{nft.name}</div>
-              <div className="text-sm mb-2">{`Registered: ${formatDatetime(nft.createdAt)}`}</div>
+              <div className="text-sm mb-2">
+                <div
+                  data-tip={
+                    isString(nft?.isPrivate)
+                      ? 'The Ethereum bridge does not currently support this NFT. Try the bridge with a more recent NFT.'
+                      : 'When set to public, this NFT will show up in your DID gallery and on the Koii Leaderboard.'
+                  }
+                >
+                  <ToggleButton value={privateNFT} setValue={setPrivateNFT} />
+                </div>
+                {`Registered: ${formatDatetime(nft.createdAt)}`}
+              </div>
               <div className="flex gap-4 mb-4">
                 <a href={`https://viewblock.io/arweave/tx/${nft.txId}`} target="_blank">
                   <Button
@@ -142,8 +165,12 @@ const NFTDetail = () => {
                       }}
                     />
                     <div
-                      data-tip={!ownerImported ? `This NFT is owned by a wallet with the address ${nft.address}.<br>
-                      Please import this wallet and continue to transfer NFT.` : ''}
+                      data-tip={
+                        !ownerImported
+                          ? `This NFT is owned by a wallet with the address ${nft.address}.<br>
+                      Please import this wallet and continue to transfer NFT.`
+                          : ''
+                      }
                       className="h-full w-5/12"
                     >
                       <Button
@@ -162,8 +189,12 @@ const NFTDetail = () => {
                 {!nft.pending && (
                   <div
                     className="h-11.5 w-full"
-                    data-tip={!ownerImported ? `This NFT is owned by a wallet with the address ${nft.address}.<br>
-                    Please import this wallet and continue to bridge NFT.` : ''}
+                    data-tip={
+                      !ownerImported
+                        ? `This NFT is owned by a wallet with the address ${nft.address}.<br>
+                    Please import this wallet and continue to bridge NFT.`
+                        : ''
+                    }
                   >
                     <Button
                       size="lg"
@@ -182,9 +213,7 @@ const NFTDetail = () => {
           </div>
         </div>
       )}
-      {showShareNFTModal && (
-        <ShareNFTModal txId={id} close={() => setShowShareNFTModal(false)} />
-      )}
+      {showShareNFTModal && <ShareNFTModal txId={id} close={() => setShowShareNFTModal(false)} />}
     </div>
   )
 }
