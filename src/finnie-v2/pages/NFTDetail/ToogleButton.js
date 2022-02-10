@@ -1,5 +1,6 @@
 import { GalleryContext } from 'options/galleryContext'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
+import clsx from 'clsx'
 
 import { popupBackgroundRequest as request } from 'services/request/popup'
 
@@ -18,15 +19,17 @@ export default ({ value, setValue, disabled, hanldeUpdateNft }) => {
     if (!disabled && !sending) {
       setValue(isPrivate)
       setSending(true)
-      setIsLoading(prev => ++prev)
+      setIsLoading((prev) => ++prev)
       await hanldeUpdateNft({ isPrivate })
       setSending(false)
-      setIsLoading(prev => --prev)
+      setIsLoading((prev) => --prev)
     }
   }
 
   return (
-    <label className='is-private-switch disabled:cursor-not-allowed'>
+    <label
+      className={clsx('is-private-switch', (sending || disabled) && 'is-private-switch-disabled')}
+    >
       <input
         className="is-private-switch-checkbox"
         type="checkbox"
@@ -36,7 +39,13 @@ export default ({ value, setValue, disabled, hanldeUpdateNft }) => {
         disabled={sending}
       />
       {isPublic ? <span className="on">PUBLIC</span> : <span className="off">PRIVATE</span>}
-      <div className={`slider round ${isPublic ? 'checked' : ''}`}></div>
+      <div
+        className={clsx(
+          (sending || disabled) && 'is-private-switch-disabled',
+          isPublic ? 'checked' : '',
+          'slider round'
+        )}
+      ></div>
     </label>
   )
 }

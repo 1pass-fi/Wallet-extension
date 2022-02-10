@@ -115,17 +115,18 @@ const NFTDetail = () => {
 
             <div className="w-115 h-101 relative">
               <div className="finnieSpacing-tighter font-semibold text-5xl mb-2">{nft.name}</div>
-              <div className="text-sm mb-2">
+              <div className="flex items-center text-sm mb-2">
                 <div
+                  className="h-6 mr-2.25"
                   data-tip={
                     isString(nft?.isPrivate)
-                      ? 'The Ethereum bridge does not currently support this NFT. Try the bridge with a more recent NFT.'
-                      : 'When set to public, this NFT will show up in your DID gallery and on the Koii Leaderboard.'
+                      ? 'The public/private feature <br>does not currently support this NFT. <br>Try the public/private feature with <br>a more recent NFT.'
+                      : 'When set to public, this NFT <br>will show up in your DID gallery <br>and on the Koii Leaderboard.'
                   }
                 >
-                  <ToggleButton 
-                    value={privateNFT} 
-                    setValue={setPrivateNFT} 
+                  <ToggleButton
+                    value={privateNFT}
+                    setValue={setPrivateNFT}
                     disabled={isString(nft?.isPrivate)}
                     hanldeUpdateNft={handleUpdateNft}
                   />

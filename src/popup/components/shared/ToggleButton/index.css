@@ -9,7 +9,7 @@
   display: none;
 }
 
-.slider {
+.switch .slider {
   position: absolute;
   cursor: pointer;
   top: 0;

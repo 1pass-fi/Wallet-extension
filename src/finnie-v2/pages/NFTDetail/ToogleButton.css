@@ -3,6 +3,13 @@
   display: inline-block;
   width: 77px;
   height: 24px;
+  cursor: pointer;
+}
+
+.is-private-switch-disabled {
+  opacity: 80%;
+  cursor: not-allowed;
+  user-select: none;
 }
 
 .is-private-switch .is-private-switch-checkbox {
@@ -11,7 +18,6 @@
 
 .is-private-switch .slider {
   position: absolute;
-  cursor: pointer;
   top: 0;
   left: 0;
   right: 0;
@@ -23,12 +29,12 @@
 
 .is-private-switch .slider:before {
   top: 2px;
-  left: 32px;
+  left: 3px;
   position: absolute;
   content: '';
   height: 20px;
   width: 20px;
-  background-color: #ffffff;
+  background-color: #bef0ed;
   box-shadow: -1px 2px 4px rgba(0, 0, 0, 0.4);
   -webkit-transition: 0.4s;
   transition: 0.4s;
@@ -46,12 +52,14 @@
   -webkit-transform: translateX(20px);
   -ms-transform: translateX(20px);
   transform: translateX(20px);
+  left: 35px;
+  background-color: #4e4e8d;
 }
 
 .is-private-switch .on,
 .is-private-switch .off {
   z-index: 2;
-  color: #171753;
+  color: #4e4e8d;
   position: absolute;
   transform: translate(-50%, -50%);
   top: 50%;
@@ -61,13 +69,13 @@
 
 .is-private-switch .on {
   position: absolute;
-  left: 14px;
+  left: 24px;
   color: #373765 !important;
 }
 
 .is-private-switch .off {
   right: -16px;
-  color: #d6d6d6 !important;
+  color: #bef0ed !important;
 }
 
 .is-private-switch input:checked + .slider .on {
