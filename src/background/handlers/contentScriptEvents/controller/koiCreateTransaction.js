@@ -7,6 +7,7 @@ import { createWindow, getPlatformInfo } from 'utils/extension'
 // Services
 import arweave from 'services/arweave'
 import storage from 'services/storage'
+import { winstonToAr } from 'utils'
 
 
 export default async (payload, tab, next) => {
@@ -26,7 +27,7 @@ export default async (payload, tab, next) => {
 
     const [isKoiTransfer, koiiQty] = getKoiiQty(transaction)
 
-    const qty = transaction.quantity
+    const qty = winstonToAr(transaction.quantity)
     const address = transaction.target
     const fee = await arweave.transactions.getPrice(transaction.data_size) / 1000000000000
 
