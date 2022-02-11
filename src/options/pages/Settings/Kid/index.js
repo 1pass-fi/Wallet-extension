@@ -237,7 +237,7 @@ const KidPage = () => {
     })
     setDisableUpdateKID(false)
     const { name, value } = e.target
-    if (name === 'kid') {
+    if (name === 'did link') {
       setuserKID({
         ...userKID,
         kidLink: `${kidLinkPrefix}${value}`
@@ -524,7 +524,7 @@ const KidPage = () => {
         <div className="form-text" >
           <div data-tip={isPending ? 'DID transactions pending' : ''}>
             <KidInputField
-              label="kID"
+              label="DID Link"
               isRequired={true}
               value={kID}
               setValue={onChangeUserInfo}

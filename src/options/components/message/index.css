@@ -70,13 +70,13 @@
 }
 
 .message-gallery.notification {
-  background: #ECFFFE;
+  background: #9BE7C4;
 }
 
 .message-gallery.notification:after {
-  background-color: #ECFFFE;
-  border-bottom: 1px solid #ECFFFE;
-  border-right: 1px solid #ECFFFE;
+  background-color: #9BE7C4;
+  border-bottom: 1px solid #9BE7C4;
+  border-right: 1px solid #9BE7C4;
 }
 
 .message-gallery.warning {

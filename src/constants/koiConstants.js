@@ -349,7 +349,7 @@ export const NOTIFICATION = {
   CREATE_KID_SUCCESS:
     'Created KID successfully. It may take a while until you can get your data updated.',
   UPDATE_KID_SUCCESS:
-    'kID updated! It may take several minutes before the update is reflected in Finnie.'
+    'Your DID is being updated as we speak. This might take a couple of minutes.'
 }
 
 export const STATEMENT = {
