@@ -153,12 +153,12 @@ const NFTDetail = () => {
                       : nftTooltipMessage
                   }
                 >
-                  <ToggleButton
+                  {/* <ToggleButton
                     value={privateNFT}
                     setValue={setPrivateNFT}
                     disabled={isString(nft?.isPrivate) || isPendingUpdate || nft?.pending}
                     handleUpdateNft={handleUpdateNft}
-                  />
+                  /> */}
                 </div>
                 {`Registered: ${formatDatetime(nft.createdAt)}`}
               </div>

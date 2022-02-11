@@ -102,7 +102,6 @@ export default async (payload, next) => {
       network: null,
       retried: 1,
       transactionType: PENDING_TRANSACTION_TYPE.MINT_NFT
-      // TODO MinhV
     }
     await helpers.pendingTransactionFactory.createPendingTransaction(payload)
 
@@ -116,7 +115,7 @@ export default async (payload, next) => {
       ownerAddress: address,
       createdAt,
       address,
-      isPrivate: false // TODO MinhV update isPrivate
+      isPrivate: false
     }
     await helpers.pendingTransactionFactory.createPendingAsset(nftPayload)
 
