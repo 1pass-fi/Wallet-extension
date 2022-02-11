@@ -212,7 +212,7 @@ const UploadNftForm = () => {
         <ConfirmCreateNftModal
           nftContent={nftContent}
           tags={tags}
-          fileType={fileType}
+          fileType={file?.type}
           url={url}
           close={closeConfirmModal}
           resetState={resetState}
