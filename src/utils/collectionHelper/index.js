@@ -156,7 +156,7 @@ const addTag = ({ transaction, contentType, initialState, isNSFW }) => {
   transaction.addTag('Network', 'Koii')
   transaction.addTag('Action', 'marketplace/Create')
   transaction.addTag('App-Name', 'SmartWeaveContract')
-  transaction.addTag('App-Version', '0.3.0')
+  transaction.addTag('App-Version', '0.3.1')
   transaction.addTag('Contract-Src', NFT_CONTRACT_SRC)
   transaction.addTag('Init-State', JSON.stringify(initialState))
   transaction.addTag('NSFW', isNSFW)
