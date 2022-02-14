@@ -26,7 +26,7 @@ import { GalleryContext } from 'options/galleryContext'
 import arweave from 'services/arweave'
 import { popupAccount } from 'services/account'
 
-import getCollectionByTxId from 'finnie-v2/selectors/getCollectionByTxid'
+import getCollectionByTxId from 'options/selectors/getCollectionByTxid'
 
 import './CollectionForm.css'
 

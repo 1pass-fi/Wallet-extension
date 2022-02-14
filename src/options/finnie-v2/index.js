@@ -9,17 +9,17 @@ import storage from 'services/storage'
 
 import NavBar from 'finnie-v2/components/NavBar'
 
-import Collection from './pages/Collection'
-import Gallery from './pages/Gallery'
-import NFTDetail from './pages/NFTDetail'
-import Notifications from './pages/Notifications'
+import Collection from 'options/pages/Collection'
+import Gallery from 'options/pages/Gallery'
+import NFTDetail from 'options/pages/NFTDetail'
+import Notifications from 'options/pages/Notifications'
 import CollectionDetails from 'options/pages/CollectionDetails'
-import SelectNfts from 'finnie-v2/components/SelectNfts'
+import SelectNfts from 'options/pages/SelectNfts'
 
 import './style.css'
 import Success from 'options/pages/StartUp/shared/Success'
 import MainLayout from './components/MainLayout'
-import Settings from './pages/Settings/Settings'
+import Settings from 'options/pages/Settings'
 
 const SecondVer = () => {
   const dispatch = useDispatch()

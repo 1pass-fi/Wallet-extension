@@ -6,7 +6,7 @@ import formatNumber from 'finnie-v2/utils/formatNumber'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
 import { useSelector } from 'react-redux'
-import getAssetByTxId from 'finnie-v2/selectors/getAssetByTxId'
+import getAssetByTxId from 'options/selectors/getAssetByTxId'
 
 import NFTMedia from 'finnie-v2/components/NFTMedia'
 

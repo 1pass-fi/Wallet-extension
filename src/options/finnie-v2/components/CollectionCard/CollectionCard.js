@@ -6,7 +6,7 @@ import formatLongString from 'finnie-v2/utils/formatLongString'
 
 import NFTMedia from 'finnie-v2/components/NFTMedia'
 
-import getAssetByTxId from 'finnie-v2/selectors/getAssetByTxId'
+import getAssetByTxId from 'options/selectors/getAssetByTxId'
 
 const CollectionCard = ({ collection }) => {
   const nft = useSelector(getAssetByTxId(collection.collection[0]))

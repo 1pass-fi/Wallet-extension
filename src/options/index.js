@@ -9,7 +9,7 @@ import Welcome from './pages/StartUp/Welcome'
 import UploadWallet from './pages/StartUp/Upload'
 import ImportWallet from './pages/StartUp/Import'
 import CreateWallet from './pages/StartUp/Create'
-import FriendReferral from 'finnie-v2/pages/FriendReferral'
+import FriendReferral from 'options/pages/FriendReferral'
 
 import SecondVer from './finnie-v2'
 

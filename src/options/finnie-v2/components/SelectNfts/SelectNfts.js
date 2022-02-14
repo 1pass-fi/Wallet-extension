@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { uniqueId } from 'lodash'
 
-import getCollectionByTxId from 'finnie-v2/selectors/getCollectionByTxid'
+import getCollectionByTxId from 'options/selectors/getCollectionByTxid'
 
 import NftSelectCard from './SelectNftCard'
 
