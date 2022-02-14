@@ -5,8 +5,6 @@ import { Provider } from 'react-redux'
 
 import './index.css'
 import Layout from './layout'
-import Create from './pages/Create'
-import Friends from './pages/Friends'
 import Welcome from './pages/StartUp/Welcome'
 import UploadWallet from './pages/StartUp/Upload'
 import ImportWallet from './pages/StartUp/Import'
@@ -38,24 +36,13 @@ const Gallery = () => {
               <Route exact path="/import-wallet">
                 <ImportWallet />
               </Route>
-              <Route exact path="/create">
-                <HasArweave content="This feature only supports AR wallets">
-                  <Create />
-                </HasArweave>
-              </Route>
-              <Route exact path="/friends">
-                <HasArweave
-                  content="This feature only supports AR wallets"
-                  checkingDefaultAccount={true}
-                >
-                  <Friends />
-                </HasArweave>
-              </Route>
               <Route exact path="/friend-referral">
                 <FriendReferral />
               </Route>
               <Route path="*">
-                <SecondVer />
+                <HasArweave content={'Please import an Arweave account'}>
+                  <SecondVer />
+                </HasArweave>
               </Route>
             </Switch>
           </Layout>
