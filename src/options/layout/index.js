@@ -24,8 +24,8 @@ import classifyAssets from 'finnie-v2/utils/classifyAssets'
 
 import './index.css'
 import StartUp from 'options/pages/StartUp'
-import Message from 'options/components/message'
-import LockScreen from 'options/components/lockScreen'
+import Message from 'options/finnie-v1/components/message'
+import LockScreen from 'options/finnie-v1/components/lockScreen'
 
 import { GalleryContext } from 'options/galleryContext'
 import { DidContext } from 'options/context'

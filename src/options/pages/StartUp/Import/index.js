@@ -15,7 +15,7 @@ import Loading from '../shared/Loading'
 import useEthereumNetworks from '../shared/useEthereumNetworks'
 import { GalleryContext } from 'options/galleryContext'
 import InputPassword from '../shared/InputPassword'
-import GoBackBtn from '../../../components/GoBackButton'
+import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
 import { SHOW_ETHEREUM } from 'constants/koiConstants'
 import HasTwelveSeedPhrase from 'options/modal/HasTwelveSeedPhrase'
 

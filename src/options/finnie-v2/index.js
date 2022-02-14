@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { Switch, Route, useLocation, useParams } from 'react-router-dom'
+import { Switch, Route, useLocation } from 'react-router-dom'
 
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 
@@ -13,7 +13,7 @@ import Collection from './pages/Collection'
 import Gallery from './pages/Gallery'
 import NFTDetail from './pages/NFTDetail'
 import Notifications from './pages/Notifications'
-import CollectionDetails from './pages/CollectionDetails'
+import CollectionDetails from 'options/pages/CollectionDetails'
 import SelectNfts from 'finnie-v2/components/SelectNfts'
 
 import './style.css'

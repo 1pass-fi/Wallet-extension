@@ -14,7 +14,7 @@ import { JSONFileToObject } from 'options/utils'
 import ConfirmPassword from '../../shared/ConfirmPassword'
 import InputPassword from '../../shared/InputPassword'
 import {ERROR_MESSAGE} from 'constants/koiConstants'
-import GoBackBtn from 'options/components/GoBackButton'
+import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
 import { addAccountByAddress } from 'options/actions/accounts'
 
 

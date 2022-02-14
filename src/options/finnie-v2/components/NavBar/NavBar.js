@@ -12,7 +12,7 @@ import ArrowIcon from 'img/v2/settings/uparrow.svg'
 import AccountSettings from 'finnie-v2/components/AccountSettings'
 import ActivityCenterDropdown from 'finnie-v2/components/ActivityCenterDropdown'
 
-import Loading from 'options/components/loading'
+import Loading from 'options/finnie-v1/components/loading'
 import { GalleryContext } from 'options/galleryContext'
 import { DidContext } from 'options/context'
 

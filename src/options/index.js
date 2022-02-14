@@ -11,7 +11,7 @@ import ImportWallet from './pages/StartUp/Import'
 import CreateWallet from './pages/StartUp/Create'
 import FriendReferral from 'finnie-v2/pages/FriendReferral'
 
-import SecondVer from '../finnie-v2'
+import SecondVer from './finnie-v2'
 
 import HasArweave from 'options/shared/hasArweave'
 

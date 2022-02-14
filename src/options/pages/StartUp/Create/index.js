@@ -16,7 +16,7 @@ import Button from '../shared/Button'
 import ConfirmPassword from '../shared/ConfirmPassword'
 import InputPassword from '../shared/InputPassword'
 import Loading from '../shared/Loading'
-import GoBackBtn from '../../../components/GoBackButton'
+import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
 import { SHOW_ETHEREUM } from 'constants/koiConstants'
 
 import isEmpty from 'lodash/isEmpty'

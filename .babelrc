@@ -12,7 +12,8 @@
             "components": "./src/popup/components",
             "actions": "./src/popup/actions",
             "stories": "./stories",
-            "options/*": "./src/options/*"
+            "options/*": "./src/options/*",
+            "finnie-v2": "./src/options/finnie-v2"
           }
         }]
       ]
