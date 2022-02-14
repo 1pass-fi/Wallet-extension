@@ -261,7 +261,19 @@ export default ({ children }) => {
   }, [notification])
 
 
+  const updateDefaultAccountData = async () => {
+    const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
+    const activatedAccount = await popupAccount.getAccount({
+      address: activatedAccountAddress
+    })
+    const activatedAccountMetadata = await activatedAccount.get.metadata()
 
+    dispatch(setDefaultAccount(activatedAccountMetadata))
+  }
+
+  useEffect(() => {
+    updateDefaultAccountData()
+  }, [])
 
   /* 
     set file stuffs

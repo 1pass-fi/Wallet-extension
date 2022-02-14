@@ -1,11 +1,43 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import NavBar from 'finnie-v2/components/NavBar'
 import Sidebar from 'finnie-v2/components/Sidebar'
 
-const MainLayout = ({ title, children }) => {
+const MainLayout = ({ children }) => {
   const location = useLocation()
+
+  const title = useMemo(() => {
+    let title = ''
+    switch (location.pathname) {
+      case '/':
+      case '/gallery':
+        title = 'Gallery'
+        break
+      case '/collections':
+        title = 'Collections'
+        break
+      case '/collections/create.new-collection':
+        title = 'Create Collection'
+        break
+      case '/collections/create/select-nft':
+        title = 'Select your NFTs'
+        break
+      default:
+        title = ''
+    }
+
+    if (location.pathname.includes('collections')) title = 'Collections'
+
+    if (location.pathname.includes('notifications')) title = 'Notification Center'
+
+    if (location.pathname.includes('settings')) title = 'Settings'
+
+    if (location.pathname.includes('create-nft')) title = 'Gallery'
+
+    return title
+  }, [location.pathname])
+
   const EXCLUDE_PATH = ['/success']
 
   return (
