@@ -78,6 +78,40 @@ body #root {
   align-items: center;
 }
 
+.footer {
+  width: 100%;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  background-color: #4e4e7e;
+  position: fixed;
+  bottom: 0;
+  padding: 0px 3px 0px 3px;
+}
+
+.popup .footer .footer-item {
+  width: 138px;
+  height: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: end; */
+  background-color: #373765;
+  color: white;
+  font-size: 10px;
+  line-height: 32px;
+  margin-right: 3px;
+  cursor: pointer;
+}
+
+.popup .footer .footer-item.gallery {
+  border-radius: 0px 0px 0px 6px;
+}
+
+.popup .footer .footer-item.lock {
+  border-radius: 0px 0px 6px 0px;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

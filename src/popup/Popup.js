@@ -16,6 +16,7 @@ import Setting from 'components/setting'
 import Message from 'components/message'
 
 // actions
+import { lockWallet } from 'actions/koi'
 import { setIsLoading } from 'actions/loading'
 import { setError } from 'actions/error'
 import { setNotification } from 'actions/notification'
@@ -33,6 +34,10 @@ import { setAssetsTabSettings } from 'actions/assetsSettings'
 import continueLoadingIcon from 'img/continue-load.gif'
 import KoiLogo from 'img/koi-logo.svg'
 
+import GalleryIcon from 'img/popup/gallery-icon.svg'
+import AddIcon from 'img/popup/add-icon.svg'
+import LockIcon from 'img/popup/lock-icon.svg'
+
 // services
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
@@ -44,23 +49,26 @@ import { SHOW_ACTIVITIES_BY } from 'constants/storageConstants'
 
 // styles
 import './Popup.css'
-
+import NavBar from './components/NavBar'
 
 const ContinueLoading = () => (
-  <div className='continue-loading'>
+  <div className="continue-loading">
     <img src={continueLoadingIcon} />
   </div>
 )
 
 const Reconnect = () => (
-  <div className='reconnect'>
-    <div className='reconnect-logo'><KoiLogo /></div>
-      Finnie needs to reconnect to the background. Please click on the button below.
+  <div className="reconnect">
+    <div className="reconnect-logo">
+      <KoiLogo />
+    </div>
+    Finnie needs to reconnect to the background. Please click on the button below.
     <button onClick={() => chrome.runtime.reload()}>Reconnect</button>
   </div>
 )
 
 const Popup = ({
+  lockWallet,
   location,
   isLoading,
   isContLoading,
@@ -99,13 +107,12 @@ const Popup = ({
 
     setAccounts(accounts)
 
-
     const query = window.location.search // later we should refactor using react-hash-router
 
     /* 
       Load for activity notifications
     */
-    const _activityNotifications = await storage.generic.get.activityNotifications() || []
+    const _activityNotifications = (await storage.generic.get.activityNotifications()) || []
     setActivityNotifications(_activityNotifications)
 
     /* 
@@ -152,8 +159,6 @@ const Popup = ({
         const walletType = params.get('type')
         history.push(`/account/import/phrase?type=${walletType}`)
       }
-
-
     } catch (err) {
       console.log(err.message)
       if (err.message === DISCONNECTED_BACKGROUND) {
@@ -168,7 +173,7 @@ const Popup = ({
   const loadPrice = async () => {
     try {
       const price = await storage.generic.get.tokenPrice()
-      let selectedCurrency = await storage.setting.get.selectedCurrency() || 'USD'
+      let selectedCurrency = (await storage.setting.get.selectedCurrency()) || 'USD'
 
       console.log('Selected Currency: ', selectedCurrency)
 
@@ -177,7 +182,9 @@ const Popup = ({
       setPrice({ AR })
       setCurrency(selectedCurrency)
 
-      const { data: responseData } = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=${selectedCurrency}`)
+      const { data: responseData } = await axios.get(
+        `https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=${selectedCurrency}`
+      )
       console.log('currency: ', selectedCurrency)
       console.log('price', responseData)
 
@@ -185,23 +192,24 @@ const Popup = ({
 
       if (isNumber(arPrice)) {
         await setPrice({ AR: arPrice })
-        await storage.generic.set.tokenPrice({...price, AR: arPrice})
+        await storage.generic.set.tokenPrice({ ...price, AR: arPrice })
       }
-    } catch(err) {
+    } catch (err) {
       setError(err.message)
     }
   }
 
   const loadSettings = async () => {
     try {
-      const showActivitiesBy = await storage.setting.get.showActivitiesBy() || SHOW_ACTIVITIES_BY.ALL_ACCOUNTS
-      const accountsToShowOnActivities = await storage.setting.get.accountsToShowOnActivities() || []
+      const showActivitiesBy =
+        (await storage.setting.get.showActivitiesBy()) || SHOW_ACTIVITIES_BY.ALL_ACCOUNTS
+      const accountsToShowOnActivities =
+        (await storage.setting.get.accountsToShowOnActivities()) || []
       const payload = {
-        showAllAccounts : showActivitiesBy == SHOW_ACTIVITIES_BY.ALL_ACCOUNTS,
+        showAllAccounts: showActivitiesBy == SHOW_ACTIVITIES_BY.ALL_ACCOUNTS,
         accountsToShowOnActivities
       }
       setSettings(payload)
-
     } catch (err) {
       console.log(err.message)
     }
@@ -214,6 +222,22 @@ const Popup = ({
       setAssetsTabSettings(assetsTabSettings)
     } catch (error) {
       setError(error.message)
+    }
+  }
+
+  const handleLockWallet = async () => {
+    if (!isEmpty(accounts)) {
+      setIsLoading(true)
+      await lockWallet()
+      setIsLoading(false)
+
+      history.push(PATH.LOGIN)
+
+      chrome.tabs.query({ url: chrome.extension.getURL('*') }, (tabs) => {
+        tabs.map((tab) => chrome.tabs.reload(tab.id))
+      })
+    } else {
+      setError('Cannot lock wallet.')
     }
   }
 
@@ -246,33 +270,37 @@ const Popup = ({
 
   return (
     <div className="popup">
-      {
-        needToReconnect ? <Reconnect /> :
-          <div>
-            {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
-            {isLoading && <Loading />}
-            {error && <Message type='error' children={error} />}
-            {notification && <Message type='notification' children={notification} />}
-            {warning && <Message type='warning' children={warning} />}
-            {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />}
-            <div className='content'>
-              {<Switch>
-                <Route path='/account'>
+      {needToReconnect ? (
+        <Reconnect />
+      ) : (
+        <div>
+          {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
+          {isLoading && <Loading />}
+          {error && <Message type="error" children={error} />}
+          {notification && <Message type="notification" children={notification} />}
+          {warning && <Message type="warning" children={warning} />}
+          {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />}
+          <div className="content">
+            {
+              <Switch>
+                <Route path="/account">
                   <Account />
                 </Route>
-                <Route path='/assets'>
+                <Route path="/assets">
                   <Assets />
                 </Route>
-                <Route path='/activity'>
+                <Route path="/activity">
                   <Activity />
                 </Route>
-                <Route path='/settings'>
+                <Route path="/settings">
                   <Setting />
                 </Route>
-              </Switch>}
-            </div>
+              </Switch>
+            }
           </div>
-      }
+          <NavBar handleLockWallet={handleLockWallet} />
+        </div>
+      )}
     </div>
   )
 }
@@ -292,6 +320,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
+  lockWallet,
   setIsLoading,
   setError,
   setNotification,
