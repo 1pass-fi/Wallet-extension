@@ -34,10 +34,6 @@ import { setAssetsTabSettings } from 'actions/assetsSettings'
 import continueLoadingIcon from 'img/continue-load.gif'
 import KoiLogo from 'img/koi-logo.svg'
 
-import GalleryIcon from 'img/popup/gallery-icon.svg'
-import AddIcon from 'img/popup/add-icon.svg'
-import LockIcon from 'img/popup/lock-icon.svg'
-
 // services
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
@@ -273,14 +269,17 @@ const Popup = ({
       {needToReconnect ? (
         <Reconnect />
       ) : (
-        <div>
+        <div className="h-full">
           {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
           {isLoading && <Loading />}
           {error && <Message type="error" children={error} />}
           {notification && <Message type="notification" children={notification} />}
           {warning && <Message type="warning" children={warning} />}
           {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />}
-          <div className="content">
+          <div
+            className="flex min-h-3.375 pt-13.5 overflow-y-scroll overflow-x-hidden"
+            style={{ height: 'calc(100% - 64px)', backgroundColor: '#eeeeee' }}
+          >
             {
               <Switch>
                 <Route path="/account">
