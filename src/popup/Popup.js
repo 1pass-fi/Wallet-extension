@@ -7,7 +7,8 @@ import axios from 'axios'
 import { get, isNumber, isEmpty } from 'lodash'
 
 // components
-import Header from 'components/header'
+// import Header from 'components/header'
+import Header from 'components/PopupHeader'
 import Loading from 'components/loading'
 import Account from 'components/accounts'
 import Assets from 'components/assets'
@@ -275,7 +276,8 @@ const Popup = ({
           {error && <Message type="error" children={error} />}
           {notification && <Message type="notification" children={notification} />}
           {warning && <Message type="warning" children={warning} />}
-          {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />}
+          {/* {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />} */}
+          {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header />}
           <div
             className="flex min-h-3.375 pt-13.5 overflow-y-scroll overflow-x-hidden"
             style={{ height: 'calc(100% - 64px)', backgroundColor: '#eeeeee' }}

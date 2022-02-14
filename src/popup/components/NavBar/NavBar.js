@@ -1,5 +1,4 @@
 import React from 'react'
-import { isEmpty } from 'lodash'
 
 import GalleryIcon from 'img/popup/gallery-icon.svg'
 import AddIcon from 'img/popup/add-icon.svg'
