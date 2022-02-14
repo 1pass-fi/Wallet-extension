@@ -17,18 +17,33 @@ const NavBar = ({ handleLockWallet }) => {
   }
 
   return (
-    <div className="footer">
-      <div className="footer-item gallery" onClick={goToGallery}>
-        <GalleryIcon style={{ width: '26px', height: '21px', marginTop: '6px' }} />
-        GALLERY
+    <div
+      className="flex items-center justify-between fixed bottom-0 px-0.75"
+      style={{ width: '100%', height: '64px', backgroundColor: '#4e4e7e' }}
+    >
+      <div
+        className="bg-blue-800 cursor-pointer rounded-bl-md"
+        style={{ width: '138px', height: '58px' }}
+        onClick={goToGallery}
+      >
+        <GalleryIcon className="mt-1.5 mx-auto" style={{ width: '26px', height: '21px' }} />
+        <div className="text-center text-white text-2xs leading-8">GALLERY</div>
       </div>
-      <div className="footer-item new-nft" onClick={goToCreateNft}>
-        <AddIcon style={{ width: '25px', height: '25px', marginTop: '6px' }} />
-        NEW NFT
+      <div
+        className="bg-blue-800 cursor-pointer"
+        style={{ width: '138px', height: '58px' }}
+        onClick={goToCreateNft}
+      >
+        <AddIcon className="mt-1.5 mx-auto" style={{ width: '25px', height: '25px' }} />
+        <div className="text-center text-white text-2xs leading-8">NEW NFT</div>
       </div>
-      <div className="footer-item lock" onClick={handleLockWallet}>
-        <LockIcon style={{ width: '18px', height: '25px', marginTop: '6px' }} />
-        LOCK
+      <div
+        className="bg-blue-800 cursor-pointer rounded-br-md"
+        style={{ width: '138px', height: '58px' }}
+        onClick={handleLockWallet}
+      >
+        <LockIcon className="mt-1.5 mx-auto" style={{ width: '18px', height: '25px' }} />
+        <div className="text-center text-white text-2xs leading-8">LOCK</div>
       </div>
     </div>
   )
