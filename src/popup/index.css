@@ -17,3 +17,28 @@ code {
 html::-webkit-scrollbar {
   display: none;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(165, 165, 165, 0);
+  border-radius: 10px;
+  border: 0px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #bef0ed;
+  border-radius: 10px;
+  border: 0px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

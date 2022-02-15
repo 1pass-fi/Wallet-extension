@@ -3,6 +3,7 @@ import capitalize from 'lodash/capitalize'
 import React, { useState } from 'react'
 
 import Tokens from './Tokens'
+import Assets from './Assets'
 
 const tabs = ['ASSETS', 'TOKENS', 'ACTIVITY']
 
@@ -16,7 +17,7 @@ const AccountInfo = () => {
           <div
             key={idx}
             className={clsx(
-              'w-1/3 flex items-center justify-center cursor-pointer',
+              'w-1/3 h-10.75 flex items-center justify-center cursor-pointer',
               currentTab === tab && 'font-semibold bg-lightBlue'
             )}
             onClick={() => setCurrentTab(tab)}
@@ -27,7 +28,7 @@ const AccountInfo = () => {
       </div>
       <div>
         {currentTab === 'TOKENS' && <Tokens />}
-        {currentTab === 'ASSETS' && <div>Assets</div>}
+        {currentTab === 'ASSETS' && <Assets />}
         {currentTab === 'ACTIVITY' && <div>Activity</div>}
       </div>
     </div>
