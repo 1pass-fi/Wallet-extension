@@ -208,6 +208,9 @@ export default ({
               onChange={(e) => updateSuggestWords(e.target.value)}
               className='inputSeedPhrase'
               ref={inputRef}
+              style={{
+                fontSize:'14px'
+              }}
             />
           )}
         </div>
