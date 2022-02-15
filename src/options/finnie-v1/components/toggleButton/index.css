@@ -5,7 +5,7 @@
   height: 24px;
 }
 
-.switch input {
+.switch .switch-checkbox {
   display: none;
 }
 
@@ -16,7 +16,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #d6d6d6;
+  background-color: #3e3e71;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -28,13 +28,14 @@
   content: '';
   height: 20px;
   width: 20px;
-  background-color: #030332;
+  background-color: #ffffff;
+  box-shadow: -1px 2px 4px rgba(0, 0, 0, 0.4);
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 
 .checked.slider {
-  /* background-color: #9be7c4; */
+  background-color: #bef0ed;
 }
 
 .focus + .slider {
@@ -61,12 +62,12 @@
 .on {
   position: absolute;
   left: 14px;
-  color: #171753 !important;
+  color: #373765 !important;
 }
 
 .off {
   right: -6px;
-  color: #171753 !important;
+  color: #d6d6d6 !important;
 }
 
 input:checked + .slider .on {

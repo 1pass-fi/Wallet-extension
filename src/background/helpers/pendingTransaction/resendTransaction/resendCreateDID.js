@@ -39,7 +39,7 @@ const createReactAppDID = async (contractId, account) => {
   tx.addTag('Exchange', 'Verto')
   tx.addTag('Action', 'marketplace/Create')
   tx.addTag('App-Name', 'SmartWeaveContract')
-  tx.addTag('App-Version', '0.3.0') 
+  tx.addTag('App-Version', '0.3.1') 
   tx.addTag('Contract-Id', contractId)
   tx.addTag('Koii-Did', 'CreateReactApp')
 

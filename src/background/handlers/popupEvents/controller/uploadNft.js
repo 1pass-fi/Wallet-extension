@@ -7,20 +7,18 @@ import { ERROR_MESSAGE, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 
 import helpers from 'background/helpers'
 
-
 export default async (payload, next) => {
   const { content, tags, fileType, address, price, imageId } = payload.data
   try {
     const credentials = await backgroundAccount.getCredentialByAddress(address)
     const account = await backgroundAccount.getAccount(credentials)
-    
+
     const { u8, imageId: _imageId, file } = await helpers.uploadNft.getImageDataForNFT()
-    const createdAt = Math.floor(Date.now()/1000).toString()
+    const createdAt = Math.floor(Date.now() / 1000).toString()
 
     // check for imageId
     console.log('Upload NFT [1/6]: check for imageId')
     if (imageId !== _imageId) throw new Error(ERROR_MESSAGE.UPLOAD_NFT.INVALID_CONTENT)
-
 
     // create transaction
     console.log('Upload NFT [2/6]: create transaction')
@@ -40,7 +38,6 @@ export default async (payload, next) => {
     }
     console.log('Created transaction: ', transaction)
 
-    
     // sign transaction
     console.log('Upload NFT [3/6]: sign transaction')
     try {
@@ -50,7 +47,6 @@ export default async (payload, next) => {
       throw new Error(ERROR_MESSAGE.UPLOAD_NFT.SIGN_TRANSACTION_ERROR)
     }
     console.log('Signed transaction: ', transaction)
-
 
     // get registrationReward data (true -> don't need to register this nft)
     console.log('Upload NFT [4/6]: check hasRegistrationReward')
@@ -63,7 +59,6 @@ export default async (payload, next) => {
       hasRegistrationReward = false
     }
     console.log('Has registration reward: ', hasRegistrationReward)
-    
 
     // post transaction
     console.log('Upload NFT [5/6]: post transaction')
@@ -82,7 +77,6 @@ export default async (payload, next) => {
     }
     console.log('NFT uploaded')
 
-
     // register NFT
     console.log('Register NFT [6/6]: register nft')
     if (!hasRegistrationReward) {
@@ -98,7 +92,6 @@ export default async (payload, next) => {
     const result = { txId: transaction.id, createdAt }
     console.log('Upload NFT result', result)
 
-
     // save pending transaction to storage
     const payload = {
       id: transaction.id,
@@ -111,8 +104,7 @@ export default async (payload, next) => {
       transactionType: PENDING_TRANSACTION_TYPE.MINT_NFT
     }
     await helpers.pendingTransactionFactory.createPendingTransaction(payload)
-    
-    
+
     // save pending nft to storage
     const nftPayload = {
       file,
@@ -122,7 +114,8 @@ export default async (payload, next) => {
       fileType,
       ownerAddress: address,
       createdAt,
-      address
+      address,
+      isPrivate: false
     }
     await helpers.pendingTransactionFactory.createPendingAsset(nftPayload)
 

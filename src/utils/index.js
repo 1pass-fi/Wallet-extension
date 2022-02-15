@@ -466,7 +466,7 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
     tx.addTag('Network', 'Koii')
     tx.addTag('Action', 'marketplace/Create')
     tx.addTag('App-Name', 'SmartWeaveContract')
-    tx.addTag('App-Version', '0.3.0')
+    tx.addTag('App-Version', '0.3.1')
     tx.addTag('Contract-Src', 'r_ibeOTHJW8McJvivPJjHxjMwkYfAKRjs-LjAeaBcLc')
     tx.addTag('Init-State', JSON.stringify(initialState))
     tx.addTag('NSFW', content.isNSFW)

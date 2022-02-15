@@ -16,7 +16,7 @@ import KidInputField from './kidInputField'
 import ProfileCover from 'img/profile-cover-placeholder.png'
 import RemoveLinkAccount from 'img/remove-account-links.svg'
 import Button from '../../../shared/Button'
-import ToggleButton from 'options/components/toggleButton'
+import ToggleButton from 'options/finnie-v1/components/toggleButton'
 import ExpandIcon from 'img/share-icon.svg'
 import CloseIcon from 'img/ab-close-icon.svg'
 import GoBackIcon from 'img/goback-icon-26px.svg'
@@ -237,7 +237,7 @@ const KidPage = () => {
     })
     setDisableUpdateKID(false)
     const { name, value } = e.target
-    if (name === 'kid') {
+    if (name === 'did link') {
       setuserKID({
         ...userKID,
         kidLink: `${kidLinkPrefix}${value}`
@@ -524,7 +524,7 @@ const KidPage = () => {
         <div className="form-text" >
           <div data-tip={isPending ? 'DID transactions pending' : ''}>
             <KidInputField
-              label="kID"
+              label="DID Link"
               isRequired={true}
               value={kID}
               setValue={onChangeUserInfo}

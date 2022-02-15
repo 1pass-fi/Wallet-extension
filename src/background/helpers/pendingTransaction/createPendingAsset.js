@@ -13,7 +13,8 @@ export default async ({
   fileType,
   ownerAddress,
   createdAt,
-  address
+  address,
+  isPrivate
 }) => {
   const credentials = await backgroundAccount.getCredentialByAddress(ownerAddress)
   const account = await backgroundAccount.getAccount(credentials)
@@ -43,7 +44,8 @@ export default async ({
     type: TYPE.ARWEAVE,
     expired: false,
     retried: 1,
-    address
+    address,
+    isPrivate
   }
 
   const allPendingAssets = await account.get.pendingAssets() || []

@@ -2,7 +2,7 @@ export const SHOW_ETHEREUM = true
 
 export const LOAD_KOI_BY = {
   ADDRESS: 'address',
-  KEY: 'key',
+  KEY: 'key'
 }
 
 export const HEADER_EXCLUDE_PATH = [
@@ -82,7 +82,7 @@ export const LONG_LIVED_HANDLER = [
 
 export const PORTS = {
   POPUP: 'POPUP',
-  CONTENT_SCRIPT: 'CONTENT_SCRIPT',
+  CONTENT_SCRIPT: 'CONTENT_SCRIPT'
 }
 
 export const MESSAGES = {
@@ -205,7 +205,8 @@ export const MESSAGES = {
   UPDATE_COLLECTION: 'UPDATE_COLLECTION',
   GET_KEY: 'GET_KEY',
   PUSH_NOTIFICATIONS: 'PUSH_NOTIFICATIONS',
-  UPDATE_PASSWORD: 'UPDATE_PASSWORD'
+  UPDATE_PASSWORD: 'UPDATE_PASSWORD',
+  UPDATE_NFT: 'UPDATE_NFT'
 }
 
 export const PATH = {
@@ -225,9 +226,7 @@ export const PATH = {
   VIEW_BLOCK: 'https://viewblock.io/arweave/address',
   ETHERSCAN: 'https://etherscan.io/address',
   KOI_ROCK: 'https://koi.rocks/content-detail',
-  GALLERY: chrome.extension
-    ? `${chrome.extension.getURL('/options.html')}`
-    : 'GALLERY_PATH',
+  GALLERY: chrome.extension ? `${chrome.extension.getURL('/options.html')}` : 'GALLERY_PATH',
   ALL_CONTENT: 'https://devbundler.openkoi.com:8888/state/top-content-predicted?frequency=all',
   SINGLE_CONTENT: 'https://devbundler.openkoi.com:8888/state/nft?tranxId=',
   VIEW_BLOCK_TRANSACTION: 'https://viewblock.io/arweave/tx',
@@ -277,8 +276,10 @@ export const ERROR_MESSAGE = {
   SEND_WITH_ETH: 'We currently only support Ethereum transfers on the Rinkeby network.',
   INVALID_TOKEN_SCHEMA: 'Invalid token schema. Please use nft with token schema of ERC1155',
   NOT_ENOUGH_ETH: `You don't have enough ETH.`,
-  EXPIRED_TRANSACTION_ACTION_ERROR: 'Something went wrong when trying to delete or resend your transaction',
-  BRIDGE_WITH_ETH_MAINNET: 'We currently only support Ethereum NFT bridging on the Rinkeby network.',
+  EXPIRED_TRANSACTION_ACTION_ERROR:
+    'Something went wrong when trying to delete or resend your transaction',
+  BRIDGE_WITH_ETH_MAINNET:
+    'We currently only support Ethereum NFT bridging on the Rinkeby network.',
   NFT_NOT_EXIST_ON_CHAIN: `This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie.`,
   BRIDGE_NFT_FAILED: 'Bridge NFT failed',
   ACCOUNT_EXIST: 'This account has already been imported.',
@@ -327,7 +328,7 @@ export const STORAGE = {
 
 export const REQUEST = {
   PERMISSION: 'PERMISSION',
-  TRANSACTION: 'TRANSACTION',
+  TRANSACTION: 'TRANSACTION'
 }
 
 export const RATE = {
@@ -343,13 +344,16 @@ export const NOTIFICATION = {
   ACCOUNT_NAME_UPDATED: 'Account nickname updated.',
   NFT_LOADED: 'Your assets list is up to date.',
   TRANSACTION_SENT: 'Transaction sent.',
-  CREATE_COLLECTION_SUCCESS: 'Collection created successfully. It may take a while until you can get your data updated.',
-  CREATE_KID_SUCCESS: 'Created KID successfully. It may take a while until you can get your data updated.',
-  UPDATE_KID_SUCCESS: 'kID updated! It may take several minutes before the update is reflected in Finnie.'
+  CREATE_COLLECTION_SUCCESS:
+    'Collection created successfully. It may take a while until you can get your data updated.',
+  CREATE_KID_SUCCESS:
+    'Created KID successfully. It may take a while until you can get your data updated.',
+  UPDATE_KID_SUCCESS:
+    'Your DID is being updated as we speak. This might take a couple of minutes.'
 }
 
 export const STATEMENT = {
-  NO_REWARD: `You don't have any rewards available, share your code to get some!`,
+  NO_REWARD: `You don't have any rewards available, share your code to get some!`
 }
 
 export const TIME_INTERVAL = {
@@ -389,15 +393,20 @@ export const URL = {
   TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf',
   GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchBridgeDetails',
   ETHERSCAN_MAINNET: 'https://etherscan.io',
-  ETHERSCAN_RINKEBY: 'https://rinkeby.etherscan.io',
+  ETHERSCAN_RINKEBY: 'https://rinkeby.etherscan.io'
 }
 
 export const BRIDGE_FLOW = {
-  AR_TO_ETH: 'ArweaveToEthereum', 
+  AR_TO_ETH: 'ArweaveToEthereum',
   ETH_TO_AR: 'EthereumToArweave'
 }
 
-export const GALLERY_IMPORT_PATH = ['/welcome', '/upload-wallet', '/import-wallet', '/create-wallet']
+export const GALLERY_IMPORT_PATH = [
+  '/welcome',
+  '/upload-wallet',
+  '/import-wallet',
+  '/create-wallet'
+]
 
 export const ETH_NETWORK_PROVIDER = {
   MAINNET: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
@@ -479,7 +488,8 @@ export const PENDING_TRANSACTION_TYPE = {
   CREATE_COLLECTION: 'CREATE_COLLECTION',
   REGISTER_KID: 'REGISTER_KID',
   UPDATE_KID: 'UPDATE_KID',
-  UPDATE_COLLECTION: 'UPDATE_COLLECTION'
+  UPDATE_COLLECTION: 'UPDATE_COLLECTION',
+  UPDATE_NFT: 'UPDATE_NFT'
 }
 
 export const DID_CONTRACT_ID = {

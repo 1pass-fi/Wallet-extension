@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 
-import ToggleButton from 'options/components/toggleButton'
+import ToggleButton from 'options/finnie-v1/components/toggleButton'
 
 import storage from 'services/storage'
 

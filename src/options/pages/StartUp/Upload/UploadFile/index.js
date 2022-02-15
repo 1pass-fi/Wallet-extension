@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import isEmpty from 'lodash/isEmpty'
 
 import Dropfile from '../../shared/Dropfile'
-import GoBackBtn from '../../../../components/GoBackButton'
+import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
 
 import { TYPE } from 'constants/accountConstants'
 

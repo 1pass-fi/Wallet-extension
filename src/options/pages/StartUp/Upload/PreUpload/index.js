@@ -4,7 +4,7 @@ import EthereumLogo from 'img/startup/ethereum-logo.svg'
 import FinnieLogo from 'img/startup/finnie-logo.svg'
 
 import WalletType from '../../shared/WalletType'
-import GoBackBtn from 'options/components/GoBackButton'
+import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
 
 import { TYPE } from 'constants/accountConstants'
 import { SHOW_ETHEREUM } from 'constants/koiConstants'

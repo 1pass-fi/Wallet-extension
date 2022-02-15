@@ -703,7 +703,8 @@ export class ArweaveMethod {
               type: TYPE.ARWEAVE,
               address: this.koi.address,
               locked: content.locked,
-              tags: content.tags
+              tags: content.tags,
+              isPrivate: content.isPrivate === undefined ? 'undefined' : content.isPrivate
             }
           } else {
             console.log('Failed load content: ', content)
@@ -723,7 +724,8 @@ export class ArweaveMethod {
               type: TYPE.ARWEAVE,
               address: this.koi.address,
               locked: content.locked,
-              tags: content.tags
+              tags: content.tags,
+              isPrivate: content.isPrivate === undefined ? 'undefined' : content.isPrivate
             }
           }
         } catch (err) {
@@ -776,7 +778,8 @@ export class ArweaveMethod {
               type: TYPE.ARWEAVE,
               address: content.owner,
               locked: content.locked,
-              tags: content.tags
+              tags: content.tags,
+              isPrivate: content.isPrivate === undefined ? 'undefined' : content.isPrivate
             }
           } else {
             console.log('Failed load content: ', content)
@@ -796,7 +799,8 @@ export class ArweaveMethod {
               type: TYPE.ARWEAVE,
               address: content.owner,
               locked: content.locked,
-              tags: content.tags
+              tags: content.tags,
+              isPrivate: content.isPrivate === undefined ? 'undefined' : content.isPrivate
             }
           }
         } catch (err) {

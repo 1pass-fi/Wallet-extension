@@ -119,10 +119,10 @@ export default () => {
               type='image'
             />
             <div className='create-kid-text'>
-              Or make your decentralized Koii ID (kID) to connect cross-chain assets.
+              Or make your decentralized Koii ID (DID) to connect cross-chain assets.
             </div>
 
-            <Button className='go-to-kid' onClick={() => history.push('/settings/k-id')} >Create my kID</Button>
+            <Button className='go-to-kid' onClick={() => history.push('/settings/k-id')} >Create my DID</Button>
           </div>
           <ReactTooltip place='top' type="dark" effect="float" />
         </>

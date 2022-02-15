@@ -5,21 +5,30 @@ import { Provider } from 'react-redux'
 
 import './index.css'
 import Layout from './layout'
-import Create from './pages/Create'
-import Friends from './pages/Friends'
 import Welcome from './pages/StartUp/Welcome'
 import UploadWallet from './pages/StartUp/Upload'
 import ImportWallet from './pages/StartUp/Import'
 import CreateWallet from './pages/StartUp/Create'
-import FriendReferral from 'finnie-v2/pages/FriendReferral'
-
-import SecondVer from '../finnie-v2'
+import FriendReferral from 'options/pages/FriendReferral'
 
 import HasArweave from 'options/shared/hasArweave'
 
 import store from './store'
 
-const Gallery = () => {
+import NavBar from 'finnie-v2/components/NavBar'
+
+import Collection from 'options/pages/Collection'
+import Gallery from 'options/pages/Gallery'
+import NFTDetail from 'options/pages/NFTDetail'
+import Notifications from 'options/pages/Notifications'
+import CollectionDetails from 'options/pages/CollectionDetails'
+import SelectNfts from 'options/pages/SelectNfts'
+
+import Success from 'options/pages/StartUp/shared/Success'
+import MainLayout from 'finnie-v2/components/MainLayout'
+import Settings from 'options/pages/Settings'
+
+const FullView = () => {
   return (
     <Provider store={store}>
       <Router>
@@ -38,24 +47,54 @@ const Gallery = () => {
               <Route exact path="/import-wallet">
                 <ImportWallet />
               </Route>
-              <Route exact path="/create">
-                <HasArweave content="This feature only supports AR wallets">
-                  <Create />
-                </HasArweave>
-              </Route>
-              <Route exact path="/friends">
-                <HasArweave
-                  content="This feature only supports AR wallets"
-                  checkingDefaultAccount={true}
-                >
-                  <Friends />
-                </HasArweave>
-              </Route>
               <Route exact path="/friend-referral">
                 <FriendReferral />
               </Route>
               <Route path="*">
-                <SecondVer />
+                <HasArweave content={'Please import an Arweave account'}>
+                  <Route exact path="/collections/:collectionId">
+                    <CollectionDetails />
+                  </Route>
+                  <MainLayout>
+                    <Switch>
+                      <Route exact path="/nfts/:id">
+                        <NFTDetail />
+                      </Route>
+                      <Route exact path="/settings/*">
+                        <div className="flex justify-start" style={{ maxWidth: '100%' }}>
+                          <Settings />
+                        </div>
+                      </Route>
+                      <Route exact path="/collections/create/new-collection">
+                        <Collection />
+                      </Route>
+                      <Route exact path="/collections/create/select-nft">
+                        <SelectNfts />
+                      </Route>
+                      <Route exact path="/collections/edit/select-nft/:collectionId">
+                        <SelectNfts />
+                      </Route>
+                      <Route exact path="/collections">
+                        <Collection />
+                      </Route>
+                      <Route path="/notifications">
+                        <Notifications />
+                      </Route>
+                      <Route path="/success">
+                        <>
+                          <NavBar />
+                          <Success />
+                        </>
+                      </Route>
+                      <Route exact path="/gallery">
+                        <Gallery />
+                      </Route>
+                      <Route path="*">
+                        <Gallery />
+                      </Route>
+                    </Switch>
+                  </MainLayout>
+                </HasArweave>
               </Route>
             </Switch>
           </Layout>
@@ -65,4 +104,4 @@ const Gallery = () => {
   )
 }
 
-ReactDOM.render(<Gallery />, document.getElementById('root'))
+ReactDOM.render(<FullView />, document.getElementById('root'))
