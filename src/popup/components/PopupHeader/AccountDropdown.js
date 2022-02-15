@@ -13,7 +13,7 @@ export const AccountDropdown = ({ setShowAccountDropdown }) => {
     <div className="bg-blue-600">
       {accounts.map((account, idx) => (
         <div
-          className="bg-blue-600 text-white flex items-center"
+          className="bg-blue-600 text-white flex items-center cursor-pointer"
           key={idx}
           style={{ width: '249px', height: '45px' }}
           onClick={() => setShowAccountDropdown(false)}
