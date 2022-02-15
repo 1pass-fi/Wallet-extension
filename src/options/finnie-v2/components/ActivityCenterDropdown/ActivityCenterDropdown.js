@@ -17,7 +17,7 @@ const COMMUNITY = 'COMMUNITY'
 const NOTIFICATION = 'NOTIFICATION'
 
 const ActivityCenterDropdown = React.forwardRef((_, ref) => {
-  const [tab, setTab] = useState(ACTIVITY)
+  const [tab, setTab] = useState(NOTIFICATION)
   const [activities, setActivities] = useState([])
   const [pages, setPages] = useState(1)
 
