@@ -40,6 +40,12 @@ const Home = () => {
             <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
               {numberFormat(defaultAccount.balance)} ETH
             </div>
+            <div
+              className="text-base leading-8 tracking-finnieSpacing-tight"
+              style={{ color: '#707070' }}
+            >
+              ${fiatCurrencyFormat(defaultAccount.balance * price.ETH)} USD
+            </div>
           </div>
         </>
       )}

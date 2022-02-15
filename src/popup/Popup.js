@@ -187,9 +187,9 @@ const Popup = ({
 
       console.log('Selected Currency: ', selectedCurrency)
 
-      const { AR } = price || 1
+      const { AR, ETH } = price || 1
 
-      setPrice({ AR })
+      setPrice({ AR, ETH })
       setCurrency(selectedCurrency)
 
       const { data: responseData } = await axios.get(
@@ -200,9 +200,14 @@ const Popup = ({
 
       const arPrice = get(responseData, `arweave.${selectedCurrency.toLowerCase()}`)
 
-      if (isNumber(arPrice)) {
-        await setPrice({ AR: arPrice })
-        await storage.generic.set.tokenPrice({ ...price, AR: arPrice })
+      const { data: ethRes } = await axios.get(
+        `https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=${selectedCurrency}`
+      )
+      const ethPrice = get(ethRes, `ethereum.${selectedCurrency.toLowerCase()}`)
+
+      if (isNumber(arPrice) && isNumber(arPrice)) {
+        await setPrice({ AR: arPrice, ETH: ethPrice })
+        await storage.generic.set.tokenPrice({ ...price, AR: arPrice, ETH: ethPrice })
       }
     } catch (err) {
       setError(err.message)
