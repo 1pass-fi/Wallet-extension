@@ -23,7 +23,7 @@ import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/form
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import shareSocialNetwork from 'finnie-v2/utils/shareSocialNetwork'
 
-import { SOCIAL_NETWORKS } from 'constants/koiConstants'
+import { FRIEND_REFERRAL_ENDPOINTS, SOCIAL_NETWORKS } from 'constants/koiConstants'
 
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
@@ -42,8 +42,11 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
   const [disableCreateNFT, setDisableCreateNFT] = useState(false)
   const [nftId, setNftId] = useState(null)
   const [showShareLink, setShowShareLink] = useState(true)
-  const [showReferralField, setShowReferralField] = useState(true)
+
+  const [showReferralField, setShowReferralField] = useState(false)
   const [referralCodeError, setReferralCodeError] = useState(null)
+  const [referralCode, setReferralCode] = useState(null)
+  const [confirmedCode, setConfirmedCode] = useState(false)
 
   const modalRef = useRef(null)
 
@@ -99,6 +102,31 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
       setError(err.message)
       setIsLoading((prev) => --prev)
       setDisableCreateNFT(false)
+    }
+  }
+
+  const handleSubmitReferralCode = async () => {
+    try {
+      setIsLoading(prev => ++prev)
+      const result = await backgroundRequest.gallery.friendReferral({ endpoints: FRIEND_REFERRAL_ENDPOINTS.SUBMIT_CODE, friendCode: referralCode })
+      switch (result?.status) {
+        case 201: 
+          setShowReferralField(false)
+          setConfirmedCode(true)
+          break
+        case 200: 
+          setReferralCodeError('Affiliate Invite already exists')
+          break
+        case 422:
+          setReferralCodeError('Incorrect Referral code')
+          break
+        default:
+          setReferralCodeError('Network error')
+      }
+      setIsLoading(prev => --prev)
+    } catch (err) {
+      console.error(err.message)
+      setIsLoading(prev => --prev)
     }
   }
 
@@ -201,13 +229,14 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
               <div className='w-101 mt-4'>
                 <div className='w-46.75 text-sm text-success-700 m-auto mb-2'>FRIEND REFERRAL CODE</div>
                 <div className='mb-2'>
-                  <input style={{boxSizing:'border-box',background:'#D6D6D6',borderBottom:'1.5px solid #373765',paddingLeft:'4px',fontSize:'14px'}} className='w-77 h-8 confirm-create-nft-modal-referral-input' type='text'></input>
-                  <button className='w-23 h-8 bg-blue-800 text-white'>Submit</button>
+                  <input onChange={(e) => setReferralCode(e.target.value)} style={{boxSizing:'border-box',background:'#D6D6D6',borderBottom:'1.5px solid #373765',paddingLeft:'4px',fontSize:'14px'}} className='w-77 h-8 confirm-create-nft-modal-referral-input' type='text'></input>
+                  <button onClick={handleSubmitReferralCode} className='w-23 h-8 bg-blue-800 text-white'>Submit</button>
                 </div>
                 {referralCodeError && <div style={{color:'#DB1B1B',fontSize:'12px'}}>{referralCodeError}</div>}
               </div>
             }
-            <div onClick={() => setShowReferralField(prev => !prev)} className='text-xs text-success-700 underline my-3.75 cursor-pointer'>{!showReferralField ? 'Skip the KOII cost with a referral code' : 'Continue without referral code'}</div>
+            {!confirmedCode && <div onClick={() => setShowReferralField(prev => !prev)} className='text-xs text-success-700 underline my-3.75 cursor-pointer'>{!showReferralField ? 'Skip the KOII cost with a referral code' : 'Continue without referral code'}</div>}
+            {confirmedCode && <div className='text-xs text-success-700 my-3.75'>Referral code has been sucessfully redeemed!</div>}
           </>
         )}
         {step === 2 && (
