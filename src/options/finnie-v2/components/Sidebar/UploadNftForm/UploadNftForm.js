@@ -36,7 +36,7 @@ const UploadNftForm = () => {
   const [tagInput, setTagInput] = useState('')
   const [tags, setTags] = useState([])
   const [file, setFile] = useState({})
-  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [showConfirmModal, setShowConfirmModal] = useState(true)
 
   const titleFieldRef = useRef(null)
 

@@ -30,6 +30,8 @@ import storage from 'services/storage'
 import arweave from 'services/arweave'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
+import './ConfirmCreateNftModal.css'
+
 const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetState }) => {
   const estimateCostKOII = 1
 
@@ -40,6 +42,8 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
   const [disableCreateNFT, setDisableCreateNFT] = useState(false)
   const [nftId, setNftId] = useState(null)
   const [showShareLink, setShowShareLink] = useState(true)
+  const [showReferralField, setShowReferralField] = useState(true)
+  const [referralCodeError, setReferralCodeError] = useState(null)
 
   const modalRef = useRef(null)
 
@@ -135,7 +139,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
   return (
     <div className="w-full h-full flex items-center justify-center min-w-screen min-h-screen bg-black bg-opacity-25 fixed z-51 top-0 left-0">
       <div
-        className="w-146.5 h-98 rounded bg-trueGray-100 flex flex-col items-center text-indigo"
+        className="w-146.5 h-103 rounded bg-trueGray-100 flex flex-col items-center text-indigo"
         ref={modalRef}
       >
         <div className="flex h-16.75 rounded-t bg-trueGray-100 shadow-md w-full font-semibold text-xl tracking-finnieSpacing-wide relative">
@@ -186,13 +190,24 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                 </div>
               </div>
             </div>
-            <Button
+            {!showReferralField && <Button
               onClick={handleUploadNFT}
               className="h-9 mt-8 font-semibold text-sm rounded w-43.75"
               variant="indigo"
               text="Create NFT"
               disabled={disableCreateNFT}
-            />
+            />}
+            {showReferralField &&
+              <div className='w-101 mt-4'>
+                <div className='w-46.75 text-sm text-success-700 m-auto mb-2'>FRIEND REFERRAL CODE</div>
+                <div className='mb-2'>
+                  <input style={{boxSizing:'border-box',background:'#D6D6D6',borderBottom:'1.5px solid #373765',paddingLeft:'4px',fontSize:'14px'}} className='w-77 h-8 confirm-create-nft-modal-referral-input' type='text'></input>
+                  <button className='w-23 h-8 bg-blue-800 text-white'>Submit</button>
+                </div>
+                {referralCodeError && <div style={{color:'#DB1B1B',fontSize:'12px'}}>{referralCodeError}</div>}
+              </div>
+            }
+            <div onClick={() => setShowReferralField(prev => !prev)} className='text-xs text-success-700 underline my-3.75 cursor-pointer'>{!showReferralField ? 'Skip the KOII cost with a referral code' : 'Continue without referral code'}</div>
           </>
         )}
         {step === 2 && (
