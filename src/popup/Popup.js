@@ -16,6 +16,9 @@ import Activity from 'components/activity'
 import Setting from 'components/setting'
 import Message from 'components/message'
 
+// pages
+import Home from './pages/Home'
+
 // actions
 import { lockWallet } from 'actions/koi'
 import { setIsLoading } from 'actions/loading'
@@ -289,12 +292,12 @@ const Popup = ({
           {/* {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />} */}
           {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header />}
           <div
-            className="flex min-h-3.375 pt-13.5 overflow-y-scroll overflow-x-hidden"
+            className="flex min-h-3.375 pt-13.5 overflow-y-auto overflow-x-hidden"
             style={{ height: 'calc(100% - 64px)', backgroundColor: '#eeeeee' }}
           >
             {
               <Switch>
-                <Route path="/account">
+                {/* <Route path="/account">
                   <Account />
                 </Route>
                 <Route path="/assets">
@@ -305,6 +308,9 @@ const Popup = ({
                 </Route>
                 <Route path="/settings">
                   <Setting />
+                </Route> */}
+                <Route path="*">
+                  <Home />
                 </Route>
               </Switch>
             }

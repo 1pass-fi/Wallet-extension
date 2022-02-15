@@ -170,6 +170,7 @@ module.exports = {
         221.5: '55.375rem'
       },
       letterSpacing: {
+        'finnieSpacing-tightest': '-0.04em',
         'finnieSpacing-tighter': '-0.02em',
         'finnieSpacing-tight': '-0.01em',
         'finnieSpacing-wide': '0.01em',
