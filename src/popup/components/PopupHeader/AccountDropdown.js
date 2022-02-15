@@ -1,13 +1,15 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import EthereumIcon from 'img/ethereum-logo.svg'
 import FinnieIcon from 'img/popup/finnie-icon.svg'
 
+import { setDefaultAccount } from 'actions/defaultAccount'
 import { TYPE } from 'constants/accountConstants'
 
 export const AccountDropdown = ({ setShowAccountDropdown }) => {
   const accounts = useSelector((state) => state.accounts)
+  const dispatch = useDispatch()
 
   return (
     <div className="bg-blue-600">
@@ -16,7 +18,10 @@ export const AccountDropdown = ({ setShowAccountDropdown }) => {
           className="bg-blue-600 text-white flex items-center cursor-pointer"
           key={idx}
           style={{ width: '249px', height: '45px' }}
-          onClick={() => setShowAccountDropdown(false)}
+          onClick={() => {
+            dispatch(setDefaultAccount(account))
+            setShowAccountDropdown(false)
+          }}
         >
           {account.type === TYPE.ARWEAVE && <FinnieIcon className="ml-2.5 h-6.25 w-6.25" />}
           {account.type === TYPE.ETHEREUM && <EthereumIcon className="ml-2.5 h-6.25 w-6.25" />}

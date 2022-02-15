@@ -17,6 +17,7 @@ import creatingWallet from './creatingWallet'
 import currency from './currency'
 import ethereum from './ethereum'
 import accounts from './accounts'
+import defaultAccount from './defaultAccount'
 import activityNotifications from './activityNotifications'
 import settings from './settings'
 import assetsSettings from './assetsSettings'
@@ -39,6 +40,7 @@ export default combineReducers({
   currency,
   ethereum,
   accounts,
+  defaultAccount,
   activityNotifications,
   settings,
   assetsSettings

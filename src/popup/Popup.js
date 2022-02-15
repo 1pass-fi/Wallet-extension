@@ -26,6 +26,7 @@ import { setPrice } from 'actions/price'
 import { setKoi, getBalances } from 'actions/koi'
 import { setCurrency } from 'actions/currency'
 import { setAccounts } from 'actions/accounts'
+import { setDefaultAccount } from 'actions/defaultAccount'
 import { setActivityNotifications } from 'actions/activityNotification'
 import { setSettings } from 'actions/settings'
 import { setActivities } from 'actions/activities'
@@ -80,6 +81,7 @@ const Popup = ({
   setKoi,
   setCurrency,
   setAccounts,
+  setDefaultAccount,
   accounts,
   setActivityNotifications,
   setSettings,
@@ -103,6 +105,14 @@ const Popup = ({
     const isLocked = await backgroundRequest.wallet.getLockState()
 
     setAccounts(accounts)
+
+    const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
+    const activatedAccount = await popupAccount.getAccount({
+      address: activatedAccountAddress
+    })
+
+    const activatedAccountMetadata = await activatedAccount.get.metadata()
+    setDefaultAccount(activatedAccountMetadata)
 
     const query = window.location.search // later we should refactor using react-hash-router
 
@@ -316,6 +326,7 @@ const mapStateToProps = (state) => ({
   isContLoading: state.contLoading,
   price: state.price,
   accounts: state.accounts,
+  defaultAccount: state.defaultAccount,
   activityNotifications: state.activityNotifications,
   activities: state.activities
 })
@@ -331,6 +342,7 @@ const mapDispatchToProps = {
   setPrice,
   setCurrency,
   setAccounts,
+  setDefaultAccount,
   setActivityNotifications,
   setSettings,
   setActivities,
