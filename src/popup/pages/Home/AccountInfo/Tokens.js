@@ -1,21 +1,39 @@
 import clsx from 'clsx'
-import React from 'react'
+import React, { useMemo } from 'react'
+import { useSelector } from 'react-redux'
+
+import { TYPE } from 'constants/accountConstants'
+import { fiatCurrencyFormat, numberFormat } from 'utils'
 
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 
-const tokens = [
-  {
-    name: 'Ethereum',
-    value: 2.56876,
-    unit: 'ETH'
-  },
-  { name: 'KOII', value: 136.359, unit: 'KOII' },
-  { name: 'Arweave', value: 235, unit: 'AR' }
-]
-
 const Tokens = () => {
+  const defaultAccount = useSelector((state) => state.defaultAccount)
+  const price = useSelector((state) => state.price)
+
+  const tokens = useMemo(() => {
+    if (defaultAccount.type === TYPE.ARWEAVE)
+      return [
+        {
+          name: 'Arweave',
+          value: numberFormat(defaultAccount.balance),
+          unit: 'AR',
+          usdValue: numberFormat(fiatCurrencyFormat(defaultAccount.balance * price.AR))
+        },
+        { name: 'KOII', value: numberFormat(defaultAccount.koiBalance), unit: 'KOII' }
+      ]
+    return [
+      {
+        name: 'Ethereum',
+        value: numberFormat(defaultAccount.balance),
+        usdValue: numberFormat(fiatCurrencyFormat(defaultAccount.balance * price.ETH)),
+        unit: 'ETH'
+      }
+    ]
+  }, [defaultAccount])
+
   return (
     <div className="w-full px-3">
       {tokens.map((token, idx) => (
@@ -36,7 +54,7 @@ const Tokens = () => {
             <div className="font-semibold">
               {token.value} {token.unit}
             </div>
-            <div>$11.92 USD</div>
+            {token.usdValue && <div>{token.usdValue} USD</div>}
           </div>
         </div>
       ))}
