@@ -12,7 +12,7 @@ const Header = () => {
 
   return (
     <div
-      className="fixed flex shadow-md"
+      className="fixed flex shadow-md z-30"
       style={{ height: '54px', width: '100%', backgroundColor: '#8585BC' }}
     >
       <div className="relative">

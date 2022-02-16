@@ -76,7 +76,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <PopupBackground className="absolute top-13.5 right-0" />
+        <PopupBackground className="absolute top-13.5 right-0 z-10" />
       </div>
       <AccountInfo />
     </div>

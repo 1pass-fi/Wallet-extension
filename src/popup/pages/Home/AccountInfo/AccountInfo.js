@@ -11,7 +11,7 @@ const AccountInfo = () => {
   const [currentTab, setCurrentTab] = useState('TOKENS')
 
   return (
-    <div className="bg-trueGray-100 text-blue-600 text-base flex flex-col h-full">
+    <div className="z-20 bg-trueGray-100 text-blue-600 text-base flex flex-col h-full">
       <div className="shadow-lg h-10.75 flex items-stretch">
         {tabs.map((tab, idx) => (
           <div
