@@ -167,7 +167,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
   return (
     <div className="w-full h-full flex items-center justify-center min-w-screen min-h-screen bg-black bg-opacity-25 fixed z-51 top-0 left-0">
       <div
-        className="w-146.5 h-103 rounded bg-trueGray-100 flex flex-col items-center text-indigo"
+        className="w-146.5 min-h-103 rounded bg-trueGray-100 flex flex-col items-center text-indigo"
         ref={modalRef}
       >
         <div className="flex h-16.75 rounded-t bg-trueGray-100 shadow-md w-full font-semibold text-xl tracking-finnieSpacing-wide relative">
@@ -235,7 +235,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                 {referralCodeError && <div style={{color:'#DB1B1B',fontSize:'12px'}}>{referralCodeError}</div>}
               </div>
             }
-            {!confirmedCode && <div onClick={() => setShowReferralField(prev => !prev)} className='text-xs text-success-700 underline my-3.75 cursor-pointer'>{!showReferralField ? 'Skip the KOII cost with a referral code' : 'Continue without referral code'}</div>}
+            {!confirmedCode && <div onClick={() => setShowReferralField(prev => !prev)} className='text-xs text-success-700 underline my-3.75 cursor-pointer'>{!showReferralField ? 'Skip the KOII cost with a referral code' : 'Continue without a referral code'}</div>}
             {confirmedCode && <div className='text-xs text-success-700 my-3.75'>Referral code has been sucessfully redeemed!</div>}
           </>
         )}
