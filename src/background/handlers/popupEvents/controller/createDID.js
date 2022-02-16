@@ -28,7 +28,18 @@ export default async (payload, next) => {
     
     await account.method.registerData(contractId)
 
-    const { kIDCreated, id: brandlyID } = await helpers.did.koiiMe.mapKoiiMe({ txId: id, kID: didData.kID, account })
+    const kID = didData.kID
+    const available = await helpers.did.koiiMe.checkAvailable(kID)
+
+    let kIDCreated
+    
+    if (available) {
+      const result = await helpers.did.koiiMe.mapKoiiMe({ txId: id, kID: didData.kID, account })
+      kIDCreated = result.kIDCreated
+    } else {
+      console.log('UPDATE KOII DID')
+      kIDCreated = await helpers.did.koiiMe.updateKoiiMe(kID, id, account)
+    }
 
     if (!kIDCreated) {
       next({ error: 'Map koii.id error', status: 400 })
@@ -48,7 +59,7 @@ export default async (payload, next) => {
       contract: null,
       data: {
         dataContractID: contractId,
-        brandlyID,
+        brandlyID: 'brandlyID',
         kID: didData.kID
       }
     }
@@ -65,7 +76,7 @@ export default async (payload, next) => {
       contract: null,
       data: {
         didData,
-        brandlyID,
+        brandlyID: 'brandlyID',
         reactAppId: id
       }
     }

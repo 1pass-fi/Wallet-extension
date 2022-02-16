@@ -87,11 +87,11 @@ export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
         else backgroundRequest.gallery.getDID({ address: defaultAccountAddress })
         state = result.state
   
-        if (!isEmpty(state)) {
-          setHadData(true)
-        } else {
-          setHadData(false)
-        }
+        // if (!isEmpty(state)) {
+        //   setHadData(true)
+        // } else {
+        //   setHadData(false)
+        // }
   
         id = result.id
       } catch (err) {
