@@ -32,6 +32,7 @@ module.exports = {
         blueGray: {
           500: '#8787A6',
           600: '#5C5C85',
+          800: '#707070',
           900: '#07073F'
         },
         blue: {
@@ -68,6 +69,7 @@ module.exports = {
         '4xs': '7px',
         '3xs': '9px',
         '2xs': '10px',
+        '25px': '25px',
         '11px': '11px',
         '32px': '32px'
       },

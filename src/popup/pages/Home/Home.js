@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import PopupBackground from 'img/popup/popup-background.svg'
 import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
@@ -65,12 +66,13 @@ const Home = () => {
             </div>
           </div>
           <div className="flex flex-col items-center justify-center">
-            <div
+            <Link
               className="rounded-full bg-lightBlue shadow flex items-center justify-center cursor-pointer"
               style={{ width: '44px', height: '44px' }}
+              to="/receive"
             >
               <ReceiveIcon style={{ width: '23px', height: '20px' }} />
-            </div>
+            </Link>
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
               RECEIVE
             </div>

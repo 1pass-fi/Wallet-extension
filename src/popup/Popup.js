@@ -18,6 +18,7 @@ import Message from 'components/message'
 
 // pages
 import Home from './pages/Home'
+import Receive from './pages/Receive'
 
 // actions
 import { lockWallet } from 'actions/koi'
@@ -314,6 +315,9 @@ const Popup = ({
                 <Route path="/settings">
                   <Setting />
                 </Route> */}
+                <Route exact path="/receive">
+                  <Receive />
+                </Route>
                 <Route path="*">
                   <Home />
                 </Route>
