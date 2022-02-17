@@ -7,6 +7,7 @@ import storage from 'services/storage'
 
 import inject from './inject'
 import inpageScript from './inpageScript'
+import eventEmitterScript from './eventEmitterScript'
 import initHanlders from './initHandlers'
 
 if (includes(ALLOWED_ORIGIN, window.origin)) {
@@ -21,7 +22,7 @@ async function contentScript () {
 
   const disabled = disabledOrigins.includes(origin)
 
-  inject(inpageScript(disabled))
+  inject(inpageScript(disabled), eventEmitterScript)
 
   const arweaveWalletLoaded = new CustomEvent('arweaveWalletLoaded')
   const finnieWalletLoaded = new CustomEvent('finnieWalletLoaded')
