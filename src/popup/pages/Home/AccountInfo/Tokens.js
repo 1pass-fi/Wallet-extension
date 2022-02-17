@@ -20,7 +20,7 @@ const Tokens = () => {
           name: 'Arweave',
           value: numberFormat(defaultAccount.balance),
           unit: 'AR',
-          usdValue: numberFormat(fiatCurrencyFormat(defaultAccount.balance * price.AR))
+          usdValue: fiatCurrencyFormat(defaultAccount.balance * price.AR)
         },
         { name: 'KOII', value: numberFormat(defaultAccount.koiBalance), unit: 'KOII' }
       ]
@@ -28,7 +28,7 @@ const Tokens = () => {
       {
         name: 'Ethereum',
         value: numberFormat(defaultAccount.balance),
-        usdValue: numberFormat(fiatCurrencyFormat(defaultAccount.balance * price.ETH)),
+        usdValue: fiatCurrencyFormat(defaultAccount.balance * price.ETH),
         unit: 'ETH'
       }
     ]

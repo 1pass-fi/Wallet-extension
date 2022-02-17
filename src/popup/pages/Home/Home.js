@@ -19,9 +19,9 @@ const Home = () => {
   return (
     <div className="flex flex-col w-full h-full">
       <div className="pt-4.75 pl-4.75 mb-3.5">
+        <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />
         {defaultAccount.type !== TYPE.ETHEREUM && (
           <>
-            <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />
             <div className="mt-6.5">
               <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
                 {numberFormat(defaultAccount.koiBalance)} KOII
@@ -38,7 +38,6 @@ const Home = () => {
         )}
         {defaultAccount.type === TYPE.ETHEREUM && (
           <>
-            <EthereumIcon className="" style={{ width: '40px', height: '40px' }} />
             <div className="mt-6.5">
               <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
                 {numberFormat(defaultAccount.balance)} ETH
