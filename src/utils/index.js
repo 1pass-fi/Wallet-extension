@@ -388,7 +388,7 @@ export const numberFormat = (num) => {
 }
 
 export const fiatCurrencyFormat = (num) => {
-  return num === null ? '---' : new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 }).format(num)
+  return num === null ? '---' : new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(num)
 }
 
 export const transactionAmountFormat = (num) => {
