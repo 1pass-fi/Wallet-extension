@@ -35,8 +35,8 @@ const AccountSettingsDark = React.forwardRef(({ className }, ref) => {
             key={path}
             to={path}
             className={clsx(
-              'h-9.75 flex items-center',
-              idx !== 0 && 'border-t-2 border-opacity-20 '
+              'h-9.75 flex items-center hover:underline underline-offset-1',
+              idx !== 0 && 'border-t-2 border-opacity-20'
             )}
             activeClassName="underline underline-offset-1"
           >
