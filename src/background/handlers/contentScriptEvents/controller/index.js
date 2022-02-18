@@ -17,6 +17,7 @@ import koiSendKoi from './koiSendKoi'
 import createDID from './createDID'
 import updateDID from './updateDID'
 import signature from './signature'
+import testEthereum from './testEthereum'
 
 export default {
   koiConnect,
@@ -37,5 +38,6 @@ export default {
   koiSendKoi,
   createDID,
   updateDID,
-  signature
+  signature,
+  testEthereum
 }

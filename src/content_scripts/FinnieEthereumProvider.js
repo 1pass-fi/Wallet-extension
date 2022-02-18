@@ -17,4 +17,4 @@ const finnieEthereumProviderScript = () => {
   }
 }
 
-export default declareFinnieEthereumProvider
+export default finnieEthereumProviderScript
