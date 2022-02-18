@@ -24,7 +24,7 @@ const ChangePasswordModal = ({ close }) => {
 
   const { setError, setIsLoading } = useContext(GalleryContext)
 
-  const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%].*).{8,}')
+  const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%^&*()].*).{8,}')
 
   useEffect(() => {
     const handleClickOutside = (event) => {

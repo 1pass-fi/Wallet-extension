@@ -181,10 +181,10 @@ const NFTDetail = () => {
                   />
                 </a>
               </div>
-              <p className="w-full max-h-12 overflow-y-scroll overflow-x-none break-words text-sm leading-6 pr-4 whitespace-pre-line">
+              <p className="w-full max-h-18 overflow-y-scroll overflow-x-none break-words text-sm leading-6 pr-4 whitespace-pre-line">
                 {nft.description}
               </p>
-              <div className="mt-2 flex flex-wrap gap-x-2.5 gap-y-1 h-11 overflow-y-scroll">
+              <div className="mt-3.25 flex flex-wrap gap-x-2.5 gap-y-1 max-h-11 overflow-y-scroll">
                 {nft.tags &&
                   nft.tags.map((tag) => (
                     <div
@@ -196,9 +196,9 @@ const NFTDetail = () => {
                   ))}
               </div>
 
-              <div className="absolute bottom-0 w-full">
+              <div className="w-full mt-7.5">
                 {!nft.pending && (
-                  <div className="w-full flex items-center justify-between h-11.5 mt-7.5 gap-5 mb-6">
+                  <div className="w-full flex items-center justify-between h-11.5 gap-5 mb-6">
                     <Button
                       disabled={disabledFeatures}
                       size="lg"

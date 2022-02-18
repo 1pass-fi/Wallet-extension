@@ -8,7 +8,7 @@ import CheckBox from 'finnie-v2/components/CheckBox'
 import InputField from '../InputField'
 import './index.css'
 
-const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%].*).{8,}')
+const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%^&*()].*).{8,}')
 
 export default ({ setPassword, showError }) => {
   const [tempPassword, setTempPassword] = useState('')

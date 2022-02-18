@@ -39,6 +39,7 @@ const UploadNftForm = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false)
 
   const titleFieldRef = useRef(null)
+  const tagFields = useRef(null)
 
   const fileType = useMemo(() => getFileType(file), [file])
   const url = useMemo(() => {
@@ -58,6 +59,13 @@ const UploadNftForm = () => {
       setErrors((prev) => ({ ...prev, file: '' }))
     }
   }, [file])
+
+  useEffect(() => {
+    const tagNode = tagFields.current
+    if (tagNode) {
+      tagNode.scrollTop = tagNode.scrollHeight
+    }
+  }, [tags])
 
   const handleNftContentChange = (e) => {
     setErrors({
@@ -158,7 +166,10 @@ const UploadNftForm = () => {
             onKeyUp={(e) => handleTagsKeyUp(e)}
           />
         </div>
-        <div className="max-h-19 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1 mb-5">
+        <div
+          ref={tagFields}
+          className="max-h-19 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1 mb-5"
+        >
           {tags.map((tag) => (
             <div
               onClick={() => removeTag(tag)}

@@ -44,8 +44,8 @@ const AccountSettingsLight = React.forwardRef(({ className }, ref) => {
             key={path}
             to={path}
             className={clsx(
-              'h-12 pl-2 flex items-center',
-              idx !== 0 && 'border-t-2 border-trueGray-150 '
+              'h-12 pl-2 flex items-center hover:underline underline-offset-1',
+              idx !== 0 && 'border-t-2 border-trueGray-150'
             )}
             activeClassName="underline underline-offset-1"
           >

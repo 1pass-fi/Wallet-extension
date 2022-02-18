@@ -33,7 +33,14 @@ const sizes = {
   }
 }
 
-const DropDown = ({ options, value, onChange, variant = 'dark', size = 'lg' }) => {
+const DropDown = ({
+  options,
+  value,
+  onChange,
+  variant = 'dark',
+  size = 'lg',
+  emptyOption = false
+}) => {
   const [listOpened, setListOpened] = useState(false)
 
   const dropDownRef = useRef(null)
@@ -93,6 +100,19 @@ const DropDown = ({ options, value, onChange, variant = 'dark', size = 'lg' }) =
             variants[variant].body
           )}
         >
+          {emptyOption && (
+            <button
+              className={clsx('text-left', sizes[size].row, variants[variant].row)}
+              key="emptyOption"
+              onClick={() =>
+                selectItem({
+                  value: ''
+                })
+              }
+            >
+              &nbsp;&nbsp;
+            </button>
+          )}
           {options.map((item, idx) => (
             <button
               className={clsx('text-left', sizes[size].row, variants[variant].row)}

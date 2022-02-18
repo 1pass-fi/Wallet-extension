@@ -1,5 +1,5 @@
 import React, { createRef, useContext, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 import clsx from 'clsx'
 
@@ -15,6 +15,8 @@ import ActivityCenterDropdown from 'finnie-v2/components/ActivityCenterDropdown'
 import Loading from 'options/finnie-v1/components/loading'
 import { GalleryContext } from 'options/galleryContext'
 import { DidContext } from 'options/context'
+import storage from 'services/storage'
+import { viewNotifications } from 'options/actions/notifications'
 
 const NavBar = () => {
   const { isLoading } = useContext(GalleryContext)
@@ -25,6 +27,8 @@ const NavBar = () => {
   const dropdownRef = createRef()
   const notificationRef = createRef()
   const navbarRef = createRef()
+
+  const dispatch = useDispatch()
 
   const defaultAccount = useSelector((state) => state.defaultAccount)
   const notificationsData = useSelector((state) => state.notificationsData)
@@ -59,6 +63,10 @@ const NavBar = () => {
         !notificationRef.current.contains(event.target) &&
         !navbarRef.current.contains(event.target)
       ) {
+        // clear notifications
+        storage.generic.set.pushNotification()
+        dispatch(viewNotifications())
+
         closeNotificationsCenter()
       }
     }
