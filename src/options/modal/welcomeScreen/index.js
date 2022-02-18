@@ -8,9 +8,14 @@ export default ({ onClose }) => {
     <Modal onClose={onClose}>
       <div className="welcome-message">
         <div className="title">
-          Finnie Wallet <span>v0.3.1 Notes</span>
+          Finnie Wallet <span>v0.3.2 Notes</span>
         </div>
         <div className="content">
+          <div className="paragraph">
+            <span className="text-success-900">v0.3.2</span>
+            <br></br>
+            We fixed a few small bugs in the UI.
+          </div>
           <div className="paragraph">
             <span className="text-success-900">v0.3.1</span>
             <br></br>

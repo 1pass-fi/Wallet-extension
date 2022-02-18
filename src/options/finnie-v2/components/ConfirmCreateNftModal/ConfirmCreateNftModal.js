@@ -220,7 +220,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
             </div>
             {!showReferralField && <Button
               onClick={handleUploadNFT}
-              className="h-9 mt-8 font-semibold text-sm rounded w-43.75"
+              className="h-9 mt-8 font-semibold text-sm rounded w-43.75 mb-4"
               variant="indigo"
               text="Create NFT"
               disabled={disableCreateNFT}
@@ -235,7 +235,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                 {referralCodeError && <div style={{color:'#DB1B1B',fontSize:'12px'}}>{referralCodeError}</div>}
               </div>
             }
-            {!confirmedCode && <div onClick={() => setShowReferralField(prev => !prev)} className='text-xs text-success-700 underline my-3.75 cursor-pointer'>{!showReferralField ? 'Skip the KOII cost with a referral code' : 'Continue without a referral code'}</div>}
+            {/* {!confirmedCode && <div onClick={() => setShowReferralField(prev => !prev)} className='text-xs text-success-700 underline my-3.75 cursor-pointer'>{!showReferralField ? 'Skip the KOII cost with a referral code' : 'Continue without a referral code'}</div>} */}
             {confirmedCode && <div className='text-xs text-success-700 my-3.75'>Referral code has been sucessfully redeemed!</div>}
           </>
         )}
