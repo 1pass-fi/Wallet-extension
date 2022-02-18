@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
@@ -11,6 +11,7 @@ import storage from 'services/storage'
 import { popupAccount } from 'services/account'
 
 import './ActivityCenterDropdown.css'
+import { viewNotifications } from 'options/actions/notifications'
 
 const ACTIVITY = 'ACTIVITY'
 const COMMUNITY = 'COMMUNITY'
@@ -20,6 +21,8 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
   const [tab, setTab] = useState(NOTIFICATION)
   const [activities, setActivities] = useState([])
   const [pages, setPages] = useState(1)
+
+  const dispatch = useDispatch()
 
   const notificationsData = useSelector((state) => state.notificationsData)
 
@@ -54,6 +57,11 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
     if (!isEmpty(activities)) setSeen()
   }, [activities])
 
+  const setReadNotifications = async () => {
+    await storage.generic.set.pushNotification()
+    dispatch(viewNotifications())
+  }
+
   return (
     <div
       ref={ref}
@@ -64,6 +72,7 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
         <Link
           className="text-sm font-normal text-success-700 underline"
           to="/notifications/activity"
+          onClick={setReadNotifications}
         >
           See All
         </Link>
