@@ -341,13 +341,15 @@ const KidPage = () => {
       return
     }
 
-    if (!userKID.country) {
-      setFieldError((prev) => ({ ...prev, country: 'Country field must be filled in' }))
-      setIsLoading((prev) => --prev)
-      setDisableUpdateKID(false)
-      kidInput.current.scrollIntoView()
-      return
-    }
+    // DID country should not be required
+    // https://app.clickup.com/t/208adfx
+    // if (!userKID.country) {
+    //   setFieldError((prev) => ({ ...prev, country: 'Country field must be filled in' }))
+    //   setIsLoading((prev) => --prev)
+    //   setDisableUpdateKID(false)
+    //   kidInput.current.scrollIntoView()
+    //   return
+    // }
 
     if (!userKID.description) {
       setFieldError((prev) => ({ ...prev, description: 'Description field must be filled in' }))
@@ -544,7 +546,7 @@ const KidPage = () => {
             />
           </div>
           <div className="kid-input__country">
-            <div className="kid-input__country__label">Country*</div>
+            <div className="kid-input__country__label">Country</div>
             <DropDown
               options={countriesList}
               value={userKID.country}
@@ -553,6 +555,7 @@ const KidPage = () => {
                 setDisableUpdateKID(false)
                 setuserKID({ ...userKID, country: value })
               }}
+              emptyOption={true}
             />
           </div>
           <div data-tip={isPending ? 'DID transactions pending' : ''}>
