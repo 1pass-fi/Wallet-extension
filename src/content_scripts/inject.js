@@ -1,16 +1,13 @@
-import { MESSAGES } from 'constants/koiConstants'
-import storage from 'services/storage'
+export default async (scripts) => {
+  const arweaveScriptElement = document.createElement('script')
+  arweaveScriptElement.src = 'https://unpkg.com/arweave/bundles/web.bundle.js'
 
-export default async (fn, fn1) => {
-  const script = document.createElement('script')
-  const eventEmitter = document.createElement('script')
-  const arweaveScript = document.createElement('script')
-  
-  eventEmitter.text = `(${fn1})();`
-  script.text = `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(MESSAGES)}');(${fn.toString()})();`
-  arweaveScript.src = 'https://unpkg.com/arweave/bundles/web.bundle.js'
+  document.documentElement.appendChild(arweaveScriptElement)
 
-  document.documentElement.appendChild(eventEmitter)
-  document.documentElement.appendChild(arweaveScript)
-  document.documentElement.appendChild(script)
+  for (const script of scripts) {
+    const newScriptElement = document.createElement('script')
+    newScriptElement.text = script
+
+    document.documentElement.appendChild(newScriptElement)
+  }
 }

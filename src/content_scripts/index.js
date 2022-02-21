@@ -2,13 +2,16 @@ import '@babel/polyfill'
 import { includes } from 'lodash'
 
 // constants
-import { ALLOWED_ORIGIN } from 'constants/koiConstants'
+import { ALLOWED_ORIGIN, MESSAGES } from 'constants/koiConstants'
 import storage from 'services/storage'
 
 import inject from './inject'
-import inpageScript from './inpageScript'
-import eventEmitterScript from './eventEmitterScript'
 import initHanlders from './initHandlers'
+
+import eventEmitterScript from 'content_scripts/scripts/eventEmitterScript'
+import finnieEthereumProviderScript from 'content_scripts/scripts/finnieEthereumProviderScript'
+import finnieRpcConnectionScript from 'content_scripts/scripts/finnieRpcConnectionScript'
+import mainScript from 'content_scripts/scripts/mainScript'
 
 if (includes(ALLOWED_ORIGIN, window.origin)) {
   console.log('Finnie is ready to connect to the site.')
@@ -22,7 +25,17 @@ async function contentScript () {
 
   const disabled = disabledOrigins.includes(origin)
 
-  inject(inpageScript(disabled), eventEmitterScript)
+  /* 
+    Script injection
+  */
+  const scripts = [
+    `(${eventEmitterScript})()`,
+    `(${finnieEthereumProviderScript})()`,
+    `(${finnieRpcConnectionScript})()`,
+    `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(MESSAGES)}');(${mainScript(disabled)})();`
+  ]
+
+  inject(scripts)
 
   const arweaveWalletLoaded = new CustomEvent('arweaveWalletLoaded')
   const finnieWalletLoaded = new CustomEvent('finnieWalletLoaded')
