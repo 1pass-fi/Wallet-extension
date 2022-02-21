@@ -10,6 +10,11 @@ import SettingIcon from 'img/popup/setting-icon.svg'
 const Header = () => {
   const [showAccountDropdown, setShowAccountDropdown] = useState(false)
 
+  const goToSetting = () => {
+    const url = chrome.extension.getURL('options.html#/settings/KID')
+    chrome.tabs.create({ url })
+  }
+
   return (
     <div
       className="fixed flex shadow-md z-30"
@@ -22,7 +27,7 @@ const Header = () => {
         />
         {showAccountDropdown && <AccountDropdown setShowAccountDropdown={setShowAccountDropdown} />}
       </div>
-      <div className="bg-white flex items-center justify-center" style={{ width: '59px' }}>
+      <div onClick={goToSetting} className="bg-white flex items-center justify-center cursor-pointer" style={{ width: '59px' }}>
         <SettingIcon style={{ width: '33px', height: '32px' }} />
       </div>
       <div
