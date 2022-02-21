@@ -1,6 +1,5 @@
 export default async (_, tab, next) => {
   try {
-    console.log('RUNNNNNNNNNN')
     setTimeout(() => {
       next({ data: 'HELLO FROM BACKGROUND' })
     }, 3000)

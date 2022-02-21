@@ -9,7 +9,7 @@ const finnieEthereumProviderScript = `() => {
     async request(message) {
       try {
         const response = await this.connection.send(message)
-        console.log('RESPONSE---', response)
+        return response
       } catch (err) {
         console.error('ERROR --- ', err.message)
       }
