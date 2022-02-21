@@ -2,6 +2,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      lineHeight: {
+        12: '3rem'
+      },
       zIndex: {
         51: '51'
       },
