@@ -4,6 +4,7 @@ import { Switch, Route, NavLink, Redirect } from 'react-router-dom'
 
 import Tokens from './Tokens'
 import Assets from './Assets'
+import Activity from './Activity'
 
 const tabs = [
   { name: 'Assets', to: '/assets' },
@@ -31,7 +32,7 @@ const AccountInfo = () => {
           <Assets />
         </Route>
         <Route exact path="/activity">
-          <div>Activity</div>
+          <Activity />
         </Route>
         <Route exact path="/tokens">
           <Tokens />
