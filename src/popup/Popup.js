@@ -19,6 +19,7 @@ import Message from 'components/message'
 // pages
 import Home from './pages/Home'
 import Receive from './pages/Receive'
+import Send from './pages/Send'
 import Login from './pages/Login'
 
 // actions
@@ -313,6 +314,9 @@ const Popup = ({
                   <Switch>
                     <Route exact path="/receive">
                       <Receive />
+                    </Route>
+                	<Route exact path="/send">
+                      <Send />
                     </Route>
                     <Route path="*">
                       <Home />

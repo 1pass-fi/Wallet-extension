@@ -54,12 +54,13 @@ const Home = () => {
 
         <div className="mt-5 flex items-center justify-between" style={{ width: '140px' }}>
           <div className="flex flex-col items-center justify-center">
-            <div
+            <Link
               className="rounded-full bg-lightBlue shadow flex items-center justify-center cursor-pointer"
               style={{ width: '44px', height: '44px' }}
+              to="/send"
             >
               <SendIcon style={{ width: '23px', height: '20px' }} />
-            </div>
+            </Link>
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
               SEND
             </div>
