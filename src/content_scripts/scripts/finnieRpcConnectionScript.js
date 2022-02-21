@@ -1,16 +1,15 @@
-const finnieRpcConnectionScript = () => {
+const finnieRpcConnectionScript = `() => {
   class FinnieRpcConnection extends EventEmitter {
     constructor() {
       super()
 
-      // array to store resolve, reject functions
       this.resolve = {'TEST_ETHEREUM': null}
       this.reject = {'TEST_ETHEREUM': null}
     }
 
     send(message) {
       return new Promise((resolve, reject) => {
-        window.postMessage({ type: 'TEST_ETHEREUM', data: 'TEST' })
+        window.postMessage({ type: 'TEST_ETHEREUM', data: 'TEST FROM CLIENT' })
         this.resolve['TEST_ETHEREUM'] = resolve
         this.reject['TEST_ETHEREUM'] = reject
       })
@@ -18,6 +17,12 @@ const finnieRpcConnectionScript = () => {
   }
 
   window.FinnieRpcConnection = FinnieRpcConnection
-}
+  window.connection = new FinnieRpcConnection()
 
-export default '() => {\n  class FinnieRpcConnection extends EventEmitter {\n    constructor() {\n      super()\n\n      // array to store resolve, reject functions\n      this.resolve = {\'TEST_ETHEREUM\': null}\n      this.reject = {\'TEST_ETHEREUM\': null}\n    }\n\n    send(message) {\n      return new Promise((resolve, reject) => {\n        window.postMessage({ type: \'TEST_ETHEREUM\', data: \'TEST\' })\n        this.resolve[\'TEST_ETHEREUM\'] = resolve\n        this.reject[\'TEST_ETHEREUM\'] = reject\n      })\n    }\n  }\n\n  window.FinnieRpcConnection = FinnieRpcConnection\n}'
+  window.addEventListener('message', function(event) {
+    console.log('EVENT DATA', event.data)
+    window.connection.resolve['TEST_ETHEREUM'](event.data.data)
+  })
+}`
+
+export default finnieRpcConnectionScript

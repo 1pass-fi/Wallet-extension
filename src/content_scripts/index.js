@@ -30,8 +30,8 @@ async function contentScript () {
   */
   const scripts = [
     `(${eventEmitterScript})()`,
-    `(${finnieEthereumProviderScript})()`,
     `(${finnieRpcConnectionScript})()`,
+    `(${finnieEthereumProviderScript})()`,
     `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(MESSAGES)}');(${mainScript(disabled)})();`
   ]
 

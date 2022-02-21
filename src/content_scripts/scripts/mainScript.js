@@ -3,6 +3,9 @@
 */
 
 const inpageScript = () => {
+  const finnieEthereumProvider = new FinnieEthereumProvider(window.connection)
+  window.ethereum = finnieEthereumProvider
+
   const promiseResolves = {}
   Object.values(MESSAGE_TYPES).forEach(messageType => {
     promiseResolves[`${messageType}_SUCCESS`] = []
@@ -173,39 +176,39 @@ const inpageScript = () => {
 
   window.koiWallet = window.koiiWallet
 
-  window.addEventListener('message', function (event) {
-    // console.log('EVENT', event)
-    if (!event.data || !event.data.type) {
-      return
-    }
+  // window.addEventListener('message', function (event) {
+  //   // console.log('EVENT', event)
+  //   if (!event.data || !event.data.type) {
+  //     return
+  //   }
 
-    if (event.data.type == 'ERROR') {
-      const keys = Object.keys(promiseResolves)
-      keys.forEach(key => {
-        if (key.includes('ERROR') && promiseResolves[key].length > 0 ) {
-          promiseResolves[key].forEach(r => {
-            const { resolve } = r
-            resolve('Something went wrong. Please try to refresh the page.')
-          })
-        }
-        promiseResolves[key].length = 0
-      })
-    }
+  //   if (event.data.type == 'ERROR') {
+  //     const keys = Object.keys(promiseResolves)
+  //     keys.forEach(key => {
+  //       if (key.includes('ERROR') && promiseResolves[key].length > 0 ) {
+  //         promiseResolves[key].forEach(r => {
+  //           const { resolve } = r
+  //           resolve('Something went wrong. Please try to refresh the page.')
+  //         })
+  //       }
+  //       promiseResolves[key].length = 0
+  //     })
+  //   }
 
-    if (promiseResolves[event.data.type]) {
-      promiseResolves[event.data.type].forEach(({ id, resolve }) => {
-        console.log('Finnie event: ', id)
-        if (id === event.data.id) {
-          resolve(event.data.data)
-        }
-      })
-      promiseResolves[event.data.type] = promiseResolves[event.data.type].filter(({ id }) => id !== event.data.id)
-      const pairMessageType = event.data.type.endsWith('_SUCCESS') ? event.data.type.replace(/_SUCCESS$/g, '_ERROR') : event.data.type.replace(/_ERROR$/g, '_SUCCESS')
-      if (pairMessageType !== event.data.type && promiseResolves[pairMessageType]) {
-        promiseResolves[pairMessageType] = promiseResolves[pairMessageType].filter(({ id }) => id !== event.data.id)
-      }
-    }
-  })
+  //   if (promiseResolves[event.data.type]) {
+  //     promiseResolves[event.data.type].forEach(({ id, resolve }) => {
+  //       console.log('Finnie event: ', id)
+  //       if (id === event.data.id) {
+  //         resolve(event.data.data)
+  //       }
+  //     })
+  //     promiseResolves[event.data.type] = promiseResolves[event.data.type].filter(({ id }) => id !== event.data.id)
+  //     const pairMessageType = event.data.type.endsWith('_SUCCESS') ? event.data.type.replace(/_SUCCESS$/g, '_ERROR') : event.data.type.replace(/_ERROR$/g, '_SUCCESS')
+  //     if (pairMessageType !== event.data.type && promiseResolves[pairMessageType]) {
+  //       promiseResolves[pairMessageType] = promiseResolves[pairMessageType].filter(({ id }) => id !== event.data.id)
+  //     }
+  //   }
+  // })
 }
 
 

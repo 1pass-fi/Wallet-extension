@@ -27,7 +27,7 @@ const getEmitter = () => {
   contentScriptEvents.on(MESSAGES.KOI_CREATE_DID, controller.createDID)
   contentScriptEvents.on(MESSAGES.KOI_UPDATE_DID, controller.updateDID)
   contentScriptEvents.on(MESSAGES.SIGNATURE, controller.signature)
-  contentScriptEvents.on('TEST_ETHEREUM', controller.testEthereum)
+  contentScriptEvents.on(MESSAGES.TEST_ETHEREUM, controller.testEthereum)
 
   return contentScriptEvents
 }
