@@ -19,6 +19,7 @@ import Message from 'components/message'
 // pages
 import Home from './pages/Home'
 import Receive from './pages/Receive'
+import Login from './pages/Login'
 
 // actions
 import { lockWallet } from 'actions/koi'
@@ -144,7 +145,7 @@ const Popup = ({
       }
 
       if (!isEmpty(accounts) && isLocked) {
-        history.push('/account/login')
+        history.push('/login')
       } else {
         if (pendingRequest) {
           switch (pendingRequest.type) {
@@ -295,36 +296,33 @@ const Popup = ({
           {error && <Message type="error" children={error} />}
           {notification && <Message type="notification" children={notification} />}
           {warning && <Message type="warning" children={warning} />}
-          {/* {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header location={location} />} */}
-          {!HEADER_EXCLUDE_PATH.includes(location.pathname) && <Header />}
-          <div
-            className="flex min-h-3.375 pt-13.5 overflow-y-auto overflow-x-hidden"
-            style={{ height: 'calc(100% - 64px)', backgroundColor: '#eeeeee' }}
-          >
-            {
-              <Switch>
-                {/* <Route path="/account">
-                  <Account />
-                </Route>
-                <Route path="/assets">
-                  <Assets />
-                </Route>
-                <Route path="/activity">
-                  <Activity />
-                </Route>
-                <Route path="/settings">
-                  <Setting />
-                </Route> */}
-                <Route exact path="/receive">
-                  <Receive />
-                </Route>
-                <Route path="*">
-                  <Home />
-                </Route>
-              </Switch>
-            }
-          </div>
-          <NavBar handleLockWallet={handleLockWallet} />
+          {
+            <Switch>
+              <Route exact path="/login">
+                <Login />
+              </Route>
+              <Route exact path="/account/*">
+                <Account />
+              </Route>
+              <>
+                <Header />
+                <div
+                  className="flex min-h-3.375 pt-13.5 overflow-y-auto overflow-x-hidden"
+                  style={{ height: 'calc(100% - 64px)', backgroundColor: '#eeeeee' }}
+                >
+                  <Switch>
+                    <Route exact path="/receive">
+                      <Receive />
+                    </Route>
+                    <Route path="*">
+                      <Home />
+                    </Route>
+                  </Switch>
+                </div>
+                <NavBar handleLockWallet={handleLockWallet} />
+              </>
+            </Switch>
+          }
         </div>
       )}
     </div>

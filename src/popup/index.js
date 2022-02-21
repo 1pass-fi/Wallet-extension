@@ -14,7 +14,7 @@ browser.runtime.sendMessage({ data: 'hello' })
 /**
  * Temporary workaround for secondary monitors on MacOS where redraws don't happen
  * @See https://bugs.chromium.org/p/chromium/issues/detail?id=971701
- * 
+ *
  * Copied from: https://stackoverflow.com/questions/56500742/why-is-my-google-chrome-extensions-popup-ui-laggy-on-external-monitors-but-not
  */
 if (
@@ -42,10 +42,7 @@ if (
           animation: redraw 1s linear infinite;
         }
       `)
-      document.adoptedStyleSheets = [
-        ...document.adoptedStyleSheets,
-        fontFaceSheet,
-      ]
+      document.adoptedStyleSheets = [...document.adoptedStyleSheets, fontFaceSheet]
     }
   })
 }
