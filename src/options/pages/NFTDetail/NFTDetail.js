@@ -25,7 +25,7 @@ import { GalleryContext } from 'options/galleryContext'
 
 import { popupBackgroundRequest as request } from 'services/request/popup'
 
-import ToggleButton from './ToogleButton'
+import ToggleButton from './ToggleButton'
 import { popupAccount } from 'services/account'
 
 const NFTDetail = () => {
