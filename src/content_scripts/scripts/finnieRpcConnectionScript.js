@@ -12,16 +12,8 @@ const finnieRpcConnectionScript = `() => {
       })
     }
   }
-
-  window.connection = new FinnieRpcConnection()
-
-  window.addEventListener('message', function(event) {
-    try {
-      window.connection.emit(event.data.type, event.data.data)
-    } catch (err) {
-
-    }
-  })
+  
+  window.FinnieRpcConnection = FinnieRpcConnection
 }`
 
 export default finnieRpcConnectionScript

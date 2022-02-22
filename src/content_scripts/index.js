@@ -10,7 +10,10 @@ import initHanlders from './initHandlers'
 
 import eventEmitterScript from 'content_scripts/scripts/eventEmitterScript'
 import finnieEthereumProviderScript from 'content_scripts/scripts/finnieEthereumProviderScript'
+import finnieArweaveProviderScript from 'content_scripts/scripts/finnieArweaveProviderScript'
+import finnieKoiiWalletProviderScript from 'content_scripts/scripts/finnieKoiiWalletProviderScript'
 import finnieRpcConnectionScript from 'content_scripts/scripts/finnieRpcConnectionScript'
+import declareConstantScript from 'content_scripts/scripts/declareConstantScript'
 import mainScript from 'content_scripts/scripts/mainScript'
 
 if (includes(ALLOWED_ORIGIN, window.origin)) {
@@ -29,10 +32,13 @@ async function contentScript () {
     Script injection
   */
   const scripts = [
+    `(${declareConstantScript})()`,
     `(${eventEmitterScript})()`,
     `(${finnieRpcConnectionScript})()`,
     `(${finnieEthereumProviderScript})()`,
-    `const MESSAGE_TYPES = JSON.parse('${JSON.stringify(MESSAGES)}');(${mainScript(disabled)})();`
+    `(${finnieArweaveProviderScript})()`,
+    `(${finnieKoiiWalletProviderScript})()`,
+    `(${mainScript(disabled)})();`
   ]
 
   inject(scripts)
