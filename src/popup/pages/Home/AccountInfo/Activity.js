@@ -42,7 +42,7 @@ const Activity = () => {
   }, [activities])
 
   return (
-    <div>
+    <div className="bg-trueGray-100">
       {activities.slice(0, pages * 10).map((activity) => (
         <ActivityRow
           key={activity.id}
@@ -60,9 +60,9 @@ const Activity = () => {
         />
       ))}
       {pages * 10 < activities.length && (
-        <div className="w-full text-center">
+        <div className="w-full text-center flex items-center justify-center">
           <button
-            className="w-20 h-5 bg-blue-800 text-white m-2 font-semibold rounded"
+            className="px-1.5 py-1 text-sm flex items-center justify-center bg-blue-800 text-white m-2 font-semibold rounded"
             onClick={() => {
               setPages((prev) => ++prev)
             }}

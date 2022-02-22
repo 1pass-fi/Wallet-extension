@@ -120,7 +120,7 @@ const ActivityRow = ({
                 <GreenDotIcon />
               </div>
             )}
-            <div className="text-base font-semibold text-blue-800 leading-5">
+            <div className="text-sm font-semibold text-blue-800 leading-5">
               {activityName.length <= 21 ? activityName : `${activityName.substring(0, 19)}...`}
             </div>
             {(activityName.includes('Received') || activityName.includes('Sent')) && (
@@ -133,7 +133,7 @@ const ActivityRow = ({
           </div>
           <div className="w-full flex flex-col items-end text-right pt-2">
             <div
-              className={`text-base font-semibold rounded-sm px-1 text-blue-800 ${
+              className={`text-sm font-semibold rounded-sm px-1 text-blue-800 ${
                 get(displayInfo, 'expenseText').includes('-') ? 'bg-warning' : 'bg-success'
               } ${!seen && 'bg-opacity-50'} leading-5`}
             >
