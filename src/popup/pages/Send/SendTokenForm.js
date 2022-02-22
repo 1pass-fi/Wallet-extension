@@ -65,15 +65,15 @@ const SendTokenForm = ({
   }
 
   const onChangeRecipientAddress = (e) => {
-    setRecipient(e.target.value)
+    setRecipient({ address: e.target.value })
   }
 
   const onAddressDropdownChange = (account) => {
     if (isEmpty(account)) {
-      setRecipient('')
+      setRecipient(null)
       addressInputRef.current.focus()
     } else {
-      setRecipient(account.address)
+      setRecipient(account)
     }
 
     setIsShowDropdown(false)
@@ -121,7 +121,7 @@ const SendTokenForm = ({
         <div className="recipient-input">
           <input
             ref={(ip) => (addressInputRef.current = ip)}
-            value={recipient}
+            value={recipient.address}
             onChange={onChangeRecipientAddress}
             className="recipient-input-field"
             placeholder="Recipient’s Wallet Address"

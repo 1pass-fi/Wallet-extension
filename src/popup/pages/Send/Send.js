@@ -4,11 +4,11 @@ import ReactTooltip from 'react-tooltip'
 import clsx from 'clsx'
 import isEmpty from 'lodash/isEmpty'
 
-import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import TokenDropdown from 'popup/components/TokenDropdown'
 import SendTokenForm from './SendTokenForm'
+import TransactionConfirmModal from './TransactionConfirmModal'
 
 // constants
 import { ERROR_MESSAGE } from 'constants/koiConstants'
@@ -30,17 +30,16 @@ import SendBackgroundRight from 'img/popup/send-background-right.svg'
 const Send = ({ setError }) => {
   const history = useHistory()
 
-  const defaultAccount = useSelector((state) => state.defaultAccount)
-
   const [fontSize, setFontSize] = useState('3xl')
   const [balance, setBalance] = useState(null)
   const [koiBalance, setKoiBalance] = useState(null)
+  const [showModal, setShowModal] = useState(false)
 
   const [selectedToken, setSelectedToken] = useState()
   const [tokenOptions, setTokenOptions] = useState([])
   const [showTokenOptions, setShowTokenOptions] = useState(false)
   const [amount, setAmount] = useState('')
-  const [recipient, setRecipient] = useState('')
+  const [recipient, setRecipient] = useState([])
   const [selectedAccount, setSelectedAccount] = useState(null)
   const [enoughGas, setEnoughGas] = useState(true)
 
@@ -97,7 +96,7 @@ const Send = ({ setError }) => {
 
   const handleSendToken = () => {
     // validations
-    if (!(recipient.trim().length > 0 && amount.trim().length > 0)) {
+    if (!(recipient?.address.trim().length > 0 && amount.trim().length > 0)) {
       setError(ERROR_MESSAGE.EMPTY_FIELDS)
       return
     }
@@ -118,17 +117,40 @@ const Send = ({ setError }) => {
       return
     }
 
-    if (selectedAccount.type === TYPE.ARWEAVE && !isArweaveAddress(recipient)) {
+    if (selectedAccount.type === TYPE.ARWEAVE && !isArweaveAddress(recipient.address)) {
       setError('Invalid AR Address')
       return
     }
 
-    if (selectedAccount.type === TYPE.ETHEREUM && !isEthereumAddress(recipient)) {
+    if (selectedAccount.type === TYPE.ETHEREUM && !isEthereumAddress(recipient.address)) {
       setError('Invalid ETH Address')
       return
     }
 
     setShowModal(true)
+  }
+
+  const handleSendTransaction = async () => {
+    try {
+      setShowModal(false)
+      setIsLoading(true)
+      if (selectedAccount.type === TYPE.ETHEREUM) {
+        const account = await popupAccount.getAccount({ address: selectedAccount.address })
+        const provider = await account.get.provider()
+        if (provider.includes('mainnet')) {
+          // setError(ERROR_MESSAGE.SEND_WITH_ETH)
+          // setIsLoading(false)
+          // return
+        }
+      }
+      await makeTransfer(selectedAccount, Number(amount), recipient.address, selectedToken)
+      setIsLoading(false)
+      setNotification(NOTIFICATION.TRANSACTION_SENT)
+      history.push(PATH.ACTIVITY)
+    } catch (err) /* istanbul ignore next */ {
+      setIsLoading(false)
+      setError(err.message)
+    } 
   }
 
   return (
@@ -170,6 +192,7 @@ const Send = ({ setError }) => {
           }}
           style={{ width: '68px', height: '45px' }}
         >
+          {isEmpty(selectedToken) && <FinnieIcon style={{ width: '34px', height: '34px' }} />}
           {selectedToken === 'AR' && <ArweaveIcon style={{ width: '35px', height: '35px' }} />}
           {selectedToken === 'ETH' && <EthereumIcon style={{ width: '33px', height: '33px' }} />}
           {selectedToken === 'KOII' && <FinnieIcon style={{ width: '34px', height: '34px' }} />}
@@ -188,8 +211,8 @@ const Send = ({ setError }) => {
         {selectedToken
           ? `${
             selectedToken === 'KOII'
-              ? formatNumber(defaultAccount.koiBalance, 2)
-              : formatNumber(defaultAccount.balance, 6)
+              ? formatNumber(koiBalance, 2)
+              : formatNumber(balance, 6)
           } ${selectedToken} Available`
           : ''}
       </div>
@@ -208,6 +231,18 @@ const Send = ({ setError }) => {
         />
       </div>
       <ReactTooltip place="top" effect="float" />
+      {showModal && (
+        <TransactionConfirmModal
+          sentAmount={Number(amount)}
+          currency={selectedToken}
+          recipient={recipient}
+          onClose={() => {
+            setShowModal(false)
+          }}
+          onSubmit={handleSendTransaction}
+          selectedAccount={selectedAccount}
+        />
+      )}
     </div>
   )
 }

@@ -22,8 +22,6 @@ import EthereumLogo from 'img/ethereum-logo-18.svg'
 // actions
 import { makeTransfer } from 'actions/koi'
 import { setError } from 'actions/error'
-import { setWarning } from 'actions/warning'
-import { setIsLoading } from 'popup/actions/loading'
 import { setNotification } from 'popup/actions/notification'
 
 // constants
@@ -37,20 +35,17 @@ import storage from 'services/storage'
 
 // utils
 import { getDisplayAddress, formatNumber } from 'options/utils'
-import { fiatCurrencyFormat, getAddressesFromAddressBook, isArweaveAddress, isEthereumAddress } from 'utils'
+import {
+  fiatCurrencyFormat,
+  getAddressesFromAddressBook,
+  isArweaveAddress,
+  isEthereumAddress
+} from 'utils'
 
 // styles
 import './index.css'
 
-
-const SendKoiForm = ({
-  setError,
-  makeTransfer,
-  setIsLoading,
-  setNotification,
-  accounts,
-  price
-}) => {
+const SendKoiForm = ({ setError, makeTransfer, setNotification, accounts, price }) => {
   const history = useHistory()
 
   const [recipient, setRecipient] = useState('')
@@ -69,7 +64,7 @@ const SendKoiForm = ({
   const [selectedToken, setSelectedToken] = useState(null)
 
   const onChangeAccount = (selected) => {
-    const account = find(accountOptions, v => v.value == selected)
+    const account = find(accountOptions, (v) => v.value == selected)
     setSelectedAccount(account)
   }
 
@@ -110,11 +105,11 @@ const SendKoiForm = ({
     if (isEmpty(selectedAccount)) {
       setError(ERROR_MESSAGE.SELECT_ACCOUNT)
       return
-    } 
+    }
     if (isEmpty(selectedToken)) {
       setError(ERROR_MESSAGE.SELECT_TOKEN)
       return
-    } 
+    }
     if (Number(amount) === 0) {
       setError(ERROR_MESSAGE.SEND_ZERO_KOI)
       return
@@ -136,7 +131,7 @@ const SendKoiForm = ({
   const handleSendTransaction = async () => {
     try {
       setShowModal(false)
-      setIsLoading(true)
+      // setIsLoading(true)
       if (selectedAccount.type === TYPE.ETHEREUM) {
         const account = await popupAccount.getAccount({ address: selectedAccount.address })
         const provider = await account.get.provider()
@@ -147,13 +142,13 @@ const SendKoiForm = ({
         }
       }
       await makeTransfer(selectedAccount, Number(amount), recipient, selectedToken)
-      setIsLoading(false)
+      // setIsLoading(false)
       setNotification(NOTIFICATION.TRANSACTION_SENT)
       history.push(PATH.ACTIVITY)
     } catch (err) /* istanbul ignore next */ {
-      setIsLoading(false)
+      // setIsLoading(false)
       setError(err.message)
-    } 
+    }
   }
 
   useEffect(() => {
@@ -162,7 +157,7 @@ const SendKoiForm = ({
       const options = arAccounts.map((account, index) => ({
         id: index,
         value: account.address,
-        label: account.accountName, 
+        label: account.accountName,
         address: account.address,
         type: account.type
       }))
@@ -180,7 +175,10 @@ const SendKoiForm = ({
       let options
       switch (selectedAccount.type) {
         case TYPE.ARWEAVE:
-          options = [{ value: 'AR', label: 'AR' }, { value: 'KOII', label: 'KOII' }]
+          options = [
+            { value: 'AR', label: 'AR' },
+            { value: 'KOII', label: 'KOII' }
+          ]
           setTokenOptions(options)
           setBalance(await account.get.balance())
           setKoiBalance(await account.get.koiBalance())
@@ -206,25 +204,21 @@ const SendKoiForm = ({
 
   const AddressDropdown = ({ accounts = [], onChange, type }) => {
     return (
-      <div className='accounts'>
-        <div className='different-address' onClick={() => onChange({})}>
-          <div className='name'>Enter Address Manually</div>
+      <div className="accounts">
+        <div className="different-address" onClick={() => onChange({})}>
+          <div className="name">Enter Address Manually</div>
         </div>
         {accounts.map((account) => {
           if (account.type === type) {
             return (
-              <div
-                key={account.id}
-                className='account'
-                onClick={() => onChange(account)}
-              >
-                <div className='logo'>
+              <div key={account.id} className="account" onClick={() => onChange(account)}>
+                <div className="logo">
                   {account.type === TYPE.ARWEAVE && <ArweaveLogo />}
                   {account.type === TYPE.ETHEREUM && <EthereumLogo />}
                 </div>
-                <div className='info'>
-                  <div className='name'>{account.accountName}</div>
-                  <div className='address'>{getDisplayAddress(account.address)}</div>
+                <div className="info">
+                  <div className="name">{account.accountName}</div>
+                  <div className="address">{getDisplayAddress(account.address)}</div>
                 </div>
               </div>
             )
@@ -235,80 +229,92 @@ const SendKoiForm = ({
   }
 
   return (
-    <form className='send-koi-form' onSubmit={handleSubmitForm}>
+    <form className="send-koi-form" onSubmit={handleSubmitForm}>
       {/* AVAILABLE BALANCE */}
       {!isEmpty(selectedAccount) && (
-        <div className='selected-account'>
-          <div className='selected-account-left'>
-            <div className='selected-account-label'>
-              {selectedAccount.label}
-            </div>
-            <div className='selected-account-address'>
+        <div className="selected-account">
+          <div className="selected-account-left">
+            <div className="selected-account-label">{selectedAccount.label}</div>
+            <div className="selected-account-address">
               {getDisplayAddress(selectedAccount.address, 4, 4)}
-              <div className='edit-icon'><EditIcon
-                data-testid='editBtn'
-                className='edit-icon'
-                onClick={() => {
-                  setSelectedAccount({})
-                  setIsShowDropdown(false)
-                }}
-              /></div>
+              <div className="edit-icon">
+                <EditIcon
+                  data-testid="editBtn"
+                  className="edit-icon"
+                  onClick={() => {
+                    setSelectedAccount({})
+                    setIsShowDropdown(false)
+                  }}
+                />
+              </div>
             </div>
           </div>
-          <div className='selected-account-right'>{selectedToken ? 
-            `${selectedToken == 'KOII' ? formatNumber(koiBalance, 2) : formatNumber(balance, 6)} ${selectedToken} available` : ''}</div>
+          <div className="selected-account-right">
+            {selectedToken
+              ? `${
+                selectedToken == 'KOII' ? formatNumber(koiBalance, 2) : formatNumber(balance, 6)
+              } ${selectedToken} available`
+              : ''}
+          </div>
         </div>
       )}
       {/* SELECT ACCOUNT */}
-      {isEmpty(selectedAccount) && <Select
-        className='currency-select'
-        options={accountOptions}
-        placeholder='Select your account'
-        onChange={onChangeAccount}
-        label='From'
-        isAccountAddress={true}
-      />}
+      {isEmpty(selectedAccount) && (
+        <Select
+          className="currency-select"
+          options={accountOptions}
+          placeholder="Select your account"
+          onChange={onChangeAccount}
+          label="From"
+          isAccountAddress={true}
+        />
+      )}
       {/* SELECT TOKEN */}
       {!isEmpty(selectedAccount) && (
         <Select
-          className='currency-select'
+          className="currency-select"
           options={tokenOptions}
           label={'Select Currency'}
-          placeholder='Select token'
+          placeholder="Select token"
           onChange={onChangeToken}
         />
       )}
 
       {/* RECIPIENT INPUT */}
-      <div className='recipient'>
-        <div className='label'>To</div>
-        <div className='recipient-input'>
+      <div className="recipient">
+        <div className="label">To</div>
+        <div className="recipient-input">
           <input
             ref={(ip) => (addressInputRef.current = ip)}
             value={recipient}
             onChange={onChangeRecipientAddress}
-            className='recipient-input-field'
-            placeholder='Recipient’s wallet address'
+            className="recipient-input-field"
+            placeholder="Recipient’s wallet address"
           />
-          <div className='address-dropdown' 
+          <div
+            className="address-dropdown"
             data-tip={isEmpty(selectedAccount) ? 'Please choose Sender Account first!' : ''}
-            data-for='arrow-button'>
-            <button 
-              className='arrow-button'
+            data-for="arrow-button"
+          >
+            <button
+              className="arrow-button"
               disabled={isEmpty(selectedAccount)}
               onClick={(e) => {
                 e.preventDefault()
-                setIsShowDropdown(isShowDropdown => !isShowDropdown)
+                setIsShowDropdown((isShowDropdown) => !isShowDropdown)
               }}
             >
-              <div className='arrow-icon' style={{transform: !isShowDropdown ? 'none' : 'rotateX(180deg)'}}>
+              <div
+                className="arrow-icon"
+                style={{ transform: !isShowDropdown ? 'none' : 'rotateX(180deg)' }}
+              >
                 <DownArrowIcon />
               </div>
             </button>
-            <ReactTooltip place='top' effect='float' />
-            <ReactTooltip id='arrow-button' place='left' effect='float' />
+            <ReactTooltip place="top" effect="float" />
+            <ReactTooltip id="arrow-button" place="left" effect="float" />
           </div>
-          {(isShowDropdown && !isEmpty(selectedAccount)) && (
+          {isShowDropdown && !isEmpty(selectedAccount) && (
             <AddressDropdown
               accounts={addressOptions}
               onChange={onAddressDropdownChange}
@@ -319,33 +325,31 @@ const SendKoiForm = ({
       </div>
 
       {/* HINT */}
-      <div className='warning'>
-        <div className='warning-icon'>
+      <div className="warning">
+        <div className="warning-icon">
           <WarningIcon />
         </div>
-        <div className='warning-message'>
-          Make sure you have the correct wallet address. There is no way to
-          reverse the transaction.
+        <div className="warning-message">
+          Make sure you have the correct wallet address. There is no way to reverse the transaction.
         </div>
       </div>
 
       {/* AMOUNT INPUT */}
-      <div className='amount'>
+      <div className="amount">
         <InputField
-          label='Amount'
+          label="Amount"
           placeholder={`Amount ${selectedToken ? 'of ' + selectedToken + ' ' : ''}to send`}
-          className='form-input'
-          type='number'
+          className="form-input"
+          type="number"
           onChange={onChangeAmount}
           value={amount}
         />
-        {selectedToken === 'AR' && <div className='amount-exchanged'>${fiatCurrencyFormat(amount * price.AR)} USD</div>}
+        {selectedToken === 'AR' && (
+          <div className="amount-exchanged">${fiatCurrencyFormat(amount * price.AR)} USD</div>
+        )}
       </div>
 
-      <Button
-        label={`Send ${selectedToken ? selectedToken : 'token'}`}
-        className='send-button'
-      />
+      <Button label={`Send ${selectedToken ? selectedToken : 'token'}`} className="send-button" />
       {showModal && (
         <TransactionConfirmModal
           sentAmount={Number(amount)}
@@ -362,17 +366,16 @@ const SendKoiForm = ({
   )
 }
 
-const mapStateToProps = (state) => ({ 
-  price: state.price, 
+const mapStateToProps = (state) => ({
+  price: state.price,
   currency: state.currency,
-  accounts: state.accounts,
+  accounts: state.accounts
 })
 
-const mapDispatchToProps = { 
-  setError, 
-  makeTransfer, 
-  setIsLoading, 
-  setNotification 
+const mapDispatchToProps = {
+  setError,
+  makeTransfer,
+  setNotification
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SendKoiForm)
