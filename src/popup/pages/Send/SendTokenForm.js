@@ -8,7 +8,7 @@ import isEmpty from 'lodash/isEmpty'
 import Select from 'shared/select'
 
 // assets
-import DownArrowIcon from 'img/down-arrow-icon.svg'
+import DownArrowIcon from 'img/v2/dropdown/down-icon-blue.svg'
 
 // services
 import { popupAccount } from 'services/account'
@@ -70,7 +70,6 @@ const SendTokenForm = ({
 
   const onAddressDropdownChange = (account) => {
     if (isEmpty(account)) {
-      setRecipient(null)
       addressInputRef.current.focus()
     } else {
       setRecipient(account)
@@ -81,22 +80,22 @@ const SendTokenForm = ({
 
   const AddressDropdown = ({ accounts = [], onChange, type }) => {
     return (
-      <div className="accounts">
-        <div className="different-address" onClick={() => onChange({})}>
-          <div className="name">Enter Address Manually</div>
-        </div>
+      <div className="bg-blue-800 border-b-2 border-white z-50 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none">
+        <button
+          className="text-left pl-2 h-8 text-white text-sm hover:bg-blue-500"
+          onClick={() => onChange({})}
+        >
+          Enter Address Manually
+        </button>
         {accounts.map((account) => {
           if (account.type === type) {
             return (
-              <div key={account.id} className="account" onClick={() => onChange(account)}>
-                <div className="logo">
-                  {account.type === TYPE.ARWEAVE && <ArweaveLogo />}
-                  {account.type === TYPE.ETHEREUM && <EthereumLogo />}
-                </div>
-                <div className="info">
-                  <div className="name">{account.accountName}</div>
-                  <div className="address">{getDisplayAddress(account.address)}</div>
-                </div>
+              <div
+                key={account.id}
+                className="text-left pl-2 h-8 text-white text-sm hover:bg-blue-500"
+                onClick={() => onChange(account)}
+              >
+                <div>{account.accountName}</div>
               </div>
             )
           }
@@ -108,46 +107,48 @@ const SendTokenForm = ({
   return (
     <div className="pt-7.5 flex flex-col items-center">
       {/* SELECT ACCOUNT */}
-      <Select
-        options={accountOptions}
-        placeholder="Select Account"
-        onChange={onChangeAccount}
-        label="FROM"
-        isAccountAddress={true}
-      />
+      <div style={{ width: '352px' }}>
+        <Select
+          options={accountOptions}
+          placeholder="Select Account"
+          onChange={onChangeAccount}
+          label="FROM"
+          isAccountAddress={true}
+        />
+      </div>
       {/* RECIPIENT INPUT */}
-      <div className="pt-7 recipient">
-        <div className="label">TO</div>
-        <div className="recipient-input">
-          <input
-            ref={(ip) => (addressInputRef.current = ip)}
-            value={recipient.address}
-            onChange={onChangeRecipientAddress}
-            className="recipient-input-field"
-            placeholder="Recipient’s Wallet Address"
-          />
-          <div
-            className="address-dropdown"
-            data-tip={isEmpty(selectedAccount) ? 'Please choose Sender Account first!' : ''}
-            data-for="arrow-button"
-          >
-            <button
-              className="arrow-button"
-              disabled={isEmpty(selectedAccount)}
-              onClick={(e) => {
-                e.preventDefault()
-                setIsShowDropdown((isShowDropdown) => !isShowDropdown)
-              }}
+      <div className="mt-7 recipient" style={{ width: '352px' }}>
+        <div className="text-sm pl-1.5 mb-1.5 font-semibold">TO</div>
+        <div className="w-full relative text-left rounded-finnie border-t-2 border-r-2 border-l-2 border-white shadow-lg">
+          <div className="border-b-2 rounded-finnie border-white text-white h-8 flex">
+            <input
+              ref={(ip) => (addressInputRef.current = ip)}
+              value={recipient.address}
+              onChange={onChangeRecipientAddress}
+              className="cursor-pointer text-white border-b-2 text-sm border-white bg-blue-800 h-8 pl-2 flex-grow rounded-l-finnie focus:outline-none placeholder-trueGray-400"
+              placeholder="Recipient’s Wallet Address"
+            />
+            <div
+              className="w-8 h-8 rounded-r-finnie"
+              data-tip={isEmpty(selectedAccount) ? 'Please choose Sender Account first!' : ''}
+              data-for="arrow-button"
             >
-              <div
-                className="arrow-icon"
-                style={{ transform: !isShowDropdown ? 'none' : 'rotateX(180deg)' }}
+              <button
+                className="border-b-2 border-white flex items-center justify-center bg-white w-8 h-8 rounded-r-finnie"
+                disabled={isEmpty(selectedAccount)}
+                onClick={(e) => {
+                  e.preventDefault()
+                  setIsShowDropdown((isShowDropdown) => !isShowDropdown)
+                }}
               >
-                <DownArrowIcon />
-              </div>
-            </button>
-            <ReactTooltip place="top" effect="float" />
-            <ReactTooltip id="arrow-button" place="left" effect="float" />
+                <DownArrowIcon
+                  className="h-1.75 w-3.25"
+                  style={{ transform: !isShowDropdown ? 'none' : 'rotateX(180deg)' }}
+                />
+              </button>
+              <ReactTooltip place="top" effect="float" />
+              <ReactTooltip id="arrow-button" place="left" effect="float" />
+            </div>
           </div>
           {isShowDropdown && !isEmpty(selectedAccount) && (
             <AddressDropdown

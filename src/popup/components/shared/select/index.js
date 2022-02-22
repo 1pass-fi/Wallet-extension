@@ -2,18 +2,17 @@
 import React, { useEffect, useState } from 'react'
 
 // assets
-import DownArrowIcon from 'img/down-arrow-icon.svg'
+import DownArrowIcon from 'img/v2/dropdown/down-icon-blue.svg'
 
 // styles
-import './index.css'
+// import './index.css'
 
-
-export const Select = ({ 
+export const Select = ({
   options,
-  defaultOption = '', 
-  label='', 
-  placeholder='' ,
-  className='',
+  defaultOption = '',
+  label = '',
+  placeholder = '',
+  className = '',
   onChange,
   isAccountAddress
 }) => {
@@ -31,8 +30,12 @@ export const Select = ({
 
   const handleShowMenu = (e) => {
     e.preventDefault()
-    setDownArrow((prev) => {return !prev})
-    setShowMenu((prev) => {return !prev})
+    setDownArrow((prev) => {
+      return !prev
+    })
+    setShowMenu((prev) => {
+      return !prev
+    })
   }
 
   useEffect(() => {
@@ -40,38 +43,40 @@ export const Select = ({
   }, [options])
 
   return (
-    <div className={`select-container ${className}`}>
-      {
-        label.length > 0 && <div className='label'>{label}</div>
-      }
-      <div className='select-wrapper' >
-        <div className="header">
+    <div className="w-full flex flex-col">
+      {label.length > 0 && <div className="text-sm pl-1.5 mb-1.5 font-semibold">{label}</div>}
+      <div className="w-full relative text-left rounded-finnie border-t-2 border-r-2 border-l-2 border-white shadow-lg">
+        <div className="border-b-2 rounded-finnie border-white text-white h-8 flex">
           <input
             readOnly
-            type='text'  
-            className="selected-option"
-            placeholder={placeholder} 
+            type="text"
+            className="cursor-pointer text-white border-b-2 text-sm border-white bg-blue-800 h-8 pl-2 flex-grow rounded-l-finnie focus:outline-none placeholder-trueGray-400"
+            placeholder={placeholder}
             value={selectedOption}
+            onClick={handleShowMenu}
           />
-          <button 
-            className="arrow-button" 
+          <button
+            className="border-b-2 border-white flex items-center justify-center bg-white w-8 h-8 rounded-r-finnie"
             onClick={handleShowMenu}
           >
-            <div className='arrow-icon' style={{transform: downArrow ? 'none' : 'rotateX(180deg)'}}>
-              <DownArrowIcon />
-            </div>
+            <DownArrowIcon
+              className="h-1.75 w-3.25"
+              style={{ transform: downArrow ? 'none' : 'rotateX(180deg)' }}
+            />
           </button>
         </div>
         {showMenu && (
-          <div className="select-options">
+          <div className="bg-blue-800 border-b-2 border-white z-50 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none">
             {options.map((option) => {
               return (
                 <button
-                  className="option"
+                  className="pl-2 h-8 text-white text-sm hover:bg-blue-500"
                   value={option.value}
                   key={option.id + option.label}
                   onClick={handleSelect}
-                >{option.label} {isAccountAddress && <button value={option.value} className='address-text'>{option.address.slice(0, 6)}</button>}</button>
+                >
+                  {`${option.label} ${isAccountAddress ? option.address.slice(0, 6) + '...' : ''}`}
+                </button>
               )
             })}
           </div>
