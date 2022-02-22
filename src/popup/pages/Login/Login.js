@@ -22,6 +22,7 @@ import { REQUEST } from 'constants/koiConstants'
 
 // services
 import storage from 'services/storage'
+import disableOrigin from 'utils/disableOrigin'
 
 const Login = ({ unlockWallet, setIsLoading, setError }) => {
   const history = useHistory()
@@ -31,7 +32,9 @@ const Login = ({ unlockWallet, setIsLoading, setError }) => {
   const [isIncorrectPassword, setIsIncorrectPassword] = useState(false)
   const [showPw, setShowPw] = useState(false)
 
+  const [currentTabOrigin, setCurrentTabOrigin] = useState('')
   const [originDisabled, setOriginDisabled] = useState(false)
+
   const loadDisabledOrigins = () => {
     chrome.windows.getCurrent((w) => {
       try {
@@ -51,7 +54,7 @@ const Login = ({ unlockWallet, setIsLoading, setError }) => {
     loadDisabledOrigins()
   }, [])
 
-  const handleDisableFinnie = async () => {
+  const toggleDisableFinnie = async () => {
     if (!originDisabled) {
       await disableOrigin.addDisabledOrigin(currentTabOrigin)
       setOriginDisabled(true)
@@ -136,21 +139,21 @@ const Login = ({ unlockWallet, setIsLoading, setError }) => {
         >
           Unlock
         </button>
-        {!originDisabled ? (
-          <div
-            onClick={handleDisableFinnie}
-            className="cursor-pointer absolute w-full bottom-3.5 flex items-center justify-center text-xs"
-          >
-            <PauseIcon className="mr-1.75" /> Pause Finnie on this site.
-          </div>
-        ) : (
-          <div
-            onClick={handleDisableFinnie}
-            className="cursor-pointer absolute w-full bottom-3.5 flex items-center justify-center text-xs"
-          >
-            <PlayIcon className=" mr-1.75" /> Resume Finnie on this site.
-          </div>
-        )}
+
+        <div
+          onClick={toggleDisableFinnie}
+          className="cursor-pointer absolute w-full bottom-3.5 flex items-center justify-center text-xs"
+        >
+          {!originDisabled ? (
+            <>
+              <PauseIcon className="mr-1.75" /> Pause Finnie on this site.
+            </>
+          ) : (
+            <>
+              <PlayIcon className=" mr-1.75" /> Resume Finnie on this site.
+            </>
+          )}
+        </div>
       </div>
     </div>
   )
