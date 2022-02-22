@@ -93,7 +93,7 @@ const TransactionConfirmModal = ({
         >
           <BackIcon
             style={{ width: '30px', height: '30px' }}
-            className="absolute top-4 left-4"
+            className="absolute top-4 left-4 cursor-pointer"
             onClick={onClose}
           />
           <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
@@ -101,7 +101,7 @@ const TransactionConfirmModal = ({
           </div>
           <CloseIcon
             style={{ width: '30px', height: '30px' }}
-            className="absolute top-4 right-4"
+            className="absolute top-4 right-4 cursor-pointer"
             onClick={onClose}
           />
         </div>

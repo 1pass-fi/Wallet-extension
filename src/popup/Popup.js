@@ -315,7 +315,7 @@ const Popup = ({
                     <Route exact path="/receive">
                       <Receive />
                     </Route>
-                	<Route exact path="/send">
+                    <Route exact path="/send">
                       <Send />
                     </Route>
                     <Route path="*">

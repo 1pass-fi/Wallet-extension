@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom'
 import TokenDropdown from 'popup/components/TokenDropdown'
 import SendTokenForm from './SendTokenForm'
 import TransactionConfirmModal from './TransactionConfirmModal'
+import TransactionDetails from './TransactionDetails'
 
 // constants
 import { ERROR_MESSAGE } from 'constants/koiConstants'
@@ -42,6 +43,7 @@ const Send = ({ setError }) => {
   const [recipient, setRecipient] = useState([])
   const [selectedAccount, setSelectedAccount] = useState(null)
   const [enoughGas, setEnoughGas] = useState(true)
+  const [showTxDetailPage, setShowTxDetailPage] = useState(false)
 
   useEffect(() => {
     const getTokenOptions = async () => {
@@ -132,28 +134,29 @@ const Send = ({ setError }) => {
 
   const handleSendTransaction = async () => {
     try {
-      setShowModal(false)
-      setIsLoading(true)
-      if (selectedAccount.type === TYPE.ETHEREUM) {
-        const account = await popupAccount.getAccount({ address: selectedAccount.address })
-        const provider = await account.get.provider()
-        if (provider.includes('mainnet')) {
-          // setError(ERROR_MESSAGE.SEND_WITH_ETH)
-          // setIsLoading(false)
-          // return
-        }
-      }
-      await makeTransfer(selectedAccount, Number(amount), recipient.address, selectedToken)
-      setIsLoading(false)
+      // setShowModal(false)
+      // setIsLoading(true)
+      // if (selectedAccount.type === TYPE.ETHEREUM) {
+      //   const account = await popupAccount.getAccount({ address: selectedAccount.address })
+      //   const provider = await account.get.provider()
+      //   if (provider.includes('mainnet')) {
+      //     // setError(ERROR_MESSAGE.SEND_WITH_ETH)
+      //     // setIsLoading(false)
+      //     // return
+      //   }
+      // }
+      // await makeTransfer(selectedAccount, Number(amount), recipient.address, selectedToken)
+      // setIsLoading(false)
+      setShowTxDetailPage(true)
       setNotification(NOTIFICATION.TRANSACTION_SENT)
       history.push(PATH.ACTIVITY)
     } catch (err) /* istanbul ignore next */ {
       setIsLoading(false)
       setError(err.message)
-    } 
+    }
   }
 
-  return (
+  return !showTxDetailPage ? (
     <div className="w-full relative bg-white flex flex-col items-center pt-9.75">
       <SendBackgroundLeft className="absolute top-0 left-0" />
       <SendBackgroundRight className="absolute top-0 right-0" />
@@ -244,6 +247,13 @@ const Send = ({ setError }) => {
         />
       )}
     </div>
+  ) : (
+    <TransactionDetails
+      sentAmount={Number(amount)}
+      currency={selectedToken}
+      recipient={recipient}
+      selectedAccount={selectedAccount}
+    />
   )
 }
 
