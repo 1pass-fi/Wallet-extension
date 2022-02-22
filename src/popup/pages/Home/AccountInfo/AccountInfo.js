@@ -37,7 +37,7 @@ const AccountInfo = () => {
         <Route exact path="/tokens">
           <Tokens />
         </Route>
-        <Redirect to="/tokens" />
+        {/* <Redirect exact from="/" to="/tokens" /> */}
       </Switch>
     </div>
   )

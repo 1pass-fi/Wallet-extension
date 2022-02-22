@@ -215,7 +215,7 @@ export const PATH = {
   IMPORT_KEY_REDIRECT: '/account/import/keyfile/success',
   CREATE_WALLET_REDIRECT: '/account/create/success',
   HOME: '/account',
-  LOGIN: '/account/login',
+  LOGIN: '/login',
   ACTIVITY: '/activity',
   WELCOME: '/account/welcome',
   SETTING: '/settings',
@@ -348,8 +348,7 @@ export const NOTIFICATION = {
     'Collection created successfully. It may take a while until you can get your data updated.',
   CREATE_KID_SUCCESS:
     'Created KID successfully. It may take a while until you can get your data updated.',
-  UPDATE_KID_SUCCESS:
-    'Your DID is being updated as we speak. This might take a couple of minutes.'
+  UPDATE_KID_SUCCESS: 'Your DID is being updated as we speak. This might take a couple of minutes.'
 }
 
 export const STATEMENT = {

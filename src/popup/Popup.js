@@ -301,9 +301,9 @@ const Popup = ({
               <Route exact path="/login">
                 <Login />
               </Route>
-              <Route exact path="/account/*">
+              {/* <Route exact path="/account/*">
                 <Account />
-              </Route>
+              </Route> */}
               <>
                 <Header />
                 <div

@@ -17,8 +17,8 @@ const NavBar = ({ handleLockWallet }) => {
 
   return (
     <div
-      className="flex items-center justify-between fixed bottom-0 px-0.75"
-      style={{ width: '100%', height: '64px', backgroundColor: '#4e4e7e' }}
+      className="flex items-center w-full justify-between fixed bottom-0 px-0.75"
+      style={{ height: '64px', backgroundColor: '#4e4e7e' }}
     >
       <div
         className="bg-blue-800 cursor-pointer rounded-bl-md"
