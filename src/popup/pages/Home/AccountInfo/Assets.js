@@ -34,12 +34,10 @@ const Assets = ({ assets, loadContent, setContLoading }) => {
   }, [defaultAccount, assets])
 
   return (
-    <div className="w-full bg-trueGray-100">
-      <div className="grid grid-cols-3 gap-5 place-items-center px-3 py-1">
-        {filteredAssets[0]?.contents?.map((asset, idx) => (
-          <NFTCard key={idx} nft={asset} />
-        ))}
-      </div>
+    <div className="w-full bg-trueGray-100 grid grid-cols-3 gap-5 place-items-center px-3 py-1">
+      {filteredAssets[0]?.contents?.map((asset, idx) => (
+        <NFTCard key={idx} nft={asset} />
+      ))}
     </div>
   )
 }
