@@ -22,7 +22,7 @@ export const Select = ({
 
   const handleSelect = (e) => {
     e.preventDefault()
-    setSelectedOption(e.target.value)
+    setSelectedOption(e.target.id)
     setShowMenu(false)
     setDownArrow(true)
     onChange(e.target.value)
@@ -50,7 +50,7 @@ export const Select = ({
           <input
             readOnly
             type="text"
-            className="cursor-pointer text-white border-b-2 text-sm border-white bg-blue-800 h-8 pl-2 flex-grow rounded-l-finnie focus:outline-none placeholder-trueGray-400"
+            className="cursor-pointer text-white border-b-2 text-sm font-semibold border-white bg-blue-800 h-8 pl-2 flex-grow rounded-l-finnie focus:outline-none placeholder-trueGray-400"
             placeholder={placeholder}
             value={selectedOption}
             onClick={handleShowMenu}
@@ -70,12 +70,13 @@ export const Select = ({
             {options.map((option) => {
               return (
                 <button
-                  className="pl-2 h-8 text-white text-sm hover:bg-blue-500"
+                  className="text-left pl-2 h-8 text-white text-sm hover:bg-blue-500"
                   value={option.value}
                   key={option.id + option.label}
                   onClick={handleSelect}
+                  id={option.label}
                 >
-                  {`${option.label} ${isAccountAddress ? option.address.slice(0, 6) + '...' : ''}`}
+                  {`${option.label} ${isAccountAddress ? option.address.slice(0, 24) + '...' : ''}`}
                 </button>
               )
             })}

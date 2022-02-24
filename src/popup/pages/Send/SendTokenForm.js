@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import ReactTooltip from 'react-tooltip'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
+import clsx from 'clsx'
 
 // components
 import Select from 'shared/select'
@@ -120,21 +121,27 @@ const SendTokenForm = ({
       <div className="mt-7 recipient" style={{ width: '352px' }}>
         <div className="text-sm pl-1.5 mb-1.5 font-semibold">TO</div>
         <div className="w-full relative text-left rounded-finnie border-t-2 border-r-2 border-l-2 border-white shadow-lg">
-          <div className="border-b-2 rounded-finnie border-white text-white h-8 flex">
+          <div
+            className="border-b-2 rounded-finnie border-white text-white h-8 flex"
+            data-tip={isEmpty(selectedAccount) ? 'Please choose Sender Account first!' : ''}
+          >
             <input
               ref={(ip) => (addressInputRef.current = ip)}
               value={recipient.address}
               onChange={onChangeRecipientAddress}
-              className="cursor-pointer text-white border-b-2 text-sm border-white bg-blue-800 h-8 pl-2 flex-grow rounded-l-finnie focus:outline-none placeholder-trueGray-400"
+              className={clsx(
+                isEmpty(selectedAccount) ? 'cursor-not-allowed' : 'cursor-pointer',
+                'text-white border-b-2 text-sm font-semibold border-white bg-blue-800 h-8 pl-2 flex-grow rounded-l-finnie focus:outline-none placeholder-trueGray-400'
+              )}
               placeholder="Recipient’s Wallet Address"
+              disabled={isEmpty(selectedAccount)}
             />
-            <div
-              className="w-8 h-8 rounded-r-finnie"
-              data-tip={isEmpty(selectedAccount) ? 'Please choose Sender Account first!' : ''}
-              data-for="arrow-button"
-            >
+            <div className="w-8 h-8 rounded-r-finnie" data-for="arrow-button">
               <button
-                className="border-b-2 border-white flex items-center justify-center bg-white w-8 h-8 rounded-r-finnie"
+                className={clsx(
+                  isEmpty(selectedAccount) ? 'cursor-not-allowed' : 'cursor-pointer',
+                  'border-b-2 border-white flex items-center justify-center bg-white w-8 h-8 rounded-r-finnie'
+                )}
                 disabled={isEmpty(selectedAccount)}
                 onClick={(e) => {
                   e.preventDefault()
@@ -146,10 +153,10 @@ const SendTokenForm = ({
                   style={{ transform: !isShowDropdown ? 'none' : 'rotateX(180deg)' }}
                 />
               </button>
-              <ReactTooltip place="top" effect="float" />
-              <ReactTooltip id="arrow-button" place="left" effect="float" />
             </div>
           </div>
+          <ReactTooltip place="top" effect="float" />
+          <ReactTooltip id="arrow-button" place="left" effect="float" />
           {isShowDropdown && !isEmpty(selectedAccount) && (
             <AddressDropdown
               accounts={addressOptions}
