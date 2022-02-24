@@ -3,6 +3,8 @@
   height: 600px;
   box-sizing: border-box;
   position: relative;
+  overflow-y: overlay;
+  overflow-x: hidden;
   /* border: 1px solid black; */
 }
 

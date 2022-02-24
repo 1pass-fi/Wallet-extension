@@ -88,6 +88,7 @@
         "react-redux": "^7.2.4",
         "react-router": "5.2.0",
         "react-router-dom": "^5.2.0",
+        "react-scroll-parallax": "^3.0.3",
         "react-tooltip": "^4.2.21",
         "redux": "^4.1.0",
         "redux-devtools-extension": "^2.13.9",

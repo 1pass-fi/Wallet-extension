@@ -309,7 +309,7 @@ const Popup = ({
                 <Header />
                 <div
                   className="flex min-h-3.375 pt-13.5 overflow-y-auto overflow-x-hidden"
-                  style={{ height: 'calc(100% - 64px)', backgroundColor: '#eeeeee' }}
+                  style={{ height: 'calc(100% - 64px)' }}
                 >
                   <Switch>
                     <Route exact path="/receive">
