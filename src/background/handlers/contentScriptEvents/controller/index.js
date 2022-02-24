@@ -17,6 +17,7 @@ import koiSendKoi from './koiSendKoi'
 import createDID from './createDID'
 import updateDID from './updateDID'
 import signature from './signature'
+import ethereumRpcRequest from './ethereumRpcRequest'
 import testEthereum from './testEthereum'
 
 export default {
@@ -39,5 +40,6 @@ export default {
   createDID,
   updateDID,
   signature,
+  ethereumRpcRequest,
   testEthereum
 }

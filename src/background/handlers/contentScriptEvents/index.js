@@ -27,6 +27,7 @@ const getEmitter = () => {
   contentScriptEvents.on(MESSAGES.KOI_CREATE_DID, controller.createDID)
   contentScriptEvents.on(MESSAGES.KOI_UPDATE_DID, controller.updateDID)
   contentScriptEvents.on(MESSAGES.SIGNATURE, controller.signature)
+  contentScriptEvents.on(MESSAGES.ETHEREUM_RPC_REQUEST, controller.ethereumRpcRequest)
   contentScriptEvents.on(MESSAGES.TEST_ETHEREUM, controller.testEthereum)
 
   return contentScriptEvents

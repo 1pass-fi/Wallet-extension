@@ -208,7 +208,6 @@ export default `function eventEmitter() {
     };
 
     var R = (typeof Reflect === "undefined" ? "undefined" : typeof(Reflect)) === 'object' ? Reflect : null;
-    console.log('RUNNNN');
     var ReflectApply = R && typeof R.apply === 'function' ? R.apply : function ReflectApply(target, receiver, args) {
       return Function.prototype.apply.call(target, receiver, args);
     };

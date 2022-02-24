@@ -50,7 +50,9 @@ export default async () => {
     MESSAGES.SIGNATURE_ERROR,
     MESSAGES.ERROR,
     MESSAGES.TEST_ETHEREUM_SUCCESS,
-    MESSAGES.TEST_ETHEREUM_ERROR
+    MESSAGES.TEST_ETHEREUM_ERROR,
+    MESSAGES.ETHEREUM_RPC_REQUEST_SUCCESS,
+    MESSAGES.ETHEREUM_RPC_REQUEST_ERROR
   ]
   
   /* 
@@ -87,6 +89,7 @@ export default async () => {
       case MESSAGES.KOI_UPDATE_DID:
       case MESSAGES.SIGNATURE:
       case MESSAGES.TEST_ETHEREUM:
+      case MESSAGES.ETHEREUM_RPC_REQUEST:
         backgroundConnect.postMessage(event.data)
         break
       case MESSAGES.KOI_CREATE_TRANSACTION:

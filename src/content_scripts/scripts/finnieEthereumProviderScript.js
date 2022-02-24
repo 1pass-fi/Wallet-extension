@@ -2,17 +2,15 @@ const finnieEthereumProviderScript = `() => {
   class FinnieEthereumProvider extends EventEmitter {
     constructor(connection) {
       super()
-
       this.connection = connection
     }
 
-    async request(message) {
-      try {
-        const response = await this.connection.send(message)
-        return response
-      } catch (err) {
-        console.error('ERROR --- ', err.message)
+    request(payload) {
+      const message = {
+        type: ENDPOINTS.ETHEREUM_RPC_REQUEST,
+        data: payload
       }
+      return this.connection.send(message)
     }
   }
 
