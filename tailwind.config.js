@@ -23,7 +23,8 @@ module.exports = {
         indigo: {
           DEFAULT: '#171753',
           800: '#0a0a45',
-          900: '#211C52'
+          900: '#211C52',
+          400: '#8585BC'
         },
         trueGray: {
           100: '#F5F5F5',
