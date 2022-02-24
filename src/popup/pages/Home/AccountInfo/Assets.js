@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
+import includes from 'lodash/includes'
 
 // actions
 import { loadContent } from 'actions/koi'
@@ -35,9 +36,9 @@ const Assets = ({ assets, loadContent, setContLoading }) => {
 
   return (
     <div className="w-full bg-trueGray-100 grid grid-cols-3 gap-5 place-items-center px-3 py-1">
-      {filteredAssets[0]?.contents?.map((asset, idx) => (
-        <NFTCard key={idx} nft={asset} />
-      ))}
+      {filteredAssets[0]?.contents?.map((asset, idx) =>
+        !includes(asset.name, 'DID Profile Page') ? <NFTCard key={idx} nft={asset} /> : null
+      )}
     </div>
   )
 }
