@@ -51,7 +51,7 @@ export class Ethereum {
     koiTools.initializeEthWalletAndProvider(this.address, this.#provider)
 
     const receipt = await koiTools.transferEth(toAddress, amount, this.key)
-    return receipt.transactionHash
+    return receipt
   }
 
   async getTransactionStatus(txHash) {

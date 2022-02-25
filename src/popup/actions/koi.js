@@ -204,9 +204,11 @@ export const makeTransfer = (sender, qty, target, token) => async (dispatch) => 
     const { address } = sender
 
     if (token == 'KOII') token = 'KOI' // On the SDK the name of token KOII has not been updated. (still KOI) 
-    const { txId } = await backgroundRequest.wallet.makeTransfer({qty, target, token, address})
 
-    console.log('TRANSACTION ID', txId)
+    const { txId, receipt } = await backgroundRequest.wallet.makeTransfer({qty, target, token, address})
+
+    console.log('TRANSACTION res', { txId, receipt })
+    return { txId, receipt}
   } catch (err) {
     console.log('ERROR-ACTION: ', err.message)
     throw new Error(err.message)

@@ -6,23 +6,31 @@ import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 
 import helpers from 'background/helpers'
 
-
 export default async (payload, next) => {
   try {
     const { qty, target, token, address } = payload.data
     const credentials = await backgroundAccount.getCredentialByAddress(address)
     const account = await backgroundAccount.getAccount(credentials)
-    const transactionType = token === 'KOI' ? PENDING_TRANSACTION_TYPE.SEND_KOII : PENDING_TRANSACTION_TYPE.SEND_AR
+    const transactionType =
+      token === 'KOI' ? PENDING_TRANSACTION_TYPE.SEND_KOII : PENDING_TRANSACTION_TYPE.SEND_AR
 
     console.log('QTY ', qty, 'TARGET ', target, 'TOKEN ', token)
-    const txId = await account.method.transfer(token, target, qty)
+
+    let txId = ''
+    let receipt = {}
+    if (token === 'ETH') {
+      receipt = await account.method.transfer(token, target, qty)
+      txId = receipt.transactionHash
+    } else {
+      txId = await account.method.transfer(token, target, qty)
+    }
 
     const network = await account.get.provider()
 
     // add new pending transaction
     const pendingTransactionPayload = {
       id: txId,
-      activityName: (token === 'KOI' ? 'Sent KOII' : `Sent ${token}`),
+      activityName: token === 'KOI' ? 'Sent KOII' : `Sent ${token}`,
       expense: qty,
       target,
       address,
@@ -34,8 +42,8 @@ export default async (payload, next) => {
 
     helpers.loadBalances()
     helpers.loadActivities()
-    
-    next({ data: { txId } })
+
+    next({ data: { txId, receipt } })
   } catch (err) {
     console.error(err.message)
     next({ error: err.message })
