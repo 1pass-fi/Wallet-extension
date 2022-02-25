@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+
 import { Link } from 'react-router-dom'
 import { useParallax } from 'react-scroll-parallax'
 
@@ -9,10 +9,7 @@ import ReceiveIcon from 'img/popup/receive-icon.svg'
 import { TYPE } from 'constants/accountConstants'
 import { fiatCurrencyFormat, numberFormat } from 'utils'
 
-const HomeTop = () => {
-  const defaultAccount = useSelector((state) => state.defaultAccount)
-  const price = useSelector((state) => state.price)
-
+const HomeTop = ({ defaultAccount, price }) => {
   const p = useParallax({
     translateX: [0, 100],
     shouldAlwaysCompleteAnimation: true,

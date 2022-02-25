@@ -1,10 +1,16 @@
 import React, { useEffect } from 'react'
+import { ParallaxProvider } from 'react-scroll-parallax'
+import { useSelector } from 'react-redux'
 
 import AccountInfo from './AccountInfo/AccountInfo'
 import PopupBackground from 'img/popup/popup-background.svg'
-import { ParallaxProvider } from 'react-scroll-parallax'
+
 import HomeTop from './HomeTop'
+
 const Home = () => {
+  const defaultAccount = useSelector((state) => state.defaultAccount)
+  const price = useSelector((state) => state.price)
+
   const [scrollEl, setScrollElement] = React.useState(null)
   const ref = React.useRef()
 
@@ -20,10 +26,10 @@ const Home = () => {
     >
       <ParallaxProvider scrollContainer={scrollEl}>
         <div className="pt-4.75 pl-4.75 mb-3.5">
-          <HomeTop />
+          <HomeTop defaultAccount={defaultAccount} price={price} />
           <PopupBackground className="absolute top-13.5 right-0 z-30" />
         </div>
-        <AccountInfo />
+        <AccountInfo defaultAccount={defaultAccount} price={price} />
       </ParallaxProvider>
     </div>
   )
