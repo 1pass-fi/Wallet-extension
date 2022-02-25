@@ -186,12 +186,12 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
               Atomic NFTs are stored permanently on Arweave. With Koii, they earn attention rewards
               forever.
             </div>
-            <div className="flex w-108 mt-4.25 justify-evenly">
+            <div className="flex min-w-108 mt-4.25 justify-evenly">
               <div className="w-40 h-40 object-cover rounded">
                 <NFTMedia contentType={fileType} source={url} />
               </div>
 
-              <div className="flex flex-col pl-6 w-68">
+              <div className="flex flex-col pl-6 min-w-68">
                 <div className="font-semibold text-base tracking-finnieSpacing-wide leading-6">
                   {formatLongStringTruncate(nftContent.title, 35)}
                 </div>
