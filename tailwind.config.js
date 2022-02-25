@@ -10,7 +10,8 @@ module.exports = {
       },
       colors: {
         teal: {
-          100: '#BEEFEC'
+          100: '#BEEFEC',
+          700: '#267D77'
         },
         bittersweet: {
           200: '#F97664'
