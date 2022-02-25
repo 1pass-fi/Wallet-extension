@@ -11,13 +11,17 @@ import SendTokenForm from './SendTokenForm'
 import TransactionConfirmModal from './TransactionConfirmModal'
 import TransactionDetails from './TransactionDetails'
 
+// actions
+import { makeTransfer } from 'actions/koi'
+import { setIsLoading } from 'popup/actions/loading'
+import { setError } from 'actions/error'
+
 // constants
 import { ERROR_MESSAGE } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
 
 import { formatNumber } from 'options/utils'
-import { setError } from 'actions/error'
-import { isArweaveAddress, isEthereumAddress } from 'utils'
+import { isArweaveAddress, isEthereumAddress, calculateGasFee } from 'utils'
 import { popupAccount } from 'services/account'
 
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
@@ -28,7 +32,7 @@ import BackBtn from 'img/popup/back-button.svg'
 import SendBackgroundLeft from 'img/popup/send-background-left.svg'
 import SendBackgroundRight from 'img/popup/send-background-right.svg'
 
-const Send = ({ setError }) => {
+const Send = ({ setIsLoading, setError, makeTransfer }) => {
   const history = useHistory()
 
   const [fontSize, setFontSize] = useState('3xl')
@@ -40,10 +44,15 @@ const Send = ({ setError }) => {
   const [tokenOptions, setTokenOptions] = useState([])
   const [showTokenOptions, setShowTokenOptions] = useState(false)
   const [amount, setAmount] = useState('')
-  const [recipient, setRecipient] = useState([])
+  const [recipient, setRecipient] = useState({ address: '' })
   const [selectedAccount, setSelectedAccount] = useState(null)
   const [enoughGas, setEnoughGas] = useState(true)
   const [showTxDetailPage, setShowTxDetailPage] = useState(false)
+
+  const [gasFee, setGasFee] = useState(0)
+  const [arFee, setArFee] = useState(0)
+  const [txId, setTxId] = useState('')
+  const [ethReceipt, setEthReceipt] = useState({})
 
   useEffect(() => {
     const getTokenOptions = async () => {
@@ -72,12 +81,52 @@ const Send = ({ setError }) => {
     if (selectedAccount) getTokenOptions()
   }, [selectedAccount])
 
+  useEffect(() => {
+    const loadGasFee = async () => {
+      const account = await popupAccount.getAccount({ address: selectedAccount.address })
+      const provider = await account.get.provider()
+
+      const gasFee = await calculateGasFee({
+        amount: Number(amount),
+        senderAddress: selectedAccount.address,
+        toAddress: recipient.address,
+        provider: provider
+      })
+      setGasFee(gasFee)
+    }
+
+    const loadArFee = async () => {
+      if (selectedToken === 'AR') {
+        setArFee(0.0008)
+      }
+      if (selectedToken === 'KOII') {
+        setArFee(0.00005)
+      }
+    }
+
+    let loadGasFeeInterval
+    if (Number(amount) <= 0) {
+      return
+    }
+    if (!isEmpty(selectedAccount) && selectedAccount.type === TYPE.ETHEREUM && !isEmpty(recipient.address)) {
+      loadGasFee()
+      loadGasFeeInterval = setInterval(() => {
+        loadGasFee()
+      }, 3000)
+    }
+
+    if (!isEmpty(selectedAccount) && selectedAccount.type === TYPE.ARWEAVE) loadArFee()
+
+    return () => clearInterval(loadGasFeeInterval)
+  }, [selectedAccount, selectedToken, amount, recipient])
+
   const onChangeToken = (selectedToken) => {
     setSelectedToken(selectedToken)
   }
 
   const onChangeAmount = (e) => {
     setAmount(e.target.value)
+    setEnoughGas(true)
     if (e.target.value.length <= 8) {
       setFontSize('3xl')
       return
@@ -97,6 +146,8 @@ const Send = ({ setError }) => {
   }
 
   const handleSendToken = () => {
+    setEnoughGas(true)
+    
     // validations
     if (!(recipient?.address.trim().length > 0 && amount.trim().length > 0)) {
       setError(ERROR_MESSAGE.EMPTY_FIELDS)
@@ -129,27 +180,49 @@ const Send = ({ setError }) => {
       return
     }
 
+    if (selectedToken === 'KOII' && (koiBalance < Number(amount) || balance < arFee)) {
+      setEnoughGas(false)
+      return
+    }
+
+    if (selectedToken === 'AR' && balance < (Number(amount) + arFee)) {
+      setEnoughGas(false)
+      return
+    }
+
+    if (selectedToken === 'ETH' && balance < (Number(amount) + gasFee)) {
+      setEnoughGas(false)
+      return
+    }
+
     setShowModal(true)
   }
 
   const handleSendTransaction = async () => {
     try {
-      // setShowModal(false)
-      // setIsLoading(true)
-      // if (selectedAccount.type === TYPE.ETHEREUM) {
-      //   const account = await popupAccount.getAccount({ address: selectedAccount.address })
-      //   const provider = await account.get.provider()
-      //   if (provider.includes('mainnet')) {
-      //     // setError(ERROR_MESSAGE.SEND_WITH_ETH)
-      //     // setIsLoading(false)
-      //     // return
-      //   }
-      // }
-      // await makeTransfer(selectedAccount, Number(amount), recipient.address, selectedToken)
-      // setIsLoading(false)
+      setShowModal(false)
+      setIsLoading(true)
+      if (selectedAccount.type === TYPE.ETHEREUM) {
+        const account = await popupAccount.getAccount({ address: selectedAccount.address })
+        const provider = await account.get.provider()
+        if (provider.includes('mainnet')) {
+          // setError(ERROR_MESSAGE.SEND_WITH_ETH)
+          // setIsLoading(false)
+          // return
+        }
+      }
+
+      const {txId, receipt} = await makeTransfer(
+        selectedAccount,
+        Number(amount),
+        recipient.address,
+        selectedToken
+      )
+
+      setTxId(txId)
+      setEthReceipt(receipt)
+      setIsLoading(false)
       setShowTxDetailPage(true)
-      setNotification(NOTIFICATION.TRANSACTION_SENT)
-      history.push(PATH.ACTIVITY)
     } catch (err) /* istanbul ignore next */ {
       setIsLoading(false)
       setError(err.message)
@@ -244,15 +317,23 @@ const Send = ({ setError }) => {
           }}
           onSubmit={handleSendTransaction}
           selectedAccount={selectedAccount}
+          gasFee={gasFee}
+          setGasFee={setGasFee}
+          arFee={arFee}
+          setArFee={setArFee}
         />
       )}
     </div>
   ) : (
     <TransactionDetails
+      txId={txId}
+      ethReceipt={ethReceipt}
       sentAmount={Number(amount)}
       currency={selectedToken}
       recipient={recipient}
       selectedAccount={selectedAccount}
+      gasFee={gasFee}
+      arFee={arFee}
     />
   )
 }
@@ -264,7 +345,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  setError
+  setError,
+  setIsLoading,
+  makeTransfer
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Send)

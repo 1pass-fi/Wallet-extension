@@ -3,6 +3,7 @@ module.exports = {
   theme: {
     extend: {
       lineHeight: {
+        11: '2.875rem',
         12: '3rem'
       },
       zIndex: {
@@ -70,9 +71,6 @@ module.exports = {
         gray: {
           underline: 'rgba(214, 214, 214, 0.2)'
         }
-      },
-      lineHeight: {
-        11: '2.875rem'
       },
       fontSize: {
         '4xs': '7px',

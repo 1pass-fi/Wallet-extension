@@ -30,14 +30,15 @@ const TransactionConfirmModal = ({
   currency,
   onClose,
   onSubmit,
-  selectedAccount
+  selectedAccount,
+  gasFee,
+  setGasFee,
+  arFee,
+  setArFee
 }) => {
   const price = useSelector((state) => state.price)
-  const [gasFee, setGasFee] = useState(0)
-  const [arFee, setArFee] = useState(0)
 
   const accountAddress = recipient.address
-  console.log('accountAddress', accountAddress)
 
   useEffect(() => {
     const loadGasFee = async () => {
@@ -136,9 +137,6 @@ const TransactionConfirmModal = ({
                   {sentAmount} KOII
                   <FinnieIcon className="ml-1 w-4 h-4" />
                 </div>
-                <div className="text-2xs tracking-finnieSpacing-tightest text-blueGray-800">
-                  ${fiatCurrencyFormat(sentAmount * price.AR)} USD
-                </div>
               </>
             )}
             {currency === 'AR' && (
@@ -159,7 +157,7 @@ const TransactionConfirmModal = ({
                   <EthereumIcon className="ml-1 w-4 h-4" />
                 </div>
                 <div className="text-2xs tracking-finnieSpacing-tightest text-blueGray-800">
-                  ${fiatCurrencyFormat(sentAmount * price.ETHEREUM)} USD
+                  ${fiatCurrencyFormat(sentAmount * price.ETH)} USD
                 </div>
               </>
             )}
@@ -181,8 +179,12 @@ const TransactionConfirmModal = ({
             <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
               Estimated Costs:
             </div>
-            {gasFee !== 0 && <div className="text-base leading-5 text-blue-800">{gasFee} ETH</div>}
-            {arFee !== 0 && <div className="text-base leading-5 text-blue-800">{arFee} ETH</div>}
+            {gasFee !== 0 && currency === 'ETH' && (
+              <div className="text-11px leading-5 text-blue-800">{gasFee} ETH</div>
+            )}
+            {arFee !== 0 && (currency === 'KOII' || currency === 'AR') && (
+              <div className="text-base leading-5 text-blue-800">{arFee} AR</div>
+            )}
             <div className="text-2xs leading-3 tracking-finnieSpacing-wider text-success-700">
               Storage Fee
             </div>

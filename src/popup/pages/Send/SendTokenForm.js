@@ -179,10 +179,13 @@ const SendTokenForm = ({
       )}
 
       <button
-        className="absolute bottom-15 bg-lightBlue font-normal text-sm text-center text-blue-800 leading-4 border border-lightBlue rounded-sm shadow-lg"
+        className="absolute bottom-12 bg-lightBlue font-normal text-sm text-center text-blue-800 leading-4 border border-lightBlue rounded-sm shadow-lg"
         type="send-tokens"
         style={{ width: '200px', height: '38px' }}
-        onClick={() => handleSendToken()}
+        onClick={() => {
+          setIsShowDropdown(false)
+          handleSendToken()
+        }}
       >
         Send Tokens
       </button>
