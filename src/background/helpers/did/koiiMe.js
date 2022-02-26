@@ -15,7 +15,7 @@ export const mapKoiiMe = async ({ txId, kID, account }) => {
   const ownerAddress = await account.get.address()
 
   const available = await checkAvailable(kID)
-  // if (!available) throw new Error('This kID is not available')
+  if (!available) throw new Error('This kID is not available')
 
   try {
     const input = {

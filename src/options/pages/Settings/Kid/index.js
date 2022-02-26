@@ -296,7 +296,7 @@ const KidPage = () => {
     setIsLoading((prev) => ++prev)
     // Validation
     const pattern = /^[A-Za-z0-9]+$/
-    const available = true
+    const available = await checkAvailable(kID)
     if (!kID) {
       setFieldError((prev) => ({ ...prev, kid: 'kID field must be filled in' }))
       setIsLoading((prev) => --prev)
