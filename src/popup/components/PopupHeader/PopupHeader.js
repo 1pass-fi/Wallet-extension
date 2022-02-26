@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 
 import AccountDropdown from './AccountDropdown'
@@ -49,6 +49,11 @@ const Header = () => {
     const url = 'https://koii.id/' + (DID || '')
     chrome.tabs.create({ url })
   }
+
+  const goToReportAnIssue = () => {
+    const url = 'https://share.hsforms.com/1Nmy8p6zWSN2J2skJn5EcOQc20dg'
+    chrome.tabs.create({ url })
+  }
   
   const handleDisableFinnie = async () => {
     if (!originDisabled) {
@@ -59,15 +64,34 @@ const Header = () => {
       setOriginDisabled(false)
     }
   }
+
+  const ref = useRef(null)
+  const modalRef = useRef(null)
   
   useEffect(() => {
     loadDisabledOrigins()
   }, [])
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && modalRef.current.contains(event.target)) {
+        return
+      } else if (ref.current && !ref.current.contains(event.target)) {
+        setShowPauseFinnieDropdown(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [ref, modalRef])
   
   return (
     <div
       className="fixed flex shadow-md z-30"
       style={{ height: '54px',backgroundColor: '#8585BC' }}
+      ref={ref}
     >
       <div className="relative">
         <Account
@@ -86,16 +110,18 @@ const Header = () => {
       >
         <Avatar className="mt-1.25" />
       </div>
-      <div onClick={() => setShowPauseFinnieDropdown(prev => !prev)} onMouseEnter={() => setShowPauseFinnieDropdown(true)} className="bg-blue-800 flex items-center justify-center" style={{ width: '30px' }}>
+      <div onClick={() => setShowPauseFinnieDropdown(prev => !prev)} className="bg-blue-800 flex items-center justify-center cursor-pointer" style={{ width: '30px' }}>
         <OptionIcon />
       </div>
-      {showPauseFinnieDropdown && <div style={{width:'252px',height:'92px',right:'0px',top:'54px'}} className='text-base text-white absolute bg-'>
-        <div onClick={handleDisableFinnie} style={{height:'46px',paddingRight:'16px',borderBottom:'1px solid #8585BC'}} className='bg-blue-800 hover:bg-blue-400 cursor-pointer flex items-center justify-end'>
-          <div className='flex items-center justify-center' style={{marginRight:'6px'}}>{!originDisabled ? <PauseIcon /> : <PlayIcon />}</div>
-          {!originDisabled ? 'Pause Finnie on this site' : 'Resume Finnie'}
-        </div>
-        <div style={{height:'46px',paddingRight:'16px'}} className='bg-blue-800 hover:bg-blue-400 cursor-pointer flex items-center justify-end'>Report an Issue</div>
-      </div>}
+      <div className='z-50'>
+        {showPauseFinnieDropdown && <div style={{width:'252px',height:'92px',right:'0px',top:'54px'}} className='text-base text-white absolute' ref={modalRef}>
+          <div onClick={handleDisableFinnie} style={{height:'46px',paddingRight:'16px',borderBottom:'1px solid #8585BC'}} className='bg-blue-800 hover:bg-blue-400 cursor-pointer flex items-center justify-end'>
+            <div className='flex items-center justify-center' style={{marginRight:'6px'}}>{!originDisabled ? <PauseIcon /> : <PlayIcon />}</div>
+            {!originDisabled ? 'Pause Finnie on this site' : 'Resume Finnie'}
+          </div>
+          <div onClick={goToReportAnIssue} style={{height:'46px',paddingRight:'16px',zIndex:100}} className='bg-blue-800 hover:bg-blue-400 cursor-pointer flex items-center justify-end'>Report an Issue</div>
+        </div>}
+      </div>
     </div>
   )
 }

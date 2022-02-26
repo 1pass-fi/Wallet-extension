@@ -27,7 +27,9 @@ const Home = () => {
       <ParallaxProvider scrollContainer={scrollEl}>
         <div className="pt-4.75 pl-4.75 mb-3.5">
           <HomeTop defaultAccount={defaultAccount} price={price} />
-          <PopupBackground className="absolute top-13.5 right-0 z-30" />
+          <div style={{width:'177px',height:'156px'}} className="absolute top-13.5 right-0">
+            <PopupBackground />
+          </div>
         </div>
         <AccountInfo defaultAccount={defaultAccount} price={price} />
       </ParallaxProvider>
