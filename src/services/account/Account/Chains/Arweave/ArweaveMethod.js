@@ -298,6 +298,7 @@ export class ArweaveMethod {
           break
       }
       const txId = await this.koi.transfer(qty, target, token)
+
       return txId
 
     } catch (err) {

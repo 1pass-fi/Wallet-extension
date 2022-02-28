@@ -1,21 +1,36 @@
 import React, { useState, useEffect } from 'react'
-import { isEmpty } from 'lodash'
+import { isEmpty, orderBy } from 'lodash'
 
 import storage from 'services/storage'
 import { popupAccount } from 'services/account'
 
 import ActivityRow from './ActivityRow'
+import ExpiredTxModal from 'popup/components/modals/expiredTxModal'
 
 const Activity = () => {
   const [activities, setActivities] = useState([])
+  const [pendingTransactions, setPendingTransactions] = useState([])
   const [pages, setPages] = useState(1)
+  const [deleteTransactionModalStatus, setDeleteTransactionModalStatus] = useState({
+    isShow: false,
+    txInfo: {},
+  })
 
   useEffect(() => {
     const loadActivities = async () => {
       const allActivities = await storage.generic.get.allActivities()
       setActivities(allActivities)
     }
+
+    const loadPendingTransactions = async () => {
+      let pendingTransactions = await popupAccount.getAllPendingTransactions()
+      console.log('all pending transaction', pendingTransactions)
+      pendingTransactions = orderBy(pendingTransactions, 'timestamp', 'desc')
+      setPendingTransactions(pendingTransactions)
+    }
+
     loadActivities()
+    loadPendingTransactions()
   }, [])
 
   useEffect(() => {
@@ -43,6 +58,24 @@ const Activity = () => {
 
   return (
     <div className="bg-trueGray-100">
+      {pendingTransactions.map((activity) => (
+        <ActivityRow
+          key={activity.id}
+          activityName={activity.activityName}
+          expense={activity.expense}
+          date={activity.date}
+          source={activity.source}
+          id={activity.id}
+          pending={true}
+          price={1}
+          currency={'USD'}
+          accountName={activity.accountName}
+          expired={false}
+          seen={true}
+          expired={activity.expired}
+          setDeleteTransactionModalStatus={setDeleteTransactionModalStatus}
+        />
+      ))}
       {activities.slice(0, pages * 10).map((activity) => (
         <ActivityRow
           key={activity.id}
@@ -71,6 +104,20 @@ const Activity = () => {
           </button>
         </div>
       )}
+
+      {
+        deleteTransactionModalStatus.isShow && (
+          <ExpiredTxModal
+            txInfo={deleteTransactionModalStatus.txInfo}
+            onClose={() => setDeleteTransactionModalStatus((prev) => ({
+              ...prev,
+              isShow: false,
+            }))}
+            setPendingTransactions={setPendingTransactions}
+            pendingTransactions={pendingTransactions}
+          />
+        )
+      }
     </div>
   )
 }

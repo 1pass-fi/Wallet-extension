@@ -15,7 +15,8 @@ export default async ({
   retried,
   transactionType,
   contract,
-  data
+  data,
+  expired
 }) => {
   const credentials = await backgroundAccount.getCredentialByAddress(address)
   const account = await backgroundAccount.getAccount(credentials)
@@ -37,7 +38,8 @@ export default async ({
     transactionType,
     address,
     contract,
-    data
+    data,
+    expired
   }
 
   pendingTransactions.push(initialTransaction)

@@ -21,6 +21,7 @@ import './index.css'
 const ExpiredTxModal = ({ onClose, txInfo, setError, setPendingTransactions, setIsLoading }) => {
   const expiredTxAction = async (txInfo, wantToResend) => {
     try {
+      console.log('txInfo', txInfo)
       setIsLoading(true)
       const resentTransactionId = await request.wallet.handleExpiredTransaction({...txInfo, wantToResend})
       /* 
