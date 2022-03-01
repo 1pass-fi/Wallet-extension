@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { v4 as uuid } from 'uuid'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import isEmpty from 'lodash/isEmpty'
 
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
@@ -212,9 +213,9 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                 <div className="font-semibold text-base tracking-finnieSpacing-wide leading-6 mt-3">
                   Estimated Costs:
                 </div>
-                <div className="finnieSpacing-wider text-sm leading-5">{estimateCostKOII} KOII</div>
-                <div className="finnieSpacing-wider text-sm leading-5">
-                  {formatNumber(estimateCostAr, 6)} AR <span className="text-2xs text-success-700">Storage Fee</span>
+                <div className="tracking-finnieSpacing-wider text-sm leading-5">{estimateCostKOII} KOII</div>
+                <div className="tracking-finnieSpacing-wider text-sm leading-5">
+                  {isEmpty(estimateCostAr) ? 'Calculating fee...' : `${formatNumber(estimateCostAr, 6)} AR`} {!isEmpty(estimateCostAr) && <span className="text-2xs text-success-700">Storage Fee</span>}
                 </div>
               </div>
             </div>
