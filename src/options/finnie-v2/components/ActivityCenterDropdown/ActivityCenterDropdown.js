@@ -11,7 +11,7 @@ import storage from 'services/storage'
 import { popupAccount } from 'services/account'
 
 import './ActivityCenterDropdown.css'
-import { viewNotifications } from 'options/actions/notifications'
+import { setNotifications } from 'options/actions/notifications'
 
 const ACTIVITY = 'ACTIVITY'
 const COMMUNITY = 'COMMUNITY'
@@ -58,8 +58,14 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
   }, [activities])
 
   const setReadNotifications = async () => {
-    await storage.generic.set.pushNotification()
-    dispatch(viewNotifications())
+    // clear notifications
+    let allNotifications = await storage.generic.get.pushNotification()
+    allNotifications = allNotifications.map((n) => {
+      n.new = false
+      return n
+    })
+    dispatch(setNotifications(allNotifications))
+    storage.generic.set.pushNotification(allNotifications)
   }
 
   return (

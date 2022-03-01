@@ -16,7 +16,7 @@ import Loading from 'options/finnie-v1/components/loading'
 import { GalleryContext } from 'options/galleryContext'
 import { DidContext } from 'options/context'
 import storage from 'services/storage'
-import { viewNotifications } from 'options/actions/notifications'
+import { setNotifications } from 'options/actions/notifications'
 
 const NavBar = () => {
   const { isLoading } = useContext(GalleryContext)
@@ -57,15 +57,21 @@ const NavBar = () => {
   }, [dropdownRef])
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = async (event) => {
       if (
         notificationRef.current &&
         !notificationRef.current.contains(event.target) &&
         !navbarRef.current.contains(event.target)
       ) {
+
         // clear notifications
-        storage.generic.set.pushNotification()
-        dispatch(viewNotifications())
+        let allNotifications = await storage.generic.get.pushNotification()
+        allNotifications = allNotifications.map((n) => {
+          n.new = false
+          return n
+        })
+        dispatch(setNotifications(allNotifications))
+        await storage.generic.set.pushNotification(allNotifications)
 
         closeNotificationsCenter()
       }
