@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { TYPE } from 'constants/accountConstants'
 import ArrowIcon from 'img/v2/arrow-icon.svg'
@@ -20,8 +20,24 @@ const SortAndFilter = ({
   handleSort,
   type = 'Gallery'
 }) => {
+  const [showFilters, setShowFilters] = useState(false)
   const [showFilterChains, setShowFilterChains] = useState(false)
   const [showSortBy, setShowSortBy] = useState(false)
+
+  useEffect(() => {
+    setShowSortBy(showFilters)
+    setShowFilterChains(showFilters)
+  }, [showFilters])
+
+  useEffect(() => {
+    if (showFilterChains && showSortBy) {
+      setShowFilters(true)
+    }
+
+    if (!showFilterChains && !showSortBy) {
+      setShowFilters(false)
+    }
+  }, [showFilterChains, showSortBy])
 
   return (
     <div>
@@ -34,9 +50,16 @@ const SortAndFilter = ({
         <MagnifierIcon className="absolute top-2 right-5 w-4.75 h-4.75 cursor-pointer" />
       </div>
       <div className="px-2 pb-9">
-        <div className="flex items-center justify-between h-12 pl-1.5 pr-3 font-semibold text-sm text-white">
+        <div
+          onClick={() => {
+            setShowFilters(!showFilters)
+          }}
+          className="flex items-center justify-between h-12 pl-1.5 pr-3 font-semibold text-sm text-white"
+        >
           Filters
-          <FilterIcon className="w-5.25 h-5.25 cursor-pointer" />
+          <FilterIcon
+            className={clsx(showFilters && 'transform rotate-90', 'w-5.25 h-5.25 cursor-pointer')}
+          />
         </div>
         <hr className="rounded bg-white" />
         <div
