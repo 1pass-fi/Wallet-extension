@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, useContext } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Prompt } from 'react-router-dom'
 import AceEditor from 'react-ace'
 import 'ace-builds/src-noconflict/mode-css'
 import 'ace-builds/src-noconflict/theme-monokai'
@@ -469,6 +469,7 @@ const KidPage = () => {
 
   return (
     <div className="kid-page-wrapper">
+      <Prompt when={!disableUpdateKID} message="Are you sure you want to leave this page?"></Prompt>
       <div ref={kidInput} className="title-section">
         <div className="title-section__header-group">
           <IDCardIcon />
@@ -799,6 +800,7 @@ const KidPage = () => {
           </div>
         )}
       </div>
+
       <ReactTooltip place='top' type="dark" effect="float"/>
     </div>
   )
