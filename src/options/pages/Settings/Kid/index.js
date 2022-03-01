@@ -22,6 +22,7 @@ import CloseIcon from 'img/ab-close-icon.svg'
 import GoBackIcon from 'img/goback-icon-26px.svg'
 import CloseIconBlue from 'img/close-icon-blue.svg'
 import MagnifierIcon from 'img/v2/magnifier-icon.svg'
+import ModalBackground from 'img/v2/modal-background.svg'
 
 import parseCss from 'utils/parseCss'
 import { GalleryContext } from 'options/galleryContext'
@@ -750,14 +751,15 @@ const KidPage = () => {
         )}
 
         {showConfirmModal && (
-          <div className="confirm-did-modal">
+          <div className="confirm-did-modal w-full h-full">
+            {<ModalBackground className="absolute top-16.75 left-0" />}
             <div className="title">
-              {!confirm ? 'Confirm your DID' : 'Decentralized ID Confirmed'}
+              {!confirmed ? 'Confirm your DID' : 'Decentralized ID Confirmed'}
               <CloseIconBlue onClick={() => setShowConfirmModal(false)} className="close-icon" />
             </div>
-            <div className="content">
+            <div className="content ml-56 mt-16">
               {!confirmed && (
-                <div>
+                <div className="flex flex-col pl-8">
                   <div className="content-title">
                     Confirm your personalized Decentralized ID profile.
                   </div>
@@ -782,21 +784,21 @@ const KidPage = () => {
                   </div>
                 </div>
               )}
-              {!confirmed && (
-                <button
-                  className="confirm-button"
-                  disabled={disableUpdateKID}
-                  onClick={handleSubmit}
-                >
-                  {hadData ? 'Update DID' : 'Create DID'}
-                </button>
-              )}
-              {confirmed && (
-                <button className="confirm-button" onClick={() => setShowConfirmModal(false)}>
-                  OK
-                </button>
-              )}
             </div>
+            {!confirmed && (
+              <button
+                className="confirm-button flex items-center justify-center w-101 mx-auto mt-2 text-base leading-6"
+                disabled={disableUpdateKID}
+                onClick={handleSubmit}
+              >
+                {hadData ? 'Update DID' : 'Create DID'}
+              </button>
+            )}
+            {confirmed && (
+              <button className="confirm-button flex items-center justify-center w-101 mx-auto mt-8 text-base leading-6" onClick={() => setShowConfirmModal(false)}>
+                OK
+              </button>
+            )}
           </div>
         )}
       </div>

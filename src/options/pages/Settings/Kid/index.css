@@ -507,16 +507,14 @@
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.01em;
-  text-align: center;
-  margin-top: 22px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 222px;
 }
 
 .confirm-did-modal .content .content-title {
   margin-bottom: 19px;
+  width: 300px;
 }
 
 .confirm-did-modal .content .cost .cost-title {
@@ -534,20 +532,18 @@
   font-size: 10px;
 }
 
-.confirm-did-modal .content .confirm-button {
+.confirm-did-modal .confirm-button {
   height: 41px;
   width: 175px;
   background-color: #373765;
   border-radius: 4px;
   cursor: pointer;
   color: white;
-  font-weight: 600;
   letter-spacing: 0.005em;
   text-align: center;
-  margin-top: auto;
 }
 
-.confirm-did-modal .content .confirm-button:disabled {
+.confirm-did-modal .confirm-button:disabled {
   cursor: not-allowed;
 }
 
