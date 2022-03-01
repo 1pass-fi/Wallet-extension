@@ -45,6 +45,7 @@ import DropDown from 'finnie-v2/components/DropDown'
 import Hint from 'finnie-v2/components/Hint'
 
 import countriesList from './countries.json'
+import clsx from 'clsx'
 
 const KidPage = () => {
   const { setIsLoading, setError, setNotification } = useContext(GalleryContext)
@@ -757,7 +758,7 @@ const KidPage = () => {
               {!confirmed ? 'Confirm your DID' : 'Decentralized ID Confirmed'}
               <CloseIconBlue onClick={() => setShowConfirmModal(false)} className="close-icon" />
             </div>
-            <div className="content ml-56 mt-16">
+            <div className={clsx('content ml-56', !hadData ? 'mt-10' : 'mt-16')}>
               {!confirmed && (
                 <div className="flex flex-col pl-8">
                   <div className="content-title">
