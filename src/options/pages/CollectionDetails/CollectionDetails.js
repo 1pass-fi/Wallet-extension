@@ -11,7 +11,6 @@ import EditIcon from 'img/v2/collection-detail/edit-icon.svg'
 
 import NftCard from './NftCard'
 
-import NavBar from 'finnie-v2/components/NavBar'
 import Sidebar from 'finnie-v2/components/Sidebar'
 
 import { GalleryContext } from 'options/galleryContext'
@@ -101,7 +100,6 @@ const CollectionDetails = () => {
   return (
     <>
       <div className="w-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
-        <NavBar />
         <div className="w-full 2xl:w-5/6 mx-auto">
           <div className="px-4.25 pt-6">
             <aside className="fixed z-51 w-61">
