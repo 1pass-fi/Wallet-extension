@@ -4,7 +4,7 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
 import './index.css'
-import Layout from './layout'
+import AppProvider from './provider'
 import Welcome from './pages/StartUp/Welcome'
 import UploadWallet from './pages/StartUp/Upload'
 import ImportWallet from './pages/StartUp/Import'
@@ -32,7 +32,7 @@ const FullView = () => {
   return (
     <Provider store={store}>
       <Router>
-        <Layout>
+        <AppProvider>
           <Switch>
             <Route exact path="/welcome">
               <Welcome />
@@ -99,7 +99,7 @@ const FullView = () => {
               </MainLayout>
             </HasArweave>
           </Switch>
-        </Layout>
+        </AppProvider>
       </Router>
     </Provider>
   )
