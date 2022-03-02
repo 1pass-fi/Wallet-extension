@@ -38,11 +38,9 @@ const MainLayout = ({ children }) => {
     return title
   }, [location.pathname])
 
-  const EXCLUDE_PATH = ['/success']
-
   return (
     <>
-      {!EXCLUDE_PATH.includes(location.pathname) && !location.pathname.includes('nfts') ? (
+      {!location.pathname.includes('nfts') ? (
         <div className="w-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
           <NavBar />
           <div className="w-full z-40 fixed top-16 h-18.75 bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800" />
