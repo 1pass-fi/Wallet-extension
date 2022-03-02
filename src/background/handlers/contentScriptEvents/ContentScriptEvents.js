@@ -16,6 +16,7 @@ import { ports } from 'background'
 
 export default class ContentScriptEvents extends EventEmitter {
   async sendMessage(endpoint, payload) {
+    console.log('payload ------', payload)
     const tabData = await this.getTabData()
 
     const { port } = payload

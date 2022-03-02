@@ -7,13 +7,12 @@ const finnieRpcConnectionScript = `() => {
     send(message) {
       return new Promise((resolve, reject) => {
         const id = Date.now()
-        message.data.id = id
-        window.postMessage({ type: message.type, data: message.data })
-        this.once(message.type + '_SUCCESS', (data) => {
-          if (data.id === id) resolve(data.responseData)
+        window.postMessage({ type: message.type, data: message.data, id })
+        this.once(message.type + '_SUCCESS', (response) => {
+          if (response.id === id) resolve(response.data)
         })
-        this.once(message.type + '_ERROR', (data) => {
-          if (data.id === id) resolve(data.responseData)
+        this.once(message.type + '_ERROR', (response) => {
+          if (response.id === id) resolve(response.data)
         })
       })
     }
