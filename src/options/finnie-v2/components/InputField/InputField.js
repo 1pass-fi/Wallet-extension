@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import ReactTooltip from 'react-tooltip'
 
@@ -15,8 +15,33 @@ const InputField = ({
   error = '',
   className,
   isDisable,
-  placeholder
+  placeholder,
+  maxHeight = 0
 }) => {
+  const [textAreaHeight, setTextAreaHeight] = useState(83)
+
+  const textAreaRef = useRef(null)
+
+  useEffect(() => {
+    if (maxHeight === 0 || type !== 'textarea') return
+    const textAreaField = textAreaRef.current
+    if (textAreaField) {
+      const scrollHeight = textAreaField.scrollHeight
+      if (scrollHeight < 83 || value.length < 83) {
+        setTextAreaHeight(83)
+        return
+      }
+
+      if (scrollHeight <= maxHeight) {
+        setTextAreaHeight(scrollHeight)
+      }
+
+      if (scrollHeight > maxHeight) {
+        setTextAreaHeight(maxHeight)
+      }
+    }
+  }, [value])
+
   return (
     <div className={clsx(className, 'flex flex-col w-full')}>
       <label htmlFor={label} className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
@@ -26,8 +51,10 @@ const InputField = ({
       {type === 'textarea' ? (
         <div data-tip={isDisable ? 'This NFT version does not support updating' : ''}>
           <textarea
+            ref={textAreaRef}
             name={name}
-            className="w-full resize-none bg-trueGray-100 bg-opacity-10 border-b border-white h-20.75 text-white px-1 text-area-component"
+            className="w-full resize-none bg-trueGray-100 bg-opacity-10 border-b border-white text-white px-1 text-area-component"
+            style={{ height: `${clsx(textAreaHeight)}px` }}
             placeholder={placeholder || label}
             id={label}
             value={value}
@@ -51,7 +78,7 @@ const InputField = ({
       )}
       <div className="text-warning mt-1 uppercase text-3xs">{description}</div>
       <span className="text-3xs text-bittersweet-200">{error}</span>
-      <ReactTooltip place='top' type="dark" effect="float"/>
+      <ReactTooltip place="top" type="dark" effect="float" />
     </div>
   )
 }

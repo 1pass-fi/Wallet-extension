@@ -303,6 +303,7 @@ const CollectionForm = ({ isUpdate }) => {
           name="description"
           error={errors.description}
           placeholder={placeholder.description}
+          maxHeight={200}
         />
         <div className="my-1 flex flex-col w-full">
           <label htmlFor="tags" className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
