@@ -15,6 +15,7 @@ import { filterCollection } from 'options/actions/collections'
 import AccountSettings from 'finnie-v2/components/AccountSettings'
 import SortAndFilter from './SortAndFilter'
 import NotificationsCenterLinks from './NotificationsCenterLinks'
+import './Sidebar.css'
 
 const navItems = [
   { icon: CreateIcon, path: '/create-nft' },
@@ -105,7 +106,7 @@ const Sidebar = () => {
               <UploadNftForm />
               {showCollectionTooltip && (
                 <div
-                  className="absolute -top-10 -right-28 flex items-center border border-white bg-indigo text-white text-center pr-2 rounded-sm"
+                  className="collection-tooltip-after absolute -top-11 -right-28 flex items-center border border-white bg-indigo text-white text-center pr-2 rounded-sm"
                   style={{ width: '201px', height: '47px' }}
                 >
                   <CloseIcon

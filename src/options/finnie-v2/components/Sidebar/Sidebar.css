@@ -1,0 +1,12 @@
+.collection-tooltip-after::after {
+  content: '';
+  height: 12px;
+  position: absolute;
+  right: 160px;
+  top: 31.2px;
+  transform: rotate(45deg) translate(50%, 50%);
+  width: 12px;
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
+  background: #171753;
+}
