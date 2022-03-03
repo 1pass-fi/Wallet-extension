@@ -27,6 +27,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
   const [passwordError, setPasswordError] = useState('')
   const [password, setPassword] = useState('')
   const [seedPhrase, setSeedPhrase] = useState('')
+  const [isCopied, setIsCopied] = useState(false)
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -163,13 +164,13 @@ const RecoveryPhraseModal = ({ account, close }) => {
                   style={{ width: '220px', height: '39px' }}
                   className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
                   variant="inversedIndigo"
-                  text="Copy Link"
+                  text={isCopied ? 'Copied!' : 'Copy Link'}
                   icon={CopyIcon}
-                  onClick={() => onGetRecoveryPhrase()}
+                  onClick={() => setIsCopied(true)}
                 />
               </CopyToClipboard>
               <CSVLink
-                filename={`${name}_seedphrase.csv`}
+                filename={`${account.accountName}_seedphrase.csv`}
                 data={seedPhrase}
                 style={{ textDecoration: 'none' }}
               >
@@ -179,7 +180,6 @@ const RecoveryPhraseModal = ({ account, close }) => {
                   variant="indigo"
                   text="Save as CSV File"
                   icon={ImportIcon}
-                  onClick={() => onGetRecoveryPhrase()}
                 />
               </CSVLink>
             </div>
