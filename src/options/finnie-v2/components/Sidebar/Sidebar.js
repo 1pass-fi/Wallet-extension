@@ -5,6 +5,7 @@ import { NavLink, Route, Switch } from 'react-router-dom'
 import CreateIcon from 'img/v2/create-icon.svg'
 import GalleryIcon from 'img/v2/gallery-icon.svg'
 import CollectionIcon from 'img/v2/collection-icon.svg'
+import CloseIcon from 'img/v2/x-icon-white.svg'
 
 import UploadNftForm from './UploadNftForm'
 import CollectionForm from './CollectionForm'
@@ -14,6 +15,7 @@ import { filterCollection } from 'options/actions/collections'
 import AccountSettings from 'finnie-v2/components/AccountSettings'
 import SortAndFilter from './SortAndFilter'
 import NotificationsCenterLinks from './NotificationsCenterLinks'
+import './Sidebar.css'
 
 const navItems = [
   { icon: CreateIcon, path: '/create-nft' },
@@ -31,6 +33,8 @@ const Sidebar = () => {
   const [searchStrCollection, setSearchStrCollection] = useState('')
   const [chainTypeCollection, setChainTypeCollection] = useState('')
   const [sortByCollection, setSortByCollection] = useState('')
+
+  const [showCollectionTooltip, setShowCollectionTooltip] = useState(true)
 
   useEffect(() => {
     dispatch(filterNft({ searchStr, chainType, sortBy }))
@@ -87,6 +91,9 @@ const Sidebar = () => {
             to={path}
             className="flex items-center justify-center w-13.75 h-11.25"
             activeClassName="rounded-t border-b border-white bg-trueGray-100 bg-opacity-20"
+            onClick={() => {
+              path === '/create-nft' && setShowCollectionTooltip(true)
+            }}
           >
             <Icon className="w-7.5 h-7" />
           </NavLink>
@@ -97,6 +104,19 @@ const Sidebar = () => {
           <Switch>
             <Route path="/create-nft">
               <UploadNftForm />
+              {showCollectionTooltip && (
+                <div
+                  className="collection-tooltip-after absolute -top-11 -right-28 flex items-center border border-white bg-indigo text-white text-center pr-2 rounded-sm"
+                  style={{ width: '201px', height: '47px' }}
+                >
+                  <CloseIcon
+                    className="absolute top-0.75 right-0.75 cursor-pointer"
+                    style={{ width: '14px', height: '15px' }}
+                    onClick={() => setShowCollectionTooltip(false)}
+                  />
+                  Upload multiple NFTs at the same time with collections.
+                </div>
+              )}
             </Route>
             <Route exact path="/collections">
               <SortAndFilter
@@ -112,7 +132,7 @@ const Sidebar = () => {
               <CollectionForm />
             </Route>
             <Route path="/collections/edit">
-              <CollectionForm isUpdate={true}/>
+              <CollectionForm isUpdate={true} />
             </Route>
             <Route exact path="/settings/*">
               <AccountSettings />
