@@ -53,6 +53,7 @@ const FullView = () => {
             <Route exact path="/success">
               <>
                 <NavBar />
+                <AddressBook />
                 <Success />
               </>
             </Route>
@@ -60,6 +61,7 @@ const FullView = () => {
             <Route exact path="/collections/:collectionId">
               <HasArweave content={'Please import an Arweave account'}>
                 <NavBar />
+                <AddressBook />
                 <CollectionDetails />
               </HasArweave>
             </Route>
