@@ -37,7 +37,8 @@ export default ({ setError, setModalStates, setNotification, setIsLoading, }) =>
             const balancesUpdated = defaultAccount.balance !== balance || defaultAccount.koiBalance !== koiBalance
             if (balancesUpdated) {
               await dispatch(loadAllAccounts())
-              sendMessage.success({ title: 'Balances updated', message: 'Your balances have been updated.' })
+              // sendMessage.success({ title: 'Balances updated', message: 'Your balances have been updated.' })
+              setNotification('Your balances have been updated.')
             }
 
             console.log('defaultAccount', defaultAccount)
