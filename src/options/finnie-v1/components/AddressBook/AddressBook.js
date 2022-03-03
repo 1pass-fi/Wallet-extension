@@ -1,5 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
+
+import { hideAddressBook } from 'options/actions/addressBook'
 
 import AddIcon from 'img/navbar/create-nft.svg'
 
@@ -13,17 +16,24 @@ import './index.css'
 import storage from 'services/storage'
 import { v4 as uuid } from 'uuid'
 
-const AddressBook = ({ onClose }) => {
+const AddressBook = () => {
+  const showAddressBook = useSelector((state) => state.addressBook.showing)
+
   const [addresses, setAddresses] = useState([])
   const [filterAddresses, setFilterAddresses] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const [showCreateForm, setShowCreateForm] = useState(false)
+  const [showCreateForm, setShowCreateForm] = useState(true)
   const [showEditForm, setShowEditForm] = useState(false)
   const [selectedContact, setSelectedContact] = useState({})
   const [showDeleteContactModal, setShowDeleteContactModal] = useState(false)
 
   const ref = useRef(null)
   const modalRef = useRef(null)
+
+  const dispatch = useDispatch()
+
+  const onClose = useCallback(() => dispatch(hideAddressBook()), [hideAddressBook])
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && modalRef.current.contains(event.target)) {
@@ -97,8 +107,8 @@ const AddressBook = ({ onClose }) => {
     setShowEditForm(false)
   }
 
-  return (
-    <>
+  return showAddressBook ? (
+    <div className="address-book-bg">
       <div className="address-book-container" ref={ref}>
         <div className="address-book-contacts">
           <div className="address-book__list__header">
@@ -166,8 +176,8 @@ const AddressBook = ({ onClose }) => {
           ref={modalRef}
         />
       )}
-    </>
-  )
+    </div>
+  ) : null
 }
 
 export default AddressBook

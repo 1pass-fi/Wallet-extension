@@ -17,6 +17,7 @@ import { GalleryContext } from 'options/galleryContext'
 import { DidContext } from 'options/context'
 import storage from 'services/storage'
 import { setNotifications } from 'options/actions/notifications'
+import { showAddressBook } from 'options/actions/addressBook'
 
 const NavBar = () => {
   const { isLoading } = useContext(GalleryContext)
@@ -63,7 +64,6 @@ const NavBar = () => {
         !notificationRef.current.contains(event.target) &&
         !navbarRef.current.contains(event.target)
       ) {
-
         // clear notifications
         let allNotifications = await storage.generic.get.pushNotification()
         allNotifications = allNotifications.map((n) => {
@@ -95,9 +95,11 @@ const NavBar = () => {
         <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/create-nft">Create</NavLink>
         </nav>
-        {/* <nav className="ml-9 tracking-finnieSpacing-wider">
-          <NavLink to="/#">Address book</NavLink>
-        </nav> */}
+        <nav className="ml-9 cursor-pointer tracking-finnieSpacing-wider">
+          <div to="/#" onClick={() => dispatch(showAddressBook())}>
+            Address book
+          </div>
+        </nav>
         <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/friend-referral">Refer a friend</NavLink>
         </nav>
