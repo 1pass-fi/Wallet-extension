@@ -81,14 +81,14 @@ const AddressBook = () => {
   const dispatch = useDispatch()
   const onClose = useCallback(() => dispatch(hideAddressBook()), [hideAddressBook])
 
-  const ref = useRef(null)
+  const addressBookRef = useRef(null)
   const modalRef = useRef(null)
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && modalRef.current.contains(event.target)) {
         return
-      } else if (ref.current && !ref.current.contains(event.target)) {
+      } else if (addressBookRef.current && !addressBookRef.current.contains(event.target)) {
         onClose()
       }
     }
@@ -97,7 +97,7 @@ const AddressBook = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [ref, modalRef])
+  }, [addressBookRef, modalRef])
 
   useEffect(() => {
     const getStorageAddresses = async () => {
@@ -161,7 +161,7 @@ const AddressBook = () => {
 
   return showAddressBook ? (
     <div className="address-book-bg">
-      <div className="address-book-container" ref={ref}>
+      <div className="address-book-container" ref={addressBookRef}>
         <div className="address-book-contacts">
           <div className="address-book__list__header">
             <SearchBar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
