@@ -11,6 +11,7 @@ import CreateContactForm from './CreateContactForm'
 import ContactDetail from './ContactDetail'
 import EditContactForm from './EditContactForm'
 import DeleteContactModal from './DeleteContactModal'
+import CreateNewContact from './CreateNewContact'
 import './index.css'
 
 import storage from 'services/storage'
@@ -22,8 +23,9 @@ const AddressBook = () => {
   const [addresses, setAddresses] = useState([])
   const [filterAddresses, setFilterAddresses] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const [showCreateForm, setShowCreateForm] = useState(true)
+  const [showCreateForm, setShowCreateForm] = useState(false)
   const [showEditForm, setShowEditForm] = useState(false)
+  const [showCreateNewContact, setShowCreateNewContact] = useState(true)
   const [selectedContact, setSelectedContact] = useState({})
   const [showDeleteContactModal, setShowDeleteContactModal] = useState(false)
 
@@ -116,7 +118,8 @@ const AddressBook = () => {
             <div
               className="address-book-add-icon"
               onClick={() => {
-                setShowCreateForm(true)
+                setShowCreateNewContact(true)
+                setShowCreateForm(false)
                 setShowEditForm(false)
                 setSelectedContact({})
               }}
@@ -134,6 +137,7 @@ const AddressBook = () => {
                   onClick={() => {
                     setSelectedContact(add)
                     setShowCreateForm(false)
+                    setShowCreateNewContact(false)
                   }}
                   className="address-book__list__body__name"
                   key={add.id}
@@ -144,15 +148,29 @@ const AddressBook = () => {
             )}
           </div>
         </div>
+        {showCreateNewContact && (
+          <CreateNewContact
+            goToCreateForm={() => {
+              setShowCreateNewContact(false)
+              setShowCreateForm(true)
+            }}
+          />
+        )}
         {showCreateForm && (
           <CreateContactForm
             storeNewAddress={storeNewAddress}
-            onClose={() => setShowCreateForm(false)}
+            onClose={() => {
+              setShowCreateForm(false)
+              setShowCreateNewContact(true)
+            }}
           />
         )}
         {!isEmpty(selectedContact) && !showEditForm && (
           <ContactDetail
-            onClose={() => setSelectedContact({})}
+            onClose={() => {
+              setSelectedContact({})
+              setShowCreateNewContact(true)
+            }}
             contact={selectedContact}
             setShowDeleteContactModal={setShowDeleteContactModal}
             showEditForm={() => {
@@ -162,7 +180,10 @@ const AddressBook = () => {
         )}
         {showEditForm && (
           <EditContactForm
-            onClose={() => setShowEditForm(false)}
+            onClose={() => {
+              setShowEditForm(false)
+              setShowCreateNewContact(false)
+            }}
             contact={selectedContact}
             updateAddress={updateAddress}
           />
