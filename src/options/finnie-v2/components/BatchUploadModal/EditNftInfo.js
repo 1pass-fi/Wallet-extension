@@ -110,7 +110,7 @@ const EditNftInfo = ({
               Tags
             </label>
             <input
-              className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1"
+              className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 input-field-component"
               name="tags"
               placeholder="Tags,"
               id="tags"
