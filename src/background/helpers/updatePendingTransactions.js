@@ -75,7 +75,7 @@ export default async () => {
     
           if (confirmed) {
             console.log('Transaction confirmed', transaction)
-            const message = { title: `Transaction confirmed`, message: `${transaction.activityName} has been confirmed`, txId: transaction.id, new: true }
+            const message = { title: `Transaction confirmed`, message: `${transaction.activityName} has been confirmed`, txId: transaction.id, new: true, date: transaction.timestamp || Date.now() }
             showNotification(message)
 
             const notifications = await storage.generic.get.pushNotification()
