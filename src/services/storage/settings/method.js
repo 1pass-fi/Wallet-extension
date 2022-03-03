@@ -5,6 +5,8 @@ import { isEmpty } from 'lodash'
 import { backgroundAccount, popupAccount } from 'services/account'
 import storage from 'services/storage'
 
+import { isEthereumAddress } from 'utils'
+
 
 export class SettingMethod {
   #chrome
@@ -12,7 +14,7 @@ export class SettingMethod {
     this.#chrome = new ChromeStorage()
   }
 
-  async checkSitePermission(site) {
+  async checkSitePermission(site, isEthereumRequest) {
     try {
       /* 
         check existed address for a site on siteAddressDictionary

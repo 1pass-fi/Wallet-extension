@@ -12,12 +12,13 @@ import storage from 'services/storage'
 
 import cache from 'background/cache'
 
-import { ports } from 'background'
 
 export default class ContentScriptEvents extends EventEmitter {
   async sendMessage(endpoint, payload) {
-    console.log('payload ------', payload)
-    const tabData = await this.getTabData()
+    const isEthereumRequest = [
+      'ETHEREUM_RPC_REQUEST'
+    ].includes(endpoint)
+    const tabData = await this.getTabData(isEthereumRequest)
 
     const { port } = payload
     const promise = new Promise((resolve) => {
@@ -60,13 +61,13 @@ export default class ContentScriptEvents extends EventEmitter {
     })
   }
 
-  async getTabData () {
+  async getTabData (isEthereumRequest) {
     const tab = await getSelectedTab()
     const url = tab.url
     const origin = (new URL(url)).origin
     const favicon = tab.favIconUrl
 
-    const hadPermission = await storage.setting.method.checkSitePermission(origin)
+    const hadPermission = await storage.setting.method.checkSitePermission(origin, isEthereumRequest)
     const hasPendingRequest = !isEmpty(await storage.generic.get.pendingRequest())
 
     const siteAddressDictionary = await storage.setting.get.siteAddressDictionary()
