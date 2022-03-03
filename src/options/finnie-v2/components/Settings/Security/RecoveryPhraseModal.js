@@ -102,7 +102,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
               <input
                 style={{ width: '382px', height: '28px' }}
                 type={showPassword ? 'text' : 'password'}
-                className="text-base rounded-sm px-2 mt-1.5 bg-trueGray-400 bg-opacity-50 border-b border-indigo border-opacity-80"
+                className="text-base rounded-sm px-2 mt-1.5 bg-trueGray-400 bg-opacity-50 border-b border-indigo border-opacity-80 focus:text-success"
                 onChange={(e) => setPassword(e.target.value)}
               ></input>
               {!showPassword ? (
@@ -134,7 +134,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
 
             <Button
               style={{ width: '239px', height: '39px' }}
-              className="h-10 mt-5 font-semibold text-base rounded w-43.75 mx-auto mb-8"
+              className="h-10 mt-5 font-normal text-base rounded w-43.75 mx-auto mb-8"
               variant="indigo"
               text="Get My Recovery Phrase"
               onClick={() => onGetRecoveryPhrase()}
