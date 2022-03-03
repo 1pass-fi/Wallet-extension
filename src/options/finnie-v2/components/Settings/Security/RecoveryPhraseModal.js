@@ -102,7 +102,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
               <input
                 style={{ width: '382px', height: '28px' }}
                 type={showPassword ? 'text' : 'password'}
-                className="text-base rounded-sm px-2 mt-1.5 bg-trueGray-400 bg-opacity-50 border-b border-indigo border-opacity-80 focus:text-success"
+                className="text-base rounded-sm pl-2 pr-11 mt-1.5 bg-trueGray-400 bg-opacity-50 border-b border-indigo border-opacity-80 focus:text-success-700"
                 onChange={(e) => setPassword(e.target.value)}
               ></input>
               {!showPassword ? (
