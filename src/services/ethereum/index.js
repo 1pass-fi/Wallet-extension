@@ -16,7 +16,11 @@ export class Ethereum {
     this.address = null
   }
 
-  getCurrentNetWork () {
+  web3() {
+    return this.#web3
+  }
+
+  getCurrentNetWork() {
     return this.#provider
   }
 
@@ -61,7 +65,7 @@ export class Ethereum {
   /*
     PRIVATE FUNCTIONS
   */
- 
+
   #getWalletFromSeedPhrase(seedPhrase) {
     const seed = mnemonicToSeedSync(seedPhrase)
     const hdwallet = hdkey.fromMasterSeed(seed)

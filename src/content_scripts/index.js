@@ -45,9 +45,11 @@ async function contentScript () {
 
   const arweaveWalletLoaded = new CustomEvent('arweaveWalletLoaded')
   const finnieWalletLoaded = new CustomEvent('finnieWalletLoaded')
+  const ethWalletLoaded = new CustomEvent('DOMContentLoaded')
 
   window.dispatchEvent(arweaveWalletLoaded)
   window.dispatchEvent(finnieWalletLoaded)
+  window.dispatchEvent(ethWalletLoaded)
 }
 
 contentScript()

@@ -473,4 +473,8 @@ export class EthereumMethod {
       return transaction
     }
   }
+
+  async getNetworkId() {
+    return this.eth.web3().eth.net.getId()
+  }
 }
