@@ -29,10 +29,6 @@
   width: 238px;
 }
 
-.address-book-container input {
-  border: 0px;
-}
-
 .address-book-container input:focus {
   outline: none;
 }
@@ -57,7 +53,7 @@
 
 .address-book-container .address-book__list__body {
   margin-top: 40px;
-
+  background-color: #55557f;
   height: 383px;
 
   display: flex;
@@ -84,5 +80,5 @@
 
 .address-book-container .address-book__list__body__name:hover {
   cursor: pointer;
-  background-color: #0c1162;
+  background-color: #454575;
 }
