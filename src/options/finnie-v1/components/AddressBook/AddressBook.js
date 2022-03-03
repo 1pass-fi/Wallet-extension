@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
+import { useMachine } from '@xstate/react'
+import { createMachine } from 'xstate'
 
 import { hideAddressBook } from 'options/actions/addressBook'
 
@@ -17,24 +19,70 @@ import './index.css'
 import storage from 'services/storage'
 import { v4 as uuid } from 'uuid'
 
+const screenMachine = createMachine({
+  id: 'screen',
+  initial: 'createContact',
+  states: {
+    createContact: {
+      on: {
+        CREATE_MANUALLY: 'createManually',
+        IMPORT_FROM_DID: 'importFromDID',
+        SELECT_CONTACT: 'contactDetail',
+        CREATE_CONTACT: 'createContact'
+      }
+    },
+    createManually: {
+      on: {
+        SAVE: 'contactDetail',
+        GO_BACK: 'createContact',
+        SELECT_CONTACT: 'contactDetail',
+        CREATE_CONTACT: 'createContact'
+      }
+    },
+    importFromDID: {
+      on: {
+        SAVE: 'contactDetail',
+        GO_BACK: 'createContact',
+        SELECT_CONTACT: 'contactDetail',
+        CREATE_CONTACT: 'createContact'
+      }
+    },
+    contactDetail: {
+      on: {
+        EDIT: 'editContact',
+        GO_BACK: 'createContact',
+        SELECT_CONTACT: 'contactDetail',
+        CREATE_CONTACT: 'createContact'
+      }
+    },
+    editContact: {
+      on: {
+        GO_BACK: 'contactDetail',
+        SAVE: 'contactDetail',
+        CANCEL: 'contactDetail',
+        SELECT_CONTACT: 'contactDetail',
+        CREATE_CONTACT: 'createContact'
+      }
+    }
+  }
+})
+
 const AddressBook = () => {
+  const [state, send] = useMachine(screenMachine)
+
   const showAddressBook = useSelector((state) => state.addressBook.showing)
 
   const [addresses, setAddresses] = useState([])
   const [filterAddresses, setFilterAddresses] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const [showCreateForm, setShowCreateForm] = useState(false)
-  const [showEditForm, setShowEditForm] = useState(false)
-  const [showCreateNewContact, setShowCreateNewContact] = useState(true)
   const [selectedContact, setSelectedContact] = useState({})
   const [showDeleteContactModal, setShowDeleteContactModal] = useState(false)
 
+  const dispatch = useDispatch()
+  const onClose = useCallback(() => dispatch(hideAddressBook()), [hideAddressBook])
+
   const ref = useRef(null)
   const modalRef = useRef(null)
-
-  const dispatch = useDispatch()
-
-  const onClose = useCallback(() => dispatch(hideAddressBook()), [hideAddressBook])
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -77,8 +125,8 @@ const AddressBook = () => {
     setAddresses(currentAB)
 
     // after save contact successful, show the contact detail view
-    setShowCreateForm(false)
     setSelectedContact(newAddress)
+    send('SAVE')
   }
 
   const removeContact = async (toRemoveId) => {
@@ -88,6 +136,8 @@ const AddressBook = () => {
 
     await storage.generic.set.addressBook(currentAB)
     setAddresses(currentAB)
+    send('GO_BACK')
+
     setSelectedContact({})
   }
 
@@ -106,7 +156,7 @@ const AddressBook = () => {
     setAddresses(currentAB)
 
     setSelectedContact(address)
-    setShowEditForm(false)
+    send('SAVE')
   }
 
   return showAddressBook ? (
@@ -115,15 +165,7 @@ const AddressBook = () => {
         <div className="address-book-contacts">
           <div className="address-book__list__header">
             <SearchBar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
-            <div
-              className="address-book-add-icon"
-              onClick={() => {
-                setShowCreateNewContact(true)
-                setShowCreateForm(false)
-                setShowEditForm(false)
-                setSelectedContact({})
-              }}
-            >
+            <div className="address-book-add-icon" onClick={() => send('CREATE_CONTACT')}>
               <AddIcon />
             </div>
           </div>
@@ -136,8 +178,7 @@ const AddressBook = () => {
                 <div
                   onClick={() => {
                     setSelectedContact(add)
-                    setShowCreateForm(false)
-                    setShowCreateNewContact(false)
+                    send('SELECT_CONTACT')
                   }}
                   className="address-book__list__body__name"
                   key={add.id}
@@ -148,42 +189,23 @@ const AddressBook = () => {
             )}
           </div>
         </div>
-        {showCreateNewContact && (
-          <CreateNewContact
-            goToCreateForm={() => {
-              setShowCreateNewContact(false)
-              setShowCreateForm(true)
-            }}
-          />
+        {state.value === 'createContact' && (
+          <CreateNewContact goToCreateForm={() => send('CREATE_MANUALLY')} />
         )}
-        {showCreateForm && (
-          <CreateContactForm
-            storeNewAddress={storeNewAddress}
-            onClose={() => {
-              setShowCreateForm(false)
-              setShowCreateNewContact(true)
-            }}
-          />
+        {state.value === 'createManually' && (
+          <CreateContactForm storeNewAddress={storeNewAddress} onClose={() => send('GO_BACK')} />
         )}
-        {!isEmpty(selectedContact) && !showEditForm && (
+        {state.value === 'contactDetail' && (
           <ContactDetail
-            onClose={() => {
-              setSelectedContact({})
-              setShowCreateNewContact(true)
-            }}
+            onClose={() => send('GO_BACK')}
             contact={selectedContact}
             setShowDeleteContactModal={setShowDeleteContactModal}
-            showEditForm={() => {
-              setShowEditForm(true)
-            }}
+            showEditForm={() => send('EDIT')}
           />
         )}
-        {showEditForm && (
+        {state.value === 'editContact' && (
           <EditContactForm
-            onClose={() => {
-              setShowEditForm(false)
-              setShowCreateNewContact(false)
-            }}
+            onClose={() => send('GO_BACK')}
             contact={selectedContact}
             updateAddress={updateAddress}
           />
