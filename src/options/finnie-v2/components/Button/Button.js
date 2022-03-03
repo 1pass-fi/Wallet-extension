@@ -2,13 +2,13 @@ import React from 'react'
 import clsx from 'clsx'
 
 const variants = {
-  light: 'bg-trueGray-100 text-indigo',
-  indigo: 'bg-blue-800 text-white',
+  light: 'bg-trueGray-100 text-indigo font-semibold',
+  indigo: 'bg-blue-800 text-white font-normal',
   primary: 'bg-success text-indigo',
   warning: 'bg-warning-200 text-indigo shadow',
   warning300: 'bg-warning-300 text-indigo shadow',
   inversed: 'border border-solid border-white text-white',
-  inversedIndigo: 'border-2 border-solid border-blue-800 text-indigo',
+  inversedIndigo: 'border-2 border-solid border-blue-800 text-indigo font-semibold',
   lightBlue: 'bg-lightBlue text-indigo'
 }
 

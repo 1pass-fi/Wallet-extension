@@ -134,7 +134,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
 
             <Button
               style={{ width: '239px', height: '39px' }}
-              className="h-10 mt-5 font-normal text-base rounded w-43.75 mx-auto mb-8"
+              className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-8"
               variant="indigo"
               text="Get My Recovery Phrase"
               onClick={() => onGetRecoveryPhrase()}

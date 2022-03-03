@@ -76,7 +76,7 @@ const ShareNFTModal = ({ txId, close }) => {
         <CopyToClipboard text={showEmbedLink ? embedUrl : shareUrl}>
           <Button
             style={{ width: '200px', height: '40px' }}
-            className="text-base font-semibold"
+            className="text-base"
             text={isCopied ? 'Copied' : 'Copy Link'}
             variant="indigo"
             icon={CopyIcon}

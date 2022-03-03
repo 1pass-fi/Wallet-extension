@@ -58,7 +58,7 @@ const ShareCodeModal = ({ code, close }) => {
         <CopyToClipboard text={code}>
           <Button
             style={{ width: '200px', height: '40px' }}
-            className="text-base font-semibold"
+            className="text-base"
             text={isCopied ? 'Copied' : 'Copy Code'}
             variant="indigo"
             icon={CopyIcon}

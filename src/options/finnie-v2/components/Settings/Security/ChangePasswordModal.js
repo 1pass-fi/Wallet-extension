@@ -171,7 +171,7 @@ const ChangePasswordModal = ({ close }) => {
             )}
 
             <Button
-              className="h-10 mt-5 font-semibold text-base rounded w-43.75 mx-auto"
+              className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
               variant="indigo"
               text="Save Changes"
               onClick={() => handleUpdatePassword()}
@@ -193,7 +193,7 @@ const ChangePasswordModal = ({ close }) => {
             </div>
 
             <Button
-              className="h-10 mt-5 font-semibold text-base rounded w-43.75 mx-auto"
+              className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
               variant="indigo"
               text="Got It"
               onClick={() => close()}

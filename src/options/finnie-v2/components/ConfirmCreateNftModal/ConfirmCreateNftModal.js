@@ -221,7 +221,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
             </div>
             {!showReferralField && <Button
               onClick={handleUploadNFT}
-              className="h-9 mt-8 font-semibold text-sm rounded w-43.75 mb-4"
+              className="h-9 mt-8 text-sm rounded w-43.75 mb-4"
               variant="indigo"
               text="Create NFT"
               disabled={disableCreateNFT}
@@ -257,13 +257,13 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
             <div className='flex w-101 justify-between m-auto'>
               {/* <Button
                 onClick={() => {close(); handleShareNFT(nftId)}}
-                className="h-10 mt-16 font-semibold text-base rounded w-43.75 mx-auto"
+                className="h-10 mt-16 text-base rounded w-43.75 mx-auto"
                 variant="indigo"
                 text="Transfer"
               /> */}
               {/* <Button
                 onClick={() => setStep(3)}
-                className="h-10 mt-16 font-semibold text-base rounded w-43.75 mx-auto"
+                className="h-10 mt-16 text-base rounded w-43.75 mx-auto"
                 variant="inversedIndigo"
                 text="Share"
               />               */}
@@ -283,7 +283,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
               {!showShareLink && <textarea value={embedLink} disabled className='w-94.5 h-20 m-auto mt-2 rounded-1 text-sm leading-6 text-blue-800 border-1.5 border-solid border-blue-800 px-1' />}
               <CopyToClipboard text={showShareLink ? shareLink : embedLink}>
                 <Button
-                  className="h-10 mt-5 font-semibold text-base rounded w-43.75 mx-auto"
+                  className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
                   variant="indigo"
                   text="Copy link"
                 />

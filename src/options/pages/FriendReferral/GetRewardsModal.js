@@ -48,7 +48,7 @@ const GetRewardsModal = ({ redeemRewards, rewards, close }) => {
         </div> */}
         <Button
           style={{ width: '228px', height: '46px' }}
-          className="my-auto text-base font-semibold"
+          className="my-auto text-base"
           text="Redeem Rewards"
           variant="indigo"
           icon={ShareIcon}
