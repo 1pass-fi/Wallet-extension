@@ -17,6 +17,8 @@
 
 .address-book-container {
   background-color: #55557f;
+
+  border-radius: 4px;
   height: 486px;
 
   position: relative;
