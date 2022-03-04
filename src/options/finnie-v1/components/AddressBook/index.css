@@ -78,6 +78,10 @@
   text-overflow: ellipsis;
 }
 
+.address-book-container .address-book__list__body__name.selected {
+  background-color: #454575;
+}
+
 .address-book-container .address-book__list__body__name:hover {
   cursor: pointer;
   background-color: #454575;

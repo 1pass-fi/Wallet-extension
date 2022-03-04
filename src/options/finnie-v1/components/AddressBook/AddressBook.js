@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
@@ -24,6 +25,7 @@ const screenMachine = createMachine({
   initial: 'createContact',
   states: {
     createContact: {
+      entry: ['clearSelectedContact'],
       on: {
         CREATE_MANUALLY: 'createManually',
         IMPORT_FROM_DID: 'importFromDID',
@@ -68,8 +70,6 @@ const screenMachine = createMachine({
 })
 
 const AddressBook = () => {
-  const [state, send] = useMachine(screenMachine)
-
   const showAddressBook = useSelector((state) => state.addressBook.showing)
 
   const [addresses, setAddresses] = useState([])
@@ -77,6 +77,12 @@ const AddressBook = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedContact, setSelectedContact] = useState({})
   const [showDeleteContactModal, setShowDeleteContactModal] = useState(false)
+
+  const [state, send] = useMachine(screenMachine, {
+    actions: {
+      clearSelectedContact: () => setSelectedContact({})
+    }
+  })
 
   const dispatch = useDispatch()
   const onClose = useCallback(() => dispatch(hideAddressBook()), [hideAddressBook])
@@ -180,7 +186,10 @@ const AddressBook = () => {
                     setSelectedContact(add)
                     send('SELECT_CONTACT')
                   }}
-                  className="address-book__list__body__name"
+                  className={clsx(
+                    'address-book__list__body__name',
+                    selectedContact.id === add.id && 'selected'
+                  )}
                   key={add.id}
                 >
                   {add.name}
