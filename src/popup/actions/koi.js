@@ -8,6 +8,7 @@ import { setCreateWallet } from './createWallet'
 import { setAssets } from './assets'
 import { setActivities } from './activities'
 import { setAccounts } from './accounts'
+import { setDefaultAccount } from './defaultAccount'
 
 // constants
 import { MESSAGES, FILENAME } from 'constants/koiConstants'
@@ -62,6 +63,17 @@ export const removeWallet = (address) => async (dispatch, getState) => {
     await popupAccount.loadImported() // update accounts list for popupAccount
     const accountStates = await popupAccount.getAllMetadata()
     console.log('accountStates: ', accountStates)
+
+    /* 
+      Have to handle removing this address from activatedAccount if this
+      address is the activated account.
+    */
+    const { defaultAccount } = getState()
+    if (accountStates.length) {
+      if (address === defaultAccount.address) {
+        dispatch(setDefaultAccount(accountStates[0]))
+      }
+    }
 
     const { activities } = getState()
     const newActivities = activities.filter(activity => activity.address !== address)
