@@ -191,6 +191,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
         </div>
       </div>
       <div className="ab-contact-form__footer">
+        <Button startIcon={CloseIcon} onClick={onClose} text="Cancel" />
         <Button startIcon={TickIcon} onClick={handleSubmit} text="Save" variant="normal" />
       </div>
 

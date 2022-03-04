@@ -172,11 +172,14 @@
 
   background-color: #55557f;
 
-  padding-left: 21px;
+  padding-left: 32px;
+  padding-right: 14px;
 
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+
+  box-shadow: inset 2px 0em 2px rgba(0, 0, 0, 0.2);
 }
 
 /* 
