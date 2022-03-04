@@ -8,7 +8,7 @@ export default ({ onClose }) => {
     <Modal onClose={onClose}>
       <div className="welcome-message">
         <div className="title">
-          Finnie Wallet <span>v0.3.2 Notes</span>
+          Finnie Wallet <span>v0.3.3 Notes</span>
         </div>
         <div className="content">
           <div className="paragraph">
