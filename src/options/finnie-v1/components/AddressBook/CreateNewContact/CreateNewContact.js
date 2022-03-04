@@ -2,7 +2,7 @@ import React from 'react'
 
 import Avatar from 'img/ab-avatar.png'
 
-const CreateNewContact = ({ goToCreateForm }) => {
+const CreateNewContact = ({ goToCreateForm, goToImportFromDID }) => {
   return (
     <div
       style={{
@@ -22,6 +22,13 @@ const CreateNewContact = ({ goToCreateForm }) => {
         style={{ width: '238px', height: '38px' }}
       >
         Enter Info Manually
+      </button>
+      <button
+        onClick={goToImportFromDID}
+        className="rounded-sm shadow-md text-center text-indigo bg-success text-sm mt-6.25"
+        style={{ width: '238px', height: '38px' }}
+      >
+        Import from a DID link
       </button>
     </div>
   )

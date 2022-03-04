@@ -15,6 +15,7 @@ import ContactDetail from './ContactDetail'
 import EditContactForm from './EditContactForm'
 import DeleteContactModal from './DeleteContactModal'
 import CreateNewContact from './CreateNewContact'
+import ImportFromDID from './ImportFromDID'
 import './index.css'
 
 import storage from 'services/storage'
@@ -200,8 +201,12 @@ const AddressBook = () => {
           </div>
         </div>
         {state.value === 'createContact' && (
-          <CreateNewContact goToCreateForm={() => send('CREATE_MANUALLY')} />
+          <CreateNewContact
+            goToCreateForm={() => send('CREATE_MANUALLY')}
+            goToImportFromDID={() => send('IMPORT_FROM_DID')}
+          />
         )}
+        {state.value === 'importFromDID' && <ImportFromDID onClose={() => send('GO_BACK')} />}
         {state.value === 'createManually' && (
           <CreateContactForm storeNewAddress={storeNewAddress} onClose={() => send('GO_BACK')} />
         )}
