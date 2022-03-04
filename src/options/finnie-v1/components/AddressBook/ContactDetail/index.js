@@ -33,7 +33,7 @@ const ContactDetail = ({ contact, onClose, showEditForm, setShowDeleteContactMod
 
       <div className="ab-contact-detail__notes">{contact.notes}</div>
 
-      {contact.addresses.map((address, idx) => (
+      {contact.addresses?.map((address, idx) => (
         <div className="ab-contact-detail__address-group" key={idx}>
           <div className="ab-contact-detail__address-name">{address.name}</div>
           <div className="ab-contact-detail__address-info">

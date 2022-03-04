@@ -124,14 +124,15 @@ const AddressBook = () => {
   const storeNewAddress = async (newAddress) => {
     // get Address book value from storage instead of the state for data consistency
     const currentAB = (await storage.generic.get.addressBook()) || []
-    currentAB.push({ id: uuid(), ...newAddress })
+
+    const toSaveAddress = { id: uuid(), ...newAddress }
+    currentAB.push(toSaveAddress)
 
     await storage.generic.set.addressBook(currentAB)
 
     setAddresses(currentAB)
 
-    // after save contact successful, show the contact detail view
-    setSelectedContact(newAddress)
+    setSelectedContact(toSaveAddress)
     send('SAVE')
   }
 
