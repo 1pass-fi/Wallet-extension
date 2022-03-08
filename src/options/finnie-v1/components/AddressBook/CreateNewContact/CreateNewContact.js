@@ -2,14 +2,14 @@ import React from 'react'
 
 import Avatar from 'img/ab-avatar.png'
 
-const CreateNewContact = ({ goToCreateForm }) => {
+const CreateNewContact = ({ goToCreateForm, goToImportFromDID }) => {
   return (
     <div
       style={{
         width: '411px',
         height: '486px',
         backgroundColor: '#3E3E71',
-        'box-shadow': 'inset 8px 0 10px -6px rgba(0, 0, 0, 0.16)',
+        boxShadow: 'inset 8px 0 10px -6px rgba(0, 0, 0, 0.16)',
         borderRadius: '0px 4px 4px 0px'
       }}
       className="flex flex-col items-center justify-center"
@@ -22,6 +22,13 @@ const CreateNewContact = ({ goToCreateForm }) => {
         style={{ width: '238px', height: '38px' }}
       >
         Enter Info Manually
+      </button>
+      <button
+        onClick={goToImportFromDID}
+        className="rounded-sm shadow-md text-center text-indigo bg-success text-sm mt-6.25"
+        style={{ width: '238px', height: '38px' }}
+      >
+        Import from a DID link
       </button>
     </div>
   )

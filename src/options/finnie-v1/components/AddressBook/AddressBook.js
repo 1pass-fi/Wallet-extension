@@ -15,6 +15,10 @@ import ContactDetail from './ContactDetail'
 import EditContactForm from './EditContactForm'
 import DeleteContactModal from './DeleteContactModal'
 import CreateNewContact from './CreateNewContact'
+import ImportFromDID from './ImportFromDID'
+import { TYPE } from 'constants/accountConstants'
+import { ERROR_MESSAGE } from 'constants/koiConstants'
+
 import './index.css'
 
 import storage from 'services/storage'
@@ -136,6 +140,38 @@ const AddressBook = () => {
     send('SAVE')
   }
 
+  const validateDIDNotExist = async (didLink) => {
+    // get Address book value from storage instead of the state for data consistency
+    const currentAB = (await storage.generic.get.addressBook()) || []
+
+    return currentAB.every((address) => {
+      return address.didValue !== didLink
+    })
+  }
+
+  const storeDIDAddress = async (didContact) => {
+    // get Address book value from storage instead of the state for data consistency
+    const currentAB = (await storage.generic.get.addressBook()) || []
+
+    const newAddress = {
+      name: didContact.state.name,
+      notes: didContact.state.description,
+      didName: 'DID link',
+      didValue: didContact.didValue,
+      addresses: [
+        { name: 'Address #1', type: TYPE.ARWEAVE, value: didContact.state.addresses.arweave }
+      ]
+    }
+
+    const toSaveAddress = { id: uuid(), ...newAddress }
+    currentAB.push(toSaveAddress)
+
+    await storage.generic.set.addressBook(currentAB)
+    setAddresses(currentAB)
+    setSelectedContact(toSaveAddress)
+    send('SAVE')
+  }
+
   const removeContact = async (toRemoveId) => {
     // get Address book value from storage instead of the state for data consistency
     let currentAB = (await storage.generic.get.addressBook()) || []
@@ -200,7 +236,17 @@ const AddressBook = () => {
           </div>
         </div>
         {state.value === 'createContact' && (
-          <CreateNewContact goToCreateForm={() => send('CREATE_MANUALLY')} />
+          <CreateNewContact
+            goToCreateForm={() => send('CREATE_MANUALLY')}
+            goToImportFromDID={() => send('IMPORT_FROM_DID')}
+          />
+        )}
+        {state.value === 'importFromDID' && (
+          <ImportFromDID
+            onClose={() => send('GO_BACK')}
+            validateDIDNotExist={validateDIDNotExist}
+            storeDIDAddress={storeDIDAddress}
+          />
         )}
         {state.value === 'createManually' && (
           <CreateContactForm storeNewAddress={storeNewAddress} onClose={() => send('GO_BACK')} />
