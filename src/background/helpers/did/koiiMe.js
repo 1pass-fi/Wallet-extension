@@ -1,4 +1,5 @@
 import { smartweave } from 'smartweave'
+import isEmpty from 'lodash/isEmpty'
 
 import arweave from 'services/arweave'
 import { DID_CONTRACT_ID, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
@@ -100,6 +101,16 @@ export const checkAvailable = async (kID) => {
   } catch (err) {
     console.error(err.message)
     return false
+  }
+}
+
+export const getDIDs = async () => {
+  try {
+    const state = await smartweave.readContract(arweave, DID_CONTRACT_ID.KID_CONTRACT)
+    return isEmpty(state.dids) ? {} : state.dids
+  } catch (err) {
+    console.error(err.message)
+    return {}
   }
 }
 

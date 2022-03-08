@@ -9,7 +9,7 @@ const CreateNewContact = ({ goToCreateForm, goToImportFromDID }) => {
         width: '411px',
         height: '486px',
         backgroundColor: '#3E3E71',
-        'box-shadow': 'inset 8px 0 10px -6px rgba(0, 0, 0, 0.16)',
+        boxShadow: 'inset 8px 0 10px -6px rgba(0, 0, 0, 0.16)',
         borderRadius: '0px 4px 4px 0px'
       }}
       className="flex flex-col items-center justify-center"
