@@ -29,6 +29,11 @@
 }
 
 .ab-contact-detail .ab-contact-detail__avatar {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 100%;
+
   margin-bottom: 15px;
 }
 

@@ -43,7 +43,7 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
       const allDIDs = await getDIDs()
       const didInfo = get(allDIDs, did)
       const ownerAddress = get(didInfo, 'owner')
-      if (isEmpty(didInfo)) {
+      if (isEmpty(ownerAddress)) {
         setInvalidDIDLink(true)
         setClicked(false)
         return
@@ -54,6 +54,7 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
       setClicked(false)
       storeDIDAddress(result)
     } catch (error) {
+      console.log(error.message)
       setInvalidDIDLink(true)
       setClicked(false)
     }

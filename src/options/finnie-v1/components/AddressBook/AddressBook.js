@@ -158,6 +158,7 @@ const AddressBook = () => {
       notes: didContact.state.description,
       didName: 'DID link',
       didValue: didContact.didValue,
+      avatarUrl: `https://arweave.net/${didContact.state.picture}`,
       addresses: [
         { name: 'Address #1', type: TYPE.ARWEAVE, value: didContact.state.addresses.arweave }
       ]

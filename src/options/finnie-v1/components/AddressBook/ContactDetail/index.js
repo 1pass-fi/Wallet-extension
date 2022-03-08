@@ -1,6 +1,7 @@
 import React from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import ReactTooltip from 'react-tooltip'
+import isEmpty from 'lodash/isEmpty'
 
 import EditIcon from 'img/edit-icon-collection.svg'
 import CloseIcon from 'img/ab-close-icon.svg'
@@ -25,7 +26,11 @@ const ContactDetail = ({ contact, onClose, showEditForm, setShowDeleteContactMod
         </div>
       </div>
 
-      <img className="ab-contact-detail__avatar" src={Avatar} alt="avatar" />
+      <img
+        className="ab-contact-detail__avatar"
+        src={isEmpty(contact.avatarUrl) ? Avatar : contact.avatarUrl}
+        alt="avatar"
+      />
 
       <div className="ab-contact-detail__name">{contact.name}</div>
 
