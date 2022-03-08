@@ -74,6 +74,7 @@ const screenMachine = createMachine({
 })
 
 const AddressBook = () => {
+  const kidLinkPrefix = 'https://koii.id/'
   const showAddressBook = useSelector((state) => state.addressBook.showing)
 
   const [addresses, setAddresses] = useState([])
@@ -140,7 +141,8 @@ const AddressBook = () => {
     send('SAVE')
   }
 
-  const validateDIDNotExist = async (didLink) => {
+  const validateDIDNotExist = async (did) => {
+    const didLink = kidLinkPrefix + did
     // get Address book value from storage instead of the state for data consistency
     const currentAB = (await storage.generic.get.addressBook()) || []
 

@@ -18,7 +18,10 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
   const kidLinkPrefix = 'https://koii.id/'
 
   const getDID = (link) => {
-    if (link.startsWith(kidLinkPrefix) && link.length !== 16) return link.substring(16, link.length)
+    if (link.startsWith(kidLinkPrefix) && link.length !== 16) {
+      let did = link.substring(16, link.length)
+      return !did.endsWith('/') ? did : did.substring(0, did.length - 1)
+    }
     return false
   }
 
@@ -33,7 +36,7 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
         return
       }
 
-      const didNotExist = await validateDIDNotExist(didLink)
+      const didNotExist = await validateDIDNotExist(did)
       if (!didNotExist) {
         setDuplicateDID(true)
         setClicked(false)
@@ -49,8 +52,8 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
         return
       }
 
-      let result = await backgroundRequest.gallery.getDID({ address: ownerAddress })
-      result.didValue = didLink
+      let result = await backgroundRequest.gallery.getDIDData({ address: ownerAddress })
+      result.didValue = kidLinkPrefix + did
       setClicked(false)
       storeDIDAddress(result)
     } catch (error) {

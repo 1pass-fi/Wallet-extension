@@ -145,6 +145,10 @@ export class GalleryRequest extends Request {
     return this.promise(MESSAGES.GET_DID, body)
   }
 
+  getDIDData(body) {
+    return this.promise(MESSAGES.GET_DID_DATA, body)
+  }
+
   /**
    * 
    * @param {Object} body

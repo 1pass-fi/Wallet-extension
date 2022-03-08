@@ -20,7 +20,7 @@ export default async (address, contractId) => {
         parent { id }
       }
     }`
-  
+
     let query
     /* 
       if contractId -> get CreateReactApp transaction
@@ -56,14 +56,14 @@ export default async (address, contractId) => {
       }
       `
     }
-  
+
     const URL_ARWEAVE_GQL = 'https://arweave.net/graphql'
-  
+
     const request = JSON.stringify({ query })
     const { data } = await axios.post(URL_ARWEAVE_GQL, request, {
       headers: { 'content-type': 'application/json' }
     })
-  
+
     return get(data, 'data.transactions.edges[0].node.id') || null
   } catch (err) {
     console.error(err.message)
