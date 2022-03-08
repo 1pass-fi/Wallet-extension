@@ -16,6 +16,8 @@ import EditContactForm from './EditContactForm'
 import DeleteContactModal from './DeleteContactModal'
 import CreateNewContact from './CreateNewContact'
 import ImportFromDID from './ImportFromDID'
+import { TYPE } from 'constants/accountConstants'
+
 import './index.css'
 
 import storage from 'services/storage'
@@ -137,6 +139,21 @@ const AddressBook = () => {
     send('SAVE')
   }
 
+  const storeDIDAddress = async (didContact) => {
+
+    const toSaveAddress = {
+      name: didContact.state.name,
+      notes: didContact.state.description,
+      didName: 'DID link',
+      didValue: didContact.didValue,
+      addresses: [
+        { name: 'Address #1', type: TYPE.ARWEAVE, value: didContact.state.addresses.arweave }
+      ]
+    }
+
+    storeNewAddress(toSaveAddress)
+  }
+
   const removeContact = async (toRemoveId) => {
     // get Address book value from storage instead of the state for data consistency
     let currentAB = (await storage.generic.get.addressBook()) || []
@@ -206,7 +223,9 @@ const AddressBook = () => {
             goToImportFromDID={() => send('IMPORT_FROM_DID')}
           />
         )}
-        {state.value === 'importFromDID' && <ImportFromDID onClose={() => send('GO_BACK')} />}
+        {state.value === 'importFromDID' && (
+          <ImportFromDID onClose={() => send('GO_BACK')} storeDIDAddress={storeDIDAddress} />
+        )}
         {state.value === 'createManually' && (
           <CreateContactForm storeNewAddress={storeNewAddress} onClose={() => send('GO_BACK')} />
         )}
