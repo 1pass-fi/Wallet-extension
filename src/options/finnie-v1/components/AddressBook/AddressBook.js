@@ -1,5 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import clsx from 'clsx'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
+import { useMachine } from '@xstate/react'
+import { createMachine } from 'xstate'
+
+import { hideAddressBook } from 'options/actions/addressBook'
 
 import AddIcon from 'img/navbar/create-nft.svg'
 
@@ -8,27 +14,87 @@ import CreateContactForm from './CreateContactForm'
 import ContactDetail from './ContactDetail'
 import EditContactForm from './EditContactForm'
 import DeleteContactModal from './DeleteContactModal'
+import CreateNewContact from './CreateNewContact'
 import './index.css'
 
 import storage from 'services/storage'
 import { v4 as uuid } from 'uuid'
 
-const AddressBook = ({ onClose }) => {
+const screenMachine = createMachine({
+  id: 'screen',
+  initial: 'createContact',
+  states: {
+    createContact: {
+      entry: ['clearSelectedContact'],
+      on: {
+        CREATE_MANUALLY: 'createManually',
+        IMPORT_FROM_DID: 'importFromDID',
+        SELECT_CONTACT: 'contactDetail',
+        CREATE_CONTACT: 'createContact'
+      }
+    },
+    createManually: {
+      on: {
+        SAVE: 'contactDetail',
+        GO_BACK: 'createContact',
+        SELECT_CONTACT: 'contactDetail',
+        CREATE_CONTACT: 'createContact'
+      }
+    },
+    importFromDID: {
+      on: {
+        SAVE: 'contactDetail',
+        GO_BACK: 'createContact',
+        SELECT_CONTACT: 'contactDetail',
+        CREATE_CONTACT: 'createContact'
+      }
+    },
+    contactDetail: {
+      on: {
+        EDIT: 'editContact',
+        GO_BACK: 'createContact',
+        SELECT_CONTACT: 'contactDetail',
+        CREATE_CONTACT: 'createContact'
+      }
+    },
+    editContact: {
+      on: {
+        GO_BACK: 'contactDetail',
+        SAVE: 'contactDetail',
+        CANCEL: 'contactDetail',
+        SELECT_CONTACT: 'contactDetail',
+        CREATE_CONTACT: 'createContact'
+      }
+    }
+  }
+})
+
+const AddressBook = () => {
+  const showAddressBook = useSelector((state) => state.addressBook.showing)
+
   const [addresses, setAddresses] = useState([])
   const [filterAddresses, setFilterAddresses] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const [showCreateForm, setShowCreateForm] = useState(false)
-  const [showEditForm, setShowEditForm] = useState(false)
   const [selectedContact, setSelectedContact] = useState({})
   const [showDeleteContactModal, setShowDeleteContactModal] = useState(false)
 
-  const ref = useRef(null)
+  const [state, send] = useMachine(screenMachine, {
+    actions: {
+      clearSelectedContact: () => setSelectedContact({})
+    }
+  })
+
+  const dispatch = useDispatch()
+  const onClose = useCallback(() => dispatch(hideAddressBook()), [hideAddressBook])
+
+  const addressBookRef = useRef(null)
   const modalRef = useRef(null)
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && modalRef.current.contains(event.target)) {
         return
-      } else if (ref.current && !ref.current.contains(event.target)) {
+      } else if (addressBookRef.current && !addressBookRef.current.contains(event.target)) {
         onClose()
       }
     }
@@ -37,7 +103,7 @@ const AddressBook = ({ onClose }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [ref, modalRef])
+  }, [addressBookRef, modalRef])
 
   useEffect(() => {
     const getStorageAddresses = async () => {
@@ -58,15 +124,16 @@ const AddressBook = ({ onClose }) => {
   const storeNewAddress = async (newAddress) => {
     // get Address book value from storage instead of the state for data consistency
     const currentAB = (await storage.generic.get.addressBook()) || []
-    currentAB.push({ id: uuid(), ...newAddress })
+
+    const toSaveAddress = { id: uuid(), ...newAddress }
+    currentAB.push(toSaveAddress)
 
     await storage.generic.set.addressBook(currentAB)
 
     setAddresses(currentAB)
 
-    // after save contact successful, show the contact detail view
-    setShowCreateForm(false)
-    setSelectedContact(newAddress)
+    setSelectedContact(toSaveAddress)
+    send('SAVE')
   }
 
   const removeContact = async (toRemoveId) => {
@@ -76,6 +143,8 @@ const AddressBook = ({ onClose }) => {
 
     await storage.generic.set.addressBook(currentAB)
     setAddresses(currentAB)
+    send('GO_BACK')
+
     setSelectedContact({})
   }
 
@@ -94,23 +163,16 @@ const AddressBook = ({ onClose }) => {
     setAddresses(currentAB)
 
     setSelectedContact(address)
-    setShowEditForm(false)
+    send('SAVE')
   }
 
-  return (
-    <>
-      <div className="address-book-container" ref={ref}>
+  return showAddressBook ? (
+    <div className="address-book-bg">
+      <div className="address-book-container" ref={addressBookRef}>
         <div className="address-book-contacts">
           <div className="address-book__list__header">
             <SearchBar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
-            <div
-              className="address-book-add-icon"
-              onClick={() => {
-                setShowCreateForm(true)
-                setShowEditForm(false)
-                setSelectedContact({})
-              }}
-            >
+            <div className="address-book-add-icon" onClick={() => send('CREATE_CONTACT')}>
               <AddIcon />
             </div>
           </div>
@@ -123,9 +185,12 @@ const AddressBook = ({ onClose }) => {
                 <div
                   onClick={() => {
                     setSelectedContact(add)
-                    setShowCreateForm(false)
+                    send('SELECT_CONTACT')
                   }}
-                  className="address-book__list__body__name"
+                  className={clsx(
+                    'address-book__list__body__name',
+                    selectedContact.id === add.id && 'selected'
+                  )}
                   key={add.id}
                 >
                   {add.name}
@@ -134,25 +199,23 @@ const AddressBook = ({ onClose }) => {
             )}
           </div>
         </div>
-        {showCreateForm && (
-          <CreateContactForm
-            storeNewAddress={storeNewAddress}
-            onClose={() => setShowCreateForm(false)}
-          />
+        {state.value === 'createContact' && (
+          <CreateNewContact goToCreateForm={() => send('CREATE_MANUALLY')} />
         )}
-        {!isEmpty(selectedContact) && !showEditForm && (
+        {state.value === 'createManually' && (
+          <CreateContactForm storeNewAddress={storeNewAddress} onClose={() => send('GO_BACK')} />
+        )}
+        {state.value === 'contactDetail' && (
           <ContactDetail
-            onClose={() => setSelectedContact({})}
+            onClose={() => send('GO_BACK')}
             contact={selectedContact}
             setShowDeleteContactModal={setShowDeleteContactModal}
-            showEditForm={() => {
-              setShowEditForm(true)
-            }}
+            showEditForm={() => send('EDIT')}
           />
         )}
-        {showEditForm && (
+        {state.value === 'editContact' && (
           <EditContactForm
-            onClose={() => setShowEditForm(false)}
+            onClose={() => send('GO_BACK')}
             contact={selectedContact}
             updateAddress={updateAddress}
           />
@@ -166,8 +229,8 @@ const AddressBook = ({ onClose }) => {
           ref={modalRef}
         />
       )}
-    </>
-  )
+    </div>
+  ) : null
 }
 
 export default AddressBook

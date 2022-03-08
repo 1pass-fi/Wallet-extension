@@ -3,6 +3,7 @@
   background-color: transparent;
   border-radius: 2px;
   border: 1px solid white;
+  background-color: #373765;
   color: white;
 
   display: flex;
@@ -37,18 +38,19 @@
   width: 178px;
   height: 41px;
 
-  font-size: 18px;
-  line-height: 23px;
-  letter-spacing: -0.01em;
+  font-size: 16px;
+  letter-spacing: 0.005em;
 }
+
 .addressBookBtn.big .startIcon {
   width: 24px;
   height: 24px;
 }
 
-.addressBookBtn.text-red {
-  border: 1px solid #ffa6a6;
-  color: #ffa6a6;
+.addressBookBtn.delete {
+  border: 2px solid #373765;
+  color: #373765;
+  background-color: #ffa6a6;
 }
 
 .addressBookBtn.text-red .startIcon {

@@ -25,11 +25,13 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
     name: '',
     notes: '',
     didName: 'DID link',
-    didValue: '',
+    didValue: ''
   })
 
   // TODO need to ask Kayla's confirmation about TYPE of address
-  const [userAddresses, setUserAddresses] = useState([{ name: 'Address #1', value: '', type: TYPE.ARWEAVE }])
+  const [userAddresses, setUserAddresses] = useState([
+    { name: 'Address #1', value: '', type: TYPE.ARWEAVE }
+  ])
 
   const handleSubmit = async () => {
     if (isEmpty(userInfo.name)) {
@@ -149,7 +151,12 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
         <div
           className="ab-contact-form__add-more"
           // TODO need to ask Kayla's confirmation about TYPE of address
-          onClick={() => setUserAddresses([...userAddresses, { name: `Address #${userAddresses.length + 1}`, value: '', type: TYPE.ARWEAVE }])}
+          onClick={() =>
+            setUserAddresses([
+              ...userAddresses,
+              { name: `Address #${userAddresses.length + 1}`, value: '', type: TYPE.ARWEAVE }
+            ])
+          }
         >
           <div className="ab-form-add-icon">
             <AddIcon />
@@ -184,6 +191,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
         </div>
       </div>
       <div className="ab-contact-form__footer">
+        <Button startIcon={CloseIcon} onClick={onClose} text="Cancel" />
         <Button startIcon={TickIcon} onClick={handleSubmit} text="Save" variant="normal" />
       </div>
 

@@ -6,26 +6,22 @@ import './index.css'
 
 const variantClassName = {
   normal: 'text-green',
-  delete: 'big text-red',
-  cancel: 'big text-white',
+  delete: 'big delete',
+  cancel: 'big text-white'
 }
 
-const Button = ({
-  startIcon: StartIcon = EditIcon,
-  text,
-  variant,
-  isLoading = false,
-  ...props
-}) => {
+const Button = ({ startIcon: StartIcon, text, variant, isLoading = false, ...props }) => {
   return (
     <button
       className={clsx('addressBookBtn', variantClassName[variant])}
       disabled={isLoading}
       {...props}
     >
-      <div className="startIcon">
-        <StartIcon />
-      </div>
+      {StartIcon && (
+        <div className="startIcon">
+          <StartIcon />
+        </div>
+      )}
       {text}
     </button>
   )
@@ -34,8 +30,8 @@ const Button = ({
 Button.propTypes = {
   startIcon: PropTypes.elementType,
   text: PropTypes.string.isRequired,
-  variant: PropTypes.oneOf(['normal', 'delete', 'cancel']).isRequired,
-  isLoading: PropTypes.bool,
+  variant: PropTypes.oneOf(['normal', 'delete', 'cancel']),
+  isLoading: PropTypes.bool
 }
 
 export default Button

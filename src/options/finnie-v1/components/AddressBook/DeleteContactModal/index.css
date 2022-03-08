@@ -16,24 +16,47 @@
 }
 
 .ab-confirm-delete-contact-modal {
+  position: relative;
+
   z-index: 21;
   box-sizing: border-box;
-  width: 475px;
+  width: 503px;
   height: 240px;
-  background: #55557f;
+  background: #f5f5f5;
 
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
   border-radius: 4px;
+
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  padding: 11px 11px 34px 11px;
+
+  padding: 106px 11px 30px 11px;
+}
+
+.ab-confirm-delete-contact-modal__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 503px;
+  height: 67px;
+
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 18px 0px 18px;
+
+  color: #171753;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
 }
 
 .ab-confirm-delete-contact-modal .ab-close-icon {
   cursor: pointer;
-  align-self: flex-end;
   width: 25px;
   height: 25px;
   flex-grow: 0;
@@ -41,20 +64,18 @@
 
 .ab-confirm-delete-contact-modal .ab-confirm-delete-message {
   flex-grow: 2;
-  width: 305px;
-  height: 60px;
+  width: 379px;
 
-  font-size: 20px;
+  font-size: 14px;
+  line-height: 24px;
   font-weight: 400;
-  letter-spacing: -0.02em;
+  color: #171753;
+  letter-spacing: -0.01em;
   text-align: center;
 }
 
-.ab-confirm-delete-contact-modal .ab-confirm-delete-message span {
-  color: #9be7c4;
-}
-
 .ab-confirm-delete-contact-modal .ab-confirm-delete-buttons {
+  margin-top: 29px;
   width: 400px;
   height: 41px;
   display: flex;

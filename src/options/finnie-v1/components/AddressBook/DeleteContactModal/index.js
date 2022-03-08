@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react'
-import ReactTooltip from 'react-tooltip'
 
 import Button from '../Button'
-import CloseIcon from 'img/ab-close-icon.svg'
-import TickIcon from 'img/ab-circle-tick.svg'
+import CloseIcon from 'img/v2/close-icon-blue.svg'
+import BackIcon from 'img/v2/back-icon-blue.svg'
 
 import './index.css'
 
@@ -26,26 +25,32 @@ const DeleteContactModal = React.forwardRef(({ contact, onClose, removeContact }
   return (
     <div className="address-book-modal-wrapper" ref={ref}>
       <div className="ab-confirm-delete-contact-modal" ref={innerRef}>
-        <div data-tip="Close" data-for="close" className="ab-close-icon" onClick={onClose}>
-          <CloseIcon />
+        <div className="ab-confirm-delete-contact-modal__header">
+          <div className="ab-close-icon" onClick={onClose}>
+            <BackIcon />
+          </div>
+          <div>Delete Contact</div>
+          <div className="ab-close-icon" onClick={onClose}>
+            <CloseIcon />
+          </div>
         </div>
         <div className="ab-confirm-delete-message">
-          Are you sure you want to delete <span>{contact.name.length < 13 ? contact.name : contact.name.slice(0,13) + '...'}</span> ’s information?
+          Are you sure you want to delete{' '}
+          {contact.name.length < 13 ? contact.name : contact.name.slice(0, 13) + '...'} from your
+          address book? You cannot undo this action.
         </div>
         <div className="ab-confirm-delete-buttons">
           <Button
-            startIcon={TickIcon}
             onClick={() => {
               removeContact(contact.id)
               onClose()
             }}
-            text="Yes, Delete"
+            text="Delete Contact"
             variant="delete"
           />
-          <Button startIcon={CloseIcon} onClick={onClose} text="No, Cancel" variant="cancel" />
+          <Button onClick={onClose} text="Go Back" variant="cancel" />
         </div>
       </div>
-      <ReactTooltip id="close" />
     </div>
   )
 })

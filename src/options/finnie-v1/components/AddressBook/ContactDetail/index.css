@@ -1,8 +1,9 @@
 .ab-contact-detail {
   width: 411px;
   height: 486px;
+  border-radius: 0px 4px 4px 0px;
 
-  background-color: #55557f;
+  background-color: #3e3e71;
   box-shadow: inset 8px 0 10px -6px rgba(0, 0, 0, 0.16);
 
   display: flex;

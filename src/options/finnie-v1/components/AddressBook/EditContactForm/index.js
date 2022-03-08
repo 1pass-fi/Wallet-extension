@@ -143,7 +143,12 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
         <div
           className="ab-contact-form__add-more"
           // TODO need to ask Kayla's confirmation about TYPE of address
-          onClick={() => setUserAddresses([...userAddresses, { name: `Address #${userAddresses.length + 1}`, value: '', type: TYPE.ARWEAVE }])}
+          onClick={() =>
+            setUserAddresses([
+              ...userAddresses,
+              { name: `Address #${userAddresses.length + 1}`, value: '', type: TYPE.ARWEAVE }
+            ])
+          }
         >
           <div className="ab-form-add-icon">
             <AddIcon />
@@ -178,6 +183,7 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
         </div>
       </div>
       <div className="ab-contact-form__footer">
+        <Button startIcon={CloseIcon} onClick={onClose} text="Cancel" />
         <Button startIcon={TickIcon} onClick={handleSubmit} text="Save" variant="normal" />
       </div>
 

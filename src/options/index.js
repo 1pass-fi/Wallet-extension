@@ -27,6 +27,7 @@ import SelectNfts from 'options/pages/SelectNfts'
 import Success from 'options/pages/StartUp/shared/Success'
 import MainLayout from 'finnie-v2/components/MainLayout'
 import Settings from 'options/pages/Settings'
+import AddressBook from 'options/finnie-v1/components/AddressBook/AddressBook'
 
 const FullView = () => {
   return (
@@ -52,6 +53,7 @@ const FullView = () => {
             <Route exact path="/success">
               <>
                 <NavBar />
+                <AddressBook />
                 <Success />
               </>
             </Route>
@@ -59,12 +61,14 @@ const FullView = () => {
             <Route exact path="/collections/:collectionId">
               <HasArweave content={'Please import an Arweave account'}>
                 <NavBar />
+                <AddressBook />
                 <CollectionDetails />
               </HasArweave>
             </Route>
 
             <HasArweave content={'Please import an Arweave account'}>
               <MainLayout>
+                <AddressBook />
                 <Switch>
                   <Route exact path="/nfts/:id">
                     <NFTDetail />
