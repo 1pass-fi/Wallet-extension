@@ -8,11 +8,13 @@ import Avatar from 'img/ab-avatar.png'
 
 import { getDIDs } from 'background/helpers/did/koiiMe'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import { ERROR_MESSAGE } from 'constants/koiConstants'
 
-const ImportFromDID = ({ onClose, storeDIDAddress }) => {
+const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
   const [clicked, setClicked] = useState(false)
   const [didLink, setDidLink] = useState('')
   const [invalidDIDLink, setInvalidDIDLink] = useState(false)
+  const [duplicateDID, setDuplicateDID] = useState(false)
   const kidLinkPrefix = 'https://koii.id/'
 
   const getDID = (link) => {
@@ -31,6 +33,13 @@ const ImportFromDID = ({ onClose, storeDIDAddress }) => {
         return
       }
 
+      const didNotExist = await validateDIDNotExist(didLink)
+      if (!didNotExist) {
+        setDuplicateDID(true)
+        setClicked(false)
+        return
+      }
+
       const allDIDs = await getDIDs()
       const didInfo = get(allDIDs, did)
       const ownerAddress = get(didInfo, 'owner')
@@ -45,6 +54,7 @@ const ImportFromDID = ({ onClose, storeDIDAddress }) => {
       setClicked(false)
       storeDIDAddress(result)
     } catch (error) {
+      setInvalidDIDLink(true)
       setClicked(false)
     }
   }
@@ -76,12 +86,18 @@ const ImportFromDID = ({ onClose, storeDIDAddress }) => {
         onChange={(e) => {
           setDidLink(e.target.value)
           setInvalidDIDLink(false)
+          setDuplicateDID(false)
         }}
         disabled={clicked}
       />
       {invalidDIDLink && (
         <span className="mt-2 text-center font-normal text-xs leading-4 text-warning-300 tracking-finnieSpacing-wide">
           That’s not a valid DID link
+        </span>
+      )}
+      {duplicateDID && (
+        <span className="mt-2 text-center font-normal text-xs leading-4 text-warning-300 tracking-finnieSpacing-wide">
+          {ERROR_MESSAGE.ADDRESS_BOOK.DUPLICATE_DID}
         </span>
       )}
       <button

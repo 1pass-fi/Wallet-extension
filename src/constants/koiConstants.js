@@ -300,6 +300,10 @@ export const ERROR_MESSAGE = {
     INVALID_ACCOUNT_INPUT: 'Invalid account input',
     INVALID_DATA_INPUT: 'Invalid data input',
     KEY_NOT_FOUND: 'Key not found'
+  },
+
+  ADDRESS_BOOK: {
+    DUPLICATE_DID: 'This DID already exist in Address Book'
   }
 }
 
