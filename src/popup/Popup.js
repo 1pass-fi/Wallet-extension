@@ -112,6 +112,10 @@ const Popup = ({
 
     setAccounts(accounts)
 
+    if (isEmpty(accounts)) {
+      history.push('/account/welcome')
+    }
+
     const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
     const activatedAccount = await popupAccount.getAccount({
       address: activatedAccountAddress
