@@ -98,9 +98,10 @@ const Popup = ({
   const history = useHistory()
 
   const [needToReconnect, setNeedToReconnect] = useState(false)
-  const [appLoaded, setAppLoaded] = useState(false)
+  const [accountLoaded, setAccountLoaded] = useState(false)
 
   const loadApp = async () => {
+    setIsLoading(true)
     /* 
       load for wallet state of lock or unlock
       load for all accounts
@@ -111,6 +112,8 @@ const Popup = ({
     const isLocked = await backgroundRequest.wallet.getLockState()
 
     setAccounts(accounts)
+    setAccountLoaded(true)
+    setIsLoading(false)
 
     if (isEmpty(accounts)) {
       history.push('/account/welcome')
@@ -265,11 +268,10 @@ const Popup = ({
 
   useEffect(() => {
     const load = async () => {
+      loadPrice()
+      loadAssetsTabSettings()
       await loadApp()
-      await loadPrice()
       await loadSettings()
-      await loadAssetsTabSettings()
-      setAppLoaded(true)
     }
 
     load()
@@ -301,7 +303,7 @@ const Popup = ({
           {error && <Message type="error" children={error} />}
           {notification && <Message type="notification" children={notification} />}
           {warning && <Message type="warning" children={warning} />}
-          {
+          {accountLoaded && (
             <Switch>
               <Route exact path="/login">
                 <Login />
@@ -330,7 +332,7 @@ const Popup = ({
                 <NavBar handleLockWallet={handleLockWallet} />
               </>
             </Switch>
-          }
+          )}
         </div>
       )}
     </div>
