@@ -45,7 +45,15 @@ export class SettingGet {
   }
 
   activatedAccountAddress() {
-    return this.#chrome._getChrome(SETTING.ACTIVATED_ACCOUNT)
+    return this.#chrome._getChrome(SETTING.ACTIVATED_ARWEAVE_ACCOUNT)
+  }
+
+  activatedArweaveAccountAddress() {
+    return this.#chrome._getChrome(SETTING.ACTIVATED_ARWEAVE_ACCOUNT)
+  }
+
+  activatedEthereumAccountAddress() {
+    return this.#chrome._getChrome(SETTING.ACTIVATED_ETHEREUM_ACCOUNT)
   }
 
   connectSiteAccountAddress() {
