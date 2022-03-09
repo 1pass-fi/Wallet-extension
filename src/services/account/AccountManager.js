@@ -8,6 +8,8 @@ import { ChromeStorage } from 'services/storage/ChromeStorage'
 
 import { ERROR_MESSAGE } from 'constants/koiConstants'
 
+import { setActivatedAccountAddress } from 'utils'
+
 import storage from 'services/storage'
 
 /* 
@@ -348,9 +350,10 @@ export class BackgroundAccountManager extends AccountManager {
           set new activatedAccount after remove activatedAccount
         */
         const defaultActivatedAccount = this.importedAccount[0].address
-        await storage.setting.set.activatedAccountAddress(defaultActivatedAccount)
+        await setActivatedAccountAddress(defaultActivatedAccount)
       } else {
-        await storage.setting.set.activatedAccountAddress(null)
+        await storage.setting.set.activatedArweaveAccountAddress(null)
+        await storage.setting.set.activatedArweaveAccountAddress(null)
       }
     } catch (err) {
       console.log(err.message)

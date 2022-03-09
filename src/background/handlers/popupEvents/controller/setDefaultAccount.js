@@ -1,11 +1,13 @@
 // Services
 import storage from 'services/storage'
 
+import { setActivatedAccountAddress } from 'utils'
+
 
 export default async (payload, next) => {
   try {
     const { address } = payload.data
-    await storage.setting.set.activatedAccountAddress(address)
+    await setActivatedAccountAddress(address)
 
     next()
   } catch (err) {

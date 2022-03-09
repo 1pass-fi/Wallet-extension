@@ -8,6 +8,7 @@ import { getArAccounts } from 'options/selectors/accounts'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 
 import storage from 'services/storage'
+import { setActivatedAccountAddress } from 'utils'
 
 const SelectAccount = () => {
   const dispatch = useDispatch()
@@ -20,7 +21,7 @@ const SelectAccount = () => {
     dispatch(setDefaultAccount(selectedAccount))
 
     // set default account to storage
-    await storage.setting.set.activatedAccountAddress(selectedAccount.address)
+    await setActivatedAccountAddress(selectedAccount.address)
   }
 
   return (

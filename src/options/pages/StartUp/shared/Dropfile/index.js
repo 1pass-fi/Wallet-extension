@@ -11,6 +11,7 @@ import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
+import { setActivatedAccountAddress } from 'utils'
 
 const DragActive = ({ description, Icon }) => {
   return (
@@ -56,7 +57,7 @@ export default ({
     setFile(acceptedFiles ? acceptedFiles[0] : {})
 
     const handleSetDefaultAccount = async () => {
-      await storage.setting.set.activatedAccountAddress(importedAddress)
+      await setActivatedAccountAddress(importedAddress)
       const account = await popupAccount.getAccount({ address: importedAddress })
       const data = await account.get.metadata()
       dispatch(setDefaultAccount(data))

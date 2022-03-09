@@ -14,6 +14,7 @@ import { ERROR_MESSAGE } from 'constants/koiConstants'
 
 // Utils
 import { getProviderUrlFromName } from 'utils'
+import { setActivatedAccountAddress } from 'utils'
 
 // helpers
 import helpers from 'background/helpers'
@@ -112,7 +113,7 @@ export default async (payload, next) => {
       If total account = 1, set this accountAddress to activatedAccountAddress
     */
     if (totalAccounts == 1) {
-      await storage.setting.set.activatedAccountAddress(await account.get.address())
+      await setActivatedAccountAddress(await account.get.address())
     }
            
     /* 

@@ -9,9 +9,11 @@ import isEmpty from 'lodash/isEmpty'
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 
+import { setActivatedAccountAddress } from 'utils'
+
 export const setDefaultAccountByAddress = (address) => async (dispatch) => {
   if (!isEmpty(address)) {
-    await storage.setting.set.activatedAccountAddress(address)
+    await setActivatedAccountAddress(address)
   }
 
   const account = await popupAccount.getAccount({
@@ -27,7 +29,7 @@ export const setDefaultAccountByAddress = (address) => async (dispatch) => {
 
 export const setDefaultAccount = (account) => async (dispatch) => {
   if (!isEmpty(account?.address)) {
-    await storage.setting.set.activatedAccountAddress(account.address)
+    await setActivatedAccountAddress(account.address, account.type)
   }
 
   return dispatch({
@@ -38,7 +40,7 @@ export const setDefaultAccount = (account) => async (dispatch) => {
 
 export const updateDefaultAccount = (newAccountInfo) => async (dispatch) => {
   if (!isEmpty(newAccountInfo?.address)) {
-    await storage.setting.set.activatedAccountAddress(newAccountInfo.address)
+    await setActivatedAccountAddress(newAccountInfo.address, newAccountInfo.type)
   }
   return dispatch({
     type: UPDATE_DEFAULT_ACCOUNT,

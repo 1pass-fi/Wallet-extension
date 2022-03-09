@@ -23,6 +23,7 @@ export const koi = new Web()
 
 import storage from 'services/storage'
 import Web3 from 'web3'
+import { TYPE } from 'constants/accountConstants'
 
 /* istanbul ignore next */
 const arweave = Arweave.init({ host: 'arweave.net', protocol: 'https', port: 443, })
@@ -772,4 +773,26 @@ export const isEthereumAddress = (ethAddress) => {
 export const calculateArFee = async (dataSize) => {
   const fee = await arweave.transactions.getPrice(dataSize)
   return winstonToAr(fee)
+}
+
+export const setActivatedAccountAddress = async (address, type) => {
+  switch (type) {
+    case TYPE.ARWEAVE:
+      await storage.setting.set.activatedArweaveAccountAddress(address)
+      break
+
+    case TYPE.ETHEREUM:
+      await storage.setting.set.activatedEthereumAccountAddress(address)
+      break
+
+    default:
+      if (isArweaveAddress(address)) {
+        await storage.setting.set.activatedArweaveAccountAddress(address)
+      }
+
+      if (isEthereumAddress(address)) {
+        await storage.setting.set.activatedEthereumAccountAddress(address)
+      }
+      break
+  }
 }

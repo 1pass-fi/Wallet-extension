@@ -11,6 +11,7 @@ import helpers from 'background/helpers'
 
 // Utils
 import { getProviderUrlFromName } from 'utils'
+import { setActivatedAccountAddress } from 'utils'
 
 import cache from 'background/cache'
 
@@ -62,7 +63,7 @@ export default async (payload, next) => {
 
     // If total account = 1, set this account to activatedAccountAddress.
     if (totalAccounts == 1) {
-      await storage.setting.set.activatedAccountAddress(await account.get.address())
+      await setActivatedAccountAddress(await account.get.address())
     }
 
     helpers.loadBalances()          

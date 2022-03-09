@@ -49,8 +49,12 @@ export class SettingSet {
     return this.#chrome._setChrome(SETTING.ACCOUNTS_SHOW_ACTIVITIES, value)
   }
 
-  activatedAccountAddress(value) {
-    return this.#chrome._setChrome(SETTING.ACTIVATED_ACCOUNT, value)
+  activatedArweaveAccountAddress(value) {
+    return this.#chrome._setChrome(SETTING.ACTIVATED_ARWEAVE_ACCOUNT, value)
+  }
+
+  activatedEthereumAccountAddress(value) {
+    return this.#chrome._setChrome(SETTING.ACTIVATED_ETHEREUM_ACCOUNT, value)
   }
 
   connectSiteAccountAddress(value) {
