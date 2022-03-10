@@ -13,6 +13,16 @@ const mainScript = () => {
   const finnieArweaveProvider = new FinnieArweaveProvider(window.connection)
   const finnieKoiiWalletProvider = new FinnieKoiiWalletProvider(window.connection)
 
+  window.addEventListener('chainChanged', function() {
+    finnieEthereumProvider.emit('chainChanged')
+  })
+  window.addEventListener('networkChanged', function() {
+    finnieEthereumProvider.emit('networkChanged')
+  })
+  window.addEventListener('accountsChanged', function() {
+    finnieEthereumProvider.emit('accountsChanged')
+  })
+
   window.ethereum = finnieEthereumProvider
   window.arweaveWallet = finnieArweaveProvider
   window.koiiWallet = finnieKoiiWalletProvider

@@ -63,6 +63,8 @@ export default async () => {
     backgroundConnect.addHandler(new EventHandler(messageType, (message) => {
       window.postMessage(message)
     }))
+
+    // dispatch custom event on chain changed, account changed
   })
   
   /* 
