@@ -49,7 +49,8 @@ const AccountManagement = ({ accounts }) => {
   const { getDID } = useContext(DidContext)
 
   const dispatch = useDispatch()
-  const defaultAccountAddress = useSelector((state) => state.defaultAccount?.address)
+  const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
+  const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
 
   const [currentTab, setCurrentTab] = useState('AR')
 
@@ -124,7 +125,10 @@ const AccountManagement = ({ accounts }) => {
               <td className="pl-2">
                 <CheckBox
                   onClick={() => handleSetDefaultAccount(account.address)}
-                  checked={defaultAccountAddress === account.address}
+                  checked={
+                    defaultArweaveAccountAddress === account.address ||
+                    defaultEthereumAccountAddress === account.address
+                  }
                 />
               </td>
               <td>

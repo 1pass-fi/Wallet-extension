@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
+import isEmpty from 'lodash/isEmpty'
 
 import { TYPE } from 'constants/accountConstants'
 import { fiatCurrencyFormat, numberFormat } from 'utils'
@@ -10,7 +11,10 @@ import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 
 const Tokens = () => {
-  const defaultAccount = useSelector((state) => state.defaultAccount)
+  let defaultAccount = useSelector((state) => state.defaultAccount.AR)
+  if (isEmpty(defaultAccount)) {
+    defaultAccount = useSelector((state) => state.defaultAccount.ETH)
+  }
   const price = useSelector((state) => state.price)
 
   const tokens = useMemo(() => {

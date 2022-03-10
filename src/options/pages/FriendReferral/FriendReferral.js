@@ -25,7 +25,7 @@ const FriendReferral = () => {
   const [showGetRewardsModal, setShowGetRewardsModal] = useState(false)
   const [showShareCodeModal, setShowShareCodeModal] = useState(false)
 
-  const defaultAccount = useSelector((state) => state.defaultAccount)
+  const defaultAccount = useSelector((state) => state.defaultAccount.AR)
   const code = defaultAccount.affiliateCode
 
   const redeemRewards = async () => {

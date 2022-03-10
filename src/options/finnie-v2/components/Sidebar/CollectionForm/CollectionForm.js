@@ -41,9 +41,9 @@ const CollectionForm = ({ isUpdate }) => {
   } = useContext(GalleryContext)
 
   const collection = useSelector(getCollectionByTxId(collectionId))
-  const address = useSelector((state) => state.defaultAccount.address)
+  const address = useSelector((state) => state.defaultAccount.AR?.address)
   const _nfts = useSelector((state) => state.assets.nfts)
-  const collectionNfts = useSelector(state => state.assets.collectionNfts)
+  const collectionNfts = useSelector((state) => state.assets.collectionNfts)
 
   const selectFiles = useRef(null)
   const titleField = useRef(null)
@@ -379,7 +379,9 @@ const CollectionForm = ({ isUpdate }) => {
                   <li key={index} style={{ marginBottom: '5px' }}>
                     <div className="flex w-full justify-between">
                       <div className="w-28 truncate">
-                        {find(_nfts, nft => nft.txId === id)?.name || find(collectionNfts, nft => nft.txId === id)?.name || id}
+                        {find(_nfts, (nft) => nft.txId === id)?.name ||
+                          find(collectionNfts, (nft) => nft.txId === id)?.name ||
+                          id}
                       </div>
                       <div>
                         <PhotoIcon />

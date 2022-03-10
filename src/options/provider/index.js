@@ -36,7 +36,10 @@ import Welcome from 'options/modal/welcomeScreen'
 import TransferNFT from 'options/modal/TransferNFT'
 
 import storage from 'services/storage'
-import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect } from 'services/request/popup'
+import {
+  popupBackgroundRequest as backgroundRequest,
+  popupBackgroundConnect
+} from 'services/request/popup'
 
 import { popupAccount } from 'services/account'
 import SelectAccountModal from 'options/modal/SelectAccountModal'
@@ -48,7 +51,6 @@ import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setCollections } from 'options/actions/collections'
 import { setAssets, setCollectionNfts } from 'options/actions/assets'
 import { addNotification, setNotifications } from 'options/actions/notifications'
-
 
 export default ({ children }) => {
   const { pathname } = useLocation()
@@ -87,7 +89,7 @@ export default ({ children }) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
     accept: ['image/*', 'video/*', 'audio/*'],
-    noClick: true,
+    noClick: true
   })
 
   const [searchTerm, setSearchTerm] = useState('') // search bar
@@ -104,18 +106,15 @@ export default ({ children }) => {
   const [settingStates, setSettingStates] = useSetting({ walletLoaded })
   useAddHandler({ setError, setNotification, setModalStates, setIsLoading })
 
-  
-
   /* 
     GET STATE FROM STORE
   */
-  const accounts = useSelector(state => state.accounts)
-  const defaultAccount = useSelector(state => state.defaultAccount)
-  const assets = useSelector(state => state.assets)
+  const accounts = useSelector((state) => state.accounts)
+  const defaultAccount = useSelector((state) => state.defaultAccount.AR)
+  const assets = useSelector((state) => state.assets)
 
   /* EDITING COLLECTION ID */
   const [editingCollectionId, setEditingCollectionId] = useState(null)
-
 
   const onClearFile = () => {
     setFile({})
@@ -133,15 +132,15 @@ export default ({ children }) => {
     }, 1),
     []
   )
-  
+
   const handleShareNFT = (txId) => {
     const toShareNFT = find(assets.nfts, { txId })
-    setModalStates.setShowTransferNFT({show: true, cardInfo: toShareNFT})
+    setModalStates.setShowTransferNFT({ show: true, cardInfo: toShareNFT })
   }
 
   const refreshNFTs = async () => {
     let allAssets = await popupAccount.getAllAssets()
-    let validAssets = allAssets.filter(asset => asset.name !== '...')
+    let validAssets = allAssets.filter((asset) => asset.name !== '...')
 
     console.log('validAssets', validAssets.length)
 
@@ -154,16 +153,16 @@ export default ({ children }) => {
   */
   useEffect(() => {
     const loadWallets = async () => {
-      setIsLoading(prev => ++prev)
+      setIsLoading((prev) => ++prev)
       const allAccounts = await dispatch(loadAllAccounts()) // will load default account also
       const _isLocked = await backgroundRequest.wallet.getLockState()
 
       setWalletLoaded(true)
-      // go to lock screen if having imported account 
-      if(!isEmpty(allAccounts)){
+      // go to lock screen if having imported account
+      if (!isEmpty(allAccounts)) {
         setIsLocked(_isLocked)
       }
-      setIsLoading(prev => --prev)
+      setIsLoading((prev) => --prev)
     }
     loadWallets()
   }, [])
@@ -187,7 +186,6 @@ export default ({ children }) => {
       getAffiliateCode()
       loadNotifications()
     }
-
   }, [walletLoaded])
 
   /* 
@@ -202,18 +200,18 @@ export default ({ children }) => {
       */
       if (get(popupAccount, 'importedAccount.length') === 1) {
         let activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
-        if(!isEmpty(activatedAccountAddress)) {
+        if (!isEmpty(activatedAccountAddress)) {
           let activatedAccount = await popupAccount.getAccount({
-            address: activatedAccountAddress,
+            address: activatedAccountAddress
           })
           activatedAccount = await activatedAccount.get.metadata()
           dispatch(setDefaultAccount(activatedAccount))
         }
 
         let activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
-        if(!isEmpty(activatedEthereumAccountAddress)) {
+        if (!isEmpty(activatedEthereumAccountAddress)) {
           let activatedEthereumAccount = await popupAccount.getAccount({
-            address: activatedEthereumAccountAddress,
+            address: activatedEthereumAccountAddress
           })
           activatedEthereumAccount = await activatedEthereumAccount.get.metadata()
           dispatch(setDefaultAccount(activatedEthereumAccount))
@@ -231,7 +229,6 @@ export default ({ children }) => {
       dispatch(loadAllFriendReferralData())
     }
   }, [newAddress])
-  
 
   /* 
     On open create collection form, allAssets list should be set to assets of the 
@@ -242,16 +239,15 @@ export default ({ children }) => {
   useEffect(() => {
     const setAssetsForCreateCollection = async () => {
       const _account = await popupAccount.getAccount({
-        address: defaultAccount.address,
+        address: defaultAccount.address
       })
       let assets = await _account.get.assets()
-      assets = assets.filter(asset => asset.name !== '...')
+      assets = assets.filter((asset) => asset.name !== '...')
       dispatch(setAssets({ nfts: assets }))
     }
 
     if (showCreateCollection) setAssetsForCreateCollection()
   }, [showCreateCollection, defaultAccount])
-
 
   /*
     Redirect to create NFT page to support create new NFT in case import new wallet
@@ -271,21 +267,20 @@ export default ({ children }) => {
     }
   }, [notification])
 
-
   const updateDefaultAccountData = async () => {
     let activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
-    if(!isEmpty(activatedAccountAddress)) {
+    if (!isEmpty(activatedAccountAddress)) {
       let activatedAccount = await popupAccount.getAccount({
-        address: activatedAccountAddress,
+        address: activatedAccountAddress
       })
       activatedAccount = await activatedAccount.get.metadata()
       dispatch(setDefaultAccount(activatedAccount))
     }
 
     let activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
-    if(!isEmpty(activatedEthereumAccountAddress)) {
+    if (!isEmpty(activatedEthereumAccountAddress)) {
       let activatedEthereumAccount = await popupAccount.getAccount({
-        address: activatedEthereumAccountAddress,
+        address: activatedEthereumAccountAddress
       })
       activatedEthereumAccount = await activatedEthereumAccount.get.metadata()
       dispatch(setDefaultAccount(activatedEthereumAccount))
@@ -304,11 +299,10 @@ export default ({ children }) => {
     // if (!isEmpty(acceptedFiles)) history.push('/create')
   }, [acceptedFiles])
 
-
   useEffect(() => {
     // load nfts and collection from store, set to state
     const loadAssetsFromStorage = async () => {
-      setIsLoading(prev => ++prev)
+      setIsLoading((prev) => ++prev)
       let allCollections = await popupAccount.getAllCollections()
       let allCollectionNfts = await popupAccount.getAllCollectionNfts()
       dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
@@ -317,19 +311,19 @@ export default ({ children }) => {
       console.log('all Collections', allCollections)
       console.log('loading all contents')
       let allAssets = await popupAccount.getAllAssets()
-      let validAssets = allAssets.filter(asset => asset.name !== '...')
-      
+      let validAssets = allAssets.filter((asset) => asset.name !== '...')
+
       validAssets = classifyAssets(validAssets, allCollections)
       console.log('valid assets', validAssets.length)
-      validAssets = validAssets.filter(nft => !get(nft, 'name')?.includes('DID Profile Page'))
+      validAssets = validAssets.filter((nft) => !get(nft, 'name')?.includes('DID Profile Page'))
 
       dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
-      
-      setIsLoading(prev => --prev)
+
+      setIsLoading((prev) => --prev)
     }
 
     const fetchAssets = async () => {
-      let allCollections = await popupAccount.getAllCollections() 
+      let allCollections = await popupAccount.getAllCollections()
       let allCollectionNfts = await popupAccount.getAllCollectionNfts()
       let allAssets, validAssets
 
@@ -338,27 +332,29 @@ export default ({ children }) => {
         await backgroundRequest.gallery.loadCollections()
         allCollections = await popupAccount.getAllCollections()
         allCollectionNfts = await popupAccount.getAllCollectionNfts()
-        dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
+        dispatch(
+          setCollections({ collections: allCollections, filteredCollections: allCollections })
+        )
         dispatch(setCollectionNfts({ collectionNfts: allCollectionNfts }))
       }
 
       const loadNfts = async () => {
         await backgroundRequest.assets.loadAllContent()
         allAssets = await popupAccount.getAllAssets()
-        validAssets = allAssets.filter(asset => asset.name !== '...')
+        validAssets = allAssets.filter((asset) => asset.name !== '...')
         validAssets = classifyAssets(validAssets, allCollections)
-        validAssets = validAssets.filter(nft => !get(nft, 'name')?.includes('DID Profile Page'))
+        validAssets = validAssets.filter((nft) => !get(nft, 'name')?.includes('DID Profile Page'))
         dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
       }
 
-      setIsLoading(prev => ++prev)
-      await Promise.all([loadCollection, loadNfts].map(f => f()))
+      setIsLoading((prev) => ++prev)
+      await Promise.all([loadCollection, loadNfts].map((f) => f()))
       validAssets = classifyAssets(validAssets, allCollections)
-      if (isEmpty(validAssets) && pathname === '/') {}
-      else {
+      if (isEmpty(validAssets) && pathname === '/') {
+      } else {
         dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
       }
-      setIsLoading(prev => --prev)
+      setIsLoading((prev) => --prev)
     }
 
     loadAssetsFromStorage()
@@ -388,95 +384,103 @@ export default ({ children }) => {
         inputFileRef,
         walletLoaded,
         refreshNFTs,
-        selectedNftIds, setSelectedNftIds,
-        editingCollectionId, setEditingCollectionId,
+        selectedNftIds,
+        setSelectedNftIds,
+        editingCollectionId,
+        setEditingCollectionId,
         ...modalStates,
         ...setModalStates,
         ...settingStates,
         ...setSettingStates
       }}
     >
-      <DidContext.Provider 
+      <DidContext.Provider
         value={{
           ...didStates,
-          ...setDIDStates,
+          ...setDIDStates
         }}
       >
-        <div className='app-background'>
-          {!isEmpty(accounts) ?
-          <>
-            {!isLocked ? <div
-              {...getRootProps({ className: 'app dropzone' })}
-              onDragOver={() => modifyDraging(true)}
-              onDragLeave={() => modifyDraging(false)}
-              onClick={(e) => {
-                if (e.target.className === 'modal-container') {
-                  setModalStates.setShowShareModal(false)
-                  setModalStates.setShowExportModal(false)
-                  setSettingStates.setShowWelcome(false)
-                }
-              }}
-            >
-              {error && <Message children={error} />}
-              {notification && !GALLERY_IMPORT_PATH.includes(pathname) && <Message children={notification} type='notification' />}
-              {modalStates.showShareModal.show && (
-                <ShareNFT
-                  txid={modalStates.showShareModal.txid}
-                  onClose={() => {
-                    setModalStates.setShowShareModal({ ...modalStates.showShareModal, show: false })
+        <div className="app-background">
+          {!isEmpty(accounts) ? (
+            <>
+              {!isLocked ? (
+                <div
+                  {...getRootProps({ className: 'app dropzone' })}
+                  onDragOver={() => modifyDraging(true)}
+                  onDragLeave={() => modifyDraging(false)}
+                  onClick={(e) => {
+                    if (e.target.className === 'modal-container') {
+                      setModalStates.setShowShareModal(false)
+                      setModalStates.setShowExportModal(false)
+                      setSettingStates.setShowWelcome(false)
+                    }
                   }}
-                />
-              )}
-              {!isEmpty(modalStates.showExportModal) && (
-                <ExportNFT
-                  info={modalStates.showExportModal}
-                  onClose={() => {
-                    setModalStates.setShowExportModal(false)
-                  }}
-                />
-              )}
+                >
+                  {error && <Message children={error} />}
+                  {notification && !GALLERY_IMPORT_PATH.includes(pathname) && (
+                    <Message children={notification} type="notification" />
+                  )}
+                  {modalStates.showShareModal.show && (
+                    <ShareNFT
+                      txid={modalStates.showShareModal.txid}
+                      onClose={() => {
+                        setModalStates.setShowShareModal({
+                          ...modalStates.showShareModal,
+                          show: false
+                        })
+                      }}
+                    />
+                  )}
+                  {!isEmpty(modalStates.showExportModal) && (
+                    <ExportNFT
+                      info={modalStates.showExportModal}
+                      onClose={() => {
+                        setModalStates.setShowExportModal(false)
+                      }}
+                    />
+                  )}
 
-              {modalStates.showTransferNFT.show && (
-                <TransferNFT
-                  cardInfo={modalStates.showTransferNFT.cardInfo}
-                  onClose={() => {
-                    setModalStates.setShowTransferNFT({ show: false })
-                  }}
-                />
-              )}
+                  {modalStates.showTransferNFT.show && (
+                    <TransferNFT
+                      cardInfo={modalStates.showTransferNFT.cardInfo}
+                      onClose={() => {
+                        setModalStates.setShowTransferNFT({ show: false })
+                      }}
+                    />
+                  )}
 
-              {settingStates.showWelcome && (
-                <Welcome
-                  onClose={() => {
-                    setSettingStates.setShowWelcome(false)
-                  }}
-                />
-              )
-              }
-              {modalStates.showSelectAccount && (
-                <SelectAccountModal
-                  onClose={() => {
-                    setModalStates.setShowSelectAccount(false)
-                  }}
-                />
-              )
-              }
-              {isDragging && isEmpty(file) && (
-                <input name='fileField' {...getInputProps()} />
-              )}
+                  {settingStates.showWelcome && (
+                    <Welcome
+                      onClose={() => {
+                        setSettingStates.setShowWelcome(false)
+                      }}
+                    />
+                  )}
+                  {modalStates.showSelectAccount && (
+                    <SelectAccountModal
+                      onClose={() => {
+                        setModalStates.setShowSelectAccount(false)
+                      }}
+                    />
+                  )}
+                  {isDragging && isEmpty(file) && <input name="fileField" {...getInputProps()} />}
 
-              {children}
-            </div> : <LockScreen />}
-          </>
-            :
-          <>
-            {walletLoaded &&
-              <div>
-                {error && <Message children={error} />}
-                <StartUp />
-              </div>}
-          </>
-          }
+                  {children}
+                </div>
+              ) : (
+                <LockScreen />
+              )}
+            </>
+          ) : (
+            <>
+              {walletLoaded && (
+                <div>
+                  {error && <Message children={error} />}
+                  <StartUp />
+                </div>
+              )}
+            </>
+          )}
         </div>
         <ReactNotification />
       </DidContext.Provider>

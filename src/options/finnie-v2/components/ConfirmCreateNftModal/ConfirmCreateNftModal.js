@@ -51,18 +51,18 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
 
   const modalRef = useRef(null)
 
-  const defaultAccount = useSelector((state) => state.defaultAccount)
+  const defaultAccount = useSelector((state) => state.defaultAccount.AR)
 
   const handleUploadNFT = async () => {
     try {
       // set isLoading
       setDisableCreateNFT(true)
       setIsLoading((prev) => ++prev)
-  
+
       const account = await popupAccount.getAccount({ address: defaultAccount.address })
       const arBalance = await account.get.balance()
       const koiBalance = await account.get.koiBalance()
-      
+
       if (estimateCostKOII > koiBalance) throw new Error('Not enough KOII')
       if (estimateCostAr > arBalance) throw new Error('Not enough AR')
 
@@ -89,11 +89,13 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
         tags,
         fileType,
         address: defaultAccount.address,
-        price: estimateCostAr, 
+        price: estimateCostAr,
         imageId
       })
 
-      if (txId) setStep(2); setNftId(txId); resetState()
+      if (txId) setStep(2)
+      setNftId(txId)
+      resetState()
       // set isLoading
       setIsLoading((prev) => --prev)
       setDisableCreateNFT(false)
@@ -108,14 +110,17 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
 
   const handleSubmitReferralCode = async () => {
     try {
-      setIsLoading(prev => ++prev)
-      const result = await backgroundRequest.gallery.friendReferral({ endpoints: FRIEND_REFERRAL_ENDPOINTS.SUBMIT_CODE, friendCode: referralCode })
+      setIsLoading((prev) => ++prev)
+      const result = await backgroundRequest.gallery.friendReferral({
+        endpoints: FRIEND_REFERRAL_ENDPOINTS.SUBMIT_CODE,
+        friendCode: referralCode
+      })
       switch (result?.status) {
-        case 201: 
+        case 201:
           setShowReferralField(false)
           setConfirmedCode(true)
           break
-        case 200: 
+        case 200:
           setReferralCodeError('Affiliate Invite already exists')
           break
         case 422:
@@ -124,10 +129,10 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
         default:
           setReferralCodeError('Network error')
       }
-      setIsLoading(prev => --prev)
+      setIsLoading((prev) => --prev)
     } catch (err) {
       console.error(err.message)
-      setIsLoading(prev => --prev)
+      setIsLoading((prev) => --prev)
     }
   }
 
@@ -213,31 +218,64 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                 <div className="font-semibold text-base tracking-finnieSpacing-wide leading-6 mt-3">
                   Estimated Costs:
                 </div>
-                <div className="tracking-finnieSpacing-wider text-sm leading-5">{estimateCostKOII} KOII</div>
                 <div className="tracking-finnieSpacing-wider text-sm leading-5">
-                  {isEmpty(estimateCostAr) ? 'Calculating fee...' : `${formatNumber(estimateCostAr, 6)} AR`} {!isEmpty(estimateCostAr) && <span className="text-2xs text-success-700">Storage Fee</span>}
+                  {estimateCostKOII} KOII
+                </div>
+                <div className="tracking-finnieSpacing-wider text-sm leading-5">
+                  {isEmpty(estimateCostAr)
+                    ? 'Calculating fee...'
+                    : `${formatNumber(estimateCostAr, 6)} AR`}{' '}
+                  {!isEmpty(estimateCostAr) && (
+                    <span className="text-2xs text-success-700">Storage Fee</span>
+                  )}
                 </div>
               </div>
             </div>
-            {!showReferralField && <Button
-              onClick={handleUploadNFT}
-              className="h-9 mt-8 text-sm rounded w-43.75 mb-4"
-              variant="indigo"
-              text="Create NFT"
-              disabled={disableCreateNFT}
-            />}
-            {showReferralField &&
-              <div className='w-101 mt-4'>
-                <div className='w-46.75 text-sm text-success-700 m-auto mb-2'>FRIEND REFERRAL CODE</div>
-                <div className='mb-2'>
-                  <input onChange={(e) => setReferralCode(e.target.value)} style={{boxSizing:'border-box',background:'#D6D6D6',borderBottom:'1.5px solid #373765',paddingLeft:'4px',fontSize:'14px'}} className='w-77 h-8 confirm-create-nft-modal-referral-input' type='text'></input>
-                  <button onClick={handleSubmitReferralCode} className='w-23 h-8 bg-blue-800 text-white'>Submit</button>
+            {!showReferralField && (
+              <Button
+                onClick={handleUploadNFT}
+                className="h-9 mt-8 text-sm rounded w-43.75 mb-4"
+                variant="indigo"
+                text="Create NFT"
+                disabled={disableCreateNFT}
+              />
+            )}
+            {showReferralField && (
+              <div className="w-101 mt-4">
+                <div className="w-46.75 text-sm text-success-700 m-auto mb-2">
+                  FRIEND REFERRAL CODE
                 </div>
-                {referralCodeError && <div style={{color:'#DB1B1B',fontSize:'12px'}}>{referralCodeError}</div>}
+                <div className="mb-2">
+                  <input
+                    onChange={(e) => setReferralCode(e.target.value)}
+                    style={{
+                      boxSizing: 'border-box',
+                      background: '#D6D6D6',
+                      borderBottom: '1.5px solid #373765',
+                      paddingLeft: '4px',
+                      fontSize: '14px'
+                    }}
+                    className="w-77 h-8 confirm-create-nft-modal-referral-input"
+                    type="text"
+                  ></input>
+                  <button
+                    onClick={handleSubmitReferralCode}
+                    className="w-23 h-8 bg-blue-800 text-white"
+                  >
+                    Submit
+                  </button>
+                </div>
+                {referralCodeError && (
+                  <div style={{ color: '#DB1B1B', fontSize: '12px' }}>{referralCodeError}</div>
+                )}
               </div>
-            }
+            )}
             {/* {!confirmedCode && <div onClick={() => setShowReferralField(prev => !prev)} className='text-xs text-success-700 underline my-3.75 cursor-pointer'>{!showReferralField ? 'Skip the KOII cost with a referral code' : 'Continue without a referral code'}</div>} */}
-            {confirmedCode && <div className='text-xs text-success-700 my-3.75'>Referral code has been sucessfully redeemed!</div>}
+            {confirmedCode && (
+              <div className="text-xs text-success-700 my-3.75">
+                Referral code has been sucessfully redeemed!
+              </div>
+            )}
           </>
         )}
         {step === 2 && (
@@ -254,7 +292,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                 It will take a few minutes to reflect on your wallet. In the meantime...
               </div> */}
             </div>
-            <div className='flex w-101 justify-between m-auto'>
+            <div className="flex w-101 justify-between m-auto">
               {/* <Button
                 onClick={() => {close(); handleShareNFT(nftId)}}
                 className="h-10 mt-16 text-base rounded w-43.75 mx-auto"
@@ -270,39 +308,65 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
             </div>
           </div>
         )}
-        {
-          step === 3 && (
-            <div className="relative w-full h-full text-center">
-              <div className='w-112 text-sm mt-6'>
-                  Earn attention rewards forever through Koii. Copy this link and share on your favorite social platforms.
+        {step === 3 && (
+          <div className="relative w-full h-full text-center">
+            <div className="w-112 text-sm mt-6">
+              Earn attention rewards forever through Koii. Copy this link and share on your favorite
+              social platforms.
+            </div>
+            <div className="mt-6 text-base font-semibold">
+              {showShareLink ? 'Share Link' : 'Embed Link'}
+            </div>
+            {showShareLink && (
+              <input
+                type="text"
+                value={shareLink}
+                disabled
+                className="w-94.5 m-auto mt-2 rounded-1 text-sm leading-6 text-blue-800 border-1.5 border-solid border-blue-800 px-1"
+              />
+            )}
+            {!showShareLink && (
+              <textarea
+                value={embedLink}
+                disabled
+                className="w-94.5 h-20 m-auto mt-2 rounded-1 text-sm leading-6 text-blue-800 border-1.5 border-solid border-blue-800 px-1"
+              />
+            )}
+            <CopyToClipboard text={showShareLink ? shareLink : embedLink}>
+              <Button
+                className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
+                variant="indigo"
+                text="Copy link"
+              />
+            </CopyToClipboard>
+            <div className="flex w-77.25 m-auto mt-5 justify-between">
+              <div
+                className="cursor-pointer"
+                onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.TWITTER, nftId)}
+              >
+                <TwitterIcon />
               </div>
-              <div className='mt-6 text-base font-semibold'>
-                {showShareLink ? 'Share Link' : 'Embed Link'}
+              <div
+                className="cursor-pointer"
+                onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.FACEBOOK, nftId)}
+              >
+                <FacebookIcon />
               </div>
-              {showShareLink && <input type='text' value={shareLink} disabled className='w-94.5 m-auto mt-2 rounded-1 text-sm leading-6 text-blue-800 border-1.5 border-solid border-blue-800 px-1' />}
-              {!showShareLink && <textarea value={embedLink} disabled className='w-94.5 h-20 m-auto mt-2 rounded-1 text-sm leading-6 text-blue-800 border-1.5 border-solid border-blue-800 px-1' />}
-              <CopyToClipboard text={showShareLink ? shareLink : embedLink}>
-                <Button
-                  className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
-                  variant="indigo"
-                  text="Copy link"
-                />
-              </CopyToClipboard>
-              <div className='flex w-77.25 m-auto mt-5 justify-between'>
-                <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.TWITTER, nftId)}><TwitterIcon /></div>
-                <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.FACEBOOK, nftId)}><FacebookIcon /></div>
-                {/* <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.LINKEDIN, nftId)}><LinkedIn /></div> */}
-                <a
-                  href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koii.live/content-detail/${nftId}`}
-                  title="Share by Email"
-                >
-                  <div className='cursor-pointer'><MailIcon /></div>
-                </a>
-                <div onClick={() => setShowShareLink(prev => !prev)} className='cursor-pointer'>{showShareLink ? <EmbedIcon /> : <ShareIcon />}</div>
+              {/* <div className='cursor-pointer' onClick={() => shareSocialNetwork(SOCIAL_NETWORKS.LINKEDIN, nftId)}><LinkedIn /></div> */}
+              <a
+                href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koii.live/content-detail/${nftId}`}
+                title="Share by Email"
+              >
+                <div className="cursor-pointer">
+                  <MailIcon />
+                </div>
+              </a>
+              <div onClick={() => setShowShareLink((prev) => !prev)} className="cursor-pointer">
+                {showShareLink ? <EmbedIcon /> : <ShareIcon />}
               </div>
             </div>
-          )
-        } 
+          </div>
+        )}
       </div>
     </div>
   )

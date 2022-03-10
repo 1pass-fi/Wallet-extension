@@ -14,7 +14,8 @@ import CheckBox from 'finnie-v2/components/CheckBox'
 const tabs = ['AR', 'ETH']
 
 const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupPhraseModal }) => {
-  const defaultAccountAddress = useSelector((state) => state.defaultAccount?.address)
+  const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
+  const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
 
   const [currentTab, setCurrentTab] = useState('AR')
 
@@ -61,7 +62,12 @@ const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupPh
                 )}
               >
                 <td className="pl-2">
-                  <CheckBox checked={defaultAccountAddress === account.address} />
+                  <CheckBox
+                    checked={
+                      defaultArweaveAccountAddress === account.address ||
+                      defaultEthereumAccountAddress === account.address
+                    }
+                  />
                 </td>
                 <td>
                   {currentTab === 'AR' ? (

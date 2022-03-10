@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import isEmpty from 'lodash/isEmpty'
 
 import { TYPE } from 'constants/accountConstants'
 import { popupAccount } from 'services/account'
@@ -12,7 +13,7 @@ const ArweaveOnly = ({ content }) => {
 export default (({ children, content, checkingDefaultAccount }) => {
   const [hasArWallet, setHasArWallet] = useState(false)
 
-  const defaultAccount = useSelector(state => state.defaultAccount)
+  const defaultArweaveAccount = useSelector(state => state.defaultAccount.AR)
 
 
   useEffect(() => {
@@ -23,5 +24,5 @@ export default (({ children, content, checkingDefaultAccount }) => {
     showArweaveForm()
   }, [])
 
-  return ((checkingDefaultAccount && defaultAccount.type !== TYPE.ARWEAVE) || !hasArWallet) ? <ArweaveOnly content={content} /> : children
+  return ((checkingDefaultAccount && isEmpty(defaultArweaveAccount)) || !hasArWallet) ? <ArweaveOnly content={content} /> : children
 })

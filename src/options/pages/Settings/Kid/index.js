@@ -78,7 +78,7 @@ const KidPage = () => {
     setCssTemplate
   } = useContext(DidContext)
 
-  const defaultAccount = useSelector((state) => state.defaultAccount)
+  const defaultAccount = useSelector((state) => state.defaultAccount.AR)
   const assets = useSelector((state) => state.assets.nfts)
 
   const [disableUpdateKID, setDisableUpdateKID] = useState(true)
@@ -281,10 +281,13 @@ const KidPage = () => {
     let linkErrors = []
     linkAccounts.forEach((linkAccount, idx) => {
       linkErrors[idx] = ''
-      if (!linkAccount['link'].toLowerCase().startsWith('http://') && !linkAccount['link'].toLowerCase().startsWith('https://')) {
+      if (
+        !linkAccount['link'].toLowerCase().startsWith('http://') &&
+        !linkAccount['link'].toLowerCase().startsWith('https://')
+      ) {
         linkErrors[idx] = 'Links must begin with https:// or http://'
         validLinkAccounts = false
-      } else if(!urlRegex.test(linkAccount['link'])) {
+      } else if (!urlRegex.test(linkAccount['link'])) {
         linkErrors[idx] = 'That doesn\'t seem like a valid website. Please try again.'
         validLinkAccounts = false
       }
@@ -526,7 +529,7 @@ const KidPage = () => {
           </div>
         </div>
 
-        <div className="form-text" >
+        <div className="form-text">
           <div data-tip={isPending ? 'DID transactions pending' : ''}>
             <KidInputField
               label="DID Link"
@@ -569,13 +572,17 @@ const KidPage = () => {
               value={userKID.pronouns}
               setValue={onChangeUserInfo}
               disabled={isPending}
-            />            
+            />
           </div>
           <div className="kid-input">
             <div className="kid-input-label-section">
               <label className="kid-input-label">Description*</label>
             </div>
-            <div ref={descriptionInput} className="kid-input-input-section" data-tip={isPending ? 'DID transactions pending' : ''}>
+            <div
+              ref={descriptionInput}
+              className="kid-input-input-section"
+              data-tip={isPending ? 'DID transactions pending' : ''}
+            >
               <textarea
                 value={userKID.description}
                 onChange={(e) => onChangeUserInfo(e)}
@@ -590,7 +597,8 @@ const KidPage = () => {
 
           <div className="section-name">Link Accounts</div>
           <p className="link-account-desc">
-            These links will appear on your DID profile. For best practice, each link should begin with https://
+            These links will appear on your DID profile. For best practice, each link should begin
+            with https://
           </p>
           {linkAccounts.map((linkAccounts, idx) => (
             <div className="link-accounts-wrapper" key={idx}>
@@ -796,7 +804,10 @@ const KidPage = () => {
               </button>
             )}
             {confirmed && (
-              <button className="confirm-button flex items-center justify-center w-101 mx-auto mt-8 text-base leading-6" onClick={() => setShowConfirmModal(false)}>
+              <button
+                className="confirm-button flex items-center justify-center w-101 mx-auto mt-8 text-base leading-6"
+                onClick={() => setShowConfirmModal(false)}
+              >
                 OK
               </button>
             )}
@@ -804,7 +815,7 @@ const KidPage = () => {
         )}
       </div>
 
-      <ReactTooltip place='top' type="dark" effect="float"/>
+      <ReactTooltip place="top" type="dark" effect="float" />
     </div>
   )
 }

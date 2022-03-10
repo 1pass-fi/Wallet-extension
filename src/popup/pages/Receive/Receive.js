@@ -11,7 +11,12 @@ import BackBtn from 'img/v2/popup-back-btn.svg'
 const Receive = () => {
   const history = useHistory()
 
-  const { accountName, address } = useSelector((state) => state.defaultAccount)
+  let defaultAccount = useSelector((state) => state.defaultAccount.AR)
+  if (isEmpty(defaultAccount)) {
+    defaultAccount = useSelector((state) => state.defaultAccount.ETH)
+  }
+
+  const { accountName, address } = defaultAccount
 
   const [isCopied, setIsCopied] = useState(false)
 

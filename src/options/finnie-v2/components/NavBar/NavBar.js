@@ -2,6 +2,7 @@ import React, { createRef, useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 import clsx from 'clsx'
+import isEmpty from 'lodash/isEmpty'
 
 import Balance from 'finnie-v2/components/Balance'
 import DefaultAvatar from 'img/v2/default-avatar.svg'
@@ -31,7 +32,8 @@ const NavBar = () => {
 
   const dispatch = useDispatch()
 
-  const defaultAccount = useSelector((state) => state.defaultAccount)
+  const defaultArweaveAccount = useSelector((state) => state.defaultAccount.AR)
+  const defaultEthereumAccount = useSelector((state) => state.defaultAccount.ETH)
   const notificationsData = useSelector((state) => state.notificationsData)
 
   const toggleDropdownMenu = () => setShowDropdown(!showDropdown)
@@ -123,7 +125,13 @@ const NavBar = () => {
             </span>
           )}
         </div>
-        <Balance account={defaultAccount} />
+        <Balance
+          account={
+            !isEmpty(defaultArweaveAccount?.address)
+              ? defaultArweaveAccount
+              : defaultEthereumAccount
+          }
+        />
         <div className="relative">
           <div
             className="w-10 h-10 cursor-pointer rounded-full ml-6.5"

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import includes from 'lodash/includes'
+import isEmpty from 'lodash/isEmpty'
 
 // actions
 import { loadContent } from 'actions/koi'
@@ -11,7 +12,10 @@ import NFTCard from 'popup/components/NFTCard'
 
 const Assets = ({ assets, loadContent, setContLoading }) => {
   const [filteredAssets, setFilteredAssets] = useState({})
-  const defaultAccount = useSelector((state) => state.defaultAccount)
+  let defaultAccount = useSelector((state) => state.defaultAccount.AR)
+  if (isEmpty(defaultAccount)) {
+    defaultAccount = useSelector((state) => state.defaultAccount.ETH)
+  }
 
   useEffect(() => {
     const handleLoadContent = async () => {

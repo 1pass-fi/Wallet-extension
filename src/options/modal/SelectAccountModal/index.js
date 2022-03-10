@@ -12,12 +12,12 @@ import { setActivatedAccountAddress } from 'utils'
 
 const SelectAccount = () => {
   const dispatch = useDispatch()
-  const defaultAccount = useSelector(state => state.defaultAccount)
+  const defaultAccount = useSelector((state) => state.defaultAccount.AR)
   const arAccounts = useSelector(getArAccounts)
 
   const onSelectAccount = async (e) => {
     const selectedAccountName = e.target.value
-    const selectedAccount = find(arAccounts, v => v.accountName == selectedAccountName)
+    const selectedAccount = find(arAccounts, (v) => v.accountName == selectedAccountName)
     dispatch(setDefaultAccount(selectedAccount))
 
     // set default account to storage
@@ -25,10 +25,16 @@ const SelectAccount = () => {
   }
 
   return (
-    <div className='select-account-modal'>
-      <div className='title'>Select your account</div>
-      <select defaultValue={defaultAccount.accountName} onChange={(e) => onSelectAccount(e)} className='select'>
-        {arAccounts.map((wallet, idx) => <option key={wallet.accountName + idx}>{wallet.accountName}</option>)}
+    <div className="select-account-modal">
+      <div className="title">Select your account</div>
+      <select
+        defaultValue={defaultAccount.accountName}
+        onChange={(e) => onSelectAccount(e)}
+        className="select"
+      >
+        {arAccounts.map((wallet, idx) => (
+          <option key={wallet.accountName + idx}>{wallet.accountName}</option>
+        ))}
       </select>
     </div>
   )
@@ -42,4 +48,4 @@ export default ({ onClose }) => {
       </Modal>
     </div>
   )
-} 
+}

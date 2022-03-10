@@ -31,7 +31,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   padding: 6,
   margin: `0 0 ${grid}px 0`,
   background: isDragging ? '#BEF0ED' : '#F5F5F5',
-  ...draggableStyle,
+  ...draggableStyle
 })
 
 const getListStyle = (isDraggingOver) => ({
@@ -39,7 +39,7 @@ const getListStyle = (isDraggingOver) => ({
   paddingTop: 9,
   paddingBottom: 1,
   width: 376,
-  position: 'relative',
+  position: 'relative'
 })
 
 const queryAttr = 'data-rbd-drag-handle-draggable-id'
@@ -48,13 +48,19 @@ export default ({ accounts, setAccounts }) => {
   const [placeholderProps, setPlaceholderProps] = useState({})
   const { setNotification, setError, getDID } = useContext(GalleryContext)
   const [selectedAddress, setSelectedAddress] = useState()
+  const [selectedEthAddress, setSelectedEthAddress] = useState()
 
   const dispatch = useDispatch()
-  const defaultAccount = useSelector(state => state.defaultAccount)
+  const defaultAccount = useSelector((state) => state.defaultAccount.AR)
+  const defaultEthAccount = useSelector((state) => state.defaultAccount.AR)
 
   useEffect(() => {
     setSelectedAddress(get(defaultAccount, 'address', ''))
   }, [defaultAccount])
+
+  useEffect(() => {
+    setSelectedEthAddress(get(defaultEthAccount, 'address', ''))
+  }, [defaultEthAccount])
 
   const onDragEnd = (result) => {
     // dropped outside the list
@@ -63,9 +69,7 @@ export default ({ accounts, setAccounts }) => {
     }
 
     setPlaceholderProps({})
-    setAccounts((accounts) =>
-      reorder(accounts, result.source.index, result.destination.index)
-    )
+    setAccounts((accounts) => reorder(accounts, result.source.index, result.destination.index))
   }
 
   const onDragUpdate = (update) => {
@@ -85,21 +89,17 @@ export default ({ accounts, setAccounts }) => {
 
     const clientY =
       parseFloat(window.getComputedStyle(draggedDOM.parentNode).paddingTop) +
-      [...draggedDOM.parentNode.children]
-        .slice(0, destinationIndex)
-        .reduce((total, curr) => {
-          const style = curr.currentStyle || window.getComputedStyle(curr)
-          const marginBottom = parseFloat(style.marginBottom)
-          return total + curr.clientHeight + marginBottom
-        }, 0)
+      [...draggedDOM.parentNode.children].slice(0, destinationIndex).reduce((total, curr) => {
+        const style = curr.currentStyle || window.getComputedStyle(curr)
+        const marginBottom = parseFloat(style.marginBottom)
+        return total + curr.clientHeight + marginBottom
+      }, 0)
 
     setPlaceholderProps({
       clientHeight,
       clientWidth,
       clientY,
-      clientX: parseFloat(
-        window.getComputedStyle(draggedDOM.parentNode).paddingLeft
-      ),
+      clientX: parseFloat(window.getComputedStyle(draggedDOM.parentNode).paddingLeft)
     })
   }
 
@@ -124,25 +124,25 @@ export default ({ accounts, setAccounts }) => {
   }
 
   return (
-    <div className='account-order'>
-      <div className='account-header'>DEFAULT</div>
+    <div className="account-order">
+      <div className="account-header">DEFAULT</div>
       {accounts.map((item, index) => (
-        <div className='account' key={item.address}>
-          <div className='name-icon'>
+        <div className="account" key={item.address}>
+          <div className="name-icon">
             {/* <RearrangePadsIcon className='arrange-icon' /> */}
             <div
               onClick={() => handleSetDefaultAccount(item.address)}
               className={`set-default-checkbox ${
-                selectedAddress === item.address ? 'active' : ''
+                selectedAddress === item.address || selectedEthAddress === item.address
+                  ? 'active'
+                  : ''
               }`}
             ></div>
-            {item.type == TYPE.ARWEAVE && <FinnieIcon className='finnie-icon' />}
-            {item.type == TYPE.ETHEREUM && <EthereumIcon className='finnie-icon' />}
-            <div className='account-name'>{item.accountName}</div>
+            {item.type == TYPE.ARWEAVE && <FinnieIcon className="finnie-icon" />}
+            {item.type == TYPE.ETHEREUM && <EthereumIcon className="finnie-icon" />}
+            <div className="account-name">{item.accountName}</div>
           </div>
-          <div className='account-address'>
-            {getDisplayAddress(item.address)}
-          </div>
+          <div className="account-address">{getDisplayAddress(item.address)}</div>
         </div>
       ))}
     </div>

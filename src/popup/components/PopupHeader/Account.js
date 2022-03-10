@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import isEmpty from 'lodash/isEmpty'
 
 import ArrowIcon from 'img/down-arrow-icon.svg'
 import EthereumIcon from 'img/popup/ethereum-icon.svg'
@@ -8,7 +9,10 @@ import FinnieIcon from 'img/popup/finnie-icon.svg'
 import { TYPE } from 'constants/accountConstants'
 
 const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
-  const defaultAccount = useSelector((state) => state.defaultAccount)
+  let defaultAccount = useSelector((state) => state.defaultAccount.AR)
+  if (isEmpty(defaultAccount)) {
+    defaultAccount = useSelector((state) => state.defaultAccount.ETH)
+  }
 
   return (
     <div

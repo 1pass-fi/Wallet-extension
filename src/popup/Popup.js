@@ -357,7 +357,6 @@ const mapStateToProps = (state) => ({
   isContLoading: state.contLoading,
   price: state.price,
   accounts: state.accounts,
-  defaultAccount: state.defaultAccount,
   activityNotifications: state.activityNotifications,
   activities: state.activities
 })

@@ -20,7 +20,7 @@ const Header = () => {
   const [currentTabOrigin, setCurrentTabOrigin] = useState('')
   const [originDisabled, setOriginDisabled] = useState(false)
 
-  const defaultAccount = useSelector((state) => state.defaultAccount)
+  const defaultAccount = useSelector((state) => state.defaultAccount.AR)
 
   const loadDisabledOrigins = () => {
     chrome.windows.getCurrent(w => {
