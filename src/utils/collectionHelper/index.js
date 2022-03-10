@@ -23,7 +23,7 @@ export default async ({nfts, setNfts, address, collectionData, selectedNftIds, c
 
   info = info.value
 
-  const ownerAddress = await storage.setting.get.activatedAccountAddress()
+  const ownerAddress = await storage.setting.get.activatedArweaveAccountAddress()
 
   let nftIds = await Promise.all(nfts.map(async ({ info, url }, index) => {
     try {

@@ -339,18 +339,33 @@ export class BackgroundAccountManager extends AccountManager {
       Have to handle removing this address from activatedAccount if this
       address is the activated account.
       */
-     
       await this.removeFromImported(address)
-      if (this.importedAccount.length){
-        const currentActivatedAccount = await storage.setting.get.activatedAccountAddress()
-        if (address !== currentActivatedAccount) {
-          return
+      if (this.importedAccount.length) {
+        const currentActivatedAccount = await storage.setting.get.activatedArweaveAccountAddress()
+        if (address === currentActivatedAccount) {
+          /*
+            set new activatedAccount after remove activatedAccount
+          */
+          const defaultActivatedAccount = find(this.importedAccount, { type: TYPE.ARWEAVE })
+          if (!isEmpty(defaultActivatedAccount)) {
+            await setActivatedAccountAddress(defaultActivatedAccount)
+          } else {
+            await storage.setting.set.activatedArweaveAccountAddress(null)
+          }
         }
-        /*
-          set new activatedAccount after remove activatedAccount
-        */
-        const defaultActivatedAccount = this.importedAccount[0].address
-        await setActivatedAccountAddress(defaultActivatedAccount)
+
+        const currentEthereumActivatedAccount = await storage.setting.get.activatedEthereumAccountAddress()
+        if (address === currentEthereumActivatedAccount) {
+          /*
+            set new activatedAccount after remove activatedAccount
+          */
+          const defaultActivatedAccount = find(this.importedAccount, { type: TYPE.ARWEAVE })
+          if (!isEmpty(defaultActivatedAccount)) {
+            await setActivatedAccountAddress(defaultActivatedAccount)
+          } else {
+            await storage.setting.set.activatedArweaveAccountAddress(null)
+          }
+        }
       } else {
         await storage.setting.set.activatedArweaveAccountAddress(null)
         await storage.setting.set.activatedArweaveAccountAddress(null)

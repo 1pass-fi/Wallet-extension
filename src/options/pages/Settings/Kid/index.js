@@ -136,7 +136,7 @@ const KidPage = () => {
 
   useEffect(() => {
     const getPendingStatus = async () => {
-      const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
+      const defaultAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
       const account = await popupAccount.getAccount({ address: defaultAccountAddress })
       const pendingTransactions = await account.get.pendingTransactions()
 

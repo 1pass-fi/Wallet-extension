@@ -19,8 +19,11 @@ export const loadAllAccounts = () => async (dispatch) => {
 }
 
 export const setAccounts = (accounts) => async (dispatch) => {
-  const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
+  const defaultAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
   dispatch(setDefaultAccountByAddress(defaultAccountAddress))
+
+  const defaultEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
+  dispatch(setDefaultAccountByAddress(defaultEthereumAccountAddress))
 
   return dispatch({
     type: SET_ACCOUNTS,

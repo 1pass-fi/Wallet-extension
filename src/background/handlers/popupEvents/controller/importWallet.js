@@ -1,4 +1,4 @@
-import { get, isString } from 'lodash'
+import { get, isString, isEmpty } from 'lodash'
 import passworder from 'browser-passworder'
 
 // Services
@@ -49,9 +49,11 @@ export default async (payload, next) => {
     */
     const count = await backgroundAccount.count()
     if (count) {
-      const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
+      let activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
+      if (isEmpty(activatedAccountAddress)) {
+        activatedAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
+      }
       const encryptedKey = await backgroundAccount.getEncryptedKey(activatedAccountAddress)
-  
       try {
         await passworder.decrypt(password, encryptedKey)
       } catch (err) {

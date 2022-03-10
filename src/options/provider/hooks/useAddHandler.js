@@ -25,16 +25,33 @@ export default ({ setError, setModalStates, setNotification, setIsLoading, }) =>
         MESSAGES.GET_BALANCES_SUCCESS,
         async () => {
           try {
-            const { defaultAccount } = store.getState()
+            const {
+              defaultAccount: { AR, ETH }
+            } = store.getState()
+  
+            const activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
+            let balancesUpdated = false
+            if (!isEmpty(activatedAccountAddress)) {
+              const activatedAccount = await popupAccount.getAccount({
+                address: activatedAccountAddress
+              })
 
-            let activatedAccount = await storage.setting.get.activatedAccountAddress()
-            activatedAccount = await popupAccount.getAccount({
-              address: activatedAccount,
-            })
-            const activatedAccountData = await activatedAccount.get.metadata()
-            const { balance, koiBalance } = activatedAccountData
+              const activatedAccountData = await activatedAccount.get.metadata()
+              const { balance, koiBalance } = activatedAccountData
+              balancesUpdated = AR.balance !== balance || AR.koiBalance !== koiBalance
+            } else {
+              const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
+              if (!isEmpty(activatedEthereumAccountAddress)) {
+                const activatedAccount = await popupAccount.getAccount({
+                  address: activatedEthereumAccountAddress
+                })
 
-            const balancesUpdated = defaultAccount.balance !== balance || defaultAccount.koiBalance !== koiBalance
+                const activatedAccountData = await activatedAccount.get.metadata()
+                const { balance, koiBalance } = activatedAccountData
+                balancesUpdated = ETH.balance !== balance
+              }
+            }
+
             if (balancesUpdated) {
               await dispatch(loadAllAccounts())
               // sendMessage.success({ title: 'Balances updated', message: 'Your balances have been updated.' })
@@ -76,7 +93,7 @@ export default ({ setError, setModalStates, setNotification, setIsLoading, }) =>
                 - Get pending assets for activated account
                 - Set the pending NFT to cardInfo list
             */
-            let activatedAccount = await storage.setting.get.activatedAccountAddress()
+            let activatedAccount = await storage.setting.get.activatedArweaveAccountAddress()
             activatedAccount = await popupAccount.getAccount({
               address: activatedAccount,
             })

@@ -78,7 +78,7 @@ export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
   const getDID = async () => {
     try {
       setIsLoading(prev => ++prev)
-      const defaultAccountAddress = await storage.setting.get.activatedAccountAddress()
+      const defaultAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
       let state, id
       try {
         const account = await popupAccount.getAccount({ address: defaultAccountAddress })

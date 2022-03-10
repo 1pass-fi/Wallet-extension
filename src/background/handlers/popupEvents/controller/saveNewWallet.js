@@ -27,10 +27,14 @@ export default async (payload, next) => {
       Check for having imported account.
     */
     const count = await backgroundAccount.count()
-    const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
-    const encryptedKey = await backgroundAccount.getEncryptedKey(activatedAccountAddress)
 
     if (count) {
+      let activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
+      if (isEmpty(activatedAccountAddress)) {
+        activatedAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
+      }
+      const encryptedKey = await backgroundAccount.getEncryptedKey(activatedAccountAddress)
+
       // Check input password
       try {
         await passworder.decrypt(password, encryptedKey)

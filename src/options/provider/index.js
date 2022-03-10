@@ -201,12 +201,23 @@ export default ({ children }) => {
         Set default account if imported account is the first account
       */
       if (get(popupAccount, 'importedAccount.length') === 1) {
-        let activatedAccount = await storage.setting.get.activatedAccountAddress()
-        activatedAccount = await popupAccount.getAccount({
-          address: activatedAccount,
-        })
-        activatedAccount = await activatedAccount.get.metadata()
-        dispatch(setDefaultAccount(activatedAccount))
+        let activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
+        if(!isEmpty(activatedAccountAddress)) {
+          let activatedAccount = await popupAccount.getAccount({
+            address: activatedAccountAddress,
+          })
+          activatedAccount = await activatedAccount.get.metadata()
+          dispatch(setDefaultAccount(activatedAccount))
+        }
+
+        let activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
+        if(!isEmpty(activatedEthereumAccountAddress)) {
+          let activatedEthereumAccount = await popupAccount.getAccount({
+            address: activatedEthereumAccountAddress,
+          })
+          activatedEthereumAccount = await activatedEthereumAccount.get.metadata()
+          dispatch(setDefaultAccount(activatedEthereumAccount))
+        }
       }
     }
 
@@ -262,13 +273,23 @@ export default ({ children }) => {
 
 
   const updateDefaultAccountData = async () => {
-    const activatedAccountAddress = await storage.setting.get.activatedAccountAddress()
-    const activatedAccount = await popupAccount.getAccount({
-      address: activatedAccountAddress
-    })
-    const activatedAccountMetadata = await activatedAccount.get.metadata()
+    let activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
+    if(!isEmpty(activatedAccountAddress)) {
+      let activatedAccount = await popupAccount.getAccount({
+        address: activatedAccountAddress,
+      })
+      activatedAccount = await activatedAccount.get.metadata()
+      dispatch(setDefaultAccount(activatedAccount))
+    }
 
-    dispatch(setDefaultAccount(activatedAccountMetadata))
+    let activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
+    if(!isEmpty(activatedEthereumAccountAddress)) {
+      let activatedEthereumAccount = await popupAccount.getAccount({
+        address: activatedEthereumAccountAddress,
+      })
+      activatedEthereumAccount = await activatedEthereumAccount.get.metadata()
+      dispatch(setDefaultAccount(activatedEthereumAccount))
+    }
   }
 
   useEffect(() => {

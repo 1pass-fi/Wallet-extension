@@ -49,7 +49,7 @@ export const setDefaultAccount = (account) => async (dispatch) => {
     })
   }
 
-  if (defaultAccount.type === TYPE.ETHEREUM) {
+  if (account.type === TYPE.ETHEREUM) {
     return dispatch({
       type: SET_DEFAULT_ETHEREUM_ACCOUNT,
       payload: account

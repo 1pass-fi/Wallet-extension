@@ -9,7 +9,7 @@ import { FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
 export default async (payload, next) => {
   try {
     const { endpoints, friendCode } = payload.data
-    const defaultAddress = await storage.setting.get.activatedAccountAddress()
+    const defaultAddress = await storage.setting.get.activatedArweaveAccountAddress()
     const credentials = await backgroundAccount.getCredentialByAddress(defaultAddress)
     const account = await backgroundAccount.getAccount(credentials)
     let result

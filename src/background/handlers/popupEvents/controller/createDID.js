@@ -11,7 +11,7 @@ export default async (payload, next) => {
 
     let address
     if (activatedAddress) address = activatedAddress
-    else address = await storage.setting.get.activatedAccountAddress()
+    else address = await storage.setting.get.activatedArweaveAccountAddress()
 
     const credentials = await backgroundAccount.getCredentialByAddress(address)
     const account = await backgroundAccount.getAccount(credentials)
