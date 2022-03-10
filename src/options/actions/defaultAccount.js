@@ -13,9 +13,11 @@ import { popupAccount } from 'services/account'
 import { setActivatedAccountAddress } from 'utils'
 
 export const setDefaultAccountByAddress = (address) => async (dispatch) => {
-  if (!isEmpty(address)) {
-    await setActivatedAccountAddress(address)
+  if (isEmpty(address)) {
+    return
   }
+
+  await setActivatedAccountAddress(address)
 
   const account = await popupAccount.getAccount({
     address: address
