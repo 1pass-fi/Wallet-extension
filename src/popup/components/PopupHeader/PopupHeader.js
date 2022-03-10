@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
+import isEmpty from 'lodash/isEmpty'
 
 import AccountDropdown from './AccountDropdown'
 import Account from './Account'
@@ -15,27 +16,38 @@ import PlayIcon from 'img/popup/play-icon.svg'
 import disableOrigin from 'utils/disableOrigin'
 
 const Header = () => {
+  const defaultArweaveAccount = useSelector((state) => state.defaultAccount.AR)
+  const defaultEthereumAccount = useSelector((state) => state.defaultAccount.ETH)
+
   const [showAccountDropdown, setShowAccountDropdown] = useState(false)
   const [showPauseFinnieDropdown, setShowPauseFinnieDropdown] = useState(false)
   const [currentTabOrigin, setCurrentTabOrigin] = useState('')
   const [originDisabled, setOriginDisabled] = useState(false)
+  const [defaultAccount, setDefaultAccount] = useState({})
 
-  const defaultAccount = useSelector((state) => state.defaultAccount.AR)
+  useEffect(() => {
+    if (!isEmpty(defaultArweaveAccount.address)) {
+      setDefaultAccount(defaultArweaveAccount)
+      return
+    }
+    if (!isEmpty(defaultEthereumAccount.address)) {
+      setDefaultAccount(defaultEthereumAccount)
+      return
+    }
+  }, [defaultArweaveAccount, defaultEthereumAccount])
 
   const loadDisabledOrigins = () => {
-    chrome.windows.getCurrent(w => {
+    chrome.windows.getCurrent((w) => {
       try {
         const windowId = w.id
-        chrome.tabs.getSelected(windowId, tab => {
+        chrome.tabs.getSelected(windowId, (tab) => {
           const origin = tab.url.split('/')[0] + '//' + tab.url.split('/')[2]
           setCurrentTabOrigin(origin)
-          storage.setting.get.disabledOrigins().then(disabledOrigins => {
+          storage.setting.get.disabledOrigins().then((disabledOrigins) => {
             setOriginDisabled(disabledOrigins.includes(origin))
           })
         })
-      } catch (err) {
-
-      }
+      } catch (err) {}
     })
   }
 
@@ -43,7 +55,7 @@ const Header = () => {
     const url = chrome.extension.getURL('options.html#/settings/KID')
     chrome.tabs.create({ url })
   }
-  
+
   const goToDID = () => {
     const DID = defaultAccount?.didData?.state?.kID
     const url = 'https://koii.id/' + (DID || '')
@@ -54,7 +66,7 @@ const Header = () => {
     const url = 'https://share.hsforms.com/1Nmy8p6zWSN2J2skJn5EcOQc20dg'
     chrome.tabs.create({ url })
   }
-  
+
   const handleDisableFinnie = async () => {
     if (!originDisabled) {
       await disableOrigin.addDisabledOrigin(currentTabOrigin)
@@ -67,7 +79,7 @@ const Header = () => {
 
   const ref = useRef(null)
   const modalRef = useRef(null)
-  
+
   useEffect(() => {
     loadDisabledOrigins()
   }, [])
@@ -86,11 +98,11 @@ const Header = () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [ref, modalRef])
-  
+
   return (
     <div
       className="fixed flex shadow-md z-30"
-      style={{ height: '54px',backgroundColor: '#8585BC' }}
+      style={{ height: '54px', backgroundColor: '#8585BC' }}
       ref={ref}
     >
       <div className="relative">
@@ -100,7 +112,11 @@ const Header = () => {
         />
         {showAccountDropdown && <AccountDropdown setShowAccountDropdown={setShowAccountDropdown} />}
       </div>
-      <div onClick={goToSetting} className="bg-white flex items-center justify-center cursor-pointer" style={{ width: '59px' }}>
+      <div
+        onClick={goToSetting}
+        className="bg-white flex items-center justify-center cursor-pointer"
+        style={{ width: '59px' }}
+      >
         <SettingIcon style={{ width: '33px', height: '32px' }} />
       </div>
       <div
@@ -110,17 +126,39 @@ const Header = () => {
       >
         <Avatar className="mt-1.25" />
       </div>
-      <div onClick={() => setShowPauseFinnieDropdown(prev => !prev)} className="bg-blue-800 flex items-center justify-center cursor-pointer" style={{ width: '30px' }}>
+      <div
+        onClick={() => setShowPauseFinnieDropdown((prev) => !prev)}
+        className="bg-blue-800 flex items-center justify-center cursor-pointer"
+        style={{ width: '30px' }}
+      >
         <OptionIcon />
       </div>
-      <div className='z-50'>
-        {showPauseFinnieDropdown && <div style={{width:'252px',height:'92px',right:'0px',top:'54px'}} className='text-base text-white absolute' ref={modalRef}>
-          <div onClick={handleDisableFinnie} style={{height:'46px',paddingRight:'16px',borderBottom:'1px solid #8585BC'}} className='bg-blue-800 hover:bg-blue-400 cursor-pointer flex items-center justify-end'>
-            <div className='flex items-center justify-center' style={{marginRight:'6px'}}>{!originDisabled ? <PauseIcon /> : <PlayIcon />}</div>
-            {!originDisabled ? 'Pause Finnie on this site' : 'Resume Finnie'}
+      <div className="z-50">
+        {showPauseFinnieDropdown && (
+          <div
+            style={{ width: '252px', height: '92px', right: '0px', top: '54px' }}
+            className="text-base text-white absolute"
+            ref={modalRef}
+          >
+            <div
+              onClick={handleDisableFinnie}
+              style={{ height: '46px', paddingRight: '16px', borderBottom: '1px solid #8585BC' }}
+              className="bg-blue-800 hover:bg-blue-400 cursor-pointer flex items-center justify-end"
+            >
+              <div className="flex items-center justify-center" style={{ marginRight: '6px' }}>
+                {!originDisabled ? <PauseIcon /> : <PlayIcon />}
+              </div>
+              {!originDisabled ? 'Pause Finnie on this site' : 'Resume Finnie'}
+            </div>
+            <div
+              onClick={goToReportAnIssue}
+              style={{ height: '46px', paddingRight: '16px', zIndex: 100 }}
+              className="bg-blue-800 hover:bg-blue-400 cursor-pointer flex items-center justify-end"
+            >
+              Report an Issue
+            </div>
           </div>
-          <div onClick={goToReportAnIssue} style={{height:'46px',paddingRight:'16px',zIndex:100}} className='bg-blue-800 hover:bg-blue-400 cursor-pointer flex items-center justify-end'>Report an Issue</div>
-        </div>}
+        )}
       </div>
     </div>
   )

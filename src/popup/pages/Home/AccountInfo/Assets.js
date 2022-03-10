@@ -11,11 +11,20 @@ import { setContLoading } from 'actions/continueLoading'
 import NFTCard from 'popup/components/NFTCard'
 
 const Assets = ({ assets, loadContent, setContLoading }) => {
-  const [filteredAssets, setFilteredAssets] = useState({})
-  let defaultAccount = useSelector((state) => state.defaultAccount.AR)
-  if (isEmpty(defaultAccount)) {
-    defaultAccount = useSelector((state) => state.defaultAccount.ETH)
-  }
+  const defaultArweaveAccount = useSelector((state) => state.defaultAccount.AR)
+  const defaultEthereumAccount = useSelector((state) => state.defaultAccount.ETH)
+  const [defaultAccount, setDefaultAccount] = useState({})
+
+  useEffect(() => {
+    if (!isEmpty(defaultArweaveAccount.address)) {
+      setDefaultAccount(defaultArweaveAccount)
+      return
+    }
+    if (!isEmpty(defaultEthereumAccount.address)) {
+      setDefaultAccount(defaultEthereumAccount)
+      return
+    }
+  }, [defaultArweaveAccount, defaultEthereumAccount])
 
   useEffect(() => {
     const handleLoadContent = async () => {

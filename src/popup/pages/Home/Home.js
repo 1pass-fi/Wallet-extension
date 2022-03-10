@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ParallaxProvider } from 'react-scroll-parallax'
 import { useSelector } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
@@ -9,14 +9,24 @@ import PopupBackground from 'img/popup/popup-background.svg'
 import HomeTop from './HomeTop'
 
 const Home = () => {
-  let defaultAccount = useSelector((state) => state.defaultAccount.AR)
-  if (isEmpty(defaultAccount)) {
-    defaultAccount = useSelector((state) => state.defaultAccount.ETH)
-  }
+  const defaultArweaveAccount = useSelector((state) => state.defaultAccount.AR)
+  const defaultEthereumAccount = useSelector((state) => state.defaultAccount.ETH)
   const price = useSelector((state) => state.price)
 
-  const [scrollEl, setScrollElement] = React.useState(null)
   const ref = React.useRef()
+  const [scrollEl, setScrollElement] = React.useState(null)
+  const [defaultAccount, setDefaultAccount] = useState({})
+
+  useEffect(() => {
+    if (!isEmpty(defaultArweaveAccount.address)) {
+      setDefaultAccount(defaultArweaveAccount)
+      return
+    }
+    if (!isEmpty(defaultEthereumAccount.address)) {
+      setDefaultAccount(defaultEthereumAccount)
+      return
+    }
+  }, [defaultArweaveAccount, defaultEthereumAccount])
 
   useEffect(() => {
     setScrollElement(ref.current)

@@ -12,7 +12,7 @@ const Receive = () => {
   const history = useHistory()
 
   let defaultAccount = useSelector((state) => state.defaultAccount.AR)
-  if (isEmpty(defaultAccount)) {
+  if (isEmpty(defaultAccount?.address)) {
     defaultAccount = useSelector((state) => state.defaultAccount.ETH)
   }
 
