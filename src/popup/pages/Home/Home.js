@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-
 import { ParallaxProvider } from 'react-scroll-parallax'
 import { useSelector } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
