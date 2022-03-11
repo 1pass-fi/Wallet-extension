@@ -20,8 +20,7 @@ const emptyAccount = {
 
 const initialState = {
   ETH: emptyAccount,
-  AR: emptyAccount,
-  defaultAccount: emptyAccount
+  AR: emptyAccount
 }
 
 export default function defaultAccountReducer(state = initialState, action) {
@@ -29,9 +28,9 @@ export default function defaultAccountReducer(state = initialState, action) {
 
   switch (type) {
     case SET_DEFAULT_ARWEAVE_ACCOUNT:
-      return { ...state, AR: payload, defaultAccount: payload }
+      return { ...state, AR: payload }
     case SET_DEFAULT_ETHEREUM_ACCOUNT:
-      return { ...state, ETH: payload, defaultAccount: payload }
+      return { ...state, ETH: payload }
     case UPDATE_DEFAULT_ACCOUNT:
       return { ...state, AR: { ...state.AR, ...payload } }
     case UPDATE_DEFAULT_ETHEREUM_ACCOUNT:

@@ -78,6 +78,6 @@ export class SettingGet {
   }
 
   async activatedChain() {
-    return await this.#chrome._getChrome(SETTING.ACTIVATED_CHAIN) || TYPE.ARWEAVE
+    return (await this.#chrome._getChrome(SETTING.ACTIVATED_CHAIN)) || TYPE.ARWEAVE
   }
 }

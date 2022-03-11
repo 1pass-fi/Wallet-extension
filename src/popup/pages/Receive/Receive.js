@@ -8,11 +8,14 @@ import Background from 'img/v2/popup-receive-bg.svg'
 import CopyIdBtn from 'img/v2/copy-id-button.svg'
 import BackBtn from 'img/v2/popup-back-btn.svg'
 
+// selectors
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
+
 const Receive = () => {
   const history = useHistory()
-  const defaultAccount = useSelector((state) => state.defaultAccount.defaultAccount)
+  const displayingAccount = useSelector(getDisplayingAccount)
 
-  const { accountName, address } = defaultAccount
+  const { accountName, address } = displayingAccount
 
   const [isCopied, setIsCopied] = useState(false)
 

@@ -33,6 +33,7 @@ import { setKoi, getBalances } from 'actions/koi'
 import { setCurrency } from 'actions/currency'
 import { setAccounts } from 'actions/accounts'
 import { setDefaultAccount } from 'actions/defaultAccount'
+import { setActivatedChain } from 'actions/activatedChain'
 import { setActivityNotifications } from 'actions/activityNotification'
 import { setSettings } from 'actions/settings'
 import { setActivities } from 'actions/activities'
@@ -88,6 +89,7 @@ const Popup = ({
   setCurrency,
   setAccounts,
   setDefaultAccount,
+  setActivatedChain,
   accounts,
   setActivityNotifications,
   setSettings,
@@ -102,6 +104,10 @@ const Popup = ({
 
   const loadApp = async () => {
     setIsLoading(true)
+
+    const activatedChain = await storage.setting.get.activatedChain()
+    setActivatedChain(activatedChain)
+
     /* 
       load for wallet state of lock or unlock
       load for all accounts
@@ -381,6 +387,7 @@ const mapDispatchToProps = {
   setCurrency,
   setAccounts,
   setDefaultAccount,
+  setActivatedChain,
   setActivityNotifications,
   setSettings,
   setActivities,

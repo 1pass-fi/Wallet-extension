@@ -10,30 +10,33 @@ import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 
+// selectors
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
+
 const Tokens = () => {
-  const defaultAccount = useSelector((state) => state.defaultAccount.defaultAccount)
+  const displayingAccount = useSelector(getDisplayingAccount)
   const price = useSelector((state) => state.price)
 
   const tokens = useMemo(() => {
-    if (defaultAccount.type === TYPE.ARWEAVE)
+    if (displayingAccount.type === TYPE.ARWEAVE)
       return [
         {
           name: 'Arweave',
-          value: numberFormat(defaultAccount.balance),
+          value: numberFormat(displayingAccount.balance),
           unit: 'AR',
-          usdValue: fiatCurrencyFormat(defaultAccount.balance * price.AR)
+          usdValue: fiatCurrencyFormat(displayingAccount.balance * price.AR)
         },
-        { name: 'KOII', value: numberFormat(defaultAccount.koiBalance), unit: 'KOII' }
+        { name: 'KOII', value: numberFormat(displayingAccount.koiBalance), unit: 'KOII' }
       ]
     return [
       {
         name: 'Ethereum',
-        value: numberFormat(defaultAccount.balance),
-        usdValue: fiatCurrencyFormat(defaultAccount.balance * price.ETH),
+        value: numberFormat(displayingAccount.balance),
+        usdValue: fiatCurrencyFormat(displayingAccount.balance * price.ETH),
         unit: 'ETH'
       }
     ]
-  }, [defaultAccount])
+  }, [displayingAccount])
 
   return (
     <div className="w-full px-3">

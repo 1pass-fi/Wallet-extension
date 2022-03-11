@@ -10,9 +10,12 @@ import { setContLoading } from 'actions/continueLoading'
 // components
 import NFTCard from 'popup/components/NFTCard'
 
+// selectors
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
+
 const Assets = ({ assets, loadContent, setContLoading }) => {
   const [filteredAssets, setFilteredAssets] = useState({})
-  const defaultAccount = useSelector((state) => state.defaultAccount.defaultAccount)
+  const displayingAccount = useSelector(getDisplayingAccount)
 
   useEffect(() => {
     const handleLoadContent = async () => {
@@ -31,9 +34,9 @@ const Assets = ({ assets, loadContent, setContLoading }) => {
 
   useEffect(() => {
     let showAssets = []
-    showAssets = assets.filter((asset) => defaultAccount.address === asset.owner)
+    showAssets = assets.filter((asset) => displayingAccount.address === asset.owner)
     setFilteredAssets(showAssets)
-  }, [defaultAccount, assets])
+  }, [displayingAccount, assets])
 
   return (
     <div className="w-full bg-trueGray-100 grid grid-cols-3 gap-5 place-items-center px-3 py-1">

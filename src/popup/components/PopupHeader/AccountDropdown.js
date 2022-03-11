@@ -12,14 +12,17 @@ import RemoveAccountIcon from 'img/remove-account-links.svg'
 import { removeWallet } from 'actions/koi'
 import { setIsLoading } from 'actions/loading'
 import { setDefaultAccount } from 'actions/defaultAccount'
+import { setActivatedChain } from 'actions/activatedChain'
 
 // services
 import { popupAccount } from 'services/account'
 
+// storage
+import storage from 'services/storage'
+
 // constants
 import { PATH } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
-import storage from 'services/storage'
 
 export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoading }) => {
   const dispatch = useDispatch()
@@ -54,10 +57,8 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
           key={idx}
           style={{ width: '249px', height: '45px' }}
           onClick={async () => {
-            // set activatedChain to store
-            console.log('RUINN')
-            console.log(account.TYPE)
             await storage.setting.set.activatedChain(account.type)
+            dispatch(setActivatedChain(account.type))
 
             dispatch(setDefaultAccount(account))
             setShowAccountDropdown(false)

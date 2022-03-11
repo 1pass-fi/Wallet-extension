@@ -11,7 +11,6 @@ import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 import HomeTop from './HomeTop'
 
 const Home = () => {
-  const defaultAccount = useSelector((state) => state.defaultAccount.defaultAccount)
   const displayingAccount = useSelector(getDisplayingAccount)
 
   const price = useSelector((state) => state.price)
@@ -36,7 +35,7 @@ const Home = () => {
             <PopupBackground />
           </div>
         </div>
-        <AccountInfo defaultAccount={displayingAccount} price={price} />
+        <AccountInfo displayingAccount={displayingAccount} price={price} />
       </ParallaxProvider>
     </div>
   )
