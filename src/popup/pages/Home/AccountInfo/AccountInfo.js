@@ -20,7 +20,7 @@ const tabs = [
   { name: 'Activity', to: '/activity' }
 ]
 
-const AccountInfo = ({ defaultAccount, price }) => {
+const AccountInfo = ({ displayingAccount, price }) => {
   const history = useHistory()
 
   const assetHeaderParallax = useParallax({
@@ -47,26 +47,27 @@ const AccountInfo = ({ defaultAccount, price }) => {
         />
         {!includes(location.pathname, 'assets') ? (
           <div className="h-full px-17.25 py-3">
-            {defaultAccount.type !== TYPE.ETHEREUM && (
+            {displayingAccount.type !== TYPE.ETHEREUM && (
               <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-                {numberFormat(defaultAccount.koiBalance)} KOII
+                {numberFormat(displayingAccount.koiBalance)} KOII
               </div>
             )}
-            {defaultAccount.type === TYPE.ETHEREUM && (
+            {displayingAccount.type === TYPE.ETHEREUM && (
               <div className="flex flex-col">
                 <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-                  {numberFormat(defaultAccount.balance)} ETH
+                  {numberFormat(displayingAccount.balance)} ETH
                 </div>
                 <div
                   className="text-base leading-8 tracking-finnieSpacing-tight"
                   style={{ color: '#707070' }}
                 >
-                  ${fiatCurrencyFormat(defaultAccount.balance * price.ETH)} USD
+                  ${fiatCurrencyFormat(displayingAccount.balance * price.ETH)} USD
                 </div>
               </div>
             )}
           </div>
         ) : null}
+       
       </div>
       <div
         className={clsx(

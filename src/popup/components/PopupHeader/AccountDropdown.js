@@ -19,6 +19,7 @@ import { popupAccount } from 'services/account'
 // constants
 import { PATH } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
+import storage from 'services/storage'
 
 export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoading }) => {
   const dispatch = useDispatch()
@@ -52,7 +53,12 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
           className="bg-blue-600 text-white flex items-center cursor-pointer mb-0.25 hover:bg-indigo-400"
           key={idx}
           style={{ width: '249px', height: '45px' }}
-          onClick={() => {
+          onClick={async () => {
+            // set activatedChain to store
+            console.log('RUINN')
+            console.log(account.TYPE)
+            await storage.setting.set.activatedChain(account.type)
+
             dispatch(setDefaultAccount(account))
             setShowAccountDropdown(false)
           }}

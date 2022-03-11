@@ -1,5 +1,5 @@
 import {
-  SET_DEFAULT_ACCOUNT,
+  SET_DEFAULT_ARWEAVE_ACCOUNT,
   UPDATE_DEFAULT_ACCOUNT,
   SET_DEFAULT_ETHEREUM_ACCOUNT,
   UPDATE_DEFAULT_ETHEREUM_ACCOUNT
@@ -26,7 +26,7 @@ export const setDefaultAccountByAddress = (address) => async (dispatch) => {
 
   if (defaultAccount.type === TYPE.ARWEAVE) {
     return dispatch({
-      type: SET_DEFAULT_ACCOUNT,
+      type: SET_DEFAULT_ARWEAVE_ACCOUNT,
       payload: defaultAccount
     })
   }
@@ -46,7 +46,7 @@ export const setDefaultAccount = (account) => async (dispatch) => {
 
   if (account.type === TYPE.ARWEAVE) {
     return dispatch({
-      type: SET_DEFAULT_ACCOUNT,
+      type: SET_DEFAULT_ARWEAVE_ACCOUNT,
       payload: account
     })
   }

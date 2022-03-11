@@ -1,7 +1,7 @@
 import { 
   ADD_ACCOUNT_BY_ADDRESS, 
   SET_ACCOUNTS,
-  SET_DEFAULT_ACCOUNT 
+  SET_DEFAULT_ARWEAVE_ACCOUNT 
 } from './types'
 import actionHelpers from './helpers'
 

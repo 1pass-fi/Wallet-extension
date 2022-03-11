@@ -72,4 +72,16 @@ export class SettingSet {
   disabledOrigin(value) {
     return this.#chrome._setChrome(SETTING.DISABLED_ORIGINS, value)
   }
+
+  siteConnectedAddresses(value) {
+    return this.#chrome._setChrome(SETTING.SITE_CONNECTED_ADDRESSES, value)
+  }
+
+  ethereumProvider(value) {
+    return this.#chrome._setChrome(SETTING.ETHEREUM_PROVIDER, value)
+  }
+
+  activatedChain(value) {
+    return this.#chrome._setChrome(SETTING.ACTIVATED_CHAIN, value)
+  }
 }

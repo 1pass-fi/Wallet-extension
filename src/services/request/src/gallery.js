@@ -105,7 +105,7 @@ export class GalleryRequest extends Request {
    * @param {String} body.address 
    */
   setDefaultAccount(body) {
-    return this.promise(MESSAGES.SET_DEFAULT_ACCOUNT, body)
+    return this.promise(MESSAGES.SET_DEFAULT_ARWEAVE_ACCOUNT, body)
   }
 
   friendReferral(body) {

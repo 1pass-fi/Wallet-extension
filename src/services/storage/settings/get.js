@@ -1,5 +1,6 @@
 import { ChromeStorage } from '../ChromeStorage'
 import { SETTING } from 'constants/storageConstants'
+import { TYPE } from 'constants/accountConstants'
 
 export class SettingGet {
   #chrome
@@ -66,5 +67,17 @@ export class SettingGet {
 
   async disabledOrigins() {
     return (await this.#chrome._getChrome(SETTING.DISABLED_ORIGINS)) || []
+  }
+
+  async siteConnectedAddresses() {
+    return (await this.#chrome._getChrome(SETTING.SITE_CONNECTED_ADDRESSES)) || {}
+  }
+
+  async ethereumProvider() {
+    return await this.#chrome._getChrome(SETTING.ETHEREUM_PROVIDER)
+  }
+
+  async activatedChain() {
+    return await this.#chrome._getChrome(SETTING.ACTIVATED_CHAIN) || TYPE.ARWEAVE
   }
 }

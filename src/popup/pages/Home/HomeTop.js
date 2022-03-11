@@ -8,8 +8,9 @@ import SendIcon from 'img/popup/send-icon.svg'
 import ReceiveIcon from 'img/popup/receive-icon.svg'
 import { TYPE } from 'constants/accountConstants'
 import { fiatCurrencyFormat, numberFormat } from 'utils'
+import storage from 'services/storage'
 
-const HomeTop = ({ defaultAccount, price }) => {
+const HomeTop = ({ displayingAccount, price }) => {
   const p = useParallax({
     translateX: [0, 100],
     shouldAlwaysCompleteAnimation: true,
@@ -21,30 +22,30 @@ const HomeTop = ({ defaultAccount, price }) => {
     <div>
       <div ref={p.ref}>
         <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />
-        {defaultAccount.type !== TYPE.ETHEREUM && (
+        {displayingAccount.type !== TYPE.ETHEREUM && (
           <div className="mt-6.5">
             <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-              {numberFormat(defaultAccount.koiBalance)} KOII
+              {numberFormat(displayingAccount.koiBalance)} KOII
             </div>
             <div
               hidden
               className="text-base leading-8 tracking-finnieSpacing-tight"
               style={{ color: '#707070' }}
             >
-              ${fiatCurrencyFormat(defaultAccount.koiBalance * price.KOI)} USD
+              ${fiatCurrencyFormat(displayingAccount.koiBalance * price.KOI)} USD
             </div>
           </div>
         )}
-        {defaultAccount.type === TYPE.ETHEREUM && (
+        {displayingAccount.type === TYPE.ETHEREUM && (
           <div className="mt-6.5">
             <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-              {numberFormat(defaultAccount.balance)} ETH
+              {numberFormat(displayingAccount.balance)} ETH
             </div>
             <div
               className="text-base leading-8 tracking-finnieSpacing-tight"
               style={{ color: '#707070' }}
             >
-              ${fiatCurrencyFormat(defaultAccount.balance * price.ETH)} USD
+              ${fiatCurrencyFormat(displayingAccount.balance * price.ETH)} USD
             </div>
           </div>
         )}
@@ -61,6 +62,19 @@ const HomeTop = ({ defaultAccount, price }) => {
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
               SEND
             </div>
+            <button style={{backgroundColor: 'pink', borderRadius: '4px', marginTop: '5px'}} onClick={async () => {
+              console.log('RUNNN')
+              // change provider
+              const mainnetProvider = 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
+              await storage.setting.set.ethereumProvider(mainnetProvider)
+
+              // reload all account
+              
+
+            }}>Change Provider</button>
+            <button style={{backgroundColor: 'pink', marginTop:'5px', borderRadius: '4px'}} onClick={() => {
+
+            }}>Change Chain</button>
           </div>
           <div className="flex flex-col items-center justify-center">
             <Link

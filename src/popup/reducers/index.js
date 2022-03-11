@@ -21,6 +21,7 @@ import defaultAccount from './defaultAccount'
 import activityNotifications from './activityNotifications'
 import settings from './settings'
 import assetsSettings from './assetsSettings'
+import activatedChain from './activatedChain'
 
 export default combineReducers({
   loading,
@@ -43,5 +44,6 @@ export default combineReducers({
   defaultAccount,
   activityNotifications,
   settings,
-  assetsSettings
+  assetsSettings,
+  activatedChain
 })

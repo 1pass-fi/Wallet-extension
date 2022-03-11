@@ -1,5 +1,6 @@
 // modules
 import { get, isNumber, isEmpty, find } from 'lodash'
+import { useSelector } from 'react-redux'
 
 // actions
 import { setIsLoading } from './loading'
@@ -20,6 +21,9 @@ import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect as 
 import { popupAccount } from 'services/account'
 import { EventHandler as CreateEventHandler } from 'services/request/src/backgroundConnect'
 import storage from 'services/storage'
+
+// selectors
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
 export const getBalances = () => async (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
@@ -69,11 +73,13 @@ export const removeWallet = (address) => async (dispatch, getState) => {
       address is the activated account.
     */
     const { defaultAccount } = getState()
+    const displayingAccount = useSelector(getDisplayingAccount)
+
     const totalArweaveAccounts = await popupAccount.count(TYPE.ARWEAVE)
     const totalEthereumAccounts = await popupAccount.count(TYPE.ETHEREUM)
 
     if (accountStates.length) {
-      if (address === defaultAccount.defaultAccount?.address) {
+      if (address === displayingAccount?.address) {
         dispatch(setDefaultAccount(accountStates[0]))
       }
     }

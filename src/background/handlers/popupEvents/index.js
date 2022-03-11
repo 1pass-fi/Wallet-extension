@@ -27,7 +27,7 @@ const getEmitter = () => {
   popupEvents.on(MESSAGES.GET_LOCK_STATE, controller.getLockState)
   popupEvents.on(MESSAGES.LOAD_COLLECTIONS, controller.loadCollection)
   popupEvents.on(MESSAGES.LOAD_KID, controller.loadDID)
-  popupEvents.on(MESSAGES.SET_DEFAULT_ACCOUNT, controller.setDefaultAccount)
+  popupEvents.on(MESSAGES.SET_DEFAULT_ARWEAVE_ACCOUNT, controller.setDefaultAccount)
   popupEvents.on(MESSAGES.FRIEND_REFERRAL, controller.friendReferral)
   popupEvents.on(MESSAGES.TRANSFER_NFT, controller.bridgeNft)
   popupEvents.on(MESSAGES.REAL_TRANSFER_NFT, controller.sendNft)
