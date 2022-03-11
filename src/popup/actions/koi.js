@@ -1,5 +1,5 @@
 // modules
-import { get, isNumber } from 'lodash'
+import { get, isNumber, isEmpty, find } from 'lodash'
 
 // actions
 import { setIsLoading } from './loading'
@@ -69,9 +69,30 @@ export const removeWallet = (address) => async (dispatch, getState) => {
       address is the activated account.
     */
     const { defaultAccount } = getState()
+    const totalArweaveAccounts = await popupAccount.count(TYPE.ARWEAVE)
+    const totalEthereumAccounts = await popupAccount.count(TYPE.ETHEREUM)
+
     if (accountStates.length) {
-      if (address === defaultAccount.address) {
+      if (address === defaultAccount.defaultAccount?.address) {
         dispatch(setDefaultAccount(accountStates[0]))
+      }
+    }
+
+    if (totalArweaveAccounts) {
+      if (address === defaultAccount.AR?.address) {
+        const arAccount = find(accountStates, (v) => v.TYPE === TYPE.ARWEAVE)
+        if (!isEmpty(arAccount)) {
+          dispatch(setDefaultAccount(arAccount))
+        }
+      }
+    }
+
+    if (totalEthereumAccounts) {
+      if (address === defaultAccount.ETH?.address) {
+        const ethAccount = find(accountStates, (v) => v.TYPE === TYPE.ETHEREUM)
+        if (!isEmpty(ethAccount)) {
+          dispatch(setDefaultAccount(ethAccount))
+        }
       }
     }
 
@@ -84,7 +105,6 @@ export const removeWallet = (address) => async (dispatch, getState) => {
     dispatch(setError(err.message))
   }
 }
-
 
 export const lockWallet = () => async (dispatch) => {
   try {

@@ -119,21 +119,29 @@ const Popup = ({
       history.push('/account/welcome')
     }
 
-    const activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
-    const activatedAccount = await popupAccount.getAccount({
-      address: activatedAccountAddress
-    })
-
-    const activatedAccountMetadata = await activatedAccount.get.metadata()
-    setDefaultAccount(activatedAccountMetadata)
-
     const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
-    const activatedEthereumAccount = await popupAccount.getAccount({
-      address: activatedEthereumAccountAddress
-    })
+    if (!isEmpty(activatedEthereumAccountAddress)) {
+      const activatedEthereumAccount = await popupAccount.getAccount({
+        address: activatedEthereumAccountAddress
+      })
 
-    const activatedEthereumAccountMetadata = await activatedEthereumAccount.get.metadata()
-    setDefaultAccount(activatedEthereumAccountMetadata)
+      if (!isEmpty(activatedEthereumAccount)) {
+        const activatedEthereumAccountMetadata = await activatedEthereumAccount.get.metadata()
+        setDefaultAccount(activatedEthereumAccountMetadata)
+      }
+    }
+
+    const activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
+    if (!isEmpty(activatedAccountAddress)) {
+      const activatedAccount = await popupAccount.getAccount({
+        address: activatedAccountAddress
+      })
+
+      if (!isEmpty(activatedAccount)) {
+        const activatedAccountMetadata = await activatedAccount.get.metadata()
+        setDefaultAccount(activatedAccountMetadata)
+      }
+    }
 
     const query = window.location.search // later we should refactor using react-hash-router
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import clsx from 'clsx'
 import isEmpty from 'lodash/isEmpty'
@@ -11,21 +11,8 @@ import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 
 const Tokens = () => {
-  const defaultArweaveAccount = useSelector((state) => state.defaultAccount.AR)
-  const defaultEthereumAccount = useSelector((state) => state.defaultAccount.ETH)
-  const [defaultAccount, setDefaultAccount] = useState({})
+  const defaultAccount = useSelector((state) => state.defaultAccount.defaultAccount)
   const price = useSelector((state) => state.price)
-
-  useEffect(() => {
-    if (!isEmpty(defaultArweaveAccount.address)) {
-      setDefaultAccount(defaultArweaveAccount)
-      return
-    }
-    if (!isEmpty(defaultEthereumAccount.address)) {
-      setDefaultAccount(defaultEthereumAccount)
-      return
-    }
-  }, [defaultArweaveAccount, defaultEthereumAccount])
 
   const tokens = useMemo(() => {
     if (defaultAccount.type === TYPE.ARWEAVE)

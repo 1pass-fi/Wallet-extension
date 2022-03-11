@@ -17,24 +17,11 @@ import disableOrigin from 'utils/disableOrigin'
 
 const Header = () => {
   const defaultArweaveAccount = useSelector((state) => state.defaultAccount.AR)
-  const defaultEthereumAccount = useSelector((state) => state.defaultAccount.ETH)
 
   const [showAccountDropdown, setShowAccountDropdown] = useState(false)
   const [showPauseFinnieDropdown, setShowPauseFinnieDropdown] = useState(false)
   const [currentTabOrigin, setCurrentTabOrigin] = useState('')
   const [originDisabled, setOriginDisabled] = useState(false)
-  const [defaultAccount, setDefaultAccount] = useState({})
-
-  useEffect(() => {
-    if (!isEmpty(defaultArweaveAccount.address)) {
-      setDefaultAccount(defaultArweaveAccount)
-      return
-    }
-    if (!isEmpty(defaultEthereumAccount.address)) {
-      setDefaultAccount(defaultEthereumAccount)
-      return
-    }
-  }, [defaultArweaveAccount, defaultEthereumAccount])
 
   const loadDisabledOrigins = () => {
     chrome.windows.getCurrent((w) => {
@@ -57,7 +44,7 @@ const Header = () => {
   }
 
   const goToDID = () => {
-    const DID = defaultAccount?.didData?.state?.kID
+    const DID = defaultArweaveAccount?.didData?.state?.kID
     const url = 'https://koii.id/' + (DID || '')
     chrome.tabs.create({ url })
   }

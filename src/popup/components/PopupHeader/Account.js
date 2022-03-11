@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 
@@ -9,20 +9,7 @@ import FinnieIcon from 'img/popup/finnie-icon.svg'
 import { TYPE } from 'constants/accountConstants'
 
 const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
-  const defaultArweaveAccount = useSelector((state) => state.defaultAccount.AR)
-  const defaultEthereumAccount = useSelector((state) => state.defaultAccount.ETH)
-  const [defaultAccount, setDefaultAccount] = useState({})
-
-  useEffect(() => {
-    if (!isEmpty(defaultArweaveAccount.address)) {
-      setDefaultAccount(defaultArweaveAccount)
-      return
-    }
-    if (!isEmpty(defaultEthereumAccount.address)) {
-      setDefaultAccount(defaultEthereumAccount)
-      return
-    }
-  }, [defaultArweaveAccount, defaultEthereumAccount])
+  const defaultAccount = useSelector((state) => state.defaultAccount.defaultAccount)
 
   return (
     <div
