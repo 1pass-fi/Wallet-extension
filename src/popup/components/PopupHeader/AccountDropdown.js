@@ -23,6 +23,7 @@ import storage from 'services/storage'
 // constants
 import { PATH } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
+import storage from 'services/storage'
 
 export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoading }) => {
   const dispatch = useDispatch()
