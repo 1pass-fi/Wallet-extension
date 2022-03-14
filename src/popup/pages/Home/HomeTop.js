@@ -1,4 +1,5 @@
 import React from 'react'
+import { useDispatch, connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 import { useParallax } from 'react-scroll-parallax'
@@ -9,14 +10,20 @@ import ReceiveIcon from 'img/popup/receive-icon.svg'
 import { TYPE } from 'constants/accountConstants'
 import { fiatCurrencyFormat, numberFormat } from 'utils'
 import storage from 'services/storage'
+import { setIsLoading } from 'popup/actions/loading'
+import { popupBackgroundRequest as request } from 'services/request/popup'
 
-const HomeTop = ({ displayingAccount, price }) => {
+import { loadAllAccounts } from 'options/actions/accounts'
+
+const HomeTop = ({ displayingAccount, price, setIsLoading }) => {
   const p = useParallax({
     translateX: [0, 100],
     shouldAlwaysCompleteAnimation: true,
     startScroll: 0,
     endScroll: 161
   })
+
+  const dispatch = useDispatch()
 
   return (
     <div>
@@ -63,14 +70,23 @@ const HomeTop = ({ displayingAccount, price }) => {
               SEND
             </div>
             <button style={{backgroundColor: 'pink', borderRadius: '4px', marginTop: '5px'}} onClick={async () => {
-              console.log('RUNNN')
+              setIsLoading(true)
               // change provider
-              const mainnetProvider = 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
-              await storage.setting.set.ethereumProvider(mainnetProvider)
+              let currentProvider = await storage.setting.get.ethereumProvider()
+              if (currentProvider === 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2') {
+                currentProvider = 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
+              } else {
+                currentProvider = 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
+              }
+              await storage.setting.set.ethereumProvider(currentProvider)
 
-              // reload all account
-              
+              // load balance
+              await request.wallet.loadBalanceAsync()
 
+              // update account state
+              await dispatch(loadAllAccounts())
+
+              setIsLoading(false)
             }}>Change Provider</button>
             <button style={{backgroundColor: 'pink', marginTop:'5px', borderRadius: '4px'}} onClick={() => {
 
@@ -94,4 +110,4 @@ const HomeTop = ({ displayingAccount, price }) => {
   )
 }
 
-export default HomeTop
+export default connect(null, { setIsLoading })(HomeTop)

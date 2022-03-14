@@ -137,4 +137,8 @@ export class WalletRequest extends Request {
   updatePassword(body) {
     return this.promise(MESSAGES.UPDATE_PASSWORD, body)
   }
+
+  loadBalanceAsync(body) {
+    return this.promise(MESSAGES.LOAD_BALANCE_ASYNC, body)
+  }
 }

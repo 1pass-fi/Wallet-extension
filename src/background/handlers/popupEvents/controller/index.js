@@ -32,6 +32,7 @@ import updateCollection from './updateCollection'
 import getKey from './getKey'
 import updatePassword from './updatePassword'
 import updateNft from './updateNft'
+import loadBalanceAsync from './loadBalanceAsync'
 import test from './test'
 
 
@@ -70,5 +71,6 @@ export default {
   getKey,
   updatePassword,
   updateNft,
+  loadBalanceAsync,
   test
 }
