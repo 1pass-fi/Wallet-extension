@@ -50,7 +50,7 @@ export const Select = ({
           <input
             readOnly
             type="text"
-            className="cursor-pointer text-white border-b-2 text-sm font-semibold border-white bg-blue-800 h-8 pl-2 flex-grow rounded-l-finnie focus:outline-none placeholder-trueGray-400"
+            className="w-full cursor-pointer text-white border-b-2 text-sm font-semibold border-white bg-blue-800 h-8 pl-2 flex-grow rounded-l-finnie focus:outline-none placeholder-trueGray-400"
             placeholder={placeholder}
             value={selectedOption}
             onClick={handleShowMenu}
