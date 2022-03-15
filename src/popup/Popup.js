@@ -125,6 +125,10 @@ const Popup = ({
       history.push('/account/welcome')
     }
 
+    if (!isEmpty(accounts) && isLocked) {
+      history.push('/login')
+    }
+
     const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
     if (!isEmpty(activatedEthereumAccountAddress)) {
       const activatedEthereumAccount = await popupAccount.getAccount({
