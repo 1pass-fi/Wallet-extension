@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useParallax } from 'react-scroll-parallax'
@@ -59,6 +59,8 @@ const HomeTop = ({ displayingAccount, price, setIsLoading }) => {
         console.log('Change provider', provider[0].address)
         await storage.setting.set.ethereumProvider(provider[0].address)
 
+        setDefaultProvider(provider[0])
+
         // load balance
         await request.wallet.loadBalanceAsync()
 
@@ -71,6 +73,31 @@ const HomeTop = ({ displayingAccount, price, setIsLoading }) => {
     setIsLoading(false)
   }
 
+  const [defaultProvider, setDefaultProvider] = useState({})
+  useEffect(() => {
+    const getCurrentProvider = async () => {
+      const currentProvider = await storage.setting.get.ethereumProvider()
+      if (currentProvider.startsWith('https://mainnet')) {
+        setDefaultProvider({
+          id: 'mainnet',
+          value: 'Mainnet Network',
+          address: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
+          label: 'Mainnet Network'
+        })
+      }
+      if (currentProvider.startsWith('https://rinkeby')) {
+        setDefaultProvider({
+          id: 'rinkeby',
+          value: 'Rinkeby Network',
+          address: 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
+          label: 'Rinkeby Network'
+        })
+      }
+    }
+
+    getCurrentProvider()
+  }, [])
+
   return (
     <div>
       <div ref={p.ref}>
@@ -82,6 +109,7 @@ const HomeTop = ({ displayingAccount, price, setIsLoading }) => {
               placeholder="Select Provider"
               onChange={onChangeProvider}
               label="Provider"
+              defaultOption={defaultProvider.value}
             />
           </div>
         </div>
