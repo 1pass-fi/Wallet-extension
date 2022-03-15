@@ -19,17 +19,9 @@ export class SettingMethod {
       /* 
         check existed address for a site on siteAddressDictionary
       */
-      // const siteAddressDictionary = await storage.setting.get.siteAddressDictionary() || {}
-      // const respectiveAddress = siteAddressDictionary[site]
-      // const accountExists = !backgroundAccount.importedAccount.every(credentials => {
-      //   return credentials.address !== respectiveAddress
-      // })
-      // if (!accountExists) return false
-      // if (isEthereumRequest && !isEthereumAddress(respectiveAddress)) return false
-      // if (!isEthereumRequest && isEthereumAddress(respectiveAddress)) return false
-      // return true
       let defaultAddress, connectedAddresses
-      connectedAddresses = await storage.setting.get.siteConnectedAddresses()[site]
+      connectedAddresses = (await storage.setting.get.siteConnectedAddresses())[site]
+      console.log('connectedAddresses', connectedAddresses)
       if (isEmpty(connectedAddresses)) connectedAddresses = { ethereum: [], arweave: [] }
       if (isEthereumRequest) {
         connectedAddresses = connectedAddresses.ethereum
@@ -38,6 +30,9 @@ export class SettingMethod {
         connectedAddresses = connectedAddresses.arweave
         defaultAddress = await storage.setting.get.activatedArweaveAccountAddress()
       }
+
+      console.log('defaultAddress', defaultAddress)
+      console.log('connectedAddresses', connectedAddresses)
 
       return connectedAddresses.includes(defaultAddress)
     } catch (err) {
