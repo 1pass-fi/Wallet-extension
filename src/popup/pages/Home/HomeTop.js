@@ -13,6 +13,7 @@ import { fiatCurrencyFormat, numberFormat } from 'utils'
 import storage from 'services/storage'
 import { setIsLoading } from 'popup/actions/loading'
 import { popupBackgroundRequest as request } from 'services/request/popup'
+import DropDown from 'finnie-v2/components/DropDown'
 
 // components
 import Select from 'shared/select'
@@ -30,69 +31,39 @@ const HomeTop = ({ displayingAccount, price, setIsLoading }) => {
 
   const providerOptions = [
     {
-      id: 'mainnet',
-      value: 'Mainnet Network',
-      address: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
-      label: 'Mainnet Network'
+      label: 'Mainnet Network',
+      value: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
     },
     {
-      id: 'rinkeby',
-      value: 'Rinkeby Network',
-      address: 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
-      label: 'Rinkeby Network'
+      label: 'Rinkeby Network',
+      value: 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
     }
   ]
 
-  const onChangeProvider = async (selected) => {
+  const onChangeProvider = async (value) => {
     setIsLoading(true)
     try {
-      const provider = providerOptions.filter((p) => p.value === selected)
+      await storage.setting.set.ethereumProvider(value)
 
-      // change provider
-      // let currentProvider = await storage.setting.get.ethereumProvider()
-      // if (currentProvider === 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2') {
-      //   currentProvider = 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
-      // } else {
-      //   currentProvider = 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
-      // }
-      if (!isEmpty(provider[0].address)) {
-        console.log('Change provider', provider[0].address)
-        await storage.setting.set.ethereumProvider(provider[0].address)
+      setCurrentProviderAddress(value)
 
-        setDefaultProvider(provider[0])
+      // load balance
+      await request.wallet.loadBalanceAsync()
 
-        // load balance
-        await request.wallet.loadBalanceAsync()
-
-        // update account state
-        await dispatch(loadAllAccounts())
-      }
+      // update account state
+      await dispatch(loadAllAccounts())
     } catch (error) {
       console.log('Failed to change provider', error.message)
     }
     setIsLoading(false)
   }
 
-  const [defaultProvider, setDefaultProvider] = useState({})
+  const [currentProviderAddress, setCurrentProviderAddress] = useState({})
+
   useEffect(() => {
     const getCurrentProvider = async () => {
       const currentProvider = await storage.setting.get.ethereumProvider()
-      if (currentProvider.startsWith('https://mainnet')) {
-        setDefaultProvider({
-          id: 'mainnet',
-          value: 'Mainnet Network',
-          address: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
-          label: 'Mainnet Network'
-        })
-      }
-      if (currentProvider.startsWith('https://rinkeby')) {
-        setDefaultProvider({
-          id: 'rinkeby',
-          value: 'Rinkeby Network',
-          address: 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
-          label: 'Rinkeby Network'
-        })
-      }
+      setCurrentProviderAddress(currentProvider)
     }
 
     getCurrentProvider()
@@ -104,12 +75,13 @@ const HomeTop = ({ displayingAccount, price, setIsLoading }) => {
         <div className="flex">
           <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />
           <div className="ml-2" style={{ width: '168px' }}>
-            <Select
+            <DropDown
               options={providerOptions}
-              placeholder="Select Provider"
+              value={currentProviderAddress}
               onChange={onChangeProvider}
-              label="Provider"
-              defaultOption={defaultProvider.value}
+              emptyOption={false}
+              variant="light"
+              size="sm"
             />
           </div>
         </div>

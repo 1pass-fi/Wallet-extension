@@ -25,12 +25,12 @@ const variants = {
 const sizes = {
   sm: {
     wrapper: 'text-xs',
-    header: 'h-5 pl-1',
+    header: 'h-5 pl-1 pr-5.5',
     row: 'pl-1 min-h-5'
   },
   lg: {
     wrapper: 'text-base',
-    header: 'h-8 pl-2',
+    header: 'h-8 pl-2 pr-9',
     row: 'pl-2 min-h-8'
   }
 }
@@ -89,7 +89,7 @@ const DropDown = ({
       <div className="flex items-center rounded-finnie" onClick={toggleList}>
         <input
           className={clsx(
-            'cursor-pointer rounded-finnie flex-grow',
+            'cursor-pointer w-full rounded-finnie flex-grow focus:outline-none',
             sizes[size].header,
             variants[variant].header
           )}
