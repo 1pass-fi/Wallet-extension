@@ -51,5 +51,9 @@ export class EthereumAccount extends BackgroundAccount {
     this.method = new EthereumMethod(this.#eth)
   }
 
+  getKey() {
+    // TODO: ThuanN
+  }
+
   static utils = new EthereumStatic()
 }

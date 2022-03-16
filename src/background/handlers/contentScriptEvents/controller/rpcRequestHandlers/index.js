@@ -7,6 +7,7 @@ import ethAccounts from './ethAccounts'
 import getEncryptionPublicKey from './getEncryptionPublicKey'
 import ethDecrypt from './ethDecrypt'
 import netVersion from './netVersion'
+import ethSendTransaction from './ethSendTransaction'
 
 const METHOD = {
   eth_requestAccounts: 'eth_requestAccounts', // connect -> popup
@@ -17,6 +18,7 @@ const METHOD = {
   eth_decrypt: 'eth_decrypt', // params: ['encryptionData', 'selectedAddress'] decrypt message -> popup
   eth_chainId: 'eth_chainId', // get chainId
   net_version: 'net_version', // get networkId
+  eth_sendTransaction: 'eth_sendTransaction' // send eth
 }
 
 class EthereumRequestHandlers extends EventEmitter {
@@ -39,6 +41,7 @@ const getEthereumRequestHandlers = () => {
   ethereumRequestHandlers.on(METHOD.eth_getEncryptionPublicKey, getEncryptionPublicKey)
   ethereumRequestHandlers.on(METHOD.eth_decrypt, ethDecrypt)
   ethereumRequestHandlers.on(METHOD.net_version, netVersion)
+  ethereumRequestHandlers.on(METHOD.eth_sendTransaction, ethSendTransaction)
 
   return ethereumRequestHandlers
 }
