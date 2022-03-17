@@ -23,6 +23,9 @@ import storage from 'services/storage'
 import './index.css'
 import { popupAccount } from 'services/account'
 import disableOrigin from 'utils/disableOrigin'
+import { ChromeStorage } from 'services/storage/ChromeStorage'
+
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 
 export const ConnectToWallet = ({ setError, connectSite }) => {
@@ -33,18 +36,25 @@ export const ConnectToWallet = ({ setError, connectSite }) => {
   const [step, setStep] = useState(1)
   const [accounts, setAccounts] = useState([])
   const [isKoi, setIsKoi] = useState(true)
+  const [requestId, setRequestId] = useState('')
+  const [isEthereum, setIsEthereum] = useState(false)
 
   const handleOnClick = async (accept) => {
     try {
       if (accept) {
         if (!(await storage.generic.get.pendingRequest())) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-        console.log('ORIGIN POPUP', origin)
-        connectSite({ origin, confirm: true, address: checkedAddress })
-        await storage.generic.remove.pendingRequest()
+        await backgroundRequest.wallet.connect({ origin, confirm: true, address: checkedAddress })
+        chrome.runtime.sendMessage({requestId, approved: true, checkedAddresses: [checkedAddress]})
+        
+        storage.generic.remove.pendingRequest()
+        chrome.browserAction.setBadgeText({ text: '' })
+        setTimeout(() => {
+          window.close()
+        }, 1000)
       } else {
-        // action koi
-        connectSite({ origin, confirm: false })
+        await backgroundRequest.wallet.connect({ origin, confirm: false })
         await storage.generic.remove.pendingRequest()
+        chrome.runtime.sendMessage({requestId, approved: false})
         window.close()
       }
     } catch (err) {
@@ -66,18 +76,24 @@ export const ConnectToWallet = ({ setError, connectSite }) => {
       const requestOrigin = get(request, 'data.origin')
       const requestFavicon = get(request, 'data.favicon')
       const isKoi = get(request, 'data.isKoi')
+      const requestId = get(request, 'data.requestId')
+      const isEthereum = get(request, 'data.isEthereum')
+
+      let accounts = []
+      if (!isEthereum) {
+        accounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE) || []
+      } else {
+        accounts = await popupAccount.getAllMetadata(TYPE.ETHEREUM) || []
+      }
+      
       setOrigin(requestOrigin)
       setFavicon(requestFavicon)
       setIsKoi(isKoi)
-    }
-
-    const loadArAccounts = async () => {
-      const arAccounts = await popupAccount.getAllMetadata(TYPE.ARWEAVE) || []
-      setAccounts(arAccounts)
+      setRequestId(requestId)
+      setAccounts(accounts)
     }
 
     loadRequest()
-    loadArAccounts()
   }, [])
 
   const handleDisableFinnie = async () => {

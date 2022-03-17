@@ -21,7 +21,6 @@ export class SettingMethod {
       */
       let defaultAddress, connectedAddresses
       connectedAddresses = (await storage.setting.get.siteConnectedAddresses())[site]
-      console.log('connectedAddresses', connectedAddresses)
       if (isEmpty(connectedAddresses)) connectedAddresses = { ethereum: [], arweave: [] }
       if (isEthereumRequest) {
         connectedAddresses = connectedAddresses.ethereum
@@ -30,9 +29,6 @@ export class SettingMethod {
         connectedAddresses = connectedAddresses.arweave
         defaultAddress = await storage.setting.get.activatedArweaveAccountAddress()
       }
-
-      console.log('defaultAddress', defaultAddress)
-      console.log('connectedAddresses', connectedAddresses)
 
       return connectedAddresses.includes(defaultAddress)
     } catch (err) {

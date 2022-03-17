@@ -184,10 +184,7 @@ const Popup = ({
                 </>
               )}
             </Switch>
-          )} */}
-          <button onClick={() => {
-            chrome.runtime.sendMessage({greeting: 'hello'})
-          }}>Send message</button>
+          )}
         </div>
       )}
     </div>
