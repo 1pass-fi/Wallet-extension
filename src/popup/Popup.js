@@ -3,8 +3,7 @@ import '@babel/polyfill'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch, useHistory, withRouter } from 'react-router-dom'
-import axios from 'axios'
-import { get, isNumber, isEmpty } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 
 // components
 // import Header from 'components/header'
@@ -41,19 +40,16 @@ import { setAssetsTabSettings } from 'actions/assetsSettings'
 
 // hooks
 import useAccountLoaded from './provider/hooks/useAccountLoaded'
+import usePrice from './provider/hooks/usePrice'
+import useSettings from './provider/hooks/useSettings'
+import useLoadApp from './provider/hooks/useLoadApp'
 
 // assets
 import continueLoadingIcon from 'img/continue-load.gif'
 import KoiLogo from 'img/koi-logo.svg'
 
-// services
-import storage from 'services/storage'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
-import { popupAccount } from 'services/account'
-
 // constants
-import { HEADER_EXCLUDE_PATH, REQUEST, DISCONNECTED_BACKGROUND, PATH } from 'constants/koiConstants'
-import { SHOW_ACTIVITIES_BY } from 'constants/storageConstants'
+import { PATH } from 'constants/koiConstants'
 
 // styles
 import './Popup.css'
@@ -111,187 +107,25 @@ const Popup = ({
     setActivatedChain
   })
 
-  const loadApp = async () => {
-    if (accountLoaded.isEmptyAccounts) {
-      history.push('/account/welcome')
-      return
-    }
-    if (accountLoaded.isWalletLocked) {
-      history.push('/login')
-      return
-    }
+  usePrice({
+    setCurrency,
+    setPrice,
+    setError
+  })
 
-    const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
-    if (!isEmpty(activatedEthereumAccountAddress)) {
-      const activatedEthereumAccount = await popupAccount.getAccount({
-        address: activatedEthereumAccountAddress
-      })
+  useSettings({ setSettings, setAssetsTabSettings, setError })
 
-      if (!isEmpty(activatedEthereumAccount)) {
-        const activatedEthereumAccountMetadata = await activatedEthereumAccount.get.metadata()
-        setDefaultAccount(activatedEthereumAccountMetadata)
-      }
-    }
-
-    const activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
-    if (!isEmpty(activatedAccountAddress)) {
-      const activatedAccount = await popupAccount.getAccount({
-        address: activatedAccountAddress
-      })
-
-      if (!isEmpty(activatedAccount)) {
-        const activatedAccountMetadata = await activatedAccount.get.metadata()
-        setDefaultAccount(activatedAccountMetadata)
-      }
-    }
-
-    const query = window.location.search // later we should refactor using react-hash-router
-
-    /* 
-      Load for activity notifications
-    */
-    const _activityNotifications = (await storage.generic.get.activityNotifications()) || []
-    setActivityNotifications(_activityNotifications)
-
-    /* 
-      Load for pending request
-    */
-    const pendingRequest = await storage.generic.get.pendingRequest()
-
-    /*
-      When there's no imported account, redirect to welcome screen
-      If not unlocked, redirect to lock screen
-      Click on add account, go to welcome screen
-    */
-    try {
-      if (pendingRequest) {
-        switch (pendingRequest.type) {
-          case REQUEST.PERMISSION:
-            history.push(PATH.CONNECT_SITE)
-            break
-          case REQUEST.TRANSACTION:
-            history.push(PATH.SIGN_TRANSACTION)
-        }
-      } else {
-        history.push('/account')
-      }
-
-      if (query.includes('create-wallet')) {
-        const params = new URLSearchParams(query)
-        const walletType = params.get('type')
-        history.push(`/account/create?type=${walletType}`)
-      } else if (query.includes('upload-json')) {
-        const params = new URLSearchParams(query)
-        const walletType = params.get('type')
-        history.push(`/account/import/keyfile?type=${walletType}`)
-      } else if (query.includes('upload-seedphrase')) {
-        const params = new URLSearchParams(query)
-        const walletType = params.get('type')
-        history.push(`/account/import/phrase?type=${walletType}`)
-      }
-    } catch (err) {
-      console.log(err.message)
-      if (err.message === DISCONNECTED_BACKGROUND) {
-        setNeedToReconnect(true)
-      } else {
-        setError(err.message)
-      }
-      setIsLoading(false)
-    }
-  }
-
-  const loadPrice = async () => {
-    try {
-      const price = await storage.generic.get.tokenPrice()
-      let selectedCurrency = (await storage.setting.get.selectedCurrency()) || 'USD'
-
-      console.log('Selected Currency: ', selectedCurrency)
-
-      const { AR, ETH } = price || 1
-
-      setPrice({ AR, ETH })
-      setCurrency(selectedCurrency)
-
-      const { data: responseData } = await axios.get(
-        `https://api.coingecko.com/api/v3/simple/price?ids=arweave&vs_currencies=${selectedCurrency}`
-      )
-      console.log('currency: ', selectedCurrency)
-      console.log('price', responseData)
-
-      const arPrice = get(responseData, `arweave.${selectedCurrency.toLowerCase()}`)
-
-      const { data: ethRes } = await axios.get(
-        `https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=${selectedCurrency}`
-      )
-      const ethPrice = get(ethRes, `ethereum.${selectedCurrency.toLowerCase()}`)
-
-      if (isNumber(arPrice) && isNumber(arPrice)) {
-        await setPrice({ AR: arPrice, ETH: ethPrice })
-        await storage.generic.set.tokenPrice({ ...price, AR: arPrice, ETH: ethPrice })
-      }
-    } catch (err) {
-      setError(err.message)
-    }
-  }
-
-  const loadSettings = async () => {
-    try {
-      const showActivitiesBy =
-        (await storage.setting.get.showActivitiesBy()) || SHOW_ACTIVITIES_BY.ALL_ACCOUNTS
-      const accountsToShowOnActivities =
-        (await storage.setting.get.accountsToShowOnActivities()) || []
-      const payload = {
-        showAllAccounts: showActivitiesBy == SHOW_ACTIVITIES_BY.ALL_ACCOUNTS,
-        accountsToShowOnActivities
-      }
-      setSettings(payload)
-    } catch (err) {
-      console.log(err.message)
-    }
-  }
-
-  const loadAssetsTabSettings = async () => {
-    try {
-      const assetsTabSettings = await storage.setting.get.assetsTabSettings()
-
-      setAssetsTabSettings(assetsTabSettings)
-    } catch (error) {
-      setError(error.message)
-    }
-  }
-
-  const handleLockWallet = async () => {
-    if (!isEmpty(accounts)) {
-      setIsLoading(true)
-      await lockWallet()
-      setIsLoading(false)
-
-      history.push(PATH.LOGIN)
-
-      chrome.tabs.query({ url: chrome.extension.getURL('*') }, (tabs) => {
-        tabs.map((tab) => chrome.tabs.reload(tab.id))
-      })
-    } else {
-      setError('Cannot lock wallet.')
-    }
-  }
-
-  useEffect(() => {
-    const load = async () => {
-      loadPrice()
-      loadAssetsTabSettings()
-      await loadSettings()
-    }
-
-    load()
-  }, [])
-
-  useEffect(() => {
-    const load = async () => {
-      await loadApp()
-    }
-    if (accountLoaded.accountLoaded) load()
-  }, [accountLoaded.accountLoaded])
+  const [handleLockWallet] = useLoadApp({
+    history,
+    accountLoaded,
+    setDefaultAccount,
+    setActivityNotifications,
+    setNeedToReconnect,
+    setError,
+    setIsLoading,
+    accounts,
+    lockWallet
+  })
 
   useEffect(() => {
     if (error) {
