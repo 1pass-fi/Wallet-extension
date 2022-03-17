@@ -39,6 +39,9 @@ import { setSettings } from 'actions/settings'
 import { setActivities } from 'actions/activities'
 import { setAssetsTabSettings } from 'actions/assetsSettings'
 
+// hooks
+import useAccountLoaded from './provider/hooks/useAccountLoaded'
+
 // assets
 import continueLoadingIcon from 'img/continue-load.gif'
 import KoiLogo from 'img/koi-logo.svg'
@@ -100,33 +103,22 @@ const Popup = ({
   const history = useHistory()
 
   const [needToReconnect, setNeedToReconnect] = useState(false)
-  const [accountLoaded, setAccountLoaded] = useState(false)
+
+  const [accountLoaded, setAccountLoaded] = useAccountLoaded({
+    history,
+    setIsLoading,
+    setAccounts,
+    setActivatedChain
+  })
 
   const loadApp = async () => {
-    setIsLoading(true)
-
-    const activatedChain = await storage.setting.get.activatedChain()
-    setActivatedChain(activatedChain)
-
-    /* 
-      load for wallet state of lock or unlock
-      load for all accounts
-    */
-    await popupAccount.loadImported()
-    let accounts = await popupAccount.getAllMetadata()
-
-    const isLocked = await backgroundRequest.wallet.getLockState()
-
-    setAccounts(accounts)
-    setAccountLoaded(true)
-    setIsLoading(false)
-
-    if (isEmpty(accounts)) {
+    if (accountLoaded.isEmptyAccounts) {
       history.push('/account/welcome')
+      return
     }
-
-    if (!isEmpty(accounts) && isLocked) {
+    if (accountLoaded.isWalletLocked) {
       history.push('/login')
+      return
     }
 
     const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
@@ -172,24 +164,16 @@ const Popup = ({
       Click on add account, go to welcome screen
     */
     try {
-      if (isEmpty(accounts)) {
-        history.push('/account/welcome')
+      if (pendingRequest) {
+        switch (pendingRequest.type) {
+          case REQUEST.PERMISSION:
+            history.push(PATH.CONNECT_SITE)
+            break
+          case REQUEST.TRANSACTION:
+            history.push(PATH.SIGN_TRANSACTION)
+        }
       } else {
         history.push('/account')
-      }
-
-      if (!isEmpty(accounts) && isLocked) {
-        history.push('/login')
-      } else {
-        if (pendingRequest) {
-          switch (pendingRequest.type) {
-            case REQUEST.PERMISSION:
-              history.push(PATH.CONNECT_SITE)
-              break
-            case REQUEST.TRANSACTION:
-              history.push(PATH.SIGN_TRANSACTION)
-          }
-        }
       }
 
       if (query.includes('create-wallet')) {
@@ -296,12 +280,18 @@ const Popup = ({
     const load = async () => {
       loadPrice()
       loadAssetsTabSettings()
-      await loadApp()
       await loadSettings()
     }
 
     load()
   }, [])
+
+  useEffect(() => {
+    const load = async () => {
+      await loadApp()
+    }
+    if (accountLoaded.accountLoaded) load()
+  }, [accountLoaded.accountLoaded])
 
   useEffect(() => {
     if (error) {
@@ -329,7 +319,7 @@ const Popup = ({
           {error && <Message type="error" children={error} />}
           {notification && <Message type="notification" children={notification} />}
           {warning && <Message type="warning" children={warning} />}
-          {accountLoaded && (
+          {accountLoaded.accountLoaded && (
             <Switch>
               <Route exact path="/login">
                 <Login />
@@ -337,26 +327,28 @@ const Popup = ({
               <Route exact path="/account/*">
                 <Account />
               </Route>
-              <>
-                <Header />
-                <div
-                  className="flex min-h-3.375 pt-13.5 overflow-y-auto overflow-x-hidden"
-                  style={{ height: 'calc(100% - 64px)' }}
-                >
-                  <Switch>
-                    <Route exact path="/receive">
-                      <Receive />
-                    </Route>
-                    <Route exact path="/send">
-                      <Send />
-                    </Route>
-                    <Route path="*">
-                      <Home />
-                    </Route>
-                  </Switch>
-                </div>
-                <NavBar handleLockWallet={handleLockWallet} />
-              </>
+              {!accountLoaded.isEmptyAccounts && (
+                <>
+                  <Header />
+                  <div
+                    className="flex min-h-3.375 pt-13.5 overflow-y-auto overflow-x-hidden"
+                    style={{ height: 'calc(100% - 64px)' }}
+                  >
+                    <Switch>
+                      <Route exact path="/receive">
+                        <Receive />
+                      </Route>
+                      <Route exact path="/send">
+                        <Send />
+                      </Route>
+                      <Route path="*">
+                        <Home />
+                      </Route>
+                    </Switch>
+                  </div>
+                  <NavBar handleLockWallet={handleLockWallet} />
+                </>
+              )}
             </Switch>
           )}
         </div>
