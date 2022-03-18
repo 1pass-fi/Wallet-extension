@@ -10,7 +10,7 @@ import SelectWallet from './selectWallet'
 
 // actions
 import { setError } from 'actions/error'
-import { connectSite } from 'actions/koi'
+import { setIsLoading } from 'actions/loading'
 
 // constants
 import { ERROR_MESSAGE } from 'constants/koiConstants'
@@ -28,7 +28,7 @@ import { ChromeStorage } from 'services/storage/ChromeStorage'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 
-export const ConnectToWallet = ({ setError, connectSite }) => {
+export const ConnectToWallet = ({ setError, setIsLoading }) => {
   const [checkedAddress, setCheckedAddress] = useState('')
 
   const [origin, setOrigin] = useState('')
@@ -42,6 +42,7 @@ export const ConnectToWallet = ({ setError, connectSite }) => {
   const handleOnClick = async (accept) => {
     try {
       if (accept) {
+        setIsLoading(true)
         if (!(await storage.generic.get.pendingRequest())) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
         await backgroundRequest.wallet.connect({ origin, confirm: true, address: checkedAddress })
         chrome.runtime.sendMessage({requestId, approved: true, checkedAddresses: [checkedAddress]})
@@ -138,4 +139,4 @@ export const ConnectToWallet = ({ setError, connectSite }) => {
 
 export const mapStateToProps = (state) => ({accountName: state.accountName, accounts: state.accounts})
 
-export default connect(mapStateToProps, { setError, connectSite })(ConnectToWallet)
+export default connect(mapStateToProps, { setError, setIsLoading })(ConnectToWallet)

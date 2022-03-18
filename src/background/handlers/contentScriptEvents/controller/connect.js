@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid'
+
 // Constants
 import { REQUEST, OS, WINDOW_SIZE } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
@@ -36,6 +38,15 @@ export default async (payload, tab, next) => {
         return
       }
 
+      const requestId = uuid()
+
+      const requestPayload = {
+        origin,
+        favicon,
+        requestId,
+        isEthereum: false
+      }
+
       const screenWidth = screen.availWidth
       const screenHeight = screen.availHeight
       const os = window.localStorage.getItem(OS)
@@ -62,23 +73,49 @@ export default async (payload, tab, next) => {
         }
       }
 
-      createWindow(
-        windowData,
-        {
-          beforeCreate: async () => {
-            chrome.browserAction.setBadgeText({ text: '1' })
-            await storage.generic.set.pendingRequest({
-              type: REQUEST.PERMISSION,
-              data: { origin, favicon, isKoi: false }
-            })
-          },
-          afterClose: async () => {
-            chrome.browserAction.setBadgeText({ text: '' })
-            next({ error: 'User cancelled the login.' })
-            await storage.generic.set.pendingRequest({})
-          },
+      createWindow(windowData, {
+        beforeCreate: async () => {
+          chrome.browserAction.setBadgeText({ text: '1' })
+          chrome.runtime.onMessage.addListener(
+            async function(popupMessage) {
+              if (popupMessage.requestId === requestId) {
+                console.log('Message from popup', popupMessage)
+  
+                const approved = popupMessage.approved
+                if (approved) {
+                  try {
+                    const checkedAddresses = popupMessage.checkedAddresses
+    
+                    let siteConnectedAddresses = await storage.setting.get.siteConnectedAddresses()
+    
+                    if (!siteConnectedAddresses[origin]) {
+                      siteConnectedAddresses[origin] = { ethereum: [], arweave: [] }
+                    }
+                    siteConnectedAddresses[origin].arweave = checkedAddresses 
+                    await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
+    
+                    next({ data: siteConnectedAddresses[origin].arweave })
+                  } catch (err) {
+                    console.error(err.message)
+                  } 
+                } else {
+                  next({ error: 'Transaction rejected' })
+                }
+              }
+            }
+          )
+
+          await storage.generic.set.pendingRequest({
+            type: REQUEST.PERMISSION,
+            data: requestPayload 
+          })
+        },
+        afterClose: async () => {
+          chrome.browserAction.setBadgeText({ text: '' })
+          next({ error: 'User cancelled the login.' })
+          await storage.generic.set.pendingRequest({})
         }
-      )
+      })
     } else {
       next({ data: 'This site has already connected.' })
     }

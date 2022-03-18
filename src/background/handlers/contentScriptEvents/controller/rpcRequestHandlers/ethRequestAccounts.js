@@ -66,14 +66,6 @@ export default async (payload, tab, next) => {
       }
     }
 
-    const sleep = () => {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve()
-        }, 3000)
-      })
-    }
-
     createWindow(windowData, {
       beforeCreate: async () => {
         chrome.browserAction.setBadgeText({ text: '1' })

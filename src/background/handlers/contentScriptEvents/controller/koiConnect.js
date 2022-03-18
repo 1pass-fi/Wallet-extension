@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid'
+
 // constants
 import { REQUEST, OS, WINDOW_SIZE } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
@@ -64,26 +66,57 @@ export default async (payload, tab, next) => {
         }
       }
 
-      createWindow(
-        windowData,
-        {
-          beforeCreate: async () => {
-            chrome.browserAction.setBadgeText({ text: '1' })
-            /* 
-              Save pending request to chrome storage
-            */
-            await storage.generic.set.pendingRequest({
-              type: REQUEST.PERMISSION,
-              data: { origin, favicon, isKoi: true }
-            })
-          },
-          afterClose: async () => {
-            chrome.browserAction.setBadgeText({ text: '' })
-            next({data: { status: 400, data: `Request rejected on closed` }})
-            await storage.generic.set.pendingRequest(null)
-          }
+      const requestId = uuid()
+      const requestPayload = {
+        origin,
+        favicon,
+        requestId,
+        isEthereum: false
+      }
+
+      createWindow(windowData, {
+        beforeCreate: async () => {
+          chrome.browserAction.setBadgeText({ text: '1' })
+          chrome.runtime.onMessage.addListener(
+            async function(popupMessage) {
+              if (popupMessage.requestId === requestId) {
+                console.log('Message from popup', popupMessage)
+  
+                const approved = popupMessage.approved
+                if (approved) {
+                  try {
+                    const checkedAddresses = popupMessage.checkedAddresses
+    
+                    let siteConnectedAddresses = await storage.setting.get.siteConnectedAddresses()
+    
+                    if (!siteConnectedAddresses[origin]) {
+                      siteConnectedAddresses[origin] = { ethereum: [], arweave: [] }
+                    }
+                    siteConnectedAddresses[origin].arweave = checkedAddresses 
+                    await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
+    
+                    next({ data: siteConnectedAddresses[origin].arweave })
+                  } catch (err) {
+                    console.error(err.message)
+                  } 
+                } else {
+                  next({ data: { status: 400, message: 'Transaction rejected' } })
+                }
+              }
+            }
+          )
+
+          await storage.generic.set.pendingRequest({
+            type: REQUEST.PERMISSION,
+            data: requestPayload 
+          })
+        },
+        afterClose: async () => {
+          chrome.browserAction.setBadgeText({ text: '' })
+          next({ data: { status: 400, message: 'User cancelled the login.' } })
+          await storage.generic.set.pendingRequest({})
         }
-      )
+      })
     } else {
       next({ data: { status: 200, data: 'This site has already connected.' } })
     }
