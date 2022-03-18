@@ -1,17 +1,115 @@
-export default (payload, tab, next) => {
+import { v4 as uuid } from 'uuid'
+
+// Services
+import storage from 'services/storage'
+import { createWindow } from 'utils/extension'
+import { REQUEST, OS, WINDOW_SIZE } from 'constants/koiConstants'
+
+export default async (payload, tab, next) => {
   try {
-    const mockedPermissions = [{
-      caveats: [{
-        type: 'restrictReturnedAccounts',
-        value: ['0x9ffc78a6c4141235691e4585666b2646ea687b37']
-      }],
-      date: Date.now(),
-      id: '??????',
-      invoker: tab.origin,
-      parentCapability: 'eth_accounts'
-    }]
-    next({ data: { responseData: mockedPermissions, id: payload.data.id } })
+    const { hadPermission, origin, favicon } = tab
+    
+    // check if there is an imported ethereum account
+    const hasImportedEthereum = false
+    if (!hasImportedEthereum) {
+      
+    }
+
+    const requestId = uuid()
+
+    /* 
+      Save the request to local storage
+    */
+    const requestPayload = {
+      origin,
+      favicon,
+      requestId,
+      isEthereum: true
+    }
+
+    const screenWidth = screen.availWidth
+    const screenHeight = screen.availHeight
+    const os = window.localStorage.getItem(OS)
+    let windowData = {
+      url: chrome.extension.getURL('/popup.html'),
+      focused: true,
+      type: 'popup',
+    }
+    if (os == 'win') {
+      windowData = {
+        ...windowData,
+        height: WINDOW_SIZE.WIN_HEIGHT,
+        width: WINDOW_SIZE.WIN_WIDTH,
+        left: Math.round((screenWidth - WINDOW_SIZE.WIN_WIDTH) / 2),
+        top: Math.round((screenHeight - WINDOW_SIZE.WIN_HEIGHT) / 2)
+      }
+    } else {
+      windowData = {
+        ...windowData,
+        height: WINDOW_SIZE.MAC_HEIGHT,
+        width: WINDOW_SIZE.MAC_WIDTH,
+        left: Math.round((screenWidth - WINDOW_SIZE.MAC_WIDTH) / 2),
+        top: Math.round((screenHeight - WINDOW_SIZE.MAC_HEIGHT) / 2)
+      }
+    }
+
+    createWindow(windowData, {
+      beforeCreate: async () => {
+        chrome.browserAction.setBadgeText({ text: '1' })
+        chrome.runtime.onMessage.addListener(
+          async function(popupMessage, _, sendResponse) {
+            if (popupMessage.requestId === requestId) {
+              console.log('Message from popup', popupMessage)
+
+              const approved = popupMessage.approved
+              if (approved) {
+                // connect account
+                try {
+                  const checkedAddresses = popupMessage.checkedAddresses
+  
+                  let siteConnectedAddresses = await storage.setting.get.siteConnectedAddresses()
+  
+                  if (!siteConnectedAddresses[origin]) {
+                    siteConnectedAddresses[origin] = { ethereum: [], arweave: [] }
+                  }
+                  siteConnectedAddresses[origin].ethereum = checkedAddresses 
+                  await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
+
+                  const permissions = [{
+                    caveats: [{
+                      type: 'restrictReturnedAccounts',
+                      value: checkedAddresses
+                    }],
+                    date: Date.now(),
+                    id: uuid(),
+                    invoker: origin,
+                    parentCapability: 'eth_accounts'
+                  }]
+  
+                  next({ data: permissions })
+                } catch (err) {
+                  console.error(err.message)
+                }  
+              } else {
+                next({ error: 'Request rejected' })
+              }
+            }
+          }
+        )
+        await storage.generic.set.pendingRequest({
+          type: REQUEST.PERMISSION,
+          data: requestPayload 
+        })
+
+      },
+      afterClose: async () => {
+        chrome.browserAction.setBadgeText({ text: '' })
+        next({ error: 'User cancelled the login.' })
+        await storage.generic.set.pendingRequest({})
+      }
+    })
   } catch (err) {
+    console.error(err.message)
     next({ error: err.message })
   }
 }

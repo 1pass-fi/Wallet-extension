@@ -80,7 +80,6 @@ export default async (payload, tab, next) => {
                 try {
                   const checkedAddresses = popupMessage.checkedAddresses
   
-                  const allAccounts = await backgroundAccount.getAllAccounts(TYPE.ETHEREUM)
                   let siteConnectedAddresses = await storage.setting.get.siteConnectedAddresses()
   
                   if (!siteConnectedAddresses[origin]) {

@@ -1,16 +1,24 @@
+import { v4 as uuid } from 'uuid'
+
 export default (payload, tab, next) => {
   try {
-    const mockedPermissions = [{
-      caveats: [{
-        type: 'restrictReturnedAccounts',
-        value: ['0x9ffc78a6c4141235691e4585666b2646ea687b37']
-      }],
-      date: Date.now(),
-      id: '??????',
-      invoker: tab.origin,
-      parentCapability: 'eth_accounts'
-    }]
-    next({ data: { responseData: mockedPermissions, id: payload.data.id } })
+    const { hadPermission, activatedAddress, origin } = tab
+
+    let permissions = []
+
+    if (hadPermission) {
+      permissions = [{
+        caveats: [{
+          type: 'restrictReturnedAccounts',
+          value: [activatedAddress]
+        }],
+        date: Date.now(),
+        id: uuid(),
+        invoker: origin,
+        parentCapability: 'eth_accounts'
+      }]
+    }
+    next({ data: permissions })
   } catch (err) {
     next({ error: err.message })
   }

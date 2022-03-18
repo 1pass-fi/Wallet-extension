@@ -71,7 +71,14 @@ export default class ContentScriptEvents extends EventEmitter {
     const hasPendingRequest = !isEmpty(await storage.generic.get.pendingRequest())
 
     const siteAddressDictionary = await storage.setting.get.siteAddressDictionary()
-    const activatedAddress = siteAddressDictionary[origin]
+    
+    const defaultArweaveAddress = await storage.setting.get.activatedArweaveAccountAddress()
+    const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
+
+    const activatedAddress = isEthereumRequest ? defaultEthereumAddress : defaultArweaveAddress
+
+    const siteConnectedAddresses = (await storage.setting.get.siteConnectedAddresses())[origin]
+    const connectedAddresses = (isEthereumRequest ? siteConnectedAddresses?.ethereum : siteAddressDictionary?.arweave) || []
 
     return { 
       origin, 
@@ -80,7 +87,8 @@ export default class ContentScriptEvents extends EventEmitter {
       hadPermission, 
       hasPendingRequest,
       siteAddressDictionary,
-      activatedAddress 
+      activatedAddress,
+      connectedAddresses
     }
   }
 }
