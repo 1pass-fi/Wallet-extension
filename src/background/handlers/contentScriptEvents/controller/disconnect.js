@@ -1,13 +1,21 @@
+import { isEmpty, isArray, get } from 'lodash'
+
 import storage from 'services/storage'
 
 
 export default async (_, tab, next) => {
   try {
-    const { hadPermission, siteAddressDictionary, origin } = tab
+    const { hadPermission, activatedAddress, origin } = tab
 
     if (hadPermission) {
-      delete siteAddressDictionary[origin]
-      await storage.setting.set.siteAddressDictionary(siteAddressDictionary)
+      const siteConnectedAddresses = (await storage.setting.get.siteConnectedAddresses())[origin]
+      if (isEmpty(siteConnectedAddresses)) return next()
+
+      let connectedArweaveAddresses = get(siteConnectedAddresses, 'arweave', [])
+      connectedArweaveAddresses = connectedArweaveAddresses.filter(address => address !== activatedAddress)
+
+      siteConnectedAddresses.arweave = connectedArweaveAddresses
+      await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
     }
 
     next()

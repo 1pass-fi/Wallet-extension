@@ -79,8 +79,6 @@ export default async (payload, tab, next) => {
           chrome.runtime.onMessage.addListener(
             async function(popupMessage) {
               if (popupMessage.requestId === requestId) {
-                console.log('Message from popup', popupMessage)
-  
                 const approved = popupMessage.approved
                 if (approved) {
                   try {
