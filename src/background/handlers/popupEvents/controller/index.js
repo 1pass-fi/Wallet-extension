@@ -33,8 +33,8 @@ import getKey from './getKey'
 import updatePassword from './updatePassword'
 import updateNft from './updateNft'
 import loadBalanceAsync from './loadBalanceAsync'
+import updateEthereumProvider from './updateEthereumProvider'
 import test from './test'
-
 
 export default {
   getBalance,
@@ -72,5 +72,6 @@ export default {
   updatePassword,
   updateNft,
   loadBalanceAsync,
+  updateEthereumProvider,
   test
 }

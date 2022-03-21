@@ -42,7 +42,7 @@ const getEmitter = () => {
   popupEvents.on(MESSAGES.UPDATE_PASSWORD, controller.updatePassword)
   popupEvents.on(MESSAGES.UPDATE_NFT, controller.updateNft)
   popupEvents.on(MESSAGES.LOAD_BALANCE_ASYNC, controller.loadBalanceAsync)
-
+  popupEvents.on(MESSAGES.UPDATE_ETHEREUM_PROVIDER, controller.updateEthereumProvider)
   popupEvents.on(MESSAGES.TEST, controller.test)
 
   return popupEvents

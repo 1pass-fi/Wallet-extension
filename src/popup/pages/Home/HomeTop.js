@@ -19,7 +19,17 @@ import DropDown from 'finnie-v2/components/DropDown'
 import Select from 'shared/select'
 import { loadAllAccounts } from 'options/actions/accounts'
 
-const HomeTop = ({ displayingAccount, price, setIsLoading, currentProviderAddress, setCurrentProviderAddress }) => {
+// actions
+import { updateEthereumProvider } from 'actions/koi'
+
+const HomeTop = ({
+  displayingAccount,
+  price,
+  setIsLoading,
+  currentProviderAddress,
+  setCurrentProviderAddress,
+  updateEthereumProvider
+}) => {
   const p = useParallax({
     translateX: [0, 100],
     shouldAlwaysCompleteAnimation: true,
@@ -43,7 +53,7 @@ const HomeTop = ({ displayingAccount, price, setIsLoading, currentProviderAddres
   const onChangeProvider = async (value) => {
     setIsLoading(true)
     try {
-      await storage.setting.set.ethereumProvider(value)
+      await updateEthereumProvider(value)
 
       setCurrentProviderAddress(value)
 
@@ -142,4 +152,4 @@ const HomeTop = ({ displayingAccount, price, setIsLoading, currentProviderAddres
   )
 }
 
-export default connect(null, { setIsLoading })(HomeTop)
+export default connect(null, { updateEthereumProvider, setIsLoading })(HomeTop)

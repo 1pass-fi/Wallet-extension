@@ -355,3 +355,11 @@ export const changeAccountName = (address, newName) => async (dispatch) => {
 }
 
 export const setKoi = (payload) => ({ type: SET_KOI, payload })
+
+export const updateEthereumProvider = (ethereumProvider) => async (dispatch) => {
+  try {
+    await backgroundRequest.gallery.updateEthereumProvider({ ethereumProvider })
+  } catch (error) {
+    dispatch(setError(err.message))
+  }
+}

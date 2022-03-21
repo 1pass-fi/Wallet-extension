@@ -186,4 +186,8 @@ export class GalleryRequest extends Request {
   test(body) {
     return this.promise(MESSAGES.TEST, body)
   }
+
+  updateEthereumProvider(body) {
+    return this.promise(MESSAGES.UPDATE_ETHEREUM_PROVIDER, body)
+  }
 }
