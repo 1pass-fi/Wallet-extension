@@ -49,7 +49,7 @@ const AccountConfig = (({ sites, account, setIsLoading, removeWallet }) => {
   const handleRemoveWallet = async () => {
     try {
       setIsLoading(true)
-      await removeWallet(account.address)
+      await removeWallet(account.address, account.type)
       setShowModal(false)
       setIsLoading(false)
 

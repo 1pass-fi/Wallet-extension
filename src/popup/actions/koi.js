@@ -1,3 +1,5 @@
+import React from 'react'
+
 // modules
 import { get, isNumber, isEmpty, find } from 'lodash'
 import { useSelector } from 'react-redux'
@@ -10,6 +12,7 @@ import { setAssets } from './assets'
 import { setActivities } from './activities'
 import { setAccounts } from './accounts'
 import { setDefaultAccount } from './defaultAccount'
+import { setActivatedChain } from './activatedChain'
 
 // constants
 import { MESSAGES, FILENAME } from 'constants/koiConstants'
@@ -17,27 +20,30 @@ import { TYPE } from 'constants/accountConstants'
 import { SET_KOI } from 'actions/types'
 
 // services
-import { popupBackgroundRequest as backgroundRequest, popupBackgroundConnect as backgroundConnect } from 'services/request/popup'
+import {
+  popupBackgroundRequest as backgroundRequest,
+  popupBackgroundConnect as backgroundConnect
+} from 'services/request/popup'
 import { popupAccount } from 'services/account'
 import { EventHandler as CreateEventHandler } from 'services/request/src/backgroundConnect'
 import storage from 'services/storage'
 
-// selectors
-import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
-
 export const getBalances = () => async (dispatch) => {
-  const getBalanceSuccessHandler = new CreateEventHandler(MESSAGES.GET_BALANCES_SUCCESS, async response => {
-    try { 
-      const accountStates = await popupAccount.getAllMetadata()
-      dispatch(setAccounts(accountStates))
-    } catch (err) {
-      console.log(err.message)
-      dispatch(setError(err.message))
+  const getBalanceSuccessHandler = new CreateEventHandler(
+    MESSAGES.GET_BALANCES_SUCCESS,
+    async (response) => {
+      try {
+        const accountStates = await popupAccount.getAllMetadata()
+        dispatch(setAccounts(accountStates))
+      } catch (err) {
+        console.log(err.message)
+        dispatch(setError(err.message))
+      }
     }
-  })
+  )
   backgroundConnect.addHandler(getBalanceSuccessHandler)
   backgroundConnect.postMessage({
-    type: MESSAGES.GET_BALANCES,
+    type: MESSAGES.GET_BALANCES
   })
 }
 
@@ -49,7 +55,7 @@ export const getBalances = () => async (dispatch) => {
  */
 export const importWallet = (key, password, type) => async (dispatch) => {
   try {
-    await backgroundRequest.wallet.importWallet({key, password, type})
+    await backgroundRequest.wallet.importWallet({ key, password, type })
     await popupAccount.loadImported()
     const accountsData = await popupAccount.getAllMetadata()
 
@@ -60,53 +66,73 @@ export const importWallet = (key, password, type) => async (dispatch) => {
   }
 }
 
-export const removeWallet = (address) => async (dispatch, getState) => {
+export const removeWallet = (address, type) => async (dispatch, getState) => {
   try {
     await backgroundRequest.wallet.removeWallet({ address })
 
     await popupAccount.loadImported() // update accounts list for popupAccount
     const accountStates = await popupAccount.getAllMetadata()
-    console.log('accountStates: ', accountStates)
+    dispatch(setAccounts(accountStates))
 
     /* 
       Have to handle removing this address from activatedAccount if this
       address is the activated account.
     */
-    const { defaultAccount } = getState()
-    const displayingAccount = useSelector(getDisplayingAccount)
+    const { defaultAccount, activatedChain } = getState()
 
-    const totalArweaveAccounts = await popupAccount.count(TYPE.ARWEAVE)
-    const totalEthereumAccounts = await popupAccount.count(TYPE.ETHEREUM)
-
-    if (accountStates.length) {
-      if (address === displayingAccount?.address) {
-        dispatch(setDefaultAccount(accountStates[0]))
-      }
-    }
-
-    if (totalArweaveAccounts) {
-      if (address === defaultAccount.AR?.address) {
-        const arAccount = find(accountStates, (v) => v.TYPE === TYPE.ARWEAVE)
-        if (!isEmpty(arAccount)) {
-          dispatch(setDefaultAccount(arAccount))
+    if (type === activatedChain) {
+      if (accountStates.length) {
+        if (type === TYPE.ARWEAVE) {
+          if (address === defaultAccount.AR?.address) {
+            const arAccount = find(accountStates, (v) => v.type === TYPE.ARWEAVE)
+            if (!isEmpty(arAccount)) {
+              dispatch(setDefaultAccount(arAccount))
+            } else {
+              dispatch(setActivatedChain(TYPE.ETHEREUM))
+            }
+          }
+        }
+        if (type === TYPE.ETHEREUM) {
+          if (address === defaultAccount.ETH?.address) {
+            const ethAccount = find(accountStates, (v) => v.type === TYPE.ETHEREUM)
+            if (!isEmpty(ethAccount)) {
+              dispatch(setDefaultAccount(ethAccount))
+            } else {
+              dispatch(setActivatedChain(TYPE.ARWEAVE))
+            }
+          }
         }
       }
-    }
+    } else {
+      if (type === TYPE.ARWEAVE) {
+        const totalArweaveAccounts = await popupAccount.count(TYPE.ARWEAVE)
+        if (totalArweaveAccounts) {
+          if (address === defaultAccount.AR?.address) {
+            const arAccount = find(accountStates, (v) => v.type === TYPE.ARWEAVE)
+            if (!isEmpty(arAccount)) {
+              dispatch(setDefaultAccount(arAccount))
+            }
+          }
+        }
+      }
 
-    if (totalEthereumAccounts) {
-      if (address === defaultAccount.ETH?.address) {
-        const ethAccount = find(accountStates, (v) => v.TYPE === TYPE.ETHEREUM)
-        if (!isEmpty(ethAccount)) {
-          dispatch(setDefaultAccount(ethAccount))
+      if (type === TYPE.ETHEREUM) {
+        const totalEthereumAccounts = await popupAccount.count(TYPE.ETHEREUM)
+        if (totalEthereumAccounts) {
+          if (address === defaultAccount.ETH?.address) {
+            const ethAccount = find(accountStates, (v) => v.type === TYPE.ETHEREUM)
+            if (!isEmpty(ethAccount)) {
+              dispatch(setDefaultAccount(ethAccount))
+            }
+          }
         }
       }
     }
 
     const { activities } = getState()
-    const newActivities = activities.filter(activity => activity.address !== address)
+    const newActivities = activities.filter((activity) => activity.address !== address)
 
     dispatch(setActivities(newActivities))
-    dispatch(setAccounts(accountStates))
   } catch (err) {
     dispatch(setError(err.message))
   }
@@ -119,7 +145,6 @@ export const lockWallet = () => async (dispatch) => {
     dispatch(setError(err.message))
   }
 }
-
 
 export const unlockWallet = (password) => async (dispatch) => {
   try {
@@ -157,7 +182,7 @@ export const generateWallet = (inputData) => async (dispatch) => {
 */
 export const saveWallet = (seedPhrase, password, walletType) => async (dispatch) => {
   try {
-    await backgroundRequest.wallet.saveWallet({seedPhrase, password, walletType})
+    await backgroundRequest.wallet.saveWallet({ seedPhrase, password, walletType })
     const allData = await popupAccount.getAllMetadata()
     dispatch(setAccounts(allData))
     dispatch(setIsLoading(false))
@@ -177,23 +202,27 @@ export const loadContent = () => async (dispatch) => {
   try {
     const allAccounts = await popupAccount.getAllAccounts()
     let allAssets = []
-    
-    allAssets = await Promise.all(allAccounts.map(async (account) => {
-      const assets = await account.get.assets() || []
-      const address = await account.get.address()
 
-      return { owner: address, contents: assets }
-    }))
+    allAssets = await Promise.all(
+      allAccounts.map(async (account) => {
+        const assets = (await account.get.assets()) || []
+        const address = await account.get.address()
+
+        return { owner: address, contents: assets }
+      })
+    )
     dispatch(setAssets(allAssets))
 
     await backgroundRequest.assets.loadAllContent()
     // update state
-    allAssets = await Promise.all(allAccounts.map(async (account) => {
-      const assets = await account.get.assets() || []
-      const address = await account.get.address()
+    allAssets = await Promise.all(
+      allAccounts.map(async (account) => {
+        const assets = (await account.get.assets()) || []
+        const address = await account.get.address()
 
-      return { owner: address, contents: assets }
-    }))
+        return { owner: address, contents: assets }
+      })
+    )
     dispatch(setAssets(allAssets))
   } catch (err) {
     dispatch(setError(err.message))
@@ -217,16 +246,18 @@ export const loadActivities = (cursor, address) => async (dispatch, getState) =>
 
     let { activities } = getState()
 
-    const newActivities = await Promise.all(activities.map(async activity => {
-      if (get(activity, 'account.address') === address) {
-        const activitiesItems = [...activity.activityItems, ...activitiesList]
-        activity.activityItems = activitiesItems
-        const doneLoading = !activitiesList.length
-        activity.cursor = { offset, limit, doneLoading }
-      }
+    const newActivities = await Promise.all(
+      activities.map(async (activity) => {
+        if (get(activity, 'account.address') === address) {
+          const activitiesItems = [...activity.activityItems, ...activitiesList]
+          activity.activityItems = activitiesItems
+          const doneLoading = !activitiesList.length
+          activity.cursor = { offset, limit, doneLoading }
+        }
 
-      return activity
-    }))
+        return activity
+      })
+    )
 
     console.log('New Activities: ', newActivities)
 
@@ -241,12 +272,17 @@ export const makeTransfer = (sender, qty, target, token) => async (dispatch) => 
   try {
     const { address } = sender
 
-    if (token == 'KOII') token = 'KOI' // On the SDK the name of token KOII has not been updated. (still KOI) 
+    if (token == 'KOII') token = 'KOI' // On the SDK the name of token KOII has not been updated. (still KOI)
 
-    const { txId, receipt } = await backgroundRequest.wallet.makeTransfer({qty, target, token, address})
+    const { txId, receipt } = await backgroundRequest.wallet.makeTransfer({
+      qty,
+      target,
+      token,
+      address
+    })
 
     console.log('TRANSACTION res', { txId, receipt })
-    return { txId, receipt}
+    return { txId, receipt }
   } catch (err) {
     console.log('ERROR-ACTION: ', err.message)
     throw new Error(err.message)
@@ -265,7 +301,7 @@ export const signTransaction = (inputData) => async (dispatch) => {
     } else {
       await backgroundRequest.wallet.signTransaction(inputData)
     }
-    
+
     window.close()
   } catch (err) {
     window.close()
@@ -278,7 +314,7 @@ export const getKeyFile = (password, address) => async (dispatch) => {
     const type = await popupAccount.getType(address)
 
     let filename
-    switch(type) {
+    switch (type) {
       case TYPE.ARWEAVE:
         filename = FILENAME.ARWEAVE
         break
@@ -291,7 +327,7 @@ export const getKeyFile = (password, address) => async (dispatch) => {
     const url = 'data:application/json;base64,' + btoa(result)
     chrome.downloads.download({
       url: url,
-      filename: filename,
+      filename: filename
     })
   } catch (err) {
     throw new Error(err.message)

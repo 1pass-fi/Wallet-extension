@@ -37,7 +37,7 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
   const handleRemoveWallet = async (account) => {
     try {
       setIsLoading(true)
-      await removeWallet(account.address)
+      await removeWallet(account.address, account.type)
       setIsLoading(false)
 
       // if remove the last wallet, redirect to welcome screen
@@ -45,7 +45,7 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
       if (totalAccount == 0) history.push(PATH.WELCOME)
     } catch (err) {
       setIsLoading(false)
-      console.log(err.message)
+      console.log('Remove wallet - Error: ', err.message)
     }
   }
 
