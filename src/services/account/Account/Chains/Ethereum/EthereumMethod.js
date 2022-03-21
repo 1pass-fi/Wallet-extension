@@ -19,6 +19,7 @@ import Web3 from 'web3'
 import koiRouterABI from './abi/KoiRouter.json'
 import koiTokenABI from './abi/KoiToken.json'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
+import storage from 'services/storage'
 
 export class EthereumMethod {
   #chrome
@@ -35,10 +36,15 @@ export class EthereumMethod {
 
   async loadMyContent() {
     try {
+      let path = PATH.OPENSEA_API_MAINNET
+      const ethereumProvider = await storage.setting.get.ethereumProvider()
+      console.log('ethereumProvider', ethereumProvider)
+
+      if (ethereumProvider.includes('rinkeby')) path = PATH.OPENSEA_API_RINEKY
+
       console.log('ETH ADDRESS', this.eth.address)
       console.log('ETH PROVIDER', this.eth.provider)
-      let path = PATH.OPENSEA_API_MAINNET
-      if ((this.eth.provider).includes('rinkeby')) path = PATH.OPENSEA_API_RINEKY
+      // if ((this.eth.provider).includes('rinkeby')) path = PATH.OPENSEA_API_RINEKY
 
       /* 
         get nft list for this ETH address
