@@ -13,19 +13,21 @@ import { REQUEST, OS, WINDOW_SIZE } from 'constants/koiConstants'
 
 export default async (payload, tab, next) => {
   try {
-    const { hadPermission, activatedAddress, origin, favicon } = tab
+    const { hadPermission, origin, favicon, hasPendingRequest } = tab
     
-    console.log('hadPermission ethRequestAccounts', hadPermission)
-
     if (hadPermission) {
       /* Response with array of connected addresses */
       return next({ data: ['example_address_1, example_address_2'] })
     }
 
+    if (hadPendingRequest) {
+      return next({ error: 'Request pending' })
+    }
+
     // check if there is an imported ethereum account
     const hasImportedEthereum = false
     if (!hasImportedEthereum) {
-      
+      return next({ error: 'No imported ethereum account' })
     }
 
     const requestId = uuid()
