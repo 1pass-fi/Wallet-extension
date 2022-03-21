@@ -20,13 +20,13 @@ export default async (payload, tab, next) => {
       return next({ data: ['example_address_1, example_address_2'] })
     }
 
-    if (hadPendingRequest) {
+    if (hasPendingRequest) {
       return next({ error: 'Request pending' })
     }
 
     // check if there is an imported ethereum account
-    const hasImportedEthereum = false
-    if (!hasImportedEthereum) {
+    const totalEthereumAccounts = await backgroundAccount.count(TYPE.ETHEREUM)
+    if (!totalEthereumAccounts) {
       return next({ error: 'No imported ethereum account' })
     }
 

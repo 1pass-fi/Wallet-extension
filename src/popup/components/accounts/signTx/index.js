@@ -46,6 +46,7 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
   const [koiiQuantity, setKoiiQuantity] = useState(0)
   const [isUpdate, setIsUpdate] = useState(false)
   const [isCreate, setIsCreate] = useState(false)
+  const [isEthereum, setIsEthereum] = useState(false)
 
   const walletIcon = {
     koi: <KoiIcon className='icon' />,
@@ -59,6 +60,8 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
       const siteAddressDict = await storage.setting.get.siteAddressDictionary()
 
       const address = siteAddressDict[origin]
+
+      console.log('request data', request)
       
       const {
         origin: requestOrigin,
@@ -68,18 +71,34 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
         isKoiTransfer,
         koiiQty,
         isCreateDID,
-        isUpdateDID
+        isUpdateDID,
+        params,
+        isEthereum
       } = request.data
 
-      setSourceAccount({ address, type: 'koi' })
-      setDestinationAccount({ address: targetAddress, type: 'arweave' })
       setOrigin(requestOrigin)
-      setQty(qty)
-      setFee(fee)
-      setKoiiTransfer(isKoiTransfer || isCreateDID)
-      setKoiiQuantity(koiiQty)
-      setIsUpdate(isUpdateDID)
-      setIsCreate(isCreateDID)
+      if (!isEthereum) {
+        setSourceAccount({ address, type: 'koi' })
+        setDestinationAccount({ address: targetAddress, type: 'arweave' })
+        setQty(qty)
+        setFee(fee)
+        setKoiiTransfer(isKoiTransfer || isCreateDID)
+        setKoiiQuantity(koiiQty)
+        setIsUpdate(isUpdateDID)
+        setIsCreate(isCreateDID)        
+      } else {
+        const { from, to, value, gasLimit, gasPrice } = params[0]
+        setIsEthereum(true)
+        setCurrency('ETH')
+        setSourceAccount({ address: from, type: 'eth' })
+        setDestinationAccount({ address: to, type: 'eth' })
+        setQty(parseInt(value, 16))
+        setFee(0.0001)
+
+        // TODO: ThuanN
+        // calculate gas fee
+      }
+
     }
 
     loadRequest()
@@ -90,9 +109,17 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
       if (confirm) {
         const request = await storage.generic.get.pendingRequest()
         if (isEmpty(request)) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-        const { transaction, origin } = request.data
-        signTransaction({ tx: transaction, confirm: true , origin, isUpdate, isCreate})
+        const { transaction, origin, params, requestId } = request.data
+        console.log('input params', params)
+
+        chrome.runtime.sendMessage({ requestId, approved: true })
+        // signTransaction({ tx: transaction, confirm: true , origin, isUpdate, isCreate})
+
         await storage.generic.set.pendingRequest({})
+
+        setTimeout(() => {
+          window.close()
+        }, 1000)
       } else {
         signTransaction({ tx: null, confirm: false })
         await storage.generic.set.pendingRequest({})
@@ -150,7 +177,7 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
             <div className='detail fee'>
               <div className='detail-row row-label'>Fee</div>
               <div className='detail-row amount'>
-                <div className='koi'>{transactionAmountFormat(fee)} AR</div>
+                <div className='koi'>{transactionAmountFormat(fee)} {isEthereum ? 'ETH' : 'AR'}</div>
                 <div className='usd'>~{fiatCurrencyFormat(fee*price.AR)} USD</div>
               </div>
             </div>
@@ -162,7 +189,14 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
                     <div className='koi'>{transactionAmountFormat(koiiQuantity)} KOII</div>
                   }
                   <div className='koi'>{transactionAmountFormat(qty+fee)} AR</div>
-                  {/* <div className='usd'>~{fiatCurrencyFormat((qty+fee)*price.AR)} USD</div> */}
+                </div>
+              </div>
+            }
+            { currency === 'ETH' &&
+              <div className='detail total'>
+                <div className='detail-row row-label'>Total</div>
+                <div className='detail-row amount'>
+                  <div className='koi'>{transactionAmountFormat(qty+fee)} ETH</div>
                 </div>
               </div>
             }
