@@ -19,7 +19,7 @@ import DropDown from 'finnie-v2/components/DropDown'
 import Select from 'shared/select'
 import { loadAllAccounts } from 'options/actions/accounts'
 
-const HomeTop = ({ displayingAccount, price, setIsLoading }) => {
+const HomeTop = ({ displayingAccount, price, setIsLoading, currentProviderAddress, setCurrentProviderAddress }) => {
   const p = useParallax({
     translateX: [0, 100],
     shouldAlwaysCompleteAnimation: true,
@@ -57,8 +57,6 @@ const HomeTop = ({ displayingAccount, price, setIsLoading }) => {
     }
     setIsLoading(false)
   }
-
-  const [currentProviderAddress, setCurrentProviderAddress] = useState({})
 
   useEffect(() => {
     const getCurrentProvider = async () => {

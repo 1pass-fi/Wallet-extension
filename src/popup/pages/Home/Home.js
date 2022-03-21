@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ParallaxProvider } from 'react-scroll-parallax'
 import { useSelector } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
@@ -11,6 +11,7 @@ import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 import HomeTop from './HomeTop'
 
 const Home = () => {
+  const [currentProviderAddress, setCurrentProviderAddress] = useState({})
   const displayingAccount = useSelector(getDisplayingAccount)
 
   const price = useSelector((state) => state.price)
@@ -30,12 +31,21 @@ const Home = () => {
     >
       <ParallaxProvider scrollContainer={scrollEl}>
         <div className="pt-4.75 pl-4.75 mb-3.5">
-          <HomeTop displayingAccount={displayingAccount} price={price} />
+          <HomeTop
+            displayingAccount={displayingAccount}
+            price={price}
+            currentProviderAddress={currentProviderAddress}
+            setCurrentProviderAddress={setCurrentProviderAddress}
+          />
           <div style={{ width: '177px', height: '156px' }} className="absolute top-13.5 right-0">
             <PopupBackground />
           </div>
         </div>
-        <AccountInfo displayingAccount={displayingAccount} price={price} />
+        <AccountInfo
+          displayingAccount={displayingAccount}
+          price={price}
+          currentProviderAddress={currentProviderAddress}
+        />
       </ParallaxProvider>
     </div>
   )

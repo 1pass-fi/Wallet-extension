@@ -13,7 +13,7 @@ import NFTCard from 'popup/components/NFTCard'
 // selectors
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
-const Assets = ({ assets, loadContent, setContLoading }) => {
+const Assets = ({ assets, loadContent, setContLoading, currentProviderAddress }) => {
   const [filteredAssets, setFilteredAssets] = useState({})
   const displayingAccount = useSelector(getDisplayingAccount)
 
@@ -30,7 +30,7 @@ const Assets = ({ assets, loadContent, setContLoading }) => {
     }
 
     handleLoadContent()
-  }, [])
+  }, [currentProviderAddress])
 
   useEffect(() => {
     let showAssets = []

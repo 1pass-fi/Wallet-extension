@@ -20,7 +20,7 @@ const tabs = [
   { name: 'Activity', to: '/activity' }
 ]
 
-const AccountInfo = ({ displayingAccount, price }) => {
+const AccountInfo = ({ displayingAccount, price, currentProviderAddress }) => {
   const history = useHistory()
 
   const assetHeaderParallax = useParallax({
@@ -67,7 +67,6 @@ const AccountInfo = ({ displayingAccount, price }) => {
             )}
           </div>
         ) : null}
-       
       </div>
       <div
         className={clsx(
@@ -88,7 +87,7 @@ const AccountInfo = ({ displayingAccount, price }) => {
       </div>
       <Switch>
         <Route exact path="/assets">
-          <Assets />
+          <Assets currentProviderAddress={currentProviderAddress} />
         </Route>
         <Route exact path="/activity">
           <Activity />
