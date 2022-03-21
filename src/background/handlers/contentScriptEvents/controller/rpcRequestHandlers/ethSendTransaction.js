@@ -15,7 +15,6 @@ import { createWindow } from 'utils/extension'
 
 export default async (payload, tab, next) => {
   try {
-    console.log('=== TEST SEND ETH TRANSACTION ===')
     const params = get(payload, 'data.params')
     const { favicon, origin } = tab
     
@@ -76,18 +75,30 @@ export default async (payload, tab, next) => {
       beforeCreate: async () => {
         chrome.browserAction.setBadgeText({ text: '1' })
         chrome.runtime.onMessage.addListener(
-          async function(popupMessage) {
-            console.log('popupMessage', popupMessage)
+          async function(popupMessage, sender, sendResponse) {
             if (popupMessage.requestId === requestId) {
               const approved = popupMessage.approved
               if (approved) {
                 try {
-                  console.log('Send eth transaction confirmed')
+                  /* Send ETH transaction */
+                  const provider = await storage.setting.get.ethereumProvider()
+                  console.log('provider', provider)
+
+                  const web3 = new Web3(provider)
+                  const estimateGas = await web3.eth.estimateGas(rawTx)
+                  rawTx.gas = estimateGas
+              
+                  const signTx = await web3.eth.accounts.signTransaction(rawTx, key)
+                  const receipt = await web3.eth.sendSignedTransaction(signTx.rawTransaction)
+                  next({ data: receipt })
+
+                  chrome.runtime.sendMessage({requestId, finished: true})
+                  return true
                 } catch (err) {
                   console.error(err.message)
                 } 
               } else {
-                next({ error: 'Transaction rejected' })
+                next({ error: { code: 4001, data: 'User rejected request' } })
               }
             }
           }
@@ -104,22 +115,6 @@ export default async (payload, tab, next) => {
         await storage.generic.set.pendingRequest({})
       }
     })
-
-
-
-    // const account = await backgroundAccount.getAccount({ address: rawTx.from })
-
-    // const provider = await storage.setting.get.ethereumProvider()
-
-    // const web3 = new Web3(provider)
-
-    // const estimateGas = await web3.eth.estimateGas(rawTx)
-    // rawTx.gas = estimateGas
-
-    // const signTx = await web3.eth.accounts.signTransaction(rawTx, account.mockedGetKey())
-    // const receipt = await web3.eth.sendSignedTransaction(signTx.rawTransaction)
-
-    next({ data: receipt })
   } catch (err) {
     next({ error: err.message })
   }

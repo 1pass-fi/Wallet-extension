@@ -22,13 +22,14 @@ import { STORAGE, ERROR_MESSAGE } from 'constants/koiConstants'
 // actions
 import { signTransaction } from 'actions/koi'
 import { setError } from 'actions/error'
+import { setIsLoading } from 'actions/loading'
 
 // styles
 import './index.css'
 import storage from 'services/storage'
 
 
-export const SignTx = ({ signTransaction, setError, accountName, price }) => {
+export const SignTx = ({ signTransaction, setError, accountName, price, setIsLoading }) => {
   const history = useHistory()
   const [sourceAccount, setSourceAccount] = useState({
     address: '',
@@ -107,25 +108,30 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
   const handleOnClick = async (confirm) => {
     try {
       if (confirm) {
+        setIsLoading(true)
         const request = await storage.generic.get.pendingRequest()
         if (isEmpty(request)) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
         const { transaction, origin, params, requestId } = request.data
         console.log('input params', params)
 
-        chrome.runtime.sendMessage({ requestId, approved: true })
+        chrome.runtime.sendMessage({ requestId, approved: true }, function(response) {
+          chrome.runtime.onMessage.addListener(function(message) {
+            if (message.requestId === requestId) {
+              setIsLoading(false)
+              window.close()
+            }
+          })
+
+        })
         // signTransaction({ tx: transaction, confirm: true , origin, isUpdate, isCreate})
 
         await storage.generic.set.pendingRequest({})
-
-        setTimeout(() => {
-          window.close()
-        }, 1000)
       } else {
         signTransaction({ tx: null, confirm: false })
         await storage.generic.set.pendingRequest({})
       }
 
-      history.push('/account')
+      
     } catch (err) {
       setError(err.message)
     }
@@ -222,4 +228,4 @@ export const SignTx = ({ signTransaction, setError, accountName, price }) => {
 
 export const mapStateToProps = (state) => ({ accountName: state.accountName, price: state.price })
 
-export default connect(mapStateToProps, { signTransaction, setError })(SignTx)
+export default connect(mapStateToProps, { signTransaction, setError, setIsLoading })(SignTx)

@@ -12,7 +12,7 @@ const finnieRpcConnectionScript = `() => {
           if (response.id === id) resolve(response.data)
         })
         this.once(message.type + '_ERROR', (response) => {
-          if (response.id === id) resolve(response.data)
+          if (response.id === id) reject(response.data)
         })
       })
     }

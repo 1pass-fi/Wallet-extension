@@ -93,7 +93,7 @@ export default async (payload, tab, next) => {
                   console.error(err.message)
                 }  
               } else {
-                next({ error: 'Transaction rejected' })
+                next({ error: {code: 4001, data: 'User rejected'} })
               }
             }
           }
