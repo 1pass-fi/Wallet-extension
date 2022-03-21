@@ -66,42 +66,44 @@ const FullView = () => {
               </HasArweave>
             </Route>
 
-            <HasArweave content={'Please import an Arweave account'}>
-              <MainLayout>
-                <AddressBook />
-                <Switch>
-                  <Route exact path="/nfts/:id">
-                    <NFTDetail />
-                  </Route>
-                  <Route exact path="/settings/*">
-                    <div className="flex justify-start" style={{ maxWidth: '100%' }}>
-                      <Settings />
-                    </div>
-                  </Route>
-                  <Route exact path="/collections/create/new-collection">
-                    <Collection />
-                  </Route>
-                  <Route exact path="/collections/create/select-nft">
+            <MainLayout>
+              <AddressBook />
+              <Switch>
+                <Route exact path="/nfts/:id">
+                  <NFTDetail />
+                </Route>
+                <Route exact path="/settings/*">
+                  <div className="flex justify-start" style={{ maxWidth: '100%' }}>
+                    <Settings />
+                  </div>
+                </Route>
+                <Route exact path="/collections/create/new-collection">
+                  <Collection />
+                </Route>
+                <Route exact path="/collections/create/select-nft">
+                  <HasArweave content={'Please import an Arweave account'}>
                     <SelectNfts />
-                  </Route>
-                  <Route exact path="/collections/edit/select-nft/:collectionId">
+                  </HasArweave>
+                </Route>
+                <Route exact path="/collections/edit/select-nft/:collectionId">
+                  <HasArweave content={'Please import an Arweave account'}>
                     <SelectNfts />
-                  </Route>
-                  <Route exact path="/collections">
-                    <Collection />
-                  </Route>
-                  <Route path="/notifications">
-                    <Notifications />
-                  </Route>
-                  <Route exact path="/gallery">
-                    <Gallery />
-                  </Route>
-                  <Route path="*">
-                    <Gallery />
-                  </Route>
-                </Switch>
-              </MainLayout>
-            </HasArweave>
+                  </HasArweave>
+                </Route>
+                <Route exact path="/collections">
+                  <Collection />
+                </Route>
+                <Route path="/notifications">
+                  <Notifications />
+                </Route>
+                <Route exact path="/gallery">
+                  <Gallery />
+                </Route>
+                <Route path="*">
+                  <Gallery />
+                </Route>
+              </Switch>
+            </MainLayout>
           </Switch>
         </AppProvider>
       </Router>

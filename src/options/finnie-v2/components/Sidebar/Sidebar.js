@@ -10,6 +10,7 @@ import CloseIcon from 'img/v2/x-icon-white.svg'
 import UploadNftForm from './UploadNftForm'
 import CollectionForm from './CollectionForm'
 
+import HasArweave from 'options/shared/hasArweave'
 import { filterNft } from 'options/actions/assets'
 import { filterCollection } from 'options/actions/collections'
 import AccountSettings from 'finnie-v2/components/AccountSettings'
@@ -103,20 +104,22 @@ const Sidebar = () => {
         <div className="bg-trueGray-100 bg-opacity-20 rounded w-57.75">
           <Switch>
             <Route path="/create-nft">
-              <UploadNftForm />
-              {showCollectionTooltip && (
-                <div
-                  className="collection-tooltip-after absolute -top-11 -right-28 flex items-center border border-white bg-indigo text-white text-center pr-2 rounded-sm"
-                  style={{ width: '201px', height: '47px' }}
-                >
-                  <CloseIcon
-                    className="absolute top-0.75 right-0.75 cursor-pointer"
-                    style={{ width: '14px', height: '15px' }}
-                    onClick={() => setShowCollectionTooltip(false)}
-                  />
-                  Upload multiple NFTs at the same time with collections.
-                </div>
-              )}
+              <HasArweave content="This feature only supports AR account">
+                <UploadNftForm />
+                {showCollectionTooltip && (
+                  <div
+                    className="collection-tooltip-after absolute -top-11 -right-28 flex items-center border border-white bg-indigo text-white text-center pr-2 rounded-sm"
+                    style={{ width: '201px', height: '47px' }}
+                  >
+                    <CloseIcon
+                      className="absolute top-0.75 right-0.75 cursor-pointer"
+                      style={{ width: '14px', height: '15px' }}
+                      onClick={() => setShowCollectionTooltip(false)}
+                    />
+                    Upload multiple NFTs at the same time with collections.
+                  </div>
+                )}
+              </HasArweave>
             </Route>
             <Route exact path="/collections">
               <SortAndFilter
@@ -129,7 +132,9 @@ const Sidebar = () => {
               />
             </Route>
             <Route path="/collections/create">
-              <CollectionForm />
+              <HasArweave content="This feature only supports AR account">
+                <CollectionForm />
+              </HasArweave>
             </Route>
             <Route path="/collections/edit">
               <CollectionForm isUpdate={true} />
