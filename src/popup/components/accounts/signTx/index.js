@@ -109,12 +109,12 @@ export const SignTx = ({ signTransaction, setError, accountName, price, setIsLoa
   useEffect(() => {
     if(isEthereum) {
       const calculateEthFee = async () => {
-        const account = await popupAccount.getAccount({ address: sourceAccount.address })
-        const provider = await account.get.provider()
+        const provider = await storage.setting.get.ethereumProvider()
 
         const web3 = new Web3(provider)
           
         const currentGasPrice = await web3.eth.getGasPrice()
+        console.log('current gas price', currentGasPrice)
         const currentGasPriceBN = Web3.utils.toBN(currentGasPrice)
         
         const totalFee = Web3.utils.fromWei(currentGasPriceBN.muln(21000)) // 21,000 is the amount of gas needed to send ETH

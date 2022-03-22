@@ -8,6 +8,7 @@ import getEncryptionPublicKey from './getEncryptionPublicKey'
 import ethDecrypt from './ethDecrypt'
 import netVersion from './netVersion'
 import ethSendTransaction from './ethSendTransaction'
+import ethChainId from './ethChainId'
 
 const METHOD = {
   eth_requestAccounts: 'eth_requestAccounts', // connect -> popup
@@ -42,6 +43,7 @@ const getEthereumRequestHandlers = () => {
   ethereumRequestHandlers.on(METHOD.eth_decrypt, ethDecrypt)
   ethereumRequestHandlers.on(METHOD.net_version, netVersion)
   ethereumRequestHandlers.on(METHOD.eth_sendTransaction, ethSendTransaction)
+  ethereumRequestHandlers.on(METHOD.eth_chainId, ethChainId)
 
   return ethereumRequestHandlers
 }
