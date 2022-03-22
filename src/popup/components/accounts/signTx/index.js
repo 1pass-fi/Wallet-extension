@@ -1,8 +1,10 @@
 // modules
+import Web3 from 'web3'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { isEmpty } from 'lodash'
+
 
 // assets
 import ArweaveIcon from 'img/arweave-icon.svg'
@@ -26,7 +28,10 @@ import { setIsLoading } from 'actions/loading'
 
 // styles
 import './index.css'
+
+// services
 import storage from 'services/storage'
+import { popupAccount } from 'services/account'
 
 
 export const SignTx = ({ signTransaction, setError, accountName, price, setIsLoading }) => {
@@ -94,16 +99,36 @@ export const SignTx = ({ signTransaction, setError, accountName, price, setIsLoa
         setSourceAccount({ address: from, type: 'eth' })
         setDestinationAccount({ address: to, type: 'eth' })
         setQty(parseInt(value, 16))
-        setFee(0.0001)
-
-        // TODO: ThuanN
-        // calculate gas fee
       }
 
     }
 
     loadRequest()
   }, [])
+
+  useEffect(() => {
+    if(isEthereum) {
+      const calculateEthFee = async () => {
+        const account = await popupAccount.getAccount({ address: sourceAccount.address })
+        const provider = await account.get.provider()
+
+        const web3 = new Web3(provider)
+          
+        const currentGasPrice = await web3.eth.getGasPrice()
+        const currentGasPriceBN = Web3.utils.toBN(currentGasPrice)
+        
+        const totalFee = Web3.utils.fromWei(currentGasPriceBN.muln(21000)) // 21,000 is the amount of gas needed to send ETH
+        setFee(totalFee) 
+      }
+  
+      calculateEthFee()
+      const intervalId = setInterval(() => {
+        calculateEthFee()
+      }, 3000)
+  
+      return () => clearInterval(intervalId)
+    }
+  }, [sourceAccount, isEthereum])
 
   const handleOnClick = async (confirm) => {
     try {
