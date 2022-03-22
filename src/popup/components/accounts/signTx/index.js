@@ -132,13 +132,12 @@ export const SignTx = ({ signTransaction, setError, accountName, price, setIsLoa
 
   const handleOnClick = async (confirm) => {
     try {
+      const request = await storage.generic.get.pendingRequest()
+      if (isEmpty(request)) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
+      const { transaction, origin, params, requestId } = request.data
+
       if (confirm) {
         setIsLoading(true)
-        const request = await storage.generic.get.pendingRequest()
-        if (isEmpty(request)) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-        const { transaction, origin, params, requestId } = request.data
-        console.log('input params', params)
-
         chrome.runtime.sendMessage({ requestId, approved: true }, function(response) {
           chrome.runtime.onMessage.addListener(function(message) {
             if (message.requestId === requestId) {
@@ -152,6 +151,7 @@ export const SignTx = ({ signTransaction, setError, accountName, price, setIsLoa
       } else {
         chrome.runtime.sendMessage({ requestId, approved: false }, function(response) {
           chrome.runtime.onMessage.addListener(function(message) {
+            console.log('response message', message)
             if (message.requestId === requestId) {
               setIsLoading(false)
               window.close()

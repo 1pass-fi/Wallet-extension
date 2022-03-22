@@ -133,28 +133,6 @@ const HomeTop = ({
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
               SEND
             </div>
-            <button style={{backgroundColor: 'pink', borderRadius: '4px', marginTop: '5px'}} onClick={async () => {
-              setIsLoading(true)
-              // change provider
-              let currentProvider = await storage.setting.get.ethereumProvider()
-              if (currentProvider === 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2') {
-                currentProvider = 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
-              } else {
-                currentProvider = 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
-              }
-              await storage.setting.set.ethereumProvider(currentProvider)
-
-              // load balance
-              await request.wallet.loadBalanceAsync()
-
-              // update account state
-              await dispatch(loadAllAccounts())
-
-              setIsLoading(false)
-            }}>Change Provider</button>
-            <button style={{backgroundColor: 'pink', marginTop:'5px', borderRadius: '4px'}} onClick={() => {
-
-            }}>Change Chain</button>
           </div>
           <div className="flex flex-col items-center justify-center">
             <Link

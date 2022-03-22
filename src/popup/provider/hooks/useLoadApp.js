@@ -26,7 +26,6 @@ const useLoadApp = ({
     }
     if (accountLoaded.isWalletLocked) {
       history.push('/login')
-      return
     }
 
     const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
