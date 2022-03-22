@@ -40,6 +40,7 @@
     },
     "dependencies": {
         "@_koi/sdk": "2.4.7",
+        "@metamask/eth-sig-util": "^4.0.0",
         "@polymer/paper-button": "^3.0.1",
         "@ramonak/react-progress-bar": "^4.2.0",
         "@storybook/addon-actions": "^6.2.9",
@@ -63,6 +64,7 @@
         "currency-symbol-map": "^5.0.1",
         "ethereum-provider": "^0.5.0",
         "ethereumjs-tx": "^2.1.2",
+        "ethereumjs-util": "^7.1.4",
         "ethereumjs-wallet": "^1.0.1",
         "identity-obj-proxy": "3.0.0",
         "joi": "^17.5.0",
