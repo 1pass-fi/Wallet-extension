@@ -121,17 +121,21 @@ export const SignTx = ({ signTransaction, setError, accountName, price, setIsLoa
               window.close()
             }
           })
-
         })
         // signTransaction({ tx: transaction, confirm: true , origin, isUpdate, isCreate})
-
         await storage.generic.set.pendingRequest({})
       } else {
-        signTransaction({ tx: null, confirm: false })
+        chrome.runtime.sendMessage({ requestId, approved: false }, function(response) {
+          chrome.runtime.onMessage.addListener(function(message) {
+            if (message.requestId === requestId) {
+              setIsLoading(false)
+              window.close()
+            }
+          })
+        })
+        // signTransaction({ tx: null, confirm: false })
         await storage.generic.set.pendingRequest({})
       }
-
-      
     } catch (err) {
       setError(err.message)
     }

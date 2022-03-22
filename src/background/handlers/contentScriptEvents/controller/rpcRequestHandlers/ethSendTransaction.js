@@ -12,25 +12,18 @@ import { REQUEST, OS, WINDOW_SIZE } from 'constants/koiConstants'
 import { createWindow } from 'utils/extension'
 
 
-
 export default async (payload, tab, next) => {
   try {
     const params = get(payload, 'data.params')
-    const { favicon, origin } = tab
-    
-    const rawTx = {
-      from: '0xb076413401172CBB73C082107514De3376E4FF6c',
-      to: '0x0c54FcCd2e384b4BB6f2E405Bf5Cbc15a017AaFb',
-      value: '0x0',
-      gas: 0,
-      type: '0x0'
-    }
+    const { favicon, origin, hadPermission } = tab
 
+    if (!hadPermission) {
+      return next({error: { code: 4100,  data: 'No permissions' }})
+    }
+    
     const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
-    console.log('defaultEthereumAddress', defaultEthereumAddress)
 
     const credential = await backgroundAccount.getCredentialByAddress(defaultEthereumAddress)
-    console.log('credential', credential)
 
     const key = credential.key
 
@@ -82,7 +75,8 @@ export default async (payload, tab, next) => {
                 try {
                   /* Send ETH transaction */
                   const provider = await storage.setting.get.ethereumProvider()
-                  console.log('provider', provider)
+
+                  const rawTx = params[0]
 
                   const web3 = new Web3(provider)
                   const estimateGas = await web3.eth.estimateGas(rawTx)
@@ -90,12 +84,13 @@ export default async (payload, tab, next) => {
               
                   const signTx = await web3.eth.accounts.signTransaction(rawTx, key)
                   const receipt = await web3.eth.sendSignedTransaction(signTx.rawTransaction)
-                  next({ data: receipt })
 
+                  next({ data: receipt })
                   chrome.runtime.sendMessage({requestId, finished: true})
-                  return true
                 } catch (err) {
-                  console.error(err.message)
+                  console.error('Send eth error:', err.message)
+                  chrome.runtime.sendMessage({requestId, finished: true})
+                  next({ error: { code: 4001, data: err.message } })
                 } 
               } else {
                 next({ error: { code: 4001, data: 'User rejected request' } })
