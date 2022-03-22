@@ -6,6 +6,7 @@ const mainScript = () => {
   window.connection = new FinnieRpcConnection()
 
   window.addEventListener('message', function(event) {
+    window.connection.emit(event.data.type + '_' + event.data.id, event.data)
     window.connection.emit(event.data.type, event.data)
   })
 
@@ -32,7 +33,7 @@ const arweaveWalletExcluded = () => {
   window.connection = new FinnieRpcConnection()
 
   window.addEventListener('message', function(event) {
-    window.connection.emit(event.data.type, event.data)
+    window.connection.emit(event.data.type + '_' + event.data.id, event.data)
   })
 
   const finnieEthereumProvider = new FinnieEthereumProvider(window.connection)
