@@ -78,6 +78,8 @@ export default async (payload, tab, next) => {
 
                   const rawTx = params[0]
 
+                  console.log('rawTx', rawTx)
+
                   const web3 = new Web3(provider)
                   const estimateGas = await web3.eth.estimateGas(rawTx)
                   rawTx.gas = estimateGas
@@ -85,7 +87,9 @@ export default async (payload, tab, next) => {
                   const signTx = await web3.eth.accounts.signTransaction(rawTx, key)
                   const receipt = await web3.eth.sendSignedTransaction(signTx.rawTransaction)
 
-                  next({ data: receipt })
+                  console.log('receipt', receipt)
+
+                  next({ data: receipt.transactionHash })
                   chrome.runtime.sendMessage({requestId, finished: true})
                 } catch (err) {
                   console.error('Send eth error:', err.message)

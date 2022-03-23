@@ -2,6 +2,8 @@ import ethereumRequestHandlers from 'background/handlers/contentScriptEvents/con
 
 export default async (payload, tab, next) => {
   try {
+    console.log('request', payload.data.method)
+    console.log('request - data', payload.data.params)
     ethereumRequestHandlers.send(payload.data.method, payload, tab, next)
   } catch (err) {
     console.error(err.message)
