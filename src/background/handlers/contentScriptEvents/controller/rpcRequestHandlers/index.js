@@ -19,6 +19,7 @@ import ethEstimateGas from './ethEstimateGas'
 import ethGetTransactionByHash from './ethGetTransactionByHash'
 import ethBlockNumber from './ethBlockNumber'
 import ethGetTransactionReceipt from './ethGetTransactionReceipt'
+import ethGetBlockByNumber from './ethGetBlockByNumber'
 
 const METHOD = {
   eth_requestAccounts: 'eth_requestAccounts', // connect -> popup
@@ -39,7 +40,8 @@ const METHOD = {
   eth_estimateGas: 'eth_estimateGas',
   eth_getTransactionByHash: 'eth_getTransactionByHash',
   eth_blockNumber: 'eth_blockNumber',
-  eth_getTransactionReceipt: 'eth_getTransactionReceipt'
+  eth_getTransactionReceipt: 'eth_getTransactionReceipt',
+  eth_getBlockByNumber: 'eth_getBlockByNumber'
 }
 
 class EthereumRequestHandlers extends EventEmitter {
@@ -74,6 +76,7 @@ const getEthereumRequestHandlers = () => {
   ethereumRequestHandlers.on(METHOD.eth_getTransactionByHash, ethGetTransactionByHash)
   ethereumRequestHandlers.on(METHOD.eth_blockNumber, ethBlockNumber)
   ethereumRequestHandlers.on(METHOD.eth_getTransactionReceipt, ethGetTransactionReceipt)
+  ethereumRequestHandlers.on(METHOD.eth_getBlockByNumber, ethGetBlockByNumber)
 
   return ethereumRequestHandlers
 }
