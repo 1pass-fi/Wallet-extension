@@ -4,13 +4,20 @@ import { connect } from 'react-redux'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
+// assets
+import CheckMarkIcon from 'img/check-mark-white.svg'
+import BackIcon from 'img/v2/back-icon.svg'
+import CloseIcon from 'img/v2/close-icon-white.svg'
+import ConnectBackgroundLeft from 'img/popup/connect-background-left.svg'
+import ConnectBackgroundRight from 'img/popup/connect-background-right.svg'
+
 // components
 import AllowPermission from './AllowPermission'
 import SelectWallet from './SelectWallet'
 
 // actions
 import { setError } from 'actions/error'
-import { connectSite } from 'actions/koi'
+import { setIsLoading } from 'actions/loading'
 
 // constants
 import { ERROR_MESSAGE } from 'constants/koiConstants'
@@ -22,14 +29,9 @@ import storage from 'services/storage'
 // styles
 import { popupAccount } from 'services/account'
 
-// assets
-import CheckMarkIcon from 'img/check-mark-white.svg'
-import BackIcon from 'img/v2/back-icon.svg'
-import CloseIcon from 'img/v2/close-icon-white.svg'
-import ConnectBackgroundLeft from 'img/popup/connect-background-left.svg'
-import ConnectBackgroundRight from 'img/popup/connect-background-right.svg'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
-const ConnectScreen = ({ setError, connectSite }) => {
+const ConnectScreen = ({ setError, setIsLoading }) => {
   const [checkedAddress, setCheckedAddress] = useState('')
 
   const [origin, setOrigin] = useState('')
@@ -37,6 +39,7 @@ const ConnectScreen = ({ setError, connectSite }) => {
   const [step, setStep] = useState(1)
   const [accounts, setAccounts] = useState([])
   const [isKoi, setIsKoi] = useState(true)
+  const [requestId, setRequestId] = useState('')
 
   useEffect(() => {
     if (accounts.length > 0) {
@@ -52,50 +55,25 @@ const ConnectScreen = ({ setError, connectSite }) => {
       const requestOrigin = get(request, 'data.origin')
       const requestFavicon = get(request, 'data.favicon')
       const isKoi = get(request, 'data.isKoi')
+      const requestId = get(request, 'data.requestId')
+      const isEthereum = get(request, 'data.isEthereum')
+
+      let accounts = []
+      if (!isEthereum) {
+        accounts = (await popupAccount.getAllMetadata(TYPE.ARWEAVE)) || []
+      } else {
+        accounts = (await popupAccount.getAllMetadata(TYPE.ETHEREUM)) || []
+      }
+
       setOrigin(requestOrigin)
       setFavicon(requestFavicon)
-
       setIsKoi(isKoi)
-    }
+      setRequestId(requestId)
 
-    const loadArAccounts = async () => {
-      let arAccounts = (await popupAccount.getAllMetadata(TYPE.ARWEAVE)) || []
-
-      if (isEmpty(arAccounts)) {
-        arAccounts = [
-          {
-            accountName: 'Account#1',
-            address: '5VJYLb6lvBISrgRbhd1ODHzJ1xAh3ZA3OdSY20E88Bg',
-            affiliateCode: '',
-            balance: 0.34015790157,
-            didData: { id: '-zuDocilwNB5B02cwiQMeP43R22WxQT2DHrawgvRN-k', state: {} },
-            inviteSpent: undefined,
-            koiBalance: 6.160004946977989,
-            provider: undefined,
-            seedPhrase: undefined,
-            totalReward: undefined,
-            type: 'TYPE_ARWEAVE'
-          },
-          {
-            accountName: 'Account#2',
-            address: '6VJYLb6lvBISrgRbhd1ODHzJ1xAh3ZA3OdSY20E88Bg',
-            affiliateCode: '',
-            balance: 0.34015790157,
-            didData: { id: '-zuDocilwNB5B02cwiQMeP43R22WxQT2DHrawgvRN-k', state: {} },
-            inviteSpent: undefined,
-            koiBalance: 6.160004946977989,
-            provider: undefined,
-            seedPhrase: undefined,
-            totalReward: undefined,
-            type: 'TYPE_ARWEAVE'
-          }
-        ]
-      }
-      setAccounts(arAccounts)
+      setAccounts(accounts)
     }
 
     loadRequest()
-    loadArAccounts()
   }, [])
 
   const goToTOU = () => {
@@ -106,21 +84,29 @@ const ConnectScreen = ({ setError, connectSite }) => {
   const handleOnClick = async (accept) => {
     try {
       if (accept) {
+        setIsLoading(true)
+
         if (!(await storage.generic.get.pendingRequest()))
           throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-        console.log('ORIGIN POPUP', origin)
-        if (!isEmpty(origin)) {
-          connectSite({ origin, confirm: true, address: checkedAddress })
-        } else {
-          throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-        }
-        await storage.generic.remove.pendingRequest()
+        await backgroundRequest.wallet.connect({ origin, confirm: true, address: checkedAddress })
+        chrome.runtime.sendMessage({
+          requestId,
+          approved: true,
+          checkedAddresses: [checkedAddress]
+        })
+
+        storage.generic.remove.pendingRequest()
+        chrome.browserAction.setBadgeText({ text: '' })
+
+        // setTimeout(() => {
+        //   window.close()
+        // }, 1000)
 
         setStep(3)
       } else {
-        // action koi
-        connectSite({ origin, confirm: false })
+        await backgroundRequest.wallet.connect({ origin, confirm: false })
         await storage.generic.remove.pendingRequest()
+        chrome.runtime.sendMessage({ requestId, approved: false })
         window.close()
       }
     } catch (err) {
@@ -273,4 +259,4 @@ export const mapStateToProps = (state) => ({
   accounts: state.accounts
 })
 
-export default connect(mapStateToProps, { setError, connectSite })(ConnectScreen)
+export default connect(mapStateToProps, { setError, setIsLoading })(ConnectScreen)

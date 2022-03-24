@@ -97,7 +97,6 @@ const Popup = ({
   setActivities,
   setAssetsTabSettings
 }) => {
-  const [showSigning, setShowSigning] = useState(true)
   const history = useHistory()
 
   const [needToReconnect, setNeedToReconnect] = useState(false)
@@ -117,7 +116,7 @@ const Popup = ({
 
   useSettings({ setSettings, setAssetsTabSettings, setError })
 
-  const [handleLockWallet] = useLoadApp({
+  const [handleLockWallet, showSigning] = useLoadApp({
     history,
     accountLoaded,
     setDefaultAccount,
