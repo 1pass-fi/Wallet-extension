@@ -19,6 +19,7 @@ const useLoadApp = ({
   accounts,
   lockWallet
 }) => {
+  const [showConnectSite, setShowConnectSite] = useState(false)
   const [showSigning, setShowSigning] = useState(false)
   const loadApp = async () => {
     if (accountLoaded.isEmptyAccounts) {
@@ -75,10 +76,11 @@ const useLoadApp = ({
       if (pendingRequest) {
         switch (pendingRequest.type) {
           case REQUEST.PERMISSION:
-            setShowSigning(true)
+            setShowConnectSite(true)
             // history.push(PATH.CONNECT_SITE)
             break
           case REQUEST.TRANSACTION:
+            setShowSigning(true)
           // history.push(PATH.SIGN_TRANSACTION)
         }
       } else {
@@ -132,7 +134,7 @@ const useLoadApp = ({
     if (accountLoaded.accountLoaded) load()
   }, [accountLoaded.accountLoaded])
 
-  return [handleLockWallet, showSigning]
+  return [handleLockWallet, showConnectSite, showSigning]
 }
 
 export default useLoadApp

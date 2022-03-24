@@ -15,6 +15,7 @@ import Activity from 'components/activity'
 import Setting from 'components/setting'
 import Message from 'components/message'
 import ConnectScreen from 'components/Connect/ConnectScreen'
+import TransactionConfirmModal from 'components/modals/transactionConfirmModal'
 
 // pages
 import Home from './pages/Home'
@@ -50,7 +51,7 @@ import continueLoadingIcon from 'img/continue-load.gif'
 import KoiLogo from 'img/koi-logo.svg'
 
 // constants
-import { PATH } from 'constants/koiConstants'
+import { PATH, WINDOW_SIZE } from 'constants/koiConstants'
 
 // styles
 import './Popup.css'
@@ -116,7 +117,7 @@ const Popup = ({
 
   useSettings({ setSettings, setAssetsTabSettings, setError })
 
-  const [handleLockWallet, showSigning] = useLoadApp({
+  const [handleLockWallet, showConnectSite, showSigning] = useLoadApp({
     history,
     accountLoaded,
     setDefaultAccount,
@@ -149,7 +150,26 @@ const Popup = ({
         <Reconnect />
       ) : (
         <div className="h-full">
-          {showSigning && <ConnectScreen />}
+          {showConnectSite && <ConnectScreen />}
+          {showSigning && (
+            <TransactionConfirmModal
+              sentAmount={0}
+              currency={'ETH'}
+              recipient={'recipient'}
+              onClose={() => {
+                window.close()
+              }}
+              onSubmit={() => {
+                console.log('submit')
+                window.close()
+              }}
+              selectedAccount={'selectedAccount'}
+              gasFee={0}
+              // setGasFee={setGasFee}
+              arFee={0}
+              // setArFee={setArFee}
+            />
+          )}
           {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
           {isLoading && <Loading />}
           {error && <Message type="error" children={error} />}
