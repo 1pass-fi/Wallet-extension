@@ -13,21 +13,21 @@ import { REQUEST, OS, WINDOW_SIZE } from 'constants/koiConstants'
 
 export default async (payload, tab, next) => {
   try {
-    const { hadPermission, origin, favicon, hasPendingRequest } = tab
+    const { hadPermission, origin, favicon, hasPendingRequest, connectedAddresses } = tab
     
     if (hadPermission) {
       /* Response with array of connected addresses */
-      return next({ data: ['example_address_1, example_address_2'] })
+      return next({ data: connectedAddresses })
     }
 
     if (hasPendingRequest) {
-      return next({ error: 'Request pending' })
+      return next({ error: { code: 4001, data: 'Request pending' } })
     }
 
     // check if there is an imported ethereum account
     const totalEthereumAccounts = await backgroundAccount.count(TYPE.ETHEREUM)
     if (!totalEthereumAccounts) {
-      return next({ error: 'No imported ethereum account' })
+      return next({ error: { code: 4001, data: 'No imported Ethereum account' } })
     }
 
     const requestId = uuid()
@@ -87,6 +87,12 @@ export default async (payload, tab, next) => {
                   }
                   siteConnectedAddresses[origin].ethereum = checkedAddresses 
                   await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
+                  await storage.setting.set.activatedEthereumAccountAddress(checkedAddresses[0])
+
+                  chrome.runtime.sendMessage({
+                    requestId,
+                    finished: true
+                  })
   
                   next({ data: siteConnectedAddresses[origin].ethereum })
                 } catch (err) {
@@ -106,7 +112,7 @@ export default async (payload, tab, next) => {
       },
       afterClose: async () => {
         chrome.browserAction.setBadgeText({ text: '' })
-        next({ error: 'User cancelled the login.' })
+        next({ error: {code: 4001, data: 'User rejected'} })
         await storage.generic.set.pendingRequest({})
       }
     })

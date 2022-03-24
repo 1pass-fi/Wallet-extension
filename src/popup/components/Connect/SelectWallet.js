@@ -14,6 +14,8 @@ const walletIcon = {
   arweave: <ArweaveIcon className="wallet-icon" />
 }
 
+// TODO LongP: default-address checked by default
+
 const SelectWallet = ({
   accounts,
   onChecked,

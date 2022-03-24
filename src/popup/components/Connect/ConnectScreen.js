@@ -88,23 +88,32 @@ const ConnectScreen = ({ setError, setIsLoading }) => {
 
         if (!(await storage.generic.get.pendingRequest()))
           throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-        await backgroundRequest.wallet.connect({ origin, confirm: true, address: checkedAddress })
-        chrome.runtime.sendMessage({
+        // await backgroundRequest.wallet.connect({ origin, confirm: true, address: checkedAddress })
+        
+        const payload = {
           requestId,
           approved: true,
           checkedAddresses: [checkedAddress]
+        }
+
+        chrome.runtime.onMessage.addListener(function(message) {
+          if (message.requestId === requestId) {
+            setIsLoading(false)
+            storage.generic.remove.pendingRequest()
+            chrome.browserAction.setBadgeText({ text: '' })
+            setStep(3)
+          }
         })
 
-        storage.generic.remove.pendingRequest()
-        chrome.browserAction.setBadgeText({ text: '' })
+        chrome.runtime.sendMessage(payload)
 
-        // setTimeout(() => {
-        //   window.close()
-        // }, 1000)
-
-        setStep(3)
       } else {
-        await backgroundRequest.wallet.connect({ origin, confirm: false })
+        // await backgroundRequest.wallet.connect({ origin, confirm: false })
+        const payload = {
+          requestId,
+          approved: false
+        }
+        chrome.runtime.sendMessage(payload)
         await storage.generic.remove.pendingRequest()
         chrome.runtime.sendMessage({ requestId, approved: false })
         window.close()
