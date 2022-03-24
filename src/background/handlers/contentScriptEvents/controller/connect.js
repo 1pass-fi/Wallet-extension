@@ -91,13 +91,19 @@ export default async (payload, tab, next) => {
                     }
                     siteConnectedAddresses[origin].arweave = checkedAddresses 
                     await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
+                    await storage.setting.set.activatedArweaveAccountAddress(checkedAddresses[0])
+
+                    chrome.runtime.sendMessage({
+                      requestId,
+                      finished: true
+                    })
     
                     next({ data: siteConnectedAddresses[origin].arweave })
                   } catch (err) {
                     console.error(err.message)
                   } 
                 } else {
-                  next({ error: 'Transaction rejected' })
+                  next({ error: 'User rejected' })
                 }
               }
             }

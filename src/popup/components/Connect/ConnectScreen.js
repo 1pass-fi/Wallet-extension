@@ -85,10 +85,8 @@ const ConnectScreen = ({ setError, setIsLoading }) => {
     try {
       if (accept) {
         setIsLoading(true)
-
         if (!(await storage.generic.get.pendingRequest()))
           throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-        // await backgroundRequest.wallet.connect({ origin, confirm: true, address: checkedAddress })
         
         const payload = {
           requestId,
@@ -108,7 +106,6 @@ const ConnectScreen = ({ setError, setIsLoading }) => {
         chrome.runtime.sendMessage(payload)
 
       } else {
-        // await backgroundRequest.wallet.connect({ origin, confirm: false })
         const payload = {
           requestId,
           approved: false
