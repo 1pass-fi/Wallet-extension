@@ -11,6 +11,7 @@ import ethSendTransaction from './ethSendTransaction'
 import ethChainId from './ethChainId'
 import ethSign from './ethSign'
 import ethSignTypedData from './ethSignTypedData'
+import ethSignTypedDataV3 from './ethSignTypedDataV3'
 import personalSign from './personalSign'
 import personalEcRecover from './personalEcRecover'
 import ethEstimateGas from './ethEstimateGas'
@@ -30,6 +31,7 @@ const METHOD = {
   eth_sendTransaction: 'eth_sendTransaction', // send eth
   eth_sign: 'eth_sign',
   eth_signTypedData: 'eth_signTypedData',
+  eth_signTypedData_v3: 'eth_signTypedData_v3',
   personal_sign: 'personal_sign',
   personal_ecRecover: 'personal_ecRecover',
   eth_estimateGas: 'eth_estimateGas',
@@ -62,6 +64,7 @@ const getEthereumRequestHandlers = () => {
   ethereumRequestHandlers.on(METHOD.eth_chainId, ethChainId)
   ethereumRequestHandlers.on(METHOD.eth_sign, ethSign)
   ethereumRequestHandlers.on(METHOD.eth_signTypedData, ethSignTypedData)
+  ethereumRequestHandlers.on(METHOD.eth_signTypedData_v3, ethSignTypedDataV3)
   ethereumRequestHandlers.on(METHOD.personal_sign, personalSign)
   ethereumRequestHandlers.on(METHOD.personal_ecRecover, personalEcRecover)
   ethereumRequestHandlers.on(METHOD.eth_estimateGas, ethEstimateGas)
