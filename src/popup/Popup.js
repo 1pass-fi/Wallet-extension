@@ -14,7 +14,7 @@ import Assets from 'components/assets'
 import Activity from 'components/activity'
 import Setting from 'components/setting'
 import Message from 'components/message'
-import SigningScreen from 'components/Signing/SigningScreen'
+import ConnectScreen from 'components/Connect/ConnectScreen'
 
 // pages
 import Home from './pages/Home'
@@ -150,7 +150,7 @@ const Popup = ({
         <Reconnect />
       ) : (
         <div className="h-full">
-          {showSigning && <SigningScreen />}
+          {showSigning && <ConnectScreen />}
           {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
           {isLoading && <Loading />}
           {error && <Message type="error" children={error} />}

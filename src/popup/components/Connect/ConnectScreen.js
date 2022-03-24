@@ -29,7 +29,7 @@ import CloseIcon from 'img/v2/close-icon-white.svg'
 import ConnectBackgroundLeft from 'img/popup/connect-background-left.svg'
 import ConnectBackgroundRight from 'img/popup/connect-background-right.svg'
 
-const SigningScreen = ({ setError, connectSite }) => {
+const ConnectScreen = ({ setError, connectSite }) => {
   const [checkedAddress, setCheckedAddress] = useState('')
 
   const [origin, setOrigin] = useState('')
@@ -273,4 +273,4 @@ export const mapStateToProps = (state) => ({
   accounts: state.accounts
 })
 
-export default connect(mapStateToProps, { setError, connectSite })(SigningScreen)
+export default connect(mapStateToProps, { setError, connectSite })(ConnectScreen)
