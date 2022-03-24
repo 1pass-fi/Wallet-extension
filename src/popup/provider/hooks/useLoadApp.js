@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import isEmpty from 'lodash/isEmpty'
 
 // services
@@ -19,6 +19,8 @@ const useLoadApp = ({
   accounts,
   lockWallet
 }) => {
+  const [showConnectSite, setShowConnectSite] = useState(false)
+  const [showSigning, setShowSigning] = useState(false)
   const loadApp = async () => {
     if (accountLoaded.isEmptyAccounts) {
       history.push('/account/welcome')
@@ -74,10 +76,12 @@ const useLoadApp = ({
       if (pendingRequest) {
         switch (pendingRequest.type) {
           case REQUEST.PERMISSION:
-            history.push(PATH.CONNECT_SITE)
+            setShowConnectSite(true)
+            // history.push(PATH.CONNECT_SITE)
             break
           case REQUEST.TRANSACTION:
-            history.push(PATH.SIGN_TRANSACTION)
+            setShowSigning(true)
+          // history.push(PATH.SIGN_TRANSACTION)
         }
       } else {
         history.push('/account')
@@ -130,7 +134,7 @@ const useLoadApp = ({
     if (accountLoaded.accountLoaded) load()
   }, [accountLoaded.accountLoaded])
 
-  return [handleLockWallet]
+  return [handleLockWallet, showConnectSite, showSigning]
 }
 
 export default useLoadApp
