@@ -21,7 +21,7 @@ import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 
 // constants
-import { PATH } from 'constants/koiConstants'
+import { MESSAGES, PATH } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
 
 export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoading }) => {
@@ -59,8 +59,10 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
           onClick={async () => {
             await storage.setting.set.activatedChain(account.type)
             dispatch(setActivatedChain(account.type))
-
             dispatch(setDefaultAccount(account))
+            chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+              chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
+            })
             setShowAccountDropdown(false)
           }}
         >

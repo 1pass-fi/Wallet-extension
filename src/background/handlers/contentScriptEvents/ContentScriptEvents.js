@@ -78,7 +78,10 @@ export default class ContentScriptEvents extends EventEmitter {
     const activatedAddress = isEthereumRequest ? defaultEthereumAddress : defaultArweaveAddress
 
     const siteConnectedAddresses = (await storage.setting.get.siteConnectedAddresses())[origin]
-    const connectedAddresses = (isEthereumRequest ? siteConnectedAddresses?.ethereum : siteAddressDictionary?.arweave) || []
+    let connectedAddresses = []
+    if (hadPermission) {
+      connectedAddresses = [activatedAddress]
+    }
 
     return { 
       origin, 

@@ -15,13 +15,20 @@ const mainScript = () => {
   const finnieKoiiWalletProvider = new FinnieKoiiWalletProvider(window.connection)
 
   window.addEventListener('chainChanged', function() {
+    finnieEthereumProvider.request({ method: 'eth_chainId' }).then(chainId => {
+      finnieEthereumProvider.emit('chainChanged', chainId)
+    })
     finnieEthereumProvider.emit('chainChanged')
   })
   window.addEventListener('networkChanged', function() {
-    finnieEthereumProvider.emit('networkChanged')
+    finnieArweaveProvider.request({ method: 'net_version' }).then(netVersion => {
+      finnieEthereumProvider.emit('networkChanged', netVersion)
+    })
   })
   window.addEventListener('accountsChanged', function() {
-    finnieEthereumProvider.emit('accountsChanged')
+    finnieEthereumProvider.request({ method: 'eth_accounts' }).then(accounts => {
+      finnieEthereumProvider.emit('accountsChanged', accounts)
+    })
   })
 
   window.ethereum = finnieEthereumProvider

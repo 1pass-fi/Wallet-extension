@@ -63,8 +63,24 @@ export default async () => {
     backgroundConnect.addHandler(new EventHandler(messageType, (message) => {
       window.postMessage(message)
     }))
+  })
 
-    // dispatch custom event on chain changed, account changed
+  chrome.runtime.onMessage.addListener(function(request) {
+    const accountsChangedEvent = new CustomEvent('accountsChanged')
+    const chainChangedEvent = new CustomEvent('chainChangedEvent')
+    const networkChangedEvent = new CustomEvent('networkChangedEvent')
+
+    switch(request?.type) {
+      case MESSAGES.ACCOUNTS_CHANGED:
+        window.dispatchEvent(accountsChangedEvent)
+        break
+      case MESSAGES.CHAIN_CHANGED:
+        window.dispatchEvent(chainChangedEvent)
+        break
+      case MESSAGES.NETWORK_CHANGED:
+        window.dispatchEvent(networkChangedEvent)
+        break
+    }
   })
   
   /* 
