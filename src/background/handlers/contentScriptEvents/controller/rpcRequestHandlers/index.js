@@ -4,11 +4,11 @@ import ethRequestAccounts from './ethRequestAccounts'
 import walletRequestPermissions from './walletRequestPermissions'
 import walletGetPermissions from './walletGetPermissions'
 import ethAccounts from './ethAccounts'
-import getEncryptionPublicKey from './getEncryptionPublicKey'
 import ethDecrypt from './ethDecrypt'
 import netVersion from './netVersion'
 import ethSendTransaction from './ethSendTransaction'
 import ethChainId from './ethChainId'
+import ethGetEncryptionPublicKey from './ethGetEncryptionPublicKey'
 import ethSign from './ethSign'
 import ethSignTypedData from './ethSignTypedData'
 import ethSignTypedDataV3 from './ethSignTypedDataV3'
@@ -59,7 +59,7 @@ const getEthereumRequestHandlers = () => {
   ethereumRequestHandlers.on(METHOD.wallet_requestPermissions, walletRequestPermissions)
   ethereumRequestHandlers.on(METHOD.wallet_getPermissions, walletGetPermissions)
   ethereumRequestHandlers.on(METHOD.eth_accounts, ethAccounts)
-  ethereumRequestHandlers.on(METHOD.eth_getEncryptionPublicKey, getEncryptionPublicKey)
+  ethereumRequestHandlers.on(METHOD.eth_getEncryptionPublicKey, ethGetEncryptionPublicKey)
   ethereumRequestHandlers.on(METHOD.eth_decrypt, ethDecrypt)
   ethereumRequestHandlers.on(METHOD.net_version, netVersion)
   ethereumRequestHandlers.on(METHOD.eth_sendTransaction, ethSendTransaction)
