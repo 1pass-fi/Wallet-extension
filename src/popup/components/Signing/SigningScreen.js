@@ -2,10 +2,11 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 
 // components
-import AllowPermission from './allowPermission'
-import SelectWallet from './selectWallet'
+import AllowPermission from './AllowPermission'
+import SelectWallet from './SelectWallet'
 
 // actions
 import { setError } from 'actions/error'
@@ -20,13 +21,13 @@ import storage from 'services/storage'
 
 // styles
 import { popupAccount } from 'services/account'
-import disableOrigin from 'utils/disableOrigin'
 
+// assets
+import CheckMarkIcon from 'img/check-mark-white.svg'
 import BackIcon from 'img/v2/back-icon.svg'
 import CloseIcon from 'img/v2/close-icon-white.svg'
-import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
-import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
-import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import ConnectBackgroundLeft from 'img/popup/connect-background-left.svg'
+import ConnectBackgroundRight from 'img/popup/connect-background-right.svg'
 
 const SigningScreen = ({ setError, connectSite }) => {
   const [checkedAddress, setCheckedAddress] = useState('')
@@ -53,6 +54,7 @@ const SigningScreen = ({ setError, connectSite }) => {
       const isKoi = get(request, 'data.isKoi')
       setOrigin(requestOrigin)
       setFavicon(requestFavicon)
+
       setIsKoi(isKoi)
     }
 
@@ -65,34 +67,33 @@ const SigningScreen = ({ setError, connectSite }) => {
     loadArAccounts()
   }, [])
 
-  // TODO LongP - ask for disable Finnie
-  const handleDisableFinnie = async () => {
-    await disableOrigin.addDisabledOrigin(origin)
-    window.close()
+  const goToTOU = () => {
+    const url = 'https://koii.network/TOU_June_22_2021.pdf'
+    chrome.tabs.create({ url })
   }
 
   const handleOnClick = async (accept) => {
-    console.log('connectWallet', accept)
     try {
       if (accept) {
         if (!(await storage.generic.get.pendingRequest()))
           throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
         console.log('ORIGIN POPUP', origin)
-        connectSite({ origin, confirm: true, address: checkedAddress })
+        if (!isEmpty(origin)) {
+          connectSite({ origin, confirm: true, address: checkedAddress })
+        } else {
+          throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
+        }
         await storage.generic.remove.pendingRequest()
 
-        // TODO LongP
         setStep(3)
       } else {
         // action koi
-        // connectSite({ origin, confirm: false })
+        connectSite({ origin, confirm: false })
         await storage.generic.remove.pendingRequest()
-        console.log('connectWallet - CLOSE')
-        // window.close()
+        window.close()
       }
     } catch (err) {
-      console.log('connectWallet - Error: ', err.message)
-      // setError(err.message)
+      setError(err.message)
     }
   }
 
@@ -105,24 +106,36 @@ const SigningScreen = ({ setError, connectSite }) => {
         {step === 1 && (
           <>
             <div className="text-indigo tracking-finnieSpacing-wide px-6.5 mt-7">
-              <div className="text-sm font-semibold leading-5 text-center">
-                Welcome to the Koii Attention Leaderboard
-              </div>
-              <div className="mt-5.5 text-xs font-normal leading-4 ">
+              {isKoi && (
+                <div className="text-sm font-semibold leading-5 text-center mb-5.5">
+                  Welcome to the Koii Attention Leaderboard
+                </div>
+              )}
+              <div className="text-xs font-normal leading-5">
                 Make sure creators are fairly rewarded. While your wallet is connected, every time
-                you interact with an NFT the creator will earn attention rewards. This request will
-                not cost any fees or initiate a transaction. By signing, you agree to accept the
-                Koii Network Terms of Service. Your authentication status resets every 24 hours.
+                you interact with an NFT the creator will earn attention rewards.
+                <br></br>
+                This request will <span className="font-semibold">not cost any fees</span> or
+                initiate a transaction. <br></br>
+                By signing, you agree to accept the{' '}
+                <span className="text-success-700 underline cursor-pointer" onClick={goToTOU}>
+                  Koii Network Terms of Service.
+                </span>
+                <br></br>
+                Your authentication status resets every 24 hours.
               </div>
             </div>
-            <div className="text-indigo">
-              <div className="mt-4 leading-4 font-semibold text-xs">Wallet address:</div>
+            <div className="w-full text-indigo">
+              <div className="mt-4 mb-3 leading-4 font-semibold text-xs text-center">
+                Wallet address:
+              </div>
               <SelectWallet
                 accounts={accounts}
                 checkedAddress={checkedAddress}
                 setCheckedAddress={setCheckedAddress}
                 setStep={setStep}
                 handleOnClick={handleOnClick}
+                isKoi={isKoi}
               />
             </div>
             <div className="absolute bottom-7.25 w-full flex justify-between px-4.5">
@@ -138,7 +151,7 @@ const SigningScreen = ({ setError, connectSite }) => {
                 className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
                 style={{ width: '160px', height: '38px' }}
               >
-                SelectWallet
+                Select Wallet
               </button>
             </div>
           </>
@@ -185,23 +198,33 @@ const SigningScreen = ({ setError, connectSite }) => {
         {step === 3 && (
           <>
             <div
-              className="relative bg-blue-800 w-full flex items-center justify-center"
+              className="z-10 relative bg-blue-800 w-full flex items-center justify-center"
               style={{ height: '67px' }}
             >
               <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
                 Connect to site
               </div>
             </div>
-            <div>
-              {
-                'Your wallet is now connected to this site. You can remove this connection at anytime in Settings Menu > Connected sites'
-              }
+            <div className="mt-16.75">
+              <ConnectBackgroundLeft className="absolute top-13.5 left-0" />
+              <ConnectBackgroundRight className="absolute top-13.5 right-0" />
+              <div
+                className="bg-blue-800 rounded-full mb-12.5 mx-auto flex items-center justify-center"
+                style={{ width: '61px', height: '61px' }}
+              >
+                <CheckMarkIcon style={{ width: '32px', height: '22px' }} />
+              </div>
+              <div
+                style={{ width: '316px' }}
+                className="font-normal text-base text-center tracking-finnieSpacing-wide text-indigo"
+              >
+                Your wallet is now connected to <br></br>this site. You can remove this<br></br>{' '}
+                connection at anytime in
+                <br></br> SETTINGS MENU {'>'} CONNECTED SITES
+              </div>
             </div>
             <button
-              onClick={() => {
-                console.log('connectWallet - DONE')
-                // window.close()
-              }}
+              onClick={() => window.close()}
               className="absolute bottom-7.25 px-4.5 bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
               style={{ width: '160px', height: '38px' }}
             >
