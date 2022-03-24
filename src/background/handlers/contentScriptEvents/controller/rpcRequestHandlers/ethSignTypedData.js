@@ -1,7 +1,7 @@
 import { get } from 'lodash'
 
 import { stripHexPrefix } from 'ethereumjs-util'
-import { decrypt } from '@metamask/eth-sig-util'
+import { signTypedData } from '@metamask/eth-sig-util'
 
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
@@ -14,20 +14,20 @@ export default async (payload, tab, next) => {
     }
 
     const params = get(payload, 'data.params')
-    const encryptedDataHex = params[0]
-
-    const stripped = stripHexPrefix(encryptedDataHex)
-    const buff = Buffer.from(stripped, 'hex')
-    const encryptedData = JSON.parse(buff.toString('utf8'))
+    const message = params[0]
 
     const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
     const credential = await backgroundAccount.getCredentialByAddress(defaultEthereumAddress)
 
-    const privateKey = stripHexPrefix(credential.key)
+    const key = stripHexPrefix(credential.key)
 
-    const decryptedMessage = decrypt({ privateKey, encryptedData })
+    const msgSig = signTypedData({
+      privateKey: Buffer.from(key, 'hex'),
+      data: message,
+      version: 'V1'
+    })
 
-    next({ data: decryptedMessage })
+    next({ data: msgSig })
   } catch (err) {
     next({ error: err.message })
   }
