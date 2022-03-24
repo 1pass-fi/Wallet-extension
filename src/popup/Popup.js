@@ -14,6 +14,7 @@ import Assets from 'components/assets'
 import Activity from 'components/activity'
 import Setting from 'components/setting'
 import Message from 'components/message'
+import SigningScreen from 'components/Signing/SigningScreen'
 
 // pages
 import Home from './pages/Home'
@@ -96,6 +97,7 @@ const Popup = ({
   setActivities,
   setAssetsTabSettings
 }) => {
+  const [showSigning, setShowSigning] = useState(true)
   const history = useHistory()
 
   const [needToReconnect, setNeedToReconnect] = useState(false)
@@ -148,6 +150,7 @@ const Popup = ({
         <Reconnect />
       ) : (
         <div className="h-full">
+          {showSigning && <SigningScreen />}
           {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
           {isLoading && <Loading />}
           {error && <Message type="error" children={error} />}

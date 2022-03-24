@@ -59,7 +59,38 @@ const SigningScreen = ({ setError, connectSite }) => {
     }
 
     const loadArAccounts = async () => {
-      const arAccounts = (await popupAccount.getAllMetadata(TYPE.ARWEAVE)) || []
+      let arAccounts = (await popupAccount.getAllMetadata(TYPE.ARWEAVE)) || []
+
+      if (isEmpty(arAccounts)) {
+        arAccounts = [
+          {
+            accountName: 'Account#1',
+            address: '5VJYLb6lvBISrgRbhd1ODHzJ1xAh3ZA3OdSY20E88Bg',
+            affiliateCode: '',
+            balance: 0.34015790157,
+            didData: { id: '-zuDocilwNB5B02cwiQMeP43R22WxQT2DHrawgvRN-k', state: {} },
+            inviteSpent: undefined,
+            koiBalance: 6.160004946977989,
+            provider: undefined,
+            seedPhrase: undefined,
+            totalReward: undefined,
+            type: 'TYPE_ARWEAVE'
+          },
+          {
+            accountName: 'Account#2',
+            address: '6VJYLb6lvBISrgRbhd1ODHzJ1xAh3ZA3OdSY20E88Bg',
+            affiliateCode: '',
+            balance: 0.34015790157,
+            didData: { id: '-zuDocilwNB5B02cwiQMeP43R22WxQT2DHrawgvRN-k', state: {} },
+            inviteSpent: undefined,
+            koiBalance: 6.160004946977989,
+            provider: undefined,
+            seedPhrase: undefined,
+            totalReward: undefined,
+            type: 'TYPE_ARWEAVE'
+          }
+        ]
+      }
       setAccounts(arAccounts)
     }
 
