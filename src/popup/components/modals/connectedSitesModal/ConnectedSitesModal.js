@@ -12,6 +12,7 @@ import RecycleBinIcon from 'img/popup/recycle-bin-icon.svg'
 
 // constants
 import { TYPE } from 'constants/accountConstants'
+import { MESSAGES } from 'constants/koiConstants'
 
 // actions
 import { setError } from 'actions/error'
@@ -94,13 +95,12 @@ const ConnectedSitesModal = ({ onClose, setError, setIsLoading }) => {
         siteConnectedStorage[siteAddress.address].ethereum = connectedEthereumAddresses
       }
 
-      if (
-        isEmpty(siteConnectedStorage[siteAddress.address].arweave) &&
-        isEmpty(siteConnectedStorage[siteAddress.address].ethereum)
-      ) {
-        delete siteConnectedStorage[siteAddress.address]
-      }
       await storage.setting.set.siteConnectedAddresses(siteConnectedStorage)
+
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
+      })
+
       setIsLoading(false)
       loadConnectedSites()
     } catch (error) {
