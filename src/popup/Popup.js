@@ -16,6 +16,7 @@ import Setting from 'components/setting'
 import Message from 'components/message'
 import ConnectScreen from 'components/Connect/ConnectScreen'
 import TransactionConfirmModal from 'components/modals/transactionConfirmModal'
+import ConnectedSitesModal from 'components/modals/connectedSitesModal'
 
 // pages
 import Home from './pages/Home'
@@ -102,6 +103,8 @@ const Popup = ({
 
   const [needToReconnect, setNeedToReconnect] = useState(false)
 
+  const [showConnectedSites, setShowConnectedSites] = useState(false)
+
   const [accountLoaded, setAccountLoaded] = useAccountLoaded({
     history,
     setIsLoading,
@@ -151,6 +154,9 @@ const Popup = ({
       ) : (
         <div className="h-full">
           {showConnectSite && <ConnectScreen />}
+          {showConnectedSites && (
+            <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />
+          )}
           {showSigning && (
             <TransactionConfirmModal
               sentAmount={0}
@@ -185,7 +191,7 @@ const Popup = ({
               </Route>
               {!accountLoaded.isEmptyAccounts && (
                 <>
-                  <Header />
+                  <Header setShowConnectedSites={setShowConnectedSites} />
                   <div
                     className="flex min-h-3.375 pt-13.5 overflow-y-auto overflow-x-hidden"
                     style={{ height: 'calc(100% - 64px)' }}

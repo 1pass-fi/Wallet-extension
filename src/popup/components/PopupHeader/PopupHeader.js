@@ -15,7 +15,7 @@ import PlayIcon from 'img/popup/play-icon.svg'
 
 import disableOrigin from 'utils/disableOrigin'
 
-const Header = () => {
+const Header = ({ setShowConnectedSites }) => {
   const defaultArweaveAccount = useSelector((state) => state.defaultAccount.AR)
 
   const [showAccountDropdown, setShowAccountDropdown] = useState(false)
@@ -127,6 +127,16 @@ const Header = () => {
             className="text-base text-white absolute"
             ref={modalRef}
           >
+            <div
+              style={{ height: '46px', paddingRight: '16px', zIndex: 100 }}
+              className="bg-blue-800 hover:bg-blue-400 cursor-pointer flex items-center justify-end"
+              onClick={() => {
+                setShowConnectedSites(true)
+                setShowPauseFinnieDropdown(false)
+              }}
+            >
+              See connected sites
+            </div>
             <div
               onClick={handleDisableFinnie}
               style={{ height: '46px', paddingRight: '16px', borderBottom: '1px solid #8585BC' }}
