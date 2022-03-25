@@ -8,13 +8,13 @@ export default async (_, tab, next) => {
     const { hadPermission, activatedAddress, origin } = tab
 
     if (hadPermission) {
-      const siteConnectedAddresses = (await storage.setting.get.siteConnectedAddresses())[origin]
-      if (isEmpty(siteConnectedAddresses)) return next()
+      let siteConnectedAddresses = (await storage.setting.get.siteConnectedAddresses())
+      if (isEmpty(siteConnectedAddresses[origin])) return next()
 
-      let connectedArweaveAddresses = get(siteConnectedAddresses, 'arweave', [])
+      let connectedArweaveAddresses = get(siteConnectedAddresses[origin], 'arweave', [])
       connectedArweaveAddresses = connectedArweaveAddresses.filter(address => address !== activatedAddress)
 
-      siteConnectedAddresses.arweave = connectedArweaveAddresses
+      siteConnectedAddresses[origin].arweave = connectedArweaveAddresses
       await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
     }
 
