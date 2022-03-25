@@ -1,6 +1,6 @@
 // modules
 import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 
@@ -32,6 +32,7 @@ import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 const ConnectScreen = ({ setError, setIsLoading }) => {
+  const defaultAccount = useSelector((state) => state.defaultAccount)
   const [checkedAddress, setCheckedAddress] = useState('')
 
   const [origin, setOrigin] = useState('')
@@ -43,9 +44,13 @@ const ConnectScreen = ({ setError, setIsLoading }) => {
 
   useEffect(() => {
     if (accounts.length > 0) {
-      setCheckedAddress(accounts[0].address)
+      if (isKoi) {
+        setCheckedAddress(defaultAccount.AR?.address)
+      } else {
+        setCheckedAddress(defaultAccount.ETH?.address)
+      }
     }
-  }, [accounts])
+  }, [accounts, isKoi])
 
   useEffect(() => {
     const loadRequest = async () => {
@@ -87,14 +92,14 @@ const ConnectScreen = ({ setError, setIsLoading }) => {
         setIsLoading(true)
         if (!(await storage.generic.get.pendingRequest()))
           throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-        
+
         const payload = {
           requestId,
           approved: true,
           checkedAddresses: [checkedAddress]
         }
 
-        chrome.runtime.onMessage.addListener(function(message) {
+        chrome.runtime.onMessage.addListener(function (message) {
           if (message.requestId === requestId) {
             setIsLoading(false)
             storage.generic.remove.pendingRequest()
@@ -104,7 +109,6 @@ const ConnectScreen = ({ setError, setIsLoading }) => {
         })
 
         chrome.runtime.sendMessage(payload)
-
       } else {
         const payload = {
           requestId,
