@@ -77,11 +77,9 @@ const useLoadApp = ({
         switch (pendingRequest.type) {
           case REQUEST.PERMISSION:
             setShowConnectSite(true)
-            // history.push(PATH.CONNECT_SITE)
             break
           case REQUEST.TRANSACTION:
             setShowSigning(true)
-          // history.push(PATH.SIGN_TRANSACTION)
         }
       } else {
         history.push('/account')

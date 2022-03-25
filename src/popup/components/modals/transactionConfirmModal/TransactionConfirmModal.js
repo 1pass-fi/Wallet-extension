@@ -1,7 +1,8 @@
 // modules
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import isEmpty from 'lodash/isEmpty'
+import { useSelector, connect } from 'react-redux'
+import { get } from 'lodash'
+import Web3 from 'web3'
 
 // utils
 import { numberFormat, fiatCurrencyFormat, calculateGasFee, winstonToAr } from 'utils'
@@ -14,70 +15,111 @@ import { popupAccount } from 'services/account'
 import arweave from 'services/arweave'
 import { TYPE } from 'constants/accountConstants'
 
+import { setIsLoading } from 'actions/loading'
+
 import BackIcon from 'img/v2/back-icon.svg'
 import CloseIcon from 'img/v2/close-icon-white.svg'
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import storage from 'services/storage'
 
 const TransactionConfirmModal = ({
-  sentAmount,
-  recipient,
-  currency,
   onClose,
   onSubmit,
-  selectedAccount,
-  gasFee,
-  setGasFee,
-  arFee,
-  setArFee,
-  isSignTransaction
+  setIsLoading,
+  recipient
 }) => {
   const price = useSelector((state) => state.price)
 
-  const accountAddress = recipient.address
+  const [sourceAddress, setSourceAddress] = useState('')
+  const [recipientAddress, setRecipientAddress] = useState('')
+  const [qty, setQty] = useState(null)
+  const [gasLimit, setGasLimit] = useState(null)
+  const [currency, setCurrency] =  useState('AR')
+
+  const [isEthereum, setIsEthereum] = useState(false)
+  const [fee, setFee] = useState(null)
+
+  const [requestLoaded, setRequestLoaded] = useState(false)
+
+  const accountAddress = recipient?.address
+
+  useEffect(() => {
+    const loadRequest = async () => {
+      setIsLoading(true)
+      const request = await storage.generic.get.pendingRequest()
+      const { requestPayload, origin, favicon, requestId, isEthereum } = request.data
+
+      if (isEthereum) {
+        setIsEthereum(true)
+        setCurrency('ETH')
+        setSourceAddress(get(requestPayload, 'from'))
+        setRecipientAddress(get(requestPayload, 'to'))
+        
+        let _gasLimit = get(requestPayload, 'gasLimit')
+        _gasLimit = Web3.utils.hexToNumber(_gasLimit)
+        setGasLimit(_gasLimit)
+
+        let value = get(requestPayload, 'value')
+        value = Web3.utils.hexToNumber(value)
+        console.log('value', value)
+        setQty(value)
+
+      } else {
+
+      }
+
+      setRequestLoaded(true)
+      setIsLoading(false)
+    }
+
+    loadRequest()
+  }, [])
 
   useEffect(() => {
     const loadGasFee = async () => {
-      const account = await popupAccount.getAccount({ address: selectedAccount.address })
-      const provider = await account.get.provider()
+      const provider = await storage.setting.get.ethereumProvider()
 
-      const gasFee = await calculateGasFee({
-        amount: sentAmount,
-        senderAddress: selectedAccount.address,
-        toAddress: accountAddress,
+      const fee = await calculateGasFee({
+        amount: qty,
+        senderAddress: sourceAddress,
+        toAddress: recipientAddress,
         provider: provider
       })
-      setGasFee(gasFee)
+      console.log('GAS FEE', fee)
+
+      setFee(fee)
     }
 
     const loadArFee = async () => {
       if (currency === 'AR') {
         const tx = await arweave.createTransaction({
-          quantity: `${sentAmount * 1000000000000}`,
+          quantity: `${qty * 1000000000000}`,
           target: accountAddress
         })
 
         const fee = await arweave.transactions.getPrice(0, accountAddress)
 
-        setArFee(0.0008) // TODO: find for a proper way to get the exact ar fee
+        setFee(0.0008) // TODO: find for a proper way to get the exact ar fee
       }
 
-      if (currency === 'KOII') setArFee(0.00005)
+      if (currency === 'KOII') setFee(0.00005)
     }
 
     let loadGasFeeInterval
-    if (selectedAccount.type === TYPE.ETHEREUM) {
+    if (isEthereum && requestLoaded) {
+      console.log('runnnnnnn')
       loadGasFee()
       loadGasFeeInterval = setInterval(() => {
         loadGasFee()
       }, 3000)
     }
 
-    if (selectedAccount.type === TYPE.ARWEAVE) loadArFee()
+    if (!isEthereum && requestLoaded) loadArFee()
 
     return () => clearInterval(loadGasFeeInterval)
-  }, [])
+  }, [requestLoaded])
 
   return (
     <div className="w-full h-full z-51 m-auto top-0 left-0 fixed flex flex-col items-center">
@@ -116,11 +158,11 @@ const TransactionConfirmModal = ({
             <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
               From:
             </div>
-            <div className="text-lg leading-10 tracking-finnieSpacing-tightest text-blue-800">
-              {selectedAccount.label}
-            </div>
+            {/* <div className="text-lg leading-10 tracking-finnieSpacing-tightest text-blue-800">
+              accountName
+            </div> */}
             <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
-              {getDisplayAddress(selectedAccount.address)}
+              {getDisplayAddress(sourceAddress)}
             </div>
           </div>
 
@@ -128,33 +170,25 @@ const TransactionConfirmModal = ({
             <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
               Sending:
             </div>
-            {currency === 'KOII' && (
-              <>
-                <div className="flex items-center text-lg leading-10 tracking-finnieSpacing-tightest text-blue-800">
-                  {sentAmount} KOII
-                  <FinnieIcon className="ml-1 w-4 h-4" />
-                </div>
-              </>
-            )}
             {currency === 'AR' && (
               <>
                 <div className="flex items-center text-lg leading-10 tracking-finnieSpacing-tightest text-blue-800">
-                  {sentAmount} AR
+                  {qty} AR
                   <ArweaveIcon className="ml-1 w-4 h-4" />
                 </div>
                 <div className="text-2xs tracking-finnieSpacing-tightest text-blueGray-800">
-                  ${fiatCurrencyFormat(sentAmount * price.AR)} USD
+                  ${fiatCurrencyFormat(qty * price.AR)} USD
                 </div>
               </>
             )}
             {currency === 'ETH' && (
               <>
                 <div className="flex items-center text-lg leading-10 tracking-finnieSpacing-tightest text-blue-800">
-                  {sentAmount} ETH
+                  {qty} ETH
                   <EthereumIcon className="ml-1 w-4 h-4" />
                 </div>
                 <div className="text-2xs tracking-finnieSpacing-tightest text-blueGray-800">
-                  ${fiatCurrencyFormat(sentAmount * price.ETH)} USD
+                  ${fiatCurrencyFormat(qty * price.ETH)} USD
                 </div>
               </>
             )}
@@ -168,7 +202,7 @@ const TransactionConfirmModal = ({
               {recipient.name}
             </div>
             <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
-              {getDisplayAddress(accountAddress)}
+              {getDisplayAddress(recipientAddress)}
             </div>
           </div>
 
@@ -176,14 +210,14 @@ const TransactionConfirmModal = ({
             <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
               Estimated Costs:
             </div>
-            {gasFee !== 0 && currency === 'ETH' && (
-              <div className="text-11px leading-5 text-blue-800">{gasFee} ETH</div>
+            {fee !== 0 && currency === 'ETH' && (
+              <div className="text-11px leading-5 text-blue-800">{fee} ETH</div>
             )}
-            {arFee !== 0 && (currency === 'KOII' || currency === 'AR') && (
-              <div className="text-base leading-5 text-blue-800">{arFee} AR</div>
+            {fee !== 0 && (currency === 'KOII' || currency === 'AR') && (
+              <div className="text-base leading-5 text-blue-800">{fee} AR</div>
             )}
             <div className="text-2xs leading-3 tracking-finnieSpacing-wider text-success-700">
-              Storage Fee
+              Gas Fee
             </div>
           </div>
         </div>
@@ -208,4 +242,4 @@ const TransactionConfirmModal = ({
   )
 }
 
-export default TransactionConfirmModal
+export default connect(null, { setIsLoading })(TransactionConfirmModal)

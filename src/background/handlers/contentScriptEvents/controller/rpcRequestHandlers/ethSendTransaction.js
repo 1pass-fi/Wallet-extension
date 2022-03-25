@@ -60,7 +60,9 @@ export default async (payload, tab, next) => {
       favicon,
       requestId,
       isEthereum: true,
-      params,
+      requestPayload: {
+        ...params[0]
+      },
     }
 
 

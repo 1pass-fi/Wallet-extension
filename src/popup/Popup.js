@@ -58,6 +58,9 @@ import { PATH, WINDOW_SIZE } from 'constants/koiConstants'
 import './Popup.css'
 import NavBar from './components/NavBar'
 
+// services
+import storage from 'services/storage'
+
 const ContinueLoading = () => (
   <div className="continue-loading">
     <img src={continueLoadingIcon} />
@@ -165,9 +168,22 @@ const Popup = ({
               onClose={() => {
                 window.close()
               }}
-              onSubmit={() => {
-                console.log('submit')
-                window.close()
+              onSubmit={async () => {
+                try {
+                  const request = await storage.generic.get.pendingRequest()
+                  if (isEmpty(request)) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
+                  const { requestId } = request.data
+
+                  setIsLoading(true)
+                  chrome.runtime.sendMessage({ requestId, approved: true }, function(response) {
+                    chrome.runtime.onMessage.addListener(function(message) {
+                      if (message.requestId === requestId) window.close()
+                    })
+                  })
+                  await storage.generic.set.pendingRequest({})
+                } catch (err) {
+                  setError(err.message)
+                }
               }}
               selectedAccount={'selectedAccount'}
               gasFee={0}
