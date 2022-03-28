@@ -21,7 +21,7 @@ const mainScript = () => {
     finnieEthereumProvider.emit('chainChanged')
   })
   window.addEventListener('networkChanged', function() {
-    finnieArweaveProvider.request({ method: 'net_version' }).then(netVersion => {
+    finnieEthereumProvider.request({ method: 'net_version' }).then(netVersion => {
       finnieEthereumProvider.emit('networkChanged', netVersion)
     })
   })

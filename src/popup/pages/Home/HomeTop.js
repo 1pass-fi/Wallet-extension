@@ -8,7 +8,10 @@ import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 import SendIcon from 'img/popup/send-icon.svg'
 import ReceiveIcon from 'img/popup/receive-icon.svg'
 
+// constants
 import { TYPE } from 'constants/accountConstants'
+import { MESSAGES } from 'constants/koiConstants'
+
 import { fiatCurrencyFormat, numberFormat } from 'utils'
 import storage from 'services/storage'
 import { setIsLoading } from 'popup/actions/loading'
@@ -58,6 +61,14 @@ const HomeTop = ({
 
       // load balance
       await request.wallet.loadBalanceAsync()
+
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.NETWORK_CHANGED })
+      })
+
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.CHAIN_CHANGED })
+      })
 
       // update account state
       await dispatch(loadAllAccounts())

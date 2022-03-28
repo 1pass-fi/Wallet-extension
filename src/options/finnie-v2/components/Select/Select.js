@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import find from 'lodash/find'
+import isEmpty from 'lodash/isEmpty'
 import inclues from 'lodash/includes'
 import lowerCase from 'lodash/lowerCase'
 
@@ -9,7 +10,7 @@ import DownIconWhite from 'img/v2/dropdown/down-icon-white.svg'
 
 const Select = ({ options, value, onChange, emptyOption = false }) => {
   const [listOpened, setListOpened] = useState(false)
-  const [selectedItem, setSelectedItem] = useState(find(options, (o) => o.value === value))
+  const [selectedItem, setSelectedItem] = useState()
   const [hoverOption, setHoverOption] = useState(false)
 
   const dropDownRef = useRef(null)
@@ -33,6 +34,12 @@ const Select = ({ options, value, onChange, emptyOption = false }) => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [dropDownRef])
+
+  useEffect(() => {
+    const currentProvider = find(options, (o) => o.value === value)
+    // console.log('value changed', currentProvider)
+    setSelectedItem(currentProvider ? currentProvider : {})
+  }, [value])
 
   const toggleList = () => {
     setListOpened((prev) => !prev)
@@ -70,7 +77,7 @@ const Select = ({ options, value, onChange, emptyOption = false }) => {
             'cursor-pointer focus:outline-none bg-transparent font-normal text-sm leading-8 tracking-finnieSpacing-tight text-blue-800 select-none'
           )}
         >
-          {selectedItem.label}
+          {!isEmpty(selectedItem?.label) ? selectedItem.label : ''}
         </div>
         <DownIconBlue style={{ Width: '7.05px', height: '3.33px' }} className="cursor-pointer" />
       </div>

@@ -67,8 +67,8 @@ export default async () => {
 
   chrome.runtime.onMessage.addListener(function(request) {
     const accountsChangedEvent = new CustomEvent('accountsChanged')
-    const chainChangedEvent = new CustomEvent('chainChangedEvent')
-    const networkChangedEvent = new CustomEvent('networkChangedEvent')
+    const chainChangedEvent = new CustomEvent('chainChanged')
+    const networkChangedEvent = new CustomEvent('networkChanged')
 
     switch(request?.type) {
       case MESSAGES.ACCOUNTS_CHANGED:
