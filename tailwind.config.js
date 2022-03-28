@@ -41,6 +41,9 @@ module.exports = {
           800: '#707070',
           900: '#07073F'
         },
+        cyan: {
+          DEFAULT: '#ECFFFE'
+        },
         warmGray: {
           DEFAULT: '#433D3D'
         },

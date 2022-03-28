@@ -37,9 +37,10 @@ const Home = () => {
             currentProviderAddress={currentProviderAddress}
             setCurrentProviderAddress={setCurrentProviderAddress}
           />
-          <div style={{ width: '177px', height: '156px' }} className="absolute top-13.5 right-0">
-            <PopupBackground />
-          </div>
+          <PopupBackground
+            style={{ width: '177px', height: '156px' }}
+            className="absolute top-13.5 right-0 z-10"
+          />
         </div>
         <AccountInfo
           displayingAccount={displayingAccount}
