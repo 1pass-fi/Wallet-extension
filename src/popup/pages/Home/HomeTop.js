@@ -13,10 +13,9 @@ import { fiatCurrencyFormat, numberFormat } from 'utils'
 import storage from 'services/storage'
 import { setIsLoading } from 'popup/actions/loading'
 import { popupBackgroundRequest as request } from 'services/request/popup'
-import DropDown from 'finnie-v2/components/DropDown'
+import Select from 'finnie-v2/components/Select'
 
 // components
-import Select from 'shared/select'
 import { loadAllAccounts } from 'options/actions/accounts'
 
 // actions
@@ -41,11 +40,11 @@ const HomeTop = ({
 
   const providerOptions = [
     {
-      label: 'Mainnet Network',
+      label: 'ETH Mainnet',
       value: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
     },
     {
-      label: 'Rinkeby Network',
+      label: 'Rinkeby TestNet',
       value: 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
     }
   ]
@@ -78,20 +77,19 @@ const HomeTop = ({
   }, [])
 
   return (
-    <div>
+    <div className="relative z-20">
       <div ref={p.ref}>
-        <div className="flex">
+        <div className="flex justify-between">
           <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />
-          <div className="ml-2" style={{ width: '168px' }}>
-            <DropDown
-              options={providerOptions}
-              value={currentProviderAddress}
-              onChange={onChangeProvider}
-              emptyOption={false}
-              variant="light"
-              size="sm"
-            />
-          </div>
+          {displayingAccount.type === TYPE.ETHEREUM && (
+            <div className="mr-1.75">
+              <Select
+                options={providerOptions}
+                value={currentProviderAddress}
+                onChange={onChangeProvider}
+              />
+            </div>
+          )}
         </div>
         {displayingAccount.type !== TYPE.ETHEREUM && (
           <div className="mt-6.5">
