@@ -17,6 +17,7 @@ import Message from 'components/message'
 import ConnectScreen from 'components/Connect/ConnectScreen'
 import TransactionConfirmModal from 'components/modals/transactionConfirmModal'
 import ConnectedSitesModal from 'components/modals/connectedSitesModal'
+import EthSign from 'components/sign/EthSign'
 
 // pages
 import Home from './pages/Home'
@@ -156,6 +157,7 @@ const Popup = ({
         <Reconnect />
       ) : (
         <div className="h-full">
+          <EthSign onClose={() => {}} />
           {showConnectSite && <ConnectScreen />}
           {showConnectedSites && (
             <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />
@@ -175,8 +177,8 @@ const Popup = ({
                   const { requestId } = request.data
 
                   setIsLoading(true)
-                  chrome.runtime.sendMessage({ requestId, approved: true }, function(response) {
-                    chrome.runtime.onMessage.addListener(function(message) {
+                  chrome.runtime.sendMessage({ requestId, approved: true }, function (response) {
+                    chrome.runtime.onMessage.addListener(function (message) {
                       if (message.requestId === requestId) window.close()
                     })
                   })
