@@ -19,6 +19,7 @@ import { setError } from 'popup/actions/error'
 
 // constants
 import { REQUEST } from 'constants/koiConstants'
+import { MESSAGES } from 'constants/koiConstants'
 
 // services
 import storage from 'services/storage'
@@ -71,6 +72,10 @@ const Login = ({ unlockWallet, setIsLoading, setError }) => {
       setIsLoading(false)
 
       if (unlocked) {
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+          chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
+        })
+
         const pendingRequest = await storage.generic.get.pendingRequest()
         switch (get(pendingRequest, 'type')) {
           case REQUEST.PERMISSION:
