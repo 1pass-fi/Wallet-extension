@@ -80,54 +80,79 @@ export const removeWallet = (address, type) => async (dispatch, getState) => {
     */
     const { defaultAccount, activatedChain } = getState()
 
-    if (type === activatedChain) {
-      if (accountStates.length) {
+    if (accountStates.length === 0) {
+      await storage.setting.set.activatedArweaveAccountAddress(null)
+      await storage.setting.set.activatedEthereumAccountAddress(null)
+      await storage.setting.set.activatedChain(null)
+    } else {
+      const arAccount = find(accountStates, (v) => v.type === TYPE.ARWEAVE)
+      const ethAccount = find(accountStates, (v) => v.type === TYPE.ETHEREUM)
+
+      if (type === activatedChain) {
         if (type === TYPE.ARWEAVE) {
           if (address === defaultAccount.AR?.address) {
-            const arAccount = find(accountStates, (v) => v.type === TYPE.ARWEAVE)
             if (!isEmpty(arAccount)) {
               dispatch(setDefaultAccount(arAccount))
             } else {
+              await storage.setting.set.activatedArweaveAccountAddress(null)
+
               dispatch(setActivatedChain(TYPE.ETHEREUM))
+              await storage.setting.set.activatedChain(TYPE.ETHEREUM)
             }
           }
         }
         if (type === TYPE.ETHEREUM) {
           if (address === defaultAccount.ETH?.address) {
-            const ethAccount = find(accountStates, (v) => v.type === TYPE.ETHEREUM)
             if (!isEmpty(ethAccount)) {
               dispatch(setDefaultAccount(ethAccount))
             } else {
-              dispatch(setActivatedChain(TYPE.ARWEAVE))
-            }
-          }
-        }
-      }
-    } else {
-      if (type === TYPE.ARWEAVE) {
-        const totalArweaveAccounts = await popupAccount.count(TYPE.ARWEAVE)
-        if (totalArweaveAccounts) {
-          if (address === defaultAccount.AR?.address) {
-            const arAccount = find(accountStates, (v) => v.type === TYPE.ARWEAVE)
-            if (!isEmpty(arAccount)) {
-              dispatch(setDefaultAccount(arAccount))
-            }
-          }
-        }
-      }
+              await storage.setting.set.activatedEthereumAccountAddress(null)
 
-      if (type === TYPE.ETHEREUM) {
-        const totalEthereumAccounts = await popupAccount.count(TYPE.ETHEREUM)
-        if (totalEthereumAccounts) {
-          if (address === defaultAccount.ETH?.address) {
-            const ethAccount = find(accountStates, (v) => v.type === TYPE.ETHEREUM)
-            if (!isEmpty(ethAccount)) {
-              dispatch(setDefaultAccount(ethAccount))
+              dispatch(setActivatedChain(TYPE.ARWEAVE))
+              await storage.setting.set.activatedChain(TYPE.ARWEAVE)
+            }
+          }
+        }
+      } else {
+        if (type === TYPE.ARWEAVE) {
+          const totalArweaveAccounts = await popupAccount.count(TYPE.ARWEAVE)
+          if (totalArweaveAccounts) {
+            if (address === defaultAccount.AR?.address) {
+              if (!isEmpty(arAccount)) {
+                dispatch(setDefaultAccount(arAccount))
+              } else {
+                await storage.setting.set.activatedArweaveAccountAddress(null)
+              }
+            }
+          }
+        }
+
+        if (type === TYPE.ETHEREUM) {
+          const totalEthereumAccounts = await popupAccount.count(TYPE.ETHEREUM)
+          if (totalEthereumAccounts) {
+            if (address === defaultAccount.ETH?.address) {
+              if (!isEmpty(ethAccount)) {
+                dispatch(setDefaultAccount(ethAccount))
+              } else {
+                await storage.setting.set.activatedEthereumAccountAddress(null)
+              }
             }
           }
         }
       }
     }
+
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
+    })
+
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.NETWORK_CHANGED })
+    })
+
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.CHAIN_CHANGED })
+    })
 
     const { activities } = getState()
     const newActivities = activities.filter((activity) => activity.address !== address)
