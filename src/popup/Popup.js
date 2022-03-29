@@ -18,6 +18,7 @@ import ConnectScreen from 'components/Connect/ConnectScreen'
 import TransactionConfirmModal from 'components/modals/transactionConfirmModal'
 import ConnectedSitesModal from 'components/modals/connectedSitesModal'
 import EthSign from 'components/sign/EthSign'
+import SignTypedDataV1 from 'components/sign/SignTypedDataV1'
 
 // pages
 import Home from './pages/Home'
@@ -124,7 +125,13 @@ const Popup = ({
 
   useSettings({ setSettings, setAssetsTabSettings, setError })
 
-  const [handleLockWallet, showConnectSite, showSigning, showEthSign] = useLoadApp({
+  const [
+    handleLockWallet,
+    showConnectSite,
+    showSigning,
+    showEthSign,
+    showSignTypedDataV1
+  ] = useLoadApp({
     history,
     accountLoaded,
     setDefaultAccount,
@@ -158,6 +165,7 @@ const Popup = ({
       ) : (
         <div className="h-full">
           {showEthSign && <EthSign />}
+          {showSignTypedDataV1 && <SignTypedDataV1 />}
           {showConnectSite && <ConnectScreen />}
           {showConnectedSites && (
             <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />
