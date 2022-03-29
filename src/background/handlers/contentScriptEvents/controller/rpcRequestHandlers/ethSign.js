@@ -19,7 +19,7 @@ export default async (payload, tab, next) => {
     const params = get(payload, 'data.params')
     const message = stripHexPrefix(params[1])
 
-    /* Show popup for signing transaction */
+    /* Show popup */
     const screenWidth = screen.availWidth
     const screenHeight = screen.availHeight
     const os = window.localStorage.getItem(OS)

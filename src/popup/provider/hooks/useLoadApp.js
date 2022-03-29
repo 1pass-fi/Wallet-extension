@@ -83,6 +83,7 @@ const useLoadApp = ({
           case REQUEST.TRANSACTION:
             setShowSigning(true)
             break
+          case REQUEST.PERSONAL_SIGN:
           case REQUEST.ETH_SIGN:
             setShowEthSign(true)
             break
