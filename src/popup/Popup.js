@@ -124,7 +124,7 @@ const Popup = ({
 
   useSettings({ setSettings, setAssetsTabSettings, setError })
 
-  const [handleLockWallet, showConnectSite, showSigning] = useLoadApp({
+  const [handleLockWallet, showConnectSite, showSigning, showEthSign] = useLoadApp({
     history,
     accountLoaded,
     setDefaultAccount,
@@ -157,7 +157,7 @@ const Popup = ({
         <Reconnect />
       ) : (
         <div className="h-full">
-          <EthSign onClose={() => {}} />
+          {showEthSign && <EthSign />}
           {showConnectSite && <ConnectScreen />}
           {showConnectedSites && (
             <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />

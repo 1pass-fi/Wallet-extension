@@ -348,7 +348,8 @@ export const STORAGE = {
 
 export const REQUEST = {
   PERMISSION: 'PERMISSION',
-  TRANSACTION: 'TRANSACTION'
+  TRANSACTION: 'TRANSACTION',
+  ETH_SIGN: 'ETH_SIGN'
 }
 
 export const RATE = {

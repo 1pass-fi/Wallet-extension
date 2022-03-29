@@ -1,28 +1,70 @@
-// modules
 import React, { useEffect, useState } from 'react'
-import { connect, useSelector } from 'react-redux'
-import find from 'lodash/find'
-import isEmpty from 'lodash/isEmpty'
-import capitalize from 'lodash/capitalize'
-import get from 'lodash/get'
+import { connect } from 'react-redux'
 
-// assets
 import CloseIcon from 'img/v2/close-icon-white.svg'
-import RecycleBinIcon from 'img/popup/recycle-bin-icon.svg'
-
-// constants
-import { TYPE } from 'constants/accountConstants'
-import { MESSAGES } from 'constants/koiConstants'
-
-// actions
 import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
-
-// services
 import storage from 'services/storage'
 
-const EthSign = ({ onClose, setError, setIsLoading }) => {
-  const [siteConnectedAddresses, setSiteConnectedAddresses] = useState([])
+const EthSign = ({ setError, setIsLoading }) => {
+  const [requestData, setRequestData] = useState({})
+
+  useEffect(() => {
+    const loadRequest = async () => {
+      setIsLoading(true)
+      const request = await storage.generic.get.pendingRequest()
+      const {
+        requestPayload: { message },
+        requestId
+      } = request.data
+
+      setRequestData({ requestId, message })
+
+      setIsLoading(false)
+    }
+
+    loadRequest()
+  }, [])
+
+  const onSign = async () => {
+    try {
+      setIsLoading(true)
+
+      chrome.runtime.onMessage.addListener(async function (message) {
+        if (message.requestId === requestData.requestId) {
+          setIsLoading(false)
+          await storage.generic.remove.pendingRequest()
+          chrome.browserAction.setBadgeText({ text: '' })
+          window.close()
+        }
+      })
+
+      const payload = {
+        requestId: requestData.requestId,
+        approved: true
+      }
+
+      chrome.runtime.sendMessage(payload)
+    } catch (error) {
+      setError(error.message)
+    } finally {
+      await storage.generic.remove.pendingRequest()
+      setIsLoading(false)
+    }
+  }
+
+  const onClose = async () => {
+    const payload = {
+      requestId: requestData.requestId,
+      approved: false
+    }
+
+    chrome.runtime.sendMessage(payload)
+
+    await storage.generic.remove.pendingRequest()
+
+    window.close()
+  }
 
   return (
     <div className="w-full h-full z-51 m-auto top-0 left-0 fixed flex flex-col items-center">
@@ -35,7 +77,7 @@ const EthSign = ({ onClose, setError, setIsLoading }) => {
           style={{ height: '67px' }}
         >
           <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-            Eth Sign
+            Signing Message
           </div>
           <CloseIcon
             style={{ width: '30px', height: '30px' }}
@@ -47,18 +89,18 @@ const EthSign = ({ onClose, setError, setIsLoading }) => {
           Message:
         </div>
         <div className="mt-4.5 px-2 w-full font-normal text-base text-left tracking-finnieSpacing-wide text-indigo break-words">
-          0x879a053d4800c6354e76c7985a865d2922c82fb5b3f4577b2fe08b998954f2e0
+          {requestData.message}
         </div>
         <div className="absolute bottom-7.25 w-full flex justify-between px-4.5">
           <button
-            onClick={onClose}
             className="bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800"
             style={{ width: '160px', height: '38px' }}
+            onClick={onClose}
           >
             Reject
           </button>
           <button
-            onClick={onClose}
+            onClick={onSign}
             className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
             style={{ width: '160px', height: '38px' }}
           >
