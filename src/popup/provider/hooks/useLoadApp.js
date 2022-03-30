@@ -23,6 +23,7 @@ const useLoadApp = ({
   const [showSigning, setShowSigning] = useState(false)
   const [showEthSign, setShowEthSign] = useState(false)
   const [showSignTypedDataV1, setShowSignTypedDataV1] = useState(false)
+  const [showSignTypedDataV3, setShowSignTypedDataV3] = useState(false)
 
   const loadApp = async () => {
     if (accountLoaded.isEmptyAccounts) {
@@ -91,6 +92,9 @@ const useLoadApp = ({
           case REQUEST.SIGN_TYPED_DATA_V1:
             setShowSignTypedDataV1(true)
             break
+          case REQUEST.SIGN_TYPED_DATA_V3:
+            setShowSignTypedDataV3(true)
+            break
         }
       } else {
         history.push('/account')
@@ -143,7 +147,14 @@ const useLoadApp = ({
     if (accountLoaded.accountLoaded) load()
   }, [accountLoaded.accountLoaded])
 
-  return [handleLockWallet, showConnectSite, showSigning, showEthSign, showSignTypedDataV1]
+  return [
+    handleLockWallet,
+    showConnectSite,
+    showSigning,
+    showEthSign,
+    showSignTypedDataV1,
+    showSignTypedDataV3
+  ]
 }
 
 export default useLoadApp

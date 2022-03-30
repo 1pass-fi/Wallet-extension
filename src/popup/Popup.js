@@ -19,6 +19,7 @@ import TransactionConfirmModal from 'components/modals/transactionConfirmModal'
 import ConnectedSitesModal from 'components/modals/connectedSitesModal'
 import EthSign from 'components/sign/EthSign'
 import SignTypedDataV1 from 'components/sign/SignTypedDataV1'
+import SignTypedDataV3 from 'components/sign/SignTypedDataV3'
 
 // pages
 import Home from './pages/Home'
@@ -130,7 +131,8 @@ const Popup = ({
     showConnectSite,
     showSigning,
     showEthSign,
-    showSignTypedDataV1
+    showSignTypedDataV1,
+    showSignTypedDataV3
   ] = useLoadApp({
     history,
     accountLoaded,
@@ -166,6 +168,7 @@ const Popup = ({
         <div className="h-full">
           {showEthSign && <EthSign />}
           {showSignTypedDataV1 && <SignTypedDataV1 />}
+          {showSignTypedDataV3 && <SignTypedDataV3 />}
           {showConnectSite && <ConnectScreen />}
           {showConnectedSites && (
             <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />
