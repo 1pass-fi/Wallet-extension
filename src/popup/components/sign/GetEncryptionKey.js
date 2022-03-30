@@ -6,7 +6,7 @@ import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
 import storage from 'services/storage'
 
-const SignTypedDataV3 = ({ setError, setIsLoading }) => {
+const GetEncryptionKey = ({ setError, setIsLoading }) => {
   const [requestData, setRequestData] = useState({})
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const SignTypedDataV3 = ({ setError, setIsLoading }) => {
       className="absolute z-51 bg-white shadow-md rounded flex flex-col items-center"
       style={{
         width: '381px',
-        height: '450px',
+        height: '425px',
         transform: 'translate(-50%, -50%)',
         top: '50%',
         left: '50%'
@@ -78,7 +78,7 @@ const SignTypedDataV3 = ({ setError, setIsLoading }) => {
         style={{ height: '67px' }}
       >
         <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-          Signing Message
+          Request encryption key
         </div>
         <CloseIcon
           style={{ width: '30px', height: '30px' }}
@@ -87,24 +87,12 @@ const SignTypedDataV3 = ({ setError, setIsLoading }) => {
         />
       </div>
 
-      <div className="w-full mt-4.5 px-3 text-indigo text-center">
-        <div className="font-semibold text-base tracking-finnieSpacing-wide ">
-          {requestData.requestPayload?.domain.name}
-        </div>
-        <div className="font-light text-sm tracking-finnieSpacing-wide ">{requestData.origin}</div>
-        <div className="font-light text-sm tracking-finnieSpacing-wide  break-words">
-          {requestData.requestPayload?.domain.verifyingContract}
-        </div>
-      </div>
-
-      <div className="w-full mt-3.5 px-3 text-indigo">
-        <div className="font-semibold text-base text-left">Message</div>
-        <div
-          className="font-light text-sm text-left tracking-finnieSpacing-wide overflow-auto"
-          style={{ height: '180px' }}
-        >
-          <pre>{JSON.stringify(requestData.requestPayload?.message, null, 2)}</pre>
-        </div>
+      <div
+        className="w-full mt-3.5 px-3 text-indigo text-center text-sm tracking-finnieSpacing-wide"
+        style={{ marginTop: '135px' }}
+      >
+        {requestData.origin} would like your public encryption key. By consenting, this site will be
+        able to compose encrypted messages to you.
       </div>
 
       <div className="absolute bottom-3.25 w-full flex justify-between px-4.5">
@@ -113,18 +101,18 @@ const SignTypedDataV3 = ({ setError, setIsLoading }) => {
           style={{ width: '160px', height: '38px' }}
           onClick={onClose}
         >
-          Reject
+          Cancel
         </button>
         <button
           onClick={onSign}
           className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
           style={{ width: '160px', height: '38px' }}
         >
-          Sign
+          Provide
         </button>
       </div>
     </div>
   )
 }
 
-export default connect(null, { setError, setIsLoading })(SignTypedDataV3)
+export default connect(null, { setError, setIsLoading })(GetEncryptionKey)

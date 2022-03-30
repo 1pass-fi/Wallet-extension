@@ -24,6 +24,7 @@ const useLoadApp = ({
   const [showEthSign, setShowEthSign] = useState(false)
   const [showSignTypedDataV1, setShowSignTypedDataV1] = useState(false)
   const [showSignTypedDataV3, setShowSignTypedDataV3] = useState(false)
+  const [showGetEcryptionKey, setShowGetEncryptionKey] = useState(false)
 
   const loadApp = async () => {
     if (accountLoaded.isEmptyAccounts) {
@@ -96,6 +97,9 @@ const useLoadApp = ({
           case REQUEST.SIGN_TYPED_DATA_V4:
             setShowSignTypedDataV3(true)
             break
+          case REQUEST.GET_ENCRYPTION_KEY:
+            setShowGetEncryptionKey(true)
+            break
         }
       } else {
         history.push('/account')
@@ -154,7 +158,8 @@ const useLoadApp = ({
     showSigning,
     showEthSign,
     showSignTypedDataV1,
-    showSignTypedDataV3
+    showSignTypedDataV3,
+    showGetEcryptionKey
   ]
 }
 
