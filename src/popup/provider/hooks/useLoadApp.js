@@ -93,6 +93,7 @@ const useLoadApp = ({
             setShowSignTypedDataV1(true)
             break
           case REQUEST.SIGN_TYPED_DATA_V3:
+          case REQUEST.SIGN_TYPED_DATA_V4:
             setShowSignTypedDataV3(true)
             break
         }
