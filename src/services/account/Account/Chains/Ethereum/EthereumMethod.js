@@ -509,4 +509,25 @@ export class EthereumMethod {
   async getNetworkId() {
     return this.eth.web3().eth.net.getId()
   }
+
+  async transferToken({ tokenContractAddress, to, value }) {
+    const tokenContract = new this.eth.web3.eth.Contract(ERC20ABI, tokenContractAddress)
+
+    const decimals = await tokenContract.methods.decimals().call()
+    const amount = parseFloat(value) * Math.pow(10, decimals)
+
+    const rawTx = {
+      from: this.eth.address,
+      to: tokenContractAddress,
+      value: amount,
+      data: contract.methods.transfer(to, amount).encodeABI()
+    }
+    const estimateGas = await web3.eth.estimateGas(rawTx)
+    rawTx.gas = estimateGas
+
+    const signedTx = await web3.eth.accounts.signTransaction(rawTx, this.eth.key)
+    const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction)
+
+    return receipt
+  }
 }
