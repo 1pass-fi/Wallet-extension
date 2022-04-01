@@ -3,14 +3,27 @@
   Load activities, assets,...
 */
 
-import { PATH, ALL_NFT_LOADED, ACTIVITY_NAME, ETHERSCAN_API, ETH_NFT_BRIDGE_ACTION } from 'constants/koiConstants'
+import {
+  PATH,
+  ALL_NFT_LOADED,
+  ACTIVITY_NAME,
+  ETHERSCAN_API,
+  ETH_NFT_BRIDGE_ACTION
+} from 'constants/koiConstants'
 import { ACCOUNT } from 'constants/accountConstants'
 import { getChromeStorage } from 'utils'
 import { get, includes, findIndex } from 'lodash'
 import moment from 'moment'
 
 import { TYPE } from 'constants/accountConstants'
-import { VALID_TOKEN_SCHEMA, ERROR_MESSAGE, URL, BRIDGE_FLOW, KOI_ROUTER_CONTRACT, ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
+import {
+  VALID_TOKEN_SCHEMA,
+  ERROR_MESSAGE,
+  URL,
+  BRIDGE_FLOW,
+  KOI_ROUTER_CONTRACT,
+  ETH_NETWORK_PROVIDER
+} from 'constants/koiConstants'
 
 import axios from 'axios'
 
@@ -18,6 +31,7 @@ import HDWalletProvider from '@truffle/hdwallet-provider'
 import Web3 from 'web3'
 import koiRouterABI from './abi/KoiRouter.json'
 import koiTokenABI from './abi/KoiToken.json'
+import ERC20ABI from './abi/ERC20ABI.json'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 import storage from 'services/storage'
 
@@ -52,7 +66,9 @@ export class EthereumMethod {
       let ethAssets = []
       for (let i = 0; i < 3; i++) {
         let assets = []
-        const url = `${path}/assets?owner=${this.eth.address}&order_direction=desc&offset=${i*50}&limit=50`
+        const url = `${path}/assets?owner=${this.eth.address}&order_direction=desc&offset=${
+          i * 50
+        }&limit=50`
         try {
           const { data } = await axios.get(url)
           assets = get(data, 'assets') || []
@@ -68,7 +84,8 @@ export class EthereumMethod {
       /* 
         get nft list for this ETH address from Chrome storage
       */
-      const contentList = (await getChromeStorage(`${this.eth.address}_assets`))[`${this.eth.address}_assets`] || []
+      const contentList =
+        (await getChromeStorage(`${this.eth.address}_assets`))[`${this.eth.address}_assets`] || []
       console.log('Saved contents: ', contentList.length)
 
       /*
@@ -76,7 +93,7 @@ export class EthereumMethod {
         - Failed load content (removed on functions cacheNFTs on "background/popupEventHandlers")
         - Out-of-date NFTs
       */
-      const ethAssetIds = ethAssets.map(ethAsset => ethAsset.token_id)
+      const ethAssetIds = ethAssets.map((ethAsset) => ethAsset.token_id)
       const validContents = contentList.filter((content) => {
         return ethAssetIds.indexOf(content.txId) !== -1
       })
@@ -85,7 +102,7 @@ export class EthereumMethod {
       /* 
         detect new nft(s) that were not saved in Chrome storage
       */
-      const storageContentIds = validContents.map(nft => nft.txId)
+      const storageContentIds = validContents.map((nft) => nft.txId)
 
       const newContents = ethAssets.filter((ethAsset) => {
         return storageContentIds.indexOf(ethAsset.token_id) === -1
@@ -93,7 +110,7 @@ export class EthereumMethod {
 
       console.log('New contents: ', newContents.length)
 
-      if (!newContents.length && ethAssets.length === contentList.length){
+      if (!newContents.length && ethAssets.length === contentList.length) {
         console.log('ALL NFT LOADED')
         return ALL_NFT_LOADED
       }
@@ -144,10 +161,10 @@ export class EthereumMethod {
 
     let fetchedData = resp.data.result
     const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
-    fetchedData = fetchedData.map(activity => {
+    fetchedData = fetchedData.map((activity) => {
       try {
         let id, activityName, expense, date, source, time
-  
+
         id = activity.hash
         if (activity.from === this.eth.address.toLowerCase()) {
           activityName = 'Sent ETH'
@@ -156,15 +173,15 @@ export class EthereumMethod {
           activityName = 'Received ETH'
           source = activity.from
         }
-  
+
         const gasFee = (activity.gasUsed * activity.gasPrice) / 1000000000000000000
         const expenseValue = activity.value / 1000000000000000000
 
         expense = gasFee + expenseValue
         date = moment(Number(activity.timeStamp) * 1000).format('MMMM DD YYYY')
-        
+
         time = activity.timeStamp
-  
+
         return {
           id,
           activityName,
@@ -181,14 +198,14 @@ export class EthereumMethod {
         return {}
       }
     })
-    
-    const oldActivites = await this.#chrome.getActivities() || []
+
+    const oldActivites = (await this.#chrome.getActivities()) || []
     const newestOfOldActivites = oldActivites[0]
 
     if (newestOfOldActivites) {
-      const idx = findIndex(fetchedData, data => data.id === newestOfOldActivites.id)
-  
-      for(let i = 0; i < idx; i++) {
+      const idx = findIndex(fetchedData, (data) => data.id === newestOfOldActivites.id)
+
+      for (let i = 0; i < idx; i++) {
         fetchedData[i].seen = false
       }
     }
@@ -208,9 +225,16 @@ export class EthereumMethod {
     return []
   }
 
-  async nftBridge({ txId, toAddress, type = TYPE.ARWEAVE, tokenAddress, tokenSchema, accountName }) {
+  async nftBridge({
+    txId,
+    toAddress,
+    type = TYPE.ARWEAVE,
+    tokenAddress,
+    tokenSchema,
+    accountName
+  }) {
     let bridgePending
-    let pendingTransactions = await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION) || []
+    let pendingTransactions = (await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION)) || []
     let assets = await this.#chrome.getAssets()
     let success, action, result
 
@@ -283,7 +307,8 @@ export class EthereumMethod {
     /* 
       Validations
     */
-    if (!includes(VALID_TOKEN_SCHEMA, tokenSchema)) throw new Error(ERROR_MESSAGE.INVALID_TOKEN_SCHEMA)
+    if (!includes(VALID_TOKEN_SCHEMA, tokenSchema))
+      throw new Error(ERROR_MESSAGE.INVALID_TOKEN_SCHEMA)
     if (balance < 0.00015) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_ETH)
 
     const provider = new HDWalletProvider(this.eth.key, this.eth.getCurrentNetWork())
@@ -346,58 +371,65 @@ export class EthereumMethod {
       if (provider === ETH_NETWORK_PROVIDER.MAINNET) etherscanUrl = URL.ETHERSCAN_MAINNET
       if (provider === ETH_NETWORK_PROVIDER.RINKEBY) etherscanUrl = URL.ETHERSCAN_RINKEBY
 
-      let fetchedNFTs = await Promise.all(contents.map(async content => {
-        try {
-          const tokenId = content?.token_id
-          const addressContract = content?.asset_contract?.address
-          const koiRockUrl = `${etherscanUrl}/token/${addressContract}?a=${tokenId}`
+      let fetchedNFTs = await Promise.all(
+        contents.map(async (content) => {
+          try {
+            const tokenId = content?.token_id
+            const addressContract = content?.asset_contract?.address
+            const koiRockUrl = `${etherscanUrl}/token/${addressContract}?a=${tokenId}`
 
-          if (content.image_url && content.name) {
-            let imageUrl = content.image_url
-            if (getBase64) {
-              let u8 = Buffer.from((await axios.get(content.image_url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
-              imageUrl = `data:image/jpeg;base64,${u8}`
-              if (content.image_url.endsWith('.svg')) {
-                imageUrl = `data:image/svg+xml;base64,${u8}`
+            if (content.image_url && content.name) {
+              let imageUrl = content.image_url
+              if (getBase64) {
+                let u8 = Buffer.from(
+                  (await axios.get(content.image_url, { responseType: 'arraybuffer' })).data,
+                  'binary'
+                ).toString('base64')
+                imageUrl = `data:image/jpeg;base64,${u8}`
+                if (content.image_url.endsWith('.svg')) {
+                  imageUrl = `data:image/svg+xml;base64,${u8}`
+                }
+
+                if (content.animation_url) {
+                  u8 = Buffer.from(
+                    (await axios.get(content.animation_url, { responseType: 'arraybuffer' })).data,
+                    'binary'
+                  ).toString('base64')
+                  imageUrl = `data:video/mp4;base64,${u8}`
+                }
               }
 
-              if (content.animation_url) {
-                u8 = Buffer.from((await axios.get(content.animation_url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
-                imageUrl = `data:video/mp4;base64,${u8}`
+              return {
+                name: content.name,
+                isKoiWallet: false,
+                txId: `${content.token_id}_${content.asset_contract?.address}`,
+                imageUrl,
+                galleryUrl: `${PATH.GALLERY}#/details/${content.token_id}_${content.asset_contract?.address}`,
+                koiRockUrl,
+                isRegistered: false,
+                contentType: content.animation_url ? 'video' : 'image',
+                totalViews: 0,
+                createdAt: Date.parse(get(content, 'collection.created_date')) / 1000,
+                description: content.description,
+                type: TYPE.ETHEREUM,
+                address: this.eth.address,
+                tokenAddress: content?.asset_contract?.address,
+                tokenSchema: content?.asset_contract?.schema_name // ERC compatiblility. eg: ERC1155,...
               }
+            } else {
+              console.log('Not enough data NFT: ', content)
+              return null
             }
-
-            return {
-              name: content.name,
-              isKoiWallet: false,
-              txId: `${content.token_id}_${content.asset_contract?.address}`,
-              imageUrl,
-              galleryUrl: `${PATH.GALLERY}#/details/${content.token_id}_${content.asset_contract?.address}`,
-              koiRockUrl,
-              isRegistered: false,
-              contentType: content.animation_url ? 'video' : 'image',
-              totalViews: 0,
-              createdAt: Date.parse(get(content, 'collection.created_date')) / 1000,
-              description: content.description,
-              type: TYPE.ETHEREUM,
-              address: this.eth.address,
-              tokenAddress: content?.asset_contract?.address,
-              tokenSchema: content?.asset_contract?.schema_name // ERC compatiblility. eg: ERC1155,...
-            }
-          } else {
-            console.log('Not enough data NFT: ', content)
+          } catch (err) {
+            console.log('Failed loaded NFT: ', content)
             return null
           }
-        } catch (err) {
-          console.log('Failed loaded NFT: ', content)
-          return null
-        }
-      }))
+        })
+      )
 
       // Filter failed load contents
-      fetchedNFTs = fetchedNFTs.filter(nft => !!nft)
+      fetchedNFTs = fetchedNFTs.filter((nft) => !!nft)
       return fetchedNFTs
-
     } catch (err) {
       console.log(err.message)
       return []
@@ -413,7 +445,7 @@ export class EthereumMethod {
     let response = await fetch(URL.GET_BRIDGE_STATUS, {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
@@ -434,10 +466,10 @@ export class EthereumMethod {
     if (transaction) {
       const { activityName } = transaction
       if (includes(activityName, 'Bridged')) {
-        await this.#bridgeEthtoAr({ 
+        await this.#bridgeEthtoAr({
           txId,
-          toAddress: transaction.source, 
-          tokenAddress: transaction.tokenAddress,  
+          toAddress: transaction.source,
+          tokenAddress: transaction.tokenAddress,
           tokenSchema: transaction.tokenSchema
         })
         newTxId = txId
@@ -447,7 +479,7 @@ export class EthereumMethod {
         Set newTxId for the pending transaction
       */
       if (newTxId) {
-        pendingTransactions = pendingTransactions.map(transaction => {
+        pendingTransactions = pendingTransactions.map((transaction) => {
           if (transaction.id === txId) {
             transaction.id = newTxId
             if (transaction.retried !== undefined) transaction.retried = 0
@@ -459,7 +491,7 @@ export class EthereumMethod {
         await this.#chrome.setField(ACCOUNT.PENDING_TRANSACTION, pendingTransactions)
       } else {
         // TODO: refactor
-        pendingTransactions = pendingTransactions.map(transaction => {
+        pendingTransactions = pendingTransactions.map((transaction) => {
           if (transaction.id === txId) {
             if (transaction.retried !== undefined) transaction.retried = 0
             transaction.retried++
