@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import isEmpty from 'lodash/isEmpty'
 
 import SearchIcon from 'img/popup/search-icon.svg'
@@ -6,24 +6,19 @@ import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 
 import contracts from 'utils/contract-map.json'
 
-const Search = ({ setTokenImport }) => {
-  const [searchToken, setSearchToken] = useState('')
+const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
   const [tokenList, setTokenList] = useState([])
 
-  const onChangeSearchToken = (e) => {
-    if (e.keyCode === 13) {
-      onSearchToken()
-    }
-  }
-
   const onSearchToken = async () => {
-    console.log('onSearchToken', searchToken)
-    if (isEmpty(searchToken)) return
+    if (isEmpty(searchToken)) {
+      setTokenList([])
+      return
+    }
     const filterTokenList = Object.keys(contracts).reduce((result, key) => {
       if (
         key === searchToken ||
-        contracts[key].name?.includes(searchToken) ||
-        contracts[key].symbol?.includes(searchToken)
+        contracts[key].name?.toLowerCase().includes(searchToken.toLowerCase()) ||
+        contracts[key].symbol?.toLowerCase().includes(searchToken.toLowerCase())
       ) {
         // TODO LongP
         const token = {
@@ -36,12 +31,15 @@ const Search = ({ setTokenImport }) => {
       return result
     }, [])
 
-    console.log('onSearchToken', filterTokenList)
     setTokenList(filterTokenList)
   }
 
+  useEffect(() => {
+    onSearchToken()
+  }, [searchToken])
+
   return (
-    <div className="flex flex-col items-center justify-center mt-5.5">
+    <div className="flex flex-col items-center justify-center mt-5">
       <div
         className="bg-trueGray-100 rounded border border-blue-800 flex justify-between items-center"
         style={{ width: '352px', height: '32px' }}
@@ -51,25 +49,28 @@ const Search = ({ setTokenImport }) => {
           placeholder="Seach for a token"
           style={{ width: '316px' }}
           onChange={(e) => setSearchToken(e.target.value)}
-          onKeyUp={(e) => onChangeSearchToken(e)}
           value={searchToken}
         ></input>
         <SearchIcon className="mr-2 cursor-pointer" onClick={() => onSearchToken()} />
       </div>
 
       <div
-        className="mt-6.25 w-full flex flex-col pl-12.5 pr-1.5 mr-1.25 overflow-y-scroll"
-        style={{ height: '300px' }}
+        className="mt-6.25 w-full flex flex-col pr-1.5 mr-1.25 overflow-y-scroll overflow-x-hidden"
+        style={{ width: '352px', height: '290px' }}
       >
         {tokenList.map((token, idx) => (
           <div
             key={idx}
-            className="flex w-full items-center mb-6 cursor-pointer"
+            className="flex w-full items-center ml-2 mb-6 cursor-pointer"
             onClick={() => setTokenImport(token)}
           >
             <FinnieIcon style={{ width: '36px', height: '36px' }} />
-            <div className="ml-3 font-normal text-base tracking-finnieSpacing-tight text-blue-800">
-              {token.name + ' (' + token.symbol + ')'}
+            <div className="w-full flex ml-3 font-normal text-base tracking-finnieSpacing-tight text-blue-800">
+              <span className="truncate" style={{ maxWidth: '220px' }}>
+                {token.name}
+              </span>
+              &nbsp;
+              {'(' + token.symbol + ')'}
             </div>
           </div>
         ))}
