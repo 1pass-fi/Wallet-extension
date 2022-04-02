@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import isEmpty from 'lodash/isEmpty'
 
@@ -45,7 +46,7 @@ const Tokens = () => {
           key={idx}
           className={clsx(
             'w-full flex items-center justify-between px-2 py-3 text-blue-800 text-sm',
-            idx !== 0 && 'border-t border-trueGray-400'
+            'border-b border-trueGray-400'
           )}
         >
           <div className="flex items-center">
@@ -62,6 +63,15 @@ const Tokens = () => {
           </div>
         </div>
       ))}
+      <div className="mt-5 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
+        Don’t see your token?
+      </div>
+      <div className="mt-1.5 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
+        <span className="cursor-pointer underline text-success-700">Refresh list</span> or{' '}
+        <Link className="cursor-pointer underline text-success-700" to="/import-token">
+          Import a token
+        </Link>
+      </div>
     </div>
   )
 }
