@@ -1,7 +1,85 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useHistory } from 'react-router'
+import clsx from 'clsx'
+import isEmpty from 'lodash/isEmpty'
+
+import WarningIcon from 'img/popup/warning-icon.svg'
 
 const CustomToken = () => {
-  return <div>CustomToken</div>
+  const history = useHistory()
+
+  const [tokenAddress, setTokenAddress] = useState('')
+  const [tokenSymbol, setTokenSymbol] = useState('')
+  const [tokenDecimal, setTokenDecimal] = useState(0)
+
+  const handleImportCustomToken = () => {
+    // TODO LongP
+    console.log('tokenAddress', tokenAddress)
+    console.log('tokenSymbol', tokenSymbol)
+    console.log('tokenDecimal', tokenDecimal)
+    history.push('*')
+  }
+
+  const isInputted =
+    !isEmpty(tokenAddress) && !isEmpty(tokenSymbol) && (!isEmpty(tokenDecimal) || tokenDecimal == 0)
+
+  return (
+    <div className="flex flex-col text-blue-850">
+      <div className="mt-4 flex">
+        <WarningIcon className="ml-6" style={{ width: '35px', height: '35px' }} />
+        <div className="ml-3.5 font-normal text-xs" style={{ width: '329px' }}>
+          Anyone can create a token, which includes fake versions of existing tokens. Always confirm
+          the Token Contract Address before purchasing a custom token.
+        </div>
+      </div>
+
+      <div className="mt-8 ml-9.25 font-normal text-xs">Token Contract Address</div>
+      <input
+        className="mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none font-normal text-sm leading-6 pl-2 rounded border border-blue-800"
+        style={{ width: '352px', height: '32px' }}
+        onChange={(e) => setTokenAddress(e.target.value)}
+        value={tokenAddress}
+      ></input>
+
+      <div className="mt-6 ml-9.25 font-normal text-xs">Token Symbol</div>
+      <input
+        className="mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none font-normal text-sm leading-6 pl-2 rounded border border-blue-800"
+        style={{ width: '352px', height: '32px' }}
+        onChange={(e) => setTokenSymbol(e.target.value)}
+        value={tokenSymbol}
+      ></input>
+
+      <div className="mt-6 ml-9.25 font-normal text-xs">Token Decimal</div>
+      <input
+        className="mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none font-normal text-sm leading-6 pl-2 rounded border border-blue-800"
+        style={{ width: '352px', height: '32px' }}
+        onChange={(e) => setTokenDecimal(e.target.value)}
+        value={tokenDecimal}
+        type="number"
+      ></input>
+
+      <div className="mx-auto mt-8">
+        <button
+          onClick={() => history.goBack()}
+          className="bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800"
+          style={{ width: '160px', height: '38px' }}
+        >
+          Back
+        </button>
+        <button
+          onClick={() => handleImportCustomToken()}
+          className={clsx(
+            'ml-6 bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white',
+            !isInputted && 'cursor-not-allowed bg-opacity-80'
+          )}
+          style={{ width: '160px', height: '38px' }}
+          disabled={!isInputted}
+        >
+          Continue
+        </button>
+      </div>
+    </div>
+  )
 }
 
 export default CustomToken

@@ -39,6 +39,11 @@ const Tokens = () => {
     ]
   }, [displayingAccount])
 
+  const handleRefreshTokenList = async () => {
+    // TODO LongP
+    console.log('handleRefreshTokenList')
+  }
+
   return (
     <div className="w-full px-3">
       {tokens.map((token, idx) => (
@@ -67,7 +72,13 @@ const Tokens = () => {
         Don’t see your token?
       </div>
       <div className="mt-1.5 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
-        <span className="cursor-pointer underline text-success-700">Refresh list</span> or{' '}
+        <span
+          className="cursor-pointer underline text-success-700"
+          onClick={() => handleRefreshTokenList()}
+        >
+          Refresh list
+        </span>{' '}
+        or{' '}
         <Link className="cursor-pointer underline text-success-700" to="/import-token">
           Import a token
         </Link>
