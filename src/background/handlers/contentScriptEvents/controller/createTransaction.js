@@ -1,4 +1,5 @@
 import { isNumber } from 'lodash'
+import { v4 as uuid } from 'uuid'
 
 // Constants
 import { REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
@@ -48,6 +49,20 @@ export default async (payload, tab, next) => {
       width,
       left: Math.round((screenWidth - width) / 2),
       top: Math.round((screenHeight - height) / 2)
+    }
+
+    const requestId = uuid()
+
+    const transactionPayload = {
+      transaction,
+      qty,
+      address,
+      origin,
+      favicon,
+      fee,
+      isKoi: false,
+      isKoiiTransfer,
+      koiiQty
     }
 
     createWindow (

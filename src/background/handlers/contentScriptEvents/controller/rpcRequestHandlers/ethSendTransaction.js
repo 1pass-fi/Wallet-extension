@@ -60,6 +60,7 @@ export default async (payload, tab, next) => {
       favicon,
       requestId,
       isEthereum: true,
+      network: 'ETHEREUM',
       requestPayload: {
         ...params[0]
       },
@@ -99,7 +100,7 @@ export default async (payload, tab, next) => {
                   next({ error: { code: 4001, data: err.message } })
                 } 
               } else {
-                next({ error: { code: 4001, data: 'User rejected request' } })
+                next({ error: { code: 4001, data: 'Request rejected' } })
               }
             }
           }
@@ -112,8 +113,8 @@ export default async (payload, tab, next) => {
       },
       afterClose: async () => {
         chrome.browserAction.setBadgeText({ text: '' })
-        next({ error: 'User cancelled the login.' })
-        await storage.generic.set.pendingRequest({})
+        next({ error: { code: 4001, data: 'Request rejected' }})
+        // await storage.generic.set.pendingRequest({})
       }
     })
   } catch (err) {

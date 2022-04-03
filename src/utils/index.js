@@ -384,8 +384,8 @@ export const signTransaction = async (koiObj, transaction) => {
   }
 }
 
-export const numberFormat = (num) => {
-  return num === null ? '---' : new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 }).format(num)
+export const numberFormat = (num, digit) => {
+  return num === null ? '---' : new Intl.NumberFormat('en-US', { maximumFractionDigits: digit || 4 }).format(num)
 }
 
 export const fiatCurrencyFormat = (num) => {
@@ -723,7 +723,12 @@ export const winstonToAr = (value) => {
 export const calculateGasFee = async ({ amount, senderAddress, toAddress, provider }) => {
   const web3 = new Web3()
   koiTools.initializeEthWalletAndProvider(senderAddress, provider)
-  const amountToSend = web3.utils.toWei(amount.toString(), 'ether') // Convert to wei value
+
+  let amountToSend
+  if (amount) {
+    amountToSend = web3.utils.toWei(amount.toString(), 'ether') // Convert to wei value
+  }
+
   const rawTx = {
     to: toAddress,
     value: amountToSend,
