@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import isEmpty from 'lodash/isEmpty'
 
-import Checkbox from 'popup/components/shared/checkBoxRedesign'
+import CheckBoxLight from 'options/finnie-v2/components/CheckBox/CheckBoxLight'
 
 // utils
 import formatNumber from 'finnie-v2/utils/formatNumber'
@@ -73,13 +73,13 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
             <div className="flex justify-center font-normal text-base leading-5 text-blue-800">
               {formatNumber(account.balance, 3) + ' ' + tokenImport.symbol}
             </div>
-            <Checkbox
-              isDisabled={false}
-              defaultChecked={selectedAccount.includes(account)}
-              onChange={() => handleSelectAccount(account)}
-              className="flex justify-center"
-              isNewDesign={true}
-            />
+            <div className="flex justify-center">
+              <CheckBoxLight
+                isDisabled={false}
+                checked={selectedAccount.includes(account)}
+                onClick={() => handleSelectAccount(account)}
+              />
+            </div>
           </div>
         ))}
       </div>
