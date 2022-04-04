@@ -235,10 +235,10 @@ const useGetTokenBalance = ({ contractAddress, userAddress }) => {
         const provider = await storage.setting.get.ethereumProvider()
         const web3 = new Web3(provider)
         const tokenContract = new web3.eth.Contract(ERC20_ABI, contractAddress)
-  
+
         const symbol = await tokenContract.methods.symbol().call()
         const balance = await tokenContract.methods.balanceOf(userAddress).call()
-  
+
         setTokenSymbol(symbol)
         setBalance(balance)
       } catch (err) {
@@ -251,9 +251,11 @@ const useGetTokenBalance = ({ contractAddress, userAddress }) => {
 
   const TokenBalance = () => (
     <>
-      {tokenBalance || '------'} {tokenSymbol || '------'}
+      {balance || '------'} {tokenSymbol || '------'}
     </>
   )
 
   return { TokenBalance, tokenSymbol, balance }
 }
+
+export default useGetTokenBalance

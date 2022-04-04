@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import isEmpty from 'lodash/isEmpty'
 
+// components
 import CheckBoxLight from 'options/finnie-v2/components/CheckBox/CheckBoxLight'
+
+// hooks
+import useGetTokenBalance from './hooks/useGetTokenBalance'
 
 // utils
 import formatNumber from 'finnie-v2/utils/formatNumber'
@@ -31,6 +35,18 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
     // TODO LongP
     console.log('selectedAccount', selectedAccount)
     history.push('*')
+  }
+
+  const getTokenBalance = (userAddress) => {
+    const tokenBalance = useGetTokenBalance({
+      contractAddress: tokenImport.contract,
+      userAddress: userAddress
+    })
+
+    const balance = formatNumber(tokenBalance.balance, 3) || '---'
+    const symbol = tokenBalance.tokenSymbol || tokenImport.symbol
+
+    return `${balance} ${symbol}`
   }
 
   const accounts = useSelector((state) => state.accounts)
@@ -71,7 +87,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
               </div>
             </div>
             <div className="flex justify-center font-normal text-base leading-5 text-blue-800">
-              {formatNumber(account.balance, 3) + ' ' + tokenImport.symbol}
+              {getTokenBalance(account.address)}
             </div>
             <div className="flex justify-center">
               <CheckBoxLight
