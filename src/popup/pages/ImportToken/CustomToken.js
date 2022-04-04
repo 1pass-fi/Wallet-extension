@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import clsx from 'clsx'
 import isEmpty from 'lodash/isEmpty'
+
+// hooks
+import useGetTokenMetaData from './hooks/useGetTokenMetaData'
 
 import WarningIcon from 'img/popup/warning-icon.svg'
 
@@ -9,19 +12,19 @@ const CustomToken = () => {
   const history = useHistory()
 
   const [tokenAddress, setTokenAddress] = useState('')
-  const [tokenSymbol, setTokenSymbol] = useState('')
-  const [tokenDecimal, setTokenDecimal] = useState(0)
+
+  const tokenData = useGetTokenMetaData({ contractAddress: tokenAddress })
 
   const handleImportCustomToken = () => {
     // TODO LongP
     console.log('tokenAddress', tokenAddress)
-    console.log('tokenSymbol', tokenSymbol)
-    console.log('tokenDecimal', tokenDecimal)
+    console.log('tokenSymbol', tokenData.tokenSymbol)
+    console.log('tokenDecimal', tokenData.tokenDecimal)
     history.push('*')
   }
 
   const isInputted =
-    !isEmpty(tokenAddress) && !isEmpty(tokenSymbol) && (!isEmpty(tokenDecimal) || tokenDecimal == 0)
+    !isEmpty(tokenAddress) && !isEmpty(tokenData.tokenSymbol) && !isEmpty(tokenData.tokenDecimal)
 
   return (
     <div className="flex flex-col text-blue-850">
@@ -43,19 +46,18 @@ const CustomToken = () => {
 
       <div className="mt-6 ml-9.25 font-normal text-xs">Token Symbol</div>
       <input
-        className="mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none font-normal text-sm leading-6 pl-2 rounded border border-blue-800"
+        className="mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none font-normal text-sm leading-6 pl-2 rounded border border-blue-800 cursor-not-allowed"
         style={{ width: '352px', height: '32px' }}
-        onChange={(e) => setTokenSymbol(e.target.value)}
-        value={tokenSymbol}
+        value={!isEmpty(tokenData.tokenSymbol) ? tokenData.tokenSymbol : ''}
+        readOnly
       ></input>
 
       <div className="mt-6 ml-9.25 font-normal text-xs">Token Decimal</div>
       <input
-        className="mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none font-normal text-sm leading-6 pl-2 rounded border border-blue-800"
+        className="mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none font-normal text-sm leading-6 pl-2 rounded border border-blue-800 cursor-not-allowed"
         style={{ width: '352px', height: '32px' }}
-        onChange={(e) => setTokenDecimal(e.target.value)}
-        value={tokenDecimal}
-        type="number"
+        value={!isEmpty(tokenData.tokenDecimal) ? tokenData.tokenDecimal : '0'}
+        readOnly
       ></input>
 
       <div className="mx-auto mt-8">

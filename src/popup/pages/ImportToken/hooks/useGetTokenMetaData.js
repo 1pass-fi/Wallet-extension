@@ -235,10 +235,10 @@ const useGetTokenMetaData = ({ contractAddress }) => {
         const provider = await storage.setting.get.ethereumProvider()
         const web3 = new Web3(provider)
         const tokenContract = new web3.eth.Contract(ERC20_ABI, contractAddress)
-  
-        const decimal = tokenContract.decimals().call()
-        const symbol = tokenContract.symbol().call()
-  
+
+        const decimal = await tokenContract.methods.decimals().call()
+        const symbol = await tokenContract.methods.symbol().call()
+
         setTokenDecimal(decimal)
         setTokenSymbol(symbol)
       } catch (err) {
@@ -251,3 +251,5 @@ const useGetTokenMetaData = ({ contractAddress }) => {
 
   return { tokenSymbol, tokenDecimal }
 }
+
+export default useGetTokenMetaData
