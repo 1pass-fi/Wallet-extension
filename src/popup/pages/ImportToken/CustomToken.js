@@ -8,7 +8,7 @@ import useGetTokenMetaData from './hooks/useGetTokenMetaData'
 
 import WarningIcon from 'img/popup/warning-icon.svg'
 
-const CustomToken = () => {
+const CustomToken = ({ setTokenImport }) => {
   const history = useHistory()
 
   const [tokenAddress, setTokenAddress] = useState('')
@@ -16,15 +16,16 @@ const CustomToken = () => {
   const tokenData = useGetTokenMetaData({ contractAddress: tokenAddress })
 
   const handleImportCustomToken = () => {
-    // TODO LongP
-    console.log('tokenAddress', tokenAddress)
-    console.log('tokenSymbol', tokenData.tokenSymbol)
-    console.log('tokenDecimal', tokenData.tokenDecimal)
-    history.push('*')
+    setTokenImport({
+      contract: tokenAddress,
+      name: tokenData.tokenName,
+      symbol: tokenData.tokenSymbol,
+      decimals: tokenData.tokenDecimals
+    })
   }
 
   const isInputted =
-    !isEmpty(tokenAddress) && !isEmpty(tokenData.tokenSymbol) && !isEmpty(tokenData.tokenDecimal)
+    !isEmpty(tokenAddress) && !isEmpty(tokenData.tokenSymbol) && !isEmpty(tokenData.tokenDecimals)
 
   return (
     <div className="flex flex-col text-blue-850">
@@ -56,7 +57,7 @@ const CustomToken = () => {
       <input
         className="mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none font-normal text-sm leading-6 pl-2 rounded border border-blue-800 cursor-not-allowed"
         style={{ width: '352px', height: '32px' }}
-        value={!isEmpty(tokenData.tokenDecimal) ? tokenData.tokenDecimal : '0'}
+        value={!isEmpty(tokenData.tokenDecimals) ? tokenData.tokenDecimals : '0'}
         readOnly
       ></input>
 

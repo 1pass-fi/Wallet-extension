@@ -227,7 +227,8 @@ const ERC20_ABI = [
 
 const useGetTokenMetaData = ({ contractAddress }) => {
   const [tokenSymbol, setTokenSymbol] = useState(null)
-  const [tokenDecimal, setTokenDecimal] = useState(null)
+  const [tokenDecimals, setTokenDecimals] = useState(null)
+  const [tokenName, setTokenName] = useState(null)
 
   useEffect(() => {
     const loadTokenData = async () => {
@@ -236,11 +237,13 @@ const useGetTokenMetaData = ({ contractAddress }) => {
         const web3 = new Web3(provider)
         const tokenContract = new web3.eth.Contract(ERC20_ABI, contractAddress)
 
-        const decimal = await tokenContract.methods.decimals().call()
+        const decimals = await tokenContract.methods.decimals().call()
         const symbol = await tokenContract.methods.symbol().call()
+        const name = await tokenContract.methods.name().call()
 
-        setTokenDecimal(decimal)
+        setTokenDecimals(decimals)
         setTokenSymbol(symbol)
+        setTokenName(name)
       } catch (err) {
         console.error(err.message)
       }
@@ -249,7 +252,7 @@ const useGetTokenMetaData = ({ contractAddress }) => {
     if (contractAddress) loadTokenData()
   }, [contractAddress])
 
-  return { tokenSymbol, tokenDecimal }
+  return { tokenSymbol, tokenDecimals, tokenName }
 }
 
 export default useGetTokenMetaData

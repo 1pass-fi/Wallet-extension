@@ -43,7 +43,7 @@ const SelectWallet = ({
         >
           <CheckBoxLight
             checked={account.address === checkedAddress}
-            isDisabled={false}
+            disabled={false}
             onClick={() => {
               if (account.address === checkedAddress) {
                 setCheckedAddress('')

@@ -91,7 +91,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
             </div>
             <div className="flex justify-center">
               <CheckBoxLight
-                isDisabled={false}
+                disabled={false}
                 checked={selectedAccount.includes(account)}
                 onClick={() => handleSelectAccount(account)}
               />

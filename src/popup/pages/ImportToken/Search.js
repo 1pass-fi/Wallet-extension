@@ -20,11 +20,11 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
         contracts[key].name?.toLowerCase().includes(searchToken.toLowerCase()) ||
         contracts[key].symbol?.toLowerCase().includes(searchToken.toLowerCase())
       ) {
-        // TODO LongP - get data from contract list
         const token = {
           contract: key,
           name: contracts[key].name,
-          symbol: contracts[key].symbol
+          symbol: contracts[key].symbol,
+          decimals: contracts[key].decimals
         }
         result.push(token)
       }
