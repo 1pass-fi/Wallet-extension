@@ -2360,6 +2360,11 @@
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-1.6.22.tgz#219dfd89ae5b97a8801f015323ffa4b62f45718b"
   integrity sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==
 
+"@metamask/contract-metadata@^1.33.0":
+  version "1.33.0"
+  resolved "https://registry.yarnpkg.com/@metamask/contract-metadata/-/contract-metadata-1.33.0.tgz#3f0501d5c6d9119ce09c1edb075fc0a8fed7d09c"
+  integrity sha512-sWfzsUe59UH2Y1A7czRjhPmYrWlg4UQDOUPdf+lY7kbXwYrlF/ZUvhQYajdgJVchv2yDzr+cFhWF7DmNb5NyTQ==
+
 "@metamask/eth-sig-util@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@metamask/eth-sig-util/-/eth-sig-util-4.0.0.tgz#11553ba06de0d1352332c1bde28c8edd00e0dcf6"
