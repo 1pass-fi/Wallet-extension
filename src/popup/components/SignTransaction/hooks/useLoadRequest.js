@@ -22,11 +22,17 @@ const useLoadRequest = () => {
       const requestId = get(request, 'data.requestId')
       const favicon = get(request, 'data.favicon')
 
+      const value = get(requestPayload, 'value')
+      const to = get(requestPayload, 'to')
+      const data = get(requestPayload, 'data')
+
       setRequestPayload(requestPayload)
       setNetwork(network)
       setOrigin(origin)
       setRequestId(requestId)
       setFavicon(favicon)
+      setIsContractDeployment(!value && !to)
+      setIsMintCollectibles(data && !value)
     })
   }, [])
 

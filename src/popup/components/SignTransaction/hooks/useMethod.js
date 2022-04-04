@@ -3,7 +3,7 @@ import { get } from 'lodash'
 import storage from 'services/storage'
 import { ERROR_MESSAGE } from 'constants/koiConstants'
 
-const useMethod = ({ setIsLoading, requestId, setError }) => {
+const useMethod = ({ setIsLoading, requestId, setError, setShowSigning }) => {
   const onSubmitTransaction = async () => {
     try {
       const pendingRequest = await storage.generic.get.pendingRequest()
@@ -24,7 +24,9 @@ const useMethod = ({ setIsLoading, requestId, setError }) => {
         /* 
           Send request to background
         */
+        console.log('send message to background')
         setIsLoading(false)
+        setShowSigning(0)
       }
     } catch (err) {
       console.error(err.message)
@@ -38,11 +40,12 @@ const useMethod = ({ setIsLoading, requestId, setError }) => {
   }
 
   const onRejectTransaction = async () => {
-    console.log('requestId', requestId)
     if (requestId) {
+      await storage.generic.set.pendingRequest({})
       window.close()
     } else {
-      storage.generic.set.pendingRequest({})
+      await storage.generic.set.pendingRequest({})
+      setShowSigning(0)
     }
   }
 

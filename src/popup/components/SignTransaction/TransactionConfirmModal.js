@@ -28,12 +28,13 @@ import storage from 'services/storage'
 import useGetFee from './hooks/useGetFee'
 import useLoadRequest from './hooks/useLoadRequest'
 import useMethod from './hooks/useMethod'
+import useSendValue from './hooks/useSendValue'
 
 const TransactionConfirmModal = ({
   onClose,
   setIsLoading,
   setError,
-  recipient
+  setShowSigning
 }) => {
   const price = useSelector((state) => state.price)
   const { 
@@ -46,7 +47,8 @@ const TransactionConfirmModal = ({
     isMintCollectibles 
   } = useLoadRequest()
   const [Fee] = useGetFee({ network: 'ETHEREUM', transactionPayload })
-  const { onSubmitTransaction, onRejectTransaction } = useMethod({ setIsLoading, requestId, setError })
+  const { onSubmitTransaction, onRejectTransaction } = useMethod({ setIsLoading, requestId, setError, setShowSigning })
+  const { SendValue, TokenIcon } = useSendValue({ network, transactionPayload })
 
   return (
     <div className="w-full h-full z-51 m-auto top-0 left-0 fixed flex flex-col items-center">
@@ -93,10 +95,9 @@ const TransactionConfirmModal = ({
             width: '288px'
           }}
         >
-          Transaction Deployment
-          {/* {isContractDeployment && 'Transaction Deployment'} */}
-          {/* {isMintCollectibles && !isContractDeployment && 'Mint Collectibles'}
-          {!isContractDeployment && !isMintCollectibles && 'Transfer ETH'}  */}
+          {isContractDeployment && 'Transaction Deployment'}
+          {isMintCollectibles && !isContractDeployment && 'Mint Collectibles'}
+          {!isContractDeployment && !isMintCollectibles && 'Transfer ETH'}
         </div>
 
         
@@ -109,8 +110,7 @@ const TransactionConfirmModal = ({
               From:
             </div>
             <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
-              {/* {getDisplayAddress(sourceAddress)} */}
-              example_address
+              {getDisplayAddress(get(transactionPayload, 'from'))}
             </div>
           </div>
 
@@ -121,13 +121,11 @@ const TransactionConfirmModal = ({
               <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
               Sending:
               </div>
-
-              {/* TODO useHook */}
               <div>
                 <div className="flex items-center text-lg leading-10 tracking-finnieSpacing-tightest text-blue-800">
-                  {/* {qty} ETH */}
-                  0.01 ETH
-                  <EthereumIcon className="ml-1 w-4 h-4" />
+                  <SendValue />
+                  <div className='ml-1 w-4 h-4'><TokenIcon /></div>
+                  {/* <EthereumIcon className="ml-1 w-4 h-4" /> */}
                 </div>
                 <div className="text-2xs tracking-finnieSpacing-tightest text-blueGray-800">
                   {/* ${fiatCurrencyFormat(qty * price.ETH)} USD */}
@@ -145,8 +143,7 @@ const TransactionConfirmModal = ({
               To:
               </div>
               <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
-                {/* {getDisplayAddress(recipientAddress)} */}
-                example_recipient_address
+                {getDisplayAddress(get(transactionPayload, 'to'))}
               </div>
             </div>  
           }
@@ -158,12 +155,6 @@ const TransactionConfirmModal = ({
               Estimated Costs:
             </div>
             <div className="text-11px leading-5 text-blue-800"><Fee /></div>
-            {/* {fee !== 0 && currency === 'ETH' && (
-              <div className="text-11px leading-5 text-blue-800">{numberFormat(fee, 8)} ETH</div>
-            )}
-            {fee !== 0 && (currency === 'KOII' || currency === 'AR') && (
-              <div className="text-base leading-5 text-blue-800">{fee} AR</div>
-            )} */}
             <div className="text-2xs leading-3 tracking-finnieSpacing-wider text-success-700">
               Transaction Fee
             </div>
