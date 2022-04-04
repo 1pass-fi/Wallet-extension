@@ -36,7 +36,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
     try {
       useMethod({
         contractAddress: tokenImport.contract,
-        userAddresses: [selectedAccounts]
+        userAddresses: selectedAccounts
       }).importNewToken()
       history.push('*')
     } catch (error) {
