@@ -238,8 +238,8 @@ const getIconPath = (contractAddress) => {
   }
 }
 
-const getTokenData = async (contractAddresss, userAddress) => {
-  const icon = getIconPath(contractAddresss)
+const getTokenData = async (contractAddress, userAddress) => {
+  const icon = getIconPath(contractAddress)
 
   const provider = await storage.setting.get.ethereumProvider()
   const web3 = new Web3(provider)
@@ -253,10 +253,10 @@ const getTokenData = async (contractAddresss, userAddress) => {
   const selectedCurrency = (await storage.setting.get.selectedCurrency()) || 'USD'
 
   const { data } = await axios.get(
-    `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${contractAddresss}&vs_currencies=${selectedCurrency}`
+    `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${contractAddress}&vs_currencies=${selectedCurrency}`
   )
 
-  const price = get(data, [contractAddresss, selectedCurrency.toLowerCase()])
+  const price = get(data, [contractAddress.toLowerCase(), selectedCurrency.toLowerCase()])
 
   return {
     icon,
