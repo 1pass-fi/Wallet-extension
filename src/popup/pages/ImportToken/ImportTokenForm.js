@@ -32,12 +32,13 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
     setSelectedAccounts(currentSelectedAccount)
   }
 
-  const handleImportToken = () => {
+  const handleImportToken = async () => {
     try {
-      useMethod({
+      await useMethod({
         contractAddress: tokenImport.contract,
         userAddresses: selectedAccounts
       }).importNewToken()
+
       history.push('*')
     } catch (error) {
       console.log('Failed to import token - Error: ', error.message)
