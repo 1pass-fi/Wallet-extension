@@ -42,6 +42,19 @@ const TransactionConfirmModal = ({
   const [fee, setFee] = useState(null)
 
   const [requestLoaded, setRequestLoaded] = useState(false)
+  const [isContractDeployment, setIsContractDeployment] = useState(false)
+  const [isMintCollectibles, setIsMintCollectibles] = useState(false)
+
+  const [transactionData, setTransactionData] = useState(null)
+
+  const [estimatedGas, setEstimatedGas] = useState(null)
+
+  const [maxFeePerGas, setMaxFeePerGas] = useState(null)
+  const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState(null)
+
+
+
+  const [transactionInputError, setTransactionInputError] = useState({})
 
   const accountAddress = recipient?.address
 
@@ -49,24 +62,53 @@ const TransactionConfirmModal = ({
     const loadRequest = async () => {
       setIsLoading(true)
       const request = await storage.generic.get.pendingRequest()
-      const { requestPayload, origin, favicon, requestId, isEthereum } = request.data
+      const { requestPayload, origin, favicon, requestId, isEthereum, network } = request.data
 
-      if (isEthereum) {
+      const provider = await storage.setting.get.ethereumProvider()
+      const web3 = new Web3(provider)
+
+      if (network === 'ETHEREUM') {
         setIsEthereum(true)
         setCurrency('ETH')
         setSourceAddress(get(requestPayload, 'from'))
         setRecipientAddress(get(requestPayload, 'to'))
-        
+        setTransactionData(get(requestPayload, 'data'))
+        setEstimatedGas(get(requestPayload, 'gas'))
+        setMaxFeePerGas(get(requestPayload, 'maxFeePerGas'))
+        setMaxPriorityFeePerGas(get(requestPayload, 'maxPriorityFeePerGas'))
+
+        const latestBlock = await web3.eth.getBlockNumber()
+        const latestBlockData = await web3.eth.getBlock(latestBlock)
+
+        console.log('latest block data', latestBlockData)
+        let baseFeePerGas = get(latestBlockData, 'baseFeePerGas')
+        let maxFeePerGas = get(requestPayload, 'maxFeePerGas')
+        baseFeePerGas = web3.utils.hexToNumber(baseFeePerGas)
+        maxFeePerGas = web3.utils.hexToNumber(maxFeePerGas)
+
+        console.log('baseFeePerGas', baseFeePerGas)
+        console.log('maxFeePerGas', maxFeePerGas)
+
+        if (!get(requestPayload, 'value')) {
+          setIsMintCollectibles(true)
+        }
+
+        if (!get(requestPayload, 'to') && !get(requestPayload, 'value')) {
+          setIsContractDeployment(true)
+        }
+
         let _gasLimit = get(requestPayload, 'gasLimit')
         _gasLimit = Web3.utils.hexToNumber(_gasLimit)
         setGasLimit(_gasLimit)
 
         let value = get(requestPayload, 'value')
-        value = Web3.utils.hexToNumber(value)
+        value = parseInt(value, 16)
         console.log('value', value)
-        setQty(value)
+        setQty(value / 1000000000000000000)
 
-      } else {
+      }
+
+      if (network === 'ARWEAVE') {
 
       }
 
@@ -77,16 +119,29 @@ const TransactionConfirmModal = ({
     loadRequest()
   }, [])
 
+  const estimateGasFee = async () => {
+    const provider = await storage.setting.get.ethereumProvider()
+    const web3 = new Web3(provider)
+
+    const rawTx = {}
+    if (recipientAddress) rawTx.to = recipientAddress
+    if (qty) rawTx.value = qty * 1000000000000000000
+    if (transactionData) rawTx.data = transactionData
+    if (maxFeePerGas) rawTx.maxFeePerGas = maxFeePerGas
+    if (maxPriorityFeePerGas) rawTx.maxPriorityFeePerGas = maxPriorityFeePerGas 
+
+    rawTx.from = sourceAddress
+
+    const gasPrice = await web3.eth.getGasPrice()
+    console.log('gasPrice', gasPrice)
+
+    return (await web3.eth.estimateGas(rawTx)) / 1000000000000000000 * gasPrice
+  }
+
   useEffect(() => {
     const loadGasFee = async () => {
       const provider = await storage.setting.get.ethereumProvider()
-
-      const fee = await calculateGasFee({
-        amount: qty,
-        senderAddress: sourceAddress,
-        toAddress: recipientAddress,
-        provider: provider
-      })
+      const fee = await estimateGasFee()
       console.log('GAS FEE', fee)
 
       setFee(fee)
@@ -109,7 +164,6 @@ const TransactionConfirmModal = ({
 
     let loadGasFeeInterval
     if (isEthereum && requestLoaded) {
-      console.log('runnnnnnn')
       loadGasFee()
       loadGasFeeInterval = setInterval(() => {
         loadGasFee()
@@ -153,6 +207,16 @@ const TransactionConfirmModal = ({
         >
           Double check the details. This transaction cannot be undone.
         </div>
+        <div
+          className="mt-3 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center"
+          style={{
+            width: '288px'
+          }}
+        >
+          {isContractDeployment && 'Transaction Deployment'}
+          {isMintCollectibles && !isContractDeployment && 'Mint Collectibles'}
+          {!isContractDeployment && !isMintCollectibles && 'Transfer ETH'} 
+        </div>
         <div className="mt-8 grid grid-cols-2 gap-5">
           <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
             <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
@@ -166,11 +230,12 @@ const TransactionConfirmModal = ({
             </div>
           </div>
 
-          <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
-            <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
+          {!isContractDeployment && !isMintCollectibles &&
+            <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
+              <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
               Sending:
-            </div>
-            {currency === 'AR' && (
+              </div>
+              {currency === 'AR' && (
               <>
                 <div className="flex items-center text-lg leading-10 tracking-finnieSpacing-tightest text-blue-800">
                   {qty} AR
@@ -180,8 +245,8 @@ const TransactionConfirmModal = ({
                   ${fiatCurrencyFormat(qty * price.AR)} USD
                 </div>
               </>
-            )}
-            {currency === 'ETH' && (
+              )}
+              {currency === 'ETH' && (
               <>
                 <div className="flex items-center text-lg leading-10 tracking-finnieSpacing-tightest text-blue-800">
                   {qty} ETH
@@ -191,27 +256,29 @@ const TransactionConfirmModal = ({
                   ${fiatCurrencyFormat(qty * price.ETH)} USD
                 </div>
               </>
-            )}
-          </div>
-
-          <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
-            <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
+              )}
+            </div>  
+          }
+          {!isContractDeployment && !isMintCollectibles &&
+            <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
+              <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
               To:
-            </div>
-            <div className="text-lg leading-10 tracking-finnieSpacing-tightest text-blue-800">
-              {recipient.name}
-            </div>
-            <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
-              {getDisplayAddress(recipientAddress)}
-            </div>
-          </div>
+              </div>
+              <div className="text-lg leading-10 tracking-finnieSpacing-tightest text-blue-800">
+                {recipient.name}
+              </div>
+              <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
+                {getDisplayAddress(recipientAddress)}
+              </div>
+            </div>  
+          }
 
           <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
             <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
               Estimated Costs:
             </div>
             {fee !== 0 && currency === 'ETH' && (
-              <div className="text-11px leading-5 text-blue-800">{fee} ETH</div>
+              <div className="text-11px leading-5 text-blue-800">{numberFormat(fee, 8)} ETH</div>
             )}
             {fee !== 0 && (currency === 'KOII' || currency === 'AR') && (
               <div className="text-base leading-5 text-blue-800">{fee} AR</div>

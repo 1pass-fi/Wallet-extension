@@ -156,6 +156,7 @@ const useLoadApp = ({
     handleLockWallet,
     showConnectSite,
     showSigning,
+    setShowSigning,
     showEthSign,
     showSignTypedDataV1,
     showSignTypedDataV3,

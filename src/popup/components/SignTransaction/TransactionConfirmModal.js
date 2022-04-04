@@ -46,8 +46,8 @@ const TransactionConfirmModal = ({
     isContractDeployment, 
     isMintCollectibles 
   } = useLoadRequest()
-  const [Fee] = useGetFee({ network: 'ETHEREUM', transactionPayload })
-  const { onSubmitTransaction, onRejectTransaction } = useMethod({ setIsLoading, requestId, setError, setShowSigning })
+  const [Fee] = useGetFee({ network, transactionPayload })
+  const { onSubmitTransaction, onRejectTransaction } = useMethod({ setIsLoading, requestId, setError, setShowSigning, transactionPayload, network })
   const { SendValue, TokenIcon } = useSendValue({ network, transactionPayload })
 
   return (
@@ -97,7 +97,8 @@ const TransactionConfirmModal = ({
         >
           {isContractDeployment && 'Transaction Deployment'}
           {isMintCollectibles && !isContractDeployment && 'Mint Collectibles'}
-          {!isContractDeployment && !isMintCollectibles && 'Transfer ETH'}
+          {!isContractDeployment && !isMintCollectibles && network === 'ETHEREUM' && 'Transfer ETH'}
+          {!isContractDeployment && !isMintCollectibles && network === 'ARWEAVE' && 'Transfer AR'}
         </div>
 
         
@@ -127,10 +128,9 @@ const TransactionConfirmModal = ({
                   <div className='ml-1 w-4 h-4'><TokenIcon /></div>
                   {/* <EthereumIcon className="ml-1 w-4 h-4" /> */}
                 </div>
-                <div className="text-2xs tracking-finnieSpacing-tightest text-blueGray-800">
-                  {/* ${fiatCurrencyFormat(qty * price.ETH)} USD */}
-                  100 USD
-                </div>
+                {/* <div className="text-2xs tracking-finnieSpacing-tightest text-blueGray-800">
+                  ${fiatCurrencyFormat(qty * price.ETH)} USD
+                </div> */}
               </div>
             </div>  
           }

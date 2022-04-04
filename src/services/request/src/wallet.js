@@ -71,7 +71,7 @@ export class WalletRequest extends Request {
    * @param {Object} body request body
    * @param {Number} body.qty quantity
    * @param {String} body.target target address
-   * @param {String} body.currency KOII or AR
+   * @param {String} body.token KOII or AR
    * @returns {Object} { txId, qty, address, currency }
    */
   makeTransfer(body) {

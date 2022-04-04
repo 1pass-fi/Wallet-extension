@@ -65,6 +65,8 @@ import NavBar from './components/NavBar'
 // services
 import storage from 'services/storage'
 
+import SignModal from 'components/SignTransaction'
+
 const ContinueLoading = () => (
   <div className="continue-loading">
     <img src={continueLoadingIcon} />
@@ -131,6 +133,7 @@ const Popup = ({
     handleLockWallet,
     showConnectSite,
     showSigning,
+    setShowSigning,
     showEthSign,
     showSignTypedDataV1,
     showSignTypedDataV3,
@@ -177,42 +180,14 @@ const Popup = ({
             <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />
           )}
           {showSigning && (
-            <TransactionConfirmModal
-              sentAmount={0}
-              currency={'ETH'}
-              recipient={'recipient'}
-              onClose={() => {
-                window.close()
-              }}
-              onSubmit={async () => {
-                try {
-                  const request = await storage.generic.get.pendingRequest()
-                  if (isEmpty(request)) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-                  const { requestId } = request.data
-
-                  setIsLoading(true)
-                  chrome.runtime.sendMessage({ requestId, approved: true }, function (response) {
-                    chrome.runtime.onMessage.addListener(function (message) {
-                      if (message.requestId === requestId) window.close()
-                    })
-                  })
-                  await storage.generic.set.pendingRequest({})
-                } catch (err) {
-                  setError(err.message)
-                }
-              }}
-              selectedAccount={'selectedAccount'}
-              gasFee={0}
-              // setGasFee={setGasFee}
-              arFee={0}
-              // setArFee={setArFee}
-            />
+            <SignModal setShowSigning={setShowSigning}/>
           )}
           {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
-          {isLoading && <Loading />}
+          {isLoading && <Loading />}          
           {error && <Message type="error" children={error} />}
           {notification && <Message type="notification" children={notification} />}
           {warning && <Message type="warning" children={warning} />}
+
           {accountLoaded.accountLoaded && (
             <Switch>
               <Route exact path="/login">
@@ -233,7 +208,7 @@ const Popup = ({
                         <Receive />
                       </Route>
                       <Route exact path="/send">
-                        <Send />
+                        <Send setShowSigning={setShowSigning}/>
                       </Route>
                       <Route path="*">
                         <Home />

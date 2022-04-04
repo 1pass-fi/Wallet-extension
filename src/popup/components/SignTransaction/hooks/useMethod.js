@@ -1,9 +1,39 @@
-import { get } from 'lodash'
+import { isEmpty, get } from 'lodash'
 
 import storage from 'services/storage'
 import { ERROR_MESSAGE } from 'constants/koiConstants'
 
-const useMethod = ({ setIsLoading, requestId, setError, setShowSigning }) => {
+import { popupBackgroundRequest as request } from 'services/request/popup'
+
+const useMethod = ({ setIsLoading, requestId, setError, setShowSigning, transactionPayload, network }) => {
+  const handleSendEth = async (transactionPayload) => {
+    let qty = get(transactionPayload, 'value')
+    qty = parseInt(qty, 16) / 1000000000000000000
+    const target = get(transactionPayload, 'to')
+    const source = get(transactionPayload, 'from')
+
+    return await request.wallet.makeTransfer({
+      qty,
+      target,
+      address: source,
+      token: 'ETH'
+    })
+  }
+
+  const handleSendAr = async (transactionPayload) => {
+    let qty = get(transactionPayload, 'value')
+    qty = parseInt(qty / 1000000000000)
+    const target = get(transactionPayload, 'to')
+    const source = get(transactionPayload, 'from')
+
+    return await request.wallet.makeTransfer({
+      qty,
+      target,
+      address: source,
+      token: 'AR'
+    })
+  }
+
   const onSubmitTransaction = async () => {
     try {
       const pendingRequest = await storage.generic.get.pendingRequest()
@@ -25,13 +55,20 @@ const useMethod = ({ setIsLoading, requestId, setError, setShowSigning }) => {
           Send request to background
         */
         console.log('send message to background')
+        switch (network) {
+          case 'ARWEAVE':
+            console.log(await handleSendAr(transactionPayload))
+            break
+          case 'ETHEREUM':
+            console.log(await handleSendEth(transactionPayload))
+        }
         setIsLoading(false)
-        setShowSigning(0)
+        setShowSigning(false)
       }
     } catch (err) {
       console.error(err.message)
       if (requestId) {
-        window.close()
+        // window.close()
       } else {        
         setIsLoading(false)
         setError(err.message)
@@ -45,7 +82,7 @@ const useMethod = ({ setIsLoading, requestId, setError, setShowSigning }) => {
       window.close()
     } else {
       await storage.generic.set.pendingRequest({})
-      setShowSigning(0)
+      setShowSigning(false)
     }
   }
 

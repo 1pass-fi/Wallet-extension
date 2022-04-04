@@ -17,7 +17,7 @@ import { setIsLoading } from 'popup/actions/loading'
 import { setError } from 'actions/error'
 
 // constants
-import { ERROR_MESSAGE } from 'constants/koiConstants'
+import { ERROR_MESSAGE, REQUEST } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
 
 import { formatNumber } from 'options/utils'
@@ -31,8 +31,9 @@ import ArrowIconBlue from 'img/popup/down-arrow-icon-blue.svg'
 import BackBtn from 'img/popup/back-button.svg'
 import SendBackgroundLeft from 'img/popup/send-background-left.svg'
 import SendBackgroundRight from 'img/popup/send-background-right.svg'
+import storage from 'services/storage'
 
-const Send = ({ setIsLoading, setError, makeTransfer }) => {
+const Send = ({ setIsLoading, setError, makeTransfer, setShowSigning }) => {
   const history = useHistory()
 
   const [fontSize, setFontSize] = useState('3xl')
@@ -195,7 +196,37 @@ const Send = ({ setIsLoading, setError, makeTransfer }) => {
       return
     }
 
-    setShowModal(true)
+    // setShowModal(true)
+
+    let value
+    let network
+    if (selectedToken === 'ETH') {
+      value = (amount * 1000000000000000000).toString(16)
+      network = 'ETHEREUM'
+    }
+
+    if (selectedToken === 'AR') {
+      value = (amount * 1000000000000).toString()
+      network = 'ARWEAVE'
+    }
+
+    const rawTx = {
+      from: selectedAccount.address,
+      to: recipient.address,
+      value
+    }
+
+    const requestPayload = {
+      requestPayload: rawTx,
+      network
+    }
+
+    storage.generic.set.pendingRequest({
+      type: REQUEST.TRANSACTION,
+      data: requestPayload
+    }).then(() => {
+      setShowSigning(true)
+    })
   }
 
   const handleSendTransaction = async () => {

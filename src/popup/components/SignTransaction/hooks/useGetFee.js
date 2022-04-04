@@ -4,6 +4,7 @@ import Web3 from 'web3'
 
 import storage from 'services/storage'
 import { numberFormat } from 'utils'
+import arweave from 'services/arweave'
 
 const fromHexToDecimal = (hexString) => {
   let number = null
@@ -53,7 +54,22 @@ const useGetFee = ({ network, transactionPayload }) => {
   }
 
   const getArFee = async () => {
+    const rawTx = {}
 
+    const recipientAddress = get(transactionPayload, 'to')
+    const value = get(transactionPayload, 'value')
+    const transactionData = get(transactionPayload, 'data')
+
+    if (recipientAddress) rawTx.target = recipientAddress
+    if (value) rawTx.quantity = value
+    if (transactionData) rawTx.data = transactionData
+
+    const transaction = await arweave.createTransaction(rawTx)
+    let fee = await arweave.transactions.getPrice(transaction.data_size)
+    fee = fee / 1000000000000
+    
+    setTotalFee(fee)
+    setTokenSymbol('AR')
   }
 
   useEffect(() => {

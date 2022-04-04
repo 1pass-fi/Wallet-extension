@@ -1,29 +1,46 @@
 import React, { useEffect, useState } from 'react'
-import { get } from 'lodash'
+import { get, isNumber } from 'lodash'
 
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+
+const fromHexToDecimal = (hexString) => {
+  let number = null
+  if (hexString) number = parseInt(hexString, 16)
+
+  return number
+}
+
+const fromWeiToEth = (wei) => {
+  return wei / 1000000000000000000
+}
 
 const useSendValue = ({ transactionPayload, network }) => {
   const [value, setValue] = useState(null)
   const [symbol, setSymbol] = useState(null)
 
   const getSendValueEthereum = (value) => {
-    return 0.001
+    value = fromHexToDecimal(value)
+    value = fromWeiToEth(value)
+    return value
+  }
+
+  const getSendValueArweave = (value) => {
+    value = parseInt(value)
+    return value / 1000000000000
   }
 
   useEffect(() => {
     const loadValue = () => {
       const value = get(transactionPayload, 'value')
-
-      console.log('network', network)
-
       switch (network) {
         case 'ETHEREUM':
           setValue(getSendValueEthereum(value))
           setSymbol('ETH')
           break
         case 'ARWEAVE':
+          setValue(getSendValueArweave(value))
+          setSymbol('AR')
           break
       }
     }
@@ -33,7 +50,7 @@ const useSendValue = ({ transactionPayload, network }) => {
 
   const SendValue = () => (
     <>
-      {value || '------'} {symbol || '------'}
+      {isNumber(value) ? value : '------'} {symbol || '------'}
     </>
   )
 
