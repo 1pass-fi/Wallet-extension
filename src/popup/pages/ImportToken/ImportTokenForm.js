@@ -8,6 +8,7 @@ import CheckBoxLight from 'options/finnie-v2/components/CheckBox/CheckBoxLight'
 
 // hooks
 import useGetTokenBalance from './hooks/useGetTokenBalance'
+import useMethod from './hooks/useMethod'
 
 // utils
 import formatNumber from 'finnie-v2/utils/formatNumber'
@@ -18,23 +19,29 @@ import clsx from 'clsx'
 const ImportTokenForm = ({ tokenImport, goBack }) => {
   const history = useHistory()
 
-  const [selectedAccount, setSelectedAccount] = useState([])
+  const [selectedAccounts, setSelectedAccounts] = useState([])
 
   const handleSelectAccount = (account) => {
-    let currentSelectedAccount = [...selectedAccount]
-    if (currentSelectedAccount.includes(account)) {
-      currentSelectedAccount = currentSelectedAccount.filter((a) => a !== account)
+    let currentSelectedAccount = [...selectedAccounts]
+    if (currentSelectedAccount.includes(account.address)) {
+      currentSelectedAccount = currentSelectedAccount.filter((a) => a !== account.address)
     } else {
-      currentSelectedAccount.push(account)
+      currentSelectedAccount.push(account.address)
     }
 
-    setSelectedAccount(currentSelectedAccount)
+    setSelectedAccounts(currentSelectedAccount)
   }
 
   const handleImportToken = () => {
-    // TODO LongP
-    console.log('selectedAccount', selectedAccount)
-    history.push('*')
+    try {
+      useMethod({
+        contractAddress: tokenImport.contract,
+        userAddresses: [selectedAccounts]
+      }).importNewToken()
+      history.push('*')
+    } catch (error) {
+      console.log('Failed to import token - Error: ', error.message)
+    }
   }
 
   const getTokenBalance = (userAddress) => {
@@ -63,7 +70,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
             {tokenImport.name + ' (' + tokenImport.symbol + ')'}
           </div>
           <div className="flex font-normal text-11px leading-4 tracking-finnieSpacing-wide text-success-700">
-            {!isEmpty(selectedAccount) && tokenImport.contract}
+            {!isEmpty(selectedAccounts) && tokenImport.contract}
           </div>
         </div>
       </div>
@@ -92,7 +99,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
             <div className="flex justify-center">
               <CheckBoxLight
                 disabled={false}
-                checked={selectedAccount.includes(account)}
+                checked={selectedAccounts.includes(account.address)}
                 onClick={() => handleSelectAccount(account)}
               />
             </div>
@@ -111,10 +118,10 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
           onClick={() => handleImportToken()}
           className={clsx(
             'ml-6 bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white',
-            isEmpty(selectedAccount) && 'cursor-not-allowed bg-opacity-80'
+            isEmpty(selectedAccounts) && 'cursor-not-allowed bg-opacity-80'
           )}
           style={{ width: '160px', height: '38px' }}
-          disabled={isEmpty(selectedAccount)}
+          disabled={isEmpty(selectedAccounts)}
         >
           Confirm
         </button>
