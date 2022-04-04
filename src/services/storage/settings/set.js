@@ -84,4 +84,8 @@ export class SettingSet {
   activatedChain(value) {
     return this.#chrome._setChrome(SETTING.ACTIVATED_CHAIN, value)
   }
+
+  importedErc20Tokens(value) {
+    return this.#chrome._setChrome(SETTING.ACTIVATED_CHAIN, value)
+  }
 }
