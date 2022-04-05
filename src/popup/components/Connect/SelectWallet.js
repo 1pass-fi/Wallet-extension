@@ -7,14 +7,12 @@ import KoiIcon from 'img/koi-logo.svg'
 import ArweaveIcon from 'img/arweave-icon.svg'
 
 // components
-import Checkbox from 'popup/components/shared/checkBoxRedesign'
+import CheckBoxLight from 'options/finnie-v2/components/CheckBox/CheckBoxLight'
 
 const walletIcon = {
   koi: <KoiIcon className="wallet-icon" />,
   arweave: <ArweaveIcon className="wallet-icon" />
 }
-
-// TODO LongP: default-address checked by default
 
 const SelectWallet = ({
   accounts,
@@ -43,11 +41,10 @@ const SelectWallet = ({
             }
           }}
         >
-          <Checkbox
-            defaultChecked={account.address === checkedAddress}
-            className="check-wallet"
-            isDisabled={false}
-            onChange={() => {
+          <CheckBoxLight
+            checked={account.address === checkedAddress}
+            disabled={false}
+            onClick={() => {
               if (account.address === checkedAddress) {
                 setCheckedAddress('')
               } else {

@@ -81,4 +81,8 @@ export class SettingGet {
   async activatedChain() {
     return (await this.#chrome._getChrome(SETTING.ACTIVATED_CHAIN)) || TYPE.ARWEAVE
   }
+
+  async importedErc20Tokens() {
+    return (await this.#chrome._getChrome(SETTING.IMPORTED_ERC20_TOKENS)) || {}
+  }
 }

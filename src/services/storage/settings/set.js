@@ -8,34 +8,34 @@ export class SettingSet {
   }
 
   /**
-   * 
+   *
    * @param {String} value Selected currency, choosen in setting.
-   * @returns 
+   * @returns
    */
   selectedCurrency(value) {
     return this.#chrome._setChrome(SETTING.SELECTED_CURRENCY, value)
   }
 
   /**
-   * 
+   *
    * @param {Number} 1 or 0
-   * @returns 
+   * @returns
    */
   showWelcomeScreen(value) {
     return this.#chrome._setChrome(SETTING.SHOW_WELCOME_SCREEN, value)
   }
   /**
-   * 
+   *
    * @param {Boolean} value on/off show views on gallery
-   * @returns 
+   * @returns
    */
   showViews(value) {
     return this.#chrome._setChrome(SETTING.SHOW_VIEWS, value)
   }
   /**
-   * 
+   *
    * @param {Boolean} value on/off show earned koi on gallery
-   * @returns 
+   * @returns
    */
   showEarnedKoi(value) {
     return this.#chrome._setChrome(SETTING.SHOW_EARNED_KOI, value)
@@ -83,5 +83,9 @@ export class SettingSet {
 
   activatedChain(value) {
     return this.#chrome._setChrome(SETTING.ACTIVATED_CHAIN, value)
+  }
+
+  importedErc20Tokens(value) {
+    return this.#chrome._setChrome(SETTING.IMPORTED_ERC20_TOKENS, value)
   }
 }

@@ -27,6 +27,7 @@ import Home from './pages/Home'
 import Receive from './pages/Receive'
 import Send from './pages/Send'
 import Login from './pages/Login'
+import ImportToken from './pages/ImportToken'
 
 // actions
 import { lockWallet } from 'actions/koi'
@@ -209,6 +210,9 @@ const Popup = ({
                       </Route>
                       <Route exact path="/send">
                         <Send setShowSigning={setShowSigning}/>
+                      </Route>
+                      <Route path="/import-token">
+                        <ImportToken />
                       </Route>
                       <Route path="*">
                         <Home />
