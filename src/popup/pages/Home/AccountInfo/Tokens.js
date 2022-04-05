@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
@@ -75,8 +75,31 @@ const Tokens = ({ currentProviderAddress }) => {
     await loadTokenList()
   }
 
+  const [accountInfoMinHeight, setAccountInfoMinHeight] = useState(0)
+  const accountInfoRef = useRef(null)
+
+  useEffect(() => {
+    const accountInfoField = accountInfoRef.current
+    if (accountInfoField) {
+      const scrollHeight = accountInfoField.scrollHeight
+      if (scrollHeight < 200) {
+        setAccountInfoMinHeight(0)
+        return
+      }
+
+      if (scrollHeight >= 200) {
+        setAccountInfoMinHeight(350)
+        return
+      }
+    }
+  }, [tokens])
+
   return (
-    <div className="w-full px-3">
+    <div
+      className="w-full px-3"
+      ref={accountInfoRef}
+      style={{ minHeight: `${clsx(accountInfoMinHeight)}px` }}
+    >
       {tokens.map((token, idx) => (
         <div
           key={idx}

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
+import clsx from 'clsx'
 import includes from 'lodash/includes'
 import isEmpty from 'lodash/isEmpty'
 
@@ -38,8 +39,31 @@ const Assets = ({ assets, loadContent, setContLoading, currentProviderAddress })
     setFilteredAssets(showAssets)
   }, [displayingAccount, assets])
 
+  const [assetsMinHeight, setAssetsMinHeight] = useState(0)
+  const assetsRef = useRef(null)
+
+  useEffect(() => {
+    const assetsField = assetsRef.current
+    if (assetsField) {
+      const scrollHeight = assetsField.scrollHeight
+      if (scrollHeight < 200) {
+        setAssetsMinHeight(0)
+        return
+      }
+
+      if (scrollHeight >= 200) {
+        setAssetsMinHeight(350)
+        return
+      }
+    }
+  }, [filteredAssets])
+
   return (
-    <div className="w-full bg-trueGray-100 grid grid-cols-3 gap-5 place-items-center px-3 py-1">
+    <div
+      ref={assetsRef}
+      style={{ minHeight: `${clsx(assetsMinHeight)}px` }}
+      className="w-full bg-trueGray-100 grid grid-cols-3 gap-5 place-items-center px-3 py-1"
+    >
       {filteredAssets[0]?.contents?.map((asset, idx) =>
         !includes(asset.name, 'DID Profile Page') ? <NFTCard key={idx} nft={asset} /> : null
       )}

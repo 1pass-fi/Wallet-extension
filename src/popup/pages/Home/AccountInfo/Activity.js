@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
+import clsx from 'clsx'
 import { isEmpty, orderBy } from 'lodash'
 
 import storage from 'services/storage'
@@ -13,7 +14,7 @@ const Activity = () => {
   const [pages, setPages] = useState(1)
   const [deleteTransactionModalStatus, setDeleteTransactionModalStatus] = useState({
     isShow: false,
-    txInfo: {},
+    txInfo: {}
   })
 
   useEffect(() => {
@@ -56,8 +57,31 @@ const Activity = () => {
     if (!isEmpty(activities)) setSeen()
   }, [activities])
 
+  const [acctivityMinHeight, setActivityMinHeight] = useState(0)
+  const activityRef = useRef(null)
+
+  useEffect(() => {
+    const activityField = activityRef.current
+    if (activityField) {
+      const scrollHeight = activityField.scrollHeight
+      if (scrollHeight < 200) {
+        setActivityMinHeight(0)
+        return
+      }
+
+      if (scrollHeight >= 200) {
+        setActivityMinHeight(350)
+        return
+      }
+    }
+  }, [pendingTransactions, activities])
+
   return (
-    <div className="bg-trueGray-100">
+    <div
+      ref={activityRef}
+      style={{ minHeight: `${clsx(acctivityMinHeight)}px` }}
+      className="bg-trueGray-100"
+    >
       {pendingTransactions.map((activity) => (
         <ActivityRow
           key={activity.id}
@@ -70,7 +94,6 @@ const Activity = () => {
           price={1}
           currency={'USD'}
           accountName={activity.accountName}
-          expired={false}
           seen={true}
           expired={activity.expired}
           setDeleteTransactionModalStatus={setDeleteTransactionModalStatus}
@@ -105,19 +128,19 @@ const Activity = () => {
         </div>
       )}
 
-      {
-        deleteTransactionModalStatus.isShow && (
-          <ExpiredTxModal
-            txInfo={deleteTransactionModalStatus.txInfo}
-            onClose={() => setDeleteTransactionModalStatus((prev) => ({
+      {deleteTransactionModalStatus.isShow && (
+        <ExpiredTxModal
+          txInfo={deleteTransactionModalStatus.txInfo}
+          onClose={() =>
+            setDeleteTransactionModalStatus((prev) => ({
               ...prev,
-              isShow: false,
-            }))}
-            setPendingTransactions={setPendingTransactions}
-            pendingTransactions={pendingTransactions}
-          />
-        )
-      }
+              isShow: false
+            }))
+          }
+          setPendingTransactions={setPendingTransactions}
+          pendingTransactions={pendingTransactions}
+        />
+      )}
     </div>
   )
 }
