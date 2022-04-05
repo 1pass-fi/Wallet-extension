@@ -93,7 +93,7 @@ const AccountInfo = ({ displayingAccount, price, currentProviderAddress }) => {
           <Activity />
         </Route>
         <Route exact path="/tokens">
-          <Tokens />
+          <Tokens currentProviderAddress={currentProviderAddress} />
         </Route>
         <Redirect to="/tokens" />
       </Switch>

@@ -20,12 +20,13 @@ import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 // utils
 import getTokenData from 'utils/getTokenData'
 
-const Tokens = () => {
+const Tokens = ({ currentProviderAddress }) => {
   const displayingAccount = useSelector(getDisplayingAccount)
   const price = useSelector((state) => state.price)
 
   const { importedTokenAddresses } = useImportedTokenAddresses({
-    userAddress: displayingAccount.address
+    userAddress: displayingAccount.address,
+    currentProviderAddress
   })
 
   const [tokens, setTokens] = useState([])
@@ -90,7 +91,7 @@ const Tokens = () => {
             {token.name !== 'Ethereum' &&
               token.name !== 'KOII' &&
               token.name !== 'Arweave' &&
-              (token.logo ? (
+              (token.icon ? (
                 <img src={token.icon} className="w-8.75 h-8.75" />
               ) : (
                 <FinnieIcon className="w-8.75 h-8.75" />
