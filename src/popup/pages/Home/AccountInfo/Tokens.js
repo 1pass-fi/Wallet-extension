@@ -26,7 +26,8 @@ const Tokens = ({ currentProviderAddress }) => {
 
   const { importedTokenAddresses } = useImportedTokenAddresses({
     userAddress: displayingAccount.address,
-    currentProviderAddress
+    currentProviderAddress,
+    displayingAccount
   })
 
   const [tokens, setTokens] = useState([])
@@ -68,7 +69,7 @@ const Tokens = ({ currentProviderAddress }) => {
 
   useEffect(() => {
     loadTokenList()
-  }, [displayingAccount, importedTokenAddresses])
+  }, [importedTokenAddresses])
 
   const handleRefreshTokenList = async () => {
     await loadTokenList()
