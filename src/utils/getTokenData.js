@@ -6,6 +6,11 @@ import Web3 from 'web3'
 import storage from 'services/storage'
 import ERC20_ABI from 'abi/ERC20.json'
 
+export const getLogoPath = (logo) => {
+  const path = `img/erc20/${logo}`
+  return path
+}
+
 const getIconPath = (contractAddress) => {
   const metadata = contractMap[contractAddress]
   if (metadata?.logo) {
@@ -16,7 +21,7 @@ const getIconPath = (contractAddress) => {
 }
 
 const getTokenData = async (contractAddress, userAddress) => {
-  const icon = getIconPath(contractAddress)
+  const logo = getIconPath(contractAddress)
 
   const provider = await storage.setting.get.ethereumProvider()
   const web3 = new Web3(provider)
@@ -36,7 +41,7 @@ const getTokenData = async (contractAddress, userAddress) => {
   const price = get(data, [contractAddress.toLowerCase(), selectedCurrency.toLowerCase()])
 
   return {
-    icon,
+    logo,
     balance,
     price,
     name,

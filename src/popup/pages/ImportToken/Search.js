@@ -6,6 +6,9 @@ import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 
 import contracts from 'utils/contract-map.json'
 
+// utils
+import { getLogoPath } from 'utils/getTokenData'
+
 const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
   const [tokenList, setTokenList] = useState([])
 
@@ -24,7 +27,8 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
           contract: key,
           name: contracts[key].name,
           symbol: contracts[key].symbol,
-          decimals: contracts[key].decimals
+          decimals: contracts[key].decimals,
+          logo: contracts[key].logo
         }
         result.push(token)
       }
@@ -64,7 +68,12 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
             className="flex w-full items-center ml-2 mb-6 cursor-pointer"
             onClick={() => setTokenImport(token)}
           >
-            <FinnieIcon style={{ width: '36px', height: '36px' }} />
+            {token.logo ? (
+              <img src={getLogoPath(token.logo)} style={{ width: '36px', height: '36px' }} />
+            ) : (
+              <FinnieIcon style={{ width: '36px', height: '36px' }} />
+            )}
+
             <div className="w-full flex ml-3 font-normal text-base tracking-finnieSpacing-tight text-blue-800">
               <span className="truncate" style={{ maxWidth: '220px' }}>
                 {token.name}

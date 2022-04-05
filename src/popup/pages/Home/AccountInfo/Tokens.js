@@ -92,8 +92,8 @@ const Tokens = ({ currentProviderAddress }) => {
             {token.name !== 'Ethereum' &&
               token.name !== 'KOII' &&
               token.name !== 'Arweave' &&
-              (token.icon ? (
-                <img src={token.icon} className="w-8.75 h-8.75" />
+              (token.logo ? (
+                <img src={token.logo} className="w-8.75 h-8.75" />
               ) : (
                 <FinnieIcon className="w-8.75 h-8.75" />
               ))}

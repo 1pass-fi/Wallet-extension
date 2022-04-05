@@ -12,6 +12,7 @@ import useMethod from './hooks/useMethod'
 
 // utils
 import formatNumber from 'finnie-v2/utils/formatNumber'
+import { getLogoPath } from 'utils/getTokenData'
 
 import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 import clsx from 'clsx'
@@ -65,7 +66,11 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
       </div>
       <div className="mt-4 text-xs font-normal tracking-finnieSpacing-wide">Token</div>
       <div className="flex items-start mt-2" style={{ height: '36px' }}>
-        <FinnieIcon style={{ width: '36px', height: '36px' }} />
+        {tokenImport.logo ? (
+          <img src={getLogoPath(tokenImport.logo)} style={{ width: '36px', height: '36px' }} />
+        ) : (
+          <FinnieIcon style={{ width: '36px', height: '36px' }} />
+        )}
         <div className="ml-3 mt-1 flex flex-col items-start justify-center">
           <div className="font-normal text-base tracking-finnieSpacing-tight">
             {tokenImport.name + ' (' + tokenImport.symbol + ')'}
