@@ -87,9 +87,14 @@ const Tokens = () => {
             {token.name === 'Ethereum' && <EthereumIcon className="w-8.75 h-8.75" />}
             {token.name === 'KOII' && <FinnieIcon className="w-8.75 h-8.75" />}
             {token.name === 'Arweave' && <ArweaveIcon className="w-8.75 h-8.75" />}
-            {token.name !== 'Ethereum' && token.name !== 'KOII' && token.name !== 'Arweave' && (
-              <FinnieIcon className="w-8.75 h-8.75" />
-            )}
+            {token.name !== 'Ethereum' &&
+              token.name !== 'KOII' &&
+              token.name !== 'Arweave' &&
+              (token.logo ? (
+                <img src={token.icon} className="w-8.75 h-8.75" />
+              ) : (
+                <FinnieIcon className="w-8.75 h-8.75" />
+              ))}
             <span className="font-semibold ml-2.75">{token.name}</span>
           </div>
           <div className="flex flex-col items-end">
