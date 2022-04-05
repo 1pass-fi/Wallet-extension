@@ -12,6 +12,7 @@ const CustomToken = ({ setTokenImport }) => {
   const history = useHistory()
 
   const [tokenAddress, setTokenAddress] = useState('')
+  const [tokenAddressError, setTokenAddressError] = useState('')
 
   const tokenData = useGetTokenMetaData({ contractAddress: tokenAddress })
 
@@ -23,6 +24,23 @@ const CustomToken = ({ setTokenImport }) => {
       decimals: tokenData.tokenDecimals
     })
   }
+
+  useEffect(() => {
+    if (tokenAddress.length === 0) {
+      setTokenAddressError('')
+      return
+    }
+
+    if (tokenAddress.length !== 42) {
+      setTokenAddressError('That’s not a valid Token contract address.')
+    } else {
+      if (tokenData.tokenSymbol) {
+        setTokenAddressError('')
+      } else {
+        setTokenAddressError('This address does not exist in the provider.')
+      }
+    }
+  }, [tokenAddress, tokenData.tokenSymbol])
 
   const isInputted =
     !isEmpty(tokenAddress) && !isEmpty(tokenData.tokenSymbol) && !isEmpty(tokenData.tokenDecimals)
@@ -39,15 +57,26 @@ const CustomToken = ({ setTokenImport }) => {
 
       <div className="mt-8 ml-9.25 font-normal text-xs">Token Contract Address</div>
       <input
-        className="mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none font-normal text-sm leading-6 pl-2 rounded border border-blue-800"
+        className={clsx(
+          'mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none',
+          'font-normal text-sm leading-6 pl-2 rounded border border-blue-800'
+        )}
         style={{ width: '352px', height: '32px' }}
-        onChange={(e) => setTokenAddress(e.target.value)}
+        onChange={(e) => {
+          setTokenAddress(e.target.value)
+        }}
         value={tokenAddress}
       ></input>
+      <div className="mt-0.5 text-red-finnie ml-9.25 text-2xs font-normal h-2">
+        {tokenAddressError}
+      </div>
 
-      <div className="mt-6 ml-9.25 font-normal text-xs">Token Symbol</div>
+      <div className="mt-3 ml-9.25 font-normal text-xs">Token Symbol</div>
       <input
-        className="mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none font-normal text-sm leading-6 pl-2 rounded border border-blue-800 cursor-not-allowed"
+        className={clsx(
+          'mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none',
+          'font-normal text-sm leading-6 pl-2 rounded border border-blue-800 cursor-not-allowed'
+        )}
         style={{ width: '352px', height: '32px' }}
         value={!isEmpty(tokenData.tokenSymbol) ? tokenData.tokenSymbol : ''}
         readOnly
@@ -55,7 +84,10 @@ const CustomToken = ({ setTokenImport }) => {
 
       <div className="mt-6 ml-9.25 font-normal text-xs">Token Decimal</div>
       <input
-        className="mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none font-normal text-sm leading-6 pl-2 rounded border border-blue-800 cursor-not-allowed"
+        className={clsx(
+          'mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none',
+          'font-normal text-sm leading-6 pl-2 rounded border border-blue-800 cursor-not-allowed'
+        )}
         style={{ width: '352px', height: '32px' }}
         value={!isEmpty(tokenData.tokenDecimals) ? tokenData.tokenDecimals : '0'}
         readOnly

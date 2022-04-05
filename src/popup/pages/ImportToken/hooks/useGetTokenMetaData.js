@@ -24,6 +24,9 @@ const useGetTokenMetaData = ({ contractAddress }) => {
         setTokenSymbol(symbol)
         setTokenName(name)
       } catch (err) {
+        setTokenDecimals(null)
+        setTokenSymbol(null)
+        setTokenName(null)
         console.error(err.message)
       }
     }
