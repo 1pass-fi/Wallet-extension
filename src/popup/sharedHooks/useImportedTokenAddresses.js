@@ -6,7 +6,7 @@ import storage from 'services/storage'
 
 import ERC20_ABI from 'abi/ERC20.json'
 
-const useImportedTokenAddresses = ({ userAddress }) => {
+const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
   const [importedTokenAddresses, setImportedTokenAddresses] = useState([])
 
   const checkValidToken = async (tokenAddress) => {
@@ -14,7 +14,7 @@ const useImportedTokenAddresses = ({ userAddress }) => {
       const provider = await storage.setting.get.ethereumProvider()
       const web3 = new Web3(provider)
       const tokenContract = new web3.eth.Contract(ERC20_ABI, tokenAddress)
-      await tokenContract.methods.name.call()
+      await tokenContract.methods.name().call()
 
       return true
     } catch (err) {
@@ -25,7 +25,6 @@ const useImportedTokenAddresses = ({ userAddress }) => {
   useEffect(() => {
     const loadAddresses = async () => {
       const importedErc20Tokens = await storage.setting.get.importedErc20Tokens()
-
       const tokenAddresses = Object.keys(importedErc20Tokens).reduce((result, key) => {
         if (importedErc20Tokens[key].includes(userAddress)) {
           result.push(key)
@@ -49,7 +48,7 @@ const useImportedTokenAddresses = ({ userAddress }) => {
     }
 
     if (userAddress) loadAddresses()
-  }, [userAddress])
+  }, [userAddress, currentProviderAddress])
 
   return { importedTokenAddresses }
 }
