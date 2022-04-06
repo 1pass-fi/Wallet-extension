@@ -801,3 +801,8 @@ export const setActivatedAccountAddress = async (address, type) => {
       break
   }
 }
+
+export const fromArToWinston = (value) => value * 1000000000000
+export const fromWinstonToAr = (value) => value / 1000000000000
+export const fromEthToWei = (value) => value * 1000000000000000000
+export const fromWeiToEth = (value) => value / 1000000000000000000

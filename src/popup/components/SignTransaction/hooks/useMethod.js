@@ -5,10 +5,12 @@ import { ERROR_MESSAGE } from 'constants/koiConstants'
 
 import { popupBackgroundRequest as request } from 'services/request/popup'
 
+import { fromWeiToEth, fromWinstonToAr } from 'utils'
+
 const useMethod = ({ setIsLoading, requestId, setError, setShowSigning, transactionPayload, network }) => {
   const handleSendEth = async (transactionPayload) => {
     let qty = get(transactionPayload, 'value')
-    qty = parseInt(qty, 16) / 1000000000000000000
+    qty = fromWeiToEth(parseInt(qty, 16))
     const target = get(transactionPayload, 'to')
     const source = get(transactionPayload, 'from')
 
@@ -22,7 +24,7 @@ const useMethod = ({ setIsLoading, requestId, setError, setShowSigning, transact
 
   const handleSendAr = async (transactionPayload) => {
     let qty = get(transactionPayload, 'value')
-    qty = parseInt(qty / 1000000000000)
+    qty = fromWinstonToAr(parseInt(qty))
     const target = get(transactionPayload, 'to')
     const source = get(transactionPayload, 'from')
 
@@ -55,13 +57,16 @@ const useMethod = ({ setIsLoading, requestId, setError, setShowSigning, transact
           Send request to background
         */
         console.log('send message to background')
+        let result
         switch (network) {
           case 'ARWEAVE':
-            console.log(await handleSendAr(transactionPayload))
+            result = await handleSendAr(transactionPayload)
             break
           case 'ETHEREUM':
-            console.log(await handleSendEth(transactionPayload))
+            result = await handleSendEth(transactionPayload)
         }
+
+        console.log('result', result)
         setIsLoading(false)
         setShowSigning(false)
       }
