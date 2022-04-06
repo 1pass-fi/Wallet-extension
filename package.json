@@ -52,6 +52,7 @@
         "@truffle/hdwallet-provider": "^1.5.0",
         "@webcomponents/webcomponentsjs": "^2.2.6",
         "@xstate/react": "^2.0.1",
+        "abi-decoder": "^2.4.0",
         "ace-builds": "^1.4.13",
         "arweave": "1.10.18",
         "axios": "^0.21.1",

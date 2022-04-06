@@ -30,6 +30,8 @@ import useLoadRequest from './hooks/useLoadRequest'
 import useMethod from './hooks/useMethod'
 import useSendValue from './hooks/useSendValue'
 
+import { TRANSACTION_TYPE } from './hooks/constants'
+
 const TransactionConfirmModal = ({
   onClose,
   setIsLoading,
@@ -43,12 +45,11 @@ const TransactionConfirmModal = ({
     origin, 
     requestId, 
     favicon, 
-    isContractDeployment, 
-    isMintCollectibles 
+    transactionType
   } = useLoadRequest()
   const [Fee] = useGetFee({ network, transactionPayload })
   const { onSubmitTransaction, onRejectTransaction } = useMethod({ setIsLoading, requestId, setError, setShowSigning, transactionPayload, network })
-  const { SendValue, TokenIcon } = useSendValue({ network, transactionPayload })
+  const { SendValue, TokenIcon, customTokenRecipient } = useSendValue({ network, transactionPayload, transactionType })
 
   return (
     <div className="w-full h-full z-51 m-auto top-0 left-0 fixed flex flex-col items-center">
@@ -95,10 +96,11 @@ const TransactionConfirmModal = ({
             width: '288px'
           }}
         >
-          {isContractDeployment && 'Transaction Deployment'}
-          {isMintCollectibles && !isContractDeployment && 'Mint Collectibles'}
-          {!isContractDeployment && !isMintCollectibles && network === 'ETHEREUM' && 'Transfer ETH'}
-          {!isContractDeployment && !isMintCollectibles && network === 'ARWEAVE' && 'Transfer AR'}
+          {transactionType === TRANSACTION_TYPE.CONTRACT_DEPLOYMENT && 'Contract Deployment'}
+          {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION && 'Contract Interaction'}
+          {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER && network === 'ETHEREUM' && 'Transfer ETH'}
+          {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER && network === 'ARWEAVE' && 'Transfer AR'}
+          {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && 'Transfer Token'}
         </div>
 
         
@@ -117,7 +119,7 @@ const TransactionConfirmModal = ({
 
 
           {/* VALUE */}
-          {!isContractDeployment && !isMintCollectibles &&
+          {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER || transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) &&
             <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
               <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
               Sending:
@@ -137,13 +139,13 @@ const TransactionConfirmModal = ({
 
 
           {/* RECIPIENT */}
-          {!isContractDeployment && !isMintCollectibles &&
+          {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER || transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) &&
             <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
               <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
               To:
               </div>
               <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
-                {getDisplayAddress(get(transactionPayload, 'to'))}
+                {getDisplayAddress(customTokenRecipient || get(transactionPayload, 'to'))}
               </div>
             </div>  
           }
