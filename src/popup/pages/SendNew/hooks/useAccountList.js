@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react'
 import { get } from 'lodash'
 
-import { useEffect } from 'react'
 import { popupAccount } from 'services/account'
 
 const useAccountList = () => {

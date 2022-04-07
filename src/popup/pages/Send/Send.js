@@ -109,7 +109,11 @@ const Send = ({ setIsLoading, setError, makeTransfer, setShowSigning }) => {
     if (Number(amount) <= 0) {
       return
     }
-    if (!isEmpty(selectedAccount) && selectedAccount.type === TYPE.ETHEREUM && !isEmpty(recipient.address)) {
+    if (
+      !isEmpty(selectedAccount) &&
+      selectedAccount.type === TYPE.ETHEREUM &&
+      !isEmpty(recipient.address)
+    ) {
       loadGasFee()
       loadGasFeeInterval = setInterval(() => {
         loadGasFee()
@@ -148,7 +152,7 @@ const Send = ({ setIsLoading, setError, makeTransfer, setShowSigning }) => {
 
   const handleSendToken = () => {
     setEnoughGas(true)
-    
+
     // validations
     if (!(recipient?.address.trim().length > 0 && amount.trim().length > 0)) {
       setError(ERROR_MESSAGE.EMPTY_FIELDS)
@@ -186,12 +190,12 @@ const Send = ({ setIsLoading, setError, makeTransfer, setShowSigning }) => {
       return
     }
 
-    if (selectedToken === 'AR' && balance < (Number(amount) + arFee)) {
+    if (selectedToken === 'AR' && balance < Number(amount) + arFee) {
       setEnoughGas(false)
       return
     }
 
-    if (selectedToken === 'ETH' && balance < (Number(amount) + gasFee)) {
+    if (selectedToken === 'ETH' && balance < Number(amount) + gasFee) {
       setEnoughGas(false)
       return
     }
@@ -221,12 +225,14 @@ const Send = ({ setIsLoading, setError, makeTransfer, setShowSigning }) => {
       network
     }
 
-    storage.generic.set.pendingRequest({
-      type: REQUEST.TRANSACTION,
-      data: requestPayload
-    }).then(() => {
-      setShowSigning(true)
-    })
+    storage.generic.set
+      .pendingRequest({
+        type: REQUEST.TRANSACTION,
+        data: requestPayload
+      })
+      .then(() => {
+        setShowSigning(true)
+      })
   }
 
   const handleSendTransaction = async () => {
@@ -243,7 +249,7 @@ const Send = ({ setIsLoading, setError, makeTransfer, setShowSigning }) => {
         }
       }
 
-      const {txId, receipt} = await makeTransfer(
+      const { txId, receipt } = await makeTransfer(
         selectedAccount,
         Number(amount),
         recipient.address,
@@ -317,9 +323,7 @@ const Send = ({ setIsLoading, setError, makeTransfer, setShowSigning }) => {
       <div className="text-success-700 text-base font-normal tracking-finnieSpacing-tight leading-8 select-none">
         {selectedToken
           ? `${
-            selectedToken === 'KOII'
-              ? formatNumber(koiBalance, 2)
-              : formatNumber(balance, 6)
+            selectedToken === 'KOII' ? formatNumber(koiBalance, 2) : formatNumber(balance, 6)
           } ${selectedToken} Available`
           : ''}
       </div>

@@ -25,7 +25,8 @@ import GetEncryptionKey from 'components/sign/GetEncryptionKey'
 // pages
 import Home from './pages/Home'
 import Receive from './pages/Receive'
-import Send from './pages/Send'
+import Send from './pages/SendNew'
+// import Send from './pages/Send'
 import Login from './pages/Login'
 import ImportToken from './pages/ImportToken'
 
@@ -180,11 +181,9 @@ const Popup = ({
           {showConnectedSites && (
             <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />
           )}
-          {showSigning && (
-            <SignModal setShowSigning={setShowSigning}/>
-          )}
+          {showSigning && <SignModal setShowSigning={setShowSigning} />}
           {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
-          {isLoading && <Loading />}          
+          {isLoading && <Loading />}
           {error && <Message type="error" children={error} />}
           {notification && <Message type="notification" children={notification} />}
           {warning && <Message type="warning" children={warning} />}
@@ -209,7 +208,7 @@ const Popup = ({
                         <Receive />
                       </Route>
                       <Route exact path="/send">
-                        <Send setShowSigning={setShowSigning}/>
+                        <Send setShowSigning={setShowSigning} />
                       </Route>
                       <Route path="/import-token">
                         <ImportToken />

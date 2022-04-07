@@ -1,13 +1,12 @@
 import { useState, useMemo } from 'react'
+import { get } from 'lodash'
 
-const useSelectedAccount = () => {
-  const [selectedAccount, setSelectedAccount] = useState(null)
-
+const useSelectedAccount = ({ selectedAccount }) => {
   const selectedNetwork = useMemo(() => {
     return get(selectedAccount, 'type')
   }, [selectedAccount])
 
-  return { selectedNetwork, selectedAccount, setSelectedAccount} 
+  return { selectedNetwork }
 }
 
 export default useSelectedAccount

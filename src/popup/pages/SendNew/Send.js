@@ -8,8 +8,8 @@ import { useHistory } from 'react-router-dom'
 
 import TokenDropdown from 'popup/components/TokenDropdown'
 import SendTokenForm from './SendTokenForm'
-import TransactionConfirmModal from './TransactionConfirmModal'
-import TransactionDetails from './TransactionDetails'
+// import TransactionConfirmModal from './TransactionConfirmModal'
+// import TransactionDetails from './TransactionDetails'
 
 // actions
 import { makeTransfer } from 'actions/koi'
@@ -36,10 +36,71 @@ import storage from 'services/storage'
 // hooks
 import useAccountList from './hooks/useAccountList'
 import useSelectedAccount from './hooks/useSelectedAccount'
+import useTokenList from './hooks/useTokenList'
 
 const Send = () => {
   const { accountList } = useAccountList()
-  const { selectedNetwork, selectedAccount, setSelectedAccount } = useSelectedAccount()
+  const [selectedAccount, setSelectedAccount] = useState({})
+  const [currentToken, setCurrentToken] = useState({})
+
+  const { selectedNetwork } = useSelectedAccount({ selectedAccount })
+  const { tokenList, selectedToken, setSelectedToken } = useTokenList({
+    userAddress: selectedAccount?.address,
+    selectedNetwork: selectedNetwork
+  })
+
+  useEffect(() => {
+    setCurrentToken(tokenList.find((t) => t.symbol === selectedToken))
+  }, [selectedToken])
+
+  const history = useHistory()
+
+  const [fontSize, setFontSize] = useState('3xl')
+  const [balance, setBalance] = useState(null)
+  const [koiBalance, setKoiBalance] = useState(null)
+  const [showModal, setShowModal] = useState(false)
+
+  // const [selectedToken, setSelectedToken] = useState()
+  const [tokenOptions, setTokenOptions] = useState([])
+  const [showTokenOptions, setShowTokenOptions] = useState(false)
+  const [amount, setAmount] = useState('')
+  const [recipient, setRecipient] = useState({ address: '' })
+  const [enoughGas, setEnoughGas] = useState(true)
+  const [showTxDetailPage, setShowTxDetailPage] = useState(false)
+
+  const [gasFee, setGasFee] = useState(0)
+  const [arFee, setArFee] = useState(0)
+  const [txId, setTxId] = useState('')
+  const [ethReceipt, setEthReceipt] = useState({})
+
+  const onChangeToken = (selectedToken) => {
+    setSelectedToken(selectedToken)
+  }
+
+  const onChangeAmount = (e) => {
+    setAmount(e.target.value)
+    setEnoughGas(true)
+    if (e.target.value.length <= 8) {
+      setFontSize('3xl')
+      return
+    }
+    if (e.target.value.length > 16) {
+      setFontSize('sm')
+      return
+    }
+    if (e.target.value.length > 12) {
+      setFontSize('lg')
+      return
+    }
+    if (e.target.value.length > 8) {
+      setFontSize('2xl')
+      return
+    }
+  }
+
+  const handleSendToken = () => {
+    console.log('handle Send token')
+  }
 
   return (
     <div className="w-full relative bg-white flex flex-col items-center pt-9.75">
@@ -51,7 +112,7 @@ const Send = () => {
       />
 
       <div className="font-semibold text-xs leading-4 tracking-finnieSpacing-wide text-blue-800">
-        AMOUNT
+        AMOUNT1
       </div>
       <div
         className="z-10 bg-trueGray-100 border-b-2 border-blue-800 flex"
@@ -84,10 +145,13 @@ const Send = () => {
           {selectedToken === 'AR' && <ArweaveIcon style={{ width: '35px', height: '35px' }} />}
           {selectedToken === 'ETH' && <EthereumIcon style={{ width: '33px', height: '33px' }} />}
           {selectedToken === 'KOII' && <FinnieIcon style={{ width: '34px', height: '34px' }} />}
+          {!isEmpty(selectedToken) && selectedToken !== 'KOII' && selectedToken !== 'AR' && selectedToken !== 'ETH' && (
+            <img src={currentToken?.logo} style={{ width: '34px', height: '34px' }} />
+          )}
           <ArrowIconBlue style={{ transform: !showTokenOptions ? 'none' : 'rotateX(180deg)' }} />
           {showTokenOptions && (
             <TokenDropdown
-              tokenOptions={tokenOptions}
+              tokenOptions={tokenList}
               selectedToken={selectedToken}
               onChangeToken={onChangeToken}
             />
@@ -98,9 +162,7 @@ const Send = () => {
       <div className="text-success-700 text-base font-normal tracking-finnieSpacing-tight leading-8 select-none">
         {selectedToken
           ? `${
-            selectedToken === 'KOII'
-              ? formatNumber(koiBalance, 2)
-              : formatNumber(balance, 6)
+            selectedToken === 'KOII' ? formatNumber(currentToken?.balance, 2) : formatNumber(currentToken?.balance, 6)
           } ${selectedToken} Available`
           : ''}
       </div>

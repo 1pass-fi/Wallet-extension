@@ -6,7 +6,11 @@ import storage from 'services/storage'
 
 import ERC20_ABI from 'abi/ERC20.json'
 
-const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displayingAccount }) => {
+const useImportedTokenAddresses = ({
+  userAddress,
+  currentProviderAddress,
+  displayingAccountAddress
+}) => {
   const [importedTokenAddresses, setImportedTokenAddresses] = useState([])
 
   const checkValidToken = async (tokenAddress) => {
@@ -50,7 +54,7 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
     }
 
     if (userAddress) loadAddresses()
-  }, [userAddress, currentProviderAddress, displayingAccount])
+  }, [userAddress, currentProviderAddress, displayingAccountAddress])
 
   return { importedTokenAddresses }
 }

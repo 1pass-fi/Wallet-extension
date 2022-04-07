@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { get } from 'lodash'
+import { useEffect, useState } from 'react'
+import { get, isEmpty } from 'lodash'
 
 import { fromArToWinston, fromEthToWei } from 'utils'
 import getTokenData from 'utils/getTokenData'
@@ -12,22 +12,39 @@ import storage from 'services/storage'
 const useTokenList = ({ selectedNetwork, userAddress }) => {
   const [tokenList, setTokenList] = useState([])
   const [ethProvider, setEthProvider] = useState(null)
+  const [selectedToken, setSelectedToken] = useState()
+
+  useEffect(() => {
+    const loadEthProvider = async () => {
+      const provider = await storage.setting.get.ethereumProvider()
+      setEthProvider(provider)
+    }
+
+    loadEthProvider()
+  }, [])
+
+  const { importedTokenAddresses } = useImportedTokenAddresses({
+    userAddress,
+    currentProviderAddress: ethProvider,
+    displayingAccountAddress: userAddress
+  })
 
   const loadArweaveTokens = async (userAddress) => {
+    setSelectedToken('KOII')
     const arweaveToken = {}
     const koiiToken = {}
 
     const account = await popupAccount.getAccount({ address: userAddress })
     const accountData = await account.get.metadata()
 
-    arweaveToken.icon = 'example_path'
+    arweaveToken.logo = 'example_path'
     arweaveToken.balance = fromArToWinston(get(accountData, 'balance'))
     arweaveToken.price = 40
     arweaveToken.name = 'Arweave'
     arweaveToken.symbol = 'AR'
     arweaveToken.decimal = 12
 
-    koiiToken.icon = 'example_path'
+    koiiToken.logo = 'example_path'
     koiiToken.balance = get(accountData, 'koiBalance')
     koiiToken.price = 0
     koiiToken.name = 'Koii'
@@ -38,50 +55,47 @@ const useTokenList = ({ selectedNetwork, userAddress }) => {
   }
 
   const loadEthereumTokens = async (userAddress, importedTokenAddresses) => {
+    setSelectedToken('ETH')
     const ethereumToken = {}
 
     const account = await popupAccount.getAccount({ address: userAddress })
     const accountData = await account.get.metadata()
 
-    ethereumToken.icon = 'example_path'
+    ethereumToken.logo = 'example_path'
     ethereumToken.balance = fromEthToWei(get(accountData, 'balance'))
     ethereumToken.price = 2000
     ethereumToken.name = 'Ether'
     ethereumToken.symbol = 'ETH'
     ethereumToken.decimal = 1000000000000000000
 
-    const customTokenList = await Promise.all(importedTokenAddresses.map(async tokenAddress => {
-      return await getTokenData(tokenAddress, userAddress)
-    }))
+    if (isEmpty(importedTokenAddresses)) {
+      return [ethereumToken]
+    }
+
+    const customTokenList = await Promise.all(
+      importedTokenAddresses?.map(async (tokenAddress) => {
+        return await getTokenData(tokenAddress, userAddress)
+      })
+    )
 
     return [ethereumToken, ...customTokenList]
   }
-
-  const importedTokenAddresses = useImportedTokenAddresses({ userAddress, currentProviderAddress: ethProvider })
-
-
-  useEffect(() => {
-    const loadEthProvider = async () => {
-      const provider = await storage.setting.get.ethereumProvider()
-      setEthProvider(provider)  
-    }
-
-    loadEthProvider()
-  }, [])
 
   useEffect(() => {
     const loadTokenList = async () => {
       switch (selectedNetwork) {
         case 'TYPE_ETHEREUM':
-          loadEthereumTokens()
+          setTokenList(await loadEthereumTokens(userAddress, importedTokenAddresses))
           break
         case 'TYPE_ARWEAVE':
-          loadArweaveTokens()
+          setTokenList(await loadArweaveTokens(userAddress))
       }
     }
 
     if (selectedNetwork && userAddress) loadTokenList()
-  }, [selectedNetwork, userAddress])
+  }, [selectedNetwork, userAddress, importedTokenAddresses])
+
+  return { tokenList, selectedToken, setSelectedToken }
 }
 
 export default useTokenList
