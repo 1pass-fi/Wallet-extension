@@ -70,13 +70,14 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
 
         decimal = decimal === 1 ? 0 : decimal
         quantity = quantity / (10 ** decimal)
-        
+
+        if (!logo) logo = 'img/erc20/generic-token.svg'
+
         setTokenIconPath(logo)
         setSymbol(symbol)
         setValue(quantity)
         setCustomTokenRecipient(customTokenRecipient)
       }
-
     }
 
     if (transactionPayload && network) loadValue()
@@ -90,8 +91,9 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
 
   const TokenIcon = () => (
     <>
-      {network === 'ETHEREUM' && <EthereumIcon />}
-      {network === 'ARWEAVE' && <ArweaveIcon />}
+      {network === 'ETHEREUM' && !tokenIconPath && <EthereumIcon />}
+      {network === 'ARWEAVE' && !tokenIconPath && <ArweaveIcon />}
+      {tokenIconPath && <img src={tokenIconPath}/>}
     </>
   )
 
