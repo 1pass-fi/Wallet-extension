@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import { TYPE } from 'constants/accountConstants'
 import { fiatCurrencyFormat, numberFormat } from 'utils'
+import { fromArToWinston, fromEthToWei } from 'utils'
 
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
@@ -37,11 +38,19 @@ const Tokens = ({ currentProviderAddress }) => {
       setTokens([
         {
           name: 'Arweave',
-          balance: numberFormat(displayingAccount.balance),
+          balance: numberFormat(fromArToWinston(displayingAccount.balance)),
+          displayingBalance: numberFormat(displayingAccount.balance),
           symbol: 'AR',
-          usdValue: fiatCurrencyFormat(displayingAccount.balance * price.AR)
+          usdValue: fiatCurrencyFormat(displayingAccount.balance * price.AR),
+          decimal: 12
         },
-        { name: 'KOII', balance: numberFormat(displayingAccount.koiBalance), symbol: 'KOII' }
+        {
+          name: 'KOII',
+          balance: numberFormat(displayingAccount.koiBalance),
+          displayingBalance: numberFormat(displayingAccount.koiBalance),
+          symbol: 'KOII',
+          decimal: 0
+        }
       ])
       return
     }
@@ -49,16 +58,24 @@ const Tokens = ({ currentProviderAddress }) => {
     const importTokens = [
       {
         name: 'Ethereum',
-        balance: numberFormat(displayingAccount.balance),
+        balance: numberFormat(fromEthToWei(displayingAccount.balance)),
+        displayingBalance: numberFormat(displayingAccount.balance),
         usdValue: fiatCurrencyFormat(displayingAccount.balance * price.ETH),
-        symbol: 'ETH'
+        symbol: 'ETH',
+        decimal: 18
       }
     ]
     await Promise.all(
       importedTokenAddresses.map(async (contractAddress) => {
         let token = await getTokenData(contractAddress, displayingAccount.address)
+        token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
         if (token.price) {
-          token = { ...token, usdValue: fiatCurrencyFormat(token.balance * token.price) }
+          token = {
+            ...token,
+            usdValue: fiatCurrencyFormat(
+              (token.balance / Math.pow(10, token.decimal)) * token.price
+            )
+          }
         }
         importTokens.push(token)
       })
@@ -82,12 +99,12 @@ const Tokens = ({ currentProviderAddress }) => {
     const accountInfoField = accountInfoRef.current
     if (accountInfoField) {
       const scrollHeight = accountInfoField.scrollHeight
-      if (scrollHeight < 200) {
+      if (scrollHeight < 150) {
         setAccountInfoMinHeight(0)
         return
       }
 
-      if (scrollHeight >= 200) {
+      if (scrollHeight >= 150) {
         setAccountInfoMinHeight(350)
         return
       }
@@ -124,7 +141,7 @@ const Tokens = ({ currentProviderAddress }) => {
           </div>
           <div className="flex flex-col items-end">
             <div className="font-semibold">
-              {token.balance} {token.symbol}
+              {token.displayingBalance} {token.symbol}
             </div>
             {token.usdValue && <div>{token.usdValue} USD</div>}
           </div>

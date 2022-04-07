@@ -51,7 +51,7 @@ const Send = () => {
 
   useEffect(() => {
     setCurrentToken(tokenList.find((t) => t.symbol === selectedToken))
-  }, [selectedToken])
+  }, [selectedToken, tokenList])
 
   const history = useHistory()
 
@@ -145,7 +145,10 @@ const Send = () => {
           {selectedToken === 'AR' && <ArweaveIcon style={{ width: '35px', height: '35px' }} />}
           {selectedToken === 'ETH' && <EthereumIcon style={{ width: '33px', height: '33px' }} />}
           {selectedToken === 'KOII' && <FinnieIcon style={{ width: '34px', height: '34px' }} />}
-          {!isEmpty(selectedToken) && selectedToken !== 'KOII' && selectedToken !== 'AR' && selectedToken !== 'ETH' && (
+          {!isEmpty(selectedToken) &&
+            selectedToken !== 'KOII' &&
+            selectedToken !== 'AR' &&
+            selectedToken !== 'ETH' && (
             <img src={currentToken?.logo} style={{ width: '34px', height: '34px' }} />
           )}
           <ArrowIconBlue style={{ transform: !showTokenOptions ? 'none' : 'rotateX(180deg)' }} />
@@ -162,7 +165,9 @@ const Send = () => {
       <div className="text-success-700 text-base font-normal tracking-finnieSpacing-tight leading-8 select-none">
         {selectedToken
           ? `${
-            selectedToken === 'KOII' ? formatNumber(currentToken?.balance, 2) : formatNumber(currentToken?.balance, 6)
+            selectedToken === 'KOII'
+              ? formatNumber(currentToken?.balance / Math.pow(10, currentToken?.decimal), 2)
+              : formatNumber(currentToken?.balance / Math.pow(10, currentToken?.decimal), 6)
           } ${selectedToken} Available`
           : ''}
       </div>

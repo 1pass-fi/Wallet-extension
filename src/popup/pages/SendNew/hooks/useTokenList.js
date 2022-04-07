@@ -49,7 +49,7 @@ const useTokenList = ({ selectedNetwork, userAddress }) => {
     koiiToken.price = 0
     koiiToken.name = 'Koii'
     koiiToken.symbol = 'KOII'
-    koiiToken.decimal = 1
+    koiiToken.decimal = 0
 
     return [arweaveToken, koiiToken]
   }
@@ -66,7 +66,7 @@ const useTokenList = ({ selectedNetwork, userAddress }) => {
     ethereumToken.price = 2000
     ethereumToken.name = 'Ether'
     ethereumToken.symbol = 'ETH'
-    ethereumToken.decimal = 1000000000000000000
+    ethereumToken.decimal = 18
 
     if (isEmpty(importedTokenAddresses)) {
       return [ethereumToken]

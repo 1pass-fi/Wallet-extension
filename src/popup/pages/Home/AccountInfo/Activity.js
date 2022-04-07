@@ -64,12 +64,12 @@ const Activity = () => {
     const activityField = activityRef.current
     if (activityField) {
       const scrollHeight = activityField.scrollHeight
-      if (scrollHeight < 200) {
+      if (scrollHeight < 150) {
         setActivityMinHeight(0)
         return
       }
 
-      if (scrollHeight >= 200) {
+      if (scrollHeight >= 150) {
         setActivityMinHeight(350)
         return
       }
