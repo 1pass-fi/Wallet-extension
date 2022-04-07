@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { get, isNumber } from 'lodash'
 
 import getTokenData from 'utils/getTokenData'
+import getArweaveTokenData from 'utils/getArweaveTokenData'
 import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
 
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 
 import { TRANSACTION_TYPE } from './constants'
+
+import decodeTags from 'utils/decodeTags'
 
 const fromHexToDecimal = (hexString) => {
   let number = null
@@ -53,30 +56,57 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
       }
 
       if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
-        const to = get(transactionPayload, 'to')
-        let {     
-          logo,
-          balance,
-          price,
-          name,
-          symbol,
-          decimal 
-        } = await getTokenData(to, userAddress)
+        if (network === 'ETHEREUM') {
+          const to = get(transactionPayload, 'to')
+          let {     
+            logo,
+            balance,
+            price,
+            name,
+            symbol,
+            decimal 
+          } = await getTokenData(to, userAddress)
+  
+          const data = get(transactionPayload, 'data')
+          const decode = decodeERC20Transaction(data)
+          let quantity = get(decode, 'params[1].value')
+          const customTokenRecipient = get(decode, 'params[0].value')
+  
+          decimal = decimal === 1 ? 0 : decimal
+          quantity = quantity / (10 ** decimal)
+  
+          if (!logo) logo = 'img/erc20/generic-token.svg'
+  
+          setTokenIconPath(logo)
+          setSymbol(symbol)
+          setValue(quantity)
+          setCustomTokenRecipient(customTokenRecipient)
+        }
 
-        const data = get(transactionPayload, 'data')
-        const decode = decodeERC20Transaction(data)
-        let quantity = get(decode, 'params[1].value')
-        const customTokenRecipient = get(decode, 'params[0].value')
+        if (network === 'ARWEAVE') {
+          let tags = decodeTags(get(transactionPayload, 'tags'))
+          const contractAddress = get(tags, 'Contract')          
+          let {
+            logo,
+            balance,
+            price,
+            name,
+            symbol,
+            decimal
+          } = await getArweaveTokenData(contractAddress, userAddress)
 
-        decimal = decimal === 1 ? 0 : decimal
-        quantity = quantity / (10 ** decimal)
+          const input = JSON.parse(tags['Input'])
 
-        if (!logo) logo = 'img/erc20/generic-token.svg'
+          const customTokenRecipient = get(input, 'target')
+          const quantity = get(input, 'qty')
 
-        setTokenIconPath(logo)
-        setSymbol(symbol)
-        setValue(quantity)
-        setCustomTokenRecipient(customTokenRecipient)
+          if (!logo) logo = 'img/erc20/generic-token.svg'
+
+          setTokenIconPath(logo)
+          setSymbol(symbol)
+          setValue(quantity)
+          setCustomTokenRecipient(customTokenRecipient)
+        }
       }
     }
 

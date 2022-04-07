@@ -23,8 +23,8 @@ export default async (payload, tab, next) => {
       return
     }
 
-    console.log('transaction', transaction)
-    
+    const tags = get(transaction, 'tags')
+
     const requestId = uuid()
     const requestPayload = {
       origin,
@@ -34,7 +34,9 @@ export default async (payload, tab, next) => {
       requestPayload: {
         from: activatedAddress,
         to: get(transaction, 'target'),
-        value: get(transaction, 'quantity')
+        value: get(transaction, 'quantity'),
+        data: get(transaction , 'data'),
+        tags
       }
     }
     

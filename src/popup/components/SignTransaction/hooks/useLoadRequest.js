@@ -29,7 +29,13 @@ const useLoadRequest = () => {
       const to = get(requestPayload, 'to')
       const data = get(requestPayload, 'data')
 
-      const transactionType = await helper.getEthereumTransactionType(requestPayload)
+      let transactionType
+      if (network === 'ETHEREUM') {
+        transactionType = await helper.getEthereumTransactionType(requestPayload)
+      }
+      if (network === 'ARWEAVE') {
+        transactionType = await helper.getArweaveTransactionType(requestPayload)
+      }
 
       setRequestPayload(requestPayload)
       setNetwork(network)
