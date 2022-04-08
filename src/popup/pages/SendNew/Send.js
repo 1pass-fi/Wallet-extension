@@ -1,43 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { connect } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 import clsx from 'clsx'
 import isEmpty from 'lodash/isEmpty'
+import get from 'lodash/get'
 
 import { useHistory } from 'react-router-dom'
 
 import TokenDropdown from 'popup/components/TokenDropdown'
 import SendTokenForm from './SendTokenForm'
-// import TransactionConfirmModal from './TransactionConfirmModal'
-// import TransactionDetails from './TransactionDetails'
-
-// actions
-import { makeTransfer } from 'actions/koi'
-import { setIsLoading } from 'popup/actions/loading'
-import { setError } from 'actions/error'
-
-// constants
-import { ERROR_MESSAGE, REQUEST } from 'constants/koiConstants'
-import { TYPE } from 'constants/accountConstants'
 
 import { formatNumber } from 'options/utils'
-import { isArweaveAddress, isEthereumAddress, calculateGasFee } from 'utils'
-import { popupAccount } from 'services/account'
 
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import ArrowIconBlue from 'img/popup/down-arrow-icon-blue.svg'
 import BackBtn from 'img/popup/back-button.svg'
 import SendBackgroundLeft from 'img/popup/send-background-left.svg'
 import SendBackgroundRight from 'img/popup/send-background-right.svg'
-import storage from 'services/storage'
 
 // hooks
 import useAccountList from './hooks/useAccountList'
 import useSelectedAccount from './hooks/useSelectedAccount'
 import useTokenList from './hooks/useTokenList'
+import useMethod from './hooks/useMethod'
 
 const Send = () => {
-  const { accountList } = useAccountList()
   const [selectedAccount, setSelectedAccount] = useState({})
 
   const { selectedNetwork } = useSelectedAccount({ selectedAccount })
@@ -46,21 +33,34 @@ const Send = () => {
     selectedNetwork: selectedNetwork
   })
 
-  const history = useHistory()
-
   const [fontSize, setFontSize] = useState('3xl')
-  const [showModal, setShowModal] = useState(false)
 
   const [showTokenOptions, setShowTokenOptions] = useState(false)
   const [amount, setAmount] = useState('')
   const [recipient, setRecipient] = useState({ address: '' })
   const [enoughGas, setEnoughGas] = useState(true)
-  const [showTxDetailPage, setShowTxDetailPage] = useState(false)
 
-  const [gasFee, setGasFee] = useState(0)
-  const [arFee, setArFee] = useState(0)
-  const [txId, setTxId] = useState('')
-  const [ethReceipt, setEthReceipt] = useState({})
+  const sender = useMemo(() => {
+    return get(selectedAccount, 'address')
+  }, [selectedAccount])
+  const _recipient = useMemo(() => {
+    return get(recipient, 'address')
+  }, [recipient])
+  const contractAddress = useMemo(() => {
+    return get(selectedToken, 'contractAddress')
+  }, [selectedToken])
+
+  const { onSendTokens } = useMethod({ 
+    sender,
+    recipient: _recipient,
+    value: amount,
+    contractAddress
+  })
+
+  const history = useHistory()
+
+
+
 
   const onChangeToken = (selectedToken) => {
     setSelectedToken(selectedToken)
@@ -88,7 +88,8 @@ const Send = () => {
   }
 
   const handleSendToken = () => {
-    console.log('handle Send token')
+    // BALANCE VALIDATIONS
+    onSendTokens()
   }
 
   return (

@@ -49,6 +49,7 @@ const useTokenList = ({ selectedNetwork, userAddress }) => {
     koiiToken.name = 'Koii'
     koiiToken.symbol = 'KOII'
     koiiToken.decimal = 0
+    koiiToken.contractAddress = 'QA7AIFVx1KBBmzC7WUNhJbDsHlSJArUT0jWrhZMZPS8'
 
     setSelectedToken(koiiToken)
     return [arweaveToken, koiiToken]

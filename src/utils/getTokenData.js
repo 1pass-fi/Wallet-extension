@@ -47,7 +47,8 @@ const getTokenData = async (contractAddress, userAddress) => {
     price,
     name,
     symbol,
-    decimal
+    decimal,
+    contractAddress
   }
 }
 

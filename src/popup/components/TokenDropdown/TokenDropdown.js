@@ -16,7 +16,7 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken }) => {
         style={{ height: '45px' }}
         onClick={() => onChangeToken(selectedToken)}
       >
-        <img src={selectedToken.logo} style={{ width: '34px', height: '34px' }} />
+        <img src={selectedToken?.logo} style={{ width: '34px', height: '34px' }} />
         <ArrowIcon style={{ transform: 'rotateX(180deg)' }} />
       </div>
       {tokenOptions.map((token, idx) => (
