@@ -61,7 +61,7 @@ const useGetFee = ({ network, transactionPayload }) => {
     const transactionData = get(transactionPayload, 'data')
 
     if (recipientAddress) rawTx.target = recipientAddress
-    if (value) rawTx.quantity = value
+    if (isNumber(value)) rawTx.quantity = value.toString()
     if (transactionData) rawTx.data = Buffer.from(transactionData)
 
     const transaction = await arweave.createTransaction(rawTx)

@@ -24,7 +24,7 @@ import useSelectedAccount from './hooks/useSelectedAccount'
 import useTokenList from './hooks/useTokenList'
 import useMethod from './hooks/useMethod'
 
-const Send = () => {
+const Send = ({ setShowSigning }) => {
   const [selectedAccount, setSelectedAccount] = useState({})
 
   const { selectedNetwork } = useSelectedAccount({ selectedAccount })
@@ -87,9 +87,10 @@ const Send = () => {
     }
   }
 
-  const handleSendToken = () => {
+  const handleSendToken = async () => {
     // BALANCE VALIDATIONS
-    onSendTokens()
+    await onSendTokens()
+    setShowSigning(true)
   }
 
   return (
