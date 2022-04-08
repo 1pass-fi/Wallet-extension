@@ -25,8 +25,6 @@ import { isArweaveAddress, isEthereumAddress, calculateGasFee } from 'utils'
 import { popupAccount } from 'services/account'
 
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
-import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
-import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import ArrowIconBlue from 'img/popup/down-arrow-icon-blue.svg'
 import BackBtn from 'img/popup/back-button.svg'
 import SendBackgroundLeft from 'img/popup/send-background-left.svg'
@@ -41,7 +39,6 @@ import useTokenList from './hooks/useTokenList'
 const Send = () => {
   const { accountList } = useAccountList()
   const [selectedAccount, setSelectedAccount] = useState({})
-  const [currentToken, setCurrentToken] = useState({})
 
   const { selectedNetwork } = useSelectedAccount({ selectedAccount })
   const { tokenList, selectedToken, setSelectedToken } = useTokenList({
@@ -49,19 +46,11 @@ const Send = () => {
     selectedNetwork: selectedNetwork
   })
 
-  useEffect(() => {
-    setCurrentToken(tokenList.find((t) => t.symbol === selectedToken))
-  }, [selectedToken, tokenList])
-
   const history = useHistory()
 
   const [fontSize, setFontSize] = useState('3xl')
-  const [balance, setBalance] = useState(null)
-  const [koiBalance, setKoiBalance] = useState(null)
   const [showModal, setShowModal] = useState(false)
 
-  // const [selectedToken, setSelectedToken] = useState()
-  const [tokenOptions, setTokenOptions] = useState([])
   const [showTokenOptions, setShowTokenOptions] = useState(false)
   const [amount, setAmount] = useState('')
   const [recipient, setRecipient] = useState({ address: '' })
@@ -142,14 +131,11 @@ const Send = () => {
           style={{ width: '68px', height: '45px' }}
         >
           {isEmpty(selectedToken) && <FinnieIcon style={{ width: '34px', height: '34px' }} />}
-          {selectedToken === 'AR' && <ArweaveIcon style={{ width: '35px', height: '35px' }} />}
-          {selectedToken === 'ETH' && <EthereumIcon style={{ width: '33px', height: '33px' }} />}
-          {selectedToken === 'KOII' && <FinnieIcon style={{ width: '34px', height: '34px' }} />}
           {!isEmpty(selectedToken) &&
             selectedToken !== 'KOII' &&
             selectedToken !== 'AR' &&
             selectedToken !== 'ETH' && (
-            <img src={currentToken?.logo} style={{ width: '34px', height: '34px' }} />
+            <img src={selectedToken?.logo} style={{ width: '34px', height: '34px' }} />
           )}
           <ArrowIconBlue style={{ transform: !showTokenOptions ? 'none' : 'rotateX(180deg)' }} />
           {showTokenOptions && (
@@ -165,10 +151,10 @@ const Send = () => {
       <div className="text-success-700 text-base font-normal tracking-finnieSpacing-tight leading-8 select-none">
         {selectedToken
           ? `${
-            selectedToken === 'KOII'
-              ? formatNumber(currentToken?.balance / Math.pow(10, currentToken?.decimal), 2)
-              : formatNumber(currentToken?.balance / Math.pow(10, currentToken?.decimal), 6)
-          } ${selectedToken} Available`
+            selectedToken.symbol === 'KOII'
+              ? formatNumber(selectedToken?.balance / Math.pow(10, selectedToken?.decimal), 2)
+              : formatNumber(selectedToken?.balance / Math.pow(10, selectedToken?.decimal), 6)
+          } ${selectedToken.symbol} Available`
           : ''}
       </div>
 
