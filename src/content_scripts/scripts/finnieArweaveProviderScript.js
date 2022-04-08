@@ -14,7 +14,7 @@ const finnieArweaveProviderScript = `() => {
       return this.connection.send(message)
     }
 
-    getPermission() {
+    getPermissions() {
       const message = { type: ENDPOINTS.GET_PERMISSION }
       return this.connection.send(message)
     }

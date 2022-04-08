@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { get, isNumber } from 'lodash'
 
+import getTokenData from 'utils/getTokenData'
+import getArweaveTokenData from 'utils/getArweaveTokenData'
+import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
+
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+
+import { TRANSACTION_TYPE } from './constants'
+
+import decodeTags from 'utils/decodeTags'
 
 const fromHexToDecimal = (hexString) => {
   let number = null
@@ -15,9 +23,11 @@ const fromWeiToEth = (wei) => {
   return wei / 1000000000000000000
 }
 
-const useSendValue = ({ transactionPayload, network }) => {
+const useSendValue = ({ transactionPayload, network, transactionType, userAddress = '0xb076413401172CBB73C082107514De3376E4FF6c' }) => {
   const [value, setValue] = useState(null)
   const [symbol, setSymbol] = useState(null)
+  const [tokenIconPath, setTokenIconPath] = useState(false)
+  const [customTokenRecipient, setCustomTokenRecipient] = useState(null)
 
   const getSendValueEthereum = (value) => {
     value = fromHexToDecimal(value)
@@ -31,8 +41,9 @@ const useSendValue = ({ transactionPayload, network }) => {
   }
 
   useEffect(() => {
-    const loadValue = () => {
+    const loadValue = async () => {
       const value = get(transactionPayload, 'value')
+
       switch (network) {
         case 'ETHEREUM':
           setValue(getSendValueEthereum(value))
@@ -43,10 +54,64 @@ const useSendValue = ({ transactionPayload, network }) => {
           setSymbol('AR')
           break
       }
+
+      if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
+        if (network === 'ETHEREUM') {
+          const to = get(transactionPayload, 'to')
+          let {     
+            logo,
+            balance,
+            price,
+            name,
+            symbol,
+            decimal 
+          } = await getTokenData(to, userAddress)
+  
+          const data = get(transactionPayload, 'data')
+          const decode = decodeERC20Transaction(data)
+          let quantity = get(decode, 'params[1].value')
+          const customTokenRecipient = get(decode, 'params[0].value')
+  
+          decimal = decimal === 1 ? 0 : decimal
+          quantity = quantity / (10 ** decimal)
+  
+          if (!logo) logo = 'img/erc20/generic-token.svg'
+  
+          setTokenIconPath(logo)
+          setSymbol(symbol)
+          setValue(quantity)
+          setCustomTokenRecipient(customTokenRecipient)
+        }
+
+        if (network === 'ARWEAVE') {
+          let tags = decodeTags(get(transactionPayload, 'tags'))
+          const contractAddress = get(tags, 'Contract')          
+          let {
+            logo,
+            balance,
+            price,
+            name,
+            symbol,
+            decimal
+          } = await getArweaveTokenData(contractAddress, userAddress)
+
+          const input = JSON.parse(tags['Input'])
+
+          const customTokenRecipient = get(input, 'target')
+          const quantity = get(input, 'qty')
+
+          if (!logo) logo = 'img/erc20/generic-token.svg'
+
+          setTokenIconPath(logo)
+          setSymbol(symbol)
+          setValue(quantity)
+          setCustomTokenRecipient(customTokenRecipient)
+        }
+      }
     }
 
     if (transactionPayload && network) loadValue()
-  }, [transactionPayload, network])
+  }, [transactionPayload, network, transactionType])
 
   const SendValue = () => (
     <>
@@ -56,12 +121,13 @@ const useSendValue = ({ transactionPayload, network }) => {
 
   const TokenIcon = () => (
     <>
-      {network === 'ETHEREUM' && <EthereumIcon />}
-      {network === 'ARWEAVE' && <ArweaveIcon />}
+      {network === 'ETHEREUM' && !tokenIconPath && <EthereumIcon />}
+      {network === 'ARWEAVE' && !tokenIconPath && <ArweaveIcon />}
+      {tokenIconPath && <img src={tokenIconPath}/>}
     </>
   )
 
-  return { SendValue, TokenIcon }
+  return { SendValue, TokenIcon, customTokenRecipient }
 }
 
 export default useSendValue

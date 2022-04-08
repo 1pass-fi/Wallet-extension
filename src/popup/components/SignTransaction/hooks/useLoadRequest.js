@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import { get } from 'lodash'
 
 import storage from 'services/storage'
+import validateToken from 'utils/erc20/validateToken'
+
+import helper from './helper'
 
 const useLoadRequest = () => {
   const [requestPayload, setRequestPayload] = useState(null)
@@ -9,13 +12,13 @@ const useLoadRequest = () => {
   const [origin, setOrigin] = useState(null)
   const [requestId, setRequestId] = useState(null)
   const [favicon, setFavicon] = useState(null)
-  const [isContractDeployment, setIsContractDeployment] = useState(false)
-  const [isMintCollectibles, setIsMintCollectibles] = useState(false)
+
+  const [transactionType, setTransactionType] = useState(null)
   
   useEffect(() => {
-    storage.generic.get.pendingRequest().then(request => {
-      console.log('request data', request)
-
+    const loadRequest = async () => {
+      const request = await storage.generic.get.pendingRequest()
+  
       const requestPayload = get(request, 'data.requestPayload')
       const network = get(request, 'data.network')
       const origin = get(request, 'data.origin')
@@ -26,14 +29,23 @@ const useLoadRequest = () => {
       const to = get(requestPayload, 'to')
       const data = get(requestPayload, 'data')
 
+      let transactionType
+      if (network === 'ETHEREUM') {
+        transactionType = await helper.getEthereumTransactionType(requestPayload)
+      }
+      if (network === 'ARWEAVE') {
+        transactionType = await helper.getArweaveTransactionType(requestPayload)
+      }
+
       setRequestPayload(requestPayload)
       setNetwork(network)
       setOrigin(origin)
       setRequestId(requestId)
       setFavicon(favicon)
-      setIsContractDeployment(!value && !to)
-      setIsMintCollectibles(data && !value)
-    })
+      setTransactionType(transactionType)
+    }
+
+    loadRequest()
   }, [])
 
   return { 
@@ -42,8 +54,7 @@ const useLoadRequest = () => {
     origin, 
     requestId, 
     favicon,
-    isContractDeployment,
-    isMintCollectibles
+    transactionType
   }
 }
 

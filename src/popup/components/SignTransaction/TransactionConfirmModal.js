@@ -30,25 +30,35 @@ import useLoadRequest from './hooks/useLoadRequest'
 import useMethod from './hooks/useMethod'
 import useSendValue from './hooks/useSendValue'
 
-const TransactionConfirmModal = ({
-  onClose,
-  setIsLoading,
-  setError,
-  setShowSigning
-}) => {
+import { TRANSACTION_TYPE, TAB } from './hooks/constants'
+
+const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigning }) => {
+  const [tab, setTab] = useState(TAB.DETAIL)
+
   const price = useSelector((state) => state.price)
-  const { 
-    transactionPayload, 
-    network, 
-    origin, 
-    requestId, 
-    favicon, 
-    isContractDeployment, 
-    isMintCollectibles 
+  const {
+    transactionPayload,
+    network,
+    origin,
+    requestId,
+    favicon,
+    transactionType
   } = useLoadRequest()
+
   const [Fee] = useGetFee({ network, transactionPayload })
-  const { onSubmitTransaction, onRejectTransaction } = useMethod({ setIsLoading, requestId, setError, setShowSigning, transactionPayload, network })
-  const { SendValue, TokenIcon } = useSendValue({ network, transactionPayload })
+  const { onSubmitTransaction, onRejectTransaction } = useMethod({
+    setIsLoading,
+    requestId,
+    setError,
+    setShowSigning,
+    transactionPayload,
+    network
+  })
+  const { SendValue, TokenIcon, customTokenRecipient } = useSendValue({
+    network,
+    transactionPayload,
+    transactionType
+  })
 
   return (
     <div className="w-full h-full z-51 m-auto top-0 left-0 fixed flex flex-col items-center">
@@ -56,128 +66,144 @@ const TransactionConfirmModal = ({
         className="relative bg-white shadow-md rounded m-auto flex flex-col items-center"
         style={{ width: '381px', height: '453px' }}
       >
-        {/* TOP BUTTONS */}
-        <div
-          className="relative bg-blue-800 w-full flex items-center justify-center"
-          style={{ height: '67px' }}
-        >
-          <BackIcon
-            style={{ width: '30px', height: '30px' }}
-            className="absolute top-4 left-4 cursor-pointer"
-            onClick={onClose}
-          />
-          <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-            Confirm Transaction
-          </div>
-          <CloseIcon
-            style={{ width: '30px', height: '30px' }}
-            className="absolute top-4 right-4 cursor-pointer"
-            onClick={onClose}
-          />
-        </div>
-
-
-        {/* TEXT */}
-        <div
-          className="mt-7 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center"
-          style={{
-            width: '288px'
-          }}
-        >
-          Double check the details. This transaction cannot be undone.
-        </div>
-
-
-        {/* TRANSACTION TITLE */}
-        <div
-          className="mt-3 text-sm leading-6 tracking-finnieSpacing-wide text-indigo text-center"
-          style={{
-            width: '288px'
-          }}
-        >
-          {isContractDeployment && 'Transaction Deployment'}
-          {isMintCollectibles && !isContractDeployment && 'Mint Collectibles'}
-          {!isContractDeployment && !isMintCollectibles && network === 'ETHEREUM' && 'Transfer ETH'}
-          {!isContractDeployment && !isMintCollectibles && network === 'ARWEAVE' && 'Transfer AR'}
-        </div>
-
-        
-        {/* TRANSACTION DATA */}
-        <div className="mt-8 grid grid-cols-2 gap-5">
-
-          {/* SENDER */}
-          <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
-            <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
-              From:
+        <div className="w-full flex flex-col">
+          {/* TOP BUTTONS */}
+          <div
+            className="relative bg-blue-800 w-full flex items-center justify-center"
+            style={{ height: '67px' }}
+          >
+            <BackIcon
+              style={{ width: '30px', height: '30px' }}
+              className="absolute top-4 left-4 cursor-pointer"
+              onClick={onClose}
+            />
+            <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
+              Confirm Transaction
             </div>
-            <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
-              {getDisplayAddress(get(transactionPayload, 'from'))}
-            </div>
+            <CloseIcon
+              style={{ width: '30px', height: '30px' }}
+              className="absolute top-4 right-4 cursor-pointer"
+              onClick={onClose}
+            />
           </div>
 
+          {/* NAVIGATION TAB */}
+          <div className="w-full flex text-base">
+            <div
+              style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
+              className="w-47.5 h-9.5 flex justify-center items-center"
+            >
+              Details
+            </div>
+            <div
+              style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
+              className="w-47.5 h-9.5 flex justify-center items-center"
+            >
+              Data
+            </div>
+          </div>
+        </div>
 
-          {/* VALUE */}
-          {!isContractDeployment && !isMintCollectibles &&
+        <div
+          className="overflow-y-scroll flex flex-col items-center w-full px-4.5"
+          style={{ height: '348px' }}
+        >
+          {/* TEXT */}
+          <div className="w-full mt-5 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center">
+            Double check the details. This transaction cannot be undone.
+          </div>
+
+          {/* TRANSACTION TITLE */}
+          <div className="w-full mt-3 text-sm leading-6 tracking-finnieSpacing-wide text-indigo text-center">
+            {transactionType === TRANSACTION_TYPE.CONTRACT_DEPLOYMENT && 'Contract Deployment'}
+            {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION && 'Contract Interaction'}
+            {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER &&
+              network === 'ETHEREUM' &&
+              'Transfer ETH'}
+            {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER &&
+              network === 'ARWEAVE' &&
+              'Transfer AR'}
+            {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && 'Transfer Token'}
+          </div>
+
+          {/* TRANSACTION DATA */}
+          <div className="mt-4 grid grid-cols-2 gap-5">
+            {/* SENDER */}
             <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
               <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
-              Sending:
-              </div>
-              <div>
-                <div className="flex items-center text-lg leading-10 tracking-finnieSpacing-tightest text-blue-800">
-                  <SendValue />
-                  <div className='ml-1 w-4 h-4'><TokenIcon /></div>
-                  {/* <EthereumIcon className="ml-1 w-4 h-4" /> */}
-                </div>
-                {/* <div className="text-2xs tracking-finnieSpacing-tightest text-blueGray-800">
-                  ${fiatCurrencyFormat(qty * price.ETH)} USD
-                </div> */}
-              </div>
-            </div>  
-          }
-
-
-          {/* RECIPIENT */}
-          {!isContractDeployment && !isMintCollectibles &&
-            <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
-              <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
-              To:
+                From:
               </div>
               <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
-                {getDisplayAddress(get(transactionPayload, 'to'))}
+                {getDisplayAddress(get(transactionPayload, 'from'))}
               </div>
-            </div>  
-          }
-
-
-          {/* TRANSACTION FEE */}
-          <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
-            <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
-              Estimated Costs:
             </div>
-            <div className="text-11px leading-5 text-blue-800"><Fee /></div>
-            <div className="text-2xs leading-3 tracking-finnieSpacing-wider text-success-700">
-              Transaction Fee
+
+            {/* VALUE */}
+            {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
+              transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
+              <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
+                <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
+                  Sending:
+                </div>
+                <div>
+                  <div className="flex items-center text-lg leading-10 tracking-finnieSpacing-tightest text-blue-800">
+                    <SendValue />
+                    <div className="ml-1 w-4 h-4">
+                      <TokenIcon />
+                    </div>
+                    {/* <EthereumIcon className="ml-1 w-4 h-4" /> */}
+                  </div>
+                  {/* <div className="text-2xs tracking-finnieSpacing-tightest text-blueGray-800">
+                  ${fiatCurrencyFormat(qty * price.ETH)} USD
+                </div> */}
+                </div>
+              </div>
+            )}
+
+            {/* RECIPIENT */}
+            {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
+              transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
+              <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
+                <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
+                  To:
+                </div>
+                <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
+                  {getDisplayAddress(customTokenRecipient || get(transactionPayload, 'to'))}
+                </div>
+              </div>
+            )}
+
+            {/* TRANSACTION FEE */}
+            <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
+              <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
+                Estimated Costs:
+              </div>
+              <div className="text-11px leading-5 text-blue-800">
+                <Fee />
+              </div>
+              <div className="text-2xs leading-3 tracking-finnieSpacing-wider text-success-700">
+                Transaction Fee
+              </div>
             </div>
           </div>
-        </div>
 
-
-        {/* BUTTONS */}
-        <div className="absolute bottom-7.25 w-full flex justify-between px-4.5">
-          <button
-            onClick={onRejectTransaction}
-            className="bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800"
-            style={{ width: '160px', height: '38px' }}
-          >
-            Reject
-          </button>
-          <button
-            onClick={onSubmitTransaction}
-            className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
-            style={{ width: '160px', height: '38px' }}
-          >
-            Confirm
-          </button>
+          {/* BUTTONS */}
+          <div className="w-full flex justify-between mt-2 mb-4">
+            <button
+              onClick={onRejectTransaction}
+              className="bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800"
+              style={{ width: '160px', height: '38px' }}
+            >
+              Reject
+            </button>
+            <button
+              onClick={onSubmitTransaction}
+              className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
+              style={{ width: '160px', height: '38px' }}
+            >
+              Confirm
+            </button>
+          </div>
         </div>
       </div>
     </div>

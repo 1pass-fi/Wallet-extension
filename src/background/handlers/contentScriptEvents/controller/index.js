@@ -18,6 +18,7 @@ import createDID from './createDID'
 import updateDID from './updateDID'
 import signature from './signature'
 import ethereumRpcRequest from './ethereumRpcRequest'
+import signArweaveTransaction from './signArweaveTransaction'
 import testEthereum from './testEthereum'
 
 export default {
@@ -41,5 +42,6 @@ export default {
   updateDID,
   signature,
   ethereumRpcRequest,
+  signArweaveTransaction,
   testEthereum
 }
