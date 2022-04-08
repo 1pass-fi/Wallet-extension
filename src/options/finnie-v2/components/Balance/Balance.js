@@ -42,7 +42,7 @@ const Balance = ({ account }) => {
         </>
       )}
       <div
-        className="bg-trueGray-100 rounded-r-lg flex items-center justify-center"
+        className="bg-trueGray-100 rounded-r-lg flex items-center justify-center cursor-pointer"
         style={{ width: '32px', height: '32px' }}
       >
         <RefreshIcon />
