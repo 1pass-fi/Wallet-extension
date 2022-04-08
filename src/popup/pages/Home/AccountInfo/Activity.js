@@ -96,6 +96,7 @@ const Activity = () => {
           accountName={activity.accountName}
           seen={true}
           expired={activity.expired}
+          network={activity.network}
           setDeleteTransactionModalStatus={setDeleteTransactionModalStatus}
         />
       ))}
@@ -112,6 +113,7 @@ const Activity = () => {
           currency={'USD'}
           accountName={activity.accountName}
           expired={false}
+          network={activity.network}
           seen={activity.seen}
         />
       ))}

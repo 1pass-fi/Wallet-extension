@@ -133,6 +133,7 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
               currency={'USD'}
               accountName={activity.accountName}
               expired={false}
+              network={activity.network}
               seen={activity.seen}
             />
           ))}
