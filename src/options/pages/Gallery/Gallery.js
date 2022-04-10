@@ -34,9 +34,12 @@ const Gallery = () => {
       id="gallery"
       className="w-full flex justify-center items-center scroll"
       onScroll={handleScroll}
-      style={{ height: '85vh', overflow: 'auto' }}
+      style={{ height: '85vh', overflow: 'scroll' }}
     >
-      <div className="grid h-full grid-cols-1 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-5 place-items-center">
+      <div
+        className="grid h-full grid-cols-1 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-5 place-items-center"
+        style={{ minHeight: '86vh' }}
+      >
         {displayingNfts.map((nft) => (
           <NFTCard nft={nft} key={nft.txId} />
         ))}
