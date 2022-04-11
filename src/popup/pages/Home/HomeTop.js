@@ -23,6 +23,7 @@ import { loadAllAccounts } from 'options/actions/accounts'
 
 // actions
 import { updateEthereumProvider } from 'actions/koi'
+import { setActivities } from 'popup/actions/activities'
 
 const HomeTop = ({
   displayingAccount,
@@ -30,7 +31,8 @@ const HomeTop = ({
   setIsLoading,
   currentProviderAddress,
   setCurrentProviderAddress,
-  updateEthereumProvider
+  updateEthereumProvider,
+  setActivities
 }) => {
   const p = useParallax({
     translateX: [0, 100],
@@ -69,6 +71,10 @@ const HomeTop = ({
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.CHAIN_CHANGED })
       })
+
+      await request.activities.loadActivities({ network: TYPE.ETHEREUM })
+      const activities = await storage.generic.get.allActivities()
+      setActivities(activities)
 
       // update account state
       await dispatch(loadAllAccounts())
@@ -161,4 +167,4 @@ const HomeTop = ({
   )
 }
 
-export default connect(null, { updateEthereumProvider, setIsLoading })(HomeTop)
+export default connect(null, { updateEthereumProvider, setIsLoading, setActivities })(HomeTop)

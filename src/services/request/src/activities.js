@@ -10,8 +10,7 @@ export class ActivityRequest extends Request {
   /**
    * 
    * @param {Object} body request body
-   * @param {Object} body.cursor to do pagination on loading activities
-   * @returns {Object} { activitiesList, nextOwnedCursor, nextRecipientCursor }
+   * @param {Object} body.network
    */
   loadActivities(body) {
     return this.promise(MESSAGES.LOAD_ACTIVITIES, body)
