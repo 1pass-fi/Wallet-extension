@@ -67,6 +67,7 @@ const useTokenList = ({ selectedNetwork, userAddress }) => {
     ethereumToken.name = 'Ether'
     ethereumToken.symbol = 'ETH'
     ethereumToken.decimal = 18
+    setSelectedToken(ethereumToken)
 
     if (isEmpty(importedTokenAddresses)) {
       return [ethereumToken]
@@ -78,7 +79,6 @@ const useTokenList = ({ selectedNetwork, userAddress }) => {
       })
     )
 
-    setSelectedToken(ethereumToken)
     return [ethereumToken, ...customTokenList]
   }
 
