@@ -26,8 +26,6 @@ const useLoadRequest = () => {
       const requestId = get(request, 'data.requestId')
       const favicon = get(request, 'data.favicon')
 
-      const value = get(requestPayload, 'value')
-      const to = get(requestPayload, 'to')
       const data = get(requestPayload, 'data')
 
       let transactionType
@@ -44,6 +42,7 @@ const useLoadRequest = () => {
       setRequestId(requestId)
       setFavicon(favicon)
       setTransactionType(transactionType)
+      setDataString(data)
     }
 
     loadRequest()
