@@ -59,20 +59,20 @@ const ConnectScreen = ({ setError, setIsLoading }) => {
 
       const requestOrigin = get(request, 'data.origin')
       const requestFavicon = get(request, 'data.favicon')
-      const isKoi = get(request, 'data.isKoi')
       const requestId = get(request, 'data.requestId')
       const isEthereum = get(request, 'data.isEthereum')
 
       let accounts = []
       if (!isEthereum) {
         accounts = (await popupAccount.getAllMetadata(TYPE.ARWEAVE)) || []
+        setIsKoi(true)
       } else {
         accounts = (await popupAccount.getAllMetadata(TYPE.ETHEREUM)) || []
+        setIsKoi(false)
       }
 
       setOrigin(requestOrigin)
       setFavicon(requestFavicon)
-      setIsKoi(isKoi)
       setRequestId(requestId)
 
       setAccounts(accounts)
