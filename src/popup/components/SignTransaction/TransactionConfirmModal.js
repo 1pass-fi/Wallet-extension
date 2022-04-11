@@ -45,8 +45,8 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     requestId,
     favicon,
     transactionType,
-    dataString
-  } = useLoadRequest()
+    dataString,
+  } = useLoadRequest({ setIsLoading })
 
   const [Fee] = useGetFee({ network, transactionPayload })
   const { onSubmitTransaction, onRejectTransaction } = useMethod({
@@ -60,7 +60,8 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
   const { SendValue, TokenIcon, customTokenRecipient } = useSendValue({
     network,
     transactionPayload,
-    transactionType
+    transactionType,
+    setIsLoading
   })
 
   return (
@@ -101,28 +102,35 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
 
               } 
               onClick={() => setTab(TAB.DETAIL)} 
-              data-tip={isEmpty(dataString) && `This transaction doesn't contain data`}
             >Details</div>
-            <div style={{boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)'}} className={
-              clsx(
-                'w-47.5 h-9.5 flex justify-center items-center cursor-pointer',
-                tab === TAB.DATA && 'bg-lightBlue font-semibold',
-                isEmpty(dataString) && 'cursor-not-allowed'
-              ) 
-            } onClick={() => {
-              if (!isEmpty(dataString)) setTab(TAB.DATA)
-            }}>Data</div>
+            <div 
+              style={{boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)'}} 
+              className={
+                clsx(
+                  'w-47.5 h-9.5 flex justify-center items-center cursor-pointer',
+                  tab === TAB.DATA && 'bg-lightBlue font-semibold',
+                  isEmpty(dataString) && 'cursor-not-allowed'
+                ) 
+              } onClick={() => {
+                if (!isEmpty(dataString)) setTab(TAB.DATA)
+              }}
+              data-tip={isEmpty(dataString) ? `This transaction doesn't contain data` : ''}
+            >Data</div>
           </div>
         </div>
 
         {/* TRANSACTION DATA */}
         {tab === TAB.DATA && <div
-          className="overflow-y-scroll flex flex-col items-center justify-center w-full px-4.5 py-4.5"
+          className="flex flex-col items-center justify-center w-full px-4.5 py-4.5"
           style={{ height: '348px' }}
         >
-          <div style={{
-            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)'
-          }} className='overflow-y-scroll h-36 w-full'>{dataString}</div>
+          <div 
+            className='h-36 w-full'
+            style={{
+              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)',
+              whiteSpace: 'nowrap',
+              padding: '12px'
+            }} >{dataString}</div>
         </div>}
 
         {/* TRANSACTION DETAIL */}
@@ -207,11 +215,10 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               </div>
             </div>
           </div>
-
         </div>}
 
         {/* BUTTONS */}
-        <div className="w-full flex justify-between mt-2 mb-4">
+        <div style={{width: '350px'}} className="w-full flex justify-between mt-2 mb-4">
           <button
             onClick={onRejectTransaction}
             className="bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800"

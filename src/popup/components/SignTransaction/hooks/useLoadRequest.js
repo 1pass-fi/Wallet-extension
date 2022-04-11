@@ -6,7 +6,7 @@ import validateToken from 'utils/erc20/validateToken'
 
 import helper from './helper'
 
-const useLoadRequest = () => {
+const useLoadRequest = ({ setIsLoading }) => {
   const [requestPayload, setRequestPayload] = useState(null)
   const [network, setNetwork] = useState(null)
   const [origin, setOrigin] = useState(null)
@@ -18,6 +18,7 @@ const useLoadRequest = () => {
   
   useEffect(() => {
     const loadRequest = async () => {
+      setIsLoading(true)
       const request = await storage.generic.get.pendingRequest()
   
       const requestPayload = get(request, 'data.requestPayload')

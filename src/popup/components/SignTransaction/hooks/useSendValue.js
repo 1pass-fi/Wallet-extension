@@ -23,7 +23,7 @@ const fromWeiToEth = (wei) => {
   return wei / 1000000000000000000
 }
 
-const useSendValue = ({ transactionPayload, network, transactionType, userAddress = '0xb076413401172CBB73C082107514De3376E4FF6c' }) => {
+const useSendValue = ({ transactionPayload, network, transactionType, userAddress = '0xb076413401172CBB73C082107514De3376E4FF6c', setIsLoading }) => {
   const [value, setValue] = useState(null)
   const [symbol, setSymbol] = useState(null)
   const [tokenIconPath, setTokenIconPath] = useState(false)
@@ -42,6 +42,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
 
   useEffect(() => {
     const loadValue = async () => {
+      setIsLoading(true)
       const value = get(transactionPayload, 'value')
 
       switch (network) {
@@ -108,6 +109,8 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
           setCustomTokenRecipient(customTokenRecipient)
         }
       }
+
+      setIsLoading(false)
     }
 
     if (transactionPayload && network) loadValue()
