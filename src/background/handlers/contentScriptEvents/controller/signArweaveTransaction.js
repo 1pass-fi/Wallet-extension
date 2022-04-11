@@ -105,7 +105,7 @@ export default async (payload, tab, next) => {
       },
       afterClose: async () => {
         chrome.browserAction.setBadgeText({ text: '' })
-        // await storage.generic.set.pendingRequest({})
+        await storage.generic.set.pendingRequest({})
       }
     })
 

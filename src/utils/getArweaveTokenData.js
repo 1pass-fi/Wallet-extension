@@ -11,10 +11,10 @@ const contractMap = {
     logo: 'koii.svg'
   },
   '-8A6RexFkpfWwuyVO98wzSFZh0d6VJuI-buTJvlwOJQ': {
-    logo: 'ardrive.svg'
+    logo: 'ardrive.png'
   },
   'fE2OcfjlS-sHqG5K8QvxE8wHtcqKxS-YV0bDEgxo-eI': {
-    logo: 'verto.svg'
+    logo: 'verto_1.svg'
   }
 }
 

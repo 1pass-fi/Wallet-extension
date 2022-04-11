@@ -76,19 +76,19 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
             className="relative bg-blue-800 w-full flex items-center justify-center"
             style={{ height: '67px' }}
           >
-            <BackIcon
+            {/* <BackIcon
               style={{ width: '30px', height: '30px' }}
               className="absolute top-4 left-4 cursor-pointer"
               onClick={onClose}
-            />
+            /> */}
             <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
               Confirm Transaction
             </div>
-            <CloseIcon
+            {/* <CloseIcon
               style={{ width: '30px', height: '30px' }}
               className="absolute top-4 right-4 cursor-pointer"
               onClick={onClose}
-            />
+            /> */}
           </div>
 
           {/* NAVIGATION TAB */}
@@ -125,10 +125,9 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
           style={{ height: '348px' }}
         >
           <div 
-            className='h-36 w-full'
+            className='h-56 w-full break-words overflow-y-scroll'
             style={{
               boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)',
-              whiteSpace: 'nowrap',
               padding: '12px'
             }} >{dataString}</div>
         </div>}
@@ -155,7 +154,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
             {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && 'Transfer Token'}
           </div>
 
-          {/* TRANSACTION DATA */}
+          {/* TRANSACTION INFO */}
           <div className="mt-4 grid grid-cols-2 gap-5">
             {/* SENDER */}
             <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>

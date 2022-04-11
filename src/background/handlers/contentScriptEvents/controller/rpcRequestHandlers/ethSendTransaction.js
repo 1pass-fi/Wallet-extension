@@ -15,10 +15,15 @@ import { createWindow } from 'utils/extension'
 export default async (payload, tab, next) => {
   try {
     const params = get(payload, 'data.params')
-    const { favicon, origin, hadPermission } = tab
+    const { favicon, origin, hadPermission, hasPendingRequest } = tab
 
     if (!hadPermission) {
       return next({error: { code: 4100,  data: 'No permissions' }})
+    }
+
+    if (hasPendingRequest) {
+      next({ error: { code: 4001, data: 'Request pending' } })
+      return
     }
     
     const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
@@ -114,7 +119,7 @@ export default async (payload, tab, next) => {
       afterClose: async () => {
         chrome.browserAction.setBadgeText({ text: '' })
         next({ error: { code: 4001, data: 'Request rejected' }})
-        // await storage.generic.set.pendingRequest({})
+        await storage.generic.set.pendingRequest({})
       }
     })
   } catch (err) {
