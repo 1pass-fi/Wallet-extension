@@ -14,6 +14,9 @@ import useMethod from './hooks/useMethod'
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import { getLogoPath } from 'utils/getTokenData'
 
+// constants
+import { TYPE } from 'constants/accountConstants'
+
 import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 import clsx from 'clsx'
 
@@ -87,30 +90,33 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
         <div>Add Token</div>
       </div>
       <div className="overflow-y-scroll" style={{ maxHeight: '168px' }}>
-        {accounts.map((account, idx) => (
-          <div className="grid grid-cols-3 mb-6.5" key={idx}>
-            <div className="flex flex-col">
-              <div className="font-normal text-base leading-5 text-blue-800">
-                {account.accountName}
+        {accounts.map((account, idx) => {
+          if (account.type === TYPE.ETHEREUM)
+            return (
+              <div className="grid grid-cols-3 mb-6.5" key={idx}>
+                <div className="flex flex-col">
+                  <div className="font-normal text-base leading-5 text-blue-800">
+                    {account.accountName}
+                  </div>
+                  <div className="mt-0.5 font-normal text-xs leading-4 tracking-finnieSpacing-wide text-success-700">
+                    {account.address.substring(0, 7)}
+                    ...
+                    {account.address.substring(40, 43)}
+                  </div>
+                </div>
+                <div className="flex justify-center font-normal text-base leading-5 text-blue-800">
+                  {getTokenBalance(account.address)}
+                </div>
+                <div className="flex justify-center">
+                  <CheckBoxLight
+                    disabled={false}
+                    checked={selectedAccounts.includes(account.address)}
+                    onClick={() => handleSelectAccount(account)}
+                  />
+                </div>
               </div>
-              <div className="mt-0.5 font-normal text-xs leading-4 tracking-finnieSpacing-wide text-success-700">
-                {account.address.substring(0, 7)}
-                ...
-                {account.address.substring(40, 43)}
-              </div>
-            </div>
-            <div className="flex justify-center font-normal text-base leading-5 text-blue-800">
-              {getTokenBalance(account.address)}
-            </div>
-            <div className="flex justify-center">
-              <CheckBoxLight
-                disabled={false}
-                checked={selectedAccounts.includes(account.address)}
-                onClick={() => handleSelectAccount(account)}
-              />
-            </div>
-          </div>
-        ))}
+            )
+        })}
       </div>
       <div className="absolute bottom-20 w-full flex">
         <button
