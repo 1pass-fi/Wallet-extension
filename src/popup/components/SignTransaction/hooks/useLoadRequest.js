@@ -12,6 +12,7 @@ const useLoadRequest = () => {
   const [origin, setOrigin] = useState(null)
   const [requestId, setRequestId] = useState(null)
   const [favicon, setFavicon] = useState(null)
+  const [dataString, setDataString] = useState(null)
 
   const [transactionType, setTransactionType] = useState(null)
   
@@ -54,7 +55,8 @@ const useLoadRequest = () => {
     origin, 
     requestId, 
     favicon,
-    transactionType
+    transactionType,
+    dataString
   }
 }
 
