@@ -21,7 +21,7 @@ const Gallery = () => {
 
   const handleScroll = (e) => {
     const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
-    if (bottom) {
+    if (bottom && displayingNfts.length < filteredNfts.length) {
       setDisplayingNfts([
         ...displayingNfts,
         ...filteredNfts.slice(displayingNfts.length, displayingNfts.length + 16)

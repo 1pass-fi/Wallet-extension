@@ -72,7 +72,7 @@ const HomeTop = ({
         chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.CHAIN_CHANGED })
       })
 
-      await request.activities.loadActivities({ network: TYPE.ETHEREUM })
+      await request.activities.loadActivities()
       const activities = await storage.generic.get.allActivities()
       setActivities(activities)
 
