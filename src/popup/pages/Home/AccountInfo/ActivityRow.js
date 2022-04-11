@@ -3,11 +3,13 @@ import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 import { get, includes } from 'lodash'
 
-import { PATH } from 'constants/koiConstants'
+import { PATH, ETH_NETWORK_PROVIDER, URL } from 'constants/koiConstants'
 import { transactionAmountFormat } from 'utils'
 
 import ViewBlockIcon from 'img/v2/view-block.svg'
 import GreenDotIcon from 'img/v2/green-dot.svg'
+
+import formatLongString from 'options/finnie-v2/utils/formatLongString'
 
 const ActivityRow = ({
   activityName,
@@ -127,7 +129,7 @@ const ActivityRow = ({
             {(activityName.includes('Received') || activityName.includes('Sent')) && (
               <div className="text-xs text-blue-800">
                 {activityName.includes('Sent') ? 'to' : 'from'}{' '}
-                <span className="text-success-700">iLyb...o45CQ</span>
+                <span className="text-success-700">{formatLongString(source, 10)}</span>
               </div>
             )}
             <div className="text-xs font-semibold text-blue-800 leading-5">{accountName}</div>
@@ -141,7 +143,7 @@ const ActivityRow = ({
               {get(displayInfo, 'expenseText')}
             </div>
             <div className="text-xs text-success-700">{get(displayInfo, 'dateString')}</div>
-            {!expired ?
+            {!expired ? (
               <a
                 href={displayInfo.blockUrl}
                 target="_blank"
@@ -152,14 +154,23 @@ const ActivityRow = ({
                   <ViewBlockIcon />
                 </div>
                 {!pending ? 'Explore Block' : 'Pending transaction'}
-              </a> :
-              <div onClick={() => {
-                setDeleteTransactionModalStatus({ isShow: true, txInfo: {  
-                  txId: id,
-                  address: source
-                } })
-              }} className='text-xs text-red-finnie underline leading-5 cursor-pointer'>Transaction failed</div>
-            }
+              </a>
+            ) : (
+              <div
+                onClick={() => {
+                  setDeleteTransactionModalStatus({
+                    isShow: true,
+                    txInfo: {
+                      txId: id,
+                      address: source
+                    }
+                  })
+                }}
+                className="text-xs text-red-finnie underline leading-5 cursor-pointer"
+              >
+                Transaction failed
+              </div>
+            )}
           </div>
         </div>
       )}

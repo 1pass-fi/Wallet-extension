@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import clsx from 'clsx'
 import { isEmpty, orderBy } from 'lodash'
 
@@ -8,8 +9,11 @@ import { popupAccount } from 'services/account'
 import ActivityRow from './ActivityRow'
 import ExpiredTxModal from 'popup/components/modals/expiredTxModal'
 
-const Activity = () => {
-  const [activities, setActivities] = useState([])
+import { setActivities } from 'popup/actions/activities'
+
+
+
+const Activity = ({ activities, setActivities }) => {
   const [pendingTransactions, setPendingTransactions] = useState([])
   const [pages, setPages] = useState(1)
   const [deleteTransactionModalStatus, setDeleteTransactionModalStatus] = useState({
@@ -96,6 +100,7 @@ const Activity = () => {
           accountName={activity.accountName}
           seen={true}
           expired={activity.expired}
+          network={activity.network}
           setDeleteTransactionModalStatus={setDeleteTransactionModalStatus}
         />
       ))}
@@ -112,6 +117,7 @@ const Activity = () => {
           currency={'USD'}
           accountName={activity.accountName}
           expired={false}
+          network={activity.network}
           seen={activity.seen}
         />
       ))}
@@ -145,4 +151,10 @@ const Activity = () => {
   )
 }
 
-export default Activity
+const mapStateToProps = (state) => ({
+  activities: state.activities
+})
+
+export default connect(mapStateToProps, {
+  setActivities
+})(Activity)
