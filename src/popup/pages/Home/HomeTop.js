@@ -22,7 +22,7 @@ import Select from 'finnie-v2/components/Select'
 import { loadAllAccounts } from 'options/actions/accounts'
 
 // actions
-import { updateEthereumProvider } from 'actions/koi'
+import { updateEthereumProvider, loadContent } from 'actions/koi'
 import { setActivities } from 'popup/actions/activities'
 
 const HomeTop = ({
@@ -73,15 +73,18 @@ const HomeTop = ({
       })
 
       await request.activities.loadActivities()
+
       const activities = await storage.generic.get.allActivities()
       setActivities(activities)
 
       // update account state
       await dispatch(loadAllAccounts())
+      await dispatch(loadContent())
     } catch (error) {
       console.log('Failed to change provider', error.message)
+    } finally {
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
 
   useEffect(() => {

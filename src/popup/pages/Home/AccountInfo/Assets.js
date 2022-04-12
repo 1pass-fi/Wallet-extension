@@ -2,11 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import clsx from 'clsx'
 import includes from 'lodash/includes'
-import isEmpty from 'lodash/isEmpty'
-
-// actions
-import { loadContent } from 'actions/koi'
-import { setContLoading } from 'actions/continueLoading'
 
 // components
 import NFTCard from 'popup/components/NFTCard'
@@ -14,24 +9,9 @@ import NFTCard from 'popup/components/NFTCard'
 // selectors
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
-const Assets = ({ assets, loadContent, setContLoading, currentProviderAddress }) => {
+const Assets = ({ assets }) => {
   const [filteredAssets, setFilteredAssets] = useState({})
   const displayingAccount = useSelector(getDisplayingAccount)
-
-  useEffect(() => {
-    const handleLoadContent = async () => {
-      try {
-        setContLoading(true)
-        const allNftLoaded = await loadContent()
-        setContLoading(false)
-      } catch (err) {
-        setContLoading(false)
-        setError(err.message)
-      }
-    }
-
-    handleLoadContent()
-  }, [currentProviderAddress])
 
   useEffect(() => {
     let showAssets = []
@@ -75,7 +55,4 @@ const mapStateToProps = (state) => ({
   assets: state.assets
 })
 
-export default connect(mapStateToProps, {
-  loadContent,
-  setContLoading
-})(Assets)
+export default connect(mapStateToProps)(Assets)

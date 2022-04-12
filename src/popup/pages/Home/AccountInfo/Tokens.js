@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import isEmpty from 'lodash/isEmpty'
@@ -7,6 +7,7 @@ import isEmpty from 'lodash/isEmpty'
 import { TYPE } from 'constants/accountConstants'
 import { fiatCurrencyFormat, numberFormat } from 'utils'
 import { fromArToWinston, fromEthToWei } from 'utils'
+import { setIsLoading } from 'popup/actions/loading'
 
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
@@ -22,6 +23,8 @@ import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 import getTokenData from 'utils/getTokenData'
 
 const Tokens = ({ currentProviderAddress }) => {
+  const dispatch = useDispatch()
+
   const displayingAccount = useSelector(getDisplayingAccount)
   const price = useSelector((state) => state.price)
 
@@ -34,6 +37,7 @@ const Tokens = ({ currentProviderAddress }) => {
   const [tokens, setTokens] = useState([])
 
   const loadTokenList = async () => {
+    dispatch(setIsLoading(true))
     if (displayingAccount.type === TYPE.ARWEAVE) {
       setTokens([
         {
@@ -82,6 +86,7 @@ const Tokens = ({ currentProviderAddress }) => {
     )
 
     setTokens(importTokens)
+    dispatch(setIsLoading(false))
   }
 
   useEffect(() => {
