@@ -10,6 +10,8 @@ import RefreshIcon from 'img/popup/refresh-icon.svg'
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import { TYPE } from 'constants/accountConstants'
 
+import { popupBackgroundRequest as request } from 'services/request/popup'
+
 const Balance = ({ account }) => {
   return (
     <div className="min-w-22.5 h-8 flex justify-between items-center pl-2 bg-white bg-opacity-20 rounded text-white shadow">
@@ -44,6 +46,7 @@ const Balance = ({ account }) => {
       <div
         className="bg-trueGray-100 rounded-r-lg flex items-center justify-center cursor-pointer"
         style={{ width: '32px', height: '32px' }}
+        onClick={async () => await request.wallet.loadBalanceAsync()}
       >
         <RefreshIcon />
       </div>
