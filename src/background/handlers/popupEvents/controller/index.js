@@ -34,6 +34,8 @@ import updatePassword from './updatePassword'
 import updateNft from './updateNft'
 import loadBalanceAsync from './loadBalanceAsync'
 import updateEthereumProvider from './updateEthereumProvider'
+import sendCustomTokenEth from './sendCustomTokenEth'
+import sendCustomTokenAr from './sendCustomTokenAr'
 import test from './test'
 
 export default {
@@ -73,5 +75,7 @@ export default {
   updateNft,
   loadBalanceAsync,
   updateEthereumProvider,
+  sendCustomTokenEth,
+  sendCustomTokenAr,
   test
 }

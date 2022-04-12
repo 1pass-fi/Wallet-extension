@@ -141,4 +141,12 @@ export class WalletRequest extends Request {
   loadBalanceAsync(body) {
     return this.promise(MESSAGES.LOAD_BALANCE_ASYNC, body)
   }
+
+  sendCustomTokenEth(body) {
+    return this.promise(MESSAGES.SEND_CUSTOM_TOKEN_ETH, body)
+  }
+
+  sendCustomTokenAr(body) {
+    return this.promise(MESSAGES.SEND_CUSTOM_TOKEN_AR, body)
+  }
 }

@@ -6,9 +6,21 @@ import { ERROR_MESSAGE } from 'constants/koiConstants'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 
 import { fromWeiToEth, fromWinstonToAr } from 'utils'
+import { TRANSACTION_TYPE } from './constants'
 
-const useMethod = ({ setIsLoading, requestId, setError, setShowSigning, transactionPayload, network }) => {
-  const handleSendEth = async (transactionPayload) => {
+const useMethod = ({ 
+  setIsLoading, 
+  requestId, 
+  setError, 
+  setShowSigning, 
+  transactionPayload, 
+  network, 
+  transactionType,
+  contractAddress,
+  value,
+  customTokenRecipient
+}) => {
+  const handleSendEth = async () => {
     let qty = get(transactionPayload, 'value')
     qty = fromWeiToEth(parseInt(qty, 16))
     const target = get(transactionPayload, 'to')
@@ -22,7 +34,7 @@ const useMethod = ({ setIsLoading, requestId, setError, setShowSigning, transact
     })
   }
 
-  const handleSendAr = async (transactionPayload) => {
+  const handleSendAr = async () => {
     let qty = get(transactionPayload, 'value')
     qty = fromWinstonToAr(parseInt(qty))
     const target = get(transactionPayload, 'to')
@@ -34,6 +46,19 @@ const useMethod = ({ setIsLoading, requestId, setError, setShowSigning, transact
       address: source,
       token: 'AR'
     })
+  }
+
+  const handleSendCustomTokenEth = async () => {
+    await request.wallet.sendCustomTokenEth({
+      sender: transactionPayload.from,
+      customTokenRecipient,
+      contractAddress,
+      value
+    })
+  }
+
+  const handleSendCustomTokenAr = async () => {
+
   }
 
   const onSubmitTransaction = async () => {
@@ -56,17 +81,24 @@ const useMethod = ({ setIsLoading, requestId, setError, setShowSigning, transact
         /* 
           Send request to background
         */
-        console.log('send message to background')
         let result
         switch (network) {
           case 'ARWEAVE':
-            result = await handleSendAr(transactionPayload)
+            if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
+              result = await handleSendCustomTokenAr()
+            } else {
+              result = await handleSendAr()
+            }
             break
           case 'ETHEREUM':
-            result = await handleSendEth(transactionPayload)
+            if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
+              result = await handleSendCustomTokenEth()
+            } else {
+              result = await handleSendEth()
+            }
+            break
         }
 
-        console.log('result', result)
         setIsLoading(false)
         setShowSigning(false)
       }

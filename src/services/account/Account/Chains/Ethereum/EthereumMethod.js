@@ -511,7 +511,10 @@ export class EthereumMethod {
   }
 
   async transferToken({ tokenContractAddress, to, value }) {
-    const tokenContract = new this.eth.web3.eth.Contract(ERC20ABI, tokenContractAddress)
+    const provider = await storage.setting.get.ethereumProvider()
+    const web3 = new Web3(provider)
+
+    const tokenContract = new web3.eth.Contract(ERC20ABI, tokenContractAddress)
 
     const decimals = await tokenContract.methods.decimals().call()
     const amount = parseFloat(value) * Math.pow(10, decimals)
@@ -520,7 +523,7 @@ export class EthereumMethod {
       from: this.eth.address,
       to: tokenContractAddress,
       value: amount,
-      data: contract.methods.transfer(to, amount).encodeABI()
+      data: tokenContract.methods.transfer(to, amount).encodeABI()
     }
     const estimateGas = await web3.eth.estimateGas(rawTx)
     rawTx.gas = estimateGas

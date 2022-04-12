@@ -28,6 +28,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
   const [symbol, setSymbol] = useState(null)
   const [tokenIconPath, setTokenIconPath] = useState(false)
   const [customTokenRecipient, setCustomTokenRecipient] = useState(null)
+  const [contractAddress, setContractAddress] = useState(null)
 
   const getSendValueEthereum = (value) => {
     value = fromHexToDecimal(value)
@@ -59,6 +60,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
       if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
         if (network === 'ETHEREUM') {
           const to = get(transactionPayload, 'to')
+          setContractAddress(to) // "to" is contractAddress for eth transaction
           let {     
             logo,
             balance,
@@ -86,7 +88,8 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
 
         if (network === 'ARWEAVE') {
           let tags = decodeTags(get(transactionPayload, 'tags'))
-          const contractAddress = get(tags, 'Contract')          
+          const contractAddress = get(tags, 'Contract')
+          setContractAddress(contractAddress)   
           let {
             logo,
             balance,
@@ -130,7 +133,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
     </>
   )
 
-  return { SendValue, TokenIcon, customTokenRecipient }
+  return { SendValue, TokenIcon, customTokenRecipient, value, contractAddress }
 }
 
 export default useSendValue
