@@ -12,5 +12,5 @@
 }
 
 #gallery > div {
-  min-height: calc(100vh - 158px);
+  min-height: calc(100vh - 155px);
 }
