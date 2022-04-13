@@ -112,6 +112,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
           setTokenIconPath(logo)
           setSymbol(symbol)
           setValue(quantity)
+          setRawValue(quantity)
           setCustomTokenRecipient(customTokenRecipient)
         }
       }
