@@ -16,7 +16,7 @@ const validateAddress = (address) => {
   if (address?.length === 43) return ARWEAVE
 }
 
-const useMethod = ({ sender, recipient, value, contractAddress }) => {
+const useMethod = ({ sender, recipient, value, contractAddress, selectedToken }) => {
   const onSendTokens = async () => {
     const network = validateAddress(sender)
     if (!network) throw new Error('Invalid address')
@@ -48,7 +48,7 @@ const useMethod = ({ sender, recipient, value, contractAddress }) => {
           'payable': false,
           'stateMutability': 'nonpayable',
           'type': 'function'
-        }, [recipient, 0])
+        }, [recipient, (selectedToken.decimal === 1 ? value : (10 ** selectedToken.decimal * value))])
 
         const transactionPayload = {
           from: sender,

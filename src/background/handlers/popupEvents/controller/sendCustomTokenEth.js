@@ -2,7 +2,7 @@ import { backgroundAccount } from 'services/account'
 
 export default async (payload, next) => {
   try {
-    const { sender, customTokenRecipient, contractAddress, value } = payload.data
+    const { sender, customTokenRecipient, contractAddress, value, rawValue } = payload.data
     console.log('payload', { sender, customTokenRecipient, contractAddress, value })
 
     const credential = await backgroundAccount.getCredentialByAddress(sender)
@@ -11,7 +11,7 @@ export default async (payload, next) => {
     const receipt = await account.method.transferToken({ 
       tokenContractAddress: contractAddress,
       to: customTokenRecipient,
-      value
+      value: rawValue
     })
 
     next({ data: receipt })

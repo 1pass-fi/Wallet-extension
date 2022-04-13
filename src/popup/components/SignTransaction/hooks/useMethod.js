@@ -18,7 +18,8 @@ const useMethod = ({
   transactionType,
   contractAddress,
   value,
-  customTokenRecipient
+  customTokenRecipient,
+  rawValue
 }) => {
   const handleSendEth = async () => {
     let qty = get(transactionPayload, 'value')
@@ -53,12 +54,19 @@ const useMethod = ({
       sender: transactionPayload.from,
       customTokenRecipient,
       contractAddress,
-      value
+      value,
+      rawValue
     })
   }
 
   const handleSendCustomTokenAr = async () => {
-
+    await request.wallet.sendCustomTokenAr({
+      sender: transactionPayload.from,
+      customTokenRecipient,
+      contractAddress,
+      value,
+      rawValue
+    })
   }
 
   const onSubmitTransaction = async () => {

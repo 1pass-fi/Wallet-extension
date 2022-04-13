@@ -29,6 +29,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
   const [tokenIconPath, setTokenIconPath] = useState(false)
   const [customTokenRecipient, setCustomTokenRecipient] = useState(null)
   const [contractAddress, setContractAddress] = useState(null)
+  const [rawValue, setRawValue] = useState(null)
 
   const getSendValueEthereum = (value) => {
     value = fromHexToDecimal(value)
@@ -74,6 +75,8 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
           const decode = decodeERC20Transaction(data)
           let quantity = get(decode, 'params[1].value')
           const customTokenRecipient = get(decode, 'params[0].value')
+
+          setRawValue(quantity)
   
           decimal = decimal === 1 ? 0 : decimal
           quantity = quantity / (10 ** decimal)
@@ -133,7 +136,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
     </>
   )
 
-  return { SendValue, TokenIcon, customTokenRecipient, value, contractAddress }
+  return { SendValue, TokenIcon, customTokenRecipient, value, contractAddress, rawValue }
 }
 
 export default useSendValue

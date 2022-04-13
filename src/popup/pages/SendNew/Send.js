@@ -54,7 +54,8 @@ const Send = ({ setShowSigning }) => {
     sender,
     recipient: _recipient,
     value: amount,
-    contractAddress
+    contractAddress,
+    selectedToken
   })
 
   const history = useHistory()

@@ -50,7 +50,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
 
   const [Fee] = useGetFee({ network, transactionPayload })
 
-  const { SendValue, TokenIcon, customTokenRecipient, contractAddress, value } = useSendValue({
+  const { SendValue, TokenIcon, customTokenRecipient, contractAddress, value, rawValue } = useSendValue({
     network,
     transactionPayload,
     transactionType,
@@ -67,6 +67,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     transactionType,
     contractAddress,
     value,
+    rawValue,
     customTokenRecipient
   })
 
