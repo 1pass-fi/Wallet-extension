@@ -522,7 +522,6 @@ export class EthereumMethod {
     const rawTx = {
       from: this.eth.address,
       to: tokenContractAddress,
-      value,
       data: tokenContract.methods.transfer(to, value).encodeABI()
     }
     const estimateGas = await web3.eth.estimateGas(rawTx)
