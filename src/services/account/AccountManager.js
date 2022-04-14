@@ -41,7 +41,7 @@ class AccountManager {
   }
 
   /**
-   * 
+   *
    * @param {Object} credentials
    * @param {Object} credentials.key Wallet key
    * @param {String} credentials.address Wallet address
@@ -55,9 +55,11 @@ class AccountManager {
       // const provider = await this.#getProviderFromAddress(get(credentials, 'address'))
 
       // const provider = 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
-      const provider = (await storage.setting.get.ethereumProvider()) || 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
+      const provider =
+        (await storage.setting.get.ethereumProvider()) ||
+        'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
 
-      switch(type) {
+      switch (type) {
         case TYPE.ARWEAVE:
           return new ArweaveAccount(credentials)
         case TYPE.ETHEREUM:
@@ -75,15 +77,19 @@ class AccountManager {
   async getAllAccounts(network) {
     try {
       if (!network) {
-        const allAccounts = await Promise.all(this.importedAccount.map(async credentials => {
-          return await this.getAccount(credentials)
-        }))
+        const allAccounts = await Promise.all(
+          this.importedAccount.map(async (credentials) => {
+            return await this.getAccount(credentials)
+          })
+        )
         return allAccounts
       } else {
         let accounts
         console.log('importedAccount', this.importedAccount)
-        accounts = this.importedAccount.filter(a => a.type === network)
-        accounts = await Promise.all(accounts.map(async credentials => await this.getAccount(credentials)))
+        accounts = this.importedAccount.filter((a) => a.type === network)
+        accounts = await Promise.all(
+          accounts.map(async (credentials) => await this.getAccount(credentials))
+        )
         return accounts
       }
     } catch (err) {
@@ -92,17 +98,17 @@ class AccountManager {
   }
 
   /**
-   * 
-   * @param {String} address 
+   *
+   * @param {String} address
    * @returns {String} walletType TYPE.ARWEAVE or TYPE.ETHEREUM
    */
   async getType(address) {
     try {
       const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE)
       const importedEthereum = await this.storage._getChrome(IMPORTED.ETHEREUM)
-  
-      if (find(importedArweave, v => v.address == address)) return TYPE.ARWEAVE
-      if (find(importedEthereum, v => v.address == address)) return TYPE.ETHEREUM
+
+      if (find(importedArweave, (v) => v.address == address)) return TYPE.ARWEAVE
+      if (find(importedEthereum, (v) => v.address == address)) return TYPE.ETHEREUM
     } catch (err) {
       err.message
     }
@@ -116,9 +122,9 @@ class AccountManager {
    */
   async loadImported() {
     try {
-      const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []
-      const importedEthereum = await this.storage._getChrome(IMPORTED.ETHEREUM) || []
-  
+      const importedArweave = (await this.storage._getChrome(IMPORTED.ARWEAVE)) || []
+      const importedEthereum = (await this.storage._getChrome(IMPORTED.ETHEREUM)) || []
+
       this.importedAccount = [...importedArweave, ...importedEthereum]
     } catch (err) {
       console.log(err.message)
@@ -133,16 +139,16 @@ class AccountManager {
    */
   async count(network) {
     try {
-      const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []
-      const importedEthereum = await this.storage._getChrome(IMPORTED.ETHEREUM) || []
-      
-      switch(network) {
+      const importedArweave = (await this.storage._getChrome(IMPORTED.ARWEAVE)) || []
+      const importedEthereum = (await this.storage._getChrome(IMPORTED.ETHEREUM)) || []
+
+      switch (network) {
         case TYPE.ARWEAVE:
           return importedArweave.length
         case TYPE.ETHEREUM:
           return importedEthereum.length
       }
-      
+
       return importedArweave.length + importedEthereum.length
     } catch (err) {
       console.log(err.message)
@@ -154,10 +160,10 @@ class AccountManager {
    * The reason why we need this function is to handle the situation of when the user has only Ethereum wallet imported.
    * If there's an imported Ethereum wallet, and no imported Arweave wallet, we have to hide some functionalities that will work
    * with Arweave only.
-   * @returns {Boolean} hasArweave 
+   * @returns {Boolean} hasArweave
    */
   async hasArweave() {
-    const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []
+    const importedArweave = (await this.storage._getChrome(IMPORTED.ARWEAVE)) || []
     return !isEmpty(importedArweave)
   }
 
@@ -165,9 +171,7 @@ class AccountManager {
     const metadata = await this.storage._getChrome(address)
     return get(metadata, ACCOUNT.PROVIDER)
   }
-
 }
-
 
 /* 
   This class will be used to get data for accounts on UI code.  
@@ -178,7 +182,7 @@ export class PopupAccountManager extends AccountManager {
   }
 
   /**
-   * 
+   *
    * @param {Object} credentials
    * @param {String} credentials.address wallet address
    * @returns {Account} account
@@ -186,7 +190,7 @@ export class PopupAccountManager extends AccountManager {
   async getAccount(credentials) {
     try {
       const { address } = credentials
-  
+
       return new Account(address)
     } catch (err) {
       console.log(err.message)
@@ -194,14 +198,14 @@ export class PopupAccountManager extends AccountManager {
   }
 
   /**
-   * 
+   *
    * @param {String} network TYPE.ARWEAVE or TYPE.ETHEREUM
-   * @returns 
+   * @returns
    */
   async getAllMetadata(network) {
     try {
       const allAccounts = await this.getAllAccounts(network)
-      return await Promise.all(allAccounts.map(async account => await account.get.metadata()))
+      return await Promise.all(allAccounts.map(async (account) => await account.get.metadata()))
     } catch (err) {
       console.log(err.message)
     }
@@ -209,7 +213,7 @@ export class PopupAccountManager extends AccountManager {
 
   /**
    * Return an array of all assets and pendingAssets
-   * @returns 
+   * @returns
    */
   async getAllAssets() {
     try {
@@ -217,8 +221,8 @@ export class PopupAccountManager extends AccountManager {
       let allAssets = []
       for (let i = 0; i < allAccounts.length; i++) {
         const account = allAccounts[i]
-        const assets = await account.get.assets() || []
-        const pendingAssets = await account.get.pendingAssets() || []
+        const assets = (await account.get.assets()) || []
+        const pendingAssets = (await account.get.pendingAssets()) || []
         allAssets = [...allAssets, ...assets, ...pendingAssets]
       }
 
@@ -232,11 +236,12 @@ export class PopupAccountManager extends AccountManager {
     try {
       const allAccounts = await this.getAllAccounts()
       let allCollectionNfts = []
-      await Promise.all(allAccounts.map(async account => {
-        const collections = await account.get.collectionNfts() || []
-        allCollectionNfts = [...allCollectionNfts, ...collections]
-
-      }))
+      await Promise.all(
+        allAccounts.map(async (account) => {
+          const collections = (await account.get.collectionNfts()) || []
+          allCollectionNfts = [...allCollectionNfts, ...collections]
+        })
+      )
 
       return allCollectionNfts
     } catch (err) {
@@ -248,10 +253,12 @@ export class PopupAccountManager extends AccountManager {
     try {
       const allAccounts = await this.getAllAccounts()
       let allCollections = []
-      await Promise.all(allAccounts.map(async account => {
-        const collections = await account.get.collections() || []
-        allCollections = [...allCollections, ...collections]
-      }))
+      await Promise.all(
+        allAccounts.map(async (account) => {
+          const collections = (await account.get.collections()) || []
+          allCollections = [...allCollections, ...collections]
+        })
+      )
 
       return allCollections
     } catch (err) {
@@ -263,10 +270,12 @@ export class PopupAccountManager extends AccountManager {
     try {
       const allAccounts = await this.getAllAccounts()
       let allPendingTransactions = []
-      await Promise.all(allAccounts.map(async account => {
-        const transactions = await account.get.pendingTransactions() || []
-        allPendingTransactions = [...allPendingTransactions, ...transactions]
-      }))
+      await Promise.all(
+        allAccounts.map(async (account) => {
+          const transactions = (await account.get.pendingTransactions()) || []
+          allPendingTransactions = [...allPendingTransactions, ...transactions]
+        })
+      )
 
       return allPendingTransactions
     } catch (err) {
@@ -305,8 +314,9 @@ export class BackgroundAccountManager extends AccountManager {
           chain = IMPORTED.ETHEREUM
       }
 
-      importedWallets = await this.storage._getChrome(chain) || []
-      if (!find(importedWallets, v => v.address == address)) importedWallets.push({ address, encryptedKey, type })
+      importedWallets = (await this.storage._getChrome(chain)) || []
+      if (!find(importedWallets, (v) => v.address == address))
+        importedWallets.push({ address, encryptedKey, type })
       await this.storage._setChrome(chain, importedWallets) // save to wallets array
 
       const newImported = { address, key, type }
@@ -329,8 +339,8 @@ export class BackgroundAccountManager extends AccountManager {
           chain = IMPORTED.ETHEREUM
       }
 
-      importedWallets = await this.storage._getChrome(chain) || []
-      importedWallets = importedWallets.filter(payload => address !== payload.address)
+      importedWallets = (await this.storage._getChrome(chain)) || []
+      importedWallets = importedWallets.filter((payload) => address !== payload.address)
       await this.storage._setChrome(chain, importedWallets)
 
       await this.storage._removeChrome(address)
@@ -382,12 +392,14 @@ export class BackgroundAccountManager extends AccountManager {
     try {
       if (password) {
         await this.loadImported()
-        this.importedAccount = await Promise.all(this.importedAccount.map(async credentials => {
-          const decryptedKey = await passworder.decrypt(password, credentials.encryptedKey)
-          credentials['key'] = decryptedKey
+        this.importedAccount = await Promise.all(
+          this.importedAccount.map(async (credentials) => {
+            const decryptedKey = await passworder.decrypt(password, credentials.encryptedKey)
+            credentials['key'] = decryptedKey
 
-          return credentials
-        }))
+            return credentials
+          })
+        )
       } else {
         throw new Error(ERROR_MESSAGE.PASSWORD_REQUIRED)
       }
@@ -402,12 +414,12 @@ export class BackgroundAccountManager extends AccountManager {
   }
 
   async removeFromImported(address) {
-    this.importedAccount = this.importedAccount.filter(account => account.address !== address)
+    this.importedAccount = this.importedAccount.filter((account) => account.address !== address)
   }
 
   async getCredentialByAddress(address) {
     try {
-      return find(this.importedAccount, v => v.address == address)
+      return find(this.importedAccount, (v) => v.address == address)
     } catch (err) {
       console.log(err.message)
     }
@@ -417,7 +429,7 @@ export class BackgroundAccountManager extends AccountManager {
     try {
       const type = await this.getType(address)
       let importedWallets
-      switch(type) {
+      switch (type) {
         case TYPE.ARWEAVE:
           importedWallets = await this.storage._getChrome(IMPORTED.ARWEAVE)
           break
@@ -425,9 +437,8 @@ export class BackgroundAccountManager extends AccountManager {
           importedWallets = await this.storage._getChrome(IMPORTED.ETHEREUM)
       }
 
-      const wallet = find(importedWallets, v => v.address == address)
+      const wallet = find(importedWallets, (v) => v.address == address)
       if (wallet) return get(wallet, 'encryptedKey')
-
     } catch (err) {
       console.log(err.message)
     }
@@ -443,16 +454,18 @@ export class BackgroundAccountManager extends AccountManager {
   */
   async removeConnectedSite() {
     try {
-      const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE) || []
-      const importedEthereum = await this.storage._getChrome(IMPORTED.ETHEREUM) || []
+      const importedArweave = (await this.storage._getChrome(IMPORTED.ARWEAVE)) || []
+      const importedEthereum = (await this.storage._getChrome(IMPORTED.ETHEREUM)) || []
 
       const allCredentials = [...importedArweave, ...importedEthereum]
 
-      await Promise.all(allCredentials.map(async credential => {
-        const data = await this.storage._getChrome(credential.address)
-        data[ACCOUNT.CONNECTED_SITE] = []
-        await this.storage._setChrome(credential.address, data)
-      }))
+      await Promise.all(
+        allCredentials.map(async (credential) => {
+          const data = await this.storage._getChrome(credential.address)
+          data[ACCOUNT.CONNECTED_SITE] = []
+          await this.storage._setChrome(credential.address, data)
+        })
+      )
     } catch (err) {
       console.log(err.message)
     }

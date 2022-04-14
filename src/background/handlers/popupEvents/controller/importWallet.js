@@ -19,7 +19,6 @@ import { setActivatedAccountAddress } from 'utils'
 // helpers
 import helpers from 'background/helpers'
 
-
 export default async (payload, next) => {
   try {
     /* 
@@ -27,9 +26,9 @@ export default async (payload, next) => {
     */
     let { key: keyOrSeedphrase, password, type, provider } = payload.data
     let address, walletKey, seedphrase
-  
+
     let account
-  
+
     /* 
       Determine if have seedphrase
     */
@@ -42,7 +41,7 @@ export default async (payload, next) => {
         if (totalWords.length === 12) seedphrase = keyOrSeedphrase
       }
     }
-  
+
     /* 
       Password validation
       - If no imported account -> skip
@@ -61,11 +60,11 @@ export default async (payload, next) => {
         return
       }
     }
-  
+
     /* 
       Create new account on storage
     */
-    switch(type) {
+    switch (type) {
       case TYPE.ARWEAVE:
         address = await ArweaveAccount.utils.loadWallet(koi, keyOrSeedphrase)
         walletKey = koi.wallet
@@ -75,21 +74,21 @@ export default async (payload, next) => {
         walletKey = eth.key
         break
     }
-  
+
     // if account existed -> send error
-    const accountExist = !backgroundAccount.importedAccount.every(credentials => {
+    const accountExist = !backgroundAccount.importedAccount.every((credentials) => {
       return credentials.address !== address
     })
-  
+
     if (accountExist) {
-      next({ error: ERROR_MESSAGE.ACCOUNT_EXIST })  
+      next({ error: ERROR_MESSAGE.ACCOUNT_EXIST })
       return
     }
-  
+
     await backgroundAccount.createAccount(address, walletKey, password, type)
-            
+
     account = await backgroundAccount.getAccount({ address, key: walletKey })
-  
+
     /* 
       Set seedPhrase field if any
     */
@@ -97,20 +96,19 @@ export default async (payload, next) => {
       const encryptedPhrase = await passworder.encrypt(password, seedphrase)
       await account.set.seedPhrase(encryptedPhrase)
     }
-  
+
     /* 
       Set the provider if any (ethereum wallet will habe)
     */
     const providerUrl = getProviderUrlFromName(provider)
     if (provider) await account.set.provider(providerUrl)
-    
-  
+
     /* 
       Get a default name for this account
     */
     const totalAccounts = await backgroundAccount.count()
     await account.set.accountName(`Account#${totalAccounts}`)
-  
+
     /* 
       If total account = 1, set this accountAddress to activatedAccountAddress
     */
@@ -127,17 +125,17 @@ export default async (payload, next) => {
     if (totalEthereumAccounts == 1 && type === TYPE.ETHEREUM) {
       await setActivatedAccountAddress(await account.get.address(), type)
     }
-           
+
     /* 
       Get balance for this account
     */
     helpers.loadBalances()
-  
+
     helpers.loadActivities()
 
     next({ data: address })
   } catch (err) {
     console.error(err.message)
-    next({ error: err.message })    
+    next({ error: err.message })
   }
 }
