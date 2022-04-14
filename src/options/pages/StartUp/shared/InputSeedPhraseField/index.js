@@ -19,7 +19,7 @@ export default ({
   seedPhraseError,
   setSeedPhraseError,
   walletType,
-  setIsSeedPhrase,
+  setIsSeedPhrase
 }) => {
   const [isShow, setIsShow] = useState(true)
   const [suggestWords, setSuggestWords] = useState([])
@@ -216,23 +216,24 @@ export default ({
         </div>
       </div>
 
-      {walletType === TYPE.ETHEREUM && (
-        <div className='import-private-key'>
-          Have a private key?{' '}
-          <span
-            onClick={() => {
-              setIsSeedPhrase(false)
-            }}
-            className='import-private-key-link'
-          >
-            Import it instead.
-          </span>
-        </div>
-      )}
+      {walletType === TYPE.ETHEREUM ||
+        (TYPE.SOLANA && (
+          <div className="import-private-key">
+            Have a private key?{' '}
+            <span
+              onClick={() => {
+                setIsSeedPhrase(false)
+              }}
+              className="import-private-key-link"
+            >
+              Import it instead.
+            </span>
+          </div>
+        ))}
 
       {!isEmpty(seedPhraseError) ? (
-        <div className='error-message'>
-          <SeedPhraseErrorIcon className='seed-phrase-error-icon' />
+        <div className="error-message">
+          <SeedPhraseErrorIcon className="seed-phrase-error-icon" />
           {seedPhraseError}
         </div>
       ) : (

@@ -28,7 +28,8 @@ export const ADDRESSES = {
 
 export const TYPE = {
   ARWEAVE: 'TYPE_ARWEAVE',
-  ETHEREUM: 'TYPE_ETHEREUM'
+  ETHEREUM: 'TYPE_ETHEREUM',
+  SOLANA: 'TYPE_SOLANA'
 }
 
 export const IMPORTED = {

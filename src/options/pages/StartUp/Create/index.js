@@ -7,6 +7,7 @@ import shuffle from 'lodash/shuffle'
 
 import EthereumLogo from 'img/startup/ethereum-logo.svg'
 import FinnieLogo from 'img/startup/finnie-logo.svg'
+import SolanaLogo from 'img/startup/solana-logo.svg'
 import DangerousIcon from 'img/startup/dangerous-icon.svg'
 import LockIcon from 'img/startup/lock-icon.svg'
 import ShareIcon from 'img/startup/share-icon.svg'
@@ -17,7 +18,7 @@ import ConfirmPassword from '../shared/ConfirmPassword'
 import InputPassword from '../shared/InputPassword'
 import Loading from '../shared/Loading'
 import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
-import { SHOW_ETHEREUM } from 'constants/koiConstants'
+import { SHOW_ETHEREUM, SHOW_SOLANA } from 'constants/koiConstants'
 
 import isEmpty from 'lodash/isEmpty'
 
@@ -88,6 +89,7 @@ export default () => {
     Generate 12 words phrase for new wallet.
   */
   const generateSeedPhare = async () => {
+    // TODO LongP - create SOL key
     await setIsLoading(true)
     /* 
       Expected to receive an array of 12 words phrase. ['summer', 'vacation',...]
@@ -217,6 +219,13 @@ export default () => {
                 )}
                 selected={walletType === TYPE.ETHEREUM}
                 onClick={() => setWalletType(TYPE.ETHEREUM)}
+              />}
+
+              {SHOW_SOLANA && <WalletType
+                icon={SolanaLogo}
+                title={(props) => <div {...props}>Solana Key</div>}
+                selected={walletType === TYPE.SOLANA}
+                onClick={() => setWalletType(TYPE.SOLANA)}
               />}
             </div>
             <button

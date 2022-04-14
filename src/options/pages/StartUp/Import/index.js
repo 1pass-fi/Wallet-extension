@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import EthereumLogo from 'img/startup/ethereum-logo.svg'
 import FinnieLogo from 'img/startup/finnie-logo.svg'
+import SolanaLogo from 'img/startup/solana-logo.svg'
 
 import WalletType from '../shared/WalletType'
 import ConfirmPassword from '../shared/ConfirmPassword'
@@ -16,7 +17,7 @@ import useEthereumNetworks from '../shared/useEthereumNetworks'
 import { GalleryContext } from 'options/galleryContext'
 import InputPassword from '../shared/InputPassword'
 import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
-import { SHOW_ETHEREUM } from 'constants/koiConstants'
+import { SHOW_ETHEREUM, SHOW_SOLANA } from 'constants/koiConstants'
 import HasTwelveSeedPhrase from 'options/modal/HasTwelveSeedPhrase'
 
 import isEmpty from 'lodash/isEmpty'
@@ -56,7 +57,7 @@ export default () => {
     setShowFormError(false)
     if (step === 1) {
       history.push('/')
-    } else if (step === 3 && walletType === TYPE.ARWEAVE) {
+    } else if ((step === 3 && walletType === TYPE.ARWEAVE) || walletType === TYPE.SOLANA) {
       setStep(1)
     } else {
       setStep(step - 1)
@@ -68,7 +69,7 @@ export default () => {
 
     // if a user re-selects Wallet Type, set isSeedPhrase to TRUE to ensure that the Private Key is not displayed on import Arweave wallet.
     setIsSeedPhrase(true)
-    if (type === TYPE.ARWEAVE) {
+    if (type === TYPE.ARWEAVE || type === TYPE.SOLANA) {
       setStep(3)
     } else {
       nextStep()
@@ -106,6 +107,7 @@ export default () => {
   }
 
   const onImportKey = async () => {
+    // TODO LongP - import SOL key
     const keyImport = isSeedPhrase ? userSeedPhrase : privateKey
     if (!password && isEmpty(accounts)) {
       setShowFormError(true)
@@ -120,7 +122,7 @@ export default () => {
         key: keyImport,
         password,
         type: walletType,
-        provider: selectedNetwork,
+        provider: selectedNetwork
       })
       setImportedAddress(address)
       setNewAddress(address)
@@ -128,7 +130,7 @@ export default () => {
 
       history.push({
         pathname: '/success',
-        state: 'import-key-state',
+        state: 'import-key-state'
       })
     } catch (err) {
       setError(err.message)
@@ -169,6 +171,14 @@ export default () => {
                     )}
                     selected={false}
                     onClick={() => onTypeSelect(TYPE.ETHEREUM)}
+                  />
+                )}
+                {SHOW_SOLANA && (
+                  <WalletType
+                    icon={SolanaLogo}
+                    title={(props) => <div {...props}>Solana Key</div>}
+                    selected={false}
+                    onClick={() => onTypeSelect(TYPE.SOLANA)}
                   />
                 )}
               </div>
