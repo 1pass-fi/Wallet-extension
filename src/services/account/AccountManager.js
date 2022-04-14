@@ -312,6 +312,9 @@ export class BackgroundAccountManager extends AccountManager {
           break
         case TYPE.ETHEREUM:
           chain = IMPORTED.ETHEREUM
+          break
+        case TYPE.SOLANA:
+          chain = IMPORTED.SOLANA
       }
 
       importedWallets = (await this.storage._getChrome(chain)) || []

@@ -8,6 +8,7 @@ import { ArweaveMethod } from './Chains/Arweave/ArweaveMethod'
 import { ArweaveStatic } from './Chains/Arweave/ArweaveStatic'
 import { EthereumMethod } from './Chains/Ethereum/EthereumMethod'
 import { EthereumStatic } from './Chains/Ethereum/EthereumStatics'
+import solanaUtils from './Chains/Solana/SolanaUtils'
 
 export class Account {
   constructor(address) {
@@ -52,4 +53,8 @@ export class EthereumAccount extends BackgroundAccount {
   }
 
   static utils = new EthereumStatic()
+}
+
+export class SolanaAccount extends BackgroundAccount {
+  static utils = solanaUtils
 }

@@ -3,7 +3,7 @@ import passworder from 'browser-passworder'
 
 // Services
 import storage from 'services/storage'
-import { ArweaveAccount, EthereumAccount } from 'services/account/Account'
+import { ArweaveAccount, EthereumAccount, SolanaAccount } from 'services/account/Account'
 import { backgroundAccount } from 'services/account'
 import { koiTools as koi } from 'services/arweave'
 import eth from 'services/ethereum'
@@ -64,6 +64,8 @@ export default async (payload, next) => {
     /* 
       Create new account on storage
     */
+
+    let keypair
     switch (type) {
       case TYPE.ARWEAVE:
         address = await ArweaveAccount.utils.loadWallet(koi, keyOrSeedphrase)
@@ -72,6 +74,13 @@ export default async (payload, next) => {
       case TYPE.ETHEREUM:
         address = await EthereumAccount.utils.loadWallet(eth, keyOrSeedphrase)
         walletKey = eth.key
+        break
+      case TYPE.SOLANA:
+        keypair = await SolanaAccount.utils.loadWallet(keyOrSeedphrase)
+
+        address = keypair.publicKey.toString()
+        walletKey = keypair.secretKey.toString()
+
         break
     }
 
