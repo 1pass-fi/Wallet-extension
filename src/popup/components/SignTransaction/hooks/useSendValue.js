@@ -23,6 +23,12 @@ const fromWeiToEth = (wei) => {
   return wei / 1000000000000000000
 }
 
+/* 
+  rawValue is the value in smallest unit
+  For example: 1 AR -> rawValue: 1.000.000.000.000 Winston
+
+  value is the value in largest unit
+*/
 const useSendValue = ({ transactionPayload, network, transactionType, userAddress = '0xb076413401172CBB73C082107514De3376E4FF6c', setIsLoading }) => {
   const [value, setValue] = useState(null)
   const [symbol, setSymbol] = useState(null)
@@ -50,10 +56,12 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
       switch (network) {
         case 'ETHEREUM':
           setValue(getSendValueEthereum(value))
+          setRawValue(value)
           setSymbol('ETH')
           break
         case 'ARWEAVE':
           setValue(getSendValueArweave(value))
+          setRawValue(value)
           setSymbol('AR')
           break
       }

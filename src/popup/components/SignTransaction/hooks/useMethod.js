@@ -54,7 +54,6 @@ const useMethod = ({
       sender: transactionPayload.from,
       customTokenRecipient,
       contractAddress,
-      value,
       rawValue
     })
   }
@@ -64,7 +63,6 @@ const useMethod = ({
       sender: transactionPayload.from,
       customTokenRecipient,
       contractAddress,
-      value,
       rawValue
     })
   }
@@ -113,7 +111,7 @@ const useMethod = ({
     } catch (err) {
       console.error(err.message)
       if (requestId) {
-        // window.close()
+        window.close()
       } else {        
         setIsLoading(false)
         setError(err.message)

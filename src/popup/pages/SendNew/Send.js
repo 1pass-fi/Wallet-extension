@@ -60,9 +60,6 @@ const Send = ({ setShowSigning }) => {
 
   const history = useHistory()
 
-
-
-
   const onChangeToken = (selectedToken) => {
     setSelectedToken(selectedToken)
   }

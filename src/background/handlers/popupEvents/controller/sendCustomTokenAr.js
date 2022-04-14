@@ -4,7 +4,7 @@ import { smartweave } from 'smartweave'
 
 export default async (payload, next) => {
   try {
-    const { sender, customTokenRecipient, contractAddress, value, rawValue } = payload.data
+    const { sender, customTokenRecipient, contractAddress, rawValue } = payload.data
 
     const credentials = await backgroundAccount.getCredentialByAddress(sender)
 
