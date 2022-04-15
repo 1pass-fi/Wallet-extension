@@ -42,6 +42,9 @@ export default async (payload, next) => {
         if (totalWords.length === 12) seedphrase = keyOrSeedphrase
       }
     }
+    if (type === TYPE.SOLANA) {
+      seedphrase = keyOrSeedphrase
+    }
 
     /* 
       Password validation
@@ -84,8 +87,6 @@ export default async (payload, next) => {
         address = await SolanaAccount.utils.loadWallet(sol, keyOrSeedphrase)
         walletKey = sol.key
 
-        console.log('SOLANA address', address)
-        console.log('SOLANA walletKey', walletKey)
         break
     }
 

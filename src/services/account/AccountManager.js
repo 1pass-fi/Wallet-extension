@@ -1,7 +1,7 @@
 import passworder from 'browser-passworder'
 import { find, get, isEmpty } from 'lodash'
 
-import { Account, ArweaveAccount, EthereumAccount } from './Account/index'
+import { Account, ArweaveAccount, EthereumAccount, SolanaAccount } from './Account/index'
 
 import { IMPORTED, TYPE, ACCOUNT } from 'constants/accountConstants'
 import { ChromeStorage } from 'services/storage/ChromeStorage'
@@ -64,6 +64,8 @@ class AccountManager {
           return new ArweaveAccount(credentials)
         case TYPE.ETHEREUM:
           return new EthereumAccount(credentials, provider)
+        case TYPE.SOLANA:
+          return new SolanaAccount(credentials)
       }
     } catch (err) {
       console.log(err.message)
@@ -106,9 +108,11 @@ class AccountManager {
     try {
       const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE)
       const importedEthereum = await this.storage._getChrome(IMPORTED.ETHEREUM)
+      const importedSolana = await this.storage._getChrome(IMPORTED.SOLANA)
 
-      if (find(importedArweave, (v) => v.address == address)) return TYPE.ARWEAVE
-      if (find(importedEthereum, (v) => v.address == address)) return TYPE.ETHEREUM
+      if (find(importedArweave, (v) => v.address === address)) return TYPE.ARWEAVE
+      if (find(importedEthereum, (v) => v.address === address)) return TYPE.ETHEREUM
+      if (find(importedSolana, (v) => v.address === address)) return TYPE.SOLANA
     } catch (err) {
       err.message
     }
@@ -124,8 +128,9 @@ class AccountManager {
     try {
       const importedArweave = (await this.storage._getChrome(IMPORTED.ARWEAVE)) || []
       const importedEthereum = (await this.storage._getChrome(IMPORTED.ETHEREUM)) || []
+      const importedSolana = (await this.storage._getChrome(IMPORTED.SOLANA)) || []
 
-      this.importedAccount = [...importedArweave, ...importedEthereum]
+      this.importedAccount = [...importedArweave, ...importedEthereum, ...importedSolana]
     } catch (err) {
       console.log(err.message)
     }
@@ -141,15 +146,18 @@ class AccountManager {
     try {
       const importedArweave = (await this.storage._getChrome(IMPORTED.ARWEAVE)) || []
       const importedEthereum = (await this.storage._getChrome(IMPORTED.ETHEREUM)) || []
+      const importedSolana = (await this.storage._getChrome(IMPORTED.SOLANA)) || []
 
       switch (network) {
         case TYPE.ARWEAVE:
           return importedArweave.length
         case TYPE.ETHEREUM:
           return importedEthereum.length
+        case TYPE.SOLANA:
+          return importedSolana.length
       }
 
-      return importedArweave.length + importedEthereum.length
+      return importedArweave.length + importedEthereum.length + importedSolana.length
     } catch (err) {
       console.log(err.message)
     }
@@ -339,7 +347,10 @@ export class BackgroundAccountManager extends AccountManager {
           chain = IMPORTED.ARWEAVE
           break
         case TYPE.ETHEREUM:
-          chain = IMPORTED.ETHEREUM
+          chain = IMPORTED.ETHERE
+          break
+        case TYPE.SOLANA:
+          chain = IMPORTED.SOLANA
       }
 
       importedWallets = (await this.storage._getChrome(chain)) || []
@@ -438,6 +449,10 @@ export class BackgroundAccountManager extends AccountManager {
           break
         case TYPE.ETHEREUM:
           importedWallets = await this.storage._getChrome(IMPORTED.ETHEREUM)
+          break
+        case TYPE.SOLANA:
+          importedWallets = await this.storage._getChrome(IMPORTED.SOLANA)
+          break
       }
 
       const wallet = find(importedWallets, (v) => v.address == address)
@@ -459,8 +474,9 @@ export class BackgroundAccountManager extends AccountManager {
     try {
       const importedArweave = (await this.storage._getChrome(IMPORTED.ARWEAVE)) || []
       const importedEthereum = (await this.storage._getChrome(IMPORTED.ETHEREUM)) || []
+      const importedSolana = (await this.storage._getChrome(IMPORTED.SOLANA)) || []
 
-      const allCredentials = [...importedArweave, ...importedEthereum]
+      const allCredentials = [...importedArweave, ...importedEthereum, ...importedSolana]
 
       await Promise.all(
         allCredentials.map(async (credential) => {
