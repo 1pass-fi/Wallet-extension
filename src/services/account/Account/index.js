@@ -3,12 +3,14 @@ import { AccountSetter } from './set'
 
 import { Web } from '@_koi/sdk/web'
 import { Ethereum } from 'services/ethereum'
+import { SolanaTool } from 'services/solana/SolanaTool'
 
 import { ArweaveMethod } from './Chains/Arweave/ArweaveMethod'
 import { ArweaveStatic } from './Chains/Arweave/ArweaveStatic'
 import { EthereumMethod } from './Chains/Ethereum/EthereumMethod'
 import { EthereumStatic } from './Chains/Ethereum/EthereumStatics'
-import solanaUtils from './Chains/Solana/SolanaUtils'
+import { SolanaMethod } from './Chains/Solana/SolanaMethod'
+import { SolanaStatic } from './Chains/Solana/SolanaStatic'
 
 export class Account {
   constructor(address) {
@@ -56,5 +58,14 @@ export class EthereumAccount extends BackgroundAccount {
 }
 
 export class SolanaAccount extends BackgroundAccount {
-  static utils = solanaUtils
+  #solTool
+  constructor({ address, key }) {
+    super(address)
+    this.#solTool = new SolanaTool()
+    this.#solTool.address = address
+    this.#solTool.key = key
+    this.method = new SolanaMethod(this.#solTool)
+  }
+
+  static utils = new SolanaStatic()
 }

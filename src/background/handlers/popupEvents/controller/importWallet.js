@@ -5,8 +5,9 @@ import passworder from 'browser-passworder'
 import storage from 'services/storage'
 import { ArweaveAccount, EthereumAccount, SolanaAccount } from 'services/account/Account'
 import { backgroundAccount } from 'services/account'
-import { koiTools as koi } from 'services/arweave'
-import eth from 'services/ethereum'
+import { KoiTool } from 'services/arweave'
+import { EthereumTool } from 'services/ethereum'
+import { SolanaTool } from 'services/solana/SolanaTool'
 
 // Constants
 import { TYPE } from 'constants/accountConstants'
@@ -66,6 +67,10 @@ export default async (payload, next) => {
     */
 
     let keypair
+    let eth = new EthereumTool()
+    let koi = new KoiTool()
+    let sol = new SolanaTool()
+
     switch (type) {
       case TYPE.ARWEAVE:
         address = await ArweaveAccount.utils.loadWallet(koi, keyOrSeedphrase)
@@ -76,11 +81,11 @@ export default async (payload, next) => {
         walletKey = eth.key
         break
       case TYPE.SOLANA:
-        keypair = await SolanaAccount.utils.loadWallet(keyOrSeedphrase)
+        address = await SolanaAccount.utils.loadWallet(sol, keyOrSeedphrase)
+        walletKey = sol.key
 
-        address = keypair.publicKey.toString()
-        walletKey = keypair.secretKey.toString()
-
+        console.log('SOLANA address', address)
+        console.log('SOLANA walletKey', walletKey)
         break
     }
 
