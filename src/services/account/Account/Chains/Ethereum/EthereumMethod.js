@@ -93,7 +93,10 @@ export class EthereumMethod {
         - Failed load content (removed on functions cacheNFTs on "background/popupEventHandlers")
         - Out-of-date NFTs
       */
-      const ethAssetIds = ethAssets.map((ethAsset) => ethAsset.token_id)
+      const ethAssetIds = ethAssets.map(
+        (ethAsset) => `${ethAsset.token_id}_${ethAsset.asset_contract?.address}`
+      )
+
       const validContents = contentList.filter((content) => {
         return ethAssetIds.indexOf(content.txId) !== -1
       })
@@ -105,7 +108,10 @@ export class EthereumMethod {
       const storageContentIds = validContents.map((nft) => nft.txId)
 
       const newContents = ethAssets.filter((ethAsset) => {
-        return storageContentIds.indexOf(ethAsset.token_id) === -1
+        return (
+          storageContentIds.indexOf(`${ethAsset.token_id}_${ethAsset.asset_contract?.address}`) ===
+          -1
+        )
       })
 
       console.log('New contents: ', newContents.length)
