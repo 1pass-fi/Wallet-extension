@@ -23,22 +23,23 @@ import useAccountList from './hooks/useAccountList'
 import useSelectedAccount from './hooks/useSelectedAccount'
 import useTokenList from './hooks/useTokenList'
 import useMethod from './hooks/useMethod'
+import useValidate from './hooks/useValidate'
 
-const Send = ({ setShowSigning }) => {
+import { setError } from 'actions/error'
+
+const Send = ({ setShowSigning, setError }) => {
   const [selectedAccount, setSelectedAccount] = useState({})
+  const [fontSize, setFontSize] = useState('3xl')
+  const [showTokenOptions, setShowTokenOptions] = useState(false)
+  const [amount, setAmount] = useState('')
+  const [recipient, setRecipient] = useState({ address: '' })
+  const [enoughGas, setEnoughGas] = useState(true)
 
   const { selectedNetwork } = useSelectedAccount({ selectedAccount })
   const { tokenList, selectedToken, setSelectedToken } = useTokenList({
     userAddress: selectedAccount?.address,
     selectedNetwork: selectedNetwork
   })
-
-  const [fontSize, setFontSize] = useState('3xl')
-
-  const [showTokenOptions, setShowTokenOptions] = useState(false)
-  const [amount, setAmount] = useState('')
-  const [recipient, setRecipient] = useState({ address: '' })
-  const [enoughGas, setEnoughGas] = useState(true)
 
   const sender = useMemo(() => {
     return get(selectedAccount, 'address')
@@ -50,6 +51,12 @@ const Send = ({ setShowSigning }) => {
     return get(selectedToken, 'contractAddress')
   }, [selectedToken])
 
+  const { validated, errorMessage } = useValidate({ selectedToken, amount, selectedAccount, recipient: _recipient })
+
+  /* 
+    amount in largest unit.
+    For example: 0.01 -> 0.01 ETH
+  */
   const { onSendTokens } = useMethod({ 
     sender,
     recipient: _recipient,
@@ -86,7 +93,7 @@ const Send = ({ setShowSigning }) => {
   }
 
   const handleSendToken = async () => {
-    // BALANCE VALIDATIONS
+    if (!validated) return setError(errorMessage)
     await onSendTokens()
     setShowSigning(true)
   }
@@ -176,4 +183,4 @@ const Send = ({ setShowSigning }) => {
   )
 }
 
-export default Send
+export default connect(null, { setError })(Send)
