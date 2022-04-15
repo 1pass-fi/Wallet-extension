@@ -119,7 +119,7 @@ export default async (payload, tab, next) => {
       afterClose: async () => {
         chrome.browserAction.setBadgeText({ text: '' })
         next({ error: { code: 4001, data: 'Request rejected' }})
-        await storage.generic.set.pendingRequest({})
+        // await storage.generic.set.pendingRequest({})
       }
     })
   } catch (err) {

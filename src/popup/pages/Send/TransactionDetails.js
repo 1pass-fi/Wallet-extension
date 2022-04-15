@@ -29,34 +29,23 @@ const TransactionDetails = ({
           <div className="font-semibold">From:</div>
           <div>{selectedAccount.label}</div>
           <div className="text-2xs text-success-700">
-            {getDisplayAddress(selectedAccount.address)}
+            {getDisplayAddress('sdfkjsdhfkhsdkjfhksjdhkfhjssadasdasd')}
           </div>
         </div>
-        {currency === 'KOII' && (
-          <div>
-            <div className="font-semibold">Amount:</div>
-            <div>{sentAmount} KOII</div>
-          </div>
-        )}
-        {currency === 'AR' && (
-          <div>
-            <div className="font-semibold">Amount:</div>
-            <div>{sentAmount} AR</div>
-            <div className="text-2xs tracking-finnieSpacing-tightest text-blueGray-800">
-              ${fiatCurrencyFormat(sentAmount * price.AR)} USD
-            </div>
-          </div>
-        )}
+        <div>
+          <div className="font-semibold">Amount:</div>
+          <div>{sentAmount} KOII</div>
+        </div>
       </div>
       <div className="w-full text-base px-12 flex gap-x-15.75 mt-5.5">
         <div style={{ width: '132px' }}>
           <div className="font-semibold">To:</div>
           <div>{recipient.name}</div>
-          <div className="text-2xs text-success-700">{getDisplayAddress(accountAddress)}</div>
+          <div className="text-2xs text-success-700">{getDisplayAddress('skdjfhkjshdfkjhskjdfhksjhdfkjhskdhfjs')}</div>
         </div>
         <div>
           <div className="font-semibold">Transaction Fee:</div>
-          {arFee !== 0 && <div className="text-base leading-5 text-blue-800">{arFee} AR</div>}
+          <div className="text-base leading-5 text-blue-800">100 AR</div>
           <div className="text-2xs text-success-700">Storage Fee</div>
         </div>
       </div>
