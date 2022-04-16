@@ -7,5 +7,7 @@ export const getDisplayingAccount = (state) => {
     return defaultAccount.AR
   } else if (activatedChain === TYPE.ETHEREUM) {
     return defaultAccount.ETH
+  } else if (activatedChain === TYPE.SOLANA) {
+    return defaultAccount.SOL
   }
 }

@@ -1,4 +1,8 @@
-import { SET_DEFAULT_ARWEAVE_ACCOUNT, SET_DEFAULT_ETHEREUM_ACCOUNT } from './types'
+import { 
+  SET_DEFAULT_ARWEAVE_ACCOUNT, 
+  SET_DEFAULT_ETHEREUM_ACCOUNT, 
+  SET_DEFAULT_SOLANA_ACCOUNT 
+} from './types'
 
 import isEmpty from 'lodash/isEmpty'
 
@@ -32,6 +36,13 @@ export const setDefaultAccountByAddress = (address) => async (dispatch) => {
       payload: defaultAccount
     })
   }
+
+  if (defaultAccount.type === TYPE.SOLANA) {
+    return dispatch({
+      type: SET_DEFAULT_SOLANA_ACCOUNT,
+      payload: defaultAccount
+    })
+  }
 }
 
 export const setDefaultAccount = (account) => async (dispatch) => {
@@ -49,6 +60,13 @@ export const setDefaultAccount = (account) => async (dispatch) => {
   if (account.type === TYPE.ETHEREUM) {
     return dispatch({
       type: SET_DEFAULT_ETHEREUM_ACCOUNT,
+      payload: account
+    })
+  }
+
+  if (account.type === TYPE.SOLANA) {
+    return dispatch({
+      type: SET_DEFAULT_SOLANA_ACCOUNT,
       payload: account
     })
   }

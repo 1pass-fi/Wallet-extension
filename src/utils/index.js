@@ -790,6 +790,10 @@ export const setActivatedAccountAddress = async (address, type) => {
       await storage.setting.set.activatedEthereumAccountAddress(address)
       break
 
+    case TYPE.SOLANA:
+      await storage.setting.set.activatedSolanaAccountAddress(address)
+      break
+
     default:
       if (isArweaveAddress(address)) {
         await storage.setting.set.activatedArweaveAccountAddress(address)

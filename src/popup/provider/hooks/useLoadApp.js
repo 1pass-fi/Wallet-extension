@@ -59,6 +59,18 @@ const useLoadApp = ({
       }
     }
 
+    const activatedSolanaAddress = await storage.setting.get.activatedSolanaAccountAddress()
+    if (!isEmpty(activatedSolanaAddress)) {
+      const activatedAccount = await popupAccount.getAccount({
+        address: activatedSolanaAddress
+      })
+
+      if (!isEmpty(activatedAccount)) {
+        const activatedAccountMetadata = await activatedAccount.get.metadata()
+        setDefaultAccount(activatedAccountMetadata)
+      }
+    }
+
     const query = window.location.search // later we should refactor using react-hash-router
 
     /* 

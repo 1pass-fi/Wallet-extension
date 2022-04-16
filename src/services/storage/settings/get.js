@@ -54,6 +54,10 @@ export class SettingGet {
     return this.#chrome._getChrome(SETTING.ACTIVATED_ETHEREUM_ACCOUNT)
   }
 
+  activatedSolanaAccountAddress() {
+    return this.#chrome._getChrome(SETTING.ACTIVATED_SOLANA_ACCOUNT)
+  }
+
   connectSiteAccountAddress() {
     return this.#chrome._getChrome(SETTING.CONNECT_SITE_ACCOUNT)
   }

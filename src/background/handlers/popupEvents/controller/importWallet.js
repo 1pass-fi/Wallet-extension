@@ -133,11 +133,17 @@ export default async (payload, next) => {
 
     const totalArweaveAccounts = await backgroundAccount.count(TYPE.ARWEAVE)
     const totalEthereumAccounts = await backgroundAccount.count(TYPE.ETHEREUM)
-    if (totalArweaveAccounts == 1 && type === TYPE.ARWEAVE) {
+    const totalSolanaAccounts = await backgroundAccount.count(TYPE.SOLANA)
+    
+    if (totalArweaveAccounts === 1 && type === TYPE.ARWEAVE) {
       await setActivatedAccountAddress(await account.get.address(), type)
     }
 
-    if (totalEthereumAccounts == 1 && type === TYPE.ETHEREUM) {
+    if (totalEthereumAccounts === 1 && type === TYPE.ETHEREUM) {
+      await setActivatedAccountAddress(await account.get.address(), type)
+    }
+
+    if (totalSolanaAccounts === 1 && type === TYPE.SOLANA) {
       await setActivatedAccountAddress(await account.get.address(), type)
     }
 

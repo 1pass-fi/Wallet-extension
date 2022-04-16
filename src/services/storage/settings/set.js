@@ -57,6 +57,10 @@ export class SettingSet {
     return this.#chrome._setChrome(SETTING.ACTIVATED_ETHEREUM_ACCOUNT, value)
   }
 
+  activatedSolanaAccountAddress(value) {
+    return this.#chrome._setChrome(SETTING.ACTIVATED_SOLANA_ACCOUNT, value)
+  }
+
   connectSiteAccountAddress(value) {
     return this.#chrome._setChrome(SETTING.CONNECT_SITE_ACCOUNT, value)
   }

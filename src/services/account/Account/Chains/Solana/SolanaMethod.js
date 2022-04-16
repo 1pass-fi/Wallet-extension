@@ -28,9 +28,7 @@ export class SolanaMethod {
   }
 
   async getBalances() {
-    const balance = Web3.utils.fromWei(await this.eth.getBalance())
-    const koiBalance = 100
-    return { balance, koiBalance }
+    return { balance: 10 }
   }
 
   async loadMyContent() {}
@@ -40,17 +38,6 @@ export class SolanaMethod {
   async transfer(_, recipient, qty) {}
 
   async loadCollections() {}
-
-  async nftBridge({
-    txId,
-    toAddress,
-    type = TYPE.ARWEAVE,
-    tokenAddress,
-    tokenSchema,
-    accountName
-  }) {}
-
-  async #bridgeEthtoAr({ txId: tokenId, toAddress, tokenAddress, tokenSchema }) {}
 
   async transactionConfirmedStatus(txHash) {}
 

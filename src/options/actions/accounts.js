@@ -25,6 +25,9 @@ export const setAccounts = (accounts) => async (dispatch) => {
   const defaultEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
   dispatch(setDefaultAccountByAddress(defaultEthereumAccountAddress))
 
+  const defaultSolanaAccountAddress = await storage.setting.get.activatedSolanaAccountAddress()
+  dispatch(setDefaultAccountByAddress(defaultSolanaAccountAddress))
+
   return dispatch({
     type: SET_ACCOUNTS,
     payload: accounts,
