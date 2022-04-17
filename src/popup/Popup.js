@@ -1,6 +1,6 @@
 // modules
 import '@babel/polyfill'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch, useHistory, withRouter } from 'react-router-dom'
 import isEmpty from 'lodash/isEmpty'
@@ -10,12 +10,8 @@ import isEmpty from 'lodash/isEmpty'
 import Header from 'components/PopupHeader'
 import Loading from 'components/loading'
 import Account from 'components/accounts'
-import Assets from 'components/assets'
-import Activity from 'components/activity'
-import Setting from 'components/setting'
 import Message from 'components/message'
 import ConnectScreen from 'components/Connect/ConnectScreen'
-import TransactionConfirmModal from 'components/modals/transactionConfirmModal'
 import ConnectedSitesModal from 'components/modals/connectedSitesModal'
 import EthSign from 'components/sign/EthSign'
 import SignTypedDataV1 from 'components/sign/SignTypedDataV1'
@@ -26,7 +22,6 @@ import GetEncryptionKey from 'components/sign/GetEncryptionKey'
 import Home from './pages/Home'
 import Receive from './pages/Receive'
 import Send from './pages/SendNew'
-// import Send from './pages/Send'
 import Login from './pages/Login'
 import ImportToken from './pages/ImportToken'
 
@@ -48,24 +43,18 @@ import { setActivities } from 'actions/activities'
 import { setAssetsTabSettings } from 'actions/assetsSettings'
 
 // hooks
-import useAccountLoaded from './provider/hooks/useAccountLoaded'
 import usePrice from './provider/hooks/usePrice'
 import useSettings from './provider/hooks/useSettings'
 import useLoadApp from './provider/hooks/useLoadApp'
+import useMethod from './provider/hooks/useMethod'
+import useTimeInterval from './provider/hooks/useTimeInterval'
 
 // assets
 import continueLoadingIcon from 'img/continue-load.gif'
-import KoiLogo from 'img/koi-logo.svg'
-
-// constants
-import { PATH, WINDOW_SIZE } from 'constants/koiConstants'
 
 // styles
 import './Popup.css'
 import NavBar from './components/NavBar'
-
-// services
-import storage from 'services/storage'
 
 import SignModal from 'components/SignTransaction'
 
@@ -75,16 +64,11 @@ const ContinueLoading = () => (
   </div>
 )
 
-const Reconnect = () => (
-  <div className="reconnect">
-    <div className="reconnect-logo">
-      <KoiLogo />
-    </div>
-    Finnie needs to reconnect to the background. Please click on the button below.
-    <button onClick={() => chrome.runtime.reload()}>Reconnect</button>
-  </div>
-)
+/* 
+  Finnie supports multiple chains.
+  Each chain has it's default account.
 
+*/
 const Popup = ({
   lockWallet,
   location,
@@ -96,9 +80,7 @@ const Popup = ({
   notification,
   setNotification,
   warning,
-  getBalances,
   setPrice,
-  setKoi,
   setCurrency,
   setAccounts,
   setDefaultAccount,
@@ -106,22 +88,9 @@ const Popup = ({
   accounts,
   setActivityNotifications,
   setSettings,
-  activities,
-  setActivities,
   setAssetsTabSettings
 }) => {
   const history = useHistory()
-
-  const [needToReconnect, setNeedToReconnect] = useState(false)
-
-  const [showConnectedSites, setShowConnectedSites] = useState(false)
-
-  const [accountLoaded, setAccountLoaded] = useAccountLoaded({
-    history,
-    setIsLoading,
-    setAccounts,
-    setActivatedChain
-  })
 
   usePrice({
     setCurrency,
@@ -131,72 +100,60 @@ const Popup = ({
 
   useSettings({ setSettings, setAssetsTabSettings, setError })
 
-  const [
-    handleLockWallet,
+  const {
     showConnectSite,
     showSigning,
     setShowSigning,
     showEthSign,
     showSignTypedDataV1,
     showSignTypedDataV3,
-    showGetEncryptionKey
-  ] = useLoadApp({
-    history,
+    showGetEncryptionKey,
     accountLoaded,
+    showConnectedSites,
+    setShowConnectedSites
+  } = useLoadApp({
+    history,
     setDefaultAccount,
     setActivityNotifications,
-    setNeedToReconnect,
     setError,
     setIsLoading,
+    setActivatedChain,
+    setAccounts,
     accounts,
     lockWallet
   })
 
-  useEffect(() => {
-    if (error) {
-      const timer = setTimeout(() => setError(null), 4000)
-      return () => clearTimeout(timer)
-    }
-    if (notification) {
-      const timer = setTimeout(() => setNotification(null), 4000)
-      return () => clearTimeout(timer)
-    }
-    if (warning) {
-      const timer = setTimeout(() => setWarning(null), 6000)
-      return () => clearTimeout(timer)
-    }
-  }, [error, notification, warning])
+  const { handleLockWallet } = useMethod({ accounts })
+
+  useTimeInterval({ error, notification, warning })
 
   return (
     <div className="popup">
-      {needToReconnect ? (
-        <Reconnect />
-      ) : (
-        <div className="h-full">
-          {showEthSign && <EthSign />}
-          {showSignTypedDataV1 && <SignTypedDataV1 />}
-          {showSignTypedDataV3 && <SignTypedDataV3 />}
-          {showGetEncryptionKey && <GetEncryptionKey />}
-          {showConnectSite && <ConnectScreen />}
-          {showConnectedSites && (
-            <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />
-          )}
-          {showSigning && <SignModal setShowSigning={setShowSigning} />}
-          {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
-          {isLoading && <Loading />}
-          {error && <Message type="error" children={error} />}
-          {notification && <Message type="notification" children={notification} />}
-          {warning && <Message type="warning" children={warning} />}
+      <div className="h-full">
+        {showEthSign && <EthSign />}
+        {showSignTypedDataV1 && <SignTypedDataV1 />}
+        {showSignTypedDataV3 && <SignTypedDataV3 />}
+        {showGetEncryptionKey && <GetEncryptionKey />}
+        {showConnectSite && <ConnectScreen />}
+        {showConnectedSites && (
+          <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />
+        )}
+        {showSigning && <SignModal setShowSigning={setShowSigning} />}
+        {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
+        {isLoading && <Loading />}
+        {error && <Message type="error" children={error} />}
+        {notification && <Message type="notification" children={notification} />}
+        {warning && <Message type="warning" children={warning} />}
 
-          {accountLoaded.accountLoaded && (
-            <Switch>
-              <Route exact path="/login">
-                <Login />
-              </Route>
-              <Route exact path="/account/*">
-                <Account />
-              </Route>
-              {!accountLoaded.isEmptyAccounts && (
+        {accountLoaded && (
+          <Switch>
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/account/*">
+              <Account />
+            </Route>
+            {!isEmpty(accounts) && (
                 <>
                   <Header setShowConnectedSites={setShowConnectedSites} />
                   <div
@@ -220,11 +177,10 @@ const Popup = ({
                   </div>
                   <NavBar handleLockWallet={handleLockWallet} />
                 </>
-              )}
-            </Switch>
-          )}
-        </div>
-      )}
+            )}
+          </Switch>
+        )}
+      </div>
     </div>
   )
 }

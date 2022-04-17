@@ -4,20 +4,21 @@ import isEmpty from 'lodash/isEmpty'
 // services
 import storage from 'services/storage'
 import { popupAccount } from 'services/account'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 // constants
-import { REQUEST, DISCONNECTED_BACKGROUND, PATH } from 'constants/koiConstants'
+import { REQUEST } from 'constants/koiConstants'
+
 
 const useLoadApp = ({
   history,
-  accountLoaded,
   setDefaultAccount,
   setActivityNotifications,
-  setNeedToReconnect,
   setError,
   setIsLoading,
   accounts,
-  lockWallet
+  setActivatedChain,
+  setAccounts
 }) => {
   const [showConnectSite, setShowConnectSite] = useState(false)
   const [showSigning, setShowSigning] = useState(false)
@@ -25,16 +26,37 @@ const useLoadApp = ({
   const [showSignTypedDataV1, setShowSignTypedDataV1] = useState(false)
   const [showSignTypedDataV3, setShowSignTypedDataV3] = useState(false)
   const [showGetEcryptionKey, setShowGetEncryptionKey] = useState(false)
+  const [accountLoaded, setAccountLoaded] = useState(false)
+  const [isWalletLocked, setIsWalletLocked] = useState(false)
+  const [showConnectedSites, setShowConnectedSites] = useState(false)
 
-  const loadApp = async () => {
-    if (accountLoaded.isEmptyAccounts) {
-      history.push('/account/welcome')
-      return
-    }
-    if (accountLoaded.isWalletLocked) {
-      history.push('/login')
-    }
+  const loadAccounts = async () => {
+    try {
+      setIsLoading(true)
 
+      const activatedChain = await storage.setting.get.activatedChain()
+      setActivatedChain(activatedChain)
+
+      /* 
+        load for wallet state of lock or unlock
+        load for all accounts
+      */
+      await popupAccount.loadImported()
+      let accounts = await popupAccount.getAllMetadata()
+
+      setAccounts(accounts)
+
+      const isLocked = await backgroundRequest.wallet.getLockState()
+      setIsWalletLocked(isLocked)
+
+      setAccountLoaded(true)
+      setIsLoading(false)
+    } catch (error) {
+      console.log('Failed to load accounts: ', error.message)
+    }
+  }
+
+  const loadDefaultAccounts = async () => {
     const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
     if (!isEmpty(activatedEthereumAccountAddress)) {
       const activatedEthereumAccount = await popupAccount.getAccount({
@@ -70,25 +92,26 @@ const useLoadApp = ({
         setDefaultAccount(activatedAccountMetadata)
       }
     }
+  }
 
-    const query = window.location.search // later we should refactor using react-hash-router
-
-    /* 
-        Load for activity notifications
-      */
+  const loadActivities = async () => {
     const _activityNotifications = (await storage.generic.get.activityNotifications()) || []
     setActivityNotifications(_activityNotifications)
+  }
 
-    /* 
-        Load for pending request
-      */
+  const handleRedirect = async () => {
+    if (isEmpty(accounts)) {
+      history.push('/account/welcome')
+      return
+    }
+    if (isWalletLocked) {
+      history.push('/login')
+      return
+    }
+
     const pendingRequest = await storage.generic.get.pendingRequest()
+    const query = window.location.search
 
-    /*
-        When there's no imported account, redirect to welcome screen
-        If not unlocked, redirect to lock screen
-        Click on add account, go to welcome screen
-      */
     try {
       if (pendingRequest) {
         switch (pendingRequest.type) {
@@ -132,48 +155,34 @@ const useLoadApp = ({
       }
     } catch (err) {
       console.log(err.message)
-      if (err.message === DISCONNECTED_BACKGROUND) {
-        setNeedToReconnect(true)
-      } else {
-        setError(err.message)
-      }
+      setError(err.message)
       setIsLoading(false)
-    }
-  }
-
-  const handleLockWallet = async () => {
-    if (!isEmpty(accounts)) {
-      setIsLoading(true)
-      await lockWallet()
-      setIsLoading(false)
-
-      history.push(PATH.LOGIN)
-
-      chrome.tabs.query({ url: chrome.extension.getURL('*') }, (tabs) => {
-        tabs.map((tab) => chrome.tabs.reload(tab.id))
-      })
-    } else {
-      setError('Cannot lock wallet.')
     }
   }
 
   useEffect(() => {
-    const load = async () => {
-      await loadApp()
-    }
-    if (accountLoaded.accountLoaded) load()
-  }, [accountLoaded.accountLoaded])
+    loadAccounts()
+    loadDefaultAccounts()
+    loadActivities()
+  }, [])
 
-  return [
-    handleLockWallet,
+  useEffect(() => {
+    if (accountLoaded) handleRedirect()
+  }, [accountLoaded])
+
+  return {
     showConnectSite,
+    setShowConnectSite,
     showSigning,
     setShowSigning,
     showEthSign,
     showSignTypedDataV1,
     showSignTypedDataV3,
-    showGetEcryptionKey
-  ]
+    showGetEcryptionKey,
+    accountLoaded,
+    showConnectedSites,
+    setShowConnectedSites
+  }
 }
 
 export default useLoadApp
