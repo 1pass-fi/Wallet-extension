@@ -347,7 +347,7 @@ export class BackgroundAccountManager extends AccountManager {
           chain = IMPORTED.ARWEAVE
           break
         case TYPE.ETHEREUM:
-          chain = IMPORTED.ETHERE
+          chain = IMPORTED.ETHEREUM
           break
         case TYPE.SOLANA:
           chain = IMPORTED.SOLANA
@@ -375,7 +375,7 @@ export class BackgroundAccountManager extends AccountManager {
           */
           const defaultActivatedAccount = find(this.importedAccount, { type: TYPE.ARWEAVE })
           if (!isEmpty(defaultActivatedAccount)) {
-            await setActivatedAccountAddress(defaultActivatedAccount)
+            await setActivatedAccountAddress(defaultActivatedAccount, TYPE.ARWEAVE)
           } else {
             await storage.setting.set.activatedArweaveAccountAddress(null)
           }
@@ -388,14 +388,25 @@ export class BackgroundAccountManager extends AccountManager {
           */
           const defaultActivatedAccount = find(this.importedAccount, { type: TYPE.ARWEAVE })
           if (!isEmpty(defaultActivatedAccount)) {
-            await setActivatedAccountAddress(defaultActivatedAccount)
+            await setActivatedAccountAddress(defaultActivatedAccount, TYPE.ETHEREUM)
+          } else {
+            await storage.setting.set.activatedArweaveAccountAddress(null)
+          }
+        }
+
+        const currentSolanaActivatedAccount = await storage.setting.get.activatedSolanaAccountAddress()
+        if (address === currentSolanaActivatedAccount) {
+          const defaultActivatedAccount = find(this.importedAccount, { type: TYPE.SOLANA })
+          if (!isEmpty(defaultActivatedAccount)) {
+            await setActivatedAccountAddress(defaultActivatedAccount, TYPE.SOLANA)
           } else {
             await storage.setting.set.activatedArweaveAccountAddress(null)
           }
         }
       } else {
         await storage.setting.set.activatedArweaveAccountAddress(null)
-        await storage.setting.set.activatedArweaveAccountAddress(null)
+        await storage.setting.set.activatedEthereumAccountAddress(null)
+        await storage.setting.set.activatedSolanaAccountAddress(null)
       }
     } catch (err) {
       console.log(err.message)
