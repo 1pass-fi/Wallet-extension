@@ -17,7 +17,7 @@ const validateAddress = (address) => {
   if (address?.length === 43) return ARWEAVE
 }
 
-const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, alchemyAddress, setAlchemyAddress }) => {
+const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, alchemyAddress, setAlchemyAddress, setIsLoading }) => {
   const onSendTokens = async () => {
     if (alchemyAddress) recipient = alchemyAddress
     const network = validateAddress(sender)
@@ -141,6 +141,7 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
   }
 
   const getAlchemyAddress = async () => {
+    setIsLoading(true)
     const API_KEY = 'TD3-t3Nv-5Hma3u6LtghPmYWMs-KzSAF'
     const url = `https://unstoppabledomains.g.alchemy.com/domains/${recipient}`
 
@@ -148,7 +149,7 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
       headers: { Authorization: `Bearer ${API_KEY}` }
     })
 
-    console.log('response', response.data.meta.owner)
+    setIsLoading(false)
     if (get(response, 'data.meta.owner')) setAlchemyAddress(get(response, 'data.meta.owner'))
   }
 

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 import clsx from 'clsx'
@@ -26,8 +26,9 @@ import useMethod from './hooks/useMethod'
 import useValidate from './hooks/useValidate'
 
 import { setError } from 'actions/error'
+import { setIsLoading } from 'actions/loading'
 
-const Send = ({ setShowSigning, setError }) => {
+const Send = ({ setShowSigning, setError, setIsLoading }) => {
   const [selectedAccount, setSelectedAccount] = useState({})
   const [fontSize, setFontSize] = useState('3xl')
   const [showTokenOptions, setShowTokenOptions] = useState(false)
@@ -35,6 +36,7 @@ const Send = ({ setShowSigning, setError }) => {
   const [recipient, setRecipient] = useState({ address: '' })
   const [enoughGas, setEnoughGas] = useState(true)
   const [alchemyAddress, setAlchemyAddress] = useState(null)
+  const [sendTokenClick, setSendTokenClick] = useState(0)
 
   const { selectedNetwork } = useSelectedAccount({ selectedAccount })
   const { tokenList, selectedToken, setSelectedToken } = useTokenList({
@@ -65,7 +67,8 @@ const Send = ({ setShowSigning, setError }) => {
     contractAddress,
     selectedToken,
     alchemyAddress,
-    setAlchemyAddress
+    setAlchemyAddress,
+    setIsLoading
   })
 
   const history = useHistory()
@@ -97,11 +100,16 @@ const Send = ({ setShowSigning, setError }) => {
 
   const handleSendToken = async () => {
     await getAlchemyAddress()
-    console.log('alchemyAddress', alchemyAddress)
-    if (!validated) return setError(errorMessage)
-    await onSendTokens()
-    setShowSigning(true)       
+    setSendTokenClick(prev => ++prev)
   }
+  useEffect(() => {
+    const sendToken = async () => {
+      if (!validated) return setError(errorMessage)
+      onSendTokens()
+      setShowSigning(true)
+    }
+    if (sendTokenClick) sendToken()
+  }, [sendTokenClick])
 
   return (
     <div className="w-full relative bg-white flex flex-col items-center pt-9.75">
@@ -188,4 +196,4 @@ const Send = ({ setShowSigning, setError }) => {
   )
 }
 
-export default connect(null, { setError })(Send)
+export default connect(null, { setError, setIsLoading })(Send)
