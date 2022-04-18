@@ -36,4 +36,9 @@ export class SolanaTool {
 
     return seedPhrase
   }
+
+  async getBalance() {
+    // TODO ThuanN: get balance function
+    return 10
+  }
 }

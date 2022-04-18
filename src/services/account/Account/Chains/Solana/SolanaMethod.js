@@ -2,13 +2,14 @@ import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 
 export class SolanaMethod {
   #chrome
-  constructor(eth) {
-    this.eth = eth
+  constructor(solTool) {
+    this.solTool = solTool
     this.#chrome = new AccountStorageUtils(eth.address)
   }
 
   async getBalances() {
-    return { balance: 10 }
+    const solBalance = this.solTool.getBalance()
+    return { balance: solBalance }
   }
 
   async loadMyContent() {
