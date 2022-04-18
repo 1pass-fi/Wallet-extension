@@ -96,8 +96,6 @@ const HomeTop = ({
     getCurrentProvider()
   }, [])
 
-  console.log('=========', displayingAccount)
-
   return (
     <div className="relative z-20">
       <div ref={p.ref}>
@@ -116,13 +114,13 @@ const HomeTop = ({
         {displayingAccount.type === TYPE.SOLANA && (
           <div className="mt-6.5">
             <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-              {numberFormat(displayingAccount.balance)} SOL
+              {numberFormat(displayingAccount.balance / Math.pow(10, 9))} SOL
             </div>
             <div
               className="text-base leading-8 tracking-finnieSpacing-tight"
               style={{ color: '#707070' }}
             >
-              ${fiatCurrencyFormat(displayingAccount.balance * price.SOL)} USD
+              ${fiatCurrencyFormat((displayingAccount.balance * price.SOL) / Math.pow(10, 9))} USD
             </div>
           </div>
         )}

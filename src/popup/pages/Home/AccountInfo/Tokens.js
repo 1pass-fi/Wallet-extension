@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
-import isEmpty from 'lodash/isEmpty'
 
 import { TYPE } from 'constants/accountConstants'
 import { fiatCurrencyFormat, numberFormat } from 'utils'
@@ -57,51 +56,47 @@ const Tokens = ({ currentProviderAddress }) => {
           decimal: 0
         }
       ])
-      return
-    }
-
-    if (displayingAccount.type === TYPE.SOLANA) {
+    } else if (displayingAccount.type === TYPE.SOLANA) {
       setTokens([
         {
           name: 'Solana',
-          balance: numberFormat(fromArToWinston(displayingAccount.balance)),
-          displayingBalance: numberFormat(displayingAccount.balance),
+          balance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
+          displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
           symbol: 'SOL',
-          usdValue: fiatCurrencyFormat(displayingAccount.balance * price.SOL),
+          usdValue: fiatCurrencyFormat((displayingAccount.balance * price.SOL) / Math.pow(10, 9)),
           decimal: 9
         }
       ])
+    } else {
+      const importTokens = [
+        {
+          name: 'Ethereum',
+          balance: numberFormat(fromEthToWei(displayingAccount.balance)),
+          displayingBalance: numberFormat(displayingAccount.balance),
+          usdValue: fiatCurrencyFormat(displayingAccount.balance * price.ETH),
+          symbol: 'ETH',
+          decimal: 18
+        }
+      ]
+      await Promise.all(
+        importedTokenAddresses.map(async (contractAddress) => {
+          let token = await getTokenData(contractAddress, displayingAccount.address)
+          token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
+          if (token.price) {
+            token = {
+              ...token,
+              usdValue: fiatCurrencyFormat(
+                (token.balance / Math.pow(10, token.decimal)) * token.price
+              )
+            }
+          }
+          importTokens.push(token)
+        })
+      )
 
-      return
+      setTokens(importTokens)
     }
 
-    const importTokens = [
-      {
-        name: 'Ethereum',
-        balance: numberFormat(fromEthToWei(displayingAccount.balance)),
-        displayingBalance: numberFormat(displayingAccount.balance),
-        usdValue: fiatCurrencyFormat(displayingAccount.balance * price.ETH),
-        symbol: 'ETH',
-        decimal: 18
-      }
-    ]
-    await Promise.all(
-      importedTokenAddresses.map(async (contractAddress) => {
-        let token = await getTokenData(contractAddress, displayingAccount.address)
-        token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
-        if (token.price) {
-          token = {
-            ...token,
-            usdValue: fiatCurrencyFormat(
-              (token.balance / Math.pow(10, token.decimal)) * token.price
-            )
-          }
-        }
-        importTokens.push(token)
-      })
-    )
-
-    setTokens(importTokens)
     dispatch(setIsLoading(false))
   }
 

@@ -13,7 +13,7 @@ const usePrice = ({ setCurrency, setPrice, setError }) => {
 
       const { AR, ETH, SOL } = price || { AR: 1, ETH: 1, SOL: 1 }
 
-      setPrice({ AR, ETH })
+      setPrice({ AR, ETH, SOL })
       setCurrency(selectedCurrency)
 
       const { data: responseData } = await axios.get(
@@ -32,7 +32,7 @@ const usePrice = ({ setCurrency, setPrice, setError }) => {
       )
       const solPrice = get(solRes, `solana.${selectedCurrency.toLowerCase()}`)
 
-      if (isNumber(arPrice) && isNumber(arPrice)) {
+      if (isNumber(arPrice) && isNumber(ethPrice) && isNumber(solPrice)) {
         await setPrice({ AR: arPrice, ETH: ethPrice, SOL: solPrice })
         await storage.generic.set.tokenPrice({
           ...price,

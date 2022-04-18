@@ -1,5 +1,5 @@
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
-import { Keypair } from '@solana/web3.js'
+import { Keypair, Connection, clusterApiUrl, PublicKey } from '@solana/web3.js'
 import { derivePath } from 'ed25519-hd-key'
 
 export class SolanaTool {
@@ -38,7 +38,10 @@ export class SolanaTool {
   }
 
   async getBalance() {
-    // TODO ThuanN: get balance function
-    return 10
+    const connection = new Connection(clusterApiUrl('testnet'), 'confirmed')
+
+    const balance = await connection.getBalance(new PublicKey(this.address))
+
+    return balance
   }
 }
