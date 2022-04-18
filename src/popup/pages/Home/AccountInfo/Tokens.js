@@ -12,6 +12,7 @@ import { setIsLoading } from 'popup/actions/loading'
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import SolanaIcon from 'img/v2/solana-logo.svg'
 
 // hooks
 import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddresses'
@@ -56,6 +57,21 @@ const Tokens = ({ currentProviderAddress }) => {
           decimal: 0
         }
       ])
+      return
+    }
+
+    if (displayingAccount.type === TYPE.SOLANA) {
+      setTokens([
+        {
+          name: 'Solana',
+          balance: numberFormat(fromArToWinston(displayingAccount.balance)),
+          displayingBalance: numberFormat(displayingAccount.balance),
+          symbol: 'SOL',
+          usdValue: fiatCurrencyFormat(displayingAccount.balance * price.SOL),
+          decimal: 9
+        }
+      ])
+
       return
     }
 
@@ -134,9 +150,11 @@ const Tokens = ({ currentProviderAddress }) => {
             {token.name === 'Ethereum' && <EthereumIcon className="w-8.75 h-8.75" />}
             {token.name === 'KOII' && <FinnieIcon className="w-8.75 h-8.75" />}
             {token.name === 'Arweave' && <ArweaveIcon className="w-8.75 h-8.75" />}
+            {token.name === 'Solana' && <SolanaIcon className="w-8.75 h-8.75" />}
             {token.name !== 'Ethereum' &&
               token.name !== 'KOII' &&
               token.name !== 'Arweave' &&
+              token.name !== 'Solana' &&
               (token.logo ? (
                 <img src={token.logo} className="w-8.75 h-8.75" />
               ) : (

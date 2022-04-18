@@ -47,7 +47,12 @@ const AccountInfo = ({ displayingAccount, price, currentProviderAddress }) => {
         />
         {!includes(location.pathname, 'assets') ? (
           <div className="h-full px-17.25 py-3">
-            {displayingAccount.type !== TYPE.ETHEREUM && (
+            {displayingAccount.type === TYPE.SOLANA && (
+              <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+                {numberFormat(displayingAccount.balance)} SOL
+              </div>
+            )}
+            {displayingAccount.type === TYPE.ARWEAVE && (
               <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
                 {numberFormat(displayingAccount.koiBalance)} KOII
               </div>

@@ -96,6 +96,8 @@ const HomeTop = ({
     getCurrentProvider()
   }, [])
 
+  console.log('=========', displayingAccount)
+
   return (
     <div className="relative z-20">
       <div ref={p.ref}>
@@ -111,17 +113,23 @@ const HomeTop = ({
             </div>
           )}
         </div>
-        {displayingAccount.type !== TYPE.ETHEREUM && (
+        {displayingAccount.type === TYPE.SOLANA && (
           <div className="mt-6.5">
             <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-              {numberFormat(displayingAccount.koiBalance)} KOII
+              {numberFormat(displayingAccount.balance)} SOL
             </div>
             <div
-              hidden
               className="text-base leading-8 tracking-finnieSpacing-tight"
               style={{ color: '#707070' }}
             >
-              ${fiatCurrencyFormat(displayingAccount.koiBalance * price.KOI)} USD
+              ${fiatCurrencyFormat(displayingAccount.balance * price.SOL)} USD
+            </div>
+          </div>
+        )}
+        {displayingAccount.type === TYPE.ARWEAVE && (
+          <div className="mt-6.5">
+            <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+              {numberFormat(displayingAccount.koiBalance)} KOII
             </div>
           </div>
         )}
