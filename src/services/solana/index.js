@@ -1,4 +1,4 @@
-import { mnemonicToSeedSync } from 'bip39'
+import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
 import { Keypair } from '@solana/web3.js'
 import { derivePath } from 'ed25519-hd-key'
 
@@ -27,5 +27,13 @@ export class SolanaTool {
     }
 
     return wallet
+  }
+
+  generateWallet() {
+    const seedPhrase = generateMnemonic()
+
+    this.importWallet(seedPhrase)
+
+    return seedPhrase
   }
 }
