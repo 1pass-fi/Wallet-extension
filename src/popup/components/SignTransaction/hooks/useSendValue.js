@@ -11,6 +11,7 @@ import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import { TRANSACTION_TYPE } from './constants'
 
 import decodeTags from 'utils/decodeTags'
+import { popupAccount } from 'services/account'
 
 const fromHexToDecimal = (hexString) => {
   let number = null
@@ -36,6 +37,9 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
   const [customTokenRecipient, setCustomTokenRecipient] = useState(null)
   const [contractAddress, setContractAddress] = useState(null)
   const [rawValue, setRawValue] = useState(null)
+  const [balance, setBalance] = useState(null)
+  const [originBalance, setOriginBalance] = useState(null)
+  const [originSymbol, setOriginSymbol] = useState(null)
 
   const getSendValueEthereum = (value) => {
     value = fromHexToDecimal(value)
@@ -58,13 +62,20 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
           setValue(getSendValueEthereum(value))
           setRawValue(value)
           setSymbol('ETH')
+          setOriginSymbol('ETH')
           break
         case 'ARWEAVE':
           setValue(getSendValueArweave(value))
           setRawValue(value)
           setSymbol('AR')
+          setOriginSymbol('ETH')
           break
       }
+
+      const account = await popupAccount.getAccount({ address: userAddress })
+      const balance = await account.get.balance()
+
+      setOriginBalance(balance)
 
       if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
         if (network === 'ETHEREUM') {
@@ -95,6 +106,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
           setSymbol(symbol)
           setValue(quantity)
           setCustomTokenRecipient(customTokenRecipient)
+          setBalance(balance / (10 ** decimal))
         }
 
         if (network === 'ARWEAVE') {
@@ -122,6 +134,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
           setValue(quantity)
           setRawValue(quantity)
           setCustomTokenRecipient(customTokenRecipient)
+          setBalance(balance)
         }
       }
 
@@ -145,7 +158,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
     </>
   )
 
-  return { SendValue, TokenIcon, customTokenRecipient, value, contractAddress, rawValue }
+  return { SendValue, TokenIcon, customTokenRecipient, value, contractAddress, rawValue, balance, symbol, originBalance, originSymbol }
 }
 
 export default useSendValue

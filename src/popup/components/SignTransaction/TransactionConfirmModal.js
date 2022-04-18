@@ -61,7 +61,11 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     customTokenRecipient,
     contractAddress,
     value,
-    rawValue
+    rawValue,
+    balance,
+    symbol,
+    originBalance,
+    originSymbol
   } = useSendValue({
     network,
     transactionPayload,
@@ -152,8 +156,15 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               style={{ height: '348px' }}
             >
               <div className="w-full mt-5 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center">
-                Double check the details. This transaction cannot be undone.
+                {origin}
               </div>
+              <div className="w-full mt-5 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center">
+                Balance: {numberFormat(originBalance, 6)} {originSymbol}
+              </div>
+              {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && 
+              <div className="w-full mt-5 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center">
+                Token balance: {numberFormat(balance, 6)} {symbol}
+              </div>}
 
               {/* TRANSACTION TITLE */}
               <div className="w-full mt-3 text-sm leading-6 tracking-finnieSpacing-wide text-indigo text-center">
