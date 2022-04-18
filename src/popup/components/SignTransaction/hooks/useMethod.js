@@ -19,7 +19,10 @@ const useMethod = ({
   contractAddress,
   value,
   customTokenRecipient,
-  rawValue
+  rawValue,
+  setTxId,
+  setShowReceipt,
+  getFeeInterval
 }) => {
   const handleSendEth = async () => {
     let qty = get(transactionPayload, 'value')
@@ -76,6 +79,7 @@ const useMethod = ({
         If requestId === undefined, request was sent internally from Finnie
       */
       setIsLoading(true)
+      clearInterval(getFeeInterval)
       if (requestId) {
         chrome.runtime.sendMessage({ requestId, approved: true }, function (response) {
           chrome.runtime.onMessage.addListener(function (message) {
@@ -106,7 +110,9 @@ const useMethod = ({
         }
 
         setIsLoading(false)
-        setShowSigning(false)
+        setShowReceipt(true)
+        setTxId(result)
+        // setShowSigning(false)
       }
     } catch (err) {
       console.error(err.message)

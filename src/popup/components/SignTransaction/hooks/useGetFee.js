@@ -20,6 +20,7 @@ const fromWeiToEth = (wei) => {
 const useGetFee = ({ network, transactionPayload }) => {
   const [totalFee, setTotalFee] = useState('------')
   const [tokenSymbol, setTokenSymbol] = useState('------')
+  const [getFeeInterval, setGetFeeInterval] = useState(null)
 
   const getEthFee = async () => {
     const provider = await storage.setting.get.ethereumProvider()
@@ -76,9 +77,9 @@ const useGetFee = ({ network, transactionPayload }) => {
     const load = () => {
       if (network === 'ETHEREUM') {
         getEthFee()
-        setInterval(() => {
+        setGetFeeInterval(setInterval(() => {
           getEthFee()
-        }, 3000)
+        }, 3000))
       }
       if (network === 'ARWEAVE') getArFee()
     }
@@ -92,7 +93,7 @@ const useGetFee = ({ network, transactionPayload }) => {
     </div>
   )
 
-  return [Fee, totalFee, tokenSymbol]
+  return { Fee, totalFee, tokenSymbol, getFeeInterval }
 }
 
 export default useGetFee

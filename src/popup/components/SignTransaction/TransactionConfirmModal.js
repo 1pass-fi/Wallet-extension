@@ -1,5 +1,5 @@
 // modules
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, connect } from 'react-redux'
 import { get, isEmpty } from 'lodash'
@@ -41,6 +41,7 @@ import OkBtn from 'img/v2/popup-tx-detail-ok.svg'
 const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigning }) => {
   const [tab, setTab] = useState(TAB.DETAIL)
   const [showReceipt, setShowReceipt] = useState(false)
+  const [txId, setTxId] = useState('')
 
   const price = useSelector((state) => state.price)
   const {
@@ -53,7 +54,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     dataString
   } = useLoadRequest({ setIsLoading })
 
-  const [Fee] = useGetFee({ network, transactionPayload })
+  const { Fee, tokenSymbol, totalFee, getFeeInterval } = useGetFee({ network, transactionPayload })
 
   const {
     SendValue,
@@ -84,8 +85,26 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     contractAddress,
     value,
     rawValue,
-    customTokenRecipient
+    customTokenRecipient,
+    setTxId,
+    setShowReceipt,
+    getFeeInterval
   })
+
+  const sender = useMemo(() => {
+    return get(transactionPayload, 'from')
+  }, [transactionPayload])
+
+  const recipient = useMemo(() => {
+    if (customTokenRecipient) return customTokenRecipient
+    return get(transactionPayload, 'to')
+  }, [customTokenRecipient, transactionPayload])
+
+  useEffect(() => {
+    return () => {
+      storage.generic.set.pendingRequest({})
+    }
+  }, [])
 
   return (
     <div className="w-full h-full bg-white z-51 m-auto top-0 left-0 fixed flex flex-col justify-center items-center">
@@ -272,28 +291,28 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
           <div className="w-full text-base px-12 flex gap-x-15.75 mt-6.5">
             <div style={{ width: '132px' }}>
               <div className="font-semibold">From:</div>
-              <div>example_account</div>
+              {/* <div>example_sender</div> */}
               <div className="text-2xs text-success-700">
-                {getDisplayAddress('sdfkjsdhfkhsdkjfhksjdhkfhjssadasdasd')}
+                {getDisplayAddress(sender)}
               </div>
             </div>
-            <div>
+            {transactionType !== TRANSACTION_TYPE.CONTRACT_DEPLOYMENT && transactionType !== TRANSACTION_TYPE.CONTRACT_INTERACTION && <div>
               <div className="font-semibold">Amount:</div>
-              <div>100 KOII</div>
-            </div>
+              <div>{value} {symbol}</div>
+            </div>}
           </div>
           <div className="w-full text-base px-12 flex gap-x-15.75 mt-5.5">
             <div style={{ width: '132px' }}>
               <div className="font-semibold">To:</div>
-              <div>example_recipient</div>
+              {/* <div>example_recipient</div> */}
               <div className="text-2xs text-success-700">
-                {getDisplayAddress('skdjfhkjshdfkjhskjdfhksjhdfkjhskdhfjs')}
+                {getDisplayAddress(recipient)}
               </div>
             </div>
             <div>
               <div className="font-semibold">Transaction Fee:</div>
-              <div className="text-base leading-5 text-blue-800">100 AR</div>
-              <div className="text-2xs text-success-700">Storage Fee</div>
+              <div className="text-base leading-5 text-blue-800">{numberFormat(totalFee, 6)} {tokenSymbol}</div>
+              {/* <div className="text-2xs text-success-700">Storage Fee</div> */}
             </div>
           </div>
           <div className="w-full text-base px-12 flex gap-x-15.75 mt-5.5">
@@ -302,7 +321,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               <div className="text-success-700">Confirmed</div>
             </div>
             <div>
-              <a href={`https://viewblock.io/arweave/tx/example_txid`} target="_blank">
+              <a href={`https://viewblock.io/arweave/tx/${txId}`} target="_blank">
                 <button
                   style={{ width: '128px', height: '29px' }}
                   className="bg-lightBlue shadow-md text-xs flex items-center justify-center rounded-sm"
@@ -316,11 +335,12 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
           <div className="mt-5.5 text-blue-800 text-lg flex items-start justify-center">
             <div className="font-semibold leading-5">Total Cost: </div>
             <div className="ml-2">
-              <div className="leading-5">example_ar_fee AR</div>
-              <div className="text-2xs text-success-700">${fiatCurrencyFormat(1000)} USD</div>
+              <div className="leading-5">{value} {symbol}</div>
+              <div className="leading-5">{numberFormat(totalFee)} {tokenSymbol}</div>
+              {/* <div className="text-2xs text-success-700">${fiatCurrencyFormat(1000)} USD</div> */}
             </div>
           </div>
-          <Link className="mt-1" to="/">
+          <Link onClick={() => setShowSigning(false)} className="mt-3" to="/">
             <OkBtn className="cursor-pointer" />
           </Link>
         </div>
