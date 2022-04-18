@@ -12,7 +12,7 @@ const validateArweaveAddress = (address) => {
 const NOT_ENOUGH_BALANCE = `Not enough token amount`
 const INVALID_RECIPIENT = 'Invalid recipient address'
 
-const useValidate = ({ selectedToken, amount, recipient, selectedAccount }) => {
+const useValidate = ({ selectedToken, amount, recipient, selectedAccount, alchemyAddress }) => {
   const [validated, setValidated] = useState(false)
   const [errorMessage, setErrorMessage] = useState('Please fill in all fields')
 
@@ -36,14 +36,18 @@ const useValidate = ({ selectedToken, amount, recipient, selectedAccount }) => {
       }
 
       if (selectedAccount?.type === TYPE.ETHEREUM) {
-        if (!validateEthereumAddress(recipient)) return throwValidationError(INVALID_RECIPIENT)
+        if (alchemyAddress) {
+          if (!validateEthereumAddress(alchemyAddress)) return throwValidationError(INVALID_RECIPIENT)
+        } else {
+          if (!validateEthereumAddress(recipient)) return throwValidationError(INVALID_RECIPIENT)
+        }
       }
 
       setValidated(true)
     }
 
     if (selectedToken && amount && recipient && selectedAccount) validate()
-  }, [selectedToken, amount, recipient, selectedAccount])
+  }, [selectedToken, amount, recipient, selectedAccount, alchemyAddress])
 
   return { validated, errorMessage }
 }

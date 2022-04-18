@@ -34,6 +34,7 @@ const Send = ({ setShowSigning, setError }) => {
   const [amount, setAmount] = useState('')
   const [recipient, setRecipient] = useState({ address: '' })
   const [enoughGas, setEnoughGas] = useState(true)
+  const [alchemyAddress, setAlchemyAddress] = useState(null)
 
   const { selectedNetwork } = useSelectedAccount({ selectedAccount })
   const { tokenList, selectedToken, setSelectedToken } = useTokenList({
@@ -51,18 +52,20 @@ const Send = ({ setShowSigning, setError }) => {
     return get(selectedToken, 'contractAddress')
   }, [selectedToken])
 
-  const { validated, errorMessage } = useValidate({ selectedToken, amount, selectedAccount, recipient: _recipient })
+  const { validated, errorMessage } = useValidate({ selectedToken, amount, selectedAccount, recipient: _recipient, alchemyAddress })
 
   /* 
     amount in largest unit.
     For example: 0.01 -> 0.01 ETH
   */
-  const { onSendTokens } = useMethod({ 
+  const { onSendTokens, getAlchemyAddress } = useMethod({ 
     sender,
     recipient: _recipient,
     value: amount,
     contractAddress,
-    selectedToken
+    selectedToken,
+    alchemyAddress,
+    setAlchemyAddress
   })
 
   const history = useHistory()
@@ -93,9 +96,11 @@ const Send = ({ setShowSigning, setError }) => {
   }
 
   const handleSendToken = async () => {
+    await getAlchemyAddress()
+    console.log('alchemyAddress', alchemyAddress)
     if (!validated) return setError(errorMessage)
     await onSendTokens()
-    setShowSigning(true)
+    setShowSigning(true)       
   }
 
   return (

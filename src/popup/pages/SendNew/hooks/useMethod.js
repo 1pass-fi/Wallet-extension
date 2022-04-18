@@ -1,6 +1,7 @@
 
 import Web3 from 'web3'
-import { isString } from 'lodash'
+import { isString, get } from 'lodash'
+import axios from 'axios'
 
 import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
 import storage from 'services/storage'
@@ -16,8 +17,9 @@ const validateAddress = (address) => {
   if (address?.length === 43) return ARWEAVE
 }
 
-const useMethod = ({ sender, recipient, value, contractAddress, selectedToken }) => {
+const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, alchemyAddress, setAlchemyAddress }) => {
   const onSendTokens = async () => {
+    if (alchemyAddress) recipient = alchemyAddress
     const network = validateAddress(sender)
     if (!network) throw new Error('Invalid address')
 
@@ -138,7 +140,19 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken })
     }
   }
 
-  return { onSendTokens }
+  const getAlchemyAddress = async () => {
+    const API_KEY = 'TD3-t3Nv-5Hma3u6LtghPmYWMs-KzSAF'
+    const url = `https://unstoppabledomains.g.alchemy.com/domains/${recipient}`
+
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${API_KEY}` }
+    })
+
+    console.log('response', response.data.meta.owner)
+    if (get(response, 'data.meta.owner')) setAlchemyAddress(get(response, 'data.meta.owner'))
+  }
+
+  return { onSendTokens, getAlchemyAddress }
 }
 
 export default useMethod

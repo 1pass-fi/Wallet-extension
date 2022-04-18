@@ -40,7 +40,7 @@ import OkBtn from 'img/v2/popup-tx-detail-ok.svg'
 
 const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigning }) => {
   const [tab, setTab] = useState(TAB.DETAIL)
-  const [showReceipt, setShowReceipt] = useState(true)
+  const [showReceipt, setShowReceipt] = useState(false)
 
   const price = useSelector((state) => state.price)
   const {
