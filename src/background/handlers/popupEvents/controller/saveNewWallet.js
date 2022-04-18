@@ -23,7 +23,7 @@ export default async (payload, next) => {
 
     // Get key and seedphrase from koitool.
     const { key, mnemonic: seedPhrase, type } = generatedKey
-    if (type == TYPE.ARWEAVE) provider = null
+    if (type === TYPE.ARWEAVE || type === TYPE.SOLANA) provider = null
     /* 
       Check for having imported account.
     */
@@ -34,6 +34,10 @@ export default async (payload, next) => {
       if (isEmpty(activatedAccountAddress)) {
         activatedAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
       }
+      if (isEmpty(activatedAccountAddress)) {
+        activatedAccountAddress = await storage.setting.get.activatedSolanaAccountAddress()
+      }
+
       const encryptedKey = await backgroundAccount.getEncryptedKey(activatedAccountAddress)
 
       // Check input password

@@ -3,7 +3,7 @@ import { AccountSetter } from './set'
 
 import { Web } from '@_koi/sdk/web'
 import { Ethereum } from 'services/ethereum'
-import { SolanaTool } from 'services/solana/SolanaTool'
+import { SolanaTool } from 'services/solana'
 
 import { ArweaveMethod } from './Chains/Arweave/ArweaveMethod'
 import { ArweaveStatic } from './Chains/Arweave/ArweaveStatic'

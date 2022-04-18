@@ -7,7 +7,7 @@ import { ArweaveAccount, EthereumAccount, SolanaAccount } from 'services/account
 import { backgroundAccount } from 'services/account'
 import { KoiTool } from 'services/arweave'
 import { EthereumTool } from 'services/ethereum'
-import { SolanaTool } from 'services/solana/SolanaTool'
+import { SolanaTool } from 'services/solana'
 
 // Constants
 import { TYPE } from 'constants/accountConstants'
