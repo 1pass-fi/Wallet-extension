@@ -156,13 +156,13 @@ const Tokens = ({ currentProviderAddress }) => {
         Don’t see your token?
       </div>
       <div className="mt-1.5 mb-4 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
-        <span
+        {/* <span
           className="cursor-pointer underline text-success-700"
           onClick={() => handleRefreshTokenList()}
         >
           Refresh list
         </span>{' '}
-        or{' '}
+        or{' '} */}
         <Link className="cursor-pointer underline text-success-700" to="/import-token">
           Import a token
         </Link>
