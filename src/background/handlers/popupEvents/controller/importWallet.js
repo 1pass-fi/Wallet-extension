@@ -51,11 +51,18 @@ export default async (payload, next) => {
       - If no imported account -> skip
     */
     const count = await backgroundAccount.count()
+
     if (count) {
       let activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
+
       if (isEmpty(activatedAccountAddress)) {
         activatedAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
       }
+
+      if (isEmpty(activatedAccountAddress)) {
+        activatedAccountAddress = await storage.setting.get.activatedSolanaAccountAddress()
+      }
+
       const encryptedKey = await backgroundAccount.getEncryptedKey(activatedAccountAddress)
       try {
         await passworder.decrypt(password, encryptedKey)
@@ -134,7 +141,7 @@ export default async (payload, next) => {
     const totalArweaveAccounts = await backgroundAccount.count(TYPE.ARWEAVE)
     const totalEthereumAccounts = await backgroundAccount.count(TYPE.ETHEREUM)
     const totalSolanaAccounts = await backgroundAccount.count(TYPE.SOLANA)
-    
+
     if (totalArweaveAccounts === 1 && type === TYPE.ARWEAVE) {
       await setActivatedAccountAddress(await account.get.address(), type)
     }
