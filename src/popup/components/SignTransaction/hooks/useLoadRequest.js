@@ -5,6 +5,7 @@ import storage from 'services/storage'
 import validateToken from 'utils/erc20/validateToken'
 
 import helper from './helper'
+import { popupAccount } from 'services/account'
 
 const useLoadRequest = ({ setIsLoading }) => {
   const [requestPayload, setRequestPayload] = useState(null)
@@ -13,8 +14,9 @@ const useLoadRequest = ({ setIsLoading }) => {
   const [requestId, setRequestId] = useState(null)
   const [favicon, setFavicon] = useState(null)
   const [dataString, setDataString] = useState(null)
-
   const [transactionType, setTransactionType] = useState(null)
+  const [senderName, setSenderName] = useState(null)
+  const [recipientName, setRecipientName] = useState(null)
   
   useEffect(() => {
     const loadRequest = async () => {
@@ -27,6 +29,7 @@ const useLoadRequest = ({ setIsLoading }) => {
         const origin = get(request, 'data.origin')
         const requestId = get(request, 'data.requestId')
         const favicon = get(request, 'data.favicon')
+        const recipientName = get(request, 'data.recipientName')
   
         const data = get(requestPayload, 'data')
   
@@ -37,6 +40,10 @@ const useLoadRequest = ({ setIsLoading }) => {
         if (network === 'ARWEAVE') {
           transactionType = await helper.getArweaveTransactionType(requestPayload)
         }
+
+        const sender = get(requestPayload, 'from')
+        const account = await popupAccount.getAccount({ address: sender })
+        const senderName = await account.get.accountName()
   
         setRequestPayload(requestPayload)
         setNetwork(network)
@@ -45,6 +52,8 @@ const useLoadRequest = ({ setIsLoading }) => {
         setFavicon(favicon)
         setTransactionType(transactionType)
         setDataString(data)
+        setSenderName(senderName)
+        setRecipientName(recipientName)
       } catch (err) {
         console.error('loadRequest error: ', err.message)
       }
@@ -60,7 +69,9 @@ const useLoadRequest = ({ setIsLoading }) => {
     requestId, 
     favicon,
     transactionType,
-    dataString
+    dataString,
+    senderName,
+    recipientName
   }
 }
 

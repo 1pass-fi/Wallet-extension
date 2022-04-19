@@ -17,7 +17,7 @@ const validateAddress = (address) => {
   if (address?.length === 43) return ARWEAVE
 }
 
-const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, alchemyAddress, setAlchemyAddress, setIsLoading }) => {
+const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, alchemyAddress, setAlchemyAddress, setIsLoading, setRecipientName, recipientName }) => {
   const onSendTokens = async () => {
     try {
       if (alchemyAddress) recipient = alchemyAddress
@@ -62,7 +62,8 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
           }
           const requestPayload = {
             network: 'ETHEREUM',
-            requestPayload: transactionPayload
+            requestPayload: transactionPayload,
+            recipientName
           }
 
           await storage.generic.set.pendingRequest({
@@ -157,7 +158,10 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
     })
 
     setIsLoading(false)
-    if (get(response, 'data.meta.owner')) setAlchemyAddress(get(response, 'data.meta.owner'))
+    if (get(response, 'data.meta.owner')) {
+      setAlchemyAddress(get(response, 'data.meta.owner'))
+      setRecipientName(recipient)
+    }
   }
 
   return { onSendTokens, getAlchemyAddress }

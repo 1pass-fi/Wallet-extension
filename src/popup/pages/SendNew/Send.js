@@ -37,6 +37,7 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
   const [enoughGas, setEnoughGas] = useState(true)
   const [alchemyAddress, setAlchemyAddress] = useState(null)
   const [sendTokenClick, setSendTokenClick] = useState(0)
+  const [recipientName, setRecipientName] = useState(null)
 
   const { selectedNetwork } = useSelectedAccount({ selectedAccount })
   const { tokenList, selectedToken, setSelectedToken } = useTokenList({
@@ -68,7 +69,9 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
     selectedToken,
     alchemyAddress,
     setAlchemyAddress,
-    setIsLoading
+    setIsLoading,
+    recipientName,
+    setRecipientName
   })
 
   const history = useHistory()

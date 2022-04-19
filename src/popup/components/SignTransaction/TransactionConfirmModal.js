@@ -51,7 +51,9 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     requestId,
     favicon,
     transactionType,
-    dataString
+    dataString,
+    senderName,
+    recipientName
   } = useLoadRequest({ setIsLoading })
 
   const { Fee, tokenSymbol, totalFee, getFeeInterval } = useGetFee({ network, transactionPayload })
@@ -206,6 +208,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                   <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
                     From:
                   </div>
+                  {senderName && <div>{senderName}</div>}
                   <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
                     {getDisplayAddress(get(transactionPayload, 'from'))}
                   </div>
@@ -240,6 +243,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                     <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
                       To:
                     </div>
+                    {recipientName && <div>{recipientName}</div>}
                     <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
                       {getDisplayAddress(customTokenRecipient || get(transactionPayload, 'to'))}
                     </div>
@@ -291,7 +295,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
           <div className="w-full text-base px-12 flex gap-x-15.75 mt-6.5">
             <div style={{ width: '132px' }}>
               <div className="font-semibold">From:</div>
-              {/* <div>example_sender</div> */}
+              {senderName && <div>{senderName}</div>}
               <div className="text-2xs text-success-700">
                 {getDisplayAddress(sender)}
               </div>
@@ -304,7 +308,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
           <div className="w-full text-base px-12 flex gap-x-15.75 mt-5.5">
             <div style={{ width: '132px' }}>
               <div className="font-semibold">To:</div>
-              {/* <div>example_recipient</div> */}
+              {recipientName && <div>{recipientName}</div>}
               <div className="text-2xs text-success-700">
                 {getDisplayAddress(recipient)}
               </div>
