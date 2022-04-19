@@ -1,8 +1,7 @@
 import {
   SET_DEFAULT_ARWEAVE_ACCOUNT,
-  UPDATE_DEFAULT_ACCOUNT,
   SET_DEFAULT_ETHEREUM_ACCOUNT,
-  UPDATE_DEFAULT_ETHEREUM_ACCOUNT
+  SET_DEFAULT_SOLANA_ACCOUNT
 } from 'options/actions/types'
 
 const emptyAccount = {
@@ -20,7 +19,8 @@ const emptyAccount = {
 
 const initialState = {
   ETH: emptyAccount,
-  AR: emptyAccount
+  AR: emptyAccount,
+  SOL: emptyAccount
 }
 
 export default function defaultAccountReducer(state = initialState, action) {
@@ -31,10 +31,8 @@ export default function defaultAccountReducer(state = initialState, action) {
       return { ...state, AR: payload }
     case SET_DEFAULT_ETHEREUM_ACCOUNT:
       return { ...state, ETH: payload }
-    case UPDATE_DEFAULT_ACCOUNT:
-      return { ...state, AR: { ...state.AR, ...payload } }
-    case UPDATE_DEFAULT_ETHEREUM_ACCOUNT:
-      return { ...state, ETH: { ...state.ETH, ...payload } }
+    case SET_DEFAULT_SOLANA_ACCOUNT:
+      return { ...state, SOL: payload }
     default:
       return state
   }
