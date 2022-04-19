@@ -7,15 +7,17 @@ import formatLongString from 'finnie-v2/utils/formatLongString'
 
 import ArLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import SolLogo from 'img/v2/solana-logo.svg'
 
 import Hint from 'finnie-v2/components/Hint'
 import CheckBox from 'finnie-v2/components/CheckBox'
 
-const tabs = ['AR', 'ETH']
+const tabs = ['AR', 'ETH', 'SOL']
 
 const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupPhraseModal }) => {
   const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
   const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
+  const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
 
   const [currentTab, setCurrentTab] = useState('AR')
 
@@ -65,15 +67,20 @@ const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupPh
                   <CheckBox
                     checked={
                       defaultArweaveAccountAddress === account.address ||
-                      defaultEthereumAccountAddress === account.address
+                      defaultEthereumAccountAddress === account.address ||
+                      defaultSolanaAccountAddress === account.address
                     }
                   />
                 </td>
                 <td>
-                  {currentTab === 'AR' ? (
+                  {currentTab === 'AR' && (
                     <ArLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
-                  ) : (
+                  )}
+                  {currentTab === 'ETH' && (
                     <EthLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
+                  )}
+                  {currentTab === 'SOL' && (
+                    <SolLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
                   )}
                   {formatLongString(account.accountName, 12)}
                 </td>
