@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import ArrowIcon from 'img/down-arrow-icon.svg'
 import EthereumIcon from 'img/popup/ethereum-icon.svg'
 import FinnieIcon from 'img/popup/finnie-icon.svg'
+import SolanaIcon from 'img/v2/solana-logo.svg'
 
 import { TYPE } from 'constants/accountConstants'
 
@@ -27,6 +28,9 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
         )}
         {displayingAccount.type === TYPE.ETHEREUM && (
           <EthereumIcon style={{ width: '25px', height: '25px' }} />
+        )}
+        {displayingAccount.type === TYPE.SOLANA && (
+          <SolanaIcon style={{ width: '25px', height: '25px' }} />
         )}
         <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
           {displayingAccount?.accountName}

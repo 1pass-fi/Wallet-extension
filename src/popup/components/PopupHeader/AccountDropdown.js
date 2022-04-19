@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import EthereumIcon from 'img/ethereum-logo.svg'
+import SolanaIcon from 'img/v2/solana-logo.svg'
 import FinnieIcon from 'img/popup/finnie-icon.svg'
 import AddIcon from 'img/popup/add-icon.svg'
 import RemoveAccountIcon from 'img/remove-account-links.svg'
@@ -60,7 +61,7 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
             await storage.setting.set.activatedChain(account.type)
             dispatch(setActivatedChain(account.type))
             dispatch(setDefaultAccount(account))
-            chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
               chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
             })
             setShowAccountDropdown(false)
@@ -68,6 +69,7 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
         >
           {account.type === TYPE.ARWEAVE && <FinnieIcon className="ml-2.5 h-6.25 w-6.25" />}
           {account.type === TYPE.ETHEREUM && <EthereumIcon className="ml-2.5 h-6.25 w-6.25" />}
+          {account.type === TYPE.SOLANA && <SolanaIcon className="ml-2.5 h-6.25 w-6.25" />}
           <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
             {account.accountName}
           </div>
