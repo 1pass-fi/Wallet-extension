@@ -13,7 +13,7 @@ export default async (payload, next) => {
       value: rawValue
     })
 
-    next({ data: receipt })
+    next({ data: receipt.transactionHash })
 
   } catch (err) {
     console.error(err.message)

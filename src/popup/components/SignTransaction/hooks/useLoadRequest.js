@@ -8,7 +8,7 @@ import helper from './helper'
 import { popupAccount } from 'services/account'
 
 const useLoadRequest = ({ setIsLoading }) => {
-  const [requestPayload, setRequestPayload] = useState(null)
+  const [transactionPayload, setTransactionPayload] = useState(null)
   const [network, setNetwork] = useState(null)
   const [origin, setOrigin] = useState(null)
   const [requestId, setRequestId] = useState(null)
@@ -24,28 +24,28 @@ const useLoadRequest = ({ setIsLoading }) => {
         setIsLoading(true)
         const request = await storage.generic.get.pendingRequest()
     
-        const requestPayload = get(request, 'data.requestPayload')
+        const transactionPayload = get(request, 'data.transactionPayload')
         const network = get(request, 'data.network')
         const origin = get(request, 'data.origin')
         const requestId = get(request, 'data.requestId')
         const favicon = get(request, 'data.favicon')
         const recipientName = get(request, 'data.recipientName')
   
-        const data = get(requestPayload, 'data')
+        const data = get(transactionPayload, 'data')
   
         let transactionType
         if (network === 'ETHEREUM') {
-          transactionType = await helper.getEthereumTransactionType(requestPayload)
+          transactionType = await helper.getEthereumTransactionType(transactionPayload)
         }
         if (network === 'ARWEAVE') {
-          transactionType = await helper.getArweaveTransactionType(requestPayload)
+          transactionType = await helper.getArweaveTransactionType(transactionPayload)
         }
 
-        const sender = get(requestPayload, 'from')
+        const sender = get(transactionPayload, 'from')
         const account = await popupAccount.getAccount({ address: sender })
         const senderName = await account.get.accountName()
   
-        setRequestPayload(requestPayload)
+        setTransactionPayload(transactionPayload)
         setNetwork(network)
         setOrigin(origin)
         setRequestId(requestId)
@@ -63,7 +63,7 @@ const useLoadRequest = ({ setIsLoading }) => {
   }, [])
 
   return { 
-    transactionPayload: requestPayload, 
+    transactionPayload, 
     network, 
     origin, 
     requestId, 

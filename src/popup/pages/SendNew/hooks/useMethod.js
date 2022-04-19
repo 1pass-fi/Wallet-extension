@@ -62,7 +62,7 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
           }
           const requestPayload = {
             network: 'ETHEREUM',
-            requestPayload: transactionPayload,
+            transactionPayload,
             recipientName
           }
 
@@ -80,7 +80,7 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
   
           const requestPayload = {
             network: 'ETHEREUM',
-            requestPayload: transactionPayload,
+            transactionPayload,
             recipientName
           }
           await storage.generic.set.pendingRequest({
@@ -118,7 +118,7 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
   
           const requestPayload = {
             network: 'ARWEAVE',
-            requestPayload: transactionPayload,
+            transactionPayload,
             recipientName
           }
           await storage.generic.set.pendingRequest({
@@ -136,7 +136,7 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
   
           const requestPayload = {
             network: 'ARWEAVE',
-            requestPayload: transactionPayload,
+            transactionPayload,
             recipientName
           }
   
