@@ -75,13 +75,17 @@ const useGetFee = ({ network, transactionPayload }) => {
 
   useEffect(() => {
     const load = () => {
-      if (network === 'ETHEREUM') {
-        getEthFee()
-        setGetFeeInterval(setInterval(() => {
+      try {
+        if (network === 'ETHEREUM') {
           getEthFee()
-        }, 3000))
+          setGetFeeInterval(setInterval(() => {
+            getEthFee()
+          }, 3000))
+        }
+        if (network === 'ARWEAVE') getArFee()
+      } catch (err) {
+        console.error('get fee error: ', err.message)
       }
-      if (network === 'ARWEAVE') getArFee()
     }
 
     if (transactionPayload && network) load()

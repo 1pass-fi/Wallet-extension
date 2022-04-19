@@ -18,32 +18,36 @@ const useLoadRequest = ({ setIsLoading }) => {
   
   useEffect(() => {
     const loadRequest = async () => {
-      setIsLoading(true)
-      const request = await storage.generic.get.pendingRequest()
+      try {
+        setIsLoading(true)
+        const request = await storage.generic.get.pendingRequest()
+    
+        const requestPayload = get(request, 'data.requestPayload')
+        const network = get(request, 'data.network')
+        const origin = get(request, 'data.origin')
+        const requestId = get(request, 'data.requestId')
+        const favicon = get(request, 'data.favicon')
   
-      const requestPayload = get(request, 'data.requestPayload')
-      const network = get(request, 'data.network')
-      const origin = get(request, 'data.origin')
-      const requestId = get(request, 'data.requestId')
-      const favicon = get(request, 'data.favicon')
-
-      const data = get(requestPayload, 'data')
-
-      let transactionType
-      if (network === 'ETHEREUM') {
-        transactionType = await helper.getEthereumTransactionType(requestPayload)
+        const data = get(requestPayload, 'data')
+  
+        let transactionType
+        if (network === 'ETHEREUM') {
+          transactionType = await helper.getEthereumTransactionType(requestPayload)
+        }
+        if (network === 'ARWEAVE') {
+          transactionType = await helper.getArweaveTransactionType(requestPayload)
+        }
+  
+        setRequestPayload(requestPayload)
+        setNetwork(network)
+        setOrigin(origin)
+        setRequestId(requestId)
+        setFavicon(favicon)
+        setTransactionType(transactionType)
+        setDataString(data)
+      } catch (err) {
+        console.error('loadRequest error: ', err.message)
       }
-      if (network === 'ARWEAVE') {
-        transactionType = await helper.getArweaveTransactionType(requestPayload)
-      }
-
-      setRequestPayload(requestPayload)
-      setNetwork(network)
-      setOrigin(origin)
-      setRequestId(requestId)
-      setFavicon(favicon)
-      setTransactionType(transactionType)
-      setDataString(data)
     }
 
     loadRequest()
