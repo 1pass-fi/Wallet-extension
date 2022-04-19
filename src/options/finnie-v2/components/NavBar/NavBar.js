@@ -34,6 +34,7 @@ const NavBar = () => {
 
   const defaultArweaveAccount = useSelector((state) => state.defaultAccount.AR)
   const defaultEthereumAccount = useSelector((state) => state.defaultAccount.ETH)
+  const defaultSolanaAccount = useSelector((state) => state.defaultAccount.SOL)
   const notificationsData = useSelector((state) => state.notificationsData)
 
   const toggleDropdownMenu = () => setShowDropdown(!showDropdown)
@@ -129,7 +130,9 @@ const NavBar = () => {
           account={
             !isEmpty(defaultArweaveAccount?.address)
               ? defaultArweaveAccount
-              : defaultEthereumAccount
+              : !isEmpty(defaultEthereumAccount?.address)
+                ? defaultEthereumAccount
+                : defaultSolanaAccount
           }
         />
         <div className="relative">
