@@ -80,7 +80,8 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
   
           const requestPayload = {
             network: 'ETHEREUM',
-            requestPayload: transactionPayload
+            requestPayload: transactionPayload,
+            recipientName
           }
           await storage.generic.set.pendingRequest({
             type: REQUEST.TRANSACTION,
@@ -117,7 +118,8 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
   
           const requestPayload = {
             network: 'ARWEAVE',
-            requestPayload: transactionPayload
+            requestPayload: transactionPayload,
+            recipientName
           }
           await storage.generic.set.pendingRequest({
             type: REQUEST.TRANSACTION,
@@ -134,7 +136,8 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
   
           const requestPayload = {
             network: 'ARWEAVE',
-            requestPayload: transactionPayload
+            requestPayload: transactionPayload,
+            recipientName
           }
   
           await storage.generic.set.pendingRequest({
@@ -161,6 +164,8 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
     if (get(response, 'data.meta.owner')) {
       setAlchemyAddress(get(response, 'data.meta.owner'))
       setRecipientName(recipient)
+    } else {
+      setRecipientName(null)
     }
   }
 
