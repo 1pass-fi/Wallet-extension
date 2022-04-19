@@ -216,6 +216,15 @@ export default ({ children }) => {
           activatedEthereumAccount = await activatedEthereumAccount.get.metadata()
           dispatch(setDefaultAccount(activatedEthereumAccount))
         }
+
+        let activatedSolanaAccountAddress = await storage.setting.get.activatedSolanaAccountAddress()
+        if (!isEmpty(activatedSolanaAccountAddress)) {
+          let activatedSolanaAccount = await popupAccount.getAccount({
+            address: activatedSolanaAccountAddress
+          })
+          activatedSolanaAccount = await activatedSolanaAccount.get.metadata()
+          dispatch(setDefaultAccount(activatedSolanaAccount))
+        }
       }
     }
 
@@ -284,6 +293,15 @@ export default ({ children }) => {
       })
       activatedEthereumAccount = await activatedEthereumAccount.get.metadata()
       dispatch(setDefaultAccount(activatedEthereumAccount))
+    }
+
+    let activatedSolanaAccountAddress = await storage.setting.get.activatedSolanaAccountAddress()
+    if (!isEmpty(activatedSolanaAccountAddress)) {
+      let activatedSolanaAccount = await popupAccount.getAccount({
+        address: activatedSolanaAccountAddress
+      })
+      activatedSolanaAccount = await activatedSolanaAccount.get.metadata()
+      dispatch(setDefaultAccount(activatedSolanaAccount))
     }
   }
 

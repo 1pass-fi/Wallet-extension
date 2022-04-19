@@ -72,14 +72,13 @@ export default async (payload, next) => {
 
     // If total account = 1, set this account to activatedAccountAddress.
     if (totalAccounts == 1) {
-      await setActivatedAccountAddress(await account.get.address())
+      await setActivatedAccountAddress(await account.get.address(), type)
     }
 
-    helpers.loadBalances()          
+    helpers.loadBalances()
     helpers.loadActivities()
-    
-    next({ data: addressFromKey })
 
+    next({ data: addressFromKey })
   } catch (err) {
     console.error(err.message)
     next({ error: err.message })

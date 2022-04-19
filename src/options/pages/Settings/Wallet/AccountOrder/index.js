@@ -5,6 +5,7 @@ import get from 'lodash/get'
 
 import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
 import EthereumIcon from 'img/ethereum-logo-18.svg'
+import SolanaIcon from 'img/v2/solana-logo.svg'
 import RearrangePadsIcon from 'img/rearrange-pads-icon.svg'
 import { getDisplayAddress } from 'options/utils'
 import storage from 'services/storage'
@@ -109,6 +110,9 @@ export default ({ accounts, setAccounts }) => {
 
     const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
     dispatch(setDefaultAccountByAddress(activatedEthereumAccountAddress))
+
+    const defaultSolanaAccountAddress = await storage.setting.get.activatedSolanaAccountAddress()
+    dispatch(setDefaultAccountByAddress(defaultSolanaAccountAddress))
   }
 
   const handleSetDefaultAccount = async (address) => {
@@ -140,6 +144,7 @@ export default ({ accounts, setAccounts }) => {
             ></div>
             {item.type == TYPE.ARWEAVE && <FinnieIcon className="finnie-icon" />}
             {item.type == TYPE.ETHEREUM && <EthereumIcon className="finnie-icon" />}
+            {item.type == TYPE.SOLANA && <SolanaIcon className="finnie-icon" />}
             <div className="account-name">{item.accountName}</div>
           </div>
           <div className="account-address">{getDisplayAddress(item.address)}</div>

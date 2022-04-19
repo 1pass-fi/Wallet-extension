@@ -7,7 +7,7 @@ import data from 'currency-codes/data'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { isEmpty, get } from 'lodash'
 
-import { getChromeStorage, setChromeStorage } from 'utils'
+import { getChromeStorage, setChromeStorage, isSolanaAddress } from 'utils'
 import { STORAGE, OS } from 'constants/koiConstants'
 import { GalleryContext } from 'options/galleryContext'
 import storage from 'services/storage'

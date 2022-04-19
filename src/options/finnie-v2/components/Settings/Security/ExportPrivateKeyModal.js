@@ -11,6 +11,7 @@ import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import Button from 'finnie-v2/components/Button'
 import formatLongString from 'finnie-v2/utils/formatLongString'
+import { TYPE } from 'constants/accountConstants'
 
 const ExportPrivateKeyModal = ({ account, close }) => {
   const modalRef = useRef(null)
@@ -39,7 +40,15 @@ const ExportPrivateKeyModal = ({ account, close }) => {
         password,
         address: account.address
       })
-      const filename = 'arweave-key.json'
+      let filename = 'arweave-key.json'
+
+      if (account.type === TYPE.ETHEREUM) {
+        filename = 'ethereum-key.json'
+      }
+      if (account.type === TYPE.SOLANA) {
+        filename = 'solana-key.json'
+      }
+
       const result = JSON.stringify(key)
 
       const url = 'data:application/json;base64,' + btoa(result)
