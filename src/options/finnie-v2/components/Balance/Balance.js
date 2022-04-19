@@ -48,7 +48,9 @@ const Balance = ({ account }) => {
         <>
           <SolanaLogo className="w-6 h-6 mr-2" />
           <span className="font-semibold text-sm mr-2">
-            {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'}
+            {formatNumber(account.balance, 4) !== 'NaN'
+              ? formatNumber(account.balance / Math.pow(10, 9), 4)
+              : '0'}
           </span>
         </>
       )}

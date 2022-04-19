@@ -16,7 +16,11 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken }) => {
         style={{ height: '45px' }}
         onClick={() => onChangeToken(selectedToken)}
       >
-        <img src={selectedToken?.logo} style={{ width: '34px', height: '34px' }} />
+        {selectedToken?.logo ? (
+          <img src={selectedToken.logo} style={{ width: '34px', height: '34px' }} />
+        ) : (
+          <FinnieIcon style={{ width: '34px', height: '34px' }} />
+        )}
         <ArrowIcon style={{ transform: 'rotateX(180deg)' }} />
       </div>
       {tokenOptions.map((token, idx) => (
@@ -27,7 +31,11 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken }) => {
               style={{ height: '45px' }}
               onClick={() => onChangeToken(token)}
             >
-              <img src={token.logo} className="ml-2" style={{ width: '34px', height: '34px' }} />
+              {token?.logo ? (
+                <img src={token.logo} className="ml-2" style={{ width: '34px', height: '34px' }} />
+              ) : (
+                <FinnieIcon className="ml-2" style={{ width: '34px', height: '34px' }} />
+              )}
             </div>
           )}
         </div>
