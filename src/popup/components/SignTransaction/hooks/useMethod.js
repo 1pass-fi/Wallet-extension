@@ -53,7 +53,7 @@ const useMethod = ({
   }
 
   const handleSendCustomTokenEth = async () => {
-    await request.wallet.sendCustomTokenEth({
+    return await request.wallet.sendCustomTokenEth({
       sender: transactionPayload.from,
       customTokenRecipient,
       contractAddress,
@@ -62,7 +62,7 @@ const useMethod = ({
   }
 
   const handleSendCustomTokenAr = async () => {
-    await request.wallet.sendCustomTokenAr({
+    return await request.wallet.sendCustomTokenAr({
       sender: transactionPayload.from,
       customTokenRecipient,
       contractAddress,
@@ -112,6 +112,7 @@ const useMethod = ({
         setIsLoading(false)
         setShowReceipt(true)
         setTxId(result)
+        storage.generic.set.pendingRequest({})
         // setShowSigning(false)
       }
     } catch (err) {

@@ -32,6 +32,7 @@ import useGetFee from './hooks/useGetFee'
 import useLoadRequest from './hooks/useLoadRequest'
 import useMethod from './hooks/useMethod'
 import useSendValue from './hooks/useSendValue'
+import useExploreBlockUrl from './hooks/useExploreBlockUrl'
 
 import { TRANSACTION_TYPE, TAB } from './hooks/constants'
 
@@ -55,6 +56,8 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     senderName,
     recipientName
   } = useLoadRequest({ setIsLoading })
+
+  const { exploreBlockUrl } = useExploreBlockUrl({ transactionPayload })
 
   const { Fee, tokenSymbol, totalFee, getFeeInterval } = useGetFee({ network, transactionPayload })
 
@@ -325,7 +328,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               <div className="text-success-700">Confirmed</div>
             </div>
             <div>
-              <a href={`https://viewblock.io/arweave/tx/${txId}`} target="_blank">
+              <a href={`${exploreBlockUrl}/${txId}`} target="_blank">
                 <button
                   style={{ width: '128px', height: '29px' }}
                   className="bg-lightBlue shadow-md text-xs flex items-center justify-center rounded-sm"
