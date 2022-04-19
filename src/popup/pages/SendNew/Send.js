@@ -157,9 +157,12 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
           {!isEmpty(selectedToken) &&
             selectedToken !== 'KOII' &&
             selectedToken !== 'AR' &&
-            selectedToken !== 'ETH' && (
-            <img src={selectedToken?.logo} style={{ width: '34px', height: '34px' }} />
-          )}
+            selectedToken !== 'ETH' &&
+            (selectedToken?.logo ? (
+              <img src={selectedToken?.logo} style={{ width: '34px', height: '34px' }} />
+            ) : (
+              <FinnieIcon style={{ width: '34px', height: '34px' }} />
+            ))}
           <ArrowIconBlue style={{ transform: !showTokenOptions ? 'none' : 'rotateX(180deg)' }} />
           {showTokenOptions && (
             <TokenDropdown
