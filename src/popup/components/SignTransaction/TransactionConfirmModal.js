@@ -117,17 +117,17 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
         <div className="w-full h-full relative bg-white shadow-md rounded m-auto flex flex-col items-center">
           <div className="w-full flex flex-col">
             {/* TOP BUTTONS */}
-            <div
+            {/* <div
               className="relative bg-blue-800 w-full flex items-center justify-center"
               style={{ height: '67px' }}
             >
               <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
                 Confirm Transaction
               </div>
-            </div>
+            </div> */}
 
             {/* NAVIGATION TAB */}
-            <div className="w-full grid grid-cols-2 text-base">
+            <div className="w-full grid grid-cols-2 text-base text-indigo">
               <div
                 style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
                 className={clsx(
@@ -176,22 +176,17 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
           {/* TRANSACTION DETAIL */}
           {tab === TAB.DETAIL && (
             <div
-              className="overflow-y-scroll flex flex-col items-center w-full px-4.5"
+              className="overflow-y-scroll flex flex-col items-center w-full px-9"
               style={{ height: '348px' }}
             >
-              <div className="w-full mt-5 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center">
+              {/* <div className="w-full mt-5 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center">
                 {origin}
+              </div> */}
+              <div className="mt-5 font-semibold text-base text-indigo leading-5 text-center tracking-finnieSpacing-wide">
+                Confirm Transaction
               </div>
-              <div className="w-full mt-5 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center">
-                Balance: {numberFormat(originBalance, 6)} {originSymbol}
-              </div>
-              {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && 
-              <div className="w-full mt-5 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center">
-                Token balance: {numberFormat(balance, 6)} {symbol}
-              </div>}
-
               {/* TRANSACTION TITLE */}
-              <div className="w-full mt-3 text-sm leading-6 tracking-finnieSpacing-wide text-indigo text-center">
+              <div className="mt-4.5 font-semibold text-sm text-indigo text-center tracking-finnieSpacing-wide">
                 {transactionType === TRANSACTION_TYPE.CONTRACT_DEPLOYMENT && 'Contract Deployment'}
                 {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION &&
                   'Contract Interaction'}
@@ -204,66 +199,61 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && 'Transfer Token'}
               </div>
 
-              {/* TRANSACTION INFO */}
-              <div className="mt-4 grid grid-cols-2 gap-5">
-                {/* SENDER */}
-                <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
-                  <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
-                    From:
+              <div className="mt-5 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
+                {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
+                  transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
+                  <div className="flex mb-2">
+                    <div style={{ width: '176px' }}>Sending</div>
+                    <div className="flex font-normal text-xs items-center">
+                      <SendValue />
+                      <div className="ml-1 w-4 h-4">
+                        <TokenIcon />
+                      </div>
+                      {/* <EthereumIcon className="ml-1 w-4 h-4" /> */}
+                    </div>
                   </div>
-                  {senderName && <div>{senderName}</div>}
-                  <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
-                    {getDisplayAddress(get(transactionPayload, 'from'))}
+                )}
+                <div className="flex mb-2">
+                  <div style={{ width: '176px' }}>Total Balance</div>
+                  <div className="flex font-normal text-xs items-center text-success-700">
+                    {numberFormat(originBalance, 6)} {originSymbol}
                   </div>
                 </div>
 
-                {/* VALUE */}
-                {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
-                  transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
-                  <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
-                    <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
-                      Sending:
-                    </div>
-                    <div>
-                      <div className="flex items-center text-lg leading-10 tracking-finnieSpacing-tightest text-blue-800">
-                        <SendValue />
-                        <div className="ml-1 w-4 h-4">
-                          <TokenIcon />
-                        </div>
-                        {/* <EthereumIcon className="ml-1 w-4 h-4" /> */}
-                      </div>
-                      {/* <div className="text-2xs tracking-finnieSpacing-tightest text-blueGray-800">
-                  ${fiatCurrencyFormat(qty * price.ETH)} USD
-                </div> */}
+                {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && (
+                  <div className="flex mb-2">
+                    <div style={{ width: '176px' }}>Token Balance</div>
+                    <div className="flex font-normal text-xs items-center text-success-700">
+                      {numberFormat(balance, 6)} {symbol}
                     </div>
                   </div>
                 )}
 
-                {/* RECIPIENT */}
-                {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
-                  transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
-                  <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
-                    <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
-                      To:
-                    </div>
-                    {recipientName && <div>{recipientName}</div>}
-                    <div className="text-2xs tracking-finnieSpacing-tightest text-success-700">
-                      {getDisplayAddress(customTokenRecipient || get(transactionPayload, 'to'))}
-                    </div>
-                  </div>
-                )}
-
-                {/* TRANSACTION FEE */}
-                <div className="flex flex-col" style={{ width: '155px', height: '70px' }}>
-                  <div className="font-semibold text-base leading-6 tracking-finnieSpacing-wide text-blue-800">
-                    Estimated Costs:
-                  </div>
-                  <div className="text-11px leading-5 text-blue-800">
+                <div className="flex">
+                  <div style={{ width: '176px' }}> Transaction Fees</div>
+                  <div className="flex font-normal text-xs items-center">
                     <Fee />
                   </div>
-                  <div className="text-2xs leading-3 tracking-finnieSpacing-wider text-success-700">
-                    Transaction Fee
+                </div>
+              </div>
+
+              <div className="mt-5 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
+                <div style={{ width: '176px' }}>From</div>
+                {senderName && (
+                  <div className="mt-2 font-semibold text-xs">
+                    {senderName} <span className="font-normal text-xs">(Default)</span>
                   </div>
+                )}
+                <div className="mt-2 font-normal text-xs text-success-700">
+                  {get(transactionPayload, 'from')}
+                </div>
+              </div>
+
+              <div className="mt-5 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
+                <div style={{ width: '176px' }}>To</div>
+                {recipientName && <div className="mt-2 font-semibold text-xs">{recipientName}</div>}
+                <div className="mt-2 font-normal text-xs text-success-700">
+                  {customTokenRecipient || get(transactionPayload, 'to')}
                 </div>
               </div>
             </div>
@@ -299,26 +289,29 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
             <div style={{ width: '132px' }}>
               <div className="font-semibold">From:</div>
               {senderName && <div>{senderName}</div>}
-              <div className="text-2xs text-success-700">
-                {getDisplayAddress(sender)}
-              </div>
+              <div className="text-2xs text-success-700">{getDisplayAddress(sender)}</div>
             </div>
-            {transactionType !== TRANSACTION_TYPE.CONTRACT_DEPLOYMENT && transactionType !== TRANSACTION_TYPE.CONTRACT_INTERACTION && <div>
-              <div className="font-semibold">Amount:</div>
-              <div>{value} {symbol}</div>
-            </div>}
+            {transactionType !== TRANSACTION_TYPE.CONTRACT_DEPLOYMENT &&
+              transactionType !== TRANSACTION_TYPE.CONTRACT_INTERACTION && (
+              <div>
+                <div className="font-semibold">Amount:</div>
+                <div>
+                  {value} {symbol}
+                </div>
+              </div>
+            )}
           </div>
           <div className="w-full text-base px-12 flex gap-x-15.75 mt-5.5">
             <div style={{ width: '132px' }}>
               <div className="font-semibold">To:</div>
               {recipientName && <div>{recipientName}</div>}
-              <div className="text-2xs text-success-700">
-                {getDisplayAddress(recipient)}
-              </div>
+              <div className="text-2xs text-success-700">{getDisplayAddress(recipient)}</div>
             </div>
             <div>
               <div className="font-semibold">Transaction Fee:</div>
-              <div className="text-base leading-5 text-blue-800">{numberFormat(totalFee, 6)} {tokenSymbol}</div>
+              <div className="text-base leading-5 text-blue-800">
+                {numberFormat(totalFee, 6)} {tokenSymbol}
+              </div>
               {/* <div className="text-2xs text-success-700">Storage Fee</div> */}
             </div>
           </div>
@@ -342,8 +335,12 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
           <div className="mt-5.5 text-blue-800 text-lg flex items-start justify-center">
             <div className="font-semibold leading-5">Total Cost: </div>
             <div className="ml-2">
-              <div className="leading-5">{value} {symbol}</div>
-              <div className="leading-5">{numberFormat(totalFee)} {tokenSymbol}</div>
+              <div className="leading-5">
+                {value} {symbol}
+              </div>
+              <div className="leading-5">
+                {numberFormat(totalFee)} {tokenSymbol}
+              </div>
               {/* <div className="text-2xs text-success-700">${fiatCurrencyFormat(1000)} USD</div> */}
             </div>
           </div>
