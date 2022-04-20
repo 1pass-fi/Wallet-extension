@@ -30,7 +30,7 @@ const fromWeiToEth = (wei) => {
 
   value is the value in largest unit
 */
-const useSendValue = ({ transactionPayload, network, transactionType, userAddress = '0xb076413401172CBB73C082107514De3376E4FF6c', setIsLoading }) => {
+const useSendValue = ({ transactionPayload, network, transactionType, userAddress, setIsLoading }) => {
   const [value, setValue] = useState(null)
   const [symbol, setSymbol] = useState(null)
   const [tokenIconPath, setTokenIconPath] = useState(false)
@@ -69,10 +69,9 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
             setValue(getSendValueArweave(value))
             setRawValue(value)
             setSymbol('AR')
-            setOriginSymbol('ETH')
+            setOriginSymbol('AR')
             break
         }
-  
         const account = await popupAccount.getAccount({ address: userAddress })
         const balance = await account.get.balance()
   
@@ -145,8 +144,8 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
       }
     }
 
-    if (transactionPayload && network) loadValue()
-  }, [transactionPayload, network, transactionType])
+    if (transactionPayload && network && userAddress) loadValue()
+  }, [transactionPayload, network, transactionType, userAddress])
 
   const SendValue = () => (
     <>

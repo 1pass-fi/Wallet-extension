@@ -61,6 +61,10 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
 
   const { Fee, tokenSymbol, totalFee, getFeeInterval } = useGetFee({ network, transactionPayload })
 
+  const sender = useMemo(() => {
+    return get(transactionPayload, 'from')
+  }, [transactionPayload])
+
   const {
     SendValue,
     TokenIcon,
@@ -76,7 +80,8 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     network,
     transactionPayload,
     transactionType,
-    setIsLoading
+    setIsLoading,
+    userAddress: sender
   })
 
   const { onSubmitTransaction, onRejectTransaction } = useMethod({
@@ -95,10 +100,6 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     setShowReceipt,
     getFeeInterval
   })
-
-  const sender = useMemo(() => {
-    return get(transactionPayload, 'from')
-  }, [transactionPayload])
 
   const recipient = useMemo(() => {
     if (customTokenRecipient) return customTokenRecipient
@@ -201,10 +202,10 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               </div>
 
               <div className="mt-5 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
-                <div className="flex mb-2">
+                {origin && <div className="flex mb-2">
                   <div style={{ width: '176px' }}>Origin</div>
                   <div className="flex font-normal text-xs items-center">{origin}</div>
-                </div>
+                </div>}
                 {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
                   transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
                   <div className="flex mb-2">
@@ -225,7 +226,9 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                   </div>
                 </div>
 
-                {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && (
+                {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER &&
+                  network !== 'ARWEAVE' &&
+                (
                   <div className="flex mb-2">
                     <div style={{ width: '176px' }}>Token Balance</div>
                     <div className="flex font-normal text-xs items-center text-success-700">
@@ -246,7 +249,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 <div style={{ width: '176px' }}>From</div>
                 {senderName && (
                   <div className="mt-2 font-semibold text-xs">
-                    {senderName} <span className="font-normal text-xs">(Default)</span>
+                    {senderName}
                   </div>
                 )}
                 <div className="mt-2 font-normal text-xs text-success-700">
