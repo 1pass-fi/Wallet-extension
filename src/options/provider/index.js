@@ -106,7 +106,7 @@ export default ({ children }) => {
   const [modalStates, setModalStates] = useModal()
   const [settingStates, setSettingStates] = useSetting({ walletLoaded })
   useAddHandler({ setError, setNotification, setModalStates, setIsLoading })
-  useNfts({ setCollections, setIsLoading, walletLoaded, newAddress })
+  useNfts({ setCollections, setIsLoading, walletLoaded, newAddress, pathname })
 
   /* 
     GET STATE FROM STORE

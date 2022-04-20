@@ -9,7 +9,7 @@ import classifyAssets from 'finnie-v2/utils/classifyAssets'
 
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
-export const useNfts = ({ setCollections, setIsLoading, walletLoaded, newAddress }) => {
+export const useNfts = ({ setCollections, setIsLoading, walletLoaded, newAddress, pathname }) => {
   const dispatch = useDispatch()
   useEffect(() => {
     // load nfts and collection from store, set to state
