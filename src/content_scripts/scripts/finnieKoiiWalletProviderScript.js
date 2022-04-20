@@ -9,7 +9,7 @@ const finnieKoiiWalletProviderScript = `() => {
       return this.connection.send(message)
     }
 
-    getPermission() {
+    getPermissions() {
       const message = { type: ENDPOINTS.KOI_GET_PERMISSION }
       return this.connection.send(message)
     }
@@ -31,9 +31,8 @@ const finnieKoiiWalletProviderScript = `() => {
 
       const message = { type: ENDPOINTS.KOI_CREATE_TRANSACTION, data: { transaction: plainTransaction } }
       return this.connection.send(message).then((response) => {
-        const signedTransaction = response.data   
-
-        if (response.data.signature) {
+        const signedTransaction = response
+        if (response.signature) {
           transaction.setSignature({
             id: signedTransaction.id,
             owner: signedTransaction.owner,
@@ -42,7 +41,7 @@ const finnieKoiiWalletProviderScript = `() => {
           })
         }
 
-        return response
+        return {data: response}
       })
     }
 

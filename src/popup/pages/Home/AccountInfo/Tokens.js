@@ -56,6 +56,7 @@ const Tokens = ({ currentProviderAddress }) => {
           decimal: 0
         }
       ])
+      dispatch(setIsLoading(false))
       return
     }
 
