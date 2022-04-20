@@ -65,6 +65,11 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     return get(transactionPayload, 'from')
   }, [transactionPayload])
 
+  const contractId = useMemo(() => {
+    if (transactionType !== TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) return get(transactionPayload, 'to')
+    return null
+  }, [transactionType])
+
   const {
     SendValue,
     TokenIcon,
@@ -173,8 +178,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 {dataString}
               </div>
               <div className="mt-10 font-semibold text-sm leading-5">Contract ID</div>
-              {/* TODO - MinhV add contract ID */}
-              <div className="mt-1.5 leading-4">V_uuCzqzpRBFuYhFEVf-QWVoL7qW8KZyiDCM7ur3Nqg</div>
+              {contractId && <div className="mt-1.5 leading-4">{contractId}</div>}
             </div>
           )}
 
