@@ -56,11 +56,12 @@ export default () => {
     setShowFormError(false)
     if (step === 1) {
       history.push('/')
-    } else if (step === 3 && walletType === TYPE.ARWEAVE) {
-      setStep(1)
-    } else {
-      setStep(step - 1)
-    }
+    } else setStep(1)
+    // else if (step === 3 && walletType === TYPE.ARWEAVE) {
+    //   setStep(1)
+    // } else {
+    //   setStep(step - 1)
+    // }
   }
 
   const onTypeSelect = (type) => {
@@ -68,11 +69,13 @@ export default () => {
 
     // if a user re-selects Wallet Type, set isSeedPhrase to TRUE to ensure that the Private Key is not displayed on import Arweave wallet.
     setIsSeedPhrase(true)
-    if (type === TYPE.ARWEAVE) {
-      setStep(3)
-    } else {
-      nextStep()
-    }
+    // if (type === TYPE.ARWEAVE) {
+    //   setStep(3)
+    // } else {
+    //   nextStep()
+    // }
+
+    setStep(3)
   }
 
   const [showHasTwelveSeedPhrase, setShowHasTwelveSeedPhrase] = useState(false)
@@ -115,6 +118,7 @@ export default () => {
     setIsLoading(true)
     try {
       if (walletType === TYPE.ARWEAVE) selectedNetwork = null
+      if (walletType === TYPE.ETHEREUM) selectedNetwork = 'Rinkeby Test Network'
 
       const address = await backgroundRequest.gallery.uploadJSONKeyFile({
         key: keyImport,
