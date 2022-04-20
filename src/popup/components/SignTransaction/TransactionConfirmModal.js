@@ -158,11 +158,12 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
           {/* TRANSACTION DATA */}
           {tab === TAB.DATA && (
             <div
-              className="flex flex-col items-center justify-center w-full px-4.5 py-4.5"
+              className="flex flex-col w-full px-4.5 pb-20 my-auto font-normal text-xs leading-6 tracking-finnieSpacing-wide text-indigo"
               style={{ height: '348px' }}
             >
+              <div>HEX DATA: </div>
               <div
-                className="h-56 w-full break-words overflow-y-scroll"
+                className="mt-4 h-56 w-full break-words overflow-y-scroll"
                 style={{
                   boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)',
                   padding: '12px'
@@ -170,15 +171,15 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               >
                 {dataString}
               </div>
+              <div className="mt-10 font-semibold text-sm leading-5">Contract ID</div>
+              {/* TODO - MinhV add contract ID */}
+              <div className="mt-1.5 leading-4">V_uuCzqzpRBFuYhFEVf-QWVoL7qW8KZyiDCM7ur3Nqg</div>
             </div>
           )}
 
           {/* TRANSACTION DETAIL */}
           {tab === TAB.DETAIL && (
-            <div
-              className="overflow-y-scroll flex flex-col items-center w-full px-9"
-              style={{ height: '348px' }}
-            >
+            <div className="flex flex-col items-center w-full h-full px-9 mt-2 mb-22 overflow-y-scroll">
               {/* <div className="w-full mt-5 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center">
                 {origin}
               </div> */}
@@ -200,6 +201,10 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               </div>
 
               <div className="mt-5 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
+                <div className="flex mb-2">
+                  <div style={{ width: '176px' }}>Origin</div>
+                  <div className="flex font-normal text-xs items-center">{origin}</div>
+                </div>
                 {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
                   transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
                   <div className="flex mb-2">
@@ -249,13 +254,18 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 </div>
               </div>
 
-              <div className="mt-5 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
-                <div style={{ width: '176px' }}>To</div>
-                {recipientName && <div className="mt-2 font-semibold text-xs">{recipientName}</div>}
-                <div className="mt-2 font-normal text-xs text-success-700">
-                  {customTokenRecipient || get(transactionPayload, 'to')}
+              {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
+                transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
+                <div className="mt-5 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
+                  <div style={{ width: '176px' }}>To</div>
+                  {recipientName && (
+                    <div className="mt-2 font-semibold text-xs">{recipientName}</div>
+                  )}
+                  <div className="mt-2 font-normal text-xs text-success-700">
+                    {customTokenRecipient || get(transactionPayload, 'to')}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           )}
 
@@ -276,7 +286,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
               style={{ width: '160px', height: '38px' }}
             >
-              Confirm
+              Sign
             </button>
           </div>
           <ReactTooltip place="top" effect="float" />
@@ -284,67 +294,64 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
       ) : (
         /* RECEIPT */
         <div className="w-full relative bg-white rounded m-auto pt-9 text-blue-800 flex flex-col items-center tracking-finnieSpacing-tighter">
-          <div className="text-success-700 font-semibold text-xl">Your tokens are on the way!</div>
-          <div className="w-full text-base px-12 flex gap-x-15.75 mt-6.5">
-            <div style={{ width: '132px' }}>
-              <div className="font-semibold">From:</div>
-              {senderName && <div>{senderName}</div>}
-              <div className="text-2xs text-success-700">{getDisplayAddress(sender)}</div>
-            </div>
+          <div className="font-semibold text-lg leading-5 text-indigo">
+            Your tokens are on the way!
+          </div>
+          <div className="px-9 mt-8 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
             {transactionType !== TRANSACTION_TYPE.CONTRACT_DEPLOYMENT &&
               transactionType !== TRANSACTION_TYPE.CONTRACT_INTERACTION && (
-              <div>
-                <div className="font-semibold">Amount:</div>
-                <div>
+              <div className="flex mb-4">
+                <div style={{ width: '142px' }}>Amount</div>
+                <div className="flex font-normal text-sm items-center">
                   {value} {symbol}
+                  <div className="ml-1 w-4 h-4">
+                    <TokenIcon />
+                  </div>
                 </div>
               </div>
             )}
-          </div>
-          <div className="w-full text-base px-12 flex gap-x-15.75 mt-5.5">
-            <div style={{ width: '132px' }}>
-              <div className="font-semibold">To:</div>
-              {recipientName && <div>{recipientName}</div>}
-              <div className="text-2xs text-success-700">{getDisplayAddress(recipient)}</div>
+            <div className="flex mb-4">
+              <div style={{ width: '142px' }}>From</div>
+              <div className="flex flex-col font-normal text-sm items-start">
+                {senderName && <div>{senderName}</div>}
+                <div className="font-normal text-xs text-success-700">
+                  {getDisplayAddress(sender, 20)}
+                </div>
+              </div>
             </div>
-            <div>
-              <div className="font-semibold">Transaction Fee:</div>
-              <div className="text-base leading-5 text-blue-800">
+            <div className="flex mb-4">
+              <div style={{ width: '142px' }}>To</div>
+              <div className="flex flex-col font-normal text-sm items-start">
+                {recipientName && <div>{recipientName}</div>}
+                <div className="font-normal text-xs text-success-700">
+                  {getDisplayAddress(recipient, 20)}
+                </div>
+              </div>
+            </div>
+            <div className="flex mb-4">
+              <div style={{ width: '142px' }}>Transaction Fees</div>
+              <div className="font-normal text-sm">
                 {numberFormat(totalFee, 6)} {tokenSymbol}
               </div>
-              {/* <div className="text-2xs text-success-700">Storage Fee</div> */}
             </div>
-          </div>
-          <div className="w-full text-base px-12 flex gap-x-15.75 mt-5.5">
-            <div style={{ width: '132px' }}>
-              <div className="font-semibold">Status:</div>
-              <div className="text-success-700">Confirmed</div>
+            <div className="flex mb-4">
+              <div style={{ width: '142px' }}>Status</div>
+              <div className="font-normal text-sm">Confirmed</div>
             </div>
-            <div>
-              <a href={`${exploreBlockUrl}/${txId}`} target="_blank">
-                <button
-                  style={{ width: '128px', height: '29px' }}
-                  className="bg-lightBlue shadow-md text-xs flex items-center justify-center rounded-sm"
-                >
-                  <ViewBlockIcon className="w-5 mr-2" />
-                  Explore Block
-                </button>
-              </a>
-            </div>
-          </div>
-          <div className="mt-5.5 text-blue-800 text-lg flex items-start justify-center">
-            <div className="font-semibold leading-5">Total Cost: </div>
-            <div className="ml-2">
-              <div className="leading-5">
-                {value} {symbol}
+            <div className="flex">
+              <div style={{ width: '142px' }}>Total Cost</div>
+              <div className="flex flex-col font-normal text-sm items-start">
+                <div className="leading-5">
+                  {value} {symbol}
+                </div>
+                <div className="leading-5">
+                  {numberFormat(totalFee)} {tokenSymbol}
+                </div>
               </div>
-              <div className="leading-5">
-                {numberFormat(totalFee)} {tokenSymbol}
-              </div>
-              {/* <div className="text-2xs text-success-700">${fiatCurrencyFormat(1000)} USD</div> */}
             </div>
           </div>
-          <Link onClick={() => setShowSigning(false)} className="mt-3" to="/">
+
+          <Link onClick={() => setShowSigning(false)} className="mt-10" to="/">
             <OkBtn className="cursor-pointer" />
           </Link>
         </div>
