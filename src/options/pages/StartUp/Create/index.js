@@ -73,7 +73,8 @@ export default () => {
     setShowFormError(false)
     if (step === 1) {
       history.push('/')
-    } else if (step === 3 && walletType === TYPE.ARWEAVE) {
+    // } else if (step === 3 && walletType === TYPE.ARWEAVE) {
+    } else if (step === 3) {
       setStep(1)
     } else if (step === 5){
       setStep(3)
@@ -103,11 +104,13 @@ export default () => {
     )
     await setIsLoading(false)
 
-    if (walletType == TYPE.ARWEAVE) {
-      setStep(3)
-    } else {
-      nextStep()
-    }
+    // if (walletType == TYPE.ARWEAVE) {
+    //   setStep(3)
+    // } else {
+    //   nextStep()
+    // }
+
+    setStep(3)
   }
 
   /* 
@@ -120,6 +123,7 @@ export default () => {
     }
     try {
       if (walletType === TYPE.ARWEAVE) selectedNetwork = null
+      if (walletType === TYPE.ETHEREUM) selectedNetwork = 'Rinkeby Test Network'
 
       const address = await backgroundRequest.gallery.saveWallet({ password, provider: selectedNetwork })
       setImportedAddress(address)
@@ -229,7 +233,7 @@ export default () => {
           </>
           )}
 
-          {step === 2 && <EthereumNetworks onSubmit={nextStep} />}
+          {/* {step === 2 && <EthereumNetworks onSubmit={nextStep} />} */}
 
           {(step === 3 || step === 4) && (
           <>
