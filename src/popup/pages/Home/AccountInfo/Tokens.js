@@ -153,21 +153,25 @@ const Tokens = ({ currentProviderAddress }) => {
           </div>
         </div>
       ))}
-      <div className="mt-5 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
-        Don’t see your token?
-      </div>
-      <div className="mt-1.5 mb-4 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
-        {/* <span
+      {displayingAccount.type === TYPE.ETHEREUM && (
+        <div className="mt-5 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
+          Don’t see your token?
+        </div>
+      )}
+      {displayingAccount.type === TYPE.ETHEREUM && (
+        <div className="mt-1.5 mb-4 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
+          {/* <span
           className="cursor-pointer underline text-success-700"
           onClick={() => handleRefreshTokenList()}
         >
           Refresh list
         </span>{' '}
         or{' '} */}
-        <Link className="cursor-pointer underline text-success-700" to="/import-token">
-          Import a token
-        </Link>
-      </div>
+          <Link className="cursor-pointer underline text-success-700" to="/import-token">
+            Import a token
+          </Link>
+        </div>
+      )}
     </div>
   )
 }
