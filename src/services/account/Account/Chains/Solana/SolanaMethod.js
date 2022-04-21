@@ -26,7 +26,7 @@ export class SolanaMethod {
   }
 
   async transfer(_, recipient, qty) {
-    return 'example_txid'
+    return this.solTool.transfer(recipient, qty)
   }
 
   async loadCollections() {}
