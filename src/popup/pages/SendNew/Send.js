@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 import clsx from 'clsx'
@@ -23,22 +23,27 @@ import useAccountList from './hooks/useAccountList'
 import useSelectedAccount from './hooks/useSelectedAccount'
 import useTokenList from './hooks/useTokenList'
 import useMethod from './hooks/useMethod'
+import useValidate from './hooks/useValidate'
 
-const Send = ({ setShowSigning }) => {
+import { setError } from 'actions/error'
+import { setIsLoading } from 'actions/loading'
+
+const Send = ({ setShowSigning, setError, setIsLoading }) => {
   const [selectedAccount, setSelectedAccount] = useState({})
+  const [fontSize, setFontSize] = useState('3xl')
+  const [showTokenOptions, setShowTokenOptions] = useState(false)
+  const [amount, setAmount] = useState('')
+  const [recipient, setRecipient] = useState({ address: '' })
+  const [enoughGas, setEnoughGas] = useState(true)
+  const [alchemyAddress, setAlchemyAddress] = useState(null)
+  const [sendTokenClick, setSendTokenClick] = useState(0)
+  const [recipientName, setRecipientName] = useState(null)
 
   const { selectedNetwork } = useSelectedAccount({ selectedAccount })
   const { tokenList, selectedToken, setSelectedToken } = useTokenList({
     userAddress: selectedAccount?.address,
     selectedNetwork: selectedNetwork
   })
-
-  const [fontSize, setFontSize] = useState('3xl')
-
-  const [showTokenOptions, setShowTokenOptions] = useState(false)
-  const [amount, setAmount] = useState('')
-  const [recipient, setRecipient] = useState({ address: '' })
-  const [enoughGas, setEnoughGas] = useState(true)
 
   const sender = useMemo(() => {
     return get(selectedAccount, 'address')
@@ -50,12 +55,23 @@ const Send = ({ setShowSigning }) => {
     return get(selectedToken, 'contractAddress')
   }, [selectedToken])
 
-  const { onSendTokens } = useMethod({ 
+  const { validated, errorMessage } = useValidate({ selectedToken, amount, selectedAccount, recipient: _recipient, alchemyAddress })
+
+  /* 
+    amount in largest unit.
+    For example: 0.01 -> 0.01 ETH
+  */
+  const { onSendTokens, getAlchemyAddress } = useMethod({ 
     sender,
     recipient: _recipient,
     value: amount,
     contractAddress,
-    selectedToken
+    selectedToken,
+    alchemyAddress,
+    setAlchemyAddress,
+    setIsLoading,
+    recipientName,
+    setRecipientName
   })
 
   const history = useHistory()
@@ -86,10 +102,17 @@ const Send = ({ setShowSigning }) => {
   }
 
   const handleSendToken = async () => {
-    // BALANCE VALIDATIONS
-    await onSendTokens()
-    setShowSigning(true)
+    await getAlchemyAddress()
+    setSendTokenClick(prev => ++prev)
   }
+  useEffect(() => {
+    const sendToken = async () => {
+      if (!validated) return setError(errorMessage)
+      onSendTokens()
+      setShowSigning(true)
+    }
+    if (sendTokenClick) sendToken()
+  }, [sendTokenClick])
 
   return (
     <div className="w-full relative bg-white flex flex-col items-center pt-9.75">
@@ -179,4 +202,4 @@ const Send = ({ setShowSigning }) => {
   )
 }
 
-export default Send
+export default connect(null, { setError, setIsLoading })(Send)

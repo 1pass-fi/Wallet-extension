@@ -5,58 +5,73 @@ import storage from 'services/storage'
 import validateToken from 'utils/erc20/validateToken'
 
 import helper from './helper'
+import { popupAccount } from 'services/account'
 
 const useLoadRequest = ({ setIsLoading }) => {
-  const [requestPayload, setRequestPayload] = useState(null)
+  const [transactionPayload, setTransactionPayload] = useState(null)
   const [network, setNetwork] = useState(null)
   const [origin, setOrigin] = useState(null)
   const [requestId, setRequestId] = useState(null)
   const [favicon, setFavicon] = useState(null)
   const [dataString, setDataString] = useState(null)
-
   const [transactionType, setTransactionType] = useState(null)
+  const [senderName, setSenderName] = useState(null)
+  const [recipientName, setRecipientName] = useState(null)
   
   useEffect(() => {
     const loadRequest = async () => {
-      setIsLoading(true)
-      const request = await storage.generic.get.pendingRequest()
+      try {
+        setIsLoading(true)
+        const request = await storage.generic.get.pendingRequest()
+    
+        const transactionPayload = get(request, 'data.transactionPayload')
+        const network = get(request, 'data.network')
+        const origin = get(request, 'data.origin')
+        const requestId = get(request, 'data.requestId')
+        const favicon = get(request, 'data.favicon')
+        const recipientName = get(request, 'data.recipientName')
   
-      const requestPayload = get(request, 'data.requestPayload')
-      const network = get(request, 'data.network')
-      const origin = get(request, 'data.origin')
-      const requestId = get(request, 'data.requestId')
-      const favicon = get(request, 'data.favicon')
+        const data = get(transactionPayload, 'data')
+  
+        let transactionType
+        if (network === 'ETHEREUM') {
+          transactionType = await helper.getEthereumTransactionType(transactionPayload)
+        }
+        if (network === 'ARWEAVE') {
+          transactionType = await helper.getArweaveTransactionType(transactionPayload)
+        }
 
-      const data = get(requestPayload, 'data')
-
-      let transactionType
-      if (network === 'ETHEREUM') {
-        transactionType = await helper.getEthereumTransactionType(requestPayload)
+        const sender = get(transactionPayload, 'from')
+        const account = await popupAccount.getAccount({ address: sender })
+        const senderName = await account.get.accountName()
+  
+        setTransactionPayload(transactionPayload)
+        setNetwork(network)
+        setOrigin(origin)
+        setRequestId(requestId)
+        setFavicon(favicon)
+        setTransactionType(transactionType)
+        setDataString(data)
+        setSenderName(senderName)
+        setRecipientName(recipientName)
+      } catch (err) {
+        console.error('loadRequest error: ', err.message)
       }
-      if (network === 'ARWEAVE') {
-        transactionType = await helper.getArweaveTransactionType(requestPayload)
-      }
-
-      setRequestPayload(requestPayload)
-      setNetwork(network)
-      setOrigin(origin)
-      setRequestId(requestId)
-      setFavicon(favicon)
-      setTransactionType(transactionType)
-      setDataString(data)
     }
 
     loadRequest()
   }, [])
 
   return { 
-    transactionPayload: requestPayload, 
+    transactionPayload, 
     network, 
     origin, 
     requestId, 
     favicon,
     transactionType,
-    dataString
+    dataString,
+    senderName,
+    recipientName
   }
 }
 

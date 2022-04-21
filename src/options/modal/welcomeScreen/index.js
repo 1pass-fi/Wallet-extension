@@ -8,13 +8,44 @@ export default ({ onClose }) => {
     <Modal onClose={onClose}>
       <div className="welcome-message">
         <div className="title">
-          Finnie Wallet <span>v0.3.3 Notes</span>
+          Finnie Wallet <span>v0.3.2 Notes</span>
         </div>
         <div className="content">
           <div className="paragraph">
             <span className="text-success-900">v0.3.2</span>
             <br></br>
-            We fixed a few small bugs in the UI.
+            <div className='paragraph'>
+              TL;DR: Like Metamask, but better. And Universal Crypto Addresses are here!
+            </div>
+            <div className='paragraph'>
+              We are excited to announce that you can now send tokens to any Universal Crypto Address (like koiinetwork.wallet, for example) that is registered with{' '}
+              <a
+                style={{ color: '#49ce8b' }}
+                href="https://unstoppabledomains.com"
+                className="link"
+                target="_blank"
+              >
+              Unstoppable Domains
+              </a>. Just type the site into the Address field when sending tokens and, voila, you don’t have to worry about mixing up address digits anymore.
+            </div>
+            <div className='paragraph'>
+              In other news, let’s celebrate expanded Ethereum compatibility! With this new version, Finnie can sign any type of Ethereum transaction (if you find one that doesn’t work,{' '}
+              <a
+                style={{ color: '#49ce8b' }}
+                href="https://koii.me/support"
+                className="link"
+                target="_blank"
+              >
+              please let us know
+              </a>
+              {' '}so we can troubleshoot).
+            </div>
+            <div className='paragraph'>
+              You can send, receive, and import existing or custom Ethereum sub-tokens and keep track of all your balances. To help our community stay safe in transacting, we are working on improved user experiences for signing transactions, so keep your eyes peeled for UX updates that are on the way. 
+            </div>
+            <div className='paragraph'>
+              We have fixed a few small bugs related to notifications and the UI.
+            </div>
           </div>
           <div className="paragraph">
             <span className="text-success-900">v0.3.1</span>

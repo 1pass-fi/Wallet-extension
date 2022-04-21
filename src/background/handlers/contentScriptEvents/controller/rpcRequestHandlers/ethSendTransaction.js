@@ -66,7 +66,7 @@ export default async (payload, tab, next) => {
       requestId,
       isEthereum: true,
       network: 'ETHEREUM',
-      requestPayload: {
+      transactionPayload: {
         ...params[0]
       },
     }

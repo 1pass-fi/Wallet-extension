@@ -72,10 +72,20 @@ export default async (payload, next) => {
 
     // If total account = 1, set this account to activatedAccountAddress.
     if (totalAccounts == 1) {
+      await storage.setting.set.activatedChain(type)
+    }
+
+    const totalArweaveAccounts = await backgroundAccount.count(TYPE.ARWEAVE)
+    const totalEthereumAccounts = await backgroundAccount.count(TYPE.ETHEREUM)
+    if (totalArweaveAccounts == 1 && type === TYPE.ARWEAVE) {
       await setActivatedAccountAddress(await account.get.address(), type)
     }
 
-    helpers.loadBalances()
+    if (totalEthereumAccounts == 1 && type === TYPE.ETHEREUM) {
+      await setActivatedAccountAddress(await account.get.address(), type)
+    }
+  
+    helpers.loadBalances()          
     helpers.loadActivities()
 
     next({ data: addressFromKey })

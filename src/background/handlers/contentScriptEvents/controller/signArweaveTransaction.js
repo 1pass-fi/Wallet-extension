@@ -31,7 +31,7 @@ export default async (payload, tab, next) => {
       favicon,
       requestId,
       network: 'ARWEAVE',
-      requestPayload: {
+      transactionPayload: {
         from: activatedAddress,
         to: get(transaction, 'target'),
         value: get(transaction, 'quantity'),

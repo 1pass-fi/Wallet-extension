@@ -10,7 +10,7 @@ const NFTMedia = ({ contentType, source, showFull = false }) => {
         src={source}
         className={clsx(
           'w-full h-full rounded',
-          showFull ? 'object-contain bg-black' : 'object-cover'
+          showFull ? 'object-contain bg-blue-800' : 'object-cover'
         )}
       />
     )

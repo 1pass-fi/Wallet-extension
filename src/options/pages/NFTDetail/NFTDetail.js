@@ -165,7 +165,7 @@ const NFTDetail = () => {
               <div className="flex gap-4 mb-4">
                 <a href={`https://viewblock.io/arweave/tx/${nft.txId}`} target="_blank">
                   <Button
-                    disabled={disabledFeatures}
+                    disabled={disabledFeatures || nft.pending}
                     icon={BlockIcon}
                     text={nft.pending ? 'Pending Transaction' : 'Explore Block'}
                     variant="inversed"

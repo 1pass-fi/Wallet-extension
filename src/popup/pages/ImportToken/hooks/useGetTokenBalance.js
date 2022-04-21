@@ -7,6 +7,7 @@ import ERC20_ABI from 'abi/ERC20.json'
 const useGetTokenBalance = ({ contractAddress, userAddress }) => {
   const [tokenSymbol, setTokenSymbol] = useState(null)
   const [balance, setBalance] = useState(null)
+  const [tokenDecimal, setTokenDecimal] = useState(null)
 
   useEffect(() => {
     const loadContract = async () => {
@@ -17,9 +18,11 @@ const useGetTokenBalance = ({ contractAddress, userAddress }) => {
 
         const symbol = await tokenContract.methods.symbol().call()
         const balance = await tokenContract.methods.balanceOf(userAddress).call()
+        const decimal = await tokenContract.methods.decimals().call()
 
         setTokenSymbol(symbol)
         setBalance(balance)
+        setTokenDecimal(decimal)
       } catch (err) {
         console.error(err.message)
       }
@@ -34,7 +37,7 @@ const useGetTokenBalance = ({ contractAddress, userAddress }) => {
     </>
   )
 
-  return { TokenBalance, tokenSymbol, balance }
+  return { TokenBalance, tokenSymbol, balance, tokenDecimal }
 }
 
 export default useGetTokenBalance

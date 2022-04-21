@@ -19,7 +19,10 @@ const useMethod = ({
   contractAddress,
   value,
   customTokenRecipient,
-  rawValue
+  rawValue,
+  setTxId,
+  setShowReceipt,
+  getFeeInterval
 }) => {
   const handleSendEth = async () => {
     let qty = get(transactionPayload, 'value')
@@ -50,7 +53,7 @@ const useMethod = ({
   }
 
   const handleSendCustomTokenEth = async () => {
-    await request.wallet.sendCustomTokenEth({
+    return await request.wallet.sendCustomTokenEth({
       sender: transactionPayload.from,
       customTokenRecipient,
       contractAddress,
@@ -59,7 +62,7 @@ const useMethod = ({
   }
 
   const handleSendCustomTokenAr = async () => {
-    await request.wallet.sendCustomTokenAr({
+    return await request.wallet.sendCustomTokenAr({
       sender: transactionPayload.from,
       customTokenRecipient,
       contractAddress,
@@ -76,6 +79,7 @@ const useMethod = ({
         If requestId === undefined, request was sent internally from Finnie
       */
       setIsLoading(true)
+      clearInterval(getFeeInterval)
       if (requestId) {
         chrome.runtime.sendMessage({ requestId, approved: true }, function (response) {
           chrome.runtime.onMessage.addListener(function (message) {
@@ -106,7 +110,10 @@ const useMethod = ({
         }
 
         setIsLoading(false)
-        setShowSigning(false)
+        setShowReceipt(true)
+        setTxId(result)
+        storage.generic.set.pendingRequest({})
+        // setShowSigning(false)
       }
     } catch (err) {
       console.error(err.message)

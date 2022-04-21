@@ -16,7 +16,7 @@ const getEmitter = () => {
   contentScriptEvents.on(MESSAGES.GET_PERMISSION, controller.getPermission)
   contentScriptEvents.on(MESSAGES.KOI_GET_PERMISSION, controller.koiGetPermission)
   contentScriptEvents.on(MESSAGES.CREATE_TRANSACTION, controller.signArweaveTransaction)
-  contentScriptEvents.on(MESSAGES.KOI_CREATE_TRANSACTION, controller.koiCreateTransaction)
+  contentScriptEvents.on(MESSAGES.KOI_CREATE_TRANSACTION, controller.signArweaveTransaction)
   contentScriptEvents.on(MESSAGES.DISCONNECT, controller.disconnect)
   contentScriptEvents.on(MESSAGES.KOI_DISCONNECT, controller.koiDisconnect)
   contentScriptEvents.on(MESSAGES.GET_WALLET_NAMES, controller.getWalletName)

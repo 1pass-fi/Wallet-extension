@@ -34,6 +34,7 @@ const mainScript = () => {
   window.ethereum = finnieEthereumProvider
   window.arweaveWallet = finnieArweaveProvider
   window.koiiWallet = finnieKoiiWalletProvider
+  window.koiWallet = finnieKoiiWalletProvider
 }
 
 const arweaveWalletExcluded = () => {

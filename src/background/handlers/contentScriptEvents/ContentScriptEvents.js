@@ -11,6 +11,8 @@ import { getSelectedTab } from 'utils/extension'
 import storage from 'services/storage'
 
 import cache from 'background/cache'
+import { backgroundAccount } from 'services/account'
+
 
 
 export default class ContentScriptEvents extends EventEmitter {
@@ -19,8 +21,30 @@ export default class ContentScriptEvents extends EventEmitter {
       'ETHEREUM_RPC_REQUEST'
     ].includes(endpoint)
     const tabData = await this.getTabData(isEthereumRequest)
-
     const { port } = payload
+
+    const storedAccounts = await backgroundAccount.count()
+    const importedAccounts = backgroundAccount.importedAccount
+
+    const walletLocked = (storedAccounts > 0) && (importedAccounts.length === 0)
+    if (walletLocked) {
+      if (endpoint.includes('KOI')) {
+        port.postMessage({
+          type: `${endpoint}_SUCCESS`,
+          data: { status: 400, message: 'Please unlock Finnie wallet' },
+          id: payload.id
+        })
+      } else {
+        port.postMessage({
+          type: `${endpoint}_ERROR`,
+          data: 'Please unlock Finnie wallet',
+          id: payload.id
+        })
+      }
+
+      return
+    }
+
     const promise = new Promise((resolve) => {
       this.emit(endpoint, payload, tabData, resolve)
     })

@@ -55,7 +55,8 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
       userAddress: userAddress
     })
 
-    const balance = formatNumber(tokenBalance.balance, 3) || '---'
+    const balance =
+      formatNumber(tokenBalance.balance / Math.pow(10, tokenBalance?.tokenDecimal), 3) || '---'
     const symbol = tokenBalance.tokenSymbol || tokenImport.symbol
 
     return `${balance} ${symbol}`

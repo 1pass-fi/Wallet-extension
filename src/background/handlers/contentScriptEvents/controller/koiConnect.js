@@ -99,7 +99,7 @@ export default async (payload, tab, next) => {
                       finished: true
                     })
     
-                    next({ data: siteConnectedAddresses[origin].arweave })
+                    next({ data: { status: 200, message: siteConnectedAddresses[origin].arweave } })
                   } catch (err) {
                     console.error(err.message)
                   } 
