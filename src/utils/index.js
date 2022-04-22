@@ -804,10 +804,10 @@ export const isEthereumAddress = (ethAddress) => {
   }
 }
 
-export const isSolanaAddress = async (solAddress) => {
+export const isSolanaAddress = (solAddress) => {
   try {
     const publicKey = new PublicKey(solAddress)
-    return await PublicKey.isOnCurve(publicKey)
+    return PublicKey.isOnCurve(publicKey)
   } catch (error) {
     console.log('Failed to verify Solana Address: ', solAddress, error.message)
     return false
@@ -853,3 +853,5 @@ export const fromArToWinston = (value) => value * 1000000000000
 export const fromWinstonToAr = (value) => value / 1000000000000
 export const fromEthToWei = (value) => value * 1000000000000000000
 export const fromWeiToEth = (value) => value / 1000000000000000000
+export const fromSolToLamp = (value) => value * 1000000000
+export const fromLampToSol = (value) => value / 1000000000

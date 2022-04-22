@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { get, isEmpty } from 'lodash'
 
-import { fromArToWinston, fromEthToWei } from 'utils'
+import { fromArToWinston, fromEthToWei, fromSolToLamp } from 'utils'
 import getTokenData from 'utils/getTokenData'
 
 import { popupAccount } from 'services/account'
@@ -82,6 +82,23 @@ const useTokenList = ({ selectedNetwork, userAddress }) => {
     return [ethereumToken, ...customTokenList]
   }
 
+  const loadSolanaTokens = async (userAddress) => {
+    const solanaToken = {}
+
+    const account = await popupAccount.getAccount({ address: userAddress })
+    const accountData = await account.get.metadata()
+
+    solanaToken.logo = 'img/v2/solana-logo.svg'
+    solanaToken.balance = get(accountData, 'balance')
+    solanaToken.price = 40
+    solanaToken.name = 'Solana'
+    solanaToken.symbol = 'SOL'
+    solanaToken.decimal = 9
+    setSelectedToken(solanaToken)
+
+    return [solanaToken]
+  }
+
   useEffect(() => {
     const loadTokenList = async () => {
       switch (selectedNetwork) {
@@ -90,6 +107,9 @@ const useTokenList = ({ selectedNetwork, userAddress }) => {
           break
         case 'TYPE_ARWEAVE':
           setTokenList(await loadArweaveTokens(userAddress))
+          break
+        case 'TYPE_SOLANA':
+          setTokenList(await loadSolanaTokens(userAddress))
       }
     }
 

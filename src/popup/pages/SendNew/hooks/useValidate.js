@@ -1,12 +1,22 @@
 import { TYPE } from 'constants/accountConstants'
 import { useEffect, useState } from 'react'
 
+import { 
+  isArweaveAddress,
+  isEthereumAddress,
+  isSolanaAddress
+} from 'utils'
+
 const validateEthereumAddress = (address) => {
-  return address.includes('0x') && address.length === 42
+  return isEthereumAddress(address)
 }
 
 const validateArweaveAddress = (address) => {
-  return !address.includes('0x') && address.length === 43
+  return isArweaveAddress(address)
+}
+
+const validateSolanaAddress = (address) => {
+  return isSolanaAddress(address)
 }
 
 const NOT_ENOUGH_BALANCE = `Not enough token amount`
@@ -41,6 +51,10 @@ const useValidate = ({ selectedToken, amount, recipient, selectedAccount, alchem
         } else {
           if (!validateEthereumAddress(recipient)) return throwValidationError(INVALID_RECIPIENT)
         }
+      }
+
+      if (selectedAccount?.type === TYPE.SOLANA) {
+        if (!validateSolanaAddress(recipient)) return throwValidationError(INVALID_RECIPIENT)
       }
 
       setValidated(true)

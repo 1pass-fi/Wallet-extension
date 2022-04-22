@@ -6,15 +6,17 @@ import axios from 'axios'
 import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
 import storage from 'services/storage'
 import { REQUEST } from 'constants/koiConstants'
-import { fromEthToWei, fromArToWinston } from 'utils'
+import { fromEthToWei, fromArToWinston, fromSolToLamp } from 'utils'
 
 
 const ETHEREUM = 'ETHEREUM'
 const ARWEAVE = 'ARWEAVE'
+const SOLANA = 'SOLANA'
 
 const validateAddress = (address) => {
   if (address?.slice(0, 2) === '0x' && address?.length === 42) return ETHEREUM
   if (address?.length === 43) return ARWEAVE
+  else return SOLANA
 }
 
 const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, alchemyAddress, setAlchemyAddress, setIsLoading, setRecipientName, recipientName }) => {
@@ -145,6 +147,25 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
             data: requestPayload
           })
         }
+      }
+
+      if (network === 'SOLANA') {
+        const transactionPayload = {
+          from: sender,
+          to: recipient,
+          value: fromSolToLamp(value)
+        }
+
+        const requestPayload = {
+          network: 'SOLANA',
+          transactionPayload,
+          recipientName
+        }
+
+        await storage.generic.set.pendingRequest({
+          type: REQUEST.TRANSACTION,
+          data: requestPayload
+        })
       }
     } catch (err) {
       console.error('send token error: ', err.message)
