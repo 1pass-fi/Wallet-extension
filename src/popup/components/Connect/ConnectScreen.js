@@ -126,13 +126,10 @@ const ConnectScreen = ({ setError, setIsLoading }) => {
 
   return (
     <div className="w-full h-full z-51 m-auto top-0 left-0 fixed flex flex-col items-center">
-      <div
-        className="relative bg-white shadow-md rounded m-auto flex flex-col items-center overflow-y-scroll"
-        style={{ width: '381px', height: '453px' }}
-      >
+      <div className="w-full h-full relative bg-white shadow-md rounded m-auto flex flex-col items-center">
         {step === 1 && (
           <>
-            <div className="text-indigo tracking-finnieSpacing-wide px-6.5 mt-7">
+            <div className="text-indigo pt-10 tracking-finnieSpacing-wide px-6.5 mt-7">
               {isKoi && (
                 <div className="text-sm font-semibold leading-5 text-center mb-5.5">
                   Welcome to the Koii Attention Leaderboard

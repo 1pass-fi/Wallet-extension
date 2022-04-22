@@ -26,7 +26,8 @@ const SelectWallet = ({
   return (
     <div
       className="w-full flex flex-col pl-8 pr-1.5 overflow-y-scroll"
-      style={isKoi ? { maxHeight: '104px' } : { maxHeight: '138px' }}
+      style={{ maxHeight: '144px' }}
+      // style={isKoi ? { maxHeight: '104px' } : { maxHeight: '138px' }}
     >
       {accounts.map((account) => (
         <div
