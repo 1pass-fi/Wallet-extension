@@ -9,9 +9,11 @@ import PopupBackground from 'img/popup/popup-background.svg'
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
 import HomeTop from './HomeTop'
+import { TYPE } from 'constants/accountConstants'
 
 const Home = () => {
-  const [currentProviderAddress, setCurrentProviderAddress] = useState({})
+  const [currentProviderAddress, setCurrentProviderAddress] = useState()
+  const [currentSolanaProviderAddress, setCurrentSolanaProviderAddress] = useState()
   const displayingAccount = useSelector(getDisplayingAccount)
 
   const price = useSelector((state) => state.price)
@@ -34,8 +36,16 @@ const Home = () => {
           <HomeTop
             displayingAccount={displayingAccount}
             price={price}
-            currentProviderAddress={currentProviderAddress}
-            setCurrentProviderAddress={setCurrentProviderAddress}
+            currentProviderAddress={
+              displayingAccount.type === TYPE.ETHEREUM
+                ? currentProviderAddress
+                : currentSolanaProviderAddress
+            }
+            setCurrentProviderAddress={
+              displayingAccount.type === TYPE.ETHEREUM
+                ? setCurrentProviderAddress
+                : setCurrentSolanaProviderAddress
+            }
           />
           <PopupBackground
             style={{ width: '177px', height: '156px' }}
@@ -45,7 +55,11 @@ const Home = () => {
         <AccountInfo
           displayingAccount={displayingAccount}
           price={price}
-          currentProviderAddress={currentProviderAddress}
+          currentProviderAddress={
+            displayingAccount.type === TYPE.ETHEREUM
+              ? currentProviderAddress
+              : currentSolanaProviderAddress
+          }
         />
       </ParallaxProvider>
     </div>

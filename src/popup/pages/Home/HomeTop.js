@@ -22,7 +22,7 @@ import Select from 'finnie-v2/components/Select'
 import { loadAllAccounts } from 'options/actions/accounts'
 
 // actions
-import { updateEthereumProvider, loadContent } from 'actions/koi'
+import { updateEthereumProvider, updateSolanaProvider, loadContent } from 'actions/koi'
 import { setActivities } from 'popup/actions/activities'
 
 const HomeTop = ({
@@ -32,6 +32,7 @@ const HomeTop = ({
   currentProviderAddress,
   setCurrentProviderAddress,
   updateEthereumProvider,
+  updateSolanaProvider,
   setActivities
 }) => {
   const p = useParallax({
@@ -81,20 +82,59 @@ const HomeTop = ({
       await dispatch(loadAllAccounts())
       await dispatch(loadContent())
     } catch (error) {
-      console.log('Failed to change provider', error.message)
+      console.log('Failed to change Ethereum provider', error.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const solanaProviderOptions = [
+    {
+      label: 'MAINNET',
+      value: 'mainnet'
+    },
+    {
+      label: 'TESTNET',
+      value: 'testnet'
+    },
+    {
+      label: 'DEVNET',
+      value: 'devnet'
+    }
+  ]
+
+  const onChangeSolanaProvider = async (value) => {
+    setIsLoading(true)
+    try {
+      await updateSolanaProvider(value)
+
+      setCurrentProviderAddress(value)
+
+      // load balance
+      await request.wallet.loadBalanceAsync()
+
+      // update account state
+      await dispatch(loadAllAccounts())
+    } catch (error) {
+      console.log('Failed to change Solana provider', error.message)
     } finally {
       setIsLoading(false)
     }
   }
 
   useEffect(() => {
-    const getCurrentProvider = async () => {
-      const currentProvider = await storage.setting.get.ethereumProvider()
+    const getCurrentProvider = async (accountType) => {
+      let currentProvider
+      if (accountType === TYPE.ETHEREUM) {
+        currentProvider = await storage.setting.get.ethereumProvider()
+      } else if (accountType === TYPE.SOLANA) {
+        currentProvider = await storage.setting.get.solanaProvider()
+      }
       setCurrentProviderAddress(currentProvider)
     }
 
-    getCurrentProvider()
-  }, [])
+    getCurrentProvider(displayingAccount.type)
+  }, [displayingAccount])
 
   return (
     <div className="relative z-20">
@@ -107,6 +147,15 @@ const HomeTop = ({
                 options={providerOptions}
                 value={currentProviderAddress}
                 onChange={onChangeProvider}
+              />
+            </div>
+          )}
+          {displayingAccount.type === TYPE.SOLANA && (
+            <div className="mr-1.75">
+              <Select
+                options={solanaProviderOptions}
+                value={currentProviderAddress}
+                onChange={onChangeSolanaProvider}
               />
             </div>
           )}
@@ -176,4 +225,9 @@ const HomeTop = ({
   )
 }
 
-export default connect(null, { updateEthereumProvider, setIsLoading, setActivities })(HomeTop)
+export default connect(null, {
+  updateEthereumProvider,
+  updateSolanaProvider,
+  setIsLoading,
+  setActivities
+})(HomeTop)
