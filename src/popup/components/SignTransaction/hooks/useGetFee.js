@@ -77,6 +77,11 @@ const useGetFee = ({ network, transactionPayload }) => {
     setTokenSymbol('AR')
   }
 
+  const getSolFee = async () => {
+    setTotalFee(0)
+    setTokenSymbol('SOL')
+  }
+
   useEffect(() => {
     const load = () => {
       try {
@@ -87,6 +92,7 @@ const useGetFee = ({ network, transactionPayload }) => {
           }, 3000))
         }
         if (network === 'ARWEAVE') getArFee()
+        if (network === 'SOLANA') getSolFee()
       } catch (err) {
         console.error('get fee error: ', err.message)
       }

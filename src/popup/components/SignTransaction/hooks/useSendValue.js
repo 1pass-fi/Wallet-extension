@@ -52,6 +52,11 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
     return value / 1000000000000
   }
 
+  const getSendValueSolana = (value) => {
+    value = parseInt(value)
+    return value / 1000000000
+  }
+
   useEffect(() => {
     const loadValue = async () => {
       try {
@@ -71,11 +76,20 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
             setSymbol('AR')
             setOriginSymbol('AR')
             break
+          case 'SOLANA':
+            setValue(getSendValueSolana(value))
+            setRawValue(value)
+            setSymbol('SOL')
+            setOriginSymbol('SOL')
+            setTokenIconPath('img/v2/solana-logo.svg')
         }
         const account = await popupAccount.getAccount({ address: userAddress })
         const balance = await account.get.balance()
   
         setOriginBalance(balance)
+        if (network === 'SOLANA') {
+          setOriginBalance(balance / 1000000000)
+        }
   
         if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
           if (network === 'ETHEREUM') {

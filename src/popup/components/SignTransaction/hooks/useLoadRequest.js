@@ -35,7 +35,11 @@ const useLoadRequest = ({ setIsLoading }) => {
 
         const storedData = await storage.generic.get.transactionData()
 
-        if (isEmpty(data)) data = Object.values(JSON.parse(storedData.data)) 
+        try {
+          if (isEmpty(data)) data = Object.values(JSON.parse(storedData.data)) 
+        } catch (err) {
+
+        }
   
         let transactionType
         if (network === 'ETHEREUM') {
@@ -43,6 +47,9 @@ const useLoadRequest = ({ setIsLoading }) => {
         }
         if (network === 'ARWEAVE') {
           transactionType = await helper.getArweaveTransactionType(transactionPayload)
+        }
+        if (network === 'SOLANA') {
+          transactionType = await helper.getSolanaTransactionType(transactionPayload)
         }
 
         const sender = get(transactionPayload, 'from')

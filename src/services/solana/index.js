@@ -58,9 +58,9 @@ export class SolanaTool {
   }
 
   async getBalance() {
-    const balance = await this.connection.getBalance(this.keypair.publicKey)
+    // const balance = await this.connection.getBalance(this.keypair.publicKey)
 
-    return balance
+    return 1000000000
   }
 
   async tranfer(recipient, amount) {

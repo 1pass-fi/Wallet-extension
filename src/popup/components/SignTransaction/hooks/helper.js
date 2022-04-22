@@ -44,6 +44,10 @@ const getTransactionType = (network) => async (transactionPayload) => {
       if (get(input, 'function') === 'transfer') return TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER
       return TRANSACTION_TYPE.CONTRACT_INTERACTION
     }
+
+    if (network === 'SOLANA') {
+      return TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER
+    }
   } catch (err) {
     console.error('getTransactionType error: ', err.message)
     return TRANSACTION_TYPE.CONTRACT_INTERACTION
@@ -52,5 +56,6 @@ const getTransactionType = (network) => async (transactionPayload) => {
 
 export default {
   getEthereumTransactionType: getTransactionType('ETHEREUM'),
-  getArweaveTransactionType: getTransactionType('ARWEAVE')
+  getArweaveTransactionType: getTransactionType('ARWEAVE'),
+  getSolanaTransactionType: getTransactionType('SOLANA')
 }
