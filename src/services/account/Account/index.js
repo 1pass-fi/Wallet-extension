@@ -61,9 +61,8 @@ export class SolanaAccount extends BackgroundAccount {
   #solTool
   constructor({ address, key }) {
     super(address)
-    this.#solTool = new SolanaTool()
-    this.#solTool.address = address
-    this.#solTool.key = key
+    this.#solTool = new SolanaTool({ address, key })
+
     this.method = new SolanaMethod(this.#solTool)
   }
 

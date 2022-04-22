@@ -10,12 +10,19 @@ import {
   sendAndConfirmTransaction
 } from '@solana/web3.js'
 import { derivePath } from 'ed25519-hd-key'
+import isEmpty from 'lodash/isEmpty'
 
 export class SolanaTool {
-  constructor() {
+  constructor(credentials) {
     this.key = null
     this.address = null
     this.keypair = null
+
+    if (!isEmpty(credentials)) {
+      this.key = credentials.key
+      this.address = credentials.address
+      this.keypair = Keypair.fromSecretKey(new Uint8Array(credentials.key.split(',')))
+    }
 
     this.connection = new Connection(clusterApiUrl('testnet'), 'confirmed')
   }

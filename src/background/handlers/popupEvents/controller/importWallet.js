@@ -76,7 +76,6 @@ export default async (payload, next) => {
       Create new account on storage
     */
 
-    let keypair
     let eth = new EthereumTool()
     let koi = new KoiTool()
     let sol = new SolanaTool()
