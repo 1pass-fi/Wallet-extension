@@ -32,7 +32,7 @@ export default async (payload, next) => {
         break
       case TYPE.SOLANA:
         walletTool = new SolanaTool()
-        seedPhrase = new SolanaAccount.utils.generateWallet(walletTool)
+        seedPhrase = await SolanaAccount.utils.generateWallet(walletTool)
         key = walletTool.key
         address = walletTool.address
         walletTool.wallet = key
