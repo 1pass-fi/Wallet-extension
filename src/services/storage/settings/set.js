@@ -85,6 +85,10 @@ export class SettingSet {
     return this.#chrome._setChrome(SETTING.ETHEREUM_PROVIDER, value)
   }
 
+  solanaProvider(value) {
+    return this.#chrome._setChrome(SETTING.SOLANA_PROVIDER, value)
+  }
+
   activatedChain(value) {
     return this.#chrome._setChrome(SETTING.ACTIVATED_CHAIN, value)
   }

@@ -1,7 +1,7 @@
 import { ChromeStorage } from '../ChromeStorage'
 import { SETTING } from 'constants/storageConstants'
 import { TYPE } from 'constants/accountConstants'
-import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
+import { ETH_NETWORK_PROVIDER, SOL_NETWORK_PROVIDER } from 'constants/koiConstants'
 
 export class SettingGet {
   #chrome
@@ -79,7 +79,13 @@ export class SettingGet {
   }
 
   async ethereumProvider() {
-    return (await this.#chrome._getChrome(SETTING.ETHEREUM_PROVIDER)) || ETH_NETWORK_PROVIDER.MAINNET
+    return (
+      (await this.#chrome._getChrome(SETTING.ETHEREUM_PROVIDER)) || ETH_NETWORK_PROVIDER.MAINNET
+    )
+  }
+
+  async solanaProvider() {
+    return (await this.#chrome._getChrome(SETTING.SOLANA_PROVIDER)) || SOL_NETWORK_PROVIDER.MAINNET
   }
 
   async activatedChain() {
