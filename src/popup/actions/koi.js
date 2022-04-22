@@ -388,3 +388,11 @@ export const updateEthereumProvider = (ethereumProvider) => async (dispatch) => 
     dispatch(setError(err.message))
   }
 }
+
+export const updateSolanaProvider = (solanaProvider) => async (dispatch) => {
+  try {
+    await backgroundRequest.gallery.updateSolanaProvider({ solanaProvider })
+  } catch (error) {
+    dispatch(setError(err.message))
+  }
+}

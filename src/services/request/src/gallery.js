@@ -8,7 +8,7 @@ export class GalleryRequest extends Request {
   }
 
   /**
-   * @param {Object} body 
+   * @param {Object} body
    * @param {JSON} body.content Title, Description, Username of the NFT
    * @param {Array} body.tags Tas of the NFT
    * @param {String} body.fileType The content type of file
@@ -19,8 +19,8 @@ export class GalleryRequest extends Request {
   }
 
   /**
-   * 
-   * @param {Object} body 
+   *
+   * @param {Object} body
    * @param {Object} body.collectionData An array of NFT IDs
    * @param {String} body.address { name: String, description: String, tags: Array }
    */
@@ -28,34 +28,33 @@ export class GalleryRequest extends Request {
     return this.promise(MESSAGES.CREATE_COLLECTION, body)
   }
 
-  
   /**
-   * 
+   *
    * @param {Object} body
    * @param {Object} body.kidInfo { name, description, link, addresses }
    * @param {String} body.fileType
-   * @returns 
+   * @returns
    */
   createNewKID(body) {
     return this.promise(MESSAGES.CREATE_KID, body)
   }
 
   /**
-   * 
+   *
    * @param {Object} body
    * @param {Object} body.kidInfo { name, description, link, addresses }
    * @param {String} body.contractId contract ID of KID to be updated
-   * @returns 
+   * @returns
    */
   updateKID(body) {
     return this.promise(MESSAGES.UPDATE_KID, body)
   }
 
   /**
-   * 
+   *
    * @param {Object} body
    * @param {String} body.password Input password
-   * @returns 
+   * @returns
    */
   getKeyFile(body) {
     return this.promise(MESSAGES.GET_KEY_FILE, body)
@@ -64,24 +63,24 @@ export class GalleryRequest extends Request {
   loadCollections() {
     return this.promise(MESSAGES.LOAD_COLLECTIONS)
   }
-  
+
   /**
-   * 
+   *
    * @param {Object} body
    * @param {String} body.address Address of wallet
-   * @returns 
+   * @returns
    */
   loadKID(body) {
     return this.promise(MESSAGES.LOAD_KID, body)
   }
 
   /**
-   * 
+   *
    * @param {Object} body
    * @param {Object} body.kidInfo
    * @param {String} body.address
    * @param {Object} body.payload
-   * @returns 
+   * @returns
    */
   createOrUpdateKID(body) {
     return this.promise(MESSAGES.CREATE_UPDATE_KID, body)
@@ -100,9 +99,9 @@ export class GalleryRequest extends Request {
   }
 
   /**
-   * 
+   *
    * @param {Object} body
-   * @param {String} body.address 
+   * @param {String} body.address
    */
   setDefaultAccount(body) {
     return this.promise(MESSAGES.SET_DEFAULT_ARWEAVE_ACCOUNT, body)
@@ -113,17 +112,17 @@ export class GalleryRequest extends Request {
   }
 
   // TODO: PLEASE CHANGE THE FUNCTION NAME ASAP
-  transferNFT(body){
+  transferNFT(body) {
     return this.promise(MESSAGES.TRANSFER_NFT, body)
   }
 
   /**
-   * 
+   *
    * @param {Object} body
-   * @param {String} body.nftId 
+   * @param {String} body.nftId
    * @param {String} body.senderAddress
    * @param {String} body.recipientAddress
-   * @returns 
+   * @returns
    */
   _transferNFT(body) {
     return this.promise(MESSAGES.REAL_TRANSFER_NFT, body)
@@ -150,12 +149,12 @@ export class GalleryRequest extends Request {
   }
 
   /**
-   * 
+   *
    * @param {Object} body
    * @param {Object} body.collectionData
    * @param {String} body.collectionId
    * @param {String} body.address
-   * @returns 
+   * @returns
    */
   updateCollection(body) {
     return this.promise(MESSAGES.UPDATE_COLLECTION, body)
@@ -164,7 +163,7 @@ export class GalleryRequest extends Request {
   /**
    * @typedef {Object} GetKeyPayload
    * @property {string} address
-   * @param {GetKeyPayload} body 
+   * @param {GetKeyPayload} body
    * @returns {Promise<any>}
    */
   getKey(body) {
@@ -172,12 +171,12 @@ export class GalleryRequest extends Request {
   }
 
   /**
-   * 
+   *
    * @param {Object} body
    * @param {Boolean} body.isPrivate
    * @param {String} body.txId
    * @param {String} body.address
-   * @returns 
+   * @returns
    */
   updateNft(body) {
     return this.promise(MESSAGES.UPDATE_NFT, body)
@@ -189,5 +188,9 @@ export class GalleryRequest extends Request {
 
   updateEthereumProvider(body) {
     return this.promise(MESSAGES.UPDATE_ETHEREUM_PROVIDER, body)
+  }
+
+  updateSolanaProvider(body) {
+    return this.promise(MESSAGES.UPDATE_SOLANA_PROVIDER, body)
   }
 }
