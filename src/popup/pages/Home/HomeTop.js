@@ -79,6 +79,7 @@ const HomeTop = ({
       setActivities(activities)
 
       // update account state
+      // TODO Thuan Ngo
       await dispatch(loadAllAccounts())
       await dispatch(loadContent())
     } catch (error) {

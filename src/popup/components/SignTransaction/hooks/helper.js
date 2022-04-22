@@ -46,6 +46,7 @@ const getTransactionType = (network) => async (transactionPayload) => {
     }
   } catch (err) {
     console.error('getTransactionType error: ', err.message)
+    return TRANSACTION_TYPE.CONTRACT_INTERACTION
   }
 }
 
