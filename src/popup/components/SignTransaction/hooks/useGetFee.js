@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { get, isNumber } from 'lodash'
+import { get, isNumber, isEmpty } from 'lodash'
 import Web3 from 'web3'
 
 import storage from 'services/storage'
@@ -59,7 +59,11 @@ const useGetFee = ({ network, transactionPayload }) => {
 
     const recipientAddress = get(transactionPayload, 'to')
     const value = get(transactionPayload, 'value')
-    const transactionData = get(transactionPayload, 'data')
+    let transactionData = get(transactionPayload, 'data')
+
+    const storedData = await storage.generic.get.transactionData()
+
+    if (isEmpty(transactionData)) transactionData = Object.values(JSON.parse(storedData.data)) 
 
     if (recipientAddress) rawTx.target = recipientAddress
     if (isNumber(value)) rawTx.quantity = value.toString()
