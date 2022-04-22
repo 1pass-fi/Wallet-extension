@@ -56,6 +56,8 @@ const useLoadRequest = ({ setIsLoading }) => {
         setRecipientName(recipientName)
       } catch (err) {
         console.error('loadRequest error: ', err.message)
+      } finally {
+        setIsLoading(false)
       }
     }
 
