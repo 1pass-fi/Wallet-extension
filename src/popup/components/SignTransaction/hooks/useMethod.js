@@ -5,7 +5,7 @@ import { ERROR_MESSAGE } from 'constants/koiConstants'
 
 import { popupBackgroundRequest as request } from 'services/request/popup'
 
-import { fromWeiToEth, fromWinstonToAr } from 'utils'
+import { fromLampToSol, fromWeiToEth, fromWinstonToAr } from 'utils'
 import { TRANSACTION_TYPE } from './constants'
 
 const useMethod = ({ 
@@ -49,6 +49,20 @@ const useMethod = ({
       target,
       address: source,
       token: 'AR'
+    })
+  }
+
+  const handleSendSol = async () => {
+    let qty = get(transactionPayload, 'value')
+    qty = fromLampToSol(parseInt(qty))
+    const target = get(transactionPayload, 'to')
+    const source = get(transactionPayload, 'from')
+
+    return await request.wallet.makeTransfer({
+      qty,
+      target,
+      address: source,
+      token: 'SOL'
     })
   }
 
@@ -107,6 +121,8 @@ const useMethod = ({
               result = await handleSendEth()
             }
             break
+          case 'SOLANA':
+            result = await handleSendSol()
         }
 
         setIsLoading(false)

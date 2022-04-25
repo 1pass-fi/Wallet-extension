@@ -14,14 +14,16 @@ export default async (payload, next) => {
     const transactionType =
       token === 'KOI' ? PENDING_TRANSACTION_TYPE.SEND_KOII : PENDING_TRANSACTION_TYPE.SEND_AR
 
-    console.log('QTY ', qty, 'TARGET ', target, 'TOKEN ', token)
+    console.log('QTY ', qty, 'TARGET ', target, 'TOKEN', token)
 
     let txId = ''
     let receipt = {}
     if (token === 'ETH') {
       receipt = await account.method.transfer(token, target, qty)
       txId = receipt.transactionHash
-    } else {
+    } else if (token === 'KOI') {
+      txId = await account.method.transfer(token, target, qty)
+    } else if (token === 'SOL') {
       txId = await account.method.transfer(token, target, qty)
     }
 
