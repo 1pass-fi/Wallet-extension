@@ -3,8 +3,19 @@ import { get, isNumber, isEmpty } from 'lodash'
 import Web3 from 'web3'
 
 import storage from 'services/storage'
-import { numberFormat } from 'utils'
+import { numberFormat, fromLampToSol } from 'utils'
 import arweave from 'services/arweave'
+
+import {
+  Keypair,
+  Connection,
+  clusterApiUrl,
+  PublicKey,
+  Transaction,
+  SystemProgram,
+  LAMPORTS_PER_SOL,
+  sendAndConfirmTransaction
+} from '@solana/web3.js'
 
 const fromHexToDecimal = (hexString) => {
   let number = null
@@ -78,7 +89,33 @@ const useGetFee = ({ network, transactionPayload }) => {
   }
 
   const getSolFee = async () => {
-    setTotalFee(0)
+    const recipientAddress = get(transactionPayload, 'to')
+    const senderAddress = get(transactionPayload, 'from')
+    const value = get(transactionPayload, 'value')
+
+    const transaction = new Transaction()
+    // TODO Minh Vu load provider from storage
+    const connection = new Connection(clusterApiUrl('testnet'), 'confirmed')
+
+    let blockhash = (await connection.getLatestBlockhash('finalized')).blockhash
+    
+    transaction.recentBlockhash = blockhash
+    transaction.feePayer = new PublicKey(senderAddress)
+
+    transaction.add(
+      SystemProgram.transfer({
+        fromPubkey: new PublicKey(senderAddress),
+        toPubkey: new PublicKey(recipientAddress),
+        lamports: value
+      })
+    )
+
+    const response = await connection.getFeeForMessage(
+      transaction.compileMessage(),
+      'confirmed',
+    )
+
+    setTotalFee(fromLampToSol(response.value))
     setTokenSymbol('SOL')
   }
 
