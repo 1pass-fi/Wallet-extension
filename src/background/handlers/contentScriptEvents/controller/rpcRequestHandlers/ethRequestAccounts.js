@@ -77,6 +77,15 @@ export default async (payload, tab, next) => {
               const approved = popupMessage.approved
               if (approved) {
                 // connect account
+                var pendingRequest = await storage.generic.get.pendingRequest()
+                if (isEmpty(pendingRequest)) {
+                  next({ error: { code: 4001, data: 'Request has been removed' } })
+                  chrome.runtime.sendMessage({
+                    requestId,
+                    error: 'Request has been removed'
+                  })
+                  return
+                }
                 try {
                   const checkedAddresses = popupMessage.checkedAddresses
   

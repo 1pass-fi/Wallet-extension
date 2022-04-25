@@ -97,7 +97,13 @@ const useMethod = ({
       if (requestId) {
         chrome.runtime.sendMessage({ requestId, approved: true }, function (response) {
           chrome.runtime.onMessage.addListener(function (message) {
-            if (message.requestId === requestId) window.close()
+            if (message.requestId === requestId) {
+              if (message.error) {
+                setError(message.error)
+              } else {
+                window.close()
+              }
+            } 
           })
         })
         await storage.generic.set.pendingRequest({})
@@ -134,7 +140,8 @@ const useMethod = ({
     } catch (err) {
       console.error(err.message)
       if (requestId) {
-        window.close()
+        // window.close()
+        setError(err.message)
       } else {        
         setIsLoading(false)
         setError(err.message)
