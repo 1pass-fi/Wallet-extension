@@ -101,6 +101,11 @@ const ConnectScreen = ({ setError, setIsLoading }) => {
 
         chrome.runtime.onMessage.addListener(function (message) {
           if (message.requestId === requestId) {
+            if (message.error) {
+              setError(message.error)
+              setIsLoading(false)
+              return
+            }
             setIsLoading(false)
             storage.generic.remove.pendingRequest()
             chrome.browserAction.setBadgeText({ text: '' })

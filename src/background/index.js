@@ -13,6 +13,7 @@ import popupEvents from './handlers/popupEvents'
 import contentScriptEvents from './handlers/contentScriptEvents'
 
 import cache from './cache'
+import storage from 'services/storage'
 
 function cb(port) {
   if ((port.name).includes(PORTS.POPUP)) {
@@ -20,6 +21,7 @@ function cb(port) {
 
     port.onDisconnect.addListener((disconnect) => {
       console.log('port disconnected--', disconnect, port)
+      storage.generic.set.pendingRequest({})
       cache.removePopupPort(port)
     })
 

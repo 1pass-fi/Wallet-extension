@@ -80,6 +80,15 @@ export default async (payload, tab, next) => {
             if (popupMessage.requestId === requestId) {
               const approved = popupMessage.approved
               if (approved) {
+                var pendingRequest = await storage.generic.get.pendingRequest()
+                if (isEmpty(pendingRequest)) {
+                  next({ error: { code: 4001, data: 'Request has been removed' } })
+                  chrome.runtime.sendMessage({
+                    requestId,
+                    error: 'Request has been removed'
+                  })
+                  return
+                }
                 try {
                   /* Send ETH transaction */
                   const provider = await storage.setting.get.ethereumProvider()
