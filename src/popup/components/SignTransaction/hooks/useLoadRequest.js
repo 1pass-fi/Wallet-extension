@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 
 import storage from 'services/storage'
 import validateToken from 'utils/erc20/validateToken'
@@ -31,8 +31,12 @@ const useLoadRequest = ({ setIsLoading }) => {
         const favicon = get(request, 'data.favicon')
         const recipientName = get(request, 'data.recipientName')
   
-        const data = get(transactionPayload, 'data')
-  
+        let data = get(transactionPayload, 'data')
+        if (network === 'ARWEAVE') {
+          data = (await storage.generic.get.transactionData())?.data
+          data = Object.values(JSON.parse(data))
+        }
+
         let transactionType
         if (network === 'ETHEREUM') {
           transactionType = await helper.getEthereumTransactionType(transactionPayload)
@@ -51,7 +55,11 @@ const useLoadRequest = ({ setIsLoading }) => {
         setRequestId(requestId)
         setFavicon(favicon)
         setTransactionType(transactionType)
-        setDataString(data)
+        if (network === 'ARWEAVE') {
+          setDataString(data.toString())
+        } else {
+          setDataString(data)
+        }
         setSenderName(senderName)
         setRecipientName(recipientName)
       } catch (err) {
