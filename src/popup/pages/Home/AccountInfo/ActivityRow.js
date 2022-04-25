@@ -72,10 +72,15 @@ const ActivityRow = ({
             blockUrl = `${URL.ETHERSCAN_RINKEBY}/tx/${id}`
         }
 
+        if (includes(activityName, 'SOL')) {
+          blockUrl = `${URL.SOLANA_EXPLORE}/tx/${id}?cluster=${network}`
+        }
+
         if (!includes(activityName, 'Bridge')) {
           let sign = includes(activityName, 'Received') ? '+' : '-'
           let token = includes(activityName, 'KOII') ? 'KOII' : 'AR'
           if (includes(activityName, 'ETH')) token = 'ETH'
+          if (includes(activityName, 'SOL')) token = 'SOL'
 
           expenseText = `${expense !== null && expense > 0 ? sign : ''}${transactionAmountFormat(
             expense
