@@ -32,15 +32,11 @@ const useLoadRequest = ({ setIsLoading }) => {
         const recipientName = get(request, 'data.recipientName')
   
         let data = get(transactionPayload, 'data')
-
-        const storedData = await storage.generic.get.transactionData()
-
-        try {
-          if (isEmpty(data)) data = Object.values(JSON.parse(storedData.data)) 
-        } catch (err) {
-
+        if (network === 'ARWEAVE') {
+          data = (await storage.generic.get.transactionData())?.data
+          data = Object.values(JSON.parse(data))
         }
-  
+
         let transactionType
         if (network === 'ETHEREUM') {
           transactionType = await helper.getEthereumTransactionType(transactionPayload)
@@ -62,11 +58,17 @@ const useLoadRequest = ({ setIsLoading }) => {
         setRequestId(requestId)
         setFavicon(favicon)
         setTransactionType(transactionType)
-        setDataString(data.toString())
+        if (network === 'ARWEAVE') {
+          setDataString(data.toString())
+        } else {
+          setDataString(data)
+        }
         setSenderName(senderName)
         setRecipientName(recipientName)
       } catch (err) {
         console.error('loadRequest error: ', err.message)
+      } finally {
+        setIsLoading(false)
       }
     }
 

@@ -88,7 +88,7 @@ const Header = ({ setShowConnectedSites }) => {
 
   return (
     <div
-      className="fixed flex shadow-md z-30"
+      className="fixed flex shadow-md z-50"
       style={{ height: '54px', backgroundColor: '#8585BC' }}
       ref={ref}
     >

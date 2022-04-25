@@ -151,10 +151,10 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
             setBalance(balance)
           }
         }
-  
-        setIsLoading(false)
       } catch (err) {
         console.error('Get send value error: ', err.message)
+      } finally {
+        setIsLoading(false)
       }
     }
 

@@ -127,6 +127,8 @@ const Popup = ({
 
   useTimeInterval({ error, notification, warning })
 
+  console.log('isLoading', isLoading)
+
   return (
     <div className="popup">
       <div className="h-full">
