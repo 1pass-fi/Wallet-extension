@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const useTimeInterval = ({ error, notification, warning }) => {
+const useTimeInterval = ({ error, notification, warning, setError }) => {
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => setError(null), 4000)

@@ -125,7 +125,7 @@ const Popup = ({
 
   const { handleLockWallet } = useMethod({ accounts })
 
-  useTimeInterval({ error, notification, warning })
+  useTimeInterval({ error, notification, warning, setError })
 
   console.log('isLoading', isLoading)
 

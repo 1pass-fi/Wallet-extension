@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import { v4 as uuid } from 'uuid'
 
 import { backgroundAccount } from 'services/account'
