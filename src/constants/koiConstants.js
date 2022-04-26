@@ -439,7 +439,7 @@ export const GALLERY_IMPORT_PATH = [
 ]
 
 export const SOL_NETWORK_PROVIDER = {
-  MAINNET: 'mainnet',
+  MAINNET: 'mainnet-beta',
   TESTNET: 'testnet',
   DEVNET: 'devnet'
 }

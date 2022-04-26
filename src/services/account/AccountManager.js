@@ -55,9 +55,12 @@ class AccountManager {
       // const provider = await this.#getProviderFromAddress(get(credentials, 'address'))
 
       // const provider = 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
+
       const provider =
         (await storage.setting.get.ethereumProvider()) ||
         'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
+
+      const solProvider = (await storage.setting.get.solanaProvider()) || 'testnet'
 
       switch (type) {
         case TYPE.ARWEAVE:
@@ -65,7 +68,7 @@ class AccountManager {
         case TYPE.ETHEREUM:
           return new EthereumAccount(credentials, provider)
         case TYPE.SOLANA:
-          return new SolanaAccount(credentials)
+          return new SolanaAccount(credentials, solProvider)
       }
     } catch (err) {
       console.log(err.message)

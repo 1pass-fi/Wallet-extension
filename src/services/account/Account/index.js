@@ -59,9 +59,9 @@ export class EthereumAccount extends BackgroundAccount {
 
 export class SolanaAccount extends BackgroundAccount {
   #solTool
-  constructor({ address, key }) {
+  constructor({ address, key }, provider) {
     super(address)
-    this.#solTool = new SolanaTool({ address, key })
+    this.#solTool = new SolanaTool({ address, key }, provider)
 
     this.method = new SolanaMethod(this.#solTool)
   }
