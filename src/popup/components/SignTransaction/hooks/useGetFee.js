@@ -95,7 +95,8 @@ const useGetFee = ({ network, transactionPayload }) => {
 
     const transaction = new Transaction()
     // TODO Minh Vu load provider from storage
-    const connection = new Connection(clusterApiUrl('testnet'), 'confirmed')
+    const solProvider = (await storage.setting.get.solanaProvider()) || 'testnet'
+    const connection = new Connection(clusterApiUrl(solProvider), 'confirmed')
 
     let blockhash = (await connection.getLatestBlockhash('finalized')).blockhash
     

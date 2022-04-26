@@ -113,6 +113,10 @@ const HomeTop = ({
 
       // load balance
       await request.wallet.loadBalanceAsync()
+      await request.activities.loadActivities()
+
+      const activities = await storage.generic.get.allActivities()
+      setActivities(activities)
 
       // update account state
       await dispatch(loadAllAccounts())
