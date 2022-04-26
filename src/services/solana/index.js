@@ -13,7 +13,7 @@ import { derivePath } from 'ed25519-hd-key'
 import isEmpty from 'lodash/isEmpty'
 
 export class SolanaTool {
-  constructor(credentials) {
+  constructor(credentials, provider) {
     this.key = null
     this.address = null
     this.keypair = null
@@ -24,7 +24,12 @@ export class SolanaTool {
       this.keypair = Keypair.fromSecretKey(new Uint8Array(credentials.key.split(',')))
     }
 
-    this.connection = new Connection(clusterApiUrl('testnet'), 'confirmed')
+    this.provider = provider || 'testnet'
+    this.connection = new Connection(clusterApiUrl(provider), 'confirmed')
+  }
+
+  getCurrentNetwork() {
+    return this.provider
   }
 
   importWallet(key, type) {

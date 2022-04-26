@@ -5,8 +5,9 @@ import includes from 'lodash/includes'
 import ViewBlockIcon from 'img/v2/view-block.svg'
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-bg-white.svg'
 import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import SolanaLogo from 'img/v2/solana-logo.svg'
 
-import { PATH, URL,ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
+import { PATH, URL, ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import clsx from 'clsx'
@@ -30,6 +31,11 @@ const ActivityRow = ({
         network === ETH_NETWORK_PROVIDER.MAINNET
           ? `${URL.ETHERSCAN_MAINNET}/tx/${id}`
           : `${URL.ETHERSCAN_RINKEBY}/tx/${id}`
+    }
+
+    if (includes(activityName, 'SOL')) {
+      url = `${URL.SOLANA_EXPLORE}/tx/${id}?cluster=${network}`
+      tokenType = 'SOL'
     }
 
     let from = ''
@@ -62,9 +68,9 @@ const ActivityRow = ({
       <td className="px-1">{displayInfo.dateString}</td>
       <td className="px-1">{formatLongStringTruncate(displayInfo.action, 20)}</td>
       <td className="px-1">
-        {displayInfo.tokenType === 'ETH' ? (
-          <EthereumLogo className="w-5 h-5 mr-2 inline-block" />
-        ) : (
+        {displayInfo.tokenType === 'ETH' && <EthereumLogo className="w-5 h-5 mr-2 inline-block" />}
+        {displayInfo.tokenType === 'SOL' && <SolanaLogo className="w-5 h-5 mr-2 inline-block" />}
+        {displayInfo.tokenType !== 'ETH' && displayInfo.tokenType !== 'SOL' && (
           <KoiiLogo className="w-5 h-5 mr-2 inline-block" />
         )}
         {formatLongString(displayInfo.from, 20)}

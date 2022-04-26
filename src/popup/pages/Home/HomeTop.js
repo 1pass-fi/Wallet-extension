@@ -92,7 +92,7 @@ const HomeTop = ({
   const solanaProviderOptions = [
     {
       label: 'MAINNET',
-      value: 'mainnet'
+      value: 'mainnet-beta'
     },
     {
       label: 'TESTNET',

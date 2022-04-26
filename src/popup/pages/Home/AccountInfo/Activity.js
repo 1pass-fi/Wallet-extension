@@ -11,8 +11,6 @@ import ExpiredTxModal from 'popup/components/modals/expiredTxModal'
 
 import { setActivities } from 'popup/actions/activities'
 
-
-
 const Activity = ({ activities, setActivities }) => {
   const [pendingTransactions, setPendingTransactions] = useState([])
   const [pages, setPages] = useState(1)

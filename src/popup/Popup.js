@@ -142,7 +142,7 @@ const Popup = ({
         )}
         {showSigning && <SignModal setShowSigning={setShowSigning} />}
         {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
-        {isLoading && <Loading />}
+        {isLoading !== 0 && <Loading />}
         {error && <Message type="error" children={error} />}
         {notification && <Message type="notification" children={notification} />}
         {warning && <Message type="warning" children={warning} />}
