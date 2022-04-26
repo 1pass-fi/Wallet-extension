@@ -118,6 +118,16 @@ const HomeTop = ({
       const activities = await storage.generic.get.allActivities()
       setActivities(activities)
 
+      await request.activities.loadActivities()
+
+      const activities = await storage.generic.get.allActivities()
+      setActivities(activities)
+
+      // update account state
+      // TODO Thuan Ngo
+      await dispatch(loadAllAccounts())
+      await dispatch(loadContent())
+
       // update account state
       await dispatch(loadAllAccounts())
     } catch (error) {

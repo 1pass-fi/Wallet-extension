@@ -102,7 +102,7 @@ const Tokens = ({ currentProviderAddress }) => {
 
   useEffect(() => {
     loadTokenList()
-  }, [importedTokenAddresses])
+  }, [importedTokenAddresses, displayingAccount])
 
   const handleRefreshTokenList = async () => {
     await loadTokenList()
