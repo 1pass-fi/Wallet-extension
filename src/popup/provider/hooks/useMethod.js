@@ -1,6 +1,11 @@
-import { PATH } from 'constants/koiConstants'
+import { useHistory } from 'react-router'
 
-const useMethod = ({ accounts }) => {
+import { PATH } from 'constants/koiConstants'
+import { isEmpty } from 'lodash'
+
+const useMethod = ({ accounts, setIsLoading, lockWallet }) => {
+  const history = useHistory()
+  
   const handleLockWallet = async () => {
     if (!isEmpty(accounts)) {
       setIsLoading(true)

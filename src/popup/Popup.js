@@ -123,7 +123,7 @@ const Popup = ({
     lockWallet
   })
 
-  const { handleLockWallet } = useMethod({ accounts })
+  const { handleLockWallet } = useMethod({ accounts, setIsLoading, lockWallet })
 
   useTimeInterval({ error, notification, warning, setError })
 

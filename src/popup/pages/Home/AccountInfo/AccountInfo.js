@@ -49,7 +49,7 @@ const AccountInfo = ({ displayingAccount, price, currentProviderAddress }) => {
           <div className="h-full px-17.25 py-3">
             {displayingAccount.type === TYPE.SOLANA && (
               <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-                {numberFormat(displayingAccount.balance)} SOL
+                {numberFormat(displayingAccount.balance / Math.pow(10, 9))} SOL
               </div>
             )}
             {displayingAccount.type === TYPE.ARWEAVE && (
