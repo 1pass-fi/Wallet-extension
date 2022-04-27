@@ -120,9 +120,6 @@ const HomeTop = ({
 
       await request.activities.loadActivities()
 
-      const activities = await storage.generic.get.allActivities()
-      setActivities(activities)
-
       // update account state
       // TODO Thuan Ngo
       await dispatch(loadAllAccounts())

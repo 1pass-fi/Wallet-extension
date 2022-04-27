@@ -13,6 +13,7 @@ const mainScript = () => {
   const finnieEthereumProvider = new FinnieEthereumProvider(window.connection)
   const finnieArweaveProvider = new FinnieArweaveProvider(window.connection)
   const finnieKoiiWalletProvider = new FinnieKoiiWalletProvider(window.connection)
+  const finnieSolanaWalletProvider = new FinnieSolanaProvider(window.connection)
 
   window.addEventListener('chainChanged', function() {
     finnieEthereumProvider.request({ method: 'eth_chainId' }).then(chainId => {
@@ -35,6 +36,7 @@ const mainScript = () => {
   window.arweaveWallet = finnieArweaveProvider
   window.koiiWallet = finnieKoiiWalletProvider
   window.koiWallet = finnieKoiiWalletProvider
+  window.solana = finnieSolanaWalletProvider
 }
 
 const arweaveWalletExcluded = () => {

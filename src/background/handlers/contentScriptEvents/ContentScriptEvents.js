@@ -20,6 +20,7 @@ export default class ContentScriptEvents extends EventEmitter {
     const isEthereumRequest = [
       'ETHEREUM_RPC_REQUEST'
     ].includes(endpoint)
+    const isSolanaRequest = endpoint?.includes('SOLANA')
     const tabData = await this.getTabData(isEthereumRequest)
     const { port } = payload
 
@@ -86,6 +87,8 @@ export default class ContentScriptEvents extends EventEmitter {
   }
 
   async getTabData (isEthereumRequest) {
+    // TODO Thuan Ngo: you can mock the tab data here
+
     const tab = await getSelectedTab()
     const url = tab.url
     const origin = (new URL(url)).origin

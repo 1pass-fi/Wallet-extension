@@ -20,6 +20,11 @@ import signature from './signature'
 import ethereumRpcRequest from './ethereumRpcRequest'
 import signArweaveTransaction from './signArweaveTransaction'
 import testEthereum from './testEthereum'
+import solanaConnect from './solanaConnect'
+import solanaDisconnect from './solanaDisconnect'
+import solanaSignAllTransactions from './solanaSignAllTransactions'
+import solanaSignTransaction from './solanaSignTransaction'
+import solanaSignMessage from './solanaSignMessage'
 
 export default {
   koiConnect,
@@ -43,5 +48,10 @@ export default {
   signature,
   ethereumRpcRequest,
   signArweaveTransaction,
-  testEthereum
+  testEthereum,
+  solanaConnect,
+  solanaDisconnect,
+  solanaSignAllTransactions,
+  solanaSignTransaction,
+  solanaSignMessage
 }
