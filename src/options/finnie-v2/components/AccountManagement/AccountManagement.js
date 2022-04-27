@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { useMemo, useState, useContext } from 'react'
+import React, { useMemo, useRef, useState, useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
@@ -9,9 +9,13 @@ import formatLongString from 'finnie-v2/utils/formatLongString'
 import ArLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import CopyIcon from 'img/v2/copy-icon.svg'
+import EditIcon from 'img/v2/edit-icon.svg'
 
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import { popupAccount } from 'services/account'
+
+import { setAccounts } from 'options/actions/accounts'
 import { setDefaultAccountByAddress } from 'options/actions/defaultAccount'
 import { GalleryContext } from 'options/galleryContext'
 import { DidContext } from 'options/context'
@@ -52,11 +56,15 @@ const AccountManagement = ({ accounts }) => {
   const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
   const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
 
+  const inputAccountNameRef = useRef(null)
+
   const [currentTab, setCurrentTab] = useState('AR')
+  const [editAccount, setEditAccount] = useState({})
+  const [accountName, setAccountName] = useState('')
 
   const showAccounts = useMemo(
     () => accounts.filter((account) => account.type.includes(currentTab)),
-    [currentTab]
+    [currentTab, accounts]
   )
 
   const reloadDefaultAccount = async () => {
@@ -96,6 +104,31 @@ const AccountManagement = ({ accounts }) => {
 
   const changeTab = (newTab) => setCurrentTab(newTab)
 
+  const handleChangeAccountName = (account) => async () => {
+    try {
+      if (editAccount !== account) {
+        setEditAccount(account)
+        setAccountName(account.accountName)
+      } else {
+        if (accountName !== account.accountName) {
+          await backgroundRequest.wallet.changeAccountName({
+            address: account.address,
+            newName: accountName
+          })
+          const allData = await popupAccount.getAllMetadata()
+          dispatch(setAccounts(allData))
+        }
+        setEditAccount({})
+      }
+    } catch (err) {
+      dispatch(setError(err.message))
+    }
+  }
+
+  useEffect(() => {
+    inputAccountNameRef.current?.focus()
+  }, [editAccount])
+
   return (
     <>
       <div className="flex items-center justify-start gap-10 font-bold text-xs mb-4">
@@ -114,7 +147,7 @@ const AccountManagement = ({ accounts }) => {
         <thead className="text-4xs font-normal">
           <tr className="text-left h-8">
             <td className="pl-2">DEFAULT</td>
-            <td className="text-center">ACCOUNT NAME</td>
+            <td className="w-40 pl-9">ACCOUNT NAME</td>
             <td>ADDRESS</td>
             {/* <td>LAYER</td> */}
           </tr>
@@ -132,12 +165,29 @@ const AccountManagement = ({ accounts }) => {
                 />
               </td>
               <td>
-                {currentTab === 'AR' ? (
-                  <ArLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
-                ) : (
-                  <EthLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
-                )}
-                {formatLongString(account.accountName, 12)}
+                <div className="flex items-center">
+                  {currentTab === 'AR' ? (
+                    <ArLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
+                  ) : (
+                    <EthLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
+                  )}
+                  {editAccount?.address === account.address ? (
+                    <input
+                      ref={(accountNameInput) => (inputAccountNameRef.current = accountNameInput)}
+                      className="w-24 pl-1 bg-trueGray-400 bg-opacity-50 rounded-t-sm border-b-2 border-blue-850 focus:outline-none"
+                      value={accountName}
+                      onChange={(e) => setAccountName(e.target.value)}
+                      style={{ height: '17.23px' }}
+                    />
+                  ) : (
+                    <div className="w-24 pl-1">{formatLongString(account.accountName, 12)}</div>
+                  )}
+                  <EditIcon
+                    onClick={handleChangeAccountName(account)}
+                    className="inline cursor-pointer ml-1 mr-6"
+                    style={{ width: '13px', height: '13px' }}
+                  />
+                </div>
               </td>
               <td>
                 <Address address={account.address} key={account.address} />
