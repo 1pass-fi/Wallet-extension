@@ -24,6 +24,9 @@ import storage from 'services/storage'
 import { MESSAGES, PATH } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
 
+// utils
+import formatLongString from 'finnie-v2/utils/formatLongString'
+
 export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoading }) => {
   const dispatch = useDispatch()
   const history = useHistory()
@@ -60,7 +63,7 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
             await storage.setting.set.activatedChain(account.type)
             dispatch(setActivatedChain(account.type))
             dispatch(setDefaultAccount(account))
-            chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
               chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
             })
             setShowAccountDropdown(false)
@@ -69,7 +72,7 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
           {account.type === TYPE.ARWEAVE && <FinnieIcon className="ml-2.5 h-6.25 w-6.25" />}
           {account.type === TYPE.ETHEREUM && <EthereumIcon className="ml-2.5 h-6.25 w-6.25" />}
           <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
-            {account.accountName}
+            {formatLongString(account.accountName, 12)}
           </div>
           <RemoveAccountIcon
             className="absolute right-5.25"
