@@ -4,7 +4,6 @@ import { MESSAGES } from 'constants/koiConstants'
 // controller
 import controller from './controller'
 
-
 const getEmitter = () => {
   const contentScriptEvents = new ContentScriptEvents()
 
@@ -31,9 +30,16 @@ const getEmitter = () => {
   contentScriptEvents.on(MESSAGES.TEST_ETHEREUM, controller.testEthereum)
   contentScriptEvents.on(MESSAGES.SOLANA_CONNECT, controller.solanaConnect)
   contentScriptEvents.on(MESSAGES.SOLANA_DISCONNECT, controller.solanaDisconnect)
-  contentScriptEvents.on(MESSAGES.SOLANA_SIGN_ALL_TRANSACTIONS, controller.solanaSignAllTransactions)
+  contentScriptEvents.on(
+    MESSAGES.SOLANA_SIGN_ALL_TRANSACTIONS,
+    controller.solanaSignAllTransactions
+  )
   contentScriptEvents.on(MESSAGES.SOLANA_SIGN_TRANSACTION, controller.solanaSignTransaction)
   contentScriptEvents.on(MESSAGES.SOLANA_SIGN_MESSAGE, controller.solanaSignMessage)
+  contentScriptEvents.on(
+    MESSAGES.SOLANA_SIGN_AND_SEND_TRANSACTION,
+    controller.solanaSignAndSendTransaction
+  )
 
   return contentScriptEvents
 }

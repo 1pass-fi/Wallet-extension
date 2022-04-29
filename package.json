@@ -57,6 +57,7 @@
         "ace-builds": "^1.4.13",
         "arweave": "1.10.18",
         "axios": "^0.21.1",
+        "base58": "^2.0.1",
         "bip39": "^3.0.4",
         "browser-passworder": "^2.0.3",
         "camelcase": "^6.2.1",

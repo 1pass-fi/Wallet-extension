@@ -25,6 +25,7 @@ import solanaDisconnect from './solanaDisconnect'
 import solanaSignAllTransactions from './solanaSignAllTransactions'
 import solanaSignTransaction from './solanaSignTransaction'
 import solanaSignMessage from './solanaSignMessage'
+import solanaSignAndSendTransaction from './solanaSignAndSendTransaction'
 
 export default {
   koiConnect,
