@@ -1,24 +1,26 @@
-export default async (payload, tab, next) => {
+import { isEmpty, get } from 'lodash'
+
+import storage from 'services/storage'
+
+
+export default async (_, tab, next) => {
   try {
-    const {       
-      origin, 
-      favicon, 
-      url, 
-      hadPermission, 
-      hasPendingRequest,
-      siteAddressDictionary,
-      activatedAddress,
-      connectedAddresses 
-    } = tab
+    const { hadPermission, activatedAddress, origin } = tab
 
-    // TODO Thuan Ngo: implement disconnect functions
-    // We could consider to mock this function at the moment
+    if (hadPermission) {
+      let siteConnectedAddresses = (await storage.setting.get.siteConnectedAddresses())
+      if (isEmpty(siteConnectedAddresses[origin])) return next()
 
-    console.log('SOLANA DISCONNECT...')
- 
-    next({ data: 'Disconnected' })
+      let connectedArweaveAddresses = get(siteConnectedAddresses[origin], 'solana', [])
+      connectedArweaveAddresses = connectedArweaveAddresses.filter(address => address !== activatedAddress)
+
+      siteConnectedAddresses[origin].solana = connectedArweaveAddresses
+      await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
+    }
+
+    next()
   } catch (err) {
-    console.error(err.mesage)
-    next({ data: { status: 500, data: 'Solana disconnect error' } })
+    console.error(err.message)
+    next({ error: 'Disconnect error' })
   }
 }
