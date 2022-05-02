@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import ReactTooltip from 'react-tooltip'
 
 import EthereumIcon from 'img/ethereum-logo.svg'
 import FinnieIcon from 'img/popup/finnie-icon.svg'
 import AddIcon from 'img/popup/add-icon.svg'
-import RemoveAccountIcon from 'img/remove-account-links.svg'
+import CopyIcon from 'img/v2/copy-address-icon.svg'
 
 // actions
 import { removeWallet } from 'actions/koi'
@@ -52,6 +53,14 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
     }
   }
 
+  const [isCopied, setIsCopied] = useState(false)
+  const [accountCopied, setAccountCopied] = useState('')
+  const onCopy = () => {
+    setIsCopied(true)
+
+    setTimeout(() => setIsCopied(false), 2000)
+  }
+
   return (
     <div className="bg-indigo-400 select-none">
       {accounts.map((account, idx) => (
@@ -74,12 +83,17 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
           <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
             {formatLongString(account.accountName, 12)}
           </div>
-          <RemoveAccountIcon
-            className="absolute right-5.25"
+
+          <CopyIcon
+            data-tip={isCopied && account.address === accountCopied ? 'Copied' : ''}
             onClick={(e) => {
               e.stopPropagation()
-              handleRemoveWallet(account)
+              onCopy()
+              setAccountCopied(account.address)
+              navigator.clipboard.writeText(account.address)
             }}
+            className="absolute right-5.25 cursor-pointer focus:outline-none"
+            style={{ width: '20px', height: '20px' }}
           />
         </div>
       ))}
@@ -94,6 +108,8 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
           Import New Wallet
         </div>
       </div>
+      <ReactTooltip place="top" effect="solid" />
+      <ReactTooltip id="arrow-button" place="left" effect="float" />
     </div>
   )
 }
