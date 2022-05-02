@@ -8,7 +8,7 @@ import storage from 'services/storage'
 
 const contractMap = {
   'QA7AIFVx1KBBmzC7WUNhJbDsHlSJArUT0jWrhZMZPS8': {
-    logo: 'koii.svg'
+    logo: 'KOII.svg'
   },
   '-8A6RexFkpfWwuyVO98wzSFZh0d6VJuI-buTJvlwOJQ': {
     logo: 'ardrive.png'

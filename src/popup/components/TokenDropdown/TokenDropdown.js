@@ -19,7 +19,11 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken }) => {
         {selectedToken?.logo ? (
           <img src={selectedToken.logo} style={{ width: '34px', height: '34px' }} />
         ) : (
-          <FinnieIcon style={{ width: '34px', height: '34px' }} />
+          // <FinnieIcon style={{ width: '34px', height: '34px' }} />
+          <img
+            src={`img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`}
+            style={{ width: '34px', height: '34px' }}
+          />
         )}
         <ArrowIcon style={{ transform: 'rotateX(180deg)' }} />
       </div>
@@ -34,7 +38,12 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken }) => {
               {token?.logo ? (
                 <img src={token.logo} className="ml-2" style={{ width: '34px', height: '34px' }} />
               ) : (
-                <FinnieIcon className="ml-2" style={{ width: '34px', height: '34px' }} />
+                // <FinnieIcon className="ml-2" style={{ width: '34px', height: '34px' }} />
+                <img
+                  src={`img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`}
+                  className="ml-2"
+                  style={{ width: '34px', height: '34px' }}
+                />
               )}
             </div>
           )}

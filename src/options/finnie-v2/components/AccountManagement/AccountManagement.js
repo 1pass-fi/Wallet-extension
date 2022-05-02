@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { useMemo, useState, useContext } from 'react'
+import React, { useMemo, useRef, useState, useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
@@ -10,16 +10,20 @@ import ArLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import SolLogo from 'img/v2/solana-logo.svg'
 import CopyIcon from 'img/v2/copy-icon.svg'
+import EditIcon from 'img/v2/edit-icon.svg'
+import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import { popupAccount } from 'services/account'
+
+import { setAccounts } from 'options/actions/accounts'
 import { setDefaultAccountByAddress } from 'options/actions/defaultAccount'
 import { GalleryContext } from 'options/galleryContext'
 import { DidContext } from 'options/context'
 
 import CheckBox from 'finnie-v2/components/CheckBox'
-
-const tabs = ['AR', 'ETH', 'SOL']
+import { TYPE } from 'constants/accountConstants'
 
 const Address = ({ address }) => {
   const [isCopied, setIsCopied] = useState(false)
@@ -38,14 +42,14 @@ const Address = ({ address }) => {
           <CopyIcon className="inline cursor-pointer w-3.25 ml-2" />
         </CopyToClipboard>
         {isCopied && (
-          <span className="text-11px absolute top-0 -right-14 text-blue-800">Copied!</span>
+          <span className="text-11px absolute top-0 -right-13 text-blue-800">Copied!</span>
         )}
       </div>
     </>
   )
 }
 
-const AccountManagement = ({ accounts }) => {
+const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAccount }) => {
   const { setNotification, setError } = useContext(GalleryContext)
   const { getDID } = useContext(DidContext)
 
@@ -54,12 +58,10 @@ const AccountManagement = ({ accounts }) => {
   const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
   const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
 
-  const [currentTab, setCurrentTab] = useState('AR')
+  const inputAccountNameRef = useRef(null)
 
-  const showAccounts = useMemo(
-    () => accounts.filter((account) => account.type.includes(currentTab)),
-    [currentTab]
-  )
+  const [editAccount, setEditAccount] = useState({})
+  const [accountName, setAccountName] = useState('')
 
   const reloadDefaultAccount = async () => {
     const activatedArweaveAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
@@ -99,33 +101,46 @@ const AccountManagement = ({ accounts }) => {
   //   [currentTab]
   // )
 
-  const changeTab = (newTab) => setCurrentTab(newTab)
+  const handleChangeAccountName = async (account) => {
+    try {
+      if (editAccount !== account) {
+        setEditAccount(account)
+        setAccountName(account.accountName)
+      } else {
+        if (accountName !== account.accountName) {
+          await backgroundRequest.wallet.changeAccountName({
+            address: account.address,
+            newName: accountName
+          })
+          const allData = await popupAccount.getAllMetadata()
+          dispatch(setAccounts(allData))
+        }
+        setEditAccount({})
+      }
+    } catch (err) {
+      dispatch(setError(err.message))
+    }
+  }
+
+  useEffect(() => {
+    inputAccountNameRef.current?.focus()
+  }, [editAccount])
 
   return (
     <>
-      <div className="flex items-center justify-start gap-10 font-bold text-xs mb-4">
-        {tabs.map((tab) => (
-          <div
-            className={clsx(
-              'cursor-pointer',
-              currentTab === tab && 'text-success border-b-2 border-success'
-            )}
-            onClick={() => changeTab(tab)}
-            key={tab}
-          >{`${tab} wallets`}</div>
-        ))}
-      </div>
-      <table className="w-2/3 bg-trueGray-100 rounded-finnie text-indigo">
+      <table className="bg-trueGray-100 rounded-finnie text-indigo" style={{ width: '588px' }}>
         <thead className="text-4xs font-normal">
           <tr className="text-left h-8">
-            <td className="pl-2">DEFAULT</td>
-            <td className="text-center">ACCOUNT NAME</td>
-            <td>ADDRESS</td>
+            <td className="w-4 pl-2">DEFAULT</td>
+            <td className="w-10 pl-2">CHAIN</td>
+            <td className="w-48 pl-6.5">ACCOUNT NAME</td>
+            <td className="w-52">ADDRESS</td>
             {/* <td>LAYER</td> */}
+            <td className="text-center w-18">REMOVE</td>
           </tr>
         </thead>
         <tbody className="text-xs tracking-finnieSpacing-wide">
-          {showAccounts.map((account, idx) => (
+          {accounts.map((account, idx) => (
             <tr key={idx} className={clsx('text-left h-8', idx % 2 === 1 && 'bg-lightBlue')}>
               <td className="pl-2">
                 <CheckBox
@@ -137,17 +152,38 @@ const AccountManagement = ({ accounts }) => {
                   }
                 />
               </td>
-              <td>
-                {currentTab === 'AR' && (
-                  <ArLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
+              <td className="w-10 pl-2">
+                {account.type === TYPE.ARWEAVE && (
+                  <ArLogo className="inline w-6 h-6 shadow-sm rounded-full" />
                 )}
-                {currentTab === 'ETH' && (
-                  <EthLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
+                {account.type === TYPE.ETHEREUM && (
+                  <EthLogo className="inline w-6 h-6 shadow-sm rounded-full" />
                 )}
-                {currentTab === 'SOL' && (
+                {account.type === TYPE.SOLANA && (
                   <SolLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
                 )}
-                {formatLongString(account.accountName, 12)}
+              </td>
+              <td>
+                <div className="flex items-center">
+                  {editAccount?.address === account.address ? (
+                    <input
+                      ref={(accountNameInput) => (inputAccountNameRef.current = accountNameInput)}
+                      className="w-28 ml-5 pl-1.5 bg-trueGray-400 bg-opacity-50 rounded-t-sm border-b-2 border-blue-850 focus:outline-none"
+                      value={accountName}
+                      onChange={(e) => setAccountName(e.target.value)}
+                      style={{ height: '17.23px' }}
+                    />
+                  ) : (
+                    <div className="max-w-24 pl-6.5">
+                      {formatLongString(account.accountName, 12)}
+                    </div>
+                  )}
+                  <EditIcon
+                    onClick={() => handleChangeAccountName(account)}
+                    className="inline cursor-pointer ml-2.25 mr-6"
+                    style={{ width: '13px', height: '13px' }}
+                  />
+                </div>
               </td>
               <td>
                 <Address address={account.address} key={account.address} />
@@ -156,6 +192,17 @@ const AccountManagement = ({ accounts }) => {
               {/* <td className="w-50 pr-10">
                 <DropDown size="sm" variant="light" options={options} value="mainnet" />
               </td> */}
+              <td className="flex w-full h-8 items-center justify-center">
+                <div
+                  className="w-5 h-5 flex items-center justify-center bg-warning-300 rounded-sm shadow cursor-pointer"
+                  onClick={() => {
+                    setShowConfirmRemoveAccount(true)
+                    setRemoveAccount(account)
+                  }}
+                >
+                  <RecycleBinIcon style={{ width: '14px', height: '16px' }} />
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>

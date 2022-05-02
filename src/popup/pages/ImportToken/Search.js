@@ -71,7 +71,11 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
             {token.logo ? (
               <img src={getLogoPath(token.logo)} style={{ width: '36px', height: '36px' }} />
             ) : (
-              <FinnieIcon style={{ width: '36px', height: '36px' }} />
+              // <FinnieIcon style={{ width: '36px', height: '36px' }} />
+              <img
+                src={`img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`}
+                style={{ width: '36px', height: '36px' }}
+              />
             )}
 
             <div className="w-full flex ml-3 font-normal text-base tracking-finnieSpacing-tight text-blue-800">

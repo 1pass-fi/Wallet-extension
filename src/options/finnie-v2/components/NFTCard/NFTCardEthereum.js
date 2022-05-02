@@ -11,7 +11,7 @@ const NFTCard = ({ nft }) => {
   return (
     <Link
       to={`/nfts/${nft.txId}`}
-      className="relative text-white rounded bg-blue-800 w-46.75 h-62.5 pt-1.75 px-1.75"
+      className="relative text-white rounded bg-blue-800 w-46.75 h-72 pt-1.75 px-1.75"
     >
       <div className="flex justify-center items-center w-full h-37.75">
         <NFTMedia contentType={nft.contentType} source={nft.imageUrl} />

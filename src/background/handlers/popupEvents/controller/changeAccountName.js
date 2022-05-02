@@ -41,7 +41,7 @@ export default async (payload, next) => {
 
     next()
 
-    helpers.sendMessageToPopupPorts({ type: MESSAGES.RELOAD_GALLERY })
+    // helpers.sendMessageToPopupPorts({ type: MESSAGES.RELOAD_GALLERY })
   } catch (err) {
     console.error(err.message)
     next({ error: 'Change account name error' })

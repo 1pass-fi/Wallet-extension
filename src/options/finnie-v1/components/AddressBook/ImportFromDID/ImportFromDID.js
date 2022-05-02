@@ -15,11 +15,12 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
   const [didLink, setDidLink] = useState('')
   const [invalidDIDLink, setInvalidDIDLink] = useState(false)
   const [duplicateDID, setDuplicateDID] = useState(false)
+  const kidLink = 'koii.id/'
   const kidLinkPrefix = 'https://koii.id/'
 
   const getDID = (link) => {
-    if (link.startsWith(kidLinkPrefix) && link.length !== 16) {
-      let did = link.substring(16, link.length)
+    if ((link.startsWith(kidLinkPrefix) || link.startsWith(kidLink)) && link.length !== 8) {
+      let did = link.substring(link.indexOf(kidLink) + 8, link.length)
       return !did.endsWith('/') ? did : did.substring(0, did.length - 1)
     }
     return false

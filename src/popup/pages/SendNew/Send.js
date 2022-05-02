@@ -161,7 +161,11 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
             (selectedToken?.logo ? (
               <img src={selectedToken?.logo} style={{ width: '34px', height: '34px' }} />
             ) : (
-              <FinnieIcon style={{ width: '34px', height: '34px' }} />
+              // <FinnieIcon style={{ width: '34px', height: '34px' }} />
+              <img
+                src={`img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`}
+                style={{ width: '36px', height: '36px' }}
+              />
             ))}
           <ArrowIconBlue style={{ transform: !showTokenOptions ? 'none' : 'rotateX(180deg)' }} />
           {showTokenOptions && (

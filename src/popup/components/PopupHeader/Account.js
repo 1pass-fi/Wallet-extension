@@ -11,6 +11,8 @@ import { TYPE } from 'constants/accountConstants'
 // selectors
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
+import formatLongString from 'finnie-v2/utils/formatLongString'
+
 const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
   const displayingAccount = useSelector(getDisplayingAccount)
 
@@ -33,7 +35,7 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
           <SolanaIcon style={{ width: '25px', height: '25px' }} />
         )}
         <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
-          {displayingAccount?.accountName}
+          {formatLongString(displayingAccount?.accountName, 12)}
         </div>
       </div>
       <ArrowIcon
