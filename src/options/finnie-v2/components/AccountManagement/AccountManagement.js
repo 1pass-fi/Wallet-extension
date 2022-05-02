@@ -10,6 +10,7 @@ import ArLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import CopyIcon from 'img/v2/copy-icon.svg'
 import EditIcon from 'img/v2/edit-icon.svg'
+import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
@@ -41,14 +42,14 @@ const Address = ({ address }) => {
           <CopyIcon className="inline cursor-pointer w-3.25 ml-2" />
         </CopyToClipboard>
         {isCopied && (
-          <span className="text-11px absolute top-0 -right-14 text-blue-800">Copied!</span>
+          <span className="text-11px absolute top-0 -right-13 text-blue-800">Copied!</span>
         )}
       </div>
     </>
   )
 }
 
-const AccountManagement = ({ accounts }) => {
+const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAccount }) => {
   const { setNotification, setError } = useContext(GalleryContext)
   const { getDID } = useContext(DidContext)
 
@@ -104,7 +105,7 @@ const AccountManagement = ({ accounts }) => {
 
   const changeTab = (newTab) => setCurrentTab(newTab)
 
-  const handleChangeAccountName = (account) => async () => {
+  const handleChangeAccountName = async (account) => {
     try {
       if (editAccount !== account) {
         setEditAccount(account)
@@ -143,13 +144,14 @@ const AccountManagement = ({ accounts }) => {
           >{`${tab} wallets`}</div>
         ))}
       </div>
-      <table className="w-2/3 bg-trueGray-100 rounded-finnie text-indigo">
+      <table className="bg-trueGray-100 rounded-finnie text-indigo" style={{ width: '520px' }}>
         <thead className="text-4xs font-normal">
           <tr className="text-left h-8">
             <td className="pl-2">DEFAULT</td>
-            <td className="w-40 pl-9">ACCOUNT NAME</td>
-            <td>ADDRESS</td>
+            <td className="w-48 pl-9">ACCOUNT NAME</td>
+            <td className="w-52">ADDRESS</td>
             {/* <td>LAYER</td> */}
+            <td className="text-center w-18">REMOVE</td>
           </tr>
         </thead>
         <tbody className="text-xs tracking-finnieSpacing-wide">
@@ -174,17 +176,17 @@ const AccountManagement = ({ accounts }) => {
                   {editAccount?.address === account.address ? (
                     <input
                       ref={(accountNameInput) => (inputAccountNameRef.current = accountNameInput)}
-                      className="w-24 pl-1 bg-trueGray-400 bg-opacity-50 rounded-t-sm border-b-2 border-blue-850 focus:outline-none"
+                      className="w-28 pl-1 bg-trueGray-400 bg-opacity-50 rounded-t-sm border-b-2 border-blue-850 focus:outline-none"
                       value={accountName}
                       onChange={(e) => setAccountName(e.target.value)}
                       style={{ height: '17.23px' }}
                     />
                   ) : (
-                    <div className="w-24 pl-1">{formatLongString(account.accountName, 12)}</div>
+                    <div className="max-w-24 pl-1">{formatLongString(account.accountName, 12)}</div>
                   )}
                   <EditIcon
-                    onClick={handleChangeAccountName(account)}
-                    className="inline cursor-pointer ml-1 mr-6"
+                    onClick={() => handleChangeAccountName(account)}
+                    className="inline cursor-pointer ml-2.25 mr-6"
                     style={{ width: '13px', height: '13px' }}
                   />
                 </div>
@@ -196,6 +198,17 @@ const AccountManagement = ({ accounts }) => {
               {/* <td className="w-50 pr-10">
                 <DropDown size="sm" variant="light" options={options} value="mainnet" />
               </td> */}
+              <td className="flex w-full h-8 items-center justify-center">
+                <div
+                  className="w-5 h-5 flex items-center justify-center bg-warning-300 rounded-sm shadow cursor-pointer"
+                  onClick={() => {
+                    setShowConfirmRemoveAccount(true)
+                    setRemoveAccount(account)
+                  }}
+                >
+                  <RecycleBinIcon style={{ width: '14px', height: '16px' }} />
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>

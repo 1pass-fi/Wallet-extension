@@ -16,6 +16,7 @@ import storage from 'services/storage'
 import AcceptedCurrencies from './currencies'
 
 import AccountManagement from 'finnie-v2/components/AccountManagement'
+import ConfirmRemoveAccountModal from 'finnie-v2/components/AccountManagement/ConfirmRemoveAccountModal'
 import DropDown from 'finnie-v2/components/DropDown'
 
 import './index.css'
@@ -27,6 +28,8 @@ export default () => {
   const { setError, setNotification } = useContext(GalleryContext)
 
   const [currency, setCurrency] = useState('USD')
+  const [showConfirmRemoveAccount, setShowConfirmRemoveAccount] = useState(false)
+  const [removeAccount, setRemoveAccount] = useState({})
 
   const accounts = useSelector((state) => state.accounts)
 
@@ -133,7 +136,11 @@ export default () => {
               selected to create NFTs and send tokens.
             </div>
             {/* <AccountOrder accounts={accounts} setAccounts={() => {}} /> */}
-            <AccountManagement accounts={accounts} />
+            <AccountManagement
+              accounts={accounts}
+              setShowConfirmRemoveAccount={setShowConfirmRemoveAccount}
+              setRemoveAccount={setRemoveAccount}
+            />
           </div>
 
           {/* Still in use */}
@@ -160,6 +167,13 @@ export default () => {
           </div>
         </div>
       </div>
+
+      {showConfirmRemoveAccount && (
+        <ConfirmRemoveAccountModal
+          account={removeAccount}
+          close={() => setShowConfirmRemoveAccount(false)}
+        />
+      )}
     </div>
   )
 }

@@ -351,7 +351,7 @@ export class BackgroundAccountManager extends AccountManager {
           */
           const defaultActivatedAccount = find(this.importedAccount, { type: TYPE.ARWEAVE })
           if (!isEmpty(defaultActivatedAccount)) {
-            await setActivatedAccountAddress(defaultActivatedAccount)
+            await setActivatedAccountAddress(defaultActivatedAccount, TYPE.ARWEAVE)
           } else {
             await storage.setting.set.activatedArweaveAccountAddress(null)
           }
@@ -362,9 +362,9 @@ export class BackgroundAccountManager extends AccountManager {
           /*
             set new activatedAccount after remove activatedAccount
           */
-          const defaultActivatedAccount = find(this.importedAccount, { type: TYPE.ARWEAVE })
+          const defaultActivatedAccount = find(this.importedAccount, { type: TYPE.ETHEREUM })
           if (!isEmpty(defaultActivatedAccount)) {
-            await setActivatedAccountAddress(defaultActivatedAccount)
+            await setActivatedAccountAddress(defaultActivatedAccount, TYPE.ETHEREUM)
           } else {
             await storage.setting.set.activatedArweaveAccountAddress(null)
           }
