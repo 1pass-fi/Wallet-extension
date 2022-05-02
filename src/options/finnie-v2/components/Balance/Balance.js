@@ -20,7 +20,7 @@ const Balance = ({ account }) => {
           <KoiiLogo className="w-6 h-6 mr-2" />
           <span className="font-semibold text-sm mr-3.75">0</span>
           <ArweaveLogo className="w-6 h-6 mr-2" />
-          <span className="font-semibold text-sm">0</span>
+          <span className="font-semibold text-sm mr-2">0</span>
         </>
       )}
       {account.type === TYPE.ARWEAVE && (

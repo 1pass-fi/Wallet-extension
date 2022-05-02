@@ -22,8 +22,7 @@ import { GalleryContext } from 'options/galleryContext'
 import { DidContext } from 'options/context'
 
 import CheckBox from 'finnie-v2/components/CheckBox'
-
-const tabs = ['AR', 'ETH']
+import { TYPE } from 'constants/accountConstants'
 
 const Address = ({ address }) => {
   const [isCopied, setIsCopied] = useState(false)
@@ -59,14 +58,8 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
 
   const inputAccountNameRef = useRef(null)
 
-  const [currentTab, setCurrentTab] = useState('AR')
   const [editAccount, setEditAccount] = useState({})
   const [accountName, setAccountName] = useState('')
-
-  const showAccounts = useMemo(
-    () => accounts.filter((account) => account.type.includes(currentTab)),
-    [currentTab, accounts]
-  )
 
   const reloadDefaultAccount = async () => {
     const activatedArweaveAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
@@ -103,8 +96,6 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
   //   [currentTab]
   // )
 
-  const changeTab = (newTab) => setCurrentTab(newTab)
-
   const handleChangeAccountName = async (account) => {
     try {
       if (editAccount !== account) {
@@ -132,30 +123,19 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
 
   return (
     <>
-      <div className="flex items-center justify-start gap-10 font-bold text-xs mb-4">
-        {tabs.map((tab) => (
-          <div
-            className={clsx(
-              'cursor-pointer',
-              currentTab === tab && 'text-success border-b-2 border-success'
-            )}
-            onClick={() => changeTab(tab)}
-            key={tab}
-          >{`${tab} wallets`}</div>
-        ))}
-      </div>
-      <table className="bg-trueGray-100 rounded-finnie text-indigo" style={{ width: '520px' }}>
+      <table className="bg-trueGray-100 rounded-finnie text-indigo" style={{ width: '588px' }}>
         <thead className="text-4xs font-normal">
           <tr className="text-left h-8">
-            <td className="pl-2">DEFAULT</td>
-            <td className="w-48 pl-9">ACCOUNT NAME</td>
+            <td className="w-4 pl-2">DEFAULT</td>
+            <td className="w-10 pl-2">CHAIN</td>
+            <td className="w-48 pl-6.5">ACCOUNT NAME</td>
             <td className="w-52">ADDRESS</td>
             {/* <td>LAYER</td> */}
             <td className="text-center w-18">REMOVE</td>
           </tr>
         </thead>
         <tbody className="text-xs tracking-finnieSpacing-wide">
-          {showAccounts.map((account, idx) => (
+          {accounts.map((account, idx) => (
             <tr key={idx} className={clsx('text-left h-8', idx % 2 === 1 && 'bg-lightBlue')}>
               <td className="pl-2">
                 <CheckBox
@@ -166,23 +146,28 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
                   }
                 />
               </td>
+              <td className="w-10 pl-2">
+                {account.type === TYPE.ARWEAVE && (
+                  <ArLogo className="inline w-6 h-6 shadow-sm rounded-full" />
+                )}
+                {account.type === TYPE.ETHEREUM && (
+                  <EthLogo className="inline w-6 h-6 shadow-sm rounded-full" />
+                )}
+              </td>
               <td>
                 <div className="flex items-center">
-                  {currentTab === 'AR' ? (
-                    <ArLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
-                  ) : (
-                    <EthLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
-                  )}
                   {editAccount?.address === account.address ? (
                     <input
                       ref={(accountNameInput) => (inputAccountNameRef.current = accountNameInput)}
-                      className="w-28 pl-1 bg-trueGray-400 bg-opacity-50 rounded-t-sm border-b-2 border-blue-850 focus:outline-none"
+                      className="w-28 ml-5 pl-1.5 bg-trueGray-400 bg-opacity-50 rounded-t-sm border-b-2 border-blue-850 focus:outline-none"
                       value={accountName}
                       onChange={(e) => setAccountName(e.target.value)}
                       style={{ height: '17.23px' }}
                     />
                   ) : (
-                    <div className="max-w-24 pl-1">{formatLongString(account.accountName, 12)}</div>
+                    <div className="max-w-24 pl-6.5">
+                      {formatLongString(account.accountName, 12)}
+                    </div>
                   )}
                   <EditIcon
                     onClick={() => handleChangeAccountName(account)}
