@@ -33,6 +33,11 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
   const history = useHistory()
   const accounts = useSelector((state) => state.accounts)
 
+  const goToImportPages = () => {
+    const url = chrome.extension.getURL('options.html#/welcome')
+    chrome.tabs.create({ url })
+  }
+
   const goToSettingPage = () => {
     const url = chrome.extension.getURL('options.html#/settings/wallet')
     chrome.tabs.create({ url })
@@ -98,7 +103,7 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
         className="bg-blue-600 text-white flex items-center cursor-pointer mb-0.25 hover:bg-indigo-400"
         key={'import-new-wallet'}
         style={{ width: '249px', height: '45px' }}
-        onClick={() => goToSettingPage()}
+        onClick={() => goToImportPages()}
       >
         <AddIcon className="ml-2.5 h-6.25 w-6.25" />
         <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
