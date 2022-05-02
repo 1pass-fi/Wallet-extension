@@ -17,24 +17,24 @@ const useLoadRequest = ({ setIsLoading }) => {
   const [transactionType, setTransactionType] = useState(null)
   const [senderName, setSenderName] = useState(null)
   const [recipientName, setRecipientName] = useState(null)
-  
+
   useEffect(() => {
     const loadRequest = async () => {
       try {
         setIsLoading(true)
         const request = await storage.generic.get.pendingRequest()
-    
+
         const transactionPayload = get(request, 'data.transactionPayload')
         const network = get(request, 'data.network')
         const origin = get(request, 'data.origin')
         const requestId = get(request, 'data.requestId')
         const favicon = get(request, 'data.favicon')
         const recipientName = get(request, 'data.recipientName')
-  
+
         let data = get(transactionPayload, 'data')
         if (network === 'ARWEAVE') {
-          data = (await storage.generic.get.transactionData())?.data
-          data = Object.values(JSON.parse(data))
+          data = (await storage.generic.get.transactionData()?.data) || '{}'
+          data = Object.values(JSON.parse(data)) || []
         }
 
         let transactionType
@@ -51,7 +51,7 @@ const useLoadRequest = ({ setIsLoading }) => {
         const sender = get(transactionPayload, 'from')
         const account = await popupAccount.getAccount({ address: sender })
         const senderName = await account.get.accountName()
-  
+
         setTransactionPayload(transactionPayload)
         setNetwork(network)
         setOrigin(origin)
@@ -75,11 +75,11 @@ const useLoadRequest = ({ setIsLoading }) => {
     loadRequest()
   }, [])
 
-  return { 
-    transactionPayload, 
-    network, 
-    origin, 
-    requestId, 
+  return {
+    transactionPayload,
+    network,
+    origin,
+    requestId,
     favicon,
     transactionType,
     dataString,

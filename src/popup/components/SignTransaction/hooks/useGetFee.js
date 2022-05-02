@@ -74,7 +74,10 @@ const useGetFee = ({ network, transactionPayload }) => {
     let transactionData = null
     if (!isEmpty(storedTransactionData)) {
       transactionData = Buffer.from(Object.values(JSON.parse(storedTransactionData)))
-    } 
+    } else {
+      transactionData = get(transactionPayload, 'data')
+    }
+
 
     if (recipientAddress) rawTx.target = recipientAddress
     if (isNumber(value)) rawTx.quantity = value.toString()
@@ -83,7 +86,7 @@ const useGetFee = ({ network, transactionPayload }) => {
     const transaction = await arweave.createTransaction(rawTx)
     let fee = await arweave.transactions.getPrice(transaction.data_size)
     fee = fee / 1000000000000
-    
+
     setTotalFee(fee)
     setTokenSymbol('AR')
   }
@@ -125,9 +128,11 @@ const useGetFee = ({ network, transactionPayload }) => {
       try {
         if (network === 'ETHEREUM') {
           getEthFee()
-          setGetFeeInterval(setInterval(() => {
-            getEthFee()
-          }, 3000))
+          setGetFeeInterval(
+            setInterval(() => {
+              getEthFee()
+            }, 3000)
+          )
         }
         if (network === 'ARWEAVE') getArFee()
         if (network === 'SOLANA') getSolFee()
