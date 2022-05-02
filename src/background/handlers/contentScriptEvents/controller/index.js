@@ -54,5 +54,6 @@ export default {
   solanaDisconnect,
   solanaSignAllTransactions,
   solanaSignTransaction,
-  solanaSignMessage
+  solanaSignMessage,
+  solanaSignAndSendTransaction
 }

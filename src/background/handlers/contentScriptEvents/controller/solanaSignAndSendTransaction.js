@@ -1,8 +1,9 @@
-import base58 from 'base58'
-import { Transaction, sendAndConfirmTransaction } from '@solana/web3.js'
+import bs58 from 'bs58'
+import { Transaction, sendAndConfirmTransaction, Message, Connection, clusterApiUrl } from '@solana/web3.js'
 
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
+import { SolanaTool } from 'services/solana'
 
 export default async (payload, tab, next) => {
   try {
@@ -15,24 +16,22 @@ export default async (payload, tab, next) => {
       siteAddressDictionary,
       activatedAddress
     } = tab
-
-    console.log('SOLANA SIGN ALL TRANSACTIONS...')
-
     const defaultSolanaAddress = await storage.setting.get.activatedSolanaAccountAddress()
 
-    console.log('default solana address', defaultSolanaAddress)
-    const credential = backgroundAccount.getCredentialByAddress(defaultSolanaAddress)
-    console.log('credential', credential)
+    const credential = await backgroundAccount.getCredentialByAddress(defaultSolanaAddress)
 
-    const transaction = new Transaction(base58.decode(payload))
+    const transactionMessage = Message.from(bs58.decode(payload.data))
+    const transaction = Transaction.populate(transactionMessage)
 
-    // TODO: Get connection and keypair
+    const solanaProvider = await storage.setting.get.solanaProvider()
+    const connection = new Connection(clusterApiUrl(solanaProvider), 'confirmed')
+    const tool = new SolanaTool(credential)
 
-    const receipt = await sendAndConfirmTransaction(connection, transaction, [keypair])
+    const signature = await sendAndConfirmTransaction(connection, transaction, [tool.keypair])
 
-    next({ data: receipt })
+    next({ data: signature })
   } catch (err) {
-    console.error(err.mesage)
+    console.error(err)
     next({ data: { status: 500, data: 'Solana signAndSendTransaction error' } })
   }
 }
