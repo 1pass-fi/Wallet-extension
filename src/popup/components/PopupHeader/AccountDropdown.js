@@ -8,6 +8,7 @@ import EthereumIcon from 'img/ethereum-logo.svg'
 import FinnieIcon from 'img/popup/finnie-icon.svg'
 import AddIcon from 'img/popup/add-icon.svg'
 import CopyIcon from 'img/v2/copy-address-icon.svg'
+import EditIcon from 'img/v2/edit-icon-white.svg'
 
 // actions
 import { removeWallet } from 'actions/koi'
@@ -98,7 +99,7 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
         </div>
       ))}
       <div
-        className="bg-blue-600 text-white flex items-center cursor-pointer hover:bg-indigo-400"
+        className="bg-blue-600 text-white flex items-center cursor-pointer mb-0.25 hover:bg-indigo-400"
         key={'import-new-wallet'}
         style={{ width: '249px', height: '45px' }}
         onClick={() => goToSettingPage()}
@@ -106,6 +107,17 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
         <AddIcon className="ml-2.5 h-6.25 w-6.25" />
         <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
           Import New Wallet
+        </div>
+      </div>
+      <div
+        className="bg-blue-600 text-white flex items-center cursor-pointer hover:bg-indigo-400"
+        key={'edit-accounts'}
+        style={{ width: '249px', height: '45px' }}
+        onClick={() => goToSettingPage()}
+      >
+        <EditIcon className="ml-2.5 h-6.25 w-6.25" style={{ width: '23px', height: '22px' }} />
+        <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
+          Edit Accounts
         </div>
       </div>
       <ReactTooltip place="top" effect="solid" />
