@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import ReactTooltip from 'react-tooltip'
 
 import EthereumIcon from 'img/ethereum-logo.svg'
 import FinnieIcon from 'img/popup/finnie-icon.svg'
@@ -55,11 +54,10 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
   }
 
   const [isCopied, setIsCopied] = useState(false)
-  const [accountCopied, setAccountCopied] = useState('')
   const onCopy = () => {
     setIsCopied(true)
 
-    setTimeout(() => setIsCopied(false), 2000)
+    setTimeout(() => setIsCopied(false), 3000)
   }
 
   return (
@@ -86,11 +84,9 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
           </div>
 
           <CopyIcon
-            data-tip={isCopied && account.address === accountCopied ? 'Copied' : ''}
             onClick={(e) => {
               e.stopPropagation()
               onCopy()
-              setAccountCopied(account.address)
               navigator.clipboard.writeText(account.address)
             }}
             className="absolute right-5.25 cursor-pointer focus:outline-none"
@@ -120,8 +116,15 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
           Edit Accounts
         </div>
       </div>
-      <ReactTooltip place="top" effect="solid" />
-      <ReactTooltip id="arrow-button" place="left" effect="float" />
+
+      {isCopied && (
+        <div
+          className="absolute bg-cyan text-blue-800 rounded-3xl shadow-md text-center flex items-center justify-center"
+          style={{ width: '159px', height: '28px', left: '133px', top: '499px' }}
+        >
+          Address copied
+        </div>
+      )}
     </div>
   )
 }
