@@ -38,6 +38,7 @@ const useAccountLoaded = ({ history, setIsLoading, setAccounts, setActivatedChai
         setAccountLoaded(true)
         setIsLoading(false)
       } catch (error) {
+        setIsLoading(false)
         console.log('Failed to load accounts: ', error.message)
       }
     }

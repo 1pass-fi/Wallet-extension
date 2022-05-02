@@ -37,62 +37,66 @@ const Tokens = ({ currentProviderAddress }) => {
   const [tokens, setTokens] = useState([])
 
   const loadTokenList = async () => {
-    dispatch(setIsLoading(true))
-    if (displayingAccount.type === TYPE.ARWEAVE) {
-      setTokens([
-        {
-          name: 'Arweave',
-          balance: numberFormat(fromArToWinston(displayingAccount.balance)),
-          displayingBalance: numberFormat(displayingAccount.balance),
-          symbol: 'AR',
-          usdValue: fiatCurrencyFormat(displayingAccount.balance * price.AR),
-          decimal: 12
-        },
-        {
-          name: 'KOII',
-          balance: numberFormat(displayingAccount.koiBalance),
-          displayingBalance: numberFormat(displayingAccount.koiBalance),
-          symbol: 'KOII',
-          decimal: 0
-        }
-      ])
-      dispatch(setIsLoading(false))
-      return
-    }
-
-    const importTokens = [
-      {
-        name: 'Ethereum',
-        balance: numberFormat(fromEthToWei(displayingAccount.balance)),
-        displayingBalance: numberFormat(displayingAccount.balance),
-        usdValue: fiatCurrencyFormat(displayingAccount.balance * price.ETH),
-        symbol: 'ETH',
-        decimal: 18
-      }
-    ]
-    await Promise.all(
-      importedTokenAddresses.map(async (contractAddress) => {
-        let token = await getTokenData(contractAddress, displayingAccount.address)
-        token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
-        if (token.price) {
-          token = {
-            ...token,
-            usdValue: fiatCurrencyFormat(
-              (token.balance / Math.pow(10, token.decimal)) * token.price
-            )
+    try {
+      dispatch(setIsLoading(true))
+      if (displayingAccount.type === TYPE.ARWEAVE) {
+        setTokens([
+          {
+            name: 'Arweave',
+            balance: numberFormat(fromArToWinston(displayingAccount.balance)),
+            displayingBalance: numberFormat(displayingAccount.balance),
+            symbol: 'AR',
+            usdValue: fiatCurrencyFormat(displayingAccount.balance * price.AR),
+            decimal: 12
+          },
+          {
+            name: 'KOII',
+            balance: numberFormat(displayingAccount.koiBalance),
+            displayingBalance: numberFormat(displayingAccount.koiBalance),
+            symbol: 'KOII',
+            decimal: 0
           }
-        }
-        importTokens.push(token)
-      })
-    )
+        ])
+        return
+      }
 
-    setTokens(importTokens)
-    dispatch(setIsLoading(false))
+      const importTokens = [
+        {
+          name: 'Ethereum',
+          balance: numberFormat(fromEthToWei(displayingAccount.balance)),
+          displayingBalance: numberFormat(displayingAccount.balance),
+          usdValue: fiatCurrencyFormat(displayingAccount.balance * price.ETH),
+          symbol: 'ETH',
+          decimal: 18
+        }
+      ]
+      await Promise.all(
+        importedTokenAddresses.map(async (contractAddress) => {
+          let token = await getTokenData(contractAddress, displayingAccount.address)
+          token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
+          if (token.price) {
+            token = {
+              ...token,
+              usdValue: fiatCurrencyFormat(
+                (token.balance / Math.pow(10, token.decimal)) * token.price
+              )
+            }
+          }
+          importTokens.push(token)
+        })
+      )
+
+      setTokens(importTokens)
+    } catch (error) {
+      console.log('Failed to load Token list: ', error.message)
+    } finally {
+      dispatch(setIsLoading(false))
+    }
   }
 
   useEffect(() => {
     loadTokenList()
-  }, [importedTokenAddresses])
+  }, [importedTokenAddresses, displayingAccount])
 
   const handleRefreshTokenList = async () => {
     await loadTokenList()
