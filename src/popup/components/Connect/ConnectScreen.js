@@ -61,13 +61,17 @@ const ConnectScreen = ({ setError, setIsLoading }) => {
       const requestFavicon = get(request, 'data.favicon')
       const requestId = get(request, 'data.requestId')
       const isEthereum = get(request, 'data.isEthereum')
+      const isSolana = get(request, 'data.isSolana')
 
       let accounts = []
-      if (!isEthereum) {
+      if (!isEthereum && !isSolana) {
         accounts = (await popupAccount.getAllMetadata(TYPE.ARWEAVE)) || []
         setIsKoi(true)
-      } else {
+      } else if (isEthereum) {
         accounts = (await popupAccount.getAllMetadata(TYPE.ETHEREUM)) || []
+        setIsKoi(false)
+      } else {
+        accounts = (await popupAccount.getAllMetadata(TYPE.SOLANA)) || []
         setIsKoi(false)
       }
 

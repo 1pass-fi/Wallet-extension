@@ -2,7 +2,7 @@ import EventEmitter from 'events'
 import { get, isEmpty } from 'lodash'
 
 // Constants
-import { MESSAGES, PORTS } from 'constants/koiConstants'
+import { MESSAGES, NETWORK } from 'constants/koiConstants'
 
 // Utils
 import { getSelectedTab } from 'utils/extension'
@@ -17,11 +17,9 @@ import { backgroundAccount } from 'services/account'
 
 export default class ContentScriptEvents extends EventEmitter {
   async sendMessage(endpoint, payload) {
-    const isEthereumRequest = [
-      'ETHEREUM_RPC_REQUEST'
-    ].includes(endpoint)
-    const isSolanaRequest = endpoint?.includes('SOLANA')
-    const tabData = await this.getTabData(isEthereumRequest)
+    const network = this.getNetworkFromEndpoint(endpoint)
+
+    const tabData = await this.getTabData(network)
     const { port } = payload
 
     const storedAccounts = await backgroundAccount.count()
@@ -86,23 +84,38 @@ export default class ContentScriptEvents extends EventEmitter {
     })
   }
 
-  async getTabData (isEthereumRequest) {
-    // TODO Thuan Ngo: you can mock the tab data here
+  getNetworkFromEndpoint(endpoint) {
+    if (['ETHEREUM_RPC_REQUEST'].includes(endpoint)) return NETWORK.ETHEREUM
+    if (endpoint?.includes('SOLANA')) return NETWORK.SOLANA
+    return NETWORK.ARWEAVE
+  }
 
+  async getTabData (network) {
     const tab = await getSelectedTab()
     const url = tab.url
     const origin = (new URL(url)).origin
     const favicon = tab.favIconUrl
 
-    const hadPermission = await storage.setting.method.checkSitePermission(origin, isEthereumRequest)
+    const hadPermission = await storage.setting.method.checkSitePermission(origin, network)
     const hasPendingRequest = !isEmpty(await storage.generic.get.pendingRequest())
 
     const siteAddressDictionary = await storage.setting.get.siteAddressDictionary()
     
     const defaultArweaveAddress = await storage.setting.get.activatedArweaveAccountAddress()
     const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
+    const defaultSolanaAddress = await storage.setting.get.activatedSolanaAccountAddress()
 
-    const activatedAddress = isEthereumRequest ? defaultEthereumAddress : defaultArweaveAddress
+    let activatedAddress
+    switch (network) {
+      case NETWORK.ARWEAVE: 
+        activatedAddress = defaultArweaveAddress
+        break
+      case NETWORK.ETHEREUM:
+        activatedAddress = defaultEthereumAddress
+        break
+      case NETWORK.SOLANA:
+        activatedAddress = defaultSolanaAddress
+    }
 
     const siteConnectedAddresses = (await storage.setting.get.siteConnectedAddresses())[origin]
     let connectedAddresses = []
