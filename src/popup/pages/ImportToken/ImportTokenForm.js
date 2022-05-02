@@ -73,7 +73,11 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
         {tokenImport.logo ? (
           <img src={getLogoPath(tokenImport.logo)} style={{ width: '36px', height: '36px' }} />
         ) : (
-          <FinnieIcon style={{ width: '36px', height: '36px' }} />
+          // <FinnieIcon style={{ width: '36px', height: '36px' }} />
+          <img
+            src={`img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`}
+            style={{ width: '36px', height: '36px' }}
+          />
         )}
         <div className="ml-3 mt-1 flex flex-col items-start justify-center">
           <div className="font-normal text-base tracking-finnieSpacing-tight">

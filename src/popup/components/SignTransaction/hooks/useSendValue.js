@@ -100,7 +100,8 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
             decimal = decimal === 1 ? 0 : decimal
             quantity = quantity / (10 ** decimal)
     
-            if (!logo) logo = 'img/erc20/generic-token.svg'
+            // if (!logo) logo = 'img/erc20/generic-token.svg'
+            if (!logo) logo = `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`
     
             setTokenIconPath(logo)
             setSymbol(symbol)
@@ -127,7 +128,8 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
             const customTokenRecipient = get(input, 'target')
             const quantity = get(input, 'qty')
   
-            if (!logo) logo = 'img/erc20/generic-token.svg'
+            // if (!logo) logo = 'img/erc20/generic-token.svg'
+            if (!logo) logo = `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`
   
             setTokenIconPath(logo)
             setSymbol(symbol)
