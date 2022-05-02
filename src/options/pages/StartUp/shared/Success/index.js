@@ -59,7 +59,7 @@ export default () => {
               </li>
               <li className='warning-item'>
                 If you have questions or see something suspicious, email us at
-                security@koii.network
+                support@koii.network
               </li>
             </div>
 
