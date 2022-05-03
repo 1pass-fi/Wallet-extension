@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
@@ -35,6 +35,11 @@ const Tokens = ({ currentProviderAddress }) => {
   })
 
   const [tokens, setTokens] = useState([])
+
+  const customTokenIconPath = useMemo(
+    () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,
+    []
+  )
 
   const loadTokenList = async () => {
     try {
@@ -157,10 +162,7 @@ const Tokens = ({ currentProviderAddress }) => {
               (token.logo ? (
                 <img src={token.logo} className="w-8.75 h-8.75" />
               ) : (
-                <img
-                  src={`img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`}
-                  className="w-8.75 h-8.75"
-                />
+                <img src={customTokenIconPath} className="w-8.75 h-8.75" />
               ))}
             <span className="font-semibold ml-2.75">{token.name}</span>
           </div>

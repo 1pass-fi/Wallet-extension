@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import isEmpty from 'lodash/isEmpty'
@@ -63,6 +63,12 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
   }
 
   const accounts = useSelector((state) => state.accounts)
+
+  const customTokenIconPath = useMemo(
+    () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,
+    []
+  )
+
   return (
     <div className="mt-6 px-6 text-blue-800">
       <div className="font-normal text-base tracking-finnieSpacing-tight">
@@ -74,10 +80,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
           <img src={getLogoPath(tokenImport.logo)} style={{ width: '36px', height: '36px' }} />
         ) : (
           // <FinnieIcon style={{ width: '36px', height: '36px' }} />
-          <img
-            src={`img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`}
-            style={{ width: '36px', height: '36px' }}
-          />
+          <img src={customTokenIconPath} style={{ width: '36px', height: '36px' }} />
         )}
         <div className="ml-3 mt-1 flex flex-col items-start justify-center">
           <div className="font-normal text-base tracking-finnieSpacing-tight">

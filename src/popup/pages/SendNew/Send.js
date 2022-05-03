@@ -114,6 +114,11 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
     if (sendTokenClick) sendToken()
   }, [sendTokenClick])
 
+  const customTokenIconPath = useMemo(
+    () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,
+    []
+  )
+
   return (
     <div className="w-full relative bg-white flex flex-col items-center pt-9.75">
       <SendBackgroundLeft className="absolute top-0 left-0" />
@@ -163,7 +168,7 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
             ) : (
               // <FinnieIcon style={{ width: '34px', height: '34px' }} />
               <img
-                src={`img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`}
+                src={customTokenIconPath}
                 style={{ width: '36px', height: '36px' }}
               />
             ))}
@@ -173,6 +178,7 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
               tokenOptions={tokenList}
               selectedToken={selectedToken}
               onChangeToken={onChangeToken}
+              customTokenIconPath={customTokenIconPath}
             />
           )}
         </div>

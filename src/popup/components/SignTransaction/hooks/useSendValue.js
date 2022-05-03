@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { get, isNumber } from 'lodash'
 
 import getTokenData from 'utils/getTokenData'
@@ -56,6 +56,11 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
     value = parseInt(value)
     return value / 1000000000
   }
+
+  const customTokenIconPath = useMemo(
+    () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,
+    []
+  )
 
   useEffect(() => {
     const loadValue = async () => {
@@ -115,7 +120,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
             quantity = quantity / (10 ** decimal)
     
             // if (!logo) logo = 'img/erc20/generic-token.svg'
-            if (!logo) logo = `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`
+            if (!logo) logo = customTokenIconPath
     
             setTokenIconPath(logo)
             setSymbol(symbol)
@@ -143,7 +148,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
             const quantity = get(input, 'qty')
   
             // if (!logo) logo = 'img/erc20/generic-token.svg'
-            if (!logo) logo = `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`
+            if (!logo) logo = customTokenIconPath
   
             setTokenIconPath(logo)
             setSymbol(symbol)
