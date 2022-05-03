@@ -9,7 +9,7 @@ const validateArweaveAddress = (address) => {
   return !address.includes('0x') && address.length === 43
 }
 
-const NOT_ENOUGH_BALANCE = `Not enough token amount`
+const NOT_ENOUGH_BALANCE = 'Not enough tokens'
 const INVALID_RECIPIENT = 'Invalid recipient address'
 
 const useValidate = ({ selectedToken, amount, recipient, selectedAccount, alchemyAddress }) => {
@@ -28,7 +28,7 @@ const useValidate = ({ selectedToken, amount, recipient, selectedAccount, alchem
       if (selectedToken?.decimal === 1) rate = 1
       
       // validate balance
-      if (balance < (amount * rate)) return throwValidationError(NOT_ENOUGH_BALANCE)
+      if (balance <= (amount * rate)) return throwValidationError(NOT_ENOUGH_BALANCE)
 
       // validate recipient address
       if (selectedAccount?.type === TYPE.ARWEAVE) {

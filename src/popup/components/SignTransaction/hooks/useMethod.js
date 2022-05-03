@@ -7,6 +7,7 @@ import { popupBackgroundRequest as request } from 'services/request/popup'
 
 import { fromWeiToEth, fromWinstonToAr } from 'utils'
 import { TRANSACTION_TYPE } from './constants'
+import { popupAccount } from 'services/account'
 
 const useMethod = ({ 
   setIsLoading, 
@@ -22,7 +23,8 @@ const useMethod = ({
   rawValue,
   setTxId,
   setShowReceipt,
-  getFeeInterval
+  getFeeInterval,
+  totalFee
 }) => {
   const handleSendEth = async () => {
     let qty = get(transactionPayload, 'value')
@@ -71,6 +73,33 @@ const useMethod = ({
   }
 
   const onSubmitTransaction = async () => {
+    // if (!totalFee) {
+    //   setError('Transaction fee has not been loaded')
+    //   return
+    // }
+
+    try {
+      let totalOriginExpense
+      if (transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) {
+        totalOriginExpense = value + totalFee
+      } else {
+        totalOriginExpense = totalFee
+      }
+
+      const senderAddress = get(transactionPayload, 'from')
+
+      const account = await popupAccount.getAccount({ address: senderAddress })
+      const balance = await account.get.balance()
+
+      if (balance < totalOriginExpense) {
+        setError('Not enough tokens')
+        return
+      }
+
+    } catch (err) {
+      console.error('Balance validate error: ', err.message)
+    }
+
     try {
       const pendingRequest = await storage.generic.get.pendingRequest()
       if (isEmpty(pendingRequest)) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
