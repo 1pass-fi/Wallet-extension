@@ -16,6 +16,7 @@ import { popupAccount } from 'services/account'
 
 // utils
 import { getAddressesFromAddressBook } from 'utils'
+import formatLongString from 'finnie-v2/utils/formatLongString'
 
 // svgs
 import NoticeIcon from 'img/v2/notice-icon.svg'
@@ -96,7 +97,7 @@ const SendTokenForm = ({
                 className="text-left pl-2 h-8 text-white text-sm hover:bg-blue-500"
                 onClick={() => onChange(account)}
               >
-                <div>{account.accountName}</div>
+                <div>{formatLongString(account.accountName, 40)}</div>
               </div>
             )
           }

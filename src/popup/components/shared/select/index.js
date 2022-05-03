@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 // assets
 import DownArrowIcon from 'img/v2/dropdown/down-icon-blue.svg'
 
+import formatLongString from 'finnie-v2/utils/formatLongString'
+
 // styles
 // import './index.css'
 
@@ -76,7 +78,9 @@ export const Select = ({
                   onClick={handleSelect}
                   id={option.label}
                 >
-                  {`${option.label} ${isAccountAddress ? option.address.slice(0, 24) + '...' : ''}`}
+                  {`${formatLongString(option.label, 12)} ${
+                    isAccountAddress ? option.address.slice(0, 24) + '...' : ''
+                  }`}
                 </button>
               )
             })}
