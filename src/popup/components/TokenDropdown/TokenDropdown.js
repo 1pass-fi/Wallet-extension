@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import ArrowIcon from 'img/popup/down-arrow-icon.svg'
 
-const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken }) => {
+const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken, customTokenIconPath }) => {
   return (
     <div
       className="absolute top-0 right-0 flex flex-col bg-blue-800 cursor-pointer"
@@ -20,10 +20,7 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken }) => {
           <img src={selectedToken.logo} style={{ width: '34px', height: '34px' }} />
         ) : (
           // <FinnieIcon style={{ width: '34px', height: '34px' }} />
-          <img
-            src={`img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`}
-            style={{ width: '34px', height: '34px' }}
-          />
+          <img src={customTokenIconPath} style={{ width: '34px', height: '34px' }} />
         )}
         <ArrowIcon style={{ transform: 'rotateX(180deg)' }} />
       </div>
@@ -40,7 +37,7 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken }) => {
               ) : (
                 // <FinnieIcon className="ml-2" style={{ width: '34px', height: '34px' }} />
                 <img
-                  src={`img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`}
+                  src={customTokenIconPath}
                   className="ml-2"
                   style={{ width: '34px', height: '34px' }}
                 />

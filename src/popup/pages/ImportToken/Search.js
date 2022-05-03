@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import isEmpty from 'lodash/isEmpty'
 
 import SearchIcon from 'img/popup/search-icon.svg'
@@ -42,6 +42,11 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
     onSearchToken()
   }, [searchToken])
 
+  const customTokenIconPath = useMemo(
+    () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,
+    []
+  )
+
   return (
     <div className="flex flex-col items-center justify-center mt-5">
       <div
@@ -72,10 +77,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
               <img src={getLogoPath(token.logo)} style={{ width: '36px', height: '36px' }} />
             ) : (
               // <FinnieIcon style={{ width: '36px', height: '36px' }} />
-              <img
-                src={`img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`}
-                style={{ width: '36px', height: '36px' }}
-              />
+              <img src={customTokenIconPath} style={{ width: '36px', height: '36px' }} />
             )}
 
             <div className="w-full flex ml-3 font-normal text-base tracking-finnieSpacing-tight text-blue-800">
