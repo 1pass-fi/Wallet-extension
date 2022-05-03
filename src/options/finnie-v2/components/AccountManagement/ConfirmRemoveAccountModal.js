@@ -98,7 +98,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
             className="font-bold text-lg text-indigo leading-6 text-center"
             style={{ width: '303px' }}
           >
-            Are you sure you want to delete this account?
+            Are you sure you want to remove this account?
           </div>
           <div className="mt-6 text-sm font-normal text-center" style={{ width: '300px' }}>
             This action cannot be undone
@@ -108,7 +108,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
               style={{ width: '180px', height: '39px' }}
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-8"
               variant="warning300"
-              text="Delete Account"
+              text="Remove Account"
               onClick={() => handleRemoveAccount()}
             />
 
