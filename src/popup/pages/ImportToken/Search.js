@@ -1,46 +1,84 @@
+import { TokenListProvider } from '@solana/spl-token-registry'
 import React, { useEffect, useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 
 import SearchIcon from 'img/popup/search-icon.svg'
-import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 
 import contracts from 'utils/contract-map.json'
 
+// selectors
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
+
 // utils
 import { getLogoPath } from 'utils/getTokenData'
+import { TYPE } from 'constants/accountConstants'
 
 const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
+  const displayingAccount = useSelector(getDisplayingAccount)
+
+  const [solanaTokenList, setSolanaTokenList] = useState([])
   const [tokenList, setTokenList] = useState([])
 
-  const onSearchToken = async () => {
-    if (isEmpty(searchToken)) {
-      setTokenList([])
-      return
-    }
-    const filterTokenList = Object.keys(contracts).reduce((result, key) => {
-      if (
-        key === searchToken ||
-        contracts[key].name?.toLowerCase().includes(searchToken.toLowerCase()) ||
-        contracts[key].symbol?.toLowerCase().includes(searchToken.toLowerCase())
-      ) {
-        const token = {
-          contract: key,
-          name: contracts[key].name,
-          symbol: contracts[key].symbol,
-          decimals: contracts[key].decimals,
-          logo: contracts[key].logo
-        }
-        result.push(token)
+  useEffect(() => {
+    if (displayingAccount.type === TYPE.SOLANA) {
+      const loadSolTokens = async () => {
+        const tokens = await new TokenListProvider().resolve()
+        setSolanaTokenList(tokens.filterByClusterSlug('mainnet-beta').getList())
       }
-      return result
-    }, [])
 
-    setTokenList(filterTokenList)
-  }
+      loadSolTokens()
+    }
+  }, [displayingAccount.type])
 
   useEffect(() => {
+    const onSearchToken = async () => {
+      if (isEmpty(searchToken)) {
+        setTokenList([])
+        return
+      }
+
+      let filterTokenList = []
+
+      if (displayingAccount.type === TYPE.ETHEREUM) {
+        filterTokenList = Object.keys(contracts).reduce((result, key) => {
+          if (
+            key === searchToken ||
+            contracts[key].name?.toLowerCase().includes(searchToken.toLowerCase()) ||
+            contracts[key].symbol?.toLowerCase().includes(searchToken.toLowerCase())
+          ) {
+            const token = {
+              contract: key,
+              name: contracts[key].name,
+              symbol: contracts[key].symbol,
+              decimals: contracts[key].decimals,
+              logo: contracts[key].logo
+            }
+            result.push(token)
+          }
+          return result
+        }, [])
+      }
+
+      if (displayingAccount.type === TYPE.SOLANA) {
+        filterTokenList = solanaTokenList
+          .filter(
+            (token) =>
+              token.address === searchToken ||
+              token.name?.toLowerCase().includes(searchToken.toLowerCase()) ||
+              token.symbol?.toLowerCase().includes(searchToken.toLowerCase())
+          )
+          .map((token) => ({
+            ...token,
+            contract: token.address
+          }))
+      }
+
+      setTokenList(filterTokenList)
+    }
+
     onSearchToken()
-  }, [searchToken])
+  }, [searchToken, displayingAccount.type])
 
   const customTokenIconPath = useMemo(
     () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,
@@ -73,10 +111,11 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
             className="flex w-full items-center ml-2 mb-6 cursor-pointer"
             onClick={() => setTokenImport(token)}
           >
-            {token.logo ? (
+            {token.logoURI && <img src={token.logoURI} style={{ width: '36px', height: '36px' }} />}
+            {token.logo && (
               <img src={getLogoPath(token.logo)} style={{ width: '36px', height: '36px' }} />
-            ) : (
-              // <FinnieIcon style={{ width: '36px', height: '36px' }} />
+            )}
+            {!token.logoURI && !token.logo && (
               <img src={customTokenIconPath} style={{ width: '36px', height: '36px' }} />
             )}
 

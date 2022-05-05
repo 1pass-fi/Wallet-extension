@@ -2638,6 +2638,13 @@
   dependencies:
     buffer "~6.0.3"
 
+"@solana/spl-token-registry@^0.2.3796":
+  version "0.2.3796"
+  resolved "https://registry.yarnpkg.com/@solana/spl-token-registry/-/spl-token-registry-0.2.3796.tgz#cff0b0e97599629e4151f0d0acd004e2251be12b"
+  integrity sha512-X4MiG6z+x9aGx0NhPuuvXLdUFTqw84ZUP4IUKGL2/Kik/M+hsITyvLxL+NtZar3B1lzFKo8d22Y5lW5u+ldHog==
+  dependencies:
+    cross-fetch "3.0.6"
+
 "@solana/spl-token@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.2.0.tgz#329bb6babb5de0f9c40035ddb1657f01a8347acd"
@@ -7727,6 +7734,13 @@ create-react-context@0.3.0:
   dependencies:
     gud "^1.0.0"
     warning "^4.0.3"
+
+cross-fetch@3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.0.6.tgz#3a4040bc8941e653e0e9cf17f29ebcd177d3365c"
+  integrity sha512-KBPUbqgFjzWlVcURG+Svp9TlhA5uliYtiNx/0r8nv0pdypeQCRJ9IaSIc3q/x3q8t3F75cHuwxVql1HFGHCNJQ==
+  dependencies:
+    node-fetch "2.6.1"
 
 cross-fetch@^2.1.0, cross-fetch@^2.1.1:
   version "2.2.5"

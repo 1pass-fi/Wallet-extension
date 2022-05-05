@@ -179,7 +179,7 @@ const Tokens = ({ currentProviderAddress }) => {
           Don’t see your token?
         </div>
       )}
-      {displayingAccount.type === TYPE.ETHEREUM && (
+      {(displayingAccount.type === TYPE.ETHEREUM || displayingAccount.type === TYPE.SOLANA) && (
         <div className="mt-1.5 mb-4 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
           {/* <span
           className="cursor-pointer underline text-success-700"
