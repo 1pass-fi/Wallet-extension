@@ -67,7 +67,7 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
         loader: require.resolve('eslint-loader'),
       },
     ],
-    include: paths.appSrc,
+    include: paths.appSrc
   }
 
   const urlLoader = {
@@ -84,6 +84,7 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
     test: /\.(js|mjs|jsx|ts|tsx)$/,
     include: paths.appSrc,
     loader: require.resolve('babel-loader'),
+    type: 'javascript/auto',
     options: {
       customize: require.resolve(
         'babel-preset-react-app/webpack-overrides'
@@ -112,6 +113,7 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
     test: /\.(js|mjs)$/,
     exclude: /@babel(?:\/|\\{1,2})runtime/,
     loader: require.resolve('babel-loader'),
+    type: 'javascript/auto',
     options: {
       babelrc: false,
       configFile: false,

@@ -53,6 +53,8 @@ import { setAssets, setCollectionNfts } from 'options/actions/assets'
 import { addNotification, setNotifications } from 'options/actions/notifications'
 import { useNfts } from './hooks/useNfts'
 
+import { Transaction, sendAndConfirmTransaction, Message as _Messagge, Connection, clusterApiUrl } from '@solana/web3.js'
+
 export default ({ children }) => {
   const { pathname } = useLocation()
   const history = useHistory()
