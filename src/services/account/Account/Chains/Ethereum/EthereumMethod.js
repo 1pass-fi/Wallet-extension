@@ -70,7 +70,18 @@ export class EthereumMethod {
           i * 50
         }&limit=50`
         try {
-          const { data } = await axios.get(url)
+          let requestConfig = {}
+          if (ethereumProvider.includes('mainnet')) {
+            requestConfig = {
+              headers: {
+                'X-API-KEY': 'b2c5ef456a464bda8868fd20d8af6ce2'
+              }
+            }
+          }
+
+          console.log('requestConfig', requestConfig)
+
+          const { data } = await axios.get(url, requestConfig)
           assets = get(data, 'assets') || []
         } catch (err) {
           console.error('Fetched ETH nft error: ', err.message)
