@@ -96,4 +96,8 @@ export class SettingSet {
   importedErc20Tokens(value) {
     return this.#chrome._setChrome(SETTING.IMPORTED_ERC20_TOKENS, value)
   }
+
+  importedSolanaCustomTokens(value) {
+    return this.#chrome._setChrome(SETTING.IMPORTED_SOLANA_CUSTOM_TOKENS, value)
+  }
 }

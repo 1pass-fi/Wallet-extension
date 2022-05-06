@@ -95,4 +95,9 @@ export class SettingGet {
   async importedErc20Tokens() {
     return (await this.#chrome._getChrome(SETTING.IMPORTED_ERC20_TOKENS)) || {}
   }
+
+  async importedSolanaCustomTokens() {
+    return (await this.#chrome._getChrome(SETTING.IMPORTED_SOLANA_CUSTOM_TOKENS)) || {}
+  }
 }
+  

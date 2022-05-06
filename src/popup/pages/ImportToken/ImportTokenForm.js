@@ -17,10 +17,13 @@ import { getLogoPath } from 'utils/getTokenData'
 // constants
 import { TYPE } from 'constants/accountConstants'
 
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
+
 import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 import clsx from 'clsx'
 
 const ImportTokenForm = ({ tokenImport, goBack }) => {
+  const displayingAccount = useSelector(getDisplayingAccount)
   const history = useHistory()
 
   const [selectedAccounts, setSelectedAccounts] = useState([])
@@ -36,12 +39,11 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
     setSelectedAccounts(currentSelectedAccount)
   }
 
+  const { importNewToken } = useMethod({ contractAddress: tokenImport.contract, userAddresses: selectedAccounts })
+
   const handleImportToken = async () => {
     try {
-      await useMethod({
-        contractAddress: tokenImport.contract,
-        userAddresses: selectedAccounts
-      }).importNewToken()
+      await importNewToken()
 
       history.push('*')
     } catch (error) {
@@ -99,7 +101,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
       </div>
       <div className="overflow-y-scroll" style={{ maxHeight: '168px' }}>
         {accounts.map((account, idx) => {
-          if (account.type === TYPE.ETHEREUM)
+          if (account.type === displayingAccount.type)
             return (
               <div className="grid grid-cols-3 mb-6.5" key={idx}>
                 <div className="flex flex-col">

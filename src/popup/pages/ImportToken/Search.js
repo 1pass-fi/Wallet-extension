@@ -14,6 +14,8 @@ import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 import { getLogoPath } from 'utils/getTokenData'
 import { TYPE } from 'constants/accountConstants'
 
+let currentTimeout = [null]
+
 const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
   const displayingAccount = useSelector(getDisplayingAccount)
 
@@ -76,8 +78,12 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
 
       setTokenList(filterTokenList)
     }
-
-    onSearchToken()
+    
+    clearTimeout(currentTimeout[0])
+    currentTimeout[0] = setTimeout(() => {
+      onSearchToken()
+    }, 500)
+  
   }, [searchToken, displayingAccount.type])
 
   const customTokenIconPath = useMemo(
@@ -111,11 +117,11 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
             className="flex w-full items-center ml-2 mb-6 cursor-pointer"
             onClick={() => setTokenImport(token)}
           >
-            {token.logoURI && <img src={token.logoURI} style={{ width: '36px', height: '36px' }} />}
+            {/* {token.logoURI && <img src={token.logoURI} style={{ width: '36px', height: '36px' }} />} */}
             {token.logo && (
               <img src={getLogoPath(token.logo)} style={{ width: '36px', height: '36px' }} />
             )}
-            {!token.logoURI && !token.logo && (
+            {token.logoURI && !token.logo && (
               <img src={customTokenIconPath} style={{ width: '36px', height: '36px' }} />
             )}
 
