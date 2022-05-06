@@ -129,7 +129,7 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
       />
 
       <div className="font-semibold text-xs leading-4 tracking-finnieSpacing-wide text-blue-800">
-        AMOUNT1
+        AMOUNT
       </div>
       <div
         className="z-10 bg-trueGray-100 border-b-2 border-blue-800 flex"
