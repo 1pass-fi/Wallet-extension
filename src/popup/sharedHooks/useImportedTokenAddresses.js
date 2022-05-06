@@ -3,14 +3,11 @@ import Web3 from 'web3'
 import { get, isEmpty } from 'lodash'
 
 import storage from 'services/storage'
+import { TYPE } from 'constants/accountConstants'
 
 import ERC20_ABI from 'abi/ERC20.json'
 
-const useImportedTokenAddresses = ({
-  userAddress,
-  currentProviderAddress,
-  displayingAccountAddress
-}) => {
+const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displayingAccount }) => {
   const [importedTokenAddresses, setImportedTokenAddresses] = useState([])
 
   const checkValidToken = async (tokenAddress) => {
@@ -27,7 +24,7 @@ const useImportedTokenAddresses = ({
   }
 
   useEffect(() => {
-    const loadAddresses = async () => {
+    const loadEthAddresses = async () => {
       const importedErc20Tokens = await storage.setting.get.importedErc20Tokens()
       const tokenAddresses = Object.keys(importedErc20Tokens).reduce((result, key) => {
         if (importedErc20Tokens[key].includes(userAddress)) {
@@ -53,8 +50,19 @@ const useImportedTokenAddresses = ({
       }
     }
 
-    if (userAddress) loadAddresses()
-  }, [userAddress, currentProviderAddress, displayingAccountAddress])
+    const loadSolanaAddresses = async () => {
+      const importedSolanaCustomTokens = await storage.setting.get.importedSolanaCustomTokens()
+      const tokenAddresses = Object.keys(importedSolanaCustomTokens).filter((key) =>
+        importedSolanaCustomTokens[key].includes(userAddress)
+      )
+
+      setImportedTokenAddresses(tokenAddresses)
+    }
+
+    if (!isEmpty(displayingAccount) && displayingAccount.type === TYPE.SOLANA) {
+      loadSolanaAddresses()
+    } else if (userAddress) loadEthAddresses()
+  }, [userAddress, currentProviderAddress, displayingAccount])
 
   return { importedTokenAddresses }
 }

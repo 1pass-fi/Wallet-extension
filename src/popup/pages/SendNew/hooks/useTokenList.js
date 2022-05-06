@@ -25,8 +25,7 @@ const useTokenList = ({ selectedNetwork, userAddress }) => {
 
   const { importedTokenAddresses } = useImportedTokenAddresses({
     userAddress,
-    currentProviderAddress: ethProvider,
-    displayingAccountAddress: userAddress
+    currentProviderAddress: ethProvider
   })
 
   const loadArweaveTokens = async (userAddress) => {

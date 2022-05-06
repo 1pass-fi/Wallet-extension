@@ -31,7 +31,7 @@ const Tokens = ({ currentProviderAddress }) => {
   const { importedTokenAddresses } = useImportedTokenAddresses({
     userAddress: displayingAccount.address,
     currentProviderAddress,
-    displayingAccountAddress: displayingAccount.address
+    displayingAccount: displayingAccount
   })
 
   const [tokens, setTokens] = useState([])

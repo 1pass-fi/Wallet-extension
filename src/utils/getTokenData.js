@@ -11,7 +11,6 @@ export const getLogoPath = (logo) => {
   return path
 }
 
-
 const getIconPath = (contractAddress) => {
   const metadata = contractMap[contractAddress]
   if (metadata?.logo) {
