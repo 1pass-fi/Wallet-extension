@@ -130,12 +130,14 @@ const HomeTop = ({
             <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
               {numberFormat(displayingAccount.balance)} ETH
             </div>
-            <div
-              className="text-base leading-8 tracking-finnieSpacing-tight"
-              style={{ color: '#707070' }}
-            >
-              ${fiatCurrencyFormat(displayingAccount.balance * price.ETH)} USD
-            </div>
+            {currentProviderAddress?.includes('mainnet') && (
+              <div
+                className="text-base leading-8 tracking-finnieSpacing-tight"
+                style={{ color: '#707070' }}
+              >
+                ${fiatCurrencyFormat(displayingAccount.balance * price.ETH)} USD
+              </div>
+            )}
           </div>
         )}
 

@@ -11,7 +11,7 @@ import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 import HomeTop from './HomeTop'
 
 const Home = () => {
-  const [currentProviderAddress, setCurrentProviderAddress] = useState({})
+  const [currentProviderAddress, setCurrentProviderAddress] = useState('')
   const displayingAccount = useSelector(getDisplayingAccount)
 
   const price = useSelector((state) => state.price)

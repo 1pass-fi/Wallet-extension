@@ -158,7 +158,9 @@ const Tokens = ({ currentProviderAddress }) => {
             <div className="font-semibold">
               {token.displayingBalance} {token.symbol}
             </div>
-            {token.usdValue && <div>{token.usdValue} USD</div>}
+            {currentProviderAddress?.includes('mainnet') && token.usdValue && (
+              <div>{token.usdValue} USD</div>
+            )}
           </div>
         </div>
       ))}
