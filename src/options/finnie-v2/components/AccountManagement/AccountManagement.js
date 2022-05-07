@@ -122,6 +122,12 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
     }
   }
 
+  const handleKeyDown = async (e, account) => {
+    if (e.keyCode === 13) {
+      handleChangeAccountName(account)
+    }
+  }
+
   useEffect(() => {
     inputAccountNameRef.current?.focus()
   }, [editAccount])
@@ -170,6 +176,7 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
                       ref={(accountNameInput) => (inputAccountNameRef.current = accountNameInput)}
                       className="w-28 ml-5 pl-1.5 bg-trueGray-400 bg-opacity-50 rounded-t-sm border-b-2 border-blue-850 focus:outline-none"
                       value={accountName}
+                      onKeyDown={(e) => handleKeyDown(e, account)}
                       onChange={(e) => setAccountName(e.target.value)}
                       style={{ height: '17.23px' }}
                     />
