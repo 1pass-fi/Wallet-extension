@@ -49,7 +49,8 @@ chrome.storage.local.remove('sitePermission')
 chrome.runtime.onInstalled.addListener(async function () {
   const arweaveAccount = (await getChromeStorage(IMPORTED.ARWEAVE))[IMPORTED.ARWEAVE] || []
   const ethereumAccount = (await getChromeStorage(IMPORTED.ETHEREUM))[IMPORTED.ETHEREUM] || []
-  if (!arweaveAccount.length && !ethereumAccount.length) chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
+  const solanaAccount = (await getChromeStorage(IMPORTED.SOLANA))[IMPORTED.SOLANA] || []
+  if (!arweaveAccount.length && !ethereumAccount.length && !solanaAccount.length) chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
 })
 
 streamer()
