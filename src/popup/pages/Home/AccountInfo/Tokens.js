@@ -20,7 +20,7 @@ import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddress
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
 // utils
-import getTokenData from 'utils/getTokenData'
+import getTokenData, { getSolanaCustomTokensData } from 'utils/getTokenData'
 
 const Tokens = ({ currentProviderAddress }) => {
   const dispatch = useDispatch()
@@ -64,7 +64,7 @@ const Tokens = ({ currentProviderAddress }) => {
         ])
         return
       } else if (displayingAccount.type === TYPE.SOLANA) {
-        setTokens([
+        const importTokens = [
           {
             name: 'Solana',
             balance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
@@ -73,7 +73,25 @@ const Tokens = ({ currentProviderAddress }) => {
             usdValue: fiatCurrencyFormat((displayingAccount.balance * price.SOL) / Math.pow(10, 9)),
             decimal: 9
           }
-        ])
+        ]
+
+        await Promise.all(
+          importedTokenAddresses.map(async (contractAddress) => {
+            let token = await getSolanaCustomTokensData(contractAddress, displayingAccount.address)
+            token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
+            if (token.price) {
+              token = {
+                ...token,
+                usdValue: fiatCurrencyFormat(
+                  (token.balance / Math.pow(10, token.decimal)) * token.price
+                )
+              }
+            }
+            importTokens.push(token)
+          })
+        )
+
+        setTokens(importTokens)
       } else {
         const importTokens = [
           {
