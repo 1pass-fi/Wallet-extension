@@ -1,6 +1,6 @@
 import bs58 from 'bs58'
 import { Transaction, sendAndConfirmTransaction, Message, Connection, clusterApiUrl, PublicKey } from '@solana/web3.js'
-import { decodeTransferInstruction } from '@solana/spl-token'
+import { decodeTransferInstructionUnchecked } from '@solana/spl-token'
 
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
@@ -28,17 +28,20 @@ const getTransactionDataFromMessage = (transactionMessage) => {
     console.log('recipientAddress', recipientAddress)
   
     console.log('message', message)
-    // message.instructions[0].programId = new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA')
-  
-    // const decodedInstruction = decodeTransferInstruction(message.instructions[0])
-  
-    // console.log('decodedInstruction', decodedInstruction)
-  
+
+    const transaction = Transaction.populate(message)
+    const instruction = transaction.instructions[0]
+
+    const decodeData = decodeTransferInstructionUnchecked(instruction)
+
+    console.log('decodeData', decodeData)
+    
+    console.log('value', Number(decodeData.data.amount) / 16777216)
   
     return {
-      from: senderAddress,
-      to: recipientAddress,
-      value: 1000000
+      from: decodeData.keys.source.pubkey.toString(),
+      to: decodeData.keys.destination.pubkey.toString(),
+      value: Number(decodeData.data.amount) / 16777216
     }
   } catch (err) {
     console.error(err)
