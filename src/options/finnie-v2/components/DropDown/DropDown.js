@@ -127,17 +127,18 @@ const DropDown = ({
               -- None
             </button>
           )}
-          {options
-            .filter((item) => inclues(lowerCase(item.label), lowerCase(filterValue)))
-            .map((item, idx) => (
-              <button
-                className={clsx('text-left', sizes[size].row, variants[variant].row)}
-                key={idx}
-                onClick={() => selectItem(item)}
-              >
-                {item.label}
-              </button>
-            ))}
+          {(filterValue !== '-- None'
+            ? options.filter((item) => inclues(lowerCase(item.label), lowerCase(filterValue)))
+            : options
+          ).map((item, idx) => (
+            <button
+              className={clsx('text-left', sizes[size].row, variants[variant].row)}
+              key={idx}
+              onClick={() => selectItem(item)}
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
       )}
     </div>
