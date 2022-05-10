@@ -148,7 +148,7 @@ const Tokens = ({ currentProviderAddress }) => {
       }
 
       if (scrollHeight >= 150) {
-        setAccountInfoMinHeight(350)
+        setAccountInfoMinHeight(400)
         return
       }
     }
@@ -194,7 +194,7 @@ const Tokens = ({ currentProviderAddress }) => {
           </div>
         </div>
       ))}
-      {displayingAccount.type === TYPE.ETHEREUM && (
+      {(displayingAccount.type === TYPE.ETHEREUM || displayingAccount.type === TYPE.SOLANA) && (
         <div className="mt-5 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
           Don’t see your token?
         </div>

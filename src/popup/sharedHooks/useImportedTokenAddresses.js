@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Web3 from 'web3'
 import { get, isEmpty } from 'lodash'
+import { TokenListProvider } from '@solana/spl-token-registry'
 
 import storage from 'services/storage'
 import { TYPE } from 'constants/accountConstants'
@@ -18,6 +19,22 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
       await tokenContract.methods.name().call()
 
       return true
+    } catch (err) {
+      return false
+    }
+  }
+
+  const checkValidSolanaToken = async (tokenAddress) => {
+    try {
+      const clusterSlug = await storage.setting.get.solanaProvider()
+
+      const tokenlistContainer = await new TokenListProvider().resolve()
+      const tokenList = tokenlistContainer.filterByClusterSlug(clusterSlug).getList()
+
+      const result = tokenList.find(
+        ({ address }) => address?.toLowerCase() === tokenAddress?.toLowerCase()
+      )
+      return !isEmpty(result)
     } catch (err) {
       return false
     }
@@ -56,7 +73,21 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
         importedSolanaCustomTokens[key].includes(userAddress)
       )
 
-      setImportedTokenAddresses(tokenAddresses)
+      if (!isEmpty(tokenAddresses)) {
+        let validTokenAddresses = (
+          await Promise.all(
+            tokenAddresses.map(async (tokenAddress) => {
+              const valid = await checkValidSolanaToken(tokenAddress)
+              if (valid) return tokenAddress
+              return null
+            })
+          )
+        ).filter((tokenAddress) => !!tokenAddress)
+
+        setImportedTokenAddresses(validTokenAddresses)
+      } else {
+        setImportedTokenAddresses([])
+      }
     }
 
     if (!isEmpty(displayingAccount) && displayingAccount.type === TYPE.SOLANA) {
