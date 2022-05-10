@@ -177,12 +177,14 @@ const HomeTop = ({
             <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
               {numberFormat(displayingAccount.balance / Math.pow(10, 9))} SOL
             </div>
-            <div
-              className="text-base leading-8 tracking-finnieSpacing-tight"
-              style={{ color: '#707070' }}
-            >
-              ${fiatCurrencyFormat((displayingAccount.balance * price.SOL) / Math.pow(10, 9))} USD
-            </div>
+            {currentProviderAddress?.includes('mainnet') && (
+              <div
+                className="text-base leading-8 tracking-finnieSpacing-tight"
+                style={{ color: '#707070' }}
+              >
+                ${fiatCurrencyFormat((displayingAccount.balance * price.SOL) / Math.pow(10, 9))} USD
+              </div>
+            )}
           </div>
         )}
         {displayingAccount.type === TYPE.ARWEAVE && (
