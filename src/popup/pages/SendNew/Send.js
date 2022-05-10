@@ -41,7 +41,7 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
 
   const { selectedNetwork } = useSelectedAccount({ selectedAccount })
   const { tokenList, selectedToken, setSelectedToken } = useTokenList({
-    userAddress: selectedAccount?.address,
+    selectedAccount: selectedAccount,
     selectedNetwork: selectedNetwork
   })
 

@@ -3,13 +3,15 @@ import { get, isEmpty } from 'lodash'
 
 import { fromArToWinston, fromEthToWei, fromSolToLamp } from 'utils'
 import getTokenData from 'utils/getTokenData'
+import { getSolanaCustomTokensData } from 'utils/getTokenData'
 
 import { popupAccount } from 'services/account'
 
 import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddresses'
 import storage from 'services/storage'
 
-const useTokenList = ({ selectedNetwork, userAddress }) => {
+const useTokenList = ({ selectedNetwork, selectedAccount }) => {
+  const userAddress = selectedAccount?.address
   const [tokenList, setTokenList] = useState([])
   const [ethProvider, setEthProvider] = useState(null)
   const [selectedToken, setSelectedToken] = useState()
@@ -25,7 +27,8 @@ const useTokenList = ({ selectedNetwork, userAddress }) => {
 
   const { importedTokenAddresses } = useImportedTokenAddresses({
     userAddress,
-    currentProviderAddress: ethProvider
+    currentProviderAddress: ethProvider,
+    displayingAccount: selectedAccount
   })
 
   const loadArweaveTokens = async (userAddress) => {
@@ -81,7 +84,7 @@ const useTokenList = ({ selectedNetwork, userAddress }) => {
     return [ethereumToken, ...customTokenList]
   }
 
-  const loadSolanaTokens = async (userAddress) => {
+  const loadSolanaTokens = async (userAddress, importedTokenAddresses) => {
     const solanaToken = {}
 
     const account = await popupAccount.getAccount({ address: userAddress })
@@ -95,7 +98,17 @@ const useTokenList = ({ selectedNetwork, userAddress }) => {
     solanaToken.decimal = 9
     setSelectedToken(solanaToken)
 
-    return [solanaToken]
+    if (isEmpty(importedTokenAddresses)) {
+      return [solanaToken]
+    }
+
+    const customTokenList = await Promise.all(
+      importedTokenAddresses?.map(async (tokenAddress) => {
+        return await getSolanaCustomTokensData(tokenAddress, userAddress)
+      })
+    )
+
+    return [solanaToken, ...customTokenList]
   }
 
   useEffect(() => {
@@ -108,7 +121,7 @@ const useTokenList = ({ selectedNetwork, userAddress }) => {
           setTokenList(await loadArweaveTokens(userAddress))
           break
         case 'TYPE_SOLANA':
-          setTokenList(await loadSolanaTokens(userAddress))
+          setTokenList(await loadSolanaTokens(userAddress, importedTokenAddresses))
       }
     }
 
