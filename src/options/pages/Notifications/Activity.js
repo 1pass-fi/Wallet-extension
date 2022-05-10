@@ -1,15 +1,24 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import ActivityRow from './ActivityRow'
 
 import storage from 'services/storage'
+import { popupAccount } from 'services/account'
+import { TYPE } from 'constants/accountConstants'
 
 const Activity = () => {
   const [activities, setActivities] = useState([])
-
   useEffect(() => {
     const loadActivities = async () => {
-      const allActivities = await storage.generic.get.allActivities()
+      const activatedChain = await storage.setting.get.activatedChain()
+      let displayingAccountAddress
+      if (activatedChain === TYPE.ARWEAVE) displayingAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
+      if (activatedChain === TYPE.ETHEREUM) displayingAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
+
+      const account = await popupAccount.getAccount({ address: displayingAccountAddress })
+      const allActivities = await account.get.activities()
+      // const allActivities = await storage.generic.get.allActivities()
       setActivities(allActivities)
     }
     loadActivities()

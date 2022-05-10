@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import clsx from 'clsx'
 import { isEmpty, orderBy } from 'lodash'
 
@@ -10,10 +10,12 @@ import ActivityRow from './ActivityRow'
 import ExpiredTxModal from 'popup/components/modals/expiredTxModal'
 
 import { setActivities } from 'popup/actions/activities'
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
 
 
 const Activity = ({ activities, setActivities }) => {
+  const displayingAccount = useSelector(getDisplayingAccount)
   const [pendingTransactions, setPendingTransactions] = useState([])
   const [pages, setPages] = useState(1)
   const [deleteTransactionModalStatus, setDeleteTransactionModalStatus] = useState({
@@ -23,7 +25,9 @@ const Activity = ({ activities, setActivities }) => {
 
   useEffect(() => {
     const loadActivities = async () => {
-      const allActivities = await storage.generic.get.allActivities()
+      const account = await popupAccount.getAccount({ address: displayingAccount.address })
+      const allActivities = await account.get.activities()
+      // const allActivities = await storage.generic.get.allActivities()
       setActivities(allActivities)
     }
 
