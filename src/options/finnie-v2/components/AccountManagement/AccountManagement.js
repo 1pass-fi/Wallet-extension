@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import React, { useMemo, useRef, useState, useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import isEmpty from 'lodash/isEmpty'
 
 import DropDown from 'finnie-v2/components/DropDown'
 import formatLongString from 'finnie-v2/utils/formatLongString'
@@ -10,6 +11,7 @@ import ArLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import CopyIcon from 'img/v2/copy-icon.svg'
 import EditIcon from 'img/v2/edit-icon.svg'
+import SaveIcon from 'img/v2/check-mark-icon-blue.svg'
 import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 
 import storage from 'services/storage'
@@ -176,11 +178,19 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
                       {formatLongString(account.accountName, 12)}
                     </div>
                   )}
-                  <EditIcon
-                    onClick={() => handleChangeAccountName(account)}
-                    className="inline cursor-pointer ml-2.25 mr-6"
-                    style={{ width: '13px', height: '13px' }}
-                  />
+                  {isEmpty(editAccount) || editAccount?.address !== account.address ? (
+                    <EditIcon
+                      onClick={() => handleChangeAccountName(account)}
+                      className="inline cursor-pointer ml-2.25 mr-6"
+                      style={{ width: '13px', height: '13px' }}
+                    />
+                  ) : (
+                    <SaveIcon
+                      onClick={() => handleChangeAccountName(account)}
+                      className="inline cursor-pointer ml-2.25 mr-6"
+                      style={{ width: '13px', height: '13px' }}
+                    />
+                  )}
                 </div>
               </td>
               <td>
