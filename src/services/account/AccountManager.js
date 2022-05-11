@@ -366,12 +366,12 @@ export class BackgroundAccountManager extends AccountManager {
           if (!isEmpty(defaultActivatedAccount)) {
             await setActivatedAccountAddress(defaultActivatedAccount.address, TYPE.ETHEREUM)
           } else {
-            await storage.setting.set.activatedArweaveAccountAddress(null)
+            await storage.setting.set.activatedEthereumAccountAddress(null)
           }
         }
       } else {
         await storage.setting.set.activatedArweaveAccountAddress(null)
-        await storage.setting.set.activatedArweaveAccountAddress(null)
+        await storage.setting.set.activatedEthereumAccountAddress(null)
       }
     } catch (err) {
       console.log(err.message)
