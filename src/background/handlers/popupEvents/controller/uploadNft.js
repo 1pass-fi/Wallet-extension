@@ -50,14 +50,14 @@ export default async (payload, next) => {
 
     // get registrationReward data (true -> don't need to register this nft)
     console.log('Upload NFT [4/6]: check hasRegistrationReward')
-    let hasRegistrationReward
-    try {
-      const registrationReward = await account.method.getRegistrationReward(transaction.id)
-      hasRegistrationReward = registrationReward.status === 200
-    } catch (err) {
-      console.error(err.message)
-      hasRegistrationReward = false
-    }
+    let hasRegistrationReward = false
+    // try {
+    //   const registrationReward = await account.method.getRegistrationReward(transaction.id)
+    //   hasRegistrationReward = registrationReward.status === 200
+    // } catch (err) {
+    //   console.error(err.message)
+    //   hasRegistrationReward = false
+    // }
     console.log('Has registration reward: ', hasRegistrationReward)
 
     // post transaction
