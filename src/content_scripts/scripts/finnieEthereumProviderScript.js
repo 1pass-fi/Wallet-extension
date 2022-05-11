@@ -3,7 +3,7 @@ const finnieEthereumProviderScript = `() => {
     constructor(connection) {
       super()
       this.connection = connection
-      this.isMetaMask = true
+      this.isFinnie = true
     }
 
     request(payload) {
