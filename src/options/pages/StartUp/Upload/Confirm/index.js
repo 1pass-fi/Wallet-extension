@@ -16,10 +16,12 @@ import InputPassword from '../../shared/InputPassword'
 import {ERROR_MESSAGE} from 'constants/koiConstants'
 import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
 import { addAccountByAddress } from 'options/actions/accounts'
+import { popupAccount } from 'services/account'
+import storage from 'services/storage'
 
 
 export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) => {
-  const { setError, setImportedAddress, setNewAddress } =  useContext(GalleryContext)
+  const { setError, setImportedAddress, setNewAddress, setActivatedChain } =  useContext(GalleryContext)
   const [password, setPassword] = useState('')
   const [showFormError, setShowFormError] = useState(false)
 
@@ -42,6 +44,16 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
       if (walletType === TYPE.ARWEAVE) selectedNetwork = null
 
       const address = await backgroundRequest.gallery.uploadJSONKeyFile({ password, key, type: walletType, provider: selectedNetwork })
+
+      /* 
+        Set activated chain if this wallet is the first imported wallet
+      */
+      const totalAccount = await popupAccount.count()
+      if (totalAccount === 1) {
+        await storage.setting.set.activatedChain(walletType)
+        setActivatedChain(walletType)
+      }
+
       setImportedAddress(address)
       setNewAddress(address)
       dispatch(addAccountByAddress(address))
@@ -51,6 +63,7 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
         state: 'upload-key-state'
       })
     } catch (err) {
+      console.error(err.message)
       if (err.message === 'Incorrect password') {
         setError(err.message)
         return

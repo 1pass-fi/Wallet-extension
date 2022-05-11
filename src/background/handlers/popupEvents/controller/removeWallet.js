@@ -13,9 +13,7 @@ export default async (payload, next) => {
 
     await backgroundAccount.removeAccount(address)
     
-    helpers.sendMessageToPopupPorts({ type: MESSAGES.RELOAD_GALLERY })
     helpers.loadActivities()
-    
     next()
   } catch (err) {
     console.error(err.message)

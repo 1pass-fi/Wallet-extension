@@ -29,6 +29,8 @@ import { addAccountByAddress } from 'options/actions/accounts'
 import './index.css'
 import { TYPE } from 'constants/accountConstants'
 import { GalleryContext } from 'options/galleryContext'
+import { popupAccount } from 'services/account'
+import storage from 'services/storage'
 
 const mockPhrase = [
   'program',
@@ -48,7 +50,7 @@ const mockPhrase = [
 export default () => {
   let { selectedNetwork, EthereumNetworks } = useEthereumNetworks({})
 
-  const { setError, setImportedAddress, setNewAddress } = useContext(GalleryContext)
+  const { setError, setImportedAddress, setNewAddress, setActivatedChain } = useContext(GalleryContext)
 
   const [step, setStep] = useState(1)
   const [walletType, setWalletType] = useState(null)
@@ -126,6 +128,16 @@ export default () => {
       if (walletType === TYPE.ETHEREUM) selectedNetwork = 'Rinkeby Test Network'
 
       const address = await backgroundRequest.gallery.saveWallet({ password, provider: selectedNetwork })
+
+      /* 
+        Set activated chain if this wallet is the first imported wallet
+      */
+      const totalAccount = await popupAccount.count()
+      if (totalAccount === 1) {
+        await storage.setting.set.activatedChain(walletType)
+        setActivatedChain(walletType)
+      }
+
       setImportedAddress(address)
       setNewAddress(address)
       dispatch(addAccountByAddress(address))

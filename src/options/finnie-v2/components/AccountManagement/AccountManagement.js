@@ -51,12 +51,10 @@ const Address = ({ address }) => {
 }
 
 const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAccount }) => {
-  const { setNotification, setError } = useContext(GalleryContext)
+  const { displayingAccount, setNotification, setError, setActivatedChain } = useContext(GalleryContext)
   const { getDID } = useContext(DidContext)
 
   const dispatch = useDispatch()
-  const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
-  const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
 
   const inputAccountNameRef = useRef(null)
 
@@ -71,10 +69,19 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
     dispatch(setDefaultAccountByAddress(activatedEthereumAccountAddress))
   }
 
-  const handleSetDefaultAccount = async (address) => {
+  const handleSetDefaultAccount = async (address, type) => {
     try {
       await backgroundRequest.gallery.setDefaultAccount({ address })
       await reloadDefaultAccount()
+      if (type === TYPE.ARWEAVE) {
+        await storage.setting.set.activatedChain(TYPE.ARWEAVE)
+        setActivatedChain(TYPE.ARWEAVE)
+      }
+      if (type === TYPE.ETHEREUM) {
+        await storage.setting.set.activatedChain(TYPE.ETHEREUM)
+        setActivatedChain(TYPE.ETHEREUM)
+      }
+
       getDID()
       setNotification(`Set default account successfully.`)
     } catch (err) {
@@ -147,10 +154,9 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
             <tr key={idx} className={clsx('text-left h-8', idx % 2 === 1 && 'bg-lightBlue')}>
               <td className="pl-2">
                 <CheckBox
-                  onClick={() => handleSetDefaultAccount(account.address)}
+                  onClick={() => handleSetDefaultAccount(account.address, account.type)}
                   checked={
-                    defaultArweaveAccountAddress === account.address ||
-                    defaultEthereumAccountAddress === account.address
+                    displayingAccount?.address === account?.address
                   }
                 />
               </td>

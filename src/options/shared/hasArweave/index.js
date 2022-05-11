@@ -1,28 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import isEmpty from 'lodash/isEmpty'
+import React, { useContext } from 'react'
 
-import { TYPE } from 'constants/accountConstants'
-import { popupAccount } from 'services/account'
+import { GalleryContext } from 'options/galleryContext'
 import './index.css'
+import { TYPE } from 'constants/accountConstants'
 
 const ArweaveOnly = ({ content }) => {
-  return <div className='ar-only-message'>{content}</div>
+  return <div className="ar-only-message">{content}</div>
 }
 
-export default (({ children, content, checkingDefaultAccount }) => {
-  const [hasArWallet, setHasArWallet] = useState(false)
+export default ({ children, content }) => {
+  const { displayingAccount } = useContext(GalleryContext)
 
-  const defaultArweaveAccount = useSelector(state => state.defaultAccount.AR)
-
-
-  useEffect(() => {
-    const showArweaveForm = async () => {
-      setHasArWallet(await popupAccount.hasArweave())
-    }
-
-    showArweaveForm()
-  }, [])
-
-  return ((checkingDefaultAccount && isEmpty(defaultArweaveAccount)) || !hasArWallet) ? <ArweaveOnly content={content} /> : children
-})
+  return displayingAccount.type === TYPE.ARWEAVE ? children : <ArweaveOnly content={content} />
+}
