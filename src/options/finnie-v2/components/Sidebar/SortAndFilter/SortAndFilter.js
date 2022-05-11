@@ -62,34 +62,38 @@ const SortAndFilter = ({
           />
         </div>
         <hr className="rounded bg-white" />
-        <div
-          onClick={() => setShowSortBy(!showSortBy)}
-          className="flex items-center justify-between h-12 pl-1.5 pr-3 font-semibold text-sm text-white cursor-pointer"
-        >
-          Sort By
-          <ArrowIcon
-            className={clsx(showSortBy && 'transform rotate-90', 'w-1.5 h-3 cursor-pointer')}
-          />
-        </div>
-        <hr className="rounded border border-trueGray-100 border-opacity-20" />
-        {showSortBy && (
-          <div className="flex text-white text-xs gap-x-2.5 gap-y-2 items-center flex-wrap text-center mt-2.75">
-            <ToggleButton
-              isActive={sortBy === SORT_TYPES.NEWEST}
-              onClick={() => handleSort(SORT_TYPES.NEWEST)}
-              text="Recently Added"
-            />
-            <ToggleButton
-              isActive={sortBy === SORT_TYPES.OLDEST}
-              onClick={() => handleSort(SORT_TYPES.OLDEST)}
-              text="Oldest"
-            />
-            <ToggleButton
-              isActive={sortBy === SORT_TYPES.MOST_VIEWED}
-              onClick={() => handleSort(SORT_TYPES.MOST_VIEWED)}
-              text="Most viewed"
-            />
-          </div>
+        {type === 'Gallery' && (
+          <>
+            <div
+              onClick={() => setShowSortBy(!showSortBy)}
+              className="flex items-center justify-between h-12 pl-1.5 pr-3 font-semibold text-sm text-white cursor-pointer"
+            >
+              Sort By
+              <ArrowIcon
+                className={clsx(showSortBy && 'transform rotate-90', 'w-1.5 h-3 cursor-pointer')}
+              />
+            </div>
+            <hr className="rounded border border-trueGray-100 border-opacity-20" />
+            {showSortBy && (
+              <div className="flex text-white text-xs gap-x-2.5 gap-y-2 items-center flex-wrap text-center mt-2.75">
+                <ToggleButton
+                  isActive={sortBy === SORT_TYPES.NEWEST}
+                  onClick={() => handleSort(SORT_TYPES.NEWEST)}
+                  text="Recently Added"
+                />
+                <ToggleButton
+                  isActive={sortBy === SORT_TYPES.OLDEST}
+                  onClick={() => handleSort(SORT_TYPES.OLDEST)}
+                  text="Oldest"
+                />
+                <ToggleButton
+                  isActive={sortBy === SORT_TYPES.MOST_VIEWED}
+                  onClick={() => handleSort(SORT_TYPES.MOST_VIEWED)}
+                  text="Most viewed"
+                />
+              </div>
+            )}
+          </>
         )}
         <div
           onClick={() => setShowFilterChains(!showFilterChains)}
