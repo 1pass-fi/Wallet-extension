@@ -141,7 +141,8 @@ export default ({ children }) => {
   const displayingAccount = useMemo(() => {
     if (activatedChain === TYPE.ARWEAVE) return _defaultAccount.AR
     if (activatedChain === TYPE.ETHEREUM) return _defaultAccount.ETH
-  }, [_defaultAccount.AR, _defaultAccount.ETH, activatedChain])
+    if (activatedChain === TYPE.SOLANA) return _defaultAccount.SOL
+  }, [_defaultAccount.AR, _defaultAccount.ETH, _defaultAccount.SOL, activatedChain])
 
   /* EDITING COLLECTION ID */
   const [editingCollectionId, setEditingCollectionId] = useState(null)
