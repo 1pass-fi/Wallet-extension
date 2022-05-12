@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
@@ -12,6 +12,7 @@ import { popupAccount } from 'services/account'
 
 import './ActivityCenterDropdown.css'
 import { setNotifications } from 'options/actions/notifications'
+import { GalleryContext } from 'options/galleryContext'
 
 const ACTIVITY = 'ACTIVITY'
 const COMMUNITY = 'COMMUNITY'
@@ -22,13 +23,16 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
   const [activities, setActivities] = useState([])
   const [pages, setPages] = useState(1)
 
+  const { displayingAccount } = useContext(GalleryContext)
+
   const dispatch = useDispatch()
 
   const notificationsData = useSelector((state) => state.notificationsData)
 
   useEffect(() => {
     const loadActivities = async () => {
-      const allActivities = await storage.generic.get.allActivities()
+      const account = await popupAccount.getAccount({ address: displayingAccount.address })
+      const allActivities = await account.get.activities()
       setActivities(allActivities)
     }
     loadActivities()

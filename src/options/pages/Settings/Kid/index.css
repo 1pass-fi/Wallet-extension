@@ -380,8 +380,9 @@
 .select-nft-profile-modal {
   position: fixed;
   width: 526px;
-  margin: 0px auto auto 200px;
-
+  top: 50%;
+  left: 50%;
+  transform: translate(-25%, -40%);
   background: #353563;
   border-radius: 4px;
 }

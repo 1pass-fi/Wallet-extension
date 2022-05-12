@@ -86,7 +86,7 @@ const KidPage = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false)
 
   const [nftSearchText, setNftSearchText] = useState('')
-  const [filteredAssets, setFilteredAssets] = useState(assets)
+  const [filteredAssets, setFilteredAssets] = useState([])
 
   const [isPending, setIsPending] = useState(false)
   const [balance, koiBalance] = useSelector(getBalance)
@@ -133,6 +133,10 @@ const KidPage = () => {
       setShowModal(false)
     }
   }
+
+  useEffect(() => {
+    setFilteredAssets(assets)
+  }, [assets])
 
   useEffect(() => {
     const getPendingStatus = async () => {

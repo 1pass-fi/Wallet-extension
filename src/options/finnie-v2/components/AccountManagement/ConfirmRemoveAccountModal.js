@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { isEmpty } from 'lodash'
 
 import { GalleryContext } from 'options/galleryContext'
 
@@ -15,10 +16,15 @@ import Button from 'finnie-v2/components/Button'
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 
+import { TYPE } from 'constants/accountConstants'
+import storage from 'services/storage'
+
 const ConfirmRemoveAccountModal = ({ account, close }) => {
-  const { setIsLoading, setError } = useContext(GalleryContext)
+  const { setIsLoading, setError, setActivatedChain } = useContext(GalleryContext)
   const dispatch = useDispatch()
   const modalRef = useRef(null)
+
+  const defaultAccount = useSelector(state => state.defaultAccount)
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -47,7 +53,6 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
         Have to handle removing this address from activatedAccount if this
         address is the activated account.
       */
-      const { defaultAccount } = getState()
 
       if (accountStates.length !== 0) {
         const arAccount = find(accountStates, (v) => v.type === TYPE.ARWEAVE)
@@ -69,10 +74,24 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
         }
       }
 
+      const totalArweaveAccount = await popupAccount.count(TYPE.ARWEAVE)
+      const totalEthereumAccount = await popupAccount.count(TYPE.ETHEREUM)
+
+      if (totalArweaveAccount === 0) {
+        await storage.setting.set.activatedChain(TYPE.ETHEREUM)
+        setActivatedChain(TYPE.ETHEREUM)
+      }
+
+      if (totalEthereumAccount === 0) {
+        await storage.setting.set.activatedChain(TYPE.ARWEAVE)
+        setActivatedChain(TYPE.ARWEAVE)
+      }
+
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
       })
 
+      close()
       setIsLoading((prev) => --prev)
     } catch (error) {
       setIsLoading((prev) => --prev)

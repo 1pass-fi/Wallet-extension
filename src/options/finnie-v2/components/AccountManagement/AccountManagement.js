@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import React, { useMemo, useRef, useState, useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import isEmpty from 'lodash/isEmpty'
 
 import DropDown from 'finnie-v2/components/DropDown'
 import formatLongString from 'finnie-v2/utils/formatLongString'
@@ -11,6 +12,7 @@ import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import SolLogo from 'img/v2/solana-logo.svg'
 import CopyIcon from 'img/v2/copy-icon.svg'
 import EditIcon from 'img/v2/edit-icon.svg'
+import SaveIcon from 'img/v2/check-mark-icon-blue.svg'
 import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 
 import storage from 'services/storage'
@@ -50,13 +52,10 @@ const Address = ({ address }) => {
 }
 
 const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAccount }) => {
-  const { setNotification, setError } = useContext(GalleryContext)
+  const { displayingAccount, setNotification, setError, setActivatedChain } = useContext(GalleryContext)
   const { getDID } = useContext(DidContext)
 
   const dispatch = useDispatch()
-  const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
-  const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
-  const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
 
   const inputAccountNameRef = useRef(null)
 
@@ -74,10 +73,23 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
     dispatch(setDefaultAccountByAddress(activatedSolanaAccountAddress))
   }
 
-  const handleSetDefaultAccount = async (address) => {
+  const handleSetDefaultAccount = async (address, type) => {
     try {
       await backgroundRequest.gallery.setDefaultAccount({ address })
       await reloadDefaultAccount()
+      if (type === TYPE.ARWEAVE) {
+        await storage.setting.set.activatedChain(TYPE.ARWEAVE)
+        setActivatedChain(TYPE.ARWEAVE)
+      }
+      if (type === TYPE.ETHEREUM) {
+        await storage.setting.set.activatedChain(TYPE.ETHEREUM)
+        setActivatedChain(TYPE.ETHEREUM)
+      }
+      if (type === TYPE.SOLANA) {
+        await storage.setting.set.activatedChain(TYPE.SOLANA)
+        setActivatedChain(TYPE.SOLANA)
+      }
+
       getDID()
       setNotification(`Set default account successfully.`)
     } catch (err) {
@@ -150,11 +162,9 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
             <tr key={idx} className={clsx('text-left h-8', idx % 2 === 1 && 'bg-lightBlue')}>
               <td className="pl-2">
                 <CheckBox
-                  onClick={() => handleSetDefaultAccount(account.address)}
+                  onClick={() => handleSetDefaultAccount(account.address, account.type)}
                   checked={
-                    defaultArweaveAccountAddress === account.address ||
-                    defaultEthereumAccountAddress === account.address ||
-                    defaultSolanaAccountAddress === account.address
+                    displayingAccount?.address === account?.address
                   }
                 />
               </td>
@@ -185,11 +195,19 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
                       {formatLongString(account.accountName, 12)}
                     </div>
                   )}
-                  <EditIcon
-                    onClick={() => handleChangeAccountName(account)}
-                    className="inline cursor-pointer ml-2.25 mr-6"
-                    style={{ width: '13px', height: '13px' }}
-                  />
+                  {isEmpty(editAccount) || editAccount?.address !== account.address ? (
+                    <EditIcon
+                      onClick={() => handleChangeAccountName(account)}
+                      className="inline cursor-pointer ml-2.25 mr-6"
+                      style={{ width: '13px', height: '13px' }}
+                    />
+                  ) : (
+                    <SaveIcon
+                      onClick={() => handleChangeAccountName(account)}
+                      className="inline cursor-pointer ml-2.25 mr-6"
+                      style={{ width: '13px', height: '13px' }}
+                    />
+                  )}
                 </div>
               </td>
               <td>

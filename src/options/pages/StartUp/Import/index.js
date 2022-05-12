@@ -28,6 +28,8 @@ import { TYPE } from 'constants/accountConstants'
 import { addAccountByAddress } from 'options/actions/accounts'
 
 import './index.css'
+import { popupAccount } from 'services/account'
+import storage from 'services/storage'
 
 export default () => {
   const [step, setStep] = useState(1)
@@ -45,7 +47,7 @@ export default () => {
   const dispatch = useDispatch()
   const accounts = useSelector(state => state.accounts)
 
-  const { setError, setImportedAddress, setNewAddress } = useContext(GalleryContext)
+  const { setError, setImportedAddress, setNewAddress, setActivatedChain } = useContext(GalleryContext)
   let { selectedNetwork, EthereumNetworks } = useEthereumNetworks({
     title: () => <div className='title'>Import Ethereum Key</div>,
     description: () => <div className='description'>Choose your Network.</div>,
@@ -128,6 +130,16 @@ export default () => {
         type: walletType,
         provider: selectedNetwork
       })
+
+      /* 
+        Set activated chain if this wallet is the first imported wallet
+      */
+      const totalAccount = await popupAccount.count()
+      if (totalAccount === 1) {
+        await storage.setting.set.activatedChain(walletType)
+        setActivatedChain(walletType)
+      }
+
       setImportedAddress(address)
       setNewAddress(address)
       dispatch(addAccountByAddress(address))

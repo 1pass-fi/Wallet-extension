@@ -66,6 +66,17 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
     setTimeout(() => setIsCopied(false), 3000)
   }
 
+  const handleChangeDisplayAccount = async (account) => {
+    await storage.setting.set.activatedChain(account.type)
+    dispatch(setActivatedChain(account.type))
+    dispatch(setDefaultAccount(account))
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
+    })
+    setShowAccountDropdown(false)
+    history.push('/tokens')
+  }
+
   return (
     <div className="bg-indigo-400 select-none">
       {accounts.map((account, idx) => (
@@ -73,15 +84,7 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
           className="bg-blue-600 text-white flex items-center cursor-pointer mb-0.25 hover:bg-indigo-400"
           key={idx}
           style={{ width: '249px', height: '45px' }}
-          onClick={async () => {
-            await storage.setting.set.activatedChain(account.type)
-            dispatch(setActivatedChain(account.type))
-            dispatch(setDefaultAccount(account))
-            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-              chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
-            })
-            setShowAccountDropdown(false)
-          }}
+          onClick={() => handleChangeDisplayAccount(account)}
         >
           {account.type === TYPE.ARWEAVE && <FinnieIcon className="ml-2.5 h-6.25 w-6.25" />}
           {account.type === TYPE.ETHEREUM && <EthereumIcon className="ml-2.5 h-6.25 w-6.25" />}

@@ -1,19 +1,26 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useContext } from 'react'
+import { useSelector } from 'react-redux'
 
 import ActivityRow from './ActivityRow'
 
 import storage from 'services/storage'
+import { popupAccount } from 'services/account'
+import { TYPE } from 'constants/accountConstants'
+import { GalleryContext } from 'options/galleryContext'
 
 const Activity = () => {
   const [activities, setActivities] = useState([])
 
+  const { displayingAccount } = useContext(GalleryContext)
+
   useEffect(() => {
     const loadActivities = async () => {
-      const allActivities = await storage.generic.get.allActivities()
+      const account = await popupAccount.getAccount({ address: displayingAccount.address })
+      const allActivities = await account.get.activities()
       setActivities(allActivities)
     }
     loadActivities()
-  }, [])
+  }, [displayingAccount])
 
   const columns = useMemo(() => ['Date', 'Action', 'From', 'To', 'Amount', ''], [])
 

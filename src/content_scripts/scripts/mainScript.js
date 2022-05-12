@@ -32,6 +32,8 @@ const mainScript = () => {
     })
   })
 
+  if (window.ethereum === undefined) window.ethereum = finnieEthereumProvider
+
   window.ethereum = finnieEthereumProvider
   window.arweaveWallet = finnieArweaveProvider
   window.koiiWallet = finnieKoiiWalletProvider
@@ -46,10 +48,8 @@ const arweaveWalletExcluded = () => {
     window.connection.emit(event.data.type + '_' + event.data.id, event.data)
   })
 
-  const finnieEthereumProvider = new FinnieEthereumProvider(window.connection)
   const finnieKoiiWalletProvider = new FinnieKoiiWalletProvider(window.connection)
 
-  window.ethereum = finnieEthereumProvider
   window.koiiWallet = finnieKoiiWalletProvider
 }
 

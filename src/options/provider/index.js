@@ -52,6 +52,7 @@ import { setCollections } from 'options/actions/collections'
 import { setAssets, setCollectionNfts } from 'options/actions/assets'
 import { addNotification, setNotifications } from 'options/actions/notifications'
 import { useNfts } from './hooks/useNfts'
+import { TYPE } from 'constants/accountConstants'
 
 import { Transaction, sendAndConfirmTransaction, Message as _Messagge, Connection, clusterApiUrl } from '@solana/web3.js'
 
@@ -107,6 +108,7 @@ export default ({ children }) => {
   const [didStates, setDIDStates] = useDID({ newAddress, walletLoaded, setIsLoading, setError })
   const [modalStates, setModalStates] = useModal()
   const [settingStates, setSettingStates] = useSetting({ walletLoaded })
+
   useAddHandler({ setError, setNotification, setModalStates, setIsLoading })
   useNfts({ setCollections, setIsLoading, walletLoaded, newAddress, pathname })
 
@@ -116,6 +118,30 @@ export default ({ children }) => {
   const accounts = useSelector((state) => state.accounts)
   const defaultAccount = useSelector((state) => state.defaultAccount.AR)
   const assets = useSelector((state) => state.assets)
+  const _defaultAccount = useSelector((state) => state.defaultAccount)
+
+  /* 
+    Activated chain
+  */
+  const [activatedChain, setActivatedChain] = useState('TYPE_ARWEAVE')
+
+
+  useEffect(() => {
+    const loadActivatedChain = async () => {
+      const activatedChain = await storage.setting.get.activatedChain()
+      if (activatedChain) setActivatedChain(activatedChain)
+    }
+  
+    loadActivatedChain()
+  }, [])
+  
+  /* 
+      Account to display
+    */
+  const displayingAccount = useMemo(() => {
+    if (activatedChain === TYPE.ARWEAVE) return _defaultAccount.AR
+    if (activatedChain === TYPE.ETHEREUM) return _defaultAccount.ETH
+  }, [_defaultAccount.AR, _defaultAccount.ETH, activatedChain])
 
   /* EDITING COLLECTION ID */
   const [editingCollectionId, setEditingCollectionId] = useState(null)
@@ -324,6 +350,8 @@ export default ({ children }) => {
   return (
     <GalleryContext.Provider
       value={{
+        displayingAccount,
+        setActivatedChain,
         file,
         handleShareNFT,
         isDragging,

@@ -13,7 +13,7 @@ const Gallery = () => {
   const [dislayLength, setDisplayLength] = useState(filteredNfts.length)
 
   useEffect(() => {
-    if (dislayLength === filteredNfts.length) {
+    if (dislayLength === filteredNfts.length && displayingNfts === filteredNfts.slice(0, 16)) {
       return
     } else {
       setDisplayLength(filteredNfts.length)

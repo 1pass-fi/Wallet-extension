@@ -21,7 +21,7 @@ import { setNotifications } from 'options/actions/notifications'
 import { showAddressBook } from 'options/actions/addressBook'
 
 const NavBar = () => {
-  const { isLoading } = useContext(GalleryContext)
+  const { isLoading, displayingAccount } = useContext(GalleryContext)
   const { profilePictureId } = useContext(DidContext)
   const [showDropdown, setShowDropdown] = useState(false)
   const [showNotificationsCenter, setShowNotificationsCenter] = useState(false)
@@ -127,13 +127,7 @@ const NavBar = () => {
           )}
         </div>
         <Balance
-          account={
-            !isEmpty(defaultArweaveAccount?.address)
-              ? defaultArweaveAccount
-              : !isEmpty(defaultEthereumAccount?.address)
-                ? defaultEthereumAccount
-                : defaultSolanaAccount
-          }
+          account={displayingAccount}
         />
         <div className="relative">
           <div
