@@ -46,6 +46,8 @@ const getTransactionType = (network) => async (transactionPayload) => {
     }
 
     if (network === 'SOLANA') {
+      const contractAddress = get(transactionPayload, 'contractAddress')
+      if (contractAddress) return TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER
       return TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER
     }
   } catch (err) {

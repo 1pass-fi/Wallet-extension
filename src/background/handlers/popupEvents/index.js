@@ -46,6 +46,7 @@ const getEmitter = () => {
   popupEvents.on(MESSAGES.UPDATE_SOLANA_PROVIDER, controller.updateSolanaProvider)
   popupEvents.on(MESSAGES.SEND_CUSTOM_TOKEN_ETH, controller.sendCustomTokenEth)
   popupEvents.on(MESSAGES.SEND_CUSTOM_TOKEN_AR, controller.sendCustomTokenAr)
+  popupEvents.on(MESSAGES.SEND_CUSTOM_TOKEN_SOL, controller.sendCustomTokenSol)
   popupEvents.on(MESSAGES.TEST, controller.test)
 
   return popupEvents

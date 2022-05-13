@@ -37,6 +37,7 @@ import updateEthereumProvider from './updateEthereumProvider'
 import updateSolanaProvider from './updateSolanaProvider'
 import sendCustomTokenEth from './sendCustomTokenEth'
 import sendCustomTokenAr from './sendCustomTokenAr'
+import sendCustomTokenSol from './sendCustomTokenSol'
 import test from './test'
 
 export default {
@@ -79,5 +80,6 @@ export default {
   updateSolanaProvider,
   sendCustomTokenEth,
   sendCustomTokenAr,
+  sendCustomTokenSol,
   test
 }

@@ -13,6 +13,8 @@ import { TRANSACTION_TYPE } from './constants'
 import decodeTags from 'utils/decodeTags'
 import { popupAccount } from 'services/account'
 
+import { getSolanaCustomTokensData } from 'utils/getTokenData'
+
 const fromHexToDecimal = (hexString) => {
   let number = null
   if (hexString) number = parseInt(hexString, 16)
@@ -156,6 +158,25 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
             setRawValue(quantity)
             setCustomTokenRecipient(customTokenRecipient)
             setBalance(balance)
+          }
+
+          if (network === 'SOLANA') {
+            const contractAddress = get(transactionPayload, 'contractAddress')
+            setContractAddress(contractAddress)   
+            const rawValue = get(transactionPayload, 'value')
+            const recipient = get(transactionPayload, 'to')
+            const sender = get(transactionPayload, 'from')
+
+            const tokenData = await getSolanaCustomTokensData(contractAddress, sender)
+
+            const rate = 10 ** (tokenData.decimal === 1 ? 0: tokenData.decimal)
+
+            setTokenIconPath(tokenData.logo)
+            setSymbol(tokenData.symbol)
+            setValue(rawValue / rate)
+            setRawValue(rawValue)
+            setCustomTokenRecipient(recipient)
+            setBalance(tokenData.balance / rate)
           }
         }
       } catch (err) {

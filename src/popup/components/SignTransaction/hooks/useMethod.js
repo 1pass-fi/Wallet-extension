@@ -86,6 +86,22 @@ const useMethod = ({
     })
   }
 
+  const handleSendCustomTokenSol = async () => {
+    console.log('RUNNNN')
+    console.log({
+      sender: transactionPayload.from,
+      customTokenRecipient,
+      contractAddress,
+      rawValue
+    })
+    return await request.wallet.sendCustomTokenSol({
+      sender: transactionPayload.from,
+      customTokenRecipient,
+      contractAddress,
+      rawValue
+    })
+  }
+
   const onSubmitTransaction = async () => {
     // if (!totalFee) {
     //   setError('Transaction fee has not been loaded')
@@ -157,7 +173,11 @@ const useMethod = ({
             }
             break
           case 'SOLANA':
-            result = await handleSendSol()
+            if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
+              result = await handleSendCustomTokenSol()
+            } else {
+              result = await handleSendSol()
+            }
         }
 
         setIsLoading(false)

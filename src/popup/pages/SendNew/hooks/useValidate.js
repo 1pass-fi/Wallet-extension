@@ -38,7 +38,7 @@ const useValidate = ({ selectedToken, amount, recipient, selectedAccount, alchem
       if (selectedToken?.decimal === 1) rate = 1
       
       // validate balance
-      if (balance <= (amount * rate)) return throwValidationError(NOT_ENOUGH_BALANCE)
+      // if (balance <= (amount * rate)) return throwValidationError(NOT_ENOUGH_BALANCE)
 
       // validate recipient address
       if (selectedAccount?.type === TYPE.ARWEAVE) {

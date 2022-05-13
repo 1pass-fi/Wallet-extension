@@ -150,22 +150,44 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
       }
 
       if (network === 'SOLANA') {
-        const transactionPayload = {
-          from: sender,
-          to: recipient,
-          value: fromSolToLamp(value)
-        }
+        if (contractAddress) {
+          // send custom token
+          const transactionPayload = {
+            from: sender,
+            to: recipient,
+            value: sendValue,
+            contractAddress
+          }
 
-        const requestPayload = {
-          network: 'SOLANA',
-          transactionPayload,
-          recipientName
-        }
+          const requestPayload = {
+            network: 'SOLANA',
+            transactionPayload,
+            recipientName
+          }
 
-        await storage.generic.set.pendingRequest({
-          type: REQUEST.TRANSACTION,
-          data: requestPayload
-        })
+          await storage.generic.set.pendingRequest({
+            type: REQUEST.TRANSACTION,
+            data: requestPayload
+          })
+        } else {
+          // send origin token
+          const transactionPayload = {
+            from: sender,
+            to: recipient,
+            value: fromSolToLamp(value)
+          }
+  
+          const requestPayload = {
+            network: 'SOLANA',
+            transactionPayload,
+            recipientName
+          }
+  
+          await storage.generic.set.pendingRequest({
+            type: REQUEST.TRANSACTION,
+            data: requestPayload
+          })
+        }
       }
     } catch (err) {
       console.error('send token error: ', err.message)
