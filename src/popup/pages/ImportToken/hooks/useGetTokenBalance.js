@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
 import storage from 'services/storage'
 import Web3 from 'web3'
+import { TOKEN_PROGRAM_ID, AccountLayout } from '@solana/spl-token'
+import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js'
+
+import { isEthereumAddress, isSolanaAddress } from 'utils'
+
+import { getSolanaCustomTokensData } from 'utils/getTokenData'
 
 import ERC20_ABI from 'abi/ERC20.json'
 
@@ -10,7 +16,7 @@ const useGetTokenBalance = ({ contractAddress, userAddress }) => {
   const [tokenDecimal, setTokenDecimal] = useState(null)
 
   useEffect(() => {
-    const loadContract = async () => {
+    const loadEthereumContract = async () => {
       try {
         const provider = await storage.setting.get.ethereumProvider()
         const web3 = new Web3(provider)
@@ -28,7 +34,24 @@ const useGetTokenBalance = ({ contractAddress, userAddress }) => {
       }
     }
 
-    if (contractAddress && userAddress) loadContract()
+    const loadSolanaContract = async () => {
+      try {
+        const {     
+          balance,
+          symbol,
+          decimal,
+        } = await getSolanaCustomTokensData(contractAddress, userAddress)
+
+        setTokenSymbol(symbol)
+        setBalance(balance)
+        setTokenDecimal(decimal)
+      } catch (err) {
+
+      }
+    }
+
+    if (contractAddress && userAddress && isSolanaAddress(userAddress)) loadSolanaContract()
+    if (contractAddress && userAddress && isEthereumAddress(userAddress)) loadEthereumContract()
   }, [contractAddress, userAddress])
 
   const TokenBalance = () => (

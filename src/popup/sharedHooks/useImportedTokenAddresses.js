@@ -8,6 +8,9 @@ import { TYPE } from 'constants/accountConstants'
 
 import ERC20_ABI from 'abi/ERC20.json'
 
+import hardcodeSolanaTokens from 'solanaTokens/solanaTokens'
+import { SOL_NETWORK_PROVIDER } from 'constants/koiConstants'
+
 const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displayingAccount }) => {
   const [importedTokenAddresses, setImportedTokenAddresses] = useState([])
 
@@ -28,8 +31,24 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
     try {
       const clusterSlug = await storage.setting.get.solanaProvider()
 
+      let chainId
+      switch(clusterSlug) {
+        case SOL_NETWORK_PROVIDER.MAINNET:
+          chainId = 101
+          break
+        case SOL_NETWORK_PROVIDER.TESTNET:
+          chainId = 102
+          break
+        case SOL_NETWORK_PROVIDER.DEVNET:
+          chainId = 103
+          break
+      }
+
+      let _hardcodeSolanaTokens = hardcodeSolanaTokens.filter(token => token.chainId === chainId)
+
       const tokenlistContainer = await new TokenListProvider().resolve()
-      const tokenList = tokenlistContainer.filterByClusterSlug(clusterSlug).getList()
+      let tokenList = tokenlistContainer.filterByClusterSlug(clusterSlug).getList()
+      tokenList =[...tokenList, ..._hardcodeSolanaTokens]
 
       const result = tokenList.find(
         ({ address }) => address?.toLowerCase() === tokenAddress?.toLowerCase()

@@ -12,6 +12,8 @@ import { AccountLayout, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import storage from 'services/storage'
 import ERC20_ABI from 'abi/ERC20.json'
 
+import customTokens from 'solanaTokens/solanaTokens'
+
 export const getLogoPath = (logo) => {
   const path = `img/erc20/${logo}`
   return path
@@ -58,42 +60,54 @@ const getTokenData = async (contractAddress, userAddress) => {
 }
 
 export const getSolanaCustomTokensData = async (contractAddress, userAddress) => {
-  const clusterSlug = await storage.setting.get.solanaProvider()
-  const connection = new Connection(clusterApiUrl(clusterSlug))
-
-  const tokenlistContainer = await new TokenListProvider().resolve()
-  const tokenList = tokenlistContainer.filterByClusterSlug(clusterSlug).getList()
-
-  const { logoURI: logo, name, decimals: decimal, symbol } = find(tokenList, (token) =>
-    includes(token.address?.toLowerCase(), contractAddress?.toLowerCase())
-  )
-
-  const selectedCurrency = (await storage.setting.get.selectedCurrency()) || 'USD'
-  const { data } = await axios.get(
-    `https://api.coingecko.com/api/v3/simple/token_price/solana?contract_addresses=${contractAddress}&vs_currencies=${selectedCurrency}`
-  )
-  const price = get(data, [contractAddress.toLowerCase(), selectedCurrency.toLowerCase()])
-
-  const tokenAccounts = await connection.getTokenAccountsByOwner(new PublicKey(userAddress), {
-    programId: TOKEN_PROGRAM_ID
-  })
-
-  let balance = 0
-  tokenAccounts.value.forEach((e) => {
-    const accountInfo = AccountLayout.decode(e.account.data)
-    if (includes(accountInfo.mint?.toLowerCase(), userAddress?.toLowerCase())) {
-      balance = accountInfo.amount
+  try {
+    const clusterSlug = await storage.setting.get.solanaProvider()
+    const connection = new Connection(clusterApiUrl(clusterSlug))
+  
+    const tokenlistContainer = await new TokenListProvider().resolve()
+    const tokenList = tokenlistContainer.filterByClusterSlug(clusterSlug).getList()
+  
+    let foundToken = find(tokenList, (token) =>
+      includes(token.address?.toLowerCase(), contractAddress?.toLowerCase())
+    )
+  
+    if (!foundToken) {
+      foundToken = find(customTokens, (token) =>
+        includes(token.address?.toLowerCase(), contractAddress?.toLowerCase())
+      ) || {}
     }
-  })
+    
+    const { logoURI: logo, name, decimals: decimal, symbol } = foundToken
+  
+    const selectedCurrency = (await storage.setting.get.selectedCurrency()) || 'USD'
+    const { data } = await axios.get(
+      `https://api.coingecko.com/api/v3/simple/token_price/solana?contract_addresses=${contractAddress}&vs_currencies=${selectedCurrency}`
+    )
+    const price = get(data, [contractAddress.toLowerCase(), selectedCurrency.toLowerCase()])
+  
+    const tokenAccounts = await connection.getTokenAccountsByOwner(new PublicKey(userAddress), {
+      programId: TOKEN_PROGRAM_ID
+    })
+    
+    let balance = 0
+    tokenAccounts.value.forEach((e) => {
+      const accountInfo = AccountLayout.decode(e.account.data)
+      if (accountInfo.mint?.toString().toLowerCase() === contractAddress?.toLowerCase()) {
+        balance = parseInt(accountInfo.amount)
+      }
+    })
 
-  return {
-    logo,
-    balance,
-    price,
-    name,
-    symbol,
-    decimal,
-    contractAddress
+    return {
+      logo,
+      balance,
+      price,
+      name,
+      symbol,
+      decimal,
+      contractAddress
+    }
+  } catch (err) {
+    console.error(err.message)
   }
 }
 

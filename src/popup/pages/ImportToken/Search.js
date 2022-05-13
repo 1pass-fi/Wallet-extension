@@ -13,6 +13,10 @@ import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 // utils
 import { getLogoPath } from 'utils/getTokenData'
 import { TYPE } from 'constants/accountConstants'
+import storage from 'services/storage'
+
+import hardcodeTokens from 'solanaTokens/solanaTokens'
+import { SOL_NETWORK_PROVIDER } from 'constants/koiConstants'
 
 let currentTimeout = [null]
 
@@ -23,12 +27,31 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
   const [tokenList, setTokenList] = useState([])
 
   useEffect(() => {
-    if (displayingAccount.type === TYPE.SOLANA) {
-      const loadSolTokens = async () => {
-        const tokens = await new TokenListProvider().resolve()
-        setSolanaTokenList(tokens.filterByClusterSlug('mainnet-beta').getList())
+    const loadSolTokens = async () => {
+      const provider = await storage.setting.get.solanaProvider()
+
+      let chainId
+      switch(provider) {
+        case SOL_NETWORK_PROVIDER.MAINNET:
+          chainId = 101
+          break
+        case SOL_NETWORK_PROVIDER.TESTNET:
+          chainId = 102
+          break
+        case SOL_NETWORK_PROVIDER.DEVNET:
+          chainId = 103
       }
 
+      const tokens = await new TokenListProvider().resolve()
+
+      const _hardcodeTokens = hardcodeTokens.filter(token => token.chainId === chainId)
+
+      const tokenList = [...tokens.filterByClusterSlug(provider).getList(), ..._hardcodeTokens]
+
+      setSolanaTokenList(tokenList)
+    }
+
+    if (displayingAccount.type === TYPE.SOLANA) {
       loadSolTokens()
     }
   }, [displayingAccount.type])
