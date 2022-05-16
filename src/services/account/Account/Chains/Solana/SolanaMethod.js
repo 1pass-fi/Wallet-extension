@@ -65,6 +65,19 @@ export class SolanaMethod {
         address: this.solTool.address
       }
     })
+
+    const oldActivites = (await this.#chrome.getActivities()) || []
+    const newestOfOldActivites = oldActivites[0]
+
+    if (newestOfOldActivites) {
+      const idx = findIndex(activities, (data) => data.id === newestOfOldActivites.id)
+
+      for (let i = 0; i < idx; i++) {
+        activities[i].seen = false
+      }
+    }
+
+    await this.#chrome.setActivities(activities)
   }
 
   async transfer(_, recipient, qty) {
