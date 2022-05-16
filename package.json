@@ -47,7 +47,7 @@
         "@solana/buffer-layout": "^4.0.0",
         "@solana/spl-token": "^0.2.0",
         "@solana/spl-token-registry": "^0.2.3796",
-        "@solana/web3.js": "^1.37.2",
+        "@solana/web3.js": "^1.41.4",
         "@storybook/addon-actions": "^6.2.9",
         "@storybook/addon-essentials": "^6.2.9",
         "@storybook/addon-links": "^6.2.9",

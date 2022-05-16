@@ -1,9 +1,18 @@
-import { clusterApiUrl, Connection, Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js'
-import { getOrCreateAssociatedTokenAccount, transfer } from '@solana/spl-token'
+// import { clusterApiUrl, Connection, Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js'
+// import { getOrCreateAssociatedTokenAccount, transfer } from '@solana/spl-token'
+
+import { Keypair, clusterApiUrl, Connection, PublicKey, Transaction, sendAndConfirmTransaction } from '@solana/web3.js'
+import { getOrCreateAssociatedTokenAccount, transfer, createTransferInstruction } from '@solana/spl-token'
 
 import { backgroundAccount } from 'services/account'
 import { SolanaTool } from 'services/solana'
 import storage from 'services/storage'
+
+const getSigners = (signerOrMultisig, multiSigners) => {
+  return signerOrMultisig instanceof PublicKey
+    ? [signerOrMultisig, multiSigners]
+    : [signerOrMultisig.publicKey, [signerOrMultisig]]
+}
 
 export default async (payload, next) => {
   try {
@@ -12,6 +21,7 @@ export default async (payload, next) => {
     console.log({ sender, customTokenRecipient, contractAddress, rawValue })
 
     const credentials = await backgroundAccount.getCredentialByAddress(sender)
+
     const solanaTool = new SolanaTool(credentials)
     const fromWallet = solanaTool.keypair
 
@@ -20,8 +30,6 @@ export default async (payload, next) => {
 
     const mint = new PublicKey(contractAddress)
 
-    console.log('mint', mint)
-
     const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
       connection,
       fromWallet,
@@ -29,7 +37,6 @@ export default async (payload, next) => {
       fromWallet.publicKey
     )
 
-    console.log('fromTokenAccount', fromTokenAccount)
     const toWallet = new PublicKey(customTokenRecipient)
 
     const toTokenAccount = await getOrCreateAssociatedTokenAccount(
@@ -39,24 +46,24 @@ export default async (payload, next) => {
       toWallet
     )
 
-    console.log('toTokenAccount', toTokenAccount)
+    const multiSigners = []
+    const [ownerPublicKey, signers] = getSigners(fromWallet, multiSigners)
 
-    console.log({
-      connection,
-      fromWallet,
-      _: fromTokenAccount.address,
-      __: toTokenAccount.address,
-      ___: fromWallet.publicKey,
-      rawValue
-    })
+    const transaction = new Transaction().add(
+      createTransferInstruction(
+        fromTokenAccount.address,
+        toTokenAccount.address,
+        ownerPublicKey,
+        rawValue,
+        multiSigners,
+        'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
+      )
+    )
 
-    const signature = await transfer(
+    const signature = await sendAndConfirmTransaction(
       connection,
-      fromWallet,
-      fromTokenAccount.address,
-      toTokenAccount.address,
-      fromWallet.publicKey,
-      parseInt(rawValue)
+      transaction,
+      [fromWallet,...signers]
     )
 
     console.log('signature', signature)
