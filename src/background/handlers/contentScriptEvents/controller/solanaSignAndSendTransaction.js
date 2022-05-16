@@ -1,6 +1,6 @@
-import bs58 from 'bs58'
+import bs58, { decode } from 'bs58'
 import { Transaction, sendAndConfirmTransaction, Message, Connection, clusterApiUrl, PublicKey } from '@solana/web3.js'
-import { decodeTransferInstructionUnchecked } from '@solana/spl-token'
+import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
 
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
@@ -15,7 +15,7 @@ import { REQUEST, OS, WINDOW_SIZE } from 'constants/koiConstants'
 // Utils
 import { createWindow } from 'utils/extension'
 
-const getTransactionDataFromMessage = (transactionMessage) => {
+const getTransactionDataFromMessage = async (transactionMessage) => {
   try {
     console.log('transactionMessage', transactionMessage)
   
@@ -36,13 +36,33 @@ const getTransactionDataFromMessage = (transactionMessage) => {
 
     console.log('decodeData', decodeData)
     
-    console.log('value', Number(decodeData.data.amount) / 16777216)
-  
-    return {
-      from: decodeData.keys.source.pubkey.toString(),
-      to: decodeData.keys.destination.pubkey.toString(),
-      value: Number(decodeData.data.amount) / 16777216
+    if (decodeData.data.instruction === 3) {
+      console.log('1')
+      const provider = await storage.setting.get.solanaProvider()
+      const connection = new Connection(clusterApiUrl(provider), 'confirmed')
+      console.log('2')
+      const contractData = await getAccount(connection, new PublicKey(decodeData.keys.source.pubkey))
+
+      console.log('contractData', contractData)
+
+      const contractAddress = contractData.mint.toString()
+
+      return {
+        from: decodeData.keys.source.pubkey.toString(),
+        to: decodeData.keys.destination.pubkey.toString(),
+        value: Number(decodeData.data.amount),
+        contractAddress
+      }
+    } else {
+      console.log('value', Number(decodeData.data.amount) / 16777216)
+      return {
+        from: decodeData.keys.owner.pubkey.toString(),
+        to: decodeData.keys.destination.pubkey.toString(),
+        value: Number(decodeData.data.amount) / 16777216,
+      }
     }
+
+  
   } catch (err) {
     console.error(err)
   }
