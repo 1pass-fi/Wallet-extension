@@ -17,46 +17,31 @@ import { createWindow } from 'utils/extension'
 
 const getTransactionDataFromMessage = async (transactionMessage) => {
   try {
-    console.log('transactionMessage', transactionMessage)
-  
     const message = Message.from(bs58.decode(transactionMessage))
-  
-    const senderAddress = message.accountKeys[0].toString()
-    const recipientAddress = message.accountKeys[1].toString()
-  
-    console.log('senderAddress', senderAddress)
-    console.log('recipientAddress', recipientAddress)
-  
-    console.log('message', message)
 
     const transaction = Transaction.populate(message)
     const instruction = transaction.instructions[0]
 
     const decodeData = decodeTransferInstructionUnchecked(instruction)
 
-    console.log('decodeData', decodeData)
-    
     if (decodeData.data.instruction === 3) {
-      console.log('1')
       const provider = await storage.setting.get.solanaProvider()
       const connection = new Connection(clusterApiUrl(provider), 'confirmed')
-      console.log('2')
+
       const contractData = await getAccount(connection, new PublicKey(decodeData.keys.source.pubkey))
-
-      console.log('contractData', contractData)
-
       const contractAddress = contractData.mint.toString()
 
+      const recipientAccount = await getAccount(connection, new PublicKey(decodeData.keys.destination.pubkey))
+
       return {
-        from: decodeData.keys.source.pubkey.toString(),
-        to: decodeData.keys.destination.pubkey.toString(),
+        from: decodeData.keys.owner.pubkey.toString(),
+        to: recipientAccount.owner.toString(),
         value: Number(decodeData.data.amount),
         contractAddress
       }
     } else {
-      console.log('value', Number(decodeData.data.amount) / 16777216)
       return {
-        from: decodeData.keys.owner.pubkey.toString(),
+        from: decodeData.keys.source.pubkey.toString(),
         to: decodeData.keys.destination.pubkey.toString(),
         value: Number(decodeData.data.amount) / 16777216,
       }
