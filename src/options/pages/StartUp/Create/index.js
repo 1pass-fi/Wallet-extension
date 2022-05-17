@@ -144,7 +144,8 @@ export default () => {
 
       history.push({
         pathname: '/success',
-        state: 'create-key-state'
+        state: 'create-key-state',
+        type: walletType
       })
     } catch (err) {
       console.log(err.message)
