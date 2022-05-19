@@ -121,7 +121,6 @@ const useMethod = ({
             } 
           })
         })
-        await storage.generic.set.pendingRequest({})
       } else {
         /* 
           Send request to background
