@@ -12,8 +12,6 @@ import ExpiredTxModal from 'popup/components/modals/expiredTxModal'
 import { setActivities } from 'popup/actions/activities'
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
-
-
 const Activity = ({ activities, setActivities }) => {
   const displayingAccount = useSelector(getDisplayingAccount)
   const [pendingTransactions, setPendingTransactions] = useState([])
@@ -23,12 +21,14 @@ const Activity = ({ activities, setActivities }) => {
     txInfo: {}
   })
 
+  const [accountActivites, setAccountActivites] = useState([])
+
   useEffect(() => {
     const loadActivities = async () => {
       const account = await popupAccount.getAccount({ address: displayingAccount.address })
       const allActivities = await account.get.activities()
       // const allActivities = await storage.generic.get.allActivities()
-      setActivities(allActivities)
+      setAccountActivites(allActivities)
     }
 
     const loadPendingTransactions = async () => {
@@ -40,7 +40,7 @@ const Activity = ({ activities, setActivities }) => {
 
     loadActivities()
     loadPendingTransactions()
-  }, [])
+  }, [activities])
 
   useEffect(() => {
     const setSeen = async () => {
@@ -82,7 +82,7 @@ const Activity = ({ activities, setActivities }) => {
         return
       }
     }
-  }, [pendingTransactions, activities])
+  }, [pendingTransactions, accountActivites])
 
   return (
     <div
@@ -108,7 +108,7 @@ const Activity = ({ activities, setActivities }) => {
           setDeleteTransactionModalStatus={setDeleteTransactionModalStatus}
         />
       ))}
-      {activities.slice(0, pages * 10).map((activity) => (
+      {accountActivites.slice(0, pages * 10).map((activity) => (
         <ActivityRow
           key={activity.id}
           activityName={activity.activityName}
@@ -125,7 +125,7 @@ const Activity = ({ activities, setActivities }) => {
           seen={activity.seen}
         />
       ))}
-      {pages * 10 < activities.length && (
+      {pages * 10 < accountActivites.length && (
         <div className="w-full text-center flex items-center justify-center">
           <button
             className="px-1.5 py-1 text-sm flex items-center justify-center bg-blue-800 text-white m-2 font-semibold rounded"
