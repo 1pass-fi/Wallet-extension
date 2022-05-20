@@ -17,6 +17,15 @@ export class SolanaMethod {
   }
 
   async loadMyContent() {
+    const address = 'DSZQfr2LGQoeXPrVTfZMTYmzLN6ZaRBfLWPCRfAuUGEW'
+    const publicAddress = await solRayz.resolveToWalletAddress({
+      text: address
+    })
+  
+    const nftArray = await solRayz.getParsedNftAccountsByOwner({ publicAddress })
+  
+    console.log('nftArray', nftArray)
+
     const res = {
       contents: [],
       newContents: []

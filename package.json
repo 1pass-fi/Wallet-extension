@@ -42,6 +42,7 @@
         "@_koi/sdk": "2.4.7",
         "@metamask/contract-metadata": "^1.33.0",
         "@metamask/eth-sig-util": "^4.0.0",
+        "@nfteyez/sol-rayz": "^0.10.2",
         "@polymer/paper-button": "^3.0.1",
         "@ramonak/react-progress-bar": "^4.2.0",
         "@solana/buffer-layout": "^4.0.0",
