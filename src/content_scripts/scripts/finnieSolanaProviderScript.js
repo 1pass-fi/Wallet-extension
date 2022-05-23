@@ -124,15 +124,16 @@ const finnieSolanaProviderScript = `() => {
       this.connection = connection
       this.isConnected = false
       this.isFinnie = true
+      this.isPhantom = true
+      this.publicKey = null
     }
 
-    publicKey() {
-      return 'example_public_key'
-    }
-
-    connect() {
+    async connect() {
       const message = { type: ENDPOINTS.SOLANA_CONNECT }
-      return this.connection.send(message)
+      const result = await this.connection.send(message)
+      const publicKey = new window.solanaWeb3.PublicKey(result[0])
+      this.publicKey = publicKey
+      return publicKey
     }
 
     disconnect() {
