@@ -15,8 +15,7 @@ export default async (payload, next) => {
       console.log('updateSolanaProvider ', solanaProvider)
       await storage.setting.set.solanaProvider(solanaProvider)
 
-      // TODO Thuan Ngo
-      // helpers.sendMessageToPopupPorts({ type: MESSAGES.RELOAD_GALLERY })
+      helpers.sendMessageToPopupPorts({ type: MESSAGES.RELOAD_GALLERY })
     }
     next()
   } catch (err) {
