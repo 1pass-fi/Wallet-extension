@@ -68,7 +68,7 @@ export class SolanaMethod {
         return ALL_NFT_LOADED
       }
 
-      const newContentList = await this.getNftData(nfts, false)
+      const newContentList = await this.getNftData(newContents, false)
       console.log('newContentList', newContentList)
 
       const res = {
