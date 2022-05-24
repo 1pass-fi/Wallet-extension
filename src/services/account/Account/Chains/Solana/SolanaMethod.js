@@ -1,8 +1,12 @@
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
-import { clusterApiUrl, Connection, LAMPORTS_PER_SOL } from '@solana/web3.js'
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
+import { clusterApiUrl, Connection, PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js'
 import moment from 'moment'
+import { findIndex } from 'lodash'
 
-import { ACCOUNT } from 'constants/accountConstants'
+import { getChromeStorage } from 'utils'
+import { PATH, ALL_NFT_LOADED } from 'constants/koiConstants'
+import { ACCOUNT, TYPE } from 'constants/accountConstants'
 
 export class SolanaMethod {
   #chrome
@@ -17,17 +21,297 @@ export class SolanaMethod {
   }
 
   async loadMyContent() {
-    const res = {
-      contents: [],
-      newContents: []
-    }
+    try {
+      const nfts = await this.fetchNfts()
+      console.log('Fetched contents: ', nfts.length)
 
-    return res
+      /* 
+        get nft list for this ETH address from Chrome storage
+      */
+      const contentList =
+        (await getChromeStorage(`${this.solTool.address}_assets`))[
+          `${this.solTool.address}_assets`
+        ] || []
+      console.log('Saved contents: ', contentList.length)
+
+      /*
+        There're two cases that NFTs will be filtered:
+        - Failed load content (removed on functions cacheNFTs on "background/popupEventHandlers")
+        - Out-of-date NFTs
+      */
+      const solAssetIds = nfts.map(
+        (nft) => `${nft.metadata.properties.files[0].uri?.slice(24, 60)}_${this.solTool.address}`
+      )
+
+      const validContents = contentList.filter((content) => {
+        return solAssetIds.indexOf(content.txId) !== -1
+      })
+      console.log('Up to date saved content: ', validContents.length)
+
+      /* 
+        detect new nft(s) that were not saved in Chrome storage
+      */
+      const storageContentIds = validContents.map((nft) => nft.txId)
+
+      const newContents = nfts.filter((nft) => {
+        return (
+          storageContentIds.indexOf(
+            `${nft.metadata.properties.files[0].uri?.slice(24, 60)}_${this.solTool.address}`
+          ) === -1
+        )
+      })
+
+      console.log('New contents: ', newContents.length)
+
+      if (!newContents.length && nfts.length === contentList.length) {
+        console.log('ALL NFT LOADED')
+        return ALL_NFT_LOADED
+      }
+
+      const newContentList = await this.getNftData(nfts, false)
+      console.log('newContentList', newContentList)
+
+      const res = {
+        contents: [...validContents, ...newContentList],
+        newContents
+      }
+      return res
+    } catch (e) {
+      console.error('Unable to load SOL content', e)
+      throw new Error(err.message)
+    }
+  }
+
+  async fetchNfts() {
+    const METADATA_PROGRAM_ID_PUBLIC_KEY = new PublicKey(
+      'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s'
+    )
+    if (this.solTool.connection === null) throw new Error('No connection')
+    const connection = this.solTool.connection
+
+    // const solanaProvider = await storage.setting.get.solanaProvider()
+    // connection = new Connection(clusterApiUrl(solanaProvider), 'confirmed')
+    console.log('SOL provider', connection)
+
+    const wallets = [this.solTool.address]
+    const tokenAccountsByOwnerAddress = await Promise.all(
+      wallets.map(async (address) =>
+        connection.getParsedTokenAccountsByOwner(new PublicKey(address), {
+          programId: TOKEN_PROGRAM_ID
+        })
+      )
+    )
+
+    const potentialNFTsByOwnerAddress = tokenAccountsByOwnerAddress
+      .map((ta) => ta.value)
+      .map((value) => {
+        const mintAddresses = value
+          .map((v) => ({
+            mint: v.account.data.parsed.info.mint,
+            tokenAmount: v.account.data.parsed.info.tokenAmount
+          }))
+          .filter(({ tokenAmount }) => {
+            // Filter out the token if we don't have any balance
+            const ownsNFT = tokenAmount.amount !== '0'
+            // Filter out the tokens that don't have 0 decimal places.
+            // NFTs really should have 0
+            const hasNoDecimals = tokenAmount.decimals === 0
+            return ownsNFT && hasNoDecimals
+          })
+          .map(({ mint }) => mint)
+        return { mintAddresses }
+      })
+
+    const nfts = await Promise.all(
+      potentialNFTsByOwnerAddress.map(async ({ mintAddresses }) => {
+        const programAddresses = await Promise.all(
+          mintAddresses.map(
+            async (mintAddress) =>
+              (
+                await PublicKey.findProgramAddress(
+                  [
+                    Buffer.from('metadata'),
+                    METADATA_PROGRAM_ID_PUBLIC_KEY.toBytes(),
+                    new PublicKey(mintAddress).toBytes()
+                  ],
+                  METADATA_PROGRAM_ID_PUBLIC_KEY
+                )
+              )[0]
+          )
+        )
+
+        const accountInfos = await connection.getMultipleAccountsInfo(programAddresses)
+        const nonNullInfos = accountInfos?.filter(Boolean) ?? []
+
+        const metadataUrls = nonNullInfos
+          .map((x) => this._utf8ArrayToNFTType(x?.data))
+          .filter(Boolean)
+
+        const results = await Promise.all(
+          metadataUrls.map(async (item) =>
+            fetch(item?.url)
+              .then((res) => res.json())
+              .catch(() => null)
+          )
+        )
+
+        const metadatas = results.filter(Boolean).map((metadata, i) => ({
+          metadata,
+          type: metadataUrls[i].type
+        }))
+
+        return metadatas.filter((r) => !!r.metadata)
+      })
+    )
+    return nfts[0]
+  }
+
+  async getNftData(nfts, getBase64) {
+    try {
+      let nftContents = await Promise.all(
+        nfts.map(async (nft) => {
+          try {
+            const nftMetadata = nft.metadata
+            const token_id = nftMetadata.properties.files[0].uri?.slice(24, 60)
+            return {
+              name: nftMetadata.name,
+              isKoiWallet: false,
+              txId: `${token_id}_${this.solTool.address}`,
+              imageUrl: nftMetadata.properties.files[0].uri,
+              galleryUrl: `${PATH.GALLERY}#/details/${token_id}_${this.solTool.address}`,
+              koiRockUrl: '',
+              isRegistered: false,
+              contentType: nftMetadata.properties.category,
+              totalViews: 0,
+              createdAt: '',
+              description: nftMetadata.description,
+              type: TYPE.SOLANA,
+              address: this.solTool.address
+            }
+          } catch (error) {
+            return null
+          }
+        })
+      )
+
+      // filter failed load contents
+      nftContents = nftContents.filter((nft) => !!nft)
+      return nftContents
+    } catch (error) {
+      console.log(error.message)
+      return []
+    }
+  }
+
+  _utf8ArrayToNFTType = (array) => {
+    const text = new TextDecoder().decode(array)
+
+    // for the sake of simplicty/readability/understandability, we check the decoded url
+    // one by one against metaplex, star atlas, and others
+    return (
+      this._metaplex(text) || this._starAtlas(text) || this._jsonExtension(text) || this._ipfs(text)
+    )
+  }
+
+  _metaplex = (text) => {
+    const query = 'https://'
+    const startIndex = text.indexOf(query)
+    if (startIndex === -1) return null
+
+    // metaplex standard nfts live in arweave, see link below
+    // https://github.com/metaplex-foundation/metaplex/blob/81023eb3e52c31b605e1dcf2eb1e7425153600cd/js/packages/web/src/contexts/meta/processMetaData.ts#L29
+    const isMetaplex = text.includes('arweave')
+    const foundNFTUrl = startIndex > -1 && isMetaplex
+    if (!foundNFTUrl) return null
+
+    const suffix = '/'
+    const suffixIndex = text.indexOf(suffix, startIndex + query.length)
+    if (suffixIndex === -1) return null
+
+    const hashLength = 43
+    const endIndex = suffixIndex + suffix.length + hashLength
+    const url = text.substring(startIndex, endIndex)
+    return {
+      type: 'METAPLEX',
+      url
+    }
+  }
+
+  _starAtlas = (text) => {
+    const query = 'https://'
+    const startIndex = text.indexOf(query)
+    if (startIndex === -1) return null
+
+    // star atlas nfts live in https://galaxy.staratlas.com/nfts/...
+    const isStarAtlas = text.includes('staratlas')
+    const foundNFTUrl = startIndex > -1 && isStarAtlas
+    if (!foundNFTUrl) return null
+
+    const suffix = '/nfts/'
+    const suffixIndex = text.indexOf(suffix, startIndex + query.length)
+    if (suffixIndex === -1) return null
+
+    const hashLength = 44
+    const endIndex = suffixIndex + suffix.length + hashLength
+    const url = text.substring(startIndex, endIndex)
+    return {
+      type: 'STAR_ATLAS',
+      url
+    }
+  }
+
+  _jsonExtension = (text) => {
+    // Look for 'https://<...>.json' and that will be the metadata location
+    // examples:
+    // https://d1b6hed00dtfsr.cloudfront.net/9086.json
+    // https://cdn.piggygang.com/meta/3ad355d46a9cb2ee57049db4df57088f.json
+
+    const query = 'https://'
+    const startIndex = text.indexOf(query)
+    if (startIndex === -1) return null
+
+    const extension = '.json'
+    const extensionIndex = text.indexOf(extension)
+    const foundNFTUrl = startIndex > -1 && extensionIndex > -1
+    if (!foundNFTUrl) return null
+
+    const endIndex = extensionIndex + extension.length
+    const url = text.substring(startIndex, endIndex)
+    return {
+      type: 'METAPLEX',
+      url
+    }
+  }
+
+  _ipfs = (text) => {
+    // Look for 'https://ipfs.io/ipfs/<...alphanumeric...>' and that will be the metadata location
+    // e.g. https://ipfs.io/ipfs/QmWJC47JYuvxYw63cRq81bBNGFXPjhQH8nXg71W5JeRMrC
+
+    const query = 'https://'
+    const startIndex = text.indexOf(query)
+    if (startIndex === -1) return null
+
+    const isIpfs = text.includes('ipfs')
+    const foundNFTUrl = startIndex > -1 && isIpfs
+    if (!foundNFTUrl) return null
+
+    const suffix = '/ipfs/'
+    const suffixIndex = text.indexOf(suffix, startIndex + query.length)
+    if (suffixIndex === -1) return null
+
+    let endIndex = suffixIndex + suffix.length
+    while (/[a-zA-Z0-9]/.test(text.charAt(endIndex++))) {}
+
+    const url = text.substring(startIndex, endIndex)
+    return {
+      type: 'METAPLEX',
+      url
+    }
   }
 
   async updateActivities() {
     const connection = new Connection(clusterApiUrl(this.solTool.provider))
-  
+
     const signatureInfos = await connection.getSignaturesForAddress(this.solTool.keypair.publicKey)
 
     const transactions = await Promise.all(
@@ -89,10 +373,6 @@ export class SolanaMethod {
   async transactionConfirmedStatus(txHash) {
     /* TODO Minh Vu */
     return { dropped: false, confirmed: true }
-  }
-
-  async getNftData() {
-    return []
   }
 
   async resendTransaction(txId) {}

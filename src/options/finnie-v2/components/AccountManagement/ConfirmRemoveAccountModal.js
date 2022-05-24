@@ -53,7 +53,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
         Have to handle removing this address from activatedAccount if this
         address is the activated account.
       */
-
+      // TODO LongP - handle SOLANA cases
       if (accountStates.length !== 0) {
         const arAccount = find(accountStates, (v) => v.type === TYPE.ARWEAVE)
         const ethAccount = find(accountStates, (v) => v.type === TYPE.ETHEREUM)
