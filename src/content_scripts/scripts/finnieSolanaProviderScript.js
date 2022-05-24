@@ -126,6 +126,7 @@ const finnieSolanaProviderScript = `() => {
       this.isFinnie = true
       this.isPhantom = true
       this.publicKey = null
+      this.isConnected = false
     }
 
     async connect() {
@@ -133,6 +134,8 @@ const finnieSolanaProviderScript = `() => {
       const result = await this.connection.send(message)
       const publicKey = new window.solanaWeb3.PublicKey(result[0])
       this.publicKey = publicKey
+      this.isConnected = true
+      this.emit('connect')
       return publicKey
     }
 
@@ -141,9 +144,24 @@ const finnieSolanaProviderScript = `() => {
       return this.connection.send(message)
     }
 
-    signAllTransactions() {
-      const message = { type: ENDPOINTS.SOLANA_SIGN_ALL_TRANSACTIONS }
-      return this.connection.send(message)
+    async signAllTransactions(payload) {
+      const transactions = payload.map(transaction => base58.encode(transaction.serializeMessage()))
+      const message = { type: ENDPOINTS.SOLANA_SIGN_ALL_TRANSACTIONS, data: transactions }
+      let result = await this.connection.send(message)
+      result.forEach((signature, index) => {
+        // const _message = window.solanaWeb3.Message.from(base58.decode(message))
+        // const transaction = window.solanaWeb3.Transaction.populate(_message)
+        // return transaction
+        console.log('signature', signature)
+        signature[0].publicKey = new window.solanaWeb3.PublicKey(signature[0].publicKey)
+        signature[0].signature = Uint8Array.from(signature[0].signature.data)
+
+        console.log('signature 0', signature[0])
+        payload[0].addSignature(signature[0].publicKey, signature[0].signature)
+      })
+      console.log('transactions', payload)
+
+      return payload
     }
 
     signTransaction() {
