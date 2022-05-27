@@ -29,7 +29,7 @@ export default () => {
         <NeedHelp />
       </Route>
       <Route path="/settings/*">
-        <HasArweave content="Koii Identity only supports AR wallets.">
+        <HasArweave content="Koii Identity only supports AR wallets." hasArweaveAccounts={true}>
           <Kid />
         </HasArweave>
       </Route>
