@@ -29,25 +29,29 @@ const Home = () => {
       style={{ overflowY: 'overlay' }}
       ref={ref}
     >
-      <ParallaxProvider scrollContainer={scrollEl}>
-        <div className="pt-4.75 pl-4.75 mb-3.5">
-          <HomeTop
+      {isEmpty(displayingAccount?.address) ? (
+        <div>Select Account</div>
+      ) : (
+        <ParallaxProvider scrollContainer={scrollEl}>
+          <div className="pt-4.75 pl-4.75 mb-3.5">
+            <HomeTop
+              displayingAccount={displayingAccount}
+              price={price}
+              currentProviderAddress={currentProviderAddress}
+              setCurrentProviderAddress={setCurrentProviderAddress}
+            />
+            <PopupBackground
+              style={{ width: '177px', height: '156px' }}
+              className="absolute top-13.5 right-0 z-10"
+            />
+          </div>
+          <AccountInfo
             displayingAccount={displayingAccount}
             price={price}
             currentProviderAddress={currentProviderAddress}
-            setCurrentProviderAddress={setCurrentProviderAddress}
           />
-          <PopupBackground
-            style={{ width: '177px', height: '156px' }}
-            className="absolute top-13.5 right-0 z-10"
-          />
-        </div>
-        <AccountInfo
-          displayingAccount={displayingAccount}
-          price={price}
-          currentProviderAddress={currentProviderAddress}
-        />
-      </ParallaxProvider>
+        </ParallaxProvider>
+      )}
     </div>
   )
 }
