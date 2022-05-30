@@ -5,6 +5,8 @@ import isEmpty from 'lodash/isEmpty'
 
 import AccountInfo from './AccountInfo/AccountInfo'
 import PopupBackground from 'img/popup/popup-background.svg'
+import PopupArrow from 'img/popup/popup-arrow-icon.svg'
+import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
@@ -30,7 +32,20 @@ const Home = () => {
       ref={ref}
     >
       {isEmpty(displayingAccount?.address) ? (
-        <div>Select Account</div>
+        <div>
+          <PopupArrow className="absolute" style={{ top: '67px', left: '30px' }} />
+          <PopupBackground
+            style={{ width: '177px', height: '156px' }}
+            className="absolute top-13.5 right-0 z-10"
+          />
+          <div
+            style={{ width: '300px' }}
+            className="font-normal text-2xl tracking-finnieSpacing-tight ml-5 mt-40 text-blue-800"
+          >
+            Select an account to see a summary.
+          </div>
+          <FinnieIcon className="ml-5 mt-8" style={{ width: '54px', height: '40px' }} />
+        </div>
       ) : (
         <ParallaxProvider scrollContainer={scrollEl}>
           <div className="pt-4.75 pl-4.75 mb-3.5">
