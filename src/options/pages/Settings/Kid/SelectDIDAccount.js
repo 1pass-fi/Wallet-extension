@@ -114,9 +114,12 @@ const SelectDIDAccount = ({ close }) => {
                     </CopyToClipboard>
                   </div>
                 </div>
-                <div className="ml-10 flex flex-col font-normal text-xs tracking-finnieSpacing-tight">
+                <div
+                  className="ml-10 mt-1 flex flex-col font-normal text-xs text-left tracking-finnieSpacing-tight justify-between"
+                  style={{ height: '38px' }}
+                >
                   <div>Balance: {formatNumber(arAccount.koiBalance, 2)} KOII</div>
-                  {/* <div>Assetss: </div> */}
+                  <div>Assets: {arAccount.totalAssets.length}</div>
                 </div>
                 {arAccount?.address === defaultArAccount?.address ? (
                   <FavoriteIcon className="absolute right-6 top-4" />

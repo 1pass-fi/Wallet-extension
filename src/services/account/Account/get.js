@@ -114,6 +114,7 @@ export class AccountGetter {
     const inviteSpent = await this.inviteSpent()
     const totalReward = await this.totalReward()
     const didData = await this.didData()
+    const totalAssets = await this.assets()
 
     return { 
       address, 
@@ -126,7 +127,8 @@ export class AccountGetter {
       affiliateCode,
       inviteSpent,
       totalReward,
-      didData
+      didData,
+      totalAssets
     }
   }
 
