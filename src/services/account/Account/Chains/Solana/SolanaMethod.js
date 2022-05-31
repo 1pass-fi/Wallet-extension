@@ -39,9 +39,7 @@ export class SolanaMethod {
         - Failed load content (removed on functions cacheNFTs on "background/popupEventHandlers")
         - Out-of-date NFTs
       */
-      const solAssetIds = nfts.map(
-        (nft) => `${nft.metadata.properties.files[0].uri?.slice(24, 60)}_${this.solTool.address}`
-      )
+      const solAssetIds = nfts.map((nft) => nft.txId)
 
       const validContents = contentList.filter((content) => {
         return solAssetIds.indexOf(content.txId) !== -1
@@ -54,11 +52,7 @@ export class SolanaMethod {
       const storageContentIds = validContents.map((nft) => nft.txId)
 
       const newContents = nfts.filter((nft) => {
-        return (
-          storageContentIds.indexOf(
-            `${nft.metadata.properties.files[0].uri?.slice(24, 60)}_${this.solTool.address}`
-          ) === -1
-        )
+        return storageContentIds.indexOf(nft.txId) === -1
       })
 
       console.log('New contents: ', newContents.length)
@@ -140,16 +134,21 @@ export class SolanaMethod {
           )
         )
 
-        const accountInfos = await connection.getMultipleAccountsInfo(programAddresses)
-        const nonNullInfos = accountInfos?.filter(Boolean) ?? []
+        let accountInfos = await connection.getMultipleAccountsInfo(programAddresses)
+        accountInfos = accountInfos.map((accountInfo, i) => [
+          accountInfo,
+          potentialNFTsByOwnerAddress.map(({ mintAddresses }) => mintAddresses[i])[0]
+        ])
+
+        const nonNullInfos = accountInfos?.filter((a) => !!a[0]) ?? []
 
         const metadataUrls = nonNullInfos
-          .map((x) => this._utf8ArrayToNFTType(x?.data))
-          .filter(Boolean)
+          .map((x) => [this._utf8ArrayToNFTType(x[0]?.data), x[1]])
+          .filter((metadataUrl) => !!metadataUrl[0])
 
         const results = await Promise.all(
           metadataUrls.map(async (item) =>
-            fetch(item?.url)
+            fetch(item[0]?.url)
               .then((res) => res.json())
               .catch(() => null)
           )
@@ -157,7 +156,8 @@ export class SolanaMethod {
 
         const metadatas = results.filter(Boolean).map((metadata, i) => ({
           metadata,
-          type: metadataUrls[i].type
+          type: metadataUrls[i][0].type,
+          txId: metadataUrls[i][1]
         }))
 
         return metadatas.filter((r) => !!r.metadata)
@@ -176,9 +176,9 @@ export class SolanaMethod {
             return {
               name: nftMetadata.name,
               isKoiWallet: false,
-              txId: `${token_id}_${this.solTool.address}`,
+              txId: `${nft.txId}`,
               imageUrl: nftMetadata.properties.files[0].uri,
-              galleryUrl: `${PATH.GALLERY}#/details/${token_id}_${this.solTool.address}`,
+              galleryUrl: `${PATH.GALLERY}#/details/${nft.txId}`,
               koiRockUrl: '',
               isRegistered: false,
               contentType: nftMetadata.properties.category,

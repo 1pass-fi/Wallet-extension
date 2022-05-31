@@ -16,12 +16,14 @@ import ShareIcon from 'img/v2/share-icon.svg'
 import LinkIcon from 'img/v2/link-icon.svg'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import SolanaLogo from 'img/v2/solana-logo.svg'
 import GoBackIcon from 'img/v2/back-icon.svg'
 
 import { TYPE } from 'constants/accountConstants'
 import formatDatetime from 'finnie-v2/utils/formatDatetime'
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import { GalleryContext } from 'options/galleryContext'
+import storage from 'services/storage'
 
 import { popupBackgroundRequest as request } from 'services/request/popup'
 
@@ -63,7 +65,7 @@ const NFTDetail = () => {
   }, [nft, privateNFT])
 
   useEffect(() => {
-    const getNft = () => {
+    const getNft = async () => {
       let nft = find(assets.nfts, { txId: id })
 
       if (isEmpty(nft)) {
@@ -72,6 +74,12 @@ const NFTDetail = () => {
       } else {
         setOwnerImported(true)
       }
+
+      if (nft?.type === TYPE.SOLANA) {
+        const solanaProvider = await storage.setting.get.solanaProvider()
+        nft.provider = solanaProvider
+      }
+
       setNft(nft)
       isString(nft?.isPrivate) ? setPrivateNFT(false) : setPrivateNFT(nft?.isPrivate)
     }
@@ -118,10 +126,14 @@ const NFTDetail = () => {
           <div className="mx-auto mt-28 flex flex-col md:flex-row">
             <div className="w-100.25 h-101 mr-7 relative">
               <NFTMedia contentType={nft.contentType} source={nft.imageUrl} showFull={true} />
-              {!isArweaveNft ? (
+              {nft?.type === TYPE.ETHEREUM && (
                 <EthLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
-              ) : (
+              )}
+              {nft?.type === TYPE.ARWEAVE && (
                 <ArweaveLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
+              )}
+              {nft?.type === TYPE.SOLANA && (
+                <SolanaLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
               )}
 
               {nft.type === TYPE.ARWEAVE && !nft.pending && (
@@ -144,43 +156,64 @@ const NFTDetail = () => {
 
             <div className="w-115 h-101 relative">
               <div className="finnieSpacing-tighter font-semibold text-5xl mb-2">{nft.name}</div>
-              <div className="flex items-center text-sm mb-2">
-                <div
-                  className="h-6 mr-2.25"
-                  data-tip={
-                    isString(nft?.isPrivate)
-                      ? 'The public/private feature <br>does not currently support this NFT. <br>Try the public/private feature with <br>a more recent NFT.'
-                      : nftTooltipMessage
-                  }
-                >
-                  {/* <ToggleButton
+              {nft?.type !== TYPE.SOLANA && (
+                <div className="flex items-center text-sm mb-2">
+                  <div
+                    className="h-6 mr-2.25"
+                    data-tip={
+                      isString(nft?.isPrivate)
+                        ? 'The public/private feature <br>does not currently support this NFT. <br>Try the public/private feature with <br>a more recent NFT.'
+                        : nftTooltipMessage
+                    }
+                  >
+                    {/* <ToggleButton
                     value={privateNFT}
                     setValue={setPrivateNFT}
                     disabled={isString(nft?.isPrivate) || isPendingUpdate || nft?.pending}
                     handleUpdateNft={handleUpdateNft}
                   /> */}
+                  </div>
+                  {`Registered: ${formatDatetime(nft.createdAt)}`}
                 </div>
-                {`Registered: ${formatDatetime(nft.createdAt)}`}
-              </div>
-              <div className="flex gap-4 mb-4">
-                <a href={`https://viewblock.io/arweave/tx/${nft.txId}`} target="_blank">
-                  <Button
-                    disabled={disabledFeatures || nft.pending}
-                    icon={BlockIcon}
-                    text={nft.pending ? 'Pending Transaction' : 'Explore Block'}
-                    variant="inversed"
-                    className="border-opacity-20"
-                  />
-                </a>
-                <a href={`https://koi.rocks/content-details/${nft.txId}`} target="_blank">
-                  <Button
-                    disabled={disabledFeatures}
-                    icon={LeaderboardIcon}
-                    text="Leaderboard"
-                    variant="warning"
-                  />
-                </a>
-              </div>
+              )}
+
+              {nft?.type === TYPE.SOLANA ? (
+                <div className="flex gap-4 mb-4">
+                  <a
+                    // href={`https://solscan.io/tx/${nft.txId}?cluster=${nft.provider}`}
+                    href={`https://solscan.io/token/${nft.txId}?cluster=${nft.provider}`}
+                    target="_blank"
+                  >
+                    <Button
+                      icon={BlockIcon}
+                      text={'Explore Block'}
+                      variant="inversed"
+                      className="border-opacity-20"
+                    />
+                  </a>
+                </div>
+              ) : (
+                <div className="flex gap-4 mb-4">
+                  <a href={`https://viewblock.io/arweave/tx/${nft.txId}`} target="_blank">
+                    <Button
+                      disabled={disabledFeatures || nft.pending}
+                      icon={BlockIcon}
+                      text={nft.pending ? 'Pending Transaction' : 'Explore Block'}
+                      variant="inversed"
+                      className="border-opacity-20"
+                    />
+                  </a>
+                  <a href={`https://koi.rocks/content-details/${nft.txId}`} target="_blank">
+                    <Button
+                      disabled={disabledFeatures}
+                      icon={LeaderboardIcon}
+                      text="Leaderboard"
+                      variant="warning"
+                    />
+                  </a>
+                </div>
+              )}
+
               <p className="w-full max-h-18 overflow-y-scroll overflow-x-none break-words text-sm leading-6 pr-4 whitespace-pre-line">
                 {nft.description}
               </p>
@@ -196,63 +229,65 @@ const NFTDetail = () => {
                   ))}
               </div>
 
-              <div className="w-full mt-7.5">
-                {!nft.pending && (
-                  <div className="w-full flex items-center justify-between h-11.5 gap-5 mb-6">
-                    <Button
-                      disabled={disabledFeatures}
-                      size="lg"
-                      icon={ShareIcon}
-                      className="h-full w-7/12"
-                      text="Share for Rewards"
-                      onClick={() => {
-                        setShowShareNFTModal(true)
-                      }}
-                    />
+              {nft?.type !== TYPE.SOLANA && (
+                <div className="w-full mt-7.5">
+                  {!nft.pending && (
+                    <div className="w-full flex items-center justify-between h-11.5 gap-5 mb-6">
+                      <Button
+                        disabled={disabledFeatures}
+                        size="lg"
+                        icon={ShareIcon}
+                        className="h-full w-7/12"
+                        text="Share for Rewards"
+                        onClick={() => {
+                          setShowShareNFTModal(true)
+                        }}
+                      />
+                      <div
+                        data-tip={
+                          !ownerImported
+                            ? `This NFT is owned by a wallet with the address ${nft.address}.<br>
+                      Please import this wallet and continue to transfer NFT.`
+                            : ''
+                        }
+                        className="h-full w-5/12"
+                      >
+                        <Button
+                          disabled={disabledFeatures || !ownerImported}
+                          size="lg"
+                          icon={LinkIcon}
+                          variant="inversed"
+                          text="Transfer NFT"
+                          className="w-full h-full"
+                          onClick={() => handleShareNFT(nft.txId)}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {!nft.pending && (
                     <div
+                      className="h-11.5 w-full"
                       data-tip={
                         !ownerImported
                           ? `This NFT is owned by a wallet with the address ${nft.address}.<br>
-                      Please import this wallet and continue to transfer NFT.`
+                    Please import this wallet and continue to bridge NFT.`
                           : ''
                       }
-                      className="h-full w-5/12"
                     >
                       <Button
-                        disabled={disabledFeatures || !ownerImported}
                         size="lg"
-                        icon={LinkIcon}
-                        variant="inversed"
-                        text="Transfer NFT"
+                        icon={isArweaveNft ? EthLogo : ArweaveLogo}
+                        variant="lightBlue"
+                        text="Bridge your NFT to a different Blockchain"
+                        onClick={() => setShowExportModal(nft)}
+                        disabled={!ownerImported}
                         className="w-full h-full"
-                        onClick={() => handleShareNFT(nft.txId)}
                       />
                     </div>
-                  </div>
-                )}
-
-                {!nft.pending && (
-                  <div
-                    className="h-11.5 w-full"
-                    data-tip={
-                      !ownerImported
-                        ? `This NFT is owned by a wallet with the address ${nft.address}.<br>
-                    Please import this wallet and continue to bridge NFT.`
-                        : ''
-                    }
-                  >
-                    <Button
-                      size="lg"
-                      icon={isArweaveNft ? EthLogo : ArweaveLogo}
-                      variant="lightBlue"
-                      text="Bridge your NFT to a different Blockchain"
-                      onClick={() => setShowExportModal(nft)}
-                      disabled={!ownerImported}
-                      className="w-full h-full"
-                    />
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
               <ToolTip />
             </div>
           </div>
