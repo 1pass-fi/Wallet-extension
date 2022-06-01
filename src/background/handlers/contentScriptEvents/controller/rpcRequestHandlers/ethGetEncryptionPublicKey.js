@@ -18,7 +18,7 @@ export default async (payload, tab, next) => {
     const screenHeight = screen.availHeight
     const os = window.localStorage.getItem(OS)
     let windowData = {
-      url: chrome.extension.getURL('/popup.html'),
+      url: chrome.runtime.getURL('/popup.html'),
       focused: true,
       type: 'popup'
     }
@@ -50,7 +50,7 @@ export default async (payload, tab, next) => {
 
     createWindow(windowData, {
       beforeCreate: async () => {
-        chrome.browserAction.setBadgeText({ text: '1' })
+        chrome.action.setBadgeText({ text: '1' })
         chrome.runtime.onMessage.addListener(async function (popupMessage, sender, sendResponse) {
           if (popupMessage.requestId === requestId) {
             const approved = popupMessage.approved
@@ -85,7 +85,7 @@ export default async (payload, tab, next) => {
         })
       },
       afterClose: async () => {
-        chrome.browserAction.setBadgeText({ text: '' })
+        chrome.action.setBadgeText({ text: '' })
         next({ error: 'User rejected request' })
         await storage.generic.set.pendingRequest({})
       }

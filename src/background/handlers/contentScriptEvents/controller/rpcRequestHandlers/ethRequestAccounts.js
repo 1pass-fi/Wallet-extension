@@ -10,7 +10,7 @@ import { v4 as uuid } from 'uuid'
 export default async (payload, tab, next) => {
   try {
     const { hadPermission, origin, favicon, hasPendingRequest, connectedAddresses } = tab
-    
+
     if (hadPermission) {
       /* Response with array of connected addresses */
       return next({ data: connectedAddresses })
@@ -42,9 +42,9 @@ export default async (payload, tab, next) => {
     const screenHeight = screen.availHeight
     const os = window.localStorage.getItem(OS)
     let windowData = {
-      url: chrome.extension.getURL('/popup.html'),
+      url: chrome.runtime.getURL('/popup.html'),
       focused: true,
-      type: 'popup',
+      type: 'popup'
     }
     if (os == 'win') {
       windowData = {
@@ -66,58 +66,55 @@ export default async (payload, tab, next) => {
 
     createWindow(windowData, {
       beforeCreate: async () => {
-        chrome.browserAction.setBadgeText({ text: '1' })
-        chrome.runtime.onMessage.addListener(
-          async function(popupMessage, _, sendResponse) {
-            if (popupMessage.requestId === requestId) {
-              const approved = popupMessage.approved
-              if (approved) {
-                // connect account
-                var pendingRequest = await storage.generic.get.pendingRequest()
-                if (isEmpty(pendingRequest)) {
-                  next({ error: { code: 4001, data: 'Request has been removed' } })
-                  chrome.runtime.sendMessage({
-                    requestId,
-                    error: 'Request has been removed'
-                  })
-                  return
-                }
-                try {
-                  const checkedAddresses = popupMessage.checkedAddresses
-  
-                  let siteConnectedAddresses = await storage.setting.get.siteConnectedAddresses()
-  
-                  if (!siteConnectedAddresses[origin]) {
-                    siteConnectedAddresses[origin] = { ethereum: [], arweave: [] }
-                  }
-                  siteConnectedAddresses[origin].ethereum = checkedAddresses 
-                  await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
-                  await storage.setting.set.activatedEthereumAccountAddress(checkedAddresses[0])
-
-                  chrome.runtime.sendMessage({
-                    requestId,
-                    finished: true
-                  })
-  
-                  next({ data: siteConnectedAddresses[origin].ethereum })
-                } catch (err) {
-                  console.error(err.message)
-                }  
-              } else {
-                next({ error: {code: 4001, data: 'User rejected'} })
+        chrome.action.setBadgeText({ text: '1' })
+        chrome.runtime.onMessage.addListener(async function (popupMessage, _, sendResponse) {
+          if (popupMessage.requestId === requestId) {
+            const approved = popupMessage.approved
+            if (approved) {
+              // connect account
+              var pendingRequest = await storage.generic.get.pendingRequest()
+              if (isEmpty(pendingRequest)) {
+                next({ error: { code: 4001, data: 'Request has been removed' } })
+                chrome.runtime.sendMessage({
+                  requestId,
+                  error: 'Request has been removed'
+                })
+                return
               }
+              try {
+                const checkedAddresses = popupMessage.checkedAddresses
+
+                let siteConnectedAddresses = await storage.setting.get.siteConnectedAddresses()
+
+                if (!siteConnectedAddresses[origin]) {
+                  siteConnectedAddresses[origin] = { ethereum: [], arweave: [] }
+                }
+                siteConnectedAddresses[origin].ethereum = checkedAddresses
+                await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
+                await storage.setting.set.activatedEthereumAccountAddress(checkedAddresses[0])
+
+                chrome.runtime.sendMessage({
+                  requestId,
+                  finished: true
+                })
+
+                next({ data: siteConnectedAddresses[origin].ethereum })
+              } catch (err) {
+                console.error(err.message)
+              }
+            } else {
+              next({ error: { code: 4001, data: 'User rejected' } })
             }
           }
-        )
+        })
         await storage.generic.set.pendingRequest({
           type: REQUEST.PERMISSION,
-          data: requestPayload 
+          data: requestPayload
         })
-
       },
       afterClose: async () => {
-        chrome.browserAction.setBadgeText({ text: '' })
-        next({ error: {code: 4001, data: 'User rejected'} })
+        chrome.action.setBadgeText({ text: '' })
+        next({ error: { code: 4001, data: 'User rejected' } })
         await storage.generic.set.pendingRequest({})
       }
     })

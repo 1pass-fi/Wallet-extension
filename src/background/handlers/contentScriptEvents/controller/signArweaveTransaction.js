@@ -33,20 +33,20 @@ export default async (payload, tab, next) => {
         from: activatedAddress,
         to: get(transaction, 'target'),
         value: get(transaction, 'quantity'),
-        data: get(transaction , 'data'),
+        data: get(transaction, 'data'),
         tags
       }
     }
-    
+
     console.log('requestPayload', requestPayload)
 
     const screenWidth = screen.availWidth
     const screenHeight = screen.availHeight
     const os = window.localStorage.getItem(OS)
     let windowData = {
-      url: chrome.extension.getURL('/popup.html'),
+      url: chrome.runtime.getURL('/popup.html'),
       focused: true,
-      type: 'popup',
+      type: 'popup'
     }
     if (os == 'win') {
       windowData = {
@@ -68,33 +68,28 @@ export default async (payload, tab, next) => {
 
     createWindow(windowData, {
       beforeCreate: async () => {
-        chrome.browserAction.setBadgeText({ text: '1' })
-        chrome.runtime.onMessage.addListener(
-          async function(popupMessage, sender, sendResponse) {
-            if (popupMessage.requestId === requestId) {
-              const approved = popupMessage.approved
-              if (approved) {
-                try {
-                  /* Sign Arweave transaction */
-                  const credentials = await backgroundAccount.getCredentialByAddress(activatedAddress)
-                  const account = await backgroundAccount.getAccount(credentials)
-                  const { data: transactionData } = await storage.generic.get.transactionData()
+        chrome.action.setBadgeText({ text: '1' })
+        chrome.runtime.onMessage.addListener(async function (popupMessage, sender, sendResponse) {
+          if (popupMessage.requestId === requestId) {
+            const approved = popupMessage.approved
+            if (approved) {
+              try {
+                /* Sign Arweave transaction */
+                const credentials = await backgroundAccount.getCredentialByAddress(activatedAddress)
+                const account = await backgroundAccount.getAccount(credentials)
+                const { data: transactionData } = await storage.generic.get.transactionData()
 
-                  transaction.data = transactionData
-                  const clonedTransaction = await helpers.cloneTransaction(transaction)
-                  await account.method.signTx(clonedTransaction)
+                transaction.data = transactionData
+                const clonedTransaction = await helpers.cloneTransaction(transaction)
+                await account.method.signTx(clonedTransaction)
 
-                  next({ data: clonedTransaction })
-                  chrome.runtime.sendMessage({ requestId, finished: true })
-                } catch (err) {
-
-                } 
-              } else {
-
-              }
+                next({ data: clonedTransaction })
+                chrome.runtime.sendMessage({ requestId, finished: true })
+              } catch (err) {}
+            } else {
             }
           }
-        )
+        })
 
         await storage.generic.set.pendingRequest({
           type: REQUEST.AR_TRANSACTION,
@@ -102,11 +97,10 @@ export default async (payload, tab, next) => {
         })
       },
       afterClose: async () => {
-        chrome.browserAction.setBadgeText({ text: '' })
+        chrome.action.setBadgeText({ text: '' })
         await storage.generic.set.pendingRequest({})
       }
     })
-
   } catch (err) {
     console.error(err.message)
     next({ error: 'Sign transaction error' })

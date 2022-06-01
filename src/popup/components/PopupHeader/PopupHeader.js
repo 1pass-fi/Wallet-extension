@@ -24,7 +24,7 @@ const Header = ({ setShowConnectedSites }) => {
     chrome.windows.getCurrent((w) => {
       try {
         const windowId = w.id
-        chrome.tabs.getSelected(windowId, (tab) => {
+        chrome.scripting.getSelected(windowId, (tab) => {
           const origin = tab.url.split('/')[0] + '//' + tab.url.split('/')[2]
           setCurrentTabOrigin(origin)
           storage.setting.get.disabledOrigins().then((disabledOrigins) => {
@@ -36,19 +36,19 @@ const Header = ({ setShowConnectedSites }) => {
   }
 
   const goToSetting = () => {
-    const url = chrome.extension.getURL('options.html#/settings/wallet')
+    const url = chrome.runtime.getURL('options.html#/settings/wallet')
     chrome.tabs.create({ url })
   }
 
   const goToDID = () => {
     const DID = defaultArweaveAccount?.didData?.state?.kID
     const url = 'https://koii.id/' + (DID || '')
-    chrome.tabs.create({ url })
+    chrome.scripting.create({ url })
   }
 
   const goToReportAnIssue = () => {
     const url = 'https://share.hsforms.com/1Nmy8p6zWSN2J2skJn5EcOQc20dg'
-    chrome.tabs.create({ url })
+    chrome.scripting.create({ url })
   }
 
   const handleDisableFinnie = async () => {

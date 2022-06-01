@@ -8,7 +8,6 @@ import storage from 'services/storage'
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
 
-
 export default async (payload, tab, next) => {
   const { hadPermission, origin, favicon, hasPendingRequest } = tab
   try {
@@ -18,18 +17,18 @@ export default async (payload, tab, next) => {
     const savedAccountCount = await backgroundAccount.count()
     if (!savedAccountCount) {
       const path = '/options.html'
-      const url = chrome.extension.getURL(path)
-      next({ data: {status: 401, data: 'Please import your wallet.'} })
-      chrome.tabs.create({ url })
+      const url = chrome.runtime.getURL(path)
+      next({ data: { status: 401, data: 'Please import your wallet.' } })
+      chrome.scripting.create({ url })
       return
     } else {
       const arWalletCount = await backgroundAccount.count(TYPE.ARWEAVE)
       if (!arWalletCount) {
-        next({ data: {status: 401, data: 'Please import an Arweave wallet to Finnie.'} })
+        next({ data: { status: 401, data: 'Please import an Arweave wallet to Finnie.' } })
         return
       }
     }
-    
+
     if (!hadPermission) {
       if (hasPendingRequest) {
         next({ data: { status: 400, data: `Request pending` } })
@@ -40,9 +39,9 @@ export default async (payload, tab, next) => {
       const screenHeight = screen.availHeight
       const os = window.localStorage.getItem(OS)
       let windowData = {
-        url: chrome.extension.getURL('/popup.html'),
+        url: chrome.runtime.getURL('/popup.html'),
         focused: true,
-        type: 'popup',
+        type: 'popup'
       }
 
       if (os == 'win') {
@@ -73,47 +72,45 @@ export default async (payload, tab, next) => {
 
       createWindow(windowData, {
         beforeCreate: async () => {
-          chrome.browserAction.setBadgeText({ text: '1' })
-          chrome.runtime.onMessage.addListener(
-            async function(popupMessage) {
-              if (popupMessage.requestId === requestId) {
-                const approved = popupMessage.approved
-                if (approved) {
-                  try {
-                    const checkedAddresses = popupMessage.checkedAddresses
-    
-                    let siteConnectedAddresses = await storage.setting.get.siteConnectedAddresses()
-    
-                    if (!siteConnectedAddresses[origin]) {
-                      siteConnectedAddresses[origin] = { ethereum: [], arweave: [] }
-                    }
-                    siteConnectedAddresses[origin].arweave = checkedAddresses 
-                    await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
-                    await storage.setting.set.activatedArweaveAccountAddress(checkedAddresses[0])
+          chrome.action.setBadgeText({ text: '1' })
+          chrome.runtime.onMessage.addListener(async function (popupMessage) {
+            if (popupMessage.requestId === requestId) {
+              const approved = popupMessage.approved
+              if (approved) {
+                try {
+                  const checkedAddresses = popupMessage.checkedAddresses
 
-                    chrome.runtime.sendMessage({
-                      requestId,
-                      finished: true
-                    })
-    
-                    next({ data: { status: 200, message: siteConnectedAddresses[origin].arweave } })
-                  } catch (err) {
-                    console.error(err.message)
-                  } 
-                } else {
-                  next({ data: { status: 400, message: 'User rejected' } })
+                  let siteConnectedAddresses = await storage.setting.get.siteConnectedAddresses()
+
+                  if (!siteConnectedAddresses[origin]) {
+                    siteConnectedAddresses[origin] = { ethereum: [], arweave: [] }
+                  }
+                  siteConnectedAddresses[origin].arweave = checkedAddresses
+                  await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
+                  await storage.setting.set.activatedArweaveAccountAddress(checkedAddresses[0])
+
+                  chrome.runtime.sendMessage({
+                    requestId,
+                    finished: true
+                  })
+
+                  next({ data: { status: 200, message: siteConnectedAddresses[origin].arweave } })
+                } catch (err) {
+                  console.error(err.message)
                 }
+              } else {
+                next({ data: { status: 400, message: 'User rejected' } })
               }
             }
-          )
+          })
 
           await storage.generic.set.pendingRequest({
             type: REQUEST.PERMISSION,
-            data: requestPayload 
+            data: requestPayload
           })
         },
         afterClose: async () => {
-          chrome.browserAction.setBadgeText({ text: '' })
+          chrome.action.setBadgeText({ text: '' })
           next({ data: { status: 400, message: 'User cancelled the login.' } })
           await storage.generic.set.pendingRequest({})
         }
@@ -124,5 +121,5 @@ export default async (payload, tab, next) => {
   } catch (err) {
     console.log(err.message)
     next({ data: { status: 500, data: 'Something went wrong.' } })
-  } 
+  }
 }

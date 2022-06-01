@@ -21,14 +21,17 @@ export const closeCurrentWindow = () => {
   })
 }
 
-export const createWindow = (windowData, { beforeCreate = () => {}, afterClose = () => {} } = {}) => {
+export const createWindow = (
+  windowData,
+  { beforeCreate = () => {}, afterClose = () => {} } = {}
+) => {
   closeCurrentWindow().then(() => {
     setTimeout(async () => {
       await beforeCreate()
-      chrome.windows.create(windowData , w => {
+      chrome.windows.create(windowData, (w) => {
         currentWindow = w
         afterCloseCallbacks[w.id] = afterClose
-        chrome.windows.onRemoved.addListener(async wIndex => {
+        chrome.windows.onRemoved.addListener(async (wIndex) => {
           if (afterCloseCallbacks[w.id]) {
             afterCloseCallbacks[w.id]()
             afterCloseCallbacks[w.id] = undefined
@@ -43,7 +46,7 @@ export const getSelectedTab = (timeout = 200, retries = 0) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       try {
-        chrome.tabs.getSelected(null, tab => {
+        chrome.scripting.getSelected(null, (tab) => {
           resolve(tab)
         })
       } catch (err) {
@@ -62,8 +65,9 @@ export const performOnDifferentOs = (win, others) => (payload) => {
   }
 }
 
-export const getPlatformInfo = () => new Promise(resolve => {
-  chrome.runtime.getPlatformInfo((info) => {
-    resolve(info.os)
+export const getPlatformInfo = () =>
+  new Promise((resolve) => {
+    chrome.runtime.getPlatformInfo((info) => {
+      resolve(info.os)
+    })
   })
-})

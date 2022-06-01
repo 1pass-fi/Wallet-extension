@@ -87,8 +87,8 @@ export default ({ setModalStates }) => {
       // reload all Finnie tabs when receive RELOAD_GALLERY message from background
       const reloadGalleryHandler = new EventHandler(MESSAGES.RELOAD_GALLERY, async () => {
         try {
-          chrome.tabs.query({ url: chrome.extension.getURL('*') }, (tabs) => {
-            tabs.map((tab) => chrome.tabs.reload(tab.id))
+          chrome.scripting.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
+            tabs.map((tab) => chrome.scripting.reload(tab.id))
           })
         } catch (err) {
           console.log('reload gallery page - error: ', err)

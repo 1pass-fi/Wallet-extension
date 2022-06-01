@@ -1,41 +1,24 @@
 {
   "version": "1.0",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Finnie",
   "description": "Finnie Chrome Extension.",
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "lib/js/browser-polyfill.js",
-        "content.js"
-      ]
+      "matches": ["<all_urls>"],
+      "js": ["lib/js/browser-polyfill.js", "content.js"]
     }
   ],
-  "background": {
-    "scripts": [
-      "lib/js/browser-polyfill.js",
-      "background.js"
-    ]
-  },
-  "browser_action": {
+  "background": { "service_worker": "background.js" },
+  "action": {
     "default_icon": "img/icon.png",
     "default_popup": "popup.html"
   },
-  "permissions": [
-    "storage",
-    "unlimitedStorage",
-    "downloads",
-    "tabs",
-    "notifications"
-  ],
+  "permissions": ["storage", "unlimitedStorage", "downloads", "tabs", "notifications"],
   "icons": {
     "128": "img/icon.png"
   },
-  "web_accessible_resources": [
-    "sidebar.html"
-  ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';"
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  }
 }

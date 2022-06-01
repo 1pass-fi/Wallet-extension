@@ -7,11 +7,10 @@ import { v4 as uuid } from 'uuid'
 export default async (payload, tab, next) => {
   try {
     const { hadPermission, origin, favicon } = tab
-    
+
     // check if there is an imported ethereum account
     const hasImportedEthereum = false
     if (!hasImportedEthereum) {
-      
     }
 
     const requestId = uuid()
@@ -30,9 +29,9 @@ export default async (payload, tab, next) => {
     const screenHeight = screen.availHeight
     const os = window.localStorage.getItem(OS)
     let windowData = {
-      url: chrome.extension.getURL('/popup.html'),
+      url: chrome.runtime.getURL('/popup.html'),
       focused: true,
-      type: 'popup',
+      type: 'popup'
     }
     if (os == 'win') {
       windowData = {
@@ -54,31 +53,33 @@ export default async (payload, tab, next) => {
 
     createWindow(windowData, {
       beforeCreate: async () => {
-        chrome.browserAction.setBadgeText({ text: '1' })
-        chrome.runtime.onMessage.addListener(
-          async function(popupMessage, _, sendResponse) {
-            if (popupMessage.requestId === requestId) {
-              console.log('Message from popup', popupMessage)
+        chrome.action.setBadgeText({ text: '1' })
+        chrome.runtime.onMessage.addListener(async function (popupMessage, _, sendResponse) {
+          if (popupMessage.requestId === requestId) {
+            console.log('Message from popup', popupMessage)
 
-              const approved = popupMessage.approved
-              if (approved) {
-                // connect account
-                try {
-                  const checkedAddresses = popupMessage.checkedAddresses
-  
-                  let siteConnectedAddresses = await storage.setting.get.siteConnectedAddresses()
-  
-                  if (!siteConnectedAddresses[origin]) {
-                    siteConnectedAddresses[origin] = { ethereum: [], arweave: [] }
-                  }
-                  siteConnectedAddresses[origin].ethereum = checkedAddresses 
-                  await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
+            const approved = popupMessage.approved
+            if (approved) {
+              // connect account
+              try {
+                const checkedAddresses = popupMessage.checkedAddresses
 
-                  const permissions = [{
-                    caveats: [{
-                      type: 'restrictReturnedAccounts',
-                      value: checkedAddresses
-                    }],
+                let siteConnectedAddresses = await storage.setting.get.siteConnectedAddresses()
+
+                if (!siteConnectedAddresses[origin]) {
+                  siteConnectedAddresses[origin] = { ethereum: [], arweave: [] }
+                }
+                siteConnectedAddresses[origin].ethereum = checkedAddresses
+                await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
+
+                const permissions = [
+                  {
+                    caveats: [
+                      {
+                        type: 'restrictReturnedAccounts',
+                        value: checkedAddresses
+                      }
+                    ],
                     date: Date.now(),
                     id: uuid(),
                     invoker: origin,
@@ -99,15 +100,14 @@ export default async (payload, tab, next) => {
               }
             }
           }
-        )
+        })
         await storage.generic.set.pendingRequest({
           type: REQUEST.PERMISSION,
-          data: requestPayload 
+          data: requestPayload
         })
-
       },
       afterClose: async () => {
-        chrome.browserAction.setBadgeText({ text: '' })
+        chrome.action.setBadgeText({ text: '' })
         next({ error: 'User cancelled the login.' })
         await storage.generic.set.pendingRequest({})
       }

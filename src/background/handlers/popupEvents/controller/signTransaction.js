@@ -22,8 +22,8 @@ export default async (payload, next) => {
       /* 
         Sign transaction confirmed
       */
-      chrome.browserAction.setBadgeText({ text: '' })
-      const {data: transactionData, id} = await storage.generic.get.transactionData()
+      chrome.action.setBadgeText({ text: '' })
+      const { data: transactionData, id } = await storage.generic.get.transactionData()
 
       if (id !== contentScriptPort.id) {
         next({ data: 'Invalid data input', status: 400 })
@@ -39,9 +39,9 @@ export default async (payload, next) => {
       /* 
         Sign transaction rejected
       */
-      chrome.browserAction.setBadgeText({ text: '' })
+      chrome.action.setBadgeText({ text: '' })
       next({ data: 'Transaction rejected', status: 403 })
-    }  
+    }
   } catch (err) {
     console.error(err.message)
     next({ data: 'Sign transaction error', status: 500 })

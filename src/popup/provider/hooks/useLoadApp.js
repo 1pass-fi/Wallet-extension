@@ -188,6 +188,22 @@ const useLoadApp = ({
     }
   }
 
+  const handleLockWallet = async () => {
+    if (!isEmpty(accounts)) {
+      setIsLoading(true)
+      await lockWallet()
+      setIsLoading(false)
+
+      history.push(PATH.LOGIN)
+
+      chrome.scripting.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
+        tabs.map((tab) => chrome.scripting.reload(tab.id))
+      })
+    } else {
+      setError('Cannot lock wallet.')
+    }
+  }
+
   useEffect(() => {
     loadAccounts()
     loadDefaultAccounts()

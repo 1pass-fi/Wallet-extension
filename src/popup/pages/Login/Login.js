@@ -36,7 +36,7 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
     chrome.windows.getCurrent((w) => {
       try {
         const windowId = w.id
-        chrome.tabs.getSelected(windowId, (tab) => {
+        chrome.scripting.getSelected(windowId, (tab) => {
           const origin = tab.url.split('/')[0] + '//' + tab.url.split('/')[2]
           setCurrentTabOrigin(origin)
           storage.setting.get.disabledOrigins().then((disabledOrigins) => {
@@ -68,16 +68,16 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
       setIsLoading(false)
 
       if (unlocked) {
-        setIsWalletLocked(false)
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-          chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
+		setIsWalletLocked(false)
+        chrome.scripting.query({ active: true, currentWindow: true }, function (tabs) {
+          chrome.scripting.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
         })
 
         history.push('/tokens')
 
-        /* Reload gallery page after unlocked */
-        chrome.tabs.query({ url: chrome.extension.getURL('*') }, (tabs) => {
-          tabs.map((tab) => tab.url.includes('options') && chrome.tabs.reload(tab.id))
+		/* Reload gallery page after unlocked */
+        chrome.scripting.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
+          tabs.map((tab) => tab.url.includes('options') && chrome.scripting.reload(tab.id))
         })
       } else {
         setIsIncorrectPassword(true)

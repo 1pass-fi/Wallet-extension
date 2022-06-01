@@ -8,7 +8,6 @@ import { calculateArFee,winstonToAr } from 'utils'
 import { createWindow, getPlatformInfo } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
 
-
 export default async (payload, tab, next) => {
   try {
     const { transaction } = payload.data
@@ -39,7 +38,7 @@ export default async (payload, tab, next) => {
     const height = isWin ? WINDOW_SIZE.WIN_HEIGHT : WINDOW_SIZE.MAC_HEIGHT
 
     const windowData = {
-      url: chrome.extension.getURL('/popup.html'),
+      url: chrome.runtime.getURL('/popup.html'),
       focused: true,
       type: 'popup',
       height,
@@ -66,19 +65,19 @@ export default async (payload, tab, next) => {
       windowData,
       {
         beforeCreate: async () => {
-          chrome.browserAction.setBadgeText({ text: '1' })
+          chrome.action.setBadgeText({ text: '1' })
           await storage.generic.set.pendingRequest({
             type: REQUEST.AR_TRANSACTION,
             data: { transaction, qty, address, origin, favicon, fee, isKoi: false, isKoiTransfer, koiiQty }
           })
         },
         afterClose: async () => {
-          chrome.browserAction.setBadgeText({ text: '' })
+          chrome.action.setBadgeText({ text: '' })
           next({ error: 'Transaction rejected on closed.' })
           await storage.generic.set.pendingRequest({})
         },
       }
-    )
+    })
   } catch (err) {
     console.error(err.message)
     next({ error: 'Sign transaction error' })
@@ -93,12 +92,12 @@ const getKoiiQty = (transaction) => {
     const valueString = Buffer.from(transaction.tags[3].value, 'base64')
     const inputValue = JSON.parse(valueString)
     const functionName = inputValue.function
-    
+
     if (functionName === 'transfer' && isNumber(koiiQty)) isKoiTransfer = true
     koiiQty = inputValue.qty
   } catch (err) {
     console.log('Get koii qty error: ', err.message)
   }
-  
+
   return [isKoiTransfer, koiiQty]
 }

@@ -102,7 +102,7 @@ const ConnectScreen = ({
 
   const goToTOU = () => {
     const url = 'https://koii.network/TOU_June_22_2021.pdf'
-    chrome.tabs.create({ url })
+    chrome.scripting.create({ url })
   }
 
   const handleOnClick = async (accept) => {
@@ -137,7 +137,7 @@ const ConnectScreen = ({
             }
             setIsLoading(false)
             storage.generic.remove.pendingRequest()
-            chrome.browserAction.setBadgeText({ text: '' })
+            chrome.action.setBadgeText({ text: '' })
             setStep(3)
           }
         })

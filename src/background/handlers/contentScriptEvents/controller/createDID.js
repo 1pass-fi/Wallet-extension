@@ -5,7 +5,6 @@ import storage from 'services/storage'
 // Utils
 import { createWindow, getPlatformInfo } from 'utils/extension'
 
-
 export default async (payload, tab, next) => {
   const { didData } = payload.data
   const { origin, favicon, hadPermission, hasPendingRequest, activatedAddress } = tab
@@ -48,7 +47,7 @@ export default async (payload, tab, next) => {
   const height = isWin ? WINDOW_SIZE.WIN_HEIGHT : WINDOW_SIZE.MAC_HEIGHT
 
   const windowData = {
-    url: chrome.extension.getURL('/popup.html'),
+    url: chrome.runtime.getURL('/popup.html'),
     focused: true,
     type: 'popup',
     height,
@@ -61,7 +60,7 @@ export default async (payload, tab, next) => {
     windowData,
     {
       beforeCreate: async () => {
-        chrome.browserAction.setBadgeText({ text: '1' })
+        chrome.action.setBadgeText({ text: '1' })
         await storage.generic.set.pendingRequest({
           type: REQUEST.AR_TRANSACTION,
           data: { 
@@ -78,10 +77,10 @@ export default async (payload, tab, next) => {
         })
       },
       afterClose: async () => {
-        chrome.browserAction.setBadgeText({ text: '' })
+        chrome.action.setBadgeText({ text: '' })
         next({ data: { status: 403, data: 'Transaction rejected on closed.' } })
         await storage.generic.set.pendingRequest({})
       },
     }
-  )
+  })
 }

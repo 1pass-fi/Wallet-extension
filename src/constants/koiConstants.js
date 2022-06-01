@@ -311,7 +311,7 @@ export const PATH = {
   VIEW_BLOCK: 'https://viewblock.io/arweave/address',
   ETHERSCAN: 'https://etherscan.io/address',
   KOI_ROCK: 'https://koi.rocks/content-detail',
-  GALLERY: chrome.extension ? `${chrome.extension.getURL('/options.html')}` : 'GALLERY_PATH',
+  GALLERY: chrome.runtime ? `${chrome.runtime.getURL('/options.html')}` : 'GALLERY_PATH',
   ALL_CONTENT: 'https://devbundler.openkoi.com:8888/state/top-content-predicted?frequency=all',
   SINGLE_CONTENT: 'https://devbundler.openkoi.com:8888/state/nft?tranxId=',
   VIEW_BLOCK_TRANSACTION: 'https://viewblock.io/arweave/tx',
