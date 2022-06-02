@@ -2,12 +2,15 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import clsx from 'clsx'
 
 import EthereumIcon from 'img/ethereum-logo.svg'
 import FinnieIcon from 'img/popup/finnie-icon.svg'
 import AddIcon from 'img/popup/add-icon.svg'
-import CopyIcon from 'img/v2/copy-address-icon.svg'
+import CopyIcon from 'img/popup/copy-icon.svg'
 import EditIcon from 'img/v2/edit-icon-white.svg'
+import FilledStarIcon from 'img/popup/star-filled-icon.svg'
+import EmptyStarIcon from 'img/popup/star-empty-icon.svg'
 
 // actions
 import { removeWallet } from 'actions/koi'
@@ -27,11 +30,15 @@ import { TYPE } from 'constants/accountConstants'
 
 // utils
 import formatLongString from 'finnie-v2/utils/formatLongString'
+import formatNumber from 'finnie-v2/utils/formatNumber'
 
 export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoading }) => {
   const dispatch = useDispatch()
   const history = useHistory()
+
   const accounts = useSelector((state) => state.accounts)
+  const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
+  const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
 
   const goToImportPages = () => {
     const url = chrome.extension.getURL('options.html#/welcome')
@@ -76,53 +83,82 @@ export const AccountDropdown = ({ setShowAccountDropdown, removeWallet, setIsLoa
     history.push('/tokens')
   }
 
-  return (
-    <div className="bg-indigo-400 select-none">
-      {accounts.map((account, idx) => (
-        <div
-          className="bg-blue-600 text-white flex items-center cursor-pointer mb-0.25 hover:bg-indigo-400"
-          key={idx}
-          style={{ width: '249px', height: '45px' }}
-          onClick={() => handleChangeDisplayAccount(account)}
-        >
-          {account.type === TYPE.ARWEAVE && <FinnieIcon className="ml-2.5 h-6.25 w-6.25" />}
-          {account.type === TYPE.ETHEREUM && <EthereumIcon className="ml-2.5 h-6.25 w-6.25" />}
-          <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
-            {formatLongString(account.accountName, 12)}
-          </div>
+  const isDefaultAccount = (account) => {
+    switch (account.type) {
+      case TYPE.ARWEAVE:
+        return account.address === defaultArweaveAccountAddress
+      case TYPE.ETHEREUM:
+        return account.address === defaultEthereumAccountAddress
+      default:
+        return false
+    }
+  }
 
-          <CopyIcon
-            onClick={(e) => {
-              e.stopPropagation()
-              onCopy()
-              navigator.clipboard.writeText(account.address)
-            }}
-            className="absolute right-5.25 cursor-pointer focus:outline-none"
-            style={{ width: '20px', height: '20px' }}
-          />
-        </div>
-      ))}
+  return (
+    <div style={{ width: '249px' }}>
       <div
-        className="bg-blue-600 text-white flex items-center cursor-pointer mb-0.25 hover:bg-indigo-400"
-        key={'import-new-wallet'}
-        style={{ width: '249px', height: '45px' }}
-        onClick={() => goToImportPages()}
+        className="bg-indigo-400 select-none overflow-y-auto overflow-x-hidden"
+        style={{ maxHeight: '438px' }}
       >
-        <AddIcon className="ml-2.5 h-6.25 w-6.25" />
-        <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
-          Import New Wallet
-        </div>
+        {accounts.map((account, idx) => (
+          <div
+            className={clsx(
+              'flex items-start justify-between bg-blue-600 text-white cursor-pointer py-3 hover:bg-indigo-400',
+              idx !== 0 && 'mt-0.25'
+            )}
+            key={idx}
+            style={{ height: '108px' }}
+            onClick={() => handleChangeDisplayAccount(account)}
+          >
+            {account.type === TYPE.ARWEAVE && <FinnieIcon className="ml-2.5 mt-1 h-6.25 w-6.25" />}
+            {account.type === TYPE.ETHEREUM && (
+              <EthereumIcon className="ml-2.5 mt-1 h-6.25 w-6.25" />
+            )}
+            <div className="flex flex-col" style={{ width: '154px' }}>
+              <div className="font-semibold text-base tracking-finnieSpacing-tight text-white">
+                {formatLongString(account.accountName, 12)}
+              </div>
+              <div className="font-normal text-2xs leading-4 tracking-finnieSpacing-tight text-turquoiseBlue flex justify-between items-center">
+                {formatLongString(account.address, 20)}
+                <CopyIcon
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onCopy()
+                    navigator.clipboard.writeText(account.address)
+                  }}
+                  className="cursor-pointer focus:outline-none"
+                  style={{ width: '13px', height: '13px' }}
+                />
+              </div>
+              {account.type === TYPE.ARWEAVE && (
+                <div className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white">
+                  Balance: {formatNumber(account.koiBalance, 2)} KOII
+                </div>
+              )}
+              {account.type === TYPE.ETHEREUM && (
+                <div className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white">
+                  Balance: {formatNumber(account.balance, 2)} ETH
+                </div>
+              )}
+              <div className="font-normal text-xs leading-4 tracking-finnieSpacing-tight text-white">
+                Assets: {account.totalAssets.length}
+              </div>
+            </div>
+            {isDefaultAccount(account) ? (
+              <FilledStarIcon className="mr-4 mt-1" style={{ width: '15px', height: '14px' }} />
+            ) : (
+              <EmptyStarIcon className="mr-4 mt-1" style={{ width: '15px', height: '14px' }} />
+            )}
+          </div>
+        ))}
       </div>
       <div
-        className="bg-blue-600 text-white flex items-center cursor-pointer hover:bg-indigo-400"
+        className="w-full bg-indigo cursor-pointer text-center underline font-normal text-xs leading-8 tracking-finnieSpacing-tight text-white"
         key={'edit-accounts'}
-        style={{ width: '249px', height: '45px' }}
+        style={{ height: '26px' }}
         onClick={() => goToSettingPage()}
       >
-        <EditIcon className="ml-2.5 h-6.25 w-6.25" style={{ width: '23px', height: '22px' }} />
-        <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
-          Edit Accounts
-        </div>
+        Edit Accounts
       </div>
 
       {isCopied && (
