@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom'
 
 import KoiIcon from 'img/finnie-koi-logo-white.svg'
 
-import Welcome from './Welcome'
+// import Welcome from './Welcome'
+import Welcome from 'options/finnie-v2/pages/Onboarding/Welcome'
 import Upload from './Upload'
 import Import from './Import'
 import Create from './Create'
@@ -14,9 +15,9 @@ import './index.css'
 export default () => {
   return (
     <>
-      <Link to="/">
+      {/* <Link to="/">
         <KoiIcon className="startup-logo" />
-      </Link>
+      </Link> */}
 
       <Switch>
         <Route path="/create-wallet">
