@@ -16,7 +16,8 @@ const InputField = ({
   className,
   isDisable,
   placeholder,
-  maxHeight = 0
+  maxHeight = 0,
+  uppercase = true
 }) => {
   const [textAreaHeight, setTextAreaHeight] = useState(83)
 
@@ -44,7 +45,13 @@ const InputField = ({
 
   return (
     <div className={clsx(className, 'flex flex-col w-full')}>
-      <label htmlFor={label} className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
+      <label
+        htmlFor={label}
+        className={clsx(
+          'w-full text-lightBlue text-2xs leading-3 mb-1',
+          uppercase ? 'uppercase' : 'ml-2 text-left'
+        )}
+      >
         {label}
         {`${required ? '*' : ''}`}
       </label>
@@ -76,7 +83,11 @@ const InputField = ({
           />
         </div>
       )}
-      <div className="text-warning mt-1 uppercase text-3xs">{description}</div>
+      <div
+        className={clsx('text-warning mt-1 text-3xs', uppercase ? 'uppercase' : 'ml-2 text-left')}
+      >
+        {description}
+      </div>
       <span className="text-3xs text-bittersweet-200">{error}</span>
       <ReactTooltip place="top" type="dark" effect="float" />
     </div>

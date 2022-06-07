@@ -17,10 +17,6 @@ export const onboardingSteps = [
 const Welcome = () => {
   const [step, setStep] = useState(0)
 
-  useEffect(() => {
-    console.log('step', step)
-  }, [step])
-
   return (
     <div className="w-screen h-screen flex text-center">
       <NavBar step={step} setStep={setStep} />

@@ -1,11 +1,11 @@
 import React from 'react'
 import clsx from 'clsx'
 
-import WelcomeBackgroundTop from 'img/v2/popup/welcome-background-top.svg'
-import WelcomeBackgroundBottom from 'img/v2/popup/welcome-background-bottom.svg'
-import CreateNewIcon from 'img/v2/popup/create-new-icon.svg'
-import ImportSeedphraseIcon from 'img/v2/popup/import-seedphrase-icon.svg'
-import ImportKeyIcon from 'img/v2/popup/import-key-icon.svg'
+import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
+import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
+import CreateNewIcon from 'img/v2/onboarding/create-new-icon.svg'
+import ImportSeedphraseIcon from 'img/v2/onboarding/import-seedphrase-icon.svg'
+import ImportKeyIcon from 'img/v2/onboarding/import-key-icon.svg'
 import KoiIcon from 'img/finnie-koi-logo-white.svg'
 
 const Welcome = () => {

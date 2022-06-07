@@ -17,7 +17,11 @@ const NavBar = ({ step, setStep }) => {
   return (
     <div className="w-1/3 h-full bg-blue-800 shadow-lg flex flex-col items-center overflow-hidden">
       {step > 1 && (
-        <BackIcon className="absolute top-5.5 left-6" style={{ width: '45px', height: '45px' }} />
+        <BackIcon
+          className="absolute top-5.5 left-6 cursor-pointer"
+          style={{ width: '45px', height: '45px' }}
+          onClick={() => setStep(step - 1)}
+        />
       )}
       <div className="flex flex-col items-center">
         <KoiIcon style={{ width: '156px', height: '156px' }} />
@@ -33,23 +37,51 @@ const NavBar = ({ step, setStep }) => {
           </div>
         )}
       </div>
-      <div className="w-full pl-6 flex flex-col items-start gap-6 pt-8 font-normal text-base leading-8 text-white">
-        <div className="flex items-center">
-          <LockIcon className="mr-5" />
-          Secure Finnie with a password.
-        </div>
-        <div className="flex items-center">
-          <KeyIcon className="mr-5" />
-          Create or import a key.
-        </div>
-        <div className="flex items-center">
-          <EditIcon className="mr-5" />
-          Write down your recovery phrase.
-        </div>
-        <div className="flex items-center">
-          <SeedphraseIcon className="mr-5" />
-          Confirm your recovery phrase.
-        </div>
+      <div className="w-full pl-6 flex flex-col items-start gap-6 pt-8 font-normal text-base leading-8 text-white select-none text-left">
+        {step === 0 ? (
+          <div className="flex items-center text-warning">
+            <LockSelectedIcon className="mr-5" />
+            Secure Finnie with a password.
+          </div>
+        ) : (
+          <div className="flex items-center">
+            <LockIcon className="mr-5" />
+            Secure Finnie with a password.
+          </div>
+        )}
+        {step === 1 || step === 2 ? (
+          <div className="flex items-center text-warning">
+            <KeySelectedIcon className="mr-5" />
+            Create or import a key.
+          </div>
+        ) : (
+          <div className="flex items-center">
+            <KeyIcon className="mr-5" />
+            Create or import a key.
+          </div>
+        )}
+        {2 < step && step < 6 ? (
+          <div className="flex items-center text-warning">
+            <EditSelectedIcon className="mr-5" />
+            Write down your recovery phrase.
+          </div>
+        ) : (
+          <div className="flex items-center">
+            <EditIcon className="mr-5" />
+            Write down your recovery phrase.
+          </div>
+        )}
+        {step === 6 ? (
+          <div className="flex items-center text-warning">
+            <SeedphraseSelectedIcon className="mr-5" />
+            Confirm your recovery phrase.
+          </div>
+        ) : (
+          <div className="flex items-center">
+            <SeedphraseIcon className="mr-5" />
+            Confirm your recovery phrase.
+          </div>
+        )}
       </div>
     </div>
   )
