@@ -39,7 +39,7 @@ const NavBar = ({ step, setStep }) => {
       </div>
       <div className="w-full pl-6 flex flex-col items-start gap-6 pt-8 font-normal text-base leading-8 text-white select-none text-left">
         {step === 0 ? (
-          <div className="flex items-center text-warning">
+          <div className="flex text-warning">
             <LockSelectedIcon className="mr-5" />
             Secure Finnie with a password.
           </div>
@@ -50,9 +50,14 @@ const NavBar = ({ step, setStep }) => {
           </div>
         )}
         {step === 1 || step === 2 ? (
-          <div className="flex items-center text-warning">
+          <div className="flex text-warning">
             <KeySelectedIcon className="mr-5" />
-            Create or import a key.
+            <div className="w-4/5 flex flex-col whitespace-pre-wrap">
+              Create or import a key.
+              <span className="font-normal text-sm leading-6 text-trueGray-100">
+                Choose a new Koii or Ethereum account or import one you already have.
+              </span>
+            </div>
           </div>
         ) : (
           <div className="flex items-center">
@@ -60,10 +65,15 @@ const NavBar = ({ step, setStep }) => {
             Create or import a key.
           </div>
         )}
-        {2 < step && step < 6 ? (
-          <div className="flex items-center text-warning">
+        {2 < step && step < 5 ? (
+          <div className="flex text-warning">
             <EditSelectedIcon className="mr-5" />
-            Write down your recovery phrase.
+            <div className="w-4/5 flex flex-col whitespace-pre-wrap">
+              Write down your recovery phrase.
+              <span className="font-normal text-sm leading-6 text-trueGray-100">
+                Grab a pen & paper so you can keep your phrase safe.
+              </span>
+            </div>
           </div>
         ) : (
           <div className="flex items-center">
@@ -71,10 +81,15 @@ const NavBar = ({ step, setStep }) => {
             Write down your recovery phrase.
           </div>
         )}
-        {step === 6 ? (
-          <div className="flex items-center text-warning">
+        {step === 5 ? (
+          <div className="flex text-warning">
             <SeedphraseSelectedIcon className="mr-5" />
-            Confirm your recovery phrase.
+            <div className="w-4/5 flex flex-col whitespace-pre-wrap">
+              Confirm your recovery phrase.
+              <span className="font-normal text-sm leading-6 text-trueGray-100">
+                Re-enter 3 words of your secret phrase for safety.
+              </span>
+            </div>
           </div>
         ) : (
           <div className="flex items-center">
