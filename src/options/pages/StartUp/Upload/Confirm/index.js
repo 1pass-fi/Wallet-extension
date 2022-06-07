@@ -60,7 +60,8 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
 
       history.push({
         pathname: '/success',
-        state: 'upload-key-state'
+        state: 'upload-key-state',
+        type: walletType
       })
     } catch (err) {
       console.error(err.message)

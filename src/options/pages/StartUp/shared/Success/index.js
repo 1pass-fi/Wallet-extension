@@ -9,6 +9,8 @@ import Dropfile from '../Dropfile'
 import { GalleryContext } from 'options/galleryContext'
 import Button from '../Button'
 
+import { TYPE } from 'constants/accountConstants'
+
 import './index.css'
 
 export default () => {
@@ -63,7 +65,14 @@ export default () => {
               </li>
             </div>
 
-            <Button className='got-it-button' onClick={() => nextStep()} >I Got It</Button>
+            <Button className='got-it-button'
+              onClick={() => {
+                if (location.type === TYPE.ARWEAVE) {
+                  nextStep()
+                } else {
+                  history.push('/')
+                }
+              }} >I Got It</Button>
           </div>
         </>
       )}

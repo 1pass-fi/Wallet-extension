@@ -14,7 +14,8 @@ const emptyAccount = {
   seedPhrase: '',
   affiliateCode: 'loading...',
   totalReward: 0,
-  inviteSpent: true
+  inviteSpent: true,
+  assets: 0
 }
 
 const initialState = {

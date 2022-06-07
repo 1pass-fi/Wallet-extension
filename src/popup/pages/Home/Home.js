@@ -5,6 +5,8 @@ import isEmpty from 'lodash/isEmpty'
 
 import AccountInfo from './AccountInfo/AccountInfo'
 import PopupBackground from 'img/popup/popup-background.svg'
+import PopupArrow from 'img/popup/popup-arrow-icon.svg'
+import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
@@ -31,37 +33,42 @@ const Home = () => {
       style={{ overflowY: 'overlay' }}
       ref={ref}
     >
-      <ParallaxProvider scrollContainer={scrollEl}>
-        <div className="pt-4.75 pl-4.75 mb-3.5">
-          <HomeTop
-            displayingAccount={displayingAccount}
-            price={price}
-            currentProviderAddress={
-              displayingAccount.type === TYPE.ETHEREUM
-                ? currentProviderAddress
-                : currentSolanaProviderAddress
-            }
-            setCurrentProviderAddress={
-              displayingAccount.type === TYPE.ETHEREUM
-                ? setCurrentProviderAddress
-                : setCurrentSolanaProviderAddress
-            }
-          />
+      {isEmpty(displayingAccount?.address) ? (
+        <div>
+          <PopupArrow className="absolute" style={{ top: '67px', left: '30px' }} />
           <PopupBackground
             style={{ width: '177px', height: '156px' }}
             className="absolute top-13.5 right-0 z-10"
           />
+          <div
+            style={{ width: '300px' }}
+            className="font-normal text-2xl tracking-finnieSpacing-tight ml-5 mt-40 text-blue-800"
+          >
+            Select an account to see a summary.
+          </div>
+          <FinnieIcon className="ml-5 mt-8" style={{ width: '54px', height: '40px' }} />
         </div>
-        <AccountInfo
-          displayingAccount={displayingAccount}
-          price={price}
-          currentProviderAddress={
-            displayingAccount.type === TYPE.ETHEREUM
-              ? currentProviderAddress
-              : currentSolanaProviderAddress
-          }
-        />
-      </ParallaxProvider>
+      ) : (
+        <ParallaxProvider scrollContainer={scrollEl}>
+          <div className="pt-4.75 pl-4.75 mb-3.5">
+            <HomeTop
+              displayingAccount={displayingAccount}
+              price={price}
+              currentProviderAddress={currentProviderAddress}
+              setCurrentProviderAddress={setCurrentProviderAddress}
+            />
+            <PopupBackground
+              style={{ width: '177px', height: '156px' }}
+              className="absolute top-13.5 right-0 z-10"
+            />
+          </div>
+          <AccountInfo
+            displayingAccount={displayingAccount}
+            price={price}
+            currentProviderAddress={currentProviderAddress}
+          />
+        </ParallaxProvider>
+      )}
     </div>
   )
 }

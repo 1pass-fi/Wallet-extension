@@ -28,7 +28,7 @@ const Tokens = ({ currentProviderAddress }) => {
   const displayingAccount = useSelector(getDisplayingAccount)
   const price = useSelector((state) => state.price)
 
-  const { importedTokenAddresses } = useImportedTokenAddresses({
+  let { importedTokenAddresses } = useImportedTokenAddresses({
     userAddress: displayingAccount.address,
     currentProviderAddress,
     displayingAccount: displayingAccount
@@ -126,6 +126,10 @@ const Tokens = ({ currentProviderAddress }) => {
       dispatch(setIsLoading(false))
     }
   }
+
+  useEffect(() => {
+    importedTokenAddresses = []
+  }, [displayingAccount.address])
 
   useEffect(() => {
     loadTokenList()

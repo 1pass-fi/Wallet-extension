@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import isEmpty from 'lodash/isEmpty'
 
 import ArrowIcon from 'img/down-arrow-icon.svg'
 import EthereumIcon from 'img/popup/ethereum-icon.svg'
@@ -24,20 +25,27 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
         setShowAccountDropdown((prev) => !prev)
       }}
     >
-      <div className="ml-2.5 flex items-center">
-        {displayingAccount.type === TYPE.ARWEAVE && (
-          <FinnieIcon style={{ width: '25px', height: '25px' }} />
-        )}
-        {displayingAccount.type === TYPE.ETHEREUM && (
-          <EthereumIcon style={{ width: '25px', height: '25px' }} />
-        )}
-        {displayingAccount.type === TYPE.SOLANA && (
-          <SolanaIcon style={{ width: '25px', height: '25px' }} />
-        )}
-        <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
-          {formatLongString(displayingAccount?.accountName, 12)}
+      {isEmpty(displayingAccount?.address) ? (
+        <div className="ml-3.75 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
+          Select Account
         </div>
-      </div>
+      ) : (
+        <div className="ml-2.5 flex items-center">
+          {displayingAccount.type === TYPE.ARWEAVE && (
+            <FinnieIcon style={{ width: '25px', height: '25px' }} />
+          )}
+          {displayingAccount.type === TYPE.ETHEREUM && (
+            <EthereumIcon style={{ width: '25px', height: '25px' }} />
+          )}
+          {displayingAccount.type === TYPE.SOLANA && (
+            <SolanaIcon style={{ width: '25px', height: '25px' }} />
+          )}
+          <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
+            {formatLongString(displayingAccount?.accountName, 12)}
+          </div>
+        </div>
+      )}
+
       <ArrowIcon
         className="mr-6.5"
         style={{ transform: !showAccountDropdown ? 'none' : 'rotateX(180deg)' }}

@@ -37,7 +37,8 @@ const NavBar = () => {
   const defaultSolanaAccount = useSelector((state) => state.defaultAccount.SOL)
   const notificationsData = useSelector((state) => state.notificationsData)
 
-  const toggleDropdownMenu = () => setShowDropdown(!showDropdown)
+  const toggleDropdownMenu = () => setShowDropdown((prev) => !prev)
+
   const closeDropdownMenu = () => setShowDropdown(false)
 
   const toggleNotificationsCenter = () => setShowNotificationsCenter(!showNotificationsCenter)
@@ -126,9 +127,7 @@ const NavBar = () => {
             </span>
           )}
         </div>
-        <Balance
-          account={displayingAccount}
-        />
+        <Balance account={displayingAccount} />
         <div className="relative">
           <div
             className="w-10 h-10 cursor-pointer rounded-full ml-6.5"
@@ -146,7 +145,11 @@ const NavBar = () => {
           {showDropdown && (
             <div className="absolute top-14 right-0 rounded shadow-2xl">
               <ArrowIcon className="absolute -top-2 right-2.5" />
-              <AccountSettings ref={dropdownRef} type="light" />
+              <AccountSettings
+                ref={dropdownRef}
+                toggleDropdownMenu={toggleDropdownMenu}
+                type="light"
+              />
             </div>
           )}
           {showNotificationsCenter && <ActivityCenterDropdown ref={notificationRef} />}

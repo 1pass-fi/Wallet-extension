@@ -8,8 +8,12 @@ const ArweaveOnly = ({ content }) => {
   return <div className="ar-only-message">{content}</div>
 }
 
-export default ({ children, content }) => {
+export default ({ children, content, hasArweaveAccounts = false }) => {
   const { displayingAccount } = useContext(GalleryContext)
 
-  return displayingAccount.type === TYPE.ARWEAVE ? children : <ArweaveOnly content={content} />
+  return displayingAccount.type === TYPE.ARWEAVE || hasArweaveAccounts ? (
+    children
+  ) : (
+    <ArweaveOnly content={content} />
+  )
 }

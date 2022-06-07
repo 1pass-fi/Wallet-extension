@@ -43,6 +43,7 @@ import { DidContext } from 'options/context'
 
 import DropDown from 'finnie-v2/components/DropDown'
 import Hint from 'finnie-v2/components/Hint'
+import SelectDIDAccount from './SelectDIDAccount'
 
 import countriesList from './countries.json'
 import clsx from 'clsx'
@@ -97,6 +98,8 @@ const KidPage = () => {
     country: '',
     description: ''
   })
+
+  const [showSelectDIDAccount, setShowSelectDIDAccount] = useState(true)
 
   const kidLinkPrefix = 'https://koii.id/'
 
@@ -818,6 +821,10 @@ const KidPage = () => {
           </div>
         )}
       </div>
+
+      {showSelectDIDAccount && (
+        <SelectDIDAccount close={() => setShowSelectDIDAccount(false)} />
+      )}
 
       <ReactTooltip place="top" type="dark" effect="float" />
     </div>
