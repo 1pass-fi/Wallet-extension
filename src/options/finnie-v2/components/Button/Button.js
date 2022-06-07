@@ -9,7 +9,8 @@ const variants = {
   warning300: 'bg-warning-300 text-indigo shadow',
   inversed: 'border border-solid border-white text-white',
   inversedIndigo: 'border-2 border-solid border-blue-800 text-indigo font-semibold',
-  lightBlue: 'bg-lightBlue text-indigo'
+  lightBlue: 'bg-lightBlue text-indigo',
+  white: 'bg-white shadow-md rounded-finnie text-indigo font-normal'
 }
 
 const sizes = {

@@ -17,7 +17,8 @@ const InputField = ({
   isDisable,
   placeholder,
   maxHeight = 0,
-  uppercase = true
+  uppercase = true,
+  password = false
 }) => {
   const [textAreaHeight, setTextAreaHeight] = useState(83)
 
@@ -80,6 +81,7 @@ const InputField = ({
             value={value}
             onChange={(e) => setValue(e)}
             disabled={isDisable}
+            type={password ? 'password' : 'text'}
           />
         </div>
       )}

@@ -25,23 +25,25 @@ const CreatePassword = ({ step, setStep }) => {
         className="my-5 h-5.25"
         label="New Password"
         value={password}
-        setValue={setPassword}
+        setValue={(e) => setPassword(e.target.value)}
         required={true}
         name="password"
         description="Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%)."
         placeholder=""
         uppercase={false}
+        password={true}
       />
       <InputField
         className="my-12 h-5.25"
         label="Confirm Password"
         value={confirmPassword}
-        setValue={setConfirmPassword}
+        setValue={(e) => setConfirmPassword(e.target.value)}
         required={true}
         name="password"
         placeholder=""
         // description="Passwords do not match"
         uppercase={false}
+        password={true}
       />
       <div className="flex items-center justify-center">
         <CheckBox
@@ -60,7 +62,7 @@ const CreatePassword = ({ step, setStep }) => {
       <Button
         style={{ width: '240px', height: '42px' }}
         className="mt-6 text-base rounded mx-auto z-10"
-        variant="light"
+        variant="white"
         text="Log In"
         onClick={() => setStep(step + 1)}
       />
