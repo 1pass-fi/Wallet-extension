@@ -302,11 +302,11 @@ export class BackgroundAccountManager extends AccountManager {
 
   async getNewAccountName() {
     const allAccounts = await this.getAllAccounts()
-    const accountNames = allAccounts.map(account => account.get.accountName())
+    const accountNames = await Promise.all(allAccounts.map((account) => account.get.accountName()))
 
     let index = 1
     let newAccountName = `Account#${index}`
-    while(accountNames.includes(newAccountName)) {
+    while (accountNames.includes(newAccountName)) {
       index += 1
       newAccountName = `Account#${index}`
     }
