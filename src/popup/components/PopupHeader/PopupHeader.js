@@ -66,6 +66,7 @@ const Header = ({ setShowConnectedSites }) => {
 
   const ref = useRef(null)
   const modalRef = useRef(null)
+  const accountDropdownRef = useRef(null)
 
   useEffect(() => {
     loadDisabledOrigins()
@@ -80,11 +81,21 @@ const Header = ({ setShowConnectedSites }) => {
       }
     }
 
+    const handleClickOutsideAccountDropdown = (event) => {
+      if (accountDropdownRef.current && accountDropdownRef.current.contains(event.target)) {
+        return
+      } else if (ref.current && !ref.current.contains(event.target)) {
+        setShowAccountDropdown(false)
+      }
+    }
+
     document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('mousedown', handleClickOutsideAccountDropdown)
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('mousedown', handleClickOutsideAccountDropdown)
     }
-  }, [ref, modalRef])
+  }, [ref, modalRef, accountDropdownRef])
 
   return (
     <div
@@ -97,7 +108,12 @@ const Header = ({ setShowConnectedSites }) => {
           showAccountDropdown={showAccountDropdown}
           setShowAccountDropdown={setShowAccountDropdown}
         />
-        {showAccountDropdown && <AccountDropdown setShowAccountDropdown={setShowAccountDropdown} />}
+        {showAccountDropdown && (
+          <AccountDropdown
+            setShowAccountDropdown={setShowAccountDropdown}
+            ref={accountDropdownRef}
+          />
+        )}
       </div>
       <div
         onClick={goToSetting}
