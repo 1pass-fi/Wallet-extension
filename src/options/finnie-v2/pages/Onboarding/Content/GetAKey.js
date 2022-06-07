@@ -16,9 +16,15 @@ const GetAKey = ({ step, setStep }) => {
       <div className="mt-2 font-normal text-sm w-11/12">
         Finnie currently supports Koii and Ethereum keys. More key types are in the works.
       </div>
-      <div className="mt-11 flex justify-between">
-        <KoiiKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
-        <EthereumKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
+      <div className="mt-11 ml-4 flex justify-between">
+        <div className="flex flex-col items-center">
+          <KoiiKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
+          <div className="font-normal text-lg leading-6">Koii Key</div>
+        </div>
+        <div className="flex flex-col items-center">
+          <EthereumKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
+          <div className="font-normal text-lg leading-6">Ethereum Key</div>
+        </div>
       </div>
     </div>
   )

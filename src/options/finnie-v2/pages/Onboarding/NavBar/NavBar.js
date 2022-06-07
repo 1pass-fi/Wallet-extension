@@ -39,7 +39,7 @@ const NavBar = ({ step, setStep }) => {
       </div>
       <div className="w-full pl-6 flex flex-col items-start gap-6 pt-8 font-normal text-base leading-8 text-white select-none text-left">
         {step === 0 ? (
-          <div className="flex text-warning">
+          <div className="flex text-warning items-center">
             <LockSelectedIcon className="mr-5" />
             Secure Finnie with a password.
           </div>

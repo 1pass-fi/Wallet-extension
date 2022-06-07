@@ -6,6 +6,8 @@ import WelcomeBackground1 from 'img/v2/onboarding/welcome-background-1.svg'
 import WelcomeBackground2 from 'img/v2/onboarding/welcome-background-2.svg'
 import KoiIcon from 'img/v2/onboarding/finnie-koii-logo.svg'
 
+import Button from 'finnie-v2/components/Button'
+
 const RevealPhrase = ({ step, setStep }) => {
   const history = useHistory()
 
@@ -18,30 +20,49 @@ const RevealPhrase = ({ step, setStep }) => {
         You successfully saved your Recovery Phrase
       </div>
 
-      <div className="mt-5">Remember:</div>
+      <div className="mt-5 font-normal text-base">Remember:</div>
 
       <div>
-        <li>Keep your phrase somewhere secure</li>
-        <li>Never share your phrase with anyone</li>
+        <li>
+          Keep your phrase <span className="text-warning">somewhere secure</span>
+        </li>
+        <li>
+          <span className="text-warning">Never share</span> your phrase with anyone
+        </li>
         <li>
           Stay safe from phishing scams—<br></br>
-          Koii will NEVER ask you for your recovery phrase or keyfile
+          <span className="text-warning">Koii will NEVER ask you for your recovery phrase</span> or
+          keyfile
         </li>
         <li>
-          If you have questions or see something suspicious, contact us at security@koii.network
+          If you have questions or see something suspicious, contact us at{' '}
+          <span className="text-success">security@koii.network</span>
         </li>
       </div>
 
-      <div className="mt-5 font-normal text-lg leading-6">
-        Do you have a <span className="text-success">pen & paper handy?</span>
-      </div>
-      <div className="mt-1 font-normal text-lg leading-6">
-        What about a <span className="text-success">safe place to keep it?</span>
+      <div className="mt-10 font-normal text-xl leading-8">
+        Head over to the faucet to grab some free KOII tokens.
       </div>
 
-      <div className="mt-8 font-normal text-lg leading-6 text-white">
-        Type in the missing words to confirm your secret phase is properly secured.
+      <Button
+        style={{ width: '240px', height: '42px' }}
+        className="mt-5 text-base rounded mx-auto z-10"
+        variant="primary"
+        text="Get Free KOII"
+        size="lg"
+      />
+
+      <div className="mt-11.5 font-normal text-xl leading-8">
+        Or go to the gallery to create your first Finnie NFT
       </div>
+
+      <Button
+        style={{ width: '240px', height: '42px' }}
+        className="mt-5 text-base rounded mx-auto z-10"
+        variant="warningDefault"
+        text="Create an NFT"
+        size="lg"
+      />
 
       <div
         className="absolute bottom-11 right-7.5 text-lightBlue underline font-normal text-sm tracking-finnieSpacing-wide cursor-pointer"
