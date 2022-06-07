@@ -92,7 +92,7 @@ const Header = ({ setShowConnectedSites }) => {
       style={{ height: '54px', backgroundColor: '#8585BC' }}
       ref={ref}
     >
-      <div className="relative">
+      <div>
         <Account
           showAccountDropdown={showAccountDropdown}
           setShowAccountDropdown={setShowAccountDropdown}
