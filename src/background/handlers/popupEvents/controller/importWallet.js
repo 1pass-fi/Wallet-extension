@@ -127,12 +127,13 @@ export default async (payload, next) => {
     /* 
       Get a default name for this account
     */
-    const totalAccounts = await backgroundAccount.count()
-    await account.set.accountName(`Account#${totalAccounts}`)
-
+    const newAccountName = await backgroundAccount.getNewAccountName()
+    await account.set.accountName(newAccountName)
+  
     /* 
       If total account = 1, set this accountAddress to activatedAccountAddress
     */
+    const totalAccounts = await backgroundAccount.count()
     if (totalAccounts == 1) {
       await storage.setting.set.activatedChain(type)
     }

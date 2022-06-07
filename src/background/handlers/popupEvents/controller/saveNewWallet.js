@@ -62,15 +62,15 @@ export default async (payload, next) => {
     const account = await backgroundAccount.getAccount(credentials)
     account.set.seedPhrase(encryptedSeedPhrase)
 
-    // Get total account to get a appropriate account name.
-    const totalAccounts = await backgroundAccount.count()
-    await account.set.accountName(`Account#${totalAccounts}`)
-    console.log('totalAccounts', totalAccounts)
+    const newAccountName = await backgroundAccount.getNewAccountName()
+    await account.set.accountName(newAccountName)
+
     // Set network provider
     const networkProvider = getProviderUrlFromName(provider)
     if (networkProvider) await account.set.provider(networkProvider)
 
     // If total account = 1, set this account to activatedAccountAddress.
+    const totalAccounts = await backgroundAccount.count()
     if (totalAccounts == 1) {
       await storage.setting.set.activatedChain(type)
     }

@@ -300,6 +300,20 @@ export class BackgroundAccountManager extends AccountManager {
     super()
   }
 
+  async getNewAccountName() {
+    const allAccounts = await this.getAllAccounts()
+    const accountNames = allAccounts.map(account => account.get.accountName())
+
+    let index = 1
+    let newAccountName = `Account#${index}`
+    while(accountNames.includes(newAccountName)) {
+      index += 1
+      newAccountName = `Account#${index}`
+    }
+
+    return newAccountName
+  }
+
   async createAccount(address, key, password, type) {
     try {
       const encryptedKey = await passworder.encrypt(password, key)
