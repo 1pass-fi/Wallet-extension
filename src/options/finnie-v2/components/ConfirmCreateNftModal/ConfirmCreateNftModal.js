@@ -197,9 +197,9 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                 <NFTMedia contentType={fileType} source={url} />
               </div>
 
-              <div className="flex flex-col pl-6 min-w-68">
+              <div className="flex flex-col pl-6 min-w-68 max-w-sm">
                 <div className="font-semibold text-base tracking-finnieSpacing-wide leading-6">
-                  {formatLongStringTruncate(nftContent.title, 35)}
+                  {formatLongStringTruncate(nftContent.title, 25)}
                 </div>
                 <div className="text-sm tracking-finnieSpacing-tight leading-5">
                   {formatLongStringTruncate(nftContent.description, 32)}
