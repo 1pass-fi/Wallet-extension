@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import isEmpty from 'lodash/isEmpty'
 import clsx from 'clsx'
@@ -10,17 +11,26 @@ import Search from './Search'
 import CustomToken from './CustomToken'
 import ImportTokenForm from './ImportTokenForm'
 
-const tabs = [
-  { name: 'Search', to: 'SEARCH_TOKEN' },
-  { name: 'Custom Token', to: 'CUSTOM_TOKEN' }
-]
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
+import { TYPE } from 'constants/accountConstants'
 
 export const ImportToken = () => {
+  const displayingAccount = useSelector(getDisplayingAccount)
   const history = useHistory()
 
+  const [tabs, setTabs] = useState([
+    { name: 'Search', to: 'SEARCH_TOKEN' },
+    { name: 'Custom Token', to: 'CUSTOM_TOKEN' }
+  ])
   const [currentTab, setCurrentTab] = useState('SEARCH_TOKEN')
   const [tokenImport, setTokenImport] = useState({})
   const [searchToken, setSearchToken] = useState('')
+  
+  useEffect(() => {
+    if (displayingAccount?.type === TYPE.SOLANA) {
+      setTabs([{ name: 'Search', to: 'SEARCH_TOKEN' }])
+    }
+  }, [displayingAccount])
 
   return (
     <div className="w-full h-full">
