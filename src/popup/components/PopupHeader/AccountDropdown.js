@@ -32,6 +32,7 @@ import { TYPE } from 'constants/accountConstants'
 // utils
 import formatLongString from 'finnie-v2/utils/formatLongString'
 import formatNumber from 'finnie-v2/utils/formatNumber'
+import { numberFormat } from 'utils'
 
 export const AccountDropdown = React.forwardRef(
   ({ setShowAccountDropdown, removeWallet, setIsLoading }, accountDropdownRef) => {
@@ -150,7 +151,7 @@ export const AccountDropdown = React.forwardRef(
                 )}
                 {account.type === TYPE.SOLANA && (
                   <div className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white">
-                    Balance: {formatNumber(account.balance, 2)} SOL
+                    Balance: {formatNumber(account.balance / Math.pow(10, 9), 2)} SOL
                   </div>
                 )}
                 <div className="font-normal text-xs leading-4 tracking-finnieSpacing-tight text-white">
