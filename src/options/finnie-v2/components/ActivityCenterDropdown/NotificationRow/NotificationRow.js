@@ -32,7 +32,7 @@ const NotificationRow = ({ notification, newNotification = false }) => {
     <div
       onClick={setRead}
       className={clsx(
-        'flex flex-col px-4.25 pl-5 h-18.25 border-b-2 border-gray-underline cursor-pointer text-xs text-indigo leading-5',
+        'flex flex-col px-4.25 pl-5 h-auto border-b-2 border-gray-underline cursor-pointer text-xs text-indigo leading-5',
         newNotification && 'font-semibold'
       )}
     >
@@ -42,8 +42,8 @@ const NotificationRow = ({ notification, newNotification = false }) => {
             <GreenDotIcon />
           </div>
         )}
-        <div className="text-teal-700">{notification.title}</div>
-        <div className="h-5.25 overflow-hidden">{notification.message}</div>
+        <div className="text-teal-700 overflow-hidden truncate">{notification.title}</div>
+        <div className="break-words whitespace-pre-line">{notification.message}</div>
       </div>
       <div className="w-full flex justify-between">
         <div>{notification.account}</div>
