@@ -40,6 +40,7 @@ const NFTDetail = () => {
   const [showShareNFTModal, setShowShareNFTModal] = useState(false)
   const [privateNFT, setPrivateNFT] = useState(false)
   const [isPendingUpdate, setIsPendingUpdate] = useState(false)
+  const [nftLoaded, setNFTLoaded] = useState(false)
 
   const { setShowExportModal, handleShareNFT, showViews, showEarnedKoi } = useContext(
     GalleryContext
@@ -82,6 +83,8 @@ const NFTDetail = () => {
 
       setNft(nft)
       isString(nft?.isPrivate) ? setPrivateNFT(false) : setPrivateNFT(nft?.isPrivate)
+
+      setNFTLoaded(true)
     }
 
     if (assets && isEmpty(nft)) getNft()
@@ -121,7 +124,7 @@ const NFTDetail = () => {
         <GoBackIcon />
       </div>
       <NavBar />
-      {nft && (
+      {nft && nftLoaded && (
         <div className="flex h-full w-full text-white">
           <div className="mx-auto mt-28 flex flex-col md:flex-row">
             <div className="w-100.25 h-101 mr-7 relative">
