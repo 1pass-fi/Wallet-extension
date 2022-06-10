@@ -9,7 +9,6 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 // constants
 import { REQUEST } from 'constants/koiConstants'
 
-
 const useLoadApp = ({
   history,
   setDefaultAccount,
@@ -30,6 +29,9 @@ const useLoadApp = ({
   const [isWalletLocked, setIsWalletLocked] = useState(false)
   const [showConnectedSites, setShowConnectedSites] = useState(false)
 
+  const [loadAccountsDone, setLoadAccountsDone] = useState(false)
+  const [loadDefaultAccountDone, setDefaultLoadAccountDone] = useState(false)
+
   const loadAccounts = async () => {
     try {
       setIsLoading(true)
@@ -48,11 +50,11 @@ const useLoadApp = ({
 
       const isLocked = await backgroundRequest.wallet.getLockState()
       setIsWalletLocked(isLocked)
-
-      setAccountLoaded(true)
-      setIsLoading(false)
     } catch (error) {
       console.log('Failed to load accounts: ', error.message)
+    } finally {
+      setLoadAccountsDone(true)
+      setIsLoading(false)
     }
   }
 
@@ -92,6 +94,8 @@ const useLoadApp = ({
         setDefaultAccount(activatedAccountMetadata)
       }
     }
+
+    setDefaultLoadAccountDone(true)
   }
 
   const loadActivities = async () => {
@@ -165,6 +169,10 @@ const useLoadApp = ({
     loadDefaultAccounts()
     loadActivities()
   }, [])
+
+  useEffect(() => {
+    if (loadAccountsDone && loadDefaultAccountDone) setAccountLoaded(true)
+  }, [loadAccountsDone, loadDefaultAccountDone])
 
   useEffect(() => {
     if (accountLoaded) handleRedirect()
