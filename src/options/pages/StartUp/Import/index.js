@@ -243,7 +243,7 @@ export default () => {
                 />
               )}
 
-              {!isSeedPhrase && walletType === TYPE.ETHEREUM && (
+              {!isSeedPhrase && (walletType === TYPE.ETHEREUM || walletType === TYPE.SOLANA) && (
                 <InputPrivateKeyField
                   label='Import your private key'
                   placeholder='Copy & paste your private key here.'
