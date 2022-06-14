@@ -378,20 +378,6 @@ const KidPage = () => {
       return
     }
 
-    if (!profilePictureId) {
-      setError('Please select an avatar')
-      setIsLoading((prev) => --prev)
-      setDisableUpdateKID(false)
-      return
-    }
-
-    if (!bannerId) {
-      setError('Please select a cover image')
-      setIsLoading((prev) => --prev)
-      setDisableUpdateKID(false)
-      return
-    }
-
     if (hadData) {
       // balance validate update
       if (balance < 0.00007) {

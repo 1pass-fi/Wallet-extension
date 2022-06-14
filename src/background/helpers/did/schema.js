@@ -1,14 +1,8 @@
 import Joi from 'joi'
 
 export default Joi.object({
-  picture: Joi.string().required().messages({
-    'string.base': `"picture" should be a valid id of an image hosted on arweave`,
-    'string.empty': 'A valid Image trxId is required',
-  }),
-  banner: Joi.string().required().messages({
-    'string.base': `"banner" should be a valid id of an image hosted on arweave`,
-    'string.empty': 'A valid Image trxId is required',
-  }),
+  picture: Joi.string().empty(''),
+  banner: Joi.string().empty(''),
   description:Joi.string().required().messages({
     'string.empty': 'description is required',
   }),
