@@ -35,7 +35,7 @@ export class SolanaTool {
   importWallet(key, type) {
     let wallet
 
-    const DEFAULT_DERIVE_PATH = `m/44'/501'/0'`
+    const DEFAULT_DERIVE_PATH = `m/44'/501'/0'/0'`
     const bufferToString = (buffer) => Buffer.from(buffer).toString('hex')
     const deriveSeed = (seed) => derivePath(DEFAULT_DERIVE_PATH, seed).key
 
