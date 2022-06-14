@@ -11,6 +11,7 @@ import {
 } from '@solana/web3.js'
 import { derivePath } from 'ed25519-hd-key'
 import isEmpty from 'lodash/isEmpty'
+import bs58 from 'bs58'
 
 export class SolanaTool {
   constructor(credentials, provider) {
@@ -34,13 +35,19 @@ export class SolanaTool {
 
   importWallet(key, type) {
     let wallet
-
+    let keypair
     const DEFAULT_DERIVE_PATH = `m/44'/501'/0'/0'`
-    const bufferToString = (buffer) => Buffer.from(buffer).toString('hex')
-    const deriveSeed = (seed) => derivePath(DEFAULT_DERIVE_PATH, seed).key
 
-    const seed = mnemonicToSeedSync(key)
-    const keypair = Keypair.fromSeed(deriveSeed(bufferToString(seed)))
+    if (type === 'seedphrase') {
+      const bufferToString = (buffer) => Buffer.from(buffer).toString('hex')
+      const deriveSeed = (seed) => derivePath(DEFAULT_DERIVE_PATH, seed).key
+
+      const seed = mnemonicToSeedSync(key)
+      keypair = Keypair.fromSeed(deriveSeed(bufferToString(seed)))
+    } else {
+      const secretKey = bs58.decode(key)
+      keypair = Keypair.fromSecretKey(secretKey)
+    }
 
     this.keypair = keypair
     this.address = keypair.publicKey.toString()
