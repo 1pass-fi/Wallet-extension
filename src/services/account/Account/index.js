@@ -4,6 +4,7 @@ import { AccountSetter } from './set'
 import { Web } from '@_koi/sdk/web'
 import { Ethereum } from 'services/ethereum'
 import { SolanaTool } from 'services/solana'
+import { K2Tool } from 'services/k2'
 
 import { ArweaveMethod } from './Chains/Arweave/ArweaveMethod'
 import { ArweaveStatic } from './Chains/Arweave/ArweaveStatic'
@@ -11,6 +12,8 @@ import { EthereumMethod } from './Chains/Ethereum/EthereumMethod'
 import { EthereumStatic } from './Chains/Ethereum/EthereumStatics'
 import { SolanaMethod } from './Chains/Solana/SolanaMethod'
 import { SolanaStatic } from './Chains/Solana/SolanaStatic'
+import { K2Method } from './Chains/K2/K2Method'
+import { K2Static } from './Chains/K2/K2Static'
 
 export class Account {
   constructor(address) {
@@ -67,4 +70,16 @@ export class SolanaAccount extends BackgroundAccount {
   }
 
   static utils = new SolanaStatic()
+}
+
+export class K2Account extends BackgroundAccount {
+  #k2Tool
+  constructor({ address, key }, provider) {
+    super(address)
+    this.#k2Tool = new K2Tool({ address, key }, provider)
+
+    this.method = new K2Method(this.#k2Tool)
+  }
+
+  static utils = new K2Static()
 }
