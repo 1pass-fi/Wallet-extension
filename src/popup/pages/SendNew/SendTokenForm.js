@@ -39,7 +39,7 @@ const SendTokenForm = ({
     const getAccountOptions = async () => {
       const arAccounts = await popupAccount.getAllMetadata()
       const options = arAccounts.map((account, index) => ({
-        id: index,
+        id: account.address,
         value: account.address,
         label: account.accountName,
         address: account.address,
@@ -116,6 +116,7 @@ const SendTokenForm = ({
           onChange={onChangeAccount}
           label="FROM"
           isAccountAddress={true}
+          defaultOption={selectedAccount.label}
         />
       </div>
       {/* RECIPIENT INPUT */}

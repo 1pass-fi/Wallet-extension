@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 import clsx from 'clsx'
 import isEmpty from 'lodash/isEmpty'
@@ -27,8 +27,11 @@ import useValidate from './hooks/useValidate'
 
 import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
 const Send = ({ setShowSigning, setError, setIsLoading }) => {
+  const displayingAccount = useSelector(getDisplayingAccount)
+
   const [selectedAccount, setSelectedAccount] = useState({})
   const [fontSize, setFontSize] = useState('3xl')
   const [showTokenOptions, setShowTokenOptions] = useState(false)
@@ -45,6 +48,18 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
     selectedNetwork: selectedNetwork
   })
 
+  useEffect(() => {
+    if (!isEmpty(displayingAccount)) {
+      setSelectedAccount({
+        id: displayingAccount.address,
+        value: displayingAccount.address,
+        label: displayingAccount.accountName,
+        address: displayingAccount.address,
+        type: displayingAccount.type
+      })
+    }
+  }, [displayingAccount])
+
   const sender = useMemo(() => {
     return get(selectedAccount, 'address')
   }, [selectedAccount])
@@ -55,13 +70,19 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
     return get(selectedToken, 'contractAddress')
   }, [selectedToken])
 
-  const { validated, errorMessage } = useValidate({ selectedToken, amount, selectedAccount, recipient: _recipient, alchemyAddress })
+  const { validated, errorMessage } = useValidate({
+    selectedToken,
+    amount,
+    selectedAccount,
+    recipient: _recipient,
+    alchemyAddress
+  })
 
   /* 
     amount in largest unit.
     For example: 0.01 -> 0.01 ETH
   */
-  const { onSendTokens, getAlchemyAddress } = useMethod({ 
+  const { onSendTokens, getAlchemyAddress } = useMethod({
     sender,
     recipient: _recipient,
     value: amount,
@@ -103,7 +124,7 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
 
   const handleSendToken = async () => {
     await getAlchemyAddress()
-    setSendTokenClick(prev => ++prev)
+    setSendTokenClick((prev) => ++prev)
   }
   useEffect(() => {
     const sendToken = async () => {
@@ -167,10 +188,7 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
               <img src={selectedToken?.logo} style={{ width: '34px', height: '34px' }} />
             ) : (
               // <FinnieIcon style={{ width: '34px', height: '34px' }} />
-              <img
-                src={customTokenIconPath}
-                style={{ width: '36px', height: '36px' }}
-              />
+              <img src={customTokenIconPath} style={{ width: '36px', height: '36px' }} />
             ))}
           <ArrowIconBlue style={{ transform: !showTokenOptions ? 'none' : 'rotateX(180deg)' }} />
           {showTokenOptions && (
