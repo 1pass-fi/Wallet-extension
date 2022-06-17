@@ -3,11 +3,12 @@ import passworder from 'browser-passworder'
 
 // Services
 import storage from 'services/storage'
-import { ArweaveAccount, EthereumAccount, SolanaAccount } from 'services/account/Account'
+import { ArweaveAccount, EthereumAccount, SolanaAccount, K2Account } from 'services/account/Account'
 import { backgroundAccount } from 'services/account'
 import { KoiTool } from 'services/arweave'
 import { EthereumTool } from 'services/ethereum'
 import { SolanaTool } from 'services/solana'
+import { K2Tool } from 'services/k2'
 
 // Constants
 import { TYPE } from 'constants/accountConstants'
@@ -79,6 +80,7 @@ export default async (payload, next) => {
     let eth = new EthereumTool()
     let koi = new KoiTool()
     let sol = new SolanaTool()
+    let k2 = new K2Tool()
 
     switch (type) {
       case TYPE.ARWEAVE:
@@ -90,11 +92,19 @@ export default async (payload, next) => {
         walletKey = eth.key
         break
       case TYPE.SOLANA:
-        address = await SolanaAccount.utils.loadWallet(sol, keyOrSeedphrase)
-        walletKey = sol.key
+        // address = await SolanaAccount.utils.loadWallet(sol, keyOrSeedphrase)
+        // walletKey = sol.key
+
+        // TODO testing DatH - LongP
+        address = await K2Account.utils.loadWallet(k2, keyOrSeedphrase)
+        walletKey = k2.key
 
         break
     }
+
+    // TODO testing DatH - LongP
+    console.log('K2 address', address)
+    console.log('K2 walletKey', walletKey)
 
     // if account existed -> send error
     const accountExist = !backgroundAccount.importedAccount.every((credentials) => {
@@ -129,7 +139,7 @@ export default async (payload, next) => {
     */
     const newAccountName = await backgroundAccount.getNewAccountName()
     await account.set.accountName(newAccountName)
-  
+
     /* 
       If total account = 1, set this accountAddress to activatedAccountAddress
     */
