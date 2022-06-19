@@ -12,6 +12,7 @@ import {
 import { derivePath } from 'ed25519-hd-key'
 import isEmpty from 'lodash/isEmpty'
 import bs58 from 'bs58'
+import storage from 'services/storage'
 
 export class SolanaTool {
   constructor(credentials, provider) {
@@ -33,17 +34,42 @@ export class SolanaTool {
     return this.provider
   }
 
-  importWallet(key, type) {
+  async importWallet(key, type) {
     let wallet
     let keypair
-    const DEFAULT_DERIVE_PATH = `m/44'/501'/0'/0'`
+    let seed
+
+    const bufferToString = (buffer) => Buffer.from(buffer).toString('hex')
+    const DEFAULT_DERIVE_PATH = `m/44'/501'/0'/0'` // from phantom
+
+    const derivePathList = this.#getDerivePathList()
 
     if (type === 'seedphrase') {
-      const bufferToString = (buffer) => Buffer.from(buffer).toString('hex')
       const deriveSeed = (seed) => derivePath(DEFAULT_DERIVE_PATH, seed).key
 
-      const seed = mnemonicToSeedSync(key)
+      seed = mnemonicToSeedSync(key)
       keypair = Keypair.fromSeed(deriveSeed(bufferToString(seed)))
+
+      /* 
+        Pick first has balance address or first address
+      */
+      const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed')
+      const balance = await connection.getBalance(keypair.publicKey)
+
+      if (balance === 0) {
+        for (const path of derivePathList) {
+          try {
+            const _keypair = Keypair.fromSeed(derivePath(path, bufferToString(seed)).key)
+            const _balance = await connection.getBalance(_keypair.publicKey)
+            if (_balance > 0) {
+              keypair = _keypair
+              break
+            }
+          } catch (err) {
+            console.error('ERROR: ', err.message)
+          }
+        }
+      }
     } else {
       const secretKey = bs58.decode(key)
       keypair = Keypair.fromSecretKey(secretKey)
@@ -89,5 +115,19 @@ export class SolanaTool {
     const receipt = await sendAndConfirmTransaction(this.connection, transaction, [this.keypair])
 
     return receipt
+  }
+
+  #getDerivePathList() {
+    const derivePathList = []
+
+    for (let i = 0; i < 20; i++) {
+      const solanaPath = `m/44'/501'/${i}'/0'`
+      const solflarePath = `m/44'/501'/${i}'`
+
+      derivePathList.push(solanaPath)
+      derivePathList.push(solflarePath)
+    }
+
+    return derivePathList
   }
 }
