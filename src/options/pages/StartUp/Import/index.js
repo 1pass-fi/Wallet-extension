@@ -17,7 +17,7 @@ import useEthereumNetworks from '../shared/useEthereumNetworks'
 import { GalleryContext } from 'options/galleryContext'
 import InputPassword from '../shared/InputPassword'
 import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
-import { SHOW_ETHEREUM, SHOW_SOLANA } from 'constants/koiConstants'
+import { SHOW_ETHEREUM, SHOW_SOLANA, SHOW_K2 } from 'constants/koiConstants'
 import HasTwelveSeedPhrase from 'options/modal/HasTwelveSeedPhrase'
 
 import isEmpty from 'lodash/isEmpty'
@@ -196,6 +196,14 @@ export default () => {
                     title={(props) => <div {...props}>Solana Key</div>}
                     selected={false}
                     onClick={() => onTypeSelect(TYPE.SOLANA)}
+                  />
+                )}
+                {SHOW_K2 && (
+                  <WalletType
+                    icon={FinnieLogo}
+                    title={(props) => <div {...props}>K2 Key</div>}
+                    selected={false}
+                    onClick={() => onTypeSelect(TYPE.K2)}
                   />
                 )}
               </div>

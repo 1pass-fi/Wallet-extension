@@ -2,18 +2,27 @@ import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 
 export class K2Method {
   #chrome
-  constructor(k2) {
-    this.k2 = k2
+  constructor(k2Tool) {
+    this.k2Tool = k2Tool
     this.#chrome = new AccountStorageUtils(k2.address)
   }
 
-  async getBalances() {}
+  async getBalances() {
+    return { balance: 1000000000 }
+  }
 
-  async loadMyContent() {}
+  async loadMyContent() {
+    return []
+  }
 
-  async updateActivities() {}
+  async updateActivities() {
+    console.log('updateActivities-boilerplate')
+  }
 
-  async transfer() {}
+  async transfer(_, recipient, qty) {
+    console.log('transfer-boilerplate')
+    // return this.k2Tool.transfer(recipient, qty)
+  }
 
   async loadCollections() {}
 
@@ -23,7 +32,9 @@ export class K2Method {
 
   async createOrUpdateKID() {}
 
-  async transactionConfirmedStatus() {}
+  async transactionConfirmedStatus(txHas) {
+    return { dropped: false, confirmed: true }
+  }
 
   async nftBridge() {}
 

@@ -1,5 +1,6 @@
 export const SHOW_ETHEREUM = true
 export const SHOW_SOLANA = true
+export const SHOW_K2 = true
 
 export const LOAD_KOI_BY = {
   ADDRESS: 'address',

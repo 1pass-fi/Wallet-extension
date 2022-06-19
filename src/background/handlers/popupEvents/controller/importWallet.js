@@ -92,13 +92,13 @@ export default async (payload, next) => {
         walletKey = eth.key
         break
       case TYPE.SOLANA:
-        // address = await SolanaAccount.utils.loadWallet(sol, keyOrSeedphrase)
-        // walletKey = sol.key
-
+        address = await SolanaAccount.utils.loadWallet(sol, keyOrSeedphrase)
+        walletKey = sol.key
+        break
+      case TYPE.K2:
         // TODO testing DatH - LongP
         address = await K2Account.utils.loadWallet(k2, keyOrSeedphrase)
         walletKey = k2.key
-
         break
     }
 

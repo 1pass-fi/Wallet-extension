@@ -1,7 +1,7 @@
 import passworder from 'browser-passworder'
 import { find, get, isEmpty } from 'lodash'
 
-import { Account, ArweaveAccount, EthereumAccount, SolanaAccount } from './Account/index'
+import { Account, ArweaveAccount, EthereumAccount, K2Account, SolanaAccount } from './Account/index'
 
 import { IMPORTED, TYPE, ACCOUNT } from 'constants/accountConstants'
 import { ChromeStorage } from 'services/storage/ChromeStorage'
@@ -69,6 +69,8 @@ class AccountManager {
           return new EthereumAccount(credentials, provider)
         case TYPE.SOLANA:
           return new SolanaAccount(credentials, solProvider)
+        case TYPE.K2:
+          return new K2Account(credentials, solProvider) // TODO: change to koii provider
       }
     } catch (err) {
       console.log(err.message)
@@ -112,10 +114,16 @@ class AccountManager {
       const importedArweave = await this.storage._getChrome(IMPORTED.ARWEAVE)
       const importedEthereum = await this.storage._getChrome(IMPORTED.ETHEREUM)
       const importedSolana = await this.storage._getChrome(IMPORTED.SOLANA)
+      const importedK2 = await this.storage._getChrome(IMPORTED.K2)
 
       if (find(importedArweave, (v) => v.address === address)) return TYPE.ARWEAVE
       if (find(importedEthereum, (v) => v.address === address)) return TYPE.ETHEREUM
+
+      /* 
+        TODO: solve problem SOLANA and K2 have same address
+      */
       if (find(importedSolana, (v) => v.address === address)) return TYPE.SOLANA
+      if (find(importedK2, (v) => v.address === address)) return TYPE.K2
     } catch (err) {
       err.message
     }
@@ -132,8 +140,9 @@ class AccountManager {
       const importedArweave = (await this.storage._getChrome(IMPORTED.ARWEAVE)) || []
       const importedEthereum = (await this.storage._getChrome(IMPORTED.ETHEREUM)) || []
       const importedSolana = (await this.storage._getChrome(IMPORTED.SOLANA)) || []
+      const importedK2 = (await this.storage._getChrome(IMPORTED.K2)) || []
 
-      this.importedAccount = [...importedArweave, ...importedEthereum, ...importedSolana]
+      this.importedAccount = [...importedArweave, ...importedEthereum, ...importedSolana, ...importedK2]
     } catch (err) {
       console.log(err.message)
     }
@@ -150,6 +159,7 @@ class AccountManager {
       const importedArweave = (await this.storage._getChrome(IMPORTED.ARWEAVE)) || []
       const importedEthereum = (await this.storage._getChrome(IMPORTED.ETHEREUM)) || []
       const importedSolana = (await this.storage._getChrome(IMPORTED.SOLANA)) || []
+      const importedK2 = (await this.storage._getChrome(IMPORTED.K2)) || []
 
       switch (network) {
         case TYPE.ARWEAVE:
@@ -158,9 +168,11 @@ class AccountManager {
           return importedEthereum.length
         case TYPE.SOLANA:
           return importedSolana.length
+        case TYPE.K2:
+          return importedK2.length
       }
 
-      return importedArweave.length + importedEthereum.length + importedSolana.length
+      return importedArweave.length + importedEthereum.length + importedSolana.length + importedK2.length
     } catch (err) {
       console.log(err.message)
     }
@@ -340,6 +352,10 @@ export class BackgroundAccountManager extends AccountManager {
           break
         case TYPE.SOLANA:
           chain = IMPORTED.SOLANA
+          break
+        case TYPE.K2:
+          chain = IMPORTED.K2
+          break
       }
 
       importedWallets = (await this.storage._getChrome(chain)) || []
@@ -368,6 +384,10 @@ export class BackgroundAccountManager extends AccountManager {
           break
         case TYPE.SOLANA:
           chain = IMPORTED.SOLANA
+          break
+        case TYPE.K2:
+          chain = IMPORTED.K2
+          break
       }
 
       importedWallets = (await this.storage._getChrome(chain)) || []
@@ -420,10 +440,21 @@ export class BackgroundAccountManager extends AccountManager {
             await storage.setting.set.activatedSolanaAccountAddress(null)
           }
         }
+
+        const currentK2ActivatedAccount = await storage.setting.get.activatedK2AccountAddress()
+        if (address === currentK2ActivatedAccount) {
+          const defaultActivatedAccount = find(this.importedAccount, { type: TYPE.K2 })
+          if (!isEmpty(defaultActivatedAccount)) {
+            await setActivatedAccountAddress(defaultActivatedAccount, TYPE.K2)
+          } else {
+            await storage.setting.set.activatedK2AccountAddress(null)
+          }
+        }
       } else {
         await storage.setting.set.activatedArweaveAccountAddress(null)
         await storage.setting.set.activatedEthereumAccountAddress(null)
         await storage.setting.set.activatedSolanaAccountAddress(null)
+        await storage.setting.set.activatedK2AccountAddress(null)
       }
     } catch (err) {
       console.log(err.message)
@@ -481,6 +512,9 @@ export class BackgroundAccountManager extends AccountManager {
         case TYPE.SOLANA:
           importedWallets = await this.storage._getChrome(IMPORTED.SOLANA)
           break
+        case TYPE.K2:
+          importedWallets = await this.storage._getChrome(IMPORTED.K2)
+          break
       }
 
       const wallet = find(importedWallets, (v) => v.address == address)
@@ -503,8 +537,9 @@ export class BackgroundAccountManager extends AccountManager {
       const importedArweave = (await this.storage._getChrome(IMPORTED.ARWEAVE)) || []
       const importedEthereum = (await this.storage._getChrome(IMPORTED.ETHEREUM)) || []
       const importedSolana = (await this.storage._getChrome(IMPORTED.SOLANA)) || []
+      const importedK2 = (await this.storage._getChrome(IMPORTED.K2)) || []
 
-      const allCredentials = [...importedArweave, ...importedEthereum, ...importedSolana]
+      const allCredentials = [...importedArweave, ...importedEthereum, ...importedSolana, ...importedK2]
 
       await Promise.all(
         allCredentials.map(async (credential) => {

@@ -58,6 +58,10 @@ export class SettingGet {
     return this.#chrome._getChrome(SETTING.ACTIVATED_SOLANA_ACCOUNT)
   }
 
+  activatedK2AccountAddress() {
+    return this.#chrome._getChrome(SETTING.ACTIVATED_K2_ACCOUNT)
+  }
+
   connectSiteAccountAddress() {
     return this.#chrome._getChrome(SETTING.CONNECT_SITE_ACCOUNT)
   }
