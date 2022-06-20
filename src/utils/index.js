@@ -838,7 +838,6 @@ export const setActivatedAccountAddress = async (address, type) => {
       await storage.setting.set.activatedK2AccountAddress(address)
       break
 
-    // TODO DatH - LongP HIGH PRIORITY: solve problem SOLANA and K2 have same address
     default:
       console.log('Failed to set activated account address: ', address, type)
       break

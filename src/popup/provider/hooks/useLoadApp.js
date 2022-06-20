@@ -83,6 +83,18 @@ const useLoadApp = ({
       }
     }
 
+    const activatedK2Address = await storage.setting.get.activatedK2AccountAddress()
+    if (!isEmpty(activatedK2Address)) {
+      const activatedAccount = await popupAccount.getAccount({
+        address: activatedK2Address
+      })
+
+      if (!isEmpty(activatedAccount)) {
+        const activatedAccountMetadata = await activatedAccount.get.metadata()
+        setDefaultAccount(activatedAccountMetadata)
+      }
+    }
+
     const activatedSolanaAddress = await storage.setting.get.activatedSolanaAccountAddress()
     if (!isEmpty(activatedSolanaAddress)) {
       const activatedAccount = await popupAccount.getAccount({

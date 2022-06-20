@@ -108,6 +108,9 @@ export default ({ accounts, setAccounts }) => {
     const activatedArweaveAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
     dispatch(setDefaultAccountByAddress(activatedArweaveAccountAddress))
 
+    const defaultK2AccountAddress = await storage.setting.get.activatedK2AccountAddress()
+    dispatch(setDefaultAccountByAddress(defaultK2AccountAddress))
+
     const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
     dispatch(setDefaultAccountByAddress(activatedEthereumAccountAddress))
 

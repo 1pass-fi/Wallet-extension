@@ -41,8 +41,6 @@ const NavBar = () => {
   const toggleNotificationsCenter = () => setShowNotificationsCenter(!showNotificationsCenter)
   const closeNotificationsCenter = () => setShowNotificationsCenter(false)
 
-  console.log('displayingAccount', displayingAccount)
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
