@@ -8,10 +8,8 @@ export class K2Method {
   }
 
   async getBalances() {
-    console.log('this.k2Tool================', this.k2Tool)
     const k2Balance = await this.k2Tool.getBalance()
-    console.log('k2Balance================', k2Balance)
-    return { balance: 1000000000 }
+    return { balance: k2Balance }
   }
 
   async loadMyContent() {

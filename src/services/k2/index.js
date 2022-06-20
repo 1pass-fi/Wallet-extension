@@ -76,4 +76,10 @@ export class K2Tool {
 
     return wallet
   }
+
+  async getBalance() {
+    const balance = await this.connection.getBalance(this.keypair.publicKey)
+
+    return balance
+  }
 }

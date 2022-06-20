@@ -63,6 +63,19 @@ const Tokens = ({ currentProviderAddress }) => {
           }
         ])
         return
+      } else if (displayingAccount.type === TYPE.K2) {
+        // TODO DatH - LongP
+        const importTokens = [
+          {
+            name: 'KOII',
+            balance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
+            displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
+            symbol: 'KOII',
+            decimal: 9
+          }
+        ]
+
+        setTokens(importTokens)
       } else if (displayingAccount.type === TYPE.SOLANA) {
         const importTokens = [
           {
@@ -92,7 +105,7 @@ const Tokens = ({ currentProviderAddress }) => {
         )
 
         setTokens(importTokens)
-      } else {
+      } else if (displayingAccount.type === TYPE.ETHEREUM) {
         const importTokens = [
           {
             name: 'Ethereum',
@@ -164,7 +177,6 @@ const Tokens = ({ currentProviderAddress }) => {
       ref={accountInfoRef}
       style={{ minHeight: `${clsx(accountInfoMinHeight)}px` }}
     >
-      {/* TODO DatH - LongP */}
       {tokens.map((token, idx) => (
         <div
           key={idx}
