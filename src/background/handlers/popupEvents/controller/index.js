@@ -35,6 +35,7 @@ import updateNft from './updateNft'
 import loadBalanceAsync from './loadBalanceAsync'
 import updateEthereumProvider from './updateEthereumProvider'
 import updateSolanaProvider from './updateSolanaProvider'
+import updateK2Provider from './updateK2Provider'
 import sendCustomTokenEth from './sendCustomTokenEth'
 import sendCustomTokenAr from './sendCustomTokenAr'
 import sendCustomTokenSol from './sendCustomTokenSol'
@@ -79,6 +80,7 @@ export default {
   loadBalanceAsync,
   updateEthereumProvider,
   updateSolanaProvider,
+  updateK2Provider,
   sendCustomTokenEth,
   sendCustomTokenAr,
   sendCustomTokenSol,

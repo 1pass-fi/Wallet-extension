@@ -13,7 +13,12 @@ const testNotification = async () => {
   const sendPopupPorts = sendMessageToPorts(cache.getPopupPorts())
 
   const txId = uuid()
-  const message = { title: 'Test notification', message: 'test notification blah blah blah', txId, new: true }
+  const message = {
+    title: 'Test notification',
+    message: 'test notification blah blah blah',
+    txId,
+    new: true
+  }
   const notifications = await storage.generic.get.pushNotification()
   notifications.unshift(message)
 
@@ -25,10 +30,8 @@ const testNotification = async () => {
   })
 }
 
-
 export default () => {
-  let 
-    uploadPendingTransactionInterval,
+  let uploadPendingTransactionInterval,
     loadBalancesArweaveInterval,
     loadBalancesEthereumInterval,
     loadActivitiesArweaveInterval,
@@ -59,6 +62,8 @@ export default () => {
     loadNftStatesInterval = setInterval(() => {
       helpers.loadNftStates(TYPE.ARWEAVE)
     }, TIME_INTERVAL.LOAD_NFT_STATE)
+
+    // TODO DatH - LongP - add SOL - K2 interval
   } catch (err) {
     console.error('Set interval background error', err.message)
   }
