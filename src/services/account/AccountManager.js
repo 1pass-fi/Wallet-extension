@@ -62,6 +62,9 @@ class AccountManager {
 
       const solProvider = (await storage.setting.get.solanaProvider()) || 'testnet'
 
+      // TODO DatH - LongP: change to koii provider
+      const k2Provider = (await storage.setting.get.k2Provider()) || 'testnet'
+
       switch (type) {
         case TYPE.ARWEAVE:
           return new ArweaveAccount(credentials)
@@ -70,7 +73,7 @@ class AccountManager {
         case TYPE.SOLANA:
           return new SolanaAccount(credentials, solProvider)
         case TYPE.K2:
-          return new K2Account(credentials, solProvider) // TODO: change to koii provider
+          return new K2Account(credentials, k2Provider)
       }
     } catch (err) {
       console.log(err.message)
@@ -120,7 +123,7 @@ class AccountManager {
       if (find(importedEthereum, (v) => v.address === address)) return TYPE.ETHEREUM
 
       /* 
-        TODO: solve problem SOLANA and K2 have same address
+        TODO DatH - LongP: solve problem SOLANA and K2 have same address
       */
       if (find(importedSolana, (v) => v.address === address)) return TYPE.SOLANA
       if (find(importedK2, (v) => v.address === address)) return TYPE.K2
@@ -142,7 +145,12 @@ class AccountManager {
       const importedSolana = (await this.storage._getChrome(IMPORTED.SOLANA)) || []
       const importedK2 = (await this.storage._getChrome(IMPORTED.K2)) || []
 
-      this.importedAccount = [...importedArweave, ...importedEthereum, ...importedSolana, ...importedK2]
+      this.importedAccount = [
+        ...importedArweave,
+        ...importedEthereum,
+        ...importedSolana,
+        ...importedK2
+      ]
     } catch (err) {
       console.log(err.message)
     }
@@ -172,7 +180,9 @@ class AccountManager {
           return importedK2.length
       }
 
-      return importedArweave.length + importedEthereum.length + importedSolana.length + importedK2.length
+      return (
+        importedArweave.length + importedEthereum.length + importedSolana.length + importedK2.length
+      )
     } catch (err) {
       console.log(err.message)
     }
@@ -539,7 +549,12 @@ export class BackgroundAccountManager extends AccountManager {
       const importedSolana = (await this.storage._getChrome(IMPORTED.SOLANA)) || []
       const importedK2 = (await this.storage._getChrome(IMPORTED.K2)) || []
 
-      const allCredentials = [...importedArweave, ...importedEthereum, ...importedSolana, ...importedK2]
+      const allCredentials = [
+        ...importedArweave,
+        ...importedEthereum,
+        ...importedSolana,
+        ...importedK2
+      ]
 
       await Promise.all(
         allCredentials.map(async (credential) => {

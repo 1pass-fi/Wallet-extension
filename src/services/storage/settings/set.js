@@ -93,6 +93,10 @@ export class SettingSet {
     return this.#chrome._setChrome(SETTING.SOLANA_PROVIDER, value)
   }
 
+  k2Provider(value) {
+    return this.#chrome._setChrome(SETTING.K2_PROVIDER, value)
+  }
+
   activatedChain(value) {
     return this.#chrome._setChrome(SETTING.ACTIVATED_CHAIN, value)
   }

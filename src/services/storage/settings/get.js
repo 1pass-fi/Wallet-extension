@@ -1,7 +1,7 @@
 import { ChromeStorage } from '../ChromeStorage'
 import { SETTING } from 'constants/storageConstants'
 import { TYPE } from 'constants/accountConstants'
-import { ETH_NETWORK_PROVIDER, SOL_NETWORK_PROVIDER } from 'constants/koiConstants'
+import { ETH_NETWORK_PROVIDER, SOL_NETWORK_PROVIDER, K2_NETWORK_PROVIDER } from 'constants/koiConstants'
 
 export class SettingGet {
   #chrome
@@ -92,6 +92,10 @@ export class SettingGet {
     return (await this.#chrome._getChrome(SETTING.SOLANA_PROVIDER)) || SOL_NETWORK_PROVIDER.MAINNET
   }
 
+  async k2Provider() {
+    return (await this.#chrome._getChrome(SETTING.K2_PROVIDER)) || K2_NETWORK_PROVIDER.MAINNET
+  }
+
   async activatedChain() {
     return (await this.#chrome._getChrome(SETTING.ACTIVATED_CHAIN)) || TYPE.ARWEAVE
   }
@@ -104,4 +108,3 @@ export class SettingGet {
     return (await this.#chrome._getChrome(SETTING.IMPORTED_SOLANA_CUSTOM_TOKENS)) || {}
   }
 }
-  

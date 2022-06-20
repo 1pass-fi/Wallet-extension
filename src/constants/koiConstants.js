@@ -483,6 +483,12 @@ export const SOL_NETWORK_PROVIDER = {
   DEVNET: 'devnet'
 }
 
+export const K2_NETWORK_PROVIDER = {
+  MAINNET: 'mainnet-beta',
+  TESTNET: 'testnet',
+  DEVNET: 'devnet'
+}
+
 export const ETH_NETWORK_PROVIDER = {
   MAINNET: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
   ROPSTEN: 'https://ropsten.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
