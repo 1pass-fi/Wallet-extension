@@ -66,6 +66,8 @@ export const importWallet = (key, password, type) => async (dispatch) => {
   }
 }
 
+
+// TODO LongP - remove unused method(s)
 export const removeWallet = (address, type) => async (dispatch, getState) => {
   try {
     await backgroundRequest.wallet.removeWallet({ address })
@@ -345,6 +347,8 @@ export const getKeyFile = (password, address) => async (dispatch) => {
         break
       case TYPE.ETHEREUM:
         filename = FILENAME.ETHEREUM
+
+      // TODO DatH - LongP
     }
 
     const result = JSON.stringify(key)
@@ -392,6 +396,14 @@ export const updateEthereumProvider = (ethereumProvider) => async (dispatch) => 
 export const updateSolanaProvider = (solanaProvider) => async (dispatch) => {
   try {
     await backgroundRequest.gallery.updateSolanaProvider({ solanaProvider })
+  } catch (error) {
+    dispatch(setError(err.message))
+  }
+}
+
+export const updateK2Provider = (k2Provider) => async (dispatch) => {
+  try {
+    await backgroundRequest.gallery.updateK2Provider({ k2Provider })
   } catch (error) {
     dispatch(setError(err.message))
   }

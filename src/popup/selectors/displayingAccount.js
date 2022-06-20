@@ -9,5 +9,7 @@ export const getDisplayingAccount = (state) => {
     return defaultAccount.ETH
   } else if (activatedChain === TYPE.SOLANA) {
     return defaultAccount.SOL
+  } else if (activatedChain === TYPE.K2) {
+    return defaultAccount.K2
   }
 }
