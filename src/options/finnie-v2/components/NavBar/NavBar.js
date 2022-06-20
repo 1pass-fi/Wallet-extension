@@ -32,10 +32,6 @@ const NavBar = () => {
   const navbarRef = createRef()
 
   const dispatch = useDispatch()
-
-  const defaultArweaveAccount = useSelector((state) => state.defaultAccount.AR)
-  const defaultEthereumAccount = useSelector((state) => state.defaultAccount.ETH)
-  const defaultSolanaAccount = useSelector((state) => state.defaultAccount.SOL)
   const notificationsData = useSelector((state) => state.notificationsData)
 
   const toggleDropdownMenu = () => setShowDropdown((prev) => !prev)
@@ -44,6 +40,8 @@ const NavBar = () => {
 
   const toggleNotificationsCenter = () => setShowNotificationsCenter(!showNotificationsCenter)
   const closeNotificationsCenter = () => setShowNotificationsCenter(false)
+
+  console.log('displayingAccount', displayingAccount)
 
   useEffect(() => {
     const handleClickOutside = (event) => {

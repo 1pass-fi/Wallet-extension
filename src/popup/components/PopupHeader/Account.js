@@ -34,6 +34,9 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
           {displayingAccount.type === TYPE.ARWEAVE && (
             <FinnieIcon style={{ width: '25px', height: '25px' }} />
           )}
+          {displayingAccount.type === TYPE.K2 && (
+            <FinnieIcon style={{ width: '25px', height: '25px' }} />
+          )}
           {displayingAccount.type === TYPE.ETHEREUM && (
             <EthereumIcon style={{ width: '25px', height: '25px' }} />
           )}

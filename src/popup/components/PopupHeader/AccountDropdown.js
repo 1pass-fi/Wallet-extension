@@ -41,6 +41,7 @@ export const AccountDropdown = React.forwardRef(
 
     const accounts = useSelector((state) => state.accounts)
     const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
+    const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
     const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
     const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
 
@@ -92,6 +93,8 @@ export const AccountDropdown = React.forwardRef(
       switch (account.type) {
         case TYPE.ARWEAVE:
           return account.address === defaultArweaveAccountAddress
+        case TYPE.K2:
+          return account.address === defaultK2AccountAddress
         case TYPE.ETHEREUM:
           return account.address === defaultEthereumAccountAddress
         case TYPE.SOLANA:
@@ -120,6 +123,7 @@ export const AccountDropdown = React.forwardRef(
               {account.type === TYPE.ARWEAVE && (
                 <FinnieIcon className="ml-2.5 mt-1 h-6.25 w-6.25" />
               )}
+              {account.type === TYPE.K2 && <FinnieIcon className="ml-2.5 mt-1 h-6.25 w-6.25" />}
               {account.type === TYPE.ETHEREUM && (
                 <EthereumIcon className="ml-2.5 mt-1 h-6.25 w-6.25" />
               )}
@@ -145,6 +149,11 @@ export const AccountDropdown = React.forwardRef(
                 {account.type === TYPE.ARWEAVE && (
                   <div className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white">
                     Balance: {formatNumber(account.koiBalance, 2)} KOII
+                  </div>
+                )}
+                {account.type === TYPE.K2 && (
+                  <div className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white">
+                    Balance: {formatNumber(account.balance / Math.pow(10, 9), 2)} KOII
                   </div>
                 )}
                 {account.type === TYPE.ETHEREUM && (

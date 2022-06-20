@@ -26,7 +26,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
   const dispatch = useDispatch()
   const modalRef = useRef(null)
 
-  const defaultAccount = useSelector(state => state.defaultAccount)
+  const defaultAccount = useSelector((state) => state.defaultAccount)
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -51,19 +51,35 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
       const accountStates = await popupAccount.getAllMetadata()
       dispatch(setAccounts(accountStates))
 
+      const activatedChain = await storage.setting.get.activatedChain()
+
       /* 
         Have to handle removing this address from activatedAccount if this
         address is the activated account.
       */
       if (accountStates.length !== 0) {
         const arAccount = find(accountStates, (v) => v.type === TYPE.ARWEAVE)
+        const k2Account = find(accountStates, (v) => v.type === TYPE.K2)
         const ethAccount = find(accountStates, (v) => v.type === TYPE.ETHEREUM)
         const solAccount = find(accountStates, (v) => v.type === TYPE.SOLANA)
+
+        let emptyActivatedChainAccount = false
 
         if (account.type === TYPE.ARWEAVE) {
           if (account.address === defaultAccount.AR?.address) {
             if (!isEmpty(arAccount)) {
               dispatch(setDefaultAccount(arAccount))
+            } else {
+              emptyActivatedChainAccount = true
+            }
+          }
+        }
+        if (account.type === TYPE.K2) {
+          if (account.address === defaultAccount.K2?.address) {
+            if (!isEmpty(k2Account)) {
+              dispatch(setDefaultAccount(k2Account))
+            } else {
+              emptyActivatedChainAccount = true
             }
           }
         }
@@ -71,6 +87,8 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
           if (account.address === defaultAccount.ETH?.address) {
             if (!isEmpty(ethAccount)) {
               dispatch(setDefaultAccount(ethAccount))
+            } else {
+              emptyActivatedChainAccount = true
             }
           }
         }
@@ -78,12 +96,18 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
           if (account.address === defaultAccount.SOL?.address) {
             if (!isEmpty(solAccount)) {
               dispatch(setDefaultAccount(solAccount))
+            } else {
+              emptyActivatedChainAccount = true
             }
           }
         }
-      }
 
-      const totalArweaveAccount = await popupAccount.count(TYPE.ARWEAVE)
+        // TODO DatH - LongP
+        if (account.type === activatedChain && emptyActivatedChainAccount) {
+          await storage.setting.set.activatedChain(accountStates[0].type)
+          setActivatedChain(accountStates[0].type)
+        }
+	      const totalArweaveAccount = await popupAccount.count(TYPE.ARWEAVE)
       const totalEthereumAccount = await popupAccount.count(TYPE.ETHEREUM)
       const totalSolanaAccount = await popupAccount.count(TYPE.SOLANA)
 

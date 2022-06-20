@@ -193,4 +193,8 @@ export class GalleryRequest extends Request {
   updateSolanaProvider(body) {
     return this.promise(MESSAGES.UPDATE_SOLANA_PROVIDER, body)
   }
+
+  updateK2Provider(body) {
+    return this.promise(MESSAGES.UPDATE_K2_PROVIDER, body)
+  }
 }

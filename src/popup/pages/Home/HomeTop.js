@@ -22,7 +22,12 @@ import Select from 'finnie-v2/components/Select'
 import { loadAllAccounts } from 'options/actions/accounts'
 
 // actions
-import { updateEthereumProvider, updateSolanaProvider, loadContent } from 'actions/koi'
+import {
+  updateEthereumProvider,
+  updateSolanaProvider,
+  updateK2Provider,
+  loadContent
+} from 'actions/koi'
 import { setActivities } from 'popup/actions/activities'
 
 const HomeTop = ({
@@ -33,6 +38,7 @@ const HomeTop = ({
   setCurrentProviderAddress,
   updateEthereumProvider,
   updateSolanaProvider,
+  updateK2Provider,
   setActivities
 }) => {
   const p = useParallax({
@@ -89,6 +95,21 @@ const HomeTop = ({
     }
   }
 
+  const k2ProviderOptions = [
+    {
+      label: 'MAINNET',
+      value: 'mainnet-beta'
+    },
+    {
+      label: 'TESTNET',
+      value: 'testnet'
+    },
+    {
+      label: 'DEVNET',
+      value: 'devnet'
+    }
+  ]
+
   const solanaProviderOptions = [
     {
       label: 'MAINNET',
@@ -103,6 +124,36 @@ const HomeTop = ({
       value: 'devnet'
     }
   ]
+
+  const onChangeK2Provider = async (value) => {
+    setIsLoading(true)
+    try {
+      await updateK2Provider(value)
+
+      setCurrentProviderAddress(value)
+
+      // load balance
+      await request.wallet.loadBalanceAsync()
+      await request.activities.loadActivities()
+
+      const activities = await storage.generic.get.allActivities()
+      setActivities(activities)
+
+      await request.activities.loadActivities()
+
+      // update account state
+      // TODO Thuan Ngo
+      await dispatch(loadAllAccounts())
+      await dispatch(loadContent())
+
+      // update account state
+      await dispatch(loadAllAccounts())
+    } catch (error) {
+      console.log('Failed to change K2 provider', error.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const onChangeSolanaProvider = async (value) => {
     setIsLoading(true)
@@ -141,6 +192,8 @@ const HomeTop = ({
         currentProvider = await storage.setting.get.ethereumProvider()
       } else if (accountType === TYPE.SOLANA) {
         currentProvider = await storage.setting.get.solanaProvider()
+      } else if (accountType === TYPE.K2) {
+        currentProvider = await storage.setting.get.k2Provider()
       }
       setCurrentProviderAddress(currentProvider)
     }
@@ -153,6 +206,15 @@ const HomeTop = ({
       <div ref={p.ref}>
         <div className="flex justify-between">
           <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />
+          {displayingAccount.type === TYPE.K2 && (
+            <div className="mr-1.75">
+              <Select
+                options={k2ProviderOptions}
+                value={currentProviderAddress}
+                onChange={onChangeK2Provider}
+              />
+            </div>
+          )}
           {displayingAccount.type === TYPE.ETHEREUM && (
             <div className="mr-1.75">
               <Select
@@ -185,6 +247,21 @@ const HomeTop = ({
                 ${fiatCurrencyFormat((displayingAccount.balance * price.SOL) / Math.pow(10, 9))} USD
               </div>
             )}
+          </div>
+        )}
+        {displayingAccount.type === TYPE.K2 && (
+          <div className="mt-6.5">
+            <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+              {numberFormat(displayingAccount.balance / Math.pow(10, 9))} KOII
+            </div>
+            {/* {currentProviderAddress?.includes('mainnet') && (
+              <div
+                className="text-base leading-8 tracking-finnieSpacing-tight"
+                style={{ color: '#707070' }}
+              >
+                ${fiatCurrencyFormat((displayingAccount.balance * price.SOL) / Math.pow(10, 9))} USD
+              </div>
+            )} */}
           </div>
         )}
         {displayingAccount.type === TYPE.ARWEAVE && (
@@ -244,6 +321,7 @@ const HomeTop = ({
 export default connect(null, {
   updateEthereumProvider,
   updateSolanaProvider,
+  updateK2Provider,
   setIsLoading,
   setActivities
 })(HomeTop)

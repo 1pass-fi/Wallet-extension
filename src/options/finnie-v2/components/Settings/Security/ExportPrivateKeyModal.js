@@ -42,6 +42,10 @@ const ExportPrivateKeyModal = ({ account, close }) => {
       })
       let filename = 'arweave-key.json'
 
+      if (account.type === TYPE.K2) {
+        filename = 'k2-key.json'
+      }
+
       if (account.type === TYPE.ETHEREUM) {
         filename = 'ethereum-key.json'
       }

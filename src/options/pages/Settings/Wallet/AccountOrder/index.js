@@ -143,6 +143,7 @@ export default ({ accounts, setAccounts }) => {
               }`}
             ></div>
             {item.type == TYPE.ARWEAVE && <FinnieIcon className="finnie-icon" />}
+            {item.type == TYPE.K2 && <FinnieIcon className="finnie-icon" />}
             {item.type == TYPE.ETHEREUM && <EthereumIcon className="finnie-icon" />}
             {item.type == TYPE.SOLANA && <SolanaIcon className="finnie-icon" />}
             <div className="account-name">{item.accountName}</div>

@@ -120,13 +120,11 @@ class AccountManager {
       const importedK2 = await this.storage._getChrome(IMPORTED.K2)
 
       if (find(importedArweave, (v) => v.address === address)) return TYPE.ARWEAVE
+      if (find(importedK2, (v) => v.address === address)) return TYPE.K2
       if (find(importedEthereum, (v) => v.address === address)) return TYPE.ETHEREUM
 
-      /* 
-        TODO DatH - LongP: solve problem SOLANA and K2 have same address
-      */
+      // TODO DatH - LongP HIGH PRIORITY: solve problem SOLANA and K2 have same address
       if (find(importedSolana, (v) => v.address === address)) return TYPE.SOLANA
-      if (find(importedK2, (v) => v.address === address)) return TYPE.K2
     } catch (err) {
       err.message
     }

@@ -54,7 +54,13 @@ import { addNotification, setNotifications } from 'options/actions/notifications
 import { useNfts } from './hooks/useNfts'
 import { TYPE } from 'constants/accountConstants'
 
-import { Transaction, sendAndConfirmTransaction, Message as _Messagge, Connection, clusterApiUrl } from '@solana/web3.js'
+import {
+  Transaction,
+  sendAndConfirmTransaction,
+  Message as _Messagge,
+  Connection,
+  clusterApiUrl
+} from '@solana/web3.js'
 
 export default ({ children }) => {
   const { pathname } = useLocation()
@@ -126,16 +132,15 @@ export default ({ children }) => {
   */
   const [activatedChain, setActivatedChain] = useState('TYPE_ARWEAVE')
 
-
   useEffect(() => {
     const loadActivatedChain = async () => {
       const activatedChain = await storage.setting.get.activatedChain()
       if (activatedChain) setActivatedChain(activatedChain)
     }
-  
+
     loadActivatedChain()
   }, [])
-  
+
   /* 
       Account to display
     */
@@ -143,7 +148,14 @@ export default ({ children }) => {
     if (activatedChain === TYPE.ARWEAVE) return _defaultAccount.AR
     if (activatedChain === TYPE.ETHEREUM) return _defaultAccount.ETH
     if (activatedChain === TYPE.SOLANA) return _defaultAccount.SOL
-  }, [_defaultAccount.AR, _defaultAccount.ETH, _defaultAccount.SOL, activatedChain])
+    if (activatedChain === TYPE.K2) return _defaultAccount.K2
+  }, [
+    _defaultAccount.AR,
+    _defaultAccount.ETH,
+    _defaultAccount.SOL,
+    _defaultAccount.K2,
+    activatedChain
+  ])
 
   /* EDITING COLLECTION ID */
   const [editingCollectionId, setEditingCollectionId] = useState(null)

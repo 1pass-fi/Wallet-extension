@@ -8,6 +8,7 @@ import DropDown from 'finnie-v2/components/DropDown'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
 import ArLogo from 'img/v2/arweave-logos/arweave-logo.svg'
+import K2Logo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import SolLogo from 'img/v2/solana-logo.svg'
 import CopyIcon from 'img/v2/copy-icon.svg'
@@ -52,7 +53,9 @@ const Address = ({ address }) => {
 }
 
 const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAccount }) => {
-  const { displayingAccount, setNotification, setError, setActivatedChain } = useContext(GalleryContext)
+  const { displayingAccount, setNotification, setError, setActivatedChain } = useContext(
+    GalleryContext
+  )
   const { getDID } = useContext(DidContext)
 
   const dispatch = useDispatch()
@@ -65,6 +68,10 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
   const reloadDefaultAccount = async () => {
     const activatedArweaveAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
     dispatch(setDefaultAccountByAddress(activatedArweaveAccountAddress))
+
+    // TODO DatH - LongP
+    const activatedK2AccountAddress = await storage.setting.get.activatedK2AccountAddress()
+    dispatch(setDefaultAccountByAddress(activatedK2AccountAddress))
 
     const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
     dispatch(setDefaultAccountByAddress(activatedEthereumAccountAddress))
@@ -88,6 +95,10 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
       if (type === TYPE.SOLANA) {
         await storage.setting.set.activatedChain(TYPE.SOLANA)
         setActivatedChain(TYPE.SOLANA)
+      }
+      if (type === TYPE.K2) {
+        await storage.setting.set.activatedChain(TYPE.K2)
+        setActivatedChain(TYPE.K2)
       }
 
       getDID()
@@ -163,14 +174,15 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
               <td className="pl-2">
                 <CheckBox
                   onClick={() => handleSetDefaultAccount(account.address, account.type)}
-                  checked={
-                    displayingAccount?.address === account?.address
-                  }
+                  checked={displayingAccount?.address === account?.address}
                 />
               </td>
               <td className="w-10 pl-2">
                 {account.type === TYPE.ARWEAVE && (
                   <ArLogo className="inline w-6 h-6 shadow-sm rounded-full" />
+                )}
+                {account.type === TYPE.K2 && (
+                  <K2Logo className="inline w-6 h-6 shadow-sm rounded-full" />
                 )}
                 {account.type === TYPE.ETHEREUM && (
                   <EthLogo className="inline w-6 h-6 shadow-sm rounded-full" />

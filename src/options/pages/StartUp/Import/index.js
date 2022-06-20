@@ -45,12 +45,14 @@ export default () => {
   const [isSeedPhrase, setIsSeedPhrase] = useState(true)
 
   const dispatch = useDispatch()
-  const accounts = useSelector(state => state.accounts)
+  const accounts = useSelector((state) => state.accounts)
 
-  const { setError, setImportedAddress, setNewAddress, setActivatedChain } = useContext(GalleryContext)
+  const { setError, setImportedAddress, setNewAddress, setActivatedChain } = useContext(
+    GalleryContext
+  )
   let { selectedNetwork, EthereumNetworks } = useEthereumNetworks({
-    title: () => <div className='title'>Import Ethereum Key</div>,
-    description: () => <div className='description'>Choose your Network.</div>,
+    title: () => <div className="title">Import Ethereum Key</div>,
+    description: () => <div className="description">Choose your Network.</div>
   })
   const nextStep = () => {
     setStep(step + 1)
@@ -156,16 +158,16 @@ export default () => {
   }
 
   return (
-    <div className='start-up'>
-      <div className='import-wallet-wrapper'>
+    <div className="start-up">
+      <div className="import-wallet-wrapper">
         {isLoading && <Loading />}
-        <div className='import-wallet'>
+        <div className="import-wallet">
           <GoBackBtn goToPreviousStep={previousStep} />
           {step === 1 && (
             <>
-              <div className='title'>Import a wallet with a secret phrase</div>
-              <div className='description'>What type of key are you importing?</div>
-              <div className='wallet-types'>
+              <div className="title">Import a wallet with a recovery phrase</div>
+              <div className="description">What type of key are you importing?</div>
+              <div className="wallet-types">
                 <WalletType
                   icon={FinnieLogo}
                   title={(props) => (
@@ -214,8 +216,8 @@ export default () => {
 
           {step === 3 && (
             <>
-              <div className='title'>Import a wallet</div>
-              <div className='description'>
+              <div className="title">Import a wallet</div>
+              <div className="description">
                 {isSeedPhrase ? (
                   <>
                     Paste your seed phrase, then create a password for Finnie. Make sure your
@@ -230,7 +232,7 @@ export default () => {
               </div>
               {isKoiiPhrase && isSeedPhrase && (
                 <InputSeedPhraseField
-                  label='12-word Secret Phrase'
+                  label="12-word Recovery Phrase"
                   userSeedPhrase={userSeedPhrase}
                   setUserSeedPhrase={setUserSeedPhrase}
                   seedPhraseError={seedPhraseError}
@@ -242,19 +244,19 @@ export default () => {
 
               {!isKoiiPhrase && isSeedPhrase && (
                 <InputNonKoiiSeedPhraseField
-                  label='Non-KOII Secret Phrase'
+                  label="Non-KOII Recovery Phrase"
                   value={userSeedPhrase}
                   setValue={setUserSeedPhrase}
-                  placeholder='Paste your secret phrase here'
+                  placeholder="Paste your recovery phrase here"
                   walletType={walletType}
                   setIsSeedPhrase={setIsSeedPhrase}
                 />
               )}
 
-              {!isSeedPhrase && (walletType === TYPE.ETHEREUM || walletType === TYPE.SOLANA) && (
+              {!isSeedPhrase && walletType !== TYPE.ARWEAVE && (
                 <InputPrivateKeyField
-                  label='Import your private key'
-                  placeholder='Copy & paste your private key here.'
+                  label="Import your private key"
+                  placeholder="Copy & paste your private key here."
                   setIsSeedPhrase={setIsSeedPhrase}
                   value={privateKey}
                   setValue={setPrivateKey}
@@ -272,7 +274,7 @@ export default () => {
                   (!isSeedPhrase && isEmpty(privateKey)) ||
                   (isKoiiPhrase && isSeedPhrase && !isEmpty(seedPhraseError))
                 }
-                className='seed-phrase-button'
+                className="seed-phrase-button"
                 onClick={onImportSeedPhrase}
               >
                 Continue
@@ -285,7 +287,7 @@ export default () => {
                     setUserSeedPhrase('')
                     setSeedPhraseError('')
                   }}
-                  className='non-koii-phrase'
+                  className="non-koii-phrase"
                 >
                   {isKoiiPhrase
                     ? 'I have a non-Koii secret phrase.'
@@ -298,25 +300,24 @@ export default () => {
 
           {step === 4 && (
             <>
-              <div className='title'>Import a wallet</div>
-              <div className='description'>
-                {isEmpty(accounts) ? 
-                  'Create a password for Finnie, so you have easy access to your new key. Make sure it is unique and secure.'
-                  : 'Re-enter your Finnie password so we can securely store your new key.'
-                }
+              <div className="title">Import a wallet</div>
+              <div className="description">
+                {isEmpty(accounts)
+                  ? 'Create a password for Finnie, so you have easy access to your new key. Make sure it is unique and secure.'
+                  : 'Re-enter your Finnie password so we can securely store your new key.'}
               </div>
 
               {isEmpty(accounts) ? (
-                <div className='confirm-password-wrapper'>
+                <div className="confirm-password-wrapper">
                   <ConfirmPassword setPassword={setPassword} showError={showFormError} />
                 </div>
               ) : (
-                <div className='confirm-password-wrapper'>
+                <div className="confirm-password-wrapper">
                   <InputPassword setPassword={setPassword} />
                 </div>
               )}
 
-              <Button className='import-key-button' onClick={onImportKey}>
+              <Button className="import-key-button" onClick={onImportKey}>
                 Import Key
               </Button>
             </>

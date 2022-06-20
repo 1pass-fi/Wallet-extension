@@ -67,6 +67,16 @@ const Balance = ({ account }) => {
           </span> */}
         </>
       )}
+      {account.type === TYPE.K2 && (
+        <>
+          <KoiiLogo className="w-6 h-6 mr-2" />
+          <span className="font-semibold text-sm mr-2">
+            {formatNumber(account.balance, 4) !== 'NaN'
+              ? formatNumber(account.balance / Math.pow(10, 9), 4)
+              : '0'}
+          </span>
+        </>
+      )}
       {account.type === TYPE.ETHEREUM && (
         <>
           <EthereumLogo className="w-6 h-6 mx-2" />

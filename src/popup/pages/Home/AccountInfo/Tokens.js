@@ -164,6 +164,7 @@ const Tokens = ({ currentProviderAddress }) => {
       ref={accountInfoRef}
       style={{ minHeight: `${clsx(accountInfoMinHeight)}px` }}
     >
+      {/* TODO DatH - LongP */}
       {tokens.map((token, idx) => (
         <div
           key={idx}

@@ -4,10 +4,13 @@ export class K2Method {
   #chrome
   constructor(k2Tool) {
     this.k2Tool = k2Tool
-    this.#chrome = new AccountStorageUtils(k2.address)
+    this.#chrome = new AccountStorageUtils(k2Tool.address)
   }
 
   async getBalances() {
+    console.log('this.k2Tool================', this.k2Tool)
+    const k2Balance = await this.k2Tool.getBalance()
+    console.log('k2Balance================', k2Balance)
     return { balance: 1000000000 }
   }
 

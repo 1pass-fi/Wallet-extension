@@ -32,12 +32,14 @@ export default async (payload, next) => {
     if (count) {
       let activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
       if (isEmpty(activatedAccountAddress)) {
+        activatedAccountAddress = await storage.setting.get.activatedK2AccountAddress()
+      }
+      if (isEmpty(activatedAccountAddress)) {
         activatedAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
       }
       if (isEmpty(activatedAccountAddress)) {
         activatedAccountAddress = await storage.setting.get.activatedSolanaAccountAddress()
       }
-
       const encryptedKey = await backgroundAccount.getEncryptedKey(activatedAccountAddress)
 
       // Check input password
@@ -78,6 +80,7 @@ export default async (payload, next) => {
     const totalArweaveAccounts = await backgroundAccount.count(TYPE.ARWEAVE)
     const totalEthereumAccounts = await backgroundAccount.count(TYPE.ETHEREUM)
     const totalSolanaAccounts = await backgroundAccount.count(TYPE.SOLANA)
+    const totalK2Accounts = await backgroundAccount.count(TYPE.K2)
 
     if (totalArweaveAccounts == 1 && type === TYPE.ARWEAVE) {
       await setActivatedAccountAddress(await account.get.address(), type)
@@ -90,8 +93,12 @@ export default async (payload, next) => {
     if (totalSolanaAccounts === 1 && type === TYPE.SOLANA) {
       await setActivatedAccountAddress(await account.get.address(), type)
     }
-  
-    helpers.loadBalances()          
+
+    if (totalK2Accounts === 1 && type === TYPE.K2) {
+      await setActivatedAccountAddress(await account.get.address(), type)
+    }
+
+    helpers.loadBalances()
     helpers.loadActivities()
 
     next({ data: addressFromKey })

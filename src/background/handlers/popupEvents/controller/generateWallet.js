@@ -36,6 +36,7 @@ export default async (payload, next) => {
         key = walletTool.key
         address = walletTool.address
         walletTool.wallet = key
+      // TODO DatH - LongP - add generate K2 account(s)
     }
 
     const generatedKey = cache.getGeneratedKey()
@@ -45,7 +46,7 @@ export default async (payload, next) => {
     generatedKey.address = address
     cache.setGeneratedKey(generatedKey)
 
-    next({ data: seedPhrase.split(' ') })    
+    next({ data: seedPhrase.split(' ') })
   } catch (err) {
     console.error(err.message)
     next({ error: err.message })

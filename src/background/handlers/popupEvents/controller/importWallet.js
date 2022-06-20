@@ -47,6 +47,11 @@ export default async (payload, next) => {
       seedphrase = keyOrSeedphrase
     }
 
+    // TODO DatH - LongP
+    if (type === TYPE.K2) {
+      seedphrase = keyOrSeedphrase
+    }
+
     /* 
       Password validation
       - If no imported account -> skip
@@ -55,6 +60,10 @@ export default async (payload, next) => {
 
     if (count) {
       let activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
+
+      if (isEmpty(activatedAccountAddress)) {
+        activatedAccountAddress = await storage.setting.get.activatedK2AccountAddress()
+      }
 
       if (isEmpty(activatedAccountAddress)) {
         activatedAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
@@ -96,15 +105,10 @@ export default async (payload, next) => {
         walletKey = sol.key
         break
       case TYPE.K2:
-        // TODO testing DatH - LongP
         address = await K2Account.utils.loadWallet(k2, keyOrSeedphrase)
         walletKey = k2.key
         break
     }
-
-    // TODO testing DatH - LongP
-    console.log('K2 address', address)
-    console.log('K2 walletKey', walletKey)
 
     // if account existed -> send error
     const accountExist = !backgroundAccount.importedAccount.every((credentials) => {
@@ -151,6 +155,7 @@ export default async (payload, next) => {
     const totalArweaveAccounts = await backgroundAccount.count(TYPE.ARWEAVE)
     const totalEthereumAccounts = await backgroundAccount.count(TYPE.ETHEREUM)
     const totalSolanaAccounts = await backgroundAccount.count(TYPE.SOLANA)
+    const totalK2Accounts = await backgroundAccount.count(TYPE.K2)
 
     if (totalArweaveAccounts === 1 && type === TYPE.ARWEAVE) {
       await setActivatedAccountAddress(await account.get.address(), type)
@@ -161,6 +166,10 @@ export default async (payload, next) => {
     }
 
     if (totalSolanaAccounts === 1 && type === TYPE.SOLANA) {
+      await setActivatedAccountAddress(await account.get.address(), type)
+    }
+
+    if (totalK2Accounts === 1 && type === TYPE.K2) {
       await setActivatedAccountAddress(await account.get.address(), type)
     }
 

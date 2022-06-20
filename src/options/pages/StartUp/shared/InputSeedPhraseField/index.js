@@ -178,25 +178,25 @@ export default ({
   }
 
   return (
-    <div className='input-seedphrase-field'>
-      <EyeIcon className='hide-icon' onClick={() => setIsShow(!isShow)} />
-      <label className='label'>{label}</label>
+    <div className="input-seedphrase-field">
+      <EyeIcon className="hide-icon" onClick={() => setIsShow(!isShow)} />
+      <label className="label">{label}</label>
       <div
-        className='selected-words-wrapper'
+        className="selected-words-wrapper"
         onClick={() => {
           setShowInput(true)
           inputRef.current?.focus()
         }}
       >
-        <div className='selected-words'>
+        <div className="selected-words">
           {!userSeedPhrase && !showInput && (
-            <div className='seed-phrase-message'>
+            <div className="seed-phrase-message">
               Start typing then select from the options below, or copy/paste.
             </div>
           )}
           {selectedWords.length > 0 &&
             selectedWords.map((word, index) => (
-              <div key={word + index} className='word' onClick={() => removeWord({ word, index })}>
+              <div key={word + index} className="word" onClick={() => removeWord({ word, index })}>
                 {isShow && word}
               </div>
             ))}
@@ -206,30 +206,29 @@ export default ({
               value={inputWord}
               onKeyDown={(e) => handleKeyDown(e)}
               onChange={(e) => updateSuggestWords(e.target.value)}
-              className='inputSeedPhrase'
+              className="inputSeedPhrase"
               ref={inputRef}
               style={{
-                fontSize:'14px'
+                fontSize: '14px'
               }}
             />
           )}
         </div>
       </div>
 
-      {walletType === TYPE.ETHEREUM ||
-        (TYPE.SOLANA && (
-          <div className="import-private-key">
-            Have a private key?{' '}
-            <span
-              onClick={() => {
-                setIsSeedPhrase(false)
-              }}
-              className="import-private-key-link"
-            >
-              Import it instead.
-            </span>
-          </div>
-        ))}
+      {walletType !== TYPE.ARWEAVE && (
+        <div className="import-private-key">
+          Have a private key?{' '}
+          <span
+            onClick={() => {
+              setIsSeedPhrase(false)
+            }}
+            className="import-private-key-link"
+          >
+            Import it instead.
+          </span>
+        </div>
+      )}
 
       {!isEmpty(seedPhraseError) ? (
         <div className="error-message">
@@ -238,11 +237,11 @@ export default ({
         </div>
       ) : (
         <div style={{ height: '164px' }}>
-          <div className='unselected-words'>
+          <div className="unselected-words">
             {suggestWords.map((word) => (
               <button
                 key={word}
-                className='word'
+                className="word"
                 onClick={() => {
                   addWord(word)
                   inputRef.current.focus()

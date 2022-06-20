@@ -52,6 +52,11 @@ const AccountInfo = ({ displayingAccount, price, currentProviderAddress }) => {
                 {numberFormat(displayingAccount.balance / Math.pow(10, 9))} SOL
               </div>
             )}
+            {displayingAccount.type === TYPE.K2 && (
+              <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+                {numberFormat(displayingAccount.balance / Math.pow(10, 9))} KOII
+              </div>
+            )}
             {displayingAccount.type === TYPE.ARWEAVE && (
               <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
                 {numberFormat(displayingAccount.koiBalance)} KOII
