@@ -1,5 +1,14 @@
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
-import { Keypair, Connection, clusterApiUrl, Transaction } from '@_koi/web3.js'
+import {
+  Keypair,
+  Connection,
+  clusterApiUrl,
+  PublicKey,
+  Transaction,
+  SystemProgram,
+  LAMPORTS_PER_SOL,
+  sendAndConfirmTransaction
+} from '@_koi/web3.js'
 
 import { derivePath } from 'ed25519-hd-key'
 import { isEmpty } from 'lodash'
@@ -91,13 +100,11 @@ export class K2Tool {
     const transaction = new Transaction()
 
     transaction.add(
-      SystemProgram.transfer(
-        {
-          fromPubKey: this.keypair.publicKey,
-          toPubkey: new PublicKey(recipient),
-          lamports: amount * LAMPORTS_PER_SOL
-        }
-      )
+      SystemProgram.transfer({
+        fromPubKey: this.keypair.publicKey,
+        toPubkey: new PublicKey(recipient),
+        lamports: amount * LAMPORTS_PER_SOL
+      })
     )
 
     const receipt = await sendAndConfirmTransaction(this.connection, transaction, [this.keypair])
