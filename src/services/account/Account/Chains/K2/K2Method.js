@@ -21,8 +21,7 @@ export class K2Method {
   }
 
   async transfer(_, recipient, qty) {
-    console.log('transfer-boilerplate')
-    // return this.k2Tool.transfer(recipient, qty)
+    return this.k2Tool.transfer(recipient, qty)
   }
 
   async loadCollections() {}
