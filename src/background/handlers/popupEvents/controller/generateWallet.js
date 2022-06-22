@@ -1,9 +1,10 @@
 import { Web } from '@_koi/sdk/web'
 
 // Services
-import { ArweaveAccount, EthereumAccount, SolanaAccount } from 'services/account/Account'
+import { ArweaveAccount, EthereumAccount, SolanaAccount, K2Account } from 'services/account/Account'
 import { EthereumTool } from 'services/ethereum'
 import { SolanaTool } from 'services/solana'
+import { K2Tool } from 'services/k2'
 
 // Constants
 import { TYPE } from 'constants/accountConstants'
@@ -36,7 +37,15 @@ export default async (payload, next) => {
         key = walletTool.key
         address = walletTool.address
         walletTool.wallet = key
-      // TODO DatH - LongP - add generate K2 account(s)
+        break
+
+      case TYPE.K2:
+        walletTool = new K2Tool()
+        seedPhrase = await K2Account.utils.generateWallet(walletTool)
+        key = walletTool.key
+        address = walletTool.address
+        walletTool.wallet = key
+        break
     }
 
     const generatedKey = cache.getGeneratedKey()

@@ -49,7 +49,6 @@ export class K2Tool {
     let keypair
 
     if (type === 'seedphrase') {
-      //   const DEFAULT_DERIVE_PATH = `m/44'/501'/0'/0'`
       const DEFAULT_DERIVE_PATH = `m/44'/501'/0'`
 
       const bufferToString = (buffer) => Buffer.from(buffer).toString('hex')
@@ -71,10 +70,15 @@ export class K2Tool {
       privateKey: this.key
     }
 
-    // TODO testing DatH - LongP
-    console.log('importWallet keypair', keypair)
-
     return wallet
+  }
+
+  async generateWallet() {
+    const seedPhrase = generateMnemonic()
+
+    this.importWallet(seedPhrase)
+
+    return seedPhrase
   }
 
   async getBalance() {
