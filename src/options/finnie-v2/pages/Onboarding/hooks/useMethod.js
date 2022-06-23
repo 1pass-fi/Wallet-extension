@@ -16,7 +16,7 @@ const useMethod = ({
   const generateNewKey = async () => {
     try {
       setIsLoading(true)
-      const { seedphrase } = await request.wallet.generateWallet({ walletType: network })
+      const seedphrase = await request.wallet.generateWallet({ walletType: network })
       setNewSeedphrase(seedphrase)
     } catch (err) {
       console.error(err.message)
@@ -35,7 +35,18 @@ const useMethod = ({
     }
   }
 
-  return { generateNewKey, saveNewKey }
+  const verifyPassword = async () => {
+    try {
+      setIsLoading(true)
+      const isCorrectPassword = await request.wallet.verifyPassword({ password })
+      setIsLoading(false)
+      return isCorrectPassword
+    } catch (err) {
+
+    }
+  }
+
+  return { generateNewKey, saveNewKey, verifyPassword }
 }
 
 export default useMethod

@@ -152,5 +152,14 @@ export class WalletRequest extends Request {
 
   sendCustomTokenSol(body) {
     return this.promise(MESSAGES.SEND_CUSTOM_TOKEN_SOL, body)
+
+  /**
+   * 
+   * @param {Object} body
+   * @param {String} body.password 
+   * @returns 
+   */
+  verifyPassword(body) {
+    return this.promise(MESSAGES.VERIFY_PASSWORD, body)
   }
 }

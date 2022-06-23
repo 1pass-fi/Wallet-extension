@@ -38,6 +38,7 @@ import updateSolanaProvider from './updateSolanaProvider'
 import sendCustomTokenEth from './sendCustomTokenEth'
 import sendCustomTokenAr from './sendCustomTokenAr'
 import sendCustomTokenSol from './sendCustomTokenSol'
+import verifyPassword from './verifyPassword'
 import test from './test'
 
 export default {
@@ -81,5 +82,6 @@ export default {
   sendCustomTokenEth,
   sendCustomTokenAr,
   sendCustomTokenSol,
+  verifyPassword,
   test
 }
