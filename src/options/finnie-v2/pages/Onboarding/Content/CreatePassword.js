@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
@@ -9,9 +9,18 @@ import CheckBox from 'finnie-v2/components/CheckBox'
 
 import { URL } from 'constants/koiConstants'
 
+import { OnboardingContext } from '../onboardingContext'
+
 const CreatePassword = ({ step, setStep }) => {
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const {
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    isValidPassword,
+    passwordErrorMessage
+  } = useContext(OnboardingContext)
+
   const [isAcceptTermService, setIsAcceptTermService] = useState(false)
 
   return (
@@ -58,6 +67,7 @@ const CreatePassword = ({ step, setStep }) => {
             Terms of Service
           </a>
         </div>
+        <div>{passwordErrorMessage}</div>
       </div>
       <Button
         style={{ width: '240px', height: '42px' }}

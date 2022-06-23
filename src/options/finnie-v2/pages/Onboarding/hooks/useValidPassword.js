@@ -9,13 +9,17 @@ const VALIDATE_ERROR_MESSAGE = {
 const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%^&*()].*).{8,}')
 
 const useValidPassword = ({ password, confirmPassword }) => {
-  const [isValidPassword, setIsValidPassword] = useState(null)
+  const [isValidPassword, setIsValidPassword] = useState(false)
   const [passwordErrorMessage, setPasswordErrorMessage] = useState(null)
 
   const validatePassword = () => {
+    console.log('password', password)
+    console.log('confirmPassword', confirmPassword)
+
     if (password?.length < 8) {
       setIsValidPassword(false)
-      setPasswordErrorMessage(VALIDATE_ERROR_MESSAGE)
+      setPasswordErrorMessage(VALIDATE_ERROR_MESSAGE.NOT_ENOUGH_CHARACTERS)
+      return
     }
 
     if (!passwordRegex.test(password)) {
@@ -26,7 +30,7 @@ const useValidPassword = ({ password, confirmPassword }) => {
 
     if (password !== confirmPassword) {
       setIsValidPassword(false)
-      setPasswordErrorMessage(VALIDATE_ERROR_MESSAGE.NOT_ENOUGH_CHARACTERS)
+      setPasswordErrorMessage(VALIDATE_ERROR_MESSAGE.NOT_MATCH)
       return
     }
 
