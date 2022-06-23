@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
 
 import WelcomeBackground from 'img/v2/onboarding/welcome-background-1.svg'
@@ -7,10 +7,92 @@ import WarningIcon from 'img/v2/onboarding/warning-icon.svg'
 
 import Button from 'finnie-v2/components/Button'
 
-const SEED_STRING = 'color tired merge rural token pole capable people metal student catch uphold'
-const SEED_ARRAY = SEED_STRING.split(' ')
+const InputPhrase = ({ step, setStep, phrase }) => {
+  // const SEED_ARRAY = phrase.split(' ')
+  const [hiddenPhrase, setHiddenPhrase] = useState([])
+  const [completePhrase, setCompletePhrase] = useState([])
+  const [isNextStep, setIsNextStep] = useState(false)
 
-const InputPhrase = ({ step, setStep }) => {
+  const SEED_STRING = 'color tired merge rural token pole capable people metal student catch uphold'
+  const SEED_ARRAY = SEED_STRING.split(' ')
+
+  useEffect(() => {
+    const getRandom = (seedString, n) => {
+      let seedArray = seedString.split(' ')
+      let result = []
+      let taken = []
+
+      while (n !== 0) {
+        let index = Math.floor(Math.random() * seedArray.length)
+        if (!taken.includes(index)) {
+          result.push({ index: index, word: seedArray[index] })
+          taken.push(index)
+          n--
+        }
+      }
+
+      result.sort((a, b) => {
+        return a.index < b.index ? -1 : 1
+      })
+      console.log(result)
+
+      return result
+    }
+
+    let result = getRandom(SEED_STRING, 3)
+
+    const newCompletePhrase = result.map((obj, index) => {
+      let new_obj = { ...obj, word: '' }
+      return new_obj
+    })
+
+    console.log('=>>>>>>>>>>>>>>>>', newCompletePhrase)
+    setCompletePhrase(newCompletePhrase)
+    setHiddenPhrase(result)
+  }, [phrase])
+
+  const onChangeInputPhrase = (e, idx) => {
+    let newCompletePhrase = [...completePhrase]
+
+    const changeIndex = newCompletePhrase.findIndex((item) => item.index === idx)
+    newCompletePhrase[changeIndex].word = e.target.value
+
+    setCompletePhrase(newCompletePhrase)
+  }
+
+  useEffect(() => {
+    if (completePhrase.length > 0) {
+      let canContinue = true
+      for (let obj of completePhrase) {
+        if (obj.word === '') {
+          canContinue = false
+          break
+        }
+      }
+      setIsNextStep(canContinue)
+    }
+  }, [completePhrase])
+
+  const onClickContinue = () => {
+    const validateInputPhrase = () => {
+      let isValid = true
+      console.log('completePhraseCHeckinnnggg', completePhrase)
+      console.log('hiddenPhraseCHeckinnnggg', hiddenPhrase)
+      for (let i = 0; i < completePhrase.length; i++) {
+        if (completePhrase[i].word !== hiddenPhrase[i].word) {
+          isValid = false
+          break
+        }
+      }
+      return isValid
+    }
+
+    if (validateInputPhrase()) {
+      setStep(step + 1)
+    } else {
+      console.error('You have entered wrong things')
+    }
+  }
   return (
     <div className="w-11/12 flex flex-col text-white text-left">
       <WelcomeBackground className="absolute bottom-0 right-0" />
@@ -35,7 +117,16 @@ const InputPhrase = ({ step, setStep }) => {
           className="mt-7.5 py-3.5 bg-trueGray-100 bg-opacity-20 rounded-sm grid grid-flow-col grid-rows-6 font-normal text-sm leading-6"
         >
           {SEED_ARRAY.map((phrase, index) => {
-            return (
+            return hiddenPhrase.map((obj, index) => obj.index).includes(index) ? (
+              <div className="flex mx-7.5 my-auto gap-2" key={index}>
+                {index + 1}.
+                <input
+                  className="bg-transparent border-b-2 focus:outline-none cursor-pointer w-22 h-5.5"
+                  type="text"
+                  onChange={(e) => onChangeInputPhrase(e, index)}
+                />
+              </div>
+            ) : (
               <div className="mx-7.5 my-auto" key={index}>
                 {index + 1}. {phrase}
               </div>
@@ -48,7 +139,8 @@ const InputPhrase = ({ step, setStep }) => {
           className="mt-10.75 text-base mx-auto rounded z-10"
           variant="white"
           text="Continue"
-          onClick={() => setStep(step + 1)}
+          disabled={!isNextStep}
+          onClick={onClickContinue}
         />
       </div>
 
