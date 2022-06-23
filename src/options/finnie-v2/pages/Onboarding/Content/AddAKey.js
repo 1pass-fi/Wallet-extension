@@ -6,7 +6,9 @@ import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom
 import CreateNewIcon from 'img/v2/onboarding/create-new-icon.svg'
 import KeySelectedIcon from 'img/v2/onboarding/key-selected-icon.svg'
 
-const AddAKey = ({ step, setStep }) => {
+const SEED_STRING = 'color tired merge rural token pole capable people metal student catch uphold'
+
+const AddAKey = ({ step, setStep, setPhrase }) => {
   return (
     <div className="w-4/5 flex flex-col text-white">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
@@ -23,7 +25,10 @@ const AddAKey = ({ step, setStep }) => {
             'hover:border-turquoiseBlue border-transparent border'
           )}
           style={{ width: '249px', height: '140px' }}
-          onClick={() => setStep(step + 1)}
+          onClick={() => {
+            setPhrase(SEED_STRING)
+            setStep(step + 1)
+          }}
         >
           <CreateNewIcon style={{ width: '32px', height: '32px' }} />
           <div className="mt-3 font-semibold text-base leading-4 text-center text-white">
