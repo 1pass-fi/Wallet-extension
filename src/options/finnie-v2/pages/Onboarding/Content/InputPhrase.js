@@ -7,6 +7,9 @@ import WarningIcon from 'img/v2/onboarding/warning-icon.svg'
 
 import Button from 'finnie-v2/components/Button'
 
+const SEED_STRING = 'color tired merge rural token pole capable people metal student catch uphold'
+const SEED_ARRAY = SEED_STRING.split(' ')
+
 const InputPhrase = ({ step, setStep }) => {
   return (
     <div className="w-11/12 flex flex-col text-white text-left">
@@ -29,20 +32,15 @@ const InputPhrase = ({ step, setStep }) => {
       <div className="flex flex-col" style={{ width: '347px' }}>
         <div
           style={{ height: '182px' }}
-          className="mt-7.5 py-3.5 bg-trueGray-100 bg-opacity-20 rounded-sm grid grid-cols-2 grid-rows-6 font-normal text-sm leading-6"
+          className="mt-7.5 py-3.5 bg-trueGray-100 bg-opacity-20 rounded-sm grid grid-flow-col grid-rows-6 font-normal text-sm leading-6"
         >
-          <div className="mx-7.5 my-auto">1. internet</div>
-          <div className="mx-7.5 my-auto">2. _____</div>
-          <div className="mx-7.5 my-auto">3. passion</div>
-          <div className="mx-7.5 my-auto">4. skill</div>
-          <div className="mx-7.5 my-auto">5. employer</div>
-          <div className="mx-7.5 my-auto">6. _____</div>
-          <div className="mx-7.5 my-auto">7. volume</div>
-          <div className="mx-7.5 my-auto">8. hair</div>
-          <div className="mx-7.5 my-auto">9. reception</div>
-          <div className="mx-7.5 my-auto">10. proposal</div>
-          <div className="mx-7.5 my-auto">11. _____</div>
-          <div className="mx-7.5 my-auto">12. paper</div>
+          {SEED_ARRAY.map((phrase, index) => {
+            return (
+              <div className="mx-7.5 my-auto" key={index}>
+                {index + 1}. {phrase}
+              </div>
+            )
+          })}
         </div>
 
         <Button
