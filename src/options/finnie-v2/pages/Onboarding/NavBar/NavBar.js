@@ -81,7 +81,7 @@ const NavBar = ({ step, setStep }) => {
             Write down your recovery phrase.
           </div>
         )}
-        {step === 5 ? (
+        {step === 5 || step == 6 ? (
           <div className="flex text-warning">
             <SeedphraseSelectedIcon className="mr-5" />
             <div className="w-4/5 flex flex-col whitespace-pre-wrap">
