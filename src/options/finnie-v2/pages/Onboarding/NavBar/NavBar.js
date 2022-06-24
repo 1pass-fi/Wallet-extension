@@ -23,7 +23,7 @@ const NavBar = ({ step, setStep }) => {
           onClick={() => setStep(step - 1)}
         />
       )}
-      <div className="flex flex-col items-center">
+      <div className="w-11/12 flex flex-col items-center">
         <KoiIcon style={{ width: '156px', height: '156px' }} />
         {onboardingSteps[step] === 'CREATE_PASSWORD' && (
           <div
@@ -37,7 +37,7 @@ const NavBar = ({ step, setStep }) => {
           </div>
         )}
       </div>
-      <div className="w-full pl-6 flex flex-col items-start gap-6 pt-8 font-normal text-base leading-8 text-white select-none text-left">
+      <div className="w-4/5 pl-6 flex flex-col items-start gap-6 pt-8 font-normal text-base leading-8 text-white select-none text-left">
         {step === 0 ? (
           <div className="flex text-warning items-center">
             <LockSelectedIcon className="mr-5" />

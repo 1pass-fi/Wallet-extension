@@ -35,10 +35,10 @@ const CreatePassword = ({ step, setStep }) => {
     }
   }
   return (
-    <div className="w-2/3 flex flex-col text-white">
+    <div className="w-2/3 flex flex-col text-white self-start pl-23" style={{ width: '500px' }}>
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
-      <div className="font-normal text-base leading-6 text-left" style={{ width: '265px' }}>
+      <div className="font-normal text-base leading-6 text-left">
         Create a password to secure Finnie.
       </div>
       <InputField
@@ -81,7 +81,7 @@ const CreatePassword = ({ step, setStep }) => {
         />
         <div className="flex ml-2.25 font-normal text-sm leading-6">
           <div onClick={() => setIsAcceptTermService((prev) => !prev)}>I agree with the&nbsp;</div>
-          <a target="_blank" href={URL.TERM_OF_SERVICE} className="text-success underline">
+          <a target="_blank" href={URL.TERM_OF_SERVICE} className="text-turquoiseBlue underline">
             Terms of Service
           </a>
         </div>

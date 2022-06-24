@@ -11,26 +11,31 @@ const HiddenPhrase = ({ step, setStep, phrase }) => {
   const [showPhrase, setShowPhrase] = useState(false)
   const SEED_ARRAY = phrase.split(' ')
   return (
-    <div className="w-11/12 flex flex-col text-white text-left">
+    <div className="w-11/12 flex flex-col text-white text-left" style={{ width: '500px' }}>
       <WelcomeBackground className="absolute bottom-0 right-0" />
       <div className="font-semibold text-2xl tracking-finnieSpacing-wider">
         Save your Secret Phrase
       </div>
-      <div className="mt-5 font-normal text-lg leading-6">
-        1. Click the lock below to reveal your secret phrase.
+      <div className="flex mt-5 font-normal text-lg leading-6 gap-1.5">
+        <div>1. </div>
+        <div>Click the lock below to reveal your secret phrase.</div>
       </div>
-      <div className="mt-1 font-normal text-lg leading-6">
-        2. Write down the key on a piece of paper.
+      <div className="flex mt-1.5 font-normal text-lg leading-6 gap-1.5">
+        <div>2. </div>
+        <div>Write down the key on a piece of paper.</div>
       </div>
-      <div className="mt-1 font-normal text-lg leading-6">
-        3. Do not show this to anyone else or they will be able to use your wallet and withdraw
-        funds or other assets like NFTs
+      <div className="flex mt-1.5 font-normal text-lg leading-6 gap-1.5">
+        <div>3. </div>
+        <div>
+          <span className="text-warning-200">Do not show this to anyone else</span> or they will be
+          able to use your wallet and withdraw funds or other assets like NFTs
+        </div>
       </div>
       <div className="mt-6.75 font-normal text-lg leading-6">
-        Do you have a <span className="text-success">pen & paper handy?</span>
+        Do you have a <span className="text-turquoiseBlue">pen & paper handy?</span>
       </div>
       <div className="mt-1 font-normal text-lg leading-6">
-        What about a <span className="text-success">safe place to keep it?</span>
+        What about a <span className="text-turquoiseBlue">safe place to keep it?</span>
       </div>
 
       {showPhrase ? (

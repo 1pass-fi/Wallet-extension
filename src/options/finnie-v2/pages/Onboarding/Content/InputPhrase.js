@@ -92,17 +92,17 @@ const InputPhrase = ({ step, setStep, phrase }) => {
     }
   }
   return (
-    <div className="w-11/12 flex flex-col text-white text-left">
+    <div className="w-11/12 flex flex-col text-white text-left" style={{ width: '500px' }}>
       <WelcomeBackground className="absolute bottom-0 right-0" />
       <div className="font-semibold text-2xl tracking-finnieSpacing-wider">
         Save your Secret Phrase
       </div>
 
       <div className="mt-5 font-normal text-lg leading-6">
-        Do you have a <span className="text-success">pen & paper handy?</span>
+        Do you have a <span className="text-turquoiseBlue">pen & paper handy?</span>
       </div>
       <div className="mt-1 font-normal text-lg leading-6">
-        What about a <span className="text-success">safe place to keep it?</span>
+        What about a <span className="text-turquoiseBlue">safe place to keep it?</span>
       </div>
 
       <div className="mt-8 font-normal text-lg leading-6 text-white">
@@ -138,7 +138,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
           style={{ width: '240px', height: '42px' }}
           className="mt-10.75 text-base mx-auto rounded z-10"
           variant="white"
-          text="Continue"
+          text="Confirm Phrase"
           disabled={!isNextStep}
           onClick={onClickContinue}
         />

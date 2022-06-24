@@ -55,9 +55,9 @@ const InputField = ({
       <label
         htmlFor={label}
         className={clsx(
-          'w-full text-lightBlue mb-1',
+          'w-full mb-1',
           uppercase ? 'uppercase' : 'ml-2 text-left',
-          passwordFinnie ? 'text-xs ml-2.5' : 'text-2xs leading-3'
+          passwordFinnie ? 'text-xs ml-2.5 text-white' : 'text-2xs leading-3 text-lightBlue'
         )}
       >
         {label}

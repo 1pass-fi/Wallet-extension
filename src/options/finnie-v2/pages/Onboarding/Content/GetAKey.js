@@ -5,6 +5,7 @@ import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
 import KoiiKey from 'img/v2/onboarding/koii-key-icon.svg'
 import EthereumKey from 'img/v2/onboarding/ethereum-key-icon.svg'
+import SolanaKey from 'img/v2/onboarding/solana-key-icon.svg'
 
 const GetAKey = ({ step, setStep }) => {
   return (
@@ -16,9 +17,13 @@ const GetAKey = ({ step, setStep }) => {
       <div className="mt-2 font-normal text-sm w-11/12">
         Finnie currently supports Koii and Ethereum keys. More key types are in the works.
       </div>
-      <div className="mt-11 ml-4 flex justify-between">
+      <div className="mt-11 ml-4 flex justify-start gap-4.5">
         <div className="flex flex-col items-center">
           <KoiiKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
+          <div className="font-normal text-lg leading-6">Koii Key</div>
+        </div>
+        <div className="flex flex-col items-center">
+          <SolanaKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
           <div className="font-normal text-lg leading-6">Koii Key</div>
         </div>
         <div className="flex flex-col items-center">

@@ -13,11 +13,11 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
     <div className="w-4/5 flex flex-col text-white">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
-      <div className="font-normal text-base leading-6 text-left" style={{ width: '347px' }}>
+      <div className="ml-3 font-normal text-base leading-6 text-left" style={{ width: '347px' }}>
         Do you already <span className="text-warning">have a key</span> you want to use or do you
-        want to <span className="text-success">start from scratch?</span>
+        want to <span className="text-turquoiseBlue">start from scratch?</span>
       </div>
-      <div className="mt-12 flex w-full justify-between">
+      <div className="mt-12 flex w-full justify-start gap-32">
         <div
           className={clsx(
             'bg-blue-800 shadow-md rounded-finnie z-10',
