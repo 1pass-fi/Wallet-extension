@@ -55,8 +55,9 @@ const InputField = ({
       <label
         htmlFor={label}
         className={clsx(
-          'w-full text-lightBlue text-2xs leading-3 mb-1',
-          uppercase ? 'uppercase' : 'ml-2 text-left'
+          'w-full text-lightBlue mb-1',
+          uppercase ? 'uppercase' : 'ml-2 text-left',
+          passwordFinnie ? 'text-xs' : 'text-2xs leading-3'
         )}
       >
         {label}
@@ -86,7 +87,7 @@ const InputField = ({
             name={name}
             className={clsx(
               'w-full bg-trueGray-100 bg-opacity-10 border-b border-white text-white px-1 input-field-component',
-              passwordFinnie ? 'h-7.5' : 'h-5.25'
+              passwordFinnie ? 'h-7.5 text-sm' : 'h-5.25'
             )}
             placeholder={placeholder || label}
             id={label}
@@ -104,9 +105,20 @@ const InputField = ({
           )}
         </div>
       )}
-      <div className="text-3xs text-bittersweet-200 mt-1 text-left ml-2">{errorFinnie}</div>
       <div
-        className={clsx('text-warning mt-1 text-3xs', uppercase ? 'uppercase' : 'ml-2 text-left')}
+        className={clsx(
+          'text-bittersweet-200 mt-1 text-left ml-2',
+          passwordFinnie ? 'text-xs' : 'text-3xs'
+        )}
+      >
+        {errorFinnie}
+      </div>
+      <div
+        className={clsx(
+          'text-warning mt-1',
+          uppercase ? 'uppercase' : 'ml-2 text-left',
+          passwordFinnie ? 'text-xs' : 'text-3xs'
+        )}
       >
         {description}
       </div>

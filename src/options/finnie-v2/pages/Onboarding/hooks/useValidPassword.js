@@ -9,6 +9,8 @@ const useValidPassword = ({ password, confirmPassword }) => {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState(null)
 
   const validatePassword = () => {
+    setIsValidPassword(false)
+
     console.log('password', password)
     console.log('confirmPassword', confirmPassword)
 
@@ -24,7 +26,7 @@ const useValidPassword = ({ password, confirmPassword }) => {
       return
     }
 
-    if (!isEmpty(confirmPassword) && password !== confirmPassword) {
+    if (password !== confirmPassword) {
       setIsValidPassword(false)
       setPasswordErrorMessage(VALIDATE_ERROR_MESSAGE.NOT_MATCH)
       return
@@ -35,6 +37,7 @@ const useValidPassword = ({ password, confirmPassword }) => {
   }
 
   useEffect(() => {
+    setIsValidPassword(false)
     if (password?.length) validatePassword()
   }, [password, confirmPassword])
 
