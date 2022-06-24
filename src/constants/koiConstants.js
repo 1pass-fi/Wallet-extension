@@ -359,6 +359,12 @@ export const ERROR_MESSAGE = {
   }
 }
 
+export const VALIDATE_ERROR_MESSAGE = {
+  NOT_ENOUGH_CHARACTERS: 'Not enough characters',
+  NOT_MATCH: `These passwords don't match, try entering them again.`,
+  INVALID_CHARACTER: 'The password does not meet the requirements.'
+}
+
 export const STORAGE = {
   KOI_ADDRESS: 'koiAddress',
   KOI_KEY: 'koiKey',

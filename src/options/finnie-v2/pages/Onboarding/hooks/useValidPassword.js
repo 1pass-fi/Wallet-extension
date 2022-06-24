@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react'
-
-const VALIDATE_ERROR_MESSAGE = {
-  NOT_ENOUGH_CHARACTERS: 'Not enough characters',
-  NOT_MATCH: `These passwords don't match, try entering them again.`,
-  INVALID_CHARACTER: 'Invalid character'
-}
+import { VALIDATE_ERROR_MESSAGE } from '../../../../../constants/koiConstants'
+import isEmpty from 'lodash/isEmpty'
 
 const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%^&*()].*).{8,}')
 
@@ -28,7 +24,7 @@ const useValidPassword = ({ password, confirmPassword }) => {
       return
     }
 
-    if (password !== confirmPassword) {
+    if (!isEmpty(confirmPassword) && password !== confirmPassword) {
       setIsValidPassword(false)
       setPasswordErrorMessage(VALIDATE_ERROR_MESSAGE.NOT_MATCH)
       return

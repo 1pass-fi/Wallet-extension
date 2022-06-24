@@ -4,6 +4,8 @@ import ReactTooltip from 'react-tooltip'
 
 import './InputField.css'
 
+import ToggleViewPw from 'img/v2/popup-toggle-view-pw.svg'
+
 const InputField = ({
   value,
   setValue,
@@ -13,16 +15,20 @@ const InputField = ({
   required = false,
   description = '',
   error = '',
+  errorFinnie = '',
   className,
   isDisable,
   placeholder,
   maxHeight = 0,
   uppercase = true,
-  password = false
+  password = false,
+  passwordFinnie = false
 }) => {
   const [textAreaHeight, setTextAreaHeight] = useState(83)
 
   const textAreaRef = useRef(null)
+
+  const [showPw, setShowPw] = useState(false)
 
   useEffect(() => {
     if (maxHeight === 0 || type !== 'textarea') return
@@ -72,19 +78,33 @@ const InputField = ({
           />
         </div>
       ) : (
-        <div data-tip={isDisable ? 'This NFT version does not support updating' : ''}>
+        <div
+          data-tip={isDisable ? 'This NFT version does not support updating' : ''}
+          className={clsx(passwordFinnie && 'relative')}
+        >
           <input
             name={name}
-            className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 input-field-component"
+            className={clsx(
+              'w-full bg-trueGray-100 bg-opacity-10 border-b border-white text-white px-1 input-field-component',
+              passwordFinnie ? 'h-7.5' : 'h-5.25'
+            )}
             placeholder={placeholder || label}
             id={label}
             value={value}
             onChange={(e) => setValue(e)}
             disabled={isDisable}
-            type={password ? 'password' : 'text'}
+            type={password || !showPw ? 'password' : 'text'}
           />
+
+          {passwordFinnie && (
+            <ToggleViewPw
+              onClick={() => setShowPw((prev) => !prev)}
+              className="w-6.75 cursor-pointer absolute top-1.75 right-2.25"
+            />
+          )}
         </div>
       )}
+      <div className="text-3xs text-bittersweet-200 mt-1 text-left ml-2">{errorFinnie}</div>
       <div
         className={clsx('text-warning mt-1 text-3xs', uppercase ? 'uppercase' : 'ml-2 text-left')}
       >

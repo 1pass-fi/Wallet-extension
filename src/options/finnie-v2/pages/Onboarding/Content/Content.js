@@ -40,13 +40,13 @@ const Content = ({ step, setStep }) => {
           step > 1 ? 'pl-14 pt-20' : 'justify-center items-center'
         )}
       >
-      {step > 1 && <KoiIcon className="w-18 h-18 absolute top-2.25 right-3.75" />}
-      {step === 0 && <CreatePassword step={step} setStep={setStep} />}
-      {step === 1 && <AddAKey step={step} setStep={setStep} setPhrase={setPhrase} />}
-      {step === 2 && <GetAKey step={step} setStep={setStep} />}
-      {step === 3 && <PrepareSavePhrase step={step} setStep={setStep} />}
-      {step === 4 && <HiddenPhrase step={step} setStep={setStep} phrase={phrase} />}
-      {step === 5 && <InputPhrase step={step} setStep={setStep} phrase={phrase} />}
+        {step > 1 && <KoiIcon className="w-18 h-18 absolute top-2.25 right-3.75" />}
+        {step === 0 && <CreatePassword step={step} setStep={setStep} />}
+        {step === 1 && <AddAKey step={step} setStep={setStep} setPhrase={setPhrase} />}
+        {step === 2 && <GetAKey step={step} setStep={setStep} />}
+        {step === 3 && <PrepareSavePhrase step={step} setStep={setStep} />}
+        {step === 4 && <HiddenPhrase step={step} setStep={setStep} phrase={phrase} />}
+        {step === 5 && <InputPhrase step={step} setStep={setStep} phrase={phrase} />}
       </div>
     </OnboardingContext.Provider>
   )

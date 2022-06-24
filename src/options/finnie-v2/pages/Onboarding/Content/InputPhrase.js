@@ -12,6 +12,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
   const [hiddenPhrase, setHiddenPhrase] = useState([])
   const [completePhrase, setCompletePhrase] = useState([])
   const [isNextStep, setIsNextStep] = useState(false)
+  const [messageError, setMessageError] = useState('')
 
   const SEED_STRING = 'color tired merge rural token pole capable people metal student catch uphold'
   const SEED_ARRAY = SEED_STRING.split(' ')
@@ -34,7 +35,6 @@ const InputPhrase = ({ step, setStep, phrase }) => {
       result.sort((a, b) => {
         return a.index < b.index ? -1 : 1
       })
-      console.log(result)
 
       return result
     }
@@ -46,7 +46,6 @@ const InputPhrase = ({ step, setStep, phrase }) => {
       return new_obj
     })
 
-    console.log('=>>>>>>>>>>>>>>>>', newCompletePhrase)
     setCompletePhrase(newCompletePhrase)
     setHiddenPhrase(result)
   }, [phrase])
@@ -58,6 +57,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
     newCompletePhrase[changeIndex].word = e.target.value
 
     setCompletePhrase(newCompletePhrase)
+    setMessageError('')
   }
 
   useEffect(() => {
@@ -76,8 +76,6 @@ const InputPhrase = ({ step, setStep, phrase }) => {
   const onClickContinue = () => {
     const validateInputPhrase = () => {
       let isValid = true
-      console.log('completePhraseCHeckinnnggg', completePhrase)
-      console.log('hiddenPhraseCHeckinnnggg', hiddenPhrase)
       for (let i = 0; i < completePhrase.length; i++) {
         if (completePhrase[i].word !== hiddenPhrase[i].word) {
           isValid = false
@@ -90,7 +88,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
     if (validateInputPhrase()) {
       setStep(step + 1)
     } else {
-      console.error('You have entered wrong things')
+      setMessageError('Invalid Secret Recovery Phrase')
     }
   }
   return (
@@ -133,6 +131,8 @@ const InputPhrase = ({ step, setStep, phrase }) => {
             )
           })}
         </div>
+
+        <div className="mt-1.5 text-red-finnie ml-7 text-xs font-normal h-2">{messageError}</div>
 
         <Button
           style={{ width: '240px', height: '42px' }}
