@@ -4,7 +4,7 @@ import ReactTooltip from 'react-tooltip'
 
 import './InputField.css'
 
-import ToggleViewPw from 'img/v2/popup-toggle-view-pw.svg'
+import ToggleViewPw from 'img/v2/toggle-icon.svg'
 
 const InputField = ({
   value,
@@ -57,7 +57,7 @@ const InputField = ({
         className={clsx(
           'w-full text-lightBlue mb-1',
           uppercase ? 'uppercase' : 'ml-2 text-left',
-          passwordFinnie ? 'text-xs' : 'text-2xs leading-3'
+          passwordFinnie ? 'text-xs ml-2.5' : 'text-2xs leading-3'
         )}
       >
         {label}
@@ -86,8 +86,8 @@ const InputField = ({
           <input
             name={name}
             className={clsx(
-              'w-full bg-trueGray-100 bg-opacity-10 border-b border-white text-white px-1 input-field-component',
-              passwordFinnie ? 'h-7.5 text-sm' : 'h-5.25'
+              'w-full bg-trueGray-100 bg-opacity-10 border-b border-white text-white',
+              passwordFinnie ? 'h-7.5 text-sm pl-2.5 pr-10' : 'h-5.25 px-1 input-field-component'
             )}
             placeholder={placeholder || label}
             id={label}
@@ -100,7 +100,7 @@ const InputField = ({
           {passwordFinnie && (
             <ToggleViewPw
               onClick={() => setShowPw((prev) => !prev)}
-              className="w-6.75 cursor-pointer absolute top-1.75 right-2.25"
+              className="w-6 h-6 cursor-pointer absolute top-1 right-2"
             />
           )}
         </div>
