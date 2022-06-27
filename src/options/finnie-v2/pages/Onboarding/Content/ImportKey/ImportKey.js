@@ -6,8 +6,9 @@ import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom
 import KoiiKey from 'img/v2/onboarding/koii-key-icon.svg'
 import EthereumKey from 'img/v2/onboarding/ethereum-key-icon.svg'
 import SolanaKey from 'img/v2/onboarding/solana-key-icon.svg'
+import { TYPE } from 'constants/accountConstants'
 
-const ImportAKey = ({ step, setStep }) => {
+const ImportAKey = ({ step, setStep, setImportType }) => {
   return (
     <div className="w-3/4 flex flex-col text-white text-left">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
@@ -22,15 +23,33 @@ const ImportAKey = ({ step, setStep }) => {
       </div>
       <div className="mt-11 ml-4 flex justify-start gap-4.5">
         <div className="flex flex-col items-center">
-          <KoiiKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
+          <KoiiKey
+            className="cursor-pointer"
+            onClick={() => {
+              setImportType(TYPE.ARWEAVE)
+              setStep(step + 1)
+            }}
+          />
           <div className="font-normal text-lg leading-6">Koii Key</div>
         </div>
         <div className="flex flex-col items-center">
-          <EthereumKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
+          <EthereumKey
+            className="cursor-pointer"
+            onClick={() => {
+              setImportType(TYPE.ETHEREUM)
+              setStep(step + 1)
+            }}
+          />
           <div className="font-normal text-lg leading-6">Ethereum Key</div>
         </div>
         <div className="flex flex-col items-center">
-          <SolanaKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
+          <SolanaKey
+            className="cursor-pointer"
+            onClick={() => {
+              setImportType(TYPE.SOLANA)
+              setStep(step + 1)
+            }}
+          />
           <div className="font-normal text-lg leading-6">Solana Key</div>
         </div>
       </div>

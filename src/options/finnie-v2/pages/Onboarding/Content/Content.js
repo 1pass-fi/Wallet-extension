@@ -24,6 +24,8 @@ const Content = ({ step, setStep }) => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [phrase, setPhrase] = useState('')
 
+  const [importType, setImportType] = useState(null)
+
   const { isValidPassword, passwordErrorMessage } = useValidPassword({ password, confirmPassword })
 
   return (
@@ -53,8 +55,8 @@ const Content = ({ step, setStep }) => {
         {step === 5 && <InputPhrase step={step} setStep={setStep} phrase={phrase} />}
         {step === 6 && <RevealPhrase />}
 
-        {step === 10 && <ImportAKey step={step} setStep={setStep} />}
-        {step === 11 && <ImportPhrase step={step} setStep={setStep} />}
+        {step === 10 && <ImportAKey step={step} setStep={setStep} setImportType={setImportType} />}
+        {step === 11 && <ImportPhrase step={step} setStep={setStep} importType={importType} />}
         {step === 12 && <RevealPhrase />}
       </div>
     </OnboardingContext.Provider>
