@@ -10,7 +10,7 @@ import Button from 'finnie-v2/components/Button'
 import { OnboardingContext } from '../onboardingContext'
 
 const InputPhrase = ({ step, setStep, phrase }) => {
-  const { saveNewKey } = useContext(OnboardingContext) 
+  const { saveNewKey, newSeedphrase } = useContext(OnboardingContext) 
 
   const [hiddenPhrase, setHiddenPhrase] = useState([])
   const [completePhrase, setCompletePhrase] = useState([])
