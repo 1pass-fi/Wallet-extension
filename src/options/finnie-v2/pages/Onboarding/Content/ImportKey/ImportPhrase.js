@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import isEmpty from 'lodash/isEmpty'
 import clsx from 'clsx'
 
@@ -7,7 +7,17 @@ import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom
 
 import Button from 'finnie-v2/components/Button'
 
+import { GalleryContext } from 'options/galleryContext'
+import { OnboardingContext } from '../../onboardingContext'
+
+import useMethod from '../../hooks/useMethod'
+
 const ImportPhrase = ({ step, setStep, importType }) => {
+  const { setIsLoading, setError } = useContext(GalleryContext)
+  const { password } = useContext(OnboardingContext)
+
+  const { importFromSeedphrase } = useMethod({ setIsLoading, setError, password })
+
   const [completePhrase, setCompletePhrase] = useState([])
   const [validPhrase, setValidPhrase] = useState(false)
   const [messageError, setMessageError] = useState('')
@@ -48,7 +58,29 @@ const ImportPhrase = ({ step, setStep, importType }) => {
     setValidPhrase(isValid)
   }
 
-  const onClickContinue = () => {}
+  const onClickContinue = async () => {
+    try {
+      console.log('completePhrase', importType, completePhrase)
+      let isNotValid = true
+      isNotValid = completePhrase.forEach((word) => {
+        console.log('word', word)
+        if (isEmpty(word)) isNotValid = false
+      })
+      if (isNotValid) {
+        setMessageError('Invalid Secret Recovery Phrase')
+        return
+      }
+      let seedphrase = completePhrase.map(phraseObj => phraseObj.word)
+
+      seedphrase = seedphrase.join(' ')
+
+      const address = await importFromSeedphrase(seedphrase, importType)
+      if (address) setStep(6)
+    } catch (err) {
+      console.error(err.message)
+      setError('Import wallet error')
+    }
+  }
 
   return (
     <div className="mt-40 ml-24 flex flex-col text-white text-left">

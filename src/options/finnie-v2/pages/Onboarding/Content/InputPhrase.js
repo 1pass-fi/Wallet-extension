@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState, useContext } from 'react'
 import clsx from 'clsx'
 
 import WelcomeBackground from 'img/v2/onboarding/welcome-background-1.svg'
@@ -7,15 +7,28 @@ import WarningIcon from 'img/v2/onboarding/warning-icon.svg'
 
 import Button from 'finnie-v2/components/Button'
 
+import { OnboardingContext } from '../onboardingContext'
+import { GalleryContext } from 'options/galleryContext'
+
+import useMethod from '../hooks/useMethod'
+
 const InputPhrase = ({ step, setStep, phrase }) => {
-  // const SEED_ARRAY = phrase.split(' ')
+  const { setIsLoading, setError } = useContext(GalleryContext)
+  const { newSeedphrase, password } = useContext(OnboardingContext) 
+
   const [hiddenPhrase, setHiddenPhrase] = useState([])
   const [completePhrase, setCompletePhrase] = useState([])
   const [isNextStep, setIsNextStep] = useState(false)
   const [messageError, setMessageError] = useState('')
 
-  const SEED_STRING = 'color tired merge rural token pole capable people metal student catch uphold'
-  const SEED_ARRAY = SEED_STRING.split(' ')
+  const { saveNewKey } = useMethod({ setIsLoading, setError, newSeedphrase, password })
+
+  const SEED_STRING = useMemo(() => {
+    return newSeedphrase
+  }, [newSeedphrase])
+  const SEED_ARRAY = useMemo(() => {
+    return SEED_STRING.split(' ')
+  }, [SEED_STRING]) 
 
   useEffect(() => {
     const getRandom = (seedString, n) => {
@@ -73,7 +86,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
     }
   }, [completePhrase])
 
-  const onClickContinue = () => {
+  const onClickContinue = async () => {
     const validateInputPhrase = () => {
       let isValid = true
       for (let i = 0; i < completePhrase.length; i++) {
@@ -86,6 +99,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
     }
 
     if (validateInputPhrase()) {
+      await saveNewKey()
       setStep(step + 1)
     } else {
       setMessageError('Invalid Secret Recovery Phrase')

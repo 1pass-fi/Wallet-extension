@@ -15,6 +15,7 @@ import ImportAKey from './ImportKey/ImportKey'
 import ImportPhrase from './ImportKey/ImportPhrase'
 
 import { OnboardingContext } from '../onboardingContext'
+import { GalleryContext } from 'options/galleryContext'
 
 import useValidPassword from '../hooks/useValidPassword'
 
@@ -23,6 +24,7 @@ const Content = ({ step, setStep }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [phrase, setPhrase] = useState('')
+  const [newSeedphrase, setNewSeedphrase] = useState('')
 
   const [importType, setImportType] = useState(null)
 
@@ -36,7 +38,9 @@ const Content = ({ step, setStep }) => {
         confirmPassword,
         setConfirmPassword,
         isValidPassword,
-        passwordErrorMessage
+        passwordErrorMessage,
+        newSeedphrase,
+        setNewSeedphrase
       }}
     >
       <div

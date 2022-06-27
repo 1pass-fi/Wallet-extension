@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import clsx from 'clsx'
 
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
@@ -7,7 +7,24 @@ import KoiiKey from 'img/v2/onboarding/koii-key-icon.svg'
 import EthereumKey from 'img/v2/onboarding/ethereum-key-icon.svg'
 import SolanaKey from 'img/v2/onboarding/solana-key-icon.svg'
 
+import { TYPE } from 'constants/accountConstants'
+
+import { OnboardingContext } from '../onboardingContext'
+import { GalleryContext } from 'options/galleryContext'
+
+import useMethod from '../hooks/useMethod'
+
 const GetAKey = ({ step, setStep }) => {
+  const { setIsLoading, setError } = useContext(GalleryContext)
+  const { setNewSeedphrase } = useContext(OnboardingContext)
+
+  const { generateNewKey } = useMethod({ setIsLoading, setError, setNewSeedphrase })
+
+  const handleGetNewKey = async (network) => {
+    await generateNewKey(network)
+    setStep(step + 1)
+  }
+
   return (
     <div className="w-3/4 flex flex-col text-white text-left">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
@@ -19,15 +36,15 @@ const GetAKey = ({ step, setStep }) => {
       </div>
       <div className="mt-11 ml-4 flex justify-start gap-4.5">
         <div className="flex flex-col items-center">
-          <KoiiKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
+          <KoiiKey className="cursor-pointer" onClick={() => handleGetNewKey(TYPE.ARWEAVE)} />
           <div className="font-normal text-lg leading-6">Koii Key</div>
         </div>
         <div className="flex flex-col items-center">
-          <EthereumKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
+          <EthereumKey className="cursor-pointer" onClick={() => handleGetNewKey(TYPE.ETHEREUM)} />
           <div className="font-normal text-lg leading-6">Ethereum Key</div>
         </div>
         <div className="flex flex-col items-center">
-          <SolanaKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
+          <SolanaKey className="cursor-pointer" onClick={() => handleGetNewKey('SOLANA')} />
           <div className="font-normal text-lg leading-6">Solana Key</div>
         </div>
       </div>

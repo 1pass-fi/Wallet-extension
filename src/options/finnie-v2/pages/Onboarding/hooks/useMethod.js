@@ -13,11 +13,12 @@ const useMethod = ({
   newSeedphrase,
   setNewSeedphrase
 }) => {
-  const generateNewKey = async () => {
+  const generateNewKey = async (network) => {
     try {
       setIsLoading(true)
       const seedphrase = await request.wallet.generateWallet({ walletType: network })
-      setNewSeedphrase(seedphrase)
+      setNewSeedphrase(seedphrase.join(' '))
+      setIsLoading(false)
     } catch (err) {
       console.error(err.message)
       setError(ERROR_MESSAGE.GENERATE_NEW_KEY_FAILED)
@@ -46,7 +47,18 @@ const useMethod = ({
     }
   }
 
-  return { generateNewKey, saveNewKey, verifyPassword }
+  const importFromSeedphrase = async (seedphrase, network) => {
+    try {
+      setIsLoading(true)
+      const address = await request.wallet.importWallet({ key: seedphrase, password, type: network })
+      setIsLoading(false)
+      return address
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
+  return { generateNewKey, saveNewKey, verifyPassword, importFromSeedphrase }
 }
 
 export default useMethod

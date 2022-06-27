@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useMemo } from 'react'
 import clsx from 'clsx'
 
 import WelcomeBackground from 'img/v2/onboarding/welcome-background-1.svg'
@@ -7,9 +7,28 @@ import WarningIcon from 'img/v2/onboarding/warning-icon.svg'
 
 import Button from 'finnie-v2/components/Button'
 
-const HiddenPhrase = ({ step, setStep, phrase }) => {
+import { GalleryContext } from 'options/galleryContext'
+import { OnboardingContext } from '../onboardingContext'
+
+
+import useMethod from '../hooks/useMethod'
+
+const HiddenPhrase = ({ step, setStep }) => {
+  const { setIsLoading, setError } = useContext(GalleryContext)
+  const { newSeedphrase, password } = useContext(OnboardingContext)
   const [showPhrase, setShowPhrase] = useState(false)
-  const SEED_ARRAY = phrase.split(' ')
+
+  const { saveNewKey } = useMethod({ setIsLoading, setError, newSeedphrase, password })
+
+  const SEED_ARRAY = useMemo(() => {
+    return newSeedphrase.split(' ')
+  }, [newSeedphrase])
+
+  const handleSkipThisStep = async () => {
+    await saveNewKey()
+    setStep(6)
+  }
+
   return (
     <div className="w-11/12 flex flex-col text-white text-left" style={{ width: '500px' }}>
       <WelcomeBackground className="absolute bottom-0 right-0" />
@@ -68,7 +87,7 @@ const HiddenPhrase = ({ step, setStep, phrase }) => {
       {showPhrase && (
         <div
           className="absolute bottom-11 right-7.5 text-lightBlue underline font-normal text-sm tracking-finnieSpacing-wide cursor-pointer"
-          onClick={() => setStep(6)}
+          onClick={handleSkipThisStep}
         >
           Skip this step
         </div>

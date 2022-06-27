@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import clsx from 'clsx'
 
 import WelcomeBackground from 'img/v2/onboarding/welcome-background.svg'
@@ -7,7 +7,22 @@ import WarningIcon from 'img/v2/onboarding/warning-icon.svg'
 
 import Button from 'finnie-v2/components/Button'
 
+import { GalleryContext } from 'options/galleryContext'
+import { OnboardingContext } from '../onboardingContext'
+
+import useMethod from '../hooks/useMethod'
+
 const PrepareSavePhrase = ({ step, setStep }) => {
+  const { setIsLoading, setError } = useContext(GalleryContext)
+  const { newSeedphrase, password } = useContext(OnboardingContext)
+
+  const { saveNewKey } = useMethod({ setIsLoading, setError, newSeedphrase, password })
+
+  const handleRemindMeLater = async () => {
+    await saveNewKey()
+    setStep(6)
+  }
+
   return (
     <div className="w-11/12 flex flex-col text-white text-left">
       <WelcomeBackground className="absolute bottom-0 right-0" />
@@ -39,7 +54,7 @@ const PrepareSavePhrase = ({ step, setStep }) => {
           variant="indigo"
           text="Remind me later."
           size="lg"
-          onClick={() => setStep(step + 1)}
+          onClick={handleRemindMeLater}
         />
         <Button
           style={{ width: '240px', height: '42px' }}

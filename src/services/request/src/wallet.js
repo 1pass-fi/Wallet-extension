@@ -62,7 +62,7 @@ export class WalletRequest extends Request {
    * @returns {Object} koiData: { address }
    */
   saveWallet(body) {
-    return this.promise(MESSAGES.SAVE_WALLET, body)
+    return this.promise(MESSAGES.SAVE_WALLET_GALLERY, body)
   }
 
 
