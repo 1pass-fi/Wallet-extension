@@ -11,6 +11,9 @@ import HiddenPhrase from './HiddenPhrase'
 import InputPhrase from './InputPhrase'
 import RevealPhrase from './RevealPhrase'
 
+import ImportAKey from './ImportKey/ImportKey'
+import ImportPhrase from './ImportKey/ImportPhrase'
+
 import { OnboardingContext } from '../onboardingContext'
 
 import useValidPassword from '../hooks/useValidPassword'
@@ -49,6 +52,10 @@ const Content = ({ step, setStep }) => {
         {step === 4 && <HiddenPhrase step={step} setStep={setStep} phrase={phrase} />}
         {step === 5 && <InputPhrase step={step} setStep={setStep} phrase={phrase} />}
         {step === 6 && <RevealPhrase />}
+
+        {step === 10 && <ImportAKey step={step} setStep={setStep} />}
+        {step === 11 && <ImportPhrase step={step} setStep={setStep} />}
+        {step === 12 && <RevealPhrase />}
       </div>
     </OnboardingContext.Provider>
   )

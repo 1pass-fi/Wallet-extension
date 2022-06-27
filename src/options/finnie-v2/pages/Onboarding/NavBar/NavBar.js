@@ -14,13 +14,21 @@ import SeedphraseSelectedIcon from 'img/v2/onboarding/seedphrase-selected-icon.s
 import { onboardingSteps } from '../Welcome'
 
 const NavBar = ({ step, setStep }) => {
+  const handleBack = () => {
+    if (step === 10) {
+      setStep(1)
+    } else {
+      setStep(step - 1)
+    }
+  }
+
   return (
     <div className="w-1/3 h-full bg-blue-800 shadow-lg flex flex-col items-center overflow-hidden">
       {step > 1 && (
         <BackIcon
           className="absolute top-5.5 left-6 cursor-pointer"
           style={{ width: '45px', height: '45px' }}
-          onClick={() => setStep(step - 1)}
+          onClick={handleBack}
         />
       )}
       <div className="w-11/12 flex flex-col items-center">
@@ -49,7 +57,7 @@ const NavBar = ({ step, setStep }) => {
             Secure Finnie with a password.
           </div>
         )}
-        {step === 1 || step === 2 ? (
+        {step === 1 || step === 2 || step === 10 ? (
           <div className="flex text-warning">
             <KeySelectedIcon className="mr-5" />
             <div className="w-4/5 flex flex-col whitespace-pre-wrap">
@@ -65,22 +73,41 @@ const NavBar = ({ step, setStep }) => {
             Create or import a key.
           </div>
         )}
-        {2 < step && step < 5 ? (
-          <div className="flex text-warning">
-            <EditSelectedIcon className="mr-5" />
-            <div className="w-4/5 flex flex-col whitespace-pre-wrap">
-              Write down your recovery phrase.
-              <span className="font-normal text-sm leading-6 text-trueGray-100">
-                Grab a pen & paper so you can keep your phrase safe.
-              </span>
+        {step < 10 &&
+          (2 < step && step < 5 ? (
+            <div className="flex text-warning">
+              <EditSelectedIcon className="mr-5" />
+              <div className="w-4/5 flex flex-col whitespace-pre-wrap">
+                Write down your recovery phrase.
+                <span className="font-normal text-sm leading-6 text-trueGray-100">
+                  Grab a pen & paper so you can keep your phrase safe.
+                </span>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="flex items-center">
-            <EditIcon className="mr-5" />
-            Write down your recovery phrase.
-          </div>
-        )}
+          ) : (
+            <div className="flex items-center">
+              <EditIcon className="mr-5" />
+              Write down your recovery phrase.
+            </div>
+          ))}
+
+        {step >= 10 &&
+          (step === 11 ? (
+            <div className="flex text-warning">
+              <EditSelectedIcon className="mr-5" />
+              <div className="w-4/5 flex flex-col whitespace-pre-wrap">
+                Type in your secret phrase.
+                <span className="font-normal text-sm leading-6 text-trueGray-100">
+                  Remember to store your phrase somewhere safe
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center">
+              <EditIcon className="mr-5" />
+              Type in your secret phrase.
+            </div>
+          ))}
         {step === 5 || step == 6 ? (
           <div className="flex text-warning">
             <SeedphraseSelectedIcon className="mr-5" />

@@ -13,7 +13,7 @@ const HiddenPhrase = ({ step, setStep, phrase }) => {
   return (
     <div className="w-11/12 flex flex-col text-white text-left" style={{ width: '500px' }}>
       <WelcomeBackground className="absolute bottom-0 right-0" />
-      <div className="font-semibold text-2xl tracking-finnieSpacing-wider">
+      <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
         Save your Secret Phrase
       </div>
       <div className="flex mt-5 font-normal text-lg leading-6 gap-1.5">

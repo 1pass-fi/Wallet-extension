@@ -7,15 +7,18 @@ import KoiiKey from 'img/v2/onboarding/koii-key-icon.svg'
 import EthereumKey from 'img/v2/onboarding/ethereum-key-icon.svg'
 import SolanaKey from 'img/v2/onboarding/solana-key-icon.svg'
 
-const GetAKey = ({ step, setStep }) => {
+const ImportAKey = ({ step, setStep }) => {
   return (
     <div className="w-3/4 flex flex-col text-white text-left">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
-      <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">Get a Key</div>
-      <div className="mt-5 font-normal text-lg">Click a circle below to generate a key.</div>
+      <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
+        Import your Key
+      </div>
+      <div className="mt-5 font-normal text-lg">Click a circle below to import your key.</div>
       <div className="mt-2 font-normal text-sm w-11/12">
-        Finnie currently supports Koii and Ethereum keys. More key types are in the works.
+        Finnie currently supports Koii, Solana, Arweave and Ethereum keys. More key types are in the
+        works.
       </div>
       <div className="mt-11 ml-4 flex justify-start gap-4.5">
         <div className="flex flex-col items-center">
@@ -35,4 +38,4 @@ const GetAKey = ({ step, setStep }) => {
   )
 }
 
-export default GetAKey
+export default ImportAKey

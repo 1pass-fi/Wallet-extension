@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import clsx from 'clsx'
 
-import WelcomeBackground1 from 'img/v2/onboarding/welcome-background-1.svg'
-import WelcomeBackground2 from 'img/v2/onboarding/welcome-background-2.svg'
+import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
 import KoiIcon from 'img/v2/onboarding/finnie-koii-logo.svg'
 import SuccessIcon from 'img/v2/onboarding/success-icon.svg'
 
@@ -13,9 +12,8 @@ const RevealPhrase = ({ step, setStep }) => {
   const history = useHistory()
 
   return (
-    <div className="flex flex-col items-center justify-center text-white text-left w-full">
-      <WelcomeBackground2 className="absolute top-0 -left-4" />
-      <WelcomeBackground1 className="absolute bottom-0 right-0" />
+    <div className="flex flex-col items-center justify-center text-white text-left w-full pr-4">
+      <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <KoiIcon className="w-18 h-18 absolute top-2.25 right-3.75" />
       <div className="flex items-center">
         <SuccessIcon className="w-20 h-20 mr-6.5" />

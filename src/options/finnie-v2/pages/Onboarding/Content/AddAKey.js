@@ -45,6 +45,9 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
             'hover:border-turquoiseBlue border-transparent border'
           )}
           style={{ width: '249px', height: '140px' }}
+          onClick={() => {
+            setStep(10)
+          }}
         >
           <KeySelectedIcon style={{ width: '48px', height: '48px' }} />
           <div className="mt-3 font-semibold text-base leading-4 text-center text-white">
