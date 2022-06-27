@@ -64,7 +64,7 @@ export class SolanaTool {
   generateWallet() {
     const seedPhrase = generateMnemonic()
 
-    this.importWallet(seedPhrase)
+    this.importWallet(seedPhrase, 'seedphrase')
 
     return seedPhrase
   }

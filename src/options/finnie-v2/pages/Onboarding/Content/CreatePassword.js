@@ -22,18 +22,25 @@ const CreatePassword = ({ step, setStep }) => {
     confirmPassword,
     setConfirmPassword,
     isValidPassword,
-    passwordErrorMessage
+    passwordErrorMessage,
+    verifyPassword
   } = useContext(OnboardingContext)
 
   const [isAcceptTermService, setIsAcceptTermService] = useState(false)
   const [termServiceMessage, setTermServiceMessage] = useState('')
 
+  const [wrongPasswordMessage, setWrongPasswordMessage] = useState('')
+
   const accounts = useSelector((state) => state.accounts)
 
-  const onClickContinue = () => {
+  const onClickContinue = async () => {
     if (!isEmpty(accounts)) {
-      // TODO - handle check password
-      setStep(step + 1)
+      const isCorrectPassword = await verifyPassword()
+      if (isCorrectPassword) {
+        setStep(step + 1)
+      } else {
+        setWrongPasswordMessage('Incorrect password')
+      }
       return
     }
 
@@ -57,14 +64,17 @@ const CreatePassword = ({ step, setStep }) => {
         className="mt-5"
         label={isEmpty(accounts) ? 'New Password' : 'Password'}
         value={password}
-        setValue={(e) => setPassword(e.target.value)}
+        setValue={(e) => {
+          setWrongPasswordMessage('')
+          setPassword(e.target.value)
+        }}
         required={true}
         name="password"
         errorFinnie={
           isEmpty(accounts) &&
           !isEmpty(passwordErrorMessage) &&
           passwordErrorMessage != VALIDATE_ERROR_MESSAGE.NOT_MATCH &&
-          passwordErrorMessage
+          passwordErrorMessage || wrongPasswordMessage
         }
         description="Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%)."
         placeholder=""

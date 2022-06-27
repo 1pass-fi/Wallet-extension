@@ -8,7 +8,7 @@ import { addAccountByAddress } from 'options/actions/accounts'
 
 import { GalleryContext } from 'options/galleryContext'
 
-import { isArweaveAddress, isEthereumAddress } from 'utils'
+import { isArweaveAddress, isEthereumAddress, isSolanaAddress } from 'utils'
 
 const ERROR_MESSAGE = {
   SAVE_NEW_KEY_FAILED: 'Save new key failed',
@@ -94,10 +94,11 @@ const useMethod = ({
     let type
     if (isArweaveAddress(address)) type = 'TYPE_ARWEAVE'
     if (isEthereumAddress(address)) type = 'TYPE_ETHEREUM'
+    if (isSolanaAddress(address)) type = 'TYPE_SOLANA'
 
     const totalAccount = await popupAccount.count()
     if (totalAccount === 1) {
-      await storage.setting.set.activatedChain('TYPE_ETHEREUM')
+      await storage.setting.set.activatedChain(type)
       setActivatedChain(type)
     }
   }

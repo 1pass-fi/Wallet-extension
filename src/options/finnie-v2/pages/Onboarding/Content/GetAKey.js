@@ -40,7 +40,7 @@ const GetAKey = ({ step, setStep }) => {
           <div className="font-normal text-lg leading-6">Ethereum Key</div>
         </div>
         <div className="flex flex-col items-center">
-          <SolanaKey className="cursor-pointer" onClick={() => handleGetNewKey('SOLANA')} />
+          <SolanaKey className="cursor-pointer" onClick={() => handleGetNewKey(TYPE.SOLANA)} />
           <div className="font-normal text-lg leading-6">Solana Key</div>
         </div>
       </div>

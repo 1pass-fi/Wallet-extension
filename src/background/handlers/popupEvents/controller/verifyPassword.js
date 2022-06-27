@@ -7,7 +7,6 @@ import storage from 'services/storage'
 export default async (payload, next) => {
   try {
     const { password } = payload.data
-
     const totalAccount = backgroundAccount.count()
 
     if (totalAccount === 0) {
@@ -17,12 +16,16 @@ export default async (payload, next) => {
       if (isEmpty(accountAddress)) {
         accountAddress = await storage.setting.get.activatedEthereumAccountAddress()
       }
+      if (isEmpty(accountAddress)) {
+        accountAddress = await storage.setting.get.activatedSolanaAccountAddress()
+      }
 
       const encryptedKey = await backgroundAccount.getEncryptedKey(accountAddress)
       try {
         await passworder.decrypt(password, encryptedKey)
         next({ data: true })
       } catch (err) {
+        console.error(err.message)
         next({ data: false })
       }
     }
