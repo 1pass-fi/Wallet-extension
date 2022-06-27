@@ -7,18 +7,13 @@ import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom
 
 import Button from 'finnie-v2/components/Button'
 
-import { GalleryContext } from 'options/galleryContext'
 import { OnboardingContext } from '../../onboardingContext'
 
-import useMethod from '../../hooks/useMethod'
-
 const ImportPhrase = ({ step, setStep, importType }) => {
-  const { setIsLoading, setError } = useContext(GalleryContext)
-  const { password } = useContext(OnboardingContext)
-
-  const { importFromSeedphrase } = useMethod({ setIsLoading, setError, password })
+  const { importFromSeedphrase } = useContext(OnboardingContext)
 
   const [completePhrase, setCompletePhrase] = useState([])
+  const [seedphrase, setSeedphrase] = useState('')
   const [validPhrase, setValidPhrase] = useState(false)
   const [messageError, setMessageError] = useState('')
 
@@ -56,23 +51,15 @@ const ImportPhrase = ({ step, setStep, importType }) => {
       }
     })
     setValidPhrase(isValid)
+    setSeedphrase(seedPhrase)
   }
 
   const onClickContinue = async () => {
     try {
-      console.log('completePhrase', importType, completePhrase)
-      let isNotValid = true
-      isNotValid = completePhrase.forEach((word) => {
-        console.log('word', word)
-        if (isEmpty(word)) isNotValid = false
-      })
-      if (isNotValid) {
+      if (!validPhrase) {
         setMessageError('Invalid Secret Recovery Phrase')
         return
       }
-      let seedphrase = completePhrase.map(phraseObj => phraseObj.word)
-
-      seedphrase = seedphrase.join(' ')
 
       const address = await importFromSeedphrase(seedphrase, importType)
       if (address) setStep(6)

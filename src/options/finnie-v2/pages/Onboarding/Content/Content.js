@@ -19,7 +19,9 @@ import { GalleryContext } from 'options/galleryContext'
 
 import useValidPassword from '../hooks/useValidPassword'
 
-import { onboardingSteps } from '../Welcome'
+import useMethod from '../hooks/useMethod'
+
+
 const Content = ({ step, setStep }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -29,6 +31,17 @@ const Content = ({ step, setStep }) => {
   const [importType, setImportType] = useState(null)
 
   const { isValidPassword, passwordErrorMessage } = useValidPassword({ password, confirmPassword })
+
+  const { 
+    generateNewKey,
+    saveNewKey,
+    verifyPassword,
+    importFromSeedphrase
+  } = useMethod({ 
+    password, 
+    newSeedphrase, 
+    setNewSeedphrase,
+  })
 
   return (
     <OnboardingContext.Provider
@@ -40,7 +53,11 @@ const Content = ({ step, setStep }) => {
         isValidPassword,
         passwordErrorMessage,
         newSeedphrase,
-        setNewSeedphrase
+        setNewSeedphrase,
+        generateNewKey,
+        saveNewKey,
+        verifyPassword,
+        importFromSeedphrase
       }}
     >
       <div

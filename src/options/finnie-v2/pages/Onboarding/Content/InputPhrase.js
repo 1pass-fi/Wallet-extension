@@ -8,20 +8,14 @@ import WarningIcon from 'img/v2/onboarding/warning-icon.svg'
 import Button from 'finnie-v2/components/Button'
 
 import { OnboardingContext } from '../onboardingContext'
-import { GalleryContext } from 'options/galleryContext'
-
-import useMethod from '../hooks/useMethod'
 
 const InputPhrase = ({ step, setStep, phrase }) => {
-  const { setIsLoading, setError } = useContext(GalleryContext)
-  const { newSeedphrase, password } = useContext(OnboardingContext) 
+  const { saveNewKey } = useContext(OnboardingContext) 
 
   const [hiddenPhrase, setHiddenPhrase] = useState([])
   const [completePhrase, setCompletePhrase] = useState([])
   const [isNextStep, setIsNextStep] = useState(false)
   const [messageError, setMessageError] = useState('')
-
-  const { saveNewKey } = useMethod({ setIsLoading, setError, newSeedphrase, password })
 
   const SEED_STRING = useMemo(() => {
     return newSeedphrase

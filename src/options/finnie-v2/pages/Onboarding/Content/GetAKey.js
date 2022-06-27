@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import clsx from 'clsx'
 
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
@@ -15,10 +14,7 @@ import { GalleryContext } from 'options/galleryContext'
 import useMethod from '../hooks/useMethod'
 
 const GetAKey = ({ step, setStep }) => {
-  const { setIsLoading, setError } = useContext(GalleryContext)
-  const { setNewSeedphrase } = useContext(OnboardingContext)
-
-  const { generateNewKey } = useMethod({ setIsLoading, setError, setNewSeedphrase })
+  const { generateNewKey } = useContext(OnboardingContext)
 
   const handleGetNewKey = async (network) => {
     await generateNewKey(network)

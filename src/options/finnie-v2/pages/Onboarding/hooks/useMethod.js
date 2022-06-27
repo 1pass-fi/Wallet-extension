@@ -1,4 +1,14 @@
+import { useContext } from 'react'
+import { useDispatch } from 'react-redux'
+import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as request } from 'services/request/popup'
+import storage from 'services/storage'
+
+import { addAccountByAddress } from 'options/actions/accounts'
+
+import { GalleryContext } from 'options/galleryContext'
+
+import { isArweaveAddress, isEthereumAddress } from 'utils'
 
 const ERROR_MESSAGE = {
   SAVE_NEW_KEY_FAILED: 'Save new key failed',
@@ -6,13 +16,20 @@ const ERROR_MESSAGE = {
 }
 
 const useMethod = ({ 
-  setIsLoading,
-  setError,
-  network, 
   password,
   newSeedphrase,
-  setNewSeedphrase
+  setNewSeedphrase,
 }) => {
+  const { 
+    setImportedAddress,
+    setIsLoading,
+    setError,
+    setNewAddress,
+    setActivatedChain
+  } = useContext(GalleryContext)
+
+  const dispatch = useDispatch()
+
   const generateNewKey = async (network) => {
     try {
       setIsLoading(true)
@@ -28,7 +45,14 @@ const useMethod = ({
   const saveNewKey = async () => {
     try {
       setIsLoading(true)
-      await request.wallet.saveWallet({ seedPhrase: newSeedphrase, password })
+      const address = await request.wallet.saveWallet({ seedPhrase: newSeedphrase, password })
+
+      await initActivatedChain(address)
+
+      setImportedAddress(address)
+      setNewAddress(address)
+      dispatch(addAccountByAddress(address))
+
       setIsLoading(false)
     } catch (err) {
       console.error(err.message)
@@ -51,10 +75,30 @@ const useMethod = ({
     try {
       setIsLoading(true)
       const address = await request.wallet.importWallet({ key: seedphrase, password, type: network })
+
+      await initActivatedChain(address)
+
+      setImportedAddress(address)
+      setNewAddress(address)
+      dispatch(addAccountByAddress(address))
+
       setIsLoading(false)
+      
       return address
     } catch (err) {
       setError(err.message)
+    }
+  }
+
+  const initActivatedChain = async (address) => {
+    let type
+    if (isArweaveAddress(address)) type = 'TYPE_ARWEAVE'
+    if (isEthereumAddress(address)) type = 'TYPE_ETHEREUM'
+
+    const totalAccount = await popupAccount.count()
+    if (totalAccount === 1) {
+      await storage.setting.set.activatedChain('TYPE_ETHEREUM')
+      setActivatedChain(type)
     }
   }
 
