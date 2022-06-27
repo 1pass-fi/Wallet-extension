@@ -21,13 +21,16 @@ export default () => {
 
       <Switch>
         <Route path="/create-wallet">
-          <Create />
+          {/* <Create /> */}
+          <Welcome />
         </Route>
         <Route path="/upload-wallet">
-          <Upload />
+          {/* <Upload /> */}
+          <Welcome />
         </Route>
         <Route path="/import-wallet">
-          <Import />
+          {/* <Import /> */}
+          <Welcome />
         </Route>
         <Route path="/*">
           <Welcome />

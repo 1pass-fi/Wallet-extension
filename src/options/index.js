@@ -5,7 +5,8 @@ import { Provider } from 'react-redux'
 
 import './index.css'
 import AppProvider from './provider'
-import Welcome from './pages/StartUp/Welcome'
+// import Welcome from './pages/StartUp/Welcome'
+import Welcome from 'options/finnie-v2/pages/Onboarding/Welcome'
 import UploadWallet from './pages/StartUp/Upload'
 import ImportWallet from './pages/StartUp/Import'
 import CreateWallet from './pages/StartUp/Create'
@@ -39,13 +40,16 @@ const FullView = () => {
               <Welcome />
             </Route>
             <Route exact path="/create-wallet">
-              <CreateWallet />
+              {/* <CreateWallet /> */}
+              <Welcome />
             </Route>
             <Route exact path="/upload-wallet">
-              <UploadWallet />
+              {/* <UploadWallet /> */}
+              <Welcome />
             </Route>
             <Route exact path="/import-wallet">
-              <ImportWallet />
+              {/* <ImportWallet /> */}
+              <Welcome />
             </Route>
             <Route exact path="/friend-referral">
               <>
