@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 
 import NavBar from './NavBar'
 import Content from './Content'
-import RevealPhrase from './RevealPhrase'
 
 export const onboardingSteps = [
   'CREATE_PASSWORD',
@@ -19,14 +18,8 @@ const Welcome = () => {
 
   return (
     <div className="w-screen h-screen flex text-center">
-      {step !== 6 ? (
-        <>
-          <NavBar step={step} setStep={setStep} />
-          <Content step={step} setStep={setStep} />
-        </>
-      ) : (
-        <RevealPhrase />
-      )}
+      <NavBar step={step} setStep={setStep} />
+      <Content step={step} setStep={setStep} />
     </div>
   )
 }

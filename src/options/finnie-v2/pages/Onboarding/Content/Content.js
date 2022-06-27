@@ -9,6 +9,7 @@ import GetAKey from './GetAKey'
 import PrepareSavePhrase from './PrepareSavePhrase'
 import HiddenPhrase from './HiddenPhrase'
 import InputPhrase from './InputPhrase'
+import RevealPhrase from './RevealPhrase'
 
 import { OnboardingContext } from '../onboardingContext'
 
@@ -47,6 +48,7 @@ const Content = ({ step, setStep }) => {
         {step === 3 && <PrepareSavePhrase step={step} setStep={setStep} />}
         {step === 4 && <HiddenPhrase step={step} setStep={setStep} phrase={phrase} />}
         {step === 5 && <InputPhrase step={step} setStep={setStep} phrase={phrase} />}
+        {step === 6 && <RevealPhrase />}
       </div>
     </OnboardingContext.Provider>
   )

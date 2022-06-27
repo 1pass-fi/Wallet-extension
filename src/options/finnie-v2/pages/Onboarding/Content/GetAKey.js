@@ -23,12 +23,12 @@ const GetAKey = ({ step, setStep }) => {
           <div className="font-normal text-lg leading-6">Koii Key</div>
         </div>
         <div className="flex flex-col items-center">
-          <SolanaKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
-          <div className="font-normal text-lg leading-6">Koii Key</div>
-        </div>
-        <div className="flex flex-col items-center">
           <EthereumKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
           <div className="font-normal text-lg leading-6">Ethereum Key</div>
+        </div>
+        <div className="flex flex-col items-center">
+          <SolanaKey className="cursor-pointer" onClick={() => setStep(step + 1)} />
+          <div className="font-normal text-lg leading-6">Solana Key</div>
         </div>
       </div>
     </div>
