@@ -9,6 +9,7 @@ import Button from 'finnie-v2/components/Button'
 
 const ImportPhrase = ({ step, setStep, importType }) => {
   const [completePhrase, setCompletePhrase] = useState([])
+  const [validPhrase, setValidPhrase] = useState(false)
   const [messageError, setMessageError] = useState('')
 
   useEffect(() => {
@@ -25,23 +26,29 @@ const ImportPhrase = ({ step, setStep, importType }) => {
     let newCompletePhrase = [...completePhrase]
 
     const changeIndex = newCompletePhrase.findIndex((item) => item.index === idx)
-    newCompletePhrase[changeIndex].word = e.target.value
+    newCompletePhrase[changeIndex].word = e.target.value?.trim()
 
     setCompletePhrase(newCompletePhrase)
-    setMessageError('')
+
+    const seedPhrase = completePhrase
+      .map((phrase) => {
+        return phrase.word?.trim()
+      })
+      .filter(Boolean)
+      .join(' ')
+
+    console.log('completePhrase', importType, seedPhrase)
+
+    let isValid = true
+    completePhrase.forEach((word) => {
+      if (isEmpty(word.word)) {
+        isValid = false
+      }
+    })
+    setValidPhrase(isValid)
   }
 
-  const onClickContinue = () => {
-    console.log('completePhrase', importType, completePhrase)
-    let isValid = true
-    isValid = completePhrase.forEach((word) => {
-      console.log('word', word)
-      if (isEmpty(word)) isValid = false
-    })
-    if (isValid) {
-      setMessageError('Invalid Secret Recovery Phrase')
-    }
-  }
+  const onClickContinue = () => {}
 
   return (
     <div className="mt-40 ml-24 flex flex-col text-white text-left">
@@ -62,23 +69,23 @@ const ImportPhrase = ({ step, setStep, importType }) => {
                 <input
                   key={index}
                   className="bg-transparent focus:outline-none cursor-pointer w-22 h-5.5"
-                  // style={{ width: '121px' }}
                   type="text"
                   onChange={(e) => onChangeInputPhrase(e, index)}
+                  value={completePhrase[index].word}
                 />
               </div>
             )
           })}
         </div>
 
-        <div className="mt-1.5 text-red-finnie ml-7 text-xs font-normal h-2">{messageError}</div>
+        {/* <div className="mt-1.5 text-red-finnie ml-7 text-xs font-normal h-2">{messageError}</div> */}
 
         <Button
           style={{ width: '240px', height: '42px' }}
           className="mt-10.75 text-base mx-auto rounded z-10"
           variant="white"
           text="Confirm"
-          // disabled={!isNextStep}
+          disabled={!validPhrase}
           onClick={onClickContinue}
         />
       </div>
