@@ -25,7 +25,6 @@ const useMethod = ({
     setIsLoading,
     setError,
     setNewAddress,
-    setIsOnboarding,
     setActivatedChain
   } = useContext(GalleryContext)
 
@@ -45,7 +44,6 @@ const useMethod = ({
 
   const saveNewKey = async () => {
     try {
-      setIsOnboarding(true)
       setIsLoading(true)
       const address = await request.wallet.saveWallet({ seedPhrase: newSeedphrase, password })
 
@@ -57,7 +55,6 @@ const useMethod = ({
 
       setIsLoading(false)
     } catch (err) {
-      setIsOnboarding(false)
       console.error(err.message)
       setError(ERROR_MESSAGE.SAVE_NEW_KEY_FAILED)
     }
@@ -76,7 +73,6 @@ const useMethod = ({
 
   const importFromSeedphrase = async (seedphrase, network) => {
     try {
-      setIsOnboarding(true)
       setIsLoading(true)
       const address = await request.wallet.importWallet({ key: seedphrase, password, type: network })
 
@@ -90,7 +86,6 @@ const useMethod = ({
       
       return address
     } catch (err) {
-      setIsOnboarding(false)
       setError(err.message)
     }
   }

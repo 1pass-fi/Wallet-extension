@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+
+import { GalleryContext } from 'options/galleryContext'
 
 import NavBar from './NavBar'
 import Content from './Content'
@@ -14,7 +16,9 @@ export const onboardingSteps = [
 ]
 
 const Welcome = () => {
+  const { setIsOnboarding } = useContext(GalleryContext)
   const [step, setStep] = useState(0)
+  setIsOnboarding(true)
 
   return (
     <div className="w-screen h-screen flex text-center">
