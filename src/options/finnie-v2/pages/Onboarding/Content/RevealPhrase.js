@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import clsx from 'clsx'
+
+import { GalleryContext } from 'options/galleryContext'
 
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
 import KoiIcon from 'img/v2/onboarding/finnie-koii-logo.svg'
@@ -11,6 +13,7 @@ import ImagesNFTs from 'img/v2/onboarding/Images-NFTs.svg'
 import Button from 'finnie-v2/components/Button'
 
 const RevealPhrase = ({ step }) => {
+  const { setIsOnboarding } = useContext(GalleryContext)
   const history = useHistory()
 
   return (
@@ -75,7 +78,10 @@ const RevealPhrase = ({ step }) => {
 
       <div
         className="absolute bottom-11 right-7.5 text-lightBlue underline font-normal text-sm tracking-finnieSpacing-wide cursor-pointer"
-        onClick={() => history.push('/')}
+        onClick={() => {
+          setIsOnboarding(false)
+          history.push('/')
+        }}
       >
         Skip this step
       </div>

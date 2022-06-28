@@ -84,6 +84,7 @@ export default ({ children }) => {
   */
   const [importedAddress, setImportedAddress] = useState(null) // just imported account
   const [newAddress, setNewAddress] = useState(null) // just imported address
+  const [isOnboarding, setIsOnboarding] = useState(false) // keep reveal page - onboarding flow
 
   /* 
     File
@@ -370,6 +371,7 @@ export default ({ children }) => {
         importedAddress,
         setImportedAddress,
         setNewAddress,
+        setIsOnboarding,
         inputFileRef,
         walletLoaded,
         refreshNFTs,
@@ -390,7 +392,7 @@ export default ({ children }) => {
         }}
       >
         <div className="app-background">
-          {!isEmpty(accounts) ? (
+          {!isEmpty(accounts) && !isOnboarding ? (
             <>
               {!isLocked ? (
                 <div
