@@ -100,6 +100,11 @@ const InputPhrase = ({ step, setStep, phrase }) => {
     }
   }
 
+  const handleSkipThisStep = async () => {
+    await saveNewKey()
+    setStep(6)
+  }
+
   return (
     <div className="w-11/12 flex flex-col text-white text-left" style={{ width: '500px' }}>
       <WelcomeBackground className="absolute bottom-0 right-0" />
@@ -155,7 +160,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
 
       <div
         className="absolute bottom-11 right-7.5 text-lightBlue underline font-normal text-sm tracking-finnieSpacing-wide cursor-pointer"
-        onClick={() => setStep(6)}
+        onClick={handleSkipThisStep}
       >
         Skip this step
       </div>
