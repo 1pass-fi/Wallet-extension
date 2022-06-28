@@ -10,7 +10,6 @@ import Button from 'finnie-v2/components/Button'
 import { GalleryContext } from 'options/galleryContext'
 import { OnboardingContext } from '../onboardingContext'
 
-
 import useMethod from '../hooks/useMethod'
 
 const HiddenPhrase = ({ step, setStep }) => {
@@ -65,8 +64,9 @@ const HiddenPhrase = ({ step, setStep }) => {
           >
             {SEED_ARRAY.map((phrase, index) => {
               return (
-                <div className="mx-7.5 my-auto" key={index}>
-                  {index + 1}. {phrase}
+                <div className="mx-7.5 my-auto flex" key={index}>
+                  <div className="w-1/5">{index + 1}. </div>
+                  <div>{phrase}</div>
                 </div>
               )
             })}
