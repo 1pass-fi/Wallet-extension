@@ -30,7 +30,7 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
               setStep(step + 1)
             }}
           />
-          <div className="font-normal text-lg leading-6">Koii Key</div>
+          <div className="font-normal text-lg leading-6">Koii</div>
         </div>
         <div className="flex flex-col items-center">
           <EthereumKey
@@ -40,7 +40,7 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
               setStep(step + 1)
             }}
           />
-          <div className="font-normal text-lg leading-6">Ethereum Key</div>
+          <div className="font-normal text-lg leading-6">Ethereum</div>
         </div>
         <div className="flex flex-col items-center">
           <SolanaKey
@@ -50,7 +50,7 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
               setStep(step + 1)
             }}
           />
-          <div className="font-normal text-lg leading-6">Solana Key</div>
+          <div className="font-normal text-lg leading-6">Solana</div>
         </div>
       </div>
     </div>
