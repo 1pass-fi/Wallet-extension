@@ -62,7 +62,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
       }
 
       const address = await importFromSeedphrase(seedphrase, importType)
-      if (address) setStep(6)
+      if (address) setStep(12)
     } catch (err) {
       console.error(err.message)
       setError('Import wallet error')
