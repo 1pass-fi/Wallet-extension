@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import clsx from 'clsx'
 
-import WelcomeBackground from 'img/v2/onboarding/welcome-background.svg'
+import WelcomeBackground from 'img/v2/onboarding/welcome-background-1.svg'
 import NoticeIcon from 'img/v2/onboarding/notice-icon.svg'
 import WarningIcon from 'img/v2/onboarding/warning-icon.svg'
 
@@ -30,8 +30,11 @@ const PrepareSavePhrase = ({ step, setStep }) => {
         Save your Secret Phrase
       </div>
       <div className="mt-5 font-normal text-base leading-8" style={{ width: '500px' }}>
-        Koii Wallets use a 12-word secret phrase to secure your account to ensure that you and only
-        you will control your identity online.
+        Koii Wallets use a {/* TODO add tooltip/link */}
+        <span className="text-turquoiseBlue underline cursor-pointer">
+          12-word secret phrase
+        </span>{' '}
+        to secure your account to ensure that you and only you will control your identity online.
       </div>
       <div className="mt-8 font-normal text-sm leading-6 w-11/12 flex">
         <NoticeIcon style={{ width: '96px', height: '96px' }} />

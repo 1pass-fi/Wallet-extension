@@ -10,7 +10,7 @@ import Button from 'finnie-v2/components/Button'
 import { OnboardingContext } from '../onboardingContext'
 
 const InputPhrase = ({ step, setStep, phrase }) => {
-  const { saveNewKey, newSeedphrase } = useContext(OnboardingContext) 
+  const { saveNewKey, newSeedphrase } = useContext(OnboardingContext)
 
   const [hiddenPhrase, setHiddenPhrase] = useState([])
   const [completePhrase, setCompletePhrase] = useState([])
@@ -22,7 +22,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
   }, [newSeedphrase])
   const SEED_ARRAY = useMemo(() => {
     return SEED_STRING.split(' ')
-  }, [SEED_STRING]) 
+  }, [SEED_STRING])
 
   useEffect(() => {
     const getRandom = (seedString, n) => {
@@ -107,12 +107,12 @@ const InputPhrase = ({ step, setStep, phrase }) => {
         Save your Secret Phrase
       </div>
 
-      <div className="mt-5 font-normal text-lg leading-6">
+      {/* <div className="mt-5 font-normal text-lg leading-6">
         Do you have a <span className="text-turquoiseBlue">pen & paper handy?</span>
       </div>
       <div className="mt-1 font-normal text-lg leading-6">
         What about a <span className="text-turquoiseBlue">safe place to keep it?</span>
-      </div>
+      </div> */}
 
       <div className="mt-8 font-normal text-lg leading-6 text-white">
         Type in the missing words to confirm your secret phase is properly secured.

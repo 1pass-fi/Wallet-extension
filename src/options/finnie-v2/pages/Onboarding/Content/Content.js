@@ -74,11 +74,11 @@ const Content = ({ step, setStep }) => {
         {step === 3 && <PrepareSavePhrase step={step} setStep={setStep} />}
         {step === 4 && <HiddenPhrase step={step} setStep={setStep} phrase={phrase} />}
         {step === 5 && <InputPhrase step={step} setStep={setStep} phrase={phrase} />}
-        {step === 6 && <RevealPhrase />}
+        {step === 6 && <RevealPhrase step={step}/>}
 
         {step === 10 && <ImportAKey step={step} setStep={setStep} setImportType={setImportType} />}
         {step === 11 && <ImportPhrase step={step} setStep={setStep} importType={importType} />}
-        {step === 12 && <RevealPhrase />}
+        {step === 12 && <RevealPhrase step={step}/>}
       </div>
     </OnboardingContext.Provider>
   )

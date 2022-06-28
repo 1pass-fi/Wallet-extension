@@ -5,35 +5,33 @@ import clsx from 'clsx'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
 import KoiIcon from 'img/v2/onboarding/finnie-koii-logo.svg'
 import SuccessIcon from 'img/v2/onboarding/success-icon.svg'
+import KoiiToken from 'img/v2/onboarding/koii-token.svg'
+import ImagesNFTs from 'img/v2/onboarding/Images-NFTs.svg'
 
 import Button from 'finnie-v2/components/Button'
 
-const RevealPhrase = ({ step, setStep }) => {
+const RevealPhrase = ({ step }) => {
   const history = useHistory()
 
   return (
     <div className="flex flex-col items-center justify-center text-white text-left w-full pr-4">
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <KoiIcon className="w-18 h-18 absolute top-2.25 right-3.75" />
-      <div className="flex items-center">
+      <div className="w-3/4 flex items-center justify-center">
         <SuccessIcon className="w-20 h-20 mr-6.5" />
         <div
-          className="font-semibold text-2xl tracking-finnieSpacing-wider h-16"
-          style={{ width: '350px' }}
+          className="font-semibold text-2xl tracking-finnieSpacing-wider self-center"
+          // style={{ width: '350px' }}
         >
-          You successfully saved your Recovery Phrase
+          {step === 6
+            ? 'You successfully saved your Secret Phrase'
+            : 'Your key was successfully imported!'}
         </div>
       </div>
 
       <div className="text-lg mt-12 font-normal">
         <div>Remember:</div>
         <li className="mt-2">
-          Keep your phrase <span className="text-warning">somewhere secure</span>
-        </li>
-        <li>
-          <span className="text-warning">Never share</span> your phrase with anyone
-        </li>
-        <li>
           Stay safe from phishing scams—<br></br>
           <span className="text-warning">Koii will NEVER ask you for your recovery phrase</span> or
           keyfile
@@ -44,28 +42,30 @@ const RevealPhrase = ({ step, setStep }) => {
         </li>
       </div>
 
-      <div className="flex items-center justify-center h-36">
-        <div className="h-10 mt-12 mr-19" style={{ width: '300px' }}>
-          <div className="font-normal text-lg text-center">
+      <div className="mt-12 flex items-center justify-center">
+        <div className="flex flex-col items-center mr-19" style={{ width: '300px' }}>
+          <KoiiToken />
+          <div className="mt-3 font-normal text-lg text-center">
             Head over to the faucet to grab some free KOII tokens.
           </div>
 
           <Button
             style={{ width: '240px', height: '42px' }}
-            className="mt-10 text-base rounded mx-auto z-10"
+            className="mt-7 text-base rounded mx-auto z-10"
             variant="primary"
             text="Get Free KOII"
             size="lg"
           />
         </div>
-        <div className="h-10 mt-12" style={{ width: '300px' }}>
-          <div className="font-normal text-lg text-center">
+        <div className="flex flex-col items-center" style={{ width: '300px' }}>
+          <ImagesNFTs />
+          <div className="mt-3 font-normal text-lg text-center">
             Or go to the gallery to create your first Finnie NFT
           </div>
 
           <Button
             style={{ width: '240px', height: '42px' }}
-            className="mt-10 text-base rounded mx-auto z-10"
+            className="mt-7 text-base rounded mx-auto z-10"
             variant="warningDefault"
             text="Create an NFT"
             size="lg"
