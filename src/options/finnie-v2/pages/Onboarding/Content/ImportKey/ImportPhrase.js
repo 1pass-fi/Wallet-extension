@@ -84,7 +84,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
           {completePhrase.map((phrase, index) => {
             return (
               <div className="flex ml-7.5 my-auto" key={index}>
-                <div className="w-1/5">{index + 1}. </div>
+                <div className="w-5 text-right mr-3">{index + 1}. </div>
                 <input
                   key={index}
                   className="bg-transparent focus:outline-none cursor-pointer w-22 h-5.5"

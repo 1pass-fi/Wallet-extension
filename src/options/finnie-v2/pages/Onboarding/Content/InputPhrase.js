@@ -131,7 +131,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
           {SEED_ARRAY.map((phrase, index) => {
             return hiddenPhrase.map((obj, index) => obj.index).includes(index) ? (
               <div className="flex mx-7.5 my-auto" key={index}>
-                <div className="w-1/5">{index + 1}. </div>
+                <div className="w-5 text-right mr-3">{index + 1}. </div>
                 <input
                   className="bg-transparent border-b-2 focus:outline-none cursor-pointer w-22 h-5.5"
                   type="text"
@@ -140,7 +140,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
               </div>
             ) : (
               <div className="mx-7.5 my-auto flex" key={index}>
-                <div className="w-1/5">{index + 1}. </div>
+                <div className="w-5 text-right mr-3">{index + 1}. </div>
                 <div>{phrase}</div>
               </div>
             )

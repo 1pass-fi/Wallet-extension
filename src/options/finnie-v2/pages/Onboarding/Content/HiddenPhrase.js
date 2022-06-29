@@ -65,7 +65,7 @@ const HiddenPhrase = ({ step, setStep }) => {
             {SEED_ARRAY.map((phrase, index) => {
               return (
                 <div className="mx-7.5 my-auto flex" key={index}>
-                  <div className="w-1/5">{index + 1}. </div>
+                  <div className="w-5 text-right mr-3">{index + 1}. </div>
                   <div>{phrase}</div>
                 </div>
               )
