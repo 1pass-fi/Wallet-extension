@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react'
-import clsx from 'clsx'
 
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
@@ -45,68 +44,29 @@ const GetAKey = ({ step, setStep }) => {
       </div>
       <div className="mt-11 ml-4 flex justify-start gap-4.5">
         <div className="flex flex-col items-center">
-          <SolanaKey
-            className={clsx(
-              inProcessing
-                ? networkProcessing === TYPE.SOLANA
-                  ? 'cursor-wait'
-                  : 'cursor-not-allowed'
-                : 'cursor-pointer',
-              ''
-            )}
-            onClick={() => handleGetNewKey(TYPE.SOLANA)}
-          />
-          <div className="font-normal text-lg leading-6">Solana</div>
-        </div>
-
-        {/* TODO NEW LOGO */}
-        <div className="flex flex-col items-center">
           <KeyLogo
             type={TYPE.ARWEAVE}
-            isHover={false}
-            className={clsx(
-              inProcessing
-                ? networkProcessing === TYPE.ARWEAVE
-                  ? 'cursor-wait'
-                  : 'cursor-not-allowed'
-                : 'cursor-pointer',
-              ''
-            )}
-            onClick={() => handleGetNewKey(TYPE.ARWEAVE)}
+            inProcessing={inProcessing}
+            networkProcessing={networkProcessing}
+            handleGetNewKey={handleGetNewKey}
           />
           <div className="font-normal text-lg leading-6">Koii</div>
         </div>
-
         <div className="flex flex-col items-center">
           <KeyLogo
             type={TYPE.ETHEREUM}
-            isHover={false}
-            className={clsx(
-              inProcessing
-                ? networkProcessing === TYPE.ETHEREUM
-                  ? 'cursor-wait'
-                  : 'cursor-not-allowed'
-                : 'cursor-pointer',
-              ''
-            )}
-            onClick={() => handleGetNewKey(TYPE.ETHEREUM)}
+            inProcessing={inProcessing}
+            networkProcessing={networkProcessing}
+            handleGetNewKey={handleGetNewKey}
           />
           <div className="font-normal text-lg leading-6">Ethereum</div>
         </div>
-
         <div className="flex flex-col items-center">
           <KeyLogo
             type={TYPE.SOLANA}
-            isHover={true}
-            className={clsx(
-              inProcessing
-                ? networkProcessing === TYPE.SOLANA
-                  ? 'cursor-wait'
-                  : 'cursor-not-allowed'
-                : 'cursor-pointer',
-              ''
-            )}
-            onClick={() => handleGetNewKey(TYPE.SOLANA)}
+            inProcessing={inProcessing}
+            networkProcessing={networkProcessing}
+            handleGetNewKey={handleGetNewKey}
           />
           <div className="font-normal text-lg leading-6">Solana</div>
         </div>
