@@ -14,6 +14,8 @@ import { GalleryContext } from 'options/galleryContext'
 
 import useMethod from '../hooks/useMethod'
 
+import KeyLogo from 'finnie-v2/components/KeyLogo'
+
 const GetAKey = ({ step, setStep }) => {
   const { generateNewKey } = useContext(OnboardingContext)
   const [inProcessing, setInProcessing] = useState(false)
@@ -43,7 +45,25 @@ const GetAKey = ({ step, setStep }) => {
       </div>
       <div className="mt-11 ml-4 flex justify-start gap-4.5">
         <div className="flex flex-col items-center">
-          <KoiiKey
+          <SolanaKey
+            className={clsx(
+              inProcessing
+                ? networkProcessing === TYPE.SOLANA
+                  ? 'cursor-wait'
+                  : 'cursor-not-allowed'
+                : 'cursor-pointer',
+              ''
+            )}
+            onClick={() => handleGetNewKey(TYPE.SOLANA)}
+          />
+          <div className="font-normal text-lg leading-6">Solana</div>
+        </div>
+
+        {/* TODO NEW LOGO */}
+        <div className="flex flex-col items-center">
+          <KeyLogo
+            type={TYPE.ARWEAVE}
+            isHover={false}
             className={clsx(
               inProcessing
                 ? networkProcessing === TYPE.ARWEAVE
@@ -56,8 +76,11 @@ const GetAKey = ({ step, setStep }) => {
           />
           <div className="font-normal text-lg leading-6">Koii</div>
         </div>
+
         <div className="flex flex-col items-center">
-          <EthereumKey
+          <KeyLogo
+            type={TYPE.ETHEREUM}
+            isHover={false}
             className={clsx(
               inProcessing
                 ? networkProcessing === TYPE.ETHEREUM
@@ -70,8 +93,11 @@ const GetAKey = ({ step, setStep }) => {
           />
           <div className="font-normal text-lg leading-6">Ethereum</div>
         </div>
+
         <div className="flex flex-col items-center">
-          <SolanaKey
+          <KeyLogo
+            type={TYPE.SOLANA}
+            isHover={true}
             className={clsx(
               inProcessing
                 ? networkProcessing === TYPE.SOLANA
