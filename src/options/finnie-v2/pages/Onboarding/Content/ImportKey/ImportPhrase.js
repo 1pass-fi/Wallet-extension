@@ -76,6 +76,13 @@ const ImportPhrase = ({ step, setStep, importType }) => {
       <div className="font-normal text-lg leading-8 tracking-finnieSpacing-tight">
         Type in your secret phrase to import your key.
       </div>
+      <div className="font-normal text-sm mt-2">
+        Hit the{' '}
+        <span className="text-lightBlue bg-warmGray-300 bg-opacity-20 rounded-xs px-0.75 mx-0.5">
+          tab
+        </span>
+        button to move to the next word.
+      </div>
       <div className="flex flex-col" style={{ width: '347px' }}>
         <div
           style={{ height: '182px' }}

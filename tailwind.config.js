@@ -45,7 +45,8 @@ module.exports = {
           DEFAULT: '#ECFFFE'
         },
         warmGray: {
-          DEFAULT: '#433D3D'
+          DEFAULT: '#433D3D',
+          300: '#D9D9D9'
         },
         blue: {
           300: '#030332',
@@ -204,7 +205,8 @@ module.exports = {
       },
       borderRadius: {
         1: '0.25rem',
-        finnie: '3px'
+        finnie: '3px',
+        xs: '1px'
       },
       borderWidth: {
         1.5: '1.5px'
