@@ -1,19 +1,12 @@
 import React, { useContext, useState } from 'react'
 
+import { OnboardingContext } from '../onboardingContext'
+import KeyLogo from 'finnie-v2/components/KeyLogo'
+
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
-import KoiiKey from 'img/v2/onboarding/koii-key-icon.svg'
-import EthereumKey from 'img/v2/onboarding/ethereum-key-icon.svg'
-import SolanaKey from 'img/v2/onboarding/solana-key-icon.svg'
 
 import { TYPE } from 'constants/accountConstants'
-
-import { OnboardingContext } from '../onboardingContext'
-import { GalleryContext } from 'options/galleryContext'
-
-import useMethod from '../hooks/useMethod'
-
-import KeyLogo from 'finnie-v2/components/KeyLogo'
 
 const GetAKey = ({ step, setStep }) => {
   const { generateNewKey } = useContext(OnboardingContext)
@@ -48,7 +41,7 @@ const GetAKey = ({ step, setStep }) => {
             type={TYPE.ARWEAVE}
             inProcessing={inProcessing}
             networkProcessing={networkProcessing}
-            handleGetNewKey={handleGetNewKey}
+            handleOnClick={handleGetNewKey}
           />
           <div className="font-normal text-lg leading-6">Koii</div>
         </div>
@@ -57,7 +50,7 @@ const GetAKey = ({ step, setStep }) => {
             type={TYPE.ETHEREUM}
             inProcessing={inProcessing}
             networkProcessing={networkProcessing}
-            handleGetNewKey={handleGetNewKey}
+            handleOnClick={handleGetNewKey}
           />
           <div className="font-normal text-lg leading-6">Ethereum</div>
         </div>
@@ -66,7 +59,7 @@ const GetAKey = ({ step, setStep }) => {
             type={TYPE.SOLANA}
             inProcessing={inProcessing}
             networkProcessing={networkProcessing}
-            handleGetNewKey={handleGetNewKey}
+            handleOnClick={handleGetNewKey}
           />
           <div className="font-normal text-lg leading-6">Solana</div>
         </div>

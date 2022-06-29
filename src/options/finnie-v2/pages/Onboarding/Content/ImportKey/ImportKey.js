@@ -1,14 +1,18 @@
 import React from 'react'
 import clsx from 'clsx'
 
+import KeyLogo from 'finnie-v2/components/KeyLogo'
+
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
-import KoiiKey from 'img/v2/onboarding/koii-key-icon.svg'
-import EthereumKey from 'img/v2/onboarding/ethereum-key-icon.svg'
-import SolanaKey from 'img/v2/onboarding/solana-key-icon.svg'
+
 import { TYPE } from 'constants/accountConstants'
 
 const ImportAKey = ({ step, setStep, setImportType }) => {
+  const handleImportKey = (type) => {
+    setImportType(type)
+    setStep(step + 1)
+  }
   return (
     <div className="w-3/4 flex flex-col text-white text-left">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
@@ -23,33 +27,15 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
       </div>
       <div className="mt-11 ml-4 flex justify-start gap-4.5">
         <div className="flex flex-col items-center">
-          <KoiiKey
-            className="cursor-pointer"
-            onClick={() => {
-              setImportType(TYPE.ARWEAVE)
-              setStep(step + 1)
-            }}
-          />
+          <KeyLogo type={TYPE.ARWEAVE} handleOnClick={handleImportKey} />
           <div className="font-normal text-lg leading-6">Koii</div>
         </div>
         <div className="flex flex-col items-center">
-          <EthereumKey
-            className="cursor-pointer"
-            onClick={() => {
-              setImportType(TYPE.ETHEREUM)
-              setStep(step + 1)
-            }}
-          />
+          <KeyLogo type={TYPE.ETHEREUM} handleOnClick={handleImportKey} />
           <div className="font-normal text-lg leading-6">Ethereum</div>
         </div>
         <div className="flex flex-col items-center">
-          <SolanaKey
-            className="cursor-pointer"
-            onClick={() => {
-              setImportType(TYPE.SOLANA)
-              setStep(step + 1)
-            }}
-          />
+          <KeyLogo type={TYPE.SOLANA} handleOnClick={handleImportKey} />
           <div className="font-normal text-lg leading-6">Solana</div>
         </div>
       </div>

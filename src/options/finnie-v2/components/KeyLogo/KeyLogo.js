@@ -9,7 +9,7 @@ import KoiiLock from 'img/v2/onboarding/koii-lock-icon.svg'
 
 import { TYPE } from 'constants/accountConstants'
 
-const KeyLogo = ({ type, inProcessing, networkProcessing, handleGetNewKey }) => {
+const KeyLogo = ({ type, inProcessing, networkProcessing, handleOnClick }) => {
   const [isHover, setIsHover] = useState(false)
   return (
     <div
@@ -23,7 +23,7 @@ const KeyLogo = ({ type, inProcessing, networkProcessing, handleGetNewKey }) => 
       )}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
-      onClick={() => handleGetNewKey(type)}
+      onClick={() => handleOnClick(type)}
     >
       {isHover ? <KeyHoverBackground className="z-0" /> : <KeyDarkBackground className="z-0" />}
       {type === TYPE.SOLANA && <SolanaLock className="z-10 absolute top-2 left-8.5" />}
