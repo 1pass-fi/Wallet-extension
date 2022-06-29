@@ -361,7 +361,7 @@ export const ERROR_MESSAGE = {
 
 export const VALIDATE_ERROR_MESSAGE = {
   NOT_ENOUGH_CHARACTERS: 'Not enough characters',
-  NOT_MATCH: `These passwords don't match, try entering them again.`,
+  NOT_MATCH: `Password does not match`,
   INVALID_CHARACTER: 'The password does not meet the requirements.'
 }
 

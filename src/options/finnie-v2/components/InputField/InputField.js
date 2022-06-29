@@ -107,7 +107,7 @@ const InputField = ({
       )}
       <div
         className={clsx(
-          'text-bittersweet-200 mt-1 text-left ml-2',
+          'text-warning mt-1 text-left ml-2',
           passwordFinnie ? 'text-xs' : 'text-3xs'
         )}
       >

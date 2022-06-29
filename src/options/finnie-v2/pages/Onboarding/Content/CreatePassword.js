@@ -70,12 +70,6 @@ const CreatePassword = ({ step, setStep }) => {
         }}
         required={true}
         name="password"
-        errorFinnie={
-          isEmpty(accounts) &&
-          !isEmpty(passwordErrorMessage) &&
-          passwordErrorMessage != VALIDATE_ERROR_MESSAGE.NOT_MATCH &&
-          passwordErrorMessage || wrongPasswordMessage
-        }
         description="Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%)."
         placeholder=""
         uppercase={false}
