@@ -31,7 +31,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
     let newCompletePhrase = [...completePhrase]
 
     const changeIndex = newCompletePhrase.findIndex((item) => item.index === idx)
-    newCompletePhrase[changeIndex].word = e.target.value?.trim()
+    newCompletePhrase[changeIndex].word = e.target.value?.replace(/ /g, '')
 
     setCompletePhrase(newCompletePhrase)
 

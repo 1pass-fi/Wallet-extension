@@ -61,7 +61,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
     let newCompletePhrase = [...completePhrase]
 
     const changeIndex = newCompletePhrase.findIndex((item) => item.index === idx)
-    newCompletePhrase[changeIndex].word = e.target.value
+    newCompletePhrase[changeIndex].word = e.target.value?.replace(/ /g, '')
 
     setCompletePhrase(newCompletePhrase)
     setMessageError('')
@@ -129,13 +129,14 @@ const InputPhrase = ({ step, setStep, phrase }) => {
           className="mt-7.5 py-3.5 bg-trueGray-100 bg-opacity-20 rounded-sm grid grid-flow-col grid-rows-6 font-normal text-sm leading-6"
         >
           {SEED_ARRAY.map((phrase, index) => {
-            return hiddenPhrase.map((obj, index) => obj.index).includes(index) ? (
+            return hiddenPhrase.map((obj) => obj.index).includes(index) ? (
               <div className="flex mx-7.5 my-auto" key={index}>
                 <div className="w-5 text-right mr-3">{index + 1}. </div>
                 <input
                   className="bg-transparent border-b-2 focus:outline-none cursor-pointer w-22 h-5.5"
                   type="text"
                   onChange={(e) => onChangeInputPhrase(e, index)}
+                  value={completePhrase.find((obj) => obj.index === index).word}
                 />
               </div>
             ) : (
