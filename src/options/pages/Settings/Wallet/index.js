@@ -107,18 +107,36 @@ export default () => {
               <div className="action action--create-new" onClick={onCreateWallet}>
                 Create New Wallet
               </div>
+            </div> */}
+
+            <div className="flex gap-6.75">
+              <div
+                className=" bg-success rounded-sm text-center text-indigo text-sm leading-4 font-normal flex justify-center items-center mr-6.75"
+                style={{ width: '220px', height: '38px' }}
+              >
+                Create New Wallet
+              </div>
+              <div
+                className=" bg-trueGray-100 rounded-sm text-center text-indigo text-sm leading-4 font-normal flex justify-center items-center"
+                style={{ width: '220px', height: '38px' }}
+              >
+                Import with Phrase
+              </div>
+            </div>
+            <div className="mt-2.5 font-normal text-xs underline tracking-finnieSpacing-wide text-lightBlue">
+              Import a JSON file.
             </div>
           </div>
 
-          <div className="default-currency item">
-            <div className="title">Default Currency</div>
-            <div className="description">
+          <div className="default-currency pb-6 mb-4 border-b border-white">
+            <div className="font-semibold text-base leading-8 uppercase">Default Currency</div>
+            <div className="text-sm leading-6 mb-1">
               Select the exchange currency displayed next to your tokens and transactions.
             </div>
-            <div className="notes">
+            <div className="text-xs leading-4 mb-4.5 text-lightBlue">
               We can only show the exchange rate for fiat currencies at this time.
             </div>
-            <div className="default-currency__dropdown">
+            <div style={{ width: '270px' }}>
               <DropDown
                 options={currenciesData}
                 value={currency}
