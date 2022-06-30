@@ -147,41 +147,21 @@ export default () => {
             </div>
           </div>
 
-          <div className="display-order item">
-            <div className="title">Wallet Priority</div>
-            <div className="description">
+          <div className="display-order pb-6 mb-4 border-b border-white">
+            <div className="font-semibold text-base leading-8 uppercase">Key Details</div>
+            <div className="text-sm leading-6 mb-4.5">
               Organize your wallet display and select a default key. This key will be automatically
               selected to create NFTs and send tokens.
             </div>
-            {/* <AccountOrder accounts={accounts} setAccounts={() => {}} /> */}
-            <AccountManagement
-              accounts={accounts}
-              setShowConfirmRemoveAccount={setShowConfirmRemoveAccount}
-              setRemoveAccount={setRemoveAccount}
-            />
-          </div>
-
-          {/* Still in use */}
-          {/* <div className="default-currency item">
-            <div className="title">Wallet display</div>
-            <div className="description">
-              Select a wallet or your account summary as the default when opening the Finnie
-              extension.
-            </div>
-            <div className="default-currency__dropdown">
+            <div style={{ width: '270px' }}>
               <DropDown
-                options={mockedWalletDisplayOptions}
-                value={mockedWalletDisplayOptions[0].value}
-                onChange={() => {}}
+                options={chainOptions}
+                value={chainOption}
+                onChange={onChainOption}
                 variant="dark"
                 size="lg"
               />
             </div>
-          </div> */}
-
-          <div className="language-order item">
-            <div className="title">Language</div>
-            <div className="description coming-soon">Language options are coming soon!</div>
           </div>
         </div>
       </div>

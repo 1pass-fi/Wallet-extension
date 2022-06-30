@@ -23,35 +23,7 @@
   width: 802px;
 }
 
-.wallet-settings .items {
-  margin-top: 40px;
-  padding-left: 20px;
-}
 
-.wallet-settings .items .item {
-  padding-bottom: 30px;
-  border-bottom: 1px solid white;
-  margin-bottom: 23px;
-}
-
-.wallet-settings .items .item .title {
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 32px;
-  text-transform: uppercase;
-}
-
-.wallet-settings .items .item .description {
-  font-size: 14px;
-  line-height: 24px;
-  margin-bottom: 18px;
-}
-.wallet-settings .items .item .notes {
-  font-size: 12px;
-  line-height: 16px;
-  margin-bottom: 18px;
-  color: #bef0ed;
-}
 
 .wallet-settings .items .item .coming-soon {
   color: #ffc78f;
@@ -109,6 +81,3 @@
   width: 280px;
 }
 
-.wallet-settings .default-currency__dropdown {
-  width: 270px;
-}
