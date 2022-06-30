@@ -18,6 +18,7 @@ import AcceptedCurrencies from './currencies'
 import AccountManagement from 'finnie-v2/components/AccountManagement'
 import ConfirmRemoveAccountModal from 'finnie-v2/components/AccountManagement/ConfirmRemoveAccountModal'
 import DropDown from 'finnie-v2/components/DropDown'
+import AccountCard from 'finnie-v2/components/AccountCard'
 
 import './index.css'
 
@@ -28,10 +29,13 @@ export default () => {
   const { setError, setNotification } = useContext(GalleryContext)
 
   const [currency, setCurrency] = useState('USD')
+  /* TODO DatH */
+  const [chainOption, setChainOption] = useState('All')
   const [showConfirmRemoveAccount, setShowConfirmRemoveAccount] = useState(false)
   const [removeAccount, setRemoveAccount] = useState({})
 
   const accounts = useSelector((state) => state.accounts)
+  console.log('List accounts', accounts)
 
   const currenciesData = useMemo(
     () =>
@@ -43,6 +47,13 @@ export default () => {
         })),
     [data]
   )
+
+  /* TODO DatH */
+  const chainOptions = [
+    { label: 'All Accounts', value: 'All' },
+    { label: 'B', value: 'B' },
+    { label: 'C', value: 'C' }
+  ]
 
   useEffect(() => {
     const getCurrency = async () => {
@@ -89,41 +100,39 @@ export default () => {
     }
   }
 
+  /* TODO DatH */
+  const onChainOption = (chain) => {
+    console.log('onChainOption', chain)
+    setChainOption(chain)
+  }
+
   return (
     <div className="wallet-settings-wrapper">
       <div className="wallet-settings">
         <div className="header">Wallet Settings</div>
-
-        <div className="items">
-          <div className="add-wallet item">
-            <div className="title">Add a Wallet</div>
-            <div className="actions">
-              <div className="action action--seed-phrase" onClick={onImportSeedPhrase}>
-                Import Seed Phrase
-              </div>
-              <div className="action action--json" onClick={onImportKeyFile}>
-                Import .JSON File
-              </div>
-              <div className="action action--create-new" onClick={onCreateWallet}>
-                Create New Wallet
-              </div>
-            </div> */}
-
+        <div className="mt-10 pl-5">
+          <div className="add-wallet pb-2 mb-4 border-b border-white">
+            <div className="font-semibold text-base leading-8 uppercase">Add a Wallet</div>
             <div className="flex gap-6.75">
               <div
-                className=" bg-success rounded-sm text-center text-indigo text-sm leading-4 font-normal flex justify-center items-center mr-6.75"
+                className="bg-success rounded-sm text-center text-indigo text-sm leading-4 font-normal flex justify-center items-center mr-6.75 cursor-pointer"
                 style={{ width: '220px', height: '38px' }}
+                onClick={onCreateWallet}
               >
                 Create New Wallet
               </div>
               <div
-                className=" bg-trueGray-100 rounded-sm text-center text-indigo text-sm leading-4 font-normal flex justify-center items-center"
+                className="bg-trueGray-100 rounded-sm text-center text-indigo text-sm leading-4 font-normal flex justify-center items-center cursor-pointer"
                 style={{ width: '220px', height: '38px' }}
+                onClick={onImportSeedPhrase}
               >
                 Import with Phrase
               </div>
             </div>
-            <div className="mt-2.5 font-normal text-xs underline tracking-finnieSpacing-wide text-lightBlue">
+            <div
+              className="mt-2.5 font-normal text-xs underline tracking-finnieSpacing-wide text-lightBlue cursor-pointer"
+              onClick={onImportKeyFile}
+            >
               Import a JSON file.
             </div>
           </div>
@@ -153,7 +162,7 @@ export default () => {
               Organize your wallet display and select a default key. This key will be automatically
               selected to create NFTs and send tokens.
             </div>
-            <div style={{ width: '270px' }}>
+            <div className="mb-1.5" style={{ width: '270px' }}>
               <DropDown
                 options={chainOptions}
                 value={chainOption}
@@ -162,6 +171,10 @@ export default () => {
                 size="lg"
               />
             </div>
+
+            {accounts.map((account, index) => (
+              <AccountCard type={account.type} key={index} />
+            ))}
           </div>
         </div>
       </div>
