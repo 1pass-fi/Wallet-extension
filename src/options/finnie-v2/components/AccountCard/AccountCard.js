@@ -21,6 +21,25 @@ import clsx from 'clsx'
 const AccountCard = ({ account }) => {
   const [isDrop, setIsDrop] = useState(false)
 
+  const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
+  const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
+  const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
+  const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
+
+  const isDefaultAccount = (account) => {
+    switch (account.type) {
+      case TYPE.ARWEAVE:
+        return account.address === defaultArweaveAccountAddress
+      case TYPE.K2:
+        return account.address === defaultK2AccountAddress
+      case TYPE.ETHEREUM:
+        return account.address === defaultEthereumAccountAddress
+      case TYPE.SOLANA:
+        return account.address === defaultSolanaAccountAddress
+      default:
+        return false
+    }
+  }
 
   return (
     <div className="mt-4.5 text-indigo">
