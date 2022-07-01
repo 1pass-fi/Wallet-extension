@@ -105,15 +105,18 @@ const AccountCard = ({ account }) => {
     }
   ]
 
-  console.log(providerOptions[TYPE.ETHEREUM])
   return (
-    <div className="mt-4.5 text-indigo">
+    <div className="mt-4.5 text-indigo select-none">
       <div
         className="relative py-6 -mb-1.25 bg-trueGray-100 rounded-lg flex items-center justify-start shadow-md overflow-hidden"
         style={{ width: '707px', height: '124px' }}
       >
-        {/* TODO DatH - CardIcon */}
-        <DragIcon className="-ml-1.5" />
+        <div
+          className="flex items-center justify-center bg-white shadow rounded-r-lg"
+          style={{ width: '22.5px', height: '55.25px' }}
+        >
+          <DragIcon style={{ width: '4.93px', height: '31.49px' }} />
+        </div>
         {account.type === TYPE.K2 && (
           <KoiiLogo style={{ width: '25px', height: '25px' }} className="self-start ml-4" />
         )}
@@ -126,33 +129,32 @@ const AccountCard = ({ account }) => {
         {account.type === TYPE.ARWEAVE && (
           <ArweaveLogo style={{ width: '25px', height: '25px' }} className="self-start ml-4" />
         )}
-
-        <div className="flex flex-col">
-          <div className="flex">
-            <div className="flex items-center font-semibold text-base leading-8 tracking-finnieSpacing-tight">
+        <div className="flex flex-col ml-2.25 mr-4.5 mt-1" style={{ width: '296px' }}>
+          <div className="flex items-center">
+            <div className="font-semibold text-base tracking-finnieSpacing-tight leading-6">
               {account.accountName}
             </div>
             <div
-              className="bg-lightBlue rounded-full shadow-sm cursor-pointer"
+              className="ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
               style={{ width: '16px', height: '16px' }}
             >
               <EditIcon />
             </div>
           </div>
-          <div className="flex">
-            <div className="flex items-center text-success-700 text-opacity-80 text-2xs leading-8 font-normal tracking-finnieSpacing-tight">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center text-success-700 text-opacity-80 text-2xs font-normal leading-6 tracking-finnieSpacing-tight">
               {account.address}
             </div>
             <div
-              className="bg-lightBlue rounded-full shadow-sm cursor-pointer"
+              className="flex items-center justify-center my-auto bg-lightBlue rounded-full shadow-sm cursor-pointer"
               style={{ width: '16px', height: '16px' }}
             >
-              <CopyIcon />
+              <CopyIcon style={{ width: '14px', height: '14px' }} />
             </div>
           </div>
 
           {account.type === TYPE.K2 && (
-            <div className="font-normal text-xs leading-8 flex items-center tracking-finnieSpacing-tight">
+            <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight">
               Balance:
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance / Math.pow(10, 9), 4)
@@ -161,7 +163,7 @@ const AccountCard = ({ account }) => {
             </div>
           )}
           {account.type === TYPE.ETHEREUM && (
-            <div className="font-normal text-xs leading-8 flex items-center tracking-finnieSpacing-tight">
+            <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight">
               Balance:
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance, 4)
@@ -170,7 +172,7 @@ const AccountCard = ({ account }) => {
             </div>
           )}
           {account.type === TYPE.SOLANA && (
-            <div className="font-normal text-xs leading-8 flex items-center tracking-finnieSpacing-tight">
+            <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight">
               Balance:
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance / Math.pow(10, 9), 4)
@@ -180,19 +182,20 @@ const AccountCard = ({ account }) => {
           )}
           {account.type === TYPE.ARWEAVE && (
             <>
-              <div className="font-normal text-xs leading-8 flex items-center tracking-finnieSpacing-tight">
+              <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight">
                 Balance: {isNumber(account.balance) ? formatNumber(account.balance, 4) : '0'} AR
               </div>
-              {/* <div className="font-normal text-xs leading-8 flex items-center tracking-finnieSpacing-tight">
+              {/* <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight">
                 Koii Balance:{' '}
                 {isNumber(account.koiBalance) ? formatNumber(account.koiBalance, 2) : '0'} KOII
               </div> */}
             </>
           )}
 
-          <div className="">Assets: {account.totalAssets.length}</div>
+          <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight leading-6">
+            Assets: {account.totalAssets.length}
+          </div>
         </div>
-
         <div className="flex items-center gap-4">
           <div
             className="flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1"
@@ -230,8 +233,7 @@ const AccountCard = ({ account }) => {
             </div>
           </div>
         </div>
-
-        <div className="flex flex-col justify-between items-center">
+        <div className="h-full flex flex-col justify-between items-center ml-4">
           {/* TODO DatH - Change account with star clicking */}
           <div className="flex items-center justify-center">
             {isDefaultAccount(account) ? (
@@ -246,11 +248,11 @@ const AccountCard = ({ account }) => {
           <div
             className="flex items-center justify-center bg-lightBlue shadow-sm rounded-full cursor-pointer"
             style={{ width: '24px', height: '24px' }}
+            onClick={() => setIsDrop((prev) => !prev)}
           >
             <ExtendIcon
               style={{ width: '8px', height: '4.25px' }}
               className={clsx(isDrop && 'transform rotate-180')}
-              onClick={() => setIsDrop((prev) => !prev)}
             />
           </div>
         </div>
@@ -284,7 +286,7 @@ const AccountCard = ({ account }) => {
               <DropDown
                 size="sm"
                 variant="light"
-                options={providerOptions[account.type]}
+                options={providerOptions.find((o) => o.type === account.type)?.value}
                 value="mainnet"
               />
             </div>
