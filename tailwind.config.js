@@ -33,7 +33,8 @@ module.exports = {
           250: '#EBEBEB',
           300: '#C4C4C4',
           400: '#D6D6D6',
-          500: '#8A8A8A'
+          500: '#8A8A8A',
+          600: '#EDECEC'
         },
         blueGray: {
           500: '#8787A6',

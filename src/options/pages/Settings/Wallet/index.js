@@ -173,7 +173,7 @@ export default () => {
             </div>
 
             {accounts.map((account, index) => (
-              <AccountCard type={account.type} key={index} />
+              <AccountCard account={account} key={index} />
             ))}
           </div>
         </div>
