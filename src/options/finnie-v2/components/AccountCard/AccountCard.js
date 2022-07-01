@@ -19,6 +19,10 @@ import CopyIcon from 'img/v2/settings/copy-icon.svg'
 import FilledStarIcon from 'img/popup/star-filled-icon.svg'
 import EmptyStarIcon from 'img/popup/star-empty-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
+import ReavealSeedphraseIcon from 'img/v2/settings/reveal-seedphrase-icon.svg'
+import SeeQRIcon from 'img/v2/settings/see-QR-icon.svg'
+import SeeExtensionIcon from 'img/v2/settings/see-extension-icon.svg'
+import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 
 const AccountCard = ({ account }) => {
   const [isDrop, setIsDrop] = useState(false)
@@ -309,10 +313,40 @@ const AccountCard = ({ account }) => {
             </div>
           </div>
 
-          <div className="w-1/3 h-full bg-red-400">
-            <div className="w-full flex gap-2.75 items-start">
-              <div className="font-semibold text-xs tracking-finnieSpacing-tight">
+          <div className="w-1/3 h-full flex flex-col gap-5">
+            <div className="w-full flex gap-4 items-center">
+              <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 Reveal Seed Phrase:{' '}
+              </div>
+              <div
+                className="bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
+                style={{ width: '24px', height: '24px' }}
+              >
+                <ReavealSeedphraseIcon style={{ width: '15.43px', height: '15.17px' }} />
+              </div>
+            </div>
+
+            <div className="w-full flex gap-4 items-center">
+              <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
+                See QR code:{' '}
+              </div>
+              <div
+                className="bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
+                style={{ width: '24px', height: '24px' }}
+              >
+                <SeeQRIcon style={{ width: '12.89px', height: '12.93px' }} />
+              </div>
+            </div>
+
+            <div className="w-full flex gap-4 items-center">
+              <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
+                See on extension:{' '}
+              </div>
+              <div
+                className="bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
+                style={{ width: '24px', height: '24px' }}
+              >
+                <SeeExtensionIcon style={{ width: '12.54px', height: '15.75px' }} />
               </div>
             </div>
           </div>
