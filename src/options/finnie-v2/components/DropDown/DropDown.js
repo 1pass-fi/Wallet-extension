@@ -41,7 +41,8 @@ const DropDown = ({
   onChange,
   variant = 'dark',
   size = 'lg',
-  emptyOption = false
+  emptyOption = false,
+  filterSupported = true
 }) => {
   const [listOpened, setListOpened] = useState(false)
   const [filterValue, setFilterValue] = useState('')
@@ -87,18 +88,30 @@ const DropDown = ({
       )}
     >
       <div className="flex items-center rounded-finnie" onClick={toggleList}>
-        <input
-          className={clsx(
-            'cursor-pointer w-full rounded-finnie flex-grow focus:outline-none',
-            sizes[size].header,
-            variants[variant].header
-          )}
-          value={filterValue}
-          onChange={(e) => setFilterValue(e.target.value)}
-        />
+        {filterSupported ? (
+          <input
+            className={clsx(
+              'cursor-pointer w-full rounded-finnie flex-grow focus:outline-none',
+              sizes[size].header,
+              variants[variant].header
+            )}
+            value={filterValue}
+            onChange={(e) => setFilterValue(e.target.value)}
+          />
+        ) : (
+          <div
+            className={clsx(
+              'w-full flex items-center rounded-finnie flex-grow',
+              sizes[size].header,
+              variants[variant].header
+            )}
+          >
+            {filterValue}
+          </div>
+        )}
         <div
           className={clsx(
-            'absolute top-0 rounded-r-finnie flex items-center justify-center bg-white',
+            'absolute top-0 rounded-r-finnie flex items-center justify-center cursor-pointer bg-white',
             size === 'lg' ? 'w-8 h-8 -right-0.25' : 'w-5 h-5 right-0'
           )}
         >
@@ -127,7 +140,7 @@ const DropDown = ({
               -- None
             </button>
           )}
-          {(filterValue !== '-- None'
+          {(filterValue !== '-- None' && filterSupported
             ? options.filter((item) => inclues(lowerCase(item.label), lowerCase(filterValue)))
             : options
           ).map((item, idx) => (

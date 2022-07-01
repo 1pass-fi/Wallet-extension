@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import clsx from 'clsx'
+import isNumber from 'lodash/isNumber'
+
+import { GalleryContext } from 'options/galleryContext'
 
 import DropDown from 'finnie-v2/components/DropDown'
 
-import isNumber from 'lodash/isNumber'
-import formatNumber from 'finnie-v2/utils/formatNumber'
-
+import storage from 'services/storage'
 import { TYPE } from 'constants/accountConstants'
+import formatNumber from 'finnie-v2/utils/formatNumber'
+import { getSiteConnectedAddresses } from 'utils'
 
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-orange.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
@@ -26,11 +29,30 @@ import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 
 const AccountCard = ({ account }) => {
   const [isDrop, setIsDrop] = useState(false)
+  const [currentNetwork, setCurrentNetwork] = useState('')
 
   const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
   const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
   const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
   const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
+
+  useEffect(() => {
+    const getCurrentProvider = async (accountType) => {
+      let currentProvider
+      if (accountType === TYPE.ETHEREUM) {
+        currentProvider = await storage.setting.get.ethereumProvider()
+      } else if (accountType === TYPE.SOLANA) {
+        currentProvider = await storage.setting.get.solanaProvider()
+      } else if (accountType === TYPE.K2) {
+        currentProvider = await storage.setting.get.k2Provider()
+      } else if ((accountType = TYPE.ARWEAVE)) {
+        currentProvider = 'mainnet'
+      }
+
+      setCurrentNetwork(currentProvider)
+    }
+    getCurrentProvider(account.type)
+  }, [account])
 
   const isDefaultAccount = (account) => {
     switch (account.type) {
@@ -104,6 +126,13 @@ const AccountCard = ({ account }) => {
       ]
     }
   ]
+
+  const onNetworkChange = (networkAddress) => {
+    if (networkAddress !== currentNetwork) {
+      // TODO DatH
+      console.log('onNetworkChange', networkAddress)
+    }
+  }
 
   return (
     <div className="mt-4.5 text-indigo select-none">
@@ -281,28 +310,32 @@ const AccountCard = ({ account }) => {
           </div>
 
           <div className="w-1/3 h-full flex flex-col gap-4.5">
-            <div className="w-full flex justify-between ">
+            <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">Network: </div>
-              <DropDown
-                size="sm"
-                variant="light"
-                options={providerOptions.find((o) => o.type === account.type)?.value}
-                value="mainnet"
-              />
+              <div style={{ width: '154px' }}>
+                <DropDown
+                  options={providerOptions.find((o) => o.type === account.type)?.value}
+                  value={currentNetwork}
+                  onChange={onNetworkChange}
+                  filterSupported={false}
+                  variant="light"
+                  size="sm"
+                />
+              </div>
             </div>
-            <div className="w-full flex justify-between ">
+            <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">
                 Show Hex data:{' '}
               </div>
               <div className="bg-yellow-300" style={{ width: '38.89px', height: '20px' }}></div>
             </div>
-            <div className="w-full flex justify-between ">
+            <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">
                 Hide empty Token:{' '}
               </div>
               <div className="bg-yellow-300" style={{ width: '38.89px', height: '20px' }}></div>
             </div>
-            <div className="w-full flex justify-between ">
+            <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">
                 Dapp Connections:{' '}
               </div>
@@ -315,8 +348,8 @@ const AccountCard = ({ account }) => {
             </div>
           </div>
 
-          <div className="w-1/3 h-full flex flex-col gap-5">
-            <div className="w-full flex gap-4 items-center">
+          <div className="w-1/3 h-full flex flex-col gap-4.5">
+            <div className="w-full h-6 flex gap-4 items-center">
               <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 Reveal Seed Phrase:{' '}
               </div>
@@ -328,7 +361,7 @@ const AccountCard = ({ account }) => {
               </div>
             </div>
 
-            <div className="w-full flex gap-4 items-center">
+            <div className="w-full h-6 flex gap-4 items-center">
               <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 See QR code:{' '}
               </div>
@@ -340,7 +373,7 @@ const AccountCard = ({ account }) => {
               </div>
             </div>
 
-            <div className="w-full flex gap-4 items-center">
+            <div className="w-full h-6 flex gap-4 items-center">
               <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 See on extension:{' '}
               </div>
