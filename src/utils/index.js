@@ -845,6 +845,27 @@ export const setActivatedAccountAddress = async (address, type) => {
   }
 }
 
+export const getSiteConnectedAddresses = async (accountAddress, accountType) => {
+  const siteConnectedStorage = await storage.setting.get.siteConnectedAddresses()
+  let siteAddresses = []
+
+  for (const [key, value] of Object.entries(siteConnectedStorage)) {
+    const origin = capitalize(key.split('/')[2])
+    if (accountType === TYPE.ARWEAVE) {
+      if (value.arweave.includes(accountAddress)) {
+        siteAddresses.push({ origin: origin, address: key })
+      }
+    }
+    if (accountType === TYPE.ETHEREUM) {
+      if (value.ethereum.includes(accountAddress)) {
+        siteAddresses.push({ origin: origin, address: key })
+      }
+    }
+  }
+
+  return siteAddresses
+}
+
 export const fromArToWinston = (value) => value * 1000000000000
 export const fromWinstonToAr = (value) => value / 1000000000000
 export const fromEthToWei = (value) => value * 1000000000000000000

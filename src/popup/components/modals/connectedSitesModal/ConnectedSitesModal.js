@@ -24,6 +24,9 @@ import storage from 'services/storage'
 // selectors
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
+// utils
+import { getSiteConnectedAddresses } from 'utils'
+
 const ConnectedSitesModal = ({ onClose, setError, setIsLoading }) => {
   const [siteConnectedAddresses, setSiteConnectedAddresses] = useState([])
   const displayingAccount = useSelector(getDisplayingAccount)
@@ -31,22 +34,12 @@ const ConnectedSitesModal = ({ onClose, setError, setIsLoading }) => {
   const loadConnectedSites = async () => {
     try {
       setIsLoading(true)
-      const siteConnectedStorage = await storage.setting.get.siteConnectedAddresses()
-      let siteAddresses = []
 
-      for (const [key, value] of Object.entries(siteConnectedStorage)) {
-        const origin = capitalize(key.split('/')[2])
-        if (displayingAccount.type === TYPE.ARWEAVE) {
-          if (value.arweave.includes(displayingAccount.address)) {
-            siteAddresses.push({ origin: origin, address: key })
-          }
-        }
-        if (displayingAccount.type === TYPE.ETHEREUM) {
-          if (value.ethereum.includes(displayingAccount.address)) {
-            siteAddresses.push({ origin: origin, address: key })
-          }
-        }
-      }
+      const siteAddresses = await getSiteConnectedAddresses(
+        displayingAccount.address,
+        displayingAccount.type
+      )
+
       setSiteConnectedAddresses(siteAddresses)
       setIsLoading(false)
     } catch (error) {

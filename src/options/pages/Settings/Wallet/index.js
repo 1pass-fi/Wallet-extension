@@ -35,7 +35,6 @@ export default () => {
   const [removeAccount, setRemoveAccount] = useState({})
 
   const accounts = useSelector((state) => state.accounts)
-  console.log('List accounts', accounts)
 
   const currenciesData = useMemo(
     () =>
