@@ -28,8 +28,10 @@ import SeeExtensionIcon from 'img/v2/settings/see-extension-icon.svg'
 import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 
 const AccountCard = ({ account }) => {
+  const { setIsLoading, setError } = useContext(GalleryContext)
   const [isDrop, setIsDrop] = useState(false)
   const [currentNetwork, setCurrentNetwork] = useState('')
+  const [siteConnectedAddresses, setSiteConnectedAddresses] = useState([])
 
   const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
   const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
@@ -51,6 +53,22 @@ const AccountCard = ({ account }) => {
 
       setCurrentNetwork(currentProvider)
     }
+
+    const loadConnectedSites = async () => {
+      try {
+        setIsLoading(true)
+        const siteAddresses = await getSiteConnectedAddresses(account.address, account.type)
+        console.log('siteAddresses', siteAddresses)
+        setSiteConnectedAddresses(siteAddresses)
+        setIsLoading(false)
+      } catch (error) {
+        setError(error.message)
+        console.log('Load connected sites - Error: ', error.message)
+        setIsLoading(false)
+      }
+    }
+
+    loadConnectedSites()
     getCurrentProvider(account.type)
   }, [account])
 
@@ -341,9 +359,9 @@ const AccountCard = ({ account }) => {
               </div>
               <div
                 className="text-xs font-normal tracking-finnieSpacing-tight underline cursor-pointer"
-                style={{ width: '38.89px', height: '20px' }}
+                onClick={() => console.log('siteConnectedAddresses', siteConnectedAddresses)}
               >
-                2 sites
+                {siteConnectedAddresses.length} sites
               </div>
             </div>
           </div>
