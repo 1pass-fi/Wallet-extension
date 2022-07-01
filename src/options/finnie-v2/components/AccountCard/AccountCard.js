@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import clsx from 'clsx'
+
+import DropDown from 'finnie-v2/components/DropDown'
 
 import isNumber from 'lodash/isNumber'
 import formatNumber from 'finnie-v2/utils/formatNumber'
@@ -16,7 +19,6 @@ import CopyIcon from 'img/v2/settings/copy-icon.svg'
 import FilledStarIcon from 'img/popup/star-filled-icon.svg'
 import EmptyStarIcon from 'img/popup/star-empty-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
-import clsx from 'clsx'
 
 const AccountCard = ({ account }) => {
   const [isDrop, setIsDrop] = useState(false)
@@ -40,7 +42,66 @@ const AccountCard = ({ account }) => {
         return false
     }
   }
+  const providerOptions = [
+    {
+      type: TYPE.ETHEREUM,
+      value: [
+        {
+          label: 'ETH Mainnet',
+          value: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
+        },
+        {
+          label: 'Rinkeby TestNet',
+          value: 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
+        }
+      ]
+    },
+    {
+      type: TYPE.K2,
+      value: [
+        {
+          label: 'Mainnet',
+          value: 'mainnet-beta'
+        },
+        {
+          label: 'Testnet',
+          value: 'testnet'
+        },
+        {
+          label: 'Devnet',
+          value: 'devnet'
+        }
+      ]
+    },
+    {
+      type: TYPE.SOLANA,
+      value: [
+        {
+          label: 'Mainnet',
+          value: 'mainnet-beta'
+        },
+        {
+          label: 'Testnet',
+          value: 'testnet'
+        },
+        {
+          label: 'Devnet',
+          value: 'devnet'
+        }
+      ]
+    },
+    {
+      type: TYPE.ARWEAVE,
+      value: [
+        {
+          label: 'Mainnet',
+          value: 'mainnet'
+        }
+      ]
+    }
+  ]
 
+  console.log(providerOptions[TYPE.ETHEREUM])
   return (
     <div className="mt-4.5 text-indigo">
       <div
