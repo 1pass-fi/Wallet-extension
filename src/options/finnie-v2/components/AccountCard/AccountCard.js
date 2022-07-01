@@ -253,7 +253,70 @@ const AccountCard = ({ account }) => {
       </div>
 
       {isDrop && (
-        <div className="bg-trueGray-500 -mt-1" style={{ width: '707px', height: '183px' }}></div>
+        <div
+          className="flex items-center justify-start bg-trueGray-600 px-5 py-6"
+          style={{ width: '707px', height: '183px' }}
+        >
+          <div className="w-1/3 h-full flex flex-col gap-6">
+            <div className="flex gap-2.75 items-start">
+              <div className="w-1/2 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
+                Account Balance:
+              </div>
+
+              <div className="font-normal text-xs tracking-finnieSpacing-tight">286.22 KOII</div>
+            </div>
+
+            <div className="flex gap-2.75 items-start">
+              <div className="w-1/2 flex justify-end text-right font-semibold text-xs tracking-finnieSpacing-tight">
+                NFT Assets:
+              </div>
+              <div className="font-normal text-xs tracking-finnieSpacing-tight">286.22 KOII</div>
+            </div>
+          </div>
+
+          <div className="w-1/3 h-full flex flex-col gap-4.5">
+            <div className="w-full flex justify-between ">
+              <div className="font-semibold text-xs tracking-finnieSpacing-tight">Network: </div>
+              <DropDown
+                size="sm"
+                variant="light"
+                options={providerOptions[account.type]}
+                value="mainnet"
+              />
+            </div>
+            <div className="w-full flex justify-between ">
+              <div className="font-semibold text-xs tracking-finnieSpacing-tight">
+                Show Hex data:{' '}
+              </div>
+              <div className="bg-yellow-300" style={{ width: '38.89px', height: '20px' }}></div>
+            </div>
+            <div className="w-full flex justify-between ">
+              <div className="font-semibold text-xs tracking-finnieSpacing-tight">
+                Hide empty Token:{' '}
+              </div>
+              <div className="bg-yellow-300" style={{ width: '38.89px', height: '20px' }}></div>
+            </div>
+            <div className="w-full flex justify-between ">
+              <div className="font-semibold text-xs tracking-finnieSpacing-tight">
+                Dapp Connections:{' '}
+              </div>
+              <div
+                className="text-xs font-normal tracking-finnieSpacing-tight underline cursor-pointer"
+                style={{ width: '38.89px', height: '20px' }}
+              >
+                2 sites
+              </div>
+            </div>
+          </div>
+
+          <div className="w-1/3 h-full bg-red-400">
+            <div className="w-full flex gap-2.75 items-start">
+              <div className="font-semibold text-xs tracking-finnieSpacing-tight">
+                Reveal Seed Phrase:{' '}
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
