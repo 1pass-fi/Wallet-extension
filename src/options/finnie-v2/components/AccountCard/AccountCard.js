@@ -1,16 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import clsx from 'clsx'
 import isNumber from 'lodash/isNumber'
+import isEmpty from 'lodash/isEmpty'
 
 import { GalleryContext } from 'options/galleryContext'
 
 import DropDown from 'finnie-v2/components/DropDown'
 
 import storage from 'services/storage'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import { popupAccount } from 'services/account'
 import { TYPE } from 'constants/accountConstants'
+
+import { setAccounts } from 'options/actions/accounts'
+
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import { getSiteConnectedAddresses } from 'utils'
+import formatLongString from 'finnie-v2/utils/formatLongString'
 
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-orange.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
@@ -18,6 +25,7 @@ import SolLogo from 'img/v2/solana-logo.svg'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import DragIcon from 'img/v2/settings/drag-icon.svg'
 import EditIcon from 'img/v2/settings/edit-icon.svg'
+import SaveIcon from 'img/v2/check-mark-icon-blue.svg'
 import CopyIcon from 'img/v2/settings/copy-icon.svg'
 import FilledStarIcon from 'img/popup/star-filled-icon.svg'
 import EmptyStarIcon from 'img/popup/star-empty-icon.svg'
@@ -29,63 +37,23 @@ import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 
 const AccountCard = ({ account }) => {
   const { setIsLoading, setError } = useContext(GalleryContext)
+
+  const dispatch = useDispatch()
+
+  const inputAccountNameRef = useRef(null)
+
   const [isDrop, setIsDrop] = useState(false)
   const [currentNetwork, setCurrentNetwork] = useState('')
   const [siteConnectedAddresses, setSiteConnectedAddresses] = useState([])
+
+  const [editAccount, setEditAccount] = useState({})
+  const [accountName, setAccountName] = useState('')
 
   const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
   const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
   const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
   const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
 
-  useEffect(() => {
-    const getCurrentProvider = async (accountType) => {
-      let currentProvider
-      if (accountType === TYPE.ETHEREUM) {
-        currentProvider = await storage.setting.get.ethereumProvider()
-      } else if (accountType === TYPE.SOLANA) {
-        currentProvider = await storage.setting.get.solanaProvider()
-      } else if (accountType === TYPE.K2) {
-        currentProvider = await storage.setting.get.k2Provider()
-      } else if ((accountType = TYPE.ARWEAVE)) {
-        currentProvider = 'mainnet'
-      }
-
-      setCurrentNetwork(currentProvider)
-    }
-
-    const loadConnectedSites = async () => {
-      try {
-        setIsLoading(true)
-        const siteAddresses = await getSiteConnectedAddresses(account.address, account.type)
-        console.log('siteAddresses', siteAddresses)
-        setSiteConnectedAddresses(siteAddresses)
-        setIsLoading(false)
-      } catch (error) {
-        setError(error.message)
-        console.log('Load connected sites - Error: ', error.message)
-        setIsLoading(false)
-      }
-    }
-
-    loadConnectedSites()
-    getCurrentProvider(account.type)
-  }, [account])
-
-  const isDefaultAccount = (account) => {
-    switch (account.type) {
-      case TYPE.ARWEAVE:
-        return account.address === defaultArweaveAccountAddress
-      case TYPE.K2:
-        return account.address === defaultK2AccountAddress
-      case TYPE.ETHEREUM:
-        return account.address === defaultEthereumAccountAddress
-      case TYPE.SOLANA:
-        return account.address === defaultSolanaAccountAddress
-      default:
-        return false
-    }
-  }
   const providerOptions = [
     {
       type: TYPE.ETHEREUM,
@@ -145,10 +113,98 @@ const AccountCard = ({ account }) => {
     }
   ]
 
+  useEffect(() => {
+    const getCurrentProvider = async (accountType) => {
+      let currentProvider
+      if (accountType === TYPE.ETHEREUM) {
+        currentProvider = await storage.setting.get.ethereumProvider()
+      } else if (accountType === TYPE.SOLANA) {
+        currentProvider = await storage.setting.get.solanaProvider()
+      } else if (accountType === TYPE.K2) {
+        currentProvider = await storage.setting.get.k2Provider()
+      } else if ((accountType = TYPE.ARWEAVE)) {
+        currentProvider = 'mainnet'
+      }
+
+      setCurrentNetwork(currentProvider)
+    }
+
+    const loadConnectedSites = async () => {
+      try {
+        setIsLoading(true)
+        const siteAddresses = await getSiteConnectedAddresses(account.address, account.type)
+        console.log('siteAddresses', siteAddresses)
+        setSiteConnectedAddresses(siteAddresses)
+        setIsLoading(false)
+      } catch (error) {
+        setError(error.message)
+        console.log('Load connected sites - Error: ', error.message)
+        setIsLoading(false)
+      }
+    }
+
+    loadConnectedSites()
+    getCurrentProvider(account.type)
+  }, [account])
+
+  const isDefaultAccount = (account) => {
+    switch (account.type) {
+      case TYPE.ARWEAVE:
+        return account.address === defaultArweaveAccountAddress
+      case TYPE.K2:
+        return account.address === defaultK2AccountAddress
+      case TYPE.ETHEREUM:
+        return account.address === defaultEthereumAccountAddress
+      case TYPE.SOLANA:
+        return account.address === defaultSolanaAccountAddress
+      default:
+        return false
+    }
+  }
+
   const onNetworkChange = (networkAddress) => {
     if (networkAddress !== currentNetwork) {
       // TODO DatH
       console.log('onNetworkChange', networkAddress)
+    }
+  }
+
+  useEffect(() => {
+    inputAccountNameRef.current?.focus()
+  }, [editAccount])
+
+  const handleKeyDown = async (e, account) => {
+    if (e.keyCode === 13) {
+      handleChangeAccountName(account)
+    }
+  }
+
+  const handleChangeAccountName = async (account) => {
+    try {
+      if (editAccount !== account) {
+        setEditAccount(account)
+        setAccountName(account.accountName)
+        return
+      }
+
+      if (isEmpty(accountName)) {
+        setError('Account name cannot be empty.')
+        setEditAccount({})
+        return
+      }
+
+      if (accountName !== account.accountName) {
+        await backgroundRequest.wallet.changeAccountName({
+          address: account.address,
+          newName: accountName
+        })
+        const allData = await popupAccount.getAllMetadata()
+        dispatch(setAccounts(allData))
+      }
+
+      setEditAccount({})
+    } catch (err) {
+      setError(err.message)
     }
   }
 
@@ -177,17 +233,39 @@ const AccountCard = ({ account }) => {
           <ArweaveLogo style={{ width: '25px', height: '25px' }} className="self-start ml-4" />
         )}
         <div className="flex flex-col ml-2.25 mr-4.5 mt-1" style={{ width: '296px' }}>
-          <div className="flex items-center">
-            <div className="font-semibold text-base tracking-finnieSpacing-tight leading-6">
-              {account.accountName}
-            </div>
-            <div
-              className="ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
-              style={{ width: '16px', height: '16px' }}
-            >
-              <EditIcon />
-            </div>
+          <div className="flex items-center text-base tracking-finnieSpacing-tight leading-6">
+            {editAccount?.address === account.address ? (
+              <input
+                ref={(accountNameInput) => (inputAccountNameRef.current = accountNameInput)}
+                className="w-40 pl-1.5 bg-trueGray-400 bg-opacity-50 rounded-t-sm border-b-2 border-blue-850 focus:outline-none"
+                value={accountName}
+                onKeyDown={(e) => handleKeyDown(e, account)}
+                onChange={(e) => setAccountName(e.target.value)}
+                // style={{ height: '17.23px' }}
+              />
+            ) : (
+              <div
+                // className="max-w-24 pl-6.5"
+                className="font-semibold max-w-40"
+              >
+                {formatLongString(account.accountName, 20)}
+              </div>
+            )}
+            {isEmpty(editAccount) || editAccount?.address !== account.address ? (
+              <EditIcon
+                onClick={() => handleChangeAccountName(account)}
+                className="inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
+                style={{ width: '16px', height: '16px' }}
+              />
+            ) : (
+              <SaveIcon
+                onClick={() => handleChangeAccountName(account)}
+                className="inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
+                style={{ width: '16px', height: '16px' }}
+              />
+            )}
           </div>
+
           <div className="flex items-center justify-between">
             <div className="flex items-center text-success-700 text-opacity-80 text-2xs font-normal leading-6 tracking-finnieSpacing-tight">
               {account.address}
