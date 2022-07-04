@@ -17,6 +17,7 @@ import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 
 import { TYPE } from 'constants/accountConstants'
+import { MESSAGES } from 'constants/koiConstants'
 import storage from 'services/storage'
 
 const ConfirmRemoveAccountModal = ({ account, close }) => {

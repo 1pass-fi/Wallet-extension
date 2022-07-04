@@ -37,7 +37,7 @@ import SeeQRIcon from 'img/v2/settings/see-QR-icon.svg'
 import SeeExtensionIcon from 'img/v2/settings/see-extension-icon.svg'
 import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 
-const AccountCard = ({ account }) => {
+const AccountCard = ({ account, setShowConfirmRemoveAccount, setRemoveAccount }) => {
   const { setIsLoading, setError } = useContext(GalleryContext)
 
   const dispatch = useDispatch()
@@ -405,7 +405,7 @@ const AccountCard = ({ account }) => {
 
       {isDrop && (
         <div
-          className="flex items-center justify-start bg-trueGray-600 px-5 py-6"
+          className="relative flex items-center justify-start bg-trueGray-600 px-5 py-6"
           style={{ width: '707px', height: '183px' }}
         >
           <div className="w-1/3 h-full flex flex-col gap-6">
@@ -465,7 +465,7 @@ const AccountCard = ({ account }) => {
           </div>
 
           <div className="w-1/3 h-full flex flex-col gap-4.5">
-            <div className="w-full h-6 flex gap-4 items-center">
+            <div className="w-full h-6 flex items-center justify-between">
               <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 Reveal Seed Phrase:{' '}
               </div>
@@ -477,7 +477,7 @@ const AccountCard = ({ account }) => {
               </div>
             </div>
 
-            <div className="w-full h-6 flex gap-4 items-center">
+            <div className="w-full h-6 flex items-center justify-between">
               <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 See QR code:{' '}
               </div>
@@ -489,7 +489,7 @@ const AccountCard = ({ account }) => {
               </div>
             </div>
 
-            <div className="w-full h-6 flex gap-4 items-center">
+            <div className="w-full h-6 flex items-center justify-between">
               <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 See on extension:{' '}
               </div>
@@ -500,6 +500,16 @@ const AccountCard = ({ account }) => {
                 <SeeExtensionIcon style={{ width: '12.54px', height: '15.75px' }} />
               </div>
             </div>
+          </div>
+          <div
+            className="absolute bottom-2.5 right-5 flex items-center justify-center bg-warning-300 rounded-sm shadow cursor-pointer"
+            onClick={() => {
+              setShowConfirmRemoveAccount(true)
+              setRemoveAccount(account)
+            }}
+            style={{ width: '27px', height: '27px' }}
+          >
+            <RecycleBinIcon style={{ width: '15.7px', height: '19px' }} />
           </div>
         </div>
       )}

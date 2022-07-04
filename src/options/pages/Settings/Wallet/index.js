@@ -172,7 +172,12 @@ export default () => {
             </div>
 
             {accounts.map((account, index) => (
-              <AccountCard account={account} key={index} />
+              <AccountCard
+                account={account}
+                key={index}
+                setShowConfirmRemoveAccount={setShowConfirmRemoveAccount}
+                setRemoveAccount={setRemoveAccount}
+              />
             ))}
           </div>
         </div>
