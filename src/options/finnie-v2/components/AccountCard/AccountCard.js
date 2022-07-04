@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import clsx from 'clsx'
 import isNumber from 'lodash/isNumber'
 import isEmpty from 'lodash/isEmpty'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import ReactTooltip from 'react-tooltip'
 
 import { GalleryContext } from 'options/galleryContext'
 
@@ -208,6 +210,31 @@ const AccountCard = ({ account }) => {
     }
   }
 
+  const CopyAddressIcon = ({ address }) => {
+    const [isCopied, setIsCopied] = useState(false)
+
+    const onCopy = () => {
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    }
+
+    return (
+      <div className="relative">
+        <CopyToClipboard
+          text={address}
+          onCopy={onCopy}
+          className="flex items-center justify-center my-auto bg-lightBlue rounded-full shadow-sm cursor-pointer"
+          style={{ width: '16px', height: '16px' }}
+        >
+          <CopyIcon style={{ width: '14px', height: '14px' }} />
+        </CopyToClipboard>
+        {isCopied && (
+          <span className="text-11px absolute top-4 -right-0 text-success-700">Copied!</span>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className="mt-4.5 text-indigo select-none">
       <div
@@ -270,17 +297,12 @@ const AccountCard = ({ account }) => {
             <div className="flex items-center text-success-700 text-opacity-80 text-2xs font-normal leading-6 tracking-finnieSpacing-tight">
               {account.address}
             </div>
-            <div
-              className="flex items-center justify-center my-auto bg-lightBlue rounded-full shadow-sm cursor-pointer"
-              style={{ width: '16px', height: '16px' }}
-            >
-              <CopyIcon style={{ width: '14px', height: '14px' }} />
-            </div>
+            <CopyAddressIcon address={account.address} key={account.address} />
           </div>
 
           {account.type === TYPE.K2 && (
             <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight">
-              Balance:
+              Balance:{' '}
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance / Math.pow(10, 9), 4)
                 : '0'}{' '}
@@ -289,16 +311,14 @@ const AccountCard = ({ account }) => {
           )}
           {account.type === TYPE.ETHEREUM && (
             <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight">
-              Balance:
-              {formatNumber(account.balance, 4) !== 'NaN'
-                ? formatNumber(account.balance, 4)
-                : '0'}{' '}
+              Balance:{' '}
+              {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'}{' '}
               ETH
             </div>
           )}
           {account.type === TYPE.SOLANA && (
             <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight">
-              Balance:
+              Balance:{' '}
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance / Math.pow(10, 9), 4)
                 : '0'}{' '}
