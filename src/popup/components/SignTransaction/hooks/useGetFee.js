@@ -23,7 +23,8 @@ import { get, isEmpty,isNumber } from 'lodash'
 import arweave from 'services/arweave'
 import storage from 'services/storage'
 import { fromLampToSol,numberFormat } from 'utils'
-import Web3 from 'web3'
+// import Web3 from 'web3'
+const Web3 = () => ({})
 
 
 const fromHexToDecimal = (hexString) => {

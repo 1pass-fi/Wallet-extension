@@ -1,5 +1,6 @@
-import { Web } from '@_koi/sdk/web'
-import cache from 'background/cache'
+// import { Web } from '@_koi/sdk/web'
+const Web = () => ({})
+
 // Constants
 import { TYPE } from 'constants/accountConstants'
 // Services

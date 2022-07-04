@@ -1,9 +1,12 @@
-import { Web } from '@_koi/sdk/web'
+// import { Web } from '@_koi/sdk/web'
+const Web = () => ({})
+
 import { MOCK_COLLECTIONS_STORE, STORAGE } from 'constants/koiConstants'
 import { isString } from 'lodash'
 import { find, get } from 'lodash'
 import numeral from 'numeral'
 import { getChromeStorage, setChromeStorage } from 'utils'
+
 export const koi = new Web()
 
 import storage from 'services/storage'

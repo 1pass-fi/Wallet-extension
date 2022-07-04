@@ -1,11 +1,12 @@
 
+// import Web3 from 'web3'
+const Web3 = () => ({})
 import axios from 'axios'
 import { REQUEST } from 'constants/koiConstants'
 import { get,isString } from 'lodash'
 import storage from 'services/storage'
 import { fromArToWinston, fromEthToWei, fromSolToLamp } from 'utils'
 import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
-import Web3 from 'web3'
 
 
 const ETHEREUM = 'ETHEREUM'

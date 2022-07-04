@@ -1,6 +1,9 @@
 import React, { useEffect,useMemo, useRef, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
+// import Web3 from 'web3'
+const Web3 = () => ({})
+
 import { TYPE } from 'constants/accountConstants'
 import { ETH_NETWORK_PROVIDER, KOI_ROUTER_CONTRACT } from 'constants/koiConstants'
 import { ERROR_MESSAGE } from 'constants/koiConstants'
@@ -25,7 +28,6 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 import { getAddressesFromAddressBook } from 'utils'
 import { isArweaveAddress } from 'utils'
 import { isEthereumAddress } from 'utils'
-import Web3 from 'web3'
 
 import './index.css'
 

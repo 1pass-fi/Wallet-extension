@@ -1,8 +1,11 @@
-const Web3 = require('web3')
+// const Web3 = require('web3')
+const Web3 = () => ({})
+
 const { ABI2, ABI } = require('./ABI')
 const HDWalletProvider = require('@truffle/hdwallet-provider')
 
 // import Web3 from 'web3'
+
 
 const fromEthToArweave = async () => {
   try {

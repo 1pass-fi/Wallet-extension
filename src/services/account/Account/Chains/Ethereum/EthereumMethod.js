@@ -16,10 +16,14 @@ import {
   TRANSACTION_METHOD
 } from 'constants/koiConstants'
 import {
+  VALID_TOKEN_SCHEMA,
+  ERROR_MESSAGE,
+  URL,
   BRIDGE_FLOW,
   ERROR_MESSAGE,
   ETH_NETWORK_PROVIDER,
   KOI_ROUTER_CONTRACT,
+  ETH_NETWORK_PROVIDER
   URL,
   VALID_TOKEN_SCHEMA
 } from 'constants/koiConstants'
@@ -31,7 +35,8 @@ import storage from 'services/storage'
 import { getChromeStorage } from 'utils'
 import { clarifyEthereumProvider } from 'utils'
 import * as ethereumAssets from 'utils/ethereumActivities'
-import Web3 from 'web3'
+// import Web3 from 'web3'
+const Web3 = () => ({})
 
 import ERC20ABI from './abi/ERC20ABI.json'
 import ERC721ABI from './abi/ERC721ABI.json'

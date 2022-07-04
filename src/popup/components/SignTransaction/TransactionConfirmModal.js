@@ -1,4 +1,6 @@
 // modules
+// import Web3 from 'web3'
+const Web3 = () => ({})
 import React, { useEffect, useMemo, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'

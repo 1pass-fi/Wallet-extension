@@ -1,4 +1,6 @@
-import { Web } from '@_koi/sdk/web'
+// import { Web } from '@_koi/sdk/web'
+const Web = () => ({})
+
 import axios from 'axios'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
 import { NFT_CONTRACT_SRC,PATH, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'

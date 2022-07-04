@@ -1,8 +1,10 @@
+// import Web3 from 'web3'
+const Web3 = () => ({})
+
 import { get } from 'lodash'
 import storage from 'services/storage'
 import decodeTags  from 'utils/decodeTags'
 import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
-import Web3 from 'web3'
 
 import { TRANSACTION_TYPE } from './constants'
 

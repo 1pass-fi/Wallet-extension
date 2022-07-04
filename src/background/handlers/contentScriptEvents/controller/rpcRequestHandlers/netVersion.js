@@ -1,6 +1,8 @@
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
-import Web3 from 'web3'
+// import Web3 from 'web3'
+const Web3 = () => ({})
+
 
 export default async (payload, tab, next) => {
   try {

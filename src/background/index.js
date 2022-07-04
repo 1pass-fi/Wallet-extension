@@ -38,7 +38,7 @@ function cb(port) {
 }
 
 chrome.runtime.getPlatformInfo((info) => {
-  window.localStorage.setItem(OS, info.os)
+  // window.localStorage.setItem(OS, info.os)
 })
 chrome.storage.local.remove('koiAddress')
 chrome.runtime.onConnect.addListener(cb)

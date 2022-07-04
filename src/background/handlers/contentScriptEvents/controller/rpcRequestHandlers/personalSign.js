@@ -1,3 +1,5 @@
+// import Web3 from 'web3'
+const Web3 = () => ({})
 import { personalSign } from '@metamask/eth-sig-util'
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 import { stripHexPrefix } from 'ethereumjs-util'

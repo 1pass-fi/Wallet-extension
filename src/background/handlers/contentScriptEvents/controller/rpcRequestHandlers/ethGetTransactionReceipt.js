@@ -1,6 +1,8 @@
+// import Web3 from 'web3'
+const Web3 = () => ({})
+
 import { get } from 'lodash'
 import storage from 'services/storage'
-import Web3 from 'web3'
 
 export default async (payload, tab, next) => {
   try {

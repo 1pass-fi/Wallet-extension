@@ -1,8 +1,10 @@
-import { Web } from '@_koi/sdk/web'
+// import Web3 from 'web3'
+const Web3 = () => ({})
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
 import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 import hdkey from 'ethereumjs-wallet/dist/hdkey'
-import Web3 from 'web3'
+// import { Web } from '@_koi/sdk/web'
+const Web = () => ({})
 
 export class EthereumTool {
   #provider

@@ -1,3 +1,6 @@
+// import Web3 from 'web3'
+const Web3 = () => ({})
+
 // Constants
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 import { get, isEmpty } from 'lodash'
@@ -6,7 +9,6 @@ import storage from 'services/storage'
 // Utils
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
-import Web3 from 'web3'
 
 export default async (payload, tab, next) => {
   try {

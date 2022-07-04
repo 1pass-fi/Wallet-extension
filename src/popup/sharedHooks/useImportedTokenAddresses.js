@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
+// import Web3 from 'web3'
+const Web3 = () => ({})
 import { TokenListProvider } from '@solana/spl-token-registry'
 import ERC20_ABI from 'abi/ERC20.json'
 import { TYPE } from 'constants/accountConstants'
@@ -6,7 +8,6 @@ import { SOL_NETWORK_PROVIDER } from 'constants/koiConstants'
 import { get, isEmpty } from 'lodash'
 import storage from 'services/storage'
 import hardcodeSolanaTokens from 'solanaTokens/solanaTokens'
-import Web3 from 'web3'
 
 const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displayingAccount }) => {
   const [importedTokenAddresses, setImportedTokenAddresses] = useState([])

@@ -4,6 +4,9 @@ import {
   PublicKey as PublicKeyK2
 } from '@_koi/web3.js'
 import contractMap from '@metamask/contract-metadata'
+// import Web3 from 'web3'
+const Web3 = () => ({})
+
 import { AccountLayout, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { TokenListProvider } from '@solana/spl-token-registry'
 import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js'
@@ -15,7 +18,6 @@ import includes from 'lodash/includes'
 import storage from 'services/storage'
 import customTokens from 'solanaTokens/solanaTokens'
 import k2Contracts from 'utils/k2-contracts.json'
-import Web3 from 'web3'
 
 export const getLogoPath = (logo) => {
   const path = `img/erc20/${logo}`
