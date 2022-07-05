@@ -14,8 +14,10 @@ import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { popupAccount } from 'services/account'
 import { TYPE } from 'constants/accountConstants'
+import { MESSAGES } from 'constants/koiConstants'
 
 import { setAccounts } from 'options/actions/accounts'
+import { setDefaultAccount } from 'options/actions/defaultAccount'
 
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import { getSiteConnectedAddresses } from 'utils'
@@ -39,7 +41,7 @@ import SeeExtensionIcon from 'img/v2/settings/see-extension-icon.svg'
 import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 
 const AccountCard = ({ account, setShowConfirmRemoveAccount, setRemoveAccount }) => {
-  const { setIsLoading, setError } = useContext(GalleryContext)
+  const { setIsLoading, setError, setActivatedChain } = useContext(GalleryContext)
 
   const dispatch = useDispatch()
 
@@ -208,6 +210,19 @@ const AccountCard = ({ account, setShowConfirmRemoveAccount, setRemoveAccount })
       setEditAccount({})
     } catch (err) {
       setError(err.message)
+    }
+  }
+
+  const handleChangeDisplayAccount = async (account) => {
+    try {
+      await storage.setting.set.activatedChain(account.type)
+      setActivatedChain(account.type)
+      dispatch(setDefaultAccount(account))
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
+      })
+    } catch (error) {
+      setError(error.message)
     }
   }
 
@@ -380,7 +395,10 @@ const AccountCard = ({ account, setShowConfirmRemoveAccount, setRemoveAccount })
         </div>
         <div className="h-full flex flex-col justify-between items-center ml-4">
           {/* TODO DatH - Change account with star clicking */}
-          <div className="flex items-center justify-center">
+          <div
+            className="flex items-center justify-center"
+            onClick={() => handleChangeDisplayAccount(account)}
+          >
             {isDefaultAccount(account) ? (
               <FilledStarIcon
                 style={{ width: '20px', height: '20px' }}
