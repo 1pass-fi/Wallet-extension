@@ -30,27 +30,45 @@ const ImportPhrase = ({ step, setStep, importType }) => {
 
   const onChangeInputPhrase = (e, idx) => {
     let newCompletePhrase = [...completePhrase]
-
-    const changeIndex = newCompletePhrase.findIndex((item) => item.index === idx)
-    newCompletePhrase[changeIndex].word = e.target.value?.replace(/ /g, '')
-
-    setCompletePhrase(newCompletePhrase)
-
-    const seedPhrase = completePhrase
-      .map((phrase) => {
-        return phrase.word?.trim()
-      })
-      .filter(Boolean)
-      .join(' ')
-
-    console.log('completePhrase', importType, seedPhrase)
-
+    let seedPhrase
     let isValid = true
-    completePhrase.forEach((word) => {
-      if (isEmpty(word.word)) {
-        isValid = false
-      }
-    })
+
+    if (e.target.value?.split(' ').length == 12) {
+      newCompletePhrase = e.target.value?.split(' ').map((item, index) => ({
+        index: index,
+        word: item
+      }))
+
+      setCompletePhrase(newCompletePhrase)
+
+      seedPhrase = newCompletePhrase
+        .map((phrase) => {
+          return phrase.word?.trim()
+        })
+        .filter(Boolean)
+        .join(' ')
+    } else {
+      const changeIndex = newCompletePhrase.findIndex((item) => item.index === idx)
+      newCompletePhrase[changeIndex].word = e.target.value?.replace(/ /g, '')
+
+      setCompletePhrase(newCompletePhrase)
+
+      seedPhrase = completePhrase
+        .map((phrase) => {
+          return phrase.word?.trim()
+        })
+        .filter(Boolean)
+        .join(' ')
+
+      console.log('completePhrase', importType, completePhrase)
+      console.log('seedPhrase', importType, seedPhrase)
+
+      completePhrase.forEach((word) => {
+        if (isEmpty(word.word)) {
+          isValid = false
+        }
+      })
+    }
     setValidPhrase(isValid)
     setSeedphrase(seedPhrase)
   }
