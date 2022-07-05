@@ -1,0 +1,87 @@
+.st-switch {
+  position: relative;
+  display: inline-block;
+  width: 38.89px;
+  height: 20px;
+}
+
+.st-switch .st-switch-checkbox {
+  display: none;
+}
+
+.st-switch .st-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #4e4e8d;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.st-slider:before {
+  top: 2px;
+  left: 1.5px;
+  position: absolute;
+  content: '';
+  height: 16px;
+  width: 16px;
+  background-color: #bef0ed;
+  box-shadow: -1px 2px 4px rgba(0, 0, 0, 0.4);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.st-checked.st-slider {
+  background-color: #4e4e8d;
+}
+
+.st-focus + .st-slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+.st-checked.st-slider:before {
+  -webkit-transform: translateX(21px);
+  -ms-transform: translateX(21px);
+  transform: translateX(21px);
+}
+
+.st-on,
+.st-off {
+  z-index: 2;
+  color: #171753;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.st-on {
+  position: absolute;
+  left: 11px;
+  color: #bef0ed !important;
+}
+
+.st-off {
+  right: -8px;
+  color: #bef0ed !important;
+}
+
+input:checked + .st-slider .st-on {
+  display: block;
+}
+
+input:checked + .st-slider .st-off {
+  display: none;
+}
+
+.st-slider.st-round {
+  border-radius: 34px;
+}
+
+.st-slider.st-round:before {
+  border-radius: 50%;
+}

@@ -9,6 +9,7 @@ import ReactTooltip from 'react-tooltip'
 import { GalleryContext } from 'options/galleryContext'
 
 import DropDown from 'finnie-v2/components/DropDown'
+import ToggleButton from 'finnie-v2/components/ToggleButton'
 
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
@@ -49,6 +50,9 @@ const AccountCard = ({
   setAccountConnectSites
 }) => {
   const { setIsLoading, setError, setActivatedChain } = useContext(GalleryContext)
+
+  const [showHex, setShowHex] = useState(true)
+  const [showEmptyToken, setShowEmptyToken] = useState(true)
 
   const dispatch = useDispatch()
 
@@ -560,13 +564,13 @@ const AccountCard = ({
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">
                 Show Hex data:{' '}
               </div>
-              <div className="bg-yellow-300" style={{ width: '38.89px', height: '20px' }}></div>
+              <ToggleButton value={showHex} setValue={setShowHex} />
             </div>
             <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">
                 Hide empty Token:{' '}
               </div>
-              <div className="bg-yellow-300" style={{ width: '38.89px', height: '20px' }}></div>
+              <ToggleButton value={showEmptyToken} setValue={setShowEmptyToken} />
             </div>
             <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">
