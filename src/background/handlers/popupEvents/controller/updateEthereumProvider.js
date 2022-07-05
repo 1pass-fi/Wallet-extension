@@ -8,13 +8,16 @@ import helpers from 'background/helpers'
 
 export default async (payload, next) => {
   try {
-    const { ethereumProvider } = payload.data
+    const { ethereumProvider, isGalleryRequest } = payload.data
     const currentEthereumProvider = await storage.setting.get.ethereumProvider()
 
     if (ethereumProvider !== currentEthereumProvider) {
       console.log('updateEthereumProvider ', ethereumProvider)
       await storage.setting.set.ethereumProvider(ethereumProvider)
-      helpers.sendMessageToPopupPorts({ type: MESSAGES.RELOAD_GALLERY })
+
+      if (!isGalleryRequest) {
+        helpers.sendMessageToPopupPorts({ type: MESSAGES.RELOAD_GALLERY })
+      }
     }
     next()
   } catch (err) {

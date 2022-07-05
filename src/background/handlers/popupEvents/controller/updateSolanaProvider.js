@@ -8,14 +8,16 @@ import helpers from 'background/helpers'
 
 export default async (payload, next) => {
   try {
-    const { solanaProvider } = payload.data
+    const { solanaProvider, isGalleryRequest } = payload.data
     const currentSolanaProvider = await storage.setting.get.solanaProvider()
 
     if (solanaProvider !== currentSolanaProvider) {
       console.log('updateSolanaProvider ', solanaProvider)
       await storage.setting.set.solanaProvider(solanaProvider)
 
-      helpers.sendMessageToPopupPorts({ type: MESSAGES.RELOAD_GALLERY })
+      if (!isGalleryRequest) {
+        helpers.sendMessageToPopupPorts({ type: MESSAGES.RELOAD_GALLERY })
+      }
     }
     next()
   } catch (err) {

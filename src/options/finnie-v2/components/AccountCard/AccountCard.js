@@ -18,6 +18,7 @@ import { MESSAGES } from 'constants/koiConstants'
 
 import { setAccounts } from 'options/actions/accounts'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
+import { loadAllAccounts } from 'options/actions/accounts'
 
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import { getSiteConnectedAddresses } from 'utils'
@@ -167,10 +168,22 @@ const AccountCard = ({ account, setShowConfirmRemoveAccount, setRemoveAccount })
     }
   }
 
-  const onNetworkChange = (networkAddress) => {
+  const onNetworkChange = async (networkAddress) => {
     if (networkAddress !== currentNetwork) {
-      // TODO DatH
-      console.log('onNetworkChange', networkAddress)
+      switch (account.type) {
+        case TYPE.K2:
+          await onChangeK2Provider(networkAddress)
+          break
+        case TYPE.ETHEREUM:
+          await onChangeEthereumProvider(networkAddress)
+          break
+        case TYPE.SOLANA:
+          await onChangeSolanaProvider(networkAddress)
+          break
+        default:
+          setError('Invalid network type')
+          break
+      }
     }
   }
 
@@ -248,6 +261,86 @@ const AccountCard = ({ account, setShowConfirmRemoveAccount, setRemoveAccount })
         </CopyToClipboard>
       </div>
     )
+  }
+
+  const onChangeK2Provider = async (value) => {
+    setIsLoading(true)
+    const _currentNetwork = currentNetwork
+    try {
+      setCurrentNetwork(value)
+      await backgroundRequest.gallery.updateK2Provider({
+        k2Provider: value,
+        isGalleryRequest: true
+      })
+
+      // load balance
+      await backgroundRequest.wallet.loadBalanceAsync()
+
+      // update account state
+      await dispatch(loadAllAccounts())
+    } catch (error) {
+      setCurrentNetwork(_currentNetwork)
+      setError(error.message)
+      console.log('Failed to change K2 provider', error.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const onChangeEthereumProvider = async (value) => {
+    setIsLoading(true)
+    const _currentNetwork = currentNetwork
+    try {
+      setCurrentNetwork(value)
+      await backgroundRequest.gallery.updateEthereumProvider({
+        ethereumProvider: value,
+        isGalleryRequest: true
+      })
+
+      // load balance
+      await backgroundRequest.wallet.loadBalanceAsync()
+
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.NETWORK_CHANGED })
+      })
+
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.CHAIN_CHANGED })
+      })
+
+      // update account state
+      await dispatch(loadAllAccounts())
+    } catch (error) {
+      setCurrentNetwork(_currentNetwork)
+      setError(error.message)
+      console.log('Failed to change Ethereum provider', error.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const onChangeSolanaProvider = async (value) => {
+    setIsLoading(true)
+    const _currentNetwork = currentNetwork
+    try {
+      setCurrentNetwork(value)
+      await backgroundRequest.gallery.updateSolanaProvider({
+        solanaProvider: value,
+        isGalleryRequest: true
+      })
+
+      // load balance
+      await backgroundRequest.wallet.loadBalanceAsync()
+
+      // update account state
+      await dispatch(loadAllAccounts())
+    } catch (error) {
+      setCurrentNetwork(_currentNetwork)
+      setError(error.message)
+      console.log('Failed to change Solana provider', error.message)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
