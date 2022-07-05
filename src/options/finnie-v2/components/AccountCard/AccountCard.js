@@ -27,8 +27,9 @@ import SolLogo from 'img/v2/solana-logo.svg'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import DragIcon from 'img/v2/settings/drag-icon.svg'
 import EditIcon from 'img/v2/settings/edit-icon.svg'
-import SaveIcon from 'img/v2/check-mark-icon-blue.svg'
 import CopyIcon from 'img/v2/settings/copy-icon.svg'
+import CheckMarkIcon from 'img/v2/settings/check-mark-icon.svg'
+import SaveIcon from 'img/v2/check-mark-icon-blue.svg'
 import FilledStarIcon from 'img/popup/star-filled-icon.svg'
 import EmptyStarIcon from 'img/popup/star-empty-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
@@ -215,22 +216,21 @@ const AccountCard = ({ account, setShowConfirmRemoveAccount, setRemoveAccount })
 
     const onCopy = () => {
       setIsCopied(true)
-      setTimeout(() => setIsCopied(false), 2000)
+      setTimeout(() => setIsCopied(false), 3000)
     }
 
     return (
-      <div className="relative">
-        <CopyToClipboard
-          text={address}
-          onCopy={onCopy}
-          className="flex items-center justify-center my-auto bg-lightBlue rounded-full shadow-sm cursor-pointer"
-          style={{ width: '16px', height: '16px' }}
-        >
-          <CopyIcon style={{ width: '14px', height: '14px' }} />
+      <div
+        className="flex items-center justify-center my-auto bg-lightBlue rounded-full shadow-sm cursor-pointer"
+        style={{ width: '16px', height: '16px' }}
+      >
+        <CopyToClipboard text={address} onCopy={onCopy}>
+          {isCopied ? (
+            <CheckMarkIcon style={{ width: '13px', height: '12px' }} />
+          ) : (
+            <CopyIcon style={{ width: '14px', height: '14px' }} />
+          )}
         </CopyToClipboard>
-        {isCopied && (
-          <span className="text-11px absolute top-4 -right-0 text-success-700">Copied!</span>
-        )}
       </div>
     )
   }
