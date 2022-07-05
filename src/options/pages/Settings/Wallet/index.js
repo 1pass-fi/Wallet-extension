@@ -16,6 +16,7 @@ import storage from 'services/storage'
 import AcceptedCurrencies from './currencies'
 
 import AccountManagement from 'finnie-v2/components/AccountManagement'
+import ConnectedSitesModal from 'finnie-v2/components/ConnectedSitesModal'
 import ConfirmRemoveAccountModal from 'finnie-v2/components/AccountManagement/ConfirmRemoveAccountModal'
 import DropDown from 'finnie-v2/components/DropDown'
 import AccountCard from 'finnie-v2/components/AccountCard'
@@ -32,6 +33,8 @@ export default () => {
   /* TODO DatH */
   const [chainOption, setChainOption] = useState('All')
   const [showConfirmRemoveAccount, setShowConfirmRemoveAccount] = useState(false)
+  const [showConnectedSites, setShowConnectedSites] = useState(false)
+  const [accountConnectSites, setAccountConnectSites] = useState({})
   const [removeAccount, setRemoveAccount] = useState({})
 
   const accounts = useSelector((state) => state.accounts)
@@ -177,6 +180,8 @@ export default () => {
                 key={index}
                 setShowConfirmRemoveAccount={setShowConfirmRemoveAccount}
                 setRemoveAccount={setRemoveAccount}
+                setShowConnectedSites={setShowConnectedSites}
+                setAccountConnectSites={setAccountConnectSites}
               />
             ))}
           </div>
@@ -187,6 +192,13 @@ export default () => {
         <ConfirmRemoveAccountModal
           account={removeAccount}
           close={() => setShowConfirmRemoveAccount(false)}
+        />
+      )}
+
+      {showConnectedSites && (
+        <ConnectedSitesModal
+          account={accountConnectSites}
+          close={() => setShowConnectedSites(false)}
         />
       )}
     </div>

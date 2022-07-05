@@ -113,7 +113,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
           {/* <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" /> */}
           <div className="m-auto">Delete Account</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
-        </div>{' '}
+        </div>
         <div className="mt-7.5 flex flex-col items-center justify-evenly">
           <div
             className="font-bold text-lg text-indigo leading-6 text-center"

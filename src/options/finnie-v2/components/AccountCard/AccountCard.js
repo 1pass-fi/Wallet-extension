@@ -41,7 +41,13 @@ import SeeQRIcon from 'img/v2/settings/see-QR-icon.svg'
 import SeeExtensionIcon from 'img/v2/settings/see-extension-icon.svg'
 import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 
-const AccountCard = ({ account, setShowConfirmRemoveAccount, setRemoveAccount }) => {
+const AccountCard = ({
+  account,
+  setShowConfirmRemoveAccount,
+  setRemoveAccount,
+  setShowConnectedSites,
+  setAccountConnectSites
+}) => {
   const { setIsLoading, setError, setActivatedChain } = useContext(GalleryContext)
 
   const dispatch = useDispatch()
@@ -568,7 +574,10 @@ const AccountCard = ({ account, setShowConfirmRemoveAccount, setRemoveAccount })
               </div>
               <div
                 className="text-xs font-normal tracking-finnieSpacing-tight underline cursor-pointer"
-                onClick={() => console.log('siteConnectedAddresses', siteConnectedAddresses)}
+                onClick={() => {
+                  setShowConnectedSites(true)
+                  setAccountConnectSites(account)
+                }}
               >
                 {siteConnectedAddresses.length} sites
               </div>

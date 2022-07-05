@@ -12,6 +12,7 @@ import {
 import passworder from 'browser-passworder'
 import moment from 'moment'
 import { get, isArray, isEmpty, isNumber } from 'lodash'
+import capitalize from 'lodash/capitalize'
 
 import Arweave from 'arweave'
 import axios from 'axios'
