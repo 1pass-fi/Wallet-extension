@@ -86,6 +86,7 @@ const DropDown = ({
         sizes[size].wrapper,
         variants[variant].wrapper
       )}
+      ref={dropDownRef}
     >
       <div className="flex items-center rounded-finnie" onClick={toggleList}>
         {filterSupported ? (
@@ -124,7 +125,6 @@ const DropDown = ({
             'z-50 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none',
             variants[variant].body
           )}
-          ref={dropDownRef}
         >
           {emptyOption && (
             <button
