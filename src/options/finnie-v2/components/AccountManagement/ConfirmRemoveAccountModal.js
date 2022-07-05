@@ -19,6 +19,7 @@ import CloseIcon from 'img/v2/close-icon-blue.svg'
 import { TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
 import storage from 'services/storage'
+import formatLongString from 'finnie-v2/utils/formatLongString'
 
 const ConfirmRemoveAccountModal = ({ account, close }) => {
   const { setIsLoading, setError, setActivatedChain } = useContext(GalleryContext)
@@ -104,13 +105,13 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
   return (
     <div className="w-full h-full flex items-center justify-center min-w-screen min-h-screen bg-black bg-opacity-25 fixed z-51 top-0 left-0">
       <div
-        style={{ width: '510px' }}
+        style={{ width: '586px' }}
         className="rounded bg-trueGray-100 flex flex-col items-center text-indigo"
         ref={modalRef}
       >
         <div className="flex h-16.75 rounded-t bg-trueGray-100 shadow-md w-full font-semibold text-xl tracking-finnieSpacing-wide relative">
-          <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" />
-          <div className="m-auto">WARNING</div>
+          {/* <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" /> */}
+          <div className="m-auto">Delete Account</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>{' '}
         <div className="mt-7.5 flex flex-col items-center justify-evenly">
@@ -118,17 +119,18 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
             className="font-bold text-lg text-indigo leading-6 text-center"
             style={{ width: '303px' }}
           >
-            Are you sure you want to remove this account?
+            Are you sure you want to delete {formatLongString(account.accountName, 25)}?
           </div>
-          <div className="mt-6 text-sm font-normal text-center" style={{ width: '300px' }}>
-            This action cannot be undone
+          <div className="mt-6 text-sm font-normal text-center" style={{ width: '485px' }}>
+            This will erase all account information from Finnie but you’ll still be able to import
+            it if you have a seed phrase
           </div>
           <div className="mt-4 flex justify-between" style={{ width: '404px' }}>
             <Button
               style={{ width: '180px', height: '39px' }}
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-8"
               variant="warning300"
-              text="Remove Account"
+              text="Delete"
               onClick={() => handleRemoveAccount()}
             />
 
@@ -136,7 +138,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
               style={{ width: '180px', height: '39px' }}
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-8"
               variant="indigo"
-              text="Keep Account"
+              text="Discard"
               onClick={close}
             />
           </div>
