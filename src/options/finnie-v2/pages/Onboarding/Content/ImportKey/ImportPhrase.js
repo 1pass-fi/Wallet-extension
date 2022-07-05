@@ -16,6 +16,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
   const [seedphrase, setSeedphrase] = useState('')
   const [validPhrase, setValidPhrase] = useState(false)
   const [messageError, setMessageError] = useState('')
+  const [isImporting, setIsImporting] = useState(false)
 
   useEffect(() => {
     let initialPhrase = []
@@ -56,12 +57,15 @@ const ImportPhrase = ({ step, setStep, importType }) => {
 
   const onClickContinue = async () => {
     try {
+      if (isImporting) return
       if (!validPhrase) {
         setMessageError('Invalid Secret Recovery Phrase')
         return
       }
 
+      setIsImporting(true)
       const address = await importFromSeedphrase(seedphrase, importType)
+      setIsImporting(false)
       if (address) setStep(12)
     } catch (err) {
       console.error(err.message)
@@ -108,7 +112,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
 
         <Button
           style={{ width: '240px', height: '42px' }}
-          className="mt-10.75 text-base mx-auto rounded z-10"
+          className={clsx('mt-10.75 text-base mx-auto rounded z-10', isImporting && 'cursor-wait')}
           variant="white"
           text="Confirm"
           disabled={!validPhrase}
