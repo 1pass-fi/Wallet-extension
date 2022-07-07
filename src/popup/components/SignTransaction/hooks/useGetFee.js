@@ -24,8 +24,9 @@ import arweave from 'services/arweave'
 import storage from 'services/storage'
 import { fromLampToSol,numberFormat } from 'utils'
 // import Web3 from 'web3'
-const Web3 = () => ({})
+import { ethers } from 'ethers'
 
+import { clarifyEthereumProvider } from 'utils'
 
 const fromHexToDecimal = (hexString) => {
   let number = null
@@ -45,7 +46,11 @@ const useGetFee = ({ network, transactionPayload }) => {
 
   const getEthFee = async () => {
     const provider = await storage.setting.get.ethereumProvider()
-    const web3 = new Web3(provider)
+    const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
+
+    const network = ethers.providers.getNetwork(ethNetwork)
+    const web3 = new ethers.providers.InfuraProvider(network, apiKey)
+
 
     const sourceAddress = get(transactionPayload, 'from')
     const recipientAddress = get(transactionPayload, 'to')

@@ -36,7 +36,9 @@ import { getChromeStorage } from 'utils'
 import { clarifyEthereumProvider } from 'utils'
 import * as ethereumAssets from 'utils/ethereumActivities'
 // import Web3 from 'web3'
-const Web3 = () => ({})
+import { ethers } from 'ethers'
+
+import { clarifyEthereumProvider } from 'utils'
 
 import ERC20ABI from './abi/ERC20ABI.json'
 import ERC721ABI from './abi/ERC721ABI.json'
@@ -406,7 +408,10 @@ export class EthereumMethod {
     if (balance < 0.00015) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_ETH)
 
     const provider = new HDWalletProvider(this.eth.key, this.eth.getCurrentNetWork())
-    const web3 = new Web3(provider)
+    const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
+
+    const network = ethers.providers.getNetwork(ethNetwork)
+    const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
     const userAddress = this.eth.address
 
@@ -606,7 +611,10 @@ export class EthereumMethod {
 
   async transferToken({ tokenContractAddress, to, value }) {
     const provider = await storage.setting.get.ethereumProvider()
-    const web3 = new Web3(provider)
+    const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
+
+    const network = ethers.providers.getNetwork(ethNetwork)
+    const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
     const tokenContract = new web3.eth.Contract(ERC20ABI, tokenContractAddress)
 

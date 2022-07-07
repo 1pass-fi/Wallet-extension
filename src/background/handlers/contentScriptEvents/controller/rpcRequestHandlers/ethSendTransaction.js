@@ -1,5 +1,7 @@
 // import Web3 from 'web3'
-const Web3 = () => ({})
+import { ethers } from 'ethers'
+
+import { clarifyEthereumProvider } from 'utils'
 
 // Constants
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
@@ -93,7 +95,11 @@ export default async (payload, tab, next) => {
 
                 console.log('rawTx', rawTx)
 
-                const web3 = new Web3(provider)
+                const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
+
+                const network = ethers.providers.getNetwork(ethNetwork)
+                const web3 = new ethers.providers.InfuraProvider(network, apiKey)
+
                 const estimateGas = await web3.eth.estimateGas(rawTx)
                 rawTx.gas = estimateGas
 

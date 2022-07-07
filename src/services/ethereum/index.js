@@ -1,5 +1,8 @@
 // import Web3 from 'web3'
-const Web3 = () => ({})
+import { ethers } from 'ethers'
+
+import { clarifyEthereumProvider } from 'utils'
+
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
 import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 import hdkey from 'ethereumjs-wallet/dist/hdkey'
@@ -11,7 +14,11 @@ export class EthereumTool {
   #web3
   constructor(provider) {
     this.#provider = provider || ETH_NETWORK_PROVIDER.MAINNET
-    this.#web3 = new Web3(this.#provider)
+    const { ethNetwork, apiKey } = clarifyEthereumProvider(this.#provider)
+
+    const network = ethers.providers.getNetwork(ethNetwork)
+    this.#web3 = new ethers.providers.InfuraProvider(network, apiKey)
+
     this.key = null
     this.address = null
   }
@@ -69,7 +76,7 @@ export class EthereumTool {
   #getWalletFromSeedPhrase(seedPhrase) {
     const seed = mnemonicToSeedSync(seedPhrase)
     const hdwallet = hdkey.fromMasterSeed(seed)
-    const wallet_hdpath = 'm/44\'/60\'/0\'/0/0'
+    const wallet_hdpath = "m/44'/60'/0'/0/0"
 
     const wallet = hdwallet.derivePath(wallet_hdpath).getWallet()
     const address = '0x' + wallet.getAddress().toString('hex')

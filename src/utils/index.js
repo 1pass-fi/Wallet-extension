@@ -43,7 +43,7 @@ import { TYPE } from 'constants/accountConstants'
 import { TRANSACTION_METHOD } from 'popup/components/SignTransaction/hooks/constants'
 import storage from 'services/storage'
 // import Web3 from 'web3'
-const Web3 = () => ({})
+import { ethers } from 'ethers'
 
 /* istanbul ignore next */
 const arweave = Arweave.init({ host: 'arweave.net', protocol: 'https', port: 443 })

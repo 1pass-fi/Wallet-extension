@@ -5,7 +5,9 @@ import {
 } from '@_koi/web3.js'
 import contractMap from '@metamask/contract-metadata'
 // import Web3 from 'web3'
-const Web3 = () => ({})
+import { ethers } from 'ethers'
+
+import { clarifyEthereumProvider } from 'utils'
 
 import { AccountLayout, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { TokenListProvider } from '@solana/spl-token-registry'
@@ -37,7 +39,11 @@ const getTokenData = async (contractAddress, userAddress) => {
   const logo = getIconPath(contractAddress)
 
   const provider = await storage.setting.get.ethereumProvider()
-  const web3 = new Web3(provider)
+  const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
+
+  const network = ethers.providers.getNetwork(ethNetwork)
+  const web3 = new ethers.providers.InfuraProvider(network, apiKey)
+
   const tokenContract = new web3.eth.Contract(ERC20_ABI, contractAddress)
 
   const name = await tokenContract.methods.name().call()

@@ -1,13 +1,14 @@
-
 // import Web3 from 'web3'
-const Web3 = () => ({})
+import { ethers } from 'ethers'
+
+import { clarifyEthereumProvider } from 'utils'
+
 import axios from 'axios'
 import { REQUEST } from 'constants/koiConstants'
 import { get,isString } from 'lodash'
 import storage from 'services/storage'
 import { fromArToWinston, fromEthToWei, fromSolToLamp } from 'utils'
 import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
-
 
 const ETHEREUM = 'ETHEREUM'
 const ARWEAVE = 'ARWEAVE'
@@ -39,37 +40,40 @@ const useMethod = ({
       if (alchemyAddress) recipient = alchemyAddress
       const network = selectedNetwork
       if (!network) throw new Error('Invalid address')
-  
-      const sendValue = selectedToken.decimal === 1 ? value : (10 ** selectedToken.decimal * value)
+
+      const sendValue = selectedToken.decimal === 1 ? value : 10 ** selectedToken.decimal * value
 
       if (network === TYPE.ETHEREUM) {
         if (contractAddress) {
           // send erc20 token
           console.log('send erc20 token')
           const web3 = new Web3()
-          const hex = web3.eth.abi.encodeFunctionCall({
-            'constant': false,
-            'inputs': [
-              {
-                'name': '_to',
-                'type': 'address'
-              },
-              {
-                'name': '_value',
-                'type': 'uint256'
-              }
-            ],
-            'name': 'transfer',
-            'outputs': [
-              {
-                'name': '',
-                'type': 'bool'
-              }
-            ],
-            'payable': false,
-            'stateMutability': 'nonpayable',
-            'type': 'function'
-          }, [recipient, `${sendValue}`])
+          const hex = web3.eth.abi.encodeFunctionCall(
+            {
+              constant: false,
+              inputs: [
+                {
+                  name: '_to',
+                  type: 'address'
+                },
+                {
+                  name: '_value',
+                  type: 'uint256'
+                }
+              ],
+              name: 'transfer',
+              outputs: [
+                {
+                  name: '',
+                  type: 'bool'
+                }
+              ],
+              payable: false,
+              stateMutability: 'nonpayable',
+              type: 'function'
+            },
+            [recipient, `${sendValue}`]
+          )
 
           const transactionPayload = {
             from: sender,
@@ -93,7 +97,7 @@ const useMethod = ({
             to: recipient,
             value: fromEthToWei(value).toString(16)
           }
-  
+
           const requestPayload = {
             network: 'ETHEREUM',
             transactionPayload,
@@ -110,28 +114,33 @@ const useMethod = ({
         if (contractAddress) {
           // send custom token
           const tags = {
-            'Contract': contractAddress,
-            'Input': {
-              'qty': Number(value),
-              'target': recipient,
-              'function': 'transfer'
+            Contract: contractAddress,
+            Input: {
+              qty: Number(value),
+              target: recipient,
+              function: 'transfer'
             }
           }
-  
+
           const encodedTags = []
-  
-          Object.keys(tags).forEach(tagKey => {
+
+          Object.keys(tags).forEach((tagKey) => {
             const tagValue = tags[tagKey]
-            const encode = { name: Buffer.from(tagKey).toString('base64'), value: Buffer.from(!isString(tagValue) ? JSON.stringify(tagValue) : tagValue).toString('base64') }
+            const encode = {
+              name: Buffer.from(tagKey).toString('base64'),
+              value: Buffer.from(
+                !isString(tagValue) ? JSON.stringify(tagValue) : tagValue
+              ).toString('base64')
+            }
             encodedTags.push(encode)
           })
-  
+
           const transactionPayload = {
             from: sender,
             data: [],
             tags: encodedTags
           }
-  
+
           const requestPayload = {
             network: 'ARWEAVE',
             transactionPayload,
@@ -141,7 +150,6 @@ const useMethod = ({
             type: REQUEST.AR_TRANSACTION,
             data: requestPayload
           })
-  
         } else {
           // send origin token
           const transactionPayload = {
@@ -149,13 +157,13 @@ const useMethod = ({
             to: recipient,
             value: fromArToWinston(value)
           }
-  
+
           const requestPayload = {
             network: 'ARWEAVE',
             transactionPayload,
             recipientName
           }
-  
+
           await storage.generic.set.pendingRequest({
             type: REQUEST.AR_TRANSACTION,
             data: requestPayload

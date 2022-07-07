@@ -1,5 +1,7 @@
 // import Web3 from 'web3'
-const Web3 = () => ({})
+import { ethers } from 'ethers'
+
+import { clarifyEthereumProvider } from 'utils'
 
 import { get } from 'lodash'
 import storage from 'services/storage'
@@ -8,8 +10,10 @@ export default async (payload, tab, next) => {
   try {
     const params = get(payload, 'data.params')
     const provider = await storage.setting.get.ethereumProvider()
+    const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
 
-    const web3 = new Web3(provider)
+    const network = ethers.providers.getNetwork(ethNetwork)
+    const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
     let blockNumber = params[0]
     if (blockNumber === 'latest') {
