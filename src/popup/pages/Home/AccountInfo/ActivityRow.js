@@ -78,9 +78,12 @@ const ActivityRow = ({
 
         if (!includes(activityName, 'Bridge')) {
           let sign = includes(activityName, 'Received') ? '+' : '-'
-          let token = includes(activityName, 'KOII') ? 'KOII' : 'AR'
-          if (includes(activityName, 'ETH')) token = 'ETH'
-          if (includes(activityName, 'SOL')) token = 'SOL'
+          // TODO DatH - Handle custom token ETH
+
+          // let token = includes(activityName, 'KOII') ? 'KOII' : 'AR'
+          // if (includes(activityName, 'ETH')) token = 'ETH'
+          // if (includes(activityName, 'SOL')) token = 'SOL'
+          let token = activityName.split(' ').pop()
 
           expenseText = `${expense !== null && expense > 0 ? sign : ''}${transactionAmountFormat(
             expense
