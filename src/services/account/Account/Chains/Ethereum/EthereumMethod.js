@@ -263,45 +263,73 @@ export class EthereumMethod {
     let fetchedData = await etherscanProvider.getHistory(walletAddress)
     fetchedData = fetchedData.reverse() // Descending transactions
 
+    console.log('fetchedData----------------', fetchedData)
 
     const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
-    fetchedData = fetchedData.map((activity) => {
-      try {
-        let id, activityName, expense, date, source, time
 
-        id = activity.hash
-        if (activity.from === this.eth.address.toLowerCase()) {
-          activityName = 'Sent ETH'
-          source = activity.to
-        } else {
-          activityName = 'Received ETH'
-          source = activity.from
+    const interfaceABI = new ethers.utils.Interface(ERC20ABI)
+
+    fetchedData = await Promise.all(
+      fetchedData.map(async (activity) => {
+        try {
+          let token = 'ETH',
+            decimals = 18,
+            expense = activity.value,
+            to = activity.to
+
+          let id, activityName, date, source, time
+
+          id = activity.hash
+
+          if (await ethereumAssets.isInteractWithContract(activity, web3)) {
+            const contract = new ethers.Contract(activity.to, ERC20ABI, etherscanProvider)
+            token = await contract.symbol()
+            decimals = await contract.decimals()
+
+            const decodedInput = await ethereumAssets.decodeTransactionData(
+              id,
+              interfaceABI,
+              etherscanProvider
+            )
+            to = decodedInput.args[0]
+            expense = Number(decodedInput.args[1])
+          }
+
+          if (activity.from.toLowerCase() === this.eth.address.toLowerCase()) {
+            console.log('Should be thissss')
+            activityName = `Sent ${token}`
+            source = to
+          } else {
+            activityName = `Received ${token}`
+            source = activity.from
+          }
+
+          const gasFee =
+            (Number(activity.gasLimit) * Number(activity.gasPrice)) / 1000000000000000000
+          const expenseValue = expense / Math.pow(10, decimals)
+
+          expense = gasFee + expenseValue
+          date = moment(Number(activity.timestamp) * 1000).format('MMMM DD YYYY')
+
+          time = activity.timestamp
+
+          return {
+            id,
+            activityName,
+            expense,
+            accountName,
+            date,
+            source,
+            time,
+            currentNetwork,
+            address: this.eth.address
+          }
+        } catch (err) {
+          console.error(err.message)
+          return {}
         }
-
-        const gasFee = (activity.gasUsed * activity.gasPrice) / 1000000000000000000
-        const expenseValue = activity.value / 1000000000000000000
-
-        expense = gasFee + expenseValue
-        date = moment(Number(activity.timeStamp) * 1000).format('MMMM DD YYYY')
-
-        time = activity.timeStamp
-
-        return {
-          id,
-          activityName,
-          expense,
-          accountName,
-          date,
-          source,
-          time,
-          network,
-          address: this.eth.address
-        }
-      } catch (err) {
-        console.error(err.message)
-        return {}
-      }
-    })
+      })
+    )
 
     const oldActivites = (await this.#chrome.getActivities()) || []
     const newestOfOldActivites = oldActivites[0]
