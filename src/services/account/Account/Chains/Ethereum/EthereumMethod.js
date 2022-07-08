@@ -26,9 +26,11 @@ import {
 } from 'constants/koiConstants'
 
 import axios from 'axios'
+import * as ethereumAssets from 'utils/ethereumActivities'
 
 import HDWalletProvider from '@truffle/hdwallet-provider'
 import Web3 from 'web3'
+import { ethers } from 'ethers'
 import koiRouterABI from './abi/KoiRouter.json'
 import koiTokenABI from './abi/KoiToken.json'
 import ERC20ABI from './abi/ERC20ABI.json'
@@ -144,39 +146,124 @@ export class EthereumMethod {
     }
   }
 
+  // async updateActivities() {
+  //   let baseUrl, url, network
+
+  //   network = this.eth.getCurrentNetWork()
+
+  //   switch (network) {
+  //     case ETH_NETWORK_PROVIDER.RINKEBY:
+  //       baseUrl = ETHERSCAN_API.RINKEY
+  //       break
+  //     default:
+  //       baseUrl = ETHERSCAN_API.MAINNET
+  //   }
+
+  //   const walletAddress = this.eth.address
+  //   const offset = 1000
+  //   const etherscanAPIKey = 'USBA7QPN747A6KGYFCSY42KZ1W9JGFI2YB'
+
+  //   url = [
+  //     `${baseUrl}/`,
+  //     'api?module=account',
+  //     '&action=txlist',
+  //     `&address=${walletAddress}`,
+  //     '&startblock=0&endblock=99999999',
+  //     `&page=1&offset=${offset}`,
+  //     '&sort=desc',
+  //     `&apikey=${etherscanAPIKey}`
+  //   ]
+
+  //   url = url.join('')
+
+  //   let resp = await axios.get(url)
+
+  //   let fetchedData = resp.data.result
+  //   console.log(fetchedData)
+  //   const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
+  //   fetchedData = fetchedData.map((activity) => {
+  //     try {
+  //       let id, activityName, expense, date, source, time
+
+  //       id = activity.hash
+
+  //       if (activity.from === this.eth.address.toLowerCase()) {
+  //         activityName = 'Sent ETH'
+  //         source = activity.to
+  //       } else {
+  //         activityName = 'Received ETH'
+  //         source = activity.from
+  //       }
+
+  //       const gasFee = (activity.gasUsed * activity.gasPrice) / 1000000000000000000
+  //       const expenseValue = activity.value / 1000000000000000000
+
+  //       expense = gasFee + expenseValue
+  //       date = moment(Number(activity.timeStamp) * 1000).format('MMMM DD YYYY')
+
+  //       time = activity.timeStamp
+
+  //       return {
+  //         id,
+  //         activityName,
+  //         expense,
+  //         accountName,
+  //         date,
+  //         source,
+  //         time,
+  //         network,
+  //         address: this.eth.address
+  //       }
+  //     } catch (err) {
+  //       console.error(err.message)
+  //       return {}
+  //     }
+  //   })
+
+  //   const oldActivites = (await this.#chrome.getActivities()) || []
+  //   const newestOfOldActivites = oldActivites[0]
+
+  //   if (newestOfOldActivites) {
+  //     const idx = findIndex(fetchedData, (data) => data.id === newestOfOldActivites.id)
+
+  //     for (let i = 0; i < idx; i++) {
+  //       fetchedData[i].seen = false
+  //     }
+  //   }
+
+  //   await this.#chrome.setActivities(fetchedData)
+  // }
+
   async updateActivities() {
-    let baseUrl, url, network
+    const provider = await storage.setting.get.ethereumProvider()
+    console.log('providerr ======', provider)
+    const { ethNetwork, apiKey } = ethereumAssets.clarifyEthereumProvider(provider)
+    const network = ethers.providers.getNetwork(ethNetwork)
+    const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
-    network = this.eth.getCurrentNetWork()
+    let providerNetwork, currentNetwork
 
-    switch (network) {
+    currentNetwork = this.eth.getCurrentNetWork()
+
+    switch (currentNetwork) {
       case ETH_NETWORK_PROVIDER.RINKEBY:
-        baseUrl = ETHERSCAN_API.RINKEY
+        providerNetwork = 'rinkeby'
         break
       default:
-        baseUrl = ETHERSCAN_API.MAINNET
+        providerNetwork = 'homestead'
     }
 
     const walletAddress = this.eth.address
-    const offset = 1000
     const etherscanAPIKey = 'USBA7QPN747A6KGYFCSY42KZ1W9JGFI2YB'
+    const etherscanProvider = new ethers.providers.EtherscanProvider(
+      providerNetwork,
+      etherscanAPIKey
+    )
 
-    url = [
-      `${baseUrl}/`,
-      'api?module=account',
-      '&action=txlist',
-      `&address=${walletAddress}`,
-      '&startblock=0&endblock=99999999',
-      `&page=1&offset=${offset}`,
-      '&sort=desc',
-      `&apikey=${etherscanAPIKey}`
-    ]
+    let fetchedData = await etherscanProvider.getHistory(walletAddress)
+    fetchedData = fetchedData.reverse() // Descending transactions
 
-    url = url.join('')
 
-    let resp = await axios.get(url)
-
-    let fetchedData = resp.data.result
     const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
     fetchedData = fetchedData.map((activity) => {
       try {
