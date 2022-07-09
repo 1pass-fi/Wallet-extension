@@ -13,7 +13,8 @@ export default async (payload, tab, next) => {
     const network = ethers.providers.getNetwork(ethNetwork)
     const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
-    const chainId = await web3.eth.getChainId()
+    // const chainId = await web3.eth.getChainId()
+    const { chainId } = await web3.getNetwork()
 
     next({ data: '0x' + chainId })
   } catch (err) {

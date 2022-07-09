@@ -18,7 +18,8 @@ export default async (payload, tab, next) => {
     const network = ethers.providers.getNetwork(ethNetwork)
     const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
-    const estimatedGas = await web3.eth.estimateGas(rawTx)
+    // const estimatedGas = await web3.eth.estimateGas(rawTx)
+    const estimatedGas = await web3.estimateGas(rawTx)
 
     console.log('estimatedGas', estimatedGas)
 

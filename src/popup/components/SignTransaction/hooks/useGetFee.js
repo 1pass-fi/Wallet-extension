@@ -51,7 +51,6 @@ const useGetFee = ({ network, transactionPayload }) => {
     const network = ethers.providers.getNetwork(ethNetwork)
     const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
-
     const sourceAddress = get(transactionPayload, 'from')
     const recipientAddress = get(transactionPayload, 'to')
     const value = fromHexToDecimal(get(transactionPayload, 'value'))
@@ -70,8 +69,10 @@ const useGetFee = ({ network, transactionPayload }) => {
 
     console.log('rawTx', rawTx)
 
-    const gasPrice = await web3.eth.getGasPrice()
-    const gasUsed = await web3.eth.estimateGas(rawTx)
+    // const gasPrice = await web3.eth.getGasPrice()
+    const gasPrice = await web3.getGasPrice()
+    // const gasUsed = await web3.eth.estimateGas(rawTx)
+    const gasUsed = await web3.estimateGas(rawTx)
 
     console.log('gasPrice', gasPrice)
 

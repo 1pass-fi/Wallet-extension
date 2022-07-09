@@ -14,8 +14,8 @@ export default async (payload, tab, next) => {
     const network = ethers.providers.getNetwork(ethNetwork)
     const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
-    const blockNumber = await web3.eth.getBlockNumber()
-
+    // const blockNumber = await web3.eth.getBlockNumber()
+    const blockNumber = await web3.getBlockNumber()
     console.log('blockNumber', blockNumber)
 
     next({ data: blockNumber })

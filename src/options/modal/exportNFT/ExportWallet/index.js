@@ -202,7 +202,8 @@ export default ({ info, onClose, type }) => {
       const network = ethers.providers.getNetwork(ethNetwork)
       const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
-      const tokenContract = new web3.eth.Contract(koiTokenABI, tokenAddress)
+      // const tokenContract = new web3.eth.Contract(koiTokenABI, tokenAddress)
+      const tokenContract = new ethers.Contract(tokenAddress, koiTokenABI, web3)
       const koiRouterContractAddress =
         provider === ETH_NETWORK_PROVIDER.MAINNET
           ? KOI_ROUTER_CONTRACT.MAINNET
@@ -235,14 +236,17 @@ export default ({ info, onClose, type }) => {
         const network = ethers.providers.getNetwork(ethNetwork)
         const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
-        const koiRouterContract = new web3.eth.Contract(koiRouterABI, koiRouterContractAddress)
-        const tokenContract = new web3.eth.Contract(koiTokenABI, tokenAddress)
+        // const koiRouterContract = new web3.eth.Contract(koiRouterABI, koiRouterContractAddress)
+        const koiRouterContract = new ethers.Contract(koiRouterContractAddress, koiRouterABI, web3)
+        // const tokenContract = new web3.eth.Contract(koiTokenABI, tokenAddress)
+        const tokenContract = new ethers.Contract(tokenAddress, koiTokenABI, web3)
 
         let newEstimateGasUnit = 0
         if (isApproved) {
           newEstimateGasUnit = await koiRouterContract.methods
             .deposit(tokenAddress, txId, 1, address)
-            .estimateGas({ from: _ownerAddress, value: web3.utils.toWei('0.00015', 'ether') })
+            // .estimateGas({ from: _ownerAddress, value: web3.utils.toWei('0.00015', 'ether') })
+            .estimateGas({ from: _ownerAddress, value: ethers.utils.parseEther('0.00015') })
         } else {
           newEstimateGasUnit = await tokenContract.methods
             .setApprovalForAll(koiRouterContractAddress, true)
@@ -267,7 +271,8 @@ export default ({ info, onClose, type }) => {
         const network = ethers.providers.getNetwork(ethNetwork)
         const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
-        const currentGasPrice = await web3.eth.getGasPrice()
+        // const currentGasPrice = await web3.eth.getGasPrice()
+        const currentGasPrice = await web3.getGasPrice()
         setCurrentGasPrice(currentGasPrice)
       }
     }

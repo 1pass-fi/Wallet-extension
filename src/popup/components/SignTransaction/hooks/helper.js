@@ -19,7 +19,8 @@ const isContractAddress = async (address) => {
   const network = ethers.providers.getNetwork(ethNetwork)
   const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
-  const code = await web3.eth.getCode(address)
+  // const code = await web3.eth.getCode(address)
+  const code = await web3.getCode(address)
 
   return code !== '0x'
 }
