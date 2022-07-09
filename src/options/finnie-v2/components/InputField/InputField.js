@@ -94,7 +94,7 @@ const InputField = ({
             value={value}
             onChange={(e) => setValue(e)}
             disabled={isDisable}
-            type={password || !showPw ? 'password' : 'text'}
+            type={password || (passwordFinnie && !showPw) ? 'password' : 'text'}
           />
 
           {passwordFinnie && (
