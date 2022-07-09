@@ -47,8 +47,35 @@ const useMethod = ({
         if (contractAddress) {
           // send erc20 token
           console.log('send erc20 token')
-          const web3 = new Web3()
-          const hex = web3.eth.abi.encodeFunctionCall(
+          // const web3 = new Web3()
+          // const hex = web3.eth.abi.encodeFunctionCall(
+          //   {
+          //     constant: false,
+          //     inputs: [
+          //       {
+          //         name: '_to',
+          //         type: 'address'
+          //       },
+          //       {
+          //         name: '_value',
+          //         type: 'uint256'
+          //       }
+          //     ],
+          //     name: 'transfer',
+          //     outputs: [
+          //       {
+          //         name: '',
+          //         type: 'bool'
+          //       }
+          //     ],
+          //     payable: false,
+          //     stateMutability: 'nonpayable',
+          //     type: 'function'
+          //   },
+          //   [recipient, `${sendValue}`]
+          // )
+
+          const ABI = [
             {
               constant: false,
               inputs: [
@@ -71,9 +98,10 @@ const useMethod = ({
               payable: false,
               stateMutability: 'nonpayable',
               type: 'function'
-            },
-            [recipient, `${sendValue}`]
-          )
+            }
+          ]
+          const iface = new ethers.utils.Interface(ABI)
+          const hex = iface.encodeFunctionData('transfer', [recipient, `${sendValue}`])
 
           const transactionPayload = {
             from: sender,

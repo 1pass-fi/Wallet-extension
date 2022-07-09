@@ -666,8 +666,8 @@ export default ({ info, onClose, type }) => {
                     {isBridging
                       ? 'Bridging your NFT...'
                       : type === TYPE.ARWEAVE
-                      ? 'Confirm Transfer to AR'
-                      : 'Confirm Transfer to ETH'}
+                        ? 'Confirm Transfer to AR'
+                        : 'Confirm Transfer to ETH'}
                   </button>
                 )}
 

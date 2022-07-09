@@ -76,7 +76,7 @@ export class EthereumTool {
   #getWalletFromSeedPhrase(seedPhrase) {
     const seed = mnemonicToSeedSync(seedPhrase)
     const hdwallet = hdkey.fromMasterSeed(seed)
-    const wallet_hdpath = "m/44'/60'/0'/0/0"
+    const wallet_hdpath = 'm/44\'/60\'/0\'/0/0'
 
     const wallet = hdwallet.derivePath(wallet_hdpath).getWallet()
     const address = '0x' + wallet.getAddress().toString('hex')

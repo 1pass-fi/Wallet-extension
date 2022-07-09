@@ -767,12 +767,13 @@ export const winstonToAr = (value) => {
 }
 
 export const calculateGasFee = async ({ amount, senderAddress, toAddress, provider }) => {
-  const web3 = new Web3()
+  // const web3 = new Web3()
   koiTools.initializeEvmWalletAndProvider(senderAddress, provider)
 
   let amountToSend
   if (amount) {
-    amountToSend = web3.utils.toWei(amount.toString(), 'ether') // Convert to wei value
+    // amountToSend = web3.utils.toWei(amount.toString(), 'ether') // Convert to wei value
+    amountToSend = ethers.utils.parseEther(amount.toString(), 'ether') // Convert to wei value
   }
 
   const rawTx = {
@@ -845,7 +846,8 @@ export const isArweaveAddress = (arAddress) => {
 
 export const isEthereumAddress = (ethAddress) => {
   try {
-    return Web3.utils.isAddress(ethAddress?.toUpperCase())
+  	// return Web3.utils.isAddress(ethAddress?.toUpperCase())
+  	return ethers.utils.isAddress(ethAddress?.toUpperCase())
   } catch (error) {
     console.log('Failed to verify Ethereum Address: ', ethAddress, error.message)
     return false

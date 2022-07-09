@@ -562,16 +562,16 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
           <div className="px-9 mt-8 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
             {transactionType !== TRANSACTION_TYPE.CONTRACT_DEPLOYMENT &&
               transactionType !== TRANSACTION_TYPE.CONTRACT_INTERACTION && (
-                <div className="flex mb-4">
-                  <div style={{ width: '142px' }}>Amount</div>
-                  <div className="flex font-normal text-sm items-center">
-                    {value} {symbol}
-                    <div className="ml-1 w-4 h-4">
-                      <TokenIcon />
-                    </div>
+              <div className="flex mb-4">
+                <div style={{ width: '142px' }}>Amount</div>
+                <div className="flex font-normal text-sm items-center">
+                  {value} {symbol}
+                  <div className="ml-1 w-4 h-4">
+                    <TokenIcon />
                   </div>
                 </div>
-              )}
+              </div>
+            )}
             <div className="flex mb-4">
               <div style={{ width: '142px' }}>From</div>
               <div className="flex flex-col font-normal text-sm items-start">

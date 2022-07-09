@@ -54,7 +54,8 @@ export class EthereumMethod {
   }
 
   async getBalances() {
-    const balance = Web3.utils.fromWei(await this.eth.getBalance())
+    // const balance = Web3.utils.fromWei(await this.eth.getBalance())
+    const balance = ethers.utils.formatEther(await this.eth.getBalance())
     const koiBalance = 100
     return { balance, koiBalance }
   }
