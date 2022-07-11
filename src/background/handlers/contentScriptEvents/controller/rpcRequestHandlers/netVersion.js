@@ -15,6 +15,7 @@ export default async (payload, tab, next) => {
     const network = ethers.providers.getNetwork(ethNetwork)
     const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
+    // TODO - DatH Switch to ethers
     networkId = await web3.eth.net.getId()
 
     next({ data: networkId })

@@ -23,12 +23,16 @@ const useGetTokenBalance = ({ contractAddress, account }) => {
 
         const network = ethers.providers.getNetwork(ethNetwork)
         const web3 = new ethers.providers.InfuraProvider(network, apiKey)
-    
-        const tokenContract = new web3.eth.Contract(ERC20_ABI, contractAddress)
 
-        const symbol = await tokenContract.methods.symbol().call()
-        const balance = await tokenContract.methods.balanceOf(account.address).call()
-        const decimal = await tokenContract.methods.decimals().call()
+        // const tokenContract = new web3.eth.Contract(ERC20_ABI, contractAddress)
+        const tokenContract = new ethers.Contract(contractAddress, ERC20_ABI, web3)
+
+        // const symbol = await tokenContract.methods.symbol().call()
+        // const balance = await tokenContract.methods.balanceOf(userAddress).call()
+        // const decimal = await tokenContract.methods.decimals().call()
+        const symbol = await tokenContract.symbol()
+        const balance = await tokenContract.balanceOf(userAddress)
+        const decimal = await tokenContract.decimals()
 
         setTokenSymbol(symbol)
         setBalance(balance)

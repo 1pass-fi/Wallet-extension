@@ -103,7 +103,8 @@ export default async (payload, tab, next) => {
                 // const estimateGas = await web3.eth.estimateGas(rawTx)
                 const estimateGas = await web3.estimateGas(rawTx)
                 rawTx.gas = estimateGas
-
+                
+                // TODO - DatH Switch to ethers
                 const signTx = await web3.eth.accounts.signTransaction(rawTx, key)
                 const receipt = await web3.eth.sendSignedTransaction(signTx.rawTransaction)
 
