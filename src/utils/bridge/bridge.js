@@ -19,19 +19,30 @@ const fromEthToArweave = async () => {
     const network = ethers.providers.getNetwork(ethNetwork)
     const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
-    const addresses = await web3.eth.getAccounts()
+    // const addresses = await web3.eth.getAccounts()
+    const addresses = await web3.listAccounts()
     console.log('addresses: ', addresses)
     /* 
       create contract from koiToken/user nft contract address, it can be koiNFt contract or any other nfts contract
     */
-    const nftContract = new web3.eth.Contract(ABI2, '0xff3096ED566445c9F24F615b3afD6677AD4Dcba4')
+    // const nftContract = new web3.eth.Contract(ABI2, '0xff3096ED566445c9F24F615b3afD6677AD4Dcba4')
+    const nftContract = new ethers.Contract(
+      '0xff3096ED566445c9F24F615b3afD6677AD4Dcba4',
+      ABI2,
+      web3
+    )
 
     /* 
       create contract from koiRouter contract address 0xD1183ad3B7934466aCB98D17B85Ced15999EA3AC
     */
-    const koiRouterContract = new web3.eth.Contract(
+    // const koiRouterContract = new web3.eth.Contract(
+    //   ABI,
+    //   '0xD1183ad3B7934466aCB98D17B85Ced15999EA3AC'
+    // )
+    const koiRouterContract = new ethers.Contract(
+      '0xD1183ad3B7934466aCB98D17B85Ced15999EA3AC',
       ABI,
-      '0xD1183ad3B7934466aCB98D17B85Ced15999EA3AC'
+      web3
     )
 
     const isApprove = await nftContract.methods

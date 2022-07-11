@@ -416,8 +416,10 @@ export class EthereumMethod {
 
     const userAddress = this.eth.address
 
-    const koiRouterContract = new web3.eth.Contract(koiRouterABI, koiRouterContractAddress)
-    const tokenContract = new web3.eth.Contract(koiTokenABI, tokenAddress)
+    // const koiRouterContract = new web3.eth.Contract(koiRouterABI, koiRouterContractAddress)
+    const koiRouterContract = new ethers.Contract(koiRouterContractAddress, koiRouterABI, web3)
+
+    const tokenContract = new web3.eth.Contract(tokenAddress, koiTokenABI, web3)
 
     /* 
       Check for approval
@@ -620,9 +622,11 @@ export class EthereumMethod {
     const network = ethers.providers.getNetwork(ethNetwork)
     const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
-    const tokenContract = new web3.eth.Contract(ERC20ABI, tokenContractAddress)
+    // const tokenContract = new web3.eth.Contract(ERC20ABI, tokenContractAddress)
+    const tokenContract = new ethers.Contract(tokenContractAddress, ERC20ABI, web3)
 
-    const decimals = await tokenContract.methods.decimals().call()
+    // const decimals = await tokenContract.methods.decimals().call()
+    const decimals = await tokenContract.decimals()
     const amount = parseFloat(value) * Math.pow(10, decimals)
 
     const rawTx = {
