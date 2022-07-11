@@ -15,9 +15,24 @@ export class EthereumTool {
   #web3
   constructor(provider) {
     this.#provider = provider || ETH_NETWORK_PROVIDER.MAINNET
+
+    const clarifyEthereumProvider = (ethProvider) => {
+      try {
+        let ethNetwork, apiKey
+        const providerArray = ethProvider.split('/')
+        apiKey = providerArray[4]
+        ethNetwork = providerArray[2].split('.')[0]
+        return { ethNetwork, apiKey }
+      } catch (err) {
+        console.error('Failed to clarify Ethereum Provider - error: ', err.message)
+        return { ethNetwork: 'mainnet', apiKey: 'f811f2257c4a4cceba5ab9044a1f03d2' }
+      }
+    }
+
     const { ethNetwork, apiKey } = clarifyEthereumProvider(this.#provider)
 
     const network = ethers.providers.getNetwork(ethNetwork)
+
     this.#web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
     this.key = null
