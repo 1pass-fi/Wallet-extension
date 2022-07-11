@@ -449,7 +449,8 @@ export class EthereumMethod {
       try {
         const depositResult = await koiRouterContract.methods
           .deposit(tokenAddress, tokenId, 1, toAddress)
-          .send({ from: userAddress, value: web3.utils.toWei('0.00015', 'ether') })
+          // .send({ from: userAddress, value: web3.utils.toWei('0.00015', 'ether') })
+          .send({ from: userAddress, value: ethers.utils.parseEther('0.00015') })
         console.log('====== Deposit receipt ', depositResult)
         return { success: true, action: ETH_NFT_BRIDGE_ACTION.DEPOSIT }
       } catch (error) {
@@ -627,12 +628,15 @@ export class EthereumMethod {
       to: tokenContractAddress,
       data: tokenContract.methods.transfer(to, value).encodeABI()
     }
-    const estimateGas = await web3.eth.estimateGas(rawTx)
+    const estimateGas = await web3.estimateGas(rawTx)
     rawTx.gas = estimateGas
 
-    const signedTx = await web3.eth.accounts.signTransaction(rawTx, this.eth.key)
-    const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction)
-
+    // TODO - DatH Switch to ethers
+    // const signedTx = await web3.eth.accounts.signTransaction(rawTx, this.eth.key)
+    // const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction)
+    const signer = new ethers.Wallet(this.ethkey, web3)
+    const signTx = await signer.signTransaction(rawTx)
+    const receipt = await web3.sendTransaction(signTx)
     return receipt
   }
 
