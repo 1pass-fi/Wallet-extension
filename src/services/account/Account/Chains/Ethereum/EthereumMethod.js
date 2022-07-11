@@ -235,28 +235,22 @@ export class EthereumMethod {
   // }
 
   async updateActivities() {
-    const provider = await storage.setting.get.ethereumProvider()
-    console.log('providerr ======', provider)
-    const { ethNetwork, apiKey } = ethereumAssets.clarifyEthereumProvider(provider)
-    const network = ethers.providers.getNetwork(ethNetwork)
-    const web3 = new ethers.providers.InfuraProvider(network, apiKey)
+    let etherscanNetwork, network
 
-    let providerNetwork, currentNetwork
+    network = this.eth.getCurrentNetWork()
 
-    currentNetwork = this.eth.getCurrentNetWork()
-
-    switch (currentNetwork) {
+    switch (network) {
       case ETH_NETWORK_PROVIDER.RINKEBY:
-        providerNetwork = 'rinkeby'
+        etherscanNetwork = 'rinkeby'
         break
       default:
-        providerNetwork = 'homestead'
+        etherscanNetwork = 'homestead'
     }
 
     const walletAddress = this.eth.address
     const etherscanAPIKey = 'USBA7QPN747A6KGYFCSY42KZ1W9JGFI2YB'
     const etherscanProvider = new ethers.providers.EtherscanProvider(
-      providerNetwork,
+      etherscanNetwork,
       etherscanAPIKey
     )
 
@@ -267,7 +261,10 @@ export class EthereumMethod {
 
     const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
 
-    const interfaceABI = new ethers.utils.Interface(ERC20ABI)
+    const provider = await storage.setting.get.ethereumProvider()
+    const { ethNetwork, apiKey } = ethereumAssets.clarifyEthereumProvider(provider)
+    const _network = ethers.providers.getNetwork(ethNetwork)
+    const web3 = new ethers.providers.InfuraProvider(_network, apiKey)
 
     fetchedData = await Promise.all(
       fetchedData.map(async (activity) => {
@@ -275,37 +272,36 @@ export class EthereumMethod {
           let token = 'ETH',
             decimals = 18,
             expense = activity.value,
-            to = activity.to
+            to = activity.to,
+            gasFee = 0
 
           let id, activityName, date, source, time
 
           id = activity.hash
 
-          if (await ethereumAssets.isInteractWithContract(activity, web3)) {
-            const contract = new ethers.Contract(activity.to, ERC20ABI, etherscanProvider)
+          if (await ethereumAssets.isInteractWithContract(activity)) {
+            const contract = new ethers.Contract(activity.to, ERC20ABI, web3)
             token = await contract.symbol()
             decimals = await contract.decimals()
 
-            const decodedInput = await ethereumAssets.decodeTransactionData(
-              id,
-              interfaceABI,
-              etherscanProvider
-            )
+            const decodedInput = await ethereumAssets.decodeTransactionData(id)
             to = decodedInput.args[0]
             expense = Number(decodedInput.args[1])
           }
-
+          
           if (activity.from.toLowerCase() === this.eth.address.toLowerCase()) {
-            console.log('Should be thissss')
             activityName = `Sent ${token}`
             source = to
+
+            if (token === 'ETH') {
+              const receipt = await web3.getTransactionReceipt(id)
+              gasFee = (Number(receipt.gasUsed) * Number(activity.gasPrice)) / 1000000000000000000
+            }
           } else {
             activityName = `Received ${token}`
             source = activity.from
           }
 
-          const gasFee =
-            (Number(activity.gasLimit) * Number(activity.gasPrice)) / 1000000000000000000
           const expenseValue = expense / Math.pow(10, decimals)
 
           expense = gasFee + expenseValue
@@ -321,7 +317,7 @@ export class EthereumMethod {
             date,
             source,
             time,
-            currentNetwork,
+            network,
             address: this.eth.address
           }
         } catch (err) {
