@@ -1,7 +1,8 @@
 // import Web3 from 'web3'
 import { ethers } from 'ethers'
 
-import { clarifyEthereumProvider } from 'utils'
+// import { clarifyEthereumProvider } from 'constants/koiConstants'
+// import { clarifyEthereumProvider } from 'utils'
 
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
 import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
@@ -43,7 +44,8 @@ export class EthereumTool {
   importWallet(payload, type) {
     let wallet
     if (type === 'key') {
-      wallet = this.#web3.eth.accounts.privateKeyToAccount(payload)
+      // wallet = this.#web3.eth.accounts.privateKeyToAccount(payload)
+      wallet = new ethers.Wallet(payload, this.#web3)
     } else {
       wallet = this.#getWalletFromSeedPhrase(payload)
     }
@@ -54,7 +56,8 @@ export class EthereumTool {
   }
 
   async getBalance() {
-    return this.#web3.eth.getBalance(this.address)
+    // return this.#web3.eth.getBalance(this.address)
+    return this.#web3.getBalance(this.address)
   }
 
   async transferEth(toAddress, amount) {
@@ -66,7 +69,8 @@ export class EthereumTool {
   }
 
   async getTransactionStatus(txHash) {
-    return this.#web3.eth.getTransactionReceipt(txHash)
+    // return this.#web3.eth.getTransactionReceipt(txHash)
+    return this.#web3.getTransactionReceipt(txHash)
   }
 
   /*
@@ -83,7 +87,8 @@ export class EthereumTool {
     console.log('address: ', address)
 
     const privateKey = wallet.getPrivateKey().toString('hex')
-    const restoredWallet = this.#web3.eth.accounts.privateKeyToAccount(privateKey)
+    // const restoredWallet = this.#web3.eth.accounts.privateKeyToAccount(privateKey)
+    const restoredWallet = new ethers.Wallet(privateKey, this.#web3)
 
     return restoredWallet
   }

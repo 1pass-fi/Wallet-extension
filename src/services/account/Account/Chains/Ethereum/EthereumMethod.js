@@ -607,8 +607,10 @@ export class EthereumMethod {
     }
   }
 
+  // TODO - DatH Switch to ethers
   async getNetworkId() {
-    return this.eth.web3().eth.net.getId()
+    // return this.eth.web3().eth.net.getId()
+    return (await this.eth.web3().getNetwork()).chainID
   }
 
   async transferToken({ tokenContractAddress, to, value }) {
