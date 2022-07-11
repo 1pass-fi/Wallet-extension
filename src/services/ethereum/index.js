@@ -7,8 +7,8 @@ import { ethers } from 'ethers'
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
 import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 import hdkey from 'ethereumjs-wallet/dist/hdkey'
-// import { Web } from '@_koi/sdk/web'
-const Web = () => ({})
+
+import { Web } from '@_koi/sdk/web'
 
 export class EthereumTool {
   #provider

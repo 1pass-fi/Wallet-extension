@@ -1,5 +1,4 @@
-// import { Web } from '@_koi/sdk/web'
-const Web = () => ({})
+import { Web } from '@_koi/sdk/web'
 
 import { MOCK_COLLECTIONS_STORE, STORAGE } from 'constants/koiConstants'
 import { isString } from 'lodash'

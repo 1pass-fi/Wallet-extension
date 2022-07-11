@@ -1,5 +1,4 @@
-// import { Web } from '@_koi/sdk/web'
-const Web = () => ({})
+import { Web } from '@_koi/sdk/web'
 
 import axios from 'axios'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'

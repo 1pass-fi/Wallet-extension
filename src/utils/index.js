@@ -15,9 +15,10 @@ import { get, isArray, isEmpty, isNumber } from 'lodash'
 import capitalize from 'lodash/capitalize'
 
 import Arweave from 'arweave/node'
-// import { Web } from '@_koi/sdk/web'
-const Web = () => ({})
 import axios from 'axios'
+
+import { Web } from '@_koi/sdk/web'
+
 import passworder from 'browser-passworder'
 import {
   ALL_NFT_LOADED,
