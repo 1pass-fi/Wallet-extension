@@ -68,11 +68,11 @@ const HomeTop = ({
       // load balance
       await request.wallet.loadBalanceAsync()
 
-      chrome.scripting.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.scripting.sendMessage(tabs[0].id, { type: MESSAGES.NETWORK_CHANGED })
       })
 
-      chrome.scripting.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.scripting.sendMessage(tabs[0].id, { type: MESSAGES.CHAIN_CHANGED })
       })
 

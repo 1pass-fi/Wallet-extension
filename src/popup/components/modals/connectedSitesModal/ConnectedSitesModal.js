@@ -111,7 +111,7 @@ const ConnectedSitesModal = ({ onClose, setError, setIsLoading }) => {
 
       await storage.setting.set.siteConnectedAddresses(siteConnectedStorage)
 
-      chrome.scripting.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.scripting.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
       })
 

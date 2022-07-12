@@ -18,7 +18,7 @@ export default async (payload, tab, next) => {
       const path = '/options.html'
       const url = chrome.runtime.getURL(path)
       next({ error: 'Please import your wallet.' })
-      chrome.scripting.create({ url })
+      chrome.tabs.create({ url })
       return
     } else {
       const arWalletCount = await backgroundAccount.count(TYPE.ARWEAVE)

@@ -43,12 +43,12 @@ const Header = ({ setShowConnectedSites }) => {
   const goToDID = () => {
     const DID = defaultArweaveAccount?.didData?.state?.kID
     const url = 'https://koii.id/' + (DID || '')
-    chrome.scripting.create({ url })
+    chrome.tabs.create({ url })
   }
 
   const goToReportAnIssue = () => {
     const url = 'https://share.hsforms.com/1Nmy8p6zWSN2J2skJn5EcOQc20dg'
-    chrome.scripting.create({ url })
+    chrome.tabs.create({ url })
   }
 
   const handleDisableFinnie = async () => {

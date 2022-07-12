@@ -69,14 +69,14 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
 
       if (unlocked) {
 		setIsWalletLocked(false)
-        chrome.scripting.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
           chrome.scripting.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
         })
 
         history.push('/tokens')
 
 		/* Reload gallery page after unlocked */
-        chrome.scripting.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
+        chrome.tabs.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
           tabs.map((tab) => tab.url.includes('options') && chrome.scripting.reload(tab.id))
         })
       } else {

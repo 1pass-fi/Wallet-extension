@@ -6,12 +6,12 @@ import LockIcon from 'img/popup/lock-icon.svg'
 const NavBar = ({ handleLockWallet }) => {
   const goToGallery = () => {
     const url = chrome.runtime.getURL('options.html#/gallery')
-    chrome.scripting.create({ url })
+    chrome.tabs.create({ url })
   }
 
   const goToCreateNft = () => {
     const url = chrome.runtime.getURL('options.html#/create-nft')
-    chrome.scripting.create({ url })
+    chrome.tabs.create({ url })
   }
 
   return (

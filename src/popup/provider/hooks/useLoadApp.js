@@ -196,7 +196,7 @@ const useLoadApp = ({
 
       history.push(PATH.LOGIN)
 
-      chrome.scripting.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
+      chrome.tabs.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
         tabs.map((tab) => chrome.scripting.reload(tab.id))
       })
     } else {

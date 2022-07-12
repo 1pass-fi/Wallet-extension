@@ -5,7 +5,7 @@ import NFTMedia from 'options/components/NFTMedia'
 const NFTCard = ({ nft }) => {
   const goToNft = () => {
     const url = chrome.runtime.getURL(`options.html#/nfts/${nft.txId}`)
-    chrome.scripting.create({ url })
+    chrome.tabs.create({ url })
   }
 
   return (

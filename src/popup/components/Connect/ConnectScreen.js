@@ -102,7 +102,7 @@ const ConnectScreen = ({
 
   const goToTOU = () => {
     const url = 'https://koii.network/TOU_June_22_2021.pdf'
-    chrome.scripting.create({ url })
+    chrome.tabs.create({ url })
   }
 
   const handleOnClick = async (accept) => {
