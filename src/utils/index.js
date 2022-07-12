@@ -873,3 +873,16 @@ export const fromEthToWei = (value) => value * 1000000000000000000
 export const fromWeiToEth = (value) => value / 1000000000000000000
 export const fromSolToLamp = (value) => value * 1000000000
 export const fromLampToSol = (value) => value / 1000000000
+
+export const clarifyEthereumProvider = (ethProvider) => {
+  try {
+    let ethNetwork, apiKey
+    const providerArray = ethProvider.split('/')
+    apiKey = providerArray[4]
+    ethNetwork = providerArray[2].split('.')[0]
+    return { ethNetwork, apiKey }
+  } catch (err) {
+    console.error('Failed to clarify Ethereum Provider - error: ', err.message)
+    return { ethNetwork: 'rinkeby', apiKey: 'f811f2257c4a4cceba5ab9044a1f03d2' }
+  }
+}

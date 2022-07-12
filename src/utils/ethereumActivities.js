@@ -3,19 +3,7 @@ import { ethers } from 'ethers'
 
 import storage from 'services/storage'
 import ERC20ABI from 'services/account/Account/Chains/Ethereum/abi/ERC20ABI.json'
-
-export const clarifyEthereumProvider = (ethProvider) => {
-  try {
-    let ethNetwork, apiKey
-    const providerArray = ethProvider.split('/')
-    apiKey = providerArray[4]
-    ethNetwork = providerArray[2].split('.')[0]
-    return { ethNetwork, apiKey }
-  } catch (err) {
-    console.error('Failed to clarify Ethereum Provider - error: ', err.message)
-    return { ethNetwork: 'mainnet', apiKey: 'f811f2257c4a4cceba5ab9044a1f03d2' }
-  }
-}
+import { clarifyEthereumProvider } from 'utils'
 
 export const isContractAddress = async (address) => {
   const provider = await storage.setting.get.ethereumProvider()

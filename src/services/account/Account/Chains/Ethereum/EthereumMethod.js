@@ -27,6 +27,7 @@ import {
 
 import axios from 'axios'
 import * as ethereumAssets from 'utils/ethereumActivities'
+import { clarifyEthereumProvider } from 'utils'
 
 import HDWalletProvider from '@truffle/hdwallet-provider'
 import Web3 from 'web3'
@@ -262,7 +263,7 @@ export class EthereumMethod {
     const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
 
     const provider = await storage.setting.get.ethereumProvider()
-    const { ethNetwork, apiKey } = ethereumAssets.clarifyEthereumProvider(provider)
+    const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
     const _network = ethers.providers.getNetwork(ethNetwork)
     const web3 = new ethers.providers.InfuraProvider(_network, apiKey)
 
@@ -288,7 +289,7 @@ export class EthereumMethod {
             to = decodedInput.args[0]
             expense = Number(decodedInput.args[1])
           }
-          
+
           if (activity.from.toLowerCase() === this.eth.address.toLowerCase()) {
             activityName = `Sent ${token}`
             source = to
