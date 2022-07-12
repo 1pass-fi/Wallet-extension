@@ -848,7 +848,7 @@ export const isArweaveAddress = (arAddress) => {
 export const isEthereumAddress = (ethAddress) => {
   try {
     // return Web3.utils.isAddress(ethAddress?.toUpperCase())
-    return ethers.utils.isAddress(ethAddress?.toUpperCase())
+    return ethers.utils.isAddress(ethAddress)
   } catch (error) {
     console.log('Failed to verify Ethereum Address: ', ethAddress, error.message)
     return false
