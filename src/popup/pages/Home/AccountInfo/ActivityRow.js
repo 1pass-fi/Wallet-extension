@@ -125,9 +125,9 @@ const ActivityRow = ({
             !seen && 'font-semibold'
           )}
         >
-          <div className="w-full flex flex-col relative pt-2">
+          <div className="w-3/5 flex flex-col relative pt-2">
             {!seen && (
-              <div className="absolute -left-4.25 top-3.25">
+              <div className="absolute -left-3.25 top-3.25">
                 <GreenDotIcon />
               </div>
             )}
@@ -142,7 +142,7 @@ const ActivityRow = ({
             )}
             <div className="text-xs font-semibold text-blue-800 leading-5">{accountName}</div>
           </div>
-          <div className="w-full flex flex-col items-end text-right pt-2">
+          <div className="w-2/5 flex flex-col items-end text-right pt-2">
             <div
               className={`text-sm font-semibold rounded-sm px-1 text-blue-800 ${
                 get(displayInfo, 'expenseText').includes('-') ? 'bg-warning' : 'bg-success'
