@@ -53,6 +53,7 @@ const AccountCard = ({
 
   const [showHex, setShowHex] = useState(true)
   const [showEmptyToken, setShowEmptyToken] = useState(true)
+  const [totalViews, setTotalViews] = useState(0)
 
   const dispatch = useDispatch()
 
@@ -159,8 +160,19 @@ const AccountCard = ({
       }
     }
 
+    const countTotalViews = () => {
+      let totalAssetViews = 0
+      if (account.type === TYPE.ARWEAVE) {
+        for (let asset of account.totalAssets) {
+          totalAssetViews += asset.totalViews
+        }
+      }
+      setTotalViews(totalAssetViews)
+    }
+
     loadConnectedSites()
     getCurrentProvider(account.type)
+    countTotalViews()
   }, [account])
 
   const isDefaultAccount = (account) => {
@@ -471,7 +483,6 @@ const AccountCard = ({
               Coins
             </div>
           </div>
-
           <div
             className="flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1"
             style={{ width: '75px', height: '75px' }}
@@ -483,18 +494,29 @@ const AccountCard = ({
               Assets
             </div>
           </div>
-
-          <div
-            className="flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1"
-            style={{ width: '75px', height: '75px' }}
-          >
-            <div className="flex items-center text-center font-normal text-xl leading-8 tracking-finnieSpacing-tight">
-              1.234
+          {account.type === TYPE.ARWEAVE ? (
+            <div
+              className="flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1"
+              style={{ width: '75px', height: '75px' }}
+            >
+              <div className="flex items-center text-center font-normal text-xl leading-8 tracking-finnieSpacing-tight">
+                {totalViews}
+              </div>
+              <div className="flex items-center text-center font-normal text-xs tracking-finnieSpacing-tight">
+                Views
+              </div>
             </div>
-            <div className="flex items-center text-center font-normal text-xs tracking-finnieSpacing-tight">
-              Views
+          ) : (
+            <div
+              className={clsx(
+                'flex flex-col justify-center items-center shadow-sm bg-trueGray-400 rounded',
+                'font-normal text-xs text-center tracking-finnieSpacing-tight'
+              )}
+              style={{ width: '75px', height: '75px' }}
+            >
+              Coming Soon
             </div>
-          </div>
+          )}
         </div>
         <div className="h-full flex flex-col justify-between items-center ml-4">
           {/* TODO DatH - Change account with star clicking */}
