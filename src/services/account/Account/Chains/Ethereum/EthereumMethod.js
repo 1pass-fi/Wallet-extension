@@ -170,8 +170,6 @@ export class EthereumMethod {
     let fetchedData = await etherscanProvider.getHistory(walletAddress)
     fetchedData = fetchedData.reverse() // Descending transactions
 
-    console.log('fetchedData----------------', fetchedData)
-
     const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
 
     const provider = await storage.setting.get.ethereumProvider()
@@ -208,7 +206,7 @@ export class EthereumMethod {
 
             if (token === 'ETH') {
               const receipt = await web3.getTransactionReceipt(id)
-              gasFee = (Number(receipt.gasUsed) * Number(activity.gasPrice)) / 1000000000000000000
+              gasFee = (Number(receipt.gasUsed) * Number(activity.gasPrice)) / Math.pow(10, 18)
             }
           } else {
             activityName = `Received ${token}`
