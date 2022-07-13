@@ -26,9 +26,12 @@ import {
 } from 'constants/koiConstants'
 
 import axios from 'axios'
+import * as ethereumAssets from 'utils/ethereumActivities'
+import { clarifyEthereumProvider } from 'utils'
 
 import HDWalletProvider from '@truffle/hdwallet-provider'
 import Web3 from 'web3'
+import { ethers } from 'ethers'
 import koiRouterABI from './abi/KoiRouter.json'
 import koiTokenABI from './abi/KoiToken.json'
 import ERC20ABI from './abi/ERC20ABI.json'
@@ -145,76 +148,95 @@ export class EthereumMethod {
   }
 
   async updateActivities() {
-    let baseUrl, url, network
+    let etherscanNetwork, network
 
     network = this.eth.getCurrentNetWork()
 
     switch (network) {
       case ETH_NETWORK_PROVIDER.RINKEBY:
-        baseUrl = ETHERSCAN_API.RINKEY
+        etherscanNetwork = 'rinkeby'
         break
       default:
-        baseUrl = ETHERSCAN_API.MAINNET
+        etherscanNetwork = 'homestead'
     }
 
     const walletAddress = this.eth.address
-    const offset = 1000
     const etherscanAPIKey = 'USBA7QPN747A6KGYFCSY42KZ1W9JGFI2YB'
+    const etherscanProvider = new ethers.providers.EtherscanProvider(
+      etherscanNetwork,
+      etherscanAPIKey
+    )
 
-    url = [
-      `${baseUrl}/`,
-      'api?module=account',
-      '&action=txlist',
-      `&address=${walletAddress}`,
-      '&startblock=0&endblock=99999999',
-      `&page=1&offset=${offset}`,
-      '&sort=desc',
-      `&apikey=${etherscanAPIKey}`
-    ]
+    let fetchedData = await etherscanProvider.getHistory(walletAddress)
+    fetchedData = fetchedData.reverse() // Descending transactions
 
-    url = url.join('')
-
-    let resp = await axios.get(url)
-
-    let fetchedData = resp.data.result
     const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
-    fetchedData = fetchedData.map((activity) => {
-      try {
-        let id, activityName, expense, date, source, time
 
-        id = activity.hash
-        if (activity.from === this.eth.address.toLowerCase()) {
-          activityName = 'Sent ETH'
-          source = activity.to
-        } else {
-          activityName = 'Received ETH'
-          source = activity.from
+    const provider = await storage.setting.get.ethereumProvider()
+    const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
+    const _network = ethers.providers.getNetwork(ethNetwork)
+    const web3 = new ethers.providers.InfuraProvider(_network, apiKey)
+
+    fetchedData = await Promise.all(
+      fetchedData.map(async (activity) => {
+        try {
+          let token = 'ETH',
+            decimals = 18,
+            expense = activity.value,
+            to = activity.to,
+            gasFee = 0
+
+          let id, activityName, date, source, time
+
+          id = activity.hash
+
+          if (await ethereumAssets.isInteractWithContract(activity)) {
+            const contract = new ethers.Contract(activity.to, ERC20ABI, web3)
+            token = await contract.symbol()
+            decimals = await contract.decimals()
+
+            const decodedInput = await ethereumAssets.decodeTransactionData(id)
+            to = decodedInput.args[0]
+            expense = Number(decodedInput.args[1])
+          }
+
+          if (activity.from.toLowerCase() === this.eth.address.toLowerCase()) {
+            activityName = `Sent ${token}`
+            source = to
+
+            if (token === 'ETH') {
+              const receipt = await web3.getTransactionReceipt(id)
+              gasFee = (Number(receipt.gasUsed) * Number(activity.gasPrice)) / Math.pow(10, 18)
+            }
+          } else {
+            activityName = `Received ${token}`
+            source = activity.from
+          }
+
+          const expenseValue = expense / Math.pow(10, decimals)
+
+          expense = gasFee + expenseValue
+          date = moment(Number(activity.timestamp) * 1000).format('MMMM DD YYYY')
+
+          time = activity.timestamp
+
+          return {
+            id,
+            activityName,
+            expense,
+            accountName,
+            date,
+            source,
+            time,
+            network,
+            address: this.eth.address
+          }
+        } catch (err) {
+          console.error(err.message)
+          return {}
         }
-
-        const gasFee = (activity.gasUsed * activity.gasPrice) / 1000000000000000000
-        const expenseValue = activity.value / 1000000000000000000
-
-        expense = gasFee + expenseValue
-        date = moment(Number(activity.timeStamp) * 1000).format('MMMM DD YYYY')
-
-        time = activity.timeStamp
-
-        return {
-          id,
-          activityName,
-          expense,
-          accountName,
-          date,
-          source,
-          time,
-          network,
-          address: this.eth.address
-        }
-      } catch (err) {
-        console.error(err.message)
-        return {}
-      }
-    })
+      })
+    )
 
     const oldActivites = (await this.#chrome.getActivities()) || []
     const newestOfOldActivites = oldActivites[0]
