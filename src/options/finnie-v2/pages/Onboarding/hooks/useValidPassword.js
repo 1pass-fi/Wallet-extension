@@ -11,9 +11,6 @@ const useValidPassword = ({ password, confirmPassword }) => {
   const validatePassword = () => {
     setIsValidPassword(false)
 
-    console.log('password', password)
-    console.log('confirmPassword', confirmPassword)
-
     if (password?.length < 8) {
       setIsValidPassword(false)
       setPasswordErrorMessage(VALIDATE_ERROR_MESSAGE.NOT_ENOUGH_CHARACTERS)

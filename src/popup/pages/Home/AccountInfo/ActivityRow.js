@@ -137,7 +137,7 @@ const ActivityRow = ({
             {(activityName.includes('Received') || activityName.includes('Sent')) && (
               <div className="text-xs text-blue-800">
                 {activityName.includes('Sent') ? 'to' : 'from'}{' '}
-                <span className="text-success-700">{formatLongString(source, 10)}</span>
+                <span className="text-success-700">{formatLongString(source, 10, true)}</span>
               </div>
             )}
             <div className="text-xs font-semibold text-blue-800 leading-5">{accountName}</div>
