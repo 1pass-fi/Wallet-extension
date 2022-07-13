@@ -128,7 +128,9 @@ export const AccountDropdown = React.forwardRef(
                   {formatLongString(account.accountName, 12)}
                 </div>
                 <div className="font-normal text-2xs leading-4 tracking-finnieSpacing-tight text-turquoiseBlue flex justify-between items-center">
-                  {formatLongString(account.address, 20)}
+                  <span style={{ width: '140px' }} className="break-all">
+                    {formatLongString(account.address, 20, true)}
+                  </span>
                   <CopyIcon
                     onClick={(e) => {
                       e.stopPropagation()
