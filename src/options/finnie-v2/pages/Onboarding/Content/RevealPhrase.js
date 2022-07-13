@@ -16,6 +16,15 @@ const RevealPhrase = ({ step }) => {
   const { setIsOnboarding } = useContext(GalleryContext)
   const history = useHistory()
 
+  const openFaucet = () => {
+    chrome.tabs.create({ url: 'https://koi.rocks/faucet' })
+  }
+
+  const openCreateNFTPage = () => {
+    const url = chrome.extension.getURL('options.html#/create-nft')
+    chrome.tabs.create({ url })
+  }
+
   return (
     <div className="flex flex-col items-center justify-center text-white text-left w-full pr-4">
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
@@ -58,6 +67,7 @@ const RevealPhrase = ({ step }) => {
             variant="primary"
             text="Get Free KOII"
             size="lg"
+            onClick={openFaucet}
           />
         </div>
         <div className="flex flex-col items-center" style={{ width: '300px' }}>
@@ -72,6 +82,7 @@ const RevealPhrase = ({ step }) => {
             variant="warningDefault"
             text="Create an NFT"
             size="lg"
+            onClick={openCreateNFTPage}
           />
         </div>
       </div>
