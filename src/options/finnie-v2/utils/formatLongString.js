@@ -22,9 +22,13 @@ const formatLongString = (inputStr, maxLength, isAddress = false) => {
 }
 
 export const formatLongStringTruncate = (inputStr, maxLength) => {
-  const strLength = inputStr.length
-  if (strLength <= maxLength) return inputStr
-  return `${inputStr.substring(0, maxLength)}...`
+  try {
+    const strLength = inputStr.length
+    if (strLength <= maxLength) return inputStr
+    return `${inputStr.substring(0, maxLength)}...`
+  } catch (err) {
+    console.error('formatLongStringTruncate: ', err)
+  }
 }
 
 export default formatLongString

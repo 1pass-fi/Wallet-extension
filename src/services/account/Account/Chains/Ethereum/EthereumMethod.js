@@ -247,6 +247,10 @@ export class EthereumMethod {
       for (let i = 0; i < idx; i++) {
         fetchedData[i].seen = false
       }
+    } else {
+      for (let i = 0; i < fetchedData.length; i++) {
+        fetchedData[i].seen = false
+      }
     }
 
     await this.#chrome.setActivities(fetchedData)
