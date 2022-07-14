@@ -27,7 +27,7 @@ export class SolanaStatic {
   }
 
   async generateWallet(sol) {
-    const seedPhrase = sol.generateWallet()
+    const seedPhrase = await sol.generateWallet()
 
     return seedPhrase
   }

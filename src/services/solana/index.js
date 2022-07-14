@@ -87,10 +87,10 @@ export class SolanaTool {
     return wallet
   }
 
-  generateWallet() {
+  async generateWallet() {
     const seedPhrase = generateMnemonic()
 
-    this.importWallet(seedPhrase, 'seedphrase')
+    await this.importWallet(seedPhrase, 'seedphrase')
 
     return seedPhrase
   }
