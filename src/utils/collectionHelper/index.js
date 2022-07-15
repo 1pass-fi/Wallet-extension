@@ -3,6 +3,8 @@ import { Web } from '@_koi/sdk/web'
 import axios from 'axios'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
 import { NFT_CONTRACT_SRC,PATH, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
+
 import arweave from 'services/arweave'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 import storage from 'services/storage'
@@ -64,7 +66,12 @@ export default async ({nfts, setNfts, address, collectionData, selectedNftIds, c
       await addPendingTransaction(address, pendingTransaction)
   
       // save pending asset
-      const base64String = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
+      const base64String = Buffer.from((await axios.request({
+        url,
+        responseType: 'arraybuffer',
+        method: 'GET',
+        adapter: axiosAdapter
+      })).data, 'binary').toString('base64')
       let imageUrl = `data:image/jpeg;base64,${base64String}`
       if (fileType.includes('video')) imageUrl = `data:video/mp4;base64,${base64String}`
       const pendingNFT = {

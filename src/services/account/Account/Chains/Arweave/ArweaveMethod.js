@@ -4,6 +4,8 @@
 */
 
 import axios from 'axios'
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
+
 import { ACCOUNT,TYPE } from 'constants/accountConstants'
 import { ACTIVITY_NAME, ALL_NFT_LOADED, BRIDGE_FLOW, DELIGATED_OWNER, ERROR_MESSAGE, KOII_CONTRACT,PATH, URL } from 'constants/koiConstants'
 import { find, findIndex,get, includes, isArray, isEmpty, isNumber, isString, orderBy } from 'lodash'
@@ -678,7 +680,12 @@ export class ArweaveMethod {
             let imageUrl = url
             if (getBase64) {
               if (!includes(content.contentType, 'html')) {
-                const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
+                const u8 = Buffer.from((await axios.request({
+                  url,
+                  adapter: axiosAdapter,
+                  method: 'GET',
+                  responseType: 'arraybuffer'
+                })).data, 'binary').toString('base64')
                 imageUrl = `data:${content.contentType};base64,${u8}`
                 if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
               }
@@ -753,7 +760,12 @@ export class ArweaveMethod {
             let imageUrl = url
             if (getBase64) {
               if (!includes(content.contentType, 'html')) {
-                const u8 = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
+                const u8 = Buffer.from((await axios.request({
+                  url,
+                  adapter: axiosAdapter,
+                  method: 'GET',
+                  responseType: 'arraybuffer'
+                })).data, 'binary').toString('base64')
                 imageUrl = `data:${content.contentType};base64,${u8}`
                 if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
               }

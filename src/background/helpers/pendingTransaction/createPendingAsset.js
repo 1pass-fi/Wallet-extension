@@ -1,4 +1,6 @@
 import axios from 'axios'
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
+
 import { TYPE } from 'constants/accountConstants'
 // constants
 import { PATH } from 'constants/koiConstants'
@@ -19,7 +21,13 @@ export default async ({
   const account = await backgroundAccount.getAccount(credentials)
 
   const url = URL.createObjectURL(file)
-  const base64String = Buffer.from((await axios.get(url, { responseType: 'arraybuffer' })).data, 'binary').toString('base64')
+
+  const base64String = Buffer.from((await axios.request({
+    url,
+    method: 'GET',
+    responseType: 'arraybuffer',
+    adapter: axiosAdapter
+  })).data, 'binary').toString('base64')
   let imageUrl = `data:image/jpeg;base64,${base64String}`
   if (fileType.includes('video')) imageUrl = `data:video/mp4;base64,${base64String}`
 

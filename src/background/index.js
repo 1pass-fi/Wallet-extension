@@ -1,4 +1,5 @@
 import '@babel/polyfill'
+import 'regenerator-runtime/runtime.js'
 
 import { IMPORTED } from 'constants/accountConstants'
 // Constants

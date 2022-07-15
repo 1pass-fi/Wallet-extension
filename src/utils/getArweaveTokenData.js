@@ -47,13 +47,6 @@ const getArweaveTokenData = async (contractAddress, userAddress) => {
     const symbol = get(contractInitData, 'ticker')
     const balance = 100
   
-    // const selectedCurrency = (await storage.setting.get.selectedCurrency()) || 'USD'
-  
-    // const { data } = await axios.get(
-    //   `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${contractAddress}&vs_currencies=${selectedCurrency}`
-    // )
-  
-    // const price = get(data, [contractAddress.toLowerCase(), selectedCurrency.toLowerCase()])
     const price = 1
   
     return {

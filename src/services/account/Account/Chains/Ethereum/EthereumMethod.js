@@ -27,6 +27,10 @@ import {
   URL,
   VALID_TOKEN_SCHEMA
 } from 'constants/koiConstants'
+
+import axios from 'axios'
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
+import * as ethereumAssets from 'utils/ethereumActivities'
 import { ethers } from 'ethers'
 import { find, findIndex, get, includes, isEmpty } from 'lodash'
 import moment from 'moment'
@@ -34,7 +38,6 @@ import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 import storage from 'services/storage'
 import { getChromeStorage } from 'utils'
 import { clarifyEthereumProvider } from 'utils'
-import * as ethereumAssets from 'utils/ethereumActivities'
 // import Web3 from 'web3'
 import { ethers } from 'ethers'
 
@@ -82,18 +85,19 @@ export class EthereumMethod {
           i * 50
         }&limit=50`
         try {
-          let requestConfig = {}
+          let headers = {}
           if (ethereumProvider.includes('mainnet')) {
-            requestConfig = {
-              headers: {
-                'X-API-KEY': 'b2c5ef456a464bda8868fd20d8af6ce2'
-              }
-            }
+            headers = { 'X-API-KEY': 'b2c5ef456a464bda8868fd20d8af6ce2' }
           }
 
-          console.log('requestConfig', requestConfig)
+          console.log('requestHeaders', headers)
 
-          const { data } = await axios.get(url, requestConfig)
+          const { data } = await axios.request({
+            url,
+            headers,
+            method: 'GET',
+            adapter: axiosAdapter
+          })
           assets = get(data, 'assets') || []
         } catch (err) {
           console.error('Fetched ETH nft error: ', err.message)
@@ -485,7 +489,12 @@ export class EthereumMethod {
               let imageUrl = content.image_url
               if (getBase64) {
                 let u8 = Buffer.from(
-                  (await axios.get(content.image_url, { responseType: 'arraybuffer' })).data,
+                  (await axios.request({
+                    url: content.image_url,
+                    responseType: 'arraybuffer',
+                    method: 'GET',
+                    adapter: axiosAdapter
+                  })).data,
                   'binary'
                 ).toString('base64')
                 imageUrl = `data:image/jpeg;base64,${u8}`
@@ -495,7 +504,12 @@ export class EthereumMethod {
 
                 if (content.animation_url) {
                   u8 = Buffer.from(
-                    (await axios.get(content.animation_url, { responseType: 'arraybuffer' })).data,
+                    (await axios.request({
+                      url: content.animation_url,
+                      responseType: 'arraybuffer',
+                      method: 'GET',
+                      adapter: axiosAdapter
+                    })).data,
                     'binary'
                   ).toString('base64')
                   imageUrl = `data:video/mp4;base64,${u8}`

@@ -16,6 +16,7 @@ import capitalize from 'lodash/capitalize'
 
 import Arweave from 'arweave/node'
 import axios from 'axios'
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 
 import { Web } from '@_koi/sdk/web'
 
@@ -132,7 +133,11 @@ export const generateWallet = async (koiObj) => {
 
 export const loadMyContent = async (koiObj) => {
   try {
-    const { data: allContent } = await axios.get(PATH.ALL_CONTENT)
+    const { data: allContent } = await axios.request({
+      url: PATH.ALL_CONTENT,
+      adapter: axiosAdapter,
+      method: 'GET'
+    })
     console.log({ allContent })
     const myContent = allContent
       .filter((content) => get(content[Object.keys(content)[0]], 'owner') === koiObj.address)
@@ -144,13 +149,22 @@ export const loadMyContent = async (koiObj) => {
       myContent.map(async (contentId) => {
         try {
           console.log(`${PATH.SINGLE_CONTENT}${contentId}`)
-          const { data: content } = await axios.get(`${PATH.SINGLE_CONTENT}${contentId}`)
+          const { data: content } = await axios.request({
+            url: `${PATH.SINGLE_CONTENT}${contentId}`,
+            method: 'GET',
+            adapter: axiosAdapter
+          })
           console.log({ content })
           if (content.title) {
             let url = `${PATH.NFT_IMAGE}/${content.txIdContent}`
             if (content.fileLocation) url = content.fileLocation
             const u8 = Buffer.from(
-              (await axios.get(url, { responseType: 'arraybuffer' })).data,
+              (await axios.request({
+                url,
+                responseType: 'arraybuffer',
+                adapter: axiosAdapter,
+                method: 'GET'
+              })).data,
               'binary'
             ).toString('base64')
             let imageUrl = `data:image/jpeg;base64,${u8}`

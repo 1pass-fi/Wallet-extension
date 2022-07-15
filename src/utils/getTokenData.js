@@ -4,6 +4,7 @@ import {
   PublicKey as PublicKeyK2
 } from '@_koi/web3.js'
 import contractMap from '@metamask/contract-metadata'
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 // import Web3 from 'web3'
 import { ethers } from 'ethers'
 
@@ -57,9 +58,11 @@ const getTokenData = async (contractAddress, userAddress) => {
   const balance = await tokenContract.balanceOf(userAddress)
   const selectedCurrency = (await storage.setting.get.selectedCurrency()) || 'USD'
 
-  const { data } = await axios.get(
-    `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${contractAddress}&vs_currencies=${selectedCurrency}`
-  )
+  const { data } = await axios.request({
+    url: `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${contractAddress}&vs_currencies=${selectedCurrency}`,
+    method: 'GET',
+    adapter: axiosAdapter
+  })
 
   const price = get(data, [contractAddress.toLowerCase(), selectedCurrency.toLowerCase()])
 
@@ -134,9 +137,12 @@ export const getSolanaCustomTokensData = async (contractAddress, userAddress) =>
     const { logoURI: logo, name, decimals: decimal, symbol } = foundToken
   
     const selectedCurrency = (await storage.setting.get.selectedCurrency()) || 'USD'
-    const { data } = await axios.get(
-      `https://api.coingecko.com/api/v3/simple/token_price/solana?contract_addresses=${contractAddress}&vs_currencies=${selectedCurrency}`
-    )
+    const { data } = await axios.request({
+      url: `https://api.coingecko.com/api/v3/simple/token_price/solana?contract_addresses=${contractAddress}&vs_currencies=${selectedCurrency}`,
+      adapter: axiosAdapter,
+      method: 'GET'
+    })
+    
     const price = get(data, [contractAddress.toLowerCase(), selectedCurrency.toLowerCase()])
   
     const tokenAccounts = await connection.getTokenAccountsByOwner(new PublicKey(userAddress), {
