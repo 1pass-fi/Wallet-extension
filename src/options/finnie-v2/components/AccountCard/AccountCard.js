@@ -70,7 +70,7 @@ const AccountCard = ({
   const [accountName, setAccountName] = useState('')
 
   const [showRecoveryPhraseModal, setShowRecoveryPhraseModal] = useState(false)
-  const [showQrCodeModal, setShowQrCodeModal] = useState(true)
+  const [showQrCodeModal, setShowQrCodeModal] = useState(false)
 
   const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
   const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
@@ -635,7 +635,7 @@ const AccountCard = ({
               </div>
             </div>
 
-            <div className="w-full h-6 flex items-center justify-between">
+            <div onClick={() => setShowQrCodeModal(true)} className="w-full h-6 flex items-center justify-between">
               <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 See QR code:{' '}
               </div>
@@ -676,7 +676,7 @@ const AccountCard = ({
         <RecoveryPhraseModal account={account} close={() => setShowRecoveryPhraseModal(false)} />
       }
       { showQrCodeModal &&
-        <QrCodeModal account={account}/>
+        <QrCodeModal account={account} close={() => setShowQrCodeModal(false)}/>
       }
     </div>
   )
