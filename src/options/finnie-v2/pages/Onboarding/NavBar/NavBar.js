@@ -24,7 +24,7 @@ const NavBar = ({ step, setStep }) => {
 
   return (
     <div className="w-1/3 h-full bg-blue-800 shadow-lg flex flex-col items-center overflow-hidden">
-      {step > 1 && (
+      {step > 1 && step !== 6 && step !== 12 && (
         <BackIcon
           className="absolute top-5.5 left-6 cursor-pointer"
           style={{ width: '45px', height: '45px' }}

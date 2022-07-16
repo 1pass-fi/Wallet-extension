@@ -70,7 +70,7 @@ const CreatePassword = ({ step, setStep }) => {
         }}
         required={true}
         name="password"
-        description="Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%)."
+        description={isEmpty(accounts) ? 'Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%).' : ''}
         placeholder=""
         uppercase={false}
         passwordFinnie={true}

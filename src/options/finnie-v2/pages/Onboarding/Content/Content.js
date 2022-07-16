@@ -27,6 +27,7 @@ const Content = ({ step, setStep }) => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [phrase, setPhrase] = useState('')
   const [newSeedphrase, setNewSeedphrase] = useState('')
+  const [network, setNetwork] = useState('')
 
   const [importType, setImportType] = useState(null)
 
@@ -57,7 +58,9 @@ const Content = ({ step, setStep }) => {
         generateNewKey,
         saveNewKey,
         verifyPassword,
-        importFromSeedphrase
+        importFromSeedphrase,
+        network,
+        setNetwork
       }}
     >
       <div

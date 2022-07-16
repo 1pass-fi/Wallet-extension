@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import clsx from 'clsx'
 
 import KeyLogo from 'finnie-v2/components/KeyLogo'
@@ -6,9 +6,14 @@ import KeyLogo from 'finnie-v2/components/KeyLogo'
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
 
+import { OnboardingContext } from '../../onboardingContext'
+
 import { TYPE } from 'constants/accountConstants'
+import { NETWORK } from 'constants/koiConstants'
 
 const ImportAKey = ({ step, setStep, setImportType }) => {
+  const { setNetwork } = useContext(OnboardingContext)
+
   const handleImportKey = (type) => {
     setImportType(type)
     setStep(step + 1)
@@ -27,15 +32,24 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
       </div>
       <div className="mt-11 ml-4 flex justify-start gap-4.5">
         <div className="flex flex-col items-center">
-          <KeyLogo type={TYPE.ARWEAVE} handleOnClick={handleImportKey} />
+          <KeyLogo type={TYPE.ARWEAVE} handleOnClick={() => {
+            setNetwork(NETWORK.ARWEAVE)
+            handleImportKey(TYPE.ARWEAVE)
+          }} />
           <div className="font-normal text-lg leading-6">Koii</div>
         </div>
         <div className="flex flex-col items-center">
-          <KeyLogo type={TYPE.ETHEREUM} handleOnClick={handleImportKey} />
+          <KeyLogo type={TYPE.ETHEREUM} handleOnClick={() => {
+            setNetwork(NETWORK.ETHEREUM)
+            handleImportKey(TYPE.ETHEREUM)
+          }} />
           <div className="font-normal text-lg leading-6">Ethereum</div>
         </div>
         <div className="flex flex-col items-center">
-          <KeyLogo type={TYPE.SOLANA} handleOnClick={handleImportKey} />
+          <KeyLogo type={TYPE.SOLANA} handleOnClick={() => {
+            setNetwork(NETWORK.SOLANA)
+            handleImportKey(TYPE.SOLANA)
+          }} />
           <div className="font-normal text-lg leading-6">Solana</div>
         </div>
       </div>

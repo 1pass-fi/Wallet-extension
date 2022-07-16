@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import clsx from 'clsx'
 
 import { GalleryContext } from 'options/galleryContext'
+import { OnboardingContext } from '../onboardingContext'
 
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
 import KoiIcon from 'img/v2/onboarding/finnie-koii-logo.svg'
@@ -12,8 +13,11 @@ import ImagesNFTs from 'img/v2/onboarding/Images-NFTs.svg'
 
 import Button from 'finnie-v2/components/Button'
 
+import { NETWORK } from 'constants/koiConstants'
+
 const RevealPhrase = ({ step }) => {
   const { setIsOnboarding } = useContext(GalleryContext)
+  const { network } = useContext(OnboardingContext)
   const history = useHistory()
 
   const openFaucet = () => {
@@ -54,7 +58,7 @@ const RevealPhrase = ({ step }) => {
         </li>
       </div>
 
-      <div className="mt-12 flex items-center justify-center">
+      {network === NETWORK.ARWEAVE && <div className="mt-12 flex items-center justify-center">
         <div className="flex flex-col items-center mr-19" style={{ width: '300px' }}>
           <KoiiToken />
           <div className="mt-3 font-normal text-lg text-center">
@@ -85,7 +89,7 @@ const RevealPhrase = ({ step }) => {
             onClick={openCreateNFTPage}
           />
         </div>
-      </div>
+      </div>}
 
       <div
         className="absolute bottom-11 right-7.5 text-lightBlue underline font-normal text-sm tracking-finnieSpacing-wide cursor-pointer"
@@ -94,7 +98,7 @@ const RevealPhrase = ({ step }) => {
           history.push('/')
         }}
       >
-        Skip this step
+        {network === NETWORK.ARWEAVE ? 'Skip this step': 'Go to homepage'}
       </div>
     </div>
   )
