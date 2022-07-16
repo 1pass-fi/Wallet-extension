@@ -14,7 +14,7 @@ import ToggleButton from 'finnie-v2/components/ToggleButton'
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { popupAccount } from 'services/account'
-import { TYPE } from 'constants/accountConstants'
+import { ACCOUNT, TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
 
 import { setAccounts } from 'options/actions/accounts'
@@ -42,6 +42,9 @@ import SeeQRIcon from 'img/v2/settings/see-QR-icon.svg'
 import SeeExtensionIcon from 'img/v2/settings/see-extension-icon.svg'
 import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 
+import RecoveryPhraseModal from '../Settings/Security/RecoveryPhraseModal'
+import QrCodeModal from './qrCodeModal'
+
 const AccountCard = ({
   account,
   setShowConfirmRemoveAccount,
@@ -65,6 +68,9 @@ const AccountCard = ({
 
   const [editAccount, setEditAccount] = useState({})
   const [accountName, setAccountName] = useState('')
+
+  const [showRecoveryPhraseModal, setShowRecoveryPhraseModal] = useState(false)
+  const [showQrCodeModal, setShowQrCodeModal] = useState(true)
 
   const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
   const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
@@ -557,14 +563,16 @@ const AccountCard = ({
                 Account Balance:
               </div>
 
-              <div className="font-normal text-xs tracking-finnieSpacing-tight">286.22 KOII</div>
+              <div className="font-normal text-xs tracking-finnieSpacing-tight">
+                {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'} {account.type === TYPE.ARWEAVE && 'AR'}{account.type === TYPE.ETHEREUM && 'ETH'}{account.type === TYPE.SOLANA && 'SOL'}
+              </div>
             </div>
 
             <div className="flex gap-2.75 items-start">
               <div className="w-1/2 flex justify-end text-right font-semibold text-xs tracking-finnieSpacing-tight">
                 NFT Assets:
               </div>
-              <div className="font-normal text-xs tracking-finnieSpacing-tight">286.22 KOII</div>
+              <div className="font-normal text-xs tracking-finnieSpacing-tight">{account.totalAssets.length} {account.type === TYPE.ARWEAVE && 'AR'}{account.type === TYPE.ETHEREUM && 'ETH'}{account.type === TYPE.SOLANA && 'SOL'}</div>
             </div>
           </div>
 
@@ -582,18 +590,22 @@ const AccountCard = ({
                 />
               </div>
             </div>
-            <div className="w-full h-6 flex items-center justify-between">
+
+            {/* SHOW HEX DATA */}
+            {/* <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">
                 Show Hex data:{' '}
               </div>
               <ToggleButton value={showHex} setValue={setShowHex} />
-            </div>
-            <div className="w-full h-6 flex items-center justify-between">
+            </div> */}
+            
+            {/* HIDE EMPTY TOKEN */}
+            {/* <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">
                 Hide empty Token:{' '}
               </div>
               <ToggleButton value={showEmptyToken} setValue={setShowEmptyToken} />
-            </div>
+            </div> */}
             <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">
                 Dapp Connections:{' '}
@@ -611,7 +623,7 @@ const AccountCard = ({
           </div>
 
           <div className="w-1/3 h-full flex flex-col gap-4.5">
-            <div className="w-full h-6 flex items-center justify-between">
+            <div onClick={() => setShowRecoveryPhraseModal(true)} className="w-full h-6 flex items-center justify-between">
               <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 Reveal Seed Phrase:{' '}
               </div>
@@ -635,7 +647,8 @@ const AccountCard = ({
               </div>
             </div>
 
-            <div className="w-full h-6 flex items-center justify-between">
+            {/* SEE ON EXTENSION */}
+            {/* <div className="w-full h-6 flex items-center justify-between">
               <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 See on extension:{' '}
               </div>
@@ -645,7 +658,7 @@ const AccountCard = ({
               >
                 <SeeExtensionIcon style={{ width: '12.54px', height: '15.75px' }} />
               </div>
-            </div>
+            </div> */}
           </div>
           <div
             className="absolute bottom-2.5 right-5 flex items-center justify-center bg-warning-300 rounded-sm shadow cursor-pointer"
@@ -659,6 +672,12 @@ const AccountCard = ({
           </div>
         </div>
       )}
+      { showRecoveryPhraseModal &&
+        <RecoveryPhraseModal account={account} close={() => setShowRecoveryPhraseModal(false)} />
+      }
+      { showQrCodeModal &&
+        <QrCodeModal account={account}/>
+      }
     </div>
   )
 }

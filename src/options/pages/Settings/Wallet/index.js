@@ -131,12 +131,12 @@ export default () => {
                 Import with Phrase
               </div>
             </div>
-            <div
+            {/* <div
               className="mt-2.5 font-normal text-xs underline tracking-finnieSpacing-wide text-lightBlue cursor-pointer"
               onClick={onImportKeyFile}
             >
               Import a JSON file.
-            </div>
+            </div> */}
           </div>
 
           <div className="default-currency pb-6 mb-4 border-b border-white">
