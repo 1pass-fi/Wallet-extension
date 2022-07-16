@@ -7,7 +7,8 @@ import isEmpty from 'lodash/isEmpty'
 import Balance from 'finnie-v2/components/Balance'
 import DefaultAvatar from 'img/v2/default-avatar.svg'
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-white.svg'
-import NotificationIcon from 'img/v2/bell-icon.svg'
+import NotificationIcon from 'img/v2/notification-icon.svg'
+import AddressBookIcon from 'img/v2/address-book-icon.svg'
 import ArrowIcon from 'img/v2/settings/uparrow.svg'
 
 import AccountSettings from 'finnie-v2/components/AccountSettings'
@@ -89,7 +90,7 @@ const NavBar = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full h-16 flex items-center bg-indigo-900 px-5.25 text-white text-sm justify-between">
-      <div className="flex items-center">
+      <div className="flex items-center mr-1">
         <Link to="/">
           <KoiiLogo className="h-8 w-10.75" />
         </Link>
@@ -99,10 +100,8 @@ const NavBar = () => {
         <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/create-nft">Create</NavLink>
         </nav>
-        <nav className="ml-9 cursor-pointer tracking-finnieSpacing-wider">
-          <div to="/#" onClick={() => dispatch(showAddressBook())}>
-            Address book
-          </div>
+        <nav className="ml-9 tracking-finnieSpacing-wider">
+          <NavLink to="/collections">Collections</NavLink>
         </nav>
         <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/friend-referral">Refer a friend</NavLink>
@@ -111,22 +110,24 @@ const NavBar = () => {
 
       <div className="flex items-center" ref={navbarRef}>
         {isLoading !== 0 && <Loading />}
-        <div className="relative mx-6.5">
-          <NotificationIcon
-            className="h-6 w-4.5 cursor-pointer"
-            onClick={toggleNotificationsCenter}
-          />
+        <div className="relative ml-6.5" style={{ width: '48px', height: '48px' }}>
+          <NotificationIcon className="cursor-pointer" onClick={toggleNotificationsCenter} />
           {notificationsData.new > 0 && (
-            <span
-              className={clsx(
-                notificationsData.new > 99 ? 'text-3xs' : 'text-2xs',
-                'flex items-center justify-center rounded-full w-4.25 h-4.25 bg-red-finnie absolute text-white font-semibold -top-1 -right-1.75'
-              )}
-            >
-              {notificationsData.new > 99 ? `99+` : notificationsData.new}
-            </span>
+            <div
+              className="absolute top-2.25 left-1.75 bg-warning-200 rounded-full"
+              style={{ width: '6px', height: '6px' }}
+            ></div>
           )}
         </div>
+
+        <nav className="ml-2 mr-4.5">
+          <AddressBookIcon
+            className="cursor-pointer"
+            to="/#"
+            onClick={() => dispatch(showAddressBook())}
+            style={{ width: '48px', height: '48px' }}
+          />
+        </nav>
         <Balance account={displayingAccount} />
         <div className="relative">
           <div
@@ -139,7 +140,12 @@ const NavBar = () => {
                 src={`https://arweave.net/${profilePictureId}`}
               />
             ) : (
-              <DefaultAvatar className="object-cover rounded-full w-full h-full" />
+              <div
+                style={{ width: '38px', height: '38px' }}
+                className="flex items-center justify-center object-cover rounded-full w-full h-full bg-white"
+              >
+                <DefaultAvatar style={{ width: '36px', height: '36px' }} />
+              </div>
             )}
           </div>
           {showDropdown && (
