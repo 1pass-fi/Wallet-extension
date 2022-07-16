@@ -37,7 +37,7 @@ const Activity = ({ activities, setActivities }) => {
       pendingTransactions = orderBy(pendingTransactions, 'timestamp', 'desc')
       setPendingTransactions(pendingTransactions)
     }
-
+ 
     loadActivities()
     loadPendingTransactions()
   }, [activities])
@@ -62,8 +62,8 @@ const Activity = ({ activities, setActivities }) => {
       await storage.generic.set.allActivities(allActivities)
     }
 
-    if (!isEmpty(activities)) setSeen()
-  }, [activities])
+    if (!isEmpty(accountActivites)) setSeen()
+  }, [accountActivites])
 
   const [acctivityMinHeight, setActivityMinHeight] = useState(0)
   const activityRef = useRef(null)
