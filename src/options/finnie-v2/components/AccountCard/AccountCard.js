@@ -379,7 +379,7 @@ const AccountCard = ({
     <div className="mt-4.5 text-indigo select-none">
       <div
         className="relative py-6 -mb-1.25 bg-trueGray-100 rounded-lg flex items-center justify-start shadow-md overflow-hidden"
-        style={{ width: '707px', height: '124px' }}
+        style={{ maxWidth: '707px', height: '124px' }}
       >
         <div
           className="flex items-center justify-center bg-white shadow rounded-r-lg"
@@ -528,8 +528,7 @@ const AccountCard = ({
             </div>
           )}
         </div>
-        <div className="h-full flex flex-col justify-between items-center ml-4">
-          {/* TODO DatH - Change account with star clicking */}
+        <div className="h-full flex flex-col justify-between items-center ml-4 mr-1">
           <div
             className="flex items-center justify-center"
             onClick={() => handleChangeDisplayAccount(account)}
@@ -559,20 +558,21 @@ const AccountCard = ({
       {isDrop && (
         <div
           className="relative flex items-center justify-start bg-trueGray-600 px-5 py-6"
-          style={{ width: '707px', height: '183px' }}
+          style={{ maxWidth: '707px', height: '183px' }}
         >
           <div className="w-1/3 h-full flex flex-col gap-6">
-            {tokenList?.map(token => (
-              <div className="flex gap-2.75 items-start">
-                <div className="w-1/2 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
+            <div className="flex gap-2.75 items-start">
+              <div className="w-1/2 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 Account Balance:
-                </div>
-
-                <div className="font-normal text-xs tracking-finnieSpacing-tight">
-                  {formatNumber(token.displayingBalance, 4)} {token.symbol}
-                </div>
               </div>
-            ))}
+              <div className="flex flex-col gap-1">
+                {tokenList?.map((token) => (
+                  <div className="font-normal text-xs tracking-finnieSpacing-tight">
+                    {formatNumber(token.displayingBalance, 4)} {token.symbol}
+                  </div>
+                ))}
+              </div>
+            </div>
 
             <div className="flex gap-2.75 items-start">
               <div className="w-1/2 flex justify-end text-right font-semibold text-xs tracking-finnieSpacing-tight">
