@@ -45,6 +45,8 @@ import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 import RecoveryPhraseModal from '../Settings/Security/RecoveryPhraseModal'
 import QrCodeModal from './qrCodeModal'
 
+import useTokenLists from 'sharedHooks/useTokenLists'
+
 const AccountCard = ({
   account,
   setShowConfirmRemoveAccount,
@@ -371,6 +373,8 @@ const AccountCard = ({
     }
   }
 
+  const { tokenList } = useTokenLists({ address: account.address, setIsLoading: () => {} })
+
   return (
     <div className="mt-4.5 text-indigo select-none">
       <div
@@ -483,10 +487,10 @@ const AccountCard = ({
             style={{ width: '75px', height: '75px' }}
           >
             <div className="flex items-center text-center font-normal text-xl leading-8 tracking-finnieSpacing-tight">
-              4
+              { tokenList?.length }
             </div>
             <div className="flex items-center text-center font-normal text-xs tracking-finnieSpacing-tight">
-              Coins
+              { tokenList?.length > 1 ? 'Coins' : 'Coin' }
             </div>
           </div>
           <div
@@ -558,15 +562,17 @@ const AccountCard = ({
           style={{ width: '707px', height: '183px' }}
         >
           <div className="w-1/3 h-full flex flex-col gap-6">
-            <div className="flex gap-2.75 items-start">
-              <div className="w-1/2 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
+            {tokenList?.map(token => (
+              <div className="flex gap-2.75 items-start">
+                <div className="w-1/2 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 Account Balance:
-              </div>
+                </div>
 
-              <div className="font-normal text-xs tracking-finnieSpacing-tight">
-                {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'} {account.type === TYPE.ARWEAVE && 'AR'}{account.type === TYPE.ETHEREUM && 'ETH'}{account.type === TYPE.SOLANA && 'SOL'}
+                <div className="font-normal text-xs tracking-finnieSpacing-tight">
+                  {formatNumber(token.displayingBalance, 4)} {token.symbol}
+                </div>
               </div>
-            </div>
+            ))}
 
             <div className="flex gap-2.75 items-start">
               <div className="w-1/2 flex justify-end text-right font-semibold text-xs tracking-finnieSpacing-tight">
