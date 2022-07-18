@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useMemo } from 'react'
 import isEmpty from 'lodash/isEmpty'
 import { useSelector } from 'react-redux'
 
@@ -70,7 +70,8 @@ const CreatePassword = ({ step, setStep }) => {
         }}
         required={true}
         name="password"
-        description={isEmpty(accounts) ? 'Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%).' : ''}
+        description={
+          isEmpty(accounts) && !isEmpty(password) && (passwordErrorMessage === VALIDATE_ERROR_MESSAGE.INVALID_CHARACTER || passwordErrorMessage === VALIDATE_ERROR_MESSAGE.NOT_ENOUGH_CHARACTERS) ? 'Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%).' : ''}
         placeholder=""
         uppercase={false}
         passwordFinnie={true}
