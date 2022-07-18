@@ -85,6 +85,7 @@ export const AccountDropdown = React.forwardRef(
       })
       // setShowAccountDropdown(false)
       history.push('/tokens')
+      setShowAccountDropdown(false)
     }
 
     const isDefaultAccount = (account) => {
