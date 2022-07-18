@@ -33,16 +33,16 @@ const ConnectedSitesModal = ({ account, close }) => {
 
   const loadConnectedSites = async () => {
     try {
-      setIsLoading(true)
+      setIsLoading((prev) => ++prev)
 
       const siteAddresses = await getSiteConnectedAddresses(account.address, account.type)
 
       setSiteConnectedAddresses(siteAddresses)
-      setIsLoading(false)
+      setIsLoading((prev) => --prev)
     } catch (error) {
       setError(error.message)
       console.log('Load connected sites - Error: ', error.message)
-      setIsLoading(false)
+      setIsLoading((prev) => --prev)
     }
   }
 
@@ -65,10 +65,9 @@ const ConnectedSitesModal = ({ account, close }) => {
 
   const handleRemoveSite = async (siteAddress) => {
     try {
-      setIsLoading(true)
+      setIsLoading((prev) => ++prev)
       let siteConnectedStorage = await storage.setting.get.siteConnectedAddresses()
       if (isEmpty(siteConnectedStorage[siteAddress.address])) {
-        setIsLoading(false)
         return
       }
 
@@ -116,12 +115,12 @@ const ConnectedSitesModal = ({ account, close }) => {
       // update account state
       await dispatch(loadAllAccounts())
 
-      setIsLoading(false)
       loadConnectedSites()
     } catch (error) {
       setError(error.message)
       console.log('Remove connected site - Error: ', error.message)
-      setIsLoading(false)
+    } finally {
+      setIsLoading((prev) => --prev)
     }
   }
 

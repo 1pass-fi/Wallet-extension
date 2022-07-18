@@ -32,19 +32,20 @@ const useMethod = ({
 
   const generateNewKey = async (network) => {
     try {
-      setIsLoading(true)
+      setIsLoading((prev) => ++prev)
       const seedphrase = await request.wallet.generateWallet({ walletType: network })
       setNewSeedphrase(seedphrase.join(' '))
-      setIsLoading(false)
     } catch (err) {
       console.error(err.message)
       setError(ERROR_MESSAGE.GENERATE_NEW_KEY_FAILED)
+    } finally {
+      setIsLoading((prev) => --prev)
     }
   }
 
   const saveNewKey = async () => {
     try {
-      setIsLoading(true)
+      setIsLoading((prev) => ++prev)
       const address = await request.wallet.saveWallet({ seedPhrase: newSeedphrase, password })
 
       await initActivatedChain(address)
@@ -52,28 +53,29 @@ const useMethod = ({
       setImportedAddress(address)
       setNewAddress(address)
       dispatch(addAccountByAddress(address))
-
-      setIsLoading(false)
     } catch (err) {
       console.error(err.message)
       setError(ERROR_MESSAGE.SAVE_NEW_KEY_FAILED)
+    } finally {
+      setIsLoading((prev) => --prev)
     }
   }
 
   const verifyPassword = async () => {
     try {
-      setIsLoading(true)
+      setIsLoading((prev) => ++prev)
       const isCorrectPassword = await request.wallet.verifyPassword({ password })
-      setIsLoading(false)
       return isCorrectPassword
     } catch (err) {
 
+    } finally {
+      setIsLoading((prev) => --prev)
     }
   }
 
   const importFromSeedphrase = async (seedphrase, network) => {
     try {
-      setIsLoading(true)
+      setIsLoading((prev) => ++prev)
       const address = await request.wallet.importWallet({ key: seedphrase, password, type: network })
 
       await initActivatedChain(address)
@@ -81,12 +83,12 @@ const useMethod = ({
       setImportedAddress(address)
       setNewAddress(address)
       dispatch(addAccountByAddress(address))
-
-      setIsLoading(false)
       
       return address
     } catch (err) {
       setError(err.message)
+    } finally {
+      setIsLoading((prev) => --prev)
     }
   }
 

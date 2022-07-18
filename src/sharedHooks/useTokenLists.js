@@ -26,7 +26,7 @@ const useTokenLists = ({ address, setIsLoading }) => {
   useEffect(() => {
     const loadTokenList = async () => {
       try {
-        setIsLoading && setIsLoading(true)
+        setIsLoading && setIsLoading((prev) => ++prev)
         const account = await popupAccount.getAccount({ address })
         if (isEmpty(account)) throw new Error('Get account failed.')
   
@@ -120,9 +120,9 @@ const useTokenLists = ({ address, setIsLoading }) => {
         setTokenList(_tokenList)
       } catch (err) {
         console.error('Load token failed: ', err)
-        setIsLoading && setIsLoading(false)
+      } finally {
+        setIsLoading && setIsLoading((prev) => --prev)
       }
-      
     }
 
     if (!isEmpty(address)) loadTokenList()

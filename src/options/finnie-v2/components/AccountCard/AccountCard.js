@@ -156,15 +156,15 @@ const AccountCard = ({
 
     const loadConnectedSites = async () => {
       try {
-        setIsLoading(true)
+        setIsLoading((prev) => ++prev)
         const siteAddresses = await getSiteConnectedAddresses(account.address, account.type)
         console.log('siteAddresses', siteAddresses)
         setSiteConnectedAddresses(siteAddresses)
-        setIsLoading(false)
+        setIsLoading((prev) => --prev)
       } catch (error) {
         setError(error.message)
         console.log('Load connected sites - Error: ', error.message)
-        setIsLoading(false)
+        setIsLoading((prev) => --prev)
       }
     }
 
@@ -294,7 +294,7 @@ const AccountCard = ({
   }
 
   const onChangeK2Provider = async (value) => {
-    setIsLoading(true)
+    setIsLoading((prev) => ++prev)
     const _currentNetwork = currentNetwork
     try {
       setCurrentNetwork(value)
@@ -313,12 +313,12 @@ const AccountCard = ({
       setError(error.message)
       console.log('Failed to change K2 provider', error.message)
     } finally {
-      setIsLoading(false)
+      setIsLoading((prev) => --prev)
     }
   }
 
   const onChangeEthereumProvider = async (value) => {
-    setIsLoading(true)
+    setIsLoading((prev) => ++prev)
     const _currentNetwork = currentNetwork
     try {
       setCurrentNetwork(value)
@@ -345,12 +345,12 @@ const AccountCard = ({
       setError(error.message)
       console.log('Failed to change Ethereum provider', error.message)
     } finally {
-      setIsLoading(false)
+      setIsLoading((prev) => --prev)
     }
   }
 
   const onChangeSolanaProvider = async (value) => {
-    setIsLoading(true)
+    setIsLoading((prev) => ++prev)
     const _currentNetwork = currentNetwork
     try {
       setCurrentNetwork(value)
@@ -369,7 +369,7 @@ const AccountCard = ({
       setError(error.message)
       console.log('Failed to change Solana provider', error.message)
     } finally {
-      setIsLoading(false)
+      setIsLoading((prev) => --prev)
     }
   }
 
