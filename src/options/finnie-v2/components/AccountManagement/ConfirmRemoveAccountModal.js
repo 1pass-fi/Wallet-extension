@@ -55,10 +55,10 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
         Have to handle removing this address from activatedAccount if this
         address is the activated account.
       */
-      // TODO LongP - handle SOLANA cases
       if (accountStates.length !== 0) {
         const arAccount = find(accountStates, (v) => v.type === TYPE.ARWEAVE)
         const ethAccount = find(accountStates, (v) => v.type === TYPE.ETHEREUM)
+        const solAccount = find(accountStates, (v) => v.type === TYPE.SOLANA)
 
         if (account.type === TYPE.ARWEAVE) {
           if (account.address === defaultAccount.AR?.address) {
@@ -74,19 +74,50 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
             }
           }
         }
+        if (account.type === TYPE.SOLANA) {
+          if (account.address === defaultAccount.SOL?.address) {
+            if (!isEmpty(solAccount)) {
+              dispatch(setDefaultAccount(solAccount))
+            }
+          }
+        }
       }
 
       const totalArweaveAccount = await popupAccount.count(TYPE.ARWEAVE)
       const totalEthereumAccount = await popupAccount.count(TYPE.ETHEREUM)
+      const totalSolanaAccount = await popupAccount.count(TYPE.SOLANA)
 
       if (totalArweaveAccount === 0) {
-        await storage.setting.set.activatedChain(TYPE.ETHEREUM)
-        setActivatedChain(TYPE.ETHEREUM)
+        if (totalEthereumAccount !== 0) {
+          await storage.setting.set.activatedChain(TYPE.ETHEREUM)
+          setActivatedChain(TYPE.ETHEREUM)
+        }
+        if (totalSolanaAccount !== 0) {
+          await storage.setting.set.activatedChain(TYPE.SOLANA)
+          setActivatedChain(TYPE.SOLANA)
+        }
       }
 
       if (totalEthereumAccount === 0) {
-        await storage.setting.set.activatedChain(TYPE.ARWEAVE)
-        setActivatedChain(TYPE.ARWEAVE)
+        if (totalArweaveAccount !== 0) {
+          await storage.setting.set.activatedChain(TYPE.ARWEAVE)
+          setActivatedChain(TYPE.ARWEAVE)
+        }
+        if (totalSolanaAccount !== 0) {
+          await storage.setting.set.activatedChain(TYPE.SOLANA)
+          setActivatedChain(TYPE.SOLANA)
+        }
+      }
+
+      if (totalSolanaAccount === 0) {
+        if (totalArweaveAccount !== 0) {
+          await storage.setting.set.activatedChain(TYPE.ARWEAVE)
+          setActivatedChain(TYPE.ARWEAVE)
+        }
+        if (totalEthereumAccount !== 0) {
+          await storage.setting.set.activatedChain(TYPE.ETHEREUM)
+          setActivatedChain(TYPE.ETHEREUM)
+        }
       }
 
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
