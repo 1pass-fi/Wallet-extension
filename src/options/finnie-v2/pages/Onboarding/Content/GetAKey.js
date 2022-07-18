@@ -7,15 +7,29 @@ import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
 
 import { TYPE } from 'constants/accountConstants'
+import { NETWORK } from 'constants/koiConstants'
 
 const GetAKey = ({ step, setStep }) => {
-  const { generateNewKey } = useContext(OnboardingContext)
+  const { generateNewKey, setNetwork } = useContext(OnboardingContext)
+
   const [inProcessing, setInProcessing] = useState(false)
   const [networkProcessing, setNetworkProcessing] = useState(null)
 
   const handleGetNewKey = async (network) => {
     if (networkProcessing) {
       return
+    }
+
+    switch (network) {
+      case TYPE.ARWEAVE:
+        setNetwork(NETWORK.ARWEAVE)
+        break
+      case TYPE.ETHEREUM:
+        setNetwork(NETWORK.ETHEREUM)
+        break
+      case TYPE.SOLANA:
+        setNetwork(NETWORK.SOLANA)
+        break
     }
 
     setNetworkProcessing(network)
