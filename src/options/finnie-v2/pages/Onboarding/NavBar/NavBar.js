@@ -1,4 +1,7 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
+import isEmpty from 'lodash/isEmpty'
 
 import KoiIcon from 'img/v2/onboarding/finnie-koii-logo.svg'
 import BackIcon from 'img/v2/back-icon.svg'
@@ -14,23 +17,40 @@ import SeedphraseSelectedIcon from 'img/v2/onboarding/seedphrase-selected-icon.s
 import { onboardingSteps } from '../Welcome'
 
 const NavBar = ({ step, setStep }) => {
+  const history = useHistory()
+
   const handleBack = () => {
     if (step === 10) {
       setStep(1)
     } else {
       setStep(step - 1)
     }
+
+    if (step === 0) {
+      history.push('/settings/wallet')
+      window.location.reload()
+    }
   }
+
+  const accounts = useSelector(state => state.accounts)
 
   return (
     <div className="w-1/3 h-full bg-blue-800 shadow-lg flex flex-col items-center overflow-hidden">
-      {step > 1 && step !== 6 && step !== 12 && (
+      {step > 0 && step !== 6 && step !== 12 && (
         <BackIcon
           className="absolute top-5.5 left-6 cursor-pointer"
           style={{ width: '45px', height: '45px' }}
           onClick={handleBack}
         />
       )}
+      {step === 0 && !isEmpty(accounts) && (
+        <BackIcon
+          className="absolute top-5.5 left-6 cursor-pointer"
+          style={{ width: '45px', height: '45px' }}
+          onClick={handleBack}
+        />
+      )}
+
       <div className="w-11/12 flex flex-col items-center">
         <KoiIcon style={{ width: '156px', height: '156px' }} />
         {onboardingSteps[step] === 'CREATE_PASSWORD' && (
