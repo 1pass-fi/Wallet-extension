@@ -9,7 +9,7 @@ import ReactTooltip from 'react-tooltip'
 import { GalleryContext } from 'options/galleryContext'
 
 import DropDown from 'finnie-v2/components/DropDown'
-import ToggleButton from 'finnie-v2/components/ToggleButton'
+import ToggleButton from './ToggleButton'
 
 import storage from 'services/storage'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
@@ -566,8 +566,8 @@ const AccountCard = ({
                 Account Balance:
               </div>
               <div className="flex flex-col gap-1">
-                {tokenList?.map((token) => (
-                  <div className="font-normal text-xs tracking-finnieSpacing-tight">
+                {tokenList?.map((token, idx) => (
+                  <div className="font-normal text-xs tracking-finnieSpacing-tight" key={idx}>
                     {formatNumber(token.displayingBalance, 4)} {token.symbol}
                   </div>
                 ))}
@@ -578,7 +578,11 @@ const AccountCard = ({
               <div className="w-1/2 flex justify-end text-right font-semibold text-xs tracking-finnieSpacing-tight">
                 NFT Assets:
               </div>
-              <div className="font-normal text-xs tracking-finnieSpacing-tight">{account.totalAssets.length} {account.type === TYPE.ARWEAVE && 'AR'}{account.type === TYPE.ETHEREUM && 'ETH'}{account.type === TYPE.SOLANA && 'SOL'}</div>
+              <div className="font-normal text-xs tracking-finnieSpacing-tight">
+                {account.totalAssets.length} {account.type === TYPE.ARWEAVE && 'AR'}
+                {account.type === TYPE.ETHEREUM && 'ETH'}
+                {account.type === TYPE.SOLANA && 'SOL'}
+              </div>
             </div>
           </div>
 
@@ -604,7 +608,7 @@ const AccountCard = ({
               </div>
               <ToggleButton value={showHex} setValue={setShowHex} />
             </div> */}
-            
+
             {/* HIDE EMPTY TOKEN */}
             {/* <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">
@@ -629,7 +633,10 @@ const AccountCard = ({
           </div>
 
           <div className="w-1/3 h-full flex flex-col gap-4.5">
-            <div onClick={() => setShowRecoveryPhraseModal(true)} className="w-full h-6 flex items-center justify-between">
+            <div
+              onClick={() => setShowRecoveryPhraseModal(true)}
+              className="w-full h-6 flex items-center justify-between"
+            >
               <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 Reveal Seed Phrase:{' '}
               </div>
@@ -641,7 +648,10 @@ const AccountCard = ({
               </div>
             </div>
 
-            <div onClick={() => setShowQrCodeModal(true)} className="w-full h-6 flex items-center justify-between">
+            <div
+              onClick={() => setShowQrCodeModal(true)}
+              className="w-full h-6 flex items-center justify-between"
+            >
               <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 See QR code:{' '}
               </div>
@@ -678,12 +688,10 @@ const AccountCard = ({
           </div>
         </div>
       )}
-      { showRecoveryPhraseModal &&
+      {showRecoveryPhraseModal && (
         <RecoveryPhraseModal account={account} close={() => setShowRecoveryPhraseModal(false)} />
-      }
-      { showQrCodeModal &&
-        <QrCodeModal account={account} close={() => setShowQrCodeModal(false)}/>
-      }
+      )}
+      {showQrCodeModal && <QrCodeModal account={account} close={() => setShowQrCodeModal(false)} />}
     </div>
   )
 }
