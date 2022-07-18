@@ -5,6 +5,8 @@ import { GalleryContext } from 'options/galleryContext'
 import NavBar from './NavBar'
 import Content from './Content'
 
+import LoadingScreen from 'options/pages/StartUp/shared/Loading'
+
 export const onboardingSteps = [
   'CREATE_PASSWORD',
   'CREATE_OR_IMPORT',
@@ -16,7 +18,7 @@ export const onboardingSteps = [
 ]
 
 const Welcome = () => {
-  const { setIsOnboarding } = useContext(GalleryContext)
+  const { isLoading, setIsOnboarding } = useContext(GalleryContext)
   const [step, setStep] = useState(0)
   setIsOnboarding(true)
 
@@ -24,6 +26,7 @@ const Welcome = () => {
     <div className="w-screen h-screen flex text-center">
       <NavBar step={step} setStep={setStep} />
       <Content step={step} setStep={setStep} />
+      {isLoading !== 0 && <LoadingScreen />}
     </div>
   )
 }
