@@ -22,6 +22,7 @@ import DropDown from 'finnie-v2/components/DropDown'
 import AccountCard from 'finnie-v2/components/AccountCard'
 
 import './index.css'
+import { TYPE } from 'constants/accountConstants'
 
 const mockedWalletDisplayOptions = [{ value: 'accountsummary', label: 'Account Summary' }]
 
@@ -31,7 +32,7 @@ export default () => {
 
   const [currency, setCurrency] = useState('USD')
   /* TODO DatH */
-  const [chainOption, setChainOption] = useState('All')
+  const [chainOption, setChainOption] = useState('ALL')
   const [showConfirmRemoveAccount, setShowConfirmRemoveAccount] = useState(false)
   const [showConnectedSites, setShowConnectedSites] = useState(false)
   const [accountConnectSites, setAccountConnectSites] = useState({})
@@ -50,11 +51,11 @@ export default () => {
     [data]
   )
 
-  /* TODO DatH */
   const chainOptions = [
-    { label: 'All Accounts', value: 'All' },
-    { label: 'B', value: 'B' },
-    { label: 'C', value: 'C' }
+    { label: 'All Accounts', value: 'ALL' },
+    { label: 'Arweave Account', value: TYPE.ARWEAVE },
+    { label: 'Ethereum Account', value: TYPE.ETHEREUM },
+    { label: 'Solana Account', value: TYPE.SOLANA }
   ]
 
   useEffect(() => {
@@ -102,9 +103,15 @@ export default () => {
     }
   }
 
-  /* TODO DatH */
+  const showAccounts = useMemo(() => {
+    if (chainOption !== 'ALL') {
+      return accounts.filter((account) => account.type.includes(chainOption))
+    } else {
+      return accounts
+    }
+  }, [chainOption, accounts])
+
   const onChainOption = (chain) => {
-    console.log('onChainOption', chain)
     setChainOption(chain)
   }
 
@@ -171,10 +178,11 @@ export default () => {
                 onChange={onChainOption}
                 variant="dark"
                 size="lg"
+                filterSupported={false}
               />
             </div>
 
-            {accounts.map((account, index) => (
+            {showAccounts.map((account, index) => (
               <AccountCard
                 account={account}
                 key={index}
