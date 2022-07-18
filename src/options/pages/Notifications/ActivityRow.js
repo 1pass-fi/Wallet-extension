@@ -15,6 +15,11 @@ import clsx from 'clsx'
 const ActivityRow = ({
   activity: { activityName, address, date, expense, id, source, network }
 }) => {
+  const customTokenIconPath = useMemo(
+    () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,
+    []
+  )
+
   const displayInfo = useMemo(() => {
     const dateString = moment(date).format('MM/DD/YYYY')
 
@@ -38,6 +43,9 @@ const ActivityRow = ({
       tokenType = 'SOL'
     }
 
+    if (network) {
+      tokenType = activityName.split(' ').pop()
+    }
     let from = ''
     let to = ''
     if (!source) {
@@ -70,9 +78,16 @@ const ActivityRow = ({
       <td className="px-1">
         {displayInfo.tokenType === 'ETH' && <EthereumLogo className="w-5 h-5 mr-2 inline-block" />}
         {displayInfo.tokenType === 'SOL' && <SolanaLogo className="w-5 h-5 mr-2 inline-block" />}
-        {displayInfo.tokenType !== 'ETH' && displayInfo.tokenType !== 'SOL' && (
+        {(displayInfo.tokenType === 'AR' || displayInfo.tokenType === 'KOII') && (
           <KoiiLogo className="w-5 h-5 mr-2 inline-block" />
         )}
+        {displayInfo.tokenType !== 'ETH' &&
+          displayInfo.tokenType !== 'SOL' &&
+          displayInfo.tokenType !== 'AR' &&
+          displayInfo.tokenType !== 'KOII' && (
+          <img src={customTokenIconPath} className="w-5 h-5 mr-2 inline-block" />
+        )}
+
         {formatLongString(displayInfo.from, 20)}
       </td>
       <td className="px-1">{formatLongString(displayInfo.to, 20)}</td>
