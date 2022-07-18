@@ -96,7 +96,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
       await saveNewKey()
       setStep(step + 1)
     } else {
-      setMessageError('Invalid Secret Recovery Phrase')
+      setMessageError('Invalid Secret Secret Phrase')
     }
   }
 

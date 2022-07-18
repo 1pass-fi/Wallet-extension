@@ -3,7 +3,7 @@ import React from 'react'
 import './index.css'
 
 const HasTwelveSeedPhrase = ({ isSeedPhrase }) => {
-  const invalidPhraseMsg = 'A Recovery Phrase has 12 words. Make sure you have all 12.'
+  const invalidPhraseMsg = 'A Secret Phrase has 12 words. Make sure you have all 12.'
   const invalidPrivateMsg = 'Invalid Private Key.'
 
   return (

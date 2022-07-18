@@ -104,7 +104,7 @@ const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupPh
                   {!hasSeedPhrase && (
                     <Hint
                       className="inline ml-4.25"
-                      text="This key was not <br>generated with a<br>recovery phrase.<br>Keys can only<br>generate recovery<br>phrases at creation."
+                      text="This key was not <br>generated with a<br>secret phrase.<br>Keys can only<br>generate recovery<br>phrases at creation."
                       place="right"
                     />
                   )}

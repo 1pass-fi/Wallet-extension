@@ -112,8 +112,8 @@ const AccountImport = ({ totalAccount }) => {
             wallets and an Ethereum bridge.
           </div>
           <div>
-            If you need a copy of your key or recovery phrase, get it here. <b>Never delete</b> the
-            Finnie extension without first backing up a copy of your recovery phrase or key.
+            If you need a copy of your key or secret phrase, get it here. <b>Never delete</b> the
+            Finnie extension without first backing up a copy of your secret phrase or key.
           </div>
           <div className='btn-wrapper'>
             <Button onClick={() => history.push('/account/recovery')} label='Recover My Key' />

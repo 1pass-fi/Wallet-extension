@@ -82,7 +82,7 @@ const NavBar = ({ step, setStep }) => {
             <div className="flex text-warning">
               <EditSelectedIcon className="mr-5" />
               <div className="w-4/5 flex flex-col whitespace-pre-wrap">
-                Write down your recovery phrase.
+                Write down your secret phrase.
                 <span className="font-normal text-sm leading-6 text-trueGray-100">
                   Grab a pen & paper so you can keep your phrase safe.
                 </span>
@@ -91,7 +91,7 @@ const NavBar = ({ step, setStep }) => {
           ) : (
             <div className="flex items-center">
               <EditIcon className="mr-5" />
-              Write down your recovery phrase.
+              Write down your secret phrase.
             </div>
           ))}
 
@@ -100,7 +100,7 @@ const NavBar = ({ step, setStep }) => {
             <div className="flex text-warning">
               <SeedphraseSelectedIcon className="mr-5" />
               <div className="w-4/5 flex flex-col whitespace-pre-wrap">
-                Confirm your recovery phrase.
+                Confirm your secret phrase.
                 <span className="font-normal text-sm leading-6 text-trueGray-100">
                   Re-enter 3 words of your secret phrase for safety.
                 </span>
@@ -109,7 +109,7 @@ const NavBar = ({ step, setStep }) => {
           ) : (
             <div className="flex items-center">
               <SeedphraseIcon className="mr-5" />
-              Confirm your recovery phrase.
+              Confirm your secret phrase.
             </div>
           ))}
       </div>

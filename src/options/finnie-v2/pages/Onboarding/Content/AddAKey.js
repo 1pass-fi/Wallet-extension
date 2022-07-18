@@ -54,7 +54,7 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
             Use my existing key.
           </div>
           <div className="mt-2 font-normal text-xs text-center tracking-finnieSpacing-wide text-white w-9/12">
-            Import a key with a recovery phrase.
+            Import a key with a secret phrase.
           </div>
         </div>
       </div>

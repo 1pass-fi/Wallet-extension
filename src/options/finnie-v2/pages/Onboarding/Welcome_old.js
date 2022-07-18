@@ -56,7 +56,7 @@ const Welcome = () => {
             Import with a seed phrase
           </div>
           <div className="mt-2 font-normal text-xs text-center tracking-finnieSpacing-wide text-white w-9/12">
-            Import an existing key using a 12-word recovery phrase.
+            Import an existing key using a 12-word secret phrase.
           </div>
         </div>
         <div

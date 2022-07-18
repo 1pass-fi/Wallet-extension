@@ -28,8 +28,8 @@ const NoSeedphrase = ({onClose}) => (
       Reveal Seed Phrase
     </div>
     <div className='modal-description'> 
-      This key does not have a recovery phrase. If you have a recovery phrase for this key, please import it again using the recovery phrase.<br/>
-      Note: recovery phrases must be generated at the same time as the key.
+      This key does not have a secret phrase. If you have a secret phrase for this key, please import it again using the secret phrase.<br/>
+      Note: secret phrases must be generated at the same time as the key.
     </div>
     <div className='modal-button-no-seedphrase'>
       <Button label='Got it' type='outline' onClick={onClose} className='modal-action-button close'/>

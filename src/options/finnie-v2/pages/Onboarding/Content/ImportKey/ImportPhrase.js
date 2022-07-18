@@ -77,7 +77,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
     try {
       if (isImporting) return
       if (!validPhrase) {
-        setMessageError('Invalid Secret Recovery Phrase')
+        setMessageError('Invalid Secret Secret Phrase')
         return
       }
 

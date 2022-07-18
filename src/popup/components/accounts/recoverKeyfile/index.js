@@ -43,7 +43,7 @@ export const Recovery = ({ setError }) => {
       <div className='content'>
         <div className='recover-key-wrapper'>
           <div className='title'>Recover my key</div>
-          <div>Enter your previous Finnie password to download your recovery phrase or key file.</div>
+          <div>Enter your previous Finnie password to download your secret phrase or key file.</div>
           <div className='recovery-form'>
             <div>Enter your Finnie password</div>
             <div><Input onChange={(e) => setPassowrd(e.target.value)} /></div>

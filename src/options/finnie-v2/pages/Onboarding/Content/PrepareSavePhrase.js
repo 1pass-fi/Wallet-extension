@@ -40,7 +40,7 @@ const PrepareSavePhrase = ({ step, setStep }) => {
         <NoticeIcon style={{ width: '96px', height: '96px' }} />
         <div style={{ width: '370px' }} className="flex flex-col">
           <div>
-            With your Recovery Phrase, anyone can access{' '}
+            With your Secret Phrase, anyone can access{' '}
             <span className="text-warning-200">everything in your wallet</span>.
           </div>
           <div className="mt-2">

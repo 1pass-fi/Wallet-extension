@@ -260,14 +260,14 @@ export default () => {
           {(step === 3 || step === 4) && (
           <>
             <div className='description'>
-              Store your recovery phrase somewhere safe. This phrase makes it
+              Store your secret phrase somewhere safe. This phrase makes it
               easy to restore your account.
             </div>
 
             <div className='warning'>
               <DangerousIcon />
               <div className='warning-text'>
-                Never disclose your recovery phrase. Anyone with this phrase can
+                Never disclose your secret phrase. Anyone with this phrase can
                 steal from your wallet.
               </div>
             </div>
@@ -310,7 +310,7 @@ export default () => {
                   Skip
                 </Button>
                 <div className='danger-skip-text'>
-                  If I change devices without my recovery phrase, I may lose
+                  If I change devices without my secret phrase, I may lose
                   access to my key.
                 </div>
               </div>
@@ -335,7 +335,7 @@ export default () => {
             </div>
             {!isEqual(seedPhrase, userSeedPhrase) && userSeedPhrase.length === 12 && 
               <div className='confirm-phrase-error-message'>
-                That recovery phrase doesn't match. Please check the order and try again.
+                That secret phrase doesn't match. Please check the order and try again.
               </div>
             }
 
@@ -364,7 +364,7 @@ export default () => {
                   Skip
                 </Button>
                 <div className='danger-skip-text'>
-                  If I change devices without my recovery phrase, I may lose
+                  If I change devices without my secret phrase, I may lose
                   access to my key.
                 </div>
               </div>

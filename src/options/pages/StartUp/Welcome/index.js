@@ -42,7 +42,7 @@ export default () => {
               <ImportIcon className='icon' />
               <div style={{textAlign:'center',fontSize:'12px',padding:'5px 15px 0px 15px'}} className='action-title'>Import with a seed phrase or private key</div>
               <div style={{fontSize:'10px'}} className='action-description'>
-              Import an existing key using a 12-word recovery phrase or private key.
+              Import an existing key using a 12-word secret phrase or private key.
               </div>
             </Link>
           </div>

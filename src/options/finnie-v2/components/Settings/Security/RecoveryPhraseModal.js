@@ -70,7 +70,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
           {step === 1 && (
             <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" />
           )}
-          <div className="m-auto">Recovery Phrase</div>
+          <div className="m-auto">Secret Phrase</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
 
@@ -85,7 +85,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
               </span>
             </div>
             <div className="mt-3 text-sm font-normal" style={{ width: '418px' }}>
-              If you change browsers or switch computers, you will need this Recovery Phrase to
+              If you change browsers or switch computers, you will need this Secret Phrase to
               access your account.{' '}
               <span className="font-semibold">
                 Never share this phrase and keep it somewhere safe.

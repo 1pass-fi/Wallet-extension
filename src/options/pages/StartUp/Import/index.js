@@ -163,7 +163,7 @@ export default () => {
           <GoBackBtn goToPreviousStep={previousStep} />
           {step === 1 && (
             <>
-              <div className='title'>Import a wallet with a recovery phrase</div>
+              <div className='title'>Import a wallet with a secret phrase</div>
               <div className='description'>What type of key are you importing?</div>
               <div className='wallet-types'>
                 <WalletType
@@ -222,7 +222,7 @@ export default () => {
               </div>
               {isKoiiPhrase && isSeedPhrase && (
                 <InputSeedPhraseField
-                  label='12-word Recovery Phrase'
+                  label='12-word Secret Phrase'
                   userSeedPhrase={userSeedPhrase}
                   setUserSeedPhrase={setUserSeedPhrase}
                   seedPhraseError={seedPhraseError}
@@ -234,10 +234,10 @@ export default () => {
 
               {!isKoiiPhrase && isSeedPhrase && (
                 <InputNonKoiiSeedPhraseField
-                  label='Non-KOII Recovery Phrase'
+                  label='Non-KOII Secret Phrase'
                   value={userSeedPhrase}
                   setValue={setUserSeedPhrase}
-                  placeholder='Paste your recovery phrase here'
+                  placeholder='Paste your secret phrase here'
                   walletType={walletType}
                   setIsSeedPhrase={setIsSeedPhrase}
                 />
@@ -280,8 +280,8 @@ export default () => {
                   className='non-koii-phrase'
                 >
                   {isKoiiPhrase
-                    ? 'I have a non-Koii recovery phrase.'
-                    : 'I have a Koii recovery phrase.'}
+                    ? 'I have a non-Koii secret phrase.'
+                    : 'I have a Koii secret phrase.'}
                 </span>
               )}
               {showHasTwelveSeedPhrase && <HasTwelveSeedPhrase isSeedPhrase={isSeedPhrase} />}

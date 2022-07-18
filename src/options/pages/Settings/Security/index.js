@@ -53,9 +53,9 @@ export default () => {
         <div className="header">Security Settings</div>
         <div className="content">
           <div className="backup-seedphrase">
-            <div className="title">Get my Recovery Phrase</div>
+            <div className="title">Get my Secret Phrase</div>
             <div className="description">
-              Select a wallet to see its recovery phrase (sometimes called a ‘seed phrase’).
+              Select a wallet to see its secret phrase (sometimes called a ‘seed phrase’).
             </div>
             <AccountManagementGetPhrase
               accounts={accounts}

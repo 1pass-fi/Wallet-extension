@@ -22,7 +22,7 @@ const InputPrivateKeyField = ({
       ></textarea>
 
       <div className='import-private-key'>
-        Have a recovery phrase?{' '}
+        Have a secret phrase?{' '}
         <span
           onClick={() => {
             setIsSeedPhrase(true)

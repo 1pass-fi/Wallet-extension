@@ -9,7 +9,7 @@ import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom
 import KoiIcon from 'img/v2/onboarding/finnie-koii-logo.svg'
 import SuccessIcon from 'img/v2/onboarding/success-icon.svg'
 import KoiiToken from 'img/v2/onboarding/koii-token.svg'
-import ImagesNFTs from 'img/v2/onboarding/Images-NFTs.svg'
+import ImagesNFTs from 'img/v2/onboarding/images-nfts.svg'
 
 import Button from 'finnie-v2/components/Button'
 
@@ -49,7 +49,7 @@ const RevealPhrase = ({ step }) => {
         <div>Remember:</div>
         <li className="mt-2">
           Stay safe from phishing scams—<br></br>
-          <span className="text-warning">Koii will NEVER ask you for your recovery phrase</span> or
+          <span className="text-warning">Koii will NEVER ask you for your secret phrase</span> or
           keyfile
         </li>
         <li>
