@@ -155,7 +155,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 onClick={() => {
                   if (!isEmpty(dataString)) setTab(TAB.DATA)
                 }}
-                data-tip={isEmpty(dataString) ? `This transaction doesn't contain data` : ''}
+                // data-tip={isEmpty(dataString) ? `This transaction doesn't contain data` : ''}
               >
                 Data
               </div>
