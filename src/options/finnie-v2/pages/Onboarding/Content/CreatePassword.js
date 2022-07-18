@@ -71,7 +71,15 @@ const CreatePassword = ({ step, setStep }) => {
         required={true}
         name="password"
         description={
-          isEmpty(accounts) && !isEmpty(password) && (passwordErrorMessage === VALIDATE_ERROR_MESSAGE.INVALID_CHARACTER || passwordErrorMessage === VALIDATE_ERROR_MESSAGE.NOT_ENOUGH_CHARACTERS) ? 'Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%).' : ''}
+          isEmpty(accounts) &&
+          !isEmpty(password) &&
+          (passwordErrorMessage === VALIDATE_ERROR_MESSAGE.INVALID_CHARACTER ||
+            passwordErrorMessage === VALIDATE_ERROR_MESSAGE.NOT_ENOUGH_CHARACTERS)
+            ? 'Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%).'
+            : !isEmpty(wrongPasswordMessage)
+              ? wrongPasswordMessage
+              : ''
+        }
         placeholder=""
         uppercase={false}
         passwordFinnie={true}
@@ -120,7 +128,7 @@ const CreatePassword = ({ step, setStep }) => {
         variant="white"
         text="Log In"
         disabled={!isValidPassword && isEmpty(accounts)}
-        onClick={onClickContinue}
+        onClick={() => onClickContinue()}
       />
     </div>
   )
