@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState, useContext } from 'react'
 import { useSelector } from 'react-redux'
+import { v4 as uuid } from 'uuid'
 
 import ActivityRow from './ActivityRow'
 import DropDown from 'finnie-v2/components/DropDown'
@@ -27,7 +28,6 @@ const Activity = () => {
       if (accountOption !== 'ALL') {
         const account = await popupAccount.getAccount({ address: accountOption })
         const allActivities = await account.get.activities()
-        console.log('accountOption', accountOption, allActivities)
         setActivities(allActivities)
       } else {
         let allActivities = []
@@ -40,7 +40,6 @@ const Activity = () => {
         )
         allActivities.sort((a, b) => b.time - a.time)
 
-        console.log('accountOption ALL', allActivities)
         setActivities(allActivities)
       }
     }
@@ -81,7 +80,7 @@ const Activity = () => {
         </thead>
         <tbody>
           {activities.map((activity, idx) => (
-            <ActivityRow activity={activity} key={idx} />
+            <ActivityRow activity={activity} key={uuid()} />
           ))}
         </tbody>
       </table>
