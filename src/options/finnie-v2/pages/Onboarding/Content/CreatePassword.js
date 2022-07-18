@@ -75,6 +75,7 @@ const CreatePassword = ({ step, setStep }) => {
         placeholder=""
         uppercase={false}
         passwordFinnie={true}
+        autoFocus={true}
       />
       {isEmpty(accounts) && (
         <InputField
