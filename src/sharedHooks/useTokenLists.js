@@ -10,11 +10,13 @@ import useImportedTokenAddresses from 'sharedHooks/useImportedTokenAddresses'
 import { 
   fromArToWinston,
   fromEthToWei,
+  fromSolToLamp,
+  fromLampToSol,
   fiatCurrencyFormat,
   numberFormat
 } from 'utils'
 
-import getTokenData from 'utils/getTokenData'
+import getTokenData, { getSolanaCustomTokensData } from 'utils/getTokenData'
 
 const useTokenLists = ({ address, setIsLoading }) => {
   const [tokenList, setTokenList] = useState([])
@@ -84,11 +86,34 @@ const useTokenLists = ({ address, setIsLoading }) => {
                 _tokenList.push(token)
               })
             )
-
-            console.log('ETH tokenList', tokenList)
-
             break
           case TYPE.SOLANA:
+            _tokenList = [
+              {
+                name: 'Solana',
+                balance,
+                displayingBalance: numberFormat(fromLampToSol(balance)),
+                symbol: 'SOL',
+                usdValue: fiatCurrencyFormat((fromLampToSol(balance) * price.SOL)),
+                decimal: 9
+              }
+            ]
+
+            await Promise.all(
+              importedTokenAddresses.map(async (contractAddress) => {
+                let token = await getSolanaCustomTokensData(contractAddress, address)
+                token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
+                if (token.price) {
+                  token = {
+                    ...token,
+                    usdValue: fiatCurrencyFormat(
+                      (token.balance / Math.pow(10, token.decimal)) * token.price
+                    )
+                  }
+                }
+                _tokenList.push(token)
+              })
+            )
             break
         }
 
