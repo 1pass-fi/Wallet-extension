@@ -82,7 +82,7 @@ const SendTokenForm = ({
 
   const AddressDropdown = ({ accounts = [], onChange, type }) => {
     return (
-      <div className="bg-blue-800 border-b-2 border-white z-50 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none">
+      <div className="bg-blue-800 border-b-2 border-white z-40 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none">
         <button
           className="text-left pl-2 h-8 text-white text-sm hover:bg-blue-500"
           onClick={() => onChange({})}

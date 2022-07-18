@@ -68,7 +68,7 @@ export const Select = ({
           </button>
         </div>
         {showMenu && (
-          <div className="bg-blue-800 border-b-2 border-white z-50 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none">
+          <div className="bg-blue-800 border-b-2 border-white z-40 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none">
             {options.map((option) => {
               return (
                 <button
