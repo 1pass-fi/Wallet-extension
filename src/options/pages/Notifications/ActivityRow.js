@@ -6,6 +6,7 @@ import ViewBlockIcon from 'img/v2/view-block.svg'
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-bg-white.svg'
 import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import SolanaLogo from 'img/v2/solana-logo.svg'
+import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 
 import { PATH, URL, ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
@@ -78,9 +79,8 @@ const ActivityRow = ({
       <td className="px-1">
         {displayInfo.tokenType === 'ETH' && <EthereumLogo className="w-5 h-5 mr-2 inline-block" />}
         {displayInfo.tokenType === 'SOL' && <SolanaLogo className="w-5 h-5 mr-2 inline-block" />}
-        {(displayInfo.tokenType === 'AR' || displayInfo.tokenType === 'KOII') && (
-          <KoiiLogo className="w-5 h-5 mr-2 inline-block" />
-        )}
+        {displayInfo.tokenType === 'AR' && <ArweaveLogo className="w-5 h-5 mr-2 inline-block" />}
+        {displayInfo.tokenType === 'KOII' && <KoiiLogo className="w-5 h-5 mr-2 inline-block" />}
         {displayInfo.tokenType !== 'ETH' &&
           displayInfo.tokenType !== 'SOL' &&
           displayInfo.tokenType !== 'AR' &&
