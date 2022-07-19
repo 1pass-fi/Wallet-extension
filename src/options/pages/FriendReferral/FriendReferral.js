@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useSelector } from 'react-redux'
+import get from 'lodash/get'
 
 import NavBar from 'finnie-v2/components/NavBar'
+import ToolTip from 'finnie-v2/components/ToolTip'
 
 import FriendReferralBg from 'img/v2/friend-referral-bg.svg'
 import ShuttleIcon from 'img/v2/shuttle-icon.svg'
@@ -18,9 +20,10 @@ import { FRIEND_REFERRAL_ENDPOINTS, STATEMENT } from 'constants/koiConstants'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import { GalleryContext } from 'options/galleryContext'
+import { TYPE } from 'constants/accountConstants'
 
 const FriendReferral = () => {
-  const { setIsLoading, setError, setNotification } = useContext(GalleryContext)
+  const { setIsLoading, setError, setNotification, displayingAccount } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const [showGetRewardsModal, setShowGetRewardsModal] = useState(false)
   const [showShareCodeModal, setShowShareCodeModal] = useState(false)
@@ -83,36 +86,47 @@ const FriendReferral = () => {
         </div>
         <div className="mt-2 text-base text-center leading-7 text-white">{code}</div>
         <div style={{ width: '768px' }} className="mt-8 flex justify-evenly items-center mx-auto">
-          <Button
-            style={{ width: '216px', height: '46px' }}
-            text="Share Code"
-            variant="lightBlue"
-            icon={ShareCodeIcon}
-            size="lg"
-            onClick={() => {
-              setShowShareCodeModal(true)
-            }}
-          />
-          <CopyToClipboard text={code}>
+          <span data-tip="This feature only supports AR account">
             <Button
               style={{ width: '216px', height: '46px' }}
-              text={isCopied ? 'Copied' : 'Click to Copy'}
-              variant="primary"
-              icon={isCopied ? CheckMarkIcon : CopyIcon}
-              size={isCopied ? 'lg' : 'md'}
-              onClick={() => setIsCopied(true)}
+              text="Share Code"
+              variant="lightBlue"
+              icon={ShareCodeIcon}
+              size="lg"
+              onClick={() => {
+                setShowShareCodeModal(true)
+              }}
+              disabled={get(displayingAccount, 'type') !== TYPE.ARWEAVE}
             />
-          </CopyToClipboard>
-          <Button
-            style={{ width: '216px', height: '46px' }}
-            text="Get My Rewards"
-            variant="warning300"
-            icon={ShareIcon}
-            size="lg"
-            onClick={() => {
-              setShowGetRewardsModal(true)
-            }}
-          />
+          </span>
+
+          <span data-tip="This feature only supports AR account">
+            <CopyToClipboard text={code}>
+              <Button
+                style={{ width: '216px', height: '46px' }}
+                text={isCopied ? 'Copied' : 'Click to Copy'}
+                variant="primary"
+                icon={isCopied ? CheckMarkIcon : CopyIcon}
+                size={isCopied ? 'lg' : 'md'}
+                onClick={() => setIsCopied(true)}
+                disabled={get(displayingAccount, 'type') !== TYPE.ARWEAVE}
+              />
+            </CopyToClipboard>
+          </span>
+
+          <span data-tip="This feature only supports AR account">
+            <Button
+              style={{ width: '216px', height: '46px' }}
+              text="Get My Rewards"
+              variant="warning300"
+              icon={ShareIcon}
+              size="lg"
+              onClick={() => {
+                setShowGetRewardsModal(true)
+              }}
+              disabled={get(displayingAccount, 'type') !== TYPE.ARWEAVE}
+            />
+          </span>
         </div>
       </div>
       {showGetRewardsModal && (
@@ -125,6 +139,7 @@ const FriendReferral = () => {
       {showShareCodeModal && (
         <ShareCodeModal code={code} close={() => setShowShareCodeModal(false)} />
       )}
+      {get(displayingAccount, 'type') !== TYPE.ARWEAVE && <ToolTip />}
     </div>
   )
 }
