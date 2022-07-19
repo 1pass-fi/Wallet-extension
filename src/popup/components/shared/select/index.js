@@ -1,5 +1,5 @@
 // modules
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 // assets
 import DownArrowIcon from 'img/v2/dropdown/down-icon-blue.svg'
@@ -18,6 +18,9 @@ export const Select = ({
   onChange,
   isAccountAddress
 }) => {
+  const ref = useRef(null)
+  const menuRef = useRef(null)
+
   const [showMenu, setShowMenu] = useState(false)
   const [downArrow, setDownArrow] = useState(true)
   const [selectedOption, setSelectedOption] = useState(defaultOption)
@@ -44,8 +47,23 @@ export const Select = ({
     setSelectedOption(defaultOption)
   }, [options])
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && menuRef.current.contains(event.target)) {
+        return
+      } else if (ref.current && !ref.current.contains(event.target)) {
+        setShowMenu(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [menuRef])
+
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col" ref={ref}>
       {label.length > 0 && <div className="text-sm pl-1.5 mb-1.5 font-semibold">{label}</div>}
       <div className="w-full relative text-left rounded-finnie border-t-2 border-r-2 border-l-2 border-white shadow-lg">
         <div className="border-b-2 rounded-finnie border-white text-white h-8 flex">
@@ -68,7 +86,10 @@ export const Select = ({
           </button>
         </div>
         {showMenu && (
-          <div className="bg-blue-800 border-b-2 border-white z-40 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none">
+          <div
+            className="bg-blue-800 border-b-2 border-white z-40 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none"
+            ref={menuRef}
+          >
             {options.map((option) => {
               return (
                 <button

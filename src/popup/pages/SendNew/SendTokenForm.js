@@ -29,6 +29,9 @@ const SendTokenForm = ({
   setSelectedAccount,
   enoughGas
 }) => {
+  const ref = useRef(null)
+  const recipientsRef = useRef(null)
+
   const [accountOptions, setAccountOptions] = useState([])
   const [addressOptions, setAddressOptions] = useState([])
   const [isShowDropdown, setIsShowDropdown] = useState(false)
@@ -80,9 +83,12 @@ const SendTokenForm = ({
     setIsShowDropdown(false)
   }
 
-  const AddressDropdown = ({ accounts = [], onChange, type }) => {
+  const AddressDropdown = React.forwardRef(({ accounts = [], onChange, type }, recipientsRef) => {
     return (
-      <div className="bg-blue-800 border-b-2 border-white z-30 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none">
+      <div
+        className="bg-blue-800 border-b-2 border-white z-30 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none"
+        ref={recipientsRef}
+      >
         <button
           className="text-left pl-2 h-8 text-white text-sm hover:bg-blue-500"
           onClick={() => onChange({})}
@@ -93,7 +99,7 @@ const SendTokenForm = ({
           if (account.type === type) {
             return (
               <div
-                key={account.id}
+                key={account.address}
                 className="text-left pl-2 h-8 text-white text-sm hover:bg-blue-500"
                 onClick={() => onChange(account)}
               >
@@ -104,7 +110,22 @@ const SendTokenForm = ({
         })}
       </div>
     )
-  }
+  })
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (recipientsRef.current && recipientsRef.current.contains(event.target)) {
+        return
+      } else if (ref.current && !ref.current.contains(event.target)) {
+        setIsShowDropdown(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [recipientsRef])
 
   return (
     <div className="pt-7.5 flex flex-col items-center">
@@ -122,7 +143,10 @@ const SendTokenForm = ({
       {/* RECIPIENT INPUT */}
       <div className="mt-7 recipient" style={{ width: '352px' }}>
         <div className="text-sm pl-1.5 mb-1.5 font-semibold">TO</div>
-        <div className="w-full relative text-left rounded-finnie border-t-2 border-r-2 border-l-2 border-white shadow-lg">
+        <div
+          className="w-full relative text-left rounded-finnie border-t-2 border-r-2 border-l-2 border-white shadow-lg"
+          ref={ref}
+        >
           <div
             className="border-b-2 rounded-finnie border-white text-white h-8 flex"
             data-tip={isEmpty(selectedAccount) ? 'Please choose Sender Account first!' : ''}
@@ -164,6 +188,7 @@ const SendTokenForm = ({
               accounts={addressOptions}
               onChange={onAddressDropdownChange}
               type={selectedAccount.type}
+              ref={recipientsRef}
             />
           )}
         </div>
