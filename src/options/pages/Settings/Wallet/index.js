@@ -201,6 +201,7 @@ export default () => {
                 onChange={onCurrencyChange}
                 variant="dark"
                 size="lg"
+                filterSupported={false}
               />
             </div>
           </div>
