@@ -1,5 +1,6 @@
 // modules
 import React, { useState, useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
@@ -32,6 +33,7 @@ const SendTokenForm = ({
   const ref = useRef(null)
   const recipientsRef = useRef(null)
 
+  const accounts = useSelector((state) => state.accounts)
   const [accountOptions, setAccountOptions] = useState([])
   const [addressOptions, setAddressOptions] = useState([])
   const [isShowDropdown, setIsShowDropdown] = useState(false)
@@ -57,12 +59,13 @@ const SendTokenForm = ({
 
   useEffect(() => {
     const getAddressList = async () => {
-      const options = await getAddressesFromAddressBook()
+      let options = await getAddressesFromAddressBook()
+      options = options.concat(accounts)
       setAddressOptions(options)
     }
 
     getAddressList()
-  }, [])
+  }, [selectedAccount])
 
   const onChangeAccount = (selected) => {
     const account = find(accountOptions, (v) => v.value == selected)
@@ -96,7 +99,7 @@ const SendTokenForm = ({
           Enter Address Manually
         </button>
         {accounts.map((account) => {
-          if (account.type === type) {
+          if (account.type === type && account.address !== selectedAccount.address) {
             return (
               <div
                 key={account.address}
