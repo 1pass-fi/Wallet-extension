@@ -373,7 +373,11 @@ const AccountCard = ({
     }
   }
 
-  const { tokenList } = useTokenLists({ address: account.address, setIsLoading: () => {} })
+  const { tokenList } = useTokenLists({
+    address: account.address,
+    setIsLoading: () => {},
+    currentProviderAddress: currentNetwork
+  })
 
   return (
     <div className="mt-4.5 text-indigo select-none">

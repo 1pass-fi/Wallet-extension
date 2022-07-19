@@ -7,7 +7,7 @@ import { TYPE } from 'constants/accountConstants'
 
 import useImportedTokenAddresses from 'sharedHooks/useImportedTokenAddresses'
 
-import { 
+import {
   fromArToWinston,
   fromEthToWei,
   fromSolToLamp,
@@ -18,10 +18,13 @@ import {
 
 import getTokenData, { getSolanaCustomTokensData } from 'utils/getTokenData'
 
-const useTokenLists = ({ address, setIsLoading }) => {
+const useTokenLists = ({ address, setIsLoading, currentProviderAddress }) => {
   const [tokenList, setTokenList] = useState([])
 
-  let { importedTokenAddresses } = useImportedTokenAddresses({userAddress: address})
+  let { importedTokenAddresses } = useImportedTokenAddresses({
+    userAddress: address,
+    currentProviderAddress
+  })
 
   useEffect(() => {
     const loadTokenList = async () => {
@@ -29,7 +32,7 @@ const useTokenLists = ({ address, setIsLoading }) => {
         setIsLoading && setIsLoading((prev) => ++prev)
         const account = await popupAccount.getAccount({ address })
         if (isEmpty(account)) throw new Error('Get account failed.')
-  
+
         const accountType = await account.get.type()
         const balance = (await account.get.balance()) || 0
         const koiBalance = (await account.get.koiBalance()) || 0
@@ -40,7 +43,7 @@ const useTokenLists = ({ address, setIsLoading }) => {
         }
 
         let _tokenList = []
-        switch(accountType) {
+        switch (accountType) {
           case TYPE.ARWEAVE:
             _tokenList = [
               {
@@ -94,7 +97,7 @@ const useTokenLists = ({ address, setIsLoading }) => {
                 balance,
                 displayingBalance: numberFormat(fromLampToSol(balance)),
                 symbol: 'SOL',
-                usdValue: fiatCurrencyFormat((fromLampToSol(balance) * price.SOL)),
+                usdValue: fiatCurrencyFormat(fromLampToSol(balance) * price.SOL),
                 decimal: 9
               }
             ]

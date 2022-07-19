@@ -13,7 +13,7 @@ import { SOL_NETWORK_PROVIDER } from 'constants/koiConstants'
 
 import { popupAccount } from 'services/account'
 
-const useImportedTokenAddresses = ({ userAddress }) => {
+const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
   const [importedTokenAddresses, setImportedTokenAddresses] = useState([])
 
   const checkValidToken = async (tokenAddress) => {
@@ -120,7 +120,7 @@ const useImportedTokenAddresses = ({ userAddress }) => {
     }
 
     if (!isEmpty(userAddress)) loadImportedTokenAddresses()
-  }, [userAddress])
+  }, [userAddress, currentProviderAddress])
 
   return { importedTokenAddresses }
 }
