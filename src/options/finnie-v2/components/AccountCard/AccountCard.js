@@ -52,7 +52,8 @@ const AccountCard = ({
   setShowConfirmRemoveAccount,
   setRemoveAccount,
   setShowConnectedSites,
-  setAccountConnectSites
+  setAccountConnectSites,
+  dragProvided
 }) => {
   const { setIsLoading, setError, setActivatedChain } = useContext(GalleryContext)
 
@@ -388,6 +389,7 @@ const AccountCard = ({
         <div
           className="flex items-center justify-center bg-white shadow rounded-r-lg"
           style={{ width: '22.5px', height: '55.25px' }}
+          {...dragProvided.dragHandleProps}
         >
           <DragIcon style={{ width: '4.93px', height: '31.49px' }} />
         </div>

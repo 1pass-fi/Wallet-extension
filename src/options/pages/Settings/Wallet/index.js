@@ -227,17 +227,14 @@ export default () => {
                     {listAccounts.map((account, index) => (
                       <Draggable draggableId={account.address} index={index} key={account.address}>
                         {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
+                          <div ref={provided.innerRef} {...provided.draggableProps}>
                             <AccountCard
                               account={account}
                               setShowConfirmRemoveAccount={setShowConfirmRemoveAccount}
                               setRemoveAccount={setRemoveAccount}
                               setShowConnectedSites={setShowConnectedSites}
                               setAccountConnectSites={setAccountConnectSites}
+                              dragProvided={provided}
                             />
                           </div>
                         )}
