@@ -107,7 +107,8 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
           await storage.setting.set.activatedChain(accountStates[0].type)
           setActivatedChain(accountStates[0].type)
         }
-	      const totalArweaveAccount = await popupAccount.count(TYPE.ARWEAVE)
+      }
+      const totalArweaveAccount = await popupAccount.count(TYPE.ARWEAVE)
       const totalEthereumAccount = await popupAccount.count(TYPE.ETHEREUM)
       const totalSolanaAccount = await popupAccount.count(TYPE.SOLANA)
 

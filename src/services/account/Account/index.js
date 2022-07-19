@@ -2,7 +2,7 @@ import { AccountGetter } from './get'
 import { AccountSetter } from './set'
 
 import { Web } from '@_koi/sdk/web'
-import { Ethereum } from 'services/ethereum'
+import { EthereumTool } from 'services/ethereum'
 import { SolanaTool } from 'services/solana'
 import { K2Tool } from 'services/k2'
 
@@ -50,7 +50,7 @@ export class EthereumAccount extends BackgroundAccount {
   #eth
   constructor({ address, key }, provider) {
     super(address)
-    this.#eth = new Ethereum(provider)
+    this.#eth = new EthereumTool(provider)
     this.#eth.address = address
     this.#eth.provider = provider
     this.#eth.key = key
