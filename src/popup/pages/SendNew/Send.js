@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { connect, useSelector } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 import clsx from 'clsx'
@@ -140,6 +140,21 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
     []
   )
 
+  const tokenDropdownRef = useRef(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (tokenDropdownRef.current && !tokenDropdownRef.current.contains(event.target)) {
+        setShowTokenOptions(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [tokenDropdownRef])
+
   return (
     <div className="w-full relative bg-white flex flex-col items-center pt-9.75">
       <SendBackgroundLeft className="absolute top-0 left-0" />
@@ -178,6 +193,7 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
             !isEmpty(selectedAccount) && setShowTokenOptions((prev) => !prev)
           }}
           style={{ width: '68px', height: '45px' }}
+          ref={tokenDropdownRef}
         >
           {isEmpty(selectedToken) && <FinnieIcon style={{ width: '34px', height: '34px' }} />}
           {!isEmpty(selectedToken) &&
