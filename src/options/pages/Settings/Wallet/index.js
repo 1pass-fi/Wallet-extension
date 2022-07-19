@@ -10,6 +10,7 @@ import { isEmpty, get } from 'lodash'
 import { getChromeStorage, setChromeStorage, isSolanaAddress } from 'utils'
 import { STORAGE, OS } from 'constants/koiConstants'
 import { GalleryContext } from 'options/galleryContext'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import storage from 'services/storage'
 
 // import AccountOrder from './AccountOrder'
@@ -37,6 +38,7 @@ export default () => {
   const [showConnectedSites, setShowConnectedSites] = useState(false)
   const [accountConnectSites, setAccountConnectSites] = useState({})
   const [removeAccount, setRemoveAccount] = useState({})
+  const [listAccounts, setListAccounts] = useState([])
 
   const accounts = useSelector((state) => state.accounts)
 
@@ -105,14 +107,52 @@ export default () => {
 
   const showAccounts = useMemo(() => {
     if (chainOption !== 'ALL') {
-      return accounts.filter((account) => account.type.includes(chainOption))
+      const showAccountList = accounts.filter((account) => account.type.includes(chainOption))
+      setListAccounts(showAccountList)
+
+      return showAccountList
     } else {
+      setListAccounts(accounts)
       return accounts
     }
   }, [chainOption, accounts])
 
   const onChainOption = (chain) => {
     setChainOption(chain)
+  }
+
+  const reorder = (list, startIndex, endIndex) => {
+    try {
+      const result = Array.from(list)
+      const [removed] = result.splice(startIndex, 1)
+      result.splice(endIndex, 0, removed)
+
+      return result
+    } catch (err) {
+      console.error('reorder - Error: ', err.message)
+    }
+  }
+
+  const onDragEnd = (result) => {
+    try {
+      if (!result.destination) {
+        return
+      }
+
+      if (result.destination.index === result.source.index) {
+        return
+      }
+
+      const listAccountsAfterDrag = reorder(
+        listAccounts,
+        result.source.index,
+        result.destination.index
+      )
+
+      setListAccounts(listAccountsAfterDrag)
+    } catch (error) {
+      console.error('onDragEnd - Error: ', error.message)
+    }
   }
 
   return (
@@ -181,17 +221,35 @@ export default () => {
                 filterSupported={false}
               />
             </div>
-
-            {showAccounts.map((account, index) => (
-              <AccountCard
-                account={account}
-                key={index}
-                setShowConfirmRemoveAccount={setShowConfirmRemoveAccount}
-                setRemoveAccount={setRemoveAccount}
-                setShowConnectedSites={setShowConnectedSites}
-                setAccountConnectSites={setAccountConnectSites}
-              />
-            ))}
+            
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="list">
+                {(provided) => (
+                  <div ref={provided.innerRef} {...provided.droppableProps}>
+                    {listAccounts.map((account, index) => (
+                      <Draggable draggableId={account.address} index={index} key={account.address}>
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <AccountCard
+                              account={account}
+                              setShowConfirmRemoveAccount={setShowConfirmRemoveAccount}
+                              setRemoveAccount={setRemoveAccount}
+                              setShowConnectedSites={setShowConnectedSites}
+                              setAccountConnectSites={setAccountConnectSites}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
           </div>
         </div>
       </div>
