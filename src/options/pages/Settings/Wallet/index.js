@@ -105,15 +105,12 @@ export default () => {
     }
   }
 
-  const showAccounts = useMemo(() => {
+  useEffect(() => {
     if (chainOption !== 'ALL') {
       const showAccountList = accounts.filter((account) => account.type.includes(chainOption))
       setListAccounts(showAccountList)
-
-      return showAccountList
     } else {
       setListAccounts(accounts)
-      return accounts
     }
   }, [chainOption, accounts])
 
@@ -222,7 +219,7 @@ export default () => {
                 filterSupported={false}
               />
             </div>
-            
+
             <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="list">
                 {(provided) => (
