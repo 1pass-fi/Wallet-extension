@@ -142,7 +142,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
       >
         <div className="flex h-16.75 rounded-t bg-trueGray-100 shadow-md w-full font-semibold text-xl tracking-finnieSpacing-wide relative">
           {/* <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" /> */}
-          <div className="m-auto">Delete Account</div>
+          <div className="m-auto">Remove Account</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
         <div className="mt-7.5 flex flex-col items-center justify-evenly">
@@ -150,7 +150,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
             className="font-bold text-lg text-indigo leading-6 text-center"
             style={{ width: '303px' }}
           >
-            Are you sure you want to delete {formatLongString(account.accountName, 25)}?
+            Are you sure you want to remove "{formatLongString(account.accountName, 25)}"?
           </div>
           <div className="mt-6 text-sm font-normal text-center" style={{ width: '485px' }}>
             This will erase all account information from Finnie but you’ll still be able to import
@@ -161,7 +161,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
               style={{ width: '180px', height: '39px' }}
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-8"
               variant="warning300"
-              text="Delete"
+              text="Remove Account"
               onClick={() => handleRemoveAccount()}
             />
 
