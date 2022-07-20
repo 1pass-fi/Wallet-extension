@@ -594,5 +594,6 @@ export const NFT_CONTRACT_SRC = '14l2t0DtenMRKPasR6Xi3pmQm3rqopD4cUr6Q5oD8lc'
 export const NETWORK = {
   ETHEREUM: 'ETHEREUM',
   SOLANA: 'SOLANA',
-  ARWEAVE: 'ARWEAVE'
+  ARWEAVE: 'ARWEAVE',
+  K2: 'K2'
 }

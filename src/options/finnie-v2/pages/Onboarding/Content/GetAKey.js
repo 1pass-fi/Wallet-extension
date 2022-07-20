@@ -21,14 +21,17 @@ const GetAKey = ({ step, setStep }) => {
     }
 
     switch (network) {
-      case TYPE.ARWEAVE:
-        setNetwork(NETWORK.ARWEAVE)
+      case TYPE.K2:
+        setNetwork(NETWORK.K2)
         break
       case TYPE.ETHEREUM:
         setNetwork(NETWORK.ETHEREUM)
         break
       case TYPE.SOLANA:
         setNetwork(NETWORK.SOLANA)
+        break
+      case TYPE.ARWEAVE:
+        setNetwork(NETWORK.ARWEAVE)
         break
     }
 
@@ -49,10 +52,10 @@ const GetAKey = ({ step, setStep }) => {
       <div className="mt-2 font-normal text-sm w-11/12">
         Finnie currently supports Koii and Ethereum keys. More key types are in the works.
       </div>
-      <div className="mt-11 ml-4 flex justify-start gap-4.5">
+      <div className="mt-11 ml-1 flex justify-start gap-4.5">
         <div className="flex flex-col items-center">
           <KeyLogo
-            type={TYPE.ARWEAVE}
+            type={TYPE.K2}
             inProcessing={inProcessing}
             networkProcessing={networkProcessing}
             handleOnClick={handleGetNewKey}
@@ -76,6 +79,15 @@ const GetAKey = ({ step, setStep }) => {
             handleOnClick={handleGetNewKey}
           />
           <div className="font-normal text-lg leading-6">Solana</div>
+        </div>
+        <div className="flex flex-col items-center">
+          <KeyLogo
+            type={TYPE.ARWEAVE}
+            inProcessing={inProcessing}
+            networkProcessing={networkProcessing}
+            handleOnClick={handleGetNewKey}
+          />
+          <div className="font-normal text-lg leading-6">Arweave</div>
         </div>
       </div>
     </div>

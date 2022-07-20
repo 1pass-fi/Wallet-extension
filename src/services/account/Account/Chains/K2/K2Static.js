@@ -29,7 +29,7 @@ export class K2Static {
   }
 
   async generateWallet(k2) {
-    const seedPhrase = k2.generateWallet()
+    const seedPhrase = await k2.generateWallet()
 
     return seedPhrase
   }

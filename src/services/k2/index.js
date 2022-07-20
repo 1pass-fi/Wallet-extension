@@ -85,7 +85,7 @@ export class K2Tool {
   async generateWallet() {
     const seedPhrase = generateMnemonic()
 
-    this.importWallet(seedPhrase)
+    await this.importWallet(seedPhrase)
 
     return seedPhrase
   }
