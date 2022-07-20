@@ -9,7 +9,7 @@ import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom
 import { TYPE } from 'constants/accountConstants'
 import { NETWORK } from 'constants/koiConstants'
 
-const GetAKey = ({ step, setStep }) => {
+const GetAKey = ({ step, setStep, setImportType }) => {
   const { generateNewKey, setNetwork } = useContext(OnboardingContext)
 
   const [inProcessing, setInProcessing] = useState(false)
@@ -37,6 +37,7 @@ const GetAKey = ({ step, setStep }) => {
 
     setNetworkProcessing(network)
     setInProcessing(true)
+    setImportType(network)
     await generateNewKey(network)
     setInProcessing(false)
     setNetworkProcessing(null)

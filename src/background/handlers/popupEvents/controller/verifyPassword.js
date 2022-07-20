@@ -12,12 +12,15 @@ export default async (payload, next) => {
     if (totalAccount === 0) {
       next({ data: false })
     } else {
-      let accountAddress = await storage.setting.get.activatedArweaveAccountAddress()
+      let accountAddress = await storage.setting.get.activatedK2AccountAddress()
       if (isEmpty(accountAddress)) {
         accountAddress = await storage.setting.get.activatedEthereumAccountAddress()
       }
       if (isEmpty(accountAddress)) {
         accountAddress = await storage.setting.get.activatedSolanaAccountAddress()
+      }
+      if (isEmpty(accountAddress)) {
+        accountAddress = await storage.setting.get.activatedArweaveAccountAddress()
       }
 
       const encryptedKey = await backgroundAccount.getEncryptedKey(accountAddress)

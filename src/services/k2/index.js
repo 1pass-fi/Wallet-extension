@@ -9,8 +9,8 @@ import {
   LAMPORTS_PER_SOL,
   sendAndConfirmTransaction
 } from '@_koi/web3.js'
-
 import { derivePath } from 'ed25519-hd-key'
+import bs58 from 'bs58'
 import { isEmpty } from 'lodash'
 
 export class K2Tool {
@@ -85,7 +85,7 @@ export class K2Tool {
   async generateWallet() {
     const seedPhrase = generateMnemonic()
 
-    await this.importWallet(seedPhrase)
+    await this.importWallet(seedPhrase, 'seedphrase')
 
     return seedPhrase
   }

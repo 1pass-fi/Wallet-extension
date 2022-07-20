@@ -12,7 +12,7 @@ import { OnboardingContext } from '../onboardingContext'
 
 import useMethod from '../hooks/useMethod'
 
-const HiddenPhrase = ({ step, setStep }) => {
+const HiddenPhrase = ({ step, setStep, importType }) => {
   const { setIsLoading, setError } = useContext(GalleryContext)
   const { newSeedphrase, password } = useContext(OnboardingContext)
   const [showPhrase, setShowPhrase] = useState(false)
@@ -24,7 +24,7 @@ const HiddenPhrase = ({ step, setStep }) => {
   }, [newSeedphrase])
 
   const handleSkipThisStep = async () => {
-    await saveNewKey()
+    await saveNewKey(importType)
     setStep(6)
   }
 

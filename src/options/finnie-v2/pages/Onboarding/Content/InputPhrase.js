@@ -9,7 +9,7 @@ import Button from 'finnie-v2/components/Button'
 
 import { OnboardingContext } from '../onboardingContext'
 
-const InputPhrase = ({ step, setStep, phrase }) => {
+const InputPhrase = ({ step, setStep, phrase, importType }) => {
   const { saveNewKey, newSeedphrase } = useContext(OnboardingContext)
 
   const [hiddenPhrase, setHiddenPhrase] = useState([])
@@ -93,7 +93,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
     }
 
     if (validateInputPhrase()) {
-      await saveNewKey()
+      await saveNewKey(importType)
       setStep(step + 1)
     } else {
       setMessageError('Invalid Secret Secret Phrase')
@@ -101,7 +101,7 @@ const InputPhrase = ({ step, setStep, phrase }) => {
   }
 
   const handleSkipThisStep = async () => {
-    await saveNewKey()
+    await saveNewKey(importType)
     setStep(6)
   }
 

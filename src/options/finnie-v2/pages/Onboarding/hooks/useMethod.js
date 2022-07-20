@@ -15,12 +15,8 @@ const ERROR_MESSAGE = {
   GENERATE_NEW_KEY_FAILED: 'Generate new key failed'
 }
 
-const useMethod = ({ 
-  password,
-  newSeedphrase,
-  setNewSeedphrase,
-}) => {
-  const { 
+const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
+  const {
     setImportedAddress,
     setIsLoading,
     setError,
@@ -43,12 +39,12 @@ const useMethod = ({
     }
   }
 
-  const saveNewKey = async () => {
+  const saveNewKey = async (network) => {
     try {
       setIsLoading((prev) => ++prev)
       const address = await request.wallet.saveWallet({ seedPhrase: newSeedphrase, password })
 
-      await initActivatedChain(address)
+      await initActivatedChain(network)
 
       setImportedAddress(address)
       setNewAddress(address)
@@ -67,7 +63,6 @@ const useMethod = ({
       const isCorrectPassword = await request.wallet.verifyPassword({ password })
       return isCorrectPassword
     } catch (err) {
-
     } finally {
       setIsLoading((prev) => --prev)
     }
@@ -76,14 +71,18 @@ const useMethod = ({
   const importFromSeedphrase = async (seedphrase, network) => {
     try {
       setIsLoading((prev) => ++prev)
-      const address = await request.wallet.importWallet({ key: seedphrase, password, type: network })
+      const address = await request.wallet.importWallet({
+        key: seedphrase,
+        password,
+        type: network
+      })
 
-      await initActivatedChain(address)
+      await initActivatedChain(network)
 
       setImportedAddress(address)
       setNewAddress(address)
       dispatch(addAccountByAddress(address))
-      
+
       return address
     } catch (err) {
       setError(err.message)
@@ -92,12 +91,7 @@ const useMethod = ({
     }
   }
 
-  const initActivatedChain = async (address) => {
-    let type
-    if (isArweaveAddress(address)) type = 'TYPE_ARWEAVE'
-    if (isEthereumAddress(address)) type = 'TYPE_ETHEREUM'
-    if (isSolanaAddress(address)) type = 'TYPE_SOLANA'
-
+  const initActivatedChain = async (type) => {
     const totalAccount = await popupAccount.count()
     if (totalAccount === 1) {
       await storage.setting.set.activatedChain(type)
