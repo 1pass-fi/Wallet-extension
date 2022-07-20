@@ -32,7 +32,6 @@ export default () => {
   const { setError, setNotification } = useContext(GalleryContext)
 
   const [currency, setCurrency] = useState('USD')
-  /* TODO DatH */
   const [chainOption, setChainOption] = useState('ALL')
   const [showConfirmRemoveAccount, setShowConfirmRemoveAccount] = useState(false)
   const [showConnectedSites, setShowConnectedSites] = useState(false)

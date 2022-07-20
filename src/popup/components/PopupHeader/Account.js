@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty'
 import ArrowIcon from 'img/down-arrow-icon.svg'
 import EthereumIcon from 'img/popup/ethereum-icon.svg'
 import FinnieIcon from 'img/popup/finnie-icon.svg'
+import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import SolanaIcon from 'img/v2/solana-logo.svg'
 
 import { TYPE } from 'constants/accountConstants'
@@ -32,7 +33,7 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
       ) : (
         <div className="ml-2.5 flex items-center">
           {displayingAccount.type === TYPE.ARWEAVE && (
-            <FinnieIcon style={{ width: '25px', height: '25px' }} />
+            <ArweaveIcon style={{ width: '25px', height: '25px' }} />
           )}
           {displayingAccount.type === TYPE.K2 && (
             <FinnieIcon style={{ width: '25px', height: '25px' }} />

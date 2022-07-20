@@ -138,16 +138,16 @@ class AccountManager {
    */
   async loadImported() {
     try {
-      const importedArweave = (await this.storage._getChrome(IMPORTED.ARWEAVE)) || []
+      const importedK2 = (await this.storage._getChrome(IMPORTED.K2)) || []
       const importedEthereum = (await this.storage._getChrome(IMPORTED.ETHEREUM)) || []
       const importedSolana = (await this.storage._getChrome(IMPORTED.SOLANA)) || []
-      const importedK2 = (await this.storage._getChrome(IMPORTED.K2)) || []
+      const importedArweave = (await this.storage._getChrome(IMPORTED.ARWEAVE)) || []
 
       this.importedAccount = [
-        ...importedArweave,
+        ...importedK2,
         ...importedEthereum,
         ...importedSolana,
-        ...importedK2
+        ...importedArweave
       ]
     } catch (err) {
       console.log(err.message)

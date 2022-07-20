@@ -25,7 +25,7 @@ import formatNumber from 'finnie-v2/utils/formatNumber'
 import { getSiteConnectedAddresses } from 'utils'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
-import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-orange.svg'
+import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import SolLogo from 'img/v2/solana-logo.svg'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
