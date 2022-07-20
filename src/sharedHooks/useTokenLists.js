@@ -118,6 +118,34 @@ const useTokenLists = ({ address, setIsLoading, currentProviderAddress }) => {
               })
             )
             break
+          case TYPE.K2:
+            _tokenList = [
+              {
+                name: 'KOII',
+                balance,
+                displayingBalance: numberFormat(balance),
+                symbol: 'KOII',
+                // usdValue: fiatCurrencyFormat(fromLampToSol(balance) * price.K2),
+                decimal: 0
+              }
+            ]
+
+            // await Promise.all(
+            //   importedTokenAddresses.map(async (contractAddress) => {
+            //     let token = await getSolanaCustomTokensData(contractAddress, address)
+            //     token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
+            //     if (token.price) {
+            //       token = {
+            //         ...token,
+            //         usdValue: fiatCurrencyFormat(
+            //           (token.balance / Math.pow(10, token.decimal)) * token.price
+            //         )
+            //       }
+            //     }
+            //     _tokenList.push(token)
+            //   })
+            // )
+            break
         }
 
         setTokenList(_tokenList)
