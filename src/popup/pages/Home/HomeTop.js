@@ -97,16 +97,8 @@ const HomeTop = ({
 
   const k2ProviderOptions = [
     {
-      label: 'MAINNET',
-      value: 'mainnet-beta'
-    },
-    {
       label: 'TESTNET',
       value: 'testnet'
-    },
-    {
-      label: 'DEVNET',
-      value: 'devnet'
     }
   ]
 

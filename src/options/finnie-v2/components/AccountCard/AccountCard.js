@@ -98,16 +98,8 @@ const AccountCard = ({
       type: TYPE.K2,
       value: [
         {
-          label: 'Mainnet',
-          value: 'mainnet-beta'
-        },
-        {
           label: 'Testnet',
           value: 'testnet'
-        },
-        {
-          label: 'Devnet',
-          value: 'devnet'
         }
       ]
     },

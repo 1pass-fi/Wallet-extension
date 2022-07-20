@@ -93,7 +93,7 @@ export class SettingGet {
   }
 
   async k2Provider() {
-    return (await this.#chrome._getChrome(SETTING.K2_PROVIDER)) || K2_NETWORK_PROVIDER.MAINNET
+    return (await this.#chrome._getChrome(SETTING.K2_PROVIDER)) || K2_NETWORK_PROVIDER.TESTNET
   }
 
   async activatedChain() {
