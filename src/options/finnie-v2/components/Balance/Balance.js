@@ -57,20 +57,20 @@ const Balance = ({ account }) => {
         <>
           <ViewsIcon style={{ width: '26px', height: '24px' }} className="mx-2" />
           <span className="font-semibold text-sm mr-2.5">{totalViews}</span>
-          <KoiiLogo className="w-6 h-6 mr-2" />
+          {/* <KoiiLogo className="w-6 h-6 mr-2" />
           <span className="font-semibold text-sm mr-2.5">
             {isNumber(account.koiBalance) ? formatNumber(account.koiBalance, 2) : '0'}
-          </span>
-          {/* <ArweaveLogo className="w-6 h-6 mr-2" />
+          </span> */}
+          <ArweaveLogo className="w-6 h-6 mr-2" />
           <span className="font-semibold text-sm  mr-2">
             {isNumber(account.balance) ? formatNumber(account.balance, 4) : '0'}
-          </span> */}
+          </span>
         </>
       )}
       {account.type === TYPE.K2 && (
         <>
-          <KoiiLogo className="w-6 h-6 mr-2" />
-          <span className="font-semibold text-sm mr-2">
+          <KoiiLogo className="w-6 h-6 mx-2" />
+          <span className="font-semibold text-sm mr-2.5">
             {formatNumber(account.balance, 4) !== 'NaN'
               ? formatNumber(account.balance / Math.pow(10, 9), 4)
               : '0'}

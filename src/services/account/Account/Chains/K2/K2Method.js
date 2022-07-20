@@ -4,6 +4,10 @@ import { clusterApiUrl, Connection, PublicKey, LAMPORTS_PER_SOL } from '@_koi/we
 
 import * as TokenAssets from 'utils/resolveSolanaNFTs'
 
+import { getChromeStorage } from 'utils'
+import { PATH, ALL_NFT_LOADED } from 'constants/koiConstants'
+import { TYPE } from 'constants/accountConstants'
+
 export class K2Method {
   #chrome
   constructor(k2Tool) {
@@ -68,7 +72,7 @@ export class K2Method {
       return res
     } catch (e) {
       console.log('Unable to load K2 content', e)
-      throw new Error(err.message)
+      throw new Error(e.message)
     }
   }
 

@@ -20,7 +20,10 @@ export const onboardingSteps = [
 const Welcome = () => {
   const { isLoading, setIsOnboarding } = useContext(GalleryContext)
   const [step, setStep] = useState(0)
-  setIsOnboarding(true)
+
+  useEffect(() => {
+    setIsOnboarding(true)
+  }, [])
 
   return (
     <div className="w-screen h-screen flex text-center">

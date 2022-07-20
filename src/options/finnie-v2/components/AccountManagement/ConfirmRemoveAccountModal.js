@@ -108,42 +108,71 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
           setActivatedChain(accountStates[0].type)
         }
       }
-      const totalArweaveAccount = await popupAccount.count(TYPE.ARWEAVE)
-      const totalEthereumAccount = await popupAccount.count(TYPE.ETHEREUM)
-      const totalSolanaAccount = await popupAccount.count(TYPE.SOLANA)
 
-      if (totalArweaveAccount === 0) {
-        if (totalEthereumAccount !== 0) {
-          await storage.setting.set.activatedChain(TYPE.ETHEREUM)
-          setActivatedChain(TYPE.ETHEREUM)
-        }
-        if (totalSolanaAccount !== 0) {
-          await storage.setting.set.activatedChain(TYPE.SOLANA)
-          setActivatedChain(TYPE.SOLANA)
-        }
-      }
+      // const totalK2Account = await popupAccount.count(TYPE.K2)
+      // const totalEthereumAccount = await popupAccount.count(TYPE.ETHEREUM)
+      // const totalSolanaAccount = await popupAccount.count(TYPE.SOLANA)
+      // const totalArweaveAccount = await popupAccount.count(TYPE.ARWEAVE)
 
-      if (totalEthereumAccount === 0) {
-        if (totalArweaveAccount !== 0) {
-          await storage.setting.set.activatedChain(TYPE.ARWEAVE)
-          setActivatedChain(TYPE.ARWEAVE)
-        }
-        if (totalSolanaAccount !== 0) {
-          await storage.setting.set.activatedChain(TYPE.SOLANA)
-          setActivatedChain(TYPE.SOLANA)
-        }
-      }
+      // if (totalK2Account === 0) {
+      //   if (totalEthereumAccount !== 0) {
+      //     await storage.setting.set.activatedChain(TYPE.ETHEREUM)
+      //     setActivatedChain(TYPE.ETHEREUM)
+      //   }
+      //   if (totalSolanaAccount !== 0) {
+      //     await storage.setting.set.activatedChain(TYPE.SOLANA)
+      //     setActivatedChain(TYPE.SOLANA)
+      //   }
+      //   if (totalArweaveAccount !== 0) {
+      //     await storage.setting.set.activatedChain(TYPE.ARWEAVE)
+      //     setActivatedChain(TYPE.ARWEAVE)
+      //   }
+      // }
 
-      if (totalSolanaAccount === 0) {
-        if (totalArweaveAccount !== 0) {
-          await storage.setting.set.activatedChain(TYPE.ARWEAVE)
-          setActivatedChain(TYPE.ARWEAVE)
-        }
-        if (totalEthereumAccount !== 0) {
-          await storage.setting.set.activatedChain(TYPE.ETHEREUM)
-          setActivatedChain(TYPE.ETHEREUM)
-        }
-      }
+      // if (totalArweaveAccount === 0) {
+      //   if (totalK2Account !== 0) {
+      //     await storage.setting.set.activatedChain(TYPE.K2)
+      //     setActivatedChain(TYPE.K2)
+      //   }
+      //   if (totalEthereumAccount !== 0) {
+      //     await storage.setting.set.activatedChain(TYPE.ETHEREUM)
+      //     setActivatedChain(TYPE.ETHEREUM)
+      //   }
+      //   if (totalSolanaAccount !== 0) {
+      //     await storage.setting.set.activatedChain(TYPE.SOLANA)
+      //     setActivatedChain(TYPE.SOLANA)
+      //   }
+      // }
+
+      // if (totalEthereumAccount === 0) {
+      //   if (totalK2Account !== 0) {
+      //     await storage.setting.set.activatedChain(TYPE.K2)
+      //     setActivatedChain(TYPE.K2)
+      //   }
+      //   if (totalArweaveAccount !== 0) {
+      //     await storage.setting.set.activatedChain(TYPE.ARWEAVE)
+      //     setActivatedChain(TYPE.ARWEAVE)
+      //   }
+      //   if (totalSolanaAccount !== 0) {
+      //     await storage.setting.set.activatedChain(TYPE.SOLANA)
+      //     setActivatedChain(TYPE.SOLANA)
+      //   }
+      // }
+
+      // if (totalSolanaAccount === 0) {
+      //   if (totalK2Account !== 0) {
+      //     await storage.setting.set.activatedChain(TYPE.K2)
+      //     setActivatedChain(TYPE.K2)
+      //   }
+      //   if (totalArweaveAccount !== 0) {
+      //     await storage.setting.set.activatedChain(TYPE.ARWEAVE)
+      //     setActivatedChain(TYPE.ARWEAVE)
+      //   }
+      //   if (totalEthereumAccount !== 0) {
+      //     await storage.setting.set.activatedChain(TYPE.ETHEREUM)
+      //     setActivatedChain(TYPE.ETHEREUM)
+      //   }
+      // }
 
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
