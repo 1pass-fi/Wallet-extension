@@ -55,7 +55,7 @@ const Tokens = ({ currentProviderAddress }) => {
             decimal: 12
           },
           {
-            name: 'KOII',
+            name: 'KOII 1st Testnet',
             balance: numberFormat(displayingAccount.koiBalance),
             displayingBalance: numberFormat(displayingAccount.koiBalance),
             symbol: 'KOII',
@@ -67,7 +67,7 @@ const Tokens = ({ currentProviderAddress }) => {
         // TODO DatH - LongP
         const importTokens = [
           {
-            name: 'KOII',
+            name: 'KOII 2nd Testnet',
             balance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             symbol: 'KOII',
@@ -187,11 +187,11 @@ const Tokens = ({ currentProviderAddress }) => {
         >
           <div className="flex items-center">
             {token.name === 'Ethereum' && <EthereumIcon className="w-8.75 h-8.75" />}
-            {token.name === 'KOII' && <FinnieIcon className="w-8.75 h-8.75" />}
+            {token?.name?.includes('KOII') && <FinnieIcon className="w-8.75 h-8.75" />}
             {token.name === 'Arweave' && <ArweaveIcon className="w-8.75 h-8.75" />}
             {token.name === 'Solana' && <SolanaIcon className="w-8.75 h-8.75" />}
             {token.name !== 'Ethereum' &&
-              token.name !== 'KOII' &&
+              !token?.name?.includes('KOII') &&
               token.name !== 'Arweave' &&
               token.name !== 'Solana' &&
               (token.logo ? (
