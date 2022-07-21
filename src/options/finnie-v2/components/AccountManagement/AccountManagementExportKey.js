@@ -4,20 +4,22 @@ import { useSelector } from 'react-redux'
 
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
+import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import ArLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import SolLogo from 'img/v2/solana-logo.svg'
 
 import CheckBox from 'finnie-v2/components/CheckBox'
 
-const tabs = ['AR', 'ETH', 'SOL']
+const tabs = ['K2', 'ETH', 'SOL', 'AR']
 
 const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupKeyfileModal }) => {
+  const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
   const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
   const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
   const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
 
-  const [currentTab, setCurrentTab] = useState('AR')
+  const [currentTab, setCurrentTab] = useState('K2')
 
   const showAccounts = useMemo(
     () => accounts.filter((account) => account.type.includes(currentTab)),
@@ -61,6 +63,7 @@ const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupKe
               <td className="pl-2">
                 <CheckBox
                   checked={
+                    defaultK2AccountAddress === account.address ||
                     defaultArweaveAccountAddress === account.address ||
                     defaultEthereumAccountAddress === account.address ||
                     defaultSolanaAccountAddress === account.address
@@ -68,6 +71,9 @@ const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupKe
                 />
               </td>
               <td>
+                {currentTab === 'K2' && (
+                  <KoiiLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
+                )}
                 {currentTab === 'AR' && (
                   <ArLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
                 )}
