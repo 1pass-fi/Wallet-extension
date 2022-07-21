@@ -54,9 +54,10 @@ export default () => {
 
   const chainOptions = [
     { label: 'All Accounts', value: 'ALL' },
-    { label: 'Arweave Account', value: TYPE.ARWEAVE },
+    { label: 'K2 Account', value: TYPE.K2 },
     { label: 'Ethereum Account', value: TYPE.ETHEREUM },
-    { label: 'Solana Account', value: TYPE.SOLANA }
+    { label: 'Solana Account', value: TYPE.SOLANA },
+    { label: 'Arweave Account', value: TYPE.ARWEAVE }
   ]
 
   useEffect(() => {
