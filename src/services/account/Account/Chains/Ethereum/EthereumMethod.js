@@ -190,14 +190,22 @@ export class EthereumMethod {
 
           id = activity.hash
 
-          if (await ethereumAssets.isInteractWithContract(activity)) {
-            const contract = new ethers.Contract(activity.to, ERC20ABI, web3)
-            token = await contract.symbol()
-            decimals = await contract.decimals()
+          try {
+            if (await ethereumAssets.isInteractWithContract(activity)) {
+              const contract = new ethers.Contract(activity.to, ERC20ABI, web3)
+              token = await contract.symbol()
+              decimals = await contract.decimals()
 
-            const decodedInput = await ethereumAssets.decodeTransactionData(id)
-            to = decodedInput.args[0]
-            expense = Number(decodedInput.args[1])
+              const decodedInput = await ethereumAssets.decodeTransactionData(id)
+              to = decodedInput.args[0]
+              expense = Number(decodedInput.args[1])
+            }
+          } catch (err) {
+            // console.error('Does not match ER20ABI error: ', err.message)
+            token = 'ETH'
+            decimals = 18
+            to = activity.to
+            expense = activity.value
           }
 
           if (activity.from.toLowerCase() === this.eth.address.toLowerCase()) {
