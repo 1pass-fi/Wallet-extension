@@ -8,6 +8,11 @@ import { getChromeStorage } from 'utils'
 import { PATH, ALL_NFT_LOADED } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
 
+import { ACCOUNT } from 'constants/accountConstants'
+
+import moment from 'moment'
+import { findIndex } from 'lodash'
+
 export class K2Method {
   #chrome
   constructor(k2Tool) {
@@ -203,7 +208,58 @@ export class K2Method {
   }
 
   async updateActivities() {
-    console.log('updateActivities-boilerplate')
+    const connection = new Connection(clusterApiUrl('testnet'))
+
+    const signatureInfos = await connection.getSignaturesForAddress(this.k2Tool.keypair.publicKey)
+
+    const transactions = await Promise.all(
+      signatureInfos.map(
+        async (signatureInfos) => await connection.getTransaction(signatureInfos.signature)
+      )
+    )
+
+    const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
+
+    const activities = transactions.map((tx) => {
+      const { transaction } = tx
+
+      let source, activityName, expense
+
+      if (transaction.message.accountKeys[0]?.toString() === this.k2Tool.address) {
+        source = transaction.message.accountKeys[1]?.toString()
+        activityName = 'Sent KOII'
+        expense = Math.abs(tx.meta.postBalances[0] - tx.meta.preBalances[0]) / LAMPORTS_PER_SOL
+      } else {
+        source = transaction.message.accountKeys[0]?.toString()
+        activityName = 'Received KOII'
+        expense = Math.abs(tx.meta.postBalances[1] - tx.meta.preBalances[1]) / LAMPORTS_PER_SOL
+      }
+
+      return {
+        id: transaction.signatures[0],
+        activityName,
+        expense,
+        accountName,
+        time: tx.blockTime,
+        date: moment(Number(tx.blockTime) * 1000).format('MMMM DD YYYY'),
+        source,
+        network: this.k2Tool.provider,
+        address: this.k2Tool.address
+      }
+    })
+
+    const oldActivites = (await this.#chrome.getActivities()) || []
+    const newestOfOldActivites = oldActivites[0]
+
+    if (newestOfOldActivites) {
+      const idx = findIndex(activities, (data) => data.id === newestOfOldActivites.id)
+
+      for (let i = 0; i < idx; i++) {
+        activities[i].seen = false
+      }
+    }
+
+    await this.#chrome.setActivities(activities)
   }
 
   async transfer(_, recipient, qty) {
