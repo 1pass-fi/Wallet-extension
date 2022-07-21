@@ -244,7 +244,8 @@ export class K2Method {
         date: moment(Number(tx.blockTime) * 1000).format('MMMM DD YYYY'),
         source,
         network: this.k2Tool.provider,
-        address: this.k2Tool.address
+        address: this.k2Tool.address,
+        isK2Account: true
       }
     })
 

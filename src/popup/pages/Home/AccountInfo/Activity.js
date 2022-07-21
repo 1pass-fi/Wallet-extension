@@ -105,6 +105,7 @@ const Activity = ({ activities, setActivities }) => {
           seen={true}
           expired={activity.expired}
           network={activity.network}
+          isK2Account={activity.isK2Account}
           setDeleteTransactionModalStatus={setDeleteTransactionModalStatus}
         />
       ))}
@@ -123,6 +124,7 @@ const Activity = ({ activities, setActivities }) => {
           expired={false}
           network={activity.network}
           seen={activity.seen}
+          isK2Account={activity.isK2Account}
         />
       ))}
       {pages * 10 < accountActivites.length && (

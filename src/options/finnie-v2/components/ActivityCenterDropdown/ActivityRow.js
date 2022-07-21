@@ -23,7 +23,8 @@ const ActivityRow = ({
   accountName,
   expired,
   network,
-  seen
+  seen,
+  isK2Account
 }) => {
   const [displayInfo, setDisplayInfo] = useState({})
   const [loaded, setLoaded] = useState(false)
@@ -44,6 +45,10 @@ const ActivityRow = ({
           toUsdText,
           dateString,
           blockUrl
+
+        let displayExploreBlock = true
+
+        if (isK2Account) displayExploreBlock = false
 
         recipientOrSender = source
           ? `${source.slice(0, 4)}...${source.slice(source.length - 5)}`
@@ -106,7 +111,8 @@ const ActivityRow = ({
           expenseText,
           toUsdText,
           dateString,
-          blockUrl
+          blockUrl,
+          displayExploreBlock
         }
         setDisplayInfo(info)
         setLoaded(true)
@@ -151,17 +157,19 @@ const ActivityRow = ({
               {get(displayInfo, 'expenseText')}
             </div>
             <div className="text-xs text-blue-800">{get(displayInfo, 'dateString')}</div>
-            <a
-              href={displayInfo.blockUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex justify-end text-xs text-success-700 underline leading-5"
-            >
-              <div className="pr-1.375">
-                <ViewBlockIcon />
-              </div>
-              Explore Block
-            </a>
+            {displayInfo.displayExploreBlock && (
+              <a
+                href={displayInfo.blockUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex justify-end text-xs text-success-700 underline leading-5"
+              >
+                <div className="pr-1.375">
+                  <ViewBlockIcon />
+                </div>
+                Explore Block
+              </a>
+            )}
           </div>
         </div>
       )}

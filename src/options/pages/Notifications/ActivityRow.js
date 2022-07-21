@@ -14,7 +14,7 @@ import formatNumber from 'finnie-v2/utils/formatNumber'
 import clsx from 'clsx'
 
 const ActivityRow = ({
-  activity: { activityName, address, date, expense, id, source, network }
+  activity: { activityName, address, date, expense, id, source, network, isK2Account }
 }) => {
   const customTokenIconPath = useMemo(
     () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,
@@ -101,7 +101,7 @@ const ActivityRow = ({
         {formatNumber(displayInfo.amount, 6)}
         {` ${displayInfo.tokenType}`}
       </td>
-      <td className="px-1">
+      {!isK2Account && <td className="px-1">
         <a
           href={displayInfo.url}
           target="_blank"
@@ -111,7 +111,7 @@ const ActivityRow = ({
           <ViewBlockIcon className="pr-1.375" />
           {displayInfo.tokenType === 'ETH' ? 'Etherscan' : 'Explore Block'}
         </a>
-      </td>
+      </td>}
     </tr>
   )
 }

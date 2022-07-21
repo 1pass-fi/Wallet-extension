@@ -139,6 +139,7 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
               expired={false}
               network={activity.network}
               seen={activity.seen}
+              isK2Account={activity.isK2Account}
             />
           ))}
           {pages * 10 < activities.length && (

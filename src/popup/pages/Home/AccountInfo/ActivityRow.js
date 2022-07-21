@@ -24,7 +24,8 @@ const ActivityRow = ({
   expired,
   network,
   seen,
-  setDeleteTransactionModalStatus
+  setDeleteTransactionModalStatus,
+  isK2Account
 }) => {
   const [displayInfo, setDisplayInfo] = useState({})
   const [loaded, setLoaded] = useState(false)
@@ -45,6 +46,10 @@ const ActivityRow = ({
           toUsdText,
           dateString,
           blockUrl
+
+        let displayExploreBlock = true
+
+        if (isK2Account) displayExploreBlock = false
 
         recipientOrSender = source
           ? `${source.slice(0, 4)}...${source.slice(source.length - 5)}`
@@ -106,7 +111,8 @@ const ActivityRow = ({
           expenseText,
           toUsdText,
           dateString,
-          blockUrl
+          blockUrl,
+          displayExploreBlock
         }
         setDisplayInfo(info)
         setLoaded(true)
@@ -153,34 +159,35 @@ const ActivityRow = ({
               {get(displayInfo, 'expenseText')}
             </div>
             <div className="text-xs text-success-700">{get(displayInfo, 'dateString')}</div>
-            {!expired ? (
-              <a
-                href={displayInfo.blockUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex justify-end text-xs text-success-700 underline leading-5"
-              >
-                <div className="pr-1.375">
-                  <ViewBlockIcon />
+            {displayInfo.displayExploreBlock &&
+              (!expired ? (
+                <a
+                  href={displayInfo.blockUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex justify-end text-xs text-success-700 underline leading-5"
+                >
+                  <div className="pr-1.375">
+                    <ViewBlockIcon />
+                  </div>
+                  {!pending ? 'Explore Block' : 'Pending transaction'}
+                </a>
+              ) : (
+                <div
+                  onClick={() => {
+                    setDeleteTransactionModalStatus({
+                      isShow: true,
+                      txInfo: {
+                        txId: id,
+                        address: source
+                      }
+                    })
+                  }}
+                  className="text-xs text-red-finnie underline leading-5 cursor-pointer"
+                >
+                  Transaction failed
                 </div>
-                {!pending ? 'Explore Block' : 'Pending transaction'}
-              </a>
-            ) : (
-              <div
-                onClick={() => {
-                  setDeleteTransactionModalStatus({
-                    isShow: true,
-                    txInfo: {
-                      txId: id,
-                      address: source
-                    }
-                  })
-                }}
-                className="text-xs text-red-finnie underline leading-5 cursor-pointer"
-              >
-                Transaction failed
-              </div>
-            )}
+              ))}
           </div>
         </div>
       )}
