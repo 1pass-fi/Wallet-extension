@@ -122,7 +122,7 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
     K2Token.price = 0
     K2Token.name = 'Koii'
     K2Token.symbol = 'KOII'
-    K2Token.decimal = 0
+    K2Token.decimal = 9
     setSelectedToken(K2Token)
 
     /* TODO DatH Custom token K2 */

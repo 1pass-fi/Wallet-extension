@@ -222,7 +222,7 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
       <div className="text-success-700 text-base font-normal tracking-finnieSpacing-tight leading-8 select-none">
         {selectedToken
           ? `${
-            selectedToken.symbol === 'KOII'
+            selectedToken.symbol === 'KOII' && selectedNetwork != 'K2'
               ? formatNumber(selectedToken?.balance / Math.pow(10, selectedToken?.decimal), 2)
               : formatNumber(selectedToken?.balance / Math.pow(10, selectedToken?.decimal), 6)
           } ${selectedToken.symbol} Available`

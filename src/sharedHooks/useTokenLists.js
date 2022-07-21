@@ -123,10 +123,10 @@ const useTokenLists = ({ address, setIsLoading, currentProviderAddress }) => {
               {
                 name: 'KOII',
                 balance,
-                displayingBalance: numberFormat(balance),
+                displayingBalance: numberFormat(fromLampToSol(balance)),
                 symbol: 'KOII',
                 // usdValue: fiatCurrencyFormat(fromLampToSol(balance) * price.K2),
-                decimal: 0
+                decimal: 9
               }
             ]
 
