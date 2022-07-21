@@ -111,6 +111,35 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
     return [solanaToken, ...customTokenList]
   }
 
+  const loadK2Tokens = async (userAddress, importedTokenAddresses) => {
+    const K2Token = {}
+
+    const account = await popupAccount.getAccount({ address: userAddress })
+    const accountData = await account.get.metadata()
+
+    K2Token.logo = 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+    K2Token.balance = get(accountData, 'balance')
+    K2Token.price = 0
+    K2Token.name = 'Koii'
+    K2Token.symbol = 'KOII'
+    K2Token.decimal = 0
+    setSelectedToken(K2Token)
+
+    /* TODO DatH Custom token K2 */
+    // if (isEmpty(importedTokenAddresses)) {
+    //   return [solanaToken]
+    // }
+
+    // const customTokenList = await Promise.all(
+    //   importedTokenAddresses?.map(async (tokenAddress) => {
+    //     return await getSolanaCustomTokensData(tokenAddress, userAddress)
+    //   })
+    // )
+
+    // return [solanaToken, ...customTokenList]
+    return [K2Token]
+  }
+
   useEffect(() => {
     const loadTokenList = async () => {
       switch (selectedNetwork) {
@@ -122,6 +151,11 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
           break
         case 'TYPE_SOLANA':
           setTokenList(await loadSolanaTokens(userAddress, importedTokenAddresses))
+          break
+        case 'K2':
+          console.log('TYPE_K2 ========== loadK2Tokens')
+          setTokenList(await loadK2Tokens(userAddress, importedTokenAddresses))
+          break
       }
     }
 
