@@ -16,33 +16,65 @@ export default async (payload, next) => {
     }
 
     const chromeStorage = new ChromeStorage()
-    let importedArweave = await chromeStorage._getChrome(IMPORTED.ARWEAVE) || []
+    let importedArweave = (await chromeStorage._getChrome(IMPORTED.ARWEAVE)) || []
     let importedEthereum = (await chromeStorage._getChrome(IMPORTED.ETHEREUM)) || []
+    let importedSolana = (await chromeStorage._getChrome(IMPORTED.SOLANA)) || []
+    let importedK2 = (await chromeStorage._getChrome(IMPORTED.K2)) || []
 
-    importedArweave = await Promise.all(importedArweave.map(async accountData => {
-      const encryptedKey = get(accountData, 'encryptedKey')
-      if (!encryptedKey) throw new Error('Encrypted key not found')
+    importedK2 = await Promise.all(
+      importedK2.map(async (accountData) => {
+        const encryptedKey = get(accountData, 'encryptedKey')
+        if (!encryptedKey) throw new Error('Encrypted key not found')
 
-      const key = await passworder.decrypt(oldPassword, encryptedKey)
-      const newEncryptedKey = await passworder.encrypt(newPassword, key)
-      accountData['encryptedKey'] = newEncryptedKey
+        const key = await passworder.decrypt(oldPassword, encryptedKey)
+        const newEncryptedKey = await passworder.encrypt(newPassword, key)
+        accountData['encryptedKey'] = newEncryptedKey
 
-      return accountData
-    }))
+        return accountData
+      })
+    )
 
-    importedEthereum = await Promise.all(importedEthereum.map(async accountData => {
-      const encryptedKey = get(accountData, 'encryptedKey')
-      if (!encryptedKey) throw new Error('Encrypted key not found')
+    importedSolana = await Promise.all(
+      importedSolana.map(async (accountData) => {
+        const encryptedKey = get(accountData, 'encryptedKey')
+        if (!encryptedKey) throw new Error('Encrypted key not found')
 
-      const key = await passworder.decrypt(oldPassword, encryptedKey)
-      const newEncryptedKey = await passworder.encrypt(newPassword, key)
-      accountData['encryptedKey'] = newEncryptedKey
+        const key = await passworder.decrypt(oldPassword, encryptedKey)
+        const newEncryptedKey = await passworder.encrypt(newPassword, key)
+        accountData['encryptedKey'] = newEncryptedKey
 
-      return accountData
-    }))
+        return accountData
+      })
+    )
+
+    importedArweave = await Promise.all(
+      importedArweave.map(async (accountData) => {
+        const encryptedKey = get(accountData, 'encryptedKey')
+        if (!encryptedKey) throw new Error('Encrypted key not found')
+
+        const key = await passworder.decrypt(oldPassword, encryptedKey)
+        const newEncryptedKey = await passworder.encrypt(newPassword, key)
+        accountData['encryptedKey'] = newEncryptedKey
+
+        return accountData
+      })
+    )
+
+    importedEthereum = await Promise.all(
+      importedEthereum.map(async (accountData) => {
+        const encryptedKey = get(accountData, 'encryptedKey')
+        if (!encryptedKey) throw new Error('Encrypted key not found')
+
+        const key = await passworder.decrypt(oldPassword, encryptedKey)
+        const newEncryptedKey = await passworder.encrypt(newPassword, key)
+        accountData['encryptedKey'] = newEncryptedKey
+
+        return accountData
+      })
+    )
 
     const allAccounts = await backgroundAccount.getAllAccounts()
-    allAccounts.forEach(async account => {
+    allAccounts.forEach(async (account) => {
       const encryptedSeedPhrase = await account.get.seedPhrase()
       const seedPhrase = await passworder.decrypt(oldPassword, encryptedSeedPhrase)
       const newEncryptedSeedPhrase = await passworder.encrypt(newPassword, seedPhrase)
@@ -51,6 +83,8 @@ export default async (payload, next) => {
 
     await chromeStorage._setChrome(IMPORTED.ARWEAVE, importedArweave)
     await chromeStorage._setChrome(IMPORTED.ETHEREUM, importedEthereum)
+    await chromeStorage._setChrome(IMPORTED.SOLANA, importedSolana)
+    await chromeStorage._setChrome(IMPORTED.K2, importedK2)
 
     console.log('Password updated.')
     next()

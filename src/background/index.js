@@ -50,7 +50,8 @@ chrome.runtime.onInstalled.addListener(async function () {
   const arweaveAccount = (await getChromeStorage(IMPORTED.ARWEAVE))[IMPORTED.ARWEAVE] || []
   const ethereumAccount = (await getChromeStorage(IMPORTED.ETHEREUM))[IMPORTED.ETHEREUM] || []
   const solanaAccount = (await getChromeStorage(IMPORTED.SOLANA))[IMPORTED.SOLANA] || []
-  if (!arweaveAccount.length && !ethereumAccount.length && !solanaAccount.length) chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
+  const k2Account = (await getChromeStorage(IMPORTED.K2))[IMPORTED.K2] || []
+  if (!arweaveAccount.length && !ethereumAccount.length && !solanaAccount.length && !k2Account.length) chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
 })
 
 streamer()
