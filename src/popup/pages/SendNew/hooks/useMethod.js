@@ -13,6 +13,8 @@ const ETHEREUM = 'ETHEREUM'
 const ARWEAVE = 'ARWEAVE'
 const SOLANA = 'SOLANA'
 
+import { TYPE } from 'constants/accountConstants'
+
 const validateAddress = (address) => {
   if (address?.slice(0, 2) === '0x' && address?.length === 42) return ETHEREUM
   if (address?.length === 43) return ARWEAVE
@@ -40,7 +42,7 @@ const useMethod = ({
   
       const sendValue = selectedToken.decimal === 1 ? value : (10 ** selectedToken.decimal * value)
 
-      if (network === 'ETHEREUM') {
+      if (network === TYPE.ETHEREUM) {
         if (contractAddress) {
           // send erc20 token
           console.log('send erc20 token')
@@ -104,7 +106,7 @@ const useMethod = ({
         }
       }
   
-      if (network === 'ARWEAVE') {
+      if (network === TYPE.ARWEAVE) {
         if (contractAddress) {
           // send custom token
           const tags = {
@@ -161,7 +163,7 @@ const useMethod = ({
         }
       }
 
-      if (network === 'SOLANA') {
+      if (network === TYPE.SOLANA) {
         if (contractAddress) {
           // send custom token
           const transactionPayload = {
@@ -202,7 +204,7 @@ const useMethod = ({
         }
       }
 
-      if (network === 'K2') {
+      if (network === TYPE.K2) {
         if (contractAddress) {
           // send custom token
           const transactionPayload = {

@@ -68,6 +68,20 @@ const useMethod = ({
     })
   }
 
+  const handleSendK2 = async () => {
+    let qty = get(transactionPayload, 'value')
+    qty = fromLampToSol(parseInt(qty))
+    const target = get(transactionPayload, 'to')
+    const source = get(transactionPayload, 'from')
+
+    return await request.wallet.makeTransfer({
+      qty,
+      target,
+      address: source,
+      token: 'KOII'
+    })
+  }
+
   const handleSendCustomTokenEth = async () => {
     return await request.wallet.sendCustomTokenEth({
       sender: transactionPayload.from,
@@ -178,6 +192,10 @@ const useMethod = ({
             } else {
               result = await handleSendSol()
             }
+            break
+          case 'K2':
+            result = await handleSendK2()
+            break
         }
 
         setIsLoading(false)

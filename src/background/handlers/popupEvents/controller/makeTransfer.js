@@ -18,12 +18,15 @@ export default async (payload, next) => {
 
     let txId = ''
     let receipt = {}
+
     if (token === 'ETH') {
       receipt = await account.method.transfer(token, target, qty)
       txId = receipt.transactionHash
     } else if (token === 'KOI') {
       txId = await account.method.transfer(token, target, qty)
     } else if (token === 'SOL') {
+      txId = await account.method.transfer(token, target, qty)
+    } else if (token === 'KOII') {
       txId = await account.method.transfer(token, target, qty)
     }
 

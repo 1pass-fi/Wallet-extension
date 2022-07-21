@@ -102,7 +102,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
         const balance = await account.get.balance()
   
         setOriginBalance(balance)
-        if (network === 'SOLANA') {
+        if (network === 'SOLANA' || network === 'K2') {
           setOriginBalance(balance / 1000000000)
         }
   
