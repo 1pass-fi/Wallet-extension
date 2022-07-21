@@ -835,13 +835,7 @@ export const setActivatedAccountAddress = async (address, type) => {
       break
 
     default:
-      if (isArweaveAddress(address)) {
-        await storage.setting.set.activatedArweaveAccountAddress(address)
-      } else if (isEthereumAddress(address)) {
-        await storage.setting.set.activatedEthereumAccountAddress(address)
-      } else if (isSolanaAddress(address)) {
-        await storage.setting.set.activatedSolanaAccountAddress(address)
-      }
+      console.log('Failed to set activated account address: ', address, type)
       break
   }
 }

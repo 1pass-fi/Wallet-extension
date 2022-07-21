@@ -16,12 +16,12 @@ export const setDefaultAccountByAddress = (address) => async (dispatch) => {
     return
   }
 
-  await setActivatedAccountAddress(address)
-
   const account = await popupAccount.getAccount({
     address: address
   })
   const defaultAccount = await account.get.metadata()
+
+  await setActivatedAccountAddress(defaultAccount.address, defaultAccount.type)
 
   if (defaultAccount.type === TYPE.ARWEAVE) {
     return dispatch({

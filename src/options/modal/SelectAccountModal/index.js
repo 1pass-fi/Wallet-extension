@@ -21,7 +21,7 @@ const SelectAccount = () => {
     dispatch(setDefaultAccount(selectedAccount))
 
     // set default account to storage
-    await setActivatedAccountAddress(selectedAccount.address)
+    await setActivatedAccountAddress(selectedAccount.address, selectedAccount.type)
   }
 
   return (
