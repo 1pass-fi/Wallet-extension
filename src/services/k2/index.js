@@ -101,7 +101,7 @@ export class K2Tool {
 
     transaction.add(
       SystemProgram.transfer({
-        fromPubKey: this.keypair.publicKey,
+        fromPubkey: this.keypair.publicKey,
         toPubkey: new PublicKey(recipient),
         lamports: amount * LAMPORTS_PER_SOL
       })
