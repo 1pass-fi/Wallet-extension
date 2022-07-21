@@ -18,7 +18,7 @@ import {
 
 import getTokenData, { getSolanaCustomTokensData } from 'utils/getTokenData'
 
-const useTokenLists = ({ address, setIsLoading, currentProviderAddress }) => {
+const useTokenLists = ({ account, address, setIsLoading, currentProviderAddress }) => {
   const [tokenList, setTokenList] = useState([])
 
   let { importedTokenAddresses } = useImportedTokenAddresses({
@@ -157,7 +157,7 @@ const useTokenLists = ({ address, setIsLoading, currentProviderAddress }) => {
     }
 
     if (!isEmpty(address)) loadTokenList()
-  }, [address, importedTokenAddresses])
+  }, [account, address, importedTokenAddresses])
 
   return { tokenList }
 }

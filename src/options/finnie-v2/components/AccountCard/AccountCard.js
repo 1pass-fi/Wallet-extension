@@ -367,6 +367,7 @@ const AccountCard = ({
   }
 
   const { tokenList } = useTokenLists({
+    account,
     address: account.address,
     setIsLoading: () => {},
     currentProviderAddress: currentNetwork
