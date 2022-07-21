@@ -17,6 +17,17 @@ import {
   sendAndConfirmTransaction
 } from '@solana/web3.js'
 
+import {
+  Keypair as KeypairK2,
+  Connection as ConnectionK2,
+  clusterApiUrl as clusterApiUrlK2,
+  PublicKey as PublicKeyK2,
+  Transaction as TransactionK2,
+  SystemProgram as SystemProgramK2,
+  LAMPORTS_PER_SOL as LAMPORTS_PER_SOLK2,
+  sendAndConfirmTransaction as sendAndConfirmTransactionK2
+} from '@_koi/web3.js'
+
 const fromHexToDecimal = (hexString) => {
   let number = null
   if (hexString) number = parseInt(hexString, 16)
@@ -78,7 +89,6 @@ const useGetFee = ({ network, transactionPayload }) => {
       transactionData = get(transactionPayload, 'data')
     }
 
-
     if (recipientAddress) rawTx.target = recipientAddress
     if (isNumber(value)) rawTx.quantity = value.toString()
     if (transactionData) rawTx.data = Buffer.from(transactionData)
@@ -102,7 +112,7 @@ const useGetFee = ({ network, transactionPayload }) => {
     const connection = new Connection(clusterApiUrl(solProvider), 'confirmed')
 
     let blockhash = (await connection.getLatestBlockhash('finalized')).blockhash
-    
+
     transaction.recentBlockhash = blockhash
     transaction.feePayer = new PublicKey(senderAddress)
 
@@ -114,13 +124,41 @@ const useGetFee = ({ network, transactionPayload }) => {
       })
     )
 
-    const response = await connection.getFeeForMessage(
-      transaction.compileMessage(),
-      'confirmed',
-    )
+    const response = await connection.getFeeForMessage(transaction.compileMessage(), 'confirmed')
 
     setTotalFee(fromLampToSol(response.value))
     setTokenSymbol('SOL')
+  }
+
+  const getK2Fee = async () => {
+    const recipientAddress = get(transactionPayload, 'to')
+    const senderAddress = get(transactionPayload, 'from')
+    const value = get(transactionPayload, 'value')
+
+    const transaction = new TransactionK2()
+    // TODO Minh Vu load provider from storage
+    const k2Provider = (await storage.setting.get.k2Provider()) || 'testnet'
+    const connection = new ConnectionK2(clusterApiUrlK2(k2Provider), 'confirmed')
+    console.log('getK2Fee k2Provider =========', connection)
+    
+    let blockhash = (await connection.getRecentBlockhash('finalized')).blockhash
+    console.log('getK2Fee k2Provider =========', blockhash)
+
+    transaction.recentBlockhash = blockhash
+    transaction.feePayer = new PublicKeyK2(senderAddress)
+
+    transaction.add(
+      SystemProgramK2.transfer({
+        fromPubkey: new PublicKeyK2(senderAddress),
+        toPubkey: new PublicKeyK2(recipientAddress),
+        lamports: value
+      })
+    )
+
+    const response = await connection.getFeeForMessage(transaction.compileMessage(), 'confirmed')
+
+    setTotalFee(fromLampToSol(response.value))
+    setTokenSymbol('KOII')
   }
 
   useEffect(() => {
@@ -136,6 +174,7 @@ const useGetFee = ({ network, transactionPayload }) => {
         }
         if (network === 'ARWEAVE') getArFee()
         if (network === 'SOLANA') getSolFee()
+        if (network === 'K2') getK2Fee()
       } catch (err) {
         console.error('get fee error: ', err.message)
       }
