@@ -92,7 +92,8 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
     setAlchemyAddress,
     setIsLoading,
     recipientName,
-    setRecipientName
+    setRecipientName,
+    selectedNetwork
   })
 
   const history = useHistory()

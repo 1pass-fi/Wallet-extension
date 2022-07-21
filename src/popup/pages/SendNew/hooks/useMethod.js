@@ -19,11 +19,23 @@ const validateAddress = (address) => {
   else return SOLANA
 }
 
-const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, alchemyAddress, setAlchemyAddress, setIsLoading, setRecipientName, recipientName }) => {
+const useMethod = ({
+  sender,
+  recipient,
+  value,
+  contractAddress,
+  selectedToken,
+  alchemyAddress,
+  setAlchemyAddress,
+  setIsLoading,
+  setRecipientName,
+  recipientName,
+  selectedNetwork
+}) => {
   const onSendTokens = async () => {
     try {
       if (alchemyAddress) recipient = alchemyAddress
-      const network = validateAddress(sender)
+      const network = selectedNetwork
       if (!network) throw new Error('Invalid address')
   
       const sendValue = selectedToken.decimal === 1 ? value : (10 ** selectedToken.decimal * value)
@@ -182,7 +194,48 @@ const useMethod = ({ sender, recipient, value, contractAddress, selectedToken, a
             transactionPayload,
             recipientName
           }
-  
+
+          await storage.generic.set.pendingRequest({
+            type: REQUEST.TRANSACTION,
+            data: requestPayload
+          })
+        }
+      }
+
+      if (network === 'K2') {
+        if (contractAddress) {
+          // send custom token
+          const transactionPayload = {
+            from: sender,
+            to: recipient,
+            value: sendValue,
+            contractAddress
+          }
+
+          const requestPayload = {
+            network: 'K2',
+            transactionPayload,
+            recipientName
+          }
+
+          await storage.generic.set.pendingRequest({
+            type: REQUEST.TRANSACTION,
+            data: requestPayload
+          })
+        } else {
+          // send origin token
+          const transactionPayload = {
+            from: sender,
+            to: recipient,
+            value: fromSolToLamp(value)
+          }
+
+          const requestPayload = {
+            network: 'K2',
+            transactionPayload,
+            recipientName
+          }
+
           await storage.generic.set.pendingRequest({
             type: REQUEST.TRANSACTION,
             data: requestPayload

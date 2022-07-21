@@ -47,6 +47,9 @@ const useLoadRequest = ({ setIsLoading }) => {
         if (network === 'SOLANA') {
           transactionType = await helper.getSolanaTransactionType(transactionPayload)
         }
+        if (network === 'K2') {
+          transactionType = await helper.getK2TransactionType(transactionPayload)
+        }
 
         const sender = get(transactionPayload, 'from')
         const account = await popupAccount.getAccount({ address: sender })

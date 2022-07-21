@@ -89,6 +89,14 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
             setSymbol('SOL')
             setOriginSymbol('SOL')
             setTokenIconPath('img/v2/solana-logo.svg')
+            break
+          case 'K2':
+            setValue(getSendValueSolana(value))
+            setRawValue(value)
+            setSymbol('KOII')
+            setOriginSymbol('KOII')
+            setTokenIconPath('img/v2/koii-logos/finnie-koii-logo-blue.svg')
+            break
         }
         const account = await popupAccount.getAccount({ address: userAddress })
         const balance = await account.get.balance()
@@ -162,14 +170,33 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
 
           if (network === 'SOLANA') {
             const contractAddress = get(transactionPayload, 'contractAddress')
-            setContractAddress(contractAddress)   
+            setContractAddress(contractAddress)
             const rawValue = get(transactionPayload, 'value')
             const recipient = get(transactionPayload, 'to')
             const sender = get(transactionPayload, 'from')
 
             const tokenData = await getSolanaCustomTokensData(contractAddress, sender)
 
-            const rate = 10 ** (tokenData.decimal === 1 ? 0: tokenData.decimal)
+            const rate = 10 ** (tokenData.decimal === 1 ? 0 : tokenData.decimal)
+
+            setTokenIconPath(tokenData.logo)
+            setSymbol(tokenData.symbol)
+            setValue(rawValue / rate)
+            setRawValue(rawValue)
+            setCustomTokenRecipient(recipient)
+            setBalance(tokenData.balance / rate)
+          }
+
+          if (network === 'K2') {
+            const contractAddress = get(transactionPayload, 'contractAddress')
+            setContractAddress(contractAddress)
+            const rawValue = get(transactionPayload, 'value')
+            const recipient = get(transactionPayload, 'to')
+            const sender = get(transactionPayload, 'from')
+
+            const tokenData = await getSolanaCustomTokensData(contractAddress, sender)
+
+            const rate = 10 ** (tokenData.decimal === 1 ? 0 : tokenData.decimal)
 
             setTokenIconPath(tokenData.logo)
             setSymbol(tokenData.symbol)

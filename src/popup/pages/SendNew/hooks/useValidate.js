@@ -56,6 +56,11 @@ const useValidate = ({ selectedToken, amount, recipient, selectedAccount, alchem
       if (selectedAccount?.type === TYPE.SOLANA) {
         if (!validateSolanaAddress(recipient)) return throwValidationError(INVALID_RECIPIENT)
       }
+      
+      // TODO DatH 
+      if (selectedAccount?.type === TYPE.K2) {
+        if (!validateSolanaAddress(recipient)) return throwValidationError(INVALID_RECIPIENT)
+      }
 
       setValidated(true)
     }
