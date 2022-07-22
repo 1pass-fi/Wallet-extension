@@ -117,7 +117,7 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
     const account = await popupAccount.getAccount({ address: userAddress })
     const accountData = await account.get.metadata()
 
-    K2Token.logo = 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+    K2Token.logo = 'img/v2/k2-logos/finnie-k2-logo.svg'
     K2Token.balance = get(accountData, 'balance')
     K2Token.price = 0
     K2Token.name = 'Koii'

@@ -95,7 +95,7 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
             setRawValue(value)
             setSymbol('KOII')
             setOriginSymbol('KOII')
-            setTokenIconPath('img/v2/koii-logos/finnie-koii-logo-blue.svg')
+            setTokenIconPath('img/v2/k2-logos/finnie-k2-logo.svg')
             break
         }
         const account = await popupAccount.getAccount({ address: userAddress })

@@ -12,7 +12,7 @@ import SendTokenForm from './SendTokenForm'
 
 import { formatNumber } from 'options/utils'
 
-import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+import FinnieIcon from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import ArrowIconBlue from 'img/popup/down-arrow-icon-blue.svg'
 import BackBtn from 'img/popup/back-button.svg'
 import SendBackgroundLeft from 'img/popup/send-background-left.svg'
