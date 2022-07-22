@@ -25,7 +25,7 @@ import formatNumber from 'finnie-v2/utils/formatNumber'
 import { getSiteConnectedAddresses } from 'utils'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
-import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+import K2Logo from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import SolLogo from 'img/v2/solana-logo.svg'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
@@ -387,7 +387,7 @@ const AccountCard = ({
           {/* <DragIcon style={{ width: '4.93px', height: '31.49px' }} /> */}
         </div>
         {account.type === TYPE.K2 && (
-          <KoiiLogo style={{ width: '25px', height: '25px' }} className="self-start ml-4" />
+          <K2Logo style={{ width: '25px', height: '25px' }} className="self-start ml-4" />
         )}
         {account.type === TYPE.ETHEREUM && (
           <EthLogo style={{ width: '25px', height: '25px' }} className="self-start ml-4" />

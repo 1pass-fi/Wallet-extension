@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+import K2Logo from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import ArLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import SolLogo from 'img/v2/solana-logo.svg'
@@ -72,7 +73,7 @@ const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupKe
               </td>
               <td>
                 {currentTab === 'K2' && (
-                  <KoiiLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
+                  <K2Logo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />
                 )}
                 {currentTab === 'AR' && (
                   <ArLogo className="inline mr-2 w-6 h-6 shadow-sm rounded-full" />

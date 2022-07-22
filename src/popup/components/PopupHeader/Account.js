@@ -4,7 +4,8 @@ import isEmpty from 'lodash/isEmpty'
 
 import ArrowIcon from 'img/down-arrow-icon.svg'
 import EthereumIcon from 'img/popup/ethereum-icon.svg'
-import FinnieIcon from 'img/popup/finnie-icon.svg'
+// import FinnieIcon from 'img/popup/finnie-icon.svg'
+import K2Logo from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import SolanaIcon from 'img/v2/solana-logo.svg'
 
@@ -36,7 +37,7 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
             <ArweaveIcon style={{ width: '25px', height: '25px' }} />
           )}
           {displayingAccount.type === TYPE.K2 && (
-            <FinnieIcon style={{ width: '25px', height: '25px' }} />
+            <K2Logo style={{ width: '25px', height: '25px' }} />
           )}
           {displayingAccount.type === TYPE.ETHEREUM && (
             <EthereumIcon style={{ width: '25px', height: '25px' }} />

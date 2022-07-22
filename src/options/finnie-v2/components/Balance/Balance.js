@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import isEmpty from 'lodash/isEmpty'
 import isNumber from 'lodash/isNumber'
 
-import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-bg-white.svg'
+// import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-bg-white.svg'
+import K2Logo from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import SolanaLogo from 'img/v2/solana-logo.svg'
@@ -41,7 +42,7 @@ const Balance = ({ account }) => {
         <>
           <ViewsIcon style={{ width: '26px', height: '24px' }} className="mx-2" />
           <span className="font-semibold text-sm mr-2.5">0</span>
-          <KoiiLogo className="w-6 h-6 mr-2" />
+          <K2Logo className="w-6 h-6 mr-2" />
           <span className="font-semibold text-sm mr-2.5">0</span>
         </>
       )}
@@ -69,7 +70,7 @@ const Balance = ({ account }) => {
       )}
       {account.type === TYPE.K2 && (
         <>
-          <KoiiLogo className="w-6 h-6 mx-2" />
+          <K2Logo className="w-6 h-6 mx-2" />
           <span className="font-semibold text-sm mr-2.5">
             {formatNumber(account.balance, 4) !== 'NaN'
               ? formatNumber(account.balance / Math.pow(10, 9), 4)
