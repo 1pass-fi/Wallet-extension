@@ -14,7 +14,7 @@ import { GalleryContext } from 'options/galleryContext'
 import Button from '../Button'
 import { TYPE } from 'constants/accountConstants'
 
-import { isArweaveAddress, isEthereumAddress } from 'utils'
+import { isArweaveAddress, isEthereumAddress, isSolanaAddress } from 'utils'
 
 import './index.css'
 
@@ -40,6 +40,8 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
         address.type = TYPE.ARWEAVE
       } else if (isEthereumAddress(address.value)) {
         address.type = TYPE.ETHEREUM
+      } else if (isSolanaAddress(address.value)) {
+        address.type = TYPE.K2
       } else {
         isValid = false
       }
