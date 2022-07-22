@@ -24,10 +24,21 @@ export default ({ setError, setModalStates, setNotification, setIsLoading }) => 
       const loadBalancesSuccess = new EventHandler(MESSAGES.GET_BALANCES_SUCCESS, async () => {
         try {
           const { defaultAccount } = store.getState()
-          const { AR, ETH } = defaultAccount
+          const { K2, AR, ETH, SOL } = defaultAccount
+          let balancesUpdated = false
+
+          const activatedK2AccountAddress = await storage.setting.get.activatedK2AccountAddress()
+          if (!isEmpty(activatedK2AccountAddress)) {
+            const activatedAccount = await popupAccount.getAccount({
+              address: activatedK2AccountAddress
+            })
+
+            const activatedAccountData = await activatedAccount.get.metadata()
+            const { balance } = activatedAccountData
+            if (K2.balance !== balance) balancesUpdated = true
+          }
 
           const activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
-          let balancesUpdated = false
           if (!isEmpty(activatedAccountAddress)) {
             const activatedAccount = await popupAccount.getAccount({
               address: activatedAccountAddress
@@ -35,19 +46,31 @@ export default ({ setError, setModalStates, setNotification, setIsLoading }) => 
 
             const activatedAccountData = await activatedAccount.get.metadata()
             const { balance, koiBalance } = activatedAccountData
-            balancesUpdated = AR.balance !== balance || AR.koiBalance !== koiBalance
-          } else {
-            const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
-            if (!isEmpty(activatedEthereumAccountAddress)) {
-              const activatedAccount = await popupAccount.getAccount({
-                address: activatedEthereumAccountAddress
-              })
-
-              const activatedAccountData = await activatedAccount.get.metadata()
-              const { balance, koiBalance } = activatedAccountData
-              balancesUpdated = ETH.balance !== balance
-            }
+            if (AR.balance !== balance || AR.koiBalance !== koiBalance) balancesUpdated = true
           }
+
+          const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
+          if (!isEmpty(activatedEthereumAccountAddress)) {
+            const activatedAccount = await popupAccount.getAccount({
+              address: activatedEthereumAccountAddress
+            })
+
+            const activatedAccountData = await activatedAccount.get.metadata()
+            const { balance } = activatedAccountData
+            if (ETH.balance !== balance) balancesUpdated = true
+          }
+
+          const activatedSolanaAccountAddress = await storage.setting.get.activatedSolanaAccountAddress()
+          if (!isEmpty(activatedSolanaAccountAddress)) {
+            const activatedAccount = await popupAccount.getAccount({
+              address: activatedSolanaAccountAddress
+            })
+
+            const activatedAccountData = await activatedAccount.get.metadata()
+            const { balance } = activatedAccountData
+            if (SOL.balance !== balance) balancesUpdated = true
+          }
+
 
           if (balancesUpdated) {
             await dispatch(loadAllAccounts())
