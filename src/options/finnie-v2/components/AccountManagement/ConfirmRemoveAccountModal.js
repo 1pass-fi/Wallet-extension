@@ -228,7 +228,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
               style={{ width: '180px', height: '39px' }}
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-8"
               variant="indigo"
-              text="Discard"
+              text="Cancel"
               onClick={close}
             />
           </div>
