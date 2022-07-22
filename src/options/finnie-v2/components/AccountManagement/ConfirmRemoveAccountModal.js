@@ -22,7 +22,7 @@ import storage from 'services/storage'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
 const ConfirmRemoveAccountModal = ({ account, close }) => {
-  const { setIsLoading, setError, setActivatedChain } = useContext(GalleryContext)
+  const { setIsLoading, setError, setActivatedChain, isLoading } = useContext(GalleryContext)
   const dispatch = useDispatch()
   const modalRef = useRef(null)
 
@@ -217,6 +217,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
               variant="warning300"
               text="Remove Account"
               onClick={() => handleRemoveAccount()}
+              disabled = {isLoading > 0}
             />
 
             <Button
