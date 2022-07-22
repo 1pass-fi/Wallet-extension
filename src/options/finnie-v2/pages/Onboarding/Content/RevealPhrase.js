@@ -56,22 +56,22 @@ const RevealPhrase = ({ step }) => {
           If you have questions or see something suspicious, contact us at{' '}
           <span className="text-success underline cursor-pointer">security@koii.network</span>
         </li>
-      </div>
 
-      {network !== NETWORK.ARWEAVE && (
-        <div className="w-full">
-          <Button
-            style={{ width: '240px', height: '42px' }}
-            className="mt-10 text-base rounded z-10"
-            variant="white"
-            text="Go to Homepage"
-            onClick={() => {
-              setIsOnboarding(false)
-              history.push('/')
-            }}
-          />
-        </div>
-      )}
+        {network !== NETWORK.ARWEAVE && (
+          <div className="w-full">
+            <Button
+              style={{ width: '240px', height: '42px' }}
+              className="mt-10 text-base rounded z-10"
+              variant="white"
+              text="Go to Homepage"
+              onClick={() => {
+                setIsOnboarding(false)
+                history.push('/')
+              }}
+            />
+          </div>
+        )}
+      </div>
 
       {network === NETWORK.ARWEAVE && (
         <div className="mt-12 flex items-center justify-center">
