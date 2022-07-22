@@ -219,8 +219,8 @@ export default () => {
                 filterSupported={false}
               />
             </div>
-
-            <DragDropContext onDragEnd={onDragEnd}>
+            {/* TODO - DatH - Hide drag and drop */}
+            {/* <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="list">
                 {(provided) => (
                   <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -244,7 +244,17 @@ export default () => {
                   </div>
                 )}
               </Droppable>
-            </DragDropContext>
+            </DragDropContext> */}
+            {listAccounts.map((account, index) => (
+              <AccountCard
+                key={index}
+                account={account}
+                setShowConfirmRemoveAccount={setShowConfirmRemoveAccount}
+                setRemoveAccount={setRemoveAccount}
+                setShowConnectedSites={setShowConnectedSites}
+                setAccountConnectSites={setAccountConnectSites}
+              />
+            ))}
           </div>
         </div>
       </div>

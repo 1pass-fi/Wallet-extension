@@ -380,11 +380,11 @@ const AccountCard = ({
         style={{ maxWidth: '707px', height: '124px' }}
       >
         <div
-          className="flex items-center justify-center bg-white shadow rounded-r-lg"
+          // className="flex items-center justify-center bg-white shadow rounded-r-lg"
           style={{ width: '22.5px', height: '55.25px' }}
-          {...dragProvided.dragHandleProps}
+          // {...dragProvided.dragHandleProps}
         >
-          <DragIcon style={{ width: '4.93px', height: '31.49px' }} />
+          {/* <DragIcon style={{ width: '4.93px', height: '31.49px' }} /> */}
         </div>
         {account.type === TYPE.K2 && (
           <KoiiLogo style={{ width: '25px', height: '25px' }} className="self-start ml-4" />
@@ -486,10 +486,10 @@ const AccountCard = ({
             style={{ width: '75px', height: '75px' }}
           >
             <div className="flex items-center text-center font-normal text-xl leading-8 tracking-finnieSpacing-tight">
-              { tokenList?.length }
+              {tokenList?.length}
             </div>
             <div className="flex items-center text-center font-normal text-xs tracking-finnieSpacing-tight">
-              { tokenList?.length > 1 ? 'Coins' : 'Coin' }
+              {tokenList?.length > 1 ? 'Coins' : 'Coin'}
             </div>
           </div>
           <div
