@@ -12,6 +12,7 @@ import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import SolanaIcon from 'img/v2/solana-logo.svg'
+import K2Icon from 'img/v2/k2-logos/finnie-k2-logo.svg'
 
 // hooks
 import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddresses'
@@ -187,7 +188,8 @@ const Tokens = ({ currentProviderAddress }) => {
         >
           <div className="flex items-center">
             {token.name === 'Ethereum' && <EthereumIcon className="w-8.75 h-8.75" />}
-            {token?.name?.includes('KOII') && <FinnieIcon className="w-8.75 h-8.75" />}
+            {token?.name?.includes('KOII 1st') && <FinnieIcon className="w-8.75 h-8.75" />}
+            {token?.name?.includes('KOII 2nd') && <K2Icon className="w-8.75 h-8.75" />}
             {token.name === 'Arweave' && <ArweaveIcon className="w-8.75 h-8.75" />}
             {token.name === 'Solana' && <SolanaIcon className="w-8.75 h-8.75" />}
             {token.name !== 'Ethereum' &&
