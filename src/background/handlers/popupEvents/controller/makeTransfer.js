@@ -5,6 +5,7 @@ import { backgroundAccount } from 'services/account'
 import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 
 import helpers from 'background/helpers'
+import storage from 'services/storage'
 
 export default async (payload, next) => {
   try {
@@ -30,7 +31,10 @@ export default async (payload, next) => {
       txId = await account.method.transfer(token, target, qty)
     }
 
-    const network = await account.get.provider()
+    let network
+    if (token === 'ETH') {
+      network = await storage.setting.get.ethereumProvider()
+    }
 
     // add new pending transaction
     const pendingTransactionPayload = {
