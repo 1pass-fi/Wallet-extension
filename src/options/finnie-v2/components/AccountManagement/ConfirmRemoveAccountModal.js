@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { isEmpty } from 'lodash'
 
@@ -22,7 +22,8 @@ import storage from 'services/storage'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 
 const ConfirmRemoveAccountModal = ({ account, close }) => {
-  const { setIsLoading, setError, setActivatedChain, isLoading } = useContext(GalleryContext)
+  const { setIsLoading, setError, setActivatedChain } = useContext(GalleryContext)
+  const [isRemoving, setIsRemoving] = useState(false)
   const dispatch = useDispatch()
   const modalRef = useRef(null)
 
@@ -43,6 +44,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
 
   const handleRemoveAccount = async () => {
     try {
+      setIsRemoving(true)
       setIsLoading((prev) => ++prev)
 
       await backgroundRequest.wallet.removeWallet({ address: account.address })
@@ -180,8 +182,10 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
 
       close()
       setIsLoading((prev) => --prev)
+      setIsRemoving(false)
     } catch (error) {
       setIsLoading((prev) => --prev)
+      setIsRemoving(false)
       console.log('Failed to remove account - Error: ', error.message)
       setError(error.message)
     }
@@ -217,7 +221,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
               variant="warning300"
               text="Remove Account"
               onClick={() => handleRemoveAccount()}
-              disabled = {isLoading > 0}
+              disabled={isRemoving}
             />
 
             <Button
