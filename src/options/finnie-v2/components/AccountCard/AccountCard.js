@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import isNumber from 'lodash/isNumber'
 import isEmpty from 'lodash/isEmpty'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import ReactTooltip from 'react-tooltip'
+import ToolTip from 'finnie-v2/components/ToolTip'
 
 import { GalleryContext } from 'options/galleryContext'
 
@@ -522,10 +522,12 @@ const AccountCard = ({
                 'font-normal text-xs text-center tracking-finnieSpacing-tight'
               )}
               style={{ width: '75px', height: '75px' }}
+              data-tip={'Views'}
             >
               Coming Soon
             </div>
           )}
+          <ToolTip />
         </div>
         <div className="h-full flex flex-col justify-between items-center ml-4 mr-1">
           <div
