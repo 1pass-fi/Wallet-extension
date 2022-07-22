@@ -58,48 +58,67 @@ const RevealPhrase = ({ step }) => {
         </li>
       </div>
 
-      {network === NETWORK.ARWEAVE && <div className="mt-12 flex items-center justify-center">
-        <div className="flex flex-col items-center mr-19" style={{ width: '300px' }}>
-          <KoiiToken />
-          <div className="mt-3 font-normal text-lg text-center">
-            Head over to the faucet to grab some free KOII tokens.
-          </div>
-
+      {network !== NETWORK.ARWEAVE && (
+        <div className="w-full">
           <Button
             style={{ width: '240px', height: '42px' }}
-            className="mt-7 text-base rounded mx-auto z-10"
-            variant="primary"
-            text="Get Free KOII"
-            size="lg"
-            onClick={openFaucet}
+            className="mt-10 text-base rounded z-10"
+            variant="white"
+            text="Go to Homepage"
+            onClick={() => {
+              setIsOnboarding(false)
+              history.push('/')
+            }}
           />
         </div>
-        <div className="flex flex-col items-center" style={{ width: '300px' }}>
-          <ImagesNFTs />
-          <div className="mt-3 font-normal text-lg text-center">
-            Or go to the gallery to create your first Finnie NFT
+      )}
+
+      {network === NETWORK.ARWEAVE && (
+        <div className="mt-12 flex items-center justify-center">
+          <div className="flex flex-col items-center mr-19" style={{ width: '300px' }}>
+            <KoiiToken />
+            <div className="mt-3 font-normal text-lg text-center">
+              Head over to the faucet to grab some free KOII tokens.
+            </div>
+
+            <Button
+              style={{ width: '240px', height: '42px' }}
+              className="mt-7 text-base rounded mx-auto z-10"
+              variant="primary"
+              text="Get Free KOII"
+              size="lg"
+              onClick={openFaucet}
+            />
           </div>
+          <div className="flex flex-col items-center" style={{ width: '300px' }}>
+            <ImagesNFTs />
+            <div className="mt-3 font-normal text-lg text-center">
+              Or go to the gallery to create your first Finnie NFT
+            </div>
 
-          <Button
-            style={{ width: '240px', height: '42px' }}
-            className="mt-7 text-base rounded mx-auto z-10"
-            variant="warningDefault"
-            text="Create an NFT"
-            size="lg"
-            onClick={openCreateNFTPage}
-          />
+            <Button
+              style={{ width: '240px', height: '42px' }}
+              className="mt-7 text-base rounded mx-auto z-10"
+              variant="warningDefault"
+              text="Create an NFT"
+              size="lg"
+              onClick={openCreateNFTPage}
+            />
+          </div>
         </div>
-      </div>}
+      )}
 
-      <div
-        className="absolute bottom-11 right-7.5 text-lightBlue underline font-normal text-sm tracking-finnieSpacing-wide cursor-pointer"
-        onClick={() => {
-          setIsOnboarding(false)
-          history.push('/')
-        }}
-      >
-        {network === NETWORK.ARWEAVE ? 'Skip this step': 'Go to homepage'}
-      </div>
+      {network === NETWORK.ARWEAVE && (
+        <div
+          className="absolute bottom-11 right-7.5 text-lightBlue underline font-normal text-sm tracking-finnieSpacing-wide cursor-pointer"
+          onClick={() => {
+            setIsOnboarding(false)
+            history.push('/')
+          }}
+        >
+          Skip this step
+        </div>
+      )}
     </div>
   )
 }
