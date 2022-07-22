@@ -7,6 +7,7 @@ import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-bg-white.svg'
 import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import SolanaLogo from 'img/v2/solana-logo.svg'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
+import ExploreBlock from 'img/v2/explore-block-coming-soon.svg'
 
 import { PATH, URL, ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
@@ -101,17 +102,23 @@ const ActivityRow = ({
         {formatNumber(displayInfo.amount, 6)}
         {` ${displayInfo.tokenType}`}
       </td>
-      {!isK2Account && <td className="px-1">
-        <a
-          href={displayInfo.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex justify-end text-xs text-turquoiseBlue underline font-semibold leading-5"
-        >
-          <ViewBlockIcon className="pr-1.375" />
-          {displayInfo.tokenType === 'ETH' ? 'Etherscan' : 'Explore Block'}
-        </a>
-      </td>}
+      {!isK2Account ? (
+        <td className="px-1">
+          <a
+            href={displayInfo.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex justify-end text-xs text-turquoiseBlue underline font-semibold leading-5"
+          >
+            <ViewBlockIcon className="pr-1.375" />
+            {displayInfo.tokenType === 'ETH' ? 'Etherscan' : 'Explore Block'}
+          </a>
+        </td>
+      ) : (
+        <td className="px-1">
+          <ExploreBlock />
+        </td>
+      )}
     </tr>
   )
 }

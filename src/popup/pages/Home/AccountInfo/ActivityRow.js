@@ -8,6 +8,7 @@ import { transactionAmountFormat } from 'utils'
 
 import ViewBlockIcon from 'img/v2/view-block.svg'
 import GreenDotIcon from 'img/v2/green-dot.svg'
+import ExploreBlock from 'img/v2/explore-block-coming-soon.svg'
 
 import formatLongString from 'options/finnie-v2/utils/formatLongString'
 
@@ -159,8 +160,8 @@ const ActivityRow = ({
               {get(displayInfo, 'expenseText')}
             </div>
             <div className="text-xs text-success-700">{get(displayInfo, 'dateString')}</div>
-            {displayInfo.displayExploreBlock &&
-              (!expired ? (
+            {displayInfo.displayExploreBlock ? (
+              !expired ? (
                 <a
                   href={displayInfo.blockUrl}
                   target="_blank"
@@ -187,7 +188,10 @@ const ActivityRow = ({
                 >
                   Transaction failed
                 </div>
-              ))}
+              )
+            ) : (
+              <ExploreBlock />
+            )}
           </div>
         </div>
       )}
