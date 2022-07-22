@@ -16,7 +16,8 @@ export default async ({
   transactionType,
   contract,
   data,
-  expired
+  expired,
+  isK2Account
 }) => {
   const credentials = await backgroundAccount.getCredentialByAddress(address)
   const account = await backgroundAccount.getAccount(credentials)
@@ -39,7 +40,8 @@ export default async ({
     address,
     contract,
     data,
-    expired
+    expired,
+    isK2Account
   }
 
   pendingTransactions.push(initialTransaction)

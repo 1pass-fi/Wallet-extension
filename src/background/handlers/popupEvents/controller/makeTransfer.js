@@ -41,7 +41,8 @@ export default async (payload, next) => {
       address,
       network,
       retried: 1,
-      transactionType
+      transactionType,
+      isK2Account: token === 'KOII'
     }
     await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
 
