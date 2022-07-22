@@ -130,7 +130,7 @@ export default ({ children }) => {
   /* 
     Activated chain
   */
-  const [activatedChain, setActivatedChain] = useState('TYPE_ARWEAVE')
+  const [activatedChain, setActivatedChain] = useState(TYPE.K2)
 
   useEffect(() => {
     const loadActivatedChain = async () => {
@@ -269,6 +269,15 @@ export default ({ children }) => {
           activatedSolanaAccount = await activatedSolanaAccount.get.metadata()
           dispatch(setDefaultAccount(activatedSolanaAccount))
         }
+
+        let activatedK2AccountAddress = await storage.setting.get.activatedK2AccountAddress()
+        if (!isEmpty(activatedK2AccountAddress)) {
+          let activatedK2Account = await popupAccount.getAccount({
+            address: activatedK2AccountAddress
+          })
+          activatedK2Account = await activatedK2Account.get.metadata()
+          dispatch(setDefaultAccount(activatedK2Account))
+        }
       }
     }
 
@@ -346,6 +355,15 @@ export default ({ children }) => {
       })
       activatedSolanaAccount = await activatedSolanaAccount.get.metadata()
       dispatch(setDefaultAccount(activatedSolanaAccount))
+    }
+
+    let activatedK2AccountAddress = await storage.setting.get.activatedK2AccountAddress()
+    if (!isEmpty(activatedK2AccountAddress)) {
+      let activatedK2Account = await popupAccount.getAccount({
+        address: activatedK2AccountAddress
+      })
+      activatedK2Account = await activatedK2Account.get.metadata()
+      dispatch(setDefaultAccount(activatedK2Account))
     }
   }
 
