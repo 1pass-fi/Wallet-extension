@@ -10,7 +10,7 @@ const propTypes = {
   onClose: PropTypes.func,
 }
 
-const Modal = ({ onClose, children, className = '' }) => {
+const Modal = ({ onClose, children, className = '', isWelcomeScreen = false }) => {
   const ref = useRef()
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const Modal = ({ onClose, children, className = '' }) => {
 
   return (
     <div className='modal-container'>
-      <div className={`modal ${className}`} ref={ref}>
+      <div className={`${isWelcomeScreen ? 'welcome-screen-modal' : 'modal'} ${className}`} ref={ref}>
         <div data-tip='Close' data-for='close-btn' className='modal-close-icon'>
           <CloseIcon onClick={onClose} />
         </div>

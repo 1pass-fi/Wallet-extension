@@ -5,14 +5,14 @@ import './index.css'
 
 export default ({ onClose }) => {
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} isWelcomeScreen={true}>
       <div className="welcome-message">
         <div className="title">
           Finnie Wallet <span>v0.3.3 Notes</span>
         </div>
         <div className="content">
           <div className="paragraph">
-            <span className="text-success-900">v0.3.3</span>
+            <span className="text-success">v0.3.3</span>
             <br></br>
             <div className='paragraph'>
               TL;DR: Like Metamask, but better. And Universal Crypto Addresses are here!
@@ -20,7 +20,7 @@ export default ({ onClose }) => {
             <div className='paragraph'>
               We are excited to announce that you can now send tokens to any Universal Crypto Address (like koiinetwork.wallet, for example) that is registered with{' '}
               <a
-                style={{ color: '#49ce8b' }}
+                style={{ color: '#9BE7C4' }}
                 href="https://unstoppabledomains.com"
                 className="link"
                 target="_blank"
@@ -31,7 +31,7 @@ export default ({ onClose }) => {
             <div className='paragraph'>
               In other news, let’s celebrate expanded Ethereum compatibility! With this new version, Finnie can sign any type of Ethereum transaction (if you find one that doesn’t work,{' '}
               <a
-                style={{ color: '#49ce8b' }}
+                style={{ color: '#9BE7C4' }}
                 href="https://koii.me/support"
                 className="link"
                 target="_blank"
@@ -48,13 +48,13 @@ export default ({ onClose }) => {
             </div>
           </div>
           <div className="paragraph">
-            <span className="text-success-900">v0.3.1</span>
+            <span className="text-success">v0.3.1</span>
             <br></br>
             We fixed a few small bugs in the UI.
           </div>
 
           <div className="paragraph">
-            <span className="text-success-900">v0.3.0</span>
+            <span className="text-success">v0.3.0</span>
             <br></br>A new look, batch uploads, and customized Decentralized ID profile pages.
           </div>
 
@@ -91,7 +91,7 @@ export default ({ onClose }) => {
             be compatible with other Arweave apps. You can now pause Finnie for a specific webpage
             if you need to for any reason. If you encounter a problem, please let us know with a{' '}
             <a
-              style={{ color: '#49ce8b' }}
+              style={{ color: '#9BE7C4' }}
               href="https://koii.me/support"
               className="link"
               target="_blank"

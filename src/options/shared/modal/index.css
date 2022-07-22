@@ -12,6 +12,20 @@
   align-items: center;
 }
 
+.welcome-screen-modal {
+  margin: auto;
+  min-width: 377px;
+  background-color: #0b0b3f;
+  /* border: 1px solid #ffffff; */
+  box-sizing: border-box;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
 .modal {
   margin: auto;
   min-width: 377px;
