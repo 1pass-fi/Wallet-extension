@@ -6,6 +6,7 @@ import storage from 'services/storage'
 
 import { addAccountByAddress } from 'options/actions/accounts'
 
+import { OnboardingContext } from '../onboardingContext'
 import { GalleryContext } from 'options/galleryContext'
 
 import { isArweaveAddress, isEthereumAddress, isSolanaAddress } from 'utils'
@@ -18,7 +19,7 @@ const ERROR_MESSAGE = {
 const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
   const {
     setImportedAddress,
-    setIsLoading,
+    setIsProcessing,
     setError,
     setNewAddress,
     setActivatedChain
@@ -28,20 +29,20 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
 
   const generateNewKey = async (network) => {
     try {
-      setIsLoading((prev) => ++prev)
+      setIsProcessing((prev) => ++prev)
       const seedphrase = await request.wallet.generateWallet({ walletType: network })
       setNewSeedphrase(seedphrase.join(' '))
     } catch (err) {
       console.error(err.message)
       setError(ERROR_MESSAGE.GENERATE_NEW_KEY_FAILED)
     } finally {
-      setIsLoading((prev) => --prev)
+      setIsProcessing((prev) => --prev)
     }
   }
 
   const saveNewKey = async (network) => {
     try {
-      setIsLoading((prev) => ++prev)
+      setIsProcessing((prev) => ++prev)
       const address = await request.wallet.saveWallet({ seedPhrase: newSeedphrase, password })
 
       await initActivatedChain(network)
@@ -53,24 +54,24 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
       console.error(err.message)
       setError(ERROR_MESSAGE.SAVE_NEW_KEY_FAILED)
     } finally {
-      setIsLoading((prev) => --prev)
+      setIsProcessing((prev) => --prev)
     }
   }
 
   const verifyPassword = async () => {
     try {
-      setIsLoading((prev) => ++prev)
+      setIsProcessing((prev) => ++prev)
       const isCorrectPassword = await request.wallet.verifyPassword({ password })
       return isCorrectPassword
     } catch (err) {
     } finally {
-      setIsLoading((prev) => --prev)
+      setIsProcessing((prev) => --prev)
     }
   }
 
   const importFromSeedphrase = async (seedphrase, network) => {
     try {
-      setIsLoading((prev) => ++prev)
+      setIsProcessing((prev) => ++prev)
       const address = await request.wallet.importWallet({
         key: seedphrase,
         password,
@@ -87,7 +88,7 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
     } catch (err) {
       setError(err.message)
     } finally {
-      setIsLoading((prev) => --prev)
+      setIsProcessing((prev) => --prev)
     }
   }
 

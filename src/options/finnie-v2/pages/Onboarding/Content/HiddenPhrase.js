@@ -13,11 +13,11 @@ import { OnboardingContext } from '../onboardingContext'
 import useMethod from '../hooks/useMethod'
 
 const HiddenPhrase = ({ step, setStep, importType }) => {
-  const { setIsLoading, setError } = useContext(GalleryContext)
+  const { setError, setIsProcessing } = useContext(GalleryContext)
   const { newSeedphrase, password } = useContext(OnboardingContext)
   const [showPhrase, setShowPhrase] = useState(false)
 
-  const { saveNewKey } = useMethod({ setIsLoading, setError, newSeedphrase, password })
+  const { saveNewKey } = useMethod({ setIsProcessing, setError, newSeedphrase, password })
 
   const SEED_ARRAY = useMemo(() => {
     return newSeedphrase.split(' ')

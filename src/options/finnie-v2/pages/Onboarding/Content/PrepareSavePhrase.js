@@ -13,10 +13,10 @@ import { OnboardingContext } from '../onboardingContext'
 import useMethod from '../hooks/useMethod'
 
 const PrepareSavePhrase = ({ step, setStep, importType }) => {
-  const { setIsLoading, setError } = useContext(GalleryContext)
+  const { setError, setIsProcessing } = useContext(GalleryContext)
   const { newSeedphrase, password } = useContext(OnboardingContext)
 
-  const { saveNewKey } = useMethod({ setIsLoading, setError, newSeedphrase, password })
+  const { saveNewKey } = useMethod({ setIsProcessing, setError, newSeedphrase, password })
 
   const handleRemindMeLater = async () => {
     await saveNewKey(importType)

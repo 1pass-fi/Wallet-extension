@@ -18,7 +18,7 @@ export const onboardingSteps = [
 ]
 
 const Welcome = () => {
-  const { isLoading, setIsOnboarding } = useContext(GalleryContext)
+  const { isProcessing, setIsOnboarding } = useContext(GalleryContext)
   const [step, setStep] = useState(0)
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const Welcome = () => {
     <div className="w-screen h-screen flex text-center">
       <NavBar step={step} setStep={setStep} />
       <Content step={step} setStep={setStep} />
-      {isLoading !== 0 && <LoadingScreen />}
+      {isProcessing !== 0 && <LoadingScreen />}
     </div>
   )
 }
