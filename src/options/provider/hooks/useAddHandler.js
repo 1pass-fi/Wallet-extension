@@ -23,6 +23,8 @@ export default ({ setError, setModalStates, setNotification, setIsLoading }) => 
     const handleAddHandler = () => {
       const loadBalancesSuccess = new EventHandler(MESSAGES.GET_BALANCES_SUCCESS, async () => {
         try {
+          await dispatch(loadAllAccounts())
+
           const { defaultAccount } = store.getState()
           const { K2, AR, ETH, SOL } = defaultAccount
           let balancesUpdated = false
@@ -71,9 +73,7 @@ export default ({ setError, setModalStates, setNotification, setIsLoading }) => 
             if (SOL.balance !== balance) balancesUpdated = true
           }
 
-
           if (balancesUpdated) {
-            await dispatch(loadAllAccounts())
             // sendMessage.success({ title: 'Balances updated', message: 'Your balances have been updated.' })
             setNotification('Your balances have been updated.')
           }
