@@ -22,7 +22,7 @@ export default async (payload, next) => {
 
     if (token === 'ETH') {
       receipt = await account.method.transfer(token, target, qty)
-      txId = receipt.transactionHash
+      txId = receipt.hash
     } else if (token === 'KOI') {
       txId = await account.method.transfer(token, target, qty)
     } else if (token === 'SOL') {
