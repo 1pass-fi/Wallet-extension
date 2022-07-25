@@ -24,7 +24,8 @@ const NotificationRow = ({ notification, newNotification = false }) => {
     storage.generic.set.pushNotification(allNotifications)
 
     chrome.tabs.create({
-      url: `https://viewblock.io/arweave/tx/${notification.txId}`
+      // url: `https://viewblock.io/arweave/tx/${notification.txId}`
+      url: notification.blockUrl
     })
   }
 

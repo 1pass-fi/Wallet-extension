@@ -34,6 +34,8 @@ export default async (payload, next) => {
     let network
     if (token === 'ETH') {
       network = await storage.setting.get.ethereumProvider()
+    } else if (token === 'SOL') {
+      network = await storage.setting.get.solanaProvider()
     }
 
     // add new pending transaction
