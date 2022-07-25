@@ -59,8 +59,8 @@ const SendTokenForm = ({
 
   useEffect(() => {
     const getAddressList = async () => {
-      let options = await getAddressesFromAddressBook()
-      options = options.concat(accounts)
+      let options = await getAddressesFromAddressBook(selectedAccount.type)
+      options = options.concat(accounts.filter((account) => account.type === selectedAccount.type))
       setAddressOptions(options)
     }
 
@@ -99,7 +99,8 @@ const SendTokenForm = ({
           Enter Address Manually
         </button>
         {accounts.map((account) => {
-          if (account.type === type && account.address !== selectedAccount.address) {
+          // if (account.type === type && account.address !== selectedAccount.address) {
+          if (account.address !== selectedAccount.address) {
             return (
               <div
                 key={account.address}

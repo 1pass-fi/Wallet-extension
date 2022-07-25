@@ -5,8 +5,10 @@ import isEmpty from 'lodash/isEmpty'
 
 import EditIcon from 'img/edit-icon-collection.svg'
 import CloseIcon from 'img/ab-close-icon.svg'
-import FinnieKoiiIcon from 'img/finnie-koi-white-icon.svg'
+import ArweaveIcon from 'img/finnie-koi-white-icon.svg'
 import EthereumIcon from 'img/ethereum-icon.svg'
+import SolanaIcon from 'img/v2/solana-logo.svg'
+import K2Icon from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import Button from '../Button'
 import Avatar from 'img/ab-avatar.png'
 import CopyIcon from 'img/copy-icon.svg'
@@ -42,9 +44,14 @@ const ContactDetail = ({ contact, onClose, showEditForm, setShowDeleteContactMod
         <div className="ab-contact-detail__address-group" key={idx}>
           <div className="ab-contact-detail__address-name">{address.name}</div>
           <div className="ab-contact-detail__address-info">
-            <div className="ab-contact-detail__address-wallet">
-              {address.type === TYPE.ARWEAVE && <FinnieKoiiIcon />}
+            <div
+              className="ab-contact-detail__address-wallet"
+              style={{ width: '29px', height: '29px' }}
+            >
+              {address.type === TYPE.ARWEAVE && <ArweaveIcon />}
               {address.type === TYPE.ETHEREUM && <EthereumIcon />}
+              {address.type === TYPE.SOLANA && <SolanaIcon />}
+              {address.type === TYPE.K2 && <K2Icon />}
             </div>
             <div className="ab-contact-detail__address-value">{address.value}</div>
             <div className="ab-copy-icon" data-tip="Copy to clipboard">
