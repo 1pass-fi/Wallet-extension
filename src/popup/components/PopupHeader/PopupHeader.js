@@ -39,7 +39,7 @@ const Header = ({ setShowConnectedSites }) => {
   }
 
   const goToSetting = () => {
-    const url = chrome.extension.getURL('options.html#/settings/KID')
+    const url = chrome.extension.getURL('options.html#/settings/wallet')
     chrome.tabs.create({ url })
   }
 

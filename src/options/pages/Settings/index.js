@@ -16,8 +16,10 @@ export default () => {
       <Route exact path="/settings/security">
         <Security />
       </Route>
-      <Route exact path="/settings/wallet">
-        <Wallet />
+      <Route exact path="/settings/KID">
+        <HasArweave content="Koii Identity only supports AR wallets." hasArweaveAccounts={true}>
+          <Kid />
+        </HasArweave>
       </Route>
       <Route exact path="/settings/gallery">
         <Gallery />
@@ -29,9 +31,7 @@ export default () => {
         <NeedHelp />
       </Route>
       <Route path="/settings/*">
-        <HasArweave content="Koii Identity only supports AR wallets." hasArweaveAccounts={true}>
-          <Kid />
-        </HasArweave>
+        <Wallet />
       </Route>
     </Switch>
   )
