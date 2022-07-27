@@ -242,6 +242,7 @@ export default ({ info, onClose, type }) => {
         const tokenContract = new ethers.Contract(tokenAddress, koiTokenABI, web3)
 
         let newEstimateGasUnit = 0
+        // TODO - DatH Contract.estimateGas.METHOD_NAME
         if (isApproved) {
           newEstimateGasUnit = await koiRouterContract.methods
             .deposit(tokenAddress, txId, 1, address)
@@ -289,7 +290,7 @@ export default ({ info, onClose, type }) => {
     // const currentGasBN = Web3.utils.toBN(currentGasPrice)
     const currentGasBN = ethers.BigNumber.from(currentGasPrice)
     // const newTotalGas = Web3.utils.fromWei(currentGasBN.muln(estimateGasUnit))
-    const newTotalGas = ethers.utils.formatEther(currentGasBN.muln(estimateGasUnit))
+    const newTotalGas = ethers.utils.formatEther(currentGasBN.mul(estimateGasUnit))
 
     setTotalGasCost(newTotalGas)
   }, [currentGasPrice, estimateGasUnit])
