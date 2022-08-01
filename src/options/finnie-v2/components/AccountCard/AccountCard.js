@@ -639,7 +639,7 @@ const AccountCard = ({
               className="w-full h-6 flex items-center justify-between"
             >
               <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
-                Reveal Seed Phrase:{' '}
+                Reveal Secret Phrase:{' '}
               </div>
               <div
                 className="bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
