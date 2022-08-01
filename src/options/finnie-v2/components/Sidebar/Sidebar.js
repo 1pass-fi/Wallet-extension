@@ -24,7 +24,7 @@ const navItems = [
   { icon: CollectionIcon, path: '/collections' }
 ]
 
-const Sidebar = () => {
+const Sidebar = ({ currentPath }) => {
   const dispatch = useDispatch()
 
   const [searchStr, setSearchStr] = useState('')
@@ -93,10 +93,25 @@ const Sidebar = () => {
             className="flex items-center justify-center w-13.75 h-11.25"
             activeClassName="rounded-t border-b border-white bg-trueGray-100 bg-opacity-20"
             onClick={() => {
-              path === '/create-nft' && setShowCollectionTooltip(true)
+              path === '/create-nft'
+                ? setShowCollectionTooltip(true)
+                : setShowCollectionTooltip(false)
             }}
           >
             <Icon className="w-7.5 h-7" />
+            {path === '/create-nft' && currentPath === '/create-nft' && showCollectionTooltip && (
+              <div
+                className="collection-tooltip-after absolute -top-11 -right-28 flex items-center border border-white bg-indigo text-white text-center pr-2 rounded-sm"
+                style={{ width: '201px', height: '47px' }}
+              >
+                <CloseIcon
+                  className="absolute top-0.75 right-0.75 cursor-pointer"
+                  style={{ width: '14px', height: '15px' }}
+                  onClick={() => setShowCollectionTooltip(false)}
+                />
+                Upload multiple NFTs at the same time with collections.
+              </div>
+            )}
           </NavLink>
         ))}
       </nav>
@@ -104,21 +119,8 @@ const Sidebar = () => {
         <div className="bg-trueGray-100 bg-opacity-20 rounded w-57.75">
           <Switch>
             <Route path="/create-nft">
-              <HasArweave content="This feature only supports AR account">
+              <HasArweave content="Right now, we can only create  NFTs with Arweave. Switch to an Arweave account to get started.">
                 <UploadNftForm />
-                {showCollectionTooltip && (
-                  <div
-                    className="collection-tooltip-after absolute -top-11 -right-28 flex items-center border border-white bg-indigo text-white text-center pr-2 rounded-sm"
-                    style={{ width: '201px', height: '47px' }}
-                  >
-                    <CloseIcon
-                      className="absolute top-0.75 right-0.75 cursor-pointer"
-                      style={{ width: '14px', height: '15px' }}
-                      onClick={() => setShowCollectionTooltip(false)}
-                    />
-                    Upload multiple NFTs at the same time with collections.
-                  </div>
-                )}
               </HasArweave>
             </Route>
             <Route exact path="/collections">
@@ -132,7 +134,7 @@ const Sidebar = () => {
               />
             </Route>
             <Route path="/collections/create">
-              <HasArweave content="This feature only supports AR account">
+              <HasArweave content="Right now, we can only create  NFTs with Arweave. Switch to an Arweave account to get started.">
                 <CollectionForm />
               </HasArweave>
             </Route>

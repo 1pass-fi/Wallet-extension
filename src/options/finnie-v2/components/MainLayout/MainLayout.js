@@ -50,7 +50,7 @@ const MainLayout = ({ children }) => {
             </div>
             <div className="px-4.25">
               <aside className="fixed z-51 w-61 pt-4">
-                <Sidebar />
+                <Sidebar currentPath={location.pathname} />
               </aside>
               <main className="ml-65.5 pb-5">{children}</main>
             </div>
