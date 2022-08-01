@@ -84,13 +84,13 @@ const RecoveryPhraseModal = ({ account, close }) => {
                 {formatLongString(account.address, 22)}
               </span>
             </div>
-            <div className="mt-3 text-sm font-normal" style={{ width: '418px' }}>
-              If you change browsers or switch computers, you will need this Secret Phrase to
-              access your account.{' '}
+            {/* <div className="mt-3 text-sm font-normal" style={{ width: '418px' }}>
+              If you change browsers or switch computers, you will need this Secret Phrase to access
+              your account.{' '}
               <span className="font-semibold">
                 Never share this phrase and keep it somewhere safe.
               </span>
-            </div>
+            </div> */}
 
             <div
               style={{ width: '382px' }}
@@ -120,7 +120,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
               )}
             </div>
 
-            {!isEmpty(passwordError) ? (
+            {!isEmpty(passwordError) && (
               <div
                 style={{ width: '382px', height: '24px' }}
                 className="pl-1.75 flex items-center mt-2 bg-warning rounded"
@@ -128,15 +128,16 @@ const RecoveryPhraseModal = ({ account, close }) => {
                 <NoticeIcon className="w-4.25" />
                 <span className="ml-1.75">{passwordError}</span>
               </div>
-            ) : (
-              <div style={{ width: '382px', height: '24px' }} className="mt-2"></div>
             )}
+            {/* : (
+              <div style={{ width: '382px', height: '24px' }} className="mt-2"></div>
+            ) */}
 
             <Button
               style={{ width: '239px', height: '39px' }}
-              className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-8"
+              className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-5"
               variant="indigo"
-              text="Get My Recovery Phrase"
+              text="Done"
               onClick={() => onGetRecoveryPhrase()}
             />
           </div>
@@ -144,7 +145,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
 
         {step === 2 && (
           <div>
-            <div
+            {/* <div
               style={{ width: '462px' }}
               className="flex flex-wrap items-center justify-center rounded mt-8.5 bg-trueGray-400 bg-opacity-40 text-base font-normal tracking-finnieSpacing-wide text-indigo"
             >
@@ -156,9 +157,26 @@ const RecoveryPhraseModal = ({ account, close }) => {
                     {capitalize(word)}
                   </div>
                 ))}
+            </div> */}
+
+            <div
+              style={{ width: '347px', height: '182px' }}
+              className="select-text mt-7.5 py-3.5 bg-blue-800 rounded-sm grid grid-flow-col grid-rows-6 font-normal text-sm text-white leading-6"
+            >
+              {seedPhrase
+                ?.trim()
+                ?.split(' ')
+                .map((phrase, index) => {
+                  return (
+                    <div className="mx-7.5 my-auto flex" key={index}>
+                      <div className="w-5 text-right mr-3">{index + 1}. </div>
+                      <div>{phrase}</div>
+                    </div>
+                  )
+                })}
             </div>
 
-            <div className="flex mt-6.25 mb-8">
+            {/* <div className="flex mt-6.25 mb-8">
               <CopyToClipboard text={seedPhrase}>
                 <Button
                   style={{ width: '220px', height: '39px' }}
@@ -182,7 +200,15 @@ const RecoveryPhraseModal = ({ account, close }) => {
                   icon={ImportIcon}
                 />
               </CSVLink>
-            </div>
+            </div> */}
+
+            <Button
+              style={{ width: '239px', height: '39px' }}
+              className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-5"
+              variant="indigo"
+              text="Done"
+              onClick={close}
+            />
           </div>
         )}
       </div>
