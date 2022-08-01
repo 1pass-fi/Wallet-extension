@@ -52,7 +52,7 @@ export default () => {
       <div className="security-settings">
         <div className="header">Security Settings</div>
         <div className="content">
-          <div className="backup-seedphrase">
+          {/* <div className="backup-seedphrase">
             <div className="title">Get my Secret Phrase</div>
             <div className="description">
               Select a wallet to see its secret phrase (sometimes called a ‘seed phrase’).
@@ -62,33 +62,6 @@ export default () => {
               setSelectedAccount={setSelectedAccount}
               setShowExportBackupPhraseModal={setShowExportBackupPhraseModal}
             />
-            {/* <div className="seedphrase">
-              {accounts.map((account) => {
-                if (account.seedPhrase)
-                  return (
-                    <div
-                      key={account.id}
-                      className="account"
-                      onClick={() => onSeedPhraseClick(account)}
-                    >
-                      <div className="name-icon">
-                        {account.type === TYPE.ARWEAVE && (
-                          <div className="finnie-icon">
-                            <FinnieIcon />
-                          </div>
-                        )}
-                        {account.type === TYPE.ETHEREUM && (
-                          <div className="finnie-icon">
-                            <EthereumIcon />
-                          </div>
-                        )}
-                        <div className="account-name">{account.accountName}</div>
-                      </div>
-                      <div className="account-address">{getDisplayAddress(account.address)}</div>
-                    </div>
-                  )
-              })}
-            </div> */}
           </div>
 
           <div className="backup-keyfile">
@@ -99,22 +72,7 @@ export default () => {
               setSelectedAccount={setSelectedAccount}
               setShowExportBackupKeyfileModal={setShowExportBackupKeyfileModal}
             />
-            {/* <div className="keyfile">
-              {arAccounts.map((account) => (
-                <div
-                  key={account.address}
-                  className="account"
-                  onClick={() => onKeyFileClick(account)}
-                >
-                  <div className="name-icon">
-                    <FinnieIcon className="finnie-icon" />
-                    <div className="account-name">{account.accountName}</div>
-                  </div>
-                  <div className="account-address">{getDisplayAddress(account.address)}</div>
-                </div>
-              ))}
-            </div> */}
-          </div>
+          </div> */}
 
           <div className="change-password">
             <div className="title">Change my password</div>
