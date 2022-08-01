@@ -158,14 +158,14 @@ export default () => {
         <div className="header">Wallet Settings</div>
         <div className="mt-10 pl-5">
           <div className="add-wallet pb-2 mb-4 border-b border-white">
-            <div className="font-semibold text-base leading-8 uppercase">Add a Wallet</div>
+            <div className="font-semibold text-base leading-8 uppercase">Add a Key</div>
             <div className="flex gap-6.75">
               <div
                 className="bg-success rounded-sm text-center text-indigo text-sm leading-4 font-normal flex justify-center items-center mr-6.75 cursor-pointer"
                 style={{ width: '220px', height: '38px' }}
                 onClick={onCreateWallet}
               >
-                Create New Wallet
+                Create a New Key
               </div>
               <div
                 className="bg-trueGray-100 rounded-sm text-center text-indigo text-sm leading-4 font-normal flex justify-center items-center cursor-pointer"
