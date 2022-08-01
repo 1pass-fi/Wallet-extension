@@ -125,7 +125,7 @@ const NFTDetail = () => {
       </div>
       <NavBar />
       {nft && nftLoaded && (
-        <div className="flex h-full w-full text-white">
+        <div className="flex flex-col h-full w-full text-white">
           <div className="mx-auto mt-28 flex flex-col md:flex-row">
             <div className="w-100.25 h-101 mr-7 relative">
               <NFTMedia contentType={nft.contentType} source={nft.imageUrl} showFull={true} />
@@ -137,23 +137,6 @@ const NFTDetail = () => {
               )}
               {nft?.type === TYPE.SOLANA && (
                 <SolanaLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
-              )}
-
-              {nft.type === TYPE.ARWEAVE && !nft.pending && (
-                <div className="flex justify-between items-center h-17.25 mt-6.5 tracking-finnieSpacing-tight text-lg text-center">
-                  {showEarnedKoi && (
-                    <div className="w-48.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
-                      KOII earned <br />
-                      {formatNumber(nft.earnedKoi, 3)}
-                    </div>
-                  )}
-                  {showViews && (
-                    <div className="w-46 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
-                      Total Views <br />
-                      {nft.totalViews}
-                    </div>
-                  )}
-                </div>
               )}
             </div>
 
@@ -217,7 +200,10 @@ const NFTDetail = () => {
                 </div>
               )}
 
-              <p className="w-full max-h-18 overflow-y-scroll overflow-x-none break-words text-sm leading-6 pr-4 whitespace-pre-line">
+              <p
+                className="w-full overflow-y-scroll overflow-x-none break-words text-sm leading-6 pr-4 whitespace-pre-line"
+                style={{ maxHeight: '25%' }}
+              >
                 {nft.description}
               </p>
               <div className="mt-3.25 flex flex-wrap gap-x-2.5 gap-y-1 max-h-11 overflow-y-scroll">
@@ -294,6 +280,23 @@ const NFTDetail = () => {
               <ToolTip />
             </div>
           </div>
+
+          {nft.type === TYPE.ARWEAVE && !nft.pending && (
+            <div className="mx-auto flex justify-start items-center w-221.5 h-17.25 mt-6.5 mb-4 tracking-finnieSpacing-tight text-lg text-center">
+              {showEarnedKoi && (
+                <div className="w-48.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                  KOII earned <br />
+                  {formatNumber(nft.earnedKoi, 3)}
+                </div>
+              )}
+              {showViews && (
+                <div className="ml-5.75 w-46 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                  Total Views <br />
+                  {nft.totalViews}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
       {showShareNFTModal && <ShareNFTModal txId={id} close={() => setShowShareNFTModal(false)} />}
