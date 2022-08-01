@@ -99,9 +99,9 @@ const NavBar = () => {
         <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/collections">Collections</NavLink>
         </nav>
-        <nav className="ml-9 tracking-finnieSpacing-wider">
+        {/* <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/friend-referral">Refer a friend</NavLink>
-        </nav>
+        </nav> */}
       </div>
 
       <div className="flex items-center" ref={navbarRef}>

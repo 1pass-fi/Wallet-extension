@@ -51,12 +51,12 @@ const FullView = () => {
               {/* <ImportWallet /> */}
               <Welcome />
             </Route>
-            <Route exact path="/friend-referral">
+            {/* <Route exact path="/friend-referral">
               <>
                 <FriendReferral />
                 <AddressBook />
               </>
-            </Route>
+            </Route> */}
             <Route exact path="/success">
               <>
                 <NavBar />
