@@ -23,7 +23,8 @@ const InputField = ({
   uppercase = true,
   password = false,
   passwordFinnie = false,
-  autoFocus = false
+  autoFocus = false,
+  onKeyDown = () => {}
 }) => {
   const [textAreaHeight, setTextAreaHeight] = useState(83)
 
@@ -97,6 +98,7 @@ const InputField = ({
             disabled={isDisable}
             type={password || (passwordFinnie && !showPw) ? 'password' : 'text'}
             autoFocus={autoFocus}
+            onKeyDown={(e) => onKeyDown(e)}
           />
 
           {passwordFinnie && (

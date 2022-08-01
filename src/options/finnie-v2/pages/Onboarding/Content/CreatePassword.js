@@ -51,6 +51,12 @@ const CreatePassword = ({ step, setStep }) => {
     }
   }
 
+  const handleKeyDown = async (e) => {
+    if (e.keyCode === 13) {
+      onClickContinue()
+    }
+  }
+
   return (
     <div className="w-2/3 flex flex-col text-white self-start pl-23" style={{ width: '500px' }}>
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
@@ -84,6 +90,7 @@ const CreatePassword = ({ step, setStep }) => {
         uppercase={false}
         passwordFinnie={true}
         autoFocus={true}
+        onKeyDown={e => handleKeyDown(e)}
       />
       {isEmpty(accounts) && (
         <InputField
