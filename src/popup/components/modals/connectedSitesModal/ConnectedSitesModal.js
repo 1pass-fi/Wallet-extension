@@ -9,6 +9,7 @@ import get from 'lodash/get'
 // assets
 import CloseIcon from 'img/v2/close-icon-white.svg'
 import RecycleBinIcon from 'img/popup/recycle-bin-icon.svg'
+import EmptyConnectedSitesIcon from 'img/v2/empty-connected-sites-icon.svg'
 
 // constants
 import { TYPE } from 'constants/accountConstants'
@@ -122,31 +123,42 @@ const ConnectedSitesModal = ({ onClose, setError, setIsLoading }) => {
             onClick={onClose}
           />
         </div>
-        <div className="mt-4.5 font-normal text-base text-center tracking-finnieSpacing-wide text-indigo">
-          <span className="font-semibold">{displayingAccount.accountName}</span> is connected to
-          these sites.
-        </div>
-        <div
-          className="w-full mt-7.5 flex flex-col justify-between pl-6.5 text-blue-850 overflow-y-scroll"
-          style={{ maxHeight: '240px' }}
-        >
-          {siteConnectedAddresses.map((siteAddress, idx) => (
-            <div className="w-full flex justify-between items-center pr-8 mb-2" key={idx}>
-              <div style={{ maxWidth: '269px' }}>
-                <div className="font-semibold text-xs tracking-finnieSpacing-wide truncate">
-                  {siteAddress.origin}
-                </div>
-                <div className="font-normal text-2xs leading-6 tracking-finnieSpacing-wide truncate">
-                  {siteAddress.address}
-                </div>
-              </div>
-              <RecycleBinIcon
-                className="cursor-pointer"
-                onClick={() => handleRemoveSite(siteAddress)}
-              />
+        {isEmpty(siteConnectedAddresses) ? (
+          <div className="m-auto flex flex-col items-center">
+            <EmptyConnectedSitesIcon />
+            <div className="font-normal text-base leading-6 text-center text-indigo">
+              Not connected to any sites
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <>
+            <div className="mt-4.5 font-normal text-base text-center tracking-finnieSpacing-wide text-indigo">
+              <span className="font-semibold">{displayingAccount.accountName}</span> is connected to
+              these sites.
+            </div>
+            <div
+              className="w-full mt-7.5 flex flex-col justify-between pl-6.5 text-blue-850 overflow-y-scroll"
+              style={{ maxHeight: '240px' }}
+            >
+              {siteConnectedAddresses.map((siteAddress, idx) => (
+                <div className="w-full flex justify-between items-center pr-8 mb-2" key={idx}>
+                  <div style={{ maxWidth: '269px' }}>
+                    <div className="font-semibold text-xs tracking-finnieSpacing-wide truncate">
+                      {siteAddress.origin}
+                    </div>
+                    <div className="font-normal text-2xs leading-6 tracking-finnieSpacing-wide truncate">
+                      {siteAddress.address}
+                    </div>
+                  </div>
+                  <RecycleBinIcon
+                    className="cursor-pointer"
+                    onClick={() => handleRemoveSite(siteAddress)}
+                  />
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

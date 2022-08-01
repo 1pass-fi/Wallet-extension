@@ -8,6 +8,7 @@ import get from 'lodash/get'
 // assets
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
+import EmptyConnectedSitesIcon from 'img/v2/empty-connected-sites-icon.svg'
 
 // actions
 import { loadAllAccounts } from 'options/actions/accounts'
@@ -136,38 +137,49 @@ const ConnectedSitesModal = ({ account, close }) => {
           <div className="m-auto">Connected Sites</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
-        <div className="mt-7.5 font-normal text-base text-center tracking-finnieSpacing-wide text-indigo">
-          <span className="font-semibold">{formatLongString(account.accountName, 20)}</span> is
-          connected to these sites.
-        </div>
-        <div
-          className="w-11/12 mt-4.5 mb-15 flex flex-col justify-between text-blue-850 overflow-y-scroll"
-          style={{ maxHeight: '240px' }}
-        >
-          {siteConnectedAddresses.map((siteAddress, idx) => (
-            <div
-              className="flex justify-between items-center mb-2 relative mx-auto"
-              style={{ width: '480px' }}
-              key={idx}
-            >
-              <div style={{ maxWidth: '380px' }}>
-                <div className="font-semibold text-sm leading-6 tracking-finnieSpacing-wide truncate">
-                  {siteAddress.origin}
-                </div>
-                <div className="font-normal text-sm leading-6 tracking-finnieSpacing-wide truncate">
-                  {siteAddress.address}
-                </div>
-              </div>
-              <div
-                className="absolute bottom-2.5 right-0 flex items-center justify-center bg-warning-300 rounded-full shadow cursor-pointer"
-                onClick={() => handleRemoveSite(siteAddress)}
-                style={{ width: '30px', height: '30px' }}
-              >
-                <RecycleBinIcon style={{ width: '18px', height: '22px' }} />
-              </div>
+        {isEmpty(siteConnectedAddresses) ? (
+          <div className="m-auto flex flex-col items-center">
+            <EmptyConnectedSitesIcon />
+            <div className="font-normal text-base leading-6 text-center text-indigo">
+              Not connected to any sites
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <>
+            <div className="mt-7.5 font-normal text-base text-center tracking-finnieSpacing-wide text-indigo">
+              <span className="font-semibold">{formatLongString(account.accountName, 20)}</span> is
+              connected to these sites.
+            </div>
+            <div
+              className="w-11/12 mt-4.5 mb-15 flex flex-col justify-between text-blue-850 overflow-y-scroll"
+              style={{ maxHeight: '240px' }}
+            >
+              {siteConnectedAddresses.map((siteAddress, idx) => (
+                <div
+                  className="flex justify-between items-center mb-2 relative mx-auto"
+                  style={{ width: '480px' }}
+                  key={idx}
+                >
+                  <div style={{ maxWidth: '380px' }}>
+                    <div className="font-semibold text-sm leading-6 tracking-finnieSpacing-wide truncate">
+                      {siteAddress.origin}
+                    </div>
+                    <div className="font-normal text-sm leading-6 tracking-finnieSpacing-wide truncate">
+                      {siteAddress.address}
+                    </div>
+                  </div>
+                  <div
+                    className="absolute bottom-2.5 right-0 flex items-center justify-center bg-warning-300 rounded-full shadow cursor-pointer"
+                    onClick={() => handleRemoveSite(siteAddress)}
+                    style={{ width: '30px', height: '30px' }}
+                  >
+                    <RecycleBinIcon style={{ width: '18px', height: '22px' }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   )
