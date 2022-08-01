@@ -211,8 +211,8 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
             Are you sure you want to remove "{formatLongString(account.accountName, 25)}"?
           </div>
           <div className="mt-6 text-sm font-normal text-center" style={{ width: '485px' }}>
-            This will erase all account information from Finnie but you’ll still be able to import
-            it if you have a seed phrase
+            This will erase all account information from Finnie, but you can import it again with
+            the secret phrase.
           </div>
           <div className="mt-4 flex justify-between" style={{ width: '404px' }}>
             <Button
