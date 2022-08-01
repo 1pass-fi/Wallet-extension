@@ -45,11 +45,16 @@ const fromEthToArweave = async () => {
       web3
     )
 
-    const isApprove = await nftContract.methods
-      .isApprovedForAll(addresses[0], '0xD1183ad3B7934466aCB98D17B85Ced15999EA3AC')
-      .call()
+    // const isApprove = await nftContract.methods
+    //   .isApprovedForAll(addresses[0], '0xD1183ad3B7934466aCB98D17B85Ced15999EA3AC')
+    //   .call()
+    const isApprove = await nftContract.isApprovedForAll(
+      addresses[0],
+      '0xD1183ad3B7934466aCB98D17B85Ced15999EA3AC'
+    )
     console.log('isApprove', isApprove)
 
+    // TODO DatH - test manifestv3
     if (isApprove === false) {
       // give router contract access to make transaction on behalf of the user
       const result = await nftContract.methods
@@ -57,7 +62,8 @@ const fromEthToArweave = async () => {
         .send({ from: addresses[0] })
       console.log('*****RECEIPT1: ', result)
     }
-
+    
+    // TODO DatH - test manifestv3
     const depositResult = await koiRouterContract.methods
       .deposit(
         '0xff3096ed566445c9f24f615b3afd6677ad4dcba4',

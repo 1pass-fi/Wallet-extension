@@ -429,16 +429,18 @@ export class EthereumMethod {
       Check for approval
       If not approved, setApprovalForAll()
     */
+    // TODO DatH - test manifestv3
     let isApproved = false
     try {
-      isApproved = await tokenContract.methods
-        .isApprovedForAll(userAddress, koiRouterContractAddress)
-        .call()
+      // isApproved = await tokenContract.methods
+      //   .isApprovedForAll(userAddress, koiRouterContractAddress)
+      //   .call()
+      isApproved = await tokenContract.isApprovedForAll(userAddress, koiRouterContractAddress)
       console.log('isApproved', isApproved)
     } catch (error) {
       console.log('====== get isApprovedForAll error', error)
     }
-
+    // TODO DatH - test manifestv3
     if (!isApproved) {
       try {
         console.log('SET APPROVAL...')
@@ -452,6 +454,7 @@ export class EthereumMethod {
         return { success: false, action: ETH_NFT_BRIDGE_ACTION.SET_APPROVAL }
       }
     } else {
+      // TODO DatH - test manifestv3
       try {
         const depositResult = await koiRouterContract.methods
           .deposit(tokenAddress, tokenId, 1, toAddress)
@@ -642,7 +645,8 @@ export class EthereumMethod {
     // const decimals = await tokenContract.methods.decimals().call()
     const decimals = await tokenContract.decimals()
     const amount = parseFloat(value) * Math.pow(10, decimals)
-
+    
+    // TODO DatH - test manifestv3
     const rawTx = {
       from: this.eth.address,
       to: tokenContractAddress,

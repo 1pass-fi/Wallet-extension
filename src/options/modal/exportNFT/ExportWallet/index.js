@@ -209,10 +209,13 @@ export default ({ info, onClose, type }) => {
           ? KOI_ROUTER_CONTRACT.MAINNET
           : KOI_ROUTER_CONTRACT.GOERLI
 
-      const isApproved = await tokenContract.methods
-        .isApprovedForAll(_ownerAddress, koiRouterContractAddress)
-        .call()
-
+      // const isApproved = await tokenContract.methods
+      //   .isApprovedForAll(_ownerAddress, koiRouterContractAddress)
+      //   .call()
+      const isApproved = await tokenContract.isApprovedForAll(
+        _ownerAddress,
+        koiRouterContractAddress
+      )
       setIsApproved(isApproved)
       setApprovedStatusLoaded(true)
     }
@@ -244,14 +247,26 @@ export default ({ info, onClose, type }) => {
         let newEstimateGasUnit = 0
         // TODO - DatH Contract.estimateGas.METHOD_NAME
         if (isApproved) {
-          newEstimateGasUnit = await koiRouterContract.methods
-            .deposit(tokenAddress, txId, 1, address)
-            // .estimateGas({ from: _ownerAddress, value: web3.utils.toWei('0.00015', 'ether') })
-            .estimateGas({ from: _ownerAddress, value: ethers.utils.parseEther('0.00015') })
+          // newEstimateGasUnit = await koiRouterContract.methods
+          //   .deposit(tokenAddress, txId, 1, address)
+          //   // .estimateGas({ from: _ownerAddress, value: web3.utils.toWei('0.00015', 'ether') })
+          //   .estimateGas({ from: _ownerAddress, value: ethers.utils.parseEther('0.00015') })
+          newEstimateGasUnit = await koiRouterContract.estimateGas.deposit(
+            tokenAddress,
+            txId,
+            1,
+            address,
+            { from: _ownerAddress, value: ethers.utils.parseEther('0.00015') }
+          )
         } else {
-          newEstimateGasUnit = await tokenContract.methods
-            .setApprovalForAll(koiRouterContractAddress, true)
-            .estimateGas({ from: _ownerAddress })
+          // newEstimateGasUnit = await tokenContract.methods
+          //   .setApprovalForAll(koiRouterContractAddress, true)
+          //   .estimateGas({ from: _ownerAddress })
+          newEstimateGasUnit = await tokenContract.estimateGas.setApprovalForAll(
+            koiRouterContractAddress,
+            true,
+            { from: _ownerAddress }
+          )
         }
 
         setEstimateGasUnit(newEstimateGasUnit)

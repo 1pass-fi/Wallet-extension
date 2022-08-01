@@ -17,8 +17,8 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
       const provider = await storage.setting.get.ethereumProvider()
       const web3 = new Web3(provider)
       const tokenContract = new web3.eth.Contract(ERC20_ABI, tokenAddress)
-      await tokenContract.methods.name().call()
-
+      // await tokenContract.methods.name().call()
+      const name = await tokenContract.name()
       return true
     } catch (err) {
       return false
