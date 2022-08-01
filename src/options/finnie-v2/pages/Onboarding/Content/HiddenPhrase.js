@@ -14,7 +14,7 @@ import useMethod from '../hooks/useMethod'
 
 const HiddenPhrase = ({ step, setStep, importType }) => {
   const { setError, setIsProcessing } = useContext(GalleryContext)
-  const { newSeedphrase, password } = useContext(OnboardingContext)
+  const { newSeedphrase, password, setSkipPhrase } = useContext(OnboardingContext)
   const [showPhrase, setShowPhrase] = useState(false)
 
   const { saveNewKey } = useMethod({ setIsProcessing, setError, newSeedphrase, password })
@@ -25,6 +25,7 @@ const HiddenPhrase = ({ step, setStep, importType }) => {
 
   const handleSkipThisStep = async () => {
     await saveNewKey(importType)
+    setSkipPhrase(true)
     setStep(6)
   }
 

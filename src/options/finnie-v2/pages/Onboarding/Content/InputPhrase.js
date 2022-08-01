@@ -10,7 +10,7 @@ import Button from 'finnie-v2/components/Button'
 import { OnboardingContext } from '../onboardingContext'
 
 const InputPhrase = ({ step, setStep, phrase, importType }) => {
-  const { saveNewKey, newSeedphrase } = useContext(OnboardingContext)
+  const { saveNewKey, newSeedphrase, setSkipPhrase } = useContext(OnboardingContext)
 
   const [hiddenPhrase, setHiddenPhrase] = useState([])
   const [completePhrase, setCompletePhrase] = useState([])
@@ -102,6 +102,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
 
   const handleSkipThisStep = async () => {
     await saveNewKey(importType)
+    setSkipPhrase(true)
     setStep(6)
   }
 

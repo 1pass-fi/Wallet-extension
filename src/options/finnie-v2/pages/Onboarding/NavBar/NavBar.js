@@ -118,7 +118,7 @@ const NavBar = ({ step, setStep }) => {
         {step < 10 &&
           (step === 5 || step == 6 ? (
             <div className="flex text-warning">
-              <SeedphraseSelectedIcon className="mr-5" />
+              <SeedphraseSelectedIcon className="mr-5" style={{width: '48px', height: '48px'}} />
               <div className="w-4/5 flex flex-col whitespace-pre-wrap">
                 Confirm your secret phrase.
                 <span className="font-normal text-sm leading-6 text-trueGray-100">

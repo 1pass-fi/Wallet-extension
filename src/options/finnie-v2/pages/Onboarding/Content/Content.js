@@ -27,6 +27,7 @@ const Content = ({ step, setStep }) => {
   const [phrase, setPhrase] = useState('')
   const [newSeedphrase, setNewSeedphrase] = useState('')
   const [network, setNetwork] = useState('')
+  const [skipPhrase, setSkipPhrase] = useState(false)
 
   const [importType, setImportType] = useState(null)
 
@@ -54,7 +55,9 @@ const Content = ({ step, setStep }) => {
         verifyPassword,
         importFromSeedphrase,
         network,
-        setNetwork
+        setNetwork,
+        skipPhrase,
+        setSkipPhrase
       }}
     >
       <div

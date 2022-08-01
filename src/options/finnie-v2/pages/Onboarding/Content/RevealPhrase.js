@@ -10,6 +10,7 @@ import KoiIcon from 'img/v2/onboarding/finnie-koii-logo.svg'
 import SuccessIcon from 'img/v2/onboarding/success-icon.svg'
 import KoiiToken from 'img/v2/onboarding/koii-token.svg'
 import ImagesNFTs from 'img/v2/onboarding/images-nfts.svg'
+import SeedphraseSelectedIcon from 'img/v2/onboarding/seedphrase-selected-icon.svg'
 
 import Button from 'finnie-v2/components/Button'
 
@@ -17,7 +18,7 @@ import { NETWORK } from 'constants/koiConstants'
 
 const RevealPhrase = ({ step }) => {
   const { setIsOnboarding } = useContext(GalleryContext)
-  const { network } = useContext(OnboardingContext)
+  const { network, skipPhrase } = useContext(OnboardingContext)
   const history = useHistory()
 
   const openFaucet = () => {
@@ -34,14 +35,27 @@ const RevealPhrase = ({ step }) => {
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <KoiIcon className="w-18 h-18 absolute top-2.25 right-3.75" />
       <div className="w-3/4 flex items-center justify-center">
-        <SuccessIcon className="w-20 h-20 mr-6.5" />
+        {!skipPhrase ? (
+          <SuccessIcon className="w-20 h-20 mr-6.5" />
+        ) : (
+          <SeedphraseSelectedIcon className="w-20 h-20 mr-6.5" />
+        )}
         <div
           className="font-semibold text-2xl tracking-finnieSpacing-wider self-center"
           // style={{ width: '350px' }}
         >
-          {step === 6
-            ? 'You successfully saved your Secret Phrase'
-            : 'Your key was successfully imported!'}
+          {step === 6 ? (
+            !skipPhrase ? (
+              'You successfully saved your Secret Phrase'
+            ) : (
+              <>
+                Remember to save your secret phrase when you have a pen and paper.<br></br>
+                Otherwise, you could lose any tokens or assets.
+              </>
+            )
+          ) : (
+            'Your key was successfully imported!'
+          )}
         </div>
       </div>
 
