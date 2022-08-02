@@ -91,6 +91,12 @@ const ImportPhrase = ({ step, setStep, importType }) => {
     }
   }
 
+  const handleKeyDown = async (e) => {
+    if (e.keyCode === 13) {
+      onClickContinue()
+    }
+  }
+
   return (
     <div className="mt-40 ml-24 flex flex-col text-white text-left">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
@@ -119,6 +125,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
                   className="bg-transparent focus:outline-none cursor-pointer w-22 h-5.5"
                   type="text"
                   onChange={(e) => onChangeInputPhrase(e, index)}
+                  onKeyDown={(e) => handleKeyDown(e)}
                   value={completePhrase[index].word}
                 />
               </div>
@@ -133,7 +140,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
           className={clsx('mt-10.75 text-base mx-auto rounded z-10', isImporting && 'cursor-wait')}
           variant="white"
           text="Confirm"
-          disabled={!validPhrase}
+          // disabled={!validPhrase}
           onClick={onClickContinue}
         />
       </div>

@@ -106,6 +106,12 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
     setStep(6)
   }
 
+  const handleKeyDown = async (e) => {
+    if (e.keyCode === 13) {
+      onClickContinue()
+    }
+  }
+
   return (
     <div className="w-11/12 flex flex-col text-white text-left" style={{ width: '500px' }}>
       <WelcomeBackground className="absolute bottom-0 right-0" />
@@ -137,6 +143,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
                   className="bg-transparent border-b-2 focus:outline-none cursor-pointer w-22 h-5.5"
                   type="text"
                   onChange={(e) => onChangeInputPhrase(e, index)}
+                  onKeyDown={(e) => handleKeyDown(e)}
                   value={completePhrase.find((obj) => obj.index === index).word}
                 />
               </div>
@@ -156,7 +163,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
           className="mt-10.75 text-base mx-auto rounded z-10"
           variant="white"
           text="Confirm Phrase"
-          disabled={!isNextStep}
+          // disabled={!isNextStep}
           onClick={onClickContinue}
         />
       </div>

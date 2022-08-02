@@ -109,10 +109,13 @@ const CreatePassword = ({ step, setStep }) => {
           name="password"
           placeholder=""
           errorFinnie={
-            isClickContinue && passwordErrorMessage === VALIDATE_ERROR_MESSAGE.NOT_MATCH && passwordErrorMessage
+            isClickContinue &&
+            passwordErrorMessage === VALIDATE_ERROR_MESSAGE.NOT_MATCH &&
+            passwordErrorMessage
           }
           uppercase={false}
           passwordFinnie={true}
+          onKeyDown={(e) => handleKeyDown(e)}
         />
       )}
       {isEmpty(accounts) && (
