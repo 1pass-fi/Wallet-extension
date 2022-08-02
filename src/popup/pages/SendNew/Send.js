@@ -120,8 +120,12 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
   }
 
   const handleSendToken = async () => {
-    await getAlchemyAddress()
-    setSendTokenClick((prev) => ++prev)
+    if (selectedToken?.balance < amount * Math.pow(10, selectedToken?.decimal)) {
+      setError('Not enough tokens')
+    } else {
+      await getAlchemyAddress()
+      setSendTokenClick((prev) => ++prev)
+    }
   }
   useEffect(() => {
     const sendToken = async () => {
