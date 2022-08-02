@@ -72,8 +72,8 @@ export class SolanaMethod {
         newContents
       }
       return res
-    } catch (e) {
-      console.error('Unable to load SOL content', e)
+    } catch (err) {
+      console.error('Unable to load SOL content', err)
       throw new Error(err.message)
     }
   }

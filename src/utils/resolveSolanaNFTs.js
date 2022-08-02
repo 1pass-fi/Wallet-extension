@@ -3,9 +3,7 @@ export const _utf8ArrayToNFTType = (array) => {
 
   // for the sake of simplicty/readability/understandability, we check the decoded url
   // one by one against metaplex, star atlas, and others
-  return (
-    this._metaplex(text) || this._starAtlas(text) || this._jsonExtension(text) || this._ipfs(text)
-  )
+  return _metaplex(text) || _starAtlas(text) || _jsonExtension(text) || _ipfs(text)
 }
 
 export const _metaplex = (text) => {
@@ -32,7 +30,7 @@ export const _metaplex = (text) => {
   }
 }
 
-export const  _starAtlas = (text) => {
+export const _starAtlas = (text) => {
   const query = 'https://'
   const startIndex = text.indexOf(query)
   if (startIndex === -1) return null
@@ -55,7 +53,7 @@ export const  _starAtlas = (text) => {
   }
 }
 
-export const  _jsonExtension = (text) => {
+export const _jsonExtension = (text) => {
   // Look for 'https://<...>.json' and that will be the metadata location
   // examples:
   // https://d1b6hed00dtfsr.cloudfront.net/9086.json
@@ -78,7 +76,7 @@ export const  _jsonExtension = (text) => {
   }
 }
 
-export const  _ipfs = (text) => {
+export const _ipfs = (text) => {
   // Look for 'https://ipfs.io/ipfs/<...alphanumeric...>' and that will be the metadata location
   // e.g. https://ipfs.io/ipfs/QmWJC47JYuvxYw63cRq81bBNGFXPjhQH8nXg71W5JeRMrC
 
