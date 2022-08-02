@@ -656,28 +656,10 @@ export class EthereumMethod {
     const amount = parseFloat(value) * Math.pow(10, decimals)
 
     // TODO DatH - test manifestv3
-    const rawTx = {
-      from: this.eth.address,
-      to: tokenContractAddress,
-      // data: tokenContract.methods.transfer(to, value).encodeABI()
-      // data: tokenContract.transfer(to, value).encodeABI()
-      data: tokenContract.transfer(to, value)
-    }
+    const tx = await tokenContract.transfer(to, value)
+    const receipt = { transactionHash: tx.hash }
 
-    console.log('transferToken rawTx', rawTx)
-
-    const estimateGas = await web3.estimateGas(rawTx)
-    rawTx.gas = estimateGas
-
-    console.log('transferToken estimateGas', estimateGas)
-
-    // TODO - DatH Switch to ethers
-    // const signedTx = await web3.eth.accounts.signTransaction(rawTx, this.eth.key)
-    // const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction)
-    const signTx = await signer.signTransaction(rawTx)
-    const receipt = await web3.sendTransaction(signTx)
-
-    console.log('transferToken signTx', signer, signTx, receipt)
+    console.log('transferToken tx', tx)
     return receipt
   }
 
