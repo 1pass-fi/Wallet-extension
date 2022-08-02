@@ -69,11 +69,11 @@ const HomeTop = ({
       await request.wallet.loadBalanceAsync()
 
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.scripting.sendMessage(tabs[0].id, { type: MESSAGES.NETWORK_CHANGED })
+        chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.NETWORK_CHANGED })
       })
 
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.scripting.sendMessage(tabs[0].id, { type: MESSAGES.CHAIN_CHANGED })
+        chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.CHAIN_CHANGED })
       })
 
       await request.activities.loadActivities({ network: TYPE.ETHEREUM })

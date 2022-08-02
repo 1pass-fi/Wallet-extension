@@ -70,7 +70,7 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
       if (unlocked) {
 		setIsWalletLocked(false)
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-          chrome.scripting.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
+          chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
         })
 
         history.push('/tokens')

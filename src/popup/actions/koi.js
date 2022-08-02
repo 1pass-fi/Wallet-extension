@@ -62,7 +62,6 @@ export const importWallet = (key, password, type) => async (dispatch) => {
   }
 }
 
-
 // TODO LongP - remove unused method(s)
 export const removeWallet = (address, type) => async (dispatch, getState) => {
   try {
@@ -141,15 +140,15 @@ export const removeWallet = (address, type) => async (dispatch, getState) => {
     }
 
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.scripting.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
+      chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
     })
 
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.scripting.sendMessage(tabs[0].id, { type: MESSAGES.NETWORK_CHANGED })
+      chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.NETWORK_CHANGED })
     })
 
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.scripting.sendMessage(tabs[0].id, { type: MESSAGES.CHAIN_CHANGED })
+      chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.CHAIN_CHANGED })
     })
 
     const { activities } = getState()
