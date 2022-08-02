@@ -30,6 +30,7 @@ const CreatePassword = ({ step, setStep }) => {
   const [termServiceMessage, setTermServiceMessage] = useState('')
 
   const [wrongPasswordMessage, setWrongPasswordMessage] = useState('')
+  const [isClickContinue, setIsClickContinue] = useState(false)
 
   const accounts = useSelector((state) => state.accounts)
 
@@ -47,11 +48,16 @@ const CreatePassword = ({ step, setStep }) => {
     if (!isAcceptTermService) {
       setTermServiceMessage('Please accept the Terms of Service')
     } else {
-      if (isValidPassword) setStep(step + 1)
+      if (isValidPassword) {
+        setStep(step + 1)
+      } else {
+        setIsClickContinue(true)
+      }
     }
   }
 
   const handleKeyDown = async (e) => {
+    setIsClickContinue(false)
     if (e.keyCode === 13) {
       onClickContinue()
     }
@@ -79,6 +85,7 @@ const CreatePassword = ({ step, setStep }) => {
         description={
           isEmpty(accounts) &&
           !isEmpty(password) &&
+          isClickContinue &&
           (passwordErrorMessage === VALIDATE_ERROR_MESSAGE.INVALID_CHARACTER ||
             passwordErrorMessage === VALIDATE_ERROR_MESSAGE.NOT_ENOUGH_CHARACTERS)
             ? 'Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%).'
@@ -90,7 +97,7 @@ const CreatePassword = ({ step, setStep }) => {
         uppercase={false}
         passwordFinnie={true}
         autoFocus={true}
-        onKeyDown={e => handleKeyDown(e)}
+        onKeyDown={(e) => handleKeyDown(e)}
       />
       {isEmpty(accounts) && (
         <InputField
@@ -102,7 +109,7 @@ const CreatePassword = ({ step, setStep }) => {
           name="password"
           placeholder=""
           errorFinnie={
-            passwordErrorMessage === VALIDATE_ERROR_MESSAGE.NOT_MATCH && passwordErrorMessage
+            isClickContinue && passwordErrorMessage === VALIDATE_ERROR_MESSAGE.NOT_MATCH && passwordErrorMessage
           }
           uppercase={false}
           passwordFinnie={true}
@@ -134,7 +141,6 @@ const CreatePassword = ({ step, setStep }) => {
         className="mt-3.5 text-base rounded mx-auto z-10"
         variant="white"
         text="Log In"
-        disabled={!isValidPassword && isEmpty(accounts)}
         onClick={() => onClickContinue()}
       />
     </div>
