@@ -644,8 +644,12 @@ export class EthereumMethod {
     const network = ethers.providers.getNetwork(ethNetwork)
     const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
+    const wallet = new ethers.Wallet(this.eth.key, web3)
+    const signer = wallet.connect(web3)
+
     // const tokenContract = new web3.eth.Contract(ERC20ABI, tokenContractAddress)
-    const tokenContract = new ethers.Contract(tokenContractAddress, ERC20ABI, web3)
+    // const tokenContract = new ethers.Contract(tokenContractAddress, ERC20ABI, web3)
+    const tokenContract = new ethers.Contract(tokenContractAddress, ERC20ABI, signer)
 
     // const decimals = await tokenContract.methods.decimals().call()
     const decimals = await tokenContract.decimals()
@@ -655,17 +659,25 @@ export class EthereumMethod {
     const rawTx = {
       from: this.eth.address,
       to: tokenContractAddress,
-      data: tokenContract.methods.transfer(to, value).encodeABI()
+      // data: tokenContract.methods.transfer(to, value).encodeABI()
+      // data: tokenContract.transfer(to, value).encodeABI()
+      data: tokenContract.transfer(to, value)
     }
+
+    console.log('transferToken rawTx', rawTx)
+
     const estimateGas = await web3.estimateGas(rawTx)
     rawTx.gas = estimateGas
+
+    console.log('transferToken estimateGas', estimateGas)
 
     // TODO - DatH Switch to ethers
     // const signedTx = await web3.eth.accounts.signTransaction(rawTx, this.eth.key)
     // const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction)
-    const signer = new ethers.Wallet(this.ethkey, web3)
     const signTx = await signer.signTransaction(rawTx)
     const receipt = await web3.sendTransaction(signTx)
+
+    console.log('transferToken signTx', signer, signTx, receipt)
     return receipt
   }
 

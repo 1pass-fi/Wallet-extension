@@ -93,7 +93,7 @@ export default async (payload, tab, next) => {
 
                 const rawTx = params[0]
 
-                console.log('rawTx', rawTx)
+                console.log('ethSendTransaction rawTx', rawTx)
 
                 const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
 

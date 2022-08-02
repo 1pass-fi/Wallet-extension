@@ -67,7 +67,7 @@ const useGetFee = ({ network, transactionPayload }) => {
     if (maxFeePerGas) rawTx.maxFeePerGas = maxFeePerGas
     if (maxPriorityFeePerGas) rawTx.maxPriorityFeePerGas = maxPriorityFeePerGas
 
-    console.log('rawTx', rawTx)
+    console.log('getEthFee rawTx', rawTx)
 
     // const gasPrice = await web3.eth.getGasPrice()
     const gasPrice = await web3.getGasPrice()
@@ -154,7 +154,7 @@ const useGetFee = ({ network, transactionPayload }) => {
     const k2Provider = (await storage.setting.get.k2Provider()) || 'testnet'
     const connection = new ConnectionK2(clusterApiUrlK2(k2Provider), 'confirmed')
     console.log('getK2Fee k2Provider =========', connection)
-    
+
     let blockhash = (await connection.getRecentBlockhash('finalized')).blockhash
     console.log('getK2Fee k2Provider =========', blockhash)
 
