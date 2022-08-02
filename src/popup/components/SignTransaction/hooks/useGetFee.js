@@ -53,7 +53,7 @@ const useGetFee = ({ network, transactionPayload }) => {
 
     const sourceAddress = get(transactionPayload, 'from')
     const recipientAddress = get(transactionPayload, 'to')
-    const value = fromHexToDecimal(get(transactionPayload, 'value'))
+    const value = fromHexToDecimal(get(transactionPayload, 'value')).toString()
     const transactionData = get(transactionPayload, 'data')
     const estimatedGas = get(transactionPayload, 'gas')
     const maxFeePerGas = get(transactionPayload, 'maxFeePerGas')
