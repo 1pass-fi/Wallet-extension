@@ -16,7 +16,8 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
     try {
       const provider = await storage.setting.get.ethereumProvider()
       const web3 = new Web3(provider)
-      const tokenContract = new web3.eth.Contract(ERC20_ABI, tokenAddress)
+      // const tokenContract = new web3.eth.Contract(ERC20_ABI, tokenAddress)
+      const tokenContract = new ethers.Contract(ERC20_ABI, tokenAddress)
       // await tokenContract.methods.name().call()
       const name = await tokenContract.name()
       return true
@@ -30,7 +31,7 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
       const clusterSlug = await storage.setting.get.solanaProvider()
 
       let chainId
-      switch(clusterSlug) {
+      switch (clusterSlug) {
         case SOL_NETWORK_PROVIDER.MAINNET:
           chainId = 101
           break
@@ -42,11 +43,11 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
           break
       }
 
-      let _hardcodeSolanaTokens = hardcodeSolanaTokens.filter(token => token.chainId === chainId)
+      let _hardcodeSolanaTokens = hardcodeSolanaTokens.filter((token) => token.chainId === chainId)
 
       const tokenlistContainer = await new TokenListProvider().resolve()
       let tokenList = tokenlistContainer.filterByClusterSlug(clusterSlug).getList()
-      tokenList =[...tokenList, ..._hardcodeSolanaTokens]
+      tokenList = [...tokenList, ..._hardcodeSolanaTokens]
 
       const result = tokenList.find(
         ({ address }) => address?.toLowerCase() === tokenAddress?.toLowerCase()

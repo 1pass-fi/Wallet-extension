@@ -3,6 +3,9 @@ import { AccountLayout, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 // import Web3 from 'web3'
 import { ethers } from 'ethers'
 import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js'
+
+import { clarifyEthereumProvider } from 'utils'
+
 import ERC20_ABI from 'abi/ERC20.json'
 import { TYPE } from 'constants/accountConstants'
 import storage from 'services/storage'

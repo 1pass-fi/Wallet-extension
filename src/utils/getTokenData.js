@@ -46,7 +46,8 @@ const getTokenData = async (contractAddress, userAddress) => {
   const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
   // const tokenContract = new web3.eth.Contract(ERC20_ABI, contractAddress)
-  const tokenContract = new web3.eth.Contract(contractAddress, ERC20_ABI, web3)
+  // const tokenContract = new web3.eth.Contract(contractAddress, ERC20_ABI, web3)
+  const tokenContract = new ethers.Contract(contractAddress, ERC20_ABI, web3)
 
   // const name = await tokenContract.methods.name().call()
   // const decimal = await tokenContract.methods.decimals().call()
@@ -120,35 +121,36 @@ export const getSolanaCustomTokensData = async (contractAddress, userAddress) =>
   try {
     const clusterSlug = await storage.setting.get.solanaProvider()
     const connection = new Connection(clusterApiUrl(clusterSlug))
-  
+
     const tokenlistContainer = await new TokenListProvider().resolve()
     const tokenList = tokenlistContainer.filterByClusterSlug(clusterSlug).getList()
-  
+
     let foundToken = find(tokenList, (token) =>
       includes(token.address?.toLowerCase(), contractAddress?.toLowerCase())
     )
-  
+
     if (!foundToken) {
-      foundToken = find(customTokens, (token) =>
-        includes(token.address?.toLowerCase(), contractAddress?.toLowerCase())
-      ) || {}
+      foundToken =
+        find(customTokens, (token) =>
+          includes(token.address?.toLowerCase(), contractAddress?.toLowerCase())
+        ) || {}
     }
-    
+
     const { logoURI: logo, name, decimals: decimal, symbol } = foundToken
-  
+
     const selectedCurrency = (await storage.setting.get.selectedCurrency()) || 'USD'
     const { data } = await axios.request({
       url: `https://api.coingecko.com/api/v3/simple/token_price/solana?contract_addresses=${contractAddress}&vs_currencies=${selectedCurrency}`,
       adapter: axiosAdapter,
       method: 'GET'
     })
-    
+
     const price = get(data, [contractAddress.toLowerCase(), selectedCurrency.toLowerCase()])
-  
+
     const tokenAccounts = await connection.getTokenAccountsByOwner(new PublicKey(userAddress), {
       programId: TOKEN_PROGRAM_ID
     })
-    
+
     let balance = 0
     tokenAccounts.value.forEach((e) => {
       const accountInfo = AccountLayout.decode(e.account.data)

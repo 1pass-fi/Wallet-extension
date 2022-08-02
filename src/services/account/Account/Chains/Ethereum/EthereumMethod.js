@@ -423,7 +423,8 @@ export class EthereumMethod {
     // const koiRouterContract = new web3.eth.Contract(koiRouterABI, koiRouterContractAddress)
     const koiRouterContract = new ethers.Contract(koiRouterContractAddress, koiRouterABI, web3)
 
-    const tokenContract = new web3.eth.Contract(tokenAddress, koiTokenABI, web3)
+    // const tokenContract = new web3.eth.Contract(tokenAddress, koiTokenABI, web3)
+    const tokenContract = new ethers.Contract(tokenAddress, koiTokenABI, web3)
 
     /* 
       Check for approval
@@ -492,12 +493,14 @@ export class EthereumMethod {
               let imageUrl = content.image_url
               if (getBase64) {
                 let u8 = Buffer.from(
-                  (await axios.request({
-                    url: content.image_url,
-                    responseType: 'arraybuffer',
-                    method: 'GET',
-                    adapter: axiosAdapter
-                  })).data,
+                  (
+                    await axios.request({
+                      url: content.image_url,
+                      responseType: 'arraybuffer',
+                      method: 'GET',
+                      adapter: axiosAdapter
+                    })
+                  ).data,
                   'binary'
                 ).toString('base64')
                 imageUrl = `data:image/jpeg;base64,${u8}`
@@ -507,12 +510,14 @@ export class EthereumMethod {
 
                 if (content.animation_url) {
                   u8 = Buffer.from(
-                    (await axios.request({
-                      url: content.animation_url,
-                      responseType: 'arraybuffer',
-                      method: 'GET',
-                      adapter: axiosAdapter
-                    })).data,
+                    (
+                      await axios.request({
+                        url: content.animation_url,
+                        responseType: 'arraybuffer',
+                        method: 'GET',
+                        adapter: axiosAdapter
+                      })
+                    ).data,
                     'binary'
                   ).toString('base64')
                   imageUrl = `data:video/mp4;base64,${u8}`
@@ -645,7 +650,7 @@ export class EthereumMethod {
     // const decimals = await tokenContract.methods.decimals().call()
     const decimals = await tokenContract.decimals()
     const amount = parseFloat(value) * Math.pow(10, decimals)
-    
+
     // TODO DatH - test manifestv3
     const rawTx = {
       from: this.eth.address,

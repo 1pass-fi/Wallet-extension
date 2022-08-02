@@ -30,7 +30,7 @@ const useGetTokenMetaData = ({ contractAddress }) => {
         const symbol = await tokenContract.symbol()
         const name = await tokenContract.name()
 
-        setTokenDecimals(decimals)
+        setTokenDecimals(decimals?.toString())
         setTokenSymbol(symbol)
         setTokenName(name)
       } catch (err) {
