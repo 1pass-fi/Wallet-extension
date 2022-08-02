@@ -9,13 +9,13 @@ import { fromLampToSol, fromWeiToEth, fromWinstonToAr } from 'utils'
 import { TRANSACTION_TYPE } from './constants'
 import { popupAccount } from 'services/account'
 
-const useMethod = ({ 
-  setIsLoading, 
-  requestId, 
-  setError, 
-  setShowSigning, 
-  transactionPayload, 
-  network, 
+const useMethod = ({
+  setIsLoading,
+  requestId,
+  setError,
+  setShowSigning,
+  transactionPayload,
+  network,
   transactionType,
   contractAddress,
   value,
@@ -139,7 +139,6 @@ const useMethod = ({
         setError('Not enough tokens')
         return
       }
-
     } catch (err) {
       console.error('Balance validate error: ', err.message)
     }
@@ -147,7 +146,7 @@ const useMethod = ({
     try {
       const pendingRequest = await storage.generic.get.pendingRequest()
       if (isEmpty(pendingRequest)) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
-  
+
       /* 
         If requestId === undefined, request was sent internally from Finnie
       */
@@ -162,7 +161,7 @@ const useMethod = ({
               } else {
                 window.close()
               }
-            } 
+            }
           })
           storage.generic.set.pendingRequest({})
         })
@@ -209,7 +208,7 @@ const useMethod = ({
       if (requestId) {
         // window.close()
         setError(err.message)
-      } else {        
+      } else {
         setIsLoading(false)
         setError(err.message)
       }
@@ -217,6 +216,7 @@ const useMethod = ({
   }
 
   const onRejectTransaction = async () => {
+    clearInterval(getFeeInterval)
     if (requestId) {
       await storage.generic.set.pendingRequest({})
       window.close()
