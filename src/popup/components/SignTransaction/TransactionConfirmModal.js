@@ -21,7 +21,7 @@ import { TYPE } from 'constants/accountConstants'
 import { setIsLoading } from 'actions/loading'
 import { setError } from 'actions/error'
 
-import BackIcon from 'img/v2/back-icon.svg'
+import BackBtn from 'img/popup/back-button.svg'
 import CloseIcon from 'img/v2/close-icon-white.svg'
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
@@ -189,6 +189,10 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               {/* <div className="w-full mt-5 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center">
                 {origin}
               </div> */}
+              <BackBtn
+                onClick={onRejectTransaction}
+                className="w-7.5 h-7.5 z-20 absolute top-15 left-3.75 cursor-pointer bg-white bg-opacity-70 rounded-full"
+              />
               <div className="mt-5 font-semibold text-base text-indigo leading-5 text-center tracking-finnieSpacing-wide">
                 Confirm Transaction
               </div>
