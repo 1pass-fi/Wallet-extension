@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, connect } from 'react-redux'
-import { get, isEmpty } from 'lodash'
+import { get, isEmpty, isNumber } from 'lodash'
 import Web3 from 'web3'
 import clsx from 'clsx'
 import ReactTooltip from 'react-tooltip'
@@ -26,6 +26,13 @@ import CloseIcon from 'img/v2/close-icon-white.svg'
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import ViewBlockIcon from 'img/v2/view-block.svg'
+import OkBtn from 'img/v2/popup-tx-detail-ok.svg'
+import SunriseLogo from 'img/v2/sunrise-logo/sunrise-logo.svg'
+import CheckMarkIcon from 'img/popup/check-mark-icon.svg'
+import WaitingIcon from 'img/popup/waiting-icon.svg'
+import WarningIcon from 'img/popup/close-icon-red.svg'
+
 import storage from 'services/storage'
 
 import useGetFee from './hooks/useGetFee'
@@ -33,11 +40,9 @@ import useLoadRequest from './hooks/useLoadRequest'
 import useMethod from './hooks/useMethod'
 import useSendValue from './hooks/useSendValue'
 import useExploreBlockUrl from './hooks/useExploreBlockUrl'
+import useSecurityStatus from './hooks/useSecurityStatus'
 
 import { TRANSACTION_TYPE, TAB } from './hooks/constants'
-
-import ViewBlockIcon from 'img/v2/view-block.svg'
-import OkBtn from 'img/v2/popup-tx-detail-ok.svg'
 
 const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigning }) => {
   const [tab, setTab] = useState(TAB.DETAIL)
@@ -57,6 +62,8 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     recipientName
   } = useLoadRequest({ setIsLoading })
 
+  const trustStat = useSecurityStatus({ setIsLoading, url: origin })
+
   const { exploreBlockUrl } = useExploreBlockUrl({ transactionPayload })
 
   const { Fee, tokenSymbol, totalFee, getFeeInterval } = useGetFee({ network, transactionPayload })
@@ -66,7 +73,8 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
   }, [transactionPayload])
 
   const contractId = useMemo(() => {
-    if (transactionType !== TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) return get(transactionPayload, 'to')
+    if (transactionType !== TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER)
+      return get(transactionPayload, 'to')
     return null
   }, [transactionType])
 
@@ -185,7 +193,8 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
 
           {/* TRANSACTION DETAIL */}
           {tab === TAB.DETAIL && (
-            <div className="flex flex-col items-center w-full h-full px-9 mt-2 mb-22 overflow-y-scroll">
+            // <div className="flex flex-col items-center w-full h-full px-9 mt-2 mb-22 overflow-y-scroll overflow-x-hidden">
+            <div className="flex flex-col items-center w-full h-full mt-2 mb-22 overflow-y-auto overflow-x-hidden">
               {/* <div className="w-full mt-5 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center">
                 {origin}
               </div> */}
@@ -210,11 +219,68 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && 'Transfer Token'}
               </div>
 
-              <div className="mt-5 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
-                {origin && <div className="flex mb-2">
-                  <div style={{ width: '176px' }}>Origin</div>
-                  <div className="flex font-normal text-xs items-center">{origin}</div>
-                </div>}
+              {/* NFT SECURITY */}
+              {isNumber(trustStat) &&
+                (trustStat === 2 ? (
+                  <div
+                    className="w-full mt-3 flex items-center justify-center text-indigo bg-success bg-opacity-50 text-xs font-normal"
+                    // style={{ width: '426px', height: '36px' }}
+                    style={{ height: '36px' }}
+                  >
+                    <CheckMarkIcon style={{ width: '24px', height: '24px' }} />
+                    <div className="mx-2" style={{ width: '300px ' }}>
+                      Website verified by Sunrise NFT Scam Detector
+                    </div>
+                    <SunriseLogo style={{ width: '21px', height: '21px' }} />
+                  </div>
+                ) : 0 <= trustStat && trustStat < 2 ? (
+                  <div
+                    className="w-full mt-3 flex items-center justify-center text-indigo bg-warning-200 bg-opacity-50 text-xs font-normal"
+                    // style={{ width: '426px', height: '45px' }}
+                    style={{ height: '45px' }}
+                  >
+                    <WaitingIcon style={{ width: '24px', height: '24px' }} />
+                    <div className="mx-2" style={{ width: '300px ' }}>
+                      This website hasn’t been verified by Sunrise NFT Scam Detector. Make sure
+                      you’re on the right site.
+                    </div>
+                    <SunriseLogo style={{ width: '21px', height: '21px' }} />
+                  </div>
+                ) : (
+                  trustStat < 0 && (
+                    <div
+                      className="w-full mt-3 flex items-center justify-center text-indigo bg-warning-300 bg-opacity-50 text-xs font-normal"
+                      // style={{ width: '426px', height: '106px' }}
+                      style={{ height: '106px' }}
+                    >
+                      <WarningIcon style={{ width: '24px', height: '24px' }} />
+                      <div
+                        className="mx-2 flex flex-col items-center justify-center"
+                        style={{ width: '300px ' }}
+                      >
+                        According to Sunrise NFT Scam Detector, this site might be impersonating a
+                        popular NFT site. Double check that you are minting from the correct site to
+                        keep your assets secure.
+                        <div
+                          className="leading-6 bg-blue-800 rounded-sm mt-0.5 flex items-center justify-center text-white cursor-pointer"
+                          style={{ width: '100px', height: '20px' }}
+                          onClick={onRejectTransaction}
+                        >
+                          I Understand
+                        </div>
+                      </div>
+                      <SunriseLogo style={{ width: '21px', height: '21px' }} />
+                    </div>
+                  )
+                ))}
+
+              <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
+                {origin && (
+                  <div className="flex mb-2">
+                    <div style={{ width: '176px' }}>Origin</div>
+                    <div className="flex font-normal text-xs items-center">{origin}</div>
+                  </div>
+                )}
                 {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
                   transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
                   <div className="flex mb-2">
@@ -236,8 +302,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 </div>
 
                 {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER &&
-                  network !== 'ARWEAVE' &&
-                (
+                network !== 'ARWEAVE' && (
                   <div className="flex mb-2">
                     <div style={{ width: '176px' }}>Token Balance</div>
                     <div className="flex font-normal text-xs items-center text-success-700">
@@ -254,13 +319,9 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 </div>
               </div>
 
-              <div className="mt-5 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
+              <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
                 <div style={{ width: '176px' }}>From</div>
-                {senderName && (
-                  <div className="mt-2 font-semibold text-xs">
-                    {senderName}
-                  </div>
-                )}
+                {senderName && <div className="mt-2 font-semibold text-xs">{senderName}</div>}
                 <div className="mt-2 font-normal text-xs text-success-700">
                   {get(transactionPayload, 'from')}
                 </div>
@@ -268,7 +329,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
 
               {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
                 transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
-                <div className="mt-5 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
+                <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
                   <div style={{ width: '176px' }}>To</div>
                   {recipientName && (
                     <div className="mt-2 font-semibold text-xs">{recipientName}</div>
@@ -311,7 +372,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
           </div>
           <div className="px-9 mt-8 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
             {transactionType !== TRANSACTION_TYPE.CONTRACT_DEPLOYMENT &&
-              transactionType !== TRANSACTION_TYPE.CONTRACT_INTERACTION && (
+            transactionType !== TRANSACTION_TYPE.CONTRACT_INTERACTION && (
               <div className="flex mb-4">
                 <div style={{ width: '142px' }}>Amount</div>
                 <div className="flex font-normal text-sm items-center">
