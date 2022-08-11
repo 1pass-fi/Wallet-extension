@@ -4,6 +4,7 @@ const finnieEthereumProviderScript = `() => {
       super()
       this.connection = connection
       this.isFinnie = true
+      this.isMetamask = true
     }
 
     request(payload) {

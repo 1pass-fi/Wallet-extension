@@ -16,7 +16,7 @@ import cache from './cache'
 import storage from 'services/storage'
 
 function cb(port) {
-  if ((port.name).includes(PORTS.POPUP)) {
+  if (port.name.includes(PORTS.POPUP)) {
     cache.addPopupPort(port)
 
     port.onDisconnect.addListener((disconnect) => {
@@ -31,8 +31,9 @@ function cb(port) {
     })
   }
 
-  if ((port.name).includes(PORTS.CONTENT_SCRIPT)) {
-    port.onMessage.addListener(message => {
+  if (port.name.includes(PORTS.CONTENT_SCRIPT)) {
+    port.onMessage.addListener((message) => {
+      console.log('message from contentscript =====', message)
       const payload = { data: message.data, port, id: message.id }
       contentScriptEvents.sendMessage(message.type, payload)
     })
@@ -51,7 +52,13 @@ chrome.runtime.onInstalled.addListener(async function () {
   const ethereumAccount = (await getChromeStorage(IMPORTED.ETHEREUM))[IMPORTED.ETHEREUM] || []
   const solanaAccount = (await getChromeStorage(IMPORTED.SOLANA))[IMPORTED.SOLANA] || []
   const k2Account = (await getChromeStorage(IMPORTED.K2))[IMPORTED.K2] || []
-  if (!arweaveAccount.length && !ethereumAccount.length && !solanaAccount.length && !k2Account.length) chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
+  if (
+    !arweaveAccount.length &&
+    !ethereumAccount.length &&
+    !solanaAccount.length &&
+    !k2Account.length
+  )
+    chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
 })
 
 streamer()
