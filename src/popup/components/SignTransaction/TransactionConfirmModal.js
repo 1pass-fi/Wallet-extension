@@ -302,7 +302,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 </div>
 
                 {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER &&
-                network !== 'ARWEAVE' && (
+                  network !== 'ARWEAVE' && (
                   <div className="flex mb-2">
                     <div style={{ width: '176px' }}>Token Balance</div>
                     <div className="flex font-normal text-xs items-center text-success-700">
@@ -349,15 +349,23 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
           >
             <button
               onClick={onRejectTransaction}
-              className="bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800"
+              className={clsx(
+                'bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800',
+                isNumber(trustStat) && trustStat && 'cursor-not-allowed opacity-50'
+              )}
               style={{ width: '160px', height: '38px' }}
+              disabled={isNumber(trustStat) && trustStat < 0}
             >
               Reject
             </button>
             <button
               onClick={onSubmitTransaction}
-              className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
+              className={clsx(
+                'bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white',
+                isNumber(trustStat) && trustStat && 'cursor-not-allowed opacity-50'
+              )}
               style={{ width: '160px', height: '38px' }}
+              disabled={isNumber(trustStat) && trustStat < 0}
             >
               Sign
             </button>
@@ -372,7 +380,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
           </div>
           <div className="px-9 mt-8 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
             {transactionType !== TRANSACTION_TYPE.CONTRACT_DEPLOYMENT &&
-            transactionType !== TRANSACTION_TYPE.CONTRACT_INTERACTION && (
+              transactionType !== TRANSACTION_TYPE.CONTRACT_INTERACTION && (
               <div className="flex mb-4">
                 <div style={{ width: '142px' }}>Amount</div>
                 <div className="flex font-normal text-sm items-center">
