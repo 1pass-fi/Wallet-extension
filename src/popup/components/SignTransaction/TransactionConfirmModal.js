@@ -32,8 +32,11 @@ import SunriseLogo from 'img/v2/sunrise-logo/sunrise-logo.svg'
 import CheckMarkIcon from 'img/popup/check-mark-icon.svg'
 import WaitingIcon from 'img/popup/waiting-icon.svg'
 import WarningIcon from 'img/popup/close-icon-red.svg'
+import WarningRedIcon from 'img/popup/warning-icon-red.svg'
 
 import storage from 'services/storage'
+
+import ConnectScreen from 'components/Connect/ConnectScreen'
 
 import useGetFee from './hooks/useGetFee'
 import useLoadRequest from './hooks/useLoadRequest'
@@ -48,6 +51,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
   const [tab, setTab] = useState(TAB.DETAIL)
   const [showReceipt, setShowReceipt] = useState(false)
   const [txId, setTxId] = useState('')
+  const [showConnectedSites, setShowConnectedSites] = useState(false)
 
   const price = useSelector((state) => state.price)
   const {
@@ -264,7 +268,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                         <div
                           className="leading-6 bg-blue-800 rounded-sm mt-0.5 flex items-center justify-center text-white cursor-pointer"
                           style={{ width: '100px', height: '20px' }}
-                          onClick={onRejectTransaction}
+                          onClick={() => setShowConnectedSites(true)}
                         >
                           I Understand
                         </div>
@@ -276,9 +280,22 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
 
               <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
                 {origin && (
-                  <div className="flex mb-2">
+                  <div
+                    className={clsx(
+                      'flex mb-2',
+                      isNumber(trustStat) && trustStat < 0 && 'text-red-finnie'
+                    )}
+                  >
                     <div style={{ width: '176px' }}>Origin</div>
-                    <div className="flex font-normal text-xs items-center">{origin}</div>
+                    <div
+                      className={clsx(
+                        'flex font-normal text-xs items-center truncate',
+                        isNumber(trustStat) && trustStat < 0 && 'text-red-finnie'
+                      )}
+                    >
+                      {origin}
+                    </div>
+                    {isNumber(trustStat) && trustStat < 0 && <WarningRedIcon className="w-6 h-6" />}
                   </div>
                 )}
                 {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
@@ -371,6 +388,13 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
             </button>
           </div>
           <ReactTooltip place="top" effect="float" />
+          {showConnectedSites && (
+            <ConnectScreen
+              startedStep={2}
+              popupConnectedModal={true}
+              close={() => setShowConnectedSites(false)}
+            />
+          )}
         </div>
       ) : (
         /* RECEIPT */

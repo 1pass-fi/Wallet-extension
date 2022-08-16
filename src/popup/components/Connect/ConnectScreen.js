@@ -30,14 +30,21 @@ import storage from 'services/storage'
 import { popupAccount } from 'services/account'
 
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import clsx from 'clsx'
 
-const ConnectScreen = ({ setError, setIsLoading }) => {
+const ConnectScreen = ({
+  setError,
+  setIsLoading,
+  startedStep = 1,
+  popupConnectedModal = false,
+  close = () => {}
+}) => {
   const defaultAccount = useSelector((state) => state.defaultAccount)
   const [checkedAddress, setCheckedAddress] = useState('')
 
   const [origin, setOrigin] = useState('')
   const [favicon, setFavicon] = useState('')
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(startedStep)
   const [accounts, setAccounts] = useState([])
   const [isKoi, setIsKoi] = useState(true)
   const [requestId, setRequestId] = useState('')
@@ -126,7 +133,12 @@ const ConnectScreen = ({ setError, setIsLoading }) => {
         chrome.runtime.sendMessage(payload)
         await storage.generic.remove.pendingRequest()
         chrome.runtime.sendMessage({ requestId, approved: false })
-        window.close()
+
+        if (popupConnectedModal) {
+          close()
+        } else {
+          window.close()
+        }
       }
     } catch (err) {
       setError(err.message)
@@ -135,7 +147,13 @@ const ConnectScreen = ({ setError, setIsLoading }) => {
 
   return (
     <div className="w-full h-full z-51 m-auto top-0 left-0 fixed flex flex-col items-center">
-      <div className="w-full h-full relative bg-white shadow-md rounded m-auto flex flex-col items-center">
+      <div
+        className={clsx('relative bg-white shadow-md rounded m-auto flex flex-col items-center')}
+        style={{
+          width: popupConnectedModal ? '381px' : '100%',
+          height: popupConnectedModal ? '453px' : '100%'
+        }}
+      >
         {step === 1 && (
           <>
             <div className="text-indigo pt-10 tracking-finnieSpacing-wide px-6.5 mt-7">
@@ -198,7 +216,9 @@ const ConnectScreen = ({ setError, setIsLoading }) => {
               <BackIcon
                 style={{ width: '30px', height: '30px' }}
                 className="absolute top-4 left-4 cursor-pointer"
-                onClick={() => setStep(1)}
+                onClick={() => {
+                  startedStep !== 1 ? handleOnClick(false) : setStep(1)
+                }}
               />
               <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
                 Connect to site
