@@ -37,6 +37,7 @@ const ConnectScreen = ({
   setIsLoading,
   startedStep = 1,
   popupConnectedModal = false,
+  setAcceptSite = () => {},
   close = () => {}
 }) => {
   const defaultAccount = useSelector((state) => state.defaultAccount)
@@ -99,6 +100,16 @@ const ConnectScreen = ({
 
   const handleOnClick = async (accept) => {
     try {
+      if (popupConnectedModal) {
+        if (accept) {
+          setAcceptSite(true)
+          setStep(3)
+        } else {
+          close()
+        }
+        return
+      }
+
       if (accept) {
         setIsLoading(true)
         if (!(await storage.generic.get.pendingRequest()))
@@ -277,7 +288,13 @@ const ConnectScreen = ({
               </div>
             </div>
             <button
-              onClick={() => window.close()}
+              onClick={() => {
+                if (popupConnectedModal) {
+                  close()
+                } else {
+                  window.close()
+                }
+              }}
               className="absolute bottom-7.25 px-4.5 bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
               style={{ width: '160px', height: '38px' }}
             >

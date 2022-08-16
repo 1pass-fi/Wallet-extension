@@ -52,6 +52,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
   const [showReceipt, setShowReceipt] = useState(false)
   const [txId, setTxId] = useState('')
   const [showConnectedSites, setShowConnectedSites] = useState(false)
+  const [acceptSite, setAcceptSite] = useState(false)
 
   const price = useSelector((state) => state.price)
   const {
@@ -123,6 +124,10 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     if (customTokenRecipient) return customTokenRecipient
     return get(transactionPayload, 'to')
   }, [customTokenRecipient, transactionPayload])
+
+  const isScamOrigin = useMemo(() => {
+    return isNumber(trustStat) && trustStat < 0 && !acceptSite
+  }, [trustStat, acceptSite])
 
   useEffect(() => {
     return () => {
@@ -283,19 +288,19 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                   <div
                     className={clsx(
                       'flex mb-2',
-                      isNumber(trustStat) && trustStat < 0 && 'text-red-finnie'
+                      isScamOrigin && 'text-red-finnie'
                     )}
                   >
                     <div style={{ width: '176px' }}>Origin</div>
                     <div
                       className={clsx(
                         'flex font-normal text-xs items-center truncate',
-                        isNumber(trustStat) && trustStat < 0 && 'text-red-finnie'
+                        isScamOrigin && 'text-red-finnie'
                       )}
                     >
                       {origin}
                     </div>
-                    {isNumber(trustStat) && trustStat < 0 && <WarningRedIcon className="w-6 h-6" />}
+                    {isScamOrigin && <WarningRedIcon className="w-6 h-6" />}
                   </div>
                 )}
                 {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
@@ -368,10 +373,10 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               onClick={onRejectTransaction}
               className={clsx(
                 'bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800',
-                isNumber(trustStat) && trustStat && 'cursor-not-allowed opacity-50'
+                isScamOrigin && 'cursor-not-allowed opacity-50'
               )}
               style={{ width: '160px', height: '38px' }}
-              disabled={isNumber(trustStat) && trustStat < 0}
+              disabled={isScamOrigin}
             >
               Reject
             </button>
@@ -379,10 +384,10 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               onClick={onSubmitTransaction}
               className={clsx(
                 'bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white',
-                isNumber(trustStat) && trustStat && 'cursor-not-allowed opacity-50'
+                isScamOrigin && 'cursor-not-allowed opacity-50'
               )}
               style={{ width: '160px', height: '38px' }}
-              disabled={isNumber(trustStat) && trustStat < 0}
+              disabled={isScamOrigin}
             >
               Sign
             </button>
@@ -393,6 +398,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               startedStep={2}
               popupConnectedModal={true}
               close={() => setShowConnectedSites(false)}
+              setAcceptSite={setAcceptSite}
             />
           )}
         </div>
