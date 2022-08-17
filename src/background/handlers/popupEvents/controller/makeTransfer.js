@@ -50,7 +50,10 @@ export default async (payload, next) => {
       transactionType,
       isK2Account: token === 'KOII'
     }
-    await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
+    
+    if (token !== 'KOII') {
+      await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
+    }
 
     helpers.loadBalances()
     helpers.loadActivities()
