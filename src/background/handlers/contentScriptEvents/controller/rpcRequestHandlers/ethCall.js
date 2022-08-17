@@ -12,7 +12,6 @@ export default async (payload, tab, next) => {
 
     const response = await rpcProvider.send('eth_call', params)
 
-    console.log('eth_call message: ', response)
     next({ data: response })
   } catch (error) {
     next({ error: err.message })
