@@ -1,9 +1,10 @@
 // modules
 import '@babel/polyfill'
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect } from 'react'
+import { connect, useDispatch } from 'react-redux'
 import { Route, Switch, useHistory, withRouter } from 'react-router-dom'
 import isEmpty from 'lodash/isEmpty'
+import { dispatch } from 'redux'
 
 // components
 // import Header from 'components/header'
@@ -42,6 +43,8 @@ import { setSettings } from 'actions/settings'
 import { setActivities } from 'actions/activities'
 import { setAssetsTabSettings } from 'actions/assetsSettings'
 
+import { popupBackgroundConnect } from 'services/request/popup'
+
 // hooks
 import usePrice from './provider/hooks/usePrice'
 import useSettings from './provider/hooks/useSettings'
@@ -57,6 +60,12 @@ import './Popup.css'
 import NavBar from './components/NavBar'
 
 import SignModal from 'components/SignTransaction'
+import { EventHandler } from 'services/request/src/backgroundConnect'
+import { MESSAGES } from 'constants/koiConstants'
+
+import { popupAccount } from 'services/account'
+
+import storage from 'services/storage'
 
 const ContinueLoading = () => (
   <div className="continue-loading">
@@ -91,6 +100,7 @@ const Popup = ({
   setAssetsTabSettings
 }) => {
   const history = useHistory()
+  const dispatch = useDispatch()
 
   usePrice({
     setCurrency,
@@ -126,6 +136,76 @@ const Popup = ({
   const { handleLockWallet } = useMethod({ accounts, setIsLoading, lockWallet })
 
   useTimeInterval({ error, notification, warning, setError })
+
+  const loadDefaultAccounts = async () => {
+    const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
+    if (!isEmpty(activatedEthereumAccountAddress)) {
+      const activatedEthereumAccount = await popupAccount.getAccount({
+        address: activatedEthereumAccountAddress
+      })
+
+      if (!isEmpty(activatedEthereumAccount)) {
+        const activatedEthereumAccountMetadata = await activatedEthereumAccount.get.metadata()
+        setDefaultAccount(activatedEthereumAccountMetadata)
+      }
+    }
+
+    const activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
+    if (!isEmpty(activatedAccountAddress)) {
+      const activatedAccount = await popupAccount.getAccount({
+        address: activatedAccountAddress
+      })
+
+      if (!isEmpty(activatedAccount)) {
+        const activatedAccountMetadata = await activatedAccount.get.metadata()
+        setDefaultAccount(activatedAccountMetadata)
+      }
+    }
+
+    const activatedK2Address = await storage.setting.get.activatedK2AccountAddress()
+    if (!isEmpty(activatedK2Address)) {
+      const activatedAccount = await popupAccount.getAccount({
+        address: activatedK2Address
+      })
+
+      if (!isEmpty(activatedAccount)) {
+        const activatedAccountMetadata = await activatedAccount.get.metadata()
+        setDefaultAccount(activatedAccountMetadata)
+      }
+    }
+
+    const activatedSolanaAddress = await storage.setting.get.activatedSolanaAccountAddress()
+    if (!isEmpty(activatedSolanaAddress)) {
+      const activatedAccount = await popupAccount.getAccount({
+        address: activatedSolanaAddress
+      })
+
+      if (!isEmpty(activatedAccount)) {
+        const activatedAccountMetadata = await activatedAccount.get.metadata()
+        setDefaultAccount(activatedAccountMetadata)
+      }
+    }
+
+    setDefaultLoadAccountDone(true)
+  }
+
+
+  useEffect(() => {
+    const addHandler = () => {
+      const loadBalancesSuccess = new EventHandler(MESSAGES.GET_BALANCES_SUCCESS, async () => {
+        try {
+          const accountStates = await popupAccount.getAllMetadata()
+          setAccounts(accountStates)
+          loadDefaultAccounts()
+        } catch (err) {
+          console.error('Reload balance error: ', err)
+        }
+      })
+      popupBackgroundConnect.addHandler(loadBalancesSuccess)
+    }
+
+    addHandler()
+  }, [])
 
   console.log('isLoading', isLoading)
 
