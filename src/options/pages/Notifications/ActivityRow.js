@@ -3,7 +3,8 @@ import React, { useMemo } from 'react'
 import includes from 'lodash/includes'
 
 import ViewBlockIcon from 'img/v2/view-block.svg'
-import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-bg-white.svg'
+
+import KoiiLogo from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import SolanaLogo from 'img/v2/solana-logo.svg'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
