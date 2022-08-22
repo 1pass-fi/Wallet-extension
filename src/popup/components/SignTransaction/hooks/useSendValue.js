@@ -14,6 +14,7 @@ import decodeTags from 'utils/decodeTags'
 import { popupAccount } from 'services/account'
 
 import { getSolanaCustomTokensData } from 'utils/getTokenData'
+import { ethers } from 'ethers'
 
 const fromHexToDecimal = (hexString) => {
   let number = null
@@ -98,7 +99,9 @@ const useSendValue = ({ transactionPayload, network, transactionType, userAddres
             setTokenIconPath('img/v2/k2-logos/finnie-k2-logo.svg')
             break
         }
-        const account = await popupAccount.getAccount({ address: userAddress })
+        const account = await popupAccount.getAccount({
+          address: ethers.utils.getAddress(userAddress)
+        })
         const balance = await account.get.balance()
   
         setOriginBalance(balance)
