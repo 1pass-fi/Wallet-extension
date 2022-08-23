@@ -29,7 +29,8 @@ const NavBar = () => {
 
   const dropdownRef = createRef()
   const notificationRef = createRef()
-  const navbarRef = createRef()
+  const notificationToggleRef = createRef()
+  const dropdownToggleRef = createRef()
 
   const dispatch = useDispatch()
   const notificationsData = useSelector((state) => state.notificationsData)
@@ -46,7 +47,7 @@ const NavBar = () => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target) &&
-        !navbarRef.current.contains(event.target)
+        !dropdownToggleRef.current.contains(event.target)
       ) {
         closeDropdownMenu()
       }
@@ -63,7 +64,7 @@ const NavBar = () => {
       if (
         notificationRef.current &&
         !notificationRef.current.contains(event.target) &&
-        !navbarRef.current.contains(event.target)
+        !notificationToggleRef.current.contains(event.target)
       ) {
         // clear notifications
         let allNotifications = await storage.generic.get.pushNotification()
@@ -104,9 +105,13 @@ const NavBar = () => {
         </nav> */}
       </div>
 
-      <div className="flex items-center" ref={navbarRef}>
+      <div className="flex items-center">
         {isLoading !== 0 && <Loading />}
-        <div className="relative ml-6.5" style={{ width: '48px', height: '48px' }}>
+        <div
+          className="relative ml-6.5"
+          style={{ width: '48px', height: '48px' }}
+          ref={notificationToggleRef}
+        >
           <NotificationIcon className="cursor-pointer" onClick={toggleNotificationsCenter} />
           {notificationsData.new > 0 && (
             <div
@@ -139,6 +144,7 @@ const NavBar = () => {
               <div
                 style={{ width: '38px', height: '38px' }}
                 className="flex items-center justify-center object-cover rounded-full w-full h-full bg-white"
+                ref={dropdownToggleRef}
               >
                 <DefaultAvatar style={{ width: '36px', height: '36px' }} />
               </div>
