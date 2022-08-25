@@ -7,7 +7,7 @@ import CloseIcon from 'img/circle-close-icon.svg'
 import './index.css'
 
 const propTypes = {
-  onClose: PropTypes.func,
+  onClose: PropTypes.func
 }
 
 const Modal = ({ onClose, children, className = '', isWelcomeScreen = false }) => {
@@ -20,21 +20,36 @@ const Modal = ({ onClose, children, className = '', isWelcomeScreen = false }) =
       }
     }
 
+    const handleHittingEsc = (event) => {
+      if (event.defaultPrevented) {
+        return // Should do nothing if the default action has been cancelled
+      }
+
+      if (event.key === 'Escape') {
+        onClose()
+      }
+    }
+
     document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleHittingEsc)
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleHittingEsc)
     }
   }, [ref])
 
   return (
-    <div className='modal-container'>
-      <div className={`${isWelcomeScreen ? 'welcome-screen-modal' : 'modal'} ${className}`} ref={ref}>
-        <div data-tip='Close' data-for='close-btn' className='modal-close-icon'>
+    <div className="modal-container">
+      <div
+        className={`${isWelcomeScreen ? 'welcome-screen-modal' : 'modal'} ${className}`}
+        ref={ref}
+      >
+        <div data-tip="Close" data-for="close-btn" className="modal-close-icon">
           <CloseIcon onClick={onClose} />
         </div>
         {children}
       </div>
-      <ReactTooltip place='top' id='close-btn' type="dark" effect="float"/>
+      <ReactTooltip place="top" id="close-btn" type="dark" effect="float" />
     </div>
   )
 }
