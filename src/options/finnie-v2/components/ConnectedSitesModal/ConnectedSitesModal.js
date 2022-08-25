@@ -54,9 +54,22 @@ const ConnectedSitesModal = ({ account, close }) => {
       }
     }
 
+    const handlePressingEsc = (event) => {
+      if (event.defaultPrevented) {
+        return // Should do nothing if the default action has been cancelled
+      }
+
+      if (event.key === 'Escape') {
+        close()
+      }
+    }
+
     document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handlePressingEsc)
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handlePressingEsc)
     }
   }, [modalRef])
 

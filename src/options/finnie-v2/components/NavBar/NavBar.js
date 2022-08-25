@@ -52,10 +52,23 @@ const NavBar = () => {
         closeDropdownMenu()
       }
     }
+
+    const handlePressingEsc = (event) => {
+      if (event.defaultPrevented) {
+        return // Should do nothing if the default action has been cancelled
+      }
+
+      if (event.key === 'Escape') {
+        closeDropdownMenu()
+      }
+    }
+
     document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handlePressingEsc)
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handlePressingEsc)
     }
   }, [dropdownRef])
 
@@ -78,10 +91,32 @@ const NavBar = () => {
         closeNotificationsCenter()
       }
     }
+
+    const handlePressingEsc = async (event) => {
+      if (event.defaultPrevented) {
+        return // Should do nothing if the default action has been cancelled
+      }
+
+      if (event.key === 'Escape') {
+        // clear notifications
+        let allNotifications = await storage.generic.get.pushNotification()
+        allNotifications = allNotifications.map((n) => {
+          n.new = false
+          return n
+        })
+        dispatch(setNotifications(allNotifications))
+        await storage.generic.set.pushNotification(allNotifications)
+
+        closeNotificationsCenter()
+      }
+    }
+
     document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handlePressingEsc)
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handlePressingEsc)
     }
   }, [notificationRef])
 

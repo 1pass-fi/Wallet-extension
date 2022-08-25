@@ -16,9 +16,22 @@ const DeleteContactModal = React.forwardRef(({ contact, onClose, removeContact }
       }
     }
 
+    const handlePressingEsc = (event) => {
+      if (event.defaultPrevented) {
+        return // Should do nothing if the default action has been cancelled
+      }
+
+      if (event.key === 'Escape') {
+        onClose()
+      }
+    }
+
+    document.addEventListener('keydown', handlePressingEsc)
     document.addEventListener('mousedown', handleClickOutside)
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handlePressingEsc)
     }
   }, [innerRef])
 

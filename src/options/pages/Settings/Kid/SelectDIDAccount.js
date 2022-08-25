@@ -54,18 +54,31 @@ const SelectDIDAccount = ({ close }) => {
     }
   }
 
-  //   useEffect(() => {
-  //     const handleClickOutside = (event) => {
-  //       if (modalRef.current && !modalRef.current.contains(event.target)) {
-  //         close()
-  //       }
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (modalRef.current && !modalRef.current.contains(event.target)) {
+  //       close()
+  //     }
+  //   }
+
+  //   const handlePressingEsc = (event) => {
+  //     if (event.defaultPrevented) {
+  //       return // Should do nothing if the default action has been cancelled
   //     }
 
-  //     document.addEventListener('mousedown', handleClickOutside)
-  //     return () => {
-  //       document.removeEventListener('mousedown', handleClickOutside)
+  //     if (event.key === 'Escape') {
+  //       close()
   //     }
-  //   }, [modalRef])
+  //   }
+
+  //   document.addEventListener('mousedown', handleClickOutside)
+  //   document.addEventListener('keydown', handlePressingEsc)
+
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleClickOutside)
+  //     document.removeEventListener('keydown', handlePressingEsc)
+  //   }
+  // }, [modalRef])
 
   return (
     <div className="w-full h-full flex items-center justify-center min-w-screen min-h-screen bg-black bg-opacity-25 fixed z-51 top-0 left-0">

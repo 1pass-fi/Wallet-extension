@@ -28,10 +28,24 @@ const Select = ({ options, value, onChange, emptyOption = false }) => {
         setHoverOption(false)
       }
     }
+
+    const handlePressingEsc = (event) => {
+      if (event.defaultPrevented) {
+        return // Should do nothing if the default action has been cancelled
+      }
+
+      if (event.key === 'Escape') {
+        setListOpened(false)
+        setHoverOption(false)
+      }
+    }
+
     document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handlePressingEsc)
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handlePressingEsc)
     }
   }, [dropDownRef])
 
