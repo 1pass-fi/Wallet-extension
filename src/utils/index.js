@@ -19,6 +19,7 @@ import axios from 'axios'
 import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 
 import { Web } from '@_koi/sdk/web'
+import { ethers } from 'ethers'
 
 import passworder from 'browser-passworder'
 import {
@@ -46,6 +47,11 @@ import { TRANSACTION_METHOD } from 'popup/components/SignTransaction/hooks/const
 import storage from 'services/storage'
 // import Web3 from 'web3'
 import { ethers } from 'ethers'
+import { PublicKey } from '@solana/web3.js'
+import { TYPE } from 'constants/accountConstants'
+import { TRANSACTION_METHOD } from 'popup/components/SignTransaction/hooks/constants'
+
+import MetamaskABI from 'abi/MetamaskABI.json'
 
 /* istanbul ignore next */
 const arweave = Arweave.init({ host: 'arweave.net', protocol: 'https', port: 443 })
