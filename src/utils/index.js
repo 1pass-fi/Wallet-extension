@@ -18,6 +18,7 @@ import Arweave from 'arweave'
 import axios from 'axios'
 
 import { Web } from '@_koi/sdk/web'
+import { ethers } from 'ethers'
 import { koiTools } from 'services/arweave'
 export const koi = new Web()
 
@@ -25,6 +26,9 @@ import storage from 'services/storage'
 import Web3 from 'web3'
 import { PublicKey } from '@solana/web3.js'
 import { TYPE } from 'constants/accountConstants'
+import { TRANSACTION_METHOD } from 'popup/components/SignTransaction/hooks/constants'
+
+import MetamaskABI from 'abi/MetamaskABI.json'
 
 /* istanbul ignore next */
 const arweave = Arweave.init({ host: 'arweave.net', protocol: 'https', port: 443 })
@@ -910,5 +914,26 @@ export const clarifyEthereumProvider = (ethProvider) => {
   } catch (err) {
     console.error('Failed to clarify Ethereum Provider - error: ', err.message)
     return { ethNetwork: 'rinkeby', apiKey: 'f811f2257c4a4cceba5ab9044a1f03d2' }
+  }
+}
+
+export const decodeTxMethod = async (sender = null, receipt = null, data) => {
+  try {
+    const iface = new ethers.utils.Interface(MetamaskABI)
+    const decodedData = iface.parseTransaction({ data: data })
+
+    switch (get(decodedData, 'name')) {
+      case 'setApprovalForAll':
+        return TRANSACTION_METHOD.SET_APPROVAL_FOR_ALL
+      case 'mintCollectibles':
+        return TRANSACTION_METHOD.MINT_COLLECTIBLES
+      case 'approve':
+        return TRANSACTION_METHOD.APPROVE
+      default:
+        return TRANSACTION_METHOD.TOKEN_TRANSFER
+    }
+  } catch (error) {
+    console.error('decodeTxMethod - Error:', error.message)
+    return TRANSACTION_METHOD.TOKEN_TRANSFER
   }
 }
