@@ -33,9 +33,11 @@ export default async (payload, tab, next) => {
     const key = credential.key
 
     /* Show popup for signing transaction */
-    const screenWidth = screen.availWidth
-    const screenHeight = screen.availHeight
-    const os = window.localStorage.getItem(OS)
+    const screen = (await chrome.system.display.getInfo())[0].bounds
+    const screenWidth = screen.width
+    const screenHeight = screen.height
+    const os = (await chrome.runtime.getPlatformInfo()).os
+
     let windowData = {
       url: chrome.runtime.getURL('/popup.html'),
       focused: true,
@@ -103,7 +105,7 @@ export default async (payload, tab, next) => {
                 // const estimateGas = await web3.eth.estimateGas(rawTx)
                 const estimateGas = await web3.estimateGas(rawTx)
                 rawTx.gas = estimateGas
-                
+
                 // TODO - DatH Switch to ethers
                 // const signTx = await web3.eth.accounts.signTransaction(rawTx, key)
                 // const receipt = await web3.eth.sendSignedTransaction(signTx.rawTransaction)

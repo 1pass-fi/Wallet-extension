@@ -28,8 +28,9 @@ export default async (payload, tab, next) => {
     const address = transaction.target
     const fee = (await arweave.transactions.getPrice(transaction.data_size)) / 1000000000000
 
-    const screenWidth = screen.availWidth
-    const screenHeight = screen.availHeight
+    const screen = (await chrome.system.display.getInfo())[0].bounds
+    const screenWidth = screen.width
+    const screenHeight = screen.height
 
     const isWin = (await getPlatformInfo()) === 'win'
     const width = isWin ? WINDOW_SIZE.WIN_WIDTH : WINDOW_SIZE.MAC_WIDTH

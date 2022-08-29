@@ -38,9 +38,11 @@ export default async (payload, tab, next) => {
       isSolana: true
     }
 
-    const screenWidth = screen.availWidth
-    const screenHeight = screen.availHeight
-    const os = window.localStorage.getItem(OS)
+    const screen = (await chrome.system.display.getInfo())[0].bounds
+    const screenWidth = screen.width
+    const screenHeight = screen.height
+    const os = (await chrome.runtime.getPlatformInfo()).os
+
     let windowData = {
       url: chrome.extension.getURL('/popup.html'),
       focused: true,
