@@ -13,6 +13,17 @@ import popupEvents from './handlers/popupEvents'
 import cache from './cache'
 import streamer from './streamer'
 
+import inject from './inject'
+
+import declareConstantScript from 'content_scripts/scripts/declareConstantScript'
+import eventEmitterScript from 'content_scripts/scripts/eventEmitterScript'
+import finnieRpcConnectionScript from 'content_scripts/scripts/finnieRpcConnectionScript'
+import finnieEthereumProviderScript from 'content_scripts/scripts/finnieEthereumProviderScript'
+import finnieArweaveProviderScript from 'content_scripts/scripts/finnieArweaveProviderScript'
+import finnieSolanaProviderScript from 'content_scripts/scripts/finnieSolanaProviderScript'
+import finnieKoiiWalletProviderScript from 'content_scripts/scripts/finnieKoiiWalletProviderScript'
+import mainScript from 'content_scripts/scripts/mainScript'
+
 function cb(port) {
   if (port.name.includes(PORTS.POPUP)) {
     cache.addPopupPort(port)
@@ -60,3 +71,20 @@ chrome.runtime.onInstalled.addListener(async function () {
 })
 
 streamer()
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.name === 'CODE_INJECTION') {
+    const scripts = [
+      `(${declareConstantScript})()`,
+      `(${eventEmitterScript})()`,
+      `(${finnieRpcConnectionScript})()`,
+      `(${finnieEthereumProviderScript})()`,
+      `(${finnieArweaveProviderScript})()`,
+      `(${finnieSolanaProviderScript})()`,
+      `(${finnieKoiiWalletProviderScript})()`,
+      `(${mainScript(message.disabled)})();`
+    ]
+    inject(scripts)
+    sendResponse({ name: 'CODE_INJECTED' })
+  }
+})

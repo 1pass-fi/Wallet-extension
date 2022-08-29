@@ -29,6 +29,9 @@
     "tabs",
     "notifications"
   ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "icons": {
     "128": "img/icon.png"
   },
