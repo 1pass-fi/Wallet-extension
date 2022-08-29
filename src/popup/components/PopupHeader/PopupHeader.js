@@ -24,7 +24,7 @@ const Header = ({ setShowConnectedSites }) => {
     chrome.windows.getCurrent((w) => {
       try {
         const windowId = w.id
-        chrome.scripting.getSelected(windowId, (tab) => {
+        chrome.tabs.query({ active: true }, (tab) => {
           const origin = tab.url.split('/')[0] + '//' + tab.url.split('/')[2]
           setCurrentTabOrigin(origin)
           storage.setting.get.disabledOrigins().then((disabledOrigins) => {

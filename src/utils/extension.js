@@ -46,7 +46,7 @@ export const getSelectedTab = (timeout = 200, retries = 0) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       try {
-        chrome.scripting.getSelected(null, (tab) => {
+        chrome.tabs.query({ active: true }, (tab) => {
           resolve(tab)
         })
       } catch (err) {

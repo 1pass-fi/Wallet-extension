@@ -66,7 +66,7 @@ export default class ContentScriptEvents extends EventEmitter {
   }
 
   async getTabData (network) {
-    const tab = await getSelectedTab()
+    const tab = (await getSelectedTab())[0]
     const url = tab.url
     const origin = (new URL(url)).origin
     const favicon = tab.favIconUrl
