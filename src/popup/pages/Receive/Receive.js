@@ -3,11 +3,9 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import QRCode from 'react-qr-code'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-
-import Background from 'img/v2/popup-receive-bg.svg'
 import CopyIdBtn from 'img/v2/copy-id-button.svg'
 import BackBtn from 'img/v2/popup-back-btn.svg'
-
+import Background from 'img/v2/popup-receive-bg.svg'
 // selectors
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 

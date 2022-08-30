@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { URL } from 'constants/koiConstants'
+import CheckBox from 'finnie-v2/components/CheckBox'
 import isEmpty from 'lodash/isEmpty'
 
-import { URL } from 'constants/koiConstants'
-
-import CheckBox from 'finnie-v2/components/CheckBox'
-
 import InputField from '../InputField'
+
 import './index.css'
 
 const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%^&*()].*).{8,}')

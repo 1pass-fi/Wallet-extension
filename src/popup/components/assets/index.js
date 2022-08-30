@@ -1,28 +1,24 @@
 // modules
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useMemo,useState } from 'react'
 import { connect } from 'react-redux'
-
-// actions
-import { loadContent } from 'actions/koi'
 import { setContLoading } from 'actions/continueLoading'
 import { setError } from 'actions/error'
-import { setNotification } from 'popup/actions/notification'
-import { setAssetsTabSettings } from 'popup/actions/assetsSettings'
-
+// actions
+import { loadContent } from 'actions/koi'
 // constants
 import { NOTIFICATION } from 'constants/koiConstants'
-
-// components
-import AssetList from './AssetList'
-import CheckBox from 'shared/checkbox'
-import ToggleButton from 'shared/ToggleButton'
-
 // assets
 import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
-
+import { setAssetsTabSettings } from 'popup/actions/assetsSettings'
+import { setNotification } from 'popup/actions/notification'
 // services
 import storage from 'services/storage'
+import CheckBox from 'shared/checkbox'
+import ToggleButton from 'shared/ToggleButton'
+
+// components
+import AssetList from './AssetList'
 
 // styles
 import './index.css'

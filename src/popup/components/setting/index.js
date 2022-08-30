@@ -1,26 +1,24 @@
 // modules
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { isEmpty } from 'lodash'
-
+import { useHistory } from 'react-router-dom'
+import { setError } from 'actions/error'
 // actions
 import { lockWallet } from 'actions/koi'
-import { setError } from 'actions/error'
-import { setIsLoading } from 'popup/actions/loading'
-import { setNotification } from 'popup/actions/notification'
-
-// components
-import GlobalButton from 'popup/components/shared/globalButton'
-import AccountSettingRow from './accountSettingRow'
-
 // constants
 import { PATH } from 'constants/koiConstants'
+import { isEmpty } from 'lodash'
+import { setIsLoading } from 'popup/actions/loading'
+import { setNotification } from 'popup/actions/notification'
+// components
+import GlobalButton from 'popup/components/shared/globalButton'
+import storage from 'services/storage'
+import disableOrigin from 'utils/disableOrigin'
+
+import AccountSettingRow from './accountSettingRow'
 
 // styles
 import './index.css'
-import disableOrigin from 'utils/disableOrigin'
-import storage from 'services/storage'
 
 
 const Setting = ({ lockWallet, setError, setIsLoading, accounts, setNotification }) => {

@@ -1,6 +1,5 @@
-import clsx from 'clsx'
 import React from 'react'
-
+import clsx from 'clsx'
 import { includes } from 'lodash'
 
 const NFTMedia = ({ contentType, source, showFull = false }) => {

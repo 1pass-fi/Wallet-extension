@@ -1,6 +1,5 @@
+import { LONG_LIVED_HANDLER, MESSAGES, PORTS } from 'constants/koiConstants'
 import { v4 as uuid } from 'uuid'
-
-import { MESSAGES, LONG_LIVED_HANDLER, PORTS } from 'constants/koiConstants'
 
 
 export class EventHandler {

@@ -1,8 +1,8 @@
-import PopupEvents from './PopupEvents'
 import { MESSAGES } from 'constants/koiConstants'
 
 // controllers
 import controller from './controller'
+import PopupEvents from './PopupEvents'
 
 const getEmitter = () => {
   const popupEvents = new PopupEvents()

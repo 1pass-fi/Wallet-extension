@@ -1,7 +1,7 @@
-import createPendingTransaction from './createPendingTransaction'
 import createPendingAsset from './createPendingAsset'
-import resendTransaction from './resendTransaction'
+import createPendingTransaction from './createPendingTransaction'
 import removeTransaction from './removeTransaction'
+import resendTransaction from './resendTransaction'
 
 export default {
   createPendingTransaction,

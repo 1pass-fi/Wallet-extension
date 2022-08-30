@@ -1,22 +1,19 @@
 // modules
-import React, { useState, useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-
-// components
-import GlobalButton from 'shared/globalButton'
-import Button from 'shared/button'
-import SendKoiForm from './sendKoiForm'
-import Wallet from './wallet'
-
-// assets
-import PlusIcon from 'img/plus-icon.svg'
-
 // actions
 import { getBalances } from 'actions/koi'
-
 // constants
 import { RATE } from 'constants/koiConstants'
+// assets
+import PlusIcon from 'img/plus-icon.svg'
+import Button from 'shared/button'
+// components
+import GlobalButton from 'shared/globalButton'
+
+import SendKoiForm from './sendKoiForm'
+import Wallet from './wallet'
 
 // styles
 import './index.css'

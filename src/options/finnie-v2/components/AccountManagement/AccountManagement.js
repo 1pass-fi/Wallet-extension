@@ -1,32 +1,27 @@
-import clsx from 'clsx'
-import React, { useMemo, useRef, useState, useContext, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useContext, useEffect,useMemo, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import isEmpty from 'lodash/isEmpty'
-
+import { useDispatch, useSelector } from 'react-redux'
+import clsx from 'clsx'
+import { TYPE } from 'constants/accountConstants'
+import CheckBox from 'finnie-v2/components/CheckBox'
 import DropDown from 'finnie-v2/components/DropDown'
 import formatLongString from 'finnie-v2/utils/formatLongString'
-
 import ArLogo from 'img/v2/arweave-logos/arweave-logo.svg'
-import K2Logo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
-import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
-import SolLogo from 'img/v2/solana-logo.svg'
+import SaveIcon from 'img/v2/check-mark-icon-blue.svg'
 import CopyIcon from 'img/v2/copy-icon.svg'
 import EditIcon from 'img/v2/edit-icon.svg'
-import SaveIcon from 'img/v2/check-mark-icon-blue.svg'
+import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import K2Logo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
-
-import storage from 'services/storage'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
-import { popupAccount } from 'services/account'
-
+import SolLogo from 'img/v2/solana-logo.svg'
+import isEmpty from 'lodash/isEmpty'
 import { setAccounts } from 'options/actions/accounts'
 import { setDefaultAccountByAddress } from 'options/actions/defaultAccount'
-import { GalleryContext } from 'options/galleryContext'
 import { DidContext } from 'options/context'
-
-import CheckBox from 'finnie-v2/components/CheckBox'
-import { TYPE } from 'constants/accountConstants'
+import { GalleryContext } from 'options/galleryContext'
+import { popupAccount } from 'services/account'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import storage from 'services/storage'
 
 const Address = ({ address }) => {
   const [isCopied, setIsCopied] = useState(false)

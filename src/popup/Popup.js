@@ -1,71 +1,65 @@
 // modules
-import '@babel/polyfill'
 import React, { useEffect } from 'react'
 import { connect, useDispatch } from 'react-redux'
 import { Route, Switch, useHistory, withRouter } from 'react-router-dom'
+import { setAccounts } from 'actions/accounts'
+import { setActivatedChain } from 'actions/activatedChain'
+import { setActivities } from 'actions/activities'
+import { setActivityNotifications } from 'actions/activityNotification'
+import { setAssetsTabSettings } from 'actions/assetsSettings'
+import { setCurrency } from 'actions/currency'
+import { setDefaultAccount } from 'actions/defaultAccount'
+import { setError } from 'actions/error'
+// actions
+import { lockWallet } from 'actions/koi'
+import { getBalances,setKoi } from 'actions/koi'
+import { setIsLoading } from 'actions/loading'
+import { setNotification } from 'actions/notification'
+import { setPrice } from 'actions/price'
+import { setSettings } from 'actions/settings'
+import { setWarning } from 'actions/warning'
+import { MESSAGES } from 'constants/koiConstants'
+// assets
+import continueLoadingIcon from 'img/continue-load.gif'
 import isEmpty from 'lodash/isEmpty'
 import { dispatch } from 'redux'
+import { popupAccount } from 'services/account'
+import { popupBackgroundConnect } from 'services/request/popup'
+import { EventHandler } from 'services/request/src/backgroundConnect'
+import storage from 'services/storage'
 
+import Account from 'components/accounts'
+import ConnectScreen from 'components/Connect/ConnectScreen'
+import Loading from 'components/loading'
+import Message from 'components/message'
+import ConnectedSitesModal from 'components/modals/connectedSitesModal'
 // components
 // import Header from 'components/header'
 import Header from 'components/PopupHeader'
-import Loading from 'components/loading'
-import Account from 'components/accounts'
-import Message from 'components/message'
-import ConnectScreen from 'components/Connect/ConnectScreen'
-import ConnectedSitesModal from 'components/modals/connectedSitesModal'
 import EthSign from 'components/sign/EthSign'
+import GetEncryptionKey from 'components/sign/GetEncryptionKey'
 import SignTypedDataV1 from 'components/sign/SignTypedDataV1'
 import SignTypedDataV3 from 'components/sign/SignTypedDataV3'
-import GetEncryptionKey from 'components/sign/GetEncryptionKey'
+import SignModal from 'components/SignTransaction'
 
+import '@babel/polyfill'
+
+import NavBar from './components/NavBar'
 // pages
 import Home from './pages/Home'
+import ImportToken from './pages/ImportToken'
+import Login from './pages/Login'
 import Receive from './pages/Receive'
 import Send from './pages/SendNew'
-import Login from './pages/Login'
-import ImportToken from './pages/ImportToken'
-
-// actions
-import { lockWallet } from 'actions/koi'
-import { setIsLoading } from 'actions/loading'
-import { setError } from 'actions/error'
-import { setNotification } from 'actions/notification'
-import { setWarning } from 'actions/warning'
-import { setPrice } from 'actions/price'
-import { setKoi, getBalances } from 'actions/koi'
-import { setCurrency } from 'actions/currency'
-import { setAccounts } from 'actions/accounts'
-import { setDefaultAccount } from 'actions/defaultAccount'
-import { setActivatedChain } from 'actions/activatedChain'
-import { setActivityNotifications } from 'actions/activityNotification'
-import { setSettings } from 'actions/settings'
-import { setActivities } from 'actions/activities'
-import { setAssetsTabSettings } from 'actions/assetsSettings'
-
-import { popupBackgroundConnect } from 'services/request/popup'
-
+import useLoadApp from './provider/hooks/useLoadApp'
+import useMethod from './provider/hooks/useMethod'
 // hooks
 import usePrice from './provider/hooks/usePrice'
 import useSettings from './provider/hooks/useSettings'
-import useLoadApp from './provider/hooks/useLoadApp'
-import useMethod from './provider/hooks/useMethod'
 import useTimeInterval from './provider/hooks/useTimeInterval'
-
-// assets
-import continueLoadingIcon from 'img/continue-load.gif'
 
 // styles
 import './Popup.css'
-import NavBar from './components/NavBar'
-
-import SignModal from 'components/SignTransaction'
-import { EventHandler } from 'services/request/src/backgroundConnect'
-import { MESSAGES } from 'constants/koiConstants'
-
-import { popupAccount } from 'services/account'
-
-import storage from 'services/storage'
 
 const ContinueLoading = () => (
   <div className="continue-loading">

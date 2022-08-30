@@ -1,5 +1,6 @@
-import continueLoadingReducer from './continueLoading'
 import * as types from 'actions/types'
+
+import continueLoadingReducer from './continueLoading'
 
 const initialState = false
 

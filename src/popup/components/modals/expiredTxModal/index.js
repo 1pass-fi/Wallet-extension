@@ -1,19 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
-// components
-import Button from 'popup/components/shared/button/'
-import Modal from 'popup/components/shared/modal/index'
-
-// service
-import { popupBackgroundRequest as request } from 'services/request/popup'
-
 // actions
 import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
-
 // constants
 import { ERROR_MESSAGE } from 'constants/koiConstants'
+// components
+import Button from 'popup/components/shared/button/'
+import Modal from 'popup/components/shared/modal/index'
+// service
+import { popupBackgroundRequest as request } from 'services/request/popup'
 
 // styles
 import './index.css'

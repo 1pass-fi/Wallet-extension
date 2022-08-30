@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-
-import Input from 'shared/inputField'
+import { setError } from 'actions/error'
 import Button from 'shared/button'
 import Header from 'shared/header'
-
+import Input from 'shared/inputField'
 import { getOldWallet } from 'utils'
-import { setError } from 'actions/error'
 
 import './index.css'
 

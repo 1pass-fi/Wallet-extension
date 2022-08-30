@@ -1,19 +1,16 @@
-import '@babel/polyfill'
-
-// Constants
-import { PORTS, OS, PATH } from 'constants/koiConstants'
 import { IMPORTED } from 'constants/accountConstants'
-
+// Constants
+import { OS, PATH,PORTS } from 'constants/koiConstants'
+import storage from 'services/storage'
 import { getChromeStorage } from 'utils'
 
-import streamer from './streamer'
+import '@babel/polyfill'
 
+import contentScriptEvents from './handlers/contentScriptEvents'
 // emitter
 import popupEvents from './handlers/popupEvents'
-import contentScriptEvents from './handlers/contentScriptEvents'
-
 import cache from './cache'
-import storage from 'services/storage'
+import streamer from './streamer'
 
 function cb(port) {
   if (port.name.includes(PORTS.POPUP)) {

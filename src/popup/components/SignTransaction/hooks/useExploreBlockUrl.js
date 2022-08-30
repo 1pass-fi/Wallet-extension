@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import { get } from 'lodash'
-
-import { isArweaveAddress, isEthereumAddress } from 'utils'
-import storage from 'services/storage'
 import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
+import { get } from 'lodash'
+import storage from 'services/storage'
+import { isArweaveAddress, isEthereumAddress } from 'utils'
 
 const useExploreBlock = ({ transactionPayload }) => {
   const [exploreBlockUrl, setExploreBlockUrl] = useState('')

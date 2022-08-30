@@ -1,7 +1,6 @@
-import { GalleryContext } from 'options/galleryContext'
 import React, { useContext, useMemo, useState } from 'react'
 import clsx from 'clsx'
-
+import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 
 import './ToogleButton.css'

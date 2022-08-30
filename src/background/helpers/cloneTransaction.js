@@ -1,5 +1,4 @@
 import { get, isNumber } from 'lodash'
-
 import arweave from 'services/arweave'
 
 export default async (transactionPayload) => {

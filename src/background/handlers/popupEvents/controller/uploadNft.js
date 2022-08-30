@@ -1,11 +1,9 @@
 // Services
-import { backgroundAccount } from 'services/account'
-import arweave from 'services/arweave'
-
+import helpers from 'background/helpers'
 // Constants
 import { ERROR_MESSAGE, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
-
-import helpers from 'background/helpers'
+import { backgroundAccount } from 'services/account'
+import arweave from 'services/arweave'
 
 export default async (payload, next) => {
   const { content, tags, fileType, address, price, imageId } = payload.data

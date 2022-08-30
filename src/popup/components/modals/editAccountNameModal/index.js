@@ -1,11 +1,10 @@
 // modules
 import React, {useState} from 'react'
-import PropTypes from 'prop-types'
-
-// components
-import Modal from 'popup/components/shared/modal'
 import Button from 'popup/components/shared/button'
 import InputField from 'popup/components/shared/inputField'
+// components
+import Modal from 'popup/components/shared/modal'
+import PropTypes from 'prop-types'
 
 // styles
 import './index.css'

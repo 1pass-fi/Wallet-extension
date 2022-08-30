@@ -1,11 +1,10 @@
-import clsx from 'clsx'
-import moment from 'moment'
 import React from 'react'
 import { useDispatch } from 'react-redux'
-
+import clsx from 'clsx'
 import GreenDotIcon from 'img/v2/green-dot.svg'
-import storage from 'services/storage'
+import moment from 'moment'
 import { setNotifications } from 'options/actions/notifications'
+import storage from 'services/storage'
 
 const NotificationRow = ({ notification, newNotification = false }) => {
   const dispatch = useDispatch()

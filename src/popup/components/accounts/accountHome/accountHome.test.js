@@ -1,11 +1,12 @@
-import { createMemoryHistory } from 'history'
 import React from 'react'
+import { fireEvent } from '@testing-library/react'
+import { TYPE } from 'constants/accountConstants'
+import { createMemoryHistory } from 'history'
+import { act, render, screen } from 'popup/test-utils'
+
 import '@testing-library/jest-dom'
 
 import AccountHome from '.'
-import { TYPE } from 'constants/accountConstants'
-import { act, render, screen } from 'popup/test-utils'
-import { fireEvent } from '@testing-library/react'
 
 describe('AccountHome', () => {
   const accounts = [

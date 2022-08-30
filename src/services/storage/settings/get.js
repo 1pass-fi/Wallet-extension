@@ -1,7 +1,8 @@
-import { ChromeStorage } from '../ChromeStorage'
-import { SETTING } from 'constants/storageConstants'
 import { TYPE } from 'constants/accountConstants'
-import { ETH_NETWORK_PROVIDER, SOL_NETWORK_PROVIDER, K2_NETWORK_PROVIDER } from 'constants/koiConstants'
+import { ETH_NETWORK_PROVIDER, K2_NETWORK_PROVIDER,SOL_NETWORK_PROVIDER } from 'constants/koiConstants'
+import { SETTING } from 'constants/storageConstants'
+
+import { ChromeStorage } from '../ChromeStorage'
 
 export class SettingGet {
   #chrome

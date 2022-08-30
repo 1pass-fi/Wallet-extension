@@ -1,14 +1,13 @@
 import React from 'react'
 import { Route, Switch } from 'react-router'
-
-import Kid from './Kid'
-import Gallery from './Gallery'
-import Security from './Security'
-import About from './About'
-import Wallet from './Wallet'
-import NeedHelp from './NeedHelp'
-
 import HasArweave from 'options/shared/hasArweave'
+
+import About from './About'
+import Gallery from './Gallery'
+import Kid from './Kid'
+import NeedHelp from './NeedHelp'
+import Security from './Security'
+import Wallet from './Wallet'
 
 export default () => {
   return (

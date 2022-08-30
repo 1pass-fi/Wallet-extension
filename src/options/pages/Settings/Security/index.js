@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { useSelector } from 'react-redux'
-
-import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
-import { getDisplayAddress } from 'options/utils'
-import { getChromeStorage } from 'utils'
 import { STORAGE } from 'constants/koiConstants'
-import { getArAccounts } from 'options/selectors/accounts'
-
 import {
-  AccountManagementGetPhrase,
-  AccountManagementExportKey
-} from 'finnie-v2/components/AccountManagement'
-
-import './index.css'
+  AccountManagementExportKey,
+  AccountManagementGetPhrase} from 'finnie-v2/components/AccountManagement'
 import ChangePasswordModal from 'finnie-v2/components/Settings/Security/ChangePasswordModal'
 import ExportPrivateKeyModal from 'finnie-v2/components/Settings/Security/ExportPrivateKeyModal'
 import RecoveryPhraseModal from 'finnie-v2/components/Settings/Security/RecoveryPhraseModal'
+import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
+import { getArAccounts } from 'options/selectors/accounts'
+import { getDisplayAddress } from 'options/utils'
+import { getChromeStorage } from 'utils'
+
+import './index.css'
 
 export default () => {
   const [hasSeedPhrase, setHasSeedPhrase] = useState(false)

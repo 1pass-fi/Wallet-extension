@@ -3,22 +3,18 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
-
-// assets
-import ExportIcon from 'img/export-icon.svg'
-import ImportIcon from 'img/import-icon.svg'
-import PlusIcon from 'img/plus-icon-outline.svg'
-import GoBackIcon from 'img/goback-icon-26px.svg'
-
-// components
-import Card from 'shared/card'
-import Button from 'shared/button'
-
-// utils
-import { getChromeStorage } from 'utils'
-
 // constants
 import { STORAGE } from 'constants/koiConstants'
+// assets
+import ExportIcon from 'img/export-icon.svg'
+import GoBackIcon from 'img/goback-icon-26px.svg'
+import ImportIcon from 'img/import-icon.svg'
+import PlusIcon from 'img/plus-icon-outline.svg'
+import Button from 'shared/button'
+// components
+import Card from 'shared/card'
+// utils
+import { getChromeStorage } from 'utils'
 
 // styles
 import './index.css'

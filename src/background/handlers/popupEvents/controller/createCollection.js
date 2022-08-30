@@ -1,8 +1,7 @@
 // Services
-import { backgroundAccount } from 'services/account'
-
 import helpers from 'background/helpers'
 import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
+import { backgroundAccount } from 'services/account'
 
 
 export default async (payload, next) => {

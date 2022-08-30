@@ -1,27 +1,22 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { useDispatch, useSelector } from 'react-redux'
 import clsx from 'clsx'
-import { isEmpty } from 'lodash'
-
-import { GalleryContext } from 'options/galleryContext'
-import { DidContext } from 'options/context'
-
-import { setDefaultAccount } from 'options/actions/defaultAccount'
-import { getArAccounts } from 'options/selectors/accounts'
-
+import { NOTIFICATION } from 'constants/koiConstants'
 import Button from 'finnie-v2/components/Button'
-
-import CloseIcon from 'img/v2/close-icon-blue.svg'
-import CopyIcon from 'img/v2/copy-icon.svg'
-import Background from 'img/v2/select-DID-modal-background.svg'
-import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
-import FavoriteIcon from 'img/v2/favorite-icon.svg'
-import FavoriteIconWhite from 'img/v2/favorite-icon-white.svg'
-
 import formatLongString from 'finnie-v2/utils/formatLongString'
 import formatNumber from 'finnie-v2/utils/formatNumber'
-import { NOTIFICATION } from 'constants/koiConstants'
+import CloseIcon from 'img/v2/close-icon-blue.svg'
+import CopyIcon from 'img/v2/copy-icon.svg'
+import FavoriteIcon from 'img/v2/favorite-icon.svg'
+import FavoriteIconWhite from 'img/v2/favorite-icon-white.svg'
+import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+import Background from 'img/v2/select-DID-modal-background.svg'
+import { isEmpty } from 'lodash'
+import { setDefaultAccount } from 'options/actions/defaultAccount'
+import { DidContext } from 'options/context'
+import { GalleryContext } from 'options/galleryContext'
+import { getArAccounts } from 'options/selectors/accounts'
 
 const SelectDIDAccount = ({ close }) => {
   const { setIsLoading, setNotification, setError } = useContext(GalleryContext)

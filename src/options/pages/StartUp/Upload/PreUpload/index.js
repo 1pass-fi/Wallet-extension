@@ -1,13 +1,11 @@
 import React from 'react'
-
-import EthereumLogo from 'img/startup/ethereum-logo.svg'
-import FinnieLogo from 'img/startup/finnie-logo.svg'
-
-import WalletType from '../../shared/WalletType'
-import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
-
 import { TYPE } from 'constants/accountConstants'
 import { SHOW_ETHEREUM } from 'constants/koiConstants'
+import EthereumLogo from 'img/startup/ethereum-logo.svg'
+import FinnieLogo from 'img/startup/finnie-logo.svg'
+import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
+
+import WalletType from '../../shared/WalletType'
 
 
 export default ({ nextStep, setWalletType, previousStep}) => {

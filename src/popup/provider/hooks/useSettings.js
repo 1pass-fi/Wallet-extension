@@ -1,10 +1,8 @@
 import { useEffect } from 'react'
-
-// services
-import storage from 'services/storage'
-
 // constants
 import { SHOW_ACTIVITIES_BY } from 'constants/storageConstants'
+// services
+import storage from 'services/storage'
 
 const useSettings = ({ setSettings, setAssetsTabSettings, setError }) => {
   const loadSettings = async () => {

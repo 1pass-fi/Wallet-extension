@@ -1,10 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
-import formatLongString from 'finnie-v2/utils/formatLongString'
-
 import NFTMedia from 'finnie-v2/components/NFTMedia'
-
+import formatLongString from 'finnie-v2/utils/formatLongString'
 import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 
 const NFTCard = ({ nft }) => {

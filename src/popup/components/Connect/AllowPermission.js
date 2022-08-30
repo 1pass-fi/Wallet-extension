@@ -1,6 +1,5 @@
 // modules
 import React from 'react'
-
 // components
 import Checkbox from 'popup/components/shared/checkBoxRedesign'
 

@@ -1,13 +1,10 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { get } from 'lodash'
-
-import formatNumber from 'finnie-v2/utils/formatNumber'
-import formatLongString from 'finnie-v2/utils/formatLongString'
-
 import NFTMedia from 'finnie-v2/components/NFTMedia'
-
+import formatLongString from 'finnie-v2/utils/formatLongString'
+import formatNumber from 'finnie-v2/utils/formatNumber'
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+import { get } from 'lodash'
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 

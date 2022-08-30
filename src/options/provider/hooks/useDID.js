@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react'
-import { isEmpty } from 'lodash'
+import { useEffect,useState } from 'react'
 import { toCSS, toJSON } from 'cssjson'
-
-import storage from 'services/storage'
+import { isEmpty } from 'lodash'
+import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import storage from 'services/storage'
 
 import fromStyleToCss from './fromStyleToCss'
-import { popupAccount } from 'services/account'
 
 export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
   const kidLinkPrefix = 'https://koii.id/'

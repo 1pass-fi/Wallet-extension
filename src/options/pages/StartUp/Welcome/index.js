@@ -1,13 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
-
-import UploadIcon from 'img/startup/upload.svg'
-import ImportIcon from 'img/startup/import.svg'
 import CreateIcon from 'img/startup/create.svg'
+import ImportIcon from 'img/startup/import.svg'
 import QuestionIcon from 'img/startup/question-mark.svg'
+import UploadIcon from 'img/startup/upload.svg'
 
 import './index.css'
-import { Link } from 'react-router-dom'
 
 export default () => {
   return (

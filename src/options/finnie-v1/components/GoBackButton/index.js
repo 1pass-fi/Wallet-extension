@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactTooltip from 'react-tooltip'
-
 import GoBackIcon from 'img/goback-icon.svg'
 
 import './index.css'

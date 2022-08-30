@@ -1,9 +1,8 @@
 import axios from 'axios'
-import { smartweave } from 'smartweave'
 import { get } from 'lodash'
-
 import { ArweaveAccount } from 'services/account/Account'
 import arweave from 'services/arweave'
+import { smartweave } from 'smartweave'
 
 const bundlerUrl = 'https://mainnet.koii.live'
 

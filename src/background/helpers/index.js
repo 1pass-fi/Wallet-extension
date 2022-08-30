@@ -1,20 +1,18 @@
+import cache from 'background/cache'
+import { MESSAGES } from 'constants/koiConstants'
 import { backgroundAccount } from 'services/account'
 
-import { MESSAGES } from 'constants/koiConstants'
-
-import loadBalances from './loadBalances'
-import updatePendingTransactions from './updatePendingTransactions'
-import loadActivities from './loadActivities'
-import loadNftStates from './loadNftStates'
-import sendMessageToPorts from './sendMessageToPorts'
-import pendingTransactionFactory from './pendingTransaction'
-import uploadNft from './uploadNft'
-import saveContent from './saveContent'
 import cloneTransaction from './cloneTransaction'
-import did from './did'
 import collections from './collections'
-
-import cache from 'background/cache'
+import did from './did'
+import loadActivities from './loadActivities'
+import loadBalances from './loadBalances'
+import loadNftStates from './loadNftStates'
+import pendingTransactionFactory from './pendingTransaction'
+import saveContent from './saveContent'
+import sendMessageToPorts from './sendMessageToPorts'
+import updatePendingTransactions from './updatePendingTransactions'
+import uploadNft from './uploadNft'
 
 const checkHasAccounts = (fn) => (...args) => {
   if (backgroundAccount.importedAccount.length > 0) return fn(...args)

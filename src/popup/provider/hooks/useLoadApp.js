@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
-import isEmpty from 'lodash/isEmpty'
-
-// services
-import storage from 'services/storage'
-import { popupAccount } from 'services/account'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
-
 // constants
 import { REQUEST } from 'constants/koiConstants'
+import isEmpty from 'lodash/isEmpty'
+import { popupAccount } from 'services/account'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+// services
+import storage from 'services/storage'
 
 const useLoadApp = ({
   history,

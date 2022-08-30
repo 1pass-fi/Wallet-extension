@@ -1,9 +1,8 @@
 import {
   SET_DEFAULT_ARWEAVE_ACCOUNT,
   SET_DEFAULT_ETHEREUM_ACCOUNT,
-  SET_DEFAULT_SOLANA_ACCOUNT,
-  SET_DEFAULT_K2_ACCOUNT
-} from 'options/actions/types'
+  SET_DEFAULT_K2_ACCOUNT,
+  SET_DEFAULT_SOLANA_ACCOUNT} from 'options/actions/types'
 
 const emptyAccount = {
   type: '',

@@ -73,6 +73,7 @@
         "currency-codes": "^2.1.0",
         "currency-symbol-map": "^5.0.1",
         "ed25519-hd-key": "^1.2.0",
+        "eslint-plugin-simple-import-sort": "^7.0.0",
         "ethereum-provider": "^0.5.0",
         "ethereumjs-tx": "^2.1.2",
         "ethereumjs-util": "^7.1.4",

@@ -1,19 +1,18 @@
-import { AccountGetter } from './get'
-import { AccountSetter } from './set'
-
 import { Web } from '@_koi/sdk/web'
 import { EthereumTool } from 'services/ethereum'
-import { SolanaTool } from 'services/solana'
 import { K2Tool } from 'services/k2'
+import { SolanaTool } from 'services/solana'
 
 import { ArweaveMethod } from './Chains/Arweave/ArweaveMethod'
 import { ArweaveStatic } from './Chains/Arweave/ArweaveStatic'
 import { EthereumMethod } from './Chains/Ethereum/EthereumMethod'
 import { EthereumStatic } from './Chains/Ethereum/EthereumStatics'
-import { SolanaMethod } from './Chains/Solana/SolanaMethod'
-import { SolanaStatic } from './Chains/Solana/SolanaStatic'
 import { K2Method } from './Chains/K2/K2Method'
 import { K2Static } from './Chains/K2/K2Static'
+import { SolanaMethod } from './Chains/Solana/SolanaMethod'
+import { SolanaStatic } from './Chains/Solana/SolanaStatic'
+import { AccountGetter } from './get'
+import { AccountSetter } from './set'
 
 export class Account {
   constructor(address) {

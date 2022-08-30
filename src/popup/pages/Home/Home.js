@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { ParallaxProvider } from 'react-scroll-parallax'
 import { useSelector } from 'react-redux'
-import isEmpty from 'lodash/isEmpty'
-
-import AccountInfo from './AccountInfo/AccountInfo'
-import PopupBackground from 'img/popup/popup-background.svg'
-import PopupArrow from 'img/popup/popup-arrow-icon.svg'
+import { ParallaxProvider } from 'react-scroll-parallax'
+import { TYPE } from 'constants/accountConstants'
 import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
-
+import PopupArrow from 'img/popup/popup-arrow-icon.svg'
+import PopupBackground from 'img/popup/popup-background.svg'
+import isEmpty from 'lodash/isEmpty'
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
+import AccountInfo from './AccountInfo/AccountInfo'
 import HomeTop from './HomeTop'
-import { TYPE } from 'constants/accountConstants'
 
 const Home = () => {
   const [currentProviderAddress, setCurrentProviderAddress] = useState()

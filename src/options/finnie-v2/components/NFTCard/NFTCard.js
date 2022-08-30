@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { TYPE } from 'constants/accountConstants'
 
 import NFTCardArweave from './NFTCardArweave'

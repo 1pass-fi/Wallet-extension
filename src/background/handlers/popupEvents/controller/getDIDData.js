@@ -1,9 +1,7 @@
-import { smartweave } from 'smartweave'
-
 import helpers from 'background/helpers'
-
 // Services
 import arweave from 'services/arweave'
+import { smartweave } from 'smartweave'
 
 export default async (payload, next) => {
   try {

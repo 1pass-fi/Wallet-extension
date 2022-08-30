@@ -1,5 +1,6 @@
-import { SET_ACTIVATED_CHAIN } from '../actions/types'
 import { TYPE } from 'constants/accountConstants'
+
+import { SET_ACTIVATED_CHAIN } from '../actions/types'
 
 const initialState = TYPE.ARWEAVE
 

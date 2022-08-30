@@ -1,5 +1,6 @@
-import { AccountStorageUtils } from '../AccountStorageUtils'
 import { ACCOUNT } from 'constants/accountConstants'
+
+import { AccountStorageUtils } from '../AccountStorageUtils'
 
 export class AccountSetter {
   #address

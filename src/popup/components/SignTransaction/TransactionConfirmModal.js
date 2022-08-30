@@ -1,53 +1,45 @@
 // modules
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useMemo,useState } from 'react'
+import { connect,useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { useSelector, connect } from 'react-redux'
-import { get, isEmpty, isNumber } from 'lodash'
-import Web3 from 'web3'
-import clsx from 'clsx'
 import ReactTooltip from 'react-tooltip'
-
-// utils
-import { numberFormat, fiatCurrencyFormat, calculateGasFee, winstonToAr } from 'utils'
+import { setError } from 'actions/error'
+import { setIsLoading } from 'actions/loading'
+import clsx from 'clsx'
+import { TYPE } from 'constants/accountConstants'
+import BackBtn from 'img/popup/back-button.svg'
+import CheckMarkIcon from 'img/popup/check-mark-icon.svg'
+import WarningIcon from 'img/popup/close-icon-red.svg'
+import WaitingIcon from 'img/popup/waiting-icon.svg'
+import WarningRedIcon from 'img/popup/warning-icon-red.svg'
+import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import CloseIcon from 'img/v2/close-icon-white.svg'
+import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+import OkBtn from 'img/v2/popup-tx-detail-ok.svg'
+import SunriseLogo from 'img/v2/sunrise-logo/sunrise-logo.svg'
+import ViewBlockIcon from 'img/v2/view-block.svg'
+import { get, isEmpty, isNumber } from 'lodash'
 import { getDisplayAddress } from 'options/utils'
-
 // styles
 // import './index.css'
 import { popupAccount } from 'services/account'
-
 import arweave from 'services/arweave'
-import { TYPE } from 'constants/accountConstants'
-
-import { setIsLoading } from 'actions/loading'
-import { setError } from 'actions/error'
-
-import BackBtn from 'img/popup/back-button.svg'
-import CloseIcon from 'img/v2/close-icon-white.svg'
-import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
-import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
-import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
-import ViewBlockIcon from 'img/v2/view-block.svg'
-import OkBtn from 'img/v2/popup-tx-detail-ok.svg'
-import SunriseLogo from 'img/v2/sunrise-logo/sunrise-logo.svg'
-import CheckMarkIcon from 'img/popup/check-mark-icon.svg'
-import WaitingIcon from 'img/popup/waiting-icon.svg'
-import WarningIcon from 'img/popup/close-icon-red.svg'
-import WarningRedIcon from 'img/popup/warning-icon-red.svg'
-
 import storage from 'services/storage'
+// utils
+import { calculateGasFee, fiatCurrencyFormat, numberFormat, winstonToAr } from 'utils'
+import { decodeTxMethod } from 'utils/index'
+import Web3 from 'web3'
 
 import ConnectScreen from 'components/Connect/ConnectScreen'
 
+import { TAB, TRANSACTION_METHOD,TRANSACTION_TYPE } from './hooks/constants'
+import useExploreBlockUrl from './hooks/useExploreBlockUrl'
 import useGetFee from './hooks/useGetFee'
 import useLoadRequest from './hooks/useLoadRequest'
 import useMethod from './hooks/useMethod'
-import useSendValue from './hooks/useSendValue'
-import useExploreBlockUrl from './hooks/useExploreBlockUrl'
 import useSecurityStatus from './hooks/useSecurityStatus'
-
-import { TRANSACTION_TYPE, TAB, TRANSACTION_METHOD } from './hooks/constants'
-
-import { decodeTxMethod } from 'utils/index'
+import useSendValue from './hooks/useSendValue'
 
 const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigning }) => {
   const [tab, setTab] = useState(TAB.DETAIL)

@@ -1,9 +1,8 @@
+import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 import { isEmpty } from 'lodash'
+import { BackgroundAccount } from 'services/account/Account'
 
 import errorHandler from '../errorHandler'
-
-import { BackgroundAccount } from 'services/account/Account'
-import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 
 const removeTransaction = async (account, transaction) => {
   if (!(account instanceof BackgroundAccount)) throw new Error('Invalid input account')

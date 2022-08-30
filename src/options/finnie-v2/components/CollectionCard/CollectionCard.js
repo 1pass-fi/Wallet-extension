@@ -1,11 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
-import formatLongString from 'finnie-v2/utils/formatLongString'
-
 import NFTMedia from 'finnie-v2/components/NFTMedia'
-
+import formatLongString from 'finnie-v2/utils/formatLongString'
 import getAssetByTxId from 'options/selectors/getAssetByTxId'
 
 const CollectionCard = ({ collection }) => {

@@ -1,40 +1,33 @@
 // modules
-import React, { useState, useEffect, useRef } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useEffect, useRef,useState } from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
-import find from 'lodash/find'
-import isEmpty from 'lodash/isEmpty'
-
-// components
-import InputField from 'shared/inputField'
-import Select from 'shared/select'
-import Button from 'shared/button'
-import TransactionConfirmModal from 'popup/components/modals/transactionConfirmModal'
-
+import { setError } from 'actions/error'
+// actions
+import { makeTransfer } from 'actions/koi'
+import { TYPE } from 'constants/accountConstants'
+// constants
+import { ERROR_MESSAGE, NOTIFICATION, PATH } from 'constants/koiConstants'
+import ArweaveLogo from 'img/arweave-icon.svg'
 // assets
 import DownArrowIcon from 'img/down-arrow-icon.svg'
 import EditIcon from 'img/edit-icon.svg'
-import WarningIcon from 'img/warning-icon-outline-orange.svg'
-import ArweaveLogo from 'img/arweave-icon.svg'
 import EthereumLogo from 'img/ethereum-logo-18.svg'
-
-// actions
-import { makeTransfer } from 'actions/koi'
-import { setError } from 'actions/error'
+import WarningIcon from 'img/warning-icon-outline-orange.svg'
+import find from 'lodash/find'
+import isEmpty from 'lodash/isEmpty'
+// utils
+import { formatNumber,getDisplayAddress } from 'options/utils'
 import { setNotification } from 'popup/actions/notification'
-
-// constants
-import { ERROR_MESSAGE, NOTIFICATION, PATH } from 'constants/koiConstants'
-
-import { TYPE } from 'constants/accountConstants'
-
+import TransactionConfirmModal from 'popup/components/modals/transactionConfirmModal'
 // services
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
-
-// utils
-import { getDisplayAddress, formatNumber } from 'options/utils'
+import Button from 'shared/button'
+// components
+import InputField from 'shared/inputField'
+import Select from 'shared/select'
 import {
   fiatCurrencyFormat,
   getAddressesFromAddressBook,

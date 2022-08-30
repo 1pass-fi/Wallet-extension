@@ -1,10 +1,9 @@
 import React from 'react'
 import clsx from 'clsx'
-
-import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
-import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
 import CreateNewIcon from 'img/v2/onboarding/create-new-icon.svg'
 import KeySelectedIcon from 'img/v2/onboarding/key-selected-icon.svg'
+import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
+import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
 
 const SEED_STRING = 'color tired merge rural token pole capable people metal student catch uphold'
 

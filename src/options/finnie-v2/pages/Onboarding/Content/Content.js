@@ -1,25 +1,21 @@
 import React, { useContext, useState } from 'react'
 import clsx from 'clsx'
-
 import KoiIcon from 'img/v2/onboarding/finnie-koii-logo.svg'
+import { GalleryContext } from 'options/galleryContext'
 
-import CreatePassword from './CreatePassword'
-import AddAKey from './AddAKey'
-import GetAKey from './GetAKey'
-import PrepareSavePhrase from './PrepareSavePhrase'
-import HiddenPhrase from './HiddenPhrase'
-import InputPhrase from './InputPhrase'
-import RevealPhrase from './RevealPhrase'
+import useMethod from '../hooks/useMethod'
+import useValidPassword from '../hooks/useValidPassword'
+import { OnboardingContext } from '../onboardingContext'
 
 import ImportAKey from './ImportKey/ImportKey'
 import ImportPhrase from './ImportKey/ImportPhrase'
-
-import { OnboardingContext } from '../onboardingContext'
-import { GalleryContext } from 'options/galleryContext'
-
-import useValidPassword from '../hooks/useValidPassword'
-
-import useMethod from '../hooks/useMethod'
+import AddAKey from './AddAKey'
+import CreatePassword from './CreatePassword'
+import GetAKey from './GetAKey'
+import HiddenPhrase from './HiddenPhrase'
+import InputPhrase from './InputPhrase'
+import PrepareSavePhrase from './PrepareSavePhrase'
+import RevealPhrase from './RevealPhrase'
 
 const Content = ({ step, setStep }) => {
   const [password, setPassword] = useState('')

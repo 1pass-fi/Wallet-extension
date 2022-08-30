@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink, Route, Switch } from 'react-router-dom'
-
+import AccountSettings from 'finnie-v2/components/AccountSettings'
+import CollectionIcon from 'img/v2/collection-icon.svg'
 import CreateIcon from 'img/v2/create-icon.svg'
 import GalleryIcon from 'img/v2/gallery-icon.svg'
-import CollectionIcon from 'img/v2/collection-icon.svg'
 import CloseIcon from 'img/v2/x-icon-white.svg'
-
-import UploadNftForm from './UploadNftForm'
-import CollectionForm from './CollectionForm'
-
-import HasArweave from 'options/shared/hasArweave'
 import { filterNft } from 'options/actions/assets'
 import { filterCollection } from 'options/actions/collections'
-import AccountSettings from 'finnie-v2/components/AccountSettings'
-import SortAndFilter from './SortAndFilter'
+import HasArweave from 'options/shared/hasArweave'
+
+import CollectionForm from './CollectionForm'
 import NotificationsCenterLinks from './NotificationsCenterLinks'
+import SortAndFilter from './SortAndFilter'
+import UploadNftForm from './UploadNftForm'
+
 import './Sidebar.css'
 
 const navItems = [

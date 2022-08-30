@@ -1,8 +1,7 @@
 // Services
-import storage from 'services/storage'
-
-import { setActivatedAccountAddress } from 'utils'
 import { popupAccount } from 'services/account'
+import storage from 'services/storage'
+import { setActivatedAccountAddress } from 'utils'
 
 export default async (payload, next) => {
   try {

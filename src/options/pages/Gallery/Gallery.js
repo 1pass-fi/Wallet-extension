@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import isEmpty from 'lodash/isEmpty'
-
 import NFTCard from 'finnie-v2/components/NFTCard'
-import { GalleryContext } from 'options/galleryContext'
 import CreateIcon from 'img/v2/create-icon.svg'
+import isEmpty from 'lodash/isEmpty'
+import { GalleryContext } from 'options/galleryContext'
 
 import './index.css'
 

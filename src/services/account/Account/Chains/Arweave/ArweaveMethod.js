@@ -3,19 +3,16 @@
   Load activities, assets,...
 */
 
-import { PATH, ALL_NFT_LOADED, ERROR_MESSAGE, URL, ACTIVITY_NAME, BRIDGE_FLOW, DELIGATED_OWNER, KOII_CONTRACT } from 'constants/koiConstants'
-import { getChromeStorage, setChromeStorage } from 'utils'
-import { get, isNumber, isArray, orderBy, includes, find, isEmpty, isString, findIndex } from 'lodash'
-import moment from 'moment'
-import { smartweave } from 'smartweave'
 import axios from 'axios'
-
+import { ACCOUNT,TYPE } from 'constants/accountConstants'
+import { ACTIVITY_NAME, ALL_NFT_LOADED, BRIDGE_FLOW, DELIGATED_OWNER, ERROR_MESSAGE, KOII_CONTRACT,PATH, URL } from 'constants/koiConstants'
+import { find, findIndex,get, includes, isArray, isEmpty, isNumber, isString, orderBy } from 'lodash'
+import moment from 'moment'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
-import { TYPE, ACCOUNT } from 'constants/accountConstants'
-
-import storage from 'services/storage'
 import arweave from 'services/arweave'
-
+import storage from 'services/storage'
+import { smartweave } from 'smartweave'
+import { getChromeStorage, setChromeStorage } from 'utils'
 import _signPort from 'utils/signPort'
 
 export class ArweaveMethod {

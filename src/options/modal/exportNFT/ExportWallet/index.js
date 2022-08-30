@@ -1,39 +1,33 @@
-import React, { useContext, useRef, useState, useMemo, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-
-import isEmpty from 'lodash/isEmpty'
-import includes from 'lodash/includes'
-import find from 'lodash/find'
+import React, { useContext, useEffect,useMemo, useRef, useState } from 'react'
+import { useDispatch,useSelector } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
-import Web3 from 'web3'
-
-import GoBackIcon from 'img/goback-icon-26px.svg'
-import ArweaveLogo from 'img/arweave-icon.svg'
-import EthereumLogo from 'img/ethereum-logo-18.svg'
-import StackIcon from 'img/stack-icon.svg'
-import StackWhiteIcon from 'img/stack-white-icon.svg'
-import WarningIcon from 'img/dangerous-logo.svg'
-import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
-import QuestionIcon from 'img/question-tooltip.svg'
-
-import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
 import { ETH_NETWORK_PROVIDER, KOI_ROUTER_CONTRACT } from 'constants/koiConstants'
-
+import { ERROR_MESSAGE } from 'constants/koiConstants'
+import ArweaveLogo from 'img/arweave-icon.svg'
+import WarningIcon from 'img/dangerous-logo.svg'
+import EthereumLogo from 'img/ethereum-logo-18.svg'
+import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
+import GoBackIcon from 'img/goback-icon-26px.svg'
+import QuestionIcon from 'img/question-tooltip.svg'
+import StackIcon from 'img/stack-icon.svg'
+import StackWhiteIcon from 'img/stack-white-icon.svg'
+import find from 'lodash/find'
+import includes from 'lodash/includes'
+import isEmpty from 'lodash/isEmpty'
+import { setAssets } from 'options/actions/assets'
+import { GalleryContext } from 'options/galleryContext'
 import { formatNumber, getDisplayAddress } from 'options/utils'
-import { getAddressesFromAddressBook } from 'utils'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import { popupAccount } from 'services/account'
 import koiRouterABI from 'services/account/Account/Chains/Ethereum/abi/KoiRouter.json'
 import koiTokenABI from 'services/account/Account/Chains/Ethereum/abi/KoiToken.json'
-
-import './index.css'
-import { popupAccount } from 'services/account'
-import { ERROR_MESSAGE } from 'constants/koiConstants'
-
-import { setAssets } from 'options/actions/assets'
-
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import { getAddressesFromAddressBook } from 'utils'
 import { isArweaveAddress } from 'utils'
 import { isEthereumAddress } from 'utils'
+import Web3 from 'web3'
+
+import './index.css'
 
 const TRANSFER_STEPS = {
   INPUT_INFO: 1,

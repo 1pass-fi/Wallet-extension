@@ -1,4 +1,4 @@
-import { SHOW_ADDRESS_BOOK, HIDE_ADDRESS_BOOK } from './types'
+import { HIDE_ADDRESS_BOOK,SHOW_ADDRESS_BOOK } from './types'
 
 export const showAddressBook = () => {
   return {

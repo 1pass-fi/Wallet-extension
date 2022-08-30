@@ -1,23 +1,21 @@
-import React, { useState, useContext } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useContext,useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import { useHistory } from 'react-router-dom'
 import { TYPE } from 'constants/accountConstants'
-import { GalleryContext } from 'options/galleryContext'
-
+import {ERROR_MESSAGE} from 'constants/koiConstants'
 import isEmpty from 'lodash/isEmpty'
-
-import './index.css'
-
+import { addAccountByAddress } from 'options/actions/accounts'
+import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
+import { GalleryContext } from 'options/galleryContext'
 import { JSONFileToObject } from 'options/utils'
+import { popupAccount } from 'services/account'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import storage from 'services/storage'
+
 import ConfirmPassword from '../../shared/ConfirmPassword'
 import InputPassword from '../../shared/InputPassword'
-import {ERROR_MESSAGE} from 'constants/koiConstants'
-import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
-import { addAccountByAddress } from 'options/actions/accounts'
-import { popupAccount } from 'services/account'
-import storage from 'services/storage'
+
+import './index.css'
 
 
 export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) => {

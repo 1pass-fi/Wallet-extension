@@ -1,7 +1,6 @@
 import React from 'react'
-import clsx from 'clsx'
 import { NavLink } from 'react-router-dom'
-
+import clsx from 'clsx'
 import AboutIcon from 'img/v2/settings/about.svg'
 import DidIcon from 'img/v2/settings/did.svg'
 import GalleryIcon from 'img/v2/settings/gallery.svg'

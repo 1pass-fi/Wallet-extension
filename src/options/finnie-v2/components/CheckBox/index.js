@@ -1,7 +1,7 @@
 import React from 'react'
 
-import CheckBoxLight from './CheckBoxLight'
 import CheckBoxDark from './CheckBoxDark'
+import CheckBoxLight from './CheckBoxLight'
 
 const CheckBox = ({ onClick, disabled, checked = false, className, theme = 'light', ...props }) => {
   if (theme === 'dark') {

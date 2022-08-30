@@ -1,12 +1,10 @@
 // modules
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import get from 'lodash/get'
-
-// assets
-import CloseIcon from 'img/circle-close-icon-blue.svg'
-
 // constants
 import { TYPE } from 'constants/accountConstants'
+// assets
+import CloseIcon from 'img/circle-close-icon-blue.svg'
+import get from 'lodash/get'
 
 // styles
 import './index.css'

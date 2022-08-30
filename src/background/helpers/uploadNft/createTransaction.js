@@ -1,5 +1,5 @@
-import arweave from 'services/arweave'
 import { NFT_CONTRACT_SRC } from 'constants/koiConstants'
+import arweave from 'services/arweave'
 
 export default async ({ u8, nftContent, nftTags, fileType, ownerAddress, createdAt }) => {
   try {

@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
-import isEmpty from 'lodash/isEmpty'
-import get from 'lodash/get'
-import clsx from 'clsx'
-
-import CloseIcon from 'img/ab-close-icon.svg'
-import Avatar from 'img/ab-avatar.png'
-
 import { getDIDs } from 'background/helpers/did/koiiMe'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import clsx from 'clsx'
 import { ERROR_MESSAGE } from 'constants/koiConstants'
+import Avatar from 'img/ab-avatar.png'
+import CloseIcon from 'img/ab-close-icon.svg'
+import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
   const [clicked, setClicked] = useState(false)

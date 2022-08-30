@@ -1,5 +1,6 @@
-import RemoveConnectedSites from '.'
 import partialAction from 'stories/partialAction'
+
+import RemoveConnectedSites from '.'
 
 RemoveConnectedSites.displayName = 'RemoveConnectedSites'
 

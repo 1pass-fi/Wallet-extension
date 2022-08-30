@@ -1,21 +1,16 @@
 // modules
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-
-// components
-import Modal from 'popup/components/shared/modal'
-import Input from 'popup/components/shared/inputField'
-import Button from 'popup/components/shared/button'
-
-// assets
-import WarningIcon from 'img/warning-icon.svg'
-
 // actions
 import { setError } from 'actions/error'
-
 // constants
 import { ERROR_MESSAGE, STORAGE } from 'constants/koiConstants'
-
+// assets
+import WarningIcon from 'img/warning-icon.svg'
+import Button from 'popup/components/shared/button'
+import Input from 'popup/components/shared/inputField'
+// components
+import Modal from 'popup/components/shared/modal'
 // services
 import { popupAccount } from 'services/account'
 

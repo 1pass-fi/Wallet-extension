@@ -1,5 +1,6 @@
-import { ChromeStorage } from '../ChromeStorage'
 import { GENERIC } from 'constants/storageConstants'
+
+import { ChromeStorage } from '../ChromeStorage'
 
 export class GenericGet {
   #chrome

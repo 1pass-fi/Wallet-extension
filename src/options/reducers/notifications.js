@@ -1,4 +1,4 @@
-import { SET_NOTIFICATIONS, ADD_NOTIFICATION, VIEW_NOTIFICATIONS } from '../actions/types'
+import { ADD_NOTIFICATION, SET_NOTIFICATIONS, VIEW_NOTIFICATIONS } from '../actions/types'
 
 const initialState = {
   new: 0,

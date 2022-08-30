@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react'
-
-import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
-import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
-import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import ArrowIcon from 'img/popup/down-arrow-icon.svg'
+import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 
 const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken, customTokenIconPath }) => {
   return (

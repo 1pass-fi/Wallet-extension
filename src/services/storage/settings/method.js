@@ -1,9 +1,8 @@
+import { NETWORK } from 'constants/koiConstants'
 import { isEmpty } from 'lodash'
-
-import { ChromeStorage } from '../ChromeStorage'
 import storage from 'services/storage'
 
-import { NETWORK } from 'constants/koiConstants'
+import { ChromeStorage } from '../ChromeStorage'
 
 export class SettingMethod {
   #chrome

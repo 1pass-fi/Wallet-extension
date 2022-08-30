@@ -5,12 +5,12 @@ import { Route, Switch } from 'react-router-dom'
 // components
 import AccountHome from './accountHome'
 import AccountImport from './accountImport'
-import ConnectToWallet from './connectToWallet'
 import Login from './accountLockScreen'
+import ConnectToWallet from './connectToWallet'
 import ConnectSite from './connectToWallet'
+import Recovery from './recoverKeyfile'
 import SignTx from './signTx'
 import WelcomeScreen from './welcomeScreen'
-import Recovery from './recoverKeyfile'
 
 // styles
 import './index.css'

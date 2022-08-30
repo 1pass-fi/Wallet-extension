@@ -1,4 +1,4 @@
-import { SET_WARNING, CLEAR_WARNING } from '../actions/types'
+import { CLEAR_WARNING,SET_WARNING } from '../actions/types'
 
 const initialState = null
 

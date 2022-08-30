@@ -1,20 +1,18 @@
 import React, { useContext, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import ReactTooltip from 'react-tooltip'
-import isEmpty from 'lodash/isEmpty'
-
+import { TYPE } from 'constants/accountConstants'
+import Avatar from 'img/ab-avatar.png'
+import TickIcon from 'img/ab-circle-tick.svg'
 import CloseIcon from 'img/ab-close-icon.svg'
 import CopyIcon from 'img/copy-icon.svg'
-import TrashIcon from 'img/trash-bin.svg'
 import AddIcon from 'img/navbar/create-nft.svg'
-import TickIcon from 'img/ab-circle-tick.svg'
-import Avatar from 'img/ab-avatar.png'
-
+import TrashIcon from 'img/trash-bin.svg'
+import isEmpty from 'lodash/isEmpty'
 import { GalleryContext } from 'options/galleryContext'
-import Button from '../Button'
-import { TYPE } from 'constants/accountConstants'
-
 import { isArweaveAddress, isEthereumAddress, isSolanaAddress } from 'utils'
+
+import Button from '../Button'
 
 import './index.css'
 

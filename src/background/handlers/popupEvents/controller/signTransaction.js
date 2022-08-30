@@ -1,9 +1,8 @@
 // Services
-import storage from 'services/storage'
-import { backgroundAccount } from 'services/account'
-
 import cache from 'background/cache'
 import helpers from 'background/helpers'
+import { backgroundAccount } from 'services/account'
+import storage from 'services/storage'
 
 export default async (payload, next) => {
   try {

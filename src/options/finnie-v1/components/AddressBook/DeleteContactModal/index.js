@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react'
+import BackIcon from 'img/v2/back-icon-blue.svg'
+import CloseIcon from 'img/v2/close-icon-blue.svg'
 
 import Button from '../Button'
-import CloseIcon from 'img/v2/close-icon-blue.svg'
-import BackIcon from 'img/v2/back-icon-blue.svg'
 
 import './index.css'
 

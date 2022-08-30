@@ -1,9 +1,8 @@
-import storage from 'services/storage'
-import { get, includes, filter } from 'lodash'
 import { useSelector } from 'react-redux'
-
-import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 import { TYPE } from 'constants/accountConstants'
+import { filter,get, includes } from 'lodash'
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
+import storage from 'services/storage'
 
 const useMethod = ({ contractAddress, userAddresses = [] }) => {
   const displayingAccount = useSelector(getDisplayingAccount)

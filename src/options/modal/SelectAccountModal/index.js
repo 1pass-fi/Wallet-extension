@@ -1,14 +1,13 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { find } from 'lodash'
-
-import './index.css'
-import Modal from 'options/shared/modal'
-import { getArAccounts } from 'options/selectors/accounts'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
-
+import { getArAccounts } from 'options/selectors/accounts'
+import Modal from 'options/shared/modal'
 import storage from 'services/storage'
 import { setActivatedAccountAddress } from 'utils'
+
+import './index.css'
 
 const SelectAccount = () => {
   const dispatch = useDispatch()

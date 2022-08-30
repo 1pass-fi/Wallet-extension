@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { popupAccount } from 'services/account'
 
 import TransactionRow from './TransactionRow'
-
-import { popupAccount } from 'services/account'
 
 const TransactionStatus = () => {
   const [transactionData, setTransactionData] = useState([])

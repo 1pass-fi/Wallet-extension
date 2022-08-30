@@ -1,12 +1,9 @@
-import React, { useEffect, useContext } from 'react'
-
+import React, { useContext,useEffect } from 'react'
 import ToggleButton from 'options/finnie-v1/components/toggleButton'
-
+import { GalleryContext } from 'options/galleryContext'
 import storage from 'services/storage'
 
 import './index.css'
-
-import { GalleryContext } from 'options/galleryContext'
 
 export default () => {
   const { showViews, setShowViews, showEarnedKoi, setShowEarnedKoi, walletLoaded } = useContext(GalleryContext)

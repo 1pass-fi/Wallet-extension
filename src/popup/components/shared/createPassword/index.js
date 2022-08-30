@@ -1,10 +1,10 @@
 // modules
 import React from 'react'
 
-// components
-import InputField from '../inputField/index'
 import ButtonShared from '../button/index'
 import CheckBox from '../checkbox'
+// components
+import InputField from '../inputField/index'
 
 // styles
 import './index.css'

@@ -1,16 +1,13 @@
-import clsx from 'clsx'
 import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
-
+import clsx from 'clsx'
+import CheckBox from 'finnie-v2/components/CheckBox'
 import formatLongString from 'finnie-v2/utils/formatLongString'
-
-import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
-import K2Logo from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import ArLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import K2Logo from 'img/v2/k2-logos/finnie-k2-logo.svg'
+import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import SolLogo from 'img/v2/solana-logo.svg'
-
-import CheckBox from 'finnie-v2/components/CheckBox'
 
 const tabs = ['K2', 'ETH', 'SOL', 'AR']
 

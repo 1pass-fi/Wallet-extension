@@ -1,14 +1,11 @@
-import React, { useRef, useEffect, useState } from 'react'
-
-import EyeIcon from 'img/startup/eye.svg'
+import React, { useEffect, useRef, useState } from 'react'
+import { TYPE } from 'constants/accountConstants'
 import SeedPhraseErrorIcon from 'img/seed-phrase-error.svg'
-
-import './index.css'
+import EyeIcon from 'img/startup/eye.svg'
+import isEmpty from 'lodash/isEmpty'
 import wordList from 'utils/wordList.json'
 
-import isEmpty from 'lodash/isEmpty'
-
-import { TYPE } from 'constants/accountConstants'
+import './index.css'
 
 const checkSeedPhraseInWordList = (phrase) => phrase.every((word) => wordList.includes(word))
 

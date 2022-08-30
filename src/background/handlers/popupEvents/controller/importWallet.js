@@ -1,25 +1,21 @@
-import { get, isString, isEmpty } from 'lodash'
+// helpers
+import helpers from 'background/helpers'
 import passworder from 'browser-passworder'
-
-// Services
-import storage from 'services/storage'
-import { ArweaveAccount, EthereumAccount, SolanaAccount, K2Account } from 'services/account/Account'
-import { backgroundAccount } from 'services/account'
-import { KoiTool } from 'services/arweave'
-import { EthereumTool } from 'services/ethereum'
-import { SolanaTool } from 'services/solana'
-import { K2Tool } from 'services/k2'
-
 // Constants
 import { TYPE } from 'constants/accountConstants'
 import { ERROR_MESSAGE } from 'constants/koiConstants'
-
+import { get, isEmpty,isString } from 'lodash'
+import { backgroundAccount } from 'services/account'
+import { ArweaveAccount, EthereumAccount, K2Account,SolanaAccount } from 'services/account/Account'
+import { KoiTool } from 'services/arweave'
+import { EthereumTool } from 'services/ethereum'
+import { K2Tool } from 'services/k2'
+import { SolanaTool } from 'services/solana'
+// Services
+import storage from 'services/storage'
 // Utils
 import { getProviderUrlFromName } from 'utils'
 import { setActivatedAccountAddress } from 'utils'
-
-// helpers
-import helpers from 'background/helpers'
 
 export default async (payload, next) => {
   try {

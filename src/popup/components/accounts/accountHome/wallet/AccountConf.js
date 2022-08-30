@@ -1,30 +1,26 @@
 
 // modules
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-
+import { useHistory } from 'react-router-dom'
+import { removeWallet } from 'actions/koi'
+// actions
+import { setIsLoading } from 'actions/loading'
+import { TYPE } from 'constants/accountConstants'
+// constants
+import { PATH } from 'constants/koiConstants'
+import DeleteIcon from 'img/wallet/delete-icon.svg'
+import KeyIcon from 'img/wallet/key-icon.svg'
 // assets
 import ShareIconOne from 'img/wallet/share-icon.svg'
 import ShareIconTwo from 'img/wallet/share2-icon.svg'
-import KeyIcon from 'img/wallet/key-icon.svg'
-import DeleteIcon from 'img/wallet/delete-icon.svg'
-
-// components
-import RemoveAccountModal from 'shared/modal/removeAccountModal'
 import RemoveConnectedSite from 'popup/components/modals/removeConnectedSites'
-import ExportPrivateKeyModal from './exportPrivateKeyModal'
-
-// constants
-import { PATH } from 'constants/koiConstants'
-import { TYPE } from 'constants/accountConstants'
-
-// actions
-import { setIsLoading } from 'actions/loading'
-import { removeWallet } from 'actions/koi'
-
 // services
 import { popupAccount } from 'services/account'
+// components
+import RemoveAccountModal from 'shared/modal/removeAccountModal'
+
+import ExportPrivateKeyModal from './exportPrivateKeyModal'
 
 // styles
 import './index.css'

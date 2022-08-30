@@ -1,26 +1,21 @@
 // modules
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef,useState } from 'react'
 import { useSelector } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
-import find from 'lodash/find'
-import isEmpty from 'lodash/isEmpty'
 import clsx from 'clsx'
-
-// components
-import Select from 'shared/select'
-
+import formatLongString from 'finnie-v2/utils/formatLongString'
 // assets
 import DownArrowIcon from 'img/v2/dropdown/down-icon-blue.svg'
-
-// services
-import { popupAccount } from 'services/account'
-
-// utils
-import { getAddressesFromAddressBook } from 'utils'
-import formatLongString from 'finnie-v2/utils/formatLongString'
-
 // svgs
 import NoticeIcon from 'img/v2/notice-icon.svg'
+import find from 'lodash/find'
+import isEmpty from 'lodash/isEmpty'
+// services
+import { popupAccount } from 'services/account'
+// components
+import Select from 'shared/select'
+// utils
+import { getAddressesFromAddressBook } from 'utils'
 
 const SendTokenForm = ({
   handleSendToken,

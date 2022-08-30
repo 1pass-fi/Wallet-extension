@@ -1,28 +1,23 @@
 // modules
 import React, { useEffect, useState } from 'react'
-import { useSelector, connect } from 'react-redux'
+import { connect,useSelector } from 'react-redux'
+import { setIsLoading } from 'actions/loading'
+import { TYPE } from 'constants/accountConstants'
+import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import BackIcon from 'img/v2/back-icon.svg'
+import CloseIcon from 'img/v2/close-icon-white.svg'
+import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import { get } from 'lodash'
-import Web3 from 'web3'
-
-// utils
-import { numberFormat, fiatCurrencyFormat, calculateGasFee, winstonToAr } from 'utils'
 import { getDisplayAddress } from 'options/utils'
-
 // styles
 // import './index.css'
 import { popupAccount } from 'services/account'
-
 import arweave from 'services/arweave'
-import { TYPE } from 'constants/accountConstants'
-
-import { setIsLoading } from 'actions/loading'
-
-import BackIcon from 'img/v2/back-icon.svg'
-import CloseIcon from 'img/v2/close-icon-white.svg'
-import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
-import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
-import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import storage from 'services/storage'
+// utils
+import { calculateGasFee, fiatCurrencyFormat, numberFormat, winstonToAr } from 'utils'
+import Web3 from 'web3'
 
 const TransactionConfirmModal = ({
   onClose,

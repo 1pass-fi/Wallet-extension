@@ -1,7 +1,7 @@
 import React from 'react'
-
 import KoiIcon from 'img/finnie-koi-logo-white.svg'
 import Button from 'shared/button'
+
 import './index.css'
 
 export default () => {

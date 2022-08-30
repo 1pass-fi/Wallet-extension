@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-
-import CloseIcon from 'img/v2/close-icon-white.svg'
 import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
+import CloseIcon from 'img/v2/close-icon-white.svg'
 import storage from 'services/storage'
 
 const EthSign = ({ setError, setIsLoading }) => {

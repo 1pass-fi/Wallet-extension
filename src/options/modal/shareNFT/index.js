@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
-import Modal from 'options/shared/modal'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-
-import './index.css'
-
-import TwitterIcon from 'img/social-icons/twitter-icon.svg'
-import FacebookIcon from 'img/social/facebook-icon.svg'
+import { PATH } from 'constants/koiConstants'
 import EmailIcon from 'img/social/email-icon.svg'
+import FacebookIcon from 'img/social/facebook-icon.svg'
 import LinkedInIcon from 'img/social-icons/linkedin-icon.svg'
+import TwitterIcon from 'img/social-icons/twitter-icon.svg'
+import Modal from 'options/shared/modal'
 
 import { createShareWindow } from '../../helpers'
-import { PATH } from 'constants/koiConstants'
+
+import './index.css'
 
 const TextBox = ({ title, text, buttonText, url }) => {
   const [isCopied, setIsCopied] = useState(false)

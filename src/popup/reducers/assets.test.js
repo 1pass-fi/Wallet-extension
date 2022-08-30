@@ -1,5 +1,6 @@
-import assetsReducer from './assets'
 import * as types from 'actions/types'
+
+import assetsReducer from './assets'
 
 const initialState = []
 

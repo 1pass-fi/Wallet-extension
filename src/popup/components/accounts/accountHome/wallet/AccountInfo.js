@@ -1,36 +1,31 @@
 // modules
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
-import getSymbolFromCurrency from 'currency-symbol-map'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { connect } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
-
+import { setAccountName } from 'actions/accountName'
+import { setError } from 'actions/error'
+import { changeAccountName } from 'actions/koi'
+import { setNotification } from 'actions/notification'
+import { TYPE } from 'constants/accountConstants'
+// constants
+import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'
+import getSymbolFromCurrency from 'currency-symbol-map'
+import CollapseIcon from 'img/collapse-icon.svg'
 // assets
 import CopyIcon from 'img/copy-icon.svg'
 import EditIcon from 'img/edit-icon.svg'
-import RearrangeIcon from 'img/rearrange-pads-icon.svg'
-import Fish from 'img/koi-logo-bg.svg'
 import EthereumIcon from 'img/ethereum-logo.svg'
-import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
-
+import Fish from 'img/koi-logo-bg.svg'
+import RearrangeIcon from 'img/rearrange-pads-icon.svg'
+// actions
+import { setAccounts } from 'popup/actions/accounts'
 // components
 import EditAccountNameModal from 'popup/components/modals/editAccountNameModal'
 import useNetworkSelection from 'shared/useNetworkSelection'
-
-// actions
-import { setAccounts } from 'popup/actions/accounts'
-import { changeAccountName } from 'actions/koi'
-import { setError } from 'actions/error'
-import { setNotification } from 'actions/notification'
-import { setAccountName } from 'actions/accountName'
-
 // utils
 import { fiatCurrencyFormat, getProviderNameFromUrl, numberFormat } from 'utils'
-
-// constants
-import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'
-import { TYPE } from 'constants/accountConstants'
 
 // styles
 import './index.css'

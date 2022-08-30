@@ -1,35 +1,30 @@
 // modules
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { isEmpty, orderBy } from 'lodash'
 import ReactTooltip from 'react-tooltip'
-
+import { setError } from 'actions/error'
 // actions
 import { loadActivities } from 'actions/koi'
-import { setTransactions } from 'actions/transactions'
-import { setError } from 'actions/error'
 import { setSettings } from 'actions/settings'
-
-// components
-import ActivityItem from './activityRow'
-import Button from 'shared/button'
-import CheckBox from 'shared/checkbox'
-import ToggleButton from 'shared/ToggleButton'
-import ExpiredTxModal from 'popup/components/modals/expiredTxModal'
-
-// services
-import storage from 'services/storage'
-import { popupAccount } from 'services/account'
-
-// actions
-import { setActivities } from 'popup/actions/activities'
-
+import { setTransactions } from 'actions/transactions'
+// constants
+import { SHOW_ACTIVITIES_BY } from 'constants/storageConstants'
 // assets
 import CollapseIcon from 'img/collapse-icon.svg'
 import ExtendIcon from 'img/extend-icon.svg'
+import { isEmpty, orderBy } from 'lodash'
+// actions
+import { setActivities } from 'popup/actions/activities'
+import ExpiredTxModal from 'popup/components/modals/expiredTxModal'
+import { popupAccount } from 'services/account'
+// services
+import storage from 'services/storage'
+import Button from 'shared/button'
+import CheckBox from 'shared/checkbox'
+import ToggleButton from 'shared/ToggleButton'
 
-// constants
-import { SHOW_ACTIVITIES_BY } from 'constants/storageConstants'
+// components
+import ActivityItem from './activityRow'
 
 // styles
 import './index.css'

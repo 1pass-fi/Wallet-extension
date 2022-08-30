@@ -1,7 +1,7 @@
 import { GenericGet } from './get'
-import { GenericSet } from './set'
-import { GenericRemove } from './remove'
 import { GenericMethod } from './method'
+import { GenericRemove } from './remove'
+import { GenericSet } from './set'
 
 export class Generic {
   constructor() {

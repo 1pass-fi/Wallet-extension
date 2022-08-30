@@ -2,24 +2,21 @@ import React, { createRef, useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 import clsx from 'clsx'
-import isEmpty from 'lodash/isEmpty'
-
+import AccountSettings from 'finnie-v2/components/AccountSettings'
+import ActivityCenterDropdown from 'finnie-v2/components/ActivityCenterDropdown'
 import Balance from 'finnie-v2/components/Balance'
+import AddressBookIcon from 'img/v2/address-book-icon.svg'
 import DefaultAvatar from 'img/v2/default-avatar.svg'
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-white.svg'
 import NotificationIcon from 'img/v2/notification-icon.svg'
-import AddressBookIcon from 'img/v2/address-book-icon.svg'
 import ArrowIcon from 'img/v2/settings/uparrow.svg'
-
-import AccountSettings from 'finnie-v2/components/AccountSettings'
-import ActivityCenterDropdown from 'finnie-v2/components/ActivityCenterDropdown'
-
+import isEmpty from 'lodash/isEmpty'
+import { showAddressBook } from 'options/actions/addressBook'
+import { setNotifications } from 'options/actions/notifications'
+import { DidContext } from 'options/context'
 import Loading from 'options/finnie-v1/components/loading'
 import { GalleryContext } from 'options/galleryContext'
-import { DidContext } from 'options/context'
 import storage from 'services/storage'
-import { setNotifications } from 'options/actions/notifications'
-import { showAddressBook } from 'options/actions/addressBook'
 
 const NavBar = () => {
   const { isLoading, displayingAccount } = useContext(GalleryContext)

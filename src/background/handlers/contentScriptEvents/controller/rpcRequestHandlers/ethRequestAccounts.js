@@ -1,15 +1,11 @@
-import { isEmpty, includes } from 'lodash'
-import { v4 as uuid } from 'uuid'
-
-import { backgroundAccount } from 'services/account'
-
 import { TYPE } from 'constants/accountConstants'
-
-
+import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
+import { includes,isEmpty } from 'lodash'
+import { backgroundAccount } from 'services/account'
 // Services
 import storage from 'services/storage'
 import { createWindow } from 'utils/extension'
-import { REQUEST, OS, WINDOW_SIZE } from 'constants/koiConstants'
+import { v4 as uuid } from 'uuid'
 
 export default async (payload, tab, next) => {
   try {

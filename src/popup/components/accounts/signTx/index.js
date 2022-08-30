@@ -1,37 +1,30 @@
 // modules
-import Web3 from 'web3'
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { isEmpty } from 'lodash'
-
-
+import { useHistory } from 'react-router-dom'
+import { setError } from 'actions/error'
+// actions
+import { signTransaction } from 'actions/koi'
+import { setIsLoading } from 'actions/loading'
+// constants
+import { ERROR_MESSAGE,STORAGE } from 'constants/koiConstants'
 // assets
 import ArweaveIcon from 'img/arweave-icon.svg'
 import KoiIcon from 'img/koi-logo-bg.svg'
-
+import { isEmpty } from 'lodash'
+import { popupAccount } from 'services/account'
+// services
+import storage from 'services/storage'
+import Button from 'shared/button'
 // components
 import Card from 'shared/card'
-import Button from 'shared/button'
-
 // utils
-import { getChromeStorage, removeChromeStorage, transactionAmountFormat, fiatCurrencyFormat } from 'utils'
+import { fiatCurrencyFormat,getChromeStorage, removeChromeStorage, transactionAmountFormat } from 'utils'
 import { utils } from 'utils'
-
-// constants
-import { STORAGE, ERROR_MESSAGE } from 'constants/koiConstants'
-
-// actions
-import { signTransaction } from 'actions/koi'
-import { setError } from 'actions/error'
-import { setIsLoading } from 'actions/loading'
+import Web3 from 'web3'
 
 // styles
 import './index.css'
-
-// services
-import storage from 'services/storage'
-import { popupAccount } from 'services/account'
 
 
 export const SignTx = ({ signTransaction, setError, accountName, price, setIsLoading }) => {

@@ -1,5 +1,6 @@
-import errorReducer from './error'
 import * as types from 'actions/types'
+
+import errorReducer from './error'
 
 const initialState = null
 

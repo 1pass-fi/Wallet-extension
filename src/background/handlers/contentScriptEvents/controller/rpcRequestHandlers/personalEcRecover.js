@@ -1,5 +1,5 @@
-import { get } from 'lodash'
 import { recoverPersonalSignature } from '@metamask/eth-sig-util'
+import { get } from 'lodash'
 
 export default async (payload, tab, next) => {
   try {

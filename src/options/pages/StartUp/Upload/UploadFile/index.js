@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
+import { TYPE } from 'constants/accountConstants'
 import isEmpty from 'lodash/isEmpty'
-
-import Dropfile from '../../shared/Dropfile'
 import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
 
-import { TYPE } from 'constants/accountConstants'
-
+import Dropfile from '../../shared/Dropfile'
 import useEthereumNetworks from '../../shared/useEthereumNetworks'
 
 export default ({ file, setFile, nextStep, walletType, setSelectedNetwork, previousStep}) => {

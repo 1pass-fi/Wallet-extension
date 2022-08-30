@@ -1,20 +1,17 @@
 import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import clsx from 'clsx'
-
-import { GalleryContext } from 'options/galleryContext'
-import { OnboardingContext } from '../onboardingContext'
-
-import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
-import KoiIcon from 'img/v2/onboarding/finnie-koii-logo.svg'
-import SuccessIcon from 'img/v2/onboarding/success-icon.svg'
-import KoiiToken from 'img/v2/onboarding/koii-token.svg'
-import ImagesNFTs from 'img/v2/onboarding/images-nfts.svg'
-import SeedphraseSelectedIcon from 'img/v2/onboarding/seedphrase-selected-icon.svg'
-
-import Button from 'finnie-v2/components/Button'
-
 import { NETWORK } from 'constants/koiConstants'
+import Button from 'finnie-v2/components/Button'
+import KoiIcon from 'img/v2/onboarding/finnie-koii-logo.svg'
+import ImagesNFTs from 'img/v2/onboarding/images-nfts.svg'
+import KoiiToken from 'img/v2/onboarding/koii-token.svg'
+import SeedphraseSelectedIcon from 'img/v2/onboarding/seedphrase-selected-icon.svg'
+import SuccessIcon from 'img/v2/onboarding/success-icon.svg'
+import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
+import { GalleryContext } from 'options/galleryContext'
+
+import { OnboardingContext } from '../onboardingContext'
 
 const RevealPhrase = ({ step }) => {
   const { setIsOnboarding } = useContext(GalleryContext)

@@ -1,5 +1,5 @@
-import { SET_NOTIFICATION } from './types'
 import { clearMessage } from './clearMessage' 
+import { SET_NOTIFICATION } from './types'
 
 export const setNotification = (payload) => async (dispatch) => {
   await clearMessage(dispatch)

@@ -1,6 +1,5 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useEffect,useRef } from 'react'
 import QRCode from 'react-qr-code'
-
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 
 const QrCodeModal = ({ account, close }) => {

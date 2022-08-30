@@ -1,30 +1,24 @@
 // modules
 import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
-import find from 'lodash/find'
-import isEmpty from 'lodash/isEmpty'
-import capitalize from 'lodash/capitalize'
-import get from 'lodash/get'
-
-// assets
-import CloseIcon from 'img/v2/close-icon-white.svg'
-import RecycleBinIcon from 'img/popup/recycle-bin-icon.svg'
-import EmptyConnectedSitesIcon from 'img/v2/empty-connected-sites-icon.svg'
-
-// constants
-import { TYPE } from 'constants/accountConstants'
-import { MESSAGES } from 'constants/koiConstants'
-
 // actions
 import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
-
-// services
-import storage from 'services/storage'
-
+// constants
+import { TYPE } from 'constants/accountConstants'
+import { MESSAGES } from 'constants/koiConstants'
+import RecycleBinIcon from 'img/popup/recycle-bin-icon.svg'
+// assets
+import CloseIcon from 'img/v2/close-icon-white.svg'
+import EmptyConnectedSitesIcon from 'img/v2/empty-connected-sites-icon.svg'
+import capitalize from 'lodash/capitalize'
+import find from 'lodash/find'
+import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 // selectors
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
-
+// services
+import storage from 'services/storage'
 // utils
 import { getSiteConnectedAddresses } from 'utils'
 

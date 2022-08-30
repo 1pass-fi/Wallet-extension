@@ -1,10 +1,9 @@
+import helpers from 'background/helpers'
+import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 import { isUndefined } from 'lodash'
-import { smartweave } from 'smartweave'
-
 import { backgroundAccount } from 'services/account'
 import arweave from 'services/arweave'
-import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
-import helpers from 'background/helpers'
+import { smartweave } from 'smartweave'
 
 export default async (payload, next) => {
   try {

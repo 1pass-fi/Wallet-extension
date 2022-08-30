@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import PreUpload from './PreUpload'
 import Confirm from './Confirm'
+import PreUpload from './PreUpload'
 import UploadFile from './UploadFile'
 
 import './index.css'

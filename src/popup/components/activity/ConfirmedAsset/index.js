@@ -1,10 +1,9 @@
 // modules
 import React from 'react'
 import { connect } from 'react-redux'
-import moment from 'moment'
-
 // assets
 import ShareIcon from 'img/share-icon-purple.svg'
+import moment from 'moment'
 
 // styles
 import './index.css'

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import clsx from 'clsx'
+import WarningIcon from 'img/popup/warning-icon.svg'
 import isEmpty from 'lodash/isEmpty'
 
 // hooks
 import useGetTokenMetaData from './hooks/useGetTokenMetaData'
-
-import WarningIcon from 'img/popup/warning-icon.svg'
 
 const CustomToken = ({ setTokenImport }) => {
   const history = useHistory()

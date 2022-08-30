@@ -1,26 +1,21 @@
 // modules
 import React, { useEffect, useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
-
-// assets
-import KoiIcon from 'img/koi-logo.svg'
-
-// components
-import InputField from 'shared/inputField'
-import Button from 'shared/button'
-
+import { useHistory } from 'react-router-dom'
 // actions
 import { unlockWallet } from 'actions/koi'
-import { setIsLoading } from 'popup/actions/loading'
-import { setError } from 'popup/actions/error'
-
 // constants
 import { REQUEST } from 'constants/koiConstants'
-
+// assets
+import KoiIcon from 'img/koi-logo.svg'
+import { get } from 'lodash'
+import { setError } from 'popup/actions/error'
+import { setIsLoading } from 'popup/actions/loading'
 // services
 import storage from 'services/storage'
+import Button from 'shared/button'
+// components
+import InputField from 'shared/inputField'
 
 // styles
 import './index.css'

@@ -1,18 +1,17 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react'
+import React, { useContext, useEffect, useMemo,useState } from 'react'
 import { useSelector } from 'react-redux'
-import { isEmpty } from 'lodash'
-
+import Button from 'finnie-v2/components/Button'
+import CheckBox from 'finnie-v2/components/CheckBox'
+import PreviousButton from 'img/v2/arrow-left-orange.svg'
+import NextButton from 'img/v2/arrow-right-orange.svg'
 import BackIcon from 'img/v2/back-icon.svg'
 import CheckMarkIcon from 'img/v2/check-mark-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-white.svg'
-import NextButton from 'img/v2/arrow-right-orange.svg'
-import PreviousButton from 'img/v2/arrow-left-orange.svg'
-
-import Button from 'finnie-v2/components/Button'
-import CheckBox from 'finnie-v2/components/CheckBox'
-import UploadedFiles from './UploadedFiles'
-import EditNftInfo from './EditNftInfo'
+import { isEmpty } from 'lodash'
 import { GalleryContext } from 'options/galleryContext'
+
+import EditNftInfo from './EditNftInfo'
+import UploadedFiles from './UploadedFiles'
 
 const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }) => {
   const { selectedNftIds, setSelectedNftIds } = useContext(GalleryContext)

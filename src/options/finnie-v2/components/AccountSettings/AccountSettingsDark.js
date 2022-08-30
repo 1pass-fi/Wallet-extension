@@ -1,6 +1,6 @@
 import React from 'react'
-import clsx from 'clsx'
 import { NavLink } from 'react-router-dom'
+import clsx from 'clsx'
 
 const accountSettingItems = [
   { text: 'Koii Identity (DID)', path: '/settings/kID' },

@@ -1,14 +1,12 @@
-import React, { useState, useRef, useEffect, useContext } from 'react'
+import React, { useContext,useEffect, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { CSVLink } from 'react-csv'
 import passworder from 'browser-passworder'
-
 import CloseIcon from 'img/close-x-icon.svg'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { GalleryContext } from 'options/galleryContext'
-import { getChromeStorage, decryptSeedPhraseFromChrome } from 'utils'
-
 import { popupAccount } from 'services/account'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import { decryptSeedPhraseFromChrome,getChromeStorage } from 'utils'
 
 import './index.css'
 

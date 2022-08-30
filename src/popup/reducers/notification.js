@@ -1,4 +1,4 @@
-import { SET_NOTIFICATION, CLEAR_NOTIFICATION } from '../actions/types'
+import { CLEAR_NOTIFICATION,SET_NOTIFICATION } from '../actions/types'
 
 const initialState = null
 

@@ -1,17 +1,13 @@
-import EventEmitter from 'events'
-import { get, isEmpty } from 'lodash'
-
+import cache from 'background/cache'
 // Constants
 import { MESSAGES, NETWORK } from 'constants/koiConstants'
-
-// Utils
-import { getSelectedTab } from 'utils/extension'
-
+import EventEmitter from 'events'
+import { get, isEmpty } from 'lodash'
+import { backgroundAccount } from 'services/account'
 // Services
 import storage from 'services/storage'
-
-import cache from 'background/cache'
-import { backgroundAccount } from 'services/account'
+// Utils
+import { getSelectedTab } from 'utils/extension'
 
 
 

@@ -1,4 +1,4 @@
-import { SOCIAL_NETWORKS, PATH } from 'constants/koiConstants'
+import { PATH,SOCIAL_NETWORKS } from 'constants/koiConstants'
 
 export default (network, txid) => {
   const url = getShareUrl(network, txid)

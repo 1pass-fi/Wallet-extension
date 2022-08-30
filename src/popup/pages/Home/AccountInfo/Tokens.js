@@ -2,24 +2,19 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
-
 import { TYPE } from 'constants/accountConstants'
-import { fiatCurrencyFormat, numberFormat } from 'utils'
-import { fromArToWinston, fromEthToWei } from 'utils'
-import { setIsLoading } from 'popup/actions/loading'
-
-import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
-import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
-import SolanaIcon from 'img/v2/solana-logo.svg'
+import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import K2Icon from 'img/v2/k2-logos/finnie-k2-logo.svg'
-
-// hooks
-import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddresses'
-
+import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+import SolanaIcon from 'img/v2/solana-logo.svg'
+import { setIsLoading } from 'popup/actions/loading'
 // selectors
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
-
+// hooks
+import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddresses'
+import { fiatCurrencyFormat, numberFormat } from 'utils'
+import { fromArToWinston, fromEthToWei } from 'utils'
 // utils
 import getTokenData, { getSolanaCustomTokensData } from 'utils/getTokenData'
 

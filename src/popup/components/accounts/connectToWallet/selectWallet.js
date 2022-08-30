@@ -1,11 +1,9 @@
 // modules
 import React from 'react'
-import isEmpty from 'lodash/isEmpty'
-
+import ArweaveIcon from 'img/arweave-icon.svg'
 // assets
 import KoiIcon from 'img/koi-logo.svg'
-import ArweaveIcon from 'img/arweave-icon.svg'
-
+import isEmpty from 'lodash/isEmpty'
 // components
 import Button from 'popup/components/shared/button'
 import Checkbox from 'popup/components/shared/checkbox'

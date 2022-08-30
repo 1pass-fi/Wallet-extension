@@ -1,6 +1,5 @@
 // modules
 import React, { useState } from 'react'
-
 // constants
 import { TYPE } from 'constants/accountConstants'
 

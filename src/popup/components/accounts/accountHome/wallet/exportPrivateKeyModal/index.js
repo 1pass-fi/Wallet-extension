@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-
 import { getKeyFile } from 'actions/koi'
 import { NOTIFICATION } from 'constants/koiConstants'
-
 import WarningIcon from 'img/warning-icon.svg'
-
-import './index.css'
-import InputField from 'shared/inputField'
+import { setError } from 'popup/actions/error'
+import { setNotification } from 'popup/actions/notification'
 import Button from 'popup/components/shared/button'
 import Modal from 'popup/components/shared/modal/index'
-import { setNotification } from 'popup/actions/notification'
-import { setError } from 'popup/actions/error'
+import InputField from 'shared/inputField'
+
+import './index.css'
 
 export const KeyModal = ({ address, getKeyFile, setShowExportKeyModel, setNotification, setError }) => {
   const [password, setPassword] = useState(null)

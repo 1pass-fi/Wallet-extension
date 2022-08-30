@@ -1,14 +1,13 @@
-import React, { useEffect, useMemo, useState, useContext } from 'react'
+import React, { useContext,useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { TYPE } from 'constants/accountConstants'
+import DropDown from 'finnie-v2/components/DropDown'
+import { GalleryContext } from 'options/galleryContext'
+import { popupAccount } from 'services/account'
+import storage from 'services/storage'
 import { v4 as uuid } from 'uuid'
 
 import ActivityRow from './ActivityRow'
-import DropDown from 'finnie-v2/components/DropDown'
-
-import storage from 'services/storage'
-import { popupAccount } from 'services/account'
-import { TYPE } from 'constants/accountConstants'
-import { GalleryContext } from 'options/galleryContext'
 
 const Activity = () => {
   const [activities, setActivities] = useState([])

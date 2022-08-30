@@ -1,5 +1,6 @@
-import loadingReducer from './loading'
 import * as types from 'actions/types'
+
+import loadingReducer from './loading'
 
 const initialState = false
 

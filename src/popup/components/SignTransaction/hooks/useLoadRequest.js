@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useEffect,useState } from 'react'
 import { get, isEmpty } from 'lodash'
-
+import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 import validateToken from 'utils/erc20/validateToken'
 
 import helper from './helper'
-import { popupAccount } from 'services/account'
 
 const useLoadRequest = ({ setIsLoading }) => {
   const [transactionPayload, setTransactionPayload] = useState(null)

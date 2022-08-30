@@ -1,34 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, connect } from 'react-redux'
+import { connect,useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useParallax } from 'react-scroll-parallax'
-import isEmpty from 'lodash/isEmpty'
-
-import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
-import SendIcon from 'img/popup/send-icon.svg'
-import ReceiveIcon from 'img/popup/receive-icon.svg'
-
+// actions
+import {
+  loadContent,
+  updateEthereumProvider,
+  updateK2Provider,
+  updateSolanaProvider} from 'actions/koi'
 // constants
 import { TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
-
-import { fiatCurrencyFormat, numberFormat } from 'utils'
-import storage from 'services/storage'
-import { setIsLoading } from 'popup/actions/loading'
-import { popupBackgroundRequest as request } from 'services/request/popup'
 import Select from 'finnie-v2/components/Select'
-
+import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
+import ReceiveIcon from 'img/popup/receive-icon.svg'
+import SendIcon from 'img/popup/send-icon.svg'
+import isEmpty from 'lodash/isEmpty'
 // components
 import { loadAllAccounts } from 'options/actions/accounts'
-
-// actions
-import {
-  updateEthereumProvider,
-  updateSolanaProvider,
-  updateK2Provider,
-  loadContent
-} from 'actions/koi'
 import { setActivities } from 'popup/actions/activities'
+import { setIsLoading } from 'popup/actions/loading'
+import { popupBackgroundRequest as request } from 'services/request/popup'
+import storage from 'services/storage'
+import { fiatCurrencyFormat, numberFormat } from 'utils'
 
 const HomeTop = ({
   displayingAccount,

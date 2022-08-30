@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import isEmpty from 'lodash/isEmpty'
 import clsx from 'clsx'
-
+import { TYPE } from 'constants/accountConstants'
 import BackBtn from 'img/popup/back-button.svg'
+import isEmpty from 'lodash/isEmpty'
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
-// components
-import Search from './Search'
 import CustomToken from './CustomToken'
 import ImportTokenForm from './ImportTokenForm'
-
-import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
-import { TYPE } from 'constants/accountConstants'
+// components
+import Search from './Search'
 
 export const ImportToken = () => {
   const displayingAccount = useSelector(getDisplayingAccount)

@@ -1,13 +1,11 @@
-import { isEmpty, get } from 'lodash'
-
-import storage from 'services/storage'
 import { ERROR_MESSAGE } from 'constants/koiConstants'
-
-import { popupBackgroundRequest as request } from 'services/request/popup'
-
-import { fromLampToSol, fromWeiToEth, fromWinstonToAr } from 'utils'
-import { TRANSACTION_TYPE } from './constants'
+import { get,isEmpty } from 'lodash'
 import { popupAccount } from 'services/account'
+import { popupBackgroundRequest as request } from 'services/request/popup'
+import storage from 'services/storage'
+import { fromLampToSol, fromWeiToEth, fromWinstonToAr } from 'utils'
+
+import { TRANSACTION_TYPE } from './constants'
 
 const useMethod = ({
   setIsLoading,

@@ -1,19 +1,15 @@
 import { useEffect } from 'react'
-import { useStore, useDispatch } from 'react-redux'
-import isEmpty from 'lodash/isEmpty'
-
+import { useDispatch,useStore } from 'react-redux'
+import { MESSAGES } from 'constants/koiConstants'
 import sendMessage from 'finnie-v2/utils/sendMessage'
-
-import storage from 'services/storage'
-import { popupBackgroundConnect } from 'services/request/popup'
-import { popupAccount } from 'services/account'
-import { EventHandler } from 'services/request/src/backgroundConnect'
-
+import isEmpty from 'lodash/isEmpty'
 import { loadAllAccounts } from 'options/actions/accounts'
 import { setAssets } from 'options/actions/assets'
 import { addNotification } from 'options/actions/notifications'
-
-import { MESSAGES } from 'constants/koiConstants'
+import { popupAccount } from 'services/account'
+import { popupBackgroundConnect } from 'services/request/popup'
+import { EventHandler } from 'services/request/src/backgroundConnect'
+import storage from 'services/storage'
 
 export default ({ setError, setModalStates, setNotification, setIsLoading }) => {
   const store = useStore()

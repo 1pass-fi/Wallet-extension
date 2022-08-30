@@ -1,26 +1,22 @@
 // modules
 import React, { useEffect, useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { get, isUndefined } from 'lodash'
-
-// assets
-import KoiIcon from 'img/v2/koii-logos/finnie-koii-logo-transparent.svg'
-import WarningIcon from 'img/v2/popup-warning.svg'
-import ToggleViewPw from 'img/v2/popup-toggle-view-pw.svg'
-import Background from 'img/v2/popup-bg.svg'
-import PauseIcon from 'img/popup/pause-icon.svg'
-import PlayIcon from 'img/popup/play-icon.svg'
-
+import { useHistory } from 'react-router-dom'
 // actions
 import { unlockWallet } from 'actions/koi'
-import { setIsLoading } from 'popup/actions/loading'
-import { setError } from 'popup/actions/error'
-
 // constants
 import { REQUEST } from 'constants/koiConstants'
 import { MESSAGES } from 'constants/koiConstants'
-
+import PauseIcon from 'img/popup/pause-icon.svg'
+import PlayIcon from 'img/popup/play-icon.svg'
+// assets
+import KoiIcon from 'img/v2/koii-logos/finnie-koii-logo-transparent.svg'
+import Background from 'img/v2/popup-bg.svg'
+import ToggleViewPw from 'img/v2/popup-toggle-view-pw.svg'
+import WarningIcon from 'img/v2/popup-warning.svg'
+import { get, isUndefined } from 'lodash'
+import { setError } from 'popup/actions/error'
+import { setIsLoading } from 'popup/actions/loading'
 // services
 import storage from 'services/storage'
 import disableOrigin from 'utils/disableOrigin'

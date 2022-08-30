@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
-import storage from 'services/storage'
-import Web3 from 'web3'
-import { TOKEN_PROGRAM_ID, AccountLayout } from '@solana/spl-token'
+import { AccountLayout,TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js'
-
-import { isEthereumAddress, isSolanaAddress } from 'utils'
-
-import { getSolanaCustomTokensData } from 'utils/getTokenData'
-
 import ERC20_ABI from 'abi/ERC20.json'
+import storage from 'services/storage'
+import { isEthereumAddress, isSolanaAddress } from 'utils'
+import { getSolanaCustomTokensData } from 'utils/getTokenData'
+import Web3 from 'web3'
 
 const useGetTokenBalance = ({ contractAddress, userAddress }) => {
   const [tokenSymbol, setTokenSymbol] = useState(null)

@@ -1,5 +1,4 @@
 import { isEmpty } from 'lodash'
-
 // Services
 import { backgroundAccount } from 'services/account'
 

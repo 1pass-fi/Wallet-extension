@@ -1,6 +1,5 @@
 // modules
 import React from 'react'
-
 // assets
 import KoiIcon from 'img/koi-logo.svg'
 

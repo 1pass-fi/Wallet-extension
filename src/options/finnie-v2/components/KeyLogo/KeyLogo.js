@@ -1,15 +1,13 @@
 import React, { useState } from 'react'
 import clsx from 'clsx'
-
+import { TYPE } from 'constants/accountConstants'
+import ArweaveLock from 'img/v2/onboarding/arweave-lock-icon.svg'
+import EthereumLock from 'img/v2/onboarding/ethereum-lock-icon.svg'
 import KeyDarkBackground from 'img/v2/onboarding/key-background-dark.svg'
 import KeyHoverBackground from 'img/v2/onboarding/key-background-hover.svg'
-import SolanaLock from 'img/v2/onboarding/solana-lock-icon.svg'
-import EthereumLock from 'img/v2/onboarding/ethereum-lock-icon.svg'
 import KoiiLock from 'img/v2/onboarding/koii-lock-icon.svg'
 import KoiiLockOpacity from 'img/v2/onboarding/koii-lock-icon-opacity.svg'
-import ArweaveLock from 'img/v2/onboarding/arweave-lock-icon.svg'
-
-import { TYPE } from 'constants/accountConstants'
+import SolanaLock from 'img/v2/onboarding/solana-lock-icon.svg'
 
 const KeyLogo = ({ type, inProcessing, networkProcessing, handleOnClick }) => {
   const [isHover, setIsHover] = useState(false)

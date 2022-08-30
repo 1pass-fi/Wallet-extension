@@ -1,34 +1,29 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { isEmpty, isString, find, get } from 'lodash'
-
-import ToolTip from 'finnie-v2/components/ToolTip'
-
+import { TYPE } from 'constants/accountConstants'
 import Button from 'finnie-v2/components/Button'
 import NavBar from 'finnie-v2/components/NavBar'
 import NFTMedia from 'finnie-v2/components/NFTMedia'
-import ShareNFTModal from './ShareNFTModal'
-
-import BlockIcon from 'img/v2/block-icon.svg'
-import LeaderboardIcon from 'img/v2/leaderboard-icon.svg'
-import ShareIcon from 'img/v2/share-icon.svg'
-import LinkIcon from 'img/v2/link-icon.svg'
-import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
-import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
-import SolanaLogo from 'img/v2/solana-logo.svg'
-import GoBackIcon from 'img/v2/back-icon.svg'
-
-import { TYPE } from 'constants/accountConstants'
+import ToolTip from 'finnie-v2/components/ToolTip'
 import formatDatetime from 'finnie-v2/utils/formatDatetime'
 import formatNumber from 'finnie-v2/utils/formatNumber'
+import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
+import GoBackIcon from 'img/v2/back-icon.svg'
+import BlockIcon from 'img/v2/block-icon.svg'
+import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import LeaderboardIcon from 'img/v2/leaderboard-icon.svg'
+import LinkIcon from 'img/v2/link-icon.svg'
+import ShareIcon from 'img/v2/share-icon.svg'
+import SolanaLogo from 'img/v2/solana-logo.svg'
+import { find, get,isEmpty, isString } from 'lodash'
 import { GalleryContext } from 'options/galleryContext'
+import { popupAccount } from 'services/account'
+import { popupBackgroundRequest as request } from 'services/request/popup'
 import storage from 'services/storage'
 
-import { popupBackgroundRequest as request } from 'services/request/popup'
-
+import ShareNFTModal from './ShareNFTModal'
 import ToggleButton from './ToggleButton'
-import { popupAccount } from 'services/account'
 
 const NFTDetail = () => {
   const history = useHistory()

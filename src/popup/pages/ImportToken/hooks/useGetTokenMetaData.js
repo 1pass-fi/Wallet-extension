@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useEffect,useState } from 'react'
+import ERC20_ABI from 'abi/ERC20.json'
 import storage from 'services/storage'
 import Web3 from 'web3'
-
-import ERC20_ABI from 'abi/ERC20.json'
 
 const useGetTokenMetaData = ({ contractAddress }) => {
   const [tokenSymbol, setTokenSymbol] = useState(null)

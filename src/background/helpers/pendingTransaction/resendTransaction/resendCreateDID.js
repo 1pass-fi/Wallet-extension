@@ -1,13 +1,12 @@
 /* 
   Resend the transaction the will create the react app
 */
-import { get } from 'lodash'
-
-import arweave from 'services/arweave'
+import koiiMe from 'background/helpers/did/koiiMe'
 import { DID_CONTRACT_ID } from 'constants/koiConstants'
+import { get } from 'lodash'
+import arweave from 'services/arweave'
 
 import errorHandler from '../../errorHandler'
-import koiiMe from 'background/helpers/did/koiiMe'
 
 const resendCreateDID = async (account, transaction) => {
   const contractId = get(transaction, 'data.dataContractID')

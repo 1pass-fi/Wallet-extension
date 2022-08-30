@@ -1,17 +1,16 @@
-import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
 import {
-  Keypair,
-  Connection,
   clusterApiUrl,
-  PublicKey,
-  Transaction,
-  SystemProgram,
+  Connection,
+  Keypair,
   LAMPORTS_PER_SOL,
-  sendAndConfirmTransaction
-} from '@solana/web3.js'
+  PublicKey,
+  sendAndConfirmTransaction,
+  SystemProgram,
+  Transaction} from '@solana/web3.js'
+import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
+import bs58 from 'bs58'
 import { derivePath } from 'ed25519-hd-key'
 import isEmpty from 'lodash/isEmpty'
-import bs58 from 'bs58'
 import storage from 'services/storage'
 
 export class SolanaTool {

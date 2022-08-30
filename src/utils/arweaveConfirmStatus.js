@@ -1,5 +1,5 @@
-import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 
 const arweave = Arweave.init({
   host: 'arweave.net',

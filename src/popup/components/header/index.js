@@ -1,24 +1,20 @@
 // modules
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { withRouter, useHistory } from 'react-router-dom'
-import { isEmpty } from 'lodash'
-
+import { useHistory,withRouter } from 'react-router-dom'
+// actions
+import { setError } from 'actions/error'
+// constants
+import { NAVBAR_EXCLUDE_PATH, PATH,STORAGE } from 'constants/koiConstants'
 // assets
 import LogoIcon from 'img/koi-logo-42-31.svg'
 import SettingIcon from 'img/settings-icon.svg'
-
-// components
-import NavBar from './navBar'
-
-// actions
-import { setError } from 'actions/error'
-
+import { isEmpty } from 'lodash'
 // utils
 import { getChromeStorage } from 'utils'
 
-// constants
-import { STORAGE, NAVBAR_EXCLUDE_PATH, PATH } from 'constants/koiConstants'
+// components
+import NavBar from './navBar'
 
 // styles
 import './index.css'

@@ -1,29 +1,24 @@
 // modules
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import isEmpty from 'lodash/isEmpty'
-import capitalize from 'lodash/capitalize'
-import get from 'lodash/get'
-
-// assets
-import CloseIcon from 'img/v2/close-icon-blue.svg'
-import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
-import EmptyConnectedSitesIcon from 'img/v2/empty-connected-sites-icon.svg'
-
-// actions
-import { loadAllAccounts } from 'options/actions/accounts'
-
-// constants
-import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
-
+import formatLongString from 'finnie-v2/utils/formatLongString'
+// assets
+import CloseIcon from 'img/v2/close-icon-blue.svg'
+import EmptyConnectedSitesIcon from 'img/v2/empty-connected-sites-icon.svg'
+import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
+import capitalize from 'lodash/capitalize'
+import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
+// actions
+import { loadAllAccounts } from 'options/actions/accounts'
+// constants
+import { GalleryContext } from 'options/galleryContext'
 // services
 import storage from 'services/storage'
-
 // utils
 import { getSiteConnectedAddresses } from 'utils'
-import formatLongString from 'finnie-v2/utils/formatLongString'
 
 const ConnectedSitesModal = ({ account, close }) => {
   const { setError, setIsLoading } = useContext(GalleryContext)

@@ -1,6 +1,5 @@
-import clsx from 'clsx'
 import React from 'react'
-
+import clsx from 'clsx'
 import ToolTip from 'finnie-v2/components/ToolTip'
 import QuestionMarkBlue from 'img/v2/question-mark-icon-blue.svg'
 import QuestionMarkWhite from 'img/v2/question-mark-icon-white.svg'

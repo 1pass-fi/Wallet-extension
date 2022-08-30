@@ -1,15 +1,12 @@
-import { isNumber } from 'lodash'
-import { v4 as uuid } from 'uuid'
-
 // Constants
 import { REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
-
-// Utils
-import { createWindow, getPlatformInfo } from 'utils/extension'
-import { winstonToAr, calculateArFee } from 'utils'
-
+import { isNumber } from 'lodash'
 // Services
 import storage from 'services/storage'
+import { calculateArFee,winstonToAr } from 'utils'
+// Utils
+import { createWindow, getPlatformInfo } from 'utils/extension'
+import { v4 as uuid } from 'uuid'
 
 
 export default async (payload, tab, next) => {

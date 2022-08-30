@@ -1,5 +1,6 @@
-import createWalletReducer from './createWallet'
 import * as types from 'actions/types'
+
+import createWalletReducer from './createWallet'
 
 const initialState = {
   stage: 1,

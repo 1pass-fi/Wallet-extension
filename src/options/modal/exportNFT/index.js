@@ -1,10 +1,10 @@
 import React from 'react'
+import { TYPE } from 'constants/accountConstants'
 import Modal from 'options/shared/modal'
 
 import ExportWallet from './ExportWallet'
-import './index.css'
 
-import { TYPE } from 'constants/accountConstants'
+import './index.css'
 
 export default ({ onClose, info }) => {
   const { type } = info

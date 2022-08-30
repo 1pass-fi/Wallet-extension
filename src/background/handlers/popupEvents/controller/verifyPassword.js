@@ -1,6 +1,5 @@
-import { isEmpty } from 'lodash'
 import passworder from 'browser-passworder'
-
+import { isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
 

@@ -1,6 +1,7 @@
 import isEmpty from 'lodash/isEmpty'
 
 import store from '../store'
+
 import { SET_ASSETS, SET_COLLECTION_NFTS, SET_FILTER_NFTS } from './types'
 
 export const setAssets = (payload) => (dispatch) => {

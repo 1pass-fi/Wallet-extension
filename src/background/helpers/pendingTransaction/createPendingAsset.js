@@ -1,9 +1,8 @@
-import { backgroundAccount } from 'services/account'
 import axios from 'axios'
-
+import { TYPE } from 'constants/accountConstants'
 // constants
 import { PATH } from 'constants/koiConstants'
-import { TYPE } from 'constants/accountConstants'
+import { backgroundAccount } from 'services/account'
 
 export default async ({
   file,

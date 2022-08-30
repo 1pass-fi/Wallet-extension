@@ -1,26 +1,21 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import clsx from 'clsx'
+// constants
+import { TYPE } from 'constants/accountConstants'
+// utils
+import formatNumber from 'finnie-v2/utils/formatNumber'
+import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 import isEmpty from 'lodash/isEmpty'
-
 // components
 import CheckBoxLight from 'options/finnie-v2/components/CheckBox/CheckBoxLight'
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
+import { getLogoPath } from 'utils/getTokenData'
 
 // hooks
 import useGetTokenBalance from './hooks/useGetTokenBalance'
 import useMethod from './hooks/useMethod'
-
-// utils
-import formatNumber from 'finnie-v2/utils/formatNumber'
-import { getLogoPath } from 'utils/getTokenData'
-
-// constants
-import { TYPE } from 'constants/accountConstants'
-
-import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
-
-import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
-import clsx from 'clsx'
 
 const ImportTokenForm = ({ tokenImport, goBack }) => {
   const displayingAccount = useSelector(getDisplayingAccount)

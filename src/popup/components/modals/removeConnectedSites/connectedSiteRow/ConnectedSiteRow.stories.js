@@ -1,5 +1,6 @@
-import ConnectedSiteRow from '.'
 import partialAction from 'stories/partialAction'
+
+import ConnectedSiteRow from '.'
 
 ConnectedSiteRow.displayName = 'ConnectedSiteRow'
 

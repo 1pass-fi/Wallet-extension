@@ -1,5 +1,6 @@
-import EditAccountNameModal from '.'
 import partialAction from 'stories/partialAction'
+
+import EditAccountNameModal from '.'
 
 EditAccountNameModal.displayName = 'EditAccountNameModal'
 

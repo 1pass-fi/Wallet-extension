@@ -1,5 +1,6 @@
-import Checkbox from '.'
 import partialAction from 'stories/partialAction'
+
+import Checkbox from '.'
 
 Checkbox.displayName = 'Checkbox'
 

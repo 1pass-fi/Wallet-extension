@@ -1,7 +1,6 @@
 import React from 'react'
-import get from 'lodash/get'
-
 import QuestionMarkIcon from 'img/startup/question-mark.svg'
+import get from 'lodash/get'
 
 import './index.css'
 

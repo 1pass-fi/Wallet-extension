@@ -1,6 +1,6 @@
-import ContentScriptEvents from './ContentScriptEvents'
 import { MESSAGES } from 'constants/koiConstants'
 
+import ContentScriptEvents from './ContentScriptEvents'
 // controller
 import controller from './controller'
 

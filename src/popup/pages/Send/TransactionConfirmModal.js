@@ -1,28 +1,23 @@
 // modules
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { TYPE } from 'constants/accountConstants'
+import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import BackIcon from 'img/v2/back-icon.svg'
+import CloseIcon from 'img/v2/close-icon-white.svg'
+import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import isEmpty from 'lodash/isEmpty'
-
+import { getDisplayAddress } from 'options/utils'
 // components
 // import Modal from 'popup/components/shared/modal/index'
 import Button from 'popup/components/shared/button/'
-
-// utils
-import { numberFormat, fiatCurrencyFormat, calculateGasFee, winstonToAr } from 'utils'
-import { getDisplayAddress } from 'options/utils'
-
 // styles
 // import './index.css'
 import { popupAccount } from 'services/account'
-
 import arweave from 'services/arweave'
-import { TYPE } from 'constants/accountConstants'
-
-import BackIcon from 'img/v2/back-icon.svg'
-import CloseIcon from 'img/v2/close-icon-white.svg'
-import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
-import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
-import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+// utils
+import { calculateGasFee, fiatCurrencyFormat, numberFormat, winstonToAr } from 'utils'
 
 const TransactionConfirmModal = ({
   sentAmount,

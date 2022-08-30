@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-
 import EyeIcon from 'img/startup/eye.svg'
 
 import './index.css'

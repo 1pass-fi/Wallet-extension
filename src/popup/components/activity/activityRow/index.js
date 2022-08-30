@@ -1,14 +1,12 @@
 // modules
-import React, { useState, useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-import moment from 'moment'
 import ReactTooltip from 'react-tooltip'
-import { includes, get } from 'lodash'
-
 // constants
-import { ETHERSCAN_API, ETH_NETWORK_PROVIDER, PATH, URL } from 'constants/koiConstants'
-
+import { ETH_NETWORK_PROVIDER, ETHERSCAN_API, PATH, URL } from 'constants/koiConstants'
+import { get,includes } from 'lodash'
+import moment from 'moment'
+import PropTypes from 'prop-types'
 // utils
 import { transactionAmountFormat } from 'utils'
 

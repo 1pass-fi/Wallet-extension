@@ -2,33 +2,28 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
+// actions
+import { setError } from 'actions/error'
+import { changeAccountName } from 'actions/koi'
+import { setNotification } from 'actions/notification'
 import passworder from 'browser-passworder'
-
+import { TYPE } from 'constants/accountConstants'
+// constants
+import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'
+import EditIcon from 'img/edit-icon.svg'
+import Ethereum from 'img/ethereum-logo.svg'
 // assets
 import Fish from 'img/koi-logo-bg.svg'
-import Ethereum from 'img/ethereum-logo.svg'
-import EditIcon from 'img/edit-icon.svg'
-
+import EditAccountNameModal from 'popup/components/modals/editAccountNameModal'
 // components
 import Button from 'popup/components/shared/button'
-import RevealSeedPhraseModal from '../revealSeedPhraseModal'
-import EditAccountNameModal from 'popup/components/modals/editAccountNameModal'
-import { SeedPhraseModal } from '../seedPhraseModal'
-
+// services
+import { popupAccount } from 'services/account'
 // utils
 import { decryptSeedPhraseFromChrome } from 'utils'
 
-// actions
-import { setError } from 'actions/error'
-import { setNotification } from 'actions/notification'
-import { changeAccountName } from 'actions/koi'
-
-// constants
-import { ERROR_MESSAGE, NOTIFICATION } from 'constants/koiConstants'
-import { TYPE } from 'constants/accountConstants'
-
-// services
-import { popupAccount } from 'services/account'
+import RevealSeedPhraseModal from '../revealSeedPhraseModal'
+import { SeedPhraseModal } from '../seedPhraseModal'
 
 // styles
 import './index.css'

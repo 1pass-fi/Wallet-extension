@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-
 import Button from 'finnie-v2/components/Button'
-
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import ShareIcon from 'img/v2/share-icon-white.svg'

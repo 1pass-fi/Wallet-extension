@@ -1,6 +1,5 @@
 import { ethers } from 'ethers'
 import get from 'lodash/get'
-
 import storage from 'services/storage'
 
 export default async (payload, tab, next) => {

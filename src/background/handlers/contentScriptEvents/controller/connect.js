@@ -1,15 +1,12 @@
-import { v4 as uuid } from 'uuid'
-
-// Constants
-import { REQUEST, OS, WINDOW_SIZE } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
-
-// Utils
-import { createWindow } from 'utils/extension'
-
+// Constants
+import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
+import { backgroundAccount } from 'services/account'
 // Services
 import storage from 'services/storage'
-import { backgroundAccount } from 'services/account'
+// Utils
+import { createWindow } from 'utils/extension'
+import { v4 as uuid } from 'uuid'
 
 
 export default async (payload, tab, next) => {

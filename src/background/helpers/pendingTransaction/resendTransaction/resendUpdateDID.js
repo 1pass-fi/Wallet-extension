@@ -1,7 +1,6 @@
-import { get } from 'lodash'
-
 import did from 'background/helpers/did'
 import errorHandler from 'background/helpers/errorHandler'
+import { get } from 'lodash'
 
 const resendUpdateDID = async (account, transaction) => {
   const didData = get(transaction, 'data.didData')

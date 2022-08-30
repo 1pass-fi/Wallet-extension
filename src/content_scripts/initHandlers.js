@@ -1,12 +1,10 @@
-import '@babel/polyfill'
-
-import { EventHandler } from 'services/request/src/backgroundConnect'
-import { contentBackgroundConnect as backgroundConnect } from 'services/request/contentScript'
 import { MESSAGES } from 'constants/koiConstants'
 import { get, isEmpty } from 'lodash'
-
-
+import { contentBackgroundConnect as backgroundConnect } from 'services/request/contentScript'
+import { EventHandler } from 'services/request/src/backgroundConnect'
 import storage from 'services/storage'
+
+import '@babel/polyfill'
 
 export default async () => {
   const messageTypes = [

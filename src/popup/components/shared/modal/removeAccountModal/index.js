@@ -1,8 +1,8 @@
 import React from 'react'
+import Button from 'popup/components/shared/button/'
 import PropTypes from 'prop-types'
 
 import Modal from '..'
-import Button from 'popup/components/shared/button/'
 
 import './index.css'
 

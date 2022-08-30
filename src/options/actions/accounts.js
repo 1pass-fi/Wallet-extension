@@ -1,14 +1,13 @@
+import { popupAccount } from 'services/account'
+import storage from 'services/storage'
+
+import { setDefaultAccountByAddress } from './defaultAccount'
+import actionHelpers from './helpers'
 import { 
   ADD_ACCOUNT_BY_ADDRESS, 
   SET_ACCOUNTS,
   SET_DEFAULT_ARWEAVE_ACCOUNT 
 } from './types'
-import actionHelpers from './helpers'
-
-import { popupAccount } from 'services/account'
-import storage from 'services/storage'
-
-import { setDefaultAccountByAddress } from './defaultAccount'
 
 export const loadAllAccounts = () => async (dispatch) => {
   await popupAccount.loadImported()

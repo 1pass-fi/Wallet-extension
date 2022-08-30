@@ -1,7 +1,6 @@
 // modules
 import React from 'react'
 import { connect } from 'react-redux' 
-
 // assets
 import loadingIcon from 'img/loading-icon.gif'
 

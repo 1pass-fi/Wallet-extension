@@ -1,25 +1,21 @@
 // modules
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
-import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-
+import { useHistory } from 'react-router-dom'
+// constants
+import { ERROR_MESSAGE,REQUEST } from 'constants/koiConstants'
 // assets
 import PlusIcon from 'img/plus-icon.svg'
-
-// components
-import Modal from 'popup/components/shared/modal'
-import ConnectedSiteRow from './connectedSiteRow'
-
-// constants
-import { REQUEST, ERROR_MESSAGE } from 'constants/koiConstants'
-
 // actions
 import { setError } from 'popup/actions/error'
-import { getSelectedTab } from 'utils/extension'
-
+// components
+import Modal from 'popup/components/shared/modal'
+import PropTypes from 'prop-types'
 // services
 import storage from 'services/storage'
+import { getSelectedTab } from 'utils/extension'
+
+import ConnectedSiteRow from './connectedSiteRow'
 
 // styles
 import './index.css'

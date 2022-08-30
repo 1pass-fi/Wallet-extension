@@ -1,8 +1,8 @@
   
 import React from 'react'
+import Modal from 'options/shared/UploadMessageModal'
 
 import './index.css'
-import Modal from 'options/shared/UploadMessageModal'
 
 const PendingUploadNFT = () => {
   return (

@@ -1,9 +1,8 @@
 // modules
 import React from 'react'
-
+import BackgroundLockIcon from 'img/background-lock-icon.svg'
 // assets
 import SendKoiIcon from 'img/send-koi-icon.svg'
-import BackgroundLockIcon from 'img/background-lock-icon.svg'
 
 // styles
 import './index.css'

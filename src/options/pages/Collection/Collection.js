@@ -1,10 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
-import CreateIcon from 'img/v2/create-icon.svg'
-
 import CollectionCard from 'finnie-v2/components/CollectionCard'
+import CreateIcon from 'img/v2/create-icon.svg'
 
 const Collection = () => {
   const filteredCollections = useSelector((state) => state.collections.filteredCollections)

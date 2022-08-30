@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
-import isEmpty from 'lodash/isEmpty'
-
 import ClickIcon from 'img/v2/click-icon.svg'
+import isEmpty from 'lodash/isEmpty'
 
 const DragActive = ({ description, Icon }) => {
   return (

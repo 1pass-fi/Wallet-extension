@@ -1,16 +1,13 @@
+import { TYPE } from 'constants/accountConstants'
+import isEmpty from 'lodash/isEmpty'
+import { popupAccount } from 'services/account'
+import { setActivatedAccountAddress } from 'utils'
+
 import {
   SET_DEFAULT_ARWEAVE_ACCOUNT,
   SET_DEFAULT_ETHEREUM_ACCOUNT,
-  SET_DEFAULT_SOLANA_ACCOUNT,
-  SET_DEFAULT_K2_ACCOUNT
-} from './types'
-
-import isEmpty from 'lodash/isEmpty'
-
-import { TYPE } from 'constants/accountConstants'
-import { popupAccount } from 'services/account'
-
-import { setActivatedAccountAddress } from 'utils'
+  SET_DEFAULT_K2_ACCOUNT,
+  SET_DEFAULT_SOLANA_ACCOUNT} from './types'
 
 export const setDefaultAccountByAddress = (address) => async (dispatch) => {
   if (isEmpty(address)) {

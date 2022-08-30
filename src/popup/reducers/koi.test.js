@@ -1,5 +1,6 @@
-import koiReducer from './koi'
 import * as types from 'actions/types'
+
+import koiReducer from './koi'
 
 const initialState = {
   arBalance: null,

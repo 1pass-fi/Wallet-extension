@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import isEmpty from 'lodash/isEmpty'
-import isNumber from 'lodash/isNumber'
-
-// import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-bg-white.svg'
-import K2Logo from 'img/v2/k2-logos/finnie-k2-logo.svg'
-import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
-import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
-import SolanaLogo from 'img/v2/solana-logo.svg'
-import RefreshIcon from 'img/popup/refresh-icon.svg'
-import ViewsIcon from 'img/navbar/views-icon.svg'
-
+import { TYPE } from 'constants/accountConstants'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 import formatNumber from 'finnie-v2/utils/formatNumber'
-import { TYPE } from 'constants/accountConstants'
-
+import ViewsIcon from 'img/navbar/views-icon.svg'
+import RefreshIcon from 'img/popup/refresh-icon.svg'
+import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
+import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
+// import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-bg-white.svg'
+import K2Logo from 'img/v2/k2-logos/finnie-k2-logo.svg'
+import SolanaLogo from 'img/v2/solana-logo.svg'
+import isEmpty from 'lodash/isEmpty'
+import isNumber from 'lodash/isNumber'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 
 const Balance = ({ account }) => {

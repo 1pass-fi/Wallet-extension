@@ -1,9 +1,8 @@
 // modules
 import React from 'react'
-import PropTypes from 'prop-types'
-
 // assets
 import CloseIcon from 'img/close-icon.svg'
+import PropTypes from 'prop-types'
 
 // styles
 import './index.css'

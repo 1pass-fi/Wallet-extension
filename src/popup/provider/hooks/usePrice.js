@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import axios from 'axios'
 import { get, isNumber } from 'lodash'
-
 // services
 import storage from 'services/storage'
 

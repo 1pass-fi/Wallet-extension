@@ -1,17 +1,16 @@
 // modules
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-
-// components
-import AccountInfo from './AccountInfo'
-import AccountConfig from './AccountConf'
+import { setAccountName } from 'actions/accountName'
+// actions
+import { getKeyFile,removeWallet } from 'actions/koi'
+import { setNotification } from 'actions/notification'
+import { setIsLoading } from 'popup/actions/loading'
 import Card from 'shared/card'
 
-// actions
-import { removeWallet, getKeyFile } from 'actions/koi'
-import { setNotification } from 'actions/notification'
-import { setAccountName } from 'actions/accountName'
-import { setIsLoading } from 'popup/actions/loading'
+import AccountConfig from './AccountConf'
+// components
+import AccountInfo from './AccountInfo'
 
 // styles
 import './index.css'

@@ -1,15 +1,13 @@
 import { useContext } from 'react'
 import { useDispatch } from 'react-redux'
+import { addAccountByAddress } from 'options/actions/accounts'
+import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 import storage from 'services/storage'
-
-import { addAccountByAddress } from 'options/actions/accounts'
+import { isArweaveAddress, isEthereumAddress, isSolanaAddress } from 'utils'
 
 import { OnboardingContext } from '../onboardingContext'
-import { GalleryContext } from 'options/galleryContext'
-
-import { isArweaveAddress, isEthereumAddress, isSolanaAddress } from 'utils'
 
 const ERROR_MESSAGE = {
   SAVE_NEW_KEY_FAILED: 'Save new key failed',

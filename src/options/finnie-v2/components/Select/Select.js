@@ -1,12 +1,11 @@
+import React, { useEffect, useMemo,useRef, useState } from 'react'
 import clsx from 'clsx'
-import React, { useState, useRef, useEffect, useMemo } from 'react'
-import find from 'lodash/find'
-import isEmpty from 'lodash/isEmpty'
-import inclues from 'lodash/includes'
-import lowerCase from 'lodash/lowerCase'
-
 import DownIconBlue from 'img/v2/dropdown/down-icon-blue.svg'
 import DownIconWhite from 'img/v2/dropdown/down-icon-white.svg'
+import find from 'lodash/find'
+import inclues from 'lodash/includes'
+import isEmpty from 'lodash/isEmpty'
+import lowerCase from 'lodash/lowerCase'
 
 const Select = ({ options, value, onChange, emptyOption = false }) => {
   const [listOpened, setListOpened] = useState(false)

@@ -1,27 +1,23 @@
-import { includes, get } from 'lodash'
-
-// Services
-import { backgroundAccount } from 'services/account'
-
+import axios from 'axios'
+import cache from 'background/cache'
 // Constants
 import {
+  ETH_NETWORK_PROVIDER,
   MAX_RETRIED,
   MESSAGES,
-  PENDING_TRANSACTION_TYPE,
   PATH,
-  URL,
-  ETH_NETWORK_PROVIDER
-} from 'constants/koiConstants'
-
+  PENDING_TRANSACTION_TYPE,
+  URL} from 'constants/koiConstants'
+import { get,includes } from 'lodash'
+import helpers from 'options/actions/helpers'
+// Services
+import { backgroundAccount } from 'services/account'
+import storage from 'services/storage'
 // Utils
 import showNotification from 'utils/notifications'
-import axios from 'axios'
-import helpers from 'options/actions/helpers'
-import did from './did'
 
-import cache from 'background/cache'
+import did from './did'
 import sendMessageToPorts from './sendMessageToPorts'
-import storage from 'services/storage'
 
 export default async () => {
   try {

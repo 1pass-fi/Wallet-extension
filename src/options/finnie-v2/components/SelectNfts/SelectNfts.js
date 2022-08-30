@@ -1,9 +1,8 @@
-import { GalleryContext } from 'options/galleryContext'
 import React, { useContext, useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { uniqueId } from 'lodash'
-
+import { GalleryContext } from 'options/galleryContext'
 import getCollectionByTxId from 'options/selectors/getCollectionByTxid'
 
 import NftSelectCard from './SelectNftCard'

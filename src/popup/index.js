@@ -1,13 +1,14 @@
 /* istanbul ignore next */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import * as browser from 'webextension-polyfill'
-import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
+import { BrowserRouter as Router } from 'react-router-dom'
+import * as browser from 'webextension-polyfill'
 
-import './index.css'
 import Popup from './Popup'
 import store from './store'
+
+import './index.css'
 
 browser.runtime.sendMessage({ data: 'hello' })
 

@@ -1,7 +1,6 @@
-import clsx from 'clsx'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-
+import clsx from 'clsx'
 import ToolTip from 'finnie-v2/components/ToolTip'
 
 const navItems = [

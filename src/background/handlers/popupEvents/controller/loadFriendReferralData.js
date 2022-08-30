@@ -1,10 +1,8 @@
-import { isString } from 'lodash'
-
-// Services
-import { backgroundAccount } from 'services/account'
-
 // Constants
 import { TYPE } from 'constants/accountConstants'
+import { isString } from 'lodash'
+// Services
+import { backgroundAccount } from 'services/account'
 
 
 export default async (payload, next) => {

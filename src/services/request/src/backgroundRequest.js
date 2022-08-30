@@ -1,6 +1,6 @@
-import { GalleryRequest } from './gallery'
-import { AssetRequest } from './assets'
 import { ActivityRequest } from './activities'
+import { AssetRequest } from './assets'
+import { GalleryRequest } from './gallery'
 import { WalletRequest } from './wallet'
 
 export class BackgroundRequest {

@@ -1,9 +1,9 @@
-import { get } from 'lodash'
-
-import errorHandler from '../../errorHandler'
 import did from 'background/helpers/did'
 import koiiMe from 'background/helpers/did/koiiMe'
 import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
+import { get } from 'lodash'
+
+import errorHandler from '../../errorHandler'
 
 const resendCreateDIDData = async (account, transaction) => {
   const didData = get(transaction, 'data.didData')

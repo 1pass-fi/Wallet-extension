@@ -1,9 +1,7 @@
+import cache from 'background/cache'
+import { MESSAGES } from 'constants/koiConstants'
 import EventEmitter from 'events'
 import { get, includes } from 'lodash'
-
-import { MESSAGES } from 'constants/koiConstants'
-
-import cache from 'background/cache'
 
 export default class PopupEvents extends EventEmitter {
   sendMessage(endpoint, payload) {

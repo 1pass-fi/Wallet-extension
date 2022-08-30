@@ -1,18 +1,16 @@
-import clsx from 'clsx'
-import includes from 'lodash/includes'
 import React from 'react'
-import { Switch, Route, NavLink, Redirect } from 'react-router-dom'
+import { NavLink, Redirect,Route, Switch } from 'react-router-dom'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useParallax } from 'react-scroll-parallax'
-
-import BackBtn from 'img/v2/popup-back-btn.svg'
+import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
-
-import Tokens from './Tokens'
-import Assets from './Assets'
-import Activity from './Activity'
-
+import BackBtn from 'img/v2/popup-back-btn.svg'
+import includes from 'lodash/includes'
 import { fiatCurrencyFormat, numberFormat } from 'utils'
+
+import Activity from './Activity'
+import Assets from './Assets'
+import Tokens from './Tokens'
 
 const tabs = [
   { name: 'Assets', to: '/assets' },

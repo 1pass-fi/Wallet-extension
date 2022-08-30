@@ -1,15 +1,13 @@
-import clsx from 'clsx'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
+import clsx from 'clsx'
+import CheckBox from 'finnie-v2/components/CheckBox'
+import InputField from 'finnie-v2/components/InputField'
+import NFTMedia from 'finnie-v2/components/NFTMedia'
+import formatLongString from 'finnie-v2/utils/formatLongString'
+import CrossIcon from 'img/v2/cross-icon.svg'
 import initial from 'lodash/initial'
 import union from 'lodash/union'
-
-import CheckBox from 'finnie-v2/components/CheckBox'
-import NFTMedia from 'finnie-v2/components/NFTMedia'
-import InputField from 'finnie-v2/components/InputField'
-import formatLongString from 'finnie-v2/utils/formatLongString'
-
-import CrossIcon from 'img/v2/cross-icon.svg'
 
 const EditNftInfo = ({
   currentNftIdx,

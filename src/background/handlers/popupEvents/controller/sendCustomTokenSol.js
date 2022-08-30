@@ -1,9 +1,8 @@
 // import { clusterApiUrl, Connection, Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js'
 // import { getOrCreateAssociatedTokenAccount, transfer } from '@solana/spl-token'
 
-import { Keypair, clusterApiUrl, Connection, PublicKey, Transaction, sendAndConfirmTransaction } from '@solana/web3.js'
-import { getOrCreateAssociatedTokenAccount, transfer, createTransferInstruction } from '@solana/spl-token'
-
+import { createTransferInstruction,getOrCreateAssociatedTokenAccount, transfer } from '@solana/spl-token'
+import { clusterApiUrl, Connection, Keypair, PublicKey, sendAndConfirmTransaction,Transaction } from '@solana/web3.js'
 import { backgroundAccount } from 'services/account'
 import { SolanaTool } from 'services/solana'
 import storage from 'services/storage'

@@ -1,5 +1,6 @@
-import { ChromeStorage } from '../ChromeStorage'
 import { SETTING } from 'constants/storageConstants'
+
+import { ChromeStorage } from '../ChromeStorage'
 
 export class SettingSet {
   #chrome

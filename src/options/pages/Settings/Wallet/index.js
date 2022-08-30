@@ -1,29 +1,26 @@
-import React, { useState, useContext, useMemo, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useContext, useEffect,useMemo, useState } from 'react'
+import { DragDropContext, Draggable,Droppable } from 'react-beautiful-dnd'
 import { useSelector } from 'react-redux'
-
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
+import { TYPE } from 'constants/accountConstants'
+import { OS,STORAGE } from 'constants/koiConstants'
 import data from 'currency-codes/data'
 import getSymbolFromCurrency from 'currency-symbol-map'
-import { isEmpty, get } from 'lodash'
-
-import { getChromeStorage, setChromeStorage, isSolanaAddress } from 'utils'
-import { STORAGE, OS } from 'constants/koiConstants'
+import AccountCard from 'finnie-v2/components/AccountCard'
+import AccountManagement from 'finnie-v2/components/AccountManagement'
+import ConfirmRemoveAccountModal from 'finnie-v2/components/AccountManagement/ConfirmRemoveAccountModal'
+import ConnectedSitesModal from 'finnie-v2/components/ConnectedSitesModal'
+import DropDown from 'finnie-v2/components/DropDown'
+import { get,isEmpty } from 'lodash'
 import { GalleryContext } from 'options/galleryContext'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import storage from 'services/storage'
+import { getChromeStorage, isSolanaAddress,setChromeStorage } from 'utils'
 
 // import AccountOrder from './AccountOrder'
 import AcceptedCurrencies from './currencies'
 
-import AccountManagement from 'finnie-v2/components/AccountManagement'
-import ConnectedSitesModal from 'finnie-v2/components/ConnectedSitesModal'
-import ConfirmRemoveAccountModal from 'finnie-v2/components/AccountManagement/ConfirmRemoveAccountModal'
-import DropDown from 'finnie-v2/components/DropDown'
-import AccountCard from 'finnie-v2/components/AccountCard'
-
 import './index.css'
-import { TYPE } from 'constants/accountConstants'
 
 const mockedWalletDisplayOptions = [{ value: 'accountsummary', label: 'Account Summary' }]
 

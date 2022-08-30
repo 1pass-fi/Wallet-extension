@@ -1,7 +1,6 @@
 // modules
 import React from 'react'
 import Button from 'popup/components/shared/button'
-
 // components
 import Checkbox from 'popup/components/shared/checkbox'
 

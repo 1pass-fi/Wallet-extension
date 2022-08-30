@@ -1,36 +1,30 @@
 // modules
 import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
-import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
-
+// actions
+import { setError } from 'actions/error'
+import { setIsLoading } from 'actions/loading'
+import clsx from 'clsx'
+import { TYPE } from 'constants/accountConstants'
+// constants
+import { ERROR_MESSAGE } from 'constants/koiConstants'
 // assets
 import CheckMarkIcon from 'img/check-mark-white.svg'
-import BackIcon from 'img/v2/back-icon.svg'
-import CloseIcon from 'img/v2/close-icon-white.svg'
 import ConnectBackgroundLeft from 'img/popup/connect-background-left.svg'
 import ConnectBackgroundRight from 'img/popup/connect-background-right.svg'
+import BackIcon from 'img/v2/back-icon.svg'
+import CloseIcon from 'img/v2/close-icon-white.svg'
+import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
+// styles
+import { popupAccount } from 'services/account'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+// services
+import storage from 'services/storage'
 
 // components
 import AllowPermission from './AllowPermission'
 import SelectWallet from './SelectWallet'
-
-// actions
-import { setError } from 'actions/error'
-import { setIsLoading } from 'actions/loading'
-
-// constants
-import { ERROR_MESSAGE } from 'constants/koiConstants'
-import { TYPE } from 'constants/accountConstants'
-
-// services
-import storage from 'services/storage'
-
-// styles
-import { popupAccount } from 'services/account'
-
-import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
-import clsx from 'clsx'
 
 const ConnectScreen = ({
   setError,

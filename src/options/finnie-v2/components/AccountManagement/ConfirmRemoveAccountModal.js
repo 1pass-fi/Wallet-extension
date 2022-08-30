@@ -1,25 +1,19 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { isEmpty } from 'lodash'
-
-import { GalleryContext } from 'options/galleryContext'
-
-// services
-import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
-import { popupAccount } from 'services/account'
-
-import { setAccounts } from 'options/actions/accounts'
-import { setDefaultAccount } from 'options/actions/defaultAccount'
-
-import Button from 'finnie-v2/components/Button'
-
-import BackIcon from 'img/v2/back-icon-blue.svg'
-import CloseIcon from 'img/v2/close-icon-blue.svg'
-
 import { TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
-import storage from 'services/storage'
+import Button from 'finnie-v2/components/Button'
 import formatLongString from 'finnie-v2/utils/formatLongString'
+import BackIcon from 'img/v2/back-icon-blue.svg'
+import CloseIcon from 'img/v2/close-icon-blue.svg'
+import { isEmpty } from 'lodash'
+import { setAccounts } from 'options/actions/accounts'
+import { setDefaultAccount } from 'options/actions/defaultAccount'
+import { GalleryContext } from 'options/galleryContext'
+import { popupAccount } from 'services/account'
+// services
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import storage from 'services/storage'
 
 const ConfirmRemoveAccountModal = ({ account, close }) => {
   const { setIsLoading, setError, setActivatedChain } = useContext(GalleryContext)

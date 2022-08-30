@@ -1,8 +1,6 @@
-import { get } from 'lodash'
-
-import { stripHexPrefix } from 'ethereumjs-util'
 import { decrypt } from '@metamask/eth-sig-util'
-
+import { stripHexPrefix } from 'ethereumjs-util'
+import { get } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
 

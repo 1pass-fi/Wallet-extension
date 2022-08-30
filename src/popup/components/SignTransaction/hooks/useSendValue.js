@@ -1,20 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { get, isNumber } from 'lodash'
-
-import getTokenData from 'utils/getTokenData'
-import getArweaveTokenData from 'utils/getArweaveTokenData'
-import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
-
-import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import { ethers } from 'ethers'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import { get, isNumber } from 'lodash'
+import { popupAccount } from 'services/account'
+import decodeTags from 'utils/decodeTags'
+import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
+import getArweaveTokenData from 'utils/getArweaveTokenData'
+import getTokenData from 'utils/getTokenData'
+import { getSolanaCustomTokensData } from 'utils/getTokenData'
 
 import { TRANSACTION_TYPE } from './constants'
-
-import decodeTags from 'utils/decodeTags'
-import { popupAccount } from 'services/account'
-
-import { getSolanaCustomTokensData } from 'utils/getTokenData'
-import { ethers } from 'ethers'
 
 const fromHexToDecimal = (hexString) => {
   let number = null

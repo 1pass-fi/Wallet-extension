@@ -1,10 +1,8 @@
-import { isEmpty } from 'lodash'
-
-// Services
-import { backgroundAccount } from 'services/account'
-
 // Constants
 import { TYPE } from 'constants/accountConstants'
+import { isEmpty } from 'lodash'
+// Services
+import { backgroundAccount } from 'services/account'
 
 
 export default async (_, tab, next) => {

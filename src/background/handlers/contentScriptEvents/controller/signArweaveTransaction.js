@@ -1,12 +1,10 @@
-import { v4 as uuid } from 'uuid'
-import { get } from 'lodash'
-
-import { createWindow } from 'utils/extension'
-import { REQUEST, OS, WINDOW_SIZE } from 'constants/koiConstants'
-
-import storage from 'services/storage'
 import helpers from 'background/helpers'
+import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
+import { get } from 'lodash'
 import { backgroundAccount } from 'services/account'
+import storage from 'services/storage'
+import { createWindow } from 'utils/extension'
+import { v4 as uuid } from 'uuid'
 
 export default async (payload, tab, next) => {
   try {

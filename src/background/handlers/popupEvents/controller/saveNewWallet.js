@@ -1,20 +1,15 @@
+import cache from 'background/cache'
+import helpers from 'background/helpers'
 import passworder from 'browser-passworder'
-import { isEmpty } from 'lodash'
-
-// Services
-import storage from 'services/storage'
-import { backgroundAccount } from 'services/account'
-
 // Constants
 import { TYPE } from 'constants/accountConstants'
-
-import helpers from 'background/helpers'
-
+import { isEmpty } from 'lodash'
+import { backgroundAccount } from 'services/account'
+// Services
+import storage from 'services/storage'
 // Utils
 import { getProviderUrlFromName } from 'utils'
 import { setActivatedAccountAddress } from 'utils'
-
-import cache from 'background/cache'
 
 export default async (payload, next) => {
   try {

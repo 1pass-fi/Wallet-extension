@@ -1,11 +1,9 @@
 // Constants
 import { REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
-
-// Utils
-import { createWindow, getPlatformInfo } from 'utils/extension'
-
 // Services
 import storage from 'services/storage'
+// Utils
+import { createWindow, getPlatformInfo } from 'utils/extension'
 
 
 export default async (payload, tab, next) => {

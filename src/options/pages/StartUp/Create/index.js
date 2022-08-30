@@ -1,37 +1,33 @@
-import React, { useContext, useMemo, useState, useEffect } from 'react'
+import React, { useContext, useEffect,useMemo, useState } from 'react'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
-import isEqual from 'lodash/isEqual'
-import shuffle from 'lodash/shuffle'
-
+import { TYPE } from 'constants/accountConstants'
+import { SHOW_ETHEREUM, SHOW_SOLANA } from 'constants/koiConstants'
+import DangerousIcon from 'img/startup/dangerous-icon.svg'
 import EthereumLogo from 'img/startup/ethereum-logo.svg'
 import FinnieLogo from 'img/startup/finnie-logo.svg'
-import SolanaLogo from 'img/startup/solana-logo.svg'
-import DangerousIcon from 'img/startup/dangerous-icon.svg'
 import LockIcon from 'img/startup/lock-icon.svg'
 import ShareIcon from 'img/startup/share-icon.svg'
+import SolanaLogo from 'img/startup/solana-logo.svg'
+import isEmpty from 'lodash/isEmpty'
+import isEqual from 'lodash/isEqual'
+import shuffle from 'lodash/shuffle'
+import { addAccountByAddress } from 'options/actions/accounts'
+import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
+import { GalleryContext } from 'options/galleryContext'
+import { popupAccount } from 'services/account'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import storage from 'services/storage'
 
-import WalletType from '../shared/WalletType'
 import Button from '../shared/Button'
 import ConfirmPassword from '../shared/ConfirmPassword'
 import InputPassword from '../shared/InputPassword'
 import Loading from '../shared/Loading'
-import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
-import { SHOW_ETHEREUM, SHOW_SOLANA } from 'constants/koiConstants'
-
-import isEmpty from 'lodash/isEmpty'
-
 import useEthereumNetworks from '../shared/useEthereumNetworks'
-
-import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
-import { addAccountByAddress } from 'options/actions/accounts'
+import WalletType from '../shared/WalletType'
 
 import './index.css'
-import { TYPE } from 'constants/accountConstants'
-import { GalleryContext } from 'options/galleryContext'
-import { popupAccount } from 'services/account'
-import storage from 'services/storage'
 
 const mockPhrase = [
   'program',

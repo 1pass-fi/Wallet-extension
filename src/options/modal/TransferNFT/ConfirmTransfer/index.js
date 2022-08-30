@@ -1,7 +1,7 @@
 import React from 'react'
-
-import WarningIcon from 'img/v2/warning-icon.svg'
 import EditIcon from 'img/v2/edit-icon-gray.svg'
+import WarningIcon from 'img/v2/warning-icon.svg'
+
 import './index.css'
 
 const ConfirmTransfer = ({ receiverAddress, goBack }) => {

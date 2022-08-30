@@ -1,9 +1,8 @@
-import { backgroundAccount } from 'services/account'
 /* 
   This function will be used to initiate pending transaction object
 */
-
 import moment from 'moment'
+import { backgroundAccount } from 'services/account'
 
 export default async ({
   id,

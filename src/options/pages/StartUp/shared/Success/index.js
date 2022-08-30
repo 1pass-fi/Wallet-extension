@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
-
-import WarningIcon from 'img/startup/warning.svg'
-import ElectronIcon from 'img/startup/electron.svg'
-import GoBackIcon from 'img/goback-icon.svg'
-import Dropfile from '../Dropfile'
-import { GalleryContext } from 'options/galleryContext'
-import Button from '../Button'
-
 import { TYPE } from 'constants/accountConstants'
+import GoBackIcon from 'img/goback-icon.svg'
+import ElectronIcon from 'img/startup/electron.svg'
+import WarningIcon from 'img/startup/warning.svg'
+import { GalleryContext } from 'options/galleryContext'
+
+import Button from '../Button'
+import Dropfile from '../Dropfile'
 
 import './index.css'
 

@@ -1,26 +1,23 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext,useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useSelector } from 'react-redux'
-import get from 'lodash/get'
-
+import { TYPE } from 'constants/accountConstants'
+import { FRIEND_REFERRAL_ENDPOINTS, STATEMENT } from 'constants/koiConstants'
+import Button from 'finnie-v2/components/Button'
 import NavBar from 'finnie-v2/components/NavBar'
 import ToolTip from 'finnie-v2/components/ToolTip'
-
-import FriendReferralBg from 'img/v2/friend-referral-bg.svg'
-import ShuttleIcon from 'img/v2/shuttle-icon.svg'
-import ShareCodeIcon from 'img/v2/share-code-icon.svg'
-import CopyIcon from 'img/v2/copy-icon.svg'
 import CheckMarkIcon from 'img/v2/check-mark-icon-blue.svg'
+import CopyIcon from 'img/v2/copy-icon.svg'
+import FriendReferralBg from 'img/v2/friend-referral-bg.svg'
+import ShareCodeIcon from 'img/v2/share-code-icon.svg'
 import ShareIcon from 'img/v2/share-icon.svg'
-
-import Button from 'finnie-v2/components/Button'
-import GetRewardsModal from './GetRewardsModal'
-import ShareCodeModal from './ShareCodeModal'
-import { FRIEND_REFERRAL_ENDPOINTS, STATEMENT } from 'constants/koiConstants'
+import ShuttleIcon from 'img/v2/shuttle-icon.svg'
+import get from 'lodash/get'
+import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
-import { GalleryContext } from 'options/galleryContext'
-import { TYPE } from 'constants/accountConstants'
+import GetRewardsModal from './GetRewardsModal'
+import ShareCodeModal from './ShareCodeModal'
 
 const FriendReferral = () => {
   const { setIsLoading, setError, setNotification, displayingAccount } = useContext(GalleryContext)

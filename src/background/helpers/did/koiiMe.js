@@ -1,9 +1,9 @@
-import { smartweave } from 'smartweave'
-import isEmpty from 'lodash/isEmpty'
-
-import arweave from 'services/arweave'
 import { DID_CONTRACT_ID, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
+import isEmpty from 'lodash/isEmpty'
 import { ArweaveAccount } from 'services/account/Account'
+import arweave from 'services/arweave'
+import { smartweave } from 'smartweave'
+
 import helpers from '..'
 
 /*

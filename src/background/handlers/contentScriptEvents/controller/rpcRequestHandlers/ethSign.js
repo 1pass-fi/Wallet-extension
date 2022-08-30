@@ -1,13 +1,11 @@
-import { get } from 'lodash'
-import { v4 as uuid } from 'uuid'
-
-import { ecsign, stripHexPrefix } from 'ethereumjs-util'
 import { concatSig } from '@metamask/eth-sig-util'
-
-import { REQUEST, OS, WINDOW_SIZE } from 'constants/koiConstants'
+import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
+import { ecsign, stripHexPrefix } from 'ethereumjs-util'
+import { get } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
 import { createWindow } from 'utils/extension'
+import { v4 as uuid } from 'uuid'
 
 export default async (payload, tab, next) => {
   try {

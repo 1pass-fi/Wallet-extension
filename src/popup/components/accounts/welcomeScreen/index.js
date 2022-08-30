@@ -1,9 +1,9 @@
 // modules
 import React from 'react'
-import AccountImport from '../accountImport'
-
 // components
 import Header from 'shared/header'
+
+import AccountImport from '../accountImport'
 
 // styles
 import './index.css'

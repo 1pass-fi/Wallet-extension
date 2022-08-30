@@ -1,4 +1,4 @@
-import { SET_ASSETS, SET_FILTER_NFTS, SET_COLLECTION_NFTS } from '../actions/types'
+import { SET_ASSETS, SET_COLLECTION_NFTS,SET_FILTER_NFTS } from '../actions/types'
 
 const initialState = {
   nfts: [],

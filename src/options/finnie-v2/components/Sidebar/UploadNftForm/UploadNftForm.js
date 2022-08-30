@@ -1,20 +1,17 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react'
-import capitalize from 'lodash/capitalize'
-import isEmpty from 'lodash/isEmpty'
-import initial from 'lodash/initial'
-import union from 'lodash/union'
-
-import CrossIcon from 'img/v2/cross-icon.svg'
-
-import InputField from 'finnie-v2/components/InputField'
+import React, { useEffect, useMemo, useRef,useState } from 'react'
 import Button from 'finnie-v2/components/Button'
-import ConfirmCreateNftModal from 'finnie-v2/components/ConfirmCreateNftModal'
 import CheckBox from 'finnie-v2/components/CheckBox'
+import ConfirmCreateNftModal from 'finnie-v2/components/ConfirmCreateNftModal'
 import DropFile from 'finnie-v2/components/DropFile'
+import InputField from 'finnie-v2/components/InputField'
 import NFTMedia from 'finnie-v2/components/NFTMedia'
-
 import formatLongString from 'finnie-v2/utils/formatLongString'
 import { getFileType } from 'finnie-v2/utils/getFileType'
+import CrossIcon from 'img/v2/cross-icon.svg'
+import capitalize from 'lodash/capitalize'
+import initial from 'lodash/initial'
+import isEmpty from 'lodash/isEmpty'
+import union from 'lodash/union'
 
 import './UploadNftForm.css'
 

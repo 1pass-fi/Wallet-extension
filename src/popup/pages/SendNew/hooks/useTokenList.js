@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
 import { get, isEmpty } from 'lodash'
-
+import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddresses'
+import { popupAccount } from 'services/account'
+import storage from 'services/storage'
 import { fromArToWinston, fromEthToWei, fromSolToLamp } from 'utils'
 import getTokenData from 'utils/getTokenData'
 import { getSolanaCustomTokensData } from 'utils/getTokenData'
-
-import { popupAccount } from 'services/account'
-
-import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddresses'
-import storage from 'services/storage'
 
 const useTokenList = ({ selectedNetwork, selectedAccount }) => {
   const userAddress = selectedAccount?.address

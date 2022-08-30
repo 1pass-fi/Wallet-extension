@@ -3,40 +3,36 @@
   Load activities, assets,...
 */
 
-import {
-  PATH,
-  ALL_NFT_LOADED,
-  ACTIVITY_NAME,
-  ETHERSCAN_API,
-  ETH_NFT_BRIDGE_ACTION
-} from 'constants/koiConstants'
+import HDWalletProvider from '@truffle/hdwallet-provider'
+import axios from 'axios'
 import { ACCOUNT } from 'constants/accountConstants'
-import { getChromeStorage } from 'utils'
-import { get, includes, findIndex } from 'lodash'
-import moment from 'moment'
-
 import { TYPE } from 'constants/accountConstants'
 import {
-  VALID_TOKEN_SCHEMA,
-  ERROR_MESSAGE,
-  URL,
+  ACTIVITY_NAME,
+  ALL_NFT_LOADED,
+  ETH_NFT_BRIDGE_ACTION,
+  ETHERSCAN_API,
+  PATH} from 'constants/koiConstants'
+import {
   BRIDGE_FLOW,
+  ERROR_MESSAGE,
+  ETH_NETWORK_PROVIDER,
   KOI_ROUTER_CONTRACT,
-  ETH_NETWORK_PROVIDER
-} from 'constants/koiConstants'
-
-import axios from 'axios'
-import * as ethereumAssets from 'utils/ethereumActivities'
-import { clarifyEthereumProvider } from 'utils'
-
-import HDWalletProvider from '@truffle/hdwallet-provider'
-import Web3 from 'web3'
+  URL,
+  VALID_TOKEN_SCHEMA} from 'constants/koiConstants'
 import { ethers } from 'ethers'
-import koiRouterABI from './abi/KoiRouter.json'
-import koiTokenABI from './abi/KoiToken.json'
-import ERC20ABI from './abi/ERC20ABI.json'
+import { findIndex,get, includes } from 'lodash'
+import moment from 'moment'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 import storage from 'services/storage'
+import { getChromeStorage } from 'utils'
+import { clarifyEthereumProvider } from 'utils'
+import * as ethereumAssets from 'utils/ethereumActivities'
+import Web3 from 'web3'
+
+import ERC20ABI from './abi/ERC20ABI.json'
+import koiRouterABI from './abi/KoiRouter.json'
+import koiTokenABI from './abi/KoiToken.json'
 
 export class EthereumMethod {
   #chrome

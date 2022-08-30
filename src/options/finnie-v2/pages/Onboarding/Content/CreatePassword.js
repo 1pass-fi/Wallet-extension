@@ -1,19 +1,15 @@
-import React, { useState, useContext, useMemo } from 'react'
-import isEmpty from 'lodash/isEmpty'
+import React, { useContext, useMemo,useState } from 'react'
 import { useSelector } from 'react-redux'
-
-import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
-import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
-
-import Button from 'finnie-v2/components/Button'
-import InputField from 'finnie-v2/components/InputField'
-import CheckBox from 'finnie-v2/components/CheckBox'
-
 import { URL } from 'constants/koiConstants'
-
-import { OnboardingContext } from '../onboardingContext'
+import Button from 'finnie-v2/components/Button'
+import CheckBox from 'finnie-v2/components/CheckBox'
+import InputField from 'finnie-v2/components/InputField'
+import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
+import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
+import isEmpty from 'lodash/isEmpty'
 
 import { VALIDATE_ERROR_MESSAGE } from '../../../../../constants/koiConstants'
+import { OnboardingContext } from '../onboardingContext'
 
 const CreatePassword = ({ step, setStep }) => {
   const {

@@ -1,7 +1,8 @@
+import { TYPE } from 'constants/accountConstants'
 import isEmpty from 'lodash/isEmpty'
 
-import { TYPE } from 'constants/accountConstants'
 import store from '../store'
+
 import { SET_COLLECTIONS, SET_FILTER_COLLECTIONS } from './types'
 
 export const setCollections = (payload) => (dispatch) => {

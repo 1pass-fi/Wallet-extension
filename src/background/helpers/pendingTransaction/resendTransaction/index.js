@@ -1,21 +1,19 @@
+import errorHandler from 'background/helpers/errorHandler'
+import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 import { isEmpty } from 'lodash'
+import { BackgroundAccount } from 'services/account/Account'
 
-import resendKoii from './resendKoii'
 import resendAr from './resendAr'
-import resendMintNft from './resendMintNft'
-import resendNft from './resendNft'
-import resendUpdateDID from './resendUpdateDID'
-import updatePendingTransaction from './updatePendingTransaction'
+import resendCreateCollection from './resendCreateCollection'
 import resendCreateDID from './resendCreateDID'
 import resendCreateDIDData from './resendCreateDIDData'
-import resendCreateCollection from './resendCreateCollection'
+import resendKoii from './resendKoii'
+import resendMintNft from './resendMintNft'
+import resendNft from './resendNft'
 import resendRegisterKid from './resendRegisterKid'
 import resendUpdateCollection from './resendUpdateCollection'
-
-import errorHandler from 'background/helpers/errorHandler'
-
-import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
-import { BackgroundAccount } from 'services/account/Account'
+import resendUpdateDID from './resendUpdateDID'
+import updatePendingTransaction from './updatePendingTransaction'
 
 const resendTransaction = async (account, transaction) => {
   let newTransactionId

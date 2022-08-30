@@ -1,5 +1,4 @@
-import { isString, isNumber } from 'lodash'
-
+import { isNumber,isString } from 'lodash'
 // Services
 import { backgroundAccount } from 'services/account'
 

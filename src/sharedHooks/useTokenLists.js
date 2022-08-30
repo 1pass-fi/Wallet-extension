@@ -1,21 +1,16 @@
-import { useState, useEffect } from 'react'
-import { isEmpty } from 'lodash'
-
-import { popupAccount } from 'services/account'
-
+import { useEffect,useState } from 'react'
 import { TYPE } from 'constants/accountConstants'
-
+import { isEmpty } from 'lodash'
+import { popupAccount } from 'services/account'
 import useImportedTokenAddresses from 'sharedHooks/useImportedTokenAddresses'
-
 import {
+  fiatCurrencyFormat,
   fromArToWinston,
   fromEthToWei,
-  fromSolToLamp,
   fromLampToSol,
-  fiatCurrencyFormat,
+  fromSolToLamp,
   numberFormat
 } from 'utils'
-
 import getTokenData, { getSolanaCustomTokensData } from 'utils/getTokenData'
 
 const useTokenLists = ({ account, address, setIsLoading, currentProviderAddress }) => {

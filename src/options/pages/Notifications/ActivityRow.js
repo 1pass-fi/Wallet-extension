@@ -1,19 +1,16 @@
-import moment from 'moment'
 import React, { useMemo } from 'react'
-import includes from 'lodash/includes'
-
-import ViewBlockIcon from 'img/v2/view-block.svg'
-
-import KoiiLogo from 'img/v2/k2-logos/finnie-k2-logo.svg'
-import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
-import SolanaLogo from 'img/v2/solana-logo.svg'
-import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
-import ExploreBlock from 'img/v2/explore-block-coming-soon.svg'
-
-import { PATH, URL, ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
+import clsx from 'clsx'
+import { ETH_NETWORK_PROVIDER,PATH, URL } from 'constants/koiConstants'
 import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
 import formatNumber from 'finnie-v2/utils/formatNumber'
-import clsx from 'clsx'
+import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
+import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import ExploreBlock from 'img/v2/explore-block-coming-soon.svg'
+import KoiiLogo from 'img/v2/k2-logos/finnie-k2-logo.svg'
+import SolanaLogo from 'img/v2/solana-logo.svg'
+import ViewBlockIcon from 'img/v2/view-block.svg'
+import includes from 'lodash/includes'
+import moment from 'moment'
 
 const ActivityRow = ({
   activity: { activityName, address, date, expense, id, source, network, isK2Account }

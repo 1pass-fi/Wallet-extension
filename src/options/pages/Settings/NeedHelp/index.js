@@ -1,5 +1,5 @@
-import { GalleryContext } from 'options/galleryContext'
 import React, { useContext } from 'react'
+import { GalleryContext } from 'options/galleryContext'
 
 import './index.css'
 

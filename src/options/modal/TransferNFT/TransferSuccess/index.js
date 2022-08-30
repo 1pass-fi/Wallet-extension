@@ -1,6 +1,6 @@
 import React from 'react'
-
 import CheckIcon from 'img/v2/green-tick-icon.svg'
+
 import './index.css'
 
 const TransferSuccess = ({ receiverAddress, name, onClose }) => {

@@ -1,5 +1,6 @@
-import RemoveAccountModal from '.'
 import partialAction from 'stories/partialAction'
+
+import RemoveAccountModal from '.'
 
 RemoveAccountModal.displayName = 'RemoveAccountModal'
 

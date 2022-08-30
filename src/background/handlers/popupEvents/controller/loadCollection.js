@@ -1,6 +1,6 @@
 // Services
-import { backgroundAccount } from 'services/account'
 import helpers from 'background/helpers'
+import { backgroundAccount } from 'services/account'
 
 export default async (_, next) => {
   try {

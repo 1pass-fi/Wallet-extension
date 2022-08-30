@@ -1,31 +1,27 @@
 // modules
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { get } from 'lodash'
-
-// components
-import Card from 'popup/components/shared/card'
-import AllowPermission from './allowPermission'
-import SelectWallet from './selectWallet'
-
 // actions
 import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
-
+import { TYPE } from 'constants/accountConstants'
 // constants
 import { ERROR_MESSAGE } from 'constants/koiConstants'
-import { TYPE } from 'constants/accountConstants'
-
+import { get } from 'lodash'
+// components
+import Card from 'popup/components/shared/card'
+import { popupAccount } from 'services/account'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 // services
 import storage from 'services/storage'
+import { ChromeStorage } from 'services/storage/ChromeStorage'
+import disableOrigin from 'utils/disableOrigin'
+
+import AllowPermission from './allowPermission'
+import SelectWallet from './selectWallet'
 
 // styles
 import './index.css'
-import { popupAccount } from 'services/account'
-import disableOrigin from 'utils/disableOrigin'
-import { ChromeStorage } from 'services/storage/ChromeStorage'
-
-import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 
 export const ConnectToWallet = ({ setError, setIsLoading }) => {

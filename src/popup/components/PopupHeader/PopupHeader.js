@@ -1,19 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef,useState } from 'react'
 import { useSelector } from 'react-redux'
-import isEmpty from 'lodash/isEmpty'
-
-import AccountDropdown from './AccountDropdown'
-import Account from './Account'
-
-import storage from 'services/storage'
-
 import Avatar from 'img/popup/avatar-icon.svg'
 import OptionIcon from 'img/popup/option-icon.svg'
-import SettingIcon from 'img/popup/setting-icon.svg'
 import PauseIcon from 'img/popup/pause-icon.svg'
 import PlayIcon from 'img/popup/play-icon.svg'
-
+import SettingIcon from 'img/popup/setting-icon.svg'
+import isEmpty from 'lodash/isEmpty'
+import storage from 'services/storage'
 import disableOrigin from 'utils/disableOrigin'
+
+import Account from './Account'
+import AccountDropdown from './AccountDropdown'
 
 const Header = ({ setShowConnectedSites }) => {
   const defaultArweaveAccount = useSelector((state) => state.defaultAccount.AR)

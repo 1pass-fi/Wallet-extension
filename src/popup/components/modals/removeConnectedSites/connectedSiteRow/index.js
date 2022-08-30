@@ -1,11 +1,9 @@
 // modules
 import React from 'react'
-
-// components
-import PropTypes from 'prop-types'
-
 // assets
 import DeleteIcon from 'img/wallet/delete-icon.svg'
+// components
+import PropTypes from 'prop-types'
 
 // styles
 import './index.css'

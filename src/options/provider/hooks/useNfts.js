@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import classifyAssets from 'finnie-v2/utils/classifyAssets'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
-
-import { popupAccount } from 'services/account'
 import { setAssets, setCollectionNfts } from 'options/actions/assets'
-import classifyAssets from 'finnie-v2/utils/classifyAssets'
-
+import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 export const useNfts = ({ setCollections, setIsLoading, walletLoaded, newAddress, pathname }) => {

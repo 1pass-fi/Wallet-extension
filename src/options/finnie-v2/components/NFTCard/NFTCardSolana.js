@@ -1,10 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
-import formatLongString from 'finnie-v2/utils/formatLongString'
-
 import NFTMedia from 'finnie-v2/components/NFTMedia'
-
+import formatLongString from 'finnie-v2/utils/formatLongString'
 import SolanaLogo from 'img/v2/solana-logo.svg'
 
 const NFTCard = ({ nft }) => {

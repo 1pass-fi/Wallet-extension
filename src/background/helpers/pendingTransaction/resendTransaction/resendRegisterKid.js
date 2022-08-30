@@ -1,7 +1,6 @@
-import { get } from 'lodash'
-
 import did from 'background/helpers/did'
 import errorHandler from 'background/helpers/errorHandler'
+import { get } from 'lodash'
 
 const resendRegisterKid = async (account, transaction) => {
   const kID = get(transaction, 'data.kID')

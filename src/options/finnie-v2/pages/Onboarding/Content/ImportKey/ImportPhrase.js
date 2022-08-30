@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import isEmpty from 'lodash/isEmpty'
 import clsx from 'clsx'
-
-import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
-import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
-
 import Button from 'finnie-v2/components/Button'
+import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
+import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
+import isEmpty from 'lodash/isEmpty'
 
 import { OnboardingContext } from '../../onboardingContext'
 

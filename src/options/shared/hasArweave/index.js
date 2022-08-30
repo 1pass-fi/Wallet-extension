@@ -1,8 +1,7 @@
 import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
-
-import { GalleryContext } from 'options/galleryContext'
 import { TYPE } from 'constants/accountConstants'
+import { GalleryContext } from 'options/galleryContext'
 
 const ArweaveOnly = ({ content, children }) => {
   return (

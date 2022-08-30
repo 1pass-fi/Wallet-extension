@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import clsx from 'clsx'
 import ReactTooltip from 'react-tooltip'
+import clsx from 'clsx'
+import ToggleViewPw from 'img/v2/toggle-icon.svg'
 
 import './InputField.css'
-
-import ToggleViewPw from 'img/v2/toggle-icon.svg'
 
 const InputField = ({
   value,

@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import isEmpty from 'lodash/isEmpty'
-
+import Button from 'finnie-v2/components/Button'
 import BackIcon from 'img/v2/back-icon-blue.svg'
+import CheckIcon from 'img/v2/check-icon-gray.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import NoticeIcon from 'img/v2/notice-icon.svg'
-import CheckIcon from 'img/v2/check-icon-gray.svg'
-
-import Button from 'finnie-v2/components/Button'
+import isEmpty from 'lodash/isEmpty'
 import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 

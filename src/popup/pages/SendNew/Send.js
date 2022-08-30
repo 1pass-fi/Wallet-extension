@@ -1,33 +1,28 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef,useState } from 'react'
 import { connect, useSelector } from 'react-redux'
-import ReactTooltip from 'react-tooltip'
-import clsx from 'clsx'
-import isEmpty from 'lodash/isEmpty'
-import get from 'lodash/get'
-
 import { useHistory } from 'react-router-dom'
-
-import TokenDropdown from 'popup/components/TokenDropdown'
-import SendTokenForm from './SendTokenForm'
-
-import { formatNumber } from 'options/utils'
-
-import FinnieIcon from 'img/v2/k2-logos/finnie-k2-logo.svg'
-import ArrowIconBlue from 'img/popup/down-arrow-icon-blue.svg'
+import ReactTooltip from 'react-tooltip'
+import { setError } from 'actions/error'
+import { setIsLoading } from 'actions/loading'
+import clsx from 'clsx'
 import BackBtn from 'img/popup/back-button.svg'
+import ArrowIconBlue from 'img/popup/down-arrow-icon-blue.svg'
 import SendBackgroundLeft from 'img/popup/send-background-left.svg'
 import SendBackgroundRight from 'img/popup/send-background-right.svg'
+import FinnieIcon from 'img/v2/k2-logos/finnie-k2-logo.svg'
+import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
+import { formatNumber } from 'options/utils'
+import TokenDropdown from 'popup/components/TokenDropdown'
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
 // hooks
 import useAccountList from './hooks/useAccountList'
+import useMethod from './hooks/useMethod'
 import useSelectedAccount from './hooks/useSelectedAccount'
 import useTokenList from './hooks/useTokenList'
-import useMethod from './hooks/useMethod'
 import useValidate from './hooks/useValidate'
-
-import { setError } from 'actions/error'
-import { setIsLoading } from 'actions/loading'
-import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
+import SendTokenForm from './SendTokenForm'
 
 const Send = ({ setShowSigning, setError, setIsLoading }) => {
   const displayingAccount = useSelector(getDisplayingAccount)

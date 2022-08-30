@@ -1,15 +1,13 @@
 // modules
-import React, { useState, useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
+// assets
+import PlusIcon from 'img/plus-icon.svg'
 import PropTypes from 'prop-types'
+// services
+import { popupAccount } from 'services/account'
 
 // components
 import AssetRow from '../AssetRow'
-
-// assets
-import PlusIcon from 'img/plus-icon.svg'
-
-// services
-import { popupAccount } from 'services/account'
 
 // styles
 import './index.css'

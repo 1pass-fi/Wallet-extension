@@ -1,28 +1,25 @@
-import clsx from 'clsx'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import isEmpty from 'lodash/isEmpty'
+import { useDispatch,useSelector } from 'react-redux'
 import { useMachine } from '@xstate/react'
-import { createMachine } from 'xstate'
-
-import { hideAddressBook } from 'options/actions/addressBook'
-
-import AddIcon from 'img/navbar/create-nft.svg'
-
-import SearchBar from './SearchBar'
-import CreateContactForm from './CreateContactForm'
-import ContactDetail from './ContactDetail'
-import EditContactForm from './EditContactForm'
-import DeleteContactModal from './DeleteContactModal'
-import CreateNewContact from './CreateNewContact'
-import ImportFromDID from './ImportFromDID'
+import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
 import { ERROR_MESSAGE } from 'constants/koiConstants'
-
-import './index.css'
-
+import AddIcon from 'img/navbar/create-nft.svg'
+import isEmpty from 'lodash/isEmpty'
+import { hideAddressBook } from 'options/actions/addressBook'
 import storage from 'services/storage'
 import { v4 as uuid } from 'uuid'
+import { createMachine } from 'xstate'
+
+import ContactDetail from './ContactDetail'
+import CreateContactForm from './CreateContactForm'
+import CreateNewContact from './CreateNewContact'
+import DeleteContactModal from './DeleteContactModal'
+import EditContactForm from './EditContactForm'
+import ImportFromDID from './ImportFromDID'
+import SearchBar from './SearchBar'
+
+import './index.css'
 
 const screenMachine = createMachine({
   id: 'screen',

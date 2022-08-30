@@ -1,7 +1,6 @@
 // modules
-import React, { useState, useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import clsx from 'clsx'
-
 // assets
 import CheckMarkIcon from 'img/check-mark-white.svg'
 

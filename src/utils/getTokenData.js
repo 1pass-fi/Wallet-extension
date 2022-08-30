@@ -1,18 +1,15 @@
-import axios from 'axios'
-import get from 'lodash/get'
-import find from 'lodash/find'
-import includes from 'lodash/includes'
 import contractMap from '@metamask/contract-metadata'
-import Web3 from 'web3'
-
-import { Connection, clusterApiUrl, PublicKey } from '@solana/web3.js'
-import { TokenListProvider } from '@solana/spl-token-registry'
 import { AccountLayout, TOKEN_PROGRAM_ID } from '@solana/spl-token'
-
-import storage from 'services/storage'
+import { TokenListProvider } from '@solana/spl-token-registry'
+import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js'
 import ERC20_ABI from 'abi/ERC20.json'
-
+import axios from 'axios'
+import find from 'lodash/find'
+import get from 'lodash/get'
+import includes from 'lodash/includes'
+import storage from 'services/storage'
 import customTokens from 'solanaTokens/solanaTokens'
+import Web3 from 'web3'
 
 export const getLogoPath = (logo) => {
   const path = `img/erc20/${logo}`

@@ -1,34 +1,25 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import { Provider } from 'react-redux'
-
-import './index.css'
-import AppProvider from './provider'
-// import Welcome from './pages/StartUp/Welcome'
-import Welcome from 'options/finnie-v2/pages/Onboarding/Welcome'
-import UploadWallet from './pages/StartUp/Upload'
-import ImportWallet from './pages/StartUp/Import'
-import CreateWallet from './pages/StartUp/Create'
-import FriendReferral from 'options/pages/FriendReferral'
-
-import HasArweave from 'options/shared/hasArweave'
-
-import store from './store'
-
+import { HashRouter as Router, Route, Switch } from 'react-router-dom'
+import MainLayout from 'finnie-v2/components/MainLayout'
 import NavBar from 'finnie-v2/components/NavBar'
-
+import AddressBook from 'options/finnie-v1/components/AddressBook/AddressBook'
+import Welcome from 'options/finnie-v2/pages/Onboarding/Welcome'
 import Collection from 'options/pages/Collection'
+import CollectionDetails from 'options/pages/CollectionDetails'
 import Gallery from 'options/pages/Gallery'
 import NFTDetail from 'options/pages/NFTDetail'
 import Notifications from 'options/pages/Notifications'
-import CollectionDetails from 'options/pages/CollectionDetails'
 import SelectNfts from 'options/pages/SelectNfts'
-
-import Success from 'options/pages/StartUp/shared/Success'
-import MainLayout from 'finnie-v2/components/MainLayout'
 import Settings from 'options/pages/Settings'
-import AddressBook from 'options/finnie-v1/components/AddressBook/AddressBook'
+import Success from 'options/pages/StartUp/shared/Success'
+import HasArweave from 'options/shared/hasArweave'
+
+import AppProvider from './provider'
+import store from './store'
+
+import './index.css'
 
 const FullView = () => {
   return (

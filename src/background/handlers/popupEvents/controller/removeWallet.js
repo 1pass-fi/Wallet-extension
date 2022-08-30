@@ -1,11 +1,9 @@
 // Services
-import { backgroundAccount } from 'services/account'
-
-// Constants
-import { MESSAGES } from 'constants/koiConstants'
-
 // helpers
 import helpers from 'background/helpers'
+// Constants
+import { MESSAGES } from 'constants/koiConstants'
+import { backgroundAccount } from 'services/account'
 
 export default async (payload, next) => {
   try {

@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
-
-import mockCreateNfts from 'utils/createNfts/mockCreateNfts'
 import createCollection from 'utils/createNfts/createCollection'
+import mockCreateNfts from 'utils/createNfts/mockCreateNfts'
 
 export default () => {
   const handleCreateNfts = async () => {

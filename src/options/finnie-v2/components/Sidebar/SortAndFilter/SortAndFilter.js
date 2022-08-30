@@ -1,13 +1,10 @@
-import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
-
+import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
+import ToggleButton from 'finnie-v2/components/ToggleButton'
 import ArrowIcon from 'img/v2/arrow-icon.svg'
 import FilterIcon from 'img/v2/filter-icon.svg'
 import MagnifierIcon from 'img/v2/magnifier-icon.svg'
-
-import ToggleButton from 'finnie-v2/components/ToggleButton'
-
 import { SORT_TYPES } from 'options/actions/assets'
 
 import './SortAndFilter.css'

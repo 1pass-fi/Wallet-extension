@@ -1,39 +1,33 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import clsx from 'clsx'
-
-import EthereumIcon from 'img/ethereum-logo.svg'
-import SolanaIcon from 'img/v2/solana-logo.svg'
-import FinnieIcon from 'img/popup/finnie-icon.svg'
-import K2Icon from 'img/v2/k2-logos/finnie-k2-logo.svg'
-import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
-import AddIcon from 'img/popup/add-icon.svg'
-import CopyIcon from 'img/popup/copy-icon.svg'
-import EditIcon from 'img/v2/edit-icon-white.svg'
-import FilledStarIcon from 'img/popup/star-filled-icon.svg'
-import EmptyStarIcon from 'img/popup/star-empty-icon.svg'
-
+import { useHistory } from 'react-router-dom'
+import { setActivatedChain } from 'actions/activatedChain'
+import { setDefaultAccount } from 'actions/defaultAccount'
 // actions
 import { removeWallet } from 'actions/koi'
 import { setIsLoading } from 'actions/loading'
-import { setDefaultAccount } from 'actions/defaultAccount'
-import { setActivatedChain } from 'actions/activatedChain'
-
-// services
-import { popupAccount } from 'services/account'
-
-// storage
-import storage from 'services/storage'
-
+import clsx from 'clsx'
+import { TYPE } from 'constants/accountConstants'
 // constants
 import { MESSAGES, PATH } from 'constants/koiConstants'
-import { TYPE } from 'constants/accountConstants'
-
 // utils
 import formatLongString from 'finnie-v2/utils/formatLongString'
 import formatNumber from 'finnie-v2/utils/formatNumber'
+import EthereumIcon from 'img/ethereum-logo.svg'
+import AddIcon from 'img/popup/add-icon.svg'
+import CopyIcon from 'img/popup/copy-icon.svg'
+import FinnieIcon from 'img/popup/finnie-icon.svg'
+import EmptyStarIcon from 'img/popup/star-empty-icon.svg'
+import FilledStarIcon from 'img/popup/star-filled-icon.svg'
+import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import EditIcon from 'img/v2/edit-icon-white.svg'
+import K2Icon from 'img/v2/k2-logos/finnie-k2-logo.svg'
+import SolanaIcon from 'img/v2/solana-logo.svg'
+// services
+import { popupAccount } from 'services/account'
+// storage
+import storage from 'services/storage'
 import { numberFormat } from 'utils'
 
 export const AccountDropdown = React.forwardRef(

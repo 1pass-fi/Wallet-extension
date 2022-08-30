@@ -1,16 +1,13 @@
 import React, { useContext } from 'react'
 import clsx from 'clsx'
-
-import WelcomeBackground from 'img/v2/onboarding/welcome-background-1.svg'
+import Button from 'finnie-v2/components/Button'
 import NoticeIcon from 'img/v2/onboarding/notice-icon.svg'
 import WarningIcon from 'img/v2/onboarding/warning-icon.svg'
-
-import Button from 'finnie-v2/components/Button'
-
+import WelcomeBackground from 'img/v2/onboarding/welcome-background-1.svg'
 import { GalleryContext } from 'options/galleryContext'
-import { OnboardingContext } from '../onboardingContext'
 
 import useMethod from '../hooks/useMethod'
+import { OnboardingContext } from '../onboardingContext'
 
 const PrepareSavePhrase = ({ step, setStep, importType }) => {
   const { setError, setIsProcessing } = useContext(GalleryContext)

@@ -1,5 +1,6 @@
-import GlobalButton from '.'
 import partialAction from 'stories/partialAction'
+
+import GlobalButton from '.'
 
 GlobalButton.displayName = 'GlobalButton'
 

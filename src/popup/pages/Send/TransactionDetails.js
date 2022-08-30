@@ -1,10 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
-import ViewBlockIcon from 'img/v2/view-block.svg'
-
+import { Link } from 'react-router-dom'
 import OkBtn from 'img/v2/popup-tx-detail-ok.svg'
+import ViewBlockIcon from 'img/v2/view-block.svg'
 import { getDisplayAddress } from 'options/utils'
 import { fiatCurrencyFormat } from 'utils'
 

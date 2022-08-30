@@ -1,6 +1,6 @@
+import arweave from 'services/arweave'
 import { v4 as uuid } from 'uuid'
 
-import arweave from 'services/arweave'
 import nftInfoSchema from './nftInfoSchema'
 
 export default async (nfts, setNfts) => {

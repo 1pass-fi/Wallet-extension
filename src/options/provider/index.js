@@ -1,66 +1,55 @@
-import '@babel/polyfill'
-import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import React, { useCallback, useEffect, useMemo,useRef, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { useDispatch, useSelector, useStore } from 'react-redux'
-
 import ReactNotification from 'react-notifications-component'
-import 'react-notifications-component/dist/theme.css'
-
-import useError from './hooks/useError'
-import useDID from './hooks/useDID'
-import useModal from './hooks/useModal'
-import useSetting from './hooks/useSetting'
-import useAddHandler from './hooks/useAddHandler'
-
+import { useDispatch, useSelector, useStore } from 'react-redux'
+import { useHistory, useLocation } from 'react-router-dom'
+import {
+  clusterApiUrl,
+  Connection,
+  Message as _Messagge,
+  sendAndConfirmTransaction,
+  Transaction} from '@solana/web3.js'
+import { TYPE } from 'constants/accountConstants'
+import { FRIEND_REFERRAL_ENDPOINTS,GALLERY_IMPORT_PATH, MESSAGES } from 'constants/koiConstants'
+import classifyAssets from 'finnie-v2/utils/classifyAssets'
+import sendMessage from 'finnie-v2/utils/sendMessage'
+import find from 'lodash/find'
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import throttle from 'lodash/throttle'
-import get from 'lodash/get'
-import find from 'lodash/find'
-
-import { GALLERY_IMPORT_PATH, MESSAGES, FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
-import sendMessage from 'finnie-v2/utils/sendMessage'
-import classifyAssets from 'finnie-v2/utils/classifyAssets'
-
-import './index.css'
-import StartUp from 'options/pages/StartUp'
-import Message from 'options/finnie-v1/components/message'
-import LockScreen from 'options/finnie-v1/components/lockScreen'
-
-import { GalleryContext } from 'options/galleryContext'
-import { DidContext } from 'options/context'
-
-import ShareNFT from 'options/modal/shareNFT'
-import ExportNFT from 'options/modal/exportNFT'
-import Welcome from 'options/modal/welcomeScreen'
-import TransferNFT from 'options/modal/TransferNFT'
-
-import storage from 'services/storage'
-import {
-  popupBackgroundRequest as backgroundRequest,
-  popupBackgroundConnect
-} from 'services/request/popup'
-
-import { popupAccount } from 'services/account'
-import SelectAccountModal from 'options/modal/SelectAccountModal'
-
-import { EventHandler } from 'services/request/src/backgroundConnect'
-
 import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/accounts'
-import { setDefaultAccount } from 'options/actions/defaultAccount'
-import { setCollections } from 'options/actions/collections'
 import { setAssets, setCollectionNfts } from 'options/actions/assets'
+import { setCollections } from 'options/actions/collections'
+import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { addNotification, setNotifications } from 'options/actions/notifications'
-import { useNfts } from './hooks/useNfts'
-import { TYPE } from 'constants/accountConstants'
-
+import { DidContext } from 'options/context'
+import LockScreen from 'options/finnie-v1/components/lockScreen'
+import Message from 'options/finnie-v1/components/message'
+import { GalleryContext } from 'options/galleryContext'
+import ExportNFT from 'options/modal/exportNFT'
+import SelectAccountModal from 'options/modal/SelectAccountModal'
+import ShareNFT from 'options/modal/shareNFT'
+import TransferNFT from 'options/modal/TransferNFT'
+import Welcome from 'options/modal/welcomeScreen'
+import StartUp from 'options/pages/StartUp'
+import { popupAccount } from 'services/account'
 import {
-  Transaction,
-  sendAndConfirmTransaction,
-  Message as _Messagge,
-  Connection,
-  clusterApiUrl
-} from '@solana/web3.js'
+  popupBackgroundConnect,
+  popupBackgroundRequest as backgroundRequest} from 'services/request/popup'
+import { EventHandler } from 'services/request/src/backgroundConnect'
+import storage from 'services/storage'
+
+import '@babel/polyfill'
+
+import useAddHandler from './hooks/useAddHandler'
+import useDID from './hooks/useDID'
+import useError from './hooks/useError'
+import useModal from './hooks/useModal'
+import { useNfts } from './hooks/useNfts'
+import useSetting from './hooks/useSetting'
+
+import 'react-notifications-component/dist/theme.css'
+import './index.css'
 
 export default ({ children }) => {
   const { pathname } = useLocation()

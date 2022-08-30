@@ -1,16 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
-import clsx from 'clsx'
-import includes from 'lodash/includes'
-import isEmpty from 'lodash/isEmpty'
-
 // actions
 import { loadContent } from 'actions/koi'
 import { setIsLoading } from 'actions/loading'
-
+import clsx from 'clsx'
+import includes from 'lodash/includes'
+import isEmpty from 'lodash/isEmpty'
 // components
 import NFTCard from 'popup/components/NFTCard'
-
 // selectors
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 

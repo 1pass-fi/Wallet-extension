@@ -1,12 +1,11 @@
 
-import Web3 from 'web3'
-import { isString, get } from 'lodash'
 import axios from 'axios'
-
-import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
-import storage from 'services/storage'
 import { REQUEST } from 'constants/koiConstants'
-import { fromEthToWei, fromArToWinston, fromSolToLamp } from 'utils'
+import { get,isString } from 'lodash'
+import storage from 'services/storage'
+import { fromArToWinston, fromEthToWei, fromSolToLamp } from 'utils'
+import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
+import Web3 from 'web3'
 
 
 const ETHEREUM = 'ETHEREUM'

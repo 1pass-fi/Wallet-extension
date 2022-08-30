@@ -1,35 +1,29 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { v4 as uuid } from 'uuid'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import isEmpty from 'lodash/isEmpty'
-
+import { useSelector } from 'react-redux'
+import { FRIEND_REFERRAL_ENDPOINTS, SOCIAL_NETWORKS } from 'constants/koiConstants'
+import Button from 'finnie-v2/components/Button'
+import NFTMedia from 'finnie-v2/components/NFTMedia'
+import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
+import formatNumber from 'finnie-v2/utils/formatNumber'
+import shareSocialNetwork from 'finnie-v2/utils/shareSocialNetwork'
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import CrossIcon from 'img/v2/cross-icon-white.svg'
 import ModalBackground from 'img/v2/modal-background.svg'
-
-import TwitterIcon from 'img/v2/share-modal-icons/twitter-icon.svg'
+import EmbedIcon from 'img/v2/share-modal-icons/embed-icon.svg'
 import FacebookIcon from 'img/v2/share-modal-icons/facebook-icon.svg'
 import LinkedIn from 'img/v2/share-modal-icons/linkedin-icon.svg'
 import MailIcon from 'img/v2/share-modal-icons/mail-icon.svg'
-import EmbedIcon from 'img/v2/share-modal-icons/embed-icon.svg'
 import ShareIcon from 'img/v2/share-modal-icons/share-icon.svg'
-
-import NFTMedia from 'finnie-v2/components/NFTMedia'
-import Button from 'finnie-v2/components/Button'
+import TwitterIcon from 'img/v2/share-modal-icons/twitter-icon.svg'
+import isEmpty from 'lodash/isEmpty'
 import { GalleryContext } from 'options/galleryContext'
-
-import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
-import formatNumber from 'finnie-v2/utils/formatNumber'
-import shareSocialNetwork from 'finnie-v2/utils/shareSocialNetwork'
-
-import { FRIEND_REFERRAL_ENDPOINTS, SOCIAL_NETWORKS } from 'constants/koiConstants'
-
 import { popupAccount } from 'services/account'
-import storage from 'services/storage'
 import arweave from 'services/arweave'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import storage from 'services/storage'
+import { v4 as uuid } from 'uuid'
 
 import './ConfirmCreateNftModal.css'
 

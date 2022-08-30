@@ -1,6 +1,5 @@
-import { TYPE } from 'constants/accountConstants'
 import { useEffect, useState } from 'react'
-
+import { TYPE } from 'constants/accountConstants'
 import { 
   isArweaveAddress,
   isEthereumAddress,

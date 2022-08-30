@@ -1,18 +1,17 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useContext,useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
+import { setNotifications } from 'options/actions/notifications'
+import { GalleryContext } from 'options/galleryContext'
+import { popupAccount } from 'services/account'
+import storage from 'services/storage'
 
 import ActivityRow from './ActivityRow'
 import NotificationTab from './NotificationTab'
 
-import storage from 'services/storage'
-import { popupAccount } from 'services/account'
-
 import './ActivityCenterDropdown.css'
-import { setNotifications } from 'options/actions/notifications'
-import { GalleryContext } from 'options/galleryContext'
 
 const ACTIVITY = 'ACTIVITY'
 const COMMUNITY = 'COMMUNITY'

@@ -1,8 +1,7 @@
 // Services
-import { backgroundAccount } from 'services/account'
-
 // Constants
 import { TYPE } from 'constants/accountConstants'
+import { backgroundAccount } from 'services/account'
 
 export default async () => {
   try {

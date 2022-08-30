@@ -1,35 +1,31 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-
+import { useHistory } from 'react-router-dom'
+import { TYPE } from 'constants/accountConstants'
+import { SHOW_ETHEREUM, SHOW_K2,SHOW_SOLANA } from 'constants/koiConstants'
 import EthereumLogo from 'img/startup/ethereum-logo.svg'
 import FinnieLogo from 'img/startup/finnie-logo.svg'
 import SolanaLogo from 'img/startup/solana-logo.svg'
+import isEmpty from 'lodash/isEmpty'
+import { addAccountByAddress } from 'options/actions/accounts'
+import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
+import { GalleryContext } from 'options/galleryContext'
+import HasTwelveSeedPhrase from 'options/modal/HasTwelveSeedPhrase'
+import { popupAccount } from 'services/account'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
+import storage from 'services/storage'
 
-import WalletType from '../shared/WalletType'
-import ConfirmPassword from '../shared/ConfirmPassword'
-import InputSeedPhraseField from '../shared/InputSeedPhraseField'
-import InputNonKoiiSeedPhraseField from '../shared/InputNonKoiiSeedPhraseField'
-import InputPrivateKeyField from '../shared/InputPrivateKeyField'
 import Button from '../shared/Button'
+import ConfirmPassword from '../shared/ConfirmPassword'
+import InputNonKoiiSeedPhraseField from '../shared/InputNonKoiiSeedPhraseField'
+import InputPassword from '../shared/InputPassword'
+import InputPrivateKeyField from '../shared/InputPrivateKeyField'
+import InputSeedPhraseField from '../shared/InputSeedPhraseField'
 import Loading from '../shared/Loading'
 import useEthereumNetworks from '../shared/useEthereumNetworks'
-import { GalleryContext } from 'options/galleryContext'
-import InputPassword from '../shared/InputPassword'
-import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
-import { SHOW_ETHEREUM, SHOW_SOLANA, SHOW_K2 } from 'constants/koiConstants'
-import HasTwelveSeedPhrase from 'options/modal/HasTwelveSeedPhrase'
-
-import isEmpty from 'lodash/isEmpty'
-
-import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
-
-import { TYPE } from 'constants/accountConstants'
-import { addAccountByAddress } from 'options/actions/accounts'
+import WalletType from '../shared/WalletType'
 
 import './index.css'
-import { popupAccount } from 'services/account'
-import storage from 'services/storage'
 
 export default () => {
   const [step, setStep] = useState(1)

@@ -1,9 +1,8 @@
-import { find } from 'lodash'
-
-import arweave from 'services/arweave'
 import errorHandler from 'background/helpers/errorHandler'
 import createTransaction from 'background/helpers/uploadNft/createTransaction'
 import { ERROR_MESSAGE } from 'constants/koiConstants'
+import { find } from 'lodash'
+import arweave from 'services/arweave'
 
 const resendMintNft = async (account, transaction) => {
   const pendingAssets = await account.get.pendingAssets()

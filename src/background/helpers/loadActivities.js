@@ -1,8 +1,7 @@
 import { orderBy } from 'lodash'
-
+import { backgroundAccount } from 'services/account'
 // Services
 import storage from 'services/storage'
-import { backgroundAccount } from 'services/account'
 
 
 export default async (type) => {

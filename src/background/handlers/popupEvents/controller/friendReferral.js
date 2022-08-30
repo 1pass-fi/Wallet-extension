@@ -1,9 +1,8 @@
 // Services
-import storage from 'services/storage'
-import { backgroundAccount } from 'services/account'
-
 // Constants
 import { FRIEND_REFERRAL_ENDPOINTS } from 'constants/koiConstants'
+import { backgroundAccount } from 'services/account'
+import storage from 'services/storage'
 
 
 export default async (payload, next) => {

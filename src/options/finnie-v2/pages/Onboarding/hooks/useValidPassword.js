@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { VALIDATE_ERROR_MESSAGE } from '../../../../../constants/koiConstants'
 import isEmpty from 'lodash/isEmpty'
+
+import { VALIDATE_ERROR_MESSAGE } from '../../../../../constants/koiConstants'
 
 const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%^&*()].*).{8,}')
 

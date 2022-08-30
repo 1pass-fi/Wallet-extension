@@ -15,7 +15,7 @@ module.exports = {
             jsx: true,
         },
     },
-    plugins: ['react'],
+    plugins: ['react', 'simple-import-sort'],
     rules: {
         "no-console": "off",
         "no-underscore-dangle": "off",
@@ -45,4 +45,31 @@ module.exports = {
         'react/jsx-uses-react': 1,
         'spaced-comment': ['error', 'always', { exceptions: ['-', '+'] }],
     },
+    "overrides": [
+        // override "simple-import-sort" config
+        {
+          "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
+          "rules": {
+            "simple-import-sort/imports": [
+              "error",
+              {
+                "groups": [
+                  // Packages `react` related packages come first.
+                  ["^react", "^@?\\w"],
+                  // Internal packages.
+                  ["^(@|components)(/.*|$)"],
+                  // Side effect imports.
+                  ["^\\u0000"],
+                  // Parent imports. Put `..` last.
+                  ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+                  // Other relative imports. Put same-folder imports and `.` last.
+                  ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+                  // Style imports.
+                  ["^.+\\.?(css)$"]
+                ]
+              }
+            ]
+          }
+        }
+      ]
 };

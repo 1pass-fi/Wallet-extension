@@ -1,37 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import ReactTooltip from 'react-tooltip'
-import clsx from 'clsx'
-import isEmpty from 'lodash/isEmpty'
-
 import { useHistory } from 'react-router-dom'
-
+import ReactTooltip from 'react-tooltip'
+import { setError } from 'actions/error'
+// actions
+import { makeTransfer } from 'actions/koi'
+import clsx from 'clsx'
+import { TYPE } from 'constants/accountConstants'
+// constants
+import { ERROR_MESSAGE, REQUEST } from 'constants/koiConstants'
+import BackBtn from 'img/popup/back-button.svg'
+import ArrowIconBlue from 'img/popup/down-arrow-icon-blue.svg'
+import SendBackgroundLeft from 'img/popup/send-background-left.svg'
+import SendBackgroundRight from 'img/popup/send-background-right.svg'
+import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+import isEmpty from 'lodash/isEmpty'
+import { formatNumber } from 'options/utils'
+import { setIsLoading } from 'popup/actions/loading'
 import TokenDropdown from 'popup/components/TokenDropdown'
+import { popupAccount } from 'services/account'
+import storage from 'services/storage'
+import { calculateGasFee,isArweaveAddress, isEthereumAddress } from 'utils'
+
 import SendTokenForm from './SendTokenForm'
 import TransactionConfirmModal from './TransactionConfirmModal'
 import TransactionDetails from './TransactionDetails'
-
-// actions
-import { makeTransfer } from 'actions/koi'
-import { setIsLoading } from 'popup/actions/loading'
-import { setError } from 'actions/error'
-
-// constants
-import { ERROR_MESSAGE, REQUEST } from 'constants/koiConstants'
-import { TYPE } from 'constants/accountConstants'
-
-import { formatNumber } from 'options/utils'
-import { isArweaveAddress, isEthereumAddress, calculateGasFee } from 'utils'
-import { popupAccount } from 'services/account'
-
-import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
-import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
-import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
-import ArrowIconBlue from 'img/popup/down-arrow-icon-blue.svg'
-import BackBtn from 'img/popup/back-button.svg'
-import SendBackgroundLeft from 'img/popup/send-background-left.svg'
-import SendBackgroundRight from 'img/popup/send-background-right.svg'
-import storage from 'services/storage'
 
 const Send = ({ setIsLoading, setError, makeTransfer, setShowSigning }) => {
   const history = useHistory()

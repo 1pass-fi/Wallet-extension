@@ -1,8 +1,8 @@
+import { CLEAR_ERROR, CLEAR_NOTIFICATION, CLEAR_WARNING, SET_WARNING } from 'actions/types'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { setWarning } from './warning'
-import { CLEAR_ERROR, CLEAR_NOTIFICATION, CLEAR_WARNING, SET_WARNING } from 'actions/types'
 
 describe('tests warning action', () => {
   it('dispatches as expected', async () => {

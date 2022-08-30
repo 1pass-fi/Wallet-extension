@@ -1,17 +1,15 @@
-import React, { useEffect, useContext, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import isEmpty from 'lodash/isEmpty'
-
+import { useDispatch } from 'react-redux'
 import ExportIcon from 'img/startup/json-keyfile.svg'
-
-import './index.css'
+import isEmpty from 'lodash/isEmpty'
+import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { GalleryContext } from 'options/galleryContext'
-
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
-import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setActivatedAccountAddress } from 'utils'
+
+import './index.css'
 
 const DragActive = ({ description, Icon }) => {
   return (

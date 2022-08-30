@@ -1,5 +1,6 @@
-import notificationReducer from './notification'
 import * as types from 'actions/types'
+
+import notificationReducer from './notification'
 
 const initialState = null
 

@@ -1,13 +1,9 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-
-import formatLongString from 'finnie-v2/utils/formatLongString'
-
 import NFTMedia from 'finnie-v2/components/NFTMedia'
-
+import formatLongString from 'finnie-v2/utils/formatLongString'
 import AddIcon from 'img/v2/select-nfts/add-icon.svg'
 import CheckIcon from 'img/v2/select-nfts/check-icon.svg'
-
 import { GalleryContext } from 'options/galleryContext'
 
 const NftSelectCard = ({ nft }) => {

@@ -1,10 +1,8 @@
-import Web3 from 'web3'
-import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
-import hdkey from 'ethereumjs-wallet/dist/hdkey'
-
 import { Web } from '@_koi/sdk/web'
-
+import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
 import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
+import hdkey from 'ethereumjs-wallet/dist/hdkey'
+import Web3 from 'web3'
 
 export class EthereumTool {
   #provider

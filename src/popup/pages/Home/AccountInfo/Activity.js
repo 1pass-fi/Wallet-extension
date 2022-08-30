@@ -1,16 +1,14 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useEffect,useRef, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import clsx from 'clsx'
 import { isEmpty, orderBy } from 'lodash'
-
-import storage from 'services/storage'
+import { setActivities } from 'popup/actions/activities'
+import ExpiredTxModal from 'popup/components/modals/expiredTxModal'
+import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 import { popupAccount } from 'services/account'
+import storage from 'services/storage'
 
 import ActivityRow from './ActivityRow'
-import ExpiredTxModal from 'popup/components/modals/expiredTxModal'
-
-import { setActivities } from 'popup/actions/activities'
-import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
 const Activity = ({ activities, setActivities }) => {
   const displayingAccount = useSelector(getDisplayingAccount)

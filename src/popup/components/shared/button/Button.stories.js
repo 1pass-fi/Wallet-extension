@@ -1,5 +1,6 @@
-import Button from '.'
 import partialAction from 'stories/partialAction'
+
+import Button from '.'
 
 Button.displayName = 'Button'
 

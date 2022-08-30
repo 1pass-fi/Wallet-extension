@@ -1,32 +1,28 @@
 import React from 'react'
-
-// modules
-import { get, isNumber, isEmpty, find } from 'lodash'
 import { useSelector } from 'react-redux'
-
-// actions
-import { setIsLoading } from './loading'
-import { setError } from './error'
-import { setCreateWallet } from './createWallet'
-import { setAssets } from './assets'
-import { setActivities } from './activities'
-import { setAccounts } from './accounts'
-import { setDefaultAccount } from './defaultAccount'
-import { setActivatedChain } from './activatedChain'
-
-// constants
-import { MESSAGES, FILENAME } from 'constants/koiConstants'
-import { TYPE } from 'constants/accountConstants'
 import { SET_KOI } from 'actions/types'
-
+import { TYPE } from 'constants/accountConstants'
+// constants
+import { FILENAME,MESSAGES } from 'constants/koiConstants'
+// modules
+import { find,get, isEmpty, isNumber } from 'lodash'
+import { popupAccount } from 'services/account'
 // services
 import {
-  popupBackgroundRequest as backgroundRequest,
-  popupBackgroundConnect as backgroundConnect
-} from 'services/request/popup'
-import { popupAccount } from 'services/account'
+  popupBackgroundConnect as backgroundConnect,
+  popupBackgroundRequest as backgroundRequest} from 'services/request/popup'
 import { EventHandler as CreateEventHandler } from 'services/request/src/backgroundConnect'
 import storage from 'services/storage'
+
+import { setAccounts } from './accounts'
+import { setActivatedChain } from './activatedChain'
+import { setActivities } from './activities'
+import { setAssets } from './assets'
+import { setCreateWallet } from './createWallet'
+import { setDefaultAccount } from './defaultAccount'
+import { setError } from './error'
+// actions
+import { setIsLoading } from './loading'
 
 export const getBalances = () => async (dispatch) => {
   const getBalanceSuccessHandler = new CreateEventHandler(

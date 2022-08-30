@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { isEmpty } from 'lodash'
-
-import storage from 'services/storage'
-
+import { useLocation } from 'react-router-dom'
 import { GALLERY_IMPORT_PATH } from 'constants/koiConstants'
+import { isEmpty } from 'lodash'
+import storage from 'services/storage'
 
 export default ({ walletLoaded }) => {
   const { pathname } = useLocation()

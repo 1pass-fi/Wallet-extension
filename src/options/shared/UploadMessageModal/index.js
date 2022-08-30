@@ -1,6 +1,6 @@
-import React, { useRef, useEffect } from 'react'
-import PropTypes from 'prop-types'
+import React, { useEffect,useRef } from 'react'
 import CloseIcon from 'img/close-x-icon-gallery.svg'
+import PropTypes from 'prop-types'
 
 import './index.css'
 

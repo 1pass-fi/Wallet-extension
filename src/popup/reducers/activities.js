@@ -1,4 +1,4 @@
-import { SET_ACTIVITIES, CLEAR_ACTIVITIES } from 'actions/types'
+import { CLEAR_ACTIVITIES,SET_ACTIVITIES } from 'actions/types'
 
 const initialState = []
 

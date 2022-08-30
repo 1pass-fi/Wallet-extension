@@ -1,21 +1,17 @@
-import clsx from 'clsx'
-import React, { useMemo, useContext, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import { find, isEmpty, get } from 'lodash'
-import ReactTooltip from 'react-tooltip'
-
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-
-import EditIcon from 'img/v2/collection-detail/edit-icon.svg'
-
-import NftCard from './NftCard'
-
+import ReactTooltip from 'react-tooltip'
+import clsx from 'clsx'
+import { COLLECTION_CONTRACT_SRC } from 'constants/koiConstants'
 import Sidebar from 'finnie-v2/components/Sidebar'
-
+import EditIcon from 'img/v2/collection-detail/edit-icon.svg'
+import { find, get,isEmpty } from 'lodash'
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
-import { COLLECTION_CONTRACT_SRC } from 'constants/koiConstants'
+
+import NftCard from './NftCard'
 
 const CollectionDetails = () => {
   const history = useHistory()

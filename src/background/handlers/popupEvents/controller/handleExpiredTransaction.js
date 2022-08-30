@@ -1,12 +1,9 @@
-import { find } from 'lodash'
-
-// Services'
-import { backgroundAccount } from 'services/account'
-
+import helpers from 'background/helpers'
 // Constants
 import { MESSAGES } from 'constants/koiConstants'
-
-import helpers from 'background/helpers'
+import { find } from 'lodash'
+// Services'
+import { backgroundAccount } from 'services/account'
 
 
 export default async (payload, next) => {

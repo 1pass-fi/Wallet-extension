@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
+import { GalleryContext } from 'options/galleryContext'
+import Modal from 'options/shared/UploadMessageModal'
 
 import './index.css'
-import Modal from 'options/shared/UploadMessageModal'
-import { GalleryContext } from 'options/galleryContext'
 
 const SuccessUploadNFT = () => {
   const { pendingNFTTitle } = useContext(GalleryContext)

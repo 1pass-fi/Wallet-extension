@@ -1,10 +1,8 @@
-import clsx from 'clsx'
 import React from 'react'
-
+import clsx from 'clsx'
+import formatLongString from 'finnie-v2/utils/formatLongString'
 import RemoveNFTIcon from 'img/v2/cross-icon-orange.svg'
 import PhotoIcon from 'img/v2/photo-icon.svg'
-
-import formatLongString from 'finnie-v2/utils/formatLongString'
 
 const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft, error, selectNft }) => {
   return (

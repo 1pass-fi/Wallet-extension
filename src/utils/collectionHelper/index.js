@@ -1,15 +1,14 @@
 import { Web } from '@_koi/sdk/web'
 import axios from 'axios'
-
+import { ACCOUNT, TYPE } from 'constants/accountConstants'
+import { NFT_CONTRACT_SRC,PATH, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 import arweave from 'services/arweave'
 import { popupBackgroundRequest as request } from 'services/request/popup'
+import storage from 'services/storage'
 
-import nftInfoSchema from './nftInfoSchema'
 import { getChromeStorage, setChromeStorage } from '../'
 
-import { PENDING_TRANSACTION_TYPE, PATH, NFT_CONTRACT_SRC } from 'constants/koiConstants'
-import { ACCOUNT, TYPE } from 'constants/accountConstants'
-import storage from 'services/storage'
+import nftInfoSchema from './nftInfoSchema'
 
 /*
   Return nft ids of uploaded nfts

@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
-
 import NavBar from 'finnie-v2/components/NavBar'
 import Sidebar from 'finnie-v2/components/Sidebar'
 

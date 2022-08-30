@@ -1,10 +1,9 @@
 // modules
 import React, { useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
-import isEmpty from 'lodash/isEmpty'
-
 // assets
 import ExportIcon from 'img/export-icon-sm.svg'
+import isEmpty from 'lodash/isEmpty'
 
 // styles
 import './index.css'

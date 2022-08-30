@@ -1,8 +1,7 @@
-import React, { useRef, useEffect } from 'react'
-import PropTypes from 'prop-types'
+import React, { useEffect,useRef } from 'react'
 import ReactTooltip from 'react-tooltip'
-
 import CloseIcon from 'img/circle-close-icon.svg'
+import PropTypes from 'prop-types'
 
 import './index.css'
 

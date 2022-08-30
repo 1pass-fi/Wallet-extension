@@ -1,7 +1,7 @@
 import { SettingGet } from './get'
-import { SettingSet } from './set'
-import { SettingRemove } from './remove'
 import { SettingMethod } from './method'
+import { SettingRemove } from './remove'
+import { SettingSet } from './set'
 
 export class Setting {
   constructor() {

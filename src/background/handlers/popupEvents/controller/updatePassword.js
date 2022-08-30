@@ -1,10 +1,8 @@
-import { get } from 'lodash'
 import passworder from 'browser-passworder'
-
 import { IMPORTED } from 'constants/accountConstants'
-
-import { ChromeStorage } from 'services/storage/ChromeStorage'
+import { get } from 'lodash'
 import { backgroundAccount } from 'services/account'
+import { ChromeStorage } from 'services/storage/ChromeStorage'
 
 export default async (payload, next) => {
   try {

@@ -1,14 +1,13 @@
 import React from 'react'
 import { Route, Switch } from 'react-router'
 import { Link } from 'react-router-dom'
-
 import KoiIcon from 'img/finnie-koi-logo-white.svg'
-
 // import Welcome from './Welcome'
 import Welcome from 'options/finnie-v2/pages/Onboarding/Welcome'
-import Upload from './Upload'
-import Import from './Import'
+
 import Create from './Create'
+import Import from './Import'
+import Upload from './Upload'
 
 import './index.css'
 

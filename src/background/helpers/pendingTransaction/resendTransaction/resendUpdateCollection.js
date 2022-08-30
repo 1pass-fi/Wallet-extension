@@ -1,6 +1,6 @@
+import errorHandler from 'background/helpers/errorHandler'
 import { get } from 'lodash'
 
-import errorHandler from 'background/helpers/errorHandler'
 import collections from '../../collections'
 
 const resendUpdateCollection = async (account, transaction) => {

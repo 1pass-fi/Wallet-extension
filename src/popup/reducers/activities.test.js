@@ -1,5 +1,6 @@
-import activitiesReducer from './activities'
 import * as types from 'actions/types'
+
+import activitiesReducer from './activities'
 
 const initialState = []
 

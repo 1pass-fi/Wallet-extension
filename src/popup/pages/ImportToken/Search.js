@@ -1,22 +1,17 @@
-import { TokenListProvider } from '@solana/spl-token-registry'
-import React, { useEffect, useMemo, useState, useRef } from 'react'
+import React, { useEffect, useMemo, useRef,useState } from 'react'
 import { useSelector } from 'react-redux'
-import isEmpty from 'lodash/isEmpty'
-
+import { TokenListProvider } from '@solana/spl-token-registry'
+import { TYPE } from 'constants/accountConstants'
+import { SOL_NETWORK_PROVIDER } from 'constants/koiConstants'
 import SearchIcon from 'img/popup/search-icon.svg'
-
-import contracts from 'utils/contract-map.json'
-
+import isEmpty from 'lodash/isEmpty'
 // selectors
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
-
+import storage from 'services/storage'
+import hardcodeTokens from 'solanaTokens/solanaTokens'
+import contracts from 'utils/contract-map.json'
 // utils
 import { getLogoPath } from 'utils/getTokenData'
-import { TYPE } from 'constants/accountConstants'
-import storage from 'services/storage'
-
-import hardcodeTokens from 'solanaTokens/solanaTokens'
-import { SOL_NETWORK_PROVIDER } from 'constants/koiConstants'
 
 let currentTimeout = [null]
 

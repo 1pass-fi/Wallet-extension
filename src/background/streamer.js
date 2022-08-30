@@ -1,13 +1,14 @@
 /* 
   Update user data.
 */
-import helpers from './helpers'
-import { TIME_INTERVAL, MESSAGES } from 'constants/koiConstants'
 import { TYPE } from 'constants/accountConstants'
-import sendMessageToPorts from './helpers/sendMessageToPorts'
-import cache from './cache'
+import { MESSAGES,TIME_INTERVAL } from 'constants/koiConstants'
 import storage from 'services/storage'
 import { v4 as uuid } from 'uuid'
+
+import sendMessageToPorts from './helpers/sendMessageToPorts'
+import cache from './cache'
+import helpers from './helpers'
 
 const testNotification = async () => {
   const sendPopupPorts = sendMessageToPorts(cache.getPopupPorts())

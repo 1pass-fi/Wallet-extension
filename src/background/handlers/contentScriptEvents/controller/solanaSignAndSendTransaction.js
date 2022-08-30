@@ -1,19 +1,15 @@
-import bs58, { decode } from 'bs58'
-import { Transaction, sendAndConfirmTransaction, Message, Connection, clusterApiUrl, PublicKey } from '@solana/web3.js'
 import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
-
-import { backgroundAccount } from 'services/account'
-import storage from 'services/storage'
-import { SolanaTool } from 'services/solana'
-
-import { get, isEmpty } from 'lodash'
-import { v4 as uuid } from 'uuid'
-
+import { clusterApiUrl, Connection, Message, PublicKey,sendAndConfirmTransaction, Transaction } from '@solana/web3.js'
+import bs58, { decode } from 'bs58'
 // Constants
-import { REQUEST, OS, WINDOW_SIZE } from 'constants/koiConstants'
-
+import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
+import { get, isEmpty } from 'lodash'
+import { backgroundAccount } from 'services/account'
+import { SolanaTool } from 'services/solana'
+import storage from 'services/storage'
 // Utils
 import { createWindow } from 'utils/extension'
+import { v4 as uuid } from 'uuid'
 
 const getTransactionDataFromMessage = async (transactionMessage) => {
   try {

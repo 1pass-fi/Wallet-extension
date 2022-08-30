@@ -1,8 +1,7 @@
-import isEmpty from 'lodash/isEmpty'
 import { ethers } from 'ethers'
-
-import storage from 'services/storage'
+import isEmpty from 'lodash/isEmpty'
 import ERC20ABI from 'services/account/Account/Chains/Ethereum/abi/ERC20ABI.json'
+import storage from 'services/storage'
 import { clarifyEthereumProvider } from 'utils'
 
 export const isContractAddress = async (address) => {

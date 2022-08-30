@@ -1,16 +1,12 @@
 import passworder from 'browser-passworder'
-import { find, get, isEmpty } from 'lodash'
-
-import { Account, ArweaveAccount, EthereumAccount, K2Account, SolanaAccount } from './Account/index'
-
-import { IMPORTED, TYPE, ACCOUNT } from 'constants/accountConstants'
-import { ChromeStorage } from 'services/storage/ChromeStorage'
-
+import { ACCOUNT,IMPORTED, TYPE } from 'constants/accountConstants'
 import { ERROR_MESSAGE } from 'constants/koiConstants'
-
+import { find, get, isEmpty } from 'lodash'
+import storage from 'services/storage'
+import { ChromeStorage } from 'services/storage/ChromeStorage'
 import { setActivatedAccountAddress } from 'utils'
 
-import storage from 'services/storage'
+import { Account, ArweaveAccount, EthereumAccount, K2Account, SolanaAccount } from './Account/index'
 
 /* 
   AccountManager classes will be used in account management.

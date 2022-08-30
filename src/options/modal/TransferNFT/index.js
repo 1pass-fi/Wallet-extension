@@ -1,26 +1,22 @@
-import React, { useContext, useState, useRef, useEffect, useMemo } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useContext, useEffect, useMemo,useRef, useState } from 'react'
+import { useDispatch,useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import isEmpty from 'lodash/isEmpty'
-
-import TransferFrom from './TransferForm'
-import ConfirmTransfer from './ConfirmTransfer'
-import TransferSuccess from './TransferSuccess'
-
-import { GalleryContext } from 'options/galleryContext'
-import { popupBackgroundRequest } from 'services/request/popup'
-
-import './index.css'
-import { setAssets } from 'options/actions/assets'
-
-import { isArweaveAddress } from 'utils'
-
+import NFTMedia from 'finnie-v2/components/NFTMedia'
 // v2
 import { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
-import NFTMedia from 'finnie-v2/components/NFTMedia'
-
-import CloseIcon from 'img/v2/close-icon-blue.svg'
 import BackIcon from 'img/v2/back-icon-blue.svg'
+import CloseIcon from 'img/v2/close-icon-blue.svg'
+import isEmpty from 'lodash/isEmpty'
+import { setAssets } from 'options/actions/assets'
+import { GalleryContext } from 'options/galleryContext'
+import { popupBackgroundRequest } from 'services/request/popup'
+import { isArweaveAddress } from 'utils'
+
+import ConfirmTransfer from './ConfirmTransfer'
+import TransferFrom from './TransferForm'
+import TransferSuccess from './TransferSuccess'
+
+import './index.css'
 
 const TransferNFT = ({
   onClose,

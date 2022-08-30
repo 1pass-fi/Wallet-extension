@@ -1,15 +1,16 @@
-import '@testing-library/jest-dom/extend-expect'
-import { createMemoryHistory } from 'history'
 import React from 'react'
-import { createStore, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
-
-import SendKoiForm from '.'
-import { TYPE } from 'constants/accountConstants'
 import { makeTransfer } from 'actions/koi'
+import { TYPE } from 'constants/accountConstants'
 import { ERROR_MESSAGE, PATH } from 'constants/koiConstants'
+import { createMemoryHistory } from 'history'
 import rootReducer from 'popup/reducers'
 import { act, fireEvent, render, screen } from 'popup/test-utils'
+import { applyMiddleware,createStore } from 'redux'
+import thunk from 'redux-thunk'
+
+import '@testing-library/jest-dom/extend-expect'
+
+import SendKoiForm from '.'
 
 jest.mock('services/account', () => {
   return {

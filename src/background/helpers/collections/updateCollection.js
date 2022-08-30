@@ -1,7 +1,7 @@
+import { ArweaveAccount } from 'services/account/Account'
+import arweave from 'services/arweave'
 import { smartweave } from 'smartweave'
 
-import arweave from 'services/arweave'
-import { ArweaveAccount } from 'services/account/Account'
 import collectionSchema from './schema'
 
 export default async (collectionData, contractId, account) => {

@@ -1,5 +1,4 @@
 import passworder from 'browser-passworder'
-
 // Services
 import { backgroundAccount } from 'services/account'
 

@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
-
 import { GalleryContext } from 'options/galleryContext'
-
-import NavBar from './NavBar'
-import Content from './Content'
-
 import LoadingScreen from 'options/pages/StartUp/shared/Loading'
+
+import Content from './Content'
+import NavBar from './NavBar'
 
 export const onboardingSteps = [
   'CREATE_PASSWORD',

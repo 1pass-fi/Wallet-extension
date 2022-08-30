@@ -1,20 +1,16 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import isEmpty from 'lodash/isEmpty'
-
+import { TYPE } from 'constants/accountConstants'
+import formatLongString from 'finnie-v2/utils/formatLongString'
 import ArrowIcon from 'img/down-arrow-icon.svg'
 import EthereumIcon from 'img/popup/ethereum-icon.svg'
+import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 // import FinnieIcon from 'img/popup/finnie-icon.svg'
 import K2Logo from 'img/v2/k2-logos/finnie-k2-logo.svg'
-import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import SolanaIcon from 'img/v2/solana-logo.svg'
-
-import { TYPE } from 'constants/accountConstants'
-
+import isEmpty from 'lodash/isEmpty'
 // selectors
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
-
-import formatLongString from 'finnie-v2/utils/formatLongString'
 
 const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
   const displayingAccount = useSelector(getDisplayingAccount)

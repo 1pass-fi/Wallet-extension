@@ -1,23 +1,19 @@
 // modules
 import React from 'react'
-import { connect } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-
+import { connect } from 'react-redux'
+// actions
+import { setNotification } from 'actions/notification'
+// constants
+import { NOTIFICATION } from 'constants/koiConstants'
+import CopyIcon from 'img/copy-icon.svg'
+import InfoIcon from 'img/info.svg'
 // assets
 import KeyIcon from 'img/key-icon.svg'
 import WarningIcon from 'img/warning-icon.svg'
-import InfoIcon from 'img/info.svg'
-import CopyIcon from 'img/copy-icon.svg'
-
+import Button from 'shared/button'
 // components
 import Modal from 'shared/modal'
-import Button from 'shared/button'
-
-// actions
-import { setNotification } from 'actions/notification'
-
-// constants
-import { NOTIFICATION } from 'constants/koiConstants'
 
 // styles
 import './index.css'

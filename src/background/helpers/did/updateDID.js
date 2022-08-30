@@ -1,12 +1,10 @@
-import { smartweave } from 'smartweave'
-
-// services
-import arweave from 'services/arweave'
-import { backgroundAccount } from 'services/account'
-import { ArweaveAccount } from 'services/account/Account'
-
 // constants
 import { ERROR_MESSAGE } from 'constants/koiConstants'
+import { backgroundAccount } from 'services/account'
+import { ArweaveAccount } from 'services/account/Account'
+// services
+import arweave from 'services/arweave'
+import { smartweave } from 'smartweave'
 
 import didSchema from './schema'
 

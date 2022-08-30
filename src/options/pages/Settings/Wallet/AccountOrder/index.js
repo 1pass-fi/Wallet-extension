@@ -1,21 +1,20 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useContext, useEffect,useState } from 'react'
+import { DragDropContext, Draggable,Droppable } from 'react-beautiful-dnd'
 import { useDispatch, useSelector } from 'react-redux'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import get from 'lodash/get'
-
-import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
+import { TYPE } from 'constants/accountConstants'
 import EthereumIcon from 'img/ethereum-logo-18.svg'
-import SolanaIcon from 'img/v2/solana-logo.svg'
+import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
 import RearrangePadsIcon from 'img/rearrange-pads-icon.svg'
+import SolanaIcon from 'img/v2/solana-logo.svg'
+import get from 'lodash/get'
+import { setDefaultAccountByAddress } from 'options/actions/defaultAccount'
+import { GalleryContext } from 'options/galleryContext'
 import { getDisplayAddress } from 'options/utils'
+import { popupAccount } from 'services/account'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import storage from 'services/storage'
 
 import './index.css'
-import { GalleryContext } from 'options/galleryContext'
-import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
-import { popupAccount } from 'services/account'
-import { TYPE } from 'constants/accountConstants'
-import { setDefaultAccountByAddress } from 'options/actions/defaultAccount'
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list)

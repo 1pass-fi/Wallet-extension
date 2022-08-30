@@ -1,7 +1,6 @@
 import React from 'react'
-
-import GalleryIcon from 'img/popup/gallery-icon.svg'
 import AddIcon from 'img/popup/add-icon.svg'
+import GalleryIcon from 'img/popup/gallery-icon.svg'
 import LockIcon from 'img/popup/lock-icon.svg'
 
 const NavBar = ({ handleLockWallet }) => {
