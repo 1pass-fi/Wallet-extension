@@ -917,7 +917,7 @@ export const clarifyEthereumProvider = (ethProvider) => {
   }
 }
 
-export const decodeTxMethod = async (sender = null, receipt = null, data) => {
+export const decodeTxMethod = (data) => {
   try {
     const iface = new ethers.utils.Interface(MetamaskABI)
     const decodedData = iface.parseTransaction({ data: data })

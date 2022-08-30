@@ -64,6 +64,7 @@ const useLoadRequest = ({ setIsLoading }) => {
         if (network === 'ARWEAVE') {
           setDataString(data.toString())
         } else {
+          console.log('useLoadRequests', data)
           setDataString(data)
         }
         setSenderName(senderName)

@@ -45,7 +45,9 @@ import useSendValue from './hooks/useSendValue'
 import useExploreBlockUrl from './hooks/useExploreBlockUrl'
 import useSecurityStatus from './hooks/useSecurityStatus'
 
-import { TRANSACTION_TYPE, TAB } from './hooks/constants'
+import { TRANSACTION_TYPE, TAB, TRANSACTION_METHOD } from './hooks/constants'
+
+import { decodeTxMethod } from 'utils/index'
 
 const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigning }) => {
   const [tab, setTab] = useState(TAB.DETAIL)
@@ -82,6 +84,11 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
       return get(transactionPayload, 'to')
     return null
   }, [transactionType])
+
+  const transactionMethod = useMemo(() => {
+    if (transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION && !isEmpty(dataString)) return decodeTxMethod(dataString)
+    return null
+  }, [dataString])
 
   const {
     SendValue,
@@ -129,7 +136,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     return isNumber(trustStat) && trustStat < 0 && !acceptSite
   }, [trustStat, acceptSite])
 
-  useEffect(() => {
+  useEffect(async () => {
     return () => {
       storage.generic.set.pendingRequest({})
     }
@@ -227,7 +234,26 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                   'Transfer AR'}
                 {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && 'Transfer Token'}
               </div>
-
+              {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION &&
+                !isEmpty(transactionMethod) && (
+                  <>
+                    {transactionMethod === TRANSACTION_METHOD.SET_APPROVAL_FOR_ALL && (
+                      <div className="flex items-center justify-center w-auto h-5 mt-1 mb-3 px-1 text-sm text-indigo font-semibold tracking-finnieSpacing-wide border border-turquoiseBlue rounded-xs bg-cyan">
+                        setApprovalForAll
+                      </div>
+                    )}
+                    {transactionMethod === TRANSACTION_METHOD.MINT_COLLECTIBLES && (
+                      <div className="flex items-center justify-center w-auto h-5 mt-1 mb-3 px-1 text-sm text-indigo font-semibold tracking-finnieSpacing-wide border border-turquoiseBlue rounded-xs bg-cyan">
+                        mintCollectibles
+                      </div>
+                    )}
+                    {transactionMethod === TRANSACTION_METHOD.APPROVE && (
+                      <div className="flex items-center justify-center w-auto h-5 mt-1 mb-3 px-1 text-sm text-indigo font-semibold tracking-finnieSpacing-wide border border-turquoiseBlue rounded-xs bg-cyan">
+                        approve
+                      </div>
+                    )}
+                  </>
+              )}
               {/* NFT SECURITY */}
               {isNumber(trustStat) &&
                 (trustStat === 2 ? (
