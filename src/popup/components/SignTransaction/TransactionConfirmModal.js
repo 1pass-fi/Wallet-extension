@@ -195,7 +195,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     return false
   }, [trustStat, acceptSite])
 
-  useEffect(() => {
+  useEffect(async () => {
     return () => {
       storage.generic.set.pendingRequest({})
     }
