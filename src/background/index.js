@@ -1,9 +1,10 @@
 import '@babel/polyfill'
 import 'regenerator-runtime/runtime.js'
 
-import { IMPORTED } from 'constants/accountConstants'
 // Constants
-import { OS, PATH,PORTS } from 'constants/koiConstants'
+import { PORTS, OS, PATH, MESSAGES } from 'constants/koiConstants'
+import { IMPORTED } from 'constants/accountConstants'
+
 import storage from 'services/storage'
 import { getChromeStorage } from 'utils'
 
@@ -15,14 +16,14 @@ import streamer from './streamer'
 
 import inject from './inject'
 
-import declareConstantScript from 'content_scripts/scripts/declareConstantScript'
-import eventEmitterScript from 'content_scripts/scripts/eventEmitterScript'
-import finnieRpcConnectionScript from 'content_scripts/scripts/finnieRpcConnectionScript'
-import finnieEthereumProviderScript from 'content_scripts/scripts/finnieEthereumProviderScript'
-import finnieArweaveProviderScript from 'content_scripts/scripts/finnieArweaveProviderScript'
-import finnieSolanaProviderScript from 'content_scripts/scripts/finnieSolanaProviderScript'
-import finnieKoiiWalletProviderScript from 'content_scripts/scripts/finnieKoiiWalletProviderScript'
-import mainScript from 'content_scripts/scripts/mainScript'
+import declareConstantScript from './scripts/declareConstantScript'
+import eventEmitterScript from './scripts/eventEmitterScript'
+import finnieRpcConnectionScript from './scripts/finnieRpcConnectionScript'
+import finnieEthereumProviderScript from './scripts/finnieEthereumProviderScript'
+import finnieArweaveProviderScript from './scripts/finnieArweaveProviderScript'
+import finnieSolanaProviderScript from './scripts/finnieSolanaProviderScript'
+import finnieKoiiWalletProviderScript from './scripts/finnieKoiiWalletProviderScript'
+import mainScript from './scripts/mainScript'
 
 function cb(port) {
   if (port.name.includes(PORTS.POPUP)) {
@@ -42,7 +43,6 @@ function cb(port) {
 
   if (port.name.includes(PORTS.CONTENT_SCRIPT)) {
     port.onMessage.addListener((message) => {
-      console.log('message from contentscript =====', message)
       const payload = { data: message.data, port, id: message.id }
       contentScriptEvents.sendMessage(message.type, payload)
     })
@@ -72,8 +72,8 @@ chrome.runtime.onInstalled.addListener(async function () {
 
 streamer()
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.name === 'CODE_INJECTION') {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.message === MESSAGES.CODE_INJECTION) {
     const scripts = [
       `(${declareConstantScript})()`,
       `(${eventEmitterScript})()`,
@@ -82,11 +82,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       `(${finnieArweaveProviderScript})()`,
       `(${finnieSolanaProviderScript})()`,
       `(${finnieKoiiWalletProviderScript})()`,
-      `(${mainScript(message.disabled)})();`
+      `(${mainScript(request.pageDisabled)})();`
     ]
 
     inject(scripts).then(() => {
-      sendResponse({ name: 'CODE_INJECTED' })
+      sendResponse({ message: MESSAGES.CODE_INJECTED })
     })
 
     return true // send message async

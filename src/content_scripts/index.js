@@ -20,7 +20,7 @@ if (includes(ALLOWED_ORIGIN, window.origin)) {
   console.log('Finnie is ready to connect to the site.')
 }
 
-async function contentScript () {
+async function contentScript() {
   await initHanlders()
 
   const disabledOrigins = await storage.setting.get.disabledOrigins()
@@ -28,30 +28,40 @@ async function contentScript () {
 
   const disabled = disabledOrigins.includes(origin)
 
-  /* 
-    Script injection
-  */
-  const scripts = [
-    `(${declareConstantScript})()`,
-    `(${eventEmitterScript})()`,
-    `(${finnieRpcConnectionScript})()`,
-    `(${finnieEthereumProviderScript})()`,
-    `(${finnieArweaveProviderScript})()`,
-    `(${finnieSolanaProviderScript})()`,
-    `(${finnieKoiiWalletProviderScript})()`,
-    `(${finnieK2ProviderScript})()`,
-    `(${mainScript(disabled)})();`
-  ]
+  chrome.runtime.sendMessage(
+    {
+      message: MESSAGES.CODE_INJECTION,
+      pageDisabled: disabled
+    },
+    (response) => {
+      if (response.message === MESSAGES.CODE_INJECTED) {
+        /* 
+          Script injection
+        */
+        const scripts = [
+          `(${declareConstantScript})()`,
+          `(${eventEmitterScript})()`,
+          `(${finnieRpcConnectionScript})()`,
+          `(${finnieEthereumProviderScript})()`,
+          `(${finnieArweaveProviderScript})()`,
+          `(${finnieSolanaProviderScript})()`,
+          `(${finnieKoiiWalletProviderScript})()`,
+          `(${finnieK2ProviderScript})()`,
+          `(${mainScript(disabled)})();`
+        ]
 
-  inject(scripts)
+        inject(scripts)
 
-  const arweaveWalletLoaded = new CustomEvent('arweaveWalletLoaded')
-  const finnieWalletLoaded = new CustomEvent('finnieWalletLoaded')
-  const ethWalletLoaded = new CustomEvent('DOMContentLoaded')
+        const arweaveWalletLoaded = new CustomEvent('arweaveWalletLoaded')
+        const finnieWalletLoaded = new CustomEvent('finnieWalletLoaded')
+        const ethWalletLoaded = new CustomEvent('DOMContentLoaded')
 
-  window.dispatchEvent(arweaveWalletLoaded)
-  window.dispatchEvent(finnieWalletLoaded)
-  window.dispatchEvent(ethWalletLoaded)
+        window.dispatchEvent(arweaveWalletLoaded)
+        window.dispatchEvent(finnieWalletLoaded)
+        window.dispatchEvent(ethWalletLoaded)
+      }
+    }
+  )
 }
 
 contentScript()
