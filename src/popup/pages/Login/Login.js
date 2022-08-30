@@ -37,13 +37,16 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
       try {
         const windowId = w.id
         chrome.tabs.query({ active: true }, (tab) => {
+          tab = tab[0]
           const origin = tab.url.split('/')[0] + '//' + tab.url.split('/')[2]
           setCurrentTabOrigin(origin)
           storage.setting.get.disabledOrigins().then((disabledOrigins) => {
             setOriginDisabled(disabledOrigins.includes(origin))
           })
         })
-      } catch (err) {}
+      } catch (err) {
+        console.error('loadDisabledOrigins', err)
+      }
     })
   }
 
