@@ -54,6 +54,7 @@ module.exports = {
               "error",
               {
                 "groups": [
+                  ["@babel/polyfill"],
                   // Packages `react` related packages come first.
                   ["^react", "^@?\\w"],
                   // Internal packages.

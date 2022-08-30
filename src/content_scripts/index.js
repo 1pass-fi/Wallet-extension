@@ -1,4 +1,5 @@
-// constants
+import '@babel/polyfill'
+
 import { ALLOWED_ORIGIN, MESSAGES } from 'constants/koiConstants'
 import declareConstantScript from 'content_scripts/scripts/declareConstantScript'
 import eventEmitterScript from 'content_scripts/scripts/eventEmitterScript'
@@ -10,8 +11,6 @@ import finnieSolanaProviderScript from 'content_scripts/scripts/finnieSolanaProv
 import mainScript from 'content_scripts/scripts/mainScript'
 import { includes } from 'lodash'
 import storage from 'services/storage'
-
-import '@babel/polyfill'
 
 import initHanlders from './initHandlers'
 import inject from './inject'

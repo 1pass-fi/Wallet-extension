@@ -1,10 +1,10 @@
+import '@babel/polyfill'
+
 import { IMPORTED } from 'constants/accountConstants'
 // Constants
 import { OS, PATH,PORTS } from 'constants/koiConstants'
 import storage from 'services/storage'
 import { getChromeStorage } from 'utils'
-
-import '@babel/polyfill'
 
 import contentScriptEvents from './handlers/contentScriptEvents'
 // emitter

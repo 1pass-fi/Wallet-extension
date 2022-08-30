@@ -42,8 +42,6 @@ import SignTypedDataV1 from 'components/sign/SignTypedDataV1'
 import SignTypedDataV3 from 'components/sign/SignTypedDataV3'
 import SignModal from 'components/SignTransaction'
 
-import '@babel/polyfill'
-
 import NavBar from './components/NavBar'
 // pages
 import Home from './pages/Home'

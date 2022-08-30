@@ -39,8 +39,6 @@ import {
 import { EventHandler } from 'services/request/src/backgroundConnect'
 import storage from 'services/storage'
 
-import '@babel/polyfill'
-
 import useAddHandler from './hooks/useAddHandler'
 import useDID from './hooks/useDID'
 import useError from './hooks/useError'
