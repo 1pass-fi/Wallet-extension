@@ -13,10 +13,10 @@ async function execInPage(code) {
   })
 }
 
-const inject = (scripts) => {
-  for (const script of scripts) {
-    execInPage(script)
-  }
+const inject = async (scripts) => {
+  return Promise.all(scripts.map(script => {
+    return execInPage(script)
+  }))
 }
 
 export default inject

@@ -84,7 +84,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       `(${finnieKoiiWalletProviderScript})()`,
       `(${mainScript(message.disabled)})();`
     ]
-    inject(scripts)
-    sendResponse({ name: 'CODE_INJECTED' })
+
+    inject(scripts).then(() => {
+      sendResponse({ name: 'CODE_INJECTED' })
+    })
+
+    return true // send message async
   }
 })
