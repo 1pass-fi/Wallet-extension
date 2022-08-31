@@ -44,7 +44,7 @@ export default async (payload, tab, next) => {
     const os = (await chrome.runtime.getPlatformInfo()).os
 
     let windowData = {
-      url: chrome.extension.getURL('/popup.html'),
+      url: chrome.runtime.getURL('/popup.html'),
       focused: true,
       type: 'popup',
     }

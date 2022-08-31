@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash'
 
 const useMethod = ({ accounts, setIsLoading, lockWallet }) => {
   const history = useHistory()
-  
+
   const handleLockWallet = async () => {
     if (!isEmpty(accounts)) {
       setIsLoading(true)
@@ -13,7 +13,7 @@ const useMethod = ({ accounts, setIsLoading, lockWallet }) => {
 
       history.push(PATH.LOGIN)
 
-      chrome.tabs.query({ url: chrome.extension.getURL('*') }, (tabs) => {
+      chrome.tabs.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
         tabs.map((tab) => chrome.tabs.reload(tab.id))
       })
     } else {

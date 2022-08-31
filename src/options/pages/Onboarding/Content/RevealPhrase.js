@@ -25,7 +25,7 @@ const RevealPhrase = ({ step }) => {
   }
 
   const openCreateNFTPage = () => {
-    const url = chrome.extension.getURL('options.html#/create-nft')
+    const url = chrome.runtime.getURL('options.html#/create-nft')
     chrome.tabs.create({ url })
   }
 

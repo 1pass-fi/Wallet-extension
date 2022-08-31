@@ -42,12 +42,12 @@ export const AccountDropdown = React.forwardRef(
     const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
 
     const goToImportPages = () => {
-      const url = chrome.extension.getURL('options.html#/welcome')
+      const url = chrome.runtime.getURL('options.html#/welcome')
       chrome.tabs.create({ url })
     }
 
     const goToSettingPage = () => {
-      const url = chrome.extension.getURL('options.html#/settings/wallet')
+      const url = chrome.runtime.getURL('options.html#/settings/wallet')
       chrome.tabs.create({ url })
     }
 
