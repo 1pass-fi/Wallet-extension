@@ -1,27 +1,17 @@
-import React, { useCallback, useEffect, useMemo,useRef, useState } from 'react'
-import { useDropzone } from 'react-dropzone'
+import React, { useEffect, useMemo,useRef, useState } from 'react'
 import ReactNotification from 'react-notifications-component'
-import { useDispatch, useSelector, useStore } from 'react-redux'
-import { useHistory, useLocation } from 'react-router-dom'
-import {
-  clusterApiUrl,
-  Connection,
-  Message as _Messagge,
-  sendAndConfirmTransaction,
-  Transaction} from '@solana/web3.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { TYPE } from 'constants/accountConstants'
-import { FRIEND_REFERRAL_ENDPOINTS,GALLERY_IMPORT_PATH, MESSAGES } from 'constants/koiConstants'
-import classifyAssets from 'finnie-v2/utils/classifyAssets'
-import sendMessage from 'finnie-v2/utils/sendMessage'
+import { GALLERY_IMPORT_PATH } from 'constants/koiConstants'
 import find from 'lodash/find'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
-import throttle from 'lodash/throttle'
 import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/accounts'
-import { setAssets, setCollectionNfts } from 'options/actions/assets'
+import { setAssets } from 'options/actions/assets'
 import { setCollections } from 'options/actions/collections'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
-import { addNotification, setNotifications } from 'options/actions/notifications'
+import { setNotifications } from 'options/actions/notifications'
 import { DidContext } from 'options/context'
 import LockScreen from 'options/finnie-v1/components/lockScreen'
 import Message from 'options/finnie-v1/components/message'
@@ -33,10 +23,7 @@ import TransferNFT from 'options/modal/TransferNFT'
 import Welcome from 'options/modal/welcomeScreen'
 import StartUp from 'options/pages/StartUp'
 import { popupAccount } from 'services/account'
-import {
-  popupBackgroundConnect,
-  popupBackgroundRequest as backgroundRequest} from 'services/request/popup'
-import { EventHandler } from 'services/request/src/backgroundConnect'
+import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import storage from 'services/storage'
 
 import useAddHandler from './hooks/useAddHandler'
@@ -51,9 +38,6 @@ import './index.css'
 
 export default ({ children }) => {
   const { pathname } = useLocation()
-  const history = useHistory()
-
-  const inputFileRef = useRef(null)
 
   /* 
     Local state
@@ -86,11 +70,6 @@ export default ({ children }) => {
   */
   const [isDragging, setIsDragging] = useState(false) // ???
   const [file, setFile] = useState({}) // file for create nft
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-    maxFiles: 1,
-    accept: ['image/*', 'video/*', 'audio/*'],
-    noClick: true
-  })
 
   const [searchTerm, setSearchTerm] = useState('') // search bar
 
@@ -149,22 +128,10 @@ export default ({ children }) => {
   /* EDITING COLLECTION ID */
   const [editingCollectionId, setEditingCollectionId] = useState(null)
 
-  const onClearFile = () => {
-    setFile({})
-    inputFileRef.current.value = null
-  }
-
   const onCloseUploadModal = () => {
     setFile({})
     setIsDragging(false)
   }
-
-  const modifyDraging = useCallback(
-    throttle((newValue) => {
-      setIsDragging(newValue)
-    }, 1),
-    []
-  )
 
   const handleShareNFT = (txId) => {
     const toShareNFT = find(assets.nfts, { txId })
@@ -360,23 +327,12 @@ export default ({ children }) => {
     updateDefaultAccountData()
   }, [])
 
-  /* 
-    set file stuffs
-  */
-  useEffect(() => {
-    setFile(!isEmpty(acceptedFiles) ? acceptedFiles[0] : {})
-    // if (!isEmpty(acceptedFiles)) history.push('/create')
-  }, [acceptedFiles])
-
   return (
     <GalleryContext.Provider
       value={{
         displayingAccount,
         setActivatedChain,
-        file,
         handleShareNFT,
-        isDragging,
-        onClearFile,
         onCloseUploadModal,
         searchTerm,
         setError,
@@ -393,7 +349,6 @@ export default ({ children }) => {
         setImportedAddress,
         setNewAddress,
         setIsOnboarding,
-        inputFileRef,
         walletLoaded,
         refreshNFTs,
         selectedNftIds,
@@ -417,7 +372,6 @@ export default ({ children }) => {
             <>
               {!isLocked ? (
                 <div
-                  {...getRootProps({ className: 'app dropzone' })}
                   onDragOver={() => modifyDraging(true)}
                   onDragLeave={() => modifyDraging(false)}
                   onClick={(e) => {
@@ -475,8 +429,6 @@ export default ({ children }) => {
                       }}
                     />
                   )}
-                  {isDragging && isEmpty(file) && <input name="fileField" {...getInputProps()} />}
-
                   {children}
                 </div>
               ) : (
