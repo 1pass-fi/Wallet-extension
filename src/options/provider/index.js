@@ -45,11 +45,6 @@ export default ({ children }) => {
   const [isLocked, setIsLocked] = useState(false)
 
   /* 
-    Create collection states
-  */
-  const [showCreateCollection, setShowCreateCollection] = useState(false) // show create collection on home page
-
-  /* 
     Notification state
   */
   const [isLoading, setIsLoading] = useState(0) // loading state
@@ -248,25 +243,6 @@ export default ({ children }) => {
     }
   }, [newAddress])
 
-  /* 
-    On open create collection form, allAssets list should be set to assets of the 
-    activated account.
-    This action happens for the purpose of to prevent user from creating collection that contains
-    an NFTs from another account - in case they imported more than one account.
-  */
-  useEffect(() => {
-    const setAssetsForCreateCollection = async () => {
-      const _account = await popupAccount.getAccount({
-        address: defaultAccount.address
-      })
-      let assets = await _account.get.assets()
-      assets = assets.filter((asset) => asset.name !== '...')
-      dispatch(setAssets({ nfts: assets }))
-    }
-
-    if (showCreateCollection) setAssetsForCreateCollection()
-  }, [showCreateCollection, defaultAccount])
-
   /*
     Redirect to create NFT page to support create new NFT in case import new wallet
   */
@@ -343,8 +319,6 @@ export default ({ children }) => {
         setIsProcessing,
         setNotification,
         setSearchTerm,
-        setShowCreateCollection,
-        showCreateCollection,
         importedAddress,
         setImportedAddress,
         setNewAddress,
