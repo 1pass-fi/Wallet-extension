@@ -199,7 +199,8 @@ const useLoadApp = ({
     showGetEcryptionKey,
     accountLoaded,
     showConnectedSites,
-    setShowConnectedSites
+    setShowConnectedSites,
+    loadDefaultAccounts
   }
 }
 

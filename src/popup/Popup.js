@@ -1,6 +1,6 @@
 // modules
 import React, { useEffect } from 'react'
-import { connect, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { Route, Switch, useHistory, withRouter } from 'react-router-dom'
 import { setAccounts } from 'actions/accounts'
 import { setActivatedChain } from 'actions/activatedChain'
@@ -12,7 +12,7 @@ import { setDefaultAccount } from 'actions/defaultAccount'
 import { setError } from 'actions/error'
 // actions
 import { lockWallet } from 'actions/koi'
-import { getBalances,setKoi } from 'actions/koi'
+import { getBalances, setKoi } from 'actions/koi'
 import { setIsLoading } from 'actions/loading'
 import { setNotification } from 'actions/notification'
 import { setPrice } from 'actions/price'
@@ -22,11 +22,9 @@ import { MESSAGES } from 'constants/koiConstants'
 // assets
 import continueLoadingIcon from 'img/continue-load.gif'
 import isEmpty from 'lodash/isEmpty'
-import { dispatch } from 'redux'
 import { popupAccount } from 'services/account'
 import { popupBackgroundConnect } from 'services/request/popup'
 import { EventHandler } from 'services/request/src/backgroundConnect'
-import storage from 'services/storage'
 
 import Account from 'components/accounts'
 import ConnectScreen from 'components/Connect/ConnectScreen'
@@ -49,9 +47,9 @@ import ImportToken from './pages/ImportToken'
 import Login from './pages/Login'
 import Receive from './pages/Receive'
 import Send from './pages/SendNew'
+// hooks
 import useLoadApp from './provider/hooks/useLoadApp'
 import useMethod from './provider/hooks/useMethod'
-// hooks
 import usePrice from './provider/hooks/usePrice'
 import useSettings from './provider/hooks/useSettings'
 import useTimeInterval from './provider/hooks/useTimeInterval'
@@ -68,7 +66,6 @@ const ContinueLoading = () => (
 /* 
   Finnie supports multiple chains.
   Each chain has it's default account.
-
 */
 const Popup = ({
   lockWallet,
@@ -92,7 +89,6 @@ const Popup = ({
   setAssetsTabSettings
 }) => {
   const history = useHistory()
-  const dispatch = useDispatch()
 
   usePrice({
     setCurrency,
@@ -112,7 +108,8 @@ const Popup = ({
     showGetEncryptionKey,
     accountLoaded,
     showConnectedSites,
-    setShowConnectedSites
+    setShowConnectedSites,
+    loadDefaultAccounts
   } = useLoadApp({
     history,
     setDefaultAccount,
@@ -128,59 +125,6 @@ const Popup = ({
   const { handleLockWallet } = useMethod({ accounts, setIsLoading, lockWallet })
 
   useTimeInterval({ error, notification, warning, setError })
-
-  const loadDefaultAccounts = async () => {
-    const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
-    if (!isEmpty(activatedEthereumAccountAddress)) {
-      const activatedEthereumAccount = await popupAccount.getAccount({
-        address: activatedEthereumAccountAddress
-      })
-
-      if (!isEmpty(activatedEthereumAccount)) {
-        const activatedEthereumAccountMetadata = await activatedEthereumAccount.get.metadata()
-        setDefaultAccount(activatedEthereumAccountMetadata)
-      }
-    }
-
-    const activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
-    if (!isEmpty(activatedAccountAddress)) {
-      const activatedAccount = await popupAccount.getAccount({
-        address: activatedAccountAddress
-      })
-
-      if (!isEmpty(activatedAccount)) {
-        const activatedAccountMetadata = await activatedAccount.get.metadata()
-        setDefaultAccount(activatedAccountMetadata)
-      }
-    }
-
-    const activatedK2Address = await storage.setting.get.activatedK2AccountAddress()
-    if (!isEmpty(activatedK2Address)) {
-      const activatedAccount = await popupAccount.getAccount({
-        address: activatedK2Address
-      })
-
-      if (!isEmpty(activatedAccount)) {
-        const activatedAccountMetadata = await activatedAccount.get.metadata()
-        setDefaultAccount(activatedAccountMetadata)
-      }
-    }
-
-    const activatedSolanaAddress = await storage.setting.get.activatedSolanaAccountAddress()
-    if (!isEmpty(activatedSolanaAddress)) {
-      const activatedAccount = await popupAccount.getAccount({
-        address: activatedSolanaAddress
-      })
-
-      if (!isEmpty(activatedAccount)) {
-        const activatedAccountMetadata = await activatedAccount.get.metadata()
-        setDefaultAccount(activatedAccountMetadata)
-      }
-    }
-
-    setDefaultLoadAccountDone(true)
-  }
-
 
   useEffect(() => {
     const addHandler = () => {
@@ -209,9 +153,7 @@ const Popup = ({
         {showSignTypedDataV3 && <SignTypedDataV3 />}
         {showGetEncryptionKey && <GetEncryptionKey />}
         {showConnectSite && <ConnectScreen />}
-        {showConnectedSites && (
-          <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />
-        )}
+        {showConnectedSites && <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />}
         {showSigning && <SignModal setShowSigning={setShowSigning} />}
         {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
         {isLoading !== 0 && <Loading />}
@@ -228,29 +170,29 @@ const Popup = ({
               <Account />
             </Route>
             {!isEmpty(accounts) && (
-                <>
-                  <Header setShowConnectedSites={setShowConnectedSites} />
-                  <div
-                    className="flex min-h-3.375 pt-13.5 overflow-y-auto overflow-x-hidden"
-                    style={{ height: 'calc(100% - 64px)' }}
-                  >
-                    <Switch>
-                      <Route exact path="/receive">
-                        <Receive />
-                      </Route>
-                      <Route exact path="/send">
-                        <Send setShowSigning={setShowSigning} />
-                      </Route>
-                      <Route path="/import-token">
-                        <ImportToken />
-                      </Route>
-                      <Route path="*">
-                        <Home />
-                      </Route>
-                    </Switch>
-                  </div>
-                  <NavBar handleLockWallet={handleLockWallet} />
-                </>
+              <>
+                <Header setShowConnectedSites={setShowConnectedSites} />
+                <div
+                  className="flex min-h-3.375 pt-13.5 overflow-y-auto overflow-x-hidden"
+                  style={{ height: 'calc(100% - 64px)' }}
+                >
+                  <Switch>
+                    <Route exact path="/receive">
+                      <Receive />
+                    </Route>
+                    <Route exact path="/send">
+                      <Send setShowSigning={setShowSigning} />
+                    </Route>
+                    <Route path="/import-token">
+                      <ImportToken />
+                    </Route>
+                    <Route path="*">
+                      <Home />
+                    </Route>
+                  </Switch>
+                </div>
+                <NavBar handleLockWallet={handleLockWallet} />
+              </>
             )}
           </Switch>
         )}
