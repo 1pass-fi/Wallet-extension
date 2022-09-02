@@ -29,6 +29,7 @@ import isNumber from 'lodash/isNumber'
 import { setAccounts } from 'options/actions/accounts'
 import { loadAllAccounts } from 'options/actions/accounts'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
@@ -49,7 +50,7 @@ const AccountCard = ({
   setAccountConnectSites,
   dragProvided
 }) => {
-  const { setIsLoading, setError, setActivatedChain } = useContext(GalleryContext)
+  const { setError, setActivatedChain } = useContext(GalleryContext)
 
   const [showHex, setShowHex] = useState(true)
   const [showEmptyToken, setShowEmptyToken] = useState(true)
@@ -143,15 +144,15 @@ const AccountCard = ({
 
     const loadConnectedSites = async () => {
       try {
-        setIsLoading((prev) => ++prev)
+        dispatch(setIsLoading)
         const siteAddresses = await getSiteConnectedAddresses(account.address, account.type)
         console.log('siteAddresses', siteAddresses)
         setSiteConnectedAddresses(siteAddresses)
-        setIsLoading((prev) => --prev)
+        dispatch(setLoaded)
       } catch (error) {
         setError(error.message)
         console.log('Load connected sites - Error: ', error.message)
-        setIsLoading((prev) => --prev)
+        dispatch(setLoaded)
       }
     }
 
@@ -281,7 +282,7 @@ const AccountCard = ({
   }
 
   const onChangeK2Provider = async (value) => {
-    setIsLoading((prev) => ++prev)
+    dispatch(setIsLoading)
     const _currentNetwork = currentNetwork
     try {
       setCurrentNetwork(value)
@@ -300,12 +301,12 @@ const AccountCard = ({
       setError(error.message)
       console.log('Failed to change K2 provider', error.message)
     } finally {
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
   }
 
   const onChangeEthereumProvider = async (value) => {
-    setIsLoading((prev) => ++prev)
+    dispatch(setIsLoading)
     const _currentNetwork = currentNetwork
     try {
       setCurrentNetwork(value)
@@ -332,12 +333,12 @@ const AccountCard = ({
       setError(error.message)
       console.log('Failed to change Ethereum provider', error.message)
     } finally {
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
   }
 
   const onChangeSolanaProvider = async (value) => {
-    setIsLoading((prev) => ++prev)
+    dispatch(setIsLoading)
     const _currentNetwork = currentNetwork
     try {
       setCurrentNetwork(value)
@@ -356,7 +357,7 @@ const AccountCard = ({
       setError(error.message)
       console.log('Failed to change Solana provider', error.message)
     } finally {
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
   }
 

@@ -13,6 +13,7 @@ import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 // actions
 import { loadAllAccounts } from 'options/actions/accounts'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 // constants
 import { GalleryContext } from 'options/galleryContext'
 // services
@@ -21,7 +22,7 @@ import storage from 'services/storage'
 import { getSiteConnectedAddresses } from 'utils'
 
 const ConnectedSitesModal = ({ account, close }) => {
-  const { setError, setIsLoading } = useContext(GalleryContext)
+  const { setError } = useContext(GalleryContext)
   const [siteConnectedAddresses, setSiteConnectedAddresses] = useState([])
   const modalRef = useRef(null)
 
@@ -29,16 +30,16 @@ const ConnectedSitesModal = ({ account, close }) => {
 
   const loadConnectedSites = async () => {
     try {
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
 
       const siteAddresses = await getSiteConnectedAddresses(account.address, account.type)
 
       setSiteConnectedAddresses(siteAddresses)
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     } catch (error) {
       setError(error.message)
       console.log('Load connected sites - Error: ', error.message)
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
   }
 
@@ -74,7 +75,7 @@ const ConnectedSitesModal = ({ account, close }) => {
 
   const handleRemoveSite = async (siteAddress) => {
     try {
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
       let siteConnectedStorage = await storage.setting.get.siteConnectedAddresses()
       if (isEmpty(siteConnectedStorage[siteAddress.address])) {
         return
@@ -129,7 +130,7 @@ const ConnectedSitesModal = ({ account, close }) => {
       setError(error.message)
       console.log('Remove connected site - Error: ', error.message)
     } finally {
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
   }
 

@@ -1,13 +1,16 @@
 import { useEffect,useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { toCSS, toJSON } from 'cssjson'
 import { isEmpty } from 'lodash'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import storage from 'services/storage'
 
 import fromStyleToCss from './fromStyleToCss'
+export default ({ walletLoaded, newAddress, setError }) => {
+  const dispatch = useDispatch()
 
-export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
   const kidLinkPrefix = 'https://koii.id/'
   const [userKID, setuserKID] = useState({
     kidLink: kidLinkPrefix,
@@ -76,7 +79,7 @@ export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
 
   const getDID = async () => {
     try {
-      setIsLoading(prev => ++prev)
+      dispatch(setIsLoading)
       const defaultAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
       let state, id
       try {
@@ -132,7 +135,7 @@ export default ({ walletLoaded, newAddress, setIsLoading, setError }) => {
       setLinkAccounts(state.links)
       setkID(state.kID)
       setOldkID(state.kID)
-      setIsLoading(prev => --prev)
+      dispatch(setLoaded)
     } catch (err) {
       setError(err.message)
     }

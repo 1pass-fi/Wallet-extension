@@ -11,6 +11,7 @@ import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/acco
 import { setAssets } from 'options/actions/assets'
 import { setCollections } from 'options/actions/collections'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { setNotifications } from 'options/actions/notifications'
 import { DidContext } from 'options/context'
 import LockScreen from 'options/finnie-v1/components/lockScreen'
@@ -47,7 +48,7 @@ export default ({ children }) => {
   /* 
     Notification state
   */
-  const [isLoading, setIsLoading] = useState(0) // loading state
+  const [notification, setNotification] = useState(null) // notification message
 
   /* 
     Import new account
@@ -64,12 +65,12 @@ export default ({ children }) => {
   /* HOOKS */
   const [walletLoaded, setWalletLoaded] = useState(false)
   const [error, setError] = useError()
-  const [didStates, setDIDStates] = useDID({ newAddress, walletLoaded, setIsLoading, setError })
+  const [didStates, setDIDStates] = useDID({ newAddress, walletLoaded, setError })
   const [modalStates, setModalStates] = useModal()
   const [settingStates, setSettingStates] = useSetting({ walletLoaded })
 
-  useAddHandler({ setError, setNotification, setModalStates, setIsLoading })
-  useNfts({ setCollections, setIsLoading, walletLoaded, newAddress, pathname })
+  useAddHandler({ setError, setNotification, setModalStates })
+  useNfts({ setCollections, walletLoaded, newAddress, pathname })
 
   /* 
     GET STATE FROM STORE
@@ -133,7 +134,7 @@ export default ({ children }) => {
   */
   useEffect(() => {
     const loadWallets = async () => {
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
       const allAccounts = await dispatch(loadAllAccounts()) // will load default account also
       const _isLocked = await backgroundRequest.wallet.getLockState()
 
@@ -142,7 +143,7 @@ export default ({ children }) => {
       if (!isEmpty(allAccounts)) {
         setIsLocked(_isLocked)
       }
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
     loadWallets()
   }, [])
@@ -296,8 +297,8 @@ export default ({ children }) => {
         handleShareNFT,
         searchTerm,
         setError,
-        isLoading,
-        setIsLoading,
+
+
         setNotification,
         setSearchTerm,
         importedAddress,

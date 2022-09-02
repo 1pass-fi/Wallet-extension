@@ -19,7 +19,9 @@ import { GalleryContext } from 'options/galleryContext'
 import storage from 'services/storage'
 
 const NavBar = () => {
-  const { isLoading, displayingAccount } = useContext(GalleryContext)
+  const dispatch = useDispatch()
+  
+  const { displayingAccount } = useContext(GalleryContext)
   const { profilePictureId } = useContext(DidContext)
   const [showDropdown, setShowDropdown] = useState(false)
   const [showNotificationsCenter, setShowNotificationsCenter] = useState(false)
@@ -29,8 +31,8 @@ const NavBar = () => {
   const notificationToggleRef = createRef()
   const dropdownToggleRef = createRef()
 
-  const dispatch = useDispatch()
   const notificationsData = useSelector((state) => state.notificationsData)
+  const isLoading = useSelector(state => state.isLoading)
 
   const toggleDropdownMenu = () => setShowDropdown((prev) => !prev)
 

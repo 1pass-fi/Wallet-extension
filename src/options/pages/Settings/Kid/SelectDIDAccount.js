@@ -14,12 +14,13 @@ import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import Background from 'img/v2/select-DID-modal-background.svg'
 import { isEmpty } from 'lodash'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { DidContext } from 'options/context'
 import { GalleryContext } from 'options/galleryContext'
 import { getArAccounts } from 'options/selectors/accounts'
 
 const SelectDIDAccount = ({ close }) => {
-  const { setIsLoading, setNotification, setError } = useContext(GalleryContext)
+  const { setNotification, setError } = useContext(GalleryContext)
   const { getDID } = useContext(DidContext)
 
   const dispatch = useDispatch()
@@ -32,7 +33,7 @@ const SelectDIDAccount = ({ close }) => {
 
   const handleChangeDIDAccount = async () => {
     try {
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
       if (isEmpty(selectedAccount)) {
         setError('Please choose Koii or Arweave account first!')
         return
@@ -45,7 +46,7 @@ const SelectDIDAccount = ({ close }) => {
     } catch (error) {
       setError(error.message)
     } finally {
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
   }
 

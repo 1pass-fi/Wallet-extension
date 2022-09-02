@@ -1,12 +1,13 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import clsx from 'clsx'
-import { GalleryContext } from 'options/galleryContext'
-import { popupBackgroundRequest as request } from 'services/request/popup'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 
 import './ToogleButton.css'
 
 export default ({ value, setValue, disabled, handleUpdateNft }) => {
-  const { setIsLoading } = useContext(GalleryContext)
+  const dispatch = useDispatch()
+
   const [sending, setSending] = useState(false)
 
   /* value = isPrivate */
@@ -17,11 +18,11 @@ export default ({ value, setValue, disabled, handleUpdateNft }) => {
 
     if (!disabled && !sending) {
       setSending(true)
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
       await handleUpdateNft({ isPrivate })
       setValue(isPrivate)
       setSending(false)
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
   }
 

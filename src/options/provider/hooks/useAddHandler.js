@@ -5,13 +5,14 @@ import sendMessage from 'finnie-v2/utils/sendMessage'
 import isEmpty from 'lodash/isEmpty'
 import { loadAllAccounts } from 'options/actions/accounts'
 import { setAssets } from 'options/actions/assets'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { addNotification } from 'options/actions/notifications'
 import { popupAccount } from 'services/account'
 import { popupBackgroundConnect } from 'services/request/popup'
 import { EventHandler } from 'services/request/src/backgroundConnect'
 import storage from 'services/storage'
 
-export default ({ setError, setModalStates, setNotification, setIsLoading }) => {
+export default ({ setError, setModalStates, setNotification }) => {
   const store = useStore()
   const dispatch = useDispatch()
 
@@ -96,7 +97,7 @@ export default ({ setError, setModalStates, setNotification, setIsLoading }) => 
         const { assets } = store.getState()
 
         try {
-          setIsLoading((prev) => ++prev)
+          dispatch(setIsLoading)
           /* 
               Showing pending NFT
                 - Get current activated account
@@ -120,7 +121,7 @@ export default ({ setError, setModalStates, setNotification, setIsLoading }) => 
             })
           )
 
-          setIsLoading((prev) => --prev)
+          dispatch(setLoaded)
           setModalStates.setShowUploadingModal(false)
           setModalStates.setShowUploadedIcon(true)
           setModalStates.setShowSuccessUploadModal(true)
