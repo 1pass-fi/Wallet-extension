@@ -33,6 +33,10 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
   const dispatch = useDispatch()
 
   const estimateCostKOII = 1
+
+  const { handleShareNFT, refreshNFTs } = useContext(GalleryContext)
+  const dispatch = useDispatch()
+
   const [step, setStep] = useState(1)
   const [estimateCostAr, setEstimateCostAr] = useState(0)
   const [disableCreateNFT, setDisableCreateNFT] = useState(false)
