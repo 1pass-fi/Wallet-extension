@@ -22,6 +22,7 @@ import AppProvider from './provider'
 import store from './store'
 
 import './index.css'
+import '../tailwind.css'
 
 const FullView = () => {
   return (
