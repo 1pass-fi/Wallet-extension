@@ -1,6 +1,9 @@
 import { useContext } from 'react'
 import { useDispatch } from 'react-redux'
 import { addAccountByAddress } from 'options/actions/accounts'
+import {
+  setOnboardingProcessed,
+  setOnboardingProcessing} from 'options/actions/onboardingProcessing'
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as request } from 'services/request/popup'
@@ -15,32 +18,28 @@ const ERROR_MESSAGE = {
 }
 
 const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
-  const {
-    setImportedAddress,
-    setIsProcessing,
-    setError,
-    setNewAddress,
-    setActivatedChain
-  } = useContext(GalleryContext)
+  const { setImportedAddress, setError, setNewAddress, setActivatedChain } = useContext(
+    GalleryContext
+  )
 
   const dispatch = useDispatch()
 
   const generateNewKey = async (network) => {
     try {
-      setIsProcessing((prev) => ++prev)
+      dispatch(setOnboardingProcessing)
       const seedphrase = await request.wallet.generateWallet({ walletType: network })
       setNewSeedphrase(seedphrase.join(' '))
     } catch (err) {
       console.error(err.message)
       setError(ERROR_MESSAGE.GENERATE_NEW_KEY_FAILED)
     } finally {
-      setIsProcessing((prev) => --prev)
+      dispatch(setOnboardingProcessed)
     }
   }
 
   const saveNewKey = async (network) => {
     try {
-      setIsProcessing((prev) => ++prev)
+      dispatch(setOnboardingProcessing)
       const address = await request.wallet.saveWallet({ seedPhrase: newSeedphrase, password })
 
       await initActivatedChain(network)
@@ -52,24 +51,24 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
       console.error(err.message)
       setError(ERROR_MESSAGE.SAVE_NEW_KEY_FAILED)
     } finally {
-      setIsProcessing((prev) => --prev)
+      dispatch(setOnboardingProcessed)
     }
   }
 
   const verifyPassword = async () => {
     try {
-      setIsProcessing((prev) => ++prev)
+      dispatch(setOnboardingProcessing)
       const isCorrectPassword = await request.wallet.verifyPassword({ password })
       return isCorrectPassword
     } catch (err) {
     } finally {
-      setIsProcessing((prev) => --prev)
+      dispatch(setOnboardingProcessed)
     }
   }
 
   const importFromSeedphrase = async (seedphrase, network) => {
     try {
-      setIsProcessing((prev) => ++prev)
+      dispatch(setOnboardingProcessing)
       const address = await request.wallet.importWallet({
         key: seedphrase,
         password,
@@ -86,7 +85,7 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
     } catch (err) {
       setError(err.message)
     } finally {
-      setIsProcessing((prev) => --prev)
+      dispatch(setOnboardingProcessed)
     }
   }
 

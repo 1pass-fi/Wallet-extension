@@ -1,4 +1,4 @@
-import React, { useContext, useMemo,useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import clsx from 'clsx'
 import Button from 'finnie-v2/components/Button'
 import HiddenPhraseIcon from 'img/v2/onboarding/hidden-phrase.svg'
@@ -10,11 +10,11 @@ import useMethod from '../hooks/useMethod'
 import { OnboardingContext } from '../onboardingContext'
 
 const HiddenPhrase = ({ step, setStep, importType }) => {
-  const { setError, setIsProcessing } = useContext(GalleryContext)
+  const { setError } = useContext(GalleryContext)
   const { newSeedphrase, password, setSkipPhrase } = useContext(OnboardingContext)
   const [showPhrase, setShowPhrase] = useState(false)
 
-  const { saveNewKey } = useMethod({ setIsProcessing, setError, newSeedphrase, password })
+  const { saveNewKey } = useMethod({ setError, newSeedphrase, password })
 
   const SEED_ARRAY = useMemo(() => {
     return newSeedphrase.split(' ')

@@ -49,10 +49,6 @@ export default ({ children }) => {
   */
   const [isLoading, setIsLoading] = useState(0) // loading state
 
-  const [isProcessing, setIsProcessing] = useState(0) // onboarding processing state
-
-  const [notification, setNotification] = useState(null) // notification message
-
   /* 
     Import new account
   */
@@ -302,8 +298,6 @@ export default ({ children }) => {
         setError,
         isLoading,
         setIsLoading,
-        isProcessing,
-        setIsProcessing,
         setNotification,
         setSearchTerm,
         importedAddress,

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { GalleryContext } from 'options/galleryContext'
 import LoadingScreen from 'options/pages/StartUp/shared/Loading'
 
@@ -16,7 +17,9 @@ export const onboardingSteps = [
 ]
 
 const Welcome = () => {
-  const { isProcessing, setIsOnboarding } = useContext(GalleryContext)
+  const isOnboardingProcessing = useSelector((state) => state.isOnboardingProcessing)
+
+  const { setIsOnboarding } = useContext(GalleryContext)
   const [step, setStep] = useState(0)
 
   useEffect(() => {
@@ -27,7 +30,7 @@ const Welcome = () => {
     <div className="w-screen h-screen flex text-center">
       <NavBar step={step} setStep={setStep} />
       <Content step={step} setStep={setStep} />
-      {isProcessing !== 0 && <LoadingScreen />}
+      {isOnboardingProcessing !== 0 && <LoadingScreen />}
     </div>
   )
 }
