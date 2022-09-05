@@ -9,6 +9,7 @@ import defaultAccount from './defaultAccount'
 import editingCollectionId from './editingCollectionId'
 import error from './error'
 import isLoading from './loading'
+import isOnbardingProcessing from './loading'
 import newAddress from './newAddress'
 import notificationsData from './notifications'
 import onboarding from './onboarding'
@@ -24,6 +25,7 @@ export default combineReducers({
   assets,
   notificationsData,
   isLoading,
+  isOnbardingProcessing
   onboarding,
   error,
   quickNotification,
