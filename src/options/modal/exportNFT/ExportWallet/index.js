@@ -1,4 +1,4 @@
-import React, { useContext, useEffect,useMemo, useRef, useState } from 'react'
+import React, { useEffect,useMemo, useRef, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 import { TYPE } from 'constants/accountConstants'
@@ -16,7 +16,7 @@ import find from 'lodash/find'
 import includes from 'lodash/includes'
 import isEmpty from 'lodash/isEmpty'
 import { setAssets } from 'options/actions/assets'
-import { GalleryContext } from 'options/galleryContext'
+import { setError } from 'options/actions/error'
 import { formatNumber, getDisplayAddress } from 'options/utils'
 import { popupAccount } from 'services/account'
 import koiRouterABI from 'services/account/Account/Chains/Ethereum/abi/KoiRouter.json'
@@ -152,8 +152,6 @@ export default ({ info, onClose, type }) => {
   const [addressOptions, setAddressOptions] = useState([])
 
   const addressInputRef = useRef()
-
-  const { setError } = useContext(GalleryContext)
 
   const accounts = useSelector(state => state.accounts)
   const assets = useSelector(state => state.assets)
@@ -294,31 +292,31 @@ export default ({ info, onClose, type }) => {
     const account = find(accounts, account => account.address === _ownerAddress)
 
     if (isEmpty(chosenAccount) || isEmpty(chosenAccount.address)) {
-      setError('Please select an address.')
+      dispatch(setError('Please select an address.'))
       return
     }
 
     if (type === TYPE.ARWEAVE) {
       if (!isArweaveAddress(chosenAccount.address)) {
-        setError('Invalid AR Address')
+        dispatch(setError('Invalid AR Address'))
         return
       }
     }
 
     if (type === TYPE.ETHEREUM) {
       if (!isEthereumAddress(chosenAccount.address)) {
-        setError('Invalid ETH Address')
+        dispatch(setError('Invalid ETH Address'))
         return
       }
     }
 
     if (!numberTransfer || numberTransfer == 0) {
-      setError('Please give a number of transfer')
+      dispatch(setError('Please give a number of transfer'))
       return
     }
 
     if (account?.balance < 0.000001 || account?.koiBalance < 10) {
-      setError('Not enough AR or KOII')
+      dispatch(setError('Not enough AR or KOII'))
       return
     }
 
@@ -353,9 +351,9 @@ export default ({ info, onClose, type }) => {
       setIsBridging(false)
       console.log('ERROR', error)
       if (error.message === ERROR_MESSAGE.NFT_NOT_EXIST_ON_CHAIN) {
-        setError (ERROR_MESSAGE.NFT_NOT_EXIST_ON_CHAIN)
+        dispatch(setError(ERROR_MESSAGE.NFT_NOT_EXIST_ON_CHAIN))
       } else {
-        setError(ERROR_MESSAGE.BRIDGE_NFT_FAILED)
+        dispatch(setError(ERROR_MESSAGE.BRIDGE_NFT_FAILED))
       }
     }
   }
@@ -378,7 +376,7 @@ export default ({ info, onClose, type }) => {
       setSettingApproval(false)
     } catch (error) {
       setSettingApproval(false)
-      setError('Something went wrong. Please try again later!')
+      dispatch(setError('Something went wrong. Please try again later!'))
     }
   }
 

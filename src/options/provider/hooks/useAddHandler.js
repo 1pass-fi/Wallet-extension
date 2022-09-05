@@ -5,16 +5,18 @@ import sendMessage from 'finnie-v2/utils/sendMessage'
 import isEmpty from 'lodash/isEmpty'
 import { loadAllAccounts } from 'options/actions/accounts'
 import { setAssets } from 'options/actions/assets'
+import { setError } from 'options/actions/error'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { addNotification } from 'options/actions/notifications'
+import { setQuickNotification } from 'options/actions/quickNotification'
 import { popupAccount } from 'services/account'
 import { popupBackgroundConnect } from 'services/request/popup'
 import { EventHandler } from 'services/request/src/backgroundConnect'
 import storage from 'services/storage'
 
-export default ({ setError, setModalStates, setNotification }) => {
-  const store = useStore()
+export default ({ setModalStates }) => {
   const dispatch = useDispatch()
+  const store = useStore()
 
   useEffect(() => {
     const handleAddHandler = () => {
@@ -72,13 +74,13 @@ export default ({ setError, setModalStates, setNotification }) => {
 
           if (balancesUpdated) {
             // sendMessage.success({ title: 'Balances updated', message: 'Your balances have been updated.' })
-            setNotification('Your balances have been updated.')
+            dispatch(setQuickNotification('Your balances have been updated.'))
           }
 
           console.log('defaultAccount', defaultAccount)
         } catch (err) {
           console.error(err.message)
-          setError(err.message)
+          dispatch(setError(err.message))
         }
       })
 

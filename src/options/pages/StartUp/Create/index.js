@@ -14,6 +14,7 @@ import isEmpty from 'lodash/isEmpty'
 import isEqual from 'lodash/isEqual'
 import shuffle from 'lodash/shuffle'
 import { addAccountByAddress } from 'options/actions/accounts'
+import { setError } from 'options/actions/error'
 import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
@@ -44,10 +45,12 @@ const mockPhrase = [
   'summer',
 ]
 
+
 export default () => {
+  const dispatch = useDispatch()
   let { selectedNetwork, EthereumNetworks } = useEthereumNetworks({})
 
-  const { setError, setImportedAddress, setNewAddress, setActivatedChain } = useContext(GalleryContext)
+  const { setImportedAddress, setNewAddress, setActivatedChain } = useContext(GalleryContext)
 
   const [step, setStep] = useState(1)
   const [walletType, setWalletType] = useState(null)
@@ -59,7 +62,6 @@ export default () => {
   const [isLoading, setIsLoading] = useState(false)
   const [showFormError, setShowFormError] = useState(false)
 
-  const dispatch = useDispatch()
   const accounts = useSelector(state => state.accounts)
 
   const history = useHistory()
@@ -147,7 +149,7 @@ export default () => {
       })
     } catch (err) {
       console.log(err.message)
-      setError(err.message)
+      dispatch(setError(err.message))
     }
   }
 

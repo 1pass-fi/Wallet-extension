@@ -8,6 +8,8 @@ import RearrangePadsIcon from 'img/rearrange-pads-icon.svg'
 import SolanaIcon from 'img/v2/solana-logo.svg'
 import get from 'lodash/get'
 import { setDefaultAccountByAddress } from 'options/actions/defaultAccount'
+import { setError } from 'options/actions/error'
+import { setQuickNotification } from 'options/actions/quickNotification'
 import { GalleryContext } from 'options/galleryContext'
 import { getDisplayAddress } from 'options/utils'
 import { popupAccount } from 'services/account'
@@ -45,12 +47,13 @@ const getListStyle = (isDraggingOver) => ({
 const queryAttr = 'data-rbd-drag-handle-draggable-id'
 
 export default ({ accounts, setAccounts }) => {
+  const dispatch = useDispatch()
+
   const [placeholderProps, setPlaceholderProps] = useState({})
-  const { setNotification, setError, getDID } = useContext(GalleryContext)
+  const { getDID } = useContext(GalleryContext)
   const [selectedAddress, setSelectedAddress] = useState()
   const [selectedEthAddress, setSelectedEthAddress] = useState()
 
-  const dispatch = useDispatch()
   const defaultAccount = useSelector((state) => state.defaultAccount.AR)
   const defaultEthAccount = useSelector((state) => state.defaultAccount.AR)
 
@@ -123,9 +126,9 @@ export default ({ accounts, setAccounts }) => {
       await reloadDefaultAccount()
       getDID()
       setSelectedAddress(address)
-      setNotification(`Set default account successfully.`)
+      dispatch(setQuickNotification(`Set default account successfully.`))
     } catch (err) {
-      setError(err.message)
+      dispatch(setError(err.message))
     }
   }
 

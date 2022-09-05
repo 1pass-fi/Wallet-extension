@@ -14,7 +14,9 @@ import ShareCodeIcon from 'img/v2/share-code-icon.svg'
 import ShareIcon from 'img/v2/share-icon.svg'
 import ShuttleIcon from 'img/v2/shuttle-icon.svg'
 import get from 'lodash/get'
+import { setError } from 'options/actions/error'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
+import { setQuickNotification } from 'options/actions/quickNotification'
 import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
@@ -24,7 +26,7 @@ import ShareCodeModal from './ShareCodeModal'
 const FriendReferral = () => {
   const dispatch = useDispatch()
 
-  const { setError, setNotification, displayingAccount } = useContext(GalleryContext)
+  const { displayingAccount } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const [showGetRewardsModal, setShowGetRewardsModal] = useState(false)
   const [showShareCodeModal, setShowShareCodeModal] = useState(false)
@@ -43,17 +45,17 @@ const FriendReferral = () => {
         if (status != 200) {
           switch (message) {
             case `Affiliate Invites doesn't exists or already claimed`:
-              setNotification(STATEMENT.NO_REWARD)
+              dispatch(setQuickNotification(STATEMENT.NO_REWARD))
               break
             default:
-              setNotification(message)
+              dispatch(setQuickNotification(message))
           }
         } else {
           console.log('RECEIVED KOII')
         }
       }
     } catch (err) {
-      setError(err.message)
+      dispatch(setError(err.message))
     }
     dispatch(setLoaded)
   }

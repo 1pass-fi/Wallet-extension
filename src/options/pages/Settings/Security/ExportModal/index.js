@@ -1,9 +1,10 @@
-import React, { useContext,useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { CSVLink } from 'react-csv'
+import { useDispatch } from 'react-redux'
 import passworder from 'browser-passworder'
 import CloseIcon from 'img/close-x-icon.svg'
-import { GalleryContext } from 'options/galleryContext'
+import { setError } from 'options/actions/error'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import { decryptSeedPhraseFromChrome,getChromeStorage } from 'utils'
@@ -11,7 +12,7 @@ import { decryptSeedPhraseFromChrome,getChromeStorage } from 'utils'
 import './index.css'
 
 export const ExportBackupPhraseModal = ({ account, closeModal }) => {
-  const { setError } = useContext(GalleryContext)
+  const dispatch = useDispatch()
 
   const { name, address } = account
   const [password, setPassword] = useState('')
@@ -54,7 +55,7 @@ export const ExportBackupPhraseModal = ({ account, closeModal }) => {
       setIsRevealed(true)
 
     } catch (err) {
-      setError(err.message)
+      dispatch(setError(err.message))
     }
   }
 
@@ -133,7 +134,7 @@ export const ExportBackupPhraseModal = ({ account, closeModal }) => {
 }
 
 export const ExportBackupKeyFileModal = ({ account, closeModal }) => {
-  const { setError } = useContext(GalleryContext)
+  const dispatch = useDispatch()
 
   const { name, address, seedPhrase } = account
   const [password, setPassword] = useState('')
@@ -179,7 +180,7 @@ export const ExportBackupKeyFileModal = ({ account, closeModal }) => {
       })
       closeModal()
     } catch (err) {
-      setError(err.message)
+      dispatch(setError(err.message))
     }
   }
 

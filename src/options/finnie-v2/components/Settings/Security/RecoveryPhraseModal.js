@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { CSVLink } from 'react-csv'
+import { useDispatch } from 'react-redux'
 import passworder from 'browser-passworder'
 import Button from 'finnie-v2/components/Button'
 import formatLongString from 'finnie-v2/utils/formatLongString'
@@ -13,12 +14,13 @@ import ImportIcon from 'img/v2/import-icon.svg'
 import NoticeIcon from 'img/v2/notice-icon.svg'
 import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
+import { setError } from 'options/actions/error'
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 
 const RecoveryPhraseModal = ({ account, close }) => {
+  const dispatch = useDispatch()
   const modalRef = useRef(null)
-  const { setError } = useContext(GalleryContext)
 
   const [step, setStep] = useState(1)
   const [showPassword, setShowPassword] = useState(false)
@@ -65,7 +67,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
       if (err.message === 'Incorrect password') {
         setPasswordError(err.message)
       } else {
-        setError(err.message)
+        dispatch(setError(err.message))
       }
     }
   }

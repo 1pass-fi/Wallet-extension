@@ -24,7 +24,9 @@ import ExpandIcon from 'img/share-icon.svg'
 import MagnifierIcon from 'img/v2/magnifier-icon.svg'
 import ModalBackground from 'img/v2/modal-background.svg'
 import { includes, isEmpty } from 'lodash'
+import { setError } from 'options/actions/error'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
+import { setQuickNotification } from 'options/actions/quickNotification'
 import { DidContext } from 'options/context'
 import ToggleButton from 'options/finnie-v1/components/toggleButton'
 import { GalleryContext } from 'options/galleryContext'
@@ -48,8 +50,6 @@ import './index.css'
 
 const KidPage = () => {
   const dispatch = useDispatch()
-
-  const { setError, setNotification } = useContext(GalleryContext)
 
   const {
     userKID,
@@ -384,7 +384,7 @@ const KidPage = () => {
     if (hadData) {
       // balance validate update
       if (balance < 0.00007) {
-        setError(`You don't have enough AR`)
+        dispatch(setError(`You don't have enough AR`))
         dispatch(setLoaded)
         setDisableUpdateKID(false)
         return
@@ -392,14 +392,14 @@ const KidPage = () => {
     } else {
       // balance validate create
       if (balance < 0.0005) {
-        setError(`You don't have enough AR`)
+        dispatch(setError(`You don't have enough AR`))
         dispatch(setLoaded)
         setDisableUpdateKID(false)
         return
       }
 
       if (koiBalance < 1) {
-        setError(`You don't have enough KOII`)
+        dispatch(setError(`You don't have enough KOII`))
         dispatch(setLoaded)
         setDisableUpdateKID(false)
         return
@@ -448,12 +448,12 @@ const KidPage = () => {
           txId: didID,
           newkID: oldkID !== kID
         })
-        setNotification(NOTIFICATION.UPDATE_KID_SUCCESS)
+        dispatch(setQuickNotification(NOTIFICATION.UPDATE_KID_SUCCESS))
         setShowConfirmModal(false)
       } else {
         /* Create */
         result = await backgroundRequest.gallery.createDID({ didData: state })
-        setNotification(NOTIFICATION.CREATE_KID_SUCCESS)
+        dispatch(setQuickNotification(NOTIFICATION.CREATE_KID_SUCCESS))
         setConfirmed(true)
       }
 
@@ -463,7 +463,7 @@ const KidPage = () => {
     } catch (err) {
       console.error(err.message)
       setShowConfirmModal(false)
-      setError(err.message)
+      dispatch(setError(err.message))
       dispatch(setLoaded)
     }
   }

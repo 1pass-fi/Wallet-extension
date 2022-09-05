@@ -4,16 +4,14 @@ import Button from 'finnie-v2/components/Button'
 import NoticeIcon from 'img/v2/onboarding/notice-icon.svg'
 import WarningIcon from 'img/v2/onboarding/warning-icon.svg'
 import WelcomeBackground from 'img/v2/onboarding/welcome-background-1.svg'
-import { GalleryContext } from 'options/galleryContext'
 
 import useMethod from '../hooks/useMethod'
 import { OnboardingContext } from '../onboardingContext'
 
 const PrepareSavePhrase = ({ step, setStep, importType }) => {
-  const { setError } = useContext(GalleryContext)
   const { newSeedphrase, password, setSkipPhrase } = useContext(OnboardingContext)
 
-  const { saveNewKey } = useMethod({ setError, newSeedphrase, password })
+  const { saveNewKey } = useMethod({ newSeedphrase, password })
 
   const handleRemindMeLater = async () => {
     await saveNewKey(importType)

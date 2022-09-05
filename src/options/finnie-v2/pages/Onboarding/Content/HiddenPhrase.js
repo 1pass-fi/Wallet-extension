@@ -4,17 +4,15 @@ import Button from 'finnie-v2/components/Button'
 import HiddenPhraseIcon from 'img/v2/onboarding/hidden-phrase.svg'
 import WarningIcon from 'img/v2/onboarding/warning-icon.svg'
 import WelcomeBackground from 'img/v2/onboarding/welcome-background-1.svg'
-import { GalleryContext } from 'options/galleryContext'
 
 import useMethod from '../hooks/useMethod'
 import { OnboardingContext } from '../onboardingContext'
 
 const HiddenPhrase = ({ step, setStep, importType }) => {
-  const { setError } = useContext(GalleryContext)
   const { newSeedphrase, password, setSkipPhrase } = useContext(OnboardingContext)
   const [showPhrase, setShowPhrase] = useState(false)
 
-  const { saveNewKey } = useMethod({ setError, newSeedphrase, password })
+  const { saveNewKey } = useMethod({ newSeedphrase, password })
 
   const SEED_ARRAY = useMemo(() => {
     return newSeedphrase.split(' ')

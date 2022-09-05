@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { useDispatch } from 'react-redux'
 import { addAccountByAddress } from 'options/actions/accounts'
+import { setError } from 'options/actions/error'
 import {
   setOnboardingProcessed,
   setOnboardingProcessing} from 'options/actions/onboardingProcessing'
@@ -11,18 +12,17 @@ import storage from 'services/storage'
 import { isArweaveAddress, isEthereumAddress, isSolanaAddress } from 'utils'
 
 import { OnboardingContext } from '../onboardingContext'
-
 const ERROR_MESSAGE = {
   SAVE_NEW_KEY_FAILED: 'Save new key failed',
   GENERATE_NEW_KEY_FAILED: 'Generate new key failed'
 }
 
 const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
-  const { setImportedAddress, setError, setNewAddress, setActivatedChain } = useContext(
+  const dispatch = useDispatch()
+
+  const { setImportedAddress, setNewAddress, setActivatedChain } = useContext(
     GalleryContext
   )
-
-  const dispatch = useDispatch()
 
   const generateNewKey = async (network) => {
     try {
@@ -31,7 +31,7 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
       setNewSeedphrase(seedphrase.join(' '))
     } catch (err) {
       console.error(err.message)
-      setError(ERROR_MESSAGE.GENERATE_NEW_KEY_FAILED)
+      dispatch(setError(ERROR_MESSAGE.GENERATE_NEW_KEY_FAILED))
     } finally {
       dispatch(setOnboardingProcessed)
     }
@@ -49,7 +49,7 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
       dispatch(addAccountByAddress(address))
     } catch (err) {
       console.error(err.message)
-      setError(ERROR_MESSAGE.SAVE_NEW_KEY_FAILED)
+      dispatch(setError(ERROR_MESSAGE.SAVE_NEW_KEY_FAILED))
     } finally {
       dispatch(setOnboardingProcessed)
     }
@@ -83,7 +83,7 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
 
       return address
     } catch (err) {
-      setError(err.message)
+      dispatch(setError(err.message))
     } finally {
       dispatch(setOnboardingProcessed)
     }

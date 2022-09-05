@@ -1,6 +1,6 @@
-import React, { useContext, useEffect,useMemo, useState } from 'react'
+import React, { useEffect,useMemo, useState } from 'react'
 import { DragDropContext, Draggable,Droppable } from 'react-beautiful-dnd'
-import { useSelector } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { TYPE } from 'constants/accountConstants'
@@ -13,6 +13,8 @@ import ConfirmRemoveAccountModal from 'finnie-v2/components/AccountManagement/Co
 import ConnectedSitesModal from 'finnie-v2/components/ConnectedSitesModal'
 import DropDown from 'finnie-v2/components/DropDown'
 import { get,isEmpty } from 'lodash'
+import { setError } from 'options/actions/error'
+import { setQuickNotification } from 'options/actions/quickNotification'
 import { GalleryContext } from 'options/galleryContext'
 import storage from 'services/storage'
 import { getChromeStorage, isSolanaAddress,setChromeStorage } from 'utils'
@@ -25,8 +27,8 @@ import './index.css'
 const mockedWalletDisplayOptions = [{ value: 'accountsummary', label: 'Account Summary' }]
 
 export default () => {
+  const dispatch = useDispatch()
   const history = useHistory()
-  const { setError, setNotification } = useContext(GalleryContext)
 
   const [currency, setCurrency] = useState('USD')
   const [chainOption, setChainOption] = useState('ALL')
@@ -87,18 +89,18 @@ export default () => {
       )
       const price = get(response, 'data.arweave')
       if (!price || isEmpty(price)) {
-        setError(`We cannot get AR price for the currency ${currency}.`)
+        dispatch(setError(`We cannot get AR price for the currency ${currency}.`))
         setCurrency('USD')
       } else {
         setCurrency(currency)
         await setChromeStorage({ [STORAGE.CURRENCY]: currency })
         // set value for new storage object
         await storage.setting.set.selectedCurrency(currency)
-        setNotification(`Default currency set to ${currency}.`)
+        dispatch(setQuickNotification(`Default currency set to ${currency}.`))
       }
     } catch (err) {
       console.log(err.message)
-      setError(err.message)
+      dispatch(setError(err.message))
     }
   }
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import Button from 'finnie-v2/components/Button'
 import BackIcon from 'img/v2/back-icon-blue.svg'
@@ -7,7 +7,6 @@ import CloseIcon from 'img/v2/close-icon-blue.svg'
 import NoticeIcon from 'img/v2/notice-icon.svg'
 import isEmpty from 'lodash/isEmpty'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
-import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import './ChangePasswordModal.css'
@@ -23,8 +22,6 @@ const ChangePasswordModal = ({ close }) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState('')
   const [disableUpdatePassword, setDisableUpdatePassword] = useState(false)
   const modalRef = useRef(null)
-
-  const { setError } = useContext(GalleryContext)
 
   const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%^&*()].*).{8,}')
 
