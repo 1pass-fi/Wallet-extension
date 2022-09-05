@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setIsOnboarding } from 'options/actions/onboardingProcessing'
 import { GalleryContext } from 'options/galleryContext'
 import LoadingScreen from 'options/pages/StartUp/shared/Loading'
 
@@ -17,13 +18,14 @@ export const onboardingSteps = [
 ]
 
 const Welcome = () => {
-  const isOnboardingProcessing = useSelector((state) => state.isOnboardingProcessing)
+  const dispatch = useDispatch()
 
-  const { setIsOnboarding } = useContext(GalleryContext)
+  const isOnboardingProcessing = useSelector((state) => state.onboarding.isProcessing)
+
   const [step, setStep] = useState(0)
 
   useEffect(() => {
-    setIsOnboarding(true)
+    dispatch(setIsOnboarding(true))
   }, [])
 
   return (

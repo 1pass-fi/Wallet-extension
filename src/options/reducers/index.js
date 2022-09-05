@@ -6,8 +6,8 @@ import assets from './assets'
 import collections from './collections'
 import createCollection from './createCollection'
 import defaultAccount from './defaultAccount'
-import isOnbardingProcessing from './loading'
 import notificationsData from './notifications'
+import onboarding from './onboarding'
 
 export default combineReducers({
   accounts,
@@ -17,5 +17,5 @@ export default combineReducers({
   collections,
   assets,
   notificationsData,
-  isOnbardingProcessing
+  onboarding
 })
