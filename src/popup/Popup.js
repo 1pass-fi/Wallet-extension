@@ -39,6 +39,7 @@ import GetEncryptionKey from 'components/sign/GetEncryptionKey'
 import SignTypedDataV1 from 'components/sign/SignTypedDataV1'
 import SignTypedDataV3 from 'components/sign/SignTypedDataV3'
 import SignModal from 'components/SignTransaction'
+import SolanaSignMessage from 'components/SolanaSignMessage'
 
 import NavBar from './components/NavBar'
 // pages
@@ -109,7 +110,8 @@ const Popup = ({
     accountLoaded,
     showConnectedSites,
     setShowConnectedSites,
-    loadDefaultAccounts
+    loadDefaultAccounts,
+    showSolanaSignMessage
   } = useLoadApp({
     history,
     setDefaultAccount,
@@ -151,6 +153,7 @@ const Popup = ({
         {showEthSign && <EthSign />}
         {showSignTypedDataV1 && <SignTypedDataV1 />}
         {showSignTypedDataV3 && <SignTypedDataV3 />}
+        {showSolanaSignMessage && <SolanaSignMessage />}
         {showGetEncryptionKey && <GetEncryptionKey />}
         {showConnectSite && <ConnectScreen />}
         {showConnectedSites && <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />}

@@ -169,9 +169,20 @@ const finnieSolanaProviderScript = `() => {
       return this.connection.send(message)
     }
 
-    signMessage() {
-      const message = { type: ENDPOINTS.SOLANA_SIGN_MESSAGE }
-      return this.connection.send(message)
+    async signMessage(payload) {
+      const message = { type: ENDPOINTS.SOLANA_SIGN_MESSAGE, data: payload }
+      const response = await this.connection.send(message)
+
+      let signature = response.signature
+      let publicKey = response.publicKey
+
+      signature = base58.decode(signature)
+      publicKey = new window.solanaWeb3.PublicKey(publicKey)
+
+      return {
+        signature,
+        publicKey
+      }
     }
 
     signAndSendTransaction(payload) {

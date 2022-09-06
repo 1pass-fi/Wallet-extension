@@ -30,6 +30,8 @@ const useLoadApp = ({
   const [loadAccountsDone, setLoadAccountsDone] = useState(false)
   const [loadDefaultAccountDone, setDefaultLoadAccountDone] = useState(false)
 
+  const [showSolanaSignMessage, setShowSolanaSignMessage] = useState(false)
+
   const loadAccounts = async () => {
     try {
       setIsLoading(true)
@@ -149,6 +151,9 @@ const useLoadApp = ({
           case REQUEST.GET_ENCRYPTION_KEY:
             setShowGetEncryptionKey(true)
             break
+          case REQUEST.SOLANA_SIGN_MESSAGE:
+            setShowSolanaSignMessage(true)
+            break
         }
       } else {
         history.push('/account')
@@ -200,6 +205,7 @@ const useLoadApp = ({
     accountLoaded,
     showConnectedSites,
     setShowConnectedSites,
+    showSolanaSignMessage,
     loadDefaultAccounts
   }
 }
