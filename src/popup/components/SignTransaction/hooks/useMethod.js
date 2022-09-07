@@ -99,7 +99,6 @@ const useMethod = ({
   }
 
   const handleSendCustomTokenSol = async () => {
-    console.log('RUNNNN')
     console.log({
       sender: transactionPayload.from,
       customTokenRecipient,

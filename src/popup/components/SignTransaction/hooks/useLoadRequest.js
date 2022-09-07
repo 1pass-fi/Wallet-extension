@@ -16,6 +16,7 @@ const useLoadRequest = ({ setIsLoading }) => {
   const [transactionType, setTransactionType] = useState(null)
   const [senderName, setSenderName] = useState(null)
   const [recipientName, setRecipientName] = useState(null)
+  const [signWithoutSend, setSignWithoutSend] = useState(null)
 
   useEffect(() => {
     const loadRequest = async () => {
@@ -29,6 +30,7 @@ const useLoadRequest = ({ setIsLoading }) => {
         const requestId = get(request, 'data.requestId')
         const favicon = get(request, 'data.favicon')
         const recipientName = get(request, 'data.recipientName')
+        const signWithoutSend = get(request, 'data.signWithoutSend')
 
         let data = get(transactionPayload, 'data')
         if (network === 'ARWEAVE') {
@@ -68,6 +70,7 @@ const useLoadRequest = ({ setIsLoading }) => {
         }
         setSenderName(senderName)
         setRecipientName(recipientName)
+        setSignWithoutSend(signWithoutSend)
       } catch (err) {
         console.error('loadRequest error: ', err.message)
       } finally {
@@ -87,7 +90,8 @@ const useLoadRequest = ({ setIsLoading }) => {
     transactionType,
     dataString,
     senderName,
-    recipientName
+    recipientName,
+    signWithoutSend
   }
 }
 

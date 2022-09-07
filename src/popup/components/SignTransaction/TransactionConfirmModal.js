@@ -58,7 +58,8 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     transactionType,
     dataString,
     senderName,
-    recipientName
+    recipientName,
+    signWithoutSend
   } = useLoadRequest({ setIsLoading })
 
   const trustStat = useSecurityStatus({ setIsLoading, url: origin })
@@ -407,7 +408,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               style={{ width: '160px', height: '38px' }}
               disabled={isScamOrigin}
             >
-              Sign
+              {signWithoutSend ? 'Send' : 'Sign'}
             </button>
           </div>
           <ReactTooltip place="top" effect="float" />
