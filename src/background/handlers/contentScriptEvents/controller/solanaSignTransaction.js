@@ -1,5 +1,8 @@
-import { Transaction } from '@solana/web3.js'
+import { Message,Transaction } from '@solana/web3.js'
 import base58 from 'bs58'
+import get from 'lodash/get'
+import { backgroundAccount } from 'services/account'
+import { SolanaTool } from 'services/solana'
 
 export default async (payload, tab, next) => {
   try {
@@ -14,22 +17,21 @@ export default async (payload, tab, next) => {
       connectedAddresses
     } = tab
 
-    // TODO Thuan Ngo: implement signTransaction functions
-    // Take a look at controller: signAllTransactions
-    console.log('SOLANA SIGN TRANSACTION...')
-    const params = get(payload, 'data.params')
-    const encodeTransaction = get(params, 'transaction')
+    const encodedMessage = get(payload, 'data')
 
     const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses)
     const solTool = new SolanaTool(credentials)
     const keypair = solTool.keypair
 
-    const transaction = Transaction.from(base58.decode(encodeTransaction))
-    transaction.sign(keypair)
+    const transactionMessage = Message.from(base58.decode(encodedMessage))
+    const transaction = Transaction.populate(transactionMessage)
 
-    next({ data: transaction })
+    transaction.sign(keypair)
+    const encodedSignedTransaction = base58.encode(transaction.serialize())
+
+    next({ data: encodedSignedTransaction })
   } catch (err) {
-    console.error(err.mesage)
+    console.error(err)
     next({ data: { status: 500, data: 'Solana signTransaction error' } })
   }
 }
