@@ -60,12 +60,6 @@ export default ({ children }) => {
   const [newAddress, setNewAddress] = useState(null) // just imported address
   const [isOnboarding, setIsOnboarding] = useState(false) // keep reveal page - onboarding flow
 
-  /* 
-    File
-  */
-  const [isDragging, setIsDragging] = useState(false) // ???
-  const [file, setFile] = useState({}) // file for create nft
-
   const [searchTerm, setSearchTerm] = useState('') // search bar
 
   const [selectedNftIds, setSelectedNftIds] = useState([])
@@ -122,11 +116,6 @@ export default ({ children }) => {
 
   /* EDITING COLLECTION ID */
   const [editingCollectionId, setEditingCollectionId] = useState(null)
-
-  const onCloseUploadModal = () => {
-    setFile({})
-    setIsDragging(false)
-  }
 
   const handleShareNFT = (txId) => {
     const toShareNFT = find(assets.nfts, { txId })
@@ -309,10 +298,8 @@ export default ({ children }) => {
         displayingAccount,
         setActivatedChain,
         handleShareNFT,
-        onCloseUploadModal,
         searchTerm,
         setError,
-        setFile,
         isLoading,
         setIsLoading,
         isProcessing,
@@ -346,8 +333,6 @@ export default ({ children }) => {
             <>
               {!isLocked ? (
                 <div
-                  onDragOver={() => modifyDraging(true)}
-                  onDragLeave={() => modifyDraging(false)}
                   onClick={(e) => {
                     if (e.target.className === 'modal-container') {
                       setModalStates.setShowShareModal(false)
