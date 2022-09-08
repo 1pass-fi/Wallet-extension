@@ -1,6 +1,7 @@
 import React, { useContext,useEffect, useMemo, useRef, useState } from 'react'
 import AceEditor from 'react-ace'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Link, Prompt } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
 import { checkAvailable } from 'background/helpers/did/koiiMe'
@@ -23,6 +24,9 @@ import ExpandIcon from 'img/share-icon.svg'
 import MagnifierIcon from 'img/v2/magnifier-icon.svg'
 import ModalBackground from 'img/v2/modal-background.svg'
 import { includes, isEmpty } from 'lodash'
+import { setError } from 'options/actions/error'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
+import { setQuickNotification } from 'options/actions/quickNotification'
 import { DidContext } from 'options/context'
 import ToggleButton from 'options/finnie-v1/components/toggleButton'
 import { GalleryContext } from 'options/galleryContext'
@@ -45,7 +49,7 @@ import 'ace-builds/src-noconflict/mode-css'
 import './index.css'
 
 const KidPage = () => {
-  const { setIsLoading, setError, setNotification } = useContext(GalleryContext)
+  const dispatch = useDispatch()
 
   const {
     userKID,
@@ -314,13 +318,13 @@ const KidPage = () => {
   }
 
   const validateFields = async () => {
-    setIsLoading((prev) => ++prev)
+    dispatch(setIsLoading)
     // Validation
     const pattern = /^[A-Za-z0-9]+$/
     const available = await checkAvailable(kID)
     if (!kID) {
       setFieldError((prev) => ({ ...prev, kid: 'kID field must be filled in' }))
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
       setDisableUpdateKID(false)
       kidInput.current.scrollIntoView()
       return
@@ -328,7 +332,7 @@ const KidPage = () => {
 
     if (!pattern.test(kID)) {
       setFieldError((prev) => ({ ...prev, kid: 'Please try a kID without special characters' }))
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
       setDisableUpdateKID(false)
       return
     }
@@ -338,7 +342,7 @@ const KidPage = () => {
         ...prev,
         kid: 'This username is unavailable, please try a different one'
       }))
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
       setDisableUpdateKID(false)
       return
     }
@@ -348,7 +352,7 @@ const KidPage = () => {
         ...prev,
         kid: 'This username is unavailable, please try a different one'
       }))
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
       setDisableUpdateKID(false)
       kidInput.current.scrollIntoView()
       return
@@ -356,32 +360,22 @@ const KidPage = () => {
 
     if (!userKID.name) {
       setFieldError((prev) => ({ ...prev, name: 'Name field must be filled in' }))
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
       setDisableUpdateKID(false)
       kidInput.current.scrollIntoView()
       return
     }
 
-    // DID country should not be required
-    // https://app.clickup.com/t/208adfx
-    // if (!userKID.country) {
-    //   setFieldError((prev) => ({ ...prev, country: 'Country field must be filled in' }))
-    //   setIsLoading((prev) => --prev)
-    //   setDisableUpdateKID(false)
-    //   kidInput.current.scrollIntoView()
-    //   return
-    // }
-
     if (!userKID.description) {
       setFieldError((prev) => ({ ...prev, description: 'Description field must be filled in' }))
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
       setDisableUpdateKID(false)
       descriptionInput.current.scrollIntoView()
       return
     }
 
     if (!validateLinkAccounts()) {
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
       setDisableUpdateKID(false)
       descriptionInput.current.scrollIntoView()
       return
@@ -390,35 +384,35 @@ const KidPage = () => {
     if (hadData) {
       // balance validate update
       if (balance < 0.00007) {
-        setError(`You don't have enough AR`)
-        setIsLoading((prev) => --prev)
+        dispatch(setError(`You don't have enough AR`))
+        dispatch(setLoaded)
         setDisableUpdateKID(false)
         return
       }
     } else {
       // balance validate create
       if (balance < 0.0005) {
-        setError(`You don't have enough AR`)
-        setIsLoading((prev) => --prev)
+        dispatch(setError(`You don't have enough AR`))
+        dispatch(setLoaded)
         setDisableUpdateKID(false)
         return
       }
 
       if (koiBalance < 1) {
-        setError(`You don't have enough KOII`)
-        setIsLoading((prev) => --prev)
+        dispatch(setError(`You don't have enough KOII`))
+        dispatch(setLoaded)
         setDisableUpdateKID(false)
         return
       }
     }
 
-    setIsLoading((prev) => --prev)
+    dispatch(setLoaded)
     return true
   }
 
   const handleSubmit = async () => {
     try {
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
       setDisableUpdateKID(true)
 
       const ethAccounts = await popupAccount.getAllAccounts(TYPE.ETHEREUM)
@@ -454,23 +448,23 @@ const KidPage = () => {
           txId: didID,
           newkID: oldkID !== kID
         })
-        setNotification(NOTIFICATION.UPDATE_KID_SUCCESS)
+        dispatch(setQuickNotification(NOTIFICATION.UPDATE_KID_SUCCESS))
         setShowConfirmModal(false)
       } else {
         /* Create */
         result = await backgroundRequest.gallery.createDID({ didData: state })
-        setNotification(NOTIFICATION.CREATE_KID_SUCCESS)
+        dispatch(setQuickNotification(NOTIFICATION.CREATE_KID_SUCCESS))
         setConfirmed(true)
       }
 
       console.log('result', result)
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
       setIsPending(true)
     } catch (err) {
       console.error(err.message)
       setShowConfirmModal(false)
-      setError(err.message)
-      setIsLoading((prev) => --prev)
+      dispatch(setError(err.message))
+      dispatch(setLoaded)
     }
   }
 

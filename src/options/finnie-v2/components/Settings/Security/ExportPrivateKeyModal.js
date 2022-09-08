@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { TYPE } from 'constants/accountConstants'
 import Button from 'finnie-v2/components/Button'
 import formatLongString from 'finnie-v2/utils/formatLongString'
@@ -8,13 +9,14 @@ import EyeIcon from 'img/v2/eye-icon.svg'
 import EyeIcon1 from 'img/v2/eye-icon-1.svg'
 import NoticeIcon from 'img/v2/notice-icon.svg'
 import isEmpty from 'lodash/isEmpty'
-import { GalleryContext } from 'options/galleryContext'
+import { setError } from 'options/actions/error'
+import { setQuickNotification } from 'options/actions/quickNotification'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 const ExportPrivateKeyModal = ({ account, close }) => {
-  const modalRef = useRef(null)
-  const { setNotification, setError } = useContext(GalleryContext)
+  const dispatch = useDispatch()
 
+  const modalRef = useRef(null)
   const [showPassword, setShowPassword] = useState(false)
   const [passwordError, setPasswordError] = useState('')
   const [password, setPassword] = useState('')
@@ -71,13 +73,13 @@ const ExportPrivateKeyModal = ({ account, close }) => {
         url: url,
         filename: filename
       })
-      setNotification('Export Private key succesffuly!')
+      dispatch(setQuickNotification('Export Private key succesffuly!'))
       close()
     } catch (err) {
       if (err.message === 'Incorrect password') {
         setPasswordError(err.message)
       } else {
-        setError(err.message)
+        dispatch(setError(err.message))
       }
     }
   }

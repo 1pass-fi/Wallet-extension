@@ -5,6 +5,7 @@ import { TYPE } from 'constants/accountConstants'
 import {ERROR_MESSAGE} from 'constants/koiConstants'
 import isEmpty from 'lodash/isEmpty'
 import { addAccountByAddress } from 'options/actions/accounts'
+import { setError } from 'options/actions/error'
 import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
 import { GalleryContext } from 'options/galleryContext'
 import { JSONFileToObject } from 'options/utils'
@@ -19,7 +20,7 @@ import './index.css'
 
 
 export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) => {
-  const { setError, setImportedAddress, setNewAddress, setActivatedChain } =  useContext(GalleryContext)
+  const { setImportedAddress, setNewAddress, setActivatedChain } =  useContext(GalleryContext)
   const [password, setPassword] = useState('')
   const [showFormError, setShowFormError] = useState(false)
 
@@ -64,15 +65,15 @@ export default ({ nextStep, file, walletType, selectedNetwork, previousStep }) =
     } catch (err) {
       console.error(err.message)
       if (err.message === 'Incorrect password') {
-        setError(err.message)
+        dispatch(setError(err.message))
         return
       }
 
       if (err.message === ERROR_MESSAGE.ACCOUNT_EXIST) {
-        setError(err.message)
+        dispatch(setError(err.message))
         return
       }
-      setError(ERROR_MESSAGE.INVALID_JSON_KEY)
+      dispatch(setError(ERROR_MESSAGE.INVALID_JSON_KEY))
     }
   }
 

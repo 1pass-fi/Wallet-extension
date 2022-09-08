@@ -4,15 +4,17 @@ import classifyAssets from 'finnie-v2/utils/classifyAssets'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import { setAssets, setCollectionNfts } from 'options/actions/assets'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
-export const useNfts = ({ setCollections, setIsLoading, walletLoaded, newAddress, pathname }) => {
+export const useNfts = ({ setCollections, walletLoaded, newAddress, pathname }) => {
   const dispatch = useDispatch()
+  
   useEffect(() => {
     // load nfts and collection from store, set to state
     const loadAssetsFromStorage = async () => {
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
       let allCollections = await popupAccount.getAllCollections()
       let allCollectionNfts = await popupAccount.getAllCollectionNfts()
       dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
@@ -29,7 +31,7 @@ export const useNfts = ({ setCollections, setIsLoading, walletLoaded, newAddress
 
       dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
 
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
 
     const fetchAssets = async () => {
@@ -57,14 +59,14 @@ export const useNfts = ({ setCollections, setIsLoading, walletLoaded, newAddress
         dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
       }
 
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
       await Promise.all([loadCollection, loadNfts].map((f) => f()))
       validAssets = classifyAssets(validAssets, allCollections)
       if (isEmpty(validAssets) && pathname === '/') {
       } else {
         dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
       }
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
 
     loadAssetsFromStorage()

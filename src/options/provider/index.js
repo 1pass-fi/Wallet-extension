@@ -6,12 +6,16 @@ import { TYPE } from 'constants/accountConstants'
 import { GALLERY_IMPORT_PATH } from 'constants/koiConstants'
 import find from 'lodash/find'
 import get from 'lodash/get'
+import includes from 'lodash/includes'
 import isEmpty from 'lodash/isEmpty'
 import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/accounts'
 import { setAssets } from 'options/actions/assets'
 import { setCollections } from 'options/actions/collections'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
+import { clearError } from 'options/actions/error'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { setNotifications } from 'options/actions/notifications'
+import { clearQuickNotification, setQuickNotification } from 'options/actions/quickNotification'
 import { DidContext } from 'options/context'
 import LockScreen from 'options/finnie-v1/components/lockScreen'
 import Message from 'options/finnie-v1/components/message'
@@ -45,11 +49,6 @@ export default ({ children }) => {
   const [isLocked, setIsLocked] = useState(false)
 
   /* 
-    Notification state
-  */
-  const [isLoading, setIsLoading] = useState(0) // loading state
-
-  /* 
     Import new account
   */
   const [importedAddress, setImportedAddress] = useState(null) // just imported account
@@ -64,12 +63,12 @@ export default ({ children }) => {
   /* HOOKS */
   const [walletLoaded, setWalletLoaded] = useState(false)
   const [error, setError] = useError()
-  const [didStates, setDIDStates] = useDID({ newAddress, walletLoaded, setIsLoading, setError })
+  const [didStates, setDIDStates] = useDID({ newAddress, walletLoaded, setError })
   const [modalStates, setModalStates] = useModal()
   const [settingStates, setSettingStates] = useSetting({ walletLoaded })
 
-  useAddHandler({ setError, setNotification, setModalStates, setIsLoading })
-  useNfts({ setCollections, setIsLoading, walletLoaded, newAddress, pathname })
+  useAddHandler({ setError, setModalStates })
+  useNfts({ setCollections, walletLoaded, newAddress, pathname })
 
   /* 
     GET STATE FROM STORE
@@ -133,7 +132,7 @@ export default ({ children }) => {
   */
   useEffect(() => {
     const loadWallets = async () => {
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
       const allAccounts = await dispatch(loadAllAccounts()) // will load default account also
       const _isLocked = await backgroundRequest.wallet.getLockState()
 
@@ -142,7 +141,7 @@ export default ({ children }) => {
       if (!isEmpty(allAccounts)) {
         setIsLocked(_isLocked)
       }
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
     loadWallets()
   }, [])
@@ -235,17 +234,6 @@ export default ({ children }) => {
     // if (!isEmpty(file)) history.push('/create')
   }, [file])
 
-  /* 
-    set state timer
-  */
-
-  useEffect(() => {
-    if (notification) {
-      const timer = setTimeout(() => setNotification(null), 4000)
-      return () => clearTimeout(timer)
-    }
-  }, [notification])
-
   const updateDefaultAccountData = async () => {
     let activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
     if (!isEmpty(activatedAccountAddress)) {
@@ -295,10 +283,6 @@ export default ({ children }) => {
         setActivatedChain,
         handleShareNFT,
         searchTerm,
-        setError,
-        isLoading,
-        setIsLoading,
-        setNotification,
         setSearchTerm,
         importedAddress,
         setImportedAddress,
@@ -334,10 +318,9 @@ export default ({ children }) => {
                     }
                   }}
                 >
-                  {error && <Message children={error} />}
-                  {notification && !GALLERY_IMPORT_PATH.includes(pathname) && (
-                    <Message children={notification} type="notification" />
-                  )}
+                  <Error />
+                  <QuickNotification />
+
                   {modalStates.showShareModal.show && (
                     <ShareNFT
                       txid={modalStates.showShareModal.txid}
@@ -391,7 +374,7 @@ export default ({ children }) => {
             <>
               {walletLoaded && (
                 <div>
-                  {error && <Message children={error} />}
+                  <Error />
                   <StartUp />
                 </div>
               )}
@@ -402,4 +385,38 @@ export default ({ children }) => {
       </DidContext.Provider>
     </GalleryContext.Provider>
   )
+}
+
+const Error = () => {
+  const dispatch = useDispatch()
+  const error = useSelector((state) => state.error)
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => dispatch(clearError), 4000)
+      return () => clearTimeout(timer)
+    }
+  }, [error])
+
+  if (error) return <Message children={error} />
+  return ''
+}
+
+const QuickNotification = () => {
+  const dispatch = useDispatch()
+  const { pathname } = useLocation()
+  const quickNotification = useSelector((state) => state.quickNotification)
+
+  const isImportWalletPath = includes(GALLERY_IMPORT_PATH, pathname)
+
+  useEffect(() => {
+    if (quickNotification) {
+      const timer = setTimeout(() => dispatch(clearQuickNotification), 4000)
+      return () => clearTimeout(timer)
+    }
+  }, [quickNotification])
+
+  if (quickNotification && !isImportWalletPath)
+    return <Message children={quickNotification} type="notification" />
+  return ''
 }

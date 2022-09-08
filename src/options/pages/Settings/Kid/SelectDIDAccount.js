@@ -14,12 +14,13 @@ import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import Background from 'img/v2/select-DID-modal-background.svg'
 import { isEmpty } from 'lodash'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
+import { setError } from 'options/actions/error'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
+import { setQuickNotification } from 'options/actions/quickNotification'
 import { DidContext } from 'options/context'
-import { GalleryContext } from 'options/galleryContext'
 import { getArAccounts } from 'options/selectors/accounts'
 
 const SelectDIDAccount = ({ close }) => {
-  const { setIsLoading, setNotification, setError } = useContext(GalleryContext)
   const { getDID } = useContext(DidContext)
 
   const dispatch = useDispatch()
@@ -32,9 +33,9 @@ const SelectDIDAccount = ({ close }) => {
 
   const handleChangeDIDAccount = async () => {
     try {
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
       if (isEmpty(selectedAccount)) {
-        setError('Please choose Koii or Arweave account first!')
+        dispatch(setError('Please choose Koii or Arweave account first!'))
         return
       }
       await dispatch(setDefaultAccount(selectedAccount))
@@ -43,9 +44,9 @@ const SelectDIDAccount = ({ close }) => {
       // TODO - LongP
       close()
     } catch (error) {
-      setError(error.message)
+      dispatch(setError(error.message))
     } finally {
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
   }
 
@@ -116,7 +117,7 @@ const SelectDIDAccount = ({ close }) => {
                     {formatLongString(arAccount.address, 18)}
                     <CopyToClipboard text={arAccount.address}>
                       <CopyIcon
-                        onClick={() => setNotification(NOTIFICATION.ADDRESS_COPIED)}
+                        onClick={() => dispatch(setQuickNotification(NOTIFICATION.ADDRESS_COPIED))}
                         style={{ width: '16px', height: '16px' }}
                       />
                     </CopyToClipboard>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { FRIEND_REFERRAL_ENDPOINTS, SOCIAL_NETWORKS } from 'constants/koiConstants'
 import Button from 'finnie-v2/components/Button'
 import NFTMedia from 'finnie-v2/components/NFTMedia'
@@ -18,6 +18,8 @@ import MailIcon from 'img/v2/share-modal-icons/mail-icon.svg'
 import ShareIcon from 'img/v2/share-modal-icons/share-icon.svg'
 import TwitterIcon from 'img/v2/share-modal-icons/twitter-icon.svg'
 import isEmpty from 'lodash/isEmpty'
+import { setError } from 'options/actions/error'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 import arweave from 'services/arweave'
@@ -28,10 +30,9 @@ import { v4 as uuid } from 'uuid'
 import './ConfirmCreateNftModal.css'
 
 const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetState }) => {
+  const dispatch = useDispatch()
+
   const estimateCostKOII = 1
-
-  const { setError, setIsLoading, handleShareNFT, refreshNFTs } = useContext(GalleryContext)
-
   const [step, setStep] = useState(1)
   const [estimateCostAr, setEstimateCostAr] = useState(0)
   const [disableCreateNFT, setDisableCreateNFT] = useState(false)
@@ -51,7 +52,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
     try {
       // set isLoading
       setDisableCreateNFT(true)
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
 
       const account = await popupAccount.getAccount({ address: defaultAccount.address })
       const arBalance = await account.get.balance()
@@ -91,20 +92,20 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
       setNftId(txId)
       resetState()
       // set isLoading
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
       setDisableCreateNFT(false)
     } catch (err) {
       console.error(err.message)
       // set Error
-      setError(err.message)
-      setIsLoading((prev) => --prev)
+      dispatch(setError(err.message))
+      dispatch(setLoaded)
       setDisableCreateNFT(false)
     }
   }
 
   const handleSubmitReferralCode = async () => {
     try {
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
       const result = await backgroundRequest.gallery.friendReferral({
         endpoints: FRIEND_REFERRAL_ENDPOINTS.SUBMIT_CODE,
         friendCode: referralCode
@@ -123,10 +124,10 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
         default:
           setReferralCodeError('Network error')
       }
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     } catch (err) {
       console.error(err.message)
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
   }
 

@@ -1,6 +1,7 @@
 import React, { useContext,useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { TYPE } from 'constants/accountConstants'
 import { FRIEND_REFERRAL_ENDPOINTS, STATEMENT } from 'constants/koiConstants'
 import Button from 'finnie-v2/components/Button'
@@ -13,6 +14,9 @@ import ShareCodeIcon from 'img/v2/share-code-icon.svg'
 import ShareIcon from 'img/v2/share-icon.svg'
 import ShuttleIcon from 'img/v2/shuttle-icon.svg'
 import get from 'lodash/get'
+import { setError } from 'options/actions/error'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
+import { setQuickNotification } from 'options/actions/quickNotification'
 import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
@@ -20,7 +24,9 @@ import GetRewardsModal from './GetRewardsModal'
 import ShareCodeModal from './ShareCodeModal'
 
 const FriendReferral = () => {
-  const { setIsLoading, setError, setNotification, displayingAccount } = useContext(GalleryContext)
+  const dispatch = useDispatch()
+
+  const { displayingAccount } = useContext(GalleryContext)
   const [isCopied, setIsCopied] = useState(false)
   const [showGetRewardsModal, setShowGetRewardsModal] = useState(false)
   const [showShareCodeModal, setShowShareCodeModal] = useState(false)
@@ -30,7 +36,7 @@ const FriendReferral = () => {
 
   const redeemRewards = async () => {
     try {
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
       if (defaultAccount) {
         const { message, status } = await backgroundRequest.gallery.friendReferral({
           endpoints: FRIEND_REFERRAL_ENDPOINTS.CLAIM_REWARD
@@ -39,19 +45,19 @@ const FriendReferral = () => {
         if (status != 200) {
           switch (message) {
             case `Affiliate Invites doesn't exists or already claimed`:
-              setNotification(STATEMENT.NO_REWARD)
+              dispatch(setQuickNotification(STATEMENT.NO_REWARD))
               break
             default:
-              setNotification(message)
+              dispatch(setQuickNotification(message))
           }
         } else {
           console.log('RECEIVED KOII')
         }
       }
     } catch (err) {
-      setError(err.message)
+      dispatch(setError(err.message))
     }
-    setIsLoading((prev) => --prev)
+    dispatch(setLoaded)
   }
 
   return (

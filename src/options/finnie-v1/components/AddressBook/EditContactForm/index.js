@@ -1,5 +1,6 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { useDispatch } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 import { TYPE } from 'constants/accountConstants'
 import Avatar from 'img/ab-avatar.png'
@@ -9,7 +10,8 @@ import CopyIcon from 'img/copy-icon.svg'
 import AddIcon from 'img/navbar/create-nft.svg'
 import TrashIcon from 'img/trash-bin.svg'
 import isEmpty from 'lodash/isEmpty'
-import { GalleryContext } from 'options/galleryContext'
+import { setError } from 'options/actions/error'
+import { setQuickNotification } from 'options/actions/quickNotification'
 import { isArweaveAddress, isEthereumAddress, isSolanaAddress } from 'utils'
 
 import Button from '../Button'
@@ -17,7 +19,7 @@ import Button from '../Button'
 import './index.css'
 
 const EditContactForm = ({ onClose, contact, updateAddress }) => {
-  const { setNotification, setError } = useContext(GalleryContext)
+  const dispatch = useDispatch()
 
   const [userInfo, setUserInfo] = useState(contact)
 
@@ -25,7 +27,7 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
 
   const handleSubmit = async () => {
     if (isEmpty(userInfo.name)) {
-      setError('Address must have name!')
+      dispatch(setError('Address must have name!'))
       return
     }
 
@@ -46,14 +48,14 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
     })
 
     if (!isValid) {
-      setError('Invalid Address list!')
+      dispatch(setError('Invalid Address list!'))
       return
     }
 
     setUserAddresses(classifiedAddresses)
 
     await updateAddress({ ...userInfo, addresses: userAddresses })
-    setNotification('Successfully update address!')
+    dispatch(setQuickNotification('Successfully update address!'))
   }
 
   const handleUserInfoChange = (e) => {

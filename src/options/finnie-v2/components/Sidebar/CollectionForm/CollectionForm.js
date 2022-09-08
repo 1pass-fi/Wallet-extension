@@ -1,5 +1,6 @@
 import React, { useContext,useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import BatchUploadModal from 'finnie-v2/components/BatchUploadModal'
 import Button from 'finnie-v2/components/Button'
@@ -16,6 +17,7 @@ import get from 'lodash/get'
 import initial from 'lodash/initial'
 import isEmpty from 'lodash/isEmpty'
 import union from 'lodash/union'
+import { setError } from 'options/actions/error'
 import { GalleryContext } from 'options/galleryContext'
 import getCollectionByTxId from 'options/selectors/getCollectionByTxid'
 import { popupAccount } from 'services/account'
@@ -27,13 +29,13 @@ import ConfirmModal from './ConfirmModal'
 import './CollectionForm.css'
 
 const CollectionForm = ({ isUpdate }) => {
+  const dispatch = useDispatch()
   const history = useHistory()
 
   const {
     selectedNftIds,
     setSelectedNftIds,
-    editingCollectionId: collectionId,
-    setError
+    editingCollectionId: collectionId
   } = useContext(GalleryContext)
 
   const collection = useSelector(getCollectionByTxId(collectionId))
@@ -178,7 +180,7 @@ const CollectionForm = ({ isUpdate }) => {
       setSelectedNftIds([])
     } catch (err) {
       console.error(err.message)
-      setError(err.message)
+      dispatch(setError(err.message))
       setShowingConfirmModal(false)
     }
   }

@@ -1,15 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import NFTCard from 'finnie-v2/components/NFTCard'
 import CreateIcon from 'img/v2/create-icon.svg'
 import isEmpty from 'lodash/isEmpty'
-import { GalleryContext } from 'options/galleryContext'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 
 import './index.css'
 
 const Gallery = () => {
-  const { setIsLoading } = useContext(GalleryContext)
+  const dispatch = useDispatch()
+
   const filteredNfts = useSelector((state) => state.assets.filteredNfts)
   const [displayingNfts, setDisplayingNfts] = useState(filteredNfts.slice(0, 16))
   const [dislayLength, setDisplayLength] = useState(filteredNfts.length)
@@ -26,13 +28,13 @@ const Gallery = () => {
   const handleScroll = (e) => {
     const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
     if (bottom && displayingNfts.length < filteredNfts.length) {
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
       setTimeout(() => {
         setDisplayingNfts([
           ...displayingNfts,
           ...filteredNfts.slice(displayingNfts.length, displayingNfts.length + 16)
         ])
-        setIsLoading((prev) => --prev)
+        dispatch(setLoaded)
       }, 700)
     }
   }

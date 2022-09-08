@@ -1,16 +1,19 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import Button from 'finnie-v2/components/Button'
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CheckIcon from 'img/v2/check-icon-gray.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import NoticeIcon from 'img/v2/notice-icon.svg'
 import isEmpty from 'lodash/isEmpty'
-import { GalleryContext } from 'options/galleryContext'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import './ChangePasswordModal.css'
 
 const ChangePasswordModal = ({ close }) => {
+  const dispatch = useDispatch()
+
   const [step, setStep] = useState(1)
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -19,8 +22,6 @@ const ChangePasswordModal = ({ close }) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState('')
   const [disableUpdatePassword, setDisableUpdatePassword] = useState(false)
   const modalRef = useRef(null)
-
-  const { setError, setIsLoading } = useContext(GalleryContext)
 
   const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%^&*()].*).{8,}')
 
@@ -77,18 +78,18 @@ const ChangePasswordModal = ({ close }) => {
   const handleUpdatePassword = async () => {
     if (!validatePasswords()) return
     try {
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
       setDisableUpdatePassword(true)
       await backgroundRequest.wallet.updatePassword({
         oldPassword,
         newPassword
       })
       setOldPasswordError('')
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
       setDisableUpdatePassword(false)
       setStep(2)
     } catch (err) {
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
       setDisableUpdatePassword(false)
       console.log(err.message)
 

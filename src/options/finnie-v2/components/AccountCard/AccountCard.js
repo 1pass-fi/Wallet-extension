@@ -29,6 +29,8 @@ import isNumber from 'lodash/isNumber'
 import { setAccounts } from 'options/actions/accounts'
 import { loadAllAccounts } from 'options/actions/accounts'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
+import { setError } from 'options/actions/error'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
@@ -49,13 +51,13 @@ const AccountCard = ({
   setAccountConnectSites,
   dragProvided
 }) => {
-  const { setIsLoading, setError, setActivatedChain } = useContext(GalleryContext)
+  const dispatch = useDispatch()
+  const { setActivatedChain } = useContext(GalleryContext)
 
   const [showHex, setShowHex] = useState(true)
   const [showEmptyToken, setShowEmptyToken] = useState(true)
   const [totalViews, setTotalViews] = useState(0)
 
-  const dispatch = useDispatch()
 
   const inputAccountNameRef = useRef(null)
 
@@ -143,15 +145,15 @@ const AccountCard = ({
 
     const loadConnectedSites = async () => {
       try {
-        setIsLoading((prev) => ++prev)
+        dispatch(setIsLoading)
         const siteAddresses = await getSiteConnectedAddresses(account.address, account.type)
         console.log('siteAddresses', siteAddresses)
         setSiteConnectedAddresses(siteAddresses)
-        setIsLoading((prev) => --prev)
+        dispatch(setLoaded)
       } catch (error) {
-        setError(error.message)
         console.log('Load connected sites - Error: ', error.message)
-        setIsLoading((prev) => --prev)
+        dispatch(setError(error.message))
+        dispatch(setLoaded)
       }
     }
 
@@ -198,7 +200,7 @@ const AccountCard = ({
           await onChangeSolanaProvider(networkAddress)
           break
         default:
-          setError('Invalid network type')
+          dispatch(setError('Invalid network type'))
           break
       }
     }
@@ -223,7 +225,7 @@ const AccountCard = ({
       }
 
       if (isEmpty(accountName)) {
-        setError('Account name cannot be empty.')
+        dispatch(setError('Account name cannot be empty.'))
         setEditAccount({})
         return
       }
@@ -239,7 +241,7 @@ const AccountCard = ({
 
       setEditAccount({})
     } catch (err) {
-      setError(err.message)
+      dispatch(setError(err.message))
     }
   }
 
@@ -252,7 +254,7 @@ const AccountCard = ({
         chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
       })
     } catch (error) {
-      setError(error.message)
+      dispatch(setError(error.message))
     }
   }
 
@@ -281,7 +283,7 @@ const AccountCard = ({
   }
 
   const onChangeK2Provider = async (value) => {
-    setIsLoading((prev) => ++prev)
+    dispatch(setIsLoading)
     const _currentNetwork = currentNetwork
     try {
       setCurrentNetwork(value)
@@ -297,15 +299,15 @@ const AccountCard = ({
       await dispatch(loadAllAccounts())
     } catch (error) {
       setCurrentNetwork(_currentNetwork)
-      setError(error.message)
+      dispatch(setError(error.message))
       console.log('Failed to change K2 provider', error.message)
     } finally {
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
   }
 
   const onChangeEthereumProvider = async (value) => {
-    setIsLoading((prev) => ++prev)
+    dispatch(setIsLoading)
     const _currentNetwork = currentNetwork
     try {
       setCurrentNetwork(value)
@@ -329,15 +331,15 @@ const AccountCard = ({
       await dispatch(loadAllAccounts())
     } catch (error) {
       setCurrentNetwork(_currentNetwork)
-      setError(error.message)
+      dispatch(setError(error.message))
       console.log('Failed to change Ethereum provider', error.message)
     } finally {
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
   }
 
   const onChangeSolanaProvider = async (value) => {
-    setIsLoading((prev) => ++prev)
+    dispatch(setIsLoading)
     const _currentNetwork = currentNetwork
     try {
       setCurrentNetwork(value)
@@ -353,10 +355,10 @@ const AccountCard = ({
       await dispatch(loadAllAccounts())
     } catch (error) {
       setCurrentNetwork(_currentNetwork)
-      setError(error.message)
+      dispatch(setError(error.message))
       console.log('Failed to change Solana provider', error.message)
     } finally {
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
     }
   }
 

@@ -8,6 +8,7 @@ import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import isEmpty from 'lodash/isEmpty'
 import { setAssets } from 'options/actions/assets'
+import { setError } from 'options/actions/error'
 import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest } from 'services/request/popup'
 import { isArweaveAddress } from 'utils'
@@ -30,7 +31,6 @@ const TransferNFT = ({
   }
 
   const formattedName = useMemo(() => formatLongStringTruncate(name, 50), [name])
-  const { setError } = useContext(GalleryContext)
 
   const modalRef = useRef(null)
 
@@ -73,7 +73,7 @@ const TransferNFT = ({
   const handleValidateArAddress = () => {
     const isValid = isArweaveAddress(receiverAddress)
     if (!isValid) {
-      setError('Invalid Wallet Address')
+      dispatch(setError('Invalid Wallet Address'))
     } else {
       goToNextStage()
     }
@@ -99,7 +99,7 @@ const TransferNFT = ({
       goToNextStage()
     } catch (error) {
       setSendBtnDisable(false)
-      setError('Whoops! Something went wrong!')
+      dispatch(setError('Whoops! Something went wrong!'))
     }
   }
 

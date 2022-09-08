@@ -9,6 +9,8 @@ import CloseIcon from 'img/v2/close-icon-blue.svg'
 import { isEmpty } from 'lodash'
 import { setAccounts } from 'options/actions/accounts'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
+import { setError } from 'options/actions/error'
+import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 // services
@@ -16,9 +18,10 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 import storage from 'services/storage'
 
 const ConfirmRemoveAccountModal = ({ account, close }) => {
-  const { setIsLoading, setError, setActivatedChain } = useContext(GalleryContext)
-  const [isRemoving, setIsRemoving] = useState(false)
   const dispatch = useDispatch()
+
+  const { setActivatedChain } = useContext(GalleryContext)
+  const [isRemoving, setIsRemoving] = useState(false)
   const modalRef = useRef(null)
 
   const defaultAccount = useSelector((state) => state.defaultAccount)
@@ -51,7 +54,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
   const handleRemoveAccount = async () => {
     try {
       setIsRemoving(true)
-      setIsLoading((prev) => ++prev)
+      dispatch(setIsLoading)
 
       await backgroundRequest.wallet.removeWallet({ address: account.address })
 
@@ -187,13 +190,13 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
       })
 
       close()
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
       setIsRemoving(false)
     } catch (error) {
-      setIsLoading((prev) => --prev)
+      dispatch(setLoaded)
       setIsRemoving(false)
       console.log('Failed to remove account - Error: ', error.message)
-      setError(error.message)
+      dispatch(setError(error.message))
     }
   }
 
