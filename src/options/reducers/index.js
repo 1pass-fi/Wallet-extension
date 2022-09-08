@@ -7,6 +7,7 @@ import collections from './collections'
 import createCollection from './createCollection'
 import defaultAccount from './defaultAccount'
 import notificationsData from './notifications'
+import onboarding from './onboarding'
 
 export default combineReducers({
   accounts,
@@ -15,5 +16,6 @@ export default combineReducers({
   createCollection,
   collections,
   assets,
-  notificationsData
+  notificationsData,
+  onboarding
 })

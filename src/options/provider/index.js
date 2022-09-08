@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo,useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import ReactNotification from 'react-notifications-component'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -49,16 +49,11 @@ export default ({ children }) => {
   */
   const [isLoading, setIsLoading] = useState(0) // loading state
 
-  const [isProcessing, setIsProcessing] = useState(0) // onboarding processing state
-
-  const [notification, setNotification] = useState(null) // notification message
-
   /* 
     Import new account
   */
   const [importedAddress, setImportedAddress] = useState(null) // just imported account
   const [newAddress, setNewAddress] = useState(null) // just imported address
-  const [isOnboarding, setIsOnboarding] = useState(false) // keep reveal page - onboarding flow
 
   const [searchTerm, setSearchTerm] = useState('') // search bar
 
@@ -83,6 +78,7 @@ export default ({ children }) => {
   const defaultAccount = useSelector((state) => state.defaultAccount.AR)
   const assets = useSelector((state) => state.assets)
   const _defaultAccount = useSelector((state) => state.defaultAccount)
+  const isOnboarding = useSelector((state) => state.onboarding.isOnboarding)
 
   /* 
     Activated chain
@@ -302,14 +298,11 @@ export default ({ children }) => {
         setError,
         isLoading,
         setIsLoading,
-        isProcessing,
-        setIsProcessing,
         setNotification,
         setSearchTerm,
         importedAddress,
         setImportedAddress,
         setNewAddress,
-        setIsOnboarding,
         walletLoaded,
         refreshNFTs,
         selectedNftIds,

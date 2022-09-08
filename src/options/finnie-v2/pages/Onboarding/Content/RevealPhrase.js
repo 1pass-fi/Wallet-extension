@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import clsx from 'clsx'
 import { NETWORK } from 'constants/koiConstants'
@@ -9,12 +10,13 @@ import KoiiToken from 'img/v2/onboarding/koii-token.svg'
 import SeedphraseSelectedIcon from 'img/v2/onboarding/seedphrase-selected-icon.svg'
 import SuccessIcon from 'img/v2/onboarding/success-icon.svg'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
+import { setIsOnboarding } from 'options/actions/onboardingProcessing'
 import { GalleryContext } from 'options/galleryContext'
 
 import { OnboardingContext } from '../onboardingContext'
 
 const RevealPhrase = ({ step }) => {
-  const { setIsOnboarding } = useContext(GalleryContext)
+  const dispatch = useDispatch()
   const { network, skipPhrase } = useContext(OnboardingContext)
   const history = useHistory()
 
@@ -76,7 +78,7 @@ const RevealPhrase = ({ step }) => {
               variant="white"
               text="Go to Homepage"
               onClick={() => {
-                setIsOnboarding(false)
+                dispatch(setIsOnboarding(false))
                 history.push('/')
               }}
             />
@@ -123,7 +125,7 @@ const RevealPhrase = ({ step }) => {
         <div
           className="absolute bottom-11 right-7.5 text-lightBlue underline font-normal text-sm tracking-finnieSpacing-wide cursor-pointer"
           onClick={() => {
-            setIsOnboarding(false)
+            dispatch(setIsOnboarding(false))
             history.push('/')
           }}
         >
