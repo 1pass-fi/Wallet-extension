@@ -10,8 +10,7 @@ import Popup from './Popup'
 import store from './store'
 
 import './index.css'
-
-browser.runtime.sendMessage({ data: 'hello' })
+import '../tailwind.css'
 
 /**
  * Temporary workaround for secondary monitors on MacOS where redraws don't happen
