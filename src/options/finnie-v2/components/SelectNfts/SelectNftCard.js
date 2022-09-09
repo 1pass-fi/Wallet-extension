@@ -11,9 +11,9 @@ const NftSelectCard = ({ nft }) => {
 
   const handleToggleSelectNft = () => {
     if (selectedNftIds.includes(nft.txId)) {
-      dispatch(setSelectedNftIds((prev) => prev.filter((id) => id !== nft.txId)))
+      dispatch(setSelectedNftIds(selectedNftIds.filter((id) => id !== nft.txId)))
     } else {
-      dispatch(setSelectedNftIds((prev) => [...prev, nft.txId]))
+      dispatch(setSelectedNftIds([...selectedNftIds, nft.txId]))
     }
   }
 

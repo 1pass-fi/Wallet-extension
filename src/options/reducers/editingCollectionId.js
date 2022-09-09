@@ -2,7 +2,7 @@ import { SET_EDITTING_COLLECTION_ID } from '../actions/types'
 
 const initialState = null
 
-export default editingCollectionIdReducer = (state = initialState, action) => {
+export default function editingCollectionIdReducer(state = initialState, action) {
   const { type, payload } = action
 
   switch (type) {
