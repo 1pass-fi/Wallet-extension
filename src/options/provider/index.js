@@ -227,12 +227,6 @@ export default ({ children }) => {
     }
   }, [newAddress])
 
-  /*
-    Redirect to create NFT page to support create new NFT in case import new wallet
-  */
-  useEffect(() => {
-    // if (!isEmpty(file)) history.push('/create')
-  }, [file])
 
   const updateDefaultAccountData = async () => {
     let activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
