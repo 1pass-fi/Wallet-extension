@@ -14,6 +14,7 @@ module.exports = {
         ecmaFeatures: {
             jsx: true,
         },
+        parser: "@typescript-eslint/parser",
     },
     plugins: ['react', 'simple-import-sort'],
     rules: {
