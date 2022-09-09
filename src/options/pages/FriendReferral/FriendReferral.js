@@ -1,4 +1,4 @@
-import React, { useContext,useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
@@ -17,7 +17,7 @@ import get from 'lodash/get'
 import { setError } from 'options/actions/error'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { setQuickNotification } from 'options/actions/quickNotification'
-import { GalleryContext } from 'options/galleryContext'
+import { getDisplayingAccount } from 'options/selectors/displayingAccount'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 
 import GetRewardsModal from './GetRewardsModal'
@@ -26,7 +26,8 @@ import ShareCodeModal from './ShareCodeModal'
 const FriendReferral = () => {
   const dispatch = useDispatch()
 
-  const { displayingAccount } = useContext(GalleryContext)
+  const displayingAccount = useSelector(getDisplayingAccount)
+
   const [isCopied, setIsCopied] = useState(false)
   const [showGetRewardsModal, setShowGetRewardsModal] = useState(false)
   const [showShareCodeModal, setShowShareCodeModal] = useState(false)

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import { isEmpty } from 'lodash'
 import { setNotifications } from 'options/actions/notifications'
-import { GalleryContext } from 'options/galleryContext'
+import { getDisplayingAccount } from 'options/selectors/displayingAccount'
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 
@@ -21,8 +21,7 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
   const [tab, setTab] = useState(NOTIFICATION)
   const [activities, setActivities] = useState([])
   const [pages, setPages] = useState(1)
-
-  const { displayingAccount } = useContext(GalleryContext)
+  const displayingAccount = useSelector(getDisplayingAccount)
 
   const dispatch = useDispatch()
 

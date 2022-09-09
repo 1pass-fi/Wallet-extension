@@ -9,6 +9,7 @@ import get from 'lodash/get'
 import includes from 'lodash/includes'
 import isEmpty from 'lodash/isEmpty'
 import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/accounts'
+import { setActivatedChain } from 'options/actions/activatedChain'
 import { setAssets } from 'options/actions/assets'
 import { setCollections } from 'options/actions/collections'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
@@ -74,40 +75,17 @@ export default ({ children }) => {
     GET STATE FROM STORE
   */
   const accounts = useSelector((state) => state.accounts)
-  const defaultAccount = useSelector((state) => state.defaultAccount.AR)
   const assets = useSelector((state) => state.assets)
-  const _defaultAccount = useSelector((state) => state.defaultAccount)
   const isOnboarding = useSelector((state) => state.onboarding.isOnboarding)
-
-  /* 
-    Activated chain
-  */
-  const [activatedChain, setActivatedChain] = useState(TYPE.K2)
 
   useEffect(() => {
     const loadActivatedChain = async () => {
-      const activatedChain = await storage.setting.get.activatedChain()
-      if (activatedChain) setActivatedChain(activatedChain)
+      const activatedChainStorage = await storage.setting.get.activatedChain()
+      if (activatedChainStorage) dispatch(setActivatedChain(activatedChainStorage))
     }
 
     loadActivatedChain()
   }, [])
-
-  /* 
-      Account to display
-    */
-  const displayingAccount = useMemo(() => {
-    if (activatedChain === TYPE.ARWEAVE) return _defaultAccount.AR
-    if (activatedChain === TYPE.ETHEREUM) return _defaultAccount.ETH
-    if (activatedChain === TYPE.SOLANA) return _defaultAccount.SOL
-    if (activatedChain === TYPE.K2) return _defaultAccount.K2
-  }, [
-    _defaultAccount.AR,
-    _defaultAccount.ETH,
-    _defaultAccount.SOL,
-    _defaultAccount.K2,
-    activatedChain
-  ])
 
   /* EDITING COLLECTION ID */
   const [editingCollectionId, setEditingCollectionId] = useState(null)
@@ -227,7 +205,6 @@ export default ({ children }) => {
     }
   }, [newAddress])
 
-
   const updateDefaultAccountData = async () => {
     let activatedAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
     if (!isEmpty(activatedAccountAddress)) {
@@ -273,8 +250,6 @@ export default ({ children }) => {
   return (
     <GalleryContext.Provider
       value={{
-        displayingAccount,
-        setActivatedChain,
         handleShareNFT,
         searchTerm,
         setSearchTerm,

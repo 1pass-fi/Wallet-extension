@@ -8,6 +8,7 @@ import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import { isEmpty } from 'lodash'
 import { setAccounts } from 'options/actions/accounts'
+import { setActivatedChain } from 'options/actions/activatedChain'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setError } from 'options/actions/error'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
@@ -20,7 +21,6 @@ import storage from 'services/storage'
 const ConfirmRemoveAccountModal = ({ account, close }) => {
   const dispatch = useDispatch()
 
-  const { setActivatedChain } = useContext(GalleryContext)
   const [isRemoving, setIsRemoving] = useState(false)
   const modalRef = useRef(null)
 
@@ -116,74 +116,9 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
         // TODO DatH - LongP
         if (account.type === activatedChain && emptyActivatedChainAccount) {
           await storage.setting.set.activatedChain(accountStates[0].type)
-          setActivatedChain(accountStates[0].type)
+          dispatch(setActivatedChain(accountStates[0].type))
         }
       }
-
-      // const totalK2Account = await popupAccount.count(TYPE.K2)
-      // const totalEthereumAccount = await popupAccount.count(TYPE.ETHEREUM)
-      // const totalSolanaAccount = await popupAccount.count(TYPE.SOLANA)
-      // const totalArweaveAccount = await popupAccount.count(TYPE.ARWEAVE)
-
-      // if (totalK2Account === 0) {
-      //   if (totalEthereumAccount !== 0) {
-      //     await storage.setting.set.activatedChain(TYPE.ETHEREUM)
-      //     setActivatedChain(TYPE.ETHEREUM)
-      //   }
-      //   if (totalSolanaAccount !== 0) {
-      //     await storage.setting.set.activatedChain(TYPE.SOLANA)
-      //     setActivatedChain(TYPE.SOLANA)
-      //   }
-      //   if (totalArweaveAccount !== 0) {
-      //     await storage.setting.set.activatedChain(TYPE.ARWEAVE)
-      //     setActivatedChain(TYPE.ARWEAVE)
-      //   }
-      // }
-
-      // if (totalArweaveAccount === 0) {
-      //   if (totalK2Account !== 0) {
-      //     await storage.setting.set.activatedChain(TYPE.K2)
-      //     setActivatedChain(TYPE.K2)
-      //   }
-      //   if (totalEthereumAccount !== 0) {
-      //     await storage.setting.set.activatedChain(TYPE.ETHEREUM)
-      //     setActivatedChain(TYPE.ETHEREUM)
-      //   }
-      //   if (totalSolanaAccount !== 0) {
-      //     await storage.setting.set.activatedChain(TYPE.SOLANA)
-      //     setActivatedChain(TYPE.SOLANA)
-      //   }
-      // }
-
-      // if (totalEthereumAccount === 0) {
-      //   if (totalK2Account !== 0) {
-      //     await storage.setting.set.activatedChain(TYPE.K2)
-      //     setActivatedChain(TYPE.K2)
-      //   }
-      //   if (totalArweaveAccount !== 0) {
-      //     await storage.setting.set.activatedChain(TYPE.ARWEAVE)
-      //     setActivatedChain(TYPE.ARWEAVE)
-      //   }
-      //   if (totalSolanaAccount !== 0) {
-      //     await storage.setting.set.activatedChain(TYPE.SOLANA)
-      //     setActivatedChain(TYPE.SOLANA)
-      //   }
-      // }
-
-      // if (totalSolanaAccount === 0) {
-      //   if (totalK2Account !== 0) {
-      //     await storage.setting.set.activatedChain(TYPE.K2)
-      //     setActivatedChain(TYPE.K2)
-      //   }
-      //   if (totalArweaveAccount !== 0) {
-      //     await storage.setting.set.activatedChain(TYPE.ARWEAVE)
-      //     setActivatedChain(TYPE.ARWEAVE)
-      //   }
-      //   if (totalEthereumAccount !== 0) {
-      //     await storage.setting.set.activatedChain(TYPE.ETHEREUM)
-      //     setActivatedChain(TYPE.ETHEREUM)
-      //   }
-      // }
 
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })

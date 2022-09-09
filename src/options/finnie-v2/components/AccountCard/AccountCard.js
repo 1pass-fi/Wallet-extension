@@ -28,6 +28,7 @@ import isEmpty from 'lodash/isEmpty'
 import isNumber from 'lodash/isNumber'
 import { setAccounts } from 'options/actions/accounts'
 import { loadAllAccounts } from 'options/actions/accounts'
+import { setActivatedChain } from 'options/actions/activatedChain'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setError } from 'options/actions/error'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
@@ -52,12 +53,10 @@ const AccountCard = ({
   dragProvided
 }) => {
   const dispatch = useDispatch()
-  const { setActivatedChain } = useContext(GalleryContext)
 
   const [showHex, setShowHex] = useState(true)
   const [showEmptyToken, setShowEmptyToken] = useState(true)
   const [totalViews, setTotalViews] = useState(0)
-
 
   const inputAccountNameRef = useRef(null)
 
@@ -248,7 +247,7 @@ const AccountCard = ({
   const handleChangeDisplayAccount = async (account) => {
     try {
       await storage.setting.set.activatedChain(account.type)
-      setActivatedChain(account.type)
+      dispatch(setActivatedChain(account.type))
       dispatch(setDefaultAccount(account))
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })

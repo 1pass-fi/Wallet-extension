@@ -1,10 +1,12 @@
 import { useContext } from 'react'
 import { useDispatch } from 'react-redux'
 import { addAccountByAddress } from 'options/actions/accounts'
+import { setActivatedChain } from 'options/actions/activatedChain'
 import { setError } from 'options/actions/error'
 import {
   setOnboardingProcessed,
-  setOnboardingProcessing} from 'options/actions/onboardingProcessing'
+  setOnboardingProcessing
+} from 'options/actions/onboardingProcessing'
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as request } from 'services/request/popup'
@@ -20,9 +22,7 @@ const ERROR_MESSAGE = {
 const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
   const dispatch = useDispatch()
 
-  const { setImportedAddress, setNewAddress, setActivatedChain } = useContext(
-    GalleryContext
-  )
+  const { setImportedAddress, setNewAddress } = useContext(GalleryContext)
 
   const generateNewKey = async (network) => {
     try {
@@ -93,7 +93,7 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
     const totalAccount = await popupAccount.count()
     if (totalAccount === 1) {
       await storage.setting.set.activatedChain(type)
-      setActivatedChain(type)
+      dispatch(setActivatedChain(type))
     }
   }
 
