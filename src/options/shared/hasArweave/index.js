@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { TYPE } from 'constants/accountConstants'
-import { GalleryContext } from 'options/galleryContext'
+import { getDisplayingAccount } from 'options/selectors/displayingAccount'
 
 const ArweaveOnly = ({ content, children }) => {
   return (
@@ -34,7 +34,7 @@ const ArweaveOnly = ({ content, children }) => {
 }
 
 export default ({ children, content, hasArweaveAccounts = false }) => {
-  const { displayingAccount } = useContext(GalleryContext)
+  const displayingAccount = useSelector(getDisplayingAccount)
 
   return displayingAccount.type === TYPE.ARWEAVE || hasArweaveAccounts ? (
     children

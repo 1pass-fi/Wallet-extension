@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useDispatch, useSelector } from 'react-redux'
 import clsx from 'clsx'
@@ -20,6 +20,7 @@ import { setActivatedChain } from 'options/actions/activatedChain'
 import { setDefaultAccountByAddress } from 'options/actions/defaultAccount'
 import { DidContext } from 'options/context'
 import { GalleryContext } from 'options/galleryContext'
+import { getDisplayingAccount } from 'options/selectors/displayingAccount'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import storage from 'services/storage'
@@ -49,8 +50,10 @@ const Address = ({ address }) => {
 }
 
 const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAccount }) => {
-  const { displayingAccount, setNotification, setError } = useContext(GalleryContext)
+  const { setNotification, setError } = useContext(GalleryContext)
   const { getDID } = useContext(DidContext)
+
+  const displayingAccount = useSelector(getDisplayingAccount)
 
   const dispatch = useDispatch()
 
