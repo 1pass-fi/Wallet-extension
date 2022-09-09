@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
@@ -7,16 +7,17 @@ import clsx from 'clsx'
 import { COLLECTION_CONTRACT_SRC } from 'constants/koiConstants'
 import Sidebar from 'finnie-v2/components/Sidebar'
 import EditIcon from 'img/v2/collection-detail/edit-icon.svg'
-import { find, get,isEmpty } from 'lodash'
-import { GalleryContext } from 'options/galleryContext'
+import { find, get, isEmpty } from 'lodash'
+import { setEditingCollectionId } from 'options/actions/editingCollectionId'
+import { setSelectedNftIds } from 'options/actions/selectedNftIds'
 import { popupAccount } from 'services/account'
 
 import NftCard from './NftCard'
 
 const CollectionDetails = () => {
   const history = useHistory()
+  const dispatch = useDispatch()
 
-  const { setEditingCollectionId, setSelectedNftIds } = useContext(GalleryContext)
   const { collectionId } = useParams()
 
   const collectionState = useSelector((state) => state.collections)
@@ -42,18 +43,18 @@ const CollectionDetails = () => {
   }, [collectionState.collections])
 
   const openEditCollectionForm = () => {
-    setEditingCollectionId(collectionId)
+    dispatch(setEditingCollectionId(collectionId))
 
     // set nft ids
     const nftIds = collection?.collection || []
-    setSelectedNftIds(nftIds)
+    dispatch(setSelectedNftIds(nftIds))
 
     history.push(`/collections/edit/select-nft/${collectionId}`)
   }
 
   useEffect(() => {
     if (collectionId) {
-      setEditingCollectionId(collectionId)
+      dispatch(setEditingCollectionId(collectionId))
     }
   }, [collectionId])
 

@@ -1,19 +1,19 @@
-import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import NFTMedia from 'finnie-v2/components/NFTMedia'
-import formatLongString from 'finnie-v2/utils/formatLongString'
 import AddIcon from 'img/v2/select-nfts/add-icon.svg'
 import CheckIcon from 'img/v2/select-nfts/check-icon.svg'
-import { GalleryContext } from 'options/galleryContext'
+import { setSelectedNftIds } from 'options/actions/selectedNftIds'
 
 const NftSelectCard = ({ nft }) => {
-  const { selectedNftIds, setSelectedNftIds } = useContext(GalleryContext)
+  const dispatch = useDispatch()
+  const selectedNftIds = useSelector((state) => state.selectedNftIds)
 
   const handleToggleSelectNft = () => {
     if (selectedNftIds.includes(nft.txId)) {
-      setSelectedNftIds((prev) => prev.filter((id) => id !== nft.txId))
+      dispatch(setSelectedNftIds(selectedNftIds.filter((id) => id !== nft.txId)))
     } else {
-      setSelectedNftIds((prev) => [...prev, nft.txId])
+      dispatch(setSelectedNftIds([...selectedNftIds, nft.txId]))
     }
   }
 

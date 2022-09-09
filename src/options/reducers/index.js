@@ -7,11 +7,13 @@ import assets from './assets'
 import collections from './collections'
 import createCollection from './createCollection'
 import defaultAccount from './defaultAccount'
+import editingCollectionId from './editingCollectionId'
 import error from './error'
 import isLoading from './loading'
 import notificationsData from './notifications'
 import onboarding from './onboarding'
 import quickNotification from './quickNotification'
+import selectedNftIds from './selectedNftIds'
 
 export default combineReducers({
   accounts,
@@ -25,5 +27,7 @@ export default combineReducers({
   onboarding,
   error,
   quickNotification,
-  activatedChain
+  activatedChain,
+  selectedNftIds,
+  editingCollectionId
 })

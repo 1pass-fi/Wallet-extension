@@ -1,4 +1,5 @@
-import React, { useContext,useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import ProgressBar from '@ramonak/react-progress-bar'
 import Button from 'finnie-v2/components/Button'
@@ -6,7 +7,6 @@ import formatNumber from 'finnie-v2/utils/formatNumber'
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import ModalBackground from 'img/v2/modal-background.svg'
-import { GalleryContext } from 'options/galleryContext'
 import arweave from 'services/arweave'
 
 const ONE_MILLION = 1000000
@@ -27,7 +27,7 @@ const ConfirmModal = ({
   const [arPrice, setArPrice] = useState(0)
   const [displayProgressBar, setDisplayProgressBar] = useState(false)
 
-  const { editingCollectionId } = useContext(GalleryContext)
+  const editingCollectionId = useSelector((state) => state.editingCollectionId)
 
   const confirmCollection = async () => {
     await handleConfirmCollection()
@@ -41,7 +41,6 @@ const ConfirmModal = ({
       isUpdate && history.push(`/collections/${editingCollectionId}`)
     }
   }, [])
-
 
   useEffect(() => {
     const getPrice = async () => {
