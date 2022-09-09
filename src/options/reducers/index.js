@@ -7,6 +7,7 @@ import assets from './assets'
 import collections from './collections'
 import createCollection from './createCollection'
 import defaultAccount from './defaultAccount'
+import editingCollectionId from './editingCollectionId'
 import error from './error'
 import isLoading from './loading'
 import notificationsData from './notifications'
@@ -27,5 +28,6 @@ export default combineReducers({
   error,
   quickNotification,
   activatedChain,
-  selectedNftIds
+  selectedNftIds,
+  editingCollectionId
 })

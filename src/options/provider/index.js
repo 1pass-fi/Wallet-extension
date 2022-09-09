@@ -86,8 +86,6 @@ export default ({ children }) => {
   }, [])
 
   /* EDITING COLLECTION ID */
-  const [editingCollectionId, setEditingCollectionId] = useState(null)
-
   const handleShareNFT = (txId) => {
     const toShareNFT = find(assets.nfts, { txId })
     setModalStates.setShowTransferNFT({ show: true, cardInfo: toShareNFT })
@@ -256,8 +254,6 @@ export default ({ children }) => {
         setNewAddress,
         walletLoaded,
         refreshNFTs,
-        editingCollectionId,
-        setEditingCollectionId,
         ...modalStates,
         ...setModalStates,
         ...settingStates,

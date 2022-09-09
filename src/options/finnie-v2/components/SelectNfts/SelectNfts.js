@@ -1,16 +1,15 @@
-import React, { useContext, useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { uniqueId } from 'lodash'
+import { setEditingCollectionId } from 'options/actions/editingCollectionId'
 import { setSelectedNftIds } from 'options/actions/selectedNftIds'
-import { GalleryContext } from 'options/galleryContext'
 import getCollectionByTxId from 'options/selectors/getCollectionByTxid'
 
 import NftSelectCard from './SelectNftCard'
 
 export default () => {
   const { collectionId } = useParams()
-  const { setEditingCollectionId } = useContext(GalleryContext)
   const dispatch = useDispatch()
 
   const selectedNftIds = useSelector((state) => state.selectedNftIds)
@@ -18,7 +17,7 @@ export default () => {
   const collection = useSelector(getCollectionByTxId(collectionId))
 
   useEffect(() => {
-    if (collectionId) setEditingCollectionId(collectionId)
+    if (collectionId) dispatch(setEditingCollectionId(collectionId))
     if (collection) dispatch(setSelectedNftIds(collection.collection))
   }, [collectionId, collection])
 

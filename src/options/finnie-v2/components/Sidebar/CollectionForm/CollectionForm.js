@@ -1,4 +1,4 @@
-import React, { useContext,useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -19,7 +19,6 @@ import isEmpty from 'lodash/isEmpty'
 import union from 'lodash/union'
 import { setError } from 'options/actions/error'
 import { setSelectedNftIds } from 'options/actions/selectedNftIds'
-import { GalleryContext } from 'options/galleryContext'
 import getCollectionByTxId from 'options/selectors/getCollectionByTxid'
 import { popupAccount } from 'services/account'
 import arweave from 'services/arweave'
@@ -33,15 +32,13 @@ const CollectionForm = ({ isUpdate }) => {
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const {
-    editingCollectionId: collectionId
-  } = useContext(GalleryContext)
+  const collectionId = useSelector((state) => state.editingCollectionId)
 
   const collection = useSelector(getCollectionByTxId(collectionId))
   const address = useSelector((state) => state.defaultAccount.AR?.address)
   const _nfts = useSelector((state) => state.assets.nfts)
   const collectionNfts = useSelector((state) => state.assets.collectionNfts)
-  const selectedNftIds = useSelector(state => state.selectedNftIds)
+  const selectedNftIds = useSelector((state) => state.selectedNftIds)
 
   const selectFiles = useRef(null)
   const titleField = useRef(null)
