@@ -2,12 +2,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { TYPE } from 'constants/accountConstants'
-import { SHOW_ETHEREUM, SHOW_K2,SHOW_SOLANA } from 'constants/koiConstants'
+import { SHOW_ETHEREUM, SHOW_K2, SHOW_SOLANA } from 'constants/koiConstants'
 import EthereumLogo from 'img/startup/ethereum-logo.svg'
 import FinnieLogo from 'img/startup/finnie-logo.svg'
 import SolanaLogo from 'img/startup/solana-logo.svg'
 import isEmpty from 'lodash/isEmpty'
 import { addAccountByAddress } from 'options/actions/accounts'
+import { setActivatedChain } from 'options/actions/activatedChain'
 import GoBackBtn from 'options/finnie-v1/components/GoBackButton'
 import { GalleryContext } from 'options/galleryContext'
 import HasTwelveSeedPhrase from 'options/modal/HasTwelveSeedPhrase'
@@ -43,9 +44,7 @@ export default () => {
   const dispatch = useDispatch()
   const accounts = useSelector((state) => state.accounts)
 
-  const { setError, setImportedAddress, setNewAddress, setActivatedChain } = useContext(
-    GalleryContext
-  )
+  const { setError, setImportedAddress, setNewAddress } = useContext(GalleryContext)
   let { selectedNetwork, EthereumNetworks } = useEthereumNetworks({
     title: () => <div className="title">Import Ethereum Key</div>,
     description: () => <div className="description">Choose your Network.</div>
@@ -135,7 +134,7 @@ export default () => {
       const totalAccount = await popupAccount.count()
       if (totalAccount === 1) {
         await storage.setting.set.activatedChain(walletType)
-        setActivatedChain(walletType)
+        dispatch(setActivatedChain(walletType))
       }
 
       setImportedAddress(address)

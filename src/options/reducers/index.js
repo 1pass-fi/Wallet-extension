@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
 import accounts from './accounts'
+import activatedChain from './activatedChain'
 import addressBook from './addressBook'
 import assets from './assets'
 import collections from './collections'
@@ -23,5 +24,6 @@ export default combineReducers({
   isLoading,
   onboarding,
   error,
-  quickNotification
+  quickNotification,
+  activatedChain
 })

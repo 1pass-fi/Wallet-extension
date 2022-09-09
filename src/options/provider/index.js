@@ -78,16 +78,12 @@ export default ({ children }) => {
   const assets = useSelector((state) => state.assets)
   const _defaultAccount = useSelector((state) => state.defaultAccount)
   const isOnboarding = useSelector((state) => state.onboarding.isOnboarding)
-
-  /* 
-    Activated chain
-  */
-  const [activatedChain, setActivatedChain] = useState(TYPE.K2)
+  const activatedChain = useSelector((state) => state.activatedChain)
 
   useEffect(() => {
     const loadActivatedChain = async () => {
-      const activatedChain = await storage.setting.get.activatedChain()
-      if (activatedChain) setActivatedChain(activatedChain)
+      const activatedChainStorage = await storage.setting.get.activatedChain()
+      if (activatedChainStorage) dispatch(setActivatedChain(activatedChainStorage))
     }
 
     loadActivatedChain()
@@ -274,7 +270,6 @@ export default ({ children }) => {
     <GalleryContext.Provider
       value={{
         displayingAccount,
-        setActivatedChain,
         handleShareNFT,
         searchTerm,
         setSearchTerm,

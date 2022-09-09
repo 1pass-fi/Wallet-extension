@@ -1,4 +1,4 @@
-import React, { useContext, useEffect,useMemo, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useDispatch, useSelector } from 'react-redux'
 import clsx from 'clsx'
@@ -16,6 +16,7 @@ import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 import SolLogo from 'img/v2/solana-logo.svg'
 import isEmpty from 'lodash/isEmpty'
 import { setAccounts } from 'options/actions/accounts'
+import { setActivatedChain } from 'options/actions/activatedChain'
 import { setDefaultAccountByAddress } from 'options/actions/defaultAccount'
 import { DidContext } from 'options/context'
 import { GalleryContext } from 'options/galleryContext'
@@ -48,9 +49,7 @@ const Address = ({ address }) => {
 }
 
 const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAccount }) => {
-  const { displayingAccount, setNotification, setError, setActivatedChain } = useContext(
-    GalleryContext
-  )
+  const { displayingAccount, setNotification, setError } = useContext(GalleryContext)
   const { getDID } = useContext(DidContext)
 
   const dispatch = useDispatch()
@@ -79,21 +78,17 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
     try {
       await backgroundRequest.gallery.setDefaultAccount({ address })
       await reloadDefaultAccount()
-      if (type === TYPE.ARWEAVE) {
-        await storage.setting.set.activatedChain(TYPE.ARWEAVE)
-        setActivatedChain(TYPE.ARWEAVE)
-      }
-      if (type === TYPE.ETHEREUM) {
-        await storage.setting.set.activatedChain(TYPE.ETHEREUM)
-        setActivatedChain(TYPE.ETHEREUM)
-      }
-      if (type === TYPE.SOLANA) {
-        await storage.setting.set.activatedChain(TYPE.SOLANA)
-        setActivatedChain(TYPE.SOLANA)
-      }
-      if (type === TYPE.K2) {
-        await storage.setting.set.activatedChain(TYPE.K2)
-        setActivatedChain(TYPE.K2)
+      switch (type) {
+        case TYPE.ARWEAVE:
+        case TYPE.ETHEREUM:
+        case TYPE.K2:
+        case TYPE.SOLANA:
+          await storage.setting.set.activatedChain(type)
+          dispatch(setActivatedChain(type))
+          break
+
+        default:
+          break
       }
 
       getDID()
