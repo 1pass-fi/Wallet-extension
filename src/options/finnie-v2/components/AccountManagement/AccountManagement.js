@@ -81,17 +81,10 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
     try {
       await backgroundRequest.gallery.setDefaultAccount({ address })
       await reloadDefaultAccount()
-      switch (type) {
-        case TYPE.ARWEAVE:
-        case TYPE.ETHEREUM:
-        case TYPE.K2:
-        case TYPE.SOLANA:
-          await storage.setting.set.activatedChain(type)
-          dispatch(setActivatedChain(type))
-          break
 
-        default:
-          break
+      if (type) {
+        await storage.setting.set.activatedChain(type)
+        dispatch(setActivatedChain(type))
       }
 
       getDID()

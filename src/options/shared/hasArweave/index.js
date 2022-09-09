@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { TYPE } from 'constants/accountConstants'
 import { getDisplayingAccount } from 'options/selectors/displayingAccount'
