@@ -12,6 +12,7 @@ import isLoading from './loading'
 import notificationsData from './notifications'
 import onboarding from './onboarding'
 import quickNotification from './quickNotification'
+import selectedNftIds from './selectedNftIds'
 
 export default combineReducers({
   accounts,
@@ -25,5 +26,6 @@ export default combineReducers({
   onboarding,
   error,
   quickNotification,
-  activatedChain
+  activatedChain,
+  selectedNftIds
 })

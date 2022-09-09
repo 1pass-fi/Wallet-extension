@@ -18,6 +18,7 @@ import initial from 'lodash/initial'
 import isEmpty from 'lodash/isEmpty'
 import union from 'lodash/union'
 import { setError } from 'options/actions/error'
+import { setSelectedNftIds } from 'options/actions/selectedNftIds'
 import { GalleryContext } from 'options/galleryContext'
 import getCollectionByTxId from 'options/selectors/getCollectionByTxid'
 import { popupAccount } from 'services/account'
@@ -33,8 +34,6 @@ const CollectionForm = ({ isUpdate }) => {
   const history = useHistory()
 
   const {
-    selectedNftIds,
-    setSelectedNftIds,
     editingCollectionId: collectionId
   } = useContext(GalleryContext)
 
@@ -42,6 +41,7 @@ const CollectionForm = ({ isUpdate }) => {
   const address = useSelector((state) => state.defaultAccount.AR?.address)
   const _nfts = useSelector((state) => state.assets.nfts)
   const collectionNfts = useSelector((state) => state.assets.collectionNfts)
+  const selectedNftIds = useSelector(state => state.selectedNftIds)
 
   const selectFiles = useRef(null)
   const titleField = useRef(null)
@@ -177,7 +177,7 @@ const CollectionForm = ({ isUpdate }) => {
         collectionId: isUpdate ? collectionId : null
       })
 
-      setSelectedNftIds([])
+      dispatch(setSelectedNftIds([]))
     } catch (err) {
       console.error(err.message)
       dispatch(setError(err.message))
@@ -244,7 +244,7 @@ const CollectionForm = ({ isUpdate }) => {
 
   useEffect(() => {
     return () => {
-      setSelectedNftIds([])
+      dispatch(setSelectedNftIds([]))
     }
   }, [])
 

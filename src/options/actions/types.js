@@ -48,3 +48,6 @@ export const CLEAR_QUICK_NOTIFICATION = 'CLEAR_QUICK_NOTIFICATION'
 
 // Activated Chain
 export const SET_ACTIVATED_CHAIN = 'SET_ACTIVATED_CHAIN'
+
+// Selected NFT IDs on Create/Edit Collection form
+export const SET_SELECTED_NFT_IDS = 'SET_SELECTED_NFT_IDS'

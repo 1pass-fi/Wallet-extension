@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useMemo,useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Button from 'finnie-v2/components/Button'
 import CheckBox from 'finnie-v2/components/CheckBox'
 import PreviousButton from 'img/v2/arrow-left-orange.svg'
@@ -8,13 +8,14 @@ import BackIcon from 'img/v2/back-icon.svg'
 import CheckMarkIcon from 'img/v2/check-mark-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-white.svg'
 import { isEmpty } from 'lodash'
-import { GalleryContext } from 'options/galleryContext'
+import { setSelectedNftIds } from 'options/actions/selectedNftIds'
 
 import EditNftInfo from './EditNftInfo'
 import UploadedFiles from './UploadedFiles'
 
 const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }) => {
-  const { selectedNftIds, setSelectedNftIds } = useContext(GalleryContext)
+  const dispatch = useDispatch()
+  const selectedNftIds = useSelector((state) => state.selectedNftIds)
 
   const [nftLoadded, setNftLoaded] = useState(false)
 
@@ -31,7 +32,9 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
   const [tagInputs, setTagInputs] = useState([])
 
   const getDataForSelectedNfts = () => {
-    let existingNfts = [...assets.nfts, ...assets.collectionNfts].filter((nft) => selectedNftIds.includes(nft.txId))
+    let existingNfts = [...assets.nfts, ...assets.collectionNfts].filter((nft) =>
+      selectedNftIds.includes(nft.txId)
+    )
     existingNfts = existingNfts.map((nft) => {
       return {
         info: {
@@ -86,7 +89,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
     if (idx >= nfts.length) {
       const index = idx - nfts.length
       newSelectedNftIds.splice(index, 1)
-      setSelectedNftIds(newSelectedNftIds)
+      dispatch(setSelectedNftIds(newSelectedNftIds))
     } else {
       newNfts.splice(idx, 1)
       setNfts(newNfts)
