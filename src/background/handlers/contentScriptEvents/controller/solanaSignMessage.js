@@ -1,4 +1,4 @@
-import base58, { encode } from 'bs58'
+import base58 from 'bs58'
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 import { get } from 'lodash'
 import { backgroundAccount } from 'services/account'
@@ -24,6 +24,10 @@ export default async (payload, tab, next) => {
 
     if (!hadPermission) {
       return next({ error: { code: 4100, data: 'No permissions' } })
+    }
+
+    if (hasPendingRequest) {
+      return next({ error: { code: 4001, data: 'Request pending' } })
     }
 
     /* Get message to sign */
