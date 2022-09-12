@@ -164,9 +164,22 @@ const finnieSolanaProviderScript = `() => {
       return payload
     }
 
-    signTransaction() {
-      const message = { type: ENDPOINTS.SOLANA_SIGN_TRANSACTION }
-      return this.connection.send(message)
+    async signTransaction(transaction) {
+      try {
+        const encodedMessage = base58.encode(transaction.serializeMessage())
+  
+        const encodedSignedTransaction = await this.connection.send({ 
+          type: ENDPOINTS.SOLANA_SIGN_TRANSACTION,
+          data: encodedMessage
+        })
+  
+        const signedTransaction = window.solanaWeb3.Transaction.from(base58.decode(encodedSignedTransaction))
+        transaction.signatures = signedTransaction.signatures
+        return true
+      } catch (err) {
+        console.error('Sign transaction error:', err)
+        return false
+      }
     }
 
     async signMessage(payload) {
