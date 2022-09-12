@@ -83,6 +83,32 @@ const ConnectedSitesModal = ({ onClose, setError, setIsLoading }) => {
         siteConnectedStorage[siteAddress.address].ethereum = connectedEthereumAddresses
       }
 
+      if (displayingAccount.type === TYPE.SOLANA) {
+        let connectedSolanaAddresses = get(
+          siteConnectedStorage[siteAddress.address],
+          'solana',
+          []
+        )
+        connectedSolanaAddresses = connectedSolanaAddresses.filter(
+          (address) => address !== displayingAccount.address
+        )
+
+        siteConnectedStorage[siteAddress.address].solana = connectedSolanaAddresses
+      }
+
+      if (displayingAccount.type === TYPE.K2) {
+        let conectedK2Addresses = get(
+          siteConnectedStorage[siteAddress.address],
+          'k2',
+          []
+        )
+        conectedK2Addresses = conectedK2Addresses.filter(
+          (address) => address !== displayingAccount.address
+        )
+
+        siteConnectedStorage[siteAddress.address].k2 = conectedK2Addresses
+      }
+
       await storage.setting.set.siteConnectedAddresses(siteConnectedStorage)
 
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {

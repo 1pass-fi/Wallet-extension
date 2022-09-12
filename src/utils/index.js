@@ -880,22 +880,22 @@ export const getSiteConnectedAddresses = async (accountAddress, accountType) => 
   for (const [key, value] of Object.entries(siteConnectedStorage)) {
     const origin = capitalize(key.split('/')[2])
     if (accountType === TYPE.ARWEAVE) {
-      if (value.arweave.includes(accountAddress)) {
+      if (value.arweave?.includes(accountAddress)) {
         siteAddresses.push({ origin: origin, address: key })
       }
     }
     if (accountType === TYPE.ETHEREUM) {
-      if (value.ethereum.includes(accountAddress)) {
+      if (value.ethereum?.includes(accountAddress)) {
         siteAddresses.push({ origin: origin, address: key })
       }
     }
     if (accountType === TYPE.SOLANA) {
-      if (value.solana.includes(accountAddress)) {
+      if (value.solana?.includes(accountAddress)) {
         siteAddresses.push({ origin: origin, address: key })
       }
     }
     if (accountType === TYPE.K2) {
-      if (value.k2.includes(accountAddress)) {
+      if (value.k2?.includes(accountAddress)) {
         siteAddresses.push({ origin: origin, address: key })
       }
     }
