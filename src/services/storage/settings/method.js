@@ -29,7 +29,7 @@ export class SettingMethod {
         defaultAddress = await storage.setting.get.activatedSolanaAccountAddress()
       }
 
-      return connectedAddresses.includes(defaultAddress)
+      return connectedAddresses?.includes(defaultAddress)
     } catch (err) {
       throw new Error(err.message)
     }
