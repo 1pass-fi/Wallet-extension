@@ -129,6 +129,14 @@ const finnieSolanaProviderScript = `() => {
       this.isConnected = false
     }
 
+    async checkConnection() {
+      const message = { type: ENDPOINTS.SOLANA_CHECK_CONNECTION }
+      const result = await this.connection.send(message)
+      if(result === true) {
+        this.connect()
+      }
+    }
+
     async connect() {
       const message = { type: ENDPOINTS.SOLANA_CONNECT }
       const result = await this.connection.send(message)

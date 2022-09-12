@@ -11,7 +11,8 @@ import {
   LOAD_KOI_BY,
   NFT_BIT_DATA,
   PATH,
-  STORAGE} from 'constants/koiConstants'
+  STORAGE
+} from 'constants/koiConstants'
 import { ethers } from 'ethers'
 import { get, isArray, isEmpty, isNumber } from 'lodash'
 import capitalize from 'lodash/capitalize'
@@ -879,12 +880,22 @@ export const getSiteConnectedAddresses = async (accountAddress, accountType) => 
   for (const [key, value] of Object.entries(siteConnectedStorage)) {
     const origin = capitalize(key.split('/')[2])
     if (accountType === TYPE.ARWEAVE) {
-      if (value.arweave.includes(accountAddress)) {
+      if (value.arweave?.includes(accountAddress)) {
         siteAddresses.push({ origin: origin, address: key })
       }
     }
     if (accountType === TYPE.ETHEREUM) {
-      if (value.ethereum.includes(accountAddress)) {
+      if (value.ethereum?.includes(accountAddress)) {
+        siteAddresses.push({ origin: origin, address: key })
+      }
+    }
+    if (accountType === TYPE.SOLANA) {
+      if (value.solana?.includes(accountAddress)) {
+        siteAddresses.push({ origin: origin, address: key })
+      }
+    }
+    if (accountType === TYPE.K2) {
+      if (value.k2?.includes(accountAddress)) {
         siteAddresses.push({ origin: origin, address: key })
       }
     }

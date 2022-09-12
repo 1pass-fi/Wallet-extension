@@ -28,6 +28,7 @@ const getEmitter = () => {
   contentScriptEvents.on(MESSAGES.SIGNATURE, controller.signature)
   contentScriptEvents.on(MESSAGES.ETHEREUM_RPC_REQUEST, controller.ethereumRpcRequest)
   contentScriptEvents.on(MESSAGES.TEST_ETHEREUM, controller.testEthereum)
+  contentScriptEvents.on(MESSAGES.SOLANA_CHECK_CONNECTION, controller.solanaCheckConnection)
   contentScriptEvents.on(MESSAGES.SOLANA_CONNECT, controller.solanaConnect)
   contentScriptEvents.on(MESSAGES.SOLANA_DISCONNECT, controller.solanaDisconnect)
   contentScriptEvents.on(

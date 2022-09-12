@@ -116,6 +116,13 @@ const ConnectedSitesModal = ({ account, close }) => {
         siteConnectedStorage[siteAddress.address].solana = connectedSolanaAddress
       }
 
+      if (account.type === TYPE.K2) {
+        let connectK2Addresses = get(siteConnectedStorage[siteAddress.address], 'k2', [])
+        connectK2Addresses = connectK2Addresses.filter((address) => address !== account.address)
+
+        siteConnectedStorage[siteAddress.address].k2 = connectK2Addresses
+      }
+
       await storage.setting.set.siteConnectedAddresses(siteConnectedStorage)
 
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {

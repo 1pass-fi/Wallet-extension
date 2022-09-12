@@ -18,6 +18,7 @@ import koiSendKoi from './koiSendKoi'
 import koiSignPort from './koiSignPort'
 import signArweaveTransaction from './signArweaveTransaction'
 import signature from './signature'
+import solanaCheckConnection from './solanaCheckConnection'
 import solanaConnect from './solanaConnect'
 import solanaDisconnect from './solanaDisconnect'
 import solanaSignAllTransactions from './solanaSignAllTransactions'
@@ -55,5 +56,6 @@ export default {
   solanaSignAllTransactions,
   solanaSignTransaction,
   solanaSignMessage,
-  solanaSignAndSendTransaction
+  solanaSignAndSendTransaction,
+  solanaCheckConnection
 }
