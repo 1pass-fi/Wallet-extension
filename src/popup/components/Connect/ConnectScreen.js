@@ -46,10 +46,19 @@ const ConnectScreen = ({
 
   useEffect(() => {
     if (accounts.length > 0) {
-      if (isKoi) {
-        setCheckedAddress(defaultAccount.AR?.address)
-      } else {
-        setCheckedAddress(defaultAccount.ETH?.address)
+      switch (accounts[0].type) {
+        case TYPE.ARWEAVE:
+          setCheckedAddress(defaultAccount.AR?.address)
+          break
+        case TYPE.K2:
+          setCheckedAddress(defaultAccount.K2?.address)
+          break
+        case TYPE.ETHEREUM:
+          setCheckedAddress(defaultAccount.ETH?.address)
+          break
+        case TYPE.SOLANA:
+          setCheckedAddress(defaultAccount.SOL?.address)
+          break
       }
     }
   }, [accounts, isKoi])
@@ -203,8 +212,9 @@ const ConnectScreen = ({
                 Reject
               </button>
               <button
+                disabled={isEmpty(checkedAddress)}
                 onClick={() => setStep(2)}
-                className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
+                className="bg-blue-800 text-white rounded-sm shadow text-base leading-4 text-center disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ width: '160px', height: '38px' }}
               >
                 Select Wallet
