@@ -2,7 +2,7 @@ import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-toke
 import { Message,Transaction } from '@solana/web3.js'
 import { clusterApiUrl, Connection, PublicKey,sendAndConfirmTransaction } from '@solana/web3.js'
 import base58 from 'bs58'
-import bs58, { decode } from 'bs58'
+import bs58 from 'bs58'
 // Constants
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 import get from 'lodash/get'
@@ -95,13 +95,7 @@ export default async (payload, tab, next) => {
     
     const requestId = uuid()
 
-    const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses)
-    const solTool = new SolanaTool(credentials)
-    const keypair = solTool.keypair
     const transactionPayload = await getTransactionDataFromMessage(payload.data)
-
-    const transactionMessage = Message.from(base58.decode(encodedMessage))
-    const transaction = Transaction.populate(transactionMessage)
     const requestPayload = {
       origin,
       favicon,

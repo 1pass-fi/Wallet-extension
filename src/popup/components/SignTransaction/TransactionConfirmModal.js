@@ -408,7 +408,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               style={{ width: '160px', height: '38px' }}
               disabled={isScamOrigin}
             >
-              {signWithoutSend ? 'Send' : 'Sign'}
+              {signWithoutSend ? 'Sign' : 'Send'}
             </button>
           </div>
           <ReactTooltip place="top" effect="float" />
