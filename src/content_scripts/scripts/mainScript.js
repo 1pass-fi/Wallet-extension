@@ -39,6 +39,7 @@ const mainScript = () => {
   window.koiiWallet = finnieKoiiWalletProvider
   window.koiWallet = finnieKoiiWalletProvider
   window.solana = finnieSolanaWalletProvider
+  window.solana.checkConnection()
 }
 
 const arweaveWalletExcluded = () => {
