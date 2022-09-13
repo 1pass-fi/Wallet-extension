@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { addAccountByAddress } from 'options/actions/accounts'
 import { setActivatedChain } from 'options/actions/activatedChain'
 import { setError } from 'options/actions/error'
+import { setNewAddress } from 'options/actions/newAddress'
 import {
   setOnboardingProcessed,
   setOnboardingProcessing
@@ -21,8 +22,6 @@ const ERROR_MESSAGE = {
 
 const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
   const dispatch = useDispatch()
-
-  const { setImportedAddress, setNewAddress } = useContext(GalleryContext)
 
   const generateNewKey = async (network) => {
     try {
@@ -44,8 +43,7 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
 
       await initActivatedChain(network)
 
-      setImportedAddress(address)
-      setNewAddress(address)
+      dispatch(setNewAddress(address))
       dispatch(addAccountByAddress(address))
     } catch (err) {
       console.error(err.message)
@@ -77,8 +75,7 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
 
       await initActivatedChain(network)
 
-      setImportedAddress(address)
-      setNewAddress(address)
+      dispatch(setNewAddress(address))
       dispatch(addAccountByAddress(address))
 
       return address

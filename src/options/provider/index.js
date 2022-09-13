@@ -50,10 +50,12 @@ export default ({ children }) => {
   const [isLocked, setIsLocked] = useState(false)
 
   /* 
-    Import new account
+    GET STATE FROM STORE
   */
-  const [importedAddress, setImportedAddress] = useState(null) // just imported account
-  const [newAddress, setNewAddress] = useState(null) // just imported address
+  const accounts = useSelector((state) => state.accounts)
+  const assets = useSelector((state) => state.assets)
+  const isOnboarding = useSelector((state) => state.onboarding.isOnboarding)
+  const newAddress = useSelector((state) => state.newAddress)
 
   const dispatch = useDispatch()
 
@@ -66,13 +68,6 @@ export default ({ children }) => {
 
   useAddHandler({ setError, setModalStates })
   useNfts({ setCollections, walletLoaded, newAddress, pathname })
-
-  /* 
-    GET STATE FROM STORE
-  */
-  const accounts = useSelector((state) => state.accounts)
-  const assets = useSelector((state) => state.assets)
-  const isOnboarding = useSelector((state) => state.onboarding.isOnboarding)
 
   useEffect(() => {
     const loadActivatedChain = async () => {
@@ -245,9 +240,6 @@ export default ({ children }) => {
     <GalleryContext.Provider
       value={{
         handleShareNFT,
-        importedAddress,
-        setImportedAddress,
-        setNewAddress,
         walletLoaded,
         refreshNFTs,
         ...modalStates,

@@ -52,7 +52,8 @@ export const SET_ACTIVATED_CHAIN = 'SET_ACTIVATED_CHAIN'
 // Selected NFT IDs on Create/Edit Collection form
 export const SET_SELECTED_NFT_IDS = 'SET_SELECTED_NFT_IDS'
 
-
-// ID of Editting collection 
+// ID of Editting collection
 export const SET_EDITTING_COLLECTION_ID = 'SET_EDITTING_COLLECTION_ID'
 
+// Onboarding flow - New address
+export const SET_NEW_ADDRESS = 'SET_NEW_ADDRESS'
