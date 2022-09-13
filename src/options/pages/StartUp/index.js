@@ -1,13 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router'
-import { Link } from 'react-router-dom'
-import KoiIcon from 'img/finnie-koi-logo-white.svg'
-// import Welcome from './Welcome'
 import Welcome from 'options/finnie-v2/pages/Onboarding/Welcome'
-
-import Create from './Create'
-import Import from './Import'
-import Upload from './Upload'
 
 import './index.css'
 
@@ -19,18 +12,6 @@ export default () => {
       </Link> */}
 
       <Switch>
-        <Route path="/create-wallet">
-          {/* <Create /> */}
-          <Welcome />
-        </Route>
-        <Route path="/upload-wallet">
-          {/* <Upload /> */}
-          <Welcome />
-        </Route>
-        <Route path="/import-wallet">
-          {/* <Import /> */}
-          <Welcome />
-        </Route>
         <Route path="/*">
           <Welcome />
         </Route>

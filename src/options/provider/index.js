@@ -55,8 +55,6 @@ export default ({ children }) => {
   const [importedAddress, setImportedAddress] = useState(null) // just imported account
   const [newAddress, setNewAddress] = useState(null) // just imported address
 
-  const [searchTerm, setSearchTerm] = useState('') // search bar
-
   const dispatch = useDispatch()
 
   /* HOOKS */
@@ -247,8 +245,6 @@ export default ({ children }) => {
     <GalleryContext.Provider
       value={{
         handleShareNFT,
-        searchTerm,
-        setSearchTerm,
         importedAddress,
         setImportedAddress,
         setNewAddress,
