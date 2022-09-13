@@ -57,3 +57,6 @@ export const SET_EDITTING_COLLECTION_ID = 'SET_EDITTING_COLLECTION_ID'
 
 // Onboarding flow - New address
 export const SET_NEW_ADDRESS = 'SET_NEW_ADDRESS'
+
+// Wallet loaded
+export const SET_WALLET_LOADED = 'SET_WALLET_LOADED'
