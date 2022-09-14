@@ -23,9 +23,9 @@ export const ImportToken = () => {
   const [currentTab, setCurrentTab] = useState('SEARCH_TOKEN')
   const [tokenImport, setTokenImport] = useState({})
   const [searchToken, setSearchToken] = useState('')
-  
+
   useEffect(() => {
-    if (displayingAccount?.type === TYPE.SOLANA) {
+    if (displayingAccount?.type === TYPE.SOLANA || displayingAccount?.type === TYPE.K2) {
       setTabs([{ name: 'Search', to: 'SEARCH_TOKEN' }])
     }
   }, [displayingAccount])
@@ -56,7 +56,7 @@ export const ImportToken = () => {
               <div
                 key={idx}
                 className={clsx(
-                  'ml-18 h-10.75 flex items-center justify-center cursor-pointer',
+                  'w-full h-10.75 flex items-center justify-center cursor-pointer',
                   currentTab === tab.to && 'text-blue-800 underline'
                 )}
                 onClick={() => setCurrentTab(tab.to)}
