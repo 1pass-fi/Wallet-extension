@@ -20,8 +20,8 @@ import HasArweave from 'options/shared/hasArweave'
 import AppProvider from './provider'
 import store from './store'
 
-import './index.css'
 import '../tailwind.css'
+import './index.css'
 
 const FullView = () => {
   return (

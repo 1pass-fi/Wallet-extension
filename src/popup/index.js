@@ -9,8 +9,8 @@ import * as browser from 'webextension-polyfill'
 import Popup from './Popup'
 import store from './store'
 
-import './index.css'
 import '../tailwind.css'
+import './index.css'
 
 /**
  * Temporary workaround for secondary monitors on MacOS where redraws don't happen
