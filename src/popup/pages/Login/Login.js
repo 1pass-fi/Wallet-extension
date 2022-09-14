@@ -100,6 +100,12 @@ const Login = ({ unlockWallet, setIsLoading, setError }) => {
     setPassword(e.target.value)
   }
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      handleOnSubmit()
+    }
+  }
+
   useEffect(() => {
     inputRef.current?.focus()
   }, [])
@@ -122,6 +128,7 @@ const Login = ({ unlockWallet, setIsLoading, setError }) => {
               value={password}
               onChange={onPasswordChange}
               ref={inputRef}
+              onKeyDown={(e) => handleKeyDown(e)}
             />
             <ToggleViewPw
               onClick={() => setShowPw((prev) => !prev)}
