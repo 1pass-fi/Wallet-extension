@@ -44,6 +44,11 @@ const CustomToken = ({ setTokenImport }) => {
   const isInputted =
     !isEmpty(tokenAddress) && !isEmpty(tokenData.tokenSymbol) && !isEmpty(tokenData.tokenDecimals)
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13 && isInputted) {
+      handleImportCustomToken()
+    }
+  }
   return (
     <div className="flex flex-col text-blue-850">
       <div className="mt-4 flex">
@@ -65,6 +70,7 @@ const CustomToken = ({ setTokenImport }) => {
           setTokenAddress(e.target.value)
         }}
         value={tokenAddress}
+        onKeyDown={(e) => handleKeyDown(e)}
       ></input>
       <div className="mt-0.5 text-red-finnie ml-9.25 text-2xs font-normal h-2">
         {tokenAddressError}
