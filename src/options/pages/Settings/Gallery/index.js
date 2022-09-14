@@ -1,4 +1,5 @@
-import React, { useContext,useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import ToggleButton from 'options/finnie-v1/components/toggleButton'
 import { GalleryContext } from 'options/galleryContext'
 import storage from 'services/storage'
@@ -6,7 +7,9 @@ import storage from 'services/storage'
 import './index.css'
 
 export default () => {
-  const { showViews, setShowViews, showEarnedKoi, setShowEarnedKoi, walletLoaded } = useContext(GalleryContext)
+  const { showViews, setShowViews, showEarnedKoi, setShowEarnedKoi } = useContext(GalleryContext)
+
+  const walletLoaded = useSelector((state) => state.walletLoaded)
 
   useEffect(() => {
     const saveSettings = async () => {

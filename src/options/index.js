@@ -15,7 +15,6 @@ import NFTDetail from 'options/pages/NFTDetail'
 import Notifications from 'options/pages/Notifications'
 import SelectNfts from 'options/pages/SelectNfts'
 import Settings from 'options/pages/Settings'
-import Success from 'options/pages/StartUp/shared/Success'
 import HasArweave from 'options/shared/hasArweave'
 
 import AppProvider from './provider'
@@ -34,15 +33,12 @@ const FullView = () => {
               <Welcome />
             </Route>
             <Route exact path="/create-wallet">
-              {/* <CreateWallet /> */}
               <Welcome />
             </Route>
             <Route exact path="/upload-wallet">
-              {/* <UploadWallet /> */}
               <Welcome />
             </Route>
             <Route exact path="/import-wallet">
-              {/* <ImportWallet /> */}
               <Welcome />
             </Route>
             {/* <Route exact path="/friend-referral">
@@ -51,13 +47,6 @@ const FullView = () => {
                 <AddressBook />
               </>
             </Route> */}
-            <Route exact path="/success">
-              <>
-                <NavBar />
-                <AddressBook />
-                <Success />
-              </>
-            </Route>
 
             <Route exact path="/collections/:collectionId">
               <HasArweave content={'Please import an Arweave account'}>

@@ -17,6 +17,7 @@ import { clearError } from 'options/actions/error'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { setNotifications } from 'options/actions/notifications'
 import { clearQuickNotification, setQuickNotification } from 'options/actions/quickNotification'
+import { setWalletLoaded } from 'options/actions/walletLoaded'
 import { DidContext } from 'options/context'
 import LockScreen from 'options/finnie-v1/components/lockScreen'
 import Message from 'options/finnie-v1/components/message'
@@ -50,17 +51,17 @@ export default ({ children }) => {
   const [isLocked, setIsLocked] = useState(false)
 
   /* 
-    Import new account
+    GET STATE FROM STORE
   */
-  const [importedAddress, setImportedAddress] = useState(null) // just imported account
-  const [newAddress, setNewAddress] = useState(null) // just imported address
-
-  const [searchTerm, setSearchTerm] = useState('') // search bar
+  const accounts = useSelector((state) => state.accounts)
+  const assets = useSelector((state) => state.assets)
+  const isOnboarding = useSelector((state) => state.onboarding.isOnboarding)
+  const newAddress = useSelector((state) => state.newAddress)
+  const walletLoaded = useSelector((state) => state.walletLoaded)
 
   const dispatch = useDispatch()
 
   /* HOOKS */
-  const [walletLoaded, setWalletLoaded] = useState(false)
   const [error, setError] = useError()
   const [didStates, setDIDStates] = useDID({ newAddress, walletLoaded, setError })
   const [modalStates, setModalStates] = useModal()
@@ -68,13 +69,6 @@ export default ({ children }) => {
 
   useAddHandler({ setError, setModalStates })
   useNfts({ setCollections, walletLoaded, newAddress, pathname })
-
-  /* 
-    GET STATE FROM STORE
-  */
-  const accounts = useSelector((state) => state.accounts)
-  const assets = useSelector((state) => state.assets)
-  const isOnboarding = useSelector((state) => state.onboarding.isOnboarding)
 
   useEffect(() => {
     const loadActivatedChain = async () => {
@@ -110,7 +104,7 @@ export default ({ children }) => {
       const allAccounts = await dispatch(loadAllAccounts()) // will load default account also
       const _isLocked = await backgroundRequest.wallet.getLockState()
 
-      setWalletLoaded(true)
+      dispatch(setWalletLoaded(true))
       // go to lock screen if having imported account
       if (!isEmpty(allAccounts)) {
         setIsLocked(_isLocked)
@@ -247,12 +241,6 @@ export default ({ children }) => {
     <GalleryContext.Provider
       value={{
         handleShareNFT,
-        searchTerm,
-        setSearchTerm,
-        importedAddress,
-        setImportedAddress,
-        setNewAddress,
-        walletLoaded,
         refreshNFTs,
         ...modalStates,
         ...setModalStates,
