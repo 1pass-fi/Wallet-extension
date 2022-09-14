@@ -99,6 +99,11 @@ const ChangePasswordModal = ({ close }) => {
     }
   }
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      handleUpdatePassword()
+    }
+  }
   return (
     <div className="fixed z-51 top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-25">
       <div
@@ -119,11 +124,14 @@ const ChangePasswordModal = ({ close }) => {
           ) : (
             <div className="m-auto">Password Confirmed</div>
           )}
-          <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
+          <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer"/>
         </div>
 
         {step === 1 && (
-          <div style={{ height: '305px' }} className="flex flex-col justify-evenly mt-6.5 change-my-password">
+          <div
+            style={{ height: '305px' }}
+            className="flex flex-col justify-evenly mt-6.5 change-my-password"
+          >
             <div
               style={{ width: '382px' }}
               className="text-sm font-semibold tracking-finnieSpacing-tight text-left"
@@ -135,6 +143,7 @@ const ChangePasswordModal = ({ close }) => {
               style={{ width: '382px', height: '28px' }}
               className="rounded-sm px-1 mt-1.5 bg-trueGray-400 bg-opacity-50 border-b border-indigo border-opacity-80"
               onChange={(e) => setOldPassword(e.target.value)}
+              onKeyDown={(e) => handleKeyDown(e)}
             ></input>
             {!isEmpty(oldPasswordError) && (
               <div
@@ -157,6 +166,7 @@ const ChangePasswordModal = ({ close }) => {
               style={{ width: '382px', height: '28px' }}
               className="rounded-sm px-1 mt-1.5 bg-trueGray-400 bg-opacity-50 border-b border-indigo border-opacity-80"
               onChange={(e) => setNewPassword(e.target.value)}
+              onKeyDown={(e) => handleKeyDown(e)}
             ></input>
 
             <div
@@ -170,6 +180,7 @@ const ChangePasswordModal = ({ close }) => {
               style={{ width: '382px', height: '28px' }}
               className="rounded-sm px-1 mt-1.5 bg-trueGray-400 bg-opacity-50 border-b border-indigo border-opacity-80"
               onChange={(e) => setConfirmPassword(e.target.value)}
+              onKeyDown={(e) => handleKeyDown(e)}
             ></input>
 
             {!isEmpty(confirmPasswordError) && (
