@@ -3,6 +3,7 @@ import ArrowIcon from 'img/popup/down-arrow-icon.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
+import isEqual from 'lodash/isEqual'
 
 const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken, customTokenIconPath }) => {
   return (
@@ -25,7 +26,7 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken, customToken
       </div>
       {tokenOptions.map((token, idx) => (
         <div key={idx}>
-          {token !== selectedToken && (
+          {!isEqual(token, selectedToken) && (
             <div
               className="flex items-center"
               style={{ height: '45px' }}

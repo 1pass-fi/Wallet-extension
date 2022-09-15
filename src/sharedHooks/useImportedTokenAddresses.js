@@ -57,6 +57,11 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
     }
   }
 
+  const checkValidK2Token = async (tokenAddress) => {
+    // TODO DatH - LongP
+    return true
+  }
+
   const loadEthAddresses = async () => {
     const importedErc20Tokens = await storage.setting.get.importedErc20Tokens()
     const tokenAddresses = Object.keys(importedErc20Tokens).reduce((result, key) => {
