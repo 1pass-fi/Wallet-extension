@@ -1,3 +1,8 @@
+import {
+  clusterApiUrl as clusterApiUrlK2,
+  Connection as ConnectionK2,
+  PublicKey as PublicKeyK2
+} from '@_koi/web3.js'
 import contractMap from '@metamask/contract-metadata'
 import { AccountLayout, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { TokenListProvider } from '@solana/spl-token-registry'
@@ -9,6 +14,7 @@ import get from 'lodash/get'
 import includes from 'lodash/includes'
 import storage from 'services/storage'
 import customTokens from 'solanaTokens/solanaTokens'
+import k2Contracts from 'utils/k2-contracts.json'
 import Web3 from 'web3'
 
 export const getLogoPath = (logo) => {
@@ -53,6 +59,40 @@ const getTokenData = async (contractAddress, userAddress) => {
     symbol,
     decimal,
     contractAddress
+  }
+}
+
+export const getK2CustomTokensData = async (contractAddress, userAddress) => {
+  try {
+    let foundToken = find(k2Contracts, (token) =>
+      includes(token.address?.toLowerCase(), contractAddress?.toLowerCase())
+    )
+    const { logoURI: logo, name, decimals: decimal, symbol } = foundToken
+
+    const connection = new ConnectionK2(clusterApiUrlK2('testnet'), 'confirmed')
+    const tokenAccounts = await connection.getTokenAccountsByOwner(new PublicKeyK2(userAddress), {
+      programId: TOKEN_PROGRAM_ID
+    })
+
+    let balance = 0
+    tokenAccounts.value.forEach((e) => {
+      const accountInfo = AccountLayout.decode(e.account.data)
+      if (accountInfo.mint?.toString().toLowerCase() === contractAddress?.toLowerCase()) {
+        balance = parseInt(accountInfo.amount)
+      }
+    })
+
+    return {
+      logo,
+      balance,
+      // price,
+      name,
+      symbol,
+      decimal,
+      contractAddress
+    }
+  } catch (error) {
+    console.error('Fail to get K2 Token data', error.message)
   }
 }
 

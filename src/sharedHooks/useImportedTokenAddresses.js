@@ -1,4 +1,4 @@
-import { useEffect,useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TokenListProvider } from '@solana/spl-token-registry'
 import ERC20_ABI from 'abi/ERC20.json'
 import { TYPE } from 'constants/accountConstants'
@@ -106,13 +106,45 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
     }
   }
 
+  const loadK2Addresses = async () => {
+    const importedK2CustomTokens = await storage.setting.get.importedK2CustomTokens()
+    const tokenAddresses = Object.keys(importedK2CustomTokens).filter((key) =>
+      importedK2CustomTokens[key].includes(userAddress)
+    )
+
+    if (!isEmpty(tokenAddresses)) {
+      let validTokenAddresses = (
+        await Promise.all(
+          tokenAddresses.map(async (tokenAddress) => {
+            const valid = await checkValidK2Token(tokenAddress)
+            if (valid) return tokenAddress
+            return null
+          })
+        )
+      ).filter((tokenAddress) => !!tokenAddress)
+
+      setImportedTokenAddresses(validTokenAddresses)
+    } else {
+      setImportedTokenAddresses([])
+    }
+  }
+
   useEffect(() => {
     const loadImportedTokenAddresses = async () => {
       const account = await popupAccount.getAccount({ address: userAddress })
       const accountData = await account.get.metadata()
 
-      if (!isEmpty(accountData) && accountData.type === TYPE.SOLANA) loadSolanaAddresses() 
-      else loadEthAddresses()
+      if (!isEmpty(accountData)) {
+        if (accountData.type === TYPE.K2) {
+          loadK2Addresses()
+        }
+        if (accountData.type === TYPE.SOLANA) {
+          loadSolanaAddresses()
+        }
+        if (accountData.type === TYPE.ETHEREUM) {
+          loadEthAddresses()
+        }
+      }
     }
 
     if (!isEmpty(userAddress)) loadImportedTokenAddresses()

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
-import { AccountLayout,TOKEN_PROGRAM_ID } from '@solana/spl-token'
+import { AccountLayout, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js'
 import ERC20_ABI from 'abi/ERC20.json'
+import { TYPE } from 'constants/accountConstants'
 import storage from 'services/storage'
 import { isEthereumAddress, isSolanaAddress } from 'utils'
-import { getSolanaCustomTokensData } from 'utils/getTokenData'
+import { getK2CustomTokensData, getSolanaCustomTokensData } from 'utils/getTokenData'
 import Web3 from 'web3'
 
-const useGetTokenBalance = ({ contractAddress, userAddress }) => {
+const useGetTokenBalance = ({ contractAddress, account }) => {
   const [tokenSymbol, setTokenSymbol] = useState(null)
   const [balance, setBalance] = useState(null)
   const [tokenDecimal, setTokenDecimal] = useState(null)
@@ -20,7 +21,7 @@ const useGetTokenBalance = ({ contractAddress, userAddress }) => {
         const tokenContract = new web3.eth.Contract(ERC20_ABI, contractAddress)
 
         const symbol = await tokenContract.methods.symbol().call()
-        const balance = await tokenContract.methods.balanceOf(userAddress).call()
+        const balance = await tokenContract.methods.balanceOf(account.address).call()
         const decimal = await tokenContract.methods.decimals().call()
 
         setTokenSymbol(symbol)
@@ -33,23 +34,40 @@ const useGetTokenBalance = ({ contractAddress, userAddress }) => {
 
     const loadSolanaContract = async () => {
       try {
-        const {     
-          balance,
-          symbol,
-          decimal,
-        } = await getSolanaCustomTokensData(contractAddress, userAddress)
+        const { balance, symbol, decimal } = await getSolanaCustomTokensData(
+          contractAddress,
+          account.address
+        )
 
         setTokenSymbol(symbol)
         setBalance(balance)
         setTokenDecimal(decimal)
       } catch (err) {
-
+        console.error(err.message)
       }
     }
 
-    if (contractAddress && userAddress && isSolanaAddress(userAddress)) loadSolanaContract()
-    if (contractAddress && userAddress && isEthereumAddress(userAddress)) loadEthereumContract()
-  }, [contractAddress, userAddress])
+    const loadK2Contract = async () => {
+      try {
+        const { balance, symbol, decimal } = await getK2CustomTokensData(
+          contractAddress,
+          account.address
+        )
+
+        setTokenSymbol(symbol)
+        setBalance(balance)
+        setTokenDecimal(decimal)
+      } catch (err) {
+        console.error(err.message)
+      }
+    }
+
+    if (contractAddress && account) {
+      if (account.type === TYPE.K2) loadK2Contract()
+      if (account.type === TYPE.SOLANA) loadSolanaContract()
+      if (account.type === TYPE.ETHEREUM) loadEthereumContract()
+    }
+  }, [contractAddress, account])
 
   const TokenBalance = () => (
     <>
