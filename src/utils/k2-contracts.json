@@ -19,7 +19,7 @@
     "symbol": "KTK",
     "name": "Kotaku Coin",
     "decimals": 9,
-    "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/3SghkPdBSrpF9bzdAy5LwR4nGgFbqNcC6ZSq8vtZdj91/logo.png",
+    "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/CbNYA9n3927uXUukee2Hf4tm3xxkffJPPZvGazc2EAH1/logo.png",
     "tags": ["currency"],
     "extensions": {
       "facebook": "https://facebook.com/everyonecoin",
@@ -35,24 +35,5 @@
     "decimals": 0,
     "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EK58dp4mxsKwwuySWQW826i3fwcvUK69jPph22VUcd2H/logo.png",
     "tags": ["utility-token"]
-  },
-  {
-    "chainId": 101,
-    "address": "CbNYA9n3927uXUukee2Hf4tm3xxkffJPPZvGazc2EAH1",
-    "symbol": "TST2",
-    "name": "agEUR (Portal)",
-    "decimals": 8,
-    "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/CbNYA9n3927uXUukee2Hf4tm3xxkffJPPZvGazc2EAH1/logo.png",
-    "tags": ["ethereum", "wrapped", "wormhole"],
-    "extensions": {
-      "address": "0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8",
-      "assetContract": "https://etherscan.io/address/0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8",
-      "bridgeContract": "https://etherscan.io/address/0x3ee18B2214AFF97000D974cf647E7C347E8fa585",
-      "coingeckoId": "ageur",
-      "description": "Angle is the first decentralized, capital efficient and over-collateralized stablecoin protocol",
-      "discord": "https://discord.gg/z3kCpTaKMh",
-      "twitter": "https://twitter.com/AngleProtocol",
-      "website": "https://www.angle.money"
-    }
   }
 ]

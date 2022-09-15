@@ -64,12 +64,15 @@ const getTokenData = async (contractAddress, userAddress) => {
 
 export const getK2CustomTokensData = async (contractAddress, userAddress) => {
   try {
-    let foundToken = find(k2Contracts, (token) =>
-      includes(token.address?.toLowerCase(), contractAddress?.toLowerCase())
-    )
+    const clusterSlug = await storage.setting.get.k2Provider()
+    const connection = new ConnectionK2(clusterApiUrlK2(clusterSlug))
+
+    let foundToken =
+      find(k2Contracts, (token) =>
+        includes(token.address?.toLowerCase(), contractAddress?.toLowerCase())
+      ) || {}
     const { logoURI: logo, name, decimals: decimal, symbol } = foundToken
 
-    const connection = new ConnectionK2(clusterApiUrlK2('testnet'), 'confirmed')
     const tokenAccounts = await connection.getTokenAccountsByOwner(new PublicKeyK2(userAddress), {
       programId: TOKEN_PROGRAM_ID
     })
@@ -82,10 +85,12 @@ export const getK2CustomTokensData = async (contractAddress, userAddress) => {
       }
     })
 
+    const price = 0
+
     return {
       logo,
       balance,
-      // price,
+      price,
       name,
       symbol,
       decimal,
