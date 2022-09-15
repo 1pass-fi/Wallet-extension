@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux'
 import { TYPE } from 'constants/accountConstants'
-import { filter,get, includes } from 'lodash'
+import { ethers } from 'ethers'
+import { filter, get, includes } from 'lodash'
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 import storage from 'services/storage'
 
@@ -15,6 +16,7 @@ const useMethod = ({ contractAddress, userAddresses = [] }) => {
         importedTokens = await storage.setting.get.importedSolanaCustomTokens()
         break
       case TYPE.ETHEREUM:
+        contractAddress = ethers.utils.getAddress(contractAddress)
         importedTokens = await storage.setting.get.importedErc20Tokens()
         break
     }
