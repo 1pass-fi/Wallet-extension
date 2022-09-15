@@ -8,7 +8,7 @@ import decodeTags from 'utils/decodeTags'
 import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
 import getArweaveTokenData from 'utils/getArweaveTokenData'
 import getTokenData from 'utils/getTokenData'
-import { getSolanaCustomTokensData } from 'utils/getTokenData'
+import { getK2CustomTokensData, getSolanaCustomTokensData } from 'utils/getTokenData'
 
 import { TRANSACTION_TYPE } from './constants'
 
@@ -192,7 +192,7 @@ const useSendValue = ({
             const recipient = get(transactionPayload, 'to')
             const sender = get(transactionPayload, 'from')
 
-            const tokenData = await getSolanaCustomTokensData(contractAddress, sender)
+            const tokenData = await getK2CustomTokensData(contractAddress, sender)
 
             const rate = 10 ** (tokenData.decimal === 1 ? 0 : tokenData.decimal)
 

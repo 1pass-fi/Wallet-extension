@@ -48,6 +48,7 @@ const getEmitter = () => {
   popupEvents.on(MESSAGES.SEND_CUSTOM_TOKEN_ETH, controller.sendCustomTokenEth)
   popupEvents.on(MESSAGES.SEND_CUSTOM_TOKEN_AR, controller.sendCustomTokenAr)
   popupEvents.on(MESSAGES.SEND_CUSTOM_TOKEN_SOL, controller.sendCustomTokenSol)
+  popupEvents.on(MESSAGES.SEND_CUSTOM_TOKEN_K2, controller.sendCustomTokenK2)
   popupEvents.on(MESSAGES.VERIFY_PASSWORD, controller.verifyPassword)
   popupEvents.on(MESSAGES.TEST, controller.test)
 

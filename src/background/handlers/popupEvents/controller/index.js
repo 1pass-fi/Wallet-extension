@@ -26,6 +26,7 @@ import removeWallet from './removeWallet'
 import saveNewWallet from './saveNewWallet'
 import sendCustomTokenAr from './sendCustomTokenAr'
 import sendCustomTokenEth from './sendCustomTokenEth'
+import sendCustomTokenK2 from './sendCustomTokenK2'
 import sendCustomTokenSol from './sendCustomTokenSol'
 import sendNft from './sendNft'
 import setDefaultAccount from './setDefaultAccount'
@@ -84,6 +85,7 @@ export default {
   sendCustomTokenEth,
   sendCustomTokenAr,
   sendCustomTokenSol,
+  sendCustomTokenK2,
   verifyPassword,
   test
 }
