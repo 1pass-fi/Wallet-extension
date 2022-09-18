@@ -18,28 +18,6 @@ export default class ContentScriptEvents extends EventEmitter {
     const tabData = await this.getTabData(network)
     const { port } = payload
 
-    const storedAccounts = await backgroundAccount.count()
-    const importedAccounts = backgroundAccount.importedAccount
-
-    const walletLocked = (storedAccounts > 0) && (importedAccounts.length === 0)
-    if (walletLocked) {
-      if (endpoint.includes('KOI')) {
-        port.postMessage({
-          type: `${endpoint}_SUCCESS`,
-          data: { status: 400, message: 'Please unlock Finnie wallet' },
-          id: payload.id
-        })
-      } else {
-        port.postMessage({
-          type: `${endpoint}_ERROR`,
-          data: 'Please unlock Finnie wallet',
-          id: payload.id
-        })
-      }
-
-      return
-    }
-
     const promise = new Promise((resolve) => {
       this.emit(endpoint, payload, tabData, resolve)
     })

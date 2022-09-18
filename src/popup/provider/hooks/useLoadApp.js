@@ -122,7 +122,6 @@ const useLoadApp = ({
     }
     if (isWalletLocked) {
       history.push('/login')
-      return
     }
 
     const pendingRequest = await storage.generic.get.pendingRequest()
@@ -156,7 +155,7 @@ const useLoadApp = ({
             break
         }
       } else {
-        history.push('/account')
+
       }
 
       if (query.includes('create-wallet')) {
@@ -206,7 +205,9 @@ const useLoadApp = ({
     showConnectedSites,
     setShowConnectedSites,
     showSolanaSignMessage,
-    loadDefaultAccounts
+    loadDefaultAccounts,
+    isWalletLocked,
+    setIsWalletLocked
   }
 }
 

@@ -35,18 +35,9 @@ const LockScreen = ({ unlockWallet, setIsLoading, setError }) => {
       setIsLoading(false)
 
       if (unlocked) {
-        const pendingRequest = await storage.generic.get.pendingRequest()
-        switch (get(pendingRequest, 'type')) {
-          case REQUEST.PERMISSION:
-            history.push('/account/connect-site')
-            break
-          case REQUEST.TRANSACTION:
-            history.push('/account/sign-transaction')
-            break
-          default:
-            history.push('/account')
-        }
+        history.push('/tokens')
 
+        /* Reload gallery page after unlock */
         chrome.tabs.query({url: chrome.extension.getURL('*')}, tabs => {
           tabs.map(tab => tab.url.includes('options') && chrome.tabs.reload(tab.id))
         })

@@ -21,7 +21,7 @@ import { setIsLoading } from 'popup/actions/loading'
 import storage from 'services/storage'
 import disableOrigin from 'utils/disableOrigin'
 
-const Login = ({ unlockWallet, setIsLoading, setError }) => {
+const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
   const history = useHistory()
   const inputRef = useRef(null)
 
@@ -68,22 +68,14 @@ const Login = ({ unlockWallet, setIsLoading, setError }) => {
       setIsLoading(false)
 
       if (unlocked) {
+        setIsWalletLocked(false)
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
           chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
         })
 
-        const pendingRequest = await storage.generic.get.pendingRequest()
-        switch (get(pendingRequest, 'type')) {
-          case REQUEST.PERMISSION:
-            history.push('/account/connect-site')
-            break
-          case REQUEST.TRANSACTION:
-            history.push('/account/sign-transaction')
-            break
-          default:
-            history.push('/account')
-        }
+        history.push('/tokens')
 
+        /* Reload gallery page after unlocked */
         chrome.tabs.query({ url: chrome.extension.getURL('*') }, (tabs) => {
           tabs.map((tab) => tab.url.includes('options') && chrome.tabs.reload(tab.id))
         })

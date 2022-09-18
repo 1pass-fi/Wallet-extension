@@ -111,7 +111,9 @@ const Popup = ({
     showConnectedSites,
     setShowConnectedSites,
     loadDefaultAccounts,
-    showSolanaSignMessage
+    showSolanaSignMessage,
+    isWalletLocked,
+    setIsWalletLocked
   } = useLoadApp({
     history,
     setDefaultAccount,
@@ -145,19 +147,17 @@ const Popup = ({
     addHandler()
   }, [])
 
-  console.log('isLoading', isLoading)
-
   return (
     <div className="popup">
       <div className="h-full">
-        {showEthSign && <EthSign />}
-        {showSignTypedDataV1 && <SignTypedDataV1 />}
-        {showSignTypedDataV3 && <SignTypedDataV3 />}
-        {showSolanaSignMessage && <SolanaSignMessage />}
-        {showGetEncryptionKey && <GetEncryptionKey />}
-        {showConnectSite && <ConnectScreen />}
-        {showConnectedSites && <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />}
-        {showSigning && <SignModal setShowSigning={setShowSigning} />}
+        {showEthSign && !isWalletLocked && <EthSign />}
+        {showSignTypedDataV1 && !isWalletLocked && <SignTypedDataV1 />}
+        {showSignTypedDataV3 && !isWalletLocked && <SignTypedDataV3 />}
+        {showSolanaSignMessage && !isWalletLocked && <SolanaSignMessage />}
+        {showGetEncryptionKey && !isWalletLocked && <GetEncryptionKey />}
+        {showConnectSite && !isWalletLocked && !isWalletLocked && <ConnectScreen />}
+        {showConnectedSites && !isWalletLocked && <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />}
+        {showSigning && !isWalletLocked && <SignModal setShowSigning={setShowSigning} />}
         {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
         {isLoading !== 0 && <Loading />}
         {error && <Message type="error" children={error} />}
@@ -167,7 +167,7 @@ const Popup = ({
         {accountLoaded && (
           <Switch>
             <Route exact path="/login">
-              <Login />
+              <Login setIsWalletLocked={setIsWalletLocked}/>
             </Route>
             <Route exact path="/account/*">
               <Account />
