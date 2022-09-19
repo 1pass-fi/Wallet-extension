@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setIsOnboarding } from 'options/actions/onboardingProcessing'
-import { GalleryContext } from 'options/galleryContext'
 import LoadingScreen from 'options/pages/StartUp/shared/Loading'
 
 import Content from './Content'
@@ -32,7 +31,7 @@ const Welcome = () => {
     <div className="w-screen h-screen flex text-center">
       <NavBar step={step} setStep={setStep} />
       <Content step={step} setStep={setStep} />
-      {isOnboardingProcessing !== 0 && <LoadingScreen />}
+      {isOnboardingProcessing !== 0 && <LoadingScreen show={true} />}
     </div>
   )
 }
