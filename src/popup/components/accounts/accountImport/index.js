@@ -63,18 +63,18 @@ const AccountImport = ({ totalAccount }) => {
             handleOnClick('/options.html#/import-wallet')
           },
         },
+        // {
+        //   key: 2,
+        //   SvgImage: <ExportIcon className='card-icon' />,
+        //   title: 'Upload a .JSON wallet file',
+        //   description: 'Import an existing wallet by uploading a .JSON file.',
+        //   path: hasPendingRequest ? '/account/import/keyfile' : '#',
+        //   onClick: () => {
+        //     handleOnClick('/options.html#/upload-wallet')
+        //   },
+        // },
         {
           key: 2,
-          SvgImage: <ExportIcon className='card-icon' />,
-          title: 'Upload a .JSON wallet file',
-          description: 'Import an existing wallet by uploading a .JSON file.',
-          path: hasPendingRequest ? '/account/import/keyfile' : '#',
-          onClick: () => {
-            handleOnClick('/options.html#/upload-wallet')
-          },
-        },
-        {
-          key: 3,
           SvgImage: <PlusIcon className='card-icon' />,
           title: 'Get a new wallet',
           description: 'Start from the beginning.',
