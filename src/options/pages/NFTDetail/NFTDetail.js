@@ -94,7 +94,8 @@ const NFTDetail = () => {
   }, [nft])
 
   const handleGoBack = () => {
-    history.goBack()
+    if (history.action === 'POP') history.push('/')
+    else history.goBack()
   }
 
   const handleUpdateNft = async (input) => {
