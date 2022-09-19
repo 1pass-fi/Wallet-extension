@@ -19,6 +19,7 @@ const ChangePasswordModal = ({ close }) => {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [oldPasswordError, setOldPasswordError] = useState('')
+  const [newPasswordError, setNewPasswordError] = useState('')
   const [confirmPasswordError, setConfirmPasswordError] = useState('')
   const [disableUpdatePassword, setDisableUpdatePassword] = useState(false)
   const modalRef = useRef(null)
@@ -58,18 +59,20 @@ const ChangePasswordModal = ({ close }) => {
       validPassword = false
     }
 
-    if (isEmpty(newPassword) || newPassword !== confirmPassword) {
+    if (newPassword !== confirmPassword) {
       setConfirmPasswordError('Passwords don’t match')
       validPassword = false
     } else {
       setConfirmPasswordError('')
     }
 
-    if (!passwordRegex.test(newPassword)) {
+    if (isEmpty(newPassword) || !passwordRegex.test(newPassword)) {
       validPassword = false
-      setConfirmPasswordError(
+      setNewPasswordError(
         'Password must have at least 8 characters, 1 number, 1 uppercase, 1 lowercase and 1 symbol (e.g. !@#$%).'
       )
+    } else {
+      setNewPasswordError('')
     }
 
     return validPassword
@@ -124,7 +127,7 @@ const ChangePasswordModal = ({ close }) => {
           ) : (
             <div className="m-auto">Password Confirmed</div>
           )}
-          <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer"/>
+          <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
 
         {step === 1 && (
@@ -168,6 +171,15 @@ const ChangePasswordModal = ({ close }) => {
               onChange={(e) => setNewPassword(e.target.value)}
               onKeyDown={(e) => handleKeyDown(e)}
             ></input>
+            {!isEmpty(newPasswordError) && (
+              <div
+                style={{ width: '382px' }}
+                className="pl-1.75 flex items-center mt-2 bg-warning rounded"
+              >
+                <NoticeIcon className="w-4.25" />
+                <span className="ml-1.75">{newPasswordError}</span>
+              </div>
+            )}
 
             <div
               style={{ width: '382px' }}
@@ -182,7 +194,6 @@ const ChangePasswordModal = ({ close }) => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               onKeyDown={(e) => handleKeyDown(e)}
             ></input>
-
             {!isEmpty(confirmPasswordError) && (
               <div
                 style={{ width: '382px' }}
