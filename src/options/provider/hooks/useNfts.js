@@ -10,7 +10,7 @@ import { popupBackgroundRequest as backgroundRequest } from 'services/request/po
 
 export const useNfts = ({ setCollections, walletLoaded, newAddress, pathname }) => {
   const dispatch = useDispatch()
-  
+
   useEffect(() => {
     // load nfts and collection from store, set to state
     const loadAssetsFromStorage = async () => {
@@ -69,7 +69,9 @@ export const useNfts = ({ setCollections, walletLoaded, newAddress, pathname }) 
       dispatch(setLoaded)
     }
 
-    loadAssetsFromStorage()
-    fetchAssets()
+    if (walletLoaded) {
+      loadAssetsFromStorage()
+      fetchAssets()
+    }
   }, [walletLoaded, newAddress])
 }

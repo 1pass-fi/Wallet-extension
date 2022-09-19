@@ -1,7 +1,7 @@
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
-import { clusterApiUrl, Connection, LAMPORTS_PER_SOL,PublicKey } from '@solana/web3.js'
+import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
-import { ALL_NFT_LOADED,PATH } from 'constants/koiConstants'
+import { ALL_NFT_LOADED, PATH } from 'constants/koiConstants'
 import { findIndex } from 'lodash'
 import moment from 'moment'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
@@ -22,8 +22,18 @@ export class SolanaMethod {
 
   async loadMyContent() {
     try {
-      const nfts = await this.fetchNfts()
-      console.log('Fetched contents: ', nfts.length)
+      let nfts
+      try {
+        nfts = await this.fetchNfts()
+        console.log('Fetched contents: ', nfts.length)
+      } catch (error) {
+        console.error('Unable to fetch SOL content', error)
+        const res = {
+          contents: [],
+          newContents: []
+        }
+        return res
+      }
 
       /* 
         get nft list for this ETH address from Chrome storage
@@ -72,7 +82,7 @@ export class SolanaMethod {
       return res
     } catch (err) {
       console.error('Unable to load SOL content', err)
-      throw new Error(err.message)
+      throw new Error('Unable to load SOL content')
     }
   }
 
