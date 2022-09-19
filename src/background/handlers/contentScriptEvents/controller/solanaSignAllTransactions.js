@@ -214,6 +214,7 @@ export default async (payload, tab, next) => {
                     const _message = Message.from(base58.decode(message))
                     const transaction = Transaction.populate(_message)
                     transaction.sign(keypair)
+                    console.log('signed transaction===', transaction)
               
                     return transaction.signatures
                   }))

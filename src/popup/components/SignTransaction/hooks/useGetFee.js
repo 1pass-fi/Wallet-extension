@@ -28,6 +28,7 @@ import { ethers } from 'ethers'
 
 import { clarifyEthereumProvider } from 'utils'
 
+
 const fromHexToDecimal = (hexString) => {
   let number = null
   if (hexString) number = parseInt(hexString, 16)
