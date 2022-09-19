@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
+import { validateMnemonic } from 'bip39'
 import clsx from 'clsx'
 import Button from 'finnie-v2/components/Button'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
 import isEmpty from 'lodash/isEmpty'
+import wordList from 'utils/wordList.json'
 
 import { OnboardingContext } from '../../onboardingContext'
 
@@ -15,6 +17,9 @@ const ImportPhrase = ({ step, setStep, importType }) => {
   const [validPhrase, setValidPhrase] = useState(false)
   const [messageError, setMessageError] = useState('')
   const [isImporting, setIsImporting] = useState(false)
+  const [canClickContinue, setCanClickContinue] = useState(false)
+
+  const checkSeedPhraseInWordList = (phrase) => phrase.every((word) => wordList.includes(word))
 
   useEffect(() => {
     let initialPhrase = []
@@ -27,6 +32,8 @@ const ImportPhrase = ({ step, setStep, importType }) => {
   }, [])
 
   const onChangeInputPhrase = (e, idx) => {
+    setMessageError('')
+
     let newCompletePhrase = [...completePhrase]
     let seedPhrase
     let isValid = true
@@ -58,9 +65,6 @@ const ImportPhrase = ({ step, setStep, importType }) => {
         .filter(Boolean)
         .join(' ')
 
-      console.log('completePhrase', importType, completePhrase)
-      console.log('seedPhrase', importType, seedPhrase)
-
       completePhrase.forEach((word) => {
         if (isEmpty(word.word)) {
           isValid = false
@@ -71,10 +75,16 @@ const ImportPhrase = ({ step, setStep, importType }) => {
     setSeedphrase(seedPhrase)
   }
 
+  useEffect(() => {
+    setCanClickContinue(checkSeedPhraseInWordList(seedphrase.split(' ')))
+  }, [seedphrase])
+
   const onClickContinue = async () => {
     try {
+      setMessageError('')
       if (isImporting) return
-      if (!validPhrase) {
+
+      if (!validPhrase || !validateMnemonic(seedphrase)) {
         setMessageError('Invalid Secret Secret Phrase')
         return
       }
@@ -85,7 +95,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
       if (address) setStep(12)
     } catch (err) {
       console.error(err.message)
-      setError('Import wallet error')
+      setMessageError('Import wallet error')
     }
   }
 
@@ -131,14 +141,14 @@ const ImportPhrase = ({ step, setStep, importType }) => {
           })}
         </div>
 
-        {/* <div className="mt-1.5 text-red-finnie ml-7 text-xs font-normal h-2">{messageError}</div> */}
+        <div className="mt-1.5 text-red-finnie ml-7 text-xs font-normal h-2">{messageError}</div>
 
         <Button
           style={{ width: '240px', height: '42px' }}
           className={clsx('mt-10.75 text-base mx-auto rounded z-10', isImporting && 'cursor-wait')}
           variant="white"
           text="Confirm"
-          // disabled={!validPhrase}
+          disabled={!canClickContinue}
           onClick={onClickContinue}
         />
       </div>
