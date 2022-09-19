@@ -40,9 +40,9 @@ const NFTCard = ({ nft }) => {
         <div className="font-semibold text-xs tracking-finnieSpacing-wide h-8 text-ellipsis overflow-hidden">
           {nft.name}
         </div>
-        <div className="text-2xs tracking-finnieSpacing-wide text-warning">
+        {/* <div className="text-2xs tracking-finnieSpacing-wide text-warning">
           {formatLongString(nft.collection?.join(', '), 22)}
-        </div>
+        </div> */}
         {ownerName && <div className="font-semibold text-2xs tracking-finnieSpacing-wide">
           {formatLongString(ownerName, 22)}
         </div>}

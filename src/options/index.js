@@ -80,9 +80,9 @@ const FullView = () => {
                     <SelectNfts />
                   </HasArweave>
                 </Route>
-                <Route exact path="/collections">
+                {/* <Route exact path="/collections">
                   <Collection />
-                </Route>
+                </Route> */}
                 <Route path="/notifications">
                   <Notifications />
                 </Route>

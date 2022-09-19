@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink, Route, Switch } from 'react-router-dom'
+import clsx from 'clsx'
 import AccountSettings from 'finnie-v2/components/AccountSettings'
+import ToolTip from 'finnie-v2/components/ToolTip'
 import CollectionIcon from 'img/v2/collection-icon.svg'
 import CreateIcon from 'img/v2/create-icon.svg'
 import GalleryIcon from 'img/v2/gallery-icon.svg'
@@ -19,8 +21,8 @@ import './Sidebar.css'
 
 const navItems = [
   { icon: CreateIcon, path: '/create-nft' },
-  { icon: GalleryIcon, path: '/gallery' },
-  { icon: CollectionIcon, path: '/collections' }
+  { icon: GalleryIcon, path: '/gallery' }
+  // { icon: CollectionIcon, path: '/collections' }
 ]
 
 const Sidebar = ({ currentPath }) => {
@@ -98,7 +100,7 @@ const Sidebar = ({ currentPath }) => {
             }}
           >
             <Icon className="w-7.5 h-7" />
-            {path === '/create-nft' && currentPath === '/create-nft' && showCollectionTooltip && (
+            {/* {path === '/create-nft' && currentPath === '/create-nft' && showCollectionTooltip && (
               <div
                 className="collection-tooltip-after absolute -top-11 -right-28 flex items-center border border-white bg-indigo text-white text-center pr-2 rounded-sm"
                 style={{ width: '201px', height: '47px' }}
@@ -110,9 +112,16 @@ const Sidebar = ({ currentPath }) => {
                 />
                 Upload multiple NFTs at the same time with collections.
               </div>
-            )}
+            )} */}
           </NavLink>
         ))}
+        <div
+          className={clsx('flex items-center justify-center w-13.75 h-11.25 cursor-not-allowed')}
+          data-tip="Coming soon"
+        >
+          <CollectionIcon className="w-7.5 h-7" />
+        </div>
+        <ToolTip />
       </nav>
       <div style={{ height: '60vh' }} className="rounded overflow-y-scroll">
         <div className="bg-trueGray-100 bg-opacity-20 rounded w-57.75">
@@ -122,7 +131,7 @@ const Sidebar = ({ currentPath }) => {
                 <UploadNftForm />
               </HasArweave>
             </Route>
-            <Route exact path="/collections">
+            {/* <Route exact path="/collections">
               <SortAndFilter
                 handleSearchFieldChange={handleSearchFieldChangeCollection}
                 handleSelectChains={handleSelectChainsCollection}
@@ -131,7 +140,7 @@ const Sidebar = ({ currentPath }) => {
                 selectedChain={chainTypeCollection}
                 type="Collections"
               />
-            </Route>
+            </Route> */}
             <Route path="/collections/create">
               <HasArweave content="Right now, we can only create  NFTs with Arweave. Switch to an Arweave account to get started.">
                 <CollectionForm />

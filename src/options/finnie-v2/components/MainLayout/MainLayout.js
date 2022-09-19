@@ -13,9 +13,9 @@ const MainLayout = ({ children }) => {
       case '/gallery':
         title = 'Gallery'
         break
-      case '/collections':
-        title = 'Collections'
-        break
+      // case '/collections':
+      //   title = 'Collections'
+      //   break
       case '/collections/create.new-collection':
         title = 'Create Collection'
         break
@@ -23,10 +23,10 @@ const MainLayout = ({ children }) => {
         title = 'Select your NFTs'
         break
       default:
-        title = ''
+        title = 'Gallery'
     }
 
-    if (location.pathname.includes('collections')) title = 'Collections'
+    // if (location.pathname.includes('collections')) title = 'Collections'
 
     if (location.pathname.includes('notifications')) title = 'Notification Center'
 

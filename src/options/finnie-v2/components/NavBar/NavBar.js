@@ -4,6 +4,7 @@ import { Link, NavLink } from 'react-router-dom'
 import AccountSettings from 'finnie-v2/components/AccountSettings'
 import ActivityCenterDropdown from 'finnie-v2/components/ActivityCenterDropdown'
 import Balance from 'finnie-v2/components/Balance'
+import ToolTip from 'finnie-v2/components/ToolTip'
 import AddressBookIcon from 'img/v2/address-book-icon.svg'
 import DefaultAvatar from 'img/v2/default-avatar.svg'
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-white.svg'
@@ -131,8 +132,12 @@ const NavBar = () => {
           <NavLink to="/create-nft">Create</NavLink>
         </nav>
         <nav className="ml-9 tracking-finnieSpacing-wider">
-          <NavLink to="/collections">Collections</NavLink>
+          {/* <NavLink to="/collections">Collections</NavLink> */}
+          <div className="cursor-not-allowed" data-tip="Coming soon">
+            Collections
+          </div>
         </nav>
+        <ToolTip />
         {/* <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/friend-referral">Refer a friend</NavLink>
         </nav> */}
