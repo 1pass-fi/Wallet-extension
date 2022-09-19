@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { connect,useDispatch } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useParallax } from 'react-scroll-parallax'
 // actions
@@ -73,7 +73,7 @@ const HomeTop = ({
         chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.CHAIN_CHANGED })
       })
 
-      await request.activities.loadActivities()
+      await request.activities.loadActivities({ network: TYPE.ETHEREUM })
 
       const activities = await storage.generic.get.allActivities()
       setActivities(activities)
@@ -120,12 +120,10 @@ const HomeTop = ({
 
       // load balance
       await request.wallet.loadBalanceAsync()
-      await request.activities.loadActivities()
+      await request.activities.loadActivities({ network: TYPE.K2 })
 
       const activities = await storage.generic.get.allActivities()
       setActivities(activities)
-
-      await request.activities.loadActivities()
 
       // update account state
       // TODO Thuan Ngo
@@ -150,12 +148,10 @@ const HomeTop = ({
 
       // load balance
       await request.wallet.loadBalanceAsync()
-      await request.activities.loadActivities()
+      await request.activities.loadActivities({ network: TYPE.SOLANA })
 
       const activities = await storage.generic.get.allActivities()
       setActivities(activities)
-
-      await request.activities.loadActivities()
 
       // update account state
       // TODO Thuan Ngo
