@@ -21,11 +21,19 @@ const KeyLogo = ({ type, inProcessing, networkProcessing, handleOnClick }) => {
           : 'cursor-pointer',
         'relative'
       )}
-      onMouseEnter={() => setIsHover(true)}
+      onMouseEnter={() => {
+        setIsHover(true)
+      }}
       onMouseLeave={() => setIsHover(false)}
-      onClick={() => handleOnClick(type)}
+      onClick={() => {
+        if (type !== TYPE.K2) handleOnClick(type)
+      }}
     >
-      {isHover ? <KeyHoverBackground className="z-0" /> : <KeyDarkBackground className="z-0" />}
+      {isHover && type !== TYPE.K2 ? (
+        <KeyHoverBackground className="z-0" />
+      ) : (
+        <KeyDarkBackground className="z-0" />
+      )}
       {type === TYPE.SOLANA && <SolanaLock className="z-10 absolute top-2 left-8.5" />}
       {type === TYPE.ETHEREUM && <EthereumLock className="z-10 absolute top-2 left-8.5" />}
       {type === TYPE.K2 && (
