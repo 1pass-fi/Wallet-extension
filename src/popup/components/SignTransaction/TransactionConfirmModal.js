@@ -369,7 +369,9 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               </div>
 
               {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
-                transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
+                transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER &&
+                recipient
+              ) && (
                 <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
                   <div style={{ width: '176px' }}>To</div>
                   {recipientName && (

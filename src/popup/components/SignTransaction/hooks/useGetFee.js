@@ -13,15 +13,18 @@ import {
   Connection,
   Keypair,
   LAMPORTS_PER_SOL,
+  Message,
   PublicKey,
   sendAndConfirmTransaction,
   SystemProgram,
   Transaction} from '@solana/web3.js'
+import base58 from 'bs58'
 import { get, isEmpty,isNumber } from 'lodash'
 import arweave from 'services/arweave'
 import storage from 'services/storage'
 import { fromLampToSol,numberFormat } from 'utils'
 import Web3 from 'web3'
+
 
 const fromHexToDecimal = (hexString) => {
   let number = null
@@ -100,29 +103,38 @@ const useGetFee = ({ network, transactionPayload }) => {
     const recipientAddress = get(transactionPayload, 'to')
     const senderAddress = get(transactionPayload, 'from')
     const value = get(transactionPayload, 'value')
+    const transactionMessage = get(transactionPayload, 'transactionMessage')
 
-    const transaction = new Transaction()
-    // TODO Minh Vu load provider from storage
     const solProvider = (await storage.setting.get.solanaProvider()) || 'testnet'
     const connection = new Connection(clusterApiUrl(solProvider), 'confirmed')
 
-    let blockhash = (await connection.getLatestBlockhash('finalized')).blockhash
-
-    transaction.recentBlockhash = blockhash
-    transaction.feePayer = new PublicKey(senderAddress)
-
-    transaction.add(
-      SystemProgram.transfer({
-        fromPubkey: new PublicKey(senderAddress),
-        toPubkey: new PublicKey(recipientAddress),
-        lamports: value
-      })
-    )
-
-    const response = await connection.getFeeForMessage(transaction.compileMessage(), 'confirmed')
-
-    setTotalFee(fromLampToSol(response.value))
-    setTokenSymbol('SOL')
+    if (senderAddress && recipientAddress) {
+      const transaction = new Transaction()
+  
+      let blockhash = (await connection.getLatestBlockhash('finalized')).blockhash
+  
+      transaction.recentBlockhash = blockhash
+      transaction.feePayer = new PublicKey(senderAddress)
+  
+      transaction.add(
+        SystemProgram.transfer({
+          fromPubkey: new PublicKey(senderAddress),
+          toPubkey: new PublicKey(recipientAddress),
+          lamports: value
+        })
+      )
+  
+      const response = await connection.getFeeForMessage(transaction.compileMessage(), 'confirmed')
+  
+      setTotalFee(fromLampToSol(response.value))
+      setTokenSymbol('SOL')
+    } else {
+      const message = Message.from(base58.decode(transactionMessage))
+      const response = await connection.getFeeForMessage(message, 'confirmed')
+      
+      setTotalFee(fromLampToSol(response.value))
+      setTokenSymbol('SOL')
+    }
   }
 
   const getK2Fee = async () => {
