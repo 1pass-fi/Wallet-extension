@@ -169,6 +169,9 @@ export default async (payload, tab, next) => {
       return next({ error: { code: -32000, message: 'Finnie is unable to sign multiple transactions at the same time.' } })
     }
 
+    const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses)
+    const solTool = new SolanaTool(credentials)
+    const keypair = solTool.keypair
     const messages = payload.data
     const message = messages[0]
     let transactionPayload
@@ -206,13 +209,11 @@ export default async (payload, tab, next) => {
                   return
                 }
                 try {
-                  const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses)
-                  const solTool = new SolanaTool(credentials)
-                  const keypair = solTool.keypair
                   const signatures = await Promise.all(messages.map(async (message) => {
                     const _message = Message.from(base58.decode(message))
                     const transaction = Transaction.populate(_message)
                     transaction.sign(keypair)
+                    console.log('signed transaction===', transaction)
               
                     return transaction.signatures
                   }))
