@@ -75,6 +75,8 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
       <div className="flex items-start mt-2" style={{ height: '36px' }}>
         {tokenImport.logo ? (
           <img src={getLogoPath(tokenImport.logo)} style={{ width: '36px', height: '36px' }} />
+        ) : tokenImport.logoURI ? (
+          <img src={tokenImport.logoURI} style={{ width: '36px', height: '36px' }} />
         ) : (
           // <FinnieIcon style={{ width: '36px', height: '36px' }} />
           <img src={customTokenIconPath} style={{ width: '36px', height: '36px' }} />
