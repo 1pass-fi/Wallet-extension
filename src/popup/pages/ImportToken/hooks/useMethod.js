@@ -12,6 +12,9 @@ const useMethod = ({ contractAddress, userAddresses = [] }) => {
     let importedTokens
 
     switch (displayingAccount.type) {
+      case TYPE.K2:
+        importedTokens = await storage.setting.get.importedK2CustomTokens()
+        break
       case TYPE.SOLANA:
         importedTokens = await storage.setting.get.importedSolanaCustomTokens()
         break
@@ -29,6 +32,9 @@ const useMethod = ({ contractAddress, userAddresses = [] }) => {
     })
 
     switch (displayingAccount.type) {
+      case TYPE.K2:
+        await storage.setting.set.importedK2CustomTokens(importedTokens)
+        break
       case TYPE.SOLANA:
         await storage.setting.set.importedSolanaCustomTokens(importedTokens)
         break
@@ -41,6 +47,9 @@ const useMethod = ({ contractAddress, userAddresses = [] }) => {
   const removeToken = async () => {
     let importedTokens
     switch (displayingAccount.type) {
+      case TYPE.K2:
+        importedTokens = await storage.setting.get.importedK2CustomTokens()
+        break
       case TYPE.SOLANA:
         importedTokens = await storage.setting.get.importedSolanaCustomTokens()
         break

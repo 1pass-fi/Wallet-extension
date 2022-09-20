@@ -16,7 +16,7 @@ import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddress
 import { fiatCurrencyFormat, numberFormat } from 'utils'
 import { fromArToWinston, fromEthToWei } from 'utils'
 // utils
-import getTokenData, { getSolanaCustomTokensData } from 'utils/getTokenData'
+import getTokenData, { getK2CustomTokensData, getSolanaCustomTokensData } from 'utils/getTokenData'
 
 const Tokens = ({ currentProviderAddress }) => {
   const dispatch = useDispatch()
@@ -70,6 +70,22 @@ const Tokens = ({ currentProviderAddress }) => {
             decimal: 9
           }
         ]
+
+        await Promise.all(
+          importedTokenAddresses.map(async (contractAddress) => {
+            let token = await getK2CustomTokensData(contractAddress, displayingAccount.address)
+            token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
+            if (token.price) {
+              token = {
+                ...token,
+                usdValue: fiatCurrencyFormat(
+                  (token.balance / Math.pow(10, token.decimal)) * token.price
+                )
+              }
+            }
+            importTokens.push(token)
+          })
+        )
 
         setTokens(importTokens)
       } else if (displayingAccount.type === TYPE.SOLANA) {
@@ -208,12 +224,16 @@ const Tokens = ({ currentProviderAddress }) => {
           </div>
         </div>
       ))}
-      {(displayingAccount.type === TYPE.ETHEREUM || displayingAccount.type === TYPE.SOLANA) && (
+      {(displayingAccount.type === TYPE.ETHEREUM ||
+        displayingAccount.type === TYPE.SOLANA ||
+        displayingAccount.type === TYPE.K2) && (
         <div className="mt-5 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
           Don’t see your token?
         </div>
       )}
-      {(displayingAccount.type === TYPE.ETHEREUM || displayingAccount.type === TYPE.SOLANA) && (
+      {(displayingAccount.type === TYPE.ETHEREUM ||
+        displayingAccount.type === TYPE.SOLANA ||
+        displayingAccount.type === TYPE.K2) && (
         <div className="mt-1.5 mb-4 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
           {/* <span
           className="cursor-pointer underline text-success-700"

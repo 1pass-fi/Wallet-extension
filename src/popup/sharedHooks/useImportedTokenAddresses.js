@@ -1,4 +1,4 @@
-import { useEffect,useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TokenListProvider } from '@solana/spl-token-registry'
 import ERC20_ABI from 'abi/ERC20.json'
 import { TYPE } from 'constants/accountConstants'
@@ -56,59 +56,95 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
     }
   }
 
+  const checkValidK2Token = async (tokenAddress) => {
+    // TODO DatH - LongP
+    return true
+  }
+
+  const loadEthAddresses = async () => {
+    const importedErc20Tokens = await storage.setting.get.importedErc20Tokens()
+    const tokenAddresses = Object.keys(importedErc20Tokens).reduce((result, key) => {
+      if (importedErc20Tokens[key].includes(userAddress)) {
+        result.push(key)
+      }
+      return result
+    }, [])
+
+    if (!isEmpty(tokenAddresses)) {
+      let validTokenAddresses = (
+        await Promise.all(
+          tokenAddresses.map(async (tokenAddress) => {
+            const valid = await checkValidToken(tokenAddress)
+            if (valid) return tokenAddress
+            return null
+          })
+        )
+      ).filter((tokenAddress) => !!tokenAddress)
+
+      setImportedTokenAddresses(validTokenAddresses)
+    } else {
+      setImportedTokenAddresses([])
+    }
+  }
+
+  const loadSolanaAddresses = async () => {
+    const importedSolanaCustomTokens = await storage.setting.get.importedSolanaCustomTokens()
+    const tokenAddresses = Object.keys(importedSolanaCustomTokens).filter((key) =>
+      importedSolanaCustomTokens[key].includes(userAddress)
+    )
+
+    if (!isEmpty(tokenAddresses)) {
+      let validTokenAddresses = (
+        await Promise.all(
+          tokenAddresses.map(async (tokenAddress) => {
+            const valid = await checkValidSolanaToken(tokenAddress)
+            if (valid) return tokenAddress
+            return null
+          })
+        )
+      ).filter((tokenAddress) => !!tokenAddress)
+
+      setImportedTokenAddresses(validTokenAddresses)
+    } else {
+      setImportedTokenAddresses([])
+    }
+  }
+
+  const loadK2Addresses = async () => {
+    const importedK2CustomTokens = await storage.setting.get.importedK2CustomTokens()
+    const tokenAddresses = Object.keys(importedK2CustomTokens).filter((key) =>
+      importedK2CustomTokens[key].includes(userAddress)
+    )
+
+    if (!isEmpty(tokenAddresses)) {
+      let validTokenAddresses = (
+        await Promise.all(
+          tokenAddresses.map(async (tokenAddress) => {
+            const valid = await checkValidK2Token(tokenAddress)
+            if (valid) return tokenAddress
+            return null
+          })
+        )
+      ).filter((tokenAddress) => !!tokenAddress)
+
+      setImportedTokenAddresses(validTokenAddresses)
+    } else {
+      setImportedTokenAddresses([])
+    }
+  }
+
   useEffect(() => {
-    const loadEthAddresses = async () => {
-      const importedErc20Tokens = await storage.setting.get.importedErc20Tokens()
-      const tokenAddresses = Object.keys(importedErc20Tokens).reduce((result, key) => {
-        if (importedErc20Tokens[key].includes(userAddress)) {
-          result.push(key)
-        }
-        return result
-      }, [])
-
-      if (!isEmpty(tokenAddresses)) {
-        let validTokenAddresses = (
-          await Promise.all(
-            tokenAddresses.map(async (tokenAddress) => {
-              const valid = await checkValidToken(tokenAddress)
-              if (valid) return tokenAddress
-              return null
-            })
-          )
-        ).filter((tokenAddress) => !!tokenAddress)
-
-        setImportedTokenAddresses(validTokenAddresses)
-      } else {
-        setImportedTokenAddresses([])
+    if (!isEmpty(userAddress) && !isEmpty(displayingAccount)) {
+      if (displayingAccount.type === TYPE.K2) {
+        loadK2Addresses()
+      }
+      if (displayingAccount.type === TYPE.SOLANA) {
+        loadSolanaAddresses()
+      }
+      if (displayingAccount.type === TYPE.ETHEREUM) {
+        loadEthAddresses()
       }
     }
-
-    const loadSolanaAddresses = async () => {
-      const importedSolanaCustomTokens = await storage.setting.get.importedSolanaCustomTokens()
-      const tokenAddresses = Object.keys(importedSolanaCustomTokens).filter((key) =>
-        importedSolanaCustomTokens[key].includes(userAddress)
-      )
-
-      if (!isEmpty(tokenAddresses)) {
-        let validTokenAddresses = (
-          await Promise.all(
-            tokenAddresses.map(async (tokenAddress) => {
-              const valid = await checkValidSolanaToken(tokenAddress)
-              if (valid) return tokenAddress
-              return null
-            })
-          )
-        ).filter((tokenAddress) => !!tokenAddress)
-
-        setImportedTokenAddresses(validTokenAddresses)
-      } else {
-        setImportedTokenAddresses([])
-      }
-    }
-
-    if (!isEmpty(displayingAccount) && displayingAccount.type === TYPE.SOLANA) {
-      loadSolanaAddresses()
-    } else if (userAddress) loadEthAddresses()
   }, [userAddress, currentProviderAddress, displayingAccount])
 
   return { importedTokenAddresses }

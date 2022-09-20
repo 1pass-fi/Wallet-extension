@@ -1,4 +1,4 @@
-import { useEffect,useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TYPE } from 'constants/accountConstants'
 import { isEmpty } from 'lodash'
 import { popupAccount } from 'services/account'
@@ -11,7 +11,7 @@ import {
   fromSolToLamp,
   numberFormat
 } from 'utils'
-import getTokenData, { getSolanaCustomTokensData } from 'utils/getTokenData'
+import getTokenData, { getK2CustomTokensData, getSolanaCustomTokensData } from 'utils/getTokenData'
 
 const useTokenLists = ({ account, address, setIsLoading, currentProviderAddress }) => {
   const [tokenList, setTokenList] = useState([])
@@ -125,21 +125,21 @@ const useTokenLists = ({ account, address, setIsLoading, currentProviderAddress 
               }
             ]
 
-            // await Promise.all(
-            //   importedTokenAddresses.map(async (contractAddress) => {
-            //     let token = await getSolanaCustomTokensData(contractAddress, address)
-            //     token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
-            //     if (token.price) {
-            //       token = {
-            //         ...token,
-            //         usdValue: fiatCurrencyFormat(
-            //           (token.balance / Math.pow(10, token.decimal)) * token.price
-            //         )
-            //       }
-            //     }
-            //     _tokenList.push(token)
-            //   })
-            // )
+            await Promise.all(
+              importedTokenAddresses.map(async (contractAddress) => {
+                let token = await getK2CustomTokensData(contractAddress, address)
+                token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
+                if (token.price) {
+                  token = {
+                    ...token,
+                    usdValue: fiatCurrencyFormat(
+                      (token.balance / Math.pow(10, token.decimal)) * token.price
+                    )
+                  }
+                }
+                _tokenList.push(token)
+              })
+            )
             break
         }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef,useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { TokenListProvider } from '@solana/spl-token-registry'
 import { TYPE } from 'constants/accountConstants'
@@ -12,6 +12,7 @@ import hardcodeTokens from 'solanaTokens/solanaTokens'
 import contracts from 'utils/contract-map.json'
 // utils
 import { getLogoPath } from 'utils/getTokenData'
+import k2Contracts from 'utils/k2-contracts.json'
 
 let currentTimeout = [null]
 
@@ -66,6 +67,20 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
       setPages(1)
 
       let filterTokenList = []
+
+      if (displayingAccount.type === TYPE.K2) {
+        filterTokenList = k2Contracts
+          .filter(
+            (token) =>
+              token.address === searchToken ||
+              token.name?.toLowerCase().includes(searchToken.toLowerCase()) ||
+              token.symbol?.toLowerCase().includes(searchToken.toLowerCase())
+          )
+          .map((token) => ({
+            ...token,
+            contract: token.address
+          }))
+      }
 
       if (displayingAccount.type === TYPE.ETHEREUM) {
         filterTokenList = Object.keys(contracts).reduce((result, key) => {

@@ -1,5 +1,5 @@
 import { ERROR_MESSAGE } from 'constants/koiConstants'
-import { get,isEmpty } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 import storage from 'services/storage'
@@ -113,6 +113,21 @@ const useMethod = ({
     })
   }
 
+  const handleSendCustomTokenK2 = async () => {
+    console.log({
+      sender: transactionPayload.from,
+      customTokenRecipient,
+      contractAddress,
+      rawValue
+    })
+    return await request.wallet.sendCustomTokenK2({
+      sender: transactionPayload.from,
+      customTokenRecipient,
+      contractAddress,
+      rawValue
+    })
+  }
+
   const onSubmitTransaction = async () => {
     // if (!totalFee) {
     //   setError('Transaction fee has not been loaded')
@@ -190,7 +205,11 @@ const useMethod = ({
             }
             break
           case 'K2':
-            result = await handleSendK2()
+            if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
+              result = await handleSendCustomTokenK2()
+            } else {
+              result = await handleSendK2()
+            }
             break
         }
 

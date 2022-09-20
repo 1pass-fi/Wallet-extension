@@ -109,4 +109,8 @@ export class SettingSet {
   importedSolanaCustomTokens(value) {
     return this.#chrome._setChrome(SETTING.IMPORTED_SOLANA_CUSTOM_TOKENS, value)
   }
+
+  importedK2CustomTokens(value) {
+    return this.#chrome._setChrome(SETTING.IMPORTED_K2_CUSTOM_TOKENS, value)
+  }
 }

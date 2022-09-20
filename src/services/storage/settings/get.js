@@ -1,5 +1,9 @@
 import { TYPE } from 'constants/accountConstants'
-import { ETH_NETWORK_PROVIDER, K2_NETWORK_PROVIDER,SOL_NETWORK_PROVIDER } from 'constants/koiConstants'
+import {
+  ETH_NETWORK_PROVIDER,
+  K2_NETWORK_PROVIDER,
+  SOL_NETWORK_PROVIDER
+} from 'constants/koiConstants'
 import { SETTING } from 'constants/storageConstants'
 
 import { ChromeStorage } from '../ChromeStorage'
@@ -107,5 +111,9 @@ export class SettingGet {
 
   async importedSolanaCustomTokens() {
     return (await this.#chrome._getChrome(SETTING.IMPORTED_SOLANA_CUSTOM_TOKENS)) || {}
+  }
+
+  async importedK2CustomTokens() {
+    return (await this.#chrome._getChrome(SETTING.IMPORTED_K2_CUSTOM_TOKENS)) || {}
   }
 }

@@ -154,6 +154,10 @@ export class WalletRequest extends Request {
     return this.promise(MESSAGES.SEND_CUSTOM_TOKEN_SOL, body)
   }
 
+  sendCustomTokenK2(body) {
+    return this.promise(MESSAGES.SEND_CUSTOM_TOKEN_K2, body)
+  }
+
   /**
    * 
    * @param {Object} body

@@ -5,7 +5,7 @@ import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 import { fromArToWinston, fromEthToWei, fromSolToLamp } from 'utils'
 import getTokenData from 'utils/getTokenData'
-import { getSolanaCustomTokensData } from 'utils/getTokenData'
+import { getK2CustomTokensData, getSolanaCustomTokensData } from 'utils/getTokenData'
 
 const useTokenList = ({ selectedNetwork, selectedAccount }) => {
   const userAddress = selectedAccount?.address
@@ -109,32 +109,31 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
   }
 
   const loadK2Tokens = async (userAddress, importedTokenAddresses) => {
-    const K2Token = {}
+    const k2Token = {}
 
     const account = await popupAccount.getAccount({ address: userAddress })
     const accountData = await account.get.metadata()
 
-    K2Token.logo = 'img/v2/k2-logos/finnie-k2-logo.svg'
-    K2Token.balance = get(accountData, 'balance')
-    K2Token.price = 0
-    K2Token.name = 'Koii'
-    K2Token.symbol = 'KOII'
-    K2Token.decimal = 9
-    setSelectedToken(K2Token)
+    k2Token.logo = 'img/v2/k2-logos/finnie-k2-logo.svg'
+    k2Token.balance = get(accountData, 'balance')
+    k2Token.price = 0
+    k2Token.name = 'Koii'
+    k2Token.symbol = 'KOII'
+    k2Token.decimal = 9
+    setSelectedToken(k2Token)
 
     /* TODO DatH Custom token K2 */
-    // if (isEmpty(importedTokenAddresses)) {
-    //   return [solanaToken]
-    // }
+    if (isEmpty(importedTokenAddresses)) {
+      return [k2Token]
+    }
 
-    // const customTokenList = await Promise.all(
-    //   importedTokenAddresses?.map(async (tokenAddress) => {
-    //     return await getSolanaCustomTokensData(tokenAddress, userAddress)
-    //   })
-    // )
+    const customTokenList = await Promise.all(
+      importedTokenAddresses?.map(async (tokenAddress) => {
+        return await getK2CustomTokensData(tokenAddress, userAddress)
+      })
+    )
 
-    // return [solanaToken, ...customTokenList]
-    return [K2Token]
+    return [k2Token, ...customTokenList]
   }
 
   useEffect(() => {

@@ -46,10 +46,10 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
     }
   }
 
-  const getTokenBalance = (userAddress) => {
+  const getTokenBalance = (account) => {
     const tokenBalance = useGetTokenBalance({
       contractAddress: tokenImport.contract,
-      userAddress: userAddress
+      account
     })
 
     const balance =
@@ -112,7 +112,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
                   </div>
                 </div>
                 <div className="flex justify-center font-normal text-base leading-5 text-blue-800">
-                  {getTokenBalance(account.address)}
+                  {getTokenBalance(account)}
                 </div>
                 <div className="flex justify-center">
                   <CheckBoxLight
