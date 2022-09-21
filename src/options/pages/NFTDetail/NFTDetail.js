@@ -198,7 +198,7 @@ const NFTDetail = () => {
 
               <p
                 className="w-full overflow-y-scroll overflow-x-none break-words text-sm leading-6 pr-4 whitespace-pre-line"
-                style={{ maxHeight: '25%' }}
+                style={{ maxHeight: '40%' }}
               >
                 {nft.description}
               </p>
