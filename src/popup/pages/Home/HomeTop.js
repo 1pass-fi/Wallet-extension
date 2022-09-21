@@ -14,6 +14,7 @@ import { MESSAGES } from 'constants/koiConstants'
 import Select from 'finnie-v2/components/Select'
 import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 import ReceiveIcon from 'img/popup/receive-icon.svg'
+import RefreshIcon from 'img/popup/refresh-icon.svg'
 import SendIcon from 'img/popup/send-icon.svg'
 import isEmpty from 'lodash/isEmpty'
 // components
@@ -216,27 +217,29 @@ const HomeTop = ({
             </div>
           )}
         </div>
-        {displayingAccount.type === TYPE.SOLANA && (
-          <div className="mt-6.5">
-            <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-              {numberFormat(displayingAccount.balance / Math.pow(10, 9))} SOL
-            </div>
-            {currentProviderAddress?.includes('mainnet') && (
-              <div
-                className="text-base leading-8 tracking-finnieSpacing-tight"
-                style={{ color: '#707070' }}
-              >
-                ${fiatCurrencyFormat((displayingAccount.balance * price.SOL) / Math.pow(10, 9))} USD
+        <div className="flex items-start mt-6.5">
+          {displayingAccount.type === TYPE.SOLANA && (
+            <div>
+              <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+                {numberFormat(displayingAccount.balance / Math.pow(10, 9))} SOL
               </div>
-            )}
-          </div>
-        )}
-        {displayingAccount.type === TYPE.K2 && (
-          <div className="mt-6.5">
-            <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-              {numberFormat(displayingAccount.balance / Math.pow(10, 9))} KOII
+              {currentProviderAddress?.includes('mainnet') && (
+                <div
+                  className="text-base leading-8 tracking-finnieSpacing-tight"
+                  style={{ color: '#707070' }}
+                >
+                  ${fiatCurrencyFormat((displayingAccount.balance * price.SOL) / Math.pow(10, 9))}{' '}
+                  USD
+                </div>
+              )}
             </div>
-            {/* {currentProviderAddress?.includes('mainnet') && (
+          )}
+          {displayingAccount.type === TYPE.K2 && (
+            <div>
+              <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+                {numberFormat(displayingAccount.balance / Math.pow(10, 9))} KOII
+              </div>
+              {/* {currentProviderAddress?.includes('mainnet') && (
               <div
                 className="text-base leading-8 tracking-finnieSpacing-tight"
                 style={{ color: '#707070' }}
@@ -244,30 +247,35 @@ const HomeTop = ({
                 ${fiatCurrencyFormat((displayingAccount.balance * price.SOL) / Math.pow(10, 9))} USD
               </div>
             )} */}
-          </div>
-        )}
-        {displayingAccount.type === TYPE.ARWEAVE && (
-          <div className="mt-6.5">
-            <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-              {numberFormat(displayingAccount.koiBalance)} KOII
             </div>
-          </div>
-        )}
-        {displayingAccount.type === TYPE.ETHEREUM && (
-          <div className="mt-6.5">
-            <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-              {numberFormat(displayingAccount.balance)} ETH
-            </div>
-            {currentProviderAddress?.includes('mainnet') && (
-              <div
-                className="text-base leading-8 tracking-finnieSpacing-tight"
-                style={{ color: '#707070' }}
-              >
-                ${fiatCurrencyFormat(displayingAccount.balance * price.ETH)} USD
+          )}
+          {displayingAccount.type === TYPE.ARWEAVE && (
+            <div>
+              <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+                {numberFormat(displayingAccount.koiBalance)} KOII
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
+          {displayingAccount.type === TYPE.ETHEREUM && (
+            <div>
+              <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+                {numberFormat(displayingAccount.balance)} ETH
+              </div>
+              {currentProviderAddress?.includes('mainnet') && (
+                <div
+                  className="text-base leading-8 tracking-finnieSpacing-tight"
+                  style={{ color: '#707070' }}
+                >
+                  ${fiatCurrencyFormat(displayingAccount.balance * price.ETH)} USD
+                </div>
+              )}
+            </div>
+          )}
+          <RefreshIcon
+            className="ml-2.5 mt-2.5 cursor-pointer"
+            onClick={async () => await request.wallet.loadBalanceAsync()}
+          />
+        </div>
 
         <div className="mt-5 flex items-center justify-between" style={{ width: '140px' }}>
           <div className="flex flex-col items-center justify-center">
