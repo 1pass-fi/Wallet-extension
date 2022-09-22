@@ -11,7 +11,7 @@ import { setAssets } from 'options/actions/assets'
 import { setError } from 'options/actions/error'
 import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest } from 'services/request/popup'
-import { isArweaveAddress } from 'utils'
+import { isArweaveAddress, isEthereumAddress } from 'utils'
 
 import ConfirmTransfer from './ConfirmTransfer'
 import TransferFrom from './TransferForm'
@@ -71,7 +71,7 @@ const TransferNFT = ({
   const goToNextStage = () => setStage((stage) => stage + 1)
 
   const handleValidateArAddress = () => {
-    const isValid = isArweaveAddress(receiverAddress)
+    const isValid = isArweaveAddress(receiverAddress) || isEthereumAddress(receiverAddress)
     if (!isValid) {
       dispatch(setError('Invalid Wallet Address'))
     } else {
@@ -99,6 +99,10 @@ const TransferNFT = ({
       goToNextStage()
     } catch (error) {
       setSendBtnDisable(false)
+      const nfts = assets.nfts.map((nft) => {
+        if (nft.txId === txId) nft.isSending = false
+        return nft
+      })
       dispatch(setError('Whoops! Something went wrong!'))
     }
   }

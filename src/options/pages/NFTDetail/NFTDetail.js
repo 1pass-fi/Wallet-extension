@@ -16,7 +16,7 @@ import LeaderboardIcon from 'img/v2/leaderboard-icon.svg'
 import LinkIcon from 'img/v2/link-icon.svg'
 import ShareIcon from 'img/v2/share-icon.svg'
 import SolanaLogo from 'img/v2/solana-logo.svg'
-import { find, get,isEmpty, isString } from 'lodash'
+import { find, get, isEmpty, isString } from 'lodash'
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as request } from 'services/request/popup'
@@ -90,7 +90,11 @@ const NFTDetail = () => {
   }, [nft])
 
   const disabledFeatures = useMemo(() => {
-    return nft?.isBridging || nft?.isSending || nft?.type !== TYPE.ARWEAVE
+    return (
+      nft?.isBridging ||
+      nft?.isSending ||
+      (nft?.type !== TYPE.ETHEREUM && nft?.type !== TYPE.ARWEAVE)
+    )
   }, [nft])
 
   const handleGoBack = () => {
@@ -218,16 +222,18 @@ const NFTDetail = () => {
                 <div className="w-full mt-7.5">
                   {!nft.pending && (
                     <div className="w-full flex items-center justify-between h-11.5 gap-5 mb-6">
-                      <Button
-                        disabled={disabledFeatures}
-                        size="lg"
-                        icon={ShareIcon}
-                        className="h-full w-7/12"
-                        text="Share for Rewards"
-                        onClick={() => {
-                          setShowShareNFTModal(true)
-                        }}
-                      />
+                      {nft.type === TYPE.ARWEAVE && (
+                        <Button
+                          disabled={disabledFeatures}
+                          size="lg"
+                          icon={ShareIcon}
+                          className="h-full w-7/12"
+                          text="Share for Rewards"
+                          onClick={() => {
+                            setShowShareNFTModal(true)
+                          }}
+                        />
+                      )}
                       <div
                         data-tip={
                           !ownerImported
@@ -260,15 +266,17 @@ const NFTDetail = () => {
                           : ''
                       }
                     >
-                      <Button
-                        size="lg"
-                        icon={isArweaveNft ? EthLogo : ArweaveLogo}
-                        variant="lightBlue"
-                        text="Bridge your NFT to a different Blockchain"
-                        onClick={() => setShowExportModal(nft)}
-                        disabled={!ownerImported}
-                        className="w-full h-full"
-                      />
+                      {(nft.type === TYPE.ARWEAVE) && (
+                        <Button
+                          size="lg"
+                          icon={isArweaveNft ? EthLogo : ArweaveLogo}
+                          variant="lightBlue"
+                          text="Bridge your NFT to a different Blockchain"
+                          onClick={() => setShowExportModal(nft)}
+                          disabled={!ownerImported}
+                          className="w-full h-full"
+                        />
+                      )}
                     </div>
                   )}
                 </div>
