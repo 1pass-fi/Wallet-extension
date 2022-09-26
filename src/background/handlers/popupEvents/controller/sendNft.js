@@ -12,7 +12,19 @@ export default async (payload, next) => {
     const credentials = await backgroundAccount.getCredentialByAddress(senderAddress)
     const account = await backgroundAccount.getAccount(credentials)
 
-    const txId = await account.method.transferNFT(nftId, recipientAddress)
+    let allAssets = await account.get.assets()
+    const nft = find(allAssets, { txId: nftId })
+
+    let txId
+
+    switch (nft?.type) {
+      case TYPE.ARWEAVE:
+        txId = await account.method.transferNFT(nftId, recipientAddress)
+        break
+      case TYPE.SOLANA:
+        txId = await account.method.transferNFT(nftId, recipientAddress)
+        break
+    }
 
     const payload = {
       id: txId,
@@ -28,9 +40,8 @@ export default async (payload, next) => {
     await helpers.pendingTransactionFactory.createPendingTransaction(payload)
 
     // update isSending for nft
-    let allAssets = await account.get.assets()
-
-    allAssets.map((asset) => {
+    allAssets = await account.get.assets()
+    allAssets = allAssets.map((asset) => {
       if (asset.txId === nftId) asset.isSending = true
       return asset
     })
@@ -38,6 +49,10 @@ export default async (payload, next) => {
     await account.set.assets(allAssets)
     next({ data: txId })
   } catch (err) {
+    allAssets = allAssets.map((asset) => {
+      if (asset.txId === nftId) asset.isSending = false
+      return asset
+    })
     console.error(err.message)
     next({ error: err.message })
   }

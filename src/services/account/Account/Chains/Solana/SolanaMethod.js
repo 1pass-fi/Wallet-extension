@@ -1,5 +1,5 @@
-import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
-import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js'
+import { createTransferInstruction, getOrCreateAssociatedTokenAccount, TOKEN_PROGRAM_ID, transfer } from '@solana/spl-token'
+import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey, sendAndConfirmTransaction, Transaction } from '@solana/web3.js'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
 import { ALL_NFT_LOADED, PATH } from 'constants/koiConstants'
 import { findIndex } from 'lodash'
@@ -280,4 +280,55 @@ export class SolanaMethod {
   }
 
   async resendTransaction(txId) {}
+
+  async transferNFT(nftId, recipientAddress, amount = 1) {
+    const getSigners = (signerOrMultisig, multiSigners) => {
+      return signerOrMultisig instanceof PublicKey
+        ? [signerOrMultisig, multiSigners]
+        : [signerOrMultisig.publicKey, [signerOrMultisig]]
+    }
+    try {
+      const connection = this.solTool.connection
+
+      const mint = new PublicKey(nftId)
+
+      const senderTokenAccount = await getOrCreateAssociatedTokenAccount(
+        connection,
+        this.solTool.keypair,
+        mint,
+        this.solTool.keypair.publicKey
+      )
+
+      const recipientTokenAccount = await getOrCreateAssociatedTokenAccount(
+        connection,
+        this.solTool.keypair,
+        mint,
+        new PublicKey(recipientAddress)
+      )
+
+      const multiSigners = []
+      const [ownerPublicKey, signers] = getSigners(this.solTool.keypair, multiSigners)
+
+      const transaction = new Transaction().add(
+        createTransferInstruction(
+          senderTokenAccount.address,
+          recipientTokenAccount.address,
+          ownerPublicKey,
+          1,
+          multiSigners,
+          'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
+        )
+      )
+
+      const signature = await sendAndConfirmTransaction(connection, transaction, [
+        this.solTool.keypair,
+        ...signers
+      ])
+
+      return signature
+    } catch (error) {
+      console.error(error)
+      return false
+    }
+  }
 }

@@ -90,11 +90,7 @@ const NFTDetail = () => {
   }, [nft])
 
   const disabledFeatures = useMemo(() => {
-    return (
-      nft?.isBridging ||
-      nft?.isSending ||
-      (nft?.type !== TYPE.ETHEREUM && nft?.type !== TYPE.ARWEAVE)
-    )
+    return nft?.isBridging || nft?.isSending || nft?.type === TYPE.K2
   }, [nft])
 
   const handleGoBack = () => {
@@ -220,7 +216,7 @@ const NFTDetail = () => {
 
               <p
                 className="w-full overflow-y-scroll overflow-x-none break-words text-sm leading-6 pr-4 whitespace-pre-line"
-                style={{ maxHeight: '40%' }}
+                style={{ maxHeight: '35%' }}
               >
                 {nft.description}
               </p>
@@ -236,22 +232,20 @@ const NFTDetail = () => {
                   ))}
               </div>
 
-              {nft?.type !== TYPE.SOLANA && (
+              {nft?.type !== TYPE.K2 && (
                 <div className="w-full mt-7.5">
                   {!nft.pending && (
                     <div className="w-full flex items-center justify-between h-11.5 gap-5 mb-6">
-                      {nft.type === TYPE.ARWEAVE && (
-                        <Button
-                          disabled={disabledFeatures}
-                          size="lg"
-                          icon={ShareIcon}
-                          className="h-full w-7/12"
-                          text="Share for Rewards"
-                          onClick={() => {
-                            setShowShareNFTModal(true)
-                          }}
-                        />
-                      )}
+                      {(nft?.type === TYPE.ARWEAVE) && <Button
+                        disabled={disabledFeatures}
+                        size="lg"
+                        icon={ShareIcon}
+                        className="h-full w-7/12"
+                        text="Share for Rewards"
+                        onClick={() => {
+                          setShowShareNFTModal(true)
+                        }}
+                      />}
                       <div
                         data-tip={
                           !ownerImported
