@@ -35,7 +35,49 @@ import useSecurityStatus from './hooks/useSecurityStatus'
 import useSendValue from './hooks/useSendValue'
 import useSimulation from './hooks/useSimulation'
 
-const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => {
+const AdvancedDetailItem = ({ instruction }) => {
+  const title = useMemo(() => {
+    return instruction?.title
+  }, [instruction])
+
+  const keys = useMemo(() => {
+    const _instruction = { ...instruction }
+    delete _instruction.title
+    return Object.keys(_instruction)
+  }, [instruction])
+
+  const values = useMemo(() => {
+    const _instruction = { ...instruction }
+    delete _instruction.title
+
+    return Object.values(_instruction)
+  }, [instruction])
+
+  return (
+    <div>
+      <div>{title}</div>
+      {keys.map((key, index) => (
+        <div className='flex content-between'>
+          <div>{key}</div>
+          <div>{values[index]}</div>          
+        </div>
+      ))}
+    </div>
+  )
+}
+
+const AdvancedDetails = ({ instructions }) => {
+
+  return (
+    <div>
+      {instructions.map((instruction, index) => (
+        <AdvancedDetailItem instruction={instruction} key={index}/>
+      ))}
+    </div>
+  )
+}
+
+const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigning }) => {
   const [tab, setTab] = useState(TAB.DETAIL)
   const [showReceipt, setShowReceipt] = useState(false)
   const [txId, setTxId] = useState('')
@@ -53,7 +95,8 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     dataString,
     senderName,
     recipientName,
-    signWithoutSend
+    signWithoutSend,
+    instructionData
   } = useLoadRequest({ setIsLoading })
 
   const { trustStat } = useSecurityStatus({ setIsLoading, url: origin })
@@ -456,6 +499,14 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               {signWithoutSend ? 'Sign' : 'Send'}
             </button>
           </div>
+
+          {/* ADVANCED DETAILS */}
+          {origin === 'https://solsea.io' && 
+            <div>
+              <div>SEE ADVANCED DETAILS</div>
+              <AdvancedDetails instructions={instructionData}/>
+            </div>
+          }
           <ReactTooltip place="top" effect="float" />
           {showConnectedSites && (
             <ConnectScreen

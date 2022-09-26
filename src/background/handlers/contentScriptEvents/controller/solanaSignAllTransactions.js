@@ -1,4 +1,9 @@
 import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
+import { decodeInstruction } from '@solana/spl-token'
+import { 
+  decodeInitializeMintInstructionUnchecked,
+  decodeInitializeMultisigInstructionUnchecked
+} from '@solana/spl-token'
 import { Message, Transaction } from '@solana/web3.js'
 import { clusterApiUrl, Connection, PublicKey,sendAndConfirmTransaction } from '@solana/web3.js'
 import axios from 'axios'
@@ -15,6 +20,46 @@ import storage from 'services/storage'
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
 
+
+/* Use for solsea only */
+const getInstructionData = async (transaction) => {
+  try {
+    const instructions = transaction.instructions
+    const instructionOne = instructions[0]
+    const instructionTwo = instructions[1]
+    const instructionThree = instructions[2]
+
+    const decodedInstructionOne = decodeInitializeMintInstructionUnchecked(instructionOne)
+    console.log('decodedInstructionOne', decodedInstructionOne)
+    const decodedInstructionTwo = decodeInstruction(instructionTwo, instructionTwo.programId)
+    console.log('decodedInstructionTwo', decodedInstructionTwo)
+    const decodedInstructionThree = decodeInitializeMultisigInstructionUnchecked(instructionThree)
+    console.log('decodedInstructionThree', decodedInstructionThree)
+
+
+    /* HARD CODE */
+    return [
+      {
+        title: 'Create account',
+        'New Account': 'example_account',
+        'Amount': '0.00024 SOL'
+      },
+      {
+        title: 'Initialize account',
+        'Account': 'example_account',
+        'Mint': '0.00024 SOL',
+        'Owner': 'example_owner'
+      },
+      {
+        title: 'Unknown',
+        'Program Id': 'example_program_id',
+        'Data': 'example_data'
+      }
+    ]
+  } catch (err) {
+    console.error(err)
+  }
+}
 
 /* Use for solsea only */
 const getTransactionValue = async (transaction, address) => {
@@ -72,11 +117,13 @@ const getTransactionDataFromMessage = async (transactionMessage, origin, address
     
         const from = transaction.feePayer.toString()        
         const value = await getTransactionValue(transaction, address)
+        const instructionData = await getInstructionData(transaction)
       
         return {
           from,
           value,
-          transactionMessage
+          transactionMessage,
+          instructionData
         }
       } catch (err) {
         throw err
