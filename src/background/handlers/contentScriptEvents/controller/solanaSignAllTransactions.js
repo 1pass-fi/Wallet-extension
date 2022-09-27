@@ -31,29 +31,35 @@ const getInstructionData = async (transaction) => {
 
     const decodedInstructionOne = decodeInitializeMintInstructionUnchecked(instructionOne)
     console.log('decodedInstructionOne', decodedInstructionOne)
+    const oneMint = decodedInstructionOne.keys.mint.pubkey.toString()
+    const oneRent = decodedInstructionOne.keys.rent.pubkey.toString()
+
     const decodedInstructionTwo = decodeInstruction(instructionTwo, instructionTwo.programId)
     console.log('decodedInstructionTwo', decodedInstructionTwo)
+
     const decodedInstructionThree = decodeInitializeMultisigInstructionUnchecked(instructionThree)
     console.log('decodedInstructionThree', decodedInstructionThree)
+    const threeProgramId = decodedInstructionThree.programId.toString()
+    const threeData = 'Akt7JojuiN76Ghj'
 
 
     /* HARD CODE */
     return [
       {
         title: 'Create account',
-        'New Account': 'example_account',
+        'New Account': oneRent,
         'Amount': '0.00024 SOL'
       },
       {
         title: 'Initialize account',
-        'Account': 'example_account',
+        'Account': oneRent,
         'Mint': '0.00024 SOL',
-        'Owner': 'example_owner'
+        'Owner': oneMint
       },
       {
         title: 'Unknown',
-        'Program Id': 'example_program_id',
-        'Data': 'example_data'
+        'Program Id': threeProgramId,
+        'Data': threeData
       }
     ]
   } catch (err) {
@@ -118,6 +124,8 @@ const getTransactionDataFromMessage = async (transactionMessage, origin, address
         const from = transaction.feePayer.toString()        
         const value = await getTransactionValue(transaction, address)
         const instructionData = await getInstructionData(transaction)
+
+        console.log('instructionData=====', instructionData)
       
         return {
           from,

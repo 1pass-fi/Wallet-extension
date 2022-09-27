@@ -6,7 +6,9 @@ import ReactTooltip from 'react-tooltip'
 import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
 import clsx from 'clsx'
-import { NETWORK } from 'constants/koiConstants'
+import { TYPE, NETWORK } from 'constants/accountConstants'
+import formatLongString from 'finnie-v2/utils/formatLongString'
+import formatNumber from 'finnie-v2/utils/formatNumber'
 import BackBtn from 'img/popup/back-button.svg'
 import CheckMarkIcon from 'img/popup/check-mark-icon.svg'
 import WarningIcon from 'img/popup/close-icon-red.svg'
@@ -19,7 +21,8 @@ import CheckMarkIconBlue from 'img/v2/check-mark-icon-blue.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import OkBtn from 'img/v2/popup-tx-detail-ok.svg'
 import SunriseLogo from 'img/v2/sunrise-logo/sunrise-logo.svg'
-import { get, isEmpty, isNumber } from 'lodash'
+import ViewBlockIcon from 'img/v2/view-block.svg'
+import { get, includes,isEmpty, isNumber } from 'lodash'
 import { getDisplayAddress } from 'options/utils'
 // styles
 import storage from 'services/storage'
@@ -56,13 +59,21 @@ const AdvancedDetailItem = ({ instruction }) => {
     return Object.values(_instruction)
   }, [instruction])
 
+  const formatValues = (value) => {
+    if (includes(value, 'SOL')) {
+      const [amount, token] = value.split(' ')
+      return `${formatNumber(amount, 7)} ${token}`
+    }
+    return formatLongString(value, 20)
+  }
+
   return (
-    <div className='px-4 mt-2 py-2.75 bg-purplelight rounded-lg'>
-      <div className='text-darkGreen font-semibold text-sm'>{title}</div>
+    <div className="px-4 mt-2 py-2.75 bg-purplelight rounded-lg">
+      <div className="text-darkGreen font-semibold text-sm">{title}</div>
       {keys.map((key, index) => (
         <div className="flex justify-between">
-          <div className='text-indigo font-normal text-sm'>{key}</div>
-          <div className='text-indigo font-semibold text-sm'>{values[index]}</div>
+          <div className="w-1/3 text-indigo font-normal text-sm text-left">{key}</div>
+          <div className="w-2/3 text-indigo font-semibold text-sm text-right">{formatValues(values[index])}</div>
         </div>
       ))}
     </div>
@@ -99,28 +110,28 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     senderName,
     recipientName,
     signWithoutSend,
-    // instructionData
+    instructionData
   } = useLoadRequest({ setIsLoading })
 
   /* MOCK FOR TEST BECAUSE instructionData from useLoadRequest is now undefined */
-  const instructionData = [
-    {
-      title: 'Create account',
-      'New Account': 'example_account',
-      Amount: '0.00024 SOL'
-    },
-    {
-      title: 'Initialize account',
-      Account: 'example_account',
-      Mint: '0.00024 SOL',
-      Owner: 'example_owner'
-    },
-    {
-      title: 'Unknown',
-      'Program Id': 'example_program_id',
-      Data: 'example_data'
-    }
-  ]
+  // const instructionData = [
+  //   {
+  //     title: 'Create account',
+  //     'New Account': 'example_account',
+  //     Amount: '0.00024 SOL'
+  //   },
+  //   {
+  //     title: 'Initialize account',
+  //     Account: 'example_account',
+  //     Mint: '0.00024 SOL',
+  //     Owner: 'example_owner'
+  //   },
+  //   {
+  //     title: 'Unknown',
+  //     'Program Id': 'example_program_id',
+  //     Data: 'example_data'
+  //   }
+  // ]
 
   const trustStat = useSecurityStatus({ setIsLoading, url: origin })
 
