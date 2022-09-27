@@ -80,6 +80,12 @@ module.exports = {
         },
         gray: {
           underline: 'rgba(214, 214, 214, 0.2)'
+        },
+        purplelight: {
+          DEFAULT: '#EBEEF7'
+        },
+        darkGreen: {
+          DEFAULT: '#087980'
         }
       },
       fontSize: {

@@ -12,6 +12,9 @@ import CheckMarkIcon from 'img/popup/check-mark-icon.svg'
 import WarningIcon from 'img/popup/close-icon-red.svg'
 import WaitingIcon from 'img/popup/waiting-icon.svg'
 import WarningRedIcon from 'img/popup/warning-icon-red.svg'
+import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import CloseIcon from 'img/v2/close-icon-white.svg'
+import DropdownDetailIcon from 'img/v2/detail-dropdown-icon.svg'
 import CheckMarkIconBlue from 'img/v2/check-mark-icon-blue.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import OkBtn from 'img/v2/popup-tx-detail-ok.svg'
@@ -54,12 +57,12 @@ const AdvancedDetailItem = ({ instruction }) => {
   }, [instruction])
 
   return (
-    <div>
-      <div>{title}</div>
+    <div className='px-4 mt-2 py-2.75 bg-purplelight rounded-lg'>
+      <div className='text-darkGreen font-semibold text-sm'>{title}</div>
       {keys.map((key, index) => (
-        <div className='flex content-between'>
-          <div>{key}</div>
-          <div>{values[index]}</div>          
+        <div className="flex justify-between">
+          <div className='text-indigo font-normal text-sm'>{key}</div>
+          <div className='text-indigo font-semibold text-sm'>{values[index]}</div>
         </div>
       ))}
     </div>
@@ -67,11 +70,10 @@ const AdvancedDetailItem = ({ instruction }) => {
 }
 
 const AdvancedDetails = ({ instructions }) => {
-
   return (
     <div>
       {instructions.map((instruction, index) => (
-        <AdvancedDetailItem instruction={instruction} key={index}/>
+        <AdvancedDetailItem instruction={instruction} key={index} />
       ))}
     </div>
   )
@@ -83,6 +85,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
   const [txId, setTxId] = useState('')
   const [showConnectedSites, setShowConnectedSites] = useState(false)
   const [acceptSite, setAcceptSite] = useState(false)
+  const [isDetailDrop, setIsDetailDrop] = useState(false)
 
   const price = useSelector((state) => state.price)
   const {
@@ -96,10 +99,30 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     senderName,
     recipientName,
     signWithoutSend,
-    instructionData
+    // instructionData
   } = useLoadRequest({ setIsLoading })
 
-  const { trustStat } = useSecurityStatus({ setIsLoading, url: origin })
+  /* MOCK FOR TEST BECAUSE instructionData from useLoadRequest is now undefined */
+  const instructionData = [
+    {
+      title: 'Create account',
+      'New Account': 'example_account',
+      Amount: '0.00024 SOL'
+    },
+    {
+      title: 'Initialize account',
+      Account: 'example_account',
+      Mint: '0.00024 SOL',
+      Owner: 'example_owner'
+    },
+    {
+      title: 'Unknown',
+      'Program Id': 'example_program_id',
+      Data: 'example_data'
+    }
+  ]
+
+  const trustStat = useSecurityStatus({ setIsLoading, url: origin })
 
   const { exploreBlockUrl } = useExploreBlockUrl({ transactionPayload })
 
@@ -392,6 +415,29 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                   </div>
                 </div>
               )}
+
+              {/* INSTRUCTION ADVANCED DETAILS */}
+              {network === 'SOLANA' && (
+                <div className="w-90.5 h-full mt-5">
+                  <div className="px-4 w-full h-10 flex justify-between font-normal text-sm text-indigo bg-purplelight rounded-md items-center">
+                    <div className="w-40">See Advanced Details</div>
+                    <div
+                      className="cursor-pointer w-6 h-6"
+                      onClick={() => setIsDetailDrop((prev) => !prev)}
+                    >
+                      <DropdownDetailIcon
+                        className={clsx(!isDetailDrop && 'transform rotate-180')}
+                      />
+                    </div>
+                  </div>
+
+                  {isDetailDrop && (
+                    <div className="w-full h-full overflow-y-scroll">
+                      <AdvancedDetails instructions={instructionData} />
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
@@ -500,13 +546,6 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
             </button>
           </div>
 
-          {/* ADVANCED DETAILS */}
-          {origin === 'https://solsea.io' && 
-            <div>
-              <div>SEE ADVANCED DETAILS</div>
-              <AdvancedDetails instructions={instructionData}/>
-            </div>
-          }
           <ReactTooltip place="top" effect="float" />
           {showConnectedSites && (
             <ConnectScreen
