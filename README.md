@@ -43,7 +43,22 @@ arweave.transaction.sign(transaction): Promise<void>
 - Connect
 ```
 type WalletAddress = String
-window.ethereum.request({ method: 'requestAccounts' }): Promise<WalletAddress[]>
+window.ethereum.request({ method: 'eth_requestAccounts' }): Promise<WalletAddress[]>
+```
+- Get connected addresses
+```
+type WalletAddress = String
+window.ethereum.request({ method: 'eth_accounts' }): Promise<WalletAddress[]>
+```
+- Get chain ID
+```
+type ChainID = String
+window.ethereum.request({ method: 'eth_chainId' }): Promise<ChainID>
+```
+- Get network ID
+```
+type NetworkID = String
+window.ethereum.request({ method: 'net_version' }): Promise<NetworkID>
 ```
 - Sign and send transaction
 ```
@@ -66,11 +81,26 @@ window.ethereum.request({
 }): Promise<TransactionHash>
 
 ```
-- Sign typed data
+- Events
+```
+window.ethereum.on('chainChanged', () => console.log('Handle chain changed'))
+window.ethereum.on('networkChanged', () => console.log('Handle network changed'))
+window.ethereum.on('accountsChanged', () => console.log('Handle accounts changed'))
+```
+Take a look at our [Ethereum test dapp](https://gitlab.com/minhvu-eastagile/finnie-test-dapp)
+
 ### Solana
 - Connect
 ```
 window.solana.connect(): Promise<PublicKey>
+```
+- Get connected publickey
+```
+window.solana.publicKey: PublicKey
+```
+- Get connected status
+```
+window.solana.isConnected: Boolean
 ```
 - Disconnect
 ```
