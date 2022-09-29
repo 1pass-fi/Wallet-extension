@@ -2,13 +2,54 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { NETWORK } from 'constants/koiConstants'
 import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
+import { TRANSACTION_METHOD } from 'popup/components/SignTransaction/hooks/constants'
 
 const useSimulation = ({ network, transactionPayload }) => {
+  const [simulationData, setSimulationData] = useState({})
   const fromHexToDecimal = (hexString) => {
     let number = null
     if (hexString) number = parseInt(hexString, 16)
 
     return number
+  }
+
+  const classifyTransaction = (sunriseResponse) => {
+    let simulationData = {}
+    const successData = get(sunriseResponse, 'data.simulation.success')
+    if (!successData) return null
+
+    const metadata = get(sunriseResponse, 'data.metadata')
+    if (!isEmpty(get(successData, 'erc1155'))) {
+      // TODO LongP simulation
+      return simulationData
+    }
+    if (!isEmpty(get(successData, 'erc20'))) {
+      const ercData = get(successData, 'erc20')
+      const addressInfo = Object.keys(ercData)[0]
+      const receiveTokenData = Object.values(ercData)[0][0]
+
+      simulationData.type = TRANSACTION_METHOD.TOKEN_TRANSFER
+      simulationData.data = {
+        givenTokenAmount: fromHexToDecimal(get(successData, 'native.amount')),
+        receiveTokenAmount: fromHexToDecimal(get(receiveTokenData, 'amount')),
+        tokenInfo: get(metadata, `erc20.${addressInfo}`)
+      }
+
+      return simulationData
+    }
+    if (!isEmpty(get(successData, 'erc721'))) {
+      const ercData = get(successData, 'erc721')
+      const addressInfo = Object.keys(ercData)[0]
+
+      simulationData.type = TRANSACTION_METHOD.MINT_COLLECTIBLES
+      simulationData.data = {
+        givenTokenAmount: fromHexToDecimal(get(successData, 'native.amount')),
+        nftInfo: get(metadata, `nft.${addressInfo}`)
+      }
+
+      return simulationData
+    }
   }
 
   const simulateTransaction = async () => {
@@ -36,14 +77,16 @@ const useSimulation = ({ network, transactionPayload }) => {
       }
     }
     const response = await axios.post(`https://api.sunrise.wtf/api/v1/simulate`, requestBody)
-    const simulationData = get(response, 'data.simulation.success')
 
+    // detect the transaction types based on Sunrise successful response
+    const simulationData = classifyTransaction(response)
     if (!simulationData) {
-      throw new Error('Failed to simulate transaction', rawTx)
+      console.error('Failed to simulate transaction', rawTx)
+      return
     }
-
-    console.log('simulationData', simulationData)
+    setSimulationData(simulationData)
   }
+
   useEffect(() => {
     try {
       if (network === NETWORK.ETHEREUM) simulateTransaction()
@@ -52,7 +95,7 @@ const useSimulation = ({ network, transactionPayload }) => {
     }
   }, [network, transactionPayload])
 
-  return <div>useSimulation</div>
+  return { simulationData }
 }
 
 export default useSimulation
