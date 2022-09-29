@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useMemo,useRef, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { TYPE } from 'constants/accountConstants'
 import NFTMedia from 'finnie-v2/components/NFTMedia'
 // v2
 import { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
@@ -21,7 +22,7 @@ import './index.css'
 
 const TransferNFT = ({
   onClose,
-  cardInfo: { txId, name, imageUrl, earnedKoi, totalViews, contentType, address }
+  cardInfo: { txId, name, imageUrl, earnedKoi, totalViews, contentType, address, type }
 }) => {
   const history = useHistory()
 
@@ -71,7 +72,17 @@ const TransferNFT = ({
   const goToNextStage = () => setStage((stage) => stage + 1)
 
   const handleValidateArAddress = () => {
-    const isValid = isArweaveAddress(receiverAddress) || isEthereumAddress(receiverAddress)
+    let isValid
+    
+    switch (type) {
+      case TYPE.ARWEAVE:  
+        isValid = isArweaveAddress(receiverAddress) 
+        break
+      case TYPE.ETHEREUM:
+        isValid = isEthereumAddress(receiverAddress) 
+        break
+    }
+
     if (!isValid) {
       dispatch(setError('Invalid Wallet Address'))
     } else {
@@ -99,10 +110,6 @@ const TransferNFT = ({
       goToNextStage()
     } catch (error) {
       setSendBtnDisable(false)
-      const nfts = assets.nfts.map((nft) => {
-        if (nft.txId === txId) nft.isSending = false
-        return nft
-      })
       dispatch(setError('Whoops! Something went wrong!'))
     }
   }

@@ -584,7 +584,7 @@ export class EthereumMethod {
     return receipt
   }
 
-  async transferNFT(nftId, credentials, recipientAddress) {
+  async transferNFT(nftId, recipientAddress) {
     let allNfts = await this.#chrome.getAssets()
 
     const nft = find(allNfts, { txId: nftId })
@@ -599,7 +599,7 @@ export class EthereumMethod {
     const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
     const contractABI = nft.tokenSchema === 'ERC721' ? ERC721ABI : ERC1155ABI
-    const wallet = new ethers.Wallet(credentials.key, web3)
+    const wallet = new ethers.Wallet(this.eth.key, web3)
 
     const gasPrice = await web3.getGasPrice()
     const nftContract = new ethers.Contract(nft.tokenAddress, contractABI, wallet)
@@ -608,20 +608,20 @@ export class EthereumMethod {
     if (nft.tokenSchema === 'ERC721') {
       gasLimit = await nftContract.estimateGas[
         'safeTransferFrom(address,address,uint256)'
-      ](credentials.address, recipientAddress, tokenId, { gasPrice })
+      ](this.eth.address, recipientAddress, tokenId, { gasPrice })
 
       transaction = await nftContract[
         'safeTransferFrom(address,address,uint256)'
-      ](credentials.address, recipientAddress, tokenId, { gasLimit })
+      ](this.eth.address, recipientAddress, tokenId, { gasLimit })
     } else {
       gasLimit = await nftContract.estimateGas[
         'safeTransferFrom(address,address,uint256,uint256,bytes)'
-      ](credentials.address, recipientAddress, tokenId, '1', '0x', { gasPrice })
+      ](this.eth.address, recipientAddress, tokenId, '1', '0x', { gasPrice })
 
       console.log(gasLimit)
       transaction = await nftContract[
         'safeTransferFrom(address,address,uint256,uint256,bytes)'
-      ](credentials.address, recipientAddress, tokenId, '1', '0x', { gasLimit })
+      ](this.eth.address, recipientAddress, tokenId, '1', '0x', { gasLimit })
     }
 
     allNfts = allNfts.map((nft) => {
@@ -632,6 +632,6 @@ export class EthereumMethod {
    
     console.log('transactionHash', transaction?.hash)
 
-    return nftId
+    return transaction
   }
 }
