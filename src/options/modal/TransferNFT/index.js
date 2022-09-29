@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useMemo,useRef, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { TYPE } from 'constants/accountConstants'
 import NFTMedia from 'finnie-v2/components/NFTMedia'
 // v2
 import { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
@@ -11,7 +12,7 @@ import { setAssets } from 'options/actions/assets'
 import { setError } from 'options/actions/error'
 import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest } from 'services/request/popup'
-import { isArweaveAddress } from 'utils'
+import { isArweaveAddress, isEthereumAddress } from 'utils'
 
 import ConfirmTransfer from './ConfirmTransfer'
 import TransferFrom from './TransferForm'
@@ -21,7 +22,7 @@ import './index.css'
 
 const TransferNFT = ({
   onClose,
-  cardInfo: { txId, name, imageUrl, earnedKoi, totalViews, contentType, address }
+  cardInfo: { txId, name, imageUrl, earnedKoi, totalViews, contentType, address, type }
 }) => {
   const history = useHistory()
 
@@ -71,7 +72,17 @@ const TransferNFT = ({
   const goToNextStage = () => setStage((stage) => stage + 1)
 
   const handleValidateArAddress = () => {
-    const isValid = isArweaveAddress(receiverAddress)
+    let isValid
+    
+    switch (type) {
+      case TYPE.ARWEAVE:  
+        isValid = isArweaveAddress(receiverAddress) 
+        break
+      case TYPE.ETHEREUM:
+        isValid = isEthereumAddress(receiverAddress) 
+        break
+    }
+
     if (!isValid) {
       dispatch(setError('Invalid Wallet Address'))
     } else {

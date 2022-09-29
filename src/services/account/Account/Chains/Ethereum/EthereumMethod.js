@@ -12,16 +12,18 @@ import {
   ALL_NFT_LOADED,
   ETH_NFT_BRIDGE_ACTION,
   ETHERSCAN_API,
-  PATH} from 'constants/koiConstants'
+  PATH
+} from 'constants/koiConstants'
 import {
   BRIDGE_FLOW,
   ERROR_MESSAGE,
   ETH_NETWORK_PROVIDER,
   KOI_ROUTER_CONTRACT,
   URL,
-  VALID_TOKEN_SCHEMA} from 'constants/koiConstants'
+  VALID_TOKEN_SCHEMA
+} from 'constants/koiConstants'
 import { ethers } from 'ethers'
-import { findIndex,get, includes } from 'lodash'
+import { find, findIndex, get, includes } from 'lodash'
 import moment from 'moment'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 import storage from 'services/storage'
@@ -31,6 +33,8 @@ import * as ethereumAssets from 'utils/ethereumActivities'
 import Web3 from 'web3'
 
 import ERC20ABI from './abi/ERC20ABI.json'
+import ERC721ABI from './abi/ERC721ABI.json'
+import ERC1155ABI from './abi/ERC1155ABI.json'
 import koiRouterABI from './abi/KoiRouter.json'
 import koiTokenABI from './abi/KoiToken.json'
 
@@ -578,5 +582,56 @@ export class EthereumMethod {
     const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction)
 
     return receipt
+  }
+
+  async transferNFT(nftId, recipientAddress) {
+    let allNfts = await this.#chrome.getAssets()
+
+    const nft = find(allNfts, { txId: nftId })
+
+    const tokenId = nftId.split('_')[0]
+    const provider = await storage.setting.get.ethereumProvider()
+    const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
+    // const ethNetwork = 'goerli'
+    // const apiKey = 'f811f2257c4a4cceba5ab9044a1f03d2'
+
+    const network = ethers.providers.getNetwork(ethNetwork)
+    const web3 = new ethers.providers.InfuraProvider(network, apiKey)
+
+    const contractABI = nft.tokenSchema === 'ERC721' ? ERC721ABI : ERC1155ABI
+    const wallet = new ethers.Wallet(this.eth.key, web3)
+
+    const gasPrice = await web3.getGasPrice()
+    const nftContract = new ethers.Contract(nft.tokenAddress, contractABI, wallet)
+
+    let gasLimit, transaction
+    if (nft.tokenSchema === 'ERC721') {
+      gasLimit = await nftContract.estimateGas[
+        'safeTransferFrom(address,address,uint256)'
+      ](this.eth.address, recipientAddress, tokenId, { gasPrice })
+
+      transaction = await nftContract[
+        'safeTransferFrom(address,address,uint256)'
+      ](this.eth.address, recipientAddress, tokenId, { gasLimit })
+    } else {
+      gasLimit = await nftContract.estimateGas[
+        'safeTransferFrom(address,address,uint256,uint256,bytes)'
+      ](this.eth.address, recipientAddress, tokenId, '1', '0x', { gasPrice })
+
+      console.log(gasLimit)
+      transaction = await nftContract[
+        'safeTransferFrom(address,address,uint256,uint256,bytes)'
+      ](this.eth.address, recipientAddress, tokenId, '1', '0x', { gasLimit })
+    }
+
+    allNfts = allNfts.map((nft) => {
+      if (nft.txId === nftId) nft.isSending = true
+      return nft
+    })
+    await this.#chrome.setAssets(allNfts)
+   
+    console.log('transactionHash', transaction?.hash)
+
+    return transaction
   }
 }

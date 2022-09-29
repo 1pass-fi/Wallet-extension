@@ -1,9 +1,10 @@
 // Services
 import helpers from 'background/helpers'
+import { TYPE } from 'constants/accountConstants'
 // Constants
 import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
+import { find } from 'lodash'
 import { backgroundAccount } from 'services/account'
-
 
 export default async (payload, next) => {
   const { nftId, senderAddress, recipientAddress } = payload.data
@@ -28,7 +29,8 @@ export default async (payload, next) => {
 
     // update isSending for nft
     let allAssets = await account.get.assets()
-    allAssets = allAssets.map(asset => {
+
+    allAssets.map((asset) => {
       if (asset.txId === nftId) asset.isSending = true
       return asset
     })
