@@ -41,11 +41,13 @@ const useSimulation = ({ network, transactionPayload }) => {
     if (!isEmpty(get(successData, 'erc721'))) {
       const ercData = get(successData, 'erc721')
       const addressInfo = Object.keys(ercData)[0]
+      const nftInfo = get(metadata, `nft.${addressInfo}`)
 
       simulationData.type = TRANSACTION_METHOD.MINT_COLLECTIBLES
       simulationData.data = {
         givenTokenAmount: fromHexToDecimal(get(successData, 'native[0].amount')),
-        nftInfo: get(metadata, `nft.${addressInfo}`)
+        nftInfo: nftInfo,
+        nft: Object.values(get(nftInfo, 'nfts'))[0]
       }
 
       return simulationData

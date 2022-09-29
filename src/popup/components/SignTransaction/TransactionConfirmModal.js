@@ -1,6 +1,6 @@
 // modules
-import React, { useEffect, useMemo,useState } from 'react'
-import { connect,useSelector } from 'react-redux'
+import React, { useEffect, useMemo, useState } from 'react'
+import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
 import { setError } from 'actions/error'
@@ -14,6 +14,7 @@ import WarningIcon from 'img/popup/close-icon-red.svg'
 import WaitingIcon from 'img/popup/waiting-icon.svg'
 import WarningRedIcon from 'img/popup/warning-icon-red.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import CheckMarkIconBlue from 'img/v2/check-mark-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-white.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
@@ -34,7 +35,7 @@ import Web3 from 'web3'
 
 import ConnectScreen from 'components/Connect/ConnectScreen'
 
-import { TAB, TRANSACTION_METHOD,TRANSACTION_TYPE } from './hooks/constants'
+import { TAB, TRANSACTION_METHOD, TRANSACTION_TYPE } from './hooks/constants'
 import useExploreBlockUrl from './hooks/useExploreBlockUrl'
 import useGetFee from './hooks/useGetFee'
 import useLoadRequest from './hooks/useLoadRequest'
@@ -204,7 +205,76 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
           </div>
 
           {/* TRANSACTION SIMULATION */}
-          {tab === TAB.SIMULATION && network === NETWORK.ETHEREUM && (<div>Test</div>)}
+          {/* TRANSACTION SIMULATION */}
+          
+          {tab === TAB.SIMULATION && network === NETWORK.ETHEREUM && (
+            <div className="flex flex-col items-center w-full h-full mt-2 overflow-y-auto overflow-x-hidden text-indigo">
+              <div className="mt-5 font-semibold text-base text-indigo leading-5 text-center tracking-finnieSpacing-wide">
+                1 transaction in queue
+              </div>
+              <div className="mt-2 text-sm text-indigo">
+                <span className="font-bold">{origin}</span> requested{' '}
+                <span className="font-bold">just now</span>
+              </div>
+              <div className="mt-2 text-xl text-indigo font-semibold">Simulated Changes:</div>
+              <div className="w-full px-8 mt-4.5 flex flex-col">
+                <div className="font-normal text-sm">You give:</div>
+                <div
+                  className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
+                  style={{ backgroundColor: '#EBEEF7', height: '56px' }}
+                >
+                  <div className="flex items-center">
+                    <EthereumIcon className="w-10 h-10" />
+                    <div className="ml-1.5 font-normal text-base tracking-finnieSpacing-tight">
+                      ETH
+                    </div>
+                  </div>
+                  <div className="font-semibold text-sm" style={{ color: '#DB1B1B' }}>
+                    - ={simulationData.data.givenTokenAmount / Math.pow(10, 18)}
+                  </div>
+                </div>
+                <div className="mt-2.5 font-normal text-sm">You get:</div>
+                {simulationData.type === TRANSACTION_METHOD.MINT_COLLECTIBLES && (
+                  <div
+                    className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
+                    style={{ backgroundColor: '#EBEEF7', height: '56px' }}
+                  >
+                    <div className="flex items-center">
+                      <img src={simulationData.data.nft.image_url} className="max-w-10 max-h-10" />
+                    </div>
+                    <div className="font-semibold text-sm" style={{ color: '#087980' }}>
+                      + {simulationData.data.nft.name}
+                    </div>
+                  </div>
+                )}
+
+                {simulationData.type === TRANSACTION_METHOD.TOKEN_TRANSFER && (
+                  <div
+                    className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
+                    style={{ backgroundColor: '#EBEEF7', height: '56px' }}
+                  >
+                    <div className="flex items-center">
+                      <img src={simulationData.data.tokenInfo.logo} className="max-w-10 max-h-10" />
+                      <div className="ml-1.5 font-normal text-base tracking-finnieSpacing-tight">
+                        {simulationData.data.tokenInfo.name}
+                      </div>
+                    </div>
+                    <div className="font-semibold text-sm" style={{ color: '#087980' }}>
+                      + {simulationData.data.receiveTokenAmount / Math.pow(10, simulationData.data.tokenInfo.decimals)} {simulationData.data.tokenInfo.symbol}
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex flex-col items-center justify-evenly mt-4 w-full bg-success rounded-lg" style={{ height: '58px' }}>
+                  <div className="flex items-center font-semibold text-base">
+                    <CheckMarkIconBlue className="mr-1" style={{ width: '18px', height: '18px' }} />
+                    Approved
+                  </div>
+                  <div className="font-normal text-sm">This transaction appears to be in order</div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* TRANSACTION DATA */}
           {tab === TAB.DATA && (
