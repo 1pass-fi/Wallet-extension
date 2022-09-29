@@ -40,6 +40,7 @@ import useLoadRequest from './hooks/useLoadRequest'
 import useMethod from './hooks/useMethod'
 import useSecurityStatus from './hooks/useSecurityStatus'
 import useSendValue from './hooks/useSendValue'
+import useSimulation from './hooks/useSimulation'
 
 const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigning }) => {
   const [tab, setTab] = useState(TAB.DETAIL)
@@ -67,6 +68,8 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
   const { exploreBlockUrl } = useExploreBlockUrl({ transactionPayload })
 
   const { Fee, tokenSymbol, totalFee, getFeeInterval } = useGetFee({ network, transactionPayload })
+
+  useSimulation({ network, transactionPayload })
 
   const sender = useMemo(() => {
     return get(transactionPayload, 'from')
