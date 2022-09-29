@@ -31,8 +31,8 @@ const useSimulation = ({ network, transactionPayload }) => {
 
       simulationData.type = TRANSACTION_METHOD.TOKEN_TRANSFER
       simulationData.data = {
-        givenTokenAmount: fromHexToDecimal(get(successData, 'native.amount')),
-        receiveTokenAmount: fromHexToDecimal(get(receiveTokenData, 'amount')),
+        givenTokenAmount: fromHexToDecimal(get(successData, 'native[0].amount')),
+        receiveTokenAmount: fromHexToDecimal(get(receiveTokenData, 'transfer.amount')),
         tokenInfo: get(metadata, `erc20.${addressInfo}`)
       }
 
@@ -44,7 +44,7 @@ const useSimulation = ({ network, transactionPayload }) => {
 
       simulationData.type = TRANSACTION_METHOD.MINT_COLLECTIBLES
       simulationData.data = {
-        givenTokenAmount: fromHexToDecimal(get(successData, 'native.amount')),
+        givenTokenAmount: fromHexToDecimal(get(successData, 'native[0].amount')),
         nftInfo: get(metadata, `nft.${addressInfo}`)
       }
 

@@ -7,6 +7,7 @@ import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
 import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
+import { NETWORK } from 'constants/koiConstants'
 import BackBtn from 'img/popup/back-button.svg'
 import CheckMarkIcon from 'img/popup/check-mark-icon.svg'
 import WarningIcon from 'img/popup/close-icon-red.svg'
@@ -69,7 +70,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
 
   const { Fee, tokenSymbol, totalFee, getFeeInterval } = useGetFee({ network, transactionPayload })
 
-  useSimulation({ network, transactionPayload })
+  const { simulationData } = useSimulation({ network, transactionPayload })
 
   const sender = useMemo(() => {
     return get(transactionPayload, 'from')
@@ -154,7 +155,12 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
             </div> */}
 
             {/* NAVIGATION TAB */}
-            <div className="w-full grid grid-cols-2 text-base text-indigo">
+            <div
+              className={clsx(
+                'w-full grid text-base text-indigo',
+                isEmpty(simulationData) ? 'grid-cols-2' : 'grid-cols-3'
+              )}
+            >
               <div
                 style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
                 className={clsx(
@@ -165,6 +171,21 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               >
                 Details
               </div>
+              {!isEmpty(simulationData) && (
+                <div
+                  style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
+                  className={clsx(
+                    'h-9.5 flex justify-center items-center cursor-pointer',
+                    tab === TAB.SIMULATION && 'bg-lightBlue font-semibold',
+                    network !== NETWORK.ETHEREUM && 'cursor-not-allowed'
+                  )}
+                  onClick={() => {
+                    if (network === NETWORK.ETHEREUM) setTab(TAB.SIMULATION)
+                  }}
+                >
+                  Simulation
+                </div>
+              )}
               <div
                 style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
                 className={clsx(
@@ -181,6 +202,9 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               </div>
             </div>
           </div>
+
+          {/* TRANSACTION SIMULATION */}
+          {tab === TAB.SIMULATION && network === NETWORK.ETHEREUM && (<div>Test</div>)}
 
           {/* TRANSACTION DATA */}
           {tab === TAB.DATA && (
