@@ -16,5 +16,5 @@ export const TRANSACTION_METHOD = {
 
 export const TAB = {
   DETAIL: 'DETAIL',
-  DATA: 'DATA'
+  SIMULATION: 'SIMULATION'
 }
