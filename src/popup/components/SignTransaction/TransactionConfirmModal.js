@@ -156,12 +156,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
             </div> */}
 
             {/* NAVIGATION TAB */}
-            <div
-              className={clsx(
-                'w-full grid text-base text-indigo',
-                isEmpty(simulationData) ? 'grid-cols-2' : 'grid-cols-3'
-              )}
-            >
+            <div className="w-full grid grid-cols-2 text-base text-indigo">
               <div
                 style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
                 className={clsx(
@@ -172,130 +167,23 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               >
                 Details
               </div>
-              {!isEmpty(simulationData) && (
-                <div
-                  style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
-                  className={clsx(
-                    'h-9.5 flex justify-center items-center cursor-pointer',
-                    tab === TAB.SIMULATION && 'bg-lightBlue font-semibold',
-                    network !== NETWORK.ETHEREUM && 'cursor-not-allowed'
-                  )}
-                  onClick={() => {
-                    if (network === NETWORK.ETHEREUM) setTab(TAB.SIMULATION)
-                  }}
-                >
-                  Simulation
-                </div>
-              )}
+
               <div
                 style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
                 className={clsx(
                   'h-9.5 flex justify-center items-center cursor-pointer',
-                  tab === TAB.DATA && 'bg-lightBlue font-semibold',
-                  isEmpty(dataString) && 'cursor-not-allowed'
+                  tab === TAB.SIMULATION && 'bg-lightBlue font-semibold',
+                  (network !== NETWORK.ETHEREUM || isEmpty(simulationData)) && 'cursor-not-allowed'
                 )}
                 onClick={() => {
-                  if (!isEmpty(dataString)) setTab(TAB.DATA)
+                  if (network === NETWORK.ETHEREUM && !isEmpty(simulationData)) setTab(TAB.SIMULATION)
                 }}
-                // data-tip={isEmpty(dataString) ? `This transaction doesn't contain data` : ''}
               >
-                Data
+                Simulation
               </div>
+
             </div>
           </div>
-
-          {/* TRANSACTION SIMULATION */}
-          {/* TRANSACTION SIMULATION */}
-          
-          {tab === TAB.SIMULATION && network === NETWORK.ETHEREUM && (
-            <div className="flex flex-col items-center w-full h-full mt-2 overflow-y-auto overflow-x-hidden text-indigo">
-              <div className="mt-5 font-semibold text-base text-indigo leading-5 text-center tracking-finnieSpacing-wide">
-                1 transaction in queue
-              </div>
-              <div className="mt-2 text-sm text-indigo">
-                <span className="font-bold">{origin}</span> requested{' '}
-                <span className="font-bold">just now</span>
-              </div>
-              <div className="mt-2 text-xl text-indigo font-semibold">Simulated Changes:</div>
-              <div className="w-full px-8 mt-4.5 flex flex-col">
-                <div className="font-normal text-sm">You give:</div>
-                <div
-                  className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
-                  style={{ backgroundColor: '#EBEEF7', height: '56px' }}
-                >
-                  <div className="flex items-center">
-                    <EthereumIcon className="w-10 h-10" />
-                    <div className="ml-1.5 font-normal text-base tracking-finnieSpacing-tight">
-                      ETH
-                    </div>
-                  </div>
-                  <div className="font-semibold text-sm" style={{ color: '#DB1B1B' }}>
-                    - ={simulationData.data.givenTokenAmount / Math.pow(10, 18)}
-                  </div>
-                </div>
-                <div className="mt-2.5 font-normal text-sm">You get:</div>
-                {simulationData.type === TRANSACTION_METHOD.MINT_COLLECTIBLES && (
-                  <div
-                    className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
-                    style={{ backgroundColor: '#EBEEF7', height: '56px' }}
-                  >
-                    <div className="flex items-center">
-                      <img src={simulationData.data.nft.image_url} className="max-w-10 max-h-10" />
-                    </div>
-                    <div className="font-semibold text-sm" style={{ color: '#087980' }}>
-                      + {simulationData.data.nft.name}
-                    </div>
-                  </div>
-                )}
-
-                {simulationData.type === TRANSACTION_METHOD.TOKEN_TRANSFER && (
-                  <div
-                    className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
-                    style={{ backgroundColor: '#EBEEF7', height: '56px' }}
-                  >
-                    <div className="flex items-center">
-                      <img src={simulationData.data.tokenInfo.logo} className="max-w-10 max-h-10" />
-                      <div className="ml-1.5 font-normal text-base tracking-finnieSpacing-tight">
-                        {simulationData.data.tokenInfo.name}
-                      </div>
-                    </div>
-                    <div className="font-semibold text-sm" style={{ color: '#087980' }}>
-                      + {simulationData.data.receiveTokenAmount / Math.pow(10, simulationData.data.tokenInfo.decimals)} {simulationData.data.tokenInfo.symbol}
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex flex-col items-center justify-evenly mt-4 w-full bg-success rounded-lg" style={{ height: '58px' }}>
-                  <div className="flex items-center font-semibold text-base">
-                    <CheckMarkIconBlue className="mr-1" style={{ width: '18px', height: '18px' }} />
-                    Approved
-                  </div>
-                  <div className="font-normal text-sm">This transaction appears to be in order</div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* TRANSACTION DATA */}
-          {tab === TAB.DATA && (
-            <div
-              className="flex flex-col w-full px-4.5 pb-20 my-auto font-normal text-xs leading-6 tracking-finnieSpacing-wide text-indigo"
-              style={{ height: '348px' }}
-            >
-              <div>HEX DATA: </div>
-              <div
-                className="mt-4 h-56 w-full break-words overflow-y-scroll"
-                style={{
-                  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)',
-                  padding: '12px'
-                }}
-              >
-                {dataString}
-              </div>
-              <div className="mt-10 font-semibold text-sm leading-5">Contract ID</div>
-              {contractId && <div className="mt-1.5 leading-4">{contractId}</div>}
-            </div>
-          )}
 
           {/* TRANSACTION DETAIL */}
           {tab === TAB.DETAIL && (
@@ -479,6 +367,82 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                   </div>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* TRANSACTION SIMULATION */}
+          {tab === TAB.SIMULATION && network === NETWORK.ETHEREUM && (
+            <div className="flex flex-col items-center w-full h-full mt-2 overflow-y-auto overflow-x-hidden text-indigo">
+              <div className="mt-5 font-semibold text-base text-indigo leading-5 text-center tracking-finnieSpacing-wide">
+                1 transaction in queue
+              </div>
+              <div className="mt-2 text-sm text-indigo">
+                <span className="font-bold">{origin}</span> requested{' '}
+                <span className="font-bold">just now</span>
+              </div>
+              <div className="mt-2 text-xl text-indigo font-semibold">Simulated Changes:</div>
+              <div className="w-full px-8 mt-4.5 flex flex-col">
+                <div className="font-normal text-sm">You give:</div>
+                <div
+                  className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
+                  style={{ backgroundColor: '#EBEEF7', height: '56px' }}
+                >
+                  <div className="flex items-center">
+                    <EthereumIcon className="w-10 h-10" />
+                    <div className="ml-1.5 font-normal text-base tracking-finnieSpacing-tight">
+                      ETH
+                    </div>
+                  </div>
+                  <div className="font-semibold text-sm" style={{ color: '#DB1B1B' }}>
+                    - ={simulationData.data.givenTokenAmount / Math.pow(10, 18)}
+                  </div>
+                </div>
+                <div className="mt-2.5 font-normal text-sm">You get:</div>
+                {simulationData.type === TRANSACTION_METHOD.MINT_COLLECTIBLES && (
+                  <div
+                    className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
+                    style={{ backgroundColor: '#EBEEF7', height: '56px' }}
+                  >
+                    <div className="flex items-center">
+                      <img src={simulationData.data.nft.image_url} className="max-w-10 max-h-10" />
+                    </div>
+                    <div className="font-semibold text-sm" style={{ color: '#087980' }}>
+                      + {simulationData.data.nft.name}
+                    </div>
+                  </div>
+                )}
+
+                {simulationData.type === TRANSACTION_METHOD.TOKEN_TRANSFER && (
+                  <div
+                    className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
+                    style={{ backgroundColor: '#EBEEF7', height: '56px' }}
+                  >
+                    <div className="flex items-center">
+                      <img src={simulationData.data.tokenInfo.logo} className="max-w-10 max-h-10" />
+                      <div className="ml-1.5 font-normal text-base tracking-finnieSpacing-tight">
+                        {simulationData.data.tokenInfo.name}
+                      </div>
+                    </div>
+                    <div className="font-semibold text-sm" style={{ color: '#087980' }}>
+                      +{' '}
+                      {simulationData.data.receiveTokenAmount /
+                        Math.pow(10, simulationData.data.tokenInfo.decimals)}{' '}
+                      {simulationData.data.tokenInfo.symbol}
+                    </div>
+                  </div>
+                )}
+
+                <div
+                  className="flex flex-col items-center justify-evenly mt-4 w-full bg-success rounded-lg"
+                  style={{ height: '58px' }}
+                >
+                  <div className="flex items-center font-semibold text-base">
+                    <CheckMarkIconBlue className="mr-1" style={{ width: '18px', height: '18px' }} />
+                    Approved
+                  </div>
+                  <div className="font-normal text-sm">This transaction appears to be in order</div>
+                </div>
+              </div>
             </div>
           )}
 
