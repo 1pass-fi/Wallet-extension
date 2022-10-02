@@ -1,8 +1,7 @@
 import { useEffect,useState } from 'react'
-import { get, isEmpty } from 'lodash'
+import { get } from 'lodash'
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
-import validateToken from 'utils/erc20/validateToken'
 
 import helper from './helper'
 
@@ -33,24 +32,7 @@ const useLoadRequest = ({ setIsLoading }) => {
         const signWithoutSend = get(request, 'data.signWithoutSend')
 
         let data = get(transactionPayload, 'data')
-        if (network === 'ARWEAVE') {
-          data = (await storage.generic.get.transactionData()?.data) || '{}'
-          data = Object.values(JSON.parse(data)) || []
-        }
-
-        let transactionType
-        if (network === 'ETHEREUM') {
-          transactionType = await helper.getEthereumTransactionType(transactionPayload)
-        }
-        if (network === 'ARWEAVE') {
-          transactionType = await helper.getArweaveTransactionType(transactionPayload)
-        }
-        if (network === 'SOLANA') {
-          transactionType = await helper.getSolanaTransactionType(transactionPayload)
-        }
-        if (network === 'K2') {
-          transactionType = await helper.getK2TransactionType(transactionPayload)
-        }
+        let transactionType = await helper.getEthereumTransactionType(transactionPayload)
 
         const sender = get(transactionPayload, 'from')
         const account = await popupAccount.getAccount({ address: sender })
@@ -62,12 +44,7 @@ const useLoadRequest = ({ setIsLoading }) => {
         setRequestId(requestId)
         setFavicon(favicon)
         setTransactionType(transactionType)
-        if (network === 'ARWEAVE') {
-          setDataString(data.toString())
-        } else {
-          console.log('useLoadRequests', data)
-          setDataString(data)
-        }
+        setDataString(data)
         setSenderName(senderName)
         setRecipientName(recipientName)
         setSignWithoutSend(signWithoutSend)

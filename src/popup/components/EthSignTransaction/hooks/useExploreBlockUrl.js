@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 import { get } from 'lodash'
 import storage from 'services/storage'
-import { isArweaveAddress, isEthereumAddress } from 'utils'
+import { isEthereumAddress } from 'utils'
 
 const useExploreBlock = ({ transactionPayload }) => {
   const [exploreBlockUrl, setExploreBlockUrl] = useState('')
@@ -10,10 +10,6 @@ const useExploreBlock = ({ transactionPayload }) => {
   useEffect(() => {
     const load = async () => {
       const sender = get(transactionPayload, 'from')
-      if (isArweaveAddress(sender)) {
-        return setExploreBlockUrl('http://viewblock.io/arweave/tx')
-      }
-
       if (isEthereumAddress(sender)) {
         const provider = await storage.setting.get.ethereumProvider()
         if (provider === ETH_NETWORK_PROVIDER.MAINNET) {

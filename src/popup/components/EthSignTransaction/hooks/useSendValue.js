@@ -1,14 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { ethers } from 'ethers'
-import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import { get, isNumber } from 'lodash'
 import { popupAccount } from 'services/account'
-import decodeTags from 'utils/decodeTags'
 import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
-import getArweaveTokenData from 'utils/getArweaveTokenData'
 import getTokenData from 'utils/getTokenData'
-import { getK2CustomTokensData, getSolanaCustomTokensData } from 'utils/getTokenData'
 
 import { TRANSACTION_TYPE } from './constants'
 
@@ -52,16 +48,6 @@ const useSendValue = ({
     return value
   }
 
-  const getSendValueArweave = (value) => {
-    value = parseInt(value)
-    return value / 1000000000000
-  }
-
-  const getSendValueSolana = (value) => {
-    value = parseInt(value)
-    return value / 1000000000
-  }
-
   const customTokenIconPath = useMemo(
     () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,
     []
@@ -73,136 +59,43 @@ const useSendValue = ({
         setIsLoading(true)
         const value = get(transactionPayload, 'value')
 
-        switch (network) {
-          case 'ETHEREUM':
-            setValue(getSendValueEthereum(value))
-            setRawValue(value)
-            setSymbol('ETH')
-            setOriginSymbol('ETH')
-            userAddress = ethers.utils.getAddress(userAddress)
-            break
-          case 'ARWEAVE':
-            setValue(getSendValueArweave(value))
-            setRawValue(value)
-            setSymbol('AR')
-            setOriginSymbol('AR')
-            break
-          case 'SOLANA':
-            setValue(getSendValueSolana(value))
-            setRawValue(value)
-            setSymbol('SOL')
-            setOriginSymbol('SOL')
-            setTokenIconPath('img/v2/solana-logo.svg')
-            break
-          case 'K2':
-            setValue(getSendValueSolana(value))
-            setRawValue(value)
-            setSymbol('KOII')
-            setOriginSymbol('KOII')
-            setTokenIconPath('img/v2/k2-logos/finnie-k2-logo.svg')
-            break
-        }
+        setValue(getSendValueEthereum(value))
+        setRawValue(value)
+        setSymbol('ETH')
+        setOriginSymbol('ETH')
+        userAddress = ethers.utils.getAddress(userAddress)
+
         const account = await popupAccount.getAccount({
           address: userAddress
         })
         const balance = await account.get.balance()
-
         setOriginBalance(balance)
-        if (network === 'SOLANA' || network === 'K2') {
-          setOriginBalance(balance / 1000000000)
-        }
 
         if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
-          if (network === 'ETHEREUM') {
-            const to = get(transactionPayload, 'to')
-            setContractAddress(to) // "to" is contractAddress for eth transaction
-            let { logo, balance, price, name, symbol, decimal } = await getTokenData(
-              to,
-              userAddress
-            )
+          const to = get(transactionPayload, 'to')
+          setContractAddress(to) // "to" is contractAddress for eth transaction
+          let { logo, balance, price, name, symbol, decimal } = await getTokenData(
+            to,
+            userAddress
+          )
 
-            const data = get(transactionPayload, 'data')
-            const decode = decodeERC20Transaction(data)
-            let quantity = get(decode, 'params[1].value')
-            const customTokenRecipient = get(decode, 'params[0].value')
+          const data = get(transactionPayload, 'data')
+          const decode = decodeERC20Transaction(data)
+          let quantity = get(decode, 'params[1].value')
+          const customTokenRecipient = get(decode, 'params[0].value')
 
-            setRawValue(quantity)
+          setRawValue(quantity)
 
-            decimal = decimal === 1 ? 0 : decimal
-            quantity = quantity / 10 ** decimal
+          decimal = decimal === 1 ? 0 : decimal
+          quantity = quantity / 10 ** decimal
 
-            // if (!logo) logo = 'img/erc20/generic-token.svg'
-            if (!logo) logo = customTokenIconPath
+          if (!logo) logo = customTokenIconPath
 
-            setTokenIconPath(logo)
-            setSymbol(symbol)
-            setValue(quantity)
-            setCustomTokenRecipient(customTokenRecipient)
-            setBalance(balance / 10 ** decimal)
-          }
-
-          if (network === 'ARWEAVE') {
-            let tags = decodeTags(get(transactionPayload, 'tags'))
-            const contractAddress = get(tags, 'Contract')
-            setContractAddress(contractAddress)
-            let { logo, balance, price, name, symbol, decimal } = await getArweaveTokenData(
-              contractAddress,
-              userAddress
-            )
-
-            const input = JSON.parse(tags['Input'])
-
-            const customTokenRecipient = get(input, 'target')
-            const quantity = get(input, 'qty')
-
-            // if (!logo) logo = 'img/erc20/generic-token.svg'
-            if (!logo) logo = customTokenIconPath
-
-            setTokenIconPath(logo)
-            setSymbol(symbol)
-            setValue(quantity)
-            setRawValue(quantity)
-            setCustomTokenRecipient(customTokenRecipient)
-            setBalance(balance)
-          }
-
-          if (network === 'SOLANA') {
-            const contractAddress = get(transactionPayload, 'contractAddress')
-            setContractAddress(contractAddress)
-            const rawValue = get(transactionPayload, 'value')
-            const recipient = get(transactionPayload, 'to')
-            const sender = get(transactionPayload, 'from')
-
-            const tokenData = await getSolanaCustomTokensData(contractAddress, sender)
-
-            const rate = 10 ** (tokenData.decimal === 1 ? 0 : tokenData.decimal)
-
-            setTokenIconPath(tokenData.logo)
-            setSymbol(tokenData.symbol)
-            setValue(rawValue / rate)
-            setRawValue(rawValue)
-            setCustomTokenRecipient(recipient)
-            setBalance(tokenData.balance / rate)
-          }
-
-          if (network === 'K2') {
-            const contractAddress = get(transactionPayload, 'contractAddress')
-            setContractAddress(contractAddress)
-            const rawValue = get(transactionPayload, 'value')
-            const recipient = get(transactionPayload, 'to')
-            const sender = get(transactionPayload, 'from')
-
-            const tokenData = await getK2CustomTokensData(contractAddress, sender)
-
-            const rate = 10 ** (tokenData.decimal === 1 ? 0 : tokenData.decimal)
-
-            setTokenIconPath(tokenData.logo)
-            setSymbol(tokenData.symbol)
-            setValue(rawValue / rate)
-            setRawValue(rawValue)
-            setCustomTokenRecipient(recipient)
-            setBalance(tokenData.balance / rate)
-          }
+          setTokenIconPath(logo)
+          setSymbol(symbol)
+          setValue(quantity)
+          setCustomTokenRecipient(customTokenRecipient)
+          setBalance(balance / 10 ** decimal)
         }
       } catch (err) {
         console.error('Get send value error: ', err.message)
@@ -222,9 +115,7 @@ const useSendValue = ({
 
   const TokenIcon = () => (
     <>
-      {network === 'ETHEREUM' && !tokenIconPath && <EthereumIcon />}
-      {network === 'ARWEAVE' && !tokenIconPath && <ArweaveIcon />}
-      {tokenIconPath && <img src={tokenIconPath} />}
+      {tokenIconPath ? <img src={tokenIconPath} /> : <EthereumIcon />}
     </>
   )
 
