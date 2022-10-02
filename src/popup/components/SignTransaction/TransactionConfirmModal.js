@@ -6,32 +6,23 @@ import ReactTooltip from 'react-tooltip'
 import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
 import clsx from 'clsx'
-import { TYPE } from 'constants/accountConstants'
 import { NETWORK } from 'constants/koiConstants'
 import BackBtn from 'img/popup/back-button.svg'
 import CheckMarkIcon from 'img/popup/check-mark-icon.svg'
 import WarningIcon from 'img/popup/close-icon-red.svg'
 import WaitingIcon from 'img/popup/waiting-icon.svg'
 import WarningRedIcon from 'img/popup/warning-icon-red.svg'
-import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import CheckMarkIconBlue from 'img/v2/check-mark-icon-blue.svg'
-import CloseIcon from 'img/v2/close-icon-white.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
-import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import OkBtn from 'img/v2/popup-tx-detail-ok.svg'
 import SunriseLogo from 'img/v2/sunrise-logo/sunrise-logo.svg'
-import ViewBlockIcon from 'img/v2/view-block.svg'
 import { get, isEmpty, isNumber } from 'lodash'
 import { getDisplayAddress } from 'options/utils'
 // styles
-// import './index.css'
-import { popupAccount } from 'services/account'
-import arweave from 'services/arweave'
 import storage from 'services/storage'
 // utils
-import { calculateGasFee, fiatCurrencyFormat, numberFormat, winstonToAr } from 'utils'
+import { numberFormat } from 'utils'
 import { decodeTxMethod } from 'utils/index'
-import Web3 from 'web3'
 
 import ConnectScreen from 'components/Connect/ConnectScreen'
 
@@ -44,7 +35,7 @@ import useSecurityStatus from './hooks/useSecurityStatus'
 import useSendValue from './hooks/useSendValue'
 import useSimulation from './hooks/useSimulation'
 
-const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigning }) => {
+const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => {
   const [tab, setTab] = useState(TAB.DETAIL)
   const [showReceipt, setShowReceipt] = useState(false)
   const [txId, setTxId] = useState('')
@@ -145,16 +136,6 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
       {!showReceipt ? (
         <div className="w-full h-full relative bg-white shadow-md rounded m-auto flex flex-col items-center">
           <div className="w-full flex flex-col">
-            {/* TOP BUTTONS */}
-            {/* <div
-              className="relative bg-blue-800 w-full flex items-center justify-center"
-              style={{ height: '67px' }}
-            >
-              <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-                Confirm Transaction
-              </div>
-            </div> */}
-
             {/* NAVIGATION TAB */}
             <div className="w-full grid grid-cols-2 text-base text-indigo">
               <div
@@ -187,11 +168,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
 
           {/* TRANSACTION DETAIL */}
           {tab === TAB.DETAIL && (
-            // <div className="flex flex-col items-center w-full h-full px-9 mt-2 mb-22 overflow-y-scroll overflow-x-hidden">
             <div className="flex flex-col items-center w-full h-full mt-2 mb-22 overflow-y-auto overflow-x-hidden">
-              {/* <div className="w-full mt-5 text-base leading-6 tracking-finnieSpacing-wide text-indigo text-center">
-                {origin}
-              </div> */}
               <BackBtn
                 onClick={onRejectTransaction}
                 className="w-7.5 h-7.5 z-20 absolute top-15 left-3.75 cursor-pointer bg-white bg-opacity-70 rounded-full"
@@ -237,7 +214,6 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 (trustStat === 2 ? (
                   <div
                     className="w-full mt-3 flex items-center justify-center text-indigo bg-success bg-opacity-50 text-xs font-normal"
-                    // style={{ width: '426px', height: '36px' }}
                     style={{ height: '36px' }}
                   >
                     <CheckMarkIcon style={{ width: '24px', height: '24px' }} />
@@ -249,7 +225,6 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 ) : 0 <= trustStat && trustStat < 2 ? (
                   <div
                     className="w-full mt-3 flex items-center justify-center text-indigo bg-warning-200 bg-opacity-50 text-xs font-normal"
-                    // style={{ width: '426px', height: '45px' }}
                     style={{ height: '45px' }}
                   >
                     <WaitingIcon style={{ width: '24px', height: '24px' }} />
@@ -263,7 +238,6 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                   trustStat < 0 && (
                     <div
                       className="w-full mt-3 flex items-center justify-center text-indigo bg-warning-300 bg-opacity-50 text-xs font-normal"
-                      // style={{ width: '426px', height: '106px' }}
                       style={{ height: '106px' }}
                     >
                       <WarningIcon style={{ width: '24px', height: '24px' }} />
@@ -316,7 +290,6 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                       <div className="ml-1 w-4 h-4">
                         <TokenIcon />
                       </div>
-                      {/* <EthereumIcon className="ml-1 w-4 h-4" /> */}
                     </div>
                   </div>
                 )}
