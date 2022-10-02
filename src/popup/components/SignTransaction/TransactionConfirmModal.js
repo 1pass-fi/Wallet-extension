@@ -56,7 +56,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     signWithoutSend
   } = useLoadRequest({ setIsLoading })
 
-  const trustStat = useSecurityStatus({ setIsLoading, url: origin })
+  const { trustStat } = useSecurityStatus({ setIsLoading, url: origin })
 
   const { exploreBlockUrl } = useExploreBlockUrl({ transactionPayload })
 
@@ -121,8 +121,15 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     return get(transactionPayload, 'to')
   }, [customTokenRecipient, transactionPayload])
 
+
+  /* 
+    Hard return false -> temporary disable security function
+    since sunrise services has been down
+    Looking for an substitute vendor
+  */
   const isScamOrigin = useMemo(() => {
-    return isNumber(trustStat) && trustStat < 0 && !acceptSite
+    // return isNumber(trustStat) && trustStat < 0 && !acceptSite
+    return false
   }, [trustStat, acceptSite])
 
   useEffect(() => {
@@ -135,8 +142,9 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     <div className="w-full h-full bg-white z-51 m-auto top-0 left-0 fixed flex flex-col justify-center items-center">
       {!showReceipt ? (
         <div className="w-full h-full relative bg-white shadow-md rounded m-auto flex flex-col items-center">
+
+          {/* NAVIGATION TAB */}
           <div className="w-full flex flex-col">
-            {/* NAVIGATION TAB */}
             <div className="w-full grid grid-cols-2 text-base text-indigo">
               <div
                 style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
@@ -162,7 +170,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               >
                 Simulation
               </div>
-
             </div>
           </div>
 
@@ -176,6 +183,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               <div className="mt-5 font-semibold text-base text-indigo leading-5 text-center tracking-finnieSpacing-wide">
                 Confirm Transaction
               </div>
+
               {/* TRANSACTION TITLE */}
               <div className="mt-4.5 font-semibold text-sm text-indigo text-center tracking-finnieSpacing-wide">
                 {transactionType === TRANSACTION_TYPE.CONTRACT_DEPLOYMENT && 'Contract Deployment'}
@@ -209,6 +217,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                     )}
                   </>
               )}
+
               {/* NFT SECURITY */}
               {isNumber(trustStat) &&
                 (trustStat === 2 ? (

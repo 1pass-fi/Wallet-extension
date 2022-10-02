@@ -2,6 +2,12 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { get, isEmpty } from 'lodash'
 
+/* 
+  Hard return null -> temporary disable security function
+  since sunrise services has been down
+  Looking for an substitute vendor
+*/
+
 const useSecurityStatus = ({ setIsLoading, url }) => {
   const [trustStat, setTrustStat] = useState(null)
 
@@ -24,10 +30,10 @@ const useSecurityStatus = ({ setIsLoading, url }) => {
   }
 
   useEffect(() => {
-    getTrustStat()
+    // getTrustStat()
   }, [url])
 
-  return trustStat
+  return { trustStat }
 }
 
 export default useSecurityStatus

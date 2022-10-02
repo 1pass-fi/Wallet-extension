@@ -89,9 +89,13 @@ const useSimulation = ({ network, transactionPayload }) => {
     setSimulationData(simulationData)
   }
 
+  /* 
+    Sunrise API has been down
+    Hard return empty object while looking for substitute vendor
+  */
   useEffect(() => {
     try {
-      if (network === NETWORK.ETHEREUM) simulateTransaction()
+      // if (network === NETWORK.ETHEREUM) simulateTransaction()
     } catch (error) {
       console.error(error.message)
     }
