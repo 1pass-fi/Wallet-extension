@@ -3,7 +3,7 @@ import { get, isEmpty } from 'lodash'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 import storage from 'services/storage'
-import { fromLampToSol, fromWeiToEth, fromWinstonToAr } from 'utils'
+import { fromWinstonToAr } from 'utils'
 
 import { TRANSACTION_TYPE } from './constants'
 
@@ -13,7 +13,6 @@ const useMethod = ({
   setError,
   setShowSigning,
   transactionPayload,
-  network,
   transactionType,
   contractAddress,
   value,
@@ -21,23 +20,8 @@ const useMethod = ({
   rawValue,
   setTxId,
   setShowReceipt,
-  getFeeInterval,
   totalFee
 }) => {
-  const handleSendEth = async () => {
-    let qty = get(transactionPayload, 'value')
-    qty = fromWeiToEth(parseInt(qty, 16))
-    const target = get(transactionPayload, 'to')
-    const source = get(transactionPayload, 'from')
-
-    return await request.wallet.makeTransfer({
-      qty,
-      target,
-      address: source,
-      token: 'ETH'
-    })
-  }
-
   const handleSendAr = async () => {
     let qty = get(transactionPayload, 'value')
     qty = fromWinstonToAr(parseInt(qty))
@@ -52,43 +36,6 @@ const useMethod = ({
     })
   }
 
-  const handleSendSol = async () => {
-    let qty = get(transactionPayload, 'value')
-    qty = fromLampToSol(parseInt(qty))
-    const target = get(transactionPayload, 'to')
-    const source = get(transactionPayload, 'from')
-
-    return await request.wallet.makeTransfer({
-      qty,
-      target,
-      address: source,
-      token: 'SOL'
-    })
-  }
-
-  const handleSendK2 = async () => {
-    let qty = get(transactionPayload, 'value')
-    qty = fromLampToSol(parseInt(qty))
-    const target = get(transactionPayload, 'to')
-    const source = get(transactionPayload, 'from')
-
-    return await request.wallet.makeTransfer({
-      qty,
-      target,
-      address: source,
-      token: 'KOII'
-    })
-  }
-
-  const handleSendCustomTokenEth = async () => {
-    return await request.wallet.sendCustomTokenEth({
-      sender: transactionPayload.from,
-      customTokenRecipient,
-      contractAddress,
-      rawValue
-    })
-  }
-
   const handleSendCustomTokenAr = async () => {
     return await request.wallet.sendCustomTokenAr({
       sender: transactionPayload.from,
@@ -98,42 +45,7 @@ const useMethod = ({
     })
   }
 
-  const handleSendCustomTokenSol = async () => {
-    console.log({
-      sender: transactionPayload.from,
-      customTokenRecipient,
-      contractAddress,
-      rawValue
-    })
-    return await request.wallet.sendCustomTokenSol({
-      sender: transactionPayload.from,
-      customTokenRecipient,
-      contractAddress,
-      rawValue
-    })
-  }
-
-  const handleSendCustomTokenK2 = async () => {
-    console.log({
-      sender: transactionPayload.from,
-      customTokenRecipient,
-      contractAddress,
-      rawValue
-    })
-    return await request.wallet.sendCustomTokenK2({
-      sender: transactionPayload.from,
-      customTokenRecipient,
-      contractAddress,
-      rawValue
-    })
-  }
-
   const onSubmitTransaction = async () => {
-    // if (!totalFee) {
-    //   setError('Transaction fee has not been loaded')
-    //   return
-    // }
-
     try {
       let totalOriginExpense
       if (transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) {
@@ -163,7 +75,6 @@ const useMethod = ({
         If requestId === undefined, request was sent internally from Finnie
       */
       setIsLoading(true)
-      clearInterval(getFeeInterval)
       if (requestId) {
         chrome.runtime.sendMessage({ requestId, approved: true }, function (response) {
           chrome.runtime.onMessage.addListener(function (message) {
@@ -182,47 +93,20 @@ const useMethod = ({
           Send request to background
         */
         let result
-        switch (network) {
-          case 'ARWEAVE':
-            if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
-              result = await handleSendCustomTokenAr()
-            } else {
-              result = await handleSendAr()
-            }
-            break
-          case 'ETHEREUM':
-            if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
-              result = await handleSendCustomTokenEth()
-            } else {
-              result = await handleSendEth()
-            }
-            break
-          case 'SOLANA':
-            if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
-              result = await handleSendCustomTokenSol()
-            } else {
-              result = await handleSendSol()
-            }
-            break
-          case 'K2':
-            if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
-              result = await handleSendCustomTokenK2()
-            } else {
-              result = await handleSendK2()
-            }
-            break
+        if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
+          result = await handleSendCustomTokenAr()
+        } else {
+          result = await handleSendAr()
         }
 
         setIsLoading(false)
         setShowReceipt(true)
         setTxId(result)
         storage.generic.set.pendingRequest({})
-        // setShowSigning(false)
       }
     } catch (err) {
       console.error(err.message)
       if (requestId) {
-        // window.close()
         setError(err.message)
       } else {
         setIsLoading(false)
@@ -232,7 +116,6 @@ const useMethod = ({
   }
 
   const onRejectTransaction = async () => {
-    clearInterval(getFeeInterval)
     if (requestId) {
       await storage.generic.set.pendingRequest({})
       window.close()

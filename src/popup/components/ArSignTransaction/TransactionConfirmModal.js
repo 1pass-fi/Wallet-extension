@@ -60,7 +60,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
 
   const { exploreBlockUrl } = useExploreBlockUrl({ transactionPayload })
 
-  const { Fee, tokenSymbol, totalFee, getFeeInterval } = useGetFee({ network, transactionPayload })
+  const { Fee, tokenSymbol, totalFee } = useGetFee({ network, transactionPayload })
 
   const { simulationData } = useSimulation({ network, transactionPayload })
 
@@ -112,7 +112,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     customTokenRecipient,
     setTxId,
     setShowReceipt,
-    getFeeInterval,
     totalFee
   })
 
@@ -189,12 +188,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 {transactionType === TRANSACTION_TYPE.CONTRACT_DEPLOYMENT && 'Contract Deployment'}
                 {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION &&
                   'Contract Interaction'}
-                {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER &&
-                  network === 'ETHEREUM' &&
-                  'Transfer ETH'}
-                {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER &&
-                  network === 'ARWEAVE' &&
-                  'Transfer AR'}
+                {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER && 'Transfer AR'}
                 {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && 'Transfer Token'}
               </div>
               {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION &&
@@ -308,16 +302,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                     {numberFormat(originBalance, 6)} {originSymbol}
                   </div>
                 </div>
-
-                {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER &&
-                  network !== 'ARWEAVE' && (
-                  <div className="flex mb-2">
-                    <div style={{ width: '176px' }}>Token Balance</div>
-                    <div className="flex font-normal text-xs items-center text-success-700">
-                      {numberFormat(balance, 6)} {symbol}
-                    </div>
-                  </div>
-                )}
 
                 <div className="flex">
                   <div style={{ width: '176px' }}> Transaction Fees</div>
