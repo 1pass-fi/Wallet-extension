@@ -6,7 +6,7 @@ import ReactTooltip from 'react-tooltip'
 import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
 import clsx from 'clsx'
-import { TYPE, NETWORK } from 'constants/accountConstants'
+import { NETWORK,TYPE } from 'constants/accountConstants'
 import formatLongString from 'finnie-v2/utils/formatLongString'
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import BackBtn from 'img/popup/back-button.svg'
@@ -15,9 +15,9 @@ import WarningIcon from 'img/popup/close-icon-red.svg'
 import WaitingIcon from 'img/popup/waiting-icon.svg'
 import WarningRedIcon from 'img/popup/warning-icon-red.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
+import CheckMarkIconBlue from 'img/v2/check-mark-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-white.svg'
 import DropdownDetailIcon from 'img/v2/detail-dropdown-icon.svg'
-import CheckMarkIconBlue from 'img/v2/check-mark-icon-blue.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import OkBtn from 'img/v2/popup-tx-detail-ok.svg'
 import SunriseLogo from 'img/v2/sunrise-logo/sunrise-logo.svg'
@@ -33,6 +33,7 @@ import { decodeTxMethod } from 'utils/index'
 import ConnectScreen from 'components/Connect/ConnectScreen'
 
 import { TAB, TRANSACTION_METHOD, TRANSACTION_TYPE } from './hooks/constants'
+import useAdvancedDetails from './hooks/useAdvancedDetails'
 import useExploreBlockUrl from './hooks/useExploreBlockUrl'
 import useGetFee from './hooks/useGetFee'
 import useLoadRequest from './hooks/useLoadRequest'
@@ -80,10 +81,10 @@ const AdvancedDetailItem = ({ instruction }) => {
   )
 }
 
-const AdvancedDetails = ({ instructions }) => {
+const AdvancedDetails = ({ textInstructions }) => {
   return (
     <div>
-      {instructions.map((instruction, index) => (
+      {textInstructions.map((instruction, index) => (
         <AdvancedDetailItem instruction={instruction} key={index} />
       ))}
     </div>
@@ -110,28 +111,10 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     senderName,
     recipientName,
     signWithoutSend,
-    instructionData
+    message
   } = useLoadRequest({ setIsLoading })
 
-  /* MOCK FOR TEST BECAUSE instructionData from useLoadRequest is now undefined */
-  // const instructionData = [
-  //   {
-  //     title: 'Create account',
-  //     'New Account': 'example_account',
-  //     Amount: '0.00024 SOL'
-  //   },
-  //   {
-  //     title: 'Initialize account',
-  //     Account: 'example_account',
-  //     Mint: '0.00024 SOL',
-  //     Owner: 'example_owner'
-  //   },
-  //   {
-  //     title: 'Unknown',
-  //     'Program Id': 'example_program_id',
-  //     Data: 'example_data'
-  //   }
-  // ]
+  const { textInstructions } = useAdvancedDetails({ message, origin })
 
   const trustStat = useSecurityStatus({ setIsLoading, url: origin })
 
@@ -428,7 +411,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               )}
 
               {/* INSTRUCTION ADVANCED DETAILS */}
-              {network === 'SOLANA' && (
+              {network === 'SOLANA' && !isEmpty(textInstructions) && (
                 <div className="w-90.5 h-full mt-5">
                   <div className="px-4 w-full h-10 flex justify-between font-normal text-sm text-indigo bg-purplelight rounded-md items-center">
                     <div className="w-40">See Advanced Details</div>
@@ -444,7 +427,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
 
                   {isDetailDrop && (
                     <div className="w-full h-full overflow-y-scroll">
-                      <AdvancedDetails instructions={instructionData} />
+                      <AdvancedDetails textInstructions={textInstructions} />
                     </div>
                   )}
                 </div>

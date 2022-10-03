@@ -22,52 +22,6 @@ import { v4 as uuid } from 'uuid'
 
 
 /* Use for solsea only */
-const getInstructionData = async (transaction) => {
-  try {
-    const instructions = transaction.instructions
-    const instructionOne = instructions[0]
-    const instructionTwo = instructions[1]
-    const instructionThree = instructions[2]
-
-    const decodedInstructionOne = decodeInitializeMintInstructionUnchecked(instructionOne)
-    console.log('decodedInstructionOne', decodedInstructionOne)
-    const oneMint = decodedInstructionOne.keys.mint.pubkey.toString()
-    const oneRent = decodedInstructionOne.keys.rent.pubkey.toString()
-
-    const decodedInstructionTwo = decodeInstruction(instructionTwo, instructionTwo.programId)
-    console.log('decodedInstructionTwo', decodedInstructionTwo)
-
-    const decodedInstructionThree = decodeInitializeMultisigInstructionUnchecked(instructionThree)
-    console.log('decodedInstructionThree', decodedInstructionThree)
-    const threeProgramId = decodedInstructionThree.programId.toString()
-    const threeData = 'Akt7JojuiN76Ghj'
-
-
-    /* HARD CODE */
-    return [
-      {
-        title: 'Create account',
-        'New Account': oneRent,
-        'Amount': '0.00024 SOL'
-      },
-      {
-        title: 'Initialize account',
-        'Account': oneRent,
-        'Mint': '0.00024 SOL',
-        'Owner': oneMint
-      },
-      {
-        title: 'Unknown',
-        'Program Id': threeProgramId,
-        'Data': threeData
-      }
-    ]
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-/* Use for solsea only */
 const getTransactionValue = async (transaction, address) => {
   try {
     const provider = await storage.setting.get.solanaProvider()
@@ -123,15 +77,11 @@ const getTransactionDataFromMessage = async (transactionMessage, origin, address
     
         const from = transaction.feePayer.toString()        
         const value = await getTransactionValue(transaction, address)
-        const instructionData = await getInstructionData(transaction)
 
-        console.log('instructionData=====', instructionData)
-      
         return {
           from,
           value,
-          transactionMessage,
-          instructionData
+          transactionMessage
         }
       } catch (err) {
         throw err
@@ -240,6 +190,7 @@ export default async (payload, tab, next) => {
       requestId,
       network: 'SOLANA',
       transactionPayload,
+      message,
       signWithoutSend: true
     }
 

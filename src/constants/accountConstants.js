@@ -39,3 +39,10 @@ export const IMPORTED = {
   SOLANA: 'IMPORTED_SOLANA',
   K2: 'K2'
 }
+
+export const NETWORK = {
+  ETHEREUM: 'ETHEREUM',
+  SOLANA: 'SOLANA',
+  ARWEAVE: 'ARWEAVE',
+  K2: 'K2'
+}
