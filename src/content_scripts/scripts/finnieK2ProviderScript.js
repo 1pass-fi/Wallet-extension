@@ -141,6 +141,11 @@ const finnieK2ProviderScript = `() => {
       const message = { type: ENDPOINTS.K2_DISCONNECT }
       return this.connection.send(message)
     }
+
+    signAndSendTransaction(payload) {
+      const message = { type: ENDPOINTS.K2_SIGN_AND_SEND_TRANSACTION, data: base58.encode(payload) }
+      return this.connection.send(message)
+    }
   }
 
   window.FinnieK2Provider = FinnieK2Provider
