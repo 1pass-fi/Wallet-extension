@@ -63,7 +63,7 @@ const Tokens = ({ currentProviderAddress }) => {
         // TODO DatH - LongP
         const importTokens = [
           {
-            name: 'KOII 2nd Testnet',
+            name: 'KOII',
             balance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             symbol: 'KOII',
@@ -200,7 +200,7 @@ const Tokens = ({ currentProviderAddress }) => {
           <div className="flex items-center">
             {token.name === 'Ethereum' && <EthereumIcon className="w-8.75 h-8.75" />}
             {token?.name?.includes('KOII 1st') && <FinnieIcon className="w-8.75 h-8.75" />}
-            {token?.name?.includes('KOII 2nd') && <K2Icon className="w-8.75 h-8.75" />}
+            {token?.name === 'KOII' && <K2Icon className="w-8.75 h-8.75" />}
             {token.name === 'Arweave' && <ArweaveIcon className="w-8.75 h-8.75" />}
             {token.name === 'Solana' && <SolanaIcon className="w-8.75 h-8.75" />}
             {token.name !== 'Ethereum' &&
