@@ -31,16 +31,11 @@ const getEmitter = () => {
   contentScriptEvents.on(MESSAGES.SOLANA_CHECK_CONNECTION, controller.solanaCheckConnection)
   contentScriptEvents.on(MESSAGES.SOLANA_CONNECT, controller.solanaConnect)
   contentScriptEvents.on(MESSAGES.SOLANA_DISCONNECT, controller.solanaDisconnect)
-  contentScriptEvents.on(
-    MESSAGES.SOLANA_SIGN_ALL_TRANSACTIONS,
-    controller.solanaSignAllTransactions
-  )
+  contentScriptEvents.on(MESSAGES.SOLANA_SIGN_ALL_TRANSACTIONS, controller.solanaSignAllTransactions)
   contentScriptEvents.on(MESSAGES.SOLANA_SIGN_TRANSACTION, controller.solanaSignTransaction)
   contentScriptEvents.on(MESSAGES.SOLANA_SIGN_MESSAGE, controller.solanaSignMessage)
-  contentScriptEvents.on(
-    MESSAGES.SOLANA_SIGN_AND_SEND_TRANSACTION,
-    controller.solanaSignAndSendTransaction
-  )
+  contentScriptEvents.on(MESSAGES.SOLANA_SIGN_AND_SEND_TRANSACTION, controller.solanaSignAndSendTransaction)
+  contentScriptEvents.on(MESSAGES.K2_CONNECT, controller.k2Connect)
 
   return contentScriptEvents
 }
