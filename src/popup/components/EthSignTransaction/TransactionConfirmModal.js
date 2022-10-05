@@ -100,7 +100,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     setError,
     setShowSigning,
     transactionPayload,
-    network,
     transactionType,
     contractAddress,
     value,
