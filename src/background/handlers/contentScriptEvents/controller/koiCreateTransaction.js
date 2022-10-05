@@ -52,7 +52,7 @@ export default async (payload, tab, next) => {
         beforeCreate: async () => {
           chrome.browserAction.setBadgeText({ text: '1' })
           await storage.generic.set.pendingRequest({
-            type: REQUEST.TRANSACTION,
+            type: REQUEST.AR_TRANSACTION,
             data: { transaction, qty, address, origin, favicon, fee, isKoi: true, isKoiTransfer, koiiQty }
           })
         },

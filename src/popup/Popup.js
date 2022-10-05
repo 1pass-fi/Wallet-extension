@@ -27,7 +27,9 @@ import { popupBackgroundConnect } from 'services/request/popup'
 import { EventHandler } from 'services/request/src/backgroundConnect'
 
 import Account from 'components/accounts'
+import ArSignModal from 'components/ArSignTransaction'
 import ConnectScreen from 'components/Connect/ConnectScreen'
+import EthSignModal from 'components/EthSignTransaction'
 import Loading from 'components/loading'
 import Message from 'components/message'
 import ConnectedSitesModal from 'components/modals/connectedSitesModal'
@@ -103,7 +105,11 @@ const Popup = ({
     showConnectSite,
     showSigning,
     setShowSigning,
-    showEthSign,
+    showEthSigning,
+    setShowEthSigning,
+    showArSigning,
+    setShowArSigning,
+    showEthSignMessage,
     showSignTypedDataV1,
     showSignTypedDataV3,
     showGetEncryptionKey,
@@ -150,7 +156,7 @@ const Popup = ({
   return (
     <div className="popup">
       <div className="h-full">
-        {showEthSign && !isWalletLocked && <EthSign />}
+        {showEthSignMessage && !isWalletLocked && <EthSign />}
         {showSignTypedDataV1 && !isWalletLocked && <SignTypedDataV1 />}
         {showSignTypedDataV3 && !isWalletLocked && <SignTypedDataV3 />}
         {showSolanaSignMessage && !isWalletLocked && <SolanaSignMessage />}
@@ -158,6 +164,8 @@ const Popup = ({
         {showConnectSite && !isWalletLocked && !isWalletLocked && <ConnectScreen />}
         {showConnectedSites && !isWalletLocked && <ConnectedSitesModal onClose={() => setShowConnectedSites(false)} />}
         {showSigning && !isWalletLocked && <SignModal setShowSigning={setShowSigning} />}
+        {showEthSigning && !isWalletLocked && <EthSignModal setShowSigning={setShowEthSigning} />}
+        {showArSigning && !isWalletLocked && <ArSignModal setShowSigning={setShowArSigning} />}
         {isContLoading && location.pathname === '/assets' && <ContinueLoading />}
         {isLoading !== 0 && <Loading />}
         {error && <Message type="error" children={error} />}

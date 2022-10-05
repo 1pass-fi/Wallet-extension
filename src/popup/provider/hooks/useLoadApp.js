@@ -19,7 +19,9 @@ const useLoadApp = ({
 }) => {
   const [showConnectSite, setShowConnectSite] = useState(false)
   const [showSigning, setShowSigning] = useState(false)
-  const [showEthSign, setShowEthSign] = useState(false)
+  const [showEthSigning, setShowEthSigning] = useState(false)
+  const [showArSigning, setShowArSigning] = useState(false)
+  const [showEthSignMessage, setShowEthSignMessage] = useState(false)
   const [showSignTypedDataV1, setShowSignTypedDataV1] = useState(false)
   const [showSignTypedDataV3, setShowSignTypedDataV3] = useState(false)
   const [showGetEcryptionKey, setShowGetEncryptionKey] = useState(false)
@@ -136,9 +138,15 @@ const useLoadApp = ({
           case REQUEST.TRANSACTION:
             setShowSigning(true)
             break
+          case REQUEST.ETH_TRANSACTION:
+            setShowEthSigning(true)
+            break
+          case REQUEST.AR_TRANSACTION:
+            setShowArSigning(true)
+            break
           case REQUEST.PERSONAL_SIGN:
           case REQUEST.ETH_SIGN:
-            setShowEthSign(true)
+            setShowEthSignMessage(true)
             break
           case REQUEST.SIGN_TYPED_DATA_V1:
             setShowSignTypedDataV1(true)
@@ -197,7 +205,11 @@ const useLoadApp = ({
     setShowConnectSite,
     showSigning,
     setShowSigning,
-    showEthSign,
+    showEthSigning,
+    setShowEthSigning,
+    showArSigning,
+    setShowArSigning,
+    showEthSignMessage,
     showSignTypedDataV1,
     showSignTypedDataV3,
     showGetEcryptionKey,

@@ -118,7 +118,7 @@ export default async (payload, tab, next) => {
         )
 
         await storage.generic.set.pendingRequest({
-          type: REQUEST.TRANSACTION,
+          type: REQUEST.ETH_TRANSACTION,
           data: requestPayload
         })
       },

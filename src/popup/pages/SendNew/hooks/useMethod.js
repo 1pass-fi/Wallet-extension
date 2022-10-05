@@ -82,7 +82,7 @@ const useMethod = ({
           }
 
           await storage.generic.set.pendingRequest({
-            type: REQUEST.TRANSACTION,
+            type: REQUEST.ETH_TRANSACTION,
             data: requestPayload
           })
         } else {
@@ -99,7 +99,7 @@ const useMethod = ({
             recipientName
           }
           await storage.generic.set.pendingRequest({
-            type: REQUEST.TRANSACTION,
+            type: REQUEST.ETH_TRANSACTION,
             data: requestPayload
           })
         }
@@ -137,7 +137,7 @@ const useMethod = ({
             recipientName
           }
           await storage.generic.set.pendingRequest({
-            type: REQUEST.TRANSACTION,
+            type: REQUEST.AR_TRANSACTION,
             data: requestPayload
           })
   
@@ -156,7 +156,7 @@ const useMethod = ({
           }
   
           await storage.generic.set.pendingRequest({
-            type: REQUEST.TRANSACTION,
+            type: REQUEST.AR_TRANSACTION,
             data: requestPayload
           })
         }

@@ -97,7 +97,7 @@ export default async (payload, tab, next) => {
         )
 
         await storage.generic.set.pendingRequest({
-          type: REQUEST.TRANSACTION,
+          type: REQUEST.AR_TRANSACTION,
           data: requestPayload
         })
       },
