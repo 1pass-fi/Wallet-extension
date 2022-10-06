@@ -142,6 +142,25 @@ const finnieK2ProviderScript = `() => {
       return this.connection.send(message)
     }
 
+    async signTransaction(transaction) {
+      try {
+        const encodedMessage = base58.encode(transaction.serializeMessage())
+  
+        const encodedSignedTransaction = await this.connection.send({ 
+          type: ENDPOINTS.K2_SIGN_TRANSACTION,
+          data: encodedMessage
+        })
+  
+        const signedTransaction = window.k2.Transaction.from(base58.decode(encodedSignedTransaction))
+        transaction.signatures = signedTransaction.signatures
+
+        return true
+      } catch (err) {
+        console.error('Sign transaction error:', err)
+        return false
+      }
+    }
+
     signAndSendTransaction(payload) {
       const message = { type: ENDPOINTS.K2_SIGN_AND_SEND_TRANSACTION, data: base58.encode(payload) }
       return this.connection.send(message)

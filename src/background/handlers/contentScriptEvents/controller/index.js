@@ -10,6 +10,7 @@ import getPublicKey from './getPublicKey'
 import getWalletName from './getWalletName'
 import k2Connect from './k2Connect'
 import k2SignAndSendTransaction from './k2SignAndSendTransaction'
+import k2SignTransaction from './k2SignTransaction'
 import koiConnect from './koiConnect'
 import koiCreateTransaction from './koiCreateTransaction'
 import koiDisconnect from './koiDisconnect'
@@ -61,5 +62,6 @@ export default {
   solanaSignAndSendTransaction,
   solanaCheckConnection,
   k2Connect,
-  k2SignAndSendTransaction
+  k2SignAndSendTransaction,
+  k2SignTransaction
 }
