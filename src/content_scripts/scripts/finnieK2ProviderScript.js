@@ -130,7 +130,7 @@ const finnieK2ProviderScript = `() => {
     async connect() {
       const message = { type: ENDPOINTS.K2_CONNECT }
       const result = await this.connection.send(message)
-      const publicKey = new window.solanaWeb3.PublicKey(result[0])
+      const publicKey = new window.k2.PublicKey(result[0])
       this.publicKey = publicKey
       this.isConnected = true
       this.emit('connect')
@@ -158,6 +158,22 @@ const finnieK2ProviderScript = `() => {
       } catch (err) {
         console.error('Sign transaction error:', err)
         return false
+      }
+    }
+
+    async signMessage(payload) {
+      const message = { type: ENDPOINTS.K2_SIGN_MESSAGE, data: payload }
+      const response = await this.connection.send(message)
+
+      let signature = response.signature
+      let publicKey = response.publicKey
+
+      signature = base58.decode(signature)
+      publicKey = new window.k2.PublicKey(publicKey)
+
+      return {
+        signature,
+        publicKey
       }
     }
 

@@ -11,6 +11,7 @@ import getWalletName from './getWalletName'
 import k2Connect from './k2Connect'
 import k2Disconnect from './k2Disconnect'
 import k2SignAndSendTransaction from './k2SignAndSendTransaction'
+import k2SignMessage from './k2SignMessage'
 import k2SignTransaction from './k2SignTransaction'
 import koiConnect from './koiConnect'
 import koiCreateTransaction from './koiCreateTransaction'
@@ -65,5 +66,6 @@ export default {
   k2Connect,
   k2Disconnect,
   k2SignAndSendTransaction,
+  k2SignMessage,
   k2SignTransaction
 }
