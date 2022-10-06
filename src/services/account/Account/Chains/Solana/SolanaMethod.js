@@ -164,7 +164,7 @@ export class SolanaMethod {
           )
         )
 
-        const metadatas = results.filter(Boolean).map((metadata, i) => ({
+        const metadatas = results.map((metadata, i) => ({
           metadata,
           type: metadataUrls[i][0].type,
           txId: metadataUrls[i][1]
