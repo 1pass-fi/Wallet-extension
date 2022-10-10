@@ -77,9 +77,7 @@ export default async (payload, tab, next) => {
             const approved = popupMessage.approved
             if (approved) {
               try {
-                const credentials = await backgroundAccount.getCredentialByAddress(
-                  connectedAddresses
-                )
+                const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses)
                 const k2Tool = new K2Tool(credentials)
                 const keypair = k2Tool.keypair
                 const signature = nacl.sign.detached(encodedMessage, keypair.secretKey)
@@ -88,9 +86,7 @@ export default async (payload, tab, next) => {
                   signature: base58.encode(signature)
                 }
 
-                if (
-                  nacl.sign.detached.verify(encodedMessage, signature, keypair.publicKey.toBytes())
-                )
+                if (nacl.sign.detached.verify(encodedMessage, signature, keypair.publicKey.toBytes()))
                   next({
                     data: returnPayload
                   })

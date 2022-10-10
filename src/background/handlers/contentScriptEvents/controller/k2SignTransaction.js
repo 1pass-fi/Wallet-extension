@@ -140,7 +140,7 @@ export default async (payload, tab, next) => {
 
                 const k2Provider = await storage.setting.get.k2Provider()
                 const connection = new Connection(clusterApiUrl(k2Provider), 'confirmed')
-                transaction.latestBlockHash = await connection.getLatestBlockhash().blockhash
+                transaction.latestBlockHash = await connection.getRecentBlockhash().blockhash
                 transaction.feePayer = sender // PublicKey
 
                 transaction.sign(keypair)
@@ -151,7 +151,7 @@ export default async (payload, tab, next) => {
                 next({ data: encodedSignedTransaction })
                 chrome.runtime.sendMessage({ requestId, finished: true })
               } catch (err) {
-                console.error('Send sol error:', err.message)
+                console.error('Send K2 error:', err.message)
                 chrome.runtime.sendMessage({ requestId, finished: true })
                 next({ error: { code: 4001, data: err.message } })
               }

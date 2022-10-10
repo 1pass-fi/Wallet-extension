@@ -146,7 +146,7 @@ export default async (payload, tab, next) => {
                   next({ data: signature })
                   chrome.runtime.sendMessage({requestId, finished: true})
                 } catch (err) {
-                  console.error('Send sol error:', err.message)
+                  console.error('Send K2 error:', err.message)
                   chrome.runtime.sendMessage({requestId, finished: true})
                   next({ error: { code: 4001, data: err.message } })
                 } 

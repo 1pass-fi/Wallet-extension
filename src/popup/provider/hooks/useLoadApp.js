@@ -161,9 +161,11 @@ const useLoadApp = ({
           case REQUEST.SOLANA_SIGN_MESSAGE:
             setShowSolanaSignMessage(true)
             break
+          case REQUEST.K2_SIGN_MESSAGE:
+            setShowSolanaSignMessage(true)
+            break
         }
       } else {
-
       }
 
       if (query.includes('create-wallet')) {

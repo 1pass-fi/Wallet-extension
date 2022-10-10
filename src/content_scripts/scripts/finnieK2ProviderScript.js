@@ -130,7 +130,7 @@ const finnieK2ProviderScript = `() => {
     async connect() {
       const message = { type: ENDPOINTS.K2_CONNECT }
       const result = await this.connection.send(message)
-      const publicKey = new window.k2.PublicKey(result[0])
+      const publicKey = new window.solanaWeb3.PublicKey(result[0])
       this.publicKey = publicKey
       this.isConnected = true
       this.emit('connect')
@@ -151,7 +151,7 @@ const finnieK2ProviderScript = `() => {
           data: encodedMessage
         })
   
-        const signedTransaction = window.k2.Transaction.from(base58.decode(encodedSignedTransaction))
+        const signedTransaction = window.solanaWeb3.Transaction.from(base58.decode(encodedSignedTransaction))
         transaction.signatures = signedTransaction.signatures
 
         return true
@@ -169,7 +169,7 @@ const finnieK2ProviderScript = `() => {
       let publicKey = response.publicKey
 
       signature = base58.decode(signature)
-      publicKey = new window.k2.PublicKey(publicKey)
+      publicKey = new window.solanaWeb3.PublicKey(publicKey)
 
       return {
         signature,
