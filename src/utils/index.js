@@ -920,7 +920,7 @@ export const clarifyEthereumProvider = (ethProvider) => {
     return { ethNetwork, apiKey }
   } catch (err) {
     console.error('Failed to clarify Ethereum Provider - error: ', err.message)
-    return { ethNetwork: 'rinkeby', apiKey: 'f811f2257c4a4cceba5ab9044a1f03d2' }
+    return { ethNetwork: 'goerli', apiKey: 'f811f2257c4a4cceba5ab9044a1f03d2' }
   }
 }
 

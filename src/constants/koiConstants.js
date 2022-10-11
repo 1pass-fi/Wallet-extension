@@ -303,7 +303,7 @@ export const PATH = {
   AFFILIATE_SUBMIT_CODE: 'https://koi.rocks:8888/api/v1/submitCode',
   AFFILIATE_TOTAL_REWARD: 'https://koi.rocks:8888/api/v1/totalRewardForAffiliate',
   // Opensea nft APIs
-  OPENSEA_API_RINEKY: 'https://rinkeby-api.opensea.io/api/v1',
+  OPENSEA_API_RINEKY: 'https://testnets-api.opensea.io/api/v1',
   OPENSEA_API_MAINNET: 'https://api.opensea.io/api/v1',
   KOII_LIVE: 'https://koii.live'
 }
@@ -471,7 +471,7 @@ export const URL = {
   TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf',
   GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchBridgeDetails',
   ETHERSCAN_MAINNET: 'https://etherscan.io',
-  ETHERSCAN_RINKEBY: 'https://rinkeby.etherscan.io',
+  ETHERSCAN_RINKEBY: 'https://goerli.etherscan.io',
   SOLANA_EXPLORE: 'https://explorer.solana.com/'
 }
 
@@ -503,7 +503,7 @@ export const ETH_NETWORK_PROVIDER = {
   MAINNET: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
   ROPSTEN: 'https://ropsten.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
   KOVAN: 'https://kovan.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
-  RINKEBY: 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
+  RINKEBY: 'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
 }
 
 export const ETH_NETWORK_NAME = {
@@ -558,7 +558,7 @@ export const KOI_ROUTER_CONTRACT = {
 
 export const ETHERSCAN_API = {
   MAINNET: 'https://api.etherscan.io',
-  RINKEY: 'https://api-rinkeby.etherscan.io'
+  RINKEY: 'https://api-goerli.etherscan.io'
 }
 
 export const ETH_NFT_BRIDGE_ACTION = {
