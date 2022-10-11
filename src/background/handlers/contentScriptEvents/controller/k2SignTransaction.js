@@ -141,7 +141,7 @@ export default async (payload, tab, next) => {
                 const k2Provider = await storage.setting.get.k2Provider()
                 const connection = new Connection(clusterApiUrl(k2Provider), 'confirmed')
                 transaction.latestBlockHash = await connection.getRecentBlockhash().blockhash
-                transaction.feePayer = sender // PublicKey
+                transaction.feePayer = keypair.publicKey // PublicKey
 
                 transaction.sign(keypair)
                 console.log('K2 signed transaction', transaction)

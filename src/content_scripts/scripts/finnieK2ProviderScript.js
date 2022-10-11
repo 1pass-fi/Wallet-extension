@@ -142,25 +142,6 @@ const finnieK2ProviderScript = `() => {
       return this.connection.send(message)
     }
 
-    async signTransaction(transaction) {
-      try {
-        const encodedMessage = base58.encode(transaction.serializeMessage())
-  
-        const encodedSignedTransaction = await this.connection.send({ 
-          type: ENDPOINTS.K2_SIGN_TRANSACTION,
-          data: encodedMessage
-        })
-  
-        const signedTransaction = window.solanaWeb3.Transaction.from(base58.decode(encodedSignedTransaction))
-        transaction.signatures = signedTransaction.signatures
-
-        return true
-      } catch (err) {
-        console.error('Sign transaction error:', err)
-        return false
-      }
-    }
-
     async signMessage(payload) {
       const message = { type: ENDPOINTS.K2_SIGN_MESSAGE, data: payload }
       const response = await this.connection.send(message)
@@ -174,6 +155,24 @@ const finnieK2ProviderScript = `() => {
       return {
         signature,
         publicKey
+      }
+    }
+
+    async signTransaction(transaction) {
+      try {
+        const encodedMessage = base58.encode(transaction.serializeMessage())
+
+        const encodedSignedTransaction = await this.connection.send({ 
+          type: ENDPOINTS.K2_SIGN_TRANSACTION,
+          data: encodedMessage
+        })
+        const signedTransaction = window.solanaWeb3.Transaction.from(base58.decode(encodedSignedTransaction))
+        transaction.signatures = signedTransaction.signatures
+
+        return true
+      } catch (err) {
+        console.error('Sign transaction error:', err)
+        return false
       }
     }
 
