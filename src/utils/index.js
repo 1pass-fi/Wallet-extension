@@ -410,13 +410,13 @@ export const signTransaction = async (koiObj, transaction) => {
 }
 
 export const numberFormat = (num, digit) => {
-  return num === null || num === undefined
+  return num === null || num === undefined || isNaN(num)
     ? '---'
     : new Intl.NumberFormat('en-US', { maximumFractionDigits: digit || 4 }).format(num)
 }
 
 export const fiatCurrencyFormat = (num) => {
-  return num === null || num === undefined
+  return num === null || num === undefined || isNaN(num)
     ? '---'
     : new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(num)
 }
