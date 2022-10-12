@@ -1,6 +1,6 @@
 import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
 import { Message, Transaction } from '@solana/web3.js'
-import { clusterApiUrl, Connection, PublicKey,sendAndConfirmTransaction } from '@solana/web3.js'
+import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js'
 import axios from 'axios'
 import base58 from 'bs58'
 import bs58 from 'bs58'
@@ -72,7 +72,7 @@ const getTransactionDataFromMessage = async (transactionMessage, origin, address
     
         const from = transaction.feePayer.toString()        
         const value = await getTransactionValue(transaction, address)
-      
+
         return {
           from,
           value,
@@ -185,6 +185,7 @@ export default async (payload, tab, next) => {
       requestId,
       network: 'SOLANA',
       transactionPayload,
+      message,
       signWithoutSend: true
     }
 

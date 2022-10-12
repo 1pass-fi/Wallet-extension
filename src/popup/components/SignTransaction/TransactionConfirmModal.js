@@ -6,17 +6,20 @@ import ReactTooltip from 'react-tooltip'
 import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
 import clsx from 'clsx'
-import { NETWORK } from 'constants/koiConstants'
+import { NETWORK } from 'constants/accountConstants'
+import formatLongString from 'finnie-v2/utils/formatLongString'
+import formatNumber from 'finnie-v2/utils/formatNumber'
 import BackBtn from 'img/popup/back-button.svg'
 import CheckMarkIcon from 'img/popup/check-mark-icon.svg'
 import WarningIcon from 'img/popup/close-icon-red.svg'
 import WaitingIcon from 'img/popup/waiting-icon.svg'
 import WarningRedIcon from 'img/popup/warning-icon-red.svg'
 import CheckMarkIconBlue from 'img/v2/check-mark-icon-blue.svg'
+import DropdownDetailIcon from 'img/v2/detail-dropdown-icon.svg'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import OkBtn from 'img/v2/popup-tx-detail-ok.svg'
 import SunriseLogo from 'img/v2/sunrise-logo/sunrise-logo.svg'
-import { get, isEmpty, isNumber } from 'lodash'
+import { get, includes,isEmpty, isNumber } from 'lodash'
 import { getDisplayAddress } from 'options/utils'
 // styles
 import storage from 'services/storage'
@@ -27,6 +30,7 @@ import { decodeTxMethod } from 'utils/index'
 import ConnectScreen from 'components/Connect/ConnectScreen'
 
 import { TAB, TRANSACTION_METHOD, TRANSACTION_TYPE } from './hooks/constants'
+import useAdvancedDetails from './hooks/useAdvancedDetails'
 import useExploreBlockUrl from './hooks/useExploreBlockUrl'
 import useGetFee from './hooks/useGetFee'
 import useLoadRequest from './hooks/useLoadRequest'
@@ -35,12 +39,62 @@ import useSecurityStatus from './hooks/useSecurityStatus'
 import useSendValue from './hooks/useSendValue'
 import useSimulation from './hooks/useSimulation'
 
-const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => {
+const AdvancedDetailItem = ({ instruction }) => {
+  const title = useMemo(() => {
+    return instruction?.title
+  }, [instruction])
+
+  const keys = useMemo(() => {
+    const _instruction = { ...instruction }
+    delete _instruction.title
+    return Object.keys(_instruction)
+  }, [instruction])
+
+  const values = useMemo(() => {
+    const _instruction = { ...instruction }
+    delete _instruction.title
+
+    return Object.values(_instruction)
+  }, [instruction])
+
+  const formatValues = (value) => {
+    if (includes(value, 'SOL')) {
+      const [amount, token] = value.split(' ')
+      return `${formatNumber(amount, 7)} ${token}`
+    }
+    return formatLongString(value, 20)
+  }
+
+  return (
+    <div className="px-4 mt-2 py-2.75 bg-purplelight rounded-lg">
+      <div className="text-darkGreen font-semibold text-sm">{title}</div>
+      {keys.map((key, index) => (
+        <div className="flex justify-between">
+          <div className="w-1/3 text-indigo font-normal text-sm text-left">{key}</div>
+          <div className="w-2/3 text-indigo font-semibold text-sm text-right">{formatValues(values[index])}</div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+const AdvancedDetails = ({ textInstructions }) => {
+  return (
+    <div>
+      {textInstructions.map((instruction, index) => (
+        <AdvancedDetailItem instruction={instruction} key={index} />
+      ))}
+    </div>
+  )
+}
+
+const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigning }) => {
   const [tab, setTab] = useState(TAB.DETAIL)
   const [showReceipt, setShowReceipt] = useState(false)
   const [txId, setTxId] = useState('')
   const [showConnectedSites, setShowConnectedSites] = useState(false)
   const [acceptSite, setAcceptSite] = useState(false)
+  const [isDetailDrop, setIsDetailDrop] = useState(false)
 
   const price = useSelector((state) => state.price)
   const {
@@ -53,10 +107,13 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     dataString,
     senderName,
     recipientName,
-    signWithoutSend
+    signWithoutSend,
+    message
   } = useLoadRequest({ setIsLoading })
 
-  const { trustStat } = useSecurityStatus({ setIsLoading, url: origin })
+  const { textInstructions } = useAdvancedDetails({ message, origin })
+
+  const trustStat = useSecurityStatus({ setIsLoading, url: origin })
 
   const { exploreBlockUrl } = useExploreBlockUrl({ transactionPayload })
 
@@ -349,6 +406,29 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                   </div>
                 </div>
               )}
+
+              {/* INSTRUCTION ADVANCED DETAILS */}
+              {network === 'SOLANA' && !isEmpty(textInstructions) && (
+                <div className="w-90.5 h-full mt-5">
+                  <div className="px-4 w-full h-10 flex justify-between font-normal text-sm text-indigo bg-purplelight rounded-md items-center">
+                    <div className="w-40">See Advanced Details</div>
+                    <div
+                      className="cursor-pointer w-6 h-6"
+                      onClick={() => setIsDetailDrop((prev) => !prev)}
+                    >
+                      <DropdownDetailIcon
+                        className={clsx(!isDetailDrop && 'transform rotate-180')}
+                      />
+                    </div>
+                  </div>
+
+                  {isDetailDrop && (
+                    <div className="w-full h-full overflow-y-scroll">
+                      <AdvancedDetails textInstructions={textInstructions} />
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
@@ -456,6 +536,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               {signWithoutSend ? 'Sign' : 'Send'}
             </button>
           </div>
+
           <ReactTooltip place="top" effect="float" />
           {showConnectedSites && (
             <ConnectScreen

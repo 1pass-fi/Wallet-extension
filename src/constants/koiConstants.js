@@ -627,3 +627,12 @@ export const NETWORK = {
   ARWEAVE: 'ARWEAVE',
   K2: 'K2'
 }
+
+export const DAPP_ORIGIN = {
+  SOLSEA: 'https://solsea.io'
+}
+
+export const SOLANA_PROGRAM_ID = {
+  SYSTEM_PROGRAM: '11111111111111111111111111111111',
+  TOKEN_PROGRAM_ID: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
+}
