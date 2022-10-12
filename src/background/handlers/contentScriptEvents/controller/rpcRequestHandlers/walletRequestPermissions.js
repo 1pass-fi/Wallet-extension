@@ -84,7 +84,12 @@ export default async (payload, tab, next) => {
                     invoker: origin,
                     parentCapability: 'eth_accounts'
                   }]
-  
+
+                  chrome.runtime.sendMessage({
+                    requestId,
+                    finished: true
+                  })
+                  
                   next({ data: permissions })
                 } catch (err) {
                   console.error(err.message)
