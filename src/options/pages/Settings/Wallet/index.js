@@ -190,7 +190,7 @@ export default () => {
             <div className="text-xs leading-4 mb-4.5 text-lightBlue">
               We can only show the exchange rate for fiat currencies at this time.
             </div>
-            <div style={{ width: '270px' }}>
+            <div style={{ width: '300px' }}>
               <DropDown
                 options={currenciesData}
                 value={currency}

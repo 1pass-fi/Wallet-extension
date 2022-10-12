@@ -18,7 +18,7 @@ import { fromArToWinston, fromEthToWei } from 'utils'
 // utils
 import getTokenData, { getK2CustomTokensData, getSolanaCustomTokensData } from 'utils/getTokenData'
 
-const Tokens = ({ currentProviderAddress }) => {
+const Tokens = ({ currentProviderAddress, currency }) => {
   const dispatch = useDispatch()
 
   const displayingAccount = useSelector(getDisplayingAccount)
@@ -158,7 +158,7 @@ const Tokens = ({ currentProviderAddress }) => {
 
   useEffect(() => {
     loadTokenList()
-  }, [importedTokenAddresses, displayingAccount])
+  }, [importedTokenAddresses, displayingAccount, currency, price])
 
   const handleRefreshTokenList = async () => {
     await loadTokenList()
@@ -219,7 +219,9 @@ const Tokens = ({ currentProviderAddress }) => {
               {token.displayingBalance} {token.symbol}
             </div>
             {currentProviderAddress?.includes('mainnet') && token.usdValue && (
-              <div>{token.usdValue} USD</div>
+              <div>
+                {token.usdValue} {currency}
+              </div>
             )}
           </div>
         </div>
