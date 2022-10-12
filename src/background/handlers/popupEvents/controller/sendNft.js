@@ -2,9 +2,10 @@
 import helpers from 'background/helpers'
 import { TYPE } from 'constants/accountConstants'
 // Constants
-import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
+import { NETWORK, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 import { find } from 'lodash'
 import { backgroundAccount } from 'services/account'
+import storage from 'services/storage'
 
 export default async (payload, next) => {
   const { nftId, senderAddress, recipientAddress } = payload.data
@@ -16,23 +17,31 @@ export default async (payload, next) => {
     const nft = find(allAssets, { txId: nftId })
 
     let txId
-
+    let network
     switch (nft?.type) {
       case TYPE.ARWEAVE:
         txId = await account.method.transferNFT(nftId, recipientAddress)
         break
       case TYPE.SOLANA:
         txId = await account.method.transferNFT(nftId, recipientAddress)
+        network = NETWORK.SOLANA
+        break
+      case TYPE.ETHEREUM:
+        txId = await account.method.transferNFT(nftId, recipientAddress)
+        network = await storage.setting.get.ethereumProvider()
         break
     }
 
+    if (!txId) {
+      next({ error: 'Failed to send nft' })
+    }
     const payload = {
       id: txId,
       activityName: 'Sent NFT',
       expense: 0.000001,
       target: recipientAddress,
       address: senderAddress,
-      network: null,
+      network: network,
       retried: 1,
       transactionType: PENDING_TRANSACTION_TYPE.SEND_NFT,
       contract: nftId
