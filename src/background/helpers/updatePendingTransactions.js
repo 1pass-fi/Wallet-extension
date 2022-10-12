@@ -5,10 +5,13 @@ import {
   ETH_NETWORK_PROVIDER,
   MAX_RETRIED,
   MESSAGES,
+  NETWORK,
   PATH,
   PENDING_TRANSACTION_TYPE,
-  URL} from 'constants/koiConstants'
-import { get,includes } from 'lodash'
+  SOL_NETWORK_PROVIDER,
+  URL
+} from 'constants/koiConstants'
+import { get, includes } from 'lodash'
 import helpers from 'options/actions/helpers'
 // Services
 import { backgroundAccount } from 'services/account'
@@ -85,6 +88,13 @@ export default async () => {
                   blockUrl = `${URL.ETHERSCAN_MAINNET}/tx/${transaction.id}`
                 if (transaction.network === ETH_NETWORK_PROVIDER.GOERLI)
                   blockUrl = `${URL.ETHERSCAN_GOERLI}/tx/${transaction.id}`
+                if (
+                  transaction.network === SOL_NETWORK_PROVIDER.MAINNET 
+                  || transaction.network === SOL_NETWORK_PROVIDER.TESTNET 
+                  || transaction.network === SOL_NETWORK_PROVIDER.DEVNET
+                ) {
+                  blockUrl = `${URL.SOLANA_EXPLORE}/tx/${transaction.id}?cluster=${transaction.network}`
+                }
               }
 
               if (includes(transaction.activityName, 'SOL')) {

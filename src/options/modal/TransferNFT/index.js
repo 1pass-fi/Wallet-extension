@@ -12,7 +12,7 @@ import { setAssets } from 'options/actions/assets'
 import { setError } from 'options/actions/error'
 import { GalleryContext } from 'options/galleryContext'
 import { popupBackgroundRequest } from 'services/request/popup'
-import { isArweaveAddress, isEthereumAddress } from 'utils'
+import { isArweaveAddress, isEthereumAddress, isSolanaAddress } from 'utils'
 
 import ConfirmTransfer from './ConfirmTransfer'
 import TransferFrom from './TransferForm'
@@ -81,6 +81,9 @@ const TransferNFT = ({
       case TYPE.ETHEREUM:
         isValid = isEthereumAddress(receiverAddress) 
         break
+      case TYPE.SOLANA:
+        isValid = isSolanaAddress(receiverAddress) 
+        break
     }
 
     if (!isValid) {
@@ -109,6 +112,10 @@ const TransferNFT = ({
       setSendBtnDisable(false)
       goToNextStage()
     } catch (error) {
+      const nfts = assets.nfts.map((nft) => {
+        if (nft.txId === txId) nft.isSending = false
+        return nft
+      })
       setSendBtnDisable(false)
       dispatch(setError('Whoops! Something went wrong!'))
     }
