@@ -153,7 +153,7 @@ export class EthereumMethod {
     network = this.eth.getCurrentNetWork()
 
     switch (network) {
-      case ETH_NETWORK_PROVIDER.RINKEBY:
+      case ETH_NETWORK_PROVIDER.GOERLI:
         etherscanNetwork = 'goerli'
         break
       default:
@@ -346,7 +346,7 @@ export class EthereumMethod {
     }
 
     if (includes(this.eth.provider, 'goerli')) {
-      koiRouterContractAddress = KOI_ROUTER_CONTRACT.RINKEBY
+      koiRouterContractAddress = KOI_ROUTER_CONTRACT.GOERLI
     }
 
     if (!koiRouterContractAddress) throw new Error('Something went wrong.')
@@ -420,7 +420,7 @@ export class EthereumMethod {
       const provider = this.eth.provider
       let etherscanUrl
       if (provider === ETH_NETWORK_PROVIDER.MAINNET) etherscanUrl = URL.ETHERSCAN_MAINNET
-      if (provider === ETH_NETWORK_PROVIDER.RINKEBY) etherscanUrl = URL.ETHERSCAN_RINKEBY
+      if (provider === ETH_NETWORK_PROVIDER.GOERLI) etherscanUrl = URL.ETHERSCAN_GOERLI
 
       let fetchedNFTs = await Promise.all(
         contents.map(async (content) => {

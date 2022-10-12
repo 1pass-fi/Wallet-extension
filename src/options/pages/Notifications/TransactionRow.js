@@ -26,7 +26,7 @@ const TransactionRow = ({
       url =
         network === ETH_NETWORK_PROVIDER.MAINNET
           ? `${URL.ETHERSCAN_MAINNET}/tx/${id}`
-          : `${URL.ETHERSCAN_RINKEBY}/tx/${id}`
+          : `${URL.ETHERSCAN_GOERLI}/tx/${id}`
     }
 
     let from = ''

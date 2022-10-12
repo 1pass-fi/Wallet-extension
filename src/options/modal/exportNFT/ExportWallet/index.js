@@ -189,7 +189,7 @@ export default ({ info, onClose, type }) => {
       const koiRouterContractAddress =
         provider === ETH_NETWORK_PROVIDER.MAINNET
           ? KOI_ROUTER_CONTRACT.MAINNET
-          : KOI_ROUTER_CONTRACT.RINKEBY
+          : KOI_ROUTER_CONTRACT.GOERLI
 
       const isApproved = await tokenContract.methods
         .isApprovedForAll(_ownerAddress, koiRouterContractAddress)
@@ -208,7 +208,7 @@ export default ({ info, onClose, type }) => {
         const account = await popupAccount.getAccount({ address: _ownerAddress })
         const provider = await account.get.provider()
         
-        const koiRouterContractAddress = provider === ETH_NETWORK_PROVIDER.MAINNET ? KOI_ROUTER_CONTRACT.MAINNET : KOI_ROUTER_CONTRACT.RINKEBY
+        const koiRouterContractAddress = provider === ETH_NETWORK_PROVIDER.MAINNET ? KOI_ROUTER_CONTRACT.MAINNET : KOI_ROUTER_CONTRACT.GOERLI
         
         const web3 = new Web3(provider)
         const koiRouterContract = new web3.eth.Contract(koiRouterABI, koiRouterContractAddress)

@@ -51,7 +51,7 @@ const HomeTop = ({
       value: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
     },
     {
-      label: 'Rinkeby TestNet',
+      label: 'Goerli TestNet',
       value: 'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
     }
   ]

@@ -559,8 +559,8 @@ export const getProviderUrlFromName = (name) => {
       return ETH_NETWORK_PROVIDER.ROPSTEN
     case ETH_NETWORK_NAME.KOVAN:
       return ETH_NETWORK_PROVIDER.KOVAN
-    case ETH_NETWORK_NAME.RINKEBY:
-      return ETH_NETWORK_PROVIDER.RINKEBY
+    case ETH_NETWORK_NAME.GOERLI:
+      return ETH_NETWORK_PROVIDER.GOERLI
   }
 }
 export const getProviderNameFromUrl = (name) => {
@@ -571,8 +571,8 @@ export const getProviderNameFromUrl = (name) => {
       return ETH_NETWORK_NAME.ROPSTEN
     case ETH_NETWORK_PROVIDER.KOVAN:
       return ETH_NETWORK_NAME.KOVAN
-    case ETH_NETWORK_PROVIDER.RINKEBY:
-      return ETH_NETWORK_NAME.RINKEBY
+    case ETH_NETWORK_PROVIDER.GOERLI:
+      return ETH_NETWORK_NAME.GOERLI
   }
 }
 

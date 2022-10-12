@@ -83,8 +83,8 @@ export default async () => {
               } else {
                 if (transaction.network === ETH_NETWORK_PROVIDER.MAINNET)
                   blockUrl = `${URL.ETHERSCAN_MAINNET}/tx/${transaction.id}`
-                if (transaction.network === ETH_NETWORK_PROVIDER.RINKEBY)
-                  blockUrl = `${URL.ETHERSCAN_RINKEBY}/tx/${transaction.id}`
+                if (transaction.network === ETH_NETWORK_PROVIDER.GOERLI)
+                  blockUrl = `${URL.ETHERSCAN_GOERLI}/tx/${transaction.id}`
               }
 
               if (includes(transaction.activityName, 'SOL')) {
