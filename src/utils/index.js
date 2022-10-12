@@ -422,7 +422,7 @@ export const fiatCurrencyFormat = (num) => {
 }
 
 export const transactionAmountFormat = (num) => {
-  return num === null || num === undefined
+  return num === null || num === undefined || isNaN(num)
     ? '---'
     : `${Math.round(num * Math.pow(10, 6)) / Math.pow(10, 6)}`
 }
