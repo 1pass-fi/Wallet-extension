@@ -163,7 +163,7 @@ const NFTDetail = () => {
                 </div>
               )}
 
-              {nft?.type === TYPE.SOLANA ? (
+              {nft?.type === TYPE.SOLANA && (
                 <div className="flex gap-4 mb-4">
                   <a
                     // href={`https://solscan.io/tx/${nft.txId}?cluster=${nft.provider}`}
@@ -178,7 +178,25 @@ const NFTDetail = () => {
                     />
                   </a>
                 </div>
-              ) : (
+              )}
+
+              {nft?.type === TYPE.ETHEREUM && (
+                <div className="flex gap-4 mb-4">
+                  <a
+                    href={nft.koiRockUrl}
+                    target="_blank"
+                  >
+                    <Button
+                      icon={BlockIcon}
+                      text={'Explore Block'}
+                      variant="inversed"
+                      className="border-opacity-20"
+                    />
+                  </a>
+                </div>
+              )}
+
+              {nft?.type === TYPE.ARWEAVE && (
                 <div className="flex gap-4 mb-4">
                   <a href={`https://viewblock.io/arweave/tx/${nft.txId}`} target="_blank">
                     <Button
@@ -266,7 +284,7 @@ const NFTDetail = () => {
                           : ''
                       }
                     >
-                      {(nft.type === TYPE.ARWEAVE) && (
+                      {nft.type === TYPE.ARWEAVE && (
                         <Button
                           size="lg"
                           icon={isArweaveNft ? EthLogo : ArweaveLogo}
