@@ -10,7 +10,7 @@ export default ({ title: Title = () => <></>, description: Description = () => <
     ETH_NETWORK_NAME.MAINNET,
     // ETH_NETWORK_NAME.ROPSTEN,
     // ETH_NETWORK_NAME.KOVAN,
-    ETH_NETWORK_NAME.RINKEBY
+    ETH_NETWORK_NAME.GOERLI
     // 'Ethereum Mainnet',
     // 'Ropsten Test Network',
     // 'Kovan Test Network',

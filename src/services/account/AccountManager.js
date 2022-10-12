@@ -54,7 +54,7 @@ class AccountManager {
 
       const provider =
         (await storage.setting.get.ethereumProvider()) ||
-        'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
+        'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
 
       const solProvider = (await storage.setting.get.solanaProvider()) || 'testnet'
 

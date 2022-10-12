@@ -15,8 +15,8 @@ const useExploreBlock = ({ transactionPayload }) => {
         if (provider === ETH_NETWORK_PROVIDER.MAINNET) {
           return setExploreBlockUrl('https://etherscan.io/tx')
         }
-        if (provider === ETH_NETWORK_PROVIDER.RINKEBY) {
-          return setExploreBlockUrl('https://rinkeby.etherscan.io/tx')
+        if (provider === ETH_NETWORK_PROVIDER.GOERLI) {
+          return setExploreBlockUrl('https://goerli.etherscan.io/tx')
         }
       }
     }

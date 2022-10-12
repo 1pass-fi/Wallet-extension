@@ -57,7 +57,7 @@ export class EthereumMethod {
       const ethereumProvider = await storage.setting.get.ethereumProvider()
       console.log('ethereumProvider', ethereumProvider)
 
-      if (ethereumProvider.includes('rinkeby')) path = PATH.OPENSEA_API_RINEKY
+      if (ethereumProvider.includes('goerli')) path = PATH.OPENSEA_API_RINEKY
 
       console.log('ETH ADDRESS', this.eth.address)
       console.log('ETH PROVIDER', this.eth.provider)
@@ -153,8 +153,8 @@ export class EthereumMethod {
     network = this.eth.getCurrentNetWork()
 
     switch (network) {
-      case ETH_NETWORK_PROVIDER.RINKEBY:
-        etherscanNetwork = 'rinkeby'
+      case ETH_NETWORK_PROVIDER.GOERLI:
+        etherscanNetwork = 'goerli'
         break
       default:
         etherscanNetwork = 'homestead'
@@ -345,8 +345,8 @@ export class EthereumMethod {
       koiRouterContractAddress = KOI_ROUTER_CONTRACT.MAINNET
     }
 
-    if (includes(this.eth.provider, 'rinkeby')) {
-      koiRouterContractAddress = KOI_ROUTER_CONTRACT.RINKEBY
+    if (includes(this.eth.provider, 'goerli')) {
+      koiRouterContractAddress = KOI_ROUTER_CONTRACT.GOERLI
     }
 
     if (!koiRouterContractAddress) throw new Error('Something went wrong.')
@@ -420,7 +420,7 @@ export class EthereumMethod {
       const provider = this.eth.provider
       let etherscanUrl
       if (provider === ETH_NETWORK_PROVIDER.MAINNET) etherscanUrl = URL.ETHERSCAN_MAINNET
-      if (provider === ETH_NETWORK_PROVIDER.RINKEBY) etherscanUrl = URL.ETHERSCAN_RINKEBY
+      if (provider === ETH_NETWORK_PROVIDER.GOERLI) etherscanUrl = URL.ETHERSCAN_GOERLI
 
       let fetchedNFTs = await Promise.all(
         contents.map(async (content) => {

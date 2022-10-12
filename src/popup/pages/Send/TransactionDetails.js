@@ -107,7 +107,7 @@ const TransactionDetails = ({
         <div>
           <div className="font-semibold">Status:</div>
           <div>Confirmed</div>
-          <a href={`https://rinkeby.etherscan.io/tx/${txId}`} target="_blank">
+          <a href={`https://goerli.etherscan.io/tx/${txId}`} target="_blank">
             <div className="text-2xs text-success-700 underline">Explore Block</div>
           </a>
         </div>

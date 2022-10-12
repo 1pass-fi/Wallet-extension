@@ -303,7 +303,7 @@ export const PATH = {
   AFFILIATE_SUBMIT_CODE: 'https://koi.rocks:8888/api/v1/submitCode',
   AFFILIATE_TOTAL_REWARD: 'https://koi.rocks:8888/api/v1/totalRewardForAffiliate',
   // Opensea nft APIs
-  OPENSEA_API_RINEKY: 'https://rinkeby-api.opensea.io/api/v1',
+  OPENSEA_API_RINEKY: 'https://testnets-api.opensea.io/api/v1',
   OPENSEA_API_MAINNET: 'https://api.opensea.io/api/v1',
   KOII_LIVE: 'https://koii.live'
 }
@@ -333,13 +333,13 @@ export const ERROR_MESSAGE = {
   CREATE_WALLET_FAILED: 'Create new wallet failed.',
   INVALID_JSON_KEY: 'Invalid JSON key. Please make sure that you chose a valid key.',
   SEND_ZERO_KOI: 'Whoops! Enter the amount of tokens you want to send.',
-  SEND_WITH_ETH: 'We currently only support Ethereum transfers on the Rinkeby network.',
+  SEND_WITH_ETH: 'We currently only support Ethereum transfers on the Goerli network.',
   INVALID_TOKEN_SCHEMA: 'Invalid token schema. Please use nft with token schema of ERC1155',
   NOT_ENOUGH_ETH: `You don't have enough ETH.`,
   EXPIRED_TRANSACTION_ACTION_ERROR:
     'Something went wrong when trying to delete or resend your transaction',
   BRIDGE_WITH_ETH_MAINNET:
-    'We currently only support Ethereum NFT bridging on the Rinkeby network.',
+    'We currently only support Ethereum NFT bridging on the Goerli network.',
   NFT_NOT_EXIST_ON_CHAIN: `This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie.`,
   BRIDGE_NFT_FAILED: 'Bridge NFT failed',
   ACCOUNT_EXIST: 'This account has already been imported.',
@@ -471,7 +471,7 @@ export const URL = {
   TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf',
   GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchBridgeDetails',
   ETHERSCAN_MAINNET: 'https://etherscan.io',
-  ETHERSCAN_RINKEBY: 'https://rinkeby.etherscan.io',
+  ETHERSCAN_GOERLI: 'https://goerli.etherscan.io',
   SOLANA_EXPLORE: 'https://explorer.solana.com/'
 }
 
@@ -503,14 +503,14 @@ export const ETH_NETWORK_PROVIDER = {
   MAINNET: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
   ROPSTEN: 'https://ropsten.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
   KOVAN: 'https://kovan.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
-  RINKEBY: 'https://rinkeby.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
+  GOERLI: 'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
 }
 
 export const ETH_NETWORK_NAME = {
   MAINNET: 'Ethereum Mainnet',
   ROPSTEN: 'Ropsten Test Network',
   KOVAN: 'Kovan Test Network',
-  RINKEBY: 'Rinkeby Test Network'
+  GOERLI: 'GOERLI Test Network'
 }
 
 export const FRIEND_REFERRAL_ENDPOINTS = {
@@ -519,12 +519,6 @@ export const FRIEND_REFERRAL_ENDPOINTS = {
   CHECK_AFFILIATE_INVITE_SPENT: 'CHECK_AFFILIATE_INVITE_SPENT',
   CLAIM_REWARD: 'CLAIM_REWARD',
   SUBMIT_CODE: 'SUBMIT_CODE'
-}
-
-// TODO
-export const OPEN_SEA_API = {
-  MAINNET: '',
-  RINKEBY: ''
 }
 
 export const STREAM = {
@@ -551,14 +545,15 @@ export const ALLOWED_ORIGIN = [
   'https://www.verto.exchange'
 ]
 
+// TODO - Re-check KOI_ROUTER_CONTRACT.GOERLI
 export const KOI_ROUTER_CONTRACT = {
   MAINNET: '0x5B8Db3177f9904b4f8510D7FD074A44Abf610528',
-  RINKEBY: '0x8ce759A419aC0fE872e93C698F6e352246FDb50B'
+  GOERLI: '0x8ce759A419aC0fE872e93C698F6e352246FDb50B'
 }
 
 export const ETHERSCAN_API = {
   MAINNET: 'https://api.etherscan.io',
-  RINKEY: 'https://api-rinkeby.etherscan.io'
+  GOERLI: 'https://api-goerli.etherscan.io'
 }
 
 export const ETH_NFT_BRIDGE_ACTION = {

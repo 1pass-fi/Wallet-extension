@@ -70,8 +70,8 @@ const ActivityRow = ({
         } else {
           if (network === ETH_NETWORK_PROVIDER.MAINNET)
             blockUrl = `${URL.ETHERSCAN_MAINNET}/tx/${id}`
-          if (network === ETH_NETWORK_PROVIDER.RINKEBY)
-            blockUrl = `${URL.ETHERSCAN_RINKEBY}/tx/${id}`
+          if (network === ETH_NETWORK_PROVIDER.GOERLI)
+            blockUrl = `${URL.ETHERSCAN_GOERLI}/tx/${id}`
         }
 
         if (includes(activityName, 'SOL')) {

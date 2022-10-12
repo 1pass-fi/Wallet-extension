@@ -7,7 +7,7 @@ const HDWalletProvider = require('@truffle/hdwallet-provider')
 const fromEthToArweave = async () => {
   try {
     const provider = new HDWalletProvider('939eeb8b935762306c76ce02ce7947b18ff4dcdac2aba553c2660b0cd673ff6f',
-      'https://rinkeby.infura.io/v3/70c4cf77c9054fd3a3196659f7dfe4f7'
+      'https://goerli.infura.io/v3/70c4cf77c9054fd3a3196659f7dfe4f7'
     )
 
     const web3 = new Web3(provider)
