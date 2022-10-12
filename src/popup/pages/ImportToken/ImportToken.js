@@ -51,7 +51,7 @@ export const ImportToken = () => {
 
       {isEmpty(tokenImport) ? (
         <>
-          <div className="flex sticky font-normal text-base leading-5 text-blue-850 mt-2">
+          <div className="flex sticky font-normal text-base leading-5 text-blue-850 mt-2 px-6">
             {tabs.map((tab, idx) => (
               <div
                 key={idx}
