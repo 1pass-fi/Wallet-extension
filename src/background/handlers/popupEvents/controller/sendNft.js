@@ -24,7 +24,7 @@ export default async (payload, next) => {
         break
       case TYPE.SOLANA:
         txId = await account.method.transferNFT(nftId, recipientAddress)
-        network = NETWORK.SOLANA
+        network = await storage.setting.get.solanaProvider()
         break
       case TYPE.ETHEREUM:
         txId = await account.method.transferNFT(nftId, recipientAddress)
@@ -34,6 +34,7 @@ export default async (payload, next) => {
 
     if (!txId) {
       next({ error: 'Failed to send nft' })
+      return
     }
     const payload = {
       id: txId,

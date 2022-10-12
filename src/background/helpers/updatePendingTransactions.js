@@ -8,6 +8,7 @@ import {
   NETWORK,
   PATH,
   PENDING_TRANSACTION_TYPE,
+  SOL_NETWORK_PROVIDER,
   URL
 } from 'constants/koiConstants'
 import { get, includes } from 'lodash'
@@ -87,9 +88,12 @@ export default async () => {
                   blockUrl = `${URL.ETHERSCAN_MAINNET}/tx/${transaction.id}`
                 if (transaction.network === ETH_NETWORK_PROVIDER.GOERLI)
                   blockUrl = `${URL.ETHERSCAN_GOERLI}/tx/${transaction.id}`
-                if (transaction.network === NETWORK.SOLANA) {
-                  const solProvider = await storage.setting.get.solanaProvider()
-                  blockUrl = `${URL.SOLANA_EXPLORE}/tx/${transaction.id}?cluster=${solProvider}`
+                if (
+                  transaction.network === SOL_NETWORK_PROVIDER.MAINNET 
+                  || transaction.network === SOL_NETWORK_PROVIDER.TESTNET 
+                  || transaction.network === SOL_NETWORK_PROVIDER.DEVNET
+                ) {
+                  blockUrl = `${URL.SOLANA_EXPLORE}/tx/${transaction.id}?cluster=${transaction.network}`
                 }
               }
 
