@@ -61,6 +61,7 @@ export default class ContentScriptEvents extends EventEmitter {
   getNetworkFromEndpoint(endpoint) {
     if (['ETHEREUM_RPC_REQUEST'].includes(endpoint)) return NETWORK.ETHEREUM
     if (endpoint?.includes('SOLANA')) return NETWORK.SOLANA
+    if (endpoint?.includes('K2')) return NETWORK.K2
     return NETWORK.ARWEAVE
   }
 
@@ -78,6 +79,7 @@ export default class ContentScriptEvents extends EventEmitter {
     const defaultArweaveAddress = await storage.setting.get.activatedArweaveAccountAddress()
     const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
     const defaultSolanaAddress = await storage.setting.get.activatedSolanaAccountAddress()
+    const defaultK2Address = await storage.setting.get.activatedK2AccountAddress()
 
     let activatedAddress
     switch (network) {
@@ -89,6 +91,9 @@ export default class ContentScriptEvents extends EventEmitter {
         break
       case NETWORK.SOLANA:
         activatedAddress = defaultSolanaAddress
+        break
+      case NETWORK.K2:
+        activatedAddress = defaultK2Address
     }
 
     const siteConnectedAddresses = (await storage.setting.get.siteConnectedAddresses())[origin]

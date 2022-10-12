@@ -5,6 +5,7 @@ import declareConstantScript from 'content_scripts/scripts/declareConstantScript
 import eventEmitterScript from 'content_scripts/scripts/eventEmitterScript'
 import finnieArweaveProviderScript from 'content_scripts/scripts/finnieArweaveProviderScript'
 import finnieEthereumProviderScript from 'content_scripts/scripts/finnieEthereumProviderScript'
+import finnieK2ProviderScript from 'content_scripts/scripts/finnieK2ProviderScript'
 import finnieKoiiWalletProviderScript from 'content_scripts/scripts/finnieKoiiWalletProviderScript'
 import finnieRpcConnectionScript from 'content_scripts/scripts/finnieRpcConnectionScript'
 import finnieSolanaProviderScript from 'content_scripts/scripts/finnieSolanaProviderScript'
@@ -38,6 +39,7 @@ async function contentScript () {
     `(${finnieArweaveProviderScript})()`,
     `(${finnieSolanaProviderScript})()`,
     `(${finnieKoiiWalletProviderScript})()`,
+    `(${finnieK2ProviderScript})()`,
     `(${mainScript(disabled)})();`
   ]
 

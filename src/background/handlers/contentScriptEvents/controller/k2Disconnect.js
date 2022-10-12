@@ -9,12 +9,10 @@ export default async (_, tab, next) => {
       let siteConnectedAddresses = await storage.setting.get.siteConnectedAddresses()
       if (isEmpty(siteConnectedAddresses[origin])) return next()
 
-      let connectedSolanaAddresses = get(siteConnectedAddresses[origin], 'solana', [])
-      connectedSolanaAddresses = connectedSolanaAddresses.filter(
-        (address) => address !== activatedAddress
-      )
+      let connectedK2Addresses = get(siteConnectedAddresses[origin], 'k2', [])
+      connectedK2Addresses = connectedK2Addresses.filter((address) => address !== activatedAddress)
 
-      siteConnectedAddresses[origin].solana = connectedSolanaAddresses
+      siteConnectedAddresses[origin].k2 = connectedK2Addresses
       await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
     }
 

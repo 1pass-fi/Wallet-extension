@@ -27,6 +27,9 @@ export class SettingMethod {
       } else if (network === NETWORK.SOLANA) {
         connectedAddresses = connectedAddresses.solana
         defaultAddress = await storage.setting.get.activatedSolanaAccountAddress()
+      } else if (network === NETWORK.K2) {
+        connectedAddresses = connectedAddresses.k2
+        defaultAddress = await storage.setting.get.activatedK2AccountAddress()
       }
 
       return connectedAddresses?.includes(defaultAddress)
