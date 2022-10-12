@@ -1,9 +1,7 @@
 // import Web3 from 'web3'
 import { ethers } from 'ethers'
-
-import { clarifyEthereumProvider } from 'utils'
-
 import storage from 'services/storage'
+import { clarifyEthereumProvider } from 'utils'
 
 export default async (payload, tab, next) => {
   try {

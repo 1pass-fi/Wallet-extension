@@ -1,9 +1,8 @@
 import { useEffect,useState } from 'react'
 import ERC20_ABI from 'abi/ERC20.json'
-import storage from 'services/storage'
 // import Web3 from 'web3'
 import { ethers } from 'ethers'
-
+import storage from 'services/storage'
 import { clarifyEthereumProvider } from 'utils'
 
 const useGetTokenMetaData = ({ contractAddress }) => {

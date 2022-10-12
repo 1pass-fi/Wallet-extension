@@ -1,13 +1,11 @@
 // import Web3 from 'web3'
-import { ethers } from 'ethers'
-
-import { clarifyEthereumProvider } from 'utils'
-
 // Constants
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
+import { ethers } from 'ethers'
 import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
+import { clarifyEthereumProvider } from 'utils'
 // Utils
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'

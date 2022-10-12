@@ -1,6 +1,6 @@
 import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
 import { Message, Transaction } from '@solana/web3.js'
-import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js'
+import { clusterApiUrl, Connection, PublicKey, sendAndConfirmTransaction } from '@solana/web3.js'
 import axios from 'axios'
 import base58 from 'bs58'
 import bs58 from 'bs58'
@@ -15,7 +15,6 @@ import storage from 'services/storage'
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
 
-
 /* Use for solsea only */
 const getTransactionValue = async (transaction, address) => {
   try {
@@ -24,15 +23,14 @@ const getTransactionValue = async (transaction, address) => {
     const blockhash = (await connection.getLatestBlockhash()).blockhash
     transaction.recentBlockhash = blockhash
 
-
     const transactionString = base58.encode(transaction.serialize({ verifySignatures: false }))
 
     const providerUrl = clusterApiUrl(provider)
     const requestBody = {
-      'jsonrpc': '2.0',
-      'id': 1,
-      'method': 'simulateTransaction',
-      'params': [
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'simulateTransaction',
+      params: [
         transactionString,
         {
           accounts: {
@@ -42,13 +40,13 @@ const getTransactionValue = async (transaction, address) => {
       ]
     }
     const response = await axios.post(providerUrl, requestBody)
-  
+
     const afterBalance = get(response, 'data.result.value.accounts[0].lamports')
-  
+
     if (!afterBalance) {
       throw new Error('Simulate value failed')
     }
-  
+
     const balance = await connection.getBalance(new PublicKey(address))
     return balance - afterBalance
   } catch (err) {
@@ -69,8 +67,8 @@ const getTransactionDataFromMessage = async (transactionMessage, origin, address
         const transaction = Transaction.populate(message)
         const blockhash = (await connection.getLatestBlockhash()).blockhash
         transaction.recentBlockhash = blockhash
-    
-        const from = transaction.feePayer.toString()        
+
+        const from = transaction.feePayer.toString()
         const value = await getTransactionValue(transaction, address)
 
         return {
@@ -86,18 +84,24 @@ const getTransactionDataFromMessage = async (transactionMessage, origin, address
 
       const transaction = Transaction.populate(message)
       const instruction = transaction.instructions[0]
-  
+
       const decodeData = decodeTransferInstructionUnchecked(instruction)
-  
+
       if (decodeData.data.instruction === 3) {
         const provider = await storage.setting.get.solanaProvider()
         const connection = new Connection(clusterApiUrl(provider), 'confirmed')
-  
-        const contractData = await getAccount(connection, new PublicKey(decodeData.keys.source.pubkey))
+
+        const contractData = await getAccount(
+          connection,
+          new PublicKey(decodeData.keys.source.pubkey)
+        )
         const contractAddress = contractData.mint.toString()
-  
-        const recipientAccount = await getAccount(connection, new PublicKey(decodeData.keys.destination.pubkey))
-  
+
+        const recipientAccount = await getAccount(
+          connection,
+          new PublicKey(decodeData.keys.destination.pubkey)
+        )
+
         return {
           from: decodeData.keys.owner.pubkey.toString(),
           to: recipientAccount.owner.toString(),
@@ -108,7 +112,7 @@ const getTransactionDataFromMessage = async (transactionMessage, origin, address
         return {
           from: decodeData.keys.source.pubkey.toString(),
           to: decodeData.keys.destination.pubkey.toString(),
-          value: Number(decodeData.data.amount) / 16777216,
+          value: Number(decodeData.data.amount) / 16777216
         }
       }
     }
@@ -119,17 +123,17 @@ const getTransactionDataFromMessage = async (transactionMessage, origin, address
 
 export default async (payload, tab, next) => {
   try {
-    const {       
-      origin, 
-      favicon, 
-      hadPermission, 
+    const {
+      origin,
+      favicon,
+      hadPermission,
       hasPendingRequest,
       activatedAddress,
-      connectedAddresses 
+      connectedAddresses
     } = tab
 
     if (!hadPermission) {
-      return next({error: { code: 4100,  message: 'No permissions' }})
+      return next({ error: { code: 4100, message: 'No permissions' } })
     }
 
     if (hasPendingRequest) {
@@ -142,9 +146,9 @@ export default async (payload, tab, next) => {
     const screenHeight = screen.availHeight
     const os = window.localStorage.getItem(OS)
     let windowData = {
-      url: chrome.extension.getURL('/popup.html'),
+      url: chrome.runtime.getURL('/popup.html'),
       focused: true,
-      type: 'popup',
+      type: 'popup'
     }
     if (os == 'win') {
       windowData = {
@@ -166,7 +170,12 @@ export default async (payload, tab, next) => {
 
     /* Temporary disabling sign multiple transactions */
     if (payload?.data?.length > 1) {
-      return next({ error: { code: -32000, message: 'Finnie is unable to sign multiple transactions at the same time.' } })
+      return next({
+        error: {
+          code: -32000,
+          message: 'Finnie is unable to sign multiple transactions at the same time.'
+        }
+      })
     }
 
     const messages = payload.data
@@ -176,7 +185,13 @@ export default async (payload, tab, next) => {
     try {
       transactionPayload = await getTransactionDataFromMessage(message, origin, activatedAddress)
     } catch (err) {
-      return next({ error: { code: -32000, message: 'Attempt to obtain transaction data failed. Please ensure that you have sufficient balance.' } })
+      return next({
+        error: {
+          code: -32000,
+          message:
+            'Attempt to obtain transaction data failed. Please ensure that you have sufficient balance.'
+        }
+      })
     }
     const requestId = uuid()
     const requestPayload = {
@@ -192,45 +207,47 @@ export default async (payload, tab, next) => {
     createWindow(windowData, {
       beforeCreate: async () => {
         chrome.browserAction.setBadgeText({ text: '1' })
-        chrome.runtime.onMessage.addListener(
-          async function(popupMessage, sender, sendResponse) {
-            if (popupMessage.requestId === requestId) {
-              const approved = popupMessage.approved
-              if (approved) {
-                var pendingRequest = await storage.generic.get.pendingRequest()
-                if (isEmpty(pendingRequest)) {
-                  next({ error: { code: 4001, message: 'Request has been removed' } })
-                  chrome.runtime.sendMessage({
-                    requestId,
-                    error: 'Request has been removed'
-                  })
-                  return
-                }
-                try {
-                  const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses)
-                  const solTool = new SolanaTool(credentials)
-                  const keypair = solTool.keypair
-                  const signatures = await Promise.all(messages.map(async (message) => {
+        chrome.runtime.onMessage.addListener(async function (popupMessage, sender, sendResponse) {
+          if (popupMessage.requestId === requestId) {
+            const approved = popupMessage.approved
+            if (approved) {
+              var pendingRequest = await storage.generic.get.pendingRequest()
+              if (isEmpty(pendingRequest)) {
+                next({ error: { code: 4001, message: 'Request has been removed' } })
+                chrome.runtime.sendMessage({
+                  requestId,
+                  error: 'Request has been removed'
+                })
+                return
+              }
+              try {
+                const credentials = await backgroundAccount.getCredentialByAddress(
+                  connectedAddresses
+                )
+                const solTool = new SolanaTool(credentials)
+                const keypair = solTool.keypair
+                const signatures = await Promise.all(
+                  messages.map(async (message) => {
                     const _message = Message.from(base58.decode(message))
                     const transaction = Transaction.populate(_message)
                     transaction.sign(keypair)
-              
-                    return transaction.signatures
-                  }))
 
-                  next({ data: signatures })
-                  chrome.runtime.sendMessage({requestId, finished: true})
-                } catch (err) {
-                  console.error('Sign transactions error:', err.message)
-                  chrome.runtime.sendMessage({requestId, finished: true})
-                  next({ error: { code: 4001, message: err.message } })
-                } 
-              } else {
-                next({ error: { code: 4001, message: 'Request rejected' } })
+                    return transaction.signatures
+                  })
+                )
+
+                next({ data: signatures })
+                chrome.runtime.sendMessage({ requestId, finished: true })
+              } catch (err) {
+                console.error('Sign transactions error:', err.message)
+                chrome.runtime.sendMessage({ requestId, finished: true })
+                next({ error: { code: 4001, message: err.message } })
               }
+            } else {
+              next({ error: { code: 4001, message: 'Request rejected' } })
             }
           }
-        )
+        })
 
         await storage.generic.set.pendingRequest({
           type: REQUEST.TRANSACTION,
@@ -239,7 +256,7 @@ export default async (payload, tab, next) => {
       },
       afterClose: async () => {
         chrome.browserAction.setBadgeText({ text: '' })
-        next({ error: { code: 4001, message: 'Request rejected' }})
+        next({ error: { code: 4001, message: 'Request rejected' } })
         await storage.generic.set.pendingRequest({})
       }
     })

@@ -1,12 +1,10 @@
 // import Web3 from 'web3'
-import { ethers } from 'ethers'
-
-import { clarifyEthereumProvider } from 'utils'
-
 import axios from 'axios'
 import { REQUEST } from 'constants/koiConstants'
+import { ethers } from 'ethers'
 import { get,isString } from 'lodash'
 import storage from 'services/storage'
+import { clarifyEthereumProvider } from 'utils'
 import { fromArToWinston, fromEthToWei, fromSolToLamp } from 'utils'
 import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
 

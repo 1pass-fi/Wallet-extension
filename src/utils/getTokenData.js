@@ -4,22 +4,20 @@ import {
   PublicKey as PublicKeyK2
 } from '@_koi/web3.js'
 import contractMap from '@metamask/contract-metadata'
-import axiosAdapter from '@vespaiach/axios-fetch-adapter'
-// import Web3 from 'web3'
-import { ethers } from 'ethers'
-
-import { clarifyEthereumProvider } from 'utils'
-
 import { AccountLayout, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { TokenListProvider } from '@solana/spl-token-registry'
 import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js'
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import ERC20_ABI from 'abi/ERC20.json'
 import axios from 'axios'
+// import Web3 from 'web3'
+import { ethers } from 'ethers'
 import find from 'lodash/find'
 import get from 'lodash/get'
 import includes from 'lodash/includes'
 import storage from 'services/storage'
 import customTokens from 'solanaTokens/solanaTokens'
+import { clarifyEthereumProvider } from 'utils'
 import k2Contracts from 'utils/k2-contracts.json'
 
 export const getLogoPath = (logo) => {

@@ -1,16 +1,12 @@
 // import Web3 from 'web3'
 import { ethers } from 'ethers'
-
-import { clarifyEthereumProvider } from 'utils'
-
 import { get } from 'lodash'
 import storage from 'services/storage'
-import decodeTags  from 'utils/decodeTags'
+import { clarifyEthereumProvider } from 'utils'
+import decodeTags from 'utils/decodeTags'
 import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
 
 import { TRANSACTION_TYPE } from './constants'
-
-import decodeTags from 'utils/decodeTags'
 
 const isContractAddress = async (address) => {
   const provider = await storage.setting.get.ethereumProvider()

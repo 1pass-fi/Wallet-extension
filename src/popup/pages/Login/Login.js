@@ -71,14 +71,14 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
       setIsLoading(false)
 
       if (unlocked) {
-		setIsWalletLocked(false)
+        setIsWalletLocked(false)
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
           chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.ACCOUNTS_CHANGED })
         })
 
         history.push('/tokens')
 
-		/* Reload gallery page after unlocked */
+        /* Reload gallery page after unlocked */
         chrome.tabs.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
           tabs.map((tab) => tab.url.includes('options') && chrome.scripting.reload(tab.id))
         })

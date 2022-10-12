@@ -1,5 +1,4 @@
 import { Web } from '@_koi/sdk/web'
-
 // Constants
 import { TYPE } from 'constants/accountConstants'
 // Services

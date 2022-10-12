@@ -1,10 +1,8 @@
+import Arweave from 'arweave/node'
 import axios from 'axios'
 import get from 'lodash/get'
-
-import Arweave from 'arweave/node'
-import { smartweave } from 'smartweave'
-
 import storage from 'services/storage'
+import { smartweave } from 'smartweave'
 
 const contractMap = {
   'QA7AIFVx1KBBmzC7WUNhJbDsHlSJArUT0jWrhZMZPS8': {

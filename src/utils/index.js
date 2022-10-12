@@ -1,26 +1,7 @@
-import {
-  LOAD_KOI_BY,
-  PATH,
-  STORAGE,
-  ERROR_MESSAGE,
-  NFT_BIT_DATA,
-  ALL_NFT_LOADED,
-  ETH_NETWORK_NAME,
-  ETH_NETWORK_PROVIDER,
-  ATTENTION_CONTRACT
-} from 'constants/koiConstants'
-import passworder from 'browser-passworder'
-import moment from 'moment'
-import { get, isArray, isEmpty, isNumber } from 'lodash'
-import capitalize from 'lodash/capitalize'
-
+import { Web } from '@_koi/sdk/web'
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import Arweave from 'arweave/node'
 import axios from 'axios'
-import axiosAdapter from '@vespaiach/axios-fetch-adapter'
-
-import { Web } from '@_koi/sdk/web'
-import { ethers } from 'ethers'
-
 import passworder from 'browser-passworder'
 import {
   ALL_NFT_LOADED,
@@ -45,13 +26,6 @@ import MetamaskABI from 'abi/MetamaskABI.json'
 import { TYPE } from 'constants/accountConstants'
 import { TRANSACTION_METHOD } from 'popup/components/SignTransaction/hooks/constants'
 import storage from 'services/storage'
-// import Web3 from 'web3'
-import { ethers } from 'ethers'
-import { PublicKey } from '@solana/web3.js'
-import { TYPE } from 'constants/accountConstants'
-import { TRANSACTION_METHOD } from 'popup/components/SignTransaction/hooks/constants'
-
-import MetamaskABI from 'abi/MetamaskABI.json'
 
 /* istanbul ignore next */
 const arweave = Arweave.init({ host: 'arweave.net', protocol: 'https', port: 443 })
@@ -165,12 +139,14 @@ export const loadMyContent = async (koiObj) => {
             let url = `${PATH.NFT_IMAGE}/${content.txIdContent}`
             if (content.fileLocation) url = content.fileLocation
             const u8 = Buffer.from(
-              (await axios.request({
-                url,
-                responseType: 'arraybuffer',
-                adapter: axiosAdapter,
-                method: 'GET'
-              })).data,
+              (
+                await axios.request({
+                  url,
+                  responseType: 'arraybuffer',
+                  adapter: axiosAdapter,
+                  method: 'GET'
+                })
+              ).data,
               'binary'
             ).toString('base64')
             let imageUrl = `data:image/jpeg;base64,${u8}`

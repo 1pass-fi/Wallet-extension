@@ -19,13 +19,12 @@ import {
   SystemProgram,
   Transaction} from '@solana/web3.js'
 import base58 from 'bs58'
+// import Web3 from 'web3'
+import { ethers } from 'ethers'
 import { get, isEmpty,isNumber } from 'lodash'
 import arweave from 'services/arweave'
 import storage from 'services/storage'
 import { fromLampToSol,numberFormat } from 'utils'
-// import Web3 from 'web3'
-import { ethers } from 'ethers'
-
 import { clarifyEthereumProvider } from 'utils'
 
 

@@ -1,6 +1,5 @@
 // import Web3 from 'web3'
 import { ethers } from 'ethers'
-
 import { clarifyEthereumProvider } from 'utils'
 
 const validateToken = async (tokenAddress) => {

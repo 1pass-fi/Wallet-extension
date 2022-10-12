@@ -8,7 +8,6 @@ import nacl from 'tweetnacl'
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
 
-
 export default async (payload, tab, next) => {
   try {
     const {
@@ -39,7 +38,7 @@ export default async (payload, tab, next) => {
     const screenHeight = screen.availHeight
     const os = window.localStorage.getItem(OS)
     let windowData = {
-      url: chrome.extension.getURL('/popup.html'),
+      url: chrome.runtime.getURL('/popup.html'),
       focused: true,
       type: 'popup'
     }
@@ -116,7 +115,6 @@ export default async (payload, tab, next) => {
         await storage.generic.set.pendingRequest({})
       }
     })
-
   } catch (err) {
     console.error(err)
     next({ error: { code: 4001, data: 'Solana signMessage error' } })

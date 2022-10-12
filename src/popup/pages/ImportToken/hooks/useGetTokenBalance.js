@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react'
 import { AccountLayout, TOKEN_PROGRAM_ID } from '@solana/spl-token'
-// import Web3 from 'web3'
-import { ethers } from 'ethers'
 import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js'
-
-import { clarifyEthereumProvider } from 'utils'
-
 import ERC20_ABI from 'abi/ERC20.json'
 import { TYPE } from 'constants/accountConstants'
+// import Web3 from 'web3'
+import { ethers } from 'ethers'
 import storage from 'services/storage'
+import { clarifyEthereumProvider } from 'utils'
 import { isEthereumAddress, isSolanaAddress } from 'utils'
 import { getK2CustomTokensData, getSolanaCustomTokensData } from 'utils/getTokenData'
 import Web3 from 'web3'
@@ -27,14 +25,10 @@ const useGetTokenBalance = ({ contractAddress, account }) => {
         const network = ethers.providers.getNetwork(ethNetwork)
         const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
-        // const tokenContract = new web3.eth.Contract(ERC20_ABI, contractAddress)
         const tokenContract = new ethers.Contract(contractAddress, ERC20_ABI, web3)
 
-        // const symbol = await tokenContract.methods.symbol().call()
-        // const balance = await tokenContract.methods.balanceOf(userAddress).call()
-        // const decimal = await tokenContract.methods.decimals().call()
         const symbol = await tokenContract.symbol()
-        const balance = await tokenContract.balanceOf(userAddress)
+        const balance = await tokenContract.balanceOf(account.address)
         const decimal = await tokenContract.decimals()
 
         setTokenSymbol(symbol)

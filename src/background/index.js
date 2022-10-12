@@ -1,29 +1,28 @@
 import '@babel/polyfill'
-import 'regenerator-runtime/runtime.js'
 
-// Constants
-import { PORTS, OS, PATH, MESSAGES } from 'constants/koiConstants'
 import { IMPORTED } from 'constants/accountConstants'
-
+// Constants
+import { MESSAGES,OS, PATH, PORTS } from 'constants/koiConstants'
 import storage from 'services/storage'
 import { getChromeStorage } from 'utils'
+
+import 'regenerator-runtime/runtime.js'
 
 import contentScriptEvents from './handlers/contentScriptEvents'
 // emitter
 import popupEvents from './handlers/popupEvents'
-import cache from './cache'
-import streamer from './streamer'
-
-import inject from './inject'
-
 import declareConstantScript from './scripts/declareConstantScript'
 import eventEmitterScript from './scripts/eventEmitterScript'
-import finnieRpcConnectionScript from './scripts/finnieRpcConnectionScript'
-import finnieEthereumProviderScript from './scripts/finnieEthereumProviderScript'
 import finnieArweaveProviderScript from './scripts/finnieArweaveProviderScript'
-import finnieSolanaProviderScript from './scripts/finnieSolanaProviderScript'
+import finnieEthereumProviderScript from './scripts/finnieEthereumProviderScript'
+import finnieK2ProviderScript from './scripts/finnieK2ProviderScript'
 import finnieKoiiWalletProviderScript from './scripts/finnieKoiiWalletProviderScript'
+import finnieRpcConnectionScript from './scripts/finnieRpcConnectionScript'
+import finnieSolanaProviderScript from './scripts/finnieSolanaProviderScript'
 import mainScript from './scripts/mainScript'
+import cache from './cache'
+import inject from './inject'
+import streamer from './streamer'
 
 function cb(port) {
   if (port.name.includes(PORTS.POPUP)) {
@@ -82,6 +81,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       `(${finnieArweaveProviderScript})()`,
       `(${finnieSolanaProviderScript})()`,
       `(${finnieKoiiWalletProviderScript})()`,
+      `(${finnieK2ProviderScript})()`,
       `(${mainScript(request.pageDisabled)})();`
     ]
 

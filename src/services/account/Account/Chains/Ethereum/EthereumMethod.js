@@ -4,6 +4,7 @@
 */
 
 import HDWalletProvider from '@truffle/hdwallet-provider'
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import axios from 'axios'
 import { ACCOUNT } from 'constants/accountConstants'
 import { TYPE } from 'constants/accountConstants'
@@ -16,21 +17,13 @@ import {
   TRANSACTION_METHOD
 } from 'constants/koiConstants'
 import {
-  VALID_TOKEN_SCHEMA,
-  ERROR_MESSAGE,
-  URL,
   BRIDGE_FLOW,
   ERROR_MESSAGE,
   ETH_NETWORK_PROVIDER,
   KOI_ROUTER_CONTRACT,
-  ETH_NETWORK_PROVIDER
   URL,
   VALID_TOKEN_SCHEMA
 } from 'constants/koiConstants'
-
-import axios from 'axios'
-import axiosAdapter from '@vespaiach/axios-fetch-adapter'
-import * as ethereumAssets from 'utils/ethereumActivities'
 import { ethers } from 'ethers'
 import { find, findIndex, get, includes, isEmpty } from 'lodash'
 import moment from 'moment'
@@ -38,11 +31,9 @@ import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 import storage from 'services/storage'
 import { getChromeStorage } from 'utils'
 import { clarifyEthereumProvider } from 'utils'
+import * as ethereumAssets from 'utils/ethereumActivities'
+
 // import Web3 from 'web3'
-import { ethers } from 'ethers'
-
-import { clarifyEthereumProvider } from 'utils'
-
 import ERC20ABI from './abi/ERC20ABI.json'
 import ERC721ABI from './abi/ERC721ABI.json'
 import ERC1155ABI from './abi/ERC1155ABI.json'

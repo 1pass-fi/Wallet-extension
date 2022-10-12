@@ -3,7 +3,7 @@ import { REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 import { isNumber } from 'lodash'
 // Services
 import storage from 'services/storage'
-import { calculateArFee,winstonToAr } from 'utils'
+import { calculateArFee, winstonToAr } from 'utils'
 // Utils
 import { createWindow, getPlatformInfo } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
@@ -62,21 +62,28 @@ export default async (payload, tab, next) => {
       koiiQty
     }
 
-    createWindow (
-      windowData,
-      {
-        beforeCreate: async () => {
-          chrome.action.setBadgeText({ text: '1' })
-          await storage.generic.set.pendingRequest({
-            type: REQUEST.AR_TRANSACTION,
-            data: { transaction, qty, address, origin, favicon, fee, isKoi: false, isKoiTransfer, koiiQty }
-          })
-        },
-        afterClose: async () => {
-          chrome.action.setBadgeText({ text: '' })
-          next({ error: 'Transaction rejected on closed.' })
-          await storage.generic.set.pendingRequest({})
-        },
+    createWindow(windowData, {
+      beforeCreate: async () => {
+        chrome.action.setBadgeText({ text: '1' })
+        await storage.generic.set.pendingRequest({
+          type: REQUEST.AR_TRANSACTION,
+          data: {
+            transaction,
+            qty,
+            address,
+            origin,
+            favicon,
+            fee,
+            isKoi: false,
+            isKoiTransfer,
+            koiiQty
+          }
+        })
+      },
+      afterClose: async () => {
+        chrome.action.setBadgeText({ text: '' })
+        next({ error: 'Transaction rejected on closed.' })
+        await storage.generic.set.pendingRequest({})
       }
     })
   } catch (err) {

@@ -46,21 +46,28 @@ export default async (payload, tab, next) => {
       top: Math.round((screenHeight - height) / 2)
     }
 
-    createWindow(
-      windowData,
-      {
-        beforeCreate: async () => {
-          chrome.action.setBadgeText({ text: '1' })
-          await storage.generic.set.pendingRequest({
-            type: REQUEST.AR_TRANSACTION,
-            data: { transaction, qty, address, origin, favicon, fee, isKoi: true, isKoiTransfer, koiiQty }
-          })
-        },
-        afterClose: async () => {
-          chrome.action.setBadgeText({ text: '' })
-          next({ data: { status: 403, data: 'Transaction rejected on closed.' } })
-          await storage.generic.set.pendingRequest({})
-        },
+    createWindow(windowData, {
+      beforeCreate: async () => {
+        chrome.action.setBadgeText({ text: '1' })
+        await storage.generic.set.pendingRequest({
+          type: REQUEST.AR_TRANSACTION,
+          data: {
+            transaction,
+            qty,
+            address,
+            origin,
+            favicon,
+            fee,
+            isKoi: true,
+            isKoiTransfer,
+            koiiQty
+          }
+        })
+      },
+      afterClose: async () => {
+        chrome.action.setBadgeText({ text: '' })
+        next({ data: { status: 403, data: 'Transaction rejected on closed.' } })
+        await storage.generic.set.pendingRequest({})
       }
     })
   } catch (err) {

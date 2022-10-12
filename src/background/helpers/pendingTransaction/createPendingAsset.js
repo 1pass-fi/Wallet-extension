@@ -1,6 +1,5 @@
-import axios from 'axios'
 import axiosAdapter from '@vespaiach/axios-fetch-adapter'
-
+import axios from 'axios'
 import { TYPE } from 'constants/accountConstants'
 // constants
 import { PATH } from 'constants/koiConstants'

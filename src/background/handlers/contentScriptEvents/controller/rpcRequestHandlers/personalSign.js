@@ -1,14 +1,12 @@
 // import Web3 from 'web3'
-import { ethers } from 'ethers'
-
-import { clarifyEthereumProvider } from 'utils'
-
 import { personalSign } from '@metamask/eth-sig-util'
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 import { stripHexPrefix } from 'ethereumjs-util'
+import { ethers } from 'ethers'
 import { get } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
+import { clarifyEthereumProvider } from 'utils'
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
 

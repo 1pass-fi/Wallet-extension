@@ -86,20 +86,20 @@ export default async (payload, tab, next) => {
                     id: uuid(),
                     invoker: origin,
                     parentCapability: 'eth_accounts'
-                  }]
+                  }
+                ]
 
-                  chrome.runtime.sendMessage({
-                    requestId,
-                    finished: true
-                  })
-                  
-                  next({ data: permissions })
-                } catch (err) {
-                  console.error(err.message)
-                }  
-              } else {
-                next({ error: 'Request rejected' })
+                chrome.runtime.sendMessage({
+                  requestId,
+                  finished: true
+                })
+
+                next({ data: permissions })
+              } catch (err) {
+                console.error(err.message)
               }
+            } else {
+              next({ error: 'Request rejected' })
             }
           }
         })

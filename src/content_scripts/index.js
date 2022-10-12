@@ -1,15 +1,15 @@
 import '@babel/polyfill'
 
 import { ALLOWED_ORIGIN, MESSAGES } from 'constants/koiConstants'
-import declareConstantScript from 'content_scripts/scripts/declareConstantScript'
-import eventEmitterScript from 'content_scripts/scripts/eventEmitterScript'
-import finnieArweaveProviderScript from 'content_scripts/scripts/finnieArweaveProviderScript'
-import finnieEthereumProviderScript from 'content_scripts/scripts/finnieEthereumProviderScript'
-import finnieK2ProviderScript from 'content_scripts/scripts/finnieK2ProviderScript'
-import finnieKoiiWalletProviderScript from 'content_scripts/scripts/finnieKoiiWalletProviderScript'
-import finnieRpcConnectionScript from 'content_scripts/scripts/finnieRpcConnectionScript'
-import finnieSolanaProviderScript from 'content_scripts/scripts/finnieSolanaProviderScript'
-import mainScript from 'content_scripts/scripts/mainScript'
+// import declareConstantScript from 'content_scripts/scripts/declareConstantScript'
+// import eventEmitterScript from 'content_scripts/scripts/eventEmitterScript'
+// import finnieArweaveProviderScript from 'content_scripts/scripts/finnieArweaveProviderScript'
+// import finnieEthereumProviderScript from 'content_scripts/scripts/finnieEthereumProviderScript'
+// import finnieK2ProviderScript from 'content_scripts/scripts/finnieK2ProviderScript'
+// import finnieKoiiWalletProviderScript from 'content_scripts/scripts/finnieKoiiWalletProviderScript'
+// import finnieRpcConnectionScript from 'content_scripts/scripts/finnieRpcConnectionScript'
+// import finnieSolanaProviderScript from 'content_scripts/scripts/finnieSolanaProviderScript'
+// import mainScript from 'content_scripts/scripts/mainScript'
 import { includes } from 'lodash'
 import storage from 'services/storage'
 
@@ -35,23 +35,6 @@ async function contentScript() {
     },
     (response) => {
       if (response.message === MESSAGES.CODE_INJECTED) {
-        /* 
-          Script injection
-        */
-        const scripts = [
-          `(${declareConstantScript})()`,
-          `(${eventEmitterScript})()`,
-          `(${finnieRpcConnectionScript})()`,
-          `(${finnieEthereumProviderScript})()`,
-          `(${finnieArweaveProviderScript})()`,
-          `(${finnieSolanaProviderScript})()`,
-          `(${finnieKoiiWalletProviderScript})()`,
-          `(${finnieK2ProviderScript})()`,
-          `(${mainScript(disabled)})();`
-        ]
-
-        inject(scripts)
-
         const arweaveWalletLoaded = new CustomEvent('arweaveWalletLoaded')
         const finnieWalletLoaded = new CustomEvent('finnieWalletLoaded')
         const ethWalletLoaded = new CustomEvent('DOMContentLoaded')

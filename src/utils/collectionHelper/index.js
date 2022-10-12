@@ -1,10 +1,8 @@
 import { Web } from '@_koi/sdk/web'
-
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import axios from 'axios'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
 import { NFT_CONTRACT_SRC,PATH, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
-import axiosAdapter from '@vespaiach/axios-fetch-adapter'
-
 import arweave from 'services/arweave'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 import storage from 'services/storage'

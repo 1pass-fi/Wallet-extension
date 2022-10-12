@@ -25,7 +25,7 @@ export default combineReducers({
   assets,
   notificationsData,
   isLoading,
-  isOnbardingProcessing
+  isOnbardingProcessing,
   onboarding,
   error,
   quickNotification,

@@ -3,9 +3,8 @@
   Load activities, assets,...
 */
 
-import axios from 'axios'
 import axiosAdapter from '@vespaiach/axios-fetch-adapter'
-
+import axios from 'axios'
 import { ACCOUNT,TYPE } from 'constants/accountConstants'
 import { ACTIVITY_NAME, ALL_NFT_LOADED, BRIDGE_FLOW, DELIGATED_OWNER, ERROR_MESSAGE, KOII_CONTRACT,PATH, URL } from 'constants/koiConstants'
 import { find, findIndex,get, includes, isArray, isEmpty, isNumber, isString, orderBy } from 'lodash'
