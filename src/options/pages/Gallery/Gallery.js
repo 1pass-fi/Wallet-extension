@@ -41,7 +41,7 @@ const Gallery = () => {
 
   return (
     <div id="gallery" className="w-full flex justify-center items-center" onScroll={handleScroll}>
-      <div className="h-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-5 place-items-start">
+      <div className="h-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-5 gap-y-10 place-items-start content-start">
         {!isEmpty(displayingNfts) ? (
           displayingNfts.map((nft) => <NFTCard nft={nft} key={nft.txId} />)
         ) : (
