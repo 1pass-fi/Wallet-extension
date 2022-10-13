@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import axios from 'axios'
 import { NETWORK } from 'constants/koiConstants'
 import get from 'lodash/get'
@@ -78,7 +79,9 @@ const useSimulation = ({ network, transactionPayload }) => {
         value: rawTx.value
       }
     }
-    const response = await axios.post(`https://api.sunrise.wtf/api/v1/simulate`, requestBody)
+    const response = await axios.post(`https://api.sunrise.wtf/api/v1/simulate`, requestBody, {
+      adapter: axiosAdapter
+    })
 
     // detect the transaction types based on Sunrise successful response
     const simulationData = classifyTransaction(response)

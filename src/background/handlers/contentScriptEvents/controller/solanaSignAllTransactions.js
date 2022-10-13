@@ -1,6 +1,7 @@
 import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
 import { Message, Transaction } from '@solana/web3.js'
 import { clusterApiUrl, Connection, PublicKey, sendAndConfirmTransaction } from '@solana/web3.js'
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import axios from 'axios'
 import base58 from 'bs58'
 import bs58 from 'bs58'
@@ -39,7 +40,7 @@ const getTransactionValue = async (transaction, address) => {
         }
       ]
     }
-    const response = await axios.post(providerUrl, requestBody)
+    const response = await axios.post(providerUrl, requestBody, { adapter: axiosAdapter })
 
     const afterBalance = get(response, 'data.result.value.accounts[0].lamports')
 

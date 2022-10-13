@@ -1,3 +1,4 @@
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import axios from 'axios'
 import { get } from 'lodash'
 
@@ -61,7 +62,8 @@ export default async (address, contractId) => {
 
     const request = JSON.stringify({ query })
     const { data } = await axios.post(URL_ARWEAVE_GQL, request, {
-      headers: { 'content-type': 'application/json' }
+      headers: { 'content-type': 'application/json' },
+      adapter: axiosAdapter
     })
 
     return get(data, 'data.transactions.edges[0].node.id') || null

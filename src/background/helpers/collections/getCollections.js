@@ -1,3 +1,4 @@
+import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import axios from 'axios'
 import { get } from 'lodash'
 import { ArweaveAccount } from 'services/account/Account'
@@ -89,7 +90,8 @@ const readState = async (txIds) => {
 
 const gql = async (request) => {
   const { data } = await axios.post('https://arweave.net/graphql', request, {
-    headers: { 'content-type': 'application/json' }
+    headers: { 'content-type': 'application/json' },
+    adapter: axiosAdapter
   })
   return data
 }
