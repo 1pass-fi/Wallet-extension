@@ -93,27 +93,22 @@ export default async (payload, tab, next) => {
 
                 const rawTx = params[0]
 
-                console.log('ethSendTransaction rawTx', rawTx)
-
                 const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
 
                 const network = ethers.providers.getNetwork(ethNetwork)
                 const web3 = new ethers.providers.InfuraProvider(network, apiKey)
-
-                // const estimateGas = await web3.eth.estimateGas(rawTx)
+                
                 const estimateGas = await web3.estimateGas(rawTx)
-                rawTx.gas = estimateGas
+                rawTx.gasLimit = estimateGas
+                delete rawTx.gas
+                console.log('ethSendTransaction rawTx', rawTx)
 
-                // TODO - DatH Switch to ethers
-                // const signTx = await web3.eth.accounts.signTransaction(rawTx, key)
-                // const receipt = await web3.eth.sendSignedTransaction(signTx.rawTransaction)
                 const signer = new ethers.Wallet(key, web3)
-                const signTx = await signer.signTransaction(rawTx)
-                const receipt = await web3.sendTransaction(signTx)
 
+                const receipt = await signer.sendTransaction(rawTx)
                 console.log('receipt', receipt)
 
-                next({ data: receipt.transactionHash })
+                next({ data: receipt.hash })
                 chrome.runtime.sendMessage({ requestId, finished: true })
               } catch (err) {
                 console.error('Send eth error:', err.message)
