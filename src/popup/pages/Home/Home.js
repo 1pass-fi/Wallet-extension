@@ -17,6 +17,7 @@ const Home = () => {
   const displayingAccount = useSelector(getDisplayingAccount)
 
   const price = useSelector((state) => state.price)
+  const currency = useSelector((state) => state.currency)
 
   const ref = React.useRef()
   const [scrollEl, setScrollElement] = React.useState(null)
@@ -52,6 +53,7 @@ const Home = () => {
             <HomeTop
               displayingAccount={displayingAccount}
               price={price}
+              currency={currency}
               currentProviderAddress={currentProviderAddress}
               setCurrentProviderAddress={setCurrentProviderAddress}
             />
@@ -62,6 +64,7 @@ const Home = () => {
           </div>
           <AccountInfo
             displayingAccount={displayingAccount}
+            currency={currency}
             price={price}
             currentProviderAddress={currentProviderAddress}
           />

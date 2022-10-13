@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink, Redirect,Route, Switch } from 'react-router-dom'
+import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useParallax } from 'react-scroll-parallax'
 import clsx from 'clsx'
@@ -18,7 +18,7 @@ const tabs = [
   { name: 'Activity', to: '/activity' }
 ]
 
-const AccountInfo = ({ displayingAccount, price, currentProviderAddress }) => {
+const AccountInfo = ({ displayingAccount, currency, price, currentProviderAddress }) => {
   const history = useHistory()
 
   const assetHeaderParallax = useParallax({
@@ -69,7 +69,7 @@ const AccountInfo = ({ displayingAccount, price, currentProviderAddress }) => {
                   className="text-base leading-8 tracking-finnieSpacing-tight"
                   style={{ color: '#707070' }}
                 >
-                  ${fiatCurrencyFormat(displayingAccount.balance * price.ETH)} USD
+                  {fiatCurrencyFormat(displayingAccount.balance * price.ETH)} {currency}
                 </div>
               </div>
             )}
@@ -101,7 +101,7 @@ const AccountInfo = ({ displayingAccount, price, currentProviderAddress }) => {
           <Activity />
         </Route>
         <Route exact path="/tokens">
-          <Tokens currentProviderAddress={currentProviderAddress} />
+          <Tokens currentProviderAddress={currentProviderAddress} currency={currency}/>
         </Route>
         <Redirect to="/tokens" />
       </Switch>

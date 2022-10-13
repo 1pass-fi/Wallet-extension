@@ -28,6 +28,7 @@ import { fiatCurrencyFormat, numberFormat } from 'utils'
 const HomeTop = ({
   displayingAccount,
   price,
+  currency,
   setIsLoading,
   currentProviderAddress,
   setCurrentProviderAddress,
@@ -228,8 +229,10 @@ const HomeTop = ({
                   className="text-base leading-8 tracking-finnieSpacing-tight"
                   style={{ color: '#707070' }}
                 >
-                  ${fiatCurrencyFormat((displayingAccount.balance * price.SOL) / Math.pow(10, 9))}{' '}
-                  USD
+                  {fiatCurrencyFormat(
+                    (displayingAccount.balance * price.SOL) / Math.pow(10, 9)
+                  )}{' '}
+                  {currency}
                 </div>
               )}
             </div>
@@ -266,7 +269,7 @@ const HomeTop = ({
                   className="text-base leading-8 tracking-finnieSpacing-tight"
                   style={{ color: '#707070' }}
                 >
-                  ${fiatCurrencyFormat(displayingAccount.balance * price.ETH)} USD
+                  {fiatCurrencyFormat(displayingAccount.balance * price.ETH)} {currency}
                 </div>
               )}
             </div>
