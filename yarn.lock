@@ -1397,6 +1397,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.17.2":
+  version "7.19.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.19.4.tgz#a42f814502ee467d55b38dd1c256f53a7b885c78"
+  integrity sha512-EXpLCrk55f+cYqmHsSR+yD/0gAIMxxA9QK9lnQWzhMCvt+YmoBN7Zx94s++Kv0+unHk39vxNO8t+CMA2WSS3wA==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.12.13", "@babel/template@^7.12.7", "@babel/template@^7.2.2", "@babel/template@^7.3.3":
   version "7.12.13"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.12.13.tgz#530265be8a2589dbb37523844c5bcb55947fb327"
@@ -2608,6 +2615,21 @@
     lodash.chunk "^4.2.0"
     lodash.orderby "^4.6.0"
 
+"@noble/ed25519@^1.7.0":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@noble/ed25519/-/ed25519-1.7.1.tgz#6899660f6fbb97798a6fbd227227c4589a454724"
+  integrity sha512-Rk4SkJFaXZiznFyC/t77Q0NKS4FL7TLJJsVG2V2oiEq3kJVeTdxysEe/yRWSpnWMe808XRDJ+VFh5pt/FN5plw==
+
+"@noble/hashes@^1.1.2":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.1.3.tgz#360afc77610e0a61f3417e497dcf36862e4f8111"
+  integrity sha512-CE0FCR57H2acVI5UOzIGSSIYxZ6v/HOhDR0Ro9VLyhnzLwx0o8W1mmgaqlEUx4049qJDlIBRztv5k+MM8vbO3A==
+
+"@noble/secp256k1@^1.6.3":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@noble/secp256k1/-/secp256k1-1.7.0.tgz#d15357f7c227e751d90aa06b05a0e5cf993ba8c1"
+  integrity sha512-kbacwGSsH/CTout0ZnZWxnW1B+jH/7r/WAAKLBtrRJ/+CUH7lgmQzl3GTrQua3SGKWNSDsS6lmjnDpIJ5Dxyaw==
+
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.4.tgz#d4b3549a5db5de2683e0c1071ab4f140904bbf69"
@@ -2959,27 +2981,26 @@
     superstruct "^0.14.2"
     tweetnacl "^1.0.0"
 
-"@solana/web3.js@^1.41.4":
-  version "1.42.0"
-  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.42.0.tgz#296e4bbab1fbfc198b3e9c3d94016c3876eb6a2c"
-  integrity sha512-QqGh5DWzrgsWRx4sCPDQIm3390b7buPR16tZI61slQaQwJ2ymrSXPQCe4PPTJEIlzGjCV3dkn2vpT2R32BfK2Q==
+"@solana/web3.js@^1.64.0":
+  version "1.64.0"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.64.0.tgz#b7f5a976976039a0161242e94d6e1224ab5d30f9"
+  integrity sha512-AcFaoy48GxSmzBryVwB88C/UPJd/UQa+nFrO/uPc8ww6RCjanZY2vEZxdfTZub+q1NMUckwXpPwF32jJLe7SPA==
   dependencies:
     "@babel/runtime" "^7.12.5"
-    "@ethersproject/sha2" "^5.5.0"
+    "@noble/ed25519" "^1.7.0"
+    "@noble/hashes" "^1.1.2"
+    "@noble/secp256k1" "^1.6.3"
     "@solana/buffer-layout" "^4.0.0"
-    "@solana/buffer-layout-utils" "^0.2.0"
+    bigint-buffer "^1.1.5"
     bn.js "^5.0.0"
     borsh "^0.7.0"
     bs58 "^4.0.1"
     buffer "6.0.1"
-    cross-fetch "^3.1.4"
     fast-stable-stringify "^1.0.0"
     jayson "^3.4.4"
-    js-sha3 "^0.8.0"
-    rpc-websockets "^7.4.2"
-    secp256k1 "^4.0.2"
+    node-fetch "2"
+    rpc-websockets "^7.5.0"
     superstruct "^0.14.2"
-    tweetnacl "^1.0.0"
 
 "@storybook/addon-actions@6.2.9", "@storybook/addon-actions@^6.2.9":
   version "6.2.9"
@@ -16157,17 +16178,17 @@ node-emoji@^1.11.0:
   dependencies:
     lodash "^4.17.21"
 
-node-fetch@2.6.1, node-fetch@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
-  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
-
-node-fetch@2.6.7:
+node-fetch@2, node-fetch@2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
   dependencies:
     whatwg-url "^5.0.0"
+
+node-fetch@2.6.1, node-fetch@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
+  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
 
 node-fetch@~1.7.1:
   version "1.7.3"
@@ -19803,6 +19824,19 @@ rpc-websockets@^7.4.2:
     eventemitter3 "^4.0.7"
     uuid "^8.3.0"
     ws "^7.4.5"
+  optionalDependencies:
+    bufferutil "^4.0.1"
+    utf-8-validate "^5.0.2"
+
+rpc-websockets@^7.5.0:
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/rpc-websockets/-/rpc-websockets-7.5.0.tgz#bbeb87572e66703ff151e50af1658f98098e2748"
+  integrity sha512-9tIRi1uZGy7YmDjErf1Ax3wtqdSSLIlnmL5OtOzgd5eqPKbsPpwDP5whUDO2LQay3Xp0CcHlcNSGzacNRluBaQ==
+  dependencies:
+    "@babel/runtime" "^7.17.2"
+    eventemitter3 "^4.0.7"
+    uuid "^8.3.2"
+    ws "^8.5.0"
   optionalDependencies:
     bufferutil "^4.0.1"
     utf-8-validate "^5.0.2"
@@ -24026,6 +24060,11 @@ ws@^6.2.1:
   integrity sha512-zmhltoSR8u1cnDsD43TX59mzoMZsLKqUweyYBAIvTngR3shc0W6aOZylZmq/7hqyVxPdi+5Ud2QInblgyE72fw==
   dependencies:
     async-limiter "~1.0.0"
+
+ws@^8.5.0:
+  version "8.9.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.9.0.tgz#2a994bb67144be1b53fe2d23c53c028adeb7f45e"
+  integrity sha512-Ja7nszREasGaYUYCI2k4lCKIRTt+y7XuqVoHR44YpI49TtryyqbqvDMn5eqfW7e6HzTukDRIsXqzVHScqRcafg==
 
 xdg-basedir@^3.0.0:
   version "3.0.0"

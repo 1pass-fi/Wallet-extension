@@ -194,11 +194,12 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     return false
   }, [trustStat, acceptSite])
 
-  useEffect(async () => {
+  useEffect(() => {
     return () => {
       storage.generic.set.pendingRequest({})
     }
   }, [])
+  
 
   return (
     <div className="w-full h-full bg-white z-51 m-auto top-0 left-0 fixed flex flex-col justify-center items-center">
