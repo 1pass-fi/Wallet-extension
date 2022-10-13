@@ -8,11 +8,11 @@ export default ({ onClose }) => {
     <Modal onClose={onClose} isWelcomeScreen={true}>
       <div className="welcome-message">
         <div className="title">
-          Finnie Wallet <span>v0.3.3 Notes</span>
+          Finnie Wallet <span>v0.3.4 Notes</span>
         </div>
         <div className="content">
           <div className="paragraph">
-            <span className="text-success">v0.3.3</span>
+            <span className="text-success">v0.3.4</span>
             <br></br>
             <div className='paragraph'>
               TL;DR: Like Metamask, but better. And Universal Crypto Addresses are here!
