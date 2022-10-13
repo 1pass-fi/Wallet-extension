@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { useDispatch } from 'react-redux'
+import cache from 'background/cache'
 import { addAccountByAddress } from 'options/actions/accounts'
 import { setActivatedChain } from 'options/actions/activatedChain'
 import { setError } from 'options/actions/error'
