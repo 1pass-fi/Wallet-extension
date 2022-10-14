@@ -71,9 +71,11 @@ export default async (payload, tab, next) => {
     }
 
     /* Show popup for signing transaction */
-    const screenWidth = screen.availWidth
-    const screenHeight = screen.availHeight
-    const os = window.localStorage.getItem(OS)
+    const screen = (await chrome.system.display.getInfo())[0].bounds
+    const screenWidth = screen.width
+    const screenHeight = screen.height
+    const os = (await chrome.runtime.getPlatformInfo()).os
+    
     let windowData = {
       url: chrome.runtime.getURL('/popup.html'),
       focused: true,
