@@ -28,7 +28,7 @@ export default ({ version = '0.3.4' }) => {
             <div className="title">Privacy Policy</div>
             <div className="description">
               Find Koii’s &nbsp;
-              <a href="https://koii.network/Privacy_Policy.html" target="_blank" className="link">
+              <a href="https://www.koii.network/Privacy_Policy.pdf" target="_blank" className="link">
                 Privacy Policy here.
               </a>
             </div>
