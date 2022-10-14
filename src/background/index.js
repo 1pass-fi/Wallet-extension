@@ -1,5 +1,7 @@
 import '@babel/polyfill'
 
+global.window = global
+
 import { IMPORTED } from 'constants/accountConstants'
 // Constants
 import { MESSAGES,OS, PATH, PORTS } from 'constants/koiConstants'
