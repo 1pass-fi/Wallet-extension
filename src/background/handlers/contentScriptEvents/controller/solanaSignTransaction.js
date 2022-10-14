@@ -111,7 +111,7 @@ export default async (payload, tab, next) => {
 
     createWindow(windowData, {
       beforeCreate: async () => {
-        chrome.browserAction.setBadgeText({ text: '1' })
+        chrome.action.setBadgeText({ text: '1' })
         chrome.runtime.onMessage.addListener(async function (popupMessage, sender, sendResponse) {
           if (popupMessage.requestId === requestId) {
             const approved = popupMessage.approved
@@ -162,7 +162,7 @@ export default async (payload, tab, next) => {
         })
       },
       afterClose: async () => {
-        chrome.browserAction.setBadgeText({ text: '' })
+        chrome.action.setBadgeText({ text: '' })
         next({ error: { code: 4001, data: 'Request rejected' } })
         await storage.generic.set.pendingRequest({})
       }

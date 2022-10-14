@@ -30,7 +30,7 @@ const SolanaSignMessage = ({ setError, setIsLoading }) => {
         if (message.requestId === requestData.requestId) {
           setIsLoading(false)
           await storage.generic.remove.pendingRequest()
-          chrome.browserAction.setBadgeText({ text: '' })
+          chrome.action.setBadgeText({ text: '' })
           window.close()
         }
       })
