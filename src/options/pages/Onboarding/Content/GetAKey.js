@@ -1,11 +1,10 @@
 import React, { useContext, useState } from 'react'
 import { TYPE } from 'constants/accountConstants'
 import { NETWORK } from 'constants/koiConstants'
-import KeyLogo from 'finnie-v2/components/KeyLogo'
-import ToolTip from 'finnie-v2/components/ToolTip'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
 import KeyLogo from 'options/components/KeyLogo'
+import ToolTip from 'options/components/ToolTip'
 
 import { OnboardingContext } from '../onboardingContext'
 
@@ -21,9 +20,9 @@ const GetAKey = ({ step, setStep, setImportType }) => {
     }
 
     switch (network) {
-      // case TYPE.K2:
-      //   setNetwork(NETWORK.K2)
-      //   break
+      case TYPE.K2:
+        setNetwork(NETWORK.K2)
+        break
       case TYPE.ETHEREUM:
         setNetwork(NETWORK.ETHEREUM)
         break
@@ -54,10 +53,11 @@ const GetAKey = ({ step, setStep, setImportType }) => {
         Finnie currently supports Koii and Ethereum keys. More key types are in the works.
       </div>
       <div className="mt-11 ml-1 flex justify-start gap-4.5">
-        <div
+        {/* <div
           className="flex flex-col items-center opacity-50"
           data-tip="Coming soon"
-        >
+        > */}
+        <div className="flex flex-col items-center">
           <KeyLogo
             type={TYPE.K2}
             inProcessing={inProcessing}

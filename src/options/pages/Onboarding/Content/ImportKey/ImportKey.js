@@ -2,11 +2,10 @@ import React, { useContext } from 'react'
 import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
 import { NETWORK } from 'constants/koiConstants'
-import KeyLogo from 'finnie-v2/components/KeyLogo'
-import ToolTip from 'finnie-v2/components/ToolTip'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
 import KeyLogo from 'options/components/KeyLogo'
+import ToolTip from 'options/components/ToolTip'
 
 import { OnboardingContext } from '../../onboardingContext'
 
@@ -30,7 +29,8 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
         works.
       </div>
       <div className="mt-11 ml-1 flex justify-start gap-4.5">
-        <div className="flex flex-col items-center opacity-50" data-tip="Coming soon">
+        {/* <div className="flex flex-col items-center opacity-50" data-tip="Coming soon"> */}
+        <div className="flex flex-col items-center">
           <KeyLogo
             type={TYPE.K2}
             handleOnClick={() => {
