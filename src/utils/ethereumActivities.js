@@ -20,7 +20,9 @@ export const isContractAddress = async (address) => {
 }
 
 export const isInteractWithContract = async (activity) => {
-  if (isEmpty(activity.to)) return false
+  if (isEmpty(activity.to)) {
+    return true
+  }
   return await isContractAddress(activity.to)
 }
 

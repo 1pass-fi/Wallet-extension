@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react'
 import clsx from 'clsx'
-import { ETH_NETWORK_PROVIDER, PATH, URL } from 'constants/koiConstants'
+import { ACTIVITY_NAME, ETH_NETWORK_PROVIDER, PATH, URL } from 'constants/koiConstants'
 import ToolTip from 'finnie-v2/components/ToolTip'
 import ExploreBlock from 'img/v2/explore-block-coming-soon.svg'
 import GreenDotIcon from 'img/v2/green-dot.svg'
@@ -90,6 +90,8 @@ const ActivityRow = ({
           if (network) {
             token = activityName.split(' ').pop()
           }
+
+          if (activityName === ACTIVITY_NAME.CONTRACT_INTERACTION) token = 'ETH'
 
           expenseText = `${expense !== null && expense > 0 ? sign : ''}${transactionAmountFormat(
             expense

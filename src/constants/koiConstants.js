@@ -558,7 +558,11 @@ export const VALID_TOKEN_SCHEMA = ['ERC1155']
 
 export const ACTIVITY_NAME = {
   BRIDGE_AR_TO_ETH: 'Bridged NFT from Arweave to Ethereum',
-  BRIDGE_ETH_TO_AR: 'Bridged NFT from Ethereum to Arweave'
+  BRIDGE_ETH_TO_AR: 'Bridged NFT from Ethereum to Arweave',
+  SENT: 'Sent',
+  RECEIVED: 'Received',
+  CONTRACT_INTERACTION: 'Contract interaction',
+  UNKNOWN: 'Unknown transaction'
 }
 
 export const MAX_RETRIED = 1

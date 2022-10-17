@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import clsx from 'clsx'
-import { ETH_NETWORK_PROVIDER,PATH, URL } from 'constants/koiConstants'
+import { ACTIVITY_NAME, ETH_NETWORK_PROVIDER,PATH, URL } from 'constants/koiConstants'
 import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
 import formatNumber from 'finnie-v2/utils/formatNumber'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
@@ -46,6 +46,8 @@ const ActivityRow = ({
     if (network) {
       tokenType = activityName.split(' ').pop()
     }
+
+    if (activityName === ACTIVITY_NAME.CONTRACT_INTERACTION) tokenType = 'ETH'
     let from = ''
     let to = ''
     if (!source) {

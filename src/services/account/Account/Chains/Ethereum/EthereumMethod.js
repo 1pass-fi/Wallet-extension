@@ -180,53 +180,118 @@ export class EthereumMethod {
     fetchedData = await Promise.all(
       fetchedData.map(async (activity) => {
         try {
-          let token = 'ETH',
-            decimals = 18,
-            expense = activity.value,
-            to = activity.to,
-            gasFee = 0
+          // let token = 'ETH',
+          //   decimals = 18,
+          //   expense = activity.value,
+          //   to = activity.to,
+          //   gasFee = 0
 
-          let id, activityName, date, source, time
+          // let id, activityName, date, source, time
 
-          id = activity.hash
+          // id = activity.hash
 
+          // let isERC20ABI = false
+          // try {
+          //   if (await ethereumAssets.isInteractWithContract(activity)) {
+          //     if (isERC20ABI) {
+          //       const contract = new ethers.Contract(activity.to, ERC20ABI, web3)
+          //       token = await contract.symbol()
+          //       decimals = await contract.decimals()
+
+          //       const decodedInput = await ethereumAssets.decodeTransactionData(id)
+          //       to = decodedInput.args[0]
+          //       expense = Number(decodedInput.args[1])
+          //     }
+          //   }
+          // } catch (err) {
+          //   // console.error('Does not match ER20ABI error: ', err.message)
+          //   token = 'ETH'
+          //   decimals = 18
+          //   to = activity.to
+          //   expense = activity.value
+          // }
+
+          // if (activity.from.toLowerCase() === this.eth.address.toLowerCase()) {
+          //   activityName = `Sent ${token}`
+          //   source = to
+
+          //   if (token === 'ETH') {
+          //     const receipt = await web3.getTransactionReceipt(id)
+          //     gasFee = (Number(receipt.gasUsed) * Number(activity.gasPrice)) / Math.pow(10, 18)
+          //   }
+          // } else {
+          //   activityName = `Received ${token}`
+          //   source = activity.from
+          // }
+
+          // if (isERC20ABI)
+
+          // const expenseValue = expense / Math.pow(10, decimals)
+
+          // expense = gasFee + expenseValue
+          // date = moment(Number(activity.timestamp) * 1000).format('MMMM DD YYYY')
+
+          // time = activity.timestamp
+
+          // return {
+          //   id,
+          //   activityName,
+          //   expense,
+          //   accountName,
+          //   date,
+          //   source,
+          //   time,
+          //   network,
+          //   address: this.eth.address
+          // }
+          let id = activity.hash,
+            activityName,
+            expense,
+            date,
+            source,
+            time,
+            address
+          let token, decimals, gasFee
           try {
             if (await ethereumAssets.isInteractWithContract(activity)) {
-              const contract = new ethers.Contract(activity.to, ERC20ABI, web3)
-              token = await contract.symbol()
-              decimals = await contract.decimals()
-
-              const decodedInput = await ethereumAssets.decodeTransactionData(id)
-              to = decodedInput.args[0]
-              expense = Number(decodedInput.args[1])
+              // Activity with contract
+              const isSupportedContract = false
+              if (isSupportedContract) {
+              } else {
+                // Contract that finnie does not support activity
+                // CONTRACT INTERACTION
+                activityName = ACTIVITY_NAME.CONTRACT_INTERACTION
+                source = activity.to
+                const receipt = await web3.getTransactionReceipt(id)
+                gasFee = (Number(receipt.gasUsed) * Number(activity.gasPrice)) / Math.pow(10, 18)
+                expense = gasFee + activity.value / Math.pow(10, 18)
+              }
+            } else {
+              // Normal transfer ETH
+              const isSender = activity.from.toLowerCase() === this.eth.address.toLowerCase()
+              if (isSender) {
+                // Transfer ETH
+                activityName = `${ACTIVITY_NAME.SENT} ETH`
+                source = activity.to
+                const receipt = await web3.getTransactionReceipt(id)
+                gasFee = (Number(receipt.gasUsed) * Number(activity.gasPrice)) / Math.pow(10, 18)
+                expense = gasFee + activity.value / Math.pow(10, 18) 
+              } else {
+                // Receive ETH
+                activityName = `${ACTIVITY_NAME.RECEIVED} ETH`
+                source = activity.from
+                expense = activity.value / Math.pow(10, 18)
+              }
             }
-          } catch (err) {
-            // console.error('Does not match ER20ABI error: ', err.message)
-            token = 'ETH'
-            decimals = 18
-            to = activity.to
+            date = moment(Number(activity.timestamp) * 1000).format('MMMM DD YYYY')
+
+            time = activity.timestamp
+          } catch (error) {
+            // UNKNOWN TRANSACTION
+            activityName = ACTIVITY_NAME.UNKNOWN
+            source = activity.to
             expense = activity.value
           }
-
-          if (activity.from.toLowerCase() === this.eth.address.toLowerCase()) {
-            activityName = `Sent ${token}`
-            source = to
-
-            if (token === 'ETH') {
-              const receipt = await web3.getTransactionReceipt(id)
-              gasFee = (Number(receipt.gasUsed) * Number(activity.gasPrice)) / Math.pow(10, 18)
-            }
-          } else {
-            activityName = `Received ${token}`
-            source = activity.from
-          }
-
-          const expenseValue = expense / Math.pow(10, decimals)
-
-          expense = gasFee + expenseValue
-          date = moment(Number(activity.timestamp) * 1000).format('MMMM DD YYYY')
-
-          time = activity.timestamp
 
           return {
             id,
@@ -606,13 +671,19 @@ export class EthereumMethod {
 
     let gasLimit, transaction
     if (nft.tokenSchema === 'ERC721') {
-      gasLimit = await nftContract.estimateGas[
-        'safeTransferFrom(address,address,uint256)'
-      ](this.eth.address, recipientAddress, tokenId, { gasPrice })
+      gasLimit = await nftContract.estimateGas['safeTransferFrom(address,address,uint256)'](
+        this.eth.address,
+        recipientAddress,
+        tokenId,
+        { gasPrice }
+      )
 
-      transaction = await nftContract[
-        'safeTransferFrom(address,address,uint256)'
-      ](this.eth.address, recipientAddress, tokenId, { gasLimit })
+      transaction = await nftContract['safeTransferFrom(address,address,uint256)'](
+        this.eth.address,
+        recipientAddress,
+        tokenId,
+        { gasLimit }
+      )
     } else {
       gasLimit = await nftContract.estimateGas[
         'safeTransferFrom(address,address,uint256,uint256,bytes)'
@@ -629,7 +700,7 @@ export class EthereumMethod {
       return nft
     })
     await this.#chrome.setAssets(allNfts)
-   
+
     console.log('transactionHash', transaction?.hash)
 
     return transaction
