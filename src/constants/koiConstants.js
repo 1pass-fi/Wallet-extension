@@ -640,3 +640,13 @@ export const SOLANA_PROGRAM_ID = {
   SYSTEM_PROGRAM: '11111111111111111111111111111111',
   TOKEN_PROGRAM_ID: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
 }
+
+export const TRANSACTION_METHOD = {
+  ERC20_TRANSFER: 'transfer',
+  ERC1155_TRANSFER: 'safeTransferFrom',
+  ERC721_TRANSFER: 'safeTransferFrom',
+  SET_APPROVAL_FOR_ALL: 'setApprovalForAll',
+  ERC721_TRANSFER_FROM: 'transferFrom',
+  MINT_COLLECTIBLES: 'mintCollectibles',
+  APPROVE: 'approve'
+}

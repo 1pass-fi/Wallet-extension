@@ -1,6 +1,6 @@
+import MetamaskABI from 'abi/MetamaskABI.json'
 import { ethers } from 'ethers'
 import isEmpty from 'lodash/isEmpty'
-import ERC20ABI from 'services/account/Account/Chains/Ethereum/abi/ERC20ABI.json'
 import storage from 'services/storage'
 import { clarifyEthereumProvider } from 'utils'
 
@@ -27,15 +27,21 @@ export const isInteractWithContract = async (activity) => {
 }
 
 export const decodeTransactionData = async (activityHash) => {
-  const interfaceABI = new ethers.utils.Interface(ERC20ABI)
+  try {
+    const interfaceABI = new ethers.utils.Interface(MetamaskABI)
 
-  const provider = await storage.setting.get.ethereumProvider()
-  const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
-  const network = ethers.providers.getNetwork(ethNetwork)
-  const web3 = new ethers.providers.InfuraProvider(network, apiKey)
+    const provider = await storage.setting.get.ethereumProvider()
+    const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
+    const network = ethers.providers.getNetwork(ethNetwork)
+    const web3 = new ethers.providers.InfuraProvider(network, apiKey)
 
-  const tx = await web3.getTransaction(activityHash)
-  const decodedInput = interfaceABI.parseTransaction({ data: tx.data, value: tx.value })
+    const transaction = await web3.getTransaction(activityHash)
+    const decodedData = interfaceABI.parseTransaction({
+      data: transaction.data
+    })
 
-  return decodedInput
+    return decodedData
+  } catch (error) {
+    return undefined
+  }
 }
