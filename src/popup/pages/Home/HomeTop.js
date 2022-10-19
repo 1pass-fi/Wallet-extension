@@ -83,7 +83,7 @@ const HomeTop = ({
       // update account state
       // TODO Thuan Ngo
       await dispatch(loadAllAccounts())
-      await dispatch(loadContent())
+      dispatch(loadContent())
     } catch (error) {
       console.log('Failed to change Ethereum provider', error.message)
     } finally {
@@ -130,10 +130,7 @@ const HomeTop = ({
       // update account state
       // TODO Thuan Ngo
       await dispatch(loadAllAccounts())
-      await dispatch(loadContent())
-
-      // update account state
-      await dispatch(loadAllAccounts())
+      dispatch(loadContent())
     } catch (error) {
       console.log('Failed to change K2 provider', error.message)
     } finally {
@@ -158,10 +155,7 @@ const HomeTop = ({
       // update account state
       // TODO Thuan Ngo
       await dispatch(loadAllAccounts())
-      await dispatch(loadContent())
-
-      // update account state
-      await dispatch(loadAllAccounts())
+      dispatch(loadContent())
     } catch (error) {
       console.log('Failed to change Solana provider', error.message)
     } finally {
