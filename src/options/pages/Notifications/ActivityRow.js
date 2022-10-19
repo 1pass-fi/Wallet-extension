@@ -15,10 +15,6 @@ import moment from 'moment'
 const ActivityRow = ({
   activity: { activityName, address, date, expense, id, source, network, isK2Account }
 }) => {
-  const customTokenIconPath = useMemo(
-    () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,
-    []
-  )
 
   const displayInfo = useMemo(() => {
     const dateString = moment(date).format('MM/DD/YYYY')
@@ -76,16 +72,12 @@ const ActivityRow = ({
       <td className="px-1">{displayInfo.dateString}</td>
       <td className="px-1">{formatLongStringTruncate(displayInfo.action, 20)}</td>
       <td className="px-1">
-        {displayInfo.tokenType === 'ETH' && <EthereumLogo className="w-5 h-5 mr-2 inline-block" />}
+        {network === ETH_NETWORK_PROVIDER.MAINNET || network == ETH_NETWORK_PROVIDER.GOERLI && (
+          <EthereumLogo className="w-5 h-5 mr-2 inline-block" />
+        )}
         {displayInfo.tokenType === 'SOL' && <SolanaLogo className="w-5 h-5 mr-2 inline-block" />}
         {displayInfo.tokenType === 'AR' && <ArweaveLogo className="w-5 h-5 mr-2 inline-block" />}
         {displayInfo.tokenType === 'KOII' && <KoiiLogo className="w-5 h-5 mr-2 inline-block" />}
-        {displayInfo.tokenType !== 'ETH' &&
-          displayInfo.tokenType !== 'SOL' &&
-          displayInfo.tokenType !== 'AR' &&
-          displayInfo.tokenType !== 'KOII' && (
-          <img src={customTokenIconPath} className="w-5 h-5 mr-2 inline-block" />
-        )}
 
         {formatLongString(displayInfo.from, 20)}
       </td>
