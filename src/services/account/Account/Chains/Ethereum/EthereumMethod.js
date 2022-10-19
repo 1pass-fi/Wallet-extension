@@ -262,10 +262,8 @@ export class EthereumMethod {
           } catch (error) {
             // UNKNOWN TRANSACTION
             activityName = ACTIVITY_NAME.UNKNOWN
-            source = activity.to
-            const receipt = await web3.getTransactionReceipt(id)
-            gasFee = (Number(receipt.gasUsed) * Number(activity.gasPrice)) / Math.pow(10, 18)
-            expense = gasFee + activity.value / Math.pow(10, 18)
+            source = activity?.to
+            expense = activity?.value / Math.pow(10, 18)
           }
 
           return {
