@@ -90,7 +90,11 @@ const ActivityRow = ({
             token = activityName.split(' ').pop()
           }
 
-          if (activityName === ACTIVITY_NAME.CONTRACT_INTERACTION) token = 'ETH'
+          if (
+            activityName === ACTIVITY_NAME.CONTRACT_INTERACTION ||
+            activityName === ACTIVITY_NAME.UNKNOWN
+          )
+            token = 'ETH'
 
           expenseText = `${expense !== null && expense > 0 ? sign : ''}${transactionAmountFormat(
             expense

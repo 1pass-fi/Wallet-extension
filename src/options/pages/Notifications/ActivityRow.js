@@ -47,7 +47,8 @@ const ActivityRow = ({
       tokenType = activityName.split(' ').pop()
     }
 
-    if (activityName === ACTIVITY_NAME.CONTRACT_INTERACTION) tokenType = 'ETH'
+    if (activityName === ACTIVITY_NAME.CONTRACT_INTERACTION || activityName === ACTIVITY_NAME.UNKNOWN) tokenType = 'ETH'
+
     let from = ''
     let to = ''
     if (!source) {
