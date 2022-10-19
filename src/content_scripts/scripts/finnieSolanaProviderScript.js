@@ -147,9 +147,13 @@ const finnieSolanaProviderScript = `() => {
       return publicKey
     }
 
-    disconnect() {
+    async disconnect() {
       const message = { type: ENDPOINTS.SOLANA_DISCONNECT }
-      return this.connection.send(message)
+      const result = await this.connection.send(message)
+      this.publicKey = null
+      this.isConnected = false
+      
+      return result
     }
 
     async signAllTransactions(payload) {
