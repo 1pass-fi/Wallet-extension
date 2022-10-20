@@ -5,7 +5,6 @@ import activatedChain from './activatedChain'
 import addressBook from './addressBook'
 import assets from './assets'
 import collections from './collections'
-import createCollection from './createCollection'
 import defaultAccount from './defaultAccount'
 import editingCollectionId from './editingCollectionId'
 import error from './error'
@@ -21,7 +20,6 @@ export default combineReducers({
   accounts,
   addressBook,
   defaultAccount,
-  createCollection,
   collections,
   assets,
   notificationsData,
