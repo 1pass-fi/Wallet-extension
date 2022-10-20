@@ -1,6 +1,5 @@
 // modules
 import React from 'react'
-import { connect } from 'react-redux'
 // assets
 import loadingIcon from 'img/loading-icon.gif'
 
@@ -15,6 +14,4 @@ const Loading = () => {
   )
 }
 
-const mapStateToProps = (state) => ({ creatingWallet: state.creatingWallet })
-
-export default connect(mapStateToProps)(Loading)
+export default Loading
