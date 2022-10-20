@@ -112,7 +112,9 @@ const ActivityRow = ({
             className="flex justify-end text-xs text-turquoiseBlue underline font-semibold leading-5"
           >
             <ViewBlockIcon className="pr-1.375" />
-            {displayInfo.tokenType === 'ETH' ? 'Etherscan' : 'Explore Block'}
+            {network === ETH_NETWORK_PROVIDER.MAINNET || network === ETH_NETWORK_PROVIDER.GOERLI
+              ? 'Etherscan'
+              : 'Explore Block'}
           </a>
         </td>
       ) : (
