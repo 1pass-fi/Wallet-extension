@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom'
 import { useParallax } from 'react-scroll-parallax'
 // actions
 import {
-  loadContent,
+  clearContent,
   updateEthereumProvider,
   updateK2Provider,
-  updateSolanaProvider} from 'actions/koi'
+  updateSolanaProvider
+} from 'actions/koi'
 // constants
 import { TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
@@ -83,7 +84,7 @@ const HomeTop = ({
       // update account state
       // TODO Thuan Ngo
       await dispatch(loadAllAccounts())
-      dispatch(loadContent())
+      await dispatch(clearContent(TYPE.ETHEREUM))
     } catch (error) {
       console.log('Failed to change Ethereum provider', error.message)
     } finally {
@@ -130,7 +131,7 @@ const HomeTop = ({
       // update account state
       // TODO Thuan Ngo
       await dispatch(loadAllAccounts())
-      dispatch(loadContent())
+      await dispatch(clearContent(TYPE.K2))
     } catch (error) {
       console.log('Failed to change K2 provider', error.message)
     } finally {
@@ -155,7 +156,7 @@ const HomeTop = ({
       // update account state
       // TODO Thuan Ngo
       await dispatch(loadAllAccounts())
-      dispatch(loadContent())
+      await dispatch(clearContent(TYPE.SOLANA))
     } catch (error) {
       console.log('Failed to change Solana provider', error.message)
     } finally {

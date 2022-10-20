@@ -221,6 +221,31 @@ export const saveWallet = (seedPhrase, password, walletType) => async (dispatch)
   }
 }
 
+export const clearContent = (type) => async (dispatch) => {
+  try {
+    const allAccounts = await popupAccount.getAllAccounts()
+    let allAssets = []
+
+    allAssets = await Promise.all(
+      allAccounts.map(async (account) => {
+        let assets
+        const accountMetadata = await account.get.metadata()
+        if (accountMetadata.type === type) {
+          await account.set.assets([])
+          assets = []
+        } else {
+          assets = (await account.get.assets()) || []
+        }
+
+        return { owner: accountMetadata.address, contents: assets }
+      })
+    )
+    dispatch(setAssets(allAssets))
+  } catch (error) {
+    dispatch(setError(err.message))
+  }
+}
+
 export const loadContent = () => async (dispatch) => {
   try {
     const allAccounts = await popupAccount.getAllAccounts()
