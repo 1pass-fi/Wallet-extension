@@ -7,3 +7,4 @@ import './index.css'
 
 ReactDOM.render(<Sidebar />, document.getElementById('root'))
 
+/* Webpack components please do not remove */
