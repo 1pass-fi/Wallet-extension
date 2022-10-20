@@ -137,9 +137,13 @@ const finnieK2ProviderScript = `() => {
       return publicKey
     }
 
-    disconnect() {
+    async disconnect() {
       const message = { type: ENDPOINTS.K2_DISCONNECT }
-      return this.connection.send(message)
+      const result = await this.connection.send(message)
+      this.publicKey = null
+      this.isConnected = false
+      
+      return result
     }
 
     async signMessage(payload) {
