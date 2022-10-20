@@ -12,8 +12,6 @@ export const SET_ASSETS = 'SET_ASSETS'
 
 export const SET_ACTIVITIES = 'SET_ACTIVITIES'
 
-export const SET_TRANSACTIONS = 'SET_TRANSACTIONS'
-
 export const SET_CONT_LOADING = 'SET_CONT_LOADING'
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION'
@@ -24,19 +22,13 @@ export const SET_WARNING = 'SET_WARNING'
 
 export const CLEAR_WARNING = 'CLEAR_WARNING'
 
-export const SET_CURSOR = 'SET_OWNED_CURSOR'
-
 export const CLEAR_ACTIVITIES = 'CLEAR_ACTIVITIES'
 
 export const SET_ACCOUNT_NAME = 'SET_ACCOUNT_NAME'
 
 export const SET_PRICE = 'SET_PRICE'
 
-export const SET_CREATING_WALLET = 'SET_CREATING_WALLET'
-
 export const SET_CURRENCY = 'SET_CURRENCY'
-
-export const SET_ETHEREUM = 'SET_ETHEREUM'
 
 export const SET_ACCOUNTS = 'SET_ACCOUNTS'
 
