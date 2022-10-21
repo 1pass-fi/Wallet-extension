@@ -750,7 +750,7 @@ export const winstonToAr = (value) => {
 
 export const calculateGasFee = async ({ amount, senderAddress, toAddress, provider }) => {
   const web3 = new Web3()
-  koiTools.initializeEthWalletAndProvider(senderAddress, provider)
+  koiTools.initializeEvmWalletAndProvider(senderAddress, provider)
 
   let amountToSend
   if (amount) {
@@ -762,7 +762,7 @@ export const calculateGasFee = async ({ amount, senderAddress, toAddress, provid
     value: amountToSend,
     gas: 0
   }
-  return koiTools.estimateGasEth(rawTx)
+  return koiTools.estimateGasEvm(rawTx)
 }
 
 export const getAddressesFromAddressBook = async (type) => {
