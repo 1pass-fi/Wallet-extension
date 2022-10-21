@@ -21,13 +21,13 @@ import { setWalletLoaded } from 'options/actions/walletLoaded'
 import { DidContext } from 'options/context'
 import LockScreen from 'options/finnie-v1/components/lockScreen'
 import Message from 'options/finnie-v1/components/message'
+import Onboarding from 'options/finnie-v2/pages/Onboarding/Onboarding'
 import { GalleryContext } from 'options/galleryContext'
 import ExportNFT from 'options/modal/exportNFT'
 import SelectAccountModal from 'options/modal/SelectAccountModal'
 import ShareNFT from 'options/modal/shareNFT'
 import TransferNFT from 'options/modal/TransferNFT'
 import Welcome from 'options/modal/welcomeScreen'
-import StartUp from 'options/pages/StartUp'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import storage from 'services/storage'
@@ -324,7 +324,7 @@ export default ({ children }) => {
               {walletLoaded && (
                 <div>
                   <Error />
-                  <StartUp />
+                  <Onboarding />
                 </div>
               )}
             </>
