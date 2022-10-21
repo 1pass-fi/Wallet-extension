@@ -13,7 +13,7 @@ import SeedphraseIcon from 'img/v2/onboarding/seedphrase-icon.svg'
 import SeedphraseSelectedIcon from 'img/v2/onboarding/seedphrase-selected-icon.svg'
 import isEmpty from 'lodash/isEmpty'
 
-import { onboardingSteps } from '../Welcome'
+import { onboardingSteps } from '../Onboarding'
 
 const NavBar = ({ step, setStep }) => {
   const history = useHistory()

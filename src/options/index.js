@@ -7,7 +7,7 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import MainLayout from 'finnie-v2/components/MainLayout'
 import NavBar from 'finnie-v2/components/NavBar'
 import AddressBook from 'options/finnie-v1/components/AddressBook/AddressBook'
-import Welcome from 'options/finnie-v2/pages/Onboarding/Welcome'
+import Onboarding from 'options/finnie-v2/pages/Onboarding/Onboarding'
 import Collection from 'options/pages/Collection'
 import CollectionDetails from 'options/pages/CollectionDetails'
 import Gallery from 'options/pages/Gallery'
@@ -29,17 +29,8 @@ const FullView = () => {
       <Router>
         <AppProvider>
           <Switch>
-            <Route exact path="/welcome">
-              <Welcome />
-            </Route>
-            <Route exact path="/create-wallet">
-              <Welcome />
-            </Route>
-            <Route exact path="/upload-wallet">
-              <Welcome />
-            </Route>
-            <Route exact path="/import-wallet">
-              <Welcome />
+            <Route exact path={['/welcome', '/create-wallet', '/upload-wallet', '/import-wallet']}>
+              <Onboarding />
             </Route>
             {/* <Route exact path="/friend-referral">
               <>

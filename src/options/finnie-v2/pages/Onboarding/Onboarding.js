@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setIsOnboarding } from 'options/actions/onboardingProcessing'
-import LoadingScreen from 'options/pages/StartUp/shared/Loading'
 
 import Content from './Content'
+import LoadingScreen from './Loading'
 import NavBar from './NavBar'
 
 export const onboardingSteps = [
@@ -16,7 +16,7 @@ export const onboardingSteps = [
   'REVEAL_PHRASE'
 ]
 
-const Welcome = () => {
+const Onboarding = () => {
   const dispatch = useDispatch()
 
   const isOnboardingProcessing = useSelector((state) => state.onboarding.isProcessing)
@@ -36,4 +36,4 @@ const Welcome = () => {
   )
 }
 
-export default Welcome
+export default Onboarding
