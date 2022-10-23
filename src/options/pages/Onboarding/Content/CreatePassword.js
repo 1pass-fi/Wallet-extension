@@ -8,7 +8,7 @@ import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
 import isEmpty from 'lodash/isEmpty'
 
-import { VALIDATE_ERROR_MESSAGE } from '../../../../../constants/koiConstants'
+import { VALIDATE_ERROR_MESSAGE } from '../../../../constants/koiConstants'
 import { OnboardingContext } from '../onboardingContext'
 
 const CreatePassword = ({ step, setStep }) => {
