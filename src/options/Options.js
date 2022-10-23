@@ -345,62 +345,46 @@ const Options = () => {
 const MainPage = () => {
   return (
     <Switch>
-      <Route exact path={['/welcome', '/create-wallet', '/upload-wallet', '/import-wallet']}>
-        <Onboarding />
-      </Route>
-      
-      {/* <Route exact path="/friend-referral">
-        <>
-          <FriendReferral />
-          <AddressBook />
-        </>
-      </Route> */}
-
-      <Route exact path="/collections/:collectionId">
-        <HasArweave content={'Please import an Arweave account'}>
-          <NavBar />
-          <AddressBook />
-          <CollectionDetails />
-        </HasArweave>
-      </Route>
-
       <MainLayout>
         <AddressBook />
-        <Switch>
-          <Route exact path="/nfts/:id">
-            <NFTDetail />
-          </Route>
-          <Route exact path="/settings/*">
-            <div className="flex justify-start" style={{ maxWidth: '100%' }}>
-              <Settings />
-            </div>
-          </Route>
-          <Route exact path="/collections/create/new-collection">
-            <Collection />
-          </Route>
-          <Route exact path="/collections/create/select-nft">
-            <HasArweave content={'Please import an Arweave account'}>
-              <SelectNfts />
-            </HasArweave>
-          </Route>
-          <Route exact path="/collections/edit/select-nft/:collectionId">
-            <HasArweave content={'Please import an Arweave account'}>
-              <SelectNfts />
-            </HasArweave>
-          </Route>
-          {/* <Route exact path="/collections">
-                  <Collection />
-                </Route> */}
-          <Route path="/notifications">
-            <Notifications />
-          </Route>
-          <Route exact path="/gallery">
-            <Gallery />
-          </Route>
-          <Route path="*">
-            <Gallery />
-          </Route>
-        </Switch>
+        <Route exact path={['/welcome', '/create-wallet', '/upload-wallet', '/import-wallet']}>
+          <Onboarding />
+        </Route>
+        <Route exact path="/collections/:collectionId">
+          <HasArweave content={'Please import an Arweave account'}>
+            <CollectionDetails />
+          </HasArweave>
+        </Route>
+        <Route exact path="/nfts/:id">
+          <NFTDetail />
+        </Route>
+        <Route exact path="/settings/*">
+          <div className="flex justify-start" style={{ maxWidth: '100%' }}>
+            <Settings />
+          </div>
+        </Route>
+        <Route exact path="/collections/create/new-collection">
+          <Collection />
+        </Route>
+        <Route exact path="/collections/create/select-nft">
+          <HasArweave content={'Please import an Arweave account'}>
+            <SelectNfts />
+          </HasArweave>
+        </Route>
+        <Route exact path="/collections/edit/select-nft/:collectionId">
+          <HasArweave content={'Please import an Arweave account'}>
+            <SelectNfts />
+          </HasArweave>
+        </Route>
+        <Route path="/notifications">
+          <Notifications />
+        </Route>
+        <Route exact path="/gallery">
+          <Gallery />
+        </Route>
+        <Route exact path="/">
+          <Gallery />
+        </Route>
       </MainLayout>
     </Switch>
   )
