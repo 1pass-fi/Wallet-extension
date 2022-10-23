@@ -1,25 +1,25 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactNotification from 'react-notifications-component'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
-import { TYPE } from 'constants/accountConstants'
-import { GALLERY_IMPORT_PATH } from 'constants/koiConstants'
+import { useLocation, withRouter } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import find from 'lodash/find'
 import get from 'lodash/get'
-import includes from 'lodash/includes'
 import isEmpty from 'lodash/isEmpty'
 import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/accounts'
 import { setActivatedChain } from 'options/actions/activatedChain'
 import { setAssets } from 'options/actions/assets'
 import { setCollections } from 'options/actions/collections'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
-import { clearError } from 'options/actions/error'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { setNotifications } from 'options/actions/notifications'
-import { clearQuickNotification, setQuickNotification } from 'options/actions/quickNotification'
 import { setWalletLoaded } from 'options/actions/walletLoaded'
+import AddressBook from 'options/components/AddressBook/AddressBook'
+import Error from 'options/components/Error'
 import LockScreen from 'options/components/LockScreen'
-import Message from 'options/components/Message'
+import MainLayout from 'options/components/MainLayout'
+import NavBar from 'options/components/NavBar'
+import QuickNotification from 'options/components/QuickNotification'
 import { DidContext } from 'options/context'
 import { GalleryContext } from 'options/galleryContext'
 import ExportNFT from 'options/modal/exportNFT'
@@ -27,22 +27,28 @@ import SelectAccountModal from 'options/modal/SelectAccountModal'
 import ShareNFT from 'options/modal/shareNFT'
 import TransferNFT from 'options/modal/TransferNFT'
 import Welcome from 'options/modal/welcomeScreen'
+import Collection from 'options/pages/Collection'
+import CollectionDetails from 'options/pages/CollectionDetails'
+import Gallery from 'options/pages/Gallery'
+import NFTDetail from 'options/pages/NFTDetail'
+import Notifications from 'options/pages/Notifications'
 import Onboarding from 'options/pages/Onboarding/Onboarding'
+import SelectNfts from 'options/pages/SelectNfts'
+import Settings from 'options/pages/Settings'
+import useAddHandler from 'options/provider/hooks/useAddHandler'
+import useDID from 'options/provider/hooks/useDID'
+import useError from 'options/provider/hooks/useError'
+import useModal from 'options/provider/hooks/useModal'
+import { useNfts } from 'options/provider/hooks/useNfts'
+import useSetting from 'options/provider/hooks/useSetting'
+import HasArweave from 'options/shared/hasArweave'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import storage from 'services/storage'
 
-import useAddHandler from './hooks/useAddHandler'
-import useDID from './hooks/useDID'
-import useError from './hooks/useError'
-import useModal from './hooks/useModal'
-import { useNfts } from './hooks/useNfts'
-import useSetting from './hooks/useSetting'
-
 import 'react-notifications-component/dist/theme.css'
-import './index.css'
 
-export default ({ children }) => {
+const Options = () => {
   const { pathname } = useLocation()
 
   /* 
@@ -313,7 +319,7 @@ export default ({ children }) => {
                       }}
                     />
                   )}
-                  {children}
+                  <MainPage />
                 </div>
               ) : (
                 <LockScreen />
@@ -336,36 +342,68 @@ export default ({ children }) => {
   )
 }
 
-const Error = () => {
-  const dispatch = useDispatch()
-  const error = useSelector((state) => state.error)
+const MainPage = () => {
+  return (
+    <Switch>
+      <Route exact path={['/welcome', '/create-wallet', '/upload-wallet', '/import-wallet']}>
+        <Onboarding />
+      </Route>
+      
+      {/* <Route exact path="/friend-referral">
+        <>
+          <FriendReferral />
+          <AddressBook />
+        </>
+      </Route> */}
 
-  useEffect(() => {
-    if (error) {
-      const timer = setTimeout(() => dispatch(clearError), 4000)
-      return () => clearTimeout(timer)
-    }
-  }, [error])
+      <Route exact path="/collections/:collectionId">
+        <HasArweave content={'Please import an Arweave account'}>
+          <NavBar />
+          <AddressBook />
+          <CollectionDetails />
+        </HasArweave>
+      </Route>
 
-  if (error) return <Message children={error} />
-  return ''
+      <MainLayout>
+        <AddressBook />
+        <Switch>
+          <Route exact path="/nfts/:id">
+            <NFTDetail />
+          </Route>
+          <Route exact path="/settings/*">
+            <div className="flex justify-start" style={{ maxWidth: '100%' }}>
+              <Settings />
+            </div>
+          </Route>
+          <Route exact path="/collections/create/new-collection">
+            <Collection />
+          </Route>
+          <Route exact path="/collections/create/select-nft">
+            <HasArweave content={'Please import an Arweave account'}>
+              <SelectNfts />
+            </HasArweave>
+          </Route>
+          <Route exact path="/collections/edit/select-nft/:collectionId">
+            <HasArweave content={'Please import an Arweave account'}>
+              <SelectNfts />
+            </HasArweave>
+          </Route>
+          {/* <Route exact path="/collections">
+                  <Collection />
+                </Route> */}
+          <Route path="/notifications">
+            <Notifications />
+          </Route>
+          <Route exact path="/gallery">
+            <Gallery />
+          </Route>
+          <Route path="*">
+            <Gallery />
+          </Route>
+        </Switch>
+      </MainLayout>
+    </Switch>
+  )
 }
 
-const QuickNotification = () => {
-  const dispatch = useDispatch()
-  const { pathname } = useLocation()
-  const quickNotification = useSelector((state) => state.quickNotification)
-
-  const isImportWalletPath = includes(GALLERY_IMPORT_PATH, pathname)
-
-  useEffect(() => {
-    if (quickNotification) {
-      const timer = setTimeout(() => dispatch(clearQuickNotification), 4000)
-      return () => clearTimeout(timer)
-    }
-  }, [quickNotification])
-
-  if (quickNotification && !isImportWalletPath)
-    return <Message children={quickNotification} type="notification" />
-  return ''
-}
+export default withRouter(Options)
