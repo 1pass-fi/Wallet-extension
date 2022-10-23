@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import ToggleButton from 'options/finnie-v1/components/toggleButton'
+import ToggleButton from 'options/components/ToggleButton'
 import { GalleryContext } from 'options/galleryContext'
 import storage from 'services/storage'
 
