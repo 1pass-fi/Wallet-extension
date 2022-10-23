@@ -1,7 +1,7 @@
 import React, { useContext,useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { TYPE } from 'constants/accountConstants'
-import DropDown from 'finnie-v2/components/DropDown'
+import DropDown from 'options/components/DropDown'
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'

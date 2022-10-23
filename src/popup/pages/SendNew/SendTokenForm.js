@@ -3,13 +3,13 @@ import React, { useEffect, useRef,useState } from 'react'
 import { useSelector } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 import clsx from 'clsx'
-import formatLongString from 'finnie-v2/utils/formatLongString'
 // assets
 import DownArrowIcon from 'img/v2/dropdown/down-icon-blue.svg'
 // svgs
 import NoticeIcon from 'img/v2/notice-icon.svg'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
+import formatLongString from 'options/utils/formatLongString'
 // services
 import { popupAccount } from 'services/account'
 // components

@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import NFTMedia from 'finnie-v2/components/NFTMedia'
-import formatLongString from 'finnie-v2/utils/formatLongString'
-import formatNumber from 'finnie-v2/utils/formatNumber'
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import { get } from 'lodash'
+import NFTMedia from 'options/components/NFTMedia'
 import { GalleryContext } from 'options/galleryContext'
 import getAssetByTxId from 'options/selectors/getAssetByTxId'
+import formatLongString from 'options/utils/formatLongString'
+import formatNumber from 'options/utils/formatNumber'
 
 export default ({ nft }) => {
   const { showViews, showEarnedKoi } = useContext(GalleryContext)

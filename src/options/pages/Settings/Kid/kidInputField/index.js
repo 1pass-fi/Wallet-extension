@@ -1,7 +1,7 @@
 import React from 'react'
-import Hint from 'finnie-v2/components/Hint/Hint'
 import ShareIcon from 'img/share-icon-3.svg'
 import toLower from 'lodash/toLower'
+import Hint from 'options/components/Hint/Hint'
 
 import './index.css'
 

@@ -12,7 +12,6 @@ import {
 // constants
 import { TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
-import Select from 'finnie-v2/components/Select'
 import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 import ReceiveIcon from 'img/popup/receive-icon.svg'
 import RefreshIcon from 'img/popup/refresh-icon.svg'
@@ -20,6 +19,7 @@ import SendIcon from 'img/popup/send-icon.svg'
 import isEmpty from 'lodash/isEmpty'
 // components
 import { loadAllAccounts } from 'options/actions/accounts'
+import Select from 'options/components/Select'
 import { setActivities } from 'popup/actions/activities'
 import { setIsLoading } from 'popup/actions/loading'
 import { popupBackgroundRequest as request } from 'services/request/popup'

@@ -5,7 +5,7 @@ import ArweaveIcon from 'img/arweave-icon.svg'
 import KoiIcon from 'img/koi-logo.svg'
 import isEmpty from 'lodash/isEmpty'
 // components
-import CheckBoxLight from 'options/finnie-v2/components/CheckBox/CheckBoxLight'
+import CheckBoxLight from 'options/components/CheckBox/CheckBoxLight'
 
 const walletIcon = {
   koi: <KoiIcon className="wallet-icon" />,

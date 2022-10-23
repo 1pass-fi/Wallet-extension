@@ -1,13 +1,13 @@
 import React, { useEffect,useState } from 'react'
 import clsx from 'clsx'
 import { ACTIVITY_NAME, ETH_NETWORK_PROVIDER, PATH, URL } from 'constants/koiConstants'
-import ToolTip from 'finnie-v2/components/ToolTip'
 import ExploreBlock from 'img/v2/explore-block-coming-soon.svg'
 import GreenDotIcon from 'img/v2/green-dot.svg'
 import ViewBlockIcon from 'img/v2/view-block.svg'
 import { get, includes } from 'lodash'
 import moment from 'moment'
-import formatLongString from 'options/finnie-v2/utils/formatLongString'
+import ToolTip from 'options/components/ToolTip'
+import formatLongString from 'options/utils/formatLongString'
 import { transactionAmountFormat } from 'utils'
 
 const ActivityRow = ({

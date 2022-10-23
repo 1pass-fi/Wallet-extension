@@ -1,9 +1,9 @@
 import React, { useContext,useEffect, useMemo, useState } from 'react'
 import clsx from 'clsx'
-import Button from 'finnie-v2/components/Button'
 import HiddenPhraseIcon from 'img/v2/onboarding/hidden-phrase.svg'
 import WarningIcon from 'img/v2/onboarding/warning-icon.svg'
 import WelcomeBackground from 'img/v2/onboarding/welcome-background-1.svg'
+import Button from 'options/components/Button'
 
 import { OnboardingContext } from '../onboardingContext'
 

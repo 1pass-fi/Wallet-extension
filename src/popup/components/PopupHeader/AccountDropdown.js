@@ -11,9 +11,6 @@ import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
 // constants
 import { MESSAGES, PATH } from 'constants/koiConstants'
-// utils
-import formatLongString from 'finnie-v2/utils/formatLongString'
-import formatNumber from 'finnie-v2/utils/formatNumber'
 import EthereumIcon from 'img/ethereum-logo.svg'
 import AddIcon from 'img/popup/add-icon.svg'
 import CopyIcon from 'img/popup/copy-icon.svg'
@@ -24,6 +21,9 @@ import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import EditIcon from 'img/v2/edit-icon-white.svg'
 import K2Icon from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import SolanaIcon from 'img/v2/solana-logo.svg'
+// utils
+import formatLongString from 'options/utils/formatLongString'
+import formatNumber from 'options/utils/formatNumber'
 // services
 import { popupAccount } from 'services/account'
 // storage
