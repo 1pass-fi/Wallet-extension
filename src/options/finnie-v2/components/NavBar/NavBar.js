@@ -133,11 +133,11 @@ const NavBar = () => {
         </nav>
         <nav className="ml-9 tracking-finnieSpacing-wider">
           {/* <NavLink to="/collections">Collections</NavLink> */}
-          <div className="cursor-not-allowed" data-tip="Coming soon">
+          <div className="cursor-not-allowed" data-tip="Coming soon" data-for="nav-collections">
             Collections
           </div>
         </nav>
-        <ToolTip />
+        <ToolTip id="nav-collections" />
         {/* <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/friend-referral">Refer a friend</NavLink>
         </nav> */}
