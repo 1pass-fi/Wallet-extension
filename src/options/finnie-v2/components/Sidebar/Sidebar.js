@@ -118,10 +118,11 @@ const Sidebar = ({ currentPath }) => {
         <div
           className={clsx('flex items-center justify-center w-13.75 h-11.25 cursor-not-allowed')}
           data-tip="Coming soon"
+          data-for="sidebar-collections"
         >
           <CollectionIcon className="w-7.5 h-7" />
         </div>
-        <ToolTip />
+        <ToolTip id="sidebar-collections"/>
       </nav>
       <div style={{ height: '60vh' }} className="rounded overflow-y-scroll">
         <div className="bg-trueGray-100 bg-opacity-20 rounded w-57.75">
