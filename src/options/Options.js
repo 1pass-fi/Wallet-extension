@@ -345,15 +345,17 @@ const Options = () => {
 const MainPage = () => {
   return (
     <Switch>
+      <Route exact path="/collections/:collectionId">
+        <HasArweave content={'Please import an Arweave account'}>
+          <NavBar />
+          <AddressBook />
+          <CollectionDetails />
+        </HasArweave>
+      </Route>
       <MainLayout>
         <AddressBook />
         <Route exact path={['/welcome', '/create-wallet', '/upload-wallet', '/import-wallet']}>
           <Onboarding />
-        </Route>
-        <Route exact path="/collections/:collectionId">
-          <HasArweave content={'Please import an Arweave account'}>
-            <CollectionDetails />
-          </HasArweave>
         </Route>
         <Route exact path="/nfts/:id">
           <NFTDetail />
@@ -376,6 +378,9 @@ const MainPage = () => {
             <SelectNfts />
           </HasArweave>
         </Route>
+        {/* <Route exact path="/collections">
+          <Collection />
+        </Route> */}
         <Route path="/notifications">
           <Notifications />
         </Route>
