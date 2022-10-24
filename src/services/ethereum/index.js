@@ -50,9 +50,9 @@ export class EthereumTool {
 
   async transferEth(toAddress, amount) {
     const koiTools = new Web()
-    koiTools.initializeEthWalletAndProvider(this.address, this.#provider)
+    koiTools.initializeEvmWalletAndProvider(this.address, this.#provider)
 
-    const receipt = await koiTools.transferEth(toAddress, amount, this.key)
+    const receipt = await koiTools.transferEvm(toAddress, amount, this.key)
     return receipt
   }
 
