@@ -105,6 +105,7 @@ const Activity = ({ activities, setActivities }) => {
           network={activity.network}
           isK2Account={activity.isK2Account}
           setDeleteTransactionModalStatus={setDeleteTransactionModalStatus}
+          isProcessing={activity.isProcessing}
         />
       ))}
       {accountActivites.slice(0, pages * 10).map((activity) => (

@@ -24,7 +24,8 @@ const ActivityRow = ({
   network,
   seen,
   setDeleteTransactionModalStatus,
-  isK2Account
+  isK2Account,
+  isProcessing
 }) => {
   const [displayInfo, setDisplayInfo] = useState({})
   const [loaded, setLoaded] = useState(false)
@@ -175,7 +176,7 @@ const ActivityRow = ({
                   <div className="pr-1.375">
                     <ViewBlockIcon />
                   </div>
-                  {!pending ? 'Explore Block' : 'Pending transaction'}
+                  {!pending ? 'Explore Block' : (isProcessing ? 'Processing' : 'Pending transaction')}
                 </a>
               ) : (
                 <div

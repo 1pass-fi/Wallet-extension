@@ -23,14 +23,15 @@ import {
   URL,
   VALID_TOKEN_SCHEMA
 } from 'constants/koiConstants'
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import { find, findIndex, get, includes, isEmpty } from 'lodash'
 import moment from 'moment'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 import storage from 'services/storage'
-import { getChromeStorage } from 'utils'
+import { getChromeStorage, removeWalletFromChrome } from 'utils'
 import { clarifyEthereumProvider } from 'utils'
 import * as ethereumAssets from 'utils/ethereumActivities'
+import ethereumUtils from 'utils/ethereumUtils'
 import Web3 from 'web3'
 
 import ERC20ABI from './abi/ERC20ABI.json'
@@ -600,26 +601,44 @@ export class EthereumMethod {
   }
 
   async transferToken({ tokenContractAddress, to, value }) {
-    const provider = await storage.setting.get.ethereumProvider()
-    const web3 = new Web3(provider)
+    const providerUrl = await storage.setting.get.ethereumProvider()
+    const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
+    const signer = wallet.connect(ethersProvider)
+    
+    const tokenContract = new ethers.Contract(tokenContractAddress, ERC20ABI, signer)
+    const symbol = await tokenContract.symbol()
+    const decimals = await tokenContract.decimals()
+    
+    const erc20Interface = new ethers.utils.Interface(ERC20ABI)
+    const data = erc20Interface.encodeFunctionData('transfer', [to, value])
 
-    const tokenContract = new web3.eth.Contract(ERC20ABI, tokenContractAddress)
+    const nonce = await ethersProvider.getTransactionCount(this.eth.address, 'pending')
+    const chainId = (await ethersProvider.getNetwork()).chainId
+    const type = 2 // type 2: EIP1559; type 0: legacy
 
-    const decimals = await tokenContract.methods.decimals().call()
-    const amount = parseFloat(value) * Math.pow(10, decimals)
+    const gasLimit = (await tokenContract.estimateGas?.transfer(to, value)).toNumber()
+    const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei')
+    const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(providerUrl, '2.5')
 
-    const rawTx = {
-      from: this.eth.address,
+    const transactionPayload = {
       to: tokenContractAddress,
-      data: tokenContract.methods.transfer(to, value).encodeABI()
+      data,
+      maxPriorityFeePerGas,
+      maxFeePerGas,
+      nonce,
+      chainId,
+      type,
+      gasLimit
     }
-    const estimateGas = await web3.eth.estimateGas(rawTx)
-    rawTx.gas = estimateGas
+    console.log('transactionPayload', transactionPayload)
 
-    const signedTx = await web3.eth.accounts.signTransaction(rawTx, this.eth.key)
-    const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction)
-
-    return receipt
+    const rawTransaction = await wallet.signTransaction(transactionPayload)
+    const signedTransaction = ethers.utils.parseTransaction(rawTransaction)
+    const txHash = signedTransaction?.hash
+    console.log('txHash', txHash)
+    const sendingPromise = (await ethersProvider.sendTransaction(rawTransaction)).wait()
+    
+    return { txHash, sendingPromise, symbol, decimals }
   }
 
   async transferNFT(nftId, recipientAddress) {
