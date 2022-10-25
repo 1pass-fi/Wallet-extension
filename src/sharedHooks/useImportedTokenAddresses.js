@@ -7,10 +7,11 @@ import { get, isEmpty } from 'lodash'
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 import hardcodeSolanaTokens from 'solanaTokens/solanaTokens'
+import k2Contracts from 'utils/k2-contracts.json'
 import Web3 from 'web3'
 
 const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
-  const [importedTokenAddresses, setImportedTokenAddresses] = useState([])
+  const [importedTokenAddresses, setImportedTokenAddresses] = useState({})
 
   const checkValidToken = async (tokenAddress) => {
     try {
@@ -58,8 +59,12 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
   }
 
   const checkValidK2Token = async (tokenAddress) => {
-    // TODO DatH - LongP
-    return true
+    let foundToken =
+      find(k2Contracts, (token) =>
+        includes(token.address?.toLowerCase(), tokenAddress?.toLowerCase())
+      ) || {}
+
+    return !isEmpty(foundToken)
   }
 
   const loadEthAddresses = async () => {
@@ -82,9 +87,12 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses(validTokenAddresses)
+      setImportedTokenAddresses({
+        tokenType: TYPE.ETHEREUM,
+        addresses: validTokenAddresses
+      })
     } else {
-      setImportedTokenAddresses([])
+      setImportedTokenAddresses({})
     }
   }
 
@@ -105,9 +113,12 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses(validTokenAddresses)
+      setImportedTokenAddresses({
+        tokenType: TYPE.SOLANA,
+        addresses: validTokenAddresses
+      })
     } else {
-      setImportedTokenAddresses([])
+      setImportedTokenAddresses({})
     }
   }
 
@@ -128,13 +139,17 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses(validTokenAddresses)
+      setImportedTokenAddresses({
+        tokenType: TYPE.K2,
+        addresses: validTokenAddresses
+      })
     } else {
-      setImportedTokenAddresses([])
+      setImportedTokenAddresses({})
     }
   }
 
   useEffect(() => {
+    setImportedTokenAddresses({})
     const loadImportedTokenAddresses = async () => {
       const account = await popupAccount.getAccount({ address: userAddress })
       const accountData = await account.get.metadata()

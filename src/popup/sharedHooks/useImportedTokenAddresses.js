@@ -6,10 +6,11 @@ import { SOL_NETWORK_PROVIDER } from 'constants/koiConstants'
 import { get, isEmpty } from 'lodash'
 import storage from 'services/storage'
 import hardcodeSolanaTokens from 'solanaTokens/solanaTokens'
+import k2Contracts from 'utils/k2-contracts.json'
 import Web3 from 'web3'
 
 const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displayingAccount }) => {
-  const [importedTokenAddresses, setImportedTokenAddresses] = useState([])
+  const [importedTokenAddresses, setImportedTokenAddresses] = useState({})
 
   const checkValidToken = async (tokenAddress) => {
     try {
@@ -57,8 +58,12 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
   }
 
   const checkValidK2Token = async (tokenAddress) => {
-    // TODO DatH - LongP
-    return true
+    let foundToken =
+      find(k2Contracts, (token) =>
+        includes(token.address?.toLowerCase(), tokenAddress?.toLowerCase())
+      ) || {}
+
+    return !isEmpty(foundToken)
   }
 
   const loadEthAddresses = async () => {
@@ -81,9 +86,12 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses(validTokenAddresses)
+      setImportedTokenAddresses({
+        tokenType: TYPE.ETHEREUM,
+        addresses: validTokenAddresses
+      })
     } else {
-      setImportedTokenAddresses([])
+      setImportedTokenAddresses({})
     }
   }
 
@@ -104,9 +112,12 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses(validTokenAddresses)
+      setImportedTokenAddresses({
+        tokenType: TYPE.SOLANA,
+        addresses: validTokenAddresses
+      })
     } else {
-      setImportedTokenAddresses([])
+      setImportedTokenAddresses({})
     }
   }
 
@@ -127,9 +138,12 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses(validTokenAddresses)
+      setImportedTokenAddresses({
+        tokenType: TYPE.K2,
+        addresses: validTokenAddresses
+      })
     } else {
-      setImportedTokenAddresses([])
+      setImportedTokenAddresses({})
     }
   }
 

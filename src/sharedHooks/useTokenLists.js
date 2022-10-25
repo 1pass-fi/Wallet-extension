@@ -69,21 +69,26 @@ const useTokenLists = ({ account, address, setIsLoading, currentProviderAddress 
                 decimal: 18
               }
             ]
-            await Promise.all(
-              importedTokenAddresses.map(async (contractAddress) => {
-                let token = await getTokenData(contractAddress, address)
-                token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
-                if (token.price) {
+            if (importedTokenAddresses.tokenType === TYPE.ETHEREUM) {
+              await Promise.all(
+                importedTokenAddresses?.addresses?.map(async (contractAddress) => {
+                  let token = await getTokenData(contractAddress, address)
                   token = {
                     ...token,
-                    usdValue: fiatCurrencyFormat(
-                      (token.balance / Math.pow(10, token.decimal)) * token.price
-                    )
+                    displayingBalance: token.balance / Math.pow(10, token.decimal)
                   }
-                }
-                _tokenList.push(token)
-              })
-            )
+                  if (token.price) {
+                    token = {
+                      ...token,
+                      usdValue: fiatCurrencyFormat(
+                        (token.balance / Math.pow(10, token.decimal)) * token.price
+                      )
+                    }
+                  }
+                  _tokenList.push(token)
+                })
+              )
+            }
             break
           case TYPE.SOLANA:
             _tokenList = [
@@ -97,21 +102,26 @@ const useTokenLists = ({ account, address, setIsLoading, currentProviderAddress 
               }
             ]
 
-            await Promise.all(
-              importedTokenAddresses.map(async (contractAddress) => {
-                let token = await getSolanaCustomTokensData(contractAddress, address)
-                token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
-                if (token.price) {
+            if (importedTokenAddresses.tokenType === TYPE.SOLANA) {
+              await Promise.all(
+                importedTokenAddresses?.addresses?.map(async (contractAddress) => {
+                  let token = await getSolanaCustomTokensData(contractAddress, address)
                   token = {
                     ...token,
-                    usdValue: fiatCurrencyFormat(
-                      (token.balance / Math.pow(10, token.decimal)) * token.price
-                    )
+                    displayingBalance: token.balance / Math.pow(10, token.decimal)
                   }
-                }
-                _tokenList.push(token)
-              })
-            )
+                  if (token.price) {
+                    token = {
+                      ...token,
+                      usdValue: fiatCurrencyFormat(
+                        (token.balance / Math.pow(10, token.decimal)) * token.price
+                      )
+                    }
+                  }
+                  _tokenList.push(token)
+                })
+              )
+            }
             break
           case TYPE.K2:
             _tokenList = [
@@ -125,21 +135,26 @@ const useTokenLists = ({ account, address, setIsLoading, currentProviderAddress 
               }
             ]
 
-            await Promise.all(
-              importedTokenAddresses.map(async (contractAddress) => {
-                let token = await getK2CustomTokensData(contractAddress, address)
-                token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
-                if (token.price) {
+            if (importedTokenAddresses.tokenType === TYPE.K2) {
+              await Promise.all(
+                importedTokenAddresses?.addresses?.map(async (contractAddress) => {
+                  let token = await getK2CustomTokensData(contractAddress, address)
                   token = {
                     ...token,
-                    usdValue: fiatCurrencyFormat(
-                      (token.balance / Math.pow(10, token.decimal)) * token.price
-                    )
+                    displayingBalance: token.balance / Math.pow(10, token.decimal)
                   }
-                }
-                _tokenList.push(token)
-              })
-            )
+                  if (token.price) {
+                    token = {
+                      ...token,
+                      usdValue: fiatCurrencyFormat(
+                        (token.balance / Math.pow(10, token.decimal)) * token.price
+                      )
+                    }
+                  }
+                  _tokenList.push(token)
+                })
+              )
+            }
             break
         }
 

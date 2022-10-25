@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { TYPE } from 'constants/accountConstants'
 import { get, isEmpty } from 'lodash'
 import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddresses'
 import { popupAccount } from 'services/account'
@@ -68,12 +69,12 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
     ethereumToken.decimal = 18
     setSelectedToken(ethereumToken)
 
-    if (isEmpty(importedTokenAddresses)) {
+    if (isEmpty(importedTokenAddresses) || importedTokenAddresses.tokenType !== TYPE.ETHEREUM) {
       return [ethereumToken]
     }
 
     const customTokenList = await Promise.all(
-      importedTokenAddresses?.map(async (tokenAddress) => {
+      importedTokenAddresses?.addresses?.map(async (tokenAddress) => {
         return await getTokenData(tokenAddress, userAddress)
       })
     )
@@ -95,12 +96,12 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
     solanaToken.decimal = 9
     setSelectedToken(solanaToken)
 
-    if (isEmpty(importedTokenAddresses)) {
+    if (isEmpty(importedTokenAddresses) || importedTokenAddresses.tokenType !== TYPE.SOLANA) {
       return [solanaToken]
     }
 
     const customTokenList = await Promise.all(
-      importedTokenAddresses?.map(async (tokenAddress) => {
+      importedTokenAddresses?.addresses?.map(async (tokenAddress) => {
         return await getSolanaCustomTokensData(tokenAddress, userAddress)
       })
     )
@@ -123,12 +124,12 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
     setSelectedToken(k2Token)
 
     /* TODO DatH Custom token K2 */
-    if (isEmpty(importedTokenAddresses)) {
+    if (isEmpty(importedTokenAddresses) || importedTokenAddresses.tokenType !== TYPE.K2) {
       return [k2Token]
     }
 
     const customTokenList = await Promise.all(
-      importedTokenAddresses?.map(async (tokenAddress) => {
+      importedTokenAddresses?.addresses?.map(async (tokenAddress) => {
         return await getK2CustomTokensData(tokenAddress, userAddress)
       })
     )
