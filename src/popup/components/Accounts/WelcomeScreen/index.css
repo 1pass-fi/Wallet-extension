@@ -1,0 +1,17 @@
+.seed-file-lock-screen {
+  color: #171753;
+  width: 100%;
+}
+
+.seed-file-lock-screen .content {
+  flex-direction: column;
+  display: flex;
+  width: 100%;
+  padding: 16px 0 15px;
+}
+
+.seed-file-lock-screen .content .get-started {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+}

@@ -26,13 +26,14 @@ import { popupAccount } from 'services/account'
 import { popupBackgroundConnect } from 'services/request/popup'
 import { EventHandler } from 'services/request/src/backgroundConnect'
 
+// components
+import Account from 'components/Accounts'
 import ArSignModal from 'components/ArSignTransaction'
 import ConnectScreen from 'components/Connect/ConnectScreen'
 import EthSignModal from 'components/EthSignTransaction'
 import Loading from 'components/loading'
 import Message from 'components/message'
 import ConnectedSitesModal from 'components/modals/connectedSitesModal'
-// components
 import Header from 'components/PopupHeader'
 import EthSign from 'components/sign/EthSign'
 import GetEncryptionKey from 'components/sign/GetEncryptionKey'
@@ -173,7 +174,10 @@ const Popup = ({
         {accountLoaded && (
           <Switch>
             <Route exact path="/login">
-              <Login setIsWalletLocked={setIsWalletLocked}/>
+              <Login setIsWalletLocked={setIsWalletLocked} />
+            </Route>
+            <Route exact path="/account/*">
+              <Account />
             </Route>
             {!isEmpty(accounts) && (
               <>
