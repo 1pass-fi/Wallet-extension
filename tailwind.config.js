@@ -10,7 +10,11 @@ module.exports = {
         51: '51'
       },
       screens: {
-        lg: '1090px'
+        lg: '1122px',
+        '2xl': '1600px',
+        '3xl': '2200px',
+        '4xl': '2800px',
+        '5xl': '3400px'
       },
       colors: {
         teal: {

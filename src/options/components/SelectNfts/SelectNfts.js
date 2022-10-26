@@ -33,7 +33,7 @@ export default () => {
   }, [collection, assets])
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-5 gap-y-3.75 place-items-center">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-7 5xl:grid-cols-8 gap-x-5 gap-y-3.75 place-items-center">
       {nfts.map((cardInfo) => (
         <NftSelectCard key={uniqueId()} nft={cardInfo} />
       ))}
