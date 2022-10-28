@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react'
 import clsx from 'clsx'
 import { ACTIVITY_NAME, ETH_NETWORK_PROVIDER,PATH, URL } from 'constants/koiConstants'
-import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
-import formatNumber from 'finnie-v2/utils/formatNumber'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ExploreBlock from 'img/v2/explore-block-coming-soon.svg'
@@ -11,6 +9,8 @@ import SolanaLogo from 'img/v2/solana-logo.svg'
 import ViewBlockIcon from 'img/v2/view-block.svg'
 import includes from 'lodash/includes'
 import moment from 'moment'
+import formatLongString, { formatLongStringTruncate } from 'options/utils/formatLongString'
+import formatNumber from 'options/utils/formatNumber'
 
 const ActivityRow = ({
   activity: { activityName, address, date, expense, id, source, network, isK2Account }

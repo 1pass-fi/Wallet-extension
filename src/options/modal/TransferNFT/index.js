@@ -2,15 +2,15 @@ import React, { useContext, useEffect, useMemo,useRef, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { TYPE } from 'constants/accountConstants'
-import NFTMedia from 'finnie-v2/components/NFTMedia'
-// v2
-import { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import isEmpty from 'lodash/isEmpty'
 import { setAssets } from 'options/actions/assets'
 import { setError } from 'options/actions/error'
+import NFTMedia from 'options/components/NFTMedia'
 import { GalleryContext } from 'options/galleryContext'
+// v2
+import { formatLongStringTruncate } from 'options/utils/formatLongString'
 import { popupBackgroundRequest } from 'services/request/popup'
 import { isArweaveAddress, isEthereumAddress, isSolanaAddress } from 'utils'
 

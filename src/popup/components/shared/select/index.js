@@ -1,8 +1,8 @@
 // modules
 import React, { useEffect, useRef, useState } from 'react'
-import formatLongString from 'finnie-v2/utils/formatLongString'
 // assets
 import DownArrowIcon from 'img/v2/dropdown/down-icon-blue.svg'
+import formatLongString from 'options/utils/formatLongString'
 
 // styles
 // import './index.css'

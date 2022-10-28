@@ -1,3 +1,3 @@
-import SelectNfts from 'options/finnie-v2/components/SelectNfts'
+import SelectNfts from 'options/components/SelectNfts'
 
 export default SelectNfts

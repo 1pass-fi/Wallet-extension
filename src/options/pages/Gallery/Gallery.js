@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import NFTCard from 'finnie-v2/components/NFTCard'
 import CreateIcon from 'img/v2/create-icon.svg'
 import isEmpty from 'lodash/isEmpty'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
+import NFTCard from 'options/components/NFTCard'
 
 import './index.css'
 

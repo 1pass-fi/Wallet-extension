@@ -1,6 +1,6 @@
 import React from 'react'
-import NFTMedia from 'finnie-v2/components/NFTMedia'
 import OpenIcon from 'img/v2/open-icon-white.svg'
+import NFTMedia from 'options/components/NFTMedia'
 
 const NFTCard = ({ nft }) => {
   const goToNft = () => {

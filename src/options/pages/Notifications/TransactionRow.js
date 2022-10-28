@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
 import clsx from 'clsx'
 import { ETH_NETWORK_PROVIDER, MAX_RETRIED,PATH, URL } from 'constants/koiConstants'
-import formatLongString, { formatLongStringTruncate } from 'finnie-v2/utils/formatLongString'
 import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-bg-white.svg'
 import ViewBlockIcon from 'img/v2/view-block.svg'
 import includes from 'lodash/includes'
 import moment from 'moment'
+import formatLongString, { formatLongStringTruncate } from 'options/utils/formatLongString'
 
 const TransactionRow = ({
   transaction: { activityName, address, date, expense, id, source, network, retried, expired }

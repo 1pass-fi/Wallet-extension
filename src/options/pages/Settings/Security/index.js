@@ -1,13 +1,13 @@
 import React, { useEffect,useState } from 'react'
 import { useSelector } from 'react-redux'
 import { STORAGE } from 'constants/koiConstants'
+import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
 import {
   AccountManagementExportKey,
-  AccountManagementGetPhrase} from 'finnie-v2/components/AccountManagement'
-import ChangePasswordModal from 'finnie-v2/components/Settings/Security/ChangePasswordModal'
-import ExportPrivateKeyModal from 'finnie-v2/components/Settings/Security/ExportPrivateKeyModal'
-import RecoveryPhraseModal from 'finnie-v2/components/Settings/Security/RecoveryPhraseModal'
-import FinnieIcon from 'img/finnie-koi-logo-blue.svg'
+  AccountManagementGetPhrase} from 'options/components/AccountManagement'
+import ChangePasswordModal from 'options/components/Settings/Security/ChangePasswordModal'
+import ExportPrivateKeyModal from 'options/components/Settings/Security/ExportPrivateKeyModal'
+import RecoveryPhraseModal from 'options/components/Settings/Security/RecoveryPhraseModal'
 import { getArAccounts } from 'options/selectors/accounts'
 import { getDisplayAddress } from 'options/utils'
 import { getChromeStorage } from 'utils'

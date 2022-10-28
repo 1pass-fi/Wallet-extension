@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import classifyAssets from 'finnie-v2/utils/classifyAssets'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import { setAssets, setCollectionNfts } from 'options/actions/assets'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
+import classifyAssets from 'options/utils/classifyAssets'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 

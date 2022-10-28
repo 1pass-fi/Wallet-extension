@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { PATH } from 'constants/koiConstants'
-import Button from 'finnie-v2/components/Button'
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import CopyIcon from 'img/v2/copy-icon-white.svg'
@@ -11,6 +10,7 @@ import LinkedIn from 'img/v2/share-modal-icons/linkedin-icon.svg'
 import MailIcon from 'img/v2/share-modal-icons/mail-icon.svg'
 import TwitterIcon from 'img/v2/share-modal-icons/twitter-icon.svg'
 import ShareIcon from 'img/v2/share-nft-icon.svg'
+import Button from 'options/components/Button'
 import { createShareWindow } from 'options/helpers'
 
 const ShareNFTModal = ({ txId, close }) => {

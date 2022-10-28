@@ -4,12 +4,12 @@ import { useHistory } from 'react-router-dom'
 import clsx from 'clsx'
 // constants
 import { TYPE } from 'constants/accountConstants'
-// utils
-import formatNumber from 'finnie-v2/utils/formatNumber'
 import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 import isEmpty from 'lodash/isEmpty'
 // components
-import CheckBoxLight from 'options/finnie-v2/components/CheckBox/CheckBoxLight'
+import CheckBoxLight from 'options/components/CheckBox/CheckBoxLight'
+// utils
+import formatNumber from 'options/utils/formatNumber'
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 import { getLogoPath } from 'utils/getTokenData'
 
