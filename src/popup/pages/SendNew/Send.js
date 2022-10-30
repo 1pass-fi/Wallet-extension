@@ -5,6 +5,7 @@ import ReactTooltip from 'react-tooltip'
 import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
 import clsx from 'clsx'
+import { TYPE } from 'constants/accountConstants'
 import BackBtn from 'img/popup/back-button.svg'
 import ArrowIconBlue from 'img/popup/down-arrow-icon-blue.svg'
 import SendBackgroundLeft from 'img/popup/send-background-left.svg'
@@ -24,7 +25,7 @@ import useTokenList from './hooks/useTokenList'
 import useValidate from './hooks/useValidate'
 import SendTokenForm from './SendTokenForm'
 
-const Send = ({ setShowSigning, setError, setIsLoading }) => {
+const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, setIsLoading }) => {
   const displayingAccount = useSelector(getDisplayingAccount)
 
   const [selectedAccount, setSelectedAccount] = useState({})
@@ -126,7 +127,17 @@ const Send = ({ setShowSigning, setError, setIsLoading }) => {
     const sendToken = async () => {
       if (!validated) return setError(errorMessage)
       onSendTokens()
-      setShowSigning(true)
+
+      switch(selectedNetwork) {
+        case TYPE.ETHEREUM:
+          setShowEthSigning(true)
+          break
+        case TYPE.ARWEAVE:
+          setShowArSigning(true)
+          break
+        default:
+          setShowSigning(true) // for Solana and K2
+      }
     }
     if (sendTokenClick) sendToken()
   }, [sendTokenClick])

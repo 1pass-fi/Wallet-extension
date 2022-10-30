@@ -191,7 +191,11 @@ const Popup = ({
                       <Receive />
                     </Route>
                     <Route exact path="/send">
-                      <Send setShowSigning={setShowSigning} />
+                      <Send 
+                        setShowSigning={setShowSigning}
+                        setShowEthSigning={setShowEthSigning}
+                        setShowArSigning={setShowArSigning}
+                      />
                     </Route>
                     <Route path="/import-token">
                       <ImportToken />
