@@ -691,50 +691,92 @@ export class EthereumMethod {
   }
 
   async transferNFT(nftId, recipientAddress) {
+    // Get nft with nftId
     let allNfts = await this.#chrome.getAssets()
-
     const nft = find(allNfts, { txId: nftId })
 
-    const tokenId = nftId.split('_')[0]
-    const provider = await storage.setting.get.ethereumProvider()
-    const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
-    // const ethNetwork = 'goerli'
-    // const apiKey = 'f811f2257c4a4cceba5ab9044a1f03d2'
+    // Initialize provider and wallet
+    const providerUrl = await storage.setting.get.ethereumProvider()
+    const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
+    const signer = wallet.connect(ethersProvider)
 
-    const network = ethers.providers.getNetwork(ethNetwork)
-    const web3 = new ethers.providers.InfuraProvider(network, apiKey)
-
+    // Contract ABI and Contract Interface
     const contractABI = nft.tokenSchema === 'ERC721' ? ERC721ABI : ERC1155ABI
-    const wallet = new ethers.Wallet(this.eth.key, web3)
+    const contractInterface = new ethers.utils.Interface(contractABI)
 
-    const gasPrice = await web3.getGasPrice()
-    const nftContract = new ethers.Contract(nft.tokenAddress, contractABI, wallet)
+    // Token contract
+    const nftContract = new ethers.Contract(nft.tokenAddress, contractABI, signer)
 
-    let gasLimit, transaction
+    // Gas
+    const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei')
+    const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(providerUrl, '2.5')
+
+    // Payload fields
+    const nonce = await ethersProvider.getTransactionCount(this.eth.address, 'pending')
+    const chainId = (await ethersProvider.getNetwork()).chainId
+    const type = 2 // type 2: EIP1559; type 0: legacy
+
+    // Estimate gasLimit and encode function data
+    const tokenId = nftId.split('_')[0]
+    let gasLimit, data, transferFunction
     if (nft.tokenSchema === 'ERC721') {
-      gasLimit = await nftContract.estimateGas['safeTransferFrom(address,address,uint256)'](
+      transferFunction = 'safeTransferFrom(address,address,uint256)'
+
+      gasLimit = await nftContract.estimateGas[transferFunction](
         this.eth.address,
         recipientAddress,
         tokenId,
-        { gasPrice }
+        { maxPriorityFeePerGas, maxFeePerGas }
       )
 
-      transaction = await nftContract['safeTransferFrom(address,address,uint256)'](
+      data = contractInterface.encodeFunctionData(transferFunction, [
         this.eth.address,
         recipientAddress,
         tokenId,
-        { gasLimit }
-      )
+      ])
     } else {
-      gasLimit = await nftContract.estimateGas[
-        'safeTransferFrom(address,address,uint256,uint256,bytes)'
-      ](this.eth.address, recipientAddress, tokenId, '1', '0x', { gasPrice })
+      transferFunction = 'safeTransferFrom(address,address,uint256,uint256,bytes)'
 
-      console.log(gasLimit)
-      transaction = await nftContract[
-        'safeTransferFrom(address,address,uint256,uint256,bytes)'
-      ](this.eth.address, recipientAddress, tokenId, '1', '0x', { gasLimit })
+      gasLimit = await nftContract.estimateGas[transferFunction](
+        this.eth.address,
+        recipientAddress,
+        tokenId,
+        '1',
+        '0x01',
+        {
+          maxPriorityFeePerGas,
+          maxFeePerGas
+        }
+      )
+
+      data = contractInterface.encodeFunctionData(transferFunction, [
+        this.eth.address,
+        recipientAddress,
+        tokenId,
+        '1',
+        '0x01'
+      ])
     }
+
+    const transactionPayload = {
+      to: nft.tokenAddress,
+      data,
+      maxPriorityFeePerGas,
+      maxFeePerGas,
+      nonce,
+      chainId,
+      type,
+      gasLimit
+    }
+
+    console.log('transactionPayload', transactionPayload)
+
+    // Sign transaction
+    const rawTransaction = await signer.signTransaction(transactionPayload)
+    const signedTransaction = ethers.utils.parseTransaction(rawTransaction)
+    const txHash = get(signedTransaction, 'hash')
+
+    console.log('txHash', txHash)
 
     allNfts = allNfts.map((nft) => {
       if (nft.txId === nftId) nft.isSending = true
@@ -742,8 +784,9 @@ export class EthereumMethod {
     })
     await this.#chrome.setAssets(allNfts)
 
-    console.log('transactionHash', transaction?.hash)
+    // Send transaction
+    await (await ethersProvider.sendTransaction(rawTransaction)).wait()
 
-    return transaction
+    return txHash
   }
 }
