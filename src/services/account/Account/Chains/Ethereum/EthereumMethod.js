@@ -641,47 +641,51 @@ export class EthereumMethod {
   }
 
   async transferToken({ tokenContractAddress, to, value }) {
-    const providerUrl = await storage.setting.get.ethereumProvider()
-    const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
-    const signer = wallet.connect(ethersProvider)
-    
-    const tokenContract = new ethers.Contract(tokenContractAddress, ERC20ABI, signer)
-    const symbol = await tokenContract.symbol()
-    const decimals = await tokenContract.decimals()
-    
-    const erc20Interface = new ethers.utils.Interface(ERC20ABI)
-    const data = erc20Interface.encodeFunctionData('transfer', [to, value])
+    try {
+      const providerUrl = await storage.setting.get.ethereumProvider()
+      const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
+      const signer = wallet.connect(ethersProvider)
 
-    const nonce = await ethersProvider.getTransactionCount(this.eth.address, 'pending')
-    const chainId = (await ethersProvider.getNetwork()).chainId
-    const type = 2 // type 2: EIP1559; type 0: legacy
+      const tokenContract = new ethers.Contract(tokenContractAddress, ERC20ABI, signer)
+      const symbol = await tokenContract.symbol()
+      const decimals = await tokenContract.decimals()
 
-    const gasLimit = (await tokenContract.estimateGas?.transfer(to, value)).toNumber()
-    const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei')
-    const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(
-      providerUrl,
-      maxPriorityFeePerGas
-    )
+      const erc20Interface = new ethers.utils.Interface(ERC20ABI)
+      const data = erc20Interface.encodeFunctionData('transfer', [to, value])
 
-    const transactionPayload = {
-      to: tokenContractAddress,
-      data,
-      maxPriorityFeePerGas,
-      maxFeePerGas,
-      nonce,
-      chainId,
-      type,
-      gasLimit
+      const nonce = await ethersProvider.getTransactionCount(this.eth.address, 'pending')
+      const chainId = (await ethersProvider.getNetwork()).chainId
+      const type = 2 // type 2: EIP1559; type 0: legacy
+
+      const gasLimit = (await tokenContract.estimateGas?.transfer(to, value)).toNumber()
+      const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei')
+      const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(
+        providerUrl,
+        maxPriorityFeePerGas
+      )
+
+      const transactionPayload = {
+        to: tokenContractAddress,
+        data,
+        maxPriorityFeePerGas,
+        maxFeePerGas,
+        nonce,
+        chainId,
+        type,
+        gasLimit
+      }
+      console.log('transactionPayload', transactionPayload)
+
+      const rawTransaction = await wallet.signTransaction(transactionPayload)
+      const signedTransaction = ethers.utils.parseTransaction(rawTransaction)
+      const txHash = signedTransaction?.hash
+      console.log('txHash', txHash)
+      const sendingPromise = (await ethersProvider.sendTransaction(rawTransaction)).wait()
+
+      return { txHash, sendingPromise, symbol, decimals }
+    } catch (error) {
+      console.error(`Failed to transfer: ${err}`)
     }
-    console.log('transactionPayload', transactionPayload)
-
-    const rawTransaction = await wallet.signTransaction(transactionPayload)
-    const signedTransaction = ethers.utils.parseTransaction(rawTransaction)
-    const txHash = signedTransaction?.hash
-    console.log('txHash', txHash)
-    const sendingPromise = (await ethersProvider.sendTransaction(rawTransaction)).wait()
-    
-    return { txHash, sendingPromise, symbol, decimals }
   }
 
   async transferNFT(nftId, recipientAddress) {
