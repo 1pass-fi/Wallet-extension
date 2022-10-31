@@ -314,7 +314,7 @@ export class EthereumMethod {
       const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei')
       const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(
         providerUrl,
-        maxPriorityFeePerGas
+        '2.5'
       )
 
       // Payload fields
@@ -329,9 +329,11 @@ export class EthereumMethod {
         maxFeePerGas,
         nonce,
         chainId,
-        type,
-        gasLimit: '21000' // Gas limit = 21000 for normal transfer ETH
+        type
       }
+
+      const gasLimit = await signer.estimateGas(transactionPayload)
+      transactionPayload.gasLimit = gasLimit || '21000'
 
       console.log('transactionPayload', transactionPayload)
 
@@ -661,7 +663,7 @@ export class EthereumMethod {
       const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei')
       const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(
         providerUrl,
-        maxPriorityFeePerGas
+        '2.5'
       )
 
       const transactionPayload = {

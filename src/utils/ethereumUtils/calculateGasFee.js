@@ -3,26 +3,22 @@ import isString from 'lodash/isString'
 
 import initEthersProvider from './initEthersProvider'
 
-/**
- * 
- * @param {ethers.BigNumber} baseFee 
- * @param {ethers.BigNumber} priorityFee 
- * @returns 
- */
 const maxFeePerGasFormular = (baseFee, priorityFee) => {
-  return priorityFee.add(baseFee.mul('2'))
+  return baseFee * 2 + priorityFee
 }
 
 /**
- *
+ * 
  * @param {String} providerUrl
- * @param {ethers.BigNumber} maxPriorityFeePerGas
+ * @param {String} maxPriorityFeePerGas 
  */
 const calculateMaxFeePerGas = async (providerUrl, maxPriorityFeePerGas) => {
   try {
     const { ethersProvider } = initEthersProvider(providerUrl)
-
-    const baseFee = (await ethersProvider.getBlock('latest')).baseFeePerGas
+    
+    const baseFee = (await ethersProvider.getBlock('latest')).baseFeePerGas.toNumber()
+    if (!isString) maxPriorityFeePerGas = `${maxPriorityFeePerGas}`
+    maxPriorityFeePerGas = Number(ethers.utils.parseUnits(maxPriorityFeePerGas, 'gwei'))
 
     return maxFeePerGasFormular(baseFee, maxPriorityFeePerGas)
   } catch (err) {

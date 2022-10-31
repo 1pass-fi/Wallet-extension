@@ -36,7 +36,7 @@ const useGetFee = ({ network, transactionPayload }) => {
     const rawTx = {}
     rawTx.from = sourceAddress
     if (recipientAddress) rawTx.to = recipientAddress
-    if (value) rawTx.value = value
+    if (value) rawTx.value = value.toString()
     if (transactionData) rawTx.data = transactionData
     if (maxFeePerGas) rawTx.maxFeePerGas = maxFeePerGas
     if (maxPriorityFeePerGas) rawTx.maxPriorityFeePerGas = maxPriorityFeePerGas

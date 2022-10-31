@@ -89,15 +89,17 @@ export default async (payload, next) => {
       await storage.generic.set.pushNotification(notifications)
     }
 
-    receipt.sendingPromise
-      .then(() => {
-        console.log('transaction processing completed')
-        updateTransaction()
-      })
-      .catch(() => {
-        console.log('transaction processing failed, remove the transaction')
-        removeTransaction()
-      })
+    if (token === 'ETH') {
+      receipt?.sendingPromise
+        .then(() => {
+          console.log('transaction processing completed')
+          updateTransaction()
+        })
+        .catch(() => {
+          console.log('transaction processing failed, remove the transaction')
+          removeTransaction()
+        })
+    }
 
     helpers.loadBalances()
     helpers.loadActivities()
