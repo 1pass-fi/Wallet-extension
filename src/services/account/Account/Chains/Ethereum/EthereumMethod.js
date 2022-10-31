@@ -618,7 +618,10 @@ export class EthereumMethod {
 
     const gasLimit = (await tokenContract.estimateGas?.transfer(to, value)).toNumber()
     const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei')
-    const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(providerUrl, '2.5')
+    const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(
+      providerUrl,
+      maxPriorityFeePerGas
+    )
 
     const transactionPayload = {
       to: tokenContractAddress,
