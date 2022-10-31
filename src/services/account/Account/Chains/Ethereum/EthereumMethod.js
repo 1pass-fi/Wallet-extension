@@ -305,9 +305,49 @@ export class EthereumMethod {
 
   async transfer(_, recipient, qty) {
     try {
-      return await this.eth.transferEth(recipient, qty)
+      // Initialize provider and wallet
+      const providerUrl = await storage.setting.get.ethereumProvider()
+      const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
+      const signer = wallet.connect(ethersProvider)
+
+      // Gas
+      const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei')
+      const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(
+        providerUrl,
+        maxPriorityFeePerGas
+      )
+
+      // Payload fields
+      const nonce = await ethersProvider.getTransactionCount(this.eth.address, 'pending')
+      const chainId = (await ethersProvider.getNetwork()).chainId
+      const type = 2 // type 2: EIP1559; type 0: legacy
+
+      const transactionPayload = {
+        to: recipient,
+        value: ethers.utils.parseEther(qty.toString()),
+        maxPriorityFeePerGas,
+        maxFeePerGas,
+        nonce,
+        chainId,
+        type,
+        gasLimit: '21000' // Gas limit = 21000 for normal transfer ETH
+      }
+
+      console.log('transactionPayload', transactionPayload)
+
+      // Sign transaction
+      const rawTransaction = await signer.signTransaction(transactionPayload)
+      const signedTransaction = ethers.utils.parseTransaction(rawTransaction)
+      const txHash = get(signedTransaction, 'hash')
+
+      console.log('txHash', txHash)
+
+      // Send transaction
+      const sendingPromise = (await ethersProvider.sendTransaction(rawTransaction)).wait()
+
+      return { txHash, sendingPromise }
     } catch (err) {
-      throw new Error(err.message)
+      console.error(`Failed to transfer ETH: ${err}`)
     }
   }
 
