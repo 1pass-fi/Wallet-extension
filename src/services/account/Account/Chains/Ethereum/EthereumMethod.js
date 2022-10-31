@@ -650,8 +650,12 @@ export class EthereumMethod {
       const symbol = await tokenContract.symbol()
       const decimals = await tokenContract.decimals()
 
-      const erc20Interface = new ethers.utils.Interface(ERC20ABI)
-      const data = erc20Interface.encodeFunctionData('transfer', [to, value])
+    const gasLimit = (await tokenContract.estimateGas?.transfer(to, value)).toNumber()
+    const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei')
+    const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(
+      providerUrl,
+      maxPriorityFeePerGas
+    )
 
       const nonce = await ethersProvider.getTransactionCount(this.eth.address, 'pending')
       const chainId = (await ethersProvider.getNetwork()).chainId
