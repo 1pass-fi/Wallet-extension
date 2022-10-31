@@ -2,6 +2,7 @@ import React, { useEffect,useState } from 'react'
 import { get, isNumber } from 'lodash'
 import storage from 'services/storage'
 import { numberFormat } from 'utils'
+import ethereumUtils from 'utils/ethereumUtils'
 import Web3 from 'web3'
 
 
@@ -23,7 +24,7 @@ const useGetFee = ({ network, transactionPayload }) => {
 
   const getEthFee = async () => {
     const provider = await storage.setting.get.ethereumProvider()
-    const web3 = new Web3(provider)
+    const { ethersProvider } = ethereumUtils.initEthersProvider(provider)
 
     const sourceAddress = get(transactionPayload, 'from')
     const recipientAddress = get(transactionPayload, 'to')
@@ -40,14 +41,8 @@ const useGetFee = ({ network, transactionPayload }) => {
     if (maxFeePerGas) rawTx.maxFeePerGas = maxFeePerGas
     if (maxPriorityFeePerGas) rawTx.maxPriorityFeePerGas = maxPriorityFeePerGas
 
-    console.log('rawTx', rawTx)
-
-    const gasPrice = await web3.eth.getGasPrice()
-    const gasUsed = await web3.eth.estimateGas(rawTx)
-
-    console.log('gasPrice', gasPrice)
-
-    const gasFee = gasUsed * gasPrice
+    const gasUsed = await ethersProvider.estimateGas(rawTx)
+    const gasFee = gasUsed * maxFeePerGas
     setTotalFee(fromWeiToEth(gasFee))
     setTokenSymbol('ETH')
   }

@@ -1,6 +1,7 @@
 
 import axios from 'axios'
 import { REQUEST } from 'constants/koiConstants'
+import { ethers } from 'ethers'
 import { get,isString } from 'lodash'
 import storage from 'services/storage'
 import { fromArToWinston, fromEthToWei, fromSolToLamp } from 'utils'
@@ -13,6 +14,7 @@ const ARWEAVE = 'ARWEAVE'
 const SOLANA = 'SOLANA'
 
 import { TYPE } from 'constants/accountConstants'
+import ethereumUtils from 'utils/ethereumUtils'
 
 const validateAddress = (address) => {
   if (address?.slice(0, 2) === '0x' && address?.length === 42) return ETHEREUM
@@ -40,6 +42,10 @@ const useMethod = ({
       if (!network) throw new Error('Invalid address')
   
       const sendValue = selectedToken.decimal === 1 ? value : (10 ** selectedToken.decimal * value)
+
+      const providerUrl = await storage.setting.get.ethereumProvider()
+      const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei').toNumber()
+      const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(providerUrl, '2.5')
 
       if (network === TYPE.ETHEREUM) {
         if (contractAddress) {
@@ -70,11 +76,16 @@ const useMethod = ({
             'type': 'function'
           }, [recipient, `${sendValue}`])
 
+
+
           const transactionPayload = {
             from: sender,
             to: contractAddress,
-            data: hex
+            data: hex,
+            maxPriorityFeePerGas,
+            maxFeePerGas
           }
+
           const requestPayload = {
             network: 'ETHEREUM',
             transactionPayload,
@@ -90,7 +101,9 @@ const useMethod = ({
           const transactionPayload = {
             from: sender,
             to: recipient,
-            value: fromEthToWei(value).toString(16)
+            value: fromEthToWei(value).toString(16),
+            maxFeePerGas,
+            maxPriorityFeePerGas
           }
   
           const requestPayload = {

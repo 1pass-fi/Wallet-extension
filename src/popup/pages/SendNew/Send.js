@@ -126,7 +126,7 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
   useEffect(() => {
     const sendToken = async () => {
       if (!validated) return setError(errorMessage)
-      onSendTokens()
+      await onSendTokens()
 
       switch(selectedNetwork) {
         case TYPE.ETHEREUM:
