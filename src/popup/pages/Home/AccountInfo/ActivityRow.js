@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { ACTIVITY_NAME, ETH_NETWORK_PROVIDER, PATH, URL } from 'constants/koiConstants'
 import ExploreBlock from 'img/v2/explore-block-coming-soon.svg'
 import GreenDotIcon from 'img/v2/green-dot.svg'
-import ViewBlockIcon from 'img/v2/view-block.svg'
+import ViewBlockIconNew from 'img/v2/view-block-new.svg'
 import { get, includes } from 'lodash'
 import moment from 'moment'
 import ToolTip from 'options/components/ToolTip'
@@ -135,13 +135,14 @@ const ActivityRow = ({
       {loaded && (
         <div
           className={clsx(
-            'flex justify-between px-4.25 pl-5 h-18.25 border-b-2 border-gray-underline',
+            'flex justify-between items-center px-4.25 pl-5 h-18.25 border-b border-trueGray-400',
             !seen && 'font-semibold'
           )}
+          style={{ height: '82px' }}
         >
-          <div className="w-3/5 flex flex-col relative pt-2">
+          <div className="w-3/5 flex flex-col relative mt-1">
             {!seen && (
-              <div className="absolute -left-3.25 top-3.25">
+              <div className="absolute -left-3.25 top-1.75">
                 <GreenDotIcon />
               </div>
             )}
@@ -154,9 +155,11 @@ const ActivityRow = ({
                 <span className="text-success-700">{formatLongString(source, 10, true)}</span>
               </div>
             )}
-            <div className="text-xs font-semibold text-blue-800 leading-5">{accountName}</div>
+            <div className="mt-0.75 text-xs font-semibold text-blue-800 leading-5">
+              {accountName}
+            </div>
           </div>
-          <div className="w-2/5 flex flex-col items-end text-right pt-2">
+          <div className="w-2/5 flex flex-col items-end text-right mt-1">
             <div
               className={`text-sm font-semibold rounded-sm px-1 text-blue-800 ${
                 get(displayInfo, 'expenseText').includes('-') ? 'bg-warning' : 'bg-success'
@@ -171,12 +174,15 @@ const ActivityRow = ({
                   href={displayInfo.blockUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex justify-end text-xs text-success-700 underline leading-5"
+                  className={clsx(
+                    'mt-0.75 px-2.5 flex justify-center items-center text-2xs text-blue-850 leading-4 rounded-2xl',
+                    !pending ? 'bg-success' : isProcessing ? 'bg-lightBlue' : 'bg-warning'
+                  )}
+                  style={{ height: '23px' }}
                 >
-                  <div className="pr-1.375">
-                    <ViewBlockIcon />
-                  </div>
-                  {!pending ? 'Explore Block' : (isProcessing ? 'Processing' : 'Pending transaction')}
+                  <ViewBlockIconNew style={{ width: '19px', height: '18px' }} />
+
+                  {!pending ? 'Explore Block' : isProcessing ? 'Processing' : 'Pending'}
                 </a>
               ) : (
                 <div
