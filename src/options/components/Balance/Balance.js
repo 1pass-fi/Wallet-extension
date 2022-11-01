@@ -32,20 +32,20 @@ const Balance = ({ account }) => {
 
   return (
     <div
-      className="flex justify-between items-center bg-white bg-opacity-20 rounded text-white shadow"
-      style={{ maxWidth: '310px', height: '32px' }}
+      className="flex justify-between items-center bg-white bg-opacity-20 rounded text-white shadow h-8 3xl:h-12"
+      // style={{ maxWidth: '310px' }}
     >
       {isEmpty(account.type) && (
         <>
           <ViewsIcon style={{ width: '26px', height: '24px' }} className="mx-2" />
-          <span className="font-semibold text-sm mr-2.5">0</span>
-          <K2Logo className="w-6 h-6 mr-2" />
-          <span className="font-semibold text-sm mr-2.5">0</span>
+          <span className="font-semibold text-sm 3xl:text-base mr-2.5">0</span>
+          <K2Logo className="w-6 3xl:w-8 h-6 3xl:h-8 mr-2" />
+          <span className="font-semibold text-sm 3xl:text-base mr-2.5">0</span>
         </>
       )}
       {!isEmpty(account.accountName) && (
         <div
-          className="ml-3 mr-1 font-normal text-sm leading-4 text-left tracking-finnieSpacing-wider text-trueGray-100"
+          className="ml-3 mr-1 font-normal text-sm 3xl:text-base leading-4 text-left tracking-finnieSpacing-wider text-trueGray-100"
           style={{ maxWidth: '150px' }}
         >
           {formatLongString(account.accountName, 10)}
@@ -53,22 +53,22 @@ const Balance = ({ account }) => {
       )}
       {account.type === TYPE.ARWEAVE && (
         <>
-          <ViewsIcon style={{ width: '26px', height: '24px' }} className="mx-2" />
-          <span className="font-semibold text-sm mr-2.5">{totalViews}</span>
+          <ViewsIcon className="mx-2 w-6.5 3xl:w-9 h-6 3xl:h-8" />
+          <span className="font-semibold text-sm 3xl:text-base mr-2.5">{totalViews}</span>
           {/* <KoiiLogo className="w-6 h-6 mr-2" />
-          <span className="font-semibold text-sm mr-2.5">
+          <span className="font-semibold text-sm 3xl:text-base mr-2.5">
             {isNumber(account.koiBalance) ? formatNumber(account.koiBalance, 2) : '0'}
           </span> */}
-          <ArweaveLogo className="w-6 h-6 mr-2" />
-          <span className="font-semibold text-sm  mr-2">
+          <ArweaveLogo className="w-6 3xl:w-8 h-6 3xl:h-8 mr-2" />
+          <span className="font-semibold text-sm 3xl:text-base  mr-2">
             {isNumber(account.balance) ? formatNumber(account.balance, 4) : '0'}
           </span>
         </>
       )}
       {account.type === TYPE.K2 && (
         <>
-          <K2Logo className="w-6 h-6 mx-2" />
-          <span className="font-semibold text-sm mr-2.5">
+          <K2Logo className="w-6 3xl:w-8 h-6 3xl:h-8 mx-2" />
+          <span className="font-semibold text-sm 3xl:text-base mr-2.5">
             {formatNumber(account.balance, 4) !== 'NaN'
               ? formatNumber(account.balance / Math.pow(10, 9), 4)
               : '0'}
@@ -77,16 +77,16 @@ const Balance = ({ account }) => {
       )}
       {account.type === TYPE.ETHEREUM && (
         <>
-          <EthereumLogo className="w-6 h-6 mx-2" />
-          <span className="font-semibold text-sm mr-2.5">
+          <EthereumLogo className="w-6 3xl:w-8 h-6 3xl:h-8 mx-2" />
+          <span className="font-semibold text-sm 3xl:text-base mr-2.5">
             {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'}
           </span>
         </>
       )}
       {account.type === TYPE.SOLANA && (
         <>
-          <SolanaLogo className="w-6 h-6 mx-2" />
-          <span className="font-semibold text-sm mr-2.5">
+          <SolanaLogo className="w-6 3xl:w-8 h-6 3xl:h-8 mx-2" />
+          <span className="font-semibold text-sm 3xl:text-base mr-2.5">
             {formatNumber(account.balance, 4) !== 'NaN'
               ? formatNumber(account.balance / Math.pow(10, 9), 4)
               : '0'}
@@ -94,8 +94,7 @@ const Balance = ({ account }) => {
         </>
       )}
       <div
-        className="bg-trueGray-100 rounded-r-lg flex items-center justify-center cursor-pointer"
-        style={{ width: '32px', height: '32px' }}
+        className="bg-trueGray-100 rounded-r-lg flex items-center justify-center cursor-pointer w-8 3xl:w-12 h-8 3xl:h-12"
         onClick={async () => await request.wallet.loadBalanceAsync()}
       >
         <RefreshIcon />
