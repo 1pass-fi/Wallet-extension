@@ -8,7 +8,7 @@ import showNotification from 'utils/notifications'
 
 export default async (payload, next) => {
   try {
-    const { qty, target, token, address } = payload.data
+    const { qty, target, token, address, maxPriorityFeePerGas, maxFeePerGas } = payload.data
     const credentials = await backgroundAccount.getCredentialByAddress(address)
     const account = await backgroundAccount.getAccount(credentials)
     const transactionType =
@@ -20,7 +20,13 @@ export default async (payload, next) => {
     let receipt = {}
 
     if (token === 'ETH') {
-      receipt = await account.method.transfer(token, target, qty)
+      receipt = await account.method.transfer(
+        token,
+        target,
+        qty,
+        maxPriorityFeePerGas,
+        maxFeePerGas
+      )
       txId = receipt.txHash
     } else if (token === 'KOI') {
       txId = await account.method.transfer(token, target, qty)
@@ -47,7 +53,8 @@ export default async (payload, next) => {
       network,
       retried: 1,
       transactionType,
-      isK2Account: token === 'KOII'
+      isK2Account: token === 'KOII',
+      isProcessing: token === 'ETH'
     }
     
     if (token !== 'KOII') {

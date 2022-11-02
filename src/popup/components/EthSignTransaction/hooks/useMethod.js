@@ -20,8 +20,8 @@ const useMethod = ({
   rawValue,
   setTxId,
   setShowReceipt,
-  getFeeInterval,
-  totalFee
+  maxFeePerGas,
+  maxPriorityFeePerGas,
 }) => {
   const handleSendEth = async () => {
     let qty = get(transactionPayload, 'value')
@@ -33,7 +33,9 @@ const useMethod = ({
       qty,
       target,
       address: source,
-      token: 'ETH'
+      token: 'ETH',
+      maxPriorityFeePerGas,
+      maxFeePerGas
     })
   }
 
@@ -42,7 +44,9 @@ const useMethod = ({
       sender: transactionPayload.from,
       customTokenRecipient,
       contractAddress,
-      rawValue
+      rawValue,
+      maxPriorityFeePerGas,
+      maxFeePerGas
     })
   }
 
@@ -50,9 +54,9 @@ const useMethod = ({
     try {
       let totalOriginExpense
       if (transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) {
-        totalOriginExpense = value + totalFee
+        totalOriginExpense = value + maxFee
       } else {
-        totalOriginExpense = totalFee
+        totalOriginExpense = maxFee
       }
 
       const senderAddress = get(transactionPayload, 'from')
@@ -76,7 +80,6 @@ const useMethod = ({
         If requestId === undefined, request was sent internally from Finnie
       */
       setIsLoading(true)
-      clearInterval(getFeeInterval)
       if (requestId) {
         chrome.runtime.sendMessage({ requestId, approved: true }, function (response) {
           chrome.runtime.onMessage.addListener(function (message) {
@@ -118,7 +121,6 @@ const useMethod = ({
   }
 
   const onRejectTransaction = async () => {
-    clearInterval(getFeeInterval)
     if (requestId) {
       await storage.generic.set.pendingRequest({})
       window.close()

@@ -94,7 +94,9 @@ module.exports = {
         },
         purplelight: {
           DEFAULT: '#EBEEF7',
-          100: '#E3E0EB'
+          100: '#E3E0EB',
+          200: '#6B5FA5',
+          300: '#4D3D8D'
         },
         darkGreen: {
           DEFAULT: '#087980'

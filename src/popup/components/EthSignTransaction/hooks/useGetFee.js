@@ -1,10 +1,10 @@
-import React, { useEffect,useState } from 'react'
-import { get, isNumber } from 'lodash'
+import React, { useEffect, useMemo, useState } from 'react'
+import { ethers } from 'ethers'
+import { get, isEmpty, isNumber } from 'lodash'
 import storage from 'services/storage'
 import { numberFormat } from 'utils'
 import ethereumUtils from 'utils/ethereumUtils'
 import Web3 from 'web3'
-
 
 const fromHexToDecimal = (hexString) => {
   let number = null
@@ -17,21 +17,32 @@ const fromWeiToEth = (wei) => {
   return wei / 1000000000000000000
 }
 
-const useGetFee = ({ network, transactionPayload }) => {
-  const [totalFee, setTotalFee] = useState('------')
-  const [tokenSymbol, setTokenSymbol] = useState('------')
-  const [getFeeInterval, setGetFeeInterval] = useState(null)
+const useGetFee = ({
+  network,
+  transactionPayload,
+  baseFee,
+  maxPriorityFeePerGas,
+  setMaxPriorityFeePerGas,
+  maxFeePerGas,
+  setMaxFeePerGas,
+  isFixedMaxFeePerGas,
+  setIsFixedMaxFeePerGas
+}) => {
+  const [gasLimit, setGasLimit] = useState(0)
 
-  const getEthFee = async () => {
-    const provider = await storage.setting.get.ethereumProvider()
-    const { ethersProvider } = ethereumUtils.initEthersProvider(provider)
-
+  const initFeeData = async () => {
     const sourceAddress = get(transactionPayload, 'from')
     const recipientAddress = get(transactionPayload, 'to')
     const value = fromHexToDecimal(get(transactionPayload, 'value'))
     const transactionData = get(transactionPayload, 'data')
-    const maxFeePerGas = get(transactionPayload, 'maxFeePerGas')
-    const maxPriorityFeePerGas = get(transactionPayload, 'maxPriorityFeePerGas')
+    let presetMaxFeePerGas = get(transactionPayload, 'maxFeePerGas') // -> null
+    let presetMaxPriorityFeePerGas = get(transactionPayload, 'maxPriorityFeePerGas') || '2.5'
+
+
+
+    setIsFixedMaxFeePerGas(!!presetMaxFeePerGas)
+    setMaxFeePerGas(presetMaxFeePerGas)
+    setMaxPriorityFeePerGas(presetMaxPriorityFeePerGas)
 
     const rawTx = {}
     rawTx.from = sourceAddress
@@ -40,37 +51,51 @@ const useGetFee = ({ network, transactionPayload }) => {
     if (transactionData) rawTx.data = transactionData
     if (maxFeePerGas) rawTx.maxFeePerGas = maxFeePerGas
     if (maxPriorityFeePerGas) rawTx.maxPriorityFeePerGas = maxPriorityFeePerGas
-
+    
+    const providerUrl = await storage.setting.get.ethereumProvider()
+    const { ethersProvider } = ethereumUtils.initEthersProvider(providerUrl)
     const gasUsed = await ethersProvider.estimateGas(rawTx)
-    const gasFee = gasUsed * maxFeePerGas
-    setTotalFee(fromWeiToEth(gasFee))
-    setTokenSymbol('ETH')
+    setGasLimit(gasUsed.toNumber())
   }
 
-  useEffect(() => {
-    const load = () => {
-      try {
-        getEthFee()
-        setGetFeeInterval(
-          setInterval(() => {
-            getEthFee()
-          }, 3000)
-        )
-      } catch (err) {
-        console.error('get fee error: ', err.message)
-      }
-    }
+  /* Max Fee to display */
+  const maxFee = useMemo(() => {
+    if (!baseFee || !gasLimit) return '------'
 
-    if (transactionPayload && network) load()
+    let calculatedMaxFee
+    if (isFixedMaxFeePerGas) calculatedMaxFee = maxFeePerGas * gasLimit
+    else calculatedMaxFee = (maxPriorityFeePerGas + baseFee * 2) * gasLimit
+
+
+    return calculatedMaxFee / Math.pow(10, 18)
+  }, [gasLimit, baseFee, maxPriorityFeePerGas, isFixedMaxFeePerGas, maxFeePerGas])
+
+  /* Estimated Fee to display */
+  const estimatedFee = useMemo(() => {
+    if (!baseFee || !gasLimit) return '------'
+
+    return ((maxPriorityFeePerGas + baseFee) * gasLimit) / Math.pow(10, 18)
+  }, [gasLimit, baseFee, maxPriorityFeePerGas])
+
+  useEffect(() => {
+    if (transactionPayload && network) {
+      initFeeData()
+    }
   }, [transactionPayload, network])
+
+  useEffect(() => {
+    if (isFixedMaxFeePerGas) return
+    setMaxFeePerGas(maxPriorityFeePerGas + baseFee * 2)
+  }, [maxPriorityFeePerGas, baseFee, isFixedMaxFeePerGas])
 
   const Fee = () => (
     <div>
-      {isNumber(totalFee) ? numberFormat(totalFee, 8) : totalFee} {tokenSymbol}
+      <div>{isNumber(estimatedFee) ? numberFormat(estimatedFee, 8) : estimatedFee} ETH</div>
+      <div>(Max Fee: {numberFormat(maxFee, 8)} ETH)</div>
     </div>
   )
 
-  return { Fee, totalFee, tokenSymbol, getFeeInterval }
+  return { Fee, maxFee, estimatedFee, gasLimit }
 }
 
 export default useGetFee

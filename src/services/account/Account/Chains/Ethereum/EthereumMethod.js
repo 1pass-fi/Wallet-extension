@@ -303,19 +303,20 @@ export class EthereumMethod {
     await this.#chrome.setActivities(fetchedData)
   }
 
-  async transfer(_, recipient, qty) {
+  async transfer(_, recipient, qty, maxPriorityFeePerGas, maxFeePerGas) {
     try {
+      const priortyFeeInGwei = `${maxPriorityFeePerGas / Math.pow(10, 9)}`
+
+
       // Initialize provider and wallet
       const providerUrl = await storage.setting.get.ethereumProvider()
       const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
       const signer = wallet.connect(ethersProvider)
 
       // Gas
-      const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei')
-      const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(
-        providerUrl,
-        '2.5'
-      )
+      maxFeePerGas =
+        maxFeePerGas ||
+        (await ethereumUtils.calculateMaxFeePerGas(providerUrl, priortyFeeInGwei || '2.5'))
 
       // Payload fields
       const nonce = await ethersProvider.getTransactionCount(this.eth.address, 'pending')
@@ -334,8 +335,6 @@ export class EthereumMethod {
 
       const gasLimit = await signer.estimateGas(transactionPayload)
       transactionPayload.gasLimit = gasLimit || '21000'
-
-      console.log('transactionPayload', transactionPayload)
 
       // Sign transaction
       const rawTransaction = await signer.signTransaction(transactionPayload)
@@ -661,10 +660,7 @@ export class EthereumMethod {
 
       const gasLimit = (await tokenContract.estimateGas?.transfer(to, value)).toNumber()
       const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei')
-      const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(
-        providerUrl,
-        '2.5'
-      )
+      const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(providerUrl, '2.5')
 
       const transactionPayload = {
         to: tokenContractAddress,
@@ -732,7 +728,7 @@ export class EthereumMethod {
       data = contractInterface.encodeFunctionData(transferFunction, [
         this.eth.address,
         recipientAddress,
-        tokenId,
+        tokenId
       ])
     } else {
       transferFunction = 'safeTransferFrom(address,address,uint256,uint256,bytes)'

@@ -82,8 +82,7 @@ const useMethod = ({
             from: sender,
             to: contractAddress,
             data: hex,
-            maxPriorityFeePerGas,
-            maxFeePerGas
+            maxPriorityFeePerGas
           }
 
           const requestPayload = {
@@ -102,7 +101,6 @@ const useMethod = ({
             from: sender,
             to: recipient,
             value: fromEthToWei(value).toString(16),
-            maxFeePerGas,
             maxPriorityFeePerGas
           }
   
