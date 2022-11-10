@@ -107,7 +107,7 @@ export const LONG_LIVED_HANDLER = [
   'K2_SIGN_TRANSACTION_SUCCESS',
   'K2_SIGN_TRANSACTION_ERROR',
   'K2_SIGN_MESSAGE_SUCCESS',
-  'K2_SIGN_MESSAGE_ERROR',
+  'K2_SIGN_MESSAGE_ERROR'
 ]
 
 export const PORTS = {
@@ -363,8 +363,7 @@ export const ERROR_MESSAGE = {
   NOT_ENOUGH_ETH: `You don't have enough ETH.`,
   EXPIRED_TRANSACTION_ACTION_ERROR:
     'Something went wrong when trying to delete or resend your transaction',
-  BRIDGE_WITH_ETH_MAINNET:
-    'We currently only support Ethereum NFT bridging on the Goerli network.',
+  BRIDGE_WITH_ETH_MAINNET: 'We currently only support Ethereum NFT bridging on the Goerli network.',
   NFT_NOT_EXIST_ON_CHAIN: `This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie.`,
   BRIDGE_NFT_FAILED: 'Bridge NFT failed',
   ACCOUNT_EXIST: 'This account has already been imported.',
@@ -649,4 +648,25 @@ export const TRANSACTION_METHOD = {
   ERC721_TRANSFER_FROM: 'transferFrom',
   MINT_COLLECTIBLES: 'mintCollectibles',
   APPROVE: 'approve'
+}
+
+export const WALLET_CONNECT_MESSAGES = {
+  ETH_PERSONAL_SIGN: 'personal_sign',
+  ETH_CONNECT: 'eth_request_connection',
+  ETH_SIGN: 'eth_sign',
+  ETH_SIGN_TYPED_DATA: 'eth_signTypedData',
+  ETH_SEND_TRANSACTION: 'eth_sendTransaction',
+  ETH_SIGN_TRANSACTION: 'eth_signTransaction',
+  ETH_SEND_RAW_TRANSACTION: 'eth_sendRawTransaction',
+  SOLANA_CONNECT: 'solana_connect',
+  SOLANA_GET_ACCOUNTS: 'solana_getAccounts', // Do not support
+  SOLANA_REQUEST_ACCOUNTS: 'solana_requestAccounts', // Do not support
+  SOLANA_SIGN_TRANSACTION: 'solana_signTransaction',
+  SOLANA_SIGN_MESSAGE: 'solana_signMessage',
+  APPROVE_SESSION: 'APPROVE_SESSION'
+}
+
+export const WC_CHAIN_ID = {
+  ETHEREUM: ['eip155:1', 'eip:155:5'],
+  SOLANA: ['solana:4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZ', 'solana:8E9rvCKLFQia2Y35HXjjpWzj8weVo44K']
 }
