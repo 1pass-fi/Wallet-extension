@@ -16,6 +16,10 @@ module.exports = {
         '4xl': '2800px',
         '5xl': '3400px'
       },
+      maxWidth: {
+        '2xl': '707px',
+        '3xl': '803px'
+      },
       colors: {
         teal: {
           100: '#BEEFEC',
@@ -186,6 +190,7 @@ module.exports = {
         66.75: '16.6875rem',
         68: '17rem',
         68.5: '17.125rem',
+        74: '18.5rem',
         77: '19.25rem',
         77.25: '19.313rem',
         83: '20.75rem',
