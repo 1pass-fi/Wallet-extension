@@ -37,7 +37,7 @@ const SortAndFilter = ({
   }, [showFilterChains, showSortBy])
 
   return (
-    <div>
+    <div className="w-full">
       <div className="relative w-full">
         <input
           className="w-full h-8.5 pl-3.5 pr-11.25 rounded-t text-indigo-900 text-sm placeholder-current side-bar-search-field"
@@ -51,7 +51,7 @@ const SortAndFilter = ({
           onClick={() => {
             setShowFilters(!showFilters)
           }}
-          className="flex items-center justify-between h-12 pl-1.5 pr-3 font-semibold text-sm text-white"
+          className="flex items-center justify-between h-12 3xl:h-13 pl-1.5 pr-3 font-semibold text-sm 3xl:text-base text-white"
         >
           Filters
           <FilterIcon
@@ -63,7 +63,7 @@ const SortAndFilter = ({
           <>
             <div
               onClick={() => setShowSortBy(!showSortBy)}
-              className="flex items-center justify-between h-12 pl-1.5 pr-3 font-semibold text-sm text-white cursor-pointer"
+              className="flex items-center justify-between h-12 3xl:h-13 pl-1.5 pr-3 font-semibold text-sm 3xl:text-base text-white cursor-pointer"
             >
               Sort By
               <ArrowIcon
@@ -94,7 +94,7 @@ const SortAndFilter = ({
         )}
         <div
           onClick={() => setShowFilterChains(!showFilterChains)}
-          className="flex items-center justify-between h-12 pl-1.5 pr-3 font-semibold text-sm text-white cursor-pointer"
+          className="flex items-center justify-between h-12 3xl:h-13 pl-1.5 pr-3 font-semibold text-sm 3xl:text-base text-white cursor-pointer"
         >
           Chains
           <ArrowIcon

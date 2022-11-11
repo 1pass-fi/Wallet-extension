@@ -85,8 +85,8 @@ const Sidebar = ({ currentPath }) => {
   }
 
   return (
-    <>
-      <nav className="flex w-57.75 items-center justify-evenly gapx-3 mb-5">
+    <div className="w-61 3xl:w-65.5">
+      <nav className="flex w-full items-center justify-evenly gapx-3 mb-5">
         {navItems.map(({ icon: Icon, path }) => (
           <NavLink
             key={path}
@@ -122,10 +122,10 @@ const Sidebar = ({ currentPath }) => {
         >
           <CollectionIcon className="w-7.5 h-7" />
         </div>
-        <ToolTip id="sidebar-collections"/>
+        <ToolTip id="sidebar-collections" />
       </nav>
       <div style={{ height: '60vh' }} className="rounded overflow-y-scroll">
-        <div className="bg-trueGray-100 bg-opacity-20 rounded w-57.75">
+        <div className="bg-trueGray-100 bg-opacity-20 rounded w-58.5 3xl:w-64">
           <Switch>
             <Route path="/create-nft">
               <HasArweave content="Right now, we can only create  NFTs with Arweave. Switch to an Arweave account to get started.">
@@ -168,7 +168,7 @@ const Sidebar = ({ currentPath }) => {
           </Switch>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
