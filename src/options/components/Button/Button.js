@@ -15,9 +15,9 @@ const variants = {
 }
 
 const sizes = {
-  sm: 'text-xs px-3 py-1.5',
-  md: 'text-base px-4 py-1.75',
-  lg: 'text-base px-4 py-1.75'
+  sm: 'text-xs 3xl:text-sm px-3 py-1.5',
+  md: 'text-base 3xl:text-lg px-4 py-1.75',
+  lg: 'text-base 3xl:text-lg px-4 py-1.75'
 }
 
 const Button = ({ text, variant = 'primary', icon: Icon, size = 'sm', className, ...props }) => {
@@ -34,9 +34,9 @@ const Button = ({ text, variant = 'primary', icon: Icon, size = 'sm', className,
       {Icon && (
         <Icon
           className={clsx(
-            size === 'sm' && 'w-5 h-5 pr-1',
-            size === 'md' && 'w-6 h-6 pr-2',
-            size === 'lg' && 'w-8 h-8 pr-2'
+            size === 'sm' && 'w-5 3xl:w-6 h-5 3xl:h-6 pr-1',
+            size === 'md' && 'w-6 3xl:w-8 h-7 3xl:h-7 pr-2',
+            size === 'lg' && 'w-8 3xl:w-9 h-8 3xl:h-9 pr-2'
           )}
         />
       )}

@@ -116,14 +116,17 @@ const NFTDetail = () => {
 
   return (
     <div className="min-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
-      <div onClick={handleGoBack} className="w-11 h-11 absolute top-44 left-23 cursor-pointer">
-        <GoBackIcon />
-      </div>
       <NavBar />
       {nft && nftLoaded && (
         <div className="flex flex-col h-full w-full text-white">
           <div className="mx-auto mt-28 flex flex-col md:flex-row">
-            <div className="w-100.25 h-101 mr-7 relative">
+            <div
+              onClick={handleGoBack}
+              className="w-11 h-11 3xl:w-14 3xl:h-14 absolute top-44 3xl:top-47.25 left-23 2xl:left-40 3xl:left-56 4xl:left-68 cursor-pointer"
+            >
+              <GoBackIcon />
+            </div>
+            <div className="w-100 h-100 3xl:w-120 3xl:h-120 mr-7 3xl:mr-20 relative">
               <NFTMedia contentType={nft.contentType} source={nft.imageUrl} showFull={true} />
               {nft?.type === TYPE.ETHEREUM && (
                 <EthLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
@@ -136,10 +139,12 @@ const NFTDetail = () => {
               )}
             </div>
 
-            <div className="w-115 h-101 relative">
-              <div className="finnieSpacing-tighter font-semibold text-5xl mb-2">{nft.name}</div>
+            <div className="w-115 h-100 3xl:w-120 3xl:h-120 relative">
+              <div className="finnieSpacing-tighter font-semibold text-5xl 3xl:text-6xl mb-2">
+                {nft.name}
+              </div>
               {nft?.type !== TYPE.SOLANA && (
-                <div className="flex items-center text-sm mb-2">
+                <div className="flex items-center text-sm 3xl:text-base mb-2">
                   <div
                     className="h-6 mr-2.25"
                     data-tip={
@@ -170,7 +175,7 @@ const NFTDetail = () => {
                       icon={BlockIcon}
                       text={'Explore Block'}
                       variant="inversed"
-                      className="border-opacity-20"
+                      className="border-opacity-20 h-9.5 3xl:h-12"
                     />
                   </a>
                 </div>
@@ -178,15 +183,12 @@ const NFTDetail = () => {
 
               {nft?.type === TYPE.ETHEREUM && (
                 <div className="flex gap-4 mb-4">
-                  <a
-                    href={nft.koiRockUrl}
-                    target="_blank"
-                  >
+                  <a href={nft.koiRockUrl} target="_blank">
                     <Button
                       icon={BlockIcon}
                       text={'Explore Block'}
                       variant="inversed"
-                      className="border-opacity-20"
+                      className="border-opacity-20 h-9.5 3xl:h-12"
                     />
                   </a>
                 </div>
@@ -200,7 +202,7 @@ const NFTDetail = () => {
                       icon={BlockIcon}
                       text={nft.pending ? 'Pending Transaction' : 'Explore Block'}
                       variant="inversed"
-                      className="border-opacity-20"
+                      className="border-opacity-20  h-9.5 3xl:h-12"
                     />
                   </a>
                   <a href={`https://koi.rocks/content-details/${nft.txId}`} target="_blank">
@@ -209,13 +211,14 @@ const NFTDetail = () => {
                       icon={LeaderboardIcon}
                       text="Leaderboard"
                       variant="warning"
+                      className="h-9.5 3xl:h-12"
                     />
                   </a>
                 </div>
               )}
 
               <p
-                className="w-full overflow-y-scroll overflow-x-none break-words text-sm leading-6 pr-4 whitespace-pre-line"
+                className="w-full overflow-y-scroll overflow-x-none break-words text-sm 3xl:text-base leading-6 pr-4 whitespace-pre-line"
                 style={{ maxHeight: '35%' }}
               >
                 {nft.description}
@@ -225,7 +228,7 @@ const NFTDetail = () => {
                   nft.tags.map((tag) => (
                     <div
                       key={tag}
-                      className="bg-lightBlue text-indigo tracking-finnieSpacing-wide text-xs rounded-full h-5 py-0.5 px-3"
+                      className="flex items-center justify-center bg-lightBlue text-indigo tracking-finnieSpacing-wide text-xs 3xl:text-sm rounded-full h-5 py-0.5 px-3"
                     >
                       {tag}
                     </div>
@@ -235,17 +238,19 @@ const NFTDetail = () => {
               {nft?.type !== TYPE.K2 && (
                 <div className="w-full mt-7.5">
                   {!nft.pending && (
-                    <div className="w-full flex items-center justify-between h-11.5 gap-5 mb-6">
-                      {(nft?.type === TYPE.ARWEAVE) && <Button
-                        disabled={disabledFeatures}
-                        size="lg"
-                        icon={ShareIcon}
-                        className="h-full w-7/12"
-                        text="Share for Rewards"
-                        onClick={() => {
-                          setShowShareNFTModal(true)
-                        }}
-                      />}
+                    <div className="w-full flex items-center justify-between h-11.5 3xl:h-14 gap-5 mb-6">
+                      {nft?.type === TYPE.ARWEAVE && (
+                        <Button
+                          disabled={disabledFeatures}
+                          size="lg"
+                          icon={ShareIcon}
+                          className="h-full w-7/12"
+                          text="Share for Rewards"
+                          onClick={() => {
+                            setShowShareNFTModal(true)
+                          }}
+                        />
+                      )}
                       <div
                         data-tip={
                           !ownerImported
@@ -270,7 +275,7 @@ const NFTDetail = () => {
 
                   {!nft.pending && (
                     <div
-                      className="h-11.5 w-full"
+                      className="h-11.5 3xl:h-14 w-full"
                       data-tip={
                         !ownerImported
                           ? `This NFT is owned by a wallet with the address ${nft.address}.<br>
@@ -298,15 +303,15 @@ const NFTDetail = () => {
           </div>
 
           {nft.type === TYPE.ARWEAVE && !nft.pending && (
-            <div className="mx-auto flex justify-start items-center w-221.5 h-17.25 mt-6.5 mb-4 tracking-finnieSpacing-tight text-lg text-center">
+            <div className="mx-auto flex justify-start items-center w-221.5 3xl:w-259.5 h-17.25 3xl:h-20 mt-6.5 mb-4 tracking-finnieSpacing-tight text-lg 3xl:text-xl text-center">
               {showEarnedKoi && (
-                <div className="w-48.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                <div className="w-48.5 3xl:w-55.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
                   KOII earned <br />
                   {formatNumber(nft.earnedKoi, 3)}
                 </div>
               )}
               {showViews && (
-                <div className="ml-5.75 w-46 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                <div className="ml-5.75 3xl:ml-12 w-46 3xl:w-52 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
                   Total Views <br />
                   {nft.totalViews}
                 </div>
