@@ -672,5 +672,8 @@ export const WC_CHAIN_ID = {
 }
 
 export const ETH_MESSAGE = {
-  SIGN_TRANSACTION: 'eth_signTransaction'
+  SIGN_TRANSACTION: 'eth_signTransaction',
+  SEND_TRANSACTION: 'eth_sendTransaction',
+  PERSONAL_SIGN: 'personal_sign',
+  SIGN_TYPED_DATA: 'eth_signTypedData'
 }

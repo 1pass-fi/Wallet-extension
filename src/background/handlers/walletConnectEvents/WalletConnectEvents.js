@@ -16,8 +16,8 @@ export default class WalletConnectEvents extends EventEmitter {
       } else {
         walletConnect.response({ 
           id: payload.id,
-          topic: payload.topic,
-          data: result
+          data: result.data,
+          topic: payload.topic
         })
       }
     })

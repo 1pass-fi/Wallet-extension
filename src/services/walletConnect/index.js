@@ -73,7 +73,14 @@ class WalletConnect {
   }
 
   async response({ id, topic, data }) {
+    const responsePayload = {
+      'id': id,
+      'jsonrpc': '2.0',
+      'result': data,
+    }
     console.log('response', id, topic, data)
+
+    await this.signClient.respond({ topic, response: responsePayload })
   }
 }
 
