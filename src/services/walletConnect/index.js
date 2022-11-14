@@ -1,4 +1,5 @@
 import { SignClient } from '@walletconnect/sign-client'
+import walletConnectEvents from 'background/handlers/walletConnectEvents'
 import get from 'lodash/get'
 
 const PROJECT_ID = '0eb91b1c1b2541776c8a29ee31f992c8'
@@ -81,6 +82,27 @@ class WalletConnect {
     console.log('response', id, topic, data)
 
     await this.signClient.respond({ topic, response: responsePayload })
+  }
+
+  async reload() {
+    const sessionProposalCb = (event) => {
+      this.approve(event)
+    }
+
+    const sessionRequestCb = (event) => {
+      console.log('session_request event', event)
+
+      const endpoint = event.params.request.method
+      const payload = { id: event.id, topic: event.topic, params: event.params.request.params }
+      walletConnectEvents.sendMessage(endpoint, payload)
+    }
+
+    await this.init()
+    const pairings = await walletConnect.signClient.core.pairing.getPairings()
+    console.log('parings', pairings)
+
+    this.signClient.on('session_proposal', sessionProposalCb)
+    this.signClient.on('session_request', sessionRequestCb)
   }
 }
 
