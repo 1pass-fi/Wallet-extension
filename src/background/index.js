@@ -1,10 +1,11 @@
 import '@babel/polyfill'
 
-import { createPairingSession,createSignClient, signClient } from 'background/signClient'
+// import { createPairingSession,createSignClient, signClient } from 'background/signClient'
 import { IMPORTED } from 'constants/accountConstants'
 // Constants
 import { OS, PATH, PORTS, WC_EVENTS, WC_MESSAGES } from 'constants/koiConstants'
 import storage from 'services/storage'
+import walletConnect from 'services/walletConnect'
 import { getChromeStorage } from 'utils'
 
 import contentScriptEvents from './handlers/contentScriptEvents'
@@ -62,40 +63,27 @@ chrome.runtime.onInstalled.addListener(async function () {
 
 streamer()
 
-function initializeWalletConnectEvents() {
-  createSignClient()
-    .then(() => {
-      console.log('signClient from background', signClient)
-      createPairingSession(
-        'wc:1d042d8f2af96d56609d9caca1d5291f93d9d009117f9cb26e3e1acd0a743f84@2?relay-protocol=irn&symKey=eb052add59c732c0de677b17357075d1995e1d5541f7e72fff8a500bfc877ce3'
-      ).then(() => {
-        // Missing activate all the pairing topic
-
-        signClient.on(WC_EVENTS.SESSION_PROPOSAL, (requestEvent) => {
-          console.log('requestEvent-SESSION_PROPOSAL', requestEvent)
-          const { id, params } = requestEvent
-          const { requiredNamespaces, pairingTopic } = params
-          const endpoint = 'solana_connect'
-          walletConnectEvents.sendMessage(endpoint, payload)
-        })
-
-        signClient.on(WC_EVENTS.SESSION_REQUEST, (requestEvent) => {
-          console.log('requestEvent-SESSION_REQUEST', requestEvent)
-          const { id, topic, params } = requestEvent
-          const { request, chainId } = params
-          const payload = { id, topic, data: request, chainId }
-          const endpoint = request.method
-
-          walletConnectEvents.sendMessage(endpoint, payload)
-        })
-
-        // signClient.on(WC_EVENTS.SESSION_EVENT, (requestEvent) => {})
-
-        // signClient.on(WC_EVENTS.SESSION_DELETE, (requestEvent) => {})
-      })
-      
+const initWalletConnect = async () => {
+  try {
+    await walletConnect.init()
+    const pairings = await walletConnect.signClient.core.pairing.getPairings()
+    console.log('parings', pairings)
+  
+    walletConnect.signClient.on('session_proposal', (event) => {
+      walletConnect.approve(event)
     })
-    .catch((error) => console.error('Failed to initialize wallet connect events: ', error))
+    
+    walletConnect.signClient.on('session_request', (event) => {
+      console.log('session_request event', event)
+
+      const endpoint = event.params.request.method
+      const payload = { id: event.id, topic: event.topic, params: event.params.request.params }
+      walletConnectEvents.sendMessage(endpoint, payload)
+    })
+  
+  } catch (err) {
+    console.error('Init walletconnect error:', err)
+  }
 }
 
-initializeWalletConnectEvents()
+initWalletConnect()

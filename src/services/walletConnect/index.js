@@ -71,6 +71,10 @@ class WalletConnect {
       }
     }))
   }
+
+  async response({ id, topic, data }) {
+    console.log('response', id, topic, data)
+  }
 }
 
 const walletConnect = new WalletConnect()
