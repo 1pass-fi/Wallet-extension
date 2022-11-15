@@ -9,7 +9,7 @@
   dependencies:
     smartweave "^0.4.45"
 
-"@_koi/sdk@^2.4.13":
+"@_koi/sdk@2.4.13":
   version "2.4.13"
   resolved "https://registry.yarnpkg.com/@_koi/sdk/-/sdk-2.4.13.tgz#c6c4d79db14af179035bde03426b7091d553e06f"
   integrity sha512-vEZ8QPCBgtCoHK4uc95wY042gGAnBDh5pu8vbNdXY8whAVESrtv1poxT0HLqEtUR21XNATVXk9lby6LBxxF2Zw==
@@ -24167,6 +24167,11 @@ xmldom@0.1.27:
   version "0.1.27"
   resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.27.tgz#d501f97b3bdb403af8ef9ecc20573187aadac0e9"
   integrity sha1-1QH5ezvbQDr4757MIFcxh6rawOk=
+
+xmlhttprequest@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/xmlhttprequest/-/xmlhttprequest-1.8.0.tgz#67fe075c5c24fef39f9d65f5f7b7fe75171968fc"
+  integrity sha512-58Im/U0mlVBLM38NdZjHyhuMtCqa61469k2YP/AaPbvCoV9aQGUpbJBj1QRm2ytRiVQBD/fsw7L2bJGDVQswBA==
 
 xregexp@2.0.0:
   version "2.0.0"

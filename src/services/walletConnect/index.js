@@ -37,9 +37,10 @@ class WalletConnect {
     if (proposal) {
       const namespaces = {}
       Object.keys(requiredNamespaces).forEach(key => {
-        requiredNamespaces[key].chains.map(chain => {
-          selectedAccounts[key].map(acc => accounts.push(`${chain}:${acc}`))
-        })
+        // requiredNamespaces[key].chains.map(chain => {
+        //   selectedAccounts[key].map(acc => accounts.push(`${chain}:${acc}`))
+        // })
+        const accounts = ['eip155:5:0xb076413401172CBB73C082107514De3376E4FF6c']
         namespaces[key] = {
           accounts,
           methods: requiredNamespaces[key].methods,
