@@ -1,13 +1,13 @@
 // Constants
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
+import { ethers } from 'ethers'
 import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
+import ethereumUtils from 'utils/ethereumUtils'
 // Utils
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
-import Web3 from 'web3'
-
 
 export default async (payload, metadata, next) => {
   try {
@@ -15,9 +15,108 @@ export default async (payload, metadata, next) => {
     console.log('payload', payload)
     console.log('metadata', metadata)
 
-    const exampleTransactionHash = '0xe670ec64341771606e55d6b4ca35a1a6b75ee3d5145a99d05921026d1527331'
+    const params = get(payload, 'params')
     /* TODO walletconnect: Implement send transaction */
-    next({ data: exampleTransactionHash })
+
+    /* Show popup for signing transaction */
+    const screenWidth = screen.availWidth
+    const screenHeight = screen.availHeight
+    const os = window.localStorage.getItem(OS)
+    let windowData = {
+      url: chrome.extension.getURL('/popup.html'),
+      focused: true,
+      type: 'popup'
+    }
+    if (os == 'win') {
+      windowData = {
+        ...windowData,
+        height: WINDOW_SIZE.WIN_HEIGHT,
+        width: WINDOW_SIZE.WIN_WIDTH,
+        left: Math.round((screenWidth - WINDOW_SIZE.WIN_WIDTH) / 2),
+        top: Math.round((screenHeight - WINDOW_SIZE.WIN_HEIGHT) / 2)
+      }
+    } else {
+      windowData = {
+        ...windowData,
+        height: WINDOW_SIZE.MAC_HEIGHT,
+        width: WINDOW_SIZE.MAC_WIDTH,
+        left: Math.round((screenWidth - WINDOW_SIZE.MAC_WIDTH) / 2),
+        top: Math.round((screenHeight - WINDOW_SIZE.MAC_HEIGHT) / 2)
+      }
+    }
+
+    const requestId = uuid()
+    const requestPayload = {
+      requestId,
+      isEthereum: true,
+      network: 'ETHEREUM',
+      transactionPayload: {
+        ...params[0]
+      }
+    }
+
+    createWindow(windowData, {
+      beforeCreate: async () => {
+        chrome.browserAction.setBadgeText({ text: '1' })
+        chrome.runtime.onMessage.addListener(async function (popupMessage, sender, sendResponse) {
+          console.log('createWindow', { popupMessage, sender, sendResponse })
+          if (popupMessage.requestId === requestId) {
+            const approved = popupMessage.approved
+            if (approved) {
+              var pendingRequest = await storage.generic.get.pendingRequest()
+              if (isEmpty(pendingRequest)) {
+                next({ error: { code: 4001, data: 'Request has been removed' } })
+                chrome.runtime.sendMessage({
+                  requestId,
+                  error: 'Request has been removed'
+                })
+                return
+              }
+              try {
+                /* Send ETH transaction */
+                const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
+                const credential = await backgroundAccount.getCredentialByAddress(
+                  defaultEthereumAddress
+                )
+
+                const provider = await storage.setting.get.ethereumProvider()
+                const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(
+                  provider,
+                  credential.key
+                )
+
+                const signer = wallet.connect(ethersProvider)
+                const transactionPayload = params[0]
+
+                const rawTransaction = await signer.signTransaction(transactionPayload)
+                const signedTransaction = ethers.utils.parseTransaction(rawTransaction)
+                const txHash = get(signedTransaction, 'hash')
+                const sendingPromise = (await ethersProvider.sendTransaction(rawTransaction)).wait()
+
+                next({ data: txHash })
+                chrome.runtime.sendMessage({ requestId, finished: true })
+              } catch (err) {
+                console.error('Send eth error:', err.message)
+                chrome.runtime.sendMessage({ requestId, finished: true })
+                next({ error: { code: 4001, data: err.message } })
+              }
+            } else {
+              next({ error: { code: 4001, data: 'Request rejected' } })
+            }
+          }
+        })
+
+        await storage.generic.set.pendingRequest({
+          type: REQUEST.ETH_TRANSACTION,
+          data: requestPayload
+        })
+      },
+      afterClose: async () => {
+        chrome.browserAction.setBadgeText({ text: '' })
+        next({ error: { code: 4001, data: 'Request rejected' } })
+        await storage.generic.set.pendingRequest({})
+      }
+    })
   } catch (err) {
     next({ error: err.message })
   }
