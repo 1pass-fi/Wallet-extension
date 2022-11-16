@@ -118,14 +118,12 @@ const NFTDetail = () => {
     <div className="min-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
       <NavBar />
       {nft && nftLoaded && (
-        <div className="flex flex-col h-full w-full text-white">
+        // <div className="flex flex-col h-full w-full text-white">
+        <div className="h-full w-full grid grid-cols-3 grid-rows-2 text-white">
+          <div onClick={handleGoBack} className="w-11 h-11 3xl:w-14 3xl:h-14 cursor-pointer">
+            <GoBackIcon />
+          </div>
           <div className="mx-auto mt-28 flex flex-col md:flex-row">
-            <div
-              onClick={handleGoBack}
-              className="w-11 h-11 3xl:w-14 3xl:h-14 absolute top-44 3xl:top-47.25 left-23 2xl:left-40 3xl:left-56 4xl:left-68 cursor-pointer"
-            >
-              <GoBackIcon />
-            </div>
             <div className="w-100 h-100 3xl:w-120 3xl:h-120 mr-7 3xl:mr-20 relative">
               <NFTMedia contentType={nft.contentType} source={nft.imageUrl} showFull={true} />
               {nft?.type === TYPE.ETHEREUM && (
