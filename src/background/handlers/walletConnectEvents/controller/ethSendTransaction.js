@@ -16,7 +16,6 @@ export default async (payload, metadata, next) => {
     console.log('metadata', metadata)
 
     const params = get(payload, 'params')
-    /* TODO walletconnect: Implement send transaction */
 
     /* Show popup for signing transaction */
     const screenWidth = screen.availWidth
