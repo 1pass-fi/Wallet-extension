@@ -303,7 +303,7 @@ const NFTDetail = () => {
           </div>
 
           {nft.type === TYPE.ARWEAVE && !nft.pending && (
-            <div className="mx-auto flex justify-start items-center w-221.5 3xl:w-259.5 h-17.25 3xl:h-20 mt-6.5 mb-4 tracking-finnieSpacing-tight text-lg 3xl:text-xl text-center">
+            <div className="mx-auto flex justify-start items-center md:w-221.5 3xl:w-259.5 h-17.25 3xl:h-20 mt-6.5 mb-4 tracking-finnieSpacing-tight text-lg 3xl:text-xl text-center">
               {showEarnedKoi && (
                 <div className="w-48.5 3xl:w-55.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
                   KOII earned <br />
