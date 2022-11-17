@@ -678,5 +678,9 @@ export const ETH_MESSAGE = {
   SIGN_TRANSACTION: 'eth_signTransaction',
   SEND_TRANSACTION: 'eth_sendTransaction',
   PERSONAL_SIGN: 'personal_sign',
-  SIGN_TYPED_DATA: 'eth_signTypedData'
+  SIGN_TYPED_DATA: 'eth_signTypedData',
+  SIGN_TYPED_DATA_V3: 'eth_signTypedData_v3',
+  SIGN_TYPED_DATA_V4: 'eth_signTypedData_v4',
+  SIGN: 'eth_sign',
+  SEND_RAW_TRANSACTION: 'eth_sendRawTransaction'
 }
