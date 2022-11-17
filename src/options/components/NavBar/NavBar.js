@@ -187,7 +187,7 @@ const NavBar = () => {
             )}
           </div>
           {showDropdown && (
-            <div className="absolute top-14 3xl:top-15 right-0 rounded shadow-2xl">
+            <div className="absolute top-14 right-0 rounded shadow-2xl">
               <ArrowIcon className="absolute -top-2 right-2.5" />
               <AccountSettings
                 ref={dropdownRef}
