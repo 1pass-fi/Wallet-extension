@@ -57,7 +57,6 @@ export default async (payload, metadata, next) => {
       beforeCreate: async () => {
         chrome.browserAction.setBadgeText({ text: '1' })
         chrome.runtime.onMessage.addListener(async function (popupMessage, sender, sendResponse) {
-          console.log('createWindow', { popupMessage, sender, sendResponse })
           if (popupMessage.requestId === requestId) {
             const approved = popupMessage.approved
             if (approved) {

@@ -12,15 +12,11 @@ export default class WalletConnectEvents extends EventEmitter {
     })
 
     promise.then((result) => {
-      if (get(result, 'error')) {
-        walletConnect.response({ id: payload.id, data: result.error, topic: payload.topic }, true)
-      } else {
-        walletConnect.response({
-          id: payload.id,
-          data: result.data,
-          topic: payload.topic
-        })
-      }
+      walletConnect.response({
+        id: payload.id,
+        result: result,
+        topic: payload.topic
+      })
     })
   }
 
