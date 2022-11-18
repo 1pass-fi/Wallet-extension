@@ -35,7 +35,11 @@ const EditPriorityFee = ({
   const [showAdvancedInput, setShowAdvancedInput] = useState(false)
 
   const [priorityFeeErrorMessage, setPriorityFeeErrorMessage] = useState('')
-  const [maxFeeErrorMessage, setMaxFeeErrorMessage] = useState('')  
+  const [maxFeeErrorMessage, setMaxFeeErrorMessage] = useState('')
+
+  const [stringValuePriorityFee, setStringValuePriorityFee] = useState('')
+  const [stringValueMaxFee, setStringValueMaxFee] = useState('')
+
 
   const expressSetFee = (level) => {
     setTempIsFixedMaxFeePerGas(false)
@@ -112,6 +116,42 @@ const EditPriorityFee = ({
     setTab(TAB.DETAIL)
   }
 
+  const handleOnChangePriorityInput = (e) => {
+    if (e.target.value === '') {
+      setStringValuePriorityFee('0')
+    } else {
+      const reg = new RegExp(/^[\d./-]+$/)
+      if (reg.test(e.target.value)) {
+        if (e.target.value[e.target.value.length - 1] === '.') {
+          setStringValuePriorityFee(e.target.value)
+        } else {
+          setStringValuePriorityFee('')
+        }
+        setFeeLevel(null)
+        setTempMaxPriorityFee(e.target.value * Math.pow(10, 9))
+      }
+    }
+  }
+
+  const handleOnChangeMaxFeeInput = (e) => {
+    if (e.target.value === '') {
+      setStringValueMaxFee('0')
+    } else {
+      const reg = new RegExp(/^[\d./-]+$/)
+      if (reg.test(e.target.value)) {
+        if (e.target.value[e.target.value.length - 1] === '.') {
+          setStringValueMaxFee(e.target.value)
+        } else {
+          setStringValueMaxFee('')
+        }
+        setFeeLevel(null)
+        setTempMaxFeePerGas(e.target.value * Math.pow(10, 9))
+        setTempIsFixedMaxFeePerGas(true)
+        setMaxFeeErrorMessage('')
+      }
+    }
+  }
+
   return (
     <div className="flex flex-col items-center w-full overflow mt-2 text-indigo">
       {/* <div
@@ -181,11 +221,8 @@ const EditPriorityFee = ({
             <input
               style={{width:'360px',height:'36px'}}
               className=' bg-purplelight-100 rounded-md text-purplelight-200 mt-1 pl-4'
-              value={tempMaxPriorityFee / Math.pow(10, 9)}
-              onChange={(e) => {
-                setFeeLevel(null)
-                setTempMaxPriorityFee(e.target.value * Math.pow(10, 9))
-              }}
+              value={stringValuePriorityFee || tempMaxPriorityFee / Math.pow(10, 9)}
+              onChange={handleOnChangePriorityInput}
             />
           </div>
           <div className='mt-6'>
@@ -193,18 +230,12 @@ const EditPriorityFee = ({
             <input
               style={{width:'360px',height:'36px'}}
               className=' bg-purplelight-100 rounded-md text-purplelight-200 mt-1 pl-4'
-              value={tempMaxFeePerGas / Math.pow(10, 9)}
-              onChange={(e) => {
-                setFeeLevel(null)
-                setTempMaxFeePerGas(e.target.value * Math.pow(10, 9))
-                setTempIsFixedMaxFeePerGas(true)
-                setMaxFeeErrorMessage('')
-              }}
+              value={stringValueMaxFee || tempMaxFeePerGas / Math.pow(10, 9)}
+              onChange={handleOnChangeMaxFeeInput}
             />
             {maxFeeErrorMessage && <div className='text-warning-300 pl-4 mt-2'>{maxFeeErrorMessage}</div>}
           </div>
         </div>
-
       }
       <button
         onClick={handleSave}

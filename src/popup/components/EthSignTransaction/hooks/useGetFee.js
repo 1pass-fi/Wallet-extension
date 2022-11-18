@@ -36,9 +36,7 @@ const useGetFee = ({
     const value = fromHexToDecimal(get(transactionPayload, 'value'))
     const transactionData = get(transactionPayload, 'data')
     let presetMaxFeePerGas = get(transactionPayload, 'maxFeePerGas') // -> null
-    let presetMaxPriorityFeePerGas = get(transactionPayload, 'maxPriorityFeePerGas') || '2.5'
-
-
+    let presetMaxPriorityFeePerGas = get(transactionPayload, 'maxPriorityFeePerGas') || 2500000000
 
     setIsFixedMaxFeePerGas(!!presetMaxFeePerGas)
     setMaxFeePerGas(presetMaxFeePerGas)
@@ -55,6 +53,7 @@ const useGetFee = ({
     const providerUrl = await storage.setting.get.ethereumProvider()
     const { ethersProvider } = ethereumUtils.initEthersProvider(providerUrl)
     const gasUsed = await ethersProvider.estimateGas(rawTx)
+
     setGasLimit(gasUsed.toNumber())
   }
 
@@ -65,7 +64,6 @@ const useGetFee = ({
     let calculatedMaxFee
     if (isFixedMaxFeePerGas) calculatedMaxFee = maxFeePerGas * gasLimit
     else calculatedMaxFee = (maxPriorityFeePerGas + baseFee * 2) * gasLimit
-
 
     return calculatedMaxFee / Math.pow(10, 18)
   }, [gasLimit, baseFee, maxPriorityFeePerGas, isFixedMaxFeePerGas, maxFeePerGas])
