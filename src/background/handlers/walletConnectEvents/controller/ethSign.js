@@ -1,11 +1,11 @@
 import { concatSig } from '@metamask/eth-sig-util'
+import { getInternalError, getSdkError } from '@walletconnect/utils'
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 import { ecsign, stripHexPrefix } from 'ethereumjs-util'
 import { ethers } from 'ethers'
 import { get } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
-import ethereumUtils from 'utils/ethereumUtils'
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
 
@@ -87,10 +87,10 @@ export default async (payload, metadata, next) => {
               } catch (err) {
                 console.error('ETH sign error:', err.message)
                 chrome.runtime.sendMessage({ requestId, finished: true })
-                next({ error: { code: 4001, data: err.message } })
+                next({ error: { code: 4001, message: err.message } })
               }
             } else {
-              next({ error: { code: 4001, data: 'User rejected request' } })
+              next({ error: getSdkError('USER_REJECTED_METHODS') })
             }
           }
         })
@@ -102,11 +102,11 @@ export default async (payload, metadata, next) => {
       },
       afterClose: async () => {
         chrome.browserAction.setBadgeText({ text: '' })
-        next({ error: 'User cancelled sign message.' })
+        next({ error: getSdkError('USER_REJECTED_METHODS') })
         await storage.generic.set.pendingRequest({})
       }
     })
   } catch (err) {
-    next({ error: err.message })
+    next({ error: { code: 4001, message: err.message } })
   }
 }

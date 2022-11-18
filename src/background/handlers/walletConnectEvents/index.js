@@ -14,7 +14,6 @@ const getEmitter = () => {
   walletConnectEvents.on(ETH_MESSAGE.SIGN_TYPED_DATA_V3, controller.ethSignTypedData)
   walletConnectEvents.on(ETH_MESSAGE.SIGN_TYPED_DATA_V4, controller.ethSignTypedData)
   walletConnectEvents.on(ETH_MESSAGE.SIGN, controller.ethSign)
-  walletConnectEvents.on(ETH_MESSAGE.SEND_RAW_TRANSACTION, controller.ethSendRawTransaction)
 
   return walletConnectEvents
 }

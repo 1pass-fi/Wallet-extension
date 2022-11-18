@@ -1,4 +1,3 @@
-import ethSendRawTransaction from './ethSendRawTransaction'
 import ethSendTransaction from './ethSendTransaction'
 import ethSign from './ethSign'
 import ethSignTransaction from './ethSignTransaction'
@@ -11,5 +10,4 @@ export default {
   personalSign,
   ethSignTypedData,
   ethSign,
-  ethSendRawTransaction
 }

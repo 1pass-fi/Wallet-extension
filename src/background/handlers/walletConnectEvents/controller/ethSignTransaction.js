@@ -1,11 +1,9 @@
-// Constants
+import { getInternalError, getSdkError } from '@walletconnect/utils'
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
-import { ethers } from 'ethers'
 import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
 import ethereumUtils from 'utils/ethereumUtils'
-// Utils
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
 
@@ -52,7 +50,7 @@ export default async (payload, metadata, next) => {
       transactionPayload: {
         ...params[0]
       },
-      signWithoutSend: true,
+      signWithoutSend: true
     }
 
     createWindow(windowData, {
@@ -65,7 +63,7 @@ export default async (payload, metadata, next) => {
             if (approved) {
               var pendingRequest = await storage.generic.get.pendingRequest()
               if (isEmpty(pendingRequest)) {
-                next({ error: { code: 4001, data: 'Request has been removed' } })
+                next({ error: getInternalError('EXPIRED') })
                 chrome.runtime.sendMessage({
                   requestId,
                   error: 'Request has been removed'
@@ -95,10 +93,10 @@ export default async (payload, metadata, next) => {
               } catch (err) {
                 console.error('Send eth error:', err.message)
                 chrome.runtime.sendMessage({ requestId, finished: true })
-                next({ error: { code: 4001, data: err.message } })
+                next({ error: { code: 4001, message: err.message } })
               }
             } else {
-              next({ error: { code: 4001, data: 'Request rejected' } })
+              next({ error: getSdkError('USER_REJECTED_METHODS') })
             }
           }
         })
@@ -110,11 +108,11 @@ export default async (payload, metadata, next) => {
       },
       afterClose: async () => {
         chrome.browserAction.setBadgeText({ text: '' })
-        next({ error: { code: 4001, data: 'Request rejected' } })
+        next({ error: getSdkError('USER_REJECTED_METHODS') })
         await storage.generic.set.pendingRequest({})
       }
     })
   } catch (err) {
-    next({ error: err.message })
+    next({ error: { code: 4001, message: err.message } })
   }
 }
