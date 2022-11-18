@@ -65,7 +65,7 @@ class WalletConnect {
 
   async removeAllSession() {
     await this.init()
-    const pairings = await this.signClient.core.pairing.getPairings()
+    const pairings = this.signClient.core.pairing.getPairings()
     await Promise.all(pairings.map(async (pairing) => {
       const topic = get(pairing, 'topic')
       if (topic) {
@@ -103,7 +103,7 @@ class WalletConnect {
     }
 
     await this.init()
-    const pairings = await walletConnect.signClient.core.pairing.getPairings()
+    const pairings = walletConnect.signClient.core.pairing.getPairings()
     console.log('parings', pairings)
 
     this.signClient.on('session_proposal', sessionProposalCb)
