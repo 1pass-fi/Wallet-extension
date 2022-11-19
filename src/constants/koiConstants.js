@@ -670,7 +670,7 @@ export const WALLET_CONNECT_MESSAGES = {
 }
 
 export const WC_CHAIN_ID = {
-  ETHEREUM: ['eip155:1', 'eip:155:5'],
+  ETHEREUM: ['eip155:1', 'eip155:5'],
   SOLANA: ['solana:4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZ', 'solana:8E9rvCKLFQia2Y35HXjjpWzj8weVo44K']
 }
 

@@ -1,6 +1,8 @@
 import { SignClient } from '@walletconnect/sign-client'
+import { getSdkError } from '@walletconnect/utils'
 import walletConnectEvents from 'background/handlers/walletConnectEvents'
 import get from 'lodash/get'
+import walletConnectUtils from 'utils/walletConnect'
 
 const PROJECT_ID = '0eb91b1c1b2541776c8a29ee31f992c8'
 const PROJECT_METADATA = {
@@ -30,17 +32,34 @@ class WalletConnect {
     await this.signClient.core.pairing.activate({ topic })
   }
 
+  async reject(proposal, reason) {
+    if (proposal) {
+      const { id } = proposal
+      await this.signClient.reject({ id, reason })
+    }
+  }
+
   async approve(proposal) {
     const { id, params } = proposal
     const { proposer, requiredNamespaces, relays } = params
-  
+
+    if (!walletConnectUtils.validateSupportedChain(requiredNamespaces)) {
+      await this.reject(proposal, getSdkError('UNSUPPORTED_CHAINS'))
+      console.log('Reject proposal with reason: ', getSdkError('UNSUPPORTED_CHAINS'))
+      return
+    }
+
     if (proposal) {
       const namespaces = {}
-      Object.keys(requiredNamespaces).forEach(key => {
+      Object.keys(requiredNamespaces).forEach((key) => {
         // requiredNamespaces[key].chains.map(chain => {
         //   selectedAccounts[key].map(acc => accounts.push(`${chain}:${acc}`))
         // })
         const accounts = ['eip155:5:0xb076413401172CBB73C082107514De3376E4FF6c']
+        // const accounts = [
+        //   `solana:8E9rvCKLFQia2Y35HXjjpWzj8weVo44K:3TRUskCaisjqhV3k4tdB4HB8xtGwJPeVzVXEzBFquTHi`
+        // ]
+        // const accounts = ['eip155:80001:0xb076413401172CBB73C082107514De3376E4FF6c']
         namespaces[key] = {
           accounts,
           methods: requiredNamespaces[key].methods,
