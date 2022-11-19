@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { TYPE } from 'constants/accountConstants'
 import { get, isEmpty } from 'lodash'
 import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddresses'
 import { popupAccount } from 'services/account'
@@ -69,12 +68,12 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
     ethereumToken.decimal = 18
     setSelectedToken(ethereumToken)
 
-    if (isEmpty(importedTokenAddresses) || importedTokenAddresses.tokenType !== TYPE.ETHEREUM) {
+    if (isEmpty(importedTokenAddresses)) {
       return [ethereumToken]
     }
 
     const customTokenList = await Promise.all(
-      importedTokenAddresses?.addresses?.map(async (tokenAddress) => {
+      importedTokenAddresses?.map(async (tokenAddress) => {
         return await getTokenData(tokenAddress, userAddress)
       })
     )
@@ -96,12 +95,12 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
     solanaToken.decimal = 9
     setSelectedToken(solanaToken)
 
-    if (isEmpty(importedTokenAddresses) || importedTokenAddresses.tokenType !== TYPE.SOLANA) {
+    if (isEmpty(importedTokenAddresses)) {
       return [solanaToken]
     }
 
     const customTokenList = await Promise.all(
-      importedTokenAddresses?.addresses?.map(async (tokenAddress) => {
+      importedTokenAddresses?.map(async (tokenAddress) => {
         return await getSolanaCustomTokensData(tokenAddress, userAddress)
       })
     )
@@ -124,12 +123,12 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
     setSelectedToken(k2Token)
 
     /* TODO DatH Custom token K2 */
-    if (isEmpty(importedTokenAddresses) || importedTokenAddresses.tokenType !== TYPE.K2) {
+    if (isEmpty(importedTokenAddresses)) {
       return [k2Token]
     }
 
     const customTokenList = await Promise.all(
-      importedTokenAddresses?.addresses?.map(async (tokenAddress) => {
+      importedTokenAddresses?.map(async (tokenAddress) => {
         return await getK2CustomTokensData(tokenAddress, userAddress)
       })
     )
@@ -139,25 +138,27 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
 
   useEffect(() => {
     const loadTokenList = async () => {
+      setTokenList([])
+      let result = []
       switch (selectedNetwork) {
         case 'TYPE_ETHEREUM':
-          setTokenList(await loadEthereumTokens(userAddress, importedTokenAddresses))
+          result = await loadEthereumTokens(userAddress, importedTokenAddresses)
           break
         case 'TYPE_ARWEAVE':
-          setTokenList(await loadArweaveTokens(userAddress))
+          result = await loadArweaveTokens(userAddress)
           break
         case 'TYPE_SOLANA':
-          setTokenList(await loadSolanaTokens(userAddress, importedTokenAddresses))
+          result = await loadSolanaTokens(userAddress, importedTokenAddresses)
           break
         case 'K2':
-          console.log('TYPE_K2 ========== loadK2Tokens')
-          setTokenList(await loadK2Tokens(userAddress, importedTokenAddresses))
+          result = await loadK2Tokens(userAddress, importedTokenAddresses)
           break
       }
+      setTokenList(result)
     }
 
     if (selectedNetwork && userAddress) loadTokenList()
-  }, [selectedNetwork, userAddress, importedTokenAddresses])
+  }, [importedTokenAddresses])
 
   return { tokenList, selectedToken, setSelectedToken }
 }

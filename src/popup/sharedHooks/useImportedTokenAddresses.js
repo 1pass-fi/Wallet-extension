@@ -6,11 +6,10 @@ import { SOL_NETWORK_PROVIDER } from 'constants/koiConstants'
 import { get, isEmpty } from 'lodash'
 import storage from 'services/storage'
 import hardcodeSolanaTokens from 'solanaTokens/solanaTokens'
-import k2Contracts from 'utils/k2-contracts.json'
 import Web3 from 'web3'
 
 const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displayingAccount }) => {
-  const [importedTokenAddresses, setImportedTokenAddresses] = useState({})
+  const [importedTokenAddresses, setImportedTokenAddresses] = useState([])
 
   const checkValidToken = async (tokenAddress) => {
     try {
@@ -58,12 +57,8 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
   }
 
   const checkValidK2Token = async (tokenAddress) => {
-    let foundToken =
-      find(k2Contracts, (token) =>
-        includes(token.address?.toLowerCase(), tokenAddress?.toLowerCase())
-      ) || {}
-
-    return !isEmpty(foundToken)
+    // TODO DatH - LongP
+    return true
   }
 
   const loadEthAddresses = async () => {
@@ -86,12 +81,9 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses({
-        tokenType: TYPE.ETHEREUM,
-        addresses: validTokenAddresses
-      })
+      return validTokenAddresses
     } else {
-      setImportedTokenAddresses({})
+      return []
     }
   }
 
@@ -112,12 +104,9 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses({
-        tokenType: TYPE.SOLANA,
-        addresses: validTokenAddresses
-      })
+      return validTokenAddresses
     } else {
-      setImportedTokenAddresses({})
+      return []
     }
   }
 
@@ -138,26 +127,30 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses({
-        tokenType: TYPE.K2,
-        addresses: validTokenAddresses
-      })
+      return validTokenAddresses
     } else {
-      setImportedTokenAddresses({})
+      return []
     }
   }
 
   useEffect(() => {
-    if (!isEmpty(userAddress) && !isEmpty(displayingAccount)) {
+    const loadImportedTokenAddresses = async () => {
+      setImportedTokenAddresses([])
+      let result = []
       if (displayingAccount.type === TYPE.K2) {
-        loadK2Addresses()
+        result = await loadK2Addresses()
       }
       if (displayingAccount.type === TYPE.SOLANA) {
-        loadSolanaAddresses()
+        result = await loadSolanaAddresses()
       }
       if (displayingAccount.type === TYPE.ETHEREUM) {
-        loadEthAddresses()
+        result = await loadEthAddresses()
       }
+      setImportedTokenAddresses(result)
+    }
+
+    if (!isEmpty(userAddress) && !isEmpty(displayingAccount)) {
+      loadImportedTokenAddresses()
     }
   }, [userAddress, currentProviderAddress, displayingAccount])
 
