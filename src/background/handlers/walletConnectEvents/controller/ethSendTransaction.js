@@ -6,8 +6,8 @@ import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
 import ethereumUtils from 'utils/ethereumUtils'
 import { createWindow } from 'utils/extension'
+import walletConnectUtils from 'utils/walletConnect'
 import { v4 as uuid } from 'uuid'
-
 export default async (payload, metadata, next) => {
   try {
     console.log('eth send transaction')
@@ -15,6 +15,22 @@ export default async (payload, metadata, next) => {
     console.log('metadata', metadata)
 
     const params = get(payload, 'params')
+    const chainId = get(payload, 'chainId')
+
+    const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
+    const credential = await backgroundAccount.getCredentialByAddress(defaultEthereumAddress)
+
+    const provider = await storage.setting.get.ethereumProvider()
+
+    if (!walletConnectUtils.isMatchChain.isMatchEthereumChain(chainId, provider)) {
+      next({ error: { code: 4001, message: 'No matching chain' } })
+      return
+    }
+
+    if (defaultEthereumAddress !== params[0].from) {
+      next({ error: { code: 4001, message: 'No matching account address' } })
+      return
+    }
 
     /* Show popup for signing transaction */
     const screenWidth = screen.availWidth
@@ -71,12 +87,6 @@ export default async (payload, metadata, next) => {
               }
               try {
                 /* Send ETH transaction */
-                const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
-                const credential = await backgroundAccount.getCredentialByAddress(
-                  defaultEthereumAddress
-                )
-
-                const provider = await storage.setting.get.ethereumProvider()
                 const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(
                   provider,
                   credential.key

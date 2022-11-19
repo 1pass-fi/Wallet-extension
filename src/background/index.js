@@ -77,7 +77,7 @@ const initWalletConnect = async () => {
       console.log('session_request event', event)
 
       const endpoint = event.params.request.method
-      const payload = { id: event.id, topic: event.topic, params: event.params.request.params }
+      const payload = { id: event.id, topic: event.topic, params: event.params.request.params, chainId: event.params.chainId }
       walletConnectEvents.sendMessage(endpoint, payload)
     })
   
