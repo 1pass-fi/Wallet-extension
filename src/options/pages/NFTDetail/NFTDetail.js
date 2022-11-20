@@ -118,22 +118,42 @@ const NFTDetail = () => {
     <div className="min-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
       <NavBar />
       {nft && nftLoaded && (
-        // <div className="flex flex-col h-full w-full text-white">
-        <div className="h-full w-full grid grid-cols-3 grid-rows-2 text-white">
-          <div onClick={handleGoBack} className="w-11 h-11 3xl:w-14 3xl:h-14 cursor-pointer">
-            <GoBackIcon />
-          </div>
+        <div className="flex flex-col h-full w-full text-white">
           <div className="mx-auto mt-28 flex flex-col md:flex-row">
-            <div className="w-100 h-100 3xl:w-120 3xl:h-120 mr-7 3xl:mr-20 relative">
-              <NFTMedia contentType={nft.contentType} source={nft.imageUrl} showFull={true} />
-              {nft?.type === TYPE.ETHEREUM && (
-                <EthLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
-              )}
-              {nft?.type === TYPE.ARWEAVE && (
-                <ArweaveLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
-              )}
-              {nft?.type === TYPE.SOLANA && (
-                <SolanaLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
+            <div
+              onClick={handleGoBack}
+              className="w-11 h-11 3xl:w-14 3xl:h-14 absolute top-44 3xl:top-47.25 left-23 2xl:left-40 3xl:left-56 4xl:left-68 cursor-pointer"
+            >
+              <GoBackIcon />
+            </div>
+            <div>
+              <div className="w-100 h-100 3xl:w-120 3xl:h-120 mr-7 3xl:mr-20 relative">
+                <NFTMedia contentType={nft.contentType} source={nft.imageUrl} showFull={true} />
+                {nft?.type === TYPE.ETHEREUM && (
+                  <EthLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
+                )}
+                {nft?.type === TYPE.ARWEAVE && (
+                  <ArweaveLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
+                )}
+                {nft?.type === TYPE.SOLANA && (
+                  <SolanaLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
+                )}
+              </div>
+              {nft.type === TYPE.ARWEAVE && !nft.pending && (
+                <div className="mx-auto flex justify-start items-center h-17.25 3xl:h-20 mt-6.5 mb-4 tracking-finnieSpacing-tight text-lg 3xl:text-xl text-center">
+                  {showEarnedKoi && (
+                    <div className="w-48.5 3xl:w-55.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                      KOII earned <br />
+                      {formatNumber(nft.earnedKoi, 3)}
+                    </div>
+                  )}
+                  {showViews && (
+                    <div className="ml-5.75 3xl:ml-12 w-46 3xl:w-52 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                      Total Views <br />
+                      {nft.totalViews}
+                    </div>
+                  )}
+                </div>
               )}
             </div>
 
@@ -299,23 +319,6 @@ const NFTDetail = () => {
               <ToolTip />
             </div>
           </div>
-
-          {nft.type === TYPE.ARWEAVE && !nft.pending && (
-            <div className="mx-auto flex justify-start items-center md:w-221.5 3xl:w-259.5 h-17.25 3xl:h-20 mt-6.5 mb-4 tracking-finnieSpacing-tight text-lg 3xl:text-xl text-center">
-              {showEarnedKoi && (
-                <div className="w-48.5 3xl:w-55.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
-                  KOII earned <br />
-                  {formatNumber(nft.earnedKoi, 3)}
-                </div>
-              )}
-              {showViews && (
-                <div className="ml-5.75 3xl:ml-12 w-46 3xl:w-52 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
-                  Total Views <br />
-                  {nft.totalViews}
-                </div>
-              )}
-            </div>
-          )}
         </div>
       )}
       {showShareNFTModal && <ShareNFTModal txId={id} close={() => setShowShareNFTModal(false)} />}
