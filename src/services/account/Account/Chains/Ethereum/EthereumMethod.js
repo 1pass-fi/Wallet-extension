@@ -641,7 +641,7 @@ export class EthereumMethod {
     return this.eth.web3().eth.net.getId()
   }
 
-  async transferToken({ tokenContractAddress, to, value }) {
+  async transferToken({ tokenContractAddress, to, value, maxPriorityFeePerGas: manualMaxPriorityFeePerGas, maxFeePerGas: manualMaxFeePerGas }) {
     try {
       const providerUrl = await storage.setting.get.ethereumProvider()
       const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
@@ -659,8 +659,8 @@ export class EthereumMethod {
       const type = 2 // type 2: EIP1559; type 0: legacy
 
       const gasLimit = (await tokenContract.estimateGas?.transfer(to, value)).toNumber()
-      const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei')
-      const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(providerUrl, '2.5')
+      const maxPriorityFeePerGas = manualMaxPriorityFeePerGas || ethers.utils.parseUnits('2.5', 'gwei')
+      const maxFeePerGas = manualMaxFeePerGas || await ethereumUtils.calculateMaxFeePerGas(providerUrl, '2.5')
 
       const transactionPayload = {
         to: tokenContractAddress,

@@ -1,13 +1,20 @@
 import helpers from 'background/helpers'
 import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
+import { ethers } from 'ethers'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
 import showNotification from 'utils/notifications'
-import { ethers } from 'ethers'
 
 export default async (payload, next) => {
   try {
-    const { sender, customTokenRecipient, contractAddress, rawValue } = payload.data
+    const { 
+      sender,
+      customTokenRecipient, 
+      contractAddress, 
+      rawValue,
+      maxPriorityFeePerGas,
+      maxFeePerGas 
+    } = payload.data
 
     const credential = await backgroundAccount.getCredentialByAddress(ethers.utils.getAddress(sender))
     const account = await backgroundAccount.getAccount(credential)
@@ -16,7 +23,9 @@ export default async (payload, next) => {
     const { txHash, sendingPromise, symbol, decimals } = await account.method.transferToken({
       tokenContractAddress: contractAddress,
       to: customTokenRecipient,
-      value: rawValue
+      value: rawValue,
+      maxPriorityFeePerGas,
+      maxFeePerGas
     })
 
     const pendingTransactionPayload = {
