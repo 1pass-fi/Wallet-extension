@@ -44,7 +44,7 @@ const validateSessionRequest = async (params) => {
       return { error: { code: 4001, message: 'No matching account address' } }
     }
 
-    return undefined
+    return null
   } catch (error) {
     console.log('Failed to validate session request: ', error)
   }
