@@ -1,34 +1,7 @@
-import {
-  ETH_MESSAGE,
-  ETH_NETWORK_PROVIDER,
-  NETWORK,
-  SOL_NETWORK_PROVIDER,
-  WC_CHAIN_ID
-} from 'constants/koiConstants'
+import { ETH_MESSAGE, NETWORK, WC_ETH_CHAIN_ID, WC_SOL_CHAIN_ID } from 'constants/koiConstants'
 import get from 'lodash/get'
 import storage from 'services/storage'
-
-const fromProviderToWCChain = (provider, network) => {
-  if (network === NETWORK.ETHEREUM) {
-    switch (provider) {
-      case ETH_NETWORK_PROVIDER.GOERLI:
-        return 'eip155:5'
-      case ETH_NETWORK_PROVIDER.MAINNET:
-        return 'eip155:1'
-    }
-  }
-
-  if (network === NETWORK.SOLANA) {
-    switch (provider) {
-      case SOL_NETWORK_PROVIDER.DEVNET:
-        return 'solana:8E9rvCKLFQia2Y35HXjjpWzj8weVo44K'
-      case SOL_NETWORK_PROVIDER.MAINNET:
-        return 'solana:4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZ'
-    }
-
-    return undefined
-  }
-}
+import fromProviderToWCChain from 'utils/walletConnect/fromProviderToWCChain'
 
 const getAddressFromRequest = (request) => {
   const { method, params } = request
@@ -51,13 +24,13 @@ const validateSessionRequest = async (params) => {
     const { request, chainId } = params
     let defaultAddress, wcChainId
 
-    if (WC_CHAIN_ID.ETHEREUM.includes(chainId)) {
+    if (Object.values(WC_ETH_CHAIN_ID).includes(chainId)) {
       defaultAddress = await storage.setting.get.activatedEthereumAccountAddress()
       const currentProvider = await storage.setting.get.ethereumProvider()
       wcChainId = fromProviderToWCChain(currentProvider, NETWORK.ETHEREUM)
     }
 
-    if (WC_CHAIN_ID.SOLANA.includes(chainId)) {
+    if (Object.values(WC_SOL_CHAIN_ID).includes(chainId)) {
       defaultAddress = await storage.setting.get.activatedSolanaAccountAddress()
       const currentProvider = await storage.setting.get.solanaProvider()
       wcChainId = fromProviderToWCChain(currentProvider, NETWORK.SOLANA)

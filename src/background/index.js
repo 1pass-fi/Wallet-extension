@@ -1,8 +1,6 @@
 import '@babel/polyfill'
 
-// import { createPairingSession,createSignClient, signClient } from 'background/signClient'
 import { IMPORTED } from 'constants/accountConstants'
-// Constants
 import { OS, PATH, PORTS } from 'constants/koiConstants'
 import isEmpty from 'lodash/isEmpty'
 import storage from 'services/storage'
@@ -11,7 +9,6 @@ import { getChromeStorage } from 'utils'
 import walletConnectUtils from 'utils/walletConnect'
 
 import contentScriptEvents from './handlers/contentScriptEvents'
-// emitter
 import popupEvents from './handlers/popupEvents'
 import walletConnectEvents from './handlers/walletConnectEvents'
 import cache from './cache'

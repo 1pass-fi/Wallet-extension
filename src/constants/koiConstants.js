@@ -653,25 +653,14 @@ export const TRANSACTION_METHOD = {
   APPROVE: 'approve'
 }
 
-export const WALLET_CONNECT_MESSAGES = {
-  ETH_PERSONAL_SIGN: 'personal_sign',
-  ETH_CONNECT: 'eth_request_connection',
-  ETH_SIGN: 'eth_sign',
-  ETH_SIGN_TYPED_DATA: 'eth_signTypedData',
-  ETH_SEND_TRANSACTION: 'eth_sendTransaction',
-  ETH_SIGN_TRANSACTION: 'eth_signTransaction',
-  ETH_SEND_RAW_TRANSACTION: 'eth_sendRawTransaction',
-  SOLANA_CONNECT: 'solana_connect',
-  SOLANA_GET_ACCOUNTS: 'solana_getAccounts', // Do not support
-  SOLANA_REQUEST_ACCOUNTS: 'solana_requestAccounts', // Do not support
-  SOLANA_SIGN_TRANSACTION: 'solana_signTransaction',
-  SOLANA_SIGN_MESSAGE: 'solana_signMessage',
-  APPROVE_SESSION: 'APPROVE_SESSION'
+export const WC_ETH_CHAIN_ID = {
+  MAINNET: 'eip155:1',
+  GOERLI: 'eip155:5'
 }
 
-export const WC_CHAIN_ID = {
-  ETHEREUM: ['eip155:1', 'eip155:5'],
-  SOLANA: ['solana:4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZ', 'solana:8E9rvCKLFQia2Y35HXjjpWzj8weVo44K']
+export const WC_SOL_CHAIN_ID = {
+  MAINNET: 'solana:4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZ',
+  DEVNET: 'solana:8E9rvCKLFQia2Y35HXjjpWzj8weVo44K'
 }
 
 export const ETH_MESSAGE = {
@@ -683,4 +672,11 @@ export const ETH_MESSAGE = {
   SIGN_TYPED_DATA_V4: 'eth_signTypedData_v4',
   SIGN: 'eth_sign',
   SEND_RAW_TRANSACTION: 'eth_sendRawTransaction'
+}
+
+export const SOL_MESSAGE = {
+  SOLANA_GET_ACCOUNTS: 'solana_getAccounts', // Do not support
+  SOLANA_REQUEST_ACCOUNTS: 'solana_requestAccounts', // Do not support
+  SOLANA_SIGN_TRANSACTION: 'solana_signTransaction',
+  SOLANA_SIGN_MESSAGE: 'solana_signMessage'
 }

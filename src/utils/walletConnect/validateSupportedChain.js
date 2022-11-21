@@ -1,15 +1,15 @@
-import { WC_CHAIN_ID } from 'constants/koiConstants'
+import { WC_ETH_CHAIN_ID, WC_SOL_CHAIN_ID } from 'constants/koiConstants'
 
 const validateEthereumChain = (chains) => {
   for (let chain of chains) {
-    if (!WC_CHAIN_ID.ETHEREUM.includes(chain)) return false
+    if (!Object.values(WC_ETH_CHAIN_ID).includes(chain)) return false
   }
   return true
 }
 
 const validateSolanaChain = (chains) => {
   for (let chain of chains) {
-    if (!WC_CHAIN_ID.SOLANA.includes(chain)) return false
+    if (!Object.values(WC_SOL_CHAIN_ID).includes(chain)) return false
   }
   return true
 }
@@ -17,7 +17,6 @@ const validateSolanaChain = (chains) => {
 const validateSupportedChain = (requiredNamespaces) => {
   let isEthereumChains = true,
     isSolanaChains = true
-  console.log('requiredNamespaces', requiredNamespaces)
   for (let typeChain in requiredNamespaces) {
     if (typeChain !== 'eip155' && typeChain !== 'solana') return false
 
