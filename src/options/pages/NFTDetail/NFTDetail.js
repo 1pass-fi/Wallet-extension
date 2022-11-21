@@ -125,7 +125,7 @@ const NFTDetail = () => {
               onClick={handleGoBack}
               className={clsx(
                 'w-11 xl:w-12 2xl:w-13 3xl:w-14 h-11 xl:h-12 2xl:h-13 3xl:h-14',
-                'absolute top-44 xl: 2xl: 3xl:top-47.25 left-12 lg:left-16 xl:left-32 2xl:left-40 3xl:left-56 4xl:left-68 cursor-pointer'
+                'absolute top-44 3xl:top-47.25 left-12 lg:left-16 xl:left-32 2xl:left-40 3xl:left-56 4xl:left-68 cursor-pointer'
               )}
             >
               <GoBackIcon />
@@ -133,7 +133,8 @@ const NFTDetail = () => {
             <div>
               <div
                 className={clsx(
-                  'w-100 xl:w-108 2xl:w-116 3xl:w-124 h-100 xl:h-108 2xl:h-116 3xl:h-124',
+                  'w-100 xl:w-108 2xl:w-116 3xl:w-124',
+                  'h-100 xl:h-108 2xl:h-116 3xl:h-124',
                   'mr-10 xl:mr-16 2xl:mr-24 3xl:mr-32 relative'
                 )}
               >
@@ -149,15 +150,21 @@ const NFTDetail = () => {
                 )}
               </div>
               {nft.type === TYPE.ARWEAVE && !nft.pending && (
-                <div className="w-100 xl:w-108 2xl: 3xl:w-120 flex justify-between items-center h-17.25 xl: 2xl: 3xl:h-20 mt-6.5 mb-4 tracking-finnieSpacing-tight text-lg xl: 2xl: 3xl:text-xl text-center">
+                <div
+                  className={clsx(
+                    'w-100 xl:w-108 2xl:w-116 3xl:w-124 h-17.25 3xl:h-20',
+                    'flex justify-between items-center mt-6.5 xl:mt-8 2xl:mt-10 3xl:mt-12 mb-4',
+                    'tracking-finnieSpacing-tight text-lg 3xl:text-xl text-center'
+                  )}
+                >
                   {showEarnedKoi && (
-                    <div className="w-48.5 xl: 2xl: 3xl:w-55.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                    <div className="w-48.5 xl:w-50 2xl:w-52 3xl:w-55.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
                       KOII earned <br />
                       {formatNumber(nft.earnedKoi, 3)}
                     </div>
                   )}
                   {showViews && (
-                    <div className="w-46 xl: 2xl: 3xl:w-52 h-full ml-5.75 xl: 2xl: 3xl:ml-12 rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
+                    <div className="w-46 xl:w-48.5 2xl:w-50 3xl:w-52 h-full ml-5.75 3xl:ml-12 rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
                       Total Views <br />
                       {nft.totalViews}
                     </div>
@@ -166,12 +173,12 @@ const NFTDetail = () => {
               )}
             </div>
 
-            <div className="w-108 h-100 xl: 2xl: 3xl:w-120 xl: 2xl: 3xl:h-120 relative">
-              <div className="finnieSpacing-tighter font-semibold text-5xl xl: 2xl: 3xl:text-6xl mb-2">
+            <div className="w-108 h-100 3xl:w-120 3xl:h-120 relative">
+              <div className="finnieSpacing-tighter font-semibold text-5xl 3xl:text-6xl mb-2">
                 {nft.name}
               </div>
               {nft?.type !== TYPE.SOLANA && (
-                <div className="flex items-center text-sm xl: 2xl: 3xl:text-base mb-2">
+                <div className="flex items-center text-sm 2xl:text-base 3xl:text-lg mb-2">
                   <div
                     className="h-6 mr-2.25"
                     data-tip={
@@ -202,7 +209,7 @@ const NFTDetail = () => {
                       icon={BlockIcon}
                       text={'Explore Block'}
                       variant="inversed"
-                      className="border-opacity-20 h-9.5 xl: 2xl: 3xl:h-12"
+                      className="border-opacity-20 h-9.5 xl:h-10.5 2xl:h-11.5 3xl:h-12.5"
                     />
                   </a>
                 </div>
@@ -215,7 +222,7 @@ const NFTDetail = () => {
                       icon={BlockIcon}
                       text={'Explore Block'}
                       variant="inversed"
-                      className="border-opacity-20 h-9.5 xl: 2xl: 3xl:h-12"
+                      className="border-opacity-20 h-9.5 xl:h-10.5 2xl:h-11.5 3xl:h-12.5"
                     />
                   </a>
                 </div>
@@ -229,7 +236,7 @@ const NFTDetail = () => {
                       icon={BlockIcon}
                       text={nft.pending ? 'Pending Transaction' : 'Explore Block'}
                       variant="inversed"
-                      className="border-opacity-20  h-9.5 xl: 2xl: 3xl:h-12"
+                      className="border-opacity-20 h-9.5 xl:h-10.5 2xl:h-11.5 3xl:h-12.5"
                     />
                   </a>
                   <a href={`https://koi.rocks/content-details/${nft.txId}`} target="_blank">
@@ -238,14 +245,14 @@ const NFTDetail = () => {
                       icon={LeaderboardIcon}
                       text="Leaderboard"
                       variant="warning"
-                      className="h-9.5 xl: 2xl: 3xl:h-12"
+                      className="h-9.5 xl:h-10.5 2xl:h-11.5 3xl:h-12.5"
                     />
                   </a>
                 </div>
               )}
 
               <p
-                className="w-full overflow-y-scroll overflow-x-none break-words text-sm xl: 2xl: 3xl:text-base leading-6 pr-4 whitespace-pre-line"
+                className="w-full overflow-y-scroll overflow-x-none break-words text-sm xl: 2xl: 2xl:text-base 3xl:text-lg leading-6 pr-4 whitespace-pre-line"
                 style={{ maxHeight: '35%' }}
               >
                 {nft.description}
