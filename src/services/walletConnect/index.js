@@ -39,7 +39,7 @@ class WalletConnect {
     }
   }
 
-  async approve(proposal) {
+  async approve(proposal, selectedAccounts) {
     const { id, params } = proposal
     const { proposer, requiredNamespaces, relays } = params
 
@@ -51,15 +51,12 @@ class WalletConnect {
 
     if (proposal) {
       const namespaces = {}
+      let accounts = []
       Object.keys(requiredNamespaces).forEach((key) => {
-        // requiredNamespaces[key].chains.map(chain => {
-        //   selectedAccounts[key].map(acc => accounts.push(`${chain}:${acc}`))
-        // })
-        const accounts = ['eip155:5:0xb076413401172CBB73C082107514De3376E4FF6c']
-        // const accounts = [
-        //   `solana:8E9rvCKLFQia2Y35HXjjpWzj8weVo44K:3TRUskCaisjqhV3k4tdB4HB8xtGwJPeVzVXEzBFquTHi`
-        // ]
-        // const accounts = ['eip155:80001:0xb076413401172CBB73C082107514De3376E4FF6c']
+        requiredNamespaces[key].chains.map(chain => {
+          selectedAccounts[key].map(acc => accounts.push(`${chain}:${acc}`))
+        })
+
         namespaces[key] = {
           accounts,
           methods: requiredNamespaces[key].methods,

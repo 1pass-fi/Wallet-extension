@@ -93,7 +93,8 @@ module.exports = {
           underline: 'rgba(214, 214, 214, 0.2)'
         },
         purplelight: {
-          DEFAULT: '#EBEEF7'
+          DEFAULT: '#EBEEF7',
+          100: '#E3E0EB'
         },
         darkGreen: {
           DEFAULT: '#087980'
