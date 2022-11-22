@@ -121,6 +121,7 @@
         "uuid": "^8.3.2",
         "web3": "^1.4.0",
         "webextension-polyfill": "^0.3.1",
+        "xmlhttprequest-ssl": "https://github.com/longphamea/node-XMLHttpRequest",
         "xstate": "^4.30.3"
     },
     "browserslist": [

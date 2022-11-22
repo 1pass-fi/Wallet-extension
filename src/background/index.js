@@ -1,5 +1,7 @@
 import '@babel/polyfill'
 
+import xmlHttpRequest from 'xmlhttprequest-ssl'
+
 global.window = global
 
 import { IMPORTED } from 'constants/accountConstants'
@@ -102,3 +104,5 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true // send message async
   }
 })
+
+global.XMLHttpRequest = xmlHttpRequest.XMLHttpRequest

@@ -24136,6 +24136,10 @@ xmldom@0.1.27:
   resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.27.tgz#d501f97b3bdb403af8ef9ecc20573187aadac0e9"
   integrity sha1-1QH5ezvbQDr4757MIFcxh6rawOk=
 
+"xmlhttprequest-ssl@https://github.com/longphamea/node-XMLHttpRequest":
+  version "2.1.0"
+  resolved "https://github.com/longphamea/node-XMLHttpRequest#3db900738776dda8026bb95a7a73df2971dfb77f"
+
 xregexp@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-2.0.0.tgz#52a63e56ca0b84a7f3a5f3d61872f126ad7a5943"
