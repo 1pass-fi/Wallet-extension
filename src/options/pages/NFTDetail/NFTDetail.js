@@ -252,7 +252,7 @@ const NFTDetail = () => {
               )}
 
               <p
-                className="w-full overflow-y-scroll overflow-x-none break-words text-sm xl: 2xl: 2xl:text-base 3xl:text-lg leading-6 pr-4 whitespace-pre-line"
+                className="w-full overflow-y-scroll overflow-x-none break-words text-sm 2xl:text-base 3xl:text-lg leading-6 pr-4 whitespace-pre-line"
                 style={{ maxHeight: '35%' }}
               >
                 {nft.description}
@@ -262,7 +262,7 @@ const NFTDetail = () => {
                   nft.tags.map((tag) => (
                     <div
                       key={tag}
-                      className="flex items-center justify-center bg-lightBlue text-indigo tracking-finnieSpacing-wide text-xs xl: 2xl: 3xl:text-sm rounded-full h-5 py-0.5 px-3"
+                      className="flex items-center justify-center bg-lightBlue text-indigo tracking-finnieSpacing-wide text-xs 2xl:text-sm 3xl:text-base rounded-full h-5 py-0.5 px-3"
                     >
                       {tag}
                     </div>
@@ -272,7 +272,7 @@ const NFTDetail = () => {
               {nft?.type !== TYPE.K2 && (
                 <div className="w-full mt-7.5">
                   {!nft.pending && (
-                    <div className="w-full flex items-center justify-between h-11.5 xl: 2xl: 3xl:h-14 gap-5 mb-6">
+                    <div className="w-full h-11.5 xl:h-12 2xl:h-13 3xl:h-14 flex items-center justify-between gap-5 mb-6">
                       {nft?.type === TYPE.ARWEAVE && (
                         <Button
                           disabled={disabledFeatures}
@@ -309,7 +309,7 @@ const NFTDetail = () => {
 
                   {!nft.pending && (
                     <div
-                      className="h-11.5 xl: 2xl: 3xl:h-14 w-full"
+                      className="w-full h-11.5 xl:h-12 2xl:h-13 3xl:h-14"
                       data-tip={
                         !ownerImported
                           ? `This NFT is owned by a wallet with the address ${nft.address}.<br>
