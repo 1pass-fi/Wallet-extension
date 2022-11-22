@@ -18,8 +18,10 @@ module.exports = {
         '5xl': '3400px'
       },
       maxWidth: {
-        '2xl': '707px',
-        '3xl': '803px'
+        'lg': '707px',
+        'xl': '803px',
+        '2xl': '850px',
+        '3xl': '924px'
       },
       colors: {
         teal: {

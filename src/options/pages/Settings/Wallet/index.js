@@ -157,17 +157,17 @@ export default () => {
         <div className="header">Wallet Settings</div>
         <div className="mt-10 pl-5">
           <div className="add-wallet pb-2 mb-4 border-b border-white">
-            <div className="font-semibold text-base 3xl:text-lg leading-8 uppercase">Add a Key</div>
+            <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">Add a Key</div>
             <div className="flex gap-6.75 my-1">
               <div
-                className="bg-success rounded-sm text-center text-indigo text-sm 3xl:text-base leading-4 font-normal flex justify-center items-center mr-6.75 cursor-pointer"
+                className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center mr-6.75 cursor-pointer"
                 style={{ width: '220px', height: '38px' }}
                 onClick={onCreateWallet}
               >
                 Create a New Key
               </div>
               <div
-                className="bg-trueGray-100 rounded-sm text-center text-indigo text-sm 3xl:text-base leading-4 font-normal flex justify-center items-center cursor-pointer"
+                className="bg-trueGray-100 rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center cursor-pointer"
                 style={{ width: '220px', height: '38px' }}
                 onClick={onImportSeedPhrase}
               >
@@ -175,7 +175,7 @@ export default () => {
               </div>
             </div>
             {/* <div
-              className="mt-2.5 font-normal text-xs 3xl:text-sm underline tracking-finnieSpacing-wide text-lightBlue cursor-pointer"
+              className="mt-2.5 font-normal text-xs 2xl:text-sm 3xl:text-base underline tracking-finnieSpacing-wide text-lightBlue cursor-pointer"
               onClick={onImportKeyFile}
             >
               Import a JSON file.
@@ -183,13 +183,13 @@ export default () => {
           </div>
 
           <div className="default-currency pb-6 mb-4 border-b border-white">
-            <div className="font-semibold text-base 3xl:text-lg leading-8 uppercase">
+            <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
               Default Currency
             </div>
-            <div className="text-sm 3xl:text-base leading-6 mb-1">
+            <div className="text-sm 2xl:text-base 3xl:text-lg leading-6 mb-1">
               Select the exchange currency displayed next to your tokens and transactions.
             </div>
-            <div className="text-xs 3xl:text-sm leading-4 mb-4.5 text-lightBlue">
+            <div className="text-xs 2xl:text-sm 3xl:text-base leading-4 mb-4.5 text-lightBlue">
               We can only show the exchange rate for fiat currencies at this time.
             </div>
             <div style={{ width: '300px' }}>
@@ -205,10 +205,10 @@ export default () => {
           </div>
 
           <div className="display-order pb-6 mb-4 border-b border-white">
-            <div className="font-semibold text-base 3xl:text-lg leading-8 uppercase">
+            <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
               Key Details
             </div>
-            <div className="text-sm 3xl:text-base leading-6 mb-4.5">
+            <div className="text-sm 2xl:text-base 3xl:text-lg leading-6 mb-4.5">
               Organize your wallet display and select a default key. This key will be automatically
               selected to create NFTs and send tokens.
             </div>

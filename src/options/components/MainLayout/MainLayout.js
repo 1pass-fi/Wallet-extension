@@ -61,7 +61,7 @@ const MainLayout = ({ children }) => {
                 <aside className="fixed z-51 w-61 3xl:w-65.5 pt-4">
                   <Sidebar currentPath={location.pathname} />
                 </aside>
-                <main className="ml-72 3xl:ml-80 pb-5">{children}</main>
+                <main className="ml-72 xl:ml-77 2xl:ml-83 3xl:ml-90.5 pb-5">{children}</main>
               </div>
             </div>
           </div>

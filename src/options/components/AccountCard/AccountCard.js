@@ -266,12 +266,17 @@ const AccountCard = ({
     }
 
     return (
-      <div className="w-4 h-4 3xl:w-5 3xl:h-5 flex items-center justify-center my-auto bg-lightBlue rounded-full shadow-sm cursor-pointer">
+      <div
+        className={clsx(
+          'w-4 xl:w-5 2xl:w-6 3xl:w-8 h-4 xl:h-5 2xl:h-6 3xl:h-8',
+          'flex items-center justify-center my-auto bg-lightBlue rounded-full shadow-sm cursor-pointer'
+        )}
+      >
         <CopyToClipboard text={address} onCopy={onCopy}>
           {isCopied ? (
-            <CheckMarkIcon style={{ width: '13px', height: '12px' }} />
+            <CheckMarkIcon className="w-3 xl:w-4 2xl:w-5 3xl:w-6 h-3 xl:h-4 2xl:h-5 3xl:h-6" />
           ) : (
-            <CopyIcon style={{ width: '14px', height: '14px' }} />
+            <CopyIcon className="w-3 xl:w-4 2xl:w-5 3xl:w-6 h-3 xl:h-4 2xl:h-5 3xl:h-6" />
           )}
         </CopyToClipboard>
       </div>
@@ -367,7 +372,13 @@ const AccountCard = ({
 
   return (
     <div className="mt-4.5 text-indigo select-none">
-      <div className="relative py-6 -mb-1.25 bg-trueGray-100 rounded-lg flex items-center justify-start shadow-md overflow-hidden max-w-2xl h-32 3xl:max-w-3xl 3xl:h-36">
+      <div
+        className={clsx(
+          'max-w-lg xl:nax-w-xl 2xl:max-w-2xl 3xl:max-w-3xl h-32 xl:h-34.75 2xl:h-37.75 3xl:h-40',
+          'relative py-6 -mb-1.25 bg-trueGray-100 rounded-lg',
+          'flex items-center justify-start shadow-md overflow-hidden'
+        )}
+      >
         <div
           // className="flex items-center justify-center bg-white shadow rounded-r-lg"
           style={{ width: '22.5px', height: '55.25px' }}
@@ -376,31 +387,19 @@ const AccountCard = ({
           {/* <DragIcon style={{ width: '4.93px', height: '31.49px' }} /> */}
         </div>
         {account.type === TYPE.K2 && (
-          <K2Logo
-            style={{ width: '25px', height: '25px' }}
-            className="self-start ml-4 3xl:mt-2.5"
-          />
+          <K2Logo className="self-start w-6.25 xl:w-8 2xl:w-10 3xl:w-12 h-6.25 xl:h-8 2xl:h-10 3xl:h-12 ml-4 xl:ml-5 2xl:ml-6 3xl:ml-8" />
         )}
         {account.type === TYPE.ETHEREUM && (
-          <EthLogo
-            style={{ width: '25px', height: '25px' }}
-            className="self-start ml-4 3xl:mt-2.5"
-          />
+          <EthLogo className="self-start w-6.25 xl:w-8 2xl:w-10 3xl:w-12 h-6.25 xl:h-8 2xl:h-10 3xl:h-12 ml-4 xl:ml-5 2xl:ml-6 3xl:ml-8" />
         )}
         {account.type === TYPE.SOLANA && (
-          <SolLogo
-            style={{ width: '25px', height: '25px' }}
-            className="self-start ml-4 3xl:mt-2.5"
-          />
+          <SolLogo className="self-start w-6.25 xl:w-8 2xl:w-10 3xl:w-12 h-6.25 xl:h-8 2xl:h-10 3xl:h-12 ml-4 xl:ml-5 2xl:ml-6 3xl:ml-8" />
         )}
         {account.type === TYPE.ARWEAVE && (
-          <ArweaveLogo
-            style={{ width: '25px', height: '25px' }}
-            className="self-start ml-4 3xl:mt-2.5"
-          />
+          <ArweaveLogo className="self-start w-6.25 xl:w-8 2xl:w-10 3xl:w-12 h-6.25 xl:h-8 2xl:h-10 3xl:h-12 ml-4 xl:ml-5 2xl:ml-6 3xl:ml-8" />
         )}
-        <div className="flex flex-col ml-2.25 mr-4.5 mt-1 w-74 3xl:w-90.5">
-          <div className="flex items-center text-base 3xl:text-lg tracking-finnieSpacing-tight leading-6">
+        <div className="flex flex-col ml-2.25 xl:ml-3 2xl:ml-4 3xl:ml-6 mr-4.5 xl:mr-6 2xl:mr-7 3xl:mr-9 w-74 xl:w-83 2xl:w-90.5 3xl:w-100">
+          <div className="flex items-center text-base 2xl:text-lg 3xl:text-xl tracking-finnieSpacing-tight leading-6">
             {editAccount?.address === account.address ? (
               <input
                 ref={(accountNameInput) => (inputAccountNameRef.current = accountNameInput)}
@@ -421,25 +420,25 @@ const AccountCard = ({
             {isEmpty(editAccount) || editAccount?.address !== account.address ? (
               <EditIcon
                 onClick={() => handleChangeAccountName(account)}
-                className="w-4 h-4 3xl:w-5 3xl:h-5 inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
+                className="w-4 xl:w-5 2xl:w-6 3xl:w-8 h-4 xl:h-5 2xl:h-6 3xl:h-8 inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
               />
             ) : (
               <SaveIcon
                 onClick={() => handleChangeAccountName(account)}
-                className="w-4 h-4 3xl:w-5 3xl:h-5 inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
+                className="w-4 xl:w-5 2xl:w-6 3xl:w-8 h-4 xl:h-5 2xl:h-6 3xl:h-8 inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
               />
             )}
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="flex items-center text-success-700 text-opacity-80 text-2xs 3xl:text-11px font-normal leading-6 tracking-finnieSpacing-tight">
+            <div className="flex items-center text-success-700 text-opacity-80 text-2xs 2xl:text-11px 3xl:text-xs font-normal leading-6 tracking-finnieSpacing-tight">
               {account.address}
             </div>
             <CopyAddressIcon address={account.address} key={account.address} />
           </div>
 
           {account.type === TYPE.K2 && (
-            <div className="font-normal text-xs 3xl:text-sm flex items-center tracking-finnieSpacing-tight">
+            <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight">
               Balance:{' '}
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance / Math.pow(10, 9), 4)
@@ -448,14 +447,14 @@ const AccountCard = ({
             </div>
           )}
           {account.type === TYPE.ETHEREUM && (
-            <div className="font-normal text-xs 3xl:text-sm flex items-center tracking-finnieSpacing-tight">
+            <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight">
               Balance:{' '}
               {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'}{' '}
               ETH
             </div>
           )}
           {account.type === TYPE.SOLANA && (
-            <div className="font-normal text-xs 3xl:text-sm flex items-center tracking-finnieSpacing-tight">
+            <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight">
               Balance:{' '}
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance / Math.pow(10, 9), 4)
@@ -465,7 +464,7 @@ const AccountCard = ({
           )}
           {account.type === TYPE.ARWEAVE && (
             <>
-              <div className="font-normal text-xs 3xl:text-sm flex items-center tracking-finnieSpacing-tight">
+              <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight">
                 Balance: {isNumber(account.balance) ? formatNumber(account.balance, 4) : '0'} AR
               </div>
               {/* <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight">
@@ -475,41 +474,41 @@ const AccountCard = ({
             </>
           )}
 
-          <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight leading-6">
+          <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight leading-6">
             Assets: {account.totalAssets.length}
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <div className="w-18.75 h-18.75 3xl:w-20 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
-            <div className="flex items-center text-center font-normal text-xl 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
+          <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
+            <div className="flex items-center text-center font-normal text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
               {tokenList?.length}
             </div>
-            <div className="flex items-center text-center font-normal text-xs 3xl:text-sm tracking-finnieSpacing-tight">
+            <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
               {tokenList?.length > 1 ? 'Coins' : 'Coin'}
             </div>
           </div>
-          <div className="w-18.75 h-18.75 3xl:w-20 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
-            <div className="flex items-center text-center font-normal text-xl 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
+          <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
+            <div className="flex items-center text-center font-normal text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
               {account.totalAssets.length}
             </div>
-            <div className="flex items-center text-center font-normal text-xs 3xl:text-sm tracking-finnieSpacing-tight">
+            <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
               Assets
             </div>
           </div>
           {account.type === TYPE.ARWEAVE ? (
-            <div className="w-18.75 h-18.75 3xl:w-20 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
-              <div className="flex items-center text-center font-normal text-xl 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
+            <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
+              <div className="flex items-center text-center font-normal text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
                 {totalViews}
               </div>
-              <div className="flex items-center text-center font-normal text-xs 3xl:text-sm tracking-finnieSpacing-tight">
+              <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 Views
               </div>
             </div>
           ) : (
             <div
               className={clsx(
-                'w-18.75 h-18.75 3xl:w-20 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-trueGray-400 rounded',
-                'font-normal text-xs 3xl:text-sm text-center tracking-finnieSpacing-tight'
+                'w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-trueGray-400 rounded',
+                'font-normal text-xs 2xl:text-sm 3xl:text-base text-center tracking-finnieSpacing-tight'
               )}
               data-tip={'Views'}
             >
@@ -524,17 +523,19 @@ const AccountCard = ({
             onClick={() => handleChangeDisplayAccount(account)}
           >
             {isDefaultAccount(account) ? (
-              <FilledStarIcon
-                style={{ width: '20px', height: '20px' }}
-                className="cursor-pointer"
-              />
+              <FilledStarIcon className="cursor-pointer w-5 xl:w-6 2xl:w-7 3xl:w-8 h-5 xl:h-6 2xl:h-7 3xl:h-8" />
             ) : (
-              <EmptyStarIcon style={{ width: '20px', height: '20px' }} className="cursor-pointer" />
+              <EmptyStarIcon
+                style={{ width: '20px', height: '20px' }}
+                className="cursor-pointer w-5 xl:w-6 2xl:w-7 3xl:w-8 h-5 xl:h-6 2xl:h-7 3xl:h-8"
+              />
             )}
           </div>
           <div
-            className="flex items-center justify-center bg-lightBlue shadow-sm rounded-full cursor-pointer"
-            style={{ width: '24px', height: '24px' }}
+            className={clsx(
+              'flex items-center justify-center bg-lightBlue shadow-sm rounded-full cursor-pointer',
+              'w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9'
+            )}
             onClick={() => setIsDrop((prev) => !prev)}
           >
             <ExtendIcon
@@ -547,18 +548,18 @@ const AccountCard = ({
 
       {isDrop && (
         <div
-          className="max-w-2xl 3xl:max-w-3xl relative flex items-center justify-start bg-trueGray-600 px-5 py-6"
+          className="max-w-2xl xl: 2xl: 3xl:max-w-3xl relative flex items-center justify-start bg-trueGray-600 px-5 py-6"
           style={{ height: '183px' }}
         >
           <div className="w-1/3 h-full flex flex-col gap-6">
             <div className="flex gap-2.75 items-start">
-              <div className="w-1/2 flex justify-end font-semibold text-xs 3xl:text-sm tracking-finnieSpacing-tight">
+              <div className="w-1/2 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 Account Balance:
               </div>
               <div className="flex flex-col gap-1">
                 {tokenList?.map((token, idx) => (
                   <div
-                    className="font-normal text-xs 3xl:text-sm tracking-finnieSpacing-tight"
+                    className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight"
                     key={idx}
                   >
                     {formatNumber(token.displayingBalance, 4)} {token.symbol}
@@ -568,10 +569,10 @@ const AccountCard = ({
             </div>
 
             <div className="flex gap-2.75 items-start">
-              <div className="w-1/2 flex justify-end text-right font-semibold text-xs 3xl:text-sm tracking-finnieSpacing-tight">
+              <div className="w-1/2 flex justify-end text-right font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 NFT Assets:
               </div>
-              <div className="font-normal text-xs 3xl:text-sm tracking-finnieSpacing-tight">
+              <div className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 {account.totalAssets.length} {account.type === TYPE.ARWEAVE && 'AR'}
                 {account.type === TYPE.ETHEREUM && 'ETH'}
                 {account.type === TYPE.SOLANA && 'SOL'}
@@ -581,7 +582,7 @@ const AccountCard = ({
 
           <div className="w-1/3 h-full flex flex-col gap-4.5">
             <div className="w-full h-6 flex items-center justify-between">
-              <div className="font-semibold text-xs 3xl:text-sm tracking-finnieSpacing-tight">
+              <div className="font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 Network:{' '}
               </div>
               <div style={{ width: '154px' }}>
@@ -612,11 +613,11 @@ const AccountCard = ({
               <ToggleButton value={showEmptyToken} setValue={setShowEmptyToken} />
             </div> */}
             <div className="w-full h-6 flex items-center justify-between">
-              <div className="font-semibold text-xs 3xl:text-sm tracking-finnieSpacing-tight">
+              <div className="font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 Dapp Connections:{' '}
               </div>
               <div
-                className="text-xs 3xl:text-sm font-normal tracking-finnieSpacing-tight underline cursor-pointer"
+                className="text-xs 2xl:text-sm 3xl:text-base font-normal tracking-finnieSpacing-tight underline cursor-pointer"
                 onClick={() => {
                   setShowConnectedSites(true)
                   setAccountConnectSites(account)
@@ -632,7 +633,7 @@ const AccountCard = ({
               onClick={() => setShowRecoveryPhraseModal(true)}
               className="w-full h-6 flex items-center justify-between"
             >
-              <div className="w-3/4 flex justify-end font-semibold text-xs 3xl:text-sm tracking-finnieSpacing-tight">
+              <div className="w-3/4 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 Reveal Secret Phrase:{' '}
               </div>
               <div
@@ -647,7 +648,7 @@ const AccountCard = ({
               onClick={() => setShowQrCodeModal(true)}
               className="w-full h-6 flex items-center justify-between"
             >
-              <div className="w-3/4 flex justify-end font-semibold text-xs 3xl:text-sm tracking-finnieSpacing-tight">
+              <div className="w-3/4 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 See QR code:{' '}
               </div>
               <div
