@@ -62,11 +62,6 @@ export default async (payload, metadata, next) => {
               try {
                 const credential = await backgroundAccount.getCredentialByAddress(params[0])
 
-                if (isEmpty(credential)) {
-                  next({ error: { code: 4004, message: 'Account is not imported' } })
-                  return
-                }
-
                 // Prepare data for _signTypedData function
                 const types = get(data, 'types')
                 // https://github.com/ethers-io/ethers.js/issues/687

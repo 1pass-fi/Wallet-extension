@@ -75,11 +75,6 @@ export default async (payload, metadata, next) => {
                   get(params[0], 'from')
                 )
 
-                if (isEmpty(credential)) {
-                  next({ error: { code: 4004, message: 'Account is not imported' } })
-                  return
-                }
-
                 const provider = await storage.setting.get.ethereumProvider()
                 const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(
                   provider,

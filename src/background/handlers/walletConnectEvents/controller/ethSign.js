@@ -71,11 +71,6 @@ export default async (payload, metadata, next) => {
               try {
                 const credential = await backgroundAccount.getCredentialByAddress(params[0])
 
-                if (isEmpty(credential)) {
-                  next({ error: { code: 4004, message: 'Account is not imported' } })
-                  return
-                }
-
                 const msgSig = ecsign(
                   Buffer.from(stripHexPrefix(message), 'hex'),
                   Buffer.from(stripHexPrefix(credential.key), 'hex')
