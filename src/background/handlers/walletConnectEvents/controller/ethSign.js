@@ -1,9 +1,9 @@
 import { concatSig } from '@metamask/eth-sig-util'
-import { getInternalError, getSdkError } from '@walletconnect/utils'
+import { getSdkError } from '@walletconnect/utils'
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 import { ecsign, stripHexPrefix } from 'ethereumjs-util'
 import { ethers } from 'ethers'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
 import { createWindow } from 'utils/extension'
@@ -69,10 +69,12 @@ export default async (payload, metadata, next) => {
             const approved = popupMessage.approved
             if (approved) {
               try {
-                const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
-                const credential = await backgroundAccount.getCredentialByAddress(
-                  defaultEthereumAddress
-                )
+                const credential = await backgroundAccount.getCredentialByAddress(params[0])
+
+                if (isEmpty(credential)) {
+                  next({ error: { code: 4004, message: 'Account is not imported' } })
+                  return
+                }
 
                 const msgSig = ecsign(
                   Buffer.from(stripHexPrefix(message), 'hex'),

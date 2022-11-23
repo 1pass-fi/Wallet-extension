@@ -1,7 +1,7 @@
 import { getInternalError, getSdkError } from '@walletconnect/utils'
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 import { ethers } from 'ethers'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
 import ethereumUtils from 'utils/ethereumUtils'
@@ -68,10 +68,12 @@ export default async (payload, metadata, next) => {
             const approved = popupMessage.approved
             if (approved) {
               try {
-                const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
-                const credential = await backgroundAccount.getCredentialByAddress(
-                  defaultEthereumAddress
-                )
+                const credential = await backgroundAccount.getCredentialByAddress(params[1])
+
+                if (isEmpty(credential)) {
+                  next({ error: { code: 4004, message: 'Account is not imported' } })
+                  return
+                }
 
                 const provider = await storage.setting.get.ethereumProvider()
                 const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(
