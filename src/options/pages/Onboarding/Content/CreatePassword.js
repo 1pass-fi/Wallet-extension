@@ -1,4 +1,4 @@
-import React, { useContext, useMemo,useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { URL } from 'constants/koiConstants'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
@@ -60,7 +60,7 @@ const CreatePassword = ({ step, setStep }) => {
   }
 
   return (
-    <div className="w-2/3 flex flex-col text-white self-start pl-23" style={{ width: '500px' }}>
+    <div className="w-2/5 flex flex-col text-white self-start pl-23">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="font-normal text-base leading-6 text-left">

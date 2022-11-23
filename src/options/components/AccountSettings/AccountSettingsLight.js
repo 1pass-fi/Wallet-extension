@@ -23,7 +23,7 @@ const AccountSettingsLight = React.forwardRef(({ className, toggleDropdownMenu }
     <div
       ref={ref}
       className={clsx(
-        'z-50 flex flex-col w-58.5 bg-trueGray-200 text-blue-600 px-2 justify-evenly font-semibold text-sm rounded shadow-md',
+        'z-50 flex flex-col w-58.5 xl: 2xl: 3xl:w-68.5 bg-trueGray-200 text-blue-600 px-2 justify-evenly font-semibold text-sm xl: 2xl: 3xl:text-base rounded shadow-md',
         className
       )}
     >
@@ -31,11 +31,11 @@ const AccountSettingsLight = React.forwardRef(({ className, toggleDropdownMenu }
         disabled ? (
           <div
             className={clsx(
-              'h-12 pl-2 text-trueGray-500 cursor-default flex items-center',
+              'h-12 xl: 2xl: 3xl:h-14 pl-2 text-trueGray-500 cursor-default flex items-center',
               idx !== 0 && 'border-t-2 border-trueGray-150 '
             )}
           >
-            <Icon className="w-6 mr-4 " />
+            <Icon className="w-6 xl: 2xl: 3xl:w-7 mr-4 xl: 2xl: 3xl:mr-6" />
             {text}
           </div>
         ) : (
@@ -44,12 +44,12 @@ const AccountSettingsLight = React.forwardRef(({ className, toggleDropdownMenu }
             to={path}
             onClick={() => toggleDropdownMenu()}
             className={clsx(
-              'h-12 pl-2 flex items-center hover:underline underline-offset-1',
+              'h-12 xl: 2xl: 3xl:h-14 pl-2 flex items-center hover:underline underline-offset-1',
               idx !== 0 && 'border-t-2 border-trueGray-150'
             )}
             activeClassName="underline underline-offset-1"
           >
-            <Icon className="w-6 mr-4" />
+            <Icon className="w-6 xl: 2xl: 3xl:w-7 mr-4 xl: 2xl: 3xl:mr-6" />
             {text}
           </NavLink>
         )

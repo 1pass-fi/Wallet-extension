@@ -23,13 +23,13 @@ const variants = {
 
 const sizes = {
   sm: {
-    wrapper: 'text-xs',
-    header: 'h-5 pl-1 pr-5.5',
+    wrapper: 'text-xs 2xl:text-sm 3xl:text-base',
+    header: 'h-5 xl:h-6 2xl:h-7 3xl:h-8 pl-1 pr-5.5',
     row: 'pl-1 min-h-5'
   },
   lg: {
-    wrapper: 'text-base',
-    header: 'h-8 pl-2 pr-9',
+    wrapper: 'text-base 2xl:text-lg 3xl:text-xl',
+    header: 'h-8 xl:h-9 2xl:h-10 3xl:h-12 pl-2 pr-9',
     row: 'pl-2 min-h-8'
   }
 }
@@ -126,7 +126,7 @@ const DropDown = ({
         <div
           className={clsx(
             'absolute top-0 rounded-r-finnie flex items-center justify-center cursor-pointer bg-white',
-            size === 'lg' ? 'w-8 h-8 -right-0.25' : 'w-5 h-5 right-0'
+            size === 'lg' ? 'w-8 xl:w-9 2xl:w-10 3xl:w-12 h-8 xl:h-9 2xl:h-10 3xl:h-12 -right-0.25' : 'w-5 xl:w-6 2xl:w-7 3xl:w-8 h-5 xl:h-6 2xl:h-7 3xl:h-8 right-0'
           )}
         >
           <DownIconBlue className="h-1.75 w-3.25" />

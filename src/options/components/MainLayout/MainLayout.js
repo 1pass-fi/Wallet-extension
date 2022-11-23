@@ -47,21 +47,21 @@ const MainLayout = ({ children }) => {
 
   return (
     <>
-      {renderWithoutLayoutPaths.every(path => {
+      {renderWithoutLayoutPaths.every((path) => {
         return !location?.pathname?.includes(path)
       }) ? (
           <div className="w-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
             <NavBar />
             <div className="w-full z-40 fixed top-16 h-18.75 bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800" />
-            <div className="w-full 2xl:w-5/6 mx-auto">
+            <div className="w-full xl:w-5/6 mx-auto">
               <div className="sticky top-16 z-40 bg-transparent text-white text-3xl tracking-wider flex items-center justify-items-start h-18.75 ml-4.25">
                 {title.toUpperCase()}
               </div>
               <div className="px-4.25">
-                <aside className="fixed z-51 w-61 pt-4">
+                <aside className="fixed z-51 w-61 3xl:w-65.5 pt-4">
                   <Sidebar currentPath={location.pathname} />
                 </aside>
-                <main className="ml-65.5 pb-5">{children}</main>
+                <main className="ml-72 xl:ml-77 2xl:ml-83 3xl:ml-90.5 pb-5">{children}</main>
               </div>
             </div>
           </div>

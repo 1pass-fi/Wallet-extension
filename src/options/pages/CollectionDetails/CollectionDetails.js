@@ -97,7 +97,7 @@ const CollectionDetails = () => {
   return (
     <>
       <div className="w-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
-        <div className="w-full 2xl:w-5/6 mx-auto">
+        <div className="w-full xl:w-5/6 mx-auto">
           <div className="px-4.25 pt-6">
             <aside className="fixed z-51 w-61">
               <div
@@ -121,7 +121,7 @@ const CollectionDetails = () => {
               </div>
               <Sidebar />
             </aside>
-            <main className="ml-65.5 pb-5">
+            <main className="ml-77 pb-5">
               <div className="w-full relative">
                 <div
                   className="text-white w-full h-25.5 text-sm leading-6 pr-3 mb-3"
@@ -132,7 +132,7 @@ const CollectionDetails = () => {
                   {get(collection, 'description')}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-5 gap-y-3.75 place-items-stretch">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-7 5xl:grid-cols-8 gap-x-5 gap-y-3.75 place-items-stretch">
                   {nftLoaded &&
                     collection?.collection?.map((nft, index) => <NftCard key={index} nft={nft} />)}
                 </div>
