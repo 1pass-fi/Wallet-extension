@@ -32,7 +32,7 @@ export class SettingMethod {
         defaultAddress = await storage.setting.get.activatedK2AccountAddress()
       }
 
-      if (network === NETWORK.ETHEREUM || network === NETWORK.SOLANA) {
+      if (network === NETWORK.ETHEREUM || network === NETWORK.SOLANA || network === NETWORK.K2) {
         return !isEmpty(connectedAddresses)
       }
 

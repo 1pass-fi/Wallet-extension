@@ -130,7 +130,7 @@ export default async (payload, tab, next) => {
                 const encodedMessage = get(payload, 'data')
 
                 const credentials = await backgroundAccount.getCredentialByAddress(
-                  connectedAddresses
+                  connectedAddresses[0]
                 )
                 const k2Tool = new K2Tool(credentials)
                 const keypair = k2Tool.keypair
