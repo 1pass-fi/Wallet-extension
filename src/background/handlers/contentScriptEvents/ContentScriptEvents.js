@@ -82,6 +82,7 @@ export default class ContentScriptEvents extends EventEmitter {
     const defaultK2Address = await storage.setting.get.activatedK2AccountAddress()
 
     let activatedAddress
+
     switch (network) {
       case NETWORK.ARWEAVE: 
         activatedAddress = defaultArweaveAddress
@@ -99,7 +100,11 @@ export default class ContentScriptEvents extends EventEmitter {
     const siteConnectedAddresses = (await storage.setting.get.siteConnectedAddresses())[origin]
     let connectedAddresses = []
     if (hadPermission) {
-      connectedAddresses = [activatedAddress]
+      if (network === NETWORK.ETHEREUM) {
+        connectedAddresses = siteConnectedAddresses.ethereum
+      } else {
+        connectedAddresses = [activatedAddress]
+      }
     }
 
     return { 
