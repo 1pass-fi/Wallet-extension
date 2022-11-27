@@ -43,7 +43,7 @@ const getTransactionDataFromMessage = async (transactionMessage) => {
       }
     }
 
-  
+
   } catch (err) {
     console.error(err)
   }
@@ -52,7 +52,7 @@ const getTransactionDataFromMessage = async (transactionMessage) => {
 export default async (payload, tab, next) => {
   try {
     const params = get(payload, 'data.params')
-    const { favicon, origin, hadPermission, hasPendingRequest } = tab
+    const { favicon, origin, hadPermission, hasPendingRequest, connectedAddresses } = tab
 
     if (!hadPermission) {
       return next({error: { code: 4100,  data: 'No permissions' }})
@@ -63,12 +63,6 @@ export default async (payload, tab, next) => {
       return
     }
     
-    const defaultSolanaAddress = await storage.setting.get.activatedSolanaAccountAddress()
-
-    const credential = await backgroundAccount.getCredentialByAddress(defaultSolanaAddress)
-
-    const key = credential.key
-
     /* Show popup for signing transaction */
     const screenWidth = screen.availWidth
     const screenHeight = screen.availHeight
@@ -128,9 +122,7 @@ export default async (payload, tab, next) => {
                 }
                 try {
                   /* Send ETH transaction */
-                  const defaultSolanaAddress = await storage.setting.get.activatedSolanaAccountAddress()
-
-                  const credential = await backgroundAccount.getCredentialByAddress(defaultSolanaAddress)
+                  const credential = await backgroundAccount.getCredentialByAddress(connectedAddresses[0])
 
                   const transactionMessage = Message.from(bs58.decode(payload.data))
                   const transaction = Transaction.populate(transactionMessage)

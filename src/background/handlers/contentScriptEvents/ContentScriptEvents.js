@@ -102,6 +102,8 @@ export default class ContentScriptEvents extends EventEmitter {
     if (hadPermission) {
       if (network === NETWORK.ETHEREUM) {
         connectedAddresses = siteConnectedAddresses.ethereum
+      } else if (network === NETWORK.SOLANA) {
+        connectedAddresses = siteConnectedAddresses.solana
       } else {
         connectedAddresses = [activatedAddress]
       }

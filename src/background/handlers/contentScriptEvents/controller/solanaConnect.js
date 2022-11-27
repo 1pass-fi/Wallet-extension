@@ -88,11 +88,10 @@ export default async (payload, tab, next) => {
                   let siteConnectedAddresses = await storage.setting.get.siteConnectedAddresses()
   
                   if (!siteConnectedAddresses[origin]) {
-                    siteConnectedAddresses[origin] = { ethereum: [], arweave: [], solana: [] }
+                    siteConnectedAddresses[origin] = { ethereum: [], arweave: [], solana: [], k2: [] }
                   }
                   siteConnectedAddresses[origin].solana = checkedAddresses 
                   await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
-                  await storage.setting.set.activatedSolanaAccountAddress(checkedAddresses[0])
 
                   chrome.runtime.sendMessage({
                     requestId,
