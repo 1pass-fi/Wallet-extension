@@ -42,17 +42,6 @@ const Gallery = () => {
     }
   }
 
-  const testWalletConnect = async () => {
-    await walletConnect.init()
-    walletConnect.signClient.on('session_proposal', async (event) => {
-      await walletConnect.approve(event)
-      await request.wallet.reloadWalletConnect()
-    })
-    walletConnect.pair(uri)
-  }
-
-  const [uri, setUri] = useState('')
-
   return (
     <div id="gallery" className="w-full flex justify-center items-center" onScroll={handleScroll}>
       <div
@@ -61,8 +50,6 @@ const Gallery = () => {
           'grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-7 5xl:grid-cols-8'
         )}
       >
-        <input value={uri} onChange={(e) => setUri(e.target.value)} className='mt-5'/>
-        <button onClick={testWalletConnect} className='bg-white'>Connect</button>
         {!isEmpty(displayingNfts) ? (
           displayingNfts.map((nft) => <NFTCard nft={nft} key={nft.txId} />)
         ) : (

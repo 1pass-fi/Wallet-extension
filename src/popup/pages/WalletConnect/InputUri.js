@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { setIsLoading } from 'actions/loading'
+import BackIcon from 'img/wallet-connect/back-icon.svg'
 import GlobeIcon from 'img/wallet-connect/globe-big-icon.svg'
 import walletConnect from 'services/walletConnect'
 
 const InputUri = ({ setPage, setProposal }) => {
+  const history = useHistory()
+
   const dispatch = useDispatch()
   const [uri, setUri] = useState('')
 
@@ -19,8 +23,13 @@ const InputUri = ({ setPage, setProposal }) => {
     setPage('APPROVAL')
   }
 
+  const handleGoBack = () => {
+    history.push('/')
+  }
+
   return (
     <div className="flex flex-col justify-center items-center w-full h-full">
+      <div onClick={handleGoBack} className='fixed top-16 left-3 cursor-pointer'><BackIcon /></div>
       <GlobeIcon />
       <div className=' mt-5 mb-7 text-indigo text-base font-semibold'>Wallet Connect</div>
       <div>
