@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setIsLoading } from 'actions/loading'
 import GlobeIcon from 'img/wallet-connect/globe-big-icon.svg'
-import { popupBackgroundRequest as request } from 'services/request/popup'
 import walletConnect from 'services/walletConnect'
 
 const InputUri = ({ setPage, setProposal }) => {
+  const dispatch = useDispatch()
   const [uri, setUri] = useState('')
 
   const handleConnect = async () => {
+    dispatch(setIsLoading(true))
     await walletConnect.init()
-    walletConnect.signClient.on('session_proposal', async (proposal) => {
+    walletConnect.signClient.on('session_proposal', (proposal) => {
       setProposal(proposal)
     })
     await walletConnect.pair(uri)
+    dispatch(setIsLoading(false))
     setPage('APPROVAL')
   }
 

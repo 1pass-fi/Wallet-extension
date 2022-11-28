@@ -69,6 +69,8 @@ class WalletConnect {
         relayProtocol: relays[0].protocol,
         namespaces
       }
+
+      console.log('payload', payload)
     
       const { acknowledged } = await this.signClient.approve(payload)
       await acknowledged()
@@ -118,12 +120,23 @@ class WalletConnect {
       walletConnectEvents.sendMessage(endpoint, payload)
     }
 
-    await this.init()
-    const pairings = walletConnect.signClient.core.pairing.getPairings()
-    console.log('parings', pairings)
+    setTimeout(async () => {
+      await this.init()
+      const pairings = walletConnect.signClient.core.pairing.getPairings()
+  
+      this.signClient.on('session_proposal', sessionProposalCb)
+      this.signClient.on('session_request', sessionRequestCb)
+    }, 500)
+  }
 
-    this.signClient.on('session_proposal', sessionProposalCb)
-    this.signClient.on('session_request', sessionRequestCb)
+  async reject(proposal) {
+    this.signClient.reject({
+      id: proposal?.id,
+      reason: {
+        code: 1,
+        message: 'rejected'
+      }
+    })
   }
 }
 

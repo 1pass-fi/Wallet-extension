@@ -15,7 +15,6 @@ import walletConnect from 'services/walletConnect'
 
 const SelectAccountItem = ({ selectedAccounts, address, accountName, setSelectedAccounts }) => {
   const selected = useMemo(() => {
-    console.log('selectedAccounts', selectedAccounts)
     return selectedAccounts.includes(address)
   }, [selectedAccounts])
 
@@ -48,7 +47,6 @@ const Approval = ({ proposal }) => {
   useEffect(() => {
     const loadAccounts = async () => {
       let accounts = await popupAccount.getAllMetadata(TYPE.ETHEREUM)
-      console.log('accounts', accounts)
 
       accounts = accounts.map(account => ({
         address: account?.address,
@@ -77,13 +75,21 @@ const Approval = ({ proposal }) => {
       dispatch(setIsLoading(true))
       if (isEmpty(selectedAccounts)) throw new Error('No selected account')
       await walletConnect.approve(proposal, { eip155: selectedAccounts })
-      setTimeout(() => {
-        request.wallet.reloadWalletConnect()
-      }, 3000)
+      await request.wallet.reloadWalletConnect()
       dispatch(setIsLoading(false))
       history.push('/')
     } catch (err) {
       dispatch(setIsLoading(false))
+      dispatch(setError(err?.message))
+      console.error(err)
+    }
+  }
+
+  const handleReject = async () => {
+    try {
+      await walletConnect.reject(proposal)
+      history.push('/')
+    } catch (err) {
       dispatch(setError(err?.message))
       console.error(err)
     }
@@ -127,9 +133,10 @@ const Approval = ({ proposal }) => {
           }
         </div>
       </div>
+
       {/* BUTTON */}
       <div style={{height:'42px'}} className='flex justify-between fixed bottom-16 bg-white'>
-        <button style={{width:'159px',height:'38px',border:'1.5px solid #373765'}} className='bg-white text-blue-800 text-base'>Cancel</button>
+        <button onClick={handleReject} style={{width:'159px',height:'38px',border:'1.5px solid #373765'}} className='bg-white text-blue-800 text-base'>Cancel</button>
         <button onClick={handleApprove} style={{width:'159px',height:'38px'}} className='bg-blue-800 text-white text-base ml-13'>Approve</button>
       </div>
     </div>
