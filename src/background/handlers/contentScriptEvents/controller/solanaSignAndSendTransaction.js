@@ -1,5 +1,5 @@
 import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
-import { clusterApiUrl, Connection, Message, PublicKey,sendAndConfirmTransaction, Transaction } from '@solana/web3.js'
+import { Connection, Message, PublicKey,sendAndConfirmTransaction, Transaction } from '@solana/web3.js'
 import bs58, { decode } from 'bs58'
 // Constants
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
@@ -7,6 +7,7 @@ import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import { SolanaTool } from 'services/solana'
 import storage from 'services/storage'
+import clusterApiUrl from 'utils/clusterApiUrl'
 // Utils
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
