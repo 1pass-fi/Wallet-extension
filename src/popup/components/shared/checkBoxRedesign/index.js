@@ -34,7 +34,7 @@ const Checkbox = ({
       className={`checkbox-container ${className}`}
       style={isNewDesign ? { alignItems: 'flex-start' } : { alignItems: 'center' }}
     >
-      <div className="checkbox-input">
+      <div className="checkbox-input flex justify-center items-center">
         <input
           className={clsx('checkbox-hidden', isDisabled ? 'cursor-not-allowed' : 'cursor-pointer')}
           type="checkbox"
@@ -46,7 +46,7 @@ const Checkbox = ({
           id={id}
         ></input>
         <div
-          className="checkbox-styled"
+          className="checkbox-styled flex justify-center items-center"
           style={{ background: selected ? '#4E4E8D' : '#FFFFFF' }}
         >
           <div className="check-mark-icon" style={{ visibility: selected ? 'visible' : 'hidden' }}>
