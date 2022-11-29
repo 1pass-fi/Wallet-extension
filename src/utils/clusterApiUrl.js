@@ -1,12 +1,12 @@
 const endpoint = {
   http: {
     devnet: 'http://api.devnet.solana.com',
-    testnet: 'http://k2-testnet.koii.live',
+    testnet: 'http://api.testnet.solana.com',
     'mainnet-beta': 'http://solana-mainnet.g.alchemy.com/v2/Ofyia5hQc-c-yfWwI4C9Qa0UcJ5lewDy'
   },
   https: {
     devnet: 'https://api.devnet.solana.com',
-    testnet: 'https://k2-testnet.koii.live',
+    testnet: 'https://api.testnet.solana.com',
     'mainnet-beta': 'https://solana-mainnet.g.alchemy.com/v2/Ofyia5hQc-c-yfWwI4C9Qa0UcJ5lewDy'
   }
 }
