@@ -1,5 +1,6 @@
 // Constants
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
+import { ethers } from 'ethers'
 import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
@@ -23,7 +24,7 @@ export default async (payload, tab, next) => {
       return
     }
     
-    const credential = await backgroundAccount.getCredentialByAddress(connectedAddresses[0])
+    const credential = await backgroundAccount.getCredentialByAddress(ethers.utils.getAddress(connectedAddresses[0]))
     const key = credential.key
 
     /* Show popup for signing transaction */

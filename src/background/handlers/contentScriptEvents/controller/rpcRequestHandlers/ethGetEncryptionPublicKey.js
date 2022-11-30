@@ -1,6 +1,7 @@
 import { getEncryptionPublicKey } from '@metamask/eth-sig-util'
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 import { stripHexPrefix } from 'ethereumjs-util'
+import { ethers } from 'ethers'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
 import { createWindow } from 'utils/extension'
@@ -57,7 +58,7 @@ export default async (payload, tab, next) => {
             if (approved) {
               try {
                 const credential = await backgroundAccount.getCredentialByAddress(
-                  connectedAddresses[0]
+                  ethers.utils.getAddress(connectedAddresses[0])
                 )
 
                 const privateKey = stripHexPrefix(credential.key)
