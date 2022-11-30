@@ -1,5 +1,6 @@
 import { getInternalError, getSdkError } from '@walletconnect/utils'
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
+import { ethers } from 'ethers'
 import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
@@ -72,7 +73,7 @@ export default async (payload, metadata, next) => {
               try {
                 /* Send ETH transaction */
                 const credential = await backgroundAccount.getCredentialByAddress(
-                  get(params[0], 'from')
+                  ethers.utils.getAddress(get(params[0], 'from'))
                 )
 
                 const provider = await storage.setting.get.ethereumProvider()
@@ -83,6 +84,11 @@ export default async (payload, metadata, next) => {
 
                 const signer = wallet.connect(ethersProvider)
                 const transactionPayload = params[0]
+
+                if (transactionPayload.hasOwnProperty('gas')) {
+                  transactionPayload.gasLimit = transactionPayload.gas
+                  delete transactionPayload.gas
+                }
 
                 const rawTransaction = await signer.signTransaction(transactionPayload)
 

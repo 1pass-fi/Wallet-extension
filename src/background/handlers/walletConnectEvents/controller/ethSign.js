@@ -69,7 +69,7 @@ export default async (payload, metadata, next) => {
             const approved = popupMessage.approved
             if (approved) {
               try {
-                const credential = await backgroundAccount.getCredentialByAddress(params[0])
+                const credential = await backgroundAccount.getCredentialByAddress(ethers.utils.getAddress(params[0]))
 
                 const msgSig = ecsign(
                   Buffer.from(stripHexPrefix(message), 'hex'),

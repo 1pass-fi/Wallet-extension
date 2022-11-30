@@ -68,7 +68,7 @@ export default async (payload, metadata, next) => {
             const approved = popupMessage.approved
             if (approved) {
               try {
-                const credential = await backgroundAccount.getCredentialByAddress(params[1])
+                const credential = await backgroundAccount.getCredentialByAddress(ethers.utils.getAddress(params[1]))
 
                 const provider = await storage.setting.get.ethereumProvider()
                 const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(
