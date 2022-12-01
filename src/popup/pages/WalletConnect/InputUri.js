@@ -4,7 +4,14 @@ import { useHistory } from 'react-router-dom'
 import { setIsLoading } from 'actions/loading'
 import BackIcon from 'img/wallet-connect/back-icon.svg'
 import GlobeIcon from 'img/wallet-connect/globe-big-icon.svg'
+import get from 'lodash/get'
+import { setError } from 'popup/actions/error'
 import walletConnect from 'services/walletConnect'
+
+const ERROR_MESSAGE = {
+  INVALID_PROPOSAL: 'Invalid request',
+  WENT_WRONG: 'Something went wrong'
+}
 
 const InputUri = ({ setPage, setProposal }) => {
   const history = useHistory()
@@ -12,15 +19,42 @@ const InputUri = ({ setPage, setProposal }) => {
   const dispatch = useDispatch()
   const [uri, setUri] = useState('')
 
+  const validateProposal = (proposal) => {
+    try {
+      const validChains = ['eip155:1', 'eip155:5']
+  
+      const namespaces = (get(proposal, 'params.requiredNamespaces'))
+      let chains = []
+      Object.keys(namespaces).forEach(chainName => {
+        const _chains = namespaces[chainName]?.chains || []
+        chains = [...chains, ..._chains]
+      })
+
+      return chains.every(chain => validChains.includes(chain)) && chains?.length === 1
+    } catch (err) {
+      console.error(err)
+      return false
+    }
+  }
+
   const handleConnect = async () => {
-    dispatch(setIsLoading(true))
-    await walletConnect.init()
-    walletConnect.signClient.on('session_proposal', (proposal) => {
-      setProposal(proposal)
-    })
-    await walletConnect.pair(uri)
+    try {
+      dispatch(setIsLoading(true))
+      await walletConnect.init()
+      walletConnect.signClient.on('session_proposal', (proposal) => {
+        setProposal(proposal)
+        const isValidProposal = validateProposal(proposal)
+        if (isValidProposal) {
+          setPage('APPROVAL')
+        } else {
+          dispatch(setError(ERROR_MESSAGE.INVALID_PROPOSAL))
+        }
+      })
+      await walletConnect.pair(uri)
+    } catch (err) {
+      dispatch(setError(err?.message))      
+    }
     dispatch(setIsLoading(false))
-    setPage('APPROVAL')
   }
 
   const handleGoBack = () => {

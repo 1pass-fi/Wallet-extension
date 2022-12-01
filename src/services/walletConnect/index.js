@@ -126,7 +126,7 @@ class WalletConnect {
   
       this.signClient.on('session_proposal', sessionProposalCb)
       this.signClient.on('session_request', sessionRequestCb)
-    }, 500)
+    }, 3000)
   }
 
   async reject(proposal) {
