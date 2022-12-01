@@ -21,7 +21,7 @@ const InputUri = ({ setPage, setProposal }) => {
 
   const validateProposal = (proposal) => {
     try {
-      const validChains = ['eip155:1', 'eip155:5']
+      const validChains = ['eip155:1', 'eip155:5', 'solana:8E9rvCKLFQia2Y35HXjjpWzj8weVo44K', 'solana:4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZ']
   
       const namespaces = (get(proposal, 'params.requiredNamespaces'))
       let chains = []
