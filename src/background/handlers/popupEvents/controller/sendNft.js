@@ -3,6 +3,7 @@ import helpers from 'background/helpers'
 import { TYPE } from 'constants/accountConstants'
 // Constants
 import { NETWORK, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
+import { ethers } from 'ethers'
 import { find } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
@@ -27,7 +28,7 @@ export default async (payload, next) => {
         network = await storage.setting.get.solanaProvider()
         break
       case TYPE.ETHEREUM:
-        txId = await account.method.transferNFT(nftId, recipientAddress)
+        txId = await account.method.transferNFT(nftId, ethers.utils.getAddress(recipientAddress))
         network = await storage.setting.get.ethereumProvider()
         break
     }

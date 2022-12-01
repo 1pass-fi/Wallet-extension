@@ -1,5 +1,6 @@
 // Constants
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
+import { ethers } from 'ethers'
 import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
@@ -12,7 +13,7 @@ import Web3 from 'web3'
 export default async (payload, tab, next) => {
   try {
     const params = get(payload, 'data.params')
-    const { favicon, origin, hadPermission, hasPendingRequest } = tab
+    const { favicon, origin, hadPermission, hasPendingRequest, connectedAddresses } = tab
 
     if (!hadPermission) {
       return next({error: { code: 4100,  data: 'No permissions' }})
@@ -23,10 +24,7 @@ export default async (payload, tab, next) => {
       return
     }
     
-    const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
-
-    const credential = await backgroundAccount.getCredentialByAddress(defaultEthereumAddress)
-
+    const credential = await backgroundAccount.getCredentialByAddress(ethers.utils.getAddress(connectedAddresses[0]))
     const key = credential.key
 
     /* Show popup for signing transaction */

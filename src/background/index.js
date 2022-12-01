@@ -1,14 +1,16 @@
 import '@babel/polyfill'
 
 import { IMPORTED } from 'constants/accountConstants'
-// Constants
-import { OS, PATH,PORTS } from 'constants/koiConstants'
+import { OS, PATH, PORTS } from 'constants/koiConstants'
+import isEmpty from 'lodash/isEmpty'
 import storage from 'services/storage'
+import walletConnect from 'services/walletConnect'
 import { getChromeStorage } from 'utils'
+import walletConnectUtils from 'utils/walletConnect'
 
 import contentScriptEvents from './handlers/contentScriptEvents'
-// emitter
 import popupEvents from './handlers/popupEvents'
+import walletConnectEvents from './handlers/walletConnectEvents'
 import cache from './cache'
 import streamer from './streamer'
 
@@ -59,3 +61,34 @@ chrome.runtime.onInstalled.addListener(async function () {
 })
 
 streamer()
+
+const initWalletConnect = async () => {
+  try {
+    await walletConnect.init()
+    const pairings = walletConnect.signClient.core.pairing.getPairings()
+    console.log('parings', pairings)
+
+    walletConnect.signClient.on('session_proposal', (event) => {
+      walletConnect.approve(event)
+    })
+
+    walletConnect.signClient.on('session_request', async (event) => {
+      console.log('session_request event', event)
+
+      const endpoint = event.params.request.method
+      const payload = { id: event.id, topic: event.topic, params: event.params.request.params }
+
+      // validate request
+      const validationError = await walletConnectUtils.validateSessionRequest(event.params)
+      if (!isEmpty(validationError)) {
+        walletConnect.response({ id: event.id, topic: event.topic, result: validationError })
+      } else {
+        walletConnectEvents.sendMessage(endpoint, payload)
+      }
+    })
+  } catch (err) {
+    console.error('Init walletconnect error:', err)
+  }
+}
+
+initWalletConnect()

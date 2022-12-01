@@ -125,7 +125,7 @@ export default async (payload, tab, next) => {
       hadPermission, 
       hasPendingRequest,
       activatedAddress,
-      connectedAddresses 
+      connectedAddresses
     } = tab
 
     if (!hadPermission) {
@@ -207,7 +207,7 @@ export default async (payload, tab, next) => {
                   return
                 }
                 try {
-                  const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses)
+                  const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses[0])
                   const solTool = new SolanaTool(credentials)
                   const keypair = solTool.keypair
                   const signatures = await Promise.all(messages.map(async (message) => {

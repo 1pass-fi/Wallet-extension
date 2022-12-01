@@ -92,7 +92,6 @@ export default async (payload, tab, next) => {
                   }
                   siteConnectedAddresses[origin].k2 = checkedAddresses 
                   await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
-                  await storage.setting.set.activatedK2AccountAddress(checkedAddresses[0])
 
                   chrome.runtime.sendMessage({
                     requestId,

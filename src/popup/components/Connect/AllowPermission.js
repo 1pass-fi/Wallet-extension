@@ -16,7 +16,29 @@ const AllowPermission = ({ handleOnClick }) => {
           isDisabled={true}
           greenBackround={false}
           onChange={(e) => {}}
-          label="View the addresses of your permitted accounts (required)"
+          label="View the addresses of your permitted accounts"
+          isNewDesign={true}
+        />
+      </div>
+      <div className="flex px-9.75 mt-2">
+        <Checkbox
+          className="check-allow"
+          defaultChecked={true}
+          isDisabled={true}
+          greenBackround={false}
+          onChange={(e) => {}}
+          label="See account balance"
+          isNewDesign={true}
+        />
+      </div>
+      <div className="flex px-9.75 mt-2">
+        <Checkbox
+          className="check-allow"
+          defaultChecked={true}
+          isDisabled={true}
+          greenBackround={false}
+          onChange={(e) => {}}
+          label="Suggest transactions to approve"
           isNewDesign={true}
         />
       </div>

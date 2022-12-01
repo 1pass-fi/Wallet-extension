@@ -92,7 +92,6 @@ export default async (payload, tab, next) => {
                   }
                   siteConnectedAddresses[origin].ethereum = checkedAddresses 
                   await storage.setting.set.siteConnectedAddresses(siteConnectedAddresses)
-                  await storage.setting.set.activatedEthereumAccountAddress(checkedAddresses[0])
 
                   chrome.runtime.sendMessage({
                     requestId,

@@ -1,12 +1,13 @@
 import { decrypt } from '@metamask/eth-sig-util'
 import { stripHexPrefix } from 'ethereumjs-util'
+import { ethers } from 'ethers'
 import { get } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
 
 export default async (payload, tab, next) => {
   try {
-    const { hadPermission } = tab
+    const { hadPermission, connectedAddresses } = tab
     if (!hadPermission) {
       return next({ error: { code: 4100, data: 'No permissions' } })
     }
@@ -18,9 +19,7 @@ export default async (payload, tab, next) => {
     const buff = Buffer.from(stripped, 'hex')
     const encryptedData = JSON.parse(buff.toString('utf8'))
 
-    const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
-    const credential = await backgroundAccount.getCredentialByAddress(defaultEthereumAddress)
-
+    const credential = await backgroundAccount.getCredentialByAddress(ethers.utils.getAddress(connectedAddresses[0]))
     const privateKey = stripHexPrefix(credential.key)
 
     const decryptedMessage = decrypt({ privateKey, encryptedData })

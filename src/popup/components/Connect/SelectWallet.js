@@ -58,7 +58,6 @@ const SelectWallet = ({
               {account.address === checkedAddress && (
                 <span className="font-normal text-xs leading-4 tracking-finnieSpacing-wide text-indigo">
                   {' '}
-                  (Default)
                 </span>
               )}
             </div>

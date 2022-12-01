@@ -1,6 +1,7 @@
 import { signTypedData } from '@metamask/eth-sig-util'
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 import { stripHexPrefix } from 'ethereumjs-util'
+import { ethers } from 'ethers'
 import { get } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
@@ -9,7 +10,7 @@ import { v4 as uuid } from 'uuid'
 
 export default async (payload, tab, next) => {
   try {
-    const { favicon, origin, hadPermission } = tab
+    const { favicon, origin, hadPermission, connectedAddresses } = tab
     if (!hadPermission) {
       return next({ error: { code: 4100, data: 'No permissions' } })
     }
@@ -63,9 +64,8 @@ export default async (payload, tab, next) => {
             const approved = popupMessage.approved
             if (approved) {
               try {
-                const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
                 const credential = await backgroundAccount.getCredentialByAddress(
-                  defaultEthereumAddress
+                  ethers.utils.getAddress(connectedAddresses[0])
                 )
 
                 const key = stripHexPrefix(credential.key)

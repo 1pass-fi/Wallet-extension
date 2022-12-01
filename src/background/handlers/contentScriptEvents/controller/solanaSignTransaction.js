@@ -127,7 +127,7 @@ export default async (payload, tab, next) => {
                   /* Sign transaction */
                   const encodedMessage = get(payload, 'data')
 
-                  const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses)
+                  const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses[0])
                   const solTool = new SolanaTool(credentials)
                   const keypair = solTool.keypair
                   
