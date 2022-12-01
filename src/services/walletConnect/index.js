@@ -18,125 +18,152 @@ class WalletConnect {
   }
 
   async init() {
-    this.signClient = await SignClient.init({
-      projectId: PROJECT_ID,
-      metadata: PROJECT_METADATA
-    })
+    try {
+      this.signClient = await SignClient.init({
+        projectId: PROJECT_ID,
+        metadata: PROJECT_METADATA
+      })
+    } catch (err) {
+      console.error('walletconnect-init', err)
+    }
   }
 
   async pair(uri) {
-    await this.signClient.core.pairing.pair({ uri })
+    try {
+      await this.signClient.core.pairing.pair({ uri })
+    } catch (err) {
+      console.error('walletconnect-pair', err)
+    }
   }
 
   async activate(topic) {
-    await this.signClient.core.pairing.activate({ topic })
+    try {
+      await this.signClient.core.pairing.activate({ topic })
+    } catch (err) {
+      console.error('walletconnect-activate', err)
+    }
   }
 
-  async reject(proposal, reason) {
-    if (proposal) {
-      const { id } = proposal
-      await this.signClient.reject({ id, reason })
+  async reject(proposal, reason = {
+    code: 1,
+    message: 'rejected'
+  }) {
+    try {
+      if (proposal) {
+        const { id } = proposal
+        await this.signClient.reject({ id, reason })
+      }
+    } catch (err) {
+      console.error('walletconnect-reject', err)
     }
   }
 
   async approve(proposal, selectedAccounts) {
-    const { id, params } = proposal
-    const { proposer, requiredNamespaces, relays } = params
-
-    if (!walletConnectUtils.validateSupportedChain(requiredNamespaces)) {
-      await this.reject(proposal, getSdkError('UNSUPPORTED_CHAINS'))
-      console.log('Reject proposal with reason: ', getSdkError('UNSUPPORTED_CHAINS'))
-      return
-    }
-
-    if (proposal) {
-      const namespaces = {}
-      let accounts = []
-      Object.keys(requiredNamespaces).forEach((key) => {
-        requiredNamespaces[key].chains.map(chain => {
-          selectedAccounts[key].map(acc => accounts.push(`${chain}:${acc}`))
-        })
-
-        namespaces[key] = {
-          accounts,
-          methods: requiredNamespaces[key].methods,
-          events: requiredNamespaces[key].events
-        }
-      })
+    try {
+      const { id, params } = proposal
+      const { proposer, requiredNamespaces, relays } = params
   
-      const payload = {
-        id,
-        relayProtocol: relays[0].protocol,
-        namespaces
+      if (!walletConnectUtils.validateSupportedChain(requiredNamespaces)) {
+        await this.reject(proposal, getSdkError('UNSUPPORTED_CHAINS'))
+        console.log('Reject proposal with reason: ', getSdkError('UNSUPPORTED_CHAINS'))
+        return
       }
-
-      console.log('payload', payload)
+  
+      if (proposal) {
+        const namespaces = {}
+        let accounts = []
+        Object.keys(requiredNamespaces).forEach((key) => {
+          requiredNamespaces[key].chains.map(chain => {
+            selectedAccounts[key].map(acc => accounts.push(`${chain}:${acc}`))
+          })
+  
+          namespaces[key] = {
+            accounts,
+            methods: requiredNamespaces[key].methods,
+            events: requiredNamespaces[key].events
+          }
+        })
     
-      const { acknowledged } = await this.signClient.approve(payload)
-      await acknowledged()
+        const payload = {
+          id,
+          relayProtocol: relays[0].protocol,
+          namespaces
+        }
+  
+        console.log('payload', payload)
+      
+        const { acknowledged } = await this.signClient.approve(payload)
+        await acknowledged()
+      }
+    } catch (err) {
+      console.error('walletconnect-approve', err)
+      return err
     }
   }
 
   async disconnect(topic) {
-    await this.signClient.core.pairing.disconnect({ topic })
+    try {
+      await this.signClient.core.pairing.disconnect({ topic })
+    } catch (err) {
+      console.error('walletconnect-disconnect', err)
+    }
   }
 
   async removeAllSession() {
-    await this.init()
-    const pairings = this.signClient.core.pairing.getPairings()
-    await Promise.all(pairings.map(async (pairing) => {
-      const topic = get(pairing, 'topic')
-      if (topic) {
-        await this.signClient.core.pairing.disconnect({ topic })
-      }
-    }))
+    try {
+      await this.init()
+      const pairings = this.signClient.core.pairing.getPairings()
+      await Promise.all(pairings.map(async (pairing) => {
+        const topic = get(pairing, 'topic')
+        if (topic) {
+          await this.signClient.core.pairing.disconnect({ topic })
+        }
+      }))
+    } catch (err) {
+      console.error('removeAllSession', err)
+    }
   }
 
   async response({ id, topic, result }) {
-    const responsePayload = {
-      id: id,
-      jsonrpc: '2.0'
+    try {
+      const responsePayload = {
+        id: id,
+        jsonrpc: '2.0'
+      }
+  
+      if (get(result, 'error')) responsePayload.error = result.error
+      if (get(result, 'data')) responsePayload.result = result.data
+  
+      await this.signClient.respond({ topic, response: responsePayload })
+    } catch (err) {
+      console.error('walletconnect-response', err)
     }
-
-    if (get(result, 'error')) responsePayload.error = result.error
-    if (get(result, 'data')) responsePayload.result = result.data
-
-    console.log('topic', topic)
-    console.log('responsePayload', responsePayload)
-
-    await this.signClient.respond({ topic, response: responsePayload })
   }
 
   async reload() {
-    const sessionProposalCb = (event) => {
-      this.approve(event)
-    }
-
-    const sessionRequestCb = (event) => {
-      console.log('session_request event', event)
-
-      const endpoint = event.params.request.method
-      const payload = { id: event.id, topic: event.topic, params: event.params.request.params }
-      walletConnectEvents.sendMessage(endpoint, payload)
-    }
-
-    setTimeout(async () => {
-      await this.init()
-      const pairings = walletConnect.signClient.core.pairing.getPairings()
-  
-      this.signClient.on('session_proposal', sessionProposalCb)
-      this.signClient.on('session_request', sessionRequestCb)
-    }, 3000)
-  }
-
-  async reject(proposal) {
-    this.signClient.reject({
-      id: proposal?.id,
-      reason: {
-        code: 1,
-        message: 'rejected'
+    try {
+      const sessionProposalCb = (event) => {
+        this.approve(event)
       }
-    })
+  
+      const sessionRequestCb = (event) => {
+        console.log('session_request event', event)
+  
+        const endpoint = event.params.request.method
+        const payload = { id: event.id, topic: event.topic, params: event.params.request.params }
+        walletConnectEvents.sendMessage(endpoint, payload)
+      }
+  
+      setTimeout(async () => {
+        await this.init()
+        const pairings = walletConnect.signClient.core.pairing.getPairings()
+    
+        this.signClient.on('session_proposal', sessionProposalCb)
+        this.signClient.on('session_request', sessionRequestCb)
+      }, 3000)
+    } catch (err) {
+      console.error('walletconnect-reload', err)
+    }
   }
 }
 

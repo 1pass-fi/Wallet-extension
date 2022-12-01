@@ -7,8 +7,6 @@ import CreateIcon from 'img/v2/create-icon.svg'
 import isEmpty from 'lodash/isEmpty'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
 import NFTCard from 'options/components/NFTCard'
-import { popupBackgroundRequest as request } from 'services/request/popup'
-import walletConnect from 'services/walletConnect'
 
 import './index.css'
 

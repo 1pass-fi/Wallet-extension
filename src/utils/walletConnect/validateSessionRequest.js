@@ -56,6 +56,8 @@ const validateSessionRequest = async (params) => {
     return null
   } catch (error) {
     console.log('Failed to validate session request: ', error)
+    return { error: { code: 4001, message: error.message}}
+
   }
 }
 
