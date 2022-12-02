@@ -20,8 +20,9 @@ const useMethod = ({
   rawValue,
   setTxId,
   setShowReceipt,
-  getFeeInterval,
-  totalFee
+  maxFeePerGas,
+  maxPriorityFeePerGas,
+  maxFee
 }) => {
   const handleSendEth = async () => {
     let qty = get(transactionPayload, 'value')
@@ -33,7 +34,9 @@ const useMethod = ({
       qty,
       target,
       address: source,
-      token: 'ETH'
+      token: 'ETH',
+      maxPriorityFeePerGas,
+      maxFeePerGas
     })
   }
 
@@ -42,17 +45,19 @@ const useMethod = ({
       sender: transactionPayload.from,
       customTokenRecipient,
       contractAddress,
-      rawValue
+      rawValue,
+      maxPriorityFeePerGas,
+      maxFeePerGas
     })
   }
 
   const onSubmitTransaction = async () => {
     try {
-      let totalOriginExpense
+      let totalOriginTokenExpense
       if (transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) {
-        totalOriginExpense = value + totalFee
+        totalOriginTokenExpense = value + maxFee
       } else {
-        totalOriginExpense = totalFee
+        totalOriginTokenExpense = maxFee
       }
 
       const senderAddress = get(transactionPayload, 'from')
@@ -60,7 +65,7 @@ const useMethod = ({
       const account = await popupAccount.getAccount({ address: senderAddress })
       const balance = await account.get.balance()
 
-      if (balance < totalOriginExpense) {
+      if (balance < totalOriginTokenExpense) {
         setError('Not enough tokens')
         return
       }
@@ -76,9 +81,14 @@ const useMethod = ({
         If requestId === undefined, request was sent internally from Finnie
       */
       setIsLoading(true)
-      clearInterval(getFeeInterval)
       if (requestId) {
-        chrome.runtime.sendMessage({ requestId, approved: true }, function (response) {
+        const message = {
+          requestId,
+          approved: true,
+          maxPriorityFeePerGas,
+          maxFeePerGas
+        }
+        chrome.runtime.sendMessage(message, function (response) {
           chrome.runtime.onMessage.addListener(function (message) {
             if (message.requestId === requestId) {
               if (message.error) {
@@ -118,7 +128,6 @@ const useMethod = ({
   }
 
   const onRejectTransaction = async () => {
-    clearInterval(getFeeInterval)
     if (requestId) {
       await storage.generic.set.pendingRequest({})
       window.close()

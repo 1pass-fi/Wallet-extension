@@ -28,12 +28,14 @@ import ConnectScreen from 'components/Connect/ConnectScreen'
 
 import { TAB, TRANSACTION_METHOD, TRANSACTION_TYPE } from './hooks/constants'
 import useExploreBlockUrl from './hooks/useExploreBlockUrl'
+import useFetchBaseFee from './hooks/useFetchBaseFee'
 import useGetFee from './hooks/useGetFee'
 import useLoadRequest from './hooks/useLoadRequest'
 import useMethod from './hooks/useMethod'
 import useSecurityStatus from './hooks/useSecurityStatus'
 import useSendValue from './hooks/useSendValue'
 import useSimulation from './hooks/useSimulation'
+import EditPriorityFee from './EditPriorityFee'
 
 const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => {
   const [tab, setTab] = useState(TAB.DETAIL)
@@ -41,7 +43,12 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
   const [txId, setTxId] = useState('')
   const [showConnectedSites, setShowConnectedSites] = useState(false)
   const [acceptSite, setAcceptSite] = useState(false)
+  const [maxFeePerGas, setMaxFeePerGas] = useState(null)
+  const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState(null)
+  const [isFixedMaxFeePerGas, setIsFixedMaxFeePerGas] = useState(false)
 
+  const { baseFee } = useFetchBaseFee()
+  
   const {
     transactionPayload,
     network,
@@ -53,10 +60,20 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     recipientName,
     signWithoutSend
   } = useLoadRequest({ setIsLoading })
-
+  
   const { trustStat } = useSecurityStatus({ setIsLoading, url: origin })
-
-  const { Fee, tokenSymbol, totalFee, getFeeInterval } = useGetFee({ network, transactionPayload })
+  
+  const { Fee, maxFee, estimatedFee, gasLimit } = useGetFee({
+    network,
+    transactionPayload,
+    baseFee,
+    maxFeePerGas,
+    setMaxFeePerGas,
+    maxPriorityFeePerGas,
+    setMaxPriorityFeePerGas,
+    isFixedMaxFeePerGas,
+    setIsFixedMaxFeePerGas
+  })
 
   const { simulationData } = useSimulation({ network, transactionPayload })
 
@@ -107,8 +124,9 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     customTokenRecipient,
     setTxId,
     setShowReceipt,
-    getFeeInterval,
-    totalFee
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+    maxFee
   })
 
   const recipient = useMemo(() => {
@@ -136,8 +154,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
   return (
     <div className="w-full h-full bg-white z-51 m-auto top-0 left-0 fixed flex flex-col justify-center items-center">
       {!showReceipt ? (
-        <div className="w-full h-full relative bg-white shadow-md rounded m-auto flex flex-col items-center">
-
+        <div style={{overflowY:'overlay'}} className="w-full h-full relative bg-white shadow-md rounded m-auto flex flex-col items-center">
           {/* NAVIGATION TAB */}
           <div className="w-full flex flex-col">
             <div className="w-full grid grid-cols-2 text-base text-indigo">
@@ -152,7 +169,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 Details
               </div>
 
-              <div
+              {/* <div
                 style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
                 className={clsx(
                   'h-9.5 flex justify-center items-center cursor-pointer',
@@ -164,6 +181,19 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 }}
               >
                 Simulation
+              </div> */}
+              <div
+                style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
+                className={clsx(
+                  'h-9.5 flex justify-center items-center cursor-pointer',
+                  tab === TAB.EDIT_PRIORITY && 'bg-lightBlue font-semibold',
+                  network !== NETWORK.ETHEREUM && 'cursor-not-allowed'
+                )}
+                onClick={() => {
+                  if (network === NETWORK.ETHEREUM) setTab(TAB.EDIT_PRIORITY)
+                }}
+              >
+                Edit Fee
               </div>
             </div>
           </div>
@@ -417,8 +447,23 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
             </div>
           )}
 
+          {/* EDIT PRIORITY FEE */}
+          {tab === TAB.EDIT_PRIORITY && network === NETWORK.ETHEREUM && (
+            <EditPriorityFee 
+              gasLimit={gasLimit}
+              maxPriorityFeePerGas={maxPriorityFeePerGas}
+              maxFeePerGas={maxFeePerGas}
+              isFixedMaxFeePerGas={isFixedMaxFeePerGas}
+              baseFee={baseFee}
+              setMaxPriorityFeePerGas={setMaxPriorityFeePerGas}
+              setMaxFeePerGas={setMaxFeePerGas}
+              setIsFixedMaxFeePerGas={setIsFixedMaxFeePerGas}
+              setTab={setTab}
+            />
+          )}
+
           {/* BUTTONS */}
-          <div
+          {tab === TAB.DETAIL && <div
             style={{ width: '350px' }}
             className="absolute bottom-10 w-full flex justify-between"
           >
@@ -444,7 +489,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
             >
               {signWithoutSend ? 'Sign' : 'Send'}
             </button>
-          </div>
+          </div>}
           <ReactTooltip place="top" effect="float" />
           {showConnectedSites && (
             <ConnectScreen
@@ -495,7 +540,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
             <div className="flex mb-4">
               <div style={{ width: '142px' }}>Transaction Fees</div>
               <div className="font-normal text-sm">
-                {numberFormat(totalFee, 6)} {tokenSymbol}
+                {numberFormat(estimatedFee, 6)} ETH
               </div>
             </div>
             <div className="flex mb-4">
@@ -509,7 +554,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                   {value} {symbol}
                 </div>
                 <div className="leading-5">
-                  {numberFormat(totalFee)} {tokenSymbol}
+                  {numberFormat(estimatedFee)} ETH
                 </div>
               </div>
             </div>

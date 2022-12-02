@@ -60,10 +60,6 @@ export default async (payload, next) => {
     await account.set.assets(allAssets)
     next({ data: txId })
   } catch (err) {
-    allAssets = allAssets.map((asset) => {
-      if (asset.txId === nftId) asset.isSending = false
-      return asset
-    })
     console.error(err.message)
     next({ error: err.message })
   }

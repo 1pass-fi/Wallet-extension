@@ -8,14 +8,14 @@ const maxFeePerGasFormular = (baseFee, priorityFee) => {
 }
 
 /**
- *
+ * 
  * @param {String} providerUrl
- * @param {String} maxPriorityFeePerGas
+ * @param {String} maxPriorityFeePerGas 
  */
 const calculateMaxFeePerGas = async (providerUrl, maxPriorityFeePerGas) => {
   try {
     const { ethersProvider } = initEthersProvider(providerUrl)
-
+    
     const baseFee = (await ethersProvider.getBlock('latest')).baseFeePerGas.toNumber()
     if (!isString) maxPriorityFeePerGas = `${maxPriorityFeePerGas}`
     maxPriorityFeePerGas = Number(ethers.utils.parseUnits(maxPriorityFeePerGas, 'gwei'))

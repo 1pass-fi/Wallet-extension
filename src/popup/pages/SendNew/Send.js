@@ -120,13 +120,13 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
   }
 
   const handleSendToken = async () => {
-    await getAlchemyAddress()
+    // await getAlchemyAddress()
     setSendTokenClick((prev) => ++prev)
   }
   useEffect(() => {
     const sendToken = async () => {
       if (!validated) return setError(errorMessage)
-      onSendTokens()
+      await onSendTokens()
 
       switch(selectedNetwork) {
         case TYPE.ETHEREUM:
