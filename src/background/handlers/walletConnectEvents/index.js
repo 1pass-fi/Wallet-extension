@@ -1,4 +1,4 @@
-import { ETH_MESSAGE } from 'constants/koiConstants'
+import { ETH_MESSAGE, SOL_MESSAGE } from 'constants/koiConstants'
 
 // controller
 import controller from './controller'
@@ -14,6 +14,9 @@ const getEmitter = () => {
   walletConnectEvents.on(ETH_MESSAGE.SIGN_TYPED_DATA_V3, controller.ethSignTypedData)
   walletConnectEvents.on(ETH_MESSAGE.SIGN_TYPED_DATA_V4, controller.ethSignTypedData)
   walletConnectEvents.on(ETH_MESSAGE.SIGN, controller.ethSign)
+
+  walletConnectEvents.on(SOL_MESSAGE.SOLANA_SIGN_MESSAGE, controller.solanaSignMessage)
+  walletConnectEvents.on(SOL_MESSAGE.SOLANA_SIGN_TRANSACTION, controller.solanaSignTransaction)
 
   return walletConnectEvents
 }

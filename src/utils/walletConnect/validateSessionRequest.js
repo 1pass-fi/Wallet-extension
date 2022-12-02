@@ -1,4 +1,10 @@
-import { ETH_MESSAGE, NETWORK, WC_ETH_CHAIN_ID, WC_SOL_CHAIN_ID } from 'constants/koiConstants'
+import {
+  ETH_MESSAGE,
+  NETWORK,
+  SOL_MESSAGE,
+  WC_ETH_CHAIN_ID,
+  WC_SOL_CHAIN_ID
+} from 'constants/koiConstants'
 import { ethers } from 'ethers'
 import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
@@ -18,6 +24,10 @@ const getAddressFromRequest = (request) => {
     case ETH_MESSAGE.SEND_TRANSACTION:
     case ETH_MESSAGE.SIGN_TRANSACTION:
       return ethers.utils.getAddress(get(params[0], 'from'))
+    case SOL_MESSAGE.SOLANA_SIGN_MESSAGE:
+      return get(params, 'pubkey')
+    case SOL_MESSAGE.SOLANA_SIGN_TRANSACTION:
+      return get(params, 'feePayer')
   }
 }
 

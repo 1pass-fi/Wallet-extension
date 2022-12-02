@@ -88,7 +88,7 @@ export default async (payload, next) => {
                 const rawTransaction = await signer.signTransaction(transactionPayload)
                 const signedTransaction = ethers.utils.parseTransaction(rawTransaction)
                 const txHash = get(signedTransaction, 'hash')
-                const sendingPromise = (await ethersProvider.sendTransaction(rawTransaction)).wait()
+                const txReceipt = await (await ethersProvider.sendTransaction(rawTransaction)).wait()
 
                 next({ data: txHash })
                 chrome.runtime.sendMessage({ requestId, finished: true })
