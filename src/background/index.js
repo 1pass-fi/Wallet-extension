@@ -79,12 +79,41 @@ const initWalletConnect = async () => {
       const payload = { id: event.id, topic: event.topic, params: event.params.request.params }
 
       // validate request
-      const validationError = await walletConnectUtils.validateSessionRequest(event.params)
-      if (!isEmpty(validationError)) {
-        walletConnect.response({ id: event.id, topic: event.topic, result: validationError })
-      } else {
-        walletConnectEvents.sendMessage(endpoint, payload)
+      const isValidChain = await walletConnectUtils.validateSessionRequest.validateChainID(
+        event.params
+      )
+      const isValidAccount = await walletConnectUtils.validateSessionRequest.validateAccount(
+        event.params
+      )
+
+      if (!isValidChain) {
+        walletConnect.response({
+          id: event.id,
+          topic: event.topic,
+          result: {
+            error: {
+              code: 4001,
+              message: 'Chains are not supported'
+            }
+          }
+        })
+        return
       }
+
+      if (!isValidAccount) {
+        walletConnect.response({
+          id: event.id,
+          topic: event.topic,
+          result: {
+            error: {
+              code: 4004,
+              message: 'Account is not imported'
+            }
+          }
+        })
+        return
+      }
+      walletConnectEvents.sendMessage(endpoint, payload)
     })
   } catch (err) {
     console.error('Init walletconnect error:', err)
