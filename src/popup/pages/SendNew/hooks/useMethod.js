@@ -14,7 +14,6 @@ const ARWEAVE = 'ARWEAVE'
 const SOLANA = 'SOLANA'
 
 import { TYPE } from 'constants/accountConstants'
-import ethereumUtils from 'utils/ethereumUtils'
 
 const validateAddress = (address) => {
   if (address?.slice(0, 2) === '0x' && address?.length === 42) return ETHEREUM
@@ -43,9 +42,7 @@ const useMethod = ({
   
       const sendValue = selectedToken.decimal === 1 ? value : (10 ** selectedToken.decimal * value)
 
-      const providerUrl = await storage.setting.get.ethereumProvider()
       const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei').toNumber()
-      const maxFeePerGas = await ethereumUtils.calculateMaxFeePerGas(providerUrl, '2.5')
 
       if (network === TYPE.ETHEREUM) {
         if (contractAddress) {

@@ -115,7 +115,10 @@ const EditPriorityFee = ({
     setIsFixedMaxFeePerGas(tempIsFixedMaxFeePerGas)
     setTab(TAB.DETAIL)
   }
-
+  /*
+  Display the decimal point or "0" using string
+  The remaining cases dynamically display the input value using state.
+  */
   const handleOnChangePriorityInput = (e) => {
     if (e.target.value === '') {
       setStringValuePriorityFee('0')

@@ -22,6 +22,7 @@ const useMethod = ({
   setShowReceipt,
   maxFeePerGas,
   maxPriorityFeePerGas,
+  maxFee
 }) => {
   const handleSendEth = async () => {
     let qty = get(transactionPayload, 'value')
@@ -52,11 +53,11 @@ const useMethod = ({
 
   const onSubmitTransaction = async () => {
     try {
-      let totalOriginExpense
+      let totalOriginTokenExpense
       if (transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) {
-        totalOriginExpense = value + maxFee
+        totalOriginTokenExpense = value + maxFee
       } else {
-        totalOriginExpense = maxFee
+        totalOriginTokenExpense = maxFee
       }
 
       const senderAddress = get(transactionPayload, 'from')
@@ -64,7 +65,7 @@ const useMethod = ({
       const account = await popupAccount.getAccount({ address: senderAddress })
       const balance = await account.get.balance()
 
-      if (balance < totalOriginExpense) {
+      if (balance < totalOriginTokenExpense) {
         setError('Not enough tokens')
         return
       }
