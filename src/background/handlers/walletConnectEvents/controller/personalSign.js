@@ -15,12 +15,8 @@ function convertHexToUtf8(value) {
   return value
 }
 
-export default async (payload, metadata, next) => {
+export default async (payload, next) => {
   try {
-    console.log('personal sign')
-    console.log('payload', payload)
-    console.log('metadata', metadata)
-
     const params = get(payload, 'params')
     const message = convertHexToUtf8(params[0])
 

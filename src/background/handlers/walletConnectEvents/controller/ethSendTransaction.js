@@ -7,12 +7,8 @@ import storage from 'services/storage'
 import ethereumUtils from 'utils/ethereumUtils'
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
-export default async (payload, metadata, next) => {
+export default async (payload, next) => {
   try {
-    console.log('eth send transaction')
-    console.log('payload', payload)
-    console.log('metadata', metadata)
-
     const params = get(payload, 'params')
 
     /* Show popup for signing transaction */
