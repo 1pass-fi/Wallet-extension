@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
+import ethereumUtils from 'utils/ethereumUtils'
 // Utils
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
@@ -24,8 +25,7 @@ export default async (payload, tab, next) => {
       return
     }
     
-    const credential = await backgroundAccount.getCredentialByAddress(ethers.utils.getAddress(connectedAddresses[0]))
-    const key = credential.key
+
 
     /* Show popup for signing transaction */
     const screenWidth = screen.availWidth
@@ -86,23 +86,50 @@ export default async (payload, tab, next) => {
                 }
                 try {
                   /* Send ETH transaction */
-                  const provider = await storage.setting.get.ethereumProvider()
+                  const credential = await backgroundAccount.getCredentialByAddress(ethers.utils.getAddress(connectedAddresses[0]))
+                  const providerUrl = await storage.setting.get.ethereumProvider()
 
-                  const rawTx = params[0]
+                  const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(
+                    providerUrl,
+                    credential.key
+                  )
+  
+                  const signer = wallet.connect(ethersProvider)
 
-                  console.log('rawTx', rawTx)
+                  // init transaction payload
+                  let transactionPayload = params[0]
+                  delete transactionPayload.gas
+                  
+                  const maxPriorityFeePerGas = get(popupMessage, 'maxPriorityFeePerGas') || ethers.utils.parseUnits('2.5', 'gwei')
+                  const maxFeePerGas = get(popupMessage, 'maxFeePerGas') || await ethereumUtils.calculateMaxFeePerGas(providerUrl, '2.5')
 
-                  const web3 = new Web3(provider)
-                  const estimateGas = await web3.eth.estimateGas(rawTx)
-                  rawTx.gas = estimateGas
-              
-                  const signTx = await web3.eth.accounts.signTransaction(rawTx, key)
-                  const receipt = await web3.eth.sendSignedTransaction(signTx.rawTransaction)
+                  const nonce = await ethersProvider.getTransactionCount(connectedAddresses[0], 'pending')
 
-                  console.log('receipt', receipt)
+                  const gasLimit = await signer.estimateGas(transactionPayload)
 
-                  next({ data: receipt.transactionHash })
-                  chrome.runtime.sendMessage({requestId, finished: true})
+                  const type = 2 // 0: legacy; 2: eip1559
+
+                  const chainId = (await ethersProvider.getNetwork()).chainId
+
+                  transactionPayload = {
+                    ...transactionPayload,
+                    type,
+                    maxPriorityFeePerGas,
+                    maxFeePerGas,
+                    nonce,
+                    gasLimit,
+                    chainId
+                  }
+                  
+                  console.log('transactionPayload', transactionPayload)
+
+                  const rawTransaction = await signer.signTransaction(transactionPayload)
+                  const signedTransaction = ethers.utils.parseTransaction(rawTransaction)
+                  const txHash = get(signedTransaction, 'hash')
+
+                  await (await ethersProvider.sendTransaction(rawTransaction)).wait()
+                  next({ data: txHash })
+                  chrome.runtime.sendMessage({ requestId, finished: true })
                 } catch (err) {
                   console.error('Send eth error:', err.message)
                   chrome.runtime.sendMessage({requestId, finished: true})

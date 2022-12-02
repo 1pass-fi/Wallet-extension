@@ -81,7 +81,13 @@ const useMethod = ({
       */
       setIsLoading(true)
       if (requestId) {
-        chrome.runtime.sendMessage({ requestId, approved: true }, function (response) {
+        const message = {
+          requestId,
+          approved: true,
+          maxPriorityFeePerGas,
+          maxFeePerGas
+        }
+        chrome.runtime.sendMessage(message, function (response) {
           chrome.runtime.onMessage.addListener(function (message) {
             if (message.requestId === requestId) {
               if (message.error) {
