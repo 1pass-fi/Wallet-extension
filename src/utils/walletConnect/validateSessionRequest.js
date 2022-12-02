@@ -21,13 +21,10 @@ const getAddressFromRequest = (request) => {
   }
 }
 
-const validateSessionRequest = async (params) => {
+const validateChainID = async (params) => {
   try {
-    const { request, chainId } = params
+    const { chainId } = params
 
-    /**
-     * Validate available chain
-     */
     let wcChainId
 
     if (Object.values(WC_ETH_CHAIN_ID).includes(chainId)) {
@@ -41,24 +38,31 @@ const validateSessionRequest = async (params) => {
     }
 
     if (wcChainId !== chainId) {
-      return { error: { code: 4001, message: 'No matching chain' } }
+      return false
     }
 
-    /**
-     * Validate available address
-     */
-    const address = getAddressFromRequest(request)
-    
-    if (isEmpty(await backgroundAccount.getCredentialByAddress(address))) {
-      return { error: { code: 4004, message: 'Account is not imported' } }
-    }
-
-    return null
+    return true
   } catch (error) {
-    console.log('Failed to validate session request: ', error)
-    return { error: { code: 4001, message: error.message}}
-
+    console.log('Fail to validate chain: ', error)
+    return false
   }
 }
 
-export default validateSessionRequest
+const validateAccount = async (params) => {
+  try {
+    const { request } = params
+
+    const address = getAddressFromRequest(request)
+
+    if (isEmpty(await backgroundAccount.getCredentialByAddress(address))) {
+      return false
+    }
+
+    return true
+  } catch (error) {
+    console.log('Failed to validate session request: ', error)
+    return false
+  }
+}
+
+export default { validateChainID, validateAccount }

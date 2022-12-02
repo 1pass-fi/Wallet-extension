@@ -6,9 +6,8 @@ import walletConnect from 'services/walletConnect'
 
 export default class WalletConnectEvents extends EventEmitter {
   async sendMessage(endpoint, payload) {
-    const metadata = this.getMetadata()
     const promise = new Promise((resolve) => {
-      this.emit(endpoint, payload, metadata, resolve)
+      this.emit(endpoint, payload, resolve)
     })
 
     promise.then((result) => {
@@ -18,11 +17,5 @@ export default class WalletConnectEvents extends EventEmitter {
         topic: payload.topic
       })
     })
-  }
-
-  getMetadata() {
-    return {
-      name: 'example_name'
-    }
   }
 }

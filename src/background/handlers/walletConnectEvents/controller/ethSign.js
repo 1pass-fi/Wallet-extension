@@ -16,12 +16,8 @@ export function convertHexToUtf8(value) {
   return value
 }
 
-export default async (payload, metadata, next) => {
+export default async (payload, next) => {
   try {
-    console.log('eth sign')
-    console.log('payload', payload)
-    console.log('metadata', metadata)
-
     const params = get(payload, 'params')
     const message = params[1]
 
@@ -69,7 +65,9 @@ export default async (payload, metadata, next) => {
             const approved = popupMessage.approved
             if (approved) {
               try {
-                const credential = await backgroundAccount.getCredentialByAddress(ethers.utils.getAddress(params[0]))
+                const credential = await backgroundAccount.getCredentialByAddress(
+                  ethers.utils.getAddress(params[0])
+                )
 
                 const msgSig = ecsign(
                   Buffer.from(stripHexPrefix(message), 'hex'),
