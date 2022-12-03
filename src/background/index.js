@@ -93,7 +93,7 @@ const initWalletConnect = async () => {
           result: {
             error: {
               code: 4001,
-              message: 'Chains are not supported'
+              message: 'No matching chain'
             }
           }
         })

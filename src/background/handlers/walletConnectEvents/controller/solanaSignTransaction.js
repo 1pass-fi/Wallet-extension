@@ -1,5 +1,6 @@
 import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
 import { Connection, PublicKey, Transaction, TransactionInstruction } from '@solana/web3.js'
+import { getInternalError, getSdkError } from '@walletconnect/utils'
 import base58 from 'bs58'
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 import get from 'lodash/get'
@@ -71,7 +72,7 @@ const getTransactionData = async (transaction) => {
     console.error(err)
   }
 }
-export default async (payload, metadata, next) => {
+export default async (payload, next) => {
   try {
     console.log('solana sign transaction')
     console.log('payload', payload)
@@ -128,7 +129,7 @@ export default async (payload, metadata, next) => {
             if (approved) {
               var pendingRequest = await storage.generic.get.pendingRequest()
               if (isEmpty(pendingRequest)) {
-                next({ error: { code: 4001, data: 'Request has been removed' } })
+                next({ error: getInternalError('EXPIRED') })
                 chrome.runtime.sendMessage({
                   requestId,
                   error: 'Request has been removed'
@@ -157,7 +158,7 @@ export default async (payload, metadata, next) => {
                 next({ error: { code: 4001, message: err.message } })
               }
             } else {
-              next({ error: { code: 4001, message: 'Request rejected' } })
+              next({ error: getSdkError('USER_REJECTED_METHODS') })
             }
           }
         })
@@ -169,7 +170,7 @@ export default async (payload, metadata, next) => {
       },
       afterClose: async () => {
         chrome.browserAction.setBadgeText({ text: '' })
-        next({ error: { code: 4001, message: 'Request rejected' } })
+        next({ error: getSdkError('USER_REJECTED_METHODS') })
         await storage.generic.set.pendingRequest({})
       }
     })
