@@ -1,6 +1,5 @@
 // const Web3 = require('web3')
 import { ethers } from 'ethers'
-
 import { clarifyEthereumProvider } from 'utils'
 
 const { ABI2, ABI } = require('./ABI')

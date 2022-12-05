@@ -17,8 +17,8 @@ import get from 'lodash/get'
 import includes from 'lodash/includes'
 import storage from 'services/storage'
 import customTokens from 'solanaTokens/solanaTokens'
-import clusterApiUrl from 'utils/clusterApiUrl'
 import { clarifyEthereumProvider } from 'utils'
+import clusterApiUrl from 'utils/clusterApiUrl'
 import k2Contracts from 'utils/k2-contracts.json'
 
 export const getLogoPath = (logo) => {

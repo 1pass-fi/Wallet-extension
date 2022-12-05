@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useDispatch,useStore } from 'react-redux'
+import { useDispatch, useStore } from 'react-redux'
 import { MESSAGES } from 'constants/koiConstants'
 import isEmpty from 'lodash/isEmpty'
 import { loadAllAccounts } from 'options/actions/accounts'
@@ -88,7 +88,7 @@ export default ({ setModalStates }) => {
       const reloadGalleryHandler = new EventHandler(MESSAGES.RELOAD_GALLERY, async () => {
         try {
           chrome.tabs.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
-            tabs.map((tab) => chrome.scripting.reload(tab.id))
+            tabs.map((tab) => chrome.tabs.reload(tab.id))
           })
         } catch (err) {
           console.log('reload gallery page - error: ', err)

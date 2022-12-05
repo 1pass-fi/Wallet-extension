@@ -34,11 +34,12 @@ export default async (payload, tab, next) => {
     const encodedMessage = new TextEncoder().encode(message)
 
     /* Show popup */
-    const screenWidth = screen.availWidth
-    const screenHeight = screen.availHeight
-    const os = window.localStorage.getItem(OS)
+    const screen = (await chrome.system.display.getInfo())[0].bounds
+    const screenWidth = screen.width
+    const screenHeight = screen.height
+    const os = (await chrome.runtime.getPlatformInfo()).os
     let windowData = {
-      url: chrome.extension.getURL('/popup.html'),
+      url: chrome.runtime.getURL('/popup.html'),
       focused: true,
       type: 'popup'
     }
@@ -77,7 +78,9 @@ export default async (payload, tab, next) => {
             const approved = popupMessage.approved
             if (approved) {
               try {
-                const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses[0])
+                const credentials = await backgroundAccount.getCredentialByAddress(
+                  connectedAddresses[0]
+                )
                 const k2Tool = new K2Tool(credentials)
                 const keypair = k2Tool.keypair
                 const signature = nacl.sign.detached(encodedMessage, keypair.secretKey)
@@ -86,7 +89,9 @@ export default async (payload, tab, next) => {
                   signature: base58.encode(signature)
                 }
 
-                if (nacl.sign.detached.verify(encodedMessage, signature, keypair.publicKey.toBytes()))
+                if (
+                  nacl.sign.detached.verify(encodedMessage, signature, keypair.publicKey.toBytes())
+                )
                   next({
                     data: returnPayload
                   })

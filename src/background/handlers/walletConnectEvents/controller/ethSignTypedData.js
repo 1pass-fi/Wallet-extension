@@ -15,11 +15,12 @@ export default async (payload, next) => {
     const data = JSON.parse(params[1])
 
     /* Show popup */
-    const screenWidth = screen.availWidth
-    const screenHeight = screen.availHeight
-    const os = window.localStorage.getItem(OS)
+    const screen = (await chrome.system.display.getInfo())[0].bounds
+    const screenWidth = screen.width
+    const screenHeight = screen.height
+    const os = (await chrome.runtime.getPlatformInfo()).os
     let windowData = {
-      url: chrome.extension.getURL('/popup.html'),
+      url: chrome.runtime.getURL('/popup.html'),
       focused: true,
       type: 'popup'
     }
@@ -50,13 +51,15 @@ export default async (payload, next) => {
 
     createWindow(windowData, {
       beforeCreate: async () => {
-        chrome.browserAction.setBadgeText({ text: '1' })
+        chrome.action.setBadgeText({ text: '1' })
         chrome.runtime.onMessage.addListener(async function (popupMessage, sender, sendResponse) {
           if (popupMessage.requestId === requestId) {
             const approved = popupMessage.approved
             if (approved) {
               try {
-                const credential = await backgroundAccount.getCredentialByAddress(ethers.utils.getAddress(params[0]))
+                const credential = await backgroundAccount.getCredentialByAddress(
+                  ethers.utils.getAddress(params[0])
+                )
 
                 // Prepare data for _signTypedData function
                 const types = get(data, 'types')
@@ -100,7 +103,7 @@ export default async (payload, next) => {
         })
       },
       afterClose: async () => {
-        chrome.browserAction.setBadgeText({ text: '' })
+        chrome.action.setBadgeText({ text: '' })
         next({ error: getSdkError('USER_REJECTED_METHODS') })
 
         await storage.generic.set.pendingRequest({})

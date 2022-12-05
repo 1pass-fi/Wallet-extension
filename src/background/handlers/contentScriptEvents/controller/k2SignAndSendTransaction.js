@@ -1,4 +1,11 @@
-import { clusterApiUrl, Connection, Message, PublicKey,sendAndConfirmTransaction, Transaction } from '@_koi/web3.js'
+import {
+  clusterApiUrl,
+  Connection,
+  Message,
+  PublicKey,
+  sendAndConfirmTransaction,
+  Transaction
+} from '@_koi/web3.js'
 import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
 import bs58, { decode } from 'bs58'
 // Constants
@@ -24,10 +31,16 @@ const getTransactionDataFromMessage = async (transactionMessage) => {
       const provider = await storage.setting.get.k2Provider()
       const connection = new Connection(clusterApiUrl(provider), 'confirmed')
 
-      const contractData = await getAccount(connection, new PublicKey(decodeData.keys.source.pubkey))
+      const contractData = await getAccount(
+        connection,
+        new PublicKey(decodeData.keys.source.pubkey)
+      )
       const contractAddress = contractData.mint.toString()
 
-      const recipientAccount = await getAccount(connection, new PublicKey(decodeData.keys.destination.pubkey))
+      const recipientAccount = await getAccount(
+        connection,
+        new PublicKey(decodeData.keys.destination.pubkey)
+      )
 
       return {
         from: decodeData.keys.owner.pubkey.toString(),
@@ -39,7 +52,7 @@ const getTransactionDataFromMessage = async (transactionMessage) => {
       return {
         from: decodeData.keys.source.pubkey.toString(),
         to: decodeData.keys.destination.pubkey.toString(),
-        value: Number(decodeData.data.amount) / 16777216,
+        value: Number(decodeData.data.amount) / 16777216
       }
     }
   } catch (err) {
@@ -53,14 +66,14 @@ export default async (payload, tab, next) => {
     const { favicon, origin, hadPermission, hasPendingRequest, connectedAddresses } = tab
 
     if (!hadPermission) {
-      return next({error: { code: 4100,  data: 'No permissions' }})
+      return next({ error: { code: 4100, data: 'No permissions' } })
     }
 
     if (hasPendingRequest) {
       next({ error: { code: 4001, data: 'Request pending' } })
       return
     }
-    
+
     const defaultK2Address = await storage.setting.get.activatedK2AccountAddress()
 
     const credential = await backgroundAccount.getCredentialByAddress(defaultK2Address)
@@ -68,13 +81,14 @@ export default async (payload, tab, next) => {
     const key = credential.key
 
     /* Show popup for signing transaction */
-    const screenWidth = screen.availWidth
-    const screenHeight = screen.availHeight
-    const os = window.localStorage.getItem(OS)
+    const screen = (await chrome.system.display.getInfo())[0].bounds
+    const screenWidth = screen.width
+    const screenHeight = screen.height
+    const os = (await chrome.runtime.getPlatformInfo()).os
     let windowData = {
-      url: chrome.extension.getURL('/popup.html'),
+      url: chrome.runtime.getURL('/popup.html'),
       focused: true,
-      type: 'popup',
+      type: 'popup'
     }
     if (os == 'win') {
       windowData = {
@@ -93,7 +107,7 @@ export default async (payload, tab, next) => {
         top: Math.round((screenHeight - WINDOW_SIZE.MAC_HEIGHT) / 2)
       }
     }
-    
+
     const requestId = uuid()
 
     const transactionPayload = await getTransactionDataFromMessage(payload.data)
@@ -106,54 +120,55 @@ export default async (payload, tab, next) => {
       transactionPayload
     }
 
-
     createWindow(windowData, {
       beforeCreate: async () => {
         chrome.action.setBadgeText({ text: '1' })
-        chrome.runtime.onMessage.addListener(
-          async function(popupMessage, sender, sendResponse) {
-            if (popupMessage.requestId === requestId) {
-              const approved = popupMessage.approved
-              if (approved) {
-                var pendingRequest = await storage.generic.get.pendingRequest()
-                if (isEmpty(pendingRequest)) {
-                  next({ error: { code: 4001, data: 'Request has been removed' } })
-                  chrome.runtime.sendMessage({
-                    requestId,
-                    error: 'Request has been removed'
-                  })
-                  return
-                }
-                try {
-                  /* Send K2 transaction */
-                  const credential = await backgroundAccount.getCredentialByAddress(connectedAddresses[0])
-
-                  const transactionMessage = Message.from(bs58.decode(payload.data))
-                  const transaction = Transaction.populate(transactionMessage)
-
-                  console.log('transactionMessage', transactionMessage)
-
-                  const k2Provider = await storage.setting.get.k2Provider()
-                  const connection = new Connection(clusterApiUrl(k2Provider), 'confirmed')
-                  const tool = new K2Tool(credential)
-
-                  const signature = await sendAndConfirmTransaction(connection, transaction, [tool.keypair])
-
-                  console.log('signature', signature)
-
-                  next({ data: signature })
-                  chrome.runtime.sendMessage({requestId, finished: true})
-                } catch (err) {
-                  console.error('Send K2 error:', err.message)
-                  chrome.runtime.sendMessage({requestId, finished: true})
-                  next({ error: { code: 4001, data: err.message } })
-                } 
-              } else {
-                next({ error: { code: 4001, data: 'Request rejected' } })
+        chrome.runtime.onMessage.addListener(async function (popupMessage, sender, sendResponse) {
+          if (popupMessage.requestId === requestId) {
+            const approved = popupMessage.approved
+            if (approved) {
+              var pendingRequest = await storage.generic.get.pendingRequest()
+              if (isEmpty(pendingRequest)) {
+                next({ error: { code: 4001, data: 'Request has been removed' } })
+                chrome.runtime.sendMessage({
+                  requestId,
+                  error: 'Request has been removed'
+                })
+                return
               }
+              try {
+                /* Send K2 transaction */
+                const credential = await backgroundAccount.getCredentialByAddress(
+                  connectedAddresses[0]
+                )
+
+                const transactionMessage = Message.from(bs58.decode(payload.data))
+                const transaction = Transaction.populate(transactionMessage)
+
+                console.log('transactionMessage', transactionMessage)
+
+                const k2Provider = await storage.setting.get.k2Provider()
+                const connection = new Connection(clusterApiUrl(k2Provider), 'confirmed')
+                const tool = new K2Tool(credential)
+
+                const signature = await sendAndConfirmTransaction(connection, transaction, [
+                  tool.keypair
+                ])
+
+                console.log('signature', signature)
+
+                next({ data: signature })
+                chrome.runtime.sendMessage({ requestId, finished: true })
+              } catch (err) {
+                console.error('Send K2 error:', err.message)
+                chrome.runtime.sendMessage({ requestId, finished: true })
+                next({ error: { code: 4001, data: err.message } })
+              }
+            } else {
+              next({ error: { code: 4001, data: 'Request rejected' } })
             }
           }
-        )
+        })
 
         await storage.generic.set.pendingRequest({
           type: REQUEST.TRANSACTION,
@@ -162,7 +177,7 @@ export default async (payload, tab, next) => {
       },
       afterClose: async () => {
         chrome.action.setBadgeText({ text: '' })
-        next({ error: { code: 4001, data: 'Request rejected' }})
+        next({ error: { code: 4001, data: 'Request rejected' } })
         await storage.generic.set.pendingRequest({})
       }
     })

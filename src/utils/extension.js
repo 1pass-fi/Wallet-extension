@@ -56,15 +56,6 @@ export const getSelectedTab = (timeout = 200, retries = 0) => {
   })
 }
 
-export const performOnDifferentOs = (win, others) => (payload) => {
-  const os = window.localStorage.getItem(OS)
-  if (os == 'win') {
-    win(payload)
-  } else {
-    others(payload)
-  }
-}
-
 export const getPlatformInfo = () =>
   new Promise((resolve) => {
     chrome.runtime.getPlatformInfo((info) => {

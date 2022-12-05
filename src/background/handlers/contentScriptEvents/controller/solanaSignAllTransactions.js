@@ -148,7 +148,7 @@ export default async (payload, tab, next) => {
     const screenWidth = screen.width
     const screenHeight = screen.height
     const os = (await chrome.runtime.getPlatformInfo()).os
-    
+
     let windowData = {
       url: chrome.runtime.getURL('/popup.html'),
       focused: true,
@@ -210,26 +210,28 @@ export default async (payload, tab, next) => {
 
     createWindow(windowData, {
       beforeCreate: async () => {
-        chrome.browserAction.setBadgeText({ text: '1' })
-        chrome.runtime.onMessage.addListener(
-          async function(popupMessage, sender, sendResponse) {
-            if (popupMessage.requestId === requestId) {
-              const approved = popupMessage.approved
-              if (approved) {
-                var pendingRequest = await storage.generic.get.pendingRequest()
-                if (isEmpty(pendingRequest)) {
-                  next({ error: { code: 4001, message: 'Request has been removed' } })
-                  chrome.runtime.sendMessage({
-                    requestId,
-                    error: 'Request has been removed'
-                  })
-                  return
-                }
-                try {
-                  const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses[0])
-                  const solTool = new SolanaTool(credentials)
-                  const keypair = solTool.keypair
-                  const signatures = await Promise.all(messages.map(async (message) => {
+        chrome.action.setBadgeText({ text: '1' })
+        chrome.runtime.onMessage.addListener(async function (popupMessage, sender, sendResponse) {
+          if (popupMessage.requestId === requestId) {
+            const approved = popupMessage.approved
+            if (approved) {
+              var pendingRequest = await storage.generic.get.pendingRequest()
+              if (isEmpty(pendingRequest)) {
+                next({ error: { code: 4001, message: 'Request has been removed' } })
+                chrome.runtime.sendMessage({
+                  requestId,
+                  error: 'Request has been removed'
+                })
+                return
+              }
+              try {
+                const credentials = await backgroundAccount.getCredentialByAddress(
+                  connectedAddresses[0]
+                )
+                const solTool = new SolanaTool(credentials)
+                const keypair = solTool.keypair
+                const signatures = await Promise.all(
+                  messages.map(async (message) => {
                     const _message = Message.from(base58.decode(message))
                     const transaction = Transaction.populate(_message)
                     transaction.sign(keypair)

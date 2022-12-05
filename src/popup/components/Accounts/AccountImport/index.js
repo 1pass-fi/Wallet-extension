@@ -40,7 +40,7 @@ const AccountImport = ({ totalAccount }) => {
   const [hasOldKey, setHasOldKey] = useState(false)
 
   const handleOnClick = (path) => {
-    const url = chrome.extension.getURL(path)
+    const url = chrome.runtime.getURL(path)
     chrome.tabs.create({ url })
   }
 

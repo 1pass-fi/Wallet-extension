@@ -197,7 +197,7 @@ const useLoadApp = ({
       history.push(PATH.LOGIN)
 
       chrome.tabs.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
-        tabs.map((tab) => chrome.scripting.reload(tab.id))
+        tabs.map((tab) => chrome.tabs.reload(tab.id))
       })
     } else {
       setError('Cannot lock wallet.')

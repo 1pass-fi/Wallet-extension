@@ -1,6 +1,6 @@
 import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
 import { Message, Transaction } from '@solana/web3.js'
-import { Connection, PublicKey,sendAndConfirmTransaction } from '@solana/web3.js'
+import { Connection, PublicKey, sendAndConfirmTransaction } from '@solana/web3.js'
 import base58 from 'bs58'
 import bs58 from 'bs58'
 // Constants
@@ -76,7 +76,7 @@ export default async (payload, tab, next) => {
     const screenWidth = screen.width
     const screenHeight = screen.height
     const os = (await chrome.runtime.getPlatformInfo()).os
-    
+
     let windowData = {
       url: chrome.runtime.getURL('/popup.html'),
       focused: true,
@@ -114,47 +114,47 @@ export default async (payload, tab, next) => {
 
     createWindow(windowData, {
       beforeCreate: async () => {
-        chrome.browserAction.setBadgeText({ text: '1' })
-        chrome.runtime.onMessage.addListener(
-          async function(popupMessage, sender, sendResponse) {
-            if (popupMessage.requestId === requestId) {
-              const approved = popupMessage.approved
-              if (approved) {
-                var pendingRequest = await storage.generic.get.pendingRequest()
-                if (isEmpty(pendingRequest)) {
-                  next({ error: { code: 4001, data: 'Request has been removed' } })
-                  chrome.runtime.sendMessage({
-                    requestId,
-                    error: 'Request has been removed'
-                  })
-                  return
-                }
-                try {
-                  /* Sign transaction */
-                  const encodedMessage = get(payload, 'data')
-
-                  const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses[0])
-                  const solTool = new SolanaTool(credentials)
-                  const keypair = solTool.keypair
-                  
-                  const transactionMessage = Message.from(base58.decode(encodedMessage))
-                  const transaction = Transaction.populate(transactionMessage)
-                  
-                  transaction.sign(keypair)
-                  console.log('signed transaction', transaction)
-
-                  const encodedSignedTransaction = base58.encode(transaction.serialize())
-                  
-                  next({ data: encodedSignedTransaction })
-                  chrome.runtime.sendMessage({requestId, finished: true})
-                } catch (err) {
-                  console.error('Send sol error:', err.message)
-                  chrome.runtime.sendMessage({requestId, finished: true})
-                  next({ error: { code: 4001, data: err.message } })
-                } 
-              } else {
-                next({ error: { code: 4001, data: 'Request rejected' } })
+        chrome.action.setBadgeText({ text: '1' })
+        chrome.runtime.onMessage.addListener(async function (popupMessage, sender, sendResponse) {
+          if (popupMessage.requestId === requestId) {
+            const approved = popupMessage.approved
+            if (approved) {
+              var pendingRequest = await storage.generic.get.pendingRequest()
+              if (isEmpty(pendingRequest)) {
+                next({ error: { code: 4001, data: 'Request has been removed' } })
+                chrome.runtime.sendMessage({
+                  requestId,
+                  error: 'Request has been removed'
+                })
+                return
               }
+              try {
+                /* Sign transaction */
+                const encodedMessage = get(payload, 'data')
+
+                const credentials = await backgroundAccount.getCredentialByAddress(
+                  connectedAddresses[0]
+                )
+                const solTool = new SolanaTool(credentials)
+                const keypair = solTool.keypair
+
+                const transactionMessage = Message.from(base58.decode(encodedMessage))
+                const transaction = Transaction.populate(transactionMessage)
+
+                transaction.sign(keypair)
+                console.log('signed transaction', transaction)
+
+                const encodedSignedTransaction = base58.encode(transaction.serialize())
+
+                next({ data: encodedSignedTransaction })
+                chrome.runtime.sendMessage({ requestId, finished: true })
+              } catch (err) {
+                console.error('Send sol error:', err.message)
+                chrome.runtime.sendMessage({ requestId, finished: true })
+                next({ error: { code: 4001, data: err.message } })
+              }
+            } else {
+              next({ error: { code: 4001, data: 'Request rejected' } })
             }
           }
         })

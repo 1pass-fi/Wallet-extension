@@ -80,7 +80,7 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
 
         /* Reload gallery page after unlocked */
         chrome.tabs.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
-          tabs.map((tab) => tab.url.includes('options') && chrome.scripting.reload(tab.id))
+          tabs.map((tab) => tab.url.includes('options') && chrome.tabs.reload(tab.id))
         })
       } else {
         setIsIncorrectPassword(true)
