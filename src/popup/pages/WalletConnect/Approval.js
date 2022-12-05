@@ -20,7 +20,7 @@ const SelectAccountItem = ({ selectedAccounts, address, accountName, setSelected
 
   const toggleAccount = () => {
     if (!selectedAccounts.includes(address)) {
-      setSelectedAccounts(prev => [...prev, address])
+      setSelectedAccounts(prev => [address])
     } else {
       setSelectedAccounts(prev => prev.filter(_address => _address !== address))
     }

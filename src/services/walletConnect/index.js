@@ -160,7 +160,7 @@ class WalletConnect {
     
         this.signClient.on('session_proposal', sessionProposalCb)
         this.signClient.on('session_request', sessionRequestCb)
-      }, 3000)
+      }, 5000)
     } catch (err) {
       console.error('walletconnect-reload', err)
     }
