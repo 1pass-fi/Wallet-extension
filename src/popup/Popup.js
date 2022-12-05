@@ -49,6 +49,7 @@ import ImportToken from './pages/ImportToken'
 import Login from './pages/Login'
 import Receive from './pages/Receive'
 import Send from './pages/SendNew'
+import WalletConnect from './pages/WalletConnect'
 // hooks
 import useLoadApp from './provider/hooks/useLoadApp'
 import useMethod from './provider/hooks/useMethod'
@@ -199,6 +200,9 @@ const Popup = ({
                     </Route>
                     <Route path="/import-token">
                       <ImportToken />
+                    </Route>
+                    <Route path="/wallet-connect-proposal">
+                      <WalletConnect />
                     </Route>
                     <Route path="*">
                       <Home />

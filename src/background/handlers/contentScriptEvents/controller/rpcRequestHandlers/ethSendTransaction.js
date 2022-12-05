@@ -5,7 +5,7 @@ import { ethers } from 'ethers'
 import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
-import { clarifyEthereumProvider } from 'utils'
+import ethereumUtils from 'utils/ethereumUtils'
 // Utils
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
@@ -13,7 +13,7 @@ import { v4 as uuid } from 'uuid'
 export default async (payload, tab, next) => {
   try {
     const params = get(payload, 'data.params')
-    const { favicon, origin, hadPermission, hasPendingRequest } = tab
+    const { favicon, origin, hadPermission, hasPendingRequest, connectedAddresses } = tab
 
     if (!hadPermission) {
       return next({ error: { code: 4100, data: 'No permissions' } })
@@ -23,12 +23,8 @@ export default async (payload, tab, next) => {
       next({ error: { code: 4001, data: 'Request pending' } })
       return
     }
+    
 
-    const defaultEthereumAddress = await storage.setting.get.activatedEthereumAccountAddress()
-
-    const credential = await backgroundAccount.getCredentialByAddress(defaultEthereumAddress)
-
-    const key = credential.key
 
     /* Show popup for signing transaction */
     const screen = (await chrome.system.display.getInfo())[0].bounds
@@ -73,50 +69,75 @@ export default async (payload, tab, next) => {
 
     createWindow(windowData, {
       beforeCreate: async () => {
-        chrome.action.setBadgeText({ text: '1' })
-        chrome.runtime.onMessage.addListener(async function (popupMessage, sender, sendResponse) {
-          if (popupMessage.requestId === requestId) {
-            const approved = popupMessage.approved
-            if (approved) {
-              var pendingRequest = await storage.generic.get.pendingRequest()
-              if (isEmpty(pendingRequest)) {
-                next({ error: { code: 4001, data: 'Request has been removed' } })
-                chrome.runtime.sendMessage({
-                  requestId,
-                  error: 'Request has been removed'
-                })
-                return
+        chrome.browserAction.setBadgeText({ text: '1' })
+        chrome.runtime.onMessage.addListener(
+          async function(popupMessage, sender, sendResponse) {
+            if (popupMessage.requestId === requestId) {
+              const approved = popupMessage.approved
+              if (approved) {
+                var pendingRequest = await storage.generic.get.pendingRequest()
+                if (isEmpty(pendingRequest)) {
+                  next({ error: { code: 4001, data: 'Request has been removed' } })
+                  chrome.runtime.sendMessage({
+                    requestId,
+                    error: 'Request has been removed'
+                  })
+                  return
+                }
+                try {
+                  /* Send ETH transaction */
+                  const credential = await backgroundAccount.getCredentialByAddress(ethers.utils.getAddress(connectedAddresses[0]))
+                  const providerUrl = await storage.setting.get.ethereumProvider()
+
+                  const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(
+                    providerUrl,
+                    credential.key
+                  )
+  
+                  const signer = wallet.connect(ethersProvider)
+
+                  // init transaction payload
+                  let transactionPayload = params[0]
+                  delete transactionPayload.gas
+                  
+                  const maxPriorityFeePerGas = get(popupMessage, 'maxPriorityFeePerGas') || ethers.utils.parseUnits('2.5', 'gwei')
+                  const maxFeePerGas = get(popupMessage, 'maxFeePerGas') || await ethereumUtils.calculateMaxFeePerGas(providerUrl, '2.5')
+
+                  const nonce = await ethersProvider.getTransactionCount(connectedAddresses[0], 'pending')
+
+                  const gasLimit = await signer.estimateGas(transactionPayload)
+
+                  const type = 2 // 0: legacy; 2: eip1559
+
+                  const chainId = (await ethersProvider.getNetwork()).chainId
+
+                  transactionPayload = {
+                    ...transactionPayload,
+                    type,
+                    maxPriorityFeePerGas,
+                    maxFeePerGas,
+                    nonce,
+                    gasLimit,
+                    chainId
+                  }
+                  
+                  console.log('transactionPayload', transactionPayload)
+
+                  const rawTransaction = await signer.signTransaction(transactionPayload)
+                  const signedTransaction = ethers.utils.parseTransaction(rawTransaction)
+                  const txHash = get(signedTransaction, 'hash')
+
+                  await (await ethersProvider.sendTransaction(rawTransaction)).wait()
+                  next({ data: txHash })
+                  chrome.runtime.sendMessage({ requestId, finished: true })
+                } catch (err) {
+                  console.error('Send eth error:', err.message)
+                  chrome.runtime.sendMessage({requestId, finished: true})
+                  next({ error: { code: 4001, data: err.message } })
+                } 
+              } else {
+                next({ error: { code: 4001, data: 'Request rejected' } })
               }
-              try {
-                /* Send ETH transaction */
-                const provider = await storage.setting.get.ethereumProvider()
-
-                const rawTx = params[0]
-
-                const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
-
-                const network = ethers.providers.getNetwork(ethNetwork)
-                const web3 = new ethers.providers.InfuraProvider(network, apiKey)
-                
-                const estimateGas = await web3.estimateGas(rawTx)
-                rawTx.gasLimit = estimateGas
-                delete rawTx.gas
-                console.log('ethSendTransaction rawTx', rawTx)
-
-                const signer = new ethers.Wallet(key, web3)
-
-                const receipt = await signer.sendTransaction(rawTx)
-                console.log('receipt', receipt)
-
-                next({ data: receipt.hash })
-                chrome.runtime.sendMessage({ requestId, finished: true })
-              } catch (err) {
-                console.error('Send eth error:', err.message)
-                chrome.runtime.sendMessage({ requestId, finished: true })
-                next({ error: { code: 4001, data: err.message } })
-              }
-            } else {
-              next({ error: { code: 4001, data: 'Request rejected' } })
             }
           }
         })

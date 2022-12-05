@@ -3,7 +3,7 @@ import storage from 'services/storage'
 
 export default async (_, tab, next) => {
   try {
-    const { hadPermission, activatedAddress, origin } = tab
+    const { hadPermission, connectedAddresses, origin } = tab
 
     if (hadPermission) {
       let siteConnectedAddresses = await storage.setting.get.siteConnectedAddresses()
@@ -11,7 +11,7 @@ export default async (_, tab, next) => {
 
       let connectedSolanaAddresses = get(siteConnectedAddresses[origin], 'solana', [])
       connectedSolanaAddresses = connectedSolanaAddresses.filter(
-        (address) => address !== activatedAddress
+        (address) => address !== connectedAddresses[0]
       )
 
       siteConnectedAddresses[origin].solana = connectedSolanaAddresses

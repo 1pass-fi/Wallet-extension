@@ -460,6 +460,8 @@ export class BackgroundAccountManager extends AccountManager {
         await storage.setting.set.activatedSolanaAccountAddress(null)
         await storage.setting.set.activatedK2AccountAddress(null)
       }
+
+      await storage.setting.set.siteConnectedAddresses({})
     } catch (err) {
       console.log(err.message)
     }

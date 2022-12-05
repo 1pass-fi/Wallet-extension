@@ -127,6 +127,10 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
       cacheDirectory: true,
       cacheCompression: isEnvProduction,
       sourceMaps: false,
+      plugins: [
+        require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'),
+        require.resolve('@babel/plugin-proposal-optional-chaining')
+      ]
     },
   }
   // "postcss" loader applies autoprefixer to our CSS.

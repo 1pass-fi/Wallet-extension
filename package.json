@@ -39,7 +39,7 @@
         "url": "https://github.com/kryptokinght/react-extension-boilerplate/issues"
     },
     "dependencies": {
-        "@_koi/sdk": "^2.4.13",
+        "@_koi/sdk": "2.4.13",
         "@_koi/web3.js": "^0.0.6",
         "@metamask/contract-metadata": "^1.33.0",
         "@metamask/eth-sig-util": "^4.0.0",
@@ -56,6 +56,7 @@
         "@storybook/addons": "^6.2.9",
         "@storybook/react": "^6.2.9",
         "@truffle/hdwallet-provider": "^1.5.0",
+        "@walletconnect/sign-client": "^2.1.1",
         "@vespaiach/axios-fetch-adapter": "^0.3.0",
         "@webcomponents/webcomponentsjs": "^2.2.6",
         "@xstate/react": "^2.0.1",
@@ -122,6 +123,7 @@
         "web3": "^1.4.0",
         "webextension-polyfill": "^0.3.1",
         "xmlhttprequest-ssl": "https://github.com/longphamea/node-XMLHttpRequest",
+        "xmlhttprequest": "^1.8.0",
         "xstate": "^4.30.3"
     },
     "browserslist": [
@@ -153,6 +155,8 @@
     },
     "devDependencies": {
         "@babel/core": "^7.2.2",
+        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+        "@babel/plugin-proposal-optional-chaining": "^7.18.9",
         "@babel/polyfill": "^7.12.1",
         "@babel/preset-env": "^7.2.3",
         "@babel/preset-react": "^7.0.0",

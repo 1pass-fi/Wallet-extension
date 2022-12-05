@@ -22,6 +22,7 @@ import loadDID from './loadDID'
 import loadFriendReferralData from './loadFriendReferralData'
 import lockWallet from './lockWallet'
 import makeTransfer from './makeTransfer'
+import reloadWalletConnect from './reloadWalletConnect'
 import removeWallet from './removeWallet'
 import saveNewWallet from './saveNewWallet'
 import sendCustomTokenAr from './sendCustomTokenAr'
@@ -87,5 +88,6 @@ export default {
   sendCustomTokenSol,
   sendCustomTokenK2,
   verifyPassword,
-  test
+  test,
+  reloadWalletConnect
 }

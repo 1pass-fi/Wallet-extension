@@ -1,11 +1,9 @@
-// import { clusterApiUrl, Connection, Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js'
-// import { getOrCreateAssociatedTokenAccount, transfer } from '@solana/spl-token'
-
 import { createTransferInstruction,getOrCreateAssociatedTokenAccount, transfer } from '@solana/spl-token'
-import { clusterApiUrl, Connection, Keypair, PublicKey, sendAndConfirmTransaction,Transaction } from '@solana/web3.js'
+import { Connection, Keypair, PublicKey, sendAndConfirmTransaction,Transaction } from '@solana/web3.js'
 import { backgroundAccount } from 'services/account'
 import { SolanaTool } from 'services/solana'
 import storage from 'services/storage'
+import clusterApiUrl from 'utils/clusterApiUrl'
 
 const getSigners = (signerOrMultisig, multiSigners) => {
   return signerOrMultisig instanceof PublicKey

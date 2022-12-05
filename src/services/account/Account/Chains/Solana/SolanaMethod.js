@@ -1,11 +1,12 @@
 import { createTransferInstruction, getOrCreateAssociatedTokenAccount, TOKEN_PROGRAM_ID, transfer } from '@solana/spl-token'
-import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey, sendAndConfirmTransaction, Transaction } from '@solana/web3.js'
+import { Connection, LAMPORTS_PER_SOL, PublicKey, sendAndConfirmTransaction, Transaction } from '@solana/web3.js'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
 import { ALL_NFT_LOADED, PATH } from 'constants/koiConstants'
 import { findIndex } from 'lodash'
 import moment from 'moment'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 import { getChromeStorage } from 'utils'
+import clusterApiUrl from 'utils/clusterApiUrl'
 import * as TokenAssets from 'utils/resolveSolanaNFTs'
 
 export class SolanaMethod {

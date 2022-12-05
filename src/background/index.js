@@ -5,15 +5,16 @@ import xmlHttpRequest from 'xmlhttprequest-ssl'
 global.window = global
 
 import { IMPORTED } from 'constants/accountConstants'
-// Constants
-import { MESSAGES,OS, PATH, PORTS } from 'constants/koiConstants'
+import { OS, PATH, PORTS } from 'constants/koiConstants'
+import isEmpty from 'lodash/isEmpty'
 import storage from 'services/storage'
+import walletConnect from 'services/walletConnect'
 import { getChromeStorage } from 'utils'
+import walletConnectUtils from 'utils/walletConnect'
 
 import 'regenerator-runtime/runtime.js'
 
 import contentScriptEvents from './handlers/contentScriptEvents'
-// emitter
 import popupEvents from './handlers/popupEvents'
 import declareConstantScript from './scripts/declareConstantScript'
 import eventEmitterScript from './scripts/eventEmitterScript'
@@ -24,6 +25,7 @@ import finnieKoiiWalletProviderScript from './scripts/finnieKoiiWalletProviderSc
 import finnieRpcConnectionScript from './scripts/finnieRpcConnectionScript'
 import finnieSolanaProviderScript from './scripts/finnieSolanaProviderScript'
 import mainScript from './scripts/mainScript'
+import walletConnectEvents from './handlers/walletConnectEvents'
 import cache from './cache'
 import inject from './inject'
 import streamer from './streamer'
@@ -74,6 +76,66 @@ chrome.runtime.onInstalled.addListener(async function () {
 })
 
 streamer()
+
+const initWalletConnect = async () => {
+  try {
+    await walletConnect.init()
+    const pairings = walletConnect.signClient.core.pairing.getPairings()
+    console.log('parings', pairings)
+
+    walletConnect.signClient.on('session_proposal', (event) => {
+      walletConnect.approve(event)
+    })
+
+    walletConnect.signClient.on('session_request', async (event) => {
+      console.log('session_request event', event)
+
+      const endpoint = event.params.request.method
+      const payload = { id: event.id, topic: event.topic, params: event.params.request.params }
+
+      // validate request
+      const isValidChain = await walletConnectUtils.validateSessionRequest.validateChainID(
+        event.params
+      )
+      const isValidAccount = await walletConnectUtils.validateSessionRequest.validateAccount(
+        event.params
+      )
+
+      if (!isValidChain) {
+        walletConnect.response({
+          id: event.id,
+          topic: event.topic,
+          result: {
+            error: {
+              code: 4001,
+              message: 'No matching chain'
+            }
+          }
+        })
+        return
+      }
+
+      if (!isValidAccount) {
+        walletConnect.response({
+          id: event.id,
+          topic: event.topic,
+          result: {
+            error: {
+              code: 4004,
+              message: 'Account is not imported'
+            }
+          }
+        })
+        return
+      }
+      walletConnectEvents.sendMessage(endpoint, payload)
+    })
+  } catch (err) {
+    console.error('Init walletconnect error:', err)
+  }
+}
+
+initWalletConnect()
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.message === MESSAGES.CODE_INJECTION) {

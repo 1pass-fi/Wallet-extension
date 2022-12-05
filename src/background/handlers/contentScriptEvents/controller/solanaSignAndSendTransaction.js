@@ -1,5 +1,5 @@
 import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
-import { clusterApiUrl, Connection, Message, PublicKey,sendAndConfirmTransaction, Transaction } from '@solana/web3.js'
+import { Connection, Message, PublicKey,sendAndConfirmTransaction, Transaction } from '@solana/web3.js'
 import bs58, { decode } from 'bs58'
 // Constants
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
@@ -7,6 +7,7 @@ import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import { SolanaTool } from 'services/solana'
 import storage from 'services/storage'
+import clusterApiUrl from 'utils/clusterApiUrl'
 // Utils
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
@@ -43,7 +44,7 @@ const getTransactionDataFromMessage = async (transactionMessage) => {
       }
     }
 
-  
+
   } catch (err) {
     console.error(err)
   }
@@ -52,7 +53,7 @@ const getTransactionDataFromMessage = async (transactionMessage) => {
 export default async (payload, tab, next) => {
   try {
     const params = get(payload, 'data.params')
-    const { favicon, origin, hadPermission, hasPendingRequest } = tab
+    const { favicon, origin, hadPermission, hasPendingRequest, connectedAddresses } = tab
 
     if (!hadPermission) {
       return next({error: { code: 4100,  data: 'No permissions' }})
@@ -63,12 +64,6 @@ export default async (payload, tab, next) => {
       return
     }
     
-    const defaultSolanaAddress = await storage.setting.get.activatedSolanaAccountAddress()
-
-    const credential = await backgroundAccount.getCredentialByAddress(defaultSolanaAddress)
-
-    const key = credential.key
-
     /* Show popup for signing transaction */
     const screen = (await chrome.system.display.getInfo())[0].bounds
     const screenWidth = screen.width
@@ -130,9 +125,7 @@ export default async (payload, tab, next) => {
                 }
                 try {
                   /* Send ETH transaction */
-                  const defaultSolanaAddress = await storage.setting.get.activatedSolanaAccountAddress()
-
-                  const credential = await backgroundAccount.getCredentialByAddress(defaultSolanaAddress)
+                  const credential = await backgroundAccount.getCredentialByAddress(connectedAddresses[0])
 
                   const transactionMessage = Message.from(bs58.decode(payload.data))
                   const transaction = Transaction.populate(transactionMessage)

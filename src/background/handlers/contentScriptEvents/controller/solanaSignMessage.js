@@ -79,7 +79,7 @@ export default async (payload, tab, next) => {
             const approved = popupMessage.approved
             if (approved) {
               try {
-                const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses)
+                const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses[0])
                 const solTool = new SolanaTool(credentials)
                 const keypair = solTool.keypair
                 const signature = nacl.sign.detached(encodedMessage, keypair.secretKey)

@@ -28,7 +28,7 @@ const TransferNFT = ({
 
   const backToGallery = () => {
     onClose()
-    history.push('/v2/gallery')
+    history.push('/gallery')
   }
 
   const formattedName = useMemo(() => formatLongStringTruncate(name, 50), [name])

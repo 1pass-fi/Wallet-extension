@@ -107,7 +107,7 @@ export const LONG_LIVED_HANDLER = [
   'K2_SIGN_TRANSACTION_SUCCESS',
   'K2_SIGN_TRANSACTION_ERROR',
   'K2_SIGN_MESSAGE_SUCCESS',
-  'K2_SIGN_MESSAGE_ERROR',
+  'K2_SIGN_MESSAGE_ERROR'
 ]
 
 export const PORTS = {
@@ -293,7 +293,10 @@ export const MESSAGES = {
   K2_SIGN_TRANSACTION_ERROR: 'K2_SIGN_TRANSACTION_ERROR',
   K2_SIGN_AND_SEND_TRANSACTION: 'K2_SIGN_AND_SEND_TRANSACTION',
   K2_SIGN_AND_SEND_TRANSACTION_SUCCESS: 'K2_SIGN_AND_SEND_TRANSACTION_SUCCESS',
-  K2_SIGN_AND_SEND_TRANSACTION_ERROR: 'K2_SIGN_AND_SEND_TRANSACTION_ERROR'
+  K2_SIGN_AND_SEND_TRANSACTION_ERROR: 'K2_SIGN_AND_SEND_TRANSACTION_ERROR',
+  RELOAD_WALLET_CONNECT: 'RELOAD_WALLET_CONNECT',
+  RELOAD_WALLET_CONNECT_SUCCESS: 'RELOAD_WALLET_CONNECT_SUCCESS',
+  RELOAD_WALLET_CONNECT_ERROR: 'RELOAD_WALLET_CONNECT_ERROR'
 }
 
 export const PATH = {
@@ -365,8 +368,7 @@ export const ERROR_MESSAGE = {
   NOT_ENOUGH_ETH: `You don't have enough ETH.`,
   EXPIRED_TRANSACTION_ACTION_ERROR:
     'Something went wrong when trying to delete or resend your transaction',
-  BRIDGE_WITH_ETH_MAINNET:
-    'We currently only support Ethereum NFT bridging on the Goerli network.',
+  BRIDGE_WITH_ETH_MAINNET: 'We currently only support Ethereum NFT bridging on the Goerli network.',
   NFT_NOT_EXIST_ON_CHAIN: `This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie.`,
   BRIDGE_NFT_FAILED: 'Bridge NFT failed',
   ACCOUNT_EXIST: 'This account has already been imported.',
@@ -651,4 +653,32 @@ export const TRANSACTION_METHOD = {
   ERC721_TRANSFER_FROM: 'transferFrom',
   MINT_COLLECTIBLES: 'mintCollectibles',
   APPROVE: 'approve'
+}
+
+export const WC_ETH_CHAIN_ID = {
+  MAINNET: 'eip155:1',
+  GOERLI: 'eip155:5'
+}
+
+export const WC_SOL_CHAIN_ID = {
+  MAINNET: 'solana:4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZ',
+  DEVNET: 'solana:8E9rvCKLFQia2Y35HXjjpWzj8weVo44K'
+}
+
+export const ETH_MESSAGE = {
+  SIGN_TRANSACTION: 'eth_signTransaction',
+  SEND_TRANSACTION: 'eth_sendTransaction',
+  PERSONAL_SIGN: 'personal_sign',
+  SIGN_TYPED_DATA: 'eth_signTypedData',
+  SIGN_TYPED_DATA_V3: 'eth_signTypedData_v3',
+  SIGN_TYPED_DATA_V4: 'eth_signTypedData_v4',
+  SIGN: 'eth_sign',
+  SEND_RAW_TRANSACTION: 'eth_sendRawTransaction'
+}
+
+export const SOL_MESSAGE = {
+  SOLANA_GET_ACCOUNTS: 'solana_getAccounts', // Do not support
+  SOLANA_REQUEST_ACCOUNTS: 'solana_requestAccounts', // Do not support
+  SOLANA_SIGN_TRANSACTION: 'solana_signTransaction',
+  SOLANA_SIGN_MESSAGE: 'solana_signMessage'
 }

@@ -41,6 +41,8 @@ const useMethod = ({
 
       const sendValue = selectedToken.decimal === 1 ? value : 10 ** selectedToken.decimal * value
 
+      const maxPriorityFeePerGas = ethers.utils.parseUnits('2.5', 'gwei').toNumber()
+
       if (network === TYPE.ETHEREUM) {
         if (contractAddress) {
           // send erc20 token
@@ -101,11 +103,15 @@ const useMethod = ({
           const iface = new ethers.utils.Interface(ABI)
           const hex = iface.encodeFunctionData('transfer', [recipient, `${sendValue}`])
 
+
+
           const transactionPayload = {
             from: sender,
             to: contractAddress,
-            data: hex
+            data: hex,
+            maxPriorityFeePerGas
           }
+
           const requestPayload = {
             network: 'ETHEREUM',
             transactionPayload,
@@ -121,7 +127,8 @@ const useMethod = ({
           const transactionPayload = {
             from: sender,
             to: recipient,
-            value: fromEthToWei(value).toString(16)
+            value: fromEthToWei(value).toString(16),
+            maxPriorityFeePerGas
           }
 
           const requestPayload = {

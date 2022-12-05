@@ -17,7 +17,7 @@ export class SettingMethod {
       */
       let defaultAddress, connectedAddresses
       connectedAddresses = (await storage.setting.get.siteConnectedAddresses())[site]
-      if (isEmpty(connectedAddresses)) connectedAddresses = { ethereum: [], arweave: [], solana: [] }
+      if (isEmpty(connectedAddresses)) connectedAddresses = { ethereum: [], arweave: [], solana: [], k2: [] }
       if (network === NETWORK.ETHEREUM) {
         connectedAddresses = connectedAddresses.ethereum
         defaultAddress = await storage.setting.get.activatedEthereumAccountAddress()
@@ -30,6 +30,10 @@ export class SettingMethod {
       } else if (network === NETWORK.K2) {
         connectedAddresses = connectedAddresses.k2
         defaultAddress = await storage.setting.get.activatedK2AccountAddress()
+      }
+
+      if (network === NETWORK.ETHEREUM || network === NETWORK.SOLANA || network === NETWORK.K2) {
+        return !isEmpty(connectedAddresses)
       }
 
       return connectedAddresses?.includes(defaultAddress)

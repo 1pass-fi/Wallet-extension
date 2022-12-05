@@ -120,17 +120,13 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
   }
 
   const handleSendToken = async () => {
-    if (selectedToken?.balance < amount * Math.pow(10, selectedToken?.decimal)) {
-      setError('Not enough tokens')
-    } else {
-      await getAlchemyAddress()
-      setSendTokenClick((prev) => ++prev)
-    }
+    // await getAlchemyAddress()
+    setSendTokenClick((prev) => ++prev)
   }
   useEffect(() => {
     const sendToken = async () => {
       if (!validated) return setError(errorMessage)
-      onSendTokens()
+      await onSendTokens()
 
       switch(selectedNetwork) {
         case TYPE.ETHEREUM:

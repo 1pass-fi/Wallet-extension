@@ -1,6 +1,6 @@
 import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
 import { Message, Transaction } from '@solana/web3.js'
-import { clusterApiUrl, Connection, PublicKey, sendAndConfirmTransaction } from '@solana/web3.js'
+import { Connection, PublicKey } from '@solana/web3.js'
 import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import axios from 'axios'
 import base58 from 'bs58'
@@ -12,6 +12,7 @@ import isEmpty from 'lodash/isEmpty'
 import { backgroundAccount } from 'services/account'
 import { SolanaTool } from 'services/solana'
 import storage from 'services/storage'
+import clusterApiUrl from 'utils/clusterApiUrl'
 // Utils
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
@@ -209,28 +210,26 @@ export default async (payload, tab, next) => {
 
     createWindow(windowData, {
       beforeCreate: async () => {
-        chrome.action.setBadgeText({ text: '1' })
-        chrome.runtime.onMessage.addListener(async function (popupMessage, sender, sendResponse) {
-          if (popupMessage.requestId === requestId) {
-            const approved = popupMessage.approved
-            if (approved) {
-              var pendingRequest = await storage.generic.get.pendingRequest()
-              if (isEmpty(pendingRequest)) {
-                next({ error: { code: 4001, message: 'Request has been removed' } })
-                chrome.runtime.sendMessage({
-                  requestId,
-                  error: 'Request has been removed'
-                })
-                return
-              }
-              try {
-                const credentials = await backgroundAccount.getCredentialByAddress(
-                  connectedAddresses
-                )
-                const solTool = new SolanaTool(credentials)
-                const keypair = solTool.keypair
-                const signatures = await Promise.all(
-                  messages.map(async (message) => {
+        chrome.browserAction.setBadgeText({ text: '1' })
+        chrome.runtime.onMessage.addListener(
+          async function(popupMessage, sender, sendResponse) {
+            if (popupMessage.requestId === requestId) {
+              const approved = popupMessage.approved
+              if (approved) {
+                var pendingRequest = await storage.generic.get.pendingRequest()
+                if (isEmpty(pendingRequest)) {
+                  next({ error: { code: 4001, message: 'Request has been removed' } })
+                  chrome.runtime.sendMessage({
+                    requestId,
+                    error: 'Request has been removed'
+                  })
+                  return
+                }
+                try {
+                  const credentials = await backgroundAccount.getCredentialByAddress(connectedAddresses[0])
+                  const solTool = new SolanaTool(credentials)
+                  const keypair = solTool.keypair
+                  const signatures = await Promise.all(messages.map(async (message) => {
                     const _message = Message.from(base58.decode(message))
                     const transaction = Transaction.populate(_message)
                     transaction.sign(keypair)

@@ -1,17 +1,20 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import AddIcon from 'img/popup/add-icon.svg'
 import GalleryIcon from 'img/popup/gallery-icon.svg'
 import LockIcon from 'img/popup/lock-icon.svg'
+import GlobeIcon from 'img/wallet-connect/globe-icon.svg'
 
 const NavBar = ({ handleLockWallet }) => {
+  const history = useHistory()
+
   const goToGallery = () => {
     const url = chrome.runtime.getURL('options.html#/gallery')
     chrome.tabs.create({ url })
   }
 
-  const goToCreateNft = () => {
-    const url = chrome.runtime.getURL('options.html#/create-nft')
-    chrome.tabs.create({ url })
+  const goToWalletConnect = () => {
+    history.push('/wallet-connect-proposal')
   }
 
   return (
@@ -30,10 +33,10 @@ const NavBar = ({ handleLockWallet }) => {
       <div
         className="bg-blue-800 cursor-pointer"
         style={{ width: '138px', height: '58px' }}
-        onClick={goToCreateNft}
+        onClick={goToWalletConnect}
       >
-        <AddIcon className="mt-1.5 mx-auto" style={{ width: '25px', height: '25px' }} />
-        <div className="text-center text-white text-2xs leading-8">NEW NFT</div>
+        <GlobeIcon className="mx-auto" />
+        <div className="text-center text-white text-2xs leading-6">CONNECT</div>
       </div>
       <div
         className="bg-blue-800 cursor-pointer rounded-br-md"

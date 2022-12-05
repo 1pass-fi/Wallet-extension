@@ -50,7 +50,7 @@ const getTransactionDataFromMessage = async (transactionMessage) => {
 export default async (payload, tab, next) => {
   try {
     const params = get(payload, 'data.params')
-    const { favicon, origin, hadPermission, hasPendingRequest } = tab
+    const { favicon, origin, hadPermission, hasPendingRequest, connectedAddresses } = tab
 
     if (!hadPermission) {
       return next({error: { code: 4100,  data: 'No permissions' }})
@@ -126,9 +126,7 @@ export default async (payload, tab, next) => {
                 }
                 try {
                   /* Send K2 transaction */
-                  const defaultK2Address = await storage.setting.get.activatedK2AccountAddress()
-
-                  const credential = await backgroundAccount.getCredentialByAddress(defaultK2Address)
+                  const credential = await backgroundAccount.getCredentialByAddress(connectedAddresses[0])
 
                   const transactionMessage = Message.from(bs58.decode(payload.data))
                   const transaction = Transaction.populate(transactionMessage)

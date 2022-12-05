@@ -97,7 +97,7 @@ const SolanaSignMessage = ({ setError, setIsLoading }) => {
           className="font-light text-sm text-left tracking-finnieSpacing-wide overflow-auto"
           style={{ height: '180px' }}
         >
-          <pre>{get(requestData, 'requestPayload.message')}</pre>
+          <pre className='whitespace-pre-line overflow-y-scroll'>{get(requestData, 'requestPayload.message')}</pre>
         </div>
       </div>
 
