@@ -89,9 +89,9 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses(validTokenAddresses)
+      return validTokenAddresses
     } else {
-      setImportedTokenAddresses([])
+      return []
     }
   }
 
@@ -112,9 +112,9 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses(validTokenAddresses)
+      return validTokenAddresses
     } else {
-      setImportedTokenAddresses([])
+      return []
     }
   }
 
@@ -135,23 +135,30 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress, displa
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses(validTokenAddresses)
+      return validTokenAddresses
     } else {
-      setImportedTokenAddresses([])
+      return []
     }
   }
 
   useEffect(() => {
-    if (!isEmpty(userAddress) && !isEmpty(displayingAccount)) {
+    const loadImportedTokenAddresses = async () => {
+      setImportedTokenAddresses([])
+      let result = []
       if (displayingAccount.type === TYPE.K2) {
-        loadK2Addresses()
+        result = await loadK2Addresses()
       }
       if (displayingAccount.type === TYPE.SOLANA) {
-        loadSolanaAddresses()
+        result = await loadSolanaAddresses()
       }
       if (displayingAccount.type === TYPE.ETHEREUM) {
-        loadEthAddresses()
+        result = await loadEthAddresses()
       }
+      setImportedTokenAddresses(result)
+    }
+
+    if (!isEmpty(userAddress) && !isEmpty(displayingAccount)) {
+      loadImportedTokenAddresses()
     }
   }, [userAddress, currentProviderAddress, displayingAccount])
 

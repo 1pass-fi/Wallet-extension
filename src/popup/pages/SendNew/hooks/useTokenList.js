@@ -138,25 +138,27 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
 
   useEffect(() => {
     const loadTokenList = async () => {
+      setTokenList([])
+      let result = []
       switch (selectedNetwork) {
         case 'TYPE_ETHEREUM':
-          setTokenList(await loadEthereumTokens(userAddress, importedTokenAddresses))
+          result = await loadEthereumTokens(userAddress, importedTokenAddresses)
           break
         case 'TYPE_ARWEAVE':
-          setTokenList(await loadArweaveTokens(userAddress))
+          result = await loadArweaveTokens(userAddress)
           break
         case 'TYPE_SOLANA':
-          setTokenList(await loadSolanaTokens(userAddress, importedTokenAddresses))
+          result = await loadSolanaTokens(userAddress, importedTokenAddresses)
           break
         case 'K2':
-          console.log('TYPE_K2 ========== loadK2Tokens')
-          setTokenList(await loadK2Tokens(userAddress, importedTokenAddresses))
+          result = await loadK2Tokens(userAddress, importedTokenAddresses)
           break
       }
+      setTokenList(result)
     }
 
     if (selectedNetwork && userAddress) loadTokenList()
-  }, [selectedNetwork, userAddress, importedTokenAddresses])
+  }, [importedTokenAddresses])
 
   return { tokenList, selectedToken, setSelectedToken }
 }

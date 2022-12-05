@@ -83,9 +83,9 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses(validTokenAddresses)
+      return validTokenAddresses
     } else {
-      setImportedTokenAddresses([])
+      return []
     }
   }
 
@@ -106,9 +106,9 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses(validTokenAddresses)
+      return validTokenAddresses
     } else {
-      setImportedTokenAddresses([])
+      return []
     }
   }
 
@@ -129,27 +129,30 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
         )
       ).filter((tokenAddress) => !!tokenAddress)
 
-      setImportedTokenAddresses(validTokenAddresses)
+      return validTokenAddresses
     } else {
-      setImportedTokenAddresses([])
+      return []
     }
   }
 
   useEffect(() => {
     const loadImportedTokenAddresses = async () => {
+      setImportedTokenAddresses([])
+      let result = []
       const account = await popupAccount.getAccount({ address: userAddress })
       const accountData = await account.get.metadata()
 
       if (!isEmpty(accountData)) {
         if (accountData.type === TYPE.K2) {
-          loadK2Addresses()
+          result = await loadK2Addresses()
         }
         if (accountData.type === TYPE.SOLANA) {
-          loadSolanaAddresses()
+          result = await loadSolanaAddresses()
         }
         if (accountData.type === TYPE.ETHEREUM) {
-          loadEthAddresses()
+          result = await loadEthAddresses()
         }
+        setImportedTokenAddresses(result)
       }
     }
 
