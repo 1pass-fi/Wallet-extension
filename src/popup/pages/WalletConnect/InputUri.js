@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { setIsLoading } from 'actions/loading'
+import { TYPE } from 'constants/accountConstants'
 import BackIcon from 'img/wallet-connect/back-icon.svg'
 import BackgroundLeft from 'img/wallet-connect/bg-left.svg'
 import BackgroundRight from 'img/wallet-connect/bg-right.svg'
 import GlobeIcon from 'img/wallet-connect/globe-big-icon.svg'
 import get from 'lodash/get'
 import { setError } from 'popup/actions/error'
+import { popupAccount } from 'services/account'
 import walletConnect from 'services/walletConnect'
 
 const ERROR_MESSAGE = {
@@ -21,7 +23,7 @@ const InputUri = ({ setPage, setProposal }) => {
   const dispatch = useDispatch()
   const [uri, setUri] = useState('')
 
-  const validateProposal = (proposal) => {
+  const validateProposal = async (proposal) => {
     try {
       const validChains = [
         'eip155:1',
@@ -37,7 +39,12 @@ const InputUri = ({ setPage, setProposal }) => {
         chains = [...chains, ..._chains]
       })
 
-      return chains.every((chain) => validChains.includes(chain)) && chains?.length === 1
+      if (chains.length !== 1 || !validChains.includes(chains[0])) return false
+
+      const type = chains[0].includes('eip155') ? TYPE.ETHEREUM : TYPE.SOLANA
+      let accounts = await popupAccount.getAllMetadata(type)
+
+      return accounts?.length !== 0
     } catch (err) {
       console.error(err)
       return false
@@ -48,9 +55,9 @@ const InputUri = ({ setPage, setProposal }) => {
     try {
       dispatch(setIsLoading(true))
       await walletConnect.init()
-      walletConnect.signClient.on('session_proposal', (proposal) => {
+      walletConnect.signClient.on('session_proposal', async (proposal) => {
         setProposal(proposal)
-        const isValidProposal = validateProposal(proposal)
+        const isValidProposal = await validateProposal(proposal)
         if (isValidProposal) {
           setPage('APPROVAL')
         } else {

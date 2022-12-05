@@ -62,14 +62,18 @@ const Approval = ({ proposal }) => {
 
   const metadata = useMemo(() => {
     if (!isEmpty(proposal)) {
-      const origin = get(proposal, 'params.proposer.metadata.url')
-      const namespace = Object.keys(get(proposal, 'params.requiredNamespaces', {}))[0]
-      let methods = get(proposal, `params.requiredNamespaces[${namespace}].methods`, [])
-      methods = methods.join(', ')
-      let events = get(proposal, `params.requiredNamespaces[${namespace}].events`, [])
-      events = events.join(', ')
-
-      return { origin, namespace, methods, events }
+      try {
+        const origin = get(proposal, 'params.proposer.metadata.url')
+        const namespace = Object.keys(get(proposal, 'params.requiredNamespaces', {}))[0]
+        let methods = get(proposal, `params.requiredNamespaces[${namespace}].methods`, [])
+        methods = methods.join(', ')
+        let events = get(proposal, `params.requiredNamespaces[${namespace}].events`, [])
+        events = events.join(', ')
+  
+        return { origin, namespace, methods, events }
+      } catch (err) {
+        console.error(err)
+      }
     }
 
     return { origin: '---', namespace: '', methods: '', events: '' }
