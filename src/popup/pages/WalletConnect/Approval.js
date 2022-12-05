@@ -46,7 +46,8 @@ const Approval = ({ proposal }) => {
 
   useEffect(() => {
     const loadAccounts = async () => {
-      let accounts = await popupAccount.getAllMetadata(TYPE.ETHEREUM)
+      const type = metadata.namespace === 'eip155' ? TYPE.ETHEREUM : TYPE.SOLANA
+      let accounts = await popupAccount.getAllMetadata(type)
 
       accounts = accounts.map(account => ({
         address: account?.address,
@@ -56,25 +57,37 @@ const Approval = ({ proposal }) => {
       setAccounts(accounts)
     }
 
-    loadAccounts()
-  }, [])
+    if (metadata.namespace) loadAccounts()
+  }, [metadata])
 
   const metadata = useMemo(() => {
-    console.log('proposal', proposal)
     if (!isEmpty(proposal)) {
-      const origin = get(proposal, 'params.proposer.metadata.url')
-
-      return { origin }
+      try {
+        const origin = get(proposal, 'params.proposer.metadata.url')
+        const namespace = Object.keys(get(proposal, 'params.requiredNamespaces', {}))[0]
+        let methods = get(proposal, `params.requiredNamespaces[${namespace}].methods`, [])
+        methods = methods.join(', ')
+        let events = get(proposal, `params.requiredNamespaces[${namespace}].events`, [])
+        events = events.join(', ')
+  
+        return { origin, namespace, methods, events }
+      } catch (err) {
+        console.error(err)
+      }
     }
 
-    return { origin: '---' }
+    return { origin: '---', namespace: '', methods: '', events: '' }
   }, [proposal])
 
   const handleApprove = async () => {
     try {
       dispatch(setIsLoading(true))
       if (isEmpty(selectedAccounts)) throw new Error('No selected account')
-      await walletConnect.approve(proposal, { eip155: selectedAccounts })
+      let payload
+      if (metadata.namespace === 'eip155') payload = { eip155: selectedAccounts }
+      else payload = { solana: selectedAccounts }
+
+      await walletConnect.approve(proposal, payload)
       await request.wallet.reloadWalletConnect()
       dispatch(setIsLoading(false))
       history.push('/')
@@ -106,15 +119,15 @@ const Approval = ({ proposal }) => {
 
         {/* REVIEW PERMISSIONS */}
         <div className='mt-5'>
-          <div className='color-indigo font-semibold'>Review eip155 permissions:</div>
+          <div className='color-indigo font-semibold'>Review {metadata.namespace} permissions:</div>
           <div className='mt-4 flex'>
             <div className='pt-1'><Rectangle /></div>
-            <div style={{width:'317px'}} className='ml-3 color-indigo text-xs flex items-start'>Method: eth_sendTransaction, eth_signTransaction, eth_sign, personal_sign, eth_signTypedData</div>
+            <div style={{width:'317px'}} className='ml-3 color-indigo text-xs flex items-start'>Method: {metadata.methods}</div>
           </div>
-          <div className='mt-4 flex'>
+          {metadata.events && <div className='mt-4 flex'>
             <div className='pt-1'><Rectangle /></div>
-            <div style={{width:'317px'}} className='ml-3 color-indigo text-xs'>Events: chainChanged, accountsChanged</div>
-          </div>
+            <div style={{width:'317px'}} className='ml-3 color-indigo text-xs'>Events: {metadata.events}</div>
+          </div>}
         </div>
 
 

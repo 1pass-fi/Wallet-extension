@@ -1,17 +1,24 @@
-import { getInternalError, getSdkError } from '@walletconnect/utils'
+import { getSdkError } from '@walletconnect/utils'
+import base58 from 'bs58'
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
-import { ethers } from 'ethers'
-import { get, isEmpty } from 'lodash'
+import { get } from 'lodash'
 import { backgroundAccount } from 'services/account'
+import { SolanaTool } from 'services/solana'
 import storage from 'services/storage'
-import ethereumUtils from 'utils/ethereumUtils'
+import nacl from 'tweetnacl'
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
+
 export default async (payload, next) => {
   try {
-    const params = get(payload, 'params')
+    console.log('solana sign message')
+    console.log('payload', payload)
 
-    /* Show popup for signing transaction */
+    const params = get(payload, 'params')
+    const encodedMessage = get(params, 'message')
+    const message = new TextDecoder().decode(base58.decode(encodedMessage))
+
+    /* Show popup */
     const screenWidth = screen.availWidth
     const screenHeight = screen.availHeight
     const os = window.localStorage.getItem(OS)
@@ -39,13 +46,10 @@ export default async (payload, next) => {
     }
 
     const requestId = uuid()
-    const requestPayload = {
+    const requestData = {
       requestId,
-      isEthereum: true,
-      network: 'ETHEREUM',
-      transactionPayload: {
-        ...params[0]
-      }
+      isSolana: true,
+      requestPayload: { message }
     }
 
     createWindow(windowData, {
@@ -55,45 +59,32 @@ export default async (payload, next) => {
           if (popupMessage.requestId === requestId) {
             const approved = popupMessage.approved
             if (approved) {
-              var pendingRequest = await storage.generic.get.pendingRequest()
-              if (isEmpty(pendingRequest)) {
-                next({ error: getInternalError('EXPIRED') })
-                chrome.runtime.sendMessage({
-                  requestId,
-                  error: 'Request has been removed'
-                })
-                return
-              }
               try {
-                /* Send ETH transaction */
-                const credential = await backgroundAccount.getCredentialByAddress(
-                  ethers.utils.getAddress(get(params[0], 'from'))
+                const credentials = await backgroundAccount.getCredentialByAddress(
+                  get(params, 'pubkey')
                 )
+                const solTool = new SolanaTool(credentials)
+                const keypair = solTool.keypair
 
-                const provider = await storage.setting.get.ethereumProvider()
-
-                const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(
-                  provider,
-                  credential.key
+                const signature = nacl.sign.detached(
+                  base58.decode(encodedMessage),
+                  keypair.secretKey
                 )
+                console.log('signature', signature)
 
-                const signer = wallet.connect(ethersProvider)
-                const transactionPayload = params[0]
+                if (
+                  nacl.sign.detached.verify(
+                    base58.decode(encodedMessage),
+                    signature,
+                    keypair.publicKey.toBytes()
+                  )
+                )
+                  next({ data: { signature: base58.encode(signature) } })
+                else next({ error: { code: 4001, message: 'Invalid signature' } })
 
-                if (transactionPayload.hasOwnProperty('gas')) {
-                  transactionPayload.gasLimit = transactionPayload.gas
-                  delete transactionPayload.gas
-                }
-
-                const rawTransaction = await signer.signTransaction(transactionPayload)
-                const signedTransaction = ethers.utils.parseTransaction(rawTransaction)
-                const txHash = get(signedTransaction, 'hash')
-                const txReceipt = await (await ethersProvider.sendTransaction(rawTransaction)).wait()
-
-                next({ data: txHash })
                 chrome.runtime.sendMessage({ requestId, finished: true })
               } catch (err) {
-                console.error('Send eth error:', err.message)
+                console.error('Solana sign message error: ', err)
                 chrome.runtime.sendMessage({ requestId, finished: true })
                 next({ error: { code: 4001, message: err.message } })
               }
@@ -104,8 +95,8 @@ export default async (payload, next) => {
         })
 
         await storage.generic.set.pendingRequest({
-          type: REQUEST.ETH_TRANSACTION,
-          data: requestPayload
+          type: REQUEST.SOLANA_SIGN_MESSAGE,
+          data: requestData
         })
       },
       afterClose: async () => {
@@ -114,7 +105,8 @@ export default async (payload, next) => {
         await storage.generic.set.pendingRequest({})
       }
     })
-  } catch (err) {
-    next({ error: { code: 4001, message: err.message } })
+  } catch (error) {
+    console.error(err)
+    next({ error: { code: 4001, message: error.message } })
   }
 }
