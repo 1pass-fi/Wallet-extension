@@ -1,5 +1,4 @@
 import {
-  clusterApiUrl,
   Connection,
   Keypair,
   LAMPORTS_PER_SOL,
@@ -12,6 +11,7 @@ import bs58 from 'bs58'
 import { derivePath } from 'ed25519-hd-key'
 import isEmpty from 'lodash/isEmpty'
 import storage from 'services/storage'
+import clusterApiUrl from 'utils/clusterApiUrl'
 
 export class SolanaTool {
   constructor(credentials, provider) {

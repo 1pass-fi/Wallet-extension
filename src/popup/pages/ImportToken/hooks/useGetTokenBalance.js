@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { AccountLayout, TOKEN_PROGRAM_ID } from '@solana/spl-token'
-import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js'
+import { Connection, PublicKey } from '@solana/web3.js'
 import ERC20_ABI from 'abi/ERC20.json'
 import { TYPE } from 'constants/accountConstants'
 import storage from 'services/storage'
 import { isEthereumAddress, isSolanaAddress } from 'utils'
+import clusterApiUrl from 'utils/clusterApiUrl'
 import { getK2CustomTokensData, getSolanaCustomTokensData } from 'utils/getTokenData'
 import Web3 from 'web3'
 

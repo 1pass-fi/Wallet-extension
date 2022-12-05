@@ -9,7 +9,6 @@ import {
   SystemProgram as SystemProgramK2,
   Transaction as TransactionK2} from '@_koi/web3.js'
 import {
-  clusterApiUrl,
   Connection,
   Keypair,
   LAMPORTS_PER_SOL,
@@ -23,6 +22,7 @@ import { get, isEmpty,isNumber } from 'lodash'
 import arweave from 'services/arweave'
 import storage from 'services/storage'
 import { fromLampToSol,numberFormat } from 'utils'
+import clusterApiUrl from 'utils/clusterApiUrl'
 import Web3 from 'web3'
 
 
