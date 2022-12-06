@@ -9,10 +9,9 @@
   dependencies:
     smartweave "^0.4.45"
 
-"@_koi/sdk@2.4.13":
+"@_koi/sdk@https://github.com/minhvu-eastagile/koi-tools":
   version "2.4.13"
-  resolved "https://registry.yarnpkg.com/@_koi/sdk/-/sdk-2.4.13.tgz#c6c4d79db14af179035bde03426b7091d553e06f"
-  integrity sha512-vEZ8QPCBgtCoHK4uc95wY042gGAnBDh5pu8vbNdXY8whAVESrtv1poxT0HLqEtUR21XNATVXk9lby6LBxxF2Zw==
+  resolved "https://github.com/minhvu-eastagile/koi-tools#938a218c42f5fbe4b1c4676c388126a900337004"
   dependencies:
     "@_koi/kohaku" "^1.1.1"
     arweave "^1.10.18"
