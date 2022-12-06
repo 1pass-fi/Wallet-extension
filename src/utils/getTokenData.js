@@ -58,13 +58,18 @@ const getTokenData = async (contractAddress, userAddress) => {
   const balance = await tokenContract.balanceOf(userAddress)
   const selectedCurrency = (await storage.setting.get.selectedCurrency()) || 'USD'
 
-  const { data } = await axios.request({
-    url: `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${contractAddress}&vs_currencies=${selectedCurrency}`,
-    method: 'GET',
-    adapter: axiosAdapter
-  })
+  let price = undefined
 
-  const price = get(data, [contractAddress.toLowerCase(), selectedCurrency.toLowerCase()])
+  try {
+    const { data } = await axios.request({
+      url: `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${contractAddress}&vs_currencies=${selectedCurrency}`,
+      method: 'GET',
+      adapter: axiosAdapter
+    })
+    price = get(data, [contractAddress.toLowerCase(), selectedCurrency.toLowerCase()])
+  } catch (error) {
+    console.log('Failed to get ETH price: ', error)
+  }
 
   return {
     logo,
@@ -138,13 +143,19 @@ export const getSolanaCustomTokensData = async (contractAddress, userAddress) =>
     const { logoURI: logo, name, decimals: decimal, symbol } = foundToken
 
     const selectedCurrency = (await storage.setting.get.selectedCurrency()) || 'USD'
-    const { data } = await axios.request({
-      url: `https://api.coingecko.com/api/v3/simple/token_price/solana?contract_addresses=${contractAddress}&vs_currencies=${selectedCurrency}`,
-      adapter: axiosAdapter,
-      method: 'GET'
-    })
+    let price = undefined
 
-    const price = get(data, [contractAddress.toLowerCase(), selectedCurrency.toLowerCase()])
+    try {
+      const { data } = await axios.request({
+        url: `https://api.coingecko.com/api/v3/simple/token_price/solana?contract_addresses=${contractAddress}&vs_currencies=${selectedCurrency}`,
+        adapter: axiosAdapter,
+        method: 'GET'
+      })
+
+      price = get(data, [contractAddress.toLowerCase(), selectedCurrency.toLowerCase()])
+    } catch (error) {
+      console.log('Failed to get SOL price: ', error)
+    }
 
     const tokenAccounts = await connection.getTokenAccountsByOwner(new PublicKey(userAddress), {
       programId: TOKEN_PROGRAM_ID

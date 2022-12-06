@@ -41,7 +41,8 @@ const usePrice = ({ setCurrency, setPrice, setError }) => {
         })
       }
     } catch (err) {
-      setError(err.message)
+      console.log('Failed to load price', err.message)
+      // setError(err.message)
     }
   }
 
