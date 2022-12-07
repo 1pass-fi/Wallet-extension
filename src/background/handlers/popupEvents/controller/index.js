@@ -1,3 +1,4 @@
+import approveWalletConnect from './approveWalletConnect'
 import bridgeNft from './bridgeNft'
 import changeAccountName from './changeAccountName'
 import connect from './connect'
@@ -22,7 +23,7 @@ import loadDID from './loadDID'
 import loadFriendReferralData from './loadFriendReferralData'
 import lockWallet from './lockWallet'
 import makeTransfer from './makeTransfer'
-import reloadWalletConnect from './reloadWalletConnect'
+import pairingWalletConnect from './pairingWalletConnect'
 import removeWallet from './removeWallet'
 import saveNewWallet from './saveNewWallet'
 import sendCustomTokenAr from './sendCustomTokenAr'
@@ -89,5 +90,6 @@ export default {
   sendCustomTokenK2,
   verifyPassword,
   test,
-  reloadWalletConnect
+  pairingWalletConnect,
+  approveWalletConnect
 }

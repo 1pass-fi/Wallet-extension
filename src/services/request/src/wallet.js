@@ -168,7 +168,11 @@ export class WalletRequest extends Request {
     return this.promise(MESSAGES.VERIFY_PASSWORD, body)
   }
 
-  reloadWalletConnect(body) {
-    return this.promise(MESSAGES.RELOAD_WALLET_CONNECT, body)
+  pairingWalletConnect(body) {
+    return this.promise(MESSAGES.PAIRING_WALLET_CONNECT, body)
+  }
+
+  approveWalletConnect(body) {
+    return this.promise(MESSAGES.APPROVE_WALLET_CONNECT, body)
   }
 }

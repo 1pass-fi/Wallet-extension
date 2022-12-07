@@ -26,6 +26,7 @@ import finnieRpcConnectionScript from './scripts/finnieRpcConnectionScript'
 import finnieSolanaProviderScript from './scripts/finnieSolanaProviderScript'
 import mainScript from './scripts/mainScript'
 import cache from './cache'
+import helpers from './helpers'
 import inject from './inject'
 import streamer from './streamer'
 
@@ -83,7 +84,10 @@ const initWalletConnect = async () => {
     console.log('parings', pairings)
 
     walletConnect.signClient.on('session_proposal', (event) => {
-      walletConnect.approve(event)
+      helpers.sendMessageToPopupPorts({
+        type: MESSAGES.PAIRING_WALLET_CONNECT_RESPONSE,
+        payload: event
+      })
     })
 
     walletConnect.signClient.on('session_request', async (event) => {

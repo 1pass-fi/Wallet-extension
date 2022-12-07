@@ -19,10 +19,12 @@ class WalletConnect {
 
   async init() {
     try {
-      this.signClient = await SignClient.init({
-        projectId: PROJECT_ID,
-        metadata: PROJECT_METADATA
-      })
+      if (!this.signClient) {
+        this.signClient = await SignClient.init({
+          projectId: PROJECT_ID,
+          metadata: PROJECT_METADATA
+        })
+      }
     } catch (err) {
       console.error('walletconnect-init', err)
     }
@@ -137,32 +139,6 @@ class WalletConnect {
       await this.signClient.respond({ topic, response: responsePayload })
     } catch (err) {
       console.error('walletconnect-response', err)
-    }
-  }
-
-  async reload() {
-    try {
-      const sessionProposalCb = (event) => {
-        this.approve(event)
-      }
-  
-      const sessionRequestCb = (event) => {
-        console.log('session_request event', event)
-  
-        const endpoint = event.params.request.method
-        const payload = { id: event.id, topic: event.topic, params: event.params.request.params }
-        walletConnectEvents.sendMessage(endpoint, payload)
-      }
-  
-      setTimeout(async () => {
-        await this.init()
-        const pairings = walletConnect.signClient.core.pairing.getPairings()
-    
-        this.signClient.on('session_proposal', sessionProposalCb)
-        this.signClient.on('session_request', sessionRequestCb)
-      }, 5000)
-    } catch (err) {
-      console.error('walletconnect-reload', err)
     }
   }
 }
