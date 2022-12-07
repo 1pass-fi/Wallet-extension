@@ -51,7 +51,8 @@ const getEmitter = () => {
   popupEvents.on(MESSAGES.SEND_CUSTOM_TOKEN_K2, controller.sendCustomTokenK2)
   popupEvents.on(MESSAGES.VERIFY_PASSWORD, controller.verifyPassword)
   popupEvents.on(MESSAGES.TEST, controller.test)
-  popupEvents.on(MESSAGES.RELOAD_WALLET_CONNECT, controller.reloadWalletConnect)
+  popupEvents.on(MESSAGES.PAIRING_WALLET_CONNECT, controller.pairingWalletConnect)
+  popupEvents.on(MESSAGES.APPROVE_WALLET_CONNECT, controller.approveWalletConnect)
   return popupEvents
 }
 
