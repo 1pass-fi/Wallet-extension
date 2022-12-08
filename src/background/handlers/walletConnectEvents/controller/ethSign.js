@@ -1,15 +1,14 @@
-import { concatSig } from '@metamask/eth-sig-util'
-import { getSdkError } from '@walletconnect/utils'
+import { getInternalError, getSdkError } from '@walletconnect/utils'
 import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
-import { ecsign, stripHexPrefix } from 'ethereumjs-util'
 import { ethers } from 'ethers'
 import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
+import ethereumUtils from 'utils/ethereumUtils'
 import { createWindow } from 'utils/extension'
 import { v4 as uuid } from 'uuid'
 
-export function convertHexToUtf8(value) {
+function convertHexToUtf8(value) {
   if (ethers.utils.isHexString(value)) {
     return ethers.utils.toUtf8String(value)
   }
@@ -19,7 +18,7 @@ export function convertHexToUtf8(value) {
 export default async (payload, next) => {
   try {
     const params = get(payload, 'params')
-    const message = params[1]
+    const message = convertHexToUtf8(params[1])
 
     /* Show popup */
     const screen = (await chrome.system.display.getInfo())[0].bounds
@@ -70,14 +69,22 @@ export default async (payload, next) => {
                   ethers.utils.getAddress(params[0])
                 )
 
-                const msgSig = ecsign(
-                  Buffer.from(stripHexPrefix(message), 'hex'),
-                  Buffer.from(stripHexPrefix(credential.key), 'hex')
+                const provider = await storage.setting.get.ethereumProvider()
+                const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(
+                  provider,
+                  credential.key
                 )
 
-                const rawMsgSig = concatSig(msgSig.v, msgSig.r, msgSig.s)
+                const signer = wallet.connect(ethersProvider)
+                const msgSig = await signer.signMessage(message)
 
-                next({ data: rawMsgSig })
+                const verifiedAddress = ethers.utils.verifyMessage(message, msgSig)
+
+                if (verifiedAddress === credential.address) {
+                  next({ data: msgSig })
+                } else {
+                  next({ error: getInternalError('NO_MATCHING_KEY') })
+                }
 
                 chrome.runtime.sendMessage({ requestId, finished: true })
               } catch (err) {
