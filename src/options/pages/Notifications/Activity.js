@@ -51,7 +51,6 @@ const Activity = () => {
     setAccountOption(address)
   }
 
-  console.log('activities', activities)
 
   return (
     <div className="pt-4 text-white">

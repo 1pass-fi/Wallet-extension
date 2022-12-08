@@ -153,10 +153,8 @@ const useGetFee = ({ network, transactionPayload }) => {
     // TODO Minh Vu load provider from storage
     const k2Provider = (await storage.setting.get.k2Provider()) || 'testnet'
     const connection = new ConnectionK2(clusterApiUrlK2(k2Provider), 'confirmed')
-    console.log('getK2Fee k2Provider =========', connection)
 
     let blockhash = (await connection.getRecentBlockhash('finalized')).blockhash
-    console.log('getK2Fee k2Provider =========', blockhash)
 
     transaction.recentBlockhash = blockhash
     transaction.feePayer = new PublicKeyK2(senderAddress)

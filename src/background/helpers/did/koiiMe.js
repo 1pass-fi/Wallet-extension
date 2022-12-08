@@ -41,8 +41,6 @@ export const mapKoiiMe = async ({ txId, kID, account }) => {
       }
     }
 
-    console.log('kid register: ', transactionId)
-
     await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransaction)
     return {kIDCreated: transactionId, id: 'abcd' }
   } catch (err) {

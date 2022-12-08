@@ -50,7 +50,6 @@ const Select = ({ options, value, onChange, emptyOption = false }) => {
 
   useEffect(() => {
     const currentProvider = find(options, (o) => o.value === value)
-    // console.log('value changed', currentProvider)
     setSelectedItem(currentProvider ? currentProvider : {})
   }, [value])
 

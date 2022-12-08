@@ -42,7 +42,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
 
       history.push('*')
     } catch (error) {
-      console.log('Failed to import token - Error: ', error.message)
+      console.error('Failed to import token - Error: ', error.message)
     }
   }
 

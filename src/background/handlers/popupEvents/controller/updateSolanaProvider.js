@@ -10,7 +10,6 @@ export default async (payload, next) => {
     const currentSolanaProvider = await storage.setting.get.solanaProvider()
 
     if (solanaProvider !== currentSolanaProvider) {
-      console.log('updateSolanaProvider ', solanaProvider)
       await storage.setting.set.solanaProvider(solanaProvider)
 
       if (!isGalleryRequest) {

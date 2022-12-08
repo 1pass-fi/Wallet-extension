@@ -146,7 +146,6 @@ const AccountCard = ({
       try {
         dispatch(setIsLoading)
         const siteAddresses = await getSiteConnectedAddresses(account.address, account.type)
-        console.log('siteAddresses', siteAddresses)
         setSiteConnectedAddresses(siteAddresses)
         dispatch(setLoaded)
       } catch (error) {

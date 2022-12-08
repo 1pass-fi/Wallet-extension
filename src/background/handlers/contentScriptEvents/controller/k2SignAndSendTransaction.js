@@ -145,8 +145,6 @@ export default async (payload, tab, next) => {
                 const transactionMessage = Message.from(bs58.decode(payload.data))
                 const transaction = Transaction.populate(transactionMessage)
 
-                console.log('transactionMessage', transactionMessage)
-
                 const k2Provider = await storage.setting.get.k2Provider()
                 const connection = new Connection(clusterApiUrl(k2Provider), 'confirmed')
                 const tool = new K2Tool(credential)

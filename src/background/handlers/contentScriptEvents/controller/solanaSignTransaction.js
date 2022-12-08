@@ -142,7 +142,6 @@ export default async (payload, tab, next) => {
                 const transaction = Transaction.populate(transactionMessage)
 
                 transaction.sign(keypair)
-                console.log('signed transaction', transaction)
 
                 const encodedSignedTransaction = base58.encode(transaction.serialize())
 

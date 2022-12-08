@@ -11,8 +11,7 @@ import { v4 as uuid } from 'uuid'
 
 export default async (payload, next) => {
   try {
-    console.log('solana sign message')
-    console.log('payload', payload)
+    console.log('solana sign message', payload)
 
     const params = get(payload, 'params')
     const encodedMessage = get(params, 'message')

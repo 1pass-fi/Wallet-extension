@@ -28,8 +28,6 @@ const createReactAppDID = async (contractId, account) => {
     string: true
   })
 
-  console.log('reactFile', reactFile.length)
-
   const tx = await arweave.createTransaction({
     data: reactFile
   })
@@ -43,7 +41,6 @@ const createReactAppDID = async (contractId, account) => {
   tx.addTag('Koii-Did', 'CreateReactApp')
 
   await account.method.signTx(tx)
-  console.log('signed tx', tx)
   const uploader = await arweave.transactions.getUploader(tx)
   while (!uploader.isComplete) {
     await uploader.uploadChunk()

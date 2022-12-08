@@ -30,21 +30,18 @@ export const getDisplayAddress = (address, head = 6, tail = 4) => {
  */
 export const saveImageDataToStorage = async (file) => {
   const url = URL.createObjectURL(file)
-  // console.log('bottomButton- file', file)
 
   // get arrayBuffer
   const response = await fetch(url)
   const blob = await response.blob()
   const dataBuffer = await blob.arrayBuffer()
-  // console.log('bottomButton- dataBuffer', dataBuffer)
 
   // create a 8bit array and save to local storage
   let u8 = new Int8Array(dataBuffer)
-  // console.log('bottomButton- u8', u8)
 
   // save u8 to local storage
   u8 = JSON.stringify(u8, null, 2)
-  // console.log('bottomButton- u8', u8)
+
   await setChromeStorage({ NFT_BIT_DATA: u8 })
   await storage.generic.set.nftBitData(u8)
 }

@@ -9,7 +9,7 @@ export default async (payload, next) => {
     const account = await backgroundAccount.getAccount(credentials)
 
     const kidData = await account.method.loadKID()
-    console.log('LOAD_KID', kidData)
+
     await account.set.kid(kidData)
     next({ data: kidData })
   } catch (err) {

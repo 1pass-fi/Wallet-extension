@@ -85,8 +85,6 @@ export class K2Method {
     if (this.k2Tool.connection === null) throw new Error('No connection')
     const connection = this.k2Tool.connection
 
-    console.log('K2 provider', connection)
-
     const wallets = [this.k2Tool.address]
     const tokenAccountsByOwnerAddress = await Promise.all(
       wallets.map(async (address) =>

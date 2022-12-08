@@ -67,7 +67,6 @@ const useSimulation = ({ network, transactionPayload }) => {
     if (value) rawTx.value = value
     if (transactionData) rawTx.data = transactionData
 
-    console.log('simulateTransaction rawTx', rawTx)
     const requestBody = {
       options: {
         metadata: true

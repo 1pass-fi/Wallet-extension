@@ -9,8 +9,6 @@ export default async (payload, tab, next) => {
   const { didData } = payload.data
   const { origin, favicon, hadPermission, hasPendingRequest, activatedAddress } = tab
 
-  console.log('didData', didData)
-
   if (!hadPermission) {
     next({ data: { status: 400, data: 'Do not have permissions.' } })
     return

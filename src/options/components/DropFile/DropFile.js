@@ -36,7 +36,6 @@ const DropFile = ({
   })
 
   useEffect(() => {
-    console.log('accepted files', acceptedFiles)
     if (!isCreateCollection) setFile(acceptedFiles ? acceptedFiles[0] : {})
     else setFiles(acceptedFiles)
   }, [acceptedFiles])

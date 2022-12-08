@@ -99,12 +99,6 @@ const useMethod = ({
   }
 
   const handleSendCustomTokenSol = async () => {
-    console.log({
-      sender: transactionPayload.from,
-      customTokenRecipient,
-      contractAddress,
-      rawValue
-    })
     return await request.wallet.sendCustomTokenSol({
       sender: transactionPayload.from,
       customTokenRecipient,
@@ -114,12 +108,6 @@ const useMethod = ({
   }
 
   const handleSendCustomTokenK2 = async () => {
-    console.log({
-      sender: transactionPayload.from,
-      customTokenRecipient,
-      contractAddress,
-      rawValue
-    })
     return await request.wallet.sendCustomTokenK2({
       sender: transactionPayload.from,
       customTokenRecipient,

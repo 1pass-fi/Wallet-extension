@@ -145,7 +145,6 @@ export default async (payload, tab, next) => {
                 transaction.feePayer = keypair.publicKey // PublicKey
 
                 transaction.sign(keypair)
-                console.log('K2 signed transaction', transaction)
 
                 const encodedSignedTransaction = base58.encode(transaction.serialize())
 

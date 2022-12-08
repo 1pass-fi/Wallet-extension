@@ -19,9 +19,6 @@ export class K2Static {
 
       await k2.importWallet(keyOrSeedphrase, type)
 
-      // TODO testing DatH - LongP
-      console.log('loadWallet k2', k2)
-
       return k2.address
     } catch (err) {
       throw new Error(err.message)

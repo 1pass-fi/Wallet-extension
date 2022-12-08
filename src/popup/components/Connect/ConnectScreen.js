@@ -66,7 +66,6 @@ const ConnectScreen = ({
   useEffect(() => {
     const loadRequest = async () => {
       const request = await storage.generic.get.pendingRequest()
-      console.log('pending request', request)
 
       const requestOrigin = get(request, 'data.origin')
       const requestFavicon = get(request, 'data.favicon')

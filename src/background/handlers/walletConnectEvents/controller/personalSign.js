@@ -80,8 +80,6 @@ export default async (payload, next) => {
 
                 const verifiedAddress = ethers.utils.verifyMessage(message, msgSig)
 
-                console.log('verifiedAddress', verifiedAddress)
-
                 if (verifiedAddress === credential.address) {
                   next({ data: msgSig })
                 } else {

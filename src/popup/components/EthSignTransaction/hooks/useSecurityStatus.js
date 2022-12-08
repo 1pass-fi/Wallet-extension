@@ -19,7 +19,6 @@ const useSecurityStatus = ({ setIsLoading, url }) => {
         return
       }
       const { data } = await axios.get(`https://api.sunrise.wtf/api/v1/status?url=${url}`)
-      console.log('getTrustStat ', url, data)
       setTrustStat(get(data, 'status.trust_score'))
     } catch (error) {
       console.log('Failed to get Trust stat for ', url, '. Error: ', error)

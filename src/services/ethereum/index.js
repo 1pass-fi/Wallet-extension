@@ -96,7 +96,6 @@ export class EthereumTool {
 
     const wallet = hdwallet.derivePath(wallet_hdpath).getWallet()
     const address = '0x' + wallet.getAddress().toString('hex')
-    console.log('address: ', address)
 
     const privateKey = wallet.getPrivateKey().toString('hex')
     // const restoredWallet = this.#web3.eth.accounts.privateKeyToAccount(privateKey)

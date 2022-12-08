@@ -12,8 +12,6 @@ export default async (payload, account) => {
   if (!(account instanceof ArweaveAccount)) throw new Error(ERROR_MESSAGE.DID.INVALID_ACCOUNT_INPUT)
   const ownerAddress = await account.get.address()
 
-  console.log('payload', payload)
-
   let data = didSchema.validate(payload, ownerAddress)
 
   if (data.error) {
@@ -27,10 +25,6 @@ export default async (payload, account) => {
     decode: true,
     string: true
   })
-
-  console.log('data', data)
-
-  console.log('reactFile', reactFile.length)
 
   const initialState = {
     owner: ownerAddress,
@@ -47,7 +41,6 @@ export default async (payload, account) => {
   }
 
   const contractId = await deploySmartcontract(initialState, ownerAddress)
-  console.log('smartcontract id', contractId)
 
   const tx = await arweave.createTransaction({
     data: reactFile
@@ -62,7 +55,6 @@ export default async (payload, account) => {
   tx.addTag('Koii-Did', 'CreateReactApp')
 
   await account.method.signTx(tx)
-  console.log('signed tx', tx)
   const uploader = await arweave.transactions.getUploader(tx)
   while (!uploader.isComplete) {
     await uploader.uploadChunk()
@@ -71,7 +63,6 @@ export default async (payload, account) => {
       uploader.uploadedChunks + '/' + uploader.totalChunks
     )
   }
-  console.log('react id', tx.id)
   return [tx.id, contractId]
 }
 

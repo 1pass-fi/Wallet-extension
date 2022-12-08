@@ -28,8 +28,6 @@ export default async (payload, next) => {
   try {
     const { sender, customTokenRecipient, contractAddress, rawValue } = payload.data
 
-    console.log({ sender, customTokenRecipient, contractAddress, rawValue })
-
     const credentials = await backgroundAccount.getCredentialByAddress(sender)
 
     const k2Tool = new K2Tool(credentials)

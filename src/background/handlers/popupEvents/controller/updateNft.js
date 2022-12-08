@@ -8,7 +8,6 @@ import { smartweave } from 'smartweave'
 export default async (payload, next) => {
   try {
     const { isPrivate, address, txId } = payload.data
-    console.log('INPUT', { isPrivate, address, txId })
     if (!address) {
       next({ error: 'Address not found' })
       return

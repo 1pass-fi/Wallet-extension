@@ -30,7 +30,6 @@ export default (css) => {
     }
     
     key = key.split('.')[1] || undefined
-    console.log(key)
     if (key && classes.includes(key))
       data[key] = newAttributes
   }
@@ -56,7 +55,6 @@ function parseCSS(css) {
     }
     
     key = key.split('.')[1] || undefined
-    console.log(key)
     if(key)
       data[key] = newAttributes
   }

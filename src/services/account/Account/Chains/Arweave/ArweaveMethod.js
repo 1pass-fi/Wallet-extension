@@ -314,7 +314,6 @@ export class ArweaveMethod {
 
       // get list of transaction ids
       fetchedCollections = fetchedCollections.map(collection => get(collection, 'node.id'))
-      console.log(fetchedCollections)
       fetchedCollections = await this.#readState(fetchedCollections)
 
       // read state from the transaction id to get needed data for the collection
@@ -550,16 +549,16 @@ export class ArweaveMethod {
       if (!bitObject) return
       // parse the JSON string on local storage
       bitObject = JSON.parse(bitObject)
-      console.log('bitObject', bitObject)
+
       // create 8 bit array from bit object
       const u8 = Uint8Array.from(Object.values(bitObject))
-      console.log('u8', u8)
+
       // create blob from u8
       const blob = new Blob([u8], { type: 'contentType' })
-      console.log('blob', blob)
+
       // create file from blob
       const file = new File([blob], 'filename', { type: fileType })
-      console.log(file)
+
       return { u8, file }
     } catch (err) {
       throw new Error('')

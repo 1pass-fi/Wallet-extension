@@ -59,12 +59,9 @@ export class EthereumMethod {
     try {
       let path = PATH.OPENSEA_API_MAINNET
       const ethereumProvider = await storage.setting.get.ethereumProvider()
-      console.log('ethereumProvider', ethereumProvider)
 
       if (ethereumProvider.includes('goerli')) path = PATH.OPENSEA_API_RINEKY
 
-      console.log('ETH ADDRESS', this.eth.address)
-      console.log('ETH PROVIDER', this.eth.provider)
       // if ((this.eth.provider).includes('rinkeby')) path = PATH.OPENSEA_API_RINEKY
 
       /* 
@@ -81,8 +78,6 @@ export class EthereumMethod {
           if (ethereumProvider.includes('mainnet')) {
             headers = { 'X-API-KEY': 'b2c5ef456a464bda8868fd20d8af6ce2' }
           }
-
-          console.log('requestHeaders', headers)
 
           const { data } = await axios.request({
             url,
@@ -467,9 +462,8 @@ export class EthereumMethod {
       //   .isApprovedForAll(userAddress, koiRouterContractAddress)
       //   .call()
       isApproved = await tokenContract.isApprovedForAll(userAddress, koiRouterContractAddress)
-      console.log('isApproved', isApproved)
     } catch (error) {
-      console.log('====== get isApprovedForAll error', error)
+      console.log('isApprovedForAll error', error)
     }
     // TODO DatH - test manifestv3
     if (!isApproved) {
@@ -478,10 +472,10 @@ export class EthereumMethod {
         const res = await tokenContract.methods
           .setApprovalForAll(koiRouterContractAddress, true)
           .send({ from: userAddress })
-        console.log('====== setApprovalForAll receipt', res)
+        console.log('setApprovalForAll receipt', res)
         return { success: true, action: ETH_NFT_BRIDGE_ACTION.SET_APPROVAL }
       } catch (error) {
-        console.log('======= setApprovalForAll error', error)
+        console.log('setApprovalForAll error', error)
         return { success: false, action: ETH_NFT_BRIDGE_ACTION.SET_APPROVAL }
       }
     } else {
@@ -491,10 +485,10 @@ export class EthereumMethod {
           .deposit(tokenAddress, tokenId, 1, toAddress)
           // .send({ from: userAddress, value: web3.utils.toWei('0.00015', 'ether') })
           .send({ from: userAddress, value: ethers.utils.parseEther('0.00015') })
-        console.log('====== Deposit receipt ', depositResult)
+        console.log('Deposit receipt ', depositResult)
         return { success: true, action: ETH_NFT_BRIDGE_ACTION.DEPOSIT }
       } catch (error) {
-        console.log('======= Deposit error', error)
+        console.log('Deposit error', error)
         return { success: false, action: ETH_NFT_BRIDGE_ACTION.SET_APPROVAL }
       }
     }

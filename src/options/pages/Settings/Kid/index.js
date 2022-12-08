@@ -457,7 +457,6 @@ const KidPage = () => {
         setConfirmed(true)
       }
 
-      console.log('result', result)
       dispatch(setLoaded)
       setIsPending(true)
     } catch (err) {

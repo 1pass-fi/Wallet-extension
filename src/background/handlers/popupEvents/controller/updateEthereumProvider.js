@@ -10,7 +10,6 @@ export default async (payload, next) => {
     const currentEthereumProvider = await storage.setting.get.ethereumProvider()
 
     if (ethereumProvider !== currentEthereumProvider) {
-      console.log('updateEthereumProvider ', ethereumProvider)
       await storage.setting.set.ethereumProvider(ethereumProvider)
 
       if (!isGalleryRequest) {

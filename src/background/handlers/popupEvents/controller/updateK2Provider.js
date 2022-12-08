@@ -10,7 +10,6 @@ export default async (payload, next) => {
     const currentK2Provider = await storage.setting.get.k2Provider()
 
     if (k2Provider !== currentK2Provider) {
-      console.log('updateK2Provider ', k2Provider)
       await storage.setting.set.k2Provider(k2Provider)
 
       if (!isGalleryRequest) {

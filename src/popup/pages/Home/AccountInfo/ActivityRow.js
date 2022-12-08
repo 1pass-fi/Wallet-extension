@@ -123,7 +123,7 @@ const ActivityRow = ({
         setDisplayInfo(info)
         setLoaded(true)
       } catch (err) {
-        console.log('Load activity info error: ', err.message)
+        console.error('Load activity info error: ', err.message)
       }
     }
 

@@ -95,7 +95,7 @@ const Options = () => {
     let allAssets = await popupAccount.getAllAssets()
     let validAssets = allAssets.filter((asset) => asset.name !== '...')
 
-    console.log('validAssets', validAssets.length)
+    console.log('validAssets: ', validAssets.length)
 
     dispatch(setAssets({ nfts: validAssets }))
   }
@@ -131,7 +131,7 @@ const Options = () => {
 
     const loadNotifications = async () => {
       const allNotifications = await storage.generic.get.pushNotification()
-      console.log('all notificatoin =======', allNotifications)
+      console.log('notifications: ', allNotifications)
       dispatch(setNotifications(allNotifications))
     }
 

@@ -130,8 +130,6 @@ export default async (payload, tab, next) => {
                   const transactionMessage = Message.from(bs58.decode(payload.data))
                   const transaction = Transaction.populate(transactionMessage)
 
-                  console.log('transactionMessage', transactionMessage)
-
                   const solanaProvider = await storage.setting.get.solanaProvider()
                   const connection = new Connection(clusterApiUrl(solanaProvider), 'confirmed')
                   const tool = new SolanaTool(credential)

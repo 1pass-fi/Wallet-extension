@@ -39,7 +39,6 @@ const getTransactionData = async (transaction) => {
     const instruction = transaction.instructions[0]
     const decodeData = decodeTransferInstructionUnchecked(instruction)
 
-    console.log('decodeData', decodeData)
     if (decodeData.data.instruction === 3) {
       const provider = await storage.setting.get.solanaProvider()
       const connection = new Connection(clusterApiUrl(provider), 'confirmed')
@@ -74,13 +73,11 @@ const getTransactionData = async (transaction) => {
 }
 export default async (payload, next) => {
   try {
-    console.log('solana sign transaction')
-    console.log('payload', payload)
+    console.log('solana sign transaction', payload)
 
     const params = get(payload, 'params')
     const transaction = getTransactionFromParams(params)
 
-    console.log('transaction', transaction)
     /* Show popup for signing transaction */
     const screen = (await chrome.system.display.getInfo())[0].bounds
     const screenWidth = screen.width
@@ -112,7 +109,6 @@ export default async (payload, next) => {
     const requestId = uuid()
 
     const transactionPayload = await getTransactionData(transaction)
-    console.log('transactionPayload', transactionPayload)
 
     const requestPayload = {
       requestId,
@@ -146,7 +142,6 @@ export default async (payload, next) => {
                 const keypair = solTool.keypair
 
                 transaction.sign(keypair)
-                console.log('signed transaction', transaction)
 
                 const signature = base58.encode(transaction.signature)
                 console.log('signature', signature)
@@ -176,7 +171,7 @@ export default async (payload, next) => {
       }
     })
   } catch (error) {
-    console.log('hihihihi', error)
+    console.log('Fail to sign solana transaction: ', error)
     next({ error: { code: 4001, message: error.message } })
   }
 }

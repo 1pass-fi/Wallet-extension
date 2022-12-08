@@ -18,8 +18,6 @@ export default async (payload, next) => {
     let id, contractId
     try {
       [id, contractId] = await helpers.did.createDID(didData, account)
-      console.log('react app', id)
-      console.log('did', contractId)
 
     } catch (err) {
       next({ error: err.message, status: 400 })

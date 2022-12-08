@@ -328,7 +328,6 @@ export const makeTransfer = (sender, qty, target, token) => async (dispatch) => 
       address
     })
 
-    console.log('TRANSACTION res', { txId, receipt })
     return { txId, receipt }
   } catch (err) {
     console.log('ERROR-ACTION: ', err.message)

@@ -20,13 +20,11 @@ export const useNfts = ({ setCollections, walletLoaded, newAddress, pathname }) 
       dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
       dispatch(setCollectionNfts({ collectionNfts: allCollectionNfts }))
 
-      console.log('all Collections', allCollections)
-      console.log('loading all contents')
+
       let allAssets = await popupAccount.getAllAssets()
       let validAssets = allAssets.filter((asset) => asset.name !== '...')
 
       validAssets = classifyAssets(validAssets, allCollections)
-      console.log('valid assets', validAssets.length)
       validAssets = validAssets.filter((nft) => !get(nft, 'name')?.includes('DID Profile Page'))
 
       dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))

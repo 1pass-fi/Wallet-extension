@@ -96,7 +96,6 @@ export class SolanaMethod {
 
     // const solanaProvider = await storage.setting.get.solanaProvider()
     // connection = new Connection(clusterApiUrl(solanaProvider), 'confirmed')
-    console.log('SOL provider', connection)
 
     const wallets = [this.solTool.address]
     const tokenAccountsByOwnerAddress = await Promise.all(

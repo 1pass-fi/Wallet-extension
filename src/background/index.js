@@ -81,7 +81,6 @@ const initWalletConnect = async () => {
   try {
     await walletConnect.init()
     const pairings = walletConnect.signClient.core.pairing.getPairings()
-    console.log('parings', pairings)
 
     walletConnect.signClient.on('session_proposal', (event) => {
       helpers.sendMessageToPopupPorts({
@@ -91,8 +90,6 @@ const initWalletConnect = async () => {
     })
 
     walletConnect.signClient.on('session_request', async (event) => {
-      console.log('session_request event', event)
-
       const endpoint = event.params.request.method
       const payload = { id: event.id, topic: event.topic, params: event.params.request.params }
 

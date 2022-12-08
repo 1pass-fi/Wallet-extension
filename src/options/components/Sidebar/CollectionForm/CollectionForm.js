@@ -193,7 +193,7 @@ const CollectionForm = ({ isUpdate }) => {
   const getFilesFromFileList = (e) => {
     const _files = []
     for (let i = 0; i < e.target.files.length; i++) {
-      console.log(i)
+
       _files.push(e.target.files.item(i))
     }
 

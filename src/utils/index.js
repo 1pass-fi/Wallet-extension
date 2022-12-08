@@ -461,20 +461,20 @@ export const getImageDataForNFT = async (fileType) => {
   try {
     const storage = await getChromeStorage(NFT_BIT_DATA)
     let bitObject = storage[NFT_BIT_DATA]
-    console.log('background- bitObject', storage)
+
     if (!bitObject) return
     // parse the JSON string on local storage
     bitObject = JSON.parse(bitObject)
-    console.log('bitObject', bitObject)
+
     // create 8 bit array from bit object
     const u8 = Uint8Array.from(Object.values(bitObject))
-    console.log('u8', u8)
+
     // create blob from u8
     const blob = new Blob([u8], { type: 'contentType' })
-    console.log('blob', blob)
+
     // create file from blob
     const file = new File([blob], 'filename', { type: fileType })
-    console.log(file)
+
     return { u8, file }
   } catch (err) {
     throw new Error(err.message)
@@ -521,11 +521,9 @@ export const exportNFTNew = async (koi, arweave, content, tags, fileType) => {
     try {
       await arweave.transactions.sign(tx, koi.wallet)
     } catch (err) {
-      console.log('transaction sign error')
       console.log('err-sign', err)
       throw new Error(err.message)
     }
-    console.log(tx)
 
     const registrationData = await getRegistrationReward(koi, tx.id)
     console.log('REGISTER REWARD: ', registrationData)

@@ -86,7 +86,7 @@ const HomeTop = ({
       await dispatch(loadAllAccounts())
       await dispatch(clearContent(TYPE.ETHEREUM))
     } catch (error) {
-      console.log('Failed to change Ethereum provider', error.message)
+      console.error('Failed to change Ethereum provider', error.message)
     } finally {
       setIsLoading(false)
     }
@@ -133,7 +133,7 @@ const HomeTop = ({
       await dispatch(loadAllAccounts())
       await dispatch(clearContent(TYPE.K2))
     } catch (error) {
-      console.log('Failed to change K2 provider', error.message)
+      console.error('Failed to change K2 provider', error.message)
     } finally {
       setIsLoading(false)
     }
@@ -158,7 +158,7 @@ const HomeTop = ({
       await dispatch(loadAllAccounts())
       await dispatch(clearContent(TYPE.SOLANA))
     } catch (error) {
-      console.log('Failed to change Solana provider', error.message)
+      console.error('Failed to change Solana provider', error.message)
     } finally {
       setIsLoading(false)
     }
