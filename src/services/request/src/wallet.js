@@ -175,4 +175,8 @@ export class WalletRequest extends Request {
   approveWalletConnect(body) {
     return this.promise(MESSAGES.APPROVE_WALLET_CONNECT, body)
   }
+
+  rejectWalletConnect(body) {
+    return this.promise(MESSAGES.REJECT_WALLET_CONNECT, body)
+  }
 }
