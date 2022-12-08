@@ -100,7 +100,7 @@ const Approval = ({ proposal }) => {
 
   const handleReject = async () => {
     try {
-      await walletConnect.reject(proposal)
+      await request.wallet.rejectWalletConnect({ proposal })
       history.push('/')
     } catch (err) {
       dispatch(setError(err?.message))

@@ -24,6 +24,7 @@ import loadFriendReferralData from './loadFriendReferralData'
 import lockWallet from './lockWallet'
 import makeTransfer from './makeTransfer'
 import pairingWalletConnect from './pairingWalletConnect'
+import rejectWalletConnect from './rejectWalletConnect'
 import removeWallet from './removeWallet'
 import saveNewWallet from './saveNewWallet'
 import sendCustomTokenAr from './sendCustomTokenAr'
@@ -91,5 +92,6 @@ export default {
   verifyPassword,
   test,
   pairingWalletConnect,
-  approveWalletConnect
+  approveWalletConnect,
+  rejectWalletConnect
 }

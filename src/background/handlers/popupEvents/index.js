@@ -53,6 +53,7 @@ const getEmitter = () => {
   popupEvents.on(MESSAGES.TEST, controller.test)
   popupEvents.on(MESSAGES.PAIRING_WALLET_CONNECT, controller.pairingWalletConnect)
   popupEvents.on(MESSAGES.APPROVE_WALLET_CONNECT, controller.approveWalletConnect)
+  popupEvents.on(MESSAGES.REJECT_WALLET_CONNECT, controller.rejectWalletConnect)
   return popupEvents
 }
 
