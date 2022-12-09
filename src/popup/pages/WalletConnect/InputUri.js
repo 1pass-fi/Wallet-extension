@@ -57,7 +57,8 @@ const InputUri = ({ setPage, setProposal }) => {
   const handleConnect = async () => {
     try {
       dispatch(setIsLoading(true))
-      await request.wallet.pairingWalletConnect({ uri })
+      const res = await request.wallet.pairingWalletConnect({ uri })
+      if (res) dispatch(setError(res.error))
     } catch (err) {
       dispatch(setError(err?.message))
     }
@@ -90,8 +91,6 @@ const InputUri = ({ setPage, setProposal }) => {
     }
 
     addHandler()
-
-    // return 
   }, [])
 
   return (

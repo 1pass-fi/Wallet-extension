@@ -35,6 +35,7 @@ class WalletConnect {
       await this.signClient.core.pairing.pair({ uri })
     } catch (err) {
       console.error('walletconnect-pair', err)
+      throw new Error('Invalid or missing URI')
     }
   }
 

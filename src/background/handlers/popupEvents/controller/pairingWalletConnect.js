@@ -7,7 +7,7 @@ export default async (payload, next) => {
 
     next()
   } catch (err) {
-    console.log(err.message)
-    next({ error: 'Pair WalletConnect error' })
+    console.log('Fail to pair through walletconnect: ',err.message)
+    next({ error: err.message })
   }
 }
