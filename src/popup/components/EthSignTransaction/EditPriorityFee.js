@@ -123,15 +123,18 @@ const EditPriorityFee = ({
     if (e.target.value === '') {
       setStringValuePriorityFee('0')
     } else {
-      const reg = new RegExp(/^[\d./-]+$/)
+      const reg = new RegExp(/^\d+((.)|(.\d{0,9})?)$/)
       if (reg.test(e.target.value)) {
+        if (e.target.value >= 999999) {
+          return
+        }
         if (e.target.value[e.target.value.length - 1] === '.') {
           setStringValuePriorityFee(e.target.value)
         } else {
           setStringValuePriorityFee('')
         }
         setFeeLevel(null)
-        setTempMaxPriorityFee(e.target.value * Math.pow(10, 9))
+        setTempMaxPriorityFee(ethers.utils.parseUnits(e.target.value, 'gwei').toNumber())
       }
     }
   }
@@ -140,15 +143,18 @@ const EditPriorityFee = ({
     if (e.target.value === '') {
       setStringValueMaxFee('0')
     } else {
-      const reg = new RegExp(/^[\d./-]+$/)
+      const reg = new RegExp(/^\d+((.)|(.\d{0,9})?)$/)
       if (reg.test(e.target.value)) {
+        if (e.target.value >= 999999) {
+          return
+        }
         if (e.target.value[e.target.value.length - 1] === '.') {
           setStringValueMaxFee(e.target.value)
         } else {
           setStringValueMaxFee('')
         }
         setFeeLevel(null)
-        setTempMaxFeePerGas(e.target.value * Math.pow(10, 9))
+        setTempMaxFeePerGas(ethers.utils.parseUnits(e.target.value, 'gwei').toNumber())
         setTempIsFixedMaxFeePerGas(true)
         setMaxFeeErrorMessage('')
       }
