@@ -79,19 +79,50 @@ export default async (payload, next) => {
                 )
 
                 const signer = wallet.connect(ethersProvider)
-                const transactionPayload = params[0]
+                let transactionPayload = params[0]
+
 
                 if (transactionPayload.hasOwnProperty('gas')) {
-                  transactionPayload.gasLimit = transactionPayload.gas
                   delete transactionPayload.gas
                 }
+                if (transactionPayload.hasOwnProperty('gasPrice')) {
+                  delete transactionPayload.gasPrice
+                }
+                
+                const maxPriorityFeePerGas =
+                  get(popupMessage, 'maxPriorityFeePerGas') ||
+                  ethers.utils.parseUnits('2.5', 'gwei')
+                const maxFeePerGas =
+                  get(popupMessage, 'maxFeePerGas') ||
+                  (await ethereumUtils.calculateMaxFeePerGas(provider, '2.5'))
+
+                const nonce = await ethersProvider.getTransactionCount(
+                  ethers.utils.getAddress(get(params[0], 'from')),
+                  'pending'
+                )
+
+                const gasLimit = await signer.estimateGas(transactionPayload)
+
+                const type = 2 // 0: legacy; 2: eip1559
+
+                const chainId = (await ethersProvider.getNetwork()).chainId
+
+                transactionPayload = {
+                  ...transactionPayload,
+                  type,
+                  maxPriorityFeePerGas,
+                  maxFeePerGas,
+                  nonce,
+                  gasLimit,
+                  chainId
+                }
+
+                console.log('transactionPayload', transactionPayload)
 
                 const rawTransaction = await signer.signTransaction(transactionPayload)
                 const signedTransaction = ethers.utils.parseTransaction(rawTransaction)
                 const txHash = get(signedTransaction, 'hash')
-                const txReceipt = await (
-                  await ethersProvider.sendTransaction(rawTransaction)
-                ).wait()
+                await (await ethersProvider.sendTransaction(rawTransaction)).wait()
 
                 next({ data: txHash })
                 chrome.runtime.sendMessage({ requestId, finished: true })
