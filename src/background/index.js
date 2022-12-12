@@ -70,7 +70,7 @@ const initWalletConnect = async () => {
 
     walletConnect.signClient.on('session_proposal', (event) => {
       helpers.sendMessageToPopupPorts({
-        type: MESSAGES.PAIRING_WALLET_CONNECT_RESPONSE,
+        type: MESSAGES.WC_SESSION_PROPOSAL,
         payload: event
       })
     })
