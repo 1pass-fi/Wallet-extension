@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { setIsLoading } from 'actions/loading'
 import { TYPE } from 'constants/accountConstants'
+import { MESSAGES } from 'constants/koiConstants'
 import BackIcon from 'img/wallet-connect/back-icon.svg'
 import BackgroundLeft from 'img/wallet-connect/bg-left.svg'
 import BackgroundRight from 'img/wallet-connect/bg-right.svg'
@@ -10,7 +11,9 @@ import GlobeIcon from 'img/wallet-connect/globe-big-icon.svg'
 import get from 'lodash/get'
 import { setError } from 'popup/actions/error'
 import { popupAccount } from 'services/account'
-import walletConnect from 'services/walletConnect'
+import { popupBackgroundRequest as request } from 'services/request/popup'
+import { popupBackgroundConnect } from 'services/request/popup'
+import { EventHandler } from 'services/request/src/backgroundConnect'
 
 const ERROR_MESSAGE = {
   INVALID_PROPOSAL: 'Invalid request',
@@ -54,17 +57,7 @@ const InputUri = ({ setPage, setProposal }) => {
   const handleConnect = async () => {
     try {
       dispatch(setIsLoading(true))
-      await walletConnect.init()
-      walletConnect.signClient.on('session_proposal', async (proposal) => {
-        setProposal(proposal)
-        const isValidProposal = await validateProposal(proposal)
-        if (isValidProposal) {
-          setPage('APPROVAL')
-        } else {
-          dispatch(setError(ERROR_MESSAGE.INVALID_PROPOSAL))
-        }
-      })
-      await walletConnect.pair(uri)
+      await request.wallet.pairingWalletConnect({ uri })
     } catch (err) {
       dispatch(setError(err?.message))
     }
@@ -74,6 +67,32 @@ const InputUri = ({ setPage, setProposal }) => {
   const handleGoBack = () => {
     history.push('/')
   }
+
+  useEffect(() => {
+    const addHandler = () => {
+      const pairingSuccess = new EventHandler(
+        MESSAGES.WC_SESSION_PROPOSAL,
+        async ({ payload: proposal }) => {
+          try {
+            setProposal(proposal)
+            const isValidProposal = await validateProposal(proposal)
+            if (isValidProposal) {
+              setPage('APPROVAL')
+            } else {
+              dispatch(setError(ERROR_MESSAGE.INVALID_PROPOSAL))
+            }
+          } catch (err) {
+            console.error('pairingSuccess error: ', err)
+          }
+        }
+      )
+      popupBackgroundConnect.addHandler(pairingSuccess)
+    }
+
+    addHandler()
+
+    // return 
+  }, [])
 
   return (
     <div className="flex flex-col justify-center items-center w-full h-full">

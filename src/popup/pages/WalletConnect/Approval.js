@@ -83,12 +83,12 @@ const Approval = ({ proposal }) => {
     try {
       dispatch(setIsLoading(true))
       if (isEmpty(selectedAccounts)) throw new Error('No selected account')
-      let payload
-      if (metadata.namespace === 'eip155') payload = { eip155: selectedAccounts }
-      else payload = { solana: selectedAccounts }
+      let payloadData
+      if (metadata.namespace === 'eip155') payloadData = { eip155: selectedAccounts }
+      else payloadData = { solana: selectedAccounts }
 
-      await walletConnect.approve(proposal, payload)
-      await request.wallet.reloadWalletConnect()
+      await request.wallet.approveWalletConnect({ proposal, payloadData })
+  
       dispatch(setIsLoading(false))
       history.push('/')
     } catch (err) {
@@ -100,7 +100,7 @@ const Approval = ({ proposal }) => {
 
   const handleReject = async () => {
     try {
-      await walletConnect.reject(proposal)
+      await request.wallet.rejectWalletConnect({ proposal })
       history.push('/')
     } catch (err) {
       dispatch(setError(err?.message))

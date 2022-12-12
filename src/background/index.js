@@ -1,8 +1,7 @@
 import '@babel/polyfill'
 
 import { IMPORTED } from 'constants/accountConstants'
-import { OS, PATH, PORTS } from 'constants/koiConstants'
-import isEmpty from 'lodash/isEmpty'
+import { MESSAGES, OS, PATH, PORTS } from 'constants/koiConstants'
 import storage from 'services/storage'
 import walletConnect from 'services/walletConnect'
 import { getChromeStorage } from 'utils'
@@ -12,6 +11,7 @@ import contentScriptEvents from './handlers/contentScriptEvents'
 import popupEvents from './handlers/popupEvents'
 import walletConnectEvents from './handlers/walletConnectEvents'
 import cache from './cache'
+import helpers from './helpers'
 import streamer from './streamer'
 
 function cb(port) {
@@ -69,7 +69,10 @@ const initWalletConnect = async () => {
     console.log('parings', pairings)
 
     walletConnect.signClient.on('session_proposal', (event) => {
-      walletConnect.approve(event)
+      helpers.sendMessageToPopupPorts({
+        type: MESSAGES.WC_SESSION_PROPOSAL,
+        payload: event
+      })
     })
 
     walletConnect.signClient.on('session_request', async (event) => {
