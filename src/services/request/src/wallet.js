@@ -169,14 +169,14 @@ export class WalletRequest extends Request {
   }
 
   pairingWalletConnect(body) {
-    return this.promise(MESSAGES.PAIRING_WALLET_CONNECT, body)
+    return this.promise(MESSAGES.WC_PAIRING, body)
   }
 
   approveWalletConnect(body) {
-    return this.promise(MESSAGES.APPROVE_WALLET_CONNECT, body)
+    return this.promise(MESSAGES.WC_APPROVE, body)
   }
 
   rejectWalletConnect(body) {
-    return this.promise(MESSAGES.REJECT_WALLET_CONNECT, body)
+    return this.promise(MESSAGES.WC_REJECT, body)
   }
 }

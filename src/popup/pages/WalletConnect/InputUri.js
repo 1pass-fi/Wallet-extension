@@ -72,7 +72,7 @@ const InputUri = ({ setPage, setProposal }) => {
   useEffect(() => {
     const addHandler = () => {
       const pairingSuccess = new EventHandler(
-        MESSAGES.PAIRING_WALLET_CONNECT_RESPONSE,
+        MESSAGES.WC_SESSION_PROPOSAL,
         async ({ payload: proposal }) => {
           try {
             setProposal(proposal)

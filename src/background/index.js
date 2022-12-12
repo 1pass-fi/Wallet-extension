@@ -5,7 +5,7 @@ import xmlHttpRequest from 'xmlhttprequest-ssl'
 global.window = global
 
 import { IMPORTED } from 'constants/accountConstants'
-import { MESSAGES, PATH, PORTS } from 'constants/koiConstants'
+import { MESSAGES, OS, PATH, PORTS } from 'constants/koiConstants'
 import storage from 'services/storage'
 import walletConnect from 'services/walletConnect'
 import { getChromeStorage } from 'utils'
@@ -84,7 +84,7 @@ const initWalletConnect = async () => {
 
     walletConnect.signClient.on('session_proposal', (event) => {
       helpers.sendMessageToPopupPorts({
-        type: MESSAGES.PAIRING_WALLET_CONNECT_RESPONSE,
+        type: MESSAGES.WC_SESSION_PROPOSAL,
         payload: event
       })
     })
