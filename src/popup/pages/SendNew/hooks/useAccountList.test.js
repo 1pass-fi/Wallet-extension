@@ -1,20 +1,11 @@
-import { act, renderHook } from '@testing-library/react-hooks'
 import get from 'lodash/get'
 import { popupAccount } from 'services/account'
 import mockedAccounts from 'services/account/__fixtures__/allAccountMetadata.json'
+import renderCustomHook from 'testUtils/renderCustomHook'
 
 import useAccountList from './useAccountList'
 
 jest.mock('services/account')
-
-const renderCustomHook = async (hook) => {
-  let result
-  await act(async () => {
-    result = renderHook(() => hook()).result
-  })
-
-  return result
-}
 
 describe('useAccountList hook', () => {
   describe('get correct accountList data type', () => {
