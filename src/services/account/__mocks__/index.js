@@ -1,7 +1,7 @@
-const mockedAccounts = require('../__fixtures__/accounts.json')
+const mockedAccounts = require('../__fixtures__/allAccountMetadata.json')
 
-module.exports = {
-  popupAccount: {
-    getAllMetadata: async () => mockedAccounts
-  }
-}
+const mockPopupAccount = jest.fn().mockImplementation(() => {})
+const mockGetAllMetadata = jest.fn().mockImplementation(async () => mockedAccounts)
+mockPopupAccount.getAllMetadata = mockGetAllMetadata
+
+module.exports = { popupAccount: mockPopupAccount }
