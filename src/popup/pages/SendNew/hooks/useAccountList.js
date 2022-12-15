@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { get } from 'lodash'
-import { popupAccount } from 'services/account'
+import { popupAccount } from 'services/account/index.js'
 
 const useAccountList = () => {
   const [accountList, setAccountList] = useState([])
@@ -15,7 +15,8 @@ const useAccountList = () => {
         address: get(account, 'address'),
         type: get(account, 'type')
       }))
-
+      
+      console.log('ACCOUNTS', accounts)
       setAccountList(accounts)
     }
 

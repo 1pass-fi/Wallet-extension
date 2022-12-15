@@ -123,6 +123,7 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
     // await getAlchemyAddress()
     setSendTokenClick((prev) => ++prev)
   }
+
   useEffect(() => {
     const sendToken = async () => {
       if (!validated) return setError(errorMessage)
