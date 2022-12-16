@@ -5,6 +5,7 @@ import {
   SOL_NETWORK_PROVIDER
 } from 'constants/koiConstants'
 import { SETTING } from 'constants/storageConstants'
+import { SHOW_ACTIVITIES_BY } from 'constants/storageConstants'
 
 import { ChromeStorage } from '../ChromeStorage'
 
@@ -18,57 +19,59 @@ export class SettingGet {
    *
    * @returns {String} 3 characters of currency. Example: 'USD'
    */
-  selectedCurrency() {
-    return this.#chrome._getChrome(SETTING.SELECTED_CURRENCY)
+  async selectedCurrency() {
+    return (await this.#chrome._getChrome(SETTING.SELECTED_CURRENCY)) || 'USD'
   }
   /**
    *
    * @returns {Number} 1 or 0
    */
-  showWelcomeScreen() {
-    return this.#chrome._getChrome(SETTING.SHOW_WELCOME_SCREEN)
+  async showWelcomeScreen() {
+    return (await this.#chrome._getChrome(SETTING.SHOW_WELCOME_SCREEN)) || 1
   }
   /**
    *
    * @returns {Boolean} on/off show views on gallery
    */
-  showViews() {
-    return this.#chrome._getChrome(SETTING.SHOW_VIEWS)
+  async showViews() {
+    return await (this.#chrome._getChrome(SETTING.SHOW_VIEWS)) || true
   }
   /**
    *
    * @returns {Boolean} on/off show earned koi on gallery
    */
-  showEarnedKoi() {
-    return this.#chrome._getChrome(SETTING.SHOW_EARNED_KOI)
+  async showEarnedKoi() {
+    return (await this.#chrome._getChrome(SETTING.SHOW_EARNED_KOI)) || true
   }
 
-  showActivitiesBy() {
-    return this.#chrome._getChrome(SETTING.SHOW_ACTIVITIES_BY)
+  async showActivitiesBy() {
+    return (await this.#chrome._getChrome(SETTING.SHOW_ACTIVITIES_BY)) || SHOW_ACTIVITIES_BY.ALL_ACCOUNTS
   }
 
-  accountsToShowOnActivities() {
-    return this.#chrome._getChrome(SETTING.ACCOUNTS_SHOW_ACTIVITIES)
+  // not use
+  async accountsToShowOnActivities() {
+    return (await this.#chrome._getChrome(SETTING.ACCOUNTS_SHOW_ACTIVITIES)) || []
   }
 
-  activatedArweaveAccountAddress() {
-    return this.#chrome._getChrome(SETTING.ACTIVATED_ARWEAVE_ACCOUNT)
+  async activatedArweaveAccountAddress() {
+    return await this.#chrome._getChrome(SETTING.ACTIVATED_ARWEAVE_ACCOUNT)
   }
 
-  activatedEthereumAccountAddress() {
-    return this.#chrome._getChrome(SETTING.ACTIVATED_ETHEREUM_ACCOUNT)
+  async activatedEthereumAccountAddress() {
+    return await this.#chrome._getChrome(SETTING.ACTIVATED_ETHEREUM_ACCOUNT)
   }
 
-  activatedSolanaAccountAddress() {
-    return this.#chrome._getChrome(SETTING.ACTIVATED_SOLANA_ACCOUNT)
+  async activatedSolanaAccountAddress() {
+    return await this.#chrome._getChrome(SETTING.ACTIVATED_SOLANA_ACCOUNT)
   }
 
-  activatedK2AccountAddress() {
-    return this.#chrome._getChrome(SETTING.ACTIVATED_K2_ACCOUNT)
+  async activatedK2AccountAddress() {
+    return await this.#chrome._getChrome(SETTING.ACTIVATED_K2_ACCOUNT)
   }
 
-  connectSiteAccountAddress() {
-    return this.#chrome._getChrome(SETTING.CONNECT_SITE_ACCOUNT)
+  // not use
+  async connectSiteAccountAddress() {
+    return await this.#chrome._getChrome(SETTING.CONNECT_SITE_ACCOUNT)
   }
 
   async siteAddressDictionary() {
@@ -102,7 +105,7 @@ export class SettingGet {
   }
 
   async activatedChain() {
-    return (await this.#chrome._getChrome(SETTING.ACTIVATED_CHAIN)) || TYPE.ARWEAVE
+    return (await this.#chrome._getChrome(SETTING.ACTIVATED_CHAIN)) || TYPE.K2
   }
 
   async importedErc20Tokens() {
