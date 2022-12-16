@@ -1,7 +1,7 @@
 [{
   "address": "example_address",
-  "balance": "example_balance",
-  "koiBalance": "example_koiBalance",
+  "balance": 1,
+  "koiBalance": 1,
   "accountName": "example_accountName",
   "type": "example_type",
   "provider": "example_provider",
@@ -10,5 +10,5 @@
   "inviteSpent":"example_inviteSpent",
   "totalReward":"example_totalReward",
   "didData":"example_didData",
-  "totalAssets":"example_totalAssets"
+  "totalAssets":"10"
 }]
