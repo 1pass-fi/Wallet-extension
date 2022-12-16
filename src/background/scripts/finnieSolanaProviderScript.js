@@ -157,7 +157,7 @@ const finnieSolanaProviderScript = `() => {
     }
 
     async signAllTransactions(payload) {
-      const transactions = payload.map(transaction => base58.encode(transaction.serializeMessage()))
+      const transactions = payload.map(transaction => base58.encode(transaction.serialize()))
       const message = { type: ENDPOINTS.SOLANA_SIGN_ALL_TRANSACTIONS, data: transactions }
       let result = await this.connection.send(message)
       result.forEach((signature, index) => {
@@ -178,7 +178,7 @@ const finnieSolanaProviderScript = `() => {
 
     async signTransaction(transaction) {
       try {
-        const encodedMessage = base58.encode(transaction.serializeMessage())
+        const encodedMessage = base58.encode(transaction.serialize())
   
         const encodedSignedTransaction = await this.connection.send({ 
           type: ENDPOINTS.SOLANA_SIGN_TRANSACTION,

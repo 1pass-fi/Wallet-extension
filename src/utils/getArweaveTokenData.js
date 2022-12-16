@@ -21,7 +21,6 @@ export const getLogoPath = (logo) => {
   return path
 }
 
-
 const getIconPath = (contractAddress) => {
   const metadata = contractMap[contractAddress]
   if (metadata?.logo) {
@@ -32,21 +31,21 @@ const getIconPath = (contractAddress) => {
 }
 
 const getArweaveTokenData = async (contractAddress, userAddress) => {
+  const logo = getIconPath(contractAddress)
   try {
-    const logo = getIconPath(contractAddress)
+    const arweave = Arweave.init({ host: 'arweave.net', protocol: 'https', port: 443 })
 
-    const arweave = Arweave.init({ host: 'arweave.net', protocol: 'https', port: 443, })
     const contractData = await smartweave.loadContract(arweave, contractAddress)
 
     const contractInitData = JSON.parse(get(contractData, 'initState'))
-  
+
     const name = get(contractInitData, 'name')
     const decimal = 1
     const symbol = get(contractInitData, 'ticker')
     const balance = 100
-  
+
     const price = 1
-  
+
     return {
       logo,
       balance,
@@ -57,6 +56,14 @@ const getArweaveTokenData = async (contractAddress, userAddress) => {
     }
   } catch (err) {
     console.error('getArweaveTokenData error: ', err.message)
+    return {
+      logo,
+      balance: 100,
+      price: 1,
+      name: '',
+      symbol: 'KOII',
+      decimal: 1
+    }
   }
 }
 
