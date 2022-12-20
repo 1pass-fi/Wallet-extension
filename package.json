@@ -16,7 +16,8 @@
         "lint:fix": "eslint ./ --fix",
         "chrome-launch": "node scripts/dev.js --browser=chrome",
         "firefox-launch": "node scripts/dev.js --browser=firefox",
-        "coveralls": "coveralls < coverage/lcov.info"
+        "coveralls": "coveralls < coverage/lcov.info",
+        "e2e": "jest sampleTest.spec.js --detectOpenHandles"
     },
     "keywords": [
         "chrome",
@@ -201,6 +202,7 @@
         "mini-css-extract-plugin": "0.4.3",
         "optimize-css-assets-webpack-plugin": "5.0.1",
         "postcss": "^7",
+        "puppeteer": "^10.4.0",
         "sass-loader": "7.1.0",
         "sinon": "^15.0.1",
         "style-loader": "^0.23.1",

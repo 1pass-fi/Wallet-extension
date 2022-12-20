@@ -18,7 +18,6 @@ import TokenDropdown from 'popup/components/TokenDropdown'
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
 // hooks
-import useAccountList from './hooks/useAccountList'
 import useMethod from './hooks/useMethod'
 import useSelectedAccount from './hooks/useSelectedAccount'
 import useTokenList from './hooks/useTokenList'
