@@ -50,7 +50,8 @@ const GetAKey = ({ step, setStep, setImportType }) => {
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">Get a Key</div>
       <div className="mt-5 font-normal text-lg">Click a circle below to generate a key.</div>
       <div className="mt-2 font-normal text-sm w-11/12">
-        Finnie currently supports Koii and Ethereum keys. More key types are in the works.
+        Finnie currently supports Koii, Ethereum, Solana, and Arweave keys. More chains are in the
+        works.
       </div>
       <div className="mt-11 ml-1 flex justify-start gap-4.5">
         {/* <div

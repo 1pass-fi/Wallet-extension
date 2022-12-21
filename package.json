@@ -56,8 +56,8 @@
         "@storybook/addons": "^6.2.9",
         "@storybook/react": "^6.2.9",
         "@truffle/hdwallet-provider": "^1.5.0",
-        "@walletconnect/sign-client": "^2.1.1",
         "@vespaiach/axios-fetch-adapter": "^0.3.0",
+        "@walletconnect/sign-client": "^2.1.1",
         "@webcomponents/webcomponentsjs": "^2.2.6",
         "@xstate/react": "^2.0.1",
         "abi-decoder": "^2.4.0",
@@ -122,8 +122,8 @@
         "uuid": "^8.3.2",
         "web3": "^1.4.0",
         "webextension-polyfill": "^0.3.1",
-        "xmlhttprequest-ssl": "https://github.com/longphamea/node-XMLHttpRequest",
         "xmlhttprequest": "^1.8.0",
+        "xmlhttprequest-ssl": "https://github.com/longphamea/node-XMLHttpRequest",
         "xstate": "^4.30.3"
     },
     "browserslist": [
