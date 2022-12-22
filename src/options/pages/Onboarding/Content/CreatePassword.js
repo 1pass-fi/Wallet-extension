@@ -60,7 +60,7 @@ const CreatePassword = ({ step, setStep }) => {
   }
 
   return (
-    <div className="w-2/5 flex flex-col text-white self-start pl-23">
+    <div data-testid='CreatePassword' className="w-2/5 flex flex-col text-white self-start pl-23">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="font-normal text-base leading-6 text-left">

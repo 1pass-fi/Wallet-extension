@@ -106,7 +106,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
   }
 
   return (
-    <div className="mt-40 ml-24 flex flex-col text-white text-left">
+    <div data-testid="ImportPhrase" className="mt-40 ml-24 flex flex-col text-white text-left">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="font-normal text-lg leading-8 tracking-finnieSpacing-tight">

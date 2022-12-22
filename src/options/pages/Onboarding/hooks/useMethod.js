@@ -1,6 +1,4 @@
-import { useContext } from 'react'
 import { useDispatch } from 'react-redux'
-import cache from 'background/cache'
 import { addAccountByAddress } from 'options/actions/accounts'
 import { setActivatedChain } from 'options/actions/activatedChain'
 import { setError } from 'options/actions/error'
@@ -9,13 +7,10 @@ import {
   setOnboardingProcessed,
   setOnboardingProcessing
 } from 'options/actions/onboardingProcessing'
-import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 import storage from 'services/storage'
-import { isArweaveAddress, isEthereumAddress, isSolanaAddress } from 'utils'
 
-import { OnboardingContext } from '../onboardingContext'
 const ERROR_MESSAGE = {
   SAVE_NEW_KEY_FAILED: 'Save new key failed',
   GENERATE_NEW_KEY_FAILED: 'Generate new key failed'

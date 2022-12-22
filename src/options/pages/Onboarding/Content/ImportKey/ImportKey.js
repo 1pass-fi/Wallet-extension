@@ -17,7 +17,7 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
     setStep(step + 1)
   }
   return (
-    <div className="w-3/4 flex flex-col text-white text-left">
+    <div data-testid="ImportAKey" className="w-3/4 flex flex-col text-white text-left">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">

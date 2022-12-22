@@ -111,7 +111,11 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
   }
 
   return (
-    <div className="w-11/12 flex flex-col text-white text-left" style={{ width: '500px' }}>
+    <div
+      data-testid="InputPhrase"
+      className="w-11/12 flex flex-col text-white text-left"
+      style={{ width: '500px' }}
+    >
       <WelcomeBackground className="absolute bottom-0 right-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
         Save your Secret Phrase

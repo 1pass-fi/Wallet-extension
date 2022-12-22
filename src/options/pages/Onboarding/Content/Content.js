@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import clsx from 'clsx'
 import KoiIcon from 'img/v2/onboarding/finnie-koii-logo.svg'
-import { GalleryContext } from 'options/galleryContext'
 
 import useMethod from '../hooks/useMethod'
 import useValidPassword from '../hooks/useValidPassword'
