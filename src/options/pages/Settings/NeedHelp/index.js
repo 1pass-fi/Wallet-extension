@@ -3,7 +3,7 @@ import { GalleryContext } from 'options/galleryContext'
 
 import './index.css'
 
-export default ({ version = '0.3.4' }) => {
+export default ({ version = '0.4.0' }) => {
   const { setShowWelcome } = useContext(GalleryContext)
 
   return (
