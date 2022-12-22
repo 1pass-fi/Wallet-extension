@@ -17,7 +17,7 @@ export default async (payload, next) => {
 
     next({ data: txId })
   } catch (err) {
-    console.error(err.message)
-    next({ error: err.message })
+    next({ error: 'ARWEAVE' })
+    // next({ error: err.message })
   }
 }

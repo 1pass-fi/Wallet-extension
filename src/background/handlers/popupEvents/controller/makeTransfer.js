@@ -16,6 +16,8 @@ export default async (payload, next) => {
 
     console.log('QTY ', qty, 'TARGET ', target, 'TOKEN', token)
 
+    if (token === 'AR') throw new Error('ARWEAVE')
+
     let txId = ''
     let receipt = {}
 
@@ -56,7 +58,7 @@ export default async (payload, next) => {
       isK2Account: token === 'KOII',
       isProcessing: token === 'ETH'
     }
-    
+
     if (token !== 'KOII') {
       await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
     }
