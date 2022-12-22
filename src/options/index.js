@@ -11,6 +11,12 @@ import store from './store'
 import './index.css'
 import '../tailwind.css'
 
+/* init keepAlive port to prevent service worker to be inactive */
+;(function connect() {
+  chrome.runtime.connect({name: 'keepAlive'})
+    .onDisconnect.addListener(connect)
+})()
+
 ReactDOM.render(
   <Provider store={store}>
     <Router>
