@@ -1,22 +1,26 @@
 import React from 'react'
-import { fireEvent } from '@testing-library/react'
+import { fireEvent, waitFor } from '@testing-library/react'
 import Onboarding from 'options/pages/Onboarding/Onboarding'
+import { popupBackgroundRequest as request } from 'services/request/popup'
 import { renderWithOptionProviders } from 'testUtils/renderWithProviders'
 
 jest.mock('services/account')
 jest.mock('utils')
+jest.mock('services/request/popup')
 
 const PASSWORD_ERROR = {
   NOT_MATCHING: 'Password does not match',
   NOT_MEET_REQUIREMENT:
-    'Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%).'
+    'Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%).',
+  INCORRECT: 'Incorrect password'
 }
+
 describe('Onboarding flow', () => {
-  describe('Step - Secure Finnie with a password', () => {
+  describe.skip('Step - Secure Finnie with a password', () => {
     let onboarding
     let password, confirmPassword, termsService, errorPassword, errorConfirmPassword, continueButton
 
-    describe.skip('Create new password', () => {
+    describe('Create new password', () => {
       beforeEach(() => {
         onboarding = renderWithOptionProviders(<Onboarding />)
 
@@ -188,25 +192,54 @@ describe('Onboarding flow', () => {
     })
     describe('Login with password', () => {
       beforeEach(() => {
-        onboarding = renderWithOptionProviders(<Onboarding />, {
-          initialState: { accounts: ['Account#1'] }
+        request.wallet.verifyPassword.mockImplementation(async () => {
+          return true
         })
-
-        password = onboarding.container.querySelector('#new-password')
-        errorPassword = onboarding.getByTestId('error-new-password')
       })
       describe('Wrong password', () => {
-        it('should ...', () => {})
+        it('should display incorrect password error', async () => {
+          request.wallet.verifyPassword.mockImplementation(async () => {
+            return false
+          })
+          onboarding = renderWithOptionProviders(<Onboarding />, {
+            initialState: { accounts: ['Account#1'] }
+          })
+
+          password = onboarding.container.querySelector('#new-password')
+          errorPassword = onboarding.getByTestId('error-new-password')
+          continueButton = onboarding.container.querySelector('#log-in-button')
+
+          fireEvent.change(password, { target: { value: 'OpenKoi@123' } })
+          fireEvent.click(continueButton)
+
+          expect(password).toHaveValue('OpenKoi@123')
+          await waitFor(() => expect(errorPassword.textContent).toBe('Incorrect password'))
+        })
       })
-      describe.skip('Correct password', () => {
-        it('should be authenticated and move to next step', () => {})
+      describe('Correct password', () => {
+        it('should be authenticated and move to next step', async () => {
+          onboarding = renderWithOptionProviders(<Onboarding />, {
+            initialState: { accounts: ['Account#1'] }
+          })
+
+          password = onboarding.container.querySelector('#new-password')
+          errorPassword = onboarding.getByTestId('error-new-password')
+          continueButton = onboarding.container.querySelector('#log-in-button')
+
+          fireEvent.change(password, { target: { value: 'OpenKoi@123' } })
+          fireEvent.click(continueButton)
+
+          expect(password).toHaveValue('OpenKoi@123')
+          await waitFor(() => expect(errorPassword.textContent).toBe(''))
+          expect(onboarding.getByTestId('AddAKey')).toBeInTheDocument()
+        })
       })
     })
   })
-  describe.skip('Step - Create or import a key', () => {
+  describe('Step - Create or import a key', () => {
     let onboarding
     describe('Create a key', () => {
-      describe('Create AR key', () => {
+      describe.skip('Create AR key', () => {
         describe('Step - Write down your secret phrase', () => {
           beforeAll(() => {
             onboarding = renderWithOptionProviders(<Onboarding />)
@@ -218,7 +251,7 @@ describe('Onboarding flow', () => {
       })
       describe('Create non-AR key', () => {
         describe('Step - Write down your secret phrase', () => {
-          beforeAll(() => {
+          beforeEach(() => {
             onboarding = renderWithOptionProviders(<Onboarding />)
             // Move to current step
           })
@@ -247,7 +280,7 @@ describe('Onboarding flow', () => {
         })
       })
     })
-    describe('Import a key', () => {
+    describe.skip('Import a key', () => {
       describe('Import AR key', () => {
         beforeAll(() => {
           onboarding = renderWithOptionProviders(<Onboarding />)

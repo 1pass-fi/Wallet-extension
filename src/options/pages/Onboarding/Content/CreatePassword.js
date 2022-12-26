@@ -29,7 +29,7 @@ const CreatePassword = ({ step, setStep }) => {
   const [isClickContinue, setIsClickContinue] = useState(false)
 
   const accounts = useSelector((state) => state.accounts)
-  console.log('accounts', accounts)
+
   const onClickContinue = async () => {
     if (!isEmpty(accounts)) {
       const isCorrectPassword = await verifyPassword()
