@@ -29,7 +29,7 @@ const CreatePassword = ({ step, setStep }) => {
   const [isClickContinue, setIsClickContinue] = useState(false)
 
   const accounts = useSelector((state) => state.accounts)
-
+  console.log('accounts', accounts)
   const onClickContinue = async () => {
     if (!isEmpty(accounts)) {
       const isCorrectPassword = await verifyPassword()
@@ -60,7 +60,7 @@ const CreatePassword = ({ step, setStep }) => {
   }
 
   return (
-    <div data-testid='CreatePassword' className="w-2/5 flex flex-col text-white self-start pl-23">
+    <div data-testid="CreatePassword" className="w-2/5 flex flex-col text-white self-start pl-23">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="font-normal text-base leading-6 text-left">
@@ -78,7 +78,7 @@ const CreatePassword = ({ step, setStep }) => {
         }}
         required={true}
         name="password"
-        description={
+        errorFinnie={
           isEmpty(accounts) &&
           !isEmpty(password) &&
           isClickContinue &&
@@ -94,6 +94,8 @@ const CreatePassword = ({ step, setStep }) => {
         passwordFinnie={true}
         autoFocus={true}
         onKeyDown={(e) => handleKeyDown(e)}
+        id={'new-password'}
+        errorId={'error-new-password'}
       />
       {isEmpty(accounts) && (
         <InputField
@@ -112,6 +114,8 @@ const CreatePassword = ({ step, setStep }) => {
           uppercase={false}
           passwordFinnie={true}
           onKeyDown={(e) => handleKeyDown(e)}
+          id={'confirm-password'}
+          errorId={'error-confirm-password'}
         />
       )}
       {isEmpty(accounts) && (

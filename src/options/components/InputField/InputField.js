@@ -23,7 +23,9 @@ const InputField = ({
   password = false,
   passwordFinnie = false,
   autoFocus = false,
-  onKeyDown = () => {}
+  onKeyDown = () => {},
+  id,
+  errorId
 }) => {
   const [textAreaHeight, setTextAreaHeight] = useState(83)
 
@@ -117,6 +119,7 @@ const InputField = ({
           'text-warning mt-1 text-left ml-2',
           passwordFinnie ? 'text-xs lg:text-sm' : 'text-3xs'
         )}
+        data-testid={errorId}
       >
         {errorFinnie}
       </div>
