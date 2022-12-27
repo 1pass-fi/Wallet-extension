@@ -76,7 +76,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
   }
 
   useEffect(() => {
-    setCanClickContinue(checkSeedPhraseInWordList(seedphrase.split(' ')))
+    setCanClickContinue(checkSeedPhraseInWordList(seedphrase.split(' ')) && seedphrase.split(' ').length===12)
   }, [seedphrase])
 
   const onClickContinue = async () => {
@@ -85,7 +85,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
       if (isImporting) return
 
       if (!validPhrase || !validateMnemonic(seedphrase)) {
-        setMessageError('Invalid Secret Secret Phrase')
+        setMessageError('Invalid Secret Phrase')
         return
       }
 
@@ -135,6 +135,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
                   onChange={(e) => onChangeInputPhrase(e, index)}
                   onKeyDown={(e) => handleKeyDown(e)}
                   value={completePhrase[index].word}
+                  data-testid={`import-phrase-${index}`}
                 />
               </div>
             )
@@ -150,6 +151,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
           text="Confirm"
           disabled={!canClickContinue}
           onClick={onClickContinue}
+          id='confirm-button'
         />
       </div>
     </div>

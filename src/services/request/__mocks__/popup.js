@@ -30,10 +30,14 @@ const mockSaveWallet = jest.fn().mockImplementation(async () => {
   return '0xabcde'
 })
 
+const mockImportWallet = jest.fn().mockImplementation(async () => {
+  return '0xabcde'
+})
 mockPopupBackgroundRequest.wallet = {
   generateWallet: mockGenerateWallet,
   verifyPassword: mockVerifyPassword,
-  saveWallet: mockSaveWallet
+  saveWallet: mockSaveWallet,
+  importWallet: mockImportWallet
 }
 
 module.exports = { popupBackgroundRequest: mockPopupBackgroundRequest }

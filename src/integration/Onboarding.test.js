@@ -347,9 +347,7 @@ describe('Onboarding flow', () => {
                   const continueButton = onboarding.container.querySelector('#continue-button')
                   fireEvent.click(continueButton)
                   await waitFor(() => {
-                    expect(onboarding.queryAllByText('Invalid Secret Secret Phrase')).toHaveLength(
-                      1
-                    )
+                    expect(onboarding.queryAllByText('Invalid Secret Phrase')).toHaveLength(1)
                   })
                 })
               })
@@ -488,9 +486,7 @@ describe('Onboarding flow', () => {
                   const continueButton = onboarding.container.querySelector('#continue-button')
                   fireEvent.click(continueButton)
                   await waitFor(() => {
-                    expect(onboarding.queryAllByText('Invalid Secret Secret Phrase')).toHaveLength(
-                      1
-                    )
+                    expect(onboarding.queryAllByText('Invalid Secret Phrase')).toHaveLength(1)
                   })
                 })
               })
@@ -536,17 +532,185 @@ describe('Onboarding flow', () => {
         })
       })
     })
-    describe.skip('Import a key', () => {
+    describe('Import a key', () => {
       describe('Import AR key', () => {
-        beforeAll(() => {
+        beforeEach(async () => {
           onboarding = renderWithOptionProviders(<Onboarding />)
-          // Move to current step
+          /* Move to test step*/
+          // Create new password
+          createPassword(onboarding)
+
+          // Get new key
+          const getNewKey = onboarding.queryByText('Import a key with a secret phrase.')
+          fireEvent.click(getNewKey)
+          await waitFor(() => expect(onboarding.getByTestId('ImportAKey')).toBeInTheDocument())
+
+          // Choose non-AR key
+          const ARKey = onboarding.queryByTestId('arweave-key')
+          fireEvent.click(ARKey)
+          await waitFor(() => expect(onboarding.getByTestId('ImportPhrase')).toBeInTheDocument())
+        })
+
+        describe('Wrong secret phrase', () => {
+          it('should block the confirm button when at least one phrase is blank', () => {
+            arSeedPhrase.split(' ').forEach((phrase, index) => {
+              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              expect(currentPhrase).not.toBeNull()
+
+              fireEvent.change(currentPhrase, { target: { value: index === 3 ? '' : phrase } })
+
+              expect(currentPhrase).toHaveValue(index === 3 ? '' : phrase)
+            })
+
+            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            expect(confirmButton).toBeDisabled()
+          })
+          it('should block the confirm button when one of the phrase is not in bip-39 wordlist', () => {
+            arSeedPhrase.split(' ').forEach((phrase, index) => {
+              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              expect(currentPhrase).not.toBeNull()
+
+              fireEvent.change(currentPhrase, { target: { value: index === 3 ? 'abc' : phrase } })
+
+              expect(currentPhrase).toHaveValue(index === 3 ? 'abc' : phrase)
+            })
+
+            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            expect(confirmButton).toBeDisabled()
+          })
+          it('should display invalid secret phrase when fail to validate mnemonic with bip-39', () => {
+            arSeedPhrase.split(' ').forEach((phrase, index) => {
+              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              expect(currentPhrase).not.toBeNull()
+
+              fireEvent.change(currentPhrase, { target: { value: index === 3 ? 'tired' : phrase } })
+
+              expect(currentPhrase).toHaveValue(index === 3 ? 'tired' : phrase)
+            })
+
+            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            expect(confirmButton).not.toBeDisabled()
+
+            fireEvent.click(confirmButton)
+            expect(onboarding.queryAllByText('Invalid Secret Phrase')).toHaveLength(1)
+          })
+        })
+
+        describe('Correct secret phrase', () => {
+          it('should successfully import the wallet and move to the last step', async () => {
+            arSeedPhrase.split(' ').forEach((phrase, index) => {
+              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              expect(currentPhrase).not.toBeNull()
+
+              fireEvent.change(currentPhrase, { target: { value: phrase } })
+
+              expect(currentPhrase).toHaveValue(phrase)
+            })
+
+            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            expect(confirmButton).not.toBeDisabled()
+
+            fireEvent.click(confirmButton)
+
+            await waitFor(() => expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument())
+
+            expect(onboarding.container.querySelector('#go-to-home-button')).toBeNull()
+            expect(onboarding.container.querySelector('#open-faucet-button')).not.toBeNull()
+            expect(onboarding.container.querySelector('#create-nft-page-button')).not.toBeNull()
+          })
         })
       })
       describe('Import non-AR key', () => {
-        beforeAll(() => {
+        beforeEach(async () => {
           onboarding = renderWithOptionProviders(<Onboarding />)
-          // Move to current step
+          /* Move to test step*/
+          // Create new password
+          createPassword(onboarding)
+
+          // Get new key
+          const getNewKey = onboarding.queryByText('Import a key with a secret phrase.')
+          fireEvent.click(getNewKey)
+          await waitFor(() => expect(onboarding.getByTestId('ImportAKey')).toBeInTheDocument())
+
+          // Choose non-AR key
+          const nonARKey = onboarding.queryByTestId('ethereum-key')
+          fireEvent.click(nonARKey)
+          await waitFor(() => expect(onboarding.getByTestId('ImportPhrase')).toBeInTheDocument())
+        })
+
+        describe('Wrong secret phrase', () => {
+          it('should block the confirm button when at least one phrase is blank', () => {
+            ethSeedPhrase.split(' ').forEach((phrase, index) => {
+              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              expect(currentPhrase).not.toBeNull()
+
+              fireEvent.change(currentPhrase, {
+                target: { value: index === 3 ? '' : phrase }
+              })
+
+              expect(currentPhrase).toHaveValue(index === 3 ? '' : phrase)
+            })
+
+            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            expect(confirmButton).toBeDisabled()
+          })
+          it('should block the confirm button when one of the phrase is not in bip-39 wordlist', () => {
+            ethSeedPhrase.split(' ').forEach((phrase, index) => {
+              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              expect(currentPhrase).not.toBeNull()
+
+              fireEvent.change(currentPhrase, {
+                target: { value: index === 3 ? 'abc' : phrase }
+              })
+
+              expect(currentPhrase).toHaveValue(index === 3 ? 'abc' : phrase)
+            })
+
+            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            expect(confirmButton).toBeDisabled()
+          })
+          it('should display invalid secret phrase when fail to validate mnemonic with bip-39', () => {
+            ethSeedPhrase.split(' ').forEach((phrase, index) => {
+              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              expect(currentPhrase).not.toBeNull()
+
+              fireEvent.change(currentPhrase, {
+                target: { value: index === 3 ? 'tired' : phrase }
+              })
+
+              expect(currentPhrase).toHaveValue(index === 3 ? 'tired' : phrase)
+            })
+
+            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            expect(confirmButton).not.toBeDisabled()
+
+            fireEvent.click(confirmButton)
+            expect(onboarding.queryAllByText('Invalid Secret Phrase')).toHaveLength(1)
+          })
+        })
+
+        describe('Correct secret phrase', () => {
+          it('should successfully import the wallet and move to the last step', async () => {
+            ethSeedPhrase.split(' ').forEach((phrase, index) => {
+              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              expect(currentPhrase).not.toBeNull()
+
+              fireEvent.change(currentPhrase, { target: { value: phrase } })
+
+              expect(currentPhrase).toHaveValue(phrase)
+            })
+
+            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            expect(confirmButton).not.toBeDisabled()
+
+            fireEvent.click(confirmButton)
+
+            await waitFor(() => expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument())
+
+            expect(onboarding.container.querySelector('#go-to-home-button')).not.toBeNull()
+            expect(onboarding.container.querySelector('#open-faucet-button')).toBeNull()
+            expect(onboarding.container.querySelector('#create-nft-page-button')).toBeNull()
+          })
         })
       })
     })
