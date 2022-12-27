@@ -15,8 +15,23 @@ const PASSWORD_ERROR = {
   INCORRECT: 'Incorrect password'
 }
 
+const ethSeedPhrase = 'gorilla label maple solve thought avoid song pill margin harsh still broom'
+const arSeedPhrase = 'slam during purse symbol genius edge mistake stamp raven connect host fatigue'
+
+function createPassword(onboarding) {
+  const password = onboarding.container.querySelector('#new-password')
+  const confirmPassword = onboarding.container.querySelector('#confirm-password')
+  const termsService = onboarding.container.querySelector('#new-password-tos')
+  const continueButton = onboarding.container.querySelector('#log-in-button')
+
+  fireEvent.change(password, { target: { value: 'OpenKoi@123' } })
+  fireEvent.change(confirmPassword, { target: { value: 'OpenKoi@123' } })
+  fireEvent.click(termsService)
+  fireEvent.click(continueButton)
+}
+
 describe('Onboarding flow', () => {
-  describe.skip('Step - Secure Finnie with a password', () => {
+  describe('Step - Secure Finnie with a password', () => {
     let onboarding
     let password, confirmPassword, termsService, errorPassword, errorConfirmPassword, continueButton
 
@@ -236,46 +251,287 @@ describe('Onboarding flow', () => {
       })
     })
   })
+
   describe('Step - Create or import a key', () => {
     let onboarding
     describe('Create a key', () => {
-      describe.skip('Create AR key', () => {
+      describe('Create AR key', () => {
         describe('Step - Write down your secret phrase', () => {
-          beforeAll(() => {
+          beforeEach(async () => {
             onboarding = renderWithOptionProviders(<Onboarding />)
-            // Move to current step
-          })
-          describe('Step - Save your Secret Phrase - I am Ready', () => {})
-          describe('Step - Save your Secret Phrase - Remind me later', () => {})
-        })
-      })
-      describe('Create non-AR key', () => {
-        describe('Step - Write down your secret phrase', () => {
-          beforeEach(() => {
-            onboarding = renderWithOptionProviders(<Onboarding />)
-            // Move to current step
+            /* Move to test step*/
+            // Create new password
+            createPassword(onboarding)
+
+            // Get new key
+            const getNewKey = onboarding.queryByText('Start from scratch.')
+            fireEvent.click(getNewKey)
+            await waitFor(() => expect(onboarding.getByTestId('GetAKey')).toBeInTheDocument())
+
+            // Choose non-AR key
+            const ARKey = onboarding.queryByTestId('arweave-key')
+            fireEvent.click(ARKey)
+            await waitFor(() =>
+              expect(onboarding.getByTestId('PrepareSavePhrase')).toBeInTheDocument()
+            )
           })
           describe('Step - Save your Secret Phrase - I am Ready', () => {
+            beforeEach(async () => {
+              const imReady = onboarding.queryByText(`I'm ready!`)
+              fireEvent.click(imReady)
+
+              await waitFor(() =>
+                expect(onboarding.getByTestId('HiddenPhrase')).toBeInTheDocument()
+              )
+            })
             describe('Step - Reveal secret phrase', () => {
               describe('Before reveal secret phrase', () => {
-                it('should hide the secret phrase', () => {})
+                it('should hide the secret phrase', () => {
+                  const hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+                  expect(hiddenPhraseIcon).not.toBeNull()
+
+                  const continueButton = onboarding.container.querySelector('#continue-button')
+                  expect(continueButton).toBeNull()
+                })
               })
               describe('After reveal secret phrase', () => {
-                it('should show the secret phrase correctly', () => {})
+                it('should show the secret phrase correctly', async () => {
+                  let hiddenPhraseIcon
+                  hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+
+                  fireEvent.click(hiddenPhraseIcon)
+
+                  hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+                  await waitFor(() => expect(hiddenPhraseIcon).toBeNull())
+
+                  const continueButton = onboarding.container.querySelector('#continue-button')
+                  expect(continueButton).not.toBeNull()
+
+                  arSeedPhrase.split(' ').forEach((phrase, index) => {
+                    const currentPhrase = onboarding.queryByTestId(`hidden-phrase-${index}`)
+                    expect(currentPhrase).not.toBeNull()
+                    expect(currentPhrase.textContent).toBe(phrase)
+                  })
+                })
               })
             })
 
             describe('Step - Confirm secret phrase', () => {
+              beforeEach(async () => {
+                // Move to confirm secret phrase step
+                let hiddenPhraseIcon
+                hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+                fireEvent.click(hiddenPhraseIcon)
+
+                hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+                await waitFor(() => expect(hiddenPhraseIcon).toBeNull())
+
+                const continueButton = onboarding.container.querySelector('#continue-button')
+                fireEvent.click(continueButton)
+
+                await waitFor(() =>
+                  expect(onboarding.getByTestId('InputPhrase')).toBeInTheDocument()
+                )
+              })
               describe('Wrong secret phrase', () => {
-                it('should ... ', () => {})
+                it('should display invalid secret phrase error message ', async () => {
+                  arSeedPhrase.split(' ').forEach((phrase, index) => {
+                    const currentPhrase = onboarding.queryByTestId(`input-phrase-${index}`)
+                    expect(currentPhrase).not.toBeNull()
+
+                    if (currentPhrase.nodeName === 'INPUT') {
+                      fireEvent.change(currentPhrase, { target: { value: '####' } })
+                    }
+                  })
+
+                  const continueButton = onboarding.container.querySelector('#continue-button')
+                  fireEvent.click(continueButton)
+                  await waitFor(() => {
+                    expect(onboarding.queryAllByText('Invalid Secret Secret Phrase')).toHaveLength(
+                      1
+                    )
+                  })
+                })
               })
               describe('Correct secret phrase', () => {
-                it('should create new wallet successfully and move to last step', () => {})
+                it('should create new wallet successfully and move to last step', async () => {
+                  arSeedPhrase.split(' ').forEach((phrase, index) => {
+                    const currentPhrase = onboarding.queryByTestId(`input-phrase-${index}`)
+                    expect(currentPhrase).not.toBeNull()
+
+                    if (currentPhrase.nodeName === 'INPUT') {
+                      fireEvent.change(currentPhrase, { target: { value: phrase } })
+                    }
+                  })
+
+                  const continueButton = onboarding.container.querySelector('#continue-button')
+                  fireEvent.click(continueButton)
+                  await waitFor(() => {
+                    expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument()
+                  })
+
+                  expect(onboarding.container.querySelector('#go-to-home-button')).toBeNull()
+                  expect(onboarding.container.querySelector('#open-faucet-button')).not.toBeNull()
+                  expect(
+                    onboarding.container.querySelector('#create-nft-page-button')
+                  ).not.toBeNull()
+                })
               })
             })
           })
           describe('Step - Save your Secret Phrase - Remind me later', () => {
-            it('should create new wallet successfully and move to last step', () => {})
+            beforeEach(async () => {
+              const remindMeLater = onboarding.queryByText(`Remind me later.`)
+              fireEvent.click(remindMeLater)
+
+              await waitFor(() =>
+                expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument()
+              )
+            })
+            it('should create new wallet successfully and move to last step', () => {
+              expect(onboarding.container.querySelector('#go-to-home-button')).toBeNull()
+              expect(onboarding.container.querySelector('#open-faucet-button')).not.toBeNull()
+              expect(onboarding.container.querySelector('#create-nft-page-button')).not.toBeNull()
+            })
+          })
+        })
+      })
+      describe('Create non-AR key', () => {
+        describe('Step - Write down your secret phrase', () => {
+          beforeEach(async () => {
+            onboarding = renderWithOptionProviders(<Onboarding />)
+            /* Move to test step*/
+            // Create new password
+            createPassword(onboarding)
+
+            // Get new key
+            const getNewKey = onboarding.queryByText('Start from scratch.')
+            fireEvent.click(getNewKey)
+            await waitFor(() => expect(onboarding.getByTestId('GetAKey')).toBeInTheDocument())
+
+            // Choose non-AR key
+            const nonARKey = onboarding.queryByTestId('ethereum-key')
+            fireEvent.click(nonARKey)
+            await waitFor(() =>
+              expect(onboarding.getByTestId('PrepareSavePhrase')).toBeInTheDocument()
+            )
+          })
+          describe('Step - Save your Secret Phrase - I am Ready', () => {
+            beforeEach(async () => {
+              const imReady = onboarding.queryByText(`I'm ready!`)
+              fireEvent.click(imReady)
+
+              await waitFor(() =>
+                expect(onboarding.getByTestId('HiddenPhrase')).toBeInTheDocument()
+              )
+            })
+            describe('Step - Reveal secret phrase', () => {
+              describe('Before reveal secret phrase', () => {
+                it('should hide the secret phrase', () => {
+                  const hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+                  expect(hiddenPhraseIcon).not.toBeNull()
+
+                  const continueButton = onboarding.container.querySelector('#continue-button')
+                  expect(continueButton).toBeNull()
+                })
+              })
+              describe('After reveal secret phrase', () => {
+                it('should show the secret phrase correctly', async () => {
+                  let hiddenPhraseIcon
+                  hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+
+                  fireEvent.click(hiddenPhraseIcon)
+
+                  hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+                  await waitFor(() => expect(hiddenPhraseIcon).toBeNull())
+
+                  const continueButton = onboarding.container.querySelector('#continue-button')
+                  expect(continueButton).not.toBeNull()
+
+                  ethSeedPhrase.split(' ').forEach((phrase, index) => {
+                    const currentPhrase = onboarding.queryByTestId(`hidden-phrase-${index}`)
+                    expect(currentPhrase).not.toBeNull()
+                    expect(currentPhrase.textContent).toBe(phrase)
+                  })
+                })
+              })
+            })
+
+            describe('Step - Confirm secret phrase', () => {
+              beforeEach(async () => {
+                // Move to confirm secret phrase step
+                let hiddenPhraseIcon
+                hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+                fireEvent.click(hiddenPhraseIcon)
+
+                hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+                await waitFor(() => expect(hiddenPhraseIcon).toBeNull())
+
+                const continueButton = onboarding.container.querySelector('#continue-button')
+                fireEvent.click(continueButton)
+
+                await waitFor(() =>
+                  expect(onboarding.getByTestId('InputPhrase')).toBeInTheDocument()
+                )
+              })
+              describe('Wrong secret phrase', () => {
+                it('should display invalid secret phrase error message ', async () => {
+                  ethSeedPhrase.split(' ').forEach((phrase, index) => {
+                    const currentPhrase = onboarding.queryByTestId(`input-phrase-${index}`)
+                    expect(currentPhrase).not.toBeNull()
+
+                    if (currentPhrase.nodeName === 'INPUT') {
+                      fireEvent.change(currentPhrase, { target: { value: '####' } })
+                    }
+                  })
+
+                  const continueButton = onboarding.container.querySelector('#continue-button')
+                  fireEvent.click(continueButton)
+                  await waitFor(() => {
+                    expect(onboarding.queryAllByText('Invalid Secret Secret Phrase')).toHaveLength(
+                      1
+                    )
+                  })
+                })
+              })
+              describe('Correct secret phrase', () => {
+                it('should create new wallet successfully and move to last step', async () => {
+                  ethSeedPhrase.split(' ').forEach((phrase, index) => {
+                    const currentPhrase = onboarding.queryByTestId(`input-phrase-${index}`)
+                    expect(currentPhrase).not.toBeNull()
+
+                    if (currentPhrase.nodeName === 'INPUT') {
+                      fireEvent.change(currentPhrase, { target: { value: phrase } })
+                    }
+                  })
+
+                  const continueButton = onboarding.container.querySelector('#continue-button')
+                  fireEvent.click(continueButton)
+                  await waitFor(() => {
+                    expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument()
+                  })
+
+                  expect(onboarding.container.querySelector('#go-to-home-button')).not.toBeNull()
+                  expect(onboarding.container.querySelector('#open-faucet-button')).toBeNull()
+                  expect(onboarding.container.querySelector('#create-nft-page-button')).toBeNull()
+                })
+              })
+            })
+          })
+          describe('Step - Save your Secret Phrase - Remind me later', () => {
+            beforeEach(async () => {
+              const remindMeLater = onboarding.queryByText(`Remind me later.`)
+              fireEvent.click(remindMeLater)
+
+              await waitFor(() =>
+                expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument()
+              )
+            })
+            it('should create new wallet successfully and move to last step', () => {
+              expect(onboarding.container.querySelector('#go-to-home-button')).not.toBeNull()
+              expect(onboarding.container.querySelector('#open-faucet-button')).toBeNull()
+              expect(onboarding.container.querySelector('#create-nft-page-button')).toBeNull()
+            })
           })
         })
       })

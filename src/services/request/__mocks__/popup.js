@@ -1,4 +1,3 @@
-const { default: verifyPassword } = require('background/handlers/popupEvents/controller/verifyPassword')
 const { TYPE } = require('constants/accountConstants')
 
 const mockPopupBackgroundRequest = jest.fn().mockImplementation(() => {
@@ -27,9 +26,14 @@ const mockVerifyPassword = jest.fn().mockImplementation(async ({ password }) => 
   return true
 })
 
+const mockSaveWallet = jest.fn().mockImplementation(async () => {
+  return '0xabcde'
+})
+
 mockPopupBackgroundRequest.wallet = {
   generateWallet: mockGenerateWallet,
-  verifyPassword: mockVerifyPassword
+  verifyPassword: mockVerifyPassword,
+  saveWallet: mockSaveWallet
 }
 
 module.exports = { popupBackgroundRequest: mockPopupBackgroundRequest }

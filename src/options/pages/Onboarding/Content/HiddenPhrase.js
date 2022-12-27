@@ -66,7 +66,7 @@ const HiddenPhrase = ({ step, setStep, importType }) => {
               return (
                 <div className="mx-7.5 my-auto flex" key={index}>
                   <div className="w-5 text-right mr-3">{index + 1}. </div>
-                  <div>{phrase}</div>
+                  <div data-testid={`hidden-phrase-${index}`}>{phrase}</div>
                 </div>
               )
             })}
@@ -78,10 +78,15 @@ const HiddenPhrase = ({ step, setStep, importType }) => {
             variant="white"
             text="Continue"
             onClick={() => setStep(step + 1)}
+            id="continue-button"
           />
         </div>
       ) : (
-        <HiddenPhraseIcon className="mt-7.5 cursor-pointer" onClick={() => setShowPhrase(true)} />
+        <HiddenPhraseIcon
+          data-testid="blur-phrase-button"
+          className="mt-7.5 cursor-pointer"
+          onClick={() => setShowPhrase(true)}
+        />
       )}
 
       {showPhrase && (
