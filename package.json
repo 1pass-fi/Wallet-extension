@@ -17,7 +17,7 @@
         "chrome-launch": "node scripts/dev.js --browser=chrome",
         "firefox-launch": "node scripts/dev.js --browser=firefox",
         "coveralls": "coveralls < coverage/lcov.info",
-        "e2e": "jest sampleTest.spec.js --detectOpenHandles"
+        "e2e": "jest e2e --detectOpenHandles"
     },
     "keywords": [
         "chrome",

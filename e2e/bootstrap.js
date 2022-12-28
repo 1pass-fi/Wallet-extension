@@ -6,35 +6,64 @@ async function bootstrap(options = {}) {
     headless: false,
     devtools,
     args: [
+      '--disable-gpu',
+      '--disable-dev-shm-usage',
+      '--disable-setuid-sandbox',
+      '--no-first-run',
+      '--no-sandbox',
+      '--no-zygote',
+      '--deterministic-fetch',
+      '--disable-features=IsolateOrigins',
+      '--disable-site-isolation-trials',
       '--disable-extensions-except=./extension',
-      '--load-extension=./extension',
+      '--load-extension=./extension'
     ],
     defaultViewport: null,
-    ...(slowMo && { slowMo }),
+    ...(slowMo && { slowMo })
   })
+  let appPage, extPage, optionPage
 
-  const appPage = await browser.newPage()
-  await appPage.goto('https://google.com', { waitUntil: 'load' })
+  const launchAppPage = async () => {
+    appPage = await browser.newPage()
+    await appPage.goto('https://google.com', { waitUntil: 'load' })
+    return appPage
+  }
 
-  const targets = await browser.targets()
-  const extensionTarget = targets.find(target => target.type() === 'service_worker')
-  const partialExtensionUrl = extensionTarget.url() || ''
-  const [, , extensionId] = partialExtensionUrl.split('/')
+  const launchExtPage = async () => {
+    extPage = await browser.newPage()
+    const targets = await browser.targets()
+    const extensionTarget = targets.find((target) => target.type() === 'service_worker')
+    const partialExtensionUrl = extensionTarget.url() || ''
+    const [, , extensionId] = partialExtensionUrl.split('/')
+    const extensionUrl = `chrome-extension://${extensionId}/popup.html`
+    await extPage.goto(extensionUrl, { waitUntil: 'load' })
+    return extPage
+  }
 
-  const extPage = await browser.newPage()
-  const extensionUrl = `chrome-extension://${extensionId}/popup.html`
-  await extPage.goto(extensionUrl, { waitUntil: 'load' })
+  const launchOptionPage = async () => {
+    optionPage = await browser.newPage()
+    const targets = await browser.targets()
+    const extensionTarget = targets.find((target) => target.type() === 'service_worker')
+    const partialExtensionUrl = extensionTarget.url() || ''
+    const [, , extensionId] = partialExtensionUrl.split('/')
+    const optionUrl = `chrome-extension://${extensionId}/options.html#`
+    await optionPage.goto(optionUrl, { waitUntil: 'load' })
+    return optionPage
+  }
 
-  const optionPage = await browser.newPage()
-  const optionUrl = `chrome-extension://${extensionId}/options.html#`
-  await optionPage.goto(optionUrl, { waitUntil: 'load'})
+  const closePages = async () => {
+    await browser.close()
+  }
 
   return {
-    appPage,
     browser,
-    extensionUrl,
+    launchAppPage,
+    appPage,
+    launchExtPage,
     extPage,
-    optionPage
+    launchOptionPage,
+    optionPage,
+    closePages
   }
 }
 

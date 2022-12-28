@@ -51,6 +51,7 @@ const CreatePassword = ({ step, setStep }) => {
     if (!isAcceptTermService) {
       setTermServiceMessage(VALIDATE_ERROR_MESSAGE.TERM_OF_SERVICE_UNCHECKED)
     } else {
+      setTermServiceMessage('')
       if (isValidPassword) {
         setStep(step + 1)
       } else {
