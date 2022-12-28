@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import { VALIDATE_ERROR_MESSAGE } from '../../../../constants/koiConstants'
 
-const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%^&*()].*).{8,}')
+const passwordRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
 
 const useValidPassword = ({ password, confirmPassword }) => {
   const [isValidPassword, setIsValidPassword] = useState(false)

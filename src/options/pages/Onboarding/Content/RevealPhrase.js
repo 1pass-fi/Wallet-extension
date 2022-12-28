@@ -30,7 +30,10 @@ const RevealPhrase = ({ step }) => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center text-white text-left w-full pr-4">
+    <div
+      data-testid="RevealPhrase"
+      className="flex flex-col items-center justify-center text-white text-left w-full pr-4"
+    >
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <KoiIcon className="w-18 h-18 absolute top-2.25 right-3.75" />
       <div className="w-3/4 flex items-center justify-center">
@@ -81,6 +84,7 @@ const RevealPhrase = ({ step }) => {
                 dispatch(setIsOnboarding(false))
                 history.push('/')
               }}
+              id="go-to-home-button"
             />
           </div>
         )}
@@ -101,6 +105,7 @@ const RevealPhrase = ({ step }) => {
               text="Get Free KOII"
               size="lg"
               onClick={openFaucet}
+              id="open-faucet-button"
             />
           </div>
           <div className="flex flex-col items-center" style={{ width: '300px' }}>
@@ -116,6 +121,7 @@ const RevealPhrase = ({ step }) => {
               text="Create an NFT"
               size="lg"
               onClick={openCreateNFTPage}
+              id="create-nft-page-button"
             />
           </div>
         </div>

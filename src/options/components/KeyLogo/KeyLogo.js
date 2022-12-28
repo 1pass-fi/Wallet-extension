@@ -9,10 +9,11 @@ import KoiiLock from 'img/v2/onboarding/koii-lock-icon.svg'
 import KoiiLockOpacity from 'img/v2/onboarding/koii-lock-icon-opacity.svg'
 import SolanaLock from 'img/v2/onboarding/solana-lock-icon.svg'
 
-const KeyLogo = ({ type, inProcessing, networkProcessing, handleOnClick }) => {
+const KeyLogo = ({ type, inProcessing, networkProcessing, handleOnClick, data_testid }) => {
   const [isHover, setIsHover] = useState(false)
   return (
     <div
+      data-testid={data_testid}
       className={clsx(
         inProcessing
           ? networkProcessing === type

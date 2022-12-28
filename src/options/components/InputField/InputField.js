@@ -23,7 +23,9 @@ const InputField = ({
   password = false,
   passwordFinnie = false,
   autoFocus = false,
-  onKeyDown = () => {}
+  onKeyDown = () => {},
+  id,
+  errorId
 }) => {
   const [textAreaHeight, setTextAreaHeight] = useState(83)
 
@@ -74,7 +76,7 @@ const InputField = ({
             className="w-full resize-none bg-trueGray-100 bg-opacity-10 border-b border-white text-white px-1 text-area-component"
             style={{ height: `${clsx(textAreaHeight)}px` }}
             placeholder={placeholder || label}
-            id={label}
+            id={id || label}
             value={value}
             onChange={(e) => setValue(e)}
             disabled={isDisable}
@@ -95,7 +97,7 @@ const InputField = ({
                 : 'h-5.25 3xl:h-7 px-1 input-field-component'
             )}
             placeholder={placeholder || label}
-            id={label}
+            id={id || label}
             value={value}
             onChange={(e) => setValue(e)}
             disabled={isDisable}
@@ -117,6 +119,7 @@ const InputField = ({
           'text-warning mt-1 text-left ml-2',
           passwordFinnie ? 'text-xs lg:text-sm' : 'text-3xs'
         )}
+        data-testid={errorId}
       >
         {errorFinnie}
       </div>

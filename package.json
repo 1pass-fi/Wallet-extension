@@ -148,7 +148,7 @@
             ".stories.js",
             "extension.js"
         ],
-        "setupFiles": [
+        "setupFilesAfterEnv": [
             "jest-webextension-mock",
             "./setupJest.js"
         ]

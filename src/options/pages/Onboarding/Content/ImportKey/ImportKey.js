@@ -17,7 +17,7 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
     setStep(step + 1)
   }
   return (
-    <div className="w-3/4 flex flex-col text-white text-left">
+    <div data-testid="ImportAKey" className="w-3/4 flex flex-col text-white text-left">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
@@ -37,6 +37,7 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
               setNetwork(NETWORK.K2)
               handleImportKey(TYPE.K2)
             }}
+            data_testid={'k2-key'}
           />
           <div className="font-normal text-lg leading-6">Koii</div>
         </div>
@@ -48,6 +49,7 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
               setNetwork(NETWORK.ETHEREUM)
               handleImportKey(TYPE.ETHEREUM)
             }}
+            data_testid={'ethereum-key'}
           />
           <div className="font-normal text-lg leading-6">Ethereum</div>
         </div>
@@ -58,6 +60,7 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
               setNetwork(NETWORK.SOLANA)
               handleImportKey(TYPE.SOLANA)
             }}
+            data_testid={'solana-key'}
           />
           <div className="font-normal text-lg leading-6">Solana</div>
         </div>
@@ -68,6 +71,7 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
               setNetwork(NETWORK.ARWEAVE)
               handleImportKey(TYPE.ARWEAVE)
             }}
+            data_testid={'arweave-key'}
           />
           <div className="font-normal text-lg leading-6">Arweave</div>
         </div>

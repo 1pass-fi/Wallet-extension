@@ -1,4 +1,4 @@
-import React, { useContext,useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import clsx from 'clsx'
 import HiddenPhraseIcon from 'img/v2/onboarding/hidden-phrase.svg'
 import WarningIcon from 'img/v2/onboarding/warning-icon.svg'
@@ -94,7 +94,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
       await saveNewKey(importType)
       setStep(step + 1)
     } else {
-      setMessageError('Invalid Secret Secret Phrase')
+      setMessageError('Invalid Secret Phrase')
     }
   }
 
@@ -111,7 +111,11 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
   }
 
   return (
-    <div className="w-11/12 flex flex-col text-white text-left" style={{ width: '500px' }}>
+    <div
+      data-testid="InputPhrase"
+      className="w-11/12 flex flex-col text-white text-left"
+      style={{ width: '500px' }}
+    >
       <WelcomeBackground className="absolute bottom-0 right-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
         Save your Secret Phrase
@@ -143,12 +147,13 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
                   onChange={(e) => onChangeInputPhrase(e, index)}
                   onKeyDown={(e) => handleKeyDown(e)}
                   value={completePhrase.find((obj) => obj.index === index).word}
+                  data-testid={`input-phrase-${index}`}
                 />
               </div>
             ) : (
               <div className="mx-7.5 my-auto flex" key={index}>
                 <div className="w-5 text-right mr-3">{index + 1}. </div>
-                <div>{phrase}</div>
+                <div data-testid={`input-phrase-${index}`}>{phrase}</div>
               </div>
             )
           })}
@@ -163,6 +168,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
           text="Confirm Phrase"
           // disabled={!isNextStep}
           onClick={onClickContinue}
+          id="continue-button"
         />
       </div>
 

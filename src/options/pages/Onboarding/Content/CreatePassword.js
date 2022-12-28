@@ -42,7 +42,7 @@ const CreatePassword = ({ step, setStep }) => {
     }
 
     if (!isAcceptTermService) {
-      setTermServiceMessage('Please accept the Terms of Service')
+      setTermServiceMessage(VALIDATE_ERROR_MESSAGE.TERM_OF_SERVICE_UNCHECKED)
     } else {
       if (isValidPassword) {
         setStep(step + 1)
@@ -60,7 +60,7 @@ const CreatePassword = ({ step, setStep }) => {
   }
 
   return (
-    <div className="w-2/5 flex flex-col text-white self-start pl-23">
+    <div data-testid="CreatePassword" className="w-2/5 flex flex-col text-white self-start pl-23">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="font-normal text-base leading-6 text-left">
@@ -78,7 +78,7 @@ const CreatePassword = ({ step, setStep }) => {
         }}
         required={true}
         name="password"
-        description={
+        errorFinnie={
           isEmpty(accounts) &&
           !isEmpty(password) &&
           isClickContinue &&
@@ -94,6 +94,8 @@ const CreatePassword = ({ step, setStep }) => {
         passwordFinnie={true}
         autoFocus={true}
         onKeyDown={(e) => handleKeyDown(e)}
+        id={'new-password'}
+        errorId={'error-new-password'}
       />
       {isEmpty(accounts) && (
         <InputField
@@ -112,6 +114,8 @@ const CreatePassword = ({ step, setStep }) => {
           uppercase={false}
           passwordFinnie={true}
           onKeyDown={(e) => handleKeyDown(e)}
+          id={'confirm-password'}
+          errorId={'error-confirm-password'}
         />
       )}
       {isEmpty(accounts) && (
@@ -121,6 +125,7 @@ const CreatePassword = ({ step, setStep }) => {
             onClick={() => setIsAcceptTermService((prev) => !prev)}
             theme="dark"
             className="w-5 h-5"
+            id="new-password-tos"
           />
           <div className="flex ml-2.25 font-normal text-sm leading-6">
             <div onClick={() => setIsAcceptTermService((prev) => !prev)}>
@@ -132,7 +137,10 @@ const CreatePassword = ({ step, setStep }) => {
           </div>
         </div>
       )}
-      <div className="text-red-finnie text-xs font-normal mt-2 text-center">
+      <div
+        data-testid="tos-error-message"
+        className="text-red-finnie text-xs font-normal mt-2 text-center"
+      >
         {termServiceMessage}
       </div>
       <Button
@@ -141,6 +149,7 @@ const CreatePassword = ({ step, setStep }) => {
         variant="white"
         text="Log In"
         onClick={() => onClickContinue()}
+        id="log-in-button"
       />
     </div>
   )

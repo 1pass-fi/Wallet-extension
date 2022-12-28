@@ -44,7 +44,7 @@ const GetAKey = ({ step, setStep, setImportType }) => {
   }
 
   return (
-    <div className="w-3/4 flex flex-col text-white text-left">
+    <div data-testid="GetAKey" className="w-3/4 flex flex-col text-white text-left">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">Get a Key</div>
@@ -64,6 +64,7 @@ const GetAKey = ({ step, setStep, setImportType }) => {
             inProcessing={inProcessing}
             networkProcessing={networkProcessing}
             handleOnClick={handleGetNewKey}
+            data_testid="k2-key"
           />
           <div className="font-normal text-lg leading-6">Koii</div>
         </div>
@@ -74,6 +75,7 @@ const GetAKey = ({ step, setStep, setImportType }) => {
             inProcessing={inProcessing}
             networkProcessing={networkProcessing}
             handleOnClick={handleGetNewKey}
+            data_testid="ethereum-key"
           />
           <div className="font-normal text-lg leading-6">Ethereum</div>
         </div>
@@ -83,6 +85,7 @@ const GetAKey = ({ step, setStep, setImportType }) => {
             inProcessing={inProcessing}
             networkProcessing={networkProcessing}
             handleOnClick={handleGetNewKey}
+            data_testid="solana-key"
           />
           <div className="font-normal text-lg leading-6">Solana</div>
         </div>
@@ -92,6 +95,7 @@ const GetAKey = ({ step, setStep, setImportType }) => {
             inProcessing={inProcessing}
             networkProcessing={networkProcessing}
             handleOnClick={handleGetNewKey}
+            data_testid="arweave-key"
           />
           <div className="font-normal text-lg leading-6">Arweave</div>
         </div>

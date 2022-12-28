@@ -8,6 +8,8 @@ const mockGetAccount = jest.fn().mockImplementation(async () => ({
     metadata: mockAccountGetMetadata
   }
 }))
+const mockCount = jest.fn().mockImplementation(async () => 0)
 mockPopupAccount.getAllMetadata = mockGetAllMetadata
 mockPopupAccount.getAccount = mockGetAccount
+mockPopupAccount.count = mockCount
 module.exports = { popupAccount: mockPopupAccount }

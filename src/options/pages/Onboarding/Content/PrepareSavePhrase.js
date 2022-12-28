@@ -20,7 +20,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
   }
 
   return (
-    <div className="w-11/12 flex flex-col text-white text-left">
+    <div data-testid="PrepareSavePhrase" className="w-11/12 flex flex-col text-white text-left">
       <WelcomeBackground className="absolute bottom-0 right-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
         Save your Secret Phrase
@@ -54,6 +54,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
           text="Remind me later."
           size="lg"
           onClick={handleRemindMeLater}
+          data-testid={'remind-me-button'}
         />
         <Button
           style={{ width: '240px', height: '42px' }}
@@ -61,6 +62,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
           variant="white"
           text="I'm ready!"
           onClick={() => setStep(step + 1)}
+          data-testid={'ready-button'}
         />
       </div>
     </div>
