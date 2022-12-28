@@ -42,7 +42,7 @@ const CreatePassword = ({ step, setStep }) => {
     }
 
     if (!isAcceptTermService) {
-      setTermServiceMessage('Please accept the Terms of Service')
+      setTermServiceMessage(VALIDATE_ERROR_MESSAGE.TERM_OF_SERVICE_UNCHECKED)
     } else {
       if (isValidPassword) {
         setStep(step + 1)
@@ -137,7 +137,10 @@ const CreatePassword = ({ step, setStep }) => {
           </div>
         </div>
       )}
-      <div className="text-red-finnie text-xs font-normal mt-2 text-center">
+      <div
+        data-testid="tos-error-message"
+        className="text-red-finnie text-xs font-normal mt-2 text-center"
+      >
         {termServiceMessage}
       </div>
       <Button

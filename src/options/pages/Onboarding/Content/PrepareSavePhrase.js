@@ -54,6 +54,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
           text="Remind me later."
           size="lg"
           onClick={handleRemindMeLater}
+          data-testid={'remind-me-button'}
         />
         <Button
           style={{ width: '240px', height: '42px' }}
@@ -61,6 +62,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
           variant="white"
           text="I'm ready!"
           onClick={() => setStep(step + 1)}
+          data-testid={'ready-button'}
         />
       </div>
     </div>

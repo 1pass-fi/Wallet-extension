@@ -412,7 +412,8 @@ export const ERROR_MESSAGE = {
 export const VALIDATE_ERROR_MESSAGE = {
   NOT_ENOUGH_CHARACTERS: 'Not enough characters',
   NOT_MATCH: `Password does not match`,
-  INVALID_CHARACTER: 'The password does not meet the requirements.'
+  INVALID_CHARACTER: 'The password does not meet the requirements.',
+  TERM_OF_SERVICE_UNCHECKED: 'Please accept the Terms of Service'
 }
 
 export const STORAGE = {

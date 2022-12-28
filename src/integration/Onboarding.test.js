@@ -12,7 +12,8 @@ const PASSWORD_ERROR = {
   NOT_MATCHING: 'Password does not match',
   NOT_MEET_REQUIREMENT:
     'Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%).',
-  INCORRECT: 'Incorrect password'
+  INCORRECT: 'Incorrect password',
+  TERM_OF_SERVICE_UNCHECKED: 'Please accept the Terms of Service'
 }
 
 const ethSeedPhrase = 'cluster cram fish penalty twelve evoke because wheel close income bag pupil'
@@ -189,7 +190,9 @@ describe('Onboarding flow', () => {
           expect(password).toHaveValue('OpenKoi@123')
           expect(confirmPassword).toHaveValue('OpenKoi@123')
 
-          expect(onboarding.queryAllByText('Please accept the Terms of Service')).toHaveLength(1)
+          expect(onboarding.queryByTestId('tos-error-message')).toHaveTextContent(
+            PASSWORD_ERROR.TERM_OF_SERVICE_UNCHECKED
+          )
           expect(errorPassword.textContent).toBe('')
           expect(errorConfirmPassword.textContent).toBe('')
         })
@@ -204,7 +207,8 @@ describe('Onboarding flow', () => {
           expect(password).toHaveValue('OpenKoi@123')
           expect(confirmPassword).toHaveValue('OpenKoi@123')
 
-          expect(onboarding.queryAllByText('Please accept the Terms of Service')).toHaveLength(0)
+          expect(onboarding.queryByTestId('tos-error-message')).toBeNull()
+
           expect(errorPassword.textContent).toBe('')
           expect(errorConfirmPassword.textContent).toBe('')
 
@@ -284,11 +288,11 @@ describe('Onboarding flow', () => {
             createPassword(onboarding)
 
             // Get new key
-            const getNewKey = onboarding.queryByText('Start from scratch.')
+            const getNewKey = onboarding.queryByTestId('start-from-scratch-div')
             fireEvent.click(getNewKey)
             await waitFor(() => expect(onboarding.getByTestId('GetAKey')).toBeInTheDocument())
 
-            // Choose non-AR key
+            // Choose AR key
             const ARKey = onboarding.queryByTestId('arweave-key')
             fireEvent.click(ARKey)
             await waitFor(() =>
@@ -298,7 +302,7 @@ describe('Onboarding flow', () => {
 
           describe('Step - Save your Secret Phrase - I am Ready', () => {
             beforeEach(async () => {
-              const imReady = onboarding.queryByText(`I'm ready!`)
+              const imReady = onboarding.queryByTestId(`ready-button`)
               fireEvent.click(imReady)
 
               await waitFor(() =>
@@ -400,7 +404,7 @@ describe('Onboarding flow', () => {
           })
           describe('Step - Save your Secret Phrase - Remind me later', () => {
             beforeEach(async () => {
-              const remindMeLater = onboarding.queryByText(`Remind me later.`)
+              const remindMeLater = onboarding.queryByTestId(`remind-me-button`)
               fireEvent.click(remindMeLater)
 
               await waitFor(() =>
@@ -427,7 +431,7 @@ describe('Onboarding flow', () => {
             createPassword(onboarding)
 
             // Get new key
-            const getNewKey = onboarding.queryByText('Start from scratch.')
+            const getNewKey = onboarding.queryByTestId('start-from-scratch-div')
             fireEvent.click(getNewKey)
             await waitFor(() => expect(onboarding.getByTestId('GetAKey')).toBeInTheDocument())
 
@@ -440,7 +444,7 @@ describe('Onboarding flow', () => {
           })
           describe('Step - Save your Secret Phrase - I am Ready', () => {
             beforeEach(async () => {
-              const imReady = onboarding.queryByText(`I'm ready!`)
+              const imReady = onboarding.queryByTestId(`ready-button`)
               fireEvent.click(imReady)
 
               await waitFor(() =>
@@ -540,7 +544,7 @@ describe('Onboarding flow', () => {
           })
           describe('Step - Save your Secret Phrase - Remind me later', () => {
             beforeEach(async () => {
-              const remindMeLater = onboarding.queryByText(`Remind me later.`)
+              const remindMeLater = onboarding.queryByTestId('remind-me-button')
               fireEvent.click(remindMeLater)
 
               await waitFor(() =>
@@ -567,7 +571,7 @@ describe('Onboarding flow', () => {
           createPassword(onboarding)
 
           // Get new key
-          const getNewKey = onboarding.queryByText('Import a key with a secret phrase.')
+          const getNewKey = onboarding.queryByTestId('use-existing-key-div')
           fireEvent.click(getNewKey)
           await waitFor(() => expect(onboarding.getByTestId('ImportAKey')).toBeInTheDocument())
 
@@ -657,7 +661,7 @@ describe('Onboarding flow', () => {
           createPassword(onboarding)
 
           // Get new key
-          const getNewKey = onboarding.queryByText('Import a key with a secret phrase.')
+          const getNewKey = onboarding.queryByTestId('use-existing-key-div')
           fireEvent.click(getNewKey)
           await waitFor(() => expect(onboarding.getByTestId('ImportAKey')).toBeInTheDocument())
 

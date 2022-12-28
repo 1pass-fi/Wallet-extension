@@ -30,7 +30,7 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
           }}
         >
           <CreateNewIcon style={{ width: '32px', height: '32px' }} />
-          <div className="mt-3 font-semibold text-base leading-4 text-center text-white">
+          <div data-testid='start-from-scratch-div' className="mt-3 font-semibold text-base leading-4 text-center text-white">
             Start from scratch.
           </div>
           <div className="mt-2 font-normal text-xs text-center tracking-finnieSpacing-wide text-white">
@@ -49,7 +49,7 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
           }}
         >
           <KeySelectedIcon style={{ width: '48px', height: '48px' }} />
-          <div className="mt-3 font-semibold text-base leading-4 text-center text-white">
+          <div data-testid='use-existing-key-div' className="mt-3 font-semibold text-base leading-4 text-center text-white">
             Use my existing key.
           </div>
           <div className="mt-2 font-normal text-xs text-center tracking-finnieSpacing-wide text-white w-9/12">
