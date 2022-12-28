@@ -125,6 +125,7 @@ const CreatePassword = ({ step, setStep }) => {
             onClick={() => setIsAcceptTermService((prev) => !prev)}
             theme="dark"
             className="w-5 h-5"
+            id="new-password-tos"
           />
           <div className="flex ml-2.25 font-normal text-sm leading-6">
             <div onClick={() => setIsAcceptTermService((prev) => !prev)}>
@@ -145,6 +146,7 @@ const CreatePassword = ({ step, setStep }) => {
         variant="white"
         text="Log In"
         onClick={() => onClickContinue()}
+        id="log-in-button"
       />
     </div>
   )

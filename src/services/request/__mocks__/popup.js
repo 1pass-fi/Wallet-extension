@@ -7,16 +7,19 @@ const mockGenerateWallet = jest.fn().mockImplementation(async ({ walletType }) =
   let seedphrase
   switch (walletType) {
     case TYPE.ARWEAVE:
-      seedphrase = 'slam during purse symbol genius edge mistake stamp raven connect host fatigue'
+      seedphrase =
+        'credit erosion kidney deposit buddy pioneer window material embark assist quit still'
       break
     case TYPE.ETHEREUM:
-      seedphrase = 'gorilla label maple solve thought avoid song pill margin harsh still broom'
+      seedphrase = 'cluster cram fish penalty twelve evoke because wheel close income bag pupil'
       break
     case TYPE.SOLANA:
-      seedphrase = 'color tired merge rural token pole capable people metal student catch uphold'
+      seedphrase =
+        'rent involve devote swap uniform zero improve firm domain ketchup giggle universe'
       break
     case TYPE.K2:
-      seedphrase = 'color tired merge rural token pole capable people metal student catch uphold'
+      seedphrase =
+        'neglect trigger better derive lawsuit erosion cry online private rib vehicle drop '
       break
   }
   return seedphrase.split(' ')

@@ -15,8 +15,9 @@ const PASSWORD_ERROR = {
   INCORRECT: 'Incorrect password'
 }
 
-const ethSeedPhrase = 'gorilla label maple solve thought avoid song pill margin harsh still broom'
-const arSeedPhrase = 'slam during purse symbol genius edge mistake stamp raven connect host fatigue'
+const ethSeedPhrase = 'cluster cram fish penalty twelve evoke because wheel close income bag pupil'
+const arSeedPhrase =
+  'credit erosion kidney deposit buddy pioneer window material embark assist quit still'
 
 function createPassword(onboarding) {
   const password = onboarding.container.querySelector('#new-password')
@@ -31,11 +32,17 @@ function createPassword(onboarding) {
 }
 
 describe('Onboarding flow', () => {
+  /* SECURE FINNIE WITH A PASSWORD */
   describe('Step - Secure Finnie with a password', () => {
-    let onboarding
-    let password, confirmPassword, termsService, errorPassword, errorConfirmPassword, continueButton
-
     describe('Create new password', () => {
+      let onboarding,
+        password,
+        confirmPassword,
+        termsService,
+        errorPassword,
+        errorConfirmPassword,
+        continueButton
+
       beforeEach(() => {
         onboarding = renderWithOptionProviders(<Onboarding />)
 
@@ -205,14 +212,18 @@ describe('Onboarding flow', () => {
         })
       })
     })
+
     describe('Login with password', () => {
       beforeEach(() => {
         request.wallet.verifyPassword.mockImplementation(async () => {
           return true
         })
       })
+
       describe('Wrong password', () => {
-        it('should display incorrect password error', async () => {
+        let onboarding, password, errorPassword, continueButton
+
+        beforeEach(() => {
           request.wallet.verifyPassword.mockImplementation(async () => {
             return false
           })
@@ -223,7 +234,9 @@ describe('Onboarding flow', () => {
           password = onboarding.container.querySelector('#new-password')
           errorPassword = onboarding.getByTestId('error-new-password')
           continueButton = onboarding.container.querySelector('#log-in-button')
+        })
 
+        it('should display incorrect password error', async () => {
           fireEvent.change(password, { target: { value: 'OpenKoi@123' } })
           fireEvent.click(continueButton)
 
@@ -231,8 +244,11 @@ describe('Onboarding flow', () => {
           await waitFor(() => expect(errorPassword.textContent).toBe('Incorrect password'))
         })
       })
+
       describe('Correct password', () => {
-        it('should be authenticated and move to next step', async () => {
+        let onboarding, password, errorPassword, continueButton
+
+        beforeEach(() => {
           onboarding = renderWithOptionProviders(<Onboarding />, {
             initialState: { accounts: ['Account#1'] }
           })
@@ -240,7 +256,9 @@ describe('Onboarding flow', () => {
           password = onboarding.container.querySelector('#new-password')
           errorPassword = onboarding.getByTestId('error-new-password')
           continueButton = onboarding.container.querySelector('#log-in-button')
+        })
 
+        it('should be authenticated and move to next step', async () => {
           fireEvent.change(password, { target: { value: 'OpenKoi@123' } })
           fireEvent.click(continueButton)
 
@@ -252,11 +270,13 @@ describe('Onboarding flow', () => {
     })
   })
 
+  /* CREATE OR IMPORT A KEY */
   describe('Step - Create or import a key', () => {
-    let onboarding
     describe('Create a key', () => {
       describe('Create AR key', () => {
         describe('Step - Write down your secret phrase', () => {
+          let onboarding
+
           beforeEach(async () => {
             onboarding = renderWithOptionProviders(<Onboarding />)
             /* Move to test step*/
@@ -275,6 +295,7 @@ describe('Onboarding flow', () => {
               expect(onboarding.getByTestId('PrepareSavePhrase')).toBeInTheDocument()
             )
           })
+
           describe('Step - Save your Secret Phrase - I am Ready', () => {
             beforeEach(async () => {
               const imReady = onboarding.queryByText(`I'm ready!`)
@@ -394,8 +415,11 @@ describe('Onboarding flow', () => {
           })
         })
       })
+
       describe('Create non-AR key', () => {
         describe('Step - Write down your secret phrase', () => {
+          let onboarding
+
           beforeEach(async () => {
             onboarding = renderWithOptionProviders(<Onboarding />)
             /* Move to test step*/
@@ -534,6 +558,8 @@ describe('Onboarding flow', () => {
     })
     describe('Import a key', () => {
       describe('Import AR key', () => {
+        let onboarding
+
         beforeEach(async () => {
           onboarding = renderWithOptionProviders(<Onboarding />)
           /* Move to test step*/
@@ -620,7 +646,10 @@ describe('Onboarding flow', () => {
           })
         })
       })
+
       describe('Import non-AR key', () => {
+        let onboarding
+
         beforeEach(async () => {
           onboarding = renderWithOptionProviders(<Onboarding />)
           /* Move to test step*/
