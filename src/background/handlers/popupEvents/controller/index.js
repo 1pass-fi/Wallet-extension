@@ -34,7 +34,6 @@ import sendCustomTokenSol from './sendCustomTokenSol'
 import sendNft from './sendNft'
 import setDefaultAccount from './setDefaultAccount'
 import signTransaction from './signTransaction'
-import test from './test'
 import unlockWallet from './unlockWallet'
 import updateCollection from './updateCollection'
 import updateDID from './updateDID'
@@ -90,7 +89,6 @@ export default {
   sendCustomTokenSol,
   sendCustomTokenK2,
   verifyPassword,
-  test,
   pairingWalletConnect,
   approveWalletConnect,
   rejectWalletConnect

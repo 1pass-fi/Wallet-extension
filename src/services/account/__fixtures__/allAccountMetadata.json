@@ -1,0 +1,14 @@
+[{
+  "address": "example_address",
+  "balance": 1,
+  "koiBalance": 1,
+  "accountName": "example_accountName",
+  "type": "example_type",
+  "provider": "example_provider",
+  "seedPhrase": "example_seedphrase",
+  "affiliateCode": "example_affiliateCode",
+  "inviteSpent":"example_inviteSpent",
+  "totalReward":"example_totalReward",
+  "didData":"example_didData",
+  "totalAssets":"10"
+}]
