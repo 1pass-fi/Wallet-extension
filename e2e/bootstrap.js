@@ -5,25 +5,20 @@ async function bootstrap(options = {}) {
   const browser = await puppeteer.launch({
     headless: false,
     devtools,
-    args: [
-      '--disable-gpu',
-      '--disable-dev-shm-usage',
-      '--disable-setuid-sandbox',
-      '--no-first-run',
-      '--no-sandbox',
-      '--no-zygote',
-      '--deterministic-fetch',
-      '--disable-features=IsolateOrigins',
-      '--disable-site-isolation-trials',
-      '--disable-extensions-except=./extension',
-      '--load-extension=./extension'
-    ],
+    args: ['--disable-extensions-except=./extension', '--load-extension=./extension'],
     defaultViewport: null,
     ...(slowMo && { slowMo })
   })
   let appPage, extPage, optionPage
 
-  await new Promise((resolve) => setTimeout(() => resolve(), 3000))
+  // wait until the option page loaded
+  while ((await browser.pages()).length <= 1) {
+    await new Promise((resolve) =>
+      setTimeout(() => {
+        resolve()
+      }, 500)
+    )
+  }
   optionPage = await browser.pages().then((allPages) => allPages[1])
 
   const launchAppPage = async () => {

@@ -5,7 +5,7 @@ describe('e2e test', () => {
 
   beforeAll(async () => {
     context = await bootstrap()
-    optionPage = await context.launchOptionPage()
+    optionPage = context.optionPage
     return true
   })
 

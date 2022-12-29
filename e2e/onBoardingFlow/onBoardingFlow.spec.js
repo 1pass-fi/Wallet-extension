@@ -64,24 +64,20 @@ describe('e2e test', () => {
 
     // click login button
     await loginButton.click()
-    await optionPage.waitForTimeout(1000)
-
-    const createKeyMessage = await optionPage.waitForXPath(
-      '//*[contains(text(), "Start from scratch")]',
-      3000
-    )
 
     // expect go to the step 2 -  Create Key
-    expect(createKeyMessage).not.toBeNull()
+    const addAKeyPage = await optionPage.waitForSelector('[data-testid="AddAKey"]')
+    expect(addAKeyPage).not.toBeNull()
 
     // click Create Key button
-    let createKeyButton = await optionPage.waitForSelector('#create-key-button')
+    let createKeyButton = await optionPage.waitForSelector('[data-testid="use-existing-key-div"]')
     await createKeyButton.click()
 
     // click Create ETH Key button
     let createEthKeyButton = await optionPage.waitForSelector('[data-testid="ethereum-key"]')
     await createEthKeyButton.click()
-    await optionPage.waitForTimeout(5000)
+
+    await optionPage.waitForTimeout(1000)
   }, 30000)
 
   afterAll(async () => {
