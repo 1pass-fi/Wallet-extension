@@ -136,6 +136,7 @@ const RevealPhrase = ({ step }) => {
             dispatch(setOnboardingPath(''))
             history.push('/')
           }}
+          id="skip-to-home-button"
         >
           Skip this step
         </div>

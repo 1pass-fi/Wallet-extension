@@ -1,6 +1,6 @@
 import { bootstrap } from '../bootstrap'
 
-describe('e2e test', () => {
+describe.skip('e2e test', () => {
   let context, optionPage
 
   beforeAll(async () => {
