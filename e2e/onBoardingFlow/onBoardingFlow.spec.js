@@ -5,7 +5,7 @@ describe('e2e test', () => {
 
   beforeAll(async () => {
     context = await bootstrap()
-    optionPage = await context.launchOptionPage()
+    optionPage = context.optionPage
     return true
   })
 
@@ -73,6 +73,15 @@ describe('e2e test', () => {
 
     // expect go to the step 2 -  Create Key
     expect(createKeyMessage).not.toBeNull()
+
+    // click Create Key button
+    let createKeyButton = await optionPage.waitForSelector('#create-key-button')
+    await createKeyButton.click()
+
+    // click Create ETH Key button
+    let createEthKeyButton = await optionPage.waitForSelector('[data-testid="ethereum-key"]')
+    await createEthKeyButton.click()
+    await optionPage.waitForTimeout(5000)
   }, 30000)
 
   afterAll(async () => {

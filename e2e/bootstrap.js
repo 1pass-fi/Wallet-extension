@@ -23,6 +23,9 @@ async function bootstrap(options = {}) {
   })
   let appPage, extPage, optionPage
 
+  await new Promise((resolve) => setTimeout(() => resolve(), 3000))
+  optionPage = await browser.pages().then((allPages) => allPages[1])
+
   const launchAppPage = async () => {
     appPage = await browser.newPage()
     await appPage.goto('https://google.com', { waitUntil: 'load' })
