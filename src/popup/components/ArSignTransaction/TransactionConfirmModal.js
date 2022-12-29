@@ -37,7 +37,6 @@ import useSimulation from './hooks/useSimulation'
 const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => {
   const [tab, setTab] = useState(TAB.DETAIL)
   const [showReceipt, setShowReceipt] = useState(false)
-  const [txId, setTxId] = useState('')
   const [showConnectedSites, setShowConnectedSites] = useState(false)
   const [acceptSite, setAcceptSite] = useState(false)
 
