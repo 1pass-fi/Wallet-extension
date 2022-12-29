@@ -16,12 +16,10 @@ describe('e2e test', () => {
     /* Accept TOS */
     // type password
     await optionPage.type('#new-password', 'OpenKoi@123')
-    await optionPage.waitForTimeout(1000)
 
     // click login button
     let loginButton = await optionPage.waitForSelector('#log-in-button')
     await loginButton.click()
-    await optionPage.waitForTimeout(1000)
     let tosMessage = (await optionPage.content()).match('Please accept the Terms of Service')
 
     // expect the error message
@@ -33,25 +31,21 @@ describe('e2e test', () => {
     await tosCheckbox.click()
 
     await loginButton.click()
-    await optionPage.waitForTimeout(1000)
 
     tosMessage = (await optionPage.content()).match('Please accept the Terms of Service')
 
     // expect no the TOS message
     expect(tosMessage).toBeNull()
-    await optionPage.waitForTimeout(1000)
 
     // expect error message
     let errorPasswordMessage = (await optionPage.content()).match('Password does not match')
     expect(errorPasswordMessage).not.toBeNull()
-    await optionPage.waitForTimeout(1000)
 
     // type confirm password
     await optionPage.type('input[id="confirm-password"]', 'blah_blah_blah')
 
     // click login button
     await loginButton.click()
-    await optionPage.waitForTimeout(1000)
 
     errorPasswordMessage = (await optionPage.content()).match('Password does not match')
     // expect error message
