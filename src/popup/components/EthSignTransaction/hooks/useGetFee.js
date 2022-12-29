@@ -1,20 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { ethers } from 'ethers'
-import { get, isEmpty, isNumber } from 'lodash'
+import { get, isNumber } from 'lodash'
 import storage from 'services/storage'
 import { numberFormat } from 'utils'
 import ethereumUtils from 'utils/ethereumUtils'
-import Web3 from 'web3'
 
 const fromHexToDecimal = (hexString) => {
   let number = null
   if (hexString) number = parseInt(hexString, 16)
 
   return number
-}
-
-const fromWeiToEth = (wei) => {
-  return wei / 1000000000000000000
 }
 
 const useGetFee = ({

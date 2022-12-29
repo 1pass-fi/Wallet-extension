@@ -1,20 +1,10 @@
 import '@babel/polyfill'
 
 import { ALLOWED_ORIGIN, MESSAGES } from 'constants/koiConstants'
-// import declareConstantScript from 'content_scripts/scripts/declareConstantScript'
-// import eventEmitterScript from 'content_scripts/scripts/eventEmitterScript'
-// import finnieArweaveProviderScript from 'content_scripts/scripts/finnieArweaveProviderScript'
-// import finnieEthereumProviderScript from 'content_scripts/scripts/finnieEthereumProviderScript'
-// import finnieK2ProviderScript from 'content_scripts/scripts/finnieK2ProviderScript'
-// import finnieKoiiWalletProviderScript from 'content_scripts/scripts/finnieKoiiWalletProviderScript'
-// import finnieRpcConnectionScript from 'content_scripts/scripts/finnieRpcConnectionScript'
-// import finnieSolanaProviderScript from 'content_scripts/scripts/finnieSolanaProviderScript'
-// import mainScript from 'content_scripts/scripts/mainScript'
 import { includes } from 'lodash'
 import storage from 'services/storage'
 
 import initHanlders from './initHandlers'
-import inject from './inject'
 
 if (includes(ALLOWED_ORIGIN, window.origin)) {
   console.log('Finnie is ready to connect to the site.')

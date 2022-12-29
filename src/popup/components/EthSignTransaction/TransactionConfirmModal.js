@@ -1,6 +1,6 @@
 // modules
 import React, { useEffect, useMemo, useState } from 'react'
-import { connect, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
 import { setError } from 'actions/error'
@@ -27,7 +27,6 @@ import { decodeTxMethod } from 'utils/index'
 import ConnectScreen from 'components/Connect/ConnectScreen'
 
 import { TAB, TRANSACTION_METHOD, TRANSACTION_TYPE } from './hooks/constants'
-import useExploreBlockUrl from './hooks/useExploreBlockUrl'
 import useFetchBaseFee from './hooks/useFetchBaseFee'
 import useGetFee from './hooks/useGetFee'
 import useLoadRequest from './hooks/useLoadRequest'

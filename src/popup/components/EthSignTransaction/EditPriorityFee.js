@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef,useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import clsx from 'clsx'
 import { ethers } from 'ethers'
 import DropDownIcon from 'img/dropdown-icon.svg'
@@ -6,8 +6,6 @@ import ForkIcon from 'img/fork-icon.svg'
 import SelectedCircle from 'img/selected-circle.svg'
 import UnselectedCircle from 'img/unselected-circle.svg'
 import { formatNumber } from 'options/utils'
-import storage from 'services/storage'
-import ethereumUtils from 'utils/ethereumUtils'
 
 import { TAB } from './hooks/constants'
 
@@ -163,12 +161,6 @@ const EditPriorityFee = ({
 
   return (
     <div className="flex flex-col items-center w-full overflow mt-2 text-indigo">
-      {/* <div
-        className="flex bg-trueGray-100 text-lg border-1.5 text-blue-800 font-extrabold justify-center items-center"
-        style={{ width: '426px', height: '45px' }}
-      >
-        UNTITLED
-      </div> */}
       <div
         className="flex text-blue-800 mt-4 justify-center items-center"
         style={{ width: '243px', height: '46px', fontSize: '35px' }}

@@ -1,3 +1,4 @@
+/* execute input code in the current tab */
 async function execInPage(code) {
   const [tab] = await chrome.tabs.query({currentWindow: true, active: true})
   chrome.scripting.executeScript({
@@ -14,9 +15,7 @@ async function execInPage(code) {
 }
 
 const inject = async (scripts) => {
-  return Promise.all(scripts.map(script => {
-    return execInPage(script)
-  }))
+  return Promise.all(scripts.map(script => execInPage(script)))
 }
 
 export default inject

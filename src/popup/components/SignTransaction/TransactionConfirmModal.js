@@ -1,5 +1,4 @@
 // modules
-// import Web3 from 'web3'
 import React, { useEffect, useMemo, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -8,7 +7,6 @@ import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
 import clsx from 'clsx'
 import { NETWORK } from 'constants/koiConstants'
-import { ethers } from 'ethers'
 import BackBtn from 'img/popup/back-button.svg'
 import CheckMarkIcon from 'img/popup/check-mark-icon.svg'
 import WarningIcon from 'img/popup/close-icon-red.svg'
@@ -25,7 +23,6 @@ import formatLongString from 'options/utils/formatLongString'
 import formatNumber from 'options/utils/formatNumber'
 // styles
 import storage from 'services/storage'
-import { clarifyEthereumProvider } from 'utils'
 // utils
 import { numberFormat } from 'utils'
 import { decodeTxMethod } from 'utils/index'

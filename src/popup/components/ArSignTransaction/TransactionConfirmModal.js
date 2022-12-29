@@ -27,7 +27,6 @@ import { decodeTxMethod } from 'utils/index'
 import ConnectScreen from 'components/Connect/ConnectScreen'
 
 import { TAB, TRANSACTION_METHOD, TRANSACTION_TYPE } from './hooks/constants'
-import useExploreBlockUrl from './hooks/useExploreBlockUrl'
 import useGetFee from './hooks/useGetFee'
 import useLoadRequest from './hooks/useLoadRequest'
 import useMethod from './hooks/useMethod'
@@ -42,7 +41,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
   const [showConnectedSites, setShowConnectedSites] = useState(false)
   const [acceptSite, setAcceptSite] = useState(false)
 
-  const price = useSelector((state) => state.price)
   const {
     transactionPayload,
     network,
@@ -58,8 +56,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
 
   const { trustStat } = useSecurityStatus({ setIsLoading, url: origin })
 
-  const { exploreBlockUrl } = useExploreBlockUrl({ transactionPayload })
-
   const { Fee, tokenSymbol, totalFee } = useGetFee({ network, transactionPayload })
 
   const { simulationData } = useSimulation({ network, transactionPayload })
@@ -67,12 +63,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
   const sender = useMemo(() => {
     return get(transactionPayload, 'from')
   }, [transactionPayload])
-
-  const contractId = useMemo(() => {
-    if (transactionType !== TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER)
-      return get(transactionPayload, 'to')
-    return null
-  }, [transactionType])
 
   const transactionMethod = useMemo(() => {
     if (transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION && !isEmpty(dataString)) return decodeTxMethod(dataString)
@@ -86,7 +76,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     contractAddress,
     value,
     rawValue,
-    balance,
     symbol,
     originBalance,
     originSymbol

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import axios from 'axios'
-import { NETWORK } from 'constants/koiConstants'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import { TRANSACTION_METHOD } from 'popup/components/SignTransaction/hooks/constants'

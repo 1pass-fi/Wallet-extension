@@ -28,9 +28,9 @@ import mainScript from './scripts/mainScript'
 import cache from './cache'
 import helpers from './helpers'
 import inject from './inject'
-import streamer from './streamer'
+import polling from './polling'
 
-/* a workaournd to keep service worker alive */
+/* a workaround to keep service worker alive */
 
 /**
  * On disconnect -> reconnect
@@ -120,7 +120,7 @@ chrome.runtime.onInstalled.addListener(async function () {
     chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
 })
 
-streamer()
+polling()
 
 const initWalletConnect = async () => {
   try {
