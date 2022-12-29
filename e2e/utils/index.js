@@ -32,25 +32,25 @@ export const importKeyStep = async (page, walletType) => {
     case TYPE.ETHEREUM:
       // click Import ETH Key button
       keyButton = await page.waitForSelector('[data-testid="ethereum-key"]')
-      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 10000000)
+      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 60000)
       break
 
     case TYPE.SOLANA:
       // click Import ETH Key button
       keyButton = await page.waitForSelector('[data-testid="solana-key"]')
-      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 10000000)
+      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 60000)
       break
 
     case TYPE.K2:
       // click Import ETH Key button
       keyButton = await page.waitForSelector('[data-testid="k2-key"]')
-      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 10000000)
+      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 60000)
       break
 
     case TYPE.ARWEAVE:
       // click Import ETH Key button
       keyButton = await page.waitForSelector('[data-testid="arweave-key"]')
-      goToOptionPageButton = await page.waitForSelector('#skip-to-home-button', 10000000)
+      goToOptionPageButton = await page.waitForSelector('#skip-to-home-button', 60000)
       break
   }
 
@@ -68,6 +68,8 @@ export const importKeyStep = async (page, walletType) => {
   // TODO DatH - next step
   await goToOptionPageButton.click()
 }
+
+export const createKeyStep = async (page, walletType) => {}
 
 export const importWallet = async (page, walletType) => {
   await createPasswordStep(page)

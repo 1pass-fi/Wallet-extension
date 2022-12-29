@@ -48,6 +48,7 @@ const AccountSettingsLight = React.forwardRef(({ className, toggleDropdownMenu }
               idx !== 0 && 'border-t-2 border-trueGray-150'
             )}
             activeClassName="underline underline-offset-1"
+            data-testid={text}
           >
             <Icon className="w-6 xl: 2xl: 3xl:w-7 mr-4 xl: 2xl: 3xl:mr-6" />
             {text}

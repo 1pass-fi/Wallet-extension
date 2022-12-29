@@ -182,7 +182,7 @@ const NavBar = () => {
                 className="flex items-center justify-center object-cover rounded-full w-full h-full bg-white"
                 ref={dropdownToggleRef}
               >
-                <DefaultAvatar style={{ width: '36px', height: '36px' }} />
+                <DefaultAvatar data-testid='default-avatar-navbar' style={{ width: '36px', height: '36px' }} />
               </div>
             )}
           </div>
