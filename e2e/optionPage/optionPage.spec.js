@@ -11,7 +11,6 @@ describe.skip('e2e test', () => {
 
   it('should render Finnie', async () => {
     await optionPage.bringToFront()
-    await optionPage.waitForTimeout(1000)
 
     const createPassword = await optionPage.waitForXPath(
       '//*[contains(text(), "Create a password")]',

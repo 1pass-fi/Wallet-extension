@@ -370,7 +370,7 @@ const AccountCard = ({
   })
 
   return (
-    <div className="mt-4.5 text-indigo select-none">
+    <div className="mt-4.5 text-indigo select-none" data-testid="account-card-setting-page">
       <div
         className={clsx(
           'max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl h-32 xl:h-34.75 2xl:h-37.75 3xl:h-40',
@@ -432,7 +432,7 @@ const AccountCard = ({
           <div className="flex items-center justify-between">
             <div
               className="flex items-center text-success-700 text-opacity-80 text-2xs 2xl:text-11px 3xl:text-xs font-normal leading-6 tracking-finnieSpacing-tight"
-              data-testid={`account-card-address-${account.address}`}
+              data-testid="account-card-address"
             >
               {account.address}
             </div>

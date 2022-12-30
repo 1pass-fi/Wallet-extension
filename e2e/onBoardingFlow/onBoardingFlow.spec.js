@@ -1,10 +1,10 @@
 import { TYPE } from '../../src/constants/accountConstants'
 import { bootstrap } from '../bootstrap'
-import { createPasswordStep, importWallet } from '../utils'
+import { createPasswordStep, importWallet, removeKey } from '../utils'
 import { SECRET_PHRASES } from '../utils/testConstants'
 
 describe('e2e test', () => {
-  let context, optionPage, savePhrases
+  let context, optionPage, savePhrases, importedAccountAddress
 
   beforeAll(async () => {
     savePhrases = []
@@ -103,10 +103,41 @@ describe('e2e test', () => {
     await goToHomeButton.click()
   }, 30000)
 
+  // TODO DatH - e2e test: import exist wallet
+
+  it('remove ethereum wallet', async () => {
+    const profilePictureNavBar = await optionPage.waitForSelector(
+      `[data-testid="profile-picture-navbar"]`
+    )
+    await profilePictureNavBar.click()
+
+    const walletSettingButton = await optionPage.waitForSelector(
+      `[data-testid="wallet-dropdown-light"]`
+    )
+    await walletSettingButton.click()
+
+    const accountCards = await optionPage.$('[data-testid="account-card-setting-page"]')
+    const accountAddressField = await accountCards.$('[data-testid="account-card-address"]')
+    const accountAddress = await accountAddressField.evaluate((el) => el.textContent)
+
+    const dropdownButton = await optionPage.waitForSelector(
+      `[data-testid="account-card-drop-down-${accountAddress}"]`
+    )
+    await dropdownButton.click()
+
+    const removeAccountButton = await optionPage.waitForSelector(
+      `[data-testid="account-card-remove-account-${accountAddress}"]`
+    )
+    await removeAccountButton.click()
+
+    const confirmRemoveAccountButton = await optionPage.waitForSelector(
+      `[data-testid="confirm-remove-account-button"]`
+    )
+    await confirmRemoveAccountButton.click()
+  }, 10000)
+
   it('test create new ethereum wallet', async () => {
-    optionPage?.close()
-    optionPage = await context.launchOptionPage({ optionPageLink: 'create-wallet' })
-    await createPasswordStep(optionPage, false)
+    await createPasswordStep(optionPage)
 
     let createNewKeyButton = await optionPage.waitForSelector(
       '[data-testid="start-from-scratch-div"]'
@@ -156,12 +187,43 @@ describe('e2e test', () => {
 
     let goToHomeButton = await optionPage.waitForSelector('#go-to-home-button')
     await goToHomeButton.click()
+
+    // go to Setting page and detect the accout address
+    const profilePictureNavBar = await optionPage.waitForSelector(
+      `[data-testid="profile-picture-navbar"]`
+    )
+    await profilePictureNavBar.click()
+
+    const walletSettingButton = await optionPage.waitForSelector(
+      `[data-testid="wallet-dropdown-light"]`
+    )
+    await walletSettingButton.click()
+
+    const accountCards = await optionPage.$('[data-testid="account-card-setting-page"]')
+    const accountAddressField = await accountCards.$('[data-testid="account-card-address"]')
+    importedAccountAddress = await accountAddressField.evaluate((el) => el.textContent)
   }, 30000)
 
-  it('remove ethereum wallet', async () => {
-    optionPage?.close()
-    optionPage = await context.launchOptionPage({ optionPageLink: 'settings/wallet' })
-    
+  it('verify the account address', async () => {
+    await removeKey(optionPage, importedAccountAddress)
+    await importWallet(optionPage, TYPE.ETHEREUM, savePhrases.join(' '))
+
+    // go to Setting page and detect the accout address
+    const profilePictureNavBar = await optionPage.waitForSelector(
+      `[data-testid="profile-picture-navbar"]`
+    )
+    await profilePictureNavBar.click()
+
+    const walletSettingButton = await optionPage.waitForSelector(
+      `[data-testid="wallet-dropdown-light"]`
+    )
+    await walletSettingButton.click()
+
+    const accountCards = await optionPage.$('[data-testid="account-card-setting-page"]')
+    const accountAddressField = await accountCards.$('[data-testid="account-card-address"]')
+    const accountAddress = await accountAddressField.evaluate((el) => el.textContent)
+
+    expect(accountAddress).toBe(importedAccountAddress)
   }, 30000)
 
   afterAll(async () => {

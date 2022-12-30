@@ -170,7 +170,7 @@ const NavBar = () => {
           <div
             className="w-10 h-10 cursor-pointer rounded-full ml-6.5"
             onClick={toggleDropdownMenu}
-            id="account-drop-down"
+            data-testid="profile-picture-navbar"
           >
             {profilePictureId ? (
               <img
