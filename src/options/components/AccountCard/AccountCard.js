@@ -430,7 +430,10 @@ const AccountCard = ({
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="flex items-center text-success-700 text-opacity-80 text-2xs 2xl:text-11px 3xl:text-xs font-normal leading-6 tracking-finnieSpacing-tight">
+            <div
+              className="flex items-center text-success-700 text-opacity-80 text-2xs 2xl:text-11px 3xl:text-xs font-normal leading-6 tracking-finnieSpacing-tight"
+              data-testid={`account-card-address-${account.address}`}
+            >
               {account.address}
             </div>
             <CopyAddressIcon address={account.address} key={account.address} />
@@ -536,6 +539,7 @@ const AccountCard = ({
               'w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9'
             )}
             onClick={() => setIsDrop((prev) => !prev)}
+            data-testid={`account-card-drop-down-${account.address}`}
           >
             <ExtendIcon
               style={{ width: '8px', height: '4.25px' }}
@@ -677,6 +681,7 @@ const AccountCard = ({
               setShowConfirmRemoveAccount(true)
               setRemoveAccount(account)
             }}
+            data-testid={`account-card-remove-account-${account.address}`}
           >
             <RecycleBinIcon
               className="w-4 xl:w-4.5 2xl:w-5 3xl:w-6 h-4.75 xl:h-5 2xl:h-6.5 3xl:h-7.5"

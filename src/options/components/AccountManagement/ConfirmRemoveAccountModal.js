@@ -166,6 +166,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
               text="Remove Account"
               onClick={() => handleRemoveAccount()}
               disabled={isRemoving}
+              data-testid="confirm-remove-account-button"
             />
 
             <Button
@@ -174,6 +175,7 @@ const ConfirmRemoveAccountModal = ({ account, close }) => {
               variant="indigo"
               text="Cancel"
               onClick={close}
+              data-testid="cancel-remove-account-button"
             />
           </div>
         </div>

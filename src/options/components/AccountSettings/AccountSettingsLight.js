@@ -10,12 +10,32 @@ import SecurityIcon from 'img/v2/settings/security.svg'
 import WalletIcon from 'img/v2/settings/wallet.svg'
 
 const accountSettingItems = [
-  { text: 'Koii Identity (DID)', path: '/settings/kID', icon: DidIcon },
-  { text: 'Gallery Settings', path: '/settings/gallery', icon: GalleryIcon },
-  { text: 'Wallet Settings', path: '/settings/wallet', icon: WalletIcon },
-  { text: 'Security', path: '/settings/security', icon: SecurityIcon },
-  { text: 'About', path: '/settings/about', icon: AboutIcon },
-  { text: 'Need Help?', path: '/settings/need-help', icon: NeedhelpIcon }
+  { id: 'kid-dropdown-light', text: 'Koii Identity (DID)', path: '/settings/kID', icon: DidIcon },
+  {
+    id: 'gallery-dropdown-light',
+    text: 'Gallery Settings',
+    path: '/settings/gallery',
+    icon: GalleryIcon
+  },
+  {
+    id: 'wallet-dropdown-light',
+    text: 'Wallet Settings',
+    path: '/settings/wallet',
+    icon: WalletIcon
+  },
+  {
+    id: 'security-dropdown-light',
+    text: 'Security',
+    path: '/settings/security',
+    icon: SecurityIcon
+  },
+  { id: 'about-dropdown-light', text: 'About', path: '/settings/about', icon: AboutIcon },
+  {
+    id: 'need-help-dropdown-light',
+    text: 'Need Help?',
+    path: '/settings/need-help',
+    icon: NeedhelpIcon
+  }
 ]
 
 const AccountSettingsLight = React.forwardRef(({ className, toggleDropdownMenu }, ref) => {
@@ -27,7 +47,7 @@ const AccountSettingsLight = React.forwardRef(({ className, toggleDropdownMenu }
         className
       )}
     >
-      {accountSettingItems.map(({ text, path, disabled, icon: Icon }, idx) =>
+      {accountSettingItems.map(({ id, text, path, disabled, icon: Icon }, idx) =>
         disabled ? (
           <div
             className={clsx(
@@ -48,7 +68,7 @@ const AccountSettingsLight = React.forwardRef(({ className, toggleDropdownMenu }
               idx !== 0 && 'border-t-2 border-trueGray-150'
             )}
             activeClassName="underline underline-offset-1"
-            data-testid={text}
+            data-testid={id}
           >
             <Icon className="w-6 xl: 2xl: 3xl:w-7 mr-4 xl: 2xl: 3xl:mr-6" />
             {text}

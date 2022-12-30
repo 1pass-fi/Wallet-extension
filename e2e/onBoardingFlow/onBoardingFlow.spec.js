@@ -13,12 +13,7 @@ describe('e2e test', () => {
     return true
   })
 
-  // it.skip('test onboarding', async () => {
-  //   await importWallet(optionPage, TYPE.ARWEAVE)
-  //   await optionPage.waitForTimeout(10000000)
-  // }, 10000000)
-
-  it.skip('Create Password page', async () => {
+  it('Create Password page', async () => {
     await optionPage.bringToFront()
     await optionPage.waitForSelector('#new-password')
 
@@ -106,13 +101,12 @@ describe('e2e test', () => {
     expect(openCreateNFTPageButton).toBeNull()
 
     await goToHomeButton.click()
-
-    // screenshot optionPage
-    // await optionPage.waitForTimeout(10000000)
   }, 30000)
 
   it('test create new ethereum wallet', async () => {
-    await createPasswordStep(optionPage)
+    optionPage?.close()
+    optionPage = await context.launchOptionPage({ optionPageLink: 'create-wallet' })
+    await createPasswordStep(optionPage, false)
 
     let createNewKeyButton = await optionPage.waitForSelector(
       '[data-testid="start-from-scratch-div"]'
@@ -122,7 +116,7 @@ describe('e2e test', () => {
     let keyLogoButton = await optionPage.waitForSelector('[data-testid="ethereum-key"]')
     await keyLogoButton.click()
 
-    // // Remind me later
+    // // TODO Remind me later
     // let remindMeLaterButton = await optionPage.waitForSelector('[data-testid="remind-me-button"]')
     // remindMeLaterButton.click()
 
@@ -162,12 +156,13 @@ describe('e2e test', () => {
 
     let goToHomeButton = await optionPage.waitForSelector('#go-to-home-button')
     await goToHomeButton.click()
-
-    await optionPage.waitForTimeout(10000000)
-  })
+  }, 30000)
 
   it('remove ethereum wallet', async () => {
-  })
+    optionPage?.close()
+    optionPage = await context.launchOptionPage({ optionPageLink: 'settings/wallet' })
+    
+  }, 30000)
 
   afterAll(async () => {
     await context.closePages()

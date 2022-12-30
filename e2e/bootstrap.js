@@ -38,13 +38,14 @@ async function bootstrap(options = {}) {
     return extPage
   }
 
-  const launchOptionPage = async () => {
+  const launchOptionPage = async (options = {}) => {
+    const { optionPageLink } = options
     optionPage = await browser.newPage()
     const targets = await browser.targets()
     const extensionTarget = targets.find((target) => target.type() === 'service_worker')
     const partialExtensionUrl = extensionTarget.url() || ''
     const [, , extensionId] = partialExtensionUrl.split('/')
-    const optionUrl = `chrome-extension://${extensionId}/options.html#`
+    const optionUrl = `chrome-extension://${extensionId}/options.html#/${optionPageLink}`
     await optionPage.goto(optionUrl, { waitUntil: 'load' })
     return optionPage
   }

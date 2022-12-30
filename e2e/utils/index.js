@@ -1,19 +1,21 @@
 import { TYPE } from '../../src/constants/accountConstants'
 import { SECRET_PHRASES } from '../utils/testConstants'
 
-export const createPasswordStep = async (page) => {
+export const createPasswordStep = async (page, newPassword = true) => {
   await page.bringToFront()
   await page.waitForSelector('#new-password')
 
   // type password
   await page.type('#new-password', 'OpenKoi@123')
 
-  // type confirm password
-  await page.type('input[id="confirm-password"]', 'OpenKoi@123')
+  if (newPassword) {
+    // type confirm password
+    await page.type('input[id="confirm-password"]', 'OpenKoi@123')
 
-  // check tos
-  const tosCheckbox = await page.waitForSelector('#new-password-tos')
-  await tosCheckbox.click()
+    // check tos
+    const tosCheckbox = await page.waitForSelector('#new-password-tos')
+    await tosCheckbox.click()
+  }
 
   // click login button
   let loginButton = await page.waitForSelector('#log-in-button')
