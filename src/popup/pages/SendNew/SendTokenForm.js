@@ -101,6 +101,7 @@ const SendTokenForm = ({
                 key={account.address}
                 className="text-left pl-2 h-8 text-white text-sm hover:bg-blue-500"
                 onClick={() => onChange(account)}
+                data-testid={account.address}
               >
                 <div>{formatLongString(account.accountName, 40)}</div>
               </div>
@@ -172,6 +173,7 @@ const SendTokenForm = ({
                   e.preventDefault()
                   setIsShowDropdown((isShowDropdown) => !isShowDropdown)
                 }}
+                data-testid="recipient-open-dropdown"
               >
                 <DownArrowIcon
                   className="h-1.75 w-3.25"
@@ -212,6 +214,7 @@ const SendTokenForm = ({
           setIsShowDropdown(false)
           handleSendToken()
         }}
+        data-testid="send-tokens-button"
       >
         Send Tokens
       </button>

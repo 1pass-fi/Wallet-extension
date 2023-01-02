@@ -10,6 +10,7 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken, customToken
     <div
       className="absolute top-0 right-0 flex flex-col bg-blue-800 cursor-pointer"
       style={{ width: '68px' }}
+      data-testid="token-dropdown"
     >
       <div
         className="flex items-center justify-evenly cursor-pointer"
@@ -31,6 +32,7 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken, customToken
               className="flex items-center"
               style={{ height: '45px' }}
               onClick={() => onChangeToken(token)}
+              data-testid={token.symbol}
             >
               {token?.logo ? (
                 <img src={token.logo} className="ml-2" style={{ width: '34px', height: '34px' }} />

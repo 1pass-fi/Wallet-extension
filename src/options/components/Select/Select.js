@@ -109,6 +109,7 @@ const Select = ({ options, value, onChange, emptyOption = false }) => {
               )}
               key={idx}
               onClick={() => selectItem(item)}
+              data-testid={item.label}
             >
               {item.label}
             </button>

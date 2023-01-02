@@ -89,6 +89,14 @@ export const importKeyStep = async (page, walletType, secretPhrase) => {
 
 export const createKeyStep = async (page, walletType) => {}
 
+export const goToAccountSettingPage = async (page) => {
+  const profilePictureNavBar = await page.waitForSelector(`[data-testid="profile-picture-navbar"]`)
+  await profilePictureNavBar.click()
+
+  const walletSettingButton = await page.waitForSelector(`[data-testid="wallet-dropdown-light"]`)
+  await walletSettingButton.click()
+}
+
 export const removeKey = async (page, accountAddress) => {
   const profilePictureNavBar = await page.waitForSelector(`[data-testid="profile-picture-navbar"]`)
   await profilePictureNavBar.click()
@@ -115,7 +123,20 @@ export const removeKey = async (page, accountAddress) => {
 export const importWallet = async (page, walletType, secretPhrase = '', newPassword = true) => {
   if (newPassword) {
     await createPasswordStep(page, newPassword)
+  } else {
+    // From option homepage 
+    await goToAccountSettingPage(page)
+    const importButton = await page.waitForSelector(`[data-testid="setting-import-wallet"]`)
+    await importButton.click()
   }
 
   await importKeyStep(page, walletType, secretPhrase)
+}
+
+export const swapToNetwork = async (page, networkLabel) => {
+  const providerDropdown = await page.waitForSelector(`[data-testid="provider-dropdown"]`)
+  await providerDropdown.click()
+
+  const providerOption = await page.waitForSelector(`[data-testid=${networkLabel}]`)
+  await providerOption.click()
 }

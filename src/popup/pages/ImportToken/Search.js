@@ -142,6 +142,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
           style={{ width: '316px' }}
           onChange={(e) => setSearchToken(e.target.value)}
           value={searchToken}
+          data-testid='search-custom-token-input'
         ></input>
         <SearchIcon className="mr-2 cursor-pointer" onClick={() => onSearchToken()} />
       </div>
@@ -156,6 +157,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
             key={idx}
             className="flex w-full items-center ml-2 mb-6 cursor-pointer"
             onClick={() => setTokenImport(token)}
+            data-testid={token.symbol}
           >
             {token.logoURI && <img src={token.logoURI} style={{ width: '36px', height: '36px' }} />}
             {/* {token.logo && (

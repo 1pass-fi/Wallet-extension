@@ -190,6 +190,7 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
           onChange={onChangeAmount}
           value={amount}
           disabled={isEmpty(selectedAccount)}
+          data-testid="input-send-amount"
         ></input>
         <div
           className={clsx(

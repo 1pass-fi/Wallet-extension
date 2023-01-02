@@ -186,7 +186,7 @@ const HomeTop = ({
         <div className="flex justify-between">
           <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />
           {displayingAccount.type === TYPE.K2 && (
-            <div className="mr-1.75">
+            <div className="mr-1.75" data-testid="provider-dropdown">
               <Select
                 options={k2ProviderOptions}
                 value={currentProviderAddress}
@@ -195,7 +195,7 @@ const HomeTop = ({
             </div>
           )}
           {displayingAccount.type === TYPE.ETHEREUM && (
-            <div className="mr-1.75">
+            <div className="mr-1.75" data-testid="provider-dropdown">
               <Select
                 options={providerOptions}
                 value={currentProviderAddress}
@@ -204,7 +204,7 @@ const HomeTop = ({
             </div>
           )}
           {displayingAccount.type === TYPE.SOLANA && (
-            <div className="mr-1.75">
+            <div className="mr-1.75" data-testid="provider-dropdown">
               <Select
                 options={solanaProviderOptions}
                 value={currentProviderAddress}
@@ -282,7 +282,7 @@ const HomeTop = ({
               style={{ width: '44px', height: '44px' }}
               to="/send"
             >
-              <SendIcon style={{ width: '23px', height: '20px' }} />
+              <SendIcon style={{ width: '23px', height: '20px' }} data-testid="icon-send-tokens"/>
             </Link>
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
               SEND

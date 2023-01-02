@@ -163,6 +163,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                   tab === TAB.DETAIL && 'bg-lightBlue font-semibold'
                 )}
                 onClick={() => setTab(TAB.DETAIL)}
+                data-testid="detail-tab"
               >
                 Details
               </div>
@@ -176,6 +177,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 onClick={() => {
                   if (network === NETWORK.ETHEREUM) setTab(TAB.EDIT_PRIORITY)
                 }}
+                data-testid="edit-fee-tab"
               >
                 Edit Fee
               </div>
@@ -298,7 +300,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                   transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
                   <div className="flex mb-2">
                     <div style={{ width: '176px' }}>Sending</div>
-                    <div className="flex font-normal text-xs items-center">
+                    <div className="flex font-normal text-xs items-center" data-testid="tx-confirm-amount">
                       <SendValue />
                       <div className="ml-1 w-4 h-4">
                         <TokenIcon />
@@ -333,7 +335,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
                 <div style={{ width: '176px' }}>From</div>
                 {senderName && <div className="mt-2 font-semibold text-xs">{senderName}</div>}
-                <div className="mt-2 font-normal text-xs text-success-700">
+                <div className="mt-2 font-normal text-xs text-success-700" date-testid="tx-confirm-sender">
                   {get(transactionPayload, 'from')}
                 </div>
               </div>
@@ -347,7 +349,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                   {recipientName && (
                     <div className="mt-2 font-semibold text-xs">{recipientName}</div>
                   )}
-                  <div className="mt-2 font-normal text-xs text-success-700">
+                  <div className="mt-2 font-normal text-xs text-success-700" data-testid="tx-confirm-recipient">
                     {customTokenRecipient || get(transactionPayload, 'to')}
                   </div>
                 </div>
@@ -470,6 +472,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               )}
               style={{ width: '160px', height: '38px' }}
               disabled={isScamOrigin}
+              data-testid="tx-confirm-send-button"
             >
               {signWithoutSend ? 'Sign' : 'Send'}
             </button>
@@ -495,7 +498,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               transactionType !== TRANSACTION_TYPE.CONTRACT_INTERACTION && (
               <div className="flex mb-4">
                 <div style={{ width: '142px' }}>Amount</div>
-                <div className="flex font-normal text-sm items-center">
+                <div className="flex font-normal text-sm items-center" data-testid="tx-confirm-amount">
                   {value} {symbol}
                   <div className="ml-1 w-4 h-4">
                     <TokenIcon />
@@ -507,7 +510,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               <div style={{ width: '142px' }}>From</div>
               <div className="flex flex-col font-normal text-sm items-start">
                 {senderName && <div>{senderName}</div>}
-                <div className="font-normal text-xs text-success-700">
+                <div className="font-normal text-xs text-success-700" data-testid="tx-receipt-sender">
                   {getDisplayAddress(sender, 20)}
                 </div>
               </div>
@@ -516,7 +519,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               <div style={{ width: '142px' }}>To</div>
               <div className="flex flex-col font-normal text-sm items-start">
                 {recipientName && <div>{recipientName}</div>}
-                <div className="font-normal text-xs text-success-700">
+                <div className="font-normal text-xs text-success-700" data-testid="tx-receipt-recipient">
                   {getDisplayAddress(recipient, 20)}
                 </div>
               </div>
@@ -545,7 +548,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
           </div>
 
           <Link onClick={() => setShowSigning(false)} className="mt-10" to="/">
-            <OkBtn className="cursor-pointer" />
+            <OkBtn className="cursor-pointer" data-testid="button-ok"/>
           </Link>
         </div>
       )}
