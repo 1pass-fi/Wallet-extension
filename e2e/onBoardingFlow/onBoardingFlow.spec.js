@@ -3,112 +3,222 @@ import { bootstrap } from '../bootstrap'
 import Automation from '../utils/automation'
 import { SECRET_PHRASES } from '../utils/testConstants'
 
+const ERROR_MESSAGE = {
+  NOT_MATCHING: 'Password does not match',
+  NOT_MEET_REQUIREMENT:
+    'Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%).',
+  INCORRECT: 'Incorrect password',
+  TERM_OF_SERVICE_UNCHECKED: 'Please accept the Terms of Service',
+  INVALID_SECRET_PHRASE: 'Invalid Secret Phrase',
+  ACCOUNT_EXISTED: 'This account has already been imported.'
+}
+
 describe('e2e test', () => {
-  let context, optionPage, savePhrases, importedAccountAddress
+  let browser, context, optionPage, savePhrases, importedAccountAddress
 
   beforeAll(async () => {
     savePhrases = []
     context = await bootstrap()
+    browser = context.browser
     optionPage = context.optionPage
     return true
-  })
+  }, 30000)
 
   it('Import new wallet(s)', async () => {
     await optionPage.bringToFront()
-    await optionPage.waitForSelector('#new-password')
 
-    /* Accept TOS */
-    // type password
-    await optionPage.type('#new-password', 'OpenKoi@123')
-
-    // click login button
-    let loginButton = await optionPage.waitForSelector('#log-in-button')
-    await loginButton.click()
-    let tosMessage = (await optionPage.content()).match('Please accept the Terms of Service')
-
-    // expect the error message
-    expect(tosMessage).not.toBeNull()
-
-    /* Confirm Password */
-    // check tos
     const tosCheckbox = await optionPage.waitForSelector('#new-password-tos')
+    const passwordInput = await optionPage.waitForSelector('#new-password')
+    const confirmPasswordInput = await optionPage.waitForSelector('#confirm-password')
+    const loginButton = await optionPage.waitForSelector('#log-in-button')
+    const errorPasswordMessage = await optionPage.waitForSelector(
+      `[data-testid="error-new-password"]`
+    )
+    const errorPasswordConfirmMessage = await optionPage.waitForSelector(
+      `[data-testid="error-confirm-password"]`
+    )
+    const tosMessageField = await optionPage.waitForSelector(`[data-testid="tos-error-message"]`)
+
+    let tosErrorMessage, messagePasswordError
+    /* Unchecked the Terms of Services */
+    // type password and confirm password
+    await passwordInput.type('OpenKoi@123')
+    await confirmPasswordInput.type('OpenKoi@123')
+    await loginButton.click()
+
+    // expect the error message when unchecking the terms of service
+    tosErrorMessage = await tosMessageField.evaluate((el) => el.textContent)
+    expect(tosErrorMessage).toBe(ERROR_MESSAGE.TERM_OF_SERVICE_UNCHECKED)
+
+    /* Password does not meet the requirement */
+    // check the Terms of Services
     await tosCheckbox.click()
 
+    // type password and confirm password (do not contains lowercase)
+    await passwordInput.click({ clickCount: 3 })
+    await passwordInput.type('OPENKOI@123')
+    await confirmPasswordInput.click({ clickCount: 3 })
+    await confirmPasswordInput.type('OPENKOI@123')
     await loginButton.click()
 
-    tosMessage = (await optionPage.content()).match('Please accept the Terms of Service')
+    // expect the password does not meet the requirement
+    messagePasswordError = await errorPasswordMessage.evaluate((el) => el.textContent)
+    expect(messagePasswordError).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
 
-    // expect no the TOS message
-    expect(tosMessage).toBeNull()
-
-    // expect error message
-    let errorPasswordMessage = (await optionPage.content()).match('Password does not match')
-    expect(errorPasswordMessage).not.toBeNull()
-
-    // type confirm password
-    await optionPage.type('input[id="confirm-password"]', 'blah_blah_blah')
-
-    // click login button
+    // type password and confirm password (do not contains uppercase)
+    await passwordInput.click({ clickCount: 3 })
+    await passwordInput.type('openkoi@123')
+    await confirmPasswordInput.click({ clickCount: 3 })
+    await confirmPasswordInput.type('openkoi@123')
     await loginButton.click()
 
-    errorPasswordMessage = (await optionPage.content()).match('Password does not match')
-    // expect error message
-    expect(errorPasswordMessage).not.toBeNull()
+    // expect the password does not meet the requirement
+    messagePasswordError = await errorPasswordMessage.evaluate((el) => el.textContent)
+    expect(messagePasswordError).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
 
-    /* Create Password successfully */
-    const input = await optionPage.$('#confirm-password')
-    await input.click({ clickCount: 3 })
-    await input.type('OpenKoi@123')
-
-    // click login button
+    // type password and confirm password (do not contains number)
+    await passwordInput.click({ clickCount: 3 })
+    await passwordInput.type('OpenKoi@')
+    await confirmPasswordInput.click({ clickCount: 3 })
+    await confirmPasswordInput.type('OpenKoi@')
     await loginButton.click()
 
-    // expect go to the step 2 -  Create Key
+    // expect the password does not meet the requirement
+    messagePasswordError = await errorPasswordMessage.evaluate((el) => el.textContent)
+    expect(messagePasswordError).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
+
+    // type password and confirm password (do not contains special character)
+    await passwordInput.click({ clickCount: 3 })
+    await passwordInput.type('OpenKoi123')
+    await confirmPasswordInput.click({ clickCount: 3 })
+    await confirmPasswordInput.type('OpenKoi123')
+    await loginButton.click()
+
+    // expect the password does not meet the requirement
+    messagePasswordError = await errorPasswordMessage.evaluate((el) => el.textContent)
+    expect(messagePasswordError).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
+
+    // type password and confirm password (less than 8 characters)
+    await passwordInput.click({ clickCount: 3 })
+    await passwordInput.type('OpKo@1')
+    await confirmPasswordInput.click({ clickCount: 3 })
+    await confirmPasswordInput.type('OpKo@1')
+    await loginButton.click()
+
+    // expect the password does not meet the requirement
+    messagePasswordError = await errorPasswordMessage.evaluate((el) => el.textContent)
+    expect(messagePasswordError).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
+
+    // type password and confirm password (do not match)
+    await passwordInput.click({ clickCount: 3 })
+    await passwordInput.type('OpenKoi@123')
+    await confirmPasswordInput.click({ clickCount: 3 })
+    await confirmPasswordInput.type('Openkoi@123')
+    await loginButton.click()
+
+    // expect the confirm password does not match
+    messagePasswordError = await errorPasswordConfirmMessage.evaluate((el) => el.textContent)
+    expect(messagePasswordError).toBe(ERROR_MESSAGE.NOT_MATCHING)
+
+    // type password and confirm password correctly
+    await passwordInput.click({ clickCount: 3 })
+    await passwordInput.type('OpenKoi@123')
+    await confirmPasswordInput.click({ clickCount: 3 })
+    await confirmPasswordInput.type('OpenKoi@123')
+
+    // verify TOS hyperlink
+    const tosHyperlink = await optionPage.waitForSelector('[data-testid="tos-link"]')
+    await tosHyperlink.click()
+
+    await optionPage.waitForTimeout(1000)
+
+    const currentPages = await browser.pages()
+    const tosPage = currentPages[currentPages.length - 1]
+    const tosUrl = await tosPage?.url()
+
+    // expect the TOS link correctly
+    expect(tosUrl).toBe('https://www.koii.network/TOU_June_22_2021.pdf')
+    await tosPage?.close()
+    await optionPage.bringToFront()
+
+    await optionPage.waitForTimeout(1000)
+
+    await loginButton.click()
+
+    // expect go to the step 2 -  Create/Import Key
     const addAKeyPage = await optionPage.waitForSelector('[data-testid="AddAKey"]')
     expect(addAKeyPage).not.toBeNull()
 
     // click Import Key button
-    let createKeyButton = await optionPage.waitForSelector('[data-testid="use-existing-key-div"]')
+    const createKeyButton = await optionPage.waitForSelector('[data-testid="use-existing-key-div"]')
     await createKeyButton.click()
 
     // click Import ETH Key button
-    let createEthKeyButton = await optionPage.waitForSelector('[data-testid="ethereum-key"]')
+    const createEthKeyButton = await optionPage.waitForSelector('[data-testid="ethereum-key"]')
     await createEthKeyButton.click()
 
-    for (let i = 0; i < SECRET_PHRASES.TYPE_ETHEREUM.split(' ').length; i++) {
+    const secretPhrase = SECRET_PHRASES.TYPE_ETHEREUM.split(' ')
+    const confirmButton = await optionPage.waitForSelector('#confirm-button')
+    const importPhraseError = await optionPage.waitForSelector(
+      '[data-testid="import-phrase-error"]'
+    )
+
+    // expect confirm button to be disabled
+    let isDisabled = await confirmButton.evaluate((el) => el.disabled)
+    expect(isDisabled).toBeTruthy()
+
+    /* Type invalid secret phrase*/
+    // At least 1 phrase is blank
+    for (let i = 0; i < secretPhrase.length; i++) {
       const secretPhraseField = await optionPage.waitForSelector(
         `[data-testid="import-phrase-${i}"]`
       )
-      await secretPhraseField.type(SECRET_PHRASES.TYPE_ETHEREUM.split(' ')[i])
+      await secretPhraseField.type(i == 0 ? '' : secretPhrase[i])
     }
+    // expect confirm button to be disabled
+    isDisabled = await confirmButton.evaluate((el) => el.disabled)
+    expect(isDisabled).toBeTruthy()
 
-    // TODO DatH - expect Confirm button is enabled
+    // At least 1 phrase is not in bip-39 wordlist
+    const firstPhraseField = await optionPage.waitForSelector(`[data-testid="import-phrase-0"]`)
+    await firstPhraseField.click({ clickCount: 3 })
+    await firstPhraseField.type('abc')
 
-    let confirmButton = await optionPage.waitForSelector('#confirm-button')
-    let isDisabled = await confirmButton.evaluate((el) => el.disabled)
+    // expect confirm button to be disabled
+    isDisabled = await confirmButton.evaluate((el) => el.disabled)
+    expect(isDisabled).toBeTruthy()
 
-    expect(isDisabled).toBeFalsy()
+    // All the word is in bip-39 wordlist but fail to validate
+    await firstPhraseField.click({ clickCount: 3 })
+    await firstPhraseField.type('tired')
     await confirmButton.click()
 
-    // TODO DatH - next step
-    let goToHomeButton = await optionPage.waitForSelector('#go-to-home-button')
-    let openFaucetButton = await optionPage.$('#open-faucet-button')
-    let openCreateNFTPageButton = await optionPage.$('#create-nft-page-button')
+    let importPhraseErrorMessage = await importPhraseError.evaluate((el) => el.textContent)
+    // expect invalid secret phrase
+    expect(importPhraseErrorMessage).toBe(ERROR_MESSAGE.INVALID_SECRET_PHRASE)
+
+    /* Type valid secret phrase*/
+    await firstPhraseField.click({ clickCount: 3 })
+    await firstPhraseField.type(secretPhrase[0])
+
+    // expect confirm button to be enabled
+    isDisabled = await confirmButton.evaluate((el) => el.disabled)
+    expect(isDisabled).toBeFalsy()
+
+    await confirmButton.click()
+
+    const goToHomeButton = await optionPage.waitForSelector('#go-to-home-button')
+    const openFaucetButton = await optionPage.$('#open-faucet-button')
+    const openCreateNFTPageButton = await optionPage.$('#create-nft-page-button')
 
     expect(openFaucetButton).toBeNull()
     expect(openCreateNFTPageButton).toBeNull()
 
     await goToHomeButton.click()
-  }, 30000)
-
-  // TODO DatH - e2e test: import exist wallet
-
-  /* TODO Test 2 cases: IMPORT exist wallets - CREATE new wallets */
+  }, 50000)
 
   // TODO - Test back button each step(s)
   // TODO - Test input secret phrase(s)  (Confirm button - input field(s) - error messages)
-
-  // TODO - add delay 500ms for demo
 
   it('remove ethereum wallet', async () => {
     const profilePictureNavBar = await optionPage.waitForSelector(
@@ -144,53 +254,66 @@ describe('e2e test', () => {
   it('test create new ethereum wallet', async () => {
     await Automation.createPasswordStep(optionPage)
 
-    let createNewKeyButton = await optionPage.waitForSelector(
+    const createNewKeyButton = await optionPage.waitForSelector(
       '[data-testid="start-from-scratch-div"]'
     )
     await createNewKeyButton.click()
 
-    let keyLogoButton = await optionPage.waitForSelector('[data-testid="ethereum-key"]')
+    const keyLogoButton = await optionPage.waitForSelector('[data-testid="ethereum-key"]')
     await keyLogoButton.click()
 
-    // // TODO Remind me later
-    // let remindMeLaterButton = await optionPage.waitForSelector('[data-testid="remind-me-button"]')
-    // remindMeLaterButton.click()
-
-    // let goToHomeButton = await optionPage.waitForSelector('#go-to-home-button')
-    // await goToHomeButton.click()
-
-    // await optionPage.waitForTimeout(10000000)
-
     // I'm ready
-    let imReadyButton = await optionPage.waitForSelector('[data-testid="ready-button"]')
+    const imReadyButton = await optionPage.waitForSelector('[data-testid="ready-button"]')
     await imReadyButton.click()
 
     // Reveal secret phrase
-    let blurPhraseButton = await optionPage.waitForSelector('[data-testid="blur-phrase-button"]')
+    const blurPhraseButton = await optionPage.waitForSelector('[data-testid="blur-phrase-button"]')
+    expect(blurPhraseButton).not.toBeNull()
     await blurPhraseButton.click()
 
     // Save 12-word secret phrase
     for (let i = 0; i < 12; i++) {
-      let currentPhrase = await optionPage.waitForSelector(`[data-testid="hidden-phrase-${i}"]`)
-      let value = await currentPhrase.evaluate((el) => el.textContent)
+      const currentPhrase = await optionPage.waitForSelector(`[data-testid="hidden-phrase-${i}"]`)
+      const value = await currentPhrase.evaluate((el) => el.textContent)
       savePhrases.push(value)
     }
 
-    let continueButton = await optionPage.waitForSelector('#continue-button')
+    const continueButton = await optionPage.waitForSelector('#continue-button')
     await continueButton.click()
 
+    /* Input 12 phrases wrongly */
+    const confirmButton = await optionPage.waitForSelector('#continue-button')
+    await confirmButton.click()
+
+    const inputPhraseError = await optionPage.waitForSelector(`[data-testid="input-phrase-error"]`)
+    let inputPhraseErrorText = await inputPhraseError.evaluate((el) => el.textContent)
+    expect(inputPhraseErrorText).toBe(ERROR_MESSAGE.INVALID_SECRET_PHRASE)
+
     for (let i = 0; i < 12; i++) {
-      let currentPhrase = await optionPage.waitForSelector(`[data-testid="input-phrase-${i}"]`)
-      let nodeName = await currentPhrase.evaluate((el) => el.nodeName)
+      const currentPhrase = await optionPage.waitForSelector(`[data-testid="input-phrase-${i}"]`)
+      const nodeName = await currentPhrase.evaluate((el) => el.nodeName)
       if (nodeName === 'INPUT') {
+        await currentPhrase.type('####')
+      }
+    }
+
+    await confirmButton.click()
+    inputPhraseErrorText = await inputPhraseError.evaluate((el) => el.textContent)
+    expect(inputPhraseErrorText).toBe(ERROR_MESSAGE.INVALID_SECRET_PHRASE)
+
+    /* Input 12 phrases correctly */
+    for (let i = 0; i < 12; i++) {
+      const currentPhrase = await optionPage.waitForSelector(`[data-testid="input-phrase-${i}"]`)
+      const nodeName = await currentPhrase.evaluate((el) => el.nodeName)
+      if (nodeName === 'INPUT') {
+        await currentPhrase.click({ clickCount: 3 })
         await currentPhrase.type(savePhrases[i])
       }
     }
 
-    let confirmButton = await optionPage.waitForSelector('#continue-button')
     await confirmButton.click()
 
-    let goToHomeButton = await optionPage.waitForSelector('#go-to-home-button')
+    const goToHomeButton = await optionPage.waitForSelector('#go-to-home-button')
     await goToHomeButton.click()
 
     // go to Setting page and detect the accout address
@@ -229,6 +352,34 @@ describe('e2e test', () => {
     const accountAddress = await accountAddressField.evaluate((el) => el.textContent)
 
     expect(accountAddress).toBe(importedAccountAddress)
+  }, 30000)
+
+  it('import exist wallet', async () => {
+    await Automation.goToImportWalletPage(optionPage)
+    await Automation.createPasswordStep(optionPage, false)
+
+    // click Import Key button
+    let createKeyButton = await optionPage.waitForSelector('[data-testid="use-existing-key-div"]')
+    await createKeyButton.click()
+
+    // click Import ETH Key button
+    let createEthKeyButton = await optionPage.waitForSelector('[data-testid="ethereum-key"]')
+    await createEthKeyButton.click()
+
+    for (let i = 0; i < savePhrases.length; i++) {
+      const secretPhraseField = await optionPage.waitForSelector(
+        `[data-testid="import-phrase-${i}"]`
+      )
+      await secretPhraseField.type(savePhrases[i])
+    }
+
+    let confirmButton = await optionPage.waitForSelector('#confirm-button')
+    await confirmButton.click()
+
+    // expect the error message ACCOUNT_EXISTED
+    let errorMessageField = await optionPage.waitForSelector(`[data-testid="message-gallery"]`)
+    const errorMessage = await errorMessageField.evaluate((el) => el.textContent)
+    expect(errorMessage).toBe(ERROR_MESSAGE.ACCOUNT_EXISTED)
   }, 30000)
 
   afterAll(async () => {

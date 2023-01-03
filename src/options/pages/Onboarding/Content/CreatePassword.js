@@ -144,7 +144,12 @@ const CreatePassword = ({ step, setStep }) => {
             <div onClick={() => setIsAcceptTermService((prev) => !prev)}>
               I agree with the&nbsp;
             </div>
-            <a target="_blank" href={URL.TERM_OF_SERVICE} className="text-turquoiseBlue underline">
+            <a
+              target="_blank"
+              href={URL.TERM_OF_SERVICE}
+              className="text-turquoiseBlue underline"
+              data-testid="tos-link"
+            >
               Terms of Service
             </a>
           </div>

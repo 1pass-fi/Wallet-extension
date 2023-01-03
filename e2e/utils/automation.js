@@ -90,12 +90,15 @@ export const importKeyStep = async (page, walletType, secretPhrase) => {
 
 export const createKeyStep = async (page, walletType) => {}
 
-export const goToAccountSettingPage = async (page) => {
+export const goToImportWalletPage = async (page) => {
   const profilePictureNavBar = await page.waitForSelector(`[data-testid="profile-picture-navbar"]`)
   await profilePictureNavBar.click()
 
   const walletSettingButton = await page.waitForSelector(`[data-testid="wallet-dropdown-light"]`)
   await walletSettingButton.click()
+
+  const importButton = await page.waitForSelector(`[data-testid="setting-import-wallet"]`)
+  await importButton.click()
 }
 
 export const removeKey = async (page, accountAddress) => {
@@ -126,9 +129,7 @@ export const importWallet = async (page, walletType, secretPhrase = '', newPassw
     await createPasswordStep(page, newPassword)
   } else {
     // From option homepage
-    await goToAccountSettingPage(page)
-    const importButton = await page.waitForSelector(`[data-testid="setting-import-wallet"]`)
-    await importButton.click()
+    await goToImportWalletPage(page)
 
     // type password
     await page.waitForSelector('#new-password')
@@ -150,4 +151,4 @@ export const swapToNetwork = async (page, networkLabel) => {
   await providerOption.click()
 }
 
-export default { importWallet, swapToNetwork, removeKey, createPasswordStep }
+export default { importWallet, swapToNetwork, removeKey, createPasswordStep, goToImportWalletPage }

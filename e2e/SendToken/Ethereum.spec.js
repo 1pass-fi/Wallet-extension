@@ -3,6 +3,8 @@ import { bootstrap } from '../bootstrap'
 import Automation from '../utils/automation'
 import { ALTERNATIVE_SECRET_PHRASES } from '../utils/testConstants'
 
+// TODO - add delay 500ms for demo
+
 describe('Send token via Ethereum network', () => {
   let context, optionPage, extPage
 
@@ -13,11 +15,16 @@ describe('Send token via Ethereum network', () => {
 
     /* Import Ethereum wallet for transaction testing */
     await Automation.importWallet(optionPage, TYPE.ETHEREUM)
-    await Automation.importWallet(optionPage, TYPE.ETHEREUM, ALTERNATIVE_SECRET_PHRASES.TYPE_ETHEREUM, false)
+    await Automation.importWallet(
+      optionPage,
+      TYPE.ETHEREUM,
+      ALTERNATIVE_SECRET_PHRASES.TYPE_ETHEREUM,
+      false
+    )
 
     /* Launch extension page after importing wallet */
     extPage = await context.launchExtPage()
-  }, 40000)
+  }, 50000)
 
   it('should successfully to send ETH token', async () => {
     await extPage.bringToFront()
@@ -79,11 +86,11 @@ describe('Send token via Ethereum network', () => {
     )
 
     await sendConfirmButton.click()
+    await extPage.waitForTimeout(1000)
 
     /* TRANSACTION RECEIPT */
     const okButton = await extPage.waitForSelector(`[data-testid="button-ok"]`)
     await okButton.click()
-    await extPage.waitForTimeout(1000)
   }, 50000)
 
   it.skip('should successfully to send custom token', async () => {
