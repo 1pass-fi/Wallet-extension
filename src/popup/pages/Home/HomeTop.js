@@ -224,9 +224,7 @@ const HomeTop = ({
                   className="text-base leading-8 tracking-finnieSpacing-tight"
                   style={{ color: '#707070' }}
                 >
-                  {fiatCurrencyFormat(
-                    (displayingAccount.balance * price.SOL) / Math.pow(10, 9)
-                  )}{' '}
+                  {fiatCurrencyFormat((displayingAccount.balance * price.SOL) / Math.pow(10, 9))}{' '}
                   {currency}
                 </div>
               )}
@@ -272,6 +270,7 @@ const HomeTop = ({
           <RefreshIcon
             className="ml-2.5 mt-2.5 cursor-pointer"
             onClick={async () => await request.wallet.loadBalanceAsync()}
+            data-testid="reload-balance-popup-button"
           />
         </div>
 
@@ -282,7 +281,7 @@ const HomeTop = ({
               style={{ width: '44px', height: '44px' }}
               to="/send"
             >
-              <SendIcon style={{ width: '23px', height: '20px' }} data-testid="icon-send-tokens"/>
+              <SendIcon style={{ width: '23px', height: '20px' }} data-testid="icon-send-tokens" />
             </Link>
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
               SEND

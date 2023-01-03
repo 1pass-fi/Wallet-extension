@@ -1,6 +1,6 @@
 import { TYPE } from '../../src/constants/accountConstants'
 import { bootstrap } from '../bootstrap'
-import { importWallet } from '../utils'
+import { importWallet, swapToNetwork } from '../utils'
 import { ALTERNATIVE_SECRET_PHRASES } from '../utils/testConstants'
 
 describe('Send token via Ethereum network', () => {
@@ -24,6 +24,17 @@ describe('Send token via Ethereum network', () => {
 
     await swapToNetwork(extPage, 'Goerli TestNet')
 
+    extPage?.close()
+    extPage = await context.launchExtPage()
+
+    const reloadBalanceButton = await extPage.waitForSelector(
+      `[data-testid="reload-balance-popup-button"]`
+    )
+    await reloadBalanceButton.click()
+
+    // TODO DatH - wait for balance !== 0
+    await extPage.waitForTimeout(3000)
+
     const goToSendButton = await extPage.waitForSelector(`[data-testid="icon-send-tokens"]`)
     await goToSendButton.click()
 
@@ -40,11 +51,14 @@ describe('Send token via Ethereum network', () => {
     const recipientDropdown = await extPage.$(`[data-testid="recipient-open-dropdown"]`)
     await recipientDropdown.click()
 
-    const recipientOption = await extPage.waitForSelector(`[data-testid="Account #2"]`)
+    const recipientOption = await extPage.waitForSelector(`[data-testid="Account#2"]`)
     await recipientOption.click()
 
     const sendTokensButton = await extPage.waitForSelector(`[data-testid="send-tokens-button"]`)
     await sendTokensButton.click()
+
+    // TODO DatH - wait for TRANSACTION CONFIRM MODAL data
+    await extPage.waitForTimeout(3000)
 
     /* TRANSACTION CONFIRM MODAL */
     const senderConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-sender"]`)
@@ -57,11 +71,13 @@ describe('Send token via Ethereum network', () => {
     expect(recipient).toBe('0x9850Da0a1A2635625d3696E0474D855484aA0994')
 
     const amountConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-amount"]`)
-    expect(amountConfirm).toBe('0.0001 ETH')
+    const amount = await amountConfirm.evaluate((el) => el.textContent)
+    expect(amount).toBe('0.0001 ETH')
 
     const sendConfirmButton = await extPage.waitForSelector(
       `[data-testid="tx-confirm-send-button"]`
     )
+
     await sendConfirmButton.click()
 
     /* TRANSACTION RECEIPT */
@@ -87,7 +103,7 @@ describe('Send token via Ethereum network', () => {
 
     const UNITokenOption = await extPage.waitForSelector(`[data-testid="UNI"]`)
     await UNITokenOption.click()
-    
+
     const goToSendButton = await extPage.waitForSelector(`[data-testid="icon-send-tokens"]`)
     await goToSendButton.click()
 
@@ -131,5 +147,10 @@ describe('Send token via Ethereum network', () => {
     /* TRANSACTION RECEIPT */
     const okButton = await extPage.waitForSelector(`[data-testid="button-ok"]`)
     await okButton.click()
+  })
+
+  afterAll(async () => {
+    await context.closePages()
+    return true
   })
 })

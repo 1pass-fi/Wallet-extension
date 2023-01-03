@@ -202,6 +202,7 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
           }}
           style={{ width: '68px', height: '45px' }}
           ref={tokenDropdownRef}
+          data-testid="token-dropdown"
         >
           {isEmpty(selectedToken) && <FinnieIcon style={{ width: '34px', height: '34px' }} />}
           {!isEmpty(selectedToken) &&

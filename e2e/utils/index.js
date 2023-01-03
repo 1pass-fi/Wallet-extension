@@ -124,10 +124,18 @@ export const importWallet = async (page, walletType, secretPhrase = '', newPassw
   if (newPassword) {
     await createPasswordStep(page, newPassword)
   } else {
-    // From option homepage 
+    // From option homepage
     await goToAccountSettingPage(page)
     const importButton = await page.waitForSelector(`[data-testid="setting-import-wallet"]`)
     await importButton.click()
+
+    // type password
+    await page.waitForSelector('#new-password')
+    await page.type('#new-password', 'OpenKoi@123')
+
+    // click login button
+    let loginButton = await page.waitForSelector('#log-in-button')
+    await loginButton.click()
   }
 
   await importKeyStep(page, walletType, secretPhrase)
@@ -137,6 +145,6 @@ export const swapToNetwork = async (page, networkLabel) => {
   const providerDropdown = await page.waitForSelector(`[data-testid="provider-dropdown"]`)
   await providerDropdown.click()
 
-  const providerOption = await page.waitForSelector(`[data-testid=${networkLabel}]`)
+  const providerOption = await page.waitForSelector(`[data-testid="${networkLabel}"]`)
   await providerOption.click()
 }

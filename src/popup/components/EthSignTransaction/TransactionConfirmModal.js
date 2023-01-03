@@ -120,7 +120,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     value,
     rawValue,
     customTokenRecipient,
-    setTxId,
     setShowReceipt,
     maxFeePerGas,
     maxPriorityFeePerGas,
@@ -335,7 +334,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
                 <div style={{ width: '176px' }}>From</div>
                 {senderName && <div className="mt-2 font-semibold text-xs">{senderName}</div>}
-                <div className="mt-2 font-normal text-xs text-success-700" date-testid="tx-confirm-sender">
+                <div className="mt-2 font-normal text-xs text-success-700" data-testid="tx-confirm-sender">
                   {get(transactionPayload, 'from')}
                 </div>
               </div>

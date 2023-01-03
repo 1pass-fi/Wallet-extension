@@ -101,7 +101,7 @@ const SendTokenForm = ({
                 key={account.address}
                 className="text-left pl-2 h-8 text-white text-sm hover:bg-blue-500"
                 onClick={() => onChange(account)}
-                data-testid={account.address}
+                data-testid={account.accountName}
               >
                 <div>{formatLongString(account.accountName, 40)}</div>
               </div>

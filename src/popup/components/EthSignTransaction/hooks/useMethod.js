@@ -18,7 +18,6 @@ const useMethod = ({
   value,
   customTokenRecipient,
   rawValue,
-  setTxId,
   setShowReceipt,
   maxFeePerGas,
   maxPriorityFeePerGas,
@@ -113,7 +112,6 @@ const useMethod = ({
 
         setIsLoading(false)
         setShowReceipt(true)
-        setTxId(result)
         storage.generic.set.pendingRequest({})
       }
     } catch (err) {
