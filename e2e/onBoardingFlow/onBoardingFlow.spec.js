@@ -1,6 +1,6 @@
 import { TYPE } from '../../src/constants/accountConstants'
 import { bootstrap } from '../bootstrap'
-import { createPasswordStep, importWallet, removeKey } from '../utils'
+import Automation from '../utils/automation'
 import { SECRET_PHRASES } from '../utils/testConstants'
 
 describe('e2e test', () => {
@@ -13,7 +13,7 @@ describe('e2e test', () => {
     return true
   })
 
-  it('Create Password page', async () => {
+  it('Import new wallet(s)', async () => {
     await optionPage.bringToFront()
     await optionPage.waitForSelector('#new-password')
 
@@ -67,8 +67,6 @@ describe('e2e test', () => {
     const addAKeyPage = await optionPage.waitForSelector('[data-testid="AddAKey"]')
     expect(addAKeyPage).not.toBeNull()
 
-    /* TODO Test 2 cases: IMPORT exist wallets - CREATE new wallets */
-
     // click Import Key button
     let createKeyButton = await optionPage.waitForSelector('[data-testid="use-existing-key-div"]')
     await createKeyButton.click()
@@ -105,6 +103,13 @@ describe('e2e test', () => {
 
   // TODO DatH - e2e test: import exist wallet
 
+  /* TODO Test 2 cases: IMPORT exist wallets - CREATE new wallets */
+
+  // TODO - Test back button each step(s)
+  // TODO - Test input secret phrase(s)  (Confirm button - input field(s) - error messages)
+
+  // TODO - add delay 500ms for demo
+
   it('remove ethereum wallet', async () => {
     const profilePictureNavBar = await optionPage.waitForSelector(
       `[data-testid="profile-picture-navbar"]`
@@ -137,7 +142,7 @@ describe('e2e test', () => {
   }, 10000)
 
   it('test create new ethereum wallet', async () => {
-    await createPasswordStep(optionPage)
+    await Automation.createPasswordStep(optionPage)
 
     let createNewKeyButton = await optionPage.waitForSelector(
       '[data-testid="start-from-scratch-div"]'
@@ -205,8 +210,8 @@ describe('e2e test', () => {
   }, 30000)
 
   it('verify the account address', async () => {
-    await removeKey(optionPage, importedAccountAddress)
-    await importWallet(optionPage, TYPE.ETHEREUM, savePhrases.join(' '))
+    await Automation.removeKey(optionPage, importedAccountAddress)
+    await Automation.importWallet(optionPage, TYPE.ETHEREUM, savePhrases.join(' '))
 
     // go to Setting page and detect the accout address
     const profilePictureNavBar = await optionPage.waitForSelector(

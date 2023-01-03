@@ -1,7 +1,8 @@
 import isEmpty from 'lodash/isEmpty'
 
 import { TYPE } from '../../src/constants/accountConstants'
-import { SECRET_PHRASES } from '../utils/testConstants'
+
+import { SECRET_PHRASES } from './testConstants'
 
 export const createPasswordStep = async (page, newPassword = true) => {
   await page.bringToFront()
@@ -148,3 +149,5 @@ export const swapToNetwork = async (page, networkLabel) => {
   const providerOption = await page.waitForSelector(`[data-testid="${networkLabel}"]`)
   await providerOption.click()
 }
+
+export default { importWallet, swapToNetwork, removeKey, createPasswordStep }

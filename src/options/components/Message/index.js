@@ -11,7 +11,10 @@ export default ({ children, type='error' }) => {
   }, [])
 
   return (
-    <div className={`message-gallery ${type} ${isDisabled ? 'disabled' : ''}`}>
+    <div
+      className={`message-gallery ${type} ${isDisabled ? 'disabled' : ''}`}
+      data-testid="message-gallery"
+    >
       {children}
     </div>
   )

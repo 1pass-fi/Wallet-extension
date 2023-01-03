@@ -1,6 +1,6 @@
 import { TYPE } from '../../src/constants/accountConstants'
 import { bootstrap } from '../bootstrap'
-import { importWallet, swapToNetwork } from '../utils'
+import Automation from '../utils/automation'
 import { ALTERNATIVE_SECRET_PHRASES } from '../utils/testConstants'
 
 describe('Send token via Ethereum network', () => {
@@ -12,8 +12,8 @@ describe('Send token via Ethereum network', () => {
     optionPage = context.optionPage
 
     /* Import Ethereum wallet for transaction testing */
-    await importWallet(optionPage, TYPE.ETHEREUM)
-    await importWallet(optionPage, TYPE.ETHEREUM, ALTERNATIVE_SECRET_PHRASES.TYPE_ETHEREUM, false)
+    await Automation.importWallet(optionPage, TYPE.ETHEREUM)
+    await Automation.importWallet(optionPage, TYPE.ETHEREUM, ALTERNATIVE_SECRET_PHRASES.TYPE_ETHEREUM, false)
 
     /* Launch extension page after importing wallet */
     extPage = await context.launchExtPage()
@@ -22,7 +22,7 @@ describe('Send token via Ethereum network', () => {
   it('should successfully to send ETH token', async () => {
     await extPage.bringToFront()
 
-    await swapToNetwork(extPage, 'Goerli TestNet')
+    await Automation.swapToNetwork(extPage, 'Goerli TestNet')
 
     extPage?.close()
     extPage = await context.launchExtPage()
@@ -58,7 +58,7 @@ describe('Send token via Ethereum network', () => {
     await sendTokensButton.click()
 
     // TODO DatH - wait for TRANSACTION CONFIRM MODAL data
-    await extPage.waitForTimeout(3000)
+    await extPage.waitForTimeout(1000)
 
     /* TRANSACTION CONFIRM MODAL */
     const senderConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-sender"]`)
@@ -83,6 +83,7 @@ describe('Send token via Ethereum network', () => {
     /* TRANSACTION RECEIPT */
     const okButton = await extPage.waitForSelector(`[data-testid="button-ok"]`)
     await okButton.click()
+    await extPage.waitForTimeout(1000)
   }, 50000)
 
   it.skip('should successfully to send custom token', async () => {
