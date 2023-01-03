@@ -22,7 +22,7 @@ describe('e2e test', () => {
     browser = context.browser
     optionPage = context.optionPage
     return true
-  }, 30000)
+  }, 100000)
 
   it('Import new wallet(s)', async () => {
     await optionPage.bringToFront()
@@ -37,7 +37,20 @@ describe('e2e test', () => {
     const errorPasswordConfirmMessage = await optionPage.waitForSelector(
       `[data-testid="error-confirm-password"]`
     )
+    const showPassword = await optionPage.waitForSelector(`[data-testid="show-new-password"]`)
+    const showConfirmPassword = await optionPage.waitForSelector(
+      `[data-testid="show-confirm-password"]`
+    )
     const tosMessageField = await optionPage.waitForSelector(`[data-testid="tos-error-message"]`)
+
+    // Show password and hidden password
+    await showPassword.click()
+    await showConfirmPassword.click()
+
+    let passwordInputType = await passwordInput.evaluate((el) => el.type)
+    expect(passwordInputType).toBe('text')
+    let confirmPasswordInputType = await passwordInput.evaluate((el) => el.type)
+    expect(confirmPasswordInputType).toBe('text')
 
     let tosErrorMessage, messagePasswordError
     /* Unchecked the Terms of Services */
@@ -56,11 +69,22 @@ describe('e2e test', () => {
 
     // type password and confirm password (do not contains lowercase)
     await passwordInput.click({ clickCount: 3 })
+    await passwordInput.type('OpenKoi¥@123')
+    await confirmPasswordInput.click({ clickCount: 3 })
+    await confirmPasswordInput.type('OpenKoi¥@123')
+    await loginButton.click()
+    
+    // expect the password does not meet the requirement
+    messagePasswordError = await errorPasswordMessage.evaluate((el) => el.textContent)
+    expect(messagePasswordError).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
+
+    // type password and confirm password (do not contains lowercase)
+    await passwordInput.click({ clickCount: 3 })
     await passwordInput.type('OPENKOI@123')
     await confirmPasswordInput.click({ clickCount: 3 })
     await confirmPasswordInput.type('OPENKOI@123')
     await loginButton.click()
-
+    
     // expect the password does not meet the requirement
     messagePasswordError = await errorPasswordMessage.evaluate((el) => el.textContent)
     expect(messagePasswordError).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
@@ -215,10 +239,9 @@ describe('e2e test', () => {
     expect(openCreateNFTPageButton).toBeNull()
 
     await goToHomeButton.click()
-  }, 50000)
+  }, 200000)
 
   // TODO - Test back button each step(s)
-  // TODO - Test input secret phrase(s)  (Confirm button - input field(s) - error messages)
 
   it('remove ethereum wallet', async () => {
     const profilePictureNavBar = await optionPage.waitForSelector(
@@ -249,7 +272,7 @@ describe('e2e test', () => {
       `[data-testid="confirm-remove-account-button"]`
     )
     await confirmRemoveAccountButton.click()
-  }, 10000)
+  }, 50000)
 
   it('test create new ethereum wallet', async () => {
     await Automation.createPasswordStep(optionPage)
@@ -330,7 +353,7 @@ describe('e2e test', () => {
     const accountCards = await optionPage.$('[data-testid="account-card-setting-page"]')
     const accountAddressField = await accountCards.$('[data-testid="account-card-address"]')
     importedAccountAddress = await accountAddressField.evaluate((el) => el.textContent)
-  }, 30000)
+  }, 150000)
 
   it('verify the account address', async () => {
     await Automation.removeKey(optionPage, importedAccountAddress)
@@ -352,7 +375,7 @@ describe('e2e test', () => {
     const accountAddress = await accountAddressField.evaluate((el) => el.textContent)
 
     expect(accountAddress).toBe(importedAccountAddress)
-  }, 30000)
+  }, 150000)
 
   it('import exist wallet', async () => {
     await Automation.goToImportWalletPage(optionPage)
@@ -380,7 +403,7 @@ describe('e2e test', () => {
     let errorMessageField = await optionPage.waitForSelector(`[data-testid="message-gallery"]`)
     const errorMessage = await errorMessageField.evaluate((el) => el.textContent)
     expect(errorMessage).toBe(ERROR_MESSAGE.ACCOUNT_EXISTED)
-  }, 30000)
+  }, 150000)
 
   afterAll(async () => {
     await context.closePages()

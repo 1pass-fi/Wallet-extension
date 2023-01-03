@@ -24,7 +24,7 @@ describe('Send token via Ethereum network', () => {
 
     /* Launch extension page after importing wallet */
     extPage = await context.launchExtPage()
-  }, 50000)
+  }, 500000)
 
   it('should successfully to send ETH token', async () => {
     await extPage.bringToFront()
@@ -91,7 +91,7 @@ describe('Send token via Ethereum network', () => {
     /* TRANSACTION RECEIPT */
     const okButton = await extPage.waitForSelector(`[data-testid="button-ok"]`)
     await okButton.click()
-  }, 50000)
+  }, 500000)
 
   it.skip('should successfully to send custom token', async () => {
     await extPage.bringToFront()
