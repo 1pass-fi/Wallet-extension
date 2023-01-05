@@ -19,7 +19,7 @@ const NavBar = ({ handleLockWallet }) => {
 
   return (
     <div
-      className="flex items-center w-full justify-between fixed bottom-0 px-0.75"
+      className="flex items-center justify-between fixed bottom-0 px-0.75"
       style={{ height: '64px', backgroundColor: '#4e4e7e' }}
     >
       <div
@@ -31,7 +31,7 @@ const NavBar = ({ handleLockWallet }) => {
         <div className="text-center text-white text-2xs leading-8">GALLERY</div>
       </div>
       <div
-        className="bg-blue-800 cursor-pointer"
+        className="bg-blue-800 cursor-pointer mx-0.75"
         style={{ width: '138px', height: '58px' }}
         onClick={goToWalletConnect}
       >
