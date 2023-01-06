@@ -1,5 +1,6 @@
 import React from 'react'
-import { fireEvent, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Onboarding from 'options/pages/Onboarding/Onboarding'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 import { renderWithOptionProviders } from 'testUtils/renderWithProviders'
@@ -8,7 +9,7 @@ jest.mock('services/account')
 jest.mock('utils')
 jest.mock('services/request/popup')
 
-const PASSWORD_ERROR = {
+const ERROR_MESSAGE = {
   NOT_MATCHING: 'Password does not match',
   NOT_MEET_REQUIREMENT:
     'Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%).',
@@ -26,10 +27,10 @@ function createPassword(onboarding) {
   const termsService = onboarding.container.querySelector('#new-password-tos')
   const continueButton = onboarding.container.querySelector('#log-in-button')
 
-  fireEvent.change(password, { target: { value: 'OpenKoi@123' } })
-  fireEvent.change(confirmPassword, { target: { value: 'OpenKoi@123' } })
-  fireEvent.click(termsService)
-  fireEvent.click(continueButton)
+  userEvent.type(password, 'OpenKoi@123')
+  userEvent.type(confirmPassword, 'OpenKoi@123')
+  userEvent.click(termsService)
+  userEvent.click(continueButton)
 }
 
 describe('Onboarding flow', () => {
@@ -62,18 +63,19 @@ describe('Onboarding flow', () => {
           expect(termsService).toBeInTheDocument()
           expect(continueButton).toBeInTheDocument()
 
-          fireEvent.change(password, { target: { value: 'OpenKoi@123' } })
-          fireEvent.change(confirmPassword, { target: { value: 'Openkoi@123' } })
-          fireEvent.click(termsService)
-          fireEvent.click(continueButton)
+          userEvent.type(password, 'OpenKoi@123')
+          userEvent.type(confirmPassword, 'Openkoi@123')
+          userEvent.click(termsService)
+          userEvent.click(continueButton)
 
           expect(password).toHaveValue('OpenKoi@123')
           expect(confirmPassword).toHaveValue('Openkoi@123')
 
           expect(errorPassword.textContent).toBe('')
-          expect(errorConfirmPassword.textContent).toBe(PASSWORD_ERROR.NOT_MATCHING)
+          expect(errorConfirmPassword.textContent).toBe(ERROR_MESSAGE.NOT_MATCHING)
         })
       })
+
       describe('Password does not meet the requirement', () => {
         it('should display password requirement when password contains invalid character', () => {
           expect(password).toBeInTheDocument()
@@ -81,15 +83,15 @@ describe('Onboarding flow', () => {
           expect(termsService).toBeInTheDocument()
           expect(continueButton).toBeInTheDocument()
 
-          fireEvent.change(password, { target: { value: 'OpenKoi¥@123' } })
-          fireEvent.change(confirmPassword, { target: { value: 'OpenKoi¥@123' } })
-          fireEvent.click(termsService)
-          fireEvent.click(continueButton)
+          userEvent.type(password, 'OpenKoi¥@123')
+          userEvent.type(confirmPassword, 'OpenKoi¥@123')
+          userEvent.click(termsService)
+          userEvent.click(continueButton)
 
           expect(password).toHaveValue('OpenKoi¥@123')
           expect(confirmPassword).toHaveValue('OpenKoi¥@123')
 
-          expect(errorPassword.textContent).toBe(PASSWORD_ERROR.NOT_MEET_REQUIREMENT)
+          expect(errorPassword.textContent).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
           expect(errorConfirmPassword.textContent).toBe('')
         })
 
@@ -99,15 +101,15 @@ describe('Onboarding flow', () => {
           expect(termsService).toBeInTheDocument()
           expect(continueButton).toBeInTheDocument()
 
-          fireEvent.change(password, { target: { value: 'openkoi@123' } })
-          fireEvent.change(confirmPassword, { target: { value: 'openkoi@123' } })
-          fireEvent.click(termsService)
-          fireEvent.click(continueButton)
+          userEvent.type(password, 'openkoi@123')
+          userEvent.type(confirmPassword, 'openkoi@123')
+          userEvent.click(termsService)
+          userEvent.click(continueButton)
 
           expect(password).toHaveValue('openkoi@123')
           expect(confirmPassword).toHaveValue('openkoi@123')
 
-          expect(errorPassword.textContent).toBe(PASSWORD_ERROR.NOT_MEET_REQUIREMENT)
+          expect(errorPassword.textContent).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
           expect(errorConfirmPassword.textContent).toBe('')
         })
 
@@ -117,15 +119,15 @@ describe('Onboarding flow', () => {
           expect(termsService).toBeInTheDocument()
           expect(continueButton).toBeInTheDocument()
 
-          fireEvent.change(password, { target: { value: 'OPENKOI@123' } })
-          fireEvent.change(confirmPassword, { target: { value: 'OPENKOI@123' } })
-          fireEvent.click(termsService)
-          fireEvent.click(continueButton)
+          userEvent.type(password, 'OPENKOI@123')
+          userEvent.type(confirmPassword, 'OPENKOI@123')
+          userEvent.click(termsService)
+          userEvent.click(continueButton)
 
           expect(password).toHaveValue('OPENKOI@123')
           expect(confirmPassword).toHaveValue('OPENKOI@123')
 
-          expect(errorPassword.textContent).toBe(PASSWORD_ERROR.NOT_MEET_REQUIREMENT)
+          expect(errorPassword.textContent).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
           expect(errorConfirmPassword.textContent).toBe('')
         })
 
@@ -135,63 +137,66 @@ describe('Onboarding flow', () => {
           expect(termsService).toBeInTheDocument()
           expect(continueButton).toBeInTheDocument()
 
-          fireEvent.change(password, { target: { value: 'OpenKoi@' } })
-          fireEvent.change(confirmPassword, { target: { value: 'OpenKoi@' } })
-          fireEvent.click(termsService)
-          fireEvent.click(continueButton)
+          userEvent.type(password, 'OpenKoi@')
+          userEvent.type(confirmPassword, 'OpenKoi@')
+          userEvent.click(termsService)
+          userEvent.click(continueButton)
 
           expect(password).toHaveValue('OpenKoi@')
           expect(confirmPassword).toHaveValue('OpenKoi@')
 
-          expect(errorPassword.textContent).toBe(PASSWORD_ERROR.NOT_MEET_REQUIREMENT)
+          expect(errorPassword.textContent).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
           expect(errorConfirmPassword.textContent).toBe('')
         })
+
         it('should display password requirement when password does not contain special character', () => {
           expect(password).toBeInTheDocument()
           expect(confirmPassword).toBeInTheDocument()
           expect(termsService).toBeInTheDocument()
           expect(continueButton).toBeInTheDocument()
 
-          fireEvent.change(password, { target: { value: 'OpenKoi123' } })
-          fireEvent.change(confirmPassword, { target: { value: 'OpenKoi123' } })
-          fireEvent.click(termsService)
-          fireEvent.click(continueButton)
+          userEvent.type(password, 'OpenKoi123')
+          userEvent.type(confirmPassword, 'OpenKoi123')
+          userEvent.click(termsService)
+          userEvent.click(continueButton)
 
           expect(password).toHaveValue('OpenKoi123')
           expect(confirmPassword).toHaveValue('OpenKoi123')
 
-          expect(errorPassword.textContent).toBe(PASSWORD_ERROR.NOT_MEET_REQUIREMENT)
+          expect(errorPassword.textContent).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
           expect(errorConfirmPassword.textContent).toBe('')
         })
+
         it('should display password requirement when password length is less than 8 characters', () => {
           expect(password).toBeInTheDocument()
           expect(confirmPassword).toBeInTheDocument()
           expect(termsService).toBeInTheDocument()
           expect(continueButton).toBeInTheDocument()
 
-          fireEvent.change(password, { target: { value: 'OpKo@1' } })
-          fireEvent.change(confirmPassword, { target: { value: 'OpKo@1' } })
-          fireEvent.click(termsService)
-          fireEvent.click(continueButton)
+          userEvent.type(password, 'OpKo@1')
+          userEvent.type(confirmPassword, 'OpKo@1')
+          userEvent.click(termsService)
+          userEvent.click(continueButton)
 
           expect(password).toHaveValue('OpKo@1')
           expect(confirmPassword).toHaveValue('OpKo@1')
 
-          expect(errorPassword.textContent).toBe(PASSWORD_ERROR.NOT_MEET_REQUIREMENT)
+          expect(errorPassword.textContent).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
           expect(errorConfirmPassword.textContent).toBe('')
         })
       })
+
       describe('Terms of service is unchecked', () => {
         it('should display error message to force the user check the checkbox', () => {
-          fireEvent.change(password, { target: { value: 'OpenKoi@123' } })
-          fireEvent.change(confirmPassword, { target: { value: 'OpenKoi@123' } })
-          fireEvent.click(continueButton)
+          userEvent.type(password, 'OpenKoi@123')
+          userEvent.type(confirmPassword, 'OpenKoi@123')
+          userEvent.click(continueButton)
 
           expect(password).toHaveValue('OpenKoi@123')
           expect(confirmPassword).toHaveValue('OpenKoi@123')
 
           expect(onboarding.queryByTestId('tos-error-message')).toHaveTextContent(
-            PASSWORD_ERROR.TERM_OF_SERVICE_UNCHECKED
+            ERROR_MESSAGE.TERM_OF_SERVICE_UNCHECKED
           )
           expect(errorPassword.textContent).toBe('')
           expect(errorConfirmPassword.textContent).toBe('')
@@ -199,10 +204,10 @@ describe('Onboarding flow', () => {
       })
       describe('Valid passwords', () => {
         it('should create new password successfully and move to next step', () => {
-          fireEvent.change(password, { target: { value: 'OpenKoi@123' } })
-          fireEvent.change(confirmPassword, { target: { value: 'OpenKoi@123' } })
-          fireEvent.click(termsService)
-          fireEvent.click(continueButton)
+          userEvent.type(password, 'OpenKoi@123')
+          userEvent.type(confirmPassword, 'OpenKoi@123')
+          userEvent.click(termsService)
+          userEvent.click(continueButton)
 
           expect(password).toHaveValue('OpenKoi@123')
           expect(confirmPassword).toHaveValue('OpenKoi@123')
@@ -241,8 +246,8 @@ describe('Onboarding flow', () => {
         })
 
         it('should display incorrect password error', async () => {
-          fireEvent.change(password, { target: { value: 'OpenKoi@123' } })
-          fireEvent.click(continueButton)
+          userEvent.type(password, 'OpenKoi@123')
+          userEvent.click(continueButton)
 
           expect(password).toHaveValue('OpenKoi@123')
           await waitFor(() => expect(errorPassword.textContent).toBe('Incorrect password'))
@@ -263,8 +268,8 @@ describe('Onboarding flow', () => {
         })
 
         it('should be authenticated and move to next step', async () => {
-          fireEvent.change(password, { target: { value: 'OpenKoi@123' } })
-          fireEvent.click(continueButton)
+          userEvent.type(password, 'OpenKoi@123')
+          userEvent.click(continueButton)
 
           expect(password).toHaveValue('OpenKoi@123')
           await waitFor(() => expect(errorPassword.textContent).toBe(''))
@@ -289,12 +294,12 @@ describe('Onboarding flow', () => {
 
             // Get new key
             const getNewKey = onboarding.queryByTestId('start-from-scratch-div')
-            fireEvent.click(getNewKey)
+            userEvent.click(getNewKey)
             await waitFor(() => expect(onboarding.getByTestId('GetAKey')).toBeInTheDocument())
 
             // Choose AR key
             const ARKey = onboarding.queryByTestId('arweave-key')
-            fireEvent.click(ARKey)
+            userEvent.click(ARKey)
             await waitFor(() =>
               expect(onboarding.getByTestId('PrepareSavePhrase')).toBeInTheDocument()
             )
@@ -303,7 +308,7 @@ describe('Onboarding flow', () => {
           describe('Step - Save your Secret Phrase - I am Ready', () => {
             beforeEach(async () => {
               const imReady = onboarding.queryByTestId(`ready-button`)
-              fireEvent.click(imReady)
+              userEvent.click(imReady)
 
               await waitFor(() =>
                 expect(onboarding.getByTestId('HiddenPhrase')).toBeInTheDocument()
@@ -324,7 +329,7 @@ describe('Onboarding flow', () => {
                   let hiddenPhraseIcon
                   hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
 
-                  fireEvent.click(hiddenPhraseIcon)
+                  userEvent.click(hiddenPhraseIcon)
 
                   hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
                   await waitFor(() => expect(hiddenPhraseIcon).toBeNull())
@@ -346,13 +351,13 @@ describe('Onboarding flow', () => {
                 // Move to confirm secret phrase step
                 let hiddenPhraseIcon
                 hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
-                fireEvent.click(hiddenPhraseIcon)
+                userEvent.click(hiddenPhraseIcon)
 
                 hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
                 await waitFor(() => expect(hiddenPhraseIcon).toBeNull())
 
                 const continueButton = onboarding.container.querySelector('#continue-button')
-                fireEvent.click(continueButton)
+                userEvent.click(continueButton)
 
                 await waitFor(() =>
                   expect(onboarding.getByTestId('InputPhrase')).toBeInTheDocument()
@@ -365,12 +370,12 @@ describe('Onboarding flow', () => {
                     expect(currentPhrase).not.toBeNull()
 
                     if (currentPhrase.nodeName === 'INPUT') {
-                      fireEvent.change(currentPhrase, { target: { value: '####' } })
+                      userEvent.type(currentPhrase, '####')
                     }
                   })
 
                   const continueButton = onboarding.container.querySelector('#continue-button')
-                  fireEvent.click(continueButton)
+                  userEvent.click(continueButton)
                   await waitFor(() => {
                     expect(onboarding.queryAllByText('Invalid Secret Phrase')).toHaveLength(1)
                   })
@@ -383,12 +388,12 @@ describe('Onboarding flow', () => {
                     expect(currentPhrase).not.toBeNull()
 
                     if (currentPhrase.nodeName === 'INPUT') {
-                      fireEvent.change(currentPhrase, { target: { value: phrase } })
+                      userEvent.type(currentPhrase, phrase)
                     }
                   })
 
                   const continueButton = onboarding.container.querySelector('#continue-button')
-                  fireEvent.click(continueButton)
+                  userEvent.click(continueButton)
                   await waitFor(() => {
                     expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument()
                   })
@@ -405,7 +410,7 @@ describe('Onboarding flow', () => {
           describe('Step - Save your Secret Phrase - Remind me later', () => {
             beforeEach(async () => {
               const remindMeLater = onboarding.queryByTestId(`remind-me-button`)
-              fireEvent.click(remindMeLater)
+              userEvent.click(remindMeLater)
 
               await waitFor(() =>
                 expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument()
@@ -432,12 +437,12 @@ describe('Onboarding flow', () => {
 
             // Get new key
             const getNewKey = onboarding.queryByTestId('start-from-scratch-div')
-            fireEvent.click(getNewKey)
+            userEvent.click(getNewKey)
             await waitFor(() => expect(onboarding.getByTestId('GetAKey')).toBeInTheDocument())
 
             // Choose non-AR key
             const nonARKey = onboarding.queryByTestId('ethereum-key')
-            fireEvent.click(nonARKey)
+            userEvent.click(nonARKey)
             await waitFor(() =>
               expect(onboarding.getByTestId('PrepareSavePhrase')).toBeInTheDocument()
             )
@@ -445,7 +450,7 @@ describe('Onboarding flow', () => {
           describe('Step - Save your Secret Phrase - I am Ready', () => {
             beforeEach(async () => {
               const imReady = onboarding.queryByTestId(`ready-button`)
-              fireEvent.click(imReady)
+              userEvent.click(imReady)
 
               await waitFor(() =>
                 expect(onboarding.getByTestId('HiddenPhrase')).toBeInTheDocument()
@@ -466,7 +471,7 @@ describe('Onboarding flow', () => {
                   let hiddenPhraseIcon
                   hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
 
-                  fireEvent.click(hiddenPhraseIcon)
+                  userEvent.click(hiddenPhraseIcon)
 
                   hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
                   await waitFor(() => expect(hiddenPhraseIcon).toBeNull())
@@ -488,13 +493,13 @@ describe('Onboarding flow', () => {
                 // Move to confirm secret phrase step
                 let hiddenPhraseIcon
                 hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
-                fireEvent.click(hiddenPhraseIcon)
+                userEvent.click(hiddenPhraseIcon)
 
                 hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
                 await waitFor(() => expect(hiddenPhraseIcon).toBeNull())
 
                 const continueButton = onboarding.container.querySelector('#continue-button')
-                fireEvent.click(continueButton)
+                userEvent.click(continueButton)
 
                 await waitFor(() =>
                   expect(onboarding.getByTestId('InputPhrase')).toBeInTheDocument()
@@ -507,12 +512,12 @@ describe('Onboarding flow', () => {
                     expect(currentPhrase).not.toBeNull()
 
                     if (currentPhrase.nodeName === 'INPUT') {
-                      fireEvent.change(currentPhrase, { target: { value: '####' } })
+                      userEvent.type(currentPhrase, '####')
                     }
                   })
 
                   const continueButton = onboarding.container.querySelector('#continue-button')
-                  fireEvent.click(continueButton)
+                  userEvent.click(continueButton)
                   await waitFor(() => {
                     expect(onboarding.queryAllByText('Invalid Secret Phrase')).toHaveLength(1)
                   })
@@ -525,12 +530,12 @@ describe('Onboarding flow', () => {
                     expect(currentPhrase).not.toBeNull()
 
                     if (currentPhrase.nodeName === 'INPUT') {
-                      fireEvent.change(currentPhrase, { target: { value: phrase } })
+                      userEvent.type(currentPhrase, phrase)
                     }
                   })
 
                   const continueButton = onboarding.container.querySelector('#continue-button')
-                  fireEvent.click(continueButton)
+                  userEvent.click(continueButton)
                   await waitFor(() => {
                     expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument()
                   })
@@ -545,7 +550,7 @@ describe('Onboarding flow', () => {
           describe('Step - Save your Secret Phrase - Remind me later', () => {
             beforeEach(async () => {
               const remindMeLater = onboarding.queryByTestId('remind-me-button')
-              fireEvent.click(remindMeLater)
+              userEvent.click(remindMeLater)
 
               await waitFor(() =>
                 expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument()
@@ -572,12 +577,12 @@ describe('Onboarding flow', () => {
 
           // Get new key
           const getNewKey = onboarding.queryByTestId('use-existing-key-div')
-          fireEvent.click(getNewKey)
+          userEvent.click(getNewKey)
           await waitFor(() => expect(onboarding.getByTestId('ImportAKey')).toBeInTheDocument())
 
           // Choose non-AR key
           const ARKey = onboarding.queryByTestId('arweave-key')
-          fireEvent.click(ARKey)
+          userEvent.click(ARKey)
           await waitFor(() => expect(onboarding.getByTestId('ImportPhrase')).toBeInTheDocument())
         })
 
@@ -587,7 +592,9 @@ describe('Onboarding flow', () => {
               const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
-              fireEvent.change(currentPhrase, { target: { value: index === 3 ? '' : phrase } })
+              if (index !== 3) {
+                userEvent.type(currentPhrase, phrase)
+              }
 
               expect(currentPhrase).toHaveValue(index === 3 ? '' : phrase)
             })
@@ -600,7 +607,7 @@ describe('Onboarding flow', () => {
               const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
-              fireEvent.change(currentPhrase, { target: { value: index === 3 ? 'abc' : phrase } })
+              userEvent.type(currentPhrase, index === 3 ? 'abc' : phrase)
 
               expect(currentPhrase).toHaveValue(index === 3 ? 'abc' : phrase)
             })
@@ -613,7 +620,7 @@ describe('Onboarding flow', () => {
               const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
-              fireEvent.change(currentPhrase, { target: { value: index === 3 ? 'tired' : phrase } })
+              userEvent.type(currentPhrase, index === 3 ? 'tired' : phrase)
 
               expect(currentPhrase).toHaveValue(index === 3 ? 'tired' : phrase)
             })
@@ -621,7 +628,7 @@ describe('Onboarding flow', () => {
             const confirmButton = onboarding.container.querySelector('#confirm-button')
             expect(confirmButton).not.toBeDisabled()
 
-            fireEvent.click(confirmButton)
+            userEvent.click(confirmButton)
             expect(onboarding.queryAllByText('Invalid Secret Phrase')).toHaveLength(1)
           })
         })
@@ -632,7 +639,7 @@ describe('Onboarding flow', () => {
               const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
-              fireEvent.change(currentPhrase, { target: { value: phrase } })
+              userEvent.type(currentPhrase, phrase)
 
               expect(currentPhrase).toHaveValue(phrase)
             })
@@ -640,7 +647,7 @@ describe('Onboarding flow', () => {
             const confirmButton = onboarding.container.querySelector('#confirm-button')
             expect(confirmButton).not.toBeDisabled()
 
-            fireEvent.click(confirmButton)
+            userEvent.click(confirmButton)
 
             await waitFor(() => expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument())
 
@@ -662,12 +669,12 @@ describe('Onboarding flow', () => {
 
           // Get new key
           const getNewKey = onboarding.queryByTestId('use-existing-key-div')
-          fireEvent.click(getNewKey)
+          userEvent.click(getNewKey)
           await waitFor(() => expect(onboarding.getByTestId('ImportAKey')).toBeInTheDocument())
 
           // Choose non-AR key
           const nonARKey = onboarding.queryByTestId('ethereum-key')
-          fireEvent.click(nonARKey)
+          userEvent.click(nonARKey)
           await waitFor(() => expect(onboarding.getByTestId('ImportPhrase')).toBeInTheDocument())
         })
 
@@ -677,9 +684,9 @@ describe('Onboarding flow', () => {
               const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
-              fireEvent.change(currentPhrase, {
-                target: { value: index === 3 ? '' : phrase }
-              })
+              if (index !== 3) {
+                userEvent.type(currentPhrase, phrase)
+              }
 
               expect(currentPhrase).toHaveValue(index === 3 ? '' : phrase)
             })
@@ -692,9 +699,7 @@ describe('Onboarding flow', () => {
               const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
-              fireEvent.change(currentPhrase, {
-                target: { value: index === 3 ? 'abc' : phrase }
-              })
+              userEvent.type(currentPhrase, index === 3 ? 'abc' : phrase)
 
               expect(currentPhrase).toHaveValue(index === 3 ? 'abc' : phrase)
             })
@@ -707,9 +712,7 @@ describe('Onboarding flow', () => {
               const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
-              fireEvent.change(currentPhrase, {
-                target: { value: index === 3 ? 'tired' : phrase }
-              })
+              userEvent.type(currentPhrase, index === 3 ? 'tired' : phrase)
 
               expect(currentPhrase).toHaveValue(index === 3 ? 'tired' : phrase)
             })
@@ -717,7 +720,7 @@ describe('Onboarding flow', () => {
             const confirmButton = onboarding.container.querySelector('#confirm-button')
             expect(confirmButton).not.toBeDisabled()
 
-            fireEvent.click(confirmButton)
+            userEvent.click(confirmButton)
             expect(onboarding.queryAllByText('Invalid Secret Phrase')).toHaveLength(1)
           })
         })
@@ -728,7 +731,7 @@ describe('Onboarding flow', () => {
               const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
-              fireEvent.change(currentPhrase, { target: { value: phrase } })
+              userEvent.type(currentPhrase, phrase)
 
               expect(currentPhrase).toHaveValue(phrase)
             })
@@ -736,7 +739,7 @@ describe('Onboarding flow', () => {
             const confirmButton = onboarding.container.querySelector('#confirm-button')
             expect(confirmButton).not.toBeDisabled()
 
-            fireEvent.click(confirmButton)
+            userEvent.click(confirmButton)
 
             await waitFor(() => expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument())
 
