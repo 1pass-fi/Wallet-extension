@@ -14,7 +14,8 @@ const ERROR_MESSAGE = {
   NOT_MEET_REQUIREMENT:
     'Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%).',
   INCORRECT: 'Incorrect password',
-  TERM_OF_SERVICE_UNCHECKED: 'Please accept the Terms of Service'
+  TERM_OF_SERVICE_UNCHECKED: 'Please accept the Terms of Service',
+  INVALID_SECRET_PHRASE: 'Invalid Secret Phrase'
 }
 
 const ethSeedPhrase = 'cluster cram fish penalty twelve evoke because wheel close income bag pupil'
@@ -35,7 +36,7 @@ function createPassword(onboarding) {
 
 describe('Onboarding flow', () => {
   /* SECURE FINNIE WITH A PASSWORD */
-  describe.skip('Step - Secure Finnie with a password', () => {
+  describe('Step - Secure Finnie with a password', () => {
     describe('Create new password', () => {
       let onboarding, password, confirmPassword, termsService, continueButton
 
@@ -262,7 +263,7 @@ describe('Onboarding flow', () => {
                 })
               })
               describe('After reveal secret phrase', () => {
-                it.only('should show the secret phrase correctly', async () => {
+                it('should show the secret phrase correctly', async () => {
                   const hiddenPhraseIcon = screen.getByRole('img')
 
                   userEvent.click(hiddenPhraseIcon)
@@ -272,7 +273,7 @@ describe('Onboarding flow', () => {
                   expect(screen.queryByRole('button', { name: /continue/i })).not.toBeNull()
 
                   arSeedPhrase.split(' ').forEach((phrase, index) => {
-                    const currentPhrase = onboarding.queryByTestId(`hidden-phrase-${index}`)
+                    const currentPhrase = screen.queryByTestId(`hidden-phrase-${index}`) 
                     expect(currentPhrase).not.toBeNull()
                     expect(currentPhrase.textContent).toBe(phrase)
                   })
@@ -283,24 +284,21 @@ describe('Onboarding flow', () => {
             describe('Step - Confirm secret phrase', () => {
               beforeEach(async () => {
                 // Move to confirm secret phrase step
-                let hiddenPhraseIcon
-                hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+                const hiddenPhraseIcon = screen.getByRole('img')
                 userEvent.click(hiddenPhraseIcon)
 
-                hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
-                await waitFor(() => expect(hiddenPhraseIcon).toBeNull())
-
-                const continueButton = onboarding.container.querySelector('#continue-button')
+                const continueButton = screen.getByRole('button', { name: /continue/i })
                 userEvent.click(continueButton)
 
-                await waitFor(() =>
-                  expect(onboarding.getByTestId('InputPhrase')).toBeInTheDocument()
+                await screen.findByText(
+                  /Type in the missing words to confirm your secret phase is properly secured\./i
                 )
               })
+
               describe('Wrong secret phrase', () => {
                 it('should display invalid secret phrase error message ', async () => {
                   arSeedPhrase.split(' ').forEach((phrase, index) => {
-                    const currentPhrase = onboarding.queryByTestId(`input-phrase-${index}`)
+                    const currentPhrase = screen.queryByTestId(`input-phrase-${index}`) 
                     expect(currentPhrase).not.toBeNull()
 
                     if (currentPhrase.nodeName === 'INPUT') {
@@ -308,17 +306,19 @@ describe('Onboarding flow', () => {
                     }
                   })
 
-                  const continueButton = onboarding.container.querySelector('#continue-button')
-                  userEvent.click(continueButton)
-                  await waitFor(() => {
-                    expect(onboarding.queryAllByText('Invalid Secret Phrase')).toHaveLength(1)
-                  })
+                  const confirmButton = screen.getByRole('button', { name: /confirm phrase/i })
+                  userEvent.click(confirmButton)
+
+                  expect(
+                    await screen.findAllByText(ERROR_MESSAGE.INVALID_SECRET_PHRASE)
+                  ).toHaveLength(1)
                 })
               })
+
               describe('Correct secret phrase', () => {
                 it('should create new wallet successfully and move to last step', async () => {
                   arSeedPhrase.split(' ').forEach((phrase, index) => {
-                    const currentPhrase = onboarding.queryByTestId(`input-phrase-${index}`)
+                    const currentPhrase = screen.queryByTestId(`input-phrase-${index}`) 
                     expect(currentPhrase).not.toBeNull()
 
                     if (currentPhrase.nodeName === 'INPUT') {
@@ -326,34 +326,30 @@ describe('Onboarding flow', () => {
                     }
                   })
 
-                  const continueButton = onboarding.container.querySelector('#continue-button')
-                  userEvent.click(continueButton)
-                  await waitFor(() => {
-                    expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument()
-                  })
+                  const confirmButton = screen.getByRole('button', { name: /confirm phrase/i })
+                  userEvent.click(confirmButton)
 
-                  expect(onboarding.container.querySelector('#go-to-home-button')).toBeNull()
-                  expect(onboarding.container.querySelector('#open-faucet-button')).not.toBeNull()
-                  expect(
-                    onboarding.container.querySelector('#create-nft-page-button')
-                  ).not.toBeNull()
+                  await screen.findByText(/Koii will NEVER ask you for your secret phrase/i)
+
+                  expect(screen.queryByRole('button', { name: /go to homepage/i })).toBeNull()
+                  expect(screen.queryByRole('button', { name: /Get Free KOII/i })).not.toBeNull()
+                  expect(screen.queryByRole('button', { name: /Create an NFT/i })).not.toBeNull()
                 })
               })
             })
           })
+
           describe('Step - Save your Secret Phrase - Remind me later', () => {
             beforeEach(async () => {
-              const remindMeLater = onboarding.queryByTestId(`remind-me-button`)
+              const remindMeLater = screen.getByRole('button', { name: /Remind me later./i })
               userEvent.click(remindMeLater)
 
-              await waitFor(() =>
-                expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument()
-              )
+              await screen.findByText(/Koii will NEVER ask you for your secret phrase/i)
             })
             it('should create new wallet successfully and move to last step', () => {
-              expect(onboarding.container.querySelector('#go-to-home-button')).toBeNull()
-              expect(onboarding.container.querySelector('#open-faucet-button')).not.toBeNull()
-              expect(onboarding.container.querySelector('#create-nft-page-button')).not.toBeNull()
+              expect(screen.queryByRole('button', { name: /go to homepage/i })).toBeNull()
+              expect(screen.queryByRole('button', { name: /Get Free KOII/i })).not.toBeNull()
+              expect(screen.queryByRole('button', { name: /Create an NFT/i })).not.toBeNull()
             })
           })
         })
@@ -370,51 +366,43 @@ describe('Onboarding flow', () => {
             createPassword(onboarding)
 
             // Get new key
-            const getNewKey = onboarding.queryByTestId('start-from-scratch-div')
+            const getNewKey = screen.getByText(/start from scratch\./i)
             userEvent.click(getNewKey)
-            await waitFor(() => expect(onboarding.getByTestId('GetAKey')).toBeInTheDocument())
 
             // Choose non-AR key
-            const nonARKey = onboarding.queryByTestId('ethereum-key')
+            const nonARKey = (await screen.findAllByRole('button'))[1]
             userEvent.click(nonARKey)
-            await waitFor(() =>
-              expect(onboarding.getByTestId('PrepareSavePhrase')).toBeInTheDocument()
-            )
+
+            await screen.findByText(/Save your Secret Phrase/i)
           })
           describe('Step - Save your Secret Phrase - I am Ready', () => {
             beforeEach(async () => {
-              const imReady = onboarding.queryByTestId(`ready-button`)
+              const imReady = screen.getByRole('button', { name: /i'm ready!/i })
               userEvent.click(imReady)
 
-              await waitFor(() =>
-                expect(onboarding.getByTestId('HiddenPhrase')).toBeInTheDocument()
-              )
+              await screen.findByText(/Click the lock below to reveal your secret phrase\./i)
             })
             describe('Step - Reveal secret phrase', () => {
               describe('Before reveal secret phrase', () => {
                 it('should hide the secret phrase', () => {
-                  const hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+                  const hiddenPhraseIcon = screen.getByRole('img')
                   expect(hiddenPhraseIcon).not.toBeNull()
 
-                  const continueButton = onboarding.container.querySelector('#continue-button')
-                  expect(continueButton).toBeNull()
+                  expect(screen.queryByRole('button', { name: /continue/i })).toBeNull()
                 })
               })
               describe('After reveal secret phrase', () => {
                 it('should show the secret phrase correctly', async () => {
-                  let hiddenPhraseIcon
-                  hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+                  const hiddenPhraseIcon = screen.getByRole('img')
 
                   userEvent.click(hiddenPhraseIcon)
 
-                  hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
-                  await waitFor(() => expect(hiddenPhraseIcon).toBeNull())
+                  expect(screen.queryByRole('img')).toBeNull()
 
-                  const continueButton = onboarding.container.querySelector('#continue-button')
-                  expect(continueButton).not.toBeNull()
+                  expect(screen.queryByRole('button', { name: /continue/i })).not.toBeNull()
 
                   ethSeedPhrase.split(' ').forEach((phrase, index) => {
-                    const currentPhrase = onboarding.queryByTestId(`hidden-phrase-${index}`)
+                    const currentPhrase = screen.queryByTestId(`hidden-phrase-${index}`) 
                     expect(currentPhrase).not.toBeNull()
                     expect(currentPhrase.textContent).toBe(phrase)
                   })
@@ -425,24 +413,21 @@ describe('Onboarding flow', () => {
             describe('Step - Confirm secret phrase', () => {
               beforeEach(async () => {
                 // Move to confirm secret phrase step
-                let hiddenPhraseIcon
-                hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
+                const hiddenPhraseIcon = screen.getByRole('img')
                 userEvent.click(hiddenPhraseIcon)
 
-                hiddenPhraseIcon = onboarding.queryByTestId('blur-phrase-button')
-                await waitFor(() => expect(hiddenPhraseIcon).toBeNull())
-
-                const continueButton = onboarding.container.querySelector('#continue-button')
+                const continueButton = screen.getByRole('button', { name: /continue/i })
                 userEvent.click(continueButton)
 
-                await waitFor(() =>
-                  expect(onboarding.getByTestId('InputPhrase')).toBeInTheDocument()
+                await screen.findByText(
+                  /Type in the missing words to confirm your secret phase is properly secured\./i
                 )
               })
+
               describe('Wrong secret phrase', () => {
                 it('should display invalid secret phrase error message ', async () => {
                   ethSeedPhrase.split(' ').forEach((phrase, index) => {
-                    const currentPhrase = onboarding.queryByTestId(`input-phrase-${index}`)
+                    const currentPhrase = screen.queryByTestId(`input-phrase-${index}`) 
                     expect(currentPhrase).not.toBeNull()
 
                     if (currentPhrase.nodeName === 'INPUT') {
@@ -450,17 +435,19 @@ describe('Onboarding flow', () => {
                     }
                   })
 
-                  const continueButton = onboarding.container.querySelector('#continue-button')
-                  userEvent.click(continueButton)
-                  await waitFor(() => {
-                    expect(onboarding.queryAllByText('Invalid Secret Phrase')).toHaveLength(1)
-                  })
+                  const confirmButton = screen.getByRole('button', { name: /confirm phrase/i })
+                  userEvent.click(confirmButton)
+
+                  expect(
+                    await screen.findAllByText(ERROR_MESSAGE.INVALID_SECRET_PHRASE)
+                  ).toHaveLength(1)
                 })
               })
+
               describe('Correct secret phrase', () => {
                 it('should create new wallet successfully and move to last step', async () => {
                   ethSeedPhrase.split(' ').forEach((phrase, index) => {
-                    const currentPhrase = onboarding.queryByTestId(`input-phrase-${index}`)
+                    const currentPhrase = screen.queryByTestId(`input-phrase-${index}`) 
                     expect(currentPhrase).not.toBeNull()
 
                     if (currentPhrase.nodeName === 'INPUT') {
@@ -468,32 +455,32 @@ describe('Onboarding flow', () => {
                     }
                   })
 
-                  const continueButton = onboarding.container.querySelector('#continue-button')
-                  userEvent.click(continueButton)
-                  await waitFor(() => {
-                    expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument()
-                  })
+                  const confirmButton = screen.getByRole('button', { name: /confirm phrase/i })
+                  userEvent.click(confirmButton)
 
-                  expect(onboarding.container.querySelector('#go-to-home-button')).not.toBeNull()
-                  expect(onboarding.container.querySelector('#open-faucet-button')).toBeNull()
-                  expect(onboarding.container.querySelector('#create-nft-page-button')).toBeNull()
+                  await screen.findByText(/Koii will NEVER ask you for your secret phrase/i)
+
+                  expect(screen.queryByRole('button', { name: /go to homepage/i })).not.toBeNull()
+                  expect(screen.queryByRole('button', { name: /Get Free KOII/i })).toBeNull()
+                  expect(screen.queryByRole('button', { name: /Create an NFT/i })).toBeNull()
                 })
               })
             })
           })
+
           describe('Step - Save your Secret Phrase - Remind me later', () => {
             beforeEach(async () => {
-              const remindMeLater = onboarding.queryByTestId('remind-me-button')
+              const remindMeLater = screen.getByRole('button', {
+                name: /Remind me later./i
+              })
               userEvent.click(remindMeLater)
 
-              await waitFor(() =>
-                expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument()
-              )
+              await screen.findByText(/Koii will NEVER ask you for your secret phrase/i)
             })
             it('should create new wallet successfully and move to last step', () => {
-              expect(onboarding.container.querySelector('#go-to-home-button')).not.toBeNull()
-              expect(onboarding.container.querySelector('#open-faucet-button')).toBeNull()
-              expect(onboarding.container.querySelector('#create-nft-page-button')).toBeNull()
+              expect(screen.queryByRole('button', { name: /go to homepage/i })).not.toBeNull()
+              expect(screen.queryByRole('button', { name: /Get Free KOII/i })).toBeNull()
+              expect(screen.queryByRole('button', { name: /Create an NFT/i })).toBeNull()
             })
           })
         })
@@ -510,20 +497,22 @@ describe('Onboarding flow', () => {
           createPassword(onboarding)
 
           // Get new key
-          const getNewKey = onboarding.queryByTestId('use-existing-key-div')
+          const getNewKey = screen.getByText(/use my existing key\./i)
           userEvent.click(getNewKey)
-          await waitFor(() => expect(onboarding.getByTestId('ImportAKey')).toBeInTheDocument())
 
-          // Choose non-AR key
-          const ARKey = onboarding.queryByTestId('arweave-key')
+          await screen.findByText(/Click a circle below to import your key\./i)
+
+          // Choose AR key
+          const ARKey = (await screen.findAllByRole('button'))[3]
           userEvent.click(ARKey)
-          await waitFor(() => expect(onboarding.getByTestId('ImportPhrase')).toBeInTheDocument())
+
+          await screen.findByText(/Type in your secret phrase to import your key\./i)
         })
 
         describe('Wrong secret phrase', () => {
           it('should block the confirm button when at least one phrase is blank', () => {
             arSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
               expect(currentPhrase).not.toBeNull()
 
               if (index !== 3) {
@@ -533,12 +522,13 @@ describe('Onboarding flow', () => {
               expect(currentPhrase).toHaveValue(index === 3 ? '' : phrase)
             })
 
-            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            const confirmButton = screen.getByRole('button', { name: /confirm/i })
             expect(confirmButton).toBeDisabled()
           })
+
           it('should block the confirm button when one of the phrase is not in bip-39 wordlist', () => {
             arSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
               expect(currentPhrase).not.toBeNull()
 
               userEvent.type(currentPhrase, index === 3 ? 'abc' : phrase)
@@ -546,12 +536,13 @@ describe('Onboarding flow', () => {
               expect(currentPhrase).toHaveValue(index === 3 ? 'abc' : phrase)
             })
 
-            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            const confirmButton = screen.getByRole('button', { name: /confirm/i })
             expect(confirmButton).toBeDisabled()
           })
+
           it('should display invalid secret phrase when fail to validate mnemonic with bip-39', () => {
             arSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
               expect(currentPhrase).not.toBeNull()
 
               userEvent.type(currentPhrase, index === 3 ? 'tired' : phrase)
@@ -559,18 +550,18 @@ describe('Onboarding flow', () => {
               expect(currentPhrase).toHaveValue(index === 3 ? 'tired' : phrase)
             })
 
-            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            const confirmButton = screen.getByRole('button', { name: /confirm/i })
             expect(confirmButton).not.toBeDisabled()
 
             userEvent.click(confirmButton)
-            expect(onboarding.queryAllByText('Invalid Secret Phrase')).toHaveLength(1)
+            expect(screen.queryAllByText(ERROR_MESSAGE.INVALID_SECRET_PHRASE)).toHaveLength(1)
           })
         })
 
         describe('Correct secret phrase', () => {
           it('should successfully import the wallet and move to the last step', async () => {
             arSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
               expect(currentPhrase).not.toBeNull()
 
               userEvent.type(currentPhrase, phrase)
@@ -578,16 +569,16 @@ describe('Onboarding flow', () => {
               expect(currentPhrase).toHaveValue(phrase)
             })
 
-            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            const confirmButton = screen.getByRole('button', { name: /confirm/i })
             expect(confirmButton).not.toBeDisabled()
 
             userEvent.click(confirmButton)
 
-            await waitFor(() => expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument())
+            await screen.findByText(/Koii will NEVER ask you for your secret phrase/i)
 
-            expect(onboarding.container.querySelector('#go-to-home-button')).toBeNull()
-            expect(onboarding.container.querySelector('#open-faucet-button')).not.toBeNull()
-            expect(onboarding.container.querySelector('#create-nft-page-button')).not.toBeNull()
+            expect(screen.queryByRole('button', { name: /go to homepage/i })).toBeNull()
+            expect(screen.queryByRole('button', { name: /Get Free KOII/i })).not.toBeNull()
+            expect(screen.queryByRole('button', { name: /Create an NFT/i })).not.toBeNull()
           })
         })
       })
@@ -602,20 +593,22 @@ describe('Onboarding flow', () => {
           createPassword(onboarding)
 
           // Get new key
-          const getNewKey = onboarding.queryByTestId('use-existing-key-div')
+          const getNewKey = screen.getByText(/use my existing key\./i)
           userEvent.click(getNewKey)
-          await waitFor(() => expect(onboarding.getByTestId('ImportAKey')).toBeInTheDocument())
+
+          await screen.findByText(/Click a circle below to import your key\./i)
 
           // Choose non-AR key
-          const nonARKey = onboarding.queryByTestId('ethereum-key')
+          const nonARKey = (await screen.findAllByRole('button'))[1]
           userEvent.click(nonARKey)
-          await waitFor(() => expect(onboarding.getByTestId('ImportPhrase')).toBeInTheDocument())
+
+          await screen.findByText(/Type in your secret phrase to import your key\./i)
         })
 
         describe('Wrong secret phrase', () => {
           it('should block the confirm button when at least one phrase is blank', () => {
             ethSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
               expect(currentPhrase).not.toBeNull()
 
               if (index !== 3) {
@@ -625,13 +618,13 @@ describe('Onboarding flow', () => {
               expect(currentPhrase).toHaveValue(index === 3 ? '' : phrase)
             })
 
-            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            const confirmButton = screen.getByRole('button', { name: /confirm/i })
             expect(confirmButton).toBeDisabled()
           })
 
           it('should block the confirm button when one of the phrase is not in bip-39 wordlist', () => {
             ethSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
               expect(currentPhrase).not.toBeNull()
 
               userEvent.type(currentPhrase, index === 3 ? 'abc' : phrase)
@@ -639,13 +632,13 @@ describe('Onboarding flow', () => {
               expect(currentPhrase).toHaveValue(index === 3 ? 'abc' : phrase)
             })
 
-            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            const confirmButton = screen.getByRole('button', { name: /confirm/i })
             expect(confirmButton).toBeDisabled()
           })
 
           it('should display invalid secret phrase when fail to validate mnemonic with bip-39', () => {
             ethSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
               expect(currentPhrase).not.toBeNull()
 
               userEvent.type(currentPhrase, index === 3 ? 'tired' : phrase)
@@ -653,18 +646,18 @@ describe('Onboarding flow', () => {
               expect(currentPhrase).toHaveValue(index === 3 ? 'tired' : phrase)
             })
 
-            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            const confirmButton = screen.getByRole('button', { name: /confirm/i })
             expect(confirmButton).not.toBeDisabled()
 
             userEvent.click(confirmButton)
-            expect(onboarding.queryAllByText('Invalid Secret Phrase')).toHaveLength(1)
+            expect(onboarding.queryAllByText(ERROR_MESSAGE.INVALID_SECRET_PHRASE)).toHaveLength(1)
           })
         })
 
         describe('Correct secret phrase', () => {
           it('should successfully import the wallet and move to the last step', async () => {
             ethSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = onboarding.queryByTestId(`import-phrase-${index}`)
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
               expect(currentPhrase).not.toBeNull()
 
               userEvent.type(currentPhrase, phrase)
@@ -672,16 +665,16 @@ describe('Onboarding flow', () => {
               expect(currentPhrase).toHaveValue(phrase)
             })
 
-            const confirmButton = onboarding.container.querySelector('#confirm-button')
+            const confirmButton = screen.getByRole('button', { name: /confirm/i })
             expect(confirmButton).not.toBeDisabled()
 
             userEvent.click(confirmButton)
 
-            await waitFor(() => expect(onboarding.getByTestId('RevealPhrase')).toBeInTheDocument())
+            await screen.findByText(/Koii will NEVER ask you for your secret phrase/i)
 
-            expect(onboarding.container.querySelector('#go-to-home-button')).not.toBeNull()
-            expect(onboarding.container.querySelector('#open-faucet-button')).toBeNull()
-            expect(onboarding.container.querySelector('#create-nft-page-button')).toBeNull()
+            expect(screen.queryByRole('button', { name: /go to homepage/i })).not.toBeNull()
+            expect(screen.queryByRole('button', { name: /Get Free KOII/i })).toBeNull()
+            expect(screen.queryByRole('button', { name: /Create an NFT/i })).toBeNull()
           })
         })
       })
