@@ -73,7 +73,7 @@ describe('e2e test', () => {
     await confirmPasswordInput.click({ clickCount: 3 })
     await confirmPasswordInput.type('OpenKoi¥@123')
     await loginButton.click()
-    
+
     // expect the password does not meet the requirement
     messagePasswordError = await errorPasswordMessage.evaluate((el) => el.textContent)
     expect(messagePasswordError).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
@@ -84,7 +84,7 @@ describe('e2e test', () => {
     await confirmPasswordInput.click({ clickCount: 3 })
     await confirmPasswordInput.type('OPENKOI@123')
     await loginButton.click()
-    
+
     // expect the password does not meet the requirement
     messagePasswordError = await errorPasswordMessage.evaluate((el) => el.textContent)
     expect(messagePasswordError).toBe(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)
@@ -154,7 +154,7 @@ describe('e2e test', () => {
     const tosHyperlink = await optionPage.waitForSelector('[data-testid="tos-link"]')
     await tosHyperlink.click()
 
-    await optionPage.waitForTimeout(1000)
+    await optionPage.waitForTimeout(2000)
 
     const currentPages = await browser.pages()
     const tosPage = currentPages[currentPages.length - 1]

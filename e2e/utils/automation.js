@@ -149,6 +149,8 @@ export const swapToNetwork = async (page, networkLabel) => {
 
   const providerOption = await page.waitForSelector(`[data-testid="${networkLabel}"]`)
   await providerOption.click()
+
+  await page.waitForNavigation({ waitUntil: 'load' })
 }
 
 export const goToWalletSettingPage = async (page) => {

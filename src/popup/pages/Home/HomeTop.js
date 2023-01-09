@@ -280,6 +280,7 @@ const HomeTop = ({
               className="rounded-full bg-lightBlue shadow flex items-center justify-center cursor-pointer"
               style={{ width: '44px', height: '44px' }}
               to="/send"
+              role="button"
             >
               <SendIcon style={{ width: '23px', height: '20px' }} data-testid="icon-send-tokens" />
             </Link>
@@ -292,6 +293,7 @@ const HomeTop = ({
               className="rounded-full bg-lightBlue shadow flex items-center justify-center cursor-pointer"
               style={{ width: '44px', height: '44px' }}
               to="/receive"
+              role="button"
             >
               <ReceiveIcon style={{ width: '23px', height: '20px' }} />
             </Link>

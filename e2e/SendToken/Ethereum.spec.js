@@ -28,19 +28,7 @@ describe('Send token via Ethereum network', () => {
 
   it('should successfully to send ETH token', async () => {
     await extPage.bringToFront()
-
     await Automation.swapToNetwork(extPage, 'Goerli TestNet')
-
-    extPage?.close()
-    extPage = await context.launchExtPage()
-
-    const reloadBalanceButton = await extPage.waitForSelector(
-      `[data-testid="reload-balance-popup-button"]`
-    )
-    await reloadBalanceButton.click()
-
-    // TODO DatH - wait for balance !== 0
-    await extPage.waitForTimeout(3000)
 
     const goToSendButton = await extPage.waitForSelector(`[data-testid="icon-send-tokens"]`)
     await goToSendButton.click()
