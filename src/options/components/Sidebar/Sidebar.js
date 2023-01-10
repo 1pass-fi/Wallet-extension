@@ -128,7 +128,7 @@ const Sidebar = ({ currentPath }) => {
         <div className="bg-trueGray-100 bg-opacity-20 rounded w-58.5 3xl:w-64">
           <Switch>
             <Route path="/create-nft">
-              <HasArweave content="Right now, we can only create  NFTs with Arweave. Switch to an Arweave account to get started.">
+              <HasArweave content="Right now, we can only create NFTs with Arweave. Switch to an Arweave account to get started.">
                 <UploadNftForm />
               </HasArweave>
             </Route>
@@ -143,7 +143,7 @@ const Sidebar = ({ currentPath }) => {
               />
             </Route> */}
             <Route path="/collections/create">
-              <HasArweave content="Right now, we can only create  NFTs with Arweave. Switch to an Arweave account to get started.">
+              <HasArweave content="Right now, we can only create NFTs with Arweave. Switch to an Arweave account to get started.">
                 <CollectionForm />
               </HasArweave>
             </Route>
