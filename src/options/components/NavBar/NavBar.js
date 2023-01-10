@@ -121,17 +121,17 @@ const NavBar = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full h-16 3xl:h-20 4xl:h-24 flex items-center bg-indigo-900 px-5.25 text-white text-sm 3xl:text-base 4xl:text-xl justify-between">
-      <div className="flex items-center mr-1">
-        <Link to="/">
+      <div className="flex items-center mr-1" role="navigation">
+        <Link to="/" role="link">
           <KoiiLogo className="h-8 3xl:h-10 4xl:h-12 w-10.75 3xl:w-13.5 4xl:w-16.25" />
         </Link>
-        <nav className="ml-6.25 3xl:ml-10 4xl:ml-20 tracking-finnieSpacing-wider">
+        <nav className="ml-6.25 3xl:ml-10 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
           <NavLink to="/gallery">Gallery</NavLink>
         </nav>
-        <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider">
+        <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
           <NavLink to="/create-nft">Create</NavLink>
         </nav>
-        <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider">
+        <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
           {/* <NavLink to="/collections">Collections</NavLink> */}
           <div className="cursor-not-allowed" data-tip="Coming soon" data-for="nav-collections">
             Collections
