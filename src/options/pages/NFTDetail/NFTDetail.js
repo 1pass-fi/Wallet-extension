@@ -174,7 +174,7 @@ const NFTDetail = () => {
             </div>
 
             <div className="w-108 h-100 3xl:w-120 3xl:h-120 relative">
-              <div className="finnieSpacing-tighter font-semibold text-5xl 3xl:text-6xl mb-2">
+              <div className="finnieSpacing-tighter font-semibold text-5xl 3xl:text-6xl mb-2" title="nftname">
                 {nft.name}
               </div>
               {nft?.type !== TYPE.SOLANA && (
@@ -254,6 +254,7 @@ const NFTDetail = () => {
               <p
                 className="w-full overflow-y-scroll overflow-x-none break-words text-sm 2xl:text-base 3xl:text-lg leading-6 pr-4 whitespace-pre-line"
                 style={{ maxHeight: '35%' }}
+                title="nftdescription"
               >
                 {nft.description}
               </p>

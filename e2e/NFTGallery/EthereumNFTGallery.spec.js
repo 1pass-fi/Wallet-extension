@@ -78,9 +78,21 @@ describe('View Ethereum NFT gallery', () => {
     const firstNFTURL = await firstNFTCard.evaluate((el) => el.href)
     const [NFTTokenID, NFTContractAddress] = firstNFTURL.split('/').pop().split('_')
 
+    const [NFTCardName] = await firstNFTCard.$x(`//div[@title="nftname"]`)
+    expect(NFTCardName).toBeDefined()
+    const NFTCardNameValue = await NFTCardName.evaluate(el => el.textContent)
+
     await firstNFTCard.click()
 
     // expect the information
+    const [NFTDetailName] = await optionPage.$x(`//div[@title="nftname"]`)
+    expect(NFTDetailName).toBeDefined()
+    const NFTDetailNameValue = await NFTCardName.evaluate((el) => el.textContent)
+    expect(NFTDetailNameValue).toBe(NFTCardNameValue)
+
+    const [NFTDetailDescription] = await optionPage.$x(`//p[@title="nftdescription"]`)
+    expect(NFTDetailDescription).toBeDefined()
+
     const [exploreBlockButton] = await optionPage.$x(`//button[contains(text(), "Explore Block")]`)
     expect(exploreBlockButton).toBeDefined()
 
@@ -89,7 +101,7 @@ describe('View Ethereum NFT gallery', () => {
 
     // check the NFT on etherscan
     await exploreBlockButton.click()
-    await optionPage.waitForTimeout(1000)
+    await optionPage.waitForTimeout(5000)
     const currentPages = await browser.pages()
     const etherscanPage = currentPages[currentPages.length - 1]
     const etherscanPageURL = await etherscanPage.url() 
