@@ -159,6 +159,7 @@ const SendTokenForm = ({
                 isEmpty(selectedAccount) ? 'cursor-not-allowed' : 'cursor-pointer',
                 'text-white border-b-2 text-sm font-semibold border-white bg-blue-800 h-8 pl-2 flex-grow rounded-l-finnie focus:outline-none placeholder-trueGray-400'
               )}
+              data-testid="recipient-address"
               placeholder="Recipient’s Wallet Address"
               disabled={isEmpty(selectedAccount)}
             />
@@ -214,6 +215,7 @@ const SendTokenForm = ({
           setIsShowDropdown(false)
           handleSendToken()
         }}
+        role="checkbox"
         data-testid="send-tokens-button"
       >
         Send Tokens

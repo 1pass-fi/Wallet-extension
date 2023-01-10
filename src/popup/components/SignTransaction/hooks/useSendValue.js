@@ -215,9 +215,9 @@ const useSendValue = ({
   }, [transactionPayload, network, transactionType, userAddress])
 
   const SendValue = () => (
-    <>
+    <div data-testid="tx-confirm-amount">
       {isNumber(value) ? value : '------'} {symbol || '------'}
-    </>
+    </div>
   )
 
   const TokenIcon = () => (

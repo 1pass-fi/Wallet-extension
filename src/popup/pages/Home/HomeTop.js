@@ -275,32 +275,28 @@ const HomeTop = ({
         </div>
 
         <div className="mt-5 flex items-center justify-between" style={{ width: '140px' }}>
-          <div className="flex flex-col items-center justify-center">
-            <Link
+          <Link className="flex flex-col items-center justify-center" to="/send" role="button">
+            <div
               className="rounded-full bg-lightBlue shadow flex items-center justify-center cursor-pointer"
               style={{ width: '44px', height: '44px' }}
-              to="/send"
-              role="button"
             >
               <SendIcon style={{ width: '23px', height: '20px' }} data-testid="icon-send-tokens" />
-            </Link>
+            </div>
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
               SEND
             </div>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <Link
+          </Link>
+          <Link className="flex flex-col items-center justify-center" to="/receive" role="button">
+            <div
               className="rounded-full bg-lightBlue shadow flex items-center justify-center cursor-pointer"
               style={{ width: '44px', height: '44px' }}
-              to="/receive"
-              role="button"
             >
               <ReceiveIcon style={{ width: '23px', height: '20px' }} />
-            </Link>
+            </div>
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
               RECEIVE
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>
