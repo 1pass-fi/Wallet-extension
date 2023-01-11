@@ -294,8 +294,6 @@ const AccountCard = ({
       await backgroundRequest.gallery.loadCollections()
       allCollections = await popupAccount.getAllCollections()
       allCollectionNfts = await popupAccount.getAllCollectionNfts()
-      // dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
-      // dispatch(setCollectionNfts({ collectionNfts: allCollectionNfts }))
     }
 
     const loadNfts = async () => {
@@ -325,6 +323,9 @@ const AccountCard = ({
 
       // load balance
       await backgroundRequest.wallet.loadBalanceAsync()
+
+      // load nfts
+      // await fetchAssets() // TODO DatH: Uncomment this line when NFTs is available for K2 network
 
       // update account state
       await dispatch(loadAllAccounts())
@@ -384,6 +385,9 @@ const AccountCard = ({
 
       // load balance
       await backgroundRequest.wallet.loadBalanceAsync()
+
+      // load nfts
+      await fetchAssets()
 
       // update account state
       await dispatch(loadAllAccounts())
