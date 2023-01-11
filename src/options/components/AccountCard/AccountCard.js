@@ -20,17 +20,20 @@ import ReavealSeedphraseIcon from 'img/v2/settings/reveal-seedphrase-icon.svg'
 import SeeExtensionIcon from 'img/v2/settings/see-extension-icon.svg'
 import SeeQRIcon from 'img/v2/settings/see-QR-icon.svg'
 import SolLogo from 'img/v2/solana-logo.svg'
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import isNumber from 'lodash/isNumber'
 import { setAccounts } from 'options/actions/accounts'
 import { loadAllAccounts } from 'options/actions/accounts'
 import { setActivatedChain } from 'options/actions/activatedChain'
+import { setAssets } from 'options/actions/assets'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setError } from 'options/actions/error'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
 import DropDown from 'options/components/DropDown'
 import ToolTip from 'options/components/ToolTip'
 import { GalleryContext } from 'options/galleryContext'
+import classifyAssets from 'options/utils/classifyAssets'
 import formatLongString from 'options/utils/formatLongString'
 import formatNumber from 'options/utils/formatNumber'
 import { popupAccount } from 'services/account'
@@ -281,6 +284,34 @@ const AccountCard = ({
       </div>
     )
   }
+  const fetchAssets = async () => {
+    let allCollections = await popupAccount.getAllCollections()
+    let allCollectionNfts = await popupAccount.getAllCollectionNfts()
+    let allAssets, validAssets
+
+    const loadCollection = async () => {
+      console.log('LOADING COLLECTION')
+      await backgroundRequest.gallery.loadCollections()
+      allCollections = await popupAccount.getAllCollections()
+      allCollectionNfts = await popupAccount.getAllCollectionNfts()
+      // dispatch(setCollections({ collections: allCollections, filteredCollections: allCollections }))
+      // dispatch(setCollectionNfts({ collectionNfts: allCollectionNfts }))
+    }
+
+    const loadNfts = async () => {
+      await backgroundRequest.assets.loadAllContent()
+      allAssets = await popupAccount.getAllAssets()
+      validAssets = allAssets.filter((asset) => asset.name !== '...')
+      validAssets = classifyAssets(validAssets, allCollections)
+      validAssets = validAssets.filter((nft) => !get(nft, 'name')?.includes('DID Profile Page'))
+      dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
+    }
+
+    dispatch(setIsLoading)
+    await Promise.all([loadCollection, loadNfts].map((f) => f()))
+    validAssets = classifyAssets(validAssets, allCollections)
+    dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
+  }
 
   const onChangeK2Provider = async (value) => {
     dispatch(setIsLoading)
@@ -318,6 +349,9 @@ const AccountCard = ({
 
       // load balance
       await backgroundRequest.wallet.loadBalanceAsync()
+
+      // load nfts
+      await fetchAssets()
 
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.NETWORK_CHANGED })
