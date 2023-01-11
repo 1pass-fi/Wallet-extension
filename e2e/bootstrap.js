@@ -23,18 +23,19 @@ async function bootstrap(options = {}) {
 
   const launchAppPage = async () => {
     appPage = await browser.newPage()
-    await appPage.goto('https://google.com', { waitUntil: 'load' })
+    await appPage.goto('https://google.com', { waitUntil: 'networkidle0' })
     return appPage
   }
 
-  const launchExtPage = async () => {
+  const launchExtPage = async (options = {}) => {
+    const { popupPageLink = '' } = options
     extPage = await browser.newPage()
     const targets = await browser.targets()
     const extensionTarget = targets.find((target) => target.type() === 'service_worker')
     const partialExtensionUrl = extensionTarget.url() || ''
     const [, , extensionId] = partialExtensionUrl.split('/')
-    const extensionUrl = `chrome-extension://${extensionId}/popup.html`
-    await extPage.goto(extensionUrl, { waitUntil: 'load' })
+    const extensionUrl = `chrome-extension://${extensionId}/popup.html#/${popupPageLink}`
+    await extPage.goto(extensionUrl, { waitUntil: 'networkidle0' })
     return extPage
   }
 
@@ -46,7 +47,7 @@ async function bootstrap(options = {}) {
     const partialExtensionUrl = extensionTarget.url() || ''
     const [, , extensionId] = partialExtensionUrl.split('/')
     const optionUrl = `chrome-extension://${extensionId}/options.html#/${optionPageLink}`
-    await optionPage.goto(optionUrl, { waitUntil: 'load' })
+    await optionPage.goto(optionUrl, { waitUntil: 'networkidle0' })
     return optionPage
   }
 

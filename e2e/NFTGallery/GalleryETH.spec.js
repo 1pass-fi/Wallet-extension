@@ -55,32 +55,29 @@ describe('View Ethereum NFT gallery', () => {
 
   it('should correctly render the gallery with NFTs', async () => {
     // Switch to Goerli testnet
-    extPage = await context.launchExtPage()
-    await extPage.bringToFront()
+    await Automation.goToWalletSettingPage(optionPage)
+    await Automation.swapToNetworkOption(
+      optionPage,
+      '0x66083923D61D765f5FC51a612f17d64564358716',
+      'Goerli TestNet'
+    )
 
-    await Automation.swapToNetwork(extPage, 'Goerli TestNet')
-
-    await optionPage.close()
-    optionPage = await context.launchOptionPage({ optionPageLink: 'gallery' })
     await optionPage.bringToFront()
 
-    // Wait for the page load
-    await optionPage.waitForTimeout(5000)
+    /* Move to gallery */
+    await Automation.goToOptionPageName(optionPage, 'Gallery')
 
     const [nftGallery] = await optionPage.$x(`//div[@role="grid"]`)
     expect(nftGallery).toBeDefined()
 
-    const nftCards = await optionPage.$x(`//a[@role="gridcell"]`)
-    expect(nftCards.length).toBeGreaterThanOrEqual(1)
-
     /* View the NFT Detail */
-    const firstNFTCard = nftCards[0]
+    const firstNFTCard = await optionPage.waitForXPath(`//a[@role="gridcell"][contains(@href, "#/nfts/")]`)
     const firstNFTURL = await firstNFTCard.evaluate((el) => el.href)
     const [NFTTokenID, NFTContractAddress] = firstNFTURL.split('/').pop().split('_')
 
     const [NFTCardName] = await firstNFTCard.$x(`//div[@title="nftname"]`)
     expect(NFTCardName).toBeDefined()
-    const NFTCardNameValue = await NFTCardName.evaluate(el => el.textContent)
+    const NFTCardNameValue = await NFTCardName.evaluate((el) => el.textContent)
 
     await firstNFTCard.click()
 
@@ -100,18 +97,21 @@ describe('View Ethereum NFT gallery', () => {
     expect(transferNFTButton).toBeDefined()
 
     // check the NFT on etherscan
+    await optionPage.waitForTimeout(3000)
     await exploreBlockButton.click()
     await optionPage.waitForTimeout(5000)
     const currentPages = await browser.pages()
     const etherscanPage = currentPages[currentPages.length - 1]
-    const etherscanPageURL = await etherscanPage.url() 
+    const etherscanPageURL = await etherscanPage.url()
 
     expect(etherscanPageURL).toBe(
       `https://goerli.etherscan.io/token/${NFTContractAddress}?a=${NFTTokenID}`
     )
-    const [etherscanNFTAddress] = await etherscanPage.$x(`//a[contains(text(), "${NFTContractAddress}")]`)
+    const [etherscanNFTAddress] = await etherscanPage.$x(
+      `//a[contains(text(), "${NFTContractAddress}")]`
+    )
     expect(etherscanNFTAddress).toBeDefined()
-  }, 60000)
+  }, 30000)
 
   afterAll(async () => {
     await context.closePages()

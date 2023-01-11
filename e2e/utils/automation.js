@@ -151,4 +151,49 @@ export const swapToNetwork = async (page, networkLabel) => {
   await providerOption.click()
 }
 
-export default { importWallet, swapToNetwork, removeKey, createPasswordStep, goToImportWalletPage }
+export const goToWalletSettingPage = async (page) => {
+  const profilePictureNavBar = await page.waitForSelector(`[data-testid="profile-picture-navbar"]`)
+  await profilePictureNavBar.click()
+
+  const walletSettingButton = await page.waitForSelector(`[data-testid="wallet-dropdown-light"]`)
+  await walletSettingButton.click()
+}
+
+export const swapToNetworkOption = async (page, address, networkLabel) => {
+  const accountCard = await page.waitForSelector(`[data-testid="account-card-setting-page"]`)
+  const extendButton = await accountCard.$(`[data-testid="account-card-drop-down-${address}"]`)
+
+  await extendButton.click()
+
+  const networkDropdown = await accountCard.$(`[role="listbox"]`)
+  const toggleDropdownButton = await networkDropdown.$(`[role="button"]`)
+
+  await toggleDropdownButton.click()
+
+  const [networkOption] = await networkDropdown.$x(
+    `//button[@role="option"][contains(text(), "${networkLabel}")]`
+  )
+
+  await networkOption.click()
+  const UPDATE_BALANCE_MESSAGE = 'Your balances have been updated.'
+  await page.waitForXPath(
+    `//div[@data-testid="message-gallery"][contains(text(), "${UPDATE_BALANCE_MESSAGE}")]`
+  )
+}
+
+export const goToOptionPageName = async (page, optionPageName) => {
+  const [navPageLink] = await page.$x(`//nav[@role="link"]/a[text()='${optionPageName}']`)
+  await navPageLink.click()
+  // await page.waitForNavigation()
+}
+
+export default {
+  importWallet,
+  swapToNetwork,
+  removeKey,
+  createPasswordStep,
+  goToImportWalletPage,
+  swapToNetworkOption,
+  goToWalletSettingPage,
+  goToOptionPageName
+}
