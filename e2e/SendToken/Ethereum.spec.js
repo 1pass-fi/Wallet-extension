@@ -52,11 +52,10 @@ describe('Send token via Ethereum network', () => {
     const sendTokensButton = await extPage.waitForSelector(`[data-testid="send-tokens-button"]`)
     await sendTokensButton.click()
 
-    // TODO DatH - wait for TRANSACTION CONFIRM MODAL data
-    await extPage.waitForTimeout(1000)
-
     /* TRANSACTION CONFIRM MODAL */
-    const senderConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-sender"]`)
+    const senderConfirm = await extPage.waitForXPath(
+      `//div[@data-testid="tx-confirm-sender"][contains(text(), "0x")]`
+    )
     const sender = await senderConfirm.evaluate((el) => el.textContent)
 
     expect(sender).toBe('0x66083923D61D765f5FC51a612f17d64564358716')
@@ -74,7 +73,6 @@ describe('Send token via Ethereum network', () => {
     )
 
     await sendConfirmButton.click()
-    await extPage.waitForTimeout(1000)
 
     /* TRANSACTION RECEIPT */
     const okButton = await extPage.waitForSelector(`[data-testid="button-ok"]`)
