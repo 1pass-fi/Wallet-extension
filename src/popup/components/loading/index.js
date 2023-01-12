@@ -8,7 +8,7 @@ import './index.css'
 
 const Loading = () => {
   return (
-    <div className="loading-screen">
+    <div className="loading-screen" data-testid="popup-loading-screen">
       <img className="loading-icon" src={loadingIcon} />
     </div>
   )
