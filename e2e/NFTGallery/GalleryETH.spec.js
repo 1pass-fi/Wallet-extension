@@ -3,7 +3,7 @@ import { bootstrap } from '../bootstrap'
 import Automation from '../utils/automation'
 
 describe('View Ethereum NFT gallery', () => {
-  let context, optionPage, extPage, browser
+  let context, optionPage, browser
 
   beforeAll(async () => {
     /* Launch option page */
@@ -71,13 +71,18 @@ describe('View Ethereum NFT gallery', () => {
     expect(nftGallery).toBeDefined()
 
     /* View the NFT Detail */
-    const firstNFTCard = await optionPage.waitForXPath(`//a[@role="gridcell"][contains(@href, "#/nfts/")]`)
+    const firstNFTCard = await optionPage.waitForXPath(
+      `//a[@role="gridcell"][contains(@href, "#/nfts/")]`
+    )
     const firstNFTURL = await firstNFTCard.evaluate((el) => el.href)
     const [NFTTokenID, NFTContractAddress] = firstNFTURL.split('/').pop().split('_')
 
     const [NFTCardName] = await firstNFTCard.$x(`//div[@title="nftname"]`)
     expect(NFTCardName).toBeDefined()
     const NFTCardNameValue = await NFTCardName.evaluate((el) => el.textContent)
+
+    const NFTCardLogo = await firstNFTCard.$(`[data-testid="ethereum-logo"]`)
+    expect(NFTCardLogo).not.toBeNull()
 
     await firstNFTCard.click()
 
@@ -86,6 +91,9 @@ describe('View Ethereum NFT gallery', () => {
     expect(NFTDetailName).toBeDefined()
     const NFTDetailNameValue = await NFTCardName.evaluate((el) => el.textContent)
     expect(NFTDetailNameValue).toBe(NFTCardNameValue)
+
+    const NFTDetailLogo = await optionPage.$(`[data-testid="ethereum-logo"]`)
+    expect(NFTDetailLogo).not.toBeNull()
 
     const [NFTDetailDescription] = await optionPage.$x(`//p[@title="nftdescription"]`)
     expect(NFTDetailDescription).toBeDefined()

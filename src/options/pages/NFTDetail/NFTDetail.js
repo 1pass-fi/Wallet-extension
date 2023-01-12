@@ -140,13 +140,22 @@ const NFTDetail = () => {
               >
                 <NFTMedia contentType={nft.contentType} source={nft.imageUrl} showFull={true} />
                 {nft?.type === TYPE.ETHEREUM && (
-                  <EthLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
+                  <EthLogo
+                    className="absolute bottom-2 right-2 w-9 shadow rounded-full"
+                    data-testid="ethereum-logo"
+                  />
                 )}
                 {nft?.type === TYPE.ARWEAVE && (
-                  <ArweaveLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
+                  <ArweaveLogo
+                    className="absolute bottom-2 right-2 w-9 shadow rounded-full"
+                    data-testid="arweave-logo"
+                  />
                 )}
                 {nft?.type === TYPE.SOLANA && (
-                  <SolanaLogo className="absolute bottom-2 right-2 w-9 shadow rounded-full" />
+                  <SolanaLogo
+                    className="absolute bottom-2 right-2 w-9 shadow rounded-full"
+                    data-testid="solana-logo"
+                  />
                 )}
               </div>
               {nft.type === TYPE.ARWEAVE && !nft.pending && (
@@ -174,7 +183,10 @@ const NFTDetail = () => {
             </div>
 
             <div className="w-108 h-100 3xl:w-120 3xl:h-120 relative">
-              <div className="finnieSpacing-tighter font-semibold text-5xl 3xl:text-6xl mb-2" title="nftname">
+              <div
+                className="finnieSpacing-tighter font-semibold text-5xl 3xl:text-6xl mb-2"
+                title="nftname"
+              >
                 {nft.name}
               </div>
               {nft?.type !== TYPE.SOLANA && (

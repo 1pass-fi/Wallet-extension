@@ -20,7 +20,7 @@ const NFTCard = ({ nft }) => {
         </div>
         {/* <div className="text-2xs tracking-finnieSpacing-wide text-warning">Category</div> */}
       </div>
-      <SolanaLogo className="absolute w-5 h-5 bottom-1.75 right-1.75" />
+      <SolanaLogo className="absolute w-5 h-5 bottom-1.75 right-1.75" data-testid="solana-logo"/>
     </Link>
   )
 }
