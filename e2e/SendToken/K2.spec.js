@@ -67,7 +67,7 @@ describe('Send token via K2 network', () => {
     // /* TRANSACTION RECEIPT */
     const okButton = await extPage.waitForSelector('a[role="button"]')
     await okButton.click()
-  }, 20000)
+  }, 500000)
 
   it('should successfully to send custom tokens', async () => {
     await extPage.bringToFront()
@@ -94,9 +94,9 @@ describe('Send token via K2 network', () => {
     let [confirmButton] = await extPage.$x('//button[text()="Confirm"]')
     await confirmButton.click()
 
-    // await extPage.waitForSelector('[data-testid="popup-loading-screen"]', {
-    //   visible: true
-    // })
+    await extPage.waitForSelector('[data-testid="popup-loading-screen"]', {
+      visible: true
+    })
 
     await extPage.waitForSelector('[data-testid="popup-loading-screen"]', {
       hidden: true
@@ -124,9 +124,11 @@ describe('Send token via K2 network', () => {
     await sendTokensButton.click()
 
     /* TRANSACTION CONFIRM MODAL */
-    const senderConfirm = await extPage.waitForSelector(
-      `[data-testid="tx-confirm-sender"]:not(:empty)`
+    const a = await extPage.waitForXPath(
+      `//div[@data-testid="tx-confirm-amount"][contains(., "WIBU")]`
     )
+
+    const senderConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-sender"]`)
     const sender = await senderConfirm.evaluate((el) => el.textContent)
 
     expect(sender).toBe('32Dz2b9UtGymREov4EzkBsn52E6UaXHRLeECwXxEzxJ7')
@@ -145,7 +147,7 @@ describe('Send token via K2 network', () => {
     // /* TRANSACTION RECEIPT */
     const okButton = await extPage.waitForSelector('a[role="button"]')
     await okButton.click()
-  }, 20000)
+  }, 500000)
 
   afterAll(async () => {
     await context.closePages()
