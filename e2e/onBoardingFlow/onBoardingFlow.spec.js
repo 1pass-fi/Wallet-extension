@@ -205,6 +205,7 @@ describe('e2e test', () => {
 
     // At least 1 phrase is not in bip-39 wordlist
     const firstPhraseField = await optionPage.waitForSelector(`[data-testid="import-phrase-0"]`)
+    let firstPhraseFieldValue
     await firstPhraseField.click({ clickCount: 3 })
     await firstPhraseField.type('abc')
 
@@ -220,6 +221,24 @@ describe('e2e test', () => {
     let importPhraseErrorMessage = await importPhraseError.evaluate((el) => el.textContent)
     // expect invalid secret phrase
     expect(importPhraseErrorMessage).toBe(ERROR_MESSAGE.INVALID_SECRET_PHRASE)
+
+    /* Type secret phrase with the leading spaces */
+    await firstPhraseField.click({ clickCount: 3 })
+    await firstPhraseField.type('    tired')
+    firstPhraseFieldValue = await firstPhraseField.evaluate((el) => el.value)
+    expect(firstPhraseFieldValue).toBe('tired')
+
+    /* Type secret phrase with the middle spaces */
+    await firstPhraseField.click({ clickCount: 3 })
+    await firstPhraseField.type('ti   red')
+    firstPhraseFieldValue = await firstPhraseField.evaluate((el) => el.value)
+    expect(firstPhraseFieldValue).toBe('tired')
+
+    /* Type secret phrase with the trailing spaces */
+    await firstPhraseField.click({ clickCount: 3 })
+    await firstPhraseField.type('tired    ')
+    firstPhraseFieldValue = await firstPhraseField.evaluate((el) => el.value)
+    expect(firstPhraseFieldValue).toBe('tired')
 
     /* Type valid secret phrase*/
     await firstPhraseField.click({ clickCount: 3 })
@@ -312,10 +331,12 @@ describe('e2e test', () => {
     let inputPhraseErrorText = await inputPhraseError.evaluate((el) => el.textContent)
     expect(inputPhraseErrorText).toBe(ERROR_MESSAGE.INVALID_SECRET_PHRASE)
 
+    const inputIndices = []
     for (let i = 0; i < 12; i++) {
       const currentPhrase = await optionPage.waitForSelector(`[data-testid="input-phrase-${i}"]`)
       const nodeName = await currentPhrase.evaluate((el) => el.nodeName)
       if (nodeName === 'INPUT') {
+        inputIndices.push(i)
         await currentPhrase.type('####')
       }
     }
@@ -323,6 +344,29 @@ describe('e2e test', () => {
     await confirmButton.click()
     inputPhraseErrorText = await inputPhraseError.evaluate((el) => el.textContent)
     expect(inputPhraseErrorText).toBe(ERROR_MESSAGE.INVALID_SECRET_PHRASE)
+
+    /* Input the phrase with spaces */
+    const firstInputPhrase = await optionPage.waitForSelector(
+      `[data-testid="input-phrase-${inputIndices[0]}"]`
+    )
+    let firstInputPhraseValue
+    // Leading spaces
+    await firstInputPhrase.click({ clickCount: 3 })
+    await firstInputPhrase.type('    tired')
+    firstInputPhraseValue = await firstInputPhrase.evaluate((el) => el.value)
+    expect(firstInputPhraseValue).toBe('tired')
+
+    // Middle spaces
+    await firstInputPhrase.click({ clickCount: 3 })
+    await firstInputPhrase.type('ti    red')
+    firstInputPhraseValue = await firstInputPhrase.evaluate((el) => el.value)
+    expect(firstInputPhraseValue).toBe('tired')
+
+    // Trailing spaces
+    await firstInputPhrase.click({ clickCount: 3 })
+    await firstInputPhrase.type('tired    ')
+    firstInputPhraseValue = await firstInputPhrase.evaluate((el) => el.value)
+    expect(firstInputPhraseValue).toBe('tired')
 
     /* Input 12 phrases correctly */
     for (let i = 0; i < 12; i++) {
