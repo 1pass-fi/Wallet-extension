@@ -14,8 +14,6 @@
         "clean": "rimraf build/ dev/ dist/ finnie/ *.zip *.crx",
         "lint": "eslint ./ ",
         "lint:fix": "eslint ./ --fix",
-        "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook",
         "chrome-launch": "node scripts/dev.js --browser=chrome",
         "firefox-launch": "node scripts/dev.js --browser=firefox",
         "coveralls": "coveralls < coverage/lcov.info"
@@ -50,11 +48,6 @@
         "@solana/spl-token": "^0.2.0",
         "@solana/spl-token-registry": "^0.2.3796",
         "@solana/web3.js": "^1.64.0",
-        "@storybook/addon-actions": "^6.2.9",
-        "@storybook/addon-essentials": "^6.2.9",
-        "@storybook/addon-links": "^6.2.9",
-        "@storybook/addons": "^6.2.9",
-        "@storybook/react": "^6.2.9",
         "@truffle/hdwallet-provider": "^1.5.0",
         "@vespaiach/axios-fetch-adapter": "^0.3.0",
         "@walletconnect/sign-client": "^2.1.1",
@@ -145,7 +138,6 @@
         ],
         "coveragePathIgnorePatterns": [
             "/node_modules/",
-            ".stories.js",
             "extension.js"
         ],
         "setupFilesAfterEnv": [
@@ -161,7 +153,6 @@
         "@babel/preset-env": "^7.2.3",
         "@babel/preset-react": "^7.0.0",
         "@svgr/webpack": "^5.5.0",
-        "@tcorley/storybook-react-router": "^1.0.9",
         "@testing-library/jest-dom": "^5.12.0",
         "@testing-library/react": "^11.2.6",
         "@testing-library/react-hooks": "^8.0.1",

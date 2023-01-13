@@ -154,7 +154,6 @@ npm manifest:
           ],
           "coveragePathIgnorePatterns": [
               "/node_modules/",
-              ".stories.js",
               "extension.js"
           ],
           "setupFiles": [

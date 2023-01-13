@@ -63,7 +63,6 @@ To keep things modular, the resources are divided into folders namely `/backgrou
 - [`.eslintrc.js`](.eslintrc.js): ESLint config file
 - [`.eslintignore`](.eslintrc.js): Files to be ignored by ESLint.
 - [`.babelrc`](.babelrc): Babel config file.
-- [`.storybook`](.storybook): Config to setup storybook.
 
 ## Others
 
