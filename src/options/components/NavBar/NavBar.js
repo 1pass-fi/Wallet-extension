@@ -148,12 +148,14 @@ const NavBar = () => {
         <div
           className="relative ml-6.5 w-12 3xl:w-14 h-12 3xl:h-14"
           ref={notificationToggleRef}
+          title="notification"
         >
-          <NotificationIcon className="cursor-pointer" onClick={toggleNotificationsCenter} />
+          <NotificationIcon className="cursor-pointer" onClick={toggleNotificationsCenter} role="button"/>
           {notificationsData.new > 0 && (
             <div
               className="absolute top-2.25 left-1.75 bg-warning-200 rounded-full"
               style={{ width: '6px', height: '6px' }}
+              title="new-notification-alert"
             ></div>
           )}
         </div>

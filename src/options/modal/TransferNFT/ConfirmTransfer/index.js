@@ -10,7 +10,7 @@ const ConfirmTransfer = ({ receiverAddress, goBack }) => {
       <div className="label">Receiver's Wallet Address:</div>
 
       <div className="receiver-field">
-        <div className="receiver-address">{receiverAddress}</div>
+        <div className="receiver-address" title="receiver-address">{receiverAddress}</div>
         <div className="edit-icon" onClick={goBack}>
           <EditIcon />
         </div>

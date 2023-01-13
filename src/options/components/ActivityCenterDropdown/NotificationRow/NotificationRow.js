@@ -35,15 +35,16 @@ const NotificationRow = ({ notification, newNotification = false }) => {
         'flex flex-col px-4.25 pl-5 h-auto border-b-2 border-gray-underline cursor-pointer text-xs text-indigo leading-5',
         newNotification && 'font-semibold'
       )}
+      title="notificationtab"
     >
       <div className="w-full flex flex-col relative pt-2">
         {newNotification && (
-          <div className="absolute -left-4.25 top-3.25">
+          <div className="absolute -left-4.25 top-3.25" title="not-seen-icon">
             <GreenDotIcon />
           </div>
         )}
-        <div className="text-teal-700 overflow-hidden truncate">{notification.title}</div>
-        <div className="break-words whitespace-pre-line">{notification.message}</div>
+        <div className="text-teal-700 overflow-hidden truncate" title="notificationtitle">{notification.title}</div>
+        <div className="break-words whitespace-pre-line" title="notificationmessage">{notification.message}</div>
       </div>
       <div className="w-full flex justify-between">
         <div>{notification.account}</div>
