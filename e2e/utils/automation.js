@@ -78,11 +78,11 @@ export const importKeyStep = async (page, walletType, secretPhrase) => {
       break
 
     case TYPE.K2:
-      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 60000)
+      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 80000)
       break
 
     case TYPE.ARWEAVE:
-      goToOptionPageButton = await page.waitForSelector('#skip-to-home-button', 60000)
+      goToOptionPageButton = await page.waitForSelector('#skip-to-home-button', 80000)
       break
   }
   await goToOptionPageButton.click()
