@@ -6,22 +6,24 @@ import { SECRET_PHRASES } from './testConstants'
 
 export const createPasswordStep = async (page, newPassword = true) => {
   await page.bringToFront()
-  await page.waitForSelector('#new-password')
-
-  // type password
-  await page.type('#new-password', 'OpenKoi@123')
 
   if (newPassword) {
+    await page.waitForSelector(`[placeholder="New Password"]`)
+    // type password
+    await page.type('input[placeholder="New Password"]', 'OpenKoi@123')
     // type confirm password
-    await page.type('input[id="confirm-password"]', 'OpenKoi@123')
+    await page.type('input[placeholder="Confirm Password"]', 'OpenKoi@123')
 
     // check tos
-    const tosCheckbox = await page.waitForSelector('#new-password-tos')
+    const tosCheckbox = await page.$(`[role="checkbox"]`)
     await tosCheckbox.click()
+  } else {
+    await page.waitForSelector(`[placeholder="Password"]`)
+    await page.type('input[placeholder="Password"]', 'OpenKoi@123')
   }
 
   // click login button
-  let loginButton = await page.waitForSelector('#log-in-button')
+  let [loginButton] = await page.$x('//button[contains(text(), "Log In")]')
   await loginButton.click()
 }
 
@@ -29,7 +31,7 @@ export const importKeyStep = async (page, walletType, secretPhrase) => {
   await page.bringToFront()
 
   // click Import Key button
-  let importKeyButton = await page.waitForSelector('[data-testid="use-existing-key-div"]')
+  let importKeyButton = await page.waitForXPath(`//div[contains(text(), "Use my existing key.")]`)
   await importKeyButton.click()
   let keyButton
   switch (walletType) {
@@ -61,12 +63,9 @@ export const importKeyStep = async (page, walletType, secretPhrase) => {
     await secretPhraseField.type(secretPhraseArr[i])
   }
 
-  // TODO DatH - expect Confirm button is enabled
-
-  let confirmButton = await page.waitForSelector('#confirm-button')
+  let [confirmButton] = await page.$x(`//button[contains(text(), "Confirm")]`)
   await confirmButton.click()
 
-  // TODO DatH - next step
   let goToOptionPageButton
   switch (walletType) {
     case TYPE.ETHEREUM:
@@ -134,8 +133,8 @@ export const removeKey = async (page, accountAddress) => {
   )
   await removeAccountButton.click()
 
-  const confirmRemoveAccountButton = await page.waitForSelector(
-    `[data-testid="confirm-remove-account-button"]`
+  const confirmRemoveAccountButton = await page.waitForXPath(
+    `//button[contains(text(), "Remove Account")]`
   )
   await confirmRemoveAccountButton.click()
 }
@@ -148,11 +147,11 @@ export const importWallet = async (page, walletType, secretPhrase = '', newPassw
     await goToImportWalletPage(page)
 
     // type password
-    await page.waitForSelector('#new-password')
-    await page.type('#new-password', 'OpenKoi@123')
+    await page.waitForSelector(`[placeholder="Password"]`)
+    await page.type('input[placeholder="Password"]', 'OpenKoi@123')
 
     // click login button
-    let loginButton = await page.waitForSelector('#log-in-button')
+    let [loginButton] = await page.$x('//button[contains(text(), "Log In")]')
     await loginButton.click()
   }
 
