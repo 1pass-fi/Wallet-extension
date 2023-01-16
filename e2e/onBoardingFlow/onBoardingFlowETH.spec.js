@@ -178,9 +178,7 @@ describe('e2e test', () => {
 
     const secretPhrase = SECRET_PHRASES.TYPE_ETHEREUM.split(' ')
     const [confirmButton] = await optionPage.$x('//button[contains(text(), "Confirm")]')
-    const importPhraseError = await optionPage.waitForSelector(
-      '[data-testid="import-phrase-error"]'
-    )
+    const importPhraseError = await optionPage.$('[data-testid="import-phrase-error"]')
 
     // expect confirm button to be disabled
     let isDisabled = await confirmButton.evaluate((el) => el.disabled)
@@ -189,9 +187,7 @@ describe('e2e test', () => {
     /* Type invalid secret phrase*/
     // At least 1 phrase is blank
     for (let i = 0; i < secretPhrase.length; i++) {
-      const secretPhraseField = await optionPage.waitForSelector(
-        `[data-testid="import-phrase-${i}"]`
-      )
+      const secretPhraseField = await optionPage.$(`[data-testid="import-phrase-${i}"]`)
       await secretPhraseField.type(i == 0 ? '' : secretPhrase[i])
     }
     // expect confirm button to be disabled
@@ -199,7 +195,7 @@ describe('e2e test', () => {
     expect(isDisabled).toBeTruthy()
 
     // At least 1 phrase is not in bip-39 wordlist
-    const firstPhraseField = await optionPage.waitForSelector(`[data-testid="import-phrase-0"]`)
+    const firstPhraseField = await optionPage.$(`[data-testid="import-phrase-0"]`)
     let firstPhraseFieldValue
     await firstPhraseField.click({ clickCount: 3 })
     await firstPhraseField.type('abc')
@@ -245,12 +241,16 @@ describe('e2e test', () => {
 
     await confirmButton.click()
 
-    const goToHomeButton = await optionPage.waitForSelector('#go-to-home-button')
-    const openFaucetButton = await optionPage.$('#open-faucet-button')
-    const openCreateNFTPageButton = await optionPage.$('#create-nft-page-button')
+    const goToHomeButton = await optionPage.waitForXPath(
+      `//button[contains(text(), "Go to Homepage")]`
+    )
+    const [openFaucetButton] = await optionPage.$x(`//button[contains(text(), "Get Free KOII")]`)
+    const [openCreateNFTPageButton] = await optionPage.$x(
+      `//button[contains(text(), "Create an NFT")]`
+    )
 
-    expect(openFaucetButton).toBeNull()
-    expect(openCreateNFTPageButton).toBeNull()
+    expect(openFaucetButton).toBeUndefined()
+    expect(openCreateNFTPageButton).toBeUndefined()
 
     await goToHomeButton.click()
   }, 200000)
@@ -258,32 +258,28 @@ describe('e2e test', () => {
   // TODO - Test back button each step(s)
 
   it('remove ethereum wallet', async () => {
-    const profilePictureNavBar = await optionPage.waitForSelector(
-      `[data-testid="profile-picture-navbar"]`
-    )
+    const profilePictureNavBar = await optionPage.$(`[data-testid="profile-picture-navbar"]`)
     await profilePictureNavBar.click()
 
-    const walletSettingButton = await optionPage.waitForSelector(
-      `[data-testid="wallet-dropdown-light"]`
-    )
+    const walletSettingButton = await optionPage.$(`[data-testid="wallet-dropdown-light"]`)
     await walletSettingButton.click()
 
     const accountCards = await optionPage.$('[data-testid="account-card-setting-page"]')
     const accountAddressField = await accountCards.$('[data-testid="account-card-address"]')
     const accountAddress = await accountAddressField.evaluate((el) => el.textContent)
 
-    const dropdownButton = await optionPage.waitForSelector(
+    const dropdownButton = await optionPage.$(
       `[data-testid="account-card-drop-down-${accountAddress}"]`
     )
     await dropdownButton.click()
 
-    const removeAccountButton = await optionPage.waitForSelector(
+    const removeAccountButton = await optionPage.$(
       `[data-testid="account-card-remove-account-${accountAddress}"]`
     )
     await removeAccountButton.click()
 
-    const confirmRemoveAccountButton = await optionPage.waitForSelector(
-      `[data-testid="confirm-remove-account-button"]`
+    const confirmRemoveAccountButton = await optionPage.waitForXPath(
+      `//button[contains(text(), "Remove Account")]`
     )
     await confirmRemoveAccountButton.click()
   }, 50000)
@@ -291,8 +287,8 @@ describe('e2e test', () => {
   it('test create new ethereum wallet', async () => {
     await Automation.createPasswordStep(optionPage)
 
-    const createNewKeyButton = await optionPage.waitForSelector(
-      '[data-testid="start-from-scratch-div"]'
+    const createNewKeyButton = await optionPage.waitForXPath(
+      `//div[contains(text(), "Start from scratch.")]`
     )
     await createNewKeyButton.click()
 
@@ -300,7 +296,7 @@ describe('e2e test', () => {
     await keyLogoButton.click()
 
     // I'm ready
-    const imReadyButton = await optionPage.waitForSelector('[data-testid="ready-button"]')
+    const imReadyButton = await optionPage.waitForXPath(`//button[contains(text(), "I'm ready!")]`)
     await imReadyButton.click()
 
     // Reveal secret phrase
@@ -310,25 +306,27 @@ describe('e2e test', () => {
 
     // Save 12-word secret phrase
     for (let i = 0; i < 12; i++) {
-      const currentPhrase = await optionPage.waitForSelector(`[data-testid="hidden-phrase-${i}"]`)
+      const currentPhrase = await optionPage.$(`[data-testid="hidden-phrase-${i}"]`)
       const value = await currentPhrase.evaluate((el) => el.textContent)
       savePhrases.push(value)
     }
 
-    const continueButton = await optionPage.waitForSelector('#continue-button')
+    const [continueButton] = await optionPage.$x(`//button[contains(text(), "Continue")]`)
     await continueButton.click()
 
     /* Input 12 phrases wrongly */
-    const confirmButton = await optionPage.waitForSelector('#continue-button')
+    const confirmButton = await optionPage.waitForXPath(
+      `//button[contains(text(), "Confirm Phrase")]`
+    )
     await confirmButton.click()
 
-    const inputPhraseError = await optionPage.waitForSelector(`[data-testid="input-phrase-error"]`)
+    const inputPhraseError = await optionPage.$(`[data-testid="input-phrase-error"]`)
     let inputPhraseErrorText = await inputPhraseError.evaluate((el) => el.textContent)
     expect(inputPhraseErrorText).toBe(ERROR_MESSAGE.INVALID_SECRET_PHRASE)
 
     const inputIndices = []
     for (let i = 0; i < 12; i++) {
-      const currentPhrase = await optionPage.waitForSelector(`[data-testid="input-phrase-${i}"]`)
+      const currentPhrase = await optionPage.$(`[data-testid="input-phrase-${i}"]`)
       const nodeName = await currentPhrase.evaluate((el) => el.nodeName)
       if (nodeName === 'INPUT') {
         inputIndices.push(i)
@@ -341,9 +339,7 @@ describe('e2e test', () => {
     expect(inputPhraseErrorText).toBe(ERROR_MESSAGE.INVALID_SECRET_PHRASE)
 
     /* Input the phrase with spaces */
-    const firstInputPhrase = await optionPage.waitForSelector(
-      `[data-testid="input-phrase-${inputIndices[0]}"]`
-    )
+    const firstInputPhrase = await optionPage.$(`[data-testid="input-phrase-${inputIndices[0]}"]`)
     let firstInputPhraseValue
     // Leading spaces
     await firstInputPhrase.click({ clickCount: 3 })
@@ -375,7 +371,9 @@ describe('e2e test', () => {
 
     await confirmButton.click()
 
-    const goToHomeButton = await optionPage.waitForSelector('#go-to-home-button')
+    const goToHomeButton = await optionPage.waitForXPath(
+      `//button[contains(text(), "Go to Homepage")]`
+    )
     await goToHomeButton.click()
 
     // go to Setting page and detect the accout address
@@ -421,7 +419,9 @@ describe('e2e test', () => {
     await Automation.createPasswordStep(optionPage, false)
 
     // click Import Key button
-    let createKeyButton = await optionPage.waitForSelector('[data-testid="use-existing-key-div"]')
+    let createKeyButton = await optionPage.waitForXPath(
+      `//div[contains(text(), "Use my existing key.")]`
+    )
     await createKeyButton.click()
 
     // click Import ETH Key button
@@ -435,7 +435,7 @@ describe('e2e test', () => {
       await secretPhraseField.type(savePhrases[i])
     }
 
-    let confirmButton = await optionPage.waitForSelector('#confirm-button')
+    let [confirmButton] = await optionPage.$x(`//button[contains(text(), "Confirm")]`)
     await confirmButton.click()
 
     // expect the error message ACCOUNT_EXISTED

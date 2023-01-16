@@ -70,19 +70,35 @@ export const importKeyStep = async (page, walletType, secretPhrase) => {
   let goToOptionPageButton
   switch (walletType) {
     case TYPE.ETHEREUM:
-      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 1000000)
+      goToOptionPageButton = await page.waitForXPath(
+        `//button[contains(text(), "Go to Homepage")]`,
+        60000
+      )
+
       break
 
     case TYPE.SOLANA:
-      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 1000000)
+      goToOptionPageButton = await page.waitForXPath(
+        `//button[contains(text(), "Go to Homepage")]`,
+        80000
+      )
+
       break
 
     case TYPE.K2:
-      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 1000000)
+      goToOptionPageButton = await page.waitForXPath(
+        `//button[contains(text(), "Go to Homepage")]`,
+        60000
+      )
+
       break
 
     case TYPE.ARWEAVE:
-      goToOptionPageButton = await page.waitForSelector('#skip-to-home-button', 1000000)
+      goToOptionPageButton = await page.waitForXPath(
+        `//button[contains(text(), "Go to Homepage")]`,
+        80000
+      )
+
       break
   }
   await goToOptionPageButton.click()
