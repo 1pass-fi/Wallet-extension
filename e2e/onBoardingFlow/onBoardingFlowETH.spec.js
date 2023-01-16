@@ -21,27 +21,21 @@ describe('e2e test', () => {
     context = await bootstrap()
     browser = context.browser
     optionPage = context.optionPage
-    return true
   }, 100000)
 
   it('Import new wallet(s)', async () => {
     await optionPage.bringToFront()
 
-    const tosCheckbox = await optionPage.waitForSelector('#new-password-tos')
-    const passwordInput = await optionPage.waitForSelector('#new-password')
-    const confirmPasswordInput = await optionPage.waitForSelector('#confirm-password')
-    const loginButton = await optionPage.waitForSelector('#log-in-button')
-    const errorPasswordMessage = await optionPage.waitForSelector(
-      `[data-testid="error-new-password"]`
-    )
-    const errorPasswordConfirmMessage = await optionPage.waitForSelector(
-      `[data-testid="error-confirm-password"]`
-    )
-    const showPassword = await optionPage.waitForSelector(`[data-testid="show-new-password"]`)
-    const showConfirmPassword = await optionPage.waitForSelector(
-      `[data-testid="show-confirm-password"]`
-    )
-    const tosMessageField = await optionPage.waitForSelector(`[data-testid="tos-error-message"]`)
+    const tosCheckbox = await optionPage.waitForSelector(`[role="checkbox"]`)
+    const passwordInput = await optionPage.$(`[placeholder="New Password"]`)
+    const confirmPasswordInput = await optionPage.$(`[placeholder="Confirm Password"]`)
+    const [loginButton] = await optionPage.$x(`//button[contains(text(), "Log In")]`)
+    const errorPasswordMessage = await optionPage.$(`[data-testid="error-new-password"]`)
+    const errorPasswordConfirmMessage = await optionPage.$(`[data-testid="error-confirm-password"]`)
+
+    const showPassword = await optionPage.$(`[data-testid="show-new-password"]`)
+    const showConfirmPassword = await optionPage.$(`[data-testid="show-confirm-password"]`)
+    const tosMessageField = await optionPage.$(`[data-testid="tos-error-message"]`)
 
     // Show password and hidden password
     await showPassword.click()
@@ -151,7 +145,7 @@ describe('e2e test', () => {
     await confirmPasswordInput.type('OpenKoi@123')
 
     // verify TOS hyperlink
-    const tosHyperlink = await optionPage.waitForSelector('[data-testid="tos-link"]')
+    const tosHyperlink = await optionPage.$('[data-testid="tos-link"]')
     await tosHyperlink.click()
 
     await optionPage.waitForTimeout(2000)
@@ -170,11 +164,12 @@ describe('e2e test', () => {
     await loginButton.click()
 
     // expect go to the step 2 -  Create/Import Key
-    const addAKeyPage = await optionPage.waitForSelector('[data-testid="AddAKey"]')
+    // const addAKeyPage = await optionPage.waitForSelector('[data-testid="AddAKey"]')
+    const addAKeyPage = await optionPage.waitForXPath('//div[contains(text(), "Do you already")]')
     expect(addAKeyPage).not.toBeNull()
 
     // click Import Key button
-    const createKeyButton = await optionPage.waitForSelector('[data-testid="use-existing-key-div"]')
+    const [createKeyButton] = await optionPage.$x('//div[contains(text(), "Use my existing key.")]')
     await createKeyButton.click()
 
     // click Import ETH Key button
@@ -182,7 +177,7 @@ describe('e2e test', () => {
     await createEthKeyButton.click()
 
     const secretPhrase = SECRET_PHRASES.TYPE_ETHEREUM.split(' ')
-    const confirmButton = await optionPage.waitForSelector('#confirm-button')
+    const [confirmButton] = await optionPage.$x('//button[contains(text(), "Confirm")]')
     const importPhraseError = await optionPage.waitForSelector(
       '[data-testid="import-phrase-error"]'
     )
