@@ -4,6 +4,7 @@ import Automation from '../utils/automation'
 
 describe('View Ethereum NFT gallery', () => {
   let context, optionPage, browser
+  let receiverAddress, senderAddress, NFTContractAddress, NFTTokenID
 
   beforeAll(async () => {
     /* Launch option page */
@@ -13,6 +14,7 @@ describe('View Ethereum NFT gallery', () => {
 
     /* Import Ethereum wallet */
     await Automation.importWallet(optionPage, TYPE.ETHEREUM)
+    senderAddress = '0x66083923D61D765f5FC51a612f17d64564358716'
   }, 50000)
 
   it('should correctly render the gallery with no NFT', async () => {
@@ -75,7 +77,8 @@ describe('View Ethereum NFT gallery', () => {
       `//a[@role="gridcell"][contains(@href, "#/nfts/")]`
     )
     const firstNFTURL = await firstNFTCard.evaluate((el) => el.href)
-    const [NFTTokenID, NFTContractAddress] = firstNFTURL.split('/').pop().split('_')
+    NFTTokenID = firstNFTURL.split('/').pop().split('_')[0]
+    NFTContractAddress = firstNFTURL.split('/').pop().split('_')[1]
 
     const [NFTCardName] = await firstNFTCard.$x(`//div[@title="nftname"]`)
     expect(NFTCardName).toBeDefined()
@@ -115,11 +118,103 @@ describe('View Ethereum NFT gallery', () => {
     expect(etherscanPageURL).toBe(
       `https://goerli.etherscan.io/token/${NFTContractAddress}?a=${NFTTokenID}`
     )
-    const [etherscanNFTAddress] = await etherscanPage.$x(
+    const etherscanNFTAddress = await etherscanPage.waitForXPath(
       `//a[contains(text(), "${NFTContractAddress}")]`
     )
     expect(etherscanNFTAddress).toBeDefined()
   }, 30000)
+
+  it('should successfully transfer Ethereum NFT', async () => {
+    await optionPage.bringToFront()
+
+    const [transferNFTButton] = await optionPage.$x(`//button[contains(text(), "Transfer NFT")]`)
+
+    await transferNFTButton.click()
+
+    const recipientInputField = await optionPage.waitForXPath(
+      `//input[@name="receiver-address-input"]`
+    )
+    let [sendNFTButton] = await optionPage.$x(`//button[contains(text(), "Send NFT")]`)
+
+    let isDisabled = await sendNFTButton.evaluate((el) => el.disabled)
+    expect(isDisabled).toBeTruthy()
+
+    // Invalid Solana address
+    await recipientInputField.type('0x9850Da0a1A2635625d3696E0474D855484aA09')
+    await sendNFTButton.click()
+    const galleryMessage = await optionPage.waitForSelector(`[data-testid="message-gallery"]`)
+    const galleryMessageValue = await galleryMessage.evaluate((el) => el.textContent)
+    expect(galleryMessageValue).toBe('Invalid Wallet Address')
+
+    // Valid Solana address
+    await recipientInputField.click({ clickCount: 3 })
+    // await recipientInputField.type('0x9850Da0a1A2635625d3696E0474D855484aA0994')
+    await recipientInputField.type('0x66083923D61D765f5FC51a612f17d64564358716')
+    receiverAddress = await recipientInputField.evaluate((el) => el.value)
+    // expect(receiverAddress).toBe('0x9850Da0a1A2635625d3696E0474D855484aA0994')
+    expect(receiverAddress).toBe('0x66083923D61D765f5FC51a612f17d64564358716')
+    await sendNFTButton.click()
+
+    const confirmReceiverAddress = await optionPage.waitForXPath(
+      `//div[@title="receiver-address"][contains(text(), "${receiverAddress}")]`
+    )
+    expect(confirmReceiverAddress).not.toBeNull()
+
+    sendNFTButton = (await optionPage.$x(`//button[contains(text(), "Send NFT")]`))[0]
+    isDisabled = await sendNFTButton.evaluate((el) => el.disabled)
+    expect(isDisabled).toBeFalsy()
+    await sendNFTButton.click()
+
+    const backToGalleryButton = await optionPage.waitForXPath(
+      `//button[contains(text(), "Back To Gallery")]`,
+      { visible: true, timeout: 50000 }
+    )
+
+    await backToGalleryButton.click()
+
+    // Expect the transfer NFT result
+    // When NFT is completely transfered
+    const notificationField = await optionPage.waitForSelector(`[title="notification"]`)
+    await optionPage.waitForSelector(`[title="new-notification-alert"]`, {
+      visible: true,
+      timeout: 500000
+    })
+    const notificationBell = await notificationField.$(`[role="button"]`)
+    await notificationBell.click()
+
+    const notifications = await optionPage.$x(`//div[@title="notificationtab"]`)
+
+    // expect the information of notification
+    const latestNotification = notifications[0]
+    const lastestNotificationTitle = await latestNotification.$(`[title="notificationtitle"]`)
+    const lastestNotificationTitleText = await lastestNotificationTitle.evaluate(
+      (el) => el.textContent
+    )
+    expect(lastestNotificationTitleText).toBe('Transaction confirmed')
+
+    // expect the information of notification
+    const lastestNotificationMeesage = await latestNotification.$(`[title="notificationmessage"]`)
+    const lastestNotificationMeesageText = await lastestNotificationMeesage.evaluate(
+      (el) => el.textContent
+    )
+    expect(lastestNotificationMeesageText).toBe('Sent NFT has been confirmed')
+
+    // expect the solscan
+    await latestNotification.click()
+    await optionPage.waitForTimeout(5000)
+    const currentPages = await browser.pages()
+    const etherscanPage = currentPages[currentPages.length - 1]
+    
+    const [ethescanSenderAddress] = await etherscanPage.$x(
+      `//a[contains(@href, "address/${senderAddress}")]`
+    )
+    expect(ethescanSenderAddress).toBeDefined()
+
+    const [etherscanNFTAddress] = await etherscanPage.$x(
+      `//a[contains(@href, "token/${NFTContractAddress}")]`
+    )
+    expect(etherscanNFTAddress).toBeDefined()
+  }, 1000000)
 
   afterAll(async () => {
     await context.closePages()
