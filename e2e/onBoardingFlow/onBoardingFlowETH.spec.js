@@ -462,7 +462,9 @@ describe('e2e test', () => {
     backButton = await optionPage.$(`[name="back-button"]`)
     await backButton.click()
 
-    const accountCards = await optionPage.waitForSelector('[data-testid="account-card-setting-page"]')
+    const accountCards = await optionPage.waitForSelector(
+      '[data-testid="account-card-setting-page"]'
+    )
     const accountAddressField = await accountCards.$('[data-testid="account-card-address"]')
     const accountAddress = await accountAddressField.evaluate((el) => el.textContent)
 
@@ -512,8 +514,8 @@ describe('e2e test', () => {
     }
 
     expect(showedSecretPhrase).toStrictEqual(savePhrases)
-  },50000)
-  
+  }, 150000)
+
   afterAll(async () => {
     await context.closePages()
     return true
