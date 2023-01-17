@@ -444,6 +444,78 @@ describe('e2e test', () => {
     expect(errorMessage).toBe(ERROR_MESSAGE.ACCOUNT_EXISTED)
   }, 150000)
 
+  it('reveal secret phrase', async () => {
+    let backButton = await optionPage.waitForSelector(`[name="back-button"]`)
+    await backButton.click()
+
+    await optionPage.waitForXPath(`//div[contains(text(), "Import your Key")]`)
+    backButton = await optionPage.$(`[name="back-button"]`)
+    await backButton.click()
+
+    await optionPage.waitForXPath(`//div[contains(text(), "Do you already")]`)
+    backButton = await optionPage.$(`[name="back-button"]`)
+    await backButton.click()
+
+    await optionPage.waitForXPath(
+      `//div[contains(text(), "Re-enter your Finnie password so we can securely store your new key.")]`
+    )
+    backButton = await optionPage.$(`[name="back-button"]`)
+    await backButton.click()
+
+    const accountCards = await optionPage.waitForSelector(
+      '[data-testid="account-card-setting-page"]'
+    )
+    const accountAddressField = await accountCards.$('[data-testid="account-card-address"]')
+    const accountAddress = await accountAddressField.evaluate((el) => el.textContent)
+
+    const dropdownButton = await optionPage.$(
+      `[data-testid="account-card-drop-down-${accountAddress}"]`
+    )
+    await dropdownButton.click()
+
+    const revealPhraseButton = await optionPage.$(
+      `[data-testid="account-card-reveal-secret-phrase-${accountAddress}"]`
+    )
+    await revealPhraseButton.click()
+
+    const inputPasswordField = await optionPage.waitForSelector(`[name="finnie password"]`)
+    let inputPasswordType = await inputPasswordField.evaluate((el) => el.type)
+    expect(inputPasswordType).toBe('password')
+
+    const showPasswordButton = await optionPage.$(`[name="show password button"]`)
+    await showPasswordButton.click()
+
+    inputPasswordType = await inputPasswordField.evaluate((el) => el.type)
+    expect(inputPasswordType).toBe('text')
+
+    await inputPasswordField.type('OpenKoi@1234')
+    const inputPasswordValue = await inputPasswordField.evaluate((el) => el.value)
+    expect(inputPasswordValue).toBe('OpenKoi@1234')
+
+    const [doneButton] = await optionPage.$x(`//button[contains(text(), "Done")]`)
+    await doneButton.click()
+
+    const passwordErrorField = await optionPage.waitForSelector(
+      `[data-testid="reveal-secret-phrase-password-error"]`
+    )
+    const passwordErrorText = await passwordErrorField.evaluate((el) => el.textContent)
+    expect(passwordErrorText).toBe(ERROR_MESSAGE.INCORRECT)
+
+    await inputPasswordField.click({ clickCount: 3 })
+    await inputPasswordField.type('OpenKoi@123')
+    await doneButton.click()
+
+    // Show secret phrase
+    const showedSecretPhrase = []
+    for (let i = 0; i < 12; i++) {
+      const currentPhrase = await optionPage.waitForSelector(`[data-testid="secret-phrase-${i}"]`)
+      const phraseValue = await currentPhrase.evaluate((el) => el.textContent)
+      showedSecretPhrase.push(phraseValue)
+    }
+
+    expect(showedSecretPhrase).toStrictEqual(savePhrases)
+  }, 150000)
+
   afterAll(async () => {
     await context.closePages()
     return true
