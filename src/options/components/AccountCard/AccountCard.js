@@ -680,7 +680,10 @@ const AccountCard = ({
               <div className="w-3/4 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 Reveal Secret Phrase:{' '}
               </div>
-              <div className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer">
+              <div
+                className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
+                data-testid={`account-card-reveal-secret-phrase-${account.address}`}
+              >
                 <ReavealSeedphraseIcon className="w-4 xl:w-5 2xl:w-6 3xl:w-7 h-4 xl:h-5 2xl:h-6 3xl:h-7" />
               </div>
             </div>
