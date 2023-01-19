@@ -31,7 +31,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["sidebar.html"],
+      "resources": ["sidebar.html", "/scripts/arweave.js", "/scripts/solanaWeb3.js", "/scripts/eventEmitter.js", "/scripts/declareConstantScript.js", "/scripts/finnieRpcConnectionScript.js", "/scripts/finnieEthereumProviderScript.js", "/scripts/finnieArweaveProviderScript.js", "/scripts/finnieSolanaProviderScript.js", "/scripts/finnieKoiiWalletProviderScript.js", "/scripts/finnieK2ProviderScript.js", "/scripts/mainScript.js"],
       "matches": ["<all_urls>"]
     }
   ],

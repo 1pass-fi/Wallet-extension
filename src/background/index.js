@@ -182,34 +182,4 @@ const initWalletConnect = async () => {
 
 initWalletConnect()
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.message === MESSAGES.CODE_INJECTION) {
-    const pScript = `const arweaveScriptElement = document.createElement('script')
-    const solanaWeb3ScriptElement = document.createElement('script')
-    arweaveScriptElement.src = 'https://unpkg.com/arweave/bundles/web.bundle.js'
-    solanaWeb3ScriptElement.src = 'https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js'
-
-    document.documentElement.appendChild(arweaveScriptElement)
-    document.documentElement.appendChild(solanaWeb3ScriptElement)`
-    const scripts = [
-      pScript,
-      `(${declareConstantScript})()`,
-      `(${eventEmitterScript})()`,
-      `(${finnieRpcConnectionScript})()`,
-      `(${finnieEthereumProviderScript})()`,
-      `(${finnieArweaveProviderScript})()`,
-      `(${finnieSolanaProviderScript})()`,
-      `(${finnieKoiiWalletProviderScript})()`,
-      `(${finnieK2ProviderScript})()`,
-      `(${mainScript(request.pageDisabled)})();`
-    ]
-
-    inject(scripts).then(() => {
-      sendResponse({ message: MESSAGES.CODE_INJECTED })
-    })
-
-    return true // send message async
-  }
-})
-
 global.XMLHttpRequest = xmlHttpRequest.XMLHttpRequest
