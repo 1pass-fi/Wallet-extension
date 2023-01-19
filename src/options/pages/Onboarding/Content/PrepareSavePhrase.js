@@ -20,16 +20,23 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
   }
 
   return (
-    <div data-testid="PrepareSavePhrase" className="w-11/12 flex flex-col text-white text-left max-w-full">
+    <div
+      data-testid="PrepareSavePhrase"
+      className="w-11/12 flex flex-col text-white text-left max-w-full"
+    >
       <WelcomeBackground className="absolute bottom-0 right-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
         Save your Secret Phrase
       </div>
       <div className="mt-5 font-normal text-base leading-8 max-w-full" style={{ width: '500px' }}>
         Koii Wallets use a {/* TODO add tooltip/link */}
-        <span className="text-turquoiseBlue underline cursor-pointer">
+        <a
+          target="_blank"
+          href="https://cointelegraph.com/explained/what-is-a-seed-phrase-and-why-is-it-important"
+          className="text-turquoiseBlue underline cursor-pointer"
+        >
           12-word secret phrase
-        </span>{' '}
+        </a>{' '}
         to secure your account to ensure that you and only you will control your identity online.
       </div>
       <div className="mt-8 font-normal text-sm leading-6 w-11/12 flex">
