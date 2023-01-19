@@ -273,7 +273,7 @@ const AccountCard = ({
       >
         <CopyToClipboard text={address} onCopy={onCopy}>
           {isCopied ? (
-            <CheckMarkIcon className="w-3 xl:w-4 2xl:w-5 3xl:w-6 h-3 xl:h-4 2xl:h-5 3xl:h-6" />
+            <CheckMarkIcon className="w-2.75 xl:w-3.5 2xl:w-4.25 3xl:w-5 h-2.75 xl:h-3.5 2xl:h-4.25 3xl:h-5" />
           ) : (
             <CopyIcon className="w-3 xl:w-4 2xl:w-5 3xl:w-6 h-3 xl:h-4 2xl:h-5 3xl:h-6" />
           )}
