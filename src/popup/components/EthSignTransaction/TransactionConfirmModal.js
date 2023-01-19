@@ -167,20 +167,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               >
                 Details
               </div>
-
-              {/* <div
-                style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
-                className={clsx(
-                  'h-9.5 flex justify-center items-center cursor-pointer',
-                  tab === TAB.SIMULATION && 'bg-lightBlue font-semibold',
-                  (network !== NETWORK.ETHEREUM || isEmpty(simulationData)) && 'cursor-not-allowed'
-                )}
-                onClick={() => {
-                  if (network === NETWORK.ETHEREUM && !isEmpty(simulationData)) setTab(TAB.SIMULATION)
-                }}
-              >
-                Simulation
-              </div> */}
               <div
                 style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
                 className={clsx(
