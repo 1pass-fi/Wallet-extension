@@ -49,7 +49,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
         <Button
           icon={WarningIcon}
           style={{ width: '240px', height: '42px' }}
-          className="text-base rounded z-10 border border-white border-solid"
+          className="rounded z-10 border border-white border-solid"
           variant="indigo"
           text="Remind me later."
           size="lg"
@@ -58,9 +58,10 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
         />
         <Button
           style={{ width: '240px', height: '42px' }}
-          className="text-base rounded z-10"
+          className="rounded z-10"
           variant="white"
           text="I'm ready!"
+          size="lg"
           onClick={() => setStep(step + 1)}
           data-testid={'ready-button'}
         />

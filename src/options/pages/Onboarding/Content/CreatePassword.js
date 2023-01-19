@@ -149,7 +149,7 @@ const CreatePassword = ({ step, setStep }) => {
       </div>
       <Button
         style={{ width: '240px', height: '42px' }}
-        className="mt-3.5 text-base rounded mx-auto z-10"
+        className="mt-3.5 rounded mx-auto z-10"
         variant="white"
         text="Log In"
         onClick={() => onClickContinue()}

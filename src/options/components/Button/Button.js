@@ -15,12 +15,12 @@ const variants = {
 }
 
 const sizes = {
-  sm: 'text-xs 3xl:text-sm px-3 py-1.5',
-  md: 'text-base 3xl:text-lg px-4 py-1.75',
-  lg: 'text-base 3xl:text-lg px-4 py-1.75'
+  sm: 'text-3xs sm:text-2xs lg:text-xs 3xl:text-sm px-3 py-1.5',
+  md: 'text-xs sm:text-sm lg:text-base 3xl:text-lg px-4 py-1.75',
+  lg: 'text-xs sm:text-sm lg:text-base 3xl:text-lg px-4 py-1.75'
 }
 
-const Button = ({ text, variant = 'primary', icon: Icon, size = 'sm', className, ...props }) => {
+const Button = ({ text, variant = 'primary', icon: Icon, size = 'md', className, ...props }) => {
   return (
     <button
       className={clsx(
