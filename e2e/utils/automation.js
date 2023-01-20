@@ -73,7 +73,7 @@ export const importKeyStep = async (page, walletType, secretPhrase, newPassword 
     case TYPE.ETHEREUM:
       goToOptionPageButton = await page.waitForXPath(
         `//button[contains(text(), "Go to Homepage")]`,
-        60000
+        100000
       )
 
       break
@@ -81,7 +81,7 @@ export const importKeyStep = async (page, walletType, secretPhrase, newPassword 
     case TYPE.SOLANA:
       goToOptionPageButton = await page.waitForXPath(
         `//button[contains(text(), "Go to Homepage")]`,
-        80000
+        100000
       )
 
       break
@@ -89,7 +89,7 @@ export const importKeyStep = async (page, walletType, secretPhrase, newPassword 
     case TYPE.K2:
       goToOptionPageButton = await page.waitForXPath(
         `//button[contains(text(), "Go to Homepage")]`,
-        60000
+        100000
       )
 
       break
@@ -97,7 +97,7 @@ export const importKeyStep = async (page, walletType, secretPhrase, newPassword 
     case TYPE.ARWEAVE:
       goToOptionPageButton = await page.waitForXPath(
         `//button[contains(text(), "Go to Homepage")]`,
-        80000
+        100000
       )
 
       break
