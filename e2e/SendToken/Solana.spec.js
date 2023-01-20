@@ -1,7 +1,11 @@
 import { TYPE } from '../../src/constants/accountConstants'
 import { bootstrap } from '../bootstrap'
 import Automation from '../utils/automation'
-import { ALTERNATIVE_SECRET_PHRASES } from '../utils/testConstants'
+import {
+  ALTERNATIVE_SECRET_PHRASES,
+  CUSTOM_TOKEN_ADDRESS,
+  WALLET_ADDRESS
+} from '../utils/testConstants'
 
 describe('Send token via Ethereum network', () => {
   let context, optionPage, extPage
@@ -56,11 +60,11 @@ describe('Send token via Ethereum network', () => {
     )
     const sender = await senderConfirm.evaluate((el) => el.textContent)
 
-    expect(sender).toBe('9cGCJvVacp5V6xjeshprS3KDN3e5VwEUszHmxxaZuHmJ')
+    expect(sender).toBe(WALLET_ADDRESS.SOLANA_SENDER)
 
     const recipientConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-recipient"]`)
     const recipient = await recipientConfirm.evaluate((el) => el.textContent)
-    expect(recipient).toBe('H9eoLXwTW8UynUSFMEAw6XWqwQq99KyPyTx8NVaSVZon')
+    expect(recipient).toBe(WALLET_ADDRESS.SOLANA_RECIPIENT)
 
     const amountConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-amount"]`)
     const amount = await amountConfirm.evaluate((el) => el.textContent)
@@ -86,9 +90,9 @@ describe('Send token via Ethereum network', () => {
     await importTokenButton.click()
 
     const searchInputField = await extPage.waitForSelector(`input`)
-    await extPage.waitForTimeout(1000)
-    const USDC_TOKEN_CONTRACT_ADDRESS = '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU'
-    await searchInputField.type(USDC_TOKEN_CONTRACT_ADDRESS)
+    await extPage.waitForTimeout(3000)
+
+    await searchInputField.type(CUSTOM_TOKEN_ADDRESS.SOL_USDC_TOKEN)
 
     const UNITokenOption = await extPage.waitForSelector(`[data-testid="USDC"]`)
     await UNITokenOption.click()
@@ -135,11 +139,11 @@ describe('Send token via Ethereum network', () => {
     const senderConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-sender"]`)
     const sender = await senderConfirm.evaluate((el) => el.textContent)
 
-    expect(sender).toBe('9cGCJvVacp5V6xjeshprS3KDN3e5VwEUszHmxxaZuHmJ')
+    expect(sender).toBe(WALLET_ADDRESS.SOLANA_SENDER)
 
     const recipientConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-recipient"]`)
     const recipient = await recipientConfirm.evaluate((el) => el.textContent)
-    expect(recipient).toBe('H9eoLXwTW8UynUSFMEAw6XWqwQq99KyPyTx8NVaSVZon')
+    expect(recipient).toBe(WALLET_ADDRESS.SOLANA_RECIPIENT)
 
     const amountConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-amount"]`)
     const amount = await amountConfirm.evaluate((el) => el.textContent)

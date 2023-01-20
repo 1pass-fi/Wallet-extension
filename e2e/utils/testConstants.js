@@ -13,3 +13,16 @@ export const ALTERNATIVE_SECRET_PHRASES = {
   K2: 'credit erosion kidney deposit buddy pioneer window material embark assist quit still',
   TYPE_ARWEAVE: 'rent involve devote swap uniform zero improve firm domain ketchup giggle universe'
 }
+
+export const WALLET_ADDRESS = {
+  ETHEREUM_SENDER: '0x66083923D61D765f5FC51a612f17d64564358716',
+  ETHEREUM_RECIPIENT: '0x9850Da0a1A2635625d3696E0474D855484aA0994',
+  SOLANA_SENDER: '9cGCJvVacp5V6xjeshprS3KDN3e5VwEUszHmxxaZuHmJ',
+  SOLANA_RECIPIENT: 'H9eoLXwTW8UynUSFMEAw6XWqwQq99KyPyTx8NVaSVZon',
+  K2_ADDRESS: '32Dz2b9UtGymREov4EzkBsn52E6UaXHRLeECwXxEzxJ7'
+}
+
+export const CUSTOM_TOKEN_ADDRESS = {
+  ETH_UNI_TOKEN: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+  SOL_USDC_TOKEN: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU'
+}

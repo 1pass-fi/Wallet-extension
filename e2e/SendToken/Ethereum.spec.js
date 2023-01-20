@@ -1,7 +1,11 @@
 import { TYPE } from '../../src/constants/accountConstants'
 import { bootstrap } from '../bootstrap'
 import Automation from '../utils/automation'
-import { ALTERNATIVE_SECRET_PHRASES } from '../utils/testConstants'
+import {
+  ALTERNATIVE_SECRET_PHRASES,
+  CUSTOM_TOKEN_ADDRESS,
+  WALLET_ADDRESS
+} from '../utils/testConstants'
 
 describe('Send token via Ethereum network', () => {
   let context, optionPage, extPage
@@ -56,11 +60,11 @@ describe('Send token via Ethereum network', () => {
     )
     const sender = await senderConfirm.evaluate((el) => el.textContent)
 
-    expect(sender).toBe('0x66083923D61D765f5FC51a612f17d64564358716')
+    expect(sender).toBe(WALLET_ADDRESS.ETHEREUM_SENDER)
 
     const recipientConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-recipient"]`)
     const recipient = await recipientConfirm.evaluate((el) => el.textContent)
-    expect(recipient).toBe('0x9850Da0a1A2635625d3696E0474D855484aA0994')
+    expect(recipient).toBe(WALLET_ADDRESS.ETHEREUM_RECIPIENT)
 
     const amountConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-amount"]`)
     const amount = await amountConfirm.evaluate((el) => el.textContent)
@@ -88,8 +92,7 @@ describe('Send token via Ethereum network', () => {
     await importTokenButton.click()
 
     const searchInputField = await extPage.waitForSelector(`input`)
-    const UNI_TOKEN_CONTRACT_ADDRESS = '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'
-    await searchInputField.type(UNI_TOKEN_CONTRACT_ADDRESS)
+    await searchInputField.type(CUSTOM_TOKEN_ADDRESS.ETH_UNI_TOKEN)
 
     const UNITokenOption = await extPage.waitForSelector(`[data-testid="UNI"]`)
     await UNITokenOption.click()
@@ -136,11 +139,11 @@ describe('Send token via Ethereum network', () => {
     const senderConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-sender"]`)
     const sender = await senderConfirm.evaluate((el) => el.textContent)
 
-    expect(sender).toBe('0x66083923D61D765f5FC51a612f17d64564358716')
+    expect(sender).toBe(WALLET_ADDRESS.ETHEREUM_SENDER)
 
     const recipientConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-recipient"]`)
     const recipient = await recipientConfirm.evaluate((el) => el.textContent)
-    expect(recipient).toBe('0x9850Da0a1A2635625d3696E0474D855484aA0994')
+    expect(recipient).toBe(WALLET_ADDRESS.ETHEREUM_RECIPIENT)
 
     const amountConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-amount"]`)
     const amount = await amountConfirm.evaluate((el) => el.textContent)

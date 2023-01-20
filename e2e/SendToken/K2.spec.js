@@ -1,7 +1,7 @@
 import { TYPE } from '../../src/constants/accountConstants'
 import { bootstrap } from '../bootstrap'
 import Automation from '../utils/automation'
-import { ALTERNATIVE_SECRET_PHRASES } from '../utils/testConstants'
+import { ALTERNATIVE_SECRET_PHRASES, WALLET_ADDRESS } from '../utils/testConstants'
 
 describe('Send token via K2 network', () => {
   let context, optionPage, extPage
@@ -38,7 +38,7 @@ describe('Send token via K2 network', () => {
     const recipientAddressInputField = await extPage.waitForSelector(
       `[data-testid="recipient-address"]`
     )
-    await recipientAddressInputField.type('32Dz2b9UtGymREov4EzkBsn52E6UaXHRLeECwXxEzxJ7')
+    await recipientAddressInputField.type(WALLET_ADDRESS.K2_ADDRESS)
 
     const sendTokensButton = await extPage.waitForSelector(`[data-testid="send-tokens-button"]`)
     await sendTokensButton.click()
@@ -49,11 +49,11 @@ describe('Send token via K2 network', () => {
 
     const sender = await senderConfirm.evaluate((el) => el.textContent)
 
-    expect(sender).toBe('32Dz2b9UtGymREov4EzkBsn52E6UaXHRLeECwXxEzxJ7')
+    expect(sender).toBe(WALLET_ADDRESS.K2_ADDRESS)
 
     const recipientConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-recipient"]`)
     const recipient = await recipientConfirm.evaluate((el) => el.textContent)
-    expect(recipient).toBe('32Dz2b9UtGymREov4EzkBsn52E6UaXHRLeECwXxEzxJ7')
+    expect(recipient).toBe(WALLET_ADDRESS.K2_ADDRESS)
 
     const amountConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-amount"]`)
     const amount = await amountConfirm.evaluate((el) => el.textContent)
@@ -116,7 +116,7 @@ describe('Send token via K2 network', () => {
     const recipientAddressInputField = await extPage.waitForSelector(
       `[data-testid="recipient-address"]`
     )
-    await recipientAddressInputField.type('32Dz2b9UtGymREov4EzkBsn52E6UaXHRLeECwXxEzxJ7')
+    await recipientAddressInputField.type(WALLET_ADDRESS.K2_ADDRESS)
 
     const sendTokensButton = await extPage.waitForSelector(`[data-testid="send-tokens-button"]`)
     await sendTokensButton.click()
@@ -129,11 +129,11 @@ describe('Send token via K2 network', () => {
     const senderConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-sender"]`)
     const sender = await senderConfirm.evaluate((el) => el.textContent)
 
-    expect(sender).toBe('32Dz2b9UtGymREov4EzkBsn52E6UaXHRLeECwXxEzxJ7')
+    expect(sender).toBe(WALLET_ADDRESS.K2_ADDRESS)
 
     const recipientConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-recipient"]`)
     const recipient = await recipientConfirm.evaluate((el) => el.textContent)
-    expect(recipient).toBe('32Dz2b9UtGymREov4EzkBsn52E6UaXHRLeECwXxEzxJ7')
+    expect(recipient).toBe(WALLET_ADDRESS.K2_ADDRESS)
 
     const amountConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-amount"]`)
     const amount = await amountConfirm.evaluate((el) => el.textContent)
