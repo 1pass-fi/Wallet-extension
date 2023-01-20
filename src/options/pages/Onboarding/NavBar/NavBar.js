@@ -31,7 +31,7 @@ const NavBar = ({ step, setStep }) => {
     }
   }
 
-  const accounts = useSelector(state => state.accounts)
+  const accounts = useSelector((state) => state.accounts)
 
   return (
     <div className="w-1/3 h-full bg-blue-800 shadow-lg flex flex-col items-center overflow-hidden">
@@ -68,19 +68,19 @@ const NavBar = ({ step, setStep }) => {
         {step === 0 ? (
           <div className="flex text-warning items-center">
             <LockSelectedIcon />
-            <div class="w-4/5 ml-4">Secure Finnie with a password.</div>
+            <div className="w-4/5 ml-4">Secure Finnie with a password.</div>
           </div>
         ) : (
           <div className="flex items-center">
             <LockIcon />
-            <div class="w-4/5 ml-4">Secure Finnie with a password.</div>
+            <div className="w-4/5 ml-4">Secure Finnie with a password.</div>
           </div>
         )}
         {step === 1 || step === 2 || step === 10 || step === 11 || step === 12 ? (
           <div className="flex text-warning">
             <KeySelectedIcon />
             <div className="w-4/5 flex flex-col whitespace-pre-wrap">
-              <div class="w-4/5 ml-4">Create or import a key.</div>
+              <div className="w-4/5 ml-4">Create or import a key.</div>
               <span className="ml-4 font-normal text-sm leading-6 text-trueGray-100">
                 {step === 1 || step === 2
                   ? 'Choose a new Koii or Ethereum account or import one you already have.'
@@ -93,7 +93,7 @@ const NavBar = ({ step, setStep }) => {
         ) : (
           <div className="flex items-center">
             <KeyIcon />
-            <div class="w-4/5 ml-4">Create or import a key.</div>
+            <div className="w-4/5 ml-4">Create or import a key.</div>
           </div>
         )}
         {step < 10 &&
@@ -101,7 +101,7 @@ const NavBar = ({ step, setStep }) => {
             <div className="flex text-warning">
               <EditSelectedIcon />
               <div className="w-4/5 flex flex-col whitespace-pre-wrap">
-                <div class="w-4/5 ml-4">Write down your secret phrase.</div>
+                <div className="w-4/5 ml-4">Write down your secret phrase.</div>
                 <span className="ml-4 font-normal text-sm leading-6 text-trueGray-100">
                   Grab a pen & paper so you can keep your phrase safe.
                 </span>
@@ -110,16 +110,16 @@ const NavBar = ({ step, setStep }) => {
           ) : (
             <div className="flex items-center">
               <EditIcon />
-              <div class="w-4/5 ml-4">Write down your secret phrase.</div>
+              <div className="w-4/5 ml-4">Write down your secret phrase.</div>
             </div>
           ))}
 
         {step < 10 &&
           (step === 5 || step == 6 ? (
             <div className="flex text-warning">
-              <SeedphraseSelectedIcon style={{width: '48px', height: '48px'}} />
+              <SeedphraseSelectedIcon style={{ width: '48px', height: '48px' }} />
               <div className="w-4/5 flex flex-col whitespace-pre-wrap">
-                <div class="w-4/5 ml-4">Confirm your secret phrase.</div>
+                <div className="w-4/5 ml-4">Confirm your secret phrase.</div>
                 <span className="ml-4 font-normal text-sm leading-6 text-trueGray-100">
                   Re-enter 3 words of your secret phrase for safety.
                 </span>
@@ -128,7 +128,7 @@ const NavBar = ({ step, setStep }) => {
           ) : (
             <div className="flex items-center">
               <SeedphraseIcon />
-              <div class="w-4/5 ml-4">Confirm your secret phrase.</div>
+              <div className="w-4/5 ml-4">Confirm your secret phrase.</div>
             </div>
           ))}
       </div>
