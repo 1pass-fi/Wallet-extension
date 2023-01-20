@@ -3,8 +3,6 @@ import { bootstrap } from '../bootstrap'
 import Automation from '../utils/automation'
 import { ALTERNATIVE_SECRET_PHRASES } from '../utils/testConstants'
 
-// TODO - add delay 500ms for demo
-
 describe('Send token via K2 network', () => {
   let context, optionPage, extPage
 
@@ -124,7 +122,7 @@ describe('Send token via K2 network', () => {
     await sendTokensButton.click()
 
     /* TRANSACTION CONFIRM MODAL */
-    const a = await extPage.waitForXPath(
+    await extPage.waitForXPath(
       `//div[@data-testid="tx-confirm-amount"][contains(., "WIBU")]`
     )
 
