@@ -123,7 +123,8 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     setShowReceipt,
     maxFeePerGas,
     maxPriorityFeePerGas,
-    maxFee
+    maxFee,
+    balance
   })
 
   const recipient = useMemo(() => {
