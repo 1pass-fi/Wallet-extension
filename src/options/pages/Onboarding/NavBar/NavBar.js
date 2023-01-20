@@ -12,7 +12,7 @@ import LockSelectedIcon from 'img/v2/onboarding/lock-selected-icon.svg'
 import SeedphraseIcon from 'img/v2/onboarding/seedphrase-icon.svg'
 import SeedphraseSelectedIcon from 'img/v2/onboarding/seedphrase-selected-icon.svg'
 import isEmpty from 'lodash/isEmpty'
-import { setIsOnboarding } from 'options/actions/onboardingProcessing'
+import { setIsOnboarding, setOnboardingPath } from 'options/actions/onboardingProcessing'
 
 import { onboardingSteps } from '../Onboarding'
 
@@ -26,6 +26,7 @@ const NavBar = ({ step, setStep }) => {
       if (step === 2 || step === 10) {
         dispatch(setIsOnboarding(false))
         history.push('/settings/wallet')
+        dispatch(setOnboardingPath(''))
       }
     }
 
@@ -38,6 +39,7 @@ const NavBar = ({ step, setStep }) => {
     if (step === 0) {
       dispatch(setIsOnboarding(false))
       history.push('/settings/wallet')
+      dispatch(setOnboardingPath(''))
     }
   }
 
