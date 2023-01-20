@@ -36,6 +36,8 @@ export default async (payload, next) => {
       txId = await account.method.transfer(token, target, qty)
     } else if (token === 'KOII') {
       txId = await account.method.transfer(token, target, qty)
+    } else if (token === 'AR') {
+      txId = await account.method.transfer(token, target, qty)
     }
 
     let network
