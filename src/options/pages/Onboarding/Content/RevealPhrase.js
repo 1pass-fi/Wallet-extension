@@ -43,7 +43,7 @@ const RevealPhrase = ({ step }) => {
           <SeedphraseSelectedIcon className="w-20 h-20 mr-6.5" />
         )}
         <div
-          className="w-2/3 font-semibold text-2xl tracking-finnieSpacing-wider self-center"
+          className="w-5/6 font-semibold text-2xl tracking-finnieSpacing-wider self-center"
           // style={{ width: '350px' }}
         >
           {step === 6 ? (
@@ -61,7 +61,7 @@ const RevealPhrase = ({ step }) => {
         </div>
       </div>
 
-      <div className="text-lg mt-12 font-normal">
+      <div className="text-lg mt-12 font-normal z-10">
         <div>Remember:</div>
         <li className="mt-2">
           Stay safe from phishing scams—<br></br>
