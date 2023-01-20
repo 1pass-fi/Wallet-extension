@@ -43,7 +43,7 @@ const RevealPhrase = ({ step }) => {
           <SeedphraseSelectedIcon className="w-20 h-20 mr-6.5" />
         )}
         <div
-          className="font-semibold text-2xl tracking-finnieSpacing-wider self-center"
+          className="w-5/6 font-semibold text-2xl tracking-finnieSpacing-wider self-center"
           // style={{ width: '350px' }}
         >
           {step === 6 ? (
@@ -61,7 +61,7 @@ const RevealPhrase = ({ step }) => {
         </div>
       </div>
 
-      <div className="text-lg mt-12 font-normal">
+      <div className="text-lg mt-12 font-normal z-10">
         <div>Remember:</div>
         <li className="mt-2">
           Stay safe from phishing scams—<br></br>
@@ -92,7 +92,7 @@ const RevealPhrase = ({ step }) => {
 
       {network === NETWORK.ARWEAVE && (
         <div className="mt-12 flex items-center justify-center">
-          <div className="flex flex-col items-center mr-19" style={{ width: '300px' }}>
+          <div className="flex flex-col items-center mr-19 max-w-full" style={{ width: '300px' }}>
             <KoiiToken />
             <div className="mt-3 font-normal text-lg text-center">
               Head over to the faucet to grab some free KOII tokens.
@@ -108,7 +108,7 @@ const RevealPhrase = ({ step }) => {
               id="open-faucet-button"
             />
           </div>
-          <div className="flex flex-col items-center" style={{ width: '300px' }}>
+          <div className="flex flex-col items-center max-w-full" style={{ width: '300px' }}>
             <ImagesNFTs />
             <div className="mt-3 font-normal text-lg text-center">
               Or go to the gallery to create your first Finnie NFT

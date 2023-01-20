@@ -60,7 +60,11 @@ const CreatePassword = ({ step, setStep }) => {
   }
 
   return (
-    <div data-testid="CreatePassword" className="w-2/5 flex flex-col text-white self-start pl-23">
+    <div
+      data-testid="CreatePassword"
+      className="w-2/5 flex flex-col text-white self-start ml-23"
+      style={{ minWidth: '240px' }}
+    >
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="font-normal text-base leading-6 text-left">
@@ -145,7 +149,7 @@ const CreatePassword = ({ step, setStep }) => {
       </div>
       <Button
         style={{ width: '240px', height: '42px' }}
-        className="mt-3.5 text-base rounded mx-auto z-10"
+        className="mt-3.5 rounded mx-auto z-10"
         variant="white"
         text="Log In"
         onClick={() => onClickContinue()}

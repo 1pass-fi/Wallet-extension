@@ -113,7 +113,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
   return (
     <div
       data-testid="InputPhrase"
-      className="w-11/12 flex flex-col text-white text-left"
+      className="w-11/12 flex flex-col text-white text-left max-w-full"
       style={{ width: '500px' }}
     >
       <WelcomeBackground className="absolute bottom-0 right-0" />
@@ -132,7 +132,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
         Type in the missing words to confirm your secret phase is properly secured.
       </div>
 
-      <div className="flex flex-col" style={{ width: '347px' }}>
+      <div className="flex flex-col max-w-full" style={{ width: '347px' }}>
         <div
           style={{ height: '182px' }}
           className="mt-7.5 py-3.5 bg-trueGray-100 bg-opacity-20 rounded-sm grid grid-flow-col grid-rows-6 font-normal text-sm leading-6"

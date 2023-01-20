@@ -203,31 +203,15 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
 
           {/* NAVIGATION TAB */}
           <div className="w-full flex flex-col">
-            <div className="w-full grid grid-cols-2 text-base text-indigo">
-              <div
-                style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
-                className={clsx(
-                  'h-9.5 flex justify-center items-center cursor-pointer',
-                  tab === TAB.DETAIL && 'bg-lightBlue font-semibold'
-                )}
-                onClick={() => setTab(TAB.DETAIL)}
-              >
-                Details
-              </div>
-
-              <div
-                style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
-                className={clsx(
-                  'h-9.5 flex justify-center items-center cursor-pointer',
-                  tab === TAB.SIMULATION && 'bg-lightBlue font-semibold',
-                  (network !== NETWORK.ETHEREUM || isEmpty(simulationData)) && 'cursor-not-allowed'
-                )}
-                onClick={() => {
-                  if (network === NETWORK.ETHEREUM && !isEmpty(simulationData)) setTab(TAB.SIMULATION)
-                }}
-              >
-                Simulation
-              </div>
+            <div
+              style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
+              className={clsx(
+                'h-9.5 flex justify-center items-center cursor-pointer',
+                tab === TAB.DETAIL && 'bg-lightBlue font-semibold'
+              )}
+              onClick={() => setTab(TAB.DETAIL)}
+            >
+              Details
             </div>
           </div>
 

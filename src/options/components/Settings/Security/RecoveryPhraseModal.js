@@ -3,6 +3,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { CSVLink } from 'react-csv'
 import { useDispatch } from 'react-redux'
 import passworder from 'browser-passworder'
+import clsx from 'clsx'
 import BackIcon from 'img/v2/back-icon-blue.svg'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import CopyIcon from 'img/v2/copy-icon.svg'
@@ -121,7 +122,11 @@ const RecoveryPhraseModal = ({ account, close }) => {
               <input
                 style={{ width: '382px', height: '28px' }}
                 type={showPassword ? 'text' : 'password'}
-                className="text-base rounded-sm pl-2 pr-11 mt-1.5 bg-trueGray-400 bg-opacity-50 border-b border-indigo border-opacity-80 focus:text-success-700"
+                className={clsx(
+                  'text-base rounded-sm pl-2 pr-11 mt-1.5',
+                  'bg-trueGray-400 bg-opacity-50 border-b border-indigo border-opacity-80',
+                  'focus:text-success-700 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border focus:border-turquoiseBlue'
+                )}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) => handleKeyDown(e)}
               ></input>

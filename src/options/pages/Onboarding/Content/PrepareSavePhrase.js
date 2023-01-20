@@ -20,21 +20,28 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
   }
 
   return (
-    <div data-testid="PrepareSavePhrase" className="w-11/12 flex flex-col text-white text-left">
+    <div
+      data-testid="PrepareSavePhrase"
+      className="w-11/12 flex flex-col text-white text-left max-w-full"
+    >
       <WelcomeBackground className="absolute bottom-0 right-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
         Save your Secret Phrase
       </div>
-      <div className="mt-5 font-normal text-base leading-8" style={{ width: '500px' }}>
+      <div className="mt-5 font-normal text-base leading-8 max-w-full" style={{ width: '500px' }}>
         Koii Wallets use a {/* TODO add tooltip/link */}
-        <span className="text-turquoiseBlue underline cursor-pointer">
+        <a
+          target="_blank"
+          href="https://cointelegraph.com/explained/what-is-a-seed-phrase-and-why-is-it-important"
+          className="text-turquoiseBlue underline cursor-pointer"
+        >
           12-word secret phrase
-        </span>{' '}
+        </a>{' '}
         to secure your account to ensure that you and only you will control your identity online.
       </div>
       <div className="mt-8 font-normal text-sm leading-6 w-11/12 flex">
         <NoticeIcon style={{ width: '96px', height: '96px' }} />
-        <div style={{ width: '370px' }} className="flex flex-col">
+        <div style={{ width: '370px' }} className="flex flex-col max-w-full">
           <div>
             With your Secret Phrase, anyone can access{' '}
             <span className="text-warning-200">everything in your wallet</span>.
@@ -49,7 +56,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
         <Button
           icon={WarningIcon}
           style={{ width: '240px', height: '42px' }}
-          className="text-base rounded z-10 border border-white border-solid"
+          className="rounded z-10 border border-white border-solid"
           variant="indigo"
           text="Remind me later."
           size="lg"
@@ -58,9 +65,10 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
         />
         <Button
           style={{ width: '240px', height: '42px' }}
-          className="text-base rounded z-10"
+          className="rounded z-10"
           variant="white"
           text="I'm ready!"
+          size="lg"
           onClick={() => setStep(step + 1)}
           data-testid={'ready-button'}
         />
