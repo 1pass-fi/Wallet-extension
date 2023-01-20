@@ -1,12 +1,14 @@
 import {
   SET_IS_ONBOARDING,
+  SET_ONBOARDING_PATH,
   SET_ONBOARDING_PROCESSED,
   SET_ONBOARDING_PROCESSING
 } from 'options/actions/types'
 
 const initialState = {
   isProcessing: 0,
-  isOnboarding: false
+  isOnboarding: false,
+  path: ''
 }
 
 export default function onboardingReducer(state = initialState, action) {
@@ -19,6 +21,8 @@ export default function onboardingReducer(state = initialState, action) {
       return { ...state, isProcessing: state.isProcessing + 1 }
     case SET_ONBOARDING_PROCESSED:
       return { ...state, isProcessing: !state.isProcessing || state.isProcessing - 1 }
+    case SET_ONBOARDING_PATH:
+      return { ...state, path: payload }
     default:
       return state
   }

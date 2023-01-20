@@ -330,7 +330,7 @@ const Options = () => {
               {walletLoaded && (
                 <div>
                   <Error />
-                  <Onboarding />
+                  <Onboarding ignoreSetPath={true} />
                 </div>
               )}
             </>
@@ -354,8 +354,17 @@ const MainPage = () => {
       </Route>
       <MainLayout>
         <AddressBook />
-        <Route exact path={['/welcome', '/create-wallet', '/upload-wallet', '/import-wallet']}>
+        <Route exact path="/welcome">
           <Onboarding />
+        </Route>
+        <Route exact path="/create-wallet">
+          <Onboarding path={'/create-wallet'} />
+        </Route>
+        <Route exact path="/upload-wallet">
+          <Onboarding path={'/upload-wallet'} />
+        </Route>
+        <Route exact path="/import-wallet">
+          <Onboarding path={'/import-wallet'} />
         </Route>
         <Route exact path="/nfts/:id">
           <NFTDetail />

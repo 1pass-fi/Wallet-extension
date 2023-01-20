@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import BackIcon from 'img/v2/back-icon.svg'
 import EditIcon from 'img/v2/onboarding/edit-icon.svg'
@@ -12,13 +12,24 @@ import LockSelectedIcon from 'img/v2/onboarding/lock-selected-icon.svg'
 import SeedphraseIcon from 'img/v2/onboarding/seedphrase-icon.svg'
 import SeedphraseSelectedIcon from 'img/v2/onboarding/seedphrase-selected-icon.svg'
 import isEmpty from 'lodash/isEmpty'
+import { setIsOnboarding, setOnboardingPath } from 'options/actions/onboardingProcessing'
 
 import { onboardingSteps } from '../Onboarding'
 
 const NavBar = ({ step, setStep }) => {
+  const dispatch = useDispatch()
   const history = useHistory()
+  const onboardingPath = useSelector((state) => state.onboarding.path)
 
   const handleBack = () => {
+    if (!isEmpty(onboardingPath)) {
+      if (step === 2 || step === 10) {
+        dispatch(setIsOnboarding(false))
+        dispatch(setOnboardingPath(''))
+        history.push('/settings/wallet')
+      }
+    }
+
     if (step === 10) {
       setStep(1)
     } else {
@@ -26,8 +37,9 @@ const NavBar = ({ step, setStep }) => {
     }
 
     if (step === 0) {
+      dispatch(setIsOnboarding(false))
+      dispatch(setOnboardingPath(''))
       history.push('/settings/wallet')
-      window.location.reload()
     }
   }
 

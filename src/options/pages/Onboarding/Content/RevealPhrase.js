@@ -9,7 +9,7 @@ import KoiiToken from 'img/v2/onboarding/koii-token.svg'
 import SeedphraseSelectedIcon from 'img/v2/onboarding/seedphrase-selected-icon.svg'
 import SuccessIcon from 'img/v2/onboarding/success-icon.svg'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
-import { setIsOnboarding } from 'options/actions/onboardingProcessing'
+import { setIsOnboarding, setOnboardingPath } from 'options/actions/onboardingProcessing'
 import Button from 'options/components/Button'
 import { GalleryContext } from 'options/galleryContext'
 
@@ -82,6 +82,7 @@ const RevealPhrase = ({ step }) => {
               text="Go to Homepage"
               onClick={() => {
                 dispatch(setIsOnboarding(false))
+                dispatch(setOnboardingPath(''))
                 history.push('/')
               }}
               id="go-to-home-button"
@@ -132,6 +133,7 @@ const RevealPhrase = ({ step }) => {
           className="absolute bottom-11 right-7.5 text-lightBlue underline font-normal text-sm tracking-finnieSpacing-wide cursor-pointer"
           onClick={() => {
             dispatch(setIsOnboarding(false))
+            dispatch(setOnboardingPath(''))
             history.push('/')
           }}
         >
