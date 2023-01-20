@@ -1,11 +1,13 @@
 const puppeteer = require('puppeteer')
+const path = require('path')
 
 async function bootstrap(options = {}) {
   const { devtools = false, slowMo = false, appUrl } = options
+  const pathToExtension = path.join(__dirname, '..', 'extension')
   const browser = await puppeteer.launch({
     headless: false,
     devtools,
-    args: ['--disable-extensions-except=./extension', '--load-extension=./extension'],
+    args: [`--disable-extensions-except=${pathToExtension}`, `--load-extension=${pathToExtension}`],
     defaultViewport: null,
     ...(slowMo && { slowMo })
   })
