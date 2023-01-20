@@ -27,12 +27,14 @@ export const createPasswordStep = async (page, newPassword = true) => {
   await loginButton.click()
 }
 
-export const importKeyStep = async (page, walletType, secretPhrase) => {
+export const importKeyStep = async (page, walletType, secretPhrase, newPassword = true) => {
   await page.bringToFront()
 
   // click Import Key button
-  let importKeyButton = await page.waitForXPath(`//div[contains(text(), "Use my existing key.")]`)
-  await importKeyButton.click()
+  if (newPassword) {
+    let importKeyButton = await page.waitForXPath(`//div[contains(text(), "Use my existing key.")]`)
+    await importKeyButton.click()
+  }
   let keyButton
   switch (walletType) {
     case TYPE.ETHEREUM:
@@ -155,7 +157,7 @@ export const importWallet = async (page, walletType, secretPhrase = '', newPassw
     await loginButton.click()
   }
 
-  await importKeyStep(page, walletType, secretPhrase)
+  await importKeyStep(page, walletType, secretPhrase, newPassword)
 }
 
 export const swapToNetwork = async (page, networkLabel) => {

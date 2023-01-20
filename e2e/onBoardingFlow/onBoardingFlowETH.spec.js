@@ -418,12 +418,6 @@ describe('e2e test', () => {
     await Automation.goToImportWalletPage(optionPage)
     await Automation.createPasswordStep(optionPage, false)
 
-    // click Import Key button
-    let createKeyButton = await optionPage.waitForXPath(
-      `//div[contains(text(), "Use my existing key.")]`
-    )
-    await createKeyButton.click()
-
     // click Import ETH Key button
     let createEthKeyButton = await optionPage.waitForSelector('[data-testid="ethereum-key"]')
     await createEthKeyButton.click()
@@ -449,16 +443,6 @@ describe('e2e test', () => {
     await backButton.click()
 
     await optionPage.waitForXPath(`//div[contains(text(), "Import your Key")]`)
-    backButton = await optionPage.$(`[name="back-button"]`)
-    await backButton.click()
-
-    await optionPage.waitForXPath(`//div[contains(text(), "Do you already")]`)
-    backButton = await optionPage.$(`[name="back-button"]`)
-    await backButton.click()
-
-    await optionPage.waitForXPath(
-      `//div[contains(text(), "Re-enter your Finnie password so we can securely store your new key.")]`
-    )
     backButton = await optionPage.$(`[name="back-button"]`)
     await backButton.click()
 
