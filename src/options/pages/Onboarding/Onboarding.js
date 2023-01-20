@@ -17,7 +17,7 @@ export const onboardingSteps = [
   'REVEAL_PHRASE'
 ]
 
-const Onboarding = ({ path = '' }) => {
+const Onboarding = ({ ignoreSetPath = false, path = '' }) => {
   const dispatch = useDispatch()
 
   const isOnboardingProcessing = useSelector((state) => state.onboarding.isProcessing)
@@ -26,7 +26,7 @@ const Onboarding = ({ path = '' }) => {
 
   useEffect(() => {
     dispatch(setIsOnboarding(true))
-    if (!isEmpty(path)) dispatch(setOnboardingPath(path))
+    if (!ignoreSetPath) dispatch(setOnboardingPath(path))
   }, [])
 
   return (

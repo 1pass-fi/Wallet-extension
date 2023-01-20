@@ -25,8 +25,8 @@ const NavBar = ({ step, setStep }) => {
     if (!isEmpty(onboardingPath)) {
       if (step === 2 || step === 10) {
         dispatch(setIsOnboarding(false))
-        history.push('/settings/wallet')
         dispatch(setOnboardingPath(''))
+        history.push('/settings/wallet')
       }
     }
 
@@ -38,8 +38,8 @@ const NavBar = ({ step, setStep }) => {
 
     if (step === 0) {
       dispatch(setIsOnboarding(false))
-      history.push('/settings/wallet')
       dispatch(setOnboardingPath(''))
+      history.push('/settings/wallet')
     }
   }
 

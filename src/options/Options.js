@@ -330,7 +330,7 @@ const Options = () => {
               {walletLoaded && (
                 <div>
                   <Error />
-                  <Onboarding />
+                  <Onboarding ignoreSetPath={true} />
                 </div>
               )}
             </>
