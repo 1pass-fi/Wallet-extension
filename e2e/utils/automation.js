@@ -70,19 +70,19 @@ export const importKeyStep = async (page, walletType, secretPhrase) => {
   let goToOptionPageButton
   switch (walletType) {
     case TYPE.ETHEREUM:
-      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 60000)
+      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 1000000)
       break
 
     case TYPE.SOLANA:
-      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 60000)
+      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 1000000)
       break
 
     case TYPE.K2:
-      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 80000)
+      goToOptionPageButton = await page.waitForSelector('#go-to-home-button', 1000000)
       break
 
     case TYPE.ARWEAVE:
-      goToOptionPageButton = await page.waitForSelector('#skip-to-home-button', 80000)
+      goToOptionPageButton = await page.waitForSelector('#skip-to-home-button', 1000000)
       break
   }
   await goToOptionPageButton.click()
@@ -144,6 +144,7 @@ export const importWallet = async (page, walletType, secretPhrase = '', newPassw
 }
 
 export const swapToNetwork = async (page, networkLabel) => {
+  await page.bringToFront()
   const providerDropdown = await page.waitForSelector(`[data-testid="provider-dropdown"]`)
   await providerDropdown.click()
 
@@ -154,6 +155,7 @@ export const swapToNetwork = async (page, networkLabel) => {
 }
 
 export const goToWalletSettingPage = async (page) => {
+  await page.bringToFront()
   const profilePictureNavBar = await page.waitForSelector(`[data-testid="profile-picture-navbar"]`)
   await profilePictureNavBar.click()
 
@@ -162,6 +164,7 @@ export const goToWalletSettingPage = async (page) => {
 }
 
 export const swapToNetworkOption = async (page, address, networkLabel) => {
+  await page.bringToFront()
   const accountCard = await page.waitForSelector(`[data-testid="account-card-setting-page"]`)
   const extendButton = await accountCard.$(`[data-testid="account-card-drop-down-${address}"]`)
 

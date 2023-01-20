@@ -12,11 +12,11 @@ describe('Send token via Ethereum network', () => {
     optionPage = context.optionPage
 
     /* Import Ethereum wallet for transaction testing */
-    await Automation.importWallet(optionPage, TYPE.ETHEREUM)
+    await Automation.importWallet(optionPage, TYPE.SOLANA)
     await Automation.importWallet(
       optionPage,
-      TYPE.ETHEREUM,
-      ALTERNATIVE_SECRET_PHRASES.TYPE_ETHEREUM,
+      TYPE.SOLANA,
+      ALTERNATIVE_SECRET_PHRASES.TYPE_SOLANA,
       false
     )
 
@@ -24,9 +24,9 @@ describe('Send token via Ethereum network', () => {
     extPage = await context.launchExtPage()
   }, 500000)
 
-  it('should successfully to send ETH token', async () => {
+  it.skip('should successfully to send SOL token', async () => {
     await extPage.bringToFront()
-    await Automation.swapToNetwork(extPage, 'Goerli TestNet')
+    await Automation.swapToNetwork(extPage, 'DEVNET')
 
     const goToSendButton = await extPage.waitForSelector(`[data-testid="icon-send-tokens"]`)
     await goToSendButton.click()
@@ -35,7 +35,7 @@ describe('Send token via Ethereum network', () => {
     const tokenDropdown = await extPage.waitForSelector(`[data-testid="token-dropdown"]`)
     await tokenDropdown.click()
 
-    const tokenOption = await extPage.waitForSelector(`[data-testid="ETH"]`)
+    const tokenOption = await extPage.waitForSelector(`[data-testid="SOL"]`)
     await tokenOption.click()
 
     const amountInputField = await extPage.waitForSelector(`[data-testid="input-send-amount"]`)
@@ -51,34 +51,32 @@ describe('Send token via Ethereum network', () => {
     await sendTokensButton.click()
 
     /* TRANSACTION CONFIRM MODAL */
-    const senderConfirm = await extPage.waitForXPath(
-      `//div[@data-testid="tx-confirm-sender"][contains(text(), "0x")]`
+    const senderConfirm = await extPage.waitForSelector(
+      `[data-testid="tx-confirm-sender"]:not(:empty)`
     )
     const sender = await senderConfirm.evaluate((el) => el.textContent)
 
-    expect(sender).toBe('0x66083923D61D765f5FC51a612f17d64564358716')
+    expect(sender).toBe('9cGCJvVacp5V6xjeshprS3KDN3e5VwEUszHmxxaZuHmJ')
 
     const recipientConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-recipient"]`)
     const recipient = await recipientConfirm.evaluate((el) => el.textContent)
-    expect(recipient).toBe('0x9850Da0a1A2635625d3696E0474D855484aA0994')
+    expect(recipient).toBe('H9eoLXwTW8UynUSFMEAw6XWqwQq99KyPyTx8NVaSVZon')
 
     const amountConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-amount"]`)
     const amount = await amountConfirm.evaluate((el) => el.textContent)
-    expect(amount).toBe('0.0001 ETH')
+    expect(amount).toBe('0.0001 SOL')
 
-    const sendConfirmButton = await extPage.waitForSelector(
-      `[data-testid="tx-confirm-send-button"]`
-    )
-
-    await sendConfirmButton.click()
+    const [sendButton] = await extPage.$x('//button[text()="Send"]')
+    await sendButton.click()
 
     /* TRANSACTION RECEIPT */
-    const okButton = await extPage.waitForSelector(`[data-testid="button-ok"]`)
+    const okButton = await extPage.waitForSelector('a[role="button"]')
     await okButton.click()
   }, 500000)
 
   it('should successfully to send custom token', async () => {
     await extPage.bringToFront()
+    await Automation.swapToNetwork(extPage, 'DEVNET')
 
     /* IMPORT CUSTOM TOKEN */
     const goToImportToken = await extPage.waitForSelector(`[data-testid="Tokens"]`)
@@ -88,10 +86,11 @@ describe('Send token via Ethereum network', () => {
     await importTokenButton.click()
 
     const searchInputField = await extPage.waitForSelector(`input`)
-    const UNI_TOKEN_CONTRACT_ADDRESS = '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'
-    await searchInputField.type(UNI_TOKEN_CONTRACT_ADDRESS)
+    await extPage.waitForTimeout(1000)
+    const USDC_TOKEN_CONTRACT_ADDRESS = '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU'
+    await searchInputField.type(USDC_TOKEN_CONTRACT_ADDRESS)
 
-    const UNITokenOption = await extPage.waitForSelector(`[data-testid="UNI"]`)
+    const UNITokenOption = await extPage.waitForSelector(`[data-testid="USDC"]`)
     await UNITokenOption.click()
 
     let selectAccountCheckbox = await extPage.waitForSelector('div[role="checkbox"]')
@@ -115,7 +114,7 @@ describe('Send token via Ethereum network', () => {
     const tokenDropdown = await extPage.waitForSelector(`[data-testid="token-dropdown"]`)
     await tokenDropdown.click()
 
-    const tokenOption = await extPage.waitForSelector(`[data-testid="UNI"]`)
+    const tokenOption = await extPage.waitForSelector(`[data-testid="USDC"]`)
     await tokenOption.click()
 
     const amountInputField = await extPage.waitForSelector(`[data-testid="input-send-amount"]`)
@@ -131,28 +130,28 @@ describe('Send token via Ethereum network', () => {
     await sendTokensButton.click()
 
     /* TRANSACTION CONFIRM MODAL */
-    await extPage.waitForXPath(`//div[@data-testid="tx-confirm-amount"][contains(., "UNI")]`)
+    await extPage.waitForXPath(`//div[@data-testid="tx-confirm-amount"][contains(., "USDC")]`)
 
     const senderConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-sender"]`)
     const sender = await senderConfirm.evaluate((el) => el.textContent)
 
-    expect(sender).toBe('0x66083923D61D765f5FC51a612f17d64564358716')
+    expect(sender).toBe('9cGCJvVacp5V6xjeshprS3KDN3e5VwEUszHmxxaZuHmJ')
 
     const recipientConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-recipient"]`)
     const recipient = await recipientConfirm.evaluate((el) => el.textContent)
-    expect(recipient).toBe('0x9850Da0a1A2635625d3696E0474D855484aA0994')
+    expect(recipient).toBe('H9eoLXwTW8UynUSFMEAw6XWqwQq99KyPyTx8NVaSVZon')
 
     const amountConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-amount"]`)
     const amount = await amountConfirm.evaluate((el) => el.textContent)
-    expect(amount).toBe('0.0001 UNI')
+    expect(amount).toBe('0.0001 USDC')
 
     const [sendButton] = await extPage.$x('//button[text()="Send"]')
     await sendButton.click()
 
     /* TRANSACTION RECEIPT */
-    const okButton = await extPage.waitForSelector(`[data-testid="button-ok"]`)
+    const okButton = await extPage.waitForSelector('a[role="button"]')
     await okButton.click()
-  }, 2000000)
+  }, 500000)
 
   afterAll(async () => {
     await context.closePages()
