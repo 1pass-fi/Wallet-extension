@@ -74,7 +74,7 @@ describe('View Solana gallery', () => {
     )
     const firstNFTURL = await firstNFTCard.evaluate((el) => el.href)
     NFTTokenAddress = firstNFTURL.split('/').pop().split('?').pop()
-    console.log(NFTTokenAddress)
+
     const [NFTCardName] = await firstNFTCard.$x(`//div[@title="nftname"]`)
     expect(NFTCardName).toBeDefined()
     const NFTCardNameValue = await NFTCardName.evaluate((el) => el.textContent)

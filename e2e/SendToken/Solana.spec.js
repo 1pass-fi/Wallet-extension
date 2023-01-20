@@ -7,7 +7,7 @@ import {
   WALLET_ADDRESS
 } from '../utils/testConstants'
 
-describe('Send token via Ethereum network', () => {
+describe('Send token via Solana network', () => {
   let context, optionPage, extPage
 
   beforeAll(async () => {
@@ -28,7 +28,7 @@ describe('Send token via Ethereum network', () => {
     extPage = await context.launchExtPage()
   }, 500000)
 
-  it.skip('should successfully to send SOL token', async () => {
+  it('should successfully to send SOL token', async () => {
     await extPage.bringToFront()
     await Automation.swapToNetwork(extPage, 'DEVNET')
 
@@ -80,7 +80,6 @@ describe('Send token via Ethereum network', () => {
 
   it('should successfully to send custom token', async () => {
     await extPage.bringToFront()
-    await Automation.swapToNetwork(extPage, 'DEVNET')
 
     /* IMPORT CUSTOM TOKEN */
     const goToImportToken = await extPage.waitForSelector(`[data-testid="Tokens"]`)
