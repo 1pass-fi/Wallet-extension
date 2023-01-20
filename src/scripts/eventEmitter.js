@@ -452,3 +452,5 @@ function eventEmitter() {
     console.error('ERRRRR:', error.message)
   }
 }
+
+eventEmitter()

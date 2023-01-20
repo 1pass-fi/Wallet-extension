@@ -216,3 +216,5 @@ const finnieSolanaProviderScript = () => {
 
   window.FinnieSolanaProvider = FinnieSolanaProvider
 }
+
+finnieSolanaProviderScript()
