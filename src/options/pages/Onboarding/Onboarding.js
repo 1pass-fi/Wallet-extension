@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setIsOnboarding } from 'options/actions/onboardingProcessing'
+import isEmpty from 'lodash/isEmpty'
+import { setIsOnboarding, setOnboardingPath } from 'options/actions/onboardingProcessing'
 
 import Content from './Content'
 import LoadingScreen from './Loading'
@@ -16,7 +17,7 @@ export const onboardingSteps = [
   'REVEAL_PHRASE'
 ]
 
-const Onboarding = () => {
+const Onboarding = ({ path = '' }) => {
   const dispatch = useDispatch()
 
   const isOnboardingProcessing = useSelector((state) => state.onboarding.isProcessing)
@@ -25,6 +26,7 @@ const Onboarding = () => {
 
   useEffect(() => {
     dispatch(setIsOnboarding(true))
+    if (!isEmpty(path)) dispatch(setOnboardingPath(path))
   }, [])
 
   return (

@@ -28,13 +28,20 @@ const CreatePassword = ({ step, setStep }) => {
   const [wrongPasswordMessage, setWrongPasswordMessage] = useState('')
   const [isClickContinue, setIsClickContinue] = useState(false)
 
+  const onboardingPath = useSelector((state) => state.onboarding.path)
   const accounts = useSelector((state) => state.accounts)
 
   const onClickContinue = async () => {
     if (!isEmpty(accounts)) {
       const isCorrectPassword = await verifyPassword()
       if (isCorrectPassword) {
-        setStep(step + 1)
+        if (onboardingPath === '/create-wallet') {
+          setStep(2)
+        } else if (onboardingPath === '/import-wallet') {
+          setStep(10)
+        } else {
+          setStep(1)
+        }
       } else {
         setWrongPasswordMessage('Incorrect password')
       }
