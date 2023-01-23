@@ -3,6 +3,11 @@ import { bootstrap } from '../bootstrap'
 import Automation from '../utils/automation'
 import { ALTERNATIVE_SECRET_PHRASES, WALLET_ADDRESS } from '../utils/testConstants'
 
+const ERROR_MESSAGE = {
+  INVALID_RECIPIENT_ADDRESS: 'Invalid recipient address',
+  NOT_ENOUGH_TOKENS: 'Not enough tokens'
+}
+
 describe('Send token via K2 network', () => {
   let context, optionPage, extPage
 
@@ -19,7 +24,7 @@ describe('Send token via K2 network', () => {
     extPage = await context.launchExtPage()
   }, 500000)
 
-  it('should successfully to send K2 token', async () => {
+  it('should fail to send the K2 token', async () => {
     await extPage.bringToFront()
 
     const goToSendButton = await extPage.waitForSelector('a[role="button"]')
@@ -33,11 +38,69 @@ describe('Send token via K2 network', () => {
     await tokenOption.click()
 
     const amountInputField = await extPage.waitForSelector(`[data-testid="input-send-amount"]`)
+    await amountInputField.type('999') // 100 ETH
+
+    const recipientAddressInputField = await extPage.waitForSelector(
+      `[data-testid="recipient-address"]`
+    )
+
+    /* Wrongly type the ethereum address */
+    await recipientAddressInputField.type('32Dz2b9UtGymREov4EzkBsn52E6UaXHRLeECwXxEzx')
+
+    let sendTokensButton = await extPage.waitForXPath(`//button[contains(text(), "Send Tokens")]`)
+    await sendTokensButton.click()
+
+    let popupError = await extPage.waitForSelector(`[data-testid="popup-error"]`)
+    let popupErrorMessage = await popupError.evaluate((el) => el.textContent)
+
+    expect(popupErrorMessage).toBe(ERROR_MESSAGE.INVALID_RECIPIENT_ADDRESS)
+
+    await recipientAddressInputField.click({ clickCount: 3 })
+    await recipientAddressInputField.type(WALLET_ADDRESS.K2_ADDRESS)
+
+    await sendTokensButton.click()
+
+    const senderConfirm = await extPage.waitForSelector(
+      `[data-testid="tx-confirm-sender"]:not(:empty)`
+    )
+    await extPage.waitForFunction(
+      () => document.querySelector(`[data-testid="tx-confirm-fee"]`).textContent !== '------ ------'
+    )
+    const sender = await senderConfirm.evaluate((el) => el.textContent)
+    expect(sender).toBe(WALLET_ADDRESS.K2_ADDRESS)
+
+    const recipientConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-recipient"]`)
+    const recipient = await recipientConfirm.evaluate((el) => el.textContent)
+    expect(recipient).toBe(WALLET_ADDRESS.K2_ADDRESS)
+
+    const amountConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-amount"]`)
+    const amount = await amountConfirm.evaluate((el) => el.textContent)
+    expect(amount).toBe('999 KOII')
+
+    const [sendButton] = await extPage.$x('//button[contains(text(), "Send")]')
+    await sendButton.click()
+
+    popupError = await extPage.waitForSelector(`[data-testid="popup-error"]`)
+    popupErrorMessage = await popupError.evaluate((el) => el.textContent)
+    expect(popupErrorMessage).toBe(ERROR_MESSAGE.NOT_ENOUGH_TOKENS)
+
+    const [rejectButton] = await extPage.$x('//button[contains(text(), "Reject")]')
+    await rejectButton.click()
+
+    sendTokensButton = await extPage.waitForXPath(`//button[contains(text(), "Send Tokens")]`)
+    expect(sendTokensButton).not.toBeNull
+  }, 500000)
+
+  it('should successfully to send K2 token', async () => {
+    /* SEND TOKEN FORM */
+    const amountInputField = await extPage.waitForSelector(`[data-testid="input-send-amount"]`)
+    await amountInputField.click({ clickCount: 3 })
     await amountInputField.type('0.0001')
 
     const recipientAddressInputField = await extPage.waitForSelector(
       `[data-testid="recipient-address"]`
     )
+    await recipientAddressInputField.click({ clickCount: 3 })
     await recipientAddressInputField.type(WALLET_ADDRESS.K2_ADDRESS)
 
     const sendTokensButton = await extPage.waitForSelector(`[data-testid="send-tokens-button"]`)
@@ -122,9 +185,7 @@ describe('Send token via K2 network', () => {
     await sendTokensButton.click()
 
     /* TRANSACTION CONFIRM MODAL */
-    await extPage.waitForXPath(
-      `//div[@data-testid="tx-confirm-amount"][contains(., "WIBU")]`
-    )
+    await extPage.waitForXPath(`//div[@data-testid="tx-confirm-amount"][contains(., "WIBU")]`)
 
     const senderConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-sender"]`)
     const sender = await senderConfirm.evaluate((el) => el.textContent)
