@@ -170,7 +170,8 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
     setTxId,
     setShowReceipt,
     getFeeInterval,
-    totalFee
+    totalFee,
+    balance
   })
 
   const recipient = useMemo(() => {
