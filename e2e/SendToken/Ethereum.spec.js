@@ -7,6 +7,11 @@ import {
   WALLET_ADDRESS
 } from '../utils/testConstants'
 
+const ERROR_MESSAGE = {
+  INVALID_RECIPIENT_ADDRESS: 'Invalid recipient address',
+  NOT_ENOUGH_TOKENS: 'Not enough tokens'
+}
+
 describe('Send token via Ethereum network', () => {
   let context, optionPage, extPage
 
@@ -28,21 +33,77 @@ describe('Send token via Ethereum network', () => {
     extPage = await context.launchExtPage()
   }, 500000)
 
-  it('should successfully to send ETH token', async () => {
+  it('should fail to send the ETH token', async () => {
     await extPage.bringToFront()
     await Automation.swapToNetwork(extPage, 'Goerli TestNet')
 
-    const goToSendButton = await extPage.waitForSelector(`[data-testid="icon-send-tokens"]`)
+    const goToSendButton = await extPage.waitForSelector('a[role="button"]')
     await goToSendButton.click()
 
     /* SEND TOKEN FORM */
-    const tokenDropdown = await extPage.waitForSelector(`[data-testid="token-dropdown"]`)
+    const tokenDropdown = await extPage.waitForSelector('[role="button"]')
     await tokenDropdown.click()
 
     const tokenOption = await extPage.waitForSelector(`[data-testid="ETH"]`)
     await tokenOption.click()
 
     const amountInputField = await extPage.waitForSelector(`[data-testid="input-send-amount"]`)
+    await amountInputField.type('999') // 100 ETH
+
+    const recipientAddressInputField = await extPage.waitForSelector(
+      `[data-testid="recipient-address"]`
+    )
+
+    /* Wrongly type the ethereum address */
+    await recipientAddressInputField.type('0x9850Da0a1A2635625d3696E0474D855484aA09')
+
+    let sendTokensButton = await extPage.waitForXPath(`//button[contains(text(), "Send Tokens")]`)
+    await sendTokensButton.click()
+
+    let popupError = await extPage.waitForSelector(`[data-testid="popup-error"]`)
+    let popupErrorMessage = await popupError.evaluate((el) => el.textContent)
+
+    expect(popupErrorMessage).toBe(ERROR_MESSAGE.INVALID_RECIPIENT_ADDRESS)
+
+    await recipientAddressInputField.click({ clickCount: 3 })
+    await recipientAddressInputField.type(WALLET_ADDRESS.ETHEREUM_RECIPIENT)
+
+    await sendTokensButton.click()
+
+    const senderConfirm = await extPage.waitForSelector(
+      `[data-testid="tx-confirm-sender"]:not(:empty)`
+    )
+    const sender = await senderConfirm.evaluate((el) => el.textContent)
+    expect(sender).toBe(WALLET_ADDRESS.ETHEREUM_SENDER)
+
+    const recipientConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-recipient"]`)
+    const recipient = await recipientConfirm.evaluate((el) => el.textContent)
+    expect(recipient).toBe(WALLET_ADDRESS.ETHEREUM_RECIPIENT)
+
+    const amountConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-amount"]`)
+    const amount = await amountConfirm.evaluate((el) => el.textContent)
+    expect(amount).toBe('999 ETH')
+
+    const [sendButton] = await extPage.$x('//button[contains(text(), "Send")]')
+    await sendButton.click()
+
+    popupError = await extPage.waitForSelector(`[data-testid="popup-error"]`)
+    popupErrorMessage = await popupError.evaluate((el) => el.textContent)
+    expect(popupErrorMessage).toBe(ERROR_MESSAGE.NOT_ENOUGH_TOKENS)
+
+    const [rejectButton] = await extPage.$x('//button[contains(text(), "Reject")]')
+    await rejectButton.click()
+
+    sendTokensButton = await extPage.waitForXPath(`//button[contains(text(), "Send Tokens")]`)
+    expect(sendTokensButton).not.toBeNull
+  }, 500000)
+
+  it('should successfully to send ETH token', async () => {
+    await extPage.bringToFront()
+
+    /* SEND TOKEN FORM */
+    const amountInputField = await extPage.waitForSelector(`[data-testid="input-send-amount"]`)
+    await amountInputField.click({ clickCount: 3 })
     await amountInputField.type('0.0001')
 
     const recipientDropdown = await extPage.$(`[data-testid="recipient-open-dropdown"]`)

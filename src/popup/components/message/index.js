@@ -13,7 +13,7 @@ export default ({ children, type = 'error' }) => {
   }, [])
 
   return (
-    <div className={`message ${type} ${isDisabled ? 'disabled' : ''}`}>
+    <div className={`message ${type} ${isDisabled ? 'disabled' : ''}`} data-testid="popup-error">
       {children === 'ARWEAVE' ? (
         <div>
           <span>
