@@ -114,7 +114,9 @@ export const goToImportWalletPage = async (page) => {
   const walletSettingButton = await page.waitForSelector(`[data-testid="wallet-dropdown-light"]`)
   await walletSettingButton.click()
 
-  const importButton = await page.waitForSelector(`[data-testid="setting-import-wallet"]`)
+  const [importButton] = await page.$x(
+    `//div[@role="button"][contains(text(), "Import with Phrase")]`
+  )
   await importButton.click()
 }
 
@@ -217,5 +219,6 @@ export default {
   goToImportWalletPage,
   swapToNetworkOption,
   goToWalletSettingPage,
-  goToOptionPageName
+  goToOptionPageName,
+  importKeyStep
 }

@@ -166,6 +166,7 @@ export default () => {
                 style={{ width: '220px', height: '38px' }}
                 onClick={onCreateWallet}
                 data-testid="setting-create-wallet"
+                role="button"
               >
                 Create a New Key
               </div>
@@ -174,6 +175,7 @@ export default () => {
                 style={{ width: '220px', height: '38px' }}
                 onClick={onImportSeedPhrase}
                 data-testid="setting-import-wallet"
+                role="button"
               >
                 Import with Phrase
               </div>
@@ -254,7 +256,7 @@ export default () => {
             </DragDropContext> */}
             {listAccounts.map((account, index) => (
               <AccountCard
-                key={index}
+                key={account.address}
                 account={account}
                 setShowConfirmRemoveAccount={setShowConfirmRemoveAccount}
                 setRemoveAccount={setRemoveAccount}

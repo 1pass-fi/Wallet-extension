@@ -1,7 +1,7 @@
 import { TYPE } from '../../src/constants/accountConstants'
 import { bootstrap } from '../bootstrap'
 import Automation from '../utils/automation'
-import { SECRET_PHRASES } from '../utils/testConstants'
+import { ALTERNATIVE_SECRET_PHRASES, SECRET_PHRASES } from '../utils/testConstants'
 
 const ERROR_MESSAGE = {
   NOT_MATCHING: 'Password does not match',
@@ -255,33 +255,86 @@ describe('e2e test', () => {
     await goToHomeButton.click()
   }, 200000)
 
-  // TODO - Test back button each step(s)
-
   it('remove ethereum wallet', async () => {
-    const profilePictureNavBar = await optionPage.$(`[data-testid="profile-picture-navbar"]`)
-    await profilePictureNavBar.click()
+    await Automation.goToImportWalletPage(optionPage)
 
-    const walletSettingButton = await optionPage.$(`[data-testid="wallet-dropdown-light"]`)
-    await walletSettingButton.click()
+    // Check login with wrong password
+    const inputPasswordField = await optionPage.waitForSelector(`[placeholder="Password"]`)
+    const [loginButton] = await optionPage.$x('//button[contains(text(), "Log In")]')
 
-    const accountCards = await optionPage.$('[data-testid="account-card-setting-page"]')
-    const accountAddressField = await accountCards.$('[data-testid="account-card-address"]')
-    const accountAddress = await accountAddressField.evaluate((el) => el.textContent)
+    await inputPasswordField.type('OpenKoi@1234')
+    await loginButton.click()
 
-    const dropdownButton = await optionPage.$(
+    const errorPasswordField = await optionPage.waitForXPath(
+      `//div[contains(text(), "${ERROR_MESSAGE.INCORRECT}")]`
+    )
+    expect(errorPasswordField).not.toBeNull()
+
+    await inputPasswordField.click({ clickCount: 3 })
+    await inputPasswordField.type('OpenKoi@123')
+    await loginButton.click()
+
+    await Automation.importKeyStep(
+      optionPage,
+      TYPE.ETHEREUM,
+      ALTERNATIVE_SECRET_PHRASES.TYPE_ETHEREUM,
+      false
+    )
+
+    await Automation.goToWalletSettingPage(optionPage)
+
+    let accountCards = await optionPage.$$('[data-testid="account-card-setting-page"]')
+    expect(accountCards).toHaveLength(2)
+
+    // Remove the first accoun
+    let accountCardRemove = accountCards[0]
+    let accountAddressField = await accountCardRemove.$('[data-testid="account-card-address"]')
+    let accountAddress = await accountAddressField.evaluate((el) => el.textContent)
+
+    let dropdownButton = await optionPage.$(
       `[data-testid="account-card-drop-down-${accountAddress}"]`
     )
     await dropdownButton.click()
 
-    const removeAccountButton = await optionPage.$(
+    let removeAccountButton = await optionPage.$(
       `[data-testid="account-card-remove-account-${accountAddress}"]`
     )
     await removeAccountButton.click()
 
-    const confirmRemoveAccountButton = await optionPage.waitForXPath(
+    let confirmRemoveAccountButton = await optionPage.waitForXPath(
       `//button[contains(text(), "Remove Account")]`
     )
     await confirmRemoveAccountButton.click()
+
+    await optionPage.waitForFunction(
+      () => document.querySelectorAll(`[data-testid="account-card-setting-page"]`).length < 2
+    )
+
+    accountCards = await optionPage.$$('[data-testid="account-card-setting-page"]')
+    expect(accountCards).toHaveLength(1)
+
+    // Remove the second account
+    accountCardRemove = accountCards[0]
+    accountAddressField = await accountCardRemove.$('[data-testid="account-card-address"]')
+    accountAddress = await accountAddressField.evaluate((el) => el.textContent)
+    console.log(accountAddress)
+
+    dropdownButton = await optionPage.$(`[data-testid="account-card-drop-down-${accountAddress}"]`)
+    await dropdownButton.click()
+
+    removeAccountButton = await optionPage.$(
+      `[data-testid="account-card-remove-account-${accountAddress}"]`
+    )
+    await removeAccountButton.click()
+
+    confirmRemoveAccountButton = await optionPage.waitForXPath(
+      `//button[contains(text(), "Remove Account")]`
+    )
+    await confirmRemoveAccountButton.click()
+
+    expect(
+      await optionPage.waitForXPath(`//div[contains(text(), "Welcome to the Finnie Wallet")]`)
+    ).not.toBeNull()
   }, 50000)
 
   it('test create new ethereum wallet', async () => {
