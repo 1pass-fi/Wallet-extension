@@ -219,6 +219,7 @@ const ConnectScreen = ({
                 onClick={() => setStep(2)}
                 className="bg-blue-800 text-white rounded-sm shadow text-base leading-4 text-center disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ width: '160px', height: '38px' }}
+                data-testid="select-wallet-button"
               >
                 Select Wallet
               </button>
@@ -260,6 +261,7 @@ const ConnectScreen = ({
                 onClick={() => handleOnClick(true)}
                 className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
                 style={{ width: '160px', height: '38px' }}
+                data-testid="connect-button"
               >
                 Connect
               </button>

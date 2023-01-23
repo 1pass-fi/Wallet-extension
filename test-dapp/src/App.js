@@ -21,8 +21,11 @@ function App() {
     }
   }
 
-  const disconnectSolana = () => {
-    window.solana.disconnect()
+  const disconnectSolana = async () => {
+    await window.solana.disconnect()
+    const isConnected = window.solana.isConnected
+
+    if (!isConnected) setConnectSolanaResult("")
   }
 
   const connectK2 = async () => {
@@ -65,11 +68,11 @@ function App() {
 
   return (
     <div className="App">
-      <div>Code injected: {injected.toString()}</div>
-      <button disabled={!loaded} onClick={checkCodeInjection}>Check code injected</button>
-      <div>Connect Solana result: {connectSolanaResult}</div>
-      <button onClick={connectSolana}>Connect Solana</button>
-      <button onClick={disconnectSolana}>Disconnect Solana</button>
+      <div>Code injected result: <span data-testid="code-injected-result">{injected.toString()}</span></div>
+      <button data-testid="code-injected-button" disabled={!loaded} onClick={checkCodeInjection}>Check code injected</button>
+      <div>Connect Solana result: <span data-testid="connect-solana-result">{connectSolanaResult}</span></div>
+      <button data-testid="connect-solana-button" onClick={connectSolana}>Connect Solana</button>
+      <button data-testid="disconnect-solana-button" onClick={disconnectSolana}>Disconnect Solana</button>
       <div>Connect K2 result: {connectK2Result}</div>
       <button onClick={connectK2}>Connect K2</button>
       <button onClick={disconnectK2}>Disconnect K2</button>
