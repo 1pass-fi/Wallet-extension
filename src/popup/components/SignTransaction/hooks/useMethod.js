@@ -136,10 +136,6 @@ const useMethod = ({
       const account = await popupAccount.getAccount({ address: senderAddress })
       const accountBalance = (await account.get.balance()) / Math.pow(10, 9)
 
-      console.log('balance', balance)
-      console.log('accountBalance', accountBalance)
-      console.log('totalOriginExpense', totalOriginExpense)
-      console.log('value', value)
       if (accountBalance < totalOriginExpense) {
         setError('Not enough tokens')
         return

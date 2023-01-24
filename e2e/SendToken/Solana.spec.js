@@ -20,7 +20,7 @@ describe('Send token via Solana network', () => {
     context = await bootstrap()
     optionPage = context.optionPage
 
-    /* Import Ethereum wallet for transaction testing */
+    /* Import Solana wallet for transaction testing */
     await Automation.importWallet(optionPage, TYPE.SOLANA)
     await Automation.importWallet(
       optionPage,
@@ -48,13 +48,13 @@ describe('Send token via Solana network', () => {
     await tokenOption.click()
 
     const amountInputField = await extPage.waitForSelector(`[data-testid="input-send-amount"]`)
-    await amountInputField.type('999') // 999 SOL
+    await amountInputField.type('999999') // 999999 SOL
 
     const recipientAddressInputField = await extPage.waitForSelector(
       `[data-testid="recipient-address"]`
     )
 
-    /* Wrongly type the ethereum address */
+    /* Wrongly type the SOL address */
     await recipientAddressInputField.type('9cGCJvVacp5V6xjeshprS3KDN3e5VwEUszHmxxaZuH')
 
     let sendTokensButton = await extPage.waitForXPath(`//button[contains(text(), "Send Tokens")]`)
@@ -70,11 +70,11 @@ describe('Send token via Solana network', () => {
 
     await sendTokensButton.click()
 
+    /* CONFIRMATION MODAL */
+    await extPage.waitForXPath(`//div[@data-testid="tx-confirm-fee"][contains(., "SOL")]`)
+
     const senderConfirm = await extPage.waitForSelector(
       `[data-testid="tx-confirm-sender"]:not(:empty)`
-    )
-    await extPage.waitForFunction(
-      () => document.querySelector(`[data-testid="tx-confirm-fee"]`).textContent !== '------ ------'
     )
     const sender = await senderConfirm.evaluate((el) => el.textContent)
     expect(sender).toBe(WALLET_ADDRESS.SOLANA_SENDER)
@@ -85,7 +85,7 @@ describe('Send token via Solana network', () => {
 
     const amountConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-amount"]`)
     const amount = await amountConfirm.evaluate((el) => el.textContent)
-    expect(amount).toBe('999 SOL')
+    expect(amount).toBe('999999 SOL')
 
     const [sendButton] = await extPage.$x('//button[contains(text(), "Send")]')
     await sendButton.click()

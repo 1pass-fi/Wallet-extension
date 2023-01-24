@@ -38,13 +38,13 @@ describe('Send token via K2 network', () => {
     await tokenOption.click()
 
     const amountInputField = await extPage.waitForSelector(`[data-testid="input-send-amount"]`)
-    await amountInputField.type('999') // 100 ETH
+    await amountInputField.type('999999') // 999999 KOII
 
     const recipientAddressInputField = await extPage.waitForSelector(
       `[data-testid="recipient-address"]`
     )
 
-    /* Wrongly type the ethereum address */
+    /* Wrongly type the K2 address */
     await recipientAddressInputField.type('32Dz2b9UtGymREov4EzkBsn52E6UaXHRLeECwXxEzx')
 
     let sendTokensButton = await extPage.waitForXPath(`//button[contains(text(), "Send Tokens")]`)
@@ -63,9 +63,9 @@ describe('Send token via K2 network', () => {
     const senderConfirm = await extPage.waitForSelector(
       `[data-testid="tx-confirm-sender"]:not(:empty)`
     )
-    await extPage.waitForFunction(
-      () => document.querySelector(`[data-testid="tx-confirm-fee"]`).textContent !== '------ ------'
-    )
+
+    /* CONFIRMATION MODAL */
+    await extPage.waitForXPath(`//div[@data-testid="tx-confirm-fee"][contains(., "KOII")]`)
     const sender = await senderConfirm.evaluate((el) => el.textContent)
     expect(sender).toBe(WALLET_ADDRESS.K2_ADDRESS)
 
@@ -75,7 +75,7 @@ describe('Send token via K2 network', () => {
 
     const amountConfirm = await extPage.waitForSelector(`[data-testid="tx-confirm-amount"]`)
     const amount = await amountConfirm.evaluate((el) => el.textContent)
-    expect(amount).toBe('999 KOII')
+    expect(amount).toBe('999999 KOII')
 
     const [sendButton] = await extPage.$x('//button[contains(text(), "Send")]')
     await sendButton.click()
