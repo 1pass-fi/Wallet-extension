@@ -176,8 +176,7 @@ const finnieSolanaProviderScript = () => {
 
     async signTransaction(transaction) {
       try {
-        const encodedMessage = base58.encode(transaction.serialize())
-  
+        const encodedMessage = base58.encode(transaction.serializeMessage())
         const encodedSignedTransaction = await this.connection.send({ 
           type: ENDPOINTS.SOLANA_SIGN_TRANSACTION,
           data: encodedMessage

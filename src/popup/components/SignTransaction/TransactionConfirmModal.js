@@ -518,6 +518,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               )}
               style={{ width: '160px', height: '38px' }}
               disabled={isScamOrigin}
+              data-testid='sign-button'
             >
               {signWithoutSend ? 'Sign' : 'Send'}
             </button>
