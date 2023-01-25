@@ -1,5 +1,5 @@
 // import Web3 from 'web3'
-import { Web } from '@_koi/sdk/web'
+// import { Web } from '@_koi/sdk/web' // TODO: Mock
 // import { clarifyEthereumProvider } from 'constants/koiConstants'
 // import { clarifyEthereumProvider } from 'utils'
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
@@ -31,7 +31,6 @@ export class EthereumTool {
     const network = ethers.providers.getNetwork(ethNetwork)
 
     this.#web3 = new ethers.providers.InfuraProvider(network, apiKey)
-
     this.key = null
     this.address = null
   }
@@ -68,7 +67,6 @@ export class EthereumTool {
   }
 
   async getBalance() {
-    // return this.#web3.eth.getBalance(this.address)
     return this.#web3.getBalance(this.address)
   }
 
@@ -81,7 +79,6 @@ export class EthereumTool {
   }
 
   async getTransactionStatus(txHash) {
-    // return this.#web3.eth.getTransactionReceipt(txHash)
     return this.#web3.getTransactionReceipt(txHash)
   }
 
@@ -92,7 +89,8 @@ export class EthereumTool {
   #getWalletFromSeedPhrase(seedPhrase) {
     const seed = mnemonicToSeedSync(seedPhrase)
     const hdwallet = hdkey.fromMasterSeed(seed)
-    const wallet_hdpath = 'm/44\'/60\'/0\'/0/0'
+
+    const wallet_hdpath = `m/44'/60'/0'/0/0`
 
     const wallet = hdwallet.derivePath(wallet_hdpath).getWallet()
     const address = '0x' + wallet.getAddress().toString('hex')
