@@ -1,0 +1,13 @@
+image: node:14
+
+stages:
+  - build
+
+build:
+  stage: build 
+  script:  
+    - yarn install 
+    - yarn run build
+    - yarn run lint
+    - yarn run test
+    - yarn e2e
