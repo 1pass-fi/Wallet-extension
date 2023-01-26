@@ -1,7 +1,6 @@
-import { BaseProvider, InfuraProvider, Provider } from '@ethersproject/providers'
 import * as bip39 from 'bip39'
 import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
-import { BigNumber, ethers, providers } from 'ethers'
+import { ethers } from 'ethers'
 
 import { EthereumTool } from '.'
 /* CONSTANT FOR TESTING */
@@ -10,13 +9,49 @@ const WALLET_ADDRESS = '0x66083923D61D765f5FC51a612f17d64564358716'
 const WALLET_KEY = '0x0ea98b5b46f3b452171da0e3bd335f6280205d2cc48b89d042c67cd25e1a2b56'
 
 describe('EthereumTool class', () => {
+  const mockedGetBalance = jest.fn().mockResolvedValue(42)
+  const mockedGetTransactionReceipt = jest.fn().mockResolvedValue({})
+
   beforeAll(() => {
     jest.spyOn(bip39, 'generateMnemonic').mockReturnValue(SECRET_PHRASES)
+    ethers.providers.InfuraProvider.prototype.getBalance = mockedGetBalance
+    ethers.providers.InfuraProvider.prototype.getTransactionReceipt = mockedGetTransactionReceipt
   })
 
-  describe('clarifyEthereumProvider function', () => {
-    it('should correctly return result when there is no error', () => {})
-    it('should correctly return result when errors occured', () => {})
+  describe('getter web3 function', () => {
+    it('should correctly return result with goerli provider', async () => {
+      const ethTool = new EthereumTool(ETH_NETWORK_PROVIDER.GOERLI)
+      const web3 = ethTool.web3()
+      const { name, chainId } = await web3.getNetwork()
+
+      expect(name).toBe('goerli')
+      expect(chainId).toBe(5)
+    })
+
+    it('should correctly return result when mainnet provider', async () => {
+      const ethTool = new EthereumTool(ETH_NETWORK_PROVIDER.MAINNET)
+      const web3 = ethTool.web3()
+      const { name, chainId } = await web3.getNetwork()
+
+      expect(name).toBe('homestead')
+      expect(chainId).toBe(1)
+    })
+  })
+
+  describe('getter current network function', () => {
+    it('should correctly return result with goerli provider', () => {
+      const ethTool = new EthereumTool(ETH_NETWORK_PROVIDER.GOERLI)
+      const provider = ethTool.getCurrentNetWork()
+
+      expect(provider).toBe(ETH_NETWORK_PROVIDER.GOERLI)
+    })
+
+    it('should correctly return result when mainnet provider', () => {
+      const ethTool = new EthereumTool(ETH_NETWORK_PROVIDER.MAINNET)
+      const provider = ethTool.getCurrentNetWork()
+
+      expect(provider).toBe(ETH_NETWORK_PROVIDER.MAINNET)
+    })
   })
 
   describe('createNewWallet function', () => {
@@ -54,30 +89,25 @@ describe('EthereumTool class', () => {
     })
   })
 
-  describe('transferEth function', () => {
-    second
-  })
-
   describe('getBalance function', () => {
-    let ethTool
-    it('should get correct balance type and value with Goerli network', async () => {
-      ethTool = new EthereumTool(ETH_NETWORK_PROVIDER.GOERLI)
+    it('should be called once with the correct parameter', async () => {
+      const ethTool = new EthereumTool(ETH_NETWORK_PROVIDER.GOERLI)
       ethTool.importWallet(SECRET_PHRASES, 'seedphrase')
       const balance = await ethTool.getBalance()
-      expect(balance instanceof BigNumber).toBeTruthy()
-      expect(Number(ethers.utils.formatEther(balance))).toBeGreaterThan(0)
-    })
 
-    it('should get correct balance type and value with Mainnet network', async () => {
-      ethTool = new EthereumTool(ETH_NETWORK_PROVIDER.MAINNET)
-      ethTool.importWallet(SECRET_PHRASES, 'seedphrase')
-      const balance = await ethTool.getBalance()
-      expect(balance instanceof BigNumber).toBeTruthy()
-      expect(Number(ethers.utils.formatEther(balance))).toBe(0)
+      expect(mockedGetBalance).toBeCalledTimes(1)
+      expect(mockedGetBalance).toBeCalledWith(WALLET_ADDRESS)
     })
   })
 
-  describe('getTransactionStatus', () => {
-    second
+  describe('getTransactionStatus function ', () => {
+    it('should be called once with the correct parameter', async () => {
+      const ethTool = new EthereumTool(ETH_NETWORK_PROVIDER.GOERLI)
+      const txHash = '0x431dd7099dd206d79647eaf8680b026b51ecc1276f3c13b726d1ed86ff0775bf'
+      const txReceipt = await ethTool.getTransactionStatus(txHash)
+
+      expect(mockedGetTransactionReceipt).toBeCalledTimes(1)
+      expect(mockedGetTransactionReceipt).toBeCalledWith(txHash)
+    })
   })
 })

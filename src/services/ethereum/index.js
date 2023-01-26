@@ -1,7 +1,3 @@
-// import Web3 from 'web3'
-// import { Web } from '@_koi/sdk/web' // TODO: Mock
-// import { clarifyEthereumProvider } from 'constants/koiConstants'
-// import { clarifyEthereumProvider } from 'utils'
 import { generateMnemonic, mnemonicToSeedSync } from 'bip39'
 import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 import hdkey from 'ethereumjs-wallet/dist/hdkey'
@@ -68,14 +64,6 @@ export class EthereumTool {
 
   async getBalance() {
     return this.#web3.getBalance(this.address)
-  }
-
-  async transferEth(toAddress, amount) {
-    const koiTools = new Web()
-    koiTools.initializeEvmWalletAndProvider(this.address, this.#provider)
-
-    const receipt = await koiTools.transferEvm(toAddress, amount, this.key)
-    return receipt
   }
 
   async getTransactionStatus(txHash) {
