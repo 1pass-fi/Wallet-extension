@@ -1,13 +1,46 @@
-image: node:14
+image: node:18.8.0
 
 stages:
-  - build
+  - prerequisites
+  - checks
+
+install:
+  stage: prerequisites
+  script:
+    - yarn install --cache-folder .yarn
+
+  artifacts:
+    name: 'artifacts'
+    untracked: true
+    expire_in: 30 mins
+    paths:
+      - .yarn/
+      - node_modules/
 
 build:
-  stage: build 
-  script:  
-    - yarn install 
+  stage: checks
+  needs: ['install']
+
+  script:
     - yarn run build
+
+lint:
+  stage: checks
+  needs: ['install']
+
+  script:
     - yarn run lint
+
+unit_test:
+  stage: checks
+  needs: ['install']
+
+  script:
     - yarn run test
-    - yarn e2e
+
+e2e_test:
+  stage: checks
+  needs: ['install']
+
+  script:
+    - yarn run e2e
