@@ -81,10 +81,10 @@ export class K2Tool {
     return wallet
   }
 
-  async generateWallet() {
+  generateWallet() {
     const seedPhrase = generateMnemonic()
 
-    await this.importWallet(seedPhrase, 'seedphrase')
+    this.importWallet(seedPhrase, 'seedphrase')
 
     return seedPhrase
   }
