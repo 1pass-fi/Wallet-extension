@@ -3,10 +3,12 @@ import { TokenListProvider } from '@solana/spl-token-registry'
 import ERC20_ABI from 'abi/ERC20.json'
 import { TYPE } from 'constants/accountConstants'
 import { SOL_NETWORK_PROVIDER } from 'constants/koiConstants'
+import { ethers } from 'ethers'
 import { get, isEmpty } from 'lodash'
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 import hardcodeSolanaTokens from 'solanaTokens/solanaTokens'
+import { clarifyEthereumProvider } from 'utils'
 import Web3 from 'web3'
 
 const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
@@ -15,13 +17,15 @@ const useImportedTokenAddresses = ({ userAddress, currentProviderAddress }) => {
   const checkValidToken = async (tokenAddress) => {
     try {
       const provider = await storage.setting.get.ethereumProvider()
-      const web3 = new Web3(provider)
-      // const tokenContract = new web3.eth.Contract(ERC20_ABI, tokenAddress)
-      const tokenContract = new ethers.Contract(ERC20_ABI, tokenAddress)
-      // await tokenContract.methods.name().call()
+      const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
+      const network = ethers.providers.getNetwork(ethNetwork)
+
+      const web3 = new ethers.providers.InfuraProvider(network, apiKey)
+      const tokenContract = new ethers.Contract(tokenAddress, ERC20_ABI, web3)
       const name = await tokenContract.name()
       return true
     } catch (err) {
+      console.log('checkValidToken error: ', err)
       return false
     }
   }

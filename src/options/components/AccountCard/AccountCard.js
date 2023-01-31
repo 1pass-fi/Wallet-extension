@@ -564,7 +564,7 @@ const AccountCard = ({
                     className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight"
                     key={idx}
                   >
-                    {formatNumber(token.balance / Math.pow(10, token.decimal), 4)} {token.symbol}
+                    {formatNumber(token.displayingBalance, 4)} {token.symbol}
                   </div>
                 ))}
               </div>
