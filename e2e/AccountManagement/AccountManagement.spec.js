@@ -1,7 +1,7 @@
 import { TYPE } from '../../src/constants/accountConstants'
 import { bootstrap } from '../bootstrap'
 import Automation, { goToWalletSettingPage } from '../utils/automation'
-import { SECRET_PHRASES, WALLET_ADDRESS } from '../utils/testConstants'
+import { CUSTOM_TOKEN_ADDRESS, SECRET_PHRASES, WALLET_ADDRESS } from '../utils/testConstants'
 
 /* TEST CASES */
 describe('AccountManagement', () => {
@@ -120,16 +120,111 @@ describe('AccountManagement', () => {
       await extPage.close()
     }, 100000)
 
-    it('should display correct balance', () => {}, 100000)
+    it('should display correct account information ETH', async () => {
+      extPage = await context.launchExtPage()
+      await extPage.bringToFront()
+      const displayAccount = await extPage.waitForSelector(
+        `[data-testid="popup-header-displayingaccount"]`
+      )
+
+      await displayAccount.click()
+
+      const ethAccount = await extPage.waitForXPath(
+        `//span[contains(text(), "0x660839")]/ancestor::div[@data-testid="popup-header-account"]`
+      )
+      await ethAccount.click()
+
+      /* IMPORT CUSTOM TOKEN */
+      const goToImportToken = await extPage.waitForSelector(`[data-testid="Tokens"]`)
+      await goToImportToken.click()
+
+      const importTokenButton = await extPage.$(`[data-testid="import-token-button"]`)
+      await importTokenButton.click()
+
+      const searchInputField = await extPage.waitForSelector(`input`)
+      await searchInputField.type(CUSTOM_TOKEN_ADDRESS.ETH_UNI_TOKEN)
+
+      const UNITokenOption = await extPage.waitForSelector(`[data-testid="UNI"]`)
+      await UNITokenOption.click()
+
+      const selectAccountCheckbox = await extPage.waitForSelector('div[role="checkbox"]')
+      await selectAccountCheckbox.click()
+
+      const [confirmButton] = await extPage.$x('//button[text()="Confirm"]')
+      await confirmButton.click()
+
+      await extPage.waitForSelector('[data-testid="popup-loading-screen"]', {
+        visible: true
+      })
+
+      await extPage.waitForSelector('[data-testid="popup-loading-screen"]', {
+        hidden: true
+      })
+
+      await extPage.close()
+      await optionPage.reload({ waitUntil: 'networkidle0' })
+
+      /* ASSIGN ACCOUNT CARD VALUE */
+      accountCardETH = await optionPage.waitForXPath(
+        `//div[contains(text(), "${WALLET_ADDRESS.ETHEREUM_SENDER}")]/ancestor::div[@data-testid="account-card-setting-page"]`
+      )
+
+      /* CHECK ETH BALANCE */
+      const balance = await accountCardETH.$(`[data-testid="account-card-balance"]`)
+      const balanceText = await balance.evaluate((el) => el.textContent)
+      const mainBalance = balanceText.split(' ')[1]
+      const mainSymbol = balanceText.split(' ')[2]
+
+      expect(Number(mainBalance)).toBeGreaterThan(0)
+      expect(mainSymbol).toBe('ETH')
+
+      const extendButton = await accountCardETH.$(
+        `[data-testid="account-card-drop-down-${WALLET_ADDRESS.ETHEREUM_SENDER}"]`
+      )
+      await extendButton.click()
+
+      const accountBalances = await accountCardETH.$(`[data-testid="account-card-account-balance"]`)
+      const accountBalanceMain = await accountBalances.$(
+        `[data-testid="account-card-account-balance-ETH"]`
+      )
+      let tokenBalance, tokenSymbol
+      tokenBalance = (await accountBalanceMain.evaluate((el) => el.textContent)).split(' ')[0]
+      tokenSymbol = (await accountBalanceMain.evaluate((el) => el.textContent)).split(' ')[1]
+      expect(Number(tokenBalance)).toBeGreaterThan(0)
+      expect(Number(tokenBalance)).toEqual(Number(mainBalance))
+      expect(tokenSymbol).toBe('ETH')
+
+      /* CHECK UNI BALANCE */
+      const accountBalanceCustom = await accountBalances.$(
+        `[data-testid="account-card-account-balance-UNI"]`
+      )
+      tokenBalance = (await accountBalanceCustom.evaluate((el) => el.textContent)).split(' ')[0]
+      tokenSymbol = (await accountBalanceCustom.evaluate((el) => el.textContent)).split(' ')[1]
+      expect(Number(tokenBalance)).toBeGreaterThan(0)
+      expect(tokenSymbol).toBe('UNI')
+
+      /* CHECK ETH ASSETS */
+      const assets = await accountCardETH.$(`[data-testid="account-card-assets"]`)
+      const assetsText = await assets.evaluate((el) => el.textContent)
+      const assetsValue = assetsText.split(' ')[1]
+      expect(Number(assetsValue)).toBeGreaterThanOrEqual(0)
+
+      const nftAssets = await accountCardETH.$(`[data-testid="account-card-nft-assets"]`)
+      const nftAssetsText = await nftAssets.evaluate((el) => el.textContent)
+      const [nftAssetsValue, nftAssetsSymbol] = nftAssetsText.split(' ')
+      expect(Number(nftAssetsValue)).toBeGreaterThanOrEqual(0)
+      expect(Number(nftAssetsValue)).toEqual(Number(assetsValue))
+      expect(nftAssetsSymbol).toBe('ETH')
+    }, 100000)
 
     it('should display correct number of assets', () => {}, 100000)
   })
 
   describe('Copy address', () => {})
   describe('Change account name', () => {})
-  describe('Change account password', () => {})
+  // describe('Change account password', () => {})
 
-  // afterAll(async () => {
-  //   await context.closePages()
-  // })
+  afterAll(async () => {
+    await context.closePages()
+  })
 })
