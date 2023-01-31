@@ -614,17 +614,15 @@ const AccountCard = ({
         >
           <div className="w-1/3 h-full flex flex-col gap-6">
             <div className="flex gap-2.75 items-start">
-              <div
-                className="w-1/2 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight"
-                data-testid="account-card-account-balance"
-              >
+              <div className="w-1/2 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 Account Balance:
               </div>
-              <div className="flex flex-col gap-1">
-                {tokenList?.map((token, idx) => (
+              <div className="flex flex-col gap-1" data-testid="account-card-account-balance">
+                {tokenList.map((token, idx) => (
                   <div
                     className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight"
                     key={idx}
+                    data-testid={`account-card-account-balance-${token.symbol}`}
                   >
                     {formatNumber(token.displayingBalance, 4)} {token.symbol}
                   </div>
@@ -636,7 +634,7 @@ const AccountCard = ({
               <div className="w-1/2 flex justify-end text-right font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 NFT Assets:
               </div>
-              <div className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+              <div className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight" data-testid="account-card-nft-assets">
                 {account.totalAssets.length} {account.type === TYPE.ARWEAVE && 'AR'}
                 {account.type === TYPE.ETHEREUM && 'ETH'}
                 {account.type === TYPE.SOLANA && 'SOL'}
