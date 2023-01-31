@@ -458,11 +458,13 @@ const AccountCard = ({
               <EditIcon
                 onClick={() => handleChangeAccountName(account)}
                 className="w-4 xl:w-5 2xl:w-6 3xl:w-8 h-4 xl:h-5 2xl:h-6 3xl:h-8 inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
+                data-testid="edit-account-name-icon"
               />
             ) : (
               <SaveIcon
                 onClick={() => handleChangeAccountName(account)}
                 className="w-4 xl:w-5 2xl:w-6 3xl:w-8 h-4 xl:h-5 2xl:h-6 3xl:h-8 inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
+                data-testid="save-account-name-icon"
               />
             )}
           </div>
@@ -478,7 +480,10 @@ const AccountCard = ({
           </div>
 
           {account.type === TYPE.K2 && (
-            <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight">
+            <div
+              className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
+              data-testid="account-card-balance"
+            >
               Balance:{' '}
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance / Math.pow(10, 9), 4)
@@ -487,14 +492,20 @@ const AccountCard = ({
             </div>
           )}
           {account.type === TYPE.ETHEREUM && (
-            <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight">
+            <div
+              className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
+              data-testid="account-card-balance"
+            >
               Balance:{' '}
               {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'}{' '}
               ETH
             </div>
           )}
           {account.type === TYPE.SOLANA && (
-            <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight">
+            <div
+              className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
+              data-testid="account-card-balance"
+            >
               Balance:{' '}
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance / Math.pow(10, 9), 4)
@@ -504,7 +515,10 @@ const AccountCard = ({
           )}
           {account.type === TYPE.ARWEAVE && (
             <>
-              <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight">
+              <div
+                className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
+                data-testid="account-card-balance"
+              >
                 Balance: {isNumber(account.balance) ? formatNumber(account.balance, 4) : '0'} AR
               </div>
               {/* <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight">
@@ -514,7 +528,10 @@ const AccountCard = ({
             </>
           )}
 
-          <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight leading-6">
+          <div
+            className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight leading-6"
+            data-testid="account-card-assets"
+          >
             Assets: {account.totalAssets.length}
           </div>
         </div>
@@ -597,7 +614,10 @@ const AccountCard = ({
         >
           <div className="w-1/3 h-full flex flex-col gap-6">
             <div className="flex gap-2.75 items-start">
-              <div className="w-1/2 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+              <div
+                className="w-1/2 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight"
+                data-testid="account-card-account-balance"
+              >
                 Account Balance:
               </div>
               <div className="flex flex-col gap-1">

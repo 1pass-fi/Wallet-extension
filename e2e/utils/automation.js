@@ -182,9 +182,19 @@ export const goToWalletSettingPage = async (page) => {
   await walletSettingButton.click()
 }
 
-export const swapToNetworkOption = async (page, address, networkLabel) => {
+export const swapToNetworkOption = async (
+  page,
+  address,
+  networkLabel,
+  accountCardElement = null
+) => {
   await page.bringToFront()
-  const accountCard = await page.waitForSelector(`[data-testid="account-card-setting-page"]`)
+  let accountCard
+  if (!accountCardElement) {
+    accountCard = await page.waitForSelector(`[data-testid="account-card-setting-page"]`)
+  } else {
+    accountCard = accountCardElement
+  }
   const extendButton = await accountCard.$(`[data-testid="account-card-drop-down-${address}"]`)
 
   await extendButton.click()
