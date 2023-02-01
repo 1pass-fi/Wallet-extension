@@ -13,10 +13,13 @@ export default async (payload, next) => {
     const params = get(payload, 'params')
 
     /* Show popup for signing transaction */
-    const screen = (await chrome.system.display.getInfo())[0].bounds
+    // const screen = (await chrome.system.display.getInfo())[0].bounds
+    const screen = { width: 100, height: 100 }
     const screenWidth = screen.width
     const screenHeight = screen.height
-    const os = (await chrome.runtime.getPlatformInfo()).os
+    // const os = (await chrome.runtime.getPlatformInfo()).os
+    const os = 'mac'
+
     let windowData = {
       url: chrome.runtime.getURL('/popup.html'),
       focused: true,
