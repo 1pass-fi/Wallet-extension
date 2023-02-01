@@ -445,11 +445,13 @@ const AccountCard = ({
                 onKeyDown={(e) => handleKeyDown(e, account)}
                 onChange={(e) => setAccountName(e.target.value)}
                 // style={{ height: '17.23px' }}
+                data-testid="input-account-name"
               />
             ) : (
               <div
                 // className="max-w-24 pl-6.5"
                 className="font-semibold max-w-40"
+                data-testid="account-card-accountname"
               >
                 {formatLongString(account.accountName, 20)}
               </div>

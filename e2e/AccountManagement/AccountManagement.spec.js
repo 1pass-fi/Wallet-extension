@@ -1,4 +1,5 @@
 import { TYPE } from '../../src/constants/accountConstants'
+import formatLongString from '../../src/options/utils/formatLongString'
 import { bootstrap } from '../bootstrap'
 import Automation, { goToWalletSettingPage } from '../utils/automation'
 import { CUSTOM_TOKEN_ADDRESS, SECRET_PHRASES, WALLET_ADDRESS } from '../utils/testConstants'
@@ -509,10 +510,11 @@ describe('AccountManagement', () => {
     })
   })
 
-  describe.skip('Change account name', () => {
+  describe('Change account name', () => {
     let accountCardETH, accountCardK2, accountCardSOL
 
     beforeAll(async () => {
+      await optionPage.bringToFront()
       /* Assign account cards*/
       accountCardETH = await optionPage.waitForXPath(
         `//div[contains(text(), "${WALLET_ADDRESS.ETHEREUM_SENDER}")]/ancestor::div[@data-testid="account-card-setting-page"]`
@@ -525,15 +527,90 @@ describe('AccountManagement', () => {
       accountCardSOL = await optionPage.waitForXPath(
         `//div[contains(text(), "${WALLET_ADDRESS.SOLANA_SENDER}")]/ancestor::div[@data-testid="account-card-setting-page"]`
       )
-
-      it('should display correct account name after changing', async () => {
-
-      })
     }, 50000)
+
+    it('should display correct account name after changing', async () => {
+      /* ETH Account */
+      let editAccountNameIcon = await accountCardETH.$(`[data-testid="edit-account-name-icon"]`)
+      await editAccountNameIcon.click()
+      let inputAccountName = await accountCardETH.$(`[data-testid="input-account-name"]`)
+      await inputAccountName.click({ clickCount: 3 })
+      await inputAccountName.type('ETH_ACCOUNT_NEW')
+
+      expect(await inputAccountName.evaluate((el) => el.value)).toBe('ETH_ACCOUNT_NEW')
+      let saveAccountNameIcon = await accountCardETH.$(`[data-testid="save-account-name-icon"]`)
+      await saveAccountNameIcon.click()
+
+      await optionPage.waitForSelector(`[data-testid="input-account-name"]`, { hidden: true })
+
+      let accountName = await accountCardETH.$(`[data-testid="account-card-accountname"]`)
+      expect(await accountName.evaluate((el) => el.textContent)).toBe('ETH_ACCOUNT_NEW')
+
+      /* SOL Account */
+      editAccountNameIcon = await accountCardSOL.$(`[data-testid="edit-account-name-icon"]`)
+      await editAccountNameIcon.click()
+      inputAccountName = await accountCardSOL.$(`[data-testid="input-account-name"]`)
+      await inputAccountName.click({ clickCount: 3 })
+      await inputAccountName.type('SOL_ACCOUNT_NEW')
+
+      expect(await inputAccountName.evaluate((el) => el.value)).toBe('SOL_ACCOUNT_NEW')
+      saveAccountNameIcon = await accountCardSOL.$(`[data-testid="save-account-name-icon"]`)
+      await saveAccountNameIcon.click()
+
+      await optionPage.waitForSelector(`[data-testid="input-account-name"]`, { hidden: true })
+
+      accountName = await accountCardSOL.$(`[data-testid="account-card-accountname"]`)
+      expect(await accountName.evaluate((el) => el.textContent)).toBe('SOL_ACCOUNT_NEW')
+
+      /* K2 Account */
+      editAccountNameIcon = await accountCardK2.$(`[data-testid="edit-account-name-icon"]`)
+      await editAccountNameIcon.click()
+      inputAccountName = await accountCardK2.$(`[data-testid="input-account-name"]`)
+      await inputAccountName.click({ clickCount: 3 })
+      await inputAccountName.type('K2_ACCOUNT_NEW')
+
+      expect(await inputAccountName.evaluate((el) => el.value)).toBe('K2_ACCOUNT_NEW')
+      saveAccountNameIcon = await accountCardK2.$(`[data-testid="save-account-name-icon"]`)
+      await saveAccountNameIcon.click()
+
+      await optionPage.waitForSelector(`[data-testid="input-account-name"]`, { hidden: true })
+
+      accountName = await accountCardK2.$(`[data-testid="account-card-accountname"]`)
+      expect(await accountName.evaluate((el) => el.textContent)).toBe('K2_ACCOUNT_NEW')
+
+      /* Check new account name on the extension page */
+      extPage = await context.launchExtPage()
+      await extPage.bringToFront()
+      const displayAccount = await extPage.waitForSelector(
+        `[data-testid="popup-header-displayingaccount"]`
+      )
+
+      await displayAccount.click()
+
+      const ethAccount = await extPage.waitForXPath(
+        `//span[contains(text(), "0x660839")]/ancestor::div[@data-testid="popup-header-account"]`
+      )
+      const ethPopupAccountName = await ethAccount.$(`[data-testid="popup-header-account-name"]`)
+      expect(await ethPopupAccountName.evaluate((el) => el.textContent)).toBe(formatLongString('ETH_ACCOUNT_NEW', 12))
+
+      const solAccount = await extPage.waitForXPath(
+        `//span[contains(text(), "9cGCJ")]/ancestor::div[@data-testid="popup-header-account"]`
+      )
+      const solPopupAccountName = await solAccount.$(`[data-testid="popup-header-account-name"]`)
+      expect(await solPopupAccountName.evaluate((el) => el.textContent)).toBe(formatLongString('SOL_ACCOUNT_NEW', 12))
+
+      const k2Account = await extPage.waitForXPath(
+        `//span[contains(text(), "32Dz2")]/ancestor::div[@data-testid="popup-header-account"]`
+      )
+      const k2PopupAccountName = await k2Account.$(`[data-testid="popup-header-account-name"]`)
+      expect(await k2PopupAccountName.evaluate((el) => el.textContent)).toBe(formatLongString('K2_ACCOUNT_NEW', 12))
+
+      await extPage.close()
+    }, 500000)
   })
   // describe('Change account password', () => {})
 
-  // afterAll(async () => {
-  //   await context.closePages()
-  // })
+  afterAll(async () => {
+    await context.closePages()
+  })
 })
