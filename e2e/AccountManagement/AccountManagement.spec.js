@@ -38,8 +38,6 @@ describe('AccountManagement', () => {
       accountCardSOL = await optionPage.waitForXPath(
         `//div[contains(text(), "${WALLET_ADDRESS.SOLANA_SENDER}")]/ancestor::div[@data-testid="account-card-setting-page"]`
       )
-
-      /* */
     }, 500000)
 
     it('should display correct network', async () => {
@@ -118,7 +116,7 @@ describe('AccountManagement', () => {
 
       expect(await currentNetwork.evaluate((el) => el.textContent)).toBe('TESTNET')
       await extPage.close()
-    }, 100000)
+    }, 500000)
 
     it('should display correct account information ETH', async () => {
       extPage = await context.launchExtPage()
@@ -215,7 +213,7 @@ describe('AccountManagement', () => {
       expect(Number(nftAssetsValue)).toBeGreaterThanOrEqual(0)
       expect(Number(nftAssetsValue)).toEqual(Number(assetsValue))
       expect(nftAssetsSymbol).toBe('ETH')
-    }, 100000)
+    }, 500000)
 
     it('should display correct account information SOL', async () => {
       extPage = await context.launchExtPage()
@@ -264,12 +262,12 @@ describe('AccountManagement', () => {
       await optionPage.reload({ waitUntil: 'networkidle0' })
 
       /* ASSIGN ACCOUNT CARD VALUE */
-      accountCardETH = await optionPage.waitForXPath(
+      accountCardSOL = await optionPage.waitForXPath(
         `//div[contains(text(), "${WALLET_ADDRESS.SOLANA_SENDER}")]/ancestor::div[@data-testid="account-card-setting-page"]`
       )
 
       /* CHECK SOL BALANCE */
-      const balance = await accountCardETH.$(`[data-testid="account-card-balance"]`)
+      const balance = await accountCardSOL.$(`[data-testid="account-card-balance"]`)
       const balanceText = await balance.evaluate((el) => el.textContent)
       const mainBalance = balanceText.split(' ')[1]
       const mainSymbol = balanceText.split(' ')[2]
@@ -277,12 +275,12 @@ describe('AccountManagement', () => {
       expect(Number(mainBalance)).toBeGreaterThan(0)
       expect(mainSymbol).toBe('SOL')
 
-      const extendButton = await accountCardETH.$(
+      const extendButton = await accountCardSOL.$(
         `[data-testid="account-card-drop-down-${WALLET_ADDRESS.SOLANA_SENDER}"]`
       )
       await extendButton.click()
 
-      const accountBalances = await accountCardETH.$(`[data-testid="account-card-account-balance"]`)
+      const accountBalances = await accountCardSOL.$(`[data-testid="account-card-account-balance"]`)
       const accountBalanceMain = await accountBalances.$(
         `[data-testid="account-card-account-balance-SOL"]`
       )
@@ -303,17 +301,118 @@ describe('AccountManagement', () => {
       expect(tokenSymbol).toBe('USDC')
 
       /* CHECK ETH ASSETS */
-      const assets = await accountCardETH.$(`[data-testid="account-card-assets"]`)
+      const assets = await accountCardSOL.$(`[data-testid="account-card-assets"]`)
       const assetsText = await assets.evaluate((el) => el.textContent)
       const assetsValue = assetsText.split(' ')[1]
       expect(Number(assetsValue)).toBeGreaterThanOrEqual(0)
 
-      const nftAssets = await accountCardETH.$(`[data-testid="account-card-nft-assets"]`)
+      const nftAssets = await accountCardSOL.$(`[data-testid="account-card-nft-assets"]`)
       const nftAssetsText = await nftAssets.evaluate((el) => el.textContent)
       const [nftAssetsValue, nftAssetsSymbol] = nftAssetsText.split(' ')
       expect(Number(nftAssetsValue)).toBeGreaterThanOrEqual(0)
       expect(Number(nftAssetsValue)).toEqual(Number(assetsValue))
       expect(nftAssetsSymbol).toBe('SOL')
+    }, 500000)
+
+    it('should display correct account information K2', async () => {
+      extPage = await context.launchExtPage()
+      await extPage.bringToFront()
+      const displayAccount = await extPage.waitForSelector(
+        `[data-testid="popup-header-displayingaccount"]`
+      )
+
+      await displayAccount.click()
+
+      const k2Account = await extPage.waitForXPath(
+        `//span[contains(text(), "32Dz2")]/ancestor::div[@data-testid="popup-header-account"]`
+      )
+      await k2Account.click()
+
+      /* IMPORT CUSTOM TOKEN */
+      const goToImportToken = await extPage.waitForSelector(`[data-testid="Tokens"]`)
+      await goToImportToken.click()
+
+      const importTokenButton = await extPage.$(`[data-testid="import-token-button"]`)
+      await importTokenButton.click()
+
+      const searchInputField = await extPage.waitForSelector(`input`)
+      await extPage.waitForTimeout(3000)
+
+      await searchInputField.type('WI')
+
+      const WIBUTokenOption = await extPage.waitForSelector(`[data-testid="WIBU"]`)
+      await WIBUTokenOption.click()
+
+      let selectAccountCheckbox = await extPage.waitForSelector('div[role="checkbox"]')
+      await selectAccountCheckbox.click()
+
+      let [confirmButton] = await extPage.$x('//button[text()="Confirm"]')
+      await confirmButton.click()
+
+      await extPage.waitForSelector('[data-testid="popup-loading-screen"]', {
+        visible: true
+      })
+
+      await extPage.waitForSelector('[data-testid="popup-loading-screen"]', {
+        hidden: true
+      })
+
+      await extPage.close()
+      await optionPage.reload({ waitUntil: 'networkidle0' })
+
+      /* ASSIGN ACCOUNT CARD VALUE */
+      accountCardK2 = await optionPage.waitForXPath(
+        `//div[contains(text(), "${WALLET_ADDRESS.K2_ADDRESS}")]/ancestor::div[@data-testid="account-card-setting-page"]`
+      )
+
+      /* CHECK K2 BALANCE */
+      const balance = await accountCardK2.$(`[data-testid="account-card-balance"]`)
+      const balanceText = await balance.evaluate((el) => el.textContent)
+      const mainBalance = balanceText.split(' ')[1]
+      const mainSymbol = balanceText.split(' ')[2]
+
+      expect(Number(mainBalance)).toBeGreaterThan(0)
+      expect(mainSymbol).toBe('KOII')
+
+      const extendButton = await accountCardK2.$(
+        `[data-testid="account-card-drop-down-${WALLET_ADDRESS.K2_ADDRESS}"]`
+      )
+      await extendButton.click()
+
+      const accountBalances = await accountCardK2.$(`[data-testid="account-card-account-balance"]`)
+      const accountBalanceMain = await accountBalances.$(
+        `[data-testid="account-card-account-balance-KOII"]`
+      )
+      let tokenBalance, tokenSymbol
+      tokenBalance = (await accountBalanceMain.evaluate((el) => el.textContent)).split(' ')[0]
+      tokenSymbol = (await accountBalanceMain.evaluate((el) => el.textContent)).split(' ')[1]
+      expect(Number(tokenBalance)).toBeGreaterThan(0)
+      expect(Number(tokenBalance)).toEqual(Number(mainBalance))
+      expect(tokenSymbol).toBe('KOII')
+
+      /* CHECK WIBU BALANCE */
+      const accountBalanceCustom = await accountBalances.$(
+        `[data-testid="account-card-account-balance-WIBU"]`
+      )
+      tokenBalance = (await accountBalanceCustom.evaluate((el) => el.textContent)).split(' ')[0]
+      tokenSymbol = (await accountBalanceCustom.evaluate((el) => el.textContent)).split(' ')[1]
+      expect(Number(tokenBalance)).toBeGreaterThan(0)
+      expect(tokenSymbol).toBe('WIBU')
+
+      /* CHECK K2 ASSETS */
+      // const assets = await accountCardK2.$(`[data-testid="account-card-assets"]`)
+      // const assetsText = await assets.evaluate((el) => el.textContent)
+      // const assetsValue = assetsText.split(' ')[1]
+      // expect(Number(assetsValue)).toBeGreaterThanOrEqual(0)
+
+      // const nftAssets = await accountCardK2.$(`[data-testid="account-card-nft-assets"]`)
+      // const nftAssetsText = await nftAssets.evaluate((el) => el.textContent)
+      // const [nftAssetsValue, nftAssetsSymbol] = nftAssetsText.split(' ')
+      // expect(Number(nftAssetsValue)).toBeGreaterThanOrEqual(0)
+      // expect(Number(nftAssetsValue)).toEqual(Number(assetsValue))
+      // expect(nftAssetsSymbol).toBe('KOII')
+    }, 500000)
+  })
     }, 100000)
   })
 

@@ -98,7 +98,7 @@ describe('Send token via Solana network', () => {
     await rejectButton.click()
 
     sendTokensButton = await extPage.waitForXPath(`//button[contains(text(), "Send Tokens")]`)
-    expect(sendTokensButton).not.toBeNull
+    expect(sendTokensButton).not.toBeNull()
   }, 500000)
 
   it('should successfully to send SOL token', async () => {

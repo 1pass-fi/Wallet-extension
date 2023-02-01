@@ -211,7 +211,12 @@ export const swapToNetworkOption = async (
   await networkOption.click()
   const UPDATE_BALANCE_MESSAGE = 'Your balances have been updated.'
   await page.waitForXPath(
-    `//div[@data-testid="message-gallery"][contains(text(), "${UPDATE_BALANCE_MESSAGE}")]`
+    `//div[@data-testid="message-gallery"][contains(text(), "${UPDATE_BALANCE_MESSAGE}")]`,
+    { visible: true }
+  )
+  await page.waitForXPath(
+    `//div[@data-testid="message-gallery"][contains(text(), "${UPDATE_BALANCE_MESSAGE}")]`,
+    { hidden: true }
   )
 }
 

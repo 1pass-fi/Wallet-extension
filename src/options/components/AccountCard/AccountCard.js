@@ -634,7 +634,10 @@ const AccountCard = ({
               <div className="w-1/2 flex justify-end text-right font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 NFT Assets:
               </div>
-              <div className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight" data-testid="account-card-nft-assets">
+              <div
+                className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight"
+                data-testid="account-card-nft-assets"
+              >
                 {account.totalAssets.length} {account.type === TYPE.ARWEAVE && 'AR'}
                 {account.type === TYPE.ETHEREUM && 'ETH'}
                 {account.type === TYPE.SOLANA && 'SOL'}
