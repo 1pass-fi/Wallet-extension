@@ -413,14 +413,127 @@ describe('AccountManagement', () => {
       // expect(nftAssetsSymbol).toBe('KOII')
     }, 500000)
   })
+
+  describe('Copy address', () => {
+    let accountCardETH, accountCardK2, accountCardSOL
+
+    beforeAll(async () => {
+      /* Assign account cards*/
+      accountCardETH = await optionPage.waitForXPath(
+        `//div[contains(text(), "${WALLET_ADDRESS.ETHEREUM_SENDER}")]/ancestor::div[@data-testid="account-card-setting-page"]`
+      )
+
+      accountCardK2 = await optionPage.waitForXPath(
+        `//div[contains(text(), "${WALLET_ADDRESS.K2_ADDRESS}")]/ancestor::div[@data-testid="account-card-setting-page"]`
+      )
+
+      accountCardSOL = await optionPage.waitForXPath(
+        `//div[contains(text(), "${WALLET_ADDRESS.SOLANA_SENDER}")]/ancestor::div[@data-testid="account-card-setting-page"]`
+      )
+
+      extPage = await context.launchExtPage()
+      await browser
+        .defaultBrowserContext()
+        .overridePermissions(await optionPage.url(), ['clipboard-read', 'clipboard-write'])
+
+      await browser
+        .defaultBrowserContext()
+        .overridePermissions(await extPage.url(), ['clipboard-read', 'clipboard-write'])
+    }, 50000)
+
+    it('should copy the correct address to clipboard in the options page', async () => {
+      await optionPage.bringToFront()
+      /* ETH Account */
+      let copyAddressIcon = await accountCardETH.$(`[data-testid="account-card-copy-icon"]`)
+      await copyAddressIcon.click()
+
+      expect(await optionPage.evaluate(() => navigator.clipboard.readText())).toBe(
+        WALLET_ADDRESS.ETHEREUM_SENDER
+      )
+
+      /* SOL Account */
+      copyAddressIcon = await accountCardSOL.$(`[data-testid="account-card-copy-icon"]`)
+      await copyAddressIcon.click()
+      expect(await optionPage.evaluate(() => navigator.clipboard.readText())).toBe(
+        WALLET_ADDRESS.SOLANA_SENDER
+      )
+
+      /* K2 Account */
+      copyAddressIcon = await accountCardK2.$(`[data-testid="account-card-copy-icon"]`)
+      await copyAddressIcon.click()
+      expect(await optionPage.evaluate(() => navigator.clipboard.readText())).toBe(
+        WALLET_ADDRESS.K2_ADDRESS
+      )
     }, 100000)
+
+    it.skip('should copy the correct address to clipboard in the popup page', async () => {
+      await extPage.bringToFront()
+      /* ETH Account */
+      let displayAccount = await extPage.waitForSelector(
+        `[data-testid="popup-header-displayingaccount"]`
+      )
+
+      await displayAccount.click()
+      const ethAccount = await extPage.waitForXPath(
+        `//span[contains(text(), "0x660839")]/ancestor::div[@data-testid="popup-header-account"]`
+      )
+      let copyAddressIcon = await ethAccount.$(`[data-testid="copy-address-icon"]`)
+      await copyAddressIcon.click()
+      expect(await extPage.evaluate(() => navigator.clipboard.readText())).toBe(
+        WALLET_ADDRESS.ETHEREUM_SENDER
+      )
+
+      /* SOL Account */
+      const solAccount = await extPage.waitForXPath(
+        `//span[contains(text(), "9cGCJ")]/ancestor::div[@data-testid="popup-header-account"]`
+      )
+      copyAddressIcon = await solAccount.$(`[data-testid="copy-address-icon"]`)
+      await copyAddressIcon.click()
+      expect(await extPage.evaluate(() => navigator.clipboard.readText())).toBe(
+        WALLET_ADDRESS.SOLANA_SENDER
+      )
+
+      /* K2 Account */
+      const k2Account = await extPage.waitForXPath(
+        `//span[contains(text(), "32Dz2")]/ancestor::div[@data-testid="popup-header-account"]`
+      )
+      copyAddressIcon = await k2Account.$(`[data-testid="copy-address-icon"]`)
+      await copyAddressIcon.click()
+      expect(await extPage.evaluate(() => navigator.clipboard.readText())).toBe(
+        WALLET_ADDRESS.K2_ADDRESS
+      )
+    }, 100000)
+
+    afterAll(async () => {
+      await extPage.close()
+    })
   })
 
-  describe('Copy address', () => {})
-  describe('Change account name', () => {})
+  describe.skip('Change account name', () => {
+    let accountCardETH, accountCardK2, accountCardSOL
+
+    beforeAll(async () => {
+      /* Assign account cards*/
+      accountCardETH = await optionPage.waitForXPath(
+        `//div[contains(text(), "${WALLET_ADDRESS.ETHEREUM_SENDER}")]/ancestor::div[@data-testid="account-card-setting-page"]`
+      )
+
+      accountCardK2 = await optionPage.waitForXPath(
+        `//div[contains(text(), "${WALLET_ADDRESS.K2_ADDRESS}")]/ancestor::div[@data-testid="account-card-setting-page"]`
+      )
+
+      accountCardSOL = await optionPage.waitForXPath(
+        `//div[contains(text(), "${WALLET_ADDRESS.SOLANA_SENDER}")]/ancestor::div[@data-testid="account-card-setting-page"]`
+      )
+
+      it('should display correct account name after changing', async () => {
+
+      })
+    }, 50000)
+  })
   // describe('Change account password', () => {})
 
-  afterAll(async () => {
-    await context.closePages()
-  })
+  // afterAll(async () => {
+  //   await context.closePages()
+  // })
 })

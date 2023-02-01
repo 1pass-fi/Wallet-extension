@@ -142,10 +142,10 @@ export const AccountDropdown = React.forwardRef(
                     {formatLongString(account.address, 20, true)}
                   </span>
                   <CopyIcon
-                    onClick={(e) => {
+                    onClick={async (e) => {
                       e.stopPropagation()
                       onCopy()
-                      navigator.clipboard.writeText(account.address)
+                      await navigator.clipboard.writeText(account.address)
                     }}
                     className="cursor-pointer focus:outline-none"
                     style={{ width: '13px', height: '13px' }}

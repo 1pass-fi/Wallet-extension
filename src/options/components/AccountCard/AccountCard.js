@@ -274,7 +274,7 @@ const AccountCard = ({
           'flex items-center justify-center my-auto bg-lightBlue rounded-full shadow-sm cursor-pointer'
         )}
       >
-        <CopyToClipboard text={address} onCopy={onCopy}>
+        <CopyToClipboard text={address} onCopy={onCopy} data-testid="account-card-copy-icon">
           {isCopied ? (
             <CheckMarkIcon className="w-2.75 xl:w-3.5 2xl:w-4.25 3xl:w-5 h-2.75 xl:h-3.5 2xl:h-4.25 3xl:h-5" />
           ) : (
