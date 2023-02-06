@@ -30,6 +30,7 @@ const KeyLogo = ({ type, inProcessing, networkProcessing, handleOnClick, data_te
       //   if (type !== TYPE.K2) handleOnClick(type)
       // }}
       onClick={() => handleOnClick(type)}
+      role="button"
     >
       {/* {isHover && type !== TYPE.K2 ? (
         <KeyHoverBackground className="z-0" />

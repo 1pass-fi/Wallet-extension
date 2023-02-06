@@ -86,6 +86,7 @@ const HiddenPhrase = ({ step, setStep, importType }) => {
           data-testid="blur-phrase-button"
           className="mt-7.5 cursor-pointer"
           onClick={() => setShowPhrase(true)}
+          role="img"
         />
       )}
 
