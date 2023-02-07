@@ -211,6 +211,7 @@ const ConnectScreen = ({
                 onClick={() => handleOnClick(false)}
                 className="bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800"
                 style={{ width: '160px', height: '38px' }}
+                data-testid="reject-wallet-button"
               >
                 Reject
               </button>
@@ -254,6 +255,7 @@ const ConnectScreen = ({
                 onClick={() => handleOnClick(false)}
                 className="bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800"
                 style={{ width: '160px', height: '38px' }}
+                data-testid="reject-connect-button"
               >
                 Reject
               </button>

@@ -109,6 +109,8 @@ function App() {
 
   const connectSolana = async () => {
     try {
+      setConnectSolanaResult("")
+
       const result = await window.solana.connect()
       setConnectSolanaResult(result.toString())
     } catch (err) {
@@ -126,6 +128,8 @@ function App() {
 
   const connectK2 = async () => {
     try {
+      setConnectK2Result("")
+
       const result = await window.k2.connect()
       setConnectK2Result(result.toString())
     } catch (err) {
@@ -143,6 +147,7 @@ function App() {
 
   const connectEthereum = async () => {
     try {
+      setConnectEthereumResult("")
       const result = await window.ethereum.request({ method: 'eth_requestAccounts' })
       setConnectEthereumResult(result[0])
     } catch (err) {
@@ -153,7 +158,7 @@ function App() {
 
   const disconnectEthereum = () => {
     try {
-
+      setConnectEthereumResult("")
     } catch (err) {
 
     }
