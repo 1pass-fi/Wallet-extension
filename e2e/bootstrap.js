@@ -11,7 +11,7 @@ async function bootstrap(options = {}) {
     defaultViewport: null,
     ...(slowMo && { slowMo })
   })
-  let appPage, extPage, optionPage
+  let appPage, extPage, optionPage, testDappPage
 
   // wait until the option page loaded
   while ((await browser.pages()).length <= 1) {
@@ -53,6 +53,13 @@ async function bootstrap(options = {}) {
     return optionPage
   }
 
+  const launchTestDappPage = async (options = {}) => {
+    testDappPage = await browser.newPage()
+    const testDappUrl = 'http://localhost:3000'
+    await testDappPage.goto(testDappUrl, { waitUntil: 'networkidle0' })
+    return testDappPage
+  }
+
   const closePages = async () => {
     await browser.close()
   }
@@ -64,6 +71,8 @@ async function bootstrap(options = {}) {
     launchExtPage,
     extPage,
     launchOptionPage,
+    testDappPage,
+    launchTestDappPage,
     optionPage,
     closePages
   }

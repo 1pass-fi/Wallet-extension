@@ -1,4 +1,4 @@
-const finnieArweaveProviderScript = `() => {
+const finnieArweaveProviderScript = () => {
   class FinnieArweaveProvider {
     constructor(connection) {
       this.connection = connection
@@ -65,6 +65,6 @@ const finnieArweaveProviderScript = `() => {
   }
 
   window.FinnieArweaveProvider = FinnieArweaveProvider
-}`
+}
 
-export default finnieArweaveProviderScript
+finnieArweaveProviderScript()

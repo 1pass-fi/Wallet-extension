@@ -1,4 +1,4 @@
-const finnieKoiiWalletProviderScript = `() => {
+const finnieKoiiWalletProviderScript = () => {
   class FinnieKoiiWalletProvider {
     constructor(connection) {
       this.connection = connection
@@ -77,6 +77,6 @@ const finnieKoiiWalletProviderScript = `() => {
   }
 
   window.FinnieKoiiWalletProvider = FinnieKoiiWalletProvider
-}`
+}
 
-export default finnieKoiiWalletProviderScript
+finnieKoiiWalletProviderScript()

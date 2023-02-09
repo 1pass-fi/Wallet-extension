@@ -137,7 +137,7 @@ const CreatePassword = ({ step, setStep }) => {
             onClick={() => setIsAcceptTermService((prev) => !prev)}
             theme="dark"
             className="w-5 h-5"
-            id="new-password-tos"
+            data-testid="new-password-tos"
             role="checkbox"
           />
           <div className="flex ml-2.25 font-normal text-sm leading-6">

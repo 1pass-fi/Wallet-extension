@@ -151,7 +151,7 @@ describe('Send token via Solana network', () => {
     await importTokenButton.click()
 
     const searchInputField = await extPage.waitForSelector(`input`)
-    await extPage.waitForTimeout(3000)
+    await extPage.waitForTimeout(5000)
 
     await searchInputField.type(CUSTOM_TOKEN_ADDRESS.SOL_USDC_TOKEN)
 

@@ -1,4 +1,4 @@
-const finnieRpcConnectionScript = `() => {
+const finnieRpcConnectionScript = () => {
   class FinnieRpcConnection extends EventEmitter {
     constructor() {
       super()
@@ -19,6 +19,6 @@ const finnieRpcConnectionScript = `() => {
   }
   
   window.FinnieRpcConnection = FinnieRpcConnection
-}`
+}
 
-export default finnieRpcConnectionScript
+finnieRpcConnectionScript()

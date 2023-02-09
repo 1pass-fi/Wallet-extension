@@ -44,19 +44,21 @@ const mainScript = () => {
   // window.solana.checkConnection()
 }
 
-const arweaveWalletExcluded = () => {
-  window.connection = new FinnieRpcConnection()
+// const arweaveWalletExcluded = () => {
+//   window.connection = new FinnieRpcConnection()
 
-  window.addEventListener('message', function(event) {
-    window.connection.emit(event.data.type + '_' + event.data.id, event.data)
-  })
+//   window.addEventListener('message', function(event) {
+//     window.connection.emit(event.data.type + '_' + event.data.id, event.data)
+//   })
 
-  const finnieKoiiWalletProvider = new FinnieKoiiWalletProvider(window.connection)
+//   const finnieKoiiWalletProvider = new FinnieKoiiWalletProvider(window.connection)
 
-  window.koiiWallet = finnieKoiiWalletProvider
-}
+//   window.koiiWallet = finnieKoiiWalletProvider
+// }
 
-export default (disabledArweave) => {
-  if (disabledArweave) return arweaveWalletExcluded
-  else return mainScript
-}
+// export default (disabledArweave) => {
+//   if (disabledArweave) return arweaveWalletExcluded
+//   else return mainScript
+// }
+
+mainScript()

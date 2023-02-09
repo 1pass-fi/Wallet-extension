@@ -26,7 +26,7 @@ describe('e2e test', () => {
   it('Import new wallet(s)', async () => {
     await optionPage.bringToFront()
 
-    const tosCheckbox = await optionPage.waitForSelector(`[role="checkbox"]`)
+    const tosCheckbox = await optionPage.waitForSelector(`[data-testid="new-password-tos"]`)
     const passwordInput = await optionPage.$(`[placeholder="New Password"]`)
     const confirmPasswordInput = await optionPage.$(`[placeholder="Confirm Password"]`)
     const [loginButton] = await optionPage.$x(`//button[contains(text(), "Log In")]`)
@@ -312,7 +312,6 @@ describe('e2e test', () => {
     accountCardRemove = accountCards[0]
     accountAddressField = await accountCardRemove.$('[data-testid="account-card-address"]')
     accountAddress = await accountAddressField.evaluate((el) => el.textContent)
-    console.log(accountAddress)
 
     dropdownButton = await optionPage.$(`[data-testid="account-card-drop-down-${accountAddress}"]`)
     await dropdownButton.click()

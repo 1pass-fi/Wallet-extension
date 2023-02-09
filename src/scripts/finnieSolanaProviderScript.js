@@ -1,4 +1,4 @@
-const finnieK2ProviderScript = `() => {
+const finnieSolanaProviderScript = () => {
   function base (ALPHABET) {
     if (ALPHABET.length >= 255) { throw new TypeError('Alphabet too long') }
     var BASE_MAP = new Uint8Array(256)
@@ -24,7 +24,7 @@ const finnieK2ProviderScript = `() => {
       }
       if (!(source instanceof Uint8Array)) { throw new TypeError('Expected Uint8Array') }
       if (source.length === 0) { return '' }
-          // Skip & count leading zeroes.
+      // Skip & count leading zeroes.
       var zeroes = 0
       var length = 0
       var pbegin = 0
@@ -33,13 +33,13 @@ const finnieK2ProviderScript = `() => {
         pbegin++
         zeroes++
       }
-          // Allocate enough space in big-endian base58 representation.
+      // Allocate enough space in big-endian base58 representation.
       var size = ((pend - pbegin) * iFACTOR + 1) >>> 0
       var b58 = new Uint8Array(size)
-          // Process the bytes.
+      // Process the bytes.
       while (pbegin !== pend) {
         var carry = source[pbegin]
-              // Apply "b58 = b58 * 256 + ch".
+        // Apply "b58 = b58 * 256 + ch".
         var i = 0
         for (var it1 = size - 1; (carry !== 0 || i < length) && (it1 !== -1); it1--, i++) {
           carry += (256 * b58[it1]) >>> 0
@@ -50,12 +50,12 @@ const finnieK2ProviderScript = `() => {
         length = i
         pbegin++
       }
-          // Skip leading zeroes in base58 result.
+      // Skip leading zeroes in base58 result.
       var it2 = size - length
       while (it2 !== size && b58[it2] === 0) {
         it2++
       }
-          // Translate the result into a string.
+      // Translate the result into a string.
       var str = LEADER.repeat(zeroes)
       for (; it2 < size; ++it2) { str += ALPHABET.charAt(b58[it2]) }
       return str
@@ -64,21 +64,21 @@ const finnieK2ProviderScript = `() => {
       if (typeof source !== 'string') { throw new TypeError('Expected String') }
       if (source.length === 0) { return new Uint8Array() }
       var psz = 0
-          // Skip and count leading '1's.
+      // Skip and count leading '1's.
       var zeroes = 0
       var length = 0
       while (source[psz] === LEADER) {
         zeroes++
         psz++
       }
-          // Allocate enough space in big-endian base256 representation.
+      // Allocate enough space in big-endian base256 representation.
       var size = (((source.length - psz) * FACTOR) + 1) >>> 0 // log(58) / log(256), rounded up.
       var b256 = new Uint8Array(size)
-          // Process the characters.
+      // Process the characters.
       while (source[psz]) {
-              // Decode character
+        // Decode character
         var carry = BASE_MAP[source.charCodeAt(psz)]
-              // Invalid character
+        // Invalid character
         if (carry === 255) { return }
         var i = 0
         for (var it3 = size - 1; (carry !== 0 || i < length) && (it3 !== -1); it3--, i++) {
@@ -90,7 +90,7 @@ const finnieK2ProviderScript = `() => {
         length = i
         psz++
       }
-          // Skip leading zeroes in b256.
+      // Skip leading zeroes in b256.
       var it4 = size - length
       while (it4 !== size && b256[it4] === 0) {
         it4++
@@ -116,7 +116,7 @@ const finnieK2ProviderScript = `() => {
   
   const base58 = base('123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz')
 
-  class FinnieK2Provider extends EventEmitter {
+  class FinnieSolanaProvider extends EventEmitter {
     constructor(connection) {
       super()
       this.connection = connection
@@ -127,8 +127,16 @@ const finnieK2ProviderScript = `() => {
       this.isConnected = false
     }
 
+    async checkConnection() {
+      const message = { type: ENDPOINTS.SOLANA_CHECK_CONNECTION }
+      const result = await this.connection.send(message)
+      if(result === true) {
+        this.connect()
+      }
+    }
+
     async connect() {
-      const message = { type: ENDPOINTS.K2_CONNECT }
+      const message = { type: ENDPOINTS.SOLANA_CONNECT }
       const result = await this.connection.send(message)
       const publicKey = new window.solanaWeb3.PublicKey(result[0])
       this.publicKey = publicKey
@@ -138,7 +146,7 @@ const finnieK2ProviderScript = `() => {
     }
 
     async disconnect() {
-      const message = { type: ENDPOINTS.K2_DISCONNECT }
+      const message = { type: ENDPOINTS.SOLANA_DISCONNECT }
       const result = await this.connection.send(message)
       this.publicKey = null
       this.isConnected = false
@@ -146,8 +154,45 @@ const finnieK2ProviderScript = `() => {
       return result
     }
 
+    async signAllTransactions(payload) {
+      const transactions = payload.map(transaction => base58.encode(transaction.serialize()))
+      const message = { type: ENDPOINTS.SOLANA_SIGN_ALL_TRANSACTIONS, data: transactions }
+      let result = await this.connection.send(message)
+      result.forEach((signature, index) => {
+        // const _message = window.solanaWeb3.Message.from(base58.decode(message))
+        // const transaction = window.solanaWeb3.Transaction.populate(_message)
+        // return transaction
+        console.log('signature', signature)
+        signature[0].publicKey = new window.solanaWeb3.PublicKey(signature[0].publicKey)
+        signature[0].signature = Uint8Array.from(signature[0].signature.data)
+
+        console.log('signature 0', signature[0])
+        payload[0].addSignature(signature[0].publicKey, signature[0].signature)
+      })
+      console.log('transactions', payload)
+
+      return payload
+    }
+
+    async signTransaction(transaction) {
+      try {
+        const encodedMessage = base58.encode(transaction.serializeMessage())
+        const encodedSignedTransaction = await this.connection.send({ 
+          type: ENDPOINTS.SOLANA_SIGN_TRANSACTION,
+          data: encodedMessage
+        })
+  
+        const signedTransaction = window.solanaWeb3.Transaction.from(base58.decode(encodedSignedTransaction))
+        transaction.signatures = signedTransaction.signatures
+        return true
+      } catch (err) {
+        console.error('Sign transaction error:', err)
+        return false
+      }
+    }
+
     async signMessage(payload) {
-      const message = { type: ENDPOINTS.K2_SIGN_MESSAGE, data: payload }
+      const message = { type: ENDPOINTS.SOLANA_SIGN_MESSAGE, data: payload }
       const response = await this.connection.send(message)
 
       let signature = response.signature
@@ -162,31 +207,13 @@ const finnieK2ProviderScript = `() => {
       }
     }
 
-    async signTransaction(transaction) {
-      try {
-        const encodedMessage = base58.encode(transaction.serializeMessage())
-
-        const encodedSignedTransaction = await this.connection.send({ 
-          type: ENDPOINTS.K2_SIGN_TRANSACTION,
-          data: encodedMessage
-        })
-        const signedTransaction = window.solanaWeb3.Transaction.from(base58.decode(encodedSignedTransaction))
-        transaction.signatures = signedTransaction.signatures
-
-        return true
-      } catch (err) {
-        console.error('Sign transaction error:', err)
-        return false
-      }
-    }
-
     signAndSendTransaction(payload) {
-      const message = { type: ENDPOINTS.K2_SIGN_AND_SEND_TRANSACTION, data: base58.encode(payload) }
+      const message = { type: ENDPOINTS.SOLANA_SIGN_AND_SEND_TRANSACTION, data: base58.encode(payload) }
       return this.connection.send(message)
     }
   }
 
-  window.FinnieK2Provider = FinnieK2Provider
-}`
+  window.FinnieSolanaProvider = FinnieSolanaProvider
+}
 
-export default finnieK2ProviderScript
+finnieSolanaProviderScript()

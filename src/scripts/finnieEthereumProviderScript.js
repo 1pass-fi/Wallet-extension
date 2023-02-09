@@ -1,4 +1,4 @@
-const finnieEthereumProviderScript = `() => {
+const finnieEthereumProviderScript = () => {
   class FinnieEthereumProvider extends EventEmitter {
     constructor(connection) {
       super()
@@ -17,6 +17,6 @@ const finnieEthereumProviderScript = `() => {
   }
 
   window.FinnieEthereumProvider = FinnieEthereumProvider
-}`
+}
 
-export default finnieEthereumProviderScript
+finnieEthereumProviderScript()
