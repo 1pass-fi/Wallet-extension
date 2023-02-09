@@ -15,7 +15,7 @@ export const createPasswordStep = async (page, newPassword = true) => {
     await page.type('input[placeholder="Confirm Password"]', 'OpenKoi@123')
 
     // check tos
-    const tosCheckbox = await page.$(`[role="checkbox"]`)
+    const tosCheckbox = await page.waitForSelector(`[data-testid="new-password-tos"]`)
     await tosCheckbox.click()
   } else {
     await page.waitForSelector(`[placeholder="Password"]`)
