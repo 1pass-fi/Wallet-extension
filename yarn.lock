@@ -3,15 +3,15 @@
 
 
 "@_koi/kohaku@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@_koi/kohaku/-/kohaku-1.1.1.tgz#bfda79d48b452bba1e11403524e4e6d8e9506441"
-  integrity sha512-bb0GOQBpRr1pPExOBNYaECkqbY6qJT0TKv+4FX7ZogEnR7pQl5mdm1hyVmB6+77r7gLMpILm5N0Fj/jQNhYDHw==
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@_koi/kohaku/-/kohaku-1.1.2.tgz#9de6090acb7541050d05b8a2c9453174c40e8c50"
+  integrity sha512-x6WufLGOrH7B5L21N439+6p5TLdcsyXk/60qKcGJysiu27Q35YXteu3raplVSdiKc7ofILtuIjLVtFE5a8NreA==
   dependencies:
-    smartweave "^0.4.45"
+    smartweave "^0.4.46"
 
 "@_koi/sdk@https://github.com/minhvu-eastagile/koi-tools":
   version "2.4.13"
-  resolved "https://github.com/minhvu-eastagile/koi-tools#196e6563495a2b614361033088aad8ef420c002e"
+  resolved "https://github.com/minhvu-eastagile/koi-tools#6d61a966355d9861206f3df43c9ab68bf023e410"
   dependencies:
     "@_koi/kohaku" "^1.1.1"
     "@vespaiach/axios-fetch-adapter" "^0.3.1"
@@ -7633,9 +7633,9 @@ delayed-stream@~1.0.0:
   integrity sha1-3zrhmayt+31ECqrgsp4icrJOxhk=
 
 denque@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/denque/-/denque-1.5.0.tgz#773de0686ff2d8ec2ff92914316a47b73b1c73de"
-  integrity sha512-CYiCSgIF1p6EUByQPlGkKnP1M9g0ZV3qMIrqMqZqdwazygIA/YP2vrbcyl1h/WppKJTdl1F85cXIle+394iDAQ==
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/denque/-/denque-1.5.1.tgz#07f670e29c9a78f8faecb2566a1e2c11929c5cbf"
+  integrity sha512-XwE+iZ4D6ZUB7mfYRMb5wByE8L74HCn30FBN7sWnXksWc1LO1bPDl67pBR9o/kC4z/xSNAwkMYcGgqDV3BE3Hw==
 
 depd@~1.1.2:
   version "1.1.2"
@@ -7864,9 +7864,9 @@ domain-browser@^1.1.1:
   integrity sha512-jnjyiM6eRyZl2H+W8Q/zLMA481hzi0eszAaBUzIVnmYVDBbnLxVNnfu1HgEBvCbL+71FrxMl3E6lpKH7Ge3OXA==
 
 domain-browser@^4.19.0:
-  version "4.19.0"
-  resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-4.19.0.tgz#1093e17c0a17dbd521182fe90d49ac1370054af1"
-  integrity sha512-fRA+BaAWOR/yr/t7T9E9GJztHPeFjj8U35ajyAjCDtAAnTn1Rc1f6W6VGPJrO1tkQv9zWu+JRof7z6oQtiYVFQ==
+  version "4.22.0"
+  resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-4.22.0.tgz#6ddd34220ec281f9a65d3386d267ddd35c491f9f"
+  integrity sha512-IGBwjF7tNk3cwypFNH/7bfzBcgSCbaMOD3GsaY1AU/JRrnHnYgEM0+9kQt52iZxjNsjBtJYtao146V+f8jFZNw==
 
 domelementtype@1, domelementtype@^1.3.0, domelementtype@^1.3.1:
   version "1.3.1"
@@ -8272,7 +8272,7 @@ es6-map@^0.1.3:
 es6-object-assign@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/es6-object-assign/-/es6-object-assign-1.1.0.tgz#c2c3582656247c39ea107cb1e6652b6f9f24523c"
-  integrity sha1-wsNYJlYkfDnqEHyx5mUrb58kUjw=
+  integrity sha512-MEl9uirslVwqQU369iHNWZXsI8yaZYGg/D65aOgZkeyFJwHYSxilf7rQzXKI7DdDuBPrBXbfk3sl9hJhmd5AUw==
 
 es6-promise@^2.0.1:
   version "2.3.0"
@@ -16300,7 +16300,7 @@ query-string@^5.0.1:
 querystring-es3@^0.2.0, querystring-es3@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
-  integrity sha1-nsYfeQSYdXB9aUFFlv2Qek1xHnM=
+  integrity sha512-773xhDQnZBMFobEiztv8LIl70ch5MSF/jUQVlhwFyBILqq96anmoctVIYz+ZRp0qbCKATTn6ev02M3r7Ga5vqA==
 
 querystring@0.2.0:
   version "0.2.0"
@@ -16802,12 +16802,12 @@ redis-commands@^1.7.0:
 redis-errors@^1.0.0, redis-errors@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/redis-errors/-/redis-errors-1.2.0.tgz#eb62d2adb15e4eaf4610c04afe1529384250abad"
-  integrity sha1-62LSrbFeTq9GEMBK/hUpOEJQq60=
+  integrity sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w==
 
 redis-parser@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/redis-parser/-/redis-parser-3.0.0.tgz#b66d828cdcafe6b4b8a428a7def4c6bcac31c8b4"
-  integrity sha1-tm2CjNyv5rS4pCin3vTGvKwxyLQ=
+  integrity sha512-DJnGAeenTdpMEH6uAJRK/uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A==
   dependencies:
     redis-errors "^1.0.0"
 
@@ -17960,7 +17960,7 @@ smart-buffer@^1.0.13:
   resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-1.1.15.tgz#7f114b5b65fab3e2a35aa775bb12f0d1c649bf16"
   integrity sha1-fxFLW2X6s+KjWqd1uxLw0cZJvxY=
 
-smartweave@^0.4.45, smartweave@^0.4.46:
+smartweave@^0.4.46:
   version "0.4.46"
   resolved "https://registry.yarnpkg.com/smartweave/-/smartweave-0.4.46.tgz#55e2eb0e006e6ca84e5eb99f1bea7f19ac8a98db"
   integrity sha512-wZMCBRz5n+uElzdpEbQOvHs32q1rnAPVMlR57gtoKSSAtMolUVjjlcl6WK2RBU5doi9PQdUEHB/c7nLRwgfSew==
@@ -19944,7 +19944,7 @@ util@^0.11.0:
   dependencies:
     inherits "2.0.3"
 
-util@^0.12.0, util@^0.12.4:
+util@^0.12.0:
   version "0.12.4"
   resolved "https://registry.yarnpkg.com/util/-/util-0.12.4.tgz#66121a31420df8f01ca0c464be15dfa1d1850253"
   integrity sha512-bxZ9qtSlGUWSOy9Qa9Xgk11kSslpuZwaxCg4sNIDj6FLucDab2JxnHwyNTCpHMtK1MjoQiWQ6DiUMZYbSrO+Sw==
@@ -19954,6 +19954,17 @@ util@^0.12.0, util@^0.12.4:
     is-generator-function "^1.0.7"
     is-typed-array "^1.1.3"
     safe-buffer "^5.1.2"
+    which-typed-array "^1.1.2"
+
+util@^0.12.4:
+  version "0.12.5"
+  resolved "https://registry.yarnpkg.com/util/-/util-0.12.5.tgz#5f17a6059b73db61a875668781a1c2b136bd6fbc"
+  integrity sha512-kZf/K6hEIrWHI6XqOFUiiMa+79wE/D8Q+NCNAWclkyg3b4d2k7s0QGepNjiABc+aR3N1PAyHL7p6UcLY6LmrnA==
+  dependencies:
+    inherits "^2.0.3"
+    is-arguments "^1.0.4"
+    is-generator-function "^1.0.7"
+    is-typed-array "^1.1.3"
     which-typed-array "^1.1.2"
 
 utila@~0.4:
