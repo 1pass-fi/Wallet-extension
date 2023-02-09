@@ -152,7 +152,7 @@ const useTokenLists = ({ account, address, setIsLoading, currentProviderAddress 
     }
 
     if (!isEmpty(address)) loadTokenList()
-  }, [importedTokenAddresses])
+  }, [importedTokenAddresses, account, currentProviderAddress])
 
   return { tokenList }
 }

@@ -52,6 +52,7 @@ const NavBar = ({ step, setStep }) => {
           className="absolute top-5.5 left-6 cursor-pointer"
           style={{ width: '45px', height: '45px' }}
           onClick={handleBack}
+          name="back-button"
         />
       )}
       {step === 0 && !isEmpty(accounts) && (
@@ -59,6 +60,7 @@ const NavBar = ({ step, setStep }) => {
           className="absolute top-5.5 left-6 cursor-pointer"
           style={{ width: '45px', height: '45px' }}
           onClick={handleBack}
+          name="back-button"
         />
       )}
 

@@ -703,7 +703,7 @@ export class EthereumMethod {
       const sendingPromise = (await ethersProvider.sendTransaction(rawTransaction)).wait()
 
       return { txHash, sendingPromise, symbol, decimals }
-    } catch (error) {
+    } catch (err) {
       console.error(`Failed to transfer: ${err}`)
     }
   }

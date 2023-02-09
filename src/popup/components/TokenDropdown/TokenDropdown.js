@@ -10,11 +10,14 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken, customToken
     <div
       className="absolute top-0 right-0 flex flex-col bg-blue-800 cursor-pointer"
       style={{ width: '68px' }}
+      role="menu"
     >
       <div
         className="flex items-center justify-evenly cursor-pointer"
         style={{ height: '45px' }}
         onClick={() => onChangeToken(selectedToken)}
+        role="option"
+        data-testid={selectedToken?.symbol}
       >
         {selectedToken?.logo ? (
           <img src={selectedToken.logo} style={{ width: '34px', height: '34px' }} />
@@ -24,13 +27,16 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken, customToken
         )}
         <ArrowIcon style={{ transform: 'rotateX(180deg)' }} />
       </div>
-      {tokenOptions.map((token, idx) => (
-        <div key={idx}>
-          {!isEqual(token, selectedToken) && (
+      {tokenOptions.map((token, idx) => {
+        if (!isEqual(token, selectedToken))
+          return (
             <div
+              key={idx}
               className="flex items-center"
               style={{ height: '45px' }}
               onClick={() => onChangeToken(token)}
+              data-testid={token.symbol}
+              role="option"
             >
               {token?.logo ? (
                 <img src={token.logo} className="ml-2" style={{ width: '34px', height: '34px' }} />
@@ -43,9 +49,8 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken, customToken
                 />
               )}
             </div>
-          )}
-        </div>
-      ))}
+          )
+      })}
     </div>
   )
 }

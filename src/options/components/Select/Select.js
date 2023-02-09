@@ -88,6 +88,7 @@ const Select = ({ options, value, onChange, emptyOption = false }) => {
           className={clsx(
             'cursor-pointer focus:outline-none bg-transparent font-normal text-sm leading-8 tracking-finnieSpacing-tight text-blue-800 select-none'
           )}
+          data-testid="current-label"
         >
           {!isEmpty(selectedItem?.label) ? selectedItem.label : ''}
         </div>
@@ -109,6 +110,7 @@ const Select = ({ options, value, onChange, emptyOption = false }) => {
               )}
               key={idx}
               onClick={() => selectItem(item)}
+              data-testid={item.label}
             >
               {item.label}
             </button>

@@ -18,7 +18,6 @@ import TokenDropdown from 'popup/components/TokenDropdown'
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
 // hooks
-import useAccountList from './hooks/useAccountList'
 import useMethod from './hooks/useMethod'
 import useSelectedAccount from './hooks/useSelectedAccount'
 import useTokenList from './hooks/useTokenList'
@@ -191,6 +190,7 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
           onChange={onChangeAmount}
           value={amount}
           disabled={isEmpty(selectedAccount)}
+          data-testid="input-send-amount"
         ></input>
         <div
           className={clsx(
@@ -202,6 +202,8 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
           }}
           style={{ width: '68px', height: '45px' }}
           ref={tokenDropdownRef}
+          role="button"
+          data-testid="token-dropdown"
         >
           {isEmpty(selectedToken) && <FinnieIcon style={{ width: '34px', height: '34px' }} />}
           {!isEmpty(selectedToken) &&

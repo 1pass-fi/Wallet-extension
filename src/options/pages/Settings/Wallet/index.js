@@ -157,12 +157,16 @@ export default () => {
         <div className="header">Wallet Settings</div>
         <div className="mt-10 pl-5">
           <div className="add-wallet pb-2 mb-4 border-b border-white">
-            <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">Add a Key</div>
+            <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
+              Add a Key
+            </div>
             <div className="flex gap-6.75 my-1">
               <div
                 className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center mr-6.75 cursor-pointer"
                 style={{ width: '220px', height: '38px' }}
                 onClick={onCreateWallet}
+                data-testid="setting-create-wallet"
+                role="button"
               >
                 Create a New Key
               </div>
@@ -170,6 +174,8 @@ export default () => {
                 className="bg-trueGray-100 rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center cursor-pointer"
                 style={{ width: '220px', height: '38px' }}
                 onClick={onImportSeedPhrase}
+                data-testid="setting-import-wallet"
+                role="button"
               >
                 Import with Phrase
               </div>
@@ -250,7 +256,7 @@ export default () => {
             </DragDropContext> */}
             {listAccounts.map((account, index) => (
               <AccountCard
-                key={index}
+                key={account.address}
                 account={account}
                 setShowConfirmRemoveAccount={setShowConfirmRemoveAccount}
                 setRemoveAccount={setRemoveAccount}

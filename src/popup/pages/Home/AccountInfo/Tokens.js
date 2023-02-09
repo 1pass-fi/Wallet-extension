@@ -236,7 +236,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
       {(displayingAccount.type === TYPE.ETHEREUM ||
         displayingAccount.type === TYPE.SOLANA ||
         displayingAccount.type === TYPE.K2) && (
-        <div className="mt-1.5 mb-4 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
+        <div className="mt-1.5 mb-4 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800" data-testid="import-token-button">
           {/* <span
           className="cursor-pointer underline text-success-700"
           onClick={() => handleRefreshTokenList()}

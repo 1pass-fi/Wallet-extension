@@ -13,6 +13,7 @@ const CheckBoxDark = ({ onClick, disabled, checked = false, className, ...props 
       )}
       onClick={!disabled ? onClick : () => {}}
       {...props}
+      role="checkbox"
     >
       {checked ? <CheckIcon className="w-2.25 h-1.75" /> : null}
     </div>

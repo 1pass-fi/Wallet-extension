@@ -186,7 +186,7 @@ const HomeTop = ({
         <div className="flex justify-between">
           <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />
           {displayingAccount.type === TYPE.K2 && (
-            <div className="mr-1.75">
+            <div className="mr-1.75" data-testid="provider-dropdown">
               <Select
                 options={k2ProviderOptions}
                 value={currentProviderAddress}
@@ -195,7 +195,7 @@ const HomeTop = ({
             </div>
           )}
           {displayingAccount.type === TYPE.ETHEREUM && (
-            <div className="mr-1.75">
+            <div className="mr-1.75" data-testid="provider-dropdown">
               <Select
                 options={providerOptions}
                 value={currentProviderAddress}
@@ -204,7 +204,7 @@ const HomeTop = ({
             </div>
           )}
           {displayingAccount.type === TYPE.SOLANA && (
-            <div className="mr-1.75">
+            <div className="mr-1.75" data-testid="provider-dropdown">
               <Select
                 options={solanaProviderOptions}
                 value={currentProviderAddress}
@@ -224,9 +224,7 @@ const HomeTop = ({
                   className="text-base leading-8 tracking-finnieSpacing-tight"
                   style={{ color: '#707070' }}
                 >
-                  {fiatCurrencyFormat(
-                    (displayingAccount.balance * price.SOL) / Math.pow(10, 9)
-                  )}{' '}
+                  {fiatCurrencyFormat((displayingAccount.balance * price.SOL) / Math.pow(10, 9))}{' '}
                   {currency}
                 </div>
               )}
@@ -272,34 +270,33 @@ const HomeTop = ({
           <RefreshIcon
             className="ml-2.5 mt-2.5 cursor-pointer"
             onClick={async () => await request.wallet.loadBalanceAsync()}
+            data-testid="reload-balance-popup-button"
           />
         </div>
 
         <div className="mt-5 flex items-center justify-between" style={{ width: '140px' }}>
-          <div className="flex flex-col items-center justify-center">
-            <Link
+          <Link className="flex flex-col items-center justify-center" to="/send" role="button">
+            <div
               className="rounded-full bg-lightBlue shadow flex items-center justify-center cursor-pointer"
               style={{ width: '44px', height: '44px' }}
-              to="/send"
             >
-              <SendIcon style={{ width: '23px', height: '20px' }} />
-            </Link>
+              <SendIcon style={{ width: '23px', height: '20px' }} data-testid="icon-send-tokens" />
+            </div>
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
               SEND
             </div>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <Link
+          </Link>
+          <Link className="flex flex-col items-center justify-center" to="/receive" role="button">
+            <div
               className="rounded-full bg-lightBlue shadow flex items-center justify-center cursor-pointer"
               style={{ width: '44px', height: '44px' }}
-              to="/receive"
             >
               <ReceiveIcon style={{ width: '23px', height: '20px' }} />
-            </Link>
+            </div>
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
               RECEIVE
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

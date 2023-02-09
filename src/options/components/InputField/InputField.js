@@ -25,7 +25,7 @@ const InputField = ({
   autoFocus = false,
   onKeyDown = () => {},
   id,
-  errorId
+  errorId='',
 }) => {
   const [textAreaHeight, setTextAreaHeight] = useState(83)
 
@@ -110,6 +110,7 @@ const InputField = ({
             <ToggleViewPw
               onClick={() => setShowPw((prev) => !prev)}
               className="w-6 h-6 cursor-pointer absolute top-1 right-2"
+              data-testid={`show-${id}`}
             />
           )}
         </div>

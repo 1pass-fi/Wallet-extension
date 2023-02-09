@@ -105,6 +105,7 @@ export const AccountDropdown = React.forwardRef(
         <div
           className="bg-indigo-400 select-none overflow-y-auto overflow-x-hidden"
           style={{ maxHeight: '438px' }}
+          data-testid="popup-header-account-dropdown"
         >
           {accounts.map((account, idx) => (
             <div
@@ -115,6 +116,7 @@ export const AccountDropdown = React.forwardRef(
               key={idx}
               style={{ height: '108px' }}
               onClick={() => handleChangeDisplayAccount(account)}
+              data-testid="popup-header-account"
             >
               {account.type === TYPE.ARWEAVE && (
                 <ArweaveIcon className="ml-2.5 mt-1 h-6.25 w-6.25" />
@@ -125,44 +127,67 @@ export const AccountDropdown = React.forwardRef(
               )}
               {account.type === TYPE.SOLANA && <SolanaIcon className="ml-2.5 h-6.25 w-6.25" />}
               <div className="flex flex-col" style={{ width: '154px' }}>
-                <div className="font-semibold text-base tracking-finnieSpacing-tight text-white">
+                <div
+                  className="font-semibold text-base tracking-finnieSpacing-tight text-white"
+                  data-testid="popup-header-account-name"
+                >
                   {formatLongString(account.accountName, 12)}
                 </div>
                 <div className="font-normal text-2xs leading-4 tracking-finnieSpacing-tight text-turquoiseBlue flex justify-between items-center">
-                  <span style={{ width: '140px' }} className="break-all">
+                  <span
+                    style={{ width: '140px' }}
+                    className="break-all"
+                    data-testid="popup-header-account-address"
+                  >
                     {formatLongString(account.address, 20, true)}
                   </span>
                   <CopyIcon
-                    onClick={(e) => {
+                    onClick={async (e) => {
                       e.stopPropagation()
                       onCopy()
-                      navigator.clipboard.writeText(account.address)
+                      await navigator.clipboard.writeText(account.address)
                     }}
                     className="cursor-pointer focus:outline-none"
                     style={{ width: '13px', height: '13px' }}
+                    data-testid="copy-address-icon"
                   />
                 </div>
                 {account.type === TYPE.ARWEAVE && (
-                  <div className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white">
+                  <div
+                    className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
+                    data-testid="popup-header-account-balance"
+                  >
                     Balance: {formatNumber(account.koiBalance, 2)} KOII
                   </div>
                 )}
                 {account.type === TYPE.K2 && (
-                  <div className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white">
+                  <div
+                    className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
+                    data-testid="popup-header-account-balance"
+                  >
                     Balance: {formatNumber(account.balance / Math.pow(10, 9), 2)} KOII
                   </div>
                 )}
                 {account.type === TYPE.ETHEREUM && (
-                  <div className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white">
+                  <div
+                    className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
+                    data-testid="popup-header-account-balance"
+                  >
                     Balance: {formatNumber(account.balance, 2)} ETH
                   </div>
                 )}
                 {account.type === TYPE.SOLANA && (
-                  <div className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white">
+                  <div
+                    className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
+                    data-testid="popup-header-account-balance"
+                  >
                     Balance: {formatNumber(account.balance / Math.pow(10, 9), 2)} SOL
                   </div>
                 )}
-                <div className="font-normal text-xs leading-4 tracking-finnieSpacing-tight text-white">
+                <div
+                  className="font-normal text-xs leading-4 tracking-finnieSpacing-tight text-white"
+                  data-testid="popup-header-account-assets"
+                >
                   Assets: {account.totalAssets.length}
                 </div>
               </div>

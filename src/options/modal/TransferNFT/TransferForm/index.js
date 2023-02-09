@@ -17,6 +17,7 @@ const TransferFrom = ({
           type="text"
           value={receiverAddress}
           onChange={(e) => setReceiverAddress(e.target.value)}
+          name="receiver-address-input"
         />
         <div className="warning">
           <div className="warning-icon">
@@ -39,6 +40,7 @@ const TransferFrom = ({
           value={numberToTransfer}
           onChange={(e) => setNumberToTransfer(e.target.value)}
           disabled={true}
+          name="nft-amount-input"
         />
         <div className="description">Many NFTs will only have 1 item minted.</div>
       </div>

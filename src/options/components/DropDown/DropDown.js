@@ -100,6 +100,7 @@ const DropDown = ({
         variants[variant].wrapper
       )}
       ref={dropDownRef}
+      role="listbox"
     >
       <div className="flex items-center rounded-finnie" onClick={toggleList}>
         {filterSupported ? (
@@ -119,6 +120,7 @@ const DropDown = ({
               sizes[size].header,
               variants[variant].header
             )}
+            role="option"
           >
             {filterValue}
           </div>
@@ -128,6 +130,7 @@ const DropDown = ({
             'absolute top-0 rounded-r-finnie flex items-center justify-center cursor-pointer bg-white',
             size === 'lg' ? 'w-8 xl:w-9 2xl:w-10 3xl:w-12 h-8 xl:h-9 2xl:h-10 3xl:h-12 -right-0.25' : 'w-5 xl:w-6 2xl:w-7 3xl:w-8 h-5 xl:h-6 2xl:h-7 3xl:h-8 right-0'
           )}
+          role="button"
         >
           <DownIconBlue className="h-1.75 w-3.25" />
         </div>
@@ -161,6 +164,7 @@ const DropDown = ({
               className={clsx('text-left', sizes[size].row, variants[variant].row)}
               key={idx}
               onClick={() => selectItem(item)}
+              role="option"
             >
               {item.label}
             </button>

@@ -142,7 +142,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
           })}
         </div>
 
-        <div className="mt-1.5 text-red-finnie ml-7 text-xs font-normal h-2">{messageError}</div>
+        <div data-testid="import-phrase-error" className="mt-1.5 text-red-finnie ml-7 text-xs font-normal h-2">{messageError}</div>
 
         <Button
           style={{ width: '240px', height: '42px' }}

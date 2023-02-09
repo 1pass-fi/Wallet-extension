@@ -22,7 +22,8 @@ const useMethod = ({
   setTxId,
   setShowReceipt,
   getFeeInterval,
-  totalFee
+  totalFee,
+  balance
 }) => {
   const handleSendEth = async () => {
     let qty = get(transactionPayload, 'value')
@@ -133,11 +134,18 @@ const useMethod = ({
       const senderAddress = get(transactionPayload, 'from')
 
       const account = await popupAccount.getAccount({ address: senderAddress })
-      const balance = await account.get.balance()
+      const accountBalance = (await account.get.balance()) / Math.pow(10, 9)
 
-      if (balance < totalOriginExpense) {
+      if (accountBalance < totalOriginExpense) {
         setError('Not enough tokens')
         return
+      }
+
+      if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
+        if (balance < value) {
+          setError('Not enough tokens')
+          return
+        }
       }
     } catch (err) {
       console.error('Balance validate error: ', err.message)

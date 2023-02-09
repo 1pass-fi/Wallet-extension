@@ -82,7 +82,7 @@ const useSendValue = ({
           const data = get(transactionPayload, 'data')
           const decode = decodeERC20Transaction(data)
           let quantity = get(decode, 'params[1].value')
-          const customTokenRecipient = get(decode, 'params[0].value')
+          const customTokenRecipient = ethers.utils.getAddress(get(decode, 'params[0].value'))
 
           setRawValue(quantity)
 

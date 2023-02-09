@@ -22,6 +22,7 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
       onClick={() => {
         setShowAccountDropdown((prev) => !prev)
       }}
+      data-testid="popup-header-displayingaccount"
     >
       {isEmpty(displayingAccount?.address) ? (
         <div className="ml-3.75 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">

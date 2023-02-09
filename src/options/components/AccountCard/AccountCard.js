@@ -20,17 +20,20 @@ import ReavealSeedphraseIcon from 'img/v2/settings/reveal-seedphrase-icon.svg'
 import SeeExtensionIcon from 'img/v2/settings/see-extension-icon.svg'
 import SeeQRIcon from 'img/v2/settings/see-QR-icon.svg'
 import SolLogo from 'img/v2/solana-logo.svg'
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import isNumber from 'lodash/isNumber'
 import { setAccounts } from 'options/actions/accounts'
 import { loadAllAccounts } from 'options/actions/accounts'
 import { setActivatedChain } from 'options/actions/activatedChain'
+import { setAssets } from 'options/actions/assets'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setError } from 'options/actions/error'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
 import DropDown from 'options/components/DropDown'
 import ToolTip from 'options/components/ToolTip'
 import { GalleryContext } from 'options/galleryContext'
+import classifyAssets from 'options/utils/classifyAssets'
 import formatLongString from 'options/utils/formatLongString'
 import formatNumber from 'options/utils/formatNumber'
 import { popupAccount } from 'services/account'
@@ -271,7 +274,7 @@ const AccountCard = ({
           'flex items-center justify-center my-auto bg-lightBlue rounded-full shadow-sm cursor-pointer'
         )}
       >
-        <CopyToClipboard text={address} onCopy={onCopy}>
+        <CopyToClipboard text={address} onCopy={onCopy} data-testid="account-card-copy-icon">
           {isCopied ? (
             <CheckMarkIcon className="w-2.75 xl:w-3.5 2xl:w-4.25 3xl:w-5 h-2.75 xl:h-3.5 2xl:h-4.25 3xl:h-5" />
           ) : (
@@ -280,6 +283,32 @@ const AccountCard = ({
         </CopyToClipboard>
       </div>
     )
+  }
+  const fetchAssets = async () => {
+    let allCollections = await popupAccount.getAllCollections()
+    let allCollectionNfts = await popupAccount.getAllCollectionNfts()
+    let allAssets, validAssets
+
+    const loadCollection = async () => {
+      console.log('LOADING COLLECTION')
+      await backgroundRequest.gallery.loadCollections()
+      allCollections = await popupAccount.getAllCollections()
+      allCollectionNfts = await popupAccount.getAllCollectionNfts()
+    }
+
+    const loadNfts = async () => {
+      await backgroundRequest.assets.loadAllContent()
+      allAssets = await popupAccount.getAllAssets()
+      validAssets = allAssets.filter((asset) => asset.name !== '...')
+      validAssets = classifyAssets(validAssets, allCollections)
+      validAssets = validAssets.filter((nft) => !get(nft, 'name')?.includes('DID Profile Page'))
+      dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
+    }
+
+    dispatch(setIsLoading)
+    await Promise.all([loadCollection, loadNfts].map((f) => f()))
+    validAssets = classifyAssets(validAssets, allCollections)
+    dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
   }
 
   const onChangeK2Provider = async (value) => {
@@ -294,6 +323,9 @@ const AccountCard = ({
 
       // load balance
       await backgroundRequest.wallet.loadBalanceAsync()
+
+      // load nfts
+      // await fetchAssets() // TODO DatH: Uncomment this line when NFTs is available for K2 network
 
       // update account state
       await dispatch(loadAllAccounts())
@@ -318,6 +350,9 @@ const AccountCard = ({
 
       // load balance
       await backgroundRequest.wallet.loadBalanceAsync()
+
+      // load nfts
+      await fetchAssets()
 
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.NETWORK_CHANGED })
@@ -351,6 +386,9 @@ const AccountCard = ({
       // load balance
       await backgroundRequest.wallet.loadBalanceAsync()
 
+      // load nfts
+      await fetchAssets()
+
       // update account state
       await dispatch(loadAllAccounts())
     } catch (error) {
@@ -370,7 +408,7 @@ const AccountCard = ({
   })
 
   return (
-    <div className="mt-4.5 text-indigo select-none">
+    <div className="mt-4.5 text-indigo select-none" data-testid="account-card-setting-page">
       <div
         className={clsx(
           'max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl h-32 xl:h-34.75 2xl:h-37.75 3xl:h-40',
@@ -407,11 +445,13 @@ const AccountCard = ({
                 onKeyDown={(e) => handleKeyDown(e, account)}
                 onChange={(e) => setAccountName(e.target.value)}
                 // style={{ height: '17.23px' }}
+                data-testid="input-account-name"
               />
             ) : (
               <div
                 // className="max-w-24 pl-6.5"
                 className="font-semibold max-w-40"
+                data-testid="account-card-accountname"
               >
                 {formatLongString(account.accountName, 20)}
               </div>
@@ -420,24 +460,32 @@ const AccountCard = ({
               <EditIcon
                 onClick={() => handleChangeAccountName(account)}
                 className="w-4 xl:w-5 2xl:w-6 3xl:w-8 h-4 xl:h-5 2xl:h-6 3xl:h-8 inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
+                data-testid="edit-account-name-icon"
               />
             ) : (
               <SaveIcon
                 onClick={() => handleChangeAccountName(account)}
                 className="w-4 xl:w-5 2xl:w-6 3xl:w-8 h-4 xl:h-5 2xl:h-6 3xl:h-8 inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
+                data-testid="save-account-name-icon"
               />
             )}
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="flex items-center text-success-700 text-opacity-80 text-2xs 2xl:text-11px 3xl:text-xs font-normal leading-6 tracking-finnieSpacing-tight">
+            <div
+              className="flex items-center text-success-700 text-opacity-80 text-2xs 2xl:text-11px 3xl:text-xs font-normal leading-6 tracking-finnieSpacing-tight"
+              data-testid="account-card-address"
+            >
               {account.address}
             </div>
             <CopyAddressIcon address={account.address} key={account.address} />
           </div>
 
           {account.type === TYPE.K2 && (
-            <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight">
+            <div
+              className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
+              data-testid="account-card-balance"
+            >
               Balance:{' '}
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance / Math.pow(10, 9), 4)
@@ -446,14 +494,20 @@ const AccountCard = ({
             </div>
           )}
           {account.type === TYPE.ETHEREUM && (
-            <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight">
+            <div
+              className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
+              data-testid="account-card-balance"
+            >
               Balance:{' '}
               {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'}{' '}
               ETH
             </div>
           )}
           {account.type === TYPE.SOLANA && (
-            <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight">
+            <div
+              className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
+              data-testid="account-card-balance"
+            >
               Balance:{' '}
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance / Math.pow(10, 9), 4)
@@ -463,7 +517,10 @@ const AccountCard = ({
           )}
           {account.type === TYPE.ARWEAVE && (
             <>
-              <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight">
+              <div
+                className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
+                data-testid="account-card-balance"
+              >
                 Balance: {isNumber(account.balance) ? formatNumber(account.balance, 4) : '0'} AR
               </div>
               {/* <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight">
@@ -473,7 +530,10 @@ const AccountCard = ({
             </>
           )}
 
-          <div className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight leading-6">
+          <div
+            className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight leading-6"
+            data-testid="account-card-assets"
+          >
             Assets: {account.totalAssets.length}
           </div>
         </div>
@@ -536,6 +596,7 @@ const AccountCard = ({
               'w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9'
             )}
             onClick={() => setIsDrop((prev) => !prev)}
+            data-testid={`account-card-drop-down-${account.address}`}
           >
             <ExtendIcon
               style={{ width: '8px', height: '4.25px' }}
@@ -558,11 +619,12 @@ const AccountCard = ({
               <div className="w-1/2 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 Account Balance:
               </div>
-              <div className="flex flex-col gap-1">
-                {tokenList?.map((token, idx) => (
+              <div className="flex flex-col gap-1" data-testid="account-card-account-balance">
+                {tokenList.map((token, idx) => (
                   <div
                     className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight"
                     key={idx}
+                    data-testid={`account-card-account-balance-${token.symbol}`}
                   >
                     {formatNumber(token.displayingBalance, 4)} {token.symbol}
                   </div>
@@ -574,7 +636,10 @@ const AccountCard = ({
               <div className="w-1/2 flex justify-end text-right font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 NFT Assets:
               </div>
-              <div className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+              <div
+                className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight"
+                data-testid="account-card-nft-assets"
+              >
                 {account.totalAssets.length} {account.type === TYPE.ARWEAVE && 'AR'}
                 {account.type === TYPE.ETHEREUM && 'ETH'}
                 {account.type === TYPE.SOLANA && 'SOL'}
@@ -638,7 +703,10 @@ const AccountCard = ({
               <div className="w-3/4 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 Reveal Secret Phrase:{' '}
               </div>
-              <div className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer">
+              <div
+                className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
+                data-testid={`account-card-reveal-secret-phrase-${account.address}`}
+              >
                 <ReavealSeedphraseIcon className="w-4 xl:w-5 2xl:w-6 3xl:w-7 h-4 xl:h-5 2xl:h-6 3xl:h-7" />
               </div>
             </div>
@@ -677,6 +745,7 @@ const AccountCard = ({
               setShowConfirmRemoveAccount(true)
               setRemoveAccount(account)
             }}
+            data-testid={`account-card-remove-account-${account.address}`}
           >
             <RecycleBinIcon
               className="w-4 xl:w-4.5 2xl:w-5 3xl:w-6 h-4.75 xl:h-5 2xl:h-6.5 3xl:h-7.5"

@@ -129,12 +129,14 @@ const RecoveryPhraseModal = ({ account, close }) => {
                 )}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) => handleKeyDown(e)}
+                name="finnie password"
               ></input>
               {!showPassword ? (
                 <EyeIcon
                   style={{ width: '29px', height: '18px' }}
                   className="absolute top-2.5 right-2.5 cursor-pointer"
                   onClick={() => setShowPassword((prev) => !prev)}
+                  name="show password button"
                 />
               ) : (
                 <EyeIcon1
@@ -151,7 +153,9 @@ const RecoveryPhraseModal = ({ account, close }) => {
                 className="pl-1.75 flex items-center mt-2 bg-warning rounded"
               >
                 <NoticeIcon className="w-4.25" />
-                <span className="ml-1.75">{passwordError}</span>
+                <span className="ml-1.75" data-testid="reveal-secret-phrase-password-error">
+                  {passwordError}
+                </span>
               </div>
             )}
             {/* : (
@@ -189,13 +193,13 @@ const RecoveryPhraseModal = ({ account, close }) => {
               className="select-text mt-7.5 py-3.5 bg-blue-800 rounded-sm grid grid-flow-col grid-rows-6 font-normal text-sm text-white leading-6"
             >
               {seedPhrase
-                ?.trim()
-                ?.split(' ')
+                .trim()
+                .split(' ')
                 .map((phrase, index) => {
                   return (
                     <div className="mx-7.5 my-auto flex" key={index}>
                       <div className="w-5 text-right mr-3">{index + 1}. </div>
-                      <div>{phrase}</div>
+                      <div data-testid={`secret-phrase-${index}`}>{phrase}</div>
                     </div>
                   )
                 })}

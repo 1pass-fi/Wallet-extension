@@ -196,7 +196,7 @@ const useGetFee = ({ network, transactionPayload }) => {
   }, [transactionPayload, network])
 
   const Fee = () => (
-    <div>
+    <div data-testid="tx-confirm-fee">
       {isNumber(totalFee) ? numberFormat(totalFee, 8) : totalFee} {tokenSymbol}
     </div>
   )

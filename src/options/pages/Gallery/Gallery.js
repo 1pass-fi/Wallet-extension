@@ -47,6 +47,7 @@ const Gallery = () => {
           'w-full h-full gap-x-5 gap-y-10 place-items-start content-start',
           'grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-7 5xl:grid-cols-8'
         )}
+        role="grid"
       >
         {!isEmpty(displayingNfts) ? (
           displayingNfts.map((nft) => <NFTCard nft={nft} key={nft.txId} />)
@@ -54,6 +55,7 @@ const Gallery = () => {
           <Link
             to={`/create-nft`}
             className="relative text-white rounded bg-blue-800 w-46.75 h-72 pt-1.75 px-1.75"
+            role="gridcell"
           >
             <div
               className="flex flex-col justify-center items-center w-full bg-blue-400 bg-opacity-40 rounded border border-dashed border-trueGray-100"

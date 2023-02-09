@@ -101,6 +101,7 @@ const SendTokenForm = ({
                 key={account.address}
                 className="text-left pl-2 h-8 text-white text-sm hover:bg-blue-500"
                 onClick={() => onChange(account)}
+                data-testid={account.accountName}
               >
                 <div>{formatLongString(account.accountName, 40)}</div>
               </div>
@@ -158,6 +159,7 @@ const SendTokenForm = ({
                 isEmpty(selectedAccount) ? 'cursor-not-allowed' : 'cursor-pointer',
                 'text-white border-b-2 text-sm font-semibold border-white bg-blue-800 h-8 pl-2 flex-grow rounded-l-finnie focus:outline-none placeholder-trueGray-400'
               )}
+              data-testid="recipient-address"
               placeholder="Recipient’s Wallet Address"
               disabled={isEmpty(selectedAccount)}
             />
@@ -172,6 +174,7 @@ const SendTokenForm = ({
                   e.preventDefault()
                   setIsShowDropdown((isShowDropdown) => !isShowDropdown)
                 }}
+                data-testid="recipient-open-dropdown"
               >
                 <DownArrowIcon
                   className="h-1.75 w-3.25"
@@ -212,6 +215,8 @@ const SendTokenForm = ({
           setIsShowDropdown(false)
           handleSendToken()
         }}
+        role="checkbox"
+        data-testid="send-tokens-button"
       >
         Send Tokens
       </button>
