@@ -4733,10 +4733,10 @@ arweave@^1.10.16:
     base64-js "^1.3.1"
     bignumber.js "^9.0.1"
 
-arweave@^1.12.6:
-  version "1.12.6"
-  resolved "https://registry.yarnpkg.com/arweave/-/arweave-1.12.6.tgz#de2314618afa040e7f6fc99ab1a178d17042339c"
-  integrity sha512-OglStwi/79e69XO42DbaqoOBNC9CZS+EupusYawRLMj0V2/zRlhrJi0WDuy4IaqY9LQYv8dHD9iyThvRUl9mqw==
+arweave@^1.12.4:
+  version "1.12.4"
+  resolved "https://registry.yarnpkg.com/arweave/-/arweave-1.12.4.tgz#08a4fcbda250c490150cb094ce57119eb1e46b3b"
+  integrity sha512-W5z7hb9/ZP2vy6BiYC+2obfGMhlhz/DaCkEXpkj/4hjaecWYUnvlUX5aCI2i0+lCrzbBUFbz+maDihUpBrdZpg==
   dependencies:
     arconnect "^0.4.2"
     asn1.js "^5.4.1"
