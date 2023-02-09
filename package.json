@@ -57,7 +57,7 @@
         "@xstate/react": "^2.0.1",
         "abi-decoder": "^2.4.0",
         "ace-builds": "^1.4.13",
-        "arweave": "1.10.18",
+        "arweave": "^1.12.6",
         "axios": "^0.21.1",
         "base58": "^2.0.1",
         "bip39": "^3.0.4",
