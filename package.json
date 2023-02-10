@@ -206,7 +206,7 @@
         "puppeteer": "^10.4.0",
         "sass-loader": "7.1.0",
         "sinon": "^15.0.1",
-        "style-loader": "^0.23.1",
+        "style-loader": "2.0.0",
         "tailwindcss": "npm:@tailwindcss/postcss7-compat",
         "terser-webpack-plugin": "4.2.3",
         "ts-loader": "~8.2.0",
