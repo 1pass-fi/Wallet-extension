@@ -121,7 +121,6 @@ module.exports = function (webpackEnv) {
       plugins.htmlIncAssetsPlugin,
       plugins.moduleNotFoundPlugin,
       isEnvDevelopment && plugins.CaseSensitivePathsPlugin,
-      isEnvDevelopment && plugins.watchMissingNodeModulesPlugin,
       isEnvProduction && plugins.miniCssExtractPlugin,
       plugins.ignorePlugin,
       plugins.copyPlugin,

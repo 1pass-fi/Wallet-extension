@@ -7,7 +7,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlIncAssetsPlugin = require('html-webpack-tags-plugin')
 const safePostCssParser = require('postcss-safe-parser')
-const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin')
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin')
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin')
 const CopyPlugin = require('copy-webpack-plugin')
@@ -84,7 +83,6 @@ const getPlugins = (isEnvProduction = false, shouldUseSourceMap = false) => {
 
   const moduleNotFoundPlugin = new ModuleNotFoundPlugin(paths.appPath)
   const caseSensitivePathsPlugin = new CaseSensitivePathsPlugin()
-  const watchMissingNodeModulesPlugin = new WatchMissingNodeModulesPlugin(paths.appNodeModules)
   const miniCssExtractPlugin = new MiniCssExtractPlugin({
     filename: '[name].css',
     // chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
@@ -141,7 +139,6 @@ const getPlugins = (isEnvProduction = false, shouldUseSourceMap = false) => {
     sidebarHtmlPlugin,
     moduleNotFoundPlugin,
     caseSensitivePathsPlugin,
-    watchMissingNodeModulesPlugin,
     miniCssExtractPlugin,
     ignorePlugin,
     terserPlugin,
