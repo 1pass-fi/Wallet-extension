@@ -28,17 +28,18 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
       {
         loader: require.resolve('postcss-loader'),
         options: {
-          ident: 'postcss',
-          plugins: () => [
-            require('postcss-flexbugs-fixes'),
-            require('postcss-preset-env')({
-              autoprefixer: {
-                flexbox: 'no-2009',
-              },
-              stage: 3,
-            }),
-            require('tailwindcss')
-          ],
+          postcssOptions: {
+            plugins: [
+              require('postcss-flexbugs-fixes'),
+              require('postcss-preset-env')({
+                autoprefixer: {
+                  flexbox: 'no-2009',
+                },
+                stage: 3,
+              }),
+              require('tailwindcss')
+            ]
+          },
           sourceMap: isEnvProduction && shouldUseSourceMap,
         },
       },
