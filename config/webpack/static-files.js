@@ -21,6 +21,10 @@ const copyPatterns = [
     to: 'scripts/'
   },
   {
+    from: 'src/_locales',
+    to: '_locales/'
+  },
+  {
     from: 'node_modules/webextension-polyfill/dist/browser-polyfill.js',
     to: 'lib/js/',
   },
