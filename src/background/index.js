@@ -1,5 +1,3 @@
-import '@babel/polyfill'
-
 import xmlHttpRequest from 'xmlhttprequest-ssl'
 
 global.window = global

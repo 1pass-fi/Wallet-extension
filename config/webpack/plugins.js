@@ -87,7 +87,10 @@ const getPlugins = (isEnvProduction = false, shouldUseSourceMap = false) => {
     filename: '[name].css',
     // chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
   })
-  const ignorePlugin = new IgnorePlugin(/^\.\/locale$/, /moment$/)
+  const ignorePlugin = new IgnorePlugin({
+    resourceRegExp: /^\.\/locale$/,
+    contextRegExp: /moment$/
+  })
   const terserPlugin = new TerserPlugin({
     terserOptions: {
       parse: {

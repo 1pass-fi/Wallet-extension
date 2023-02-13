@@ -1,5 +1,3 @@
-import '@babel/polyfill'
-
 import { MESSAGES } from 'constants/koiConstants'
 import { get, isEmpty } from 'lodash'
 import { contentBackgroundConnect as backgroundConnect } from 'services/request/contentScript'

@@ -39,6 +39,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
   const [showReceipt, setShowReceipt] = useState(false)
   const [showConnectedSites, setShowConnectedSites] = useState(false)
   const [acceptSite, setAcceptSite] = useState(false)
+  const [txId, setTxId] = useState('')
 
   const {
     transactionPayload,
