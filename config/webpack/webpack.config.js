@@ -93,6 +93,7 @@ module.exports = function (webpackEnv) {
         'stream': require.resolve('stream-browserify'),
         'vm': require.resolve('vm-browserify'),
         'buffer': require.resolve('buffer'),
+        'os': require.resolve('os-browserify/browser'),
         'dgram': false,
         'fs': false,
         'net': false,
