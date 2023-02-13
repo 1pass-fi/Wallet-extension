@@ -570,7 +570,6 @@ describe('AccountManagement', () => {
       await extPage.close()
     }, 500000)
   })
-  // describe('Change account password', () => {})
 
   afterAll(async () => {
     await context.closePages()

@@ -226,6 +226,15 @@ export const goToOptionPageName = async (page, optionPageName) => {
   // await page.waitForNavigation()
 }
 
+export const goToSecuritySettingPage = async (page) => {
+  await page.bringToFront()
+  const profilePictureNavBar = await page.waitForSelector(`[data-testid="profile-picture-navbar"]`)
+  await profilePictureNavBar.click()
+
+  const securitySettingButton = await page.waitForSelector(`[data-testid="security-dropdown-light"]`)
+  await securitySettingButton.click()
+}
+
 export default {
   importWallet,
   swapToNetwork,
@@ -235,5 +244,6 @@ export default {
   swapToNetworkOption,
   goToWalletSettingPage,
   goToOptionPageName,
-  importKeyStep
+  importKeyStep,
+  goToSecuritySettingPage
 }
