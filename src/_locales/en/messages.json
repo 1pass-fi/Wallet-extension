@@ -1,8 +1,305 @@
 {
-  "key": {
-    "message": "value"
+  "Activity": {
+    "message": "Activity"
   },
-  "key1": {
-    "message": "value1"
+  "AdvancedOptions": {
+    "message": "Advanced Options"
+  },
+  "AMOUNT": {
+    "message": "AMOUNT"
+  },
+  "Assets": {
+    "message": "Assets"
+  },
+  "Available": {
+    "message": "Available"
+  },
+  "back": {
+    "message": "Back"
+  },
+  "Balance": {
+    "message": "Balance"
+  },
+  "chooseANewKoiiOrEthereumAccount": {
+    "message": "Choose a new Koii or Ethereum account or import one you already have."
+  },
+  "clickACircleBelowToGenerateAKey": {
+    "message": "Click a circle below to generate a key."
+  },
+  "clickTheLockBelowToRevealYourSecretPhrase": {
+    "message": "Click the lock below to reveal your secret phrase."
+  },
+  "ConfirmPassword": {
+    "message": "Confirm Password"
+  },
+  "ConfirmPhrase": {
+    "message": "Confirm Phrase"
+  },
+  "ConfirmTransaction": {
+    "message": "Confirm Transaction"
+  },
+  "confirmYourSecretPhrase": {
+    "message": "Confirm your secret phrase."
+  },
+  "CONNECT": {
+    "message": "CONNECT"
+  },
+  "Continue": {
+    "message": "Continue"
+  },
+  "createAPasswordToSecureFinnie": {
+    "message": "Create a password to secure Finnie."
+  },
+  "createOrImportAKey": {
+    "message": "Create or import a key."
+  },
+  "customToken": {
+    "message": "Custom Token"
+  },
+  "customTokenDescription": {
+    "message": "Anyone can create a token, which includes fake versions of existing tokens. Always confirm the Token Contract Address before purchasing a custom token."
+  },
+  "Details": {
+    "message": "Details"
+  },
+  "donotSeeYourTokens": {
+    "message": "Don't see your token?"
+  },
+  "editAccounts": {
+    "message": "Edit Accounts"
+  },
+  "EditFee": {
+    "message": "Edit Fee"
+  },
+  "EnterAddressManually": {
+    "message": "Enter Address Manually"
+  },
+  "enterYourPassword": {
+    "message": "Enter your password"
+  },
+  "finnieCurrentlySupports": {
+    "message": "Finnie currently supports Koii, Ethereum, Solana, and Arweave keys. More chains are in the works."
+  },
+  "FROM": {
+    "message": "FROM"
+  },
+  "From": {
+    "message": "From"
+  },
+  "gallery": {
+    "message": "GALLERY"
+  },
+  "GALLERY": {
+    "message": "GALLERY"
+  },
+  "getAKey": {
+    "message": "Get a Key"
+  },
+  "getANewKey": {
+    "message": "Get a new key."
+  },
+  "getSetupInJust4QuickEasySteps": {
+    "message": "Get set up in just 4 quick & easy steps."
+  },
+  "goToHomepage": {
+    "message": "Go to Homepage"
+  },
+  "grabAPenAndPaper": {
+    "message": "Grab a pen & paper so you can keep your phrase safe."
+  },
+  "High": {
+    "message": "High"
+  },
+  "iAgreeWithThe": {
+    "message": "I agree with the"
+  },
+  "importAKeyWithASecretPhrase": {
+    "message": "Import a key with a secret phrase."
+  },
+  "importAToken": {
+    "message": "Import a token"
+  },
+  "imready": {
+    "message": "I'm ready!"
+  },
+  "likelyIn30Seconds": {
+    "message": "Likely in 30 Seconds"
+  },
+  "likelyInLessThan15Seconds": {
+    "message": "Likely in < 15 Seconds"
+  },
+  "likelyInLessThan30Seconds": {
+    "message": "Likely in < 30 Seconds"
+  },
+  "LOCK": {
+    "message": "LOCK"
+  },
+  "lockWalletFailed": {
+    "message": "Failed to lock wallet"
+  },
+  "LogIn": {
+    "message": "Log In"
+  },
+  "Low": {
+    "message": "Low"
+  },
+  "MaxFee": {
+    "message": "Max Fee"
+  },
+  "maxFee": {
+    "message": "Max fee"
+  },
+  "maxPriorityFee": {
+    "message": "Max priority fee"
+  },
+  "Medium": {
+    "message": "Medium"
+  },
+  "NewPassword": {
+    "message": "New Password"
+  },
+  "notEnoughTokens": {
+    "message": "Not enough tokens"
+  },
+  "otherwiseYouCouldLoseAnytokensOrAssets": {
+    "message": "Otherwise, you could lose any tokens or assets."
+  },
+  "Password": {
+    "message": "Password"
+  },
+  "passwordDoesNotMatch": {
+    "message": "Password does not match"
+  },
+  "pauseFinnie": {
+    "message": "Pause Finnie on this site"
+  },
+  "pleaseAcceptTheTof": {
+    "message": "Please accept the Terms of Service"
+  },
+  "RECEIVE": {
+    "message": "RECEIVE"
+  },
+  "RecipientWalletAddress": {
+    "message": "Recipient's Wallet Address"
+  },
+  "reEnterThreeWords": {
+    "message": "Re-enter 3 words of your secret phrase for safety."
+  },
+  "reEnterYourFinniePassword": {
+    "message": "Re-enter your Finnie password so we can securely store your new key."
+  },
+  "Reject": {
+    "message": "Reject"
+  },
+  "Remember": {
+    "message": "Remeber"
+  },
+  "rememberToSaveYourSecretPhrase": {
+    "message": "Remember to save your secret phrase when you have a pen and paper."
+  },
+  "remindMeLater": {
+    "message": "Remind me later."
+  },
+  "reportAnIssue": {
+    "message": "Report an Issue"
+  },
+  "resumeFinnie": {
+    "message": "Resume Finnie on this site"
+  },
+  "Save": {
+    "message": "Save"
+  },
+  "saveYourSecretPhrase": {
+    "message": "Save your Secret Phrase"
+  },
+  "Search": {
+    "message": "Search"
+  },
+  "searchCollections": {
+    "message": "Search Collections"
+  },
+  "searchForAToken": {
+    "message": "Search for a token"
+  },
+  "searchNfts": {
+    "message": "Search NFTs"
+  },
+  "secureFinnieWithAPassword": {
+    "message": "Secure Finnie with a password."
+  },
+  "securePasswordsHaveAtLeast8Characters": {
+    "message": "Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%)."
+  },
+  "seeConnectedSites": {
+    "message": "See connected sites"
+  },
+  "SEND": {
+    "message": "SEND"
+  },
+  "Send": {
+    "message": "Send"
+  },
+  "Sending": {
+    "message": "Sending"
+  },
+  "SendTokens": {
+    "message": "Send Tokens"
+  },
+  "Sign": {
+    "message": "Sign"
+  },
+  "Simulation": {
+    "message": "Simulation"
+  },
+  "skipThisStep": {
+    "message": "Skip this step"
+  },
+  "startFromScratch": {
+    "message": "Start from scratch."
+  },
+  "TermsOfService": {
+    "message": "Terms of Service"
+  },
+  "thisShouldBeWrittenOnAPieceOfPaper": {
+    "message": "This should be written on a piece of paper and never saved on a computer or internet-connected device."
+  },
+  "TO": {
+    "message": "TO"
+  },
+  "To": {
+    "message": "To"
+  },
+  "TokenBalance": {
+    "message": "Token Balance"
+  },
+  "Tokens": {
+    "message": "Tokens"
+  },
+  "TotalBalance": {
+    "message": "Total Balance"
+  },
+  "TransactionFees": {
+    "message": "Transaction Fees"
+  },
+  "typeInTheMissingWords": {
+    "message": "Type in the missing words to confirm your secret phase is properly secured."
+  },
+  "unlock": {
+    "message": "Unlock"
+  },
+  "useMyExistingKey": {
+    "message": "Use my existing key."
+  },
+  "welcomeTo": {
+    "message": "Welcome to"
+  },
+  "welcomeToTheFinnieWallet": {
+    "message": "Welcome to the Finnie Wallet"
+  },
+  "writeDownTheKeyOnAPieceOfPaper": {
+    "message": "Write down the key on a piece of paper."
+  },
+  "writeDownYourSecretPhrase": {
+    "message": "Write down your secret phrase."
   }
 }

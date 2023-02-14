@@ -1,8 +1,305 @@
 {
-  "key": {
-    "message": "giatri"
+  "Activity": {
+    "message": "Hoạt động"
   },
-  "key1": {
-    "message": "giatri1"
+  "AdvancedOptions": {
+    "message": "Tuỳ chọn nâng cao"
+  },
+  "AMOUNT": {
+    "message": "SỐ LUỢNG"
+  },
+  "Assets": {
+    "message": "Tài sản"
+  },
+  "Available": {
+    "message": "Khả dụng"
+  },
+  "back": {
+    "message": "Quay lại"
+  },
+  "Balance": {
+    "message": "Số dư"
+  },
+  "chooseANewKoiiOrEthereumAccount": {
+    "message": "Tạo key Ethereum hoặc Koii mới; hoặc nhập key của bạn."
+  },
+  "clickACircleBelowToGenerateAKey": {
+    "message": "Click vào một trong những logo bên dưới để tạo key."
+  },
+  "clickTheLockBelowToRevealYourSecretPhrase": {
+    "message": "Nhấn vào hình ổ khoá bên dưới để hiển thị 12 từ bí mật."
+  },
+  "ConfirmPassword": {
+    "message": "Xác nhận mật khẩu"
+  },
+  "ConfirmPhrase": {
+    "message": "Xác nhận"
+  },
+  "ConfirmTransaction": {
+    "message": "Xác nhận giao dịch"
+  },
+  "confirmYourSecretPhrase": {
+    "message": "Xác nhận 12 từ bí mật của bạn."
+  },
+  "CONNECT": {
+    "message": "Kết nối"
+  },
+  "Continue": {
+    "message": "Tiếp tục"
+  },
+  "createAPasswordToSecureFinnie": {
+    "message": "Tạo mật khẩu để bảo vệ ví Finnie của bạn."
+  },
+  "createOrImportAKey": {
+    "message": "Tạo hoặc nhập key của bạn."
+  },
+  "customToken": {
+    "message": "Custom Token"
+  },
+  "customTokenDescription": {
+    "message": "Các loại token có thể có symbol và decimal trùng nhau, hãy chắc chắn rằng bạn đang sử dụng đúng token contract address"
+  },
+  "Details": {
+    "message": "Chi tiết"
+  },
+  "donotSeeYourTokens": {
+    "message": "Không tìm thấy token của bạn?"
+  },
+  "editAccounts": {
+    "message": "Chỉnh sửa tài khoản"
+  },
+  "EditFee": {
+    "message": "Thay đổi phí"
+  },
+  "EnterAddressManually": {
+    "message": "Nhập địa chỉ thủ công"
+  },
+  "enterYourPassword": {
+    "message": "Nhập mật khẩu"
+  },
+  "finnieCurrentlySupports": {
+    "message": "Finnie hiện hỗ trợ Koii, Ethereum, Solana, và Arweave key. Những chain khác sẽ được cập nhật."
+  },
+  "FROM": {
+    "message": "TỪ"
+  },
+  "From": {
+    "message": "Từ"
+  },
+  "gallery": {
+    "message": "Bộ sưu tập NFT"
+  },
+  "GALLERY": {
+    "message": "Bộ sưu tập"
+  },
+  "getAKey": {
+    "message": "Tạo một key mới"
+  },
+  "getANewKey": {
+    "message": "Tạo một key mới."
+  },
+  "getSetupInJust4QuickEasySteps": {
+    "message": "Cài đặt tài khoản của bạn với 4 bước đơn giản."
+  },
+  "goToHomepage": {
+    "message": "Đến trang chủ"
+  },
+  "grabAPenAndPaper": {
+    "message": "Hãy chuẩn bị sẵn giấy và bút để lưu giữ 12 từ bí mật của bạn một cách an toàn."
+  },
+  "High": {
+    "message": "Cao"
+  },
+  "iAgreeWithThe": {
+    "message": "Tôi đồng ý với"
+  },
+  "importAKeyWithASecretPhrase": {
+    "message": "Nhập key sử dụng 12 từ bí mật"
+  },
+  "importAToken": {
+    "message": "Thêm Token"
+  },
+  "imready": {
+    "message": "Tôi đã sẵn sàng!"
+  },
+  "likelyIn30Seconds": {
+    "message": "Trong khoảng 30 giây"
+  },
+  "likelyInLessThan15Seconds": {
+    "message": "Trong khoảng < 15 giây"
+  },
+  "likelyInLessThan30Seconds": {
+    "message": "Trong khoảng < 30 giây"
+  },
+  "LOCK": {
+    "message": "Khoá"
+  },
+  "lockWalletFailed": {
+    "message": "Khoá ví thất bại"
+  },
+  "LogIn": {
+    "message": "Đăng nhập"
+  },
+  "Low": {
+    "message": "Thấp"
+  },
+  "MaxFee": {
+    "message": "Phí tối đa"
+  },
+  "maxFee": {
+    "message": "Phí tối đa"
+  },
+  "maxPriorityFee": {
+    "message": "Phí ưu tiên tối đa"
+  },
+  "Medium": {
+    "message": "Vừa"
+  },
+  "NewPassword": {
+    "message": "Mật khẩu mới"
+  },
+  "notEnoughTokens": {
+    "message": "Không đủ token"
+  },
+  "otherwiseYouCouldLoseAnytokensOrAssets": {
+    "message": "Nếu không bạn có thể sẽ bị mất tokens và tài sản."
+  },
+  "Password": {
+    "message": "Mật khẩu"
+  },
+  "passwordDoesNotMatch": {
+    "message": "Mật khẩu không khớp"
+  },
+  "pauseFinnie": {
+    "message": "Tạm dừng Finnie"
+  },
+  "pleaseAcceptTheTof": {
+    "message": "Vui lòng đồng ý với điều khoản dịch vụ"
+  },
+  "RECEIVE": {
+    "message": "NHẬN"
+  },
+  "RecipientWalletAddress": {
+    "message": "Địa chỉ người nhận"
+  },
+  "reEnterThreeWords": {
+    "message": "Nhập lại 3 từ trong 12 từ bí mật của bạn."
+  },
+  "reEnterYourFinniePassword": {
+    "message": "Vui lòng nhập mật khẩu của bạn."
+  },
+  "Reject": {
+    "message": "Từ chối"
+  },
+  "Remember": {
+    "message": "Hãy nhớ rằng"
+  },
+  "rememberToSaveYourSecretPhrase": {
+    "message": "Hãy chắc chắn rằng bạn đã ghi chép lại 12 từ bí mật vào một tờ giấy."
+  },
+  "remindMeLater": {
+    "message": "Nhắc tôi sau."
+  },
+  "reportAnIssue": {
+    "message": "Thông báo sự cố"
+  },
+  "resumeFinnie": {
+    "message": "Tiếp tục Finnie"
+  },
+  "Save": {
+    "message": "Lưu"
+  },
+  "saveYourSecretPhrase": {
+    "message": "Lưu 12 từ bí mật"
+  },
+  "Search": {
+    "message": "Tìm kiếm"
+  },
+  "searchCollections": {
+    "message": "Tìm kiếm Bộ sưu tập"
+  },
+  "searchForAToken": {
+    "message": "Tìm kiếm token"
+  },
+  "searchNfts": {
+    "message": "Tìm kiếm NFTs"
+  },
+  "secureFinnieWithAPassword": {
+    "message": "Bảo mật Finnie với mật khẩu."
+  },
+  "securePasswordsHaveAtLeast8Characters": {
+    "message": "Mật khẩu phải có ít nhất 8 kí tự, bao gồm chữ thường, chữ hoa, số, kí tự đặc biệt (vd !@#$%)."
+  },
+  "seeConnectedSites": {
+    "message": "Trang đã kết nối"
+  },
+  "SEND": {
+    "message": "GỬI"
+  },
+  "Send": {
+    "message": "Gửi"
+  },
+  "Sending": {
+    "message": "Gửi"
+  },
+  "SendTokens": {
+    "message": "Gửi Tokens"
+  },
+  "Sign": {
+    "message": "Ký"
+  },
+  "Simulation": {
+    "message": "Mô phỏng"
+  },
+  "skipThisStep": {
+    "message": "Bỏ qua bước này"
+  },
+  "startFromScratch": {
+    "message": "Bắt đầu từ đầu."
+  },
+  "TermsOfService": {
+    "message": "Điều khoản dịch vụ"
+  },
+  "thisShouldBeWrittenOnAPieceOfPaper": {
+    "message": "Bạn nên viết 12 từ bí mật xuống một tờ giấy và đừng bao giờ lưu chúng vào máy tính có kết nối internet"
+  },
+  "TO": {
+    "message": "ĐẾN"
+  },
+  "To": {
+    "message": "Đến"
+  },
+  "TokenBalance": {
+    "message": "Số dư token"
+  },
+  "Tokens": {
+    "message": "Tokens"
+  },
+  "TotalBalance": {
+    "message": "Số dư khả dụng"
+  },
+  "TransactionFees": {
+    "message": "Phí giao dịch"
+  },
+  "typeInTheMissingWords": {
+    "message": "Gõ những từ thiếu ở phía dưới để xác nhận rằng bạn đã ghi chép lại 12 từ bí mật."
+  },
+  "unlock": {
+    "message": "Mở khoá"
+  },
+  "useMyExistingKey": {
+    "message": "Sử dụng key của tôi."
+  },
+  "welcomeTo": {
+    "message": "Chào mừng đến với"
+  },
+  "welcomeToTheFinnieWallet": {
+    "message": "Chào mừng đến với ví Finnie"
+  },
+  "writeDownTheKeyOnAPieceOfPaper": {
+    "message": "Viết 12 từ bí mật xuống một tờ giấy."
+  },
+  "writeDownYourSecretPhrase": {
+    "message": "Hãy viết xuống 12 từ bí mật mà bạn nhận được."
   }
 }
