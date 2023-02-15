@@ -172,7 +172,7 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
       />
 
       <div className="font-semibold text-xs leading-4 tracking-finnieSpacing-wide text-blue-800">
-        AMOUNT
+        {chrome.i18n.getMessage('AMOUNT')}
       </div>
       <div
         className="z-10 bg-trueGray-100 border-b-2 border-blue-800 flex"
@@ -234,7 +234,7 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
             selectedToken.symbol === 'KOII' && selectedNetwork != 'K2'
               ? formatNumber(selectedToken?.balance / Math.pow(10, selectedToken?.decimal), 2)
               : formatNumber(selectedToken?.balance / Math.pow(10, selectedToken?.decimal), 6)
-          } ${selectedToken.symbol} Available`
+          } ${selectedToken.symbol} ${chrome.i18n.getMessage('Available')}`
           : ''}
       </div>
 
