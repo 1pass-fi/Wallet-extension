@@ -137,7 +137,7 @@ const useMethod = ({
       const accountBalance = (await account.get.balance()) / Math.pow(10, 9)
 
       if (accountBalance < totalOriginExpense) {
-        setError('Not enough tokens')
+        setError(chrome.i18n.getMessage('notEnoughTokens'))
         return
       }
 
