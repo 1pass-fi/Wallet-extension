@@ -41,7 +41,7 @@ const SortAndFilter = ({
       <div className="relative w-full">
         <input
           className="w-full h-8.5 pl-3.5 pr-11.25 rounded-t text-indigo-900 text-sm placeholder-current side-bar-search-field"
-          placeholder={type === 'Gallery' ? 'Search NFTs' : 'Search Collections'}
+          placeholder={type === 'Gallery' ? chrome.i18n.getMessage('searchNfts') : chrome.i18n.getMessage('Search Collections')}
           onChange={(e) => handleSearchFieldChange(e.target.value)}
         ></input>
         <MagnifierIcon className="absolute top-2 right-5 w-4.75 h-4.75 cursor-pointer" />

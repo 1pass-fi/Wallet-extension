@@ -233,7 +233,7 @@
   "seeConnectedSites": {
     "message": "See connected sites"
   },
-  "SEND": {
+  "SENDTOKEN": {
     "message": "SEND"
   },
   "Send": {

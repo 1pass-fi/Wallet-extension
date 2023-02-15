@@ -233,7 +233,7 @@
   "seeConnectedSites": {
     "message": "Trang đã kết nối"
   },
-  "SEND": {
+  "SENDTOKEN": {
     "message": "GỬI"
   },
   "Send": {
@@ -273,7 +273,7 @@
     "message": "Số dư token"
   },
   "Tokens": {
-    "message": "Tokens"
+    "message": "Tokens" // TODO LongP
   },
   "TotalBalance": {
     "message": "Số dư khả dụng"
