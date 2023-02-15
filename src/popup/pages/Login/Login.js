@@ -111,11 +111,11 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
       <div className="w-full flex flex-col pt-38.75 items-center justify-center">
         <KoiIcon style={{ width: '117px' }} />
         <div className="text-4xl mt-2 text-center tracking-finnieSpacing-tightest leading-11">
-          Welcome to
+          {chrome.i18n.getMessage('welcomeTo')}
           <br /> Finnie
         </div>
         <div className="mt-5.25 flex flex-col justify-start" style={{ width: '312px' }}>
-          <div className="text-left text-sm mb-3">Enter your password</div>
+          <div className="text-left text-sm mb-3">{chrome.i18n.getMessage('enterYourPassword')}</div>
           <div className="relative">
             <input
               className="w-full pl-2 pr-10 bg-trueGray-250 text-blue-800 h-7 rounded-t-sm border-b-2 border-blue-850 focus:outline-none tracking-wide"
@@ -140,7 +140,7 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
           className="my-3 w-50 h-9.75 text-white text-sm bg-blue-800 shadow-sm rounded-sm flex items-center justify-center"
           onClick={handleOnSubmit}
         >
-          Unlock
+          {chrome.i18n.getMessage('unlock')}
         </button>
 
         <div
@@ -149,11 +149,11 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
         >
           {!originDisabled ? (
             <>
-              <PauseIcon className="mr-1.75" /> Pause Finnie on this site.
+              <PauseIcon className="mr-1.75" /> {chrome.i18n.getMessage('pauseFinnie')}
             </>
           ) : (
             <>
-              <PlayIcon className=" mr-1.75" /> Resume Finnie on this site.
+              <PlayIcon className=" mr-1.75" /> {chrome.i18n.getMessage('resumeFinnie')}
             </>
           )}
         </div>
