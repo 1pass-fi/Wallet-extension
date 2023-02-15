@@ -283,7 +283,7 @@ const HomeTop = ({
               <SendIcon style={{ width: '23px', height: '20px' }} data-testid="icon-send-tokens" />
             </div>
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
-              SEND
+              {chrome.i18n.getMessage('SENDTOKEN')}
             </div>
           </Link>
           <Link className="flex flex-col items-center justify-center" to="/receive" role="button">
@@ -294,7 +294,7 @@ const HomeTop = ({
               <ReceiveIcon style={{ width: '23px', height: '20px' }} />
             </div>
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
-              RECEIVE
+              {chrome.i18n.getMessage('RECEIVE')}
             </div>
           </Link>
         </div>

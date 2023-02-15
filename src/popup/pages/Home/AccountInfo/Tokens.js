@@ -230,7 +230,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
         displayingAccount.type === TYPE.SOLANA ||
         displayingAccount.type === TYPE.K2) && (
         <div className="mt-5 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
-          Don’t see your token?
+          {chrome.i18n.getMessage('donotSeeYourTokens')}
         </div>
       )}
       {(displayingAccount.type === TYPE.ETHEREUM ||
@@ -245,7 +245,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
         </span>{' '}
         or{' '} */}
           <Link className="cursor-pointer underline text-success-700" to="/import-token">
-            Import a token
+            {chrome.i18n.getMessage('importAToken')}
           </Link>
         </div>
       )}

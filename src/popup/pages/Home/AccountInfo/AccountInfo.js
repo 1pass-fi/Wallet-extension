@@ -12,14 +12,15 @@ import Activity from './Activity'
 import Assets from './Assets'
 import Tokens from './Tokens'
 
-const tabs = [
-  { name: 'Assets', to: '/assets' },
-  { name: 'Tokens', to: '/tokens' },
-  { name: 'Activity', to: '/activity' }
-]
 
 const AccountInfo = ({ displayingAccount, currency, price, currentProviderAddress }) => {
   const history = useHistory()
+
+  const tabs = [
+    { name: chrome.i18n.getMessage('Assets'), to: '/assets' },
+    { name: chrome.i18n.getMessage('Tokens'), to: '/tokens' },
+    { name: chrome.i18n.getMessage('Activity'), to: '/activity' }
+  ]
 
   const assetHeaderParallax = useParallax({
     translateX: [-100, 0],
