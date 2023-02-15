@@ -54,8 +54,7 @@ const CustomToken = ({ setTokenImport }) => {
       <div className="mt-4 flex">
         <WarningIcon className="ml-6" style={{ width: '35px', height: '35px' }} />
         <div className="ml-3.5 font-normal text-xs" style={{ width: '329px' }}>
-          Anyone can create a token, which includes fake versions of existing tokens. Always confirm
-          the Token Contract Address before purchasing a custom token.
+          {chrome.i18n.getMessage('customTokenDescription')}
         </div>
       </div>
 
@@ -104,7 +103,7 @@ const CustomToken = ({ setTokenImport }) => {
           className="bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800"
           style={{ width: '160px', height: '38px' }}
         >
-          Back
+          {chrome.i18n.getMessage('Back')}
         </button>
         <button
           onClick={() => handleImportCustomToken()}
@@ -115,7 +114,7 @@ const CustomToken = ({ setTokenImport }) => {
           style={{ width: '160px', height: '38px' }}
           disabled={!isInputted}
         >
-          Continue
+          {chrome.i18n.getMessage('Continue')}
         </button>
       </div>
     </div>
