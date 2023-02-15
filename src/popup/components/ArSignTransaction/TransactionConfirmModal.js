@@ -139,7 +139,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               )}
               onClick={() => setTab(TAB.DETAIL)}
             >
-              Details
+              {chrome.i18n.getMessage('Details')}
             </div>
           </div>
 
@@ -151,7 +151,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 className="w-7.5 h-7.5 z-20 absolute top-15 left-3.75 cursor-pointer bg-white bg-opacity-70 rounded-full"
               />
               <div className="mt-5 font-semibold text-base text-indigo leading-5 text-center tracking-finnieSpacing-wide">
-                Confirm Transaction
+                {chrome.i18n.getMessage('ConfirmTransaction')}
               </div>
 
               {/* TRANSACTION TITLE */}
@@ -258,7 +258,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
                   transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
                   <div className="flex mb-2">
-                    <div style={{ width: '176px' }}>Sending</div>
+                    <div style={{ width: '176px' }}>{chrome.i18n.getMessage('Sending')}</div>
                     <div className="flex font-normal text-xs items-center">
                       <SendValue />
                       <div className="ml-1 w-4 h-4">
@@ -268,14 +268,14 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                   </div>
                 )}
                 <div className="flex mb-2">
-                  <div style={{ width: '176px' }}>Total Balance</div>
+                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('TotalBalance')}</div>
                   <div className="flex font-normal text-xs items-center text-success-700">
                     {numberFormat(originBalance, 6)} {originSymbol}
                   </div>
                 </div>
 
                 <div className="flex">
-                  <div style={{ width: '176px' }}> Transaction Fees</div>
+                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('TransactionFees')}</div>
                   <div className="flex font-normal text-xs items-center">
                     <Fee />
                   </div>
@@ -283,7 +283,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               </div>
 
               <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
-                <div style={{ width: '176px' }}>From</div>
+                <div style={{ width: '176px' }}>{chrome.i18n.getMessage('From')}</div>
                 {senderName && <div className="mt-2 font-semibold text-xs">{senderName}</div>}
                 <div className="mt-2 font-normal text-xs text-success-700">
                   {get(transactionPayload, 'from')}
@@ -295,7 +295,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 recipient
               ) && (
                 <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
-                  <div style={{ width: '176px' }}>To</div>
+                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('To')}</div>
                   {recipientName && (
                     <div className="mt-2 font-semibold text-xs">{recipientName}</div>
                   )}
@@ -397,7 +397,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               style={{ width: '160px', height: '38px' }}
               disabled={isScamOrigin}
             >
-              Reject
+              {chrome.i18n.getMessage('Reject')}
             </button>
             <button
               onClick={onSubmitTransaction}
@@ -408,7 +408,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               style={{ width: '160px', height: '38px' }}
               disabled={isScamOrigin}
             >
-              {signWithoutSend ? 'Sign' : 'Send'}
+              {signWithoutSend ? chrome.i18n.getMessage('Sign') : chrome.i18n.getMessage('Send')}
             </button>
           </div>
           <ReactTooltip place="top" effect="float" />

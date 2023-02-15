@@ -83,7 +83,7 @@ const useGetFee = ({
   const Fee = () => (
     <div>
       <div>{isNumber(estimatedFee) ? numberFormat(estimatedFee, 8) : estimatedFee} ETH</div>
-      <div>(Max Fee: {numberFormat(maxFee, 8)} ETH)</div>
+      <div>({chrome.i18n.getMessage('MaxFee')}: {numberFormat(maxFee, 8)} ETH)</div>
     </div>
   )
 
