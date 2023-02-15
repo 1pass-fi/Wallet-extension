@@ -157,7 +157,7 @@ export const AccountDropdown = React.forwardRef(
                     className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
                     data-testid="popup-header-account-balance"
                   >
-                    Balance: {formatNumber(account.koiBalance, 2)} KOII
+                    {chrome.i18n.getMessage('Balance')}: {formatNumber(account.koiBalance, 2)} KOII
                   </div>
                 )}
                 {account.type === TYPE.K2 && (
@@ -165,7 +165,8 @@ export const AccountDropdown = React.forwardRef(
                     className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
                     data-testid="popup-header-account-balance"
                   >
-                    Balance: {formatNumber(account.balance / Math.pow(10, 9), 2)} KOII
+                    {chrome.i18n.getMessage('Balance')}:{' '}
+                    {formatNumber(account.balance / Math.pow(10, 9), 2)} KOII
                   </div>
                 )}
                 {account.type === TYPE.ETHEREUM && (
@@ -173,7 +174,7 @@ export const AccountDropdown = React.forwardRef(
                     className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
                     data-testid="popup-header-account-balance"
                   >
-                    Balance: {formatNumber(account.balance, 2)} ETH
+                    {chrome.i18n.getMessage('Balance')}: {formatNumber(account.balance, 2)} ETH
                   </div>
                 )}
                 {account.type === TYPE.SOLANA && (
@@ -181,14 +182,15 @@ export const AccountDropdown = React.forwardRef(
                     className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
                     data-testid="popup-header-account-balance"
                   >
-                    Balance: {formatNumber(account.balance / Math.pow(10, 9), 2)} SOL
+                    {chrome.i18n.getMessage('Balance')}:{' '}
+                    {formatNumber(account.balance / Math.pow(10, 9), 2)} SOL
                   </div>
                 )}
                 <div
                   className="font-normal text-xs leading-4 tracking-finnieSpacing-tight text-white"
                   data-testid="popup-header-account-assets"
                 >
-                  Assets: {account.totalAssets.length}
+                  {chrome.i18n.getMessage('Assets')}: {account.totalAssets.length}
                 </div>
               </div>
               {isDefaultAccount(account) ? (
@@ -205,7 +207,7 @@ export const AccountDropdown = React.forwardRef(
           style={{ height: '26px' }}
           onClick={() => goToSettingPage()}
         >
-          Edit Accounts
+          {chrome.i18n.getMessage('editAccounts')}
         </div>
 
         {isCopied && (

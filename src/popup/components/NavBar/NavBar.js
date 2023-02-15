@@ -28,7 +28,7 @@ const NavBar = ({ handleLockWallet }) => {
         onClick={goToGallery}
       >
         <GalleryIcon className="mt-1.5 mx-auto" style={{ width: '26px', height: '21px' }} />
-        <div className="text-center text-white text-2xs leading-8">GALLERY</div>
+        <div className="text-center text-white text-2xs leading-8">{chrome.i18n.getMessage('GALLERY')}</div>
       </div>
       <div
         className="bg-blue-800 cursor-pointer mx-0.75"
@@ -36,7 +36,7 @@ const NavBar = ({ handleLockWallet }) => {
         onClick={goToWalletConnect}
       >
         <GlobeIcon className="mx-auto" />
-        <div className="text-center text-white text-2xs leading-6">CONNECT</div>
+        <div className="text-center text-white text-2xs leading-6">{chrome.i18n.getMessage('CONNECT')}</div>
       </div>
       <div
         className="bg-blue-800 cursor-pointer rounded-br-md"
@@ -44,7 +44,7 @@ const NavBar = ({ handleLockWallet }) => {
         onClick={handleLockWallet}
       >
         <LockIcon className="mt-1.5 mx-auto" style={{ width: '18px', height: '25px' }} />
-        <div className="text-center text-white text-2xs leading-8">LOCK</div>
+        <div className="text-center text-white text-2xs leading-8">{chrome.i18n.getMessage('LOCK')}</div>
       </div>
     </div>
   )

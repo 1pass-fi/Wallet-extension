@@ -273,7 +273,7 @@
     "message": "Số dư token"
   },
   "Tokens": {
-    "message": "Tokens" // TODO LongP
+    "message": "Tokens"
   },
   "TotalBalance": {
     "message": "Số dư khả dụng"
