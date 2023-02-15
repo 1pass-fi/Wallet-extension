@@ -51,8 +51,8 @@ const RevealPhrase = ({ step }) => {
               'You successfully saved your Secret Phrase'
             ) : (
               <>
-                Remember to save your secret phrase when you have a pen and paper.<br></br>
-                Otherwise, you could lose any tokens or assets.
+                {chrome.i18n.getMessage('rememberToSaveYourSecretPhrase')}<br></br>
+                {chrome.i18n.getMessage('otherwiseYouCouldLoseAnytokensOrAssets')}
               </>
             )
           ) : (
@@ -61,8 +61,8 @@ const RevealPhrase = ({ step }) => {
         </div>
       </div>
 
-      <div className="text-lg mt-12 font-normal z-10">
-        <div>Remember:</div>
+      <div className="text-lg mt-12 font-normal">
+        <div>{chrome.i18n.getMessage('Remember')}:</div>
         <li className="mt-2">
           Stay safe from phishing scams—<br></br>
           <span className="text-warning">Koii will NEVER ask you for your secret phrase</span> or
@@ -79,7 +79,7 @@ const RevealPhrase = ({ step }) => {
               style={{ width: '240px', height: '42px' }}
               className="mt-10 text-base rounded z-10"
               variant="white"
-              text="Go to Homepage"
+              text={chrome.i18n.getMessage('goToHomepage')}
               onClick={() => {
                 dispatch(setIsOnboarding(false))
                 dispatch(setOnboardingPath(''))

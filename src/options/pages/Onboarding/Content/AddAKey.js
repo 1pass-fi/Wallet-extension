@@ -31,10 +31,10 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
         >
           <CreateNewIcon style={{ width: '32px', height: '32px' }} />
           <div data-testid='start-from-scratch-div' className="mt-3 font-semibold text-base leading-4 text-center text-white">
-            Start from scratch.
+            {chrome.i18n.getMessage('startFromScratch')}
           </div>
           <div className="mt-2 font-normal text-xs text-center tracking-finnieSpacing-wide text-white">
-            Get a new key.
+            {chrome.i18n.getMessage('getANewKey')}
           </div>
         </div>
         <div
@@ -50,10 +50,10 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
         >
           <KeySelectedIcon style={{ width: '48px', height: '48px' }} />
           <div data-testid='use-existing-key-div' className="mt-3 font-semibold text-base leading-4 text-center text-white">
-            Use my existing key.
+            {chrome.i18n.getMessage('useMyExistingKey')}
           </div>
           <div className="mt-2 font-normal text-xs text-center tracking-finnieSpacing-wide text-white w-9/12">
-            Import a key with a secret phrase.
+            {chrome.i18n.getMessage('importAKeyWithASecretPhrase')}
           </div>
         </div>
       </div>

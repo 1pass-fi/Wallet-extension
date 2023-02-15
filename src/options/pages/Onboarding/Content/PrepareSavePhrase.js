@@ -26,7 +26,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
     >
       <WelcomeBackground className="absolute bottom-0 right-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
-        Save your Secret Phrase
+        {chrome.i18n.getMessage('saveYourSecretPhrase')}
       </div>
       <div className="mt-5 font-normal text-base leading-8 max-w-full" style={{ width: '500px' }}>
         Koii Wallets use a {/* TODO add tooltip/link */}
@@ -46,10 +46,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
             With your Secret Phrase, anyone can access{' '}
             <span className="text-warning-200">everything in your wallet</span>.
           </div>
-          <div className="mt-2">
-            This should be written on a piece of paper and never saved on a computer or
-            internet-connected device.
-          </div>
+          <div className="mt-2">{chrome.i18n.getMessage('thisShouldBeWrittenOnAPieceOfPaper')}</div>
         </div>
       </div>
       <div className="mt-16 flex justify-start gap-12 w-full">
@@ -58,7 +55,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
           style={{ width: '240px', height: '42px' }}
           className="rounded z-10 border border-white border-solid"
           variant="indigo"
-          text="Remind me later."
+          text={chrome.i18n.getMessage('remindMeLater')}
           size="lg"
           onClick={handleRemindMeLater}
           data-testid={'remind-me-button'}
@@ -67,7 +64,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
           style={{ width: '240px', height: '42px' }}
           className="rounded z-10"
           variant="white"
-          text="I'm ready!"
+          text={chrome.i18n.getMessage('imready')}
           size="lg"
           onClick={() => setStep(step + 1)}
           data-testid={'ready-button'}

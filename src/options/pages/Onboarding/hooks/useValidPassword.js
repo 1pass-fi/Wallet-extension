@@ -26,7 +26,7 @@ const useValidPassword = ({ password, confirmPassword }) => {
 
     if (password !== confirmPassword) {
       setIsValidPassword(false)
-      setPasswordErrorMessage(VALIDATE_ERROR_MESSAGE.NOT_MATCH)
+      setPasswordErrorMessage(chrome.i18n.getMessage('passwordDoesNotMatch'))
       return
     }
 

@@ -118,7 +118,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
     >
       <WelcomeBackground className="absolute bottom-0 right-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
-        Save your Secret Phrase
+        {chrome.i18n.getMessage('saveYourSecretPhrase')}
       </div>
 
       {/* <div className="mt-5 font-normal text-lg leading-6">
@@ -129,7 +129,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
       </div> */}
 
       <div className="mt-8 font-normal text-lg leading-6 text-white">
-        Type in the missing words to confirm your secret phase is properly secured.
+        {chrome.i18n.getMessage('typeInTheMissingWords')}
       </div>
 
       <div className="flex flex-col max-w-full" style={{ width: '347px' }}>
@@ -165,7 +165,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
           style={{ width: '240px', height: '42px' }}
           className="mt-10.75 text-base mx-auto rounded z-10"
           variant="white"
-          text="Confirm Phrase"
+          text={chrome.i18n.getMessage('ConfirmPhrase')}
           // disabled={!isNextStep}
           onClick={onClickContinue}
           id="continue-button"
@@ -176,7 +176,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
         className="absolute bottom-11 right-7.5 text-lightBlue underline font-normal text-sm tracking-finnieSpacing-wide cursor-pointer"
         onClick={handleSkipThisStep}
       >
-        Skip this step
+        {chrome.i18n.getMessage('skipThisStep')}
       </div>
     </div>
   )

@@ -32,15 +32,15 @@ const HiddenPhrase = ({ step, setStep, importType }) => {
     >
       <WelcomeBackground className="absolute bottom-0 right-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
-        Save your Secret Phrase
+        {chrome.i18n.getMessage('saveYourSecretPhrase')}
       </div>
       <div className="flex mt-5 font-normal text-lg leading-6 gap-1.5">
         <div>1. </div>
-        <div>Click the lock below to reveal your secret phrase.</div>
+        <div>{chrome.i18n.getMessage('clickTheLockBelowToRevealYourSecretPhrase')}</div>
       </div>
       <div className="flex mt-1.5 font-normal text-lg leading-6 gap-1.5">
         <div>2. </div>
-        <div>Write down the key on a piece of paper.</div>
+        <div>{chrome.i18n.getMessage('writeDownTheKeyOnAPieceOfPaper')}</div>
       </div>
       <div className="flex mt-1.5 font-normal text-lg leading-6 gap-1.5">
         <div>3. </div>
@@ -76,7 +76,7 @@ const HiddenPhrase = ({ step, setStep, importType }) => {
             style={{ width: '240px', height: '42px' }}
             className="mt-10.75 text-base mx-auto rounded z-10"
             variant="white"
-            text="Continue"
+            text={chrome.i18n.getMessage('Continue')}
             onClick={() => setStep(step + 1)}
             id="continue-button"
           />
@@ -95,7 +95,7 @@ const HiddenPhrase = ({ step, setStep, importType }) => {
           className="absolute bottom-11 right-7.5 text-lightBlue underline font-normal text-sm tracking-finnieSpacing-wide cursor-pointer"
           onClick={handleSkipThisStep}
         >
-          Skip this step
+          {chrome.i18n.getMessage('skipThisStep')}
         </div>
       )}
     </div>
