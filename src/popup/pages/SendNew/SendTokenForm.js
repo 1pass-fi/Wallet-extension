@@ -203,7 +203,7 @@ const SendTokenForm = ({
           style={{ width: '219px', height: '24px' }}
         >
           <NoticeIcon className="mx-1.75" style={{ width: '17px', height: '17px' }} />
-          Not Enough Funds or Gas
+          {chrome.i18n.getMessage('notEnoughFundsOrGas')}
         </div>
       )}
 

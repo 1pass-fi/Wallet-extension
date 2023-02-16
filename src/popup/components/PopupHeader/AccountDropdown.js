@@ -215,7 +215,7 @@ export const AccountDropdown = React.forwardRef(
             className="absolute bg-cyan text-blue-800 rounded-3xl shadow-md text-center flex items-center justify-center"
             style={{ width: '159px', height: '28px', left: '133px', top: '499px' }}
           >
-            Address copied
+            {chrome.i18n.getMessage('addressCopied')}
           </div>
         )}
       </div>

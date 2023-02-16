@@ -493,7 +493,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
         /* RECEIPT */
         <div className="w-full relative bg-white rounded m-auto pt-9 text-blue-800 flex flex-col items-center tracking-finnieSpacing-tighter">
           <div className="font-semibold text-lg leading-5 text-indigo">
-            Your tokens are on the way!
+            {chrome.i18n.getMessage('yourTokensOnTheWay')}
           </div>
           <div className="px-9 mt-8 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
             {transactionType !== TRANSACTION_TYPE.CONTRACT_DEPLOYMENT &&
