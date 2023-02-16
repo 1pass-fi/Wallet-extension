@@ -171,7 +171,7 @@ const ActivityRow = ({
                 <div className="pr-1.375">
                   <ViewBlockIcon />
                 </div>
-                Explore Block
+                {chrome.i18n.getMessage('ExploreBlock')}
               </a>
             ) : (
               <ExploreBlock />
