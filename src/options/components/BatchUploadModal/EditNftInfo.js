@@ -75,7 +75,7 @@ const EditNftInfo = ({
 
   return (
     <>
-      <div className="text-xl text-white">EDIT NFT INFO:</div>
+      <div className="text-xl text-white">{chrome.i18n.getMessage('EditNFTInfo')}</div>
       <div className="flex mt-4">
         <div className="h-68 w-68 rounded shadow-lg object-cover">
           <NFTMedia contentType={nftInfo.contentType} source={file} />
@@ -122,7 +122,7 @@ const EditNftInfo = ({
               disabled={nftInfo.existingNft}
             />
             <div className="text-warning mt-1 uppercase text-3xs">
-              Separate with a “,” and hit space bar
+              {chrome.i18n.getMessage('TagsPlaceHolder')}
             </div>
 
             <div className="max-h-9 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1.5">
@@ -157,7 +157,8 @@ const EditNftInfo = ({
                 !nftInfo.existingNft ? () => handleNftContentNSFTChange(currentNftIdx) : () => {}
               }
             >
-              This content is <span className="text-warning">Explicit or 18+.</span>
+              {chrome.i18n.getMessage('ThisContentIs')}
+              <span className="text-warning">{chrome.i18n.getMessage('ExplicitMsg')}</span>
             </div>
           </div>
         </div>

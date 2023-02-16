@@ -275,7 +275,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
                 className="text-success ml-2 text-11px select-none w-55.5"
                 onClick={handleUpdateAll}
               >
-                Apply these details (except the title) to all NFTs in this collection.
+                {chrome.i18n.getMessage('applyDetailsToNFTs')}
               </div>
             </div>
           </div>
