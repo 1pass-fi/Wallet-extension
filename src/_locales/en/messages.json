@@ -1,9 +1,24 @@
 {
+  "": {
+    "message": ""
+  },
+  "AccountBalanceText": {
+    "message": "Account Balance:"
+  },
   "accountExist": {
     "message": "This account has already been imported."
   },
+  "ACCOUNTNAME": {
+    "message": "ACCOUNT NAME"
+  },
   "Activity": {
     "message": "Activity"
+  },
+  "ActivityCenter": {
+    "message": "ACTIVITY CENTER"
+  },
+  "ADDRESS": {
+    "message": "ADDRESS"
   },
   "addressBookAddNewAddress": {
     "message": "Successfully added address to address book!"
@@ -23,6 +38,9 @@
   "addressBookDuplicateDID": {
     "message": "This DID already exist in Address Book"
   },
+  "AddressBookEmpty": {
+    "message": "Empty address book!"
+  },
   "AddressBookNote": {
     "message": "i.e Larry from the metaverse"
   },
@@ -41,8 +59,17 @@
   "AmountLc": {
     "message": "Amount"
   },
+  "applyDetailsToNFTs": {
+    "message": "Apply these details (except the title) to all NFTs in this collection."
+  },
   "Assets": {
     "message": "Assets"
+  },
+  "AssetsText": {
+    "message": "Assets: "
+  },
+  "atomicNFTsMsg": {
+    "message": "Atomic NFTs are stored permanently on Arweave. With Koii, they earn attention rewards forever."
   },
   "Available": {
     "message": "Available"
@@ -52,6 +79,9 @@
   },
   "Balance": {
     "message": "Balance"
+  },
+  "BalanceText": {
+    "message": "Balance: "
   },
   "balanceUpdated": {
     "message": "Your balances have been updated."
@@ -65,8 +95,17 @@
   "bridgeNftFailed": {
     "message": "Bridge NFT failed"
   },
+  "Cancel": {
+    "message": "Cancel"
+  },
   "cannotLockWallet": {
     "message": "Cannot lock wallet."
+  },
+  "CHAIN": {
+    "message": "CHAIN"
+  },
+  "ChangeMyPassword": {
+    "message": "Change My Password"
   },
   "chooseANewKoiiOrEthereumAccount": {
     "message": "Choose a new Koii or Ethereum account or import one you already have."
@@ -101,8 +140,14 @@
   "CollectionsLc": {
     "message": "Collections"
   },
+  "ComingSoon": {
+    "message": "Coming Soon"
+  },
   "Confirmed": {
     "message": "Confirmed"
+  },
+  "ConfirmNewPassword": {
+    "message": "Confirm New Password"
   },
   "ConfirmPassword": {
     "message": "Confirm Password"
@@ -119,20 +164,35 @@
   "CONNECT": {
     "message": "CONNECT"
   },
+  "ConnectedSites": {
+    "message": "Connected Sites"
+  },
   "Continue": {
     "message": "Continue"
   },
   "contractInteraction": {
     "message": "Contract interaction"
   },
+  "Copied": {
+    "message": "Copied"
+  },
   "createAPasswordToSecureFinnie": {
     "message": "Create a password to secure Finnie."
+  },
+  "createAtomicNFT": {
+    "message": "Create Your Atomic NFT"
   },
   "createKIDSuccess": {
     "message": "Created KID successfully. It may take a while until you can get your data updated."
   },
   "CreateLc": {
     "message": "Create"
+  },
+  "CreateNewContact": {
+    "message": "Create New Contact"
+  },
+  "createNFTMsg": {
+    "message": "Your NFT is being created!"
   },
   "createOrImportAKey": {
     "message": "Create or import a key."
@@ -146,8 +206,23 @@
   "customTokenDescription": {
     "message": "Anyone can create a token, which includes fake versions of existing tokens. Always confirm the Token Contract Address before purchasing a custom token."
   },
+  "DappConnectionText": {
+    "message": "Dapp Connections: "
+  },
+  "DEFAULT": {
+    "message": "DEFAULT"
+  },
   "defaultCurrency": {
     "message": "Default currency set to "
+  },
+  "DeleteContact": {
+    "message": "Delete Contact"
+  },
+  "DeleteMsgEnd": {
+    "message": " from your address book? You cannot undo this action."
+  },
+  "DeleteMsgStart": {
+    "message": "Are you sure you want to delete "
   },
   "Details": {
     "message": "Details"
@@ -167,11 +242,20 @@
   "donotSeeYourTokens": {
     "message": "Don't see your token?"
   },
+  "earnAttentionRewardsMsg": {
+    "message": "Earn attention rewards forever through Koii. Copy this link and share on your favorite social platforms."
+  },
+  "earned": {
+    "message": " earned"
+  },
   "editAccounts": {
     "message": "Edit Accounts"
   },
   "EditFee": {
     "message": "Edit Fee"
+  },
+  "EditNFTInfo": {
+    "message": "EDIT NFT INFO:"
   },
   "emptyAccountNameError": {
     "message": "Account name cannot be empty."
@@ -188,14 +272,32 @@
   "EnterAddressManually": {
     "message": "Enter Address Manually"
   },
+  "EnterCurrentPassword": {
+    "message": "Enter Current Password"
+  },
+  "EnterInfoManually": {
+    "message": "Enter Info Manually"
+  },
   "enterYourPassword": {
     "message": "Enter your password"
+  },
+  "EstimatedCosts": {
+    "message": "Estimated Costs:"
+  },
+  "ExplicitMsg": {
+    "message": "Explicit or 18+."
+  },
+  "ExploreBlock": {
+    "message": "Explore Block"
   },
   "exportPrivateKey": {
     "message": "Export Private key succesffuly!"
   },
   "finnieCurrentlySupports": {
     "message": "Finnie currently supports Koii, Ethereum, Solana, and Arweave keys. More chains are in the works."
+  },
+  "FriendReferralCode": {
+    "message": "FRIEND REFERRAL CODE"
   },
   "FROM": {
     "message": "FROM"
@@ -236,11 +338,17 @@
   "iAgreeWithThe": {
     "message": "I agree with the"
   },
+  "Import": {
+    "message": "Import"
+  },
   "importAKeyWithASecretPhrase": {
     "message": "Import a key with a secret phrase."
   },
   "importAToken": {
     "message": "Import a token"
+  },
+  "ImportDIDLink": {
+    "message": "Import from a DID link"
   },
   "imready": {
     "message": "I'm ready!"
@@ -253,6 +361,9 @@
   },
   "invalidContent": {
     "message": "Invalid content"
+  },
+  "InvalidDIDLink": {
+    "message": "That’s not a valid DID link"
   },
   "invalidETHAddress": {
     "message": "Invalid ETH Address"
@@ -268,6 +379,12 @@
   },
   "invalidWalletAddress": {
     "message": "Invalid Wallet Address"
+  },
+  "isConnectedToSites": {
+    "message": " is connected to these sites."
+  },
+  "justMadeNFT": {
+    "message": "You just made a new NFT!"
   },
   "kidErrorInvalidWebsite": {
     "message": "That doesn't seem like a valid website. Please try again."
@@ -317,8 +434,17 @@
   "Name": {
     "message": "Name"
   },
+  "NetworkText": {
+    "message": "Network: "
+  },
+  "NewAddress": {
+    "message": "New Address"
+  },
   "NewPassword": {
     "message": "New Password"
+  },
+  "NFTAssets": {
+    "message": "NFT Assets:"
   },
   "NFTDescriptionLabel": {
     "message": "Description"
@@ -328,6 +454,12 @@
   },
   "NFTTitleLabel": {
     "message": "NFT Title"
+  },
+  "noneSelect": {
+    "message": "-- None"
+  },
+  "notConnectedToAnySites": {
+    "message": "Not connected to any sites"
   },
   "notEnoughARorKoiiTokens": {
     "message": "Not enough AR or KOII"
@@ -341,17 +473,32 @@
   "notEnoughETHToken": {
     "message": "You don't have enough ETH."
   },
+  "notEnoughFundsOrGas": {
+    "message": "Not Enough Funds or Gas"
+  },
   "notEnoughKoiiToken": {
     "message": "You don't have enough KOII."
   },
   "notEnoughTokens": {
     "message": "Not enough tokens"
   },
+  "Notification": {
+    "message": "Notification"
+  },
+  "OFF": {
+    "message": "OFF"
+  },
+  "ON": {
+    "message": "ON"
+  },
   "otherwiseYouCouldLoseAnytokensOrAssets": {
     "message": "Otherwise, you could lose any tokens or assets."
   },
   "Password": {
     "message": "Password"
+  },
+  "PasswordConfirmed": {
+    "message": "Password Confirmed"
   },
   "passwordDoesNotMatch": {
     "message": "Password does not match"
@@ -371,6 +518,9 @@
   "pleaseChooseAccount": {
     "message": "Please choose Koii or Arweave account first!"
   },
+  "QRCode": {
+    "message": "QR Code"
+  },
   "RECEIVE": {
     "message": "RECEIVE"
   },
@@ -379,6 +529,9 @@
   },
   "RecipientWalletAddress": {
     "message": "Recipient's Wallet Address"
+  },
+  "redeemReferralCodeMsg": {
+    "message": "Referral code has been successfully redeemed!"
   },
   "reEnterThreeWords": {
     "message": "Re-enter 3 words of your secret phrase for safety."
@@ -395,11 +548,26 @@
   "Remember": {
     "message": "Remeber"
   },
+  "RememberPasswordSecure": {
+    "message": "Remember to keep your password secure."
+  },
   "rememberToSaveYourSecretPhrase": {
     "message": "Remember to save your secret phrase when you have a pen and paper."
   },
   "remindMeLater": {
     "message": "Remind me later."
+  },
+  "REMOVE": {
+    "message": "REMOVE"
+  },
+  "RemoveAccount": {
+    "message": "Remove Account"
+  },
+  "removeAccountConfirmMsg": {
+    "message": "Are you sure you want to remove "
+  },
+  "removeAccountMsg": {
+    "message": "This will erase all account information from Finnie, but you can import it again with the secret phrase."
   },
   "reportAnIssue": {
     "message": "Report an Issue"
@@ -409,6 +577,9 @@
   },
   "resumeFinnie": {
     "message": "Resume Finnie on this site"
+  },
+  "RevealSecretPhraseText": {
+    "message": "Reveal Secret Phrase: "
   },
   "Save": {
     "message": "Save"
@@ -443,8 +614,14 @@
   "SeeAdvancedDetails": {
     "message": "See Advanced Details"
   },
+  "SeeAll": {
+    "message": "See All"
+  },
   "seeConnectedSites": {
     "message": "See connected sites"
+  },
+  "SeeMore": {
+    "message": "See more"
   },
   "selectAccountPh": {
     "message": "Select Account"
@@ -469,6 +646,9 @@
   },
   "setDefaultAccount": {
     "message": "Set default account successfully."
+  },
+  "shareToEarn": {
+    "message": "Share to earn Attention Rewards"
   },
   "Sign": {
     "message": "Sign"
@@ -497,6 +677,12 @@
   "Status": {
     "message": "Status"
   },
+  "StorageFee": {
+    "message": "Storage Fee"
+  },
+  "Submit": {
+    "message": "Submit"
+  },
   "Tags": {
     "message": "Tags,"
   },
@@ -506,8 +692,14 @@
   "TagsPlaceHolder": {
     "message": "Separate with a “,” and hit space bar"
   },
+  "takeFewMinutesMsg": {
+    "message": "It will take a few minutes to reflect on your wallet."
+  },
   "TermsOfService": {
     "message": "Terms of Service"
+  },
+  "ThisContentIs": {
+    "message": "This content is "
   },
   "thisShouldBeWrittenOnAPieceOfPaper": {
     "message": "This should be written on a piece of paper and never saved on a computer or internet-connected device."
@@ -545,8 +737,14 @@
   "unlock": {
     "message": "Unlock"
   },
+  "UnlockFinnie": {
+    "message": "Unlock Finnie"
+  },
   "updateKIDSuccess": {
     "message": "Your DID is being updated as we speak. This might take a couple of minutes."
+  },
+  "UploadedFiles": {
+    "message": "UPLOADED FILES"
   },
   "UploadNFTDescLabel": {
     "message": "Description"
@@ -566,6 +764,12 @@
   "useMyExistingKey": {
     "message": "Use my existing key."
   },
+  "viewLc": {
+    "message": " views"
+  },
+  "Views": {
+    "message": "Views"
+  },
   "welcomeTo": {
     "message": "Welcome to"
   },
@@ -577,5 +781,8 @@
   },
   "writeDownYourSecretPhrase": {
     "message": "Write down your secret phrase."
+  },
+  "yourTokensOnTheWay": {
+    "message": "Your tokens are on the way!"
   }
 }
