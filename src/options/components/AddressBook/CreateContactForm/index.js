@@ -163,7 +163,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
           <div className="ab-form-add-icon">
             <AddIcon />
           </div>
-          <span>New Address</span>
+          <span>{chrome.i18n.getMessage('NewAddress')}</span>
         </div>
 
         <div className="ab-contact-form__input-group ab-contact-form__input-group--did">

@@ -75,7 +75,9 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
         <CloseIcon className="cursor-pointer float-right w-6.25 h-6.25" onClick={onClose} />
       </div>
       <img className="w-22 h-22" src={Avatar} alt="avatar" />
-      <h1 className="font-semibold text-success text-base my-7">Import from a DID link</h1>
+      <h1 className="font-semibold text-success text-base my-7">
+        {chrome.i18n.getMessage('ImportDIDLink')}
+      </h1>
 
       <input
         style={{ width: '238px', height: '25px' }}
@@ -94,7 +96,7 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
       />
       {invalidDIDLink && (
         <span className="mt-2 text-center font-normal text-xs leading-4 text-warning-300 tracking-finnieSpacing-wide">
-          That’s not a valid DID link
+          {chrome.i18n.getMessage('InvalidDIDLink')}
         </span>
       )}
       {duplicateDID && (
@@ -112,7 +114,7 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
         onClick={() => handleImportDID()}
         disabled={clicked || isEmpty(didLink)}
       >
-        Import
+        {chrome.i18n.getMessage('Import')}
       </button>
     </div>
   )

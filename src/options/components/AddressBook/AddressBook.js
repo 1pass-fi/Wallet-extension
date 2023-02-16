@@ -227,7 +227,7 @@ const AddressBook = () => {
 
           <div className="address-book__list__body">
             {isEmpty(addresses) ? (
-              <div className="address-book__list__body__name">Empty address book!</div>
+              <div className="address-book__list__body__name">{chrome.i18n.getMessage('AddressBookEmpty')}</div>
             ) : (
               filterAddresses.map((add) => (
                 <div

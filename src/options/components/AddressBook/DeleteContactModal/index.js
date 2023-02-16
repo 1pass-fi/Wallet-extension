@@ -42,15 +42,15 @@ const DeleteContactModal = React.forwardRef(({ contact, onClose, removeContact }
           <div className="ab-close-icon" onClick={onClose}>
             <BackIcon />
           </div>
-          <div>Delete Contact</div>
+          <div>{chrome.i18n.getMessage('DeleteContact')}</div>
           <div className="ab-close-icon" onClick={onClose}>
             <CloseIcon />
           </div>
         </div>
         <div className="ab-confirm-delete-message">
-          Are you sure you want to delete{' '}
-          {contact.name.length < 13 ? contact.name : contact.name.slice(0, 13) + '...'} from your
-          address book? You cannot undo this action.
+          {chrome.i18n.getMessage('DeleteMsgStart')}
+          {contact.name.length < 13 ? contact.name : contact.name.slice(0, 13) + '...'}
+          {chrome.i18n.getMessage('DeleteMsgEnd')}
         </div>
         <div className="ab-confirm-delete-buttons">
           <Button
