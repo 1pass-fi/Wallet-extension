@@ -153,7 +153,7 @@ const DropDown = ({
                 })
               }
             >
-              -- None
+              {chrome.i18n.getMessage('noneSelect')}
             </button>
           )}
           {(filterValue !== '-- None' && filterSupported

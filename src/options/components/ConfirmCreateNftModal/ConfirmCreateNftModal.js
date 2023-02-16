@@ -190,17 +190,16 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
           {step === 1 && (
             <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" />
           )}
-          {step === 1 && <div className="m-auto">Create Your Atomic NFT</div>}
-          {step === 2 && <div className="m-auto">You just made a new NFT!</div>}
-          {step === 3 && <div className="m-auto">Share to earn Attention Rewards</div>}
+          {step === 1 && <div className="m-auto">{chrome.i18n.getMessage('createAtomicNFT')}</div>}
+          {step === 2 && <div className="m-auto">{chrome.i18n.getMessage('justMadeNFT')}</div>}
+          {step === 3 && <div className="m-auto">{chrome.i18n.getMessage('shareToEarn')}</div>}
 
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
         {step === 1 && (
           <>
             <div className="mt-4.25 w-115 text-sm tracking-finnieSpacing-tight text-center">
-              Atomic NFTs are stored permanently on Arweave. With Koii, they earn attention rewards
-              forever.
+              {chrome.i18n.getMessage('atomicNFTsMsg')}
             </div>
             <div className="flex min-w-108 mt-4.25 justify-evenly">
               <div className="w-40 h-40 object-cover rounded">
@@ -226,7 +225,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                   ))}
                 </div>
                 <div className="font-semibold text-base tracking-finnieSpacing-wide leading-6 mt-3">
-                  Estimated Costs:
+                  {chrome.i18n.getMessage('EstimatedCosts')}
                 </div>
                 <div className="tracking-finnieSpacing-wider text-sm leading-5">
                   {estimateCostKOII} KOII
@@ -236,7 +235,9 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                     ? 'Calculating fee...'
                     : `${formatNumber(estimateCostAr, 6)} AR`}{' '}
                   {!isEmpty(estimateCostAr) && (
-                    <span className="text-2xs text-success-700">Storage Fee</span>
+                    <span className="text-2xs text-success-700">
+                      {chrome.i18n.getMessage('StorageFee')}
+                    </span>
                   )}
                 </div>
               </div>
@@ -253,7 +254,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
             {showReferralField && (
               <div className="w-101 mt-4">
                 <div className="w-46.75 text-sm text-success-700 m-auto mb-2">
-                  FRIEND REFERRAL CODE
+                  {chrome.i18n.getMessage('FriendReferralCode')}
                 </div>
                 <div className="mb-2">
                   <input
@@ -272,7 +273,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                     onClick={handleSubmitReferralCode}
                     className="w-23 h-8 bg-blue-800 text-white"
                   >
-                    Submit
+                    {chrome.i18n.getMessage('Submit')}
                   </button>
                 </div>
                 {referralCodeError && (
@@ -283,7 +284,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
             {/* {!confirmedCode && <div onClick={() => setShowReferralField(prev => !prev)} className='text-xs text-success-700 underline my-3.75 cursor-pointer'>{!showReferralField ? 'Skip the KOII cost with a referral code' : 'Continue without a referral code'}</div>} */}
             {confirmedCode && (
               <div className="text-xs text-success-700 my-3.75">
-                Referral code has been sucessfully redeemed!
+                {chrome.i18n.getMessage('redeemReferralCodeMsg')}
               </div>
             )}
           </>
@@ -293,10 +294,10 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
             <ModalBackground className="absolute top-0 left-0" />
             <div className="ml-56 mt-27">
               <div className="font-semibold text-xl tracking-finnieSpacing-wide">
-                Your NFT is being created!
+                {chrome.i18n.getMessage('createNFTMsg')}
               </div>
               <div className="text-base mb-16">
-                It will take a few minutes to reflect on your wallet.
+                {chrome.i18n.getMessage('takeFewMinutesMsg')}
               </div>
               {/* <div className="text-base">
                 It will take a few minutes to reflect on your wallet. In the meantime...
@@ -321,8 +322,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
         {step === 3 && (
           <div className="relative w-full h-full text-center">
             <div className="w-112 text-sm mt-6">
-              Earn attention rewards forever through Koii. Copy this link and share on your favorite
-              social platforms.
+              {chrome.i18n.getMessage('earnAttentionRewardsMsg')}
             </div>
             <div className="mt-6 text-base font-semibold">
               {showShareLink ? 'Share Link' : 'Embed Link'}

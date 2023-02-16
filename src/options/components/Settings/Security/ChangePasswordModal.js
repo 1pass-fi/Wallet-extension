@@ -123,9 +123,9 @@ const ChangePasswordModal = ({ close }) => {
             <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" />
           )}
           {step === 1 ? (
-            <div className="m-auto">Change My Password</div>
+            <div className="m-auto">{chrome.i18n.getMessage('ChangeMyPassword')}</div>
           ) : (
-            <div className="m-auto">Password Confirmed</div>
+            <div className="m-auto">{chrome.i18n.getMessage('PasswordConfirmed')}</div>
           )}
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
@@ -139,7 +139,7 @@ const ChangePasswordModal = ({ close }) => {
               style={{ width: '382px' }}
               className="text-sm font-semibold tracking-finnieSpacing-tight text-left"
             >
-              Enter Current Password
+              {chrome.i18n.getMessage('EnterCurrentPassword')}
             </div>
             <input
               type="password"
@@ -185,7 +185,7 @@ const ChangePasswordModal = ({ close }) => {
               style={{ width: '382px' }}
               className="mt-2 text-sm font-semibold tracking-finnieSpacing-tight text-left"
             >
-              Confirm New Password
+              {chrome.i18n.getMessage('ConfirmNewPassword')}
             </div>
             <input
               type="password"
@@ -223,7 +223,7 @@ const ChangePasswordModal = ({ close }) => {
         {step === 2 && (
           <div style={{ height: '93px' }} className="relative mt-20 flex flex-col justify-between">
             <div className="text-base leading-6 font-normal tracking-finnieSpacing-wide">
-              Remember to keep your password secure.
+              {chrome.i18n.getMessage('RememberPasswordSecure')}
             </div>
 
             <Button
