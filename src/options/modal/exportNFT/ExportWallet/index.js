@@ -518,7 +518,7 @@ export default ({ info, onClose, type }) => {
                         value={address}
                         onChange={onAddressInputChange}
                         className="input"
-                        placeholder="select from connected wallets or enter a new address"
+                        placeholder={chrome.i18n.getMessage('selectConnectedWallets')}
                       />
                       <div className="address-dropdown">
                         <div

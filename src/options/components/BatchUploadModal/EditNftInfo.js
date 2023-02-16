@@ -82,7 +82,7 @@ const EditNftInfo = ({
         </div>
         <div className="ml-3.5 w-55.5 flex flex-col justify-between">
           <InputField
-            label="NFT Title"
+            label={chrome.i18n.getMessage('NFTTitleLabel')}
             required={true}
             name="title"
             value={nftDetail.title}
@@ -91,7 +91,7 @@ const EditNftInfo = ({
             isDisable={nftInfo.existingNft}
           />
           <InputField
-            label="Description"
+            label={chrome.i18n.getMessage('NFTDescriptionLabel')}
             required={true}
             type="textarea"
             name="description"
@@ -110,7 +110,7 @@ const EditNftInfo = ({
             <input
               className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 input-field-component"
               name="tags"
-              placeholder="Tags,"
+              placeholder={chrome.i18n.getMessage('Tags')}
               id="tags"
               value={tagInputs[currentNftIdx] ? tagInputs[currentNftIdx] : ''}
               onChange={(e) => {

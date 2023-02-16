@@ -305,10 +305,10 @@ const KidPage = () => {
         !linkAccount['link'].toLowerCase().startsWith('http://') &&
         !linkAccount['link'].toLowerCase().startsWith('https://')
       ) {
-        linkErrors[idx] = 'Links must begin with https:// or http://'
+        linkErrors[idx] = chrome.i18n.getMessage('kidErrorLink')
         validLinkAccounts = false
       } else if (!urlRegex.test(linkAccount['link'])) {
-        linkErrors[idx] = 'That doesn\'t seem like a valid website. Please try again.'
+        linkErrors[idx] = chrome.i18n.getMessage('kidErrorInvalidWebsite')
         validLinkAccounts = false
       }
     })
@@ -601,13 +601,13 @@ const KidPage = () => {
                 <input
                   className="link-accounts-input-name"
                   value={linkAccounts.title}
-                  placeholder="Label e.g. “Website”"
+                  placeholder={chrome.i18n.getMessage('kidLinkAccountTitlePh')}
                   onChange={(e) => handleChangeLinkAccountName(idx, e)}
                 />
                 <input
                   className="link-accounts-input-value"
                   value={linkAccounts.link}
-                  placeholder="URL e.g. https://koii.network/"
+                  placeholder={chrome.i18n.getMessage('kidLinkAccountLinkPh')}
                   onChange={(e) => handleChangeLinkAccountValue(idx, e)}
                 />
                 <div className="remove-logo" onClick={() => removeLinkAccount(idx)}>
@@ -731,7 +731,11 @@ const KidPage = () => {
               SELECT {modalType === 'AVATAR' ? 'PROFILE' : 'COVER'} PICTURE
             </div>
             <div className="select-nft-modal-search">
-              <input placeholder="Search NFTs" value={nftSearchText} onChange={onSearchNft} />
+              <input
+                placeholder={chrome.i18n.getMessage('searchNftsPh')}
+                value={nftSearchText}
+                onChange={onSearchNft}
+              />
               <MagnifierIcon className="magnifier-icon" />
             </div>
             <div className="nfts">

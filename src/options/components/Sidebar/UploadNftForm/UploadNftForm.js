@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef,useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import CrossIcon from 'img/v2/cross-icon.svg'
 import capitalize from 'lodash/capitalize'
 import initial from 'lodash/initial'
@@ -129,35 +129,35 @@ const UploadNftForm = () => {
         <div ref={titleFieldRef}>
           <InputField
             className="my-1"
-            label="NFT Title"
+            label={chrome.i18n.getMessage('UploadNFTTitleLabel')}
             value={nftContent.title}
             setValue={handleNftContentChange}
             required={true}
             name="title"
             error={errors.title}
-            placeholder={'Find the perfect name'}
+            placeholder={chrome.i18n.getMessage('UploadNFTTitlePlaceHolder')}
           />
         </div>
         <InputField
           className="my-1"
-          label="Description"
+          label={chrome.i18n.getMessage('UploadNFTDescLabel')}
           value={nftContent.description}
           setValue={handleNftContentChange}
           required={true}
           type="textarea"
           name="description"
           error={errors.description}
-          placeholder={'Tell the world about this one'}
+          placeholder={chrome.i18n.getMessage('UploadNFTDescPlaceHolder')}
           maxHeight={200}
         />
         <div className="my-1 flex flex-col w-full">
           <label htmlFor="tags" className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
-            Tags
+            {chrome.i18n.getMessage('Tags')}
           </label>
           <input
             className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 upload-nft-tag-input"
             name="tags"
-            placeholder="Separate with a “,” and hit space bar"
+            placeholder={chrome.i18n.getMessage('TagsPlaceHolder')}
             id="tags"
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}

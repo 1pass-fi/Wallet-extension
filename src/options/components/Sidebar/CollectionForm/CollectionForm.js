@@ -193,7 +193,6 @@ const CollectionForm = ({ isUpdate }) => {
   const getFilesFromFileList = (e) => {
     const _files = []
     for (let i = 0; i < e.target.files.length; i++) {
-
       _files.push(e.target.files.item(i))
     }
 
@@ -255,15 +254,13 @@ const CollectionForm = ({ isUpdate }) => {
   }, [selectedNftIds])
 
   const label = {
-    title: isUpdate ? 'Edit Collection Title' : 'Collection Title',
-    description: isUpdate ? 'Edit Description' : 'Description',
-    tags: 'tags'
-  }
-
-  const placeholder = {
-    title: `Finnie's Friends`,
-    description: `When you’ve got friends like mine, the internet is a wonderful place to be.`,
-    tags: `Separate with a “,” and hit space bar`
+    title: isUpdate
+      ? chrome.i18n.getMessage('CollectionLabelEditTitle')
+      : chrome.i18n.getMessage('CollectionLabelTitle'),
+    description: isUpdate
+      ? chrome.i18n.getMessage('CollectionLabelEditDescription')
+      : chrome.i18n.getMessage('CollectionLabelDescription'),
+    tags: chrome.i18n.getMessage('tagsLowerCase')
   }
 
   return (
@@ -285,7 +282,7 @@ const CollectionForm = ({ isUpdate }) => {
             required={true}
             name="title"
             error={errors.title}
-            placeholder={placeholder.title}
+            placeholder={chrome.i18n.getMessage('CollectionPlaceHolderTitle')}
           />
         </div>
         <InputField
@@ -297,7 +294,7 @@ const CollectionForm = ({ isUpdate }) => {
           type="textarea"
           name="description"
           error={errors.description}
-          placeholder={placeholder.description}
+          placeholder={chrome.i18n.getMessage('CollectionPlaceHolderDescription')}
           maxHeight={200}
         />
         <div className="my-1 flex flex-col w-full">
@@ -307,7 +304,7 @@ const CollectionForm = ({ isUpdate }) => {
           <input
             className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 create-collection-tag-input"
             name="tags"
-            placeholder={placeholder.tags}
+            placeholder={chrome.i18n.getMessage('CollectionPlaceHolderTags')}
             id="tags"
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}

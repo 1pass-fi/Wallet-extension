@@ -95,7 +95,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
 
         <input
           className="ab-contact-form__name"
-          placeholder="Name"
+          placeholder={chrome.i18n.getMessage('Name')}
           name="name"
           onChange={handleUserInfoChange}
           value={userInfo.name}
@@ -104,7 +104,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
         <div className="ab-contact-form__notes-label">Notes</div>
         <input
           className="ab-contact-form__notes"
-          placeholder="i.e Larry from the metaverse"
+          placeholder={chrome.i18n.getMessage('AddressBookNote')}
           name="notes"
           onChange={handleUserInfoChange}
           value={userInfo.notes}
@@ -124,7 +124,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
               <div className="second-row__left">
                 <input
                   className="input-group__input-value"
-                  placeholder="Insert Address"
+                  placeholder={chrome.i18n.getMessage('AddressBookAddress')}
                   onChange={(e) => handleUserAddressValueChange(idx, e)}
                   value={address.value}
                 />
@@ -170,7 +170,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
           <div className="input-group__first-row">
             <input
               className="input-group__label"
-              placeholder="DID link"
+              placeholder={chrome.i18n.getMessage('AddressBookDIDLink')}
               name="didName"
               value={userInfo.didName}
               onChange={handleUserInfoChange}
@@ -180,7 +180,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
             <div className="second-row__left">
               <input
                 className="input-group__input-value"
-                placeholder="Insert Decentralized ID link"
+                placeholder={chrome.i18n.getMessage('AddressBookDIDValue')}
                 name="didValue"
                 value={userInfo.didValue}
                 onChange={handleUserInfoChange}

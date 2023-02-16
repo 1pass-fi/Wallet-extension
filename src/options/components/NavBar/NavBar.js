@@ -126,15 +126,15 @@ const NavBar = () => {
           <KoiiLogo className="h-8 3xl:h-10 4xl:h-12 w-10.75 3xl:w-13.5 4xl:w-16.25" />
         </Link>
         <nav className="ml-6.25 3xl:ml-10 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
-          <NavLink to="/gallery">Gallery</NavLink>
+          <NavLink to="/gallery">{chrome.i18n.getMessage('GalleryLc')}</NavLink>
         </nav>
         <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
-          <NavLink to="/create-nft">Create</NavLink>
+          <NavLink to="/create-nft">{chrome.i18n.getMessage('CreateLc')}</NavLink>
         </nav>
         <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
           {/* <NavLink to="/collections">Collections</NavLink> */}
           <div className="cursor-not-allowed" data-tip="Coming soon" data-for="nav-collections">
-            Collections
+            {chrome.i18n.getMessage('CollectionsLc')}
           </div>
         </nav>
         <ToolTip id="nav-collections" />

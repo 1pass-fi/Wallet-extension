@@ -83,7 +83,7 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
           clicked && 'cursor-wait',
           'focus:outline-none bg-trueGray-100 bg-opacity-10 text-center text-white text-sm placeholder-trueGray-400 border-b border-white'
         )}
-        placeholder="Insert a DID link here"
+        placeholder={chrome.i18n.getMessage('AddressBookDIDLinkInput')}
         value={didLink}
         onChange={(e) => {
           setDidLink(e.target.value)
