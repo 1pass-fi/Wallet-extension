@@ -224,17 +224,50 @@
   "Password": {
     "message": "Password"
   },
+  "didInvalidAccount": {
+    "message": "Invalid account input"
+  },
+  "didInvalidData": {
+    "message": "Invalid data input"
+  },
+  "didKeyNotFound": {
+    "message": "Key not found"
+  },
+  "didDeployContractError": {
+    "message": "Deploy contract failed"
+  },
+  "addressBookDuplicateDID": {
+    "message": "This DID already exist in Address Book"
+  },
   "passwordDoesNotMatch": {
     "message": "Password does not match"
   },
   "pauseFinnie": {
     "message": "Pause Finnie on this site"
   },
+  "passwordNotMeetRequirements": {
+    "message": "The password does not meet the requirements."
+  },
+  "koiKey": {
+    "message": "koiKey"
+  },
+  "CURRENCY": {
+    "message": "CURRENCY"
+  },
+  "koiPhrase": {
+    "message": "koiPhrase"
+  },
+  "pendingRequest": {
+    "message": "pendingRequest"
+  },
   "pleaseAcceptTheTof": {
     "message": "Please accept the Terms of Service"
   },
   "pleaseChooseAccount": {
     "message": "Please choose Koii or Arweave account first!"
+  },
+  "notEnoughCharacters": {
+    "message": "Not enough character"
   },
   "getArPriceError": {
     "message": "We cannot get AR price for the currency "
@@ -268,6 +301,30 @@
   },
   "reportAnIssue": {
     "message": "Report an Issue"
+  },
+  "passwordRequired": {
+    "message": "Password required."
+  },
+  "invalidTokenSchema": {
+    "message": "Invalid token schema. Please use nft with token schema of ERC1155"
+  },
+  "accountExist": {
+    "message": "This account has already been imported."
+  },
+  "createTransactionError": {
+    "message": "Create transaction error"
+  },
+  "signTransactionError": {
+    "message": "Sign transaction error"
+  },
+  "uploadNFTError": {
+    "message": "Upload NFT error"
+  },
+  "registerNFTError": {
+    "message": "Register NFT error"
+  },
+  "invalidContent": {
+    "message": "Invalid content"
   },
   "requestNotExist": {
     "message": "This request is no longer exist."

@@ -352,91 +352,49 @@ export const PATH = {
 }
 
 export const ERROR_MESSAGE = {
-  INCORRECT_PASSWORD: 'Incorrect password, please try again.',
-  PASSWORD_LENGTH: 'Your Koii password must have at least 8 characters.',
-  PASSWORD_MATCH: 'Passwords do not match, please try again.',
-  INCORRECT_PHRASE: 'Incorrect seed phrase, please try again.',
-  EMPTY_PHRASE: 'Seed phrase should not be blank.',
-  CHECKED_TERMS: 'You have to agree to the Terms of Service',
-  EMPTY_FIELDS: 'Please fill in all fields.',
-  NOT_ENOUGH_KOI: `You don't have enough Koii.`,
-  REQUEST_NOT_EXIST: 'This request is no longer exist.',
-  INVALID_AMOUNT: 'Amount can not be negative.',
-  ALREADY_CONNECTED_SITE: 'This site has already connected.',
-  MUST_USE_IN_POPUP: 'Please use this feature in the extension pop up.',
-  NOT_ENOUGH_AR: `You don't have enough AR.`,
-  FILE_TOO_LARGE: 'File too large. The maximum size for NFT is 15MB',
-  CANNOT_GET_COSTS: 'Cannot get the upload costs.',
-  INVALID_FRIEND_CODE: `That code isn't quite right. Check it and try again.`,
-  COLLECTION_NFT_EMPTY: 'A collection has to contain at least one NFT.',
-  KID_FILE_TOO_LARGE: 'File too large. The maximum size for Profile Picture is 500KB',
-  PASSWORD_REQUIRED: 'Password required.',
-  SELECT_ACCOUNT: 'Please select account.',
-  SELECT_TOKEN: 'Please select token.',
-  CREATE_WALLET_FAILED: 'Create new wallet failed.',
-  INVALID_JSON_KEY: 'Invalid JSON key. Please make sure that you chose a valid key.',
-  SEND_ZERO_KOI: 'Whoops! Enter the amount of tokens you want to send.',
-  SEND_WITH_ETH: 'We currently only support Ethereum transfers on the Goerli network.',
-  INVALID_TOKEN_SCHEMA: 'Invalid token schema. Please use nft with token schema of ERC1155',
-  NOT_ENOUGH_ETH: `You don't have enough ETH.`,
-  EXPIRED_TRANSACTION_ACTION_ERROR:
-    'Something went wrong when trying to delete or resend your transaction',
-  BRIDGE_WITH_ETH_MAINNET: 'We currently only support Ethereum NFT bridging on the Goerli network.',
-  NFT_NOT_EXIST_ON_CHAIN: `This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie.`,
-  BRIDGE_NFT_FAILED: 'Bridge NFT failed',
-  ACCOUNT_EXIST: 'This account has already been imported.',
-  ACCOUNT_NAME_EMPTY: 'Enter a name for this key.',
+  NOT_ENOUGH_KOI: chrome.i18n.getMessage('notEnoughKoiiToken'),
+  REQUEST_NOT_EXIST: chrome.i18n.getMessage('requestNotExist'),
+  NOT_ENOUGH_AR: chrome.i18n.getMessage('notEnoughARToken'),
+  PASSWORD_REQUIRED: chrome.i18n.getMessage('passwordRequired'),
+  INVALID_TOKEN_SCHEMA: chrome.i18n.getMessage('invalidTokenSchema'),
+  NOT_ENOUGH_ETH: chrome.i18n.getMessage('notEnoughETHToken'),
+  NFT_NOT_EXIST_ON_CHAIN: chrome.i18n.getMessage('nftNotExistOnChain'),
+  BRIDGE_NFT_FAILED: chrome.i18n.getMessage('bridgeNftFailed'),
+  ACCOUNT_EXIST: chrome.i18n.getMessage('bridgeNftFailed'),
   UPLOAD_NFT: {
-    CREATE_TRANSACTION_ERROR: 'Create transaction error',
-    SIGN_TRANSACTION_ERROR: 'Sign transaction error',
-    UPLOAD_ERROR: 'Upload NFT error',
-    REGISTER_ERROR: 'Register NFT error',
-    INVALID_CONTENT: 'Invalid content'
+    CREATE_TRANSACTION_ERROR: chrome.i18n.getMessage('createTransactionError'),
+    SIGN_TRANSACTION_ERROR: chrome.i18n.getMessage('signTransactionError'),
+    UPLOAD_ERROR: chrome.i18n.getMessage('uploadNFTError'),
+    REGISTER_ERROR: chrome.i18n.getMessage('registerNFTError'),
+    INVALID_CONTENT: chrome.i18n.getMessage('invalidContent')
   },
   RESEND: {
-    KOII: 'Resend KOII failed',
-    AR: 'Resend AR failed',
-    NOT_ENOUGH_BALANCE: 'Not enough AR or KOII'
+    NOT_ENOUGH_BALANCE: chrome.i18n.getMessage('notEnoughARorKoiiTokens')
   },
   DID: {
-    INVALID_ACCOUNT_INPUT: 'Invalid account input',
-    INVALID_DATA_INPUT: 'Invalid data input',
-    KEY_NOT_FOUND: 'Key not found'
+    INVALID_ACCOUNT_INPUT: chrome.i18n.getMessage('didInvalidAccount'),
+    INVALID_DATA_INPUT: chrome.i18n.getMessage('didInvalidData'),
+    KEY_NOT_FOUND: chrome.i18n.getMessage('didKeyNotFound'),
+    DEPLOY_CONTRACT_ERROR: chrome.i18n.getMessage('didDeployContractError')
   },
 
   ADDRESS_BOOK: {
-    DUPLICATE_DID: 'This DID already exist in Address Book'
+    DUPLICATE_DID: chrome.i18n.getMessage('addressBookDuplicateDID')
   }
 }
 
 export const VALIDATE_ERROR_MESSAGE = {
-  NOT_ENOUGH_CHARACTERS: 'Not enough characters',
-  NOT_MATCH: `Password does not match`,
-  INVALID_CHARACTER: 'The password does not meet the requirements.',
-  TERM_OF_SERVICE_UNCHECKED: 'Please accept the Terms of Service'
+  NOT_ENOUGH_CHARACTERS: chrome.i18n.getMessage('notEnoughCharacters'),
+  NOT_MATCH: chrome.i18n.getMessage('passwordDoesNotMatch'),
+  INVALID_CHARACTER: chrome.i18n.getMessage('passwordNotMeetRequirements'),
+  TERM_OF_SERVICE_UNCHECKED: chrome.i18n.getMessage('pleaseAcceptTheTof')
 }
 
 export const STORAGE = {
-  KOI_ADDRESS: 'koiAddress',
-  KOI_KEY: 'koiKey',
-  KOI_BALANCE: 'koiBalance',
-  AR_BALANCE: 'arBalance',
-  CONTENT_LIST: 'contentList',
-  ACTIVITIES_LIST: 'activitiesList',
-  SITE_PERMISSION: 'sitePermission',
-  PENDING_REQUEST: 'pendingRequest',
-  KOI_PHRASE: 'koiPhrase',
-  PENDING_TRANSACTION: 'pendingTransactions',
-  ACCOUNT_NAME: 'accountName',
-  PRICE: 'PRICE',
-  AFFILIATE_CODE: 'AFFILIATE_CODE',
-  SHOW_WELCOME_SCREEN: 'SHOW_WELCOME_SCREEN',
-  CURRENCY: 'CURRENCY',
-  MOCK_COLLECTIONS_STORE: 'MOCK_COLLECTIONS_STORE',
-  SHOW_VIEWS: 'SHOW_VIEWS',
-  SHOW_EARNED_KOI: 'SHOW_EARNED_KOI',
-  COLLECTIONS: 'COLLECTIONS',
-  KID: 'KID'
+  KOI_KEY: chrome.i18n.getMessage('koiKey'),
+  PENDING_REQUEST: chrome.i18n.getMessage('pendingRequest'),
+  KOI_PHRASE: chrome.i18n.getMessage('koiPhrase'),
+  CURRENCY: chrome.i18n.getMessage('CURRENCY'),
 }
 
 export const REQUEST = {
