@@ -1,4 +1,4 @@
-import React, { useContext,useEffect, useMemo, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import AceEditor from 'react-ace'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
@@ -448,12 +448,12 @@ const KidPage = () => {
           txId: didID,
           newkID: oldkID !== kID
         })
-        dispatch(setQuickNotification(NOTIFICATION.UPDATE_KID_SUCCESS))
+        dispatch(setQuickNotification(chrome.i18n.getMessage('updateKIDSuccess')))
         setShowConfirmModal(false)
       } else {
         /* Create */
         result = await backgroundRequest.gallery.createDID({ didData: state })
-        dispatch(setQuickNotification(NOTIFICATION.CREATE_KID_SUCCESS))
+        dispatch(setQuickNotification(chrome.i18n.getMessage('createKIDSuccess')))
         setConfirmed(true)
       }
 
@@ -810,9 +810,7 @@ const KidPage = () => {
         )}
       </div>
 
-      {showSelectDIDAccount && (
-        <SelectDIDAccount close={() => setShowSelectDIDAccount(false)} />
-      )}
+      {showSelectDIDAccount && <SelectDIDAccount close={() => setShowSelectDIDAccount(false)} />}
 
       <ReactTooltip place="top" type="dark" effect="float" />
     </div>

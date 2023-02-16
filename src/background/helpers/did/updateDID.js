@@ -1,5 +1,4 @@
 // constants
-import { ERROR_MESSAGE } from 'constants/koiConstants'
 import { backgroundAccount } from 'services/account'
 import { ArweaveAccount } from 'services/account/Account'
 // services
@@ -9,14 +8,15 @@ import { smartweave } from 'smartweave'
 import didSchema from './schema'
 
 export default async (payload, txId, account) => {
-  if (!(account instanceof ArweaveAccount)) throw new Error(ERROR_MESSAGE.DID.INVALID_ACCOUNT_INPUT)
+  if (!(account instanceof ArweaveAccount))
+    throw new Error(chrome.i18n.getMessage('didInvalidAccount'))
   const ownerAddress = await account.get.address()
 
   let data = didSchema.validate(payload, {})
 
   if (data.error) {
     console.error(data.error)
-    throw new Error(ERROR_MESSAGE.DID.INVALID_DATA_INPUT)
+    throw new Error(chrome.i18n.getMessage('didInvalidData'))
   }
 
   data = data.value

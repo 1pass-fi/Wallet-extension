@@ -6,8 +6,6 @@ import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
 import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
-// constants
-import { ERROR_MESSAGE } from 'constants/koiConstants'
 // assets
 import CheckMarkIcon from 'img/check-mark-white.svg'
 import ConnectBackgroundLeft from 'img/popup/connect-background-left.svg'
@@ -119,7 +117,7 @@ const ConnectScreen = ({
       if (accept) {
         setIsLoading(true)
         if (!(await storage.generic.get.pendingRequest()))
-          throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
+          throw new Error(chrome.i18n.getMessage('requestNotExist'))
 
         const payload = {
           requestId,

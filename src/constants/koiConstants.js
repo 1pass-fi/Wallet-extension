@@ -351,50 +351,11 @@ export const PATH = {
   KOII_LIVE: 'https://koii.live'
 }
 
-export const ERROR_MESSAGE = {
-  NOT_ENOUGH_KOI: chrome.i18n.getMessage('notEnoughKoiiToken'),
-  REQUEST_NOT_EXIST: chrome.i18n.getMessage('requestNotExist'),
-  NOT_ENOUGH_AR: chrome.i18n.getMessage('notEnoughARToken'),
-  PASSWORD_REQUIRED: chrome.i18n.getMessage('passwordRequired'),
-  INVALID_TOKEN_SCHEMA: chrome.i18n.getMessage('invalidTokenSchema'),
-  NOT_ENOUGH_ETH: chrome.i18n.getMessage('notEnoughETHToken'),
-  NFT_NOT_EXIST_ON_CHAIN: chrome.i18n.getMessage('nftNotExistOnChain'),
-  BRIDGE_NFT_FAILED: chrome.i18n.getMessage('bridgeNftFailed'),
-  ACCOUNT_EXIST: chrome.i18n.getMessage('bridgeNftFailed'),
-  UPLOAD_NFT: {
-    CREATE_TRANSACTION_ERROR: chrome.i18n.getMessage('createTransactionError'),
-    SIGN_TRANSACTION_ERROR: chrome.i18n.getMessage('signTransactionError'),
-    UPLOAD_ERROR: chrome.i18n.getMessage('uploadNFTError'),
-    REGISTER_ERROR: chrome.i18n.getMessage('registerNFTError'),
-    INVALID_CONTENT: chrome.i18n.getMessage('invalidContent')
-  },
-  RESEND: {
-    NOT_ENOUGH_BALANCE: chrome.i18n.getMessage('notEnoughARorKoiiTokens')
-  },
-  DID: {
-    INVALID_ACCOUNT_INPUT: chrome.i18n.getMessage('didInvalidAccount'),
-    INVALID_DATA_INPUT: chrome.i18n.getMessage('didInvalidData'),
-    KEY_NOT_FOUND: chrome.i18n.getMessage('didKeyNotFound'),
-    DEPLOY_CONTRACT_ERROR: chrome.i18n.getMessage('didDeployContractError')
-  },
-
-  ADDRESS_BOOK: {
-    DUPLICATE_DID: chrome.i18n.getMessage('addressBookDuplicateDID')
-  }
-}
-
-export const VALIDATE_ERROR_MESSAGE = {
-  NOT_ENOUGH_CHARACTERS: chrome.i18n.getMessage('notEnoughCharacters'),
-  NOT_MATCH: chrome.i18n.getMessage('passwordDoesNotMatch'),
-  INVALID_CHARACTER: chrome.i18n.getMessage('passwordNotMeetRequirements'),
-  TERM_OF_SERVICE_UNCHECKED: chrome.i18n.getMessage('pleaseAcceptTheTof')
-}
-
 export const STORAGE = {
-  KOI_KEY: chrome.i18n.getMessage('koiKey'),
-  PENDING_REQUEST: chrome.i18n.getMessage('pendingRequest'),
-  KOI_PHRASE: chrome.i18n.getMessage('koiPhrase'),
-  CURRENCY: chrome.i18n.getMessage('CURRENCY'),
+  KOI_KEY: 'koiKey',
+  PENDING_REQUEST: 'pendingRequest',
+  KOI_PHRASE: 'koiPhrase',
+  CURRENCY: 'CURRENCY'
 }
 
 export const REQUEST = {
@@ -418,24 +379,6 @@ export const RATE = {
   ETH: 100
 }
 
-export const NOTIFICATION = {
-  ADDRESS_COPIED: 'Address copied!',
-  SEED_PHRASE_COPIED: 'Seed phrase copied!',
-  KEY_EXPORTED: 'Private key downloaded.',
-  ACCOUNT_NAME_UPDATED: 'Account nickname updated.',
-  NFT_LOADED: 'Your assets list is up to date.',
-  TRANSACTION_SENT: 'Transaction sent.',
-  CREATE_COLLECTION_SUCCESS:
-    'Collection created successfully. It may take a while until you can get your data updated.',
-  CREATE_KID_SUCCESS:
-    'Created KID successfully. It may take a while until you can get your data updated.',
-  UPDATE_KID_SUCCESS: 'Your DID is being updated as we speak. This might take a couple of minutes.'
-}
-
-export const STATEMENT = {
-  NO_REWARD: `You don't have any rewards available, share your code to get some!`
-}
-
 export const TIME_INTERVAL = {
   LOAD_BALANCES_ARWEAVE: 300000,
   LOAD_BALANCES_ETHEREUM: 900000,
@@ -448,8 +391,6 @@ export const TIME_INTERVAL = {
 export const NFT_BIT_DATA = 'NFT_BIT_DATA'
 
 export const ALL_NFT_LOADED = 'ALL_NFT_LOADED'
-
-export const DISCONNECTED_BACKGROUND = 'Attempting to use a disconnected port object'
 
 export const TRANSACTION_DATA = 'TRANSACTION_DATA'
 
@@ -531,15 +472,6 @@ export const STREAM = {
 export const ATTENTION_CONTRACT = 'CdPAQNONoR83Shj3CbI_9seC-LqgI1oLaRJhSwP90-o'
 
 export const VALID_TOKEN_SCHEMA = ['ERC1155']
-
-export const ACTIVITY_NAME = {
-  BRIDGE_AR_TO_ETH: 'Bridged NFT from Arweave to Ethereum',
-  BRIDGE_ETH_TO_AR: 'Bridged NFT from Ethereum to Arweave',
-  SENT: 'Sent',
-  RECEIVED: 'Received',
-  CONTRACT_INTERACTION: 'Contract interaction',
-  UNKNOWN: 'Unknown transaction'
-}
 
 export const MAX_RETRIED = 1
 

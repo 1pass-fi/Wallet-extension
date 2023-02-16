@@ -1,6 +1,5 @@
 import passworder from 'browser-passworder'
-import { ACCOUNT,IMPORTED, TYPE } from 'constants/accountConstants'
-import { ERROR_MESSAGE } from 'constants/koiConstants'
+import { ACCOUNT, IMPORTED, TYPE } from 'constants/accountConstants'
 import { find, get, isEmpty } from 'lodash'
 import storage from 'services/storage'
 import { ChromeStorage } from 'services/storage/ChromeStorage'
@@ -480,7 +479,7 @@ export class BackgroundAccountManager extends AccountManager {
           })
         )
       } else {
-        throw new Error(ERROR_MESSAGE.PASSWORD_REQUIRED)
+        throw new Error(chrome.i18n.getMessage('passwordRequired'))
       }
     } catch (err) {
       this.importedAccount = []

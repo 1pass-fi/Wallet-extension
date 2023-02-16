@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { ACTIVITY_NAME, ETH_NETWORK_PROVIDER, PATH, URL } from 'constants/koiConstants'
 import ExploreBlock from 'img/v2/explore-block-coming-soon.svg'
@@ -91,8 +91,8 @@ const ActivityRow = ({
           }
 
           if (
-            activityName === ACTIVITY_NAME.CONTRACT_INTERACTION ||
-            activityName === ACTIVITY_NAME.UNKNOWN
+            activityName === chrome.i18n.getMessage('contractInteraction') ||
+            activityName === chrome.i18n.getMessage('unknowTransaction')
           )
             token = 'ETH'
 

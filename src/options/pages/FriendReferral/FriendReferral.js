@@ -46,7 +46,7 @@ const FriendReferral = () => {
         if (status != 200) {
           switch (message) {
             case `Affiliate Invites doesn't exists or already claimed`:
-              dispatch(setQuickNotification(STATEMENT.NO_REWARD))
+              dispatch(setQuickNotification(chrome.i18n.getMessage('statementNoReward')))
               break
             default:
               dispatch(setQuickNotification(message))

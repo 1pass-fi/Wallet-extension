@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 // actions
 import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
-// constants
-import { ERROR_MESSAGE } from 'constants/koiConstants'
 // components
 import Button from 'popup/components/shared/button/'
 import Modal from 'popup/components/shared/modal/index'

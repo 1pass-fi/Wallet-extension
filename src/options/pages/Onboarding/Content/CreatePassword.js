@@ -82,7 +82,11 @@ const CreatePassword = ({ step, setStep }) => {
       </div>
       <InputField
         className="mt-5"
-        label={isEmpty(accounts) ? chrome.i18n.getMessage('NewPassword') : chrome.i18n.getMessage('Password')}
+        label={
+          isEmpty(accounts)
+            ? chrome.i18n.getMessage('NewPassword')
+            : chrome.i18n.getMessage('Password')
+        }
         value={password}
         setValue={(e) => {
           setWrongPasswordMessage('')
@@ -94,8 +98,8 @@ const CreatePassword = ({ step, setStep }) => {
           isEmpty(accounts) &&
           !isEmpty(password) &&
           isClickContinue &&
-          (passwordErrorMessage === VALIDATE_ERROR_MESSAGE.INVALID_CHARACTER ||
-            passwordErrorMessage === VALIDATE_ERROR_MESSAGE.NOT_ENOUGH_CHARACTERS)
+          (passwordErrorMessage === chrome.i18n.getMessage('passwordNotMeetRequirements') ||
+            passwordErrorMessage === chrome.i18n.getMessage('notEnoughCharacters'))
             ? chrome.i18n.getMessage('securePasswordsHaveAtLeast8Characters')
             : !isEmpty(wrongPasswordMessage)
               ? wrongPasswordMessage

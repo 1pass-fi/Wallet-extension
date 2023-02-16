@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { ACTIVITY_NAME, ETH_NETWORK_PROVIDER, PATH, URL } from 'constants/koiConstants'
 import ExploreBlock from 'img/v2/explore-block-coming-soon.svg'
@@ -73,8 +73,7 @@ const ActivityRow = ({
         } else {
           if (network === ETH_NETWORK_PROVIDER.MAINNET)
             blockUrl = `${URL.ETHERSCAN_MAINNET}/tx/${id}`
-          if (network === ETH_NETWORK_PROVIDER.GOERLI)
-            blockUrl = `${URL.ETHERSCAN_GOERLI}/tx/${id}`
+          if (network === ETH_NETWORK_PROVIDER.GOERLI) blockUrl = `${URL.ETHERSCAN_GOERLI}/tx/${id}`
         }
 
         if (includes(activityName, 'SOL')) {
@@ -93,8 +92,8 @@ const ActivityRow = ({
           }
 
           if (
-            activityName === ACTIVITY_NAME.CONTRACT_INTERACTION ||
-            activityName === ACTIVITY_NAME.UNKNOWN
+            activityName === chrome.i18n.getMessage('contractInteraction') ||
+            activityName === chrome.i18n.getMessage('unknowTransaction')
           )
             tokenType = 'ETH'
 

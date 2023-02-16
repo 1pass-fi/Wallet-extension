@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { getDIDs } from 'background/helpers/did/koiiMe'
 import clsx from 'clsx'
-import { ERROR_MESSAGE } from 'constants/koiConstants'
 import Avatar from 'img/ab-avatar.png'
 import CloseIcon from 'img/ab-close-icon.svg'
 import get from 'lodash/get'
@@ -100,7 +99,7 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
       )}
       {duplicateDID && (
         <span className="mt-2 text-center font-normal text-xs leading-4 text-warning-300 tracking-finnieSpacing-wide">
-          {ERROR_MESSAGE.ADDRESS_BOOK.DUPLICATE_DID}
+          {chrome.i18n.getMessage('addressBookDuplicateDID')}
         </span>
       )}
       <button

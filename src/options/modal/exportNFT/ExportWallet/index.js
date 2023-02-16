@@ -1,9 +1,8 @@
-import React, { useEffect,useMemo, useRef, useState } from 'react'
-import { useDispatch,useSelector } from 'react-redux'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 import { TYPE } from 'constants/accountConstants'
 import { ETH_NETWORK_PROVIDER, KOI_ROUTER_CONTRACT } from 'constants/koiConstants'
-import { ERROR_MESSAGE } from 'constants/koiConstants'
 // import Web3 from 'web3'
 import { ethers } from 'ethers'
 import ArweaveLogo from 'img/arweave-icon.svg'
@@ -155,8 +154,8 @@ export default ({ info, onClose, type }) => {
 
   const addressInputRef = useRef()
 
-  const accounts = useSelector(state => state.accounts)
-  const assets = useSelector(state => state.assets)
+  const accounts = useSelector((state) => state.accounts)
+  const assets = useSelector((state) => state.assets)
   const dispatch = useDispatch()
 
   const totalTransfer = 1 // TODO this
@@ -398,10 +397,10 @@ export default ({ info, onClose, type }) => {
     } catch (error) {
       setIsBridging(false)
       console.log('ERROR', error)
-      if (error.message === ERROR_MESSAGE.NFT_NOT_EXIST_ON_CHAIN) {
-        dispatch(setError(ERROR_MESSAGE.NFT_NOT_EXIST_ON_CHAIN))
+      if (error.message === chrome.i18n.getMessage('nftNotExistOnChain')) {
+        dispatch(setError(chrome.i18n.getMessage('nftNotExistOnChain')))
       } else {
-        dispatch(setError(ERROR_MESSAGE.BRIDGE_NFT_FAILED))
+        dispatch(setError(chrome.i18n.getMessage('bridgeNftFailed')))
       }
     }
   }

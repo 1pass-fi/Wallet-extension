@@ -117,7 +117,9 @@ const SelectDIDAccount = ({ close }) => {
                     {formatLongString(arAccount.address, 18)}
                     <CopyToClipboard text={arAccount.address}>
                       <CopyIcon
-                        onClick={() => dispatch(setQuickNotification(NOTIFICATION.ADDRESS_COPIED))}
+                        onClick={() =>
+                          dispatch(setQuickNotification(chrome.i18n.getMessage('addressCopied')))
+                        }
                         style={{ width: '16px', height: '16px' }}
                       />
                     </CopyToClipboard>

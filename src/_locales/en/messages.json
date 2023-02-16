@@ -1,6 +1,15 @@
 {
+  "accountExist": {
+    "message": "This account has already been imported."
+  },
   "Activity": {
     "message": "Activity"
+  },
+  "addressBookDuplicateDID": {
+    "message": "This DID already exist in Address Book"
+  },
+  "addressCopied": {
+    "message": "Address copied!"
   },
   "AdvancedOptions": {
     "message": "Advanced Options"
@@ -19,6 +28,18 @@
   },
   "Balance": {
     "message": "Balance"
+  },
+  "bridgeARtoETH": {
+    "message": "Bridged NFT from Arweave to Ethereum"
+  },
+  "bridgeETHtoAR": {
+    "message": "Bridged NFT from Ethereum to Arweave"
+  },
+  "bridgeNftFailed": {
+    "message": "Bridge NFT failed"
+  },
+  "cannotLockWallet": {
+    "message": "Cannot lock wallet."
   },
   "chooseANewKoiiOrEthereumAccount": {
     "message": "Choose a new Koii or Ethereum account or import one you already have."
@@ -41,23 +62,26 @@
   "confirmYourSecretPhrase": {
     "message": "Confirm your secret phrase."
   },
-  "saveNewKeyFailed": {
-    "message": "Save new key failed"
-  },
-  "generateNewKeyFailed": {
-    "message": "Generate new key failed"
-  },
   "CONNECT": {
     "message": "CONNECT"
   },
   "Continue": {
     "message": "Continue"
   },
+  "contractInteraction": {
+    "message": "Contract interaction"
+  },
   "createAPasswordToSecureFinnie": {
     "message": "Create a password to secure Finnie."
   },
+  "createKIDSuccess": {
+    "message": "Created KID successfully. It may take a while until you can get your data updated."
+  },
   "createOrImportAKey": {
     "message": "Create or import a key."
+  },
+  "createTransactionError": {
+    "message": "Create transaction error"
   },
   "customToken": {
     "message": "Custom Token"
@@ -65,8 +89,23 @@
   "customTokenDescription": {
     "message": "Anyone can create a token, which includes fake versions of existing tokens. Always confirm the Token Contract Address before purchasing a custom token."
   },
+  "defaultCurrency": {
+    "message": "Default currency set to "
+  },
   "Details": {
     "message": "Details"
+  },
+  "didDeployContractError": {
+    "message": "Deploy contract failed"
+  },
+  "didInvalidAccount": {
+    "message": "Invalid account input"
+  },
+  "didInvalidData": {
+    "message": "Invalid data input"
+  },
+  "didKeyNotFound": {
+    "message": "Key not found"
   },
   "donotSeeYourTokens": {
     "message": "Don't see your token?"
@@ -104,17 +143,20 @@
   "From": {
     "message": "From"
   },
-  "gallery": {
-    "message": "GALLERY"
-  },
   "GALLERY": {
     "message": "GALLERY"
+  },
+  "generateNewKeyFailed": {
+    "message": "Generate new key failed"
   },
   "getAKey": {
     "message": "Get a Key"
   },
   "getANewKey": {
     "message": "Get a new key."
+  },
+  "getArPriceError": {
+    "message": "We cannot get AR price for the currency "
   },
   "getSetupInJust4QuickEasySteps": {
     "message": "Get set up in just 4 quick & easy steps."
@@ -140,23 +182,29 @@
   "imready": {
     "message": "I'm ready!"
   },
-  "invalidRequest": {
-    "message": "Invalid request"
-  },
-  "invalidWalletAddress": {
-    "message": "Invalid Wallet Address"
-  },
   "invalidAddressList": {
     "message": "Invalid Address list!"
   },
   "invalidARAddress": {
     "message": "Invalid AR Address"
   },
+  "invalidContent": {
+    "message": "Invalid content"
+  },
   "invalidETHAddress": {
     "message": "Invalid ETH Address"
   },
   "invalidNetworkType": {
     "message": "Invalid network type"
+  },
+  "invalidRequest": {
+    "message": "Invalid request"
+  },
+  "invalidTokenSchema": {
+    "message": "Invalid token schema. Please use nft with token schema of ERC1155"
+  },
+  "invalidWalletAddress": {
+    "message": "Invalid Wallet Address"
   },
   "likelyIn30Seconds": {
     "message": "Likely in 30 Seconds"
@@ -166,9 +214,6 @@
   },
   "likelyInLessThan30Seconds": {
     "message": "Likely in < 30 Seconds"
-  },
-  "cannotLockWallet": {
-    "message": "Cannot lock wallet."
   },
   "LOCK": {
     "message": "LOCK"
@@ -197,20 +242,17 @@
   "NewPassword": {
     "message": "New Password"
   },
-  "bridgeNftFailed": {
-    "message": "Bridge NFT failed"
-  },
   "nftNotExistOnChain": {
     "message": "This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie."
   },
-  "notEnoughTokens": {
-    "message": "Not enough tokens"
+  "notEnoughARorKoiiTokens": {
+    "message": "Not enough AR or KOII"
   },
   "notEnoughARToken": {
     "message": "You don't have enough AR."
   },
-  "notEnoughARorKoiiTokens": {
-    "message": "Not enough AR or KOII"
+  "notEnoughCharacters": {
+    "message": "Not enough character"
   },
   "notEnoughETHToken": {
     "message": "You don't have enough ETH."
@@ -218,47 +260,26 @@
   "notEnoughKoiiToken": {
     "message": "You don't have enough KOII."
   },
+  "notEnoughTokens": {
+    "message": "Not enough tokens"
+  },
   "otherwiseYouCouldLoseAnytokensOrAssets": {
     "message": "Otherwise, you could lose any tokens or assets."
   },
   "Password": {
     "message": "Password"
   },
-  "didInvalidAccount": {
-    "message": "Invalid account input"
-  },
-  "didInvalidData": {
-    "message": "Invalid data input"
-  },
-  "didKeyNotFound": {
-    "message": "Key not found"
-  },
-  "didDeployContractError": {
-    "message": "Deploy contract failed"
-  },
-  "addressBookDuplicateDID": {
-    "message": "This DID already exist in Address Book"
-  },
   "passwordDoesNotMatch": {
     "message": "Password does not match"
-  },
-  "pauseFinnie": {
-    "message": "Pause Finnie on this site"
   },
   "passwordNotMeetRequirements": {
     "message": "The password does not meet the requirements."
   },
-  "koiKey": {
-    "message": "koiKey"
+  "passwordRequired": {
+    "message": "Password required."
   },
-  "CURRENCY": {
-    "message": "CURRENCY"
-  },
-  "koiPhrase": {
-    "message": "koiPhrase"
-  },
-  "pendingRequest": {
-    "message": "pendingRequest"
+  "pauseFinnie": {
+    "message": "Pause Finnie on this site"
   },
   "pleaseAcceptTheTof": {
     "message": "Please accept the Terms of Service"
@@ -266,17 +287,11 @@
   "pleaseChooseAccount": {
     "message": "Please choose Koii or Arweave account first!"
   },
-  "notEnoughCharacters": {
-    "message": "Not enough character"
-  },
-  "getArPriceError": {
-    "message": "We cannot get AR price for the currency "
-  },
-  "defaultCurrency": {
-    "message": "Default currency set to "
-  },
   "RECEIVE": {
     "message": "RECEIVE"
+  },
+  "Received": {
+    "message": "Received"
   },
   "RecipientWalletAddress": {
     "message": "Recipient's Wallet Address"
@@ -286,6 +301,9 @@
   },
   "reEnterYourFinniePassword": {
     "message": "Re-enter your Finnie password so we can securely store your new key."
+  },
+  "registerNFTError": {
+    "message": "Register NFT error"
   },
   "Reject": {
     "message": "Reject"
@@ -302,30 +320,6 @@
   "reportAnIssue": {
     "message": "Report an Issue"
   },
-  "passwordRequired": {
-    "message": "Password required."
-  },
-  "invalidTokenSchema": {
-    "message": "Invalid token schema. Please use nft with token schema of ERC1155"
-  },
-  "accountExist": {
-    "message": "This account has already been imported."
-  },
-  "createTransactionError": {
-    "message": "Create transaction error"
-  },
-  "signTransactionError": {
-    "message": "Sign transaction error"
-  },
-  "uploadNFTError": {
-    "message": "Upload NFT error"
-  },
-  "registerNFTError": {
-    "message": "Register NFT error"
-  },
-  "invalidContent": {
-    "message": "Invalid content"
-  },
   "requestNotExist": {
     "message": "This request is no longer exist."
   },
@@ -334,6 +328,9 @@
   },
   "Save": {
     "message": "Save"
+  },
+  "saveNewKeyFailed": {
+    "message": "Save new key failed"
   },
   "saveYourSecretPhrase": {
     "message": "Save your Secret Phrase"
@@ -347,12 +344,6 @@
   "searchForAToken": {
     "message": "Search for a token"
   },
-  "somethingWentWrong": {
-    "message": "Something went wrong. Please try again later!"
-  },
-  "somethingWentWrongWhoops": {
-    "message": "Whoops! Something went wrong!"
-  },
   "searchNfts": {
     "message": "Search NFTs"
   },
@@ -365,20 +356,26 @@
   "seeConnectedSites": {
     "message": "See connected sites"
   },
-  "SENDTOKEN": {
-    "message": "SEND"
-  },
   "Send": {
     "message": "Send"
   },
   "Sending": {
     "message": "Sending"
   },
+  "SENDTOKEN": {
+    "message": "SEND"
+  },
   "SendTokens": {
     "message": "Send Tokens"
   },
+  "Sent": {
+    "message": "Sent"
+  },
   "Sign": {
     "message": "Sign"
+  },
+  "signTransactionError": {
+    "message": "Sign transaction error"
   },
   "Simulation": {
     "message": "Simulation"
@@ -386,8 +383,17 @@
   "skipThisStep": {
     "message": "Skip this step"
   },
+  "somethingWentWrong": {
+    "message": "Something went wrong. Please try again later!"
+  },
+  "somethingWentWrongWhoops": {
+    "message": "Whoops! Something went wrong!"
+  },
   "startFromScratch": {
     "message": "Start from scratch."
+  },
+  "statementNoReward": {
+    "message": "You don't have any rewards available, share your code to get some!"
   },
   "TermsOfService": {
     "message": "Terms of Service"
@@ -416,8 +422,17 @@
   "typeInTheMissingWords": {
     "message": "Type in the missing words to confirm your secret phase is properly secured."
   },
+  "unknowTransaction": {
+    "message": "Unknown transaction"
+  },
   "unlock": {
     "message": "Unlock"
+  },
+  "updateKIDSuccess": {
+    "message": "Your DID is being updated as we speak. This might take a couple of minutes."
+  },
+  "uploadNFTError": {
+    "message": "Upload NFT error"
   },
   "useMyExistingKey": {
     "message": "Use my existing key."
