@@ -39,7 +39,7 @@ const QrCodeModal = ({ account, close }) => {
         ref={modalRef}
       >
         <div className="flex h-16.75 rounded-t bg-trueGray-100 shadow-md w-full font-semibold text-xl tracking-finnieSpacing-wide relative">
-          <div className="m-auto">QR Code</div>
+          <div className="m-auto">{chrome.i18n.getMessage('QRCode')}</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
         <div
