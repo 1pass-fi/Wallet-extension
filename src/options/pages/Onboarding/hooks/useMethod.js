@@ -11,11 +11,6 @@ import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 import storage from 'services/storage'
 
-const ERROR_MESSAGE = {
-  SAVE_NEW_KEY_FAILED: 'Save new key failed',
-  GENERATE_NEW_KEY_FAILED: 'Generate new key failed'
-}
-
 const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
   const dispatch = useDispatch()
 
@@ -26,7 +21,7 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
       setNewSeedphrase(seedphrase.join(' '))
     } catch (err) {
       console.error(err.message)
-      dispatch(setError(ERROR_MESSAGE.GENERATE_NEW_KEY_FAILED))
+      dispatch(setError(chrome.i18n.getMessage('generateNewKeyFailed')))
     } finally {
       dispatch(setOnboardingProcessed)
     }
@@ -43,7 +38,7 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
       dispatch(addAccountByAddress(address))
     } catch (err) {
       console.error(err.message)
-      dispatch(setError(ERROR_MESSAGE.SAVE_NEW_KEY_FAILED))
+      dispatch(setError(chrome.i18n.getMessage('saveNewKeyFailed')))
     } finally {
       dispatch(setOnboardingProcessed)
     }

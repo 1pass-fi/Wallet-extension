@@ -15,11 +15,6 @@ import { popupBackgroundRequest as request } from 'services/request/popup'
 import { popupBackgroundConnect } from 'services/request/popup'
 import { EventHandler } from 'services/request/src/backgroundConnect'
 
-const ERROR_MESSAGE = {
-  INVALID_PROPOSAL: 'Invalid request',
-  WENT_WRONG: 'Something went wrong'
-}
-
 const InputUri = ({ setPage, setProposal }) => {
   const history = useHistory()
 
@@ -80,7 +75,7 @@ const InputUri = ({ setPage, setProposal }) => {
             if (isValidProposal) {
               setPage('APPROVAL')
             } else {
-              dispatch(setError(ERROR_MESSAGE.INVALID_PROPOSAL))
+              dispatch(setError(chrome.i18n.getMessage('invalidRequest')))
             }
           } catch (err) {
             console.error('pairingSuccess error: ', err)

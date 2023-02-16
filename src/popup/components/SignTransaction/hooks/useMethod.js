@@ -143,7 +143,7 @@ const useMethod = ({
 
       if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
         if (balance < value) {
-          setError('Not enough tokens')
+          setError(chrome.i18n.getMessage('notEnoughTokens'))
           return
         }
       }

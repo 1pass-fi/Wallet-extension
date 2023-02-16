@@ -340,31 +340,31 @@ export default ({ info, onClose, type }) => {
     const account = find(accounts, (account) => account.address === _ownerAddress)
 
     if (isEmpty(chosenAccount) || isEmpty(chosenAccount.address)) {
-      dispatch(setError('Please select an address.'))
+      dispatch(setError(chrome.i18n.getMessage('emptySelectAddressError')))
       return
     }
 
     if (type === TYPE.ARWEAVE) {
       if (!isArweaveAddress(chosenAccount.address)) {
-        dispatch(setError('Invalid AR Address'))
+        dispatch(setError(chrome.i18n.getMessage('invalidARAddress')))
         return
       }
     }
 
     if (type === TYPE.ETHEREUM) {
       if (!isEthereumAddress(chosenAccount.address)) {
-        dispatch(setError('Invalid ETH Address'))
+        dispatch(setError(chrome.i18n.getMessage('invalidETHAddress')))
         return
       }
     }
 
     if (!numberTransfer || numberTransfer == 0) {
-      dispatch(setError('Please give a number of transfer'))
+      dispatch(setError(chrome.i18n.getMessage('emptyNumberofTransferError')))
       return
     }
 
     if (account?.balance < 0.000001 || account?.koiBalance < 10) {
-      dispatch(setError('Not enough AR or KOII'))
+      dispatch(setError(chrome.i18n.getMessage('notEnoughARorKoiiTokens')))
       return
     }
 
@@ -424,7 +424,7 @@ export default ({ info, onClose, type }) => {
       setSettingApproval(false)
     } catch (error) {
       setSettingApproval(false)
-      dispatch(setError('Something went wrong. Please try again later!'))
+      dispatch(setError(chrome.i18n.getMessage('somethingWentWrong')))
     }
   }
 

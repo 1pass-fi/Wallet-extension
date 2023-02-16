@@ -201,7 +201,7 @@ const AccountCard = ({
           await onChangeSolanaProvider(networkAddress)
           break
         default:
-          dispatch(setError('Invalid network type'))
+          dispatch(setError(chrome.i18n.getMessage('invalidNetworkType')))
           break
       }
     }
@@ -226,7 +226,7 @@ const AccountCard = ({
       }
 
       if (isEmpty(accountName)) {
-        dispatch(setError('Account name cannot be empty.'))
+        dispatch(setError(chrome.i18n.getMessage('emptyAccountNameError')))
         setEditAccount({})
         return
       }

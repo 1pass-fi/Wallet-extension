@@ -35,7 +35,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
 
   const handleSubmit = async () => {
     if (isEmpty(userInfo.name)) {
-      dispatch(setError('Address must have name!'))
+      dispatch(setError(chrome.i18n.getMessage('emptyAddressError')))
       return
     }
 
@@ -56,7 +56,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
     })
 
     if (!isValid) {
-      dispatch(setError('Invalid Address list!'))
+      dispatch(setError(chrome.i18n.getMessage('invalidAddressList')))
       return
     }
 

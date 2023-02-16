@@ -35,7 +35,7 @@ const SelectDIDAccount = ({ close }) => {
     try {
       dispatch(setIsLoading)
       if (isEmpty(selectedAccount)) {
-        dispatch(setError('Please choose Koii or Arweave account first!'))
+        dispatch(setError(chrome.i18n.getMessage('pleaseChooseAccount')))
         return
       }
       await dispatch(setDefaultAccount(selectedAccount))

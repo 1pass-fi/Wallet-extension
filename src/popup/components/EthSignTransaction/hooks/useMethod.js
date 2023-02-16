@@ -65,13 +65,13 @@ const useMethod = ({
       const account = await popupAccount.getAccount({ address: senderAddress })
       const accountBalance = await account.get.balance()
       if (accountBalance < totalOriginTokenExpense) {
-        setError('Not enough tokens')
+        setError(chrome.i18n.getMessage('notEnoughTokens'))
         return
       }
 
       if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
         if (balance < value) {
-          setError('Not enough tokens')
+          setError(chrome.i18n.getMessage('notEnoughTokens'))
           return
         }
       }

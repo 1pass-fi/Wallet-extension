@@ -41,6 +41,12 @@
   "confirmYourSecretPhrase": {
     "message": "Confirm your secret phrase."
   },
+  "saveNewKeyFailed": {
+    "message": "Save new key failed"
+  },
+  "generateNewKeyFailed": {
+    "message": "Generate new key failed"
+  },
   "CONNECT": {
     "message": "CONNECT"
   },
@@ -70,6 +76,18 @@
   },
   "EditFee": {
     "message": "Edit Fee"
+  },
+  "emptyAccountNameError": {
+    "message": "Account name cannot be empty."
+  },
+  "emptyAddressError": {
+    "message": "Address must have name!"
+  },
+  "emptyNumberofTransferError": {
+    "message": "Please give a number of transfer"
+  },
+  "emptySelectAddressError": {
+    "message": "Please select an address."
   },
   "EnterAddressManually": {
     "message": "Enter Address Manually"
@@ -122,6 +140,24 @@
   "imready": {
     "message": "I'm ready!"
   },
+  "invalidRequest": {
+    "message": "Invalid request"
+  },
+  "invalidWalletAddress": {
+    "message": "Invalid Wallet Address"
+  },
+  "invalidAddressList": {
+    "message": "Invalid Address list!"
+  },
+  "invalidARAddress": {
+    "message": "Invalid AR Address"
+  },
+  "invalidETHAddress": {
+    "message": "Invalid ETH Address"
+  },
+  "invalidNetworkType": {
+    "message": "Invalid network type"
+  },
   "likelyIn30Seconds": {
     "message": "Likely in 30 Seconds"
   },
@@ -130,6 +166,9 @@
   },
   "likelyInLessThan30Seconds": {
     "message": "Likely in < 30 Seconds"
+  },
+  "cannotLockWallet": {
+    "message": "Cannot lock wallet."
   },
   "LOCK": {
     "message": "LOCK"
@@ -158,8 +197,26 @@
   "NewPassword": {
     "message": "New Password"
   },
+  "bridgeNftFailed": {
+    "message": "Bridge NFT failed"
+  },
+  "nftNotExistOnChain": {
+    "message": "This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie."
+  },
   "notEnoughTokens": {
     "message": "Not enough tokens"
+  },
+  "notEnoughARToken": {
+    "message": "You don't have enough AR."
+  },
+  "notEnoughARorKoiiTokens": {
+    "message": "Not enough AR or KOII"
+  },
+  "notEnoughETHToken": {
+    "message": "You don't have enough ETH."
+  },
+  "notEnoughKoiiToken": {
+    "message": "You don't have enough KOII."
   },
   "otherwiseYouCouldLoseAnytokensOrAssets": {
     "message": "Otherwise, you could lose any tokens or assets."
@@ -175,6 +232,15 @@
   },
   "pleaseAcceptTheTof": {
     "message": "Please accept the Terms of Service"
+  },
+  "pleaseChooseAccount": {
+    "message": "Please choose Koii or Arweave account first!"
+  },
+  "getArPriceError": {
+    "message": "We cannot get AR price for the currency "
+  },
+  "defaultCurrency": {
+    "message": "Default currency set to "
   },
   "RECEIVE": {
     "message": "RECEIVE"
@@ -203,6 +269,9 @@
   "reportAnIssue": {
     "message": "Report an Issue"
   },
+  "requestNotExist": {
+    "message": "This request is no longer exist."
+  },
   "resumeFinnie": {
     "message": "Resume Finnie on this site"
   },
@@ -220,6 +289,12 @@
   },
   "searchForAToken": {
     "message": "Search for a token"
+  },
+  "somethingWentWrong": {
+    "message": "Something went wrong. Please try again later!"
+  },
+  "somethingWentWrongWhoops": {
+    "message": "Whoops! Something went wrong!"
   },
   "searchNfts": {
     "message": "Search NFTs"

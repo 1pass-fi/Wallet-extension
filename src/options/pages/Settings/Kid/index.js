@@ -384,7 +384,7 @@ const KidPage = () => {
     if (hadData) {
       // balance validate update
       if (balance < 0.00007) {
-        dispatch(setError(`You don't have enough AR`))
+        dispatch(setError(chrome.i18n.getMessage('notEnoughARToken')))
         dispatch(setLoaded)
         setDisableUpdateKID(false)
         return
@@ -392,14 +392,14 @@ const KidPage = () => {
     } else {
       // balance validate create
       if (balance < 0.0005) {
-        dispatch(setError(`You don't have enough AR`))
+        dispatch(setError(chrome.i18n.getMessage('notEnoughARToken')))
         dispatch(setLoaded)
         setDisableUpdateKID(false)
         return
       }
 
       if (koiBalance < 1) {
-        dispatch(setError(`You don't have enough KOII`))
+        dispatch(setError(chrome.i18n.getMessage('notEnoughKoiiToken')))
         dispatch(setLoaded)
         setDisableUpdateKID(false)
         return

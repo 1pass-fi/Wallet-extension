@@ -89,14 +89,14 @@ export default () => {
       )
       const price = get(response, 'data.arweave')
       if (!price || isEmpty(price)) {
-        dispatch(setError(`We cannot get AR price for the currency ${currency}.`))
+        dispatch(setError(`${chrome.i18n.getMessage('getArPriceError')} + ${currency}.`))
         setCurrency('USD')
       } else {
         setCurrency(currency)
         await setChromeStorage({ [STORAGE.CURRENCY]: currency })
         // set value for new storage object
         await storage.setting.set.selectedCurrency(currency)
-        dispatch(setQuickNotification(`Default currency set to ${currency}.`))
+        dispatch(setQuickNotification(`${chrome.i18n.getMessage('defaultCurrency')} + ${currency}.`))
       }
     } catch (err) {
       console.log(err.message)

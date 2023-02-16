@@ -97,7 +97,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     value,
     rawValue,
     customTokenRecipient,
-    setTxId,
     setShowReceipt,
     totalFee
   })

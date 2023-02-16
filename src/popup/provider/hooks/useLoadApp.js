@@ -200,7 +200,7 @@ const useLoadApp = ({
         tabs.map((tab) => chrome.tabs.reload(tab.id))
       })
     } else {
-      setError('Cannot lock wallet.')
+      setError(chrome.i18n.getMessage('cannotLockWallet'))
     }
   }
 

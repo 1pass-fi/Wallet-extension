@@ -87,7 +87,7 @@ const TransferNFT = ({
     }
 
     if (!isValid) {
-      dispatch(setError('Invalid Wallet Address'))
+      dispatch(setError(chrome.i18n.getMessage('invalidWalletAddress')))
     } else {
       goToNextStage()
     }
@@ -117,7 +117,7 @@ const TransferNFT = ({
         return nft
       })
       setSendBtnDisable(false)
-      dispatch(setError('Whoops! Something went wrong!'))
+      dispatch(setError(chrome.i18n.getMessage('somethingWentWrongWhoops')))
     }
   }
 
