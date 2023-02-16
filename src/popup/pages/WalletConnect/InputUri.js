@@ -105,7 +105,7 @@ const InputUri = ({ setPage, setProposal }) => {
           onChange={(e) => setUri(e.target.value)}
           style={{ width: '360px', height: '36px' }}
           className="mt-1 bg-purplelight-100 color-purplelight-100 pl-4 rounded-md"
-          placeholder="Type here"
+          placeholder={chrome.i18n.getMessage('TypeHerePh')}
         />
       </div>
       <button

@@ -133,7 +133,7 @@ const SendTokenForm = ({
       <div style={{ width: '352px' }}>
         <Select
           options={accountOptions}
-          placeholder="Select Account"
+          placeholder={chrome.i18n.getMessage('selectAccountPh')}
           onChange={onChangeAccount}
           label={chrome.i18n.getMessage('FROM')}
           isAccountAddress={true}

@@ -282,7 +282,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               </div>
 
               <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
-                <div style={{ width: '176px' }}>{chrome.i18n.getMessage('From')}</div>
+                <div style={{ width: '176px' }}>{chrome.i18n.getMessage('FromLc')}</div>
                 {senderName && <div className="mt-2 font-semibold text-xs">{senderName}</div>}
                 <div className="mt-2 font-normal text-xs text-success-700">
                   {get(transactionPayload, 'from')}
@@ -294,7 +294,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 recipient
               ) && (
                 <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
-                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('To')}</div>
+                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('ToLc')}</div>
                   {recipientName && (
                     <div className="mt-2 font-semibold text-xs">{recipientName}</div>
                   )}
@@ -430,7 +430,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
             {transactionType !== TRANSACTION_TYPE.CONTRACT_DEPLOYMENT &&
               transactionType !== TRANSACTION_TYPE.CONTRACT_INTERACTION && (
               <div className="flex mb-4">
-                <div style={{ width: '142px' }}>Amount</div>
+                <div style={{ width: '142px' }}>{chrome.i18n.getMessage('AmountLc')}</div>
                 <div className="flex font-normal text-sm items-center">
                   {value} {symbol}
                   <div className="ml-1 w-4 h-4">
@@ -440,7 +440,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               </div>
             )}
             <div className="flex mb-4">
-              <div style={{ width: '142px' }}>From</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('FromLc')}</div>
               <div className="flex flex-col font-normal text-sm items-start">
                 {senderName && <div>{senderName}</div>}
                 <div className="font-normal text-xs text-success-700">
@@ -449,7 +449,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               </div>
             </div>
             <div className="flex mb-4">
-              <div style={{ width: '142px' }}>To</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('ToLc')}</div>
               <div className="flex flex-col font-normal text-sm items-start">
                 {recipientName && <div>{recipientName}</div>}
                 <div className="font-normal text-xs text-success-700">
@@ -458,17 +458,17 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               </div>
             </div>
             <div className="flex mb-4">
-              <div style={{ width: '142px' }}>Transaction Fees</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('TransactionFees')}</div>
               <div className="font-normal text-sm">
                 {numberFormat(totalFee, 6)} {tokenSymbol}
               </div>
             </div>
             <div className="flex mb-4">
-              <div style={{ width: '142px' }}>Status</div>
-              <div className="font-normal text-sm">Confirmed</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('Status')}</div>
+              <div className="font-normal text-sm">{chrome.i18n.getMessage('Confirmed')}</div>
             </div>
             <div className="flex">
-              <div style={{ width: '142px' }}>Total Cost</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('TotalCost')}</div>
               <div className="flex flex-col font-normal text-sm items-start">
                 <div className="leading-5">
                   {value} {symbol}

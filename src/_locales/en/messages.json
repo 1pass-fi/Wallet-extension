@@ -8,8 +8,23 @@
   "addressBookAddNewAddress": {
     "message": "Successfully added address to address book!"
   },
+  "AddressBookAddress": {
+    "message": "Insert Address"
+  },
+  "AddressBookDIDLink": {
+    "message": "DID link"
+  },
+  "AddressBookDIDLinkInput": {
+    "message": "Insert a DID link here"
+  },
+  "AddressBookDIDValue": {
+    "message": "Insert Decentralized ID link"
+  },
   "addressBookDuplicateDID": {
     "message": "This DID already exist in Address Book"
+  },
+  "AddressBookNote": {
+    "message": "i.e Larry from the metaverse"
   },
   "addressBookUpdateAddress": {
     "message": "Successfully update address!"
@@ -22,6 +37,9 @@
   },
   "AMOUNT": {
     "message": "AMOUNT"
+  },
+  "AmountLc": {
+    "message": "Amount"
   },
   "Assets": {
     "message": "Assets"
@@ -59,6 +77,33 @@
   "clickTheLockBelowToRevealYourSecretPhrase": {
     "message": "Click the lock below to reveal your secret phrase."
   },
+  "CollectionLabelDescription": {
+    "message": "Description"
+  },
+  "CollectionLabelEditDescription": {
+    "message": "Edit Description"
+  },
+  "CollectionLabelEditTitle": {
+    "message": "Edit Collection Title"
+  },
+  "CollectionLabelTitle": {
+    "message": "Collection Title"
+  },
+  "CollectionPlaceHolderDescription": {
+    "message": "When you’ve got friends like mine, the internet is a wonderful place to be."
+  },
+  "CollectionPlaceHolderTags": {
+    "message": "Separate with a “,” and hit space bar"
+  },
+  "CollectionPlaceHolderTitle": {
+    "message": "Finnie's Friends"
+  },
+  "CollectionsLc": {
+    "message": "Collections"
+  },
+  "Confirmed": {
+    "message": "Confirmed"
+  },
   "ConfirmPassword": {
     "message": "Confirm Password"
   },
@@ -85,6 +130,9 @@
   },
   "createKIDSuccess": {
     "message": "Created KID successfully. It may take a while until you can get your data updated."
+  },
+  "CreateLc": {
+    "message": "Create"
   },
   "createOrImportAKey": {
     "message": "Create or import a key."
@@ -152,11 +200,14 @@
   "FROM": {
     "message": "FROM"
   },
-  "From": {
+  "FromLc": {
     "message": "From"
   },
   "GALLERY": {
     "message": "GALLERY"
+  },
+  "GalleryLc": {
+    "message": "Gallery"
   },
   "generateNewKeyFailed": {
     "message": "Generate new key failed"
@@ -218,6 +269,18 @@
   "invalidWalletAddress": {
     "message": "Invalid Wallet Address"
   },
+  "kidErrorInvalidWebsite": {
+    "message": "That doesn't seem like a valid website. Please try again."
+  },
+  "kidErrorLink": {
+    "message": "Links must begin with https:// or http://"
+  },
+  "kidLinkAccountLinkPh": {
+    "message": "URL e.g. https://koii.network/"
+  },
+  "kidLinkAccountTitlePh": {
+    "message": "Label e.g. “Website”"
+  },
   "likelyIn30Seconds": {
     "message": "Likely in 30 Seconds"
   },
@@ -251,11 +314,20 @@
   "Medium": {
     "message": "Medium"
   },
+  "Name": {
+    "message": "Name"
+  },
   "NewPassword": {
     "message": "New Password"
   },
+  "NFTDescriptionLabel": {
+    "message": "Description"
+  },
   "nftNotExistOnChain": {
     "message": "This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie."
+  },
+  "NFTTitleLabel": {
+    "message": "NFT Title"
   },
   "notEnoughARorKoiiTokens": {
     "message": "Not enough AR or KOII"
@@ -359,14 +431,26 @@
   "searchNfts": {
     "message": "Search NFTs"
   },
+  "searchNftsPh": {
+    "message": "Search NFTs"
+  },
   "secureFinnieWithAPassword": {
     "message": "Secure Finnie with a password."
   },
   "securePasswordsHaveAtLeast8Characters": {
     "message": "Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%)."
   },
+  "SeeAdvancedDetails": {
+    "message": "See Advanced Details"
+  },
   "seeConnectedSites": {
     "message": "See connected sites"
+  },
+  "selectAccountPh": {
+    "message": "Select Account"
+  },
+  "selectConnectedWallets": {
+    "message": "select from connected wallets or enter a new address"
   },
   "Send": {
     "message": "Send"
@@ -410,6 +494,18 @@
   "statementNoReward": {
     "message": "You don't have any rewards available, share your code to get some!"
   },
+  "Status": {
+    "message": "Status"
+  },
+  "Tags": {
+    "message": "Tags,"
+  },
+  "tagsLowerCase": {
+    "message": "tags"
+  },
+  "TagsPlaceHolder": {
+    "message": "Separate with a “,” and hit space bar"
+  },
   "TermsOfService": {
     "message": "Terms of Service"
   },
@@ -419,20 +515,26 @@
   "TO": {
     "message": "TO"
   },
-  "To": {
-    "message": "To"
-  },
   "TokenBalance": {
     "message": "Token Balance"
   },
   "Tokens": {
     "message": "Tokens"
   },
+  "ToLc": {
+    "message": "To"
+  },
   "TotalBalance": {
     "message": "Total Balance"
   },
+  "TotalCost": {
+    "message": "Total Cost"
+  },
   "TransactionFees": {
     "message": "Transaction Fees"
+  },
+  "TypeHerePh": {
+    "message": "Type here"
   },
   "typeInTheMissingWords": {
     "message": "Type in the missing words to confirm your secret phase is properly secured."
@@ -446,8 +548,20 @@
   "updateKIDSuccess": {
     "message": "Your DID is being updated as we speak. This might take a couple of minutes."
   },
+  "UploadNFTDescLabel": {
+    "message": "Description"
+  },
+  "UploadNFTDescPlaceHolder": {
+    "message": "Tell the world about this one"
+  },
   "uploadNFTError": {
     "message": "Upload NFT error"
+  },
+  "UploadNFTTitleLabel": {
+    "message": "NFT Title"
+  },
+  "UploadNFTTitlePlaceHolder": {
+    "message": "Find the perfect name"
   },
   "useMyExistingKey": {
     "message": "Use my existing key."
