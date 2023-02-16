@@ -5,8 +5,14 @@
   "Activity": {
     "message": "Activity"
   },
+  "addressBookAddNewAddress": {
+    "message": "Successfully added address to address book!"
+  },
   "addressBookDuplicateDID": {
     "message": "This DID already exist in Address Book"
+  },
+  "addressBookUpdateAddress": {
+    "message": "Successfully update address!"
   },
   "addressCopied": {
     "message": "Address copied!"
@@ -28,6 +34,9 @@
   },
   "Balance": {
     "message": "Balance"
+  },
+  "balanceUpdated": {
+    "message": "Your balances have been updated."
   },
   "bridgeARtoETH": {
     "message": "Bridged NFT from Arweave to Ethereum"
@@ -133,6 +142,9 @@
   },
   "enterYourPassword": {
     "message": "Enter your password"
+  },
+  "exportPrivateKey": {
+    "message": "Export Private key succesffuly!"
   },
   "finnieCurrentlySupports": {
     "message": "Finnie currently supports Koii, Ethereum, Solana, and Arweave keys. More chains are in the works."
@@ -370,6 +382,9 @@
   },
   "Sent": {
     "message": "Sent"
+  },
+  "setDefaultAccount": {
+    "message": "Set default account successfully."
   },
   "Sign": {
     "message": "Sign"

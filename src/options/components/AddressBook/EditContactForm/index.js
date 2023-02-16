@@ -55,7 +55,7 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
     setUserAddresses(classifiedAddresses)
 
     await updateAddress({ ...userInfo, addresses: userAddresses })
-    dispatch(setQuickNotification('Successfully update address!'))
+    dispatch(setQuickNotification(chrome.i18n.getMessage('addressBookUpdateAddress')))
   }
 
   const handleUserInfoChange = (e) => {

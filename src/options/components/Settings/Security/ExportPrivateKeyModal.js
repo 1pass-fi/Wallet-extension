@@ -73,7 +73,7 @@ const ExportPrivateKeyModal = ({ account, close }) => {
         url: url,
         filename: filename
       })
-      dispatch(setQuickNotification('Export Private key succesffuly!'))
+      dispatch(setQuickNotification(chrome.i18n.getMessage('exportPrivateKey')))
       close()
     } catch (err) {
       if (err.message === 'Incorrect password') {

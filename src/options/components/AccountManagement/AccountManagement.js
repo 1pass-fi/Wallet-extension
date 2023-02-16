@@ -88,7 +88,7 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
       }
 
       getDID()
-      setNotification(`Set default account successfully.`)
+      setNotification(chrome.i18n.getMessage('setDefaultAccount'))
     } catch (err) {
       setError(err.message)
     }

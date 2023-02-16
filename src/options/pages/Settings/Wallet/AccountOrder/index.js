@@ -126,7 +126,7 @@ export default ({ accounts, setAccounts }) => {
       await reloadDefaultAccount()
       getDID()
       setSelectedAddress(address)
-      dispatch(setQuickNotification(`Set default account successfully.`))
+      dispatch(setQuickNotification(chrome.i18n.getMessage('setDefaultAccount')))
     } catch (err) {
       dispatch(setError(err.message))
     }

@@ -63,7 +63,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
     setUserAddresses(classifiedAddresses)
 
     await storeNewAddress({ ...userInfo, addresses: userAddresses })
-    dispatch(setQuickNotification('Successfully added address to address book!'))
+    dispatch(setQuickNotification(chrome.i18n.getMessage('addressBookAddNewAddress')))
   }
 
   const handleUserInfoChange = (e) => {
