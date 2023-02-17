@@ -149,7 +149,7 @@ const ExportPrivateKeyModal = ({ account, close }) => {
           <Button
             className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
             variant="indigo"
-            text="Export Private Key"
+            text={chrome.i18n.getMessage('ExportPrivateKey')}
             onClick={() => onExportKeyfile()}
           />
         </div>

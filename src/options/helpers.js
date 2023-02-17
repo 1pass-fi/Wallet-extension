@@ -13,7 +13,7 @@ export const getShareUrl = (network, txid) => {
 
 // Will refactor this code
 export const shareFriendCode = (code, network) => {
-  const text = `Use my code to get 1 free NFT upload on https://koi.rocks/ \n${code}`
+  const text = `${chrome.i18n.getMessage('ShareFriendCodeMsg')}${code}`
   let url
   switch(network) {
     case 'twitter':

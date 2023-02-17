@@ -114,14 +114,14 @@ const ConfirmModal = ({
               <div className="absolute bottom-5.5 w-full flex left-0 justify-center">
                 <Button
                   variant="inversedIndigo"
-                  text="Cancel"
+                  text={chrome.i18n.getMessage('Cancel')}
                   className="tracking-wider py-3 rounded w-42.5 h-10 text-base mr-11"
                   onClick={close}
                   disabled={displayProgressBar}
                 />
                 <Button
                   variant="indigo"
-                  text={isUpdate ? 'Update' : 'Confirm'}
+                  text={isUpdate ? chrome.i18n.getMessage('Update') : chrome.i18n.getMessage('Confirm')}
                   className="tracking-wider py-3 rounded w-42.5 h-10 text-base"
                   onClick={() => {
                     confirmCollection()
@@ -147,7 +147,7 @@ const ConfirmModal = ({
             <div className="absolute bottom-5.5 w-full flex left-0 justify-center">
               <Button
                 variant="indigo"
-                text="OK"
+                text={chrome.i18n.getMessage('OK')}
                 className="w-42.5 h-10 tracking-wider py-3 rounded"
                 onClick={close}
               />

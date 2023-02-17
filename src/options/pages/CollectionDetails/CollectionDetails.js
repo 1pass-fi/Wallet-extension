@@ -110,7 +110,7 @@ const CollectionDetails = () => {
 
                 <div className="inline ml-1" data-tip={editButtonDataTip}>
                   <button
-                    data-tip={updatePending ? 'Transaction pending' : ''}
+                    data-tip={updatePending ? chrome.i18n.getMessage('TransactionPendingUc') : ''}
                     disabled={updatePending || usedOldContractSrc}
                     onClick={openEditCollectionForm}
                     className="inline w-4 z-40 cursor-pointer disabled:cursor-not-allowed mb-2"

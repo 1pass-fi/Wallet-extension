@@ -119,7 +119,7 @@ const AccountImport = ({ totalAccount }) => {
       )}
       <div className="account-import-header">
         {totalAccount > 0 && (
-          <div data-tip="Back" className="go-back-icon" onClick={goBackAccountHome}>
+          <div data-tip={chrome.i18n.getMessage('Back')} className="go-back-icon" onClick={goBackAccountHome}>
             <GoBackIcon />
           </div>
         )}

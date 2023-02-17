@@ -67,11 +67,7 @@ const DESCRIPTIONS_ETH = {
       .
     </div>
   ),
-  3: (
-    <div className="description">
-      {chrome.i18n.getMessage('ExportNFTToETHDesc2')}
-    </div>
-  )
+  3: <div className="description">{chrome.i18n.getMessage('ExportNFTToETHDesc2')}</div>
 }
 
 const DESCRIPTIONS_AR = {
@@ -93,11 +89,7 @@ const DESCRIPTIONS_AR = {
       .
     </div>
   ),
-  3: (
-    <div className="description">
-      {chrome.i18n.getMessage('ExportNFTToARDesc2')}
-    </div>
-  )
+  3: <div className="description">{chrome.i18n.getMessage('ExportNFTToARDesc2')}</div>
 }
 
 const AddressDropdown = ({ accounts = [], onChange, type }) => {
@@ -438,7 +430,7 @@ export default ({ info, onClose, type }) => {
             <span
               style={{ textDecoration: 'underline' }}
               data-for="cannot-bridge"
-              data-tip="created in October 2021 or later"
+              data-tip={chrome.i18n.getMessage('CreatedInOct2021')}
             >
               {chrome.i18n.getMessage('BridgeNFTNotSupportedEnd')}
             </span>
@@ -482,7 +474,12 @@ export default ({ info, onClose, type }) => {
                   </div>
                 )}
                 <div className="name">{name}</div>
-                {type === TYPE.ETHEREUM && <div className="views">{totalViews}{chrome.i18n.getMessage('viewLc')}</div>}
+                {type === TYPE.ETHEREUM && (
+                  <div className="views">
+                    {totalViews}
+                    {chrome.i18n.getMessage('viewLc')}
+                  </div>
+                )}
                 {type === TYPE.ETHEREUM && (
                   <div className="earned-koi">
                     <FinnieIcon />
@@ -529,7 +526,9 @@ export default ({ info, onClose, type }) => {
                       </div>
                     </div>
                     <div className="number-to-transfer">
-                      <div className="total-available">{chrome.i18n.getMessage('totalAvailable')}:&nbsp; {totalTransfer}</div>
+                      <div className="total-available">
+                        {chrome.i18n.getMessage('totalAvailable')}:&nbsp; {totalTransfer}
+                      </div>
                       <label className="label">{chrome.i18n.getMessage('NumberToTransfer')}:</label>
                       <StackIcon className="input-logo" />
                       <input
@@ -573,10 +572,13 @@ export default ({ info, onClose, type }) => {
                     </div>
 
                     <div className="number-to-transfer confirm">
-                      <div className="total-available">{chrome.i18n.getMessage('totalAvailable')}:&nbsp; {totalTransfer}</div>
+                      <div className="total-available">
+                        {chrome.i18n.getMessage('totalAvailable')}:&nbsp; {totalTransfer}
+                      </div>
                       <StackWhiteIcon className="logo" />
                       <div>
-                        <span>{chrome.i18n.getMessage('Transfer')}</span> {numberTransfer} {chrome.i18n.getMessage('Edition')}
+                        <span>{chrome.i18n.getMessage('Transfer')}</span> {numberTransfer}{' '}
+                        {chrome.i18n.getMessage('Edition')}
                       </div>
                     </div>
                   </>
@@ -585,7 +587,10 @@ export default ({ info, onClose, type }) => {
                 {step == TRANSFER_STEPS.SUCCESS && (
                   <>
                     <div className="number-to-transfer success">
-                      <div> {numberTransfer} {chrome.i18n.getMessage('Edition')}</div>
+                      <div>
+                        {' '}
+                        {numberTransfer} {chrome.i18n.getMessage('Edition')}
+                      </div>
                     </div>
 
                     <div className="send-to">
@@ -599,7 +604,9 @@ export default ({ info, onClose, type }) => {
                       </div>
                     </div>
 
-                    <div className="transaction-pending">{chrome.i18n.getMessage('transactionPending')}</div>
+                    <div className="transaction-pending">
+                      {chrome.i18n.getMessage('transactionPending')}
+                    </div>
 
                     <div className="complete-tip">
                       {chrome.i18n.getMessage('ExportNFTCompleteMsg')}
@@ -626,9 +633,7 @@ export default ({ info, onClose, type }) => {
                       <div className="cost">
                         <div
                           className="question-mark-icon"
-                          data-tip="Gas fees are paid to crypto miners who process transactions on the Ethereum network. Koii does not profit from gas fees. <br/> <br/>
-                          Gas fees are set by the network and fluctuate based on network traffic and transaction complexity.<br/> <br/>
-                          This estimate will update about every 30 seconds."
+                          data-tip={chrome.i18n.getMessage('GasEstimateDesc')}
                           data-for="gas-estimate-note"
                         >
                           <QuestionIcon />
@@ -692,7 +697,7 @@ export default ({ info, onClose, type }) => {
             </div>
           </>
         )}
-        <div className="goback-button" data-tip="Back" onClick={onGoBack}>
+        <div className="goback-button" data-tip={chrome.i18n.getMessage('Back')} onClick={onGoBack}>
           <GoBackIcon />
         </div>
         <div className="foot-note">{chrome.i18n.getMessage('BetaFeature')}</div>

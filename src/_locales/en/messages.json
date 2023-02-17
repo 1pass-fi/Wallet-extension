@@ -29,6 +29,9 @@
   "AddAKeyMsg": {
     "message": "you want to use or do you want to"
   },
+  "AddNFTDetails": {
+    "message": "Add NFT Details"
+  },
   "ADDRESS": {
     "message": "ADDRESS"
   },
@@ -134,6 +137,9 @@
   "bridgeETHtoAR": {
     "message": "Bridged NFT from Ethereum to Arweave"
   },
+  "BridgeNFT": {
+    "message": "Bridge your NFT to a different Blockchain"
+  },
   "bridgeNftFailed": {
     "message": "Bridge NFT failed"
   },
@@ -167,6 +173,9 @@
   "chooseANewKoiiOrEthereumAccount": {
     "message": "Choose a new Koii or Ethereum account or import one you already have."
   },
+  "ChooseSenderAccountFirst": {
+    "message": "Please choose Sender Account first!"
+  },
   "clickACircleBelowToGenerateAKey": {
     "message": "Click a circle below to generate a key."
   },
@@ -175,6 +184,15 @@
   },
   "clickTheLockBelowToRevealYourSecretPhrase": {
     "message": "Click the lock below to reveal your secret phrase."
+  },
+  "ClickToCopy": {
+    "message": "Click to Copy"
+  },
+  "ClickToUploadNFT": {
+    "message": "Click to upload an Atomic NFT"
+  },
+  "Close": {
+    "message": "Close"
   },
   "CollectionLabelDescription": {
     "message": "Description"
@@ -205,6 +223,9 @@
   },
   "ComingSoon": {
     "message": "Coming Soon"
+  },
+  "Confirm": {
+    "message": "Confirm"
   },
   "Confirmed": {
     "message": "Confirmed"
@@ -278,14 +299,26 @@
   "Copied": {
     "message": "Copied"
   },
+  "CopyCode": {
+    "message": "Copy Code"
+  },
   "CopyLink": {
     "message": "Copy Link"
+  },
+  "CopyToClipboard": {
+    "message": "Copy to clipboard"
   },
   "Cost": {
     "message": "Cost"
   },
+  "CoverImageHint": {
+    "message": "For best results, your cover<br>image should be 1400x400px"
+  },
   "CreateANewKey": {
     "message": "Create a New Key"
+  },
+  "CreateAnNFT": {
+    "message": "Create an NFT"
   },
   "createAPasswordToSecureFinnie": {
     "message": "Create a password to secure Finnie."
@@ -296,11 +329,17 @@
   "CreateAtomicNFT": {
     "message": "Create an Atomic NFT"
   },
+  "CreatedInOct2021": {
+    "message": "created in October 2021 or later"
+  },
   "createKIDSuccess": {
     "message": "Created KID successfully. It may take a while until you can get your data updated."
   },
   "CreateLc": {
     "message": "Create"
+  },
+  "CreateMyDID": {
+    "message": "Create My DID"
   },
   "CreateNewCollection": {
     "message": "Create New Collection"
@@ -310,6 +349,9 @@
   },
   "CreateNewPassword": {
     "message": "Create New Password"
+  },
+  "CreateNFT": {
+    "message": "Create NFT"
   },
   "createNFTMsg": {
     "message": "Your NFT is being created!"
@@ -341,6 +383,9 @@
   "defaultCurrency": {
     "message": "Default currency set to "
   },
+  "Delete": {
+    "message": "Delete"
+  },
   "DeleteContact": {
     "message": "Delete Contact"
   },
@@ -352,6 +397,9 @@
   },
   "DeleteOrResendTransaction": {
     "message": "Do you want to delete or resend the transaction?"
+  },
+  "DescriptionRequired": {
+    "message": "Description cannot be empty"
   },
   "Details": {
     "message": "Details"
@@ -368,11 +416,26 @@
   "didKeyNotFound": {
     "message": "Key not found"
   },
+  "DIDLink": {
+    "message": "DID Link"
+  },
+  "DIDTransactionsPending": {
+    "message": "DID transactions pending"
+  },
   "DisplayKOIIEarnedSetting": {
     "message": "Display KOII Earned"
   },
   "DisplayViews": {
     "message": "Display Views"
+  },
+  "DoesNotSupportNFTVersion": {
+    "message": "This NFT version does not support updating"
+  },
+  "DoesNotSupportPublicNFT": {
+    "message": "The public/private feature <br>does not currently support this NFT. <br>Try the public/private feature with <br>a more recent NFT."
+  },
+  "Done": {
+    "message": "Done"
   },
   "donotSeeYourTokens": {
     "message": "Don't see your token?"
@@ -383,11 +446,17 @@
   "DoYouReady": {
     "message": "Do you already"
   },
+  "DropToImportFile": {
+    "message": "Drop to import file."
+  },
   "earnAttentionRewardsMsg": {
     "message": "Earn attention rewards forever through Koii. Copy this link and share on your favorite social platforms."
   },
   "earned": {
     "message": " earned"
+  },
+  "Edit": {
+    "message": "Edit"
   },
   "editAccounts": {
     "message": "Edit Accounts"
@@ -521,6 +590,9 @@
   "GasEstimate": {
     "message": "Gas estimate"
   },
+  "GasEstimateDesc": {
+    "message": "Gas fees are paid to crypto miners who process transactions on the Ethereum network. Koii does not profit from gas fees. <br/> <br/> Gas fees are set by the network and fluctuate based on network traffic and transaction complexity.<br/> <br/> This estimate will update about every 30 seconds."
+  },
   "generateNewKeyFailed": {
     "message": "Generate new key failed"
   },
@@ -536,14 +608,29 @@
   "getArPriceError": {
     "message": "We cannot get AR price for the currency "
   },
+  "getEmbedLink": {
+    "message": "get embed link"
+  },
+  "GetFreeKOII": {
+    "message": "Get Free KOII"
+  },
   "GetMyRewards": {
     "message": "Get My Rewards"
   },
   "getSetupInJust4QuickEasySteps": {
     "message": "Get set up in just 4 quick & easy steps."
   },
+  "getShareLink": {
+    "message": "get share link"
+  },
   "GiveLittleGetLittle": {
     "message": "Give a Little, Get a Little"
+  },
+  "GoBack": {
+    "message": "Go Back"
+  },
+  "GotIt": {
+    "message": "Got It"
   },
   "GoToGalleryToCreateNFT": {
     "message": "Or go to the gallery to create your first Finnie NFT"
@@ -629,6 +716,9 @@
   "invalidETHAddress": {
     "message": "Invalid ETH Address"
   },
+  "InvalidFile": {
+    "message": "Invalid file."
+  },
   "invalidNetworkType": {
     "message": "Invalid network type"
   },
@@ -646,6 +736,9 @@
   },
   "IUnderstand": {
     "message": "I Understand"
+  },
+  "JSONKeyFile": {
+    "message": ".JSON key file"
   },
   "justMadeNFT": {
     "message": "You just made a new NFT!"
@@ -676,6 +769,9 @@
   },
   "KoiiWalletsUseA": {
     "message": "Koii Wallets use a"
+  },
+  "Leaderboard": {
+    "message": "Leaderboard"
   },
   "LearnMore": {
     "message": "Learn more"
@@ -733,6 +829,9 @@
   },
   "mintCollectibles": {
     "message": "mintCollectibles"
+  },
+  "MostViewed": {
+    "message": "Most viewed"
   },
   "MoveToTheNextWord": {
     "message": "button to move to the next word."
@@ -809,6 +908,9 @@
   "notEnoughTokens": {
     "message": "Not enough tokens"
   },
+  "NotGeneratedWithSecretPhrase": {
+    "message": "This key was not <br>generated with a<br>secret phrase.<br>Keys can only<br>generate recovery<br>phrases at creation."
+  },
   "Notification": {
     "message": "Notification"
   },
@@ -821,11 +923,17 @@
   "OK": {
     "message": "OK"
   },
+  "Oldest": {
+    "message": "Oldest"
+  },
   "ON": {
     "message": "ON"
   },
   "OneClickTransfer": {
     "message": "One-Click Transfer to"
+  },
+  "OnlyARSupports": {
+    "message": "This feature only supports AR account"
   },
   "or": {
     "message": "or"
@@ -838,6 +946,15 @@
   },
   "otherwiseYouCouldLoseAnytokensOrAssets": {
     "message": "Otherwise, you could lose any tokens or assets."
+  },
+  "OwnerNFTBridgeRequiredEnd": {
+    "message": "Please import this wallet and continue to bridge NFT."
+  },
+  "OwnerNFTRequiredEnd": {
+    "message": "Please import this wallet and continue to transfer NFT."
+  },
+  "OwnerNFTRequiredStart": {
+    "message": "This NFT is owned by a wallet with the address "
   },
   "Password": {
     "message": "Password"
@@ -869,6 +986,9 @@
   "PenAndPaper": {
     "message": "Do you have a"
   },
+  "PendingTransaction": {
+    "message": "Pending Transaction"
+  },
   "PendingUpdate": {
     "message": "Pending update"
   },
@@ -886,6 +1006,9 @@
   },
   "PRIVATE": {
     "message": "PRIVATE"
+  },
+  "Pronouns": {
+    "message": "Pronouns"
   },
   "Provide": {
     "message": "Provide"
@@ -917,6 +1040,9 @@
   "ReceiverWalletAddress": {
     "message": "Receiver's Wallet Address"
   },
+  "RecentlyAdded": {
+    "message": "Recently Added"
+  },
   "RecipientWalletAddress": {
     "message": "Recipient's Wallet Address"
   },
@@ -940,6 +1066,9 @@
   },
   "RedeemReferralRewards": {
     "message": "Redeem your Referral Rewards Now."
+  },
+  "RedeemRewards": {
+    "message": "Redeem Rewards"
   },
   "reEnterThreeWords": {
     "message": "Re-enter 3 words of your secret phrase for safety."
@@ -977,6 +1106,12 @@
   "removeAccountMsg": {
     "message": "This will erase all account information from Finnie, but you can import it again with the secret phrase."
   },
+  "RemoveThisAddress": {
+    "message": "Remove this address"
+  },
+  "RemoveThisContact": {
+    "message": "Remove this Contact"
+  },
   "reportAnIssue": {
     "message": "Report an Issue"
   },
@@ -992,6 +1127,9 @@
   "requestNotExist": {
     "message": "This request is no longer exist."
   },
+  "Resend": {
+    "message": "Resend"
+  },
   "resumeFinnie": {
     "message": "Resume Finnie on this site"
   },
@@ -1006,6 +1144,9 @@
   },
   "Save": {
     "message": "Save"
+  },
+  "SaveChanges": {
+    "message": "Save Changes"
   },
   "saveNewKeyFailed": {
     "message": "Save new key failed"
@@ -1058,6 +1199,9 @@
   "SeeMore": {
     "message": "See more"
   },
+  "Select": {
+    "message": "Select"
+  },
   "SelectAccount": {
     "message": "Select your account"
   },
@@ -1072,6 +1216,9 @@
   },
   "SelectExchangeCurrency": {
     "message": "Select the exchange currency displayed next to your tokens and transactions."
+  },
+  "SelectMultipleFiles": {
+    "message": "Select multiple files from your computer."
   },
   "SelectWallet": {
     "message": "Select Wallet"
@@ -1109,11 +1256,23 @@
   "SettingsMenu": {
     "message": "SETTINGS MENU"
   },
+  "Share": {
+    "message": "Share"
+  },
   "ShareByEmail": {
     "message": "Share by Email"
   },
   "ShareCode": {
     "message": "Share Code"
+  },
+  "ShareDIDHint": {
+    "message": "You can share your DID profile<br>with anyone using this URL."
+  },
+  "ShareForRewards": {
+    "message": "Share for Rewards"
+  },
+  "ShareFriendCodeMsg": {
+    "message": "Use my code to get 1 free NFT upload on https://koi.rocks/ \n"
   },
   "ShareLink": {
     "message": "Share Link"
@@ -1241,6 +1400,9 @@
   "thisShouldBeWrittenOnAPieceOfPaper": {
     "message": "This should be written on a piece of paper and never saved on a computer or internet-connected device."
   },
+  "TitleRequired": {
+    "message": "Title cannot be empty"
+  },
   "TO": {
     "message": "TO"
   },
@@ -1289,9 +1451,6 @@
   "transactionInQueue": {
     "message": "1 transaction in queue"
   },
-  "TransactionPending": {
-    "message": "Transaction pending"
-  },
   "transactionPending": {
     "message": "transaction pending"
   },
@@ -1315,6 +1474,9 @@
   },
   "TransferMediaToETH": {
     "message": "Transfer your media to an Ethereum wallet."
+  },
+  "TransferNFT": {
+    "message": "Transfer NFT"
   },
   "TransferNFTToFriend": {
     "message": "Transfer your NFT to a friend"
@@ -1342,6 +1504,9 @@
   },
   "UnlockFinnie": {
     "message": "Unlock Finnie"
+  },
+  "Update": {
+    "message": "Update"
   },
   "updateKIDSuccess": {
     "message": "Your DID is being updated as we speak. This might take a couple of minutes."

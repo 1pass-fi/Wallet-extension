@@ -53,10 +53,6 @@ const GetAKey = ({ step, setStep, setImportType }) => {
         {chrome.i18n.getMessage('finnieCurrentlySupports')}
       </div>
       <div className="mt-11 ml-1 lg:flex lg:justify-start gap-4.5 grid grid-cols-2">
-        {/* <div
-          className="flex flex-col items-center opacity-50"
-          data-tip="Coming soon"
-        > */}
         <div className="flex flex-col items-center">
           <KeyLogo
             type={TYPE.K2}

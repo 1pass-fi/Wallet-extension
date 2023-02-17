@@ -201,7 +201,7 @@ const UploadNftForm = () => {
               setFile={setFile}
               fileType={['image/*', 'video/*', 'audio/*']}
               className="w-full h-full"
-              description="Click to upload an Atomic NFT"
+              description={chrome.i18n.getMessage('ClickToUploadNFT')}
             />
           </div>
         ) : (
@@ -215,7 +215,7 @@ const UploadNftForm = () => {
         )}
         <span className="text-3xs text-bittersweet-200 mb-4.25">{errors.file}</span>
 
-        <Button onClick={handleCreateNFT} variant="light" text="Create NFT" className="text-sm" />
+        <Button onClick={handleCreateNFT} variant="light" text={chrome.i18n.getMessage('CreateNFT')} className="text-sm" />
       </div>
       {showConfirmModal && (
         <ConfirmCreateNftModal

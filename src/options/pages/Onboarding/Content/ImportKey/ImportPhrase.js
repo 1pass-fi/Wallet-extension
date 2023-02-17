@@ -155,7 +155,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
           style={{ width: '240px', height: '42px' }}
           className={clsx('mt-10.75 text-base mx-auto rounded z-10', isImporting && 'cursor-wait')}
           variant="white"
-          text="Confirm"
+          text={chrome.i18n.getMessage('Confirm')}
           disabled={!canClickContinue}
           onClick={onClickContinue}
           id="confirm-button"

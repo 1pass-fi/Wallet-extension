@@ -205,7 +205,7 @@ const ChangePasswordModal = ({ close }) => {
             <Button
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
               variant="indigo"
-              text="Save Changes"
+              text={chrome.i18n.getMessage('SaveChanges')}
               onClick={() => handleUpdatePassword()}
               disabled={disableUpdatePassword}
             />
@@ -227,7 +227,7 @@ const ChangePasswordModal = ({ close }) => {
             <Button
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
               variant="indigo"
-              text="Got It"
+              text={chrome.i18n.getMessage('GotIt')}
               onClick={() => close()}
             />
           </div>

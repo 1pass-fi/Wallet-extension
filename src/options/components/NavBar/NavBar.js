@@ -133,7 +133,11 @@ const NavBar = () => {
         </nav>
         <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
           {/* <NavLink to="/collections">Collections</NavLink> */}
-          <div className="cursor-not-allowed" data-tip="Coming soon" data-for="nav-collections">
+          <div
+            className="cursor-not-allowed"
+            data-tip={chrome.i18n.getMessage('ComingSoon')}
+            data-for="nav-collections"
+          >
             {chrome.i18n.getMessage('CollectionsLc')}
           </div>
         </nav>
@@ -150,7 +154,11 @@ const NavBar = () => {
           ref={notificationToggleRef}
           title="notification"
         >
-          <NotificationIcon className="cursor-pointer" onClick={toggleNotificationsCenter} role="button"/>
+          <NotificationIcon
+            className="cursor-pointer"
+            onClick={toggleNotificationsCenter}
+            role="button"
+          />
           {notificationsData.new > 0 && (
             <div
               className="absolute top-2.25 left-1.75 bg-warning-200 rounded-full"
@@ -185,7 +193,10 @@ const NavBar = () => {
                 className="flex items-center justify-center object-cover rounded-full w-full h-full bg-white"
                 ref={dropdownToggleRef}
               >
-                <DefaultAvatar data-testid='default-avatar-navbar' style={{ width: '36px', height: '36px' }} />
+                <DefaultAvatar
+                  data-testid="default-avatar-navbar"
+                  style={{ width: '36px', height: '36px' }}
+                />
               </div>
             )}
           </div>

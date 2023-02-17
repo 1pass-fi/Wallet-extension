@@ -103,7 +103,8 @@ const KidPage = () => {
 
   const kidLinkPrefix = 'https://koii.id/'
 
-  const urlExpression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/i
+  const urlExpression =
+    /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/i
   const urlRegex = new RegExp(urlExpression)
 
   const [linkAccountErrors, setLinkAccountErrors] = useState([])
@@ -517,7 +518,7 @@ const KidPage = () => {
               variant="white"
               className="inline ml-0.5"
               place="bottom"
-              text="For best results, your cover<br>image should be 1400x400px"
+              text={chrome.i18n.getMessage('CoverImageHint')}
             />{' '}
             <br></br>
             your cover image
@@ -525,9 +526,9 @@ const KidPage = () => {
         </div>
 
         <div className="form-text">
-          <div data-tip={isPending ? 'DID transactions pending' : ''}>
+          <div data-tip={isPending ? chrome.i18n.getMessage('DIDTransactionsPending') : ''}>
             <KidInputField
-              label="DID Link"
+              label={chrome.i18n.getMessage('DIDLink')}
               isRequired={true}
               value={kID}
               setValue={onChangeUserInfo}
@@ -535,9 +536,9 @@ const KidPage = () => {
               disabled={isPending}
             />
           </div>
-          <div data-tip={isPending ? 'DID transactions pending' : ''}>
+          <div data-tip={isPending ? chrome.i18n.getMessage('DIDTransactionsPending') : ''}>
             <KidInputField
-              label="Name"
+              label={chrome.i18n.getMessage('Name')}
               isRequired={true}
               description="or pseudonym"
               value={userKID.name}
@@ -559,9 +560,9 @@ const KidPage = () => {
               emptyOption={true}
             />
           </div>
-          <div data-tip={isPending ? 'DID transactions pending' : ''}>
+          <div data-tip={isPending ? chrome.i18n.getMessage('DIDTransactionsPending') : ''}>
             <KidInputField
-              label="Pronouns"
+              label={chrome.i18n.getMessage('Pronouns')}
               isRequired={false}
               example="For example: 'she/her' or 'they/them'"
               value={userKID.pronouns}
@@ -576,7 +577,7 @@ const KidPage = () => {
             <div
               ref={descriptionInput}
               className="kid-input-input-section"
-              data-tip={isPending ? 'DID transactions pending' : ''}
+              data-tip={isPending ? chrome.i18n.getMessage('DIDTransactionsPending') : ''}
             >
               <textarea
                 value={userKID.description}
@@ -708,7 +709,7 @@ const KidPage = () => {
             ))}
 
           <div className="save-kid-btn">
-            <div data-tip={isPending ? 'DID transactions pending' : ''}>
+            <div data-tip={isPending ? chrome.i18n.getMessage('DIDTransactionsPending') : ''}>
               <Button
                 disabled={disableUpdateKID || isPending}
                 onClick={async () => {
@@ -716,7 +717,11 @@ const KidPage = () => {
                   if (validated) setShowConfirmModal(true)
                 }}
                 variant="filled"
-                text={hadData ? 'Save Changes' : 'Create My DID'}
+                text={
+                  hadData
+                    ? chrome.i18n.getMessage('SaveChanges')
+                    : chrome.i18n.getMessage('CreateMyDID')
+                }
                 startIcon={CheckIcon}
               />
             </div>

@@ -125,14 +125,14 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
           if (!hadError) setCurrentNftIdx(index)
           hadError = true
           validated = false
-          newError[index].title = 'Title cannot be empty'
+          newError[index].title = chrome.i18n.getMessage('TitleRequired')
         }
 
         if (!nft?.info?.description) {
           if (!hadError) setCurrentNftIdx(index)
           hadError = true
           validated = false
-          newError[index].description = 'Description cannot be empty'
+          newError[index].description = chrome.i18n.getMessage('DescriptionRequired')
         }
       }
 
@@ -255,7 +255,7 @@ const BatchUploadModal = ({ close, inputFiles, showConfirmModal, nfts, setNfts }
               </div>
             </div>
             <Button
-              text="Save Changes"
+              text={chrome.i18n.getMessage('SaveChanges')}
               className="mx-auto mt-6.5"
               variant="light"
               icon={CheckMarkIcon}

@@ -247,7 +247,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                 onClick={handleUploadNFT}
                 className="h-9 mt-8 text-sm rounded w-43.75 mb-4"
                 variant="indigo"
-                text="Create NFT"
+                text={chrome.i18n.getMessage('CreateNFT')}
                 disabled={disableCreateNFT}
               />
             )}
@@ -296,9 +296,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
               <div className="font-semibold text-xl tracking-finnieSpacing-wide">
                 {chrome.i18n.getMessage('createNFTMsg')}
               </div>
-              <div className="text-base mb-16">
-                {chrome.i18n.getMessage('takeFewMinutesMsg')}
-              </div>
+              <div className="text-base mb-16">{chrome.i18n.getMessage('takeFewMinutesMsg')}</div>
               {/* <div className="text-base">
                 It will take a few minutes to reflect on your wallet. In the meantime...
               </div> */}
@@ -308,13 +306,13 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                 onClick={() => {close(); handleShareNFT(nftId)}}
                 className="h-10 mt-16 text-base rounded w-43.75 mx-auto"
                 variant="indigo"
-                text="Transfer"
+                text={chrome.i18n.getMessage('Transfer')}
               /> */}
               {/* <Button
                 onClick={() => setStep(3)}
                 className="h-10 mt-16 text-base rounded w-43.75 mx-auto"
                 variant="inversedIndigo"
-                text="Share"
+                text={chrome.i18n.getMessage('Share')}
               />               */}
             </div>
           </div>
@@ -346,7 +344,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
               <Button
                 className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
                 variant="indigo"
-                text="Copy link"
+                text={chrome.i18n.getMessage('CopyLink')}
               />
             </CopyToClipboard>
             <div className="flex w-77.25 m-auto mt-5 justify-between">

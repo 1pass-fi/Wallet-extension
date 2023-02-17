@@ -58,10 +58,10 @@ const DeleteContactModal = React.forwardRef(({ contact, onClose, removeContact }
               removeContact(contact.id)
               onClose()
             }}
-            text="Delete Contact"
+            text={chrome.i18n.getMessage('DeleteContact')}
             variant="delete"
           />
-          <Button onClick={onClose} text="Go Back" variant="cancel" />
+          <Button onClick={onClose} text={chrome.i18n.getMessage('GoBack')} variant="cancel" />
         </div>
       </div>
     </div>

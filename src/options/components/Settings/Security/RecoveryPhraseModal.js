@@ -166,7 +166,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
               style={{ width: '239px', height: '39px' }}
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-5"
               variant="indigo"
-              text="Done"
+              text={chrome.i18n.getMessage('Done')}
               onClick={() => onGetRecoveryPhrase()}
             />
           </div>
@@ -205,37 +205,11 @@ const RecoveryPhraseModal = ({ account, close }) => {
                 })}
             </div>
 
-            {/* <div className="flex mt-6.25 mb-8">
-              <CopyToClipboard text={seedPhrase}>
-                <Button
-                  style={{ width: '220px', height: '39px' }}
-                  className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
-                  variant="inversedIndigo"
-                  text={isCopied ? 'Copied!' : 'Copy Link'}
-                  icon={CopyIcon}
-                  onClick={() => setIsCopied(true)}
-                />
-              </CopyToClipboard>
-              <CSVLink
-                filename={`${account.accountName}_seedphrase.csv`}
-                data={seedPhrase}
-                style={{ textDecoration: 'none' }}
-              >
-                <Button
-                  style={{ width: '220px', height: '39px' }}
-                  className="ml-5.25 h-10 mt-5 text-base rounded w-43.75 mx-auto"
-                  variant="indigo"
-                  text="Save as CSV File"
-                  icon={ImportIcon}
-                />
-              </CSVLink>
-            </div> */}
-
             <Button
               style={{ width: '239px', height: '39px' }}
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-5"
               variant="indigo"
-              text="Done"
+              text={chrome.i18n.getMessage('Done')}
               onClick={close}
             />
           </div>

@@ -105,7 +105,7 @@ const RevealPhrase = ({ step }) => {
               style={{ width: '240px', height: '42px' }}
               className="mt-7 text-base rounded mx-auto z-10"
               variant="primary"
-              text="Get Free KOII"
+              text={chrome.i18n.getMessage('GetFreeKOII')}
               size="lg"
               onClick={openFaucet}
               id="open-faucet-button"
@@ -121,7 +121,7 @@ const RevealPhrase = ({ step }) => {
               style={{ width: '240px', height: '42px' }}
               className="mt-7 text-base rounded mx-auto z-10"
               variant="warningDefault"
-              text="Create an NFT"
+              text={chrome.i18n.getMessage('CreateAnNFT')}
               size="lg"
               onClick={openCreateNFTPage}
               id="create-nft-page-button"

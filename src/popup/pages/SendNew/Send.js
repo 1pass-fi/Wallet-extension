@@ -177,7 +177,7 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
       <div
         className="z-10 bg-trueGray-100 border-b-2 border-blue-800 flex"
         style={{ width: '241px', height: '45px' }}
-        data-tip={isEmpty(selectedAccount) ? 'Please choose Sender Account first!' : ''}
+        data-tip={isEmpty(selectedAccount) ? chrome.i18n.getMessage('ChooseSenderAccountFirst') : ''}
       >
         <input
           className={clsx(

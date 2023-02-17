@@ -117,7 +117,7 @@ const Sidebar = ({ currentPath }) => {
         ))}
         <div
           className={clsx('flex items-center justify-center w-13.75 h-11.25 cursor-not-allowed')}
-          data-tip="Coming soon"
+          data-tip={chrome.i18n.getMessage('ComingSoon')}
           data-for="sidebar-collections"
         >
           <CollectionIcon className="w-7.5 h-7" />

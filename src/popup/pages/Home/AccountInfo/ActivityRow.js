@@ -202,7 +202,7 @@ const ActivityRow = ({
                 </div>
               )
             ) : (
-              <ExploreBlock data-tip={'Coming soon'} />
+              <ExploreBlock data-tip={chrome.i18n.getMessage('ComingSoon')} />
             )}
             <ToolTip />
           </div>

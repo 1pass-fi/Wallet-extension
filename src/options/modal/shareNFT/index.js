@@ -52,14 +52,14 @@ const ShareNFT = ({ txid }) => {
               text={shareUrl}
               url={shareUrl}
               title="Share:"
-              buttonText="get share link"
+              buttonText={chrome.i18n.getMessage('getShareLink')}
             />
             <TextBox
               txid={txid}
               text={embedUrl}
               url={embedUrl}
               title="Embed:"
-              buttonText="get embed link"
+              buttonText={chrome.i18n.getMessage('getEmbedLink')}
             />
           </div>
           <div className="share-nft social-icon container">

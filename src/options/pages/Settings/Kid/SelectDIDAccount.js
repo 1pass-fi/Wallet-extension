@@ -149,7 +149,7 @@ const SelectDIDAccount = ({ close }) => {
               style={{ width: '180px', height: '38px' }}
               className="h-10 text-base rounded w-43.75 mx-auto mb-6.5"
               variant="indigo"
-              text="Select"
+              text={chrome.i18n.getMessage('Select')}
               onClick={handleChangeDIDAccount}
             />
           </div>

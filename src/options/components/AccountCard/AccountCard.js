@@ -565,7 +565,7 @@ const AccountCard = ({
                 'w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-trueGray-400 rounded',
                 'font-normal text-xs 2xl:text-sm 3xl:text-base text-center tracking-finnieSpacing-tight'
               )}
-              data-tip={'Views'}
+              data-tip={chrome.i18n.getMessage('Views')}
             >
               {chrome.i18n.getMessage('ComingSoon')}
             </div>

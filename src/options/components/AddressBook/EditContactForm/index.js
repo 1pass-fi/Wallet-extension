@@ -120,7 +120,7 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
                   onChange={(e) => handleUserAddressValueChange(idx, e)}
                   value={address.value}
                 />
-                <div className="ab-copy-icon" data-tip="Copy to clipboard">
+                <div className="ab-copy-icon" data-tip={chrome.i18n.getMessage('CopyToClipboard')}>
                   <CopyToClipboard text={address.value}>
                     <CopyIcon />
                   </CopyToClipboard>
@@ -128,7 +128,7 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
               </div>
               <div
                 className="ab-trash-icon"
-                data-tip="Remove this address"
+                data-tip={chrome.i18n.getMessage('RemoveThisAddress')}
                 data-for="remove"
                 onClick={() => {
                   const newAddresses = [...userAddresses]
@@ -177,7 +177,7 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
                 value={userInfo.didValue}
                 onChange={handleUserInfoChange}
               />
-              <div className="ab-copy-icon" data-tip="Copy to clipboard">
+              <div className="ab-copy-icon" data-tip={chrome.i18n.getMessage('CopyToClipboard')}>
                 <CopyIcon />
               </div>
             </div>
@@ -185,8 +185,8 @@ const EditContactForm = ({ onClose, contact, updateAddress }) => {
         </div>
       </div>
       <div className="ab-contact-form__footer">
-        <Button startIcon={CloseIcon} onClick={onClose} text="Cancel" />
-        <Button startIcon={TickIcon} onClick={handleSubmit} text="Save" variant="normal" />
+        <Button startIcon={CloseIcon} onClick={onClose} text={chrome.i18n.getMessage('Cancel')} />
+        <Button startIcon={TickIcon} onClick={handleSubmit} text={chrome.i18n.getMessage('Save')} variant="normal" />
       </div>
 
       <ReactTooltip place="top" effect="float" />

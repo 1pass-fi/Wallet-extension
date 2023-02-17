@@ -76,17 +76,17 @@ const SortAndFilter = ({
                 <ToggleButton
                   isActive={sortBy === SORT_TYPES.NEWEST}
                   onClick={() => handleSort(SORT_TYPES.NEWEST)}
-                  text="Recently Added"
+                  text={chrome.i18n.getMessage('RecentlyAdded')}
                 />
                 <ToggleButton
                   isActive={sortBy === SORT_TYPES.OLDEST}
                   onClick={() => handleSort(SORT_TYPES.OLDEST)}
-                  text="Oldest"
+                  text={chrome.i18n.getMessage('Oldest')}
                 />
                 <ToggleButton
                   isActive={sortBy === SORT_TYPES.MOST_VIEWED}
                   onClick={() => handleSort(SORT_TYPES.MOST_VIEWED)}
-                  text="Most viewed"
+                  text={chrome.i18n.getMessage('MostViewed')}
                 />
               </div>
             )}

@@ -1,5 +1,5 @@
 // modules
-import React, { useEffect, useRef,useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 import clsx from 'clsx'
@@ -149,7 +149,9 @@ const SendTokenForm = ({
         >
           <div
             className="border-b-2 rounded-finnie border-white text-white h-8 flex"
-            data-tip={isEmpty(selectedAccount) ? 'Please choose Sender Account first!' : ''}
+            data-tip={
+              isEmpty(selectedAccount) ? chrome.i18n.getMessage('ChooseSenderAccountFirst') : ''
+            }
           >
             <input
               ref={(ip) => (addressInputRef.current = ip)}

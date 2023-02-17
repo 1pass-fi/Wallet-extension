@@ -60,7 +60,7 @@ const GetRewardsModal = ({ redeemRewards, rewards, close }) => {
         <Button
           style={{ width: '228px', height: '46px' }}
           className="my-auto text-base"
-          text="Redeem Rewards"
+          text={chrome.i18n.getMessage('RedeemRewards')}
           variant="indigo"
           icon={ShareIcon}
           size="lg"

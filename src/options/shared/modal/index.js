@@ -43,7 +43,7 @@ const Modal = ({ onClose, children, className = '', isWelcomeScreen = false }) =
         className={`${isWelcomeScreen ? 'welcome-screen-modal' : 'modal'} ${className}`}
         ref={ref}
       >
-        <div data-tip="Close" data-for="close-btn" className="modal-close-icon">
+        <div data-tip={chrome.i18n.getMessage('Close')} data-for="close-btn" className="modal-close-icon">
           <CloseIcon onClick={onClose} />
         </div>
         {children}

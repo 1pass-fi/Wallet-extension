@@ -70,7 +70,7 @@ const ShareCodeModal = ({ code, close }) => {
           <Button
             style={{ width: '200px', height: '40px' }}
             className="text-base"
-            text={isCopied ? 'Copied' : 'Copy Code'}
+            text={isCopied ? chrome.i18n.getMessage('Copied') : chrome.i18n.getMessage('CopyCode')}
             variant="indigo"
             icon={CopyIcon}
             size={'md'}

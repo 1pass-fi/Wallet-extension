@@ -345,7 +345,7 @@ const CollectionForm = ({ isUpdate }) => {
               setFiles={setFiles}
               fileType={['image/*', 'video/*', 'audio/*']}
               className="w-full h-full"
-              description="Select multiple files from your computer."
+              description={chrome.i18n.getMessage('SelectMultipleFiles')}
               isCreateCollection={true}
             />
           ) : (
@@ -400,7 +400,7 @@ const CollectionForm = ({ isUpdate }) => {
         <Button
           onClick={openBatchModal}
           variant="light"
-          text="Add NFT Details"
+          text={chrome.i18n.getMessage('AddNFTDetails')}
           className="text-sm"
         />
       </div>
