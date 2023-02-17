@@ -56,10 +56,10 @@ const ExpiredTxModal = ({ onClose, txInfo, setError, setPendingTransactions, set
   return (
     <Modal onClose={onClose} className="expired-transaction-modal">
       <div className="modal-title">
-        <strong>Take an action</strong>
+        <strong>{chrome.i18n.getMessage('TakeAnAction')}</strong>
       </div>
       <div className="modal-description">
-        Do you want to delete or resend the transaction?
+        {chrome.i18n.getMessage('DeleteOrResendTransaction')}
       </div>
       <div className="modal-action-buttons">
         <Button label="Delete" className="modal-action-button delete" onClick={() => expiredTxAction(txInfo, false)} />

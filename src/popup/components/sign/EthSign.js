@@ -76,7 +76,7 @@ const EthSign = ({ setError, setIsLoading }) => {
           style={{ height: '67px' }}
         >
           <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-            Signing Message
+            {chrome.i18n.getMessage('SigningMessage')}
           </div>
           <CloseIcon
             style={{ width: '30px', height: '30px' }}
@@ -85,7 +85,7 @@ const EthSign = ({ setError, setIsLoading }) => {
           />
         </div>
         <div className="mt-4.5 w-full px-2 font-semibold text-base text-left tracking-finnieSpacing-wide text-indigo">
-          Message:
+          {chrome.i18n.getMessage('Message')}:
         </div>
         <div className="mt-4.5 px-2 w-full font-normal text-base text-left tracking-finnieSpacing-wide text-indigo break-words">
           {requestData.message}
@@ -96,14 +96,14 @@ const EthSign = ({ setError, setIsLoading }) => {
             style={{ width: '160px', height: '38px' }}
             onClick={onClose}
           >
-            Reject
+            {chrome.i18n.getMessage('Reject')}
           </button>
           <button
             onClick={onSign}
             className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
             style={{ width: '160px', height: '38px' }}
           >
-            Sign
+            {chrome.i18n.getMessage('Sign')}
           </button>
         </div>
       </div>

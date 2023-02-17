@@ -64,7 +64,8 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
   }, [transactionPayload])
 
   const transactionMethod = useMemo(() => {
-    if (transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION && !isEmpty(dataString)) return decodeTxMethod(dataString)
+    if (transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION && !isEmpty(dataString))
+      return decodeTxMethod(dataString)
     return null
   }, [dataString])
 
@@ -106,7 +107,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     return get(transactionPayload, 'to')
   }, [customTokenRecipient, transactionPayload])
 
-
   /* 
     Hard return false -> temporary disable security function
     since sunrise services has been down
@@ -127,7 +127,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     <div className="w-full h-full bg-white z-51 m-auto top-0 left-0 fixed flex flex-col justify-center items-center">
       {!showReceipt ? (
         <div className="w-full h-full relative bg-white shadow-md rounded m-auto flex flex-col items-center">
-
           {/* NAVIGATION TAB */}
           <div className="w-full flex flex-col">
             <div
@@ -155,28 +154,28 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
 
               {/* TRANSACTION TITLE */}
               <div className="mt-4.5 font-semibold text-sm text-indigo text-center tracking-finnieSpacing-wide">
-                {transactionType === TRANSACTION_TYPE.CONTRACT_DEPLOYMENT && 'Contract Deployment'}
+                {transactionType === TRANSACTION_TYPE.CONTRACT_DEPLOYMENT && chrome.i18n.getMessage('ContractDeployment')}
                 {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION &&
-                  'Contract Interaction'}
-                {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER && 'Transfer AR'}
-                {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && 'Transfer Token'}
+                  chrome.i18n.getMessage('ContractInteraction')}
+                {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER && chrome.i18n.getMessage('TransferAR')}
+                {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && chrome.i18n.getMessage('TransferToken')}
               </div>
               {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION &&
                 !isEmpty(transactionMethod) && (
                   <>
                     {transactionMethod === TRANSACTION_METHOD.SET_APPROVAL_FOR_ALL && (
                       <div className="flex items-center justify-center w-auto h-5 mt-1 mb-3 px-1 text-sm text-indigo font-semibold tracking-finnieSpacing-wide border border-turquoiseBlue rounded-xs bg-cyan">
-                        setApprovalForAll
+                        {chrome.i18n.getMessage('setApprovalForAll')}
                       </div>
                     )}
                     {transactionMethod === TRANSACTION_METHOD.MINT_COLLECTIBLES && (
                       <div className="flex items-center justify-center w-auto h-5 mt-1 mb-3 px-1 text-sm text-indigo font-semibold tracking-finnieSpacing-wide border border-turquoiseBlue rounded-xs bg-cyan">
-                        mintCollectibles
+                        {chrome.i18n.getMessage('mintCollectibles')}
                       </div>
                     )}
                     {transactionMethod === TRANSACTION_METHOD.APPROVE && (
                       <div className="flex items-center justify-center w-auto h-5 mt-1 mb-3 px-1 text-sm text-indigo font-semibold tracking-finnieSpacing-wide border border-turquoiseBlue rounded-xs bg-cyan">
-                        approve
+                        {chrome.i18n.getMessage('approve')}
                       </div>
                     )}
                   </>
@@ -191,7 +190,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                   >
                     <CheckMarkIcon style={{ width: '24px', height: '24px' }} />
                     <div className="mx-2" style={{ width: '300px ' }}>
-                      Website verified by Sunrise NFT Scam Detector
+                      {chrome.i18n.getMessage('SunriseVerified')}
                     </div>
                     <SunriseLogo style={{ width: '21px', height: '21px' }} />
                   </div>
@@ -202,8 +201,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                   >
                     <WaitingIcon style={{ width: '24px', height: '24px' }} />
                     <div className="mx-2" style={{ width: '300px ' }}>
-                      This website hasn’t been verified by Sunrise NFT Scam Detector. Make sure
-                      you’re on the right site.
+                      {chrome.i18n.getMessage('SunriseHasNotBeenVerified')}
                     </div>
                     <SunriseLogo style={{ width: '21px', height: '21px' }} />
                   </div>
@@ -218,15 +216,13 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                         className="mx-2 flex flex-col items-center justify-center"
                         style={{ width: '300px ' }}
                       >
-                        According to Sunrise NFT Scam Detector, this site might be impersonating a
-                        popular NFT site. Double check that you are minting from the correct site to
-                        keep your assets secure.
+                        {chrome.i18n.getMessage('SunriseWarningMsg')}
                         <div
                           className="leading-6 bg-blue-800 rounded-sm mt-0.5 flex items-center justify-center text-white cursor-pointer"
                           style={{ width: '100px', height: '20px' }}
                           onClick={() => setShowConnectedSites(true)}
                         >
-                          I Understand
+                          {chrome.i18n.getMessage('IUnderstand')}
                         </div>
                       </div>
                       <SunriseLogo style={{ width: '21px', height: '21px' }} />
@@ -236,13 +232,8 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
 
               <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
                 {origin && (
-                  <div
-                    className={clsx(
-                      'flex mb-2',
-                      isScamOrigin && 'text-red-finnie'
-                    )}
-                  >
-                    <div style={{ width: '176px' }}>Origin</div>
+                  <div className={clsx('flex mb-2', isScamOrigin && 'text-red-finnie')}>
+                    <div style={{ width: '176px' }}>{chrome.i18n.getMessage('Origin')}</div>
                     <div
                       className={clsx(
                         'flex font-normal text-xs items-center truncate',
@@ -290,9 +281,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               </div>
 
               {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
-                transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER &&
-                recipient
-              ) && (
+                (transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER && recipient)) && (
                 <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
                   <div style={{ width: '176px' }}>{chrome.i18n.getMessage('ToLc')}</div>
                   {recipientName && (
@@ -310,15 +299,17 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
           {tab === TAB.SIMULATION && network === NETWORK.ETHEREUM && (
             <div className="flex flex-col items-center w-full h-full mt-2 overflow-y-auto overflow-x-hidden text-indigo">
               <div className="mt-5 font-semibold text-base text-indigo leading-5 text-center tracking-finnieSpacing-wide">
-                1 transaction in queue
+                {chrome.i18n.getMessage('transactionInQueue')}
               </div>
               <div className="mt-2 text-sm text-indigo">
-                <span className="font-bold">{origin}</span> requested{' '}
-                <span className="font-bold">just now</span>
+                <span className="font-bold">{origin}</span> {chrome.i18n.getMessage('requested')}{' '}
+                <span className="font-bold">{chrome.i18n.getMessage('justNow')}</span>
               </div>
-              <div className="mt-2 text-xl text-indigo font-semibold">Simulated Changes:</div>
+              <div className="mt-2 text-xl text-indigo font-semibold">
+                {chrome.i18n.getMessage('SimulatedChanges')}:
+              </div>
               <div className="w-full px-8 mt-4.5 flex flex-col">
-                <div className="font-normal text-sm">You give:</div>
+                <div className="font-normal text-sm">{chrome.i18n.getMessage('YouGive')}:</div>
                 <div
                   className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
                   style={{ backgroundColor: '#EBEEF7', height: '56px' }}
@@ -333,7 +324,9 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                     - ={simulationData.data.givenTokenAmount / Math.pow(10, 18)}
                   </div>
                 </div>
-                <div className="mt-2.5 font-normal text-sm">You get:</div>
+                <div className="mt-2.5 font-normal text-sm">
+                  {chrome.i18n.getMessage('YouGet')}:
+                </div>
                 {simulationData.type === TRANSACTION_METHOD.MINT_COLLECTIBLES && (
                   <div
                     className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
@@ -374,9 +367,11 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 >
                   <div className="flex items-center font-semibold text-base">
                     <CheckMarkIconBlue className="mr-1" style={{ width: '18px', height: '18px' }} />
-                    Approved
+                    {chrome.i18n.getMessage('Approved')}
                   </div>
-                  <div className="font-normal text-sm">This transaction appears to be in order</div>
+                  <div className="font-normal text-sm">
+                    {chrome.i18n.getMessage('TransactionAppearsToBeInOrder')}
+                  </div>
                 </div>
               </div>
             </div>
