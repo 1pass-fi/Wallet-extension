@@ -37,42 +37,39 @@ const TRANSFER_STEPS = {
 }
 
 const TITLES_ETH = {
-  1: <div className="title">Transfer your media to an Ethereum wallet.</div>,
-  2: <div className="title">Confirm Transfer</div>,
-  3: <div className="title">Your NFT is heading to Ethereum!</div>
+  1: <div className="title">{chrome.i18n.getMessage('TransferMediaToETH')}</div>,
+  2: <div className="title">{chrome.i18n.getMessage('ConfirmTransfer')}</div>,
+  3: <div className="title">{chrome.i18n.getMessage('NFTToETH')}</div>
 }
 
 const TITLES_AR = {
-  1: <div className="title">Transfer your media to an Arweave wallet.</div>,
-  2: <div className="title">Confirm Transfer</div>,
-  3: <div className="title">Your NFT is heading to Arweave!</div>
+  1: <div className="title">{chrome.i18n.getMessage('TransferMediaToAR')}</div>,
+  2: <div className="title">{chrome.i18n.getMessage('ConfirmTransfer')}</div>,
+  3: <div className="title">{chrome.i18n.getMessage('NFTToAR')}</div>
 }
 
 const DESCRIPTIONS_ETH = {
   1: (
     <div className="description">
-      This process takes usually around 10-15 minutes. With one click, the Koii contract will move
-      your NFT to Ethereum.&nbsp;
+      {chrome.i18n.getMessage('ExportNFTToETHDesc1')}&nbsp;
       <a href="#" className="link">
-        Learn more
+        {chrome.i18n.getMessage('LearnMore')}
       </a>
       .
     </div>
   ),
   2: (
     <div className="description">
-      This process takes usually around 10-15 minutes. With one click, the Koii contract will move
-      your NFT to Ethereum.&nbsp;
+      {chrome.i18n.getMessage('ExportNFTToETHDesc1')}&nbsp;
       <a href="#" className="link">
-        Learn more
+        {chrome.i18n.getMessage('LearnMore')}
       </a>
       .
     </div>
   ),
   3: (
     <div className="description">
-      Keep in mind that this process takes usually around 10-15 minutes and can take longer,
-      depending on current Ethereum traffic.
+      {chrome.i18n.getMessage('ExportNFTToETHDesc2')}
     </div>
   )
 }
@@ -80,28 +77,25 @@ const DESCRIPTIONS_ETH = {
 const DESCRIPTIONS_AR = {
   1: (
     <div className="description">
-      This process takes usually around 10-15 minutes. With one click, the Koii contract will move
-      your NFT to Arweave.&nbsp;
+      {chrome.i18n.getMessage('ExportNFTToARDesc1')}&nbsp;
       <a href="#" className="link">
-        Learn more
+        {chrome.i18n.getMessage('LearnMore')}
       </a>
       .
     </div>
   ),
   2: (
     <div className="description">
-      This process takes usually around 10-15 minutes. With one click, the Koii contract will move
-      your NFT to Arweave.&nbsp;
+      {chrome.i18n.getMessage('ExportNFTToARDesc1')}&nbsp;
       <a href="#" className="link">
-        Learn more
+        {chrome.i18n.getMessage('LearnMore')}
       </a>
       .
     </div>
   ),
   3: (
     <div className="description">
-      Keep in mind that this process takes usually around 10-15 minutes and can take longer,
-      depending on current Arweave traffic.
+      {chrome.i18n.getMessage('ExportNFTToARDesc2')}
     </div>
   )
 }
@@ -440,13 +434,13 @@ export default ({ info, onClose, type }) => {
       <div className="transfer-wallet-modal">
         {locked === undefined && type === TYPE.ETHEREUM ? (
           <div className="unsupported-nft">
-            The Ethereum bridge does not currently support this NFT. Try the bridge with a{' '}
+            {chrome.i18n.getMessage('BridgeNFTNotSupportedStart')}
             <span
               style={{ textDecoration: 'underline' }}
               data-for="cannot-bridge"
               data-tip="created in October 2021 or later"
             >
-              more recent NFT.
+              {chrome.i18n.getMessage('BridgeNFTNotSupportedEnd')}
             </span>
             <ReactTooltip place="top" id="cannot-bridge" type="dark" effect="float" />
           </div>
@@ -488,11 +482,11 @@ export default ({ info, onClose, type }) => {
                   </div>
                 )}
                 <div className="name">{name}</div>
-                {type === TYPE.ETHEREUM && <div className="views">{totalViews} views</div>}
+                {type === TYPE.ETHEREUM && <div className="views">{totalViews}{chrome.i18n.getMessage('viewLc')}</div>}
                 {type === TYPE.ETHEREUM && (
                   <div className="earned-koi">
                     <FinnieIcon />
-                    {formatNumber(earnedKoi)} KOII earned
+                    {formatNumber(earnedKoi)} KOII{chrome.i18n.getMessage('earned')}
                   </div>
                 )}
               </div>
@@ -503,13 +497,13 @@ export default ({ info, onClose, type }) => {
                     <div className="eth-address">
                       {type === TYPE.ETHEREUM && (
                         <>
-                          <label className="label">ETH Address</label>
+                          <label className="label">ETH {chrome.i18n.getMessage('AddressLc')}</label>
                           <EthereumLogo className="input-logo" />
                         </>
                       )}
                       {type === TYPE.ARWEAVE && (
                         <>
-                          <label className="label">AR Address</label>
+                          <label className="label">AR {chrome.i18n.getMessage('AddressLc')}</label>
                           <ArweaveLogo className="input-logo" />
                         </>
                       )}
@@ -535,8 +529,8 @@ export default ({ info, onClose, type }) => {
                       </div>
                     </div>
                     <div className="number-to-transfer">
-                      <div className="total-available">total available:&nbsp; {totalTransfer}</div>
-                      <label className="label">Number to transfer:</label>
+                      <div className="total-available">{chrome.i18n.getMessage('totalAvailable')}:&nbsp; {totalTransfer}</div>
+                      <label className="label">{chrome.i18n.getMessage('NumberToTransfer')}:</label>
                       <StackIcon className="input-logo" />
                       <input
                         type="number"
@@ -549,7 +543,7 @@ export default ({ info, onClose, type }) => {
                         className="input"
                       />
                       <div className="description-one-item">
-                        Many NFTs will only have 1 item minted.
+                        {chrome.i18n.getMessage('NFTOnlyHave1ItemMinted')}
                       </div>
                     </div>
                   </>
@@ -558,7 +552,7 @@ export default ({ info, onClose, type }) => {
                 {step == TRANSFER_STEPS.CONFIRM && (
                   <>
                     <div className="send-to">
-                      <div className="label">Sending to:</div>
+                      <div className="label">{chrome.i18n.getMessage('SendingTo')}:</div>
                       <div className="account">
                         {type === TYPE.ARWEAVE && <ArweaveLogo className="account-logo" />}
                         {type === TYPE.ETHEREUM && <EthereumLogo className="account-logo" />}
@@ -574,16 +568,15 @@ export default ({ info, onClose, type }) => {
                     <div className="warning">
                       <WarningIcon className="warning-icon" />
                       <div className="warning-text">
-                        Make sure this is the correct address. Once sent, there is no way to undo
-                        the transaction.
+                        {chrome.i18n.getMessage('MakeSureCorrectAddress')}
                       </div>
                     </div>
 
                     <div className="number-to-transfer confirm">
-                      <div className="total-available">total available:&nbsp; {totalTransfer}</div>
+                      <div className="total-available">{chrome.i18n.getMessage('totalAvailable')}:&nbsp; {totalTransfer}</div>
                       <StackWhiteIcon className="logo" />
                       <div>
-                        <span>Transfer</span> {numberTransfer} Edition
+                        <span>{chrome.i18n.getMessage('Transfer')}</span> {numberTransfer} {chrome.i18n.getMessage('Edition')}
                       </div>
                     </div>
                   </>
@@ -592,7 +585,7 @@ export default ({ info, onClose, type }) => {
                 {step == TRANSFER_STEPS.SUCCESS && (
                   <>
                     <div className="number-to-transfer success">
-                      <div> {numberTransfer} Edition</div>
+                      <div> {numberTransfer} {chrome.i18n.getMessage('Edition')}</div>
                     </div>
 
                     <div className="send-to">
@@ -606,10 +599,10 @@ export default ({ info, onClose, type }) => {
                       </div>
                     </div>
 
-                    <div className="transaction-pending">transaction pending</div>
+                    <div className="transaction-pending">{chrome.i18n.getMessage('transactionPending')}</div>
 
                     <div className="complete-tip">
-                      When complete, transactions will appear in the Activity tab in the dropdown
+                      {chrome.i18n.getMessage('ExportNFTCompleteMsg')}
                     </div>
                   </>
                 )}
@@ -617,7 +610,7 @@ export default ({ info, onClose, type }) => {
                 {step != TRANSFER_STEPS.SUCCESS &&
                   (type !== TYPE.ARWEAVE ? (
                     <div className="estimate-cost">
-                      <div className="text">Estimated costs:</div>
+                      <div className="text">{chrome.i18n.getMessage('EstimatedCosts')}</div>
                       <div className="number">
                         <div className="koi-number">10 KOII</div>
                       </div>
@@ -626,7 +619,7 @@ export default ({ info, onClose, type }) => {
                     <div className="estimate-cost--eth">
                       {isApproved && (
                         <div className="cost">
-                          <span>Cost:</span>
+                          <span>{chrome.i18n.getMessage('Cost')}:</span>
                           <span>0.000150 ETH</span>
                         </div>
                       )}
@@ -640,12 +633,12 @@ export default ({ info, onClose, type }) => {
                         >
                           <QuestionIcon />
                         </div>
-                        <span>Gas estimate:</span>
+                        <span>{chrome.i18n.getMessage('Gas estimate')}:</span>
                         <span>{formatNumber(totalGasCost, 6)} ETH</span>
                       </div>
                       <div className="estimate-note">{'update in < 30 sec.'}</div>
                       <div className="total-cost">
-                        <span>Total: </span>
+                        <span>{chrome.i18n.getMessage('Gas estimate')}: </span>
                         <span className="total-number">
                           {isApproved
                             ? formatNumber(Number(totalGasCost) + 0.00015, 6)
@@ -669,12 +662,12 @@ export default ({ info, onClose, type }) => {
                     )}
                     {type === TYPE.ARWEAVE && isApproved && (
                       <button className="transfer-button" onClick={onOneClick}>
-                        One-Click Transfer to AR
+                        {chrome.i18n.getMessage('OneClickTransfer')} AR
                       </button>
                     )}
                     {type === TYPE.ETHEREUM && (
                       <button className="transfer-button" onClick={onOneClick}>
-                        One-Click Transfer to ETH
+                        {chrome.i18n.getMessage('OneClickTransfer')} ETH
                       </button>
                     )}
                   </>
@@ -683,10 +676,10 @@ export default ({ info, onClose, type }) => {
                 {step == TRANSFER_STEPS.CONFIRM && (
                   <button className="transfer-button" onClick={onConfirm} disabled={isBridging}>
                     {isBridging
-                      ? 'Bridging your NFT...'
+                      ? chrome.i18n.getMessage('BridgingYourNFT')
                       : type === TYPE.ARWEAVE
-                        ? 'Confirm Transfer to AR'
-                        : 'Confirm Transfer to ETH'}
+                        ? chrome.i18n.getMessage('ConfirmTransferTo') + 'AR'
+                        : chrome.i18n.getMessage('ConfirmTransferTo') + 'ETH'}
                   </button>
                 )}
 
@@ -702,7 +695,7 @@ export default ({ info, onClose, type }) => {
         <div className="goback-button" data-tip="Back" onClick={onGoBack}>
           <GoBackIcon />
         </div>
-        <div className="foot-note">This feature is in beta.</div>
+        <div className="foot-note">{chrome.i18n.getMessage('BetaFeature')}</div>
       </div>
       <ReactTooltip place="top" type="dark" effect="float" />
       <ReactTooltip

@@ -7,7 +7,7 @@ import './index.css'
 const ConfirmTransfer = ({ receiverAddress, goBack }) => {
   return (
     <div className="confirm-transfer">
-      <div className="label">Receiver's Wallet Address:</div>
+      <div className="label">{chrome.i18n.getMessage('ReceiverWalletAddress')}:</div>
 
       <div className="receiver-field">
         <div className="receiver-address" title="receiver-address">{receiverAddress}</div>
@@ -21,7 +21,7 @@ const ConfirmTransfer = ({ receiverAddress, goBack }) => {
           <WarningIcon />
         </div>
         <div className="warning-text">
-          Transfer of ownership can take up to 10 minutes after you confirm the purchase.
+          {chrome.i18n.getMessage('TransferOwnershipTakeTime')}
         </div>
       </div>
     </div>
