@@ -38,9 +38,8 @@ const NFTDetail = () => {
   const [isPendingUpdate, setIsPendingUpdate] = useState(false)
   const [nftLoaded, setNFTLoaded] = useState(false)
 
-  const { setShowExportModal, handleShareNFT, showViews, showEarnedKoi } = useContext(
-    GalleryContext
-  )
+  const { setShowExportModal, handleShareNFT, showViews, showEarnedKoi } =
+    useContext(GalleryContext)
 
   useEffect(() => {
     const loadPendingUpdate = async () => {
@@ -109,10 +108,16 @@ const NFTDetail = () => {
   }
 
   const nftTooltipMessage = useMemo(() => {
-    if (nft?.pending) return 'Transaction pending'
-    if (isPendingUpdate) return 'Pending update'
+    if (nft?.pending) return chrome.i18n.getMessage('TransactionPendingUc')
+    if (isPendingUpdate) return chrome.i18n.getMessage('PendingUpdate')
     else
-      return 'When set to public, this NFT <br>will show up in your DID gallery <br>and on the Koii Leaderboard.'
+      return (
+        chrome.i18n.getMessage('PublicNFTMsgStart') +
+        ' <br>' +
+        chrome.i18n.getMessage('PublicNFTMsgMiddle') +
+        ' <br>' +
+        chrome.i18n.getMessage('PublicNFTMsgEnd')
+      )
   }, [isPendingUpdate, nft])
 
   return (
@@ -168,13 +173,13 @@ const NFTDetail = () => {
                 >
                   {showEarnedKoi && (
                     <div className="w-48.5 xl:w-50 2xl:w-52 3xl:w-55.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
-                      KOII earned <br />
+                      KOII{chrome.i18n.getMessage('earned')} <br />
                       {formatNumber(nft.earnedKoi, 3)}
                     </div>
                   )}
                   {showViews && (
                     <div className="w-46 xl:w-48.5 2xl:w-50 3xl:w-52 h-full ml-5.75 3xl:ml-12 rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
-                      Total Views <br />
+                      {chrome.i18n.getMessage('TotalViews')} <br />
                       {nft.totalViews}
                     </div>
                   )}
