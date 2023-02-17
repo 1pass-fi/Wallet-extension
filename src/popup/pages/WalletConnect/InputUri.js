@@ -96,10 +96,12 @@ const InputUri = ({ setPage, setProposal }) => {
         <BackIcon />
       </div>
       <GlobeIcon />
-      <div className="mt-5 mb-7 text-indigo text-base font-semibold">Wallet Connect</div>
+      <div className="mt-5 mb-7 text-indigo text-base font-semibold">
+        {chrome.i18n.getMessage('WalletConnect')}
+      </div>
       <div>
         <div style={{ height: '24px' }} className="flex items-center text-indigo text-sm">
-          Enter wallet connect URL
+          {chrome.i18n.getMessage('EnterWalletConnectURL')}
         </div>
         <input
           onChange={(e) => setUri(e.target.value)}
@@ -113,7 +115,7 @@ const InputUri = ({ setPage, setProposal }) => {
         style={{ width: '160px', height: '38px' }}
         className="bg-blue-800 text-white text-base mt-7 rounded-sm"
       >
-        Connect
+        {chrome.i18n.getMessage('ConnectLc')}
       </button>
     </div>
   )

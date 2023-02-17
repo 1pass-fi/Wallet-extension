@@ -84,11 +84,7 @@ const ConnectedSitesModal = ({ onClose, setError, setIsLoading }) => {
       }
 
       if (displayingAccount.type === TYPE.SOLANA) {
-        let connectedSolanaAddresses = get(
-          siteConnectedStorage[siteAddress.address],
-          'solana',
-          []
-        )
+        let connectedSolanaAddresses = get(siteConnectedStorage[siteAddress.address], 'solana', [])
         connectedSolanaAddresses = connectedSolanaAddresses.filter(
           (address) => address !== displayingAccount.address
         )
@@ -97,11 +93,7 @@ const ConnectedSitesModal = ({ onClose, setError, setIsLoading }) => {
       }
 
       if (displayingAccount.type === TYPE.K2) {
-        let conectedK2Addresses = get(
-          siteConnectedStorage[siteAddress.address],
-          'k2',
-          []
-        )
+        let conectedK2Addresses = get(siteConnectedStorage[siteAddress.address], 'k2', [])
         conectedK2Addresses = conectedK2Addresses.filter(
           (address) => address !== displayingAccount.address
         )
@@ -135,7 +127,7 @@ const ConnectedSitesModal = ({ onClose, setError, setIsLoading }) => {
           style={{ height: '67px' }}
         >
           <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-            Connected Sites
+            {chrome.i18n.getMessage('ConnectedSites')}
           </div>
           <CloseIcon
             style={{ width: '30px', height: '30px' }}
@@ -147,14 +139,14 @@ const ConnectedSitesModal = ({ onClose, setError, setIsLoading }) => {
           <div className="m-auto flex flex-col items-center">
             <EmptyConnectedSitesIcon />
             <div className="font-normal text-base leading-6 text-center text-indigo">
-              Not connected to any sites
+              {chrome.i18n.getMessage('notConnectedToAnySites')}
             </div>
           </div>
         ) : (
           <>
             <div className="mt-4.5 font-normal text-base text-center tracking-finnieSpacing-wide text-indigo">
               <span className="font-semibold">{displayingAccount.accountName}</span> is connected to
-              these sites.
+              {chrome.i18n.getMessage('theseSites')}.
             </div>
             <div
               className="w-full mt-7.5 flex flex-col justify-between pl-6.5 text-blue-850 overflow-y-scroll"

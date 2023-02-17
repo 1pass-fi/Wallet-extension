@@ -174,26 +174,27 @@ const ConnectScreen = ({
             <div className="text-indigo pt-10 tracking-finnieSpacing-wide px-6.5 mt-7">
               {isKoi && (
                 <div className="text-sm font-semibold leading-5 text-center mb-5.5">
-                  Welcome to the Koii Attention Leaderboard
+                  {chrome.i18n.getMessage('WelcomeToKoiiLeaderBoard')}
                 </div>
               )}
               <div className="text-xs font-normal leading-5">
-                Make sure creators are fairly rewarded. While your wallet is connected, every time
-                you interact with an NFT the creator will earn attention rewards.
+                {chrome.i18n.getMessage('ConnectWalletMsg')}
                 <br></br>
-                This request will <span className="font-semibold">not cost any fees</span> or
-                initiate a transaction. <br></br>
-                By signing, you agree to accept the{' '}
+                {chrome.i18n.getMessage('ThisRequestWill')}{' '}
+                <span className="font-semibold">{chrome.i18n.getMessage('NotCostAnyFees')}</span>{' '}
+                {chrome.i18n.getMessage('or')}
+                {chrome.i18n.getMessage('InitiateATransaction')}. <br></br>
+                {chrome.i18n.getMessage('BySigning')}{' '}
                 <span className="text-success-700 underline cursor-pointer" onClick={goToTOU}>
-                  Koii Network Terms of Service.
+                  {chrome.i18n.getMessage('KOIITos')}
                 </span>
                 <br></br>
-                Your authentication status resets every 24 hours.
+                {chrome.i18n.getMessage('AuthenticationStatus24Hours')}
               </div>
             </div>
             <div className="w-full text-indigo">
               <div className="mt-4 mb-3 leading-4 font-semibold text-xs text-center">
-                Wallet address:
+                {chrome.i18n.getMessage('WalletAddress')}:
               </div>
               <SelectWallet
                 accounts={accounts}
@@ -211,7 +212,7 @@ const ConnectScreen = ({
                 style={{ width: '160px', height: '38px' }}
                 data-testid="reject-wallet-button"
               >
-                Reject
+                {chrome.i18n.getMessage('Reject')}
               </button>
               <button
                 disabled={isEmpty(checkedAddress)}
@@ -220,7 +221,7 @@ const ConnectScreen = ({
                 style={{ width: '160px', height: '38px' }}
                 data-testid="select-wallet-button"
               >
-                Select Wallet
+                {chrome.i18n.getMessage('SelectWallet')}
               </button>
             </div>
           </>
@@ -239,7 +240,7 @@ const ConnectScreen = ({
                 }}
               />
               <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-                Connect to site
+                {chrome.i18n.getMessage('ConnectToSite')}
               </div>
               <CloseIcon
                 style={{ width: '30px', height: '30px' }}
@@ -255,7 +256,7 @@ const ConnectScreen = ({
                 style={{ width: '160px', height: '38px' }}
                 data-testid="reject-connect-button"
               >
-                Reject
+                {chrome.i18n.getMessage('Reject')}
               </button>
               <button
                 onClick={() => handleOnClick(true)}
@@ -263,7 +264,7 @@ const ConnectScreen = ({
                 style={{ width: '160px', height: '38px' }}
                 data-testid="connect-button"
               >
-                Connect
+                {chrome.i18n.getMessage('Connect')}
               </button>
             </div>
           </>
@@ -275,7 +276,7 @@ const ConnectScreen = ({
               style={{ height: '67px' }}
             >
               <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-                Connect to site
+                {chrome.i18n.getMessage('ConnectToSite')}
               </div>
             </div>
             <div className="mt-16.75">
@@ -291,9 +292,11 @@ const ConnectScreen = ({
                 style={{ width: '316px' }}
                 className="font-normal text-base text-center tracking-finnieSpacing-wide text-indigo"
               >
-                Your wallet is now connected to <br></br>this site. You can remove this<br></br>{' '}
-                connection at anytime in
-                <br></br> SETTINGS MENU {'>'} CONNECTED SITES
+                {chrome.i18n.getMessage('ConnectWalletMsgStart')} <br></br>
+                {chrome.i18n.getMessage('ConnectWalletMsgMiddle')}
+                <br></br> {chrome.i18n.getMessage('ConnectWalletMsgEnd')}
+                <br></br> {chrome.i18n.getMessage('SettingsMenu')} {'>'}{' '}
+                {chrome.i18n.getMessage('ConnectedSitesUc')}
               </div>
             </div>
             <button
@@ -307,7 +310,7 @@ const ConnectScreen = ({
               className="absolute bottom-7.25 px-4.5 bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
               style={{ width: '160px', height: '38px' }}
             >
-              OK
+              {chrome.i18n.getMessage('OK')}
             </button>
           </>
         )}

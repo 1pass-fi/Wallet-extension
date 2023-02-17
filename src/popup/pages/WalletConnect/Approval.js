@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo,useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { setError } from 'actions/error'
@@ -20,19 +20,19 @@ const SelectAccountItem = ({ selectedAccounts, address, accountName, setSelected
 
   const toggleAccount = () => {
     if (!selectedAccounts.includes(address)) {
-      setSelectedAccounts(prev => [address])
+      setSelectedAccounts((prev) => [address])
     } else {
-      setSelectedAccounts(prev => prev.filter(_address => _address !== address))
+      setSelectedAccounts((prev) => prev.filter((_address) => _address !== address))
     }
   }
 
   return (
-    <div className='mt-2'>
-      <div onClick={toggleAccount} className='flex cursor-pointer'>
+    <div className="mt-2">
+      <div onClick={toggleAccount} className="flex cursor-pointer">
         {selected ? <Checked /> : <Unchecked />}
-        <div className='ml-3 text-indigo text-xs font-semibold'>{accountName}</div>
+        <div className="ml-3 text-indigo text-xs font-semibold">{accountName}</div>
       </div>
-      <div className='mt-3 text-success-700 text-xs'>{address}</div>
+      <div className="mt-3 text-success-700 text-xs">{address}</div>
     </div>
   )
 }
@@ -49,7 +49,7 @@ const Approval = ({ proposal }) => {
       const type = metadata.namespace === 'eip155' ? TYPE.ETHEREUM : TYPE.SOLANA
       let accounts = await popupAccount.getAllMetadata(type)
 
-      accounts = accounts.map(account => ({
+      accounts = accounts.map((account) => ({
         address: account?.address,
         accountName: account?.accountName
       }))
@@ -69,7 +69,7 @@ const Approval = ({ proposal }) => {
         methods = methods.join(', ')
         let events = get(proposal, `params.requiredNamespaces[${namespace}].events`, [])
         events = events.join(', ')
-  
+
         return { origin, namespace, methods, events }
       } catch (err) {
         console.error(err)
@@ -88,7 +88,7 @@ const Approval = ({ proposal }) => {
       else payloadData = { solana: selectedAccounts }
 
       await request.wallet.approveWalletConnect({ proposal, payloadData })
-  
+
       dispatch(setIsLoading(false))
       history.push('/')
     } catch (err) {
@@ -110,47 +110,79 @@ const Approval = ({ proposal }) => {
 
   return (
     <div className="flex flex-col w-full h-full p-7">
-      <div className='pb-15'>
+      <div className="pb-15">
         {/* TITLE */}
-        <div className='flex flex-col justify-center items-center'>
-          <div className='color-indigo text-base font-semibold'>Session Proposal</div>
-          <div style={{minWidth:'100px',height:'22px'}} className='flex justify-center items-center color-indigo font-semibold bg-turquoiseBlue rounded-sm mt-1 px-1'>{metadata.origin}</div>
+        <div className="flex flex-col justify-center items-center">
+          <div className="color-indigo text-base font-semibold">
+            {chrome.i18n.getMessage('SessionProposal')}
+          </div>
+          <div
+            style={{ minWidth: '100px', height: '22px' }}
+            className="flex justify-center items-center color-indigo font-semibold bg-turquoiseBlue rounded-sm mt-1 px-1"
+          >
+            {metadata.origin}
+          </div>
         </div>
 
         {/* REVIEW PERMISSIONS */}
-        <div className='mt-5'>
-          <div className='color-indigo font-semibold'>Review {metadata.namespace} permissions:</div>
-          <div className='mt-4 flex'>
-            <div className='pt-1'><Rectangle /></div>
-            <div style={{width:'317px'}} className='ml-3 color-indigo text-xs flex items-start'>Method: {metadata.methods}</div>
+        <div className="mt-5">
+          <div className="color-indigo font-semibold">
+            {chrome.i18n.getMessage('Review')} {metadata.namespace}{' '}
+            {chrome.i18n.getMessage('permissions')}:
           </div>
-          {metadata.events && <div className='mt-4 flex'>
-            <div className='pt-1'><Rectangle /></div>
-            <div style={{width:'317px'}} className='ml-3 color-indigo text-xs'>Events: {metadata.events}</div>
-          </div>}
+          <div className="mt-4 flex">
+            <div className="pt-1">
+              <Rectangle />
+            </div>
+            <div style={{ width: '317px' }} className="ml-3 color-indigo text-xs flex items-start">
+              {chrome.i18n.getMessage('Method')}: {metadata.methods}
+            </div>
+          </div>
+          {metadata.events && (
+            <div className="mt-4 flex">
+              <div className="pt-1">
+                <Rectangle />
+              </div>
+              <div style={{ width: '317px' }} className="ml-3 color-indigo text-xs">
+                {chrome.i18n.getMessage('Events')}: {metadata.events}
+              </div>
+            </div>
+          )}
         </div>
 
-
         {/* SELECT ACCOUNTS */}
-        <div className='mt-8'>
-          <div className='color-indigo font-semibold'>Select wallet to connect:</div>
-          {
-            accounts.map((account, index) => 
-              <SelectAccountItem 
-                key={index}
-                selectedAccounts={selectedAccounts}
-                accountName={account.accountName}
-                address={account.address}
-                setSelectedAccounts={setSelectedAccounts}
-              />)
-          }
+        <div className="mt-8">
+          <div className="color-indigo font-semibold">
+            {chrome.i18n.getMessage('SelectWalletToConnect')}:
+          </div>
+          {accounts.map((account, index) => (
+            <SelectAccountItem
+              key={index}
+              selectedAccounts={selectedAccounts}
+              accountName={account.accountName}
+              address={account.address}
+              setSelectedAccounts={setSelectedAccounts}
+            />
+          ))}
         </div>
       </div>
 
       {/* BUTTON */}
-      <div style={{height:'42px'}} className='flex justify-between fixed bottom-16 bg-white'>
-        <button onClick={handleReject} style={{width:'159px',height:'38px',border:'1.5px solid #373765'}} className='bg-white text-blue-800 text-base'>Cancel</button>
-        <button onClick={handleApprove} style={{width:'159px',height:'38px'}} className='bg-blue-800 text-white text-base ml-13'>Approve</button>
+      <div style={{ height: '42px' }} className="flex justify-between fixed bottom-16 bg-white">
+        <button
+          onClick={handleReject}
+          style={{ width: '159px', height: '38px', border: '1.5px solid #373765' }}
+          className="bg-white text-blue-800 text-base"
+        >
+          {chrome.i18n.getMessage('Cancel')}
+        </button>
+        <button
+          onClick={handleApprove}
+          style={{ width: '159px', height: '38px' }}
+          className="bg-blue-800 text-white text-base ml-13"
+        >
+          {chrome.i18n.getMessage('ApproveUc')}
+        </button>
       </div>
     </div>
   )
