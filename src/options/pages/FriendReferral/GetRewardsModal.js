@@ -42,11 +42,11 @@ const GetRewardsModal = ({ redeemRewards, rewards, close }) => {
       >
         <div className="flex h-16.75 rounded-t bg-trueGray-100 shadow-md w-full font-semibold text-xl tracking-finnieSpacing-wide relative">
           <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" />
-          <div className="m-auto">Get My Rewards</div>
+          <div className="m-auto">{chrome.i18n.getMessage('GetMyRewards')}</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
         <div className="mt-9 w-115 text-sm tracking-finnieSpacing-tight text-center">
-          Redeem your Referral Rewards Now.
+          {chrome.i18n.getMessage('RedeemReferralRewards')}
         </div>
         {/* <div className="mt-5.25 w-115 text-sm tracking-finnieSpacing-tight text-center">
           Click here to transfer:

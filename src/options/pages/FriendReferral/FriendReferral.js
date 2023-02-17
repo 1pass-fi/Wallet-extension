@@ -69,15 +69,16 @@ const FriendReferral = () => {
       </div>
       <div className="mt-16.75 mx-auto transform -translate-x-83 w-max text-white">
         <div className="font-semibold text-3xl leading-10 capitalize">
-          Give a Little, Get a Little
+          {chrome.i18n.getMessage('GiveLittleGetLittle')}
         </div>
         <div className="w-80 mt-5 leading-7 text-base">
-          Invite friends to use the Koii browser extension. You’ll get 1 KOII free for each friend
-          who registers an NFT with your code and they’ll get 1 KOII free, too.
+          {chrome.i18n.getMessage('FriendReferralMsg')}
         </div>
         <div className="w-80 mt-18 leading-7 text-base">
-          You’ve earned <span className="text-success">{defaultAccount.totalReward} KOII</span> with
-          your referral code. <span className="font-semibold">Keep sharing for free KOII.</span>
+          {chrome.i18n.getMessage('YouHaveEarned')}{' '}
+          <span className="text-success">{defaultAccount.totalReward} KOII</span>{' '}
+          {chrome.i18n.getMessage('WithYourReferralCode')}{' '}
+          <span className="font-semibold">{chrome.i18n.getMessage('KeepSharing')}</span>
         </div>
       </div>
       <div className="m-auto absolute top-48 left-0 right-0 bottom-0">
@@ -86,7 +87,7 @@ const FriendReferral = () => {
           className="mx-auto"
         />
         <div className="mt-8 text-success text-lg leading-7 font-semibold text-center">
-          YOUR CODE IS
+          {chrome.i18n.getMessage('YourCodeIs')}
         </div>
         <div className="mt-2 text-base text-center leading-7 text-white">{code}</div>
         <div style={{ width: '768px' }} className="mt-8 flex justify-evenly items-center mx-auto">

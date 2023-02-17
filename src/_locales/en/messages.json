@@ -8,11 +8,131 @@
   "ACCOUNTNAME": {
     "message": "ACCOUNT NAME"
   },
+  "HAVEQUESTIONS" : {
+    "message": "HAVE QUESTIONS"
+  },
+  "CheckOutThe" : {
+    "message": "Check out the"
+  },
+  "FAQPage" : {
+    "message": "FAQ page"
+  },
   "Activity": {
     "message": "Activity"
   },
+  "SecuritySettings" : {
+    "message": "Security Settings"
+  },
+  "ForGeneralQuestions" : {
+    "message": "for general questions"
+  },
+  "DoYouReady": {
+    "message": "Do you already"
+  },
+  "ContactUs": {
+    "message": "If you have questions or see something suspicious, contact us at"
+  },
+  "HeadOverToFaucet": {
+    "message": "Head over to the faucet to grab some free KOII tokens."
+  },
+  "GoToGalleryToCreateNFT": {
+    "message": "Or go to the gallery to create your first Finnie NFT"
+  },
+  "HaveAKey": {
+    "message": "have a key"
+  },
+  "StaySafeStart": {
+    "message": "Stay safe from phishing scams-"
+  },
+  "StaySafeMiddle": {
+    "message": "Koii will NEVER ask you for your secret phrase"
+  },
+  "StaySafeEnd": {
+    "message": "or keyfile"
+  },
+  "KoiiWalletsUseA": {
+    "message": "Koii Wallets use a"
+  },
+  "WithYourSecretPhrase": {
+    "message": "With your Secret Phrase, anyone can access"
+  },
+  "EverythingInYourWallet": {
+    "message": "everything in your wallet"
+  },
+  "12WordSecretPhrase": {
+    "message": "12-word secret phrase"
+  },
+  "SecretPhraseMsg": {
+    "message": "to secure your account to ensure that you and only you will control your identity online."
+  },
+  "NeedHelp" : {
+    "message": "Need Help?"
+  },
+  "ReactOutToKoii" : {
+    "message": "Reach out to Koii's"
+  },
+  "supportTeam" : {
+    "message": "support team"
+  },
+  "or": {
+    "message": "or"
+  },
+  "HavingAnIssue" : {
+    "message": "HAVING AN ISSUE"
+  },
+  "DoYouHaveA": {
+    "message": "Do you have a"
+  },
+  "GallerySettings" : {
+    "message": "Gallery Settings"
+  },
+  "DisplayViews" : {
+    "message": "Display Views"
+  },
+  "ShowViewSetting" : {
+    "message": "Show view counts on NFTs and Collections in my gallery."
+  },
+  "DisplayKOIIEarnedSetting" : {
+    "message": "Display KOII Earned"
+  },
+  "ShowAmountSetting" : {
+    "message": "Show amount of KOII earned on NFTs and Collections in my gallery."
+  },
+  "PenAndPaper": {
+    "message": "Do you have a"
+  },
+  "MoveToTheNextWord": {
+    "message": "button to move to the next word."
+  },
+  "tab": {
+    "message": "tab"
+  },
+  "WhatAboutA": {
+    "message": "What about a"
+  },
+  "SafePlaceToKeepIt": {
+    "message": "safe place to keep it?"
+  },
+  "AddAKeyMsg": {
+    "message": "you want to use or do you want to"
+  },
+  "HiddenPhraseStart": {
+    "message": "Do not show this to anyone else"
+  },
+  "HiddenPhraseEnd": {
+    "message": " or they will be able to use your wallet and withdraw funds or other assets like NFTs"
+  },
+  "StartFromScratch": {
+    "message": "start from scratch"
+  },
   "ActivityCenter": {
     "message": "ACTIVITY CENTER"
+  },
+  "ActivitySelectAccount": {
+    "message": "Select account to see activity"
+  },
+  "TransactionStatus": {
+    "message": "Transaction Status"
   },
   "ADDRESS": {
     "message": "ADDRESS"
@@ -119,6 +239,9 @@
   "CHAIN": {
     "message": "CHAIN"
   },
+  "UpdatePassword" : {
+    "message": "Update Password"
+  },
   "ChangeMyPassword": {
     "message": "Change My Password"
   },
@@ -144,7 +267,7 @@
     "message": "Collection Title"
   },
   "CollectionPlaceHolderDescription": {
-    "message": "When you’ve got friends like mine, the internet is a wonderful place to be."
+    "message": "When you've got friends like mine, the internet is a wonderful place to be."
   },
   "CollectionPlaceHolderTags": {
     "message": "Separate with a “,” and hit space bar"
@@ -196,6 +319,9 @@
   },
   "contractInteraction": {
     "message": "Contract interaction"
+  },
+  "CopyLink": {
+    "message": "Copy Link"
   },
   "Copied": {
     "message": "Copied"
@@ -275,8 +401,20 @@
   "donotSeeYourTokens": {
     "message": "Don't see your token?"
   },
+  "ShareCode": {
+    "message": "Share Code"
+  },
+  "EmbedLink": {
+    "message": "Embed Link"
+  },
+  "ShareLink": {
+    "message": "Share Link"
+  },
   "earnAttentionRewardsMsg": {
     "message": "Earn attention rewards forever through Koii. Copy this link and share on your favorite social platforms."
+  },
+  "TotalViews": {
+    "message": "Total Views"
   },
   "earned": {
     "message": " earned"
@@ -362,6 +500,9 @@
   "finnieCurrentlySupports": {
     "message": "Finnie currently supports Koii, Ethereum, Solana, and Arweave keys. More chains are in the works."
   },
+  "finnieCurrentlyKeySupports": {
+    "message": "Finnie currently supports Koii, Solana, Arweave and Ethereum keys. More key types are in the works."
+  },
   "FriendReferralCode": {
     "message": "FRIEND REFERRAL CODE"
   },
@@ -438,7 +579,7 @@
     "message": "Invalid content"
   },
   "InvalidDIDLink": {
-    "message": "That’s not a valid DID link"
+    "message": "That's not a valid DID link"
   },
   "invalidETHAddress": {
     "message": "Invalid ETH Address"
@@ -448,6 +589,12 @@
   },
   "invalidRequest": {
     "message": "Invalid request"
+  },
+  "aFeature" : {
+    "message": "a feature"
+  },
+  "request" : {
+    "message": "request"
   },
   "invalidTokenSchema": {
     "message": "Invalid token schema. Please use nft with token schema of ERC1155"
@@ -773,6 +920,9 @@
   "SendingTo": {
     "message": "Sending to"
   },
+  "CreateAtomicNFT": {
+    "message": "Create an Atomic NFT"
+  },
   "SENDTOKEN": {
     "message": "SEND"
   },
@@ -802,6 +952,18 @@
   },
   "SizeText": {
     "message": "Size: "
+  },
+  "ClickCircle": {
+    "message": "Click a circle below to import your key."
+  },
+  "TypeSecretPhrase": {
+    "message": "Type in your secret phrase to import your key."
+  },
+  "HitThe": {
+    "message": "Hit the"
+  },
+  "ImportYourKey": {
+    "message": "Import your Key"
   },
   "skipThisStep": {
     "message": "Skip this step"
@@ -877,6 +1039,48 @@
   },
   "TotalCost": {
     "message": "Total Cost"
+  },
+  "GetMyRewards": {
+    "message": "Get My Rewards"
+  },
+  "RedeemReferralRewards": {
+    "message": "Redeem your Referral Rewards Now."
+  },
+  "YourCodeIs": {
+    "message": "YOUR CODE IS"
+  },
+  "GiveLittleGetLittle": {
+    "message": "Give a Little, Get a Little"
+  },
+  "FriendReferralMsg": {
+    "message": "Invite friends to use the Koii browser extension. You'll get 1 KOII free for each friend who registers an NFT with your code and they'll get 1 KOII free, too."
+  },
+  "YouHaveEarned": {
+    "message": "You've earned"
+  },
+  "KeepSharing": {
+    "message": "Keep sharing for free KOII."
+  },
+  "WithYourReferralCode": {
+    "message": "with your referral code."
+  },
+  "PendingUpdate": {
+    "message": "Pending update"
+  },
+  "PUBLIC": {
+    "message": "PUBLIC"
+  },
+  "PRIVATE": {
+    "message": "PRIVATE"
+  },
+  "PublicNFTMsgStart": {
+    "message": "When set to public, this NFT"
+  },
+  "PublicNFTMsgMiddle": {
+    "message": "will show up in your DID gallery"
+  },
+  "PublicNFTMsgEnd": {
+    "message": "and on the Koii Leaderboard."
   },
   "TransactionFees": {
     "message": "Transaction Fees"
