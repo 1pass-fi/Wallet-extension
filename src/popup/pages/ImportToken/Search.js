@@ -142,7 +142,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
           style={{ width: '316px' }}
           onChange={(e) => setSearchToken(e.target.value)}
           value={searchToken}
-          data-testid='search-custom-token-input'
+          data-testid="search-custom-token-input"
         ></input>
         <SearchIcon className="mr-2 cursor-pointer" onClick={() => onSearchToken()} />
       </div>
@@ -184,7 +184,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
                 setPages((prev) => ++prev)
               }}
             >
-              See more
+              {chrome.i18n.getMessage('SeeMore')}
             </button>
           </div>
         )}

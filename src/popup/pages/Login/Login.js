@@ -115,7 +115,9 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
           <br /> Finnie
         </div>
         <div className="mt-5.25 flex flex-col justify-start" style={{ width: '312px' }}>
-          <div className="text-left text-sm mb-3">{chrome.i18n.getMessage('enterYourPassword')}</div>
+          <div className="text-left text-sm mb-3">
+            {chrome.i18n.getMessage('enterYourPassword')}
+          </div>
           <div className="relative">
             <input
               className="w-full pl-2 pr-10 bg-trueGray-250 text-blue-800 h-7 rounded-t-sm border-b-2 border-blue-850 focus:outline-none tracking-wide"
@@ -133,7 +135,8 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
         </div>
         {isIncorrectPassword && (
           <div className="mt-3 py-1 bg-warning rounded-sm flex items-center justify-center w-50 text-sm">
-            <WarningIcon className="w-4.25 h-4.25 mr-1.75" /> Password is incorrect
+            <WarningIcon className="w-4.25 h-4.25 mr-1.75" />
+            {chrome.i18n.getMessage('PasswordIsIncorrect')}
           </div>
         )}
         <button

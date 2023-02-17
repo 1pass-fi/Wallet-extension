@@ -102,17 +102,18 @@ const AccountImport = ({ totalAccount }) => {
     <div className="account-import" style={{ height: hasOldKey ? '600px' : '437px' }}>
       {hasOldKey && (
         <div className="recover-key">
-          <div className="title">Recover my key</div>
+          <div className="title">{chrome.i18n.getMessage('RecoverMyKey')}</div>
+          <div>{chrome.i18n.getMessage('MultipleWalletsSupport')}</div>
           <div>
-            We made some exciting updates to the latest version of Finnie, including multiple
-            wallets and an Ethereum bridge.
-          </div>
-          <div>
-            If you need a copy of your key or secret phrase, get it here. <b>Never delete</b> the
-            Finnie extension without first backing up a copy of your secret phrase or key.
+            {chrome.i18n.getMessage('RecoverKeyMsgStart')}{' '}
+            <b>{chrome.i18n.getMessage('RecoverKeyMsgMiddle')}</b>{' '}
+            {chrome.i18n.getMessage('RecoverKeyMsgEnd')}
           </div>
           <div className="btn-wrapper">
-            <Button onClick={() => history.push('/account/recovery')} label="Recover My Key" />
+            <Button
+              onClick={() => history.push('/account/recovery')}
+              label={chrome.i18n.getMessage('RecoverMyKeyUc')}
+            />
           </div>
         </div>
       )}
@@ -122,7 +123,7 @@ const AccountImport = ({ totalAccount }) => {
             <GoBackIcon />
           </div>
         )}
-        <div className="get-started">Let’s get started.</div>
+        <div className="get-started">{chrome.i18n.getMessage('LetsGetStarted')}</div>
       </div>
       {selections.map((content) => (
         <CardOption {...content} />

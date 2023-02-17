@@ -66,7 +66,9 @@ const ActivityRow = ({
         blockButtonText = pending ? 'explore block' : 'view block'
         if (network) blockButtonText = 'etherscan'
 
-        pendingOrExpired = expired ? 'Transaction failed' : 'Transaction pending'
+        pendingOrExpired = expired
+          ? chrome.i18n.getMessage('TransactionFailed')
+          : chrome.i18n.getMessage('TransactionPending')
 
         if (!network) {
           blockUrl = `${PATH.VIEW_BLOCK_TRANSACTION}/${id}`
@@ -196,7 +198,7 @@ const ActivityRow = ({
                   }}
                   className="text-xs text-red-finnie underline leading-5 cursor-pointer"
                 >
-                  Transaction failed
+                  {chrome.i18n.getMessage('TransactionFailed')}
                 </div>
               )
             ) : (

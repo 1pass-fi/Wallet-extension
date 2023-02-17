@@ -34,7 +34,10 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
     setSelectedAccounts(currentSelectedAccount)
   }
 
-  const { importNewToken } = useMethod({ contractAddress: tokenImport.contract, userAddresses: selectedAccounts })
+  const { importNewToken } = useMethod({
+    contractAddress: tokenImport.contract,
+    userAddresses: selectedAccounts
+  })
 
   const handleImportToken = async () => {
     try {
@@ -69,9 +72,11 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
   return (
     <div className="mt-6 px-6 text-blue-800">
       <div className="font-normal text-base tracking-finnieSpacing-tight">
-        To which wallet(s) do you want to import these tokens?
+        {chrome.i18n.getMessage('ImportTokenMsg')}
       </div>
-      <div className="mt-4 text-xs font-normal tracking-finnieSpacing-wide">Token</div>
+      <div className="mt-4 text-xs font-normal tracking-finnieSpacing-wide">
+        {chrome.i18n.getMessage('Token')}
+      </div>
       <div className="flex items-start mt-2" style={{ height: '36px' }}>
         {tokenImport.logo ? (
           <img src={getLogoPath(tokenImport.logo)} style={{ width: '36px', height: '36px' }} />
@@ -92,9 +97,9 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
       </div>
 
       <div className="mt-4 grid grid-cols-3 mb-3 font-normal text-xs tracking-finnieSpacing-wide text-center">
-        <div className="text-left">Account</div>
-        <div>Balance</div>
-        <div>Add Token</div>
+        <div className="text-left">{chrome.i18n.getMessage('Account')}</div>
+        <div>{chrome.i18n.getMessage('Balance')}</div>
+        <div>{chrome.i18n.getMessage('AddToken')}</div>
       </div>
       <div className="overflow-y-scroll" style={{ maxHeight: '168px' }}>
         {accounts.map((account, idx) => {
@@ -131,7 +136,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
           className="ml-4 bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800"
           style={{ width: '160px', height: '38px' }}
         >
-          Back
+          {chrome.i18n.getMessage('Back')}
         </button>
         <button
           onClick={() => handleImportToken()}
@@ -142,7 +147,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
           style={{ width: '160px', height: '38px' }}
           disabled={isEmpty(selectedAccounts)}
         >
-          Confirm
+          {chrome.i18n.getMessage('Confirm')}
         </button>
       </div>
     </div>

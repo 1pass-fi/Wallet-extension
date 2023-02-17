@@ -58,7 +58,9 @@ const CustomToken = ({ setTokenImport }) => {
         </div>
       </div>
 
-      <div className="mt-8 ml-9.25 font-normal text-xs">Token Contract Address</div>
+      <div className="mt-8 ml-9.25 font-normal text-xs">
+        {chrome.i18n.getMessage('TokenContractAddress')}
+      </div>
       <input
         className={clsx(
           'mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none',
@@ -75,7 +77,9 @@ const CustomToken = ({ setTokenImport }) => {
         {tokenAddressError}
       </div>
 
-      <div className="mt-3 ml-9.25 font-normal text-xs">Token Symbol</div>
+      <div className="mt-3 ml-9.25 font-normal text-xs">
+        {chrome.i18n.getMessage('TokenSymbol')}
+      </div>
       <input
         className={clsx(
           'mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none',

@@ -26,7 +26,7 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
     >
       {isEmpty(displayingAccount?.address) ? (
         <div className="ml-3.75 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
-          Select Account
+          {chrome.i18n.getMessage('selectAccountPh')}
         </div>
       ) : (
         <div className="ml-2.5 flex items-center">

@@ -45,7 +45,9 @@ const Receive = () => {
           <CopyIdBtn className="cursor-pointer" />
         </CopyToClipboard>
         {isCopied && (
-          <span className="text-11px absolute top-4.5 left-14 text-blue-800">Copied!</span>
+          <span className="text-11px absolute top-4.5 left-14 text-blue-800">
+            {chrome.i18n.getMessage('Copied')}!
+          </span>
         )}
       </div>
     </div>
