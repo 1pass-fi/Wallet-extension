@@ -9,32 +9,32 @@ export default ({ version = '0.4.0' }) => {
   return (
     <div className="need-help-settings-wrapper">
       <div className="need-help-settings">
-        <div className="header">Need Help?</div>
+        <div className="header">{chrome.i18n.getMessage('NeedHelp')}</div>
 
         <div className="items">
           <div className="item">
-            <div className="title">HAVING AN ISSUE?</div>
+            <div className="title">{chrome.i18n.getMessage('HavingAnIssue')}?</div>
             <div className="description">
-              Reach out to Koii's &nbsp;
+              {chrome.i18n.getMessage('ReactOutToKoii')} &nbsp;
               <a href="https://koii.me/support/" target="_blank" className="link">
-                support team
+                {chrome.i18n.getMessage('supportTeam')}
               </a>
-              &nbsp; or &nbsp;
+              &nbsp; {chrome.i18n.getMessage('or')} &nbsp;
               <a href="https://koii.me/featurerequest/" target="_blank" className="link">
-                request
+                {chrome.i18n.getMessage('request')}
               </a>
-              &nbsp; a feature.
+              &nbsp; {chrome.i18n.getMessage('aFeature')}.
             </div>
           </div>
 
           <div className="item">
-            <div className="title">HAVE QUESTIONS?</div>
+            <div className="title">{chrome.i18n.getMessage('HAVEQUESTIONS')}?</div>
             <div className="description">
-              Check out the &nbsp;
+              {chrome.i18n.getMessage('CheckOutThe')} &nbsp;
               <a href="https://koii.network/faq" target="_blank" rel="noopener" className="link">
-                FAQ page
+                {chrome.i18n.getMessage('FAQPage')}
               </a>
-              &nbsp; for general questions.
+              &nbsp; {chrome.i18n.getMessage('ForGeneralQuestions')}.
             </div>
           </div>
         </div>

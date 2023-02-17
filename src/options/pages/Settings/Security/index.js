@@ -47,7 +47,7 @@ export default () => {
   return (
     <div className="security-settings-wrapper">
       <div className="security-settings">
-        <div className="header">Security Settings</div>
+        <div className="header">{chrome.i18n.getMessage('SecuritySettings')}</div>
         <div className="content">
           {/* <div className="backup-seedphrase">
             <div className="title">Get my Secret Phrase</div>
@@ -72,12 +72,12 @@ export default () => {
           </div> */}
 
           <div className="change-password">
-            <div className="title">Change my password</div>
+            <div className="title">{chrome.i18n.getMessage('ChangeMyPassword')}</div>
             <button
               className="update-password-btn"
               onClick={() => setShowChangePasswordModal(true)}
             >
-              Update Password
+              {chrome.i18n.getMessage('UpdatePassword')}
             </button>
           </div>
         </div>

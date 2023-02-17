@@ -23,12 +23,12 @@ export default () => {
   return (
     <div className='galery-settings-wrapper'>
       <div className='galery-settings'>
-        <div className='header'>Gallery Settings</div>
+        <div className='header'>{chrome.i18n.getMessage('GallerySettings')}</div>
         <div className='settings-row'>
           <div className='left'>
-            <div className='title'>Display Views</div>
+            <div className='title'>{chrome.i18n.getMessage('DisplayViews')}</div>
             <div className='description'>
-              Show view counts on NFTs and Collections in my gallery.
+              {chrome.i18n.getMessage('ShowViewSetting')}
             </div>
           </div>
           <div className='right'>
@@ -38,9 +38,9 @@ export default () => {
 
         <div className='settings-row'>
           <div className='left'>
-            <div className='title'>Display KOII Earned</div>
+            <div className='title'>{chrome.i18n.getMessage('DisplayKOIIEarnedSetting')}</div>
             <div className='description'>
-              Show amount of KOII earned on NFTs and Collections in my gallery.
+              {chrome.i18n.getMessage('ShowAmountSetting')}
             </div>
           </div>
           <div className='right'>
