@@ -12,9 +12,14 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
     <div data-testid="AddAKey" className="w-4/5 flex flex-col text-white">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
-      <div className="ml-3 font-normal text-base leading-6 text-left max-w-full" style={{ width: '347px' }}>
-        Do you already <span className="text-warning">have a key</span> you want to use or do you
-        want to <span className="text-turquoiseBlue">start from scratch?</span>
+      <div
+        className="ml-3 font-normal text-base leading-6 text-left max-w-full"
+        style={{ width: '347px' }}
+      >
+        {chrome.i18n.getMessage('DoYouReady')}{' '}
+        <span className="text-warning">{chrome.i18n.getMessage('HaveAKey')}</span>{' '}
+        {chrome.i18n.getMessage('AddAKeyMsg')}{' '}
+        <span className="text-turquoiseBlue">{chrome.i18n.getMessage('StartFromScratch')}?</span>
       </div>
       <div className="mt-12 flex w-full justify-start lg:gap-32 gap-10">
         <div
@@ -30,7 +35,10 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
           }}
         >
           <CreateNewIcon style={{ width: '32px', height: '32px' }} />
-          <div data-testid='start-from-scratch-div' className="mt-3 font-semibold text-base leading-4 text-center text-white">
+          <div
+            data-testid="start-from-scratch-div"
+            className="mt-3 font-semibold text-base leading-4 text-center text-white"
+          >
             {chrome.i18n.getMessage('startFromScratch')}
           </div>
           <div className="mt-2 font-normal text-xs text-center tracking-finnieSpacing-wide text-white">
@@ -49,7 +57,10 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
           }}
         >
           <KeySelectedIcon style={{ width: '48px', height: '48px' }} />
-          <div data-testid='use-existing-key-div' className="mt-3 font-semibold text-base leading-4 text-center text-white">
+          <div
+            data-testid="use-existing-key-div"
+            className="mt-3 font-semibold text-base leading-4 text-center text-white"
+          >
             {chrome.i18n.getMessage('useMyExistingKey')}
           </div>
           <div className="mt-2 font-normal text-xs text-center tracking-finnieSpacing-wide text-white w-9/12">

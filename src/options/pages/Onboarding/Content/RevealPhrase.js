@@ -51,7 +51,8 @@ const RevealPhrase = ({ step }) => {
               'You successfully saved your Secret Phrase'
             ) : (
               <>
-                {chrome.i18n.getMessage('rememberToSaveYourSecretPhrase')}<br></br>
+                {chrome.i18n.getMessage('rememberToSaveYourSecretPhrase')}
+                <br></br>
                 {chrome.i18n.getMessage('otherwiseYouCouldLoseAnytokensOrAssets')}
               </>
             )
@@ -64,12 +65,13 @@ const RevealPhrase = ({ step }) => {
       <div className="text-lg mt-12 font-normal">
         <div>{chrome.i18n.getMessage('Remember')}:</div>
         <li className="mt-2">
-          Stay safe from phishing scams—<br></br>
-          <span className="text-warning">Koii will NEVER ask you for your secret phrase</span> or
-          keyfile
+          {chrome.i18n.getMessage('StaySafeStart')}
+          <br></br>
+          <span className="text-warning">{chrome.i18n.getMessage('StaySafeMiddle')}</span>{' '}
+          {chrome.i18n.getMessage('StaySafeEnd')}
         </li>
         <li>
-          If you have questions or see something suspicious, contact us at{' '}
+          {chrome.i18n.getMessage('ContactUs')}{' '}
           <span className="text-success underline cursor-pointer">security@koii.network</span>
         </li>
 
@@ -96,7 +98,7 @@ const RevealPhrase = ({ step }) => {
           <div className="flex flex-col items-center mr-19 max-w-full" style={{ width: '300px' }}>
             <KoiiToken />
             <div className="mt-3 font-normal text-lg text-center">
-              Head over to the faucet to grab some free KOII tokens.
+              {chrome.i18n.getMessage('HeadOverToFaucet')}
             </div>
 
             <Button
@@ -112,7 +114,7 @@ const RevealPhrase = ({ step }) => {
           <div className="flex flex-col items-center max-w-full" style={{ width: '300px' }}>
             <ImagesNFTs />
             <div className="mt-3 font-normal text-lg text-center">
-              Or go to the gallery to create your first Finnie NFT
+              {chrome.i18n.getMessage('GoToGalleryToCreateNFT')}
             </div>
 
             <Button
@@ -138,7 +140,7 @@ const RevealPhrase = ({ step }) => {
           }}
           id="skip-to-home-button"
         >
-          Skip this step
+          {chrome.i18n.getMessage('skipThisStep')}
         </div>
       )}
     </div>

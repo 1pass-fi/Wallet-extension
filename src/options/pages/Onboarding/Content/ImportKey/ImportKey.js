@@ -21,12 +21,11 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
-        Import your Key
+        {chrome.i18n.getMessage('ImportYourKey')}
       </div>
-      <div className="mt-5 font-normal text-lg">Click a circle below to import your key.</div>
+      <div className="mt-5 font-normal text-lg">{chrome.i18n.getMessage('ClickCircle')}</div>
       <div className="mt-2 font-normal text-sm w-11/12">
-        Finnie currently supports Koii, Solana, Arweave and Ethereum keys. More key types are in the
-        works.
+        {chrome.i18n.getMessage('finnieCurrentlyKeySupports')}
       </div>
       <div className="mt-11 ml-1 lg:flex lg:justify-start gap-4.5 grid grid-cols-2">
         {/* <div className="flex flex-col items-center opacity-50" data-tip="Coming soon"> */}

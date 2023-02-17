@@ -45,15 +45,17 @@ const HiddenPhrase = ({ step, setStep, importType }) => {
       <div className="flex mt-1.5 font-normal text-lg leading-6 gap-1.5">
         <div>3. </div>
         <div>
-          <span className="text-warning-200">Do not show this to anyone else</span> or they will be
-          able to use your wallet and withdraw funds or other assets like NFTs
+          <span className="text-warning-200">{chrome.i18n.getMessage('HiddenPhraseStart')}</span>
+          {chrome.i18n.getMessage('HiddenPhraseEnd')}
         </div>
       </div>
       <div className="mt-6.75 font-normal text-lg leading-6">
-        Do you have a <span className="text-turquoiseBlue">pen & paper handy?</span>
+        {chrome.i18n.getMessage('DoYouHaveA')}{' '}
+        <span className="text-turquoiseBlue">{chrome.i18n.getMessage('PenAndPaper')}</span>
       </div>
       <div className="mt-1 font-normal text-lg leading-6">
-        What about a <span className="text-turquoiseBlue">safe place to keep it?</span>
+        {chrome.i18n.getMessage('WhatAboutA')}{' '}
+        <span className="text-turquoiseBlue">{chrome.i18n.getMessage('SafePlaceToKeepIt')}</span>
       </div>
 
       {showPhrase ? (

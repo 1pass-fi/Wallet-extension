@@ -76,7 +76,9 @@ const ImportPhrase = ({ step, setStep, importType }) => {
   }
 
   useEffect(() => {
-    setCanClickContinue(checkSeedPhraseInWordList(seedphrase.split(' ')) && seedphrase.split(' ').length===12)
+    setCanClickContinue(
+      checkSeedPhraseInWordList(seedphrase.split(' ')) && seedphrase.split(' ').length === 12
+    )
   }, [seedphrase])
 
   const onClickContinue = async () => {
@@ -110,14 +112,14 @@ const ImportPhrase = ({ step, setStep, importType }) => {
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="font-normal text-lg leading-8 tracking-finnieSpacing-tight">
-        Type in your secret phrase to import your key.
+        {chrome.i18n.getMessage('TypeSecretPhrase')}
       </div>
       <div className="font-normal text-sm mt-2">
-        Hit the{' '}
+        {chrome.i18n.getMessage('HitThe')}{' '}
         <span className="text-lightBlue bg-warmGray-300 bg-opacity-20 rounded-xs px-0.75 mx-0.5">
-          tab
-        </span>
-        button to move to the next word.
+          {chrome.i18n.getMessage('tab')}
+        </span>{' '}
+        {chrome.i18n.getMessage('MoveToTheNextWord')}
       </div>
       <div className="flex flex-col max-w-full" style={{ width: '347px' }}>
         <div
@@ -142,7 +144,12 @@ const ImportPhrase = ({ step, setStep, importType }) => {
           })}
         </div>
 
-        <div data-testid="import-phrase-error" className="mt-1.5 text-red-finnie ml-7 text-xs font-normal h-2">{messageError}</div>
+        <div
+          data-testid="import-phrase-error"
+          className="mt-1.5 text-red-finnie ml-7 text-xs font-normal h-2"
+        >
+          {messageError}
+        </div>
 
         <Button
           style={{ width: '240px', height: '42px' }}
@@ -151,7 +158,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
           text="Confirm"
           disabled={!canClickContinue}
           onClick={onClickContinue}
-          id='confirm-button'
+          id="confirm-button"
         />
       </div>
     </div>
