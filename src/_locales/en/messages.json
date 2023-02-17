@@ -29,6 +29,12 @@
   "AddAKeyMsg": {
     "message": "you want to use or do you want to"
   },
+  "AddCustomCSS": {
+    "message": "Add Custom CSS"
+  },
+  "AddMore": {
+    "message": "Add more"
+  },
   "AddNFTDetails": {
     "message": "Add NFT Details"
   },
@@ -85,6 +91,9 @@
   },
   "AmountLc": {
     "message": "Amount"
+  },
+  "AnNFT": {
+    "message": "an NFT"
   },
   "applyDetailsToNFTs": {
     "message": "Apply these details (except the title) to all NFTs in this collection."
@@ -194,9 +203,6 @@
   "Close": {
     "message": "Close"
   },
-  "CollectionLabelDescription": {
-    "message": "Description"
-  },
   "CollectionLabelEditDescription": {
     "message": "Edit Description"
   },
@@ -226,6 +232,9 @@
   },
   "Confirm": {
     "message": "Confirm"
+  },
+  "ConfirmDIDProfile": {
+    "message": "Confirm your personalized Decentralized ID profile."
   },
   "Confirmed": {
     "message": "Confirmed"
@@ -311,6 +320,9 @@
   "Cost": {
     "message": "Cost"
   },
+  "CoverImage": {
+    "message": "COVER IMAGE"
+  },
   "CoverImageHint": {
     "message": "For best results, your cover<br>image should be 1400x400px"
   },
@@ -328,6 +340,9 @@
   },
   "CreateAtomicNFT": {
     "message": "Create an Atomic NFT"
+  },
+  "CreateDID": {
+    "message": "Create DID"
   },
   "CreatedInOct2021": {
     "message": "created in October 2021 or later"
@@ -347,6 +362,9 @@
   "CreateNewContact": {
     "message": "Create New Contact"
   },
+  "CreateNewNFT": {
+    "message": "Or create a new NFT"
+  },
   "CreateNewPassword": {
     "message": "Create New Password"
   },
@@ -365,6 +383,12 @@
   "createTransactionError": {
     "message": "Create transaction error"
   },
+  "CustomCSS": {
+    "message": "Custom CSS"
+  },
+  "CustomCSSHint": {
+    "message": "Hint: use one of these classes"
+  },
   "customToken": {
     "message": "Custom Token"
   },
@@ -373,6 +397,9 @@
   },
   "DappConnectionText": {
     "message": "Dapp Connections: "
+  },
+  "DecentralizedIdentity": {
+    "message": "Decentralized Identity"
   },
   "DEFAULT": {
     "message": "DEFAULT"
@@ -398,6 +425,9 @@
   "DeleteOrResendTransaction": {
     "message": "Do you want to delete or resend the transaction?"
   },
+  "Description": {
+    "message": "Description"
+  },
   "DescriptionRequired": {
     "message": "Description cannot be empty"
   },
@@ -413,11 +443,26 @@
   "didInvalidData": {
     "message": "Invalid data input"
   },
+  "DIDIsFinalizing": {
+    "message": "Your DID is finalizing!"
+  },
   "didKeyNotFound": {
     "message": "Key not found"
   },
   "DIDLink": {
     "message": "DID Link"
+  },
+  "DIDMsg": {
+    "message": "Create a personalized profile for your web3 identity. Link it to your Twitter bio to receive airdrops from Koii partners and other surprises."
+  },
+  "DIDSuccessMsgEnd": {
+    "message": "should be ready soon."
+  },
+  "DIDSuccessMsgMiddle": {
+    "message": "passport entry to DeFi. Your"
+  },
+  "DIDSuccessMsgStart": {
+    "message": "Your Decentralized ID is your"
   },
   "DIDTransactionsPending": {
     "message": "DID transactions pending"
@@ -788,6 +833,12 @@
   "likelyInLessThan30Seconds": {
     "message": "Likely in < 30 Seconds"
   },
+  "LinkAccounts": {
+    "message": "Link Accounts"
+  },
+  "LinkAccountsDesc": {
+    "message": "These links will appear on your DID profile. For best practice, each link should begin with https://"
+  },
   "LinkCopied": {
     "message": "Link copied!"
   },
@@ -856,9 +907,6 @@
   },
   "NFTAssets": {
     "message": "NFT Assets:"
-  },
-  "NFTDescriptionLabel": {
-    "message": "Description"
   },
   "nftNotExistOnChain": {
     "message": "This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie."
@@ -938,6 +986,9 @@
   "or": {
     "message": "or"
   },
+  "OrCreate": {
+    "message": "Or create"
+  },
   "OrganizeWalletDisplay": {
     "message": "Organize your wallet display and select a default key. This key will be automatically selected to create NFTs and send tokens."
   },
@@ -1006,6 +1057,12 @@
   },
   "PRIVATE": {
     "message": "PRIVATE"
+  },
+  "ProfileImage": {
+    "message": "PROFILE IMAGE"
+  },
+  "ProfileLink": {
+    "message": "profile link"
   },
   "Pronouns": {
     "message": "Pronouns"
@@ -1208,17 +1265,29 @@
   "selectAccountPh": {
     "message": "Select Account"
   },
+  "SelectAccountToCreateDID": {
+    "message": "Please select a Koii or Arweave account to create your Decentralized ID."
+  },
   "SelectAccountToSeeSummary": {
     "message": "Select an account to see a summary."
   },
+  "SelectAnAccount": {
+    "message": "Select an Account"
+  },
   "selectConnectedWallets": {
     "message": "select from connected wallets or enter a new address"
+  },
+  "SelectCoverPicture": {
+    "message": "SELECT COVER PICTURE"
   },
   "SelectExchangeCurrency": {
     "message": "Select the exchange currency displayed next to your tokens and transactions."
   },
   "SelectMultipleFiles": {
     "message": "Select multiple files from your computer."
+  },
+  "SelectProfilePicture": {
+    "message": "SELECT PROFILE PICTURE"
   },
   "SelectWallet": {
     "message": "Select Wallet"
@@ -1424,6 +1493,9 @@
   "ToLc": {
     "message": "To"
   },
+  "ToMakeIt": {
+    "message": "to make it"
+  },
   "Total": {
     "message": "Total"
   },
@@ -1508,6 +1580,9 @@
   "Update": {
     "message": "Update"
   },
+  "UpdateDID": {
+    "message": "Update DID"
+  },
   "updateKIDSuccess": {
     "message": "Your DID is being updated as we speak. This might take a couple of minutes."
   },
@@ -1516,9 +1591,6 @@
   },
   "UploadedFiles": {
     "message": "UPLOADED FILES"
-  },
-  "UploadNFTDescLabel": {
-    "message": "Description"
   },
   "UploadNFTDescPlaceHolder": {
     "message": "Tell the world about this one"
@@ -1597,6 +1669,9 @@
   },
   "YourCollectionReady": {
     "message": "Your Collection is getting ready!"
+  },
+  "yourCoverImage": {
+    "message": "your cover image"
   },
   "yourTokensOnTheWay": {
     "message": "Your tokens are on the way!"

@@ -91,7 +91,7 @@ const EditNftInfo = ({
             isDisable={nftInfo.existingNft}
           />
           <InputField
-            label={chrome.i18n.getMessage('NFTDescriptionLabel')}
+            label={chrome.i18n.getMessage('Description')}
             required={true}
             type="textarea"
             name="description"

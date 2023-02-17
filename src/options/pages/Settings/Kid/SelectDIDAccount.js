@@ -84,7 +84,7 @@ const SelectDIDAccount = ({ close }) => {
         ref={modalRef}
       >
         <div className="flex h-16.75 rounded-t bg-trueGray-100 shadow-md w-full font-semibold text-xl tracking-finnieSpacing-wide relative">
-          <div className="m-auto">Select an Account</div>
+          <div className="m-auto">{chrome.i18n.getMessage('SelectAnAccount')}</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
         <Background className="absolute" style={{ left: '0px', top: '67px' }} />
@@ -92,7 +92,7 @@ const SelectDIDAccount = ({ close }) => {
           className="absolute font-normal text-lg text-indigo"
           style={{ width: '303px', right: '31px', top: '152px' }}
         >
-          Please select a Koii or Arweave account to create your Decentralized ID.
+          {chrome.i18n.getMessage('SelectAccountToCreateDID')}
         </div>
         <div className="mt-50 flex flex-col items-center justify-evenly">
           <div
@@ -129,8 +129,14 @@ const SelectDIDAccount = ({ close }) => {
                   className="ml-10 mt-1 flex flex-col font-normal text-xs text-left tracking-finnieSpacing-tight justify-between"
                   style={{ height: '38px' }}
                 >
-                  <div>{chrome.i18n.getMessage('BalanceText')}{formatNumber(arAccount.koiBalance, 2)} KOII</div>
-                  <div>{chrome.i18n.getMessage('AssetsText')}{arAccount.totalAssets.length}</div>
+                  <div>
+                    {chrome.i18n.getMessage('BalanceText')}
+                    {formatNumber(arAccount.koiBalance, 2)} KOII
+                  </div>
+                  <div>
+                    {chrome.i18n.getMessage('AssetsText')}
+                    {arAccount.totalAssets.length}
+                  </div>
                 </div>
                 {arAccount?.address === defaultArAccount?.address ? (
                   <FavoriteIcon className="absolute right-6 top-4" />

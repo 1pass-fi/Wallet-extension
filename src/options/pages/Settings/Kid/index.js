@@ -474,16 +474,13 @@ const KidPage = () => {
       <div ref={kidInput} className="title-section">
         <div className="title-section__header-group">
           <IDCardIcon />
-          <h2>Decentralized Identity</h2>
+          <h2>{chrome.i18n.getMessage('DecentralizedIdentity')}</h2>
         </div>
-        <p className="leading">
-          Create a personalized profile for your web3 identity. Link it to your Twitter bio to
-          receive airdrops from Koii partners and other surprises.
-        </p>
+        <p className="leading">{chrome.i18n.getMessage('DIDMsg')}</p>
       </div>
       <div className="form-section">
         <div className="form-img">
-          <div className="form-img__img-name">PROFILE IMAGE</div>
+          <div className="form-img__img-name">{chrome.i18n.getMessage('ProfileImage')}</div>
           <div className="avatar">
             <div
               className="edit-avatar-layer"
@@ -497,9 +494,9 @@ const KidPage = () => {
             <img className="profile-picture" src={profileSrc}></img>
           </div>
           <div className="avt-desc">
-            <Link to="/create-nft">Or create a new NFT</Link>
+            <Link to="/create-nft">{chrome.i18n.getMessage('CreateNewNFT')}</Link>
           </div>
-          <div className="form-img__img-name">COVER IMAGE</div>
+          <div className="form-img__img-name">{chrome.i18n.getMessage('CoverImage')}</div>
           <div className="cover">
             <div
               className="edit-cover-layer"
@@ -513,7 +510,9 @@ const KidPage = () => {
             <img className="profile-cover" src={bannerSrc} alt="profile-cover" />
           </div>
           <div className="cover-desc">
-            Or create <Link to="/create-nft">an NFT</Link> to make it{' '}
+            {chrome.i18n.getMessage('OrCreate')}{' '}
+            <Link to="/create-nft">{chrome.i18n.getMessage('AnNFT')}</Link>{' '}
+            {chrome.i18n.getMessage('ToMakeIt')}{' '}
             <Hint
               variant="white"
               className="inline ml-0.5"
@@ -521,7 +520,7 @@ const KidPage = () => {
               text={chrome.i18n.getMessage('CoverImageHint')}
             />{' '}
             <br></br>
-            your cover image
+            {chrome.i18n.getMessage('yourCoverImage')}
           </div>
         </div>
 
@@ -572,7 +571,7 @@ const KidPage = () => {
           </div>
           <div className="kid-input">
             <div className="kid-input-label-section">
-              <label className="kid-input-label">Description*</label>
+              <label className="kid-input-label">{chrome.i18n.getMessage('Description')}*</label>
             </div>
             <div
               ref={descriptionInput}
@@ -591,11 +590,8 @@ const KidPage = () => {
             </div>
           </div>
 
-          <div className="section-name">Link Accounts</div>
-          <p className="link-account-desc">
-            These links will appear on your DID profile. For best practice, each link should begin
-            with https://
-          </p>
+          <div className="section-name">{chrome.i18n.getMessage('LinkAccounts')}</div>
+          <p className="link-account-desc">{chrome.i18n.getMessage('LinkAccountsDesc')}</p>
           {linkAccounts.map((linkAccounts, idx) => (
             <div className="link-accounts-wrapper" key={idx}>
               <div className="link-accounts-input-line">
@@ -622,17 +618,17 @@ const KidPage = () => {
           ))}
           <div className="add-more" onClick={addLinkAccount}>
             <AddIcon className="add-more-icon" />
-            Add more
+            {chrome.i18n.getMessage('AddMore')}
           </div>
 
-          <div className="section-name">Add Custom CSS</div>
+          <div className="section-name">{chrome.i18n.getMessage('AddCustomCSS')}</div>
           <div className="custom-css-settings">
-            <div>Custom CSS</div>
+            <div>{chrome.i18n.getMessage('CustomCSS')}</div>
             <ToggleButton value={usingCustomCss} setValue={setUsingCustomCss} />
           </div>
           {usingCustomCss && (
             <div>
-              <div className="hint">Hint: use one of these classes</div>
+              <div className="hint">{chrome.i18n.getMessage('CustomCSSHint')}</div>
               <ul
                 style={{
                   listStyleType: 'circle',
@@ -733,7 +729,9 @@ const KidPage = () => {
             <GoBackIcon onClick={close} className="go-back-icon" />
             <CloseIcon onClick={close} className="close-icon" />
             <div className="title">
-              SELECT {modalType === 'AVATAR' ? 'PROFILE' : 'COVER'} PICTURE
+              {modalType === 'AVATAR'
+                ? chrome.i18n.getMessage('SelectProfilePicture')
+                : chrome.i18n.getMessage('SelectCoverPicture')}
             </div>
             <div className="select-nft-modal-search">
               <input
@@ -773,27 +771,27 @@ const KidPage = () => {
             <div className={clsx('content ml-56', !hadData ? 'mt-10' : 'mt-16')}>
               {!confirmed && (
                 <div className="flex flex-col pl-8">
-                  <div className="content-title">
-                    Confirm your personalized Decentralized ID profile.
-                  </div>
+                  <div className="content-title">{chrome.i18n.getMessage('ConfirmDIDProfile')}</div>
                   <div className="cost">
-                    <div className="cost-title">Estimated Costs:</div>
+                    <div className="cost-title">{chrome.i18n.getMessage('EstimatedCosts')}</div>
                     {!hadData && <div className="cost-koii-fee">1 KOII</div>}
                     <div className="cost-ar-fee">{hadData ? '0.00007' : '0.0005'} AR</div>
-                    <div className="cost-storage-fee"> Storage Fee</div>
+                    <div className="cost-storage-fee"> {chrome.i18n.getMessage('StorageFee')}</div>
                   </div>
                 </div>
               )}
               {confirmed && (
                 <div className="success">
-                  <div className="success-title">Your DID is finalizing!</div>
+                  <div className="success-title">{chrome.i18n.getMessage('DIDIsFinalizing')}</div>
                   <div className="success-message">
-                    Your Decentralized ID is your<br></br>
-                    passport entry to DeFi. Your<br></br>
+                    {chrome.i18n.getMessage('DIDSuccessMsgStart')}
+                    <br></br>
+                    {chrome.i18n.getMessage('DIDSuccessMsgMiddle')}
+                    <br></br>
                     <a className="profile-link" href={`https://koii.id/${kID}`}>
-                      profile link
+                      {chrome.i18n.getMessage('ProfileLink')}
                     </a>{' '}
-                    should be ready soon.
+                    {chrome.i18n.getMessage('DIDSuccessMsgEnd')}
                   </div>
                 </div>
               )}
@@ -804,7 +802,9 @@ const KidPage = () => {
                 disabled={disableUpdateKID}
                 onClick={handleSubmit}
               >
-                {hadData ? 'Update DID' : 'Create DID'}
+                {hadData
+                  ? chrome.i18n.getMessage('UpdateDID')
+                  : chrome.i18n.getMessage('CreateDID')}
               </button>
             )}
             {confirmed && (
@@ -812,7 +812,7 @@ const KidPage = () => {
                 className="confirm-button flex items-center justify-center w-101 mx-auto mt-8 text-base leading-6"
                 onClick={() => setShowConfirmModal(false)}
               >
-                OK
+                {chrome.i18n.getMessage('OK')}
               </button>
             )}
           </div>

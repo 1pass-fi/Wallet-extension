@@ -259,7 +259,7 @@ const CollectionForm = ({ isUpdate }) => {
       : chrome.i18n.getMessage('CollectionLabelTitle'),
     description: isUpdate
       ? chrome.i18n.getMessage('CollectionLabelEditDescription')
-      : chrome.i18n.getMessage('CollectionLabelDescription'),
+      : chrome.i18n.getMessage('Description'),
     tags: chrome.i18n.getMessage('tagsLowerCase')
   }
 

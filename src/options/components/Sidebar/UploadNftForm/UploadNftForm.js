@@ -140,7 +140,7 @@ const UploadNftForm = () => {
         </div>
         <InputField
           className="my-1"
-          label={chrome.i18n.getMessage('UploadNFTDescLabel')}
+          label={chrome.i18n.getMessage('Description')}
           value={nftContent.description}
           setValue={handleNftContentChange}
           required={true}
@@ -215,7 +215,12 @@ const UploadNftForm = () => {
         )}
         <span className="text-3xs text-bittersweet-200 mb-4.25">{errors.file}</span>
 
-        <Button onClick={handleCreateNFT} variant="light" text={chrome.i18n.getMessage('CreateNFT')} className="text-sm" />
+        <Button
+          onClick={handleCreateNFT}
+          variant="light"
+          text={chrome.i18n.getMessage('CreateNFT')}
+          className="text-sm"
+        />
       </div>
       {showConfirmModal && (
         <ConfirmCreateNftModal
