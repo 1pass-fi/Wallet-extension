@@ -500,7 +500,7 @@
   "Low": {
     "message": "Low"
   },
-  "MakeSureCorrectAddress": {
+  "MakeSureCorrectAddressExportNFT": {
     "message": "Make sure this is the correct address. Once sent, there is no way to undo the transaction."
   },
   "MaxFee": {
@@ -532,6 +532,9 @@
   },
   "NFTDescriptionLabel": {
     "message": "Description"
+  },
+  "SuccessfullySent": {
+    "message": "Successfully Sent"
   },
   "nftNotExistOnChain": {
     "message": "This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie."
@@ -637,6 +640,15 @@
   },
   "RECEIVE": {
     "message": "RECEIVE"
+  },
+  "CreateNewCollection": {
+    "message": "Create New Collection"
+  },
+  "CollectionNotSupported": {
+    "message": "This version of Collection does not support updating"
+  },
+  "MakeSureCorrectAddress": {
+    "message": "Make sure this is the correct address. This action cannot be undone."
   },
   "Received": {
     "message": "Received"
@@ -868,6 +880,9 @@
   },
   "TransactionFees": {
     "message": "Transaction Fees"
+  },
+  "TransactionPendingUc": {
+    "message": "Transaction pending"
   },
   "transactionPending": {
     "message": "transaction pending"

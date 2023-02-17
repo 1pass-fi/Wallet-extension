@@ -89,8 +89,8 @@ const CollectionDetails = () => {
   }, [collection])
 
   const editButtonDataTip = useMemo(() => {
-    if (usedOldContractSrc) return 'This version of Collection does not support updating'
-    if (updatePending) return 'Transaction pending'
+    if (usedOldContractSrc) return chrome.i18n.getMessage('CollectionNotSupported')
+    if (updatePending) return chrome.i18n.getMessage('TransactionPendingUc')
     return ''
   }, [updatePending, usedOldContractSrc])
 
