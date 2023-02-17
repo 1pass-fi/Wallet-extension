@@ -568,7 +568,7 @@ export default ({ info, onClose, type }) => {
                     <div className="warning">
                       <WarningIcon className="warning-icon" />
                       <div className="warning-text">
-                        {chrome.i18n.getMessage('MakeSureCorrectAddress')}
+                        {chrome.i18n.getMessage('MakeSureCorrectAddressExportNFT')}
                       </div>
                     </div>
 
