@@ -90,25 +90,24 @@ const ConfirmModal = ({
           <section className="py-5 text-center text-base px-16.5">
             <>
               <p className="mb-5.5">
-                An Atomic NFT is store permanently on Arweave and earns attention rewards forever
-                through Koi.
+                {chrome.i18n.getMessage('AtomicNFTArweave')}
               </p>
               <div className="flex justify-around text-left">
                 <div>
                   <div className="font-semibold tracking-finnieSpacing-wide">
-                    Files to be minted:
+                    {chrome.i18n.getMessage('FilesMinted')}
                   </div>
-                  <div>{numOfNfts} pieces</div>
+                  <div>{numOfNfts}{chrome.i18n.getMessage('pieces')}</div>
                   <div className="font-semibold tracking-finnieSpacing-wide">
-                    Size: {formatNumber(filesSize / ONE_MILLION, 2)} MB
+                    {chrome.i18n.getMessage('SizeText')}{formatNumber(filesSize / ONE_MILLION, 2)} MB
                   </div>
                 </div>
                 <div>
-                  <div className="font-semibold tracking-finnieSpacing-wide">Estimated Costs:</div>
+                  <div className="font-semibold tracking-finnieSpacing-wide">{chrome.i18n.getMessage('EstimatedCosts')}</div>
                   <div>{numOfNfts} KOII</div>
                   <div>{formatNumber(arPrice, 5)} AR</div>
                   <div className="text-2xs tracking-finnieSpacing-wider text-success-700">
-                    Storage Fee
+                    {chrome.i18n.getMessage('StorageFee')}
                   </div>
                 </div>
               </div>
@@ -139,10 +138,10 @@ const ConfirmModal = ({
             <ModalBackground className="absolute top-16.75 left-0" />
             <div className="absolute left-57.75 top-40">
               <div className="font-semibold text-lg tracking-finnieSpacing-wide">
-                Your Collection is getting ready!
+                {chrome.i18n.getMessage('YourCollectionReady')}
               </div>
               <div className="text-sm tracking-finnieSpacing-wide">
-                It may take a few minutes to show up in your gallery.
+                {chrome.i18n.getMessage('TakeTimeToGallery')}
               </div>
             </div>
             <div className="absolute bottom-5.5 w-full flex left-0 justify-center">
