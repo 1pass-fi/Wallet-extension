@@ -66,7 +66,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
       setStep(2)
     } catch (err) {
       if (err.message === 'Incorrect password') {
-        setPasswordError(err.message)
+        setPasswordError(chrome.i18n.getMessage('IncorrectPassword'))
       } else {
         dispatch(setError(err.message))
       }
@@ -90,7 +90,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
           {step === 1 && (
             <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" />
           )}
-          <div className="m-auto">Secret Phrase</div>
+          <div className="m-auto">{chrome.i18n.getMessage('SecretPhrase')}</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
 
@@ -116,7 +116,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
               style={{ width: '382px' }}
               className="pl-1.75 mt-3 font-semibold text-sm leading-6"
             >
-              Enter Finnie Password:
+              {chrome.i18n.getMessage('EnterFinniePassword')}
             </div>
             <div className="relative">
               <input

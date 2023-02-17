@@ -55,12 +55,12 @@ const ChangePasswordModal = ({ close }) => {
   const validatePasswords = () => {
     let validPassword = true
     if (isEmpty(oldPassword)) {
-      setOldPasswordError('Password is incorrect')
+      setOldPasswordError(chrome.i18n.getMessage('PasswordIsIncorrect'))
       validPassword = false
     }
 
     if (newPassword !== confirmPassword) {
-      setConfirmPasswordError('Passwords don’t match')
+      setConfirmPasswordError(chrome.i18n.getMessage('PasswordDoNotMatch'))
       validPassword = false
     } else {
       setConfirmPasswordError('')
@@ -68,9 +68,7 @@ const ChangePasswordModal = ({ close }) => {
 
     if (isEmpty(newPassword) || !passwordRegex.test(newPassword)) {
       validPassword = false
-      setNewPasswordError(
-        'Password must have at least 8 characters, 1 number, 1 uppercase, 1 lowercase and 1 symbol (e.g. !@#$%).'
-      )
+      setNewPasswordError(chrome.i18n.getMessage('PasswordErrorMsg'))
     } else {
       setNewPasswordError('')
     }
@@ -97,7 +95,7 @@ const ChangePasswordModal = ({ close }) => {
       console.log(err.message)
 
       if (err.message === 'Incorrect password') {
-        setOldPasswordError('Password is incorrect')
+        setOldPasswordError(chrome.i18n.getMessage('PasswordIsIncorrect'))
       }
     }
   }
@@ -162,7 +160,7 @@ const ChangePasswordModal = ({ close }) => {
               style={{ width: '382px' }}
               className="mt-2 text-sm font-semibold tracking-finnieSpacing-tight text-left"
             >
-              Create New Password
+              {chrome.i18n.getMessage('CreateNewPassword')}
             </div>
             <input
               type="password"

@@ -1,7 +1,4 @@
 {
-  "": {
-    "message": ""
-  },
   "AccountBalanceText": {
     "message": "Account Balance:"
   },
@@ -50,6 +47,9 @@
   "addressCopied": {
     "message": "Address copied!"
   },
+  "AddressLc": {
+    "message": "Address"
+  },
   "AdvancedOptions": {
     "message": "Advanced Options"
   },
@@ -67,6 +67,9 @@
   },
   "AssetsText": {
     "message": "Assets: "
+  },
+  "AtomicNFTArweave": {
+    "message": "An Atomic NFT is store permanently on Arweave and earns attention rewards forever through Koi."
   },
   "atomicNFTsMsg": {
     "message": "Atomic NFTs are stored permanently on Arweave. With Koii, they earn attention rewards forever."
@@ -86,6 +89,9 @@
   "balanceUpdated": {
     "message": "Your balances have been updated."
   },
+  "BetaFeature": {
+    "message": "This feature is in beta."
+  },
   "bridgeARtoETH": {
     "message": "Bridged NFT from Arweave to Ethereum"
   },
@@ -94,6 +100,15 @@
   },
   "bridgeNftFailed": {
     "message": "Bridge NFT failed"
+  },
+  "BridgeNFTNotSupportedEnd": {
+    "message": "more recent NFT."
+  },
+  "BridgeNFTNotSupportedStart": {
+    "message": "The Ethereum bridge does not currently support this NFT. Try the bridge with a "
+  },
+  "BridgingYourNFT": {
+    "message": "Bridging your NFT..."
   },
   "Cancel": {
     "message": "Cancel"
@@ -158,8 +173,17 @@
   "ConfirmTransaction": {
     "message": "Confirm Transaction"
   },
+  "ConfirmTransfer": {
+    "message": "Confirm Transfer"
+  },
+  "ConfirmTransferTo": {
+    "message": "Confirm Transfer to "
+  },
   "confirmYourSecretPhrase": {
     "message": "Confirm your secret phrase."
+  },
+  "ConfirmYourTransfer": {
+    "message": "Confirm your Transfer"
   },
   "CONNECT": {
     "message": "CONNECT"
@@ -176,6 +200,9 @@
   "Copied": {
     "message": "Copied"
   },
+  "Cost": {
+    "message": "Cost"
+  },
   "createAPasswordToSecureFinnie": {
     "message": "Create a password to secure Finnie."
   },
@@ -191,8 +218,14 @@
   "CreateNewContact": {
     "message": "Create New Contact"
   },
+  "CreateNewPassword": {
+    "message": "Create New Password"
+  },
   "createNFTMsg": {
     "message": "Your NFT is being created!"
+  },
+  "CreateNFTsArweaveSupported": {
+    "message": "Right now, we can only create NFTs with Arweave. Switch to an Arweave account to get started."
   },
   "createOrImportAKey": {
     "message": "Create or import a key."
@@ -254,6 +287,9 @@
   "EditFee": {
     "message": "Edit Fee"
   },
+  "Edition": {
+    "message": "Edition"
+  },
   "EditNFTInfo": {
     "message": "EDIT NFT INFO:"
   },
@@ -275,6 +311,9 @@
   "EnterCurrentPassword": {
     "message": "Enter Current Password"
   },
+  "EnterFinniePassword": {
+    "message": "Enter Finnie Password:"
+  },
   "EnterInfoManually": {
     "message": "Enter Info Manually"
   },
@@ -290,8 +329,35 @@
   "ExploreBlock": {
     "message": "Explore Block"
   },
-  "exportPrivateKey": {
-    "message": "Export Private key succesffuly!"
+  "ExportNFTCompleteMsg": {
+    "message": "When complete, transactions will appear in the Activity tab in the dropdown"
+  },
+  "ExportNFTToARDesc1": {
+    "message": "This process takes usually around 10-15 minutes. With one click, the Koii contract will move your NFT to Arweave."
+  },
+  "ExportNFTToARDesc2": {
+    "message": "Keep in mind that this process takes usually around 10-15 minutes and can take longer, depending on current Arweave traffic."
+  },
+  "ExportNFTToETHDesc1": {
+    "message": "This process takes usually around 10-15 minutes. With one click, the Koii contract will move your NFT to Ethereum."
+  },
+  "ExportNFTToETHDesc2": {
+    "message": "Keep in mind that this process takes usually around 10-15 minutes and can take longer, depending on current Ethereum traffic."
+  },
+  "ExportPrivateKey": {
+    "message": "Export Private Key"
+  },
+  "ExportPrivateKeyMsgEnd": {
+    "message": "Keep your keys somewhere safe and secret."
+  },
+  "ExportPrivateKeyMsgStart": {
+    "message": "Exporting your key will download a .JSON file. You can copy this file to multiple secure devices as a backup. "
+  },
+  "exportPrivateKeySuccessfully": {
+    "message": "Export Private key successfully!"
+  },
+  "FilesMinted": {
+    "message": "Files to be minted:"
   },
   "finnieCurrentlySupports": {
     "message": "Finnie currently supports Koii, Ethereum, Solana, and Arweave keys. More chains are in the works."
@@ -310,6 +376,9 @@
   },
   "GalleryLc": {
     "message": "Gallery"
+  },
+  "GasEstimate": {
+    "message": "Gas estimate"
   },
   "generateNewKeyFailed": {
     "message": "Generate new key failed"
@@ -332,6 +401,9 @@
   "grabAPenAndPaper": {
     "message": "Grab a pen & paper so you can keep your phrase safe."
   },
+  "HasBeenSentTo": {
+    "message": "has been sent to"
+  },
   "High": {
     "message": "High"
   },
@@ -352,6 +424,9 @@
   },
   "imready": {
     "message": "I'm ready!"
+  },
+  "IncorrectPassword": {
+    "message": "Incorrect password"
   },
   "invalidAddressList": {
     "message": "Invalid Address list!"
@@ -398,6 +473,9 @@
   "kidLinkAccountTitlePh": {
     "message": "Label e.g. “Website”"
   },
+  "LearnMore": {
+    "message": "Learn more"
+  },
   "likelyIn30Seconds": {
     "message": "Likely in 30 Seconds"
   },
@@ -406,6 +484,9 @@
   },
   "likelyInLessThan30Seconds": {
     "message": "Likely in < 30 Seconds"
+  },
+  "LinkCopied": {
+    "message": "Link copied!"
   },
   "LOCK": {
     "message": "LOCK"
@@ -418,6 +499,9 @@
   },
   "Low": {
     "message": "Low"
+  },
+  "MakeSureCorrectAddress": {
+    "message": "Make sure this is the correct address. Once sent, there is no way to undo the transaction."
   },
   "MaxFee": {
     "message": "Max Fee"
@@ -452,8 +536,20 @@
   "nftNotExistOnChain": {
     "message": "This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie."
   },
+  "NFTOnItsWay": {
+    "message": "The NFT is on its way!"
+  },
+  "NFTOnlyHave1ItemMinted": {
+    "message": "Many NFTs will only have 1 item minted."
+  },
   "NFTTitleLabel": {
     "message": "NFT Title"
+  },
+  "NFTToAR": {
+    "message": "Your NFT is heading to Arweave!"
+  },
+  "NFTToETH": {
+    "message": "Your NFT is heading to Ethereum!"
   },
   "noneSelect": {
     "message": "-- None"
@@ -485,11 +581,17 @@
   "Notification": {
     "message": "Notification"
   },
+  "NumberToTransfer": {
+    "message": "Number to transfer"
+  },
   "OFF": {
     "message": "OFF"
   },
   "ON": {
     "message": "ON"
+  },
+  "OneClickTransfer": {
+    "message": "One-Click Transfer to"
   },
   "otherwiseYouCouldLoseAnytokensOrAssets": {
     "message": "Otherwise, you could lose any tokens or assets."
@@ -503,6 +605,15 @@
   "passwordDoesNotMatch": {
     "message": "Password does not match"
   },
+  "PasswordDoNotMatch": {
+    "message": "Passwords don't match"
+  },
+  "PasswordErrorMsg": {
+    "message": "Password must have at least 8 characters, 1 number, 1 uppercase, 1 lowercase and 1 symbol (e.g. !@#$%)."
+  },
+  "PasswordIsIncorrect": {
+    "message": "Password is incorrect"
+  },
   "passwordNotMeetRequirements": {
     "message": "The password does not meet the requirements."
   },
@@ -511,6 +622,9 @@
   },
   "pauseFinnie": {
     "message": "Pause Finnie on this site"
+  },
+  "pieces": {
+    "message": " pieces"
   },
   "pleaseAcceptTheTof": {
     "message": "Please accept the Terms of Service"
@@ -526,6 +640,9 @@
   },
   "Received": {
     "message": "Received"
+  },
+  "ReceiverWalletAddress": {
+    "message": "Receiver's Wallet Address"
   },
   "RecipientWalletAddress": {
     "message": "Recipient's Wallet Address"
@@ -605,6 +722,9 @@
   "searchNftsPh": {
     "message": "Search NFTs"
   },
+  "SecretPhrase": {
+    "message": "Secret Phrase"
+  },
   "secureFinnieWithAPassword": {
     "message": "Secure Finnie with a password."
   },
@@ -623,6 +743,9 @@
   "SeeMore": {
     "message": "See more"
   },
+  "SelectAccount": {
+    "message": "Select your account"
+  },
   "selectAccountPh": {
     "message": "Select Account"
   },
@@ -634,6 +757,9 @@
   },
   "Sending": {
     "message": "Sending"
+  },
+  "SendingTo": {
+    "message": "Sending to"
   },
   "SENDTOKEN": {
     "message": "SEND"
@@ -647,6 +773,9 @@
   "setDefaultAccount": {
     "message": "Set default account successfully."
   },
+  "ShareByEmail": {
+    "message": "Share by Email"
+  },
   "shareToEarn": {
     "message": "Share to earn Attention Rewards"
   },
@@ -659,6 +788,9 @@
   "Simulation": {
     "message": "Simulation"
   },
+  "SizeText": {
+    "message": "Size: "
+  },
   "skipThisStep": {
     "message": "Skip this step"
   },
@@ -667,6 +799,9 @@
   },
   "somethingWentWrongWhoops": {
     "message": "Whoops! Something went wrong!"
+  },
+  "SomethingWrongNFT": {
+    "message": "Whoops! There's something wrong with your NFT!"
   },
   "startFromScratch": {
     "message": "Start from scratch."
@@ -695,6 +830,9 @@
   "takeFewMinutesMsg": {
     "message": "It will take a few minutes to reflect on your wallet."
   },
+  "TakeTimeToGallery": {
+    "message": "It may take a few minutes to show up in your gallery."
+  },
   "TermsOfService": {
     "message": "Terms of Service"
   },
@@ -716,6 +854,12 @@
   "ToLc": {
     "message": "To"
   },
+  "Total": {
+    "message": "Total"
+  },
+  "totalAvailable": {
+    "message": "total available"
+  },
   "TotalBalance": {
     "message": "Total Balance"
   },
@@ -724,6 +868,24 @@
   },
   "TransactionFees": {
     "message": "Transaction Fees"
+  },
+  "transactionPending": {
+    "message": "transaction pending"
+  },
+  "Transfer": {
+    "message": "Transfer"
+  },
+  "TransferMediaToAR": {
+    "message": "Transfer your media to an Arweave wallet."
+  },
+  "TransferMediaToETH": {
+    "message": "Transfer your media to an Ethereum wallet."
+  },
+  "TransferNFTToFriend": {
+    "message": "Transfer your NFT to a friend"
+  },
+  "TransferOwnershipTakeTime": {
+    "message": " Transfer of ownership can take up to 10 minutes after you confirm the purchase."
   },
   "TypeHerePh": {
     "message": "Type here"
@@ -761,6 +923,9 @@
   "UploadNFTTitlePlaceHolder": {
     "message": "Find the perfect name"
   },
+  "UploadToARPermaweb": {
+    "message": "is uploaded to Arweave's permaweb."
+  },
   "useMyExistingKey": {
     "message": "Use my existing key."
   },
@@ -781,6 +946,9 @@
   },
   "writeDownYourSecretPhrase": {
     "message": "Write down your secret phrase."
+  },
+  "YourCollectionReady": {
+    "message": "Your Collection is getting ready!"
   },
   "yourTokensOnTheWay": {
     "message": "Your tokens are on the way!"
