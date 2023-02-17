@@ -18,7 +18,7 @@ const TransactionStatus = () => {
 
   return (
     <div className="pt-4 text-white">
-      <h1 className="text-32px font-semibold underline">Transaction Status</h1>
+      <h1 className="text-32px font-semibold underline">{chrome.i18n.getMessage('TransactionStatus')}</h1>
       <table className="w-full text-left table-auto border-collapse">
         <thead>
           <tr className="text-base h-13.75 font-semibold border-b border-white px-4">

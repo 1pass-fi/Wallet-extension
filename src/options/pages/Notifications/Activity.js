@@ -54,8 +54,8 @@ const Activity = () => {
 
   return (
     <div className="pt-4 text-white">
-      <h1 className="text-32px font-semibold underline">Activity</h1>
-      <div className="text-sm leading-6 mt-3 mb-2.5">Select account to see activity:</div>
+      <h1 className="text-32px font-semibold underline">{chrome.i18n.getMessage('Activity')}</h1>
+      <div className="text-sm leading-6 mt-3 mb-2.5">{chrome.i18n.getMessage('ActivitySelectAccount')}:</div>
       <div className="mb-1.5" style={{ width: '270px' }}>
         <DropDown
           options={accountOptions}
