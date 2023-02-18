@@ -53,7 +53,7 @@ const SortAndFilter = ({
           }}
           className="flex items-center justify-between h-12 3xl:h-13 pl-1.5 pr-3 font-semibold text-sm 3xl:text-base text-white"
         >
-          Filters
+          {chrome.i18n.getMessage('Filters')}
           <FilterIcon
             className={clsx(showFilters && 'transform rotate-90', 'w-5.25 h-5.25 cursor-pointer')}
           />
@@ -65,7 +65,7 @@ const SortAndFilter = ({
               onClick={() => setShowSortBy(!showSortBy)}
               className="flex items-center justify-between h-12 3xl:h-13 pl-1.5 pr-3 font-semibold text-sm 3xl:text-base text-white cursor-pointer"
             >
-              Sort By
+              {chrome.i18n.getMessage('SortBy')}
               <ArrowIcon
                 className={clsx(showSortBy && 'transform rotate-90', 'w-1.5 h-3 cursor-pointer')}
               />
@@ -96,7 +96,7 @@ const SortAndFilter = ({
           onClick={() => setShowFilterChains(!showFilterChains)}
           className="flex items-center justify-between h-12 3xl:h-13 pl-1.5 pr-3 font-semibold text-sm 3xl:text-base text-white cursor-pointer"
         >
-          Chains
+          {chrome.i18n.getMessage('Chains')}
           <ArrowIcon
             className={clsx(showFilterChains && 'transform rotate-90', 'w-1.5 h-3 cursor-pointer')}
           />

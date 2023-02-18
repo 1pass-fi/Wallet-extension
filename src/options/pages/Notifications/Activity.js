@@ -15,7 +15,7 @@ const Activity = () => {
 
   const accounts = useSelector((state) => state.accounts)
 
-  const accountOptions = [{ label: 'All Accounts', value: 'ALL' }].concat(
+  const accountOptions = [{ label: chrome.i18n.getMessage('AllAccounts'), value: 'ALL' }].concat(
     accounts.map((account) => ({
       label: account.accountName,
       value: account.address

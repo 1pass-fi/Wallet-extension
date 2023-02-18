@@ -2,6 +2,9 @@
   "12WordSecretPhrase": {
     "message": "12-word secret phrase"
   },
+  "About": {
+    "message": "About"
+  },
   "Account": {
     "message": "Account"
   },
@@ -82,6 +85,9 @@
   },
   "aFeature": {
     "message": "a feature"
+  },
+  "AllAccounts": {
+    "message": "All Accounts"
   },
   "AllowThisSiteTo": {
     "message": "Allow this site to"
@@ -172,6 +178,9 @@
   },
   "CHAIN": {
     "message": "CHAIN"
+  },
+  "Chains": {
+    "message": "Chains"
   },
   "ChangeMyPassword": {
     "message": "Change My Password"
@@ -340,6 +349,9 @@
   },
   "CreateAtomicNFT": {
     "message": "Create an Atomic NFT"
+  },
+  "CreateCollection": {
+    "message": "Create Collection"
   },
   "CreateDID": {
     "message": "Create DID"
@@ -602,6 +614,9 @@
   "FilesMinted": {
     "message": "Files to be minted:"
   },
+  "Filters": {
+    "message": "Filters"
+  },
   "finnieCurrentlyKeySupports": {
     "message": "Finnie currently supports Koii, Solana, Arweave and Ethereum keys. More key types are in the works."
   },
@@ -649,6 +664,9 @@
   },
   "getANewKey": {
     "message": "Get a new key."
+  },
+  "GetANewWallet": {
+    "message": "Get a new wallet"
   },
   "getArPriceError": {
     "message": "We cannot get AR price for the currency "
@@ -719,6 +737,9 @@
   "Import": {
     "message": "Import"
   },
+  "Import12WordSeedPhrase": {
+    "message": "Import an existing wallet using a 12-word seed phrase."
+  },
   "importAKeyWithASecretPhrase": {
     "message": "Import a key with a secret phrase."
   },
@@ -727,6 +748,12 @@
   },
   "ImportDIDLink": {
     "message": "Import from a DID link"
+  },
+  "ImportKeySuccessfully": {
+    "message": "Your key was successfully imported!"
+  },
+  "ImportSeedPhrase": {
+    "message": "Import with a seed phrase"
   },
   "ImportTokenMsg": {
     "message": "To which wallet(s) do you want to import these tokens?"
@@ -808,6 +835,12 @@
   },
   "kidLinkAccountTitlePh": {
     "message": "Label e.g. “Website”"
+  },
+  "KoiiIdentity": {
+    "message": "Koii Identity (DID)"
+  },
+  "KoiiIdentityARSupport": {
+    "message": "Koii Identity only supports AR wallets."
   },
   "KOIITos": {
     "message": "Koii Network Terms of Service."
@@ -961,6 +994,9 @@
   },
   "Notification": {
     "message": "Notification"
+  },
+  "NotificationCenter": {
+    "message": "Notification Center"
   },
   "NumberToTransfer": {
     "message": "Number to transfer"
@@ -1208,6 +1244,9 @@
   "saveNewKeyFailed": {
     "message": "Save new key failed"
   },
+  "SaveSecretPhraseSuccessfully": {
+    "message": "You successfully saved your Secret Phrase"
+  },
   "saveYourSecretPhrase": {
     "message": "Save your Secret Phrase"
   },
@@ -1237,6 +1276,9 @@
   },
   "securePasswordsHaveAtLeast8Characters": {
     "message": "Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%)."
+  },
+  "Security": {
+    "message": "Security"
   },
   "SecuritySettings": {
     "message": "Security Settings"
@@ -1274,6 +1316,9 @@
   "SelectAnAccount": {
     "message": "Select an Account"
   },
+  "SelectChainOfKey": {
+    "message": "Select the chain of the key you want to import"
+  },
   "selectConnectedWallets": {
     "message": "select from connected wallets or enter a new address"
   },
@@ -1294,6 +1339,9 @@
   },
   "SelectWalletToConnect": {
     "message": "Select wallet to connect"
+  },
+  "SelectYourNFTs": {
+    "message": "Select your NFTs"
   },
   "Send": {
     "message": "Send"
@@ -1321,6 +1369,9 @@
   },
   "setDefaultAccount": {
     "message": "Set default account successfully."
+  },
+  "Settings": {
+    "message": "Settings"
   },
   "SettingsMenu": {
     "message": "SETTINGS MENU"
@@ -1384,6 +1435,12 @@
   },
   "SomethingWrongNFT": {
     "message": "Whoops! There's something wrong with your NFT!"
+  },
+  "SortBy": {
+    "message": "Sort By"
+  },
+  "StartFromBeginning": {
+    "message": "Start from the beginning."
   },
   "StartFromScratch": {
     "message": "start from scratch"
@@ -1567,6 +1624,9 @@
   },
   "TypeSecretPhrase": {
     "message": "Type in your secret phrase to import your key."
+  },
+  "TypeYourSecretPhrase": {
+    "message": "Type in your secret phrase."
   },
   "unknowTransaction": {
     "message": "Unknown transaction"

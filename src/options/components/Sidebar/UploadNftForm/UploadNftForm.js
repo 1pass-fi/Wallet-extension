@@ -191,7 +191,7 @@ const UploadNftForm = () => {
             className="text-white ml-2 text-11px select-none"
             onClick={() => setNftContent((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
           >
-            This content is <span className="text-warning">Explicit or 18+.</span>
+            {chrome.i18n.getMessage('ThisContentIs')}<span className="text-warning">{chrome.i18n.getMessage('ExplicitMsg')}</span>
           </div>
         </div>
         {isEmpty(file) ? (

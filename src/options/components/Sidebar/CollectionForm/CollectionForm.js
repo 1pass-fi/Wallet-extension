@@ -335,7 +335,7 @@ const CollectionForm = ({ isUpdate }) => {
             className="text-white ml-2 text-11px select-none"
             onClick={() => setCollectionInfo((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
           >
-            This content is <span className="text-warning">Explicit or 18+.</span>
+            {chrome.i18n.getMessage('ThisContentIs')}<span className="text-warning">{chrome.i18n.getMessage('ExplicitMsg')}</span>
           </div>
         </div>
         <div className="w-50 h-36.25 border border-dashed border-success rounded">

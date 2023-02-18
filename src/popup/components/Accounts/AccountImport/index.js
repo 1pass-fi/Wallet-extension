@@ -56,8 +56,8 @@ const AccountImport = ({ totalAccount }) => {
         {
           key: 1,
           SvgImage: <ImportIcon className="card-icon" />,
-          title: 'Import with a seed phrase',
-          description: 'Import an existing wallet using a 12-word seed phrase.',
+          title: chrome.i18n.getMessage('ImportSeedPhrase'),
+          description: chrome.i18n.getMessage('Import12WordSeedPhrase'),
           path: hasPendingRequest ? '/account/import/phrase' : '#',
           onClick: () => {
             handleOnClick('/options.html#/import-wallet')
@@ -76,8 +76,8 @@ const AccountImport = ({ totalAccount }) => {
         {
           key: 2,
           SvgImage: <PlusIcon className="card-icon" />,
-          title: 'Get a new wallet',
-          description: 'Start from the beginning.',
+          title: chrome.i18n.getMessage('GetANewWallet'),
+          description: chrome.i18n.getMessage('StartFromBeginning'),
           path: hasPendingRequest ? '/account/create' : '#',
           onClick: () => {
             handleOnClick('/options.html#/create-wallet')
@@ -119,7 +119,11 @@ const AccountImport = ({ totalAccount }) => {
       )}
       <div className="account-import-header">
         {totalAccount > 0 && (
-          <div data-tip={chrome.i18n.getMessage('Back')} className="go-back-icon" onClick={goBackAccountHome}>
+          <div
+            data-tip={chrome.i18n.getMessage('Back')}
+            className="go-back-icon"
+            onClick={goBackAccountHome}
+          >
             <GoBackIcon />
           </div>
         )}

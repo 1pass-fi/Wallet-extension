@@ -52,11 +52,11 @@ export default () => {
   )
 
   const chainOptions = [
-    { label: 'All Accounts', value: 'ALL' },
-    { label: 'K2 Account', value: TYPE.K2 },
-    { label: 'Ethereum Account', value: TYPE.ETHEREUM },
-    { label: 'Solana Account', value: TYPE.SOLANA },
-    { label: 'Arweave Account', value: TYPE.ARWEAVE }
+    { label: chrome.i18n.getMessage('AllAccounts'), value: 'ALL' },
+    { label: 'K2 ' + chrome.i18n.getMessage('Account'), value: TYPE.K2 },
+    { label: 'Ethereum ' + chrome.i18n.getMessage('Account'), value: TYPE.ETHEREUM },
+    { label: 'Solana ' + chrome.i18n.getMessage('Account'), value: TYPE.SOLANA },
+    { label: 'Arweave ' + chrome.i18n.getMessage('Account'), value: TYPE.ARWEAVE }
   ]
 
   useEffect(() => {

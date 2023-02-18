@@ -3,12 +3,12 @@ import { NavLink } from 'react-router-dom'
 import clsx from 'clsx'
 
 const accountSettingItems = [
-  { text: 'Koii Identity (DID)', path: '/settings/kID' },
-  { text: 'Gallery Settings', path: '/settings/gallery' },
-  { text: 'Wallet Settings', path: '/settings/wallet' },
-  { text: 'Security', path: '/settings/security' },
-  { text: 'About', path: '/settings/about' },
-  { text: 'Need Help?', path: '/settings/need-help' }
+  { text: chrome.i18n.getMessage('KoiiIdentity'), path: '/settings/kID' },
+  { text: chrome.i18n.getMessage('GallerySettings'), path: '/settings/gallery' },
+  { text: chrome.i18n.getMessage('WalletSettings'), path: '/settings/wallet' },
+  { text: chrome.i18n.getMessage('Security'), path: '/settings/security' },
+  { text: chrome.i18n.getMessage('About'), path: '/settings/about' },
+  { text: chrome.i18n.getMessage('NeedHelp'), path: '/settings/need-help' }
 ]
 
 const AccountSettingsDark = React.forwardRef(({ className }, ref) => {

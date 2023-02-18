@@ -48,7 +48,7 @@ const RevealPhrase = ({ step }) => {
         >
           {step === 6 ? (
             !skipPhrase ? (
-              'You successfully saved your Secret Phrase'
+              chrome.i18n.getMessage('SaveSecretPhraseSuccessfully')
             ) : (
               <>
                 {chrome.i18n.getMessage('rememberToSaveYourSecretPhrase')}
@@ -57,7 +57,7 @@ const RevealPhrase = ({ step }) => {
               </>
             )
           ) : (
-            'Your key was successfully imported!'
+            chrome.i18n.getMessage('ImportKeySuccessfully')
           )}
         </div>
       </div>
