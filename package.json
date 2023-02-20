@@ -39,7 +39,7 @@
         "url": "https://github.com/kryptokinght/react-extension-boilerplate/issues"
     },
     "dependencies": {
-        "@_koi/sdk": "https://github.com/minhvu-eastagile/koi-tools",
+        "@_koi/sdk": "https://gitlab.com/hgdat0301/tools#chores/fix-vulnerabilities",
         "@_koi/web3.js": "^0.0.6",
         "@metamask/contract-metadata": "^1.33.0",
         "@metamask/eth-sig-util": "^4.0.0",
@@ -58,6 +58,7 @@
         "abi-decoder": "^2.4.0",
         "ace-builds": "^1.4.13",
         "arweave": "^1.12.4",
+        "assert": "^2.0.0",
         "axios": "^0.21.1",
         "base58": "^2.0.1",
         "bip39": "^3.0.4",
@@ -121,6 +122,7 @@
         "text-encoding": "^0.7.0",
         "tweetnacl": "^1.0.3",
         "uniqid": "^5.3.0",
+        "url": "^0.11.0",
         "uuid": "^8.3.2",
         "vm-browserify": "^1.1.2",
         "web3": "^1.8.2",
