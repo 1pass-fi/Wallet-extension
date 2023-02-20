@@ -109,8 +109,8 @@ const ActivityRow = ({
           >
             <ViewBlockIcon className="pr-1.375" />
             {network === ETH_NETWORK_PROVIDER.MAINNET || network === ETH_NETWORK_PROVIDER.GOERLI
-              ? 'Etherscan'
-              : 'Explore Block'}
+              ? chrome.i18n.getMessage('Etherscan')
+              : chrome.i18n.getMessage('ExploreBlock')}
           </a>
         </td>
       ) : (

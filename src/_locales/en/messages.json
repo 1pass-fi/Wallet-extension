@@ -566,6 +566,9 @@
   "EstimatedCosts": {
     "message": "Estimated Costs:"
   },
+  "Etherscan": {
+    "message": "Etherscan"
+  },
   "Events": {
     "message": "Events"
   },
@@ -1073,6 +1076,9 @@
   "PenAndPaper": {
     "message": "Do you have a"
   },
+  "Pending": {
+    "message": "Pending"
+  },
   "PendingTransaction": {
     "message": "Pending Transaction"
   },
@@ -1093,6 +1099,9 @@
   },
   "PRIVATE": {
     "message": "PRIVATE"
+  },
+  "Processing": {
+    "message": "Processing"
   },
   "ProfileImage": {
     "message": "PROFILE IMAGE"

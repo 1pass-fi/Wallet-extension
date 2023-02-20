@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import clsx from 'clsx'
-import { ETH_NETWORK_PROVIDER, MAX_RETRIED,PATH, URL } from 'constants/koiConstants'
+import { ETH_NETWORK_PROVIDER, MAX_RETRIED, PATH, URL } from 'constants/koiConstants'
 import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-bg-white.svg'
 import ViewBlockIcon from 'img/v2/view-block.svg'
@@ -85,7 +85,9 @@ const TransactionRow = ({
           className="flex text-xs text-turquoiseBlue underline font-semibold leading-5"
         >
           <ViewBlockIcon className="pr-1.375" />
-          {displayInfo.tokenType === 'ETH' ? 'Etherscan' : 'Explore Block'}
+          {displayInfo.tokenType === 'ETH'
+            ? chrome.i18n.getMessage('Etherscan')
+            : chrome.i18n.getMessage('ExploreBlock')}
         </a>
       </td>
     </tr>

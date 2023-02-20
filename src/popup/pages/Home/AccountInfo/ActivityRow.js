@@ -183,7 +183,11 @@ const ActivityRow = ({
                 >
                   <ViewBlockIconNew style={{ width: '19px', height: '18px' }} />
 
-                  {!pending ? 'Explore Block' : isProcessing ? 'Processing' : 'Pending'}
+                  {!pending
+                    ? chrome.i18n.getMessage('ExploreBlock')
+                    : isProcessing
+                      ? chrome.i18n.getMessage('Processing')
+                      : chrome.i18n.getMessage('Pending')}
                 </a>
               ) : (
                 <div
