@@ -324,7 +324,7 @@ const KidPage = () => {
     const pattern = /^[A-Za-z0-9]+$/
     const available = await checkAvailable(kID)
     if (!kID) {
-      setFieldError((prev) => ({ ...prev, kid: 'kID field must be filled in' }))
+      setFieldError((prev) => ({ ...prev, kid: chrome.i18n.getMessage('KIDMustBeFilled') }))
       dispatch(setLoaded)
       setDisableUpdateKID(false)
       kidInput.current.scrollIntoView()
@@ -332,7 +332,10 @@ const KidPage = () => {
     }
 
     if (!pattern.test(kID)) {
-      setFieldError((prev) => ({ ...prev, kid: 'Please try a kID without special characters' }))
+      setFieldError((prev) => ({
+        ...prev,
+        kid: chrome.i18n.getMessage('KIDWithoutSpecialCharacters')
+      }))
       dispatch(setLoaded)
       setDisableUpdateKID(false)
       return
@@ -341,7 +344,7 @@ const KidPage = () => {
     if (kID.length < 5) {
       setFieldError((prev) => ({
         ...prev,
-        kid: 'This username is unavailable, please try a different one'
+        kid: chrome.i18n.getMessage('KIDUnavailableUsername')
       }))
       dispatch(setLoaded)
       setDisableUpdateKID(false)
@@ -351,7 +354,7 @@ const KidPage = () => {
     if (!available && oldkID !== kID) {
       setFieldError((prev) => ({
         ...prev,
-        kid: 'This username is unavailable, please try a different one'
+        kid: chrome.i18n.getMessage('KIDUnavailableUsername')
       }))
       dispatch(setLoaded)
       setDisableUpdateKID(false)
@@ -360,7 +363,7 @@ const KidPage = () => {
     }
 
     if (!userKID.name) {
-      setFieldError((prev) => ({ ...prev, name: 'Name field must be filled in' }))
+      setFieldError((prev) => ({ ...prev, name: chrome.i18n.getMessage('NameMustBeFilled') }))
       dispatch(setLoaded)
       setDisableUpdateKID(false)
       kidInput.current.scrollIntoView()
@@ -368,7 +371,7 @@ const KidPage = () => {
     }
 
     if (!userKID.description) {
-      setFieldError((prev) => ({ ...prev, description: 'Description field must be filled in' }))
+      setFieldError((prev) => ({ ...prev, description: chrome.i18n.getMessage('DescriptionMustBeFilled') }))
       dispatch(setLoaded)
       setDisableUpdateKID(false)
       descriptionInput.current.scrollIntoView()
@@ -470,7 +473,7 @@ const KidPage = () => {
 
   return (
     <div className="kid-page-wrapper">
-      <Prompt when={!disableUpdateKID} message="Are you sure you want to leave this page?"></Prompt>
+      <Prompt when={!disableUpdateKID} message={chrome.i18n.getMessage('LeavePageConfirmationMsg')}></Prompt>
       <div ref={kidInput} className="title-section">
         <div className="title-section__header-group">
           <IDCardIcon />
@@ -539,7 +542,7 @@ const KidPage = () => {
             <KidInputField
               label={chrome.i18n.getMessage('Name')}
               isRequired={true}
-              description="or pseudonym"
+              description={chrome.i18n.getMessage('orPseudonym')}
               value={userKID.name}
               setValue={onChangeUserInfo}
               error={fieldError.name}
@@ -547,7 +550,7 @@ const KidPage = () => {
             />
           </div>
           <div className="kid-input__country">
-            <div className="kid-input__country__label">Country</div>
+            <div className="kid-input__country__label">{chrome.i18n.getMessage('Country')}</div>
             <DropDown
               options={countriesList}
               value={userKID.country}
@@ -563,7 +566,7 @@ const KidPage = () => {
             <KidInputField
               label={chrome.i18n.getMessage('Pronouns')}
               isRequired={false}
-              example="For example: 'she/her' or 'they/them'"
+              example={chrome.i18n.getMessage('PronounsExample')}
               value={userKID.pronouns}
               setValue={onChangeUserInfo}
               disabled={isPending}
@@ -765,7 +768,7 @@ const KidPage = () => {
           <div className="confirm-did-modal w-full h-full">
             {<ModalBackground className="absolute top-16.75 left-0" />}
             <div className="title">
-              {!confirmed ? 'Confirm your DID' : 'Decentralized ID Confirmed'}
+              {!confirmed ? chrome.i18n.getMessage('ConfirmDID') : chrome.i18n.getMessage('DecentralizedIDConfirmed')}
               <CloseIconBlue onClick={() => setShowConfirmModal(false)} className="close-icon" />
             </div>
             <div className={clsx('content ml-56', !hadData ? 'mt-10' : 'mt-16')}>

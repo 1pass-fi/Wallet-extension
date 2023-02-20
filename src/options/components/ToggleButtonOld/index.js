@@ -15,7 +15,11 @@ export default ({ value, setValue }) => {
         defaultChecked={value}
         onChange={onToggle}
       />
-      {value ? <span className="on">ON</span> : <span className="off">OFF</span>}
+      {value ? (
+        <span className="on">{chrome.i18n.getMessage('ON')}</span>
+      ) : (
+        <span className="off">{chrome.i18n.getMessage('OFF')}</span>
+      )}
       <div className={`slider round ${value ? 'checked' : ''}`}></div>
     </label>
   )

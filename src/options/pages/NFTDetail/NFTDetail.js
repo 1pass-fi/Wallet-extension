@@ -211,7 +211,7 @@ const NFTDetail = () => {
                     handleUpdateNft={handleUpdateNft}
                   /> */}
                   </div>
-                  {`Registered: ${formatDatetime(nft.createdAt)}`}
+                  {`${chrome.i18n.getMessage('Registered')}: ${formatDatetime(nft.createdAt)}`}
                 </div>
               )}
 

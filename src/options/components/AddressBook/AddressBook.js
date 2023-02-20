@@ -167,7 +167,7 @@ const AddressBook = () => {
     const newAddress = {
       name: didContact.state.name,
       notes: didContact.state.description,
-      didName: 'DID link',
+      didName: chrome.i18n.getMessage('AddressBookDIDLink'),
       didValue: didContact.didValue,
       avatarUrl: `https://arweave.net/${didContact.state.picture}`,
       addresses: [

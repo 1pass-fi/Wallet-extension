@@ -116,7 +116,7 @@ const AddressDropdown = ({ accounts = [], onChange, type }) => {
         }
       })}
       <div className="different-address" onClick={() => onChange({})}>
-        <div className="name">Enter a different address...</div>
+        <div className="name">{chrome.i18n.getMessage('EnterDifferentAddress')}...</div>
       </div>
     </div>
   )

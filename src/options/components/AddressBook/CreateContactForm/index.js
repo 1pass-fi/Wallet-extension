@@ -24,7 +24,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
   const [userInfo, setUserInfo] = useState({
     name: '',
     notes: '',
-    didName: 'DID link',
+    didName: chrome.i18n.getMessage('AddressBookDIDLink'),
     didValue: ''
   })
 

@@ -5,6 +5,36 @@
   "About": {
     "message": "About"
   },
+  "Version": {
+    "message": "Version"
+  },
+  "Find": {
+    "message": "Find"
+  },
+  "TermsOfUse": {
+    "message": "Terms of Use"
+  },
+  "PrivacyPolicyHere": {
+    "message": "Privacy Policy here."
+  },
+  "PrivacyPolicy": {
+    "message": "Privacy Policy."
+  },
+  "Possessive": {
+    "message": "'s'"
+  },
+  "Notes": {
+    "message": "Notes"
+  },
+  "See": {
+    "message": "See"
+  },
+  "VersionNotesMsg": {
+    "message": "See the details about the latest release."
+  },
+  "VersionNotes": {
+    "message": "Version Notes"
+  },
   "Account": {
     "message": "Account"
   },
@@ -76,6 +106,9 @@
   },
   "AddressLc": {
     "message": "Address"
+  },
+  "TheKOIINetwork": {
+    "message": "The KOII network"
   },
   "AddToken": {
     "message": "Add Token"
@@ -182,6 +215,15 @@
   "Chains": {
     "message": "Chains"
   },
+  "AndThe": {
+    "message": "and the"
+  },
+  "CheckOut": {
+    "message": "Check out"
+  },
+  "NFTLeaderBoard": {
+    "message": "NFT leaderboard"
+  },
   "ChangeMyPassword": {
     "message": "Change My Password"
   },
@@ -241,6 +283,9 @@
   },
   "Confirm": {
     "message": "Confirm"
+  },
+  "ConfirmDID": {
+    "message": "Confirm your DID"
   },
   "ConfirmDIDProfile": {
     "message": "Confirm your personalized Decentralized ID profile."
@@ -329,6 +374,9 @@
   "Cost": {
     "message": "Cost"
   },
+  "Country": {
+    "message": "Country"
+  },
   "CoverImage": {
     "message": "COVER IMAGE"
   },
@@ -410,6 +458,9 @@
   "DappConnectionText": {
     "message": "Dapp Connections: "
   },
+  "DecentralizedIDConfirmed": {
+    "message": "Decentralized ID Confirmed"
+  },
   "DecentralizedIdentity": {
     "message": "Decentralized Identity"
   },
@@ -439,6 +490,9 @@
   },
   "Description": {
     "message": "Description"
+  },
+  "DescriptionMustBeFilled": {
+    "message": "Description field must be filled in"
   },
   "DescriptionRequired": {
     "message": "Description cannot be empty"
@@ -551,6 +605,9 @@
   "EnterCurrentPassword": {
     "message": "Enter Current Password"
   },
+  "EnterDifferentAddress": {
+    "message": "Enter a different address"
+  },
   "EnterFinniePassword": {
     "message": "Enter Finnie Password:"
   },
@@ -640,6 +697,9 @@
   },
   "FromLc": {
     "message": "From"
+  },
+  "website": {
+    "message": "website"
   },
   "GALLERY": {
     "message": "GALLERY"
@@ -839,6 +899,15 @@
   "kidLinkAccountTitlePh": {
     "message": "Label e.g. “Website”"
   },
+  "KIDMustBeFilled": {
+    "message": "kID field must be filled in"
+  },
+  "KIDUnavailableUsername": {
+    "message": "This username is unavailable, please try a different one"
+  },
+  "KIDWithoutSpecialCharacters": {
+    "message": "Please try a kID without special characters"
+  },
   "KoiiIdentity": {
     "message": "Koii Identity (DID)"
   },
@@ -856,6 +925,9 @@
   },
   "LearnMore": {
     "message": "Learn more"
+  },
+  "LeavePageConfirmationMsg": {
+    "message": "Are you sure you want to leave this page?"
   },
   "LetsGetStarted": {
     "message": "Let's get started."
@@ -928,6 +1000,9 @@
   },
   "Name": {
     "message": "Name"
+  },
+  "NameMustBeFilled": {
+    "message": "Name field must be filled in"
   },
   "NeedHelp": {
     "message": "Need Help?"
@@ -1034,6 +1109,9 @@
   "Origin": {
     "message": "Origin"
   },
+  "orPseudonym": {
+    "message": "or pseudonym"
+  },
   "otherwiseYouCouldLoseAnytokensOrAssets": {
     "message": "Otherwise, you could lose any tokens or assets."
   },
@@ -1112,6 +1190,9 @@
   "Pronouns": {
     "message": "Pronouns"
   },
+  "PronounsExample": {
+    "message": "For example: 'she/her' or 'they/them'"
+  },
   "Provide": {
     "message": "Provide"
   },
@@ -1177,6 +1258,9 @@
   },
   "reEnterYourFinniePassword": {
     "message": "Re-enter your Finnie password so we can securely store your new key."
+  },
+  "Registered": {
+    "message": "Registered"
   },
   "registerNFTError": {
     "message": "Register NFT error"
