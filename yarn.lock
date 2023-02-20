@@ -9,9 +9,9 @@
   dependencies:
     smartweave "^0.4.46"
 
-"@_koi/sdk@https://gitlab.com/hgdat0301/tools#chores/fix-vulnerabilities":
+"@_koi/sdk@https://github.com/DatHG/tools-v2":
   version "2.4.13"
-  resolved "https://gitlab.com/hgdat0301/tools#dd30034fb95cdcc2e767c9cb9a6cc10afc3068e5"
+  resolved "https://github.com/DatHG/tools-v2#8eb6be6be7f1dacb28d8c11afc7a50a28ecc1d39"
   dependencies:
     "@_koi/kohaku" "^1.1.1"
     "@_koi/web3.js" "^0.0.6"

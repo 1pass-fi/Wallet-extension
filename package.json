@@ -39,7 +39,7 @@
         "url": "https://github.com/kryptokinght/react-extension-boilerplate/issues"
     },
     "dependencies": {
-        "@_koi/sdk": "https://gitlab.com/hgdat0301/tools#chores/fix-vulnerabilities",
+        "@_koi/sdk": "https://github.com/DatHG/tools-v2",
         "@_koi/web3.js": "^0.0.6",
         "@metamask/contract-metadata": "^1.33.0",
         "@metamask/eth-sig-util": "^4.0.0",
