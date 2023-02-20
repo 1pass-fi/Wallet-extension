@@ -39,7 +39,7 @@
         "url": "https://github.com/kryptokinght/react-extension-boilerplate/issues"
     },
     "dependencies": {
-        "@_koi/sdk": "https://github.com/DatHG/tools-v2",
+        "@_koi/sdk": "https://gitlab.com/koii-network/tools#build",
         "@_koi/web3.js": "^0.0.6",
         "@metamask/contract-metadata": "^1.33.0",
         "@metamask/eth-sig-util": "^4.0.0",
@@ -57,6 +57,7 @@
         "@xstate/react": "^2.0.1",
         "abi-decoder": "^2.4.0",
         "ace-builds": "^1.4.13",
+        "add": "^2.0.6",
         "arweave": "^1.12.4",
         "assert": "^2.0.0",
         "axios": "^0.21.1",
@@ -91,7 +92,7 @@
         "pnp-webpack-plugin": "^1.7.0",
         "postcss-flexbugs-fixes": "4.2.1",
         "postcss-loader": "4.3.0",
-        "postcss-preset-env": "6.7.1",
+        "postcss-preset-env": "^8.0.1",
         "postcss-safe-parser": "4.0.1",
         "prop-types": "^15.6.2",
         "react": "^16.7.0",
@@ -129,7 +130,8 @@
         "webextension-polyfill": "^0.3.1",
         "xmlhttprequest": "^1.8.0",
         "xmlhttprequest-ssl": "https://github.com/longphamea/node-XMLHttpRequest",
-        "xstate": "^4.30.3"
+        "xstate": "^4.30.3",
+        "yarn": "^1.22.19"
     },
     "browserslist": [
         ">0.2%",
@@ -212,13 +214,13 @@
         "jest-webextension-mock": "^3.8.6",
         "mini-css-extract-plugin": "^2.7.2",
         "optimize-css-assets-webpack-plugin": "^6.0.1",
-        "postcss": "^7",
+        "postcss": "^8.4.21",
         "process": "^0.11.10",
         "puppeteer": "^19.6.3",
         "sass-loader": "7.1.0",
         "sinon": "^15.0.1",
         "style-loader": "2.0.0",
-        "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+        "tailwindcss": "2.2.14",
         "terser-webpack-plugin": "4.2.3",
         "ts-loader": "~8.2.0",
         "tsconfig-paths-webpack-plugin": "^4.0.0",

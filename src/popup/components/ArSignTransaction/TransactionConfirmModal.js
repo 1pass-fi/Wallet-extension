@@ -100,7 +100,8 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     rawValue,
     customTokenRecipient,
     setShowReceipt,
-    totalFee
+    totalFee,
+    setTxId
   })
 
   const recipient = useMemo(() => {
