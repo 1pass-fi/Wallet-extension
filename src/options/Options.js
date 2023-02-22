@@ -3,6 +3,7 @@ import ReactNotification from 'react-notifications-component'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, withRouter } from 'react-router-dom'
 import { Route, Switch } from 'react-router-dom'
+import setupLocale from '_locales'
 import find from 'lodash/find'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
@@ -45,6 +46,8 @@ import HasArweave from 'options/shared/hasArweave'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import storage from 'services/storage'
+
+import { setText } from './actions/text'
 
 import 'react-notifications-component/dist/theme.css'
 
@@ -106,6 +109,12 @@ const Options = () => {
   */
   useEffect(() => {
     const loadWallets = async () => {
+      /* load locales */
+      await (async () => {
+        const t = await setupLocale()
+        dispatch(setText(t))
+      })()
+
       dispatch(setIsLoading)
       const allAccounts = await dispatch(loadAllAccounts()) // will load default account also
       const _isLocked = await backgroundRequest.wallet.getLockState()
@@ -161,7 +170,8 @@ const Options = () => {
           dispatch(setDefaultAccount(activatedAccount))
         }
 
-        let activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
+        let activatedEthereumAccountAddress =
+          await storage.setting.get.activatedEthereumAccountAddress()
         if (!isEmpty(activatedEthereumAccountAddress)) {
           let activatedEthereumAccount = await popupAccount.getAccount({
             address: activatedEthereumAccountAddress
@@ -170,7 +180,8 @@ const Options = () => {
           dispatch(setDefaultAccount(activatedEthereumAccount))
         }
 
-        let activatedSolanaAccountAddress = await storage.setting.get.activatedSolanaAccountAddress()
+        let activatedSolanaAccountAddress =
+          await storage.setting.get.activatedSolanaAccountAddress()
         if (!isEmpty(activatedSolanaAccountAddress)) {
           let activatedSolanaAccount = await popupAccount.getAccount({
             address: activatedSolanaAccountAddress
@@ -211,7 +222,8 @@ const Options = () => {
       dispatch(setDefaultAccount(activatedAccount))
     }
 
-    let activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
+    let activatedEthereumAccountAddress =
+      await storage.setting.get.activatedEthereumAccountAddress()
     if (!isEmpty(activatedEthereumAccountAddress)) {
       let activatedEthereumAccount = await popupAccount.getAccount({
         address: activatedEthereumAccountAddress

@@ -17,6 +17,7 @@ import loading from './loading'
 import notification from './notification'
 import price from './price'
 import settings from './settings'
+import text from './text'
 import warning from './warning'
 
 export default combineReducers({
@@ -37,5 +38,6 @@ export default combineReducers({
   activityNotifications,
   settings,
   assetsSettings,
-  activatedChain
+  activatedChain,
+  text
 })

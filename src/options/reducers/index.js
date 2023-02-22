@@ -15,6 +15,7 @@ import notificationsData from './notifications'
 import onboarding from './onboarding'
 import quickNotification from './quickNotification'
 import selectedNftIds from './selectedNftIds'
+import text from './text'
 import walletLoaded from './walletLoaded'
 
 export default combineReducers({
@@ -33,5 +34,6 @@ export default combineReducers({
   selectedNftIds,
   editingCollectionId,
   newAddress,
-  walletLoaded
+  walletLoaded,
+  text
 })
