@@ -52,5 +52,5 @@
     "script-src": "'self' 'unsafe-eval''",
     "object-src": "''self"
   },
-  "default_locale": "vi"
+  "default_locale": "en"
 }

@@ -5,36 +5,6 @@
   "About": {
     "message": "About"
   },
-  "Version": {
-    "message": "Version"
-  },
-  "Find": {
-    "message": "Find"
-  },
-  "TermsOfUse": {
-    "message": "Terms of Use"
-  },
-  "PrivacyPolicyHere": {
-    "message": "Privacy Policy here."
-  },
-  "PrivacyPolicy": {
-    "message": "Privacy Policy."
-  },
-  "Possessive": {
-    "message": "'s'"
-  },
-  "Notes": {
-    "message": "Notes"
-  },
-  "See": {
-    "message": "See"
-  },
-  "VersionNotesMsg": {
-    "message": "See the details about the latest release."
-  },
-  "VersionNotes": {
-    "message": "Version Notes"
-  },
   "Account": {
     "message": "Account"
   },
@@ -107,9 +77,6 @@
   "AddressLc": {
     "message": "Address"
   },
-  "TheKOIINetwork": {
-    "message": "The KOII network"
-  },
   "AddToken": {
     "message": "Add Token"
   },
@@ -130,6 +97,9 @@
   },
   "AmountLc": {
     "message": "Amount"
+  },
+  "AndThe": {
+    "message": "and the"
   },
   "AnNFT": {
     "message": "an NFT"
@@ -215,17 +185,11 @@
   "Chains": {
     "message": "Chains"
   },
-  "AndThe": {
-    "message": "and the"
+  "ChangeMyPassword": {
+    "message": "Change My Password"
   },
   "CheckOut": {
     "message": "Check out"
-  },
-  "NFTLeaderBoard": {
-    "message": "NFT leaderboard"
-  },
-  "ChangeMyPassword": {
-    "message": "Change My Password"
   },
   "CheckOutThe": {
     "message": "Check out the"
@@ -677,6 +641,9 @@
   "Filters": {
     "message": "Filters"
   },
+  "Find": {
+    "message": "Find"
+  },
   "finnieCurrentlyKeySupports": {
     "message": "Finnie currently supports Koii, Solana, Arweave and Ethereum keys. More key types are in the works."
   },
@@ -697,9 +664,6 @@
   },
   "FromLc": {
     "message": "From"
-  },
-  "website": {
-    "message": "website"
   },
   "GALLERY": {
     "message": "GALLERY"
@@ -1019,6 +983,9 @@
   "NFTAssets": {
     "message": "NFT Assets:"
   },
+  "NFTLeaderBoard": {
+    "message": "NFT leaderboard"
+  },
   "nftNotExistOnChain": {
     "message": "This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie."
   },
@@ -1066,6 +1033,9 @@
   },
   "notEnoughTokens": {
     "message": "Not enough tokens"
+  },
+  "Notes": {
+    "message": "Notes"
   },
   "NotGeneratedWithSecretPhrase": {
     "message": "This key was not <br>generated with a<br>secret phrase.<br>Keys can only<br>generate recovery<br>phrases at creation."
@@ -1174,6 +1144,15 @@
   },
   "pleaseChooseAccount": {
     "message": "Please choose Koii or Arweave account first!"
+  },
+  "Possessive": {
+    "message": "'s'"
+  },
+  "PrivacyPolicy": {
+    "message": "Privacy Policy."
+  },
+  "PrivacyPolicyHere": {
+    "message": "Privacy Policy here."
   },
   "PRIVATE": {
     "message": "PRIVATE"
@@ -1375,6 +1354,9 @@
   },
   "SecuritySettings": {
     "message": "Security Settings"
+  },
+  "See": {
+    "message": "See"
   },
   "SeeAccountBalancePermission": {
     "message": "See account balance"
@@ -1607,6 +1589,12 @@
   "TermsOfService": {
     "message": "Terms of Service"
   },
+  "TermsOfUse": {
+    "message": "Terms of Use"
+  },
+  "TheKOIINetwork": {
+    "message": "The KOII network"
+  },
   "theseSites": {
     "message": "these sites"
   },
@@ -1763,6 +1751,15 @@
   "useMyExistingKey": {
     "message": "Use my existing key."
   },
+  "Version": {
+    "message": "Version"
+  },
+  "VersionNotes": {
+    "message": "Version Notes"
+  },
+  "VersionNotesMsg": {
+    "message": "See the details about the latest release."
+  },
   "viewLc": {
     "message": " views"
   },
@@ -1783,6 +1780,9 @@
   },
   "WalletSettings": {
     "message": "Wallet Settings"
+  },
+  "website": {
+    "message": "website"
   },
   "welcomeTo": {
     "message": "Welcome to"
