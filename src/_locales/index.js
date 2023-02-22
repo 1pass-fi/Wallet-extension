@@ -3,22 +3,25 @@ import { getChromeStorage } from 'utils'
 
 import getFetchWithTimeout from './utils'
 
-export const getCurrentLocale = async () => {
+export const getCurrentLocaleFromStorage = async () => {
   let currentLocale = (await getChromeStorage('CURRENT_LOCALE'))['CURRENT_LOCALE']
-
-  if (!currentLocale) currentLocale = navigator.languages[0]
+  if (!currentLocale) currentLocale = ''
 
   return currentLocale
 }
 
 export const setupLocale = async (currentLocale) => {
-  console.log('currentLocale', currentLocale)
-  let currentLocaleMessages = currentLocale ? await fetchLocale(currentLocale) : {}
-  if (isEmpty(currentLocaleMessages)) {
-    currentLocaleMessages = await fetchLocale('en')
+  let currentLocaleMessages
+  if (!isEmpty(currentLocale)) {
+    currentLocaleMessages = await fetchLocale(currentLocale)
+    const defaultLocaleMessages = await fetchLocale('en') // TODO
+    const getMessage = (key) =>
+      !isEmpty(currentLocaleMessages[key])
+        ? currentLocaleMessages[key].message
+        : defaultLocaleMessages[key].message
+
+    window.chrome.i18n.getMessage = getMessage
   }
-  console.log('currentLocaleMessages', currentLocaleMessages)
-  return currentLocaleMessages
 }
 
 export async function fetchLocale(localeCode) {
@@ -26,7 +29,7 @@ export async function fetchLocale(localeCode) {
     const response = await getFetchWithTimeout(`./_locales/${localeCode}/messages.json`)
     return await response.json()
   } catch (error) {
-    console.error(`failed to fetch ${localeCode} locale because of ${error}`)
+    console.error(`Failed to fetch ${localeCode} locale because of ${error}`)
     return {}
   }
 }

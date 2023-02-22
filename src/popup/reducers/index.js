@@ -18,7 +18,6 @@ import locale from './locale'
 import notification from './notification'
 import price from './price'
 import settings from './settings'
-import text from './text'
 import warning from './warning'
 
 export default combineReducers({
@@ -40,6 +39,5 @@ export default combineReducers({
   settings,
   assetsSettings,
   activatedChain,
-  text,
   locale
 })

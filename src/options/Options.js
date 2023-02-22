@@ -3,7 +3,7 @@ import ReactNotification from 'react-notifications-component'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, withRouter } from 'react-router-dom'
 import { Route, Switch } from 'react-router-dom'
-import { getCurrentLocale, setupLocale } from '_locales'
+import { getCurrentLocaleFromStorage, setupLocale } from '_locales'
 import find from 'lodash/find'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
@@ -47,8 +47,6 @@ import HasArweave from 'options/shared/hasArweave'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import storage from 'services/storage'
-
-import { setText } from './actions/text'
 
 import 'react-notifications-component/dist/theme.css'
 
@@ -112,11 +110,9 @@ const Options = () => {
     const loadWallets = async () => {
       /* load locales */
       await (async () => {
-        const currentLocale = await getCurrentLocale()
+        const currentLocale = await getCurrentLocaleFromStorage()
         dispatch(setLocale(currentLocale))
-        const t = await setupLocale(currentLocale)
-        dispatch(setText(t))
-        console.log('option-locales', { currentLocale, t })
+        await setupLocale(currentLocale)
       })()
 
       dispatch(setIsLoading)

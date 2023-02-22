@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { getCurrentLocale, setupLocale } from '_locales'
+import { getCurrentLocaleFromStorage, setupLocale } from '_locales'
 // constants
 import { REQUEST } from 'constants/koiConstants'
 import isEmpty from 'lodash/isEmpty'
 import { setLocale } from 'popup/actions/locale'
-import { setText } from 'popup/actions/text'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 // services
@@ -46,11 +45,9 @@ const useLoadApp = ({
 
       /* load locales */
       await (async () => {
-        const currentLocale = await getCurrentLocale()
+        const currentLocale = await getCurrentLocaleFromStorage()
         dispatch(setLocale(currentLocale))
-        const t = await setupLocale(currentLocale)
-        dispatch(setText(t))
-        console.log('popup-locales', { currentLocale, t })
+        await setupLocale(currentLocale)
       })()
 
       const activatedChain = await storage.setting.get.activatedChain()

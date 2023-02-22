@@ -1,6 +1,6 @@
 import { SET_CURRENT_LOCALE } from 'popup/actions/types'
 
-const initialState = 'en'
+const initialState = ''
 
 export default (state = initialState, action) => {
   const { type, payload } = action
