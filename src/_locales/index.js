@@ -3,11 +3,16 @@ import { getChromeStorage } from 'utils'
 
 import getFetchWithTimeout from './utils'
 
-export default async function setupLocale() {
+export const getCurrentLocale = async () => {
   let currentLocale = (await getChromeStorage('CURRENT_LOCALE'))['CURRENT_LOCALE']
 
   if (!currentLocale) currentLocale = navigator.languages[0]
 
+  return currentLocale
+}
+
+export const setupLocale = async (currentLocale) => {
+  console.log('currentLocale', currentLocale)
   let currentLocaleMessages = currentLocale ? await fetchLocale(currentLocale) : {}
   if (isEmpty(currentLocaleMessages)) {
     currentLocaleMessages = await fetchLocale('en')

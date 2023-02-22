@@ -60,3 +60,5 @@ export const SET_NEW_ADDRESS = 'SET_NEW_ADDRESS'
 export const SET_WALLET_LOADED = 'SET_WALLET_LOADED'
 
 export const SET_TEXT = 'SET_TEXT'
+
+export const SET_CURRENT_LOCALE = 'SET_CURRENT_LOCALE'

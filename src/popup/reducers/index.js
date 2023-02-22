@@ -14,6 +14,7 @@ import defaultAccount from './defaultAccount'
 import error from './error'
 import koi from './koi'
 import loading from './loading'
+import locale from './locale'
 import notification from './notification'
 import price from './price'
 import settings from './settings'
@@ -39,5 +40,6 @@ export default combineReducers({
   settings,
   assetsSettings,
   activatedChain,
-  text
+  text,
+  locale
 })

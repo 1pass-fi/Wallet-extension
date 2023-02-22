@@ -3,7 +3,7 @@ import ReactNotification from 'react-notifications-component'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, withRouter } from 'react-router-dom'
 import { Route, Switch } from 'react-router-dom'
-import setupLocale from '_locales'
+import { getCurrentLocale, setupLocale } from '_locales'
 import find from 'lodash/find'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
@@ -13,6 +13,7 @@ import { setAssets } from 'options/actions/assets'
 import { setCollections } from 'options/actions/collections'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
+import { setLocale } from 'options/actions/locale'
 import { setNotifications } from 'options/actions/notifications'
 import { setWalletLoaded } from 'options/actions/walletLoaded'
 import AddressBook from 'options/components/AddressBook/AddressBook'
@@ -111,8 +112,11 @@ const Options = () => {
     const loadWallets = async () => {
       /* load locales */
       await (async () => {
-        const t = await setupLocale()
+        const currentLocale = await getCurrentLocale()
+        dispatch(setLocale(currentLocale))
+        const t = await setupLocale(currentLocale)
         dispatch(setText(t))
+        console.log('option-locales', { currentLocale, t })
       })()
 
       dispatch(setIsLoading)
