@@ -71,7 +71,9 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
 
       return address
     } catch (err) {
-      dispatch(setError(err.message))
+      dispatch(
+        setError(chrome.i18n.getMessage(err.message) || err.message)
+      )
     } finally {
       dispatch(setOnboardingProcessed)
     }

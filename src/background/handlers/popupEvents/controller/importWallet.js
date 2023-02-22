@@ -3,6 +3,7 @@ import helpers from 'background/helpers'
 import passworder from 'browser-passworder'
 // Constants
 import { TYPE } from 'constants/accountConstants'
+import { POPUP_CONTROLLER_ERROR } from 'constants/koiConstants'
 import { get, isEmpty, isString } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import { ArweaveAccount, EthereumAccount, K2Account, SolanaAccount } from 'services/account/Account'
@@ -111,7 +112,7 @@ export default async (payload, next) => {
     })
 
     if (accountExist) {
-      next({ error: chrome.i18n.getMessage('accountExist') })
+      next({ error: POPUP_CONTROLLER_ERROR.ACCOUNT_EXIST })
       return
     }
 

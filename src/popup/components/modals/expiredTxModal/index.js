@@ -48,7 +48,7 @@ const ExpiredTxModal = ({ onClose, txInfo, setError, setPendingTransactions, set
     } catch (err) {
       console.log(err.message)
       setIsLoading(false)
-      setError(err.message)
+      setError(chrome.i18n.getMessage(err.message) || err.message)
       onClose()
     }
   }

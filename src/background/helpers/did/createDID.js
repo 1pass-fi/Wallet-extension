@@ -1,5 +1,5 @@
 // constants
-import { DID_CONTRACT_ID } from 'constants/koiConstants'
+import { DID_CONTRACT_ID, POPUP_CONTROLLER_ERROR } from 'constants/koiConstants'
 import { backgroundAccount } from 'services/account'
 import { ArweaveAccount } from 'services/account/Account'
 // services
@@ -10,14 +10,14 @@ import didSchema from './schema'
 
 export default async (payload, account) => {
   if (!(account instanceof ArweaveAccount))
-    throw new Error(chrome.i18n.getMessage('didInvalidAccount'))
+    throw new Error(POPUP_CONTROLLER_ERROR.DID_INVALID_ACCOUNT)
   const ownerAddress = await account.get.address()
 
   let data = didSchema.validate(payload, ownerAddress)
 
   if (data.error) {
     console.log(data.error)
-    throw new Error(chrome.i18n.getMessage('didInvalidData'))
+    throw new Error(POPUP_CONTROLLER_ERROR.DID_INVALID_DATA)
   }
 
   data = data.value
@@ -70,7 +70,7 @@ export default async (payload, account) => {
 const deploySmartcontract = async (state, address) => {
   try {
     const { key } = await backgroundAccount.getCredentialByAddress(address)
-    if (!key) throw new Error(chrome.i18n.getMessage('didKeyNotFound'))
+    if (!key) throw new Error(POPUP_CONTROLLER_ERROR.DID_KEY_NOT_FOUND)
 
     return await smartweave.createContractFromTx(
       arweave,
@@ -84,6 +84,6 @@ const deploySmartcontract = async (state, address) => {
     )
   } catch (err) {
     console.error(err.message)
-    throw new Error(chrome.i18n.getMessage('didDeployContractError'))
+    throw new Error(POPUP_CONTROLLER_ERROR.DID_DEPLOY_CONTRACT)
   }
 }

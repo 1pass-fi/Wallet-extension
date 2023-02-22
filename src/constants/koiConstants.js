@@ -586,3 +586,17 @@ export const SOL_MESSAGE = {
   SOLANA_SIGN_TRANSACTION: 'solana_signTransaction',
   SOLANA_SIGN_MESSAGE: 'solana_signMessage'
 }
+
+export const POPUP_CONTROLLER_ERROR = {
+  ACCOUNT_EXIST: 'accountExist',
+  INVALID_CONTENT: 'invalidContent',
+  CREATE_TRANSACTION: 'createTransactionError',
+  SIGN_TRANSACTION: 'signTransactionError',
+  UPLOAD_NFT: 'uploadNFTError',
+  REGISTER_NFT: 'registerNFTError',
+  DID_INVALID_ACCOUNT: 'didInvalidAccount',
+  DID_INVALID_DATA: 'didInvalidData',
+  DID_KEY_NOT_FOUND: 'didKeyNotFound',
+  DID_DEPLOY_CONTRACT: 'didDeployContractError',
+  NOT_ENOUGH_AR_OR_KOII: 'notEnoughARorKoiiTokens'
+}

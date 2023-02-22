@@ -99,7 +99,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
     } catch (err) {
       console.error(err.message)
       // set Error
-      dispatch(setError(err.message))
+      dispatch(setError(chrome.i18n.getMessage(err.message) || err.message))
       dispatch(setLoaded)
       setDisableCreateNFT(false)
     }
