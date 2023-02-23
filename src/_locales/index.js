@@ -1,3 +1,4 @@
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import { getChromeStorage } from 'utils'
 
@@ -14,11 +15,12 @@ export const setupLocale = async (currentLocale) => {
   let currentLocaleMessages
   if (!isEmpty(currentLocale)) {
     currentLocaleMessages = await fetchLocale(currentLocale)
-    const defaultLocaleMessages = await fetchLocale('en') // TODO
-    const getMessage = (key) =>
-      !isEmpty(currentLocaleMessages[key])
-        ? currentLocaleMessages[key].message
-        : defaultLocaleMessages[key].message
+    const defaultLocaleMessages = await fetchLocale('en')
+    const getMessage = (key) => {
+      return !isEmpty(currentLocaleMessages[key])
+        ? get(currentLocaleMessages[key], 'message')
+        : get(defaultLocaleMessages[key], 'message')
+    }
 
     window.chrome.i18n.getMessage = getMessage
   }
