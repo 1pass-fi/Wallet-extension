@@ -615,7 +615,7 @@
     "message": "Chúng tôi chỉ có thể hiển thị tỷ giá hoán đổi cho các loại tiền tệ phi tài chính vào thời điểm này."
   },
   "filesMinted": {
-    "message": "Tệp để được đúc nấu:"
+    "message": "Tệp để được tạo:"
   },
   "filters": {
     "message": "Bộ lọc"
@@ -905,11 +905,11 @@
   "low": {
     "message": "Thấp"
   },
-  "map": {
-    "message": "Bản đồ"
+  "makeSureCorrectAddress": {
+    "message": "Vui lòng kiểm tra địa chỉ này có chính xác không. Hành động này không thể hoàn tác được."
   },
-  "max": {
-    "message": "Tối đa"
+  "makeSureCorrectAddressExportNFT": {
+    "message": "Vui lòng kiểm tra địa chỉ này có chính xác không. Một khi đã gửi, không có cách nào để hoàn tác giao dịch."
   },
   "maxFee": {
     "message": "Phí tối đa"
@@ -923,92 +923,92 @@
   "message": {
     "message": "Tin nhắn"
   },
-  "messageFailedToSend": {
-    "message": "Không gửi được tin nhắn"
+  "method": {
+    "message": "Phương pháp"
   },
-  "metaMask": {
-    "message": "MetaMask"
+  "mintCollectiblesLc": {
+    "message": "Tạo NFT mới"
   },
-  "min": {
-    "message": "phút"
+  "mostViewed": {
+    "message": "Xem nhiều nhất"
   },
-  "mint": {
-    "message": "Tạo mới"
+  "moveToTheNextWordLc": {
+    "message": "nút để di chuyển đến từ tiếp theo."
   },
-  "mintNewNFT": {
-    "message": "Tạo mới NFT"
+  "multipleWalletsSupport": {
+    "message": "Chúng tôi đã cập nhật phiên bản mới nhất của Finnie với nhiều ví và cầu nối Ethereum thú vị."
   },
-  "mintNewToken": {
-    "message": "Tạo mới Token"
+  "myKey": {
+    "message": "Khôi phục Khóa của tôi"
   },
-  "mintNFT": {
-    "message": "Tạo mới NFT"
-  },
-  "mintToken": {
-    "message": "Tạo mới Token"
-  },
-  "more": {
-    "message": "Thêm"
-  },
-  "mustEnter4DigitPIN": {
-    "message": "Nhập mã PIN 4 chữ số"
-  },
-  "mustEnterAPass": {
-    "message": "Phải nhập mật khẩu"
-  },
-  "mustEnterPIN": {
-    "message": "Phải nhập mã PIN"
-  },
-  "myAssets": {
-    "message": "Tài sản của tôi"
-  },
-  "myItems": {
-    "message": "Vật phẩm của tôi"
+  "myKeyLc": {
+    "message": "khôi phục khóa của tôi"
   },
   "name": {
     "message": "Tên"
   },
-  "nameYourNFT": {
-    "message": "Đặt tên cho NFT"
+  "nameMustBeFilled": {
+    "message": "Trường tên phải được điền vào"
+  },
+  "needHelp": {
+    "message": "Cần trợ giúp?"
+  },
+  "network": {
+    "message": "Mạng"
+  },
+  "newAddress": {
+    "message": "Địa chỉ mới"
   },
   "newPassword": {
     "message": "Mật khẩu mới"
   },
-  "next": {
-    "message": "Tiếp"
-  },
-  "nftImage": {
-    "message": "Hình ảnh NFT"
+  "nftAssets": {
+    "message": "Tài sản NFT"
   },
   "nftLeaderBoard": {
     "message": "Bảng xếp hạng NFT"
   },
-  "nftName": {
-    "message": "Tên NFT"
+  "nftNotExistOnChain": {
+    "message": "NFT này chưa được tạo! Thông thường trên Opensea, NFT sẽ được tạo lần đầu tiên khi được bán. Để sử dụng cầu nối, hãy tạo NFT của bạn trên Ethereum - hoặc bạn có thể tạo trực tiếp trên Arweave bằng Finnie."
   },
-  "nftSymbol": {
-    "message": "Biểu tượng NFT"
+  "nftOnItsWay": {
+    "message": "NFT sắp đến đích!"
   },
-  "nftTitle": {
+  "nftOnlyHave1ItemMinted": {
+    "message": "Nhiều NFT chỉ có 1 mục được tạo."
+  },
+  "nftTitleLabel": {
     "message": "Tiêu đề NFT"
   },
-  "no": {
-    "message": "Không"
+  "nftToAR": {
+    "message": "NFT của bạn đang trên đường đến Arweave!"
   },
-  "noActivities": {
-    "message": "Không có hoạt động nào"
+  "nftToETH": {
+    "message": "NFT của bạn đang trên đường đến Ethereum!"
   },
-  "noActivity": {
-    "message": "Không có hoạt động"
+  "noneSelect": {
+    "message": "-- Không chọn"
   },
-  "noAddress": {
-    "message": "Không có địa chỉ"
+  "notConnectedToAnySites": {
+    "message": "Không kết nối với bất kỳ trang web nào"
   },
-  "noAvailableData": {
-    "message": "Không có dữ liệu"
+  "notCostAnyFeesLc": {
+    "message": "không tốn phí nào"
   },
-  "noConnection": {
-    "message": "Không có kết nối"
+  "notEnoughARorKoiiTokens": {
+    "message": "Không đủ AR hoặc KOII"
+  },
+  "notEnoughARToken": {
+    "message": "Bạn không có đủ AR."
+  },
+  "notEnoughCharacters": {
+    "message": "Không đủ ký tự"
+  },
+  "notEnoughETHToken": {
+    "message": "Bạn không có đủ ETH."
+  },
+  "notEnoughFundsOrGas": {
+    "message": "Không đủ quỹ hoặc phí gas"
   },
   "notEnoughKoiiToken": {
     "message": "Bạn không có đủ KOII."
@@ -1058,11 +1058,11 @@
   "origin": {
     "message": "Nguồn"
   },
-  "notifications": {
-    "message": "Thông báo"
+  "orLc": {
+    "message": "hoặc"
   },
-  "noTokenYet": {
-    "message": "Chưa có Token nào"
+  "orPseudonymLc": {
+    "message": "hoặc bút danh"
   },
   "otherwiseYouCouldLoseAnyTokensOrAssets": {
     "message": "Nếu không bạn có thể sẽ bị mất tokens và tài sản."
@@ -1236,7 +1236,7 @@
     "message": "Hãy chắc chắn rằng bạn đã ghi chép lại 12 từ bí mật vào một tờ giấy."
   },
   "remindMeLater": {
-    "message": "Nhắc tôi sau."
+    "message": "Nhắc tôi sau"
   },
   "removeAccount": {
     "message": "Xóa tài khoản"
