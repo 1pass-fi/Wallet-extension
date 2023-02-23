@@ -57,7 +57,7 @@ const ShareCodeModal = ({ code, close }) => {
           {chrome.i18n.getMessage('earnAttentionRewardsMsg')}
         </div>
         <div className="mt-4 text-base font-bold leading-7">
-          {chrome.i18n.getMessage('ShareCode')}
+          {chrome.i18n.getMessage('shareCode')}
         </div>
         <div
           style={{ width: '386px', height: '32px' }}
@@ -70,7 +70,7 @@ const ShareCodeModal = ({ code, close }) => {
           <Button
             style={{ width: '200px', height: '40px' }}
             className="text-base"
-            text={isCopied ? chrome.i18n.getMessage('Copied') : chrome.i18n.getMessage('CopyCode')}
+            text={isCopied ? chrome.i18n.getMessage('copied') : chrome.i18n.getMessage('copyCode')}
             variant="indigo"
             icon={CopyIcon}
             size={'md'}
@@ -90,7 +90,7 @@ const ShareCodeModal = ({ code, close }) => {
           </div> */}
           <a
             href={`mailto:?subject=Use my Koii Friend Referral code&body=Use my code to get 1 free NFT upload on koi.rocks: \n${code}`}
-            title={chrome.i18n.getMessage('ShareByEmail')}
+            title={chrome.i18n.getMessage('shareByEmail')}
           >
             <MailIcon />
           </a>

@@ -73,7 +73,7 @@ const SignTypedDataV1 = ({ setError, setIsLoading }) => {
           style={{ height: '67px' }}
         >
           <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-            {chrome.i18n.getMessage('SigningMessage')}
+            {chrome.i18n.getMessage('signingMessage')}
           </div>
           <CloseIcon
             style={{ width: '30px', height: '30px' }}
@@ -97,14 +97,14 @@ const SignTypedDataV1 = ({ setError, setIsLoading }) => {
             style={{ width: '160px', height: '38px' }}
             onClick={onClose}
           >
-            {chrome.i18n.getMessage('Reject')}
+            {chrome.i18n.getMessage('reject')}
           </button>
           <button
             onClick={onSign}
             className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
             style={{ width: '160px', height: '38px' }}
           >
-            {chrome.i18n.getMessage('Sign')}
+            {chrome.i18n.getMessage('sign')}
           </button>
         </div>
       </div>

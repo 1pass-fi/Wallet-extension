@@ -129,35 +129,35 @@ const UploadNftForm = () => {
         <div ref={titleFieldRef}>
           <InputField
             className="my-1"
-            label={chrome.i18n.getMessage('UploadNFTTitleLabel')}
+            label={chrome.i18n.getMessage('uploadNFTTitleLabel')}
             value={nftContent.title}
             setValue={handleNftContentChange}
             required={true}
             name="title"
             error={errors.title}
-            placeholder={chrome.i18n.getMessage('UploadNFTTitlePlaceHolder')}
+            placeholder={chrome.i18n.getMessage('uploadNFTTitlePh')}
           />
         </div>
         <InputField
           className="my-1"
-          label={chrome.i18n.getMessage('Description')}
+          label={chrome.i18n.getMessage('description')}
           value={nftContent.description}
           setValue={handleNftContentChange}
           required={true}
           type="textarea"
           name="description"
           error={errors.description}
-          placeholder={chrome.i18n.getMessage('UploadNFTDescPlaceHolder')}
+          placeholder={chrome.i18n.getMessage('uploadNFTDescPh')}
           maxHeight={200}
         />
         <div className="my-1 flex flex-col w-full">
           <label htmlFor="tags" className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
-            {chrome.i18n.getMessage('Tags')}
+            {chrome.i18n.getMessage('tags')+','}
           </label>
           <input
             className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 upload-nft-tag-input"
             name="tags"
-            placeholder={chrome.i18n.getMessage('TagsPlaceHolder')}
+            placeholder={chrome.i18n.getMessage('tagsPh')}
             id="tags"
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
@@ -191,7 +191,7 @@ const UploadNftForm = () => {
             className="text-white ml-2 text-11px select-none"
             onClick={() => setNftContent((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
           >
-            {chrome.i18n.getMessage('ThisContentIs')}<span className="text-warning">{chrome.i18n.getMessage('ExplicitMsg')}</span>
+            {chrome.i18n.getMessage('thisContentIs')}<span className="text-warning">{chrome.i18n.getMessage('explicitMsg')}</span>
           </div>
         </div>
         {isEmpty(file) ? (
@@ -201,7 +201,7 @@ const UploadNftForm = () => {
               setFile={setFile}
               fileType={['image/*', 'video/*', 'audio/*']}
               className="w-full h-full"
-              description={chrome.i18n.getMessage('ClickToUploadNFT')}
+              description={chrome.i18n.getMessage('clickToUploadNFT')}
             />
           </div>
         ) : (
@@ -218,7 +218,7 @@ const UploadNftForm = () => {
         <Button
           onClick={handleCreateNFT}
           variant="light"
-          text={chrome.i18n.getMessage('CreateNFT')}
+          text={chrome.i18n.getMessage('createNFT')}
           className="text-sm"
         />
       </div>

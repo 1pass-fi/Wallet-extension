@@ -174,27 +174,27 @@ const ConnectScreen = ({
             <div className="text-indigo pt-10 tracking-finnieSpacing-wide px-6.5 mt-7">
               {isKoi && (
                 <div className="text-sm font-semibold leading-5 text-center mb-5.5">
-                  {chrome.i18n.getMessage('WelcomeToKoiiLeaderBoard')}
+                  {chrome.i18n.getMessage('welcomeToKoiiLeaderBoard')}
                 </div>
               )}
               <div className="text-xs font-normal leading-5">
-                {chrome.i18n.getMessage('ConnectWalletMsg')}
+                {chrome.i18n.getMessage('connectWalletMsg')}
                 <br></br>
-                {chrome.i18n.getMessage('ThisRequestWill')}{' '}
-                <span className="font-semibold">{chrome.i18n.getMessage('NotCostAnyFees')}</span>{' '}
-                {chrome.i18n.getMessage('or')}
-                {chrome.i18n.getMessage('InitiateATransaction')}. <br></br>
-                {chrome.i18n.getMessage('BySigning')}{' '}
+                {chrome.i18n.getMessage('thisRequestWill')}{' '}
+                <span className="font-semibold">{chrome.i18n.getMessage('notCostAnyFeesLc')}</span>{' '}
+                {chrome.i18n.getMessage('orLc')}
+                {chrome.i18n.getMessage('initiateATransaction')}. <br></br>
+                {chrome.i18n.getMessage('bySigning')}{' '}
                 <span className="text-success-700 underline cursor-pointer" onClick={goToTOU}>
-                  {chrome.i18n.getMessage('KOIITos')}
+                  {chrome.i18n.getMessage('koiiTos')}
                 </span>
                 <br></br>
-                {chrome.i18n.getMessage('AuthenticationStatus24Hours')}
+                {chrome.i18n.getMessage('authenticationStatus24Hours')}
               </div>
             </div>
             <div className="w-full text-indigo">
               <div className="mt-4 mb-3 leading-4 font-semibold text-xs text-center">
-                {chrome.i18n.getMessage('WalletAddress')}:
+                {chrome.i18n.getMessage('walletAddress')}:
               </div>
               <SelectWallet
                 accounts={accounts}
@@ -212,7 +212,7 @@ const ConnectScreen = ({
                 style={{ width: '160px', height: '38px' }}
                 data-testid="reject-wallet-button"
               >
-                {chrome.i18n.getMessage('Reject')}
+                {chrome.i18n.getMessage('reject')}
               </button>
               <button
                 disabled={isEmpty(checkedAddress)}
@@ -221,7 +221,7 @@ const ConnectScreen = ({
                 style={{ width: '160px', height: '38px' }}
                 data-testid="select-wallet-button"
               >
-                {chrome.i18n.getMessage('SelectWallet')}
+                {chrome.i18n.getMessage('selectWallet')}
               </button>
             </div>
           </>
@@ -240,7 +240,7 @@ const ConnectScreen = ({
                 }}
               />
               <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-                {chrome.i18n.getMessage('ConnectToSite')}
+                {chrome.i18n.getMessage('connectToSite')}
               </div>
               <CloseIcon
                 style={{ width: '30px', height: '30px' }}
@@ -256,7 +256,7 @@ const ConnectScreen = ({
                 style={{ width: '160px', height: '38px' }}
                 data-testid="reject-connect-button"
               >
-                {chrome.i18n.getMessage('Reject')}
+                {chrome.i18n.getMessage('reject')}
               </button>
               <button
                 onClick={() => handleOnClick(true)}
@@ -264,7 +264,7 @@ const ConnectScreen = ({
                 style={{ width: '160px', height: '38px' }}
                 data-testid="connect-button"
               >
-                {chrome.i18n.getMessage('Connect')}
+                {chrome.i18n.getMessage('connectUc')}
               </button>
             </div>
           </>
@@ -276,7 +276,7 @@ const ConnectScreen = ({
               style={{ height: '67px' }}
             >
               <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-                {chrome.i18n.getMessage('ConnectToSite')}
+                {chrome.i18n.getMessage('connectToSite')}
               </div>
             </div>
             <div className="mt-16.75">
@@ -292,11 +292,11 @@ const ConnectScreen = ({
                 style={{ width: '316px' }}
                 className="font-normal text-base text-center tracking-finnieSpacing-wide text-indigo"
               >
-                {chrome.i18n.getMessage('ConnectWalletMsgStart')} <br></br>
-                {chrome.i18n.getMessage('ConnectWalletMsgMiddle')}
-                <br></br> {chrome.i18n.getMessage('ConnectWalletMsgEnd')}
-                <br></br> {chrome.i18n.getMessage('SettingsMenu')} {'>'}{' '}
-                {chrome.i18n.getMessage('ConnectedSitesUc')}
+                {chrome.i18n.getMessage('connectWalletMsgStart')} <br></br>
+                {chrome.i18n.getMessage('connectWalletMsgMiddle')}
+                <br></br> {chrome.i18n.getMessage('connectWalletMsgEnd')}
+                <br></br> {chrome.i18n.getMessage('settingsMenuUc')} {'>'}{' '}
+                {chrome.i18n.getMessage('connectedSitesUc')}
               </div>
             </div>
             <button
@@ -310,7 +310,7 @@ const ConnectScreen = ({
               className="absolute bottom-7.25 px-4.5 bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
               style={{ width: '160px', height: '38px' }}
             >
-              {chrome.i18n.getMessage('OK')}
+              {chrome.i18n.getMessage('okUc')}
             </button>
           </>
         )}

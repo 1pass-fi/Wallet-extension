@@ -39,9 +39,9 @@ export default ({ value, setValue, disabled, handleUpdateNft }) => {
         disabled={sending}
       />
       {isPublic ? (
-        <span className="on">{chrome.i18n.getMessage('PUBLIC')}</span>
+        <span className="on">{chrome.i18n.getMessage('publicUc')}</span>
       ) : (
-        <span className="off">{chrome.i18n.getMessage('PRIVATE')}</span>
+        <span className="off">{chrome.i18n.getMessage('privateUc')}</span>
       )}
       <div
         className={clsx(

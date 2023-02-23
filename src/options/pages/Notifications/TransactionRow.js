@@ -86,8 +86,8 @@ const TransactionRow = ({
         >
           <ViewBlockIcon className="pr-1.375" />
           {displayInfo.tokenType === 'ETH'
-            ? chrome.i18n.getMessage('Etherscan')
-            : chrome.i18n.getMessage('ExploreBlock')}
+            ? chrome.i18n.getMessage('etherscan')
+            : chrome.i18n.getMessage('exploreBlock')}
         </a>
       </td>
     </tr>

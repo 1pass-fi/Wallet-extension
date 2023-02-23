@@ -11,7 +11,7 @@ export default () => {
 
   return (
     <div onClick={() => {history.push('/settings/k-id'); setShowProfilePictureModal(prev => !prev)}} className='profile-picture-modal'>
-      {chrome.i18n.getMessage('KoiiIdentity')}
+      {chrome.i18n.getMessage('koiiIdentity')}
     </div>
   )
 }

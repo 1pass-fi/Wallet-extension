@@ -10,7 +10,7 @@ const SuccessUploadNFT = () => {
   return (
     <div className='success-upload-modal'>
       <div className='description'>
-        Hooray! <b>{pendingNFTTitle}</b> {chrome.i18n.getMessage('UploadToARPermaweb')}
+        Hooray! <b>{pendingNFTTitle}</b> {chrome.i18n.getMessage('uploadToARPermaweb')}
       </div>
       <div></div>
     </div>

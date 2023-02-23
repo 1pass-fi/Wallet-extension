@@ -37,59 +37,59 @@ const TRANSFER_STEPS = {
 }
 
 const TITLES_ETH = {
-  1: <div className="title">{chrome.i18n.getMessage('TransferMediaToETH')}</div>,
-  2: <div className="title">{chrome.i18n.getMessage('ConfirmTransfer')}</div>,
-  3: <div className="title">{chrome.i18n.getMessage('NFTToETH')}</div>
+  1: <div className="title">{chrome.i18n.getMessage('transferMediaToETH')}</div>,
+  2: <div className="title">{chrome.i18n.getMessage('confirmTransfer')}</div>,
+  3: <div className="title">{chrome.i18n.getMessage('nftToETH')}</div>
 }
 
 const TITLES_AR = {
-  1: <div className="title">{chrome.i18n.getMessage('TransferMediaToAR')}</div>,
-  2: <div className="title">{chrome.i18n.getMessage('ConfirmTransfer')}</div>,
-  3: <div className="title">{chrome.i18n.getMessage('NFTToAR')}</div>
+  1: <div className="title">{chrome.i18n.getMessage('transferMediaToAR')}</div>,
+  2: <div className="title">{chrome.i18n.getMessage('confirmTransfer')}</div>,
+  3: <div className="title">{chrome.i18n.getMessage('nftToAR')}</div>
 }
 
 const DESCRIPTIONS_ETH = {
   1: (
     <div className="description">
-      {chrome.i18n.getMessage('ExportNFTToETHDesc1')}&nbsp;
+      {chrome.i18n.getMessage('exportNFTToETHDesc1')}&nbsp;
       <a href="#" className="link">
-        {chrome.i18n.getMessage('LearnMore')}
+        {chrome.i18n.getMessage('learnMore')}
       </a>
       .
     </div>
   ),
   2: (
     <div className="description">
-      {chrome.i18n.getMessage('ExportNFTToETHDesc1')}&nbsp;
+      {chrome.i18n.getMessage('exportNFTToETHDesc1')}&nbsp;
       <a href="#" className="link">
-        {chrome.i18n.getMessage('LearnMore')}
+        {chrome.i18n.getMessage('learnMore')}
       </a>
       .
     </div>
   ),
-  3: <div className="description">{chrome.i18n.getMessage('ExportNFTToETHDesc2')}</div>
+  3: <div className="description">{chrome.i18n.getMessage('exportNFTToETHDesc2')}</div>
 }
 
 const DESCRIPTIONS_AR = {
   1: (
     <div className="description">
-      {chrome.i18n.getMessage('ExportNFTToARDesc1')}&nbsp;
+      {chrome.i18n.getMessage('exportNFTToARDesc1')}&nbsp;
       <a href="#" className="link">
-        {chrome.i18n.getMessage('LearnMore')}
+        {chrome.i18n.getMessage('learnMore')}
       </a>
       .
     </div>
   ),
   2: (
     <div className="description">
-      {chrome.i18n.getMessage('ExportNFTToARDesc1')}&nbsp;
+      {chrome.i18n.getMessage('exportNFTToARDesc1')}&nbsp;
       <a href="#" className="link">
-        {chrome.i18n.getMessage('LearnMore')}
+        {chrome.i18n.getMessage('learnMore')}
       </a>
       .
     </div>
   ),
-  3: <div className="description">{chrome.i18n.getMessage('ExportNFTToARDesc2')}</div>
+  3: <div className="description">{chrome.i18n.getMessage('exportNFTToARDesc2')}</div>
 }
 
 const AddressDropdown = ({ accounts = [], onChange, type }) => {
@@ -116,7 +116,7 @@ const AddressDropdown = ({ accounts = [], onChange, type }) => {
         }
       })}
       <div className="different-address" onClick={() => onChange({})}>
-        <div className="name">{chrome.i18n.getMessage('EnterDifferentAddress')}...</div>
+        <div className="name">{chrome.i18n.getMessage('enterDifferentAddress')}...</div>
       </div>
     </div>
   )
@@ -344,7 +344,7 @@ export default ({ info, onClose, type }) => {
     }
 
     if (!numberTransfer || numberTransfer == 0) {
-      dispatch(setError(chrome.i18n.getMessage('emptyNumberofTransferError')))
+      dispatch(setError(chrome.i18n.getMessage('emptyNumberOfTransferError')))
       return
     }
 
@@ -426,13 +426,13 @@ export default ({ info, onClose, type }) => {
       <div className="transfer-wallet-modal">
         {locked === undefined && type === TYPE.ETHEREUM ? (
           <div className="unsupported-nft">
-            {chrome.i18n.getMessage('BridgeNFTNotSupportedStart')}
+            {chrome.i18n.getMessage('bridgeNFTNotSupportedStart')}
             <span
               style={{ textDecoration: 'underline' }}
               data-for="cannot-bridge"
-              data-tip={chrome.i18n.getMessage('CreatedInOct2021')}
+              data-tip={chrome.i18n.getMessage('createdInOct2021Lc')}
             >
-              {chrome.i18n.getMessage('BridgeNFTNotSupportedEnd')}
+              {chrome.i18n.getMessage('bridgeNFTNotSupportedEndLc')}
             </span>
             <ReactTooltip place="top" id="cannot-bridge" type="dark" effect="float" />
           </div>
@@ -477,13 +477,13 @@ export default ({ info, onClose, type }) => {
                 {type === TYPE.ETHEREUM && (
                   <div className="views">
                     {totalViews}
-                    {chrome.i18n.getMessage('viewLc')}
+                    {' ' +chrome.i18n.getMessage('viewLc')}
                   </div>
                 )}
                 {type === TYPE.ETHEREUM && (
                   <div className="earned-koi">
                     <FinnieIcon />
-                    {formatNumber(earnedKoi)} KOII{chrome.i18n.getMessage('earned')}
+                    {formatNumber(earnedKoi)} KOII {chrome.i18n.getMessage('earnedLc')}
                   </div>
                 )}
               </div>
@@ -494,13 +494,13 @@ export default ({ info, onClose, type }) => {
                     <div className="eth-address">
                       {type === TYPE.ETHEREUM && (
                         <>
-                          <label className="label">ETH {chrome.i18n.getMessage('AddressLc')}</label>
+                          <label className="label">ETH {chrome.i18n.getMessage('address')}</label>
                           <EthereumLogo className="input-logo" />
                         </>
                       )}
                       {type === TYPE.ARWEAVE && (
                         <>
-                          <label className="label">AR {chrome.i18n.getMessage('AddressLc')}</label>
+                          <label className="label">AR {chrome.i18n.getMessage('address')}</label>
                           <ArweaveLogo className="input-logo" />
                         </>
                       )}
@@ -527,9 +527,9 @@ export default ({ info, onClose, type }) => {
                     </div>
                     <div className="number-to-transfer">
                       <div className="total-available">
-                        {chrome.i18n.getMessage('totalAvailable')}:&nbsp; {totalTransfer}
+                        {chrome.i18n.getMessage('totalAvailableLc')}:&nbsp; {totalTransfer}
                       </div>
-                      <label className="label">{chrome.i18n.getMessage('NumberToTransfer')}:</label>
+                      <label className="label">{chrome.i18n.getMessage('numberToTransfer')}:</label>
                       <StackIcon className="input-logo" />
                       <input
                         type="number"
@@ -542,7 +542,7 @@ export default ({ info, onClose, type }) => {
                         className="input"
                       />
                       <div className="description-one-item">
-                        {chrome.i18n.getMessage('NFTOnlyHave1ItemMinted')}
+                        {chrome.i18n.getMessage('nftOnlyHave1ItemMinted')}
                       </div>
                     </div>
                   </>
@@ -551,7 +551,7 @@ export default ({ info, onClose, type }) => {
                 {step == TRANSFER_STEPS.CONFIRM && (
                   <>
                     <div className="send-to">
-                      <div className="label">{chrome.i18n.getMessage('SendingTo')}:</div>
+                      <div className="label">{chrome.i18n.getMessage('sendingTo')}:</div>
                       <div className="account">
                         {type === TYPE.ARWEAVE && <ArweaveLogo className="account-logo" />}
                         {type === TYPE.ETHEREUM && <EthereumLogo className="account-logo" />}
@@ -567,18 +567,18 @@ export default ({ info, onClose, type }) => {
                     <div className="warning">
                       <WarningIcon className="warning-icon" />
                       <div className="warning-text">
-                        {chrome.i18n.getMessage('MakeSureCorrectAddressExportNFT')}
+                        {chrome.i18n.getMessage('makeSureCorrectAddressExportNFT')}
                       </div>
                     </div>
 
                     <div className="number-to-transfer confirm">
                       <div className="total-available">
-                        {chrome.i18n.getMessage('totalAvailable')}:&nbsp; {totalTransfer}
+                        {chrome.i18n.getMessage('totalAvailableLc')}:&nbsp; {totalTransfer}
                       </div>
                       <StackWhiteIcon className="logo" />
                       <div>
-                        <span>{chrome.i18n.getMessage('Transfer')}</span> {numberTransfer}{' '}
-                        {chrome.i18n.getMessage('Edition')}
+                        <span>{chrome.i18n.getMessage('transfer')}</span> {numberTransfer}{' '}
+                        {chrome.i18n.getMessage('edition')}
                       </div>
                     </div>
                   </>
@@ -589,7 +589,7 @@ export default ({ info, onClose, type }) => {
                     <div className="number-to-transfer success">
                       <div>
                         {' '}
-                        {numberTransfer} {chrome.i18n.getMessage('Edition')}
+                        {numberTransfer} {chrome.i18n.getMessage('edition')}
                       </div>
                     </div>
 
@@ -605,11 +605,11 @@ export default ({ info, onClose, type }) => {
                     </div>
 
                     <div className="transaction-pending">
-                      {chrome.i18n.getMessage('transactionPending')}
+                      {chrome.i18n.getMessage('transactionPendingLc')}
                     </div>
 
                     <div className="complete-tip">
-                      {chrome.i18n.getMessage('ExportNFTCompleteMsg')}
+                      {chrome.i18n.getMessage('exportNFTCompleteMsg')}
                     </div>
                   </>
                 )}
@@ -617,7 +617,7 @@ export default ({ info, onClose, type }) => {
                 {step != TRANSFER_STEPS.SUCCESS &&
                   (type !== TYPE.ARWEAVE ? (
                     <div className="estimate-cost">
-                      <div className="text">{chrome.i18n.getMessage('EstimatedCosts')}</div>
+                      <div className="text">{chrome.i18n.getMessage('estimatedCosts')}:</div>
                       <div className="number">
                         <div className="koi-number">10 KOII</div>
                       </div>
@@ -626,24 +626,24 @@ export default ({ info, onClose, type }) => {
                     <div className="estimate-cost--eth">
                       {isApproved && (
                         <div className="cost">
-                          <span>{chrome.i18n.getMessage('Cost')}:</span>
+                          <span>{chrome.i18n.getMessage('cost')}:</span>
                           <span>0.000150 ETH</span>
                         </div>
                       )}
                       <div className="cost">
                         <div
                           className="question-mark-icon"
-                          data-tip={chrome.i18n.getMessage('GasEstimateDesc')}
+                          data-tip={chrome.i18n.getMessage('gasEstimateDesc')}
                           data-for="gas-estimate-note"
                         >
                           <QuestionIcon />
                         </div>
-                        <span>{chrome.i18n.getMessage('Gas estimate')}:</span>
+                        <span>{chrome.i18n.getMessage('gasEstimate')}:</span>
                         <span>{formatNumber(totalGasCost, 6)} ETH</span>
                       </div>
                       <div className="estimate-note">{'update in < 30 sec.'}</div>
                       <div className="total-cost">
-                        <span>{chrome.i18n.getMessage('Gas estimate')}: </span>
+                        <span>{chrome.i18n.getMessage('gasEstimate')}: </span>
                         <span className="total-number">
                           {isApproved
                             ? formatNumber(Number(totalGasCost) + 0.00015, 6)
@@ -667,12 +667,12 @@ export default ({ info, onClose, type }) => {
                     )}
                     {type === TYPE.ARWEAVE && isApproved && (
                       <button className="transfer-button" onClick={onOneClick}>
-                        {chrome.i18n.getMessage('OneClickTransfer')} AR
+                        {chrome.i18n.getMessage('oneClickTransfer')} AR
                       </button>
                     )}
                     {type === TYPE.ETHEREUM && (
                       <button className="transfer-button" onClick={onOneClick}>
-                        {chrome.i18n.getMessage('OneClickTransfer')} ETH
+                        {chrome.i18n.getMessage('oneClickTransfer')} ETH
                       </button>
                     )}
                   </>
@@ -681,10 +681,10 @@ export default ({ info, onClose, type }) => {
                 {step == TRANSFER_STEPS.CONFIRM && (
                   <button className="transfer-button" onClick={onConfirm} disabled={isBridging}>
                     {isBridging
-                      ? chrome.i18n.getMessage('BridgingYourNFT')
+                      ? chrome.i18n.getMessage('bridgingYourNFT')
                       : type === TYPE.ARWEAVE
-                        ? chrome.i18n.getMessage('ConfirmTransferTo') + 'AR'
-                        : chrome.i18n.getMessage('ConfirmTransferTo') + 'ETH'}
+                        ? chrome.i18n.getMessage('confirmTransferTo') + ' AR'
+                        : chrome.i18n.getMessage('confirmTransferTo') + ' ETH'}
                   </button>
                 )}
 
@@ -697,10 +697,10 @@ export default ({ info, onClose, type }) => {
             </div>
           </>
         )}
-        <div className="goback-button" data-tip={chrome.i18n.getMessage('Back')} onClick={onGoBack}>
+        <div className="goback-button" data-tip={chrome.i18n.getMessage('back')} onClick={onGoBack}>
           <GoBackIcon />
         </div>
-        <div className="foot-note">{chrome.i18n.getMessage('BetaFeature')}</div>
+        <div className="foot-note">{chrome.i18n.getMessage('betaFeature')}</div>
       </div>
       <ReactTooltip place="top" type="dark" effect="float" />
       <ReactTooltip

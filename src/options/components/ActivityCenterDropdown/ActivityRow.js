@@ -92,7 +92,7 @@ const ActivityRow = ({
 
           if (
             activityName === chrome.i18n.getMessage('contractInteraction') ||
-            activityName === chrome.i18n.getMessage('unknowTransaction')
+            activityName === chrome.i18n.getMessage('unknownTransaction')
           )
             token = 'ETH'
 
@@ -171,7 +171,7 @@ const ActivityRow = ({
                 <div className="pr-1.375">
                   <ViewBlockIcon />
                 </div>
-                {chrome.i18n.getMessage('ExploreBlock')}
+                {chrome.i18n.getMessage('exploreBlock')}
               </a>
             ) : (
               <ExploreBlock />

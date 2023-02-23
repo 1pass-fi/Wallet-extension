@@ -7,7 +7,7 @@ import formatLongString from 'options/utils/formatLongString'
 const UploadedFiles = ({ files, currentNftIdx, setCurrentNftIdx, removeNft, error, selectNft }) => {
   return (
     <>
-      <div className="text-xl text-white">{chrome.i18n.getMessage('UploadedFiles')}</div>
+      <div className="text-xl text-white">{chrome.i18n.getMessage('uploadedFilesUc')}</div>
       <div className="list-disc overflow-y-scroll overflow-x-none h-68 mt-4 pl-4 pr-1.5">
         {files.map(({ name, info: { existingNft } }, idx) => (
           <div

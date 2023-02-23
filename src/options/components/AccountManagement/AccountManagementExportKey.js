@@ -43,9 +43,9 @@ const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupKe
       <table className="w-3/5 bg-trueGray-100 rounded-finnie text-indigo">
         <thead className="text-4xs font-normal">
           <tr className="text-left h-8">
-            <td className="pl-2">{chrome.i18n.getMessage('DEFAULT')}</td>
-            <td className="text-center">{chrome.i18n.getMessage('ACCOUNTNAME')}</td>
-            <td>{chrome.i18n.getMessage('ADDRESS')}</td>
+            <td className="pl-2">{chrome.i18n.getMessage('defaultUc')}</td>
+            <td className="text-center">{chrome.i18n.getMessage('accountNameUc')}</td>
+            <td>{chrome.i18n.getMessage('addressUc')}</td>
           </tr>
         </thead>
         <tbody className="text-xs tracking-finnieSpacing-wide">

@@ -19,7 +19,7 @@ const DropFile = ({
   fileType = '',
   className = '',
   Icon,
-  description = chrome.i18n.getMessage('JSONKeyFile'),
+  description = chrome.i18n.getMessage('jsonKeyFile'),
   isCreateCollection,
   setFiles
 }) => {
@@ -44,8 +44,8 @@ const DropFile = ({
     <div {...getRootProps({ className: 'dropzone w-full h-full' })}>
       <div className="cursor-pointer h-full flex items-center justify-center">
         <input name="fileField" data-testid="fileInput" {...getInputProps()} />
-        {isDragAccept && <DragActive description={chrome.i18n.getMessage('DropToImportFile')} />}
-        {isDragReject && <DragActive description={chrome.i18n.getMessage('InvalidFile')} />}
+        {isDragAccept && <DragActive description={chrome.i18n.getMessage('dropToImportFile')} />}
+        {isDragReject && <DragActive description={chrome.i18n.getMessage('invalidFile')} />}
         {!isDragActive && (
           <DragActive Icon={Icon} description={!isEmpty(file) ? file.name : description} />
         )}

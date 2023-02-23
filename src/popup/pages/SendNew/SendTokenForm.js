@@ -91,7 +91,7 @@ const SendTokenForm = ({
           className="text-left pl-2 h-8 text-white text-sm hover:bg-blue-500"
           onClick={() => onChange({})}
         >
-          {chrome.i18n.getMessage('EnterAddressManually')}
+          {chrome.i18n.getMessage('enterAddressManually')}
         </button>
         {accounts.map((account) => {
           // if (account.type === type && account.address !== selectedAccount.address) {
@@ -135,14 +135,14 @@ const SendTokenForm = ({
           options={accountOptions}
           placeholder={chrome.i18n.getMessage('selectAccountPh')}
           onChange={onChangeAccount}
-          label={chrome.i18n.getMessage('FROM')}
+          label={chrome.i18n.getMessage('fromUc')}
           isAccountAddress={true}
           defaultOption={selectedAccount.label}
         />
       </div>
       {/* RECIPIENT INPUT */}
       <div className="mt-7 recipient" style={{ width: '352px' }}>
-        <div className="text-sm pl-1.5 mb-1.5 font-semibold">{chrome.i18n.getMessage('TO')}</div>
+        <div className="text-sm pl-1.5 mb-1.5 font-semibold">{chrome.i18n.getMessage('toUc')}</div>
         <div
           className="w-full relative text-left rounded-finnie border-t-2 border-r-2 border-l-2 border-white shadow-lg"
           ref={ref}
@@ -150,7 +150,7 @@ const SendTokenForm = ({
           <div
             className="border-b-2 rounded-finnie border-white text-white h-8 flex"
             data-tip={
-              isEmpty(selectedAccount) ? chrome.i18n.getMessage('ChooseSenderAccountFirst') : ''
+              isEmpty(selectedAccount) ? chrome.i18n.getMessage('chooseSenderAccountFirst') : ''
             }
           >
             <input
@@ -161,7 +161,7 @@ const SendTokenForm = ({
                 isEmpty(selectedAccount) ? 'cursor-not-allowed' : 'cursor-pointer',
                 'text-white border-b-2 text-sm font-semibold border-white bg-blue-800 h-8 pl-2 flex-grow rounded-l-finnie focus:outline-none placeholder-trueGray-400'
               )}
-              placeholder={chrome.i18n.getMessage('RecipientWalletAddress')}
+              placeholder={chrome.i18n.getMessage('recipientWalletAddress')}
               data-testid="recipient-address"
               disabled={isEmpty(selectedAccount)}
             />
@@ -220,7 +220,7 @@ const SendTokenForm = ({
         role="checkbox"
         data-testid="send-tokens-button"
       >
-        {chrome.i18n.getMessage('SendTokens')}
+        {chrome.i18n.getMessage('sendTokens')}
       </button>
     </div>
   )

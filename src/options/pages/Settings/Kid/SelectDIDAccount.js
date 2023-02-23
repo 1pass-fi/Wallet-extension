@@ -84,7 +84,7 @@ const SelectDIDAccount = ({ close }) => {
         ref={modalRef}
       >
         <div className="flex h-16.75 rounded-t bg-trueGray-100 shadow-md w-full font-semibold text-xl tracking-finnieSpacing-wide relative">
-          <div className="m-auto">{chrome.i18n.getMessage('SelectAnAccount')}</div>
+          <div className="m-auto">{chrome.i18n.getMessage('selectAnAccount')}</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
         <Background className="absolute" style={{ left: '0px', top: '67px' }} />
@@ -92,7 +92,7 @@ const SelectDIDAccount = ({ close }) => {
           className="absolute font-normal text-lg text-indigo"
           style={{ width: '303px', right: '31px', top: '152px' }}
         >
-          {chrome.i18n.getMessage('SelectAccountToCreateDID')}
+          {chrome.i18n.getMessage('selectAccountToCreateDID')}
         </div>
         <div className="mt-50 flex flex-col items-center justify-evenly">
           <div
@@ -130,12 +130,11 @@ const SelectDIDAccount = ({ close }) => {
                   style={{ height: '38px' }}
                 >
                   <div>
-                    {chrome.i18n.getMessage('BalanceText')}
+                    {chrome.i18n.getMessage('balance')}: 
                     {formatNumber(arAccount.koiBalance, 2)} KOII
                   </div>
                   <div>
-                    {chrome.i18n.getMessage('AssetsText')}
-                    {arAccount.totalAssets.length}
+                    {chrome.i18n.getMessage('assets')}: {arAccount.totalAssets.length}
                   </div>
                 </div>
                 {arAccount?.address === defaultArAccount?.address ? (
@@ -155,7 +154,7 @@ const SelectDIDAccount = ({ close }) => {
               style={{ width: '180px', height: '38px' }}
               className="h-10 text-base rounded w-43.75 mx-auto mb-6.5"
               variant="indigo"
-              text={chrome.i18n.getMessage('Select')}
+              text={chrome.i18n.getMessage('select')}
               onClick={handleChangeDIDAccount}
             />
           </div>

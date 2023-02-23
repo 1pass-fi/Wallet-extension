@@ -17,7 +17,7 @@ export const ImportToken = () => {
   const history = useHistory()
 
   const [tabs, setTabs] = useState([
-    { name: chrome.i18n.getMessage('Search'), to: 'SEARCH_TOKEN' },
+    { name: chrome.i18n.getMessage('search'), to: 'SEARCH_TOKEN' },
     { name: chrome.i18n.getMessage('customToken'), to: 'CUSTOM_TOKEN' }
   ])
   const [currentTab, setCurrentTab] = useState('SEARCH_TOKEN')

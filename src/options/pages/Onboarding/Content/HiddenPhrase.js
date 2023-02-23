@@ -45,17 +45,17 @@ const HiddenPhrase = ({ step, setStep, importType }) => {
       <div className="flex mt-1.5 font-normal text-lg leading-6 gap-1.5">
         <div>3. </div>
         <div>
-          <span className="text-warning-200">{chrome.i18n.getMessage('HiddenPhraseStart')}</span>
-          {chrome.i18n.getMessage('HiddenPhraseEnd')}
+          <span className="text-warning-200">{chrome.i18n.getMessage('hiddenPhraseStart')}</span>
+          {chrome.i18n.getMessage('hiddenPhraseEnd')}{' '}
         </div>
       </div>
       <div className="mt-6.75 font-normal text-lg leading-6">
-        {chrome.i18n.getMessage('DoYouHaveA')}{' '}
-        <span className="text-turquoiseBlue">{chrome.i18n.getMessage('PenAndPaper')}</span>
+        {chrome.i18n.getMessage('doYouHaveA')}{' '}
+        <span className="text-turquoiseBlue">{chrome.i18n.getMessage('penAndPaperLc')}</span>
       </div>
       <div className="mt-1 font-normal text-lg leading-6">
-        {chrome.i18n.getMessage('WhatAboutA')}{' '}
-        <span className="text-turquoiseBlue">{chrome.i18n.getMessage('SafePlaceToKeepIt')}</span>
+        {chrome.i18n.getMessage('whatAboutA')}{' '}
+        <span className="text-turquoiseBlue">{chrome.i18n.getMessage('safePlaceToKeepItLc')}</span>
       </div>
 
       {showPhrase ? (
@@ -78,7 +78,7 @@ const HiddenPhrase = ({ step, setStep, importType }) => {
             style={{ width: '240px', height: '42px' }}
             className="mt-10.75 text-base mx-auto rounded z-10"
             variant="white"
-            text={chrome.i18n.getMessage('Continue')}
+            text={chrome.i18n.getMessage('continue')}
             onClick={() => setStep(step + 1)}
             id="continue-button"
           />

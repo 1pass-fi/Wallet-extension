@@ -114,7 +114,7 @@ const Approval = ({ proposal }) => {
         {/* TITLE */}
         <div className="flex flex-col justify-center items-center">
           <div className="color-indigo text-base font-semibold">
-            {chrome.i18n.getMessage('SessionProposal')}
+            {chrome.i18n.getMessage('sessionProposal')}
           </div>
           <div
             style={{ minWidth: '100px', height: '22px' }}
@@ -127,7 +127,7 @@ const Approval = ({ proposal }) => {
         {/* REVIEW PERMISSIONS */}
         <div className="mt-5">
           <div className="color-indigo font-semibold">
-            {chrome.i18n.getMessage('Review')} {metadata.namespace}{' '}
+            {chrome.i18n.getMessage('review')} {metadata.namespace}{' '}
             {chrome.i18n.getMessage('permissions')}:
           </div>
           <div className="mt-4 flex">
@@ -135,7 +135,7 @@ const Approval = ({ proposal }) => {
               <Rectangle />
             </div>
             <div style={{ width: '317px' }} className="ml-3 color-indigo text-xs flex items-start">
-              {chrome.i18n.getMessage('Method')}: {metadata.methods}
+              {chrome.i18n.getMessage('method')}: {metadata.methods}
             </div>
           </div>
           {metadata.events && (
@@ -144,7 +144,7 @@ const Approval = ({ proposal }) => {
                 <Rectangle />
               </div>
               <div style={{ width: '317px' }} className="ml-3 color-indigo text-xs">
-                {chrome.i18n.getMessage('Events')}: {metadata.events}
+                {chrome.i18n.getMessage('events')}: {metadata.events}
               </div>
             </div>
           )}
@@ -153,7 +153,7 @@ const Approval = ({ proposal }) => {
         {/* SELECT ACCOUNTS */}
         <div className="mt-8">
           <div className="color-indigo font-semibold">
-            {chrome.i18n.getMessage('SelectWalletToConnect')}:
+            {chrome.i18n.getMessage('selectWalletToConnect')}:
           </div>
           {accounts.map((account, index) => (
             <SelectAccountItem
@@ -174,14 +174,14 @@ const Approval = ({ proposal }) => {
           style={{ width: '159px', height: '38px', border: '1.5px solid #373765' }}
           className="bg-white text-blue-800 text-base"
         >
-          {chrome.i18n.getMessage('Cancel')}
+          {chrome.i18n.getMessage('cancel')}
         </button>
         <button
           onClick={handleApprove}
           style={{ width: '159px', height: '38px' }}
           className="bg-blue-800 text-white text-base ml-13"
         >
-          {chrome.i18n.getMessage('ApproveUc')}
+          {chrome.i18n.getMessage('approve')}
         </button>
       </div>
     </div>

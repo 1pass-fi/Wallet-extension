@@ -64,8 +64,8 @@ const ShareNFTModal = ({ txId, close }) => {
         </div>
         <div className="mt-4 text-base font-bold leading-7">
           {showEmbedLink
-            ? chrome.i18n.getMessage('EmbedLink')
-            : chrome.i18n.getMessage('ShareLink')}
+            ? chrome.i18n.getMessage('embedLink')
+            : chrome.i18n.getMessage('shareLink')}
         </div>
         {showEmbedLink ? (
           <textarea
@@ -89,8 +89,8 @@ const ShareNFTModal = ({ txId, close }) => {
             style={{ width: '200px', height: '40px' }}
             className="text-base"
             text={isCopied 
-              ? chrome.i18n.getMessage('Copied')
-              : chrome.i18n.getMessage('CopyLink')}
+              ? chrome.i18n.getMessage('copied')
+              : chrome.i18n.getMessage('copyLink')}
             variant="indigo"
             icon={CopyIcon}
             size={'md'}
@@ -110,7 +110,7 @@ const ShareNFTModal = ({ txId, close }) => {
           </div> */}
           <a
             href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koii.live/content-detail/${txId}`}
-            title={chrome.i18n.getMessage('ShareByEmail')}
+            title={chrome.i18n.getMessage('shareByEmail')}
           >
             <MailIcon />
           </a>

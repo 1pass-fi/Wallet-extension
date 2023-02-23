@@ -99,7 +99,7 @@ const NavBar = ({ step, setStep }) => {
                 {step === 1 || step === 2
                   ? chrome.i18n.getMessage('chooseANewKoiiOrEthereumAccount')
                   : step === 10
-                    ? chrome.i18n.getMessage('SelectChainOfKey')
+                    ? chrome.i18n.getMessage('selectChainOfKey')
                     : chrome.i18n.getMessage('TypeYourSecretPhrase')}
               </span>
             </div>

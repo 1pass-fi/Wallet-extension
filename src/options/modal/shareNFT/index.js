@@ -30,7 +30,7 @@ const TextBox = ({ title, text, buttonText, url }) => {
           </button>
         </CopyToClipboard>
       </div>
-      {isCopied && <div className="copy-noti">{chrome.i18n.getMessage('LinkCopied')}</div>}
+      {isCopied && <div className="copy-noti">{chrome.i18n.getMessage('linkCopied')}</div>}
     </div>
   )
 }
@@ -52,14 +52,14 @@ const ShareNFT = ({ txid }) => {
               text={shareUrl}
               url={shareUrl}
               title="Share:"
-              buttonText={chrome.i18n.getMessage('getShareLink')}
+              buttonText={chrome.i18n.getMessage('getShareLinkLc')}
             />
             <TextBox
               txid={txid}
               text={embedUrl}
               url={embedUrl}
               title="Embed:"
-              buttonText={chrome.i18n.getMessage('getEmbedLink')}
+              buttonText={chrome.i18n.getMessage('getEmbedLinkLc')}
             />
           </div>
           <div className="share-nft social-icon container">
@@ -86,7 +86,7 @@ const ShareNFT = ({ txid }) => {
             </div> */}
             <a
               href={`mailto:?subject=Check out my NFT, now stored on Koii— forever!&body=https://koii.live/content-detail/${txid}`}
-              title={chrome.i18n.getMessage('ShareByEmail')}
+              title={chrome.i18n.getMessage('shareByEmail')}
             >
               <EmailIcon />
             </a>
@@ -94,7 +94,7 @@ const ShareNFT = ({ txid }) => {
         </>
       ) : (
         <div className="share-nft title container">
-          {chrome.i18n.getMessage('SomethingWrongNFT')}
+          {chrome.i18n.getMessage('somethingWrongNFT')}
         </div>
       )}
     </div>

@@ -17,9 +17,9 @@ export default ({ value, setValue }) => {
         onChange={onToggle}
       />
       {value ? (
-        <span className="st-on">{chrome.i18n.getMessage('ON')}</span>
+        <span className="st-on">{chrome.i18n.getMessage('onUc')}</span>
       ) : (
-        <span className="st-off">{chrome.i18n.getMessage('OFF')}</span>
+        <span className="st-off">{chrome.i18n.getMessage('offUc')}</span>
       )}
       <div className={`st-slider st-round ${value ? 'st-checked' : ''}`}></div>
     </label>

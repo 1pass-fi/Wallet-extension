@@ -225,7 +225,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                   ))}
                 </div>
                 <div className="font-semibold text-base tracking-finnieSpacing-wide leading-6 mt-3">
-                  {chrome.i18n.getMessage('EstimatedCosts')}
+                  {chrome.i18n.getMessage('estimatedCosts')}:
                 </div>
                 <div className="tracking-finnieSpacing-wider text-sm leading-5">
                   {estimateCostKOII} KOII
@@ -236,7 +236,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                     : `${formatNumber(estimateCostAr, 6)} AR`}{' '}
                   {!isEmpty(estimateCostAr) && (
                     <span className="text-2xs text-success-700">
-                      {chrome.i18n.getMessage('StorageFee')}
+                      {chrome.i18n.getMessage('storageFee')}
                     </span>
                   )}
                 </div>
@@ -247,14 +247,14 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                 onClick={handleUploadNFT}
                 className="h-9 mt-8 text-sm rounded w-43.75 mb-4"
                 variant="indigo"
-                text={chrome.i18n.getMessage('CreateNFT')}
+                text={chrome.i18n.getMessage('createNFT')}
                 disabled={disableCreateNFT}
               />
             )}
             {showReferralField && (
               <div className="w-101 mt-4">
                 <div className="w-46.75 text-sm text-success-700 m-auto mb-2">
-                  {chrome.i18n.getMessage('FriendReferralCode')}
+                  {chrome.i18n.getMessage('friendReferralCodeUc')}
                 </div>
                 <div className="mb-2">
                   <input
@@ -273,7 +273,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                     onClick={handleSubmitReferralCode}
                     className="w-23 h-8 bg-blue-800 text-white"
                   >
-                    {chrome.i18n.getMessage('Submit')}
+                    {chrome.i18n.getMessage('submit')}
                   </button>
                 </div>
                 {referralCodeError && (
@@ -306,13 +306,13 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
                 onClick={() => {close(); handleShareNFT(nftId)}}
                 className="h-10 mt-16 text-base rounded w-43.75 mx-auto"
                 variant="indigo"
-                text={chrome.i18n.getMessage('Transfer')}
+                text={chrome.i18n.getMessage('transfer')}
               /> */}
               {/* <Button
                 onClick={() => setStep(3)}
                 className="h-10 mt-16 text-base rounded w-43.75 mx-auto"
                 variant="inversedIndigo"
-                text={chrome.i18n.getMessage('Share')}
+                text={chrome.i18n.getMessage('share')}
               />               */}
             </div>
           </div>
@@ -344,7 +344,7 @@ const ConfirmCreateNftModal = ({ nftContent, tags, fileType, url, close, resetSt
               <Button
                 className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
                 variant="indigo"
-                text={chrome.i18n.getMessage('CopyLink')}
+                text={chrome.i18n.getMessage('copyLink')}
               />
             </CopyToClipboard>
             <div className="flex w-77.25 m-auto mt-5 justify-between">

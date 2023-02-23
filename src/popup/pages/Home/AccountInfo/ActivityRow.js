@@ -67,8 +67,8 @@ const ActivityRow = ({
         if (network) blockButtonText = 'etherscan'
 
         pendingOrExpired = expired
-          ? chrome.i18n.getMessage('TransactionFailed')
-          : chrome.i18n.getMessage('TransactionPending')
+          ? chrome.i18n.getMessage('transactionFailed')
+          : chrome.i18n.getMessage('transactionPendingLc')
 
         if (!network) {
           blockUrl = `${PATH.VIEW_BLOCK_TRANSACTION}/${id}`
@@ -95,7 +95,7 @@ const ActivityRow = ({
 
           if (
             activityName === chrome.i18n.getMessage('contractInteraction') ||
-            activityName === chrome.i18n.getMessage('unknowTransaction')
+            activityName === chrome.i18n.getMessage('unknownTransaction')
           )
             tokenType = 'ETH'
 
@@ -184,10 +184,10 @@ const ActivityRow = ({
                   <ViewBlockIconNew style={{ width: '19px', height: '18px' }} />
 
                   {!pending
-                    ? chrome.i18n.getMessage('ExploreBlock')
+                    ? chrome.i18n.getMessage('exploreBlock')
                     : isProcessing
-                      ? chrome.i18n.getMessage('Processing')
-                      : chrome.i18n.getMessage('Pending')}
+                      ? chrome.i18n.getMessage('processing')
+                      : chrome.i18n.getMessage('pending')}
                 </a>
               ) : (
                 <div
@@ -202,11 +202,11 @@ const ActivityRow = ({
                   }}
                   className="text-xs text-red-finnie underline leading-5 cursor-pointer"
                 >
-                  {chrome.i18n.getMessage('TransactionFailed')}
+                  {chrome.i18n.getMessage('transactionFailed')}
                 </div>
               )
             ) : (
-              <ExploreBlock data-tip={chrome.i18n.getMessage('ComingSoon')} />
+              <ExploreBlock data-tip={chrome.i18n.getMessage('comingSoon')} />
             )}
             <ToolTip />
           </div>

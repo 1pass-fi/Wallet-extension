@@ -84,8 +84,8 @@ const CreatePassword = ({ step, setStep }) => {
         className="mt-5"
         label={
           isEmpty(accounts)
-            ? chrome.i18n.getMessage('NewPassword')
-            : chrome.i18n.getMessage('Password')
+            ? chrome.i18n.getMessage('newPassword')
+            : chrome.i18n.getMessage('password')
         }
         value={password}
         setValue={(e) => {
@@ -116,7 +116,7 @@ const CreatePassword = ({ step, setStep }) => {
       {isEmpty(accounts) && (
         <InputField
           className="mt-7"
-          label={chrome.i18n.getMessage('ConfirmPassword')}
+          label={chrome.i18n.getMessage('confirmPassword')}
           value={confirmPassword}
           setValue={(e) => setConfirmPassword(e.target.value)}
           required={true}
@@ -154,7 +154,7 @@ const CreatePassword = ({ step, setStep }) => {
               className="text-turquoiseBlue underline"
               data-testid="tos-link"
             >
-              {chrome.i18n.getMessage('TermsOfService')}
+              {chrome.i18n.getMessage('termsOfService')}
             </a>
           </div>
         </div>
@@ -169,7 +169,7 @@ const CreatePassword = ({ step, setStep }) => {
         style={{ width: '240px', height: '42px' }}
         className="mt-3.5 rounded mx-auto z-10"
         variant="white"
-        text={chrome.i18n.getMessage('LogIn')}
+        text={chrome.i18n.getMessage('logIn')}
         onClick={() => onClickContinue()}
         id="log-in-button"
       />

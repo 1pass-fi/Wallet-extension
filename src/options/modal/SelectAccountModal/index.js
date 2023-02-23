@@ -25,7 +25,7 @@ const SelectAccount = () => {
 
   return (
     <div className="select-account-modal">
-      <div className="title">{chrome.i18n.getMessage('SelectAccount')}</div>
+      <div className="title">{chrome.i18n.getMessage('selectAccount')}</div>
       <select
         defaultValue={defaultAccount.accountName}
         onChange={(e) => onSelectAccount(e)}

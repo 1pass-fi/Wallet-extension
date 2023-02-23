@@ -15,7 +15,7 @@ const ArweaveOnly = ({ content, children }) => {
           className="flex items-center justify-center bg-trueGray-100 shadow rounded-sm mt-4 text-indigo cursor-pointer"
           style={{ width: '200px', height: '38px' }}
         >
-          {chrome.i18n.getMessage('SwitchAccounts')}
+          {chrome.i18n.getMessage('switchAccounts')}
         </NavLink>
         <NavLink
           key="/create-wallet"
@@ -23,7 +23,7 @@ const ArweaveOnly = ({ content, children }) => {
           className="flex items-center justify-center border border-white shadow rounded-sm mt-5.5 mb-5.25 cursor-pointer"
           style={{ width: '200px', height: '38px' }}
         >
-          {chrome.i18n.getMessage('GetAnArKey')}
+          {chrome.i18n.getMessage('getAnArKey')}
         </NavLink>
       </div>
       <div className="absolute cursor-not-allowed" style={{ top: '230px' }}>

@@ -7,7 +7,7 @@ import './index.css'
 const ConfirmTransfer = ({ receiverAddress, goBack }) => {
   return (
     <div className="confirm-transfer">
-      <div className="label">{chrome.i18n.getMessage('ReceiverWalletAddress')}:</div>
+      <div className="label">{chrome.i18n.getMessage('receiverWalletAddress')}:</div>
 
       <div className="receiver-field">
         <div className="receiver-address" title="receiver-address">{receiverAddress}</div>
@@ -21,7 +21,7 @@ const ConfirmTransfer = ({ receiverAddress, goBack }) => {
           <WarningIcon />
         </div>
         <div className="warning-text">
-          {chrome.i18n.getMessage('TransferOwnershipTakeTime')}
+          {' ' + chrome.i18n.getMessage('transferOwnershipTakeTime')}
         </div>
       </div>
     </div>

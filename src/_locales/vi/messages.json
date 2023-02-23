@@ -2,181 +2,187 @@
   "12WordSecretPhrase": {
     "message": "12 từ bí mật"
   },
-  "About": {
+  "about": {
     "message": "Giới thiệu"
   },
-  "Account": {
+  "account": {
     "message": "Tài khoản"
   },
-  "AccountBalanceText": {
+  "accountBalance": {
     "message": "Số dư tài khoản:"
   },
   "accountExist": {
     "message": "Tài khoản này đã được nhập."
   },
-  "ACCOUNTNAME": {
+  "accountNameUc": {
     "message": "TÊN TÀI KHOẢN"
   },
-  "Activity": {
+  "activity": {
     "message": "Hoạt động"
   },
-  "ActivityCenter": {
-    "message": "Trung tâm hoạt động"
+  "activityCenterUc": {
+    "message": "TRUNG TÂM HOẠT ĐỘNG"
   },
-  "ActivitySelectAccount": {
+  "activitySelectAccount": {
     "message": "Chọn tài khoản để xem hoạt động"
   },
-  "AddAKey": {
+  "addAKey": {
     "message": "Thêm một Key"
   },
-  "AddAKeyMsg": {
+  "addAKeyMsgLc": {
     "message": "Bạn muốn sử dụng hoặc bạn muốn"
   },
-  "AddCustomCSS": {
+  "addCustomCSS": {
     "message": "Thêm CSS tùy chỉnh"
   },
-  "AddMore": {
+  "addMore": {
     "message": "Thêm nhiều hơn"
   },
-  "AddNFTDetails": {
+  "addNFTDetails": {
     "message": "Thêm chi tiết NFT"
   },
-  "ADDRESS": {
-    "message": "ĐỊA CHỈ"
+  "address": {
+    "message": "Địa chỉ"
   },
   "addressBookAddNewAddress": {
     "message": "Đã thêm địa chỉ vào sổ địa chỉ thành công!"
   },
-  "AddressBookAddress": {
+  "addressBookAddress": {
     "message": "Chèn địa chỉ"
   },
-  "AddressBookDIDLink": {
+  "addressBookDIDLink": {
     "message": "Liên kết DID"
   },
-  "AddressBookDIDLinkInput": {
+  "addressBookDIDLinkInput": {
     "message": "Chèn liên kết DID ở đây"
   },
-  "AddressBookDIDValue": {
+  "addressBookDIDValue": {
     "message": "Chèn liên kết Decentralized ID"
   },
   "addressBookDuplicateDID": {
     "message": "DID này đã tồn tại trong Sổ địa chỉ"
   },
-  "AdvancedOptions": {
+  "addressUc": {
+    "message": "ĐỊA CHỈ"
+  },
+  "advancedOptions": {
     "message": "Tuỳ chọn nâng cao"
   },
-  "AMOUNT": {
+  "amount": {
+    "message": "Số lượng"
+  },
+  "amountUc": {
     "message": "SỐ LUỢNG"
   },
-  "AndThe": {
+  "andTheLc": {
     "message": "và"
   },
-  "Assets": {
+  "assets": {
     "message": "Tài sản"
   },
-  "Available": {
+  "available": {
     "message": "Khả dụng"
   },
-  "Back": {
+  "back": {
     "message": "Quay lại"
   },
-  "Balance": {
+  "balance": {
     "message": "Số dư"
   },
-  "Cancel": {
+  "cancel": {
     "message": "Hủy bỏ"
   },
   "cannotLockWallet": {
     "message": "Không thể khóa ví."
   },
-  "CHAIN": {
-    "message": "CHAIN"
-  },
-  "Chains": {
+  "chains": {
     "message": "Chuỗi"
   },
-  "ChangeMyPassword": {
+  "chainUc": {
+    "message": "CHUỖI"
+  },
+  "changeMyPassword": {
     "message": "Thay đổi Mật khẩu của tôi"
   },
-  "CheckOut": {
+  "checkOut": {
     "message": "Thanh toán"
   },
-  "CheckOutThe": {
+  "checkOutThe": {
     "message": "Kiểm tra"
   },
   "chooseANewKoiiOrEthereumAccount": {
     "message": "Tạo key Ethereum hoặc Koii mới; hoặc nhập key của bạn."
   },
-  "ChooseSenderAccountFirst": {
+  "chooseSenderAccountFirst": {
     "message": "Vui lòng chọn Tài khoản Người gửi trước!"
   },
   "clickACircleBelowToGenerateAKey": {
     "message": "Click vào một trong những logo bên dưới để tạo key."
   },
-  "ClickCircle": {
+  "clickCircle": {
     "message": "Nhấp vào một vòng tròn bên dưới để nhập khóa của bạn."
   },
   "clickTheLockBelowToRevealYourSecretPhrase": {
     "message": "Nhấn vào hình ổ khoá bên dưới để hiển thị 12 từ bí mật."
   },
-  "ClickToCopy": {
+  "clickToCopy": {
     "message": "Nhấn để sao chép"
   },
-  "ClickToUploadNFT": {
+  "clickToUploadNFT": {
     "message": "Nhấp để tải lên một Atomic NFT"
   },
-  "Close": {
+  "close": {
     "message": "Đóng"
   },
-  "CollectionLabelEditDescription": {
-    "message": "Chỉnh sửa mô tả"
-  },
-  "CollectionLabelEditTitle": {
-    "message": "Chỉnh sửa Tiêu đề Bộ sưu tập"
-  },
-  "CollectionLabelTitle": {
-    "message": "Tiêu đề Bộ sưu tập"
-  },
-  "CollectionNotSupported": {
-    "message": "Phiên bản Bộ sưu tập này không hỗ trợ cập nhật"
-  },
-  "CollectionPlaceHolderDescription": {
+  "collectionDescPh": {
     "message": "Khi bạn có những người bạn như tôi, internet là một nơi tuyệt vời để sống."
   },
-  "CollectionPlaceHolderTags": {
-    "message": "Phân tách bằng “,” và nhấn phím cách"
+  "collectionLabelEditDescription": {
+    "message": "Chỉnh sửa mô tả"
   },
-  "CollectionPlaceHolderTitle": {
-    "message": "Bạn bè của Finnie"
+  "collectionLabelEditTitle": {
+    "message": "Chỉnh sửa Tiêu đề Bộ sưu tập"
   },
-  "CollectionsLc": {
+  "collectionLabelTitle": {
+    "message": "Tiêu đề Bộ sưu tập"
+  },
+  "collectionNotSupported": {
+    "message": "Phiên bản Bộ sưu tập này không hỗ trợ cập nhật"
+  },
+  "collections": {
     "message": "Bộ sưu tập"
   },
-  "ComingSoon": {
+  "collectionTagsPh": {
+    "message": "Phân tách bằng “,” và nhấn phím cách"
+  },
+  "collectionTitlePh": {
+    "message": "Bạn bè của Finnie"
+  },
+  "comingSoon": {
     "message": "Sắp ra mắt"
   },
-  "Confirm": {
+  "confirm": {
     "message": "Xác nhận"
   },
-  "ConfirmDID": {
+  "confirmDID": {
     "message": "Xác nhận DID của bạn"
   },
-  "ConfirmPassword": {
+  "confirmPassword": {
     "message": "Xác nhận mật khẩu"
   },
-  "ConfirmPhrase": {
+  "confirmPhrase": {
     "message": "Xác nhận"
   },
-  "ConfirmTransaction": {
+  "confirmTransaction": {
     "message": "Xác nhận giao dịch"
   },
   "confirmYourSecretPhrase": {
     "message": "Xác nhận 12 từ bí mật của bạn."
   },
-  "CONNECT": {
-    "message": "Kết nối"
+  "connectUc": {
+    "message": "KẾT NỐI"
   },
-  "Continue": {
+  "continue": {
     "message": "Tiếp tục"
   },
   "createAPasswordToSecureFinnie": {
@@ -188,10 +194,10 @@
   "customToken": {
     "message": "Custom Token"
   },
-  "customTokenDescription": {
+  "customTokenDesc": {
     "message": "Các loại token có thể có symbol và decimal trùng nhau, hãy chắc chắn rằng bạn đang sử dụng đúng token contract address"
   },
-  "Details": {
+  "details": {
     "message": "Chi tiết"
   },
   "donotSeeYourTokens": {
@@ -200,7 +206,7 @@
   "editAccounts": {
     "message": "Chỉnh sửa tài khoản"
   },
-  "EditFee": {
+  "editFee": {
     "message": "Thay đổi phí"
   },
   "emptyAddressError": {
@@ -212,77 +218,77 @@
   "emptySelectAddressError": {
     "message": "Vui lòng chọn một địa chỉ."
   },
-  "EncryptionKeyRequest": {
+  "encryptionKeyRequestLc": {
     "message": "muốn lấy khóa mã hóa công khai của bạn. Khi đồng ý, trang web này sẽ có thể tạo ra các tin nhắn được mã hóa cho bạn."
   },
-  "EnterAddressManually": {
+  "enterAddressManually": {
     "message": "Nhập địa chỉ thủ công"
   },
-  "EnterCurrentPassword": {
+  "enterCurrentPassword": {
     "message": "Nhập mật khẩu hiện tại"
   },
-  "EnterDifferentAddress": {
+  "enterDifferentAddress": {
     "message": "Nhập địa chỉ khác"
   },
-  "EnterFinniePassword": {
+  "enterFinniePassword": {
     "message": "Nhập mật khẩu Finnie:"
   },
-  "EnterInfoManually": {
+  "enterInfoManually": {
     "message": "Nhập thông tin thủ công"
   },
-  "EnterWalletConnectURL": {
+  "enterWalletConnectURL": {
     "message": "Nhập URL kết nối ví"
   },
   "enterYourPassword": {
     "message": "Nhập mật khẩu"
   },
-  "EstimatedCosts": {
+  "estimatedCosts": {
     "message": "Ước tính chi phí:"
   },
-  "Etherscan": {
+  "etherscan": {
     "message": "Etherscan"
   },
-  "Events": {
+  "events": {
     "message": "Sự kiện"
   },
-  "EverythingInYourWallet": {
+  "everythingInYourWalletLc": {
     "message": "mọi thứ trong ví của bạn"
   },
-  "ExplicitMsg": {
+  "explicitMsg": {
     "message": "Người lớn hoặc trên 18 tuổi."
   },
-  "ExploreBlock": {
+  "exploreBlock": {
     "message": "Khám phá khối"
   },
-  "ExportNFTCompleteMsg": {
+  "exportNFTCompleteMsg": {
     "message": "Khi hoàn thành, các giao dịch sẽ xuất hiện trong tab Hoạt động trong danh sách thả xuống"
   },
-  "ExportNFTToARDesc1": {
+  "exportNFTToARDesc1": {
     "message": "Quá trình này thường mất khoảng 10-15 phút. Chỉ với một cú nhấp chuột, hợp đồng Koii sẽ chuyển NFT của bạn đến Arweave."
   },
-  "ExportNFTToARDesc2": {
+  "exportNFTToARDesc2": {
     "message": "Hãy nhớ rằng quá trình này thường mất khoảng 10-15 phút và có thể mất thời gian hơn, phụ thuộc vào lưu lượng Arweave hiện tại."
   },
-  "ExportNFTToETHDesc1": {
+  "exportNFTToETHDesc1": {
     "message": "Quá trình này thường mất khoảng 10-15 phút. Chỉ với một cú nhấp chuột, hợp đồng Koii sẽ chuyển NFT của bạn đến Ethereum."
   },
-  "Find": {
+  "find": {
     "message": "Tìm kiếm"
   },
   "finnieCurrentlySupports": {
     "message": "Finnie hiện hỗ trợ Koii, Ethereum, Solana, và Arweave key. Những chain khác sẽ được cập nhật."
   },
-  "FROM": {
-    "message": "TỪ"
-  },
-  "From": {
+  "from": {
     "message": "Từ"
   },
-  "gallery": {
-    "message": "Bộ sưu tập NFT"
+  "fromUc": {
+    "message": "TỪ"
   },
-  "GALLERY": {
+  "gallery": {
     "message": "Bộ sưu tập"
+  },
+  "galleryUc": {
+    "message": "BỘ SƯU TẬP"
   },
   "getAKey": {
     "message": "Tạo một key mới"
@@ -299,16 +305,16 @@
   "grabAPenAndPaper": {
     "message": "Hãy chuẩn bị sẵn giấy và bút để lưu giữ 12 từ bí mật của bạn một cách an toàn."
   },
-  "High": {
+  "high": {
     "message": "Cao"
   },
   "iAgreeWithThe": {
     "message": "Tôi đồng ý với"
   },
-  "Import": {
+  "import": {
     "message": "Nhập"
   },
-  "Import12WordSeedPhrase": {
+  "import12WordSeedPhrase": {
     "message": "Nhập ví hiện có bằng cụm từ khóa 12 từ."
   },
   "importAKeyWithASecretPhrase": {
@@ -317,31 +323,31 @@
   "importAToken": {
     "message": "Thêm Token"
   },
-  "ImportDIDLink": {
+  "importDIDLink": {
     "message": "Nhập từ liên kết DID"
   },
-  "ImportKeySuccessfully": {
+  "importKeySuccessfully": {
     "message": "Khóa của bạn đã được nhập thành công!"
   },
-  "ImportSeedPhrase": {
+  "importSeedPhrase": {
     "message": "Nhập với cụm từ khóa"
   },
-  "ImportTokenMsg": {
+  "importTokenMsg": {
     "message": "Bạn muốn nhập mã thông báo này vào địa chỉ ví nào?"
   },
-  "ImportWithPhrase": {
+  "importWithPhrase": {
     "message": "Nhập với Cụm từ"
   },
-  "ImportYourKey": {
+  "importYourKey": {
     "message": "Nhập khóa của bạn"
   },
-  "imready": {
+  "imReady": {
     "message": "Tôi đã sẵn sàng!"
   },
-  "IncorrectPassword": {
+  "incorrectPassword": {
     "message": "Mật khẩu không chính xác"
   },
-  "InitiateATransaction": {
+  "initiateATransaction": {
     "message": "bắt đầu giao dịch"
   },
   "invalidAddressList": {
@@ -353,13 +359,13 @@
   "invalidContent": {
     "message": "Nội dung không hợp lệ"
   },
-  "InvalidDIDLink": {
+  "invalidDIDLink": {
     "message": "Đây không phải là liên kết DID hợp lệ"
   },
   "invalidETHAddress": {
     "message": "Địa chỉ ETH không hợp lệ"
   },
-  "InvalidFile": {
+  "invalidFile": {
     "message": "Tệp không hợp lệ."
   },
   "invalidNetworkType": {
@@ -377,10 +383,10 @@
   "isConnectedToSites": {
     "message": "được kết nối với các trang web này."
   },
-  "IUnderstand": {
+  "iUnderstand": {
     "message": "Tôi hiểu"
   },
-  "JSONKeyFile": {
+  "jsonKeyFile": {
     "message": "Tệp khóa JSON"
   },
   "likelyIn30Seconds": {
@@ -392,26 +398,23 @@
   "likelyInLessThan30Seconds": {
     "message": "Trong khoảng < 30 giây"
   },
-  "LOCK": {
-    "message": "Khoá"
+  "lockUc": {
+    "message": "KHOÁ"
   },
   "lockWalletFailed": {
     "message": "Khoá ví thất bại"
   },
-  "LogIn": {
+  "logIn": {
     "message": "Đăng nhập"
   },
-  "Low": {
+  "low": {
     "message": "Thấp"
   },
-  "Map": {
+  "map": {
     "message": "Bản đồ"
   },
-  "Max": {
+  "max": {
     "message": "Tối đa"
-  },
-  "MaxFee": {
-    "message": "Phí tối đa"
   },
   "maxFee": {
     "message": "Phí tối đa"
@@ -419,130 +422,127 @@
   "maxPriorityFee": {
     "message": "Phí ưu tiên tối đa"
   },
-  "MediaError": {
+  "mediaError": {
     "message": "Lỗi phát phim"
   },
-  "Medium": {
+  "medium": {
     "message": "Trung bình"
   },
-  "Message": {
+"message": {
     "message": "Tin nhắn"
   },
-  "MessageFailedToSend": {
+  "messageFailedToSend": {
     "message": "Không gửi được tin nhắn"
   },
-  "MetaMask": {
+  "metaMask": {
     "message": "MetaMask"
   },
   "min": {
     "message": "phút"
   },
-  "Mint": {
+  "mint": {
     "message": "Tạo mới"
   },
-  "MintNewNFT": {
+  "mintNewNFT": {
     "message": "Tạo mới NFT"
   },
-  "MintNewToken": {
+  "mintNewToken": {
     "message": "Tạo mới Token"
   },
-  "MintNFT": {
+  "mintNFT": {
     "message": "Tạo mới NFT"
   },
-  "MintToken": {
+  "mintToken": {
     "message": "Tạo mới Token"
   },
-  "More": {
+  "more": {
     "message": "Thêm"
   },
-  "MustEnter4DigitPIN": {
+  "mustEnter4DigitPIN": {
     "message": "Nhập mã PIN 4 chữ số"
   },
-  "MustEnterAPass": {
+  "mustEnterAPass": {
     "message": "Phải nhập mật khẩu"
   },
-  "MustEnterPIN": {
+  "mustEnterPIN": {
     "message": "Phải nhập mã PIN"
   },
-  "MyAssets": {
+  "myAssets": {
     "message": "Tài sản của tôi"
   },
-  "MyItems": {
+  "myItems": {
     "message": "Vật phẩm của tôi"
   },
-  "Name": {
+  "name": {
     "message": "Tên"
   },
-  "NameYourNFT": {
+  "nameYourNFT": {
     "message": "Đặt tên cho NFT"
   },
-  "NewPassword": {
+  "newPassword": {
     "message": "Mật khẩu mới"
   },
-  "Next": {
+  "next": {
     "message": "Tiếp"
   },
-  "NFT": {
-    "message": "NFT"
-  },
-  "NFTImage": {
+  "nftImage": {
     "message": "Hình ảnh NFT"
   },
-  "NFTLeaderBoard": {
+  "nftLeaderBoard": {
     "message": "Bảng xếp hạng NFT"
   },
-  "NFTName": {
+  "nftName": {
     "message": "Tên NFT"
   },
-  "NFTSymbol": {
+  "nftSymbol": {
     "message": "Biểu tượng NFT"
   },
-  "NFTTitle": {
+  "nftTitle": {
     "message": "Tiêu đề NFT"
   },
-  "No": {
+  "no": {
     "message": "Không"
   },
-  "NoActivities": {
+  "noActivities": {
     "message": "Không có hoạt động nào"
   },
-  "NoActivity": {
+  "noActivity": {
     "message": "Không có hoạt động"
   },
-  "NoAddress": {
+  "noAddress": {
     "message": "Không có địa chỉ"
   },
-  "NoAvailableData": {
+  "noAvailableData": {
     "message": "Không có dữ liệu"
   },
-  "NoConnection": {
+  "noConnection": {
     "message": "Không có kết nối"
   },
-  "NoNFTsYet": {
+  "noNFTsYet": {
     "message": "Chưa có NFT nào"
   },
-  "NoOrdersYet": {
+  "noOrdersYet": {
     "message": "Chưa có đơn hàng nào"
   },
-  "NotAvailable": {
+  "notAvailable": {
     "message": "Không có sẵn"
   },
   "notEnoughTokens": {
     "message": "Không đủ token"
   },
-  "Notes": {
+  "notes": {
     "message": "Ghi chú"
   },
-  "Notifications": {
+  "notifications": {
     "message": "Thông báo"
   },
-  "NoTokenYet": {
+  "noTokenYet": {
     "message": "Chưa có Token nào"
   },
-  "otherwiseYouCouldLoseAnytokensOrAssets": {
+  "otherwiseYouCouldLoseAnyTokensOrAssets": {
     "message": "Nếu không bạn có thể sẽ bị mất tokens và tài sản."
   },
-  "Password": {
+  "password": {
     "message": "Mật khẩu"
   },
   "passwordDoesNotMatch": {
@@ -554,19 +554,19 @@
   "pleaseAcceptTheTof": {
     "message": "Vui lòng đồng ý với điều khoản dịch vụ"
   },
-  "Possessive": {
-    "message": " của"
+  "possessive": {
+    "message": "của"
   },
-  "PrivacyPolicy": {
-    "message": "Chính sách bảo mật."
+  "privacyPolicy": {
+    "message": "Chính sách bảo mật"
   },
-  "PrivacyPolicyHere": {
+  "privacyPolicyHere": {
     "message": "Chính sách bảo mật ở đây."
   },
-  "RECEIVE": {
+  "receiveUc": {
     "message": "NHẬN"
   },
-  "RecipientWalletAddress": {
+  "recipientWalletAddress": {
     "message": "Địa chỉ người nhận"
   },
   "reEnterThreeWords": {
@@ -575,10 +575,10 @@
   "reEnterYourFinniePassword": {
     "message": "Vui lòng nhập mật khẩu của bạn."
   },
-  "Reject": {
+  "reject": {
     "message": "Từ chối"
   },
-  "Remember": {
+  "remember": {
     "message": "Hãy nhớ rằng"
   },
   "rememberToSaveYourSecretPhrase": {
@@ -593,13 +593,13 @@
   "resumeFinnie": {
     "message": "Tiếp tục Finnie"
   },
-  "Save": {
+  "save": {
     "message": "Lưu"
   },
   "saveYourSecretPhrase": {
     "message": "Lưu 12 từ bí mật"
   },
-  "Search": {
+  "search": {
     "message": "Tìm kiếm"
   },
   "searchCollections": {
@@ -617,61 +617,61 @@
   "securePasswordsHaveAtLeast8Characters": {
     "message": "Mật khẩu phải có ít nhất 8 kí tự, bao gồm chữ thường, chữ hoa, số, kí tự đặc biệt (vd !@#$%)."
   },
-  "See": {
+  "see": {
     "message": "Xem"
   },
   "seeConnectedSites": {
     "message": "Trang đã kết nối"
   },
-  "Send": {
+  "send": {
     "message": "Gửi"
   },
-  "Sending": {
+  "sending": {
     "message": "Gửi"
   },
-  "SENDTOKEN": {
-    "message": "GỬI"
-  },
-  "SendTokens": {
+  "sendTokens": {
     "message": "Gửi Tokens"
   },
-  "Sign": {
+  "sendUc": {
+    "message": "GỬI"
+  },
+  "sign": {
     "message": "Ký"
   },
-  "Simulation": {
+  "simulation": {
     "message": "Mô phỏng"
   },
   "skipThisStep": {
     "message": "Bỏ qua bước này"
   },
   "startFromScratch": {
-    "message": "Bắt đầu từ đầu."
+    "message": "bắt đầu từ đầu."
   },
-  "TermsOfService": {
+  "termsOfService": {
     "message": "Điều khoản dịch vụ"
   },
-  "TermsOfUse": {
+  "termsOfUse": {
     "message": "Điều khoản sử dụng"
   },
   "thisShouldBeWrittenOnAPieceOfPaper": {
     "message": "Bạn nên viết 12 từ bí mật xuống một tờ giấy và đừng bao giờ lưu chúng vào máy tính có kết nối internet"
   },
-  "TO": {
-    "message": "ĐẾN"
-  },
-  "To": {
+  "to": {
     "message": "Đến"
   },
-  "TokenBalance": {
+  "tO": {
+    "message": "ĐẾN"
+  },
+  "tokenBalance": {
     "message": "Số dư token"
   },
-  "Tokens": {
+  "tokens": {
     "message": "Tokens"
   },
-  "TotalBalance": {
+  "totalBalance": {
     "message": "Số dư khả dụng"
   },
-  "TransactionFees": {
+  "transactionFees": {
     "message": "Phí giao dịch"
   },
   "typeInTheMissingWords": {
@@ -683,13 +683,13 @@
   "useMyExistingKey": {
     "message": "Sử dụng key của tôi."
   },
-  "Version": {
+  "version": {
     "message": "Phiên bản"
   },
-  "VersionNotes": {
+  "versionNotes": {
     "message": "Ghi chú phiên bản"
   },
-  "VersionNotesMsg": {
+  "versionNotesMsg": {
     "message": "Xem chi tiết về bản phát hành mới nhất."
   },
   "welcomeTo": {

@@ -78,7 +78,7 @@ const SolanaSignMessage = ({ setError, setIsLoading }) => {
         style={{ height: '67px' }}
       >
         <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-          {chrome.i18n.getMessage('SigningMessage')}
+          {chrome.i18n.getMessage('signingMessage')}
         </div>
         {/* <CloseIcon
           style={{ width: '30px', height: '30px' }}
@@ -92,7 +92,7 @@ const SolanaSignMessage = ({ setError, setIsLoading }) => {
       </div>
 
       <div className="w-full mt-3.5 px-3 text-indigo">
-        <div className="font-semibold text-base text-left">{chrome.i18n.getMessage('Message')}</div>
+        <div className="font-semibold text-base text-left">{chrome.i18n.getMessage('message')}</div>
         <div
           className="font-light text-sm text-left tracking-finnieSpacing-wide overflow-auto"
           style={{ height: '180px' }}
@@ -107,14 +107,14 @@ const SolanaSignMessage = ({ setError, setIsLoading }) => {
           style={{ width: '160px', height: '38px' }}
           onClick={onClose}
         >
-          {chrome.i18n.getMessage('Reject')}
+          {chrome.i18n.getMessage('reject')}
         </button>
         <button
           onClick={onSign}
           className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white mb-8"
           style={{ width: '160px', height: '38px' }}
         >
-          {chrome.i18n.getMessage('Sign')}
+          {chrome.i18n.getMessage('sign')}
         </button>
       </div>
     </div>

@@ -76,7 +76,7 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
       </div>
       <img className="w-22 h-22" src={Avatar} alt="avatar" />
       <h1 className="font-semibold text-success text-base my-7">
-        {chrome.i18n.getMessage('ImportDIDLink')}
+        {chrome.i18n.getMessage('importDIDLink')}
       </h1>
 
       <input
@@ -85,7 +85,7 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
           clicked && 'cursor-wait',
           'focus:outline-none bg-trueGray-100 bg-opacity-10 text-center text-white text-sm placeholder-trueGray-400 border-b border-white'
         )}
-        placeholder={chrome.i18n.getMessage('AddressBookDIDLinkInput')}
+        placeholder={chrome.i18n.getMessage('addressBookDIDLinkInput')}
         value={didLink}
         onChange={(e) => {
           setDidLink(e.target.value)
@@ -96,7 +96,7 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
       />
       {invalidDIDLink && (
         <span className="mt-2 text-center font-normal text-xs leading-4 text-warning-300 tracking-finnieSpacing-wide">
-          {chrome.i18n.getMessage('InvalidDIDLink')}
+          {chrome.i18n.getMessage('invalidDIDLink')}
         </span>
       )}
       {duplicateDID && (
@@ -114,7 +114,7 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
         onClick={() => handleImportDID()}
         disabled={clicked || isEmpty(didLink)}
       >
-        {chrome.i18n.getMessage('Import')}
+        {chrome.i18n.getMessage('import')}
       </button>
     </div>
   )

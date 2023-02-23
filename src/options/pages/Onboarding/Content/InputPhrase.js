@@ -165,7 +165,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
           style={{ width: '240px', height: '42px' }}
           className="mt-10.75 text-base mx-auto rounded z-10"
           variant="white"
-          text={chrome.i18n.getMessage('ConfirmPhrase')}
+          text={chrome.i18n.getMessage('confirmPhrase')}
           // disabled={!isNextStep}
           onClick={onClickContinue}
           id="continue-button"

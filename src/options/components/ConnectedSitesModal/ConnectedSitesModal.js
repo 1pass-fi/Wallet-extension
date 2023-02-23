@@ -150,7 +150,7 @@ const ConnectedSitesModal = ({ account, close }) => {
       >
         <div className="flex h-16.75 rounded-t bg-trueGray-100 shadow-md w-full font-semibold text-xl tracking-finnieSpacing-wide relative">
           {/* <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" /> */}
-          <div className="m-auto">{chrome.i18n.getMessage('ConnectedSites')}</div>
+          <div className="m-auto">{chrome.i18n.getMessage('connectedSites')}</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
         {isEmpty(siteConnectedAddresses) ? (
@@ -164,7 +164,7 @@ const ConnectedSitesModal = ({ account, close }) => {
           <>
             <div className="mt-7.5 font-normal text-base text-center tracking-finnieSpacing-wide text-indigo">
               <span className="font-semibold">{formatLongString(account.accountName, 20)}</span>
-              {chrome.i18n.getMessage('isConnectedToSites')}
+              {' '}{chrome.i18n.getMessage('isConnectedToSites')}
             </div>
             <div
               className="w-11/12 mt-4.5 mb-15 flex flex-col justify-between text-blue-850 overflow-y-scroll"

@@ -21,9 +21,9 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
-        {chrome.i18n.getMessage('ImportYourKey')}
+        {chrome.i18n.getMessage('importYourKey')}
       </div>
-      <div className="mt-5 font-normal text-lg">{chrome.i18n.getMessage('ClickCircle')}</div>
+      <div className="mt-5 font-normal text-lg">{chrome.i18n.getMessage('clickCircle')}</div>
       <div className="mt-2 font-normal text-sm w-11/12">
         {chrome.i18n.getMessage('finnieCurrentlyKeySupports')}
       </div>

@@ -90,7 +90,7 @@ const GetEncryptionKey = ({ setError, setIsLoading }) => {
         className="w-full mt-3.5 px-3 text-indigo text-center text-sm tracking-finnieSpacing-wide"
         style={{ marginTop: '135px' }}
       >
-        {requestData.origin} {chrome.i18n.getMessage('EncryptionKeyRequest')}
+        {requestData.origin} {chrome.i18n.getMessage('encryptionKeyRequestLc')}
       </div>
 
       <div className="absolute bottom-3.25 w-full flex justify-between px-4.5">
@@ -99,14 +99,14 @@ const GetEncryptionKey = ({ setError, setIsLoading }) => {
           style={{ width: '160px', height: '38px' }}
           onClick={onClose}
         >
-          {chrome.i18n.getMessage('Cancel')}
+          {chrome.i18n.getMessage('cancel')}
         </button>
         <button
           onClick={onSign}
           className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
           style={{ width: '160px', height: '38px' }}
         >
-          {chrome.i18n.getMessage('Provide')}
+          {chrome.i18n.getMessage('provide')}
         </button>
       </div>
     </div>

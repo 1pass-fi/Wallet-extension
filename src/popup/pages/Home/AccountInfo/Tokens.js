@@ -230,7 +230,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
         displayingAccount.type === TYPE.SOLANA ||
         displayingAccount.type === TYPE.K2) && (
         <div className="mt-5 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
-          {chrome.i18n.getMessage('donotSeeYourTokens')}
+          {chrome.i18n.getMessage('doNotSeeYourTokens')}
         </div>
       )}
       {(displayingAccount.type === TYPE.ETHEREUM ||

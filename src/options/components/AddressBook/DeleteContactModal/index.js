@@ -42,15 +42,15 @@ const DeleteContactModal = React.forwardRef(({ contact, onClose, removeContact }
           <div className="ab-close-icon" onClick={onClose}>
             <BackIcon />
           </div>
-          <div>{chrome.i18n.getMessage('DeleteContact')}</div>
+          <div>{chrome.i18n.getMessage('deleteContact')}</div>
           <div className="ab-close-icon" onClick={onClose}>
             <CloseIcon />
           </div>
         </div>
         <div className="ab-confirm-delete-message">
-          {chrome.i18n.getMessage('DeleteMsgStart')}
+          {chrome.i18n.getMessage('deleteMsgStart')}{' '}
           {contact.name.length < 13 ? contact.name : contact.name.slice(0, 13) + '...'}
-          {chrome.i18n.getMessage('DeleteMsgEnd')}
+          {' '}{chrome.i18n.getMessage('deleteMsgEnd')}
         </div>
         <div className="ab-confirm-delete-buttons">
           <Button
@@ -58,10 +58,10 @@ const DeleteContactModal = React.forwardRef(({ contact, onClose, removeContact }
               removeContact(contact.id)
               onClose()
             }}
-            text={chrome.i18n.getMessage('DeleteContact')}
+            text={chrome.i18n.getMessage('deleteContact')}
             variant="delete"
           />
-          <Button onClick={onClose} text={chrome.i18n.getMessage('GoBack')} variant="cancel" />
+          <Button onClick={onClose} text={chrome.i18n.getMessage('goBack')} variant="cancel" />
         </div>
       </div>
     </div>

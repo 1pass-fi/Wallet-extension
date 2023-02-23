@@ -29,7 +29,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
         {chrome.i18n.getMessage('saveYourSecretPhrase')}
       </div>
       <div className="mt-5 font-normal text-base leading-8 max-w-full" style={{ width: '500px' }}>
-        {chrome.i18n.getMessage('KoiiWalletsUseA')} {/* TODO add tooltip/link */}
+        {chrome.i18n.getMessage('koiiWalletsUseA')} {/* TODO add tooltip/link */}
         <a
           target="_blank"
           href="https://cointelegraph.com/explained/what-is-a-seed-phrase-and-why-is-it-important"
@@ -37,15 +37,15 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
         >
           {chrome.i18n.getMessage('12WordSecretPhrase')}
         </a>{' '}
-        {chrome.i18n.getMessage('SecretPhraseMsg')}
+        {chrome.i18n.getMessage('secretPhraseMsgLc')}
       </div>
       <div className="mt-8 font-normal text-sm leading-6 w-11/12 flex">
         <NoticeIcon style={{ width: '96px', height: '96px' }} />
         <div style={{ width: '370px' }} className="flex flex-col max-w-full">
           <div>
-            {chrome.i18n.getMessage('WithYourSecretPhrase')}{' '}
+            {chrome.i18n.getMessage('withYourSecretPhrase')}{' '}
             <span className="text-warning-200">
-              {chrome.i18n.getMessage('EverythingInYourWallet')}
+              {chrome.i18n.getMessage('everythingInYourWalletLc')}
             </span>
             .
           </div>
@@ -58,7 +58,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
           style={{ width: '240px', height: '42px' }}
           className="rounded z-10 border border-white border-solid"
           variant="indigo"
-          text={chrome.i18n.getMessage('remindMeLater')}
+          text={chrome.i18n.getMessage('remindMeLater') + '.'}
           size="lg"
           onClick={handleRemindMeLater}
           data-testid={'remind-me-button'}
@@ -67,7 +67,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
           style={{ width: '240px', height: '42px' }}
           className="rounded z-10"
           variant="white"
-          text={chrome.i18n.getMessage('imready')}
+          text={chrome.i18n.getMessage('imReady')}
           size="lg"
           onClick={() => setStep(step + 1)}
           data-testid={'ready-button'}

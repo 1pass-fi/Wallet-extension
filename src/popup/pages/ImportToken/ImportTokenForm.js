@@ -72,10 +72,10 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
   return (
     <div className="mt-6 px-6 text-blue-800">
       <div className="font-normal text-base tracking-finnieSpacing-tight">
-        {chrome.i18n.getMessage('ImportTokenMsg')}
+        {chrome.i18n.getMessage('importTokenMsg')}
       </div>
       <div className="mt-4 text-xs font-normal tracking-finnieSpacing-wide">
-        {chrome.i18n.getMessage('Token')}
+        {chrome.i18n.getMessage('token')}
       </div>
       <div className="flex items-start mt-2" style={{ height: '36px' }}>
         {tokenImport.logo ? (
@@ -97,9 +97,9 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
       </div>
 
       <div className="mt-4 grid grid-cols-3 mb-3 font-normal text-xs tracking-finnieSpacing-wide text-center">
-        <div className="text-left">{chrome.i18n.getMessage('Account')}</div>
-        <div>{chrome.i18n.getMessage('Balance')}</div>
-        <div>{chrome.i18n.getMessage('AddToken')}</div>
+        <div className="text-left">{chrome.i18n.getMessage('account')}</div>
+        <div>{chrome.i18n.getMessage('balance')}</div>
+        <div>{chrome.i18n.getMessage('addToken')}</div>
       </div>
       <div className="overflow-y-scroll" style={{ maxHeight: '168px' }}>
         {accounts.map((account, idx) => {
@@ -136,7 +136,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
           className="ml-4 bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800"
           style={{ width: '160px', height: '38px' }}
         >
-          {chrome.i18n.getMessage('Back')}
+          {chrome.i18n.getMessage('back')}
         </button>
         <button
           onClick={() => handleImportToken()}
@@ -147,7 +147,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
           style={{ width: '160px', height: '38px' }}
           disabled={isEmpty(selectedAccounts)}
         >
-          {chrome.i18n.getMessage('Confirm')}
+          {chrome.i18n.getMessage('confirm')}
         </button>
       </div>
     </div>

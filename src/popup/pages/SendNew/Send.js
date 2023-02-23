@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef,useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
@@ -128,7 +128,7 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
       if (!validated) return setError(errorMessage)
       await onSendTokens()
 
-      switch(selectedNetwork) {
+      switch (selectedNetwork) {
         case TYPE.ETHEREUM:
           setShowEthSigning(true)
           break
@@ -172,12 +172,14 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
       />
 
       <div className="font-semibold text-xs leading-4 tracking-finnieSpacing-wide text-blue-800">
-        {chrome.i18n.getMessage('AMOUNT')}
+        {chrome.i18n.getMessage('amountUc')}
       </div>
       <div
         className="z-10 bg-trueGray-100 border-b-2 border-blue-800 flex"
         style={{ width: '241px', height: '45px' }}
-        data-tip={isEmpty(selectedAccount) ? chrome.i18n.getMessage('ChooseSenderAccountFirst') : ''}
+        data-tip={
+          isEmpty(selectedAccount) ? chrome.i18n.getMessage('chooseSenderAccountFirst') : ''
+        }
       >
         <input
           className={clsx(
@@ -234,7 +236,7 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
             selectedToken.symbol === 'KOII' && selectedNetwork != 'K2'
               ? formatNumber(selectedToken?.balance / Math.pow(10, selectedToken?.decimal), 2)
               : formatNumber(selectedToken?.balance / Math.pow(10, selectedToken?.decimal), 6)
-          } ${selectedToken.symbol} ${chrome.i18n.getMessage('Available')}`
+          } ${selectedToken.symbol} ${chrome.i18n.getMessage('available')}`
           : ''}
       </div>
 

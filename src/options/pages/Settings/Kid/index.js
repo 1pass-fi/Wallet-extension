@@ -324,7 +324,7 @@ const KidPage = () => {
     const pattern = /^[A-Za-z0-9]+$/
     const available = await checkAvailable(kID)
     if (!kID) {
-      setFieldError((prev) => ({ ...prev, kid: chrome.i18n.getMessage('KIDMustBeFilled') }))
+      setFieldError((prev) => ({ ...prev, kid: chrome.i18n.getMessage('kidMustBeFilled') }))
       dispatch(setLoaded)
       setDisableUpdateKID(false)
       kidInput.current.scrollIntoView()
@@ -334,7 +334,7 @@ const KidPage = () => {
     if (!pattern.test(kID)) {
       setFieldError((prev) => ({
         ...prev,
-        kid: chrome.i18n.getMessage('KIDWithoutSpecialCharacters')
+        kid: chrome.i18n.getMessage('kidWithoutSpecialCharacters')
       }))
       dispatch(setLoaded)
       setDisableUpdateKID(false)
@@ -344,7 +344,7 @@ const KidPage = () => {
     if (kID.length < 5) {
       setFieldError((prev) => ({
         ...prev,
-        kid: chrome.i18n.getMessage('KIDUnavailableUsername')
+        kid: chrome.i18n.getMessage('kidUnavailableUsername')
       }))
       dispatch(setLoaded)
       setDisableUpdateKID(false)
@@ -354,7 +354,7 @@ const KidPage = () => {
     if (!available && oldkID !== kID) {
       setFieldError((prev) => ({
         ...prev,
-        kid: chrome.i18n.getMessage('KIDUnavailableUsername')
+        kid: chrome.i18n.getMessage('kidUnavailableUsername')
       }))
       dispatch(setLoaded)
       setDisableUpdateKID(false)
@@ -363,7 +363,7 @@ const KidPage = () => {
     }
 
     if (!userKID.name) {
-      setFieldError((prev) => ({ ...prev, name: chrome.i18n.getMessage('NameMustBeFilled') }))
+      setFieldError((prev) => ({ ...prev, name: chrome.i18n.getMessage('nameMustBeFilled') }))
       dispatch(setLoaded)
       setDisableUpdateKID(false)
       kidInput.current.scrollIntoView()
@@ -371,7 +371,10 @@ const KidPage = () => {
     }
 
     if (!userKID.description) {
-      setFieldError((prev) => ({ ...prev, description: chrome.i18n.getMessage('DescriptionMustBeFilled') }))
+      setFieldError((prev) => ({
+        ...prev,
+        description: chrome.i18n.getMessage('descriptionMustBeFilled')
+      }))
       dispatch(setLoaded)
       setDisableUpdateKID(false)
       descriptionInput.current.scrollIntoView()
@@ -473,17 +476,20 @@ const KidPage = () => {
 
   return (
     <div className="kid-page-wrapper">
-      <Prompt when={!disableUpdateKID} message={chrome.i18n.getMessage('LeavePageConfirmationMsg')}></Prompt>
+      <Prompt
+        when={!disableUpdateKID}
+        message={chrome.i18n.getMessage('leavePageConfirmationMsg')}
+      ></Prompt>
       <div ref={kidInput} className="title-section">
         <div className="title-section__header-group">
           <IDCardIcon />
-          <h2>{chrome.i18n.getMessage('DecentralizedIdentity')}</h2>
+          <h2>{chrome.i18n.getMessage('decentralizedIdentity')}</h2>
         </div>
-        <p className="leading">{chrome.i18n.getMessage('DIDMsg')}</p>
+        <p className="leading">{chrome.i18n.getMessage('didMsg')}</p>
       </div>
       <div className="form-section">
         <div className="form-img">
-          <div className="form-img__img-name">{chrome.i18n.getMessage('ProfileImage')}</div>
+          <div className="form-img__img-name">{chrome.i18n.getMessage('profileImageUc')}</div>
           <div className="avatar">
             <div
               className="edit-avatar-layer"
@@ -497,9 +503,9 @@ const KidPage = () => {
             <img className="profile-picture" src={profileSrc}></img>
           </div>
           <div className="avt-desc">
-            <Link to="/create-nft">{chrome.i18n.getMessage('CreateNewNFT')}</Link>
+            <Link to="/create-nft">{chrome.i18n.getMessage('createNewNFT')}</Link>
           </div>
-          <div className="form-img__img-name">{chrome.i18n.getMessage('CoverImage')}</div>
+          <div className="form-img__img-name">{chrome.i18n.getMessage('coverImageUc')}</div>
           <div className="cover">
             <div
               className="edit-cover-layer"
@@ -513,24 +519,24 @@ const KidPage = () => {
             <img className="profile-cover" src={bannerSrc} alt="profile-cover" />
           </div>
           <div className="cover-desc">
-            {chrome.i18n.getMessage('OrCreate')}{' '}
-            <Link to="/create-nft">{chrome.i18n.getMessage('AnNFT')}</Link>{' '}
-            {chrome.i18n.getMessage('ToMakeIt')}{' '}
+            {chrome.i18n.getMessage('orCreate')}{' '}
+            <Link to="/create-nft">{chrome.i18n.getMessage('anNFTLc')}</Link>{' '}
+            {chrome.i18n.getMessage('toMakeItLc')}{' '}
             <Hint
               variant="white"
               className="inline ml-0.5"
               place="bottom"
-              text={chrome.i18n.getMessage('CoverImageHint')}
+              text={chrome.i18n.getMessage('coverImageHint')}
             />{' '}
             <br></br>
-            {chrome.i18n.getMessage('yourCoverImage')}
+            {chrome.i18n.getMessage('yourCoverImageLc')}
           </div>
         </div>
 
         <div className="form-text">
-          <div data-tip={isPending ? chrome.i18n.getMessage('DIDTransactionsPending') : ''}>
+          <div data-tip={isPending ? chrome.i18n.getMessage('didTransactionsPending') : ''}>
             <KidInputField
-              label={chrome.i18n.getMessage('DIDLink')}
+              label={chrome.i18n.getMessage('didLink')}
               isRequired={true}
               value={kID}
               setValue={onChangeUserInfo}
@@ -538,11 +544,11 @@ const KidPage = () => {
               disabled={isPending}
             />
           </div>
-          <div data-tip={isPending ? chrome.i18n.getMessage('DIDTransactionsPending') : ''}>
+          <div data-tip={isPending ? chrome.i18n.getMessage('didTransactionsPending') : ''}>
             <KidInputField
-              label={chrome.i18n.getMessage('Name')}
+              label={chrome.i18n.getMessage('name')}
               isRequired={true}
-              description={chrome.i18n.getMessage('orPseudonym')}
+              description={chrome.i18n.getMessage('orPseudonymLc')}
               value={userKID.name}
               setValue={onChangeUserInfo}
               error={fieldError.name}
@@ -550,7 +556,7 @@ const KidPage = () => {
             />
           </div>
           <div className="kid-input__country">
-            <div className="kid-input__country__label">{chrome.i18n.getMessage('Country')}</div>
+            <div className="kid-input__country__label">{chrome.i18n.getMessage('country')}</div>
             <DropDown
               options={countriesList}
               value={userKID.country}
@@ -562,11 +568,11 @@ const KidPage = () => {
               emptyOption={true}
             />
           </div>
-          <div data-tip={isPending ? chrome.i18n.getMessage('DIDTransactionsPending') : ''}>
+          <div data-tip={isPending ? chrome.i18n.getMessage('didTransactionsPending') : ''}>
             <KidInputField
-              label={chrome.i18n.getMessage('Pronouns')}
+              label={chrome.i18n.getMessage('pronouns')}
               isRequired={false}
-              example={chrome.i18n.getMessage('PronounsExample')}
+              example={chrome.i18n.getMessage('pronounsExample')}
               value={userKID.pronouns}
               setValue={onChangeUserInfo}
               disabled={isPending}
@@ -574,12 +580,12 @@ const KidPage = () => {
           </div>
           <div className="kid-input">
             <div className="kid-input-label-section">
-              <label className="kid-input-label">{chrome.i18n.getMessage('Description')}*</label>
+              <label className="kid-input-label">{chrome.i18n.getMessage('description')}*</label>
             </div>
             <div
               ref={descriptionInput}
               className="kid-input-input-section"
-              data-tip={isPending ? chrome.i18n.getMessage('DIDTransactionsPending') : ''}
+              data-tip={isPending ? chrome.i18n.getMessage('didTransactionsPending') : ''}
             >
               <textarea
                 value={userKID.description}
@@ -593,8 +599,8 @@ const KidPage = () => {
             </div>
           </div>
 
-          <div className="section-name">{chrome.i18n.getMessage('LinkAccounts')}</div>
-          <p className="link-account-desc">{chrome.i18n.getMessage('LinkAccountsDesc')}</p>
+          <div className="section-name">{chrome.i18n.getMessage('linkAccounts')}</div>
+          <p className="link-account-desc">{chrome.i18n.getMessage('linkAccountsDesc')}</p>
           {linkAccounts.map((linkAccounts, idx) => (
             <div className="link-accounts-wrapper" key={idx}>
               <div className="link-accounts-input-line">
@@ -621,17 +627,17 @@ const KidPage = () => {
           ))}
           <div className="add-more" onClick={addLinkAccount}>
             <AddIcon className="add-more-icon" />
-            {chrome.i18n.getMessage('AddMore')}
+            {chrome.i18n.getMessage('addMore')}
           </div>
 
-          <div className="section-name">{chrome.i18n.getMessage('AddCustomCSS')}</div>
+          <div className="section-name">{chrome.i18n.getMessage('addCustomCSS')}</div>
           <div className="custom-css-settings">
-            <div>{chrome.i18n.getMessage('CustomCSS')}</div>
+            <div>{chrome.i18n.getMessage('customCSS')}</div>
             <ToggleButton value={usingCustomCss} setValue={setUsingCustomCss} />
           </div>
           {usingCustomCss && (
             <div>
-              <div className="hint">{chrome.i18n.getMessage('CustomCSSHint')}</div>
+              <div className="hint">{chrome.i18n.getMessage('customCSSHint')}</div>
               <ul
                 style={{
                   listStyleType: 'circle',
@@ -708,7 +714,7 @@ const KidPage = () => {
             ))}
 
           <div className="save-kid-btn">
-            <div data-tip={isPending ? chrome.i18n.getMessage('DIDTransactionsPending') : ''}>
+            <div data-tip={isPending ? chrome.i18n.getMessage('didTransactionsPending') : ''}>
               <Button
                 disabled={disableUpdateKID || isPending}
                 onClick={async () => {
@@ -718,8 +724,8 @@ const KidPage = () => {
                 variant="filled"
                 text={
                   hadData
-                    ? chrome.i18n.getMessage('SaveChanges')
-                    : chrome.i18n.getMessage('CreateMyDID')
+                    ? chrome.i18n.getMessage('saveChanges')
+                    : chrome.i18n.getMessage('createMyDID')
                 }
                 startIcon={CheckIcon}
               />
@@ -733,8 +739,8 @@ const KidPage = () => {
             <CloseIcon onClick={close} className="close-icon" />
             <div className="title">
               {modalType === 'AVATAR'
-                ? chrome.i18n.getMessage('SelectProfilePicture')
-                : chrome.i18n.getMessage('SelectCoverPicture')}
+                ? chrome.i18n.getMessage('selectProfilePictureUc')
+                : chrome.i18n.getMessage('selectCoverPictureUc')}
             </div>
             <div className="select-nft-modal-search">
               <input
@@ -768,33 +774,35 @@ const KidPage = () => {
           <div className="confirm-did-modal w-full h-full">
             {<ModalBackground className="absolute top-16.75 left-0" />}
             <div className="title">
-              {!confirmed ? chrome.i18n.getMessage('ConfirmDID') : chrome.i18n.getMessage('DecentralizedIDConfirmed')}
+              {!confirmed
+                ? chrome.i18n.getMessage('confirmDID')
+                : chrome.i18n.getMessage('decentralizedIDConfirmed')}
               <CloseIconBlue onClick={() => setShowConfirmModal(false)} className="close-icon" />
             </div>
             <div className={clsx('content ml-56', !hadData ? 'mt-10' : 'mt-16')}>
               {!confirmed && (
                 <div className="flex flex-col pl-8">
-                  <div className="content-title">{chrome.i18n.getMessage('ConfirmDIDProfile')}</div>
+                  <div className="content-title">{chrome.i18n.getMessage('confirmDIDProfile')}</div>
                   <div className="cost">
-                    <div className="cost-title">{chrome.i18n.getMessage('EstimatedCosts')}</div>
+                    <div className="cost-title">{chrome.i18n.getMessage('estimatedCosts')}:</div>
                     {!hadData && <div className="cost-koii-fee">1 KOII</div>}
                     <div className="cost-ar-fee">{hadData ? '0.00007' : '0.0005'} AR</div>
-                    <div className="cost-storage-fee"> {chrome.i18n.getMessage('StorageFee')}</div>
+                    <div className="cost-storage-fee"> {chrome.i18n.getMessage('storageFee')}</div>
                   </div>
                 </div>
               )}
               {confirmed && (
                 <div className="success">
-                  <div className="success-title">{chrome.i18n.getMessage('DIDIsFinalizing')}</div>
+                  <div className="success-title">{chrome.i18n.getMessage('didIsFinalizing')}</div>
                   <div className="success-message">
-                    {chrome.i18n.getMessage('DIDSuccessMsgStart')}
+                    {chrome.i18n.getMessage('didSuccessMsgStart')}
                     <br></br>
-                    {chrome.i18n.getMessage('DIDSuccessMsgMiddle')}
+                    {chrome.i18n.getMessage('didSuccessMsgMiddle')}
                     <br></br>
                     <a className="profile-link" href={`https://koii.id/${kID}`}>
-                      {chrome.i18n.getMessage('ProfileLink')}
+                      {chrome.i18n.getMessage('profileLinkLc')}
                     </a>{' '}
-                    {chrome.i18n.getMessage('DIDSuccessMsgEnd')}
+                    {chrome.i18n.getMessage('didSuccessMsgEnd')}
                   </div>
                 </div>
               )}
@@ -806,8 +814,8 @@ const KidPage = () => {
                 onClick={handleSubmit}
               >
                 {hadData
-                  ? chrome.i18n.getMessage('UpdateDID')
-                  : chrome.i18n.getMessage('CreateDID')}
+                  ? chrome.i18n.getMessage('updateDID')
+                  : chrome.i18n.getMessage('createDID')}
               </button>
             )}
             {confirmed && (
@@ -815,7 +823,7 @@ const KidPage = () => {
                 className="confirm-button flex items-center justify-center w-101 mx-auto mt-8 text-base leading-6"
                 onClick={() => setShowConfirmModal(false)}
               >
-                {chrome.i18n.getMessage('OK')}
+                {chrome.i18n.getMessage('okUc')}
               </button>
             )}
           </div>

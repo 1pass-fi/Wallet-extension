@@ -15,21 +15,21 @@ const CreateNewContact = ({ goToCreateForm, goToImportFromDID }) => {
     >
       <img className="w-22 h-22" src={Avatar} alt="avatar" />
       <h1 className="font-semibold text-success text-base my-7">
-        {chrome.i18n.getMessage('CreateNewContact')}
+        {chrome.i18n.getMessage('createNewContact')}
       </h1>
       <button
         onClick={goToCreateForm}
         className="rounded-sm shadow-md text-center text-indigo bg-trueGray-100 text-sm"
         style={{ width: '238px', height: '38px' }}
       >
-        {chrome.i18n.getMessage('EnterInfoManually')}
+        {chrome.i18n.getMessage('enterInfoManually')}
       </button>
       <button
         onClick={goToImportFromDID}
         className="rounded-sm shadow-md text-center text-indigo bg-success text-sm mt-6.25"
         style={{ width: '238px', height: '38px' }}
       >
-        {chrome.i18n.getMessage('ImportDIDLink')}
+        {chrome.i18n.getMessage('importDIDLink')}
       </button>
     </div>
   )

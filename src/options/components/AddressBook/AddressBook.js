@@ -167,7 +167,7 @@ const AddressBook = () => {
     const newAddress = {
       name: didContact.state.name,
       notes: didContact.state.description,
-      didName: chrome.i18n.getMessage('AddressBookDIDLink'),
+      didName: chrome.i18n.getMessage('addressBookDIDLink'),
       didValue: didContact.didValue,
       avatarUrl: `https://arweave.net/${didContact.state.picture}`,
       addresses: [
@@ -227,7 +227,7 @@ const AddressBook = () => {
 
           <div className="address-book__list__body">
             {isEmpty(addresses) ? (
-              <div className="address-book__list__body__name">{chrome.i18n.getMessage('AddressBookEmpty')}</div>
+              <div className="address-book__list__body__name">{chrome.i18n.getMessage('addressBookEmpty')}</div>
             ) : (
               filterAddresses.map((add) => (
                 <div

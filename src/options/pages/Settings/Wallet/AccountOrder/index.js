@@ -134,7 +134,7 @@ export default ({ accounts, setAccounts }) => {
 
   return (
     <div className="account-order">
-      <div className="account-header">{chrome.i18n.getMessage('DEFAULT')}</div>
+      <div className="account-header">{chrome.i18n.getMessage('defaultUc')}</div>
       {accounts.map((item, index) => (
         <div className="account" key={item.address}>
           <div className="name-icon">

@@ -212,7 +212,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               )}
               onClick={() => setTab(TAB.DETAIL)}
             >
-              {chrome.i18n.getMessage('Details')}
+              {chrome.i18n.getMessage('details')}
             </div>
           </div>
 
@@ -224,21 +224,23 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 className="w-7.5 h-7.5 z-20 absolute top-15 left-3.75 cursor-pointer bg-white bg-opacity-70 rounded-full"
               />
               <div className="mt-5 font-semibold text-base text-indigo leading-5 text-center tracking-finnieSpacing-wide">
-                {chrome.i18n.getMessage('ConfirmTransaction')}
+                {chrome.i18n.getMessage('confirmTransaction')}
               </div>
 
               {/* TRANSACTION TITLE */}
               <div className="mt-4.5 font-semibold text-sm text-indigo text-center tracking-finnieSpacing-wide">
-                {transactionType === TRANSACTION_TYPE.CONTRACT_DEPLOYMENT && chrome.i18n.getMessage('ContractDeployment')}
+                {transactionType === TRANSACTION_TYPE.CONTRACT_DEPLOYMENT &&
+                  chrome.i18n.getMessage('contractDeployment')}
                 {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION &&
-                  chrome.i18n.getMessage('ContractInteraction')}
+                  chrome.i18n.getMessage('contractInteraction')}
                 {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER &&
                   network === 'ETHEREUM' &&
-                  chrome.i18n.getMessage('TransferETH')}
+                  chrome.i18n.getMessage('transferETH')}
                 {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER &&
                   network === 'ARWEAVE' &&
-                  chrome.i18n.getMessage('TransferAR')}
-                {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && chrome.i18n.getMessage('TransferToken')}
+                  chrome.i18n.getMessage('transferAR')}
+                {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER &&
+                  chrome.i18n.getMessage('transferToken')}
               </div>
               {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION &&
                 !isEmpty(transactionMethod) && (
@@ -250,12 +252,12 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                     )}
                     {transactionMethod === TRANSACTION_METHOD.MINT_COLLECTIBLES && (
                       <div className="flex items-center justify-center w-auto h-5 mt-1 mb-3 px-1 text-sm text-indigo font-semibold tracking-finnieSpacing-wide border border-turquoiseBlue rounded-xs bg-cyan">
-                        {chrome.i18n.getMessage('mintCollectibles')}
+                        {chrome.i18n.getMessage('mintCollectiblesLc')}
                       </div>
                     )}
                     {transactionMethod === TRANSACTION_METHOD.APPROVE && (
                       <div className="flex items-center justify-center w-auto h-5 mt-1 mb-3 px-1 text-sm text-indigo font-semibold tracking-finnieSpacing-wide border border-turquoiseBlue rounded-xs bg-cyan">
-                        {chrome.i18n.getMessage('approve')}
+                        {chrome.i18n.getMessage('approveLc')}
                       </div>
                     )}
                   </>
@@ -270,7 +272,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                   >
                     <CheckMarkIcon style={{ width: '24px', height: '24px' }} />
                     <div className="mx-2" style={{ width: '300px ' }}>
-                      {chrome.i18n.getMessage('SunriseVerified')}
+                      {chrome.i18n.getMessage('sunriseVerified')}
                     </div>
                     <SunriseLogo style={{ width: '21px', height: '21px' }} />
                   </div>
@@ -281,7 +283,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                   >
                     <WaitingIcon style={{ width: '24px', height: '24px' }} />
                     <div className="mx-2" style={{ width: '300px ' }}>
-                      {chrome.i18n.getMessage('SunriseHasNotBeenVerified')}
+                      {chrome.i18n.getMessage('sunriseHasNotBeenVerified')}
                     </div>
                     <SunriseLogo style={{ width: '21px', height: '21px' }} />
                   </div>
@@ -296,13 +298,13 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                         className="mx-2 flex flex-col items-center justify-center"
                         style={{ width: '300px ' }}
                       >
-                        {chrome.i18n.getMessage('SunriseWarningMsg')}
+                        {chrome.i18n.getMessage('sunriseWarningMsg')}
                         <div
                           className="leading-6 bg-blue-800 rounded-sm mt-0.5 flex items-center justify-center text-white cursor-pointer"
                           style={{ width: '100px', height: '20px' }}
                           onClick={() => setShowConnectedSites(true)}
                         >
-                          {chrome.i18n.getMessage('IUnderstand')}
+                          {chrome.i18n.getMessage('iUnderstand')}
                         </div>
                       </div>
                       <SunriseLogo style={{ width: '21px', height: '21px' }} />
@@ -313,7 +315,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
                 {origin && (
                   <div className={clsx('flex mb-2', isScamOrigin && 'text-red-finnie')}>
-                    <div style={{ width: '176px' }}>{chrome.i18n.getMessage('Origin')}</div>
+                    <div style={{ width: '176px' }}>{chrome.i18n.getMessage('origin')}</div>
                     <div
                       className={clsx(
                         'flex font-normal text-xs items-center truncate',
@@ -328,7 +330,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
                   transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
                   <div className="flex mb-2">
-                    <div style={{ width: '176px' }}>{chrome.i18n.getMessage('Sending')}</div>
+                    <div style={{ width: '176px' }}>{chrome.i18n.getMessage('sending')}</div>
                     <div className="flex font-normal text-xs items-center">
                       <SendValue />
                       <div className="ml-1 w-4 h-4">
@@ -338,7 +340,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                   </div>
                 )}
                 <div className="flex mb-2">
-                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('TotalBalance')}</div>
+                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('totalBalance')}</div>
                   <div className="flex font-normal text-xs items-center text-success-700">
                     {numberFormat(originBalance, 6)} {originSymbol}
                   </div>
@@ -347,7 +349,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER &&
                   network !== 'ARWEAVE' && (
                   <div className="flex mb-2">
-                    <div style={{ width: '176px' }}>{chrome.i18n.getMessage('TokenBalance')}</div>
+                    <div style={{ width: '176px' }}>{chrome.i18n.getMessage('tokenBalance')}</div>
                     <div className="flex font-normal text-xs items-center text-success-700">
                       {numberFormat(balance, 6)} {symbol}
                     </div>
@@ -355,7 +357,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 )}
 
                 <div className="flex">
-                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('TransactionFees')}</div>
+                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('transactionFees')}</div>
                   <div className="flex font-normal text-xs items-center">
                     <Fee />
                   </div>
@@ -363,7 +365,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               </div>
 
               <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
-                <div style={{ width: '176px' }}>{chrome.i18n.getMessage('FromLc')}</div>
+                <div style={{ width: '176px' }}>{chrome.i18n.getMessage('from')}</div>
                 {senderName && <div className="mt-2 font-semibold text-xs">{senderName}</div>}
                 <div
                   className="mt-2 font-normal text-xs text-success-700"
@@ -376,7 +378,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
                 (transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER && recipient)) && (
                 <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
-                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('ToLc')}</div>
+                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('to')}</div>
                   {recipientName && (
                     <div className="mt-2 font-semibold text-xs">{recipientName}</div>
                   )}
@@ -393,7 +395,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               {network === 'SOLANA' && !isEmpty(textInstructions) && (
                 <div className="w-90.5 h-full mt-5">
                   <div className="px-4 w-full h-10 flex justify-between font-normal text-sm text-indigo bg-purplelight rounded-md items-center">
-                    <div className="w-40">{chrome.i18n.getMessage('SeeAdvancedDetails')}</div>
+                    <div className="w-40">{chrome.i18n.getMessage('seeAdvancedDetails')}</div>
                     <div
                       className="cursor-pointer w-6 h-6"
                       onClick={() => setIsDetailDrop((prev) => !prev)}
@@ -421,13 +423,14 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 {chrome.i18n.getMessage('transactionInQueue')}
               </div>
               <div className="mt-2 text-sm text-indigo">
-                <span className="font-bold">{origin}</span> {chrome.i18n.getMessage('requested')}{' '}
-                <span className="font-bold">{chrome.i18n.getMessage('justNow')}</span>
+                <span className="font-bold">{origin}</span> {chrome.i18n.getMessage('requestedLc')}{' '}
+                <span className="font-bold">{chrome.i18n.getMessage('justNowLc')}</span>
               </div>
               <div className="mt-2 text-xl text-indigo font-semibold">
-                {chrome.i18n.getMessage('SimulatedChanges')}:</div>
+                {chrome.i18n.getMessage('simulatedChanges')}:
+              </div>
               <div className="w-full px-8 mt-4.5 flex flex-col">
-                <div className="font-normal text-sm">{chrome.i18n.getMessage('YouGive')}:</div>
+                <div className="font-normal text-sm">{chrome.i18n.getMessage('youGive')}:</div>
                 <div
                   className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
                   style={{ backgroundColor: '#EBEEF7', height: '56px' }}
@@ -443,7 +446,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                   </div>
                 </div>
                 <div className="mt-2.5 font-normal text-sm">
-                  {chrome.i18n.getMessage('YouGet')}:
+                  {chrome.i18n.getMessage('youGet')}:
                 </div>
                 {simulationData.type === TRANSACTION_METHOD.MINT_COLLECTIBLES && (
                   <div
@@ -485,10 +488,10 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
                 >
                   <div className="flex items-center font-semibold text-base">
                     <CheckMarkIconBlue className="mr-1" style={{ width: '18px', height: '18px' }} />
-                    {chrome.i18n.getMessage('Approved')}
+                    {chrome.i18n.getMessage('approved')}
                   </div>
                   <div className="font-normal text-sm">
-                    {chrome.i18n.getMessage('TransactionAppearsToBeInOrder')}
+                    {chrome.i18n.getMessage('transactionAppearsToBeInOrder')}
                   </div>
                 </div>
               </div>
@@ -509,7 +512,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               style={{ width: '160px', height: '38px' }}
               disabled={isScamOrigin}
             >
-              {chrome.i18n.getMessage('Reject')}
+              {chrome.i18n.getMessage('reject')}
             </button>
             <button
               onClick={onSubmitTransaction}
@@ -521,7 +524,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               disabled={isScamOrigin}
               data-testid="sign-button"
             >
-              {signWithoutSend ? chrome.i18n.getMessage('Sign') : chrome.i18n.getMessage('Send')}
+              {signWithoutSend ? chrome.i18n.getMessage('sign') : chrome.i18n.getMessage('send')}
             </button>
           </div>
 
@@ -545,7 +548,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
             {transactionType !== TRANSACTION_TYPE.CONTRACT_DEPLOYMENT &&
               transactionType !== TRANSACTION_TYPE.CONTRACT_INTERACTION && (
               <div className="flex mb-4">
-                <div style={{ width: '142px' }}>{chrome.i18n.getMessage('AmountLc')}</div>
+                <div style={{ width: '142px' }}>{chrome.i18n.getMessage('amount')}</div>
                 <div className="flex font-normal text-sm items-center">
                   {value} {symbol}
                   <div className="ml-1 w-4 h-4">
@@ -555,7 +558,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               </div>
             )}
             <div className="flex mb-4">
-              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('FromLc')}</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('from')}</div>
               <div className="flex flex-col font-normal text-sm items-start">
                 {senderName && <div>{senderName}</div>}
                 <div className="font-normal text-xs text-success-700">
@@ -564,7 +567,7 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               </div>
             </div>
             <div className="flex mb-4">
-              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('ToLc')}</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('to')}</div>
               <div className="flex flex-col font-normal text-sm items-start">
                 {recipientName && <div>{recipientName}</div>}
                 <div className="font-normal text-xs text-success-700">
@@ -573,17 +576,17 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               </div>
             </div>
             <div className="flex mb-4">
-              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('TransactionFees')}</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('transactionFees')}</div>
               <div className="font-normal text-sm">
                 {numberFormat(totalFee, 6)} {tokenSymbol}
               </div>
             </div>
             <div className="flex mb-4">
-              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('Status')}</div>
-              <div className="font-normal text-sm">{chrome.i18n.getMessage('Confirmed')}</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('status')}</div>
+              <div className="font-normal text-sm">{chrome.i18n.getMessage('confirmed')}</div>
             </div>
             <div className="flex">
-              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('TotalCost')}</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('totalCost')}</div>
               <div className="flex flex-col font-normal text-sm items-start">
                 <div className="leading-5">
                   {value} {symbol}

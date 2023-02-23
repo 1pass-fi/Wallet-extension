@@ -55,12 +55,12 @@ const ChangePasswordModal = ({ close }) => {
   const validatePasswords = () => {
     let validPassword = true
     if (isEmpty(oldPassword)) {
-      setOldPasswordError(chrome.i18n.getMessage('PasswordIsIncorrect'))
+      setOldPasswordError(chrome.i18n.getMessage('passwordIsIncorrect'))
       validPassword = false
     }
 
     if (newPassword !== confirmPassword) {
-      setConfirmPasswordError(chrome.i18n.getMessage('PasswordDoNotMatch'))
+      setConfirmPasswordError(chrome.i18n.getMessage('passwordDoNotMatch'))
       validPassword = false
     } else {
       setConfirmPasswordError('')
@@ -68,7 +68,7 @@ const ChangePasswordModal = ({ close }) => {
 
     if (isEmpty(newPassword) || !passwordRegex.test(newPassword)) {
       validPassword = false
-      setNewPasswordError(chrome.i18n.getMessage('PasswordErrorMsg'))
+      setNewPasswordError(chrome.i18n.getMessage('passwordErrorMsg'))
     } else {
       setNewPasswordError('')
     }
@@ -95,7 +95,7 @@ const ChangePasswordModal = ({ close }) => {
       console.log(err.message)
 
       if (err.message === 'Incorrect password') {
-        setOldPasswordError(chrome.i18n.getMessage('PasswordIsIncorrect'))
+        setOldPasswordError(chrome.i18n.getMessage('passwordIsIncorrect'))
       }
     }
   }
@@ -121,9 +121,9 @@ const ChangePasswordModal = ({ close }) => {
             <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" />
           )}
           {step === 1 ? (
-            <div className="m-auto">{chrome.i18n.getMessage('ChangeMyPassword')}</div>
+            <div className="m-auto">{chrome.i18n.getMessage('changeMyPassword')}</div>
           ) : (
-            <div className="m-auto">{chrome.i18n.getMessage('PasswordConfirmed')}</div>
+            <div className="m-auto">{chrome.i18n.getMessage('passwordConfirmed')}</div>
           )}
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
@@ -137,7 +137,7 @@ const ChangePasswordModal = ({ close }) => {
               style={{ width: '382px' }}
               className="text-sm font-semibold tracking-finnieSpacing-tight text-left"
             >
-              {chrome.i18n.getMessage('EnterCurrentPassword')}
+              {chrome.i18n.getMessage('enterCurrentPassword')}
             </div>
             <input
               type="password"
@@ -160,7 +160,7 @@ const ChangePasswordModal = ({ close }) => {
               style={{ width: '382px' }}
               className="mt-2 text-sm font-semibold tracking-finnieSpacing-tight text-left"
             >
-              {chrome.i18n.getMessage('CreateNewPassword')}
+              {chrome.i18n.getMessage('createNewPassword')}
             </div>
             <input
               type="password"
@@ -183,7 +183,7 @@ const ChangePasswordModal = ({ close }) => {
               style={{ width: '382px' }}
               className="mt-2 text-sm font-semibold tracking-finnieSpacing-tight text-left"
             >
-              {chrome.i18n.getMessage('ConfirmNewPassword')}
+              {chrome.i18n.getMessage('confirmNewPassword')}
             </div>
             <input
               type="password"
@@ -205,7 +205,7 @@ const ChangePasswordModal = ({ close }) => {
             <Button
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
               variant="indigo"
-              text={chrome.i18n.getMessage('SaveChanges')}
+              text={chrome.i18n.getMessage('saveChanges')}
               onClick={() => handleUpdatePassword()}
               disabled={disableUpdatePassword}
             />
@@ -221,13 +221,13 @@ const ChangePasswordModal = ({ close }) => {
         {step === 2 && (
           <div style={{ height: '93px' }} className="relative mt-20 flex flex-col justify-between">
             <div className="text-base leading-6 font-normal tracking-finnieSpacing-wide">
-              {chrome.i18n.getMessage('RememberPasswordSecure')}
+              {chrome.i18n.getMessage('rememberPasswordSecure')}
             </div>
 
             <Button
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
               variant="indigo"
-              text={chrome.i18n.getMessage('GotIt')}
+              text={chrome.i18n.getMessage('gotIt')}
               onClick={() => close()}
             />
           </div>

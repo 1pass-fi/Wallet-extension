@@ -1,4 +1,4 @@
-import React, { useContext,useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { TYPE } from 'constants/accountConstants'
 import DropDown from 'options/components/DropDown'
@@ -15,7 +15,7 @@ const Activity = () => {
 
   const accounts = useSelector((state) => state.accounts)
 
-  const accountOptions = [{ label: chrome.i18n.getMessage('AllAccounts'), value: 'ALL' }].concat(
+  const accountOptions = [{ label: chrome.i18n.getMessage('allAccounts'), value: 'ALL' }].concat(
     accounts.map((account) => ({
       label: account.accountName,
       value: account.address
@@ -51,11 +51,12 @@ const Activity = () => {
     setAccountOption(address)
   }
 
-
   return (
     <div className="pt-4 text-white">
-      <h1 className="text-32px font-semibold underline">{chrome.i18n.getMessage('Activity')}</h1>
-      <div className="text-sm leading-6 mt-3 mb-2.5">{chrome.i18n.getMessage('ActivitySelectAccount')}:</div>
+      <h1 className="text-32px font-semibold underline">{chrome.i18n.getMessage('activity')}</h1>
+      <div className="text-sm leading-6 mt-3 mb-2.5">
+        {chrome.i18n.getMessage('activitySelectAccount')}:
+      </div>
       <div className="mb-1.5" style={{ width: '270px' }}>
         <DropDown
           options={accountOptions}

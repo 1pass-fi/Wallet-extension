@@ -54,12 +54,12 @@ const CustomToken = ({ setTokenImport }) => {
       <div className="mt-4 flex">
         <WarningIcon className="ml-6" style={{ width: '35px', height: '35px' }} />
         <div className="ml-3.5 font-normal text-xs" style={{ width: '329px' }}>
-          {chrome.i18n.getMessage('customTokenDescription')}
+          {chrome.i18n.getMessage('customTokenDesc')}
         </div>
       </div>
 
       <div className="mt-8 ml-9.25 font-normal text-xs">
-        {chrome.i18n.getMessage('TokenContractAddress')}
+        {chrome.i18n.getMessage('tokenContractAddress')}
       </div>
       <input
         className={clsx(
@@ -78,7 +78,7 @@ const CustomToken = ({ setTokenImport }) => {
       </div>
 
       <div className="mt-3 ml-9.25 font-normal text-xs">
-        {chrome.i18n.getMessage('TokenSymbol')}
+        {chrome.i18n.getMessage('tokenSymbol')}
       </div>
       <input
         className={clsx(
@@ -107,7 +107,7 @@ const CustomToken = ({ setTokenImport }) => {
           className="bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800"
           style={{ width: '160px', height: '38px' }}
         >
-          {chrome.i18n.getMessage('Back')}
+          {chrome.i18n.getMessage('back')}
         </button>
         <button
           onClick={() => handleImportCustomToken()}
@@ -118,7 +118,7 @@ const CustomToken = ({ setTokenImport }) => {
           style={{ width: '160px', height: '38px' }}
           disabled={!isInputted}
         >
-          {chrome.i18n.getMessage('Continue')}
+          {chrome.i18n.getMessage('continue')}
         </button>
       </div>
     </div>

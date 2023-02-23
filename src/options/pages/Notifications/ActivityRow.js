@@ -44,7 +44,7 @@ const ActivityRow = ({
 
     if (
       activityName === chrome.i18n.getMessage('contractInteraction') ||
-      activityName === chrome.i18n.getMessage('unknowTransaction')
+      activityName === chrome.i18n.getMessage('unknownTransaction')
     )
       tokenType = 'ETH'
 
@@ -109,8 +109,8 @@ const ActivityRow = ({
           >
             <ViewBlockIcon className="pr-1.375" />
             {network === ETH_NETWORK_PROVIDER.MAINNET || network === ETH_NETWORK_PROVIDER.GOERLI
-              ? chrome.i18n.getMessage('Etherscan')
-              : chrome.i18n.getMessage('ExploreBlock')}
+              ? chrome.i18n.getMessage('etherscan')
+              : chrome.i18n.getMessage('exploreBlock')}
           </a>
         </td>
       ) : (

@@ -157,7 +157,7 @@ export const AccountDropdown = React.forwardRef(
                     className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
                     data-testid="popup-header-account-balance"
                   >
-                    {chrome.i18n.getMessage('Balance')}: {formatNumber(account.koiBalance, 2)} KOII
+                    {chrome.i18n.getMessage('balance')}: {formatNumber(account.koiBalance, 2)} KOII
                   </div>
                 )}
                 {account.type === TYPE.K2 && (
@@ -165,7 +165,7 @@ export const AccountDropdown = React.forwardRef(
                     className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
                     data-testid="popup-header-account-balance"
                   >
-                    {chrome.i18n.getMessage('Balance')}:{' '}
+                    {chrome.i18n.getMessage('balance')}:{' '}
                     {formatNumber(account.balance / Math.pow(10, 9), 2)} KOII
                   </div>
                 )}
@@ -174,7 +174,7 @@ export const AccountDropdown = React.forwardRef(
                     className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
                     data-testid="popup-header-account-balance"
                   >
-                    {chrome.i18n.getMessage('Balance')}: {formatNumber(account.balance, 2)} ETH
+                    {chrome.i18n.getMessage('balance')}: {formatNumber(account.balance, 2)} ETH
                   </div>
                 )}
                 {account.type === TYPE.SOLANA && (
@@ -182,7 +182,7 @@ export const AccountDropdown = React.forwardRef(
                     className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
                     data-testid="popup-header-account-balance"
                   >
-                    {chrome.i18n.getMessage('Balance')}:{' '}
+                    {chrome.i18n.getMessage('balance')}:{' '}
                     {formatNumber(account.balance / Math.pow(10, 9), 2)} SOL
                   </div>
                 )}
@@ -190,7 +190,7 @@ export const AccountDropdown = React.forwardRef(
                   className="font-normal text-xs leading-4 tracking-finnieSpacing-tight text-white"
                   data-testid="popup-header-account-assets"
                 >
-                  {chrome.i18n.getMessage('Assets')}: {account.totalAssets.length}
+                  {chrome.i18n.getMessage('assets')}: {account.totalAssets.length}
                 </div>
               </div>
               {isDefaultAccount(account) ? (

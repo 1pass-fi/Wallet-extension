@@ -129,9 +129,9 @@ const TransferNFT = ({
             {stage === 2 && <BackIcon onClick={() => setStage(1)} />}
           </div>
           <div className="title">
-            {stage === 1 && <>{chrome.i18n.getMessage('TransferNFTToFriend')}</>}
-            {stage === 2 && <>{chrome.i18n.getMessage('ConfirmYourTransfer')}</>}
-            {stage === 3 && <>{chrome.i18n.getMessage('NFTOnItsWay')}</>}
+            {stage === 1 && <>{chrome.i18n.getMessage('transferNFTToFriend')}</>}
+            {stage === 2 && <>{chrome.i18n.getMessage('confirmYourTransfer')}</>}
+            {stage === 3 && <>{chrome.i18n.getMessage('nftOnItsWay')}</>}
           </div>
           <CloseIcon className="new-modal-header-icon" onClick={onClose} />
         </section>
@@ -140,7 +140,7 @@ const TransferNFT = ({
           <div className="transfer-nft__nft-name">{formattedName}</div>
           {stage === 3 && (
             <>
-              <span>&nbsp;{chrome.i18n.getMessage('HasBeenSentTo')}:</span>
+              <span>&nbsp;{chrome.i18n.getMessage('hasBeenSentToLc')}:</span>
             </>
           )}
         </div>

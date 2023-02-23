@@ -136,7 +136,7 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
         {isIncorrectPassword && (
           <div className="mt-3 py-1 bg-warning rounded-sm flex items-center justify-center w-50 text-sm">
             <WarningIcon className="w-4.25 h-4.25 mr-1.75" />
-            {chrome.i18n.getMessage('PasswordIsIncorrect')}
+            {chrome.i18n.getMessage('passwordIsIncorrect')}
           </div>
         )}
         <button

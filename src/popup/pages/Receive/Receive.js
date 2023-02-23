@@ -46,7 +46,7 @@ const Receive = () => {
         </CopyToClipboard>
         {isCopied && (
           <span className="text-11px absolute top-4.5 left-14 text-blue-800">
-            {chrome.i18n.getMessage('Copied')}!
+            {chrome.i18n.getMessage('copied')}!
           </span>
         )}
       </div>

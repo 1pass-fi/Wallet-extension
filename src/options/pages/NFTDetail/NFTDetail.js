@@ -108,15 +108,15 @@ const NFTDetail = () => {
   }
 
   const nftTooltipMessage = useMemo(() => {
-    if (nft?.pending) return chrome.i18n.getMessage('TransactionPendingUc')
-    if (isPendingUpdate) return chrome.i18n.getMessage('PendingUpdate')
+    if (nft?.pending) return chrome.i18n.getMessage('transactionPending')
+    if (isPendingUpdate) return chrome.i18n.getMessage('pendingUpdate')
     else
       return (
-        chrome.i18n.getMessage('PublicNFTMsgStart') +
+        chrome.i18n.getMessage('publicNFTMsgStart') +
         ' <br>' +
-        chrome.i18n.getMessage('PublicNFTMsgMiddle') +
+        chrome.i18n.getMessage('publicNFTMsgMiddle') +
         ' <br>' +
-        chrome.i18n.getMessage('PublicNFTMsgEnd')
+        chrome.i18n.getMessage('publicNFTMsgEnd')
       )
   }, [isPendingUpdate, nft])
 
@@ -173,13 +173,13 @@ const NFTDetail = () => {
                 >
                   {showEarnedKoi && (
                     <div className="w-48.5 xl:w-50 2xl:w-52 3xl:w-55.5 h-full rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
-                      KOII{chrome.i18n.getMessage('earned')} <br />
+                      KOII {chrome.i18n.getMessage('earnedLc')} <br />
                       {formatNumber(nft.earnedKoi, 3)}
                     </div>
                   )}
                   {showViews && (
                     <div className="w-46 xl:w-48.5 2xl:w-50 3xl:w-52 h-full ml-5.75 3xl:ml-12 rounded bg-trueGray-100 bg-opacity-20 flex items-center justify-center">
-                      {chrome.i18n.getMessage('TotalViews')} <br />
+                      {chrome.i18n.getMessage('totalViews')} <br />
                       {nft.totalViews}
                     </div>
                   )}
@@ -200,7 +200,7 @@ const NFTDetail = () => {
                     className="h-6 mr-2.25"
                     data-tip={
                       isString(nft?.isPrivate)
-                        ? chrome.i18n.getMessage('DoesNotSupportPublicNFT')
+                        ? chrome.i18n.getMessage('doesNotSupportPublicNFT')
                         : nftTooltipMessage
                     }
                   >
@@ -211,7 +211,7 @@ const NFTDetail = () => {
                     handleUpdateNft={handleUpdateNft}
                   /> */}
                   </div>
-                  {`${chrome.i18n.getMessage('Registered')}: ${formatDatetime(nft.createdAt)}`}
+                  {`${chrome.i18n.getMessage('registered')}: ${formatDatetime(nft.createdAt)}`}
                 </div>
               )}
 
@@ -224,7 +224,7 @@ const NFTDetail = () => {
                   >
                     <Button
                       icon={BlockIcon}
-                      text={chrome.i18n.getMessage('ExploreBlock')}
+                      text={chrome.i18n.getMessage('exploreBlock')}
                       variant="inversed"
                       className="border-opacity-20 h-9.5 xl:h-10.5 2xl:h-11.5 3xl:h-12.5"
                     />
@@ -237,7 +237,7 @@ const NFTDetail = () => {
                   <a href={nft.koiRockUrl} target="_blank">
                     <Button
                       icon={BlockIcon}
-                      text={chrome.i18n.getMessage('ExploreBlock')}
+                      text={chrome.i18n.getMessage('exploreBlock')}
                       variant="inversed"
                       className="border-opacity-20 h-9.5 xl:h-10.5 2xl:h-11.5 3xl:h-12.5"
                     />
@@ -251,7 +251,7 @@ const NFTDetail = () => {
                     <Button
                       disabled={disabledFeatures || nft.pending}
                       icon={BlockIcon}
-                      text={nft.pending ? chrome.i18n.getMessage('PendingTransaction') : chrome.i18n.getMessage('ExploreBlock')}
+                      text={nft.pending ? chrome.i18n.getMessage('pendingTransaction') : chrome.i18n.getMessage('exploreBlock')}
                       variant="inversed"
                       className="border-opacity-20 h-9.5 xl:h-10.5 2xl:h-11.5 3xl:h-12.5"
                     />
@@ -260,7 +260,7 @@ const NFTDetail = () => {
                     <Button
                       disabled={disabledFeatures}
                       icon={LeaderboardIcon}
-                      text={chrome.i18n.getMessage('Leaderboard')}
+                      text={chrome.i18n.getMessage('leaderBoard')}
                       variant="warning"
                       className="h-9.5 xl:h-10.5 2xl:h-11.5 3xl:h-12.5"
                     />
@@ -297,7 +297,7 @@ const NFTDetail = () => {
                           size="lg"
                           icon={ShareIcon}
                           className="h-full w-7/12"
-                          text={chrome.i18n.getMessage('ShareForRewards')}
+                          text={chrome.i18n.getMessage('shareForRewards')}
                           onClick={() => {
                             setShowShareNFTModal(true)
                           }}
@@ -306,9 +306,9 @@ const NFTDetail = () => {
                       <div
                         data-tip={
                           !ownerImported
-                            ? `${chrome.i18n.getMessage('OwnerNFTRequiredStart')}${
+                            ? `${chrome.i18n.getMessage('ownerNFTRequiredStart')}${
                               nft.address
-                            }.<br>${chrome.i18n.getMessage('OwnerNFTRequiredEnd')}`
+                            }.<br>${chrome.i18n.getMessage('ownerNFTRequiredEnd')}`
                             : ''
                         }
                         className="h-full w-5/12"
@@ -318,7 +318,7 @@ const NFTDetail = () => {
                           size="lg"
                           icon={LinkIcon}
                           variant="inversed"
-                          text={chrome.i18n.getMessage('TransferNFT')}
+                          text={chrome.i18n.getMessage('transferNFT')}
                           className="w-full h-full"
                           onClick={() => handleShareNFT(nft.txId)}
                         />
@@ -331,9 +331,9 @@ const NFTDetail = () => {
                       className="w-full h-11.5 xl:h-12 2xl:h-13 3xl:h-14"
                       data-tip={
                         !ownerImported
-                          ? `${chrome.i18n.getMessage('OwnerNFTRequiredStart')}${
+                          ? `${chrome.i18n.getMessage('ownerNFTRequiredStart')}${
                             nft.address
-                          }.<br>${chrome.i18n.getMessage('OwnerNFTBridgeRequiredEnd')}`
+                          }.<br>${chrome.i18n.getMessage('ownerNFTBridgeRequiredEnd')}`
                           : ''
                       }
                     >
@@ -342,7 +342,7 @@ const NFTDetail = () => {
                           size="lg"
                           icon={isArweaveNft ? EthLogo : ArweaveLogo}
                           variant="lightBlue"
-                          text={chrome.i18n.getMessage('BridgeNFT')}
+                          text={chrome.i18n.getMessage('bridgeNFT')}
                           onClick={() => setShowExportModal(nft)}
                           disabled={!ownerImported}
                           className="w-full h-full"

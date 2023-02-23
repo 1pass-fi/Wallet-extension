@@ -23,12 +23,12 @@ export default () => {
   return (
     <div className='galery-settings-wrapper'>
       <div className='galery-settings'>
-        <div className='header'>{chrome.i18n.getMessage('GallerySettings')}</div>
+        <div className='header'>{chrome.i18n.getMessage('gallerySettings')}</div>
         <div className='settings-row'>
           <div className='left'>
-            <div className='title'>{chrome.i18n.getMessage('DisplayViews')}</div>
+            <div className='title'>{chrome.i18n.getMessage('displayViews')}</div>
             <div className='description'>
-              {chrome.i18n.getMessage('ShowViewSetting')}
+              {chrome.i18n.getMessage('showViewSetting')}
             </div>
           </div>
           <div className='right'>
@@ -38,9 +38,9 @@ export default () => {
 
         <div className='settings-row'>
           <div className='left'>
-            <div className='title'>{chrome.i18n.getMessage('DisplayKOIIEarnedSetting')}</div>
+            <div className='title'>{chrome.i18n.getMessage('displayKOIIEarnedSetting')}</div>
             <div className='description'>
-              {chrome.i18n.getMessage('ShowAmountSetting')}
+              {chrome.i18n.getMessage('showAmountSetting')}
             </div>
           </div>
           <div className='right'>

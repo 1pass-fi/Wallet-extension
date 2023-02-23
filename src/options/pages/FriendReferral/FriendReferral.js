@@ -69,16 +69,16 @@ const FriendReferral = () => {
       </div>
       <div className="mt-16.75 mx-auto transform -translate-x-83 w-max text-white">
         <div className="font-semibold text-3xl leading-10 capitalize">
-          {chrome.i18n.getMessage('GiveLittleGetLittle')}
+          {chrome.i18n.getMessage('giveLittleGetLittle')}
         </div>
         <div className="w-80 mt-5 leading-7 text-base">
-          {chrome.i18n.getMessage('FriendReferralMsg')}
+          {chrome.i18n.getMessage('friendReferralMsg')}
         </div>
         <div className="w-80 mt-18 leading-7 text-base">
-          {chrome.i18n.getMessage('YouHaveEarned')}{' '}
+          {chrome.i18n.getMessage('youHaveEarned')}{' '}
           <span className="text-success">{defaultAccount.totalReward} KOII</span>{' '}
-          {chrome.i18n.getMessage('WithYourReferralCode')}{' '}
-          <span className="font-semibold">{chrome.i18n.getMessage('KeepSharing')}</span>
+          {chrome.i18n.getMessage('withYourReferralCodeLc')}{'. '}
+          <span className="font-semibold">{chrome.i18n.getMessage('keepSharing')}</span>
         </div>
       </div>
       <div className="m-auto absolute top-48 left-0 right-0 bottom-0">
@@ -87,14 +87,14 @@ const FriendReferral = () => {
           className="mx-auto"
         />
         <div className="mt-8 text-success text-lg leading-7 font-semibold text-center">
-          {chrome.i18n.getMessage('YourCodeIs')}
+          {chrome.i18n.getMessage('yourCodeIsUc')}
         </div>
         <div className="mt-2 text-base text-center leading-7 text-white">{code}</div>
         <div style={{ width: '768px' }} className="mt-8 flex justify-evenly items-center mx-auto">
-          <span data-tip={chrome.i18n.getMessage('OnlyARSupports')}>
+          <span data-tip={chrome.i18n.getMessage('onlyARSupports')}>
             <Button
               style={{ width: '216px', height: '46px' }}
-              text={chrome.i18n.getMessage('ShareCode')}
+              text={chrome.i18n.getMessage('shareCode')}
               variant="lightBlue"
               icon={ShareCodeIcon}
               size="lg"
@@ -105,11 +105,11 @@ const FriendReferral = () => {
             />
           </span>
 
-          <span data-tip={chrome.i18n.getMessage('OnlyARSupports')}>
+          <span data-tip={chrome.i18n.getMessage('onlyARSupports')}>
             <CopyToClipboard text={code}>
               <Button
                 style={{ width: '216px', height: '46px' }}
-                text={isCopied ? chrome.i18n.getMessage('Copied') : chrome.i18n.getMessage('ClickToCopy')}
+                text={isCopied ? chrome.i18n.getMessage('copied') : chrome.i18n.getMessage('clickToCopy')}
                 variant="primary"
                 icon={isCopied ? CheckMarkIcon : CopyIcon}
                 size={isCopied ? 'lg' : 'md'}
@@ -119,10 +119,10 @@ const FriendReferral = () => {
             </CopyToClipboard>
           </span>
 
-          <span data-tip={chrome.i18n.getMessage('OnlyARSupports')}>
+          <span data-tip={chrome.i18n.getMessage('onlyARSupports')}>
             <Button
               style={{ width: '216px', height: '46px' }}
-              text={chrome.i18n.getMessage('GetMyRewards')}
+              text={chrome.i18n.getMessage('getMyRewards')}
               variant="warning300"
               icon={ShareIcon}
               size="lg"

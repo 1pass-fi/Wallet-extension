@@ -205,14 +205,14 @@ const EditPriorityFee = ({
         <ForkIcon />
       </div>
       <div className="flex text-sm justify-between items-center mt-3" style={{ width: '278px' }}>
-        <div className={clsx(feeLevel === LOW && 'font-bold')}>{chrome.i18n.getMessage('Low')}</div>
-        <div className={clsx(feeLevel === MEDIUM && 'font-bold')}>{chrome.i18n.getMessage('Medium')}</div>
-        <div className={clsx(feeLevel === HIGH && 'font-bold')}>{chrome.i18n.getMessage('High')}</div>
+        <div className={clsx(feeLevel === LOW && 'font-bold')}>{chrome.i18n.getMessage('low')}</div>
+        <div className={clsx(feeLevel === MEDIUM && 'font-bold')}>{chrome.i18n.getMessage('medium')}</div>
+        <div className={clsx(feeLevel === HIGH && 'font-bold')}>{chrome.i18n.getMessage('high')}</div>
       </div>
       <div style={{width:'210px',height:'32px'}} className='flex items-center justify-between px-4 bg-purplelight-100 rounded-lg mt-4 text-sm text-purplelight-300 cursor-pointer' onClick={() => {
         setShowAdvancedInput(prev => !prev)
       }}>
-        <div>{chrome.i18n.getMessage('AdvancedOptions')}</div>
+        <div>{chrome.i18n.getMessage('advancedOptions')}</div>
         <DropDownIcon />
       </div>
       { showAdvancedInput &&
@@ -243,7 +243,7 @@ const EditPriorityFee = ({
         className='bg-blue-800 text-white my-5 text-base'
         style={{ width: '360px', height: '38px' }}
       >
-        {chrome.i18n.getMessage('Save')}
+        {chrome.i18n.getMessage('save')}
       </button>
     </div>
   )

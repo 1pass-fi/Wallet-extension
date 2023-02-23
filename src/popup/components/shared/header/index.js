@@ -11,7 +11,7 @@ export default () => {
   return (
     <header className='lock-screen-header'>
       <KoiIcon className='koi-icon' />
-      <div className='koi-title'>Koii {chrome.i18n.getMessage('Wallet')}</div>
+      <div className='koi-title'>Koii {chrome.i18n.getMessage('wallet')}</div>
     </header>
   )
 }

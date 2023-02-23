@@ -184,7 +184,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
                 setPages((prev) => ++prev)
               }}
             >
-              {chrome.i18n.getMessage('SeeMore')}
+              {chrome.i18n.getMessage('seeMore')}
             </button>
           </div>
         )}

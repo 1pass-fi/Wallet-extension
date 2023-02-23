@@ -11,28 +11,28 @@ const MainLayout = ({ children }) => {
     switch (location.pathname) {
       case '/':
       case '/gallery':
-        title = chrome.i18n.getMessage('GalleryLc')
+        title = chrome.i18n.getMessage('gallery')
         break
       // case '/collections':
       //   title = 'Collections'
       //   break
       case '/collections/create.new-collection':
-        title = chrome.i18n.getMessage('CreateCollection')
+        title = chrome.i18n.getMessage('createCollection')
         break
       case '/collections/create/select-nft':
-        title = chrome.i18n.getMessage('SelectYourNFTs')
+        title = chrome.i18n.getMessage('selectYourNFTs')
         break
       default:
-        title = chrome.i18n.getMessage('GalleryLc')
+        title = chrome.i18n.getMessage('gallery')
     }
 
     // if (location.pathname.includes('collections')) title = 'Collections'
 
-    if (location.pathname.includes('notifications')) title = chrome.i18n.getMessage('NotificationCenter')
+    if (location.pathname.includes('notifications')) title = chrome.i18n.getMessage('notificationCenter')
 
-    if (location.pathname.includes('settings')) title = chrome.i18n.getMessage('Settings')
+    if (location.pathname.includes('settings')) title = chrome.i18n.getMessage('settings')
 
-    if (location.pathname.includes('create-nft')) title = chrome.i18n.getMessage('GalleryLc')
+    if (location.pathname.includes('create-nft')) title = chrome.i18n.getMessage('gallery')
 
     return title
   }, [location.pathname])

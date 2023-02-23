@@ -22,7 +22,7 @@ const KidInputField = ({
         {label === 'DID Link' && (
           <Hint
             className="inline ml-1.5 relative -top-4"
-            text={chrome.i18n.getMessage('ShareDIDHint')}
+            text={chrome.i18n.getMessage('shareDIDHint')}
             variant="white"
           />
         )}

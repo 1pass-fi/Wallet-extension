@@ -24,7 +24,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
   const [userInfo, setUserInfo] = useState({
     name: '',
     notes: '',
-    didName: chrome.i18n.getMessage('AddressBookDIDLink'),
+    didName: chrome.i18n.getMessage('addressBookDIDLink'),
     didValue: ''
   })
 
@@ -95,7 +95,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
 
         <input
           className="ab-contact-form__name"
-          placeholder={chrome.i18n.getMessage('Name')}
+          placeholder={chrome.i18n.getMessage('name')}
           name="name"
           onChange={handleUserInfoChange}
           value={userInfo.name}
@@ -104,7 +104,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
         <div className="ab-contact-form__notes-label">Notes</div>
         <input
           className="ab-contact-form__notes"
-          placeholder={chrome.i18n.getMessage('AddressBookNote')}
+          placeholder={chrome.i18n.getMessage('addressBookNote')}
           name="notes"
           onChange={handleUserInfoChange}
           value={userInfo.notes}
@@ -124,11 +124,11 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
               <div className="second-row__left">
                 <input
                   className="input-group__input-value"
-                  placeholder={chrome.i18n.getMessage('AddressBookAddress')}
+                  placeholder={chrome.i18n.getMessage('addressBookAddress')}
                   onChange={(e) => handleUserAddressValueChange(idx, e)}
                   value={address.value}
                 />
-                <div className="ab-copy-icon" data-tip={chrome.i18n.getMessage('CopyToClipboard')}>
+                <div className="ab-copy-icon" data-tip={chrome.i18n.getMessage('copyToClipboard')}>
                   <CopyToClipboard text={address.value}>
                     <CopyIcon />
                   </CopyToClipboard>
@@ -136,7 +136,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
               </div>
               <div
                 className="ab-trash-icon"
-                data-tip={chrome.i18n.getMessage('RemoveThisAddress')}
+                data-tip={chrome.i18n.getMessage('removeThisAddress')}
                 data-for="remove"
                 onClick={() => {
                   const newAddresses = [...userAddresses]
@@ -163,14 +163,14 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
           <div className="ab-form-add-icon">
             <AddIcon />
           </div>
-          <span>{chrome.i18n.getMessage('NewAddress')}</span>
+          <span>{chrome.i18n.getMessage('newAddress')}</span>
         </div>
 
         <div className="ab-contact-form__input-group ab-contact-form__input-group--did">
           <div className="input-group__first-row">
             <input
               className="input-group__label"
-              placeholder={chrome.i18n.getMessage('AddressBookDIDLink')}
+              placeholder={chrome.i18n.getMessage('addressBookDIDLink')}
               name="didName"
               value={userInfo.didName}
               onChange={handleUserInfoChange}
@@ -180,12 +180,12 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
             <div className="second-row__left">
               <input
                 className="input-group__input-value"
-                placeholder={chrome.i18n.getMessage('AddressBookDIDValue')}
+                placeholder={chrome.i18n.getMessage('addressBookDIDValue')}
                 name="didValue"
                 value={userInfo.didValue}
                 onChange={handleUserInfoChange}
               />
-              <div className="ab-copy-icon" data-tip={chrome.i18n.getMessage('CopyToClipboard')}>
+              <div className="ab-copy-icon" data-tip={chrome.i18n.getMessage('copyToClipboard')}>
                 <CopyIcon />
               </div>
             </div>
@@ -193,11 +193,11 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
         </div>
       </div>
       <div className="ab-contact-form__footer">
-        <Button startIcon={CloseIcon} onClick={onClose} text={chrome.i18n.getMessage('Cancel')} />
+        <Button startIcon={CloseIcon} onClick={onClose} text={chrome.i18n.getMessage('cancel')} />
         <Button
           startIcon={TickIcon}
           onClick={handleSubmit}
-          text={chrome.i18n.getMessage('Save')}
+          text={chrome.i18n.getMessage('save')}
           variant="normal"
         />
       </div>

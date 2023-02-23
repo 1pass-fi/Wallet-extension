@@ -41,7 +41,7 @@ const SortAndFilter = ({
       <div className="relative w-full">
         <input
           className="w-full h-8.5 pl-3.5 pr-11.25 rounded-t text-indigo-900 text-sm placeholder-current side-bar-search-field"
-          placeholder={type === 'Gallery' ? chrome.i18n.getMessage('searchNfts') : chrome.i18n.getMessage('Search Collections')}
+          placeholder={type === 'Gallery' ? chrome.i18n.getMessage('searchNfts') : chrome.i18n.getMessage('search Collections')}
           onChange={(e) => handleSearchFieldChange(e.target.value)}
         ></input>
         <MagnifierIcon className="absolute top-2 right-5 w-4.75 h-4.75 cursor-pointer" />
@@ -53,7 +53,7 @@ const SortAndFilter = ({
           }}
           className="flex items-center justify-between h-12 3xl:h-13 pl-1.5 pr-3 font-semibold text-sm 3xl:text-base text-white"
         >
-          {chrome.i18n.getMessage('Filters')}
+          {chrome.i18n.getMessage('filters')}
           <FilterIcon
             className={clsx(showFilters && 'transform rotate-90', 'w-5.25 h-5.25 cursor-pointer')}
           />
@@ -65,7 +65,7 @@ const SortAndFilter = ({
               onClick={() => setShowSortBy(!showSortBy)}
               className="flex items-center justify-between h-12 3xl:h-13 pl-1.5 pr-3 font-semibold text-sm 3xl:text-base text-white cursor-pointer"
             >
-              {chrome.i18n.getMessage('SortBy')}
+              {chrome.i18n.getMessage('sortBy')}
               <ArrowIcon
                 className={clsx(showSortBy && 'transform rotate-90', 'w-1.5 h-3 cursor-pointer')}
               />
@@ -76,17 +76,17 @@ const SortAndFilter = ({
                 <ToggleButton
                   isActive={sortBy === SORT_TYPES.NEWEST}
                   onClick={() => handleSort(SORT_TYPES.NEWEST)}
-                  text={chrome.i18n.getMessage('RecentlyAdded')}
+                  text={chrome.i18n.getMessage('recentlyAdded')}
                 />
                 <ToggleButton
                   isActive={sortBy === SORT_TYPES.OLDEST}
                   onClick={() => handleSort(SORT_TYPES.OLDEST)}
-                  text={chrome.i18n.getMessage('Oldest')}
+                  text={chrome.i18n.getMessage('oldest')}
                 />
                 <ToggleButton
                   isActive={sortBy === SORT_TYPES.MOST_VIEWED}
                   onClick={() => handleSort(SORT_TYPES.MOST_VIEWED)}
-                  text={chrome.i18n.getMessage('MostViewed')}
+                  text={chrome.i18n.getMessage('mostViewed')}
                 />
               </div>
             )}
@@ -96,7 +96,7 @@ const SortAndFilter = ({
           onClick={() => setShowFilterChains(!showFilterChains)}
           className="flex items-center justify-between h-12 3xl:h-13 pl-1.5 pr-3 font-semibold text-sm 3xl:text-base text-white cursor-pointer"
         >
-          {chrome.i18n.getMessage('Chains')}
+          {chrome.i18n.getMessage('chains')}
           <ArrowIcon
             className={clsx(showFilterChains && 'transform rotate-90', 'w-1.5 h-3 cursor-pointer')}
           />

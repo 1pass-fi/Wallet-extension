@@ -206,11 +206,11 @@ export class EthereumMethod {
                     expense = Number(get(decodedData, 'args')[1])
 
                     if (isSender) {
-                      activityName = `${chrome.i18n.getMessage('Sent')} ${token}`
+                      activityName = `${chrome.i18n.getMessage('sent')} ${token}`
                       source = to
                       expense = expense / Math.pow(10, decimals)
                     } else {
-                      activityName = `${chrome.i18n.getMessage('Received')} ${token}`
+                      activityName = `${chrome.i18n.getMessage('received')} ${token}`
                       source = activity.from
                       expense = expense / Math.pow(10, decimals)
                     }
@@ -242,14 +242,14 @@ export class EthereumMethod {
               // Normal transfer ETH
               if (isSender) {
                 // Transfer ETH
-                activityName = `${chrome.i18n.getMessage('Sent')} ETH`
+                activityName = `${chrome.i18n.getMessage('sent')} ETH`
                 source = activity.to
                 const receipt = await web3.getTransactionReceipt(id)
                 gasFee = (Number(receipt.gasUsed) * Number(activity.gasPrice)) / Math.pow(10, 18)
                 expense = gasFee + activity.value / Math.pow(10, 18)
               } else {
                 // Receive ETH
-                activityName = `${chrome.i18n.getMessage('Received')} ETH`
+                activityName = `${chrome.i18n.getMessage('received')} ETH`
                 source = activity.from
                 expense = activity.value / Math.pow(10, 18)
               }
@@ -259,7 +259,7 @@ export class EthereumMethod {
             time = activity.timestamp
           } catch (error) {
             // UNKNOWN TRANSACTION
-            activityName = chrome.i18n.getMessage('unknowTransaction')
+            activityName = chrome.i18n.getMessage('unknownTransaction')
             source = activity?.to
             expense = activity?.value / Math.pow(10, 18)
           }

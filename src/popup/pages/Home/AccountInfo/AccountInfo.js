@@ -12,14 +12,13 @@ import Activity from './Activity'
 import Assets from './Assets'
 import Tokens from './Tokens'
 
-
 const AccountInfo = ({ displayingAccount, currency, price, currentProviderAddress }) => {
   const history = useHistory()
 
   const tabs = [
-    { name: chrome.i18n.getMessage('Assets'), to: '/assets' },
-    { name: chrome.i18n.getMessage('Tokens'), to: '/tokens' },
-    { name: chrome.i18n.getMessage('Activity'), to: '/activity' }
+    { name: chrome.i18n.getMessage('assets'), to: '/assets' },
+    { name: chrome.i18n.getMessage('tokens'), to: '/tokens' },
+    { name: chrome.i18n.getMessage('activity'), to: '/activity' }
   ]
 
   const assetHeaderParallax = useParallax({
@@ -103,7 +102,7 @@ const AccountInfo = ({ displayingAccount, currency, price, currentProviderAddres
           <Activity />
         </Route>
         <Route exact path="/tokens">
-          <Tokens currentProviderAddress={currentProviderAddress} currency={currency}/>
+          <Tokens currentProviderAddress={currentProviderAddress} currency={currency} />
         </Route>
         <Redirect to="/tokens" />
       </Switch>

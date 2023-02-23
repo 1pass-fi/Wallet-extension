@@ -112,14 +112,14 @@ const ImportPhrase = ({ step, setStep, importType }) => {
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="font-normal text-lg leading-8 tracking-finnieSpacing-tight">
-        {chrome.i18n.getMessage('TypeSecretPhrase')}
+        {chrome.i18n.getMessage('typeSecretPhrase')}
       </div>
       <div className="font-normal text-sm mt-2">
-        {chrome.i18n.getMessage('HitThe')}{' '}
+        {chrome.i18n.getMessage('hitThe')}{' '}
         <span className="text-lightBlue bg-warmGray-300 bg-opacity-20 rounded-xs px-0.75 mx-0.5">
-          {chrome.i18n.getMessage('tab')}
+          {chrome.i18n.getMessage('tabLc')}
         </span>{' '}
-        {chrome.i18n.getMessage('MoveToTheNextWord')}
+        {chrome.i18n.getMessage('moveToTheNextWordLc')}
       </div>
       <div className="flex flex-col max-w-full" style={{ width: '347px' }}>
         <div
@@ -155,7 +155,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
           style={{ width: '240px', height: '42px' }}
           className={clsx('mt-10.75 text-base mx-auto rounded z-10', isImporting && 'cursor-wait')}
           variant="white"
-          text={chrome.i18n.getMessage('Confirm')}
+          text={chrome.i18n.getMessage('confirm')}
           disabled={!canClickContinue}
           onClick={onClickContinue}
           id="confirm-button"

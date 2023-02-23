@@ -48,30 +48,30 @@ const RevealPhrase = ({ step }) => {
         >
           {step === 6 ? (
             !skipPhrase ? (
-              chrome.i18n.getMessage('SaveSecretPhraseSuccessfully')
+              chrome.i18n.getMessage('saveSecretPhraseSuccessfully')
             ) : (
               <>
                 {chrome.i18n.getMessage('rememberToSaveYourSecretPhrase')}
                 <br></br>
-                {chrome.i18n.getMessage('otherwiseYouCouldLoseAnytokensOrAssets')}
+                {chrome.i18n.getMessage('otherwiseYouCouldLoseAnyTokensOrAssets')}
               </>
             )
           ) : (
-            chrome.i18n.getMessage('ImportKeySuccessfully')
+            chrome.i18n.getMessage('importKeySuccessfully')
           )}
         </div>
       </div>
 
       <div className="text-lg mt-12 font-normal">
-        <div>{chrome.i18n.getMessage('Remember')}:</div>
+        <div>{chrome.i18n.getMessage('remember')}:</div>
         <li className="mt-2">
-          {chrome.i18n.getMessage('StaySafeStart')}
+          {chrome.i18n.getMessage('staySafeStart')}
           <br></br>
-          <span className="text-warning">{chrome.i18n.getMessage('StaySafeMiddle')}</span>{' '}
-          {chrome.i18n.getMessage('StaySafeEnd')}
+          <span className="text-warning">{chrome.i18n.getMessage('staySafeMiddle')}</span>{' '}
+          {chrome.i18n.getMessage('staySafeEnd')}
         </li>
         <li>
-          {chrome.i18n.getMessage('ContactUs')}{' '}
+          {chrome.i18n.getMessage('contactUs')}{' '}
           <span className="text-success underline cursor-pointer">security@koii.network</span>
         </li>
 
@@ -98,14 +98,14 @@ const RevealPhrase = ({ step }) => {
           <div className="flex flex-col items-center mr-19 max-w-full" style={{ width: '300px' }}>
             <KoiiToken />
             <div className="mt-3 font-normal text-lg text-center">
-              {chrome.i18n.getMessage('HeadOverToFaucet')}
+              {chrome.i18n.getMessage('headOverToFaucet')}
             </div>
 
             <Button
               style={{ width: '240px', height: '42px' }}
               className="mt-7 text-base rounded mx-auto z-10"
               variant="primary"
-              text={chrome.i18n.getMessage('GetFreeKOII')}
+              text={chrome.i18n.getMessage('getFreeKOII')}
               size="lg"
               onClick={openFaucet}
               id="open-faucet-button"
@@ -114,14 +114,14 @@ const RevealPhrase = ({ step }) => {
           <div className="flex flex-col items-center max-w-full" style={{ width: '300px' }}>
             <ImagesNFTs />
             <div className="mt-3 font-normal text-lg text-center">
-              {chrome.i18n.getMessage('GoToGalleryToCreateNFT')}
+              {chrome.i18n.getMessage('goToGalleryToCreateNFT')}
             </div>
 
             <Button
               style={{ width: '240px', height: '42px' }}
               className="mt-7 text-base rounded mx-auto z-10"
               variant="warningDefault"
-              text={chrome.i18n.getMessage('CreateAnNFT')}
+              text={chrome.i18n.getMessage('createAnNFT')}
               size="lg"
               onClick={openCreateNFTPage}
               id="create-nft-page-button"

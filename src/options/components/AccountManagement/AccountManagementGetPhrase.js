@@ -45,9 +45,9 @@ const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupPh
       <table className="w-full bg-trueGray-100 rounded-finnie text-indigo">
         <thead className="text-4xs font-normal">
           <tr className="text-left h-8">
-            <td className="pl-2">{chrome.i18n.getMessage('DEFAULT')}</td>
-            <td className="text-center">{chrome.i18n.getMessage('ACCOUNTNAME')}</td>
-            <td>{chrome.i18n.getMessage('ADDRESS')}</td>
+            <td className="pl-2">{chrome.i18n.getMessage('defaultUc')}</td>
+            <td className="text-center">{chrome.i18n.getMessage('accountNameUc')}</td>
+            <td>{chrome.i18n.getMessage('addressUc')}</td>
             <td />
           </tr>
         </thead>
@@ -108,7 +108,7 @@ const AccountManagement = ({ accounts, setSelectedAccount, setShowExportBackupPh
                   {!hasSeedPhrase && (
                     <Hint
                       className="inline ml-4.25"
-                      text={chrome.i18n.getMessage('NotGeneratedWithSecretPhrase')}
+                      text={chrome.i18n.getMessage('notGeneratedWithSecretPhrase')}
                       place="right"
                     />
                   )}

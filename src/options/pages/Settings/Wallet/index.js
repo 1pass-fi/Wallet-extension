@@ -52,11 +52,11 @@ export default () => {
   )
 
   const chainOptions = [
-    { label: chrome.i18n.getMessage('AllAccounts'), value: 'ALL' },
-    { label: 'K2 ' + chrome.i18n.getMessage('Account'), value: TYPE.K2 },
-    { label: 'Ethereum ' + chrome.i18n.getMessage('Account'), value: TYPE.ETHEREUM },
-    { label: 'Solana ' + chrome.i18n.getMessage('Account'), value: TYPE.SOLANA },
-    { label: 'Arweave ' + chrome.i18n.getMessage('Account'), value: TYPE.ARWEAVE }
+    { label: chrome.i18n.getMessage('allAccounts'), value: 'ALL' },
+    { label: 'K2 ' + chrome.i18n.getMessage('account'), value: TYPE.K2 },
+    { label: 'Ethereum ' + chrome.i18n.getMessage('account'), value: TYPE.ETHEREUM },
+    { label: 'Solana ' + chrome.i18n.getMessage('account'), value: TYPE.SOLANA },
+    { label: 'Arweave ' + chrome.i18n.getMessage('account'), value: TYPE.ARWEAVE }
   ]
 
   useEffect(() => {
@@ -156,11 +156,11 @@ export default () => {
   return (
     <div className="wallet-settings-wrapper">
       <div className="wallet-settings">
-        <div className="header">{chrome.i18n.getMessage('WalletSettings')}</div>
+        <div className="header">{chrome.i18n.getMessage('walletSettings')}</div>
         <div className="mt-10 pl-5">
           <div className="add-wallet pb-2 mb-4 border-b border-white">
             <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
-              {chrome.i18n.getMessage('AddAKey')}
+              {chrome.i18n.getMessage('addAKey')}
             </div>
             <div className="flex gap-6.75 my-1">
               <div
@@ -170,7 +170,7 @@ export default () => {
                 data-testid="setting-create-wallet"
                 role="button"
               >
-                {chrome.i18n.getMessage('CreateANewKey')}
+                {chrome.i18n.getMessage('createANewKey')}
               </div>
               <div
                 className="bg-trueGray-100 rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center cursor-pointer"
@@ -179,7 +179,7 @@ export default () => {
                 data-testid="setting-import-wallet"
                 role="button"
               >
-                {chrome.i18n.getMessage('ImportWithPhrase')}
+                {chrome.i18n.getMessage('importWithPhrase')}
               </div>
             </div>
             {/* <div
@@ -192,13 +192,13 @@ export default () => {
 
           <div className="default-currency pb-6 mb-4 border-b border-white">
             <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
-              {chrome.i18n.getMessage('DefaultCurrency')}
+              {chrome.i18n.getMessage('defaultCurrency')}
             </div>
             <div className="text-sm 2xl:text-base 3xl:text-lg leading-6 mb-1">
-              {chrome.i18n.getMessage('SelectExchangeCurrency')}
+              {chrome.i18n.getMessage('selectExchangeCurrency')}
             </div>
             <div className="text-xs 2xl:text-sm 3xl:text-base leading-4 mb-4.5 text-lightBlue">
-              {chrome.i18n.getMessage('FiatCurrenciesSupport')}
+              {chrome.i18n.getMessage('fiatCurrenciesSupport')}
             </div>
             <div style={{ width: '300px' }}>
               <DropDown
@@ -214,10 +214,10 @@ export default () => {
 
           <div className="display-order pb-6 mb-4 border-b border-white">
             <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
-              {chrome.i18n.getMessage('KeyDetails')}
+              {chrome.i18n.getMessage('keyDetails')}
             </div>
             <div className="text-sm 2xl:text-base 3xl:text-lg leading-6 mb-4.5">
-              {chrome.i18n.getMessage('OrganizeWalletDisplay')}
+              {chrome.i18n.getMessage('organizeWalletDisplay')}
             </div>
             <div className="mb-1.5" style={{ width: '270px' }}>
               <DropDown

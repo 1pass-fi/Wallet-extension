@@ -127,7 +127,7 @@ const ConnectedSitesModal = ({ onClose, setError, setIsLoading }) => {
           style={{ height: '67px' }}
         >
           <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-            {chrome.i18n.getMessage('ConnectedSites')}
+            {chrome.i18n.getMessage('connectedSites')}
           </div>
           <CloseIcon
             style={{ width: '30px', height: '30px' }}
@@ -146,7 +146,7 @@ const ConnectedSitesModal = ({ onClose, setError, setIsLoading }) => {
           <>
             <div className="mt-4.5 font-normal text-base text-center tracking-finnieSpacing-wide text-indigo">
               <span className="font-semibold">{displayingAccount.accountName}</span> is connected to
-              {chrome.i18n.getMessage('theseSites')}.
+              {chrome.i18n.getMessage('theseSitesLc')}.
             </div>
             <div
               className="w-full mt-7.5 flex flex-col justify-between pl-6.5 text-blue-850 overflow-y-scroll"

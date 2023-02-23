@@ -16,10 +16,10 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
         className="ml-3 font-normal text-base leading-6 text-left max-w-full"
         style={{ width: '347px' }}
       >
-        {chrome.i18n.getMessage('DoYouReady')}{' '}
-        <span className="text-warning">{chrome.i18n.getMessage('HaveAKey')}</span>{' '}
-        {chrome.i18n.getMessage('AddAKeyMsg')}{' '}
-        <span className="text-turquoiseBlue">{chrome.i18n.getMessage('StartFromScratch')}?</span>
+        {chrome.i18n.getMessage('doYouReady')}{' '}
+        <span className="text-warning">{chrome.i18n.getMessage('haveAKeyLc')}</span>{' '}
+        {chrome.i18n.getMessage('addAKeyMsgLc')}{' '}
+        <span className="text-turquoiseBlue">{chrome.i18n.getMessage('startFromScratchLc')}?</span>
       </div>
       <div className="mt-12 flex w-full justify-start lg:gap-32 gap-10">
         <div
@@ -39,7 +39,7 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
             data-testid="start-from-scratch-div"
             className="mt-3 font-semibold text-base leading-4 text-center text-white"
           >
-            {chrome.i18n.getMessage('startFromScratch')}
+            {chrome.i18n.getMessage('startFromScratchLc')}
           </div>
           <div className="mt-2 font-normal text-xs text-center tracking-finnieSpacing-wide text-white">
             {chrome.i18n.getMessage('getANewKey')}
