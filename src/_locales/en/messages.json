@@ -926,7 +926,7 @@
   "medium": {
     "message": "Medium"
   },
-"message": {
+  "message": {
     "message": "Message"
   },
   "method": {
@@ -1760,7 +1760,7 @@
   "websiteLc": {
     "message": "website"
   },
-"welcomeTo": {
+  "welcomeTo": {
     "message": "Welcome to"
   },
   "welcomeToKoiiLeaderBoard": {
