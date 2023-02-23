@@ -39,7 +39,7 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
             data-testid="start-from-scratch-div"
             className="mt-3 font-semibold text-base leading-4 text-center text-white"
           >
-            {chrome.i18n.getMessage('startFromScratchLc')}
+            {chrome.i18n.getMessage('startFromScratch')}
           </div>
           <div className="mt-2 font-normal text-xs text-center tracking-finnieSpacing-wide text-white">
             {chrome.i18n.getMessage('getANewKey')}

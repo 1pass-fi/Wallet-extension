@@ -308,12 +308,6 @@
   "continue": {
     "message": "Continue"
   },
-  "contractDeployment": {
-    "message": "Contract Deployment"
-  },
-  "contractInteraction": {
-    "message": "Contract Interaction"
-  },
   "copied": {
     "message": "Copied"
   },
@@ -1499,6 +1493,9 @@
   "startFromBeginning": {
     "message": "Start from the beginning."
   },
+  "startFromScratch": {
+    "message": "Start from scratch"
+  },
   "startFromScratchLc": {
     "message": "start from scratch"
   },
@@ -1649,12 +1646,6 @@
   "transfer": {
     "message": "Transfer"
   },
-  "transferAR": {
-    "message": "Transfer AR"
-  },
-  "transferETH": {
-    "message": "Transfer ETH"
-  },
   "transferMediaToAR": {
     "message": "Transfer your media to an Arweave wallet."
   },
@@ -1669,9 +1660,6 @@
   },
   "transferOwnershipTakeTime": {
     "message": "Transfer of ownership can take up to 10 minutes after you confirm the purchase."
-  },
-  "transferToken": {
-    "message": "Transfer Token"
   },
   "typeHerePh": {
     "message": "Type here"

@@ -230,17 +230,17 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               {/* TRANSACTION TITLE */}
               <div className="mt-4.5 font-semibold text-sm text-indigo text-center tracking-finnieSpacing-wide">
                 {transactionType === TRANSACTION_TYPE.CONTRACT_DEPLOYMENT &&
-                  chrome.i18n.getMessage('contractDeployment')}
+                  'Contract Deployment'}
                 {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION &&
-                  chrome.i18n.getMessage('contractInteraction')}
+                  'Contract Interaction'}
                 {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER &&
                   network === 'ETHEREUM' &&
-                  chrome.i18n.getMessage('transferETH')}
+                  'Transfer ETH'}
                 {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER &&
                   network === 'ARWEAVE' &&
-                  chrome.i18n.getMessage('transferAR')}
+                  'Transfer AR'}
                 {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER &&
-                  chrome.i18n.getMessage('transferToken')}
+                  'Transfer Token'}
               </div>
               {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION &&
                 !isEmpty(transactionMethod) && (

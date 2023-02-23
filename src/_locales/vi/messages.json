@@ -308,12 +308,6 @@
   "continue": {
     "message": "Tiếp tục"
   },
-  "contractDeployment": {
-    "message": "Triển khai Hợp đồng"
-  },
-  "contractInteraction": {
-    "message": "Tương tác Hợp đồng"
-  },
   "copied": {
     "message": "Đã sao chép"
   },
@@ -651,13 +645,13 @@
     "message": "TỪ"
   },
   "gallery": {
-    "message": "Bộ sưu tập"
+    "message": "Thư viện"
   },
   "gallerySettings": {
-    "message": "Cài đặt Bộ sưu tập"
+    "message": "Cài đặt Thư viện"
   },
   "galleryUc": {
-    "message": "BỘ SƯU TẬP"
+    "message": "THƯ VIỆN"
   },
   "gasEstimate": {
     "message": "Ước tính Gas"
@@ -708,7 +702,7 @@
     "message": "Đã hiểu"
   },
   "goToGalleryToCreateNFT": {
-    "message": "Hoặc đi đến bộ sưu tập để tạo NFT Finnie đầu tiên của bạn"
+    "message": "Hoặc đi đến Thư viện để tạo NFT Finnie đầu tiên của bạn"
   },
   "goToHomepage": {
     "message": "Đến trang chủ"
@@ -810,7 +804,7 @@
     "message": "Yêu cầu không hợp lệ"
   },
   "invalidTokenSchema": {
-    "message": "Kiểu mã thông báo không hợp lệ. Vui lòng sử dụng nft với kiểu mã thông báo của ERC1155"
+    "message": "Kiểu Token không hợp lệ. Vui lòng sử dụng nft với kiểu Token của ERC1155"
   },
   "invalidWalletAddress": {
     "message": "Địa chỉ Ví không hợp lệ"
@@ -1059,7 +1053,7 @@
     "message": "Hoặc tạo mới"
   },
   "organizeWalletDisplay": {
-    "message": "Sắp xếp hiển thị ví của bạn và chọn khóa mặc định. Khóa này sẽ tự động được chọn để tạo NFT và gửi mã thông báo."
+    "message": "Sắp xếp hiển thị ví của bạn và chọn khóa mặc định. Khóa này sẽ tự động được chọn để tạo NFT và gửi Token."
   },
   "origin": {
     "message": "Nguồn"
@@ -1167,7 +1161,7 @@
     "message": "và trên bảng xếp hạng Koii."
   },
   "publicNFTMsgMiddle": {
-    "message": "sẽ xuất hiện trong bộ sưu tập DID của bạn"
+    "message": "sẽ xuất hiện trong bộ Thư viện DID của bạn"
   },
   "publicNFTMsgStart": {
     "message": "Khi đặt ở chế độ công khai, NFT này"
@@ -1386,7 +1380,7 @@
     "message": "CHỌN HÌNH ẢNH BÌA"
   },
   "selectExchangeCurrency": {
-    "message": "Chọn đơn vị tiền tệ được hiển thị bên cạnh mã thông báo và giao dịch của bạn."
+    "message": "Chọn đơn vị tiền tệ được hiển thị bên cạnh Token và giao dịch của bạn."
   },
   "selectMultipleFiles": {
     "message": "Chọn nhiều tệp từ máy tính của bạn."
@@ -1461,16 +1455,16 @@
     "message": "Chia sẻ để kiếm Phần thưởng Chú ý"
   },
   "showAmountSetting": {
-    "message": "Hiển thị số lượng KOII kiếm được trên NFT và Bộ sưu tập trong bộ sưu tập của tôi."
+    "message": "Hiển thị số lượng KOII kiếm được ở NFTs và bộ sưu tập trong Thư viện của tôi."
   },
   "showViewSetting": {
-    "message": "Hiển thị số lượt xem trên NFT và Bộ sưu tập trong bộ sưu tập của tôi."
+    "message": "Hiển thị số lượt xem ở NFTs và bộ sưu tập trong Thư viện của tôi."
   },
   "sign": {
-    "message": "Ký"
+    "message": "Sign"
   },
-  "signMessage": {
-    "message": "Ký tin nhắn"
+  "signingMessage": {
+    "message": "Signing Message"
   },
   "signTransactionError": {
     "message": "Lỗi ký giao dịch"
@@ -1499,8 +1493,11 @@
   "startFromBeginning": {
     "message": "Bắt đầu lại từ đầu."
   },
-  "startFromScratchLc": {
+  "startFromScratch": {
     "message": "Bắt đầu lại từ đầu"
+  },
+  "startFromScratchLc": {
+    "message": "bắt đầu lại từ đầu"
   },
   "statementNoReward": {
     "message": "Bạn không có phần thưởng nào, hãy chia sẻ mã của bạn để nhận phần thưởng!"
@@ -1563,7 +1560,7 @@
     "message": "Việc này sẽ mất vài phút để phản ánh trên ví của bạn."
   },
   "takeTimeToGallery": {
-    "message": "Có thể mất vài phút để hiển thị trong bộ sưu tập của bạn."
+    "message": "Có thể mất vài phút để hiển thị trong Thư viện của bạn."
   },
   "termsOfService": {
     "message": "Điều khoản dịch vụ"
@@ -1599,13 +1596,13 @@
     "message": "Số dư token"
   },
   "tokenContractAddress": {
-    "message": "Địa chỉ hợp đồng mã thông báo"
+    "message": "Địa chỉ hợp đồng Token"
   },
   "tokens": {
     "message": "Tokens"
   },
   "tokenSymbol": {
-    "message": "Ký hiệu mã thông báo"
+    "message": "Ký hiệu Token"
   },
   "toMakeItLc": {
     "message": "để làm cho nó"
@@ -1649,12 +1646,6 @@
   "transfer": {
     "message": "Chuyển khoản"
   },
-  "transferAR": {
-    "message": "Chuyển khoản AR"
-  },
-  "transferETH": {
-    "message": "Chuyển khoản ETH"
-  },
   "transferMediaToAR": {
     "message": "Chuyển bản ghi âm của bạn sang ví Arweave."
   },
@@ -1670,9 +1661,6 @@
   "transferOwnershipTakeTime": {
     "message": "Việc chuyển quyền sở hữu có thể mất tối đa 10 phút sau khi bạn xác nhận mua hàng."
   },
-  "transferToken": {
-    "message": "Chuyển Token"
-  },
   "typeHerePh": {
     "message": "Nhập tại đây"
   },
@@ -1686,7 +1674,7 @@
     "message": "Nhập cụm từ bí mật của bạn."
   },
   "unknownTransaction": {
-    "message": "Giao dịch không xác định"
+    "message": "unknownTransaction"
   },
   "unlock": {
     "message": "Mở khoá"
@@ -1803,6 +1791,6 @@
     "message": "ảnh bìa của bạn"
   },
   "yourTokensOnTheWay": {
-    "message": "Những token của bạn đang trên đường đến!"
+    "message": "Những Token của bạn đang trên đường đến!"
   }
 }
