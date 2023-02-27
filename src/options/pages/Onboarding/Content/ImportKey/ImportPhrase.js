@@ -87,7 +87,7 @@ const ImportPhrase = ({ step, setStep, importType }) => {
       if (isImporting) return
 
       if (!validPhrase || !validateMnemonic(seedphrase)) {
-        setMessageError('Invalid Secret Phrase')
+        setMessageError(chrome.i18n.getMessage('invalidSecretPhrase'))
         return
       }
 

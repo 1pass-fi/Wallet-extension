@@ -195,7 +195,6 @@
         "html-webpack-plugin": "4.0.0-alpha.2",
         "jest": "26.6.3",
         "jest-chrome": "^0.8.0",
-        "jest-environment-jsdom": "25",
         "jest-pnp-resolver": "1.0.1",
         "jest-resolve": "23.6.0",
         "jest-webextension-mock": "^3.8.6",

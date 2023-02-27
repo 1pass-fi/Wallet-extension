@@ -803,6 +803,9 @@
   "invalidRequest": {
     "message": "Invalid request"
   },
+  "invalidSecretPhrase": {
+    "message": "Invalid Secret Phrase"
+  },
   "invalidTokenSchema": {
     "message": "Invalid token schema. Please use nft with token schema of ERC1155"
   },

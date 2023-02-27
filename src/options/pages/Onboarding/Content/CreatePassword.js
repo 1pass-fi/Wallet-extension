@@ -43,7 +43,7 @@ const CreatePassword = ({ step, setStep }) => {
           setStep(1)
         }
       } else {
-        setWrongPasswordMessage('Incorrect password')
+        setWrongPasswordMessage(chrome.i18n.getMessage('incorrectPassword'))
       }
       return
     }

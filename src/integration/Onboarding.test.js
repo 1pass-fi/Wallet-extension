@@ -23,10 +23,10 @@ const arSeedPhrase =
   'credit erosion kidney deposit buddy pioneer window material embark assist quit still'
 
 function createPassword(onboarding) {
-  const password = screen.getByPlaceholderText(/new password/i)
-  const confirmPassword = screen.getByPlaceholderText(/confirm password/i)
+  const password = screen.getByPlaceholderText(/newpassword/i)
+  const confirmPassword = screen.getByPlaceholderText(/confirmpassword/i)
   const termsService = screen.getByRole('checkbox')
-  const continueButton = screen.getByRole('button', { name: /log in/i })
+  const continueButton = screen.getByRole('button', { name: /login/i })
 
   userEvent.type(password, 'OpenKoi@123')
   userEvent.type(confirmPassword, 'OpenKoi@123')
@@ -43,10 +43,10 @@ describe('Onboarding flow', () => {
       beforeEach(() => {
         onboarding = renderWithOptionProviders(<Onboarding />)
 
-        password = screen.getByPlaceholderText(/new password/i)
-        confirmPassword = screen.getByPlaceholderText(/confirm password/i)
+        password = screen.getByPlaceholderText(/newpassword/i)
+        confirmPassword = screen.getByPlaceholderText(/confirmpassword/i)
         termsService = screen.getByRole('checkbox')
-        continueButton = screen.getByRole('button', { name: /log in/i })
+        continueButton = screen.getByRole('button', { name: /login/i })
       })
 
       describe('Passwords do not match', () => {
@@ -59,7 +59,7 @@ describe('Onboarding flow', () => {
           expect(password).toHaveValue('OpenKoi@123')
           expect(confirmPassword).toHaveValue('Openkoi@123')
 
-          expect(screen.getByText(ERROR_MESSAGE.NOT_MATCHING)).toBeInTheDocument()
+          expect(screen.getByText(/passwordDoesNotMatch/i)).toBeInTheDocument()
         })
       })
 
@@ -73,7 +73,7 @@ describe('Onboarding flow', () => {
           expect(password).toHaveValue('OpenKoi¥@123')
           expect(confirmPassword).toHaveValue('OpenKoi¥@123')
 
-          expect(screen.getByText(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)).toBeInTheDocument()
+          expect(screen.getByText(/securePasswordsHaveAtLeast8Characters/i)).toBeInTheDocument()
         })
 
         it('should display password requirement when password does not contain uppercase letter', () => {
@@ -85,7 +85,7 @@ describe('Onboarding flow', () => {
           expect(password).toHaveValue('openkoi@123')
           expect(confirmPassword).toHaveValue('openkoi@123')
 
-          expect(screen.getByText(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)).toBeInTheDocument()
+          expect(screen.getByText(/securePasswordsHaveAtLeast8Characters/i)).toBeInTheDocument()
         })
 
         it('should display password requirement when password does not contain lowercase letter', () => {
@@ -97,7 +97,7 @@ describe('Onboarding flow', () => {
           expect(password).toHaveValue('OPENKOI@123')
           expect(confirmPassword).toHaveValue('OPENKOI@123')
 
-          expect(screen.getByText(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)).toBeInTheDocument()
+          expect(screen.getByText(/securePasswordsHaveAtLeast8Characters/i)).toBeInTheDocument()
         })
 
         it('should display password requirement when password does not contain number character', () => {
@@ -109,7 +109,7 @@ describe('Onboarding flow', () => {
           expect(password).toHaveValue('OpenKoi@')
           expect(confirmPassword).toHaveValue('OpenKoi@')
 
-          expect(screen.getByText(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)).toBeInTheDocument()
+          expect(screen.getByText(/securePasswordsHaveAtLeast8Characters/i)).toBeInTheDocument()
         })
 
         it('should display password requirement when password does not contain special character', () => {
@@ -121,7 +121,7 @@ describe('Onboarding flow', () => {
           expect(password).toHaveValue('OpenKoi123')
           expect(confirmPassword).toHaveValue('OpenKoi123')
 
-          expect(screen.getByText(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)).toBeInTheDocument()
+          expect(screen.getByText(/securePasswordsHaveAtLeast8Characters/i)).toBeInTheDocument()
         })
 
         it('should display password requirement when password length is less than 8 characters', () => {
@@ -133,7 +133,7 @@ describe('Onboarding flow', () => {
           expect(password).toHaveValue('OpKo@1')
           expect(confirmPassword).toHaveValue('OpKo@1')
 
-          expect(screen.getByText(ERROR_MESSAGE.NOT_MEET_REQUIREMENT)).toBeInTheDocument()
+          expect(screen.getByText(/securePasswordsHaveAtLeast8Characters/i)).toBeInTheDocument()
         })
       })
 
@@ -147,7 +147,7 @@ describe('Onboarding flow', () => {
           expect(confirmPassword).toHaveValue('OpenKoi@123')
 
           expect(onboarding.queryByTestId('tos-error-message')).toHaveTextContent(
-            ERROR_MESSAGE.TERM_OF_SERVICE_UNCHECKED
+            /pleaseAcceptTheTof/i
           )
         })
       })
@@ -187,7 +187,7 @@ describe('Onboarding flow', () => {
           })
 
           password = screen.getByPlaceholderText(/password/i)
-          continueButton = screen.getByRole('button', { name: /log in/i })
+          continueButton = screen.getByRole('button', { name: /login/i })
         })
 
         it('should display incorrect password error', async () => {
@@ -195,7 +195,7 @@ describe('Onboarding flow', () => {
           userEvent.click(continueButton)
 
           expect(password).toHaveValue('OpenKoi@123')
-          expect(await screen.findByText(ERROR_MESSAGE.INCORRECT)).toBeInTheDocument()
+          expect(await screen.findByText(/incorrectPassword/i)).toBeInTheDocument()
         })
       })
 
@@ -208,7 +208,7 @@ describe('Onboarding flow', () => {
           })
 
           password = screen.getByPlaceholderText(/password/i)
-          continueButton = screen.getByRole('button', { name: /log in/i })
+          continueButton = screen.getByRole('button', { name: /login/i })
         })
 
         it('should be authenticated and move to next step', async () => {
@@ -216,7 +216,7 @@ describe('Onboarding flow', () => {
           userEvent.click(continueButton)
 
           expect(password).toHaveValue('OpenKoi@123')
-          expect(await screen.findByText(/do you already/i)).toBeInTheDocument()
+          expect(await screen.findByText(/doYouReady/i)).toBeInTheDocument()
         })
       })
     })
@@ -236,22 +236,22 @@ describe('Onboarding flow', () => {
             createPassword(onboarding)
 
             // Get new key
-            const getNewKey = screen.getByText(/start from scratch\./i)
+            const getNewKey = screen.getAllByText(/startFromScratch/i)[1]
             userEvent.click(getNewKey)
 
             // Choose AR key
             const ARKey = (await screen.findAllByRole('button'))[3]
             userEvent.click(ARKey)
 
-            await screen.findByText(/Save your Secret Phrase/i)
+            await screen.findByText(/saveYourSecretPhrase/i)
           })
 
           describe('Step - Save your Secret Phrase - I am Ready', () => {
             beforeEach(async () => {
-              const imReady = screen.getByRole('button', { name: /i'm ready!/i })
+              const imReady = screen.getByRole('button', { name: /imReady/i })
               userEvent.click(imReady)
 
-              await screen.findByText(/Click the lock below to reveal your secret phrase\./i)
+              await screen.findByText(/clickTheLockBelowToRevealYourSecretPhrase/i)
             })
             describe('Step - Reveal secret phrase', () => {
               describe('Before reveal secret phrase', () => {
@@ -273,7 +273,7 @@ describe('Onboarding flow', () => {
                   expect(screen.queryByRole('button', { name: /continue/i })).not.toBeNull()
 
                   arSeedPhrase.split(' ').forEach((phrase, index) => {
-                    const currentPhrase = screen.queryByTestId(`hidden-phrase-${index}`) 
+                    const currentPhrase = screen.queryByTestId(`hidden-phrase-${index}`)
                     expect(currentPhrase).not.toBeNull()
                     expect(currentPhrase.textContent).toBe(phrase)
                   })
@@ -290,15 +290,13 @@ describe('Onboarding flow', () => {
                 const continueButton = screen.getByRole('button', { name: /continue/i })
                 userEvent.click(continueButton)
 
-                await screen.findByText(
-                  /Type in the missing words to confirm your secret phase is properly secured\./i
-                )
+                await screen.findByText(/typeInTheMissingWords/i)
               })
 
               describe('Wrong secret phrase', () => {
                 it('should display invalid secret phrase error message ', async () => {
                   arSeedPhrase.split(' ').forEach((phrase, index) => {
-                    const currentPhrase = screen.queryByTestId(`input-phrase-${index}`) 
+                    const currentPhrase = screen.queryByTestId(`input-phrase-${index}`)
                     expect(currentPhrase).not.toBeNull()
 
                     if (currentPhrase.nodeName === 'INPUT') {
@@ -306,19 +304,17 @@ describe('Onboarding flow', () => {
                     }
                   })
 
-                  const confirmButton = screen.getByRole('button', { name: /confirm phrase/i })
+                  const confirmButton = screen.getByRole('button', { name: /confirmPhrase/i })
                   userEvent.click(confirmButton)
 
-                  expect(
-                    await screen.findAllByText(ERROR_MESSAGE.INVALID_SECRET_PHRASE)
-                  ).toHaveLength(1)
+                  expect(await screen.findAllByText(/invalidSecretPhrase/i)).toHaveLength(1)
                 })
               })
 
               describe('Correct secret phrase', () => {
                 it('should create new wallet successfully and move to last step', async () => {
                   arSeedPhrase.split(' ').forEach((phrase, index) => {
-                    const currentPhrase = screen.queryByTestId(`input-phrase-${index}`) 
+                    const currentPhrase = screen.queryByTestId(`input-phrase-${index}`)
                     expect(currentPhrase).not.toBeNull()
 
                     if (currentPhrase.nodeName === 'INPUT') {
@@ -326,14 +322,14 @@ describe('Onboarding flow', () => {
                     }
                   })
 
-                  const confirmButton = screen.getByRole('button', { name: /confirm phrase/i })
+                  const confirmButton = screen.getByRole('button', { name: /confirmPhrase/i })
                   userEvent.click(confirmButton)
 
-                  await screen.findByText(/Koii will NEVER ask you for your secret phrase/i)
+                  await screen.findByText(/staySafeMiddle/i)
 
-                  expect(screen.queryByRole('button', { name: /go to homepage/i })).toBeNull()
-                  expect(screen.queryByRole('button', { name: /Get Free KOII/i })).not.toBeNull()
-                  expect(screen.queryByRole('button', { name: /Create an NFT/i })).not.toBeNull()
+                  expect(screen.queryByRole('button', { name: /goToHomepage/i })).toBeNull()
+                  expect(screen.queryByRole('button', { name: /getFreeKOII/i })).not.toBeNull()
+                  expect(screen.queryByRole('button', { name: /createAnNFT/i })).not.toBeNull()
                 })
               })
             })
@@ -341,15 +337,15 @@ describe('Onboarding flow', () => {
 
           describe('Step - Save your Secret Phrase - Remind me later', () => {
             beforeEach(async () => {
-              const remindMeLater = screen.getByRole('button', { name: /Remind me later./i })
+              const remindMeLater = screen.getByRole('button', { name: /remindMeLater/i })
               userEvent.click(remindMeLater)
 
-              await screen.findByText(/Koii will NEVER ask you for your secret phrase/i)
+              await screen.findByText(/staySafeMiddle/i)
             })
             it('should create new wallet successfully and move to last step', () => {
-              expect(screen.queryByRole('button', { name: /go to homepage/i })).toBeNull()
-              expect(screen.queryByRole('button', { name: /Get Free KOII/i })).not.toBeNull()
-              expect(screen.queryByRole('button', { name: /Create an NFT/i })).not.toBeNull()
+              expect(screen.queryByRole('button', { name: /goToHomepage/i })).toBeNull()
+              expect(screen.queryByRole('button', { name: /getFreeKOII/i })).not.toBeNull()
+              expect(screen.queryByRole('button', { name: /createAnNFT/i })).not.toBeNull()
             })
           })
         })
@@ -366,21 +362,21 @@ describe('Onboarding flow', () => {
             createPassword(onboarding)
 
             // Get new key
-            const getNewKey = screen.getByText(/start from scratch\./i)
+            const getNewKey = screen.getAllByText(/startFromScratch/i)[1]
             userEvent.click(getNewKey)
 
             // Choose non-AR key
             const nonARKey = (await screen.findAllByRole('button'))[1]
             userEvent.click(nonARKey)
 
-            await screen.findByText(/Save your Secret Phrase/i)
+            await screen.findByText(/saveYourSecretPhrase/i)
           })
           describe('Step - Save your Secret Phrase - I am Ready', () => {
             beforeEach(async () => {
-              const imReady = screen.getByRole('button', { name: /i'm ready!/i })
+              const imReady = screen.getByRole('button', { name: /imReady/i })
               userEvent.click(imReady)
 
-              await screen.findByText(/Click the lock below to reveal your secret phrase\./i)
+              await screen.findByText(/clickTheLockBelowToRevealYourSecretPhrase/i)
             })
             describe('Step - Reveal secret phrase', () => {
               describe('Before reveal secret phrase', () => {
@@ -402,7 +398,7 @@ describe('Onboarding flow', () => {
                   expect(screen.queryByRole('button', { name: /continue/i })).not.toBeNull()
 
                   ethSeedPhrase.split(' ').forEach((phrase, index) => {
-                    const currentPhrase = screen.queryByTestId(`hidden-phrase-${index}`) 
+                    const currentPhrase = screen.queryByTestId(`hidden-phrase-${index}`)
                     expect(currentPhrase).not.toBeNull()
                     expect(currentPhrase.textContent).toBe(phrase)
                   })
@@ -419,15 +415,13 @@ describe('Onboarding flow', () => {
                 const continueButton = screen.getByRole('button', { name: /continue/i })
                 userEvent.click(continueButton)
 
-                await screen.findByText(
-                  /Type in the missing words to confirm your secret phase is properly secured\./i
-                )
+                await screen.findByText(/typeInTheMissingWords/i)
               })
 
               describe('Wrong secret phrase', () => {
                 it('should display invalid secret phrase error message ', async () => {
                   ethSeedPhrase.split(' ').forEach((phrase, index) => {
-                    const currentPhrase = screen.queryByTestId(`input-phrase-${index}`) 
+                    const currentPhrase = screen.queryByTestId(`input-phrase-${index}`)
                     expect(currentPhrase).not.toBeNull()
 
                     if (currentPhrase.nodeName === 'INPUT') {
@@ -435,19 +429,17 @@ describe('Onboarding flow', () => {
                     }
                   })
 
-                  const confirmButton = screen.getByRole('button', { name: /confirm phrase/i })
+                  const confirmButton = screen.getByRole('button', { name: /confirmPhrase/i })
                   userEvent.click(confirmButton)
 
-                  expect(
-                    await screen.findAllByText(ERROR_MESSAGE.INVALID_SECRET_PHRASE)
-                  ).toHaveLength(1)
+                  expect(await screen.findAllByText(/invalidSecretPhrase/i)).toHaveLength(1)
                 })
               })
 
               describe('Correct secret phrase', () => {
                 it('should create new wallet successfully and move to last step', async () => {
                   ethSeedPhrase.split(' ').forEach((phrase, index) => {
-                    const currentPhrase = screen.queryByTestId(`input-phrase-${index}`) 
+                    const currentPhrase = screen.queryByTestId(`input-phrase-${index}`)
                     expect(currentPhrase).not.toBeNull()
 
                     if (currentPhrase.nodeName === 'INPUT') {
@@ -455,14 +447,14 @@ describe('Onboarding flow', () => {
                     }
                   })
 
-                  const confirmButton = screen.getByRole('button', { name: /confirm phrase/i })
+                  const confirmButton = screen.getByRole('button', { name: /confirmPhrase/i })
                   userEvent.click(confirmButton)
 
-                  await screen.findByText(/Koii will NEVER ask you for your secret phrase/i)
+                  await screen.findByText(/staySafeMiddle/i)
 
-                  expect(screen.queryByRole('button', { name: /go to homepage/i })).not.toBeNull()
-                  expect(screen.queryByRole('button', { name: /Get Free KOII/i })).toBeNull()
-                  expect(screen.queryByRole('button', { name: /Create an NFT/i })).toBeNull()
+                  expect(screen.queryByRole('button', { name: /goToHomepage/i })).not.toBeNull()
+                  expect(screen.queryByRole('button', { name: /getFreeKOII/i })).toBeNull()
+                  expect(screen.queryByRole('button', { name: /createAnNFT/i })).toBeNull()
                 })
               })
             })
@@ -471,16 +463,16 @@ describe('Onboarding flow', () => {
           describe('Step - Save your Secret Phrase - Remind me later', () => {
             beforeEach(async () => {
               const remindMeLater = screen.getByRole('button', {
-                name: /Remind me later./i
+                name: /remindMeLater/i
               })
               userEvent.click(remindMeLater)
 
-              await screen.findByText(/Koii will NEVER ask you for your secret phrase/i)
+              await screen.findByText(/staySafeMiddle/i)
             })
             it('should create new wallet successfully and move to last step', () => {
-              expect(screen.queryByRole('button', { name: /go to homepage/i })).not.toBeNull()
-              expect(screen.queryByRole('button', { name: /Get Free KOII/i })).toBeNull()
-              expect(screen.queryByRole('button', { name: /Create an NFT/i })).toBeNull()
+              expect(screen.queryByRole('button', { name: /goToHomepage/i })).not.toBeNull()
+              expect(screen.queryByRole('button', { name: /getFreeKOII/i })).toBeNull()
+              expect(screen.queryByRole('button', { name: /createAnNFT/i })).toBeNull()
             })
           })
         })
@@ -497,22 +489,22 @@ describe('Onboarding flow', () => {
           createPassword(onboarding)
 
           // Get new key
-          const getNewKey = screen.getByText(/use my existing key\./i)
+          const getNewKey = screen.getByText(/useMyExistingKey/i)
           userEvent.click(getNewKey)
 
-          await screen.findByText(/Click a circle below to import your key\./i)
+          await screen.findByText(/clickCircle/i)
 
           // Choose AR key
           const ARKey = (await screen.findAllByRole('button'))[3]
           userEvent.click(ARKey)
 
-          await screen.findByText(/Type in your secret phrase to import your key\./i)
+          await screen.findByText(/typeSecretPhrase/i)
         })
 
         describe('Wrong secret phrase', () => {
           it('should block the confirm button when at least one phrase is blank', () => {
             arSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
               if (index !== 3) {
@@ -528,7 +520,7 @@ describe('Onboarding flow', () => {
 
           it('should block the confirm button when one of the phrase is not in bip-39 wordlist', () => {
             arSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
               userEvent.type(currentPhrase, index === 3 ? 'abc' : phrase)
@@ -542,7 +534,7 @@ describe('Onboarding flow', () => {
 
           it('should display invalid secret phrase when fail to validate mnemonic with bip-39', () => {
             arSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
               userEvent.type(currentPhrase, index === 3 ? 'tired' : phrase)
@@ -554,14 +546,14 @@ describe('Onboarding flow', () => {
             expect(confirmButton).not.toBeDisabled()
 
             userEvent.click(confirmButton)
-            expect(screen.queryAllByText(ERROR_MESSAGE.INVALID_SECRET_PHRASE)).toHaveLength(1)
+            expect(screen.queryAllByText(/invalidSecretPhrase/i)).toHaveLength(1)
           })
         })
 
         describe('Correct secret phrase', () => {
           it('should successfully import the wallet and move to the last step', async () => {
             arSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
               userEvent.type(currentPhrase, phrase)
@@ -574,11 +566,11 @@ describe('Onboarding flow', () => {
 
             userEvent.click(confirmButton)
 
-            await screen.findByText(/Koii will NEVER ask you for your secret phrase/i)
+            await screen.findByText(/staySafeMiddle/i)
 
-            expect(screen.queryByRole('button', { name: /go to homepage/i })).toBeNull()
-            expect(screen.queryByRole('button', { name: /Get Free KOII/i })).not.toBeNull()
-            expect(screen.queryByRole('button', { name: /Create an NFT/i })).not.toBeNull()
+            expect(screen.queryByRole('button', { name: /goToHomepage/i })).toBeNull()
+            expect(screen.queryByRole('button', { name: /getFreeKOII/i })).not.toBeNull()
+            expect(screen.queryByRole('button', { name: /createAnNFT/i })).not.toBeNull()
           })
         })
       })
@@ -593,22 +585,22 @@ describe('Onboarding flow', () => {
           createPassword(onboarding)
 
           // Get new key
-          const getNewKey = screen.getByText(/use my existing key\./i)
+          const getNewKey = screen.getByText(/useMyExistingKey/i)
           userEvent.click(getNewKey)
 
-          await screen.findByText(/Click a circle below to import your key\./i)
+          await screen.findByText(/clickCircle/i)
 
           // Choose non-AR key
           const nonARKey = (await screen.findAllByRole('button'))[1]
           userEvent.click(nonARKey)
 
-          await screen.findByText(/Type in your secret phrase to import your key\./i)
+          await screen.findByText(/typeSecretPhrase/i)
         })
 
         describe('Wrong secret phrase', () => {
           it('should block the confirm button when at least one phrase is blank', () => {
             ethSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
               if (index !== 3) {
@@ -624,7 +616,7 @@ describe('Onboarding flow', () => {
 
           it('should block the confirm button when one of the phrase is not in bip-39 wordlist', () => {
             ethSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
               userEvent.type(currentPhrase, index === 3 ? 'abc' : phrase)
@@ -638,7 +630,7 @@ describe('Onboarding flow', () => {
 
           it('should display invalid secret phrase when fail to validate mnemonic with bip-39', () => {
             ethSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
               userEvent.type(currentPhrase, index === 3 ? 'tired' : phrase)
@@ -650,14 +642,14 @@ describe('Onboarding flow', () => {
             expect(confirmButton).not.toBeDisabled()
 
             userEvent.click(confirmButton)
-            expect(onboarding.queryAllByText(ERROR_MESSAGE.INVALID_SECRET_PHRASE)).toHaveLength(1)
+            expect(onboarding.queryAllByText(/invalidSecretPhrase/i)).toHaveLength(1)
           })
         })
 
         describe('Correct secret phrase', () => {
           it('should successfully import the wallet and move to the last step', async () => {
             ethSeedPhrase.split(' ').forEach((phrase, index) => {
-              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`) 
+              const currentPhrase = screen.queryByTestId(`import-phrase-${index}`)
               expect(currentPhrase).not.toBeNull()
 
               userEvent.type(currentPhrase, phrase)
@@ -670,11 +662,11 @@ describe('Onboarding flow', () => {
 
             userEvent.click(confirmButton)
 
-            await screen.findByText(/Koii will NEVER ask you for your secret phrase/i)
+            await screen.findByText(/staySafeMiddle/i)
 
-            expect(screen.queryByRole('button', { name: /go to homepage/i })).not.toBeNull()
-            expect(screen.queryByRole('button', { name: /Get Free KOII/i })).toBeNull()
-            expect(screen.queryByRole('button', { name: /Create an NFT/i })).toBeNull()
+            expect(screen.queryByRole('button', { name: /goToHomepage/i })).not.toBeNull()
+            expect(screen.queryByRole('button', { name: /getFreeKOII/i })).toBeNull()
+            expect(screen.queryByRole('button', { name: /createAnNFT/i })).toBeNull()
           })
         })
       })
