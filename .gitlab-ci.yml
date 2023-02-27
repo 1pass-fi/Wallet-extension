@@ -1,4 +1,4 @@
-image: node:18.8.0
+image: node:16.17.0
 
 stages:
   - prerequisites
