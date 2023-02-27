@@ -58,7 +58,7 @@ export const importWallet = (key, password, type) => async (dispatch) => {
     dispatch(setAccounts(accountsData))
     dispatch(getBalances())
   } catch (err) {
-    dispatch(setError(err.message))
+    dispatch(setError(chrome.i18n.getMessage(err.message) || err.message))
   }
 }
 

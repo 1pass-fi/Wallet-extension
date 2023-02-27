@@ -56,8 +56,8 @@ const AccountImport = ({ totalAccount }) => {
         {
           key: 1,
           SvgImage: <ImportIcon className="card-icon" />,
-          title: 'Import with a seed phrase',
-          description: 'Import an existing wallet using a 12-word seed phrase.',
+          title: chrome.i18n.getMessage('importSeedPhrase'),
+          description: chrome.i18n.getMessage('import12WordSeedPhrase'),
           path: hasPendingRequest ? '/account/import/phrase' : '#',
           onClick: () => {
             handleOnClick('/options.html#/import-wallet')
@@ -76,8 +76,8 @@ const AccountImport = ({ totalAccount }) => {
         {
           key: 2,
           SvgImage: <PlusIcon className="card-icon" />,
-          title: 'Get a new wallet',
-          description: 'Start from the beginning.',
+          title: chrome.i18n.getMessage('getANewWallet'),
+          description: chrome.i18n.getMessage('startFromBeginning'),
           path: hasPendingRequest ? '/account/create' : '#',
           onClick: () => {
             handleOnClick('/options.html#/create-wallet')
@@ -102,27 +102,32 @@ const AccountImport = ({ totalAccount }) => {
     <div className="account-import" style={{ height: hasOldKey ? '600px' : '437px' }}>
       {hasOldKey && (
         <div className="recover-key">
-          <div className="title">Recover my key</div>
+          <div className="title">{chrome.i18n.getMessage('recover')+chrome.i18n.getMessage('myKeyLc')}</div>
+          <div>{chrome.i18n.getMessage('multipleWalletsSupport')}</div>
           <div>
-            We made some exciting updates to the latest version of Finnie, including multiple
-            wallets and an Ethereum bridge.
-          </div>
-          <div>
-            If you need a copy of your key or secret phrase, get it here. <b>Never delete</b> the
-            Finnie extension without first backing up a copy of your secret phrase or key.
+            {chrome.i18n.getMessage('recoverKeyMsgStart')}{' '}
+            <b>{chrome.i18n.getMessage('recoverKeyMsgMiddle')}</b>{' '}
+            {chrome.i18n.getMessage('recoverKeyMsgEnd')}
           </div>
           <div className="btn-wrapper">
-            <Button onClick={() => history.push('/account/recovery')} label="Recover My Key" />
+            <Button
+              onClick={() => history.push('/account/recovery')}
+              label={chrome.i18n.getMessage('recover')+chrome.i18n.getMessage('myKey')}
+            />
           </div>
         </div>
       )}
       <div className="account-import-header">
         {totalAccount > 0 && (
-          <div data-tip="Back" className="go-back-icon" onClick={goBackAccountHome}>
+          <div
+            data-tip={chrome.i18n.getMessage('back')}
+            className="go-back-icon"
+            onClick={goBackAccountHome}
+          >
             <GoBackIcon />
           </div>
         )}
-        <div className="get-started">Let’s get started.</div>
+        <div className="get-started">{chrome.i18n.getMessage('letsGetStarted')}</div>
       </div>
       {selections.map((content) => (
         <CardOption {...content} />

@@ -1,13 +1,13 @@
 import errorHandler from 'background/helpers/errorHandler'
 import createTransaction from 'background/helpers/uploadNft/createTransaction'
-import { ERROR_MESSAGE } from 'constants/koiConstants'
+import { POPUP_CONTROLLER_ERROR } from 'constants/koiConstants'
 import { find } from 'lodash'
 import arweave from 'services/arweave'
 
 const resendMintNft = async (account, transaction) => {
   const pendingAssets = await account.get.pendingAssets()
-  const asset = find(pendingAssets, asset => asset.txId === transaction.id)
-  
+  const asset = find(pendingAssets, (asset) => asset.txId === transaction.id)
+
   if (!asset) throw new Error('Asset not found')
 
   const arrayBuffer = await getArrayBuffer(asset)
@@ -19,7 +19,7 @@ const resendMintNft = async (account, transaction) => {
     isNSFW: asset.isNSFW
   }
 
-  const createdAt = Math.floor(transaction.timestamp/1000).toString()
+  const createdAt = Math.floor(transaction.timestamp / 1000).toString()
 
   const newTransaction = await createTransaction({
     u8: arrayBuffer,
@@ -35,12 +35,13 @@ const resendMintNft = async (account, transaction) => {
   const { balance: arBalance, koiBalance } = await account.method.getBalances()
   console.log('arBalance', arBalance)
   console.log('koiBalance', koiBalance)
-  if (arBalance < price || koiBalance < 1) throw new Error(ERROR_MESSAGE.RESEND.NOT_ENOUGH_BALANCE)
+  if (arBalance < price || koiBalance < 1)
+    throw new Error(POPUP_CONTROLLER_ERROR.NOT_ENOUGH_AR_OR_KOII)
 
   // sign transaction
   await account.method.signTx(newTransaction)
-  
-  // post 
+
+  // post
   const uploader = await arweave.transactions.getUploader(newTransaction)
   while (!uploader.isComplete) {
     await uploader.uploadChunk()

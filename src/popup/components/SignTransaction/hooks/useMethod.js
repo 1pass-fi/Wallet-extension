@@ -1,4 +1,3 @@
-import { ERROR_MESSAGE } from 'constants/koiConstants'
 import { get, isEmpty } from 'lodash'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as request } from 'services/request/popup'
@@ -137,13 +136,13 @@ const useMethod = ({
       const accountBalance = (await account.get.balance()) / Math.pow(10, 9)
 
       if (accountBalance < totalOriginExpense) {
-        setError('Not enough tokens')
+        setError(chrome.i18n.getMessage('notEnoughTokens'))
         return
       }
 
       if (transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER) {
         if (balance < value) {
-          setError('Not enough tokens')
+          setError(chrome.i18n.getMessage('notEnoughTokens'))
           return
         }
       }
@@ -153,7 +152,7 @@ const useMethod = ({
 
     try {
       const pendingRequest = await storage.generic.get.pendingRequest()
-      if (isEmpty(pendingRequest)) throw new Error(ERROR_MESSAGE.REQUEST_NOT_EXIST)
+      if (isEmpty(pendingRequest)) throw new Error(chrome.i18n.getMessage('requestNotExist'))
 
       /* 
         If requestId === undefined, request was sent internally from Finnie

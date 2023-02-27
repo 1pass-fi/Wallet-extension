@@ -12,7 +12,7 @@ const TransferFrom = ({
   return (
     <div className="transfer-form">
       <div className="receiver-address">
-        <label className="label">Receiver’s Wallet Address:</label>
+        <label className="label">{chrome.i18n.getMessage('receiverWalletAddress')}:</label>
         <input
           type="text"
           value={receiverAddress}
@@ -24,14 +24,14 @@ const TransferFrom = ({
             <WarningIcon />
           </div>
           <div className="warning-text">
-            Make sure this is the correct address. This action cannot be undone.
+            {chrome.i18n.getMessage('makeSureCorrectAddress')}
           </div>
         </div>
       </div>
 
       <div className="number-to-transfer">
-        <label className="label">Number to transfer:</label>
-        <div className="total-available">total available:&nbsp; {1}</div>
+        <label className="label">{chrome.i18n.getMessage('numberToTransfer')}:</label>
+        <div className="total-available">{chrome.i18n.getMessage('totalAvailableLc')}:&nbsp; {1}</div>
         <input
           type="number"
           min={1}
@@ -42,7 +42,7 @@ const TransferFrom = ({
           disabled={true}
           name="nft-amount-input"
         />
-        <div className="description">Many NFTs will only have 1 item minted.</div>
+        <div className="description">{chrome.i18n.getMessage('nftOnlyHave1ItemMinted')}</div>
       </div>
     </div>
   )

@@ -138,11 +138,11 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
       >
         <input
           className="bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none font-normal text-sm leading-6 pl-2"
-          placeholder="Seach for a token"
+          placeholder={chrome.i18n.getMessage('searchForAToken')}
           style={{ width: '316px' }}
           onChange={(e) => setSearchToken(e.target.value)}
           value={searchToken}
-          data-testid='search-custom-token-input'
+          data-testid="search-custom-token-input"
         ></input>
         <SearchIcon className="mr-2 cursor-pointer" onClick={() => onSearchToken()} />
       </div>
@@ -184,7 +184,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
                 setPages((prev) => ++prev)
               }}
             >
-              See more
+              {chrome.i18n.getMessage('seeMore')}
             </button>
           </div>
         )}

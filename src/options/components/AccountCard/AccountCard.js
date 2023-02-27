@@ -201,7 +201,7 @@ const AccountCard = ({
           await onChangeSolanaProvider(networkAddress)
           break
         default:
-          dispatch(setError('Invalid network type'))
+          dispatch(setError(chrome.i18n.getMessage('invalidNetworkType')))
           break
       }
     }
@@ -226,7 +226,7 @@ const AccountCard = ({
       }
 
       if (isEmpty(accountName)) {
-        dispatch(setError('Account name cannot be empty.'))
+        dispatch(setError(chrome.i18n.getMessage('emptyAccountNameError')))
         setEditAccount({})
         return
       }
@@ -486,7 +486,7 @@ const AccountCard = ({
               className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
               data-testid="account-card-balance"
             >
-              Balance:{' '}
+              {chrome.i18n.getMessage('balance')}: 
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance / Math.pow(10, 9), 4)
                 : '0'}{' '}
@@ -498,8 +498,10 @@ const AccountCard = ({
               className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
               data-testid="account-card-balance"
             >
-              Balance:{' '}
-              {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'}{' '}
+              {chrome.i18n.getMessage('balance')}: 
+              {formatNumber(account.balance, 4) !== 'NaN'
+                ? formatNumber(account.balance, 4)
+                : '0'}{' '}
               ETH
             </div>
           )}
@@ -508,7 +510,7 @@ const AccountCard = ({
               className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
               data-testid="account-card-balance"
             >
-              Balance:{' '}
+              {chrome.i18n.getMessage('balance')}: 
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance / Math.pow(10, 9), 4)
                 : '0'}{' '}
@@ -521,12 +523,9 @@ const AccountCard = ({
                 className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
                 data-testid="account-card-balance"
               >
-                Balance: {isNumber(account.balance) ? formatNumber(account.balance, 4) : '0'} AR
+                {chrome.i18n.getMessage('balance')}: 
+                {isNumber(account.balance) ? formatNumber(account.balance, 4) : '0'} AR
               </div>
-              {/* <div className="font-normal text-xs flex items-center tracking-finnieSpacing-tight">
-                Koii Balance:{' '}
-                {isNumber(account.koiBalance) ? formatNumber(account.koiBalance, 2) : '0'} KOII
-              </div> */}
             </>
           )}
 
@@ -534,7 +533,7 @@ const AccountCard = ({
             className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight leading-6"
             data-testid="account-card-assets"
           >
-            Assets: {account.totalAssets.length}
+            {chrome.i18n.getMessage('assets')}: {account.totalAssets.length}
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -551,7 +550,7 @@ const AccountCard = ({
               {account.totalAssets.length}
             </div>
             <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-              Assets
+              {chrome.i18n.getMessage('assets')}
             </div>
           </div>
           {account.type === TYPE.ARWEAVE ? (
@@ -560,7 +559,7 @@ const AccountCard = ({
                 {totalViews}
               </div>
               <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-                Views
+                {chrome.i18n.getMessage('views')}
               </div>
             </div>
           ) : (
@@ -569,9 +568,9 @@ const AccountCard = ({
                 'w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-trueGray-400 rounded',
                 'font-normal text-xs 2xl:text-sm 3xl:text-base text-center tracking-finnieSpacing-tight'
               )}
-              data-tip={'Views'}
+              data-tip={chrome.i18n.getMessage('views')}
             >
-              Coming Soon
+              {chrome.i18n.getMessage('comingSoon')}
             </div>
           )}
           <ToolTip />
@@ -617,7 +616,7 @@ const AccountCard = ({
           <div className="w-1/3 h-full flex flex-col gap-6">
             <div className="flex gap-2.75 items-start">
               <div className="w-1/2 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-                Account Balance:
+                {chrome.i18n.getMessage('accountBalance')}
               </div>
               <div className="flex flex-col gap-1" data-testid="account-card-account-balance">
                 {tokenList.map((token, idx) => (
@@ -634,7 +633,7 @@ const AccountCard = ({
 
             <div className="flex gap-2.75 items-start">
               <div className="w-1/2 flex justify-end text-right font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-                NFT Assets:
+                {chrome.i18n.getMessage('nftAssets')}{':'}
               </div>
               <div
                 className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight"
@@ -650,7 +649,7 @@ const AccountCard = ({
           <div className="w-1/3 h-full flex flex-col gap-4.5">
             <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-                Network:{' '}
+                {chrome.i18n.getMessage('network')}{': '}
               </div>
               <div className="w-38.75 xl:w-40 2xl:w-42.5 3xl:w-46">
                 <DropDown
@@ -681,7 +680,7 @@ const AccountCard = ({
             </div> */}
             <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-                Dapp Connections:{' '}
+                {chrome.i18n.getMessage('dappConnection')}: 
               </div>
               <div
                 className="text-xs 2xl:text-sm 3xl:text-base font-normal tracking-finnieSpacing-tight underline cursor-pointer"
@@ -701,7 +700,7 @@ const AccountCard = ({
               className="w-full h-6 flex items-center justify-between"
             >
               <div className="w-3/4 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-                Reveal Secret Phrase:{' '}
+                {chrome.i18n.getMessage('revealSecretPhraseText')}{': '}
               </div>
               <div
                 className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"

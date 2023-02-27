@@ -15,7 +15,7 @@ const Collection = () => {
       >
         <CreateIcon className="w-11.25 h-11.25" />
         <div className="text-white text-base leading-6 tracking-finnieSpacing-wide mt-4 w-32 text-center">
-          Create New Collection
+          {chrome.i18n.getMessage('createNewCollection')}
         </div>
       </Link>
       {filteredCollections.map((collection) => (

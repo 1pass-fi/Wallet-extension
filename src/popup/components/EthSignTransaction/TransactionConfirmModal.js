@@ -46,7 +46,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
   const [isFixedMaxFeePerGas, setIsFixedMaxFeePerGas] = useState(false)
 
   const { baseFee } = useFetchBaseFee()
-  
+
   const {
     transactionPayload,
     network,
@@ -58,9 +58,9 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     recipientName,
     signWithoutSend
   } = useLoadRequest({ setIsLoading })
-  
+
   const { trustStat } = useSecurityStatus({ setIsLoading, url: origin })
-  
+
   const { Fee, maxFee, estimatedFee, gasLimit } = useGetFee({
     network,
     transactionPayload,
@@ -86,7 +86,8 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
   }, [transactionType])
 
   const transactionMethod = useMemo(() => {
-    if (transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION && !isEmpty(dataString)) return decodeTxMethod(dataString)
+    if (transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION && !isEmpty(dataString))
+      return decodeTxMethod(dataString)
     return null
   }, [dataString])
 
@@ -132,7 +133,6 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
     return get(transactionPayload, 'to')
   }, [customTokenRecipient, transactionPayload])
 
-
   /* 
     Hard return false -> temporary disable security function
     since sunrise services has been down
@@ -152,7 +152,10 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
   return (
     <div className="w-full h-full bg-white z-51 m-auto top-0 left-0 fixed flex flex-col justify-center items-center">
       {!showReceipt ? (
-        <div style={{overflowY:'overlay'}} className="w-full h-full relative bg-white shadow-md rounded m-auto flex flex-col items-center">
+        <div
+          style={{ overflowY: 'overlay' }}
+          className="w-full h-full relative bg-white shadow-md rounded m-auto flex flex-col items-center"
+        >
           {/* NAVIGATION TAB */}
           <div className="w-full flex flex-col">
             <div className="w-full grid grid-cols-2 text-base text-indigo">
@@ -165,7 +168,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 onClick={() => setTab(TAB.DETAIL)}
                 data-testid="detail-tab"
               >
-                Details
+                {chrome.i18n.getMessage('details')}
               </div>
               <div
                 style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.16)' }}
@@ -179,7 +182,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 }}
                 data-testid="edit-fee-tab"
               >
-                Edit Fee
+                {chrome.i18n.getMessage('editFee')}
               </div>
             </div>
           </div>
@@ -192,33 +195,36 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 className="w-7.5 h-7.5 z-20 absolute top-15 left-3.75 cursor-pointer bg-white bg-opacity-70 rounded-full"
               />
               <div className="mt-5 font-semibold text-base text-indigo leading-5 text-center tracking-finnieSpacing-wide">
-                Confirm Transaction
+                {chrome.i18n.getMessage('confirmTransaction')}
               </div>
 
               {/* TRANSACTION TITLE */}
               <div className="mt-4.5 font-semibold text-sm text-indigo text-center tracking-finnieSpacing-wide">
-                {transactionType === TRANSACTION_TYPE.CONTRACT_DEPLOYMENT && 'Contract Deployment'}
+                {transactionType === TRANSACTION_TYPE.CONTRACT_DEPLOYMENT &&
+                  'Contract Deployment'}
                 {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION &&
                   'Contract Interaction'}
-                {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER && 'Transfer ETH'}
-                {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && 'Transfer Token'}
+                {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER &&
+                  'Transfer ETH'}
+                {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER &&
+                  'Transfer Token'}
               </div>
               {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION &&
                 !isEmpty(transactionMethod) && (
                   <>
                     {transactionMethod === TRANSACTION_METHOD.SET_APPROVAL_FOR_ALL && (
                       <div className="flex items-center justify-center w-auto h-5 mt-1 mb-3 px-1 text-sm text-indigo font-semibold tracking-finnieSpacing-wide border border-turquoiseBlue rounded-xs bg-cyan">
-                        setApprovalForAll
+                        {chrome.i18n.getMessage('setApprovalForAll')}
                       </div>
                     )}
                     {transactionMethod === TRANSACTION_METHOD.MINT_COLLECTIBLES && (
                       <div className="flex items-center justify-center w-auto h-5 mt-1 mb-3 px-1 text-sm text-indigo font-semibold tracking-finnieSpacing-wide border border-turquoiseBlue rounded-xs bg-cyan">
-                        mintCollectibles
+                        {chrome.i18n.getMessage('mintCollectiblesLc')}
                       </div>
                     )}
                     {transactionMethod === TRANSACTION_METHOD.APPROVE && (
                       <div className="flex items-center justify-center w-auto h-5 mt-1 mb-3 px-1 text-sm text-indigo font-semibold tracking-finnieSpacing-wide border border-turquoiseBlue rounded-xs bg-cyan">
-                        approve
+                        {chrome.i18n.getMessage('approveLc')}
                       </div>
                     )}
                   </>
@@ -233,7 +239,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                   >
                     <CheckMarkIcon style={{ width: '24px', height: '24px' }} />
                     <div className="mx-2" style={{ width: '300px ' }}>
-                      Website verified by Sunrise NFT Scam Detector
+                      {chrome.i18n.getMessage('sunriseVerified')}
                     </div>
                     <SunriseLogo style={{ width: '21px', height: '21px' }} />
                   </div>
@@ -244,8 +250,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                   >
                     <WaitingIcon style={{ width: '24px', height: '24px' }} />
                     <div className="mx-2" style={{ width: '300px ' }}>
-                      This website hasn’t been verified by Sunrise NFT Scam Detector. Make sure
-                      you’re on the right site.
+                      {chrome.i18n.getMessage('sunriseHasNotBeenVerified')}
                     </div>
                     <SunriseLogo style={{ width: '21px', height: '21px' }} />
                   </div>
@@ -260,15 +265,13 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                         className="mx-2 flex flex-col items-center justify-center"
                         style={{ width: '300px ' }}
                       >
-                        According to Sunrise NFT Scam Detector, this site might be impersonating a
-                        popular NFT site. Double check that you are minting from the correct site to
-                        keep your assets secure.
+                        {chrome.i18n.getMessage('sunriseWarningMsg')}
                         <div
                           className="leading-6 bg-blue-800 rounded-sm mt-0.5 flex items-center justify-center text-white cursor-pointer"
                           style={{ width: '100px', height: '20px' }}
                           onClick={() => setShowConnectedSites(true)}
                         >
-                          I Understand
+                          {chrome.i18n.getMessage('iUnderstand')}
                         </div>
                       </div>
                       <SunriseLogo style={{ width: '21px', height: '21px' }} />
@@ -278,13 +281,8 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
 
               <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
                 {origin && (
-                  <div
-                    className={clsx(
-                      'flex mb-2',
-                      isScamOrigin && 'text-red-finnie'
-                    )}
-                  >
-                    <div style={{ width: '176px' }}>Origin</div>
+                  <div className={clsx('flex mb-2', isScamOrigin && 'text-red-finnie')}>
+                    <div style={{ width: '176px' }}>{chrome.i18n.getMessage('origin')}</div>
                     <div
                       className={clsx(
                         'flex font-normal text-xs items-center truncate',
@@ -299,8 +297,11 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
                   transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER) && (
                   <div className="flex mb-2">
-                    <div style={{ width: '176px' }}>Sending</div>
-                    <div className="flex font-normal text-xs items-center" data-testid="tx-confirm-amount">
+                    <div style={{ width: '176px' }}>{chrome.i18n.getMessage('sending')}</div>
+                    <div
+                      className="flex font-normal text-xs items-center"
+                      data-testid="tx-confirm-amount"
+                    >
                       <SendValue />
                       <div className="ml-1 w-4 h-4">
                         <TokenIcon />
@@ -309,23 +310,23 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                   </div>
                 )}
                 <div className="flex mb-2">
-                  <div style={{ width: '176px' }}>Total Balance</div>
+                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('totalBalance')}</div>
                   <div className="flex font-normal text-xs items-center text-success-700">
                     {numberFormat(originBalance, 6)} {originSymbol}
                   </div>
                 </div>
 
-                {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER &&
+                {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER && (
                   <div className="flex mb-2">
-                    <div style={{ width: '176px' }}>Token Balance</div>
+                    <div style={{ width: '176px' }}>{chrome.i18n.getMessage('tokenBalance')}</div>
                     <div className="flex font-normal text-xs items-center text-success-700">
                       {numberFormat(balance, 6)} {symbol}
                     </div>
                   </div>
-                }
+                )}
 
                 <div className="flex">
-                  <div style={{ width: '176px' }}> Transaction Fees</div>
+                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('transactionFees')}</div>
                   <div className="flex font-normal text-xs items-center">
                     <Fee />
                   </div>
@@ -333,23 +334,27 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               </div>
 
               <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
-                <div style={{ width: '176px' }}>From</div>
+                <div style={{ width: '176px' }}>{chrome.i18n.getMessage('from')}</div>
                 {senderName && <div className="mt-2 font-semibold text-xs">{senderName}</div>}
-                <div className="mt-2 font-normal text-xs text-success-700" data-testid="tx-confirm-sender">
+                <div
+                  className="mt-2 font-normal text-xs text-success-700"
+                  data-testid="tx-confirm-sender"
+                >
                   {get(transactionPayload, 'from')}
                 </div>
               </div>
 
               {(transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER ||
-                transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER &&
-                recipient
-              ) && (
+                (transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER && recipient)) && (
                 <div className="mt-5 px-9 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
-                  <div style={{ width: '176px' }}>To</div>
+                  <div style={{ width: '176px' }}>{chrome.i18n.getMessage('to')}</div>
                   {recipientName && (
                     <div className="mt-2 font-semibold text-xs">{recipientName}</div>
                   )}
-                  <div className="mt-2 font-normal text-xs text-success-700" data-testid="tx-confirm-recipient">
+                  <div
+                    className="mt-2 font-normal text-xs text-success-700"
+                    data-testid="tx-confirm-recipient"
+                  >
                     {customTokenRecipient || get(transactionPayload, 'to')}
                   </div>
                 </div>
@@ -361,15 +366,17 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
           {tab === TAB.SIMULATION && network === NETWORK.ETHEREUM && (
             <div className="flex flex-col items-center w-full h-full mt-2 overflow-y-auto overflow-x-hidden text-indigo">
               <div className="mt-5 font-semibold text-base text-indigo leading-5 text-center tracking-finnieSpacing-wide">
-                1 transaction in queue
+                {chrome.i18n.getMessage('transactionInQueue')}
               </div>
               <div className="mt-2 text-sm text-indigo">
-                <span className="font-bold">{origin}</span> requested{' '}
-                <span className="font-bold">just now</span>
+                <span className="font-bold">{origin}</span> {chrome.i18n.getMessage('requestedLc')}{' '}
+                <span className="font-bold">{chrome.i18n.getMessage('justNowLc')}</span>
               </div>
-              <div className="mt-2 text-xl text-indigo font-semibold">Simulated Changes:</div>
+              <div className="mt-2 text-xl text-indigo font-semibold">
+                {chrome.i18n.getMessage('simulatedChanges')}:
+              </div>
               <div className="w-full px-8 mt-4.5 flex flex-col">
-                <div className="font-normal text-sm">You give:</div>
+                <div className="font-normal text-sm">{chrome.i18n.getMessage('youGive')}:</div>
                 <div
                   className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
                   style={{ backgroundColor: '#EBEEF7', height: '56px' }}
@@ -384,7 +391,9 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                     - ={simulationData.data.givenTokenAmount / Math.pow(10, 18)}
                   </div>
                 </div>
-                <div className="mt-2.5 font-normal text-sm">You get:</div>
+                <div className="mt-2.5 font-normal text-sm">
+                  {chrome.i18n.getMessage('youGet')}:
+                </div>
                 {simulationData.type === TRANSACTION_METHOD.MINT_COLLECTIBLES && (
                   <div
                     className="mt-1 w-full flex items-center justify-between px-4 rounded-lg"
@@ -425,9 +434,11 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 >
                   <div className="flex items-center font-semibold text-base">
                     <CheckMarkIconBlue className="mr-1" style={{ width: '18px', height: '18px' }} />
-                    Approved
+                    {chrome.i18n.getMessage('approved')}
                   </div>
-                  <div className="font-normal text-sm">This transaction appears to be in order</div>
+                  <div className="font-normal text-sm">
+                    {chrome.i18n.getMessage('transactionAppearsToBeInOrder')}
+                  </div>
                 </div>
               </div>
             </div>
@@ -435,7 +446,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
 
           {/* EDIT PRIORITY FEE */}
           {tab === TAB.EDIT_PRIORITY && network === NETWORK.ETHEREUM && (
-            <EditPriorityFee 
+            <EditPriorityFee
               gasLimit={gasLimit}
               maxPriorityFeePerGas={maxPriorityFeePerGas}
               maxFeePerGas={maxFeePerGas}
@@ -449,34 +460,36 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
           )}
 
           {/* BUTTONS */}
-          {tab === TAB.DETAIL && <div
-            style={{ width: '350px' }}
-            className="absolute bottom-10 w-full flex justify-between"
-          >
-            <button
-              onClick={onRejectTransaction}
-              className={clsx(
-                'bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800',
-                isScamOrigin && 'cursor-not-allowed opacity-50'
-              )}
-              style={{ width: '160px', height: '38px' }}
-              disabled={isScamOrigin}
+          {tab === TAB.DETAIL && (
+            <div
+              style={{ width: '350px' }}
+              className="absolute bottom-10 w-full flex justify-between"
             >
-              Reject
-            </button>
-            <button
-              onClick={onSubmitTransaction}
-              className={clsx(
-                'bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white',
-                isScamOrigin && 'cursor-not-allowed opacity-50'
-              )}
-              style={{ width: '160px', height: '38px' }}
-              disabled={isScamOrigin}
-              data-testid="tx-confirm-send-button"
-            >
-              {signWithoutSend ? 'Sign' : 'Send'}
-            </button>
-          </div>}
+              <button
+                onClick={onRejectTransaction}
+                className={clsx(
+                  'bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800',
+                  isScamOrigin && 'cursor-not-allowed opacity-50'
+                )}
+                style={{ width: '160px', height: '38px' }}
+                disabled={isScamOrigin}
+              >
+                {chrome.i18n.getMessage('reject')}
+              </button>
+              <button
+                onClick={onSubmitTransaction}
+                className={clsx(
+                  'bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white',
+                  isScamOrigin && 'cursor-not-allowed opacity-50'
+                )}
+                style={{ width: '160px', height: '38px' }}
+                disabled={isScamOrigin}
+                data-testid="tx-confirm-send-button"
+              >
+                {signWithoutSend ? chrome.i18n.getMessage('sign') : chrome.i18n.getMessage('send')}
+              </button>
+            </div>
+          )}
           <ReactTooltip place="top" effect="float" />
           {showConnectedSites && (
             <ConnectScreen
@@ -491,14 +504,17 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
         /* RECEIPT */
         <div className="w-full relative bg-white rounded m-auto pt-9 text-blue-800 flex flex-col items-center tracking-finnieSpacing-tighter">
           <div className="font-semibold text-lg leading-5 text-indigo">
-            Your tokens are on the way!
+            {chrome.i18n.getMessage('yourTokensOnTheWay')}
           </div>
           <div className="px-9 mt-8 w-full flex flex-col font-semibold text-sm text-indigo tracking-finnieSpacing-wide">
             {transactionType !== TRANSACTION_TYPE.CONTRACT_DEPLOYMENT &&
               transactionType !== TRANSACTION_TYPE.CONTRACT_INTERACTION && (
               <div className="flex mb-4">
-                <div style={{ width: '142px' }}>Amount</div>
-                <div className="flex font-normal text-sm items-center" data-testid="tx-confirm-amount">
+                <div style={{ width: '142px' }}>{chrome.i18n.getMessage('amount')}</div>
+                <div
+                  className="flex font-normal text-sm items-center"
+                  data-testid="tx-confirm-amount"
+                >
                   {value} {symbol}
                   <div className="ml-1 w-4 h-4">
                     <TokenIcon />
@@ -507,48 +523,50 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               </div>
             )}
             <div className="flex mb-4">
-              <div style={{ width: '142px' }}>From</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('from')}</div>
               <div className="flex flex-col font-normal text-sm items-start">
                 {senderName && <div>{senderName}</div>}
-                <div className="font-normal text-xs text-success-700" data-testid="tx-receipt-sender">
+                <div
+                  className="font-normal text-xs text-success-700"
+                  data-testid="tx-receipt-sender"
+                >
                   {getDisplayAddress(sender, 20)}
                 </div>
               </div>
             </div>
             <div className="flex mb-4">
-              <div style={{ width: '142px' }}>To</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('to')}</div>
               <div className="flex flex-col font-normal text-sm items-start">
                 {recipientName && <div>{recipientName}</div>}
-                <div className="font-normal text-xs text-success-700" data-testid="tx-receipt-recipient">
+                <div
+                  className="font-normal text-xs text-success-700"
+                  data-testid="tx-receipt-recipient"
+                >
                   {getDisplayAddress(recipient, 20)}
                 </div>
               </div>
             </div>
             <div className="flex mb-4">
-              <div style={{ width: '142px' }}>Transaction Fees</div>
-              <div className="font-normal text-sm">
-                {numberFormat(estimatedFee, 6)} ETH
-              </div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('transactionFees')}</div>
+              <div className="font-normal text-sm">{numberFormat(estimatedFee, 6)} ETH</div>
             </div>
             <div className="flex mb-4">
-              <div style={{ width: '142px' }}>Status</div>
-              <div className="font-normal text-sm">Confirmed</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('status')}</div>
+              <div className="font-normal text-sm">{chrome.i18n.getMessage('confirmed')}</div>
             </div>
             <div className="flex">
-              <div style={{ width: '142px' }}>Total Cost</div>
+              <div style={{ width: '142px' }}>{chrome.i18n.getMessage('totalCost')}</div>
               <div className="flex flex-col font-normal text-sm items-start">
                 <div className="leading-5">
                   {value} {symbol}
                 </div>
-                <div className="leading-5">
-                  {numberFormat(estimatedFee)} ETH
-                </div>
+                <div className="leading-5">{numberFormat(estimatedFee)} ETH</div>
               </div>
             </div>
           </div>
 
           <Link onClick={() => setShowSigning(false)} className="mt-10" to="/">
-            <OkBtn className="cursor-pointer" data-testid="button-ok"/>
+            <OkBtn className="cursor-pointer" data-testid="button-ok" />
           </Link>
         </div>
       )}

@@ -15,11 +15,6 @@ import { popupBackgroundRequest as request } from 'services/request/popup'
 import { popupBackgroundConnect } from 'services/request/popup'
 import { EventHandler } from 'services/request/src/backgroundConnect'
 
-const ERROR_MESSAGE = {
-  INVALID_PROPOSAL: 'Invalid request',
-  WENT_WRONG: 'Something went wrong'
-}
-
 const InputUri = ({ setPage, setProposal }) => {
   const history = useHistory()
 
@@ -80,7 +75,7 @@ const InputUri = ({ setPage, setProposal }) => {
             if (isValidProposal) {
               setPage('APPROVAL')
             } else {
-              dispatch(setError(ERROR_MESSAGE.INVALID_PROPOSAL))
+              dispatch(setError(chrome.i18n.getMessage('invalidRequest')))
             }
           } catch (err) {
             console.error('pairingSuccess error: ', err)
@@ -101,16 +96,18 @@ const InputUri = ({ setPage, setProposal }) => {
         <BackIcon />
       </div>
       <GlobeIcon />
-      <div className="mt-5 mb-7 text-indigo text-base font-semibold">Wallet Connect</div>
+      <div className="mt-5 mb-7 text-indigo text-base font-semibold">
+        {chrome.i18n.getMessage('walletConnect')}
+      </div>
       <div>
         <div style={{ height: '24px' }} className="flex items-center text-indigo text-sm">
-          Enter wallet connect URL
+          {chrome.i18n.getMessage('enterWalletConnectURL')}
         </div>
         <input
           onChange={(e) => setUri(e.target.value)}
           style={{ width: '360px', height: '36px' }}
           className="mt-1 bg-purplelight-100 color-purplelight-100 pl-4 rounded-md"
-          placeholder="Type here"
+          placeholder={chrome.i18n.getMessage('typeHerePh')}
         />
       </div>
       <button
@@ -118,7 +115,7 @@ const InputUri = ({ setPage, setProposal }) => {
         style={{ width: '160px', height: '38px' }}
         className="bg-blue-800 text-white text-base mt-7 rounded-sm"
       >
-        Connect
+        {chrome.i18n.getMessage('connect')}
       </button>
     </div>
   )

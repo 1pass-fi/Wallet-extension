@@ -8,19 +8,19 @@ const AllowPermission = ({ handleOnClick }) => {
   return (
     <div className="mt-7.5">
       <div className="mb-6.25 font-semibold text-base leading-5 text-center tracking-finnieSpacing-wide text-indigo">
-        Allow this site to:
+        {chrome.i18n.getMessage('allowThisSiteTo')}:
       </div>
       <div className="flex w-full items-start px-9.75 font-normal text-sm tracking-finnieSpacing-wide text-indigo">
         <BulletPoint className="w-2 h-2 mr-4 mt-1.25" />
-        View the addresses of your permitted accounts
+        {chrome.i18n.getMessage('viewTheAddressesPermission')}
       </div>
       <div className="flex w-full items-start px-9.75 font-normal text-sm tracking-finnieSpacing-wide text-indigo mt-2">
         <BulletPoint className="w-2 h-2 mr-4 mt-1.25" />
-        See account balance
+        {chrome.i18n.getMessage('seeAccountBalancePermission')}
       </div>
       <div className="flex w-full items-start px-9.75 font-normal text-sm tracking-finnieSpacing-wide text-indigo mt-2">
         <BulletPoint className="w-2 h-2 mr-4 mt-1.25" />
-        Suggest transactions to approve
+        {chrome.i18n.getMessage('suggestTransactionPermission')}
       </div>
     </div>
   )

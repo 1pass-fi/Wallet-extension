@@ -16,7 +16,7 @@ export default () => {
         <Security />
       </Route>
       <Route exact path="/settings/KID">
-        <HasArweave content="Koii Identity only supports AR wallets." hasArweaveAccounts={true}>
+        <HasArweave content={chrome.i18n.getMessage('koiiIdentityARSupport')} hasArweaveAccounts={true}>
           <Kid />
         </HasArweave>
       </Route>

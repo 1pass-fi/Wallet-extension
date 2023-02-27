@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { ACTIVITY_NAME, ETH_NETWORK_PROVIDER, PATH, URL } from 'constants/koiConstants'
 import ExploreBlock from 'img/v2/explore-block-coming-soon.svg'
@@ -66,15 +66,16 @@ const ActivityRow = ({
         blockButtonText = pending ? 'explore block' : 'view block'
         if (network) blockButtonText = 'etherscan'
 
-        pendingOrExpired = expired ? 'Transaction failed' : 'Transaction pending'
+        pendingOrExpired = expired
+          ? chrome.i18n.getMessage('transactionFailed')
+          : chrome.i18n.getMessage('transactionPendingLc')
 
         if (!network) {
           blockUrl = `${PATH.VIEW_BLOCK_TRANSACTION}/${id}`
         } else {
           if (network === ETH_NETWORK_PROVIDER.MAINNET)
             blockUrl = `${URL.ETHERSCAN_MAINNET}/tx/${id}`
-          if (network === ETH_NETWORK_PROVIDER.GOERLI)
-            blockUrl = `${URL.ETHERSCAN_GOERLI}/tx/${id}`
+          if (network === ETH_NETWORK_PROVIDER.GOERLI) blockUrl = `${URL.ETHERSCAN_GOERLI}/tx/${id}`
         }
 
         if (includes(activityName, 'SOL')) {
@@ -93,8 +94,8 @@ const ActivityRow = ({
           }
 
           if (
-            activityName === ACTIVITY_NAME.CONTRACT_INTERACTION ||
-            activityName === ACTIVITY_NAME.UNKNOWN
+            activityName === chrome.i18n.getMessage('contractInteraction') ||
+            activityName === chrome.i18n.getMessage('unknownTransaction')
           )
             tokenType = 'ETH'
 
@@ -182,7 +183,11 @@ const ActivityRow = ({
                 >
                   <ViewBlockIconNew style={{ width: '19px', height: '18px' }} />
 
-                  {!pending ? 'Explore Block' : isProcessing ? 'Processing' : 'Pending'}
+                  {!pending
+                    ? chrome.i18n.getMessage('exploreBlock')
+                    : isProcessing
+                      ? chrome.i18n.getMessage('processing')
+                      : chrome.i18n.getMessage('pending')}
                 </a>
               ) : (
                 <div
@@ -197,11 +202,11 @@ const ActivityRow = ({
                   }}
                   className="text-xs text-red-finnie underline leading-5 cursor-pointer"
                 >
-                  Transaction failed
+                  {chrome.i18n.getMessage('transactionFailed')}
                 </div>
               )
             ) : (
-              <ExploreBlock data-tip={'Coming soon'} />
+              <ExploreBlock data-tip={chrome.i18n.getMessage('comingSoon')} />
             )}
             <ToolTip />
           </div>

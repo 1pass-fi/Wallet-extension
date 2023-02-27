@@ -73,7 +73,7 @@ const ExportPrivateKeyModal = ({ account, close }) => {
         url: url,
         filename: filename
       })
-      dispatch(setQuickNotification('Export Private key succesffuly!'))
+      dispatch(setQuickNotification(chrome.i18n.getMessage('exportPrivateKeySuccessfully')))
       close()
     } catch (err) {
       if (err.message === 'Incorrect password') {
@@ -93,7 +93,7 @@ const ExportPrivateKeyModal = ({ account, close }) => {
       >
         <div className="flex h-16.75 rounded-t bg-trueGray-100 shadow-md w-full font-semibold text-xl tracking-finnieSpacing-wide relative">
           <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" />
-          <div className="m-auto">Export Private Key</div>
+          <div className="m-auto">{chrome.i18n.getMessage('exportPrivateKey')}</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
 
@@ -105,13 +105,12 @@ const ExportPrivateKeyModal = ({ account, close }) => {
             </span>
           </div>
           <div className="mt-3 text-sm font-normal" style={{ width: '418px' }}>
-            Exporting your key will download a .JSON file. You can copy this file to multiple secure
-            devices as a backup.{' '}
-            <span className="font-semibold">Keep your keys somewhere safe and secret.</span>
+            {chrome.i18n.getMessage('exportPrivateKeyMsgStart')}
+            <span className="font-semibold">{chrome.i18n.getMessage('exportPrivateKeyMsgEnd')}</span>
           </div>
 
           <div style={{ width: '382px' }} className="pl-1.75 mt-3 font-semibold text-sm leading-6">
-            Enter Finnie Password:
+            {chrome.i18n.getMessage('enterFinniePassword')}:
           </div>
           <div className="relative">
             <input
@@ -150,7 +149,7 @@ const ExportPrivateKeyModal = ({ account, close }) => {
           <Button
             className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
             variant="indigo"
-            text="Export Private Key"
+            text={chrome.i18n.getMessage('exportPrivateKey')}
             onClick={() => onExportKeyfile()}
           />
         </div>

@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { getCurrentLocaleFromStorage, setupLocale } from '_locales'
 // constants
 import { REQUEST } from 'constants/koiConstants'
 import isEmpty from 'lodash/isEmpty'
+import { setLocale } from 'popup/actions/locale'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 // services
@@ -17,6 +20,8 @@ const useLoadApp = ({
   setActivatedChain,
   setAccounts
 }) => {
+  const dispatch = useDispatch()
+
   const [showConnectSite, setShowConnectSite] = useState(false)
   const [showSigning, setShowSigning] = useState(false)
   const [showEthSigning, setShowEthSigning] = useState(false)
@@ -37,6 +42,13 @@ const useLoadApp = ({
   const loadAccounts = async () => {
     try {
       setIsLoading(true)
+
+      /* load locales */
+      await (async () => {
+        const currentLocale = await getCurrentLocaleFromStorage()
+        dispatch(setLocale(currentLocale))
+        await setupLocale(currentLocale)
+      })()
 
       const activatedChain = await storage.setting.get.activatedChain()
       setActivatedChain(activatedChain)
@@ -61,7 +73,8 @@ const useLoadApp = ({
   }
 
   const loadDefaultAccounts = async () => {
-    const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
+    const activatedEthereumAccountAddress =
+      await storage.setting.get.activatedEthereumAccountAddress()
     if (!isEmpty(activatedEthereumAccountAddress)) {
       const activatedEthereumAccount = await popupAccount.getAccount({
         address: activatedEthereumAccountAddress
@@ -200,7 +213,7 @@ const useLoadApp = ({
         tabs.map((tab) => chrome.tabs.reload(tab.id))
       })
     } else {
-      setError('Cannot lock wallet.')
+      setError(chrome.i18n.getMessage('cannotLockWallet'))
     }
   }
 

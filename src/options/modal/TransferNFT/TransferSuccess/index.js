@@ -10,9 +10,9 @@ const TransferSuccess = ({ receiverAddress, name, onClose }) => {
         <div className="green-tick">
           <CheckIcon />
         </div>
-        <div>Succesfully Sent</div>
+        <div>{chrome.i18n.getMessage('successfullySent')}</div>
       </div>
-      <div className="label">Receiver's Wallet Address:</div>
+      <div className="label">{chrome.i18n.getMessage('receiverWalletAddress')}:</div>
       <div className="receiver-address">{receiverAddress}</div>
     </div>
   )

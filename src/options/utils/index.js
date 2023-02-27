@@ -1,5 +1,5 @@
 import { Web } from '@_koi/sdk/web'
-import { MOCK_COLLECTIONS_STORE, STORAGE } from 'constants/koiConstants'
+import { MOCK_COLLECTIONS_STORE } from 'constants/koiConstants'
 import { isString } from 'lodash'
 import { find, get } from 'lodash'
 import numeral from 'numeral'

@@ -87,7 +87,7 @@ const TransferNFT = ({
     }
 
     if (!isValid) {
-      dispatch(setError('Invalid Wallet Address'))
+      dispatch(setError(chrome.i18n.getMessage('invalidWalletAddress')))
     } else {
       goToNextStage()
     }
@@ -117,7 +117,7 @@ const TransferNFT = ({
         return nft
       })
       setSendBtnDisable(false)
-      dispatch(setError('Whoops! Something went wrong!'))
+      dispatch(setError(chrome.i18n.getMessage('somethingWentWrongWhoops')))
     }
   }
 
@@ -129,9 +129,9 @@ const TransferNFT = ({
             {stage === 2 && <BackIcon onClick={() => setStage(1)} />}
           </div>
           <div className="title">
-            {stage === 1 && <>Transfer your NFT to a friend</>}
-            {stage === 2 && <>Confirm your Transfer</>}
-            {stage === 3 && <>The NFT is on its way!</>}
+            {stage === 1 && <>{chrome.i18n.getMessage('transferNFTToFriend')}</>}
+            {stage === 2 && <>{chrome.i18n.getMessage('confirmYourTransfer')}</>}
+            {stage === 3 && <>{chrome.i18n.getMessage('nftOnItsWay')}</>}
           </div>
           <CloseIcon className="new-modal-header-icon" onClick={onClose} />
         </section>
@@ -140,7 +140,7 @@ const TransferNFT = ({
           <div className="transfer-nft__nft-name">{formattedName}</div>
           {stage === 3 && (
             <>
-              <span>&nbsp;has been sent to:</span>
+              <span>&nbsp;{chrome.i18n.getMessage('hasBeenSentToLc')}:</span>
             </>
           )}
         </div>

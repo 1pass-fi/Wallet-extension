@@ -57,12 +57,12 @@ const ChangePasswordModal = ({ close }) => {
   const validatePasswords = () => {
     let validPassword = true
     if (isEmpty(oldPassword)) {
-      setOldPasswordError('Password is incorrect')
+      setOldPasswordError(chrome.i18n.getMessage('passwordIsIncorrect'))
       validPassword = false
     }
 
     if (newPassword !== confirmPassword) {
-      setConfirmPasswordError('Passwords don’t match')
+      setConfirmPasswordError(chrome.i18n.getMessage('passwordDoNotMatch'))
       validPassword = false
     } else {
       setConfirmPasswordError('')
@@ -70,9 +70,7 @@ const ChangePasswordModal = ({ close }) => {
 
     if (isEmpty(newPassword) || !passwordRegex.test(newPassword)) {
       validPassword = false
-      setNewPasswordError(
-        'Password must have at least 8 characters, 1 number, 1 uppercase, 1 lowercase and 1 symbol (e.g. !@#$%).'
-      )
+      setNewPasswordError(chrome.i18n.getMessage('passwordErrorMsg'))
     } else {
       setNewPasswordError('')
     }
@@ -99,7 +97,7 @@ const ChangePasswordModal = ({ close }) => {
       console.log(err.message)
 
       if (err.message === 'Incorrect password') {
-        setOldPasswordError('Password is incorrect')
+        setOldPasswordError(chrome.i18n.getMessage('passwordIsIncorrect'))
       }
     }
   }
@@ -125,9 +123,9 @@ const ChangePasswordModal = ({ close }) => {
             <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" />
           )}
           {step === 1 ? (
-            <div className="m-auto">Change My Password</div>
+            <div className="m-auto">{chrome.i18n.getMessage('changeMyPassword')}</div>
           ) : (
-            <div className="m-auto">Password Confirmed</div>
+            <div className="m-auto">{chrome.i18n.getMessage('passwordConfirmed')}</div>
           )}
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
@@ -141,7 +139,7 @@ const ChangePasswordModal = ({ close }) => {
               style={{ width: '382px' }}
               className="text-sm font-semibold tracking-finnieSpacing-tight text-left"
             >
-              Enter Current Password
+              {chrome.i18n.getMessage('enterCurrentPassword')}
             </div>
             <input
               type="password"
@@ -165,7 +163,7 @@ const ChangePasswordModal = ({ close }) => {
               style={{ width: '382px' }}
               className="mt-2 text-sm font-semibold tracking-finnieSpacing-tight text-left"
             >
-              Create New Password
+              {chrome.i18n.getMessage('createNewPassword')}
             </div>
             <input
               type="password"
@@ -189,7 +187,7 @@ const ChangePasswordModal = ({ close }) => {
               style={{ width: '382px' }}
               className="mt-2 text-sm font-semibold tracking-finnieSpacing-tight text-left"
             >
-              Confirm New Password
+              {chrome.i18n.getMessage('confirmNewPassword')}
             </div>
             <input
               type="password"
@@ -212,7 +210,7 @@ const ChangePasswordModal = ({ close }) => {
             <Button
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
               variant="indigo"
-              text="Save Changes"
+              text={chrome.i18n.getMessage('saveChanges')}
               onClick={() => handleUpdatePassword()}
               disabled={disableUpdatePassword}
             />
@@ -228,13 +226,13 @@ const ChangePasswordModal = ({ close }) => {
         {step === 2 && (
           <div style={{ height: '93px' }} className="relative mt-20 flex flex-col justify-between">
             <div className="text-base leading-6 font-normal tracking-finnieSpacing-wide">
-              Remember to keep your password secure.
+              {chrome.i18n.getMessage('rememberPasswordSecure')}
             </div>
 
             <Button
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
               variant="indigo"
-              text="Got It"
+              text={chrome.i18n.getMessage('gotIt')}
               onClick={() => close()}
             />
           </div>

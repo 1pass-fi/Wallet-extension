@@ -48,10 +48,10 @@ const NFTCard = ({ nft }) => {
           {formatLongString(ownerName, 22)}
         </div>}
         {showViews && <div className="text-2xs tracking-finnieSpacing-wide text-turquoiseBlue">
-          {nft.totalViews + ` views`}
+          {nft.totalViews + ' ' + chrome.i18n.getMessage('viewLc')}
         </div>}
         {showEarnedKoi && <div className="text-2xs tracking-finnieSpacing-wide text-lightBlue">
-          {formatNumber(nft.earnedKoi, 2) + ` KOII earned`}
+          {formatNumber(nft.earnedKoi, 2) + ' KOII ' + chrome.i18n.getMessage('earnedLc')}
         </div>}
       </div>
       <KoiiLogo className="absolute w-5 h-5 bottom-1.75 right-1.75" />

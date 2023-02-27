@@ -177,15 +177,15 @@ const EditPriorityFee = ({
         className="flex text-blue-800 mt-3 text-sm justify-center items-center"
         style={{ width: '343px', height: '36px' }}
       >
-        Max fee: ({formatNumber(predictMaxFee, 8)} ETH)
+        {chrome.i18n.getMessage('maxFee')}: ({formatNumber(predictMaxFee, 8)} ETH)
       </div>
       <div
         className="flex text-sm text-darkGreen mt-3 justify-center items-center"
         style={{ width: '343px', height: '36px' }}
       >
-        {tempMaxPriorityInGwei <= Number(LOW) && 'Likely in 30 Seconds'}
-        {tempMaxPriorityInGwei > Number(LOW) && tempMaxPriorityInGwei < Number(HIGH) && 'Likely in < 30 Seconds'}
-        {tempMaxPriorityInGwei >= Number(HIGH) && 'Likely in < 15 Seconds'}
+        {tempMaxPriorityInGwei <= Number(LOW) && chrome.i18n.getMessage('likelyIn30Seconds')}
+        {tempMaxPriorityInGwei > Number(LOW) && tempMaxPriorityInGwei < Number(HIGH) && chrome.i18n.getMessage('likelyInLessThan30Seconds')}
+        {tempMaxPriorityInGwei >= Number(HIGH) && chrome.i18n.getMessage('likelyInLessThan15Seconds')}
       </div>
       <div
         className="flex mt-5 justify-between items-center"
@@ -205,20 +205,20 @@ const EditPriorityFee = ({
         <ForkIcon />
       </div>
       <div className="flex text-sm justify-between items-center mt-3" style={{ width: '278px' }}>
-        <div className={clsx(feeLevel === LOW && 'font-bold')}>Low</div>
-        <div className={clsx(feeLevel === MEDIUM && 'font-bold')}>Medium</div>
-        <div className={clsx(feeLevel === HIGH && 'font-bold')}>High</div>
+        <div className={clsx(feeLevel === LOW && 'font-bold')}>{chrome.i18n.getMessage('low')}</div>
+        <div className={clsx(feeLevel === MEDIUM && 'font-bold')}>{chrome.i18n.getMessage('medium')}</div>
+        <div className={clsx(feeLevel === HIGH && 'font-bold')}>{chrome.i18n.getMessage('high')}</div>
       </div>
       <div style={{width:'210px',height:'32px'}} className='flex items-center justify-between px-4 bg-purplelight-100 rounded-lg mt-4 text-sm text-purplelight-300 cursor-pointer' onClick={() => {
         setShowAdvancedInput(prev => !prev)
       }}>
-        <div>Advanced Options</div>
+        <div>{chrome.i18n.getMessage('advancedOptions')}</div>
         <DropDownIcon />
       </div>
       { showAdvancedInput &&
         <div>
           <div className='mt-8'>
-            <div style={{fontSize:'17px',height:'24px'}} className='text-purplelight-300 font-bold flex items-center'>{'Max priority fee (GWEI)'}</div>
+            <div style={{fontSize:'17px',height:'24px'}} className='text-purplelight-300 font-bold flex items-center'>{chrome.i18n.getMessage('maxPriorityFee') + ' (GWEI)'}</div>
             <input
               style={{width:'360px',height:'36px'}}
               className=' bg-purplelight-100 rounded-md text-purplelight-200 mt-1 pl-4'
@@ -227,7 +227,7 @@ const EditPriorityFee = ({
             />
           </div>
           <div className='mt-6'>
-            <div style={{fontSize:'17px',height:'24px'}} className='text-purplelight-300 font-bold flex items-center'>{'Max fee (GWEI)'}</div>
+            <div style={{fontSize:'17px',height:'24px'}} className='text-purplelight-300 font-bold flex items-center'>{chrome.i18n.getMessage('maxFee') + ' (GWEI)'}</div>
             <input
               style={{width:'360px',height:'36px'}}
               className=' bg-purplelight-100 rounded-md text-purplelight-200 mt-1 pl-4'
@@ -243,7 +243,7 @@ const EditPriorityFee = ({
         className='bg-blue-800 text-white my-5 text-base'
         style={{ width: '360px', height: '38px' }}
       >
-          Save
+        {chrome.i18n.getMessage('save')}
       </button>
     </div>
   )

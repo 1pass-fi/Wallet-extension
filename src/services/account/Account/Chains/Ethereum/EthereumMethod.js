@@ -18,7 +18,6 @@ import {
 } from 'constants/koiConstants'
 import {
   BRIDGE_FLOW,
-  ERROR_MESSAGE,
   ETH_NETWORK_PROVIDER,
   KOI_ROUTER_CONTRACT,
   URL,
@@ -207,11 +206,11 @@ export class EthereumMethod {
                     expense = Number(get(decodedData, 'args')[1])
 
                     if (isSender) {
-                      activityName = `${ACTIVITY_NAME.SENT} ${token}`
+                      activityName = `${chrome.i18n.getMessage('sent')} ${token}`
                       source = to
                       expense = expense / Math.pow(10, decimals)
                     } else {
-                      activityName = `${ACTIVITY_NAME.RECEIVED} ${token}`
+                      activityName = `${chrome.i18n.getMessage('received')} ${token}`
                       source = activity.from
                       expense = expense / Math.pow(10, decimals)
                     }
@@ -223,7 +222,7 @@ export class EthereumMethod {
                   case TRANSACTION_METHOD.APPROVE:
                   case TRANSACTION_METHOD.MINT_COLLECTIBLES:
                   default:
-                    activityName = ACTIVITY_NAME.CONTRACT_INTERACTION
+                    activityName = chrome.i18n.getMessage('contractInteraction')
                     source = activity.to
                     receipt = await web3.getTransactionReceipt(id)
                     gasFee =
@@ -233,7 +232,7 @@ export class EthereumMethod {
                 }
               } else {
                 // Not-supported activities
-                activityName = ACTIVITY_NAME.CONTRACT_INTERACTION
+                activityName = chrome.i18n.getMessage('contractInteraction')
                 source = activity.to
                 const receipt = await web3.getTransactionReceipt(id)
                 gasFee = (Number(receipt.gasUsed) * Number(activity.gasPrice)) / Math.pow(10, 18)
@@ -243,14 +242,14 @@ export class EthereumMethod {
               // Normal transfer ETH
               if (isSender) {
                 // Transfer ETH
-                activityName = `${ACTIVITY_NAME.SENT} ETH`
+                activityName = `${chrome.i18n.getMessage('sent')} ETH`
                 source = activity.to
                 const receipt = await web3.getTransactionReceipt(id)
                 gasFee = (Number(receipt.gasUsed) * Number(activity.gasPrice)) / Math.pow(10, 18)
                 expense = gasFee + activity.value / Math.pow(10, 18)
               } else {
                 // Receive ETH
-                activityName = `${ACTIVITY_NAME.RECEIVED} ETH`
+                activityName = `${chrome.i18n.getMessage('received')} ETH`
                 source = activity.from
                 expense = activity.value / Math.pow(10, 18)
               }
@@ -260,7 +259,7 @@ export class EthereumMethod {
             time = activity.timestamp
           } catch (error) {
             // UNKNOWN TRANSACTION
-            activityName = ACTIVITY_NAME.UNKNOWN
+            activityName = chrome.i18n.getMessage('unknownTransaction')
             source = activity?.to
             expense = activity?.value / Math.pow(10, 18)
           }
@@ -378,7 +377,7 @@ export class EthereumMethod {
             if (action === ETH_NFT_BRIDGE_ACTION.DEPOSIT) {
               bridgePending = {
                 id: txId,
-                activityName: ACTIVITY_NAME.BRIDGE_ETH_TO_AR,
+                activityName: chrome.i18n.getMessage('bridgeETHtoAR'),
                 expense: 0,
                 accountName,
                 date: moment().format('MMMM DD YYYY'),
@@ -434,8 +433,8 @@ export class EthereumMethod {
       Validations
     */
     if (!includes(VALID_TOKEN_SCHEMA, tokenSchema))
-      throw new Error(ERROR_MESSAGE.INVALID_TOKEN_SCHEMA)
-    if (balance < 0.00015) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_ETH)
+      throw new Error(chrome.i18n.getMessage('invalidTokenSchema'))
+    if (balance < 0.00015) throw new Error(chrome.i18n.getMessage('notEnoughETHToken'))
 
     const provider = new HDWalletProvider(this.eth.key, this.eth.getCurrentNetWork())
     const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)

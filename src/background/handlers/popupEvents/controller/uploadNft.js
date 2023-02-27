@@ -1,7 +1,7 @@
 // Services
 import helpers from 'background/helpers'
 // Constants
-import { ERROR_MESSAGE, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
+import { PENDING_TRANSACTION_TYPE, POPUP_CONTROLLER_ERROR } from 'constants/koiConstants'
 import { backgroundAccount } from 'services/account'
 import arweave from 'services/arweave'
 
@@ -16,7 +16,7 @@ export default async (payload, next) => {
 
     // check for imageId
     console.log('Upload NFT [1/6]: check for imageId')
-    if (imageId !== _imageId) throw new Error(ERROR_MESSAGE.UPLOAD_NFT.INVALID_CONTENT)
+    if (imageId !== _imageId) throw new Error(POPUP_CONTROLLER_ERROR.INVALID_CONTENT)
 
     // create transaction
     console.log('Upload NFT [2/6]: create transaction')
@@ -32,7 +32,7 @@ export default async (payload, next) => {
       })
     } catch (err) {
       console.error(err.message)
-      throw new Error(ERROR_MESSAGE.UPLOAD_NFT.CREATE_TRANSACTION_ERROR)
+      throw new Error(POPUP_CONTROLLER_ERROR.CREATE_TRANSACTION)
     }
     console.log('Created transaction: ', transaction)
 
@@ -42,7 +42,7 @@ export default async (payload, next) => {
       await account.method.signTx(transaction)
     } catch (err) {
       console.error(err.message)
-      throw new Error(ERROR_MESSAGE.UPLOAD_NFT.SIGN_TRANSACTION_ERROR)
+      throw new Error(POPUP_CONTROLLER_ERROR.SIGN_TRANSACTION)
     }
     console.log('Signed transaction: ', transaction)
 
@@ -71,7 +71,7 @@ export default async (payload, next) => {
       }
     } catch (err) {
       console.error(err.message)
-      throw new Error(ERROR_MESSAGE.UPLOAD_NFT.UPLOAD_ERROR)
+      throw new Error(POPUP_CONTROLLER_ERROR.UPLOAD_NFT)
     }
     console.log('NFT uploaded')
 
@@ -82,7 +82,7 @@ export default async (payload, next) => {
         await account.method.registerNft(transaction.id)
       } catch (err) {
         console.error(err.message)
-        throw new Error(ERROR_MESSAGE.UPLOAD_NFT.REGISTER_ERROR)
+        throw new Error(POPUP_CONTROLLER_ERROR.REGISTER_NFT)
       }
     }
     console.log('NFT registered')

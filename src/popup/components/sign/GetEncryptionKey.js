@@ -77,7 +77,7 @@ const GetEncryptionKey = ({ setError, setIsLoading }) => {
         style={{ height: '67px' }}
       >
         <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
-          Request encryption key
+          {chrome.i18n.getMessage('RequestEncryptionKey')}
         </div>
         <CloseIcon
           style={{ width: '30px', height: '30px' }}
@@ -90,8 +90,7 @@ const GetEncryptionKey = ({ setError, setIsLoading }) => {
         className="w-full mt-3.5 px-3 text-indigo text-center text-sm tracking-finnieSpacing-wide"
         style={{ marginTop: '135px' }}
       >
-        {requestData.origin} would like your public encryption key. By consenting, this site will be
-        able to compose encrypted messages to you.
+        {requestData.origin} {chrome.i18n.getMessage('encryptionKeyRequestLc')}
       </div>
 
       <div className="absolute bottom-3.25 w-full flex justify-between px-4.5">
@@ -100,14 +99,14 @@ const GetEncryptionKey = ({ setError, setIsLoading }) => {
           style={{ width: '160px', height: '38px' }}
           onClick={onClose}
         >
-          Cancel
+          {chrome.i18n.getMessage('cancel')}
         </button>
         <button
           onClick={onSign}
           className="bg-blue-800 rounded-sm shadow text-base leading-4 text-center text-white"
           style={{ width: '160px', height: '38px' }}
         >
-          Provide
+          {chrome.i18n.getMessage('provide')}
         </button>
       </div>
     </div>

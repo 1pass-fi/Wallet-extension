@@ -48,28 +48,30 @@ const RevealPhrase = ({ step }) => {
         >
           {step === 6 ? (
             !skipPhrase ? (
-              'You successfully saved your Secret Phrase'
+              chrome.i18n.getMessage('saveSecretPhraseSuccessfully')
             ) : (
               <>
-                Remember to save your secret phrase when you have a pen and paper.<br></br>
-                Otherwise, you could lose any tokens or assets.
+                {chrome.i18n.getMessage('rememberToSaveYourSecretPhrase')}
+                <br></br>
+                {chrome.i18n.getMessage('otherwiseYouCouldLoseAnyTokensOrAssets')}
               </>
             )
           ) : (
-            'Your key was successfully imported!'
+            chrome.i18n.getMessage('importKeySuccessfully')
           )}
         </div>
       </div>
 
-      <div className="text-lg mt-12 font-normal z-10">
-        <div>Remember:</div>
+      <div className="text-lg mt-12 font-normal">
+        <div>{chrome.i18n.getMessage('remember')}:</div>
         <li className="mt-2">
-          Stay safe from phishing scams—<br></br>
-          <span className="text-warning">Koii will NEVER ask you for your secret phrase</span> or
-          keyfile
+          {chrome.i18n.getMessage('staySafeStart')}
+          <br></br>
+          <span className="text-warning">{chrome.i18n.getMessage('staySafeMiddle')}</span>{' '}
+          {chrome.i18n.getMessage('staySafeEnd')}
         </li>
         <li>
-          If you have questions or see something suspicious, contact us at{' '}
+          {chrome.i18n.getMessage('contactUs')}{' '}
           <span className="text-success underline cursor-pointer">security@koii.network</span>
         </li>
 
@@ -79,7 +81,7 @@ const RevealPhrase = ({ step }) => {
               style={{ width: '240px', height: '42px' }}
               className="mt-10 text-base rounded z-10"
               variant="white"
-              text="Go to Homepage"
+              text={chrome.i18n.getMessage('goToHomepage')}
               onClick={() => {
                 dispatch(setIsOnboarding(false))
                 dispatch(setOnboardingPath(''))
@@ -96,14 +98,14 @@ const RevealPhrase = ({ step }) => {
           <div className="flex flex-col items-center mr-19 max-w-full" style={{ width: '300px' }}>
             <KoiiToken />
             <div className="mt-3 font-normal text-lg text-center">
-              Head over to the faucet to grab some free KOII tokens.
+              {chrome.i18n.getMessage('headOverToFaucet')}
             </div>
 
             <Button
               style={{ width: '240px', height: '42px' }}
               className="mt-7 text-base rounded mx-auto z-10"
               variant="primary"
-              text="Get Free KOII"
+              text={chrome.i18n.getMessage('getFreeKOII')}
               size="lg"
               onClick={openFaucet}
               id="open-faucet-button"
@@ -112,14 +114,14 @@ const RevealPhrase = ({ step }) => {
           <div className="flex flex-col items-center max-w-full" style={{ width: '300px' }}>
             <ImagesNFTs />
             <div className="mt-3 font-normal text-lg text-center">
-              Or go to the gallery to create your first Finnie NFT
+              {chrome.i18n.getMessage('goToGalleryToCreateNFT')}
             </div>
 
             <Button
               style={{ width: '240px', height: '42px' }}
               className="mt-7 text-base rounded mx-auto z-10"
               variant="warningDefault"
-              text="Create an NFT"
+              text={chrome.i18n.getMessage('createAnNFT')}
               size="lg"
               onClick={openCreateNFTPage}
               id="create-nft-page-button"
@@ -138,7 +140,7 @@ const RevealPhrase = ({ step }) => {
           }}
           id="skip-to-home-button"
         >
-          Skip this step
+          {chrome.i18n.getMessage('skipThisStep')}
         </div>
       )}
     </div>

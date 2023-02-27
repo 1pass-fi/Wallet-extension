@@ -54,12 +54,13 @@ const CustomToken = ({ setTokenImport }) => {
       <div className="mt-4 flex">
         <WarningIcon className="ml-6" style={{ width: '35px', height: '35px' }} />
         <div className="ml-3.5 font-normal text-xs" style={{ width: '329px' }}>
-          Anyone can create a token, which includes fake versions of existing tokens. Always confirm
-          the Token Contract Address before purchasing a custom token.
+          {chrome.i18n.getMessage('customTokenDesc')}
         </div>
       </div>
 
-      <div className="mt-8 ml-9.25 font-normal text-xs">Token Contract Address</div>
+      <div className="mt-8 ml-9.25 font-normal text-xs">
+        {chrome.i18n.getMessage('tokenContractAddress')}
+      </div>
       <input
         className={clsx(
           'mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none',
@@ -76,7 +77,9 @@ const CustomToken = ({ setTokenImport }) => {
         {tokenAddressError}
       </div>
 
-      <div className="mt-3 ml-9.25 font-normal text-xs">Token Symbol</div>
+      <div className="mt-3 ml-9.25 font-normal text-xs">
+        {chrome.i18n.getMessage('tokenSymbol')}
+      </div>
       <input
         className={clsx(
           'mx-auto mt-0.5 bg-trueGray-100 text-blue-800 placeholder-opacity-80 outline-none',
@@ -104,7 +107,7 @@ const CustomToken = ({ setTokenImport }) => {
           className="bg-white border-2 border-blue-800 rounded-sm shadow text-base leading-4 text-center text-blue-800"
           style={{ width: '160px', height: '38px' }}
         >
-          Back
+          {chrome.i18n.getMessage('back')}
         </button>
         <button
           onClick={() => handleImportCustomToken()}
@@ -115,7 +118,7 @@ const CustomToken = ({ setTokenImport }) => {
           style={{ width: '160px', height: '38px' }}
           disabled={!isInputted}
         >
-          Continue
+          {chrome.i18n.getMessage('continue')}
         </button>
       </div>
     </div>

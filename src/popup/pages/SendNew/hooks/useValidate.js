@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { TYPE } from 'constants/accountConstants'
 import { isArweaveAddress, isEthereumAddress, isSolanaAddress } from 'utils'
 
-// const NOT_ENOUGH_BALANCE = 'Not enough tokens'
 const INVALID_RECIPIENT = 'Invalid recipient address'
 
 const useValidate = ({ selectedToken, amount, recipient, selectedAccount, alchemyAddress }) => {

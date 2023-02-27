@@ -46,7 +46,7 @@ const DropDown = ({
   const [listOpened, setListOpened] = useState(false)
   const [filterValue, setFilterValue] = useState('')
 
-  const label = useMemo(() => find(options, { value })?.label || '-- None', [options, value])
+  const label = useMemo(() => find(options, { value })?.label || chrome.i18n.getMessage('noneSelect'), [options, value])
 
   const dropDownRef = useRef(null)
 
@@ -153,7 +153,7 @@ const DropDown = ({
                 })
               }
             >
-              -- None
+              {chrome.i18n.getMessage('noneSelect')}
             </button>
           )}
           {(filterValue !== '-- None' && filterSupported

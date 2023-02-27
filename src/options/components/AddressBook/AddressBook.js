@@ -3,7 +3,6 @@ import { useDispatch,useSelector } from 'react-redux'
 import { useMachine } from '@xstate/react'
 import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
-import { ERROR_MESSAGE } from 'constants/koiConstants'
 import AddIcon from 'img/navbar/create-nft.svg'
 import isEmpty from 'lodash/isEmpty'
 import { hideAddressBook } from 'options/actions/addressBook'
@@ -168,7 +167,7 @@ const AddressBook = () => {
     const newAddress = {
       name: didContact.state.name,
       notes: didContact.state.description,
-      didName: 'DID link',
+      didName: chrome.i18n.getMessage('addressBookDIDLink'),
       didValue: didContact.didValue,
       avatarUrl: `https://arweave.net/${didContact.state.picture}`,
       addresses: [
@@ -228,7 +227,7 @@ const AddressBook = () => {
 
           <div className="address-book__list__body">
             {isEmpty(addresses) ? (
-              <div className="address-book__list__body__name">Empty address book!</div>
+              <div className="address-book__list__body__name">{chrome.i18n.getMessage('addressBookEmpty')}</div>
             ) : (
               filterAddresses.map((add) => (
                 <div

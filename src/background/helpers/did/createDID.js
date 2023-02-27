@@ -1,5 +1,5 @@
 // constants
-import { DID_CONTRACT_ID,ERROR_MESSAGE } from 'constants/koiConstants'
+import { DID_CONTRACT_ID, POPUP_CONTROLLER_ERROR } from 'constants/koiConstants'
 import { backgroundAccount } from 'services/account'
 import { ArweaveAccount } from 'services/account/Account'
 // services
@@ -9,14 +9,15 @@ import { smartweave } from 'smartweave'
 import didSchema from './schema'
 
 export default async (payload, account) => {
-  if (!(account instanceof ArweaveAccount)) throw new Error(ERROR_MESSAGE.DID.INVALID_ACCOUNT_INPUT)
+  if (!(account instanceof ArweaveAccount))
+    throw new Error(POPUP_CONTROLLER_ERROR.DID_INVALID_ACCOUNT)
   const ownerAddress = await account.get.address()
 
   let data = didSchema.validate(payload, ownerAddress)
 
   if (data.error) {
     console.log(data.error)
-    throw new Error(ERROR_MESSAGE.DID.INVALID_DATA_INPUT)
+    throw new Error(POPUP_CONTROLLER_ERROR.DID_INVALID_DATA)
   }
 
   data = data.value
@@ -31,13 +32,13 @@ export default async (payload, account) => {
     title: 'DID Profile Page 0.0.1',
     ticker: 'KOII-DID',
     balances: {
-      [ownerAddress]: 1,
+      [ownerAddress]: 1
     },
     contentType: 'text/html',
     createdAt: new Date().valueOf(),
     data,
     tags: [],
-    ethOwnerAddress: '0xf990AD1561D0846bCC7ac04130c926b7259Fe7cA',
+    ethOwnerAddress: '0xf990AD1561D0846bCC7ac04130c926b7259Fe7cA'
   }
 
   const contractId = await deploySmartcontract(initialState, ownerAddress)
@@ -50,7 +51,7 @@ export default async (payload, account) => {
   tx.addTag('Exchange', 'Verto')
   tx.addTag('Action', 'marketplace/Create')
   tx.addTag('App-Name', 'SmartWeaveContract')
-  tx.addTag('App-Version', '0.3.1') 
+  tx.addTag('App-Version', '0.3.1')
   tx.addTag('Contract-Id', contractId)
   tx.addTag('Koii-Did', 'CreateReactApp')
 
@@ -69,7 +70,7 @@ export default async (payload, account) => {
 const deploySmartcontract = async (state, address) => {
   try {
     const { key } = await backgroundAccount.getCredentialByAddress(address)
-    if (!key) throw new Error(ERROR_MESSAGE.DID.KEY_NOT_FOUND)
+    if (!key) throw new Error(POPUP_CONTROLLER_ERROR.DID_KEY_NOT_FOUND)
 
     return await smartweave.createContractFromTx(
       arweave,
@@ -77,12 +78,12 @@ const deploySmartcontract = async (state, address) => {
       DID_CONTRACT_ID.CONTRACT_SRC,
       JSON.stringify(state),
       [
-        {name: 'Koii-Did', value: 'CreateContract'},
-        {name: 'Owner', value: address}
+        { name: 'Koii-Did', value: 'CreateContract' },
+        { name: 'Owner', value: address }
       ]
     )
   } catch (err) {
     console.error(err.message)
-    throw new Error(ERROR_MESSAGE.DID.DEPLOY_CONTRACT_ERROR)
+    throw new Error(POPUP_CONTROLLER_ERROR.DID_DEPLOY_CONTRACT)
   }
 }

@@ -351,92 +351,11 @@ export const PATH = {
   KOII_LIVE: 'https://koii.live'
 }
 
-export const ERROR_MESSAGE = {
-  INCORRECT_PASSWORD: 'Incorrect password, please try again.',
-  PASSWORD_LENGTH: 'Your Koii password must have at least 8 characters.',
-  PASSWORD_MATCH: 'Passwords do not match, please try again.',
-  INCORRECT_PHRASE: 'Incorrect seed phrase, please try again.',
-  EMPTY_PHRASE: 'Seed phrase should not be blank.',
-  CHECKED_TERMS: 'You have to agree to the Terms of Service',
-  EMPTY_FIELDS: 'Please fill in all fields.',
-  NOT_ENOUGH_KOI: `You don't have enough Koii.`,
-  REQUEST_NOT_EXIST: 'This request is no longer exist.',
-  INVALID_AMOUNT: 'Amount can not be negative.',
-  ALREADY_CONNECTED_SITE: 'This site has already connected.',
-  MUST_USE_IN_POPUP: 'Please use this feature in the extension pop up.',
-  NOT_ENOUGH_AR: `You don't have enough AR.`,
-  FILE_TOO_LARGE: 'File too large. The maximum size for NFT is 15MB',
-  CANNOT_GET_COSTS: 'Cannot get the upload costs.',
-  INVALID_FRIEND_CODE: `That code isn't quite right. Check it and try again.`,
-  COLLECTION_NFT_EMPTY: 'A collection has to contain at least one NFT.',
-  KID_FILE_TOO_LARGE: 'File too large. The maximum size for Profile Picture is 500KB',
-  PASSWORD_REQUIRED: 'Password required.',
-  SELECT_ACCOUNT: 'Please select account.',
-  SELECT_TOKEN: 'Please select token.',
-  CREATE_WALLET_FAILED: 'Create new wallet failed.',
-  INVALID_JSON_KEY: 'Invalid JSON key. Please make sure that you chose a valid key.',
-  SEND_ZERO_KOI: 'Whoops! Enter the amount of tokens you want to send.',
-  SEND_WITH_ETH: 'We currently only support Ethereum transfers on the Goerli network.',
-  INVALID_TOKEN_SCHEMA: 'Invalid token schema. Please use nft with token schema of ERC1155',
-  NOT_ENOUGH_ETH: `You don't have enough ETH.`,
-  EXPIRED_TRANSACTION_ACTION_ERROR:
-    'Something went wrong when trying to delete or resend your transaction',
-  BRIDGE_WITH_ETH_MAINNET: 'We currently only support Ethereum NFT bridging on the Goerli network.',
-  NFT_NOT_EXIST_ON_CHAIN: `This NFT hasn't been minted yet! Usually on Opensea, an NFT is minted the first time it is sold. To use the bridge, mint your NFT on Ethereum— or you can mint directly on Arweave using Finnie.`,
-  BRIDGE_NFT_FAILED: 'Bridge NFT failed',
-  ACCOUNT_EXIST: 'This account has already been imported.',
-  ACCOUNT_NAME_EMPTY: 'Enter a name for this key.',
-  UPLOAD_NFT: {
-    CREATE_TRANSACTION_ERROR: 'Create transaction error',
-    SIGN_TRANSACTION_ERROR: 'Sign transaction error',
-    UPLOAD_ERROR: 'Upload NFT error',
-    REGISTER_ERROR: 'Register NFT error',
-    INVALID_CONTENT: 'Invalid content'
-  },
-  RESEND: {
-    KOII: 'Resend KOII failed',
-    AR: 'Resend AR failed',
-    NOT_ENOUGH_BALANCE: 'Not enough AR or KOII'
-  },
-  DID: {
-    INVALID_ACCOUNT_INPUT: 'Invalid account input',
-    INVALID_DATA_INPUT: 'Invalid data input',
-    KEY_NOT_FOUND: 'Key not found'
-  },
-
-  ADDRESS_BOOK: {
-    DUPLICATE_DID: 'This DID already exist in Address Book'
-  }
-}
-
-export const VALIDATE_ERROR_MESSAGE = {
-  NOT_ENOUGH_CHARACTERS: 'Not enough characters',
-  NOT_MATCH: `Password does not match`,
-  INVALID_CHARACTER: 'The password does not meet the requirements.',
-  TERM_OF_SERVICE_UNCHECKED: 'Please accept the Terms of Service'
-}
-
 export const STORAGE = {
-  KOI_ADDRESS: 'koiAddress',
   KOI_KEY: 'koiKey',
-  KOI_BALANCE: 'koiBalance',
-  AR_BALANCE: 'arBalance',
-  CONTENT_LIST: 'contentList',
-  ACTIVITIES_LIST: 'activitiesList',
-  SITE_PERMISSION: 'sitePermission',
   PENDING_REQUEST: 'pendingRequest',
   KOI_PHRASE: 'koiPhrase',
-  PENDING_TRANSACTION: 'pendingTransactions',
-  ACCOUNT_NAME: 'accountName',
-  PRICE: 'PRICE',
-  AFFILIATE_CODE: 'AFFILIATE_CODE',
-  SHOW_WELCOME_SCREEN: 'SHOW_WELCOME_SCREEN',
-  CURRENCY: 'CURRENCY',
-  MOCK_COLLECTIONS_STORE: 'MOCK_COLLECTIONS_STORE',
-  SHOW_VIEWS: 'SHOW_VIEWS',
-  SHOW_EARNED_KOI: 'SHOW_EARNED_KOI',
-  COLLECTIONS: 'COLLECTIONS',
-  KID: 'KID'
+  CURRENCY: 'CURRENCY'
 }
 
 export const REQUEST = {
@@ -460,24 +379,6 @@ export const RATE = {
   ETH: 100
 }
 
-export const NOTIFICATION = {
-  ADDRESS_COPIED: 'Address copied!',
-  SEED_PHRASE_COPIED: 'Seed phrase copied!',
-  KEY_EXPORTED: 'Private key downloaded.',
-  ACCOUNT_NAME_UPDATED: 'Account nickname updated.',
-  NFT_LOADED: 'Your assets list is up to date.',
-  TRANSACTION_SENT: 'Transaction sent.',
-  CREATE_COLLECTION_SUCCESS:
-    'Collection created successfully. It may take a while until you can get your data updated.',
-  CREATE_KID_SUCCESS:
-    'Created KID successfully. It may take a while until you can get your data updated.',
-  UPDATE_KID_SUCCESS: 'Your DID is being updated as we speak. This might take a couple of minutes.'
-}
-
-export const STATEMENT = {
-  NO_REWARD: `You don't have any rewards available, share your code to get some!`
-}
-
 export const TIME_INTERVAL = {
   LOAD_BALANCES_ARWEAVE: 300000,
   LOAD_BALANCES_ETHEREUM: 900000,
@@ -490,8 +391,6 @@ export const TIME_INTERVAL = {
 export const NFT_BIT_DATA = 'NFT_BIT_DATA'
 
 export const ALL_NFT_LOADED = 'ALL_NFT_LOADED'
-
-export const DISCONNECTED_BACKGROUND = 'Attempting to use a disconnected port object'
 
 export const TRANSACTION_DATA = 'TRANSACTION_DATA'
 
@@ -573,15 +472,6 @@ export const STREAM = {
 export const ATTENTION_CONTRACT = 'CdPAQNONoR83Shj3CbI_9seC-LqgI1oLaRJhSwP90-o'
 
 export const VALID_TOKEN_SCHEMA = ['ERC1155']
-
-export const ACTIVITY_NAME = {
-  BRIDGE_AR_TO_ETH: 'Bridged NFT from Arweave to Ethereum',
-  BRIDGE_ETH_TO_AR: 'Bridged NFT from Ethereum to Arweave',
-  SENT: 'Sent',
-  RECEIVED: 'Received',
-  CONTRACT_INTERACTION: 'Contract interaction',
-  UNKNOWN: 'Unknown transaction'
-}
 
 export const MAX_RETRIED = 1
 
@@ -695,4 +585,18 @@ export const SOL_MESSAGE = {
   SOLANA_REQUEST_ACCOUNTS: 'solana_requestAccounts', // Do not support
   SOLANA_SIGN_TRANSACTION: 'solana_signTransaction',
   SOLANA_SIGN_MESSAGE: 'solana_signMessage'
+}
+
+export const POPUP_CONTROLLER_ERROR = {
+  ACCOUNT_EXIST: 'accountExist',
+  INVALID_CONTENT: 'invalidContent',
+  CREATE_TRANSACTION: 'createTransactionError',
+  SIGN_TRANSACTION: 'signTransactionError',
+  UPLOAD_NFT: 'uploadNFTError',
+  REGISTER_NFT: 'registerNFTError',
+  DID_INVALID_ACCOUNT: 'didInvalidAccount',
+  DID_INVALID_DATA: 'didInvalidData',
+  DID_KEY_NOT_FOUND: 'didKeyNotFound',
+  DID_DEPLOY_CONTRACT: 'didDeployContractError',
+  NOT_ENOUGH_AR_OR_KOII: 'notEnoughARorKoiiTokens'
 }

@@ -10,29 +10,39 @@ import SecurityIcon from 'img/v2/settings/security.svg'
 import WalletIcon from 'img/v2/settings/wallet.svg'
 
 const accountSettingItems = [
-  { id: 'kid-dropdown-light', text: 'Koii Identity (DID)', path: '/settings/kID', icon: DidIcon },
+  {
+    id: 'kid-dropdown-light',
+    text: chrome.i18n.getMessage('koiiIdentity'),
+    path: '/settings/kID',
+    icon: DidIcon
+  },
   {
     id: 'gallery-dropdown-light',
-    text: 'Gallery Settings',
+    text: chrome.i18n.getMessage('gallerySettings'),
     path: '/settings/gallery',
     icon: GalleryIcon
   },
   {
     id: 'wallet-dropdown-light',
-    text: 'Wallet Settings',
+    text: chrome.i18n.getMessage('walletSettings'),
     path: '/settings/wallet',
     icon: WalletIcon
   },
   {
     id: 'security-dropdown-light',
-    text: 'Security',
+    text: chrome.i18n.getMessage('security'),
     path: '/settings/security',
     icon: SecurityIcon
   },
-  { id: 'about-dropdown-light', text: 'About', path: '/settings/about', icon: AboutIcon },
+  {
+    id: 'about-dropdown-light',
+    text: chrome.i18n.getMessage('about'),
+    path: '/settings/about',
+    icon: AboutIcon
+  },
   {
     id: 'need-help-dropdown-light',
-    text: 'Need Help?',
+    text: chrome.i18n.getMessage('needHelp'),
     path: '/settings/need-help',
     icon: NeedhelpIcon
   }

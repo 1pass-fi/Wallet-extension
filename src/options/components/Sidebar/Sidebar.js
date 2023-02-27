@@ -117,7 +117,7 @@ const Sidebar = ({ currentPath }) => {
         ))}
         <div
           className={clsx('flex items-center justify-center w-13.75 h-11.25 cursor-not-allowed')}
-          data-tip="Coming soon"
+          data-tip={chrome.i18n.getMessage('comingSoon')}
           data-for="sidebar-collections"
         >
           <CollectionIcon className="w-7.5 h-7" />
@@ -128,7 +128,7 @@ const Sidebar = ({ currentPath }) => {
         <div className="bg-trueGray-100 bg-opacity-20 rounded w-58.5 3xl:w-64">
           <Switch>
             <Route path="/create-nft">
-              <HasArweave content="Right now, we can only create NFTs with Arweave. Switch to an Arweave account to get started.">
+              <HasArweave content={chrome.i18n.getMessage('createNFTsArweaveSupported')}>
                 <UploadNftForm />
               </HasArweave>
             </Route>
@@ -143,7 +143,7 @@ const Sidebar = ({ currentPath }) => {
               />
             </Route> */}
             <Route path="/collections/create">
-              <HasArweave content="Right now, we can only create NFTs with Arweave. Switch to an Arweave account to get started.">
+              <HasArweave content={chrome.i18n.getMessage('createNFTsArweaveSupported')}>
                 <CollectionForm />
               </HasArweave>
             </Route>

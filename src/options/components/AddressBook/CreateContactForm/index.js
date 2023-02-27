@@ -24,7 +24,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
   const [userInfo, setUserInfo] = useState({
     name: '',
     notes: '',
-    didName: 'DID link',
+    didName: chrome.i18n.getMessage('addressBookDIDLink'),
     didValue: ''
   })
 
@@ -35,7 +35,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
 
   const handleSubmit = async () => {
     if (isEmpty(userInfo.name)) {
-      dispatch(setError('Address must have name!'))
+      dispatch(setError(chrome.i18n.getMessage('emptyAddressError')))
       return
     }
 
@@ -56,14 +56,14 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
     })
 
     if (!isValid) {
-      dispatch(setError('Invalid Address list!'))
+      dispatch(setError(chrome.i18n.getMessage('invalidAddressList')))
       return
     }
 
     setUserAddresses(classifiedAddresses)
 
     await storeNewAddress({ ...userInfo, addresses: userAddresses })
-    dispatch(setQuickNotification('Successfully added address to address book!'))
+    dispatch(setQuickNotification(chrome.i18n.getMessage('addressBookAddNewAddress')))
   }
 
   const handleUserInfoChange = (e) => {
@@ -95,7 +95,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
 
         <input
           className="ab-contact-form__name"
-          placeholder="Name"
+          placeholder={chrome.i18n.getMessage('name')}
           name="name"
           onChange={handleUserInfoChange}
           value={userInfo.name}
@@ -104,7 +104,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
         <div className="ab-contact-form__notes-label">Notes</div>
         <input
           className="ab-contact-form__notes"
-          placeholder="i.e Larry from the metaverse"
+          placeholder={chrome.i18n.getMessage('addressBookNote')}
           name="notes"
           onChange={handleUserInfoChange}
           value={userInfo.notes}
@@ -124,11 +124,11 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
               <div className="second-row__left">
                 <input
                   className="input-group__input-value"
-                  placeholder="Insert Address"
+                  placeholder={chrome.i18n.getMessage('addressBookAddress')}
                   onChange={(e) => handleUserAddressValueChange(idx, e)}
                   value={address.value}
                 />
-                <div className="ab-copy-icon" data-tip="Copy to clipboard">
+                <div className="ab-copy-icon" data-tip={chrome.i18n.getMessage('copyToClipboard')}>
                   <CopyToClipboard text={address.value}>
                     <CopyIcon />
                   </CopyToClipboard>
@@ -136,7 +136,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
               </div>
               <div
                 className="ab-trash-icon"
-                data-tip="Remove this address"
+                data-tip={chrome.i18n.getMessage('removeThisAddress')}
                 data-for="remove"
                 onClick={() => {
                   const newAddresses = [...userAddresses]
@@ -163,14 +163,14 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
           <div className="ab-form-add-icon">
             <AddIcon />
           </div>
-          <span>New Address</span>
+          <span>{chrome.i18n.getMessage('newAddress')}</span>
         </div>
 
         <div className="ab-contact-form__input-group ab-contact-form__input-group--did">
           <div className="input-group__first-row">
             <input
               className="input-group__label"
-              placeholder="DID link"
+              placeholder={chrome.i18n.getMessage('addressBookDIDLink')}
               name="didName"
               value={userInfo.didName}
               onChange={handleUserInfoChange}
@@ -180,12 +180,12 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
             <div className="second-row__left">
               <input
                 className="input-group__input-value"
-                placeholder="Insert Decentralized ID link"
+                placeholder={chrome.i18n.getMessage('addressBookDIDValue')}
                 name="didValue"
                 value={userInfo.didValue}
                 onChange={handleUserInfoChange}
               />
-              <div className="ab-copy-icon" data-tip="Copy to clipboard">
+              <div className="ab-copy-icon" data-tip={chrome.i18n.getMessage('copyToClipboard')}>
                 <CopyIcon />
               </div>
             </div>
@@ -193,8 +193,13 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
         </div>
       </div>
       <div className="ab-contact-form__footer">
-        <Button startIcon={CloseIcon} onClick={onClose} text="Cancel" />
-        <Button startIcon={TickIcon} onClick={handleSubmit} text="Save" variant="normal" />
+        <Button startIcon={CloseIcon} onClick={onClose} text={chrome.i18n.getMessage('cancel')} />
+        <Button
+          startIcon={TickIcon}
+          onClick={handleSubmit}
+          text={chrome.i18n.getMessage('save')}
+          variant="normal"
+        />
       </div>
 
       <ReactTooltip place="top" effect="float" />

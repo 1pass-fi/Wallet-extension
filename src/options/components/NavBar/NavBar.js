@@ -126,15 +126,19 @@ const NavBar = () => {
           <KoiiLogo className="h-8 3xl:h-10 4xl:h-12 w-10.75 3xl:w-13.5 4xl:w-16.25" />
         </Link>
         <nav className="ml-6.25 3xl:ml-10 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
-          <NavLink to="/gallery">Gallery</NavLink>
+          <NavLink to="/gallery">{chrome.i18n.getMessage('gallery')}</NavLink>
         </nav>
         <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
-          <NavLink to="/create-nft">Create</NavLink>
+          <NavLink to="/create-nft">{chrome.i18n.getMessage('create')}</NavLink>
         </nav>
         <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
           {/* <NavLink to="/collections">Collections</NavLink> */}
-          <div className="cursor-not-allowed" data-tip="Coming soon" data-for="nav-collections">
-            Collections
+          <div
+            className="cursor-not-allowed"
+            data-tip={chrome.i18n.getMessage('comingSoon')}
+            data-for="nav-collections"
+          >
+            {chrome.i18n.getMessage('collections')}
           </div>
         </nav>
         <ToolTip id="nav-collections" />
@@ -150,7 +154,11 @@ const NavBar = () => {
           ref={notificationToggleRef}
           title="notification"
         >
-          <NotificationIcon className="cursor-pointer" onClick={toggleNotificationsCenter} role="button"/>
+          <NotificationIcon
+            className="cursor-pointer"
+            onClick={toggleNotificationsCenter}
+            role="button"
+          />
           {notificationsData.new > 0 && (
             <div
               className="absolute top-2.25 left-1.75 bg-warning-200 rounded-full"
@@ -185,7 +193,10 @@ const NavBar = () => {
                 className="flex items-center justify-center object-cover rounded-full w-full h-full bg-white"
                 ref={dropdownToggleRef}
               >
-                <DefaultAvatar data-testid='default-avatar-navbar' style={{ width: '36px', height: '36px' }} />
+                <DefaultAvatar
+                  data-testid="default-avatar-navbar"
+                  style={{ width: '36px', height: '36px' }}
+                />
               </div>
             )}
           </div>

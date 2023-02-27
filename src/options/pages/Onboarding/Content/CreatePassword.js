@@ -49,7 +49,7 @@ const CreatePassword = ({ step, setStep }) => {
     }
 
     if (!isAcceptTermService) {
-      setTermServiceMessage(VALIDATE_ERROR_MESSAGE.TERM_OF_SERVICE_UNCHECKED)
+      setTermServiceMessage(chrome.i18n.getMessage('pleaseAcceptTheTof'))
     } else {
       setTermServiceMessage('')
       if (isValidPassword) {
@@ -77,12 +77,16 @@ const CreatePassword = ({ step, setStep }) => {
       <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
       <div className="font-normal text-base leading-6 text-left">
         {isEmpty(accounts)
-          ? 'Create a password to secure Finnie.'
-          : 'Re-enter your Finnie password so we can securely store your new key.'}
+          ? chrome.i18n.getMessage('createAPasswordToSecureFinnie')
+          : chrome.i18n.getMessage('reEnterYourFinniePassword')}
       </div>
       <InputField
         className="mt-5"
-        label={isEmpty(accounts) ? 'New Password' : 'Password'}
+        label={
+          isEmpty(accounts)
+            ? chrome.i18n.getMessage('newPassword')
+            : chrome.i18n.getMessage('password')
+        }
         value={password}
         setValue={(e) => {
           setWrongPasswordMessage('')
@@ -94,9 +98,9 @@ const CreatePassword = ({ step, setStep }) => {
           isEmpty(accounts) &&
           !isEmpty(password) &&
           isClickContinue &&
-          (passwordErrorMessage === VALIDATE_ERROR_MESSAGE.INVALID_CHARACTER ||
-            passwordErrorMessage === VALIDATE_ERROR_MESSAGE.NOT_ENOUGH_CHARACTERS)
-            ? 'Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%).'
+          (passwordErrorMessage === chrome.i18n.getMessage('passwordNotMeetRequirements') ||
+            passwordErrorMessage === chrome.i18n.getMessage('notEnoughCharacters'))
+            ? chrome.i18n.getMessage('securePasswordsHaveAtLeast8Characters')
             : !isEmpty(wrongPasswordMessage)
               ? wrongPasswordMessage
               : ''
@@ -112,7 +116,7 @@ const CreatePassword = ({ step, setStep }) => {
       {isEmpty(accounts) && (
         <InputField
           className="mt-7"
-          label="Confirm Password"
+          label={chrome.i18n.getMessage('confirmPassword')}
           value={confirmPassword}
           setValue={(e) => setConfirmPassword(e.target.value)}
           required={true}
@@ -120,7 +124,7 @@ const CreatePassword = ({ step, setStep }) => {
           placeholder=""
           errorFinnie={
             isClickContinue &&
-            passwordErrorMessage === VALIDATE_ERROR_MESSAGE.NOT_MATCH &&
+            passwordErrorMessage === chrome.i18n.getMessage('passwordDoesNotMatch') &&
             passwordErrorMessage
           }
           uppercase={false}
@@ -142,7 +146,7 @@ const CreatePassword = ({ step, setStep }) => {
           />
           <div className="flex ml-2.25 font-normal text-sm leading-6">
             <div onClick={() => setIsAcceptTermService((prev) => !prev)}>
-              I agree with the&nbsp;
+              {chrome.i18n.getMessage('iAgreeWithThe')}&nbsp;
             </div>
             <a
               target="_blank"
@@ -150,7 +154,7 @@ const CreatePassword = ({ step, setStep }) => {
               className="text-turquoiseBlue underline"
               data-testid="tos-link"
             >
-              Terms of Service
+              {chrome.i18n.getMessage('termsOfService')}
             </a>
           </div>
         </div>
@@ -165,7 +169,7 @@ const CreatePassword = ({ step, setStep }) => {
         style={{ width: '240px', height: '42px' }}
         className="mt-3.5 rounded mx-auto z-10"
         variant="white"
-        text="Log In"
+        text={chrome.i18n.getMessage('logIn')}
         onClick={() => onClickContinue()}
         id="log-in-button"
       />

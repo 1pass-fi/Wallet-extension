@@ -6,7 +6,6 @@ import passworder from 'browser-passworder'
 import {
   ALL_NFT_LOADED,
   ATTENTION_CONTRACT,
-  ERROR_MESSAGE,
   ETH_NETWORK_NAME,
   ETH_NETWORK_PROVIDER,
   LOAD_KOI_BY,
@@ -325,11 +324,11 @@ export const transfer = async (koiObj, qty, address, currency) => {
     switch (currency) {
       case 'KOI':
         balance = await koiObj.getKoiBalance()
-        if (qty > balance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
+        if (qty > balance) throw new Error(chrome.i18n.getMessage('notEnoughKoiiToken'))
         break
       case 'AR':
         balance = await koiObj.getWalletBalance()
-        if (qty > balance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
+        if (qty > balance) throw new Error(chrome.i18n.getMessage('notEnoughARToken'))
         break
     }
     const txId = await koiObj.transfer(qty, address, currency)

@@ -71,9 +71,9 @@ const NavBar = ({ step, setStep }) => {
             className="font-normal tracking-finnieSpacing-tightest text-white -pt-4"
             style={{ fontSize: '40px', lineHeight: '48px' }}
           >
-            Welcome to the Finnie Wallet
+            {chrome.i18n.getMessage('welcomeToTheFinnieWallet')}
             <div className="mt-6.25 mb-8 font-normal text-lg tracking-finnieSpacing-tight  text-success">
-              Get set up in just 4 quick & easy steps.
+              {chrome.i18n.getMessage('getSetupInJust4QuickEasySteps')}
             </div>
           </div>
         )}
@@ -82,32 +82,32 @@ const NavBar = ({ step, setStep }) => {
         {step === 0 ? (
           <div className="flex text-warning items-center">
             <LockSelectedIcon />
-            <div className="w-4/5 ml-4">Secure Finnie with a password.</div>
+            <div className="w-4/5 ml-4">{chrome.i18n.getMessage('secureFinnieWithAPassword')}</div>
           </div>
         ) : (
           <div className="flex items-center">
             <LockIcon />
-            <div className="w-4/5 ml-4">Secure Finnie with a password.</div>
+            <div className="w-4/5 ml-4">{chrome.i18n.getMessage('secureFinnieWithAPassword')}</div>
           </div>
         )}
         {step === 1 || step === 2 || step === 10 || step === 11 || step === 12 ? (
           <div className="flex text-warning">
             <KeySelectedIcon />
             <div className="w-4/5 flex flex-col whitespace-pre-wrap">
-              <div className="w-4/5 ml-4">Create or import a key.</div>
+              <div className="w-4/5 ml-4">{chrome.i18n.getMessage('createOrImportAKey')}</div>
               <span className="ml-4 font-normal text-sm leading-6 text-trueGray-100">
                 {step === 1 || step === 2
-                  ? 'Choose a new Koii or Ethereum account or import one you already have.'
+                  ? chrome.i18n.getMessage('chooseANewKoiiOrEthereumAccount')
                   : step === 10
-                    ? 'Select the chain of the key you want to import'
-                    : 'Type in your secret phrase.'}
+                    ? chrome.i18n.getMessage('selectChainOfKey')
+                    : chrome.i18n.getMessage('TypeYourSecretPhrase')}
               </span>
             </div>
           </div>
         ) : (
           <div className="flex items-center">
             <KeyIcon />
-            <div className="w-4/5 ml-4">Create or import a key.</div>
+            <div className="w-4/5 ml-4">{chrome.i18n.getMessage('createOrImportAKey')}</div>
           </div>
         )}
         {step < 10 &&
@@ -115,16 +115,20 @@ const NavBar = ({ step, setStep }) => {
             <div className="flex text-warning">
               <EditSelectedIcon />
               <div className="w-4/5 flex flex-col whitespace-pre-wrap">
-                <div className="w-4/5 ml-4">Write down your secret phrase.</div>
+                <div className="w-4/5 ml-4">
+                  {chrome.i18n.getMessage('writeDownYourSecretPhrase')}
+                </div>
                 <span className="ml-4 font-normal text-sm leading-6 text-trueGray-100">
-                  Grab a pen & paper so you can keep your phrase safe.
+                  {chrome.i18n.getMessage('grabAPenAndPaper')}
                 </span>
               </div>
             </div>
           ) : (
             <div className="flex items-center">
               <EditIcon />
-              <div className="w-4/5 ml-4">Write down your secret phrase.</div>
+              <div className="w-4/5 ml-4">
+                {chrome.i18n.getMessage('writeDownYourSecretPhrase')}
+              </div>
             </div>
           ))}
 
@@ -133,16 +137,18 @@ const NavBar = ({ step, setStep }) => {
             <div className="flex text-warning">
               <SeedphraseSelectedIcon style={{ width: '48px', height: '48px' }} />
               <div className="w-4/5 flex flex-col whitespace-pre-wrap">
-                <div className="w-4/5 ml-4">Confirm your secret phrase.</div>
+                <div className="w-4/5 ml-4">
+                  {chrome.i18n.getMessage('confirmYourSecretPhrase')}
+                </div>
                 <span className="ml-4 font-normal text-sm leading-6 text-trueGray-100">
-                  Re-enter 3 words of your secret phrase for safety.
+                  {chrome.i18n.getMessage('reEnterThreeWords')}
                 </span>
               </div>
             </div>
           ) : (
             <div className="flex items-center">
               <SeedphraseIcon />
-              <div className="w-4/5 ml-4">Confirm your secret phrase.</div>
+              <div className="w-4/5 ml-4">{chrome.i18n.getMessage('confirmYourSecretPhrase')}</div>
             </div>
           ))}
       </div>

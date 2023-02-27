@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 // actions
 import { setError } from 'actions/error'
 import { setIsLoading } from 'actions/loading'
-// constants
-import { ERROR_MESSAGE } from 'constants/koiConstants'
 // components
 import Button from 'popup/components/shared/button/'
 import Modal from 'popup/components/shared/modal/index'
@@ -50,7 +48,7 @@ const ExpiredTxModal = ({ onClose, txInfo, setError, setPendingTransactions, set
     } catch (err) {
       console.log(err.message)
       setIsLoading(false)
-      setError(err.message)
+      setError(chrome.i18n.getMessage(err.message) || err.message)
       onClose()
     }
   }
@@ -58,17 +56,17 @@ const ExpiredTxModal = ({ onClose, txInfo, setError, setPendingTransactions, set
   return (
     <Modal onClose={onClose} className="expired-transaction-modal">
       <div className="modal-title">
-        <strong>Take an action</strong>
+        <strong>{chrome.i18n.getMessage('takeAnAction')}</strong>
       </div>
       <div className="modal-description">
-        Do you want to delete or resend the transaction?
+        {chrome.i18n.getMessage('deleteOrResendTransaction')}
       </div>
       <div className="modal-action-buttons">
-        <Button label="Delete" className="modal-action-button delete" onClick={() => expiredTxAction(txInfo, false)} />
+        <Button label={chrome.i18n.getMessage('delete')} className="modal-action-button delete" onClick={() => expiredTxAction(txInfo, false)} />
         <Button
           onClick={() => expiredTxAction(txInfo, true)}
           type="outline"
-          label="Resend"
+          label={chrome.i18n.getMessage('resend')}
           className="modal-action-button close"
         />
       </div>

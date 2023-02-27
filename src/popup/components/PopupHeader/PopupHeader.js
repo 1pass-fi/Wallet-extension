@@ -149,7 +149,7 @@ const Header = ({ setShowConnectedSites }) => {
                 setShowPauseFinnieDropdown(false)
               }}
             >
-              See connected sites
+              {chrome.i18n.getMessage('seeConnectedSites')}
             </div>
             <div
               onClick={handleDisableFinnie}
@@ -159,14 +159,14 @@ const Header = ({ setShowConnectedSites }) => {
               <div className="flex items-center justify-center" style={{ marginRight: '6px' }}>
                 {!originDisabled ? <PauseIcon /> : <PlayIcon />}
               </div>
-              {!originDisabled ? 'Pause Finnie on this site' : 'Resume Finnie'}
+              {!originDisabled ? chrome.i18n.getMessage('pauseFinnie') : chrome.i18n.getMessage('resumeFinnie')}
             </div>
             <div
               onClick={goToReportAnIssue}
               style={{ height: '46px', paddingRight: '16px', zIndex: 100 }}
               className="bg-blue-800 hover:bg-blue-400 cursor-pointer flex items-center justify-end"
             >
-              Report an Issue
+              {chrome.i18n.getMessage('reportAnIssue')}
             </div>
           </div>
         )}

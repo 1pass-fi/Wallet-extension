@@ -66,7 +66,7 @@ const Gallery = () => {
                 className="text-white text-sm leading-6 tracking-finnieSpacing-wide mt-4 w-32 text-center"
                 style={{ width: '115px' }}
               >
-                Create an Atomic NFT
+                {chrome.i18n.getMessage('createAtomicNFT')}
               </div>
             </div>
             <div

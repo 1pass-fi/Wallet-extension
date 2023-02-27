@@ -1,0 +1,1796 @@
+{
+  "12WordSecretPhrase": {
+    "message": "12 từ bí mật"
+  },
+  "about": {
+    "message": "Giới thiệu"
+  },
+  "account": {
+    "message": "Tài khoản"
+  },
+  "accountBalance": {
+    "message": "Số dư tài khoản:"
+  },
+  "accountExist": {
+    "message": "Tài khoản này đã được nhập."
+  },
+  "accountNameUc": {
+    "message": "TÊN TÀI KHOẢN"
+  },
+  "activity": {
+    "message": "Hoạt động"
+  },
+  "activityCenterUc": {
+    "message": "TRUNG TÂM HOẠT ĐỘNG"
+  },
+  "activitySelectAccount": {
+    "message": "Chọn tài khoản để xem hoạt động"
+  },
+  "addAKey": {
+    "message": "Thêm một Key"
+  },
+  "addAKeyMsgLc": {
+    "message": "Bạn muốn sử dụng hoặc bạn muốn"
+  },
+  "addCustomCSS": {
+    "message": "Thêm CSS tùy chỉnh"
+  },
+  "addMore": {
+    "message": "Thêm nhiều hơn"
+  },
+  "addNFTDetails": {
+    "message": "Thêm chi tiết NFT"
+  },
+  "address": {
+    "message": "Địa chỉ"
+  },
+  "addressBookAddNewAddress": {
+    "message": "Đã thêm địa chỉ vào sổ địa chỉ thành công!"
+  },
+  "addressBookAddress": {
+    "message": "Chèn địa chỉ"
+  },
+  "addressBookDIDLink": {
+    "message": "Liên kết DID"
+  },
+  "addressBookDIDLinkInput": {
+    "message": "Chèn liên kết DID ở đây"
+  },
+  "addressBookDIDValue": {
+    "message": "Chèn liên kết Decentralized ID"
+  },
+  "addressBookDuplicateDID": {
+    "message": "DID này đã tồn tại trong Sổ địa chỉ"
+  },
+  "addressBookEmpty": {
+    "message": "Danh bạ địa chỉ trống!"
+  },
+  "addressBookNote": {
+    "message": "Ví dụ: Larry từ thế giới ảo"
+  },
+  "addressBookUpdateAddress": {
+    "message": "Đã cập nhật địa chỉ thành công!"
+  },
+  "addressCopied": {
+    "message": "Đã sao chép địa chỉ!"
+  },
+  "addressUc": {
+    "message": "ĐỊA CHỈ"
+  },
+  "addToken": {
+    "message": "Thêm Token"
+  },
+  "advancedOptions": {
+    "message": "Tuỳ chọn nâng cao"
+  },
+  "aFeatureLc": {
+    "message": "một tính năng"
+  },
+  "allAccounts": {
+    "message": "Tất cả các tài khoản"
+  },
+  "allowThisSiteTo": {
+    "message": "Cho phép trang web này"
+  },
+  "amount": {
+    "message": "Số lượng"
+  },
+  "amountUc": {
+    "message": "SỐ LUỢNG"
+  },
+  "andTheLc": {
+    "message": "và"
+  },
+  "anNFTLc": {
+    "message": "một NFT"
+  },
+  "applyDetailsToNFTs": {
+    "message": "Áp dụng các chi tiết này (trừ tiêu đề) cho tất cả các NFT trong bộ sưu tập này."
+  },
+  "approve": {
+    "message": "Phê duyệt"
+  },
+  "approved": {
+    "message": "Đã phê duyệt"
+  },
+  "approveLc": {
+    "message": "phê duyệt"
+  },
+  "assets": {
+    "message": "Tài sản"
+  },
+  "atomicNFTArweave": {
+    "message": "Một Atomic NFT được lưu trữ vĩnh viễn trên Arweave và luôn luôn kiếm được phần thưởng sự chú ý thông qua Koi."
+  },
+  "atomicNFTsMsg": {
+    "message": "Các Atomic NFT được lưu trữ vĩnh viễn trên Arweave. Với Koii, chúng kiếm được phần thưởng sự chú ý mãi mãi."
+  },
+  "authenticationStatus24Hours": {
+    "message": "Trạng thái xác thực của bạn sẽ được đặt lại sau mỗi 24 giờ."
+  },
+  "available": {
+    "message": "Khả dụng"
+  },
+  "back": {
+    "message": "Quay lại"
+  },
+  "balance": {
+    "message": "Số dư"
+  },
+  "balanceUpdated": {
+    "message": "Số dư của bạn đã được cập nhật."
+  },
+  "betaFeature": {
+    "message": "Tính năng này đang trong giai đoạn beta."
+  },
+  "bridgeARtoETH": {
+    "message": "NFT đã được chuyển từ Arweave sang Ethereum"
+  },
+  "bridgeETHtoAR": {
+    "message": "NFT đã được chuyển từ Ethereum sang Arweave"
+  },
+  "bridgeNFT": {
+    "message": "Chuyển đổi NFT của bạn sang một Blockchain khác"
+  },
+  "bridgeNftFailed": {
+    "message": "Chuyển đổi NFT thất bại"
+  },
+  "bridgeNFTNotSupportedEndLc": {
+    "message": "NFT mới hơn."
+  },
+  "bridgeNFTNotSupportedStart": {
+    "message": "Cầu nối Ethereum hiện không hỗ trợ NFT này. Thử cầu nối với một "
+  },
+  "bridgingYourNFT": {
+    "message": "Đang chuyển đổi NFT của bạn..."
+  },
+  "bySigning": {
+    "message": "Bằng cách ký, bạn đồng ý chấp nhận"
+  },
+  "cancel": {
+    "message": "Hủy bỏ"
+  },
+  "cannotLockWallet": {
+    "message": "Không thể khóa ví."
+  },
+  "chains": {
+    "message": "Chuỗi"
+  },
+  "chainUc": {
+    "message": "CHUỖI"
+  },
+  "changeMyPassword": {
+    "message": "Thay đổi Mật khẩu của tôi"
+  },
+  "checkOut": {
+    "message": "Thanh toán"
+  },
+  "checkOutThe": {
+    "message": "Kiểm tra"
+  },
+  "chooseANewKoiiOrEthereumAccount": {
+    "message": "Tạo key Ethereum hoặc Koii mới; hoặc nhập key của bạn."
+  },
+  "chooseSenderAccountFirst": {
+    "message": "Vui lòng chọn Tài khoản Người gửi trước!"
+  },
+  "clickACircleBelowToGenerateAKey": {
+    "message": "Click vào một trong những logo bên dưới để tạo key."
+  },
+  "clickCircle": {
+    "message": "Nhấp vào một vòng tròn bên dưới để nhập khóa của bạn."
+  },
+  "clickTheLockBelowToRevealYourSecretPhrase": {
+    "message": "Nhấn vào hình ổ khoá bên dưới để hiển thị 12 từ bí mật."
+  },
+  "clickToCopy": {
+    "message": "Nhấn để sao chép"
+  },
+  "clickToUploadNFT": {
+    "message": "Nhấp để tải lên một Atomic NFT"
+  },
+  "close": {
+    "message": "Đóng"
+  },
+  "collectionDescPh": {
+    "message": "Khi bạn có những người bạn như tôi, internet là một nơi tuyệt vời để sống."
+  },
+  "collectionLabelEditDescription": {
+    "message": "Chỉnh sửa mô tả"
+  },
+  "collectionLabelEditTitle": {
+    "message": "Chỉnh sửa Tiêu đề Bộ sưu tập"
+  },
+  "collectionLabelTitle": {
+    "message": "Tiêu đề Bộ sưu tập"
+  },
+  "collectionNotSupported": {
+    "message": "Phiên bản Bộ sưu tập này không hỗ trợ cập nhật"
+  },
+  "collections": {
+    "message": "Bộ sưu tập"
+  },
+  "collectionTagsPh": {
+    "message": "Phân tách bằng “,” và nhấn phím cách"
+  },
+  "collectionTitlePh": {
+    "message": "Bạn bè của Finnie"
+  },
+  "comingSoon": {
+    "message": "Sắp ra mắt"
+  },
+  "confirm": {
+    "message": "Xác nhận"
+  },
+  "confirmDID": {
+    "message": "Xác nhận DID của bạn"
+  },
+  "confirmDIDProfile": {
+    "message": "Xác nhận hồ sơ Decentralized ID cá nhân của bạn."
+  },
+  "confirmed": {
+    "message": "Đã xác nhận"
+  },
+  "confirmNewPassword": {
+    "message": "Xác nhận mật khẩu mới"
+  },
+  "confirmPassword": {
+    "message": "Xác nhận mật khẩu"
+  },
+  "confirmPhrase": {
+    "message": "Xác nhận"
+  },
+  "confirmTransaction": {
+    "message": "Xác nhận giao dịch"
+  },
+  "confirmTransfer": {
+    "message": "Xác nhận chuyển khoản"
+  },
+  "confirmTransferTo": {
+    "message": "Xác nhận chuyển khoản đến"
+  },
+  "confirmYourSecretPhrase": {
+    "message": "Xác nhận 12 từ bí mật của bạn."
+  },
+  "confirmYourTransfer": {
+    "message": "Xác nhận chuyển khoản của bạn"
+  },
+  "connect": {
+    "message": "Kết nối"
+  },
+  "connectedSites": {
+    "message": "Các trang web được kết nối"
+  },
+  "connectedSitesUc": {
+    "message": "CÁC TRANG WEB ĐƯỢC KẾT NỐI"
+  },
+  "connectToSite": {
+    "message": "Kết nối đến trang web"
+  },
+  "connectUc": {
+    "message": "KẾT NỐI"
+  },
+  "connectWalletMsg": {
+    "message": "Đảm bảo rằng những người tạo nội dung được công bằng được thưởng. Khi ví của bạn được kết nối, mỗi lần bạn tương tác với một NFT, người tạo sẽ nhận được phần thưởng chú ý."
+  },
+  "connectWalletMsgEnd": {
+    "message": "bất cứ lúc nào trên trang web này."
+  },
+  "connectWalletMsgMiddle": {
+    "message": "trang web này. Bạn có thể xóa kết nối này"
+  },
+  "connectWalletMsgStart": {
+    "message": "Ví của bạn hiện đang được kết nối đến"
+  },
+  "contactUs": {
+    "message": "Nếu bạn có câu hỏi hoặc phát hiện điều gì đáng ngờ, hãy liên hệ với chúng tôi tại"
+  },
+  "continue": {
+    "message": "Tiếp tục"
+  },
+  "copied": {
+    "message": "Đã sao chép"
+  },
+  "copyCode": {
+    "message": "Sao chép mã"
+  },
+  "copyLink": {
+    "message": "Sao chép liên kết"
+  },
+  "copyToClipboard": {
+    "message": "Sao chép vào clipboard"
+  },
+  "cost": {
+    "message": "Giá"
+  },
+  "country": {
+    "message": "Quốc gia"
+  },
+  "coverImageHint": {
+    "message": "Để đạt hiệu quả tốt nhất, ảnh bìa của bạn<br>nên có kích thước 1400x400px"
+  },
+  "coverImageUc": {
+    "message": "Ảnh Bìa"
+  },
+  "create": {
+    "message": "Tạo mới"
+  },
+  "createANewKey": {
+    "message": "Tạo mới một Khóa"
+  },
+  "createAnNFT": {
+    "message": "Tạo một NFT mới"
+  },
+  "createAPasswordToSecureFinnie": {
+    "message": "Tạo mật khẩu để bảo vệ ví Finnie của bạn."
+  },
+  "createAtomicNFT": {
+    "message": "Tạo Atomic NFT"
+  },
+  "createCollection": {
+    "message": "Tạo bộ sưu tập"
+  },
+  "createDID": {
+    "message": "Tạo DID"
+  },
+  "createdInOct2021Lc": {
+    "message": "được tạo vào tháng 10 năm 2021 hoặc sau đó"
+  },
+  "createKIDSuccess": {
+    "message": "Tạo KID thành công. Việc cập nhật dữ liệu có thể mất một thời gian."
+  },
+  "createMyDID": {
+    "message": "Tạo DID của tôi"
+  },
+  "createNewCollection": {
+    "message": "Tạo bộ sưu tập mới"
+  },
+  "createNewContact": {
+    "message": "Tạo liên hệ mới"
+  },
+  "createNewNFT": {
+    "message": "Hoặc tạo một NFT mới"
+  },
+  "createNewPassword": {
+    "message": "Tạo mật khẩu mới"
+  },
+  "createNFT": {
+    "message": "Tạo NFT"
+  },
+  "createNFTMsg": {
+    "message": "NFT của bạn đang được tạo!"
+  },
+  "createNFTsArweaveSupported": {
+    "message": "Hiện tại, chúng tôi chỉ có thể tạo NFT với Arweave. Chuyển sang tài khoản Arweave để bắt đầu."
+  },
+  "createOrImportAKey": {
+    "message": "Tạo hoặc nhập key của bạn."
+  },
+  "createTransactionError": {
+    "message": "Lỗi tạo giao dịch"
+  },
+  "customCSS": {
+    "message": "CSS Tùy chỉnh"
+  },
+  "customCSSHint": {
+    "message": "Gợi ý: sử dụng một trong các lớp này"
+  },
+  "customToken": {
+    "message": "Custom Token"
+  },
+  "customTokenDesc": {
+    "message": "Các loại token có thể có symbol và decimal trùng nhau, hãy chắc chắn rằng bạn đang sử dụng đúng token contract address"
+  },
+  "dappConnection": {
+    "message": "Kết nối ứng dụng phân cấp (Dapp)"
+  },
+  "decentralizedIDConfirmed": {
+    "message": "Xác nhận ID Phân cấp"
+  },
+  "decentralizedIdentity": {
+    "message": "Phân cấp địa phương"
+  },
+  "defaultCurrency": {
+    "message": "Tiền tệ mặc định"
+  },
+  "defaultUc": {
+    "message": "MẶC ĐỊNH"
+  },
+  "delete": {
+    "message": "Xóa"
+  },
+  "deleteContact": {
+    "message": "Xóa Liên hệ"
+  },
+  "deleteMsgEnd": {
+    "message": "khỏi danh bạ của bạn? Bạn không thể hoàn tác hành động này."
+  },
+  "deleteMsgStart": {
+    "message": "Bạn có chắc muốn xóa"
+  },
+  "deleteOrResendTransaction": {
+    "message": "Bạn muốn xóa hoặc gửi lại giao dịch?"
+  },
+  "description": {
+    "message": "Mô tả"
+  },
+  "descriptionMustBeFilled": {
+    "message": "Phần mô tả phải được điền vào"
+  },
+  "descriptionRequired": {
+    "message": "Mô tả không được để trống"
+  },
+  "details": {
+    "message": "Chi tiết"
+  },
+  "didDeployContractError": {
+    "message": "Không thể triển khai hợp đồng"
+  },
+  "didInvalidAccount": {
+    "message": "Tài khoản không hợp lệ"
+  },
+  "didInvalidData": {
+    "message": "Dữ liệu không hợp lệ"
+  },
+  "didIsFinalizing": {
+    "message": "DID của bạn đang hoàn thiện!"
+  },
+  "didKeyNotFound": {
+    "message": "Khóa không tìm thấy"
+  },
+  "didLink": {
+    "message": "Liên kết DID"
+  },
+  "didMsg": {
+    "message": "Tạo hồ sơ cá nhân cho danh tính web3 của bạn. Liên kết nó với trang Twitter của bạn để nhận phân phối giọt từ đối tác Koii và các bất ngờ khác."
+  },
+  "didSuccessMsgEnd": {
+    "message": "sẽ sớm sẵn sàng."
+  },
+  "didSuccessMsgMiddle": {
+    "message": "hộ chiếu đầu vào cho DeFi. Của bạn"
+  },
+  "didSuccessMsgStart": {
+    "message": "Decentralized ID của bạn là"
+  },
+  "didTransactionsPending": {
+    "message": "Các giao dịch DID đang chờ"
+  },
+  "displayKOIIEarnedSetting": {
+    "message": "Hiển thị KOII đã kiếm được"
+  },
+  "displayViews": {
+    "message": "Hiển thị lượt xem"
+  },
+  "doesNotSupportNFTVersion": {
+    "message": "Phiên bản NFT này không hỗ trợ cập nhật"
+  },
+  "doesNotSupportPublicNFT": {
+    "message": "Tính năng công khai / riêng tư <br> hiện không hỗ trợ NFT này. <br> Hãy thử tính năng công khai / riêng tư <br> với NFT mới hơn."
+  },
+  "done": {
+    "message": "Hoàn tất"
+  },
+  "doNotSeeYourTokens": {
+    "message": "Không tìm thấy token của bạn?"
+  },
+  "doYouHaveA": {
+    "message": "Bạn có một"
+  },
+  "doYouReady": {
+    "message": "Bạn đã sẵn sàng"
+  },
+  "dropToImportFile": {
+    "message": "Kéo và thả để nhập tệp."
+  },
+  "earnAttentionRewardsMsg": {
+    "message": "Kiếm phần thưởng chú ý mãi mãi thông qua Koii. Sao chép liên kết này và chia sẻ trên các nền tảng mạng xã hội yêu thích của bạn."
+  },
+  "earnedLc": {
+    "message": "đã kiếm được"
+  },
+  "edit": {
+    "message": "Chỉnh sửa"
+  },
+  "editAccounts": {
+    "message": "Chỉnh sửa tài khoản"
+  },
+  "editFee": {
+    "message": "Thay đổi phí"
+  },
+  "edition": {
+    "message": "Phiên bản"
+  },
+  "editNFTInfoUc": {
+    "message": "CHỈNH SỬA THÔNG TIN NFT"
+  },
+  "embedLink": {
+    "message": "Nhúng liên kết"
+  },
+  "emptyAccountNameError": {
+    "message": "Tên tài khoản không được để trống."
+  },
+  "emptyAddressError": {
+    "message": "Địa chỉ phải có tên!"
+  },
+  "emptyNumberofTransferError": {
+    "message": "Vui lòng nhập số lượng chuyển khoản"
+  },
+  "emptySelectAddressError": {
+    "message": "Vui lòng chọn một địa chỉ."
+  },
+  "encryptionKeyRequestLc": {
+    "message": "muốn lấy khóa mã hóa công khai của bạn. Khi đồng ý, trang web này sẽ có thể tạo ra các tin nhắn được mã hóa cho bạn."
+  },
+  "enterAddressManually": {
+    "message": "Nhập địa chỉ thủ công"
+  },
+  "enterCurrentPassword": {
+    "message": "Nhập mật khẩu hiện tại"
+  },
+  "enterDifferentAddress": {
+    "message": "Nhập địa chỉ khác"
+  },
+  "enterFinniePassword": {
+    "message": "Nhập mật khẩu Finnie:"
+  },
+  "enterInfoManually": {
+    "message": "Nhập thông tin thủ công"
+  },
+  "enterWalletConnectURL": {
+    "message": "Nhập URL kết nối ví"
+  },
+  "enterYourPassword": {
+    "message": "Nhập mật khẩu"
+  },
+  "estimatedCosts": {
+    "message": "Ước tính chi phí:"
+  },
+  "etherscan": {
+    "message": "Etherscan"
+  },
+  "events": {
+    "message": "Sự kiện"
+  },
+  "everythingInYourWalletLc": {
+    "message": "mọi thứ trong ví của bạn"
+  },
+  "explicitMsg": {
+    "message": "Người lớn hoặc trên 18 tuổi."
+  },
+  "exploreBlock": {
+    "message": "Khám phá khối"
+  },
+  "exportNFTCompleteMsg": {
+    "message": "Khi hoàn thành, các giao dịch sẽ xuất hiện trong tab Hoạt động trong danh sách thả xuống"
+  },
+  "exportNFTToARDesc1": {
+    "message": "Quá trình này thường mất khoảng 10-15 phút. Chỉ với một cú nhấp chuột, hợp đồng Koii sẽ chuyển NFT của bạn đến Arweave."
+  },
+  "exportNFTToARDesc2": {
+    "message": "Hãy nhớ rằng quá trình này thường mất khoảng 10-15 phút và có thể mất thời gian hơn, phụ thuộc vào lưu lượng Arweave hiện tại."
+  },
+  "exportNFTToETHDesc1": {
+    "message": "Quá trình này thường mất khoảng 10-15 phút. Chỉ với một cú nhấp chuột, hợp đồng Koii sẽ chuyển NFT của bạn đến Ethereum."
+  },
+  "exportNFTToETHDesc2": {
+    "message": "Hãy nhớ rằng quá trình này thường mất khoảng 10-15 phút và có thể mất thời gian hơn, tùy thuộc vào lưu lượng Ethereum hiện tại."
+  },
+  "exportPrivateKey": {
+    "message": "Xuất khóa bí mật"
+  },
+  "exportPrivateKeyMsgEnd": {
+    "message": "Hãy giữ khóa của bạn ở một nơi an toàn và bí mật."
+  },
+  "exportPrivateKeyMsgStart": {
+    "message": "Xuất khóa của bạn sẽ tải xuống một tệp .JSON. Bạn có thể sao chép tệp này sang nhiều thiết bị an toàn khác nhau để dự phòng."
+  },
+  "exportPrivateKeySuccessfully": {
+    "message": "Xuất khóa bí mật thành công!"
+  },
+  "faqPage": {
+    "message": "Trang FAQ"
+  },
+  "fiatCurrenciesSupport": {
+    "message": "Chúng tôi chỉ có thể hiển thị tỷ giá hoán đổi cho các loại tiền tệ phi tài chính vào thời điểm này."
+  },
+  "filesMinted": {
+    "message": "Tệp để được tạo:"
+  },
+  "filters": {
+    "message": "Bộ lọc"
+  },
+  "find": {
+    "message": "Tìm kiếm"
+  },
+  "finnieCurrentlyKeySupports": {
+    "message": "Finnie hiện hỗ trợ các loại khóa Koii, Solana, Arweave và Ethereum. Các loại khóa khác đang được phát triển."
+  },
+  "finnieCurrentlySupports": {
+    "message": "Finnie hiện hỗ trợ Koii, Ethereum, Solana, và Arweave key. Những chain khác sẽ được cập nhật."
+  },
+  "forGeneralQuestionsLc": {
+    "message": "cho câu hỏi chung"
+  },
+  "friendReferralCodeUc": {
+    "message": "MÃ GIỚI THIỆU BẠN BÈ"
+  },
+  "friendReferralMsg": {
+    "message": "Mời bạn bè sử dụng tiện ích mở rộng trình duyệt Koii. Bạn sẽ nhận được 1 KOII miễn phí cho mỗi người bạn mời đăng ký NFT bằng mã của bạn và họ cũng sẽ nhận được 1 KOII miễn phí."
+  },
+  "from": {
+    "message": "Từ"
+  },
+  "fromUc": {
+    "message": "TỪ"
+  },
+  "gallery": {
+    "message": "Thư viện"
+  },
+  "gallerySettings": {
+    "message": "Cài đặt Thư viện"
+  },
+  "galleryUc": {
+    "message": "THƯ VIỆN"
+  },
+  "gasEstimate": {
+    "message": "Ước tính Gas"
+  },
+  "gasEstimateDesc": {
+    "message": "Phí Gas được trả cho các thợ đào tiền điện tử xử lý các giao dịch trên mạng Ethereum. Koii không có lợi nhuận từ phí Gas. <br/> <br/> Phí Gas được đặt bởi mạng và dao động dựa trên tải lưu thông mạng và độ phức tạp của giao dịch. <br/> <br/> Ước tính này sẽ được cập nhật khoảng mỗi 30 giây."
+  },
+  "generateNewKeyFailed": {
+    "message": "Tạo khóa mới thất bại"
+  },
+  "getAKey": {
+    "message": "Tạo một key mới"
+  },
+  "getAnArKey": {
+    "message": "Nhận một khóa AR"
+  },
+  "getANewKey": {
+    "message": "Tạo một key mới."
+  },
+  "getANewWallet": {
+    "message": "Nhận một ví mới"
+  },
+  "getArPriceError": {
+    "message": "Chúng tôi không thể lấy giá AR cho tiền tệ này "
+  },
+  "getEmbedLinkLc": {
+    "message": "lấy liên kết nhúng"
+  },
+  "getFreeKOII": {
+    "message": "Nhận KOII miễn phí"
+  },
+  "getMyRewards": {
+    "message": "Nhận phần thưởng của tôi"
+  },
+  "getSetupInJust4QuickEasySteps": {
+    "message": "Cài đặt tài khoản của bạn với 4 bước đơn giản."
+  },
+  "getShareLinkLc": {
+    "message": "lấy đường dẫn chia sẻ"
+  },
+  "giveLittleGetLittle": {
+    "message": "Được ít thôi, cho đi nhiều"
+  },
+  "goBack": {
+    "message": "Quay lại"
+  },
+  "gotIt": {
+    "message": "Đã hiểu"
+  },
+  "goToGalleryToCreateNFT": {
+    "message": "Hoặc đi đến Thư viện để tạo NFT Finnie đầu tiên của bạn"
+  },
+  "goToHomepage": {
+    "message": "Đến trang chủ"
+  },
+  "grabAPenAndPaper": {
+    "message": "Hãy chuẩn bị sẵn giấy và bút để lưu giữ 12 từ bí mật của bạn một cách an toàn."
+  },
+  "hasBeenSentToLc": {
+    "message": "đã được gửi đến"
+  },
+  "haveAKey": {
+    "message": "có một khóa"
+  },
+  "haveQuestionsUc": {
+    "message": "CÓ CÂU HỎI"
+  },
+  "havingAnIssueUc": {
+    "message": "GẶP VẤN ĐỀ"
+  },
+  "headOverToFaucet": {
+    "message": "Hãy đến vòi phun để nhận một số token KOII miễn phí."
+  },
+  "hiddenPhraseEnd": {
+    "message": "hoặc họ sẽ có thể sử dụng ví của bạn và rút tiền hoặc tài sản khác như NFT"
+  },
+  "hiddenPhraseStart": {
+    "message": "Không nên hiển thị điều này cho bất kỳ ai khác"
+  },
+  "high": {
+    "message": "Cao"
+  },
+  "hitThe": {
+    "message": "Nhấn vào"
+  },
+  "iAgreeWithThe": {
+    "message": "Tôi đồng ý với"
+  },
+  "import": {
+    "message": "Nhập"
+  },
+  "import12WordSeedPhrase": {
+    "message": "Nhập ví hiện có bằng cụm từ khóa 12 từ."
+  },
+  "importAKeyWithASecretPhrase": {
+    "message": "Nhập key sử dụng 12 từ bí mật"
+  },
+  "importAToken": {
+    "message": "Thêm Token"
+  },
+  "importDIDLink": {
+    "message": "Nhập từ liên kết DID"
+  },
+  "importKeySuccessfully": {
+    "message": "Khóa của bạn đã được nhập thành công!"
+  },
+  "importSeedPhrase": {
+    "message": "Nhập với cụm từ khóa"
+  },
+  "importTokenMsg": {
+    "message": "Bạn muốn nhập mã thông báo này vào địa chỉ ví nào?"
+  },
+  "importWithPhrase": {
+    "message": "Nhập với Cụm từ"
+  },
+  "importYourKey": {
+    "message": "Nhập khóa của bạn"
+  },
+  "imReady": {
+    "message": "Tôi đã sẵn sàng!"
+  },
+  "incorrectPassword": {
+    "message": "Mật khẩu không chính xác"
+  },
+  "initiateATransaction": {
+    "message": "bắt đầu giao dịch"
+  },
+  "invalidAddressList": {
+    "message": "Danh sách địa chỉ không hợp lệ!"
+  },
+  "invalidARAddress": {
+    "message": "Địa chỉ AR không hợp lệ"
+  },
+  "invalidContent": {
+    "message": "Nội dung không hợp lệ"
+  },
+  "invalidDIDLink": {
+    "message": "Đây không phải là liên kết DID hợp lệ"
+  },
+  "invalidETHAddress": {
+    "message": "Địa chỉ ETH không hợp lệ"
+  },
+  "invalidFile": {
+    "message": "Tệp không hợp lệ."
+  },
+  "invalidNetworkType": {
+    "message": "Loại mạng không hợp lệ"
+  },
+  "invalidRequest": {
+    "message": "Yêu cầu không hợp lệ"
+  },
+  "invalidTokenSchema": {
+    "message": "Kiểu Token không hợp lệ. Vui lòng sử dụng nft với kiểu Token của ERC1155"
+  },
+  "invalidWalletAddress": {
+    "message": "Địa chỉ Ví không hợp lệ"
+  },
+  "isConnectedToSites": {
+    "message": "được kết nối với các trang web này."
+  },
+  "iUnderstand": {
+    "message": "Tôi hiểu"
+  },
+  "jsonKeyFile": {
+    "message": "Tệp khóa JSON"
+  },
+  "justMadeNFT": {
+    "message": "Bạn vừa tạo một NFT mới!"
+  },
+  "justNowLc": {
+    "message": "vừa mới"
+  },
+  "keepSharing": {
+    "message": "Tiếp tục chia sẻ để nhận KOII miễn phí."
+  },
+  "keyDetails": {
+    "message": "Chi tiết Khóa"
+  },
+  "kidErrorInvalidWebsite": {
+    "message": "Đó không phải là một trang web hợp lệ. Vui lòng thử lại."
+  },
+  "kidErrorLink": {
+    "message": "Liên kết phải bắt đầu bằng https:// hoặc http://"
+  },
+  "kidLinkAccountLinkPh": {
+    "message": "URL ví dụ https://koii.network/"
+  },
+  "kidLinkAccountTitlePh": {
+    "message": "Nhãn ví dụ như “Trang web”"
+  },
+  "kidMustBeFilled": {
+    "message": "Trường kID phải được điền"
+  },
+  "kidUnavailableUsername": {
+    "message": "Tên người dùng này không khả dụng, vui lòng thử một tên khác"
+  },
+  "kidWithoutSpecialCharacters": {
+    "message": "Vui lòng thử kID không có ký tự đặc biệt"
+  },
+  "koiiIdentity": {
+    "message": "Koii Identity (DID)"
+  },
+  "koiiIdentityARSupport": {
+    "message": "Koii Identity chỉ hỗ trợ ví AR."
+  },
+  "koiiTos": {
+    "message": "Điều khoản dịch vụ của Mạng lưới Koii."
+  },
+  "koiiWalletsUseA": {
+    "message": "Ví Koii sử dụng"
+  },
+  "leaderBoard": {
+    "message": "Bảng xếp hạng"
+  },
+  "learnMore": {
+    "message": "Tìm hiểu thêm"
+  },
+  "leavePageConfirmationMsg": {
+    "message": "Bạn có chắc chắn muốn rời khỏi trang này không?"
+  },
+  "letsGetStarted": {
+    "message": "Bắt đầu thôi."
+  },
+  "likelyIn30Seconds": {
+    "message": "Trong khoảng 30 giây"
+  },
+  "likelyInLessThan15Seconds": {
+    "message": "Trong khoảng < 15 giây"
+  },
+  "likelyInLessThan30Seconds": {
+    "message": "Trong khoảng < 30 giây"
+  },
+  "linkAccounts": {
+    "message": "Liên kết tài khoản"
+  },
+  "linkAccountsDesc": {
+    "message": "Những liên kết này sẽ xuất hiện trên hồ sơ DID của bạn. Để đảm bảo an toàn, mỗi liên kết nên bắt đầu bằng https://"
+  },
+  "linkCopied": {
+    "message": "Đã sao chép liên kết!"
+  },
+  "lockUc": {
+    "message": "KHOÁ"
+  },
+  "lockWalletFailed": {
+    "message": "Khoá ví thất bại"
+  },
+  "logIn": {
+    "message": "Đăng nhập"
+  },
+  "low": {
+    "message": "Thấp"
+  },
+  "makeSureCorrectAddress": {
+    "message": "Vui lòng kiểm tra địa chỉ này có chính xác không. Hành động này không thể hoàn tác được."
+  },
+  "makeSureCorrectAddressExportNFT": {
+    "message": "Vui lòng kiểm tra địa chỉ này có chính xác không. Một khi đã gửi, không có cách nào để hoàn tác giao dịch."
+  },
+  "maxFee": {
+    "message": "Phí tối đa"
+  },
+  "maxPriorityFee": {
+    "message": "Phí ưu tiên tối đa"
+  },
+  "medium": {
+    "message": "Trung bình"
+  },
+  "message": {
+    "message": "Tin nhắn"
+  },
+  "method": {
+    "message": "Phương pháp"
+  },
+  "mintCollectiblesLc": {
+    "message": "Tạo NFT mới"
+  },
+  "mostViewed": {
+    "message": "Xem nhiều nhất"
+  },
+  "moveToTheNextWordLc": {
+    "message": "nút để di chuyển đến từ tiếp theo."
+  },
+  "multipleWalletsSupport": {
+    "message": "Chúng tôi đã cập nhật phiên bản mới nhất của Finnie với nhiều ví và cầu nối Ethereum thú vị."
+  },
+  "myKey": {
+    "message": "Khôi phục Khóa của tôi"
+  },
+  "myKeyLc": {
+    "message": "khôi phục khóa của tôi"
+  },
+  "name": {
+    "message": "Tên"
+  },
+  "nameMustBeFilled": {
+    "message": "Trường tên phải được điền vào"
+  },
+  "needHelp": {
+    "message": "Cần trợ giúp?"
+  },
+  "network": {
+    "message": "Mạng"
+  },
+  "newAddress": {
+    "message": "Địa chỉ mới"
+  },
+  "newPassword": {
+    "message": "Mật khẩu mới"
+  },
+  "nftAssets": {
+    "message": "Tài sản NFT"
+  },
+  "nftLeaderBoard": {
+    "message": "Bảng xếp hạng NFT"
+  },
+  "nftNotExistOnChain": {
+    "message": "NFT này chưa được tạo! Thông thường trên Opensea, NFT sẽ được tạo lần đầu tiên khi được bán. Để sử dụng cầu nối, hãy tạo NFT của bạn trên Ethereum - hoặc bạn có thể tạo trực tiếp trên Arweave bằng Finnie."
+  },
+  "nftOnItsWay": {
+    "message": "NFT sắp đến đích!"
+  },
+  "nftOnlyHave1ItemMinted": {
+    "message": "Nhiều NFT chỉ có 1 mục được tạo."
+  },
+  "nftTitleLabel": {
+    "message": "Tiêu đề NFT"
+  },
+  "nftToAR": {
+    "message": "NFT của bạn đang trên đường đến Arweave!"
+  },
+  "nftToETH": {
+    "message": "NFT của bạn đang trên đường đến Ethereum!"
+  },
+  "noneSelect": {
+    "message": "-- Không chọn"
+  },
+  "notConnectedToAnySites": {
+    "message": "Không kết nối với bất kỳ trang web nào"
+  },
+  "notCostAnyFeesLc": {
+    "message": "không tốn phí nào"
+  },
+  "notEnoughARorKoiiTokens": {
+    "message": "Không đủ AR hoặc KOII"
+  },
+  "notEnoughARToken": {
+    "message": "Bạn không có đủ AR."
+  },
+  "notEnoughCharacters": {
+    "message": "Không đủ ký tự"
+  },
+  "notEnoughETHToken": {
+    "message": "Bạn không có đủ ETH."
+  },
+  "notEnoughFundsOrGas": {
+    "message": "Không đủ quỹ hoặc phí gas"
+  },
+  "notEnoughKoiiToken": {
+    "message": "Bạn không có đủ KOII."
+  },
+  "notEnoughTokens": {
+    "message": "Không đủ token"
+  },
+  "notes": {
+    "message": "Ghi chú"
+  },
+  "notGeneratedWithSecretPhrase": {
+    "message": "Khóa này không được tạo ra <br>bằng cụm từ khóa bí mật.<br>Chỉ có thể tạo ra cụm từ khóa phục hồi khi tạo mới khóa."
+  },
+  "notification": {
+    "message": "Thông báo"
+  },
+  "notificationCenter": {
+    "message": "Trung tâm thông báo"
+  },
+  "numberToTransfer": {
+    "message": "Số lượng chuyển"
+  },
+  "offUc": {
+    "message": "TẮT"
+  },
+  "okUc": {
+    "message": "OK"
+  },
+  "oldest": {
+    "message": "Cũ nhất"
+  },
+  "oneClickTransfer": {
+    "message": "Chuyển bằng một cú nhấp đến"
+  },
+  "onlyARSupports": {
+    "message": "Chức năng này chỉ hỗ trợ tài khoản AR"
+  },
+  "onUc": {
+    "message": "BẬT"
+  },
+  "orCreate": {
+    "message": "Hoặc tạo mới"
+  },
+  "organizeWalletDisplay": {
+    "message": "Sắp xếp hiển thị ví của bạn và chọn khóa mặc định. Khóa này sẽ tự động được chọn để tạo NFT và gửi Token."
+  },
+  "origin": {
+    "message": "Nguồn"
+  },
+  "orLc": {
+    "message": "hoặc"
+  },
+  "orPseudonymLc": {
+    "message": "hoặc bút danh"
+  },
+  "otherwiseYouCouldLoseAnyTokensOrAssets": {
+    "message": "Nếu không bạn có thể sẽ bị mất tokens và tài sản."
+  },
+  "ownerNFTBridgeRequiredEnd": {
+    "message": "Vui lòng nhập ví này và tiếp tục để chuyển cầu NFT."
+  },
+  "ownerNFTRequiredEnd": {
+    "message": "Vui lòng nhập ví này và tiếp tục để chuyển NFT."
+  },
+  "ownerNFTRequiredStart": {
+    "message": "NFT này được sở hữu bởi một ví với địa chỉ "
+  },
+  "password": {
+    "message": "Mật khẩu"
+  },
+  "passwordConfirmed": {
+    "message": "Xác nhận Mật khẩu"
+  },
+  "passwordDoesNotMatch": {
+    "message": "Mật khẩu không khớp"
+  },
+  "passwordDoNotMatch": {
+    "message": "Mật khẩu không khớp"
+  },
+  "passwordErrorMsg": {
+    "message": "Mật khẩu phải có ít nhất 8 ký tự, 1 số, 1 chữ cái viết hoa, 1 chữ cái viết thường và 1 ký tự đặc biệt (ví dụ: !@#$%)."
+  },
+  "passwordIsIncorrect": {
+    "message": "Mật khẩu không đúng"
+  },
+  "passwordNotMeetRequirements": {
+    "message": "Mật khẩu không đáp ứng yêu cầu."
+  },
+  "passwordRequired": {
+    "message": "Yêu cầu mật khẩu."
+  },
+  "pauseFinnie": {
+    "message": "Tạm dừng Finnie"
+  },
+  "penAndPaperLc": {
+    "message": "bút và giấy."
+  },
+  "pending": {
+    "message": "Đang chờ"
+  },
+  "pendingTransaction": {
+    "message": "Giao dịch đang chờ"
+  },
+  "pendingUpdate": {
+    "message": "Cập nhật đang chờ"
+  },
+  "permissions": {
+    "message": "quyền hạn"
+  },
+  "pieces": {
+    "message": "mảnh"
+  },
+  "pleaseAcceptTheTof": {
+    "message": "Vui lòng đồng ý với điều khoản dịch vụ"
+  },
+  "pleaseChooseAccount": {
+    "message": "Vui lòng chọn tài khoản Koii hoặc Arweave trước!"
+  },
+  "possessive": {
+    "message": "của"
+  },
+  "privacyPolicy": {
+    "message": "Chính sách bảo mật"
+  },
+  "privacyPolicyHere": {
+    "message": "Chính sách bảo mật ở đây."
+  },
+  "privateUc": {
+    "message": "RIÊNG TƯ"
+  },
+  "processing": {
+    "message": "Đang xử lý"
+  },
+  "profileImage": {
+    "message": "HÌNH ẢNH HỒ SƠ"
+  },
+  "profileLinkLc": {
+    "message": "liên kết hồ sơ"
+  },
+  "pronouns": {
+    "message": "Đại từ chỉ định giới tính"
+  },
+  "pronounsExample": {
+    "message": "Ví dụ: 'cô ấy' hoặc 'họ'"
+  },
+  "provide": {
+    "message": "Cung cấp"
+  },
+  "publicNFTMsgEnd": {
+    "message": "và trên bảng xếp hạng Koii."
+  },
+  "publicNFTMsgMiddle": {
+    "message": "sẽ xuất hiện trong bộ Thư viện DID của bạn"
+  },
+  "publicNFTMsgStart": {
+    "message": "Khi đặt ở chế độ công khai, NFT này"
+  },
+  "publicUc": {
+    "message": "CÔNG KHAI"
+  },
+  "qrCode": {
+    "message": "Mã QR"
+  },
+  "reactOutToKoii": {
+    "message": "Liên hệ với Koii's"
+  },
+  "received": {
+    "message": "Đã nhận"
+  },
+  "receiverWalletAddress": {
+    "message": "Địa chỉ Ví nhận"
+  },
+  "receiveUc": {
+    "message": "NHẬN"
+  },
+  "recentlyAdded": {
+    "message": "Vừa Thêm Gần Đây"
+  },
+  "recipientWalletAddress": {
+    "message": "Địa chỉ người nhận"
+  },
+  "recover": {
+    "message": "Khôi phục"
+  },
+  "recoverKeyMsgEnd": {
+    "message": "Finnie mà không sao lưu bản sao của cụm từ bí mật hoặc khóa của bạn trước."
+  },
+  "recoverKeyMsgMiddle": {
+    "message": "Không bao giờ xóa"
+  },
+  "recoverKeyMsgStart": {
+    "message": "Nếu bạn cần một bản sao của khóa hoặc cụm từ bí mật của mình, lấy nó ở đây."
+  },
+  "redeemReferralCodeMsg": {
+    "message": "Mã giới thiệu đã được đổi thành công!"
+  },
+  "redeemReferralRewards": {
+    "message": "Đổi phần thưởng giới thiệu của bạn ngay bây giờ."
+  },
+  "redeemRewards": {
+    "message": "Đổi phần thưởng"
+  },
+  "reEnterThreeWords": {
+    "message": "Nhập lại 3 từ trong 12 từ bí mật của bạn."
+  },
+  "reEnterYourFinniePassword": {
+    "message": "Vui lòng nhập mật khẩu của bạn."
+  },
+  "registered": {
+    "message": "Đã đăng ký"
+  },
+  "registerNFTError": {
+    "message": "Lỗi đăng ký NFT"
+  },
+  "reject": {
+    "message": "Từ chối"
+  },
+  "remember": {
+    "message": "Hãy nhớ rằng"
+  },
+  "rememberPasswordSecure": {
+    "message": "Hãy nhớ giữ mật khẩu của bạn an toàn."
+  },
+  "rememberToSaveYourSecretPhrase": {
+    "message": "Hãy chắc chắn rằng bạn đã ghi chép lại 12 từ bí mật vào một tờ giấy."
+  },
+  "remindMeLater": {
+    "message": "Nhắc tôi sau"
+  },
+  "removeAccount": {
+    "message": "Xóa tài khoản"
+  },
+  "removeAccountConfirmMsg": {
+    "message": "Bạn có chắc chắn muốn xóa"
+  },
+  "removeAccountMsg": {
+    "message": "Việc này sẽ xóa tất cả thông tin tài khoản khỏi Finnie, nhưng bạn có thể nhập lại thông tin với cụm từ bí mật."
+  },
+  "removeThisAddress": {
+    "message": "Xóa địa chỉ này"
+  },
+  "removeThisContact": {
+    "message": "Xóa liên hệ này"
+  },
+  "removeUc": {
+    "message": "XÓA"
+  },
+  "reportAnIssue": {
+    "message": "Thông báo sự cố"
+  },
+  "requestedLc": {
+    "message": "đã yêu cầu"
+  },
+  "requestEncryptionKey": {
+    "message": "Yêu cầu mã khóa mã hóa"
+  },
+  "requestLc": {
+    "message": "yêu cầu"
+  },
+  "requestNotExist": {
+    "message": "Yêu cầu này không còn tồn tại nữa."
+  },
+  "resend": {
+    "message": "Gửi lại"
+  },
+  "resumeFinnie": {
+    "message": "Tiếp tục Finnie"
+  },
+  "revealSecretPhraseText": {
+    "message": "Hiển thị Cụm từ bí mật"
+  },
+  "review": {
+    "message": "Xem xét"
+  },
+  "safePlaceToKeepItLc": {
+    "message": "nơi an toàn để lưu trữ?"
+  },
+  "save": {
+    "message": "Lưu"
+  },
+  "saveChanges": {
+    "message": "Lưu thay đổi"
+  },
+  "saveNewKeyFailed": {
+    "message": "Lưu khóa mới thất bại"
+  },
+  "saveSecretPhraseSuccessfully": {
+    "message": "Bạn đã lưu thành công Cụm từ bí mật của mình"
+  },
+  "saveYourSecretPhrase": {
+    "message": "Lưu 12 từ bí mật"
+  },
+  "search": {
+    "message": "Tìm kiếm"
+  },
+  "searchCollections": {
+    "message": "Tìm kiếm Bộ sưu tập"
+  },
+  "searchForAToken": {
+    "message": "Tìm kiếm token"
+  },
+  "searchNfts": {
+    "message": "Tìm kiếm NFTs"
+  },
+  "searchNftsPh": {
+    "message": "Tìm kiếm NFT"
+  },
+  "secretPhrase": {
+    "message": "Cụm từ bí mật"
+  },
+  "secretPhraseMsgLc": {
+    "message": "để bảo vệ tài khoản của bạn và đảm bảo rằng bạn là người kiểm soát duy nhất danh tính trực tuyến của mình."
+  },
+  "secureFinnieWithAPassword": {
+    "message": "Bảo mật Finnie với mật khẩu."
+  },
+  "securePasswordsHaveAtLeast8Characters": {
+    "message": "Mật khẩu phải có ít nhất 8 kí tự, bao gồm chữ thường, chữ hoa, số, kí tự đặc biệt (vd !@#$%)."
+  },
+  "security": {
+    "message": "Bảo mật"
+  },
+  "securitySettings": {
+    "message": "Cài đặt bảo mật"
+  },
+  "see": {
+    "message": "Xem"
+  },
+  "seeAccountBalancePermission": {
+    "message": "Xem số dư tài khoản"
+  },
+  "seeAdvancedDetails": {
+    "message": "Xem chi tiết nâng cao"
+  },
+  "seeAll": {
+    "message": "Xem tất cả"
+  },
+  "seeConnectedSites": {
+    "message": "Trang đã kết nối"
+  },
+  "seeMore": {
+    "message": "Xem thêm"
+  },
+  "select": {
+    "message": "Chọn"
+  },
+  "selectAccount": {
+    "message": "Chọn tài khoản của bạn"
+  },
+  "selectAccountPh": {
+    "message": "Chọn tài khoản"
+  },
+  "selectAccountToCreateDID": {
+    "message": "Vui lòng chọn một tài khoản Koii hoặc Arweave để tạo ID phi tập trung của bạn."
+  },
+  "selectAccountToSeeSummary": {
+    "message": "Chọn một tài khoản để xem bản tóm tắt."
+  },
+  "selectAnAccount": {
+    "message": "Chọn một Tài khoản"
+  },
+  "selectChainOfKey": {
+    "message": "Chọn chuỗi của khóa bạn muốn nhập"
+  },
+  "selectConnectedWalletsLc": {
+    "message": "chọn từ các ví được kết nối hoặc nhập địa chỉ mới"
+  },
+  "selectCoverPictureUc": {
+    "message": "CHỌN HÌNH ẢNH BÌA"
+  },
+  "selectExchangeCurrency": {
+    "message": "Chọn đơn vị tiền tệ được hiển thị bên cạnh Token và giao dịch của bạn."
+  },
+  "selectMultipleFiles": {
+    "message": "Chọn nhiều tệp từ máy tính của bạn."
+  },
+  "selectProfilePictureUc": {
+    "message": "CHỌN HÌNH ẢNH HỒ SƠ"
+  },
+  "selectWallet": {
+    "message": "Chọn Ví"
+  },
+  "selectWalletToConnect": {
+    "message": "Chọn ví để kết nối"
+  },
+  "selectYourNFTs": {
+    "message": "Chọn NFT của bạn"
+  },
+  "send": {
+    "message": "Gửi"
+  },
+  "sending": {
+    "message": "Gửi"
+  },
+  "sendingTo": {
+    "message": "Đang gửi tới"
+  },
+  "sendTokens": {
+    "message": "Gửi Tokens"
+  },
+  "sendUc": {
+    "message": "GỬI"
+  },
+  "sent": {
+    "message": "Đã gửi"
+  },
+  "sessionProposal": {
+    "message": "Đề xuất phiên họp"
+  },
+  "setApprovalForAll": {
+    "message": "Đặt sự cho phép cho tất cả"
+  },
+  "setDefaultAccount": {
+    "message": "Đã thiết lập tài khoản mặc định thành công."
+  },
+  "settings": {
+    "message": "Cài đặt"
+  },
+  "settingsMenuUc": {
+    "message": "MENU CÀI ĐẶT"
+  },
+  "share": {
+    "message": "Chia sẻ"
+  },
+  "shareByEmail": {
+    "message": "Chia sẻ qua Email"
+  },
+  "shareCode": {
+    "message": "Chia sẻ mã"
+  },
+  "shareDIDHint": {
+    "message": "Bạn có thể chia sẻ hồ sơ DID của mình với bất kỳ ai bằng cách sử dụng URL này."
+  },
+  "shareForRewards": {
+    "message": "Chia sẻ để kiếm phần thưởng"
+  },
+  "shareFriendCodeMsg": {
+    "message": "Sử dụng mã của tôi để có 1 lần tải lên NFT miễn phí trên https://koi.rocks/ \n"
+  },
+  "shareLink": {
+    "message": "Chia sẻ liên kết"
+  },
+  "shareToEarn": {
+    "message": "Chia sẻ để kiếm Phần thưởng Chú ý"
+  },
+  "showAmountSetting": {
+    "message": "Hiển thị số lượng KOII kiếm được ở NFTs và bộ sưu tập trong Thư viện của tôi."
+  },
+  "showViewSetting": {
+    "message": "Hiển thị số lượt xem ở NFTs và bộ sưu tập trong Thư viện của tôi."
+  },
+  "sign": {
+    "message": "Sign"
+  },
+  "signingMessage": {
+    "message": "Signing Message"
+  },
+  "signTransactionError": {
+    "message": "Lỗi ký giao dịch"
+  },
+  "simulatedChanges": {
+    "message": "Thay đổi mô phỏng"
+  },
+  "size": {
+    "message": "Kích thước"
+  },
+  "skipThisStep": {
+    "message": "Bỏ qua bước này"
+  },
+  "somethingWentWrong": {
+    "message": "Có lỗi xảy ra. Vui lòng thử lại sau!"
+  },
+  "somethingWentWrongWhoops": {
+    "message": "Ôi! Đã có lỗi xảy ra!"
+  },
+  "somethingWrongNFT": {
+    "message": "Oops! Có lỗi xảy ra với NFT của bạn!"
+  },
+  "sortBy": {
+    "message": "Sắp xếp theo"
+  },
+  "startFromBeginning": {
+    "message": "Bắt đầu lại từ đầu."
+  },
+  "startFromScratch": {
+    "message": "Bắt đầu lại từ đầu"
+  },
+  "startFromScratchLc": {
+    "message": "bắt đầu lại từ đầu"
+  },
+  "statementNoReward": {
+    "message": "Bạn không có phần thưởng nào, hãy chia sẻ mã của bạn để nhận phần thưởng!"
+  },
+  "status": {
+    "message": "Trạng thái"
+  },
+  "staySafeEnd": {
+    "message": "hoặc tệp khóa"
+  },
+  "staySafeMiddle": {
+    "message": "Koii SẼ KHÔNG bao giờ yêu cầu bạn cung cấp cụm từ bảo mật"
+  },
+  "staySafeStart": {
+    "message": "Bảo vệ bản thân khỏi các trò lừa đảo bằng cách -"
+  },
+  "storageFee": {
+    "message": "Phí lưu trữ"
+  },
+  "submit": {
+    "message": "Gửi"
+  },
+  "successfullySent": {
+    "message": "Gửi thành công"
+  },
+  "suggestTransactionPermission": {
+    "message": "Đề xuất các giao dịch để phê duyệt"
+  },
+  "sunriseHasNotBeenVerified": {
+    "message": "Trang web này chưa được xác minh bởi Sunrise NFT Scam Detector. Hãy đảm bảo rằng bạn đang truy cập vào trang web đúng."
+  },
+  "sunriseVerified": {
+    "message": "Trang web đã được xác minh bởi Sunrise NFT Scam Detector"
+  },
+  "sunriseWarningMsg": {
+    "message": "Theo Sunrise NFT Scam Detector, trang web này có thể giả mạo một trang web NFT phổ biến. Hãy kiểm tra lại rằng bạn đang thực hiện việc tạo NFT từ trang web đúng để đảm bảo an toàn cho tài sản của bạn."
+  },
+  "supportTeamLc": {
+    "message": "đội hỗ trợ"
+  },
+  "switchAccounts": {
+    "message": "Chuyển tài khoản"
+  },
+  "tabLc": {
+    "message": "tab"
+  },
+  "tags": {
+    "message": "Tags"
+  },
+  "tagsLc": {
+    "message": "tags"
+  },
+  "tagsPh": {
+    "message": "Phân tách bằng “,” và nhấn dấu cách"
+  },
+  "takeAnAction": {
+    "message": "Thực hiện một hành động"
+  },
+  "takeFewMinutesMsg": {
+    "message": "Việc này sẽ mất vài phút để phản ánh trên ví của bạn."
+  },
+  "takeTimeToGallery": {
+    "message": "Có thể mất vài phút để hiển thị trong Thư viện của bạn."
+  },
+  "termsOfService": {
+    "message": "Điều khoản dịch vụ"
+  },
+  "termsOfUse": {
+    "message": "Điều khoản sử dụng"
+  },
+  "theKOIINetwork": {
+    "message": "Mạng lưới KOII"
+  },
+  "theseSitesLc": {
+    "message": "những trang web này"
+  },
+  "thisContentIs": {
+    "message": "Nội dung này là "
+  },
+  "thisRequestWill": {
+    "message": "Yêu cầu này sẽ"
+  },
+  "thisShouldBeWrittenOnAPieceOfPaper": {
+    "message": "Bạn nên viết 12 từ bí mật xuống một tờ giấy và đừng bao giờ lưu chúng vào máy tính có kết nối internet"
+  },
+  "titleRequired": {
+    "message": "Tiêu đề không thể để trống"
+  },
+  "to": {
+    "message": "Đến"
+  },
+  "token": {
+    "message": "Token"
+  },
+  "tokenBalance": {
+    "message": "Số dư token"
+  },
+  "tokenContractAddress": {
+    "message": "Địa chỉ hợp đồng Token"
+  },
+  "tokens": {
+    "message": "Tokens"
+  },
+  "tokenSymbol": {
+    "message": "Ký hiệu Token"
+  },
+  "toMakeItLc": {
+    "message": "để làm cho nó"
+  },
+  "totalAvailableLc": {
+    "message": "tổng cung"
+  },
+  "totalBalance": {
+    "message": "Số dư khả dụng"
+  },
+  "totalCost": {
+    "message": "Tổng chi phí"
+  },
+  "totalViews": {
+    "message": "Tổng lượt xem"
+  },
+  "toUc": {
+    "message": "ĐẾN"
+  },
+  "transactionAppearsToBeInOrder": {
+    "message": "Giao dịch này có vẻ ổn định"
+  },
+  "transactionFailed": {
+    "message": "Giao dịch thất bại"
+  },
+  "transactionFees": {
+    "message": "Phí giao dịch"
+  },
+  "transactionInQueue": {
+    "message": "1 giao dịch trong hàng đợi"
+  },
+  "transactionPending": {
+    "message": "Giao dịch đang chờ xử lý"
+  },
+  "transactionPendingLc": {
+    "message": "giao dịch đang chờ xử lý"
+  },
+  "transactionStatus": {
+    "message": "Trạng thái giao dịch"
+  },
+  "transfer": {
+    "message": "Chuyển khoản"
+  },
+  "transferMediaToAR": {
+    "message": "Chuyển bản ghi âm của bạn sang ví Arweave."
+  },
+  "transferMediaToETH": {
+    "message": "Chuyển bản ghi âm của bạn sang ví Ethereum."
+  },
+  "transferNFT": {
+    "message": "Chuyển NFT"
+  },
+  "transferNFTToFriend": {
+    "message": "Chuyển NFT cho bạn bè"
+  },
+  "transferOwnershipTakeTime": {
+    "message": "Việc chuyển quyền sở hữu có thể mất tối đa 10 phút sau khi bạn xác nhận mua hàng."
+  },
+  "typeHerePh": {
+    "message": "Nhập tại đây"
+  },
+  "typeInTheMissingWords": {
+    "message": "Gõ những từ thiếu ở phía dưới để xác nhận rằng bạn đã ghi chép lại 12 từ bí mật."
+  },
+  "typeSecretPhrase": {
+    "message": "Nhập cụm từ bí mật của bạn để nhập khóa."
+  },
+  "typeYourSecretPhrase": {
+    "message": "Nhập cụm từ bí mật của bạn."
+  },
+  "unknownTransaction": {
+    "message": "unknownTransaction"
+  },
+  "unlock": {
+    "message": "Mở khoá"
+  },
+  "unlockFinnie": {
+    "message": "Mở khóa Finnie"
+  },
+  "update": {
+    "message": "Cập nhật"
+  },
+  "updateDID": {
+    "message": "Cập nhật DID"
+  },
+  "updateKIDSuccess": {
+    "message": "DID của bạn đang được cập nhật. Việc này có thể mất vài phút."
+  },
+  "updatePassword": {
+    "message": "Cập nhật Mật khẩu"
+  },
+  "uploadedFilesUc": {
+    "message": "Tệp ĐÃ TẢI LÊN"
+  },
+  "uploadNFTDescPh": {
+    "message": "Kể cho thế giới biết về sản phẩm này"
+  },
+  "uploadNFTError": {
+    "message": "Lỗi tải lên NFT"
+  },
+  "uploadNFTTitleLabel": {
+    "message": "Tiêu đề NFT"
+  },
+  "uploadNFTTitlePh": {
+    "message": "Tìm cái tên hoàn hảo"
+  },
+  "uploadToARPermaweb": {
+    "message": "đã được tải lên permaweb của Arweave."
+  },
+  "useMyExistingKey": {
+    "message": "Sử dụng key của tôi."
+  },
+  "version": {
+    "message": "Phiên bản"
+  },
+  "versionNotes": {
+    "message": "Ghi chú phiên bản"
+  },
+  "versionNotesMsg": {
+    "message": "Xem chi tiết về bản phát hành mới nhất."
+  },
+  "viewLc": {
+    "message": "lượt xem"
+  },
+  "views": {
+    "message": "Lượt xem"
+  },
+  "viewTheAddressesPermission": {
+    "message": "Xem địa chỉ của các tài khoản được cấp quyền của bạn"
+  },
+  "wallet": {
+    "message": "Ví"
+  },
+  "walletAddress": {
+    "message": "Địa chỉ ví"
+  },
+  "walletConnect": {
+    "message": "Kết nối ví"
+  },
+  "walletSettings": {
+    "message": "Cài đặt ví"
+  },
+  "websiteLc": {
+    "message": "trang web"
+  },
+  "welcomeTo": {
+    "message": "Chào mừng đến với"
+  },
+  "welcomeToKoiiLeaderBoard": {
+    "message": "Chào mừng đến với bảng xếp hạng của Koii"
+  },
+  "welcomeToTheFinnieWallet": {
+    "message": "Chào mừng đến với ví Finnie"
+  },
+  "whatAboutA": {
+    "message": "Còn về"
+  },
+  "withYourReferralCodeLc": {
+    "message": "với mã giới thiệu của bạn"
+  },
+  "withYourSecretPhrase": {
+    "message": "Với Secret Phrase của bạn, bất cứ ai cũng có thể truy cập"
+  },
+  "writeDownTheKeyOnAPieceOfPaper": {
+    "message": "Viết 12 từ bí mật xuống một tờ giấy."
+  },
+  "writeDownYourSecretPhrase": {
+    "message": "Hãy viết xuống 12 từ bí mật mà bạn nhận được."
+  },
+  "youGet": {
+    "message": "Bạn nhận được"
+  },
+  "youGive": {
+    "message": "Bạn tặng"
+  },
+  "youHaveEarned": {
+    "message": "Bạn đã kiếm được"
+  },
+  "yourCodeIsUc": {
+    "message": "MÃ CỦA BẠN LÀ"
+  },
+  "yourCollectionReady": {
+    "message": "Bộ sưu tập của bạn đang được chuẩn bị!"
+  },
+  "yourCoverImageLc": {
+    "message": "ảnh bìa của bạn"
+  },
+  "yourTokensOnTheWay": {
+    "message": "Những Token của bạn đang trên đường đến!"
+  }
+}

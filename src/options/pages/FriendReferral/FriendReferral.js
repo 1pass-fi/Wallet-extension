@@ -46,7 +46,7 @@ const FriendReferral = () => {
         if (status != 200) {
           switch (message) {
             case `Affiliate Invites doesn't exists or already claimed`:
-              dispatch(setQuickNotification(STATEMENT.NO_REWARD))
+              dispatch(setQuickNotification(chrome.i18n.getMessage('statementNoReward')))
               break
             default:
               dispatch(setQuickNotification(message))
@@ -69,15 +69,16 @@ const FriendReferral = () => {
       </div>
       <div className="mt-16.75 mx-auto transform -translate-x-83 w-max text-white">
         <div className="font-semibold text-3xl leading-10 capitalize">
-          Give a Little, Get a Little
+          {chrome.i18n.getMessage('giveLittleGetLittle')}
         </div>
         <div className="w-80 mt-5 leading-7 text-base">
-          Invite friends to use the Koii browser extension. You’ll get 1 KOII free for each friend
-          who registers an NFT with your code and they’ll get 1 KOII free, too.
+          {chrome.i18n.getMessage('friendReferralMsg')}
         </div>
         <div className="w-80 mt-18 leading-7 text-base">
-          You’ve earned <span className="text-success">{defaultAccount.totalReward} KOII</span> with
-          your referral code. <span className="font-semibold">Keep sharing for free KOII.</span>
+          {chrome.i18n.getMessage('youHaveEarned')}{' '}
+          <span className="text-success">{defaultAccount.totalReward} KOII</span>{' '}
+          {chrome.i18n.getMessage('withYourReferralCodeLc')}{'. '}
+          <span className="font-semibold">{chrome.i18n.getMessage('keepSharing')}</span>
         </div>
       </div>
       <div className="m-auto absolute top-48 left-0 right-0 bottom-0">
@@ -86,14 +87,14 @@ const FriendReferral = () => {
           className="mx-auto"
         />
         <div className="mt-8 text-success text-lg leading-7 font-semibold text-center">
-          YOUR CODE IS
+          {chrome.i18n.getMessage('yourCodeIsUc')}
         </div>
         <div className="mt-2 text-base text-center leading-7 text-white">{code}</div>
         <div style={{ width: '768px' }} className="mt-8 flex justify-evenly items-center mx-auto">
-          <span data-tip="This feature only supports AR account">
+          <span data-tip={chrome.i18n.getMessage('onlyARSupports')}>
             <Button
               style={{ width: '216px', height: '46px' }}
-              text="Share Code"
+              text={chrome.i18n.getMessage('shareCode')}
               variant="lightBlue"
               icon={ShareCodeIcon}
               size="lg"
@@ -104,11 +105,11 @@ const FriendReferral = () => {
             />
           </span>
 
-          <span data-tip="This feature only supports AR account">
+          <span data-tip={chrome.i18n.getMessage('onlyARSupports')}>
             <CopyToClipboard text={code}>
               <Button
                 style={{ width: '216px', height: '46px' }}
-                text={isCopied ? 'Copied' : 'Click to Copy'}
+                text={isCopied ? chrome.i18n.getMessage('copied') : chrome.i18n.getMessage('clickToCopy')}
                 variant="primary"
                 icon={isCopied ? CheckMarkIcon : CopyIcon}
                 size={isCopied ? 'lg' : 'md'}
@@ -118,10 +119,10 @@ const FriendReferral = () => {
             </CopyToClipboard>
           </span>
 
-          <span data-tip="This feature only supports AR account">
+          <span data-tip={chrome.i18n.getMessage('onlyARSupports')}>
             <Button
               style={{ width: '216px', height: '46px' }}
-              text="Get My Rewards"
+              text={chrome.i18n.getMessage('getMyRewards')}
               variant="warning300"
               icon={ShareIcon}
               size="lg"

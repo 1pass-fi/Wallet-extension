@@ -75,14 +75,14 @@ const EditNftInfo = ({
 
   return (
     <>
-      <div className="text-xl text-white">EDIT NFT INFO:</div>
+      <div className="text-xl text-white">{chrome.i18n.getMessage('editNFTInfoUc')}:</div>
       <div className="flex mt-4">
         <div className="h-68 w-68 rounded shadow-lg object-cover">
           <NFTMedia contentType={nftInfo.contentType} source={file} />
         </div>
         <div className="ml-3.5 w-55.5 flex flex-col justify-between">
           <InputField
-            label="NFT Title"
+            label={chrome.i18n.getMessage('nftTitleLabel')}
             required={true}
             name="title"
             value={nftDetail.title}
@@ -91,7 +91,7 @@ const EditNftInfo = ({
             isDisable={nftInfo.existingNft}
           />
           <InputField
-            label="Description"
+            label={chrome.i18n.getMessage('description')}
             required={true}
             type="textarea"
             name="description"
@@ -110,7 +110,7 @@ const EditNftInfo = ({
             <input
               className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 input-field-component"
               name="tags"
-              placeholder="Tags,"
+              placeholder={chrome.i18n.getMessage('tags')+','}
               id="tags"
               value={tagInputs[currentNftIdx] ? tagInputs[currentNftIdx] : ''}
               onChange={(e) => {
@@ -122,7 +122,7 @@ const EditNftInfo = ({
               disabled={nftInfo.existingNft}
             />
             <div className="text-warning mt-1 uppercase text-3xs">
-              Separate with a “,” and hit space bar
+              {chrome.i18n.getMessage('tagsPh')}
             </div>
 
             <div className="max-h-9 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1.5">
@@ -157,7 +157,8 @@ const EditNftInfo = ({
                 !nftInfo.existingNft ? () => handleNftContentNSFTChange(currentNftIdx) : () => {}
               }
             >
-              This content is <span className="text-warning">Explicit or 18+.</span>
+              {chrome.i18n.getMessage('thisContentIs')}
+              <span className="text-warning">{chrome.i18n.getMessage('explicitMsg')}</span>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import clsx from 'clsx'
-import { ACTIVITY_NAME, ETH_NETWORK_PROVIDER,PATH, URL } from 'constants/koiConstants'
+import { ACTIVITY_NAME, ETH_NETWORK_PROVIDER, PATH, URL } from 'constants/koiConstants'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import ExploreBlock from 'img/v2/explore-block-coming-soon.svg'
@@ -15,7 +15,6 @@ import formatNumber from 'options/utils/formatNumber'
 const ActivityRow = ({
   activity: { activityName, address, date, expense, id, source, network, isK2Account }
 }) => {
-
   const displayInfo = useMemo(() => {
     const dateString = moment(date).format('MM/DD/YYYY')
 
@@ -43,7 +42,11 @@ const ActivityRow = ({
       tokenType = activityName.split(' ').pop()
     }
 
-    if (activityName === ACTIVITY_NAME.CONTRACT_INTERACTION || activityName === ACTIVITY_NAME.UNKNOWN) tokenType = 'ETH'
+    if (
+      activityName === chrome.i18n.getMessage('contractInteraction') ||
+      activityName === chrome.i18n.getMessage('unknownTransaction')
+    )
+      tokenType = 'ETH'
 
     let from = ''
     let to = ''
@@ -75,9 +78,10 @@ const ActivityRow = ({
       <td className="px-1">{displayInfo.dateString}</td>
       <td className="px-1">{formatLongStringTruncate(displayInfo.action, 20)}</td>
       <td className="px-1">
-        {network === ETH_NETWORK_PROVIDER.MAINNET || network == ETH_NETWORK_PROVIDER.GOERLI && (
-          <EthereumLogo className="w-5 h-5 mr-2 inline-block" />
-        )}
+        {network === ETH_NETWORK_PROVIDER.MAINNET ||
+          (network == ETH_NETWORK_PROVIDER.GOERLI && (
+            <EthereumLogo className="w-5 h-5 mr-2 inline-block" />
+          ))}
         {displayInfo.tokenType === 'SOL' && <SolanaLogo className="w-5 h-5 mr-2 inline-block" />}
         {displayInfo.tokenType === 'AR' && <ArweaveLogo className="w-5 h-5 mr-2 inline-block" />}
         {displayInfo.tokenType === 'KOII' && <KoiiLogo className="w-5 h-5 mr-2 inline-block" />}
@@ -105,8 +109,8 @@ const ActivityRow = ({
           >
             <ViewBlockIcon className="pr-1.375" />
             {network === ETH_NETWORK_PROVIDER.MAINNET || network === ETH_NETWORK_PROVIDER.GOERLI
-              ? 'Etherscan'
-              : 'Explore Block'}
+              ? chrome.i18n.getMessage('etherscan')
+              : chrome.i18n.getMessage('exploreBlock')}
           </a>
         </td>
       ) : (

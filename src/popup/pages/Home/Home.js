@@ -43,7 +43,7 @@ const Home = () => {
             style={{ width: '300px' }}
             className="font-normal text-2xl tracking-finnieSpacing-tight ml-5 mt-40 text-blue-800"
           >
-            Select an account to see a summary.
+            {chrome.i18n.getMessage('selectAccountToSeeSummary')}
           </div>
           <FinnieIcon className="ml-5 mt-8" style={{ width: '54px', height: '40px' }} />
         </div>

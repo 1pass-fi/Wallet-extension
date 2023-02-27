@@ -50,14 +50,15 @@ const ShareCodeModal = ({ code, close }) => {
       >
         <div className="flex h-16.75 rounded-t bg-trueGray-100 shadow-md w-full font-semibold text-xl tracking-finnieSpacing-wide relative">
           <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" />
-          <div className="m-auto">Share to earn Attention Rewards</div>
+          <div className="m-auto">{chrome.i18n.getMessage('shareToEarn')}</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
         <div className="mt-7 w-115 text-sm tracking-finnieSpacing-tight text-center">
-          Earn attention rewards forever through Koii. Copy this link and share on your favorite
-          social platforms.
+          {chrome.i18n.getMessage('earnAttentionRewardsMsg')}
         </div>
-        <div className="mt-4 text-base font-bold leading-7">Share Code</div>
+        <div className="mt-4 text-base font-bold leading-7">
+          {chrome.i18n.getMessage('shareCode')}
+        </div>
         <div
           style={{ width: '386px', height: '32px' }}
           className="flex items-center justify-center mt-1.5 mb-5 border-2 border-indigo text-sm tracking-finnieSpacing-tight text-center"
@@ -69,7 +70,7 @@ const ShareCodeModal = ({ code, close }) => {
           <Button
             style={{ width: '200px', height: '40px' }}
             className="text-base"
-            text={isCopied ? 'Copied' : 'Copy Code'}
+            text={isCopied ? chrome.i18n.getMessage('copied') : chrome.i18n.getMessage('copyCode')}
             variant="indigo"
             icon={CopyIcon}
             size={'md'}
@@ -89,7 +90,7 @@ const ShareCodeModal = ({ code, close }) => {
           </div> */}
           <a
             href={`mailto:?subject=Use my Koii Friend Referral code&body=Use my code to get 1 free NFT upload on koi.rocks: \n${code}`}
-            title="Share by Email"
+            title={chrome.i18n.getMessage('shareByEmail')}
           >
             <MailIcon />
           </a>

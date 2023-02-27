@@ -66,7 +66,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
       setStep(2)
     } catch (err) {
       if (err.message === 'Incorrect password') {
-        setPasswordError(err.message)
+        setPasswordError(chrome.i18n.getMessage('incorrectPassword'))
       } else {
         dispatch(setError(err.message))
       }
@@ -90,7 +90,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
           {step === 1 && (
             <BackIcon onClick={close} className="w-7 h-7 top-4 left-4 absolute cursor-pointer" />
           )}
-          <div className="m-auto">Secret Phrase</div>
+          <div className="m-auto">{chrome.i18n.getMessage('secretPhrase')}</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
 
@@ -116,7 +116,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
               style={{ width: '382px' }}
               className="pl-1.75 mt-3 font-semibold text-sm leading-6"
             >
-              Enter Finnie Password:
+              {chrome.i18n.getMessage('enterFinniePassword')}:
             </div>
             <div className="relative">
               <input
@@ -166,7 +166,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
               style={{ width: '239px', height: '39px' }}
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-5"
               variant="indigo"
-              text="Done"
+              text={chrome.i18n.getMessage('done')}
               onClick={() => onGetRecoveryPhrase()}
             />
           </div>
@@ -205,37 +205,11 @@ const RecoveryPhraseModal = ({ account, close }) => {
                 })}
             </div>
 
-            {/* <div className="flex mt-6.25 mb-8">
-              <CopyToClipboard text={seedPhrase}>
-                <Button
-                  style={{ width: '220px', height: '39px' }}
-                  className="h-10 mt-5 text-base rounded w-43.75 mx-auto"
-                  variant="inversedIndigo"
-                  text={isCopied ? 'Copied!' : 'Copy Link'}
-                  icon={CopyIcon}
-                  onClick={() => setIsCopied(true)}
-                />
-              </CopyToClipboard>
-              <CSVLink
-                filename={`${account.accountName}_seedphrase.csv`}
-                data={seedPhrase}
-                style={{ textDecoration: 'none' }}
-              >
-                <Button
-                  style={{ width: '220px', height: '39px' }}
-                  className="ml-5.25 h-10 mt-5 text-base rounded w-43.75 mx-auto"
-                  variant="indigo"
-                  text="Save as CSV File"
-                  icon={ImportIcon}
-                />
-              </CSVLink>
-            </div> */}
-
             <Button
               style={{ width: '239px', height: '39px' }}
               className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-5"
               variant="indigo"
-              text="Done"
+              text={chrome.i18n.getMessage('done')}
               onClick={close}
             />
           </div>

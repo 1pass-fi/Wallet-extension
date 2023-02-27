@@ -22,7 +22,7 @@ const NotificationsCenterLinks = () => {
               idx !== 0 && 'border-t-2 border-opacity-20 '
             )}
             key={idx}
-            data-tip="Coming soon"
+            data-tip={chrome.i18n.getMessage('comingSoon')}
           >
             {name}
           </div>

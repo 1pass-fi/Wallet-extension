@@ -25,7 +25,7 @@ const InputField = ({
   autoFocus = false,
   onKeyDown = () => {},
   id,
-  errorId='',
+  errorId = ''
 }) => {
   const [textAreaHeight, setTextAreaHeight] = useState(83)
 
@@ -69,7 +69,7 @@ const InputField = ({
         {`${required ? '*' : ''}`}
       </label>
       {type === 'textarea' ? (
-        <div data-tip={isDisable ? 'This NFT version does not support updating' : ''}>
+        <div data-tip={isDisable ? chrome.i18n.getMessage('doesNotSupportNFTVersion') : ''}>
           <textarea
             ref={textAreaRef}
             name={name}
@@ -80,12 +80,12 @@ const InputField = ({
             value={value}
             onChange={(e) => setValue(e)}
             disabled={isDisable}
-            data-tip={isDisable ? `This NFT version does not support updating` : ''}
+            data-tip={isDisable ? chrome.i18n.getMessage('doesNotSupportNFTVersion') : ''}
           />
         </div>
       ) : (
         <div
-          data-tip={isDisable ? 'This NFT version does not support updating' : ''}
+          data-tip={isDisable ? chrome.i18n.getMessage('doesNotSupportNFTVersion') : ''}
           className={clsx(passwordFinnie && 'relative')}
         >
           <input

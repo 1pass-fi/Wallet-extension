@@ -32,28 +32,30 @@ const HiddenPhrase = ({ step, setStep, importType }) => {
     >
       <WelcomeBackground className="absolute bottom-0 right-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
-        Save your Secret Phrase
+        {chrome.i18n.getMessage('saveYourSecretPhrase')}
       </div>
       <div className="flex mt-5 font-normal text-lg leading-6 gap-1.5">
         <div>1. </div>
-        <div>Click the lock below to reveal your secret phrase.</div>
+        <div>{chrome.i18n.getMessage('clickTheLockBelowToRevealYourSecretPhrase')}</div>
       </div>
       <div className="flex mt-1.5 font-normal text-lg leading-6 gap-1.5">
         <div>2. </div>
-        <div>Write down the key on a piece of paper.</div>
+        <div>{chrome.i18n.getMessage('writeDownTheKeyOnAPieceOfPaper')}</div>
       </div>
       <div className="flex mt-1.5 font-normal text-lg leading-6 gap-1.5">
         <div>3. </div>
         <div>
-          <span className="text-warning-200">Do not show this to anyone else</span> or they will be
-          able to use your wallet and withdraw funds or other assets like NFTs
+          <span className="text-warning-200">{chrome.i18n.getMessage('hiddenPhraseStart')}</span>
+          {chrome.i18n.getMessage('hiddenPhraseEnd')}{' '}
         </div>
       </div>
       <div className="mt-6.75 font-normal text-lg leading-6">
-        Do you have a <span className="text-turquoiseBlue">pen & paper handy?</span>
+        {chrome.i18n.getMessage('doYouHaveA')}{' '}
+        <span className="text-turquoiseBlue">{chrome.i18n.getMessage('penAndPaperLc')}</span>
       </div>
       <div className="mt-1 font-normal text-lg leading-6">
-        What about a <span className="text-turquoiseBlue">safe place to keep it?</span>
+        {chrome.i18n.getMessage('whatAboutA')}{' '}
+        <span className="text-turquoiseBlue">{chrome.i18n.getMessage('safePlaceToKeepItLc')}</span>
       </div>
 
       {showPhrase ? (
@@ -76,7 +78,7 @@ const HiddenPhrase = ({ step, setStep, importType }) => {
             style={{ width: '240px', height: '42px' }}
             className="mt-10.75 text-base mx-auto rounded z-10"
             variant="white"
-            text="Continue"
+            text={chrome.i18n.getMessage('continue')}
             onClick={() => setStep(step + 1)}
             id="continue-button"
           />
@@ -95,7 +97,7 @@ const HiddenPhrase = ({ step, setStep, importType }) => {
           className="absolute bottom-11 right-7.5 text-lightBlue underline font-normal text-sm tracking-finnieSpacing-wide cursor-pointer"
           onClick={handleSkipThisStep}
         >
-          Skip this step
+          {chrome.i18n.getMessage('skipThisStep')}
         </div>
       )}
     </div>

@@ -6,7 +6,7 @@
 import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import axios from 'axios'
 import { ACCOUNT,TYPE } from 'constants/accountConstants'
-import { ACTIVITY_NAME, ALL_NFT_LOADED, BRIDGE_FLOW, DELIGATED_OWNER, ERROR_MESSAGE, KOII_CONTRACT,PATH, URL } from 'constants/koiConstants'
+import { ALL_NFT_LOADED, BRIDGE_FLOW, DELIGATED_OWNER, KOII_CONTRACT,PATH, URL } from 'constants/koiConstants'
 import { find, findIndex,get, includes, isArray, isEmpty, isNumber, isString, orderBy } from 'lodash'
 import moment from 'moment'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
@@ -287,12 +287,12 @@ export class ArweaveMethod {
         case 'KOI':
           balance = await this.koi.getKoiBalance()
           arBalance = await this.koi.getWalletBalance()
-          if (arBalance < 0.00005) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
-          if (qty > balance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_KOI)
+          if (arBalance < 0.00005) throw new Error(chrome.i18n.getMessage('notEnoughARToken'))
+          if (qty > balance) throw new Error(chrome.i18n.getMessage('notEnoughKoiiToken'))
           break
         case 'AR':
           balance = await this.koi.getWalletBalance()
-          if (qty + 0.0008 > balance) throw new Error(ERROR_MESSAGE.NOT_ENOUGH_AR)
+          if (qty + 0.0008 > balance) throw new Error(chrome.i18n.getMessage('notEnoughARToken'))
           break
       }
       const txId = await this.koi.transfer(qty, target, token)
@@ -584,7 +584,7 @@ export class ArweaveMethod {
           if (success) {
             bridgePending = {
               id: txId,
-              activityName: ACTIVITY_NAME.BRIDGE_AR_TO_ETH,
+              activityName: chrome.i18n.getMessage('bridgeARtoETH'),
               expense: 0,
               accountName,
               date: moment().format('MMMM DD YYYY'),

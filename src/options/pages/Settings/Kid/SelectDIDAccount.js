@@ -35,7 +35,7 @@ const SelectDIDAccount = ({ close }) => {
     try {
       dispatch(setIsLoading)
       if (isEmpty(selectedAccount)) {
-        dispatch(setError('Please choose Koii or Arweave account first!'))
+        dispatch(setError(chrome.i18n.getMessage('pleaseChooseAccount')))
         return
       }
       await dispatch(setDefaultAccount(selectedAccount))
@@ -84,7 +84,7 @@ const SelectDIDAccount = ({ close }) => {
         ref={modalRef}
       >
         <div className="flex h-16.75 rounded-t bg-trueGray-100 shadow-md w-full font-semibold text-xl tracking-finnieSpacing-wide relative">
-          <div className="m-auto">Select an Account</div>
+          <div className="m-auto">{chrome.i18n.getMessage('selectAnAccount')}</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
         <Background className="absolute" style={{ left: '0px', top: '67px' }} />
@@ -92,7 +92,7 @@ const SelectDIDAccount = ({ close }) => {
           className="absolute font-normal text-lg text-indigo"
           style={{ width: '303px', right: '31px', top: '152px' }}
         >
-          Please select a Koii or Arweave account to create your Decentralized ID.
+          {chrome.i18n.getMessage('selectAccountToCreateDID')}
         </div>
         <div className="mt-50 flex flex-col items-center justify-evenly">
           <div
@@ -117,7 +117,9 @@ const SelectDIDAccount = ({ close }) => {
                     {formatLongString(arAccount.address, 18)}
                     <CopyToClipboard text={arAccount.address}>
                       <CopyIcon
-                        onClick={() => dispatch(setQuickNotification(NOTIFICATION.ADDRESS_COPIED))}
+                        onClick={() =>
+                          dispatch(setQuickNotification(chrome.i18n.getMessage('addressCopied')))
+                        }
                         style={{ width: '16px', height: '16px' }}
                       />
                     </CopyToClipboard>
@@ -127,8 +129,13 @@ const SelectDIDAccount = ({ close }) => {
                   className="ml-10 mt-1 flex flex-col font-normal text-xs text-left tracking-finnieSpacing-tight justify-between"
                   style={{ height: '38px' }}
                 >
-                  <div>Balance: {formatNumber(arAccount.koiBalance, 2)} KOII</div>
-                  <div>Assets: {arAccount.totalAssets.length}</div>
+                  <div>
+                    {chrome.i18n.getMessage('balance')}: 
+                    {formatNumber(arAccount.koiBalance, 2)} KOII
+                  </div>
+                  <div>
+                    {chrome.i18n.getMessage('assets')}: {arAccount.totalAssets.length}
+                  </div>
                 </div>
                 {arAccount?.address === defaultArAccount?.address ? (
                   <FavoriteIcon className="absolute right-6 top-4" />
@@ -147,7 +154,7 @@ const SelectDIDAccount = ({ close }) => {
               style={{ width: '180px', height: '38px' }}
               className="h-10 text-base rounded w-43.75 mx-auto mb-6.5"
               variant="indigo"
-              text="Select"
+              text={chrome.i18n.getMessage('select')}
               onClick={handleChangeDIDAccount}
             />
           </div>

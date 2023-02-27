@@ -38,7 +38,11 @@ export default ({ value, setValue, disabled, handleUpdateNft }) => {
         onChange={onToggle}
         disabled={sending}
       />
-      {isPublic ? <span className="on">PUBLIC</span> : <span className="off">PRIVATE</span>}
+      {isPublic ? (
+        <span className="on">{chrome.i18n.getMessage('publicUc')}</span>
+      ) : (
+        <span className="off">{chrome.i18n.getMessage('privateUc')}</span>
+      )}
       <div
         className={clsx(
           (sending || disabled) && 'is-private-switch-disabled',

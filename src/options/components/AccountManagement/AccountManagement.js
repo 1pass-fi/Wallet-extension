@@ -42,7 +42,9 @@ const Address = ({ address }) => {
           <CopyIcon className="inline cursor-pointer w-3.25 ml-2" />
         </CopyToClipboard>
         {isCopied && (
-          <span className="text-11px absolute top-0 -right-13 text-blue-800">Copied!</span>
+          <span className="text-11px absolute top-0 -right-13 text-blue-800">
+            {chrome.i18n.getMessage('copied')}
+          </span>
         )}
       </div>
     </>
@@ -63,14 +65,16 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
   const [accountName, setAccountName] = useState('')
 
   const reloadDefaultAccount = async () => {
-    const activatedArweaveAccountAddress = await storage.setting.get.activatedArweaveAccountAddress()
+    const activatedArweaveAccountAddress =
+      await storage.setting.get.activatedArweaveAccountAddress()
     dispatch(setDefaultAccountByAddress(activatedArweaveAccountAddress))
 
     // TODO DatH - LongP
     const activatedK2AccountAddress = await storage.setting.get.activatedK2AccountAddress()
     dispatch(setDefaultAccountByAddress(activatedK2AccountAddress))
 
-    const activatedEthereumAccountAddress = await storage.setting.get.activatedEthereumAccountAddress()
+    const activatedEthereumAccountAddress =
+      await storage.setting.get.activatedEthereumAccountAddress()
     dispatch(setDefaultAccountByAddress(activatedEthereumAccountAddress))
 
     const activatedSolanaAccountAddress = await storage.setting.get.activatedSolanaAccountAddress()
@@ -88,7 +92,7 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
       }
 
       getDID()
-      setNotification(`Set default account successfully.`)
+      setNotification(chrome.i18n.getMessage('setDefaultAccount'))
     } catch (err) {
       setError(err.message)
     }
@@ -146,12 +150,12 @@ const AccountManagement = ({ accounts, setShowConfirmRemoveAccount, setRemoveAcc
       <table className="bg-trueGray-100 rounded-finnie text-indigo" style={{ width: '588px' }}>
         <thead className="text-4xs font-normal">
           <tr className="text-left h-8">
-            <td className="w-4 pl-2">DEFAULT</td>
-            <td className="w-10 pl-2">CHAIN</td>
-            <td className="w-48 pl-6.5">ACCOUNT NAME</td>
-            <td className="w-52">ADDRESS</td>
+            <td className="w-4 pl-2">{chrome.i18n.getMessage('defaultUc')}</td>
+            <td className="w-10 pl-2">{chrome.i18n.getMessage('chainUc')}</td>
+            <td className="w-48 pl-6.5">{chrome.i18n.getMessage('accountNameUc')}</td>
+            <td className="w-52">{chrome.i18n.getMessage('addressUc')}</td>
             {/* <td>LAYER</td> */}
-            <td className="text-center w-18">REMOVE</td>
+            <td className="text-center w-18">{chrome.i18n.getMessage('removeUc')}</td>
           </tr>
         </thead>
         <tbody className="text-xs tracking-finnieSpacing-wide">

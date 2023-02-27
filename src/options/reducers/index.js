@@ -10,6 +10,7 @@ import editingCollectionId from './editingCollectionId'
 import error from './error'
 import isLoading from './loading'
 import isOnbardingProcessing from './loading'
+import locale from './locale'
 import newAddress from './newAddress'
 import notificationsData from './notifications'
 import onboarding from './onboarding'
@@ -33,5 +34,6 @@ export default combineReducers({
   selectedNftIds,
   editingCollectionId,
   newAddress,
-  walletLoaded
+  walletLoaded,
+  locale
 })

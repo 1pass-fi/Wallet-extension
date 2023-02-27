@@ -24,7 +24,7 @@ describe('useValidPassword-onboarding hook', () => {
 
     const { isValidPassword, passwordErrorMessage } = result.current
     expect(isValidPassword).toBeFalsy()
-    expect(passwordErrorMessage).toBe(VALIDATE_ERROR_MESSAGE.NOT_ENOUGH_CHARACTERS)
+    expect(passwordErrorMessage).toBe(chrome.i18n.getMessage('notEnoughCharacters'))
   })
 
   it('should return the false validation result and error message is invalid characters', async () => {
@@ -35,7 +35,7 @@ describe('useValidPassword-onboarding hook', () => {
 
     const { isValidPassword, passwordErrorMessage } = result.current
     expect(isValidPassword).toBeFalsy()
-    expect(passwordErrorMessage).toBe(VALIDATE_ERROR_MESSAGE.INVALID_CHARACTER)
+    expect(passwordErrorMessage).toBe(chrome.i18n.getMessage('passwordNotMeetRequirements'))
   })
 
   it('should return the false validation result and error message is not matching password', async () => {
@@ -46,6 +46,6 @@ describe('useValidPassword-onboarding hook', () => {
 
     const { isValidPassword, passwordErrorMessage } = result.current
     expect(isValidPassword).toBeFalsy()
-    expect(passwordErrorMessage).toBe(VALIDATE_ERROR_MESSAGE.NOT_MATCH)
+    expect(passwordErrorMessage).toBe(chrome.i18n.getMessage('passwordDoesNotMatch'))
   })
 })

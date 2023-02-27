@@ -12,7 +12,7 @@ const SearchBar = ({ setSearchTerm, searchTerm }) => {
         onChange={(e) => {
           setSearchTerm(e.target.value)
         }}
-        placeholder='Search'
+        placeholder={chrome.i18n.getMessage('search')}
       ></input>
       <div className='ab-search-bar__search-icon'>
         <SearchIcon />

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { getDIDs } from 'background/helpers/did/koiiMe'
 import clsx from 'clsx'
-import { ERROR_MESSAGE } from 'constants/koiConstants'
 import Avatar from 'img/ab-avatar.png'
 import CloseIcon from 'img/ab-close-icon.svg'
 import get from 'lodash/get'
@@ -76,7 +75,9 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
         <CloseIcon className="cursor-pointer float-right w-6.25 h-6.25" onClick={onClose} />
       </div>
       <img className="w-22 h-22" src={Avatar} alt="avatar" />
-      <h1 className="font-semibold text-success text-base my-7">Import from a DID link</h1>
+      <h1 className="font-semibold text-success text-base my-7">
+        {chrome.i18n.getMessage('importDIDLink')}
+      </h1>
 
       <input
         style={{ width: '238px', height: '25px' }}
@@ -84,7 +85,7 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
           clicked && 'cursor-wait',
           'focus:outline-none bg-trueGray-100 bg-opacity-10 text-center text-white text-sm placeholder-trueGray-400 border-b border-white'
         )}
-        placeholder="Insert a DID link here"
+        placeholder={chrome.i18n.getMessage('addressBookDIDLinkInput')}
         value={didLink}
         onChange={(e) => {
           setDidLink(e.target.value)
@@ -95,12 +96,12 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
       />
       {invalidDIDLink && (
         <span className="mt-2 text-center font-normal text-xs leading-4 text-warning-300 tracking-finnieSpacing-wide">
-          That’s not a valid DID link
+          {chrome.i18n.getMessage('invalidDIDLink')}
         </span>
       )}
       {duplicateDID && (
         <span className="mt-2 text-center font-normal text-xs leading-4 text-warning-300 tracking-finnieSpacing-wide">
-          {ERROR_MESSAGE.ADDRESS_BOOK.DUPLICATE_DID}
+          {chrome.i18n.getMessage('addressBookDuplicateDID')}
         </span>
       )}
       <button
@@ -113,7 +114,7 @@ const ImportFromDID = ({ onClose, validateDIDNotExist, storeDIDAddress }) => {
         onClick={() => handleImportDID()}
         disabled={clicked || isEmpty(didLink)}
       >
-        Import
+        {chrome.i18n.getMessage('import')}
       </button>
     </div>
   )

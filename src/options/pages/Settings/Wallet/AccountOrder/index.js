@@ -126,7 +126,7 @@ export default ({ accounts, setAccounts }) => {
       await reloadDefaultAccount()
       getDID()
       setSelectedAddress(address)
-      dispatch(setQuickNotification(`Set default account successfully.`))
+      dispatch(setQuickNotification(chrome.i18n.getMessage('setDefaultAccount')))
     } catch (err) {
       dispatch(setError(err.message))
     }
@@ -134,7 +134,7 @@ export default ({ accounts, setAccounts }) => {
 
   return (
     <div className="account-order">
-      <div className="account-header">DEFAULT</div>
+      <div className="account-header">{chrome.i18n.getMessage('defaultUc')}</div>
       {accounts.map((item, index) => (
         <div className="account" key={item.address}>
           <div className="name-icon">

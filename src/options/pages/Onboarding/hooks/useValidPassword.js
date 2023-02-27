@@ -14,19 +14,19 @@ const useValidPassword = ({ password, confirmPassword }) => {
 
     if (password?.length < 8) {
       setIsValidPassword(false)
-      setPasswordErrorMessage(VALIDATE_ERROR_MESSAGE.NOT_ENOUGH_CHARACTERS)
+      setPasswordErrorMessage(chrome.i18n.getMessage('notEnoughCharacters'))
       return
     }
 
     if (!passwordRegex.test(password)) {
       setIsValidPassword(false)
-      setPasswordErrorMessage(VALIDATE_ERROR_MESSAGE.INVALID_CHARACTER)
+      setPasswordErrorMessage(chrome.i18n.getMessage('passwordNotMeetRequirements'))
       return
     }
 
     if (password !== confirmPassword) {
       setIsValidPassword(false)
-      setPasswordErrorMessage(VALIDATE_ERROR_MESSAGE.NOT_MATCH)
+      setPasswordErrorMessage(chrome.i18n.getMessage('passwordDoesNotMatch'))
       return
     }
 

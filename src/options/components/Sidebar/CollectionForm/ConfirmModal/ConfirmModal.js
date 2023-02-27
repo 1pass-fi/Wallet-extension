@@ -89,40 +89,45 @@ const ConfirmModal = ({
         {step === 1 && (
           <section className="py-5 text-center text-base px-16.5">
             <>
-              <p className="mb-5.5">
-                An Atomic NFT is store permanently on Arweave and earns attention rewards forever
-                through Koi.
-              </p>
+              <p className="mb-5.5">{chrome.i18n.getMessage('atomicNFTArweave')}</p>
               <div className="flex justify-around text-left">
                 <div>
                   <div className="font-semibold tracking-finnieSpacing-wide">
-                    Files to be minted:
+                    {chrome.i18n.getMessage('filesMinted')}
                   </div>
-                  <div>{numOfNfts} pieces</div>
+                  <div>
+                    {numOfNfts}
+                    {' '}{chrome.i18n.getMessage('pieces')}
+                  </div>
                   <div className="font-semibold tracking-finnieSpacing-wide">
-                    Size: {formatNumber(filesSize / ONE_MILLION, 2)} MB
+                    {chrome.i18n.getMessage('size')}{': '}
+                    {formatNumber(filesSize / ONE_MILLION, 2)} MB
                   </div>
                 </div>
                 <div>
-                  <div className="font-semibold tracking-finnieSpacing-wide">Estimated Costs:</div>
+                  <div className="font-semibold tracking-finnieSpacing-wide">
+                    {chrome.i18n.getMessage('estimatedCosts')}:
+                  </div>
                   <div>{numOfNfts} KOII</div>
                   <div>{formatNumber(arPrice, 5)} AR</div>
                   <div className="text-2xs tracking-finnieSpacing-wider text-success-700">
-                    Storage Fee
+                    {chrome.i18n.getMessage('storageFee')}
                   </div>
                 </div>
               </div>
               <div className="absolute bottom-5.5 w-full flex left-0 justify-center">
                 <Button
                   variant="inversedIndigo"
-                  text="Cancel"
+                  text={chrome.i18n.getMessage('cancel')}
                   className="tracking-wider py-3 rounded w-42.5 h-10 text-base mr-11"
                   onClick={close}
                   disabled={displayProgressBar}
                 />
                 <Button
                   variant="indigo"
-                  text={isUpdate ? 'Update' : 'Confirm'}
+                  text={
+                    isUpdate ? chrome.i18n.getMessage('update') : chrome.i18n.getMessage('confirm')
+                  }
                   className="tracking-wider py-3 rounded w-42.5 h-10 text-base"
                   onClick={() => {
                     confirmCollection()
@@ -139,16 +144,16 @@ const ConfirmModal = ({
             <ModalBackground className="absolute top-16.75 left-0" />
             <div className="absolute left-57.75 top-40">
               <div className="font-semibold text-lg tracking-finnieSpacing-wide">
-                Your Collection is getting ready!
+                {chrome.i18n.getMessage('yourCollectionReady')}
               </div>
               <div className="text-sm tracking-finnieSpacing-wide">
-                It may take a few minutes to show up in your gallery.
+                {chrome.i18n.getMessage('takeTimeToGallery')}
               </div>
             </div>
             <div className="absolute bottom-5.5 w-full flex left-0 justify-center">
               <Button
                 variant="indigo"
-                text="OK"
+                text={chrome.i18n.getMessage('okUc')}
                 className="w-42.5 h-10 tracking-wider py-3 rounded"
                 onClick={close}
               />

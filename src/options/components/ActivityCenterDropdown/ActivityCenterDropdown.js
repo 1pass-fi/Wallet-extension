@@ -1,4 +1,4 @@
-import React, { useContext,useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
@@ -76,13 +76,15 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
       className="w-90.5 h-130.75 bg-white box-border border-0 rounded-1 fixed right-16.25 top-18.25 z-50 p-2.75"
     >
       <div className="flex justify-between items-center h-12 border-b-2 border-gray-underline">
-        <div className="text-base font-semibold text-blue-800">ACTIVITY CENTER</div>
+        <div className="text-base font-semibold text-blue-800">
+          {chrome.i18n.getMessage('activityCenterUc')}
+        </div>
         <Link
           className="text-sm font-normal text-success-700 underline"
           to="/notifications/activity"
           onClick={setReadNotifications}
         >
-          See All
+          {chrome.i18n.getMessage('seeAll')}
         </Link>
       </div>
       <div
@@ -107,7 +109,7 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
           )}
           onClick={() => setTab(ACTIVITY)}
         >
-          Activity
+          {chrome.i18n.getMessage('activity')}
         </div>
         <div
           className={clsx(
@@ -116,7 +118,7 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
           )}
           onClick={() => setTab(NOTIFICATION)}
         >
-          Notification
+          {chrome.i18n.getMessage('notification')}
         </div>
       </div>
 
@@ -148,7 +150,7 @@ const ActivityCenterDropdown = React.forwardRef((_, ref) => {
                   setPages((prev) => ++prev)
                 }}
               >
-                See more
+                {chrome.i18n.getMessage('seeMore')}
               </button>
             </div>
           )}

@@ -17,8 +17,8 @@ export const ImportToken = () => {
   const history = useHistory()
 
   const [tabs, setTabs] = useState([
-    { name: 'Search', to: 'SEARCH_TOKEN' },
-    { name: 'Custom Token', to: 'CUSTOM_TOKEN' }
+    { name: chrome.i18n.getMessage('search'), to: 'SEARCH_TOKEN' },
+    { name: chrome.i18n.getMessage('customToken'), to: 'CUSTOM_TOKEN' }
   ])
   const [currentTab, setCurrentTab] = useState('SEARCH_TOKEN')
   const [tokenImport, setTokenImport] = useState({})
@@ -46,7 +46,7 @@ export const ImportToken = () => {
           }}
           className="w-8.75 h-8.75 ml-3.75 cursor-pointer bg-white bg-opacity-70 rounded-full"
         />
-        <div className="ml-6 font-semibold text-lg text-blue-800">Import a Token</div>
+        <div className="ml-6 font-semibold text-lg text-blue-800">{chrome.i18n.getMessage('importAToken')}</div>
       </div>
 
       {isEmpty(tokenImport) ? (

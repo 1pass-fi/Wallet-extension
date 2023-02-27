@@ -74,7 +74,7 @@ export default ({ setModalStates }) => {
 
           if (balancesUpdated) {
             // sendMessage.success({ title: 'Balances updated', message: 'Your balances have been updated.' })
-            dispatch(setQuickNotification('Your balances have been updated.'))
+            dispatch(setQuickNotification(chrome.i18n.getMessage('balanceUpdated')))
           }
 
           console.log('defaultAccount', defaultAccount)

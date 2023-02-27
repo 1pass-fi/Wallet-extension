@@ -89,8 +89,8 @@ const CollectionDetails = () => {
   }, [collection])
 
   const editButtonDataTip = useMemo(() => {
-    if (usedOldContractSrc) return 'This version of Collection does not support updating'
-    if (updatePending) return 'Transaction pending'
+    if (usedOldContractSrc) return chrome.i18n.getMessage('collectionNotSupported')
+    if (updatePending) return chrome.i18n.getMessage('transactionPending')
     return ''
   }, [updatePending, usedOldContractSrc])
 
@@ -110,7 +110,7 @@ const CollectionDetails = () => {
 
                 <div className="inline ml-1" data-tip={editButtonDataTip}>
                   <button
-                    data-tip={updatePending ? 'Transaction pending' : ''}
+                    data-tip={updatePending ? chrome.i18n.getMessage('transactionPending') : ''}
                     disabled={updatePending || usedOldContractSrc}
                     onClick={openEditCollectionForm}
                     className="inline w-4 z-40 cursor-pointer disabled:cursor-not-allowed mb-2"

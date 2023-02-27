@@ -26,30 +26,30 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
     >
       <WelcomeBackground className="absolute bottom-0 right-0" />
       <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
-        Save your Secret Phrase
+        {chrome.i18n.getMessage('saveYourSecretPhrase')}
       </div>
       <div className="mt-5 font-normal text-base leading-8 max-w-full" style={{ width: '500px' }}>
-        Koii Wallets use a {/* TODO add tooltip/link */}
+        {chrome.i18n.getMessage('koiiWalletsUseA')} {/* TODO add tooltip/link */}
         <a
           target="_blank"
           href="https://cointelegraph.com/explained/what-is-a-seed-phrase-and-why-is-it-important"
           className="text-turquoiseBlue underline cursor-pointer"
         >
-          12-word secret phrase
+          {chrome.i18n.getMessage('12WordSecretPhrase')}
         </a>{' '}
-        to secure your account to ensure that you and only you will control your identity online.
+        {chrome.i18n.getMessage('secretPhraseMsgLc')}
       </div>
       <div className="mt-8 font-normal text-sm leading-6 w-11/12 flex">
         <NoticeIcon style={{ width: '96px', height: '96px' }} />
         <div style={{ width: '370px' }} className="flex flex-col max-w-full">
           <div>
-            With your Secret Phrase, anyone can access{' '}
-            <span className="text-warning-200">everything in your wallet</span>.
+            {chrome.i18n.getMessage('withYourSecretPhrase')}{' '}
+            <span className="text-warning-200">
+              {chrome.i18n.getMessage('everythingInYourWalletLc')}
+            </span>
+            .
           </div>
-          <div className="mt-2">
-            This should be written on a piece of paper and never saved on a computer or
-            internet-connected device.
-          </div>
+          <div className="mt-2">{chrome.i18n.getMessage('thisShouldBeWrittenOnAPieceOfPaper')}</div>
         </div>
       </div>
       <div className="mt-16 flex justify-start gap-12 w-full">
@@ -58,7 +58,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
           style={{ width: '240px', height: '42px' }}
           className="rounded z-10 border border-white border-solid"
           variant="indigo"
-          text="Remind me later."
+          text={chrome.i18n.getMessage('remindMeLater') + '.'}
           size="lg"
           onClick={handleRemindMeLater}
           data-testid={'remind-me-button'}
@@ -67,7 +67,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
           style={{ width: '240px', height: '42px' }}
           className="rounded z-10"
           variant="white"
-          text="I'm ready!"
+          text={chrome.i18n.getMessage('imReady')}
           size="lg"
           onClick={() => setStep(step + 1)}
           data-testid={'ready-button'}

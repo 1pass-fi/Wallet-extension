@@ -193,7 +193,6 @@ const CollectionForm = ({ isUpdate }) => {
   const getFilesFromFileList = (e) => {
     const _files = []
     for (let i = 0; i < e.target.files.length; i++) {
-
       _files.push(e.target.files.item(i))
     }
 
@@ -255,15 +254,13 @@ const CollectionForm = ({ isUpdate }) => {
   }, [selectedNftIds])
 
   const label = {
-    title: isUpdate ? 'Edit Collection Title' : 'Collection Title',
-    description: isUpdate ? 'Edit Description' : 'Description',
-    tags: 'tags'
-  }
-
-  const placeholder = {
-    title: `Finnie's Friends`,
-    description: `When you’ve got friends like mine, the internet is a wonderful place to be.`,
-    tags: `Separate with a “,” and hit space bar`
+    title: isUpdate
+      ? chrome.i18n.getMessage('collectionLabelEditTitle')
+      : chrome.i18n.getMessage('collectionLabelTitle'),
+    description: isUpdate
+      ? chrome.i18n.getMessage('collectionLabelEditDescription')
+      : chrome.i18n.getMessage('description'),
+    tags: chrome.i18n.getMessage('tagsLc')
   }
 
   return (
@@ -285,7 +282,7 @@ const CollectionForm = ({ isUpdate }) => {
             required={true}
             name="title"
             error={errors.title}
-            placeholder={placeholder.title}
+            placeholder={chrome.i18n.getMessage('collectionTitlePh')}
           />
         </div>
         <InputField
@@ -297,7 +294,7 @@ const CollectionForm = ({ isUpdate }) => {
           type="textarea"
           name="description"
           error={errors.description}
-          placeholder={placeholder.description}
+          placeholder={chrome.i18n.getMessage('collectionDescPh')}
           maxHeight={200}
         />
         <div className="my-1 flex flex-col w-full">
@@ -307,7 +304,7 @@ const CollectionForm = ({ isUpdate }) => {
           <input
             className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 create-collection-tag-input"
             name="tags"
-            placeholder={placeholder.tags}
+            placeholder={chrome.i18n.getMessage('collectionTagsPh')}
             id="tags"
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
@@ -338,7 +335,7 @@ const CollectionForm = ({ isUpdate }) => {
             className="text-white ml-2 text-11px select-none"
             onClick={() => setCollectionInfo((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
           >
-            This content is <span className="text-warning">Explicit or 18+.</span>
+            {chrome.i18n.getMessage('thisContentIs')}<span className="text-warning">{chrome.i18n.getMessage('explicitMsg')}</span>
           </div>
         </div>
         <div className="w-50 h-36.25 border border-dashed border-success rounded">
@@ -348,7 +345,7 @@ const CollectionForm = ({ isUpdate }) => {
               setFiles={setFiles}
               fileType={['image/*', 'video/*', 'audio/*']}
               className="w-full h-full"
-              description="Select multiple files from your computer."
+              description={chrome.i18n.getMessage('selectMultipleFiles')}
               isCreateCollection={true}
             />
           ) : (
@@ -403,7 +400,7 @@ const CollectionForm = ({ isUpdate }) => {
         <Button
           onClick={openBatchModal}
           variant="light"
-          text="Add NFT Details"
+          text={chrome.i18n.getMessage('addNFTDetails')}
           className="text-sm"
         />
       </div>

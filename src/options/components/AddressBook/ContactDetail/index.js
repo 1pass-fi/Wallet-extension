@@ -21,7 +21,12 @@ const ContactDetail = ({ contact, onClose, showEditForm, setShowDeleteContactMod
   return (
     <div className="ab-contact-detail">
       <div className="ab-contact-detail__header">
-        <Button startIcon={EditIcon} onClick={showEditForm} text="Edit" variant="normal" />
+        <Button
+          startIcon={EditIcon}
+          onClick={showEditForm}
+          text={chrome.i18n.getMessage('edit')}
+          variant="normal"
+        />
         <div className="ab-close-icon" onClick={onClose}>
           <CloseIcon />
         </div>
@@ -53,7 +58,7 @@ const ContactDetail = ({ contact, onClose, showEditForm, setShowDeleteContactMod
               {address.type === TYPE.K2 && <K2Icon />}
             </div>
             <div className="ab-contact-detail__address-value">{address.value}</div>
-            <div className="ab-copy-icon" data-tip="Copy to clipboard">
+            <div className="ab-copy-icon" data-tip={chrome.i18n.getMessage('copyToClipboard')}>
               <CopyToClipboard text={address.value}>
                 <CopyIcon />
               </CopyToClipboard>
@@ -70,7 +75,7 @@ const ContactDetail = ({ contact, onClose, showEditForm, setShowDeleteContactMod
 
       <div
         className="ab-trash-icon"
-        data-tip="Remove this Contact"
+        data-tip={chrome.i18n.getMessage('removeThisContact')}
         data-for="remove"
         onClick={() => {
           setShowDeleteContactModal(true)

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef,useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import CrossIcon from 'img/v2/cross-icon.svg'
 import capitalize from 'lodash/capitalize'
 import initial from 'lodash/initial'
@@ -129,35 +129,35 @@ const UploadNftForm = () => {
         <div ref={titleFieldRef}>
           <InputField
             className="my-1"
-            label="NFT Title"
+            label={chrome.i18n.getMessage('uploadNFTTitleLabel')}
             value={nftContent.title}
             setValue={handleNftContentChange}
             required={true}
             name="title"
             error={errors.title}
-            placeholder={'Find the perfect name'}
+            placeholder={chrome.i18n.getMessage('uploadNFTTitlePh')}
           />
         </div>
         <InputField
           className="my-1"
-          label="Description"
+          label={chrome.i18n.getMessage('description')}
           value={nftContent.description}
           setValue={handleNftContentChange}
           required={true}
           type="textarea"
           name="description"
           error={errors.description}
-          placeholder={'Tell the world about this one'}
+          placeholder={chrome.i18n.getMessage('uploadNFTDescPh')}
           maxHeight={200}
         />
         <div className="my-1 flex flex-col w-full">
           <label htmlFor="tags" className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
-            Tags
+            {chrome.i18n.getMessage('tags')+','}
           </label>
           <input
             className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 upload-nft-tag-input"
             name="tags"
-            placeholder="Separate with a “,” and hit space bar"
+            placeholder={chrome.i18n.getMessage('tagsPh')}
             id="tags"
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
@@ -191,7 +191,7 @@ const UploadNftForm = () => {
             className="text-white ml-2 text-11px select-none"
             onClick={() => setNftContent((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
           >
-            This content is <span className="text-warning">Explicit or 18+.</span>
+            {chrome.i18n.getMessage('thisContentIs')}<span className="text-warning">{chrome.i18n.getMessage('explicitMsg')}</span>
           </div>
         </div>
         {isEmpty(file) ? (
@@ -201,7 +201,7 @@ const UploadNftForm = () => {
               setFile={setFile}
               fileType={['image/*', 'video/*', 'audio/*']}
               className="w-full h-full"
-              description="Click to upload an Atomic NFT"
+              description={chrome.i18n.getMessage('clickToUploadNFT')}
             />
           </div>
         ) : (
@@ -215,7 +215,12 @@ const UploadNftForm = () => {
         )}
         <span className="text-3xs text-bittersweet-200 mb-4.25">{errors.file}</span>
 
-        <Button onClick={handleCreateNFT} variant="light" text="Create NFT" className="text-sm" />
+        <Button
+          onClick={handleCreateNFT}
+          variant="light"
+          text={chrome.i18n.getMessage('createNFT')}
+          className="text-sm"
+        />
       </div>
       {showConfirmModal && (
         <ConfirmCreateNftModal
