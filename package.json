@@ -76,6 +76,7 @@
         "ethereumjs-wallet": "^1.0.1",
         "ethers": "^5.6.1",
         "identity-obj-proxy": "3.0.0",
+        "jest-environment-jsdom": "26",
         "joi": "^17.5.0",
         "mnemonic": "^1.0.1",
         "moment": "^2.29.1",
@@ -127,7 +128,7 @@
         "not op_mini all"
     ],
     "jest": {
-        "testEnvironment": "jsdom",
+        "testEnvironment": "./jest-environment-jsdom.js",
         "moduleNameMapper": {
             "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/assetsTransformer.js",
             "\\.(css|less)$": "<rootDir>/assetsTransformer.js",
