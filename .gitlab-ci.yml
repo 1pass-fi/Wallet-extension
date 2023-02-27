@@ -1,5 +1,8 @@
 image: node:16.17.0
 
+variables:
+  NODE_OPTIONS: --max_old_space_size=4096
+
 stages:
   - prerequisites
   - checks
@@ -32,15 +35,15 @@ unit_test:
     - yarn run test:unit
 
 # build:
-#   stage: checks
-#   needs: ['install']
+#    stage: checks
+#    needs: ['install']
 
-#   script:
-#     - yarn run build
+#    script:
+#      - yarn run build
 
 # e2e_test:
-#   stage: checks
-#   needs: ['install']
+#    stage: checks
+#    needs: ['build']
 
-  script:
-    - yarn run test:e2e
+#   script:
+#     - yarn run test:e2e
