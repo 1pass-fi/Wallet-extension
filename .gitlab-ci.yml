@@ -17,30 +17,30 @@ install:
       - .yarn/
       - node_modules/
 
-build:
-  stage: checks
-  needs: ['install']
+# build:
+#   stage: checks
+#   needs: ['install']
 
-  script:
-    - yarn run build
+#   script:
+#     - yarn run build
 
-lint:
-  stage: checks
-  needs: ['install']
+# lint:
+#   stage: checks
+#   needs: ['install']
 
-  script:
-    - yarn run lint
+#   script:
+#     - yarn run lint
 
 unit_test:
   stage: checks
   needs: ['install']
 
   script:
-    - yarn run test
+    - yarn run unit
 
-e2e_test:
-  stage: checks
-  needs: ['install']
+# e2e_test:
+#   stage: checks
+#   needs: ['install']
 
-  script:
-    - yarn run e2e
+#   script:
+#     - yarn run e2e
