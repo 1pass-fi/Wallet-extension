@@ -24,7 +24,9 @@ const ChangePasswordModal = ({ close }) => {
   const [disableUpdatePassword, setDisableUpdatePassword] = useState(false)
   const modalRef = useRef(null)
 
-  const passwordRegex = new RegExp('(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)(?=.*[!@#$%^&*()].*).{8,}')
+  const passwordRegex = new RegExp(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+  )
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -147,6 +149,7 @@ const ChangePasswordModal = ({ close }) => {
               className="rounded-sm px-1 mt-1.5 bg-trueGray-400 bg-opacity-50 border-b border-indigo border-opacity-80"
               onChange={(e) => setOldPassword(e.target.value)}
               onKeyDown={(e) => handleKeyDown(e)}
+              name="current-password"
             ></input>
             {!isEmpty(oldPasswordError) && (
               <div
@@ -170,6 +173,7 @@ const ChangePasswordModal = ({ close }) => {
               className="rounded-sm px-1 mt-1.5 bg-trueGray-400 bg-opacity-50 border-b border-indigo border-opacity-80"
               onChange={(e) => setNewPassword(e.target.value)}
               onKeyDown={(e) => handleKeyDown(e)}
+              name="change-new-password"
             ></input>
             {!isEmpty(newPasswordError) && (
               <div
@@ -193,6 +197,7 @@ const ChangePasswordModal = ({ close }) => {
               className="rounded-sm px-1 mt-1.5 bg-trueGray-400 bg-opacity-50 border-b border-indigo border-opacity-80"
               onChange={(e) => setConfirmPassword(e.target.value)}
               onKeyDown={(e) => handleKeyDown(e)}
+              name="change-confirm-password"
             ></input>
             {!isEmpty(confirmPasswordError) && (
               <div

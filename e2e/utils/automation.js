@@ -8,15 +8,15 @@ export const createPasswordStep = async (page, newPassword = true) => {
   await page.bringToFront()
 
   if (newPassword) {
+    // check tos
+    const tosCheckbox = await page.waitForSelector(`[data-testid="new-password-tos"]`)
+    await tosCheckbox.click()
+
     await page.waitForSelector(`[placeholder="New Password"]`)
     // type password
     await page.type('input[placeholder="New Password"]', 'OpenKoi@123')
     // type confirm password
     await page.type('input[placeholder="Confirm Password"]', 'OpenKoi@123')
-
-    // check tos
-    const tosCheckbox = await page.waitForSelector(`[data-testid="new-password-tos"]`)
-    await tosCheckbox.click()
   } else {
     await page.waitForSelector(`[placeholder="Password"]`)
     await page.type('input[placeholder="Password"]', 'OpenKoi@123')
@@ -226,6 +226,15 @@ export const goToOptionPageName = async (page, optionPageName) => {
   // await page.waitForNavigation()
 }
 
+export const goToSecuritySettingPage = async (page) => {
+  await page.bringToFront()
+  const profilePictureNavBar = await page.waitForSelector(`[data-testid="profile-picture-navbar"]`)
+  await profilePictureNavBar.click()
+
+  const securitySettingButton = await page.waitForSelector(`[data-testid="security-dropdown-light"]`)
+  await securitySettingButton.click()
+}
+
 export default {
   importWallet,
   swapToNetwork,
@@ -235,5 +244,6 @@ export default {
   swapToNetworkOption,
   goToWalletSettingPage,
   goToOptionPageName,
-  importKeyStep
+  importKeyStep,
+  goToSecuritySettingPage
 }
