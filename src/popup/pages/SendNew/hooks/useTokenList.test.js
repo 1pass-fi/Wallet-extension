@@ -45,7 +45,7 @@ const koiiToken = {
 
 const k2Token = {
   logo: 'img/v2/k2-logos/finnie-k2-logo.svg',
-  balance: 1000000000,
+  balance: 1e9,
   price: 0,
   name: 'Koii',
   symbol: 'KOII',
@@ -94,7 +94,7 @@ describe('useTokenList testsuite', () => {
       }))
       const mockAccountGetMetadata = jest.fn().mockImplementation(async () => ({
         address: 'example_address',
-        balance: 1e18,
+        balance: 1,
         koiBalance: 'koi_balance',
         accountName: 'example_accountName',
         type: 'example_type',
@@ -173,7 +173,7 @@ describe('useTokenList testsuite', () => {
       }))
       const mockAccountGetMetadata = jest.fn().mockImplementation(async () => ({
         address: 'example_address',
-        balance: 1e12,
+        balance: 1,
         koiBalance: 1,
         accountName: 'example_accountName',
         type: 'example_type',

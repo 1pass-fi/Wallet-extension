@@ -803,6 +803,9 @@
   "invalidRequest": {
     "message": "Yêu cầu không hợp lệ"
   },
+   "invalidSecretPhrase": {
+    "message": "Cụm từ bí mật không hợp lệ"
+  },
   "invalidTokenSchema": {
     "message": "Kiểu Token không hợp lệ. Vui lòng sử dụng nft với kiểu Token của ERC1155"
   },

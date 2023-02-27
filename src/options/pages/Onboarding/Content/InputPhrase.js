@@ -94,7 +94,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
       await saveNewKey(importType)
       setStep(step + 1)
     } else {
-      setMessageError('Invalid Secret Phrase')
+      setMessageError(chrome.i18n.getMessage('invalidSecretPhrase'))
     }
   }
 
