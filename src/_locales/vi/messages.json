@@ -1092,7 +1092,7 @@
     "message": "Mật khẩu không khớp"
   },
   "passwordErrorMsg": {
-    "message": "Mật khẩu phải có ít nhất 8 ký tự, 1 số, 1 chữ cái viết hoa, 1 chữ cái viết thường và 1 ký tự đặc biệt (ví dụ: !@#$%)."
+    "message": "Mật khẩu phải có ít nhất 8 ký tự, 1 số, 1 chữ cái viết hoa, 1 chữ cái viết thường và 1 ký tự đặc biệt (ví dụ: !@#$$%)."
   },
   "passwordIsIncorrect": {
     "message": "Mật khẩu không đúng"
