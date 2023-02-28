@@ -209,15 +209,15 @@ describe('View Solana gallery', () => {
       waitUntil: 'networkidle0'
     })
 
-    const [solscanSenderAddress] = await solscanTransferPage.$x(
+    const solscanSenderAddress = await solscanTransferPage.waitForXPath(
       `//a[contains(@href, "account/${senderAddress}?cluster=devnet")]`
     )
     expect(solscanSenderAddress).toBeDefined()
-    const [solscanReceiverAddress] = await solscanTransferPage.$x(
+    const solscanReceiverAddress = await solscanTransferPage.waitForXPath(
       `//a[contains(@href, "account/${receiverAddress}?cluster=devnet")]`
     )
     expect(solscanReceiverAddress).toBeDefined()
-    const [solscanNFTAddress] = await solscanTransferPage.$x(
+    const solscanNFTAddress = await solscanTransferPage.waitForXPath(
       `//a[contains(@href, "token/${NFTTokenAddress}?cluster=devnet")]`
     )
     expect(solscanNFTAddress).toBeDefined()

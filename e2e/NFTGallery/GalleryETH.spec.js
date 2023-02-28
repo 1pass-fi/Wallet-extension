@@ -205,13 +205,16 @@ describe('View Ethereum NFT gallery', () => {
     const currentPages = await browser.pages()
     const etherscanPage = currentPages[currentPages.length - 1]
 
-    const [ethescanSenderAddress] = await etherscanPage.$x(
-      `//a[contains(@href, "address/${senderAddress}")]`
-    )
-    expect(ethescanSenderAddress).toBeDefined()
+    const senderAddressLc = senderAddress.toLowerCase()
+    const nftContractAddressLc = NFTContractAddress.toLowerCase()
 
-    const [etherscanNFTAddress] = await etherscanPage.$x(
-      `//a[contains(@href, "token/${NFTContractAddress}")]`
+    const etherscanSenderAddress = await etherscanPage.waitForXPath(
+      `//a[contains(@href, "address/${senderAddressLc}")]`
+    )
+    expect(etherscanSenderAddress).toBeDefined()
+
+    const etherscanNFTAddress = await etherscanPage.waitForXPath(
+      `//a[contains(@href, "token/${nftContractAddressLc}")]`
     )
     expect(etherscanNFTAddress).toBeDefined()
   }, 1000000)
