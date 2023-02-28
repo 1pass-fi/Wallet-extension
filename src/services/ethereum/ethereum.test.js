@@ -4,8 +4,8 @@ import { ethers } from 'ethers'
 
 import { EthereumTool } from '.'
 /* CONSTANT FOR TESTING */
-const SECRET_PHRASES = 'cluster cram fish penalty twelve evoke because wheel close income bag pupil'
-const WALLET_ADDRESS = '0x66083923D61D765f5FC51a612f17d64564358716'
+const SECRET_PHRASES = 'path zero antique girl wolf call thank powder like auto oppose faculty'
+const WALLET_ADDRESS = '0xb979707D767230Df79840B39703D86F99C6d84D2'
 const WALLET_KEY = '0x0ea98b5b46f3b452171da0e3bd335f6280205d2cc48b89d042c67cd25e1a2b56'
 
 describe('EthereumTool class', () => {

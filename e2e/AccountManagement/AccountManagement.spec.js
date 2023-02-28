@@ -67,7 +67,7 @@ describe('AccountManagement', () => {
 
       /* ETH NETWORK */
       const ethAccount = await extPage.waitForXPath(
-        `//span[contains(text(), "0x660839")]/ancestor::div[@data-testid="popup-header-account"]`
+        `//span[contains(text(), "0xb97970")]/ancestor::div[@data-testid="popup-header-account"]`
       )
       await ethAccount.click()
 
@@ -129,7 +129,7 @@ describe('AccountManagement', () => {
       await displayAccount.click()
 
       const ethAccount = await extPage.waitForXPath(
-        `//span[contains(text(), "0x660839")]/ancestor::div[@data-testid="popup-header-account"]`
+        `//span[contains(text(), "0xb97970")]/ancestor::div[@data-testid="popup-header-account"]`
       )
       await ethAccount.click()
 
@@ -551,7 +551,7 @@ describe('AccountManagement', () => {
       await displayAccount.click()
 
       const ethAccount = await extPage.waitForXPath(
-        `//span[contains(text(), "0x660839")]/ancestor::div[@data-testid="popup-header-account"]`
+        `//span[contains(text(), "0xb97970")]/ancestor::div[@data-testid="popup-header-account"]`
       )
       const ethPopupAccountName = await ethAccount.$(`[data-testid="popup-header-account-name"]`)
       expect(await ethPopupAccountName.evaluate((el) => el.textContent)).toBe(formatLongString('ETH_ACCOUNT_NEW', 12))
