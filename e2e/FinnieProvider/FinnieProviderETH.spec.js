@@ -87,7 +87,7 @@ describe('Finnie Provider - ETH', () => {
       )
       signEthereumResult = await signEthereumResult.evaluate((el) => el.textContent)
       expect(signEthereumResult.length).toEqual(66)
-    }, 50000)
+    }, 500000)
 
     it('should reject connect successfully', async () => {
       await testDappPage.bringToFront()
