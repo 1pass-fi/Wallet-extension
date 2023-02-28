@@ -174,7 +174,7 @@ describe('AccountManagement', () => {
       const mainBalance = balanceText.split(' ')[1]
       const mainSymbol = balanceText.split(' ')[2]
 
-      // expect(Number(mainBalance)).toBeGreaterThan(0)
+      expect(Number(mainBalance)).toBeGreaterThan(0)
       expect(mainSymbol).toBe('ETH')
 
       const extendButton = await accountCardETH.$(
@@ -398,7 +398,7 @@ describe('AccountManagement', () => {
       tokenBalance = (await accountBalanceCustom.evaluate((el) => el.textContent)).split(' ')[0]
       tokenSymbol = (await accountBalanceCustom.evaluate((el) => el.textContent)).split(' ')[1]
 
-      // expect(Number(tokenBalance)).toBeGreaterThan(0)
+      expect(Number(tokenBalance)).toBeGreaterThan(0)
       expect(tokenSymbol).toBe('WIBU')
 
       /* CHECK K2 ASSETS */
