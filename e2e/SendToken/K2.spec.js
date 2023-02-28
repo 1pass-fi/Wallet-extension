@@ -126,7 +126,7 @@ describe('Send token via K2 network', () => {
     await sendButton.click()
 
     // /* TRANSACTION RECEIPT */
-    const okButton = await extPage.waitForSelector('a[role="button"]')
+    const okButton = await extPage.waitForSelector('a[role="button"]', { timeout: 300000 })
     await okButton.click()
   }, 500000)
 
@@ -204,7 +204,7 @@ describe('Send token via K2 network', () => {
     await sendButton.click()
 
     // /* TRANSACTION RECEIPT */
-    const okButton = await extPage.waitForSelector('a[role="button"]')
+    const okButton = await extPage.waitForSelector('a[role="button"]', { timeout: 300000 })
     await okButton.click()
   }, 500000)
 
