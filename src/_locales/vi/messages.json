@@ -806,6 +806,12 @@
    "invalidSecretPhrase": {
     "message": "Cụm từ bí mật không hợp lệ"
   },
+  "invalidTokenAddress": {
+    "message": "Đây không phải là một Token contract hợp lệ."
+  },
+  "invalidTokenAddressNotExist": {
+    "message": "Địa chỉ này không tồn tại ở provider hiện tại."
+  },
   "invalidTokenSchema": {
     "message": "Kiểu Token không hợp lệ. Vui lòng sử dụng nft với kiểu Token của ERC1155"
   },
