@@ -130,7 +130,7 @@ describe('Send token via K2 network', () => {
     await okButton.click()
   }, 500000)
 
-  it.skip('should successfully to send custom tokens', async () => {
+  it('should successfully to send custom tokens', async () => {
     await extPage.bringToFront()
 
     /* IMPORT CUSTOM TOKEN */

@@ -315,7 +315,7 @@ describe('AccountManagement', () => {
       expect(nftAssetsSymbol).toBe('SOL')
     }, 500000)
 
-    it.skip('should display correct account information K2', async () => {
+    it('should display correct account information K2', async () => {
       extPage = await context.launchExtPage()
       await extPage.bringToFront()
       const displayAccount = await extPage.waitForSelector(
