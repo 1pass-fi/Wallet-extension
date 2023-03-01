@@ -1040,6 +1040,9 @@
   "okUc": {
     "message": "OK"
   },
+  "oldKeys": {
+    "message": "The new Koii Keys are running on a brand new settlement layer called K2. If you have an old Koii key, import an Arweave key with your Koii secret phrase."
+  },
   "oldest": {
     "message": "Oldest"
   },
