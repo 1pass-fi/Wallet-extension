@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import * as bip39 from 'bip39'
 import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 import { ethers } from 'ethers'

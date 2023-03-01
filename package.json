@@ -78,7 +78,7 @@
         "ethereum-provider": "^0.5.0",
         "ethereumjs-tx": "^2.1.2",
         "ethereumjs-util": "^7.1.4",
-        "etherumjs-wallet": "^1.0.1",
+        "ethereumjs-wallet": "^1.0.1",
         "ethers": "^5.6.1",
         "https-browserify": "^1.0.0",
         "identity-obj-proxy": "3.0.0",
