@@ -1,4 +1,4 @@
-import Arweave from 'arweave/node'
+import Arweave from 'arweave'
 import axios from 'axios'
 import get from 'lodash/get'
 import storage from 'services/storage'

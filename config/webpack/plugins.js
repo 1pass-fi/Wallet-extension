@@ -5,9 +5,8 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const HtmlIncAssetsPlugin = require('html-webpack-include-assets-plugin')
+const HtmlIncAssetsPlugin = require('html-webpack-tags-plugin')
 const safePostCssParser = require('postcss-safe-parser')
-const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin')
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin')
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin')
 const CopyPlugin = require('copy-webpack-plugin')
@@ -84,12 +83,14 @@ const getPlugins = (isEnvProduction = false, shouldUseSourceMap = false) => {
 
   const moduleNotFoundPlugin = new ModuleNotFoundPlugin(paths.appPath)
   const caseSensitivePathsPlugin = new CaseSensitivePathsPlugin()
-  const watchMissingNodeModulesPlugin = new WatchMissingNodeModulesPlugin(paths.appNodeModules)
   const miniCssExtractPlugin = new MiniCssExtractPlugin({
     filename: '[name].css',
     // chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
   })
-  const ignorePlugin = new IgnorePlugin(/^\.\/locale$/, /moment$/)
+  const ignorePlugin = new IgnorePlugin({
+    resourceRegExp: /^\.\/locale$/,
+    contextRegExp: /moment$/
+  })
   const terserPlugin = new TerserPlugin({
     terserOptions: {
       parse: {
@@ -132,7 +133,7 @@ const getPlugins = (isEnvProduction = false, shouldUseSourceMap = false) => {
   })
 
   const moduleScopePlugin = new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson])
-  const copyPlugin = new CopyPlugin(staticFiles.copyPatterns)
+  const copyPlugin = new CopyPlugin({patterns: staticFiles.copyPatterns})
   const friendlyErrorsWebpackPlugin = new FriendlyErrorsWebpackPlugin()
 
   return {
@@ -141,7 +142,6 @@ const getPlugins = (isEnvProduction = false, shouldUseSourceMap = false) => {
     sidebarHtmlPlugin,
     moduleNotFoundPlugin,
     caseSensitivePathsPlugin,
-    watchMissingNodeModulesPlugin,
     miniCssExtractPlugin,
     ignorePlugin,
     terserPlugin,

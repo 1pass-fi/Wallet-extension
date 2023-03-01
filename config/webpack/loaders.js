@@ -28,17 +28,18 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
       {
         loader: require.resolve('postcss-loader'),
         options: {
-          ident: 'postcss',
-          plugins: () => [
-            require('postcss-flexbugs-fixes'),
-            require('postcss-preset-env')({
-              autoprefixer: {
-                flexbox: 'no-2009',
-              },
-              stage: 3,
-            }),
-            require('tailwindcss')
-          ],
+          postcssOptions: {
+            plugins: [
+              require('postcss-flexbugs-fixes'),
+              require('postcss-preset-env')({
+                autoprefixer: {
+                  flexbox: 'no-2009',
+                },
+                stage: 3,
+              }),
+              require('tailwindcss')
+            ]
+          },
           sourceMap: isEnvProduction && shouldUseSourceMap,
         },
       },
@@ -81,7 +82,7 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
   // Process application JS with Babel.
   // The preset includes JSX, Flow, TypeScript, and some ESnext features.
   const insideBabelLoader = {
-    test: /\.(js|mjs|jsx|ts|tsx)$/,
+    test: /\.(js|mjs|cjs|jsx|ts|tsx)$/,
     include: paths.appSrc,
     loader: require.resolve('babel-loader'),
     type: 'javascript/auto',
@@ -110,7 +111,7 @@ const getLoaders = (isEnvProduction = false, isEnvDevelopment = true, shouldUseR
   // Process any JS outside of the app with Babel.
   // Unlike the application JS, we only compile the standard ES features.
   const outsideBabelLoader = {
-    test: /\.(js|mjs)$/,
+    test: /\.(js|mjs|cjs)$/,
     exclude: /@babel(?:\/|\\{1,2})runtime/,
     loader: require.resolve('babel-loader'),
     type: 'javascript/auto',

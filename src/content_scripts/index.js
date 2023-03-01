@@ -1,5 +1,3 @@
-import '@babel/polyfill'
-
 import { ALLOWED_ORIGIN, MESSAGES } from 'constants/koiConstants'
 import { includes } from 'lodash'
 import storage from 'services/storage'
