@@ -17,8 +17,8 @@
         "chrome-launch": "node scripts/dev.js --browser=chrome",
         "firefox-launch": "node scripts/dev.js --browser=firefox",
         "coveralls": "coveralls < coverage/lcov.info",
-        "unit": "jest --testPathPattern='.*.test.js'",
-        "e2e": "jest e2e --detectOpenHandles"
+        "test:unit": "jest --testPathPattern='.*.test.js'",
+        "test:e2e": "jest e2e --detectOpenHandles"
     },
     "keywords": [
         "chrome",

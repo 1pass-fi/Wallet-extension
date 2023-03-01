@@ -14,117 +14,18 @@ Finnie supports Google Chrome, we will support Firefox and Chromium-based browse
     - Find package at `./extension`
 
 ## Integrate Finnie to your DApps
-### Arweave
-- Connect
-```
-type WalletAddress = String
-window.arweaveWallet.connect(): Promise<WalletAddress[]>
-```
-- Get Address
-```
-type WalletAddress = String
-window.arweaveWallet.getAddress(): Promise<WalletAddress>
-```
-- Disconnect
-```
-window.arweaveWallet.disconnect(): Promise<void>
-```
-- Sign transaction
-```
-const transaction = await arweave.createTransaction()
-window.arweaveWallet.sign(transaction): Promise<void>
-```
-or
-```
-const transaction = await arweave.createTransaction()
-arweave.transaction.sign(transaction): Promise<void>
-```
-### Ethereum
-- Connect
-```
-type WalletAddress = String
-window.ethereum.request({ method: 'eth_requestAccounts' }): Promise<WalletAddress[]>
-```
-- Get connected addresses
-```
-type WalletAddress = String
-window.ethereum.request({ method: 'eth_accounts' }): Promise<WalletAddress[]>
-```
-- Get chain ID
-```
-type ChainID = String
-window.ethereum.request({ method: 'eth_chainId' }): Promise<ChainID>
-```
-- Get network ID
-```
-type NetworkID = String
-window.ethereum.request({ method: 'net_version' }): Promise<NetworkID>
-```
-- Sign and send transaction
-```
-type WalletAddress = String
+Please see our Finnie documentation for Dapp [here](https://docs.koii.network/finnie-for-devs/welcome-to-finnie)
 
-type TransactionHash = String
+## Contributing
+### Running Unit Tests and Linting
+- Run unit tests with `yarn test:unit`.
+- Run linter with `yarn lint`, fix lint problems with `yarn lint --fix`
+### Running E2E Tests
+1. You have to start the included test dapp manually. This test dapp is designed specifically for e2e testing
+2. We recommend to have a fresh build before running e2e tests
 
-interface Transaction {
-    gasPrice?: string,
-    gas?: string,
-    to: WalletAddress,
-    from: WalletAddress,
-    value?: string,
-    data?: string
-}
+**Prerequisites**
+- Run `yarn build`
+- At project root run `cd ./testdapp` and `yarn start` to start the test dapp
 
-window.ethereum.request({
-    method: 'eth_sendTransaction',
-    params: [transaction: Transaction]
-}): Promise<TransactionHash>
-
-```
-- Events
-```
-window.ethereum.on('chainChanged', () => console.log('Handle chain changed'))
-window.ethereum.on('networkChanged', () => console.log('Handle network changed'))
-window.ethereum.on('accountsChanged', () => console.log('Handle accounts changed'))
-```
-Take a look at our [Ethereum test dapp](https://gitlab.com/minhvu-eastagile/finnie-test-dapp)
-
-### Solana
-- Connect
-```
-window.solana.connect(): Promise<PublicKey>
-```
-- Get connected publickey
-```
-window.solana.publicKey: PublicKey
-```
-- Get connected status
-```
-window.solana.isConnected: Boolean
-```
-- Disconnect
-```
-window.solana.disconnect(): Promise<void>
-```
-- Sign and send transaction
-```
-type TransactionHash = String
-
-const transaction = new Transaction()
-window.solana.signAndSendTransaction(transaction): Promise<TransactionHash>
-```
-- Sign transaction without sending
-```
-const transaction = new Transaction()
-window.solana.signTransaction(): Promise<void>
-```
-- Sign message
-```
-interface SignMessageResponse {
-    publicKey: PublicKey,
-    signature: Uint8Array
-}
-
-const message = 'example message'
-window.solana.signMessage(message): Promise<SignMessageResponse>
-```
+Run e2e tests with `yarn test:e2e`

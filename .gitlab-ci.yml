@@ -38,18 +38,11 @@ unit_test:
   needs: ['install']
 
   script:
-    - yarn run unit
-
-build:
-   stage: checks
-   needs: ['install']
-
-   script:
-     - yarn run build
+    - yarn run test:unit
 
 e2e_test:
    stage: checks
    needs: ['install']
 
-   script:
-     - yarn run e2e
+  script:
+    - yarn run test:e2e

@@ -16,8 +16,6 @@ export default async (payload, next) => {
 
     console.log('QTY ', qty, 'TARGET ', target, 'TOKEN', token)
 
-    if (token === 'AR') throw new Error('ARWEAVE')
-
     let txId = ''
     let receipt = {}
 
