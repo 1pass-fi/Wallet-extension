@@ -6,7 +6,7 @@ import { EthereumTool } from '.'
 /* CONSTANT FOR TESTING */
 const SECRET_PHRASES = 'path zero antique girl wolf call thank powder like auto oppose faculty'
 const WALLET_ADDRESS = '0xb979707D767230Df79840B39703D86F99C6d84D2'
-const WALLET_KEY = '0x0ea98b5b46f3b452171da0e3bd335f6280205d2cc48b89d042c67cd25e1a2b56'
+const WALLET_KEY = '0xf7aeac55e1ba534e9fb04a39d6658f298fae4e19bef62194e82f7aef280a5280'
 
 describe('EthereumTool class', () => {
   const mockedGetBalance = jest.fn().mockResolvedValue(42)
