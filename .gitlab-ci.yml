@@ -36,11 +36,11 @@ unit_test:
   needs: ['install']
 
   script:
-    - yarn run test
+    - yarn run test:unit
 
 e2e_test:
   stage: checks
   needs: ['install']
 
   script:
-    - yarn run e2e
+    - yarn run test:e2e
