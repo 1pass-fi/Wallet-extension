@@ -116,6 +116,7 @@
         "redux-thunk": "^2.3.0",
         "regenerator-runtime": "^0.13.9",
         "resolve": "1.8.1",
+        "setimmediate": "^1.0.5",
         "smartweave": "^0.4.49",
         "stream-browserify": "^3.0.0",
         "stream-http": "^3.2.0",

@@ -1,5 +1,6 @@
 import xmlHttpRequest from 'xmlhttprequest-ssl'
 
+import 'setimmediate'
 global.window = global
 
 import { IMPORTED } from 'constants/accountConstants'

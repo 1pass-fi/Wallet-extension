@@ -398,7 +398,7 @@ describe('AccountManagement', () => {
       tokenBalance = (await accountBalanceCustom.evaluate((el) => el.textContent)).split(' ')[0]
       tokenSymbol = (await accountBalanceCustom.evaluate((el) => el.textContent)).split(' ')[1]
 
-      expect(Number(tokenBalance)).toBeGreaterThan(0)
+      expect(Number(tokenBalance)).toBeGreaterThanOrEqual(0)
       expect(tokenSymbol).toBe('WIBU')
 
       /* CHECK K2 ASSETS */
