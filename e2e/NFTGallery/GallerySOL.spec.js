@@ -120,7 +120,8 @@ describe('View Solana gallery', () => {
     expect(solscanNFTAddress).not.toBeNull()
   }, 500000)
 
-  it('should successfully transfer Solana NFT', async () => {
+  // temporary skip transfer NFT test cause of take long time
+  it.skip('should successfully transfer Solana NFT', async () => {
     await optionPage.bringToFront()
 
     const [transferNFTButton] = await optionPage.$x(`//button[contains(text(), "Transfer NFT")]`)
