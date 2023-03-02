@@ -41,7 +41,7 @@ describe('Send token via Ethereum network', () => {
     await goToSendButton.click()
 
     /* SEND TOKEN FORM */
-    const tokenDropdown = await extPage.waitForSelector('[role="button"]')
+    const tokenDropdown = await extPage.waitForSelector(`[data-testid="token-dropdown"]`)
     await tokenDropdown.click()
 
     const tokenOption = await extPage.waitForSelector(`[data-testid="ETH"]`)
