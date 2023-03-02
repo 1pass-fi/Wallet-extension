@@ -1332,7 +1332,7 @@
     "message": "Secure Finnie with a password."
   },
   "securePasswordsHaveAtLeast8Characters": {
-    "message": "Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$%)."
+    "message": "Secure passwords have at least 8 characters and include uppercase & lowercase letters, numbers, and special characters (e.g. !@#$$%)."
   },
   "security": {
     "message": "Security"
@@ -1500,7 +1500,7 @@
     "message": "Start from the beginning."
   },
   "startFromScratch": {
-    "message": "Start from scratch"
+    "message": "Start from scratch."
   },
   "startFromScratchLc": {
     "message": "start from scratch"
