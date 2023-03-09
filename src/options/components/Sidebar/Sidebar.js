@@ -20,7 +20,7 @@ import UploadNftForm from './UploadNftForm'
 import './Sidebar.css'
 
 const navItems = [
-  { icon: CreateIcon, path: '/create-nft' },
+  // { icon: CreateIcon, path: '/create-nft' },
   { icon: GalleryIcon, path: '/gallery' }
   // { icon: CollectionIcon, path: '/collections' }
 ]
@@ -87,6 +87,14 @@ const Sidebar = ({ currentPath }) => {
   return (
     <div className="w-61 3xl:w-65.5">
       <nav className="flex w-full items-center justify-evenly gapx-3 mb-5">
+        <div
+          className={clsx('flex items-center justify-center w-13.75 h-11.25 cursor-not-allowed')}
+          data-tip={chrome.i18n.getMessage('featureUnderConstruction')}
+          data-for="sidebar-collections"
+        >
+          <CreateIcon className="w-7.5 h-7" />
+        </div>
+        <ToolTip id="sidebar-collections" />
         {navItems.map(({ icon: Icon, path }) => (
           <NavLink
             key={path}

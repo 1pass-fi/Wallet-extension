@@ -611,6 +611,9 @@
   "faqPage": {
     "message": "FAQ page"
   },
+  "featureUnderConstruction": {
+    "message": "This feature is under construction. Check back soon."
+  },
   "fiatCurrenciesSupport": {
     "message": "We can only show the exchange rate for fiat currencies at this time."
   },
