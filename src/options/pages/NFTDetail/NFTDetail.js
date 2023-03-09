@@ -260,7 +260,7 @@ const NFTDetail = () => {
                       className="border-opacity-20 h-9.5 xl:h-10.5 2xl:h-11.5 3xl:h-12.5"
                     />
                   </a>
-                  <a href={`https://koi.rocks/content-details/${nft.txId}`} target="_blank">
+                  {/* <a href={`https://koi.rocks/content-details/${nft.txId}`} target="_blank">
                     <Button
                       disabled={disabledFeatures}
                       icon={LeaderboardIcon}
@@ -268,7 +268,7 @@ const NFTDetail = () => {
                       variant="warning"
                       className="h-9.5 xl:h-10.5 2xl:h-11.5 3xl:h-12.5"
                     />
-                  </a>
+                  </a> */}
                 </div>
               )}
 
