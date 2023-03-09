@@ -123,13 +123,13 @@ const Sidebar = ({ currentPath }) => {
             )} */}
           </NavLink>
         ))}
-        <div
+        {/* <div
           className={clsx('flex items-center justify-center w-13.75 h-11.25 cursor-not-allowed')}
           data-tip={chrome.i18n.getMessage('comingSoon')}
           data-for="sidebar-collections"
         >
           <CollectionIcon className="w-7.5 h-7" />
-        </div>
+        </div> */}
         <ToolTip id="sidebar-collections" />
       </nav>
       <div style={{ height: '60vh' }} className="rounded overflow-y-scroll">
