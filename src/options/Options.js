@@ -97,8 +97,6 @@ const Options = () => {
     let allAssets = await popupAccount.getAllAssets()
     let validAssets = allAssets.filter((asset) => asset.name !== '...')
 
-    console.log('validAssets: ', validAssets.length)
-
     dispatch(setAssets({ nfts: validAssets }))
   }
 
