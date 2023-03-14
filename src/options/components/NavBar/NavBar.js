@@ -128,11 +128,19 @@ const NavBar = () => {
         <nav className="ml-6.25 3xl:ml-10 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
           <NavLink to="/gallery">{chrome.i18n.getMessage('gallery')}</NavLink>
         </nav>
-        <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
+        {/* <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
           <NavLink to="/create-nft">{chrome.i18n.getMessage('create')}</NavLink>
-        </nav>
+        </nav> */}
         <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
-          {/* <NavLink to="/collections">Collections</NavLink> */}
+          <div
+            className="cursor-not-allowed"
+            data-tip={chrome.i18n.getMessage('featureUnderConstruction')}
+            data-for="nav-collections"
+          >
+            {chrome.i18n.getMessage('create')}
+          </div>
+        </nav>
+        {/* <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
           <div
             className="cursor-not-allowed"
             data-tip={chrome.i18n.getMessage('comingSoon')}
@@ -140,7 +148,7 @@ const NavBar = () => {
           >
             {chrome.i18n.getMessage('collections')}
           </div>
-        </nav>
+        </nav> */}
         <ToolTip id="nav-collections" />
         {/* <nav className="ml-9 tracking-finnieSpacing-wider">
           <NavLink to="/friend-referral">Refer a friend</NavLink>
