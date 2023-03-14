@@ -1,4 +1,4 @@
-import { Web } from '@_koi/sdk/web'
+import { Web } from '@_koii/sdk/web'
 import { EthereumTool } from 'services/ethereum'
 import { K2Tool } from 'services/k2'
 import { SolanaTool } from 'services/solana'

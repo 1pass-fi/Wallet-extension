@@ -112,5 +112,5 @@
 //   }
 // }
 
-import { K2Tool } from '@_koi/sdk/k2'
+import { K2Tool } from '@_koii/sdk/k2'
 export { K2Tool }

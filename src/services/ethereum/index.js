@@ -97,5 +97,5 @@
 
 // export default new EthereumTool()
 
-import { EthereumTool } from '@_koi/sdk/ethereum'
+import { EthereumTool } from '@_koii/sdk/ethereum'
 export { EthereumTool }

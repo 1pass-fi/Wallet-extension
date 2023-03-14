@@ -1,4 +1,4 @@
-import { Web } from '@_koi/sdk/web'
+import { Web } from '@_koii/sdk/web'
 import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import Arweave from 'arweave'
 import axios from 'axios'

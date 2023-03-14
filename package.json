@@ -39,8 +39,8 @@
         "url": "https://github.com/kryptokinght/react-extension-boilerplate/issues"
     },
     "dependencies": {
-        "@_koi/sdk": "https://gitlab.com/koii-network/tools#build",
         "@_koi/web3.js": "^0.0.6",
+        "@_koii/sdk": "^2.4.15",
         "@metamask/contract-metadata": "^1.33.0",
         "@metamask/eth-sig-util": "^4.0.0",
         "@nfteyez/sol-rayz": "^0.10.2",

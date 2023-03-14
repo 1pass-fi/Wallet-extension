@@ -1,4 +1,4 @@
-import { Web } from '@_koi/sdk/web'
+import { Web } from '@_koii/sdk/web'
 import { MOCK_COLLECTIONS_STORE } from 'constants/koiConstants'
 import { isString } from 'lodash'
 import { find, get } from 'lodash'
@@ -11,21 +11,20 @@ import storage from 'services/storage'
 
 export const formatNumber = (value, decimal) => {
   const zeroArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  return numeral(value).format(
-    decimal ? `0,0.${zeroArray.slice(0, decimal).join('')}` : '0,0.00'
-  )
+  return numeral(value).format(decimal ? `0,0.${zeroArray.slice(0, decimal).join('')}` : '0,0.00')
 }
 
 export const getDisplayAddress = (address, head = 6, tail = 4) => {
   try {
-    if (isString(address)) return `${address.slice(0, head)}...${address.slice(address.length - tail)}`
+    if (isString(address))
+      return `${address.slice(0, head)}...${address.slice(address.length - tail)}`
   } catch (err) {
     throw new Error(err.message)
   }
 }
 
 /**
- * 
+ *
  * @param {File} file file object
  */
 export const saveImageDataToStorage = async (file) => {
@@ -48,7 +47,7 @@ export const saveImageDataToStorage = async (file) => {
 
 /**
  *
- * @param {Array} collection { tx: [id1, id2] } 
+ * @param {Array} collection { tx: [id1, id2] }
  */
 export const mockSaveCollections = async (collection) => {
   console.log('new collection: ', collection)
@@ -56,7 +55,7 @@ export const mockSaveCollections = async (collection) => {
   const collections = storage[MOCK_COLLECTIONS_STORE] || []
   collections.push(collection)
 
-  await setChromeStorage({[MOCK_COLLECTIONS_STORE]: collections})
+  await setChromeStorage({ [MOCK_COLLECTIONS_STORE]: collections })
 }
 
 export const mockGetCollections = async () => {
@@ -68,7 +67,7 @@ export const mockGetCollections = async () => {
 export const stringTruncate = (str, length) => {
   try {
     if (str.length > 20) {
-      return `${str.slice(0,length)}...`
+      return `${str.slice(0, length)}...`
     }
     return str
   } catch (err) {

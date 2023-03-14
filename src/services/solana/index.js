@@ -1,2 +1,2 @@
-import { SolanaTool } from '@_koi/sdk/solana'
+import { SolanaTool } from '@_koii/sdk/solana'
 export { SolanaTool }
