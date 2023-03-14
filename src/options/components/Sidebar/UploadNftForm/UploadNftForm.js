@@ -10,7 +10,6 @@ import ConfirmCreateNftModal from 'options/components/ConfirmCreateNftModal'
 import DropFile from 'options/components/DropFile'
 import InputField from 'options/components/InputField'
 import NFTMedia from 'options/components/NFTMedia'
-import ToolTip from 'options/components/ToolTip'
 import formatLongString from 'options/utils/formatLongString'
 import { getFileType } from 'options/utils/getFileType'
 
@@ -126,15 +125,10 @@ const UploadNftForm = () => {
 
   return (
     <>
-      <div
-        className="flex flex-col px-4 pt-4 pb-8 cursor-not-allowed"
-        data-tip={chrome.i18n.getMessage('featureUnderConstruction')}
-        data-for="under-construction"
-      >
-        <ToolTip id="under-construction" />
+      <div className="flex flex-col px-4 pt-4 pb-8">
         <div ref={titleFieldRef}>
           <InputField
-            className="my-1 pointer-events-none"
+            className="my-1"
             label={chrome.i18n.getMessage('uploadNFTTitleLabel')}
             value={nftContent.title}
             setValue={handleNftContentChange}
@@ -145,7 +139,7 @@ const UploadNftForm = () => {
           />
         </div>
         <InputField
-          className="my-1 pointer-events-none"
+          className="my-1"
           label={chrome.i18n.getMessage('description')}
           value={nftContent.description}
           setValue={handleNftContentChange}
@@ -156,7 +150,7 @@ const UploadNftForm = () => {
           placeholder={chrome.i18n.getMessage('uploadNFTDescPh')}
           maxHeight={200}
         />
-        <div className="my-1 flex flex-col w-full pointer-events-none">
+        <div className="my-1 flex flex-col w-full">
           <label htmlFor="tags" className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
             {chrome.i18n.getMessage('tags') + ','}
           </label>
@@ -172,7 +166,7 @@ const UploadNftForm = () => {
         </div>
         <div
           ref={tagFields}
-          className="max-h-19 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1 mb-5 pointer-events-none"
+          className="max-h-19 w-full flex flex-wrap gap-1 overflow-y-scroll mt-1 mb-5"
         >
           {tags.map((tag) => (
             <div
@@ -186,7 +180,7 @@ const UploadNftForm = () => {
           ))}
         </div>
 
-        <div className="flex mb-4 cursor-pointer pointer-events-none">
+        <div className="flex mb-4 cursor-pointer">
           <CheckBox
             checked={nftContent.isNSFW}
             onClick={() => setNftContent((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
@@ -202,7 +196,7 @@ const UploadNftForm = () => {
           </div>
         </div>
         {isEmpty(file) ? (
-          <div className="w-50 h-36.25 border border-dashed border-success rounded pointer-events-none">
+          <div className="w-50 h-36.25 border border-dashed border-success rounded">
             <DropFile
               file={file}
               setFile={setFile}
@@ -212,7 +206,7 @@ const UploadNftForm = () => {
             />
           </div>
         ) : (
-          <div className="w-50 relative object-cover pointer-events-none">
+          <div className="w-50 relative object-cover">
             <CrossIcon
               onClick={() => setFile({})}
               className="z-50 absolute top-2 right-2 w-4 h-4 cursor-pointer bg-white bg-opacity-60 rounded-full p-1 shadow-lg"
@@ -220,16 +214,13 @@ const UploadNftForm = () => {
             <NFTMedia contentType={fileType} source={url} />
           </div>
         )}
-        <span className="text-3xs text-bittersweet-200 mb-4.25 pointer-events-none">
-          {errors.file}
-        </span>
+        <span className="text-3xs text-bittersweet-200 mb-4.25">{errors.file}</span>
 
         <Button
           onClick={handleCreateNFT}
           variant="light"
           text={chrome.i18n.getMessage('createNFT')}
-          className="text-sm pointer-events-none"
-          disabled
+          className="text-sm"
         />
       </div>
       {showConfirmModal && (

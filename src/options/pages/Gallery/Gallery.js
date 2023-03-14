@@ -7,7 +7,6 @@ import CreateIcon from 'img/v2/create-icon.svg'
 import isEmpty from 'lodash/isEmpty'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
 import NFTCard from 'options/components/NFTCard'
-import ToolTip from 'options/components/ToolTip'
 
 import './index.css'
 
@@ -54,13 +53,10 @@ const Gallery = () => {
           displayingNfts.map((nft) => <NFTCard nft={nft} key={nft.txId} />)
         ) : (
           <Link
-            // to={`/create-nft`}
-            data-tip={chrome.i18n.getMessage('featureUnderConstruction')}
-            className="cursor-not-allowed relative text-white rounded bg-blue-800 w-46.75 h-72 pt-1.75 px-1.75"
+            to={`/create-nft`}
+            className="relative text-white rounded bg-blue-800 w-46.75 h-72 pt-1.75 px-1.75"
             role="gridcell"
-            data-for="create-disabled"
           >
-            <ToolTip id="create-disabled" />
             <div
               className="flex flex-col justify-center items-center w-full bg-blue-400 bg-opacity-40 rounded border border-dashed border-trueGray-100"
               style={{ height: '163px' }}
