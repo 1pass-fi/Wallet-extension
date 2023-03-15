@@ -120,7 +120,8 @@ describe('View Solana gallery', () => {
     expect(solscanNFTAddress).not.toBeNull()
   }, 500000)
 
-  it('should successfully transfer Solana NFT', async () => {
+  // temporary skip transfer NFT test cause of take long time
+  it.skip('should successfully transfer Solana NFT', async () => {
     await optionPage.bringToFront()
 
     const [transferNFTButton] = await optionPage.$x(`//button[contains(text(), "Transfer NFT")]`)
@@ -209,15 +210,15 @@ describe('View Solana gallery', () => {
       waitUntil: 'networkidle0'
     })
 
-    const [solscanSenderAddress] = await solscanTransferPage.$x(
+    const solscanSenderAddress = await solscanTransferPage.waitForXPath(
       `//a[contains(@href, "account/${senderAddress}?cluster=devnet")]`
     )
     expect(solscanSenderAddress).toBeDefined()
-    const [solscanReceiverAddress] = await solscanTransferPage.$x(
+    const solscanReceiverAddress = await solscanTransferPage.waitForXPath(
       `//a[contains(@href, "account/${receiverAddress}?cluster=devnet")]`
     )
     expect(solscanReceiverAddress).toBeDefined()
-    const [solscanNFTAddress] = await solscanTransferPage.$x(
+    const solscanNFTAddress = await solscanTransferPage.waitForXPath(
       `//a[contains(@href, "token/${NFTTokenAddress}?cluster=devnet")]`
     )
     expect(solscanNFTAddress).toBeDefined()

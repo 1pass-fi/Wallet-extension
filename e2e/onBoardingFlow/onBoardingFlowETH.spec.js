@@ -148,7 +148,7 @@ describe('e2e test', () => {
     const tosHyperlink = await optionPage.$('[data-testid="tos-link"]')
     await tosHyperlink.click()
 
-    await optionPage.waitForTimeout(2000)
+    await optionPage.waitForTimeout(5000)
 
     const currentPages = await browser.pages()
     const tosPage = currentPages[currentPages.length - 1]

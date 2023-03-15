@@ -152,7 +152,7 @@ const UploadNftForm = () => {
         />
         <div className="my-1 flex flex-col w-full">
           <label htmlFor="tags" className="w-full uppercase text-lightBlue text-2xs leading-3 mb-1">
-            {chrome.i18n.getMessage('tags')+','}
+            {chrome.i18n.getMessage('tags') + ','}
           </label>
           <input
             className="w-full bg-trueGray-100 bg-opacity-10 border-b border-white h-5.25 text-white px-1 upload-nft-tag-input"
@@ -191,7 +191,8 @@ const UploadNftForm = () => {
             className="text-white ml-2 text-11px select-none"
             onClick={() => setNftContent((prev) => ({ ...prev, isNSFW: !prev.isNSFW }))}
           >
-            {chrome.i18n.getMessage('thisContentIs')}<span className="text-warning">{chrome.i18n.getMessage('explicitMsg')}</span>
+            {chrome.i18n.getMessage('thisContentIs')}
+            <span className="text-warning">{chrome.i18n.getMessage('explicitMsg')}</span>
           </div>
         </div>
         {isEmpty(file) ? (

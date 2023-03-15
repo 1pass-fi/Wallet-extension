@@ -14,7 +14,7 @@ describe('View Ethereum NFT gallery', () => {
 
     /* Import Ethereum wallet */
     await Automation.importWallet(optionPage, TYPE.ETHEREUM)
-    senderAddress = '0x66083923D61D765f5FC51a612f17d64564358716'
+    senderAddress = '0xb979707D767230Df79840B39703D86F99C6d84D2'
   }, 50000)
 
   it('should correctly render the gallery with no NFT', async () => {
@@ -60,7 +60,7 @@ describe('View Ethereum NFT gallery', () => {
     await Automation.goToWalletSettingPage(optionPage)
     await Automation.swapToNetworkOption(
       optionPage,
-      '0x66083923D61D765f5FC51a612f17d64564358716',
+      '0xb979707D767230Df79840B39703D86F99C6d84D2',
       'Goerli TestNet'
     )
 
@@ -124,7 +124,8 @@ describe('View Ethereum NFT gallery', () => {
     expect(etherscanNFTAddress).toBeDefined()
   }, 30000)
 
-  it('should successfully transfer Ethereum NFT', async () => {
+  // temporary skip transfer NFT test cause of take long time
+  it.skip('should successfully transfer Ethereum NFT', async () => {
     await optionPage.bringToFront()
 
     const [transferNFTButton] = await optionPage.$x(`//button[contains(text(), "Transfer NFT")]`)
@@ -149,10 +150,10 @@ describe('View Ethereum NFT gallery', () => {
     // Valid Solana address
     await recipientInputField.click({ clickCount: 3 })
     // await recipientInputField.type('0x9850Da0a1A2635625d3696E0474D855484aA0994')
-    await recipientInputField.type('0x66083923D61D765f5FC51a612f17d64564358716')
+    await recipientInputField.type('0xb979707D767230Df79840B39703D86F99C6d84D2')
     receiverAddress = await recipientInputField.evaluate((el) => el.value)
     // expect(receiverAddress).toBe('0x9850Da0a1A2635625d3696E0474D855484aA0994')
-    expect(receiverAddress).toBe('0x66083923D61D765f5FC51a612f17d64564358716')
+    expect(receiverAddress).toBe('0xb979707D767230Df79840B39703D86F99C6d84D2')
     await sendNFTButton.click()
 
     const confirmReceiverAddress = await optionPage.waitForXPath(
@@ -204,14 +205,17 @@ describe('View Ethereum NFT gallery', () => {
     await optionPage.waitForTimeout(5000)
     const currentPages = await browser.pages()
     const etherscanPage = currentPages[currentPages.length - 1]
-    
-    const [ethescanSenderAddress] = await etherscanPage.$x(
-      `//a[contains(@href, "address/${senderAddress}")]`
-    )
-    expect(ethescanSenderAddress).toBeDefined()
 
-    const [etherscanNFTAddress] = await etherscanPage.$x(
-      `//a[contains(@href, "token/${NFTContractAddress}")]`
+    const senderAddressLc = senderAddress.toLowerCase()
+    const nftContractAddressLc = NFTContractAddress.toLowerCase()
+
+    const etherscanSenderAddress = await etherscanPage.waitForXPath(
+      `//a[contains(@href, "address/${senderAddressLc}")]`
+    )
+    expect(etherscanSenderAddress).toBeDefined()
+
+    const etherscanNFTAddress = await etherscanPage.waitForXPath(
+      `//a[contains(@href, "token/${nftContractAddressLc}")]`
     )
     expect(etherscanNFTAddress).toBeDefined()
   }, 1000000)

@@ -31,7 +31,7 @@ describe('Send token via K2 network', () => {
     await goToSendButton.click()
 
     /* SEND TOKEN FORM */
-    const tokenDropdown = await extPage.waitForSelector('[role="button"]')
+    const tokenDropdown = await extPage.waitForSelector(`[data-testid="token-dropdown"]`)
     await tokenDropdown.click()
 
     const tokenOption = await extPage.waitForSelector(`[data-testid="KOII"]`)
@@ -126,11 +126,12 @@ describe('Send token via K2 network', () => {
     await sendButton.click()
 
     // /* TRANSACTION RECEIPT */
-    const okButton = await extPage.waitForSelector('a[role="button"]')
+    const okButton = await extPage.waitForSelector('a[role="button"]', { timeout: 300000 })
     await okButton.click()
   }, 500000)
 
-  it('should successfully to send custom tokens', async () => {
+  // K2 network has not supported custom tokens
+  it.skip('should successfully to send custom tokens', async () => {
     await extPage.bringToFront()
 
     /* IMPORT CUSTOM TOKEN */
@@ -167,7 +168,7 @@ describe('Send token via K2 network', () => {
     await goToSendButton.click()
 
     /* SEND TOKEN FORM */
-    const tokenDropdown = await extPage.waitForSelector('[role="button"]')
+    const tokenDropdown = await extPage.waitForSelector(`[data-testid="token-dropdown"]`)
     await tokenDropdown.click()
 
     const tokenOption = await extPage.waitForSelector(`[data-testid="WIBU"]`)
@@ -204,7 +205,7 @@ describe('Send token via K2 network', () => {
     await sendButton.click()
 
     // /* TRANSACTION RECEIPT */
-    const okButton = await extPage.waitForSelector('a[role="button"]')
+    const okButton = await extPage.waitForSelector('a[role="button"]', { timeout: 300000 })
     await okButton.click()
   }, 500000)
 

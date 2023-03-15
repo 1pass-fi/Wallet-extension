@@ -4,7 +4,7 @@ import Automation from '../utils/automation'
 
 const ERROR_MESSAGE = {
   INCORRECT_PASSWORD: `Password is incorrect`,
-  NOT_MATCHING: `Passwords don’t match`,
+  NOT_MATCHING: `Passwords don't match`,
   NOT_MEET_REQUIREMENT: `Password must have at least 8 characters, 1 number, 1 uppercase, 1 lowercase and 1 symbol (e.g. !@#$%).`
 }
 
@@ -19,9 +19,10 @@ describe('ExtensionManagement', () => {
   }, 50000)
 
   it('should render the get started screen when there is no account', async () => {
-    expect(
-      await optionPage.$x(`//*[contains(text(), "Create a password to secure Finnie.")]`)
-    ).toHaveLength(1)
+    const createPasswordText = await optionPage.waitForXPath(
+      `//*[contains(text(), "Create a password to secure Finnie.")]`
+    )
+    expect(createPasswordText).not.toBeNull()
 
     expect(
       await optionPage.$x(`//*[contains(text(), "Welcome to the Finnie Wallet")]`)
@@ -35,7 +36,7 @@ describe('ExtensionManagement', () => {
     expect(await extPage.$x(`//*[contains(text(), "Get a new wallet")]`)).toHaveLength(1)
 
     await extPage.close()
-  })
+  }, 10000)
 
   it('should lock finnie and display lock screen', async () => {
     await Automation.importWallet(optionPage, TYPE.ETHEREUM)

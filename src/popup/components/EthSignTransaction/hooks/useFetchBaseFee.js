@@ -24,7 +24,7 @@ const useFetchBaseFee = () => {
     }, 3000)
 
     return () => {
-      clearImmediate(getFeeInterval)
+      clearInterval(getFeeInterval)
     }
   }, [])
 

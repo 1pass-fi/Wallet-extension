@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import ReactNotification from 'react-notifications-component'
+import { ReactNotifications } from 'react-notifications-component'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, withRouter } from 'react-router-dom'
 import { Route, Switch } from 'react-router-dom'
@@ -96,8 +96,6 @@ const Options = () => {
   const refreshNFTs = async () => {
     let allAssets = await popupAccount.getAllAssets()
     let validAssets = allAssets.filter((asset) => asset.name !== '...')
-
-    console.log('validAssets: ', validAssets.length)
 
     dispatch(setAssets({ nfts: validAssets }))
   }
@@ -348,7 +346,7 @@ const Options = () => {
             </>
           )}
         </div>
-        <ReactNotification />
+        <ReactNotifications />
       </DidContext.Provider>
     </GalleryContext.Provider>
   )

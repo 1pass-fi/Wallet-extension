@@ -148,7 +148,7 @@ describe('e2e test', () => {
     const tosHyperlink = await optionPage.$('[data-testid="tos-link"]')
     await tosHyperlink.click()
 
-    await optionPage.waitForTimeout(2000)
+    await optionPage.waitForTimeout(5000)
 
     const currentPages = await browser.pages()
     const tosPage = currentPages[currentPages.length - 1]
@@ -242,7 +242,8 @@ describe('e2e test', () => {
     await confirmButton.click()
 
     const goToHomeButton = await optionPage.waitForXPath(
-      `//button[contains(text(), "Go to Homepage")]`
+      `//button[contains(text(), "Go to Homepage")]`,
+      { timeout: 100000 }
     )
     const [openFaucetButton] = await optionPage.$x(`//button[contains(text(), "Get Free KOII")]`)
     const [openCreateNFTPageButton] = await optionPage.$x(
@@ -424,7 +425,8 @@ describe('e2e test', () => {
     await confirmButton.click()
 
     const goToHomeButton = await optionPage.waitForXPath(
-      `//button[contains(text(), "Go to Homepage")]`
+      `//button[contains(text(), "Go to Homepage")]`,
+      { timeout: 100000 }
     )
     await goToHomeButton.click()
 

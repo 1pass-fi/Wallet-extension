@@ -1,8 +1,8 @@
-import { Web } from '@_koi/sdk/web'
+import { Web } from '@_koii/sdk/web'
 import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import axios from 'axios'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
-import { NFT_CONTRACT_SRC,PATH, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
+import { NFT_CONTRACT_SRC, PATH, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 import arweave from 'services/arweave'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 import storage from 'services/storage'
@@ -14,9 +14,9 @@ import nftInfoSchema from './nftInfoSchema'
 /*
   Return nft ids of uploaded nfts
 */
-export default async ({nfts, setNfts, address, collectionData, selectedNftIds, collectionId}) => {
+export default async ({ nfts, setNfts, address, collectionData, selectedNftIds, collectionId }) => {
   nfts = [...nfts]
-  const key = await request.gallery.getKey({address})
+  const key = await request.gallery.getKey({ address })
 
   let info = nftInfoSchema.validate(nfts.info)
   if (info.error) throw new Error(info.error.message)
@@ -25,81 +25,91 @@ export default async ({nfts, setNfts, address, collectionData, selectedNftIds, c
 
   const ownerAddress = await storage.setting.get.activatedArweaveAccountAddress()
 
-  let nftIds = await Promise.all(nfts.map(async ({ info, url }, index) => {
-    try {
-      const buffer = await getBufferFromUrl(url)
-      const createdAt = Math.floor(info?.createdAt / 1000)
-      info.ownerAddress = ownerAddress
+  let nftIds = await Promise.all(
+    nfts.map(async ({ info, url }, index) => {
+      try {
+        const buffer = await getBufferFromUrl(url)
+        const createdAt = Math.floor(info?.createdAt / 1000)
+        info.ownerAddress = ownerAddress
 
-      const transaction = await createTransaction(buffer, info)
-      let price = await arweave.transactions.getPrice(buffer.byteLength)
-      price = arweave.ar.winstonToAr(price)
-      const fileType = info.contentType
-  
-      await arweave.transactions.sign(transaction, key)
-      const uploader = await arweave.transactions.getUploader(transaction)
-      while (!uploader.isComplete) {
-        await uploader.uploadChunk()
+        const transaction = await createTransaction(buffer, info)
+        let price = await arweave.transactions.getPrice(buffer.byteLength)
+        price = arweave.ar.winstonToAr(price)
+        const fileType = info.contentType
+
+        await arweave.transactions.sign(transaction, key)
+        const uploader = await arweave.transactions.getUploader(transaction)
+        while (!uploader.isComplete) {
+          await uploader.uploadChunk()
+        }
+        // await mockUploadNft()
+
+        const koii = new Web()
+        koii.wallet = key
+        await koii.getWalletAddress()
+        await registerData(koii, transaction.id)
+
+        setNfts((prev) => {
+          prev[index].uploaded = true
+          return [...prev]
+        })
+
+        // save pending transaction
+        const pendingTransaction = {
+          id: transaction.id,
+          activityName: `Minted NFT "${info.title}"`,
+          expense: price,
+          retried: 1,
+          timestamp: Date.now(),
+          transactionType: PENDING_TRANSACTION_TYPE.MINT_NFT,
+          address
+        }
+        console.log('pendingTransaction', pendingTransaction)
+        await addPendingTransaction(address, pendingTransaction)
+
+        // save pending asset
+        const base64String = Buffer.from(
+          (
+            await axios.request({
+              url,
+              responseType: 'arraybuffer',
+              method: 'GET',
+              adapter: axiosAdapter
+            })
+          ).data,
+          'binary'
+        ).toString('base64')
+        let imageUrl = `data:image/jpeg;base64,${base64String}`
+        if (fileType.includes('video')) imageUrl = `data:video/mp4;base64,${base64String}`
+        const pendingNFT = {
+          name: info.title,
+          owner: info.ownerName,
+          description: info.description,
+          isNSFW: info.isNSFW,
+          tags: info.tags,
+          isKoiWallet: true,
+          earnedKoi: 0,
+          txId: transaction.id,
+          imageUrl,
+          galleryUrl: `${PATH.GALLERY}#/details/${transaction.id}`,
+          koiRockUrl: `${PATH.KOI_ROCK}/${transaction.id}`,
+          isRegistered: true,
+          contentType: fileType,
+          totalViews: 0,
+          createdAt,
+          pending: true,
+          type: TYPE.ARWEAVE,
+          expired: false,
+          retried: 1
+        }
+        await addPendingTransaction(address, pendingNFT, true)
+
+        return transaction.id
+      } catch (err) {
+        console.error(err.message)
       }
-      // await mockUploadNft()
-  
-      const koii = new Web()
-      koii.wallet = key
-      await koii.getWalletAddress()
-      await registerData(koii, transaction.id)
-  
-      setNfts(prev => {prev[index].uploaded = true; return [...prev]})
-  
-      // save pending transaction
-      const pendingTransaction = {
-        id: transaction.id,
-        activityName: `Minted NFT "${info.title}"`,
-        expense: price,
-        retried: 1,
-        timestamp: Date.now(),
-        transactionType: PENDING_TRANSACTION_TYPE.MINT_NFT,
-        address
-      }
-      console.log('pendingTransaction', pendingTransaction)
-      await addPendingTransaction(address, pendingTransaction)
-  
-      // save pending asset
-      const base64String = Buffer.from((await axios.request({
-        url,
-        responseType: 'arraybuffer',
-        method: 'GET',
-        adapter: axiosAdapter
-      })).data, 'binary').toString('base64')
-      let imageUrl = `data:image/jpeg;base64,${base64String}`
-      if (fileType.includes('video')) imageUrl = `data:video/mp4;base64,${base64String}`
-      const pendingNFT = {
-        name: info.title,
-        owner: info.ownerName,
-        description: info.description,
-        isNSFW: info.isNSFW,
-        tags: info.tags,
-        isKoiWallet: true,
-        earnedKoi: 0,
-        txId: transaction.id,
-        imageUrl,
-        galleryUrl: `${PATH.GALLERY}#/details/${transaction.id}`,
-        koiRockUrl: `${PATH.KOI_ROCK}/${transaction.id}`,
-        isRegistered: true,
-        contentType: fileType,
-        totalViews: 0,
-        createdAt,
-        pending: true,
-        type: TYPE.ARWEAVE,
-        expired: false,
-        retried: 1
-      }
-      await addPendingTransaction(address, pendingNFT, true)
-  
-      return transaction.id
-    } catch (err) {
-      console.error(err.message)
-    }
-  }))
+    })
+  )
 
   nftIds = [...nftIds, ...selectedNftIds]
 
@@ -134,17 +144,17 @@ const createTransaction = async (buffer, info) => {
     const ticker = 'KOINFT'
 
     const initialState = {
-      'owner': ownerAddress,
-      'title': title,
-      'name': ownerName,
-      'description': description,
-      'ticker': ticker,
-      'balances': balances,
-      'contentType': contentType,
-      'createdAt': createdAt,
-      'tags': tags,
-      'locked': [],
-      'isPrivate': false
+      owner: ownerAddress,
+      title: title,
+      name: ownerName,
+      description: description,
+      ticker: ticker,
+      balances: balances,
+      contentType: contentType,
+      createdAt: createdAt,
+      tags: tags,
+      locked: [],
+      isPrivate: false
     }
 
     const transaction = await arweave.createTransaction({ data: buffer })
@@ -181,7 +191,9 @@ const addPendingTransaction = async (address, transaction, isAsset) => {
       console.log('account', account)
       await setChromeStorage({ [address]: account })
     } else {
-      let pendingAssets = (await getChromeStorage(`${address}_pendingAssets`))[`${address}_pendingAssets`]
+      let pendingAssets = (await getChromeStorage(`${address}_pendingAssets`))[
+        `${address}_pendingAssets`
+      ]
       if (!pendingAssets) pendingAssets = []
       pendingAssets.push(transaction)
       await setChromeStorage({ [`${address}_pendingAssets`]: pendingAssets })
@@ -194,7 +206,7 @@ const addPendingTransaction = async (address, transaction, isAsset) => {
 const mockUploadNft = () => {
   const time = (2 + Math.floor(Math.random() * 5)) * 1000
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve()
     }, time)

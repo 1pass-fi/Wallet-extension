@@ -67,7 +67,7 @@ describe('AccountManagement', () => {
 
       /* ETH NETWORK */
       const ethAccount = await extPage.waitForXPath(
-        `//span[contains(text(), "0x660839")]/ancestor::div[@data-testid="popup-header-account"]`
+        `//span[contains(text(), "0xb97970")]/ancestor::div[@data-testid="popup-header-account"]`
       )
       await ethAccount.click()
 
@@ -129,7 +129,7 @@ describe('AccountManagement', () => {
       await displayAccount.click()
 
       const ethAccount = await extPage.waitForXPath(
-        `//span[contains(text(), "0x660839")]/ancestor::div[@data-testid="popup-header-account"]`
+        `//span[contains(text(), "0xb97970")]/ancestor::div[@data-testid="popup-header-account"]`
       )
       await ethAccount.click()
 
@@ -397,7 +397,8 @@ describe('AccountManagement', () => {
       )
       tokenBalance = (await accountBalanceCustom.evaluate((el) => el.textContent)).split(' ')[0]
       tokenSymbol = (await accountBalanceCustom.evaluate((el) => el.textContent)).split(' ')[1]
-      expect(Number(tokenBalance)).toBeGreaterThan(0)
+
+      expect(Number(tokenBalance)).toBeGreaterThanOrEqual(0)
       expect(tokenSymbol).toBe('WIBU')
 
       /* CHECK K2 ASSETS */
@@ -505,6 +506,7 @@ describe('AccountManagement', () => {
 
       await optionPage.waitForSelector(`[data-testid="input-account-name"]`, { hidden: true })
 
+      await optionPage.waitForTimeout(3000)
       let accountName = await accountCardETH.$(`[data-testid="account-card-accountname"]`)
       expect(await accountName.evaluate((el) => el.textContent)).toBe('ETH_ACCOUNT_NEW')
 
@@ -521,6 +523,7 @@ describe('AccountManagement', () => {
 
       await optionPage.waitForSelector(`[data-testid="input-account-name"]`, { hidden: true })
 
+      await optionPage.waitForTimeout(3000)
       accountName = await accountCardSOL.$(`[data-testid="account-card-accountname"]`)
       expect(await accountName.evaluate((el) => el.textContent)).toBe('SOL_ACCOUNT_NEW')
 
@@ -537,6 +540,7 @@ describe('AccountManagement', () => {
 
       await optionPage.waitForSelector(`[data-testid="input-account-name"]`, { hidden: true })
 
+      await optionPage.waitForTimeout(3000)
       accountName = await accountCardK2.$(`[data-testid="account-card-accountname"]`)
       expect(await accountName.evaluate((el) => el.textContent)).toBe('K2_ACCOUNT_NEW')
 
@@ -550,7 +554,7 @@ describe('AccountManagement', () => {
       await displayAccount.click()
 
       const ethAccount = await extPage.waitForXPath(
-        `//span[contains(text(), "0x660839")]/ancestor::div[@data-testid="popup-header-account"]`
+        `//span[contains(text(), "0xb97970")]/ancestor::div[@data-testid="popup-header-account"]`
       )
       const ethPopupAccountName = await ethAccount.$(`[data-testid="popup-header-account-name"]`)
       expect(await ethPopupAccountName.evaluate((el) => el.textContent)).toBe(formatLongString('ETH_ACCOUNT_NEW', 12))

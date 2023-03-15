@@ -10,9 +10,8 @@ jest.mock('services/account')
 describe('useAccountList hook', () => {
   describe('get correct accountList data type', () => {
     let result
-    beforeEach(async (done) => {
+    beforeEach(async () => {
       result = await renderCustomHook(useAccountList)
-      done()
     })
 
     it('should return correct accountList state', () => {
@@ -32,12 +31,11 @@ describe('useAccountList hook', () => {
 
   describe('fail to getAllMetadata', () => {
     let result
-    beforeEach(async (done) => {
+    beforeEach(async () => {
       popupAccount.getAllMetadata = jest.fn().mockImplementation(() => {
         throw new Error('Fail to getAllMetadata')
       })
       result = await renderCustomHook(useAccountList)
-      done()
     })
 
     it('should return default state', () => {
@@ -48,10 +46,9 @@ describe('useAccountList hook', () => {
 
   describe('get wrong data type from getAllMetadata', () => {
     let result
-    beforeEach(async (done) => {
+    beforeEach(async () => {
       popupAccount.getAllMetadata = jest.fn().mockImplementation(() => '[account1, account2]')
       result = await renderCustomHook(useAccountList)
-      done()
     })
 
     it('should return default state', () => {

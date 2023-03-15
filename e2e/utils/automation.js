@@ -73,7 +73,7 @@ export const importKeyStep = async (page, walletType, secretPhrase, newPassword 
     case TYPE.ETHEREUM:
       goToOptionPageButton = await page.waitForXPath(
         `//button[contains(text(), "Go to Homepage")]`,
-        100000
+        { timeout: 100000 }
       )
 
       break
@@ -81,7 +81,7 @@ export const importKeyStep = async (page, walletType, secretPhrase, newPassword 
     case TYPE.SOLANA:
       goToOptionPageButton = await page.waitForXPath(
         `//button[contains(text(), "Go to Homepage")]`,
-        100000
+        { timeout: 100000 }
       )
 
       break
@@ -89,7 +89,7 @@ export const importKeyStep = async (page, walletType, secretPhrase, newPassword 
     case TYPE.K2:
       goToOptionPageButton = await page.waitForXPath(
         `//button[contains(text(), "Go to Homepage")]`,
-        100000
+        { timeout: 100000 }
       )
 
       break
@@ -97,7 +97,7 @@ export const importKeyStep = async (page, walletType, secretPhrase, newPassword 
     case TYPE.ARWEAVE:
       goToOptionPageButton = await page.waitForXPath(
         `//button[contains(text(), "Go to Homepage")]`,
-        100000
+        { timeout: 100000 }
       )
 
       break
@@ -231,7 +231,9 @@ export const goToSecuritySettingPage = async (page) => {
   const profilePictureNavBar = await page.waitForSelector(`[data-testid="profile-picture-navbar"]`)
   await profilePictureNavBar.click()
 
-  const securitySettingButton = await page.waitForSelector(`[data-testid="security-dropdown-light"]`)
+  const securitySettingButton = await page.waitForSelector(
+    `[data-testid="security-dropdown-light"]`
+  )
   await securitySettingButton.click()
 }
 

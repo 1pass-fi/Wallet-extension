@@ -8,15 +8,13 @@ describe('ChromeStorage class', () => {
   const TEST_KEY = 'user'
   const TEST_VALUE = ['userOne', 'userTwo']
 
-  beforeAll(async (done) => {
+  beforeAll(async () => {
     chromeStorage = new ChromeStorage()
     await chromeStorage._setChrome(TEST_KEY, TEST_VALUE)
-    done()
   })
 
-  afterAll(async (done) => {
+  afterAll(async () => {
     await chrome.storage.local.clear()
-    done()
   })
 
   describe('Get method', () => {

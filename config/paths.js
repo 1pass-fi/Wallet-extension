@@ -50,6 +50,7 @@ const moduleFileExtensions = [
   'json',
   'web.jsx',
   'jsx',
+  'cjs'
 ]
 
 const resolveModule = (resolveFn, filePath) => {

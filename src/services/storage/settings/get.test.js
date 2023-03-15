@@ -45,7 +45,7 @@ const removeChromeStorage = (key) => {
 describe('SettingGet class', () => {
   let settingGet
 
-  beforeAll(async (done) => {
+  beforeAll(async () => {
     await setChromeStorage({ [SETTING.SELECTED_CURRENCY]: SELECTED_CURRENCY_VALUE })
     await setChromeStorage({ [SETTING.SHOW_WELCOME_SCREEN]: SHOW_WELCOME_SCREEN_VALUE })
     await setChromeStorage({ [SETTING.SHOW_VIEWS]: SHOW_VIEWS_VALUE })
@@ -68,7 +68,6 @@ describe('SettingGet class', () => {
     await setChromeStorage({ [SETTING.IMPORTED_K2_CUSTOM_TOKENS]: IMPORTED_K2_CUSTOM_TOKENS_VALUE })
     
     settingGet = new SettingGet()
-    done()
   })
 
   beforeEach(() => {

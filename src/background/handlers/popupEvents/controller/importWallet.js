@@ -3,8 +3,8 @@ import helpers from 'background/helpers'
 import passworder from 'browser-passworder'
 // Constants
 import { TYPE } from 'constants/accountConstants'
-import { POPUP_CONTROLLER_ERROR } from 'constants/koiConstants'
-import { get, isEmpty, isString } from 'lodash'
+import { ETH_NETWORK_PROVIDER,POPUP_CONTROLLER_ERROR } from 'constants/koiConstants'
+import { isEmpty, isString } from 'lodash'
 import { backgroundAccount } from 'services/account'
 import { ArweaveAccount, EthereumAccount, K2Account, SolanaAccount } from 'services/account/Account'
 import { KoiTool } from 'services/arweave'
@@ -82,7 +82,7 @@ export default async (payload, next) => {
       Create new account on storage
     */
 
-    let eth = new EthereumTool()
+    let eth = new EthereumTool(ETH_NETWORK_PROVIDER.MAINNET)
     let koi = new KoiTool()
     let sol = new SolanaTool()
     let k2 = new K2Tool()

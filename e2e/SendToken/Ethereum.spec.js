@@ -41,7 +41,7 @@ describe('Send token via Ethereum network', () => {
     await goToSendButton.click()
 
     /* SEND TOKEN FORM */
-    const tokenDropdown = await extPage.waitForSelector('[role="button"]')
+    const tokenDropdown = await extPage.waitForSelector(`[data-testid="token-dropdown"]`)
     await tokenDropdown.click()
 
     const tokenOption = await extPage.waitForSelector(`[data-testid="ETH"]`)
@@ -138,7 +138,7 @@ describe('Send token via Ethereum network', () => {
     await sendConfirmButton.click()
 
     /* TRANSACTION RECEIPT */
-    const okButton = await extPage.waitForSelector(`[data-testid="button-ok"]`)
+    const okButton = await extPage.waitForSelector(`[data-testid="button-ok"]`, { timeout: 300000 })
     await okButton.click()
   }, 500000)
 
@@ -214,7 +214,7 @@ describe('Send token via Ethereum network', () => {
     await sendButton.click()
 
     /* TRANSACTION RECEIPT */
-    const okButton = await extPage.waitForSelector(`[data-testid="button-ok"]`)
+    const okButton = await extPage.waitForSelector(`[data-testid="button-ok"]`, { timeout: 300000 })
     await okButton.click()
   }, 2000000)
 

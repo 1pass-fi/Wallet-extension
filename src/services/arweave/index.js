@@ -1,5 +1,5 @@
-import { Web } from '@_koi/sdk/web'
-import Arweave from 'arweave/node'
+import { Web } from '@_koii/sdk/web'
+import Arweave from 'arweave'
 
 export const koiTools = new Web()
 

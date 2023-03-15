@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch } from 'react-router'
+import { Route, Switch } from 'react-router-dom'
 import HasArweave from 'options/shared/hasArweave'
 
 import About from './About'
@@ -16,7 +16,10 @@ export default () => {
         <Security />
       </Route>
       <Route exact path="/settings/KID">
-        <HasArweave content={chrome.i18n.getMessage('koiiIdentityARSupport')} hasArweaveAccounts={true}>
+        <HasArweave
+          content={chrome.i18n.getMessage('koiiIdentityARSupport')}
+          hasArweaveAccounts={true}
+        >
           <Kid />
         </HasArweave>
       </Route>

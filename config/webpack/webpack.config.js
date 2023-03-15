@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const PnpWebpackPlugin = require('pnp-webpack-plugin')
 const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin')
+const webpack = require('webpack')
 
 const paths = require('../paths')
 const initLoaders = require('./loaders')
@@ -84,6 +85,23 @@ module.exports = function (webpackEnv) {
         plugins.moduleScopePlugin,
         new TsconfigPathsPlugin(),
       ],
+      fallback: {
+        'crypto': require.resolve('crypto-browserify'),
+        'constants': require.resolve('constants-browserify'),
+        'http': require.resolve('stream-http'),
+        'https': require.resolve('https-browserify'),
+        'stream': require.resolve('stream-browserify'),
+        'vm': require.resolve('vm-browserify'),
+        'buffer': require.resolve('buffer'),
+        'os': require.resolve('os-browserify/browser'),
+        'url': require.resolve('url'),
+        'assert': require.resolve('assert'),
+        'dgram': false,
+        'fs': false,
+        'net': false,
+        'tls': false,
+        'child_process': false
+      }
     },
     resolveLoader: {
       plugins: [
@@ -94,7 +112,8 @@ module.exports = function (webpackEnv) {
       strictExportPresence: true,
       rules: [
         { test: /\.tsx?$/, loader: 'ts-loader' },
-        { parser: { requireEnsure: false } },
+        // TODO: MinhV not sure what it does
+        // { parser: { requireEnsure: false } },
         loaders.eslintLoader,
         {
           // "oneOf" will traverse all following loaders until one will match the requirements.
@@ -121,18 +140,17 @@ module.exports = function (webpackEnv) {
       plugins.htmlIncAssetsPlugin,
       plugins.moduleNotFoundPlugin,
       isEnvDevelopment && plugins.CaseSensitivePathsPlugin,
-      isEnvDevelopment && plugins.watchMissingNodeModulesPlugin,
       isEnvProduction && plugins.miniCssExtractPlugin,
       plugins.ignorePlugin,
       plugins.copyPlugin,
+      new webpack.ProvidePlugin({
+        Buffer: ['buffer', 'Buffer'],
+      }),
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+      })
     ].filter(Boolean),
-    node: {
-      dgram: 'empty',
-      fs: 'empty',
-      net: 'empty',
-      tls: 'empty',
-      child_process: 'empty',
-    },
-    performance: false,
+    node: {},
+    performance: false
   }
 }

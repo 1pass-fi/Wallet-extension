@@ -31,12 +31,12 @@ const CustomToken = ({ setTokenImport }) => {
     }
 
     if (tokenAddress.length !== 42) {
-      setTokenAddressError('That’s not a valid Token contract address.')
+      setTokenAddressError(chrome.i18n.getMessage('invalidTokenAddress'))
     } else {
       if (tokenData.tokenSymbol) {
         setTokenAddressError('')
       } else {
-        setTokenAddressError('This address does not exist in the provider.')
+        setTokenAddressError(chrome.i18n.getMessage('invalidTokenAddressNotExist'))
       }
     }
   }, [tokenAddress, tokenData.tokenSymbol])

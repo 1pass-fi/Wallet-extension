@@ -11,7 +11,7 @@ describe('Finnie Provider - ETH', () => {
     optionPage = context.optionPage
     testDappPage = await context.launchTestDappPage()
     await Automation.importWallet(optionPage, TYPE.ETHEREUM)
-    walletAddress = '0x66083923D61D765f5FC51a612f17d64564358716'
+    walletAddress = '0xb979707D767230Df79840B39703D86F99C6d84D2'
   }, 50000)
 
   afterEach(async () => {
@@ -87,7 +87,7 @@ describe('Finnie Provider - ETH', () => {
       )
       signEthereumResult = await signEthereumResult.evaluate((el) => el.textContent)
       expect(signEthereumResult.length).toEqual(66)
-    }, 50000)
+    }, 500000)
 
     it('should reject connect successfully', async () => {
       await testDappPage.bringToFront()

@@ -132,7 +132,6 @@ const NavBar = () => {
           <NavLink to="/create-nft">{chrome.i18n.getMessage('create')}</NavLink>
         </nav>
         <nav className="ml-9 3xl:ml-12 4xl:ml-20 tracking-finnieSpacing-wider" role="link">
-          {/* <NavLink to="/collections">Collections</NavLink> */}
           <div
             className="cursor-not-allowed"
             data-tip={chrome.i18n.getMessage('comingSoon')}

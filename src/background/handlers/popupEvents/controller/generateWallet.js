@@ -1,9 +1,10 @@
-import { Web } from '@_koi/sdk/web'
+import { Web } from '@_koii/sdk/web'
 import cache from 'background/cache'
 // Constants
 import { TYPE } from 'constants/accountConstants'
+import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 // Services
-import { ArweaveAccount, EthereumAccount, K2Account,SolanaAccount } from 'services/account/Account'
+import { ArweaveAccount, EthereumAccount, K2Account, SolanaAccount } from 'services/account/Account'
 import { EthereumTool } from 'services/ethereum'
 import { K2Tool } from 'services/k2'
 import { SolanaTool } from 'services/solana'
@@ -22,7 +23,7 @@ export default async (payload, next) => {
         address = walletTool.address
         break
       case TYPE.ETHEREUM:
-        walletTool = new EthereumTool()
+        walletTool = new EthereumTool(ETH_NETWORK_PROVIDER.MAINNET)
         seedPhrase = await EthereumAccount.utils.generateWallet(walletTool)
         key = walletTool.key // key of eth wallet will be String
         address = walletTool.address

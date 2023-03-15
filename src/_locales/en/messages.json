@@ -611,6 +611,9 @@
   "faqPage": {
     "message": "FAQ page"
   },
+  "featureUnderConstruction": {
+    "message": "This feature is under construction. Check back soon."
+  },
   "fiatCurrenciesSupport": {
     "message": "We can only show the exchange rate for fiat currencies at this time."
   },
@@ -805,6 +808,12 @@
   },
   "invalidSecretPhrase": {
     "message": "Invalid Secret Phrase"
+  },
+  "invalidTokenAddress": {
+    "message": "That's not a valid Token contract address."
+  },
+  "invalidTokenAddressNotExist": {
+    "message": "This address does not exist in the provider."
   },
   "invalidTokenSchema": {
     "message": "Invalid token schema. Please use nft with token schema of ERC1155"
@@ -1095,7 +1104,7 @@
     "message": "Passwords don't match"
   },
   "passwordErrorMsg": {
-    "message": "Password must have at least 8 characters, 1 number, 1 uppercase, 1 lowercase and 1 symbol (e.g. !@#$%)."
+    "message": "Password must have at least 8 characters, 1 number, 1 uppercase, 1 lowercase and 1 symbol (e.g. !@#$$%)."
   },
   "passwordIsIncorrect": {
     "message": "Password is incorrect"
