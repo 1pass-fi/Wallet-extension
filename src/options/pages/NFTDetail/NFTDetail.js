@@ -307,7 +307,7 @@ const NFTDetail = () => {
                           }}
                         />
                       )}
-                      <div
+                      {/* <div
                         data-tip={
                           !ownerImported
                             ? `${chrome.i18n.getMessage('ownerNFTRequiredStart')}${
@@ -326,7 +326,7 @@ const NFTDetail = () => {
                           className="w-full h-full"
                           onClick={() => handleShareNFT(nft.txId)}
                         />
-                      </div>
+                      </div> */}
                     </div>
                   )}
 
