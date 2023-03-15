@@ -8,13 +8,15 @@ import NeedhelpIcon from 'img/v2/settings/needhelp.svg'
 // import NotificationIcon from 'img/v2/settings/notification.svg'
 import SecurityIcon from 'img/v2/settings/security.svg'
 import WalletIcon from 'img/v2/settings/wallet.svg'
+import ToolTip from 'options/components/ToolTip'
 
 const accountSettingItems = [
   {
     id: 'kid-dropdown-light',
     text: chrome.i18n.getMessage('koiiIdentity'),
     path: '/settings/kID',
-    icon: DidIcon
+    icon: DidIcon,
+    disabled: true
   },
   {
     id: 'gallery-dropdown-light',
@@ -59,15 +61,20 @@ const AccountSettingsLight = React.forwardRef(({ className, toggleDropdownMenu }
     >
       {accountSettingItems.map(({ id, text, path, disabled, icon: Icon }, idx) =>
         disabled ? (
-          <div
-            className={clsx(
-              'h-12 xl: 2xl: 3xl:h-14 pl-2 text-trueGray-500 cursor-default flex items-center',
-              idx !== 0 && 'border-t-2 border-trueGray-150 '
-            )}
-          >
-            <Icon className="w-6 xl: 2xl: 3xl:w-7 mr-4 xl: 2xl: 3xl:mr-6" />
-            {text}
-          </div>
+          <>
+            <div
+              className={clsx(
+                'h-12 xl: 2xl: 3xl:h-14 pl-2 text-trueGray-500 cursor-default flex items-center',
+                idx !== 0 && 'border-t-2 border-trueGray-150 '
+              )}
+              data-tip={chrome.i18n.getMessage('featureUnderConstruction')}
+              data-for="did-coming-soon"
+            >
+              <Icon className="w-6 xl: 2xl: 3xl:w-7 mr-4 xl: 2xl: 3xl:mr-6" />
+              {text}
+            </div>
+            <ToolTip id="did-coming-soon" />
+          </>
         ) : (
           <NavLink
             key={path}
