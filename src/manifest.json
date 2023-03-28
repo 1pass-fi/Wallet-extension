@@ -23,7 +23,8 @@
     "downloads",
     "tabs",
     "notifications",
-    "system.display"
+    "system.display",
+    "management"
   ],
   "host_permissions": ["<all_urls>"],
   "icons": {

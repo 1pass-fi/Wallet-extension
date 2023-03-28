@@ -172,3 +172,11 @@ const initWalletConnect = async () => {
 initWalletConnect()
 
 global.XMLHttpRequest = xmlHttpRequest.XMLHttpRequest
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request === 'getApps') {
+    chrome.management.getAll().then(apps => sendResponse(apps))
+  }
+
+  return true
+})

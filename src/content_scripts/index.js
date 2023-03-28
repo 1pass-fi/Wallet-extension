@@ -32,6 +32,8 @@ async function contentScript() {
 
   const disabled = disabledOrigins.includes(origin)
 
+  const installedApps = await chrome.runtime.sendMessage('getApps') 
+
   const scriptPaths = [
     '/scripts/arweave.js',
     '/scripts/solanaWeb3.js',
