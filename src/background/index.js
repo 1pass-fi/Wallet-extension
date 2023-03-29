@@ -109,6 +109,17 @@ chrome.runtime.onInstalled.addListener(async function () {
     chrome.tabs.create({ url: `${PATH.GALLERY}#/` })
 })
 
+/* simple request handler */
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request === 'hasMetamaskInstalled') {
+    chrome.management.getAll().then(apps => {
+      const hasMetamask = !apps.every(app => app?.shortName !== 'MetaMask')
+      sendResponse(hasMetamask)
+    })
+  }
+  return true
+})
+
 polling()
 
 const initWalletConnect = async () => {
@@ -172,11 +183,3 @@ const initWalletConnect = async () => {
 initWalletConnect()
 
 global.XMLHttpRequest = xmlHttpRequest.XMLHttpRequest
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request === 'getApps') {
-    chrome.management.getAll().then(apps => sendResponse(apps))
-  }
-
-  return true
-})
