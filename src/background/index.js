@@ -111,7 +111,7 @@ chrome.runtime.onInstalled.addListener(async function () {
 
 /* simple request handler */
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request === 'hasMetamaskInstalled') {
+  if (request === 'checkMetamask') {
     chrome.management.getAll().then(apps => {
       const hasMetamask = !apps.every(app => app?.shortName !== 'MetaMask')
       sendResponse(hasMetamask)

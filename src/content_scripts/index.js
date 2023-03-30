@@ -33,7 +33,7 @@ async function contentScript() {
   
     const disabled = disabledOrigins.includes(origin)
   
-    const hasMetamaskInstalled = await chrome.runtime.sendMessage('hasMetamaskInstalled')
+    const hasMetamaskInstalled = await chrome.runtime.sendMessage('checkMetamask')
     const shouldOverwriteMetamask = await storage.setting.get.shouldOverwriteMetamask()
   
     const shouldInjectEthereum = !hasMetamaskInstalled || shouldOverwriteMetamask
