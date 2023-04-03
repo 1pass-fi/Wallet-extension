@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import BackgroundPatternLeft from 'img/background-pattern-left.svg'
 import BackgroundPatternRight from 'img/background-pattern-right.svg'
+import get from 'lodash/get'
 import storage from 'services/storage'
+
+async function getCurrentTab() {
+  let queryOptions = { active: true, lastFocusedWindow: true }
+  let [tab] = await chrome.tabs.query(queryOptions)
+  return tab
+}
 
 const OverwriteMetamask = () => {
   const [shouldAskForMetamaskOverwrite, setShouldAskForMetamaskOverwrite] = useState(false)
 
   useEffect(() => {
     const load = async () => {
+      const currentTab = await getCurrentTab()
+      const origin = get(currentTab, 'url')
       const hasMetamaskInstalled = await chrome.runtime.sendMessage('checkMetamask')
-      const shouldOverwriteMetamask = await storage.setting.get.shouldOverwriteMetamask()
+      const overwriteMetamaskSites = await storage.setting.get.overwriteMetamaskSites()
+      const shouldOverwriteMetamask = get(overwriteMetamaskSites, [origin, 'shouldOverwriteMetamask'], false)
 
       setShouldAskForMetamaskOverwrite(hasMetamaskInstalled && !shouldOverwriteMetamask)
     }
@@ -18,8 +28,22 @@ const OverwriteMetamask = () => {
   }, [])
 
   const handleOverwriteMetamask = async (isApproved) => {
-    await storage.setting.set.shouldOverwriteMetamask(isApproved)
-    setShouldAskForMetamaskOverwrite(false)
+    try {
+      const currentTab = await getCurrentTab()
+      const origin = get(currentTab, 'url')
+      const payload = {
+        shouldOverwriteMetamask: isApproved,
+        title: get(currentTab, 'title', '')
+      }
+
+      const overwriteMetamaskSites = await storage.setting.get.overwriteMetamaskSites()
+      if (origin) overwriteMetamaskSites[origin] = payload
+  
+      await storage.setting.set.overwriteMetamaskSites(overwriteMetamaskSites)
+      setShouldAskForMetamaskOverwrite(false)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return shouldAskForMetamaskOverwrite ? (

@@ -15,6 +15,7 @@ import AccountManagement from 'options/components/AccountManagement'
 import ConfirmRemoveAccountModal from 'options/components/AccountManagement/ConfirmRemoveAccountModal'
 import ConnectedSitesModal from 'options/components/ConnectedSitesModal'
 import DropDown from 'options/components/DropDown'
+import OverwriteMetamaskModal from 'options/components/OverwriteMetamaskModal'
 import { GalleryContext } from 'options/galleryContext'
 import storage from 'services/storage'
 import { getChromeStorage, isSolanaAddress, setChromeStorage } from 'utils'
@@ -37,6 +38,7 @@ export default () => {
   const [accountConnectSites, setAccountConnectSites] = useState({})
   const [removeAccount, setRemoveAccount] = useState({})
   const [listAccounts, setListAccounts] = useState([])
+  const [showOverwriteMetamask, setShowOverwriteMetamask] = useState(true)
 
   const accounts = useSelector((state) => state.accounts)
 
@@ -153,6 +155,10 @@ export default () => {
     }
   }
 
+  const onClickSeeListOfSites = () => {
+    setShowOverwriteMetamask(true)
+  }
+
   return (
     <div className="wallet-settings-wrapper">
       <div className="wallet-settings">
@@ -209,6 +215,27 @@ export default () => {
                 size="lg"
                 filterSupported={false}
               />
+            </div>
+          </div>
+
+          <div className="default-currency pb-6 mb-4 border-b border-white">
+            <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
+              Metamask Overwrites
+            </div>
+            <div className="text-sm 2xl:text-base 3xl:text-lg leading-6 mb-1">
+              Select which wallet you wish to prioritize when connecting to a site. 
+            </div>
+            <div className="text-xs 2xl:text-sm 3xl:text-base leading-4 mb-4.5 text-lightBlue">
+              You can change this setting in any moment.
+            </div>
+            <div
+              className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center mr-6.75 cursor-pointer"
+              style={{ width: '220px', height: '38px' }}
+              onClick={onClickSeeListOfSites}
+              data-testid="setting-see-list-of-sites"
+              role="button"
+            >
+              See List of Sites
             </div>
           </div>
 
@@ -280,6 +307,13 @@ export default () => {
         <ConnectedSitesModal
           account={accountConnectSites}
           close={() => setShowConnectedSites(false)}
+        />
+      )}
+
+      {showOverwriteMetamask && (
+        <OverwriteMetamaskModal
+          account={accountConnectSites}
+          close={() => setShowOverwriteMetamask(false)}
         />
       )}
     </div>

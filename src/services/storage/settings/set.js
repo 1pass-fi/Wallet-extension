@@ -114,7 +114,7 @@ export class SettingSet {
     return this.#chrome._setChrome(SETTING.IMPORTED_K2_CUSTOM_TOKENS, value)
   }
 
-  shouldOverwriteMetamask(value) {
-    return this.#chrome._setChrome(SETTING.SHOULD_OVERWRITE_METAMASK, value)
+  overwriteMetamaskSites(value) {
+    return this.#chrome._setChrome(SETTING.OVERWRITE_METAMASK_SITES, value)
   }
 }

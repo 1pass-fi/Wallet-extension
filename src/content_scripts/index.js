@@ -1,5 +1,6 @@
 import { ALLOWED_ORIGIN, MESSAGES } from 'constants/koiConstants'
 import { includes } from 'lodash'
+import get from 'lodash/get'
 import storage from 'services/storage'
 
 import initHanlders from './initHandlers'
@@ -29,13 +30,14 @@ async function contentScript() {
     await initHanlders()
   
     const disabledOrigins = await storage.setting.get.disabledOrigins()
-    const origin = window.location.origin
+    const overwriteMetamaskSites = await storage.setting.get.overwriteMetamaskSites()
+    const origin = window.location.origin + '/'
   
     const disabled = disabledOrigins.includes(origin)
   
     const hasMetamaskInstalled = await chrome.runtime.sendMessage('checkMetamask')
-    const shouldOverwriteMetamask = await storage.setting.get.shouldOverwriteMetamask()
-  
+    const shouldOverwriteMetamask = get(overwriteMetamaskSites, [origin, 'shouldOverwriteMetamask'], false)
+
     const shouldInjectEthereum = !hasMetamaskInstalled || shouldOverwriteMetamask
 
     const scriptPaths = [

@@ -120,7 +120,7 @@ export class SettingGet {
     return (await this.#chrome._getChrome(SETTING.IMPORTED_K2_CUSTOM_TOKENS)) || {}
   }
 
-  async shouldOverwriteMetamask() {
-    return (await this.#chrome._getChrome(SETTING.SHOULD_OVERWRITE_METAMASK)) || false
+  async overwriteMetamaskSites() {
+    return (await this.#chrome._getChrome(SETTING.OVERWRITE_METAMASK_SITES)) || {}
   }
 }
