@@ -1807,5 +1807,32 @@
   },
   "yourTokensOnTheWay": {
     "message": "Your tokens are on the way!"
+  },
+  "wouldYouLikeToOverwrite": {
+    "message": "Would you like to overwrite this setting and connect Finnie?"
+  },
+  "ifYouWantToChangeThisSetting": {
+    "message": "If you want to change this setting later, go to Settings > Wallet Settings > Metamask overwrites"
+  },
+  "keepMetamask": {
+    "message": "Keep Metamask"
+  },
+  "finnieJustDetectedMetamask": {
+    "message": "Finnie just detected Metamask"
+  },
+  "metamaskOverwrites": {
+    "message": "Metamask Overwrites"
+  },
+  "selectWhichWalletToConnect": {
+    "message": "Select which wallet to connect"
+  },
+  "selectWhichWalletYouWish": {
+    "message": "Select which wallet you wish to prioritize when connecting to a site."
+  },
+  "youCanChangeThisSetting": {
+    "message": "You can change this setting in any moment."
+  },
+  "seeListOfSites": {
+    "message": "See List of Sites"
   }
 }

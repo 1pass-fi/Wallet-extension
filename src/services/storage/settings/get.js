@@ -121,6 +121,6 @@ export class SettingGet {
   }
 
   async overwriteMetamaskSites() {
-    return (await this.#chrome._getChrome(SETTING.OVERWRITE_METAMASK_SITES)) || {}
+    return (await this.#chrome._getChrome(SETTING.OVERWRITE_ALTERNATIVES_SITES)) || {}
   }
 }

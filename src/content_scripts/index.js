@@ -13,7 +13,7 @@ const sleep = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve()
-    })
+    }, 100)
   })
 }
 
@@ -38,7 +38,7 @@ async function contentScript() {
     const hasMetamaskInstalled = await chrome.runtime.sendMessage('checkMetamask')
     const shouldOverwriteMetamask = get(overwriteMetamaskSites, [origin, 'shouldOverwriteMetamask'], false)
 
-    const shouldInjectEthereum = !hasMetamaskInstalled || shouldOverwriteMetamask
+    const shouldInjectFinnie = !hasMetamaskInstalled || shouldOverwriteMetamask
 
     const scriptPaths = [
       '/scripts/arweave.js',
@@ -46,9 +46,9 @@ async function contentScript() {
       '/scripts/declareConstantScript.js',
       '/scripts/eventEmitter.js',
       '/scripts/finnieRpcConnectionScript.js',
-      shouldInjectEthereum && '/scripts/finnieEthereumProviderScript.js',
-      '/scripts/finnieArweaveProviderScript.js',
-      '/scripts/finnieSolanaProviderScript.js',
+      shouldInjectFinnie && '/scripts/finnieEthereumProviderScript.js',
+      shouldInjectFinnie && '/scripts/finnieArweaveProviderScript.js',
+      shouldInjectFinnie && '/scripts/finnieSolanaProviderScript.js',
       '/scripts/finnieKoiiWalletProviderScript.js',
       '/scripts/finnieK2ProviderScript.js',
       '/scripts/mainScript.js'

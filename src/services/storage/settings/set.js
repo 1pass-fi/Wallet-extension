@@ -115,6 +115,6 @@ export class SettingSet {
   }
 
   overwriteMetamaskSites(value) {
-    return this.#chrome._setChrome(SETTING.OVERWRITE_METAMASK_SITES, value)
+    return this.#chrome._setChrome(SETTING.OVERWRITE_ALTERNATIVES_SITES, value)
   }
 }

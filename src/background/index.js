@@ -5,6 +5,7 @@ global.window = global
 
 import { IMPORTED } from 'constants/accountConstants'
 import { MESSAGES, OS, PATH, PORTS } from 'constants/koiConstants'
+import { FINNIE_ALTERNATIVES } from 'constants/koiConstants'
 import storage from 'services/storage'
 import walletConnect from 'services/walletConnect'
 import { getChromeStorage } from 'utils'
@@ -113,7 +114,7 @@ chrome.runtime.onInstalled.addListener(async function () {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request === 'checkMetamask') {
     chrome.management.getAll().then(apps => {
-      const hasMetamask = !apps.every(app => app?.shortName !== 'MetaMask')
+      const hasMetamask = !apps.every(app => !FINNIE_ALTERNATIVES.includes(app?.shortName))
       sendResponse(hasMetamask)
     })
   }

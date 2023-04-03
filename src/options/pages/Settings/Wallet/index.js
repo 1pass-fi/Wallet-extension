@@ -38,7 +38,7 @@ export default () => {
   const [accountConnectSites, setAccountConnectSites] = useState({})
   const [removeAccount, setRemoveAccount] = useState({})
   const [listAccounts, setListAccounts] = useState([])
-  const [showOverwriteMetamask, setShowOverwriteMetamask] = useState(true)
+  const [showOverwriteMetamask, setShowOverwriteMetamask] = useState(false)
 
   const accounts = useSelector((state) => state.accounts)
 
@@ -220,13 +220,13 @@ export default () => {
 
           <div className="default-currency pb-6 mb-4 border-b border-white">
             <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
-              Metamask Overwrites
+              {chrome.i18n.getMessage('metamaskOverwrites')}
             </div>
             <div className="text-sm 2xl:text-base 3xl:text-lg leading-6 mb-1">
-              Select which wallet you wish to prioritize when connecting to a site. 
+              {chrome.i18n.getMessage('selectWhichWalletYouWish')}
             </div>
             <div className="text-xs 2xl:text-sm 3xl:text-base leading-4 mb-4.5 text-lightBlue">
-              You can change this setting in any moment.
+              {chrome.i18n.getMessage('youCanChangeThisSetting')}
             </div>
             <div
               className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center mr-6.75 cursor-pointer"
@@ -235,7 +235,7 @@ export default () => {
               data-testid="setting-see-list-of-sites"
               role="button"
             >
-              See List of Sites
+              {chrome.i18n.getMessage('seeListOfSites')}
             </div>
           </div>
 
@@ -312,7 +312,6 @@ export default () => {
 
       {showOverwriteMetamask && (
         <OverwriteMetamaskModal
-          account={accountConnectSites}
           close={() => setShowOverwriteMetamask(false)}
         />
       )}

@@ -1,32 +1,29 @@
 // modules
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useRef, useState } from 'react'
 import FinnieIcon from 'img/overwritemm-finnie-icon.svg'
 import MetamaskIcon from 'img/overwritemm-metamask-icon.svg'
 // assets
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import EmptyConnectedSitesIcon from 'img/v2/empty-connected-sites-icon.svg'
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
-// actions
-import { setIsLoading, setLoaded } from 'options/actions/loading'
 // constants
-import { GalleryContext } from 'options/galleryContext'
-import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 
 import ToggleButton from './ToggleButton'
 
 const SiteItem = ({ site }) => {
-  const [shouldOverwriteMetamask, setShouldOverwriteMetamask] = useState(site[1].shouldOverwriteMetamask)
+  const [shouldOverwriteMetamask, setShouldOverwriteMetamask] = useState(get(site, 'shouldOverwriteMetamask', false))
 
   const setValue = async (value) => {
     setShouldOverwriteMetamask(value)
     const overwriteMetamaskSites = await storage.setting.get.overwriteMetamaskSites()
-    const payload = overwriteMetamaskSites[site[0]]
-    payload.shouldOverwriteMetamask = value
-    overwriteMetamaskSites[site[0]] = payload
-    
-    await storage.setting.set.overwriteMetamaskSites(overwriteMetamaskSites)
+    const payload = overwriteMetamaskSites[site?.origin]
+    if (!isEmpty(payload)) {
+      payload.shouldOverwriteMetamask = value
+      overwriteMetamaskSites[site?.origin] = payload
+      await storage.setting.set.overwriteMetamaskSites(overwriteMetamaskSites)
+    } 
   }
 
   return (
@@ -36,10 +33,10 @@ const SiteItem = ({ site }) => {
     >
       <div style={{ maxWidth: '380px' }}>
         <div className="font-semibold text-sm leading-6 tracking-finnieSpacing-wide truncate">
-          {site[1]?.title}
+          {get(site, 'title')}
         </div>
         <div className="font-normal text-sm leading-6 tracking-finnieSpacing-wide truncate">
-          {site[0]}
+          {get(site, 'origin')}
         </div>
       </div>
       <div className='flex justify-between items-center w-36'>
@@ -51,7 +48,7 @@ const SiteItem = ({ site }) => {
   )
 }
 
-const OverwriteMetamaskModal = ({ account, close }) => {
+const OverwriteMetamaskModal = ({ close }) => {
   const [overwriteMetamaskSites, setOverwriteMetamaskSites] = useState([])
   const modalRef = useRef(null)
 
@@ -83,11 +80,19 @@ const OverwriteMetamaskModal = ({ account, close }) => {
 
   useEffect(() => {
     const loadOverwriteMetamaskSites = async () => {
-      let overwriteMetamaskSites = await storage.setting.get.overwriteMetamaskSites()
-      overwriteMetamaskSites = Object.entries(overwriteMetamaskSites)
-      console.log('overwriteMetamaskSites', overwriteMetamaskSites)
-
-      setOverwriteMetamaskSites(overwriteMetamaskSites)
+      try {
+        let overwriteMetamaskSites = await storage.setting.get.overwriteMetamaskSites()
+        overwriteMetamaskSites = Object.entries(overwriteMetamaskSites).map(site => {
+          return {
+            origin: site[0],
+            shouldOverwriteMetamask: get(site, '[1].shouldOverwriteMetamask', false),
+            title: get(site, '[1].title', '')
+          }
+        })
+        setOverwriteMetamaskSites(overwriteMetamaskSites)
+      } catch (err) {
+        console.error(err)
+      }
     }
 
     loadOverwriteMetamaskSites()
@@ -101,11 +106,11 @@ const OverwriteMetamaskModal = ({ account, close }) => {
         ref={modalRef}
       >
         <div className="flex h-16.75 rounded-t bg-trueGray-100 shadow-md w-full font-semibold text-xl tracking-finnieSpacing-wide relative">
-          <div className="m-auto">Metamask Overwrite</div>
+          <div className="m-auto">{chrome.i18n.getMessage('metamaskOverwrites')}</div>
           <CloseIcon onClick={close} className="w-7 h-7 top-4 right-4 absolute cursor-pointer" />
         </div>
         <div className='mt-7 text-base text-indigo'>
-          Select which wallet to connect
+          {chrome.i18n.getMessage('selectWhichWalletToConnect')}
         </div>
         {isEmpty(overwriteMetamaskSites) ? (
           <div className="m-auto flex flex-col items-center">

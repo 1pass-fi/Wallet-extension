@@ -3,12 +3,8 @@ import BackgroundPatternLeft from 'img/background-pattern-left.svg'
 import BackgroundPatternRight from 'img/background-pattern-right.svg'
 import get from 'lodash/get'
 import storage from 'services/storage'
+import getCurrentTab from 'utils/getCurrentTab'
 
-async function getCurrentTab() {
-  let queryOptions = { active: true, lastFocusedWindow: true }
-  let [tab] = await chrome.tabs.query(queryOptions)
-  return tab
-}
 
 const OverwriteMetamask = () => {
   const [shouldAskForMetamaskOverwrite, setShouldAskForMetamaskOverwrite] = useState(false)
@@ -50,12 +46,14 @@ const OverwriteMetamask = () => {
     <div style={{ height:'482px', top:'54px' }} className='w-full fixed right-0 z-51 bg-white justify-start content-center'>
       <div className='w-full h-full justify-center items-center flex text-center'>
         <div style={{width:'278px', height:'168px'}} className='flex flex-col justify-between'>
-          <div className='text-indigo font-semibold text-base'>Finnie just detected Metamask</div>
-          <div>
-            Would you like to overwrite this setting and connect Finnie?
+          <div className='text-indigo font-semibold text-base'>
+            {chrome.i18n.getMessage('finnieJustDetectedMetamask')}
           </div>
-          <div >
-            If you want to change this setting later, go to Settings > Wallet Settings > Metamask overwrites
+          <div>
+            {chrome.i18n.getMessage('wouldYouLikeToOverwrite')}
+          </div>
+          <div>
+            {chrome.i18n.getMessage('ifYouWantToChangeThisSetting')}
           </div>
         </div>
         <div style={{bottom:'72px'}} className='fixed w-full top-'>
@@ -65,14 +63,14 @@ const OverwriteMetamask = () => {
               className='text-blue-800 text-base bg-white border-1.5 border-blue-800 rounded-sm'
               onClick={() => handleOverwriteMetamask(false)}
             >
-                Keep Metamask
+              {chrome.i18n.getMessage('keepMetamask')}
             </button>
             <button 
               style={{width:'190px',height:'38px'}} 
               className='text-white text-base bg-blue-800 rounded-sm'
               onClick={() => handleOverwriteMetamask(true)}
             >
-              Connect
+              {chrome.i18n.getMessage('connect')}
             </button>
           </div>
         </div>
