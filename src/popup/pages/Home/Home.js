@@ -10,6 +10,7 @@ import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 
 import AccountInfo from './AccountInfo/AccountInfo'
 import HomeTop from './HomeTop'
+import OverwriteMetamask from './OverwriteMetamask'
 
 const Home = () => {
   const [currentProviderAddress, setCurrentProviderAddress] = useState()
@@ -68,6 +69,7 @@ const Home = () => {
             price={price}
             currentProviderAddress={currentProviderAddress}
           />
+          <OverwriteMetamask />
         </ParallaxProvider>
       )}
     </div>

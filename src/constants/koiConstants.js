@@ -600,3 +600,5 @@ export const POPUP_CONTROLLER_ERROR = {
   DID_DEPLOY_CONTRACT: 'didDeployContractError',
   NOT_ENOUGH_AR_OR_KOII: 'notEnoughARorKoiiTokens'
 }
+
+export const FINNIE_ALTERNATIVES = ['MetaMask']

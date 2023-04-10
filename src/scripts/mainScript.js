@@ -10,37 +10,59 @@ const mainScript = () => {
     window.connection.emit(event.data.type, event.data)
   })
 
-  const finnieEthereumProvider = new FinnieEthereumProvider(window.connection)
-  const finnieArweaveProvider = new FinnieArweaveProvider(window.connection)
+  let finnieEthereumProvider, finnieArweaveProvider, finnieSolanaWalletProvider
+
+  if (typeof FinnieEthereumProvider !== 'undefined') {
+    finnieEthereumProvider = new FinnieEthereumProvider(window.connection)
+  }
+  if (typeof FinnieArweaveProvider !== 'undefined') {
+    finnieArweaveProvider = new FinnieArweaveProvider(window.connection)
+  }
+  if (typeof FinnieSolanaProvider !== 'undefined') {
+    finnieSolanaWalletProvider = new FinnieSolanaProvider(window.connection)
+  }
+
   const finnieKoiiWalletProvider = new FinnieKoiiWalletProvider(window.connection)
-  const finnieSolanaWalletProvider = new FinnieSolanaProvider(window.connection)
   const finnieK2WalletProvider = new FinnieK2Provider(window.connection)
 
-  window.addEventListener('chainChanged', function() {
-    finnieEthereumProvider.request({ method: 'eth_chainId' }).then(chainId => {
-      finnieEthereumProvider.emit('chainChanged', chainId)
+  if (finnieEthereumProvider) {
+    window.addEventListener('chainChanged', function() {
+      finnieEthereumProvider.request({ method: 'eth_chainId' }).then(chainId => {
+        finnieEthereumProvider.emit('chainChanged', chainId)
+      })
+      finnieEthereumProvider.emit('chainChanged')
     })
-    finnieEthereumProvider.emit('chainChanged')
-  })
-  window.addEventListener('networkChanged', function() {
-    finnieEthereumProvider.request({ method: 'net_version' }).then(netVersion => {
-      finnieEthereumProvider.emit('networkChanged', netVersion)
+    window.addEventListener('networkChanged', function() {
+      finnieEthereumProvider.request({ method: 'net_version' }).then(netVersion => {
+        finnieEthereumProvider.emit('networkChanged', netVersion)
+      })
     })
-  })
-  window.addEventListener('accountsChanged', function() {
-    finnieEthereumProvider.request({ method: 'eth_accounts' }).then(accounts => {
-      finnieEthereumProvider.emit('accountsChanged', accounts)
+    window.addEventListener('accountsChanged', function() {
+      finnieEthereumProvider.request({ method: 'eth_accounts' }).then(accounts => {
+        finnieEthereumProvider.emit('accountsChanged', accounts)
+      })
     })
-  })
+  }
 
-  if (window.ethereum === undefined) window.ethereum = finnieEthereumProvider
-
-  window.ethereum = finnieEthereumProvider
-  window.arweaveWallet = finnieArweaveProvider
+  if (finnieEthereumProvider) window.ethereum = finnieEthereumProvider
+  if (finnieArweaveProvider) window.arweaveWallet = finnieArweaveProvider
   window.koiiWallet = finnieKoiiWalletProvider
   window.koiWallet = finnieKoiiWalletProvider
-  window.solana = finnieSolanaWalletProvider
+  if (finnieSolanaWalletProvider) window.solana = finnieSolanaWalletProvider
   window.k2 = finnieK2WalletProvider
+
+  const protectProp = (target, propName) => {
+    Object.defineProperty(
+      target, 
+      propName,
+      {...Object.getOwnPropertyDescriptors(target[propName]), writable: false, configurable: false}
+    )
+  }
+  const protectFinnieProvider = (finnieProviderPropName) => {
+    if (window[finnieProviderPropName]) protectProp(window, finnieProviderPropName)
+  }
+  const finnieProviderPropNames = ['ethereum', 'solana', 'k2', 'arweaveWallet', 'koiiWallet', 'koiWallet']
+  finnieProviderPropNames.forEach(protectFinnieProvider)
   // window.solana.checkConnection()
 }
 

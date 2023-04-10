@@ -113,4 +113,8 @@ export class SettingSet {
   importedK2CustomTokens(value) {
     return this.#chrome._setChrome(SETTING.IMPORTED_K2_CUSTOM_TOKENS, value)
   }
+
+  overwriteMetamaskSites(value) {
+    return this.#chrome._setChrome(SETTING.OVERWRITE_ALTERNATIVES_SITES, value)
+  }
 }
