@@ -33,7 +33,7 @@ async function contentScript() {
     const overwriteMetamaskSites = await storage.setting.get.overwriteMetamaskSites()
     const origin = window.location.origin + '/'
   
-    const disabled = disabledOrigins.includes(origin)
+    const finnieDisabled = disabledOrigins.includes(window.location.origin)
   
     const hasMetamaskInstalled = await chrome.runtime.sendMessage('checkMetamask')
     const shouldOverwriteMetamask = get(overwriteMetamaskSites, [origin, 'shouldOverwriteMetamask'], false)
@@ -53,9 +53,11 @@ async function contentScript() {
       '/scripts/finnieK2ProviderScript.js',
       '/scripts/mainScript.js'
     ].filter(s => s)
-  
-    for (const path of scriptPaths) {
-      await injectScript(path)
+    
+    if (!finnieDisabled) {
+      for (const path of scriptPaths) {
+        await injectScript(path)
+      }
     }
   
     const arweaveWalletLoaded = new CustomEvent('arweaveWalletLoaded')
