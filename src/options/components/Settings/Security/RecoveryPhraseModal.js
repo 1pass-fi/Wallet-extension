@@ -61,6 +61,7 @@ const RecoveryPhraseModal = ({ account, close }) => {
       setPasswordError('')
       const _account = await popupAccount.getAccount({ address: account.address })
       const encryptedSeedPhrase = await _account.get.seedPhrase()
+      if (!encryptedSeedPhrase) return dispatch(setError(chrome.i18n.getMessage('thisKeyDoesNotHaveASecretPhrase')))
       const seedPhrase = await passworder.decrypt(password, encryptedSeedPhrase)
       setSeedPhrase(seedPhrase)
       setStep(2)

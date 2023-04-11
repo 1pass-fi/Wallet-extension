@@ -1834,5 +1834,8 @@
   },
   "seeListOfSites": {
     "message": "See List of Sites"
+  },
+  "thisKeyDoesNotHaveASecretPhrase": {
+    "message": "This key does not have a secret phrase"
   }
 }
