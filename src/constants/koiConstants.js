@@ -608,3 +608,10 @@ export const POPUP_CONTROLLER_ERROR = {
 }
 
 export const FINNIE_ALTERNATIVES = ['MetaMask']
+
+export const ETH_RPC_URL_CHAINID_MAPPING = {
+  'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2': 1,
+  'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2': 5,
+  'https://rpc-mainnet.maticvigil.com/': 137,
+  'https://rpc-mumbai.maticvigil.com/': 80001
+}
