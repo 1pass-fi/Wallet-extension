@@ -1,25 +1,24 @@
 // import Web3 from 'web3'
 import { ethers } from 'ethers'
 import { get } from 'lodash'
+import { getEthereumNetworkProvider } from 'services/initNetworkProvider'
 import storage from 'services/storage'
 import { clarifyEthereumProvider } from 'utils'
+
 
 export default async (payload, tab, next) => {
   try {
     const params = get(payload, 'data.params')
-    const provider = await storage.setting.get.ethereumProvider()
-    const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
+    const providerUrl = await storage.setting.get.ethereumProvider()
+    const web3 = await getEthereumNetworkProvider(providerUrl)
 
-    const network = ethers.providers.getNetwork(ethNetwork)
-    const web3 = new ethers.providers.InfuraProvider(network, apiKey)
-
-    let blockNumber = params[0]
+    let blockNumber = get(params, '[0]')
 
     if (blockNumber === 'latest') {
       blockNumber = await web3.getBlockNumber()
     }
 
-    const blockData = await web3.getBlock(params[0])
+    const blockData = await web3.getBlock(blockNumber)
 
     blockData.difficulty = ethers.utils.hexlify(blockData.difficulty)
     blockData.gasLimit = ethers.utils.hexlify(blockData.gasLimit)

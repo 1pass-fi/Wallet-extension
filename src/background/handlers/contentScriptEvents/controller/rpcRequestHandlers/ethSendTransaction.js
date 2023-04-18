@@ -4,6 +4,7 @@ import { OS, REQUEST, WINDOW_SIZE } from 'constants/koiConstants'
 import { ethers } from 'ethers'
 import { get, isEmpty } from 'lodash'
 import { backgroundAccount } from 'services/account'
+import { getEthereumNetworkProvider } from 'services/initNetworkProvider'
 import storage from 'services/storage'
 import ethereumUtils from 'utils/ethereumUtils'
 // Utils
@@ -100,10 +101,11 @@ export default async (payload, tab, next) => {
                 )
                 const providerUrl = await storage.setting.get.ethereumProvider()
 
-                const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(
+                let { ethersProvider, wallet } = ethereumUtils.initEthersProvider(
                   providerUrl,
                   credential.key
                 )
+                ethersProvider = await getEthereumNetworkProvider(providerUrl)
 
                 const signer = wallet.connect(ethersProvider)
 

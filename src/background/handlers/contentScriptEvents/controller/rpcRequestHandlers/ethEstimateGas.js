@@ -1,24 +1,16 @@
-// import Web3 from 'web3'
-import { ethers } from 'ethers'
 import { get } from 'lodash'
+import { getEthereumNetworkProvider } from 'services/initNetworkProvider'
 import storage from 'services/storage'
-import { clarifyEthereumProvider } from 'utils'
 
 export default async (payload, tab, next) => {
   try {
     const params = get(payload, 'data.params')
+    const rawTx = get(params, '[0]')
 
-    const provider = await storage.setting.get.ethereumProvider()
+    const providerUrl = await storage.setting.get.ethereumProvider()
+    const web3 = await getEthereumNetworkProvider(providerUrl)
 
-    const rawTx = params[0]
-    const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
-
-    const network = ethers.providers.getNetwork(ethNetwork)
-    const web3 = new ethers.providers.InfuraProvider(network, apiKey)
-
-    // const estimatedGas = await web3.eth.estimateGas(rawTx)
     const estimatedGas = await web3.estimateGas(rawTx)
-
     console.log('estimatedGas', estimatedGas)
 
     next({ data: estimatedGas })
