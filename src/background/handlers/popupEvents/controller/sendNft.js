@@ -5,6 +5,7 @@ import { TYPE } from 'constants/accountConstants'
 import { NETWORK, PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 import { ethers } from 'ethers'
 import { find } from 'lodash'
+import get from 'lodash/get'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
 
@@ -30,6 +31,7 @@ export default async (payload, next) => {
       case TYPE.ETHEREUM:
         txId = await account.method.transferNFT(nftId, ethers.utils.getAddress(recipientAddress))
         network = await storage.setting.get.ethereumProvider()
+        network = get(network, 'rpcUrl') || network
         break
     }
 

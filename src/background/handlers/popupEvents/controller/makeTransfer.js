@@ -2,6 +2,7 @@
 import helpers from 'background/helpers'
 // Constants
 import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
+import get from 'lodash/get'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
 import showNotification from 'utils/notifications'
@@ -41,6 +42,7 @@ export default async (payload, next) => {
     let network
     if (token === 'ETH') {
       network = await storage.setting.get.ethereumProvider()
+      network = get(network, 'rpcUrl') || network
     } else if (token === 'SOL') {
       network = await storage.setting.get.solanaProvider()
     }

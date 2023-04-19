@@ -18,7 +18,8 @@ export default async (payload, next) => {
 
     const credential = await backgroundAccount.getCredentialByAddress(ethers.utils.getAddress(sender))
     const account = await backgroundAccount.getAccount(credential)
-    const network = await storage.setting.get.ethereumProvider()
+    let network = await storage.setting.get.ethereumProvider()
+    network = get(network, 'rpcUrl') || network
 
     const { txHash, sendingPromise, symbol, decimals } = await account.method.transferToken({
       tokenContractAddress: contractAddress,
