@@ -45,7 +45,7 @@ const useGetFee = ({
     if (maxPriorityFeePerGas) rawTx.maxPriorityFeePerGas = maxPriorityFeePerGas
     
     const providerUrl = await storage.setting.get.ethereumProvider()
-    const { ethersProvider } = ethereumUtils.initEthersProvider(providerUrl)
+    const { ethersProvider } = await ethereumUtils.initEthersProvider(providerUrl)
     const gasUsed = await ethersProvider.estimateGas(rawTx)
 
     setGasLimit(gasUsed.toNumber())

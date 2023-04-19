@@ -14,7 +14,7 @@ const maxFeePerGasFormular = (baseFee, priorityFee) => {
  */
 const calculateMaxFeePerGas = async (providerUrl, maxPriorityFeePerGas) => {
   try {
-    const { ethersProvider } = initEthersProvider(providerUrl)
+    const { ethersProvider } = await initEthersProvider(providerUrl)
     
     const baseFee = (await ethersProvider.getBlock('latest')).baseFeePerGas.toNumber()
     if (!isString) maxPriorityFeePerGas = `${maxPriorityFeePerGas}`

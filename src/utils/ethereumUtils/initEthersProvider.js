@@ -1,13 +1,6 @@
-import { ETH_NETWORK_PROVIDER } from 'constants/koiConstants'
 import { ethers } from 'ethers'
+import { getEthereumNetworkProvider } from 'services/initNetworkProvider'
 
-
-const NETWORK_NAME = {
-  MAINNET: 'mainnet',
-  GOERLI: 'goerli'
-}
-
-const API_KEY = 'f811f2257c4a4cceba5ab9044a1f03d2'
 const CONNECT_ERROR = 'The ethers connection could not be established.'
 
 /**
@@ -16,22 +9,11 @@ const CONNECT_ERROR = 'The ethers connection could not be established.'
  * @param {*=} keypair
  * @returns 
  */
-const initEthersProvider = (providerUrl, keypair) => {
+const initEthersProvider = async (providerUrl, keypair) => {
   try {
-    let networkName, wallet
-    
-    switch (providerUrl) {
-      case ETH_NETWORK_PROVIDER.MAINNET:
-        networkName = NETWORK_NAME.MAINNET
-        break
-      case ETH_NETWORK_PROVIDER.GOERLI:
-        networkName = NETWORK_NAME.GOERLI
-        break
-      default:
-        networkName = NETWORK_NAME.GOERLI
-    }
+    let wallet
 
-    const ethersProvider = new ethers.providers.InfuraProvider(networkName, API_KEY)
+    const ethersProvider = await getEthereumNetworkProvider(providerUrl)
 
     if (keypair) {
       wallet = new ethers.Wallet(keypair, ethersProvider)

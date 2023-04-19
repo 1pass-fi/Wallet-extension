@@ -304,7 +304,7 @@ export class EthereumMethod {
     try {
       // Initialize provider and wallet
       const providerUrl = await storage.setting.get.ethereumProvider()
-      const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
+      const { ethersProvider, wallet } = await ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
       const signer = wallet.connect(ethersProvider)
 
       // Gas
@@ -663,7 +663,7 @@ export class EthereumMethod {
   async transferToken({ tokenContractAddress, to, value, maxPriorityFeePerGas, maxFeePerGas }) {
     try {
       const providerUrl = await storage.setting.get.ethereumProvider()
-      const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
+      const { ethersProvider, wallet } = await ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
       const signer = wallet.connect(ethersProvider)
 
       const tokenContract = new ethers.Contract(tokenContractAddress, ERC20ABI, signer)
@@ -714,7 +714,7 @@ export class EthereumMethod {
 
     // Initialize provider and wallet
     const providerUrl = await storage.setting.get.ethereumProvider()
-    const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
+    const { ethersProvider, wallet } = await ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
     const signer = wallet.connect(ethersProvider)
 
     // Contract ABI and Contract Interface

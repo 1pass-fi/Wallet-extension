@@ -73,7 +73,7 @@ export default async (payload, next) => {
 
                 const provider = await storage.setting.get.ethereumProvider()
 
-                const { ethersProvider, wallet } = ethereumUtils.initEthersProvider(
+                const { ethersProvider, wallet } = await ethereumUtils.initEthersProvider(
                   provider,
                   credential.key
                 )

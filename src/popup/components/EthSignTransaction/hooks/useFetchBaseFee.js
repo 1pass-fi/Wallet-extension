@@ -9,7 +9,7 @@ const useFetchBaseFee = () => {
     const getFee = async () => {
       try {
         const providerUrl = await storage.setting.get.ethereumProvider()
-        const { ethersProvider } = ethereumUtils.initEthersProvider(providerUrl)
+        const { ethersProvider } = await ethereumUtils.initEthersProvider(providerUrl)
         const baseFee = (await ethersProvider.getBlock('latest')).baseFeePerGas
         setBaseFee(baseFee.toNumber())
       } catch (err) {
