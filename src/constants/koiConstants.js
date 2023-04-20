@@ -615,3 +615,62 @@ export const ETH_RPC_URL_CHAINID_MAPPING = {
   'https://rpc-mainnet.maticvigil.com/': 137,
   'https://rpc-mumbai.maticvigil.com/': 80001
 }
+
+export const PREDEFINED_EVM_NETWORK_METADATA = {
+  'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2': {
+    networkName: 'ETH Mainnet',
+    rpcUrl: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
+    chainId: 1,
+    currencySymbol: 'ETH',
+    blockExplorerUrl: 'https://etherscan.io/'
+  },
+  'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2': {
+    networkName: 'Goerli Testnet',
+    rpcUrl: 'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
+    chainId: 5,
+    currencySymbol: 'Goerli ETH',
+    blockExplorerUrl: 'https://goerli.etherscan.io/'
+  }
+}
+
+export const PREDEFINED_ARWEAVE_NETWORK_METADATA = {
+  'arweave': {
+    networkName: 'Arweave',
+    rpcUrl: null,
+    chainId: null,
+    currencySymbol: 'AR',
+    blockExplorerUrl: 'https://viewblock.io/arweave'
+  }
+}
+
+export const PREDEFINED_SOLANA_NETWORK_METADATA = {
+  'mainnet': {
+    networkName: 'Mainnet',
+    rpcUrl: 'https://solana-mainnet.g.alchemy.com/v2/Ofyia5hQc-c-yfWwI4C9Qa0UcJ5lewDy',
+    chainId: null,
+    currencySymbol: 'SOL',
+    blockExplorerUrl: 'https://explorer.solana.com/'
+  },
+  'devnet': {
+    networkName: 'Devnet',
+    rpcUrl: 'https://api.devnet.solana.com',
+    chainId: null,
+    currencySymbol: 'SOL',
+    blockExplorerUrl: 'https://explorer.solana.com/?cluster=devnet'
+  },
+  'testnet': {
+    networkName: 'Testnet',
+    rpcUrl: 'http://api.testnet.solana.com',
+    chainId: null,
+    currencySymbol: 'SOL',
+    blockExplorerUrl: 'https://explorer.solana.com/?cluster=testnet'
+  }
+}
+
+export const PREDEFINED_K2_NETWORK_METADATA = {
+  networkName: 'Testnet',
+  rpcUrl: 'https://k2-testnet.koii.live',
+  chainId: null,
+  currencySymbol: 'KOII',
+  blockExplorerUrl: null
+}
