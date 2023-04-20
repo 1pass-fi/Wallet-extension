@@ -1,7 +1,7 @@
 // import Web3 from 'web3'
 import { ethers } from 'ethers'
 import { get } from 'lodash'
-import { getEthereumNetworkProvider } from 'services/initNetworkProvider'
+import { getEthereumNetworkProvider } from 'services/getNetworkProvider'
 import storage from 'services/storage'
 import { clarifyEthereumProvider } from 'utils'
 

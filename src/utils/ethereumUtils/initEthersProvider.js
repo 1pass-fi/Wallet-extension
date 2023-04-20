@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { getEthereumNetworkProvider } from 'services/initNetworkProvider'
+import { getEthereumNetworkProvider } from 'services/getNetworkProvider'
 
 const CONNECT_ERROR = 'The ethers connection could not be established.'
 

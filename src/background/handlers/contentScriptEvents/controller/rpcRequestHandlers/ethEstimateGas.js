@@ -1,5 +1,5 @@
 import { get } from 'lodash'
-import { getEthereumNetworkProvider } from 'services/initNetworkProvider'
+import { getEthereumNetworkProvider } from 'services/getNetworkProvider'
 import storage from 'services/storage'
 
 export default async (payload, tab, next) => {

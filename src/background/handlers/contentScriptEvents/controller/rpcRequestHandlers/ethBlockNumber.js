@@ -1,4 +1,4 @@
-import { getEthereumNetworkProvider } from 'services/initNetworkProvider'
+import { getEthereumNetworkProvider } from 'services/getNetworkProvider'
 import storage from 'services/storage'
 
 export default async (_, __, next) => {
