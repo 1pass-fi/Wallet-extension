@@ -139,4 +139,8 @@ export class SettingGet {
   async customK2Networks() {
     return (await this.#chrome._getChrome(SETTING.CUSTOM_K2_NETWORKS)) || {}
   }
+
+  async addedEvmNetworks() {
+    return (await this.#chrome._getChrome(SETTING.ADDED_EVM_NETWORKS)) || []
+  }
 }

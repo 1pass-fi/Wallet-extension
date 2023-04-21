@@ -630,6 +630,13 @@ export const PREDEFINED_EVM_NETWORK_METADATA = {
     chainId: 5,
     currencySymbol: 'Goerli ETH',
     blockExplorerUrl: 'https://goerli.etherscan.io/'
+  },
+  'https://rpc-mumbai.maticvigil.com/': {
+    networkName: 'Polygon Testnet',
+    rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
+    chainId: 80001,
+    currencySymbol: 'MATIC',
+    blockExplorerUrl: null
   }
 }
 

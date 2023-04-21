@@ -27,6 +27,7 @@ import { BigNumber, ethers } from 'ethers'
 import { find, findIndex, get, includes, isEmpty } from 'lodash'
 import moment from 'moment'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
+import { getEthereumNetworkProvider } from 'services/getNetworkProvider'
 import storage from 'services/storage'
 import { getChromeStorage, removeWalletFromChrome } from 'utils'
 import { clarifyEthereumProvider } from 'utils'
@@ -47,9 +48,17 @@ export class EthereumMethod {
     this.#chrome = new AccountStorageUtils(eth.address)
   }
 
+  async getWallet() {
+    const rpcUrl = await storage.setting.get.ethereumProvider()
+    const etherProvider = await getEthereumNetworkProvider(rpcUrl)
+    const wallet = new ethers.Wallet(this.eth.key, etherProvider)
+
+    return wallet
+  }
+
   async getBalances() {
-    // const balance = Web3.utils.fromWei(await this.eth.getBalance())
-    const balance = ethers.utils.formatEther(await this.eth.getBalance())
+    const wallet = await this.getWallet()
+    const balance = ethers.utils.formatEther(await wallet.getBalance())
     const koiBalance = 100
     return { balance, koiBalance }
   }

@@ -49,7 +49,7 @@ const HomeTop = ({
 
   const dispatch = useDispatch()
 
-  const providerOptions = [
+  const [evmProviderOptions, setEvmProviderOptions] = useState([
     {
       label: 'ETH Mainnet',
       value: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
@@ -58,7 +58,17 @@ const HomeTop = ({
       label: 'Goerli TestNet',
       value: 'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
     }
-  ]
+  ])
+
+  useEffect(() => {
+    const getAddedEvmNetworks = async () => {
+      const addedEvmNetworks = await storage.setting.get.addedEvmNetworks()
+
+      setEvmProviderOptions(prev => [...prev, ...addedEvmNetworks])
+    }
+
+    getAddedEvmNetworks()
+  }, [])
 
   const onChangeProvider = async (value) => {
     setIsLoading(true)
@@ -201,7 +211,7 @@ const HomeTop = ({
           {displayingAccount.type === TYPE.ETHEREUM && (
             <div className="mr-1.75" data-testid="provider-dropdown">
               <Select
-                options={providerOptions}
+                options={evmProviderOptions}
                 value={currentProviderAddress}
                 onChange={onChangeProvider}
               />

@@ -22,6 +22,7 @@ import { getChromeStorage, isSolanaAddress, setChromeStorage } from 'utils'
 
 // import AccountOrder from './AccountOrder'
 import AcceptedCurrencies from './currencies'
+import EvmNetworks from './EvmNetworks'
 
 import './index.css'
 
@@ -218,6 +219,7 @@ export default () => {
             </div>
           </div>
 
+          {/* METAMASK OVERWRITES */}
           <div className="default-currency pb-6 mb-4 border-b border-white">
             <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
               {chrome.i18n.getMessage('metamaskOverwrites')}
@@ -239,6 +241,7 @@ export default () => {
             </div>
           </div>
 
+          {/* KEY DETAILS */}
           <div className="display-order pb-6 mb-4 border-b border-white">
             <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
               {chrome.i18n.getMessage('keyDetails')}
@@ -256,32 +259,6 @@ export default () => {
                 filterSupported={false}
               />
             </div>
-            {/* TODO - DatH - Hide drag and drop */}
-            {/* <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="list">
-                {(provided) => (
-                  <div ref={provided.innerRef} {...provided.droppableProps}>
-                    {listAccounts.map((account, index) => (
-                      <Draggable draggableId={account.address} index={index} key={account.address}>
-                        {(provided) => (
-                          <div ref={provided.innerRef} {...provided.draggableProps}>
-                            <AccountCard
-                              account={account}
-                              setShowConfirmRemoveAccount={setShowConfirmRemoveAccount}
-                              setRemoveAccount={setRemoveAccount}
-                              setShowConnectedSites={setShowConnectedSites}
-                              setAccountConnectSites={setAccountConnectSites}
-                              dragProvided={provided}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext> */}
             {listAccounts.map((account, index) => (
               <AccountCard
                 key={account.address}
@@ -292,6 +269,27 @@ export default () => {
                 setAccountConnectSites={setAccountConnectSites}
               />
             ))}
+          </div>
+
+          {/* ADD EVM NETWORKS */}
+          <div className="default-currency pb-6 mb-4 border-b border-white">
+            <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
+              Add EVM Networks
+            </div>
+            <div className="text-sm 2xl:text-base 3xl:text-lg leading-6 mb-7">
+              Add from a list of popular networks or add a network manually. Only interact with the entities you trust.
+            </div>
+            <div>
+              <EvmNetworks />
+            </div>
+            <div
+              className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center mr-6.75 cursor-not-allowed"
+              style={{ width: '220px', height: '38px' }}
+              data-testid="setting-see-list-of-sites"
+              role="button"
+            >
+              Add Network Manually
+            </div>
           </div>
         </div>
       </div>

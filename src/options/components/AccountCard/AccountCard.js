@@ -73,12 +73,7 @@ const AccountCard = ({
   const [showRecoveryPhraseModal, setShowRecoveryPhraseModal] = useState(false)
   const [showQrCodeModal, setShowQrCodeModal] = useState(false)
 
-  const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
-  const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
-  const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
-  const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
-
-  const providerOptions = [
+  const [providerOptions, setProviderOptions] = useState([
     {
       type: TYPE.ETHEREUM,
       value: [
@@ -127,7 +122,13 @@ const AccountCard = ({
         }
       ]
     }
-  ]
+  ])
+
+  const defaultArweaveAccountAddress = useSelector((state) => state.defaultAccount.AR?.address)
+  const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
+  const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
+  const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
+
 
   useEffect(() => {
     const getCurrentProvider = async (accountType) => {
@@ -168,10 +169,23 @@ const AccountCard = ({
       setTotalViews(totalAssetViews)
     }
 
+
+
     loadConnectedSites()
     getCurrentProvider(account.type)
     countTotalViews()
   }, [account])
+
+  useEffect(() => {
+    const getProviderOptions = async () => {
+      const addedEvmNetworks = await storage.setting.get.addedEvmNetworks()
+      providerOptions[0].value = [...providerOptions[0].value, ...addedEvmNetworks]
+
+      setProviderOptions(providerOptions)
+    }
+
+    getProviderOptions()
+  }, [])
 
   const isDefaultAccount = (account) => {
     switch (account.type) {

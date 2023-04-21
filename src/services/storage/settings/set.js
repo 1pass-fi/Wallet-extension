@@ -133,4 +133,8 @@ export class SettingSet {
   customK2Networks(value) {
     return this.#chrome._setChrome(SETTING.CUSTOM_K2_NETWORKS, value)
   }
+
+  addedEvmNetworks(value) {
+    return this.#chrome._setChrome(SETTING.ADDED_EVM_NETWORKS, value)
+  }
 }
