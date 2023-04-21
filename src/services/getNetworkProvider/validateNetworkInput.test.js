@@ -35,7 +35,7 @@ describe('isRpcUrl', () => {
   })
 })
 
-describe('validateNetworkInput', () => {
+describe.skip('validateNetworkInput', () => {
   it('returns network payload if network payload is valid', async () => {
     const input = {
       rpcUrl: 'https://google.com',

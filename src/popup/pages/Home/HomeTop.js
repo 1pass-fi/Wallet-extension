@@ -16,6 +16,7 @@ import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 import ReceiveIcon from 'img/popup/receive-icon.svg'
 import RefreshIcon from 'img/popup/refresh-icon.svg'
 import SendIcon from 'img/popup/send-icon.svg'
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 // components
 import { loadAllAccounts } from 'options/actions/accounts'
@@ -24,6 +25,7 @@ import { setActivities } from 'popup/actions/activities'
 import { setIsLoading } from 'popup/actions/loading'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 import storage from 'services/storage'
+import { useEvmNetworkMetadata } from 'sharedHooks/useNetworkMetaData'
 import { fiatCurrencyFormat, numberFormat } from 'utils'
 
 const HomeTop = ({
@@ -180,6 +182,8 @@ const HomeTop = ({
     getCurrentProvider(displayingAccount.type)
   }, [displayingAccount])
 
+  const { evmNetworkMetadata } = useEvmNetworkMetadata()
+
   return (
     <div className="relative z-20">
       <div ref={p.ref}>
@@ -255,7 +259,7 @@ const HomeTop = ({
           {displayingAccount.type === TYPE.ETHEREUM && (
             <div>
               <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-                {numberFormat(displayingAccount.balance)} ETH
+                {numberFormat(displayingAccount.balance)} {get(evmNetworkMetadata, 'currencySymbol')}
               </div>
               {currentProviderAddress?.includes('mainnet') && (
                 <div
