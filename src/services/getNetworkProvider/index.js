@@ -1,4 +1,4 @@
-import { andThen, pipeWith } from 'ramda'
+import asyncPipe from 'utils/asyncPipe'
 import CustomError from 'utils/customError'
 
 import { extractEthereumNetworkPayload } from './ethereum/extractEthereumNetworkPayload'
@@ -6,7 +6,6 @@ import { initEthereumNetworkProvider } from './ethereum/initEthereumNetworkProvi
 import { validateEthereumChainId } from './ethereum/validateEthereumChainId'
 import { validateNetworkInput } from './validateNetworkInput'
 
-const asyncPipe = pipeWith(andThen)
 
 export class InitNetworkProviderError extends CustomError {
   constructor(message, prefixes = []) {

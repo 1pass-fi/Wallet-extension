@@ -123,4 +123,20 @@ export class SettingGet {
   async overwriteMetamaskSites() {
     return (await this.#chrome._getChrome(SETTING.OVERWRITE_ALTERNATIVES_SITES)) || {}
   }
+
+  async customEvmNetworks() {
+    return (await this.#chrome._getChrome(SETTING.CUSTOM_EVM_NETWORKS)) || {}
+  }
+
+  async customArweaveNetworks() {
+    return (await this.#chrome._getChrome(SETTING.CUSTOM_ARWEAVE_NETWORKS)) || {}
+  }
+
+  async customSolanaNetworks() {
+    return (await this.#chrome._getChrome(SETTING.CUSTOM_SOLANA_NETWORKS)) || {}
+  }
+
+  async customK2Networks() {
+    return (await this.#chrome._getChrome(SETTING.CUSTOM_K2_NETWORKS)) || {}
+  }
 }

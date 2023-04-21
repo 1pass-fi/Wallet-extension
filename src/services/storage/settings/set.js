@@ -117,4 +117,20 @@ export class SettingSet {
   overwriteMetamaskSites(value) {
     return this.#chrome._setChrome(SETTING.OVERWRITE_ALTERNATIVES_SITES, value)
   }
+
+  customEvmNetworks(value) {
+    return this.#chrome._setChrome(SETTING.CUSTOM_EVM_NETWORKS, value)
+  }
+
+  customArweaveNetworks(value) {
+    return this.#chrome._setChrome(SETTING.CUSTOM_ARWEAVE_NETWORKS, value)
+  }
+
+  customSolanaNetworks(value) {
+    return this.#chrome._setChrome(SETTING.CUSTOM_SOLANA_NETWORKS, value)
+  }
+  
+  customK2Networks(value) {
+    return this.#chrome._setChrome(SETTING.CUSTOM_K2_NETWORKS, value)
+  }
 }
