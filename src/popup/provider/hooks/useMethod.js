@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
 import { PATH } from 'constants/koiConstants'
 import { isEmpty } from 'lodash'
 
