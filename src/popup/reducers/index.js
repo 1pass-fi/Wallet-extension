@@ -10,11 +10,13 @@ import assetsSettings from './assetsSettings'
 import contLoading from './continueLoading'
 import createWallet from './createWallet'
 import currency from './currency'
+import currentProvider from './currentProvider'
 import defaultAccount from './defaultAccount'
 import error from './error'
 import koi from './koi'
 import loading from './loading'
 import locale from './locale'
+import networkMetadata from './networkMetadata'
 import notification from './notification'
 import price from './price'
 import settings from './settings'
@@ -39,5 +41,7 @@ export default combineReducers({
   settings,
   assetsSettings,
   activatedChain,
-  locale
+  locale,
+  currentProvider,
+  networkMetadata
 })
