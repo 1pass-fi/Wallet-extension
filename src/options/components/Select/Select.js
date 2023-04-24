@@ -7,7 +7,14 @@ import inclues from 'lodash/includes'
 import isEmpty from 'lodash/isEmpty'
 import lowerCase from 'lodash/lowerCase'
 
-const Select = ({ options, value, onChange, emptyOption = false }) => {
+const Select = ({ 
+  options, 
+  value, 
+  onChange, 
+  emptyOption = false,
+  bottomButtonLabel = null,
+  bottomButtonAction = null
+}) => {
   const [listOpened, setListOpened] = useState(false)
   const [selectedItem, setSelectedItem] = useState()
   const [hoverOption, setHoverOption] = useState(false)
@@ -115,6 +122,11 @@ const Select = ({ options, value, onChange, emptyOption = false }) => {
               {item.label}
             </button>
           ))}
+          {bottomButtonLabel && 
+            <button onClick={bottomButtonAction} style={{width: '130px', height: '30px', borderColor: '#353570'}} className=' text-blue-700 rounded-md border m-auto mb-2 mt-1 text-xs'>
+              {bottomButtonLabel}
+            </button>
+          }
         </div>
       )}
     </div>
