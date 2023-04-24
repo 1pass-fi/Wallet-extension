@@ -65,40 +65,50 @@ export class EthereumMethod {
 
   async loadMyContent() {
     try {
-      let path = PATH.OPENSEA_API_MAINNET
       const ethereumProvider = await storage.setting.get.ethereumProvider()
 
-      if (ethereumProvider.includes('goerli')) path = PATH.OPENSEA_API_RINEKY
-
-      // if ((this.eth.provider).includes('rinkeby')) path = PATH.OPENSEA_API_RINEKY
+      let path
+      switch (ethereumProvider) {
+        case 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2':
+          path = PATH.OPENSEA_API_MAINNET
+          break
+        case 'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2':
+          path = PATH.OPENSEA_API_RINEKY
+          break
+        default:
+          path = null
+      }
 
       /* 
         get nft list for this ETH address
       */
       let ethAssets = []
-      for (let i = 0; i < 3; i++) {
-        let assets = []
-        const url = `${path}/assets?owner=${this.eth.address}&order_direction=desc&offset=${
-          i * 50
-        }&limit=50`
-        try {
-          let headers = {}
-          if (ethereumProvider.includes('mainnet')) {
-            headers = { 'X-API-KEY': 'b2c5ef456a464bda8868fd20d8af6ce2' }
+
+      if (path) {
+        for (let i = 0; i < 3; i++) {
+          let assets = []
+          const url = `${path}/assets?owner=${this.eth.address}&order_direction=desc&offset=${
+            i * 50
+          }&limit=50`
+          try {
+            let headers = {}
+            if (ethereumProvider.includes('mainnet')) {
+              headers = { 'X-API-KEY': 'b2c5ef456a464bda8868fd20d8af6ce2' }
+            }
+  
+            const { data } = await axios.request({
+              url,
+              headers,
+              method: 'GET',
+              adapter: axiosAdapter
+            })
+            assets = get(data, 'assets') || []
+          } catch (err) {
+            console.error('Fetched ETH nft error: ', err.message)
           }
-
-          const { data } = await axios.request({
-            url,
-            headers,
-            method: 'GET',
-            adapter: axiosAdapter
-          })
-          assets = get(data, 'assets') || []
-        } catch (err) {
-          console.error('Fetched ETH nft error: ', err.message)
+  
+          ethAssets = [...ethAssets, ...assets]
         }
-
-        ethAssets = [...ethAssets, ...assets]
       }
 
       console.log('Fetched contents: ', ethAssets.length)
@@ -164,8 +174,11 @@ export class EthereumMethod {
       case ETH_NETWORK_PROVIDER.GOERLI:
         etherscanNetwork = 'goerli'
         break
-      default:
+      case ETH_NETWORK_PROVIDER.MAINNET:
         etherscanNetwork = 'homestead'
+        break
+      default:
+        etherscanNetwork = null
     }
 
     const walletAddress = this.eth.address
@@ -175,8 +188,11 @@ export class EthereumMethod {
       etherscanAPIKey
     )
 
-    let fetchedData = await etherscanProvider.getHistory(walletAddress)
-    fetchedData = fetchedData.reverse() // Descending transactions
+    let fetchedData = []
+    if (etherscanNetwork) {
+      fetchedData = await etherscanProvider.getHistory(walletAddress)
+      fetchedData = fetchedData.reverse() // Descending transactions
+    }
 
     const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
 
