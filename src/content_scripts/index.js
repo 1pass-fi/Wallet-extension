@@ -1,5 +1,6 @@
 import { ALLOWED_ORIGIN, MESSAGES } from 'constants/koiConstants'
 import { includes } from 'lodash'
+import concat from 'lodash/concat'
 import get from 'lodash/get'
 import storage from 'services/storage'
 
@@ -31,7 +32,12 @@ async function contentScript() {
   
     const disabledOrigins = await storage.setting.get.disabledOrigins()
     const overwriteMetamaskSites = await storage.setting.get.overwriteMetamaskSites()
-    const origin = window.location.origin + '/'
+
+    const endWithForwardSlash = /\/$/
+    let origin = window.location.origin
+    if (!endWithForwardSlash.test(origin)) {
+      origin = origin + '/'
+    }
   
     const finnieDisabled = disabledOrigins.includes(window.location.origin)
   
