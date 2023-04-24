@@ -126,9 +126,11 @@ export default async (payload, next) => {
 
                 next({ data: txHash })
                 chrome.runtime.sendMessage({ requestId, finished: true })
+                sendResponse({data: { requestId, finished: true }})
               } catch (err) {
                 console.error('Send eth error:', err.message)
                 chrome.runtime.sendMessage({ requestId, finished: true })
+                sendResponse({data: { requestId, finished: true }})
                 next({ error: { code: 4001, message: err.message } })
               }
             } else {

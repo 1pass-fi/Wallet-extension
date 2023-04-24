@@ -87,9 +87,11 @@ export default async (payload, next) => {
                 }
 
                 chrome.runtime.sendMessage({ requestId, finished: true })
+                sendResponse({data: { requestId, finished: true }})
               } catch (err) {
                 console.error('ETH sign error:', err.message)
                 chrome.runtime.sendMessage({ requestId, finished: true })
+                sendResponse({data: { requestId, finished: true }})
                 next({ error: { code: 4001, message: err.message } })
               }
             } else {

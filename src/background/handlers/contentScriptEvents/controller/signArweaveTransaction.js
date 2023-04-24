@@ -87,6 +87,7 @@ export default async (payload, tab, next) => {
 
                 next({ data: clonedTransaction })
                 chrome.runtime.sendMessage({ requestId, finished: true })
+                sendResponse({data: { requestId, finished: true }})
               } catch (err) {}
             } else {
             }

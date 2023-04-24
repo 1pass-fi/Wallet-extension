@@ -98,9 +98,11 @@ export default async (payload, tab, next) => {
                 else next({ error: { code: 4001, data: 'Invalid signature' } })
 
                 chrome.runtime.sendMessage({ requestId, finished: true })
+                sendResponse({data: { requestId, finished: true }})
               } catch (err) {
                 console.error('K2 sign message error: ', err)
                 chrome.runtime.sendMessage({ requestId, finished: true })
+                sendResponse({data: { requestId, finished: true }})
                 next({ error: { code: 4001, data: 'K2 sign message error' } })
               }
             } else {
