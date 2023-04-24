@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { get, isEmpty } from 'lodash'
 import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddresses'
 import { popupAccount } from 'services/account'
@@ -12,6 +13,8 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
   const [tokenList, setTokenList] = useState([])
   const [ethProvider, setEthProvider] = useState(null)
   const [selectedToken, setSelectedToken] = useState()
+
+  const networkMetadata = useSelector(state => state.networkMetadata)
 
   useEffect(() => {
     const loadEthProvider = async () => {
@@ -64,7 +67,7 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
     ethereumToken.balance = fromEthToWei(get(accountData, 'balance'))
     ethereumToken.price = 2000
     ethereumToken.name = 'Ether'
-    ethereumToken.symbol = 'ETH'
+    ethereumToken.symbol = get(networkMetadata, 'currencySymbol')
     ethereumToken.decimal = 18
     setSelectedToken(ethereumToken)
 

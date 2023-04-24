@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { TYPE } from 'constants/accountConstants'
 import { OS, STORAGE } from 'constants/koiConstants'
@@ -31,6 +31,9 @@ const mockedWalletDisplayOptions = [{ value: 'accountsummary', label: 'Account S
 export default () => {
   const dispatch = useDispatch()
   const history = useHistory()
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const locationId = queryParams.get('locationId')
 
   const [currency, setCurrency] = useState('USD')
   const [chainOption, setChainOption] = useState('ALL')
@@ -71,6 +74,15 @@ export default () => {
 
     getCurrency()
   }, [])
+
+  useEffect(() => {
+    if (locationId === 'add-network') {
+      const element = document.getElementById(locationId)
+      window.scrollTo({
+        top: element.offsetTop,
+      })
+    }
+  }, [locationId])
 
   const onImportSeedPhrase = () => {
     history.push('/import-wallet')
@@ -272,7 +284,7 @@ export default () => {
           </div>
 
           {/* ADD EVM NETWORKS */}
-          <div className="default-currency pb-6 mb-4 border-b border-white">
+          <div id='add-network' className="default-currency pb-6 mb-4 border-b border-white">
             <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
               Add EVM Networks
             </div>

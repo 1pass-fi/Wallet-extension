@@ -8,6 +8,7 @@ import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import K2Icon from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import SolanaIcon from 'img/v2/solana-logo.svg'
+import get from 'lodash/get'
 import { setIsLoading } from 'popup/actions/loading'
 // selectors
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
@@ -23,6 +24,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
 
   const displayingAccount = useSelector(getDisplayingAccount)
   const price = useSelector((state) => state.price)
+  const networkMetadata = useSelector(state => state.networkMetadata)
 
   let { importedTokenAddresses } = useImportedTokenAddresses({
     userAddress: displayingAccount.address,
@@ -124,7 +126,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             balance: numberFormat(fromEthToWei(displayingAccount.balance)),
             displayingBalance: numberFormat(displayingAccount.balance),
             usdValue: fiatCurrencyFormat(displayingAccount.balance * price.ETH),
-            symbol: 'ETH',
+            symbol: get(networkMetadata, 'currencySymbol'),
             decimal: 18
           }
         ]

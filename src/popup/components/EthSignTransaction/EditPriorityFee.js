@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
 import clsx from 'clsx'
 import { ethers } from 'ethers'
 import DropDownIcon from 'img/dropdown-icon.svg'
 import ForkIcon from 'img/fork-icon.svg'
 import SelectedCircle from 'img/selected-circle.svg'
 import UnselectedCircle from 'img/unselected-circle.svg'
+import get from 'lodash/get'
 import { formatNumber } from 'options/utils'
 
 import { TAB } from './hooks/constants'
@@ -38,6 +40,7 @@ const EditPriorityFee = ({
   const [stringValuePriorityFee, setStringValuePriorityFee] = useState('')
   const [stringValueMaxFee, setStringValueMaxFee] = useState('')
 
+  const networkMetadata = useSelector(state => state.networkMetadata)
 
   const expressSetFee = (level) => {
     setTempIsFixedMaxFeePerGas(false)
@@ -171,13 +174,13 @@ const EditPriorityFee = ({
         className="flex text-xl text-blue-800 font-semibold justify-center items-center mt-3"
         style={{ width: '256px', height: '24px' }}
       >
-        ETH
+        {get(networkMetadata, 'currencySymbol')}
       </div>
       <div
         className="flex text-blue-800 mt-3 text-sm justify-center items-center"
         style={{ width: '343px', height: '36px' }}
       >
-        {chrome.i18n.getMessage('maxFee')}: ({formatNumber(predictMaxFee, 8)} ETH)
+        {chrome.i18n.getMessage('maxFee')}: ({formatNumber(predictMaxFee, 8)} {get(networkMetadata, 'currencySymbol')})
       </div>
       <div
         className="flex text-sm text-darkGreen mt-3 justify-center items-center"

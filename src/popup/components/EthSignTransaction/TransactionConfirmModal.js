@@ -1,6 +1,6 @@
 // modules
 import React, { useEffect, useMemo, useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ReactTooltip from 'react-tooltip'
 import { setError } from 'actions/error'
@@ -44,6 +44,8 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
   const [maxFeePerGas, setMaxFeePerGas] = useState(null)
   const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState(null)
   const [isFixedMaxFeePerGas, setIsFixedMaxFeePerGas] = useState(false)
+
+  const networkMetadata = useSelector(state => state.networkMetadata)
 
   const { baseFee } = useFetchBaseFee()
 
@@ -205,7 +207,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 {transactionType === TRANSACTION_TYPE.CONTRACT_INTERACTION &&
                   'Contract Interaction'}
                 {transactionType === TRANSACTION_TYPE.ORIGIN_TOKEN_TRANSFER &&
-                  'Transfer ETH'}
+                  `Transfer ${get(networkMetadata, 'currencySymbol')}`}
                 {transactionType === TRANSACTION_TYPE.CUSTOM_TOKEN_TRANSFER &&
                   'Transfer Token'}
               </div>
@@ -548,7 +550,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
             </div>
             <div className="flex mb-4">
               <div style={{ width: '142px' }}>{chrome.i18n.getMessage('transactionFees')}</div>
-              <div className="font-normal text-sm">{numberFormat(estimatedFee, 6)} ETH</div>
+              <div className="font-normal text-sm">{numberFormat(estimatedFee, 6)} {get(networkMetadata, 'currencySymbol')}</div>
             </div>
             <div className="flex mb-4">
               <div style={{ width: '142px' }}>{chrome.i18n.getMessage('status')}</div>
@@ -560,7 +562,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                 <div className="leading-5">
                   {value} {symbol}
                 </div>
-                <div className="leading-5">{numberFormat(estimatedFee)} ETH</div>
+                <div className="leading-5">{numberFormat(estimatedFee)} {get(networkMetadata, 'currencySymbol')}</div>
               </div>
             </div>
           </div>

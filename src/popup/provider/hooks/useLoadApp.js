@@ -4,7 +4,9 @@ import { getCurrentLocaleFromStorage, setupLocale } from '_locales'
 // constants
 import { REQUEST } from 'constants/koiConstants'
 import isEmpty from 'lodash/isEmpty'
+import { setCurrentProvider } from 'popup/actions/currentProvider'
 import { setLocale } from 'popup/actions/locale'
+import { setNetworkMetadata } from 'popup/actions/networkMetadata'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 // services
@@ -83,6 +85,8 @@ const useLoadApp = ({
       if (!isEmpty(activatedEthereumAccount)) {
         const activatedEthereumAccountMetadata = await activatedEthereumAccount.get.metadata()
         setDefaultAccount(activatedEthereumAccountMetadata)
+        const currentProvider = await storage.setting.get.ethereumProvider()
+        dispatch(setCurrentProvider(currentProvider))
       }
     }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { connect, useDispatch } from 'react-redux'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useParallax } from 'react-scroll-parallax'
 // actions
@@ -22,6 +22,7 @@ import isEmpty from 'lodash/isEmpty'
 import { loadAllAccounts } from 'options/actions/accounts'
 import Select from 'options/components/Select'
 import { setActivities } from 'popup/actions/activities'
+import { setCurrentProvider } from 'popup/actions/currentProvider'
 import { setIsLoading } from 'popup/actions/loading'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 import storage from 'services/storage'
@@ -48,6 +49,8 @@ const HomeTop = ({
   })
 
   const dispatch = useDispatch()
+
+  const networkMetadata = useSelector(state => state.networkMetadata)
 
   const [evmProviderOptions, setEvmProviderOptions] = useState([
     {
@@ -76,6 +79,7 @@ const HomeTop = ({
       await updateEthereumProvider(value)
 
       setCurrentProviderAddress(value)
+      dispatch(setCurrentProvider(value))
 
       // load balance
       await request.wallet.loadBalanceAsync()
@@ -192,7 +196,10 @@ const HomeTop = ({
     getCurrentProvider(displayingAccount.type)
   }, [displayingAccount])
 
-  const { evmNetworkMetadata } = useEvmNetworkMetadata()
+  const goToAddNetwork = () => {
+    const url = chrome.runtime.getURL('options.html#/settings/wallet?locationId=add-network')
+    chrome.tabs.create({ url })
+  }
 
   return (
     <div className="relative z-20">
@@ -214,6 +221,8 @@ const HomeTop = ({
                 options={evmProviderOptions}
                 value={currentProviderAddress}
                 onChange={onChangeProvider}
+                bottomButtonLabel={'Add Network'}
+                bottomButtonAction={goToAddNetwork}
               />
             </div>
           )}
@@ -269,7 +278,7 @@ const HomeTop = ({
           {displayingAccount.type === TYPE.ETHEREUM && (
             <div>
               <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-                {numberFormat(displayingAccount.balance)} {get(evmNetworkMetadata, 'currencySymbol')}
+                {numberFormat(displayingAccount.balance)} {get(networkMetadata, 'currencySymbol')}
               </div>
               {currentProviderAddress?.includes('mainnet') && (
                 <div

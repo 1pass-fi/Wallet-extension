@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { get, isNumber } from 'lodash'
 import storage from 'services/storage'
 import { numberFormat } from 'utils'
@@ -23,6 +24,8 @@ const useGetFee = ({
   setIsFixedMaxFeePerGas
 }) => {
   const [gasLimit, setGasLimit] = useState(0)
+
+  const networkMetadata = useSelector(state => state.networkMetadata)
 
   const initFeeData = async () => {
     const sourceAddress = get(transactionPayload, 'from')
@@ -82,8 +85,8 @@ const useGetFee = ({
 
   const Fee = () => (
     <div>
-      <div>{isNumber(estimatedFee) ? numberFormat(estimatedFee, 8) : estimatedFee} ETH</div>
-      <div>({chrome.i18n.getMessage('maxFee')}: {numberFormat(maxFee, 8)} ETH)</div>
+      <div>{isNumber(estimatedFee) ? numberFormat(estimatedFee, 8) : estimatedFee} {get(networkMetadata, 'currencySymbol')}</div>
+      <div>({chrome.i18n.getMessage('maxFee')}: {numberFormat(maxFee, 8)} {get(networkMetadata, 'currencySymbol')})</div>
     </div>
   )
 

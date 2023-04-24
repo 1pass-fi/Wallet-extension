@@ -53,6 +53,7 @@ import WalletConnect from './pages/WalletConnect'
 // hooks
 import useLoadApp from './provider/hooks/useLoadApp'
 import useMethod from './provider/hooks/useMethod'
+import useNetworkMetadata from './provider/hooks/useNetworkMetadata'
 import usePrice from './provider/hooks/usePrice'
 import useSettings from './provider/hooks/useSettings'
 import useTimeInterval from './provider/hooks/useTimeInterval'
@@ -131,6 +132,8 @@ const Popup = ({
     accounts,
     lockWallet
   })
+
+  useNetworkMetadata()
 
   const { handleLockWallet } = useMethod({ accounts, setIsLoading, lockWallet })
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { ethers } from 'ethers'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import { get, isNumber } from 'lodash'
@@ -42,6 +43,8 @@ const useSendValue = ({
   const [originBalance, setOriginBalance] = useState(null)
   const [originSymbol, setOriginSymbol] = useState(null)
 
+  const networkMetadata = useSelector(state => state.networkMetadata)
+
   const getSendValueEthereum = (value) => {
     value = fromHexToDecimal(value)
     value = fromWeiToEth(value)
@@ -61,8 +64,8 @@ const useSendValue = ({
 
         setValue(getSendValueEthereum(value))
         setRawValue(value)
-        setSymbol('ETH')
-        setOriginSymbol('ETH')
+        setSymbol(get(networkMetadata, 'currencySymbol'))
+        setOriginSymbol(get(networkMetadata, 'currencySymbol'))
         userAddress = ethers.utils.getAddress(userAddress)
 
         const account = await popupAccount.getAccount({

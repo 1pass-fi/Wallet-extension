@@ -21,6 +21,7 @@ import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 import EditIcon from 'img/v2/edit-icon-white.svg'
 import K2Icon from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import SolanaIcon from 'img/v2/solana-logo.svg'
+import get from 'lodash/get'
 // utils
 import formatLongString from 'options/utils/formatLongString'
 import formatNumber from 'options/utils/formatNumber'
@@ -40,6 +41,7 @@ export const AccountDropdown = React.forwardRef(
     const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
     const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
     const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
+    const networkMetadata = useSelector(state => state.networkMetadata)
 
     const goToImportPages = () => {
       const url = chrome.runtime.getURL('options.html#/welcome')
@@ -174,7 +176,7 @@ export const AccountDropdown = React.forwardRef(
                     className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
                     data-testid="popup-header-account-balance"
                   >
-                    {chrome.i18n.getMessage('balance')}: {formatNumber(account.balance, 2)} ETH
+                    {chrome.i18n.getMessage('balance')}: {formatNumber(account.balance, 2)} {get(networkMetadata, 'currencySymbol')}
                   </div>
                 )}
                 {account.type === TYPE.SOLANA && (
