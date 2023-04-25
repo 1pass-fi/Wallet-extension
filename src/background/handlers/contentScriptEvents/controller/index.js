@@ -8,6 +8,7 @@ import getAllAddresses from './getAllAddresses'
 import getPermission from './getPermission'
 import getPublicKey from './getPublicKey'
 import getWalletName from './getWalletName'
+import k2CheckAuthentication from './k2CheckAuthentication'
 import k2Connect from './k2Connect'
 import k2Disconnect from './k2Disconnect'
 import k2SignAndSendTransaction from './k2SignAndSendTransaction'
@@ -67,5 +68,6 @@ export default {
   k2Disconnect,
   k2SignAndSendTransaction,
   k2SignMessage,
-  k2SignTransaction
+  k2SignTransaction,
+  k2CheckAuthentication
 }

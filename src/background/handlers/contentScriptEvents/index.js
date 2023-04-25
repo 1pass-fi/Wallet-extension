@@ -40,6 +40,7 @@ const getEmitter = () => {
   contentScriptEvents.on(MESSAGES.K2_SIGN_AND_SEND_TRANSACTION, controller.k2SignAndSendTransaction)
   contentScriptEvents.on(MESSAGES.K2_SIGN_MESSAGE, controller.k2SignMessage)
   contentScriptEvents.on(MESSAGES.K2_SIGN_TRANSACTION, controller.k2SignTransaction)
+  contentScriptEvents.on(MESSAGES.K2_CHECK_AUTHENTICATION, controller.k2CheckAuthentication)
 
   return contentScriptEvents
 }

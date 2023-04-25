@@ -127,6 +127,14 @@ const finnieK2ProviderScript = () => {
       this.isConnected = false
     }
 
+    async checkAuthentication() {
+      const message = { type: ENDPOINTS.K2_CHECK_AUTHENTICATION }
+      const result = await this.connection.send(message)
+      if (result === true) {
+        this.connect()
+      }
+    }
+
     async connect() {
       const message = { type: ENDPOINTS.K2_CONNECT }
       const result = await this.connection.send(message)

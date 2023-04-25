@@ -63,7 +63,7 @@ const mainScript = () => {
   }
   const finnieProviderPropNames = ['ethereum', 'solana', 'k2', 'arweaveWallet', 'koiiWallet', 'koiWallet']
   finnieProviderPropNames.forEach(protectFinnieProvider)
-  // window.solana.checkConnection()
+  window.k2.checkAuthentication()
 }
 
 // const arweaveWalletExcluded = () => {
