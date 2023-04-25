@@ -83,9 +83,11 @@ export default async (payload, next) => {
                 else next({ error: { code: 4001, message: 'Invalid signature' } })
 
                 chrome.runtime.sendMessage({ requestId, finished: true })
+                sendResponse({data: { requestId, finished: true }})
               } catch (err) {
                 console.error('Solana sign message error: ', err)
                 chrome.runtime.sendMessage({ requestId, finished: true })
+                sendResponse({data: { requestId, finished: true }})
                 next({ error: { code: 4001, message: err.message } })
               }
             } else {

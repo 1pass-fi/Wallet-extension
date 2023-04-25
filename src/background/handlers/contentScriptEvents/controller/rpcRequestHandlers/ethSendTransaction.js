@@ -148,9 +148,9 @@ export default async (payload, tab, next) => {
                 await (await ethersProvider.sendTransaction(rawTransaction)).wait()
                 next({ data: txHash })
                 chrome.runtime.sendMessage({ requestId, finished: true })
+                sendResponse({data: { requestId, finished: true }})
               } catch (err) {
                 console.error('Send eth error:', err.message)
-                chrome.runtime.sendMessage({ requestId, finished: true })
                 next({ error: { code: 4001, data: err.message } })
               }
             } else {

@@ -242,9 +242,11 @@ export default async (payload, tab, next) => {
 
                 next({ data: signatures })
                 chrome.runtime.sendMessage({ requestId, finished: true })
+                sendResponse({data: { requestId, finished: true }})
               } catch (err) {
                 console.error('Sign transactions error:', err.message)
                 chrome.runtime.sendMessage({ requestId, finished: true })
+                sendResponse({data: { requestId, finished: true }})
                 next({ error: { code: 4001, message: err.message } })
               }
             } else {
