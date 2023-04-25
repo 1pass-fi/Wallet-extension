@@ -60,7 +60,7 @@ export default () => {
   const chainOptions = [
     { label: chrome.i18n.getMessage('allAccounts'), value: 'ALL' },
     { label: 'K2 ' + chrome.i18n.getMessage('account'), value: TYPE.K2 },
-    { label: 'Ethereum ' + chrome.i18n.getMessage('account'), value: TYPE.ETHEREUM },
+    { label: 'EVM ' + chrome.i18n.getMessage('account'), value: TYPE.ETHEREUM },
     { label: 'Solana ' + chrome.i18n.getMessage('account'), value: TYPE.SOLANA },
     { label: 'Arweave ' + chrome.i18n.getMessage('account'), value: TYPE.ARWEAVE }
   ]

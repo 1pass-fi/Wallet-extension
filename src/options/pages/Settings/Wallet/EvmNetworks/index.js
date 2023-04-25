@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import BnbLogo from 'img/bnb-logo.svg'
 import storage from 'services/storage'
 
-const Bnb = () => {
+const PolygonTestnet = () => {
   const [added, setAdded] = useState(false)
 
   useEffect(() => {
@@ -32,6 +32,45 @@ const Bnb = () => {
     <div className='flex w-full justify-between mb-6'>
       <div className='flex'>
         <BnbLogo />
+        <div className='ml-4 text-sm'>Polygon Testnet</div>
+      </div>
+      {!added && <div onClick={addNetwork} className='text-sm font-semibold text-turquoiseBlue underline cursor-pointer'>
+        Add Network
+      </div>}
+    </div>
+  )
+}
+
+const PolygonMainnet = () => {
+  const [added, setAdded] = useState(false)
+
+  useEffect(() => {
+    const load = async () => {
+      const addedNetworks = await storage.setting.get.addedEvmNetworks()
+      const isAdded = !addedNetworks.every(network => network.label !== 'Polygon')
+      setAdded(isAdded)
+    }
+
+    load()
+  }, [])
+
+  const addNetwork = async () => {
+    let addedNetworks = await storage.setting.get.addedEvmNetworks()
+    const polygonNetwork = {
+      label: 'Polygon',
+      value: 'https://polygon-rpc.com/'
+    }
+    
+    addedNetworks = [...addedNetworks, polygonNetwork]
+
+    await storage.setting.set.addedEvmNetworks(addedNetworks)
+    setAdded(true)
+  }
+
+  return (
+    <div className='flex w-full justify-between mb-6'>
+      <div className='flex'>
+        <BnbLogo />
         <div className='ml-4 text-sm'>Polygon</div>
       </div>
       {!added && <div onClick={addNetwork} className='text-sm font-semibold text-turquoiseBlue underline cursor-pointer'>
@@ -44,7 +83,8 @@ const Bnb = () => {
 const EvmNetworks = () => {
   return (
     <div>
-      <Bnb />
+      <PolygonTestnet />
+      <PolygonMainnet />
     </div>
   )
 }

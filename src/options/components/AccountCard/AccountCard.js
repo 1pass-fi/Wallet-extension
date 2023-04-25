@@ -128,6 +128,7 @@ const AccountCard = ({
   const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
   const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
   const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
+  const networkMetadata = useSelector(state => state.networkMetadata)
 
 
   useEffect(() => {
@@ -515,7 +516,7 @@ const AccountCard = ({
             >
               {chrome.i18n.getMessage('balance')}{': '}
               {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'}{' '}
-              ETH
+              {get(networkMetadata, 'currencySymbol')}
             </div>
           )}
           {account.type === TYPE.SOLANA && (
@@ -654,7 +655,7 @@ const AccountCard = ({
                 data-testid="account-card-nft-assets"
               >
                 {account.totalAssets.length} {account.type === TYPE.ARWEAVE && 'AR'}
-                {account.type === TYPE.ETHEREUM && 'ETH'}
+                {account.type === TYPE.ETHEREUM && get(networkMetadata, 'currencySymbol')}
                 {account.type === TYPE.SOLANA && 'SOL'}
               </div>
             </div>

@@ -11,6 +11,7 @@ import { loadAllAccounts, loadAllFriendReferralData } from 'options/actions/acco
 import { setActivatedChain } from 'options/actions/activatedChain'
 import { setAssets } from 'options/actions/assets'
 import { setCollections } from 'options/actions/collections'
+import { setCurrentProvider } from 'options/actions/currentProvider'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
 import { setLocale } from 'options/actions/locale'
@@ -41,6 +42,7 @@ import useAddHandler from 'options/provider/hooks/useAddHandler'
 import useDID from 'options/provider/hooks/useDID'
 import useError from 'options/provider/hooks/useError'
 import useModal from 'options/provider/hooks/useModal'
+import useNetworkMetadata from 'options/provider/hooks/useNetworkMetadata'
 import { useNfts } from 'options/provider/hooks/useNfts'
 import useSetting from 'options/provider/hooks/useSetting'
 import HasArweave from 'options/shared/hasArweave'
@@ -77,6 +79,17 @@ const Options = () => {
 
   useAddHandler({ setError, setModalStates })
   useNfts({ setCollections, walletLoaded, newAddress, pathname })
+
+  useEffect(() => {
+    const loadCurrentProvider = async () => {
+      const currentProvider = await storage.setting.get.ethereumProvider()
+      dispatch(setCurrentProvider(currentProvider))
+    }
+
+    loadCurrentProvider()
+  }, [])
+
+  useNetworkMetadata()
 
   useEffect(() => {
     const loadActivatedChain = async () => {

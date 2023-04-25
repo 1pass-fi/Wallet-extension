@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { TYPE } from 'constants/accountConstants'
 import { isEmpty } from 'lodash'
+import get from 'lodash/get'
 import { popupAccount } from 'services/account'
 import useImportedTokenAddresses from 'sharedHooks/useImportedTokenAddresses'
 import {
@@ -20,6 +22,8 @@ const useTokenLists = ({ account, address, setIsLoading, currentProviderAddress 
     userAddress: address,
     currentProviderAddress
   })
+
+  const networkMetadata = useSelector(state => state.networkMetadata)
 
   useEffect(() => {
     const loadTokenList = async () => {
@@ -65,7 +69,7 @@ const useTokenLists = ({ account, address, setIsLoading, currentProviderAddress 
                 balance: numberFormat(fromEthToWei(balance)),
                 displayingBalance: numberFormat(balance),
                 usdValue: fiatCurrencyFormat(balance * price.ETH),
-                symbol: 'ETH',
+                symbol: get(networkMetadata, 'currencySymbol'),
                 decimal: 18
               }
             ]
