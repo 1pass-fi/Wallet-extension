@@ -5,6 +5,10 @@ import get from 'lodash/get'
 import storage from 'services/storage'
 import getCurrentTab from 'utils/getCurrentTab'
 
+const isValidUrl = (url) => {
+  const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/
+  return urlRegex.test(url)
+}
 
 const OverwriteMetamask = () => {
   const [shouldAskForMetamaskOverwrite, setShouldAskForMetamaskOverwrite] = useState(false)
@@ -13,6 +17,8 @@ const OverwriteMetamask = () => {
     const load = async () => {
       const currentTab = await getCurrentTab()
       const origin = get(currentTab, 'url')
+      if (!isValidUrl(origin)) return
+
       const hasMetamaskInstalled = await chrome.runtime.sendMessage('checkMetamask')
       const overwriteMetamaskSites = await storage.setting.get.overwriteMetamaskSites()
       const shouldOverwriteMetamask = get(overwriteMetamaskSites, [origin, 'shouldOverwriteMetamask'], false)
