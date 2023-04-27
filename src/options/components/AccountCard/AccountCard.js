@@ -170,14 +170,6 @@ const AccountCard = ({
       setTotalViews(totalAssetViews)
     }
 
-
-
-    loadConnectedSites()
-    getCurrentProvider(account.type)
-    countTotalViews()
-  }, [account])
-
-  useEffect(() => {
     const getProviderOptions = async () => {
       const addedEvmNetworks = await storage.setting.get.addedEvmNetworks()
       providerOptions[0].value = [...providerOptions[0].value, ...addedEvmNetworks]
@@ -186,7 +178,12 @@ const AccountCard = ({
     }
 
     getProviderOptions()
-  }, [])
+    loadConnectedSites()
+    getCurrentProvider(account.type)
+    countTotalViews()
+  }, [account])
+
+
 
   const isDefaultAccount = (account) => {
     switch (account.type) {
