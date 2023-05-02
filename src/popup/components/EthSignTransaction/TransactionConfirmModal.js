@@ -18,6 +18,7 @@ import OkBtn from 'img/v2/popup-tx-detail-ok.svg'
 import SunriseLogo from 'img/v2/sunrise-logo/sunrise-logo.svg'
 import { get, isEmpty, isNumber } from 'lodash'
 import { getDisplayAddress } from 'options/utils'
+import useNetworkLogo from 'popup/provider/hooks/useNetworkLogo'
 // styles
 import storage from 'services/storage'
 // utils
@@ -46,6 +47,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
   const [isFixedMaxFeePerGas, setIsFixedMaxFeePerGas] = useState(false)
 
   const networkMetadata = useSelector(state => state.networkMetadata)
+  const { networkLogo } = useNetworkLogo({ networkName: get(networkMetadata, 'networkName') })
 
   const { baseFee } = useFetchBaseFee()
 
@@ -384,7 +386,7 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
                   style={{ backgroundColor: '#EBEEF7', height: '56px' }}
                 >
                   <div className="flex items-center">
-                    <EthereumIcon className="w-10 h-10" />
+                    <div className="w-10 h-10">{networkLogo}</div>
                     <div className="ml-1.5 font-normal text-base tracking-finnieSpacing-tight">
                       ETH
                     </div>

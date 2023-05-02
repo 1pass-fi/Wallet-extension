@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { TYPE } from 'constants/accountConstants'
 import ArrowIcon from 'img/down-arrow-icon.svg'
-import EthereumIcon from 'img/popup/ethereum-icon.svg'
+import EvmLogo from 'img/evm-logo.svg'
 import ArweaveIcon from 'img/v2/arweave-logos/arweave-logo.svg'
 // import FinnieIcon from 'img/popup/finnie-icon.svg'
 import K2Logo from 'img/v2/k2-logos/finnie-k2-logo.svg'
@@ -37,7 +37,7 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
             <K2Logo style={{ width: '25px', height: '25px' }} />
           )}
           {displayingAccount.type === TYPE.ETHEREUM && (
-            <EthereumIcon style={{ width: '25px', height: '25px' }} />
+            <EvmLogo style={{ width: '25px', height: '25px' }} />
           )}
           {displayingAccount.type === TYPE.SOLANA && (
             <SolanaIcon style={{ width: '25px', height: '25px' }} />

@@ -10,6 +10,7 @@ import FinnieIcon from 'img/v2/koii-logos/finnie-koii-logo-blue.svg'
 import SolanaIcon from 'img/v2/solana-logo.svg'
 import get from 'lodash/get'
 import { setIsLoading } from 'popup/actions/loading'
+import useNetworkLogo from 'popup/provider/hooks/useNetworkLogo'
 // selectors
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 // hooks
@@ -25,6 +26,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
   const displayingAccount = useSelector(getDisplayingAccount)
   const price = useSelector((state) => state.price)
   const networkMetadata = useSelector(state => state.networkMetadata)
+  const { networkLogo, networkLogoPath } = useNetworkLogo({networkName: get(networkMetadata, 'networkName')})
 
   let { importedTokenAddresses } = useImportedTokenAddresses({
     userAddress: displayingAccount.address,
@@ -122,12 +124,13 @@ const Tokens = ({ currentProviderAddress, currency }) => {
       } else if (displayingAccount.type === TYPE.ETHEREUM) {
         const importTokens = [
           {
-            name: 'Ethereum',
+            name: get(networkMetadata, 'networkName'),
             balance: numberFormat(fromEthToWei(displayingAccount.balance)),
             displayingBalance: numberFormat(displayingAccount.balance),
             usdValue: fiatCurrencyFormat(displayingAccount.balance * price.ETH),
             symbol: get(networkMetadata, 'currencySymbol'),
-            decimal: 18
+            decimal: 18,
+            logo: networkLogoPath
           }
         ]
         await Promise.all(
@@ -200,7 +203,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
           )}
         >
           <div className="flex items-center">
-            {token.name === 'Ethereum' && <EthereumIcon className="w-8.75 h-8.75" />}
+            {token.name === 'Ethereum' && <div className="w-8.75 h-8.75">{networkLogo}</div>}
             {token?.name?.includes('KOII 1st') && <FinnieIcon className="w-8.75 h-8.75" />}
             {token?.name === 'KOII' && <K2Icon className="w-8.75 h-8.75" />}
             {token.name === 'Arweave' && <ArweaveIcon className="w-8.75 h-8.75" />}

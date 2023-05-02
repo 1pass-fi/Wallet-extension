@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { ethers } from 'ethers'
 import EthereumIcon from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import { get, isNumber } from 'lodash'
+import useNetworkLogo from 'popup/provider/hooks/useNetworkLogo'
 import { popupAccount } from 'services/account'
 import { decodeERC20Transaction } from 'utils/erc20/decodeTxData'
 import getTokenData from 'utils/getTokenData'
@@ -44,6 +45,7 @@ const useSendValue = ({
   const [originSymbol, setOriginSymbol] = useState(null)
 
   const networkMetadata = useSelector(state => state.networkMetadata)
+  const { networkLogo } = useNetworkLogo({ networkName: get(networkMetadata, 'networkName') })
 
   const getSendValueEthereum = (value) => {
     value = fromHexToDecimal(value)
@@ -118,7 +120,7 @@ const useSendValue = ({
 
   const TokenIcon = () => (
     <>
-      {tokenIconPath ? <img src={tokenIconPath} /> : <EthereumIcon />}
+      {tokenIconPath ? <img src={tokenIconPath} /> : networkLogo}
     </>
   )
 

@@ -11,7 +11,7 @@ import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
 // constants
 import { MESSAGES, PATH } from 'constants/koiConstants'
-import EthereumIcon from 'img/ethereum-logo.svg'
+import EvmLogo from 'img/evm-logo.svg'
 import AddIcon from 'img/popup/add-icon.svg'
 import CopyIcon from 'img/popup/copy-icon.svg'
 import FinnieIcon from 'img/popup/finnie-icon.svg'
@@ -125,7 +125,7 @@ export const AccountDropdown = React.forwardRef(
               )}
               {account.type === TYPE.K2 && <K2Icon className="ml-2.5 mt-1 h-6.25 w-6.25" />}
               {account.type === TYPE.ETHEREUM && (
-                <EthereumIcon className="ml-2.5 mt-1 h-6.25 w-6.25" />
+                <EvmLogo className="ml-2.5 mt-1 h-6.25 w-6.25" />
               )}
               {account.type === TYPE.SOLANA && <SolanaIcon className="ml-2.5 h-6.25 w-6.25" />}
               <div className="flex flex-col" style={{ width: '154px' }}>
