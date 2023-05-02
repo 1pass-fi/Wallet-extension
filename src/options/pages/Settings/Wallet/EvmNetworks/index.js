@@ -51,8 +51,8 @@ const EvmNetwork = ({ networkPayload }) => {
 
       return [...currentValue, payload]
     })
-    dispatch(loadAllAccounts())
-    setIsAdded(true)
+
+    reloadGalleryPage()
   }
 
   const removeNetwork = async () => {
