@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
+import EvmLogo from 'img/evm-logo.svg'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import GoBackIcon from 'img/v2/back-icon.svg'
 import BlockIcon from 'img/v2/block-icon.svg'
-import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import LeaderboardIcon from 'img/v2/leaderboard-icon.svg'
 import LinkIcon from 'img/v2/link-icon.svg'
 import ShareIcon from 'img/v2/share-icon.svg'
@@ -145,7 +145,7 @@ const NFTDetail = () => {
               >
                 <NFTMedia contentType={nft.contentType} source={nft.imageUrl} showFull={true} />
                 {nft?.type === TYPE.ETHEREUM && (
-                  <EthLogo
+                  <EvmLogo
                     className="absolute bottom-2 right-2 w-9 shadow rounded-full"
                     data-testid="ethereum-logo"
                   />

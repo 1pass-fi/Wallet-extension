@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
+import EvmLogo from 'img/evm-logo.svg'
 import NFTMedia from 'options/components/NFTMedia'
 import formatLongString from 'options/utils/formatLongString'
 
@@ -20,7 +20,7 @@ const NFTCard = ({ nft }) => {
         </div>
         {/* <div className="text-2xs tracking-finnieSpacing-wide text-warning">Category</div> */}
       </div>
-      <EthereumLogo className="absolute w-5 h-5 bottom-1.75 right-1.75" data-testid="ethereum-logo"/>
+      <EvmLogo className="absolute w-5 h-5 bottom-1.75 right-1.75" data-testid="ethereum-logo"/>
     </Link>
   )
 }

@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import clsx from 'clsx'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
+import EvmLogo from 'img/evm-logo.svg'
 import ExtendIcon from 'img/extend-icon.svg'
 import EmptyStarIcon from 'img/popup/star-empty-icon.svg'
 import FilledStarIcon from 'img/popup/star-filled-icon.svg'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
 import SaveIcon from 'img/v2/check-mark-icon-blue.svg'
-import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import K2Logo from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import RecycleBinIcon from 'img/v2/recycle-bin-icon.svg'
 import CheckMarkIcon from 'img/v2/settings/check-mark-icon.svg'
@@ -439,7 +439,7 @@ const AccountCard = ({
           <K2Logo className="self-start w-6.25 xl:w-8 2xl:w-10 3xl:w-12 h-6.25 xl:h-8 2xl:h-10 3xl:h-12 ml-4" />
         )}
         {account.type === TYPE.ETHEREUM && (
-          <EthLogo className="self-start w-6.25 xl:w-8 2xl:w-10 3xl:w-12 h-6.25 xl:h-8 2xl:h-10 3xl:h-12 ml-4" />
+          <EvmLogo className="self-start w-6.25 xl:w-8 2xl:w-10 3xl:w-12 h-6.25 xl:h-8 2xl:h-10 3xl:h-12 ml-4" />
         )}
         {account.type === TYPE.SOLANA && (
           <SolLogo className="self-start w-6.25 xl:w-8 2xl:w-10 3xl:w-12 h-6.25 xl:h-8 2xl:h-10 3xl:h-12 ml-4" />

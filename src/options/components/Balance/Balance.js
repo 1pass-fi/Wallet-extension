@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { TYPE } from 'constants/accountConstants'
 import ViewsIcon from 'img/navbar/views-icon.svg'
 import RefreshIcon from 'img/popup/refresh-icon.svg'
@@ -7,10 +8,12 @@ import EthereumLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 // import KoiiLogo from 'img/v2/koii-logos/finnie-koii-logo-bg-white.svg'
 import K2Logo from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import SolanaLogo from 'img/v2/solana-logo.svg'
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import isNumber from 'lodash/isNumber'
 import formatLongString from 'options/utils/formatLongString'
 import formatNumber from 'options/utils/formatNumber'
+import useNetworkLogo from 'popup/provider/hooks/useNetworkLogo'
 import { popupBackgroundRequest as request } from 'services/request/popup'
 
 const Balance = ({ account }) => {
@@ -29,6 +32,9 @@ const Balance = ({ account }) => {
 
     countTotalViews()
   }, [account])
+
+  const networkMetadata = useSelector(state => state.networkMetadata)
+  const { networkLogo } = useNetworkLogo({ networkName: get(networkMetadata, 'networkName') })
 
   return (
     <div
@@ -77,7 +83,7 @@ const Balance = ({ account }) => {
       )}
       {account.type === TYPE.ETHEREUM && (
         <>
-          <EthereumLogo className="w-6 3xl:w-8 h-6 3xl:h-8 mx-2" />
+          <div className="w-6 3xl:w-8 h-6 3xl:h-8 mx-2">{networkLogo}</div>
           <span className="font-semibold text-sm 3xl:text-base mr-2.5">
             {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'}
           </span>
