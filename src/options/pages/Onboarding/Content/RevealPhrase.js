@@ -20,15 +20,6 @@ const RevealPhrase = ({ step }) => {
   const { network, skipPhrase } = useContext(OnboardingContext)
   const history = useHistory()
 
-  const openFaucet = () => {
-    chrome.tabs.create({ url: 'https://koi.rocks/faucet' })
-  }
-
-  const openCreateNFTPage = () => {
-    const url = chrome.runtime.getURL('options.html#/create-nft')
-    chrome.tabs.create({ url })
-  }
-
   return (
     <div
       data-testid="RevealPhrase"
@@ -75,74 +66,21 @@ const RevealPhrase = ({ step }) => {
           <span className="text-success underline cursor-pointer">security@koii.network</span>
         </li>
 
-        {network !== NETWORK.ARWEAVE && (
-          <div className="w-full">
-            <Button
-              style={{ width: '240px', height: '42px' }}
-              className="mt-10 text-base rounded z-10"
-              variant="white"
-              text={chrome.i18n.getMessage('goToHomepage')}
-              onClick={() => {
-                dispatch(setIsOnboarding(false))
-                dispatch(setOnboardingPath(''))
-                history.push('/')
-              }}
-              id="go-to-home-button"
-            />
-          </div>
-        )}
+        <div className="w-full">
+          <Button
+            style={{ width: '240px', height: '42px' }}
+            className="mt-10 text-base rounded z-10"
+            variant="white"
+            text={chrome.i18n.getMessage('goToHomepage')}
+            onClick={() => {
+              dispatch(setIsOnboarding(false))
+              dispatch(setOnboardingPath(''))
+              history.push('/')
+            }}
+            id="go-to-home-button"
+          />
+        </div>
       </div>
-
-      {network === NETWORK.ARWEAVE && (
-        <div className="mt-12 flex items-center justify-center">
-          <div className="flex flex-col items-center mr-19 max-w-full" style={{ width: '300px' }}>
-            <KoiiToken />
-            <div className="mt-3 font-normal text-lg text-center">
-              {chrome.i18n.getMessage('headOverToFaucet')}
-            </div>
-
-            <Button
-              style={{ width: '240px', height: '42px' }}
-              className="mt-7 text-base rounded mx-auto z-10"
-              variant="primary"
-              text={chrome.i18n.getMessage('getFreeKOII')}
-              size="lg"
-              onClick={openFaucet}
-              id="open-faucet-button"
-            />
-          </div>
-          <div className="flex flex-col items-center max-w-full" style={{ width: '300px' }}>
-            <ImagesNFTs />
-            <div className="mt-3 font-normal text-lg text-center">
-              {chrome.i18n.getMessage('goToGalleryToCreateNFT')}
-            </div>
-
-            <Button
-              style={{ width: '240px', height: '42px' }}
-              className="mt-7 text-base rounded mx-auto z-10"
-              variant="warningDefault"
-              text={chrome.i18n.getMessage('createAnNFT')}
-              size="lg"
-              onClick={openCreateNFTPage}
-              id="create-nft-page-button"
-            />
-          </div>
-        </div>
-      )}
-
-      {network === NETWORK.ARWEAVE && (
-        <div
-          className="absolute bottom-11 right-7.5 text-lightBlue underline font-normal text-sm tracking-finnieSpacing-wide cursor-pointer"
-          onClick={() => {
-            dispatch(setIsOnboarding(false))
-            dispatch(setOnboardingPath(''))
-            history.push('/')
-          }}
-          id="skip-to-home-button"
-        >
-          {chrome.i18n.getMessage('skipThisStep')}
-        </div>
-      )}
     </div>
   )
 }
