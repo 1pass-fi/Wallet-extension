@@ -56,10 +56,6 @@ export default ({ version = '0.4.2' }) => {
               <a href="https://koii.network/" target="_blank" className="link">
                 Koii{chrome.i18n.getMessage('possessive')} {chrome.i18n.getMessage('websiteLc')}
               </a>
-              , {chrome.i18n.getMessage('andTheLc')} &nbsp;
-              <a href="https://koi.rocks/" target="_blank" className="link">
-                {chrome.i18n.getMessage('nftLeaderBoard')}
-              </a>
               .
             </div>
           </div>
