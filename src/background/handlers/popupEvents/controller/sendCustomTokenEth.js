@@ -1,6 +1,7 @@
 import helpers from 'background/helpers'
 import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 import { ethers } from 'ethers'
+import get from 'lodash/get'
 import { backgroundAccount } from 'services/account'
 import storage from 'services/storage'
 import showNotification from 'utils/notifications'
@@ -42,7 +43,9 @@ export default async (payload, next) => {
       isProcessing: true
     }
 
-    await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
+    if (network === 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2' || network === 'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2') {
+      await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
+    }
 
     const updateTransaction = async () => {
       let pendingTransactions = await account.get.pendingTransactions()

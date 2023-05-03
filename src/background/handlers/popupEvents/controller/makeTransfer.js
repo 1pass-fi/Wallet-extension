@@ -62,7 +62,13 @@ export default async (payload, next) => {
     }
 
     if (token !== 'KOII') {
-      await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
+      if (token === 'ETH') {
+        if (network === 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2' || network === 'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2') {
+          await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
+        }
+      } else {
+        await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
+      }
     }
 
     const updateTransaction = async () => {
