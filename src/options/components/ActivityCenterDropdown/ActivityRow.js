@@ -46,7 +46,7 @@ const ActivityRow = ({
 
         let displayExploreBlock = true
 
-        if (isK2Account) displayExploreBlock = false
+        // if (isK2Account) displayExploreBlock = false
 
         recipientOrSender = source
           ? `${source.slice(0, 4)}...${source.slice(source.length - 5)}`
@@ -76,6 +76,10 @@ const ActivityRow = ({
 
         if (includes(activityName, 'SOL')) {
           blockUrl = `${URL.SOLANA_EXPLORE}/tx/${id}?cluster=${network}`
+        }
+
+        if (isK2Account) {
+          blockUrl = `${URL.K2_EXPLORER}/tx/${id}`
         }
 
         if (!includes(activityName, 'Bridge')) {

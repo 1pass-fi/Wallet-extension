@@ -38,6 +38,11 @@ const ActivityRow = ({
       tokenType = 'SOL'
     }
 
+    if (isK2Account) {
+      url = `${URL.K2_EXPLORER}/tx/${id}`
+      tokenType = 'KOII'
+    }
+
     if (network) {
       tokenType = activityName.split(' ').pop()
     }
@@ -99,25 +104,19 @@ const ActivityRow = ({
         {formatNumber(displayInfo.amount, 6)}
         {` ${displayInfo.tokenType}`}
       </td>
-      {!isK2Account ? (
-        <td className="px-1">
-          <a
-            href={displayInfo.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex justify-end text-xs text-turquoiseBlue underline font-semibold leading-5"
-          >
-            <ViewBlockIcon className="pr-1.375" />
-            {network === ETH_NETWORK_PROVIDER.MAINNET || network === ETH_NETWORK_PROVIDER.GOERLI
-              ? chrome.i18n.getMessage('etherscan')
-              : chrome.i18n.getMessage('exploreBlock')}
-          </a>
-        </td>
-      ) : (
-        <td className="px-1">
-          <ExploreBlock />
-        </td>
-      )}
+      <td className="px-1">
+        <a
+          href={displayInfo.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex justify-end text-xs text-turquoiseBlue underline font-semibold leading-5"
+        >
+          <ViewBlockIcon className="pr-1.375" />
+          {network === ETH_NETWORK_PROVIDER.MAINNET || network === ETH_NETWORK_PROVIDER.GOERLI
+            ? chrome.i18n.getMessage('etherscan')
+            : chrome.i18n.getMessage('exploreBlock')}
+        </a>
+      </td>
     </tr>
   )
 }
