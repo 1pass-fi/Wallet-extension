@@ -24,13 +24,13 @@ const CreateNewContact = ({ goToCreateForm, goToImportFromDID }) => {
       >
         {chrome.i18n.getMessage('enterInfoManually')}
       </button>
-      <button
+      {/* <button
         onClick={goToImportFromDID}
         className="rounded-sm shadow-md text-center text-indigo bg-success text-sm mt-6.25"
         style={{ width: '238px', height: '38px' }}
       >
         {chrome.i18n.getMessage('importDIDLink')}
-      </button>
+      </button> */}
     </div>
   )
 }

@@ -67,11 +67,11 @@ const ContactDetail = ({ contact, onClose, showEditForm, setShowDeleteContactMod
         </div>
       ))}
 
-      <div className="ab-contact-detail__did-label">{contact.didName}</div>
+      {/* <div className="ab-contact-detail__did-label">{contact.didName}</div>
 
       <a className="ab-contact-detail__did-link" href={contact.didValue}>
         {contact.didValue}
-      </a>
+      </a> */}
 
       <div
         className="ab-trash-icon"

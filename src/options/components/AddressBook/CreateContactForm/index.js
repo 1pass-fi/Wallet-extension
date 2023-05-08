@@ -167,7 +167,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
         </div>
 
         <div className="ab-contact-form__input-group ab-contact-form__input-group--did">
-          <div className="input-group__first-row">
+          {/* <div className="input-group__first-row">
             <input
               className="input-group__label"
               placeholder={chrome.i18n.getMessage('addressBookDIDLink')}
@@ -175,8 +175,8 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
               value={userInfo.didName}
               onChange={handleUserInfoChange}
             />
-          </div>
-          <div className="input-group__second-row">
+          </div> */}
+          {/* <div className="input-group__second-row">
             <div className="second-row__left">
               <input
                 className="input-group__input-value"
@@ -189,7 +189,7 @@ const CreateContactForm = ({ onClose, storeNewAddress }) => {
                 <CopyIcon />
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="ab-contact-form__footer">
