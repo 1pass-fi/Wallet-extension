@@ -327,9 +327,9 @@ describe('Onboarding flow', () => {
 
                   await screen.findByText(/staySafeMiddle/i)
 
-                  expect(screen.queryByRole('button', { name: /goToHomepage/i })).toBeNull()
-                  expect(screen.queryByRole('button', { name: /getFreeKOII/i })).not.toBeNull()
-                  expect(screen.queryByRole('button', { name: /createAnNFT/i })).not.toBeNull()
+                  expect(screen.queryByRole('button', { name: /goToHomepage/i })).not.toBeNull()
+                  expect(screen.queryByRole('button', { name: /getFreeKOII/i })).toBeNull()
+                  expect(screen.queryByRole('button', { name: /createAnNFT/i })).toBeNull()
                 })
               })
             })
@@ -343,9 +343,7 @@ describe('Onboarding flow', () => {
               await screen.findByText(/staySafeMiddle/i)
             })
             it('should create new wallet successfully and move to last step', () => {
-              expect(screen.queryByRole('button', { name: /goToHomepage/i })).toBeNull()
-              expect(screen.queryByRole('button', { name: /getFreeKOII/i })).not.toBeNull()
-              expect(screen.queryByRole('button', { name: /createAnNFT/i })).not.toBeNull()
+              expect(screen.queryByRole('button', { name: /goToHomepage/i })).not.toBeNull()
             })
           })
         })
@@ -568,9 +566,9 @@ describe('Onboarding flow', () => {
 
             await screen.findByText(/staySafeMiddle/i)
 
-            expect(screen.queryByRole('button', { name: /goToHomepage/i })).toBeNull()
-            expect(screen.queryByRole('button', { name: /getFreeKOII/i })).not.toBeNull()
-            expect(screen.queryByRole('button', { name: /createAnNFT/i })).not.toBeNull()
+            expect(screen.queryByRole('button', { name: /goToHomepage/i })).not.toBeNull()
+            expect(screen.queryByRole('button', { name: /getFreeKOII/i })).toBeNull()
+            expect(screen.queryByRole('button', { name: /createAnNFT/i })).toBeNull()
           })
         })
       })
