@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import CreateIcon from 'img/v2/create-icon.svg'
+import WelcomeToFinnieWallet from 'img/welcome-to-finnie-wallet.svg'
 import isEmpty from 'lodash/isEmpty'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
 import NFTCard from 'options/components/NFTCard'
@@ -43,56 +44,26 @@ const Gallery = () => {
 
   return (
     <div id="gallery" className="w-full flex justify-center items-center" onScroll={handleScroll}>
-      <div
-        className={clsx(
-          'w-full h-full gap-x-5 gap-y-10 place-items-start content-start',
-          'grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-7 5xl:grid-cols-8'
-        )}
-        role="grid"
-      >
-        {!isEmpty(displayingNfts) ? (
-          displayingNfts.map((nft) => <NFTCard nft={nft} key={nft.txId} />)
-        ) : (
-          <></>
-          // <Link
-          //   // to={`/create-nft`}
-          //   data-tip={chrome.i18n.getMessage('featureUnderConstruction')}
-          //   className="cursor-not-allowed relative text-white rounded bg-blue-800 w-46.75 h-72 pt-1.75 px-1.75"
-          //   role="gridcell"
-          //   data-for="create-disabled"
-          // >
-          //   <ToolTip id="create-disabled" />
-          //   <div
-          //     className="flex flex-col justify-center items-center w-full bg-blue-400 bg-opacity-40 rounded border border-dashed border-trueGray-100"
-          //     style={{ height: '163px' }}
-          //   >
-          //     <CreateIcon className="w-8.5 h-8.5" />
-          //     <div
-          //       className="text-white text-sm leading-6 tracking-finnieSpacing-wide mt-4 w-32 text-center"
-          //       style={{ width: '115px' }}
-          //     >
-          //       {chrome.i18n.getMessage('createAtomicNFT')}
-          //     </div>
-          //   </div>
-          //   <div
-          //     className="bg-blue-400 bg-opacity-25 rounded-3xl mt-2 mb-6"
-          //     style={{ width: '151px', height: '16px' }}
-          //   />
-          //   <div
-          //     className="bg-blue-400 bg-opacity-25 rounded-3xl"
-          //     style={{ width: '99px', height: '12px' }}
-          //   />
-          //   <div
-          //     className="bg-blue-400 bg-opacity-25 rounded-3xl my-1"
-          //     style={{ width: '71px', height: '12px' }}
-          //   />
-          //   <div
-          //     className="bg-blue-400 bg-opacity-25 rounded-3xl"
-          //     style={{ width: '87px', height: '12px' }}
-          //   />
-          // </Link>
-        )}
-      </div>
+      {!isEmpty(displayingNfts) ?
+        <div
+          className={clsx(
+            'w-full h-full gap-x-5 gap-y-10 place-items-start content-start',
+            'grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-7 5xl:grid-cols-8'
+          )}
+          role="grid"
+        >
+          {(
+            displayingNfts.map((nft) => <NFTCard nft={nft} key={nft.txId} />)
+          )}
+        </div> : (
+          <div className='text-white text-center mt-15 flex flex-col items-center'>
+            <WelcomeToFinnieWallet />
+            <div className='text-2xl font-semibold'>Welcome to Finnie Wallet</div>
+            <div className='text-sm font-bold mt-2'>Beyond just a wallet</div>
+            <div className='text-sm font-normal'>The beginning of exchange, creation, and truly decentralization</div>
+          </div>
+        )
+      }
     </div>
   )
 }
