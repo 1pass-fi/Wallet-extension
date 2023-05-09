@@ -420,7 +420,8 @@ export const URL = {
   GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchBridgeDetails',
   ETHERSCAN_MAINNET: 'https://etherscan.io',
   ETHERSCAN_GOERLI: 'https://goerli.etherscan.io',
-  SOLANA_EXPLORE: 'https://explorer.solana.com/'
+  SOLANA_EXPLORE: 'https://explorer.solana.com/',
+  K2_EXPLORER: 'https://explorer.koii.live'
 }
 
 export const BRIDGE_FLOW = {
