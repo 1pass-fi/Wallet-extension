@@ -93,7 +93,7 @@ const NavBar = ({ step, setStep }) => {
         {step === 1 || step === 2 || step === 10 || step === 11 || step === 12 ? (
           <div className="flex text-warning">
             <KeySelectedIcon />
-            <div className="flex flex-col whitespace-pre-wrap">
+            <div className="w-4/5 flex flex-col whitespace-pre-wrap">
               <div className="ml-4">{chrome.i18n.getMessage('createOrImportAKey')}</div>
               <span className="ml-4 font-normal text-sm leading-6 text-trueGray-100">
                 {step === 1 || step === 2

@@ -32,10 +32,10 @@ const SiteItem = ({ site }) => {
       style={{ width: '480px' }}
     >
       <div style={{ maxWidth: '380px' }}>
-        <div className="font-semibold text-sm leading-6 tracking-finnieSpacing-wide truncate">
+        <div className="w-77.25 font-semibold text-sm leading-6 tracking-finnieSpacing-wide truncate">
           {get(site, 'title')}
         </div>
-        <div className="font-normal text-sm leading-6 tracking-finnieSpacing-wide truncate">
+        <div className="w-77.25 font-normal text-sm leading-6 tracking-finnieSpacing-wide truncate">
           {get(site, 'origin')}
         </div>
       </div>
@@ -115,7 +115,7 @@ const OverwriteMetamaskModal = ({ close }) => {
         {isEmpty(overwriteMetamaskSites) ? (
           <div className="m-auto flex flex-col items-center">
             <EmptyConnectedSitesIcon />
-            <div className="font-normal text-base leading-6 text-center text-indigo">
+            <div className="font-normal text-base leading-6 text-center text-indigo w-9">
               {chrome.i18n.getMessage('notConnectedToAnySites')}
             </div>
           </div>
