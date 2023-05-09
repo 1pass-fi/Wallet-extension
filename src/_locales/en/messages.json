@@ -1284,7 +1284,7 @@
     "message": "request"
   },
   "requestNotExist": {
-    "message": "This request is no longer exist."
+    "message": "This request does not longer exist, try again."
   },
   "resend": {
     "message": "Resend"

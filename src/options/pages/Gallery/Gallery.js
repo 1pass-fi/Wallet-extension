@@ -53,43 +53,44 @@ const Gallery = () => {
         {!isEmpty(displayingNfts) ? (
           displayingNfts.map((nft) => <NFTCard nft={nft} key={nft.txId} />)
         ) : (
-          <Link
-            // to={`/create-nft`}
-            data-tip={chrome.i18n.getMessage('featureUnderConstruction')}
-            className="cursor-not-allowed relative text-white rounded bg-blue-800 w-46.75 h-72 pt-1.75 px-1.75"
-            role="gridcell"
-            data-for="create-disabled"
-          >
-            <ToolTip id="create-disabled" />
-            <div
-              className="flex flex-col justify-center items-center w-full bg-blue-400 bg-opacity-40 rounded border border-dashed border-trueGray-100"
-              style={{ height: '163px' }}
-            >
-              <CreateIcon className="w-8.5 h-8.5" />
-              <div
-                className="text-white text-sm leading-6 tracking-finnieSpacing-wide mt-4 w-32 text-center"
-                style={{ width: '115px' }}
-              >
-                {chrome.i18n.getMessage('createAtomicNFT')}
-              </div>
-            </div>
-            <div
-              className="bg-blue-400 bg-opacity-25 rounded-3xl mt-2 mb-6"
-              style={{ width: '151px', height: '16px' }}
-            />
-            <div
-              className="bg-blue-400 bg-opacity-25 rounded-3xl"
-              style={{ width: '99px', height: '12px' }}
-            />
-            <div
-              className="bg-blue-400 bg-opacity-25 rounded-3xl my-1"
-              style={{ width: '71px', height: '12px' }}
-            />
-            <div
-              className="bg-blue-400 bg-opacity-25 rounded-3xl"
-              style={{ width: '87px', height: '12px' }}
-            />
-          </Link>
+          <></>
+          // <Link
+          //   // to={`/create-nft`}
+          //   data-tip={chrome.i18n.getMessage('featureUnderConstruction')}
+          //   className="cursor-not-allowed relative text-white rounded bg-blue-800 w-46.75 h-72 pt-1.75 px-1.75"
+          //   role="gridcell"
+          //   data-for="create-disabled"
+          // >
+          //   <ToolTip id="create-disabled" />
+          //   <div
+          //     className="flex flex-col justify-center items-center w-full bg-blue-400 bg-opacity-40 rounded border border-dashed border-trueGray-100"
+          //     style={{ height: '163px' }}
+          //   >
+          //     <CreateIcon className="w-8.5 h-8.5" />
+          //     <div
+          //       className="text-white text-sm leading-6 tracking-finnieSpacing-wide mt-4 w-32 text-center"
+          //       style={{ width: '115px' }}
+          //     >
+          //       {chrome.i18n.getMessage('createAtomicNFT')}
+          //     </div>
+          //   </div>
+          //   <div
+          //     className="bg-blue-400 bg-opacity-25 rounded-3xl mt-2 mb-6"
+          //     style={{ width: '151px', height: '16px' }}
+          //   />
+          //   <div
+          //     className="bg-blue-400 bg-opacity-25 rounded-3xl"
+          //     style={{ width: '99px', height: '12px' }}
+          //   />
+          //   <div
+          //     className="bg-blue-400 bg-opacity-25 rounded-3xl my-1"
+          //     style={{ width: '71px', height: '12px' }}
+          //   />
+          //   <div
+          //     className="bg-blue-400 bg-opacity-25 rounded-3xl"
+          //     style={{ width: '87px', height: '12px' }}
+          //   />
+          // </Link>
         )}
       </div>
     </div>
