@@ -1,10 +1,21 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
+import get from 'lodash/get'
 import Button from 'options/components/Button'
+import { validateEthereumChainId } from 'services/getNetworkProvider/ethereum/validateEthereumChainId'
+import storage from 'services/storage'
+import reloadGalleryPage from 'utils/reloadGalleryPage'
 
 const AddNetworkManuallyModal = ({ close }) => {
   const modalRef = useRef(null)
+
+  const [networkName, setNetworkName] = useState(null)
+  const [rpcUrl, setRpcUrl] = useState(null)
+  const [chainId, setChainId] = useState(null)
+  const [blockExplorerUrl, setBlockExplorerUrl] = useState(null)
+  const [currencySymbol, setCurrencySymbol] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -32,9 +43,35 @@ const AddNetworkManuallyModal = ({ close }) => {
     }
   }, [modalRef])
 
+  useEffect(() => {
+    if (errorMessage) {
+      setTimeout(() => {
+        setErrorMessage('')
+      }, 4000)
+    }
+  }, [errorMessage])
+
   const handleKeyDown = async (e) => {
     if (e.keyCode === 13) {
 
+    }
+  }
+
+  const onSaveChanges = async (payload) => {
+    try {
+      const isValidated = await validateEthereumChainId(payload)
+      const rpcUrl = get(payload, 'rpcUrl')
+
+      if (!isValidated) return setErrorMessage('Chain ID not found')
+
+      const customEvmNetworks = await storage.setting.get.customEvmNetworks()
+      customEvmNetworks[rpcUrl] = payload
+      await storage.setting.set.customEvmNetworks(customEvmNetworks)
+      reloadGalleryPage()        
+      close()
+    } catch (err) {
+      console.error(err)
+      setErrorMessage('Something went wrong')
     }
   }
 
@@ -67,6 +104,7 @@ const AddNetworkManuallyModal = ({ close }) => {
                 'focus:text-success-700 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border focus:border-turquoiseBlue'
               )}
               onKeyDown={(e) => handleKeyDown(e)}
+              onChange={e => setNetworkName(e.target.value)}
             ></input>
           </div>
 
@@ -86,6 +124,7 @@ const AddNetworkManuallyModal = ({ close }) => {
                 'focus:text-success-700 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border focus:border-turquoiseBlue'
               )}
               onKeyDown={(e) => handleKeyDown(e)}
+              onChange={e => setRpcUrl(e.target.value)}
             ></input>
           </div>
 
@@ -105,6 +144,27 @@ const AddNetworkManuallyModal = ({ close }) => {
                 'focus:text-success-700 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border focus:border-turquoiseBlue'
               )}
               onKeyDown={(e) => handleKeyDown(e)}
+              onChange={e => setChainId(e.target.value)}
+            ></input>
+          </div>
+
+          {/* Currency symbol */}
+          <div
+            style={{ width: '382px' }}
+            className="pl-1.75 mt-3 font-semibold text-sm leading-6"
+          >
+            Currency symbol
+          </div>
+          <div className="relative">
+            <input
+              style={{ width: '382px', height: '28px' }}
+              className={clsx(
+                'text-base rounded-sm pl-2 pr-11 mt-1.5',
+                'bg-trueGray-400 bg-opacity-50 border-b border-indigo border-opacity-80',
+                'focus:text-success-700 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border focus:border-turquoiseBlue'
+              )}
+              onKeyDown={(e) => handleKeyDown(e)}
+              onChange={e => setCurrencySymbol(e.target.value)}
             ></input>
           </div>
 
@@ -124,15 +184,22 @@ const AddNetworkManuallyModal = ({ close }) => {
                 'focus:text-success-700 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border focus:border-turquoiseBlue'
               )}
               onKeyDown={(e) => handleKeyDown(e)}
+              onChange={e => setBlockExplorerUrl(e.target.value)}
             ></input>
           </div>
 
-          {/* Save Changes */}
+          {/* Error message */}
+          {errorMessage && <div className=' mt-3 text-red-finnie'>{errorMessage}</div>}
+
+          {/* Save Changes Button */}
           <Button
             style={{ width: '239px', height: '39px' }}
             className="h-10 mt-5 text-base rounded w-43.75 mx-auto mb-5"
             variant="indigo"
             text='Save Changes'
+            onClick={() => {
+              onSaveChanges({ networkName, rpcUrl, chainId, blockExplorerUrl, currencySymbol })
+            }}
           />
         </div>
       </div>

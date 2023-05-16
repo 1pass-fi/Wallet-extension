@@ -8,12 +8,13 @@ export const validateEthereumChainId = async (networkPayload) => {
     if (!isNetworkPayload(networkPayload)) return false
     const provider = new ethers.providers.JsonRpcProvider(
       networkPayload.rpcUrl, 
-      networkPayload.chainId
+      Number(networkPayload.chainId)
     )
     try {
       await provider.getNetwork()
       return networkPayload
     } catch (err) {
+      console.error('ChainId not found')
       return false
     }
   } catch (err) {

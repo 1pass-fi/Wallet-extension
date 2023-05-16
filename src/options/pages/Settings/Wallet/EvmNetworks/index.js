@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { PREDEFINED_EVM_NETWORK_METADATA } from 'constants/koiConstants'
+import EvmLogo from 'img/evm-logo.svg'
 import PolygonLogo from 'img/polygon-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import get from 'lodash/get'
@@ -17,9 +18,13 @@ const useNetworkIcon = ({ networkPayload }) => {
           return <PolygonLogo />
         case 'Polygon':
           return <PolygonLogo />
+        case 'ETH Mainnet':
+          return <EthLogo />
+        case 'Goerli Testnet':
+          return <EthLogo />
       }
     }
-    return <EthLogo />
+    return <EvmLogo />
   }, [networkPayload])
 
   return icon
@@ -103,7 +108,16 @@ const EvmNetworks = () => {
         }
       })
 
-      setNetworks(predefinedNetworks)
+      let customNetworks = await storage.setting.get.customEvmNetworks()
+      customNetworks = Object.values({ ...customNetworks })
+      customNetworks = customNetworks.map(network => {
+        return {
+          label: get(network, 'networkName'),
+          value: get(network, 'rpcUrl')
+        }
+      })
+
+      setNetworks([...predefinedNetworks, ...customNetworks])
     }
 
     loadNetworks()

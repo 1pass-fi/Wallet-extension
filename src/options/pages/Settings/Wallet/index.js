@@ -20,7 +20,7 @@ import { GalleryContext } from 'options/galleryContext'
 import storage from 'services/storage'
 import { getChromeStorage, isSolanaAddress, setChromeStorage } from 'utils'
 
-// import AccountOrder from './AccountOrder'
+import AddNetworkManuallyModal from './AddNetworkManuallyModal'
 import AcceptedCurrencies from './currencies'
 import EvmNetworks from './EvmNetworks'
 
@@ -39,6 +39,7 @@ export default () => {
   const [chainOption, setChainOption] = useState('ALL')
   const [showConfirmRemoveAccount, setShowConfirmRemoveAccount] = useState(false)
   const [showConnectedSites, setShowConnectedSites] = useState(false)
+  const [showAddNetworkManually, setShowAddNetworkManually] = useState(false)
   const [accountConnectSites, setAccountConnectSites] = useState({})
   const [removeAccount, setRemoveAccount] = useState({})
   const [listAccounts, setListAccounts] = useState([])
@@ -295,10 +296,11 @@ export default () => {
               <EvmNetworks />
             </div>
             <div
-              className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center mr-6.75 cursor-not-allowed"
+              className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center mr-6.75"
               style={{ width: '220px', height: '38px' }}
               data-testid="setting-see-list-of-sites"
               role="button"
+              onClick={() => setShowAddNetworkManually(true)}
             >
               Add Network Manually
             </div>
@@ -325,6 +327,8 @@ export default () => {
           close={() => setShowOverwriteMetamask(false)}
         />
       )}
+
+      {showAddNetworkManually && <AddNetworkManuallyModal account={accounts[0]} close={() => setShowAddNetworkManually(false)}/>}
     </div>
   )
 }
