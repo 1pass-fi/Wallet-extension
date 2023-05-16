@@ -11,11 +11,12 @@ import includes from 'lodash/includes'
 import moment from 'moment'
 import formatLongString, { formatLongStringTruncate } from 'options/utils/formatLongString'
 import formatNumber from 'options/utils/formatNumber'
+import { getEthNetworkMetadata } from 'services/getNetworkMetadata'
 
 const ActivityRow = ({
-  activity: { activityName, address, date, expense, id, source, network, isK2Account }
+  activity: { activityName, address, date, expense, id, source, network, isK2Account, isEthAccount }
 }) => {
-  const displayInfo = useMemo(() => {
+  const displayInfo = useMemo(async () => {
     const dateString = moment(date).format('MM/DD/YYYY')
 
     let tokenType = 'AR'
@@ -25,12 +26,18 @@ const ActivityRow = ({
       tokenType = 'KOII'
     }
 
+
     let url = `${PATH.VIEW_BLOCK_TRANSACTION}/${id}`
     if (network) {
       url =
         network === ETH_NETWORK_PROVIDER.MAINNET
           ? `${URL.ETHERSCAN_MAINNET}/tx/${id}`
           : `${URL.ETHERSCAN_GOERLI}/tx/${id}`
+      if (isEthAccount) {
+        const metadata = await getEthNetworkMetadata(network)
+        blockUrl = get(metadata, 'blockExplorerUrl')
+        blockUrl = `${blockUrl}/tx/${id}`
+      }
     }
 
     if (includes(activityName, 'SOL')) {

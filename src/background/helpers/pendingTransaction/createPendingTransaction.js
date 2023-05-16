@@ -17,7 +17,8 @@ export default async ({
   data,
   expired,
   isK2Account,
-  isProcessing
+  isProcessing,
+  isEthAccount
 }) => {
   const credentials = await backgroundAccount.getCredentialByAddress(address)
   const account = await backgroundAccount.getAccount(credentials)
@@ -42,7 +43,8 @@ export default async ({
     data,
     expired,
     isK2Account,
-    isProcessing
+    isProcessing,
+    isEthAccount
   }
 
   pendingTransactions.push(initialTransaction)

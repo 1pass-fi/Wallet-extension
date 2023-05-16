@@ -298,7 +298,8 @@ export class EthereumMethod {
             source,
             time,
             network,
-            address: this.eth.address
+            address: this.eth.address,
+            isEthAccount: true
           }
         } catch (err) {
           console.error(err.message)
@@ -519,8 +520,21 @@ export class EthereumMethod {
   }
 
   async transactionConfirmedStatus(txHash) {
-    const response = await this.eth.getTransactionStatus(txHash)
-    return { dropped: false, confirmed: get(response, 'status') }
+    try {
+      const rpcUrl = await storage.setting.get.ethereumProvider()
+      const etherProvider = await getEthereumNetworkProvider(rpcUrl)
+  
+      const receipt = await etherProvider.getTransactionReceipt(txHash)
+
+      if (receipt && receipt.blockNumber) {
+        return { dropped: false, confirmed: true}
+      } else {
+        return { dropped: false, confirmed: false}
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      return { dropped: false, confirmed: false}
+    }
   }
 
   async getNftData(contents, getBase64) {

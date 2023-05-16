@@ -15,6 +15,7 @@ import { get, includes } from 'lodash'
 import helpers from 'options/actions/helpers'
 // Services
 import { backgroundAccount } from 'services/account'
+import { getEthNetworkMetadata } from 'services/getNetworkMetadata'
 import storage from 'services/storage'
 // Utils
 import showNotification from 'utils/notifications'
@@ -95,6 +96,11 @@ export default async () => {
                 ) {
                   blockUrl = `${URL.SOLANA_EXPLORE}/tx/${transaction.id}?cluster=${transaction.network}`
                 }
+                if (transaction?.isEthAccount) {
+                  const metadata = await getEthNetworkMetadata(transaction?.network)
+                  blockUrl = get(metadata, 'blockExplorerUrl')
+                  blockUrl = `${blockUrl}/tx/${transaction?.id}`
+                }
               }
 
               if (includes(transaction.activityName, 'SOL')) {
@@ -106,7 +112,8 @@ export default async () => {
                 txId: transaction.id,
                 new: true,
                 date: transaction.timestamp || Date.now(),
-                blockUrl: blockUrl
+                blockUrl: blockUrl,
+                isEthAccount: transaction.isEthAccount
               }
 
               showNotification(message)

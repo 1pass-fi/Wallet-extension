@@ -106,6 +106,7 @@ const Activity = ({ activities, setActivities }) => {
           isK2Account={activity.isK2Account}
           setDeleteTransactionModalStatus={setDeleteTransactionModalStatus}
           isProcessing={activity.isProcessing}
+          isEthAccount={activity.isEthAccount}
         />
       ))}
       {accountActivites.slice(0, pages * 10).map((activity) => (
@@ -124,6 +125,7 @@ const Activity = ({ activities, setActivities }) => {
           network={activity.network}
           seen={activity.seen}
           isK2Account={activity.isK2Account}
+          isEthAccount={activity.isEthAccount}
         />
       ))}
       {pages * 10 < accountActivites.length && (

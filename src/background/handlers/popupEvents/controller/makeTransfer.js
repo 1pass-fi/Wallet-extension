@@ -4,6 +4,7 @@ import helpers from 'background/helpers'
 import { PENDING_TRANSACTION_TYPE } from 'constants/koiConstants'
 import get from 'lodash/get'
 import { backgroundAccount } from 'services/account'
+import { getEthNetworkMetadata } from 'services/getNetworkMetadata'
 import storage from 'services/storage'
 import showNotification from 'utils/notifications'
 
@@ -47,10 +48,22 @@ export default async (payload, next) => {
       network = await storage.setting.get.solanaProvider()
     }
 
+    const getActivityName = async () => {
+      if (token === 'KOI') return 'Sent KOII'
+      if (token === 'ETH') {
+        const metadata = await getEthNetworkMetadata(network)
+        const currencySymbol = get(metadata, 'currencySymbol')
+        return `Sent ${currencySymbol}`
+      }
+      return `Sent ${token}`
+    }
+
+    const activityName = await getActivityName()
+
     // add new pending transaction
     const pendingTransactionPayload = {
       id: txId,
-      activityName: token === 'KOI' ? 'Sent KOII' : `Sent ${token}`,
+      activityName,
       expense: qty,
       target,
       address,
@@ -58,14 +71,13 @@ export default async (payload, next) => {
       retried: 1,
       transactionType,
       isK2Account: token === 'KOII',
+      isEthAccount: token === 'ETH',
       isProcessing: token === 'ETH'
     }
 
     if (token !== 'KOII') {
       if (token === 'ETH') {
-        if (network === 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2' || network === 'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2') {
-          await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
-        }
+        await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
       } else {
         await helpers.pendingTransactionFactory.createPendingTransaction(pendingTransactionPayload)
       }

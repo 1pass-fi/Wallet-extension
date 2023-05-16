@@ -8,7 +8,9 @@ import { get, includes } from 'lodash'
 import moment from 'moment'
 import ToolTip from 'options/components/ToolTip'
 import formatLongString from 'options/utils/formatLongString'
+import { getEthNetworkMetadata } from 'services/getNetworkMetadata'
 import { transactionAmountFormat } from 'utils'
+
 
 const ActivityRow = ({
   activityName,
@@ -25,7 +27,8 @@ const ActivityRow = ({
   seen,
   setDeleteTransactionModalStatus,
   isK2Account,
-  isProcessing
+  isProcessing,
+  isEthAccount
 }) => {
   const [displayInfo, setDisplayInfo] = useState({})
   const [loaded, setLoaded] = useState(false)
@@ -76,6 +79,11 @@ const ActivityRow = ({
           if (network === ETH_NETWORK_PROVIDER.MAINNET)
             blockUrl = `${URL.ETHERSCAN_MAINNET}/tx/${id}`
           if (network === ETH_NETWORK_PROVIDER.GOERLI) blockUrl = `${URL.ETHERSCAN_GOERLI}/tx/${id}`
+          if (isEthAccount) {
+            const metadata = await getEthNetworkMetadata(network)
+            blockUrl = get(metadata, 'blockExplorerUrl')
+            blockUrl = `${blockUrl}/tx/${id}`
+          }
         }
 
         if (includes(activityName, 'SOL')) {

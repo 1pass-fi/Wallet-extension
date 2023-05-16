@@ -636,14 +636,14 @@ export const PREDEFINED_EVM_NETWORK_METADATA = {
     rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
     chainId: 80001,
     currencySymbol: 'MATIC',
-    blockExplorerUrl: null
+    blockExplorerUrl: 'https://mumbai.polygonscan.com/'
   },
   'https://polygon-rpc.com/': {
     networkName: 'Polygon',
     rpcUrl: 'https://polygon-rpc.com/',
     chainId: 137,
     currencySymbol: 'MATIC',
-    blockExplorerUrl: null
+    blockExplorerUrl: 'https://polygonscan.com/'
   }
 }
 
