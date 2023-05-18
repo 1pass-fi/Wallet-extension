@@ -166,16 +166,26 @@ export class EthereumMethod {
   }
 
   async updateActivities() {
-    let etherscanNetwork, network
+    let etherscanNetwork, network, token
 
     network = this.eth.getCurrentNetWork()
-
+    
     switch (network) {
       case ETH_NETWORK_PROVIDER.GOERLI:
         etherscanNetwork = 'goerli'
+        token = 'ETH'
         break
       case ETH_NETWORK_PROVIDER.MAINNET:
         etherscanNetwork = 'homestead'
+        token = 'ETH'
+        break
+      case ETH_NETWORK_PROVIDER.POLYGON: 
+        etherscanNetwork = 'matic'
+        token = 'MATIC'
+        break
+      case ETH_NETWORK_PROVIDER.POLYGON_MUMBAI:
+        etherscanNetwork = 'maticmum'
+        token = 'MATIC'
         break
       default:
         etherscanNetwork = null
@@ -196,10 +206,8 @@ export class EthereumMethod {
 
     const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
 
-    const provider = await storage.setting.get.ethereumProvider()
-    const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
-    const _network = ethers.providers.getNetwork(ethNetwork)
-    const web3 = new ethers.providers.InfuraProvider(_network, apiKey)
+    const rpcUrl = await storage.setting.get.ethereumProvider()
+    const web3 = await getEthereumNetworkProvider(rpcUrl)
 
     fetchedData = await Promise.all(
       fetchedData.map(async (activity) => {
@@ -267,14 +275,14 @@ export class EthereumMethod {
               // Normal transfer ETH
               if (isSender) {
                 // Transfer ETH
-                activityName = `${chrome.i18n.getMessage('sent')} ETH`
+                activityName = `${chrome.i18n.getMessage('sent')} ${token}`
                 source = activity.to
                 const receipt = await web3.getTransactionReceipt(id)
                 gasFee = (Number(receipt.gasUsed) * Number(activity.gasPrice)) / Math.pow(10, 18)
                 expense = gasFee + activity.value / Math.pow(10, 18)
               } else {
                 // Receive ETH
-                activityName = `${chrome.i18n.getMessage('received')} ETH`
+                activityName = `${chrome.i18n.getMessage('received')} ${token}`
                 source = activity.from
                 expense = activity.value / Math.pow(10, 18)
               }
@@ -284,6 +292,7 @@ export class EthereumMethod {
             time = activity.timestamp
           } catch (error) {
             // UNKNOWN TRANSACTION
+            console.error('Get transaction failed: ', error)
             activityName = chrome.i18n.getMessage('unknownTransaction')
             source = activity?.to
             expense = activity?.value / Math.pow(10, 18)
