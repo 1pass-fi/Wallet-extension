@@ -1,6 +1,7 @@
 // Services
 // helpers
 import helpers from 'background/helpers'
+import { MESSAGES } from 'constants/koiConstants'
 import { backgroundAccount } from 'services/account'
 
 export default async (payload, next) => {
@@ -18,6 +19,7 @@ export default async (payload, next) => {
     helpers.loadBalances()
     helpers.loadActivities()
     
+    helpers.sendMessageToPopupPorts({ type: MESSAGES.RELOAD_GALLERY })
     next()
   } catch (err) {
     console.error(err.message)

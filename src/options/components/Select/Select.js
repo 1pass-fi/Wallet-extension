@@ -82,7 +82,7 @@ const Select = ({
     <div className="w-full relative text-left bg-transparent" style={{ width: '144px' }}>
       <div
         className={clsx(
-          'absolute z-20 flex items-center justify-between cursor-pointer bg-transparent px-2.25 w-full',
+          'absolute z-51 flex items-center justify-between cursor-pointer bg-transparent px-2.25 w-full',
           hoverOption && 'bg-cyan shadow-md rounded-3xl'
         )}
         onMouseOver={() => setHoverOption(true)}
@@ -104,7 +104,7 @@ const Select = ({
       {listOpened && (
         <div
           className={clsx(
-            'z-10 pt-8 top-0 absolute w-full max-h-72 flex flex-col overflow-y-auto rounded-b-finnie select-none',
+            'z-10 pt-8 top-0 absolute w-full max-h-72 flex flex-col overflow-y-scroll rounded-b-finnie select-none',
             'bg-cyan shadow rounded-b-lg rounded-t-3xl'
           )}
           ref={dropDownRef}

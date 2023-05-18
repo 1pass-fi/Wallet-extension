@@ -59,6 +59,7 @@ const Options = () => {
     Local state
   */
   const [isLocked, setIsLocked] = useState(false)
+  const [reloadApp, setReloadApp] = useState(true)
 
   /* 
     GET STATE FROM STORE
@@ -77,7 +78,7 @@ const Options = () => {
   const [modalStates, setModalStates] = useModal()
   const [settingStates, setSettingStates] = useSetting({ walletLoaded })
 
-  useAddHandler({ setError, setModalStates })
+  useAddHandler({ setError, setModalStates, setReloadApp })
   useNfts({ setCollections, walletLoaded, newAddress, pathname })
 
   useEffect(() => {
@@ -86,8 +87,8 @@ const Options = () => {
       dispatch(setCurrentProvider(currentProvider))
     }
 
-    loadCurrentProvider()
-  }, [])
+    if (walletLoaded) loadCurrentProvider()
+  }, [walletLoaded])
 
   useNetworkMetadata()
 
@@ -97,8 +98,8 @@ const Options = () => {
       if (activatedChainStorage) dispatch(setActivatedChain(activatedChainStorage))
     }
 
-    loadActivatedChain()
-  }, [])
+    if (walletLoaded) loadActivatedChain()
+  }, [walletLoaded])
 
   /* EDITING COLLECTION ID */
   const handleShareNFT = (txId) => {
@@ -128,6 +129,7 @@ const Options = () => {
 
       dispatch(setIsLoading)
       const allAccounts = await dispatch(loadAllAccounts()) // will load default account also
+      await backgroundRequest.wallet.loadBalanceAsync()
       const _isLocked = await backgroundRequest.wallet.getLockState()
 
       dispatch(setWalletLoaded(true))
@@ -137,8 +139,14 @@ const Options = () => {
       }
       dispatch(setLoaded)
     }
-    loadWallets()
-  }, [])
+
+    if (reloadApp) {
+      dispatch(setWalletLoaded(false))
+      setTimeout(() => {
+        loadWallets()
+      }, 100)
+    }
+  }, [reloadApp])
 
   /*
     STEP 2: 
@@ -263,14 +271,16 @@ const Options = () => {
   }
 
   useEffect(() => {
-    updateDefaultAccountData()
-  }, [])
+    if (walletLoaded) updateDefaultAccountData()
+  }, [walletLoaded])
 
   return (
     <GalleryContext.Provider
       value={{
         handleShareNFT,
         refreshNFTs,
+        setReloadApp,
+        reloadApp,
         ...modalStates,
         ...setModalStates,
         ...settingStates,

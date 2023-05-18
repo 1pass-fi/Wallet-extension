@@ -79,9 +79,9 @@ const Login = ({ unlockWallet, setIsLoading, setError, setIsWalletLocked }) => {
         history.push('/tokens')
 
         /* Reload gallery page after unlocked */
-        chrome.tabs.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
-          tabs.map((tab) => tab.url.includes('options') && chrome.tabs.reload(tab.id))
-        })
+        // chrome.tabs.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
+        //   tabs.map((tab) => tab.url.includes('options') && chrome.tabs.reload(tab.id))
+        // })
       } else {
         setIsIncorrectPassword(true)
       }

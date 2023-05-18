@@ -14,7 +14,7 @@ import { popupBackgroundConnect } from 'services/request/popup'
 import { EventHandler } from 'services/request/src/backgroundConnect'
 import storage from 'services/storage'
 
-export default ({ setModalStates }) => {
+export default ({ setModalStates, setReloadApp }) => {
   const dispatch = useDispatch()
   const store = useStore()
 
@@ -87,9 +87,8 @@ export default ({ setModalStates }) => {
       // reload all Finnie tabs when receive RELOAD_GALLERY message from background
       const reloadGalleryHandler = new EventHandler(MESSAGES.RELOAD_GALLERY, async () => {
         try {
-          chrome.tabs.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
-            tabs.map((tab) => chrome.tabs.reload(tab.id))
-          })
+          setReloadApp(false)
+          setReloadApp(true)
         } catch (err) {
           console.log('reload gallery page - error: ', err)
         }

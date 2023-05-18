@@ -1,11 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { disable } from 'colors'
 import { PREDEFINED_EVM_NETWORK_METADATA } from 'constants/koiConstants'
 import EvmLogo from 'img/evm-logo.svg'
 import PolygonLogo from 'img/polygon-logo.svg'
 import EthLogo from 'img/v2/ethereum-logos/ethereum-logo.svg'
 import get from 'lodash/get'
 import { loadAllAccounts } from 'options/actions/accounts'
+import { setWalletLoaded } from 'options/actions/walletLoaded'
+import { GalleryContext } from 'options/galleryContext'
 import storage from 'services/storage'
 import reloadGalleryPage from 'utils/reloadGalleryPage'
 
@@ -31,6 +34,7 @@ const useNetworkIcon = ({ networkPayload }) => {
 }
 
 const EvmNetwork = ({ networkPayload }) => {
+  const { setReloadApp } = useContext(GalleryContext)
   const dispatch = useDispatch()
 
   const [isAdded, setIsAdded] = useState(false)
@@ -57,7 +61,9 @@ const EvmNetwork = ({ networkPayload }) => {
       return [...currentValue, payload]
     })
 
-    reloadGalleryPage()
+    setReloadApp(false)
+    setReloadApp(true)
+    setIsAdded(true)
   }
 
   const removeNetwork = async () => {
@@ -69,7 +75,9 @@ const EvmNetwork = ({ networkPayload }) => {
 
     await storage.setting.set.ethereumProvider('https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2')
 
-    reloadGalleryPage()
+    setReloadApp(false)
+    setReloadApp(true)
+    setIsAdded(false)
   }
 
   const isEth = useMemo(() => {
@@ -96,6 +104,7 @@ const EvmNetwork = ({ networkPayload }) => {
 }
 
 const EvmNetworks = () => {
+  const { reloadApp } = useContext(GalleryContext)
   const [networks, setNetworks] = useState([])
 
   useEffect(() => {
@@ -121,7 +130,7 @@ const EvmNetworks = () => {
     }
 
     loadNetworks()
-  }, [])
+  }, [reloadApp])
 
   return (
     <div>

@@ -30,6 +30,7 @@ import { setAssets } from 'options/actions/assets'
 import { setDefaultAccount } from 'options/actions/defaultAccount'
 import { setError } from 'options/actions/error'
 import { setIsLoading, setLoaded } from 'options/actions/loading'
+import { setWalletLoaded } from 'options/actions/walletLoaded'
 import DropDown from 'options/components/DropDown'
 import ToolTip from 'options/components/ToolTip'
 import { GalleryContext } from 'options/galleryContext'
@@ -47,6 +48,57 @@ import RecoveryPhraseModal from '../Settings/Security/RecoveryPhraseModal'
 import QrCodeModal from './qrCodeModal'
 import ToggleButton from './ToggleButton'
 
+const predefinedProviderOptions = [
+  {
+    type: TYPE.ETHEREUM,
+    value: [
+      {
+        label: 'ETH Mainnet',
+        value: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
+      },
+      {
+        label: 'Goerli TestNet',
+        value: 'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
+      }
+    ]
+  },
+  {
+    type: TYPE.K2,
+    value: [
+      {
+        label: 'Testnet',
+        value: 'testnet'
+      }
+    ]
+  },
+  {
+    type: TYPE.SOLANA,
+    value: [
+      {
+        label: 'Mainnet',
+        value: 'mainnet-beta'
+      },
+      {
+        label: 'Testnet',
+        value: 'testnet'
+      },
+      {
+        label: 'Devnet',
+        value: 'devnet'
+      }
+    ]
+  },
+  {
+    type: TYPE.ARWEAVE,
+    value: [
+      {
+        label: 'Mainnet',
+        value: 'mainnet'
+      }
+    ]
+  }
+]
+
 const AccountCard = ({
   account,
   setShowConfirmRemoveAccount,
@@ -55,6 +107,7 @@ const AccountCard = ({
   setAccountConnectSites,
   dragProvided
 }) => {
+  const { setReloadApp, reloadApp } = useContext(GalleryContext)
   const dispatch = useDispatch()
 
   const [showHex, setShowHex] = useState(true)
@@ -76,51 +129,19 @@ const AccountCard = ({
   const [providerOptions, setProviderOptions] = useState([
     {
       type: TYPE.ETHEREUM,
-      value: [
-        {
-          label: 'ETH Mainnet',
-          value: 'https://mainnet.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
-        },
-        {
-          label: 'Goerli TestNet',
-          value: 'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2'
-        }
-      ]
+      value: [...predefinedProviderOptions[0].value]
     },
     {
       type: TYPE.K2,
-      value: [
-        {
-          label: 'Testnet',
-          value: 'testnet'
-        }
-      ]
+      value: [...predefinedProviderOptions[1].value]
     },
     {
       type: TYPE.SOLANA,
-      value: [
-        {
-          label: 'Mainnet',
-          value: 'mainnet-beta'
-        },
-        {
-          label: 'Testnet',
-          value: 'testnet'
-        },
-        {
-          label: 'Devnet',
-          value: 'devnet'
-        }
-      ]
+      value: [...predefinedProviderOptions[2].value]
     },
     {
       type: TYPE.ARWEAVE,
-      value: [
-        {
-          label: 'Mainnet',
-          value: 'mainnet'
-        }
-      ]
+      value: [...predefinedProviderOptions[3].value]
     }
   ])
 
@@ -178,13 +199,12 @@ const AccountCard = ({
   useEffect(() => {
     const getProviderOptions = async () => {
       const addedEvmNetworks = await storage.setting.get.addedEvmNetworks()
-      providerOptions[0].value = [...providerOptions[0].value, ...addedEvmNetworks]
-
+      providerOptions[0].value = [...predefinedProviderOptions[0].value, ...addedEvmNetworks]
       setProviderOptions(providerOptions)
     }
 
-    getProviderOptions()
-  }, [])
+    if (reloadApp) getProviderOptions()
+  }, [reloadApp])
 
   const isDefaultAccount = (account) => {
     switch (account.type) {
@@ -297,35 +317,8 @@ const AccountCard = ({
       </div>
     )
   }
-  const fetchAssets = async () => {
-    let allCollections = await popupAccount.getAllCollections()
-    let allCollectionNfts = await popupAccount.getAllCollectionNfts()
-    let allAssets, validAssets
-
-    const loadCollection = async () => {
-      console.log('LOADING COLLECTION')
-      await backgroundRequest.gallery.loadCollections()
-      allCollections = await popupAccount.getAllCollections()
-      allCollectionNfts = await popupAccount.getAllCollectionNfts()
-    }
-
-    const loadNfts = async () => {
-      await backgroundRequest.assets.loadAllContent()
-      allAssets = await popupAccount.getAllAssets()
-      validAssets = allAssets.filter((asset) => asset.name !== '...')
-      validAssets = classifyAssets(validAssets, allCollections)
-      validAssets = validAssets.filter((nft) => !get(nft, 'name')?.includes('DID Profile Page'))
-      dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
-    }
-
-    dispatch(setIsLoading)
-    await Promise.all([loadCollection, loadNfts].map((f) => f()))
-    validAssets = classifyAssets(validAssets, allCollections)
-    dispatch(setAssets({ nfts: validAssets, filteredNfts: validAssets }))
-  }
 
   const onChangeK2Provider = async (value) => {
-    dispatch(setIsLoading)
     const _currentNetwork = currentNetwork
     try {
       setCurrentNetwork(value)
@@ -334,14 +327,8 @@ const AccountCard = ({
         isGalleryRequest: true
       })
 
-      // load balance
-      await backgroundRequest.wallet.loadBalanceAsync()
-
-      // load nfts
-      // await fetchAssets() // TODO DatH: Uncomment this line when NFTs is available for K2 network
-
-      // update account state
-      await dispatch(loadAllAccounts())
+      setReloadApp(false)
+      setReloadApp(true)
     } catch (error) {
       setCurrentNetwork(_currentNetwork)
       dispatch(setError(error.message))
@@ -352,42 +339,24 @@ const AccountCard = ({
   }
 
   const onChangeEthereumProvider = async (value) => {
-    dispatch(setIsLoading)
-    const _currentNetwork = currentNetwork
-    try {
-      setCurrentNetwork(value)
-      await backgroundRequest.gallery.updateEthereumProvider({
-        ethereumProvider: value,
-        isGalleryRequest: true
-      })
+    await backgroundRequest.gallery.updateEthereumProvider({
+      ethereumProvider: value,
+      isGalleryRequest: true
+    })
 
-      // load balance
-      await backgroundRequest.wallet.loadBalanceAsync()
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.NETWORK_CHANGED })
+    })
 
-      // load nfts
-      await fetchAssets()
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.CHAIN_CHANGED })
+    })
 
-      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.NETWORK_CHANGED })
-      })
-
-      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, { type: MESSAGES.CHAIN_CHANGED })
-      })
-
-      // update account state
-      await dispatch(loadAllAccounts())
-    } catch (error) {
-      setCurrentNetwork(_currentNetwork)
-      dispatch(setError(error.message))
-      console.log('Failed to change Ethereum provider', error.message)
-    } finally {
-      dispatch(setLoaded)
-    }
+    setReloadApp(false)
+    setReloadApp(true)
   }
 
   const onChangeSolanaProvider = async (value) => {
-    dispatch(setIsLoading)
     const _currentNetwork = currentNetwork
     try {
       setCurrentNetwork(value)
@@ -396,14 +365,8 @@ const AccountCard = ({
         isGalleryRequest: true
       })
 
-      // load balance
-      await backgroundRequest.wallet.loadBalanceAsync()
-
-      // load nfts
-      await fetchAssets()
-
-      // update account state
-      await dispatch(loadAllAccounts())
+      setReloadApp(false)
+      setReloadApp(true)
     } catch (error) {
       setCurrentNetwork(_currentNetwork)
       dispatch(setError(error.message))

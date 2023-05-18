@@ -1,13 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import CloseIcon from 'img/v2/close-icon-blue.svg'
 import get from 'lodash/get'
 import Button from 'options/components/Button'
+import { GalleryContext } from 'options/galleryContext'
 import { validateEthereumChainId } from 'services/getNetworkProvider/ethereum/validateEthereumChainId'
 import storage from 'services/storage'
 import reloadGalleryPage from 'utils/reloadGalleryPage'
 
 const AddNetworkManuallyModal = ({ close }) => {
+  const { setReloadApp } = useContext(GalleryContext)
   const modalRef = useRef(null)
 
   const [networkName, setNetworkName] = useState(null)
@@ -67,7 +69,8 @@ const AddNetworkManuallyModal = ({ close }) => {
       const customEvmNetworks = await storage.setting.get.customEvmNetworks()
       customEvmNetworks[rpcUrl] = payload
       await storage.setting.set.customEvmNetworks(customEvmNetworks)
-      reloadGalleryPage()        
+      setReloadApp(false)
+      setReloadApp(true)   
       close()
     } catch (err) {
       console.error(err)

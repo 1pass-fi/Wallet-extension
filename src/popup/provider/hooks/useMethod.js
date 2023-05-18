@@ -12,10 +12,6 @@ const useMethod = ({ accounts, setIsLoading, lockWallet }) => {
       setIsLoading(false)
 
       history.push(PATH.LOGIN)
-
-      chrome.tabs.query({ url: chrome.runtime.getURL('*') }, (tabs) => {
-        tabs.map((tab) => chrome.tabs.reload(tab.id))
-      })
     } else {
       setError(chrome.i18n.getMessage('lockWalletFailed'))
     }
