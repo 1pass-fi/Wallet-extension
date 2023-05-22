@@ -89,8 +89,8 @@ export default () => {
     history.push('/import-wallet')
   }
 
-  const onImportKeyFile = () => {
-    history.push('/upload-wallet')
+  const onImportJsonFile = () => {
+    history.push('/upload-json')
   }
 
   const onCreateWallet = () => {
@@ -304,6 +304,11 @@ export default () => {
             >
               Add Network Manually
             </div>
+          </div>
+
+          {/* IMPORT JSON */}
+          <div onClick={onImportJsonFile} style={{color:'#8989C7'}} className='underline mb-8 text-base font-semibold cursor-pointer'>
+            Import a key file.
           </div>
         </div>
       </div>

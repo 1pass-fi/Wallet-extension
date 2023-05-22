@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import isEmpty from 'lodash/isEmpty'
 import { setIsOnboarding, setOnboardingPath } from 'options/actions/onboardingProcessing'
 
@@ -19,6 +20,7 @@ export const onboardingSteps = [
 
 const Onboarding = ({ ignoreSetPath = false, path = '' }) => {
   const dispatch = useDispatch()
+  const location = useLocation()
 
   const isOnboardingProcessing = useSelector((state) => state.onboarding.isProcessing)
 
@@ -31,8 +33,8 @@ const Onboarding = ({ ignoreSetPath = false, path = '' }) => {
 
   return (
     <div className="w-screen h-screen flex text-center">
-      <NavBar step={step} setStep={setStep} />
-      <Content step={step} setStep={setStep} />
+      {location.pathname !== '/upload-json' && <NavBar step={step} setStep={setStep} />}
+      <Content step={step} setStep={setStep} path={path} />
       {isOnboardingProcessing !== 0 && <LoadingScreen show={true} />}
     </div>
   )

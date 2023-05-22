@@ -79,6 +79,31 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
     }
   }
 
+  const importFromJson = async (jsonKey, network) => {
+    try {
+      dispatch(setOnboardingProcessing)
+      const address = await request.wallet.importWallet({
+        key: jsonKey,
+        password,
+        type: network
+      })
+
+      await initActivatedChain(network)
+
+      dispatch(setNewAddress(address))
+      dispatch(addAccountByAddress(address))
+
+      return address
+    } catch (err) {
+      console.error(err)
+      dispatch(
+        setError(chrome.i18n.getMessage(err.message) || err.message)
+      )
+    } finally {
+      dispatch(setOnboardingProcessed)
+    }
+  }
+
   const initActivatedChain = async (type) => {
     const totalAccount = await popupAccount.count()
     if (totalAccount === 1) {
@@ -87,7 +112,7 @@ const useMethod = ({ password, newSeedphrase, setNewSeedphrase }) => {
     }
   }
 
-  return { generateNewKey, saveNewKey, verifyPassword, importFromSeedphrase }
+  return { generateNewKey, saveNewKey, verifyPassword, importFromSeedphrase, importFromJson }
 }
 
 export default useMethod

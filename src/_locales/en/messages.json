@@ -1837,5 +1837,29 @@
   },
   "thisKeyDoesNotHaveASecretPhrase": {
     "message": "This key does not have a secret phrase"
+  },
+  "selectTheChainYourKeyLivesOn": {
+    "message": "Select the chain your key lives on."
+  },
+  "finnieSuppportsJsonImport": {
+    "message": "Finnie supports json import for Koii and Arweave keys."
+  },
+  "weAreWorkingOnSupporting": {
+    "message": "We are working on supporting this feature for more chains like  Ethereum and Solana."
+  },
+  "requestAnIntergration": {
+    "message": "Request an integration."
+  },
+  "ifYouDontHaveASecretPhrase": {
+    "message": "If you don't have a secret phrase, import your key here."
+  },
+  "clickToAddAFile": {
+    "message": "Click to add a file"
+  },
+  "orDragAndDrop": {
+    "message": "or drag and drop"
+  },
+  "onlyJsonFilesCanBeImported": {
+    "message": "Only .json files can be improted as keys."
   }
 }

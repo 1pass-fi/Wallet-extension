@@ -1,4 +1,6 @@
+import { Keypair } from '@_koi/web3.js'
 import { isString } from 'lodash'
+
 export class K2Static {
   async loadWallet(k2, keyOrSeedphrase) {
     try {
@@ -22,6 +24,17 @@ export class K2Static {
       return k2.address
     } catch (err) {
       throw new Error(err.message)
+    }
+  }
+
+  async loadWalletFromJson(jsonKey) {
+    try {
+      const keypair = Keypair.fromSecretKey(Buffer.from(jsonKey, 'base64'))
+
+      return { key: keypair.secretKey.toString(), address: keypair.publicKey.toString() }
+    } catch (err) {
+      console.error(err)
+      throw new Error('load wallet failed')
     }
   }
 

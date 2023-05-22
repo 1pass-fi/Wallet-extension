@@ -399,6 +399,9 @@ const MainPage = () => {
         <Route exact path="/import-wallet">
           <Onboarding path={'/import-wallet'} />
         </Route>
+        <Route exact path="/upload-json">
+          <Onboarding path={'/upload-json'} />
+        </Route>
         <Route exact path="/nfts/:id">
           <NFTDetail />
         </Route>

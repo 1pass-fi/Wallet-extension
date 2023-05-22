@@ -23,10 +23,15 @@ export default async (payload, next) => {
       Get data from popup message
     */
     let { key: keyOrSeedphrase, password, type, provider } = payload.data
-    let address, walletKey, seedphrase
+    let address, walletKey, seedphrase, jsonKey
 
     let account
 
+    console.log('keyOrSeedphrase', keyOrSeedphrase)
+    console.log('password', password)
+    console.log('type', type)
+    console.log('provider', provider)
+    
     /* 
       Determine if have seedphrase
     */
@@ -45,7 +50,8 @@ export default async (payload, next) => {
 
     // TODO DatH - LongP
     if (type === TYPE.K2) {
-      seedphrase = keyOrSeedphrase
+      if (isString(keyOrSeedphrase)) seedphrase = keyOrSeedphrase
+      else jsonKey = keyOrSeedphrase
     }
 
     /* 
@@ -101,8 +107,16 @@ export default async (payload, next) => {
         walletKey = sol.key
         break
       case TYPE.K2:
-        address = await K2Account.utils.loadWallet(k2, keyOrSeedphrase)
-        walletKey = k2.key
+        if (seedphrase) {
+          address = await K2Account.utils.loadWallet(k2, keyOrSeedphrase)
+          walletKey = k2.key          
+        }
+        if (jsonKey) {
+          console.log('running import json K2')
+          const result = await K2Account.utils.loadWalletFromJson(jsonKey)
+          walletKey = result.key
+          address = result.address
+        }
         break
     }
 

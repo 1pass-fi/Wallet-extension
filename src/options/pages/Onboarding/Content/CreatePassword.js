@@ -1,5 +1,7 @@
 import React, { useContext, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
+import clsx from 'clsx'
 import { URL } from 'constants/koiConstants'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
@@ -12,6 +14,7 @@ import { VALIDATE_ERROR_MESSAGE } from '../../../../constants/koiConstants'
 import { OnboardingContext } from '../onboardingContext'
 
 const CreatePassword = ({ step, setStep }) => {
+  const location = useLocation()
   const {
     password,
     setPassword,
@@ -39,6 +42,8 @@ const CreatePassword = ({ step, setStep }) => {
           setStep(2)
         } else if (onboardingPath === '/import-wallet') {
           setStep(10)
+        } else if (onboardingPath === '/upload-json') {
+          setStep(13)
         } else {
           setStep(1)
         }
@@ -67,10 +72,15 @@ const CreatePassword = ({ step, setStep }) => {
     }
   }
 
+  console.log('location.pathname--------', location.pathname)
+
   return (
     <div
       data-testid="CreatePassword"
-      className="w-2/5 flex flex-col text-white self-start ml-23"
+      className={clsx(
+        'w-2/5 flex flex-col text-white self-start ml-23',
+        location.pathname === '/upload-json' && 'ml-60'
+      )}
       style={{ minWidth: '240px' }}
     >
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
