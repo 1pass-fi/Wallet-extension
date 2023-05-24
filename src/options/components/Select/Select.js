@@ -104,7 +104,7 @@ const Select = ({
       {listOpened && (
         <div
           className={clsx(
-            'z-10 pt-8 top-0 absolute w-full max-h-72 flex flex-col overflow-y-scroll rounded-b-finnie select-none',
+            'z-10 pt-8 top-0 absolute w-full max-h-52 flex flex-col overflow-y-scroll rounded-b-finnie select-none',
             'bg-cyan shadow rounded-b-lg rounded-t-3xl'
           )}
           ref={dropDownRef}
