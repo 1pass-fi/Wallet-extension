@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
 import { NETWORK } from 'constants/koiConstants'
+import ReturnIcon from 'img/return-icon.svg'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
 import KeyLogo from 'options/components/KeyLogo'
@@ -31,11 +32,6 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
         </div>
         <div className="mt-2 font-normal text-sm w-11/12">
           {chrome.i18n.getMessage('weAreWorkingOnSupporting')}
-        </div>
-        <div onClick={() => {
-          console.log('open request page')
-        }} className="mt-2 font-normal text-sm w-11/12 underline text-lightBlue">
-          {chrome.i18n.getMessage('requestAnIntergration')}
         </div>
 
         <div className="mt-11 ml-1 lg:flex lg:justify-start gap-4.5 grid grid-cols-2">
@@ -99,6 +95,7 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
           </div>
         </div>
         {showToolTip && <ToolTip />}
+        <div onClick={() => setStep(0)} className='absolute top-5 left-5 cursor-pointer'><ReturnIcon /></div>
       </div>
     </div>
   )

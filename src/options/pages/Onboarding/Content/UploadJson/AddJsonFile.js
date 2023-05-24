@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import ReturnIcon from 'img/return-icon.svg'
 import UploadIcon from 'img/upload-icon.svg'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
@@ -78,6 +79,7 @@ const AddJsonFile = ({ importType, step, setStep }) => {
       }} className='absolute bottom-10 right-8 underline text-lightBlue cursor-pointer'>
         Go to Settings
       </div>
+      <div onClick={() => setStep(step - 1)} className='absolute top-5 left-5 cursor-pointer'><ReturnIcon /></div>
     </div>
   )
 }
