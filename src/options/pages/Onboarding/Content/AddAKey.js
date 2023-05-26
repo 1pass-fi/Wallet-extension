@@ -68,6 +68,9 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
           </div>
         </div>
       </div>
+      <div style={{color:'#8989C7'}} className='absolute text-base font-semibold underline cursor-pointer bottom-12 right-14' onClick={() => {
+        setStep(13)
+      }}>Import a key file</div>
     </div>
   )
 }

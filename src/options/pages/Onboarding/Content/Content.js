@@ -67,7 +67,7 @@ const Content = ({ step, setStep, path }) => {
           'w-2/3 h-full relative bg-gradient-to-r from-blue-300 to-indigo shadow-lg',
           'flex flex-col overflow-hidden',
           step > 1 ? (location.pathname !== '/upload-json' && 'pl-14 pt-20') : 'justify-center items-center',
-          location.pathname === '/upload-json' && 'w-full items-center justify-center pl-0 pt-0'
+          (location.pathname === '/upload-json' || step >=13) && 'w-full items-center justify-center pl-0 pt-0'
         )}
       >
         {step > 1 && <KoiIcon className="w-18 h-18 absolute top-2.25 right-3.75" />}

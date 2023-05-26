@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -8,6 +8,7 @@ import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
 import { setError } from 'options/actions/error'
 import { setIsOnboarding, setOnboardingPath } from 'options/actions/onboardingProcessing'
+import { popupAccount } from 'services/account'
 import getJsonFromFile from 'utils/getJsonFromfile'
 
 import { OnboardingContext } from '../../onboardingContext'
@@ -20,6 +21,7 @@ const AddJsonFile = ({ importType, step, setStep }) => {
   const { importFromJson } = useContext(OnboardingContext)
   const [file, setFile] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
+  const [totalAccount, setTotalAccount] = useState(null)
 
   const onDrop = (acceptedFiles) => {
     if (acceptedFiles[0]?.type !== 'application/json') {
@@ -47,6 +49,15 @@ const AddJsonFile = ({ importType, step, setStep }) => {
     }
   }
 
+  useEffect(() => {
+    const loadTotalAccount = async () => {
+      const totalAccount = await popupAccount.count()
+      setTotalAccount(totalAccount)
+    }
+
+    loadTotalAccount()
+  }, [])
+
   return (
     <div className='w-full h-full flex flex-col items-center justify-center text-white'>
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
@@ -72,13 +83,13 @@ const AddJsonFile = ({ importType, step, setStep }) => {
       </div>
       <div className='text-warning-300 text-xs mt-5'>{errorMessage}</div>
       <button onClick={onConfirm} style={{width:'240px',height:'42px',backgroundColor:'#F5F5F5',borderRadius:'3px'}} className='text-indigo mt-5 text-base'>Confirm</button>
-      <div onClick={() => {
+      {totalAccount > 0 && <div onClick={() => {
         dispatch(setIsOnboarding(false))
         dispatch(setOnboardingPath(''))
         history.push('/settings/wallet')
       }} className='absolute bottom-10 right-8 underline text-lightBlue cursor-pointer'>
         Go to Settings
-      </div>
+      </div>}
       <div onClick={() => setStep(step - 1)} className='absolute top-5 left-5 cursor-pointer'><ReturnIcon /></div>
     </div>
   )
