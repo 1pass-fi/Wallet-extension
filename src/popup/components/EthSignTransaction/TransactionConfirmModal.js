@@ -562,9 +562,9 @@ const TransactionConfirmModal = ({ setIsLoading, setError, setShowSigning }) => 
               <div style={{ width: '142px' }}>{chrome.i18n.getMessage('totalCost')}</div>
               <div className="flex flex-col font-normal text-sm items-start">
                 <div className="leading-5">
-                  {value} {symbol}
+                  {symbol === get(networkMetadata, 'currencySymbol') ? numberFormat(value + estimatedFee) : value} {symbol}
                 </div>
-                <div className="leading-5">{numberFormat(estimatedFee)} {get(networkMetadata, 'currencySymbol')}</div>
+                {symbol !== get(networkMetadata, 'currencySymbol') && <div className="leading-5">{numberFormat(estimatedFee)} {get(networkMetadata, 'currencySymbol')}</div>}
               </div>
             </div>
           </div>

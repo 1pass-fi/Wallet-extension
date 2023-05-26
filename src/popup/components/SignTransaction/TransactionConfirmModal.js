@@ -589,11 +589,11 @@ const TransactionConfirmModal = ({ onClose, setIsLoading, setError, setShowSigni
               <div style={{ width: '142px' }}>{chrome.i18n.getMessage('totalCost')}</div>
               <div className="flex flex-col font-normal text-sm items-start">
                 <div className="leading-5">
-                  {value} {symbol}
+                  {symbol === tokenSymbol ? numberFormat(value + totalFee) : value} {symbol}
                 </div>
-                <div className="leading-5">
+                {tokenSymbol !== symbol && <div className="leading-5">
                   {numberFormat(totalFee)} {tokenSymbol}
-                </div>
+                </div>}
               </div>
             </div>
           </div>
