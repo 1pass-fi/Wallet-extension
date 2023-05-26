@@ -8,11 +8,11 @@ export default ({ onClose }) => {
     <Modal onClose={onClose} isWelcomeScreen={true}>
       <div className="welcome-message">
         <div className="title">
-          Finnie Wallet <span>v0.4.2 Notes</span>
+          Finnie Wallet <span>v0.4.3 Notes</span>
         </div>
         <div className="content">
           <div className="paragraph">
-            <span className="text-success">v0.4.2</span>
+            <span className="text-success">v0.4.3</span>
             <br></br>
             <div className='paragraph'>
               The latest version of Finnie is now compatible with K2, Koii’s new settlement layer, and Solana keys, and there have been many more upgrades behind the scenes. 
