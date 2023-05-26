@@ -115,7 +115,7 @@ const OverwriteMetamaskModal = ({ close }) => {
         {isEmpty(overwriteMetamaskSites) ? (
           <div className="m-auto flex flex-col items-center">
             <EmptyConnectedSitesIcon />
-            <div className="font-normal text-base leading-6 text-center text-indigo w-9">
+            <div className="font-normal text-base leading-6 text-center text-indigo w-full">
               {chrome.i18n.getMessage('notConnectedToAnySites')}
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
 import BackIcon from 'img/v2/back-icon.svg'
 import EditIcon from 'img/v2/onboarding/edit-icon.svg'
 import EditSelectedIcon from 'img/v2/onboarding/edit-selected-icon.svg'
