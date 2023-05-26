@@ -24,8 +24,8 @@ const Activity = ({ activities, setActivities }) => {
   useEffect(() => {
     const loadActivities = async () => {
       const account = await popupAccount.getAccount({ address: displayingAccount.address })
-      const allActivities = await account.get.activities()
-      // const allActivities = await storage.generic.get.allActivities()
+      // const allActivities = await account.get.activities()
+      const allActivities = await storage.generic.get.allActivities()
       setAccountActivites(allActivities)
     }
 

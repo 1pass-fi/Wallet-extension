@@ -35,8 +35,12 @@ export default () => {
   let uploadPendingTransactionInterval,
     loadBalancesArweaveInterval,
     loadBalancesEthereumInterval,
+    loadBalancesSolanaInterval,
+    loadBalancesK2Interval,
     loadActivitiesArweaveInterval,
     loadActivitiesEthereumInterval,
+    loadActivitiesSolanaInterval,
+    loadActivitiesK2Interval,
     loadNftStatesInterval
 
   try {
@@ -52,6 +56,14 @@ export default () => {
       helpers.loadBalances(TYPE.ETHEREUM)
     }, TIME_INTERVAL.LOAD_BALANCES_ETHEREUM)
 
+    loadBalancesSolanaInterval = setInterval(() => {
+      helpers.loadBalances(TYPE.SOLANA)
+    }, TIME_INTERVAL.LOAD_BALANCES_SOLANA)
+
+    loadBalancesK2Interval = setInterval(() => {
+      helpers.loadBalances(TYPE.ETHEREUM)
+    }, TIME_INTERVAL.LOAD_BALANCES_K2)
+
     loadActivitiesArweaveInterval = setInterval(() => {
       helpers.loadActivities(TYPE.ARWEAVE)
     }, TIME_INTERVAL.LOAD_ARWEAVE_ACTIVITIES)
@@ -60,11 +72,18 @@ export default () => {
       helpers.loadActivities(TYPE.ETHEREUM)
     }, TIME_INTERVAL.LOAD_ETHEREUM_ACTIVITIES)
 
+    loadActivitiesSolanaInterval = setInterval(() => {
+      helpers.loadActivities(TYPE.SOLANA)
+    }, TIME_INTERVAL.LOAD_SOLANA_ACTIVITIES)
+
+    loadActivitiesK2Interval = setInterval(() => {
+      helpers.loadActivities(TYPE.K2)
+    }, TIME_INTERVAL.LOAD_K2_ACTIVITIES)
+
     loadNftStatesInterval = setInterval(() => {
       helpers.loadNftStates(TYPE.ARWEAVE)
     }, TIME_INTERVAL.LOAD_NFT_STATE)
 
-    // TODO DatH - LongP - add SOL - K2 interval
   } catch (err) {
     console.error('Set interval background error', err.message)
   }
