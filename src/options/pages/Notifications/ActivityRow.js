@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { ACTIVITY_NAME, ETH_NETWORK_PROVIDER, PATH, URL } from 'constants/koiConstants'
 import ArweaveLogo from 'img/v2/arweave-logos/arweave-logo.svg'
@@ -7,6 +7,7 @@ import ExploreBlock from 'img/v2/explore-block-coming-soon.svg'
 import KoiiLogo from 'img/v2/k2-logos/finnie-k2-logo.svg'
 import SolanaLogo from 'img/v2/solana-logo.svg'
 import ViewBlockIcon from 'img/v2/view-block.svg'
+import get from 'lodash/get'
 import includes from 'lodash/includes'
 import moment from 'moment'
 import formatLongString, { formatLongStringTruncate } from 'options/utils/formatLongString'
@@ -16,73 +17,79 @@ import { getEthNetworkMetadata } from 'services/getNetworkMetadata'
 const ActivityRow = ({
   activity: { activityName, address, date, expense, id, source, network, isK2Account, isEthAccount }
 }) => {
-  const displayInfo = useMemo(async () => {
-    const dateString = moment(date).format('MM/DD/YYYY')
+  const [displayInfo, setDisplayInfo] = useState({})
 
-    let tokenType = 'AR'
-    if (includes(activityName, 'ETH')) {
-      tokenType = 'ETH'
-    } else if (includes(activityName, 'KOII')) {
-      tokenType = 'KOII'
-    }
+  useEffect(() => {
+    const loadData = async () => {
+      const dateString = moment(date).format('MM/DD/YYYY')
 
-
-    let url = `${PATH.VIEW_BLOCK_TRANSACTION}/${id}`
-    if (network) {
-      url =
-        network === ETH_NETWORK_PROVIDER.MAINNET
-          ? `${URL.ETHERSCAN_MAINNET}/tx/${id}`
-          : `${URL.ETHERSCAN_GOERLI}/tx/${id}`
-      if (isEthAccount) {
-        const metadata = await getEthNetworkMetadata(network)
-        blockUrl = get(metadata, 'blockExplorerUrl')
-        blockUrl = `${blockUrl}/tx/${id}`
+      let tokenType = 'AR'
+      if (includes(activityName, 'ETH')) {
+        tokenType = 'ETH'
+      } else if (includes(activityName, 'KOII')) {
+        tokenType = 'KOII'
       }
+  
+  
+      let url = `${PATH.VIEW_BLOCK_TRANSACTION}/${id}`
+      if (network) {
+        url =
+          network === ETH_NETWORK_PROVIDER.MAINNET
+            ? `${URL.ETHERSCAN_MAINNET}/tx/${id}`
+            : `${URL.ETHERSCAN_GOERLI}/tx/${id}`
+        if (isEthAccount) {
+          const metadata = await getEthNetworkMetadata(network)
+          url = get(metadata, 'blockExplorerUrl')
+          url = `${url}/tx/${id}`
+        }
+      }
+  
+      if (includes(activityName, 'SOL')) {
+        url = `${URL.SOLANA_EXPLORE}/tx/${id}?cluster=${network}`
+        tokenType = 'SOL'
+      }
+  
+      if (isK2Account) {
+        url = `${URL.K2_EXPLORER}/tx/${id}`
+        tokenType = 'KOII'
+      }
+  
+      if (network) {
+        tokenType = activityName.split(' ').pop()
+      }
+  
+      if (
+        activityName === chrome.i18n.getMessage('contractInteraction') ||
+        activityName === chrome.i18n.getMessage('unknownTransaction')
+      )
+        tokenType = 'ETH'
+  
+      let from = ''
+      let to = ''
+      if (!source) {
+        from = address
+        to = ''
+      } else if (includes(activityName, 'Received')) {
+        from = source
+        to = address
+      } else {
+        from = address
+        to = source
+      }
+
+      setDisplayInfo({
+        tokenType,
+        dateString: dateString,
+        action: activityName,
+        from,
+        to,
+        amount: expense,
+        url,
+        receiving: includes(activityName, 'Received')
+      })
     }
 
-    if (includes(activityName, 'SOL')) {
-      url = `${URL.SOLANA_EXPLORE}/tx/${id}?cluster=${network}`
-      tokenType = 'SOL'
-    }
-
-    if (isK2Account) {
-      url = `${URL.K2_EXPLORER}/tx/${id}`
-      tokenType = 'KOII'
-    }
-
-    if (network) {
-      tokenType = activityName.split(' ').pop()
-    }
-
-    if (
-      activityName === chrome.i18n.getMessage('contractInteraction') ||
-      activityName === chrome.i18n.getMessage('unknownTransaction')
-    )
-      tokenType = 'ETH'
-
-    let from = ''
-    let to = ''
-    if (!source) {
-      from = address
-      to = ''
-    } else if (includes(activityName, 'Received')) {
-      from = source
-      to = address
-    } else {
-      from = address
-      to = source
-    }
-
-    return {
-      tokenType,
-      dateString: dateString,
-      action: activityName,
-      from,
-      to,
-      amount: expense,
-      url,
-      receiving: includes(activityName, 'Received')
-    }
+    loadData()
   }, [])
 
   return (
