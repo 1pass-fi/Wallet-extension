@@ -33,12 +33,6 @@ async function contentScript() {
     const disabledOrigins = await storage.setting.get.disabledOrigins()
     const overwriteMetamaskSites = await storage.setting.get.overwriteMetamaskSites()
 
-    const endWithForwardSlash = /\/$/
-    let origin = window.location.origin
-    if (!endWithForwardSlash.test(origin)) {
-      origin = origin + '/'
-    }
-  
     const finnieDisabled = disabledOrigins.includes(window.location.origin)
   
     const hasMetamaskInstalled = await chrome.runtime.sendMessage('checkMetamask')

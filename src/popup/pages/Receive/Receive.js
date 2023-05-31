@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import QRCode from 'react-qr-code'
 import { useSelector } from 'react-redux'
@@ -19,9 +19,22 @@ const Receive = () => {
 
   const onCopy = () => {
     setIsCopied(true)
-
-    setTimeout(() => setIsCopied(false), 2000)
   }
+
+  useEffect(() => {
+    if (address) {
+      navigator.clipboard.writeText(address)
+      setIsCopied(true)
+    }
+  }, [address])
+
+  useEffect(() => {
+    if (isCopied) {
+      setTimeout(() => {
+        setIsCopied(false)
+      }, 3000)
+    }
+  }, [isCopied])
 
   return (
     <div className="w-full relative bg-white flex flex-col items-center pt-9.75">
