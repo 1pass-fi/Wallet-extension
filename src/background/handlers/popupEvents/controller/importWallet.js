@@ -26,11 +26,6 @@ export default async (payload, next) => {
     let address, walletKey, seedphrase, jsonKey
 
     let account
-
-    console.log('keyOrSeedphrase', keyOrSeedphrase)
-    console.log('password', password)
-    console.log('type', type)
-    console.log('provider', provider)
     
     /* 
       Determine if have seedphrase
