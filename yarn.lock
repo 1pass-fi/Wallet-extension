@@ -29,10 +29,10 @@
     superstruct "^0.14.2"
     tweetnacl "^1.0.0"
 
-"@_koii/sdk@^2.4.16":
-  version "2.4.16"
-  resolved "https://registry.yarnpkg.com/@_koii/sdk/-/sdk-2.4.16.tgz#76b71f5cb438f29d52ae420aed7e08eb8655890b"
-  integrity sha512-Rbhm1Ie2IR7U0+AMIhilkdPP4UwWAK32UkMPp4lIcguwZ+4SmxjZm0ri0pPjPEHhS2F58Lqt41T6HqNs+MeSyg==
+"@_koii/sdk@^2.4.17":
+  version "2.4.17"
+  resolved "https://registry.yarnpkg.com/@_koii/sdk/-/sdk-2.4.17.tgz#e518e026b5d5f3fd426abfba7d36083fdc0282be"
+  integrity sha512-t+jhSTtnZF387yEAo8PN1YK+NoZQ+7PPL3QQWnFEXeLhc2ohmyNTeUujj+rPYuVqDPk6oXhMeyAjX6T/TZXH4w==
   dependencies:
     "@_koi/kohaku" "^1.1.1"
     "@_koi/web3.js" "^0.0.6"
