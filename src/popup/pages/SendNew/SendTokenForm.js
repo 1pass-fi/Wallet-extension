@@ -68,7 +68,10 @@ const SendTokenForm = ({
   }
 
   const onChangeRecipientAddress = (e) => {
-    setRecipient({ address: e.target.value })
+    if (e?.target?.value?.length < 25) setIsShowDropdown(true)
+    else setIsShowDropdown(false)
+    const foundOption = find(addressOptions, option => option?.address === e.target.value ) 
+    setRecipient({ address: e.target.value, accountName: foundOption?.accountName })
   }
 
   const onAddressDropdownChange = (account) => {
@@ -155,7 +158,7 @@ const SendTokenForm = ({
           >
             <input
               ref={(ip) => (addressInputRef.current = ip)}
-              value={recipient.address}
+              value={recipient.accountName || recipient.address}
               onChange={onChangeRecipientAddress}
               className={clsx(
                 isEmpty(selectedAccount) ? 'cursor-not-allowed' : 'cursor-pointer',
