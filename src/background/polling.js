@@ -41,7 +41,8 @@ export default () => {
     loadActivitiesEthereumInterval,
     loadActivitiesSolanaInterval,
     loadActivitiesK2Interval,
-    loadNftStatesInterval
+    loadNftStatesInterval,
+    keepAliveInterval
 
   try {
     uploadPendingTransactionInterval = setInterval(() => {
@@ -84,6 +85,9 @@ export default () => {
       helpers.loadNftStates(TYPE.ARWEAVE)
     }, TIME_INTERVAL.LOAD_NFT_STATE)
 
+    keepAlive = setInterval(() => {
+      chrome.storage.local.get()
+    }, TIME_INTERVAL.KEEP_ALIVE)
   } catch (err) {
     console.error('Set interval background error', err.message)
   }
