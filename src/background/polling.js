@@ -42,7 +42,7 @@ export default () => {
     loadActivitiesSolanaInterval,
     loadActivitiesK2Interval,
     loadNftStatesInterval,
-    keepAlive
+    keepAliveInterval
 
   try {
     uploadPendingTransactionInterval = setInterval(() => {
