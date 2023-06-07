@@ -85,7 +85,7 @@ export default () => {
       helpers.loadNftStates(TYPE.ARWEAVE)
     }, TIME_INTERVAL.LOAD_NFT_STATE)
 
-    keepAlive = setInterval(() => {
+    keepAliveInterval = setInterval(() => {
       chrome.storage.local.get()
     }, TIME_INTERVAL.KEEP_ALIVE)
   } catch (err) {
