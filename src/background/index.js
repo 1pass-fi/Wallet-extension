@@ -20,41 +20,6 @@ import cache from './cache'
 import helpers from './helpers'
 import polling from './polling'
 
-/* a workaround to keep service worker alive */
-
-/**
- * On disconnect -> reconnect
- */
-function connect() {
-  chrome.runtime.connect({name: 'keepAlive'})
-    .onDisconnect.addListener(connect)
-}
-
-/**
- *  find all tab and execute connect script
- *  the connect script will be executed on page context eg. google.com
- */
-async function findTab(tabs) {
-  const onUpdate = (_, info, tab) => /^https?:/.test(info.url) && findTab([tab])
-
-  if (chrome.runtime.lastError) { 
-    console.log('tab was closed before setTimeout ran')
-  }
-
-  for (const {id: tabId} of tabs || await chrome.tabs.query({url: '*://*/*'})) {
-    try {
-      await chrome.scripting.executeScript({target: {tabId}, func: connect})
-      chrome.tabs.onUpdated.removeListener(onUpdate) // remove to make sure connect will not run more than one time
-      return
-    } catch (e) {}
-  }
-
-  /* when a tab is closed or modified, get all tabs and run connect script */
-  chrome.tabs.onUpdated.addListener(onUpdate)
-}
-
-findTab()
-
 function cb(port) {
   if (port.name.includes(PORTS.POPUP)) {
     cache.addPopupPort(port)
@@ -76,16 +41,6 @@ function cb(port) {
       const payload = { data: message.data, port, id: message.id }
       contentScriptEvents.sendMessage(message.type, payload)
     })
-  }
-
-  /* 
-    disconnect port every 5 minutes
-    invoke onDisconnect listener -> reconnect
-  */
-  if (port.name === 'keepAlive') {
-    console.log('Keep Alive')
-    setTimeout(() => port.disconnect(), 250000) // 5 minutes
-    port.onDisconnect.addListener(() => findTab())
   }
 }
 
