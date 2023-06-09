@@ -13,6 +13,7 @@ import {
 import { TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
 import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
+import PopupBackground from 'img/popup/popup-background.svg'
 import ReceiveIcon from 'img/popup/receive-icon.svg'
 import RefreshIcon from 'img/popup/refresh-icon.svg'
 import SendIcon from 'img/popup/send-icon.svg'
@@ -203,6 +204,10 @@ const HomeTop = ({
 
   return (
     <div className="relative z-20">
+      <PopupBackground
+        style={{ width: '177px', height: '156px', top:'-18px' }}
+        className="absolute right-0 z-10 opacity-60"
+      />
       <div ref={p.ref}>
         <div className="flex justify-between">
           <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />

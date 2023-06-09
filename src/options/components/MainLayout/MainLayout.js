@@ -52,7 +52,8 @@ const MainLayout = ({ children }) => {
       }) ? (
           <div className="w-full min-h-screen h-full bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800">
             <NavBar />
-            <div className="w-full z-40 fixed top-16 h-18.75 bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800" />
+            <div className="w-full z-40 fixed top-0 h-34.75 bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800" />
+            <div style={{zIndex:'-10'}} className="w-full fixed bottom-0 h-34.75 bg-gradient-to-r from-blueGray-900 to-indigo via-indigo-800" />
             <div className="w-full xl:w-5/6 mx-auto">
               <div className="sticky top-16 z-40 bg-transparent text-white text-3xl tracking-wider flex items-center justify-items-start h-18.75 ml-4.25">
                 {title.toUpperCase()}
