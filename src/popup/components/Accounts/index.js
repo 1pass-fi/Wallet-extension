@@ -3,7 +3,6 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
 // components
-import WelcomeScreen from './WelcomeScreen'
 import WelcomeScreenNew from './WelcomeScreenNew'
 
 const Account = () => {
