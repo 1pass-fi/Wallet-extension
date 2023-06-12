@@ -188,9 +188,18 @@ const finnieK2ProviderScript = () => {
       }
     }
 
-    signAndSendTransaction(payload) {
-      const message = { type: ENDPOINTS.K2_SIGN_AND_SEND_TRANSACTION, data: base58.encode(payload) }
-      return this.connection.send(message)
+    async signAndSendTransaction(payload) {
+      try {
+        if (payload?.recentBlockhash && payload?.feePayer) {
+          payload = payload.serializeMessage()
+        }
+        
+        const message = { type: ENDPOINTS.K2_SIGN_AND_SEND_TRANSACTION, data: base58.encode(payload) }
+        return this.connection.send(message)
+      } catch (err) {
+        console.error('signAndSendTransaction error:', err)
+        return false
+      }
     }
   }
 
