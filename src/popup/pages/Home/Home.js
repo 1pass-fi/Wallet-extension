@@ -38,7 +38,7 @@ const Home = () => {
           <PopupArrow className="absolute" style={{ top: '67px', left: '30px' }} />
           <PopupBackground
             style={{ width: '177px', height: '156px' }}
-            className="absolute top-13.5 right-0 z-10"
+            className="absolute top-13.5 right-0 z-10 opacity-60"
           />
           <div
             style={{ width: '300px' }}
@@ -57,10 +57,6 @@ const Home = () => {
               currency={currency}
               currentProviderAddress={currentProviderAddress}
               setCurrentProviderAddress={setCurrentProviderAddress}
-            />
-            <PopupBackground
-              style={{ width: '177px', height: '156px' }}
-              className="absolute top-13.5 right-0 z-10"
             />
           </div>
           <AccountInfo
