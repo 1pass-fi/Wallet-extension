@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useDispatch, useSelector } from 'react-redux'
 import clsx from 'clsx'
@@ -383,6 +383,16 @@ const AccountCard = ({
     currentProviderAddress: currentNetwork
   })
 
+  const totalCoins = useMemo(() => {
+    let total = 0
+    if (tokenList) {
+      tokenList.forEach(token => {
+        if (Number(token?.displayingBalance) > 0) total++
+      })
+    }
+    return total
+  }, [tokenList])
+
   return (
     <div className="mt-4.5 text-indigo select-none" data-testid="account-card-setting-page">
       <div
@@ -514,10 +524,10 @@ const AccountCard = ({
         <div className="flex items-center gap-4">
           <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
             <div className="flex items-center text-center font-normal text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
-              {tokenList?.length}
+              {totalCoins}
             </div>
             <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-              {tokenList?.length > 1 ? 'Coins' : 'Coin'}
+              {totalCoins > 1 ? 'Coins' : 'Coin'}
             </div>
           </div>
           <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
