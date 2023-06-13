@@ -3,13 +3,13 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
 // components
-import WelcomeScreenNew from './WelcomeScreenNew'
+import WelcomeScreen from './WelcomeScreen'
 
 const Account = () => {
   return (
     <Switch>
       <Route path="/account/welcome">
-        <WelcomeScreenNew />
+        <WelcomeScreen />
       </Route>
     </Switch>
   )
