@@ -43,9 +43,9 @@ const SignTypedDataV1 = ({ setError, setIsLoading }) => {
       chrome.runtime.sendMessage(payload)
     } catch (error) {
       setError(error.message)
+      setIsLoading(false)
     } finally {
       await storage.generic.remove.pendingRequest()
-      setIsLoading(false)
     }
   }
 
