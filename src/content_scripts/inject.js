@@ -71,6 +71,8 @@ export const injectScriptsSequentially = (scripts) => {
 
     element.onload = () => injectScriptsSequentially(scripts)
     document.documentElement.appendChild(element)
+  } else {
+    dispatchFinnieIsInjected()
   }
 }
 
@@ -90,7 +92,6 @@ export const inject = async (origin) => {
   const allScriptSrc = await Promise.all(scriptPaths.map(path => getSrcFromPath(path)))
   
   injectScriptsSequentially(allScriptSrc)
-  dispatchFinnieIsInjected()
 }
 
 export default async () => {
@@ -98,6 +99,10 @@ export default async () => {
   const shouldInjectFinnie = await checkShouldInjectFinnie(origin)
 
   if (shouldInjectFinnie) {
-    await inject(origin)
+    try {
+      await inject(origin)
+    } catch (err) {
+      console.error(err)
+    }
   }
 }
