@@ -195,7 +195,7 @@ const finnieK2ProviderScript = () => {
         }
 
         if (signers) {
-          signers = signers.map(signer => signer.toString())
+          signers = signers.map(signer => signer?.secretKey?.toString())
         }
         
         const message = { type: ENDPOINTS.K2_SIGN_AND_SEND_TRANSACTION, data: { transactionMessage: base58.encode(payload), signers} }
