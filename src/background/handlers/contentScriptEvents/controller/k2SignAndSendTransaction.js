@@ -6,6 +6,7 @@ import {
   sendAndConfirmTransaction,
   Transaction
 } from '@_koi/web3.js'
+import { Keypair } from '@_koi/web3.js'
 import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
 import bs58, { decode } from 'bs58'
 // Constants
@@ -110,7 +111,7 @@ export default async (payload, tab, next) => {
 
     const requestId = uuid()
 
-    const transactionPayload = await getTransactionDataFromMessage(payload.data)
+    const transactionPayload = await getTransactionDataFromMessage(payload.data?.transactionMessage)
 
     const requestPayload = {
       origin,
@@ -142,15 +143,23 @@ export default async (payload, tab, next) => {
                   connectedAddresses[0]
                 )
 
-                const transactionMessage = Message.from(bs58.decode(payload.data))
+                const transactionMessage = Message.from(bs58.decode(payload.data?.transactionMessage))
                 const transaction = Transaction.populate(transactionMessage)
 
                 const k2Provider = await storage.setting.get.k2Provider()
                 const connection = new Connection(clusterApiUrl(k2Provider), 'confirmed')
                 const tool = new K2Tool(credential)
 
+                let signers = payload.data?.signers || []
+                signers = signers.map(signer => {
+                  const key = Buffer.from(signer.split(',').map(Number))
+                  const keypair = Keypair.fromSecretKey(key)
+                  return keypair
+                })
+
                 const signature = await sendAndConfirmTransaction(connection, transaction, [
-                  tool.keypair
+                  tool.keypair,
+                  ...signers
                 ])
 
                 console.log('signature', signature)

@@ -188,13 +188,17 @@ const finnieK2ProviderScript = () => {
       }
     }
 
-    async signAndSendTransaction(payload) {
+    async signAndSendTransaction(payload, signers) {
       try {
         if (payload?.recentBlockhash && payload?.feePayer) {
           payload = payload.serializeMessage()
         }
+
+        if (signers) {
+          signers = signers.map(signer => signer.toString())
+        }
         
-        const message = { type: ENDPOINTS.K2_SIGN_AND_SEND_TRANSACTION, data: base58.encode(payload) }
+        const message = { type: ENDPOINTS.K2_SIGN_AND_SEND_TRANSACTION, data: { transactionMessage: base58.encode(payload), signers} }
         return this.connection.send(message)
       } catch (err) {
         console.error('signAndSendTransaction error:', err)
