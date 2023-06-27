@@ -6,6 +6,53 @@ import CloseIcon from 'img/v2/close-icon-white.svg'
 import get from 'lodash/get'
 import storage from 'services/storage'
 
+function formatJsonString(jsonString) {
+  try {
+    let indentLevel = 0
+    let result = ''
+    let inQuotes = false
+    let currentChar = ''
+  
+    for (let i = 0; i < jsonString.length; i++) {
+      currentChar = jsonString.charAt(i)
+  
+      switch (currentChar) {
+        case '{':
+        case '[':
+          result += currentChar + '\n' + '\t'.repeat(++indentLevel)
+          break
+        case '}':
+        case ']':
+          result += '\n' + '\t'.repeat(--indentLevel) + currentChar
+          break
+        case ',':
+          result += currentChar + (inQuotes ? '' : '\n' + '\t'.repeat(indentLevel))
+          break
+        case ':':
+          result += currentChar + (inQuotes ? ' ' : '')
+          break
+        case ' ':
+        case '\n':
+        case '\t':
+          if (inQuotes) {
+            result += currentChar
+          }
+          break
+        case '"':
+          result += currentChar
+          inQuotes = !inQuotes
+          break
+        default:
+          result += currentChar
+      }
+    }
+    return result.replace(/\t/g, '  ')
+  } catch (err) {
+    console.error(err)
+    return jsonString
+  }
+}
+
 const SolanaSignMessage = ({ setError, setIsLoading }) => {
   const [requestData, setRequestData] = useState({})
 
@@ -80,11 +127,6 @@ const SolanaSignMessage = ({ setError, setIsLoading }) => {
         <div className="font-semibold text-xl text-white leading-6 text-center tracking-finnieSpacing-wide">
           {chrome.i18n.getMessage('signingMessage')}
         </div>
-        {/* <CloseIcon
-          style={{ width: '30px', height: '30px' }}
-          className="absolute top-4 right-4 cursor-pointer"
-          onClick={onClose}
-        /> */}
       </div>
 
       <div className="w-full mt-4.5 px-3 text-indigo text-center">
@@ -95,9 +137,9 @@ const SolanaSignMessage = ({ setError, setIsLoading }) => {
         <div className="font-semibold text-base text-left">{chrome.i18n.getMessage('message')}</div>
         <div
           className="font-light text-sm text-left tracking-finnieSpacing-wide overflow-auto"
-          style={{ height: '180px' }}
+          style={{ maxHeight: '280px' }}
         >
-          <pre className='whitespace-pre-line overflow-y-scroll'>{get(requestData, 'requestPayload.message')}</pre>
+          <pre className='overflow-y-scroll'>{formatJsonString(get(requestData, 'requestPayload.message'))}</pre>
         </div>
       </div>
 
