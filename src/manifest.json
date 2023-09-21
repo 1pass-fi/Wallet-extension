@@ -17,7 +17,6 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "scripting",
     "storage",
     "unlimitedStorage",
     "downloads",
