@@ -68,8 +68,9 @@ export const useNfts = ({ setCollections, walletLoaded, newAddress, pathname }) 
     }
 
     if (walletLoaded) {
-      loadAssetsFromStorage()
-      fetchAssets()
+      /** Disable nft feature */
+      // loadAssetsFromStorage()
+      // fetchAssets()
     }
   }, [walletLoaded, newAddress])
 }
