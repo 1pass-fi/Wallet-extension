@@ -1,6 +1,5 @@
 import React, { useEffect,useState } from 'react'
 import {
-  clusterApiUrl as clusterApiUrlK2,
   Connection as ConnectionK2,
   Keypair as KeypairK2,
   LAMPORTS_PER_SOL as LAMPORTS_PER_SOLK2,
@@ -26,6 +25,7 @@ import storage from 'services/storage'
 import { fromLampToSol,numberFormat } from 'utils'
 import { clarifyEthereumProvider } from 'utils'
 import clusterApiUrl from 'utils/clusterApiUrl'
+import clusterApiUrlK2 from 'utils/k2ClusterApiUrl'
 
 
 const fromHexToDecimal = (hexString) => {

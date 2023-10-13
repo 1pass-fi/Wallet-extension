@@ -229,6 +229,7 @@ export class EthereumMethod {
                 // Supported activities
                 let token, decimals, contract, to
                 const transactionMethod = get(decodedData, 'name')
+                let receipt
                 switch (transactionMethod) {
                   case TRANSACTION_METHOD.ERC20_TRANSFER:
                     contract = new ethers.Contract(activity.to, ERC20ABI, web3)

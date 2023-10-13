@@ -1,4 +1,4 @@
-import { clusterApiUrl, Connection, LAMPORTS_PER_SOL,PublicKey } from '@_koi/web3.js'
+import { Connection, LAMPORTS_PER_SOL,PublicKey } from '@_koi/web3.js'
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { TYPE } from 'constants/accountConstants'
 import { ACCOUNT } from 'constants/accountConstants'
@@ -6,7 +6,9 @@ import { ALL_NFT_LOADED,PATH } from 'constants/koiConstants'
 import { findIndex } from 'lodash'
 import moment from 'moment'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
+import storage from 'services/storage'
 import { getChromeStorage } from 'utils'
+import clusterApiUrl from 'utils/k2ClusterApiUrl'
 import * as TokenAssets from 'utils/resolveSolanaNFTs'
 
 export class K2Method {
@@ -202,7 +204,8 @@ export class K2Method {
   }
 
   async updateActivities() {
-    const connection = new Connection(clusterApiUrl('testnet'))
+    const provider = await storage.setting.get.k2Provider()
+    const connection = new Connection(clusterApiUrl(provider))
 
     const signatureInfos = await connection.getSignaturesForAddress(this.k2Tool.keypair.publicKey)
 

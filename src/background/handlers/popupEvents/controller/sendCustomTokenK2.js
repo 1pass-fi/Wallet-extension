@@ -2,7 +2,6 @@
 // import { getOrCreateAssociatedTokenAccount, transfer } from '@solana/spl-token'
 
 import {
-  clusterApiUrl,
   Connection,
   Keypair,
   PublicKey,
@@ -17,6 +16,7 @@ import {
 import { backgroundAccount } from 'services/account'
 import { K2Tool } from 'services/k2'
 import storage from 'services/storage'
+import clusterApiUrl from 'utils/k2ClusterApiUrl'
 
 const getSigners = (signerOrMultisig, multiSigners) => {
   return signerOrMultisig instanceof PublicKey

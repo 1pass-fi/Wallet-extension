@@ -1,5 +1,5 @@
 import { Message, Transaction } from '@_koi/web3.js'
-import { clusterApiUrl, Connection, PublicKey, sendAndConfirmTransaction } from '@_koi/web3.js'
+import { Connection, PublicKey, sendAndConfirmTransaction } from '@_koi/web3.js'
 import { decodeTransferInstructionUnchecked, getAccount } from '@solana/spl-token'
 import base58 from 'bs58'
 import bs58 from 'bs58'
@@ -12,6 +12,7 @@ import { K2Tool } from 'services/k2'
 import storage from 'services/storage'
 // Utils
 import { createWindow } from 'utils/extension'
+import clusterApiUrl from 'utils/k2ClusterApiUrl'
 import { v4 as uuid } from 'uuid'
 
 const getTransactionDataFromMessage = async (transactionMessage) => {

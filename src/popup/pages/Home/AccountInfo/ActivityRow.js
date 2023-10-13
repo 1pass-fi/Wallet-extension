@@ -105,6 +105,7 @@ const ActivityRow = ({
             token = activityName.split(' ').pop()
           }
 
+          let tokenType
           if (
             activityName === chrome.i18n.getMessage('contractInteraction') ||
             activityName === chrome.i18n.getMessage('unknownTransaction')
@@ -133,6 +134,7 @@ const ActivityRow = ({
           blockUrl,
           displayExploreBlock
         }
+
         setDisplayInfo(info)
         setLoaded(true)
       } catch (err) {
