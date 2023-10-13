@@ -26,6 +26,7 @@ export default async (payload, next) => {
     
     // newContentList.forEach(({ newContents, account }) => helpers.saveContent.saveNewNFTsToStorage(newContents, account))
     console.log('load my content')
+    next()
 
   } catch (err) {
     console.error(err.message)
