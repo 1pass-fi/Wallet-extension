@@ -1,5 +1,4 @@
 import {
-  clusterApiUrl,
   Connection,
   Message,
   PublicKey,
@@ -17,6 +16,7 @@ import { K2Tool } from 'services/k2'
 import storage from 'services/storage'
 // Utils
 import { createWindow } from 'utils/extension'
+import clusterApiUrl from 'utils/k2ClusterApiUrl'
 import { v4 as uuid } from 'uuid'
 
 const getTransactionDataFromMessage = async (transactionMessage) => {
