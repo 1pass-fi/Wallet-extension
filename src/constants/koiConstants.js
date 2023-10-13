@@ -450,7 +450,7 @@ export const SOL_NETWORK_PROVIDER = {
 
 export const K2_NETWORK_PROVIDER = {
   MAINNET: 'mainnet-beta',
-  TESTNET: 'testnet',
+  TESTNET: 'https://testnet.koii.live',
   DEVNET: 'devnet'
 }
 

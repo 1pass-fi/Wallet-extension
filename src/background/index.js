@@ -4,7 +4,7 @@ import 'setimmediate'
 global.window = global
 
 import { IMPORTED } from 'constants/accountConstants'
-import { MESSAGES, OS, PATH, PORTS } from 'constants/koiConstants'
+import { K2_NETWORK_PROVIDER, MESSAGES, OS, PATH, PORTS } from 'constants/koiConstants'
 import { FINNIE_ALTERNATIVES } from 'constants/koiConstants'
 import storage from 'services/storage'
 import walletConnect from 'services/walletConnect'
@@ -139,3 +139,9 @@ const initWalletConnect = async () => {
 initWalletConnect()
 
 global.XMLHttpRequest = xmlHttpRequest.XMLHttpRequest
+
+const updateK2TestnetRpc = async () => {
+  storage.setting.set.k2Provider(K2_NETWORK_PROVIDER.TESTNET)
+}
+
+updateK2TestnetRpc()
