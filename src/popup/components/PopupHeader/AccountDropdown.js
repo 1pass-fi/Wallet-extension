@@ -12,7 +12,8 @@ import { TYPE } from 'constants/accountConstants'
 // constants
 import { MESSAGES, PATH } from 'constants/koiConstants'
 import EvmLogo from 'img/evm-logo.svg'
-import AddIcon from 'img/popup/add-icon.svg'
+import AddIcon from 'img/popup/add-icon-new.svg'
+// import AddIcon from 'img/popup/add-icon.svg'
 import CopyIcon from 'img/popup/copy-icon.svg'
 import FinnieIcon from 'img/popup/finnie-icon.svg'
 import EmptyStarIcon from 'img/popup/star-empty-icon.svg'
@@ -204,12 +205,15 @@ export const AccountDropdown = React.forwardRef(
           ))}
         </div>
         <div
-          className="w-full bg-indigo cursor-pointer text-center underline font-normal text-xs leading-8 tracking-finnieSpacing-tight text-white"
+          className="w-full bg-indigo cursor-pointer text-center font-normal text-xs leading-8 tracking-finnieSpacing-tight text-white"
           key={'edit-accounts'}
-          style={{ height: '26px' }}
+          style={{ height: '44px' }}
           onClick={() => goToSettingPage()}
         >
-          {chrome.i18n.getMessage('editAccounts')}
+          <div className='flex flex-row justify-center items-center h-full'>
+            <AddIcon />
+            <div className='ml-2 text-sm font-normal'>Add Account</div>
+          </div>
         </div>
 
         {isCopied && (

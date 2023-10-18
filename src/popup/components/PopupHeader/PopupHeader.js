@@ -120,13 +120,13 @@ const Header = ({ setShowConnectedSites }) => {
       >
         <SettingIcon style={{ width: '33px', height: '32px' }} />
       </div>
-      <div
+      {/* <div
         className="bg-blue-800 flex items-center justify-center mr-0.25 cursor-pointer"
         style={{ width: '87px' }}
         onClick={goToDID}
       >
         <Avatar className="mt-1.25" />
-      </div>
+      </div> */}
       <div
         onClick={() => setShowPauseFinnieDropdown((prev) => !prev)}
         className="bg-blue-800 flex items-center justify-center cursor-pointer"

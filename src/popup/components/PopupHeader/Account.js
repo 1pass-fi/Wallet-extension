@@ -18,7 +18,7 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
   return (
     <div
       className="bg-blue-800 flex items-center justify-between cursor-pointer select-none"
-      style={{ width: '249px', height: '100%' }}
+      style={{ width: '341px', height: '100%' }}
       onClick={() => {
         setShowAccountDropdown((prev) => !prev)
       }}

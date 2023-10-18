@@ -12,6 +12,7 @@ import {
 // constants
 import { TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
+import CopyIcon from 'img/popup/copy-icon-new.svg'
 import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 import PopupBackground from 'img/popup/popup-background.svg'
 import ReceiveIcon from 'img/popup/receive-icon.svg'
@@ -22,6 +23,7 @@ import isEmpty from 'lodash/isEmpty'
 // components
 import { loadAllAccounts } from 'options/actions/accounts'
 import Select from 'options/components/Select'
+import formatLongString from 'options/utils/formatLongString'
 import { setActivities } from 'popup/actions/activities'
 import { setCurrentProvider } from 'popup/actions/currentProvider'
 import { setIsLoading } from 'popup/actions/loading'
@@ -42,6 +44,7 @@ const HomeTop = ({
   updateK2Provider,
   setActivities
 }) => {
+  const [isCopied, setIsCopied] = useState(false)
   const p = useParallax({
     translateX: [0, 100],
     shouldAlwaysCompleteAnimation: true,
@@ -202,6 +205,12 @@ const HomeTop = ({
     chrome.tabs.create({ url })
   }
 
+  const onCopy = () => {
+    setIsCopied(true)
+
+    setTimeout(() => setIsCopied(false), 3000)
+  }
+
   return (
     <div className="relative z-20">
       <PopupBackground
@@ -210,8 +219,20 @@ const HomeTop = ({
       />
       <div ref={p.ref}>
         <div className="flex justify-between">
-          <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />
-          {displayingAccount.type === TYPE.K2 && (
+          <div className='flex flex-row items-center'>
+            <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />
+            <div style={{backgroundColor: '#DCF7F5'}} className='flex flex-row items-center rounded-lg py-1 px-2 ml-3'>
+              <div className='mr-2'>{
+                formatLongString(displayingAccount.address, 13)
+              }</div>
+              <div onClick={async (e) => {
+                e.stopPropagation()
+                onCopy()
+                await navigator.clipboard.writeText(displayingAccount.address)
+              }} className='cursor-pointer'><CopyIcon /></div>
+            </div>
+          </div>
+          {/* {displayingAccount.type === TYPE.K2 && (
             <div className="mr-1.75" data-testid="provider-dropdown">
               <Select
                 options={k2ProviderOptions}
@@ -219,7 +240,7 @@ const HomeTop = ({
                 onChange={onChangeK2Provider}
               />
             </div>
-          )}
+          )} */}
           {displayingAccount.type === TYPE.ETHEREUM && (
             <div className="mr-1.75" data-testid="provider-dropdown">
               <Select
@@ -308,7 +329,7 @@ const HomeTop = ({
               className="rounded-full bg-lightBlue shadow flex items-center justify-center cursor-pointer"
               style={{ width: '44px', height: '44px' }}
             >
-              <SendIcon style={{ width: '23px', height: '20px' }} data-testid="icon-send-tokens" />
+              <SendIcon style={{ width: '48px', height: '48px' }} data-testid="icon-send-tokens" />
             </div>
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
               {chrome.i18n.getMessage('sendUc')}
@@ -319,13 +340,21 @@ const HomeTop = ({
               className="rounded-full bg-lightBlue shadow flex items-center justify-center cursor-pointer"
               style={{ width: '44px', height: '44px' }}
             >
-              <ReceiveIcon style={{ width: '23px', height: '20px' }} />
+              <ReceiveIcon style={{ width: '48px', height: '48px' }} />
             </div>
             <div className="mt-2.25 text-center text-xs leading-3 tracking-finnieSpacing-wide">
               {chrome.i18n.getMessage('receiveUc')}
             </div>
           </Link>
         </div>
+        {isCopied && (
+          <div
+            className="absolute bg-cyan text-blue-800 rounded-3xl shadow-md text-center flex items-center justify-center"
+            style={{ width: '159px', height: '28px', left: '115px', top: '420px' }}
+          >
+            {chrome.i18n.getMessage('addressCopied')}
+          </div>
+        )}
       </div>
     </div>
   )
