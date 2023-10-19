@@ -4,7 +4,7 @@ body {
   font-family: 'Sora', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: linear-gradient(90deg, #030332 0%, #171753 100%);
+  background-color: #353570;
 }
 
 /* width */
@@ -43,7 +43,7 @@ button {
 
 .app {
   position: relative;
-  background: linear-gradient(90deg, #030332 0%, #171753 100%);
+  background: #353570;
   min-height: 100vh;
 }
 
@@ -57,7 +57,7 @@ button {
 }
 
 .app-background {
-  background: linear-gradient(90deg, #030332 0%, #171753 100%);
+  background: #353570;
   height: 100vh;
 }
 

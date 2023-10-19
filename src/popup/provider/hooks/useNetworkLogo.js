@@ -19,6 +19,19 @@ const useNetworkLogo = ({ networkName }) => {
     return <EvmLogo />
   }, [networkName])
 
+  const networkSymbol = useMemo(() => {
+    switch(networkName) {
+      case 'ETH Mainnet':
+        return <div>ETH</div>
+      case 'Goerli Testnet':
+        return <div>ETH</div>
+      case 'Polygon Testnet':
+        return <div>MATIC</div>
+      case 'Polygon':
+        return <div>MATIC</div>
+    }
+  })
+
   const networkLogoPath = useMemo(() => {
     switch (networkName) {
       case 'ETH Mainnet':
@@ -34,7 +47,7 @@ const useNetworkLogo = ({ networkName }) => {
     return 'img/evm-logo.svg'
   })
 
-  return { networkLogo, networkLogoPath }
+  return { networkLogo, networkLogoPath, networkSymbol }
 }
 
 export default useNetworkLogo

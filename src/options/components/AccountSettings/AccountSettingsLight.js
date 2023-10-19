@@ -12,19 +12,6 @@ import ToolTip from 'options/components/ToolTip'
 
 const accountSettingItems = [
   {
-    id: 'kid-dropdown-light',
-    text: chrome.i18n.getMessage('koiiIdentity'),
-    path: '/settings/kID',
-    icon: DidIcon,
-    disabled: true
-  },
-  {
-    id: 'gallery-dropdown-light',
-    text: chrome.i18n.getMessage('gallerySettings'),
-    path: '/settings/gallery',
-    icon: GalleryIcon
-  },
-  {
     id: 'wallet-dropdown-light',
     text: chrome.i18n.getMessage('walletSettings'),
     path: '/settings/wallet',

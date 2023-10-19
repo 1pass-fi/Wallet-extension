@@ -86,52 +86,6 @@ const Sidebar = ({ currentPath }) => {
 
   return (
     <div className="w-61 3xl:w-65.5">
-      <nav className="flex w-full items-center justify-evenly gapx-3 mb-5">
-        <div
-          className={clsx('flex items-center justify-center w-13.75 h-11.25 cursor-not-allowed')}
-          data-tip={chrome.i18n.getMessage('featureUnderConstruction')}
-          data-for="sidebar-collections"
-        >
-          <CreateIcon className="w-7.5 h-7" />
-        </div>
-        <ToolTip id="sidebar-collections" />
-        {navItems.map(({ icon: Icon, path }) => (
-          <NavLink
-            key={path}
-            to={path}
-            className="flex items-center justify-center w-13.75 h-11.25"
-            activeClassName="rounded-t border-b border-white bg-trueGray-100 bg-opacity-20"
-            onClick={() => {
-              path === '/create-nft'
-                ? setShowCollectionTooltip(true)
-                : setShowCollectionTooltip(false)
-            }}
-          >
-            <Icon className="w-7.5 h-7" />
-            {/* {path === '/create-nft' && currentPath === '/create-nft' && showCollectionTooltip && (
-              <div
-                className="collection-tooltip-after absolute -top-11 -right-28 flex items-center border border-white bg-indigo text-white text-center pr-2 rounded-sm"
-                style={{ width: '201px', height: '47px' }}
-              >
-                <CloseIcon
-                  className="absolute top-0.75 right-0.75 cursor-pointer"
-                  style={{ width: '14px', height: '15px' }}
-                  onClick={() => setShowCollectionTooltip(false)}
-                />
-                Upload multiple NFTs at the same time with collections.
-              </div>
-            )} */}
-          </NavLink>
-        ))}
-        {/* <div
-          className={clsx('flex items-center justify-center w-13.75 h-11.25 cursor-not-allowed')}
-          data-tip={chrome.i18n.getMessage('comingSoon')}
-          data-for="sidebar-collections"
-        >
-          <CollectionIcon className="w-7.5 h-7" />
-        </div> */}
-        <ToolTip id="sidebar-collections" />
-      </nav>
       <div style={{ height: '60vh' }} className="rounded overflow-y-scroll">
         <div className="bg-trueGray-100 bg-opacity-20 rounded w-58.5 3xl:w-64">
           <Switch>
@@ -140,16 +94,6 @@ const Sidebar = ({ currentPath }) => {
                 <UploadNftForm />
               </HasArweave>
             </Route>
-            {/* <Route exact path="/collections">
-              <SortAndFilter
-                handleSearchFieldChange={handleSearchFieldChangeCollection}
-                handleSelectChains={handleSelectChainsCollection}
-                handleSort={handleSortCollection}
-                sortBy={sortByCollection}
-                selectedChain={chainTypeCollection}
-                type="Collections"
-              />
-            </Route> */}
             <Route path="/collections/create">
               <HasArweave content={chrome.i18n.getMessage('createNFTsArweaveSupported')}>
                 <CollectionForm />

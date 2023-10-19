@@ -7,7 +7,8 @@ import { TYPE } from 'constants/accountConstants'
 import { OS, STORAGE } from 'constants/koiConstants'
 import data from 'currency-codes/data'
 import getSymbolFromCurrency from 'currency-symbol-map'
-import { get, isEmpty } from 'lodash'
+import CopyIcon from 'img/copy-icon-green.svg'
+import { get, isEmpty, isNumber } from 'lodash'
 import { setError } from 'options/actions/error'
 import { setQuickNotification } from 'options/actions/quickNotification'
 import AccountCard from 'options/components/AccountCard'
@@ -17,6 +18,10 @@ import ConnectedSitesModal from 'options/components/ConnectedSitesModal'
 import DropDown from 'options/components/DropDown'
 import OverwriteMetamaskModal from 'options/components/OverwriteMetamaskModal'
 import { GalleryContext } from 'options/galleryContext'
+import { getDisplayingAccount } from 'options/selectors/displayingAccount'
+import formatLongString from 'options/utils/formatLongString'
+import formatNumber from 'options/utils/formatNumber'
+import useNetworkLogo from 'popup/provider/hooks/useNetworkLogo'
 import storage from 'services/storage'
 import { getChromeStorage, isSolanaAddress, setChromeStorage } from 'utils'
 
@@ -44,8 +49,12 @@ export default () => {
   const [removeAccount, setRemoveAccount] = useState({})
   const [listAccounts, setListAccounts] = useState([])
   const [showOverwriteMetamask, setShowOverwriteMetamask] = useState(false)
+  const [isCopied, setIsCopied] = useState(false)
+  const [balance, setBalance] = useState('--- KOII')
 
   const accounts = useSelector((state) => state.accounts)
+  const displayingAccount = useSelector(getDisplayingAccount)
+  const networkMetadata = useSelector(state => state.networkMetadata)
 
   const currenciesData = useMemo(
     () =>
@@ -131,6 +140,42 @@ export default () => {
     }
   }, [chainOption, accounts])
 
+  useEffect(() => {
+    const loadBalance = async () => {
+      try {
+        let balance, symbol
+        if (displayingAccount.type === TYPE.ARWEAVE) {
+          balance = isNumber(displayingAccount.balance) ? formatNumber(displayingAccount.balance, 4) : '0'
+          symbol = 'AR'
+        }
+        if (displayingAccount.type === TYPE.ETHEREUM) {
+          balance = formatNumber(displayingAccount.balance, 4) !== 'NaN' ? formatNumber(displayingAccount.balance, 4) : '0'
+          symbol = networkMetadata.currencySymbol
+        }
+        if (displayingAccount.type === TYPE.K2) {
+          balance = formatNumber(displayingAccount.balance, 4) !== 'NaN'
+            ? formatNumber(displayingAccount.balance / Math.pow(10, 9), 4)
+            : '0'
+          symbol = 'KOII'
+        }
+        if (displayingAccount.type === TYPE.SOLANA) {
+          balance = formatNumber(displayingAccount.balance, 4) !== 'NaN'
+            ? formatNumber(displayingAccount.balance / Math.pow(10, 9), 4)
+            : '0'
+          symbol = 'SOL'
+        }
+  
+        if (balance && symbol) setBalance(`${balance} ${symbol}`)
+      } catch(err) {
+        console.error('loadBalance', err)
+      }
+    }
+
+    if (!isEmpty(displayingAccount)) {
+      loadBalance()
+    }
+  }, [displayingAccount])
+
   const onChainOption = (chain) => {
     setChainOption(chain)
   }
@@ -173,18 +218,41 @@ export default () => {
     setShowOverwriteMetamask(true)
   }
 
+  const onCopy = () => {
+    setIsCopied(true)
+
+    setTimeout(() => setIsCopied(false), 3000)
+  }
+
   return (
     <div className="wallet-settings-wrapper">
       <div className="wallet-settings">
-        <div className="header">{chrome.i18n.getMessage('walletSettings')}</div>
-        <div className="mt-10 pl-5">
+        <div style={{width:'743px', backgroundColor:'rgba(137, 137, 199, 0.3)'}} className='rounded-lg p-3 pl-4 ml-5 mb-8'>
+          <div className='text-4xl font-normal pb-2'>{balance}</div>
+          <div className='flex flex-row text-xs font-normal items-center'>
+            <div className='mr-3'>{formatLongString(displayingAccount.accountName, 20)}</div>
+            <div style={{color: '#BEF0ED'}} className='mr-1'>{formatLongString(displayingAccount.address, 30)}</div>
+            <CopyIcon onClick={async (e) => {
+              e.stopPropagation()
+              onCopy()
+              await navigator.clipboard.writeText(displayingAccount.address)
+            }} className='mr-3 cursor-pointer' />
+            {isCopied && <div
+              className="bg-cyan text-blue-800 rounded-md shadow-md text-xs text-center flex items-center justify-center px-1"
+            >
+              {chrome.i18n.getMessage('addressCopied')}
+            </div>}
+          </div>
+        </div>
+        <div className="header mb-1">{chrome.i18n.getMessage('walletSettings')}</div>
+        <div className="pl-5">
           <div className="add-wallet pb-2 mb-4 border-b border-white">
             <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
-              {chrome.i18n.getMessage('addAKey')}
+              ADD AN ACCOUNT
             </div>
             <div className="flex gap-6.75 my-1">
               <div
-                className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center mr-6.75 cursor-pointer"
+                className="bg-success rounded-sm text-center text-indigo font-semibold text-sm 2xl:text-base 3xl:text-lg leading-4 flex justify-center items-center mr-6.75 cursor-pointer"
                 style={{ width: '220px', height: '38px' }}
                 onClick={onCreateWallet}
                 data-testid="setting-create-wallet"
@@ -193,7 +261,7 @@ export default () => {
                 {chrome.i18n.getMessage('createANewKey')}
               </div>
               <div
-                className="bg-trueGray-100 rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center cursor-pointer"
+                className="bg-trueGray-100 rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-semibold flex justify-center items-center cursor-pointer"
                 style={{ width: '220px', height: '38px' }}
                 onClick={onImportSeedPhrase}
                 data-testid="setting-import-wallet"
@@ -244,7 +312,7 @@ export default () => {
               {chrome.i18n.getMessage('youCanChangeThisSetting')}
             </div>
             <div
-              className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center mr-6.75 cursor-pointer"
+              className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-semibold flex justify-center items-center mr-6.75 cursor-pointer"
               style={{ width: '220px', height: '38px' }}
               onClick={onClickSeeListOfSites}
               data-testid="setting-see-list-of-sites"
@@ -296,7 +364,7 @@ export default () => {
               <EvmNetworks />
             </div>
             <div
-              className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-normal flex justify-center items-center mr-6.75"
+              className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-semibold flex justify-center items-center mr-6.75"
               style={{ width: '220px', height: '38px' }}
               data-testid="setting-see-list-of-sites"
               role="button"

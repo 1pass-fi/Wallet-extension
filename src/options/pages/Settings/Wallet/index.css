@@ -12,10 +12,10 @@
 }
 
 .wallet-settings-wrapper .header {
-  font-size: 32px;
+  font-size: 24px;
+  font-weight: 600;
   line-height: 40px;
   margin-left: 20px;
-  margin-bottom: 40px;
   color: #9be7c4;
 }
 
