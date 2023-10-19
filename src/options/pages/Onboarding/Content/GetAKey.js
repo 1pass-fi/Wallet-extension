@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { TYPE } from 'constants/accountConstants'
 import { NETWORK } from 'constants/koiConstants'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
@@ -6,6 +6,7 @@ import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg
 import WarningIcon from 'img/warning-triangle.svg'
 import KeyLogo from 'options/components/KeyLogo'
 import ToolTip from 'options/components/ToolTip'
+import { popupAccount } from 'services/account'
 
 import { OnboardingContext } from '../onboardingContext'
 
@@ -14,6 +15,7 @@ const GetAKey = ({ step, setStep, setImportType }) => {
 
   const [inProcessing, setInProcessing] = useState(false)
   const [networkProcessing, setNetworkProcessing] = useState(null)
+  const [totalAccount, setTotalAccount] = useState(0)
 
   const handleGetNewKey = async (network) => {
     if (networkProcessing) {
@@ -44,6 +46,19 @@ const GetAKey = ({ step, setStep, setImportType }) => {
     setStep(step + 1)
   }
 
+  useEffect(() => {
+    const skipOnboarding = async () => {
+      const count = await popupAccount.count()
+      if (count === 0) {
+        handleGetNewKey(TYPE.K2)
+      } else {
+        setTotalAccount(count)
+      }
+    }
+
+    skipOnboarding()
+  }, [])
+
   return (
     <div data-testid="GetAKey" className="w-3/4 flex flex-col text-white text-left">
       <WelcomeBackgroundTop className="absolute top-0 right-0" />
@@ -70,7 +85,7 @@ const GetAKey = ({ step, setStep, setImportType }) => {
           <div className="font-normal text-lg leading-6">Koii</div>
         </div>
         <ToolTip />
-        <div className="flex flex-col items-center">
+        {totalAccount > 0 && <div className="flex flex-col items-center">
           <KeyLogo
             type={TYPE.ETHEREUM}
             inProcessing={inProcessing}
@@ -79,8 +94,8 @@ const GetAKey = ({ step, setStep, setImportType }) => {
             data_testid="ethereum-key"
           />
           <div className="font-normal text-lg leading-6">Ethereum</div>
-        </div>
-        <div className="flex flex-col items-center">
+        </div>}
+        {totalAccount > 0 && <div className="flex flex-col items-center">
           <KeyLogo
             type={TYPE.SOLANA}
             inProcessing={inProcessing}
@@ -89,8 +104,8 @@ const GetAKey = ({ step, setStep, setImportType }) => {
             data_testid="solana-key"
           />
           <div className="font-normal text-lg leading-6">Solana</div>
-        </div>
-        <div className="flex flex-col items-center">
+        </div>}
+        {totalAccount > 0 && <div className="flex flex-col items-center">
           <KeyLogo
             type={TYPE.ARWEAVE}
             inProcessing={inProcessing}
@@ -99,7 +114,7 @@ const GetAKey = ({ step, setStep, setImportType }) => {
             data_testid="arweave-key"
           />
           <div className="font-normal text-lg leading-6">Arweave</div>
-        </div>
+        </div>}
       </div>
 
       <div className="mt-6 ml-3 text-warning flex items-center gap-2">
