@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import clsx from 'clsx'
 import CreateIcon from 'img/v2/create-icon.svg'
 import WelcomeToFinnieWallet from 'img/welcome-to-finnie-wallet.svg'
@@ -13,38 +14,43 @@ import ToolTip from 'options/components/ToolTip'
 import './index.css'
 
 const Gallery = () => {
-  const dispatch = useDispatch()
+  const history = useHistory()
+  // const dispatch = useDispatch()
 
-  const filteredNfts = useSelector((state) => state.assets.filteredNfts)
-  const [displayingNfts, setDisplayingNfts] = useState(filteredNfts.slice(0, 16))
-  const [dislayLength, setDisplayLength] = useState(filteredNfts.length)
+  // const filteredNfts = useSelector((state) => state.assets.filteredNfts)
+  // const [displayingNfts, setDisplayingNfts] = useState(filteredNfts.slice(0, 16))
+  // const [dislayLength, setDisplayLength] = useState(filteredNfts.length)
+
+  // useEffect(() => {
+  //   if (dislayLength === filteredNfts.length && displayingNfts === filteredNfts.slice(0, 16)) {
+  //     return
+  //   } else {
+  //     setDisplayLength(filteredNfts.length)
+  //     setDisplayingNfts(filteredNfts.slice(0, 16))
+  //   }
+  // }, [filteredNfts])
+
+  // const handleScroll = (e) => {
+  //   const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
+  //   if (bottom && displayingNfts.length < filteredNfts.length) {
+  //     dispatch(setIsLoading)
+  //     setTimeout(() => {
+  //       setDisplayingNfts([
+  //         ...displayingNfts,
+  //         ...filteredNfts.slice(displayingNfts.length, displayingNfts.length + 16)
+  //       ])
+  //       dispatch(setLoaded)
+  //     }, 700)
+  //   }
+  // }
 
   useEffect(() => {
-    if (dislayLength === filteredNfts.length && displayingNfts === filteredNfts.slice(0, 16)) {
-      return
-    } else {
-      setDisplayLength(filteredNfts.length)
-      setDisplayingNfts(filteredNfts.slice(0, 16))
-    }
-  }, [filteredNfts])
-
-  const handleScroll = (e) => {
-    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
-    if (bottom && displayingNfts.length < filteredNfts.length) {
-      dispatch(setIsLoading)
-      setTimeout(() => {
-        setDisplayingNfts([
-          ...displayingNfts,
-          ...filteredNfts.slice(displayingNfts.length, displayingNfts.length + 16)
-        ])
-        dispatch(setLoaded)
-      }, 700)
-    }
-  }
+    history.push('/settings/wallet')
+  }, [])
 
   return (
-    <div id="gallery" className="w-full flex justify-center items-center" onScroll={handleScroll}>
-      {!isEmpty(displayingNfts) ?
+    <div id="gallery" className="w-full flex justify-center items-center">
+      {/* {!isEmpty(displayingNfts) ?
         <div
           className={clsx(
             'w-full h-full gap-x-5 gap-y-10 place-items-start content-start',
@@ -63,7 +69,7 @@ const Gallery = () => {
             <div className='text-sm font-normal'>The beginning of exchange, creation, and truly decentralization</div>
           </div>
         )
-      }
+      } */}
     </div>
   )
 }

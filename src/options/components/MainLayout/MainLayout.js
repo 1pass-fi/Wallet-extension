@@ -11,7 +11,7 @@ const MainLayout = ({ children }) => {
     switch (location.pathname) {
       case '/':
       case '/gallery':
-        title = chrome.i18n.getMessage('gallery')
+        title = chrome.i18n.getMessage('settings')
         break
       // case '/collections':
       //   title = 'Collections'

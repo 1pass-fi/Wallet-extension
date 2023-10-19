@@ -109,13 +109,13 @@ const Sidebar = ({ currentPath }) => {
               <NotificationsCenterLinks />
             </Route>
             <Route path="*">
-              <SortAndFilter
+              {/* <SortAndFilter
                 handleSearchFieldChange={handleSearchFieldChange}
                 handleSelectChains={handleSelectChains}
                 handleSort={handleSort}
                 sortBy={sortBy}
                 selectedChain={chainType}
-              />
+              /> */}
             </Route>
           </Switch>
         </div>
