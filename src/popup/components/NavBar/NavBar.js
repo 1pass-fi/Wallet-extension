@@ -71,12 +71,12 @@ const NavBar = ({ handleLockWallet }) => {
 
   return (
     <div
-      className="flex items-center justify-between fixed bottom-0 px-0.7 w-full"
+      className="flex items-center justify-between fixed bottom-0 px-0.7 w-full px-0.5"
       style={{ height: '64px', backgroundColor: '#4e4e7e' }}
     >
       <div
-        className="bg-blue-800 cursor-pointer rounded-bl-md"
-        style={{ width: '140px', height: '58px' }}
+        className="cursor-pointer rounded-bl-md"
+        style={{ width: '139px', height: '58px', backgroundColor: '#353570' }}
         onClick={goToLeaderboard}
       >
         <LeaderboardIcon className="mx-auto mt-1" style={{ width: '36px', height: '36px' }} />
@@ -84,7 +84,7 @@ const NavBar = ({ handleLockWallet }) => {
       </div>
       <div
         className="bg-blue-800 cursor-pointer"
-        style={{ width: '140px', height: '58px' }}
+        style={{ width: '139px', height: '58px', backgroundColor: '#353570' }}
         onClick={goToExploreBlock}
       >
         <ExploreBlockIcon className="mx-auto mt-1" style={{ width: '36px', height: '36px'}}/>
@@ -92,7 +92,7 @@ const NavBar = ({ handleLockWallet }) => {
       </div>
       <div
         className="bg-blue-800 cursor-pointer rounded-br-md"
-        style={{ width: '140px', height: '58px' }}
+        style={{ width: '139px', height: '58px', backgroundColor: '#353570' }}
         onClick={handleLockWallet}
       >
         <LockIcon className="mx-auto mt-1" style={{ width: '18px', height: '36px' }} />

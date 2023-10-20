@@ -393,6 +393,54 @@ const AccountCard = ({
     return total
   }, [tokenList])
 
+  const tokenSymbol = useMemo(() => {
+    switch (account.type) {
+      case TYPE.K2:
+        return 'KOII'
+      case TYPE.ARWEAVE:
+        return 'AR'
+      case TYPE.ETHEREUM:
+        return get(networkMetadata, 'currencySymbol')
+      case TYPE.SOLANA:
+        return 'SOL'
+    }
+  }, [networkMetadata, account])
+
+  const balanceString = useMemo(() => {
+    function formatNumber(number) {
+      if (!isNumber(number)) return '---'
+      if (number.toFixed(3) === '0.000') return '0'
+      if (number < 10) {
+        return number.toFixed(3)
+      } else if (number < 1000) {
+        return number.toFixed(1)
+      } else if (number < 1000000) {
+        return (number / 1000).toFixed(1) + 'K'
+      } else {
+        return (number / 1000000).toFixed(1) + 'M'
+      }
+    }
+
+    if (!isEmpty(account)) {
+      let balanceNumber
+      switch (account.type) {
+        case TYPE.K2:
+          balanceNumber = get(account, 'balance', 0) / Math.pow(10, 9)
+          break
+        case TYPE.ETHEREUM:
+          balanceNumber = get(account, 'balance', 0)
+          break
+        case TYPE.SOLANA:
+          balanceNumber = get(account, 'balance', 0) / Math.pow(10, 9)
+          break
+        case TYPE.ARWEAVE:
+          balanceNumber = get(account, 'balance', 0)
+          break
+      }
+      return formatNumber(Number(balanceNumber))
+    }
+  }, [account])
+
   return (
     <div className="mt-4.5 text-indigo select-none" data-testid="account-card-setting-page">
       <div
@@ -487,7 +535,7 @@ const AccountCard = ({
             >
               {chrome.i18n.getMessage('balance')}{': '}
               {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'}{' '}
-              {get(networkMetadata, 'currencySymbol')}
+              {tokenSymbol}
             </div>
           )}
           {account.type === TYPE.SOLANA && (
@@ -522,6 +570,27 @@ const AccountCard = ({
           </div>
         </div>
         <div className="flex items-center gap-4">
+          {/* FIRST BLOCK */}
+          <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
+            <div className="flex items-center text-center font-normal text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
+              {tokenSymbol}
+            </div>
+            <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+              Token
+            </div>
+          </div>
+
+          {/* SECOND BLOCK */}
+          <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
+            <div className="flex items-center text-center font-normal text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
+              {balanceString}
+            </div>
+            <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+              Balance
+            </div>
+          </div>
+
+          {/* THRID BLOCK */}
           <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
             <div className="flex items-center text-center font-normal text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
               {totalCoins}
@@ -530,15 +599,7 @@ const AccountCard = ({
               {totalCoins > 1 ? 'Coins' : 'Coin'}
             </div>
           </div>
-          <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
-            <div className="flex items-center text-center font-normal text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
-              {account.totalAssets.length}
-            </div>
-            <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-              {chrome.i18n.getMessage('assets')}
-            </div>
-          </div>
-          {account.type === TYPE.ARWEAVE ? (
+          {/* {account.type === TYPE.ARWEAVE ? (
             <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
               <div className="flex items-center text-center font-normal text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
                 {totalViews}
@@ -557,7 +618,7 @@ const AccountCard = ({
             >
               {chrome.i18n.getMessage('comingSoon')}
             </div>
-          )}
+          )} */}
           <ToolTip />
         </div>
         <div className="absolute h-32 xl:h-34.75 2xl:h-37.75 3xl:h-40 flex flex-col justify-between items-center top-0 right-5 py-6">

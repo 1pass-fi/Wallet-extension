@@ -4,7 +4,7 @@ const initialState = {
   networkName: '---',
   rpcUrl: null,
   chainId: null,
-  currencySymbol: '---',
+  currencySymbol: 'ETH',
   blockExplorerUrl: null
 }
 

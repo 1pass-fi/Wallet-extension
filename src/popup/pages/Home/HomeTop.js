@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useParallax } from 'react-scroll-parallax'
+import ReactTooltip from 'react-tooltip'
 // actions
 import {
   clearContent,
@@ -221,7 +222,7 @@ const HomeTop = ({
         <div className="flex justify-between">
           <div className='flex flex-row items-center'>
             <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />
-            <div style={{backgroundColor: '#DCF7F5'}} className='flex flex-row items-center rounded-lg py-1 px-2 ml-3'>
+            <div style={{backgroundColor: '#DCF7F5', color: '#353570'}} className='flex flex-row items-center rounded-lg py-1 px-2 ml-3'>
               <div className='mr-2'>{
                 formatLongString(displayingAccount.address, 13)
               }</div>
@@ -316,11 +317,14 @@ const HomeTop = ({
               )}
             </div>
           )}
-          <RefreshIcon
-            className="ml-2.5 mt-2.5 cursor-pointer"
-            onClick={async () => await request.wallet.loadBalanceAsync()}
-            data-testid="reload-balance-popup-button"
-          />
+          <div data-tip='Refresh balance'>
+            <RefreshIcon
+              className="ml-2.5 mt-2.5 cursor-pointer"
+              onClick={async () => await request.wallet.loadBalanceAsync()}
+              data-testid="reload-balance-popup-button"
+            />
+
+          </div>
         </div>
 
         <div className="mt-5 flex items-center justify-between" style={{ width: '140px' }}>
@@ -356,6 +360,7 @@ const HomeTop = ({
           </div>
         )}
       </div>
+      <ReactTooltip place="top" effect="float" />
     </div>
   )
 }

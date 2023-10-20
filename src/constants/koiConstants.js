@@ -636,7 +636,7 @@ export const PREDEFINED_EVM_NETWORK_METADATA = {
     networkName: 'Goerli Testnet',
     rpcUrl: 'https://goerli.infura.io/v3/f811f2257c4a4cceba5ab9044a1f03d2',
     chainId: 5,
-    currencySymbol: 'Goerli ETH',
+    currencySymbol: 'ETH',
     blockExplorerUrl: 'https://goerli.etherscan.io/'
   },
   'https://rpc-mumbai.maticvigil.com/': {

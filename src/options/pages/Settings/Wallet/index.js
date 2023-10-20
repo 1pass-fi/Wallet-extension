@@ -51,6 +51,7 @@ export default () => {
   const [showOverwriteMetamask, setShowOverwriteMetamask] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
   const [balance, setBalance] = useState('--- KOII')
+  const [chainOptions, setChainOptions] = useState([])
 
   const accounts = useSelector((state) => state.accounts)
   const displayingAccount = useSelector(getDisplayingAccount)
@@ -67,13 +68,58 @@ export default () => {
     [data]
   )
 
-  const chainOptions = [
-    { label: chrome.i18n.getMessage('allAccounts'), value: 'ALL' },
-    { label: 'K2 ' + chrome.i18n.getMessage('account'), value: TYPE.K2 },
-    { label: 'EVM ' + chrome.i18n.getMessage('account'), value: TYPE.ETHEREUM },
-    { label: 'Solana ' + chrome.i18n.getMessage('account'), value: TYPE.SOLANA },
-    { label: 'Arweave ' + chrome.i18n.getMessage('account'), value: TYPE.ARWEAVE }
-  ]
+  // const chainOptions = [
+  //   { label: chrome.i18n.getMessage('allAccounts'), value: 'ALL' },
+  //   { label: 'K2 ' + chrome.i18n.getMessage('account'), value: TYPE.K2 },
+  //   { label: 'EVM ' + chrome.i18n.getMessage('account'), value: TYPE.ETHEREUM },
+  //   { label: 'Solana ' + chrome.i18n.getMessage('account'), value: TYPE.SOLANA },
+  //   { label: 'Arweave ' + chrome.i18n.getMessage('account'), value: TYPE.ARWEAVE }
+  // ]
+
+  useEffect(() => {
+    const getChainOptions = () => {
+      const chainOptions = []
+      let hasArweave, hasK2, hasSolana, hasEthereum
+      accounts.forEach((account) => {
+        switch(account?.type) {
+          case TYPE.ARWEAVE:
+            hasArweave = true
+            break
+          case TYPE.K2:
+            hasK2 = true
+            break
+          case TYPE.SOLANA:
+            hasSolana = true
+            break
+          case TYPE.ETHEREUM:
+            hasEthereum = true
+            break
+        }
+      })
+
+      if (hasArweave) chainOption.push({ label: 'Arweave ' + chrome.i18n.getMessage('account'), value: TYPE.ARWEAVE })
+      if (hasSolana) chainOptions.push({ label: 'Solana ' + chrome.i18n.getMessage('account'), value: TYPE.SOLANA })
+      if (hasEthereum) chainOptions.push({ label: 'EVM ' + chrome.i18n.getMessage('account'), value: TYPE.ETHEREUM })
+      if (hasK2) chainOptions.push({ label: 'K2 ' + chrome.i18n.getMessage('account'), value: TYPE.K2 })
+
+      if (chainOptions.length > 1) {
+        chainOptions.push({ label: chrome.i18n.getMessage('allAccounts'), value: 'ALL' })
+        setChainOption('ALL')
+      }
+
+      if (chainOptions.length === 1) {
+        setChainOption(chainOptions[0].value)
+      }
+
+      setChainOptions(chainOptions)
+    }
+
+    if (!isEmpty(accounts)) getChainOptions()
+  }, [accounts])
+
+  const hasEthereum = useMemo(() => {
+    if (!isEmpty(accounts)) return accounts.find(account => account.type === TYPE.ETHEREUM)
+  }, [accounts])
 
   useEffect(() => {
     const getCurrency = async () => {
@@ -353,7 +399,7 @@ export default () => {
           </div>
 
           {/* ADD EVM NETWORKS */}
-          <div id='add-network' className="default-currency pb-6 mb-4 border-b border-white">
+          {hasEthereum && <div id='add-network' className="default-currency pb-6 mb-4 border-b border-white">
             <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
               Add EVM Networks
             </div>
@@ -372,7 +418,7 @@ export default () => {
             >
               Add Network Manually
             </div>
-          </div>
+          </div>}
 
           {/* IMPORT JSON */}
           <div onClick={onImportJsonFile} style={{color:'#8989C7'}} className='underline mb-8 text-base font-semibold cursor-pointer'>

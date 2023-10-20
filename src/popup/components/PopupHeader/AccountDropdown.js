@@ -104,7 +104,7 @@ export const AccountDropdown = React.forwardRef(
     }
 
     return (
-      <div style={{ width: '249px' }} ref={accountDropdownRef}>
+      <div style={{ width: '341px' }} ref={accountDropdownRef}>
         <div
           className="bg-indigo-400 select-none overflow-y-auto overflow-x-hidden"
           style={{ maxHeight: '438px' }}
@@ -113,7 +113,7 @@ export const AccountDropdown = React.forwardRef(
           {accounts.map((account, idx) => (
             <div
               className={clsx(
-                'flex items-start justify-between bg-blue-600 text-white cursor-pointer py-3 hover:bg-indigo-400',
+                'flex items-start bg-blue-600 text-white cursor-pointer py-3 hover:bg-indigo-400',
                 idx !== 0 && 'mt-0.25'
               )}
               key={idx}
@@ -121,15 +121,18 @@ export const AccountDropdown = React.forwardRef(
               onClick={() => handleChangeDisplayAccount(account)}
               data-testid="popup-header-account"
             >
-              {account.type === TYPE.ARWEAVE && (
-                <ArweaveIcon className="ml-2.5 mt-1 h-6.25 w-6.25" />
-              )}
-              {account.type === TYPE.K2 && <K2Icon className="ml-2.5 mt-1 h-6.25 w-6.25" />}
-              {account.type === TYPE.ETHEREUM && (
-                <EvmLogo className="ml-2.5 mt-1 h-6.25 w-6.25" />
-              )}
-              {account.type === TYPE.SOLANA && <SolanaIcon className="ml-2.5 h-6.25 w-6.25" />}
-              <div className="flex flex-col" style={{ width: '154px' }}>
+              <div className='mr-4 ml-2'>
+                {account.type === TYPE.ARWEAVE && (
+                  <ArweaveIcon className="ml-2.5 mt-1 h-6.25 w-6.25" />
+                )}
+                {account.type === TYPE.K2 && <K2Icon className="ml-2.5 mt-1 h-6.25 w-6.25" />}
+                {account.type === TYPE.ETHEREUM && (
+                  <EvmLogo className="ml-2.5 mt-1 h-6.25 w-6.25" />
+                )}
+                {account.type === TYPE.SOLANA && <SolanaIcon className="ml-2.5 h-6.25 w-6.25" />}
+              </div>
+
+              <div className="flex flex-col mr-24" style={{ width: '154px' }}>
                 <div
                   className="font-semibold text-base tracking-finnieSpacing-tight text-white"
                   data-testid="popup-header-account-name"
