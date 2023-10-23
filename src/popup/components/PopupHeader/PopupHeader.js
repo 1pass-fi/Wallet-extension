@@ -118,7 +118,7 @@ const Header = ({ setShowConnectedSites }) => {
         className="bg-white flex items-center justify-center cursor-pointer"
         style={{ width: '59px' }}
       >
-        <SettingIcon style={{ width: '33px', height: '32px' }} />
+        <SettingIcon />
       </div>
       {/* <div
         className="bg-blue-800 flex items-center justify-center mr-0.25 cursor-pointer"
