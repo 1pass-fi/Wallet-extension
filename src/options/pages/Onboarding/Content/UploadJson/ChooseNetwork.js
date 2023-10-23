@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
 import { NETWORK } from 'constants/koiConstants'
@@ -7,6 +7,7 @@ import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
 import KeyLogo from 'options/components/KeyLogo'
 import ToolTip from 'options/components/ToolTip'
+import { popupAccount } from 'services/account'
 
 import { OnboardingContext } from '../../onboardingContext'
 
@@ -18,6 +19,19 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
     setImportType(type)
     setStep(step + 1)
   }
+
+  useEffect(() => {
+    const skipOnboarding = async () => {
+      const count = await popupAccount.count()
+
+      if (count === 0) {
+        handleImportKey(TYPE.K2)
+      }
+    }
+
+    skipOnboarding()
+  }, [])
+
   return (
     <div data-testid="ImportAKey" className="w-full flex flex-col text-white text-left justify-center items-center">
       <div className='w-3/5'>
