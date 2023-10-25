@@ -96,7 +96,8 @@ module.exports = {
           DEFAULT: '#EBEEF7',
           100: '#E3E0EB',
           200: '#6B5FA5',
-          300: '#4D3D8D'
+          300: '#4D3D8D',
+          400: '#454580'
         },
         darkGreen: {
           DEFAULT: '#087980'

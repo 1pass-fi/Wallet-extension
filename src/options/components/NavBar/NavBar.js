@@ -46,8 +46,7 @@ const NavBar = () => {
     const handleClickOutside = (event) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
-        !dropdownToggleRef.current.contains(event.target)
+        !dropdownRef.current.contains(event.target)
       ) {
         closeDropdownMenu()
       }

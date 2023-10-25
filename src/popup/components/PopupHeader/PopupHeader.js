@@ -132,7 +132,7 @@ const Header = ({ setShowConnectedSites }) => {
         className="bg-blue-800 flex items-center justify-center cursor-pointer"
         style={{ width: '30px' }}
       >
-        <OptionIcon />
+        <OptionIcon className="mr-0.5"/>
       </div>
       <div className="z-50">
         {showPauseFinnieDropdown && (

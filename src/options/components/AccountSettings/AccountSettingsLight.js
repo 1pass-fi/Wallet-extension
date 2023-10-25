@@ -57,7 +57,7 @@ const AccountSettingsLight = React.forwardRef(({ className, toggleDropdownMenu }
               data-tip={chrome.i18n.getMessage('featureUnderConstruction')}
               data-for="did-coming-soon"
             >
-              <Icon className="w-6 xl: 2xl: 3xl:w-7 mr-4 xl: 2xl: 3xl:mr-6" />
+              <Icon className='mr-2'/>
               {text}
             </div>
             <ToolTip id="did-coming-soon" />
@@ -74,7 +74,7 @@ const AccountSettingsLight = React.forwardRef(({ className, toggleDropdownMenu }
             activeClassName="underline underline-offset-1"
             data-testid={id}
           >
-            <Icon className="w-6 xl: 2xl: 3xl:w-7 mr-4 xl: 2xl: 3xl:mr-6" />
+            <Icon className='mr-2'/>
             {text}
           </NavLink>
         )

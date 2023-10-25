@@ -3,7 +3,7 @@ import { GalleryContext } from 'options/galleryContext'
 
 import './index.css'
 
-export default ({ version = '0.4.8' }) => {
+export default ({ version = '0.4.9' }) => {
   const { setShowWelcome } = useContext(GalleryContext)
 
   return (
@@ -57,21 +57,6 @@ export default ({ version = '0.4.8' }) => {
                 Koii{chrome.i18n.getMessage('possessive')} {chrome.i18n.getMessage('websiteLc')}
               </a>
               .
-            </div>
-          </div>
-
-          <div className="item">
-            <div className="title">{chrome.i18n.getMessage('needHelp')}</div>
-            <div className="description">
-              {chrome.i18n.getMessage('reactOutToKoii')} &nbsp;
-              <a href="https://koii.me/support/" target="_blank" className="link">
-                {chrome.i18n.getMessage('supportTeamLc')}
-              </a>
-              &nbsp; {chrome.i18n.getMessage('orLc')} &nbsp;{' '}
-              <a href="https://koii.me/featurerequest/" className="link" target="_blank">
-                {chrome.i18n.getMessage('requestLc')}
-              </a>
-              &nbsp; {chrome.i18n.getMessage('aFeatureLc')}.
             </div>
           </div>
         </div>

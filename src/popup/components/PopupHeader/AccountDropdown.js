@@ -54,6 +54,11 @@ export const AccountDropdown = React.forwardRef(
       chrome.tabs.create({ url })
     }
 
+    const goToWelcomePage = () => {
+      const url = chrome.runtime.getURL('options.html#/welcome')
+      chrome.tabs.create({ url })
+    }
+
     const handleRemoveWallet = async (account) => {
       try {
         setIsLoading(true)
@@ -211,7 +216,7 @@ export const AccountDropdown = React.forwardRef(
           className="w-full bg-indigo cursor-pointer text-center font-normal text-xs leading-8 tracking-finnieSpacing-tight text-white"
           key={'edit-accounts'}
           style={{ height: '44px' }}
-          onClick={() => goToSettingPage()}
+          onClick={() => goToWelcomePage()}
         >
           <div className='flex flex-row justify-center items-center h-full'>
             <AddIcon />

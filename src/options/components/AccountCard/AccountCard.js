@@ -40,6 +40,7 @@ import formatNumber from 'options/utils/formatNumber'
 import { popupAccount } from 'services/account'
 import { popupBackgroundRequest as backgroundRequest } from 'services/request/popup'
 import storage from 'services/storage'
+import DropdownNew from 'sharedComponents/Dropdown'
 import useTokenLists from 'sharedHooks/useTokenLists'
 import { getSiteConnectedAddresses } from 'utils'
 
@@ -700,13 +701,17 @@ const AccountCard = ({
                 {': '}
               </div>
               <div className="w-38.75 xl:w-40 2xl:w-42.5 3xl:w-46">
-                <DropDown
+                <DropdownNew
                   options={providerOptions.find((o) => o.type === account.type)?.value}
                   value={currentNetwork}
                   onChange={onNetworkChange}
-                  filterSupported={false}
-                  variant="light"
-                  size="sm"
+                  width={150}
+                  height={22}
+                  style={{
+                    color: 'white',
+                    fontSize: '12px'
+                  }
+                  }
                 />
               </div>
             </div>

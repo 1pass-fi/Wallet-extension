@@ -23,6 +23,7 @@ import formatLongString from 'options/utils/formatLongString'
 import formatNumber from 'options/utils/formatNumber'
 import useNetworkLogo from 'popup/provider/hooks/useNetworkLogo'
 import storage from 'services/storage'
+import DropdownNew from 'sharedComponents/Dropdown'
 import { getChromeStorage, isSolanaAddress, setChromeStorage } from 'utils'
 
 import AddNetworkManuallyModal from './AddNetworkManuallyModal'
@@ -335,13 +336,18 @@ export default () => {
               {chrome.i18n.getMessage('fiatCurrenciesSupport')}
             </div>
             <div style={{ width: '300px' }}>
-              <DropDown
+              {/* <DropDown
                 options={currenciesData}
                 value={currency}
                 onChange={onCurrencyChange}
                 variant="dark"
                 size="lg"
                 filterSupported={false}
+              /> */}
+              <DropdownNew 
+                options={currenciesData}
+                value={currency}
+                onChange={onCurrencyChange}
               />
             </div>
           </div>
@@ -377,13 +383,11 @@ export default () => {
               {chrome.i18n.getMessage('organizeWalletDisplay')}
             </div>
             <div className="mb-1.5" style={{ width: '270px' }}>
-              <DropDown
+              <DropdownNew
                 options={chainOptions}
                 value={chainOption}
                 onChange={onChainOption}
-                variant="dark"
-                size="lg"
-                filterSupported={false}
+                width={230}
               />
             </div>
             {listAccounts.map((account, index) => (
