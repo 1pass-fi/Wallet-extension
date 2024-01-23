@@ -46,23 +46,23 @@ const AccountInfo = ({ displayingAccount, currency, price, currentProviderAddres
         {!includes(location.pathname, 'assets') ? (
           <div className="h-full px-17.25 py-3">
             {displayingAccount.type === TYPE.SOLANA && (
-              <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+              <div className="text-4xl text-blue-800 tracking-finnieSpacing-tightest">
                 {numberFormat(displayingAccount.balance / Math.pow(10, 9))} SOL
               </div>
             )}
             {displayingAccount.type === TYPE.K2 && (
-              <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+              <div className="text-4xl text-blue-800 tracking-finnieSpacing-tightest">
                 {numberFormat(displayingAccount.balance / Math.pow(10, 9))} KOII
               </div>
             )}
             {displayingAccount.type === TYPE.ARWEAVE && (
-              <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-                {numberFormat(displayingAccount.koiBalance)} KOII
+              <div className="text-4xl text-blue-800 tracking-finnieSpacing-tightest">
+                {numberFormat(displayingAccount.balance)} AR
               </div>
             )}
             {displayingAccount.type === TYPE.ETHEREUM && (
               <div className="flex flex-col">
-                <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+                <div className="text-4xl text-blue-800 tracking-finnieSpacing-tightest">
                   {numberFormat(displayingAccount.balance)} ETH
                 </div>
                 <div

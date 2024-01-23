@@ -55,7 +55,7 @@ const HomeTop = ({
 
   const dispatch = useDispatch()
 
-  const networkMetadata = useSelector(state => state.networkMetadata)
+  const networkMetadata = useSelector((state) => state.networkMetadata)
 
   const [evmProviderOptions, setEvmProviderOptions] = useState([
     {
@@ -72,7 +72,7 @@ const HomeTop = ({
     const getAddedEvmNetworks = async () => {
       const addedEvmNetworks = await storage.setting.get.addedEvmNetworks()
 
-      setEvmProviderOptions(prev => [...prev, ...addedEvmNetworks])
+      setEvmProviderOptions((prev) => [...prev, ...addedEvmNetworks])
     }
 
     getAddedEvmNetworks()
@@ -215,22 +215,28 @@ const HomeTop = ({
   return (
     <div className="relative z-20">
       <PopupBackground
-        style={{ width: '177px', height: '156px', top:'-18px' }}
+        style={{ width: '177px', height: '156px', top: '-18px' }}
         className="absolute right-0 z-0 opacity-60"
       />
       <div ref={p.ref}>
         <div className="flex justify-between">
-          <div className='flex flex-row items-center'>
+          <div className="flex flex-row items-center">
             <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />
-            <div style={{backgroundColor: '#DCF7F5', color: '#353570'}} className='flex flex-row items-center rounded-lg py-1 px-2 ml-3'>
-              <div className='mr-2'>{
-                formatLongString(displayingAccount.address, 13)
-              }</div>
-              <div onClick={async (e) => {
-                e.stopPropagation()
-                onCopy()
-                await navigator.clipboard.writeText(displayingAccount.address)
-              }} className='cursor-pointer'><CopyIcon /></div>
+            <div
+              style={{ backgroundColor: '#DCF7F5', color: '#353570' }}
+              className="flex flex-row items-center px-2 py-1 ml-3 rounded-lg"
+            >
+              <div className="mr-2">{formatLongString(displayingAccount.address, 13)}</div>
+              <div
+                onClick={async (e) => {
+                  e.stopPropagation()
+                  onCopy()
+                  await navigator.clipboard.writeText(displayingAccount.address)
+                }}
+                className="cursor-pointer"
+              >
+                <CopyIcon />
+              </div>
             </div>
           </div>
           {/* {displayingAccount.type === TYPE.K2 && (
@@ -266,7 +272,7 @@ const HomeTop = ({
         <div className="flex items-start mt-6.5">
           {displayingAccount.type === TYPE.SOLANA && (
             <div>
-              <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+              <div className="text-4xl text-blue-800 tracking-finnieSpacing-tightest">
                 {numberFormat(displayingAccount.balance / Math.pow(10, 9))} SOL
               </div>
               {currentProviderAddress?.includes('mainnet') && (
@@ -282,7 +288,7 @@ const HomeTop = ({
           )}
           {displayingAccount.type === TYPE.K2 && (
             <div>
-              <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+              <div className="text-4xl text-blue-800 tracking-finnieSpacing-tightest">
                 {numberFormat(displayingAccount.balance / Math.pow(10, 9))} KOII
               </div>
               {/* {currentProviderAddress?.includes('mainnet') && (
@@ -297,14 +303,14 @@ const HomeTop = ({
           )}
           {displayingAccount.type === TYPE.ARWEAVE && (
             <div>
-              <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
-                {numberFormat(displayingAccount.koiBalance)} KOII
+              <div className="text-4xl text-blue-800 tracking-finnieSpacing-tightest">
+                {numberFormat(displayingAccount.balance)} AR
               </div>
             </div>
           )}
           {displayingAccount.type === TYPE.ETHEREUM && (
             <div>
-              <div className="text-blue-800 text-4xl tracking-finnieSpacing-tightest">
+              <div className="text-4xl text-blue-800 tracking-finnieSpacing-tightest">
                 {numberFormat(displayingAccount.balance)} {get(networkMetadata, 'currencySymbol')}
               </div>
               {currentProviderAddress?.includes('mainnet') && (
@@ -317,20 +323,19 @@ const HomeTop = ({
               )}
             </div>
           )}
-          <div data-tip='Refresh balance'>
+          <div data-tip="Refresh balance">
             <RefreshIcon
               className="ml-2.5 mt-2.5 cursor-pointer"
               onClick={async () => await request.wallet.loadBalanceAsync()}
               data-testid="reload-balance-popup-button"
             />
-
           </div>
         </div>
 
-        <div className="mt-5 flex items-center justify-between" style={{ width: '140px' }}>
+        <div className="flex items-center justify-between mt-5" style={{ width: '140px' }}>
           <Link className="flex flex-col items-center justify-center" to="/send" role="button">
             <div
-              className="rounded-full bg-lightBlue shadow flex items-center justify-center cursor-pointer"
+              className="flex items-center justify-center rounded-full shadow cursor-pointer bg-lightBlue"
               style={{ width: '44px', height: '44px' }}
             >
               <SendIcon style={{ width: '48px', height: '48px' }} data-testid="icon-send-tokens" />
@@ -341,7 +346,7 @@ const HomeTop = ({
           </Link>
           <Link className="flex flex-col items-center justify-center" to="/receive" role="button">
             <div
-              className="rounded-full bg-lightBlue shadow flex items-center justify-center cursor-pointer"
+              className="flex items-center justify-center rounded-full shadow cursor-pointer bg-lightBlue"
               style={{ width: '44px', height: '44px' }}
             >
               <ReceiveIcon style={{ width: '48px', height: '48px' }} />
@@ -353,7 +358,7 @@ const HomeTop = ({
         </div>
         {isCopied && (
           <div
-            className="absolute bg-cyan text-blue-800 rounded-3xl shadow-md text-center flex items-center justify-center"
+            className="absolute flex items-center justify-center text-center text-blue-800 shadow-md bg-cyan rounded-3xl"
             style={{ width: '159px', height: '28px', left: '115px', top: '420px' }}
           >
             {chrome.i18n.getMessage('addressCopied')}
