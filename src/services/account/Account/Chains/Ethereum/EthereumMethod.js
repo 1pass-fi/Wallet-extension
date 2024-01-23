@@ -59,7 +59,7 @@ export class EthereumMethod {
   async getBalances() {
     const wallet = await this.getWallet()
     const balance = ethers.utils.formatEther(await wallet.getBalance())
-    const koiBalance = 100
+    const koiBalance = 0
     return { balance, koiBalance }
   }
 
@@ -95,7 +95,7 @@ export class EthereumMethod {
             if (ethereumProvider.includes('mainnet')) {
               headers = { 'X-API-KEY': 'b2c5ef456a464bda8868fd20d8af6ce2' }
             }
-  
+
             const { data } = await axios.request({
               url,
               headers,
@@ -106,7 +106,7 @@ export class EthereumMethod {
           } catch (err) {
             console.error('Fetched ETH nft error: ', err.message)
           }
-  
+
           ethAssets = [...ethAssets, ...assets]
         }
       }
@@ -169,7 +169,7 @@ export class EthereumMethod {
     let etherscanNetwork, network, token
 
     network = this.eth.getCurrentNetWork()
-    
+
     switch (network) {
       case ETH_NETWORK_PROVIDER.GOERLI:
         etherscanNetwork = 'goerli'
@@ -179,7 +179,7 @@ export class EthereumMethod {
         etherscanNetwork = 'homestead'
         token = 'ETH'
         break
-      case ETH_NETWORK_PROVIDER.POLYGON: 
+      case ETH_NETWORK_PROVIDER.POLYGON:
         etherscanNetwork = 'matic'
         token = 'MATIC'
         break
@@ -340,13 +340,17 @@ export class EthereumMethod {
     try {
       // Initialize provider and wallet
       const providerUrl = await storage.setting.get.ethereumProvider()
-      const { ethersProvider, wallet } = await ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
+      const { ethersProvider, wallet } = await ethereumUtils.initEthersProvider(
+        providerUrl,
+        this.eth.key
+      )
       const signer = wallet.connect(ethersProvider)
 
       // Gas
       maxPriorityFeePerGas = maxPriorityFeePerGas || 2.5 * Math.pow(10, 9)
       const priortyFeeInGwei = `${maxPriorityFeePerGas / Math.pow(10, 9)}`
-      maxFeePerGas = maxFeePerGas || (await ethereumUtils.calculateMaxFeePerGas(providerUrl, priortyFeeInGwei))
+      maxFeePerGas =
+        maxFeePerGas || (await ethereumUtils.calculateMaxFeePerGas(providerUrl, priortyFeeInGwei))
 
       // Payload fields
       const nonce = await ethersProvider.getTransactionCount(this.eth.address, 'pending')
@@ -533,17 +537,17 @@ export class EthereumMethod {
     try {
       const rpcUrl = await storage.setting.get.ethereumProvider()
       const etherProvider = await getEthereumNetworkProvider(rpcUrl)
-  
+
       const receipt = await etherProvider.getTransactionReceipt(txHash)
 
       if (receipt && receipt.blockNumber) {
-        return { dropped: false, confirmed: true}
+        return { dropped: false, confirmed: true }
       } else {
-        return { dropped: false, confirmed: false}
+        return { dropped: false, confirmed: false }
       }
     } catch (error) {
       console.error('Error:', error)
-      return { dropped: false, confirmed: false}
+      return { dropped: false, confirmed: false }
     }
   }
 
@@ -712,7 +716,10 @@ export class EthereumMethod {
   async transferToken({ tokenContractAddress, to, value, maxPriorityFeePerGas, maxFeePerGas }) {
     try {
       const providerUrl = await storage.setting.get.ethereumProvider()
-      const { ethersProvider, wallet } = await ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
+      const { ethersProvider, wallet } = await ethereumUtils.initEthersProvider(
+        providerUrl,
+        this.eth.key
+      )
       const signer = wallet.connect(ethersProvider)
 
       const tokenContract = new ethers.Contract(tokenContractAddress, ERC20ABI, signer)
@@ -730,7 +737,8 @@ export class EthereumMethod {
       // Gas
       maxPriorityFeePerGas = maxPriorityFeePerGas || 2.5 * Math.pow(10, 9)
       const priortyFeeInGwei = `${maxPriorityFeePerGas / Math.pow(10, 9)}`
-      maxFeePerGas = maxFeePerGas || (await ethereumUtils.calculateMaxFeePerGas(providerUrl, priortyFeeInGwei))
+      maxFeePerGas =
+        maxFeePerGas || (await ethereumUtils.calculateMaxFeePerGas(providerUrl, priortyFeeInGwei))
 
       const transactionPayload = {
         to: tokenContractAddress,
@@ -763,7 +771,10 @@ export class EthereumMethod {
 
     // Initialize provider and wallet
     const providerUrl = await storage.setting.get.ethereumProvider()
-    const { ethersProvider, wallet } = await ethereumUtils.initEthersProvider(providerUrl, this.eth.key)
+    const { ethersProvider, wallet } = await ethereumUtils.initEthersProvider(
+      providerUrl,
+      this.eth.key
+    )
     const signer = wallet.connect(ethersProvider)
 
     // Contract ABI and Contract Interface

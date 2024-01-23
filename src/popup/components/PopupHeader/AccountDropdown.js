@@ -42,7 +42,7 @@ export const AccountDropdown = React.forwardRef(
     const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
     const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
     const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
-    const networkMetadata = useSelector(state => state.networkMetadata)
+    const networkMetadata = useSelector((state) => state.networkMetadata)
 
     const goToImportPages = () => {
       const url = chrome.runtime.getURL('options.html#/welcome')
@@ -111,122 +111,125 @@ export const AccountDropdown = React.forwardRef(
     return (
       <div style={{ width: '341px' }} ref={accountDropdownRef}>
         <div
-          className="bg-indigo-400 select-none overflow-y-auto overflow-x-hidden"
+          className="overflow-x-hidden overflow-y-auto bg-indigo-400 select-none"
           style={{ maxHeight: '438px' }}
           data-testid="popup-header-account-dropdown"
         >
-          {accounts.map((account, idx) => (
-            <div
-              className={clsx(
-                'flex items-start bg-blue-600 text-white cursor-pointer py-3 hover:bg-indigo-400',
-                idx !== 0 && 'mt-0.25'
-              )}
-              key={idx}
-              style={{ height: '108px' }}
-              onClick={() => handleChangeDisplayAccount(account)}
-              data-testid="popup-header-account"
-            >
-              <div className='mr-4 ml-2'>
-                {account.type === TYPE.ARWEAVE && (
-                  <ArweaveIcon className="ml-2.5 mt-1 h-6.25 w-6.25" />
+          {accounts.map((account, idx) => {
+            return (
+              <div
+                className={clsx(
+                  'flex items-start bg-blue-600 text-white cursor-pointer py-3 hover:bg-indigo-400',
+                  idx !== 0 && 'mt-0.25'
                 )}
-                {account.type === TYPE.K2 && <K2Icon className="ml-2.5 mt-1 h-6.25 w-6.25" />}
-                {account.type === TYPE.ETHEREUM && (
-                  <EvmLogo className="ml-2.5 mt-1 h-6.25 w-6.25" />
-                )}
-                {account.type === TYPE.SOLANA && <SolanaIcon className="ml-2.5 h-6.25 w-6.25" />}
-              </div>
+                key={idx}
+                style={{ height: '108px' }}
+                onClick={() => handleChangeDisplayAccount(account)}
+                data-testid="popup-header-account"
+              >
+                <div className="ml-2 mr-4">
+                  {account.type === TYPE.ARWEAVE && (
+                    <ArweaveIcon className="ml-2.5 mt-1 h-6.25 w-6.25" />
+                  )}
+                  {account.type === TYPE.K2 && <K2Icon className="ml-2.5 mt-1 h-6.25 w-6.25" />}
+                  {account.type === TYPE.ETHEREUM && (
+                    <EvmLogo className="ml-2.5 mt-1 h-6.25 w-6.25" />
+                  )}
+                  {account.type === TYPE.SOLANA && <SolanaIcon className="ml-2.5 h-6.25 w-6.25" />}
+                </div>
 
-              <div className="flex flex-col mr-24" style={{ width: '154px' }}>
-                <div
-                  className="font-semibold text-base tracking-finnieSpacing-tight text-white"
-                  data-testid="popup-header-account-name"
-                >
-                  {formatLongString(account.accountName, 12)}
+                <div className="flex flex-col mr-24" style={{ width: '154px' }}>
+                  <div
+                    className="text-base font-semibold text-white tracking-finnieSpacing-tight"
+                    data-testid="popup-header-account-name"
+                  >
+                    {formatLongString(account.accountName, 12)}
+                  </div>
+                  <div className="flex items-center justify-between font-normal leading-4 text-2xs tracking-finnieSpacing-tight text-turquoiseBlue">
+                    <span
+                      style={{ width: '140px' }}
+                      className="break-all"
+                      data-testid="popup-header-account-address"
+                    >
+                      {formatLongString(account.address, 20, true)}
+                    </span>
+                    <CopyIcon
+                      onClick={async (e) => {
+                        e.stopPropagation()
+                        onCopy()
+                        await navigator.clipboard.writeText(account.address)
+                      }}
+                      className="cursor-pointer focus:outline-none"
+                      style={{ width: '13px', height: '13px' }}
+                      data-testid="copy-address-icon"
+                    />
+                  </div>
+                  {account.type === TYPE.ARWEAVE && (
+                    <div
+                      className="text-xs font-normal leading-6 text-white tracking-finnieSpacing-tight"
+                      data-testid="popup-header-account-balance"
+                    >
+                      {chrome.i18n.getMessage('balance')}: {formatNumber(account.balance, 2)} AR
+                    </div>
+                  )}
+                  {account.type === TYPE.K2 && (
+                    <div
+                      className="text-xs font-normal leading-6 text-white tracking-finnieSpacing-tight"
+                      data-testid="popup-header-account-balance"
+                    >
+                      {chrome.i18n.getMessage('balance')}:{' '}
+                      {formatNumber(account.balance / Math.pow(10, 9), 2)} KOII
+                    </div>
+                  )}
+                  {account.type === TYPE.ETHEREUM && (
+                    <div
+                      className="text-xs font-normal leading-6 text-white tracking-finnieSpacing-tight"
+                      data-testid="popup-header-account-balance"
+                    >
+                      {chrome.i18n.getMessage('balance')}: {formatNumber(account.balance, 2)}{' '}
+                      {get(networkMetadata, 'currencySymbol')}
+                    </div>
+                  )}
+                  {account.type === TYPE.SOLANA && (
+                    <div
+                      className="text-xs font-normal leading-6 text-white tracking-finnieSpacing-tight"
+                      data-testid="popup-header-account-balance"
+                    >
+                      {chrome.i18n.getMessage('balance')}:{' '}
+                      {formatNumber(account.balance / Math.pow(10, 9), 2)} SOL
+                    </div>
+                  )}
+                  <div
+                    className="text-xs font-normal leading-4 text-white tracking-finnieSpacing-tight"
+                    data-testid="popup-header-account-assets"
+                  >
+                    {chrome.i18n.getMessage('assets')}: {account.totalAssets.length}
+                  </div>
                 </div>
-                <div className="font-normal text-2xs leading-4 tracking-finnieSpacing-tight text-turquoiseBlue flex justify-between items-center">
-                  <span
-                    style={{ width: '140px' }}
-                    className="break-all"
-                    data-testid="popup-header-account-address"
-                  >
-                    {formatLongString(account.address, 20, true)}
-                  </span>
-                  <CopyIcon
-                    onClick={async (e) => {
-                      e.stopPropagation()
-                      onCopy()
-                      await navigator.clipboard.writeText(account.address)
-                    }}
-                    className="cursor-pointer focus:outline-none"
-                    style={{ width: '13px', height: '13px' }}
-                    data-testid="copy-address-icon"
-                  />
-                </div>
-                {account.type === TYPE.ARWEAVE && (
-                  <div
-                    className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
-                    data-testid="popup-header-account-balance"
-                  >
-                    {chrome.i18n.getMessage('balance')}: {formatNumber(account.koiBalance, 2)} KOII
-                  </div>
+                {isDefaultAccount(account) ? (
+                  <FilledStarIcon className="mt-1 mr-4" style={{ width: '15px', height: '14px' }} />
+                ) : (
+                  <EmptyStarIcon className="mt-1 mr-4" style={{ width: '15px', height: '14px' }} />
                 )}
-                {account.type === TYPE.K2 && (
-                  <div
-                    className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
-                    data-testid="popup-header-account-balance"
-                  >
-                    {chrome.i18n.getMessage('balance')}:{' '}
-                    {formatNumber(account.balance / Math.pow(10, 9), 2)} KOII
-                  </div>
-                )}
-                {account.type === TYPE.ETHEREUM && (
-                  <div
-                    className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
-                    data-testid="popup-header-account-balance"
-                  >
-                    {chrome.i18n.getMessage('balance')}: {formatNumber(account.balance, 2)} {get(networkMetadata, 'currencySymbol')}
-                  </div>
-                )}
-                {account.type === TYPE.SOLANA && (
-                  <div
-                    className="font-normal text-xs leading-6 tracking-finnieSpacing-tight text-white"
-                    data-testid="popup-header-account-balance"
-                  >
-                    {chrome.i18n.getMessage('balance')}:{' '}
-                    {formatNumber(account.balance / Math.pow(10, 9), 2)} SOL
-                  </div>
-                )}
-                <div
-                  className="font-normal text-xs leading-4 tracking-finnieSpacing-tight text-white"
-                  data-testid="popup-header-account-assets"
-                >
-                  {chrome.i18n.getMessage('assets')}: {account.totalAssets.length}
-                </div>
               </div>
-              {isDefaultAccount(account) ? (
-                <FilledStarIcon className="mr-4 mt-1" style={{ width: '15px', height: '14px' }} />
-              ) : (
-                <EmptyStarIcon className="mr-4 mt-1" style={{ width: '15px', height: '14px' }} />
-              )}
-            </div>
-          ))}
+            )
+          })}
         </div>
         <div
-          className="w-full bg-indigo cursor-pointer text-center font-normal text-xs leading-8 tracking-finnieSpacing-tight text-white"
+          className="w-full text-xs font-normal leading-8 text-center text-white cursor-pointer bg-indigo tracking-finnieSpacing-tight"
           key={'edit-accounts'}
           style={{ height: '44px' }}
           onClick={() => goToWelcomePage()}
         >
-          <div className='flex flex-row justify-center items-center h-full'>
+          <div className="flex flex-row items-center justify-center h-full">
             <AddIcon />
-            <div className='ml-2 text-sm font-normal'>Add Account</div>
+            <div className="ml-2 text-sm font-normal">Add Account</div>
           </div>
         </div>
 
         {isCopied && (
           <div
-            className="absolute bg-cyan text-blue-800 rounded-3xl shadow-md text-center flex items-center justify-center"
+            className="absolute flex items-center justify-center text-center text-blue-800 shadow-md bg-cyan rounded-3xl"
             style={{ width: '159px', height: '28px', left: '133px', top: '499px' }}
           >
             {chrome.i18n.getMessage('addressCopied')}
