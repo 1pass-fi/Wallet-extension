@@ -32,4 +32,5 @@ export default [
   'SAR',
   'MYR',
   'RON',
+  'EUR'
 ]

@@ -56,7 +56,7 @@ export default () => {
 
   const accounts = useSelector((state) => state.accounts)
   const displayingAccount = useSelector(getDisplayingAccount)
-  const networkMetadata = useSelector(state => state.networkMetadata)
+  const networkMetadata = useSelector((state) => state.networkMetadata)
 
   const currenciesData = useMemo(
     () =>
@@ -82,7 +82,7 @@ export default () => {
       const chainOptions = []
       let hasArweave, hasK2, hasSolana, hasEthereum
       accounts.forEach((account) => {
-        switch(account?.type) {
+        switch (account?.type) {
           case TYPE.ARWEAVE:
             hasArweave = true
             break
@@ -98,10 +98,23 @@ export default () => {
         }
       })
 
-      if (hasArweave) chainOption.push({ label: 'Arweave ' + chrome.i18n.getMessage('account'), value: TYPE.ARWEAVE })
-      if (hasSolana) chainOptions.push({ label: 'Solana ' + chrome.i18n.getMessage('account'), value: TYPE.SOLANA })
-      if (hasEthereum) chainOptions.push({ label: 'EVM ' + chrome.i18n.getMessage('account'), value: TYPE.ETHEREUM })
-      if (hasK2) chainOptions.push({ label: 'K2 ' + chrome.i18n.getMessage('account'), value: TYPE.K2 })
+      if (hasArweave)
+        chainOptions.push({
+          label: 'Arweave ' + chrome.i18n.getMessage('account'),
+          value: TYPE.ARWEAVE
+        })
+      if (hasSolana)
+        chainOptions.push({
+          label: 'Solana ' + chrome.i18n.getMessage('account'),
+          value: TYPE.SOLANA
+        })
+      if (hasEthereum)
+        chainOptions.push({
+          label: 'EVM ' + chrome.i18n.getMessage('account'),
+          value: TYPE.ETHEREUM
+        })
+      if (hasK2)
+        chainOptions.push({ label: 'K2 ' + chrome.i18n.getMessage('account'), value: TYPE.K2 })
 
       if (chainOptions.length > 1) {
         chainOptions.push({ label: chrome.i18n.getMessage('allAccounts'), value: 'ALL' })
@@ -119,7 +132,7 @@ export default () => {
   }, [accounts])
 
   const hasEthereum = useMemo(() => {
-    if (!isEmpty(accounts)) return accounts.find(account => account.type === TYPE.ETHEREUM)
+    if (!isEmpty(accounts)) return accounts.find((account) => account.type === TYPE.ETHEREUM)
   }, [accounts])
 
   useEffect(() => {
@@ -136,7 +149,7 @@ export default () => {
     if (locationId === 'add-network') {
       const element = document.getElementById(locationId)
       window.scrollTo({
-        top: element.offsetTop,
+        top: element.offsetTop
       })
     }
   }, [locationId])
@@ -192,28 +205,35 @@ export default () => {
       try {
         let balance, symbol
         if (displayingAccount.type === TYPE.ARWEAVE) {
-          balance = isNumber(displayingAccount.balance) ? formatNumber(displayingAccount.balance, 4) : '0'
+          balance = isNumber(displayingAccount.balance)
+            ? formatNumber(displayingAccount.balance, 4)
+            : '0'
           symbol = 'AR'
         }
         if (displayingAccount.type === TYPE.ETHEREUM) {
-          balance = formatNumber(displayingAccount.balance, 4) !== 'NaN' ? formatNumber(displayingAccount.balance, 4) : '0'
+          balance =
+            formatNumber(displayingAccount.balance, 4) !== 'NaN'
+              ? formatNumber(displayingAccount.balance, 4)
+              : '0'
           symbol = networkMetadata.currencySymbol
         }
         if (displayingAccount.type === TYPE.K2) {
-          balance = formatNumber(displayingAccount.balance, 4) !== 'NaN'
-            ? formatNumber(displayingAccount.balance / Math.pow(10, 9), 4)
-            : '0'
+          balance =
+            formatNumber(displayingAccount.balance, 4) !== 'NaN'
+              ? formatNumber(displayingAccount.balance / Math.pow(10, 9), 4)
+              : '0'
           symbol = 'KOII'
         }
         if (displayingAccount.type === TYPE.SOLANA) {
-          balance = formatNumber(displayingAccount.balance, 4) !== 'NaN'
-            ? formatNumber(displayingAccount.balance / Math.pow(10, 9), 4)
-            : '0'
+          balance =
+            formatNumber(displayingAccount.balance, 4) !== 'NaN'
+              ? formatNumber(displayingAccount.balance / Math.pow(10, 9), 4)
+              : '0'
           symbol = 'SOL'
         }
-  
+
         if (balance && symbol) setBalance(`${balance} ${symbol}`)
-      } catch(err) {
+      } catch (err) {
         console.error('loadBalance', err)
       }
     }
@@ -274,27 +294,35 @@ export default () => {
   return (
     <div className="wallet-settings-wrapper">
       <div className="wallet-settings">
-        <div style={{width:'743px', backgroundColor:'rgba(137, 137, 199, 0.3)'}} className='rounded-lg p-3 pl-4 ml-5 mb-8'>
-          <div className='text-4xl font-normal pb-2'>{balance}</div>
-          <div className='flex flex-row text-xs font-normal items-center'>
-            <div className='mr-3'>{formatLongString(displayingAccount.accountName, 20)}</div>
-            <div style={{color: '#BEF0ED'}} className='mr-1'>{formatLongString(displayingAccount.address, 30)}</div>
-            <CopyIcon onClick={async (e) => {
-              e.stopPropagation()
-              onCopy()
-              await navigator.clipboard.writeText(displayingAccount.address)
-            }} className='mr-3 cursor-pointer' />
-            {isCopied && <div
-              className="bg-cyan text-blue-800 rounded-md shadow-md text-xs text-center flex items-center justify-center px-1"
-            >
-              {chrome.i18n.getMessage('addressCopied')}
-            </div>}
+        <div
+          style={{ width: '743px', backgroundColor: 'rgba(137, 137, 199, 0.3)' }}
+          className="p-3 pl-4 mb-8 ml-5 rounded-lg"
+        >
+          <div className="pb-2 text-4xl font-normal">{balance}</div>
+          <div className="flex flex-row items-center text-xs font-normal">
+            <div className="mr-3">{formatLongString(displayingAccount.accountName, 20)}</div>
+            <div style={{ color: '#BEF0ED' }} className="mr-1">
+              {formatLongString(displayingAccount.address, 30)}
+            </div>
+            <CopyIcon
+              onClick={async (e) => {
+                e.stopPropagation()
+                onCopy()
+                await navigator.clipboard.writeText(displayingAccount.address)
+              }}
+              className="mr-3 cursor-pointer"
+            />
+            {isCopied && (
+              <div className="flex items-center justify-center px-1 text-xs text-center text-blue-800 rounded-md shadow-md bg-cyan">
+                {chrome.i18n.getMessage('addressCopied')}
+              </div>
+            )}
           </div>
         </div>
-        <div className="header mb-1">{chrome.i18n.getMessage('walletSettings')}</div>
+        <div className="mb-1 header">{chrome.i18n.getMessage('walletSettings')}</div>
         <div className="pl-5">
-          <div className="add-wallet pb-2 mb-4 border-b border-white">
-            <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
+          <div className="pb-2 mb-4 border-b border-white add-wallet">
+            <div className="text-base font-semibold leading-8 uppercase 2xl:text-lg 3xl:text-xl">
               ADD AN ACCOUNT
             </div>
             <div className="flex gap-6.75 my-1">
@@ -308,7 +336,7 @@ export default () => {
                 {chrome.i18n.getMessage('createANewKey')}
               </div>
               <div
-                className="bg-trueGray-100 rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-semibold flex justify-center items-center cursor-pointer"
+                className="flex items-center justify-center text-sm font-semibold leading-4 text-center rounded-sm cursor-pointer bg-trueGray-100 text-indigo 2xl:text-base 3xl:text-lg"
                 style={{ width: '220px', height: '38px' }}
                 onClick={onImportSeedPhrase}
                 data-testid="setting-import-wallet"
@@ -325,11 +353,11 @@ export default () => {
             </div> */}
           </div>
 
-          <div className="default-currency pb-6 mb-4 border-b border-white">
-            <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
+          <div className="pb-6 mb-4 border-b border-white default-currency">
+            <div className="text-base font-semibold leading-8 uppercase 2xl:text-lg 3xl:text-xl">
               {chrome.i18n.getMessage('defaultCurrency')}
             </div>
-            <div className="text-sm 2xl:text-base 3xl:text-lg leading-6 mb-1">
+            <div className="mb-1 text-sm leading-6 2xl:text-base 3xl:text-lg">
               {chrome.i18n.getMessage('selectExchangeCurrency')}
             </div>
             <div className="text-xs 2xl:text-sm 3xl:text-base leading-4 mb-4.5 text-lightBlue">
@@ -344,20 +372,16 @@ export default () => {
                 size="lg"
                 filterSupported={false}
               /> */}
-              <DropdownNew 
-                options={currenciesData}
-                value={currency}
-                onChange={onCurrencyChange}
-              />
+              <DropdownNew options={currenciesData} value={currency} onChange={onCurrencyChange} />
             </div>
           </div>
 
           {/* METAMASK OVERWRITES */}
-          <div className="default-currency pb-6 mb-4 border-b border-white">
-            <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
+          <div className="pb-6 mb-4 border-b border-white default-currency">
+            <div className="text-base font-semibold leading-8 uppercase 2xl:text-lg 3xl:text-xl">
               {chrome.i18n.getMessage('metamaskOverwrites')}
             </div>
-            <div className="text-sm 2xl:text-base 3xl:text-lg leading-6 mb-1">
+            <div className="mb-1 text-sm leading-6 2xl:text-base 3xl:text-lg">
               {chrome.i18n.getMessage('selectWhichWalletYouWish')}
             </div>
             <div className="text-xs 2xl:text-sm 3xl:text-base leading-4 mb-4.5 text-lightBlue">
@@ -375,8 +399,8 @@ export default () => {
           </div>
 
           {/* KEY DETAILS */}
-          <div className="display-order pb-6 mb-4 border-b border-white">
-            <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
+          <div className="pb-6 mb-4 border-b border-white display-order">
+            <div className="text-base font-semibold leading-8 uppercase 2xl:text-lg 3xl:text-xl">
               {chrome.i18n.getMessage('keyDetails')}
             </div>
             <div className="text-sm 2xl:text-base 3xl:text-lg leading-6 mb-4.5">
@@ -403,29 +427,36 @@ export default () => {
           </div>
 
           {/* ADD EVM NETWORKS */}
-          {hasEthereum && <div id='add-network' className="default-currency pb-6 mb-4 border-b border-white">
-            <div className="font-semibold text-base 2xl:text-lg 3xl:text-xl leading-8 uppercase">
-              Add EVM Networks
+          {hasEthereum && (
+            <div id="add-network" className="pb-6 mb-4 border-b border-white default-currency">
+              <div className="text-base font-semibold leading-8 uppercase 2xl:text-lg 3xl:text-xl">
+                Add EVM Networks
+              </div>
+              <div className="text-sm leading-6 2xl:text-base 3xl:text-lg mb-7">
+                Add from a list of popular networks or add a network manually. Only interact with
+                the entities you trust.
+              </div>
+              <div>
+                <EvmNetworks />
+              </div>
+              <div
+                className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-semibold flex justify-center items-center mr-6.75"
+                style={{ width: '220px', height: '38px' }}
+                data-testid="setting-see-list-of-sites"
+                role="button"
+                onClick={() => setShowAddNetworkManually(true)}
+              >
+                Add Network Manually
+              </div>
             </div>
-            <div className="text-sm 2xl:text-base 3xl:text-lg leading-6 mb-7">
-              Add from a list of popular networks or add a network manually. Only interact with the entities you trust.
-            </div>
-            <div>
-              <EvmNetworks />
-            </div>
-            <div
-              className="bg-success rounded-sm text-center text-indigo text-sm 2xl:text-base 3xl:text-lg leading-4 font-semibold flex justify-center items-center mr-6.75"
-              style={{ width: '220px', height: '38px' }}
-              data-testid="setting-see-list-of-sites"
-              role="button"
-              onClick={() => setShowAddNetworkManually(true)}
-            >
-              Add Network Manually
-            </div>
-          </div>}
+          )}
 
           {/* IMPORT JSON */}
-          <div onClick={onImportJsonFile} style={{color:'#8989C7'}} className='underline mb-8 text-base font-semibold cursor-pointer'>
+          <div
+            onClick={onImportJsonFile}
+            style={{ color: '#8989C7' }}
+            className="mb-8 text-base font-semibold underline cursor-pointer"
+          >
             Import a key file.
           </div>
         </div>
@@ -446,12 +477,15 @@ export default () => {
       )}
 
       {showOverwriteMetamask && (
-        <OverwriteMetamaskModal
-          close={() => setShowOverwriteMetamask(false)}
-        />
+        <OverwriteMetamaskModal close={() => setShowOverwriteMetamask(false)} />
       )}
 
-      {showAddNetworkManually && <AddNetworkManuallyModal account={accounts[0]} close={() => setShowAddNetworkManually(false)}/>}
+      {showAddNetworkManually && (
+        <AddNetworkManuallyModal
+          account={accounts[0]}
+          close={() => setShowAddNetworkManually(false)}
+        />
+      )}
     </div>
   )
 }

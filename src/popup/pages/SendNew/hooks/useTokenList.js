@@ -15,7 +15,7 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
   const [ethProvider, setEthProvider] = useState(null)
   const [selectedToken, setSelectedToken] = useState()
 
-  const networkMetadata = useSelector(state => state.networkMetadata)
+  const networkMetadata = useSelector((state) => state.networkMetadata)
   const { networkLogoPath } = useNetworkLogo({ networkName: get(networkMetadata, 'networkName') })
 
   useEffect(() => {
@@ -35,8 +35,6 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
 
   const loadArweaveTokens = async (userAddress) => {
     const arweaveToken = {}
-    const koiiToken = {}
-
     const account = await popupAccount.getAccount({ address: userAddress })
     const accountData = await account.get.metadata()
 
@@ -47,16 +45,8 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
     arweaveToken.symbol = 'AR'
     arweaveToken.decimal = 12
 
-    koiiToken.logo = 'img/erc20/KOII.svg'
-    koiiToken.balance = get(accountData, 'koiBalance')
-    koiiToken.price = 0
-    koiiToken.name = 'Koii'
-    koiiToken.symbol = 'KOII'
-    koiiToken.decimal = 0
-    koiiToken.contractAddress = 'QA7AIFVx1KBBmzC7WUNhJbDsHlSJArUT0jWrhZMZPS8'
-
-    setSelectedToken(koiiToken)
-    return [arweaveToken, koiiToken]
+    setSelectedToken(arweaveToken)
+    return [arweaveToken]
   }
 
   const loadEthereumTokens = async (userAddress, importedTokenAddresses) => {

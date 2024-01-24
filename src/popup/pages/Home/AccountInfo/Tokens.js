@@ -54,13 +54,17 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             usdValue: fiatCurrencyFormat(displayingAccount.balance * price.AR),
             decimal: 12
           },
-          {
-            name: 'KOII 1st Testnet',
-            balance: numberFormat(displayingAccount.koiBalance),
-            displayingBalance: numberFormat(displayingAccount.koiBalance),
-            symbol: 'KOII',
-            decimal: 0
-          }
+          /* This code block is creating an object representing a token called "KOII 1st Testnet". It
+          includes properties such as the token's name, balance, symbol, and decimal. The
+          `numberFormat` function is used to format the balance and displayingBalance values. The
+          decimal value is set to 0, indicating that the token does not have any decimal places. */
+          // {
+          //   name: 'KOII 1st Testnet',
+          //   balance: numberFormat(displayingAccount.koiBalance),
+          //   displayingBalance: numberFormat(displayingAccount.koiBalance),
+          //   symbol: 'KOII',
+          //   decimal: 0
+          // }
         ])
         return
       } else if (displayingAccount.type === TYPE.K2) {
@@ -234,7 +238,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
       {(displayingAccount.type === TYPE.ETHEREUM ||
         displayingAccount.type === TYPE.SOLANA ||
         displayingAccount.type === TYPE.K2) && (
-        <div className="mt-5 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800">
+        <div className="mt-5 text-xs font-normal text-center text-blue-800 tracking-finnieSpacing-wide">
           {chrome.i18n.getMessage('doNotSeeYourTokens')}
         </div>
       )}
@@ -243,13 +247,13 @@ const Tokens = ({ currentProviderAddress, currency }) => {
         displayingAccount.type === TYPE.K2) && (
         <div className="mt-1.5 mb-4 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800" data-testid="import-token-button">
           {/* <span
-          className="cursor-pointer underline text-success-700"
+          className="underline cursor-pointer text-success-700"
           onClick={() => handleRefreshTokenList()}
         >
           Refresh list
         </span>{' '}
         or{' '} */}
-          <Link className="cursor-pointer underline text-success-700" to="/import-token">
+          <Link className="underline cursor-pointer text-success-700" to="/import-token">
             {chrome.i18n.getMessage('importAToken')}
           </Link>
         </div>

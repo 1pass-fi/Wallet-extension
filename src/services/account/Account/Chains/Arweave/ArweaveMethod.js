@@ -5,9 +5,26 @@
 
 import axiosAdapter from '@vespaiach/axios-fetch-adapter'
 import axios from 'axios'
-import { ACCOUNT,TYPE } from 'constants/accountConstants'
-import { ALL_NFT_LOADED, BRIDGE_FLOW, DELIGATED_OWNER, KOII_CONTRACT,PATH, URL } from 'constants/koiConstants'
-import { find, findIndex,get, includes, isArray, isEmpty, isNumber, isString, orderBy } from 'lodash'
+import { ACCOUNT, TYPE } from 'constants/accountConstants'
+import {
+  ALL_NFT_LOADED,
+  BRIDGE_FLOW,
+  DELIGATED_OWNER,
+  KOII_CONTRACT,
+  PATH,
+  URL
+} from 'constants/koiConstants'
+import {
+  find,
+  findIndex,
+  get,
+  includes,
+  isArray,
+  isEmpty,
+  isNumber,
+  isString,
+  orderBy
+} from 'lodash'
 import moment from 'moment'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 import arweave from 'services/arweave'
@@ -25,12 +42,12 @@ export class ArweaveMethod {
 
   async getBalances() {
     const balance = await this.koi.getWalletBalance()
-    const koiBalance = await this.koi.getKoiBalance()
-    return { balance, koiBalance }
+    // const koiBalance = await this.koi.getKoiBalance()
+    return { balance, koiBalance: 0 }
   }
 
   /**
-   * 
+   *
    * @returns res.contents NFTs array of an specified address at the moment this function invoked
    * @returns res.newContent NFT IDs array that will be used for "saveNewNFTsToStorage"
    */
@@ -43,7 +60,7 @@ export class ArweaveMethod {
         get nft id list for this koi address
       */
       let myContent = await this.koi.getNftIdsByOwner(this.koi.address)
-      myContent = myContent.filter(id => {
+      myContent = myContent.filter((id) => {
         const nftOwners = allContent[id]
         // const balances = Object.values(nftOwners)
         // const isOwner = nftOwners[this.koi.address] === Math.max(...balances)
@@ -56,7 +73,8 @@ export class ArweaveMethod {
       /*
         get nft list for this koi address from Chrome storage
       */
-      const contentList = (await getChromeStorage(`${this.koi.address}_assets`))[`${this.koi.address}_assets`] || []
+      const contentList =
+        (await getChromeStorage(`${this.koi.address}_assets`))[`${this.koi.address}_assets`] || []
       console.log('Saved contents: ', contentList.length)
 
       /*
@@ -72,14 +90,14 @@ export class ArweaveMethod {
       /* 
         detect new nft(s) that were not saved in Chrome storage
       */
-      const storageContentIds = validContents.map(nft => nft.txId)
+      const storageContentIds = validContents.map((nft) => nft.txId)
       const newContents = myContent.filter((nftId) => {
         return storageContentIds.indexOf(nftId) === -1
       })
 
       console.log('New contents: ', newContents.length)
 
-      if (!newContents.length && myContent.length === contentList.length){
+      if (!newContents.length && myContent.length === contentList.length) {
         console.log('ALL NFT LOADED')
         return ALL_NFT_LOADED
       }
@@ -119,26 +137,30 @@ export class ArweaveMethod {
     // get 300 latest transactions
     for (let i = 0; i < 3; i++) {
       try {
-        console.log(`Load activities [${i+1}/3]`)
+        console.log(`Load activities [${i + 1}/3]`)
 
         // get graphql resposne
         let ownedResponse, recipientResponse
-        if (hasNextPageOwned) ownedResponse = await this.koi.getOwnedTxs(this.koi.address, 100, ownedCursor)
-        if (hasNextPageRecipient) recipientResponse = await this.koi.getRecipientTxs(this.koi.address, 100, recipientCursor)
+        if (hasNextPageOwned)
+          ownedResponse = await this.koi.getOwnedTxs(this.koi.address, 100, ownedCursor)
+        if (hasNextPageRecipient)
+          recipientResponse = await this.koi.getRecipientTxs(this.koi.address, 100, recipientCursor)
 
         // get hasNextPage
         hasNextPageOwned = get(ownedResponse, 'data.transactions.pageInfo.hasNextPage')
         hasNextPageRecipient = get(recipientResponse, 'data.transactions.pageInfo.hasNextPage')
-  
+
         // get transactions
         const ownedTransactions = get(ownedResponse, 'data.transactions.edges') || []
         const recipientTransactions = get(recipientResponse, 'data.transactions.edges') || []
 
         // update cursor
         if (hasNextPageOwned) ownedCursor = ownedTransactions[ownedTransactions.length - 1].cursor
-        if (hasNextPageRecipient) recipientCursor = recipientCursor[recipientTransactions.length - 1].cursor
+        if (hasNextPageRecipient)
+          recipientCursor = recipientCursor[recipientTransactions.length - 1].cursor
 
-        if (isArray(ownedTransactions) && isArray(recipientTransactions)) fetchedData = [...fetchedData, ...ownedTransactions, ...recipientTransactions]
+        if (isArray(ownedTransactions) && isArray(recipientTransactions))
+          fetchedData = [...fetchedData, ...ownedTransactions, ...recipientTransactions]
       } catch (err) {
         console.log('Update activities failed', err.message)
       }
@@ -152,124 +174,130 @@ export class ArweaveMethod {
     // get accountName
     const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
 
-    fetchedData = fetchedData.filter(activity => !!get(activity, 'node.block')).map(activity => {
-      try {
-        const time = get(activity, 'node.block.timestamp')
-        const timeString = isNumber(time) ? moment(time * 1000).format('MMMM DD YYYY') : ''
-        const id = get(activity, 'node.id')
-        let activityName = 'Sent AR'
-        let expense = Number(get(activity, 'node.quantity.ar')) + Number(get(activity, 'node.fee.ar'))
-  
-        /* 
+    fetchedData = fetchedData
+      .filter((activity) => !!get(activity, 'node.block'))
+      .map((activity) => {
+        try {
+          const time = get(activity, 'node.block.timestamp')
+          const timeString = isNumber(time) ? moment(time * 1000).format('MMMM DD YYYY') : ''
+          const id = get(activity, 'node.id')
+          let activityName = 'Sent AR'
+          let expense =
+            Number(get(activity, 'node.quantity.ar')) + Number(get(activity, 'node.fee.ar'))
+
+          /* 
           GET TAGS
         */
-        // get input tag
-        let inputTag = (get(activity, 'node.tags'))
-        if (!isArray(inputTag)) inputTag = []
-        inputTag = inputTag.filter(tag => tag.name === 'Input')
-  
-        // get Init State tag
-        const initStateTag = (get(activity, 'node.tags')).filter(tag => tag.name === 'Init-State')
-  
-        // get action tag
-        const actionTag = ((get(activity, 'node.tags')).filter(tag => tag.name === 'Action'))
+          // get input tag
+          let inputTag = get(activity, 'node.tags')
+          if (!isArray(inputTag)) inputTag = []
+          inputTag = inputTag.filter((tag) => tag.name === 'Input')
 
-        // get Koii-Did tag
-        const koiiDidTag = ((get(activity, 'node.tags')).filter(tag => tag.name === 'Koii-Did'))
+          // get Init State tag
+          const initStateTag = get(activity, 'node.tags').filter((tag) => tag.name === 'Init-State')
 
-        let source = get(activity, 'node.recipient')
-        let inputFunction
-        if (inputTag[0]) {
-          inputFunction = JSON.parse(inputTag[0].value)
-          if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
-            activityName = 'Sent KOII'
-            if (inputFunction.isSendNft) {
-              activityName = 'Sent NFT'
-            } else {
-              expense = inputFunction.qty
-            }
-            source = inputFunction.target
-          } else if (inputFunction.function === 'updateCollection') {
-            activityName = 'Updated Collection'
-          } else if (inputFunction.function === 'updateKID') {
-            activityName = 'Updated KID'
-          } else if (inputFunction.function === 'lock') {
-            activityName = 'Locked NFT'
-          } else if (inputFunction.function === 'updateData') {
-            activityName = 'Updated DID'
-          } else if (inputFunction.function === 'burnKoi') {
-            activityName = 'Burnt KOII'
-            expense = 1
-          } else if (inputFunction.function === 'register') {
-            activityName = 'Registered KID'
-          } else if (inputFunction.function === 'unregister') {
-            activityName = 'Unregistered KID'
-          }
-  
-          if (inputFunction.function === 'registerData' ||
-            inputFunction.function === 'migratePreRegister') {
-            activityName = 'Registered Data'
-            source = null
-          }
-        }
-  
-        if (initStateTag[0]) {
-          if (actionTag[0].value.includes('KID/Create')) {
-            const initState = JSON.parse(initStateTag[0].value)
-            activityName = `Created KID "${initState.name}"`
-          } else if (actionTag[0].value.includes('Collection/Create')) {
-            const initState = JSON.parse(initStateTag[0].value)
-            activityName = `Created Collection "${initState.name}"`
-          } else {
-            const initState = JSON.parse(initStateTag[0].value)
-            activityName = `Minted NFT "${initState.title}"`
-          }
-        }
-  
-        if (get(activity, 'node.owner.address') !== this.koi.address) {
-          activityName = 'Received AR'
-          source = get(activity, 'node.owner.address')
-          expense -= Number(get(activity, 'node.fee.ar'))
+          // get action tag
+          const actionTag = get(activity, 'node.tags').filter((tag) => tag.name === 'Action')
+
+          // get Koii-Did tag
+          const koiiDidTag = get(activity, 'node.tags').filter((tag) => tag.name === 'Koii-Did')
+
+          let source = get(activity, 'node.recipient')
+          let inputFunction
           if (inputTag[0]) {
             inputFunction = JSON.parse(inputTag[0].value)
             if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
-              activityName = 'Received KOII'
-              expense = inputFunction.qty
+              activityName = 'Sent KOII'
+              if (inputFunction.isSendNft) {
+                activityName = 'Sent NFT'
+              } else {
+                expense = inputFunction.qty
+              }
               source = inputFunction.target
+            } else if (inputFunction.function === 'updateCollection') {
+              activityName = 'Updated Collection'
+            } else if (inputFunction.function === 'updateKID') {
+              activityName = 'Updated KID'
+            } else if (inputFunction.function === 'lock') {
+              activityName = 'Locked NFT'
+            } else if (inputFunction.function === 'updateData') {
+              activityName = 'Updated DID'
+            } else if (inputFunction.function === 'burnKoi') {
+              activityName = 'Burnt KOII'
+              expense = 1
+            } else if (inputFunction.function === 'register') {
+              activityName = 'Registered KID'
+            } else if (inputFunction.function === 'unregister') {
+              activityName = 'Unregistered KID'
+            }
+
+            if (
+              inputFunction.function === 'registerData' ||
+              inputFunction.function === 'migratePreRegister'
+            ) {
+              activityName = 'Registered Data'
+              source = null
             }
           }
-        }
 
-        if (!isEmpty(koiiDidTag)) {
-          if (get(koiiDidTag, '[0].value') === 'CreateReactApp') activityName = 'Created DID'
-          if (get(koiiDidTag, '[0].value') === 'CreateContract') activityName = 'Initialized DID data'
+          if (initStateTag[0]) {
+            if (actionTag[0].value.includes('KID/Create')) {
+              const initState = JSON.parse(initStateTag[0].value)
+              activityName = `Created KID "${initState.name}"`
+            } else if (actionTag[0].value.includes('Collection/Create')) {
+              const initState = JSON.parse(initStateTag[0].value)
+              activityName = `Created Collection "${initState.name}"`
+            } else {
+              const initState = JSON.parse(initStateTag[0].value)
+              activityName = `Minted NFT "${initState.title}"`
+            }
+          }
+
+          if (get(activity, 'node.owner.address') !== this.koi.address) {
+            activityName = 'Received AR'
+            source = get(activity, 'node.owner.address')
+            expense -= Number(get(activity, 'node.fee.ar'))
+            if (inputTag[0]) {
+              inputFunction = JSON.parse(inputTag[0].value)
+              if (inputFunction.function === 'transfer' || inputFunction.function === 'mint') {
+                activityName = 'Received KOII'
+                expense = inputFunction.qty
+                source = inputFunction.target
+              }
+            }
+          }
+
+          if (!isEmpty(koiiDidTag)) {
+            if (get(koiiDidTag, '[0].value') === 'CreateReactApp') activityName = 'Created DID'
+            if (get(koiiDidTag, '[0].value') === 'CreateContract')
+              activityName = 'Initialized DID data'
+          }
+
+          return {
+            id,
+            activityName,
+            expense,
+            accountName,
+            date: timeString,
+            source,
+            time,
+            address: this.koi.address,
+            seen: true
+          }
+        } catch (err) {
+          return {}
         }
-  
-        return {
-          id,
-          activityName,
-          expense,
-          accountName,
-          date: timeString,
-          source,
-          time,
-          address: this.koi.address,
-          seen: true
-        }
-      } catch (err) {
-        return {}
-      }
-    })
+      })
 
     console.log('RESULT: ', fetchedData.length)
 
-    const oldActivites = await this.#chrome.getActivities() || []
+    const oldActivites = (await this.#chrome.getActivities()) || []
     const newestOfOldActivites = oldActivites[0]
 
     if (newestOfOldActivites) {
-      const idx = findIndex(fetchedData, data => data.id === newestOfOldActivites.id)
-  
-      for(let i = 0; i < idx; i++) {
+      const idx = findIndex(fetchedData, (data) => data.id === newestOfOldActivites.id)
+
+      for (let i = 0; i < idx; i++) {
         fetchedData[i].seen = false
       }
     }
@@ -298,7 +326,6 @@ export class ArweaveMethod {
       const txId = await this.koi.transfer(qty, target, token)
 
       return txId
-
     } catch (err) {
       throw new Error(err.message)
     }
@@ -306,22 +333,24 @@ export class ArweaveMethod {
 
   async loadCollections() {
     try {
-      const savedCollection = await this.#chrome.getCollections() || []
+      const savedCollection = (await this.#chrome.getCollections()) || []
       // get list of transactions
       let fetchedCollections = await this.koi.getCollectionsByWalletAddress(this.koi.address)
 
       if (savedCollection.length == fetchedCollections.length) return 'fetched'
 
       // get list of transaction ids
-      fetchedCollections = fetchedCollections.map(collection => get(collection, 'node.id'))
+      fetchedCollections = fetchedCollections.map((collection) => get(collection, 'node.id'))
       fetchedCollections = await this.#readState(fetchedCollections)
 
       // read state from the transaction id to get needed data for the collection
-      fetchedCollections = await Promise.all(fetchedCollections.map(collection => this.#getNftsDataForCollections(collection)))
+      fetchedCollections = await Promise.all(
+        fetchedCollections.map((collection) => this.#getNftsDataForCollections(collection))
+      )
 
       // filter collection has NFTs that cannot be found on the storage.
-      fetchedCollections = fetchedCollections.filter(collection => {
-        return collection.nfts.every(nft => nft)
+      fetchedCollections = fetchedCollections.filter((collection) => {
+        return collection.nfts.every((nft) => nft)
       })
       console.log('fetchedCollections', fetchedCollections)
       return fetchedCollections
@@ -362,7 +391,7 @@ export class ArweaveMethod {
         // UPDATE KID
         return await this.koi.updateKID(kidInfo, hadKID)
       } else {
-        // Create new kid 
+        // Create new kid
         const { fileType } = payload
         const { u8 } = await this.#getImageDataForNFT(fileType)
         const image = { blobData: u8, contentType: fileType }
@@ -438,7 +467,9 @@ export class ArweaveMethod {
 
   async submitInviteCode(code) {
     try {
-      const signedPayload = await this.koi.signPayload({ data: { address: this.koi.address, code } })
+      const signedPayload = await this.koi.signPayload({
+        data: { address: this.koi.address, code }
+      })
       const { data } = await axios({
         method: 'POST',
         url: PATH.AFFILIATE_SUBMIT_CODE,
@@ -478,7 +509,9 @@ export class ArweaveMethod {
 
   async checkAffiliateInviteSpent() {
     try {
-      const signedPayload = await this.koi.signPayload({ data: { address: this.koi.address, code: 'code' } })
+      const signedPayload = await this.koi.signPayload({
+        data: { address: this.koi.address, code: 'code' }
+      })
       const { data } = await axios({
         method: 'POST',
         url: PATH.AFFILIATE_SUBMIT_CODE,
@@ -490,7 +523,7 @@ export class ArweaveMethod {
         }
       })
 
-      if (((data.message).toLowerCase()).includes('already exists')) {
+      if (data.message.toLowerCase().includes('already exists')) {
         return true
       }
     } catch (err) {
@@ -506,26 +539,28 @@ export class ArweaveMethod {
   }
 
   async #readState(txIds) {
-    const result = await Promise.all(txIds.map(async id => {
-      try {
-        let state = await smartweave.readContract(arweave, id)
-        const viewsAndReward = await this.koi.getViewsAndEarnedKOII(state.collection)
-        state = { ...state, id, ...viewsAndReward }
-        console.log('state', state)
-        return state
-      } catch (err) {
-        return null
-      }
-    }))
-    return result.filter(collection => collection)
+    const result = await Promise.all(
+      txIds.map(async (id) => {
+        try {
+          let state = await smartweave.readContract(arweave, id)
+          const viewsAndReward = await this.koi.getViewsAndEarnedKOII(state.collection)
+          state = { ...state, id, ...viewsAndReward }
+          console.log('state', state)
+          return state
+        } catch (err) {
+          return null
+        }
+      })
+    )
+    return result.filter((collection) => collection)
   }
 
   async #getNftsDataForCollections(collection) {
-    const storageNfts = await this.#chrome.getAssets() || []
+    const storageNfts = (await this.#chrome.getAssets()) || []
 
     const { collection: nftIds } = collection
-    let nfts = nftIds.map(id => {
-      const nft = find(storageNfts, v => v.txId == id)
+    let nfts = nftIds.map((id) => {
+      const nft = find(storageNfts, (v) => v.txId == id)
       if (nft) return nft
     })
 
@@ -565,10 +600,10 @@ export class ArweaveMethod {
     }
   }
 
-  async nftBridge({txId, toAddress, typeOfWallet: type, accountName}) {
+  async nftBridge({ txId, toAddress, typeOfWallet: type, accountName }) {
     try {
       let bridgePending
-      let pendingTransactions = await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION) || []
+      let pendingTransactions = (await this.#chrome.getField(ACCOUNT.PENDING_TRANSACTION)) || []
       let assets = await this.#chrome.getAssets()
       let success
 
@@ -637,12 +672,12 @@ export class ArweaveMethod {
       target: address,
       isSendNft: true
     }
-    
+
     const txId = await this.#interactWrite(input, nftId)
-    
+
     // update nft state
     let allNfts = await this.#chrome.getAssets()
-    allNfts = allNfts.map(nft => {
+    allNfts = allNfts.map((nft) => {
       if (nft.txId === nftId) nft.isSending = true
       return nft
     })
@@ -664,78 +699,86 @@ export class ArweaveMethod {
   */
   async getNftData(nftIds, getBase64) {
     try {
-      return await Promise.all(nftIds.map(async contentId => {
-        try {
-          const content = await this.koi.getNftState(contentId)
-          if (content.title || content.name) {
-            if (!get(content, 'contentType')) {
-              const response = await fetch(`${PATH.NFT_IMAGE}/${content.id}`)
-              const blob = await response.blob()
-              const type = get(blob, 'type') || 'image/png'
-              content.contentType = type
-            }
-            let url = `${PATH.NFT_IMAGE}/${content.id}`
-            let imageUrl = url
-            if (getBase64) {
-              if (!includes(content.contentType, 'html')) {
-                const u8 = Buffer.from((await axios.request({
-                  url,
-                  adapter: axiosAdapter,
-                  method: 'GET',
-                  responseType: 'arraybuffer'
-                })).data, 'binary').toString('base64')
-                imageUrl = `data:${content.contentType};base64,${u8}`
-                if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
+      return await Promise.all(
+        nftIds.map(async (contentId) => {
+          try {
+            const content = await this.koi.getNftState(contentId)
+            if (content.title || content.name) {
+              if (!get(content, 'contentType')) {
+                const response = await fetch(`${PATH.NFT_IMAGE}/${content.id}`)
+                const blob = await response.blob()
+                const type = get(blob, 'type') || 'image/png'
+                content.contentType = type
+              }
+              let url = `${PATH.NFT_IMAGE}/${content.id}`
+              let imageUrl = url
+              if (getBase64) {
+                if (!includes(content.contentType, 'html')) {
+                  const u8 = Buffer.from(
+                    (
+                      await axios.request({
+                        url,
+                        adapter: axiosAdapter,
+                        method: 'GET',
+                        responseType: 'arraybuffer'
+                      })
+                    ).data,
+                    'binary'
+                  ).toString('base64')
+                  imageUrl = `data:${content.contentType};base64,${u8}`
+                  if (content.contentType.includes('video'))
+                    imageUrl = `data:video/mp4;base64,${u8}`
+                }
+              }
+
+              return {
+                name: content.title || content.name,
+                // isKoiWallet: content.ticker === 'KOINFT',
+                isKoiWallet: true,
+                earnedKoi: content.reward,
+                txId: content.id,
+                imageUrl,
+                galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+                koiRockUrl: `${PATH.KOII_LIVE}/${content.id}`,
+                isRegistered: true,
+                contentType: content.contentType,
+                totalViews: content.attention,
+                createdAt: content.createdAt,
+                description: content.description,
+                type: TYPE.ARWEAVE,
+                address: this.koi.address,
+                locked: content.locked,
+                tags: content.tags,
+                isPrivate: content.isPrivate === undefined ? 'undefined' : content.isPrivate
+              }
+            } else {
+              console.log('Failed load content: ', content)
+              return {
+                name: '...',
+                isKoiWallet: true,
+                earnedKoi: content.reward,
+                txId: content.id,
+                imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
+                galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+                koiRockUrl: `${PATH.KOII_LIVE}/${content.id}`,
+                isRegistered: true,
+                contentType: content.contentType || 'image',
+                totalViews: content.attention,
+                createdAt: content.createdAt,
+                description: content.description,
+                type: TYPE.ARWEAVE,
+                address: this.koi.address,
+                locked: content.locked,
+                tags: content.tags,
+                isPrivate: content.isPrivate === undefined ? 'undefined' : content.isPrivate
               }
             }
-
-            return {
-              name: content.title || content.name,
-              // isKoiWallet: content.ticker === 'KOINFT',
-              isKoiWallet: true,
-              earnedKoi: content.reward,
-              txId: content.id,
-              imageUrl,
-              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
-              koiRockUrl: `${PATH.KOII_LIVE}/${content.id}`,
-              isRegistered: true,
-              contentType: content.contentType,
-              totalViews: content.attention,
-              createdAt: content.createdAt,
-              description: content.description,
-              type: TYPE.ARWEAVE,
-              address: this.koi.address,
-              locked: content.locked,
-              tags: content.tags,
-              isPrivate: content.isPrivate === undefined ? 'undefined' : content.isPrivate
-            }
-          } else {
-            console.log('Failed load content: ', content)
-            return {
-              name: '...',
-              isKoiWallet: true,
-              earnedKoi: content.reward,
-              txId: content.id,
-              imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
-              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
-              koiRockUrl: `${PATH.KOII_LIVE}/${content.id}`,
-              isRegistered: true,
-              contentType: content.contentType || 'image',
-              totalViews: content.attention,
-              createdAt: content.createdAt,
-              description: content.description,
-              type: TYPE.ARWEAVE,
-              address: this.koi.address,
-              locked: content.locked,
-              tags: content.tags,
-              isPrivate: content.isPrivate === undefined ? 'undefined' : content.isPrivate
-            }
+          } catch (err) {
+            console.log(err.message)
+            throw new Error(err.message)
           }
-        } catch (err) {
-          console.log(err.message)
-          throw new Error(err.message)
-        }
-      }))
+        })
+      )
     } catch (err) {
       console.log(err.message)
       return []
@@ -744,77 +787,85 @@ export class ArweaveMethod {
 
   async getNfts(nftIds, getBase64) {
     try {
-      return await Promise.all(nftIds.map(async contentId => {
-        try {
-          const content = await this.koi.getNftState(contentId)
-          if (content.title || content.name) {
-            if (!get(content, 'contentType')) {
-              const response = await fetch(`${PATH.NFT_IMAGE}/${content.id}`)
-              const blob = await response.blob()
-              const type = get(blob, 'type') || 'image/png'
-              content.contentType = type
-            }
-            let url = `${PATH.NFT_IMAGE}/${content.id}`
-            let imageUrl = url
-            if (getBase64) {
-              if (!includes(content.contentType, 'html')) {
-                const u8 = Buffer.from((await axios.request({
-                  url,
-                  adapter: axiosAdapter,
-                  method: 'GET',
-                  responseType: 'arraybuffer'
-                })).data, 'binary').toString('base64')
-                imageUrl = `data:${content.contentType};base64,${u8}`
-                if (content.contentType.includes('video')) imageUrl = `data:video/mp4;base64,${u8}`
+      return await Promise.all(
+        nftIds.map(async (contentId) => {
+          try {
+            const content = await this.koi.getNftState(contentId)
+            if (content.title || content.name) {
+              if (!get(content, 'contentType')) {
+                const response = await fetch(`${PATH.NFT_IMAGE}/${content.id}`)
+                const blob = await response.blob()
+                const type = get(blob, 'type') || 'image/png'
+                content.contentType = type
+              }
+              let url = `${PATH.NFT_IMAGE}/${content.id}`
+              let imageUrl = url
+              if (getBase64) {
+                if (!includes(content.contentType, 'html')) {
+                  const u8 = Buffer.from(
+                    (
+                      await axios.request({
+                        url,
+                        adapter: axiosAdapter,
+                        method: 'GET',
+                        responseType: 'arraybuffer'
+                      })
+                    ).data,
+                    'binary'
+                  ).toString('base64')
+                  imageUrl = `data:${content.contentType};base64,${u8}`
+                  if (content.contentType.includes('video'))
+                    imageUrl = `data:video/mp4;base64,${u8}`
+                }
+              }
+
+              return {
+                name: content.title || content.name,
+                // isKoiWallet: content.ticker === 'KOINFT',
+                isKoiWallet: true,
+                earnedKoi: content.reward,
+                txId: content.id,
+                imageUrl,
+                galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+                koiRockUrl: `${PATH.KOII_LIVE}/${content.id}`,
+                isRegistered: true,
+                contentType: content.contentType,
+                totalViews: content.attention,
+                createdAt: content.createdAt,
+                description: content.description,
+                type: TYPE.ARWEAVE,
+                address: content.owner,
+                locked: content.locked,
+                tags: content.tags,
+                isPrivate: content.isPrivate === undefined ? 'undefined' : content.isPrivate
+              }
+            } else {
+              console.log('Failed load content: ', content)
+              return {
+                name: '...',
+                isKoiWallet: true,
+                earnedKoi: content.reward,
+                txId: content.id,
+                imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
+                galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
+                koiRockUrl: `${PATH.KOII_LIVE}/${content.id}`,
+                isRegistered: true,
+                contentType: content.contentType || 'image',
+                totalViews: content.attention,
+                createdAt: content.createdAt,
+                description: content.description,
+                type: TYPE.ARWEAVE,
+                address: content.owner,
+                locked: content.locked,
+                tags: content.tags,
+                isPrivate: content.isPrivate === undefined ? 'undefined' : content.isPrivate
               }
             }
-
-            return {
-              name: content.title || content.name,
-              // isKoiWallet: content.ticker === 'KOINFT',
-              isKoiWallet: true,
-              earnedKoi: content.reward,
-              txId: content.id,
-              imageUrl,
-              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
-              koiRockUrl: `${PATH.KOII_LIVE}/${content.id}`,
-              isRegistered: true,
-              contentType: content.contentType,
-              totalViews: content.attention,
-              createdAt: content.createdAt,
-              description: content.description,
-              type: TYPE.ARWEAVE,
-              address: content.owner,
-              locked: content.locked,
-              tags: content.tags,
-              isPrivate: content.isPrivate === undefined ? 'undefined' : content.isPrivate
-            }
-          } else {
-            console.log('Failed load content: ', content)
-            return {
-              name: '...',
-              isKoiWallet: true,
-              earnedKoi: content.reward,
-              txId: content.id,
-              imageUrl: 'https://koi.rocks/static/media/item-temp.49349b1b.jpg',
-              galleryUrl: `${PATH.GALLERY}#/details/${content.id}`,
-              koiRockUrl: `${PATH.KOII_LIVE}/${content.id}`,
-              isRegistered: true,
-              contentType: content.contentType || 'image',
-              totalViews: content.attention,
-              createdAt: content.createdAt,
-              description: content.description,
-              type: TYPE.ARWEAVE,
-              address: content.owner,
-              locked: content.locked,
-              tags: content.tags,
-              isPrivate: content.isPrivate === undefined ? 'undefined' : content.isPrivate
-            }
+          } catch (err) {
+            console.log(err.message)
           }
-        } catch (err) {
-          console.log(err.message)
-        }
-      }))
+        })
+      )
     } catch (err) {
       console.log(err.message)
       return []
@@ -824,7 +875,7 @@ export class ArweaveMethod {
   async updateNftStates() {
     console.log('Update Nft state...')
     const allNfts = await this.#chrome.getAssets()
-    const nftIds = await allNfts.map(nft => nft.txId)
+    const nftIds = await allNfts.map((nft) => nft.txId)
 
     const updatedNfts = await this.getNftData(nftIds)
 
@@ -844,7 +895,7 @@ export class ArweaveMethod {
     let response = await fetch(URL.GET_BRIDGE_STATUS, {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
@@ -883,13 +934,14 @@ export class ArweaveMethod {
     return bytes.buffer
   }
 
-  async #fromArweaveToEthereum ({ txId: nftId, toAddress: ethereumAddress }) {
+  async #fromArweaveToEthereum({ txId: nftId, toAddress: ethereumAddress }) {
     try {
-      if (!isString(nftId) || !isString(ethereumAddress)) throw new Error('Invalid input for bridging')
+      if (!isString(nftId) || !isString(ethereumAddress))
+        throw new Error('Invalid input for bridging')
 
       // lock nft
       const key = this.koi.wallet
-      const  lockInput = {
+      const lockInput = {
         function: 'lock',
         delegatedOwner: DELIGATED_OWNER,
         qty: 1,
@@ -898,31 +950,36 @@ export class ArweaveMethod {
       }
       const lockTransactionId = await smartweave.interactWrite(arweave, key, nftId, lockInput)
       console.log('[Arweave to Ethereum 1/3] Lock transactionId: ', lockTransactionId)
-  
+
       // transfer 10 KOII
       const koiiContract = this.koi.contractId
       const transferInput = {
-        'function': 'transfer',
-        'qty': 10,
-        'target': '6E4APc5fYbTrEsX3NFkDpxoI-eaChDmRu5nqNKOn37E',
-        'nftId': nftId,
-        'lockTx': lockTransactionId
+        function: 'transfer',
+        qty: 10,
+        target: '6E4APc5fYbTrEsX3NFkDpxoI-eaChDmRu5nqNKOn37E',
+        nftId: nftId,
+        lockTx: lockTransactionId
       }
-      const transferTransactionId = await smartweave.interactWrite(arweave, key, koiiContract, transferInput)
+      const transferTransactionId = await smartweave.interactWrite(
+        arweave,
+        key,
+        koiiContract,
+        transferInput
+      )
       console.log('[Arweave to Ethereum 2/3] Transfer transactionId: ', transferTransactionId)
-  
+
       // send post request
       const payload = {
-        'arNFTId': nftId,
-        'arUserAddress': this.koi.address,
-        'burnKOItx': transferTransactionId,
-        'lockedNFTtx': lockTransactionId
+        arNFTId: nftId,
+        arUserAddress: this.koi.address,
+        burnKOItx: transferTransactionId,
+        lockedNFTtx: lockTransactionId
       }
-  
+
       const rawResposne = await fetch('https://devbundler.openkoi.com:8885/mintEthToken', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
