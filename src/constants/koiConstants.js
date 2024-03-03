@@ -692,7 +692,7 @@ export const PREDEFINED_SOLANA_NETWORK_METADATA = {
 export const PREDEFINED_K2_NETWORK_METADATA = {
   'testnet': {
     networkName: 'Testnet',
-    rpcUrl: 'https://k2-testnet.koii.live',
+    rpcUrl: 'https://testnet.koii.live',
     chainId: null,
     currencySymbol: 'KOII',
     blockExplorerUrl: null

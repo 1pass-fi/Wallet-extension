@@ -16,7 +16,7 @@ export const checkShouldInjectFinnie = async (origin) => {
   if (!isUrl(origin)) return false
 
   const disabledOrigins = await storage.setting.get.disabledOrigins()
-  if (!every(disabledOrigins, _origin => !includes(origin, _origin))) return false
+  if (!every(disabledOrigins, (_origin) => !includes(origin, _origin))) return false
   return origin
 }
 
@@ -29,7 +29,11 @@ export const checkShouldOverwriteMetamask = async (origin, checkHasAlternativesI
   if (!hasAlternativesInstalled) return true
 
   const overwriteMetamaskSites = await storage.setting.get.overwriteMetamaskSites()
-  const shouldOverwriteMetamask = get(overwriteMetamaskSites, [origin, 'shouldOverwriteMetamask'], false)
+  const shouldOverwriteMetamask = get(
+    overwriteMetamaskSites,
+    [origin, 'shouldOverwriteMetamask'],
+    false
+  )
 
   return shouldOverwriteMetamask
 }
@@ -47,7 +51,7 @@ export const getScriptPaths = async (shouldOverwriteMetamask) => {
     '/scripts/finnieKoiiWalletProviderScript.js',
     '/scripts/finnieK2ProviderScript.js',
     '/scripts/mainScript.js'
-  ].filter(s => s)
+  ].filter((s) => s)
 
   return scriptPaths
 }
@@ -81,17 +85,20 @@ export const dispatchFinnieIsInjected = async () => {
 }
 
 export const inject = async (origin) => {
-  const shouldOverwriteMetamask = await checkShouldOverwriteMetamask(origin, checkHasAlternativesInstalled)
+  const shouldOverwriteMetamask = await checkShouldOverwriteMetamask(
+    origin,
+    checkHasAlternativesInstalled
+  )
   const scriptPaths = await getScriptPaths(shouldOverwriteMetamask)
-  const allScriptSrc = await Promise.all(scriptPaths.map(path => getSrcFromPath(path)))
-  
+  const allScriptSrc = await Promise.all(scriptPaths.map((path) => getSrcFromPath(path)))
+
   injectScriptsSequentially(allScriptSrc)
 }
 
 export default async () => {
   const origin = getOrigin()
   const shouldInjectFinnie = await checkShouldInjectFinnie(origin)
-  if (origin?.includes('google.com')) return
+
   if (shouldInjectFinnie) {
     try {
       await inject(origin)
