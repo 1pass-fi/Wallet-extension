@@ -41,6 +41,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
 
   const handleImportToken = async () => {
     try {
+      console.log('------------------------------')
       await importNewToken()
 
       history.push('*')

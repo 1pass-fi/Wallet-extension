@@ -17,6 +17,7 @@ import k2Contracts from 'utils/k2-contracts.json'
 let currentTimeout = [null]
 
 const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
+  console.log('Search:')
   const displayingAccount = useSelector(getDisplayingAccount)
 
   const [solanaTokenList, setSolanaTokenList] = useState([])
@@ -46,7 +47,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
       const _hardcodeTokens = hardcodeTokens.filter((token) => token.chainId === chainId)
 
       const tokenList = [...tokens.filterByClusterSlug(provider).getList(), ..._hardcodeTokens]
-
+      console.log('=============tokenList===========')
       setSolanaTokenList(tokenList)
     }
 

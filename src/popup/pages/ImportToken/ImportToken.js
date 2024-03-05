@@ -13,6 +13,7 @@ import ImportTokenForm from './ImportTokenForm'
 import Search from './Search'
 
 export const ImportToken = () => {
+  console.log('ImportToken:')
   const displayingAccount = useSelector(getDisplayingAccount)
   const history = useHistory()
 
