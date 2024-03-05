@@ -12,7 +12,7 @@ const useMethod = ({ contractAddress, userAddresses = [] }) => {
     let importedTokens
 
     console.log('displaying Accounts: ', displayingAccount)
-    console.log('displaying Accounts: ', contractAddress)
+    console.log('contractAddress: ', contractAddress)
 
     switch (displayingAccount.type) {
       case TYPE.K2:
