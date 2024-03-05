@@ -85,8 +85,32 @@ const getTokenData = async (contractAddress, userAddress) => {
 export const getK2CustomTokensData = async (contractAddress, userAddress) => {
   try {
     const clusterSlug = await storage.setting.get.k2Provider()
-    const connection = new ConnectionK2(clusterApiUrlK2(clusterSlug))
+    console.log('clusterSlug:', clusterSlug)
+    const connection = new ConnectionK2(clusterSlug)
+    // const connection = new ConnectionK2(clusterApiUrlK2(clusterSlug))
+    console.log('connection:', connection)
 
+    // const PublicKey = new PublicKeyK2(userAddress)
+    // const requestBody = {
+    //   jsonrpc: '2.0',
+    //   id: 1,
+    //   method: 'getAccountInfo',
+    //   params: [
+    //     PublicKey,
+    //     {
+    //       encoding: 'base58'
+    //     }
+    //   ]
+    // }
+
+    // const response = await axios.post(
+    //   clusterSlug, 
+    //   requestBody,
+    //   { adapter: axiosAdapter }
+    // )
+
+    // const tokenAccounts = response.data.result
+    // console.log('response:', response)
     let foundToken =
       find(k2Contracts, (token) =>
         includes(token.address?.toLowerCase(), contractAddress?.toLowerCase())

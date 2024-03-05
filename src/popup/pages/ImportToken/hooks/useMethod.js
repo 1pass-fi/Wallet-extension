@@ -11,6 +11,9 @@ const useMethod = ({ contractAddress, userAddresses = [] }) => {
   const importNewToken = async () => {
     let importedTokens
 
+    console.log('displaying Accounts: ', displayingAccount)
+    console.log('contractAddress: ', contractAddress)
+
     switch (displayingAccount.type) {
       case TYPE.K2:
         importedTokens = await storage.setting.get.importedK2CustomTokens()
