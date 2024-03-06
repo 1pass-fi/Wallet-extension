@@ -21,7 +21,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
 
   const [solanaTokenList, setSolanaTokenList] = useState([])
   const [tokenList, setTokenList] = useState([])
-
+  const [isAdvanced, setIsAdvanced] = useState(false)
   const [pages, setPages] = useState(1)
   const tokenListRef = useRef(null)
 
@@ -50,10 +50,10 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
       setSolanaTokenList(tokenList)
     }
 
-    if (displayingAccount.type === TYPE.SOLANA) {
+    if (displayingAccount.type === TYPE.SOLANA || (displayingAccount.type == TYPE.K2 && isAdvanced)) {
       loadSolTokens()
     }
-  }, [displayingAccount.type])
+  }, [displayingAccount.type, isAdvanced])
 
 
   useEffect(() => {
@@ -71,9 +71,9 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
 
       if (displayingAccount.type === TYPE.K2) {
         if (isEmpty(searchToken)) {
-          filterTokenList = k2Contracts
+          filterTokenList = isAdvanced ? solanaTokenList : k2Contracts
         } else {
-          filterTokenList = k2Contracts
+          filterTokenList = isAdvanced ? solanaTokenList : k2Contracts
             .filter(
               (token) =>
                 token.address === searchToken ||
@@ -128,7 +128,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
     currentTimeout[0] = setTimeout(() => {
       onSearchToken()
     }, 500)
-  }, [searchToken, displayingAccount.type])
+  }, [searchToken, displayingAccount.type, isAdvanced])
 
   const customTokenIconPath = useMemo(
     () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,
