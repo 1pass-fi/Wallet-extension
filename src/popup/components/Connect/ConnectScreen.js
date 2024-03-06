@@ -98,7 +98,7 @@ const ConnectScreen = ({
   }, [])
 
   const goToTOU = () => {
-    const url = 'https://koii.network/TOU_June_22_2021.pdf'
+    const url = 'https://koii.network/Koii_TOU_Oct_24_2023.pdf'
     chrome.tabs.create({ url })
   }
 

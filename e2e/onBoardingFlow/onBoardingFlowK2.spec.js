@@ -155,7 +155,7 @@ describe('e2e test', () => {
     const tosUrl = await tosPage?.url()
 
     // expect the TOS link correctly
-    expect(tosUrl).toBe('https://www.koii.network/TOU_June_22_2021.pdf')
+    expect(tosUrl).toBe('https://www.koii.network/Koii_TOU_Oct_24_2023.pdf')
     await tosPage?.close()
     await optionPage.bringToFront()
 
