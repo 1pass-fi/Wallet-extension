@@ -55,12 +55,13 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
     }
   }, [displayingAccount.type])
 
+
   useEffect(() => {
     const onSearchToken = async () => {
-      if (isEmpty(searchToken)) {
-        setTokenList([])
-        return
-      }
+      // if (isEmpty(searchToken)) {
+      //   setTokenList([])
+      //   return
+      // }
 
       // scroll to top and reset pages value when searchToken changed
       tokenListRef?.current?.scrollTo(0, 0)
@@ -69,17 +70,21 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
       let filterTokenList = []
 
       if (displayingAccount.type === TYPE.K2) {
-        filterTokenList = k2Contracts
-          .filter(
-            (token) =>
-              token.address === searchToken ||
-              token.name?.toLowerCase().includes(searchToken.toLowerCase()) ||
-              token.symbol?.toLowerCase().includes(searchToken.toLowerCase())
-          )
-          .map((token) => ({
-            ...token,
-            contract: token.address
-          }))
+        if (isEmpty(searchToken)) {
+          filterTokenList = k2Contracts
+        } else {
+          filterTokenList = k2Contracts
+            .filter(
+              (token) =>
+                token.address === searchToken ||
+                token.name?.toLowerCase().includes(searchToken.toLowerCase()) ||
+                token.symbol?.toLowerCase().includes(searchToken.toLowerCase())
+            )
+        }
+        filterTokenList.map((token) => ({
+          ...token,
+          contract: token.address
+        }))
       }
 
       if (displayingAccount.type === TYPE.ETHEREUM) {
