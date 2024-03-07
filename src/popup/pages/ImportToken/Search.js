@@ -22,7 +22,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
 
   const [solanaTokenList, setSolanaTokenList] = useState([])
   const [tokenList, setTokenList] = useState([])
-
+  const [isAdvanced, setIsAdvanced] = useState(false)
   const [pages, setPages] = useState(1)
   const tokenListRef = useRef(null)
 
@@ -51,17 +51,18 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
       setSolanaTokenList(tokenList)
     }
 
-    if (displayingAccount.type === TYPE.SOLANA) {
+    if (displayingAccount.type === TYPE.SOLANA || (displayingAccount.type == TYPE.K2 && isAdvanced)) {
       loadSolTokens()
     }
-  }, [displayingAccount.type])
+  }, [displayingAccount.type, isAdvanced])
+
 
   useEffect(() => {
     const onSearchToken = async () => {
-      if (isEmpty(searchToken)) {
-        setTokenList([])
-        return
-      }
+      // if (isEmpty(searchToken)) {
+      //   setTokenList([])
+      //   return
+      // }
 
       // scroll to top and reset pages value when searchToken changed
       tokenListRef?.current?.scrollTo(0, 0)
@@ -70,17 +71,21 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
       let filterTokenList = []
 
       if (displayingAccount.type === TYPE.K2) {
-        filterTokenList = k2Contracts
-          .filter(
-            (token) =>
-              token.address === searchToken ||
-              token.name?.toLowerCase().includes(searchToken.toLowerCase()) ||
-              token.symbol?.toLowerCase().includes(searchToken.toLowerCase())
-          )
-          .map((token) => ({
-            ...token,
-            contract: token.address
-          }))
+        if (isEmpty(searchToken)) {
+          filterTokenList = isAdvanced ? solanaTokenList : k2Contracts
+        } else {
+          filterTokenList = isAdvanced ? solanaTokenList : k2Contracts
+            .filter(
+              (token) =>
+                token.address === searchToken ||
+                token.name?.toLowerCase().includes(searchToken.toLowerCase()) ||
+                token.symbol?.toLowerCase().includes(searchToken.toLowerCase())
+            )
+        }
+        filterTokenList.map((token) => ({
+          ...token,
+          contract: token.address
+        }))
       }
 
       if (displayingAccount.type === TYPE.ETHEREUM) {
@@ -124,7 +129,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
     currentTimeout[0] = setTimeout(() => {
       onSearchToken()
     }, 500)
-  }, [searchToken, displayingAccount.type])
+  }, [searchToken, displayingAccount.type, isAdvanced])
 
   const customTokenIconPath = useMemo(
     () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,

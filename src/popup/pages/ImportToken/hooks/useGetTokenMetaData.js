@@ -13,6 +13,7 @@ const useGetTokenMetaData = ({ contractAddress }) => {
   useEffect(() => {
     const loadTokenData = async () => {
       try {
+        console.log('contractAddress:', contractAddress)
         const provider = await storage.setting.get.ethereumProvider()
         const { ethNetwork, apiKey } = clarifyEthereumProvider(provider)
 

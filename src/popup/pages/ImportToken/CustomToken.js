@@ -29,7 +29,7 @@ const CustomToken = ({ setTokenImport }) => {
       setTokenAddressError('')
       return
     }
-
+    console.log('contractAddress:', tokenAddress, tokenData)
     if (tokenAddress.length !== 42) {
       setTokenAddressError(chrome.i18n.getMessage('invalidTokenAddress'))
     } else {
