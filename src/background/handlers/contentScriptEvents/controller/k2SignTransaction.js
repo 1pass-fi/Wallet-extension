@@ -169,7 +169,9 @@ export default async (payload, tab, next) => {
                 console.error('Send K2 error:', err.message)
                 chrome.runtime.sendMessage({ requestId, finished: true })
                 sendResponse({data: { requestId, finished: true }})
-                next({ error: { code: 4001, data: err.message } })
+                let errorMessage = err.message
+                if (err.message?.includes('blockhash')) errorMessage = 'Koii RPC is currently very busy, please try your transaction again in a few minutes'
+                next({ error: { code: 4001, data: errorMessage } })
               }
             } else {
               next({ error: { code: 4001, data: 'Request rejected' } })
