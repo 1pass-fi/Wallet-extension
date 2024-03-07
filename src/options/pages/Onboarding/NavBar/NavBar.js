@@ -1,13 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import {
-  clusterApiUrl as clusterApiUrlK2,
-  Connection as ConnectionK2,
-  PublicKey as PublicKeyK2
-} from '@_koi/web3.js'
-import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID } from '@solana/spl-token'
-import { clusterApiUrl,Connection, PublicKey } from '@solana/web3.js'
 import BackIcon from 'img/v2/back-icon.svg'
 import EditIcon from 'img/v2/onboarding/edit-icon.svg'
 import EditSelectedIcon from 'img/v2/onboarding/edit-selected-icon.svg'
@@ -20,47 +13,11 @@ import SeedphraseIcon from 'img/v2/onboarding/seedphrase-icon.svg'
 import SeedphraseSelectedIcon from 'img/v2/onboarding/seedphrase-selected-icon.svg'
 import isEmpty from 'lodash/isEmpty'
 import { setIsOnboarding, setOnboardingPath } from 'options/actions/onboardingProcessing'
-import storage from 'services/storage'
 
 import { onboardingSteps } from '../Onboarding'
 
 const NavBar = ({ step, setStep }) => {
-  // console.log('Hello00000000000:')
-  // let publicKey = new PublicKeyK2(
-  //   '2t8wijoh6nTMAMhB78mcBCZqgobjww2LtdtZCKAFYh2F',
-  // )
-  // let mintKey = new PublicKey('26EvTPUnyAiYMyYVuJTeDhkGj5eoc4Nj9BpLgFAa4HNq')
-  // let beneficiary = await PublicKey.findProgramAddressSync(
-  //   [
-  //     publicKey.toBuffer(),
-  //     TOKEN_PROGRAM_ID.toBuffer(),
-  //     mintKey.toBuffer(),
-  //   ],
-  //   ASSOCIATED_TOKEN_PROGRAM_ID
-  // )[0]
 
-  // console.log('beneficiaryAccount', beneficiary.toBase58())
-
-  // const clusterSlug = await storage.setting.get.k2Provider()
-  // const connection = new ConnectionK2(clusterApiUrlK2(clusterSlug))
-  // // const connection = new Connection(
-  // //   clusterApiUrl('devnet'),
-  // //   'confirmed'
-  // // )
-  // // const rpcUrl = await getRpcUrl()
-  // // const SPL_CONNECTION = new Connection(rpcUrl, 'confirmed')
- 
-  // console.log('beneficiaryAccount', publicKey.toBase58(), clusterSlug)
-  // getTokenBalanceWeb3(connection, publicKey).catch(err => console.log(err))
-
-  // async function getTokenBalanceWeb3(connection, tokenAccount) {
-  //   const info = await connection.getTokenAccountBalance(tokenAccount)
-  //   if (!info.value.uiAmount) throw new Error('No balance found')
-  //   console.log('Balance (using Solana-Web3.js): ', info.value.uiAmount)
-  //   return info.value.uiAmount
-  // }
-
-  
   const dispatch = useDispatch()
   const history = useHistory()
   const onboardingPath = useSelector((state) => state.onboarding.path)
