@@ -43,7 +43,7 @@ export default ({ version = '0.4.9' }) => {
             <div className="title">{chrome.i18n.getMessage('termsOfUse')}</div>
             <div className="description">
               {chrome.i18n.getMessage('see')} Koii{chrome.i18n.getMessage('possessive')} &nbsp;
-              <a href="https://koii.network/TOU_June_22_2021.pdf" target="_blank" className="link">
+              <a href="https://koii.network/Koii_TOU_Oct_24_2023.pdf" target="_blank" className="link">
                 {chrome.i18n.getMessage('termsOfUse')}.
               </a>
             </div>

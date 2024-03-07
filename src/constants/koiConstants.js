@@ -422,7 +422,7 @@ export const FILENAME = {
 }
 
 export const URL = {
-  TERM_OF_SERVICE: 'https://koii.network/TOU_June_22_2021.pdf',
+  TERM_OF_SERVICE: 'https://koii.network/Koii_TOU_Oct_24_2023.pdf',
   GET_BRIDGE_STATUS: 'https://devbundler.openkoi.com:8885/fetchBridgeDetails',
   ETHERSCAN_MAINNET: 'https://etherscan.io',
   ETHERSCAN_GOERLI: 'https://goerli.etherscan.io',
