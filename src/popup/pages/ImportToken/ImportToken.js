@@ -24,11 +24,11 @@ export const ImportToken = () => {
   const [tokenImport, setTokenImport] = useState({})
   const [searchToken, setSearchToken] = useState('')
 
-  useEffect(() => {
-    if (displayingAccount?.type === TYPE.SOLANA || displayingAccount?.type === TYPE.K2) {
-      setTabs([{ name: 'Search', to: 'SEARCH_TOKEN' }])
-    }
-  }, [displayingAccount])
+  // useEffect(() => {
+  //   if (displayingAccount?.type === TYPE.SOLANA || displayingAccount?.type === TYPE.K2) {
+  //     setTabs([{ name: 'Search', to: 'SEARCH_TOKEN' }])
+  //   }
+  // }, [displayingAccount])
 
   return (
     <div className="w-full h-full">
