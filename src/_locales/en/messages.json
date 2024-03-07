@@ -1065,7 +1065,7 @@
     "message": "Or create"
   },
   "organizeWalletDisplay": {
-    "message": "Organize your wallet display and select a default key. This key will be automatically selected to create NFTs and send tokens."
+    "message": "Organize your wallet display and select a default key. This key will be automatically selected to send tokens and display your balances in the extension view."
   },
   "origin": {
     "message": "Origin"

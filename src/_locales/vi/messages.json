@@ -1059,7 +1059,7 @@
     "message": "Hoặc tạo mới"
   },
   "organizeWalletDisplay": {
-    "message": "Sắp xếp hiển thị ví của bạn và chọn khóa mặc định. Khóa này sẽ tự động được chọn để tạo NFT và gửi Token."
+    "message": "Sắp xếp hiển thị ví của bạn và chọn khóa mặc định. Khóa này sẽ được chọn tự động để gửi mã thông báo và hiển thị số dư của bạn trong chế độ xem tiện ích mở rộng"
   },
   "origin": {
     "message": "Nguồn"
