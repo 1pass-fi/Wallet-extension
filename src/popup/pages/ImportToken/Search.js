@@ -84,7 +84,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
         }
         console.log('FilterTokenList:', filterTokenList)
 
-        filterTokenList.map((token) => ({
+        filterTokenList = filterTokenList.map((token) => ({
           ...token,
           contract: token.address
         }))
