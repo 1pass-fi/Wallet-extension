@@ -7234,11 +7234,6 @@ eslint-plugin-flowtype@2.50.1:
   dependencies:
     lodash "^4.17.10"
 
-eslint-plugin-import-sort@^0.0.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-import-sort/-/eslint-plugin-import-sort-0.0.0.tgz#31e6bc79f916196c0eba5618740e939af7bb704f"
-  integrity sha512-+b1QIojA4mn31xQuI+oOx+n7+VqTPsMMWcasFJqpHwIfgFkXGADVvuiLAOYIIydaYwdiiwFk43ha5sKmOZBbRQ==
-
 eslint-plugin-import@2.14.0:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.14.0.tgz#6b17626d2e3e6ad52cfce8807a845d15e22111a8"
