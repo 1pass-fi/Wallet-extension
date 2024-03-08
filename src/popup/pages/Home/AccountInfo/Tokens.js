@@ -69,12 +69,30 @@ const Tokens = ({ currentProviderAddress, currency }) => {
         return
       } else if (displayingAccount.type === TYPE.K2) {
         // TODO DatH - LongP
-        const importTokens = [
+        const fireTokenContractAddress = '26EvTPUnyAiYMyYVuJTeDhkGj5eoc4Nj9BpLgFAa4HNq'
+        const fireToken = await getK2CustomTokensData(fireTokenContractAddress, displayingAccount.address)
+        console.log(fireToken)
+        const importTokens = fireToken.balance ? [
           {
             name: 'KOII',
             balance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             symbol: 'KOII',
+            decimal: 9
+          }
+        ] : [
+          {
+            name: 'KOII',
+            balance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
+            displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
+            symbol: 'KOII',
+            decimal: 9
+          },
+          {
+            name: 'Fire Token',
+            balance: numberFormat(fireToken.balance / Math.pow(10, 9)),
+            displayingBalance: numberFormat(fireToken.balance / Math.pow(10, 9)),
+            symbol: 'FIRE',
             decimal: 9
           }
         ]
