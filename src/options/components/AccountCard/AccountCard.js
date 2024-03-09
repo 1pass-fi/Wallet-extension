@@ -150,8 +150,7 @@ const AccountCard = ({
   const defaultK2AccountAddress = useSelector((state) => state.defaultAccount.K2?.address)
   const defaultEthereumAccountAddress = useSelector((state) => state.defaultAccount.ETH?.address)
   const defaultSolanaAccountAddress = useSelector((state) => state.defaultAccount.SOL?.address)
-  const networkMetadata = useSelector(state => state.networkMetadata)
-
+  const networkMetadata = useSelector((state) => state.networkMetadata)
 
   useEffect(() => {
     const getCurrentProvider = async (accountType) => {
@@ -196,7 +195,7 @@ const AccountCard = ({
     getCurrentProvider(account.type)
     countTotalViews()
   }, [account])
-  
+
   useEffect(() => {
     const getProviderOptions = async () => {
       const addedEvmNetworks = await storage.setting.get.addedEvmNetworks()
@@ -387,7 +386,7 @@ const AccountCard = ({
   const totalCoins = useMemo(() => {
     let total = 0
     if (tokenList) {
-      tokenList.forEach(token => {
+      tokenList.forEach((token) => {
         if (Number(token?.displayingBalance) > 0) total++
       })
     }
@@ -534,8 +533,11 @@ const AccountCard = ({
               className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
               data-testid="account-card-balance"
             >
-              {chrome.i18n.getMessage('balance')}{': '}
-              {formatNumber(account.balance, 4) !== 'NaN' ? formatNumber(account.balance, 4) : '0'}{' '}
+              {chrome.i18n.getMessage('balance')}
+              {': '}
+              {formatNumber(account.balance, 4) !== 'NaN'
+                ? formatNumber(account.balance, 4)
+                : '0'}{' '}
               {tokenSymbol}
             </div>
           )}
@@ -544,7 +546,8 @@ const AccountCard = ({
               className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
               data-testid="account-card-balance"
             >
-              {chrome.i18n.getMessage('balance')}{': '}
+              {chrome.i18n.getMessage('balance')}
+              {': '}
               {formatNumber(account.balance, 4) !== 'NaN'
                 ? formatNumber(account.balance / Math.pow(10, 9), 4)
                 : '0'}{' '}
@@ -557,7 +560,8 @@ const AccountCard = ({
                 className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
                 data-testid="account-card-balance"
               >
-                {chrome.i18n.getMessage('balance')}{': '}
+                {chrome.i18n.getMessage('balance')}
+                {': '}
                 {isNumber(account.balance) ? formatNumber(account.balance, 4) : '0'} AR
               </div>
             </>
@@ -567,7 +571,9 @@ const AccountCard = ({
             className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight leading-6"
             data-testid="account-card-assets"
           >
-            {chrome.i18n.getMessage('assets')}{': '}{account.totalAssets.length}
+            {chrome.i18n.getMessage('assets')}
+            {': '}
+            {account.totalAssets.length}
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -672,7 +678,7 @@ const AccountCard = ({
                     key={idx}
                     data-testid={`account-card-account-balance-${token.symbol}`}
                   >
-                    {formatNumber(token.displayingBalance, 4)} {token.symbol}
+                    {formatNumber(token.displayingBalance)} {token.symbol}
                   </div>
                 ))}
               </div>
@@ -710,8 +716,7 @@ const AccountCard = ({
                   style={{
                     color: 'white',
                     fontSize: '12px'
-                  }
-                  }
+                  }}
                 />
               </div>
             </div>
@@ -733,7 +738,8 @@ const AccountCard = ({
             </div> */}
             <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-                {chrome.i18n.getMessage('dappConnection')}{': '}
+                {chrome.i18n.getMessage('dappConnection')}
+                {': '}
               </div>
               <div
                 className="text-xs 2xl:text-sm 3xl:text-base font-normal tracking-finnieSpacing-tight underline cursor-pointer"

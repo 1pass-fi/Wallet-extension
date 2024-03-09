@@ -34,9 +34,9 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
 
   return (
     <div data-testid="ImportAKey" className="w-3/4 flex flex-col text-white text-left">
-      <WelcomeBackgroundTop className="absolute top-0 right-0" />
-      <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
-      <div>
+      <WelcomeBackgroundTop className={clsx('absolute top-0 right-0 z-0')} />
+      <WelcomeBackgroundBottom className={clsx('absolute bottom-0 left-0 z-0')} />
+      <div className="z-10">
         <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
           {chrome.i18n.getMessage('importYourKey')}
         </div>
@@ -44,7 +44,7 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
         <div className="mt-2 font-normal text-sm w-11/12">
           {chrome.i18n.getMessage('finnieCurrentlyKeySupports')}
         </div>
-        <div className="mt-11 ml-1 lg:flex lg:justify-start gap-4.5 grid grid-cols-2">
+        <div className="mt-11 ml-1 lg:flex lg:justify-start gap-4.5 grid grid-cols-2 z-10">
           <div className="flex flex-col items-center">
             <KeyLogo
               type={TYPE.K2}

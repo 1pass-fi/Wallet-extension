@@ -116,8 +116,8 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
       className="w-11/12 flex flex-col text-white text-left max-w-full"
       style={{ width: '500px' }}
     >
-      <WelcomeBackground className="absolute bottom-0 right-0" />
-      <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
+      <WelcomeBackground className={clsx('absolute bottom-0 right-0 z-0')} />
+      <div className="lg:mt-8 mt-10 font-semibold text-2xl tracking-finnieSpacing-wider z-10">
         {chrome.i18n.getMessage('saveYourSecretPhrase')}
       </div>
 
@@ -128,14 +128,17 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
         What about a <span className="text-turquoiseBlue">safe place to keep it?</span>
       </div> */}
 
-      <div className="mt-8 font-normal text-lg leading-6 text-white">
+      <div className="lg:mt-4 mt-8 font-normal text-lg leading-6 text-white">
         {chrome.i18n.getMessage('typeInTheMissingWords')}
       </div>
 
-      <div className="flex flex-col max-w-full" style={{ width: '347px' }}>
+      <div
+        className="flex flex-col max-w-full z-51 text-red-600"
+        style={{ width: '347px', zIndex: 2 }}
+      >
         <div
           style={{ height: '182px' }}
-          className="mt-7.5 py-3.5 bg-trueGray-100 bg-opacity-20 rounded-sm grid grid-flow-col grid-rows-6 font-normal text-sm leading-6"
+          className="mt-7.5 py-3.5 bg-trueGray-100 bg-opacity-20 rounded-sm grid grid-flow-col grid-rows-6 font-normal text-sm leading-6 z-20"
         >
           {SEED_ARRAY.map((phrase, index) => {
             return hiddenPhrase.map((obj) => obj.index).includes(index) ? (
@@ -159,7 +162,12 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
           })}
         </div>
 
-        <div data-testid='input-phrase-error' className="mt-1.5 text-red-finnie ml-7 text-xs font-normal h-2">{messageError}</div>
+        <div
+          data-testid="input-phrase-error"
+          className="mt-1.5 text-red-finnie ml-7 text-xs font-normal h-2"
+        >
+          {messageError}
+        </div>
 
         <Button
           style={{ width: '240px', height: '42px' }}

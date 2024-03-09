@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import clsx from 'clsx'
 import ReturnIcon from 'img/return-icon.svg'
 import UploadIcon from 'img/upload-icon.svg'
 import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
@@ -60,8 +61,8 @@ const AddJsonFile = ({ importType, step, setStep }) => {
 
   return (
     <div className='w-full h-full flex flex-col items-center justify-center text-white'>
-      <WelcomeBackgroundTop className="absolute top-0 right-0" />
-      <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
+      <WelcomeBackgroundTop className={clsx('absolute top-0 right-0 z-0')} />
+      <WelcomeBackgroundBottom className={clsx('absolute bottom-0 left-0 z-0')} />
 
       <div className='text-2xl font-semibold'>{chrome.i18n.getMessage('enterYourPassword')}</div>
       <div className='text-lg mt-5'>{chrome.i18n.getMessage('ifYouDontHaveASecretPhrase')}</div>
@@ -82,12 +83,12 @@ const AddJsonFile = ({ importType, step, setStep }) => {
         <input {...getInputProps()}/>
       </div>
       <div className='text-warning-300 text-xs mt-5'>{errorMessage}</div>
-      <button onClick={onConfirm} style={{width:'240px',height:'42px',backgroundColor:'#F5F5F5',borderRadius:'3px'}} className='text-indigo mt-5 text-base'>Confirm</button>
+      <button onClick={onConfirm} style={{width:'240px',height:'42px',backgroundColor:'#F5F5F5',borderRadius:'3px'}} className='text-indigo mt-5 text-base z-10'>Confirm</button>
       {totalAccount > 0 && <div onClick={() => {
         dispatch(setIsOnboarding(false))
         dispatch(setOnboardingPath(''))
         history.push('/settings/wallet')
-      }} className='absolute bottom-10 right-8 underline text-lightBlue cursor-pointer'>
+      }} className='absolute bottom-10 right-8 underline text-lightBlue cursor-pointer z-10'>
         Go to Settings
       </div>}
       <div onClick={() => setStep(step - 1)} className='absolute top-5 left-5 cursor-pointer'><ReturnIcon /></div>

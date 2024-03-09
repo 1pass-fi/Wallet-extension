@@ -10,8 +10,8 @@ const SEED_STRING = 'color tired merge rural token pole capable people metal stu
 const AddAKey = ({ step, setStep, setPhrase }) => {
   return (
     <div data-testid="AddAKey" className="w-4/5 flex flex-col text-white">
-      <WelcomeBackgroundTop className="absolute top-0 right-0" />
-      <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
+      <WelcomeBackgroundTop className={clsx('absolute top-0 right-0 z-0')} />
+      <WelcomeBackgroundBottom className={clsx('absolute bottom-0 left-0 z-0')} />
       <div
         className="ml-3 font-normal text-base leading-6 text-left max-w-full"
         style={{ width: '347px' }}
@@ -68,9 +68,15 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
           </div>
         </div>
       </div>
-      <div style={{color:'#8989C7'}} className='absolute text-base font-semibold underline cursor-pointer bottom-12 right-14' onClick={() => {
-        setStep(13)
-      }}>Import a key file</div>
+      <div
+        style={{ color: '#8989C7' }}
+        className="absolute text-base font-semibold underline cursor-pointer bottom-12 right-14"
+        onClick={() => {
+          setStep(13)
+        }}
+      >
+        Import a key file
+      </div>
     </div>
   )
 }

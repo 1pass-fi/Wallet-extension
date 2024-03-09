@@ -109,8 +109,8 @@ const ImportPhrase = ({ step, setStep, importType }) => {
 
   return (
     <div data-testid="ImportPhrase" className="mt-40 ml-24 flex flex-col text-white text-left">
-      <WelcomeBackgroundTop className="absolute top-0 right-0" />
-      <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
+      <WelcomeBackgroundTop className={clsx('absolute top-0 right-0 z-0')} />
+      <WelcomeBackgroundBottom className={clsx('absolute bottom-0 left-0 z-0')} />
       <div className="font-normal text-lg leading-8 tracking-finnieSpacing-tight">
         {chrome.i18n.getMessage('typeSecretPhrase')}
       </div>
@@ -121,10 +121,10 @@ const ImportPhrase = ({ step, setStep, importType }) => {
         </span>{' '}
         {chrome.i18n.getMessage('moveToTheNextWordLc')}
       </div>
-      <div className="flex flex-col max-w-full" style={{ width: '347px' }}>
+      <div className={clsx('flex flex-col max-w-full z-10')} style={{ width: '347px' }}>
         <div
           style={{ height: '182px' }}
-          className="mt-7.5 py-3.5 bg-trueGray-100 bg-opacity-20 rounded-sm grid grid-flow-col grid-rows-6 font-normal text-sm leading-6"
+          className="sm:mt-2 lg:mt-4 mt-7.5 py-3.5 bg-trueGray-100 bg-opacity-20 rounded-sm grid grid-flow-col grid-rows-6 font-normal text-sm leading-6"
         >
           {completePhrase.map((phrase, index) => {
             return (
@@ -146,14 +146,14 @@ const ImportPhrase = ({ step, setStep, importType }) => {
 
         <div
           data-testid="import-phrase-error"
-          className="mt-1.5 text-red-finnie ml-7 text-xs font-normal h-2"
+          className="sm:mt-0 lg:mt-1 mt-1.5 text-red-finnie ml-7 text-xs font-normal h-2"
         >
           {messageError}
         </div>
 
         <Button
           style={{ width: '240px', height: '42px' }}
-          className={clsx('mt-10.75 text-base mx-auto rounded z-10', isImporting && 'cursor-wait')}
+          className={clsx('sm:mt-2 lg:mt-4 mt-10.75 text-base mx-auto rounded z-10', isImporting && 'cursor-wait')}
           variant="white"
           text={chrome.i18n.getMessage('confirm')}
           disabled={!canClickContinue}

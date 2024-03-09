@@ -24,11 +24,11 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
       data-testid="PrepareSavePhrase"
       className="w-11/12 flex flex-col text-white text-left max-w-full"
     >
-      <WelcomeBackground className="absolute bottom-0 right-0" />
-      <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
+      <WelcomeBackground className={clsx('absolute bottom-0 right-0 z-0')} />
+      <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider z-10">
         {chrome.i18n.getMessage('saveYourSecretPhrase')}
       </div>
-      <div className="mt-5 font-normal text-base leading-8 max-w-full" style={{ width: '500px' }}>
+      <div className="mt-5 font-normal text-base leading-8 max-w-full z-10" style={{ width: '500px' }}>
         {chrome.i18n.getMessage('koiiWalletsUseA')} {/* TODO add tooltip/link */}
         <a
           target="_blank"
@@ -39,7 +39,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
         </a>{' '}
         {chrome.i18n.getMessage('secretPhraseMsgLc')}
       </div>
-      <div className="mt-8 font-normal text-sm leading-6 w-11/12 flex">
+      <div className="mt-8 font-normal text-sm leading-6 w-11/12 flex z-10">
         <NoticeIcon style={{ width: '96px', height: '96px' }} />
         <div style={{ width: '370px' }} className="flex flex-col max-w-full">
           <div>
@@ -52,7 +52,7 @@ const PrepareSavePhrase = ({ step, setStep, importType }) => {
           <div className="mt-2">{chrome.i18n.getMessage('thisShouldBeWrittenOnAPieceOfPaper')}</div>
         </div>
       </div>
-      <div className="mt-16 flex justify-start gap-12 w-full">
+      <div className="mt-16 flex justify-start gap-12 w-full z-10">
         <Button
           icon={WarningIcon}
           style={{ width: '240px', height: '42px' }}

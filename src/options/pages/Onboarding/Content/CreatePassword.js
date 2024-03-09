@@ -83,15 +83,15 @@ const CreatePassword = ({ step, setStep }) => {
       )}
       style={{ minWidth: '240px' }}
     >
-      <WelcomeBackgroundTop className="absolute top-0 right-0" />
-      <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
-      <div className="font-normal text-base leading-6 text-left">
+      <WelcomeBackgroundTop className={clsx('absolute top-0 right-0 z-0')} />
+      <WelcomeBackgroundBottom className={clsx('absolute bottom-0 left-0 z-0')} />
+      <div className="font-normal text-base leading-6 text-left z-10">
         {isEmpty(accounts)
           ? chrome.i18n.getMessage('createAPasswordToSecureFinnie')
           : chrome.i18n.getMessage('reEnterYourFinniePassword')}
       </div>
       <InputField
-        className="mt-5"
+        className="mt-5 z-10"
         label={
           isEmpty(accounts)
             ? chrome.i18n.getMessage('newPassword')
@@ -125,7 +125,7 @@ const CreatePassword = ({ step, setStep }) => {
       />
       {isEmpty(accounts) && (
         <InputField
-          className="mt-7"
+          className="mt-7 z-10"
           label={chrome.i18n.getMessage('confirmPassword')}
           value={confirmPassword}
           setValue={(e) => setConfirmPassword(e.target.value)}
@@ -145,7 +145,7 @@ const CreatePassword = ({ step, setStep }) => {
         />
       )}
       {isEmpty(accounts) && (
-        <div className="mt-5 flex items-center justify-center">
+        <div className="mt-5 flex items-center justify-center z-10">
           <CheckBox
             checked={isAcceptTermService}
             onClick={() => setIsAcceptTermService((prev) => !prev)}
@@ -154,7 +154,7 @@ const CreatePassword = ({ step, setStep }) => {
             data-testid="new-password-tos"
             role="checkbox"
           />
-          <div className="flex ml-2.25 font-normal text-sm leading-6">
+          <div className="flex ml-2.25 font-normal text-sm leading-6 z-10">
             <div onClick={() => setIsAcceptTermService((prev) => !prev)}>
               {chrome.i18n.getMessage('iAgreeWithThe')}&nbsp;
             </div>
