@@ -83,8 +83,8 @@ const CreatePassword = ({ step, setStep }) => {
       )}
       style={{ minWidth: '240px' }}
     >
-      <WelcomeBackgroundTop className={clsx('absolute top-0 right-0 z-0')} />
-      <WelcomeBackgroundBottom className={clsx('absolute bottom-0 left-0 z-0')} />
+      <WelcomeBackgroundTop className={clsx('welcome-bg-top')} />
+      <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
       <div className="font-normal text-base leading-6 text-left z-10">
         {isEmpty(accounts)
           ? chrome.i18n.getMessage('createAPasswordToSecureFinnie')

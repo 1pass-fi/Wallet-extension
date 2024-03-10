@@ -25,7 +25,7 @@ const RevealPhrase = ({ step }) => {
       data-testid="RevealPhrase"
       className="flex flex-col items-center justify-center text-white text-left w-full pr-4"
     >
-      <WelcomeBackgroundBottom className={clsx('absolute bottom-0 left-0 z-0')} />
+      <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
       <KoiIcon className="w-18 h-18 absolute top-2.25 right-3.75" />
       <div className="w-3/4 flex items-center justify-center z-10">
         {!skipPhrase ? (

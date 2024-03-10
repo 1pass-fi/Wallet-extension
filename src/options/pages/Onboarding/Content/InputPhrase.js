@@ -116,7 +116,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
       className="w-11/12 flex flex-col text-white text-left max-w-full"
       style={{ width: '500px' }}
     >
-      <WelcomeBackground className={clsx('absolute bottom-0 right-0 z-0')} />
+      <WelcomeBackground className={clsx('welcome-bg')} />
       <div className="lg:mt-8 mt-10 font-semibold text-2xl tracking-finnieSpacing-wider z-10">
         {chrome.i18n.getMessage('saveYourSecretPhrase')}
       </div>

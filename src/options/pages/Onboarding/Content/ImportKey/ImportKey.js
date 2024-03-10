@@ -34,8 +34,8 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
 
   return (
     <div data-testid="ImportAKey" className="w-3/4 flex flex-col text-white text-left">
-      <WelcomeBackgroundTop className={clsx('absolute top-0 right-0 z-0')} />
-      <WelcomeBackgroundBottom className={clsx('absolute bottom-0 left-0 z-0')} />
+      <WelcomeBackgroundTop className={clsx('welcome-bg-top')} />
+      <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
       <div className="z-10">
         <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">
           {chrome.i18n.getMessage('importYourKey')}

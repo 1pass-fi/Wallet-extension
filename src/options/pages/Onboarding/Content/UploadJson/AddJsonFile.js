@@ -61,8 +61,8 @@ const AddJsonFile = ({ importType, step, setStep }) => {
 
   return (
     <div className='w-full h-full flex flex-col items-center justify-center text-white'>
-      <WelcomeBackgroundTop className={clsx('absolute top-0 right-0 z-0')} />
-      <WelcomeBackgroundBottom className={clsx('absolute bottom-0 left-0 z-0')} />
+      <WelcomeBackgroundTop className={clsx('welcome-bg-top')} />
+      <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
 
       <div className='text-2xl font-semibold'>{chrome.i18n.getMessage('enterYourPassword')}</div>
       <div className='text-lg mt-5'>{chrome.i18n.getMessage('ifYouDontHaveASecretPhrase')}</div>

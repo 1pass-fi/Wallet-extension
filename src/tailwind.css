@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .welcome-bg {
+    @apply absolute bottom-0 right-0 z-0;
+  }
+  .welcome-bg-top {
+    @apply absolute top-0 right-0 z-0;
+  }
+  .welcome-bg-bottom {
+    @apply absolute bottom-0 left-0 z-0;
+  }
+}

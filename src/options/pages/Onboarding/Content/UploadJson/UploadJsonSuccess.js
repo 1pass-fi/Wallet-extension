@@ -14,8 +14,8 @@ const UploadJsonSuccess = () => {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center text-white">
-      <WelcomeBackgroundTop className={clsx('absolute top-0 right-0 z-0')} />
-      <WelcomeBackgroundBottom className={clsx('absolute bottom-0 left-0 z-0')} />
+      <WelcomeBackgroundTop className={clsx('welcome-bg-top')} />
+      <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
       <div className="text-left">
         <div className="flex items-center text-2xl font-semibold">
           <CheckIcon />

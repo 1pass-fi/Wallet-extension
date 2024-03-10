@@ -109,8 +109,8 @@ const ImportPhrase = ({ step, setStep, importType }) => {
 
   return (
     <div data-testid="ImportPhrase" className="mt-40 ml-24 flex flex-col text-white text-left">
-      <WelcomeBackgroundTop className={clsx('absolute top-0 right-0 z-0')} />
-      <WelcomeBackgroundBottom className={clsx('absolute bottom-0 left-0 z-0')} />
+      <WelcomeBackgroundTop className={clsx('welcome-bg-top')} />
+      <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
       <div className="font-normal text-lg leading-8 tracking-finnieSpacing-tight">
         {chrome.i18n.getMessage('typeSecretPhrase')}
       </div>

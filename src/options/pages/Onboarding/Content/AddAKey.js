@@ -10,8 +10,8 @@ const SEED_STRING = 'color tired merge rural token pole capable people metal stu
 const AddAKey = ({ step, setStep, setPhrase }) => {
   return (
     <div data-testid="AddAKey" className="w-4/5 flex flex-col text-white">
-      <WelcomeBackgroundTop className={clsx('absolute top-0 right-0 z-0')} />
-      <WelcomeBackgroundBottom className={clsx('absolute bottom-0 left-0 z-0')} />
+      <WelcomeBackgroundTop className={clsx('welcome-bg-top')} />
+      <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
       <div
         className="ml-3 font-normal text-base leading-6 text-left max-w-full"
         style={{ width: '347px' }}

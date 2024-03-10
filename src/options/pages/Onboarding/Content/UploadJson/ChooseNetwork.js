@@ -33,14 +33,19 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
   }, [])
 
   return (
-    <div data-testid="ImportAKey" className="w-full flex flex-col text-white text-left justify-center items-center">
-      <div className='w-3/5'>
-        <WelcomeBackgroundTop className="absolute top-0 right-0" />
-        <WelcomeBackgroundBottom className="absolute bottom-0 left-0" />
+    <div
+      data-testid="ImportAKey"
+      className="w-full flex flex-col text-white text-left justify-center items-center"
+    >
+      <div className="w-3/5">
+        <WelcomeBackgroundTop className={clsx('welcome-bg-top')} />
+        <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
         <div className="font-semibold text-2xl tracking-finnieSpacing-wider">
           {chrome.i18n.getMessage('importYourKey')}
         </div>
-        <div className="mt-5 font-normal text-lg">{chrome.i18n.getMessage('selectTheChainYourKeyLivesOn')}</div>
+        <div className="mt-5 font-normal text-lg">
+          {chrome.i18n.getMessage('selectTheChainYourKeyLivesOn')}
+        </div>
         <div className="mt-2 font-normal text-sm w-11/12">
           {chrome.i18n.getMessage('finnieSuppportsJsonImport')}
         </div>
@@ -74,7 +79,7 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
             <div className="font-normal text-lg leading-6">Arweave</div>
           </div>
           {/* SOLANA */}
-          <div 
+          <div
             className="flex flex-col items-center opacity-50"
             data-tip={chrome.i18n.getMessage('comingSoon')}
             onMouseEnter={() => setShowToolTip(true)}
@@ -83,15 +88,15 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
             <KeyLogo
               type={TYPE.SOLANA}
               handleOnClick={() => {
-              // setNetwork(NETWORK.SOLANA)
-              // handleImportKey(TYPE.SOLANA)
+                // setNetwork(NETWORK.SOLANA)
+                // handleImportKey(TYPE.SOLANA)
               }}
               data_testid={'solana-key'}
             />
             <div className="font-normal text-lg leading-6">Solana</div>
           </div>
           {/* ETHEREUM */}
-          <div 
+          <div
             className="flex flex-col items-center opacity-50"
             data-tip={chrome.i18n.getMessage('comingSoon')}
             onMouseEnter={() => setShowToolTip(true)}
@@ -100,8 +105,8 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
             <KeyLogo
               type={TYPE.ETHEREUM}
               handleOnClick={() => {
-              // setNetwork(NETWORK.ETHEREUM)
-              // handleImportKey(TYPE.ETHEREUM)
+                // setNetwork(NETWORK.ETHEREUM)
+                // handleImportKey(TYPE.ETHEREUM)
               }}
               data_testid={'ethereum-key'}
             />
@@ -109,7 +114,9 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
           </div>
         </div>
         {showToolTip && <ToolTip />}
-        <div onClick={() => setStep(0)} className='absolute top-5 left-5 cursor-pointer'><ReturnIcon /></div>
+        <div onClick={() => setStep(0)} className="absolute top-5 left-5 cursor-pointer">
+          <ReturnIcon />
+        </div>
       </div>
     </div>
   )
