@@ -72,9 +72,9 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
 
       if (displayingAccount.type === TYPE.K2) {
         if (isEmpty(searchToken)) {
-          filterTokenList = isAdvanced ? solanaTokenList : k2Contracts
+          filterTokenList =  k2Contracts
         } else {
-          filterTokenList = isAdvanced ? solanaTokenList : k2Contracts
+          filterTokenList =  k2Contracts
             .filter(
               (token) =>
                 token.address === searchToken ||
@@ -82,10 +82,13 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
                 token.symbol?.toLowerCase().includes(searchToken.toLowerCase())
             )
         }
-        filterTokenList.map((token) => ({
+        console.log('FilterTokenList:', filterTokenList)
+
+        filterTokenList = filterTokenList.map((token) => ({
           ...token,
           contract: token.address
         }))
+        console.log('FilterTokenList:', filterTokenList)
       }
 
       if (displayingAccount.type === TYPE.ETHEREUM) {

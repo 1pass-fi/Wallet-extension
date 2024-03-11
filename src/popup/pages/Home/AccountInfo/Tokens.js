@@ -48,6 +48,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
   )
 
   const loadTokenList = async () => {
+    console.log('===============loadTokenList===============', displayingAccount.type)
     try {
       dispatch(setIsLoading(true))
       if (displayingAccount.type === TYPE.ARWEAVE) {
@@ -108,6 +109,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
           importedTokenAddresses.map(async (contractAddress) => {
             let token = await getK2CustomTokensData(contractAddress, displayingAccount.address)
             token = { ...token, displayingBalance: token.balance / Math.pow(10, token.decimal) }
+            console.log('Token:', token)
             if (token.price) {
               token = {
                 ...token,
