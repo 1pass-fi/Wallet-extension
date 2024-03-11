@@ -99,6 +99,8 @@ export default async () => {
   const origin = getOrigin()
   const shouldInjectFinnie = await checkShouldInjectFinnie(origin)
 
+  if (origin?.includes('google.com')) return
+
   if (shouldInjectFinnie) {
     try {
       await inject(origin)

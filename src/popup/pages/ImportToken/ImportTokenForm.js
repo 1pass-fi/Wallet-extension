@@ -18,6 +18,7 @@ import useGetTokenBalance from './hooks/useGetTokenBalance'
 import useMethod from './hooks/useMethod'
 
 const ImportTokenForm = ({ tokenImport, goBack }) => {
+  console.log('tokenImport:', tokenImport)
   const displayingAccount = useSelector(getDisplayingAccount)
   const history = useHistory()
 
@@ -41,6 +42,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
 
   const handleImportToken = async () => {
     try {
+      console.log('------------------------------')
       await importNewToken()
 
       history.push('*')
@@ -54,7 +56,7 @@ const ImportTokenForm = ({ tokenImport, goBack }) => {
       contractAddress: tokenImport.contract,
       account
     })
-
+    console.log('tokenBalance:', tokenBalance)
     const balance =
       formatNumber(tokenBalance.balance / Math.pow(10, tokenBalance?.tokenDecimal), 3) || '---'
     const symbol = tokenBalance.tokenSymbol || tokenImport.symbol

@@ -17,6 +17,7 @@ import { setIsOnboarding, setOnboardingPath } from 'options/actions/onboardingPr
 import { onboardingSteps } from '../Onboarding'
 
 const NavBar = ({ step, setStep }) => {
+
   const dispatch = useDispatch()
   const history = useHistory()
   const onboardingPath = useSelector((state) => state.onboarding.path)

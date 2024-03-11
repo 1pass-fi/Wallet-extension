@@ -38,11 +38,11 @@
   },
   {
     "chainId": 101,
-    "address": "26EvTPUnyAiYMyYVuJTeDhkGj5eoc4Nj9BpLgFAa4HNq",
-    "symbol": "TST1",
-    "name": "FIRE",
+    "address": "JPSDMfbb51aozruSM25gLFYd79VnGkBtqCWm6KhgAg7",
+    "symbol": "FIRE",
+    "name": "Fire Token",
     "decimals": 9,
-    "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/51rGXakBCcBoti5TSjKZ5kYtaiFfu8wnxjfEgPZRsdMD/Fire_FISH.png",
+    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/10089.png",
     "tags": ["utility-token"]
   }
 ]
