@@ -76,7 +76,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
         return
       } else if (displayingAccount.type === TYPE.K2) {
         // TODO DatH - LongP
-        const fireTokenContractAddress = '26EvTPUnyAiYMyYVuJTeDhkGj5eoc4Nj9BpLgFAa4HNq'
+        const fireTokenContractAddress = 'JPSDMfbb51aozruSM25gLFYd79VnGkBtqCWm6KhgAg7'
         const fireToken = await getK2CustomTokensData(fireTokenContractAddress, displayingAccount.address)
         console.log(fireToken)
         const importTokens = !fireToken.balance ? [
