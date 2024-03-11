@@ -6,7 +6,6 @@ import { TYPE } from 'constants/accountConstants'
 import BackBtn from 'img/popup/back-button.svg'
 import isEmpty from 'lodash/isEmpty'
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
-import storage from 'services/storage'
 
 import CustomToken from './CustomToken'
 import ImportTokenForm from './ImportTokenForm'
@@ -19,7 +18,6 @@ export const ImportToken = () => {
   console.log('displayingAccount:', displayingAccount)
   // const displayedImportedTokens = await storage.setting.get.displayedImportedTokens()
   // console.log('displayedImportedToken:', displayedImportedTokens)
-  let displayedTokens = []
   const history = useHistory()
 
   const [tabs, setTabs] = useState([
@@ -29,20 +27,6 @@ export const ImportToken = () => {
   const [currentTab, setCurrentTab] = useState('SEARCH_TOKEN')
   const [tokenImport, setTokenImport] = useState({})
   const [searchToken, setSearchToken] = useState('')
-
-  useEffect(() => {
-    async function getDisplayedImportedTokens () {
-      const displayedImportedTokens = await storage.setting.get.displayedImportedTokens()
-      console.log('displayedImportedToken:', displayedImportedTokens)
-      return displayedImportedTokens
-    }
-    displayedTokens = getDisplayedImportedTokens()
-  }, [displayingAccount])
-
-  // async function getDisplayedImportedTokens () {
-  //   const displayedImportedTokens = await storage.setting.get.displayedImportedTokens()
-  //   console.log('displayedImportedToken:', displayedImportedTokens)
-  // }
 
   return (
     <div className="w-full h-full">
