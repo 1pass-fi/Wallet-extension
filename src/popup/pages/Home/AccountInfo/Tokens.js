@@ -20,6 +20,8 @@ import { fiatCurrencyFormat, numberFormat } from 'utils'
 import { fromArToWinston, fromEthToWei } from 'utils'
 // utils
 import getTokenData, { getK2CustomTokensData, getSolanaCustomTokensData } from 'utils/getTokenData'
+import k2Contracts from 'utils/k2-contracts.json'
+
 
 const Tokens = ({ currentProviderAddress, currency }) => {
   const dispatch = useDispatch()
@@ -76,7 +78,9 @@ const Tokens = ({ currentProviderAddress, currency }) => {
         return
       } else if (displayingAccount.type === TYPE.K2) {
         // TODO DatH - LongP
-        const fireTokenContractAddress = '26EvTPUnyAiYMyYVuJTeDhkGj5eoc4Nj9BpLgFAa4HNq'
+        const fireTokenMetadata = k2Contracts.find((token) => token.symbol === 'FIRE')
+        const fireTokenContractAddress = fireTokenMetadata.address
+        console.log('fireTokenContractAddress:', fireTokenContractAddress)
         const fireToken = await getK2CustomTokensData(fireTokenContractAddress, displayingAccount.address)
         console.log(fireToken)
         const importTokens = !fireToken.balance ? [
