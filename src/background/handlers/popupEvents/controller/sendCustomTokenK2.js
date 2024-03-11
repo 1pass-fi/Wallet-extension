@@ -9,6 +9,7 @@ import {
   Transaction
 } from '@_koi/web3.js'
 import {
+  createAssociatedTokenAccount,
   createTransferInstruction,
   getOrCreateAssociatedTokenAccount,
   transfer
@@ -34,7 +35,7 @@ export default async (payload, next) => {
     const fromWallet = k2Tool.keypair
 
     const provider = await storage.setting.get.k2Provider()
-    const connection = new Connection(clusterApiUrl(provider))
+    const connection = new Connection(provider, 'confirmed')
 
     const mint = new PublicKey(contractAddress)
 
@@ -46,7 +47,7 @@ export default async (payload, next) => {
     )
 
     const toWallet = new PublicKey(customTokenRecipient)
-
+    
     const toTokenAccount = await getOrCreateAssociatedTokenAccount(
       connection,
       fromWallet,
