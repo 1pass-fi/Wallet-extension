@@ -6,6 +6,7 @@ import { TYPE } from 'constants/accountConstants'
 import BackBtn from 'img/popup/back-button.svg'
 import isEmpty from 'lodash/isEmpty'
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
+import storage from 'services/storage'
 
 import CustomToken from './CustomToken'
 import ImportTokenForm from './ImportTokenForm'
@@ -15,6 +16,10 @@ import Search from './Search'
 export const ImportToken = () => {
   console.log('ImportToken:')
   const displayingAccount = useSelector(getDisplayingAccount)
+  console.log('displayingAccount:', displayingAccount)
+  // const displayedImportedTokens = await storage.setting.get.displayedImportedTokens()
+  // console.log('displayedImportedToken:', displayedImportedTokens)
+  let displayedTokens = []
   const history = useHistory()
 
   const [tabs, setTabs] = useState([
@@ -25,11 +30,19 @@ export const ImportToken = () => {
   const [tokenImport, setTokenImport] = useState({})
   const [searchToken, setSearchToken] = useState('')
 
-  // useEffect(() => {
-  //   if (displayingAccount?.type === TYPE.SOLANA || displayingAccount?.type === TYPE.K2) {
-  //     setTabs([{ name: 'Search', to: 'SEARCH_TOKEN' }])
-  //   }
-  // }, [displayingAccount])
+  useEffect(() => {
+    async function getDisplayedImportedTokens () {
+      const displayedImportedTokens = await storage.setting.get.displayedImportedTokens()
+      console.log('displayedImportedToken:', displayedImportedTokens)
+      return displayedImportedTokens
+    }
+    displayedTokens = getDisplayedImportedTokens()
+  }, [displayingAccount])
+
+  // async function getDisplayedImportedTokens () {
+  //   const displayedImportedTokens = await storage.setting.get.displayedImportedTokens()
+  //   console.log('displayedImportedToken:', displayedImportedTokens)
+  // }
 
   return (
     <div className="w-full h-full">

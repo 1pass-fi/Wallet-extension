@@ -143,4 +143,8 @@ export class SettingGet {
   async addedEvmNetworks() {
     return (await this.#chrome._getChrome(SETTING.ADDED_EVM_NETWORKS)) || []
   }
+
+  async displayedImportedTokens() {
+    return (await this.#chrome._getChrome(SETTING.DISPLYED_IMPORTED_TOKEN)) || []
+  }
 }

@@ -137,4 +137,8 @@ export class SettingSet {
   addedEvmNetworks(value) {
     return this.#chrome._setChrome(SETTING.ADDED_EVM_NETWORKS, value)
   }
+
+  displayedImportedTokens(value) {
+    return this.#chrome._setChrome(SETTING.DISPLYED_IMPORTED_TOKEN, value)
+  }
 }

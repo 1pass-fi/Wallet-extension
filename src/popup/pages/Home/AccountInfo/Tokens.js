@@ -15,6 +15,7 @@ import useNetworkLogo from 'popup/provider/hooks/useNetworkLogo'
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 // hooks
 import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddresses'
+import storage from 'services/storage'
 import { useEvmNetworkMetadata } from 'sharedHooks/useNetworkMetaData'
 import { fiatCurrencyFormat, numberFormat } from 'utils'
 import { fromArToWinston, fromEthToWei } from 'utils'
@@ -108,7 +109,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             logo: fireToken.logo
           }
         ]
-
+        console.log('importedTokenAddress', importedTokenAddresses)
         await Promise.all(
           importedTokenAddresses.map(async (contractAddress) => {
             let token = await getK2CustomTokensData(contractAddress, displayingAccount.address)
@@ -125,7 +126,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             importTokens.push(token)
           })
         )
-
+        await storage.setting.set.displayedImportedTokens(importTokens)
         setTokens(importTokens)
       } else if (displayingAccount.type === TYPE.SOLANA) {
         const importTokens = [
