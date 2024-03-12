@@ -127,8 +127,10 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
         return await getK2CustomTokensData(tokenAddress, userAddress)
       })
     )
-
-    return [k2Token, ...customTokenList]
+    const tokenList = await storage.setting.get.displayedImportedTokens()
+    // return [k2Token, ...customTokenList]
+    console.log('tokenList:', tokenList)
+    return tokenList
   }
 
   useEffect(() => {

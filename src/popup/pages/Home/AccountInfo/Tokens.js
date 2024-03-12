@@ -90,7 +90,8 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             balance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             symbol: 'KOII',
-            decimal: 9
+            decimal: 9,
+            logo: 'img/v2/k2-logos/finnie-k2-logo.svg'
           }
         ] : [
           {
@@ -98,7 +99,8 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             balance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             symbol: 'KOII',
-            decimal: 9
+            decimal: 9,
+            logo: 'img/v2/k2-logos/finnie-k2-logo.svg'
           },
           {
             name: fireToken.name,
