@@ -15,6 +15,9 @@ import Search from './Search'
 export const ImportToken = () => {
   console.log('ImportToken:')
   const displayingAccount = useSelector(getDisplayingAccount)
+  console.log('displayingAccount:', displayingAccount)
+  // const displayedImportedTokens = await storage.setting.get.displayedImportedTokens()
+  // console.log('displayedImportedToken:', displayedImportedTokens)
   const history = useHistory()
 
   const [tabs, setTabs] = useState([
@@ -24,12 +27,6 @@ export const ImportToken = () => {
   const [currentTab, setCurrentTab] = useState('SEARCH_TOKEN')
   const [tokenImport, setTokenImport] = useState({})
   const [searchToken, setSearchToken] = useState('')
-
-  // useEffect(() => {
-  //   if (displayingAccount?.type === TYPE.SOLANA || displayingAccount?.type === TYPE.K2) {
-  //     setTabs([{ name: 'Search', to: 'SEARCH_TOKEN' }])
-  //   }
-  // }, [displayingAccount])
 
   return (
     <div className="w-full h-full">

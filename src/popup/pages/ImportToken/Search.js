@@ -25,6 +25,20 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
   const [isAdvanced, setIsAdvanced] = useState(false)
   const [pages, setPages] = useState(1)
   const tokenListRef = useRef(null)
+  const [displayedTokens, setDisplayedTokens] = useState([])
+
+  useEffect(() => {
+    getDisplayedImportedTokens()
+  }, [displayingAccount])
+
+  // useEffect(() => {
+  //   setDisplayedTokens(getDisplayedImportedTokens())
+  // }, [])
+
+  async function getDisplayedImportedTokens () {
+    const displayedImportedTokens = await storage.setting.get.displayedImportedTokens()
+    setDisplayedTokens(displayedImportedTokens)
+  }
 
   useEffect(() => {
     const loadSolTokens = async () => {
@@ -69,12 +83,16 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
       setPages(1)
 
       let filterTokenList = []
+      console.log('displayedTokens:', displayedTokens)
 
+      filterTokenList = k2Contracts.filter((token) => {
+        return  !displayedTokens.some((displayedToken) => token.name === displayedToken.name)
+        // return displayedTokens.some()
+      })
+      console.log('filterTokenList:', filterTokenList)
       if (displayingAccount.type === TYPE.K2) {
-        if (isEmpty(searchToken)) {
-          filterTokenList =  k2Contracts
-        } else {
-          filterTokenList =  k2Contracts
+        if (!isEmpty(searchToken)) {
+          filterTokenList =  filterTokenList
             .filter(
               (token) =>
                 token.address === searchToken ||
@@ -132,7 +150,7 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
     currentTimeout[0] = setTimeout(() => {
       onSearchToken()
     }, 500)
-  }, [searchToken, displayingAccount.type, isAdvanced])
+  }, [searchToken, displayingAccount.type, isAdvanced, displayedTokens])
 
   const customTokenIconPath = useMemo(
     () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,

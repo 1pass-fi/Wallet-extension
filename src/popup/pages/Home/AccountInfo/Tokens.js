@@ -15,11 +15,14 @@ import useNetworkLogo from 'popup/provider/hooks/useNetworkLogo'
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 // hooks
 import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddresses'
+import storage from 'services/storage'
 import { useEvmNetworkMetadata } from 'sharedHooks/useNetworkMetaData'
 import { fiatCurrencyFormat, numberFormat } from 'utils'
 import { fromArToWinston, fromEthToWei } from 'utils'
 // utils
 import getTokenData, { getK2CustomTokensData, getSolanaCustomTokensData } from 'utils/getTokenData'
+import k2Contracts from 'utils/k2-contracts.json'
+
 
 const Tokens = ({ currentProviderAddress, currency }) => {
   const dispatch = useDispatch()
@@ -76,7 +79,9 @@ const Tokens = ({ currentProviderAddress, currency }) => {
         return
       } else if (displayingAccount.type === TYPE.K2) {
         // TODO DatH - LongP
-        const fireTokenContractAddress = 'JPSDMfbb51aozruSM25gLFYd79VnGkBtqCWm6KhgAg7'
+        const fireTokenMetadata = k2Contracts.find((token) => token.symbol === 'FIRE')
+        const fireTokenContractAddress = fireTokenMetadata.address
+        console.log('fireTokenContractAddress:', fireTokenContractAddress)
         const fireToken = await getK2CustomTokensData(fireTokenContractAddress, displayingAccount.address)
         console.log(fireToken)
         const importTokens = !fireToken.balance ? [
@@ -104,7 +109,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             logo: fireToken.logo
           }
         ]
-
+        console.log('importedTokenAddress', importedTokenAddresses)
         await Promise.all(
           importedTokenAddresses.map(async (contractAddress) => {
             let token = await getK2CustomTokensData(contractAddress, displayingAccount.address)
@@ -121,7 +126,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             importTokens.push(token)
           })
         )
-
+        await storage.setting.set.displayedImportedTokens(importTokens)
         setTokens(importTokens)
       } else if (displayingAccount.type === TYPE.SOLANA) {
         const importTokens = [
