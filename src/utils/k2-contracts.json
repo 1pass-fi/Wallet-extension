@@ -42,7 +42,7 @@
     "symbol": "FIRE",
     "name": "Fire Token",
     "decimals": 9,
-    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/10089.png",
+    "logoURI": "img/v2/fire-token-logo/fire__200x200.png",
     "tags": ["utility-token"]
   }
 ]
