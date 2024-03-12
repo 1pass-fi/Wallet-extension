@@ -445,12 +445,13 @@ const AccountCard = ({
     <div className="mt-4.5 text-indigo select-none" data-testid="account-card-setting-page">
       <div
         className={clsx(
-          'max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl h-32 xl:h-34.75 2xl:h-37.75 3xl:h-40',
+          'sm:overflow-y-scroll sm:py-4 sm:h-36 md:h-auto md:py-4 lg:h-32 lg:overflow-y-hidden max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl xl:h-34.75 2xl:h-37.75 3xl:h-40',
           'relative py-6 -mb-1.25 bg-trueGray-100 rounded-lg',
           'flex items-center justify-start shadow-md overflow-hidden'
         )}
       >
         <div
+          className="xs:hidden md:w-5 md:h-14"
           // className="flex items-center justify-center bg-white shadow rounded-r-lg"
           style={{ width: '22.5px', height: '55.25px' }}
           // {...dragProvided.dragHandleProps}
@@ -469,144 +470,149 @@ const AccountCard = ({
         {account.type === TYPE.ARWEAVE && (
           <ArweaveLogo className="self-start w-6.25 xl:w-8 2xl:w-10 3xl:w-12 h-6.25 xl:h-8 2xl:h-10 3xl:h-12 ml-4" />
         )}
-        <div className="flex flex-col ml-2.25 xl:ml-3 2xl:ml-4 3xl:ml-6 mr-4.5 xl:mr-6 2xl:mr-7 3xl:mr-9 w-74 xl:w-83 2xl:w-90.5 3xl:w-100">
-          <div className="flex items-center text-base 2xl:text-lg 3xl:text-xl tracking-finnieSpacing-tight leading-6">
-            {editAccount?.address === account.address ? (
-              <input
-                ref={(accountNameInput) => (inputAccountNameRef.current = accountNameInput)}
-                className="w-40 pl-1.5 bg-trueGray-400 bg-opacity-50 rounded-t-sm border-b-2 border-blue-850 focus:outline-none"
-                value={accountName}
-                onKeyDown={(e) => handleKeyDown(e, account)}
-                onChange={(e) => setAccountName(e.target.value)}
-                // style={{ height: '17.23px' }}
-                data-testid="input-account-name"
-              />
-            ) : (
+        {/* container */}
+        <div className="md:flex md:flex-col lg:flex lg:flex-row">
+          <div className="sm:w-1/2 md:w-full flex flex-col ml-2.25 xl:ml-3 2xl:ml-4 3xl:ml-6 mr-4.5 xl:mr-6 2xl:mr-7 3xl:mr-9 w-74 xl:w-83 2xl:w-90.5 3xl:w-100">
+            {/* Account Name and Edit */}
+            <div className="flex items-center text-base 2xl:text-lg 3xl:text-xl tracking-finnieSpacing-tight leading-6">
+              {editAccount?.address === account.address ? (
+                <input
+                  ref={(accountNameInput) => (inputAccountNameRef.current = accountNameInput)}
+                  className="w-40 pl-1.5 bg-trueGray-400 bg-opacity-50 rounded-t-sm border-b-2 border-blue-850 focus:outline-none"
+                  value={accountName}
+                  onKeyDown={(e) => handleKeyDown(e, account)}
+                  onChange={(e) => setAccountName(e.target.value)}
+                  style={{ height: '17.23px' }}
+                  data-testid="input-account-name"
+                />
+              ) : (
+                <div
+                  // className="max-w-24 pl-6.5"
+                  className="font-semibold max-w-40"
+                  data-testid="account-card-accountname"
+                >
+                  {formatLongString(account.accountName, 20)}
+                </div>
+              )}
+              {isEmpty(editAccount) || editAccount?.address !== account.address ? (
+                <EditIcon
+                  onClick={() => handleChangeAccountName(account)}
+                  className="w-4 xl:w-5 2xl:w-6 3xl:w-8 h-4 xl:h-5 2xl:h-6 3xl:h-8 inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
+                  data-testid="edit-account-name-icon"
+                />
+              ) : (
+                <SaveIcon
+                  onClick={() => handleChangeAccountName(account)}
+                  className="w-4 xl:w-5 2xl:w-6 3xl:w-8 h-4 xl:h-5 2xl:h-6 3xl:h-8 inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
+                  data-testid="save-account-name-icon"
+                />
+              )}
+            </div>
+
+            {/* Account address */}
+            <div className="flex items-center justify-between">
               <div
-                // className="max-w-24 pl-6.5"
-                className="font-semibold max-w-40"
-                data-testid="account-card-accountname"
+                className="sm:truncate md:truncate-none flex items-center text-success-700 text-opacity-80 text-2xs 2xl:text-11px 3xl:text-xs font-normal leading-6 tracking-finnieSpacing-tight"
+                data-testid="account-card-address"
               >
-                {formatLongString(account.accountName, 20)}
+                {account.address}
               </div>
-            )}
-            {isEmpty(editAccount) || editAccount?.address !== account.address ? (
-              <EditIcon
-                onClick={() => handleChangeAccountName(account)}
-                className="w-4 xl:w-5 2xl:w-6 3xl:w-8 h-4 xl:h-5 2xl:h-6 3xl:h-8 inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
-                data-testid="edit-account-name-icon"
-              />
-            ) : (
-              <SaveIcon
-                onClick={() => handleChangeAccountName(account)}
-                className="w-4 xl:w-5 2xl:w-6 3xl:w-8 h-4 xl:h-5 2xl:h-6 3xl:h-8 inline ml-3.75 bg-lightBlue rounded-full shadow-sm cursor-pointer"
-                data-testid="save-account-name-icon"
-              />
-            )}
-          </div>
+              <CopyAddressIcon address={account.address} key={account.address} />
+            </div>
 
-          <div className="flex items-center justify-between">
-            <div
-              className="flex items-center text-success-700 text-opacity-80 text-2xs 2xl:text-11px 3xl:text-xs font-normal leading-6 tracking-finnieSpacing-tight"
-              data-testid="account-card-address"
-            >
-              {account.address}
-            </div>
-            <CopyAddressIcon address={account.address} key={account.address} />
-          </div>
-
-          {account.type === TYPE.K2 && (
-            <div
-              className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
-              data-testid="account-card-balance"
-            >
-              {chrome.i18n.getMessage('balance')}
-              {': '}
-              {formatNumber(account.balance, 4) !== 'NaN'
-                ? formatNumber(account.balance / Math.pow(10, 9), 4)
-                : '0'}{' '}
-              KOII
-            </div>
-          )}
-          {account.type === TYPE.ETHEREUM && (
-            <div
-              className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
-              data-testid="account-card-balance"
-            >
-              {chrome.i18n.getMessage('balance')}
-              {': '}
-              {formatNumber(account.balance, 4) !== 'NaN'
-                ? formatNumber(account.balance, 4)
-                : '0'}{' '}
-              {tokenSymbol}
-            </div>
-          )}
-          {account.type === TYPE.SOLANA && (
-            <div
-              className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
-              data-testid="account-card-balance"
-            >
-              {chrome.i18n.getMessage('balance')}
-              {': '}
-              {formatNumber(account.balance, 4) !== 'NaN'
-                ? formatNumber(account.balance / Math.pow(10, 9), 4)
-                : '0'}{' '}
-              SOL
-            </div>
-          )}
-          {account.type === TYPE.ARWEAVE && (
-            <>
+            {/* Account Type */}
+            {account.type === TYPE.K2 && (
               <div
                 className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
                 data-testid="account-card-balance"
               >
                 {chrome.i18n.getMessage('balance')}
                 {': '}
-                {isNumber(account.balance) ? formatNumber(account.balance, 4) : '0'} AR
+                {formatNumber(account.balance, 4) !== 'NaN'
+                  ? formatNumber(account.balance / Math.pow(10, 9), 4)
+                  : '0'}{' '}
+                KOII
               </div>
-            </>
-          )}
+            )}
+            {account.type === TYPE.ETHEREUM && (
+              <div
+                className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
+                data-testid="account-card-balance"
+              >
+                {chrome.i18n.getMessage('balance')}
+                {': '}
+                {formatNumber(account.balance, 4) !== 'NaN'
+                  ? formatNumber(account.balance, 4)
+                  : '0'}{' '}
+                {tokenSymbol}
+              </div>
+            )}
+            {account.type === TYPE.SOLANA && (
+              <div
+                className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
+                data-testid="account-card-balance"
+              >
+                {chrome.i18n.getMessage('balance')}
+                {': '}
+                {formatNumber(account.balance, 4) !== 'NaN'
+                  ? formatNumber(account.balance / Math.pow(10, 9), 4)
+                  : '0'}{' '}
+                SOL
+              </div>
+            )}
+            {account.type === TYPE.ARWEAVE && (
+              <>
+                <div
+                  className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight"
+                  data-testid="account-card-balance"
+                >
+                  {chrome.i18n.getMessage('balance')}
+                  {': '}
+                  {isNumber(account.balance) ? formatNumber(account.balance, 4) : '0'} AR
+                </div>
+              </>
+            )}
 
-          <div
-            className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight leading-6"
-            data-testid="account-card-assets"
-          >
-            {chrome.i18n.getMessage('assets')}
-            {': '}
-            {account.totalAssets.length}
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          {/* FIRST BLOCK */}
-          <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
-            <div className="flex items-center text-center font-normal text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
-              {tokenSymbol}
-            </div>
-            <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-              Token
+            <div
+              className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight leading-6"
+              data-testid="account-card-assets"
+            >
+              {chrome.i18n.getMessage('assets')}
+              {': '}
+              {account.totalAssets.length}
             </div>
           </div>
+          <div className="flex items-center gap-4">
+            {/* FIRST BLOCK */}
+            <div className="sm:w-12 sm:h-12 md:w-18.75 md:h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
+              <div className="sm:text-xs sm:leading-4 flex items-center text-center font-normal md:text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
+                {tokenSymbol}
+              </div>
+              <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+                Token
+              </div>
+            </div>
 
-          {/* SECOND BLOCK */}
-          <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
-            <div className="flex items-center text-center font-normal text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
-              {balanceString}
+            {/* SECOND BLOCK */}
+            <div className="sm:w-12 sm:h-12 md:w-18.75 md:h-18.75  xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
+              <div className="sm:text-xs sm:leading-4 flex items-center text-center font-normal md:text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
+                {balanceString}
+              </div>
+              <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+                Balance
+              </div>
             </div>
-            <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-              Balance
-            </div>
-          </div>
 
-          {/* THRID BLOCK */}
-          <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
-            <div className="flex items-center text-center font-normal text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
-              {totalCoins}
+            {/* THRID BLOCK */}
+            <div className="sm:w-12 sm:h-12 md:w-18.75 md:h-18.75  xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
+              <div className="sm:text-xs sm:leading-4 flex items-center text-center font-normal md:text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
+                {totalCoins}
+              </div>
+              <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+                {totalCoins > 1 ? 'Coins' : 'Coin'}
+              </div>
             </div>
-            <div className="flex items-center text-center font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-              {totalCoins > 1 ? 'Coins' : 'Coin'}
-            </div>
-          </div>
-          {/* {account.type === TYPE.ARWEAVE ? (
+            {/* {account.type === TYPE.ARWEAVE ? (
             <div className="w-18.75 h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
               <div className="flex items-center text-center font-normal text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
                 {totalViews}
@@ -626,11 +632,13 @@ const AccountCard = ({
               {chrome.i18n.getMessage('comingSoon')}
             </div>
           )} */}
-          <ToolTip />
+            <ToolTip />
+          </div>
         </div>
-        <div className="absolute h-32 xl:h-34.75 2xl:h-37.75 3xl:h-40 flex flex-col justify-between items-center top-0 right-5 py-6">
+
+        <div className="absolute sm:space-y-12 sm:h-auto md:h-40 md:space-y-0 lg:h-32 xl:h-34.75 2xl:h-37.75 3xl:h-40 flex flex-col justify-between items-center top-0 right-5 py-6">
           <div
-            className="flex items-center justify-center"
+            className="md:mt-0 flex items-center justify-center"
             onClick={() => handleChangeDisplayAccount(account)}
           >
             {isDefaultAccount(account) ? (
@@ -661,14 +669,14 @@ const AccountCard = ({
       {isDrop && (
         <div
           className={clsx(
-            'max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl',
-            'relative flex items-center justify-start bg-trueGray-600 px-5 py-6'
+            'max-w-lg md:h-auto sm:py-8 sm:pb-12 md:py-8 lg:py-6 lg:h-40 xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl',
+            'relative flex flex-wrap items-center justify-start bg-trueGray-600 px-5'
           )}
-          style={{ height: '183px' }}
+          // style={{ height: '183px' }}
         >
-          <div className="w-1/3 h-full flex flex-col gap-6">
+          <div className="sm:w-full md:w-1/2 lg:w-1/3 h-full flex flex-col gap-6">
             <div className="flex gap-2.75 items-start">
-              <div className="w-1/2 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+              <div className="w-1/2 flex justify-start text-left font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 {chrome.i18n.getMessage('accountBalance')}
               </div>
               <div className="flex flex-col gap-1" data-testid="account-card-account-balance">
@@ -685,7 +693,7 @@ const AccountCard = ({
             </div>
 
             <div className="flex gap-2.75 items-start">
-              <div className="w-1/2 flex justify-end text-right font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+              <div className="w-1/2 flex justify-start text-left font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 {chrome.i18n.getMessage('nftAssets')}
                 {':'}
               </div>
@@ -700,7 +708,7 @@ const AccountCard = ({
             </div>
           </div>
 
-          <div className="w-1/3 h-full flex flex-col gap-4.5">
+          <div className="sm:w-full md:w-1/2 md:px-2 lg:w-1/3 h-full flex flex-col gap-4.5">
             <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 {chrome.i18n.getMessage('network')}
@@ -753,14 +761,13 @@ const AccountCard = ({
             </div>
           </div>
 
-          <div className="w-1/3 h-full flex flex-col gap-4.5">
+          <div className="sm:w-full md:w-1/2 lg:w-1/3 h-full flex flex-col gap-4.5">
             <div
               onClick={() => setShowRecoveryPhraseModal(true)}
-              className="w-full h-6 flex items-center justify-between"
+              className="w-full h-6 flex justify-between items-center"
             >
-              <div className="w-3/4 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-                {chrome.i18n.getMessage('revealSecretPhraseText')}
-                {': '}
+              <div className="flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+                {chrome.i18n.getMessage('revealSecretPhraseText')}{': '}
               </div>
               <div
                 className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
@@ -774,7 +781,7 @@ const AccountCard = ({
               onClick={() => setShowQrCodeModal(true)}
               className="w-full h-6 flex items-center justify-between"
             >
-              <div className="w-3/4 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+              <div className="flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 See QR code:{' '}
               </div>
               <div className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer">
@@ -795,10 +802,11 @@ const AccountCard = ({
               </div>
             </div> */}
           </div>
+
           <div
             className={clsx(
-              'absolute bottom-2.5 right-5 flex items-center justify-center bg-warning-300 rounded-sm shadow cursor-pointer',
-              'w-6.75 xl:w-7.5 2xl:w-8.5 3xl:w-9.5 h-6.75 xl:h-7.5 2xl:h-8.5 3xl:h-9.5'
+              'absolute bottom-2 right-5 flex items-center justify-center bg-warning-300 rounded-sm shadow cursor-pointer',
+              'w-6.75 lg:bottom-2.5 xl:w-7.5 2xl:w-8.5 3xl:w-9.5 h-6.75 xl:h-7.5 2xl:h-8.5 3xl:h-9.5'
             )}
             onClick={() => {
               setShowConfirmRemoveAccount(true)
@@ -813,6 +821,7 @@ const AccountCard = ({
           </div>
         </div>
       )}
+
       {showRecoveryPhraseModal && (
         <RecoveryPhraseModal account={account} close={() => setShowRecoveryPhraseModal(false)} />
       )}
