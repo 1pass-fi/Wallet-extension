@@ -8,6 +8,8 @@ import { ethers } from 'ethers'
 import storage from 'services/storage'
 import customTokens from 'solanaTokens/solanaTokens'
 import { clarifyEthereumProvider } from 'utils'
+import k2Contracts from 'utils/k2-contracts.json'
+
 
 const useGetTokenMetaData = ({ contractAddress, displayingAccount }) => {
   const [tokenSymbol, setTokenSymbol] = useState(null)
@@ -59,6 +61,15 @@ const useGetTokenMetaData = ({ contractAddress, displayingAccount }) => {
           setTokenName(name)
         } else if (displayingAccount.type === TYPE.K2) {
 
+          let foundToken = k2Contracts.find(token =>
+            token.address && contractAddress &&
+            token.address.toLowerCase() === contractAddress.toLowerCase()
+          ) || {}
+
+          const {  name, decimals, symbol } = foundToken
+          setTokenDecimals(decimals?.toString())
+          setTokenSymbol(symbol)
+          setTokenName(name)
         }
       } catch (err) {
         setTokenDecimals(null)
