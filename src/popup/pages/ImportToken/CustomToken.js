@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import clsx from 'clsx'
+import { TYPE } from 'constants/accountConstants'
 import WarningIcon from 'img/popup/warning-icon.svg'
 import isEmpty from 'lodash/isEmpty'
 
 // hooks
 import useGetTokenMetaData from './hooks/useGetTokenMetaData'
 
-const CustomToken = ({ setTokenImport }) => {
+const CustomToken = ({ setTokenImport, displayingAccount }) => {
+  console.log('displayingAccount:', displayingAccount)
+
   const history = useHistory()
 
   const [tokenAddress, setTokenAddress] = useState('')
   const [tokenAddressError, setTokenAddressError] = useState('')
 
-  const tokenData = useGetTokenMetaData({ contractAddress: tokenAddress })
+  const tokenData = useGetTokenMetaData({ contractAddress: tokenAddress,  displayingAccount: displayingAccount})
 
   const handleImportCustomToken = () => {
     setTokenImport({
@@ -30,7 +33,7 @@ const CustomToken = ({ setTokenImport }) => {
       return
     }
     console.log('contractAddress:', tokenAddress, tokenData)
-    if (tokenAddress.length !== 42) {
+    if ((tokenAddress.length !== 42 && displayingAccount.type === TYPE.ETHEREUM) || (tokenAddress.length !== 44 && (displayingAccount.type === TYPE.K2 || displayingAccount.type === TYPE.SOLANA))) {
       setTokenAddressError(chrome.i18n.getMessage('invalidTokenAddress'))
     } else {
       if (tokenData.tokenSymbol) {

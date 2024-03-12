@@ -70,7 +70,7 @@ export const ImportToken = () => {
               setSearchToken={setSearchToken}
             />
           )}
-          {currentTab === 'CUSTOM_TOKEN' && <CustomToken setTokenImport={setTokenImport} />}
+          {currentTab === 'CUSTOM_TOKEN' && <CustomToken setTokenImport={setTokenImport} displayingAccount={displayingAccount} />}
         </>
       ) : (
         <ImportTokenForm tokenImport={tokenImport} goBack={() => setTokenImport({})} />
