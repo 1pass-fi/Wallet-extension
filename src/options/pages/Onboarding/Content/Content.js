@@ -65,7 +65,7 @@ const Content = ({ step, setStep, path }) => {
       <div
         className={clsx(
           'w-2/3 h-full relative bg-gradient-to-r from-blue-300 to-indigo shadow-lg',
-          'flex flex-col overflow-hidden',
+          'flex flex-col overflow-x-hidden overflow-y-scroll',
           step > 1 ? (location.pathname !== '/upload-json' && 'pl-14 pt-20') : 'justify-center items-center',
           (location.pathname === '/upload-json' || step >=13) && 'w-full items-center justify-center pl-0 pt-0'
         )}

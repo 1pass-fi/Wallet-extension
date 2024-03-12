@@ -1,5 +1,6 @@
 module.exports = {
   darkMode: false, // or 'media' or 'class'
+  purge: false,
   theme: {
     extend: {
       lineHeight: {
@@ -18,8 +19,8 @@ module.exports = {
         '5xl': '3400px'
       },
       maxWidth: {
-        'lg': '707px',
-        'xl': '803px',
+        lg: '707px',
+        xl: '803px',
         '2xl': '850px',
         '3xl': '924px'
       },
@@ -248,6 +249,5 @@ module.exports = {
       cursor: ['disabled']
     }
   },
-
   plugins: []
 }
