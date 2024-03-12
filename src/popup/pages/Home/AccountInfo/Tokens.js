@@ -15,6 +15,7 @@ import useNetworkLogo from 'popup/provider/hooks/useNetworkLogo'
 import { getDisplayingAccount } from 'popup/selectors/displayingAccount'
 // hooks
 import useImportedTokenAddresses from 'popup/sharedHooks/useImportedTokenAddresses'
+import { useEvmNetworkMetadata } from 'sharedHooks/useNetworkMetaData'
 import { fiatCurrencyFormat, numberFormat } from 'utils'
 import { fromArToWinston, fromEthToWei } from 'utils'
 // utils
@@ -38,6 +39,11 @@ const Tokens = ({ currentProviderAddress, currency }) => {
 
   const customTokenIconPath = useMemo(
     () => `img/v2/custom-tokens/custom-token-${Math.floor(Math.random() * 5)}.svg`,
+    []
+  )
+
+  const fireTokenIconPath = useMemo(
+    () => `img/v2/FIRE-logo-3.png`,
     []
   )
 
@@ -70,14 +76,32 @@ const Tokens = ({ currentProviderAddress, currency }) => {
         return
       } else if (displayingAccount.type === TYPE.K2) {
         // TODO DatH - LongP
-        console.log('importedTokenAddresses:', importedTokenAddresses)
-        const importTokens = [
+        const fireTokenContractAddress = 'JPSDMfbb51aozruSM25gLFYd79VnGkBtqCWm6KhgAg7'
+        const fireToken = await getK2CustomTokensData(fireTokenContractAddress, displayingAccount.address)
+        console.log(fireToken)
+        const importTokens = !fireToken.balance ? [
           {
             name: 'KOII',
             balance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             symbol: 'KOII',
             decimal: 9
+          }
+        ] : [
+          {
+            name: 'KOII',
+            balance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
+            displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
+            symbol: 'KOII',
+            decimal: 9
+          },
+          {
+            name: fireToken.name,
+            balance: numberFormat(fireToken.balance / Math.pow(10, 9)),
+            displayingBalance: numberFormat(fireToken.balance / Math.pow(10, 9)),
+            symbol: fireToken.symbol,
+            decimal: fireToken.decimal,
+            logo: fireToken.logo
           }
         ]
 
@@ -215,6 +239,8 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             {token?.name === 'KOII' && <K2Icon className="w-8.75 h-8.75" />}
             {token.name === 'Arweave' && <ArweaveIcon className="w-8.75 h-8.75" />}
             {token.name === 'Solana' && <SolanaIcon className="w-8.75 h-8.75" />}
+            {token.name === 'Solana' && <SolanaIcon className="w-8.75 h-8.75" />}
+            {/* {token.name === 'Fire Token' && <img src={'https://s2.coinmarketcap.com/static/img/coins/64x64/10089.png'} className="w-8.75 h-8.75" />} */}
             {token.name !== 'Ethereum' &&
               !token?.name?.includes('KOII') &&
               token.name !== 'Arweave' &&
