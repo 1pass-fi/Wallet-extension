@@ -84,16 +84,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
         console.log('fireTokenContractAddress:', fireTokenContractAddress)
         const fireToken = await getK2CustomTokensData(fireTokenContractAddress, displayingAccount.address)
         console.log(fireToken)
-        const importTokens = !fireToken.balance ? [
-          {
-            name: 'KOII',
-            balance: displayingAccount.balance,
-            displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
-            symbol: 'KOII',
-            decimal: 9,
-            logo: 'img/v2/k2-logos/finnie-k2-logo.svg'
-          }
-        ] : [
+        const importTokens = (fireToken.balance && !importedTokenAddresses.includes(fireTokenContractAddress)) ? [
           {
             name: 'KOII',
             balance: displayingAccount.balance,
@@ -106,7 +97,15 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             ...fireToken,
             displayingBalance: fireToken.balance / Math.pow(10, fireToken.decimal)
           }
-        ]
+        ] : [
+          {
+            name: 'KOII',
+            balance: displayingAccount.balance,
+            displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
+            symbol: 'KOII',
+            decimal: 9
+          }
+        ] 
         console.log('importedTokenAddress', importedTokenAddresses)
         await Promise.all(
           importedTokenAddresses.map(async (contractAddress) => {
