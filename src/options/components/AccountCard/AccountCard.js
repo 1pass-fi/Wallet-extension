@@ -411,9 +411,9 @@ const AccountCard = ({
       if (!isNumber(number)) return '---'
       if (number.toFixed(3) === '0.000') return '0'
       if (number < 10) {
-        return number.toFixed(3)
+        return Number.isInteger(number) ? number : number.toFixed(3)
       } else if (number < 1000) {
-        return number.toFixed(1)
+        return Number.isInteger(number) ? number : number.toFixed(1)
       } else if (number < 1000000) {
         return (number / 1000).toFixed(1) + 'K'
       } else {
