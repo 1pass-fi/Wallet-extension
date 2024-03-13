@@ -133,7 +133,7 @@ const InputPhrase = ({ step, setStep, phrase, importType }) => {
       </div>
 
       <div
-        className="flex flex-col max-w-full z-51 text-red-600"
+        className="flex flex-col max-w-full z-51 text-white-600"
         style={{ width: '347px', zIndex: 2 }}
       >
         <div
