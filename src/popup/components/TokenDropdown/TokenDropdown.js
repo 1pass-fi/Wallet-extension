@@ -28,7 +28,7 @@ const TokenDropdown = ({ tokenOptions, selectedToken, onChangeToken, customToken
         <ArrowIcon style={{ transform: 'rotateX(180deg)' }} />
       </div>
       {tokenOptions.map((token, idx) => {
-        if (!isEqual(token, selectedToken))
+        if (!isEqual(token.symbol, selectedToken.symbol))
           return (
             <div
               key={idx}

@@ -87,26 +87,24 @@ const Tokens = ({ currentProviderAddress, currency }) => {
         const importTokens = !fireToken.balance ? [
           {
             name: 'KOII',
-            balance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
+            balance: displayingAccount.balance,
             displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             symbol: 'KOII',
-            decimal: 9
+            decimal: 9,
+            logo: 'img/v2/k2-logos/finnie-k2-logo.svg'
           }
         ] : [
           {
             name: 'KOII',
-            balance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
+            balance: displayingAccount.balance,
             displayingBalance: numberFormat(displayingAccount.balance / Math.pow(10, 9)),
             symbol: 'KOII',
-            decimal: 9
+            decimal: 9,
+            logo: 'img/v2/k2-logos/finnie-k2-logo.svg'
           },
           {
-            name: fireToken.name,
-            balance: numberFormat(fireToken.balance / Math.pow(10, 9)),
-            displayingBalance: numberFormat(fireToken.balance / Math.pow(10, 9)),
-            symbol: fireToken.symbol,
-            decimal: fireToken.decimal,
-            logo: fireToken.logo
+            ...fireToken,
+            displayingBalance: fireToken.balance / Math.pow(10, fireToken.decimal)
           }
         ]
         console.log('importedTokenAddress', importedTokenAddresses)

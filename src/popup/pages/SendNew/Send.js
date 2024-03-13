@@ -44,6 +44,15 @@ const Send = ({ setShowSigning, setShowEthSigning, setShowArSigning, setError, s
   })
 
   useEffect(() => {
+    console.log('selectedToken', selectedToken, selectedNetwork, selectedToken?.balance / Math.pow(10, selectedToken?.decimal), formatNumber(selectedToken?.balance / Math.pow(10, selectedToken?.decimal), 2), selectedToken?.balance / Math.pow(10, selectedToken?.decimal), formatNumber(selectedToken?.balance / Math.pow(10, selectedToken?.decimal), 6))
+    if(selectedToken) {
+      const aaaaaaaaaaaaaaaaa = (selectedToken.symbol === 'KOII' && selectedNetwork != 'K2')
+        ? formatNumber(selectedToken?.balance / Math.pow(10, selectedToken?.decimal), 2)
+        : formatNumber(selectedToken?.balance / Math.pow(10, selectedToken?.decimal), 6)
+      console.log('aaaaaaaaaaaaaaaaa:', aaaaaaaaaaaaaaaaa)
+    }
+  }, [selectedToken])
+  useEffect(() => {
     if (!isEmpty(displayingAccount)) {
       setSelectedAccount({
         id: displayingAccount.address,
