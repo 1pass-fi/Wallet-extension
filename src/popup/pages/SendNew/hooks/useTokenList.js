@@ -118,15 +118,15 @@ const useTokenList = ({ selectedNetwork, selectedAccount }) => {
     setSelectedToken(k2Token)
 
     /* TODO DatH Custom token K2 */
-    if (isEmpty(importedTokenAddresses)) {
-      return [k2Token]
-    }
+    // if (isEmpty(importedTokenAddresses)) {
+    //   return [k2Token]
+    // }
 
-    const customTokenList = await Promise.all(
-      importedTokenAddresses?.map(async (tokenAddress) => {
-        return await getK2CustomTokensData(tokenAddress, userAddress)
-      })
-    )
+    // const customTokenList = await Promise.all(
+    //   importedTokenAddresses?.map(async (tokenAddress) => {
+    //     return await getK2CustomTokensData(tokenAddress, userAddress)
+    //   })
+    // )
     const tokenList = await storage.setting.get.displayedImportedTokens()
     // return [k2Token, ...customTokenList]
     console.log('tokenList:', tokenList)
