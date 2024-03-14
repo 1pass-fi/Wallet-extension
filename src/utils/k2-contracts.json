@@ -40,7 +40,7 @@
     "chainId": 101,
     "address": "JPSDMfbb51aozruSM25gLFYd79VnGkBtqCWm6KhgAg7",
     "symbol": "FIRE",
-    "name": "Fire Token",
+    "name": "FIRE",
     "decimals": 9,
     "logoURI": "img/v2/fire-token-logo/fire__200x200.png",
     "tags": ["utility-token"]
