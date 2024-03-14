@@ -44,12 +44,14 @@ export const ImportToken = () => {
           }}
           className="w-8.75 h-8.75 ml-3.75 cursor-pointer bg-white bg-opacity-70 rounded-full"
         />
-        <div className="ml-6 font-semibold text-lg text-blue-800">{chrome.i18n.getMessage('importAToken')}</div>
+        <div className="ml-6 font-semibold text-lg text-blue-800">
+          {chrome.i18n.getMessage('importAToken')}
+        </div>
       </div>
 
       {isEmpty(tokenImport) ? (
         <>
-          <div className="flex sticky font-normal text-base leading-5 text-blue-850 mt-2 px-6">
+          {/* <div className="flex sticky font-normal text-base leading-5 text-blue-850 mt-2 px-6">
             {tabs.map((tab, idx) => (
               <div
                 key={idx}
@@ -62,7 +64,7 @@ export const ImportToken = () => {
                 {tab.name}
               </div>
             ))}
-          </div>
+          </div> */}
           {currentTab === 'SEARCH_TOKEN' && (
             <Search
               setTokenImport={setTokenImport}
@@ -70,7 +72,9 @@ export const ImportToken = () => {
               setSearchToken={setSearchToken}
             />
           )}
-          {currentTab === 'CUSTOM_TOKEN' && <CustomToken setTokenImport={setTokenImport} displayingAccount={displayingAccount} />}
+          {currentTab === 'CUSTOM_TOKEN' && (
+            <CustomToken setTokenImport={setTokenImport} displayingAccount={displayingAccount} />
+          )}
         </>
       ) : (
         <ImportTokenForm tokenImport={tokenImport} goBack={() => setTokenImport({})} />

@@ -12,7 +12,7 @@ export default ({ version = '0.4.9' }) => {
         <div className="header">{chrome.i18n.getMessage('about')}</div>
 
         <div className="items">
-          <div className="item version-notes">
+          {/* <div className="item version-notes">
             <div>
               <div className="title">{chrome.i18n.getMessage('versionNotes')}</div>
               <div className="description">{chrome.i18n.getMessage('versionNotesMsg')}</div>
@@ -23,10 +23,13 @@ export default ({ version = '0.4.9' }) => {
                 {chrome.i18n.getMessage('notes')}
               </button>
             </div>
-          </div>
+          </div> */}
 
           <div className="item">
-            <div className="title">{chrome.i18n.getMessage('privacyPolicy')}{'.'}</div>
+            <div className="title">
+              {chrome.i18n.getMessage('privacyPolicy')}
+              {'.'}
+            </div>
             <div className="description">
               {chrome.i18n.getMessage('find')} Koii{chrome.i18n.getMessage('possessive')} &nbsp;
               <a
@@ -34,7 +37,8 @@ export default ({ version = '0.4.9' }) => {
                 target="_blank"
                 className="link"
               >
-                {chrome.i18n.getMessage('privacyPolicyHere')}{'.'}
+                {chrome.i18n.getMessage('privacyPolicyHere')}
+                {'.'}
               </a>
             </div>
           </div>
@@ -43,7 +47,11 @@ export default ({ version = '0.4.9' }) => {
             <div className="title">{chrome.i18n.getMessage('termsOfUse')}</div>
             <div className="description">
               {chrome.i18n.getMessage('see')} Koii{chrome.i18n.getMessage('possessive')} &nbsp;
-              <a href="https://koii.network/Koii_TOU_Oct_24_2023.pdf" target="_blank" className="link">
+              <a
+                href="https://koii.network/Koii_TOU_Oct_24_2023.pdf"
+                target="_blank"
+                className="link"
+              >
                 {chrome.i18n.getMessage('termsOfUse')}.
               </a>
             </div>
