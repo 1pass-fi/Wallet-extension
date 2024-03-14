@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { TYPE } from 'constants/accountConstants'
 import { URL } from 'constants/koiConstants'
 import AddIcon from 'img/popup/add-icon.svg'
+import BrowserComponentIcon from 'img/popup/browser-component.svg'
 import ExploreBlockIcon from 'img/popup/explore-block-icon.svg'
 import GalleryIcon from 'img/popup/gallery-icon.svg'
 import LeaderboardIcon from 'img/popup/leaderboard-icon.svg'
@@ -27,8 +28,8 @@ const NavBar = ({ handleLockWallet }) => {
     history.push('/wallet-connect-proposal')
   }
 
-  const goToLeaderboard = () => {
-    const url = 'https://leaderboard.koii.network'
+  const goToKoiiNetwork = () => {
+    const url = 'https://www.koii.network/'
     chrome.tabs.create({ url })
   }
 
@@ -77,10 +78,10 @@ const NavBar = ({ handleLockWallet }) => {
       <div
         className="cursor-pointer rounded-bl-md"
         style={{ width: '139px', height: '58px', backgroundColor: '#353570' }}
-        onClick={goToLeaderboard}
+        onClick={goToKoiiNetwork}
       >
-        <LeaderboardIcon className="mx-auto mt-1" style={{ width: '36px', height: '36px' }} />
-        <div style={{lineHeight: '13px'}} className="text-center text-white text-2xs">LEADERBOARD</div>
+        <BrowserComponentIcon className="mx-auto mt-1" style={{ width: '36px', height: '36px' }} />
+        <div style={{lineHeight: '13px'}} className="text-center text-white text-2xs">KOII NETWORK</div>
       </div>
       <div
         className="bg-blue-800 cursor-pointer"
