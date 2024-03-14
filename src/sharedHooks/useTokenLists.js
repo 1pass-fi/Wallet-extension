@@ -17,7 +17,15 @@ import getTokenData, { getK2CustomTokensData, getSolanaCustomTokensData } from '
 
 const useTokenLists = ({ account, address, setIsLoading, currentProviderAddress }) => {
   const [tokenList, setTokenList] = useState([])
-
+  const [fireToken, setFireToken] = useState({})
+  useEffect(()=> {
+    async function getFireToken() {
+      const fireData = await getK2CustomTokensData('JPSDMfbb51aozruSM25gLFYd79VnGkBtqCWm6KhgAg7', address)
+      console.log('fireData:', fireData)
+      setFireToken(fireData)
+    }
+    getFireToken()
+  }, [])
   let { importedTokenAddresses } = useImportedTokenAddresses({
     userAddress: address,
     currentProviderAddress
@@ -118,16 +126,32 @@ const useTokenLists = ({ account, address, setIsLoading, currentProviderAddress 
             )
             break
           case TYPE.K2:
-            _tokenList = [
+            // const fireTokenMetadata = k2Contracts.find((token) => token.symbol === 'FIRE')
+            // const fireTokenContractAddress = fireTokenMetadata.address
+            // console.log('fireTokenContractAddress:', fireTokenContractAddress)
+            console.log(fireToken)
+            _tokenList = (fireToken.balance && !importedTokenAddresses.includes(fireToken.address)) ? [
               {
                 name: 'KOII',
-                balance,
-                displayingBalance: numberFormat(fromLampToSol(balance)),
+                balance: balance,
+                displayingBalance: numberFormat(balance / Math.pow(10, 9)),
                 symbol: 'KOII',
-                // usdValue: fiatCurrencyFormat(fromLampToSol(balance) * price.K2),
+                decimal: 9,
+                logo: 'img/v2/k2-logos/finnie-k2-logo.svg'
+              },
+              {
+                ...fireToken,
+                displayingBalance: fireToken.balance / Math.pow(10, fireToken.decimal)
+              }
+            ] : [
+              {
+                name: 'KOII',
+                balance: balance,
+                displayingBalance: numberFormat(balance / Math.pow(10, 9)),
+                symbol: 'KOII',
                 decimal: 9
               }
-            ]
+            ] 
 
             await Promise.all(
               importedTokenAddresses.map(async (contractAddress) => {
@@ -156,7 +180,7 @@ const useTokenLists = ({ account, address, setIsLoading, currentProviderAddress 
     }
 
     if (!isEmpty(address)) loadTokenList()
-  }, [importedTokenAddresses, account, currentProviderAddress])
+  }, [importedTokenAddresses, account, currentProviderAddress, fireToken])
 
   return { tokenList }
 }
