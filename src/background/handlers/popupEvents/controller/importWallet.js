@@ -181,9 +181,9 @@ export default async (payload, next) => {
     /* 
       Get balance for this account
     */
-    helpers.loadBalances()
+    helpers.loadBalances(type)
 
-    helpers.loadActivities()
+    helpers.loadActivities(type)
 
     next({ data: address })
   } catch (err) {
