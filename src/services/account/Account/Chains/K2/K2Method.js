@@ -8,6 +8,7 @@ import moment from 'moment'
 import { AccountStorageUtils } from 'services/account/AccountStorageUtils'
 import storage from 'services/storage'
 import { getChromeStorage } from 'utils'
+import k2Contracts from 'utils/k2-contracts.json'
 import clusterApiUrl from 'utils/k2ClusterApiUrl'
 import * as TokenAssets from 'utils/resolveSolanaNFTs'
 
@@ -204,34 +205,47 @@ export class K2Method {
   }
 
   async updateActivities() {
+
+    const getActiveName = (metaData, activeType) => {
+      let foundToken = k2Contracts.find(token => 
+        token.address.toLowerCase() === metaData.postTokenBalances[0].mint.toLowerCase()
+      ) || {}
+      return foundToken.symbol !== undefined ? `${activeType} ${foundToken.symbol}` : `${activeType} CustomToken` 
+    }
     const provider = await storage.setting.get.k2Provider()
-    const connection = new Connection(clusterApiUrl(provider))
-
+    const connection = new Connection(provider)
     const signatureInfos = await connection.getSignaturesForAddress(this.k2Tool.keypair.publicKey)
-
     const transactions = await Promise.all(
       signatureInfos.map(
         async (signatureInfos) => await connection.getTransaction(signatureInfos.signature)
       )
     )
-
     const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
 
     const activities = transactions.map((tx) => {
-      const { transaction } = tx
+      const { transaction, meta } = tx
 
       let source, activityName, expense
-
       if (transaction.message.accountKeys[0]?.toString() === this.k2Tool.address) {
         source = transaction.message.accountKeys[1]?.toString()
-        activityName = 'Sent KOII'
-        expense = Math.abs(tx.meta.postBalances[0] - tx.meta.preBalances[0]) / LAMPORTS_PER_SOL
+        if (meta.postTokenBalances.length === 0 || meta.preTokenBalances.length === 0){
+          activityName = 'Sent KOII'
+          expense = Math.abs(meta.postBalances[0] - meta.preBalances[0] + meta.fee) / LAMPORTS_PER_SOL
+        } else {
+          activityName = getActiveName(meta, 'Sent')
+          expense = Math.abs(meta.postTokenBalances[0].uiTokenAmount.amount - meta.preTokenBalances[0].uiTokenAmount.amount) / Math.pow(10, meta.preTokenBalances[0].uiTokenAmount.decimals)
+        }
       } else {
         source = transaction.message.accountKeys[0]?.toString()
-        activityName = 'Received KOII'
-        expense = Math.abs(tx.meta.postBalances[1] - tx.meta.preBalances[1]) / LAMPORTS_PER_SOL
+        if (meta.postTokenBalances.length === 0 || meta.preTokenBalances.length === 0){
+          activityName = 'Received KOII'
+          expense = Math.abs(meta.postBalances[1] - meta.preBalances[1]) / LAMPORTS_PER_SOL
+        } else {
+          activityName = getActiveName(meta, 'Received')
+          expense = Math.abs(meta.postTokenBalances[0].uiTokenAmount.amount - meta.preTokenBalances[0].uiTokenAmount.amount) / Math.pow(10, meta.preTokenBalances[0].uiTokenAmount.decimals)
+        }
       }
-
+      console.log(source, activityName, expense)
       return {
         id: transaction.signatures[0],
         activityName,

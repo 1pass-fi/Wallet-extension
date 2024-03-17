@@ -67,6 +67,7 @@ const Activity = ({ activities, setActivities }) => {
   const activityRef = useRef(null)
 
   useEffect(() => {
+    console.log('accountActivies:', accountActivites)
     const activityField = activityRef.current
     if (activityField) {
       const scrollHeight = activityField.scrollHeight
