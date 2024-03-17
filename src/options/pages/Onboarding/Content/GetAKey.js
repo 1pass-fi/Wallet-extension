@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
 import { NETWORK } from 'constants/koiConstants'
-import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
+// import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
 import WarningIcon from 'img/warning-triangle.svg'
 import KeyLogo from 'options/components/KeyLogo'
@@ -63,7 +63,7 @@ const GetAKey = ({ step, setStep, setImportType }) => {
   return (
     <div data-testid="GetAKey" className="w-3/4 flex flex-col text-white text-left">
       <WelcomeBackgroundTop className={clsx('welcome-bg-top')} />
-      <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
+      {/* <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} /> */}
       {totalAccount > 0 && (
         <div className={clsx('z-10')}>
           <div className="mt-10 font-semibold text-2xl tracking-finnieSpacing-wider">

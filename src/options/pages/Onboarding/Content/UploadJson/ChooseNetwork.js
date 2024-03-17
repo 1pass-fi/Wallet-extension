@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
 import { NETWORK } from 'constants/koiConstants'
 import ReturnIcon from 'img/return-icon.svg'
-import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
+// import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
 import KeyLogo from 'options/components/KeyLogo'
 import ToolTip from 'options/components/ToolTip'
@@ -39,7 +39,7 @@ const ImportAKey = ({ step, setStep, setImportType }) => {
     >
       <div className="w-3/5">
         <WelcomeBackgroundTop className={clsx('welcome-bg-top')} />
-        <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
+        {/* <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} /> */}
         <div className="font-semibold text-2xl tracking-finnieSpacing-wider">
           {chrome.i18n.getMessage('importYourKey')}
         </div>

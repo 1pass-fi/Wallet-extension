@@ -2,7 +2,7 @@ import React from 'react'
 import clsx from 'clsx'
 import CreateNewIcon from 'img/v2/onboarding/create-new-icon.svg'
 import KeySelectedIcon from 'img/v2/onboarding/key-selected-icon.svg'
-import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
+// import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
 
 const SEED_STRING = 'color tired merge rural token pole capable people metal student catch uphold'
@@ -11,7 +11,7 @@ const AddAKey = ({ step, setStep, setPhrase }) => {
   return (
     <div data-testid="AddAKey" className="w-4/5 flex flex-col text-white">
       <WelcomeBackgroundTop className={clsx('welcome-bg-top')} />
-      <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
+      {/* <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} /> */}
       <div
         className="ml-3 font-normal text-base leading-6 text-left max-w-full"
         style={{ width: '347px' }}
