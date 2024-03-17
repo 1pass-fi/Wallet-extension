@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { validateMnemonic } from 'bip39'
 import clsx from 'clsx'
-import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
+// import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
 import isEmpty from 'lodash/isEmpty'
 import Button from 'options/components/Button'

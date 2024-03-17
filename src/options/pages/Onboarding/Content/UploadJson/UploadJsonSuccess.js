@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import clsx from 'clsx'
 import BulletPointIcon from 'img/bullet-point.svg'
 import CheckIcon from 'img/check-icon-onboarding.svg'
-import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
+// import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom-1.svg'
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top-1.svg'
 import { setIsOnboarding, setOnboardingPath } from 'options/actions/onboardingProcessing'
 
@@ -15,7 +15,7 @@ const UploadJsonSuccess = () => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center text-white">
       <WelcomeBackgroundTop className={clsx('welcome-bg-top')} />
-      <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
+      {/* <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} /> */}
       <div className="text-left">
         <div className="flex items-center text-2xl font-semibold">
           <CheckIcon />

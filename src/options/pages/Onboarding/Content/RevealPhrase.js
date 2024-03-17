@@ -8,7 +8,7 @@ import ImagesNFTs from 'img/v2/onboarding/images-nfts.svg'
 import KoiiToken from 'img/v2/onboarding/koii-token.svg'
 import SeedphraseSelectedIcon from 'img/v2/onboarding/seedphrase-selected-icon.svg'
 import SuccessIcon from 'img/v2/onboarding/success-icon.svg'
-import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
+// import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
 import { setIsOnboarding, setOnboardingPath } from 'options/actions/onboardingProcessing'
 import Button from 'options/components/Button'
 import { GalleryContext } from 'options/galleryContext'
@@ -25,7 +25,7 @@ const RevealPhrase = ({ step }) => {
       data-testid="RevealPhrase"
       className="flex flex-col items-center justify-center text-white text-left w-full pr-4"
     >
-      <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
+      {/* <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} /> */}
       <KoiIcon className="w-18 h-18 absolute top-2.25 right-3.75" />
       <div className="w-3/4 flex items-center justify-center z-10">
         {!skipPhrase ? (

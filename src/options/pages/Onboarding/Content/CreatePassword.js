@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import clsx from 'clsx'
 import { URL } from 'constants/koiConstants'
-import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
+// import WelcomeBackgroundBottom from 'img/v2/onboarding/welcome-background-bottom.svg'
 import WelcomeBackgroundTop from 'img/v2/onboarding/welcome-background-top.svg'
 import isEmpty from 'lodash/isEmpty'
 import Button from 'options/components/Button'
@@ -84,7 +84,7 @@ const CreatePassword = ({ step, setStep }) => {
       style={{ minWidth: '240px' }}
     >
       <WelcomeBackgroundTop className={clsx('welcome-bg-top')} />
-      <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} />
+      {/* <WelcomeBackgroundBottom className={clsx('welcome-bg-bottom')} /> */}
       <div className="font-normal text-base leading-6 text-left z-10">
         {isEmpty(accounts)
           ? chrome.i18n.getMessage('createAPasswordToSecureFinnie')
