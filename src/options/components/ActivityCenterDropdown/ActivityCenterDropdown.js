@@ -18,7 +18,7 @@ const COMMUNITY = 'COMMUNITY'
 const NOTIFICATION = 'NOTIFICATION'
 
 const ActivityCenterDropdown = React.forwardRef((_, ref) => {
-  const [tab, setTab] = useState(NOTIFICATION)
+  const [tab, setTab] = useState(ACTIVITY)
   const [activities, setActivities] = useState([])
   const [pages, setPages] = useState(1)
   const displayingAccount = useSelector(getDisplayingAccount)
