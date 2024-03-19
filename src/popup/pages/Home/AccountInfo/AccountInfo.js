@@ -16,7 +16,7 @@ const AccountInfo = ({ displayingAccount, currency, price, currentProviderAddres
   const history = useHistory()
 
   const tabs = [
-    { name: chrome.i18n.getMessage('assets'), to: '/assets' },
+    // { name: chrome.i18n.getMessage('assets'), to: '/assets' },
     { name: chrome.i18n.getMessage('tokens'), to: '/tokens' },
     { name: chrome.i18n.getMessage('activity'), to: '/activity' }
   ]
