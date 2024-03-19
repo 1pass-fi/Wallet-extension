@@ -39,7 +39,7 @@ const AccountSettingsDark = React.forwardRef(({ className }, ref) => {
               data-for="did-coming-soon"
             >
               <div className='flex flex-row items-center'>
-                <div className='w-7 flex items-center justify-center'><Icon/></div>
+                <div className='w-7 flex items-center justify-left'><Icon/></div>
                 <div className='ml-4'>{text}</div>
               </div>
             </div>
