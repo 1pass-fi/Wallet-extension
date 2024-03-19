@@ -95,9 +95,9 @@ const AccountInfo = ({ displayingAccount, currency, price, currentProviderAddres
         ))}
       </div>
       <Switch>
-        <Route exact path="/assets">
+        {/* <Route exact path="/assets">
           <Assets currentProviderAddress={currentProviderAddress} />
-        </Route>
+        </Route> */}
         <Route exact path="/activity">
           <Activity />
         </Route>
