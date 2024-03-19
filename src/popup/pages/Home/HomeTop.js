@@ -236,7 +236,7 @@ const HomeTop = ({
                 }}
                 className="cursor-pointer"
               >
-                <CopyIcon />
+                {isCopied ? <CheckIcon /> : <CopyIcon />}
               </div>
             </div>
           </div>
