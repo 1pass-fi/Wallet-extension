@@ -1,43 +1,6 @@
 [
   {
     "chainId": 101,
-    "address": "Dctf7yaMHSaU4Q253kM4aPkPEuTxXwfcpXk9Cv4zquQL",
-    "symbol": "WIBU",
-    "name": "WIBU Coin",
-    "decimals": 9,
-    "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/3SghkPdBSrpF9bzdAy5LwR4nGgFbqNcC6ZSq8vtZdj91/logo.png",
-    "tags": ["currency"],
-    "extensions": {
-      "facebook": "https://facebook.com/everyonecoin",
-      "twitter": "https://twitter.com/everyonecoin",
-      "website": "https://everyonecoin.com/"
-    }
-  },
-  {
-    "chainId": 101,
-    "address": "DShLC48WDJAW1K2SGt1RMSbwQvGxjpW7sujT28PUjNNA",
-    "symbol": "KTK",
-    "name": "Kotaku Coin",
-    "decimals": 9,
-    "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/CbNYA9n3927uXUukee2Hf4tm3xxkffJPPZvGazc2EAH1/logo.png",
-    "tags": ["currency"],
-    "extensions": {
-      "facebook": "https://facebook.com/everyonecoin",
-      "twitter": "https://twitter.com/everyonecoin",
-      "website": "https://everyonecoin.com/"
-    }
-  },
-  {
-    "chainId": 101,
-    "address": "NGK3iHqqQkyRZUj4uhJDQqEyKKcZ7mdawWpqwMffM3s",
-    "symbol": "TST1",
-    "name": "Yaku",
-    "decimals": 0,
-    "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EK58dp4mxsKwwuySWQW826i3fwcvUK69jPph22VUcd2H/logo.png",
-    "tags": ["utility-token"]
-  },
-  {
-    "chainId": 101,
     "address": "JPSDMfbb51aozruSM25gLFYd79VnGkBtqCWm6KhgAg7",
     "symbol": "FIRE",
     "name": "FIRE",
