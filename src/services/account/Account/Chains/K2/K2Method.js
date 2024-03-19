@@ -224,7 +224,6 @@ export class K2Method {
 
     const activities = transactions.map((tx) => {
       const { transaction, meta } = tx
-      console.log('meat:', meta, transaction)
       let source, activityName, expense
       if (transaction.message.accountKeys[0]?.toString() === this.k2Tool.address) {
         source = transaction.message.accountKeys[1]?.toString()
@@ -245,7 +244,6 @@ export class K2Method {
           expense = Math.abs(meta.postTokenBalances[0].uiTokenAmount.amount - meta.preTokenBalances[0].uiTokenAmount.amount) / Math.pow(10, meta.preTokenBalances[0].uiTokenAmount.decimals)
         }
       }
-      console.log(source, activityName, expense)
       return {
         id: transaction.signatures[0],
         activityName,
