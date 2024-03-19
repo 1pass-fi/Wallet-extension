@@ -14,6 +14,7 @@ import {
 import { TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
 import CopyIcon from 'img/popup/copy-icon-new.svg'
+import CheckIcon from 'img/popup/check-icon.svg'
 import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 import PopupBackground from 'img/popup/popup-background.svg'
 import ReceiveIcon from 'img/popup/receive-icon.svg'
