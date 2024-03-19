@@ -86,7 +86,7 @@ const AccountInfo = ({ displayingAccount, currency, price, currentProviderAddres
           <NavLink
             key={idx}
             to={tab.to}
-            className={clsx('w-1/3 h-10.75 flex items-center justify-center cursor-pointer')}
+            className={clsx('w-1/2 h-10.75 flex items-center justify-center cursor-pointer')}
             activeClassName="font-semibold bg-lightBlue"
             data-testid={tab.name}
           >
