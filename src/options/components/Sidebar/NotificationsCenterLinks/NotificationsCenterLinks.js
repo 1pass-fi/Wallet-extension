@@ -28,7 +28,10 @@ const NotificationsCenterLinks = () => {
           </div>
         ) : (
           <NavLink
-            className={clsx('h-16 flex items-center', idx !== 0 && 'border-t-2 border-opacity-20 ')}
+            className={clsx(
+              'h-12 xl: 2xl: 3xl:h-14 pl-2 flex items-center hover:underline underline-offset-1',
+              idx !== 0 && 'border-t-2 border-trueGray-150'
+            )}            
             activeClassName="underline underline-offset-1"
             to={path}
             key={path}
