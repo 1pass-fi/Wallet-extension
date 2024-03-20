@@ -13,6 +13,7 @@ import {
 // constants
 import { TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
+import CheckIcon from 'img/popup/check-icon.svg'
 import CopyIcon from 'img/popup/copy-icon-new.svg'
 import FinnieIcon from 'img/popup/finnie-icon-blue.svg'
 import PopupBackground from 'img/popup/popup-background.svg'
@@ -235,7 +236,7 @@ const HomeTop = ({
                 }}
                 className="cursor-pointer"
               >
-                <CopyIcon />
+                {isCopied ? <CheckIcon /> : <CopyIcon />}
               </div>
             </div>
           </div>
@@ -356,14 +357,14 @@ const HomeTop = ({
             </div>
           </Link>
         </div>
-        {isCopied && (
+        {/* {isCopied && (
           <div
             className="absolute flex items-center justify-center text-center text-blue-800 shadow-md bg-cyan rounded-3xl"
             style={{ width: '159px', height: '28px', left: '115px', top: '420px' }}
           >
             {chrome.i18n.getMessage('addressCopied')}
           </div>
-        )}
+        )} */}
       </div>
       <ReactTooltip place="top" effect="float" />
     </div>
