@@ -42,7 +42,7 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
           {displayingAccount.type === TYPE.SOLANA && (
             <SolanaIcon style={{ width: '25px', height: '25px' }} />
           )}
-          <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
+          <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white" style={{letterSpacing: '0.05em'}}>
             {displayingAccount?.accountName}
           </div>
         </div>
