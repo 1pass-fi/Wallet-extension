@@ -6,6 +6,7 @@ import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
 import { v4 as uuid } from 'uuid'
+import DropdownNew from 'sharedComponents/Dropdown'
 
 import ActivityRow from './ActivityRow'
 
@@ -58,14 +59,15 @@ const Activity = () => {
         {chrome.i18n.getMessage('activitySelectAccount')}:
       </div>
       <div className="mb-1.5" style={{ width: '270px' }}>
-        <DropDown
+        {/* <DropDown
           options={accountOptions}
           value={accountOption}
           onChange={onSelectedAccountChanged}
           variant="dark"
           size="lg"
           filterSupported={false}
-        />
+        /> */}
+        <DropdownNew options={accountOptions} value={accountOption} onChange={onSelectedAccountChanged} />        
       </div>
       <table className="w-full text-left table-auto border-collapse">
         <thead>
