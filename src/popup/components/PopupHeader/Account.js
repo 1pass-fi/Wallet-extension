@@ -43,7 +43,7 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
             <SolanaIcon style={{ width: '25px', height: '25px' }} />
           )}
           <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
-            {formatLongString(displayingAccount?.accountName, 12)}
+            {displayingAccount?.accountName}
           </div>
         </div>
       )}
