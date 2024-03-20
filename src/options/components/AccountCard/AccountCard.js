@@ -787,7 +787,7 @@ const AccountCard = ({
               <ToggleButton value={showEmptyToken} setValue={setShowEmptyToken} />
             </div> */}
             
-            <div className="w-full h-6 flex items-center justify-between">
+            {/* <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 {chrome.i18n.getMessage('dappConnection')}
                 {': '}
@@ -801,7 +801,7 @@ const AccountCard = ({
               >
                 {siteConnectedAddresses.length} sites
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div
