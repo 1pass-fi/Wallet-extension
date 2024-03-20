@@ -447,7 +447,7 @@ const AccountCard = ({
         className={clsx(
           'sm:overflow-y-scroll sm:py-4 sm:h-36 md:h-auto md:py-4 lg:h-32 lg:overflow-y-hidden max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl xl:h-34.75 2xl:h-37.75 3xl:h-40',
           'relative py-6 -mb-1.25 bg-trueGray-100 rounded-lg',
-          'flex items-center justify-start shadow-md overflow-hidden'
+          'flex justify-start shadow-md overflow-hidden'
         )}
       >
         <div
