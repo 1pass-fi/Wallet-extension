@@ -474,7 +474,7 @@ const AccountCard = ({
         <div className="md:flex md:flex-col lg:flex lg:flex-row">
           <div className="sm:w-1/2 md:w-full flex flex-col ml-2.25 xl:ml-3 2xl:ml-4 3xl:ml-6 mr-4.5 xl:mr-6 2xl:mr-7 3xl:mr-9 w-74 xl:w-83 2xl:w-90.5 3xl:w-100">
             {/* Account Name and Edit */}
-            <div className="flex items-center text-base 2xl:text-lg 3xl:text-xl tracking-finnieSpacing-tight leading-6">
+            <div className="flex text-base 2xl:text-lg 3xl:text-xl tracking-finnieSpacing-tight leading-6">
               {editAccount?.address === account.address ? (
                 <input
                   ref={(accountNameInput) => (inputAccountNameRef.current = accountNameInput)}
