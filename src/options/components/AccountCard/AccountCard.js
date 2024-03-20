@@ -708,6 +708,48 @@ const AccountCard = ({
             </div> */}
           </div>
 
+          <div className="sm:w-full md:w-1/2 lg:w-1/3 h-full flex flex-col gap-4.5">
+            <div
+              onClick={() => setShowRecoveryPhraseModal(true)}
+              className="w-full h-6 flex justify-between items-center"
+            >
+              <div className="flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+                {chrome.i18n.getMessage('revealSecretPhraseText')}{': '}
+              </div>
+              <div
+                className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
+                data-testid={`account-card-reveal-secret-phrase-${account.address}`}
+              >
+                <ReavealSeedphraseIcon className="w-4 xl:w-5 2xl:w-6 3xl:w-7 h-4 xl:h-5 2xl:h-6 3xl:h-7" />
+              </div>
+            </div>
+
+            <div
+              onClick={() => setShowQrCodeModal(true)}
+              className="w-full h-6 flex items-center justify-between"
+            >
+              <div className="flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+                See QR code:{' '}
+              </div>
+              <div className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer">
+                <SeeQRIcon className="w-3 xl:w-4 2xl:w-5 3xl:w-6 h-3 xl:h-4 2xl:h-5 3xl:h-6" />
+              </div>
+            </div>
+
+            {/* SEE ON EXTENSION */}
+            <div className="w-full h-6 flex items-center justify-between">
+              <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
+                See on extension:{' '}
+              </div>
+              <div
+                className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
+                style={{ width: '24px', height: '24px' }}
+              >
+                <SeeExtensionIcon style={{ width: '12.54px', height: '15.75px' }} />
+              </div>
+            </div>
+          </div>
+          
           <div className="sm:w-full md:w-1/2 md:px-2 lg:w-1/3 h-full flex flex-col gap-4.5">
             <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
@@ -757,48 +799,6 @@ const AccountCard = ({
                 }}
               >
                 {siteConnectedAddresses.length} sites
-              </div>
-            </div>
-          </div>
-
-          <div className="sm:w-full md:w-1/2 lg:w-1/3 h-full flex flex-col gap-4.5">
-            <div
-              onClick={() => setShowRecoveryPhraseModal(true)}
-              className="w-full h-6 flex justify-between items-center"
-            >
-              <div className="flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-                {chrome.i18n.getMessage('revealSecretPhraseText')}{': '}
-              </div>
-              <div
-                className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
-                data-testid={`account-card-reveal-secret-phrase-${account.address}`}
-              >
-                <ReavealSeedphraseIcon className="w-4 xl:w-5 2xl:w-6 3xl:w-7 h-4 xl:h-5 2xl:h-6 3xl:h-7" />
-              </div>
-            </div>
-
-            <div
-              onClick={() => setShowQrCodeModal(true)}
-              className="w-full h-6 flex items-center justify-between"
-            >
-              <div className="flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-                See QR code:{' '}
-              </div>
-              <div className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer">
-                <SeeQRIcon className="w-3 xl:w-4 2xl:w-5 3xl:w-6 h-3 xl:h-4 2xl:h-5 3xl:h-6" />
-              </div>
-            </div>
-
-            {/* SEE ON EXTENSION */}
-            <div className="w-full h-6 flex items-center justify-between">
-              <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
-                See on extension:{' '}
-              </div>
-              <div
-                className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
-                style={{ width: '24px', height: '24px' }}
-              >
-                <SeeExtensionIcon style={{ width: '12.54px', height: '15.75px' }} />
               </div>
             </div>
           </div>
