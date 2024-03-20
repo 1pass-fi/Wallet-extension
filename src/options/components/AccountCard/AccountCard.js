@@ -582,7 +582,7 @@ const AccountCard = ({
               {account.totalAssets.length}
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex gap-4">
             {/* FIRST BLOCK */}
             <div className="sm:w-12 sm:h-12 md:w-18.75 md:h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
               <div className="sm:text-xs sm:leading-4 flex items-center text-center font-normal md:text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
