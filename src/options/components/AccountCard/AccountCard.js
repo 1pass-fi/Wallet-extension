@@ -445,7 +445,7 @@ const AccountCard = ({
     <div className="mt-4.5 text-indigo select-none" data-testid="account-card-setting-page">
       <div
         className={clsx(
-          'sm:overflow-y-scroll sm:py-4 sm:h-36 md:h-auto md:py-4 lg:h-32 lg:overflow-y-hidden max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl xl:h-34.75 2xl:h-37.75 3xl:h-40',
+          'sm:overflow-y-scroll sm:py-4 sm:h-36 md:h-auto md:py-4 lg:h-32 lg:overflow-y-hidden max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl xl:h-30.75 2xl:h-34.75 3xl:h-34.75',
           'relative py-6 -mb-1.25 bg-trueGray-100 rounded-lg',
           'flex justify-start shadow-md overflow-hidden'
         )}
@@ -573,14 +573,14 @@ const AccountCard = ({
               </>
             )}
 
-            <div
+            {/* <div
               className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight leading-6"
               data-testid="account-card-assets"
             >
               {chrome.i18n.getMessage('assets')}
               {': '}
               {account.totalAssets.length}
-            </div>
+            </div> */}
           </div>
           <div className="flex gap-4">
             {/* FIRST BLOCK */}
@@ -636,7 +636,7 @@ const AccountCard = ({
           </div>
         </div>
 
-        <div className="absolute sm:space-y-12 sm:h-auto md:h-40 md:space-y-0 lg:h-32 xl:h-34.75 2xl:h-37.75 3xl:h-40 flex flex-col justify-between items-center top-0 right-5 py-6">
+        <div className="absolute sm:space-y-12 sm:h-auto md:h-36.75 md:space-y-0 lg:h-28 xl:h-30.75 2xl:h-34.75 3xl:h-36.75 flex flex-col justify-between items-center top-0 right-5 py-4">
           <div
             className="md:mt-0 flex items-center justify-center"
             onClick={() => handleChangeDisplayAccount(account)}
