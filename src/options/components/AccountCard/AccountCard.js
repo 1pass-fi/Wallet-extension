@@ -510,7 +510,7 @@ const AccountCard = ({
             </div>
 
             {/* Account address */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-start">
               <div
                 className="sm:truncate md:truncate-none flex items-center text-success-700 text-opacity-80 text-2xs 2xl:text-11px 3xl:text-xs font-normal leading-6 tracking-finnieSpacing-tight"
                 data-testid="account-card-address"
