@@ -5,8 +5,8 @@ import DropDown from 'options/components/DropDown'
 import { GalleryContext } from 'options/galleryContext'
 import { popupAccount } from 'services/account'
 import storage from 'services/storage'
-import { v4 as uuid } from 'uuid'
 import DropdownNew from 'sharedComponents/Dropdown'
+import { v4 as uuid } from 'uuid'
 
 import ActivityRow from './ActivityRow'
 
