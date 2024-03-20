@@ -377,7 +377,7 @@ export default () => {
           </div>
 
           {/* METAMASK OVERWRITES */}
-          <div className="pb-6 mb-4 border-b border-white default-currency">
+          {/* <div className="pb-6 mb-4 border-b border-white default-currency">
             <div className="text-base font-semibold leading-8 uppercase 2xl:text-lg 3xl:text-xl">
               {chrome.i18n.getMessage('metamaskOverwrites')}
             </div>
@@ -396,7 +396,7 @@ export default () => {
             >
               {chrome.i18n.getMessage('seeListOfSites')}
             </div>
-          </div>
+          </div> */}
 
           {/* KEY DETAILS */}
           <div className="pb-6 mb-4 border-b border-white display-order">
