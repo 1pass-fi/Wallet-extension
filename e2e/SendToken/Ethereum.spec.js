@@ -109,7 +109,7 @@ describe('Send token via Ethereum network', () => {
     const recipientDropdown = await extPage.$(`[data-testid="recipient-open-dropdown"]`)
     await recipientDropdown.click()
 
-    const recipientOption = await extPage.waitForSelector(`[data-testid="Account#2"]`)
+    const recipientOption = await extPage.waitForSelector(`[data-testid="NODE ACCOUNT 2"]`)
     await recipientOption.click()
 
     const sendTokensButton = await extPage.waitForSelector(`[data-testid="send-tokens-button"]`)
@@ -188,7 +188,7 @@ describe('Send token via Ethereum network', () => {
     const recipientDropdown = await extPage.$(`[data-testid="recipient-open-dropdown"]`)
     await recipientDropdown.click()
 
-    const recipientOption = await extPage.waitForSelector(`[data-testid="Account#2"]`)
+    const recipientOption = await extPage.waitForSelector(`[data-testid="NODE ACCOUNT 2"]`)
     await recipientOption.click()
 
     const sendTokensButton = await extPage.waitForSelector(`[data-testid="send-tokens-button"]`)
