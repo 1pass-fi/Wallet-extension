@@ -711,9 +711,9 @@ const AccountCard = ({
           <div className="sm:w-full md:w-1/2 md:px-2 lg:w-1/3 h-full flex flex-col gap-4.5">
             <div
               onClick={() => setShowRecoveryPhraseModal(true)}
-              className="w-full h-6 flex justify-between items-center"
+              className="w-full h-6 flex justify-around items-center"
             >
-              <div className="flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+              <div className="w-2/3 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 {chrome.i18n.getMessage('revealSecretPhraseText')}{': '}
               </div>
               <div
@@ -726,9 +726,9 @@ const AccountCard = ({
 
             <div
               onClick={() => setShowQrCodeModal(true)}
-              className="w-full h-6 flex items-center justify-between"
+              className="w-full h-6 flex items-center justify-around"
             >
-              <div className="flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+              <div className="w-2/3 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 See QR code:{' '}
               </div>
               <div className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer">
@@ -786,6 +786,7 @@ const AccountCard = ({
               </div>
               <ToggleButton value={showEmptyToken} setValue={setShowEmptyToken} />
             </div> */}
+            
             <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 {chrome.i18n.getMessage('dappConnection')}
