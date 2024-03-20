@@ -708,7 +708,7 @@ const AccountCard = ({
             </div> */}
           </div>
 
-          <div className="sm:w-full md:w-1/2 lg:w-1/3 h-full flex flex-col gap-4.5">
+          <div className="sm:w-full md:w-1/2 md:px-2 lg:w-1/3 h-full flex flex-col gap-4.5">
             <div
               onClick={() => setShowRecoveryPhraseModal(true)}
               className="w-full h-6 flex justify-between items-center"
@@ -750,7 +750,7 @@ const AccountCard = ({
             </div>
           </div>
           
-          <div className="sm:w-full md:w-1/2 md:px-2 lg:w-1/3 h-full flex flex-col gap-4.5">
+          <div className="sm:w-full md:w-1/2 lg:w-1/3 h-full flex flex-col gap-4.5">
             <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 {chrome.i18n.getMessage('network')}
