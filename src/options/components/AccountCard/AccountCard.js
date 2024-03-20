@@ -790,7 +790,7 @@ const AccountCard = ({
             </div>
 
             {/* SEE ON EXTENSION */}
-            {/* <div className="w-full h-6 flex items-center justify-between">
+            <div className="w-full h-6 flex items-center justify-between">
               <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 See on extension:{' '}
               </div>
@@ -800,7 +800,7 @@ const AccountCard = ({
               >
                 <SeeExtensionIcon style={{ width: '12.54px', height: '15.75px' }} />
               </div>
-            </div> */}
+            </div>
           </div>
 
           <div
