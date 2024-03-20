@@ -692,7 +692,7 @@ const AccountCard = ({
               </div>
             </div>
 
-            <div className="flex gap-2.75 items-start">
+            {/* <div className="flex gap-2.75 items-start">
               <div className="w-1/2 flex justify-start text-left font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 {chrome.i18n.getMessage('nftAssets')}
                 {':'}
@@ -705,7 +705,7 @@ const AccountCard = ({
                 {account.type === TYPE.ETHEREUM && get(networkMetadata, 'currencySymbol')}
                 {account.type === TYPE.SOLANA && 'SOL'}
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="sm:w-full md:w-1/2 md:px-2 lg:w-1/3 h-full flex flex-col gap-4.5">
