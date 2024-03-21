@@ -739,7 +739,7 @@ const AccountCard = ({
             {/* SEE ON EXTENSION */}
             <div className="w-full h-6 flex items-center justify-around">
               <div className="w-2/3 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
-                See on extension:{' '}
+                Open on extension:{' '}
               </div>
               <div
                 className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
