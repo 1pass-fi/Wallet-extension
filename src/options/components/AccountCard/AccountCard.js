@@ -756,7 +756,7 @@ const AccountCard = ({
                 {chrome.i18n.getMessage('network')}
                 {': '}
               </div>
-              <div className="w-38.75 xl:w-40 2xl:w-42.5 3xl:w-46">
+              <div className="w-38.75 xl:w-40">
                 <DropdownNew
                   options={providerOptions.find((o) => o.type === account.type)?.value}
                   value={currentNetwork}
