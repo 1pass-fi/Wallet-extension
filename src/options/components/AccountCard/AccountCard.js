@@ -445,9 +445,9 @@ const AccountCard = ({
     <div className="mt-4.5 text-indigo select-none" data-testid="account-card-setting-page">
       <div
         className={clsx(
-          'sm:overflow-y-scroll sm:py-4 sm:h-36 md:h-auto md:py-4 lg:h-32 lg:overflow-y-hidden max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl xl:h-34.75 2xl:h-37.75 3xl:h-40',
+          'sm:overflow-y-scroll sm:py-4 sm:h-36 md:h-auto md:py-4 lg:h-32 lg:overflow-y-hidden max-w-lg xl:max-w-xl 2xl:max-w-2xl 3xl:max-w-3xl xl:h-30.75 2xl:h-34.75 3xl:h-34.75',
           'relative py-6 -mb-1.25 bg-trueGray-100 rounded-lg',
-          'flex items-center justify-start shadow-md overflow-hidden'
+          'flex justify-start shadow-md overflow-hidden'
         )}
       >
         <div
@@ -474,7 +474,7 @@ const AccountCard = ({
         <div className="md:flex md:flex-col lg:flex lg:flex-row">
           <div className="sm:w-1/2 md:w-full flex flex-col ml-2.25 xl:ml-3 2xl:ml-4 3xl:ml-6 mr-4.5 xl:mr-6 2xl:mr-7 3xl:mr-9 w-74 xl:w-83 2xl:w-90.5 3xl:w-100">
             {/* Account Name and Edit */}
-            <div className="flex items-center text-base 2xl:text-lg 3xl:text-xl tracking-finnieSpacing-tight leading-6">
+            <div className="flex text-base 2xl:text-lg 3xl:text-xl tracking-finnieSpacing-tight leading-6">
               {editAccount?.address === account.address ? (
                 <input
                   ref={(accountNameInput) => (inputAccountNameRef.current = accountNameInput)}
@@ -510,7 +510,7 @@ const AccountCard = ({
             </div>
 
             {/* Account address */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-start">
               <div
                 className="sm:truncate md:truncate-none flex items-center text-success-700 text-opacity-80 text-2xs 2xl:text-11px 3xl:text-xs font-normal leading-6 tracking-finnieSpacing-tight"
                 data-testid="account-card-address"
@@ -573,16 +573,16 @@ const AccountCard = ({
               </>
             )}
 
-            <div
+            {/* <div
               className="font-normal text-xs 2xl:text-sm 3xl:text-base flex items-center tracking-finnieSpacing-tight leading-6"
               data-testid="account-card-assets"
             >
               {chrome.i18n.getMessage('assets')}
               {': '}
               {account.totalAssets.length}
-            </div>
+            </div> */}
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex gap-4">
             {/* FIRST BLOCK */}
             <div className="sm:w-12 sm:h-12 md:w-18.75 md:h-18.75 xl: 2xl: 3xl:w-20 xl: 2xl: 3xl:h-20 flex flex-col justify-center items-center shadow-sm bg-lightBlue rounded-1">
               <div className="sm:text-xs sm:leading-4 flex items-center text-center font-normal md:text-xl xl: 2xl: 3xl:text-2xl leading-8 tracking-finnieSpacing-tight">
@@ -636,7 +636,7 @@ const AccountCard = ({
           </div>
         </div>
 
-        <div className="absolute sm:space-y-12 sm:h-auto md:h-40 md:space-y-0 lg:h-32 xl:h-34.75 2xl:h-37.75 3xl:h-40 flex flex-col justify-between items-center top-0 right-5 py-6">
+        <div className="absolute sm:space-y-12 sm:h-auto md:h-36.75 md:space-y-0 lg:h-28 xl:h-30.75 2xl:h-34.75 3xl:h-36.75 flex flex-col justify-between items-center top-0 right-5 py-4">
           <div
             className="md:mt-0 flex items-center justify-center"
             onClick={() => handleChangeDisplayAccount(account)}
@@ -692,7 +692,7 @@ const AccountCard = ({
               </div>
             </div>
 
-            <div className="flex gap-2.75 items-start">
+            {/* <div className="flex gap-2.75 items-start">
               <div className="w-1/2 flex justify-start text-left font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 {chrome.i18n.getMessage('nftAssets')}
                 {':'}
@@ -705,10 +705,52 @@ const AccountCard = ({
                 {account.type === TYPE.ETHEREUM && get(networkMetadata, 'currencySymbol')}
                 {account.type === TYPE.SOLANA && 'SOL'}
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="sm:w-full md:w-1/2 md:px-2 lg:w-1/3 h-full flex flex-col gap-4.5">
+            <div
+              onClick={() => setShowRecoveryPhraseModal(true)}
+              className="w-full h-6 flex justify-around items-center"
+            >
+              <div className="w-2/3 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+                {chrome.i18n.getMessage('revealSecretPhraseText')}{': '}
+              </div>
+              <div
+                className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
+                data-testid={`account-card-reveal-secret-phrase-${account.address}`}
+              >
+                <ReavealSeedphraseIcon className="w-4 xl:w-5 2xl:w-6 3xl:w-7 h-4 xl:h-5 2xl:h-6 3xl:h-7" />
+              </div>
+            </div>
+
+            <div
+              onClick={() => setShowQrCodeModal(true)}
+              className="w-full h-6 flex items-center justify-around"
+            >
+              <div className="w-2/3 flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
+                See QR code:{' '}
+              </div>
+              <div className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer">
+                <SeeQRIcon className="w-3 xl:w-4 2xl:w-5 3xl:w-6 h-3 xl:h-4 2xl:h-5 3xl:h-6" />
+              </div>
+            </div>
+
+            {/* SEE ON EXTENSION */}
+            <div className="w-full h-6 flex items-center justify-around">
+              <div className="w-2/3 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
+                Open on extension:{' '}
+              </div>
+              <div
+                className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
+                style={{ width: '24px', height: '24px' }}
+              >
+                <SeeExtensionIcon style={{ width: '12.54px', height: '15.75px' }} />
+              </div>
+            </div>
+          </div>
+          
+          <div className="sm:w-full md:w-1/2 lg:w-1/3 h-full flex flex-col gap-4.5">
             <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 {chrome.i18n.getMessage('network')}
@@ -738,13 +780,16 @@ const AccountCard = ({
             </div> */}
 
             {/* HIDE EMPTY TOKEN */}
-            {/* <div className="w-full h-6 flex items-center justify-between">
+            <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">
                 Hide empty Token:{' '}
               </div>
-              <ToggleButton value={showEmptyToken} setValue={setShowEmptyToken} />
-            </div> */}
-            <div className="w-full h-6 flex items-center justify-between">
+              <div style={{paddingRight: '5px'}}>
+                <ToggleButton value={showEmptyToken} setValue={setShowEmptyToken} />
+              </div>
+            </div>
+            
+            {/* <div className="w-full h-6 flex items-center justify-between">
               <div className="font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
                 {chrome.i18n.getMessage('dappConnection')}
                 {': '}
@@ -757,48 +802,6 @@ const AccountCard = ({
                 }}
               >
                 {siteConnectedAddresses.length} sites
-              </div>
-            </div>
-          </div>
-
-          <div className="sm:w-full md:w-1/2 lg:w-1/3 h-full flex flex-col gap-4.5">
-            <div
-              onClick={() => setShowRecoveryPhraseModal(true)}
-              className="w-full h-6 flex justify-between items-center"
-            >
-              <div className="flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-                {chrome.i18n.getMessage('revealSecretPhraseText')}{': '}
-              </div>
-              <div
-                className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
-                data-testid={`account-card-reveal-secret-phrase-${account.address}`}
-              >
-                <ReavealSeedphraseIcon className="w-4 xl:w-5 2xl:w-6 3xl:w-7 h-4 xl:h-5 2xl:h-6 3xl:h-7" />
-              </div>
-            </div>
-
-            <div
-              onClick={() => setShowQrCodeModal(true)}
-              className="w-full h-6 flex items-center justify-between"
-            >
-              <div className="flex justify-end font-semibold text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight">
-                See QR code:{' '}
-              </div>
-              <div className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer">
-                <SeeQRIcon className="w-3 xl:w-4 2xl:w-5 3xl:w-6 h-3 xl:h-4 2xl:h-5 3xl:h-6" />
-              </div>
-            </div>
-
-            {/* SEE ON EXTENSION */}
-            {/* <div className="w-full h-6 flex items-center justify-between">
-              <div className="w-3/4 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
-                See on extension:{' '}
-              </div>
-              <div
-                className="w-6 xl:w-7 2xl:w-8 3xl:w-9 h-6 xl:h-7 2xl:h-8 3xl:h-9 bg-lightBlue rounded-full shadow-sm flex justify-center items-center cursor-pointer"
-                style={{ width: '24px', height: '24px' }}
-              >
-                <SeeExtensionIcon style={{ width: '12.54px', height: '15.75px' }} />
               </div>
             </div> */}
           </div>
