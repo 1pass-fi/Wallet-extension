@@ -784,7 +784,7 @@ const AccountCard = ({
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">
                 Hide empty Token:{' '}
               </div>
-              <div style={{paddingRight: "5px"}}>
+              <div style={{paddingRight: '5px'}}>
                 <ToggleButton value={showEmptyToken} setValue={setShowEmptyToken} />
               </div>
             </div>
