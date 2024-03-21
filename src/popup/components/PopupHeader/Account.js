@@ -17,8 +17,8 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
 
   return (
     <div
-      className="bg-blue-800 flex items-center justify-between cursor-pointer select-none"
-      style={{ width: '341px', height: '100%' }}
+      className="flex items-center justify-between cursor-pointer select-none"
+      style={{ width: '341px', height: '100%', backgroundColor: '#353570'}}
       onClick={() => {
         setShowAccountDropdown((prev) => !prev)
       }}
@@ -42,8 +42,8 @@ const Account = ({ showAccountDropdown, setShowAccountDropdown }) => {
           {displayingAccount.type === TYPE.SOLANA && (
             <SolanaIcon style={{ width: '25px', height: '25px' }} />
           )}
-          <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white">
-            {formatLongString(displayingAccount?.accountName, 12)}
+          <div className="ml-2 font-semibold text-base leading-8 tracking-finnieSpacing-tight text-white" style={{letterSpacing: '0.05em'}}>
+            {displayingAccount?.accountName}
           </div>
         </div>
       )}

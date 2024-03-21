@@ -224,7 +224,7 @@ const HomeTop = ({
           <div className="flex flex-row items-center">
             <FinnieIcon className="" style={{ width: '54px', height: '40px' }} />
             <div
-              style={{ backgroundColor: '#DCF7F5', color: '#353570' }}
+              style={{ backgroundColor: '#DCF7F5', color: '#373762' }}
               className="flex flex-row items-center px-2 py-1 ml-3 rounded-lg"
             >
               <div className="mr-2">{formatLongString(displayingAccount.address, 13)}</div>

@@ -184,7 +184,7 @@ describe('Onboarding flow', () => {
             return false
           })
           onboarding = renderWithOptionProviders(<Onboarding />, {
-            initialState: { accounts: ['Account#1'] }
+            initialState: { accounts: ['NODE ACCOUNT 1'] }
           })
 
           password = screen.getByPlaceholderText(/password/i)
@@ -205,7 +205,7 @@ describe('Onboarding flow', () => {
 
         beforeEach(() => {
           onboarding = renderWithOptionProviders(<Onboarding />, {
-            initialState: { accounts: ['Account#1'] }
+            initialState: { accounts: ['NODE ACCOUNT 1'] }
           })
 
           password = screen.getByPlaceholderText(/password/i)
