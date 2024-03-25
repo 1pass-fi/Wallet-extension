@@ -199,12 +199,12 @@ export const AccountDropdown = React.forwardRef(
                       {formatNumber(account.balance / Math.pow(10, 9), 2)} SOL
                     </div>
                   )}
-                  <div
+                  {/* <div
                     className="text-xs font-normal leading-4 text-white tracking-finnieSpacing-tight"
                     data-testid="popup-header-account-assets"
                   >
                     {chrome.i18n.getMessage('assets')}: {account.totalAssets.length}
-                  </div>
+                  </div> */}
                 </div>
                 {isDefaultAccount(account) ? (
                   <FilledStarIcon className="mt-1 mr-4" style={{ width: '15px', height: '14px' }} />
