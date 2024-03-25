@@ -681,13 +681,14 @@ const AccountCard = ({
               </div>
               <div className="flex flex-col gap-1" data-testid="account-card-account-balance">
                 {tokenList.map((token, idx) => (
-                  <div
-                    className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight"
-                    key={idx}
-                    data-testid={`account-card-account-balance-${token.symbol}`}
-                  >
-                    {formatNumber(token.displayingBalance)} {token.symbol}
-                  </div>
+                  !((showEmptyToken === false) && (token.displayingBalance === 0)) ?
+                    <div
+                      className="font-normal text-xs 2xl:text-sm 3xl:text-base tracking-finnieSpacing-tight"
+                      key={idx}
+                      data-testid={`account-card-account-balance-${token.symbol}`}
+                    >
+                      {formatNumber(token.displayingBalance)} {token.symbol}
+                    </div> : <></>
                 ))}
               </div>
             </div>
