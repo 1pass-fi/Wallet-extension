@@ -221,6 +221,7 @@ export class K2Method {
       )
     )
     const accountName = await this.#chrome.getField(ACCOUNT.ACCOUNT_NAME)
+    transactions = transactions.filter(tx => tx !== null);
 
     const activities = transactions.map((tx) => {
       const { transaction, meta } = tx
