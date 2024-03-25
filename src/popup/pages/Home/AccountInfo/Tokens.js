@@ -51,7 +51,6 @@ const Tokens = ({ currentProviderAddress, currency }) => {
   )
 
   const loadTokenList = async () => {
-    console.log('===============loadTokenList===============', displayingAccount.type)
     try {
       dispatch(setIsLoading(true))
       if (displayingAccount.type === TYPE.ARWEAVE) {
@@ -81,9 +80,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
         // TODO DatH - LongP
         const fireTokenMetadata = k2Contracts.find((token) => token.symbol === 'FIRE')
         const fireTokenContractAddress = fireTokenMetadata.address
-        console.log('fireTokenContractAddress:', fireTokenContractAddress)
         const fireToken = await getK2CustomTokensData(fireTokenContractAddress, displayingAccount.address)
-        console.log(fireToken)
         const importTokens = (fireToken.balance && !importedTokenAddresses.includes(fireTokenContractAddress)) ? [
           {
             name: 'KOII',
@@ -106,7 +103,6 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             decimal: 9
           }
         ] 
-        console.log('importedTokenAddress', importedTokenAddresses)
         await Promise.all(
           importedTokenAddresses.map(async (contractAddress) => {
             let token = await getK2CustomTokensData(contractAddress, displayingAccount.address)

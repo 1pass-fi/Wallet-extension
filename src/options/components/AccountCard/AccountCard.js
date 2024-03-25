@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useDispatch, useSelector } from 'react-redux'
+import contentScriptEvents from 'background/handlers/contentScriptEvents'
 import clsx from 'clsx'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
@@ -45,7 +46,7 @@ import useTokenLists from 'sharedHooks/useTokenLists'
 import { getSiteConnectedAddresses } from 'utils'
 
 import RecoveryPhraseModal from '../Settings/Security/RecoveryPhraseModal'
-import contentScriptEvents from 'background/handlers/contentScriptEvents'
+
 import QrCodeModal from './qrCodeModal'
 import ToggleButton from './ToggleButton'
 

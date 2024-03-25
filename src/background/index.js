@@ -25,7 +25,6 @@ function cb(port) {
     cache.addPopupPort(port)
 
     port.onDisconnect.addListener((disconnect) => {
-      console.log('port disconnected--', disconnect, port)
       storage.generic.set.pendingRequest({})
       cache.removePopupPort(port)
     })
