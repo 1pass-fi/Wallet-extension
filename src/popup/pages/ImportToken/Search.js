@@ -17,7 +17,6 @@ import k2Contracts from 'utils/k2-contracts.json'
 let currentTimeout = [null]
 
 const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
-  console.log('Search:')
   const displayingAccount = useSelector(getDisplayingAccount)
 
   const [solanaTokenList, setSolanaTokenList] = useState([])
@@ -61,7 +60,6 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
       const _hardcodeTokens = hardcodeTokens.filter((token) => token.chainId === chainId)
 
       const tokenList = [...tokens.filterByClusterSlug(provider).getList(), ..._hardcodeTokens]
-      console.log('=============tokenList===========')
       setSolanaTokenList(tokenList)
     }
 
@@ -83,13 +81,11 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
       setPages(1)
 
       let filterTokenList = []
-      console.log('displayedTokens:', displayedTokens)
 
       filterTokenList = k2Contracts.filter((token) => {
         return  !displayedTokens.some((displayedToken) => token.name === displayedToken.name)
         // return displayedTokens.some()
       })
-      console.log('filterTokenList:', filterTokenList)
       if (displayingAccount.type === TYPE.K2) {
         if (!isEmpty(searchToken)) {
           filterTokenList =  filterTokenList
@@ -100,13 +96,11 @@ const Search = ({ setTokenImport, searchToken, setSearchToken }) => {
                 token.symbol?.toLowerCase().includes(searchToken.toLowerCase())
             )
         }
-        console.log('FilterTokenList:', filterTokenList)
 
         filterTokenList = filterTokenList.map((token) => ({
           ...token,
           contract: token.address
         }))
-        console.log('FilterTokenList:', filterTokenList)
       }
 
       if (displayingAccount.type === TYPE.ETHEREUM) {

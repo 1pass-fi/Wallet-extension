@@ -107,7 +107,6 @@ export default async (payload, next) => {
           walletKey = k2.key          
         }
         if (jsonKey) {
-          console.log('running import json K2')
           const result = await K2Account.utils.loadWalletFromJson(jsonKey)
           walletKey = result.key
           address = result.address
