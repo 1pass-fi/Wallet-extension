@@ -85,10 +85,8 @@ const getTokenData = async (contractAddress, userAddress) => {
 export const getK2CustomTokensData = async (contractAddress, userAddress) => {
   try {
     const clusterSlug = await storage.setting.get.k2Provider()
-    console.log('clusterSlug:', clusterSlug)
     const connection = new ConnectionK2(clusterSlug)
     // const connection = new ConnectionK2(clusterApiUrlK2(clusterSlug))
-    console.log('connection:', connection)
 
     // const PublicKey = new PublicKeyK2(userAddress)
     // const requestBody = {
