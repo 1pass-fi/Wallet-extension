@@ -45,7 +45,7 @@ import useTokenLists from 'sharedHooks/useTokenLists'
 import { getSiteConnectedAddresses } from 'utils'
 
 import RecoveryPhraseModal from '../Settings/Security/RecoveryPhraseModal'
-
+import ContentScriptEvents from 'background/handlers/contentScriptEvents/ContentScriptEvents'
 import QrCodeModal from './qrCodeModal'
 import ToggleButton from './ToggleButton'
 
