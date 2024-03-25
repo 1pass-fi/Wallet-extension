@@ -38,7 +38,6 @@ function cb(port) {
   if (port.name.includes(PORTS.CONTENT_SCRIPT)) {
     port.onMessage.addListener((message) => {
       const payload = { data: message.data, port, id: message.id }
-      console.log('payload:', payload, message.type)
       contentScriptEvents.sendMessage(message.type, payload)
     })
   }

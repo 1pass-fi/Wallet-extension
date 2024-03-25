@@ -90,7 +90,6 @@ class AccountManager {
         return allAccounts
       } else {
         let accounts
-        console.log('importedAccount', this.importedAccount)
         accounts = this.importedAccount.filter((a) => a.type === network)
         accounts = await Promise.all(
           accounts.map(async (credentials) => await this.getAccount(credentials))

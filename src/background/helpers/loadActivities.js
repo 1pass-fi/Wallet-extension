@@ -8,7 +8,6 @@ export default async (type) => {
 
   const accountsForInputType = await backgroundAccount.getAllAccounts(type) // all accounts if !type
   await Promise.all(accountsForInputType.map(async account => {
-    console.log('AccountName: ', await account.get.accountName(), account)
     await account.method.updateActivities()
   }))
 
@@ -22,7 +21,6 @@ export default async (type) => {
   }
 
   allActivities = orderBy(allActivities, 'time', 'desc')
-  console.log('ACTIVITIES LOADED: ', allActivities.length)
   await storage.generic.set.allActivities(allActivities)
 
 }

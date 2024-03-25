@@ -6,11 +6,6 @@ export default async (type) => {
     const promises = accounts.map(async (account) => {
       try {
         const { balance, koiBalance } = await account.method.getBalances()
-        console.log(
-          `Load ${type ? type : ''} balance for: `,
-          await account.get.accountName(),
-          balance
-        )
         await account.set.balance(balance)
         await account.set.koiBalance(koiBalance)
       } catch (error) {
