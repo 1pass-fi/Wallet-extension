@@ -215,7 +215,7 @@ export class K2Method {
     const provider = await storage.setting.get.k2Provider()
     const connection = new Connection(provider)
     const signatureInfos = await connection.getSignaturesForAddress(this.k2Tool.keypair.publicKey)
-    const transactions = await Promise.all(
+    let transactions = await Promise.all(
       signatureInfos.map(
         async (signatureInfos) => await connection.getTransaction(signatureInfos.signature)
       )
