@@ -290,6 +290,9 @@
   "connectUc": {
     "message": "CONNECT"
   },
+  "connectWallet": {
+    "message": "Connect your wallet to this site"
+  },
   "connectWalletMsg": {
     "message": "Make sure creators are fairly rewarded. While your wallet is connected, every time you interact with an NFT the creator will earn attention rewards."
   },
