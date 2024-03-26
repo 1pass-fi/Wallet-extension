@@ -183,11 +183,11 @@ const ConnectScreen = ({
                 </div>
                 <button
                   // onClick={() => setStep(2)}
-                  className="bg-blue-800 text-white rounded-sm shadow text-base leading-4 text-center disabled:opacity-50 disabled:cursor-not-allowed"
-                  style={{ width: '160px', height: '38px' }}
-                  data-testid="select-wallet-button"
+                  className="bg-blue-700 text-white rounded-sm shadow text-base leading-4 text-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ width: '180px', height: '28px' }}
+                  data-testid="to-faucet-button"
                 >
-                  {chrome.i18n.getMessage('selectWallet')}
+                  {chrome.i18n.getMessage('toFaucetNetwork')}
                 </button>
                 <br></br>
                 {chrome.i18n.getMessage('thisRequestWill')}{' '}

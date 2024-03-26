@@ -290,6 +290,9 @@
   "connectUc": {
     "message": "KẾT NỐI"
   },
+  "toFaucetNetwork": {
+    "message": "To FAUCET KOII NETWORK"
+  },
   "connectWalletMsg": {
     "message": "Kết nối ví của bạn với trang này"
   },

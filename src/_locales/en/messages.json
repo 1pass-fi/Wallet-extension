@@ -290,6 +290,9 @@
   "connectUc": {
     "message": "CONNECT"
   },
+  "toFaucetNetwork": {
+    "message": "To FAUCET KOII NETWORK"
+  },
   "connectWalletMsg": {
     "message": "Connect your wallet to this site"
   },
