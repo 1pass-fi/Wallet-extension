@@ -290,11 +290,8 @@
   "connectUc": {
     "message": "KẾT NỐI"
   },
-  "connectWallet": {
-    "message": "Kết nối ví của bạn với trang này"
-  },
   "connectWalletMsg": {
-    "message": "Đảm bảo rằng những người tạo nội dung được công bằng được thưởng. Khi ví của bạn được kết nối, mỗi lần bạn tương tác với một NFT, người tạo sẽ nhận được phần thưởng chú ý."
+    "message": "Kết nối ví của bạn với trang này"
   },
   "connectWalletMsgEnd": {
     "message": "bất cứ lúc nào trên trang web này."
