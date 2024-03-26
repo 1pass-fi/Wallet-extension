@@ -738,7 +738,7 @@ const AccountCard = ({
             </div>
 
             {/* SEE ON EXTENSION */}
-            <div className="w-full h-6 flex items-center justify-around">
+            {/* <div className="w-full h-6 flex items-center justify-around">
               <div className="w-2/3 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 Open on extension:{' '}
               </div>
@@ -748,7 +748,7 @@ const AccountCard = ({
               >
                 <SeeExtensionIcon style={{ width: '12.54px', height: '15.75px' }} />
               </div>
-            </div>
+            </div> */}
           </div>
           
           <div className="sm:w-full md:w-1/2 lg:w-1/3 h-full flex flex-col gap-4.5">
