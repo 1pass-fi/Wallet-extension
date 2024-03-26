@@ -178,7 +178,7 @@ const ConnectScreen = ({
                 </div>
               )}
               <div className="text-xs font-normal leading-5">
-                {chrome.i18n.getMessage('connectWalletMsg')}
+                {chrome.i18n.getMessage('connectWallet')}
                 <br></br>
                 {chrome.i18n.getMessage('thisRequestWill')}{' '}
                 <span className="font-semibold">{chrome.i18n.getMessage('notCostAnyFeesLc')}</span>{' '}
