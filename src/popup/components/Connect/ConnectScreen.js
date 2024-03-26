@@ -178,7 +178,17 @@ const ConnectScreen = ({
                 </div>
               )}
               <div className="text-xs font-normal leading-5">
-                {chrome.i18n.getMessage('connectWalletMsg')}
+                <div className="mt-4 mb-3 leading-4 font-semibold text-xs text-center">
+                  {chrome.i18n.getMessage('connectWalletMsg')}
+                </div>
+                <button
+                  // onClick={() => setStep(2)}
+                  className="bg-blue-800 text-white rounded-sm shadow text-base leading-4 text-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ width: '160px', height: '38px' }}
+                  data-testid="select-wallet-button"
+                >
+                  {chrome.i18n.getMessage('selectWallet')}
+                </button>
                 <br></br>
                 {chrome.i18n.getMessage('thisRequestWill')}{' '}
                 <span className="font-semibold">{chrome.i18n.getMessage('notCostAnyFeesLc')}</span>{' '}
