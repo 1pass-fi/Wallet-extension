@@ -224,38 +224,40 @@ export class K2Method {
     transactions = transactions.filter(tx => tx !== null)
 
     const activities = transactions.map((tx) => {
-      const { transaction, meta } = tx
-      let source, activityName, expense
-      if (transaction.message.accountKeys[0]?.toString() === this.k2Tool.address) {
-        source = transaction.message.accountKeys[1]?.toString()
-        if (meta.postTokenBalances.length === 0 || meta.preTokenBalances.length === 0){
-          activityName = 'Sent KOII'
-          expense = Math.abs(meta.postBalances[0] - meta.preBalances[0] + meta.fee) / LAMPORTS_PER_SOL
+      if(tx){
+        const { transaction, meta } = tx
+        let source, activityName, expense
+        if (transaction.message.accountKeys[0]?.toString() === this.k2Tool.address) {
+          source = transaction.message.accountKeys[1]?.toString()
+          if (meta.postTokenBalances.length === 0 || meta.preTokenBalances.length === 0){
+            activityName = 'Sent KOII'
+            expense = Math.abs(meta.postBalances[0] - meta.preBalances[0] + meta.fee) / LAMPORTS_PER_SOL
+          } else {
+            activityName = getActiveName(meta, 'Sent')
+            expense = Math.abs(meta.postTokenBalances[0].uiTokenAmount.amount - meta.preTokenBalances[0].uiTokenAmount.amount) / Math.pow(10, meta.preTokenBalances[0].uiTokenAmount.decimals)
+          }
         } else {
-          activityName = getActiveName(meta, 'Sent')
-          expense = Math.abs(meta.postTokenBalances[0].uiTokenAmount.amount - meta.preTokenBalances[0].uiTokenAmount.amount) / Math.pow(10, meta.preTokenBalances[0].uiTokenAmount.decimals)
+          source = transaction.message.accountKeys[0]?.toString()
+          if (meta.postTokenBalances.length === 0 || meta.preTokenBalances.length === 0){
+            activityName = 'Received KOII'
+            expense = Math.abs(meta.postBalances[1] - meta.preBalances[1]) / LAMPORTS_PER_SOL
+          } else {
+            activityName = getActiveName(meta, 'Received')
+            expense = Math.abs(meta.postTokenBalances[0].uiTokenAmount.amount - meta.preTokenBalances[0].uiTokenAmount.amount) / Math.pow(10, meta.preTokenBalances[0].uiTokenAmount.decimals)
+          }
         }
-      } else {
-        source = transaction.message.accountKeys[0]?.toString()
-        if (meta.postTokenBalances.length === 0 || meta.preTokenBalances.length === 0){
-          activityName = 'Received KOII'
-          expense = Math.abs(meta.postBalances[1] - meta.preBalances[1]) / LAMPORTS_PER_SOL
-        } else {
-          activityName = getActiveName(meta, 'Received')
-          expense = Math.abs(meta.postTokenBalances[0].uiTokenAmount.amount - meta.preTokenBalances[0].uiTokenAmount.amount) / Math.pow(10, meta.preTokenBalances[0].uiTokenAmount.decimals)
+        return {
+          id: transaction.signatures[0],
+          activityName,
+          expense,
+          accountName,
+          time: tx.blockTime,
+          date: moment(Number(tx.blockTime) * 1000).format('MMMM DD YYYY'),
+          source,
+          network: this.k2Tool.provider,
+          address: this.k2Tool.address,
+          isK2Account: true
         }
-      }
-      return {
-        id: transaction.signatures[0],
-        activityName,
-        expense,
-        accountName,
-        time: tx.blockTime,
-        date: moment(Number(tx.blockTime) * 1000).format('MMMM DD YYYY'),
-        source,
-        network: this.k2Tool.provider,
-        address: this.k2Tool.address,
-        isK2Account: true
       }
     })
 

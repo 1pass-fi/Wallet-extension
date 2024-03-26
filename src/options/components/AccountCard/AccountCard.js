@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { useDispatch, useSelector } from 'react-redux'
+import contentScriptEvents from 'background/handlers/contentScriptEvents'
 import clsx from 'clsx'
 import { ACCOUNT, TYPE } from 'constants/accountConstants'
 import { MESSAGES } from 'constants/koiConstants'
@@ -738,7 +739,7 @@ const AccountCard = ({
             </div>
 
             {/* SEE ON EXTENSION */}
-            <div className="w-full h-6 flex items-center justify-around">
+            {/* <div className="w-full h-6 flex items-center justify-around">
               <div className="w-2/3 flex justify-end font-semibold text-xs tracking-finnieSpacing-tight">
                 Open on extension:{' '}
               </div>
@@ -748,7 +749,7 @@ const AccountCard = ({
               >
                 <SeeExtensionIcon style={{ width: '12.54px', height: '15.75px' }} />
               </div>
-            </div>
+            </div> */}
           </div>
           
           <div className="sm:w-full md:w-1/2 lg:w-1/3 h-full flex flex-col gap-4.5">
@@ -757,7 +758,7 @@ const AccountCard = ({
                 {chrome.i18n.getMessage('network')}
                 {': '}
               </div>
-              <div className="w-38.75 xl:w-40 2xl:w-42.5 3xl:w-46">
+              <div className="w-38.75 xl:w-40">
                 <DropdownNew
                   options={providerOptions.find((o) => o.type === account.type)?.value}
                   value={currentNetwork}
@@ -785,7 +786,7 @@ const AccountCard = ({
               <div className="font-semibold text-xs tracking-finnieSpacing-tight">
                 Hide empty Token:{' '}
               </div>
-              <div style={{paddingRight: '5px'}}>
+              <div style={{paddingRight: '10px'}}>
                 <ToggleButton value={showEmptyToken} setValue={setShowEmptyToken} />
               </div>
             </div>

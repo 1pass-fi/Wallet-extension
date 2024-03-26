@@ -5,6 +5,7 @@ import { get, includes } from 'lodash'
 
 export default class PopupEvents extends EventEmitter {
   sendMessage(endpoint, payload) {
+    console.log(endpoint, payload)
     const { port } = payload
     const promise = new Promise((resolve) => {
       this.emit(endpoint, payload, resolve)
