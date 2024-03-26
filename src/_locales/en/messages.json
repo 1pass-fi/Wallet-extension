@@ -291,7 +291,7 @@
     "message": "CONNECT"
   },
   "toFaucetNetwork": {
-    "message": "To FAUCET KOII NETWORK"
+    "message": "faucet.koii.network"
   },
   "connectWalletMsg": {
     "message": "Connect your wallet to this site"
