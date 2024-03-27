@@ -8,10 +8,12 @@ import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
 // assets
 import CheckMarkIcon from 'img/check-mark-white.svg'
+import BlackBackIcon from 'img/popup/back-button.svg'
 import ConnectBackgroundLeft from 'img/popup/connect-background-left.svg'
 import ConnectBackgroundRight from 'img/popup/connect-background-right.svg'
+import LeftGrpahic from 'img/popup/left-graphic.svg'
+import RightGraphic from 'img/popup/right-graphic.svg'
 import BackIcon from 'img/v2/back-icon.svg'
-import BlackBackIcon from 'img/popup/back-button.svg'
 import CloseIcon from 'img/v2/close-icon-white.svg'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
@@ -177,7 +179,9 @@ const ConnectScreen = ({
       >
         {step === 1 && (
           <>
-            <div className="relative text-indigo pt-10 tracking-finnieSpacing-wide px-8.5 mt-7">
+            <div className="text-indigo pt-10 tracking-finnieSpacing-wide px-8.5 mt-7">
+              <LeftGrpahic className="absolute top-13.5 left-0" />
+              <RightGraphic className="absolute top-13.5 right-0" />
               <BlackBackIcon
                 style={{ width: '30px', height: '30px' }}
                 className="absolute top-4 left-4 cursor-pointer"
