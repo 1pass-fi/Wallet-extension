@@ -102,6 +102,11 @@ const ConnectScreen = ({
     chrome.tabs.create({ url })
   }
 
+  const goToFaucet = () => {
+    const url = 'https://faucet.koii.network/'
+    chrome.tabs.create({ url })
+  }
+
   const handleOnClick = async (accept) => {
     try {
       if (popupConnectedModal) {
@@ -183,7 +188,7 @@ const ConnectScreen = ({
                 </div>
                 <div className="flex justify-center mb-5">
                   <button
-                    // onClick={() => setStep(2)}
+                    onClick={goToFaucet}
                     className="text-blue-800 shadow leading-4 text-center disabled:opacity-50 disabled:cursor-not-allowed text-xs rounded-xl"
                     style={{ width: '180px', height: '28px', backgroundColor: '#ebfffe'}}
                     data-testid="to-faucet-button"
