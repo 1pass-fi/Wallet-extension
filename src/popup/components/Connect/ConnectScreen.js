@@ -181,11 +181,11 @@ const ConnectScreen = ({
                 <div className="mt-4 mb-3 leading-4 font-semibold text-base text-center">
                   {chrome.i18n.getMessage('connectWalletMsg')}
                 </div>
-                <div className="flex justify-center mb-7">
+                <div className="flex justify-center mb-5">
                   <button
                     // onClick={() => setStep(2)}
-                    className="bg-success-700 text-white rounded-sm shadow leading-4 text-center disabled:opacity-50 disabled:cursor-not-allowed text-xs"
-                    style={{ width: '180px', height: '28px' }}
+                    className="text-blue-800 shadow leading-4 text-center disabled:opacity-50 disabled:cursor-not-allowed text-xs rounded-xl"
+                    style={{ width: '180px', height: '28px', backgroundColor: '#ebfffe'}}
                     data-testid="to-faucet-button"
                   >
                     {chrome.i18n.getMessage('toFaucetNetwork')}
