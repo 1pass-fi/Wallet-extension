@@ -141,7 +141,7 @@ const Header = ({ setShowConnectedSites }) => {
             className="text-base text-white absolute"
             ref={modalRef}
           >
-            <div
+            {/* <div
               style={{ height: '46px', paddingRight: '16px', zIndex: 100 }}
               className="bg-blue-800 hover:bg-blue-400 cursor-pointer flex items-center justify-end"
               onClick={() => {
@@ -150,7 +150,7 @@ const Header = ({ setShowConnectedSites }) => {
               }}
             >
               {chrome.i18n.getMessage('seeConnectedSites')}
-            </div>
+            </div> */}
             <div
               onClick={handleDisableFinnie}
               style={{ height: '46px', paddingRight: '16px', borderBottom: '1px solid #8585BC' }}
