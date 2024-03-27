@@ -290,8 +290,11 @@
   "connectUc": {
     "message": "CONNECT"
   },
+  "toFaucetNetwork": {
+    "message": "faucet.koii.network"
+  },
   "connectWalletMsg": {
-    "message": "Make sure creators are fairly rewarded. While your wallet is connected, every time you interact with an NFT the creator will earn attention rewards."
+    "message": "Connect your wallet to this site"
   },
   "connectWalletMsgEnd": {
     "message": "connection at anytime in"

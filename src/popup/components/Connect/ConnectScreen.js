@@ -8,8 +8,11 @@ import clsx from 'clsx'
 import { TYPE } from 'constants/accountConstants'
 // assets
 import CheckMarkIcon from 'img/check-mark-white.svg'
+import BlackBackIcon from 'img/popup/back-button.svg'
 import ConnectBackgroundLeft from 'img/popup/connect-background-left.svg'
 import ConnectBackgroundRight from 'img/popup/connect-background-right.svg'
+import LeftGrpahic from 'img/popup/left-graphic.svg'
+import RightGraphic from 'img/popup/right-graphic.svg'
 import BackIcon from 'img/v2/back-icon.svg'
 import CloseIcon from 'img/v2/close-icon-white.svg'
 import get from 'lodash/get'
@@ -102,6 +105,11 @@ const ConnectScreen = ({
     chrome.tabs.create({ url })
   }
 
+  const goToFaucet = () => {
+    const url = 'https://faucet.koii.network/'
+    chrome.tabs.create({ url })
+  }
+
   const handleOnClick = async (accept) => {
     try {
       if (popupConnectedModal) {
@@ -171,14 +179,35 @@ const ConnectScreen = ({
       >
         {step === 1 && (
           <>
-            <div className="text-indigo pt-10 tracking-finnieSpacing-wide px-6.5 mt-7">
+            <div className="text-indigo pt-10 tracking-finnieSpacing-wide px-8.5 mt-7">
+              <LeftGrpahic className="absolute top-0 left-0" />
+              <RightGraphic className="absolute top-0 right-0" />
+              <BlackBackIcon
+                style={{ width: '30px', height: '30px' }}
+                className="absolute top-4 left-4 cursor-pointer"
+                onClick={() => {
+                  handleOnClick(false)
+                }}
+              />
               {isKoi && (
                 <div className="text-sm font-semibold leading-5 text-center mb-5.5">
                   {chrome.i18n.getMessage('welcomeToKoiiLeaderBoard')}
                 </div>
               )}
               <div className="text-xs font-normal leading-5">
-                {chrome.i18n.getMessage('connectWalletMsg')}
+                <div className="mt-4 mb-3 leading-4 font-semibold text-base text-center">
+                  {chrome.i18n.getMessage('connectWalletMsg')}
+                </div>
+                <div className="flex justify-center mb-5">
+                  <button
+                    onClick={goToFaucet}
+                    className="text-blue-800 shadow leading-4 text-center disabled:opacity-50 disabled:cursor-not-allowed text-xs rounded-xl"
+                    style={{ width: '180px', height: '28px', backgroundColor: '#ebfffe'}}
+                    data-testid="to-faucet-button"
+                  >
+                    {chrome.i18n.getMessage('toFaucetNetwork')}
+                  </button>
+                </div>
                 <br></br>
                 {chrome.i18n.getMessage('thisRequestWill')}{' '}
                 <span className="font-semibold">{chrome.i18n.getMessage('notCostAnyFeesLc')}</span>{' '}
