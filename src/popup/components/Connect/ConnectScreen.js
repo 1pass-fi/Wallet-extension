@@ -180,8 +180,8 @@ const ConnectScreen = ({
         {step === 1 && (
           <>
             <div className="text-indigo pt-10 tracking-finnieSpacing-wide px-8.5 mt-7">
-              <LeftGrpahic className="absolute top-13.5 left-0" />
-              <RightGraphic className="absolute top-13.5 right-0" />
+              <LeftGrpahic className="absolute top-0 left-0" />
+              <RightGraphic className="absolute top-0 right-0" />
               <BlackBackIcon
                 style={{ width: '30px', height: '30px' }}
                 className="absolute top-4 left-4 cursor-pointer"
