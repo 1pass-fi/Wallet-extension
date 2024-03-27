@@ -11,6 +11,7 @@ import CheckMarkIcon from 'img/check-mark-white.svg'
 import ConnectBackgroundLeft from 'img/popup/connect-background-left.svg'
 import ConnectBackgroundRight from 'img/popup/connect-background-right.svg'
 import BackIcon from 'img/v2/back-icon.svg'
+import BlackBackIcon from 'img/popup/back-button.svg'
 import CloseIcon from 'img/v2/close-icon-white.svg'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
@@ -176,7 +177,14 @@ const ConnectScreen = ({
       >
         {step === 1 && (
           <>
-            <div className="text-indigo pt-10 tracking-finnieSpacing-wide px-6.5 mt-7">
+            <div className="relative text-indigo pt-10 tracking-finnieSpacing-wide px-8.5 mt-7">
+              <BlackBackIcon
+                style={{ width: '30px', height: '30px' }}
+                className="absolute top-4 left-4 cursor-pointer"
+                onClick={() => {
+                  handleOnClick(false)
+                }}
+              />
               {isKoi && (
                 <div className="text-sm font-semibold leading-5 text-center mb-5.5">
                   {chrome.i18n.getMessage('welcomeToKoiiLeaderBoard')}
