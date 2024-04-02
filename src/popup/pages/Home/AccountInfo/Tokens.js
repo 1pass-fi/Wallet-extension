@@ -190,7 +190,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
   }
 
   useEffect(() => {
-    showToast && toast.error('Network Unavailable')
+    showToast && toast.error('Network connection is unstable, please try again later')
   }, [showToast, setShowToast])
 
   useEffect(() => {

@@ -56,7 +56,7 @@ ReactDOM.render(
           error: {
             style: {
               width: '300px',
-              fontSize: '16px',
+              fontSize: '14px',
               color: '#373765',
             }
           }
