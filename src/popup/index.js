@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Toaster } from 'react-hot-toast'
 import { Provider } from 'react-redux'
 import { HashRouter as Router } from 'react-router-dom'
 import * as browser from 'webextension-polyfill'
@@ -49,6 +50,18 @@ if (
 ReactDOM.render(
   <Provider store={store}>
     <Router>
+      <Toaster
+        toastOptions={{
+          duration: 5000,
+          error: {
+            style: {
+              width: '300px',
+              fontSize: '14px',
+              color: '#373765',
+            }
+          }
+        }}
+      />
       <Popup />
     </Router>
   </Provider>,

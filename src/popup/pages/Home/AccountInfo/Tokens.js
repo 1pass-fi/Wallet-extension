@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
@@ -26,11 +27,12 @@ import k2Contracts from 'utils/k2-contracts.json'
 
 const Tokens = ({ currentProviderAddress, currency }) => {
   const dispatch = useDispatch()
+  const [showToast, setShowToast] = useState(false)
 
   const displayingAccount = useSelector(getDisplayingAccount)
   const price = useSelector((state) => state.price)
   const networkMetadata = useSelector(state => state.networkMetadata)
-  const { networkLogo, networkLogoPath } = useNetworkLogo({networkName: get(networkMetadata, 'networkName')})
+  const { networkLogo, networkLogoPath } = useNetworkLogo({ networkName: get(networkMetadata, 'networkName') })
 
   let { importedTokenAddresses } = useImportedTokenAddresses({
     userAddress: displayingAccount.address,
@@ -64,9 +66,9 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             decimal: 12
           },
           /* This code block is creating an object representing a token called "KOII 1st Testnet". It
-          includes properties such as the token's name, balance, symbol, and decimal. The
-          `numberFormat` function is used to format the balance and displayingBalance values. The
-          decimal value is set to 0, indicating that the token does not have any decimal places. */
+                    includes properties such as the token's name, balance, symbol, and decimal. The
+                    `numberFormat` function is used to format the balance and displayingBalance values. The
+                    decimal value is set to 0, indicating that the token does not have any decimal places. */
           // {
           //   name: 'KOII 1st Testnet',
           //   balance: numberFormat(displayingAccount.koiBalance),
@@ -102,7 +104,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             symbol: 'KOII',
             decimal: 9
           }
-        ] 
+        ]
         await Promise.all(
           importedTokenAddresses.map(async (contractAddress) => {
             let token = await getK2CustomTokensData(contractAddress, displayingAccount.address)
@@ -181,10 +183,15 @@ const Tokens = ({ currentProviderAddress, currency }) => {
       }
     } catch (error) {
       console.log('Failed to load Token list: ', error.message)
+      setShowToast(true)
     } finally {
       dispatch(setIsLoading(false))
     }
   }
+
+  useEffect(() => {
+    showToast && toast.error('Network connection is unstable, please try again later')
+  }, [showToast, setShowToast])
 
   useEffect(() => {
     importedTokenAddresses = []

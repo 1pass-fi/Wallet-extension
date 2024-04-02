@@ -83,64 +83,83 @@ const getTokenData = async (contractAddress, userAddress) => {
 }
 
 export const getK2CustomTokensData = async (contractAddress, userAddress) => {
-  try {
-    const clusterSlug = await storage.setting.get.k2Provider()
-    const connection = new ConnectionK2(clusterSlug)
-    // const connection = new ConnectionK2(clusterApiUrlK2(clusterSlug))
+  // NOTE: Display a message to the user indicating that the network is unavailable. When it takes more than 5 seconds to get the data.
+  let timeoutId
+  const timeoutPromise = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => {
+      reject(new Error('Network unavailable. Please try again later.'))
+    }, 5000)
+  })
+  const dataPromise = new Promise(async (resolve, reject) => {
+    try {
+      const clusterSlug = await storage.setting.get.k2Provider()
+      const connection = new ConnectionK2(clusterSlug)
+      // const connection = new ConnectionK2(clusterApiUrlK2(clusterSlug))
 
-    // const PublicKey = new PublicKeyK2(userAddress)
-    // const requestBody = {
-    //   jsonrpc: '2.0',
-    //   id: 1,
-    //   method: 'getAccountInfo',
-    //   params: [
-    //     PublicKey,
-    //     {
-    //       encoding: 'base58'
-    //     }
-    //   ]
-    // }
+      // const PublicKey = new PublicKeyK2(userAddress)
+      // const requestBody = {
+      //   jsonrpc: '2.0',
+      //   id: 1,
+      //   method: 'getAccountInfo',
+      //   params: [
+      //     PublicKey,
+      //     {
+      //       encoding: 'base58'
+      //     }
+      //   ]
+      // }
 
-    // const response = await axios.post(
-    //   clusterSlug, 
-    //   requestBody,
-    //   { adapter: axiosAdapter }
-    // )
+      // const response = await axios.post(
+      //   clusterSlug, 
+      //   requestBody,
+      //   { adapter: axiosAdapter }
+      // )
 
-    // const tokenAccounts = response.data.result
-    // console.log('response:', response)
-    let foundToken =
-      find(k2Contracts, (token) =>
-        includes(token.address?.toLowerCase(), contractAddress?.toLowerCase())
-      ) || {}
-    const { logoURI: logo, name, decimals: decimal, symbol } = foundToken
+      // const tokenAccounts = response.data.result
+      // console.log('response:', response)
+      let foundToken =
+        find(k2Contracts, (token) =>
+          includes(token.address?.toLowerCase(), contractAddress?.toLowerCase())
+        ) || {}
+      const { logoURI: logo, name, decimals: decimal, symbol } = foundToken
 
-    const tokenAccounts = await connection.getTokenAccountsByOwner(new PublicKeyK2(userAddress), {
-      programId: TOKEN_PROGRAM_ID
-    })
+      const tokenAccounts = await connection.getTokenAccountsByOwner(new PublicKeyK2(userAddress), {
+        programId: TOKEN_PROGRAM_ID
+      })
 
-    let balance = 0
-    tokenAccounts.value.forEach((e) => {
-      const accountInfo = AccountLayout.decode(e.account.data)
-      if (accountInfo.mint?.toString().toLowerCase() === contractAddress?.toLowerCase()) {
-        balance = parseInt(accountInfo.amount)
-      }
-    })
+      let balance = 0
+      tokenAccounts.value.forEach((e) => {
+        const accountInfo = AccountLayout.decode(e.account.data)
+        if (accountInfo.mint?.toString().toLowerCase() === contractAddress?.toLowerCase()) {
+          balance = parseInt(accountInfo.amount)
+        }
+      })
 
-    const price = 0
+      const price = 0
 
-    return {
-      logo,
-      balance,
-      price,
-      name,
-      symbol,
-      decimal,
-      contractAddress
+      resolve({
+        logo,
+        balance,
+        price,
+        name,
+        symbol,
+        decimal,
+        contractAddress
+      })
+    } catch (error) {
+      console.error('Fail to get K2 Token data', error.message)
+      reject(error)
     }
-  } catch (error) {
-    console.error('Fail to get K2 Token data', error.message)
-  }
+  })
+  return Promise.race([timeoutPromise, dataPromise])
+    .then((data) => {
+      clearTimeout(timeoutId)
+      return data
+    })
+    .catch((error) => {
+      clearTimeout(timeoutId)
+      throw error
+    })
 }
 
 export const getSolanaCustomTokensData = async (contractAddress, userAddress) => {
