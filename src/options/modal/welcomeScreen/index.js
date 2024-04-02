@@ -8,7 +8,7 @@ export default ({ onClose }) => {
     <Modal onClose={onClose} isWelcomeScreen={true}>
       <div className="welcome-message">
         <div className="title">
-          Finnie Wallet <span>v0.5.0 Notes</span>
+          Finnie Wallet <span>v0.4. Notes</span>
         </div>
         <div className="content">
           <div className="paragraph">
