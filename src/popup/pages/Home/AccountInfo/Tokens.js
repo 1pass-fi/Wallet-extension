@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
@@ -26,11 +27,12 @@ import k2Contracts from 'utils/k2-contracts.json'
 
 const Tokens = ({ currentProviderAddress, currency }) => {
   const dispatch = useDispatch()
+  const [showToast, setShowToast] = useState(false)
 
   const displayingAccount = useSelector(getDisplayingAccount)
   const price = useSelector((state) => state.price)
   const networkMetadata = useSelector(state => state.networkMetadata)
-  const { networkLogo, networkLogoPath } = useNetworkLogo({networkName: get(networkMetadata, 'networkName')})
+  const { networkLogo, networkLogoPath } = useNetworkLogo({ networkName: get(networkMetadata, 'networkName') })
 
   let { importedTokenAddresses } = useImportedTokenAddresses({
     userAddress: displayingAccount.address,
@@ -102,7 +104,7 @@ const Tokens = ({ currentProviderAddress, currency }) => {
             symbol: 'KOII',
             decimal: 9
           }
-        ] 
+        ]
         await Promise.all(
           importedTokenAddresses.map(async (contractAddress) => {
             let token = await getK2CustomTokensData(contractAddress, displayingAccount.address)
@@ -181,10 +183,15 @@ const Tokens = ({ currentProviderAddress, currency }) => {
       }
     } catch (error) {
       console.log('Failed to load Token list: ', error.message)
+      setShowToast(true)
     } finally {
       dispatch(setIsLoading(false))
     }
   }
+
+  useEffect(() => {
+    showToast && toast.error('Network Unavailable')
+  }, [showToast, setShowToast])
 
   useEffect(() => {
     importedTokenAddresses = []
@@ -265,26 +272,26 @@ const Tokens = ({ currentProviderAddress, currency }) => {
       {(displayingAccount.type === TYPE.ETHEREUM ||
         displayingAccount.type === TYPE.SOLANA ||
         displayingAccount.type === TYPE.K2) && (
-        <div className="mt-5 text-xs font-normal text-center text-blue-800 tracking-finnieSpacing-wide">
-          {chrome.i18n.getMessage('doNotSeeYourTokens')}
-        </div>
-      )}
+          <div className="mt-5 text-xs font-normal text-center text-blue-800 tracking-finnieSpacing-wide">
+            {chrome.i18n.getMessage('doNotSeeYourTokens')}
+          </div>
+        )}
       {(displayingAccount.type === TYPE.ETHEREUM ||
         displayingAccount.type === TYPE.SOLANA ||
         displayingAccount.type === TYPE.K2) && (
-        <div className="mt-1.5 mb-4 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800" data-testid="import-token-button">
-          {/* <span
+          <div className="mt-1.5 mb-4 font-normal text-xs text-center tracking-finnieSpacing-wide text-blue-800" data-testid="import-token-button">
+            {/* <span
           className="underline cursor-pointer text-success-700"
           onClick={() => handleRefreshTokenList()}
         >
           Refresh list
         </span>{' '}
         or{' '} */}
-          <Link className="underline cursor-pointer text-success-700" to="/import-token">
-            {chrome.i18n.getMessage('importAToken')}
-          </Link>
-        </div>
-      )}
+            <Link className="underline cursor-pointer text-success-700" to="/import-token">
+              {chrome.i18n.getMessage('importAToken')}
+            </Link>
+          </div>
+        )}
     </div>
   )
 }
