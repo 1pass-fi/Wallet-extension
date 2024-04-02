@@ -8,11 +8,11 @@ export default ({ onClose }) => {
     <Modal onClose={onClose} isWelcomeScreen={true}>
       <div className="welcome-message">
         <div className="title">
-          Finnie Wallet <span>v0.4.9 Notes</span>
+          Finnie Wallet <span>v0.5.0 Notes</span>
         </div>
         <div className="content">
           <div className="paragraph">
-            <span className="text-success">v0.4.9</span>
+            <span className="text-success">v0.5.0</span>
             <br></br>
             <div className='paragraph'>
               The latest version of Finnie is now compatible with K2, Koii’s new settlement layer, and Solana keys, and there have been many more upgrades behind the scenes. 
@@ -47,6 +47,24 @@ export default ({ onClose }) => {
                 {' '}bug report{' '}
               </a>
             so we can fix it ASAP. 
+            </div>
+          </div>
+          <div className="paragraph">
+            <span className="text-success">v0.4.9</span>
+            <br></br>
+            <div className='paragraph'>
+              The latest version of Finnie is now compatible with K2, Koii’s new settlement layer, and Solana keys, and there have been many more upgrades behind the scenes. 
+            </div>
+            <div className='paragraph'>
+              K2 has been running smoothly for a few months. Since the launch of K2, Finnie is faster than ever before. We are hard at work upgrading our entire system and Finnie has been working on those sprints right alongside. This means faster payments and fewer dropped transactions while using the Koii Network.
+            </div>
+            <div className='paragraph'>
+              This means that Finnie is now compatible with 4 types of keys: K2 (KOII), ETH, SOL, and AR.
+            </div>
+            <div className='paragraph'>
+              What about the existing KOII? Don’t worry! Your tokens will make the transition to K2, but only once the system is fully audited. In Finnie, the legacy tokens will be called KOII 1st Testnet. After the network has been audited, we will have a transition process where you can convert your tokens and NFTs to earn rewards through K2.            </div>
+            <div className='paragraph'>
+              Speaking of NFTs! K2 NFT creation is in the works. It’s a bit complicated but we are working to make it just as easy as the current version. You can still create Arweave NFTs from Finnie, but they will still require AR tokens to pay the storage fee.           
             </div>
           </div>
           <div className="paragraph">
