@@ -450,7 +450,7 @@ export const SOL_NETWORK_PROVIDER = {
 
 export const K2_NETWORK_PROVIDER = {
   MAINNET: 'mainnet-beta',
-  TESTNET: 'https://testnet.koii.live',
+  TESTNET: 'https://testnet.koii.network',
   DEVNET: 'devnet'
 }
 
@@ -692,7 +692,7 @@ export const PREDEFINED_SOLANA_NETWORK_METADATA = {
 export const PREDEFINED_K2_NETWORK_METADATA = {
   'testnet': {
     networkName: 'Testnet',
-    rpcUrl: 'https://testnet.koii.live',
+    rpcUrl: 'https://testnet.koii.network',
     chainId: null,
     currencySymbol: 'KOII',
     blockExplorerUrl: null
