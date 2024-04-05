@@ -3,7 +3,7 @@ import { GalleryContext } from 'options/galleryContext'
 
 import './index.css'
 
-export default ({ version = '0.4.9' }) => {
+export default ({ version = '0.4.12' }) => {
   const { setShowWelcome } = useContext(GalleryContext)
 
   return (
@@ -12,7 +12,7 @@ export default ({ version = '0.4.9' }) => {
         <div className="header">{chrome.i18n.getMessage('about')}</div>
 
         <div className="items">
-          {/* <div className="item version-notes">
+          <div className="item version-notes">
             <div>
               <div className="title">{chrome.i18n.getMessage('versionNotes')}</div>
               <div className="description">{chrome.i18n.getMessage('versionNotesMsg')}</div>
@@ -23,7 +23,7 @@ export default ({ version = '0.4.9' }) => {
                 {chrome.i18n.getMessage('notes')}
               </button>
             </div>
-          </div> */}
+          </div>
 
           <div className="item">
             <div className="title">
