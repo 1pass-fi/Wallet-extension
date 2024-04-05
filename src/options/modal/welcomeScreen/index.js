@@ -8,20 +8,20 @@ export default ({ onClose }) => {
     <Modal onClose={onClose} isWelcomeScreen={true}>
       <div className="welcome-message">
         <div className="title">
-          Finnie Wallet <span>v0.4.9 Notes</span>
+          Finnie Wallet <span>v0.4.12 Notes</span>
         </div>
         <div className="content">
           <div className="paragraph">
-            <span className="text-success">v0.4.9</span>
+            <span className="text-success">v0.4.12</span>
             <br></br>
             <div className='paragraph'>
-              The latest version of Finnie is now compatible with K2, Koii’s new settlement layer, and Solana keys, and there have been many more upgrades behind the scenes. 
+              Added the initial support for Layer 2 Tokens in the Koii's K2. Users can now see token transactions directly in the activity tab and notification panel without needing to import the token manually. Whitelisting process and custom token import feature will be announced within the following weeks, stay tuned!. Updated account cards for a more streamlined user interface. Improved the extension window's appearance to match the correct color scheme. Enhanced error handling to display a "the network is busy" message during 'blockhash unavailable' errors.  
             </div>
             <div className='paragraph'>
-              K2 has been running smoothly for a few months. Since the launch of K2, Finnie is faster than ever before. We are hard at work upgrading our entire system and Finnie has been working on those sprints right alongside. This means faster payments and fewer dropped transactions while using the Koii Network.
+              Replaced the text of "copy address" with a check icon instead of a copy icon upon clicking, simplifying the interface. Updated the styles of components in the notification center for better visual coherence. Fixed minor padding issues across the application. Addressed the back button issue on the onboarding page. Removed all bottom graphics in the account setting page, decluttering the UI for smaller screen sizes. Changed the color of letters displayed when importing a phrase to white for better readability. The balance display will now show as an integer (e.g., 12 instead of 12.0) when the balance is a complete integer, refining the precision of balance representation. Replaced the Leaderboard button with a "KOII NETWORK" button.
             </div>
             <div className='paragraph'>
-              This means that Finnie is now compatible with 4 types of keys: K2 (KOII), ETH, SOL, and AR.
+              Fixed a bug where the account dropdown wasn't showing the correct information, ensuring accurate account details are displayed. Corrected the confirm button's opacity issue to ensure it is at full opacity when the user types their secret phrase. Removed text regarding NFTs in Finnie Account settings, aligning the content with current features and functionalities. Resolved an issue where Google Docs was affecting Finnie's functionality, enhancing compatibility and stability. Removed NFT references from tabs, focusing the content on the current scope of the wallet.
             </div>
             <div className='paragraph'>
               What about the existing KOII? Don’t worry! Your tokens will make the transition to K2, but only once the system is fully audited. In Finnie, the legacy tokens will be called KOII 1st Testnet. After the network has been audited, we will have a transition process where you can convert your tokens and NFTs to earn rewards through K2.            </div>
@@ -47,6 +47,19 @@ export default ({ onClose }) => {
                 {' '}bug report{' '}
               </a>
             so we can fix it ASAP. 
+            </div>
+          </div>
+          <div className="paragraph">
+            <span className="text-success">v0.4.9</span>
+            <br></br>
+            <div className='paragraph'>
+              The latest version of Finnie is now compatible with K2, Koii’s new settlement layer, and Solana keys, and there have been many more upgrades behind the scenes. 
+            </div>
+            <div className='paragraph'>
+              K2 has been running smoothly for a few months. Since the launch of K2, Finnie is faster than ever before. We are hard at work upgrading our entire system and Finnie has been working on those sprints right alongside. This means faster payments and fewer dropped transactions while using the Koii Network.
+            </div>
+            <div className='paragraph'>
+              This means that Finnie is now compatible with 4 types of keys: K2 (KOII), ETH, SOL, and AR.
             </div>
           </div>
           <div className="paragraph">
